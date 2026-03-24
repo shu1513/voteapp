@@ -31,6 +31,7 @@ export type StateResourceDraftPayload = {
   state_name: string;
   population_estimate: number | null;
   census_source_url: string;
+  state_abbreviation_reference_url: string;
   seed_sources: readonly string[];
   allow_open_web_research: boolean;
 };

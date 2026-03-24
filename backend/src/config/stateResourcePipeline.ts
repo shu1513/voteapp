@@ -7,6 +7,10 @@ export const STATE_RESOURCE_SEED_SOURCES = [
   "https://www.usvotefoundation.org/find-my-polling-place",
 ] as const;
 
+// Documentation/audit reference for deterministic FIPS -> abbreviation mapping.
+export const STATE_ABBREVIATION_REFERENCE_URL =
+  "https://pe.usps.com/text/pub28/28apb.htm";
+
 export const ALLOW_OPEN_WEB_RESEARCH = true;
 
 export const STAGING_PENDING_STREAM = "staging:pending";

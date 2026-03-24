@@ -5,6 +5,7 @@ import {
   ALLOW_OPEN_WEB_RESEARCH,
   CENSUS_STATES_API_URL,
   EXPECTED_STATE_RESOURCE_STATE_COUNT,
+  STATE_ABBREVIATION_REFERENCE_URL,
   STAGING_ITEM_TYPE_STATE_RESOURCES,
   STAGING_PENDING_STREAM,
   STATE_RESOURCE_SEED_SOURCES,
@@ -94,6 +95,7 @@ function toDraftPayload(state: CensusState): StateResourceDraftPayload {
     state_name: state.state_name,
     population_estimate: state.population_estimate,
     census_source_url: CENSUS_STATES_API_URL,
+    state_abbreviation_reference_url: STATE_ABBREVIATION_REFERENCE_URL,
     seed_sources: STATE_RESOURCE_SEED_SOURCES,
     allow_open_web_research: ALLOW_OPEN_WEB_RESEARCH,
   };
@@ -124,6 +126,7 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
   await redis.connect();
 
   let enqueued = 0;
+  let skipped = 0;
   let failed = 0;
 
   try {
@@ -132,7 +135,7 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
       const serializedPayload = JSON.stringify(payload);
 
       try {
-        await pool.query(
+        const result = await pool.query(
           `
             INSERT INTO staging_items
               (ingest_key, item_type, payload, status, reason, run_id, model, prompt_version)
@@ -149,9 +152,17 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
               validated_at = NULL,
               written_at = NULL,
               updated_at = now()
+            WHERE staging_items.status IN ('failed', 'rejected')
+            RETURNING ingest_key
           `,
           [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, serializedPayload, runId, env.AI_MODEL, env.PROMPT_VERSION]
         );
+
+        // Enqueue only when this is a brand-new staging record, or a retry of failed/rejected data.
+        if (result.rowCount === 0) {
+          skipped += 1;
+          continue;
+        }
 
         await redis.xAdd(STAGING_PENDING_STREAM, "*", {
           ingest_key: ingestKey,
@@ -182,5 +193,5 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
     await pool.end();
   }
 
-  console.log(`state_resources producer completed. enqueued=${enqueued} failed=${failed}`);
+  console.log(`state_resources producer completed. enqueued=${enqueued} skipped=${skipped} failed=${failed}`);
 }
