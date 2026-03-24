@@ -52,10 +52,17 @@ export const STATE_ABBR_BY_FIPS: Record<string, string> = {
   "56": "WY",
 };
 
+/**
+ * Normalizes a state FIPS value to a two-character string.
+ */
 export function normalizeFips(value: string): string {
   return value.padStart(2, "0");
 }
 
+/**
+ * Returns USPS two-letter state abbreviation for a given state FIPS code.
+ * Throws when the provided FIPS code is not in the supported 50 states + DC map.
+ */
 export function getStateAbbreviationByFips(fips: string): string {
   const normalized = normalizeFips(fips.trim());
   const abbreviation = STATE_ABBR_BY_FIPS[normalized];

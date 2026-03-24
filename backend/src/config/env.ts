@@ -5,6 +5,9 @@ export type PipelineEnv = {
   PROMPT_VERSION: string;
 };
 
+/**
+ * Reads a required environment variable, with optional fallback.
+ */
 function readEnv(name: keyof PipelineEnv, fallback?: string): string {
   const value = process.env[name] ?? fallback;
 
@@ -15,6 +18,9 @@ function readEnv(name: keyof PipelineEnv, fallback?: string): string {
   return value;
 }
 
+/**
+ * Returns normalized runtime configuration for the pipeline.
+ */
 export function getPipelineEnv(): PipelineEnv {
   return {
     DATABASE_URL: readEnv("DATABASE_URL", "postgresql://localhost:5432/voteapp"),
