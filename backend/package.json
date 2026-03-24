@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "state-resources:produce": "tsx src/scripts/produceStateResources.ts",
+    "state-resources:validate": "tsx src/scripts/validateStateResources.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
