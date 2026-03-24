@@ -410,6 +410,10 @@ CREATE TABLE state_resources (
     sources jsonb NOT NULL,
     CONSTRAINT chk_state_fips_format CHECK (state_fips ~ '^[0-9]{2}$'),
     CONSTRAINT chk_state_abbreviation_format CHECK (state_abbreviation ~ '^[A-Z]{2}$'),
+    CONSTRAINT chk_state_resources_vote_by_mail_info_text
+        CHECK (btrim(vote_by_mail_info) <> '' AND char_length(vote_by_mail_info) <= 4000),
+    CONSTRAINT chk_state_resources_polling_hours_text
+        CHECK (btrim(polling_hours) <> '' AND char_length(polling_hours) <= 1000),
     CONSTRAINT chk_state_resources_sources
         CHECK (is_valid_state_resource_sources(sources))
 );

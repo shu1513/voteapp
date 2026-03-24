@@ -1,0 +1,457 @@
+import { Pool } from "pg";
+import { createClient } from "redis";
+
+import { getPipelineEnv } from "../../config/env.js";
+import {
+  STAGING_ITEM_TYPE_STATE_RESOURCES,
+  STAGING_PENDING_STREAM,
+  STAGING_REJECTED_STREAM,
+  STAGING_STATE_RESOURCES_VALIDATOR_GROUP,
+  STAGING_VALIDATED_STREAM,
+} from "../../config/stateResourcePipeline.js";
+import { getStateAbbreviationByFips } from "../../constants/usStates.js";
+import type {
+  SourceCitation,
+  StateResourcePayload,
+  StateResourceSources,
+} from "../../types/stateResource.js";
+
+type ValidatorOptions = {
+  once?: boolean;
+  batchSize?: number;
+  blockMs?: number;
+};
+
+type ValidationResult =
+  | {
+      ok: true;
+      payload: StateResourcePayload;
+    }
+  | {
+      ok: false;
+      reasons: string[];
+    };
+
+type StagingRow = {
+  ingest_key: string;
+  run_id: string | null;
+  payload: unknown;
+  status: string;
+};
+
+/**
+ * Converts an unknown error into a bounded, persistable string.
+ */
+function toReason(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
+}
+
+/**
+ * Returns true when the input is a non-empty string after trimming.
+ */
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+/**
+ * Checks whether a string is an absolute HTTP/HTTPS URL.
+ */
+function isHttpUrl(value: string): boolean {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Validates one citation object inside a sources array.
+ */
+function validateSourceCitation(value: unknown): value is SourceCitation {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    return false;
+  }
+
+  const item = value as Record<string, unknown>;
+
+  if (!isNonEmptyString(item.source_name)) {
+    return false;
+  }
+
+  if (!isNonEmptyString(item.source_url)) {
+    return false;
+  }
+
+  return isHttpUrl(item.source_url);
+}
+
+/**
+ * Validates the sources object required for state_resources records.
+ */
+function validateSources(value: unknown): { ok: true; sources: StateResourceSources } | { ok: false; reason: string } {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    return { ok: false, reason: "sources must be an object" };
+  }
+
+  const requiredKeys: (keyof StateResourceSources)[] = [
+    "polling_place_url",
+    "voter_registration_url",
+    "vote_by_mail_info",
+    "polling_hours",
+    "id_requirements",
+  ];
+
+  const obj = value as Record<string, unknown>;
+
+  for (const key of requiredKeys) {
+    const citations = obj[key];
+
+    if (!Array.isArray(citations) || citations.length === 0) {
+      return { ok: false, reason: `sources.${key} must be a non-empty array` };
+    }
+
+    for (const citation of citations) {
+      if (!validateSourceCitation(citation)) {
+        return {
+          ok: false,
+          reason: `sources.${key} contains an invalid citation (requires source_name + http(s) source_url)`,
+        };
+      }
+    }
+  }
+
+  const allowedKeys = new Set(requiredKeys);
+  const extraKeys = Object.keys(obj).filter((key) => !allowedKeys.has(key as keyof StateResourceSources));
+  if (extraKeys.length > 0) {
+    return { ok: false, reason: `sources contains unsupported keys: ${extraKeys.join(", ")}` };
+  }
+
+  return { ok: true, sources: obj as StateResourceSources };
+}
+
+/**
+ * Validates a staging payload as a complete state_resources candidate.
+ */
+function validateStateResourcePayload(payload: unknown): ValidationResult {
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+    return { ok: false, reasons: ["payload must be an object"] };
+  }
+
+  const input = payload as Record<string, unknown>;
+  const reasons: string[] = [];
+  const looksLikeDraftPayload =
+    Object.hasOwn(input, "census_source_url")
+    || Object.hasOwn(input, "seed_sources")
+    || Object.hasOwn(input, "allow_open_web_research");
+
+  const requiredTextFields: (keyof StateResourcePayload)[] = [
+    "state_fips",
+    "state_abbreviation",
+    "state_name",
+    "polling_place_url",
+    "voter_registration_url",
+    "vote_by_mail_info",
+    "polling_hours",
+    "id_requirements",
+  ];
+
+  for (const key of requiredTextFields) {
+    if (!isNonEmptyString(input[key])) {
+      reasons.push(`${key} is required and must be a non-empty string`);
+    }
+  }
+
+  if (reasons.length > 0) {
+    if (looksLikeDraftPayload) {
+      reasons.unshift("payload is a census draft and has not been AI-enriched with required state_resources fields yet");
+    }
+    return { ok: false, reasons };
+  }
+
+  const state_fips = (input.state_fips as string).trim();
+  const state_abbreviation = (input.state_abbreviation as string).trim();
+  const state_name = (input.state_name as string).trim();
+  const polling_place_url = (input.polling_place_url as string).trim();
+  const voter_registration_url = (input.voter_registration_url as string).trim();
+  const vote_by_mail_info = (input.vote_by_mail_info as string).trim();
+  const polling_hours = (input.polling_hours as string).trim();
+  const id_requirements = (input.id_requirements as string).trim();
+
+  if (!/^[0-9]{2}$/.test(state_fips)) {
+    reasons.push("state_fips must be exactly two digits");
+  }
+
+  if (!/^[A-Z]{2}$/.test(state_abbreviation)) {
+    reasons.push("state_abbreviation must be two uppercase letters");
+  }
+
+  if (!isHttpUrl(polling_place_url)) {
+    reasons.push("polling_place_url must be a valid http(s) URL");
+  }
+
+  if (!isHttpUrl(voter_registration_url)) {
+    reasons.push("voter_registration_url must be a valid http(s) URL");
+  }
+
+  if (vote_by_mail_info.length > 4000) {
+    reasons.push("vote_by_mail_info must be 4000 characters or fewer");
+  }
+
+  if (polling_hours.length > 1000) {
+    reasons.push("polling_hours must be 1000 characters or fewer");
+  }
+
+  try {
+    const expectedAbbreviation = getStateAbbreviationByFips(state_fips);
+    if (state_abbreviation !== expectedAbbreviation) {
+      reasons.push(
+        `state_abbreviation does not match deterministic mapping for fips ${state_fips} (expected ${expectedAbbreviation})`
+      );
+    }
+  } catch (error) {
+    reasons.push(toReason(error));
+  }
+
+  const sourcesResult = validateSources(input.sources);
+  if (!sourcesResult.ok) {
+    reasons.push(sourcesResult.reason);
+  }
+
+  if (reasons.length > 0 || !sourcesResult.ok) {
+    return { ok: false, reasons };
+  }
+
+  return {
+    ok: true,
+    payload: {
+      state_fips,
+      state_abbreviation,
+      state_name,
+      polling_place_url,
+      voter_registration_url,
+      vote_by_mail_info,
+      polling_hours,
+      id_requirements,
+      sources: sourcesResult.sources,
+    },
+  };
+}
+
+/**
+ * Reads a pending staging row by ingest key.
+ */
+async function getPendingStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
+  const result = await pool.query<StagingRow>(
+    `
+      SELECT ingest_key, run_id, payload, status
+      FROM staging_items
+      WHERE ingest_key = $1
+        AND item_type = $2
+    `,
+    [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+/**
+ * Joins validation reasons into a single DB-safe reason string.
+ */
+function formatValidationReason(reasons: string[]): string {
+  const joined = reasons.join("; ");
+  return joined.length > 1000 ? `${joined.slice(0, 997)}...` : joined;
+}
+
+/**
+ * Ensures Redis consumer group exists for pending stream.
+ */
+async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Promise<void> {
+  try {
+    await redis.xGroupCreate(
+      STAGING_PENDING_STREAM,
+      STAGING_STATE_RESOURCES_VALIDATOR_GROUP,
+      "0",
+      {
+        MKSTREAM: true,
+      }
+    );
+  } catch (error) {
+    const message = toReason(error);
+    if (!message.includes("BUSYGROUP")) {
+      throw error;
+    }
+  }
+}
+
+/**
+ * Processes one pending stream message and updates staging status + routing stream.
+ */
+async function processMessage(
+  pool: Pool,
+  redis: ReturnType<typeof createClient>,
+  messageId: string,
+  message: Record<string, string>
+): Promise<"validated" | "rejected" | "skipped"> {
+  const ingestKey = message.ingest_key;
+
+  if (!ingestKey) {
+    await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+    return "skipped";
+  }
+
+  const row = await getPendingStagingRow(pool, ingestKey);
+  if (!row) {
+    await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+    return "skipped";
+  }
+
+  if (row.status !== "pending") {
+    await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+    return "skipped";
+  }
+
+  const validation = validateStateResourcePayload(row.payload);
+
+  if (validation.ok) {
+    await redis.xAdd(STAGING_VALIDATED_STREAM, "*", {
+      ingest_key: ingestKey,
+      item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
+      run_id: row.run_id ?? "",
+    });
+
+    await pool.query(
+      `
+        UPDATE staging_items
+        SET status = 'validated',
+            reason = NULL,
+            validated_at = now(),
+            updated_at = now()
+        WHERE ingest_key = $1
+          AND item_type = $2
+          AND status = 'pending'
+      `,
+      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES]
+    );
+
+    await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+    return "validated";
+  }
+
+  const reason = formatValidationReason(validation.reasons);
+
+  await redis.xAdd(STAGING_REJECTED_STREAM, "*", {
+    ingest_key: ingestKey,
+    item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
+    run_id: row.run_id ?? "",
+    reason,
+  });
+
+  await pool.query(
+    `
+      UPDATE staging_items
+      SET status = 'rejected',
+          reason = $2,
+          validated_at = now(),
+          updated_at = now()
+      WHERE ingest_key = $1
+        AND item_type = $3
+        AND status = 'pending'
+    `,
+    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES]
+  );
+
+  await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+  return "rejected";
+}
+
+/**
+ * Consumes pending state_resources items and routes them to validated or rejected.
+ */
+export async function runStateResourcesValidator(options: ValidatorOptions = {}): Promise<void> {
+  const {
+    once = false,
+    batchSize = 20,
+    blockMs = 5000,
+  } = options;
+
+  const env = getPipelineEnv();
+  const pool = new Pool({ connectionString: env.DATABASE_URL });
+  const redis = createClient({ url: env.REDIS_URL });
+
+  await redis.connect();
+  await ensureConsumerGroup(redis);
+
+  const consumerName = `validator-${process.pid}`;
+
+  let validated = 0;
+  let rejected = 0;
+  let skipped = 0;
+
+  try {
+    let keepRunning = true;
+
+    while (keepRunning) {
+      const batches = await redis.xReadGroup(
+        STAGING_STATE_RESOURCES_VALIDATOR_GROUP,
+        consumerName,
+        [{ key: STAGING_PENDING_STREAM, id: ">" }],
+        {
+          COUNT: batchSize,
+          BLOCK: blockMs,
+        }
+      );
+
+      if (!batches || batches.length === 0) {
+        if (once) {
+          break;
+        }
+        continue;
+      }
+
+      for (const batch of batches) {
+        for (const entry of batch.messages) {
+          try {
+            const result = await processMessage(pool, redis, entry.id, entry.message);
+            if (result === "validated") {
+              validated += 1;
+            } else if (result === "rejected") {
+              rejected += 1;
+            } else {
+              skipped += 1;
+            }
+          } catch (error) {
+            const reason = toReason(error);
+            const ingestKey = entry.message.ingest_key;
+
+            if (ingestKey) {
+              await pool.query(
+                `
+                  UPDATE staging_items
+                  SET status = 'failed',
+                      reason = $2,
+                      updated_at = now()
+                  WHERE ingest_key = $1
+                    AND item_type = $3
+                `,
+                [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES]
+              );
+            }
+
+            await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, entry.id);
+          }
+        }
+      }
+
+      if (once) {
+        keepRunning = false;
+      }
+    }
+  } finally {
+    await redis.quit();
+    await pool.end();
+  }
+
+  console.log(`state_resources validator completed. validated=${validated} rejected=${rejected} skipped=${skipped}`);
+}

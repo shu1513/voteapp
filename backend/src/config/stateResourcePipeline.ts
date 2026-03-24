@@ -14,6 +14,10 @@ export const STATE_ABBREVIATION_REFERENCE_URL =
 export const ALLOW_OPEN_WEB_RESEARCH = true;
 
 export const STAGING_PENDING_STREAM = "staging:pending";
+export const STAGING_VALIDATED_STREAM = "staging:validated";
+export const STAGING_REJECTED_STREAM = "staging:rejected";
+
+export const STAGING_STATE_RESOURCES_VALIDATOR_GROUP = "state_resources_validator";
 
 export const STAGING_ITEM_TYPE_STATE_RESOURCES = "state_resources" as const;
 
