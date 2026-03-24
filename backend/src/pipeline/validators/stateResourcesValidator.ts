@@ -315,6 +315,8 @@ async function processMessage(
   const validation = validateStateResourcePayload(row.payload);
 
   if (validation.ok) {
+    // This stream is at-least-once delivery. If publish succeeds but ack fails,
+    // this message can be redelivered; downstream consumers must dedupe by ingest_key.
     await redis.xAdd(STAGING_VALIDATED_STREAM, "*", {
       ingest_key: ingestKey,
       item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
@@ -353,6 +355,8 @@ async function processMessage(
       UPDATE staging_items
       SET status = 'rejected',
           reason = $2,
+          -- validated_at tracks validation-attempt time, including rejected rows.
+          -- TODO: rename validated_at -> processed_at in a future migration for clarity.
           validated_at = now(),
           updated_at = now()
       WHERE ingest_key = $1
