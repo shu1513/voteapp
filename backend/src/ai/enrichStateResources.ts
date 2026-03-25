@@ -1,5 +1,6 @@
 import {
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
+  STATE_RESOURCE_SOURCE_FIELDS,
 } from "../contracts/stateResourceEnrichmentContract.js";
 import type { PipelineEnv } from "../config/env.js";
 import type {
@@ -13,12 +14,54 @@ import { parseStateResourcePayloadFromAi } from "./stateResourcePayloadValidatio
 import { openAiProvider } from "./providers/openaiProvider.js";
 import { claudeProvider } from "./providers/claudeProvider.js";
 import { geminiProvider } from "./providers/geminiProvider.js";
+import type { StateResourcePayload } from "../types/stateResource.js";
 
 const PROVIDER_ADAPTERS: Record<AiProvider, ProviderAdapter> = {
   openai: openAiProvider,
   claude: claudeProvider,
   gemini: geminiProvider,
 };
+
+function normalizeComparableUrl(raw: string): string | null {
+  try {
+    const parsed = new URL(raw);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return null;
+    }
+    parsed.hash = "";
+    const normalized = parsed.toString();
+    return normalized.endsWith("/") ? normalized.slice(0, -1) : normalized;
+  } catch {
+    return null;
+  }
+}
+
+function validateCitationsFromEvidence(payload: StateResourcePayload, evidence: EnrichStateResourcesInput["evidence"]): string | null {
+  if (!Array.isArray(evidence) || evidence.length === 0) {
+    return "evidence snippets are required for citation grounding";
+  }
+
+  const evidenceUrlSet = new Set(
+    evidence
+      .map((item) => normalizeComparableUrl(item.url))
+      .filter((url): url is string => typeof url === "string")
+  );
+
+  if (evidenceUrlSet.size === 0) {
+    return "evidence snippets must contain valid http(s) URLs";
+  }
+
+  for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
+    for (const citation of payload.sources[key]) {
+      const normalizedCitationUrl = normalizeComparableUrl(citation.source_url);
+      if (!normalizedCitationUrl || !evidenceUrlSet.has(normalizedCitationUrl)) {
+        return `sources.${key} citation URL must come from collected evidence URLs`;
+      }
+    }
+  }
+
+  return null;
+}
 
 /**
  * Builds enrichment runtime config from environment.
@@ -97,6 +140,16 @@ export async function enrichStateResources(
       retryable: false,
       errorCode: "SCHEMA_MISMATCH",
       reason: "state_name in AI output must match draft state_name",
+    };
+  }
+
+  const evidenceReason = validateCitationsFromEvidence(parsed.payload, input.evidence);
+  if (evidenceReason) {
+    return {
+      ok: false,
+      retryable: false,
+      errorCode: "SCHEMA_MISMATCH",
+      reason: evidenceReason,
     };
   }
 

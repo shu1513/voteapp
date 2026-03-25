@@ -18,6 +18,8 @@ import {
   STATE_RESOURCE_SOURCE_FIELDS,
   STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH,
 } from "../../contracts/stateResourceEnrichmentContract.js";
+import { collectStateResourceEvidence } from "../evidence/stateResourceEvidenceCollector.js";
+import type { EvidenceSnippet } from "../../ai/types.js";
 import type { StateResourceDraftPayload, StateResourcePayload, StateResourceSources } from "../../types/stateResource.js";
 
 type MockEnricherOptions = {
@@ -108,6 +110,10 @@ function parseDraftPayload(payload: unknown): DraftParseResult {
     allow_open_web_research: input.allow_open_web_research,
   };
 
+  if (!normalized.seed_sources.every((url) => isHttpUrl(url))) {
+    return { ok: false, reason: "draft.seed_sources must contain valid http(s) URLs" };
+  }
+
   if (!STATE_RESOURCE_FIPS_REGEX.test(normalized.state_fips)) {
     return { ok: false, reason: "draft.state_fips must be exactly two digits" };
   }
@@ -127,34 +133,89 @@ function parseDraftPayload(payload: unknown): DraftParseResult {
   return { ok: true, draft: normalized };
 }
 
-function buildMockPayload(draft: StateResourceDraftPayload): StateResourcePayload {
-  const pollingPlaceUrl =
-    draft.seed_sources.find((url) => url.includes("polling-place")) ??
-    "https://www.vote.org/polling-place-locator/";
+type EnrichedStagingPayload = StateResourcePayload & {
+  evidence: EvidenceSnippet[];
+};
 
-  const voterRegistrationUrl = "https://www.usa.gov/register-to-vote";
-  const voteByMailSource = "https://www.vote.org/absentee-ballot/";
-  const pollingHoursSource = "https://www.nass.org/can-i-vote";
-  const idRequirementsSource = "https://www.usvotefoundation.org/voter-id-laws";
+function sourceNameFromEvidence(evidence: EvidenceSnippet): string {
+  return evidence.title.trim().length > 0 ? evidence.title.trim() : "source";
+}
+
+function pickEvidenceUrl(
+  evidence: EvidenceSnippet[],
+  preferredPatterns: RegExp[],
+  fallbackUrl: string
+): EvidenceSnippet {
+  for (const item of evidence) {
+    for (const pattern of preferredPatterns) {
+      if (pattern.test(item.url)) {
+        return item;
+      }
+    }
+  }
+
+  return evidence[0] ?? {
+    url: fallbackUrl,
+    title: "source",
+    snippet: "fallback evidence",
+  };
+}
+
+function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSnippet[]): StateResourcePayload {
+  const pollingPlaceEvidence = pickEvidenceUrl(
+    evidence,
+    [/polling-place/i, /find-your-polling-place/i],
+    "https://www.vote.org/polling-place-locator/"
+  );
+  const registrationEvidence = pickEvidenceUrl(
+    evidence,
+    [/register/i, /voter-registration/i],
+    "https://www.usa.gov/register-to-vote"
+  );
+  const voteByMailEvidence = pickEvidenceUrl(
+    evidence,
+    [/absentee/i, /mail/i],
+    "https://www.vote.org/absentee-ballot/"
+  );
+  const pollingHoursEvidence = pickEvidenceUrl(
+    evidence,
+    [/polling/i, /can-i-vote/i],
+    "https://www.nass.org/can-i-vote"
+  );
+  const idRequirementsEvidence = pickEvidenceUrl(
+    evidence,
+    [/id/i, /voter-id/i],
+    "https://www.usvotefoundation.org/voter-id-laws"
+  );
 
   const voteByMailInfo = `${draft.state_name} voters can request and return vote-by-mail ballots based on state deadlines and local election rules.`;
   const pollingHours = "Polling locations usually open and close at posted local hours on election day.";
   const idRequirements = `${draft.state_name} voter ID requirements depend on election type and local/state rules.`;
 
   const sources: StateResourceSources = {
-    polling_place_url: [{ source_name: "Vote.org", source_url: pollingPlaceUrl }],
-    voter_registration_url: [{ source_name: "USA.gov", source_url: voterRegistrationUrl }],
-    vote_by_mail_info: [{ source_name: "Vote.org", source_url: voteByMailSource }],
-    polling_hours: [{ source_name: "NASS", source_url: pollingHoursSource }],
-    id_requirements: [{ source_name: "US Vote Foundation", source_url: idRequirementsSource }],
+    polling_place_url: [
+      { source_name: sourceNameFromEvidence(pollingPlaceEvidence), source_url: pollingPlaceEvidence.url },
+    ],
+    voter_registration_url: [
+      { source_name: sourceNameFromEvidence(registrationEvidence), source_url: registrationEvidence.url },
+    ],
+    vote_by_mail_info: [
+      { source_name: sourceNameFromEvidence(voteByMailEvidence), source_url: voteByMailEvidence.url },
+    ],
+    polling_hours: [
+      { source_name: sourceNameFromEvidence(pollingHoursEvidence), source_url: pollingHoursEvidence.url },
+    ],
+    id_requirements: [
+      { source_name: sourceNameFromEvidence(idRequirementsEvidence), source_url: idRequirementsEvidence.url },
+    ],
   };
 
   return {
     state_fips: draft.state_fips,
     state_abbreviation: draft.state_abbreviation,
     state_name: draft.state_name,
-    polling_place_url: pollingPlaceUrl,
-    voter_registration_url: voterRegistrationUrl,
+    polling_place_url: pollingPlaceEvidence.url,
+    voter_registration_url: registrationEvidence.url,
     vote_by_mail_info: voteByMailInfo,
     polling_hours: pollingHours,
     id_requirements: idRequirements,
@@ -162,7 +223,11 @@ function buildMockPayload(draft: StateResourceDraftPayload): StateResourcePayloa
   };
 }
 
-function validateMockPayload(payload: StateResourcePayload): string | null {
+function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSnippet[]): string | null {
+  if (!Array.isArray(evidence) || evidence.length === 0) {
+    return "mock enricher must collect at least one evidence snippet";
+  }
+
   for (const key of STATE_RESOURCE_REQUIRED_TEXT_FIELDS) {
     if (!isNonEmptyString(payload[key])) {
       return `mock payload missing required field: ${key}`;
@@ -310,7 +375,7 @@ async function publishPending(
 async function applyMockEnrichment(
   pool: Pool,
   ingestKey: string,
-  payload: StateResourcePayload,
+  payload: EnrichedStagingPayload,
   fallbackPromptVersion: string
 ): Promise<boolean> {
   const result = await pool.query(
@@ -389,15 +454,26 @@ async function processMessage(
     return "failed";
   }
 
-  const mockPayload = buildMockPayload(draft.draft);
-  const validationReason = validateMockPayload(mockPayload);
+  const evidence = await collectStateResourceEvidence(draft.draft);
+  const mockPayload = buildMockPayload(draft.draft, evidence);
+  const validationReason = validateMockPayload(mockPayload, evidence);
   if (validationReason) {
     await markFailedPending(pool, ingestKey, validationReason);
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "failed";
   }
 
-  const didUpdate = await applyMockEnrichment(pool, ingestKey, mockPayload, row.prompt_version ?? envPromptVersion);
+  const enrichedPayload: EnrichedStagingPayload = {
+    ...mockPayload,
+    evidence,
+  };
+
+  const didUpdate = await applyMockEnrichment(
+    pool,
+    ingestKey,
+    enrichedPayload,
+    row.prompt_version ?? envPromptVersion
+  );
   if (!didUpdate) {
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "skipped";
@@ -459,6 +535,7 @@ export async function runStateResourcesMockEnricher(options: MockEnricherOptions
         const status = await getStagingStatus(pool, ingestKey);
         if (status === "pending") {
           // Unknown error may still be transient; keep unacked for retry/reclaim.
+          console.warn(`mock enricher retrying ingest_key=${ingestKey}: ${toReason(error)}`);
           retried += 1;
           continue;
         }
