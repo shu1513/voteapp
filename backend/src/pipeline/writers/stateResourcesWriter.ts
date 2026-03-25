@@ -24,9 +24,14 @@ type StagingRow = {
   status: string;
 };
 
+type WriterOutcome = "written" | "failed" | "skipped" | "retry" | "recovered";
+
 type ParseResult =
   | { ok: true; payload: StateResourcePayload }
   | { ok: false; reason: string };
+
+const RECLAIM_MIN_IDLE_MS = 30_000;
+const RECLAIM_MAX_BATCHES = 20;
 
 /**
  * Converts unknown errors into a bounded reason string suitable for DB persistence.
@@ -155,6 +160,23 @@ async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow 
 }
 
 /**
+ * Returns current staging status for one ingest key.
+ */
+async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string | null> {
+  const result = await pool.query<{ status: string }>(
+    `
+      SELECT status
+      FROM staging_items
+      WHERE ingest_key = $1
+        AND item_type = $2
+    `,
+    [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES]
+  );
+
+  return result.rows[0]?.status ?? null;
+}
+
+/**
  * Marks a staging row as failed, preserving the reason for investigation and retry logic.
  */
 async function markFailed(pool: Pool, ingestKey: string, reason: string): Promise<void> {
@@ -244,6 +266,43 @@ async function writeStateResourceAndMarkWritten(
 }
 
 /**
+ * Reclaims stale pending entries for this consumer group so crashes don't strand messages.
+ */
+async function reclaimPendingEntries(
+  redis: ReturnType<typeof createClient>,
+  consumerName: string,
+  batchSize: number
+): Promise<Array<{ id: string; message: Record<string, string> }>> {
+  const reclaimed: Array<{ id: string; message: Record<string, string> }> = [];
+  let cursor = "0-0";
+
+  for (let i = 0; i < RECLAIM_MAX_BATCHES; i += 1) {
+    const claim = await redis.xAutoClaim(
+      STAGING_VALIDATED_STREAM,
+      STAGING_STATE_RESOURCES_WRITER_GROUP,
+      consumerName,
+      RECLAIM_MIN_IDLE_MS,
+      cursor,
+      { COUNT: batchSize }
+    );
+
+    cursor = claim.nextId;
+
+    if (!claim.messages || claim.messages.length === 0) {
+      break;
+    }
+
+    reclaimed.push(
+      ...claim.messages
+        .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
+        .map((entry) => ({ id: entry.id, message: entry.message as Record<string, string> }))
+    );
+  }
+
+  return reclaimed;
+}
+
+/**
  * Processes one message from the validated stream.
  */
 async function processMessage(
@@ -251,7 +310,7 @@ async function processMessage(
   redis: ReturnType<typeof createClient>,
   messageId: string,
   message: Record<string, string>
-): Promise<"written" | "failed" | "skipped"> {
+): Promise<WriterOutcome> {
   const ingestKey = message.ingest_key;
 
   if (!ingestKey) {
@@ -264,6 +323,23 @@ async function processMessage(
   if (!row) {
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
     return "skipped";
+  }
+
+  if (row.status === "written") {
+    // Recovery path: if prior publish/ack failed post-commit, message may be redelivered.
+    // Downstream consumers must dedupe by ingest_key for at-least-once delivery.
+    try {
+      await redis.xAdd(STAGING_WRITTEN_STREAM, "*", {
+        ingest_key: ingestKey,
+        item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
+        run_id: row.run_id ?? "",
+      });
+      await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
+      return "recovered";
+    } catch {
+      // Leave unacked so it can be reclaimed and retried.
+      return "retry";
+    }
   }
 
   if (row.status !== "validated") {
@@ -282,18 +358,10 @@ async function processMessage(
   try {
     const didTransitionToWritten = await writeStateResourceAndMarkWritten(client, ingestKey, parsed.payload);
 
-    if (didTransitionToWritten) {
-      await redis.xAdd(STAGING_WRITTEN_STREAM, "*", {
-        ingest_key: ingestKey,
-        item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
-        run_id: row.run_id ?? "",
-      });
+    if (!didTransitionToWritten) {
       await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-      return "written";
+      return "skipped";
     }
-
-    await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-    return "skipped";
   } catch (error) {
     const reason = toReason(error);
     await markFailed(pool, ingestKey, reason);
@@ -301,6 +369,19 @@ async function processMessage(
     return "failed";
   } finally {
     client.release();
+  }
+
+  // Row is committed as written. If publish/ack fails, keep message pending for reclaim.
+  try {
+    await redis.xAdd(STAGING_WRITTEN_STREAM, "*", {
+      ingest_key: ingestKey,
+      item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
+      run_id: row.run_id ?? "",
+    });
+    await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
+    return "written";
+  } catch {
+    return "retry";
   }
 }
 
@@ -321,11 +402,61 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
   let written = 0;
   let failed = 0;
   let skipped = 0;
+  let retried = 0;
+  let recovered = 0;
+
+  const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
+    for (const entry of entries) {
+      try {
+        const outcome = await processMessage(pool, redis, entry.id, entry.message);
+        if (outcome === "written") {
+          written += 1;
+        } else if (outcome === "failed") {
+          failed += 1;
+        } else if (outcome === "retry") {
+          retried += 1;
+        } else if (outcome === "recovered") {
+          recovered += 1;
+        } else {
+          skipped += 1;
+        }
+      } catch (error) {
+        failed += 1;
+        const reason = toReason(error);
+        const ingestKey = entry.message.ingest_key;
+
+        if (!ingestKey) {
+          await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, entry.id);
+          continue;
+        }
+
+        const status = await getStagingStatus(pool, ingestKey);
+        if (status === "validated") {
+          await markFailed(pool, ingestKey, reason);
+          await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, entry.id);
+          continue;
+        }
+
+        if (status === "written") {
+          // Keep unacked to allow XAUTOCLAIM recovery and re-publish of written event.
+          retried += 1;
+          continue;
+        }
+
+        await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, entry.id);
+      }
+    }
+  };
 
   try {
     let keepRunning = true;
 
     while (keepRunning) {
+      const reclaimed = await reclaimPendingEntries(redis, consumerName, batchSize);
+      if (reclaimed.length > 0) {
+        await handleEntries(reclaimed);
+      }
+
       const batches = await redis.xReadGroup(
         STAGING_STATE_RESOURCES_WRITER_GROUP,
         consumerName,
@@ -333,35 +464,9 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
         { COUNT: batchSize, BLOCK: blockMs }
       );
 
-      if (!batches || batches.length === 0) {
-        if (once) {
-          break;
-        }
-        continue;
-      }
-
-      for (const batch of batches) {
-        for (const entry of batch.messages) {
-          try {
-            const outcome = await processMessage(pool, redis, entry.id, entry.message);
-            if (outcome === "written") {
-              written += 1;
-            } else if (outcome === "failed") {
-              failed += 1;
-            } else {
-              skipped += 1;
-            }
-          } catch (error) {
-            failed += 1;
-            const reason = toReason(error);
-            const ingestKey = entry.message.ingest_key;
-
-            if (ingestKey) {
-              await markFailed(pool, ingestKey, reason);
-            }
-
-            await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, entry.id);
-          }
+      if (batches && batches.length > 0) {
+        for (const batch of batches) {
+          await handleEntries(batch.messages.map((entry) => ({ id: entry.id, message: entry.message })));
         }
       }
 
@@ -374,5 +479,7 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
     await pool.end();
   }
 
-  console.log(`state_resources writer completed. written=${written} failed=${failed} skipped=${skipped}`);
+  console.log(
+    `state_resources writer completed. written=${written} recovered=${recovered} failed=${failed} skipped=${skipped} retried=${retried}`
+  );
 }
