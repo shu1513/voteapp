@@ -32,6 +32,11 @@ Required metadata on `staging_items`:
 - `schema_version`
 - `prompt_version`
 
+Schema version rules:
+- Producer sets `schema_version = 'state_resources_draft_v1'` for draft items sent to `staging:draft`.
+- Enricher sets `schema_version = 'state_resources_enrichment_v1'` for enriched items sent to `staging:pending`.
+- Validator accepts only `schema_version = 'state_resources_enrichment_v1'` and rejects mismatches.
+
 Required limits:
 - `vote_by_mail_info` max 4000 characters
 - `polling_hours` max 1000 characters
@@ -47,8 +52,23 @@ Why:
 ## Phase 2: Model-Agnostic AI Interface
 Create one backend interface so AI providers are interchangeable.
 
-Example concept:
-- `enrichStateResources(...)` returns one strict JSON shape.
+Interface contract (target shape):
+
+```ts
+type EnrichStateResourcesInput = {
+  ingestKey: string;
+  draft: StateResourceDraftPayload;
+  evidence: Array<{ url: string; title: string; snippet: string }>;
+  promptVersion: string;
+};
+
+type EnrichStateResourcesResult =
+  | { ok: true; payload: StateResourcePayload; schemaVersion: "state_resources_enrichment_v1" }
+  | { ok: false; retryable: true; reason: string; errorCode: "RATE_LIMIT" | "TIMEOUT" | "TEMP_PROVIDER_ERROR" }
+  | { ok: false; retryable: false; reason: string; errorCode: "INVALID_JSON" | "SCHEMA_MISMATCH" | "MISSING_REQUIRED_FIELDS" };
+
+enrichStateResources(input, config): Promise<EnrichStateResourcesResult>
+```
 
 Provider adapters:
 - OpenAI (first)
@@ -98,7 +118,9 @@ Behavior:
 3. Parse and validate response shape.
 4. Save enriched payload to `staging_items`.
 5. Send to validator.
-6. On parse/schema error: mark failed/retryable with reason.
+6. Handle errors with explicit rules:
+   - Retryable (`RATE_LIMIT`, `TIMEOUT`, temporary provider outage): keep `status='pending'`, set `reason`, and requeue to `staging:draft` with backoff.
+   - Permanent (`INVALID_JSON`, `SCHEMA_MISMATCH`, missing required fields): set `status='rejected'` with `reason` and publish to `staging:rejected`.
 
 Why:
 - Keeps AI integration contained and auditable.
@@ -110,7 +132,9 @@ Validator checks:
 - required fields present
 - URL format
 - citation structure in `sources`
-- state mapping consistency (FIPS <-> abbreviation)
+- metadata present (`schema_version`, `prompt_version`)
+- schema_version match (`state_resources_enrichment_v1` only)
+- state mapping consistency using deterministic in-code map (`STATE_ABBR_BY_FIPS`) for FIPS <-> abbreviation
 - field length rules
 
 Outputs:
