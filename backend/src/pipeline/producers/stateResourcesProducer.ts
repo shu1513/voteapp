@@ -6,11 +6,12 @@ import {
   CENSUS_STATES_API_URL,
   EXPECTED_STATE_RESOURCE_STATE_COUNT,
   STATE_ABBREVIATION_REFERENCE_URL,
+  STAGING_DRAFT_STREAM,
   STAGING_ITEM_TYPE_STATE_RESOURCES,
-  STAGING_PENDING_STREAM,
   STATE_RESOURCE_SEED_SOURCES,
 } from "../../config/stateResourcePipeline.js";
 import { getPipelineEnv } from "../../config/env.js";
+import { STATE_RESOURCE_DRAFT_SCHEMA_VERSION } from "../../contracts/stateResourceEnrichmentContract.js";
 import {
   getStateAbbreviationByFips,
   normalizeFips,
@@ -118,7 +119,7 @@ function buildIngestKey(stateFips: string, runYear: number): string {
 }
 
 /**
- * Produces pending state_resources staging items and enqueues them to Redis Stream.
+ * Produces draft state_resources staging items and enqueues them to the draft stream.
  */
 export async function runStateResourcesProducer(options: ProducerOptions = {}): Promise<void> {
   const { dryRun = false } = options;
@@ -153,9 +154,9 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
         const result = await pool.query(
           `
             INSERT INTO staging_items
-              (ingest_key, item_type, payload, status, reason, run_id, model, prompt_version)
+              (ingest_key, item_type, payload, status, reason, run_id, model, schema_version, prompt_version)
             VALUES
-              ($1, $2, $3::jsonb, 'pending', NULL, $4, $5, $6)
+              ($1, $2, $3::jsonb, 'pending', NULL, $4, $5, $6, $7)
             ON CONFLICT (ingest_key) DO UPDATE SET
               item_type = EXCLUDED.item_type,
               payload = EXCLUDED.payload,
@@ -163,6 +164,7 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
               reason = NULL,
               run_id = EXCLUDED.run_id,
               model = EXCLUDED.model,
+              schema_version = EXCLUDED.schema_version,
               prompt_version = EXCLUDED.prompt_version,
               validated_at = NULL,
               written_at = NULL,
@@ -170,7 +172,15 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
             WHERE staging_items.status IN ('failed', 'rejected')
             RETURNING ingest_key
           `,
-          [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, serializedPayload, runId, env.AI_MODEL, env.PROMPT_VERSION]
+          [
+            ingestKey,
+            STAGING_ITEM_TYPE_STATE_RESOURCES,
+            serializedPayload,
+            runId,
+            env.AI_MODEL,
+            STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
+            env.PROMPT_VERSION,
+          ]
         );
 
         // Enqueue only when this is a brand-new staging record, or a retry of failed/rejected data.
@@ -179,7 +189,7 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
           continue;
         }
 
-        await redis.xAdd(STAGING_PENDING_STREAM, "*", {
+        await redis.xAdd(STAGING_DRAFT_STREAM, "*", {
           ingest_key: ingestKey,
           item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
           run_id: runId,

@@ -161,6 +161,7 @@ CREATE TABLE staging_items (
     reason text,
     run_id text,
     model text,
+    schema_version text,
     prompt_version text,
     created_at timestamptz NOT NULL DEFAULT now(),
     validated_at timestamptz,
@@ -176,6 +177,14 @@ CREATE TABLE staging_items (
         CHECK (
             (status IN ('rejected', 'failed') AND reason IS NOT NULL)
             OR status NOT IN ('rejected', 'failed')
+        ),
+    CONSTRAINT chk_staging_items_state_resources_metadata
+        CHECK (
+            item_type <> 'state_resources'
+            OR (
+                schema_version IS NOT NULL AND btrim(schema_version) <> ''
+                AND prompt_version IS NOT NULL AND btrim(prompt_version) <> ''
+            )
         )
 );
 
