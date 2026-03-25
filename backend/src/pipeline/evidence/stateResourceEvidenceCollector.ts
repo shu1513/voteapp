@@ -296,12 +296,14 @@ function buildSnippet(text: string, stateName: string, stateAbbreviation: string
     return "";
   }
 
+  // Defensive guard: keep regex input bounded even if upstream validation changes.
+  const safeAbbreviation = stateAbbreviation.slice(0, 10);
+
   const lowered = text.toLowerCase();
   const targetA = stateName.toLowerCase();
-  const targetB = escapeRegexLiteral(stateAbbreviation.toLowerCase());
+  const targetB = escapeRegexLiteral(safeAbbreviation.toLowerCase());
   const idx = lowered.indexOf(targetA);
-  const abbrevRegex = new RegExp(`\\b${targetB}\\b`);
-  const altIdx = abbrevRegex.exec(lowered)?.index ?? -1;
+  const altIdx = targetB.length > 0 ? new RegExp(`\\b${targetB}\\b`).exec(lowered)?.index ?? -1 : -1;
   const anchor = idx >= 0 ? idx : altIdx;
 
   if (anchor >= 0) {

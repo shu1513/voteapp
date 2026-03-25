@@ -201,7 +201,7 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
   );
   const pollingHoursEvidence = pickEvidenceUrl(
     evidence,
-    [/polling/i, /can-i-vote/i],
+    [/polling[-_]?hours/i, /can-i-vote/i, /\bhours\b/i],
     "https://www.nass.org/can-i-vote"
   );
   const idRequirementsEvidence = pickEvidenceUrl(

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { collectStateResourceEvidence } from "../../../src/pipeline/evidence/stateResourceEvidenceCollector.ts";
+import type { StateResourceDraftPayload } from "../../../src/types/stateResource.ts";
 
-function draft(overrides: Partial<Record<string, unknown>> = {}) {
+function draft(overrides: Partial<StateResourceDraftPayload> = {}): StateResourceDraftPayload {
   return {
     state_fips: "06",
     state_abbreviation: "CA",
@@ -32,10 +33,7 @@ describe("collectStateResourceEvidence", () => {
       return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
     };
 
-    const evidence = await collectStateResourceEvidence(
-      draft({ allow_open_web_research: false }) as never,
-      { fetchImpl }
-    );
+    const evidence = await collectStateResourceEvidence(draft({ allow_open_web_research: false }), { fetchImpl });
 
     expect(evidence.length).toBeGreaterThan(0);
     expect(hits.some((url) => url.includes("/register"))).toBe(false);
@@ -61,7 +59,7 @@ describe("collectStateResourceEvidence", () => {
       return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
     };
 
-    const evidence = await collectStateResourceEvidence(draft() as never, { fetchImpl });
+    const evidence = await collectStateResourceEvidence(draft(), { fetchImpl });
     expect(evidence.length).toBeGreaterThan(0);
     expect(hits.some((url) => url.startsWith("http://127.0.0.1"))).toBe(false);
   });
@@ -73,7 +71,7 @@ describe("collectStateResourceEvidence", () => {
         headers: { "content-type": "application/octet-stream" },
       });
 
-    const binaryEvidence = await collectStateResourceEvidence(draft() as never, { fetchImpl: binaryFetch });
+    const binaryEvidence = await collectStateResourceEvidence(draft(), { fetchImpl: binaryFetch });
     expect(binaryEvidence.length).toBe(1);
     expect(binaryEvidence[0].snippet).toContain("Live page fetch was unavailable");
 
@@ -84,9 +82,8 @@ describe("collectStateResourceEvidence", () => {
         headers: { "content-type": "text/plain", "content-length": String(oversizedText.length) },
       });
 
-    const largeEvidence = await collectStateResourceEvidence(draft() as never, { fetchImpl: largeFetch });
+    const largeEvidence = await collectStateResourceEvidence(draft(), { fetchImpl: largeFetch });
     expect(largeEvidence.length).toBe(1);
     expect(largeEvidence[0].snippet).toContain("Live page fetch was unavailable");
   });
 });
-
