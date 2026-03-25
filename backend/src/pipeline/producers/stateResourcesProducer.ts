@@ -6,8 +6,8 @@ import {
   CENSUS_STATES_API_URL,
   EXPECTED_STATE_RESOURCE_STATE_COUNT,
   STATE_ABBREVIATION_REFERENCE_URL,
+  STAGING_DRAFT_STREAM,
   STAGING_ITEM_TYPE_STATE_RESOURCES,
-  STAGING_PENDING_STREAM,
   STATE_RESOURCE_SEED_SOURCES,
 } from "../../config/stateResourcePipeline.js";
 import { getPipelineEnv } from "../../config/env.js";
@@ -119,7 +119,7 @@ function buildIngestKey(stateFips: string, runYear: number): string {
 }
 
 /**
- * Produces pending state_resources staging items and enqueues them to Redis Stream.
+ * Produces draft state_resources staging items and enqueues them to the draft stream.
  */
 export async function runStateResourcesProducer(options: ProducerOptions = {}): Promise<void> {
   const { dryRun = false } = options;
@@ -189,7 +189,7 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
           continue;
         }
 
-        await redis.xAdd(STAGING_PENDING_STREAM, "*", {
+        await redis.xAdd(STAGING_DRAFT_STREAM, "*", {
           ingest_key: ingestKey,
           item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
           run_id: runId,

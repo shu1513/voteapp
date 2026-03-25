@@ -6,10 +6,10 @@ This document explains how `state_resources` data should move from research to y
 Build a safe pipeline where AI helps with research, but AI never writes directly to production tables.
 
 ## Big Picture Flow
-1. Producer creates draft items.
-2. Enricher fills drafts with researched fields.
-3. Validator checks quality and structure.
-4. Writer upserts to `state_resources`.
+1. Producer creates draft items in `staging:draft`.
+2. Enricher consumes drafts, fills researched fields, and publishes to `staging:pending`.
+3. Validator consumes `staging:pending` and checks quality/structure.
+4. Writer consumes `staging:validated` and upserts to `state_resources`.
 5. Scheduler runs the full flow yearly (after pipeline is stable).
 
 ---
