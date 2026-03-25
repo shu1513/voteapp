@@ -1,5 +1,6 @@
 import {
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
+  STATE_RESOURCE_SOURCE_FIELDS,
 } from "../contracts/stateResourceEnrichmentContract.js";
 import type { PipelineEnv } from "../config/env.js";
 import type {
@@ -13,12 +14,53 @@ import { parseStateResourcePayloadFromAi } from "./stateResourcePayloadValidatio
 import { openAiProvider } from "./providers/openaiProvider.js";
 import { claudeProvider } from "./providers/claudeProvider.js";
 import { geminiProvider } from "./providers/geminiProvider.js";
+import type { StateResourcePayload } from "../types/stateResource.js";
+import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 const PROVIDER_ADAPTERS: Record<AiProvider, ProviderAdapter> = {
   openai: openAiProvider,
   claude: claudeProvider,
   gemini: geminiProvider,
 };
+
+/**
+ * Builds normalized evidence URL set and validates evidence preconditions.
+ */
+function buildEvidenceUrlSet(
+  evidence: EnrichStateResourcesInput["evidence"]
+): { ok: true; urlSet: Set<string> } | { ok: false; reason: string } {
+  if (!Array.isArray(evidence) || evidence.length === 0) {
+    return { ok: false, reason: "evidence snippets are required for citation grounding" };
+  }
+
+  const urlSet = new Set(
+    evidence
+      .map((item) => normalizeHttpUrl(item.url))
+      .filter((url): url is string => typeof url === "string")
+  );
+
+  if (urlSet.size === 0) {
+    return { ok: false, reason: "evidence snippets must contain valid http(s) URLs" };
+  }
+
+  return { ok: true, urlSet };
+}
+
+/**
+ * Ensures every citation URL is grounded in the retrieved evidence set.
+ */
+function validateCitationsFromEvidence(payload: StateResourcePayload, evidenceUrlSet: Set<string>): string | null {
+  for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
+    for (const citation of payload.sources[key]) {
+      const normalizedCitationUrl = normalizeHttpUrl(citation.source_url);
+      if (!normalizedCitationUrl || !evidenceUrlSet.has(normalizedCitationUrl)) {
+        return `sources.${key} citation URL must come from collected evidence URLs`;
+      }
+    }
+  }
+
+  return null;
+}
 
 /**
  * Builds enrichment runtime config from environment.
@@ -50,6 +92,17 @@ export async function enrichStateResources(
       retryable: false,
       errorCode: "UNSUPPORTED_PROVIDER",
       reason: `Unsupported AI provider: ${config.provider}`,
+    };
+  }
+
+  // Fail fast on unusable evidence before spending provider latency/tokens.
+  const evidenceCheck = buildEvidenceUrlSet(input.evidence);
+  if (!evidenceCheck.ok) {
+    return {
+      ok: false,
+      retryable: false,
+      errorCode: "SCHEMA_MISMATCH",
+      reason: evidenceCheck.reason,
     };
   }
 
@@ -97,6 +150,16 @@ export async function enrichStateResources(
       retryable: false,
       errorCode: "SCHEMA_MISMATCH",
       reason: "state_name in AI output must match draft state_name",
+    };
+  }
+
+  const evidenceReason = validateCitationsFromEvidence(parsed.payload, evidenceCheck.urlSet);
+  if (evidenceReason) {
+    return {
+      ok: false,
+      retryable: false,
+      errorCode: "SCHEMA_MISMATCH",
+      reason: evidenceReason,
     };
   }
 

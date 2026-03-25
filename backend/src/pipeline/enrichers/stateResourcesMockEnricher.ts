@@ -18,7 +18,10 @@ import {
   STATE_RESOURCE_SOURCE_FIELDS,
   STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH,
 } from "../../contracts/stateResourceEnrichmentContract.js";
+import { collectStateResourceEvidence } from "../evidence/stateResourceEvidenceCollector.js";
+import type { EvidenceSnippet } from "../../ai/types.js";
 import type { StateResourceDraftPayload, StateResourcePayload, StateResourceSources } from "../../types/stateResource.js";
+import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 
 type MockEnricherOptions = {
   once?: boolean;
@@ -41,18 +44,28 @@ type DraftParseResult =
 
 type EnricherOutcome = "enriched" | "failed" | "skipped" | "retry" | "recovered";
 
-const RECLAIM_MIN_IDLE_MS = 30_000;
+// Evidence crawling can take tens of seconds; keep reclaim window above crawl budget.
+const RECLAIM_MIN_IDLE_MS = 180_000;
 const RECLAIM_MAX_BATCHES = 20;
 
+/**
+ * Converts unknown errors into bounded strings for logs and DB reasons.
+ */
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
 }
 
+/**
+ * Checks whether a value is a non-empty trimmed string.
+ */
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
 
+/**
+ * Validates that a string is an http(s) URL.
+ */
 function isHttpUrl(value: string): boolean {
   try {
     const parsed = new URL(value);
@@ -62,6 +75,9 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
+/**
+ * Validates and normalizes draft payload structure from staging JSON.
+ */
 function parseDraftPayload(payload: unknown): DraftParseResult {
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
     return { ok: false, reason: "draft payload must be an object" };
@@ -108,6 +124,10 @@ function parseDraftPayload(payload: unknown): DraftParseResult {
     allow_open_web_research: input.allow_open_web_research,
   };
 
+  if (!normalized.seed_sources.every((url) => isHttpUrl(url))) {
+    return { ok: false, reason: "draft.seed_sources must contain valid http(s) URLs" };
+  }
+
   if (!STATE_RESOURCE_FIPS_REGEX.test(normalized.state_fips)) {
     return { ok: false, reason: "draft.state_fips must be exactly two digits" };
   }
@@ -127,34 +147,98 @@ function parseDraftPayload(payload: unknown): DraftParseResult {
   return { ok: true, draft: normalized };
 }
 
-function buildMockPayload(draft: StateResourceDraftPayload): StateResourcePayload {
-  const pollingPlaceUrl =
-    draft.seed_sources.find((url) => url.includes("polling-place")) ??
-    "https://www.vote.org/polling-place-locator/";
+type EnrichedStagingPayload = StateResourcePayload & {
+  evidence: EvidenceSnippet[];
+};
 
-  const voterRegistrationUrl = "https://www.usa.gov/register-to-vote";
-  const voteByMailSource = "https://www.vote.org/absentee-ballot/";
-  const pollingHoursSource = "https://www.nass.org/can-i-vote";
-  const idRequirementsSource = "https://www.usvotefoundation.org/voter-id-laws";
+/**
+ * Derives a citation source name from evidence title.
+ */
+function sourceNameFromEvidence(evidence: EvidenceSnippet): string {
+  return evidence.title.trim().length > 0 ? evidence.title.trim() : "source";
+}
+
+/**
+ * Picks the best evidence entry by URL pattern, with deterministic fallback.
+ */
+function pickEvidenceUrl(
+  evidence: EvidenceSnippet[],
+  preferredPatterns: RegExp[]
+): EvidenceSnippet | null {
+  for (const item of evidence) {
+    for (const pattern of preferredPatterns) {
+      if (pattern.test(item.url)) {
+        return item;
+      }
+    }
+  }
+
+  return evidence[0] ?? null;
+}
+
+/**
+ * Builds deterministic mock enriched payload from draft + evidence.
+ */
+function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSnippet[]): StateResourcePayload | null {
+  const pollingPlaceEvidence = pickEvidenceUrl(
+    evidence,
+    [/polling-place/i, /find-your-polling-place/i]
+  );
+  const registrationEvidence = pickEvidenceUrl(
+    evidence,
+    [/register/i, /voter-registration/i]
+  );
+  const voteByMailEvidence = pickEvidenceUrl(
+    evidence,
+    [/absentee/i, /mail/i]
+  );
+  const pollingHoursEvidence = pickEvidenceUrl(
+    evidence,
+    [/polling[-_]?hours/i, /can-i-vote/i, /\bhours\b/i]
+  );
+  const idRequirementsEvidence = pickEvidenceUrl(
+    evidence,
+    [/\bvoter[-\s]?id\b/i, /\bid[-\s]?requirements?\b/i, /\bidentification\b/i, /voter-id-laws/i]
+  );
+
+  if (
+    !pollingPlaceEvidence ||
+    !registrationEvidence ||
+    !voteByMailEvidence ||
+    !pollingHoursEvidence ||
+    !idRequirementsEvidence
+  ) {
+    return null;
+  }
 
   const voteByMailInfo = `${draft.state_name} voters can request and return vote-by-mail ballots based on state deadlines and local election rules.`;
   const pollingHours = "Polling locations usually open and close at posted local hours on election day.";
   const idRequirements = `${draft.state_name} voter ID requirements depend on election type and local/state rules.`;
 
   const sources: StateResourceSources = {
-    polling_place_url: [{ source_name: "Vote.org", source_url: pollingPlaceUrl }],
-    voter_registration_url: [{ source_name: "USA.gov", source_url: voterRegistrationUrl }],
-    vote_by_mail_info: [{ source_name: "Vote.org", source_url: voteByMailSource }],
-    polling_hours: [{ source_name: "NASS", source_url: pollingHoursSource }],
-    id_requirements: [{ source_name: "US Vote Foundation", source_url: idRequirementsSource }],
+    polling_place_url: [
+      { source_name: sourceNameFromEvidence(pollingPlaceEvidence), source_url: pollingPlaceEvidence.url },
+    ],
+    voter_registration_url: [
+      { source_name: sourceNameFromEvidence(registrationEvidence), source_url: registrationEvidence.url },
+    ],
+    vote_by_mail_info: [
+      { source_name: sourceNameFromEvidence(voteByMailEvidence), source_url: voteByMailEvidence.url },
+    ],
+    polling_hours: [
+      { source_name: sourceNameFromEvidence(pollingHoursEvidence), source_url: pollingHoursEvidence.url },
+    ],
+    id_requirements: [
+      { source_name: sourceNameFromEvidence(idRequirementsEvidence), source_url: idRequirementsEvidence.url },
+    ],
   };
 
   return {
     state_fips: draft.state_fips,
     state_abbreviation: draft.state_abbreviation,
     state_name: draft.state_name,
-    polling_place_url: pollingPlaceUrl,
-    voter_registration_url: voterRegistrationUrl,
+    polling_place_url: pollingPlaceEvidence.url,
+    voter_registration_url: registrationEvidence.url,
     vote_by_mail_info: voteByMailInfo,
     polling_hours: pollingHours,
     id_requirements: idRequirements,
@@ -162,7 +246,23 @@ function buildMockPayload(draft: StateResourceDraftPayload): StateResourcePayloa
   };
 }
 
-function validateMockPayload(payload: StateResourcePayload): string | null {
+/**
+ * Applies hard contract checks to the mock payload before persistence.
+ */
+function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSnippet[]): string | null {
+  if (!Array.isArray(evidence) || evidence.length === 0) {
+    return "mock enricher must collect at least one evidence snippet";
+  }
+
+  const evidenceUrlSet = new Set(
+    evidence
+      .map((item) => normalizeHttpUrl(item.url))
+      .filter((url): url is string => typeof url === "string")
+  );
+  if (evidenceUrlSet.size === 0) {
+    return "mock enricher evidence must contain valid http(s) URLs";
+  }
+
   for (const key of STATE_RESOURCE_REQUIRED_TEXT_FIELDS) {
     if (!isNonEmptyString(payload[key])) {
       return `mock payload missing required field: ${key}`;
@@ -198,8 +298,12 @@ function validateMockPayload(payload: StateResourcePayload): string | null {
       if (!isNonEmptyString(citation.source_name) || !isNonEmptyString(citation.source_url)) {
         return `mock payload sources.${key} citations require source_name + source_url`;
       }
-      if (!isHttpUrl(citation.source_url.trim())) {
+      const normalizedCitationUrl = normalizeHttpUrl(citation.source_url.trim());
+      if (!normalizedCitationUrl) {
         return `mock payload sources.${key}.source_url must be valid http(s)`;
+      }
+      if (!evidenceUrlSet.has(normalizedCitationUrl)) {
+        return `mock payload sources.${key}.source_url must come from collected evidence URLs`;
       }
     }
   }
@@ -207,6 +311,9 @@ function validateMockPayload(payload: StateResourcePayload): string | null {
   return null;
 }
 
+/**
+ * Ensures the enricher stream consumer group exists.
+ */
 async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Promise<void> {
   try {
     await redis.xGroupCreate(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, "0", {
@@ -220,6 +327,9 @@ async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Prom
   }
 }
 
+/**
+ * Reclaims stale pending stream entries for at-least-once resilience.
+ */
 async function reclaimPendingEntries(
   redis: ReturnType<typeof createClient>,
   consumerName: string,
@@ -253,6 +363,9 @@ async function reclaimPendingEntries(
   return reclaimed;
 }
 
+/**
+ * Loads a staging row by ingest key for state_resources.
+ */
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
@@ -267,6 +380,9 @@ async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow 
   return result.rows[0] ?? null;
 }
 
+/**
+ * Returns current staging status for a given ingest key.
+ */
 async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string | null> {
   const result = await pool.query<{ status: string }>(
     `
@@ -280,6 +396,9 @@ async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string |
   return result.rows[0]?.status ?? null;
 }
 
+/**
+ * Marks a pending staging row as failed with reason.
+ */
 async function markFailedPending(pool: Pool, ingestKey: string, reason: string): Promise<void> {
   await pool.query(
     `
@@ -295,6 +414,9 @@ async function markFailedPending(pool: Pool, ingestKey: string, reason: string):
   );
 }
 
+/**
+ * Publishes an item to the pending stream for validator processing.
+ */
 async function publishPending(
   redis: ReturnType<typeof createClient>,
   ingestKey: string,
@@ -307,10 +429,13 @@ async function publishPending(
   });
 }
 
+/**
+ * Writes enriched payload into staging row if it is still draft + pending.
+ */
 async function applyMockEnrichment(
   pool: Pool,
   ingestKey: string,
-  payload: StateResourcePayload,
+  payload: EnrichedStagingPayload,
   fallbackPromptVersion: string
 ): Promise<boolean> {
   const result = await pool.query(
@@ -341,6 +466,9 @@ async function applyMockEnrichment(
   return result.rowCount === 1;
 }
 
+/**
+ * Processes one draft stream message through enrichment flow.
+ */
 async function processMessage(
   pool: Pool,
   redis: ReturnType<typeof createClient>,
@@ -389,15 +517,38 @@ async function processMessage(
     return "failed";
   }
 
-  const mockPayload = buildMockPayload(draft.draft);
-  const validationReason = validateMockPayload(mockPayload);
+  const evidence = await collectStateResourceEvidence(draft.draft);
+  if (evidence.length === 0) {
+    await markFailedPending(pool, ingestKey, "mock enricher could not collect evidence snippets");
+    await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    return "failed";
+  }
+
+  const mockPayload = buildMockPayload(draft.draft, evidence);
+  if (!mockPayload) {
+    await markFailedPending(pool, ingestKey, "mock enricher could not map evidence to required fields");
+    await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    return "failed";
+  }
+
+  const validationReason = validateMockPayload(mockPayload, evidence);
   if (validationReason) {
     await markFailedPending(pool, ingestKey, validationReason);
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "failed";
   }
 
-  const didUpdate = await applyMockEnrichment(pool, ingestKey, mockPayload, row.prompt_version ?? envPromptVersion);
+  const enrichedPayload: EnrichedStagingPayload = {
+    ...mockPayload,
+    evidence,
+  };
+
+  const didUpdate = await applyMockEnrichment(
+    pool,
+    ingestKey,
+    enrichedPayload,
+    row.prompt_version ?? envPromptVersion
+  );
   if (!didUpdate) {
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "skipped";
@@ -413,6 +564,9 @@ async function processMessage(
   }
 }
 
+/**
+ * Runs the mock enricher worker loop.
+ */
 export async function runStateResourcesMockEnricher(options: MockEnricherOptions = {}): Promise<void> {
   const { once = false, batchSize = 20, blockMs = 5000 } = options;
 
@@ -459,6 +613,7 @@ export async function runStateResourcesMockEnricher(options: MockEnricherOptions
         const status = await getStagingStatus(pool, ingestKey);
         if (status === "pending") {
           // Unknown error may still be transient; keep unacked for retry/reclaim.
+          console.warn(`mock enricher retrying ingest_key=${ingestKey}: ${toReason(error)}`);
           retried += 1;
           continue;
         }

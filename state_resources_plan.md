@@ -90,6 +90,12 @@ Start with seed URLs:
 
 Then allow additional web sources.
 
+Implementation notes:
+- Fetch seed pages and clean text into short evidence snippets.
+- Discover additional URLs from fetched page links (bounded crawl).
+- Store snippets with URL/title in `staging_items.payload.evidence`.
+- AI citations must match collected evidence URLs.
+
 Why:
 - AI should summarize evidence, not guess.
 
@@ -209,9 +215,10 @@ Why this is last:
 Completed:
 - Producer
 - Mock enricher (Phase 4A)
+- Retrieval/evidence baseline (Phase 3)
 - Validator
 - Writer
 - Reliability hardening (reclaim + recovery behavior)
 
 Next practical step:
-- Build retrieval/evidence step (Phase 3), then swap to real AI enricher (Phase 4B).
+- Swap to real AI enricher (Phase 4B) using collected evidence.
