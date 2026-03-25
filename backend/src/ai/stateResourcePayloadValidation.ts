@@ -1,4 +1,6 @@
 import {
+  STATE_RESOURCE_ABBREVIATION_REGEX,
+  STATE_RESOURCE_FIPS_REGEX,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
   STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
@@ -109,6 +111,22 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     id_requirements: (input.id_requirements as string).trim(),
     sources: sanitizedSources,
   };
+
+  if (!STATE_RESOURCE_FIPS_REGEX.test(payload.state_fips)) {
+    return {
+      ok: false,
+      reason: "state_fips must be exactly two digits",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+
+  if (!STATE_RESOURCE_ABBREVIATION_REGEX.test(payload.state_abbreviation)) {
+    return {
+      ok: false,
+      reason: "state_abbreviation must be two uppercase letters",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
 
   if (!isHttpUrl(payload.polling_place_url)) {
     return { ok: false, reason: "polling_place_url must be a valid http(s) URL", errorCode: "SCHEMA_MISMATCH" };
