@@ -40,7 +40,7 @@ export async function geminiProvider(
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), config.timeoutMs);
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
+  const url = `https://generativelanguage.googleapis.com/v1/models/${encodeURIComponent(
     config.model
   )}:generateContent?key=${encodeURIComponent(config.geminiApiKey)}`;
 

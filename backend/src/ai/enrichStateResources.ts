@@ -68,8 +68,12 @@ export async function enrichStateResources(
     };
   }
 
+  const expectedStateFips = input.draft.state_fips.trim();
+  const expectedStateAbbreviation = input.draft.state_abbreviation.trim();
+  const expectedStateName = input.draft.state_name.trim();
+
   // Deterministic identity fields must match draft input (do not let AI alter them).
-  if (parsed.payload.state_fips !== input.draft.state_fips) {
+  if (parsed.payload.state_fips !== expectedStateFips) {
     return {
       ok: false,
       retryable: false,
@@ -78,7 +82,7 @@ export async function enrichStateResources(
     };
   }
 
-  if (parsed.payload.state_abbreviation !== input.draft.state_abbreviation) {
+  if (parsed.payload.state_abbreviation !== expectedStateAbbreviation) {
     return {
       ok: false,
       retryable: false,
@@ -87,7 +91,7 @@ export async function enrichStateResources(
     };
   }
 
-  if (parsed.payload.state_name !== input.draft.state_name) {
+  if (parsed.payload.state_name !== expectedStateName) {
     return {
       ok: false,
       retryable: false,

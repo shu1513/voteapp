@@ -27,7 +27,8 @@ function readEnv(name: string, fallback?: string): string {
 
 function readOptionalEnv(name: string): string | undefined {
   const value = process.env[name];
-  return value && value.trim().length > 0 ? value : undefined;
+  const trimmed = value?.trim();
+  return trimmed && trimmed.length > 0 ? trimmed : undefined;
 }
 
 function readAiProvider(): AiProvider {

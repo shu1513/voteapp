@@ -23,13 +23,23 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
-function isValidCitation(value: unknown): boolean {
+function sanitizeCitation(value: unknown): { source_name: string; source_url: string } | null {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    return false;
+    return null;
   }
 
   const item = value as Record<string, unknown>;
-  return isNonEmptyString(item.source_name) && isNonEmptyString(item.source_url) && isHttpUrl(item.source_url);
+  if (!isNonEmptyString(item.source_name) || !isNonEmptyString(item.source_url)) {
+    return null;
+  }
+
+  const source_name = item.source_name.trim();
+  const source_url = item.source_url.trim();
+  if (!isHttpUrl(source_url)) {
+    return null;
+  }
+
+  return { source_name, source_url };
 }
 
 /**
@@ -60,6 +70,34 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     };
   }
 
+  const sourcesObj = input.sources as Record<string, unknown>;
+  const sanitizedSources = {} as StateResourceSources;
+  for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
+    const citations = sourcesObj[key];
+    if (!Array.isArray(citations) || citations.length === 0) {
+      return {
+        ok: false,
+        reason: `sources.${key} must be a non-empty array`,
+        errorCode: "MISSING_REQUIRED_FIELDS",
+      };
+    }
+
+    const sanitizedBucket: Array<{ source_name: string; source_url: string }> = [];
+    for (const citation of citations) {
+      const sanitized = sanitizeCitation(citation);
+      if (!sanitized) {
+        return {
+          ok: false,
+          reason: `sources.${key} contains invalid citation entries`,
+          errorCode: "SCHEMA_MISMATCH",
+        };
+      }
+      sanitizedBucket.push(sanitized);
+    }
+
+    sanitizedSources[key] = sanitizedBucket;
+  }
+
   const payload: StateResourcePayload = {
     state_fips: (input.state_fips as string).trim(),
     state_abbreviation: (input.state_abbreviation as string).trim(),
@@ -69,7 +107,7 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     vote_by_mail_info: (input.vote_by_mail_info as string).trim(),
     polling_hours: (input.polling_hours as string).trim(),
     id_requirements: (input.id_requirements as string).trim(),
-    sources: input.sources as StateResourceSources,
+    sources: sanitizedSources,
   };
 
   if (!isHttpUrl(payload.polling_place_url)) {
@@ -98,28 +136,6 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
       reason: `polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} characters or fewer`,
       errorCode: "SCHEMA_MISMATCH",
     };
-  }
-
-  const sourcesObj = payload.sources as unknown as Record<string, unknown>;
-  for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
-    const citations = sourcesObj[key];
-    if (!Array.isArray(citations) || citations.length === 0) {
-      return {
-        ok: false,
-        reason: `sources.${key} must be a non-empty array`,
-        errorCode: "MISSING_REQUIRED_FIELDS",
-      };
-    }
-
-    for (const citation of citations) {
-      if (!isValidCitation(citation)) {
-        return {
-          ok: false,
-          reason: `sources.${key} contains invalid citation entries`,
-          errorCode: "SCHEMA_MISMATCH",
-        };
-      }
-    }
   }
 
   return { ok: true, payload };
