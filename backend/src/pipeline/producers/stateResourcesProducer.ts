@@ -11,6 +11,7 @@ import {
   STATE_RESOURCE_SEED_SOURCES,
 } from "../../config/stateResourcePipeline.js";
 import { getPipelineEnv } from "../../config/env.js";
+import { STATE_RESOURCE_DRAFT_SCHEMA_VERSION } from "../../contracts/stateResourceEnrichmentContract.js";
 import {
   getStateAbbreviationByFips,
   normalizeFips,
@@ -153,9 +154,9 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
         const result = await pool.query(
           `
             INSERT INTO staging_items
-              (ingest_key, item_type, payload, status, reason, run_id, model, prompt_version)
+              (ingest_key, item_type, payload, status, reason, run_id, model, schema_version, prompt_version)
             VALUES
-              ($1, $2, $3::jsonb, 'pending', NULL, $4, $5, $6)
+              ($1, $2, $3::jsonb, 'pending', NULL, $4, $5, $6, $7)
             ON CONFLICT (ingest_key) DO UPDATE SET
               item_type = EXCLUDED.item_type,
               payload = EXCLUDED.payload,
@@ -163,6 +164,7 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
               reason = NULL,
               run_id = EXCLUDED.run_id,
               model = EXCLUDED.model,
+              schema_version = EXCLUDED.schema_version,
               prompt_version = EXCLUDED.prompt_version,
               validated_at = NULL,
               written_at = NULL,
@@ -170,7 +172,15 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
             WHERE staging_items.status IN ('failed', 'rejected')
             RETURNING ingest_key
           `,
-          [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, serializedPayload, runId, env.AI_MODEL, env.PROMPT_VERSION]
+          [
+            ingestKey,
+            STAGING_ITEM_TYPE_STATE_RESOURCES,
+            serializedPayload,
+            runId,
+            env.AI_MODEL,
+            STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
+            env.PROMPT_VERSION,
+          ]
         );
 
         // Enqueue only when this is a brand-new staging record, or a retry of failed/rejected data.

@@ -1,6 +1,16 @@
 import { Pool } from "pg";
 import { createClient } from "redis";
 
+import {
+  STATE_RESOURCE_ABBREVIATION_REGEX,
+  STATE_RESOURCE_DRAFT_MARKER_FIELDS,
+  STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
+  STATE_RESOURCE_FIPS_REGEX,
+  STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
+  STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
+  STATE_RESOURCE_SOURCE_FIELDS,
+  STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH,
+} from "../../contracts/stateResourceEnrichmentContract.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_ITEM_TYPE_STATE_RESOURCES,
@@ -35,6 +45,8 @@ type ValidationResult =
 type StagingRow = {
   ingest_key: string;
   run_id: string | null;
+  schema_version: string | null;
+  prompt_version: string | null;
   payload: unknown;
   status: string;
 };
@@ -98,17 +110,9 @@ function validateSources(value: unknown): { ok: true; sources: StateResourceSour
     return { ok: false, reason: "sources must be an object" };
   }
 
-  const requiredKeys: (keyof StateResourceSources)[] = [
-    "polling_place_url",
-    "voter_registration_url",
-    "vote_by_mail_info",
-    "polling_hours",
-    "id_requirements",
-  ];
-
   const obj = value as Record<string, unknown>;
 
-  for (const key of requiredKeys) {
+  for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
     const citations = obj[key];
 
     if (!Array.isArray(citations) || citations.length === 0) {
@@ -125,7 +129,7 @@ function validateSources(value: unknown): { ok: true; sources: StateResourceSour
     }
   }
 
-  const allowedKeys = new Set(requiredKeys);
+  const allowedKeys = new Set(STATE_RESOURCE_SOURCE_FIELDS);
   const extraKeys = Object.keys(obj).filter((key) => !allowedKeys.has(key as keyof StateResourceSources));
   if (extraKeys.length > 0) {
     return { ok: false, reason: `sources contains unsupported keys: ${extraKeys.join(", ")}` };
@@ -144,23 +148,9 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 
   const input = payload as Record<string, unknown>;
   const reasons: string[] = [];
-  const looksLikeDraftPayload =
-    Object.hasOwn(input, "census_source_url")
-    || Object.hasOwn(input, "seed_sources")
-    || Object.hasOwn(input, "allow_open_web_research");
+  const looksLikeDraftPayload = STATE_RESOURCE_DRAFT_MARKER_FIELDS.some((key) => Object.hasOwn(input, key));
 
-  const requiredTextFields: (keyof StateResourcePayload)[] = [
-    "state_fips",
-    "state_abbreviation",
-    "state_name",
-    "polling_place_url",
-    "voter_registration_url",
-    "vote_by_mail_info",
-    "polling_hours",
-    "id_requirements",
-  ];
-
-  for (const key of requiredTextFields) {
+  for (const key of STATE_RESOURCE_REQUIRED_TEXT_FIELDS) {
     if (!isNonEmptyString(input[key])) {
       reasons.push(`${key} is required and must be a non-empty string`);
     }
@@ -182,11 +172,11 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   const polling_hours = (input.polling_hours as string).trim();
   const id_requirements = (input.id_requirements as string).trim();
 
-  if (!/^[0-9]{2}$/.test(state_fips)) {
+  if (!STATE_RESOURCE_FIPS_REGEX.test(state_fips)) {
     reasons.push("state_fips must be exactly two digits");
   }
 
-  if (!/^[A-Z]{2}$/.test(state_abbreviation)) {
+  if (!STATE_RESOURCE_ABBREVIATION_REGEX.test(state_abbreviation)) {
     reasons.push("state_abbreviation must be two uppercase letters");
   }
 
@@ -198,12 +188,12 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
     reasons.push("voter_registration_url must be a valid http(s) URL");
   }
 
-  if (vote_by_mail_info.length > 4000) {
-    reasons.push("vote_by_mail_info must be 4000 characters or fewer");
+  if (vote_by_mail_info.length > STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH) {
+    reasons.push(`vote_by_mail_info must be ${STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH} characters or fewer`);
   }
 
-  if (polling_hours.length > 1000) {
-    reasons.push("polling_hours must be 1000 characters or fewer");
+  if (polling_hours.length > STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH) {
+    reasons.push(`polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} characters or fewer`);
   }
 
   try {
@@ -243,12 +233,33 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 }
 
 /**
+ * Validates required staging metadata for enriched state_resources payloads.
+ */
+function validateStagingMetadata(row: StagingRow): string[] {
+  const reasons: string[] = [];
+
+  if (!isNonEmptyString(row.schema_version)) {
+    reasons.push("schema_version metadata is required");
+  } else if (row.schema_version !== STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION) {
+    reasons.push(
+      `schema_version must be ${STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION} for validator input (got ${row.schema_version})`
+    );
+  }
+
+  if (!isNonEmptyString(row.prompt_version)) {
+    reasons.push("prompt_version metadata is required");
+  }
+
+  return reasons;
+}
+
+/**
  * Reads a staging row by ingest key.
  */
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
-      SELECT ingest_key, run_id, payload, status
+      SELECT ingest_key, run_id, schema_version, prompt_version, payload, status
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -387,9 +398,10 @@ async function processMessage(
     return "skipped";
   }
 
+  const metadataReasons = validateStagingMetadata(row);
   const validation = validateStateResourcePayload(row.payload);
 
-  if (validation.ok) {
+  if (metadataReasons.length === 0 && validation.ok) {
     // This stream is at-least-once delivery. If publish succeeds but ack fails,
     // this message can be redelivered; downstream consumers must dedupe by ingest_key.
     await redis.xAdd(STAGING_VALIDATED_STREAM, "*", {
@@ -416,7 +428,7 @@ async function processMessage(
     return "validated";
   }
 
-  const reason = formatValidationReason(validation.reasons);
+  const reason = formatValidationReason([...metadataReasons, ...(validation.ok ? [] : validation.reasons)]);
 
   await redis.xAdd(STAGING_REJECTED_STREAM, "*", {
     ingest_key: ingestKey,

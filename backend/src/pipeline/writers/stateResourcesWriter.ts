@@ -1,6 +1,11 @@
 import { Pool, type PoolClient } from "pg";
 import { createClient } from "redis";
 
+import {
+  STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
+  STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
+  STATE_RESOURCE_SOURCE_FIELDS,
+} from "../../contracts/stateResourceEnrichmentContract.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_ITEM_TYPE_STATE_RESOURCES,
@@ -20,6 +25,8 @@ type StagingRow = {
   ingest_key: string;
   item_type: string;
   run_id: string | null;
+  schema_version: string | null;
+  prompt_version: string | null;
   payload: unknown;
   status: string;
 };
@@ -69,18 +76,7 @@ function parseStateResourcePayload(payload: unknown): ParseResult {
   }
 
   const input = payload as Record<string, unknown>;
-  const requiredTextFields: (keyof StateResourcePayload)[] = [
-    "state_fips",
-    "state_abbreviation",
-    "state_name",
-    "polling_place_url",
-    "voter_registration_url",
-    "vote_by_mail_info",
-    "polling_hours",
-    "id_requirements",
-  ];
-
-  for (const key of requiredTextFields) {
+  for (const key of STATE_RESOURCE_REQUIRED_TEXT_FIELDS) {
     if (!isNonEmptyString(input[key])) {
       return { ok: false, reason: `payload.${key} must be a non-empty string` };
     }
@@ -91,15 +87,7 @@ function parseStateResourcePayload(payload: unknown): ParseResult {
   }
 
   const sources = input.sources as Record<string, unknown>;
-  const requiredSourceKeys: (keyof StateResourceSources)[] = [
-    "polling_place_url",
-    "voter_registration_url",
-    "vote_by_mail_info",
-    "polling_hours",
-    "id_requirements",
-  ];
-
-  for (const key of requiredSourceKeys) {
+  for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
     const citations = sources[key];
     if (!Array.isArray(citations) || citations.length === 0) {
       return { ok: false, reason: `payload.sources.${key} must be a non-empty array` };
@@ -148,7 +136,7 @@ async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Prom
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
-      SELECT ingest_key, item_type, run_id, payload, status
+      SELECT ingest_key, item_type, run_id, schema_version, prompt_version, payload, status
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -345,6 +333,22 @@ async function processMessage(
   if (row.status !== "validated") {
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
     return "skipped";
+  }
+
+  if (!isNonEmptyString(row.prompt_version)) {
+    await markFailed(pool, ingestKey, "prompt_version metadata is required");
+    await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
+    return "failed";
+  }
+
+  if (row.schema_version !== STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION) {
+    await markFailed(
+      pool,
+      ingestKey,
+      `schema_version must be ${STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION} for writer input`
+    );
+    await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
+    return "failed";
   }
 
   const parsed = parseStateResourcePayload(row.payload);
