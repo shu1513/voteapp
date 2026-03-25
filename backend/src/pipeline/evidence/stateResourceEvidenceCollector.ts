@@ -1,3 +1,4 @@
+import { isIP } from "node:net";
 import type { EvidenceSnippet } from "../../ai/types.js";
 import type { StateResourceDraftPayload } from "../../types/stateResource.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
@@ -23,6 +24,7 @@ const DEFAULT_MAX_SEED_URLS = 5;
 const DEFAULT_MAX_DISCOVERED_URLS = 5;
 const DEFAULT_MAX_EVIDENCE_SNIPPETS = 8;
 const DEFAULT_SNIPPET_MAX_CHARS = 800;
+const DEFAULT_MAX_RESPONSE_BYTES = 1_000_000; // 1 MB cap for buffered page text.
 
 /**
  * Removes invalid UTF-16 surrogate usage so downstream JSON storage is safe.
@@ -72,6 +74,161 @@ function hostAsSourceName(url: string): string {
   } catch {
     return "source";
   }
+}
+
+/**
+ * Returns true when a hostname is not eligible for external crawling.
+ */
+function isBlockedHostname(hostname: string): boolean {
+  const host = hostname.toLowerCase();
+
+  if (
+    host === "localhost" ||
+    host.endsWith(".localhost") ||
+    host.endsWith(".local") ||
+    host.endsWith(".internal")
+  ) {
+    return true;
+  }
+
+  if (host === "metadata.google.internal" || host === "metadata") {
+    return true;
+  }
+
+  const ipVersion = isIP(host);
+  if (ipVersion === 4) {
+    const octets = host.split(".").map((part) => Number.parseInt(part, 10));
+    if (octets.length !== 4 || octets.some((n) => !Number.isInteger(n) || n < 0 || n > 255)) {
+      return true;
+    }
+
+    const [a, b] = octets;
+    if (
+      a === 10 ||
+      a === 127 ||
+      (a === 169 && b === 254) ||
+      (a === 172 && b >= 16 && b <= 31) ||
+      (a === 192 && b === 168) ||
+      a === 0 ||
+      (a === 100 && b >= 64 && b <= 127) ||
+      (a === 198 && (b === 18 || b === 19)) ||
+      a >= 224
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (ipVersion === 6) {
+    const normalized = host.replace(/^\[|\]$/g, "").toLowerCase();
+    if (normalized === "::1" || normalized === "::") {
+      return true;
+    }
+    if (normalized.startsWith("fc") || normalized.startsWith("fd")) {
+      return true;
+    }
+    if (
+      normalized.startsWith("fe8") ||
+      normalized.startsWith("fe9") ||
+      normalized.startsWith("fea") ||
+      normalized.startsWith("feb")
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  return false;
+}
+
+/**
+ * Returns true if URL is safe to fetch for evidence collection.
+ */
+function isSafeFetchUrl(rawUrl: string): boolean {
+  try {
+    const parsed = new URL(rawUrl);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return false;
+    }
+    return !isBlockedHostname(parsed.hostname);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Returns true for text-like content types we allow reading into snippets.
+ */
+function isAllowedTextContentType(contentType: string): boolean {
+  if (!contentType || contentType.trim().length === 0) {
+    return true;
+  }
+
+  const lower = contentType.toLowerCase();
+  return (
+    lower.startsWith("text/") ||
+    lower.includes("application/json") ||
+    lower.includes("application/xml") ||
+    lower.includes("application/xhtml+xml") ||
+    lower.includes("application/ld+json")
+  );
+}
+
+/**
+ * Reads response body as text with a hard byte cap.
+ */
+async function readTextWithByteCap(response: Response, maxBytes: number): Promise<string | null> {
+  const contentLength = Number.parseInt(response.headers.get("content-length") ?? "", 10);
+  if (Number.isFinite(contentLength) && contentLength > maxBytes) {
+    return null;
+  }
+
+  if (!response.body) {
+    const text = await response.text();
+    return Buffer.byteLength(text, "utf8") > maxBytes ? null : text;
+  }
+
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let totalBytes = 0;
+
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) {
+        break;
+      }
+
+      if (!value) {
+        continue;
+      }
+
+      totalBytes += value.byteLength;
+      if (totalBytes > maxBytes) {
+        try {
+          await reader.cancel();
+        } catch {
+          // Ignore reader cancellation errors; caller treats as no evidence.
+        }
+        return null;
+      }
+
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const merged = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    merged.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+
+  return new TextDecoder().decode(merged);
 }
 
 /**
@@ -165,8 +322,19 @@ async function fetchPageEvidence(
   fetchImpl: typeof fetch,
   fetchTimeoutMs: number,
   snippetMaxChars: number,
-  maxDiscoveredUrls: number
+  maxDiscoveredUrls: number,
+  allowOpenWebResearch: boolean,
+  allowedSeedHosts: Set<string>
 ): Promise<FetchPageResult | null> {
+  if (!isSafeFetchUrl(url)) {
+    return null;
+  }
+
+  const urlHost = new URL(url).hostname.toLowerCase();
+  if (!allowOpenWebResearch && !allowedSeedHosts.has(urlHost)) {
+    return null;
+  }
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), fetchTimeoutMs);
 
@@ -184,7 +352,14 @@ async function fetchPageEvidence(
     }
 
     const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
-    const raw = await response.text();
+    if (!isAllowedTextContentType(contentType)) {
+      return null;
+    }
+
+    const raw = await readTextWithByteCap(response, DEFAULT_MAX_RESPONSE_BYTES);
+    if (!raw) {
+      return null;
+    }
 
     const title = contentType.includes("html")
       ? extractTitle(raw, url)
@@ -247,9 +422,19 @@ export async function collectStateResourceEvidence(
     new Set(
       draft.seed_sources
         .map((url) => normalizeHttpUrl(url))
-        .filter((url): url is string => typeof url === "string")
+        .filter((url): url is string => typeof url === "string" && isSafeFetchUrl(url))
     )
   ).slice(0, maxSeedUrls);
+
+  const allowedSeedHosts = new Set(
+    seedUrls.map((url) => {
+      try {
+        return new URL(url).hostname.toLowerCase();
+      } catch {
+        return "";
+      }
+    }).filter((host) => host.length > 0)
+  );
 
   const evidence: EvidenceSnippet[] = [];
   const seenUrls = new Set<string>();
@@ -262,7 +447,9 @@ export async function collectStateResourceEvidence(
       fetchImpl,
       fetchTimeoutMs,
       snippetMaxChars,
-      maxDiscoveredUrls
+      maxDiscoveredUrls,
+      draft.allow_open_web_research,
+      allowedSeedHosts
     );
 
     if (page) {
@@ -275,10 +462,15 @@ export async function collectStateResourceEvidence(
         });
       }
 
-      for (const discovered of page.discoveredUrls) {
-        if (!seenUrls.has(discovered) && discoveredQueue.length < maxDiscoveredUrls) {
-          discoveredQueue.push(discovered);
-          seenUrls.add(discovered);
+      if (draft.allow_open_web_research) {
+        for (const discovered of page.discoveredUrls) {
+          if (!isSafeFetchUrl(discovered)) {
+            continue;
+          }
+          if (!seenUrls.has(discovered) && discoveredQueue.length < maxDiscoveredUrls) {
+            discoveredQueue.push(discovered);
+            seenUrls.add(discovered);
+          }
         }
       }
     } else if (!seenUrls.has(seedUrl)) {
@@ -291,26 +483,30 @@ export async function collectStateResourceEvidence(
     }
   }
 
-  for (const discoveredUrl of discoveredQueue) {
-    if (evidence.length >= maxEvidenceSnippets) {
-      break;
-    }
+  if (draft.allow_open_web_research) {
+    for (const discoveredUrl of discoveredQueue) {
+      if (evidence.length >= maxEvidenceSnippets) {
+        break;
+      }
 
-    const page = await fetchPageEvidence(
-      discoveredUrl,
-      draft,
-      fetchImpl,
-      fetchTimeoutMs,
-      snippetMaxChars,
-      maxDiscoveredUrls
-    );
+      const page = await fetchPageEvidence(
+        discoveredUrl,
+        draft,
+        fetchImpl,
+        fetchTimeoutMs,
+        snippetMaxChars,
+        maxDiscoveredUrls,
+        draft.allow_open_web_research,
+        allowedSeedHosts
+      );
 
-    if (page) {
-      evidence.push({
-        url: page.url,
-        title: page.title,
-        snippet: page.snippet,
-      });
+      if (page) {
+        evidence.push({
+          url: page.url,
+          title: page.title,
+          snippet: page.snippet,
+        });
+      }
     }
   }
 

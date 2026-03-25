@@ -43,7 +43,8 @@ type DraftParseResult =
 
 type EnricherOutcome = "enriched" | "failed" | "skipped" | "retry" | "recovered";
 
-const RECLAIM_MIN_IDLE_MS = 30_000;
+// Evidence crawling can take tens of seconds; keep reclaim window above crawl budget.
+const RECLAIM_MIN_IDLE_MS = 180_000;
 const RECLAIM_MAX_BATCHES = 20;
 
 /**
@@ -205,7 +206,7 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
   );
   const idRequirementsEvidence = pickEvidenceUrl(
     evidence,
-    [/id/i, /voter-id/i],
+    [/\bvoter[-\s]?id\b/i, /\bid[-\s]?requirements?\b/i, /\bidentification\b/i, /voter-id-laws/i],
     "https://www.usvotefoundation.org/voter-id-laws"
   );
 
