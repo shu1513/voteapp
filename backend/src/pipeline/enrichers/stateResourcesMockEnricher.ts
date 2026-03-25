@@ -46,15 +46,24 @@ type EnricherOutcome = "enriched" | "failed" | "skipped" | "retry" | "recovered"
 const RECLAIM_MIN_IDLE_MS = 30_000;
 const RECLAIM_MAX_BATCHES = 20;
 
+/**
+ * Converts unknown errors into bounded strings for logs and DB reasons.
+ */
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
 }
 
+/**
+ * Checks whether a value is a non-empty trimmed string.
+ */
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
 
+/**
+ * Validates that a string is an http(s) URL.
+ */
 function isHttpUrl(value: string): boolean {
   try {
     const parsed = new URL(value);
@@ -64,6 +73,9 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
+/**
+ * Validates and normalizes draft payload structure from staging JSON.
+ */
 function parseDraftPayload(payload: unknown): DraftParseResult {
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
     return { ok: false, reason: "draft payload must be an object" };
@@ -137,10 +149,16 @@ type EnrichedStagingPayload = StateResourcePayload & {
   evidence: EvidenceSnippet[];
 };
 
+/**
+ * Derives a citation source name from evidence title.
+ */
 function sourceNameFromEvidence(evidence: EvidenceSnippet): string {
   return evidence.title.trim().length > 0 ? evidence.title.trim() : "source";
 }
 
+/**
+ * Picks the best evidence entry by URL pattern, with deterministic fallback.
+ */
 function pickEvidenceUrl(
   evidence: EvidenceSnippet[],
   preferredPatterns: RegExp[],
@@ -161,6 +179,9 @@ function pickEvidenceUrl(
   };
 }
 
+/**
+ * Builds deterministic mock enriched payload from draft + evidence.
+ */
 function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSnippet[]): StateResourcePayload {
   const pollingPlaceEvidence = pickEvidenceUrl(
     evidence,
@@ -223,6 +244,9 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
   };
 }
 
+/**
+ * Applies hard contract checks to the mock payload before persistence.
+ */
 function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSnippet[]): string | null {
   if (!Array.isArray(evidence) || evidence.length === 0) {
     return "mock enricher must collect at least one evidence snippet";
@@ -272,6 +296,9 @@ function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSn
   return null;
 }
 
+/**
+ * Ensures the enricher stream consumer group exists.
+ */
 async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Promise<void> {
   try {
     await redis.xGroupCreate(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, "0", {
@@ -285,6 +312,9 @@ async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Prom
   }
 }
 
+/**
+ * Reclaims stale pending stream entries for at-least-once resilience.
+ */
 async function reclaimPendingEntries(
   redis: ReturnType<typeof createClient>,
   consumerName: string,
@@ -318,6 +348,9 @@ async function reclaimPendingEntries(
   return reclaimed;
 }
 
+/**
+ * Loads a staging row by ingest key for state_resources.
+ */
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
@@ -332,6 +365,9 @@ async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow 
   return result.rows[0] ?? null;
 }
 
+/**
+ * Returns current staging status for a given ingest key.
+ */
 async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string | null> {
   const result = await pool.query<{ status: string }>(
     `
@@ -345,6 +381,9 @@ async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string |
   return result.rows[0]?.status ?? null;
 }
 
+/**
+ * Marks a pending staging row as failed with reason.
+ */
 async function markFailedPending(pool: Pool, ingestKey: string, reason: string): Promise<void> {
   await pool.query(
     `
@@ -360,6 +399,9 @@ async function markFailedPending(pool: Pool, ingestKey: string, reason: string):
   );
 }
 
+/**
+ * Publishes an item to the pending stream for validator processing.
+ */
 async function publishPending(
   redis: ReturnType<typeof createClient>,
   ingestKey: string,
@@ -372,6 +414,9 @@ async function publishPending(
   });
 }
 
+/**
+ * Writes enriched payload into staging row if it is still draft + pending.
+ */
 async function applyMockEnrichment(
   pool: Pool,
   ingestKey: string,
@@ -406,6 +451,9 @@ async function applyMockEnrichment(
   return result.rowCount === 1;
 }
 
+/**
+ * Processes one draft stream message through enrichment flow.
+ */
 async function processMessage(
   pool: Pool,
   redis: ReturnType<typeof createClient>,
@@ -489,6 +537,9 @@ async function processMessage(
   }
 }
 
+/**
+ * Runs the mock enricher worker loop.
+ */
 export async function runStateResourcesMockEnricher(options: MockEnricherOptions = {}): Promise<void> {
   const { once = false, batchSize = 20, blockMs = 5000 } = options;
 

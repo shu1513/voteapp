@@ -15,6 +15,7 @@ import { openAiProvider } from "./providers/openaiProvider.js";
 import { claudeProvider } from "./providers/claudeProvider.js";
 import { geminiProvider } from "./providers/geminiProvider.js";
 import type { StateResourcePayload } from "../types/stateResource.js";
+import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 const PROVIDER_ADAPTERS: Record<AiProvider, ProviderAdapter> = {
   openai: openAiProvider,
@@ -22,20 +23,9 @@ const PROVIDER_ADAPTERS: Record<AiProvider, ProviderAdapter> = {
   gemini: geminiProvider,
 };
 
-function normalizeComparableUrl(raw: string): string | null {
-  try {
-    const parsed = new URL(raw);
-    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-      return null;
-    }
-    parsed.hash = "";
-    const normalized = parsed.toString();
-    return normalized.endsWith("/") ? normalized.slice(0, -1) : normalized;
-  } catch {
-    return null;
-  }
-}
-
+/**
+ * Ensures every citation URL is grounded in the retrieved evidence set.
+ */
 function validateCitationsFromEvidence(payload: StateResourcePayload, evidence: EnrichStateResourcesInput["evidence"]): string | null {
   if (!Array.isArray(evidence) || evidence.length === 0) {
     return "evidence snippets are required for citation grounding";
@@ -43,7 +33,7 @@ function validateCitationsFromEvidence(payload: StateResourcePayload, evidence: 
 
   const evidenceUrlSet = new Set(
     evidence
-      .map((item) => normalizeComparableUrl(item.url))
+      .map((item) => normalizeHttpUrl(item.url))
       .filter((url): url is string => typeof url === "string")
   );
 
@@ -53,7 +43,7 @@ function validateCitationsFromEvidence(payload: StateResourcePayload, evidence: 
 
   for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
     for (const citation of payload.sources[key]) {
-      const normalizedCitationUrl = normalizeComparableUrl(citation.source_url);
+      const normalizedCitationUrl = normalizeHttpUrl(citation.source_url);
       if (!normalizedCitationUrl || !evidenceUrlSet.has(normalizedCitationUrl)) {
         return `sources.${key} citation URL must come from collected evidence URLs`;
       }

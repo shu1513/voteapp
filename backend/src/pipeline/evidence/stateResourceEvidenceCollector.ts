@@ -1,5 +1,6 @@
 import type { EvidenceSnippet } from "../../ai/types.js";
 import type { StateResourceDraftPayload } from "../../types/stateResource.js";
+import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 
 type EvidenceCollectorOptions = {
   fetchImpl?: typeof fetch;
@@ -23,6 +24,9 @@ const DEFAULT_MAX_DISCOVERED_URLS = 5;
 const DEFAULT_MAX_EVIDENCE_SNIPPETS = 8;
 const DEFAULT_SNIPPET_MAX_CHARS = 800;
 
+/**
+ * Removes invalid UTF-16 surrogate usage so downstream JSON storage is safe.
+ */
 function stripInvalidUnicode(input: string): string {
   let output = "";
 
@@ -50,27 +54,18 @@ function stripInvalidUnicode(input: string): string {
   return output;
 }
 
+/**
+ * Sanitizes text for compact snippet storage.
+ */
 function normalizeWhitespace(input: string): string {
   // PostgreSQL jsonb rejects some control chars (notably null); strip before storing.
   const sanitized = stripInvalidUnicode(input).replace(/[\u0000-\u001f\u007f]/g, " ");
   return sanitized.replace(/\s+/g, " ").trim();
 }
 
-function normalizeUrl(raw: string, base?: string): string | null {
-  try {
-    const parsed = base ? new URL(raw, base) : new URL(raw);
-    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-      return null;
-    }
-    parsed.hash = "";
-    // Normalize trailing slash for stable URL comparisons.
-    const normalized = parsed.toString();
-    return normalized.endsWith("/") ? normalized.slice(0, -1) : normalized;
-  } catch {
-    return null;
-  }
-}
-
+/**
+ * Produces a stable source name from URL host for fallback citations.
+ */
 function hostAsSourceName(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, "");
@@ -79,6 +74,9 @@ function hostAsSourceName(url: string): string {
   }
 }
 
+/**
+ * Extracts page title when present; otherwise falls back to source host.
+ */
 function extractTitle(html: string, url: string): string {
   const match = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
   if (match && match[1]) {
@@ -91,6 +89,9 @@ function extractTitle(html: string, url: string): string {
   return hostAsSourceName(url);
 }
 
+/**
+ * Converts HTML to plain text for snippet generation.
+ */
 function htmlToText(html: string): string {
   const withoutScripts = html
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
@@ -104,13 +105,16 @@ function htmlToText(html: string): string {
   return normalizeWhitespace(decoded);
 }
 
+/**
+ * Extracts and normalizes href links from a page, bounded by maxCount.
+ */
 function extractDiscoveredUrls(html: string, baseUrl: string, maxCount: number): string[] {
   const links = new Set<string>();
   const hrefRegex = /href\s*=\s*["']([^"']+)["']/gi;
   let match: RegExpExecArray | null = hrefRegex.exec(html);
 
   while (match && links.size < maxCount) {
-    const normalized = normalizeUrl(match[1], baseUrl);
+    const normalized = normalizeHttpUrl(match[1], { baseUrl });
     if (normalized) {
       links.add(normalized);
     }
@@ -120,6 +124,16 @@ function extractDiscoveredUrls(html: string, baseUrl: string, maxCount: number):
   return Array.from(links);
 }
 
+/**
+ * Escapes regex meta characters for safe literal matching.
+ */
+function escapeRegexLiteral(input: string): string {
+  return input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Builds a bounded snippet, prioritizing text near state name/abbreviation.
+ */
 function buildSnippet(text: string, stateName: string, stateAbbreviation: string, maxChars: number): string {
   if (!text) {
     return "";
@@ -127,9 +141,10 @@ function buildSnippet(text: string, stateName: string, stateAbbreviation: string
 
   const lowered = text.toLowerCase();
   const targetA = stateName.toLowerCase();
-  const targetB = stateAbbreviation.toLowerCase();
+  const targetB = escapeRegexLiteral(stateAbbreviation.toLowerCase());
   const idx = lowered.indexOf(targetA);
-  const altIdx = lowered.indexOf(` ${targetB} `);
+  const abbrevRegex = new RegExp(`\\b${targetB}\\b`);
+  const altIdx = abbrevRegex.exec(lowered)?.index ?? -1;
   const anchor = idx >= 0 ? idx : altIdx;
 
   if (anchor >= 0) {
@@ -141,6 +156,9 @@ function buildSnippet(text: string, stateName: string, stateAbbreviation: string
   return text.slice(0, maxChars).trim();
 }
 
+/**
+ * Fetches one page, extracts a snippet, and returns newly discovered links.
+ */
 async function fetchPageEvidence(
   url: string,
   draft: StateResourceDraftPayload,
@@ -198,6 +216,9 @@ async function fetchPageEvidence(
   }
 }
 
+/**
+ * Produces fallback evidence when live fetch is unavailable.
+ */
 function fallbackEvidence(url: string, draft: StateResourceDraftPayload): EvidenceSnippet {
   return {
     url,
@@ -208,7 +229,8 @@ function fallbackEvidence(url: string, draft: StateResourceDraftPayload): Eviden
 
 /**
  * Collects evidence snippets starting from seed URLs and discovered links.
- * This collector is deterministic and safe to run before AI enrichment.
+ * The collection algorithm is deterministic given consistent network responses.
+ * Safe to run before AI enrichment.
  */
 export async function collectStateResourceEvidence(
   draft: StateResourceDraftPayload,
@@ -224,7 +246,7 @@ export async function collectStateResourceEvidence(
   const seedUrls = Array.from(
     new Set(
       draft.seed_sources
-        .map((url) => normalizeUrl(url))
+        .map((url) => normalizeHttpUrl(url))
         .filter((url): url is string => typeof url === "string")
     )
   ).slice(0, maxSeedUrls);
