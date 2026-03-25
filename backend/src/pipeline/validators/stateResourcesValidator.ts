@@ -39,6 +39,9 @@ type StagingRow = {
   status: string;
 };
 
+const RECLAIM_MIN_IDLE_MS = 30_000;
+const RECLAIM_MAX_BATCHES = 20;
+
 /**
  * Converts an unknown error into a bounded, persistable string.
  */
@@ -240,9 +243,9 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 }
 
 /**
- * Reads a pending staging row by ingest key.
+ * Reads a staging row by ingest key.
  */
-async function getPendingStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
+async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
       SELECT ingest_key, run_id, payload, status
@@ -254,6 +257,41 @@ async function getPendingStagingRow(pool: Pool, ingestKey: string): Promise<Stag
   );
 
   return result.rows[0] ?? null;
+}
+
+/**
+ * Returns current staging status for one ingest key.
+ */
+async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string | null> {
+  const result = await pool.query<{ status: string }>(
+    `
+      SELECT status
+      FROM staging_items
+      WHERE ingest_key = $1
+        AND item_type = $2
+    `,
+    [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES]
+  );
+
+  return result.rows[0]?.status ?? null;
+}
+
+/**
+ * Marks a pending staging row as failed.
+ */
+async function markFailedPending(pool: Pool, ingestKey: string, reason: string): Promise<void> {
+  await pool.query(
+    `
+      UPDATE staging_items
+      SET status = 'failed',
+          reason = $2,
+          updated_at = now()
+      WHERE ingest_key = $1
+        AND item_type = $3
+        AND status = 'pending'
+    `,
+    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES]
+  );
 }
 
 /**
@@ -286,6 +324,43 @@ async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Prom
 }
 
 /**
+ * Reclaims stale pending entries for this consumer group so crashes don't strand messages.
+ */
+async function reclaimPendingEntries(
+  redis: ReturnType<typeof createClient>,
+  consumerName: string,
+  batchSize: number
+): Promise<Array<{ id: string; message: Record<string, string> }>> {
+  const reclaimed: Array<{ id: string; message: Record<string, string> }> = [];
+  let cursor = "0-0";
+
+  for (let i = 0; i < RECLAIM_MAX_BATCHES; i += 1) {
+    const claim = await redis.xAutoClaim(
+      STAGING_PENDING_STREAM,
+      STAGING_STATE_RESOURCES_VALIDATOR_GROUP,
+      consumerName,
+      RECLAIM_MIN_IDLE_MS,
+      cursor,
+      { COUNT: batchSize }
+    );
+
+    cursor = claim.nextId;
+
+    if (!claim.messages || claim.messages.length === 0) {
+      break;
+    }
+
+    reclaimed.push(
+      ...claim.messages
+        .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
+        .map((entry) => ({ id: entry.id, message: entry.message as Record<string, string> }))
+    );
+  }
+
+  return reclaimed;
+}
+
+/**
  * Processes one pending stream message and updates staging status + routing stream.
  */
 async function processMessage(
@@ -301,7 +376,7 @@ async function processMessage(
     return "skipped";
   }
 
-  const row = await getPendingStagingRow(pool, ingestKey);
+  const row = await getStagingRow(pool, ingestKey);
   if (!row) {
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
     return "skipped";
@@ -315,6 +390,8 @@ async function processMessage(
   const validation = validateStateResourcePayload(row.payload);
 
   if (validation.ok) {
+    // This stream is at-least-once delivery. If publish succeeds but ack fails,
+    // this message can be redelivered; downstream consumers must dedupe by ingest_key.
     await redis.xAdd(STAGING_VALIDATED_STREAM, "*", {
       ingest_key: ingestKey,
       item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
@@ -353,6 +430,8 @@ async function processMessage(
       UPDATE staging_items
       SET status = 'rejected',
           reason = $2,
+          -- validated_at tracks validation-attempt time, including rejected rows.
+          -- TODO: rename validated_at -> processed_at in a future migration for clarity.
           validated_at = now(),
           updated_at = now()
       WHERE ingest_key = $1
@@ -388,11 +467,56 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
   let validated = 0;
   let rejected = 0;
   let skipped = 0;
+  let retried = 0;
+
+  const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
+    for (const entry of entries) {
+      try {
+        const result = await processMessage(pool, redis, entry.id, entry.message);
+        if (result === "validated") {
+          validated += 1;
+        } else if (result === "rejected") {
+          rejected += 1;
+        } else {
+          skipped += 1;
+        }
+      } catch (error) {
+        const reason = toReason(error);
+        const ingestKey = entry.message.ingest_key;
+
+        if (!ingestKey) {
+          try {
+            await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, entry.id);
+          } catch {
+            retried += 1;
+          }
+          continue;
+        }
+
+        const status = await getStagingStatus(pool, ingestKey);
+        if (status === "pending") {
+          await markFailedPending(pool, ingestKey, reason);
+        }
+
+        try {
+          await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, entry.id);
+        } catch {
+          // Keep unacked for XAUTOCLAIM recovery.
+          retried += 1;
+        }
+      }
+    }
+  };
 
   try {
     let keepRunning = true;
 
     while (keepRunning) {
+      const reclaimed = await reclaimPendingEntries(redis, consumerName, batchSize);
+      if (reclaimed.length > 0) {
+        await handleEntries(reclaimed);
+      }
+
       const batches = await redis.xReadGroup(
         STAGING_STATE_RESOURCES_VALIDATOR_GROUP,
         consumerName,
@@ -403,44 +527,9 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
         }
       );
 
-      if (!batches || batches.length === 0) {
-        if (once) {
-          break;
-        }
-        continue;
-      }
-
-      for (const batch of batches) {
-        for (const entry of batch.messages) {
-          try {
-            const result = await processMessage(pool, redis, entry.id, entry.message);
-            if (result === "validated") {
-              validated += 1;
-            } else if (result === "rejected") {
-              rejected += 1;
-            } else {
-              skipped += 1;
-            }
-          } catch (error) {
-            const reason = toReason(error);
-            const ingestKey = entry.message.ingest_key;
-
-            if (ingestKey) {
-              await pool.query(
-                `
-                  UPDATE staging_items
-                  SET status = 'failed',
-                      reason = $2,
-                      updated_at = now()
-                  WHERE ingest_key = $1
-                    AND item_type = $3
-                `,
-                [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES]
-              );
-            }
-
-            await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, entry.id);
-          }
+      if (batches && batches.length > 0) {
+        for (const batch of batches) {
+          await handleEntries(batch.messages.map((entry) => ({ id: entry.id, message: entry.message })));
         }
       }
 
@@ -453,5 +542,7 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
     await pool.end();
   }
 
-  console.log(`state_resources validator completed. validated=${validated} rejected=${rejected} skipped=${skipped}`);
+  console.log(
+    `state_resources validator completed. validated=${validated} rejected=${rejected} skipped=${skipped} retried=${retried}`
+  );
 }
