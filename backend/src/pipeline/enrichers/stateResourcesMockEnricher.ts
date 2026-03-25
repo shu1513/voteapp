@@ -163,9 +163,8 @@ function sourceNameFromEvidence(evidence: EvidenceSnippet): string {
  */
 function pickEvidenceUrl(
   evidence: EvidenceSnippet[],
-  preferredPatterns: RegExp[],
-  fallbackUrl: string
-): EvidenceSnippet {
+  preferredPatterns: RegExp[]
+): EvidenceSnippet | null {
   for (const item of evidence) {
     for (const pattern of preferredPatterns) {
       if (pattern.test(item.url)) {
@@ -174,42 +173,43 @@ function pickEvidenceUrl(
     }
   }
 
-  return evidence[0] ?? {
-    url: fallbackUrl,
-    title: "source",
-    snippet: "fallback evidence",
-  };
+  return evidence[0] ?? null;
 }
 
 /**
  * Builds deterministic mock enriched payload from draft + evidence.
  */
-function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSnippet[]): StateResourcePayload {
+function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSnippet[]): StateResourcePayload | null {
   const pollingPlaceEvidence = pickEvidenceUrl(
     evidence,
-    [/polling-place/i, /find-your-polling-place/i],
-    "https://www.vote.org/polling-place-locator/"
+    [/polling-place/i, /find-your-polling-place/i]
   );
   const registrationEvidence = pickEvidenceUrl(
     evidence,
-    [/register/i, /voter-registration/i],
-    "https://www.usa.gov/register-to-vote"
+    [/register/i, /voter-registration/i]
   );
   const voteByMailEvidence = pickEvidenceUrl(
     evidence,
-    [/absentee/i, /mail/i],
-    "https://www.vote.org/absentee-ballot/"
+    [/absentee/i, /mail/i]
   );
   const pollingHoursEvidence = pickEvidenceUrl(
     evidence,
-    [/polling[-_]?hours/i, /can-i-vote/i, /\bhours\b/i],
-    "https://www.nass.org/can-i-vote"
+    [/polling[-_]?hours/i, /can-i-vote/i, /\bhours\b/i]
   );
   const idRequirementsEvidence = pickEvidenceUrl(
     evidence,
-    [/\bvoter[-\s]?id\b/i, /\bid[-\s]?requirements?\b/i, /\bidentification\b/i, /voter-id-laws/i],
-    "https://www.usvotefoundation.org/voter-id-laws"
+    [/\bvoter[-\s]?id\b/i, /\bid[-\s]?requirements?\b/i, /\bidentification\b/i, /voter-id-laws/i]
   );
+
+  if (
+    !pollingPlaceEvidence ||
+    !registrationEvidence ||
+    !voteByMailEvidence ||
+    !pollingHoursEvidence ||
+    !idRequirementsEvidence
+  ) {
+    return null;
+  }
 
   const voteByMailInfo = `${draft.state_name} voters can request and return vote-by-mail ballots based on state deadlines and local election rules.`;
   const pollingHours = "Polling locations usually open and close at posted local hours on election day.";
@@ -518,7 +518,19 @@ async function processMessage(
   }
 
   const evidence = await collectStateResourceEvidence(draft.draft);
+  if (evidence.length === 0) {
+    await markFailedPending(pool, ingestKey, "mock enricher could not collect evidence snippets");
+    await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    return "failed";
+  }
+
   const mockPayload = buildMockPayload(draft.draft, evidence);
+  if (!mockPayload) {
+    await markFailedPending(pool, ingestKey, "mock enricher could not map evidence to required fields");
+    await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    return "failed";
+  }
+
   const validationReason = validateMockPayload(mockPayload, evidence);
   if (validationReason) {
     await markFailedPending(pool, ingestKey, validationReason);

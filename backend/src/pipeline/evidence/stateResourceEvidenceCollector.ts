@@ -218,9 +218,10 @@ async function isSafeFetchUrl(rawUrl: string, safetyOptions: UrlSafetyOptions): 
 /**
  * Returns true for text-like content types we allow reading into snippets.
  */
-function isAllowedTextContentType(contentType: string): boolean {
+function isAllowedTextContentType(contentType: string, sourceUrl: string): boolean {
   if (!contentType || contentType.trim().length === 0) {
-    return true;
+    console.warn(`state_resources evidence skipped due to missing content-type: ${sourceUrl}`);
+    return false;
   }
 
   const lower = contentType.toLowerCase();
@@ -428,7 +429,7 @@ async function fetchPageEvidence(
     }
 
     const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
-    if (!isAllowedTextContentType(contentType)) {
+    if (!isAllowedTextContentType(contentType, responseSourceUrl)) {
       return null;
     }
 
