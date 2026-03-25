@@ -21,6 +21,7 @@ export const STAGING_WRITTEN_STREAM = "staging:written";
 
 export const STAGING_STATE_RESOURCES_VALIDATOR_GROUP = "state_resources_validator";
 export const STAGING_STATE_RESOURCES_WRITER_GROUP = "state_resources_writer";
+export const STAGING_STATE_RESOURCES_ENRICHER_GROUP = "state_resources_enricher";
 
 export const STAGING_ITEM_TYPE_STATE_RESOURCES = "state_resources" as const;
 
