@@ -1,3 +1,4 @@
+import { lookup as dnsLookup } from "node:dns/promises";
 import { isIP } from "node:net";
 import type { EvidenceSnippet } from "../../ai/types.js";
 import type { StateResourceDraftPayload } from "../../types/stateResource.js";
@@ -5,12 +6,16 @@ import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 
 type EvidenceCollectorOptions = {
   fetchImpl?: typeof fetch;
+  dnsLookupImpl?: DnsLookupFn;
+  enforceDnsResolution?: boolean;
   fetchTimeoutMs?: number;
   maxSeedUrls?: number;
   maxDiscoveredUrls?: number;
   maxEvidenceSnippets?: number;
   snippetMaxChars?: number;
 };
+
+type DnsLookupFn = (hostname: string) => Promise<string[]>;
 
 type FetchPageResult = {
   url: string;
@@ -19,12 +24,26 @@ type FetchPageResult = {
   discoveredUrls: string[];
 };
 
+type UrlSafetyOptions = {
+  dnsLookupImpl: DnsLookupFn;
+  enforceDnsResolution: boolean;
+  hostSafetyCache: Map<string, boolean>;
+};
+
 const DEFAULT_FETCH_TIMEOUT_MS = 10_000;
 const DEFAULT_MAX_SEED_URLS = 5;
 const DEFAULT_MAX_DISCOVERED_URLS = 5;
 const DEFAULT_MAX_EVIDENCE_SNIPPETS = 8;
 const DEFAULT_SNIPPET_MAX_CHARS = 800;
 const DEFAULT_MAX_RESPONSE_BYTES = 1_000_000; // 1 MB cap for buffered page text.
+
+/**
+ * DNS lookup adapter used for hostname-to-IP safety checks.
+ */
+async function defaultDnsLookupImpl(hostname: string): Promise<string[]> {
+  const records = await dnsLookup(hostname, { all: true, verbatim: true });
+  return records.map((record) => record.address);
+}
 
 /**
  * Removes invalid UTF-16 surrogate usage so downstream JSON storage is safe.
@@ -80,7 +99,7 @@ function hostAsSourceName(url: string): string {
  * Returns true when a hostname is not eligible for external crawling.
  */
 function isBlockedHostname(hostname: string): boolean {
-  const host = hostname.toLowerCase();
+  const host = hostname.toLowerCase().replace(/^\[|\]$/g, "");
 
   if (
     host === "localhost" ||
@@ -144,15 +163,53 @@ function isBlockedHostname(hostname: string): boolean {
 }
 
 /**
- * Returns true if URL is safe to fetch for evidence collection.
+ * Returns true if URL target is safe to fetch for evidence collection.
  */
-function isSafeFetchUrl(rawUrl: string): boolean {
+async function isSafeFetchUrl(rawUrl: string, safetyOptions: UrlSafetyOptions): Promise<boolean> {
   try {
     const parsed = new URL(rawUrl);
     if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
       return false;
     }
-    return !isBlockedHostname(parsed.hostname);
+
+    const host = parsed.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+    if (!host || isBlockedHostname(host)) {
+      return false;
+    }
+
+    if (!safetyOptions.enforceDnsResolution) {
+      return true;
+    }
+
+    if (isIP(host) !== 0) {
+      return true;
+    }
+
+    const cached = safetyOptions.hostSafetyCache.get(host);
+    if (typeof cached === "boolean") {
+      return cached;
+    }
+
+    let addresses: string[];
+    try {
+      addresses = await safetyOptions.dnsLookupImpl(host);
+    } catch {
+      safetyOptions.hostSafetyCache.set(host, false);
+      return false;
+    }
+
+    if (!Array.isArray(addresses) || addresses.length === 0) {
+      safetyOptions.hostSafetyCache.set(host, false);
+      return false;
+    }
+
+    const allAddressesSafe = addresses.every((address) => {
+      const normalized = address.toLowerCase().replace(/^\[|\]$/g, "");
+      return !isBlockedHostname(normalized);
+    });
+
+    safetyOptions.hostSafetyCache.set(host, allAddressesSafe);
+    return allAddressesSafe;
   } catch {
     return false;
   }
@@ -326,13 +383,14 @@ async function fetchPageEvidence(
   snippetMaxChars: number,
   maxDiscoveredUrls: number,
   allowOpenWebResearch: boolean,
-  allowedSeedHosts: Set<string>
+  allowedSeedHosts: Set<string>,
+  safetyOptions: UrlSafetyOptions
 ): Promise<FetchPageResult | null> {
-  if (!isSafeFetchUrl(url)) {
+  if (!(await isSafeFetchUrl(url, safetyOptions))) {
     return null;
   }
 
-  const urlHost = new URL(url).hostname.toLowerCase();
+  const urlHost = new URL(url).hostname.toLowerCase().replace(/^\[|\]$/g, "");
   if (!allowOpenWebResearch && !allowedSeedHosts.has(urlHost)) {
     return null;
   }
@@ -353,6 +411,22 @@ async function fetchPageEvidence(
       return null;
     }
 
+    const responseSourceUrl =
+      normalizeHttpUrl(response.url) ??
+      normalizeHttpUrl(url);
+    if (!responseSourceUrl) {
+      return null;
+    }
+
+    if (!(await isSafeFetchUrl(responseSourceUrl, safetyOptions))) {
+      return null;
+    }
+
+    const finalHost = new URL(responseSourceUrl).hostname.toLowerCase().replace(/^\[|\]$/g, "");
+    if (!allowOpenWebResearch && !allowedSeedHosts.has(finalHost)) {
+      return null;
+    }
+
     const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
     if (!isAllowedTextContentType(contentType)) {
       return null;
@@ -364,8 +438,8 @@ async function fetchPageEvidence(
     }
 
     const title = contentType.includes("html")
-      ? extractTitle(raw, url)
-      : hostAsSourceName(url);
+      ? extractTitle(raw, responseSourceUrl)
+      : hostAsSourceName(responseSourceUrl);
 
     const text = contentType.includes("html")
       ? htmlToText(raw)
@@ -377,11 +451,11 @@ async function fetchPageEvidence(
     }
 
     const discoveredUrls = contentType.includes("html")
-      ? extractDiscoveredUrls(raw, url, maxDiscoveredUrls)
+      ? extractDiscoveredUrls(raw, responseSourceUrl, maxDiscoveredUrls)
       : [];
 
     return {
-      url,
+      url: responseSourceUrl,
       title,
       snippet,
       discoveredUrls,
@@ -414,24 +488,41 @@ export async function collectStateResourceEvidence(
   options: EvidenceCollectorOptions = {}
 ): Promise<EvidenceSnippet[]> {
   const fetchImpl = options.fetchImpl ?? fetch;
+  const dnsLookupImpl = options.dnsLookupImpl ?? defaultDnsLookupImpl;
+  const enforceDnsResolution = options.enforceDnsResolution ?? options.fetchImpl === undefined;
+  const safetyOptions: UrlSafetyOptions = {
+    dnsLookupImpl,
+    enforceDnsResolution,
+    hostSafetyCache: new Map<string, boolean>(),
+  };
   const fetchTimeoutMs = options.fetchTimeoutMs ?? DEFAULT_FETCH_TIMEOUT_MS;
   const maxSeedUrls = options.maxSeedUrls ?? DEFAULT_MAX_SEED_URLS;
   const maxDiscoveredUrls = options.maxDiscoveredUrls ?? DEFAULT_MAX_DISCOVERED_URLS;
   const maxEvidenceSnippets = options.maxEvidenceSnippets ?? DEFAULT_MAX_EVIDENCE_SNIPPETS;
   const snippetMaxChars = options.snippetMaxChars ?? DEFAULT_SNIPPET_MAX_CHARS;
 
-  const seedUrls = Array.from(
+  const normalizedSeedCandidates = Array.from(
     new Set(
       draft.seed_sources
         .map((url) => normalizeHttpUrl(url))
-        .filter((url): url is string => typeof url === "string" && isSafeFetchUrl(url))
+        .filter((url): url is string => typeof url === "string")
     )
-  ).slice(0, maxSeedUrls);
+  );
+  const seedUrls: string[] = [];
+  for (const candidate of normalizedSeedCandidates) {
+    if (seedUrls.length >= maxSeedUrls) {
+      break;
+    }
+
+    if (await isSafeFetchUrl(candidate, safetyOptions)) {
+      seedUrls.push(candidate);
+    }
+  }
 
   const allowedSeedHosts = new Set(
     seedUrls.map((url) => {
       try {
-        return new URL(url).hostname.toLowerCase();
+        return new URL(url).hostname.toLowerCase().replace(/^\[|\]$/g, "");
       } catch {
         return "";
       }
@@ -451,7 +542,8 @@ export async function collectStateResourceEvidence(
       snippetMaxChars,
       maxDiscoveredUrls,
       draft.allow_open_web_research,
-      allowedSeedHosts
+      allowedSeedHosts,
+      safetyOptions
     );
 
     if (page) {
@@ -466,7 +558,7 @@ export async function collectStateResourceEvidence(
 
       if (draft.allow_open_web_research) {
         for (const discovered of page.discoveredUrls) {
-          if (!isSafeFetchUrl(discovered)) {
+          if (!(await isSafeFetchUrl(discovered, safetyOptions))) {
             continue;
           }
           if (!seenUrls.has(discovered) && discoveredQueue.length < maxDiscoveredUrls) {
@@ -499,7 +591,8 @@ export async function collectStateResourceEvidence(
         snippetMaxChars,
         maxDiscoveredUrls,
         draft.allow_open_web_research,
-        allowedSeedHosts
+        allowedSeedHosts,
+        safetyOptions
       );
 
       if (page) {

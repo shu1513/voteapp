@@ -21,6 +21,7 @@ import {
 import { collectStateResourceEvidence } from "../evidence/stateResourceEvidenceCollector.js";
 import type { EvidenceSnippet } from "../../ai/types.js";
 import type { StateResourceDraftPayload, StateResourcePayload, StateResourceSources } from "../../types/stateResource.js";
+import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 
 type MockEnricherOptions = {
   once?: boolean;
@@ -253,6 +254,15 @@ function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSn
     return "mock enricher must collect at least one evidence snippet";
   }
 
+  const evidenceUrlSet = new Set(
+    evidence
+      .map((item) => normalizeHttpUrl(item.url))
+      .filter((url): url is string => typeof url === "string")
+  );
+  if (evidenceUrlSet.size === 0) {
+    return "mock enricher evidence must contain valid http(s) URLs";
+  }
+
   for (const key of STATE_RESOURCE_REQUIRED_TEXT_FIELDS) {
     if (!isNonEmptyString(payload[key])) {
       return `mock payload missing required field: ${key}`;
@@ -288,8 +298,12 @@ function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSn
       if (!isNonEmptyString(citation.source_name) || !isNonEmptyString(citation.source_url)) {
         return `mock payload sources.${key} citations require source_name + source_url`;
       }
-      if (!isHttpUrl(citation.source_url.trim())) {
+      const normalizedCitationUrl = normalizeHttpUrl(citation.source_url.trim());
+      if (!normalizedCitationUrl) {
         return `mock payload sources.${key}.source_url must be valid http(s)`;
+      }
+      if (!evidenceUrlSet.has(normalizedCitationUrl)) {
+        return `mock payload sources.${key}.source_url must come from collected evidence URLs`;
       }
     }
   }

@@ -86,4 +86,40 @@ describe("collectStateResourceEvidence", () => {
     expect(largeEvidence.length).toBe(1);
     expect(largeEvidence[0].snippet).toContain("Live page fetch was unavailable");
   });
+
+  it("rejects unsafe redirected final URL targets", async () => {
+    const fetchImpl: typeof fetch = async () =>
+      ({
+        ok: true,
+        headers: new Headers({ "content-type": "text/plain" }),
+        url: "http://[::1]/secret",
+        body: null,
+        text: async () => "California polling details",
+      }) as unknown as Response;
+
+    const evidence = await collectStateResourceEvidence(draft(), { fetchImpl });
+    expect(evidence.length).toBe(1);
+    expect(evidence[0].snippet).toContain("Live page fetch was unavailable");
+  });
+
+  it("can enforce DNS safety checks for hostnames", async () => {
+    const hits: string[] = [];
+    const fetchImpl: typeof fetch = async (input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : input.toString();
+      hits.push(url);
+      return new Response("California polling details", {
+        status: 200,
+        headers: { "content-type": "text/plain" },
+      });
+    };
+
+    const evidence = await collectStateResourceEvidence(draft(), {
+      fetchImpl,
+      enforceDnsResolution: true,
+      dnsLookupImpl: async () => ["127.0.0.1"],
+    });
+
+    expect(hits.length).toBe(0);
+    expect(evidence.length).toBe(0);
+  });
 });
