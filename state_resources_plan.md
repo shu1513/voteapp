@@ -208,9 +208,10 @@ Why this is last:
 ## Current Status (as of now)
 Completed:
 - Producer
+- Mock enricher (Phase 4A)
 - Validator
 - Writer
 - Reliability hardening (reclaim + recovery behavior)
 
 Next practical step:
-- Build Phase 4A mock enricher, then Phase 4B real AI enricher.
+- Build retrieval/evidence step (Phase 3), then swap to real AI enricher (Phase 4B).
