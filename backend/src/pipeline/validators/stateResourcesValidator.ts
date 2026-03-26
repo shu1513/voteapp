@@ -6,6 +6,7 @@ import {
   STATE_RESOURCE_DRAFT_MARKER_FIELDS,
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIPS_REGEX,
+  STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
   STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
@@ -235,6 +236,10 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 
   if (polling_hours.length > STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH) {
     reasons.push(`polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} characters or fewer`);
+  }
+
+  if (id_requirements.length > STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH) {
+    reasons.push(`id_requirements must be ${STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH} characters or fewer`);
   }
 
   if (isUrlOnlyText(vote_by_mail_info)) {

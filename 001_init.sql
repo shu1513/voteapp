@@ -423,6 +423,8 @@ CREATE TABLE state_resources (
         CHECK (btrim(vote_by_mail_info) <> '' AND char_length(vote_by_mail_info) <= 4000),
     CONSTRAINT chk_state_resources_polling_hours_text
         CHECK (btrim(polling_hours) <> '' AND char_length(polling_hours) <= 1000),
+    CONSTRAINT chk_state_resources_id_requirements_text
+        CHECK (btrim(id_requirements) <> '' AND char_length(id_requirements) <= 4000),
     CONSTRAINT chk_state_resources_sources
         CHECK (is_valid_state_resource_sources(sources))
 );
