@@ -122,4 +122,103 @@ describe("collectStateResourceEvidence", () => {
     expect(hits.length).toBe(0);
     expect(evidence.length).toBe(0);
   });
+
+  it("prioritizes state-specific polling locator links discovered from pages", async () => {
+    const hits: string[] = [];
+    const fetchImpl: typeof fetch = async (input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : input.toString();
+      hits.push(url);
+
+      if (url.startsWith("https://seed.example.org/polling")) {
+        return new Response(
+          `
+            <html><head><title>Polling</title></head><body>
+              <a href="/register">Register</a>
+              <a href="https://www.vote.org/polling-place-locator/">Vote.org Polling</a>
+              <a href="https://www.sos.ca.gov/elections/polling-place/">California polling place locator</a>
+            </body></html>
+          `,
+          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
+        );
+      }
+
+      if (url.startsWith("https://www.sos.ca.gov/elections/polling-place")) {
+        return new Response(
+          "<html><head><title>CA SOS</title></head><body>Find your polling place in California.</body></html>",
+          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
+        );
+      }
+
+      if (url.startsWith("https://www.vote.org/polling-place-locator/")) {
+        return new Response(
+          "<html><head><title>Vote.org</title></head><body>General polling locator page.</body></html>",
+          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
+        );
+      }
+
+      return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
+    };
+
+    const evidence = await collectStateResourceEvidence(draft(), {
+      fetchImpl,
+      maxSeedUrls: 1,
+      maxDiscoveredUrls: 2,
+      maxEvidenceSnippets: 3,
+    });
+
+    expect(evidence.some((item) => item.url.startsWith("https://www.sos.ca.gov/elections/polling-place"))).toBe(true);
+    expect(hits.some((url) => url.startsWith("https://www.sos.ca.gov/elections/polling-place"))).toBe(true);
+  });
+
+  it("extracts Vote.org state-specific polling link for the target state", async () => {
+    const hits: string[] = [];
+    const fetchImpl: typeof fetch = async (input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : input.toString();
+      hits.push(url);
+
+      if (url.startsWith("https://www.vote.org/polling-place-locator")) {
+        return new Response(
+          `
+            <html><head><title>Vote.org Polling Place Locator</title></head><body>
+              <tr><td><p id="california">California</p></td><td><p><a href="https://www.sos.ca.gov/elections/polling-place/">California<!-- --> polling place locator</a></p></td></tr>
+              <tr><td><p id="florida">Florida</p></td><td><p><a href="https://myinfo.alabamavotes.gov/voterview">Alabama<!-- --> polling place locator</a></p></td></tr>
+              <tr><td><p id="florida">Florida</p></td><td><p><a href="https://www.voterfocus.com/PrecinctFinder/addressSearch?county=ALA">Florida<!-- --> polling place locator</a></p></td></tr>
+            </body></html>
+          `,
+          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
+        );
+      }
+
+      if (url.startsWith("https://www.voterfocus.com/PrecinctFinder/addressSearch")) {
+        return new Response(
+          "<html><head><title>Florida Polling</title></head><body>Florida polling place finder.</body></html>",
+          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
+        );
+      }
+
+      return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
+    };
+
+    const evidence = await collectStateResourceEvidence(
+      draft({
+        state_fips: "12",
+        state_abbreviation: "FL",
+        state_name: "Florida",
+        seed_sources: ["https://www.vote.org/polling-place-locator/"],
+      }),
+      {
+        fetchImpl,
+        maxSeedUrls: 1,
+        maxDiscoveredUrls: 2,
+        maxEvidenceSnippets: 3,
+      }
+    );
+
+    expect(
+      evidence.some((item) =>
+        item.url.startsWith("https://www.voterfocus.com/PrecinctFinder/addressSearch?county=ALA")
+      )
+    ).toBe(true);
+    expect(hits.some((url) => url.startsWith("https://www.vote.org/polling-place-locator"))).toBe(true);
+  });
 });

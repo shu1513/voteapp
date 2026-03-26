@@ -25,6 +25,8 @@ import type {
   StateResourcePayload,
   StateResourceSources,
 } from "../../types/stateResource.js";
+import { isUrlOnlyText } from "../../utils/isUrlOnlyText.js";
+import { isLikelyPollingPlaceUrl } from "../../utils/isLikelyPollingPlaceUrl.js";
 
 type ValidatorOptions = {
   once?: boolean;
@@ -53,6 +55,18 @@ type StagingRow = {
 
 const RECLAIM_MIN_IDLE_MS = 30_000;
 const RECLAIM_MAX_BATCHES = 20;
+const CURATED_STATE_POLLING_URL_BY_FIPS: Record<string, string> = {
+  "01": "https://myinfo.alabamavotes.gov/voterview",
+  "02": "https://myvoterportal.alaska.gov/",
+  "04": "https://my.arizona.vote/WhereToVote.aspx?s=address",
+  "09": "https://portaldir.ct.gov/sots/LookUp.aspx",
+  "10": "https://ivote.de.gov/VoterView",
+  "18": "https://indianavoters.in.gov/",
+  "23": "https://www.maine.gov/portal/government/edemocracy/voter_lookup.php",
+  "25": "https://www.sec.state.ma.us/wheredoivotema/bal/MyElectionInfo.aspx",
+  "30": "https://app.mt.gov/voterinfo/",
+  "49": "https://votesearch.utah.gov/voter-search/search/search-by-address/how-and-where-can-i-vote",
+};
 
 /**
  * Converts an unknown error into a bounded, persistable string.
@@ -79,6 +93,33 @@ function isHttpUrl(value: string): boolean {
   } catch {
     return false;
   }
+}
+
+function normalizeHttpUrl(value: string): string | null {
+  try {
+    const parsed = new URL(value);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return null;
+    }
+    parsed.hash = "";
+    if (parsed.pathname.length > 1 && parsed.pathname.endsWith("/")) {
+      parsed.pathname = parsed.pathname.replace(/\/+$/, "");
+    }
+    return parsed.toString();
+  } catch {
+    return null;
+  }
+}
+
+function isCuratedPollingUrlForState(stateFips: string, pollingPlaceUrl: string): boolean {
+  const curated = CURATED_STATE_POLLING_URL_BY_FIPS[stateFips];
+  if (!curated) {
+    return false;
+  }
+
+  const normalizedCurated = normalizeHttpUrl(curated);
+  const normalizedUrl = normalizeHttpUrl(pollingPlaceUrl);
+  return typeof normalizedCurated === "string" && normalizedCurated === normalizedUrl;
 }
 
 /**
@@ -183,6 +224,13 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   if (!isHttpUrl(polling_place_url)) {
     reasons.push("polling_place_url must be a valid http(s) URL");
   }
+  if (
+    isHttpUrl(polling_place_url) &&
+    !isLikelyPollingPlaceUrl(polling_place_url) &&
+    !isCuratedPollingUrlForState(state_fips, polling_place_url)
+  ) {
+    reasons.push("polling_place_url must be a polling-place locator URL, not a registration/mail/id URL");
+  }
 
   if (!isHttpUrl(voter_registration_url)) {
     reasons.push("voter_registration_url must be a valid http(s) URL");
@@ -194,6 +242,18 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 
   if (polling_hours.length > STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH) {
     reasons.push(`polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} characters or fewer`);
+  }
+
+  if (isUrlOnlyText(vote_by_mail_info)) {
+    reasons.push("vote_by_mail_info must be plain-language text, not a URL");
+  }
+
+  if (isUrlOnlyText(polling_hours)) {
+    reasons.push("polling_hours must be plain-language text, not a URL");
+  }
+
+  if (isUrlOnlyText(id_requirements)) {
+    reasons.push("id_requirements must be plain-language text, not a URL");
   }
 
   try {

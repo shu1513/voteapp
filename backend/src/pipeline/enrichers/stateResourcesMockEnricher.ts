@@ -22,6 +22,7 @@ import { collectStateResourceEvidence } from "../evidence/stateResourceEvidenceC
 import type { EvidenceSnippet } from "../../ai/types.js";
 import type { StateResourceDraftPayload, StateResourcePayload, StateResourceSources } from "../../types/stateResource.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
+import { isLikelyPollingPlaceUrl as isLikelyPollingPlaceUrlByUrl } from "../../utils/isLikelyPollingPlaceUrl.js";
 
 type MockEnricherOptions = {
   once?: boolean;
@@ -47,6 +48,8 @@ type EnricherOutcome = "enriched" | "failed" | "skipped" | "retry" | "recovered"
 // Evidence crawling can take tens of seconds; keep reclaim window above crawl budget.
 const RECLAIM_MIN_IDLE_MS = 180_000;
 const RECLAIM_MAX_BATCHES = 20;
+const VOTE_ORG_POLLING_LOCATOR_URL = "https://www.vote.org/polling-place-locator/";
+let voteOrgPollingMapPromise: Promise<Map<string, string>> | null = null;
 
 /**
  * Converts unknown errors into bounded strings for logs and DB reasons.
@@ -158,6 +161,181 @@ function sourceNameFromEvidence(evidence: EvidenceSnippet): string {
   return evidence.title.trim().length > 0 ? evidence.title.trim() : "source";
 }
 
+function normalizeStateKey(stateName: string): string {
+  return stateName.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function normalizeWhitespace(input: string): string {
+  return input.replace(/\s+/g, " ").trim();
+}
+
+function stripHtml(input: string): string {
+  return normalizeWhitespace(
+    input
+      .replace(/<!--[\s\S]*?-->/g, " ")
+      .replace(/<[^>]+>/g, " ")
+  );
+}
+
+async function loadVoteOrgPollingMap(fetchImpl: typeof fetch = fetch): Promise<Map<string, string>> {
+  const response = await fetchImpl(VOTE_ORG_POLLING_LOCATOR_URL, {
+    headers: { "User-Agent": "voteapp-state-resources-enricher/1.0" },
+  });
+  if (!response.ok) {
+    throw new Error(`vote.org polling locator fetch failed: ${response.status} ${response.statusText}`);
+  }
+
+  const html = await response.text();
+  const map = new Map<string, string>();
+  const anchorRegex = /<a\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  let match: RegExpExecArray | null = anchorRegex.exec(html);
+
+  while (match) {
+    const href = normalizeHttpUrl(match[1], { baseUrl: VOTE_ORG_POLLING_LOCATOR_URL });
+    if (!href) {
+      match = anchorRegex.exec(html);
+      continue;
+    }
+
+    const linkText = stripHtml(match[2]).toLowerCase();
+    const suffix = "polling place locator";
+    if (!linkText.endsWith(suffix)) {
+      match = anchorRegex.exec(html);
+      continue;
+    }
+
+    const stateName = normalizeWhitespace(linkText.slice(0, -suffix.length));
+    if (stateName.length > 0) {
+      map.set(normalizeStateKey(stateName), href);
+    }
+
+    match = anchorRegex.exec(html);
+  }
+
+  return map;
+}
+
+async function getVoteOrgPollingUrlForState(stateName: string): Promise<string | null> {
+  if (!voteOrgPollingMapPromise) {
+    voteOrgPollingMapPromise = loadVoteOrgPollingMap().catch((error) => {
+      voteOrgPollingMapPromise = null;
+      throw error;
+    });
+  }
+
+  const map = await voteOrgPollingMapPromise;
+  return map.get(normalizeStateKey(stateName)) ?? null;
+}
+
+const AGGREGATOR_HOSTS = new Set([
+  "vote.org",
+  "www.vote.org",
+  "nass.org",
+  "www.nass.org",
+  "usvotefoundation.org",
+  "www.usvotefoundation.org",
+]);
+
+/**
+ * Extracts hostname for deterministic URL scoring.
+ */
+function getHostname(url: string): string {
+  try {
+    return new URL(url).hostname.toLowerCase();
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * Returns true when URL/title/snippet contain clear signal for the target state.
+ */
+function hasStateSignal(url: string, title: string, snippet: string, draft: StateResourceDraftPayload): boolean {
+  const lowerUrl = url.toLowerCase();
+  const stateNameLower = draft.state_name.trim().toLowerCase();
+  const stateSlug = stateNameLower.replace(/\s+/g, "-");
+  const stateCompact = stateNameLower.replace(/[^a-z0-9]/g, "");
+  const urlCompact = lowerUrl.replace(/[^a-z0-9]/g, "");
+  const abbreviationLower = draft.state_abbreviation.trim().toLowerCase();
+  const titleLower = title.toLowerCase();
+
+  if (
+    titleLower.includes(stateNameLower) ||
+    lowerUrl.includes(`/${stateSlug}`) ||
+    (stateCompact.length > 3 && urlCompact.includes(stateCompact))
+  ) {
+    return true;
+  }
+
+  if (abbreviationLower.length === 2) {
+    if (lowerUrl.includes(`.${abbreviationLower}.`) || lowerUrl.includes(`/${abbreviationLower}/`)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Scores candidate polling URLs so official, state-specific links beat aggregators.
+ */
+function scorePollingEvidence(item: EvidenceSnippet, draft: StateResourceDraftPayload): number {
+  const normalizedUrl = normalizeHttpUrl(item.url);
+  if (!normalizedUrl) {
+    return Number.NEGATIVE_INFINITY;
+  }
+
+  const host = getHostname(normalizedUrl);
+  const urlLower = normalizedUrl.toLowerCase();
+  const titleLower = item.title.toLowerCase();
+  const snippetLower = item.snippet.toLowerCase();
+  const combined = `${titleLower} ${snippetLower}`;
+  const stateNameLower = draft.state_name.trim().toLowerCase();
+  const stateSlug = stateNameLower.replace(/\s+/g, "-");
+  const stateAbbreviationLower = draft.state_abbreviation.trim().toLowerCase();
+  const hasPollingSignal =
+    isLikelyPollingPlaceUrlByUrl(urlLower) || /\b(polling|locator|find your polling place)\b/.test(combined);
+  const hasOnlyNonPollingSignal =
+    /\b(register|registration|absentee|mail|id[-\s]?laws?|identification)\b/.test(combined) &&
+    !hasPollingSignal;
+  const stateSignal = hasStateSignal(normalizedUrl, item.title, item.snippet, draft);
+
+  let score = 0;
+
+  if (hasPollingSignal) {
+    score += 40;
+  }
+  if (host.endsWith(".gov")) {
+    score += 40;
+  }
+  if (combined.includes(stateNameLower) && /\b(polling|locator)\b/.test(combined)) {
+    score += 30;
+  }
+  if (urlLower.includes(`/${stateSlug}`)) {
+    score += 25;
+  }
+  if (urlLower.includes(`.${stateAbbreviationLower}.`)) {
+    score += 20;
+  }
+  if (/(sos\.|secretary-?of-?state|elections?)/.test(`${host}${urlLower}`)) {
+    score += 20;
+  }
+  if (AGGREGATOR_HOSTS.has(host)) {
+    score -= 35;
+  }
+  if (hasOnlyNonPollingSignal) {
+    score -= 30;
+  }
+  if (stateSignal) {
+    score += 120;
+  } else if (!AGGREGATOR_HOSTS.has(host)) {
+    // Avoid selecting another state's official page for this state.
+    score -= 220;
+  }
+
+  return score;
+}
+
 /**
  * Picks the best evidence entry by URL pattern, with deterministic fallback.
  */
@@ -177,13 +355,29 @@ function pickEvidenceUrl(
 }
 
 /**
+ * Picks the best polling-place evidence, preferring official state-specific URLs.
+ */
+function pickBestPollingPlaceEvidence(
+  evidence: EvidenceSnippet[],
+  draft: StateResourceDraftPayload
+): EvidenceSnippet | null {
+  const scored = evidence
+    .map((item) => ({ item, score: scorePollingEvidence(item, draft) }))
+    .filter((entry) => Number.isFinite(entry.score) && entry.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  if (scored.length > 0) {
+    return scored[0].item;
+  }
+
+  return pickEvidenceUrl(evidence, [/polling-place/i, /find-your-polling-place/i]);
+}
+
+/**
  * Builds deterministic mock enriched payload from draft + evidence.
  */
 function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSnippet[]): StateResourcePayload | null {
-  const pollingPlaceEvidence = pickEvidenceUrl(
-    evidence,
-    [/polling-place/i, /find-your-polling-place/i]
-  );
+  let pollingPlaceEvidence = pickBestPollingPlaceEvidence(evidence, draft);
   const registrationEvidence = pickEvidenceUrl(
     evidence,
     [/register/i, /voter-registration/i]
@@ -524,14 +718,31 @@ async function processMessage(
     return "failed";
   }
 
-  const mockPayload = buildMockPayload(draft.draft, evidence);
+  const enrichedEvidence = [...evidence];
+  try {
+    const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
+    if (
+      voteOrgPollingUrl &&
+      !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === normalizeHttpUrl(voteOrgPollingUrl))
+    ) {
+      enrichedEvidence.unshift({
+        url: voteOrgPollingUrl,
+        title: "Vote.org",
+        snippet: `${draft.draft.state_name} polling place locator`,
+      });
+    }
+  } catch (error) {
+    console.warn(`mock enricher vote.org polling map unavailable: ${toReason(error)}`);
+  }
+
+  const mockPayload = buildMockPayload(draft.draft, enrichedEvidence);
   if (!mockPayload) {
     await markFailedPending(pool, ingestKey, "mock enricher could not map evidence to required fields");
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "failed";
   }
 
-  const validationReason = validateMockPayload(mockPayload, evidence);
+  const validationReason = validateMockPayload(mockPayload, enrichedEvidence);
   if (validationReason) {
     await markFailedPending(pool, ingestKey, validationReason);
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
@@ -540,7 +751,7 @@ async function processMessage(
 
   const enrichedPayload: EnrichedStagingPayload = {
     ...mockPayload,
-    evidence,
+    evidence: enrichedEvidence,
   };
 
   const didUpdate = await applyMockEnrichment(

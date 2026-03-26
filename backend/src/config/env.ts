@@ -57,7 +57,7 @@ export function getPipelineEnv(): PipelineEnv {
     DATABASE_URL: readEnv("DATABASE_URL", "postgresql://localhost:5432/voteapp"),
     REDIS_URL: readEnv("REDIS_URL", "redis://localhost:6379"),
     AI_PROVIDER: readAiProvider(),
-    AI_MODEL: readEnv("AI_MODEL", "openai:gpt-5-mini"),
+    AI_MODEL: readEnv("AI_MODEL", "gpt-5.4-mini"),
     AI_TIMEOUT_MS: readPositiveIntegerEnv("AI_TIMEOUT_MS", 30000),
     PROMPT_VERSION: readEnv("PROMPT_VERSION", "state_resources_v1"),
     OPENAI_API_KEY: readOptionalEnv("OPENAI_API_KEY"),

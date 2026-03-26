@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "state-resources:produce": "tsx src/scripts/produceStateResources.ts",
+    "state-resources:enrich": "tsx src/scripts/enrichStateResources.ts",
     "state-resources:enrich-mock": "tsx src/scripts/enrichStateResourcesMock.ts",
     "state-resources:validate": "tsx src/scripts/validateStateResources.ts",
     "state-resources:write": "tsx src/scripts/writeStateResources.ts",

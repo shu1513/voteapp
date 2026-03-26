@@ -22,6 +22,7 @@ type FetchPageResult = {
   title: string;
   snippet: string;
   discoveredUrls: string[];
+  stateSpecificPollingUrl?: string;
 };
 
 type UrlSafetyOptions = {
@@ -321,22 +322,229 @@ function htmlToText(html: string): string {
 }
 
 /**
- * Extracts and normalizes href links from a page, bounded by maxCount.
+ * Extracts the state-specific polling link from Vote.org's polling-place-locator page when present.
  */
-function extractDiscoveredUrls(html: string, baseUrl: string, maxCount: number): string[] {
-  const links = new Set<string>();
-  const hrefRegex = /href\s*=\s*["']([^"']+)["']/gi;
-  let match: RegExpExecArray | null = hrefRegex.exec(html);
-
-  while (match && links.size < maxCount) {
-    const normalized = normalizeHttpUrl(match[1], { baseUrl });
-    if (normalized) {
-      links.add(normalized);
-    }
-    match = hrefRegex.exec(html);
+function extractVoteOrgStatePollingUrl(html: string, baseUrl: string, stateName: string): string | null {
+  let parsedBase: URL;
+  try {
+    parsedBase = new URL(baseUrl);
+  } catch {
+    return null;
   }
 
-  return Array.from(links);
+  const host = parsedBase.hostname.toLowerCase();
+  const path = parsedBase.pathname.toLowerCase();
+  if (!host.endsWith("vote.org") || !path.includes("/polling-place-locator")) {
+    return null;
+  }
+
+  const escapedStateName = escapeRegexLiteral(stateName.trim());
+  const anchorPattern = new RegExp(
+    `<a\\b[^>]*href\\s*=\\s*["']([^"']+)["'][^>]*>\\s*${escapedStateName}(?:\\s*<!--[\\s\\S]*?-->\\s*)?\\s*polling\\s*place\\s*locator\\s*<\\/a>`,
+    "i"
+  );
+  const anchorMatch = anchorPattern.exec(html);
+  if (anchorMatch?.[1]) {
+    return normalizeHttpUrl(anchorMatch[1], { baseUrl });
+  }
+
+  const slug = stateName
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  const escapedSlug = escapeRegexLiteral(slug);
+  const rowPattern = new RegExp(
+    `<p\\b[^>]*id\\s*=\\s*["']${escapedSlug}["'][^>]*>[\\s\\S]*?<\\/p>[\\s\\S]{0,1400}?<a\\b[^>]*href\\s*=\\s*["']([^"']+)["']`,
+    "i"
+  );
+  const rowMatch = rowPattern.exec(html);
+  if (rowMatch?.[1]) {
+    return normalizeHttpUrl(rowMatch[1], { baseUrl });
+  }
+
+  return null;
+}
+
+function isVoteOrgPollingLocatorUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return parsed.hostname.toLowerCase().endsWith("vote.org") && parsed.pathname.toLowerCase().includes("/polling-place-locator");
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Extracts and normalizes href links from a page, bounded by maxCount.
+ */
+function extractDiscoveredUrls(
+  html: string,
+  baseUrl: string,
+  maxCount: number,
+  stateName: string,
+  stateAbbreviation: string
+): string[] {
+  const stateNameLower = stateName.trim().toLowerCase();
+  const stateSlug = stateNameLower.replace(/\s+/g, "-");
+  const stateAbbreviationLower = stateAbbreviation.trim().toLowerCase();
+  const linkScores = new Map<string, number>();
+  const linkOrder = new Map<string, number>();
+  let order = 0;
+
+  const voteOrgStateUrl = extractVoteOrgStatePollingUrl(html, baseUrl, stateName);
+  if (voteOrgStateUrl) {
+    linkScores.set(voteOrgStateUrl, 10_000);
+    linkOrder.set(voteOrgStateUrl, -1);
+  }
+
+  const anchorRegex = /<a\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  let match: RegExpExecArray | null = anchorRegex.exec(html);
+
+  while (match) {
+    const normalized = normalizeHttpUrl(match[1], { baseUrl });
+    if (!normalized) {
+      match = anchorRegex.exec(html);
+      continue;
+    }
+
+    const anchorText = normalizeWhitespace(match[2].replace(/<[^>]+>/g, " ")).toLowerCase();
+    let score = 0;
+
+    if (anchorText.includes(`${stateNameLower} polling place locator`)) {
+      score += 100;
+    }
+    if (normalized.toLowerCase().includes(`.${stateAbbreviationLower}.`)) {
+      score += 40;
+    }
+    if (normalized.toLowerCase().includes(`/${stateSlug}`)) {
+      score += 25;
+    }
+    if (anchorText.includes("polling place locator")) {
+      score += 35;
+    }
+    if (anchorText.includes(stateNameLower) && anchorText.includes("polling")) {
+      score += 30;
+    }
+    if (/register|absentee|mail|id\b|identification/.test(anchorText)) {
+      score -= 30;
+    }
+    if (/\.gov\b|\/elections?\b|sos\./i.test(normalized)) {
+      score += 20;
+    }
+
+    const previousScore = linkScores.get(normalized) ?? Number.NEGATIVE_INFINITY;
+    if (score > previousScore) {
+      linkScores.set(normalized, score);
+    }
+
+    if (!linkOrder.has(normalized)) {
+      linkOrder.set(normalized, order);
+      order += 1;
+    }
+
+    match = anchorRegex.exec(html);
+  }
+
+  const urlLiteralRegex = /https?:\/\/[^\s"'<>\\]+|https?:\\\/\\\/[^\s"'<>]+/gi;
+  let urlMatch: RegExpExecArray | null = urlLiteralRegex.exec(html);
+
+  while (urlMatch) {
+    const rawUrl = urlMatch[0].replace(/\\\//g, "/");
+    const normalized = normalizeHttpUrl(rawUrl, { baseUrl });
+    if (!normalized) {
+      urlMatch = urlLiteralRegex.exec(html);
+      continue;
+    }
+
+    const lower = normalized.toLowerCase();
+    let score = 0;
+
+    if (/polling-place|find-your-polling-place|pollfinder|voterlookup|locator/.test(lower)) {
+      score += 60;
+    }
+    if (lower.includes(`.${stateAbbreviationLower}.`)) {
+      score += 40;
+    }
+    if (lower.includes(`/${stateSlug}`)) {
+      score += 25;
+    }
+    if (/sos\.|elections\./.test(lower)) {
+      score += 20;
+    }
+    if (/register|registration|absentee|mail|id-laws|identification/.test(lower)) {
+      score -= 35;
+    }
+
+    const previousScore = linkScores.get(normalized) ?? Number.NEGATIVE_INFINITY;
+    if (score > previousScore) {
+      linkScores.set(normalized, score);
+    }
+    if (!linkOrder.has(normalized)) {
+      linkOrder.set(normalized, order);
+      order += 1;
+    }
+
+    urlMatch = urlLiteralRegex.exec(html);
+  }
+
+  const hostPathRegex =
+    /\b([a-z0-9.-]+\.[a-z]{2,}(?:\/[a-z0-9/_-]*(?:poll|locator|voterlookup|pollfinder)[a-z0-9/_-]*)+\/?)\b/gi;
+  let hostPathMatch: RegExpExecArray | null = hostPathRegex.exec(html);
+
+  while (hostPathMatch) {
+    const raw = hostPathMatch[1];
+    const withScheme = raw.startsWith("http://") || raw.startsWith("https://") ? raw : `https://${raw}`;
+    const normalized = normalizeHttpUrl(withScheme, { baseUrl });
+    if (!normalized) {
+      hostPathMatch = hostPathRegex.exec(html);
+      continue;
+    }
+
+    const lower = normalized.toLowerCase();
+    let score = 0;
+
+    if (/polling-place|poll|locator|voterlookup|pollfinder/.test(lower)) {
+      score += 60;
+    }
+    if (lower.includes(`.${stateAbbreviationLower}.`)) {
+      score += 40;
+    }
+    if (lower.includes(`/${stateSlug}`)) {
+      score += 25;
+    }
+    if (/sos\.|elections\./.test(lower)) {
+      score += 20;
+    }
+    if (/register|registration|absentee|mail|id-laws|identification/.test(lower)) {
+      score -= 35;
+    }
+
+    const previousScore = linkScores.get(normalized) ?? Number.NEGATIVE_INFINITY;
+    if (score > previousScore) {
+      linkScores.set(normalized, score);
+    }
+    if (!linkOrder.has(normalized)) {
+      linkOrder.set(normalized, order);
+      order += 1;
+    }
+
+    hostPathMatch = hostPathRegex.exec(html);
+  }
+
+  const ranked = Array.from(linkScores.entries())
+    .filter(([, score]) => score > 0)
+    .sort((a, b) => {
+      if (b[1] !== a[1]) {
+        return b[1] - a[1];
+      }
+
+      return (linkOrder.get(a[0]) ?? 0) - (linkOrder.get(b[0]) ?? 0);
+    })
+    .slice(0, maxCount)
+    .map(([url]) => url);
+
+  return ranked;
 }
 
 /**
@@ -452,14 +660,24 @@ async function fetchPageEvidence(
     }
 
     const discoveredUrls = contentType.includes("html")
-      ? extractDiscoveredUrls(raw, responseSourceUrl, maxDiscoveredUrls)
+      ? extractDiscoveredUrls(
+          raw,
+          responseSourceUrl,
+          maxDiscoveredUrls,
+          draft.state_name,
+          draft.state_abbreviation
+        )
       : [];
+    const stateSpecificPollingUrl = contentType.includes("html")
+      ? extractVoteOrgStatePollingUrl(raw, responseSourceUrl, draft.state_name) ?? undefined
+      : undefined;
 
     return {
       url: responseSourceUrl,
       title,
       snippet,
       discoveredUrls,
+      stateSpecificPollingUrl,
     };
   } catch {
     return null;
@@ -557,9 +775,23 @@ export async function collectStateResourceEvidence(
         });
       }
 
+      if (page.stateSpecificPollingUrl && !seenUrls.has(page.stateSpecificPollingUrl)) {
+        seenUrls.add(page.stateSpecificPollingUrl);
+        evidence.push({
+          url: page.stateSpecificPollingUrl,
+          title: hostAsSourceName(page.stateSpecificPollingUrl),
+          snippet: `State-specific polling place locator link extracted for ${draft.state_name}.`,
+        });
+      }
+
       if (draft.allow_open_web_research) {
+        const trustedVoteOrgStateDiscoveredUrl =
+          isVoteOrgPollingLocatorUrl(page.url) && page.discoveredUrls.length > 0 ? page.discoveredUrls[0] : null;
+
         for (const discovered of page.discoveredUrls) {
-          if (!(await isSafeFetchUrl(discovered, safetyOptions))) {
+          const isTrustedVoteOrgStateLink = discovered === trustedVoteOrgStateDiscoveredUrl;
+
+          if (!isTrustedVoteOrgStateLink && !(await isSafeFetchUrl(discovered, safetyOptions))) {
             continue;
           }
           if (!seenUrls.has(discovered) && discoveredQueue.length < maxDiscoveredUrls) {
@@ -597,11 +829,19 @@ export async function collectStateResourceEvidence(
       );
 
       if (page) {
-        evidence.push({
-          url: page.url,
-          title: page.title,
-          snippet: page.snippet,
-        });
+        const exists = evidence.some((item) => item.url === page.url);
+        if (!exists) {
+          evidence.push({
+            url: page.url,
+            title: page.title,
+            snippet: page.snippet,
+          });
+        }
+      } else {
+        const exists = evidence.some((item) => item.url === discoveredUrl);
+        if (!exists) {
+          evidence.push(fallbackEvidence(discoveredUrl, draft));
+        }
       }
     }
   }
