@@ -19,6 +19,7 @@ import {
 import { collectStateResourceEvidence } from "../evidence/stateResourceEvidenceCollector.js";
 import type { StateResourceDraftPayload, StateResourcePayload } from "../../types/stateResource.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
+import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -49,7 +50,12 @@ type EnrichedStagingPayload = StateResourcePayload & {
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
 const VOTE_ORG_POLLING_LOCATOR_URL = "https://www.vote.org/polling-place-locator/";
+const VOTE_ORG_POLLING_FETCH_TIMEOUT_MS = 10_000;
+const VOTE_ORG_RETRY_BACKOFF_INITIAL_MS = 60_000;
+const VOTE_ORG_RETRY_BACKOFF_MAX_MS = 15 * 60_000;
 let voteOrgPollingMapPromise: Promise<Map<string, string>> | null = null;
+let voteOrgLastLoadFailureAt: number | null = null;
+let voteOrgRetryBackoffMs = VOTE_ORG_RETRY_BACKOFF_INITIAL_MS;
 
 /**
  * Converts unknown errors into bounded strings for logs and DB reason fields.
@@ -95,53 +101,84 @@ function stripHtml(input: string): string {
 }
 
 async function loadVoteOrgPollingMap(fetchImpl: typeof fetch = fetch): Promise<Map<string, string>> {
-  const response = await fetchImpl(VOTE_ORG_POLLING_LOCATOR_URL, {
-    headers: { "User-Agent": "voteapp-state-resources-enricher/1.0" },
-  });
-  if (!response.ok) {
-    throw new Error(`vote.org polling locator fetch failed: ${response.status} ${response.statusText}`);
-  }
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), VOTE_ORG_POLLING_FETCH_TIMEOUT_MS);
 
-  const html = await response.text();
-  const map = new Map<string, string>();
-  const anchorRegex = /<a\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
-  let match: RegExpExecArray | null = anchorRegex.exec(html);
+  try {
+    const response = await fetchImpl(VOTE_ORG_POLLING_LOCATOR_URL, {
+      headers: { "User-Agent": "voteapp-state-resources-enricher/1.0" },
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      throw new Error(`vote.org polling locator fetch failed: ${response.status} ${response.statusText}`);
+    }
 
-  while (match) {
-    const href = normalizeHttpUrl(match[1], { baseUrl: VOTE_ORG_POLLING_LOCATOR_URL });
-    if (!href) {
+    const html = await response.text();
+    const map = new Map<string, string>();
+    const anchorRegex = /<a\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+    let match: RegExpExecArray | null = anchorRegex.exec(html);
+
+    while (match) {
+      const href = normalizeHttpUrl(match[1], { baseUrl: VOTE_ORG_POLLING_LOCATOR_URL });
+      if (!href) {
+        match = anchorRegex.exec(html);
+        continue;
+      }
+
+      const linkText = stripHtml(match[2]).toLowerCase();
+      const suffix = "polling place locator";
+      if (!linkText.endsWith(suffix)) {
+        match = anchorRegex.exec(html);
+        continue;
+      }
+
+      const stateName = normalizeWhitespace(linkText.slice(0, -suffix.length));
+      if (stateName.length > 0) {
+        map.set(normalizeStateKey(stateName), href);
+      }
+
       match = anchorRegex.exec(html);
-      continue;
     }
 
-    const linkText = stripHtml(match[2]).toLowerCase();
-    const suffix = "polling place locator";
-    if (!linkText.endsWith(suffix)) {
-      match = anchorRegex.exec(html);
-      continue;
-    }
-
-    const stateName = normalizeWhitespace(linkText.slice(0, -suffix.length));
-    if (stateName.length > 0) {
-      map.set(normalizeStateKey(stateName), href);
-    }
-
-    match = anchorRegex.exec(html);
+    return map;
+  } finally {
+    clearTimeout(timeout);
   }
-
-  return map;
 }
 
 async function getVoteOrgPollingUrlForState(stateName: string): Promise<string | null> {
   if (!voteOrgPollingMapPromise) {
-    voteOrgPollingMapPromise = loadVoteOrgPollingMap().catch((error) => {
-      voteOrgPollingMapPromise = null;
-      throw error;
-    });
+    if (
+      voteOrgLastLoadFailureAt !== null &&
+      Date.now() - voteOrgLastLoadFailureAt < voteOrgRetryBackoffMs
+    ) {
+      return null;
+    }
+
+    voteOrgPollingMapPromise = loadVoteOrgPollingMap()
+      .then((map) => {
+        voteOrgLastLoadFailureAt = null;
+        voteOrgRetryBackoffMs = VOTE_ORG_RETRY_BACKOFF_INITIAL_MS;
+        return map;
+      })
+      .catch((error) => {
+        voteOrgPollingMapPromise = null;
+        voteOrgLastLoadFailureAt = Date.now();
+        voteOrgRetryBackoffMs = Math.min(
+          voteOrgRetryBackoffMs * 2,
+          VOTE_ORG_RETRY_BACKOFF_MAX_MS
+        );
+        throw error;
+      });
   }
 
-  const map = await voteOrgPollingMapPromise;
-  return map.get(normalizeStateKey(stateName)) ?? null;
+  try {
+    const map = await voteOrgPollingMapPromise;
+    return map.get(normalizeStateKey(stateName)) ?? null;
+  } catch (error) {
+    console.warn(`enricher vote.org polling map unavailable: ${toReason(error)}`);
+    return null;
+  }
 }
 
 /**
@@ -304,7 +341,12 @@ async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string |
 /**
  * Marks a pending staging row as failed with persistable reason.
  */
-async function markFailedPending(pool: Pool, ingestKey: string, reason: string): Promise<void> {
+async function markFailedPending(
+  pool: Pool,
+  ingestKey: string,
+  reason: string,
+  expectedRunId: string | null
+): Promise<void> {
   await pool.query(
     `
       UPDATE staging_items
@@ -314,8 +356,9 @@ async function markFailedPending(pool: Pool, ingestKey: string, reason: string):
       WHERE ingest_key = $1
         AND item_type = $3
         AND status = 'pending'
+        AND run_id IS NOT DISTINCT FROM $4
     `,
-    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES]
+    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
   );
 }
 
@@ -343,7 +386,8 @@ async function applyEnrichment(
   payload: EnrichedStagingPayload,
   promptVersion: string,
   provider: string,
-  model: string
+  model: string,
+  expectedRunId: string | null
 ): Promise<boolean> {
   const result = await pool.query(
     `
@@ -358,6 +402,7 @@ async function applyEnrichment(
         AND item_type = $6
         AND status = 'pending'
         AND (schema_version = $7 OR schema_version IS NULL)
+        AND run_id IS NOT DISTINCT FROM $8
     `,
     [
       ingestKey,
@@ -367,6 +412,7 @@ async function applyEnrichment(
       promptVersion,
       STAGING_ITEM_TYPE_STATE_RESOURCES,
       STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
+      expectedRunId,
     ]
   );
 
@@ -385,6 +431,7 @@ async function processMessage(
   message: Record<string, string>
 ): Promise<EnricherOutcome> {
   const ingestKey = message.ingest_key;
+  const messageRunId = normalizeRunId(message.run_id);
   if (!ingestKey) {
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "skipped";
@@ -395,6 +442,12 @@ async function processMessage(
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "skipped";
   }
+
+  if (hasRunIdMismatch(message.run_id, row.run_id)) {
+    await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    return "skipped";
+  }
+  const expectedRunId = messageRunId ?? normalizeRunId(row.run_id);
 
   if (row.status !== "pending") {
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
@@ -413,40 +466,41 @@ async function processMessage(
   }
 
   if (row.schema_version && row.schema_version !== STATE_RESOURCE_DRAFT_SCHEMA_VERSION) {
-    await markFailedPending(pool, ingestKey, `Unsupported draft schema_version: ${row.schema_version}`);
+    await markFailedPending(
+      pool,
+      ingestKey,
+      `Unsupported draft schema_version: ${row.schema_version}`,
+      expectedRunId
+    );
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "failed";
   }
 
   const draft = parseDraftPayload(row.payload);
   if (!draft.ok) {
-    await markFailedPending(pool, ingestKey, draft.reason);
+    await markFailedPending(pool, ingestKey, draft.reason, expectedRunId);
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "failed";
   }
 
   const evidence = await collectStateResourceEvidence(draft.draft);
   if (evidence.length === 0) {
-    await markFailedPending(pool, ingestKey, "enricher could not collect evidence snippets");
+    await markFailedPending(pool, ingestKey, "enricher could not collect evidence snippets", expectedRunId);
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "failed";
   }
 
   const enrichedEvidence = [...evidence];
-  try {
-    const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
-    if (
-      voteOrgPollingUrl &&
-      !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === normalizeHttpUrl(voteOrgPollingUrl))
-    ) {
-      enrichedEvidence.unshift({
-        url: voteOrgPollingUrl,
-        title: "Vote.org",
-        snippet: `${draft.draft.state_name} polling place locator`,
-      });
-    }
-  } catch (error) {
-    console.warn(`enricher vote.org polling map unavailable: ${toReason(error)}`);
+  const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
+  if (
+    voteOrgPollingUrl &&
+    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === normalizeHttpUrl(voteOrgPollingUrl))
+  ) {
+    enrichedEvidence.unshift({
+      url: voteOrgPollingUrl,
+      title: "Vote.org",
+      snippet: `${draft.draft.state_name} polling place locator`,
+    });
   }
 
   const enrichmentResult = await enrichStateResources(
@@ -468,7 +522,7 @@ async function processMessage(
       return "retry";
     }
 
-    await markFailedPending(pool, ingestKey, reason);
+    await markFailedPending(pool, ingestKey, reason, expectedRunId);
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return "failed";
   }
@@ -484,7 +538,8 @@ async function processMessage(
     enrichedPayload,
     enrichmentResult.promptVersion,
     enrichmentResult.provider,
-    enrichmentResult.model
+    enrichmentResult.model,
+    expectedRunId
   );
 
   if (!didUpdate) {

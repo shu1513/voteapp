@@ -17,6 +17,7 @@ import { geminiProvider } from "./providers/geminiProvider.js";
 import type { StateResourcePayload } from "../types/stateResource.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 import { isLikelyPollingPlaceUrl as isLikelyPollingPlaceUrlByUrl } from "../utils/isLikelyPollingPlaceUrl.js";
+import { CURATED_STATE_POLLING_URL_BY_FIPS } from "../constants/curatedPollingUrls.js";
 
 const PROVIDER_ADAPTERS: Record<AiProvider, ProviderAdapter> = {
   openai: openAiProvider,
@@ -37,19 +38,6 @@ const PREFERRED_OFFICIAL_CITATION_FIELDS = new Set<
   "vote_by_mail_info" | "polling_hours" | "id_requirements"
 >(["vote_by_mail_info", "polling_hours", "id_requirements"]);
 type PreferredOfficialCitationField = "vote_by_mail_info" | "polling_hours" | "id_requirements";
-
-const STATE_POLLING_FALLBACK_BY_FIPS: Record<string, string> = {
-  "01": "https://myinfo.alabamavotes.gov/voterview",
-  "02": "https://myvoterportal.alaska.gov/",
-  "04": "https://my.arizona.vote/WhereToVote.aspx?s=address",
-  "09": "https://portaldir.ct.gov/sots/LookUp.aspx",
-  "10": "https://ivote.de.gov/VoterView",
-  "18": "https://indianavoters.in.gov/",
-  "23": "https://www.maine.gov/portal/government/edemocracy/voter_lookup.php",
-  "25": "https://www.sec.state.ma.us/wheredoivotema/bal/MyElectionInfo.aspx",
-  "30": "https://app.mt.gov/voterinfo/",
-  "49": "https://votesearch.utah.gov/voter-search/search/search-by-address/how-and-where-can-i-vote",
-};
 
 function getHostname(url: string): string {
   try {
@@ -102,9 +90,11 @@ function hasStateSignal(url: string, title: string, snippet: string, stateName: 
   const urlCompact = lowerUrl.replace(/[^a-z0-9]/g, "");
   const abbreviationLower = stateAbbreviation.trim().toLowerCase();
   const titleLower = title.toLowerCase();
+  const snippetLower = snippet.toLowerCase();
 
   if (
     titleLower.includes(stateNameLower) ||
+    snippetLower.includes(stateNameLower) ||
     lowerUrl.includes(`/${stateSlug}`) ||
     (stateCompact.length > 3 && urlCompact.includes(stateCompact))
   ) {
@@ -404,7 +394,7 @@ function choosePreferredOfficialCitationForField(
 }
 
 function chooseDraftPollingSeedUrl(draft: EnrichStateResourcesInput["draft"]): string | null {
-  const stateSpecificFallback = STATE_POLLING_FALLBACK_BY_FIPS[draft.state_fips];
+  const stateSpecificFallback = CURATED_STATE_POLLING_URL_BY_FIPS[draft.state_fips];
   if (stateSpecificFallback) {
     const normalizedFallback = normalizeHttpUrl(stateSpecificFallback);
     if (normalizedFallback) {
@@ -425,7 +415,7 @@ function chooseDraftPollingSeedUrl(draft: EnrichStateResourcesInput["draft"]): s
 }
 
 function isCuratedStatePollingUrl(url: string, draft: EnrichStateResourcesInput["draft"]): boolean {
-  const curated = STATE_POLLING_FALLBACK_BY_FIPS[draft.state_fips];
+  const curated = CURATED_STATE_POLLING_URL_BY_FIPS[draft.state_fips];
   if (!curated) {
     return false;
   }

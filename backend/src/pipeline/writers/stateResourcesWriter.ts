@@ -14,6 +14,7 @@ import {
   STAGING_WRITTEN_STREAM,
 } from "../../config/stateResourcePipeline.js";
 import type { SourceCitation, StateResourcePayload, StateResourceSources } from "../../types/stateResource.js";
+import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
 
 type WriterOptions = {
   once?: boolean;
@@ -167,7 +168,12 @@ async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string |
 /**
  * Marks a staging row as failed, preserving the reason for investigation and retry logic.
  */
-async function markFailed(pool: Pool, ingestKey: string, reason: string): Promise<void> {
+async function markFailed(
+  pool: Pool,
+  ingestKey: string,
+  reason: string,
+  expectedRunId: string | null
+): Promise<void> {
   await pool.query(
     `
       UPDATE staging_items
@@ -177,8 +183,9 @@ async function markFailed(pool: Pool, ingestKey: string, reason: string): Promis
       WHERE ingest_key = $1
         AND item_type = $3
         AND status = 'validated'
+        AND run_id IS NOT DISTINCT FROM $4
     `,
-    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES]
+    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
   );
 }
 
@@ -188,7 +195,8 @@ async function markFailed(pool: Pool, ingestKey: string, reason: string): Promis
 async function writeStateResourceAndMarkWritten(
   client: PoolClient,
   ingestKey: string,
-  payload: StateResourcePayload
+  payload: StateResourcePayload,
+  expectedRunId: string | null
 ): Promise<boolean> {
   await client.query("BEGIN");
 
@@ -241,8 +249,9 @@ async function writeStateResourceAndMarkWritten(
         WHERE ingest_key = $1
           AND item_type = $2
           AND status = 'validated'
+          AND run_id IS NOT DISTINCT FROM $3
       `,
-      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES]
+      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
     );
 
     await client.query("COMMIT");
@@ -300,6 +309,7 @@ async function processMessage(
   message: Record<string, string>
 ): Promise<WriterOutcome> {
   const ingestKey = message.ingest_key;
+  const messageRunId = normalizeRunId(message.run_id);
 
   if (!ingestKey) {
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
@@ -312,6 +322,12 @@ async function processMessage(
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
     return "skipped";
   }
+
+  if (hasRunIdMismatch(message.run_id, row.run_id)) {
+    await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
+    return "skipped";
+  }
+  const expectedRunId = messageRunId ?? normalizeRunId(row.run_id);
 
   if (row.status === "written") {
     // Recovery path: if prior publish/ack failed post-commit, message may be redelivered.
@@ -336,7 +352,7 @@ async function processMessage(
   }
 
   if (!isNonEmptyString(row.prompt_version)) {
-    await markFailed(pool, ingestKey, "prompt_version metadata is required");
+    await markFailed(pool, ingestKey, "prompt_version metadata is required", expectedRunId);
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
     return "failed";
   }
@@ -345,7 +361,8 @@ async function processMessage(
     await markFailed(
       pool,
       ingestKey,
-      `schema_version must be ${STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION} for writer input`
+      `schema_version must be ${STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION} for writer input`,
+      expectedRunId
     );
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
     return "failed";
@@ -353,14 +370,19 @@ async function processMessage(
 
   const parsed = parseStateResourcePayload(row.payload);
   if (!parsed.ok) {
-    await markFailed(pool, ingestKey, parsed.reason);
+    await markFailed(pool, ingestKey, parsed.reason, expectedRunId);
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
     return "failed";
   }
 
   const client = await pool.connect();
   try {
-    const didTransitionToWritten = await writeStateResourceAndMarkWritten(client, ingestKey, parsed.payload);
+    const didTransitionToWritten = await writeStateResourceAndMarkWritten(
+      client,
+      ingestKey,
+      parsed.payload,
+      expectedRunId
+    );
 
     if (!didTransitionToWritten) {
       await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
@@ -368,7 +390,7 @@ async function processMessage(
     }
   } catch (error) {
     const reason = toReason(error);
-    await markFailed(pool, ingestKey, reason);
+    await markFailed(pool, ingestKey, reason, expectedRunId);
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
     return "failed";
   } finally {
@@ -436,7 +458,9 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
 
         const status = await getStagingStatus(pool, ingestKey);
         if (status === "validated") {
-          await markFailed(pool, ingestKey, reason);
+          const row = await getStagingRow(pool, ingestKey);
+          const expectedRunId = normalizeRunId(entry.message.run_id) ?? normalizeRunId(row?.run_id ?? null);
+          await markFailed(pool, ingestKey, reason, expectedRunId);
           await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, entry.id);
           continue;
         }

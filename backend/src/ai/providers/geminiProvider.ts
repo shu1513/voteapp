@@ -15,8 +15,8 @@ function toReason(error: unknown): string {
 function extractJsonCandidate(text: string): string {
   const trimmed = text.trim();
 
-  const fenced = /^```(?:json)?\s*([\s\S]*?)\s*```$/i.exec(trimmed);
-  if (fenced && fenced[1]) {
+  const fenced = /```(?:json)?\s*([\s\S]*?)\s*```/i.exec(trimmed);
+  if (fenced?.[1]) {
     return fenced[1].trim();
   }
 

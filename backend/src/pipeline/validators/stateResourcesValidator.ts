@@ -19,14 +19,17 @@ import {
   STAGING_STATE_RESOURCES_VALIDATOR_GROUP,
   STAGING_VALIDATED_STREAM,
 } from "../../config/stateResourcePipeline.js";
+import { CURATED_STATE_POLLING_URL_BY_FIPS } from "../../constants/curatedPollingUrls.js";
 import { getStateAbbreviationByFips } from "../../constants/usStates.js";
 import type {
   SourceCitation,
   StateResourcePayload,
   StateResourceSources,
 } from "../../types/stateResource.js";
+import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { isUrlOnlyText } from "../../utils/isUrlOnlyText.js";
 import { isLikelyPollingPlaceUrl } from "../../utils/isLikelyPollingPlaceUrl.js";
+import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
 
 type ValidatorOptions = {
   once?: boolean;
@@ -55,19 +58,6 @@ type StagingRow = {
 
 const RECLAIM_MIN_IDLE_MS = 30_000;
 const RECLAIM_MAX_BATCHES = 20;
-const CURATED_STATE_POLLING_URL_BY_FIPS: Record<string, string> = {
-  "01": "https://myinfo.alabamavotes.gov/voterview",
-  "02": "https://myvoterportal.alaska.gov/",
-  "04": "https://my.arizona.vote/WhereToVote.aspx?s=address",
-  "09": "https://portaldir.ct.gov/sots/LookUp.aspx",
-  "10": "https://ivote.de.gov/VoterView",
-  "18": "https://indianavoters.in.gov/",
-  "23": "https://www.maine.gov/portal/government/edemocracy/voter_lookup.php",
-  "25": "https://www.sec.state.ma.us/wheredoivotema/bal/MyElectionInfo.aspx",
-  "30": "https://app.mt.gov/voterinfo/",
-  "49": "https://votesearch.utah.gov/voter-search/search/search-by-address/how-and-where-can-i-vote",
-};
-
 /**
  * Converts an unknown error into a bounded, persistable string.
  */
@@ -92,22 +82,6 @@ function isHttpUrl(value: string): boolean {
     return parsed.protocol === "http:" || parsed.protocol === "https:";
   } catch {
     return false;
-  }
-}
-
-function normalizeHttpUrl(value: string): string | null {
-  try {
-    const parsed = new URL(value);
-    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-      return null;
-    }
-    parsed.hash = "";
-    if (parsed.pathname.length > 1 && parsed.pathname.endsWith("/")) {
-      parsed.pathname = parsed.pathname.replace(/\/+$/, "");
-    }
-    return parsed.toString();
-  } catch {
-    return null;
   }
 }
 
@@ -350,7 +324,12 @@ async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string |
 /**
  * Marks a pending staging row as failed.
  */
-async function markFailedPending(pool: Pool, ingestKey: string, reason: string): Promise<void> {
+async function markFailedPending(
+  pool: Pool,
+  ingestKey: string,
+  reason: string,
+  expectedRunId: string | null
+): Promise<void> {
   await pool.query(
     `
       UPDATE staging_items
@@ -360,8 +339,9 @@ async function markFailedPending(pool: Pool, ingestKey: string, reason: string):
       WHERE ingest_key = $1
         AND item_type = $3
         AND status = 'pending'
+        AND run_id IS NOT DISTINCT FROM $4
     `,
-    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES]
+    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
   );
 }
 
@@ -441,6 +421,7 @@ async function processMessage(
   message: Record<string, string>
 ): Promise<"validated" | "rejected" | "skipped"> {
   const ingestKey = message.ingest_key;
+  const messageRunId = normalizeRunId(message.run_id);
 
   if (!ingestKey) {
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
@@ -452,6 +433,12 @@ async function processMessage(
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
     return "skipped";
   }
+
+  if (hasRunIdMismatch(message.run_id, row.run_id)) {
+    await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+    return "skipped";
+  }
+  const expectedRunId = messageRunId ?? normalizeRunId(row.run_id);
 
   if (row.status !== "pending") {
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
@@ -480,8 +467,9 @@ async function processMessage(
         WHERE ingest_key = $1
           AND item_type = $2
           AND status = 'pending'
+          AND run_id IS NOT DISTINCT FROM $3
       `,
-      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES]
+      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
     );
 
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
@@ -509,8 +497,9 @@ async function processMessage(
       WHERE ingest_key = $1
         AND item_type = $3
         AND status = 'pending'
+        AND run_id IS NOT DISTINCT FROM $4
     `,
-    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES]
+    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
   );
 
   await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
@@ -567,7 +556,9 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
 
         const status = await getStagingStatus(pool, ingestKey);
         if (status === "pending") {
-          await markFailedPending(pool, ingestKey, reason);
+          const row = await getStagingRow(pool, ingestKey);
+          const expectedRunId = normalizeRunId(entry.message.run_id) ?? normalizeRunId(row?.run_id ?? null);
+          await markFailedPending(pool, ingestKey, reason, expectedRunId);
         }
 
         try {

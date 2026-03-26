@@ -338,14 +338,25 @@ function extractVoteOrgStatePollingUrl(html: string, baseUrl: string, stateName:
     return null;
   }
 
-  const escapedStateName = escapeRegexLiteral(stateName.trim());
-  const anchorPattern = new RegExp(
-    `<a\\b[^>]*href\\s*=\\s*["']([^"']+)["'][^>]*>\\s*${escapedStateName}(?:\\s*<!--[\\s\\S]*?-->\\s*)?\\s*polling\\s*place\\s*locator\\s*<\\/a>`,
-    "i"
-  );
-  const anchorMatch = anchorPattern.exec(html);
-  if (anchorMatch?.[1]) {
-    return normalizeHttpUrl(anchorMatch[1], { baseUrl });
+  // Bound search size for defensive regex complexity control on malformed HTML.
+  const searchSlice = html.length > 500_000 ? html.slice(0, 500_000) : html;
+  const normalizedState = normalizeWhitespace(stateName).toLowerCase();
+  const anchorRegex = /<a\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  let anchorMatch: RegExpExecArray | null = anchorRegex.exec(searchSlice);
+
+  while (anchorMatch) {
+    const href = normalizeHttpUrl(anchorMatch[1], { baseUrl });
+    if (!href) {
+      anchorMatch = anchorRegex.exec(searchSlice);
+      continue;
+    }
+
+    const linkText = normalizeWhitespace(anchorMatch[2].replace(/<[^>]+>/g, " ")).toLowerCase();
+    if (linkText === `${normalizedState} polling place locator`) {
+      return href;
+    }
+
+    anchorMatch = anchorRegex.exec(searchSlice);
   }
 
   const slug = stateName
@@ -353,14 +364,20 @@ function extractVoteOrgStatePollingUrl(html: string, baseUrl: string, stateName:
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-  const escapedSlug = escapeRegexLiteral(slug);
-  const rowPattern = new RegExp(
-    `<p\\b[^>]*id\\s*=\\s*["']${escapedSlug}["'][^>]*>[\\s\\S]*?<\\/p>[\\s\\S]{0,1400}?<a\\b[^>]*href\\s*=\\s*["']([^"']+)["']`,
-    "i"
-  );
-  const rowMatch = rowPattern.exec(html);
-  if (rowMatch?.[1]) {
-    return normalizeHttpUrl(rowMatch[1], { baseUrl });
+  const lowerSlice = searchSlice.toLowerCase();
+  let rowIndex = lowerSlice.indexOf(`id="${slug}"`);
+  if (rowIndex < 0) {
+    rowIndex = lowerSlice.indexOf(`id='${slug}'`);
+  }
+
+  if (rowIndex >= 0) {
+    const windowStart = Math.max(0, rowIndex - 400);
+    const windowEnd = Math.min(searchSlice.length, rowIndex + 2200);
+    const rowWindow = searchSlice.slice(windowStart, windowEnd);
+    const hrefMatch = /<a\b[^>]*href\s*=\s*["']([^"']+)["']/i.exec(rowWindow);
+    if (hrefMatch?.[1]) {
+      return normalizeHttpUrl(hrefMatch[1], { baseUrl });
+    }
   }
 
   return null;
