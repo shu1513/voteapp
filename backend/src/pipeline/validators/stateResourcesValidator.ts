@@ -6,9 +6,11 @@ import {
   STATE_RESOURCE_DRAFT_MARKER_FIELDS,
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIPS_REGEX,
+  STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
   STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
+  STATE_RESOURCE_TEXT_MIN_LENGTH,
   STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH,
 } from "../../contracts/stateResourceEnrichmentContract.js";
 import { getPipelineEnv } from "../../config/env.js";
@@ -135,6 +137,7 @@ function validateSources(value: unknown): { ok: true; sources: StateResourceSour
       return { ok: false, reason: `sources.${key} must be a non-empty array` };
     }
 
+    const seenNormalizedUrls = new Set<string>();
     for (const citation of citations) {
       if (!validateSourceCitation(citation)) {
         return {
@@ -142,6 +145,22 @@ function validateSources(value: unknown): { ok: true; sources: StateResourceSour
           reason: `sources.${key} contains an invalid citation (requires source_name + http(s) source_url)`,
         };
       }
+
+      const normalizedCitationUrl = normalizeHttpUrl(citation.source_url);
+      if (!normalizedCitationUrl) {
+        return {
+          ok: false,
+          reason: `sources.${key} contains an invalid citation URL after normalization`,
+        };
+      }
+
+      if (seenNormalizedUrls.has(normalizedCitationUrl)) {
+        return {
+          ok: false,
+          reason: `sources.${key} contains duplicate citation source_url values`,
+        };
+      }
+      seenNormalizedUrls.add(normalizedCitationUrl);
     }
   }
 
@@ -219,6 +238,10 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
     reasons.push(`polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} characters or fewer`);
   }
 
+  if (id_requirements.length > STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH) {
+    reasons.push(`id_requirements must be ${STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH} characters or fewer`);
+  }
+
   if (isUrlOnlyText(vote_by_mail_info)) {
     reasons.push("vote_by_mail_info must be plain-language text, not a URL");
   }
@@ -229,6 +252,18 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 
   if (isUrlOnlyText(id_requirements)) {
     reasons.push("id_requirements must be plain-language text, not a URL");
+  }
+
+  if (vote_by_mail_info.length < STATE_RESOURCE_TEXT_MIN_LENGTH) {
+    reasons.push(`vote_by_mail_info must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
+  }
+
+  if (polling_hours.length < STATE_RESOURCE_TEXT_MIN_LENGTH) {
+    reasons.push(`polling_hours must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
+  }
+
+  if (id_requirements.length < STATE_RESOURCE_TEXT_MIN_LENGTH) {
+    reasons.push(`id_requirements must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
   }
 
   try {
