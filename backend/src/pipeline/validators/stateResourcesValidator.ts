@@ -174,21 +174,30 @@ function deriveIdRequirementStance(snippets: EvidenceSnippet[]): IdRequirementSt
   let hasNotRequiredSignal = false;
 
   for (const snippet of snippets) {
-    const text = `${snippet.title} ${snippet.snippet}`.toLowerCase();
+    const text = `${snippet.title}. ${snippet.snippet}`.toLowerCase();
+    const sentences = text.split(/[.!?]+/g);
 
-    if (
-      /\b(photo\s+)?id\s+(is\s+)?required\b/.test(text) ||
-      /\bmust\s+(show|present|provide)\b[^.]{0,40}\bid\b/.test(text)
-    ) {
-      hasRequiredSignal = true;
-    }
+    for (const rawSentence of sentences) {
+      const sentence = normalizeSpace(rawSentence);
+      if (!sentence) {
+        continue;
+      }
 
-    if (
-      /\bid\s+is\s+not\s+required\b/.test(text) ||
-      /\bno\s+(photo\s+)?id\s+(is\s+)?required\b/.test(text) ||
-      /\bdo\s+not\s+need\b[^.]{0,40}\bid\b/.test(text)
-    ) {
-      hasNotRequiredSignal = true;
+      if (
+        /\bid\s+is\s+not\s+required\b/.test(sentence) ||
+        /\bno\s+(photo\s+)?id\s+(is\s+)?required\b/.test(sentence) ||
+        /\bdo\s+not\s+need\b[^.]{0,40}\bid\b/.test(sentence)
+      ) {
+        hasNotRequiredSignal = true;
+        continue;
+      }
+
+      if (
+        /\b(photo\s+)?id\s+(is\s+)?required\b/.test(sentence) ||
+        /\bmust\s+(show|present|provide)\b[^.]{0,40}\bid\b/.test(sentence)
+      ) {
+        hasRequiredSignal = true;
+      }
     }
   }
 
