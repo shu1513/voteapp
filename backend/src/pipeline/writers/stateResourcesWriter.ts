@@ -205,7 +205,6 @@ async function writeStateResourceAndMarkWritten(
       `
         UPDATE staging_items
         SET status = 'written',
-            reason = NULL,
             written_at = now(),
             updated_at = now()
         WHERE ingest_key = $1

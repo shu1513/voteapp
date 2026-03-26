@@ -282,7 +282,8 @@ function detectVoteByMailConflict(snippetsBySource: Map<string, EvidenceSnippet[
 
   let hasReceivedByElectionDay = false;
   let hasPostmarkByElectionDay = false;
-  const requestDeadlines = new Set<number>();
+  const singletonRequestDeadlines = new Set<number>();
+  let singletonRequestDeadlineSources = 0;
 
   for (const facts of factSets) {
     if (facts.requiresReceivedByElectionDay) {
@@ -291,8 +292,14 @@ function detectVoteByMailConflict(snippetsBySource: Map<string, EvidenceSnippet[
     if (facts.allowsPostmarkByElectionDay) {
       hasPostmarkByElectionDay = true;
     }
-    for (const days of facts.requestDeadlineDays) {
-      requestDeadlines.add(days);
+
+    // Only compare sources that declare one unambiguous request deadline.
+    // If a source lists multiple channels/deadlines, treat it as ambiguous and skip.
+    if (facts.requestDeadlineDays.size === 1) {
+      singletonRequestDeadlineSources += 1;
+      for (const days of facts.requestDeadlineDays) {
+        singletonRequestDeadlines.add(days);
+      }
     }
   }
 
@@ -300,7 +307,7 @@ function detectVoteByMailConflict(snippetsBySource: Map<string, EvidenceSnippet[
     return true;
   }
 
-  if (requestDeadlines.size > 1) {
+  if (singletonRequestDeadlineSources >= 2 && singletonRequestDeadlines.size > 1) {
     return true;
   }
 
