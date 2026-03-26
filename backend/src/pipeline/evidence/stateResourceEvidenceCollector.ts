@@ -334,7 +334,8 @@ function extractVoteOrgStatePollingUrl(html: string, baseUrl: string, stateName:
 
   const host = parsedBase.hostname.toLowerCase();
   const path = parsedBase.pathname.toLowerCase();
-  if (!host.endsWith("vote.org") || !path.includes("/polling-place-locator")) {
+  const isVoteOrgHost = host === "vote.org" || host.endsWith(".vote.org");
+  if (!isVoteOrgHost || !path.includes("/polling-place-locator")) {
     return null;
   }
 
@@ -386,7 +387,11 @@ function extractVoteOrgStatePollingUrl(html: string, baseUrl: string, stateName:
 function isVoteOrgPollingLocatorUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
-    return parsed.hostname.toLowerCase().endsWith("vote.org") && parsed.pathname.toLowerCase().includes("/polling-place-locator");
+    const host = parsed.hostname.toLowerCase();
+    return (
+      (host === "vote.org" || host.endsWith(".vote.org")) &&
+      parsed.pathname.toLowerCase().includes("/polling-place-locator")
+    );
   } catch {
     return false;
   }

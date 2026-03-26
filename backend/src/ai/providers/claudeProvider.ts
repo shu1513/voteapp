@@ -11,6 +11,20 @@ function toReason(error: unknown): string {
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
 }
 
+/**
+ * Extracts a JSON object string from plain text or fenced markdown output.
+ */
+function extractJsonCandidate(text: string): string {
+  const trimmed = text.trim();
+
+  const fenced = /```(?:json)?\s*([\s\S]*?)\s*```/i.exec(trimmed);
+  if (fenced?.[1]) {
+    return fenced[1].trim();
+  }
+
+  return trimmed;
+}
+
 function buildPrompt(input: EnrichStateResourcesInput): string {
   return [
     "Return only one JSON object with these keys exactly:",
@@ -119,7 +133,7 @@ export async function claudeProvider(
     }
 
     try {
-      const parsed = JSON.parse(text);
+      const parsed = JSON.parse(extractJsonCandidate(text));
       return { ok: true, rawPayload: parsed };
     } catch (error) {
       return {

@@ -2,7 +2,14 @@ import { Pool } from "pg";
 import { createClient } from "redis";
 
 import { buildEnrichmentConfigFromEnv, enrichStateResources } from "../../ai/enrichStateResources.js";
-import type { EnrichStateResourcesConfig, EvidenceSnippet } from "../../ai/types.js";
+import { AI_CANDIDATES } from "../../ai/aiCandidates.js";
+import type {
+  AiProvider,
+  EnrichStateResourcesConfig,
+  EnrichStateResourcesInput,
+  EnrichStateResourcesResult,
+  EvidenceSnippet,
+} from "../../ai/types.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_DRAFT_STREAM,
@@ -46,6 +53,18 @@ type EnrichedStagingPayload = StateResourcePayload & {
   evidence: EvidenceSnippet[];
 };
 
+type EnrichmentCandidate = {
+  provider: AiProvider;
+  model: string;
+};
+
+type EnrichmentAttemptFailure = {
+  candidate: EnrichmentCandidate;
+  errorCode: string;
+  reason: string;
+  retryable: boolean;
+};
+
 // Evidence crawl + provider call can run for >2 minutes; keep reclaim window above worst-case work.
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
@@ -86,6 +105,113 @@ function isHttpUrl(value: string): boolean {
 
 function normalizeStateKey(stateName: string): string {
   return stateName.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function candidateKey(candidate: EnrichmentCandidate): string {
+  return `${candidate.provider}:${candidate.model}`;
+}
+
+function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCandidate[] {
+  const configured: EnrichmentCandidate = {
+    provider: config.provider,
+    model: config.model,
+  };
+
+  const seen = new Set<string>();
+  const chain: EnrichmentCandidate[] = [];
+
+  const addCandidate = (candidate: EnrichmentCandidate): void => {
+    const key = candidateKey(candidate);
+    if (seen.has(key)) {
+      return;
+    }
+    seen.add(key);
+    chain.push(candidate);
+  };
+
+  addCandidate(configured);
+  for (const candidate of AI_CANDIDATES) {
+    addCandidate(candidate);
+  }
+
+  return chain;
+}
+
+function shouldTryNextCandidate(result: Exclude<EnrichStateResourcesResult, { ok: true }>): boolean {
+  if (result.retryable) {
+    return true;
+  }
+
+  // Conservative fallback on provider/model-specific output/config failures.
+  // Do not fail over deterministic contract failures that indicate invalid upstream input.
+  return (
+    result.errorCode === "CONFIGURATION_ERROR" ||
+    result.errorCode === "UNSUPPORTED_PROVIDER" ||
+    result.errorCode === "INVALID_JSON" ||
+    result.errorCode === "MISSING_REQUIRED_FIELDS"
+  );
+}
+
+function formatFallbackFailureReason(
+  finalFailure: Exclude<EnrichStateResourcesResult, { ok: true }>,
+  attempts: EnrichmentAttemptFailure[]
+): string {
+  if (attempts.length <= 1) {
+    return `[${finalFailure.errorCode}] ${finalFailure.reason}`;
+  }
+
+  const summary = attempts
+    .map((attempt) => `${attempt.candidate.provider}:${attempt.candidate.model}:${attempt.errorCode}`)
+    .join(" -> ");
+  return `[${finalFailure.errorCode}] ${finalFailure.reason} | candidates=${summary}`;
+}
+
+async function enrichWithCandidates(
+  input: EnrichStateResourcesInput,
+  config: EnrichStateResourcesConfig
+): Promise<{ result: EnrichStateResourcesResult; attempts: EnrichmentAttemptFailure[] }> {
+  const chain = buildCandidateChain(config);
+  const attempts: EnrichmentAttemptFailure[] = [];
+  let lastFailure: Exclude<EnrichStateResourcesResult, { ok: true }> | null = null;
+
+  for (const candidate of chain) {
+    const candidateConfig: EnrichStateResourcesConfig = {
+      ...config,
+      provider: candidate.provider,
+      model: candidate.model,
+    };
+
+    const result = await enrichStateResources(input, candidateConfig);
+    if (result.ok) {
+      return { result, attempts };
+    }
+    lastFailure = result;
+
+    attempts.push({
+      candidate,
+      errorCode: result.errorCode,
+      reason: result.reason,
+      retryable: result.retryable,
+    });
+
+    if (!shouldTryNextCandidate(result)) {
+      return { result, attempts };
+    }
+  }
+
+  if (lastFailure) {
+    return { result: lastFailure, attempts };
+  }
+
+  return {
+    result: {
+      ok: false,
+      retryable: true,
+      errorCode: "TEMP_PROVIDER_ERROR",
+      reason: "all AI candidates failed",
+    },
+    attempts,
+  };
 }
 
 function normalizeWhitespace(input: string): string {
@@ -491,19 +617,21 @@ async function processMessage(
   }
 
   const enrichedEvidence = [...evidence];
-  const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
-  if (
-    voteOrgPollingUrl &&
-    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === normalizeHttpUrl(voteOrgPollingUrl))
-  ) {
-    enrichedEvidence.unshift({
-      url: voteOrgPollingUrl,
-      title: "Vote.org",
-      snippet: `${draft.draft.state_name} polling place locator`,
-    });
+  if (draft.draft.allow_open_web_research) {
+    const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
+    if (
+      voteOrgPollingUrl &&
+      !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === normalizeHttpUrl(voteOrgPollingUrl))
+    ) {
+      enrichedEvidence.unshift({
+        url: voteOrgPollingUrl,
+        title: "Vote.org",
+        snippet: `${draft.draft.state_name} polling place locator`,
+      });
+    }
   }
 
-  const enrichmentResult = await enrichStateResources(
+  const { result: enrichmentResult, attempts } = await enrichWithCandidates(
     {
       ingestKey,
       draft: draft.draft,
@@ -514,7 +642,7 @@ async function processMessage(
   );
 
   if (!enrichmentResult.ok) {
-    const reason = `[${enrichmentResult.errorCode}] ${enrichmentResult.reason}`;
+    const reason = formatFallbackFailureReason(enrichmentResult, attempts);
 
     if (enrichmentResult.retryable) {
       // Keep message unacked so it can be reclaimed/retried with backoff.

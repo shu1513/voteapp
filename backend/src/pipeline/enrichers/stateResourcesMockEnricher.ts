@@ -752,20 +752,22 @@ async function processMessage(
   }
 
   const enrichedEvidence = [...evidence];
-  try {
-    const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
-    if (
-      voteOrgPollingUrl &&
-      !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === normalizeHttpUrl(voteOrgPollingUrl))
-    ) {
-      enrichedEvidence.unshift({
-        url: voteOrgPollingUrl,
-        title: "Vote.org",
-        snippet: `${draft.draft.state_name} polling place locator`,
-      });
+  if (draft.draft.allow_open_web_research) {
+    try {
+      const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
+      if (
+        voteOrgPollingUrl &&
+        !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === normalizeHttpUrl(voteOrgPollingUrl))
+      ) {
+        enrichedEvidence.unshift({
+          url: voteOrgPollingUrl,
+          title: "Vote.org",
+          snippet: `${draft.draft.state_name} polling place locator`,
+        });
+      }
+    } catch (error) {
+      console.warn(`mock enricher vote.org polling map unavailable: ${toReason(error)}`);
     }
-  } catch (error) {
-    console.warn(`mock enricher vote.org polling map unavailable: ${toReason(error)}`);
   }
 
   const mockPayload = buildMockPayload(draft.draft, enrichedEvidence);

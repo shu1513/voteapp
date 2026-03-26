@@ -261,12 +261,22 @@ function buildEvidenceUrlSet(
 /**
  * Ensures every citation URL is grounded in the retrieved evidence set.
  */
-function validateCitationsFromEvidence(payload: StateResourcePayload, evidenceUrlSet: Set<string>): string | null {
+function validateCitationsFromEvidence(
+  payload: StateResourcePayload,
+  evidenceUrlSet: Set<string>,
+  draft: EnrichStateResourcesInput["draft"]
+): string | null {
+  const allowedCitationUrls = new Set(evidenceUrlSet);
+  const pollingSeedFallback = chooseDraftPollingSeedUrl(draft);
+  if (pollingSeedFallback) {
+    allowedCitationUrls.add(pollingSeedFallback);
+  }
+
   for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
     for (const citation of payload.sources[key]) {
       const normalizedCitationUrl = normalizeHttpUrl(citation.source_url);
-      if (!normalizedCitationUrl || !evidenceUrlSet.has(normalizedCitationUrl)) {
-        return `sources.${key} citation URL must come from collected evidence URLs`;
+      if (!normalizedCitationUrl || !allowedCitationUrls.has(normalizedCitationUrl)) {
+        return `sources.${key} citation URL must come from collected evidence URLs or deterministic polling fallback URL`;
       }
     }
   }
@@ -380,7 +390,10 @@ function choosePreferredOfficialCitationForField(
         score: relevance,
       };
     })
-    .filter((item): item is { url: string; sourceName: string; score: number } => item !== null)
+    .filter(
+      (item): item is { url: string; sourceName: string; score: number } =>
+        item !== null && item.score > 0
+    )
     .sort((a, b) => b.score - a.score);
 
   if (ranked.length === 0) {
@@ -391,6 +404,32 @@ function choosePreferredOfficialCitationForField(
     url: ranked[0].url,
     sourceName: ranked[0].sourceName,
   };
+}
+
+function getEvidenceSourceNameForUrl(
+  targetUrl: string,
+  evidence: EnrichStateResourcesInput["evidence"]
+): string | null {
+  const normalizedTarget = normalizeHttpUrl(targetUrl);
+  if (!normalizedTarget) {
+    return null;
+  }
+
+  for (const item of evidence) {
+    const normalizedEvidenceUrl = normalizeHttpUrl(item.url);
+    if (normalizedEvidenceUrl !== normalizedTarget) {
+      continue;
+    }
+
+    const trimmedTitle = item.title.trim();
+    if (trimmedTitle.length > 0) {
+      return trimmedTitle;
+    }
+
+    return getHostname(normalizedTarget);
+  }
+
+  return null;
 }
 
 function chooseDraftPollingSeedUrl(draft: EnrichStateResourcesInput["draft"]): string | null {
@@ -585,14 +624,36 @@ export async function enrichStateResources(
   if (pollingSeedFallback) {
     const normalizedCurrentPollingUrl = normalizeHttpUrl(normalizedPayload.polling_place_url);
     if (
-      !normalizedCurrentPollingUrl ||
-      !isLikelyPollingPlaceUrlByUrl(normalizedCurrentPollingUrl) ||
-      isAggregatorUrl(normalizedCurrentPollingUrl)
+      (
+        !normalizedCurrentPollingUrl ||
+        !isLikelyPollingPlaceUrlByUrl(normalizedCurrentPollingUrl) ||
+        isAggregatorUrl(normalizedCurrentPollingUrl)
+      )
     ) {
-      normalizedPayload = {
-        ...normalizedPayload,
-        polling_place_url: pollingSeedFallback,
-      };
+      const fallbackChangedPollingUrl = normalizedCurrentPollingUrl !== pollingSeedFallback;
+
+      if (fallbackChangedPollingUrl) {
+        const fallbackSourceName =
+          getEvidenceSourceNameForUrl(pollingSeedFallback, input.evidence) ?? getHostname(pollingSeedFallback);
+        normalizedPayload = {
+          ...normalizedPayload,
+          polling_place_url: pollingSeedFallback,
+          sources: {
+            ...normalizedPayload.sources,
+            polling_place_url: [
+              {
+                source_name: fallbackSourceName,
+                source_url: pollingSeedFallback,
+              },
+            ],
+          },
+        };
+      } else {
+        normalizedPayload = {
+          ...normalizedPayload,
+          polling_place_url: pollingSeedFallback,
+        };
+      }
     }
   }
 
@@ -608,7 +669,7 @@ export async function enrichStateResources(
     };
   }
 
-  const evidenceReason = validateCitationsFromEvidence(normalizedPayload, evidenceCheck.urlSet);
+  const evidenceReason = validateCitationsFromEvidence(normalizedPayload, evidenceCheck.urlSet, input.draft);
   if (evidenceReason) {
     return {
       ok: false,

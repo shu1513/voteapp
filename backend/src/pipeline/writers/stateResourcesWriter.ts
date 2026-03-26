@@ -201,6 +201,26 @@ async function writeStateResourceAndMarkWritten(
   await client.query("BEGIN");
 
   try {
+    const statusUpdate = await client.query(
+      `
+        UPDATE staging_items
+        SET status = 'written',
+            reason = NULL,
+            written_at = now(),
+            updated_at = now()
+        WHERE ingest_key = $1
+          AND item_type = $2
+          AND status = 'validated'
+          AND run_id IS NOT DISTINCT FROM $3
+      `,
+      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
+    );
+
+    if (statusUpdate.rowCount !== 1) {
+      await client.query("ROLLBACK");
+      return false;
+    }
+
     await client.query(
       `
         INSERT INTO state_resources (
@@ -239,23 +259,8 @@ async function writeStateResourceAndMarkWritten(
       ]
     );
 
-    const statusUpdate = await client.query(
-      `
-        UPDATE staging_items
-        SET status = 'written',
-            reason = NULL,
-            written_at = now(),
-            updated_at = now()
-        WHERE ingest_key = $1
-          AND item_type = $2
-          AND status = 'validated'
-          AND run_id IS NOT DISTINCT FROM $3
-      `,
-      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
-    );
-
     await client.query("COMMIT");
-    return statusUpdate.rowCount === 1;
+    return true;
   } catch (error) {
     await client.query("ROLLBACK");
     throw error;
