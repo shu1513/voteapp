@@ -43,6 +43,7 @@ type ValidationResult =
   | {
       ok: true;
       payload: StateResourcePayload;
+      warnings: string[];
     }
   | {
       ok: false;
@@ -97,6 +98,187 @@ function isCuratedPollingUrlForState(stateFips: string, pollingPlaceUrl: string)
   const normalizedCurated = normalizeHttpUrl(curated);
   const normalizedUrl = normalizeHttpUrl(pollingPlaceUrl);
   return typeof normalizedCurated === "string" && normalizedCurated === normalizedUrl;
+}
+
+type EvidenceSnippet = {
+  url: string;
+  title: string;
+  snippet: string;
+};
+
+function normalizeSpace(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function extractEvidenceSnippets(input: Record<string, unknown>): EvidenceSnippet[] {
+  const raw = input.evidence;
+  if (!Array.isArray(raw)) {
+    return [];
+  }
+
+  const snippets: EvidenceSnippet[] = [];
+  for (const entry of raw) {
+    if (typeof entry !== "object" || entry === null || Array.isArray(entry)) {
+      continue;
+    }
+
+    const item = entry as Record<string, unknown>;
+    if (!isNonEmptyString(item.url) || !isNonEmptyString(item.snippet)) {
+      continue;
+    }
+
+    const normalizedUrl = normalizeHttpUrl(item.url.trim());
+    if (!normalizedUrl) {
+      continue;
+    }
+
+    snippets.push({
+      url: normalizedUrl,
+      title: isNonEmptyString(item.title) ? normalizeSpace(item.title) : "",
+      snippet: normalizeSpace(item.snippet),
+    });
+  }
+
+  return snippets;
+}
+
+function getEvidenceForField(citations: SourceCitation[], evidence: EvidenceSnippet[]): EvidenceSnippet[] {
+  const citationUrls = new Set<string>();
+  for (const citation of citations) {
+    const normalized = normalizeHttpUrl(citation.source_url);
+    if (normalized) {
+      citationUrls.add(normalized);
+    }
+  }
+
+  return evidence.filter((snippet) => citationUrls.has(snippet.url));
+}
+
+function detectIdRequirementsConflict(snippets: EvidenceSnippet[]): boolean {
+  let hasRequiredSignal = false;
+  let hasNotRequiredSignal = false;
+
+  for (const snippet of snippets) {
+    const text = `${snippet.title} ${snippet.snippet}`.toLowerCase();
+
+    if (
+      /\b(photo\s+)?id\s+(is\s+)?required\b/.test(text) ||
+      /\bmust\s+(show|present|provide)\b[^.]{0,40}\bid\b/.test(text)
+    ) {
+      hasRequiredSignal = true;
+    }
+
+    if (
+      /\bid\s+is\s+not\s+required\b/.test(text) ||
+      /\bno\s+(photo\s+)?id\s+(is\s+)?required\b/.test(text) ||
+      /\bdo\s+not\s+need\b[^.]{0,40}\bid\b/.test(text)
+    ) {
+      hasNotRequiredSignal = true;
+    }
+  }
+
+  return hasRequiredSignal && hasNotRequiredSignal;
+}
+
+function categorizeVoteByMailSentence(sentence: string): "request" | "postmark" | "received" | "return" | null {
+  const lower = sentence.toLowerCase();
+  if (/request/.test(lower)) {
+    return "request";
+  }
+  if (/postmark/.test(lower)) {
+    return "postmark";
+  }
+  if (/received/.test(lower) || /must be received/.test(lower)) {
+    return "received";
+  }
+  if (/return/.test(lower) || /submit/.test(lower)) {
+    return "return";
+  }
+  return null;
+}
+
+function detectVoteByMailConflict(snippets: EvidenceSnippet[]): boolean {
+  const byCategory = new Map<string, Set<string>>();
+
+  for (const snippet of snippets) {
+    const sentences = snippet.snippet.split(/[.!?]+/g);
+    for (const rawSentence of sentences) {
+      const sentence = normalizeSpace(rawSentence);
+      if (!sentence) {
+        continue;
+      }
+      if (!/(deadline|postmark|received|request|return|submit)/i.test(sentence)) {
+        continue;
+      }
+
+      const category = categorizeVoteByMailSentence(sentence);
+      if (!category) {
+        continue;
+      }
+
+      const normalizedSentence = sentence.toLowerCase();
+      const existing = byCategory.get(category) ?? new Set<string>();
+      existing.add(normalizedSentence);
+      byCategory.set(category, existing);
+    }
+  }
+
+  for (const [, sentences] of byCategory) {
+    if (sentences.size > 1) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function detectPollingHoursConflict(snippets: EvidenceSnippet[]): boolean {
+  let hasVarySignal = false;
+  const timeSignatures = new Set<string>();
+
+  for (const snippet of snippets) {
+    const lower = `${snippet.title} ${snippet.snippet}`.toLowerCase();
+    if (/var(y|ies)\s+by\s+(county|precinct|location)/.test(lower)) {
+      hasVarySignal = true;
+    }
+
+    const matches = snippet.snippet.match(/\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b/gi);
+    if (!matches || matches.length < 2) {
+      continue;
+    }
+
+    const normalized = matches.map((m) => normalizeSpace(m.toLowerCase())).sort().join("|");
+    if (normalized.length > 0) {
+      timeSignatures.add(normalized);
+    }
+  }
+
+  return !hasVarySignal && timeSignatures.size > 1;
+}
+
+function detectConflictWarnings(payload: StateResourcePayload, evidence: EvidenceSnippet[]): string[] {
+  if (evidence.length === 0) {
+    return [];
+  }
+
+  const warnings: string[] = [];
+
+  const idSnippets = getEvidenceForField(payload.sources.id_requirements, evidence);
+  if (idSnippets.length > 0 && detectIdRequirementsConflict(idSnippets)) {
+    warnings.push("id_requirements citations show conflicting required vs not-required ID signals");
+  }
+
+  const voteByMailSnippets = getEvidenceForField(payload.sources.vote_by_mail_info, evidence);
+  if (voteByMailSnippets.length > 0 && detectVoteByMailConflict(voteByMailSnippets)) {
+    warnings.push("vote_by_mail_info citations show conflicting deadline/rule statements");
+  }
+
+  const pollingHoursSnippets = getEvidenceForField(payload.sources.polling_hours, evidence);
+  if (pollingHoursSnippets.length > 0 && detectPollingHoursConflict(pollingHoursSnippets)) {
+    warnings.push("polling_hours citations show conflicting polling-time signals");
+  }
+
+  return warnings;
 }
 
 /**
@@ -299,6 +481,20 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       id_requirements,
       sources: sourcesResult.sources,
     },
+    warnings: detectConflictWarnings(
+      {
+        state_fips,
+        state_abbreviation,
+        state_name,
+        polling_place_url,
+        voter_registration_url,
+        vote_by_mail_info,
+        polling_hours,
+        id_requirements,
+        sources: sourcesResult.sources,
+      },
+      extractEvidenceSnippets(input)
+    ),
   };
 }
 
@@ -517,19 +713,24 @@ async function processMessage(
   const validation = validateStateResourcePayload(row.payload);
 
   if (metadataReasons.length === 0 && validation.ok) {
+    const warningReason =
+      validation.warnings.length > 0
+        ? `[CONFLICT_WARN] ${formatValidationReason(validation.warnings)}`
+        : null;
+
     const transition = await pool.query(
       `
         UPDATE staging_items
         SET status = 'validated',
-            reason = NULL,
+            reason = $3,
             validated_at = now(),
             updated_at = now()
         WHERE ingest_key = $1
           AND item_type = $2
           AND status = 'pending'
-          AND run_id IS NOT DISTINCT FROM $3
+          AND run_id IS NOT DISTINCT FROM $4
       `,
-      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
+      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, warningReason, expectedRunId]
     );
 
     if (transition.rowCount !== 1) {
@@ -544,6 +745,11 @@ async function processMessage(
         item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
         run_id: row.run_id ?? "",
       });
+
+      if (warningReason) {
+        console.warn(`validator conflict warning ingest_key=${ingestKey}: ${warningReason}`);
+      }
+
       await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
       return "validated";
     } catch {
