@@ -142,7 +142,10 @@ function extractEvidenceSnippets(input: Record<string, unknown>): EvidenceSnippe
   return snippets;
 }
 
-function getEvidenceForField(citations: SourceCitation[], evidence: EvidenceSnippet[]): EvidenceSnippet[] {
+function getEvidenceBySourceForField(
+  citations: SourceCitation[],
+  evidence: EvidenceSnippet[]
+): Map<string, EvidenceSnippet[]> {
   const citationUrls = new Set<string>();
   for (const citation of citations) {
     const normalized = normalizeHttpUrl(citation.source_url);
@@ -151,10 +154,22 @@ function getEvidenceForField(citations: SourceCitation[], evidence: EvidenceSnip
     }
   }
 
-  return evidence.filter((snippet) => citationUrls.has(snippet.url));
+  const grouped = new Map<string, EvidenceSnippet[]>();
+  for (const snippet of evidence) {
+    if (!citationUrls.has(snippet.url)) {
+      continue;
+    }
+    const existing = grouped.get(snippet.url) ?? [];
+    existing.push(snippet);
+    grouped.set(snippet.url, existing);
+  }
+
+  return grouped;
 }
 
-function detectIdRequirementsConflict(snippets: EvidenceSnippet[]): boolean {
+type IdRequirementStance = "required" | "not_required" | "unknown";
+
+function deriveIdRequirementStance(snippets: EvidenceSnippet[]): IdRequirementStance {
   let hasRequiredSignal = false;
   let hasNotRequiredSignal = false;
 
@@ -177,83 +192,192 @@ function detectIdRequirementsConflict(snippets: EvidenceSnippet[]): boolean {
     }
   }
 
-  return hasRequiredSignal && hasNotRequiredSignal;
+  if (hasRequiredSignal && !hasNotRequiredSignal) {
+    return "required";
+  }
+  if (hasNotRequiredSignal && !hasRequiredSignal) {
+    return "not_required";
+  }
+
+  return "unknown";
 }
 
-function categorizeVoteByMailSentence(sentence: string): "request" | "postmark" | "received" | "return" | null {
-  const lower = sentence.toLowerCase();
-  if (/request/.test(lower)) {
-    return "request";
+function detectIdRequirementsConflict(snippetsBySource: Map<string, EvidenceSnippet[]>): boolean {
+  if (snippetsBySource.size < 2) {
+    return false;
   }
-  if (/postmark/.test(lower)) {
-    return "postmark";
+
+  let hasRequired = false;
+  let hasNotRequired = false;
+
+  for (const snippets of snippetsBySource.values()) {
+    const stance = deriveIdRequirementStance(snippets);
+    if (stance === "required") {
+      hasRequired = true;
+    } else if (stance === "not_required") {
+      hasNotRequired = true;
+    }
   }
-  if (/received/.test(lower) || /must be received/.test(lower)) {
-    return "received";
-  }
-  if (/return/.test(lower) || /submit/.test(lower)) {
-    return "return";
-  }
-  return null;
+
+  return hasRequired && hasNotRequired;
 }
 
-function detectVoteByMailConflict(snippets: EvidenceSnippet[]): boolean {
-  const byCategory = new Map<string, Set<string>>();
+type VoteByMailFacts = {
+  requestDeadlineDays: Set<number>;
+  requiresReceivedByElectionDay: boolean;
+  allowsPostmarkByElectionDay: boolean;
+};
+
+function extractVoteByMailFacts(snippets: EvidenceSnippet[]): VoteByMailFacts {
+  const facts: VoteByMailFacts = {
+    requestDeadlineDays: new Set<number>(),
+    requiresReceivedByElectionDay: false,
+    allowsPostmarkByElectionDay: false,
+  };
 
   for (const snippet of snippets) {
-    const sentences = snippet.snippet.split(/[.!?]+/g);
-    for (const rawSentence of sentences) {
-      const sentence = normalizeSpace(rawSentence);
-      if (!sentence) {
-        continue;
-      }
-      if (!/(deadline|postmark|received|request|return|submit)/i.test(sentence)) {
-        continue;
-      }
+    const text = `${snippet.title}. ${snippet.snippet}`.toLowerCase();
 
-      const category = categorizeVoteByMailSentence(sentence);
-      if (!category) {
-        continue;
+    const requestMatches = text.matchAll(/\b(?:request|apply)[^.]{0,80}\b(\d{1,2})\s+days?\s+before\b/g);
+    for (const match of requestMatches) {
+      const days = Number.parseInt(match[1] ?? "", 10);
+      if (Number.isFinite(days) && days >= 0 && days <= 90) {
+        facts.requestDeadlineDays.add(days);
       }
+    }
 
-      const normalizedSentence = sentence.toLowerCase();
-      const existing = byCategory.get(category) ?? new Set<string>();
-      existing.add(normalizedSentence);
-      byCategory.set(category, existing);
+    if (/\b(?:must|needs?)\s+be\s+received\b[^.]{0,60}\b(?:by|on)\s+election day\b/.test(text)) {
+      facts.requiresReceivedByElectionDay = true;
+    }
+
+    if (
+      /\bpostmark(?:ed)?\b[^.]{0,60}\b(?:by|on)\s+election day\b/.test(text) &&
+      !/\bpostmark(?:ed)?\b[^.]{0,30}\bnot\b/.test(text)
+    ) {
+      facts.allowsPostmarkByElectionDay = true;
     }
   }
 
-  for (const [, sentences] of byCategory) {
-    if (sentences.size > 1) {
-      return true;
+  return facts;
+}
+
+function detectVoteByMailConflict(snippetsBySource: Map<string, EvidenceSnippet[]>): boolean {
+  if (snippetsBySource.size < 2) {
+    return false;
+  }
+
+  const factSets: VoteByMailFacts[] = [];
+  for (const snippets of snippetsBySource.values()) {
+    factSets.push(extractVoteByMailFacts(snippets));
+  }
+
+  let hasReceivedByElectionDay = false;
+  let hasPostmarkByElectionDay = false;
+  const requestDeadlines = new Set<number>();
+
+  for (const facts of factSets) {
+    if (facts.requiresReceivedByElectionDay) {
+      hasReceivedByElectionDay = true;
     }
+    if (facts.allowsPostmarkByElectionDay) {
+      hasPostmarkByElectionDay = true;
+    }
+    for (const days of facts.requestDeadlineDays) {
+      requestDeadlines.add(days);
+    }
+  }
+
+  if (hasReceivedByElectionDay && hasPostmarkByElectionDay) {
+    return true;
+  }
+
+  if (requestDeadlines.size > 1) {
+    return true;
   }
 
   return false;
 }
 
-function detectPollingHoursConflict(snippets: EvidenceSnippet[]): boolean {
-  let hasVarySignal = false;
-  const timeSignatures = new Set<string>();
+function parseTwelveHourToMinutes(token: string): number | null {
+  const match = token.trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?)$/i);
+  if (!match) {
+    return null;
+  }
+
+  let hours = Number.parseInt(match[1] ?? "", 10);
+  const minutes = Number.parseInt(match[2] ?? "0", 10);
+  const meridiem = (match[3] ?? "").toLowerCase().replace(/\./g, "");
+
+  if (!Number.isFinite(hours) || !Number.isFinite(minutes) || hours < 1 || hours > 12 || minutes < 0 || minutes > 59) {
+    return null;
+  }
+
+  if (hours === 12) {
+    hours = 0;
+  }
+  if (meridiem.startsWith("p")) {
+    hours += 12;
+  }
+
+  return hours * 60 + minutes;
+}
+
+type PollingHoursFacts = {
+  hasVarySignal: boolean;
+  ranges: Set<string>;
+};
+
+function extractPollingHoursFacts(snippets: EvidenceSnippet[]): PollingHoursFacts {
+  const facts: PollingHoursFacts = {
+    hasVarySignal: false,
+    ranges: new Set<string>(),
+  };
+
+  const rangeRegex =
+    /\b(\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?))\s*(?:-|to|until)\s*(\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?))\b/gi;
 
   for (const snippet of snippets) {
     const lower = `${snippet.title} ${snippet.snippet}`.toLowerCase();
     if (/var(y|ies)\s+by\s+(county|precinct|location)/.test(lower)) {
-      hasVarySignal = true;
+      facts.hasVarySignal = true;
     }
 
-    const matches = snippet.snippet.match(/\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b/gi);
-    if (!matches || matches.length < 2) {
-      continue;
-    }
-
-    const normalized = matches.map((m) => normalizeSpace(m.toLowerCase())).sort().join("|");
-    if (normalized.length > 0) {
-      timeSignatures.add(normalized);
+    const text = `${snippet.title}. ${snippet.snippet}`;
+    for (const match of text.matchAll(rangeRegex)) {
+      const start = parseTwelveHourToMinutes(match[1] ?? "");
+      const end = parseTwelveHourToMinutes(match[2] ?? "");
+      if (start === null || end === null || start === end) {
+        continue;
+      }
+      facts.ranges.add(`${start}-${end}`);
     }
   }
 
-  return !hasVarySignal && timeSignatures.size > 1;
+  return facts;
+}
+
+function detectPollingHoursConflict(snippetsBySource: Map<string, EvidenceSnippet[]>): boolean {
+  if (snippetsBySource.size < 2) {
+    return false;
+  }
+
+  const signatures = new Set<string>();
+
+  for (const snippets of snippetsBySource.values()) {
+    const facts = extractPollingHoursFacts(snippets);
+    if (facts.hasVarySignal) {
+      return false;
+    }
+    if (facts.ranges.size === 0) {
+      continue;
+    }
+    const signature = Array.from(facts.ranges).sort().join("|");
+    if (signature.length > 0) {
+      signatures.add(signature);
+    }
+  }
+
+  return signatures.size > 1;
 }
 
 function detectConflictWarnings(payload: StateResourcePayload, evidence: EvidenceSnippet[]): string[] {
@@ -263,18 +387,18 @@ function detectConflictWarnings(payload: StateResourcePayload, evidence: Evidenc
 
   const warnings: string[] = [];
 
-  const idSnippets = getEvidenceForField(payload.sources.id_requirements, evidence);
-  if (idSnippets.length > 0 && detectIdRequirementsConflict(idSnippets)) {
+  const idBySource = getEvidenceBySourceForField(payload.sources.id_requirements, evidence);
+  if (idBySource.size > 1 && detectIdRequirementsConflict(idBySource)) {
     warnings.push("id_requirements citations show conflicting required vs not-required ID signals");
   }
 
-  const voteByMailSnippets = getEvidenceForField(payload.sources.vote_by_mail_info, evidence);
-  if (voteByMailSnippets.length > 0 && detectVoteByMailConflict(voteByMailSnippets)) {
+  const voteByMailBySource = getEvidenceBySourceForField(payload.sources.vote_by_mail_info, evidence);
+  if (voteByMailBySource.size > 1 && detectVoteByMailConflict(voteByMailBySource)) {
     warnings.push("vote_by_mail_info citations show conflicting deadline/rule statements");
   }
 
-  const pollingHoursSnippets = getEvidenceForField(payload.sources.polling_hours, evidence);
-  if (pollingHoursSnippets.length > 0 && detectPollingHoursConflict(pollingHoursSnippets)) {
+  const pollingHoursBySource = getEvidenceBySourceForField(payload.sources.polling_hours, evidence);
+  if (pollingHoursBySource.size > 1 && detectPollingHoursConflict(pollingHoursBySource)) {
     warnings.push("polling_hours citations show conflicting polling-time signals");
   }
 
