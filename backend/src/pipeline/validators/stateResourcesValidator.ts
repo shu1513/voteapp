@@ -19,12 +19,17 @@ import {
   STAGING_STATE_RESOURCES_VALIDATOR_GROUP,
   STAGING_VALIDATED_STREAM,
 } from "../../config/stateResourcePipeline.js";
+import { CURATED_STATE_POLLING_URL_BY_FIPS } from "../../constants/curatedPollingUrls.js";
 import { getStateAbbreviationByFips } from "../../constants/usStates.js";
 import type {
   SourceCitation,
   StateResourcePayload,
   StateResourceSources,
 } from "../../types/stateResource.js";
+import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
+import { isUrlOnlyText } from "../../utils/isUrlOnlyText.js";
+import { isLikelyPollingPlaceUrl } from "../../utils/isLikelyPollingPlaceUrl.js";
+import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
 
 type ValidatorOptions = {
   once?: boolean;
@@ -47,13 +52,13 @@ type StagingRow = {
   run_id: string | null;
   schema_version: string | null;
   prompt_version: string | null;
+  reason: string | null;
   payload: unknown;
   status: string;
 };
 
 const RECLAIM_MIN_IDLE_MS = 30_000;
 const RECLAIM_MAX_BATCHES = 20;
-
 /**
  * Converts an unknown error into a bounded, persistable string.
  */
@@ -79,6 +84,17 @@ function isHttpUrl(value: string): boolean {
   } catch {
     return false;
   }
+}
+
+function isCuratedPollingUrlForState(stateFips: string, pollingPlaceUrl: string): boolean {
+  const curated = CURATED_STATE_POLLING_URL_BY_FIPS[stateFips];
+  if (!curated) {
+    return false;
+  }
+
+  const normalizedCurated = normalizeHttpUrl(curated);
+  const normalizedUrl = normalizeHttpUrl(pollingPlaceUrl);
+  return typeof normalizedCurated === "string" && normalizedCurated === normalizedUrl;
 }
 
 /**
@@ -183,6 +199,13 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   if (!isHttpUrl(polling_place_url)) {
     reasons.push("polling_place_url must be a valid http(s) URL");
   }
+  if (
+    isHttpUrl(polling_place_url) &&
+    !isLikelyPollingPlaceUrl(polling_place_url) &&
+    !isCuratedPollingUrlForState(state_fips, polling_place_url)
+  ) {
+    reasons.push("polling_place_url must be a polling-place locator URL, not a registration/mail/id URL");
+  }
 
   if (!isHttpUrl(voter_registration_url)) {
     reasons.push("voter_registration_url must be a valid http(s) URL");
@@ -194,6 +217,18 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 
   if (polling_hours.length > STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH) {
     reasons.push(`polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} characters or fewer`);
+  }
+
+  if (isUrlOnlyText(vote_by_mail_info)) {
+    reasons.push("vote_by_mail_info must be plain-language text, not a URL");
+  }
+
+  if (isUrlOnlyText(polling_hours)) {
+    reasons.push("polling_hours must be plain-language text, not a URL");
+  }
+
+  if (isUrlOnlyText(id_requirements)) {
+    reasons.push("id_requirements must be plain-language text, not a URL");
   }
 
   try {
@@ -259,7 +294,7 @@ function validateStagingMetadata(row: StagingRow): string[] {
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
-      SELECT ingest_key, run_id, schema_version, prompt_version, payload, status
+      SELECT ingest_key, run_id, schema_version, prompt_version, reason, payload, status
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -290,7 +325,12 @@ async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string |
 /**
  * Marks a pending staging row as failed.
  */
-async function markFailedPending(pool: Pool, ingestKey: string, reason: string): Promise<void> {
+async function markFailedPending(
+  pool: Pool,
+  ingestKey: string,
+  reason: string,
+  expectedRunId: string | null
+): Promise<void> {
   await pool.query(
     `
       UPDATE staging_items
@@ -300,8 +340,9 @@ async function markFailedPending(pool: Pool, ingestKey: string, reason: string):
       WHERE ingest_key = $1
         AND item_type = $3
         AND status = 'pending'
+        AND run_id IS NOT DISTINCT FROM $4
     `,
-    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES]
+    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
   );
 }
 
@@ -379,8 +420,9 @@ async function processMessage(
   redis: ReturnType<typeof createClient>,
   messageId: string,
   message: Record<string, string>
-): Promise<"validated" | "rejected" | "skipped"> {
+): Promise<"validated" | "rejected" | "skipped" | "retry"> {
   const ingestKey = message.ingest_key;
+  const messageRunId = normalizeRunId(message.run_id);
 
   if (!ingestKey) {
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
@@ -393,6 +435,44 @@ async function processMessage(
     return "skipped";
   }
 
+  if (hasRunIdMismatch(message.run_id, row.run_id)) {
+    await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+    return "skipped";
+  }
+  const expectedRunId = messageRunId ?? normalizeRunId(row.run_id);
+
+  // Recovery path: status changed but publish/ack may have failed in a prior attempt.
+  if (row.status === "validated") {
+    try {
+      await redis.xAdd(STAGING_VALIDATED_STREAM, "*", {
+        ingest_key: ingestKey,
+        item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
+        run_id: row.run_id ?? "",
+      });
+      await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+      return "validated";
+    } catch {
+      return "retry";
+    }
+  }
+
+  // Recovery path for rejected items mirrors validated behavior.
+  if (row.status === "rejected") {
+    const reason = row.reason ?? "recovered rejected item (reason unavailable)";
+    try {
+      await redis.xAdd(STAGING_REJECTED_STREAM, "*", {
+        ingest_key: ingestKey,
+        item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
+        run_id: row.run_id ?? "",
+        reason,
+      });
+      await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+      return "rejected";
+    } catch {
+      return "retry";
+    }
+  }
+
   if (row.status !== "pending") {
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
     return "skipped";
@@ -402,15 +482,7 @@ async function processMessage(
   const validation = validateStateResourcePayload(row.payload);
 
   if (metadataReasons.length === 0 && validation.ok) {
-    // This stream is at-least-once delivery. If publish succeeds but ack fails,
-    // this message can be redelivered; downstream consumers must dedupe by ingest_key.
-    await redis.xAdd(STAGING_VALIDATED_STREAM, "*", {
-      ingest_key: ingestKey,
-      item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
-      run_id: row.run_id ?? "",
-    });
-
-    await pool.query(
+    const transition = await pool.query(
       `
         UPDATE staging_items
         SET status = 'validated',
@@ -420,24 +492,34 @@ async function processMessage(
         WHERE ingest_key = $1
           AND item_type = $2
           AND status = 'pending'
+          AND run_id IS NOT DISTINCT FROM $3
       `,
-      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES]
+      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
     );
 
-    await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-    return "validated";
+    if (transition.rowCount !== 1) {
+      await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+      return "skipped";
+    }
+
+    try {
+      // At-least-once: if publish succeeds but ack fails, downstream must dedupe by ingest_key.
+      await redis.xAdd(STAGING_VALIDATED_STREAM, "*", {
+        ingest_key: ingestKey,
+        item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
+        run_id: row.run_id ?? "",
+      });
+      await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+      return "validated";
+    } catch {
+      // Leave unacked so XAUTOCLAIM can replay and recovery path can republish.
+      return "retry";
+    }
   }
 
   const reason = formatValidationReason([...metadataReasons, ...(validation.ok ? [] : validation.reasons)]);
 
-  await redis.xAdd(STAGING_REJECTED_STREAM, "*", {
-    ingest_key: ingestKey,
-    item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
-    run_id: row.run_id ?? "",
-    reason,
-  });
-
-  await pool.query(
+  const transition = await pool.query(
     `
       UPDATE staging_items
       SET status = 'rejected',
@@ -449,12 +531,29 @@ async function processMessage(
       WHERE ingest_key = $1
         AND item_type = $3
         AND status = 'pending'
+        AND run_id IS NOT DISTINCT FROM $4
     `,
-    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES]
+    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
   );
 
-  await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-  return "rejected";
+  if (transition.rowCount !== 1) {
+    await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+    return "skipped";
+  }
+
+  try {
+    await redis.xAdd(STAGING_REJECTED_STREAM, "*", {
+      ingest_key: ingestKey,
+      item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
+      run_id: row.run_id ?? "",
+      reason,
+    });
+    await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
+    return "rejected";
+  } catch {
+    // Leave unacked so XAUTOCLAIM can replay and recovery path can republish.
+    return "retry";
+  }
 }
 
 /**
@@ -489,6 +588,8 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
           validated += 1;
         } else if (result === "rejected") {
           rejected += 1;
+        } else if (result === "retry") {
+          retried += 1;
         } else {
           skipped += 1;
         }
@@ -506,8 +607,16 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
         }
 
         const status = await getStagingStatus(pool, ingestKey);
+        if (status === "validated" || status === "rejected") {
+          // Keep unacked so XAUTOCLAIM recovery can republish downstream event.
+          retried += 1;
+          continue;
+        }
+
         if (status === "pending") {
-          await markFailedPending(pool, ingestKey, reason);
+          const row = await getStagingRow(pool, ingestKey);
+          const expectedRunId = normalizeRunId(entry.message.run_id) ?? normalizeRunId(row?.run_id ?? null);
+          await markFailedPending(pool, ingestKey, reason, expectedRunId);
         }
 
         try {

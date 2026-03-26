@@ -5,6 +5,10 @@ export const STATE_RESOURCE_SEED_SOURCES = [
   "https://www.vote.org/polling-place-locator/",
   "https://www.nass.org/can-i-vote/find-your-polling-place",
   "https://www.usvotefoundation.org/find-my-polling-place",
+  "https://www.usa.gov/register-to-vote",
+  "https://www.vote.org/absentee-ballot/",
+  "https://www.nass.org/can-i-vote",
+  "https://www.usvotefoundation.org/voter-id-laws",
 ] as const;
 
 // Documentation/audit reference for deterministic FIPS -> abbreviation mapping.

@@ -9,12 +9,36 @@ function toReason(error: unknown): string {
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
 }
 
+/**
+ * Extracts a JSON object string from plain text or fenced markdown output.
+ */
+function extractJsonCandidate(text: string): string {
+  const trimmed = text.trim();
+
+  const fenced = /```(?:json)?\s*([\s\S]*?)\s*```/i.exec(trimmed);
+  if (fenced?.[1]) {
+    return fenced[1].trim();
+  }
+
+  return trimmed;
+}
+
 function buildPrompt(input: EnrichStateResourcesInput): string {
   return [
     "Return only one JSON object with these keys exactly:",
     "state_fips, state_abbreviation, state_name, polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements, sources.",
     "sources must include keys: polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements.",
     "Each sources[key] must be an array of {source_name, source_url}.",
+    "Each source_url must exactly match one of the Evidence snippets URLs. Do not invent or rewrite URLs.",
+    "polling_place_url and voter_registration_url must be URLs.",
+    "vote_by_mail_info, polling_hours, and id_requirements must be plain-language text summaries, not URLs.",
+    "For vote_by_mail_info: include at least one concrete state rule detail (e.g., request deadline, return deadline, postmark/received rule, or return methods).",
+    "For polling_hours: include statewide opening/closing times when available; otherwise explicitly state that hours vary by county/precinct.",
+    "For id_requirements: explicitly state whether voter ID is required at polls, and major exceptions if applicable.",
+    "For sources.vote_by_mail_info, sources.polling_hours, and sources.id_requirements: include at least one citation each.",
+    "Prefer official state/local election office or .gov sources for those three fields when available (not strictly required if unavailable in evidence).",
+    "Do not output generic templates; each of those three fields must be specific to the draft state.",
+    "Prefer official state/local election office polling-place URLs over aggregator URLs when evidence includes both.",
     "Do not add markdown fences or commentary.",
     "",
     "Draft input:",
@@ -53,7 +77,6 @@ export async function geminiProvider(
       body: JSON.stringify({
         generationConfig: {
           temperature: 0,
-          responseMimeType: "application/json",
         },
         contents: [
           {
@@ -112,7 +135,7 @@ export async function geminiProvider(
     }
 
     try {
-      const parsed = JSON.parse(text);
+      const parsed = JSON.parse(extractJsonCandidate(text));
       return { ok: true, rawPayload: parsed };
     } catch (error) {
       return {

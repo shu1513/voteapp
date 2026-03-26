@@ -7,6 +7,7 @@ import {
   STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH,
 } from "../contracts/stateResourceEnrichmentContract.js";
 import type { StateResourcePayload, StateResourceSources } from "../types/stateResource.js";
+import { isUrlOnlyText } from "../utils/isUrlOnlyText.js";
 
 type ParseResult =
   | { ok: true; payload: StateResourcePayload }
@@ -23,6 +24,69 @@ function isHttpUrl(value: string): boolean {
   } catch {
     return false;
   }
+}
+
+function hasAnyKeyword(text: string, keywords: string[]): boolean {
+  const lower = text.toLowerCase();
+  return keywords.some((keyword) => lower.includes(keyword));
+}
+
+function looksLikeMockBoilerplate(field: "vote_by_mail_info" | "polling_hours" | "id_requirements", text: string): boolean {
+  const normalized = text.trim().toLowerCase();
+  if (
+    field === "vote_by_mail_info" &&
+    /^(?:[a-z .'-]+ voters can request and return|voters can request and return) vote-by-mail ballots based on state deadlines and local election rules\.?$/.test(
+      normalized
+    )
+  ) {
+    return true;
+  }
+
+  if (
+    field === "polling_hours" &&
+    /^polling locations usually open and close at posted local hours on election day\.?$/.test(normalized)
+  ) {
+    return true;
+  }
+
+  if (
+    field === "id_requirements" &&
+    /^(?:[a-z .'-]+ voter id requirements depend on|voter id requirements depend on) election type and local\/state rules\.?$/.test(normalized)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function validateStateSpecificFieldQuality(payload: StateResourcePayload): string | null {
+  if (looksLikeMockBoilerplate("vote_by_mail_info", payload.vote_by_mail_info)) {
+    return "vote_by_mail_info is generic boilerplate; include state-specific legal details";
+  }
+  if (looksLikeMockBoilerplate("polling_hours", payload.polling_hours)) {
+    return "polling_hours is generic boilerplate; include state-specific hours detail";
+  }
+  if (looksLikeMockBoilerplate("id_requirements", payload.id_requirements)) {
+    return "id_requirements is generic boilerplate; include state-specific ID policy";
+  }
+
+  const voteByMailKeywords = ["deadline", "postmark", "request", "return", "received", "drop box", "mail", "absentee"];
+  if (!hasAnyKeyword(payload.vote_by_mail_info, voteByMailKeywords)) {
+    return "vote_by_mail_info must include at least one concrete vote-by-mail rule detail";
+  }
+
+  const pollingHoursHasTime = /\b\d{1,2}(:\d{2})?\s?(a\.?m\.?|p\.?m\.?)\b/i.test(payload.polling_hours);
+  const pollingHoursHasVariance = hasAnyKeyword(payload.polling_hours, ["varies", "county", "precinct"]);
+  if (!pollingHoursHasTime && !pollingHoursHasVariance) {
+    return "polling_hours must include concrete opening/closing times or explicit county/precinct variance";
+  }
+
+  const idKeywords = ["id required", "require id", "photo id", "identification", "no id", "not require"];
+  if (!hasAnyKeyword(payload.id_requirements, idKeywords)) {
+    return "id_requirements must clearly state whether voter identification is required";
+  }
+
+  return null;
 }
 
 function sanitizeCitation(value: unknown): { source_name: string; source_url: string } | null {
@@ -152,6 +216,39 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     return {
       ok: false,
       reason: `polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} characters or fewer`,
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+
+  if (isUrlOnlyText(payload.vote_by_mail_info)) {
+    return {
+      ok: false,
+      reason: "vote_by_mail_info must be plain-language text, not a URL",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+
+  if (isUrlOnlyText(payload.polling_hours)) {
+    return {
+      ok: false,
+      reason: "polling_hours must be plain-language text, not a URL",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+
+  if (isUrlOnlyText(payload.id_requirements)) {
+    return {
+      ok: false,
+      reason: "id_requirements must be plain-language text, not a URL",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+
+  const qualityReason = validateStateSpecificFieldQuality(payload);
+  if (qualityReason) {
+    return {
+      ok: false,
+      reason: qualityReason,
       errorCode: "SCHEMA_MISMATCH",
     };
   }

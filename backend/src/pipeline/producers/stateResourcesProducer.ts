@@ -27,6 +27,7 @@ type CensusState = {
 
 type ProducerOptions = {
   dryRun?: boolean;
+  force?: boolean;
 };
 
 /**
@@ -122,7 +123,7 @@ function buildIngestKey(stateFips: string, runYear: number): string {
  * Produces draft state_resources staging items and enqueues them to the draft stream.
  */
 export async function runStateResourcesProducer(options: ProducerOptions = {}): Promise<void> {
-  const { dryRun = false } = options;
+  const { dryRun = false, force = false } = options;
   const env = getPipelineEnv();
   const runYear = new Date().getUTCFullYear();
   const runId = `state_resources_${new Date().toISOString()}`;
@@ -169,7 +170,7 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
               validated_at = NULL,
               written_at = NULL,
               updated_at = now()
-            WHERE staging_items.status IN ('failed', 'rejected')
+            WHERE $8::boolean = true OR staging_items.status IN ('failed', 'rejected')
             RETURNING ingest_key
           `,
           [
@@ -180,10 +181,12 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
             env.AI_MODEL,
             STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
             env.PROMPT_VERSION,
+            force,
           ]
         );
 
-        // Enqueue only when this is a brand-new staging record, or a retry of failed/rejected data.
+        // Enqueue only when this is a brand-new staging record, retry of failed/rejected data,
+        // or when force refresh is enabled.
         if (result.rowCount === 0) {
           skipped += 1;
           continue;
@@ -218,5 +221,7 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
     await pool.end();
   }
 
-  console.log(`state_resources producer completed. enqueued=${enqueued} skipped=${skipped} failed=${failed}`);
+  console.log(
+    `state_resources producer completed. enqueued=${enqueued} skipped=${skipped} failed=${failed} force=${force}`
+  );
 }
