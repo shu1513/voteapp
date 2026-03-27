@@ -31,6 +31,7 @@ import type {
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { isUrlOnlyText } from "../../utils/isUrlOnlyText.js";
 import { isLikelyPollingPlaceUrl } from "../../utils/isLikelyPollingPlaceUrl.js";
+import { createStageObserver } from "../utils/observability.js";
 import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
 
 type ValidatorOptions = {
@@ -54,10 +55,20 @@ type StagingRow = {
   ingest_key: string;
   run_id: string | null;
   schema_version: string | null;
+  model: string | null;
   prompt_version: string | null;
   reason: string | null;
   payload: unknown;
   status: string;
+};
+
+type ValidatorProcessResult = {
+  outcome: "validated" | "rejected" | "skipped" | "retry";
+  reason: string | null;
+  schemaVersion: string | null;
+  promptVersion: string | null;
+  provider: string | null;
+  model: string | null;
 };
 
 const RECLAIM_MIN_IDLE_MS = 30_000;
@@ -108,6 +119,27 @@ type EvidenceSnippet = {
 
 function normalizeSpace(value: string): string {
   return value.replace(/\s+/g, " ").trim();
+}
+
+function parseProviderModel(value: string | null): { provider: string | null; model: string | null } {
+  if (typeof value !== "string") {
+    return { provider: null, model: null };
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return { provider: null, model: null };
+  }
+
+  const separator = trimmed.indexOf(":");
+  if (separator <= 0 || separator === trimmed.length - 1) {
+    return { provider: null, model: trimmed };
+  }
+
+  return {
+    provider: trimmed.slice(0, separator),
+    model: trimmed.slice(separator + 1),
+  };
 }
 
 function extractEvidenceSnippets(input: Record<string, unknown>): EvidenceSnippet[] {
@@ -665,7 +697,7 @@ function validateStagingMetadata(row: StagingRow): string[] {
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
-      SELECT ingest_key, run_id, schema_version, prompt_version, reason, payload, status
+      SELECT ingest_key, run_id, schema_version, model, prompt_version, reason, payload, status
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -791,24 +823,46 @@ async function processMessage(
   redis: ReturnType<typeof createClient>,
   messageId: string,
   message: Record<string, string>
-): Promise<"validated" | "rejected" | "skipped" | "retry"> {
+): Promise<ValidatorProcessResult> {
   const ingestKey = message.ingest_key;
   const messageRunId = normalizeRunId(message.run_id);
 
   if (!ingestKey) {
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-    return "skipped";
+    return {
+      outcome: "skipped",
+      reason: null,
+      schemaVersion: null,
+      promptVersion: null,
+      provider: null,
+      model: null,
+    };
   }
 
   const row = await getStagingRow(pool, ingestKey);
   if (!row) {
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-    return "skipped";
+    return {
+      outcome: "skipped",
+      reason: null,
+      schemaVersion: null,
+      promptVersion: null,
+      provider: null,
+      model: null,
+    };
   }
+  const providerModel = parseProviderModel(row.model);
 
   if (hasRunIdMismatch(message.run_id, row.run_id)) {
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-    return "skipped";
+    return {
+      outcome: "skipped",
+      reason: row.reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   }
   const expectedRunId = messageRunId ?? normalizeRunId(row.run_id);
 
@@ -821,9 +875,23 @@ async function processMessage(
         run_id: row.run_id ?? "",
       });
       await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-      return "validated";
+      return {
+        outcome: "validated",
+        reason: row.reason,
+        schemaVersion: row.schema_version,
+        promptVersion: row.prompt_version,
+        provider: providerModel.provider,
+        model: providerModel.model,
+      };
     } catch {
-      return "retry";
+      return {
+        outcome: "retry",
+        reason: "redis publish/ack failed while recovering validated row",
+        schemaVersion: row.schema_version,
+        promptVersion: row.prompt_version,
+        provider: providerModel.provider,
+        model: providerModel.model,
+      };
     }
   }
 
@@ -838,15 +906,36 @@ async function processMessage(
         reason,
       });
       await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-      return "rejected";
+      return {
+        outcome: "rejected",
+        reason,
+        schemaVersion: row.schema_version,
+        promptVersion: row.prompt_version,
+        provider: providerModel.provider,
+        model: providerModel.model,
+      };
     } catch {
-      return "retry";
+      return {
+        outcome: "retry",
+        reason: "redis publish/ack failed while recovering rejected row",
+        schemaVersion: row.schema_version,
+        promptVersion: row.prompt_version,
+        provider: providerModel.provider,
+        model: providerModel.model,
+      };
     }
   }
 
   if (row.status !== "pending") {
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-    return "skipped";
+    return {
+      outcome: "skipped",
+      reason: row.reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   }
 
   const metadataReasons = validateStagingMetadata(row);
@@ -875,7 +964,14 @@ async function processMessage(
 
     if (transition.rowCount !== 1) {
       await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-      return "skipped";
+      return {
+        outcome: "skipped",
+        reason: null,
+        schemaVersion: row.schema_version,
+        promptVersion: row.prompt_version,
+        provider: providerModel.provider,
+        model: providerModel.model,
+      };
     }
 
     try {
@@ -891,10 +987,24 @@ async function processMessage(
       }
 
       await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-      return "validated";
+      return {
+        outcome: "validated",
+        reason: warningReason,
+        schemaVersion: row.schema_version,
+        promptVersion: row.prompt_version,
+        provider: providerModel.provider,
+        model: providerModel.model,
+      };
     } catch {
       // Leave unacked so XAUTOCLAIM can replay and recovery path can republish.
-      return "retry";
+      return {
+        outcome: "retry",
+        reason: "redis publish/ack failed after validated transition",
+        schemaVersion: row.schema_version,
+        promptVersion: row.prompt_version,
+        provider: providerModel.provider,
+        model: providerModel.model,
+      };
     }
   }
 
@@ -919,7 +1029,14 @@ async function processMessage(
 
   if (transition.rowCount !== 1) {
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-    return "skipped";
+    return {
+      outcome: "skipped",
+      reason: null,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   }
 
   try {
@@ -930,10 +1047,24 @@ async function processMessage(
       reason,
     });
     await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
-    return "rejected";
+    return {
+      outcome: "rejected",
+      reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   } catch {
     // Leave unacked so XAUTOCLAIM can replay and recovery path can republish.
-    return "retry";
+    return {
+      outcome: "retry",
+      reason: "redis publish/ack failed after rejected transition",
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   }
 }
 
@@ -948,11 +1079,13 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
   } = options;
 
   const env = getPipelineEnv();
+  const observer = createStageObserver("validator", {
+    provider: env.AI_PROVIDER,
+    model: env.AI_MODEL,
+    prompt_version: env.PROMPT_VERSION,
+  });
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
-
-  await redis.connect();
-  await ensureConsumerGroup(redis);
 
   const consumerName = `validator-${process.pid}`;
 
@@ -963,27 +1096,57 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
 
   const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
     for (const entry of entries) {
+      const startedAtMs = Date.now();
+      const ingestKey = entry.message.ingest_key ?? null;
+      const eventRunId = normalizeRunId(entry.message.run_id);
+
       try {
         const result = await processMessage(pool, redis, entry.id, entry.message);
-        if (result === "validated") {
+        if (result.outcome === "validated") {
           validated += 1;
-        } else if (result === "rejected") {
+        } else if (result.outcome === "rejected") {
           rejected += 1;
-        } else if (result === "retry") {
+        } else if (result.outcome === "retry") {
           retried += 1;
         } else {
           skipped += 1;
         }
+
+        observer.record({
+          outcome: result.outcome,
+          ingest_key: ingestKey,
+          run_id: eventRunId,
+          provider: result.provider,
+          model: result.model,
+          schema_version: result.schemaVersion,
+          prompt_version: result.promptVersion,
+          reason: result.reason,
+          duration_ms: Date.now() - startedAtMs,
+        });
       } catch (error) {
         const reason = toReason(error);
-        const ingestKey = entry.message.ingest_key;
 
         if (!ingestKey) {
           try {
             await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, entry.id);
           } catch {
             retried += 1;
+            observer.record({
+              outcome: "retry",
+              ingest_key: null,
+              run_id: eventRunId,
+              reason,
+              duration_ms: Date.now() - startedAtMs,
+            });
+            continue;
           }
+          observer.record({
+            outcome: "failed",
+            ingest_key: null,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
           continue;
         }
 
@@ -991,6 +1154,13 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
         if (status === "validated" || status === "rejected") {
           // Keep unacked so XAUTOCLAIM recovery can republish downstream event.
           retried += 1;
+          observer.record({
+            outcome: "retry",
+            ingest_key: ingestKey,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
           continue;
         }
 
@@ -1005,12 +1175,31 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
         } catch {
           // Keep unacked for XAUTOCLAIM recovery.
           retried += 1;
+          observer.record({
+            outcome: "retry",
+            ingest_key: ingestKey,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
+          continue;
         }
+
+        observer.record({
+          outcome: "failed",
+          ingest_key: ingestKey,
+          run_id: eventRunId,
+          reason,
+          duration_ms: Date.now() - startedAtMs,
+        });
       }
     }
   };
 
   try {
+    await redis.connect();
+    await ensureConsumerGroup(redis);
+
     let keepRunning = true;
 
     while (keepRunning) {
@@ -1040,11 +1229,21 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
       }
     }
   } finally {
-    await redis.quit();
-    await pool.end();
-  }
+    try {
+      await redis.quit();
+    } catch (error) {
+      console.error("validator cleanup warning (redis.quit):", toReason(error));
+    }
+    try {
+      await pool.end();
+    } catch (error) {
+      console.error("validator cleanup warning (pool.end):", toReason(error));
+    }
 
-  console.log(
-    `state_resources validator completed. validated=${validated} rejected=${rejected} skipped=${skipped} retried=${retried}`
-  );
+    observer.flush({ validated, rejected, skipped, retried });
+
+    console.log(
+      `state_resources validator completed. validated=${validated} rejected=${rejected} skipped=${skipped} retried=${retried}`
+    );
+  }
 }
