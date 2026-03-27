@@ -29,6 +29,7 @@ type AlertThresholds = {
   minEvents: number;
   rejectRate: number;
   retryRate: number;
+  failRate: number;
   reasonSpikeCount: number;
 };
 
@@ -36,6 +37,7 @@ const DEFAULT_ALERT_THRESHOLDS: AlertThresholds = {
   minEvents: 20,
   rejectRate: 0.25,
   retryRate: 0.25,
+  failRate: 0.25,
   reasonSpikeCount: 10,
 };
 
@@ -56,6 +58,7 @@ function readThresholds(): AlertThresholds {
     minEvents: Math.max(1, Math.floor(readPositiveNumberEnv("OBS_SPIKE_MIN_EVENTS", DEFAULT_ALERT_THRESHOLDS.minEvents))),
     rejectRate: Math.min(1, readPositiveNumberEnv("OBS_REJECT_SPIKE_RATE", DEFAULT_ALERT_THRESHOLDS.rejectRate)),
     retryRate: Math.min(1, readPositiveNumberEnv("OBS_RETRY_SPIKE_RATE", DEFAULT_ALERT_THRESHOLDS.retryRate)),
+    failRate: Math.min(1, readPositiveNumberEnv("OBS_FAILED_SPIKE_RATE", DEFAULT_ALERT_THRESHOLDS.failRate)),
     reasonSpikeCount: Math.max(
       1,
       Math.floor(readPositiveNumberEnv("OBS_REASON_SPIKE_COUNT", DEFAULT_ALERT_THRESHOLDS.reasonSpikeCount))
@@ -63,7 +66,7 @@ function readThresholds(): AlertThresholds {
   };
 }
 
-function toReasonBucket(reason: string): string {
+export function bucketReasonForObservability(reason: string): string {
   const trimmed = reason.trim();
   if (!trimmed) {
     return "UNKNOWN";
@@ -100,7 +103,7 @@ export class StageObserver {
 
     const reason = typeof event.reason === "string" ? event.reason.trim() : "";
     if (reason.length > 0) {
-      const bucket = toReasonBucket(reason);
+      const bucket = bucketReasonForObservability(reason);
       this.reasonCounts.set(bucket, (this.reasonCounts.get(bucket) ?? 0) + 1);
     }
 
@@ -158,8 +161,10 @@ export class StageObserver {
 
     const rejected = summary.outcomes.rejected ?? 0;
     const retried = summary.outcomes.retry ?? 0;
+    const failed = summary.outcomes.failed ?? 0;
     const rejectRate = rejected / summary.total;
     const retryRate = retried / summary.total;
+    const failRate = failed / summary.total;
 
     if (rejectRate >= this.thresholds.rejectRate) {
       console.error(
@@ -187,6 +192,21 @@ export class StageObserver {
           retried,
           retry_rate: retryRate,
           threshold: this.thresholds.retryRate,
+        })
+      );
+    }
+
+    if (failRate >= this.thresholds.failRate) {
+      console.error(
+        JSON.stringify({
+          type: "pipeline_alert",
+          ts: new Date().toISOString(),
+          stage: this.stage,
+          alert: "failed_spike",
+          total: summary.total,
+          failed,
+          fail_rate: failRate,
+          threshold: this.thresholds.failRate,
         })
       );
     }

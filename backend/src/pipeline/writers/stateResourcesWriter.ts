@@ -28,6 +28,7 @@ type StagingRow = {
   item_type: string;
   run_id: string | null;
   schema_version: string | null;
+  model: string | null;
   prompt_version: string | null;
   reason: string | null;
   payload: unknown;
@@ -35,6 +36,15 @@ type StagingRow = {
 };
 
 type WriterOutcome = "written" | "failed" | "skipped" | "retry" | "recovered";
+
+type WriterProcessResult = {
+  outcome: WriterOutcome;
+  reason: string | null;
+  schemaVersion: string | null;
+  promptVersion: string | null;
+  provider: string | null;
+  model: string | null;
+};
 
 type ParseResult =
   | { ok: true; payload: StateResourcePayload }
@@ -68,6 +78,27 @@ function isValidCitation(value: unknown): value is SourceCitation {
 
   const item = value as Record<string, unknown>;
   return isNonEmptyString(item.source_url) && isNonEmptyString(item.source_name);
+}
+
+function parseProviderModel(value: string | null): { provider: string | null; model: string | null } {
+  if (typeof value !== "string") {
+    return { provider: null, model: null };
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return { provider: null, model: null };
+  }
+
+  const separator = trimmed.indexOf(":");
+  if (separator <= 0 || separator === trimmed.length - 1) {
+    return { provider: null, model: trimmed };
+  }
+
+  return {
+    provider: trimmed.slice(0, separator),
+    model: trimmed.slice(separator + 1),
+  };
 }
 
 /**
@@ -139,7 +170,7 @@ async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Prom
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
-      SELECT ingest_key, item_type, run_id, schema_version, prompt_version, reason, payload, status
+      SELECT ingest_key, item_type, run_id, schema_version, model, prompt_version, reason, payload, status
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -313,25 +344,47 @@ async function processMessage(
   redis: ReturnType<typeof createClient>,
   messageId: string,
   message: Record<string, string>
-): Promise<WriterOutcome> {
+): Promise<WriterProcessResult> {
   const ingestKey = message.ingest_key;
   const messageRunId = normalizeRunId(message.run_id);
 
   if (!ingestKey) {
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-    return "skipped";
+    return {
+      outcome: "skipped",
+      reason: null,
+      schemaVersion: null,
+      promptVersion: null,
+      provider: null,
+      model: null,
+    };
   }
 
   const row = await getStagingRow(pool, ingestKey);
 
   if (!row) {
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-    return "skipped";
+    return {
+      outcome: "skipped",
+      reason: null,
+      schemaVersion: null,
+      promptVersion: null,
+      provider: null,
+      model: null,
+    };
   }
+  const providerModel = parseProviderModel(row.model);
 
   if (hasRunIdMismatch(message.run_id, row.run_id)) {
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-    return "skipped";
+    return {
+      outcome: "skipped",
+      reason: row.reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   }
   const expectedRunId = messageRunId ?? normalizeRunId(row.run_id);
 
@@ -345,40 +398,84 @@ async function processMessage(
         run_id: row.run_id ?? "",
       });
       await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-      return "recovered";
+      return {
+        outcome: "recovered",
+        reason: row.reason,
+        schemaVersion: row.schema_version,
+        promptVersion: row.prompt_version,
+        provider: providerModel.provider,
+        model: providerModel.model,
+      };
     } catch {
       // Leave unacked so it can be reclaimed and retried.
-      return "retry";
+      return {
+        outcome: "retry",
+        reason: "redis publish/ack failed while recovering written row",
+        schemaVersion: row.schema_version,
+        promptVersion: row.prompt_version,
+        provider: providerModel.provider,
+        model: providerModel.model,
+      };
     }
   }
 
   if (row.status !== "validated") {
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-    return "skipped";
+    return {
+      outcome: "skipped",
+      reason: row.reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   }
 
   if (!isNonEmptyString(row.prompt_version)) {
-    await markFailed(pool, ingestKey, "prompt_version metadata is required", expectedRunId);
+    const reason = "prompt_version metadata is required";
+    await markFailed(pool, ingestKey, reason, expectedRunId);
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-    return "failed";
+    return {
+      outcome: "failed",
+      reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   }
 
   if (row.schema_version !== STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION) {
+    const reason = `schema_version must be ${STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION} for writer input`;
     await markFailed(
       pool,
       ingestKey,
-      `schema_version must be ${STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION} for writer input`,
+      reason,
       expectedRunId
     );
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-    return "failed";
+    return {
+      outcome: "failed",
+      reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   }
 
   const parsed = parseStateResourcePayload(row.payload);
   if (!parsed.ok) {
     await markFailed(pool, ingestKey, parsed.reason, expectedRunId);
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-    return "failed";
+    return {
+      outcome: "failed",
+      reason: parsed.reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   }
 
   const client = await pool.connect();
@@ -392,13 +489,27 @@ async function processMessage(
 
     if (!didTransitionToWritten) {
       await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-      return "skipped";
+      return {
+        outcome: "skipped",
+        reason: null,
+        schemaVersion: row.schema_version,
+        promptVersion: row.prompt_version,
+        provider: providerModel.provider,
+        model: providerModel.model,
+      };
     }
   } catch (error) {
     const reason = toReason(error);
     await markFailed(pool, ingestKey, reason, expectedRunId);
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-    return "failed";
+    return {
+      outcome: "failed",
+      reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   } finally {
     client.release();
   }
@@ -411,9 +522,23 @@ async function processMessage(
       run_id: row.run_id ?? "",
     });
     await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, messageId);
-    return "written";
+    return {
+      outcome: "written",
+      reason: row.reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   } catch {
-    return "retry";
+    return {
+      outcome: "retry",
+      reason: "redis publish/ack failed after written transition",
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: providerModel.provider,
+      model: providerModel.model,
+    };
   }
 }
 
@@ -449,7 +574,8 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
       const eventRunId = normalizeRunId(entry.message.run_id);
 
       try {
-        const outcome = await processMessage(pool, redis, entry.id, entry.message);
+        const result = await processMessage(pool, redis, entry.id, entry.message);
+        const outcome = result.outcome;
         if (outcome === "written") {
           written += 1;
         } else if (outcome === "failed") {
@@ -462,23 +588,15 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
           skipped += 1;
         }
 
-        let reason: string | null = null;
-        let schemaVersion: string | null = null;
-        let promptVersion: string | null = null;
-        if (ingestKey && outcome !== "skipped") {
-          const row = await getStagingRow(pool, ingestKey);
-          reason = row?.reason ?? null;
-          schemaVersion = row?.schema_version ?? null;
-          promptVersion = row?.prompt_version ?? null;
-        }
-
         observer.record({
           outcome,
           ingest_key: ingestKey,
           run_id: eventRunId,
-          schema_version: schemaVersion,
-          prompt_version: promptVersion,
-          reason,
+          provider: result.provider,
+          model: result.model,
+          schema_version: result.schemaVersion,
+          prompt_version: result.promptVersion,
+          reason: result.reason,
           duration_ms: Date.now() - startedAtMs,
         });
       } catch (error) {

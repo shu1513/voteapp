@@ -1,6 +1,7 @@
 import { Pool } from "pg";
 
 import { getPipelineEnv } from "../config/env.js";
+import { bucketReasonForObservability } from "../pipeline/utils/observability.js";
 
 function readHoursArg(): number {
   const arg = process.argv.find((value) => value.startsWith("--hours="));
@@ -37,27 +38,33 @@ async function main(): Promise<void> {
     );
 
     const reasonResult = await pool.query<{
-      reason_bucket: string;
+      reason: string | null;
       count: string;
     }>(
       `
         SELECT
-          CASE
-            WHEN reason IS NULL OR btrim(reason) = '' THEN 'NONE'
-            WHEN reason LIKE '[CONFLICT_WARN]%' THEN '[CONFLICT_WARN]'
-            WHEN reason ~ '^\\[[A-Z0-9_ -]{2,60}\\]' THEN substring(reason from '^\\[[A-Z0-9_ -]{2,60}\\]')
-            ELSE left(reason, 80)
-          END AS reason_bucket,
+          reason,
           COUNT(*)::text AS count
         FROM staging_items
         WHERE item_type = 'state_resources'
           AND updated_at >= now() - ($1::text || ' hours')::interval
-        GROUP BY reason_bucket
+        GROUP BY reason
         ORDER BY COUNT(*) DESC
-        LIMIT 20
       `,
       [hours]
     );
+
+    const reasonBuckets = new Map<string, number>();
+    for (const row of reasonResult.rows) {
+      const bucket = bucketReasonForObservability(row.reason ?? "");
+      const count = Number.parseInt(row.count, 10);
+      reasonBuckets.set(bucket, (reasonBuckets.get(bucket) ?? 0) + count);
+    }
+
+    const topReasonBuckets = Array.from(reasonBuckets.entries())
+      .map(([reason_bucket, count]) => ({ reason_bucket, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 20);
 
     const output = {
       type: "pipeline_health",
@@ -67,10 +74,7 @@ async function main(): Promise<void> {
         status: row.status,
         count: Number.parseInt(row.count, 10),
       })),
-      top_reason_buckets: reasonResult.rows.map((row) => ({
-        reason_bucket: row.reason_bucket,
-        count: Number.parseInt(row.count, 10),
-      })),
+      top_reason_buckets: topReasonBuckets,
     };
 
     console.log(JSON.stringify(output, null, 2));
