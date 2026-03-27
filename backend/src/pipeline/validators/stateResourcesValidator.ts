@@ -43,6 +43,7 @@ type ValidationResult =
   | {
       ok: true;
       payload: StateResourcePayload;
+      warnings: string[];
     }
   | {
       ok: false;
@@ -97,6 +98,327 @@ function isCuratedPollingUrlForState(stateFips: string, pollingPlaceUrl: string)
   const normalizedCurated = normalizeHttpUrl(curated);
   const normalizedUrl = normalizeHttpUrl(pollingPlaceUrl);
   return typeof normalizedCurated === "string" && normalizedCurated === normalizedUrl;
+}
+
+type EvidenceSnippet = {
+  url: string;
+  title: string;
+  snippet: string;
+};
+
+function normalizeSpace(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function extractEvidenceSnippets(input: Record<string, unknown>): EvidenceSnippet[] {
+  const raw = input.evidence;
+  if (!Array.isArray(raw)) {
+    return [];
+  }
+
+  const snippets: EvidenceSnippet[] = [];
+  for (const entry of raw) {
+    if (typeof entry !== "object" || entry === null || Array.isArray(entry)) {
+      continue;
+    }
+
+    const item = entry as Record<string, unknown>;
+    if (!isNonEmptyString(item.url) || !isNonEmptyString(item.snippet)) {
+      continue;
+    }
+
+    const normalizedUrl = normalizeHttpUrl(item.url.trim());
+    if (!normalizedUrl) {
+      continue;
+    }
+
+    snippets.push({
+      url: normalizedUrl,
+      title: isNonEmptyString(item.title) ? normalizeSpace(item.title) : "",
+      snippet: normalizeSpace(item.snippet),
+    });
+  }
+
+  return snippets;
+}
+
+function getEvidenceBySourceForField(
+  citations: SourceCitation[],
+  evidence: EvidenceSnippet[]
+): Map<string, EvidenceSnippet[]> {
+  const citationUrls = new Set<string>();
+  for (const citation of citations) {
+    const normalized = normalizeHttpUrl(citation.source_url);
+    if (normalized) {
+      citationUrls.add(normalized);
+    }
+  }
+
+  const grouped = new Map<string, EvidenceSnippet[]>();
+  for (const snippet of evidence) {
+    if (!citationUrls.has(snippet.url)) {
+      continue;
+    }
+    const existing = grouped.get(snippet.url) ?? [];
+    existing.push(snippet);
+    grouped.set(snippet.url, existing);
+  }
+
+  return grouped;
+}
+
+type IdRequirementStance = "required" | "not_required" | "unknown";
+
+function deriveIdRequirementStance(snippets: EvidenceSnippet[]): IdRequirementStance {
+  let hasRequiredSignal = false;
+  let hasNotRequiredSignal = false;
+
+  for (const snippet of snippets) {
+    const text = `${snippet.title}. ${snippet.snippet}`.toLowerCase();
+    const sentences = text.split(/[.!?]+/g);
+
+    for (const rawSentence of sentences) {
+      const sentence = normalizeSpace(rawSentence);
+      if (!sentence) {
+        continue;
+      }
+
+      if (
+        /\bid\s+is\s+not\s+required\b/.test(sentence) ||
+        /\bno\s+(photo\s+)?id\s+(is\s+)?required\b/.test(sentence) ||
+        /\bdo\s+not\s+need\b[^.]{0,40}\bid\b/.test(sentence)
+      ) {
+        hasNotRequiredSignal = true;
+        continue;
+      }
+
+      if (
+        /\b(photo\s+)?id\s+(is\s+)?required\b/.test(sentence) ||
+        /\bmust\s+(show|present|provide)\b[^.]{0,40}\bid\b/.test(sentence)
+      ) {
+        hasRequiredSignal = true;
+      }
+    }
+  }
+
+  if (hasRequiredSignal && !hasNotRequiredSignal) {
+    return "required";
+  }
+  if (hasNotRequiredSignal && !hasRequiredSignal) {
+    return "not_required";
+  }
+
+  return "unknown";
+}
+
+function detectIdRequirementsConflict(snippetsBySource: Map<string, EvidenceSnippet[]>): boolean {
+  if (snippetsBySource.size < 2) {
+    return false;
+  }
+
+  let hasRequired = false;
+  let hasNotRequired = false;
+
+  for (const snippets of snippetsBySource.values()) {
+    const stance = deriveIdRequirementStance(snippets);
+    if (stance === "required") {
+      hasRequired = true;
+    } else if (stance === "not_required") {
+      hasNotRequired = true;
+    }
+  }
+
+  return hasRequired && hasNotRequired;
+}
+
+type VoteByMailFacts = {
+  requestDeadlineDays: Set<number>;
+  requiresReceivedByElectionDay: boolean;
+  allowsPostmarkByElectionDay: boolean;
+};
+
+function extractVoteByMailFacts(snippets: EvidenceSnippet[]): VoteByMailFacts {
+  const facts: VoteByMailFacts = {
+    requestDeadlineDays: new Set<number>(),
+    requiresReceivedByElectionDay: false,
+    allowsPostmarkByElectionDay: false,
+  };
+
+  for (const snippet of snippets) {
+    const text = `${snippet.title}. ${snippet.snippet}`.toLowerCase();
+
+    const requestMatches = text.matchAll(/\b(?:request|apply)[^.]{0,80}\b(\d{1,2})\s+days?\s+before\b/g);
+    for (const match of requestMatches) {
+      const days = Number.parseInt(match[1] ?? "", 10);
+      if (Number.isFinite(days) && days >= 0 && days <= 90) {
+        facts.requestDeadlineDays.add(days);
+      }
+    }
+
+    if (/\b(?:must|needs?)\s+be\s+received\b[^.]{0,60}\b(?:by|on)\s+election day\b/.test(text)) {
+      facts.requiresReceivedByElectionDay = true;
+    }
+
+    if (
+      /\bpostmark(?:ed)?\b[^.]{0,60}\b(?:by|on)\s+election day\b/.test(text) &&
+      !/\bpostmark(?:ed)?\b[^.]{0,30}\bnot\b/.test(text)
+    ) {
+      facts.allowsPostmarkByElectionDay = true;
+    }
+  }
+
+  return facts;
+}
+
+function detectVoteByMailConflict(snippetsBySource: Map<string, EvidenceSnippet[]>): boolean {
+  if (snippetsBySource.size < 2) {
+    return false;
+  }
+
+  const factSets: VoteByMailFacts[] = [];
+  for (const snippets of snippetsBySource.values()) {
+    factSets.push(extractVoteByMailFacts(snippets));
+  }
+
+  let hasReceivedByElectionDay = false;
+  let hasPostmarkByElectionDay = false;
+  const singletonRequestDeadlines = new Set<number>();
+  let singletonRequestDeadlineSources = 0;
+
+  for (const facts of factSets) {
+    if (facts.requiresReceivedByElectionDay) {
+      hasReceivedByElectionDay = true;
+    }
+    if (facts.allowsPostmarkByElectionDay) {
+      hasPostmarkByElectionDay = true;
+    }
+
+    // Only compare sources that declare one unambiguous request deadline.
+    // If a source lists multiple channels/deadlines, treat it as ambiguous and skip.
+    if (facts.requestDeadlineDays.size === 1) {
+      singletonRequestDeadlineSources += 1;
+      for (const days of facts.requestDeadlineDays) {
+        singletonRequestDeadlines.add(days);
+      }
+    }
+  }
+
+  if (hasReceivedByElectionDay && hasPostmarkByElectionDay) {
+    return true;
+  }
+
+  if (singletonRequestDeadlineSources >= 2 && singletonRequestDeadlines.size > 1) {
+    return true;
+  }
+
+  return false;
+}
+
+function parseTwelveHourToMinutes(token: string): number | null {
+  const match = token.trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?)$/i);
+  if (!match) {
+    return null;
+  }
+
+  let hours = Number.parseInt(match[1] ?? "", 10);
+  const minutes = Number.parseInt(match[2] ?? "0", 10);
+  const meridiem = (match[3] ?? "").toLowerCase().replace(/\./g, "");
+
+  if (!Number.isFinite(hours) || !Number.isFinite(minutes) || hours < 1 || hours > 12 || minutes < 0 || minutes > 59) {
+    return null;
+  }
+
+  if (hours === 12) {
+    hours = 0;
+  }
+  if (meridiem.startsWith("p")) {
+    hours += 12;
+  }
+
+  return hours * 60 + minutes;
+}
+
+type PollingHoursFacts = {
+  hasVarySignal: boolean;
+  ranges: Set<string>;
+};
+
+function extractPollingHoursFacts(snippets: EvidenceSnippet[]): PollingHoursFacts {
+  const facts: PollingHoursFacts = {
+    hasVarySignal: false,
+    ranges: new Set<string>(),
+  };
+
+  const rangeRegex =
+    /\b(\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?))\s*(?:-|to|until)\s*(\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?))\b/gi;
+
+  for (const snippet of snippets) {
+    const lower = `${snippet.title} ${snippet.snippet}`.toLowerCase();
+    if (/var(y|ies)\s+by\s+(county|precinct|location)/.test(lower)) {
+      facts.hasVarySignal = true;
+    }
+
+    const text = `${snippet.title}. ${snippet.snippet}`;
+    for (const match of text.matchAll(rangeRegex)) {
+      const start = parseTwelveHourToMinutes(match[1] ?? "");
+      const end = parseTwelveHourToMinutes(match[2] ?? "");
+      if (start === null || end === null || start === end) {
+        continue;
+      }
+      facts.ranges.add(`${start}-${end}`);
+    }
+  }
+
+  return facts;
+}
+
+function detectPollingHoursConflict(snippetsBySource: Map<string, EvidenceSnippet[]>): boolean {
+  if (snippetsBySource.size < 2) {
+    return false;
+  }
+
+  const signatures = new Set<string>();
+
+  for (const snippets of snippetsBySource.values()) {
+    const facts = extractPollingHoursFacts(snippets);
+    if (facts.hasVarySignal) {
+      return false;
+    }
+    if (facts.ranges.size === 0) {
+      continue;
+    }
+    const signature = Array.from(facts.ranges).sort().join("|");
+    if (signature.length > 0) {
+      signatures.add(signature);
+    }
+  }
+
+  return signatures.size > 1;
+}
+
+function detectConflictWarnings(payload: StateResourcePayload, evidence: EvidenceSnippet[]): string[] {
+  if (evidence.length === 0) {
+    return [];
+  }
+
+  const warnings: string[] = [];
+
+  const idBySource = getEvidenceBySourceForField(payload.sources.id_requirements, evidence);
+  if (idBySource.size > 1 && detectIdRequirementsConflict(idBySource)) {
+    warnings.push("id_requirements citations show conflicting required vs not-required ID signals");
+  }
+
+  const voteByMailBySource = getEvidenceBySourceForField(payload.sources.vote_by_mail_info, evidence);
+  if (voteByMailBySource.size > 1 && detectVoteByMailConflict(voteByMailBySource)) {
+    warnings.push("vote_by_mail_info citations show conflicting deadline/rule statements");
+  }
+
+  const pollingHoursBySource = getEvidenceBySourceForField(payload.sources.polling_hours, evidence);
+  if (pollingHoursBySource.size > 1 && detectPollingHoursConflict(pollingHoursBySource)) {
+    warnings.push("polling_hours citations show conflicting polling-time signals");
+  }
+
+  return warnings;
 }
 
 /**
@@ -299,6 +621,20 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       id_requirements,
       sources: sourcesResult.sources,
     },
+    warnings: detectConflictWarnings(
+      {
+        state_fips,
+        state_abbreviation,
+        state_name,
+        polling_place_url,
+        voter_registration_url,
+        vote_by_mail_info,
+        polling_hours,
+        id_requirements,
+        sources: sourcesResult.sources,
+      },
+      extractEvidenceSnippets(input)
+    ),
   };
 }
 
@@ -517,19 +853,24 @@ async function processMessage(
   const validation = validateStateResourcePayload(row.payload);
 
   if (metadataReasons.length === 0 && validation.ok) {
+    const warningReason =
+      validation.warnings.length > 0
+        ? `[CONFLICT_WARN] ${formatValidationReason(validation.warnings)}`
+        : null;
+
     const transition = await pool.query(
       `
         UPDATE staging_items
         SET status = 'validated',
-            reason = NULL,
+            reason = $3,
             validated_at = now(),
             updated_at = now()
         WHERE ingest_key = $1
           AND item_type = $2
           AND status = 'pending'
-          AND run_id IS NOT DISTINCT FROM $3
+          AND run_id IS NOT DISTINCT FROM $4
       `,
-      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
+      [ingestKey, STAGING_ITEM_TYPE_STATE_RESOURCES, warningReason, expectedRunId]
     );
 
     if (transition.rowCount !== 1) {
@@ -544,6 +885,11 @@ async function processMessage(
         item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
         run_id: row.run_id ?? "",
       });
+
+      if (warningReason) {
+        console.warn(`validator conflict warning ingest_key=${ingestKey}: ${warningReason}`);
+      }
+
       await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, messageId);
       return "validated";
     } catch {
