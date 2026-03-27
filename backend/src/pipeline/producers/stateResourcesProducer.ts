@@ -18,6 +18,7 @@ import {
   STATE_ABBR_BY_FIPS,
 } from "../../constants/usStates.js";
 import type { StateResourceDraftPayload } from "../../types/stateResource.js";
+import { createStageObserver } from "../utils/observability.js";
 
 type CensusState = {
   state_name: string;
@@ -127,11 +128,21 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
   const env = getPipelineEnv();
   const runYear = new Date().getUTCFullYear();
   const runId = `state_resources_${new Date().toISOString()}`;
+  const observer = createStageObserver("producer", {
+    run_id: runId,
+    model: env.AI_MODEL,
+    prompt_version: env.PROMPT_VERSION,
+  });
 
   const states = await fetchCensusStates();
   const payloads = states.map(toDraftPayload);
 
   if (dryRun) {
+    observer.record({
+      outcome: "dry_run",
+      reason: `fetched ${payloads.length} state_resources draft items`,
+    });
+    observer.flush({ dry_run: true, fetched: payloads.length, force });
     console.log(`[DRY RUN] fetched ${payloads.length} state_resources draft items`);
     console.log(payloads.slice(0, 3));
     return;
@@ -148,6 +159,7 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
 
   try {
     for (const payload of payloads) {
+      const startedAtMs = Date.now();
       const ingestKey = buildIngestKey(payload.state_fips, runYear);
       const serializedPayload = JSON.stringify(payload);
 
@@ -189,6 +201,13 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
         // or when force refresh is enabled.
         if (result.rowCount === 0) {
           skipped += 1;
+          observer.record({
+            outcome: "skipped",
+            ingest_key: ingestKey,
+            run_id: runId,
+            schema_version: STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
+            duration_ms: Date.now() - startedAtMs,
+          });
           continue;
         }
 
@@ -200,6 +219,13 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
         });
 
         enqueued += 1;
+        observer.record({
+          outcome: "enqueued",
+          ingest_key: ingestKey,
+          run_id: runId,
+          schema_version: STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
+          duration_ms: Date.now() - startedAtMs,
+        });
       } catch (error) {
         failed += 1;
         const reason = toReason(error);
@@ -214,12 +240,23 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
           `,
           [ingestKey, reason]
         );
+
+        observer.record({
+          outcome: "failed",
+          ingest_key: ingestKey,
+          run_id: runId,
+          schema_version: STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
+          reason,
+          duration_ms: Date.now() - startedAtMs,
+        });
       }
     }
   } finally {
     await redis.quit();
     await pool.end();
   }
+
+  observer.flush({ enqueued, skipped, failed, force, total_candidates: payloads.length });
 
   console.log(
     `state_resources producer completed. enqueued=${enqueued} skipped=${skipped} failed=${failed} force=${force}`

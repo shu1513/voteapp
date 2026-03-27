@@ -31,6 +31,7 @@ import type {
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { isUrlOnlyText } from "../../utils/isUrlOnlyText.js";
 import { isLikelyPollingPlaceUrl } from "../../utils/isLikelyPollingPlaceUrl.js";
+import { createStageObserver } from "../utils/observability.js";
 import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
 
 type ValidatorOptions = {
@@ -948,6 +949,11 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
   } = options;
 
   const env = getPipelineEnv();
+  const observer = createStageObserver("validator", {
+    provider: env.AI_PROVIDER,
+    model: env.AI_MODEL,
+    prompt_version: env.PROMPT_VERSION,
+  });
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
 
@@ -963,6 +969,10 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
 
   const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
     for (const entry of entries) {
+      const startedAtMs = Date.now();
+      const ingestKey = entry.message.ingest_key ?? null;
+      const eventRunId = normalizeRunId(entry.message.run_id);
+
       try {
         const result = await processMessage(pool, redis, entry.id, entry.message);
         if (result === "validated") {
@@ -974,9 +984,28 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
         } else {
           skipped += 1;
         }
+
+        let reason: string | null = null;
+        let schemaVersion: string | null = null;
+        let promptVersion: string | null = null;
+        if (ingestKey && result !== "skipped") {
+          const row = await getStagingRow(pool, ingestKey);
+          reason = row?.reason ?? null;
+          schemaVersion = row?.schema_version ?? null;
+          promptVersion = row?.prompt_version ?? null;
+        }
+
+        observer.record({
+          outcome: result,
+          ingest_key: ingestKey,
+          run_id: eventRunId,
+          schema_version: schemaVersion,
+          prompt_version: promptVersion,
+          reason,
+          duration_ms: Date.now() - startedAtMs,
+        });
       } catch (error) {
         const reason = toReason(error);
-        const ingestKey = entry.message.ingest_key;
 
         if (!ingestKey) {
           try {
@@ -984,6 +1013,13 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
           } catch {
             retried += 1;
           }
+          observer.record({
+            outcome: "failed",
+            ingest_key: null,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
           continue;
         }
 
@@ -991,6 +1027,13 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
         if (status === "validated" || status === "rejected") {
           // Keep unacked so XAUTOCLAIM recovery can republish downstream event.
           retried += 1;
+          observer.record({
+            outcome: "retry",
+            ingest_key: ingestKey,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
           continue;
         }
 
@@ -1006,6 +1049,14 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
           // Keep unacked for XAUTOCLAIM recovery.
           retried += 1;
         }
+
+        observer.record({
+          outcome: "failed",
+          ingest_key: ingestKey,
+          run_id: eventRunId,
+          reason,
+          duration_ms: Date.now() - startedAtMs,
+        });
       }
     }
   };
@@ -1043,6 +1094,8 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
     await redis.quit();
     await pool.end();
   }
+
+  observer.flush({ validated, rejected, skipped, retried });
 
   console.log(
     `state_resources validator completed. validated=${validated} rejected=${rejected} skipped=${skipped} retried=${retried}`

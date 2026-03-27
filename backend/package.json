@@ -8,6 +8,7 @@
     "state-resources:enrich-mock": "tsx src/scripts/enrichStateResourcesMock.ts",
     "state-resources:validate": "tsx src/scripts/validateStateResources.ts",
     "state-resources:write": "tsx src/scripts/writeStateResources.ts",
+    "state-resources:health": "tsx src/scripts/stateResourcesHealth.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"

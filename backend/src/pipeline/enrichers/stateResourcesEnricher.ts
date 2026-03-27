@@ -26,6 +26,7 @@ import {
 import { collectStateResourceEvidence } from "../evidence/stateResourceEvidenceCollector.js";
 import type { StateResourceDraftPayload, StateResourcePayload } from "../../types/stateResource.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
+import { createStageObserver } from "../utils/observability.js";
 import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
 
 type EnricherOptions = {
@@ -41,6 +42,7 @@ type StagingRow = {
   status: string;
   schema_version: string | null;
   prompt_version: string | null;
+  reason: string | null;
 };
 
 type DraftParseResult =
@@ -437,7 +439,7 @@ async function reclaimPendingEntries(
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
-      SELECT ingest_key, run_id, payload, status, schema_version, prompt_version
+      SELECT ingest_key, run_id, payload, status, schema_version, prompt_version, reason
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -693,6 +695,11 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
 
   const env = getPipelineEnv();
   const enrichmentConfig = buildEnrichmentConfigFromEnv(env);
+  const observer = createStageObserver("enricher", {
+    provider: enrichmentConfig.provider,
+    model: enrichmentConfig.model,
+    prompt_version: env.PROMPT_VERSION,
+  });
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
 
@@ -708,6 +715,10 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
 
   const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
     for (const entry of entries) {
+      const startedAtMs = Date.now();
+      const ingestKey = entry.message.ingest_key ?? null;
+      const eventRunId = normalizeRunId(entry.message.run_id);
+
       try {
         const outcome = await processMessage(
           pool,
@@ -729,8 +740,28 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
         } else {
           skipped += 1;
         }
+
+        let reason: string | null = null;
+        let schemaVersion: string | null = null;
+        let promptVersion: string | null = null;
+        if (ingestKey && (outcome === "failed" || outcome === "retry")) {
+          const row = await getStagingRow(pool, ingestKey);
+          reason = row?.reason ?? null;
+          schemaVersion = row?.schema_version ?? null;
+          promptVersion = row?.prompt_version ?? null;
+        }
+
+        observer.record({
+          outcome,
+          ingest_key: ingestKey,
+          run_id: eventRunId,
+          schema_version: schemaVersion,
+          prompt_version: promptVersion,
+          reason,
+          duration_ms: Date.now() - startedAtMs,
+        });
       } catch (error) {
-        const ingestKey = entry.message.ingest_key;
+        const reason = toReason(error);
 
         if (!ingestKey) {
           try {
@@ -738,14 +769,28 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
           } catch {
             retried += 1;
           }
+          observer.record({
+            outcome: "failed",
+            ingest_key: null,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
           continue;
         }
 
         const status = await getStagingStatus(pool, ingestKey);
         if (status === "pending") {
           // Unknown error may still be transient; keep unacked for retry/reclaim.
-          console.warn(`enricher retrying ingest_key=${ingestKey}: ${toReason(error)}`);
+          console.warn(`enricher retrying ingest_key=${ingestKey}: ${reason}`);
           retried += 1;
+          observer.record({
+            outcome: "retry",
+            ingest_key: ingestKey,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
           continue;
         }
 
@@ -755,7 +800,15 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
           retried += 1;
         }
 
-        console.error("enricher unexpected error:", toReason(error));
+        observer.record({
+          outcome: "failed",
+          ingest_key: ingestKey,
+          run_id: eventRunId,
+          reason,
+          duration_ms: Date.now() - startedAtMs,
+        });
+
+        console.error("enricher unexpected error:", reason);
       }
     }
   };
@@ -790,6 +843,8 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
     await redis.quit();
     await pool.end();
   }
+
+  observer.flush({ enriched, recovered, failed, skipped, retried });
 
   console.log(
     `state_resources enricher completed. enriched=${enriched} recovered=${recovered} failed=${failed} skipped=${skipped} retried=${retried}`

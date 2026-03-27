@@ -14,6 +14,7 @@ import {
   STAGING_WRITTEN_STREAM,
 } from "../../config/stateResourcePipeline.js";
 import type { SourceCitation, StateResourcePayload, StateResourceSources } from "../../types/stateResource.js";
+import { createStageObserver } from "../utils/observability.js";
 import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
 
 type WriterOptions = {
@@ -28,6 +29,7 @@ type StagingRow = {
   run_id: string | null;
   schema_version: string | null;
   prompt_version: string | null;
+  reason: string | null;
   payload: unknown;
   status: string;
 };
@@ -137,7 +139,7 @@ async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Prom
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
-      SELECT ingest_key, item_type, run_id, schema_version, prompt_version, payload, status
+      SELECT ingest_key, item_type, run_id, schema_version, prompt_version, reason, payload, status
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -422,6 +424,11 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
   const { once = false, batchSize = 20, blockMs = 5000 } = options;
 
   const env = getPipelineEnv();
+  const observer = createStageObserver("writer", {
+    provider: env.AI_PROVIDER,
+    model: env.AI_MODEL,
+    prompt_version: env.PROMPT_VERSION,
+  });
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
 
@@ -437,6 +444,10 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
 
   const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
     for (const entry of entries) {
+      const startedAtMs = Date.now();
+      const ingestKey = entry.message.ingest_key ?? null;
+      const eventRunId = normalizeRunId(entry.message.run_id);
+
       try {
         const outcome = await processMessage(pool, redis, entry.id, entry.message);
         if (outcome === "written") {
@@ -450,13 +461,39 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
         } else {
           skipped += 1;
         }
+
+        let reason: string | null = null;
+        let schemaVersion: string | null = null;
+        let promptVersion: string | null = null;
+        if (ingestKey && outcome !== "skipped") {
+          const row = await getStagingRow(pool, ingestKey);
+          reason = row?.reason ?? null;
+          schemaVersion = row?.schema_version ?? null;
+          promptVersion = row?.prompt_version ?? null;
+        }
+
+        observer.record({
+          outcome,
+          ingest_key: ingestKey,
+          run_id: eventRunId,
+          schema_version: schemaVersion,
+          prompt_version: promptVersion,
+          reason,
+          duration_ms: Date.now() - startedAtMs,
+        });
       } catch (error) {
         failed += 1;
         const reason = toReason(error);
-        const ingestKey = entry.message.ingest_key;
 
         if (!ingestKey) {
           await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, entry.id);
+          observer.record({
+            outcome: "failed",
+            ingest_key: null,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
           continue;
         }
 
@@ -466,16 +503,37 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
           const expectedRunId = normalizeRunId(entry.message.run_id) ?? normalizeRunId(row?.run_id ?? null);
           await markFailed(pool, ingestKey, reason, expectedRunId);
           await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, entry.id);
+          observer.record({
+            outcome: "failed",
+            ingest_key: ingestKey,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
           continue;
         }
 
         if (status === "written") {
           // Keep unacked to allow XAUTOCLAIM recovery and re-publish of written event.
           retried += 1;
+          observer.record({
+            outcome: "retry",
+            ingest_key: ingestKey,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
           continue;
         }
 
         await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, entry.id);
+        observer.record({
+          outcome: "failed",
+          ingest_key: ingestKey,
+          run_id: eventRunId,
+          reason,
+          duration_ms: Date.now() - startedAtMs,
+        });
       }
     }
   };
@@ -510,6 +568,8 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
     await redis.quit();
     await pool.end();
   }
+
+  observer.flush({ written, recovered, failed, skipped, retried });
 
   console.log(
     `state_resources writer completed. written=${written} recovered=${recovered} failed=${failed} skipped=${skipped} retried=${retried}`
