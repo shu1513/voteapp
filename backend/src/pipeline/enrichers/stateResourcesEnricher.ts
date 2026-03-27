@@ -119,6 +119,22 @@ function normalizeStateKey(stateName: string): string {
   return stateName.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
+function splitStoredModel(storedModel: string | null): Pick<EnricherProcessResult, "provider" | "model"> {
+  if (!storedModel) {
+    return { provider: null, model: null };
+  }
+
+  const separatorIndex = storedModel.indexOf(":");
+  if (separatorIndex === -1) {
+    return { provider: null, model: storedModel };
+  }
+
+  return {
+    provider: storedModel.slice(0, separatorIndex),
+    model: storedModel.slice(separatorIndex + 1),
+  };
+}
+
 function candidateKey(candidate: EnrichmentCandidate): string {
   return `${candidate.provider}:${candidate.model}`;
 }
@@ -597,31 +613,34 @@ async function processMessage(
 
   if (hasRunIdMismatch(message.run_id, row.run_id)) {
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    const storedModel = splitStoredModel(row.model);
     return {
       outcome: "skipped",
       reason: null,
       schemaVersion: row.schema_version,
       promptVersion: row.prompt_version,
-      provider: null,
-      model: row.model,
+      provider: storedModel.provider,
+      model: storedModel.model,
     };
   }
   const expectedRunId = messageRunId ?? normalizeRunId(row.run_id);
 
   if (row.status !== "pending") {
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    const storedModel = splitStoredModel(row.model);
     return {
       outcome: "skipped",
       reason: row.reason,
       schemaVersion: row.schema_version,
       promptVersion: row.prompt_version,
-      provider: null,
-      model: row.model,
+      provider: storedModel.provider,
+      model: storedModel.model,
     };
   }
 
   // Recovery path: DB already enriched, likely publish/ack failed earlier.
   if (row.schema_version === STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION) {
+    const storedModel = splitStoredModel(row.model);
     try {
       await publishPending(redis, ingestKey, row.run_id);
       await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
@@ -630,8 +649,8 @@ async function processMessage(
         reason: row.reason,
         schemaVersion: row.schema_version,
         promptVersion: row.prompt_version,
-        provider: null,
-        model: row.model,
+        provider: storedModel.provider,
+        model: storedModel.model,
       };
     } catch {
       return {
@@ -639,8 +658,8 @@ async function processMessage(
         reason: "redis publish/ack failed while recovering enriched row",
         schemaVersion: row.schema_version,
         promptVersion: row.prompt_version,
-        provider: null,
-        model: row.model,
+        provider: storedModel.provider,
+        model: storedModel.model,
       };
     }
   }
@@ -654,13 +673,14 @@ async function processMessage(
       expectedRunId
     );
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    const storedModel = splitStoredModel(row.model);
     return {
       outcome: "failed",
       reason,
       schemaVersion: row.schema_version,
       promptVersion: row.prompt_version,
-      provider: null,
-      model: row.model,
+      provider: storedModel.provider,
+      model: storedModel.model,
     };
   }
 
@@ -668,13 +688,14 @@ async function processMessage(
   if (!draft.ok) {
     await markFailedPending(pool, ingestKey, draft.reason, expectedRunId);
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    const storedModel = splitStoredModel(row.model);
     return {
       outcome: "failed",
       reason: draft.reason,
       schemaVersion: row.schema_version,
       promptVersion: row.prompt_version,
-      provider: null,
-      model: row.model,
+      provider: storedModel.provider,
+      model: storedModel.model,
     };
   }
 
@@ -683,13 +704,14 @@ async function processMessage(
     const reason = "enricher could not collect evidence snippets";
     await markFailedPending(pool, ingestKey, reason, expectedRunId);
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    const storedModel = splitStoredModel(row.model);
     return {
       outcome: "failed",
       reason,
       schemaVersion: row.schema_version,
       promptVersion: row.prompt_version,
-      provider: null,
-      model: row.model,
+      provider: storedModel.provider,
+      model: storedModel.model,
     };
   }
 
@@ -873,6 +895,9 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
               outcome: "retry",
               ingest_key: null,
               run_id: eventRunId,
+              provider: null,
+              model: null,
+              prompt_version: null,
               reason,
               duration_ms: Date.now() - startedAtMs,
             });
@@ -884,6 +909,9 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
             outcome: "failed",
             ingest_key: null,
             run_id: eventRunId,
+            provider: null,
+            model: null,
+            prompt_version: null,
             reason,
             duration_ms: Date.now() - startedAtMs,
           });
@@ -899,6 +927,9 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
             outcome: "retry",
             ingest_key: ingestKey,
             run_id: eventRunId,
+            provider: null,
+            model: null,
+            prompt_version: null,
             reason,
             duration_ms: Date.now() - startedAtMs,
           });
@@ -913,6 +944,9 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
             outcome: "retry",
             ingest_key: ingestKey,
             run_id: eventRunId,
+            provider: null,
+            model: null,
+            prompt_version: null,
             reason,
             duration_ms: Date.now() - startedAtMs,
           });
@@ -924,6 +958,9 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
           outcome: "failed",
           ingest_key: ingestKey,
           run_id: eventRunId,
+          provider: null,
+          model: null,
+          prompt_version: null,
           reason,
           duration_ms: Date.now() - startedAtMs,
         });
