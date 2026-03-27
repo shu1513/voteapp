@@ -557,9 +557,6 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
 
-  await redis.connect();
-  await ensureConsumerGroup(redis);
-
   const consumerName = `writer-${process.pid}`;
   let written = 0;
   let failed = 0;
@@ -600,10 +597,10 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
           duration_ms: Date.now() - startedAtMs,
         });
       } catch (error) {
-        failed += 1;
         const reason = toReason(error);
 
         if (!ingestKey) {
+          failed += 1;
           await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, entry.id);
           observer.record({
             outcome: "failed",
@@ -617,6 +614,7 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
 
         const status = await getStagingStatus(pool, ingestKey);
         if (status === "validated") {
+          failed += 1;
           const row = await getStagingRow(pool, ingestKey);
           const expectedRunId = normalizeRunId(entry.message.run_id) ?? normalizeRunId(row?.run_id ?? null);
           await markFailed(pool, ingestKey, reason, expectedRunId);
@@ -644,6 +642,7 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
           continue;
         }
 
+        failed += 1;
         await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_STATE_RESOURCES_WRITER_GROUP, entry.id);
         observer.record({
           outcome: "failed",
@@ -657,6 +656,9 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
   };
 
   try {
+    await redis.connect();
+    await ensureConsumerGroup(redis);
+
     let keepRunning = true;
 
     while (keepRunning) {
@@ -683,13 +685,21 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
       }
     }
   } finally {
-    await redis.quit();
-    await pool.end();
+    try {
+      await redis.quit();
+    } catch (error) {
+      console.error("writer cleanup warning (redis.quit):", toReason(error));
+    }
+    try {
+      await pool.end();
+    } catch (error) {
+      console.error("writer cleanup warning (pool.end):", toReason(error));
+    }
+
+    observer.flush({ written, recovered, failed, skipped, retried });
+
+    console.log(
+      `state_resources writer completed. written=${written} recovered=${recovered} failed=${failed} skipped=${skipped} retried=${retried}`
+    );
   }
-
-  observer.flush({ written, recovered, failed, skipped, retried });
-
-  console.log(
-    `state_resources writer completed. written=${written} recovered=${recovered} failed=${failed} skipped=${skipped} retried=${retried}`
-  );
 }

@@ -1087,9 +1087,6 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
 
-  await redis.connect();
-  await ensureConsumerGroup(redis);
-
   const consumerName = `validator-${process.pid}`;
 
   let validated = 0;
@@ -1184,6 +1181,9 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
   };
 
   try {
+    await redis.connect();
+    await ensureConsumerGroup(redis);
+
     let keepRunning = true;
 
     while (keepRunning) {
@@ -1213,13 +1213,21 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
       }
     }
   } finally {
-    await redis.quit();
-    await pool.end();
+    try {
+      await redis.quit();
+    } catch (error) {
+      console.error("validator cleanup warning (redis.quit):", toReason(error));
+    }
+    try {
+      await pool.end();
+    } catch (error) {
+      console.error("validator cleanup warning (pool.end):", toReason(error));
+    }
+
+    observer.flush({ validated, rejected, skipped, retried });
+
+    console.log(
+      `state_resources validator completed. validated=${validated} rejected=${rejected} skipped=${skipped} retried=${retried}`
+    );
   }
-
-  observer.flush({ validated, rejected, skipped, retried });
-
-  console.log(
-    `state_resources validator completed. validated=${validated} rejected=${rejected} skipped=${skipped} retried=${retried}`
-  );
 }

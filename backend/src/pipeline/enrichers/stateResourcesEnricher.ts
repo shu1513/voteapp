@@ -814,9 +814,6 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
 
-  await redis.connect();
-  await ensureConsumerGroup(redis);
-
   const consumerName = `enricher-${process.pid}`;
   let enriched = 0;
   let recovered = 0;
@@ -868,6 +865,7 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
         const reason = toReason(error);
 
         if (!ingestKey) {
+          failed += 1;
           try {
             await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, entry.id);
           } catch {
@@ -904,6 +902,7 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
           retried += 1;
         }
 
+        failed += 1;
         observer.record({
           outcome: "failed",
           ingest_key: ingestKey,
@@ -918,6 +917,9 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
   };
 
   try {
+    await redis.connect();
+    await ensureConsumerGroup(redis);
+
     let keepRunning = true;
 
     while (keepRunning) {
@@ -944,13 +946,21 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
       }
     }
   } finally {
-    await redis.quit();
-    await pool.end();
+    try {
+      await redis.quit();
+    } catch (error) {
+      console.error("enricher cleanup warning (redis.quit):", toReason(error));
+    }
+    try {
+      await pool.end();
+    } catch (error) {
+      console.error("enricher cleanup warning (pool.end):", toReason(error));
+    }
+
+    observer.flush({ enriched, recovered, failed, skipped, retried });
+
+    console.log(
+      `state_resources enricher completed. enriched=${enriched} recovered=${recovered} failed=${failed} skipped=${skipped} retried=${retried}`
+    );
   }
-
-  observer.flush({ enriched, recovered, failed, skipped, retried });
-
-  console.log(
-    `state_resources enricher completed. enriched=${enriched} recovered=${recovered} failed=${failed} skipped=${skipped} retried=${retried}`
-  );
 }

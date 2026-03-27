@@ -114,10 +114,13 @@ export class StageObserver {
         stage: this.stage,
         outcome,
         ingest_key: event.ingest_key ?? null,
-        run_id: event.run_id ?? this.runContext.run_id ?? null,
-        provider: event.provider ?? this.runContext.provider ?? null,
-        model: event.model ?? this.runContext.model ?? null,
-        prompt_version: event.prompt_version ?? this.runContext.prompt_version ?? null,
+        run_id: event.run_id !== undefined ? event.run_id : (this.runContext.run_id ?? null),
+        provider: event.provider !== undefined ? event.provider : (this.runContext.provider ?? null),
+        model: event.model !== undefined ? event.model : (this.runContext.model ?? null),
+        prompt_version:
+          event.prompt_version !== undefined
+            ? event.prompt_version
+            : (this.runContext.prompt_version ?? null),
         schema_version: event.schema_version ?? null,
         reason: reason.length > 0 ? reason : null,
         duration_ms: Number.isFinite(event.duration_ms) ? event.duration_ms : null,
