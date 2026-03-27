@@ -1131,6 +1131,14 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
             await redis.xAck(STAGING_PENDING_STREAM, STAGING_STATE_RESOURCES_VALIDATOR_GROUP, entry.id);
           } catch {
             retried += 1;
+            observer.record({
+              outcome: "retry",
+              ingest_key: null,
+              run_id: eventRunId,
+              reason,
+              duration_ms: Date.now() - startedAtMs,
+            });
+            continue;
           }
           observer.record({
             outcome: "failed",
@@ -1167,6 +1175,14 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
         } catch {
           // Keep unacked for XAUTOCLAIM recovery.
           retried += 1;
+          observer.record({
+            outcome: "retry",
+            ingest_key: ingestKey,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
+          continue;
         }
 
         observer.record({

@@ -865,12 +865,21 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
         const reason = toReason(error);
 
         if (!ingestKey) {
-          failed += 1;
           try {
             await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, entry.id);
           } catch {
             retried += 1;
+            observer.record({
+              outcome: "retry",
+              ingest_key: null,
+              run_id: eventRunId,
+              reason,
+              duration_ms: Date.now() - startedAtMs,
+            });
+            continue;
           }
+
+          failed += 1;
           observer.record({
             outcome: "failed",
             ingest_key: null,
@@ -900,6 +909,14 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
           await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, entry.id);
         } catch {
           retried += 1;
+          observer.record({
+            outcome: "retry",
+            ingest_key: ingestKey,
+            run_id: eventRunId,
+            reason,
+            duration_ms: Date.now() - startedAtMs,
+          });
+          continue;
         }
 
         failed += 1;
