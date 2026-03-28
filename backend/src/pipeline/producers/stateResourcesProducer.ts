@@ -244,8 +244,11 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
                 ai_raw_debug = NULL,
                 updated_at = now()
             WHERE ingest_key = $1
+              AND item_type = $3
+              AND status = 'pending'
+              AND run_id IS NOT DISTINCT FROM $4
           `,
-          [ingestKey, reason]
+          [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES, runId]
         );
 
         observer.record({

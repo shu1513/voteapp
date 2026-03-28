@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Pool } from "pg";
 import { createClient } from "redis";
 
@@ -14,6 +15,7 @@ import {
   STATE_RESOURCE_SOURCE_FIELDS,
 } from "../../contracts/stateResourceEnrichmentContract.js";
 import { normalizeRetryFeedback } from "../../ai/retryFeedback.js";
+import { loadProjectEnv } from "../../config/env.js";
 import type { SourceCitation, StateResourceDraftPayload, StateResourcePayload } from "../../types/stateResource.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { normalizeRunId } from "../utils/runIdGuard.js";
@@ -46,6 +48,15 @@ const DUPLICATE_CITATION_FRAGMENT = "contains duplicate citation source_url valu
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
+}
+
+function readRequiredInfraEnv(name: "DATABASE_URL" | "REDIS_URL"): string {
+  const value = process.env[name];
+  const trimmed = value?.trim();
+  if (!trimmed) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+  return trimmed;
 }
 
 function isNonEmptyString(value: unknown): value is string {
@@ -200,18 +211,31 @@ function parseDraftPayload(value: unknown): StateResourceDraftPayload | null {
   }
 
   const population_estimate =
-    typeof input.population_estimate === "number" || input.population_estimate === null
+    (typeof input.population_estimate === "number" && Number.isFinite(input.population_estimate)) ||
+    input.population_estimate === null
       ? (input.population_estimate as number | null)
       : null;
+
+  const normalizedSeedSources = seedSources.map((item) => item.trim());
+  const censusSourceUrl = (input.census_source_url as string).trim();
+  const stateAbbreviationReferenceUrl = (input.state_abbreviation_reference_url as string).trim();
+
+  if (!normalizedSeedSources.every((item) => isHttpUrl(item))) {
+    return null;
+  }
+
+  if (!isHttpUrl(censusSourceUrl) || !isHttpUrl(stateAbbreviationReferenceUrl)) {
+    return null;
+  }
 
   return {
     state_fips,
     state_abbreviation,
     state_name: (input.state_name as string).trim(),
     population_estimate,
-    census_source_url: (input.census_source_url as string).trim(),
-    state_abbreviation_reference_url: (input.state_abbreviation_reference_url as string).trim(),
-    seed_sources: seedSources.map((item) => item.trim()),
+    census_source_url: censusSourceUrl,
+    state_abbreviation_reference_url: stateAbbreviationReferenceUrl,
+    seed_sources: normalizedSeedSources,
     allow_open_web_research: input.allow_open_web_research,
   };
 }
@@ -319,8 +343,9 @@ function dedupeSources(payload: StateResourcePayload): { payload: StateResourceP
   };
 }
 
-function buildRetryRunId(rowRunId: string | null): string {
-  return normalizeRunId(rowRunId) ?? `state_resources_retry_${new Date().toISOString()}`;
+function buildRetryRunId(): string {
+  const generated = `state_resources_retry_${new Date().toISOString()}_${randomUUID().slice(0, 8)}`;
+  return normalizeRunId(generated) ?? `state_resources_retry_${Date.now()}_${randomUUID().slice(0, 8)}`;
 }
 
 async function loadRetryRows(pool: Pool, maxItems: number): Promise<RetryRow[]> {
@@ -364,7 +389,7 @@ async function requeueToDraft(
   row: RetryRow,
   draft: StateResourceDraftPayload
 ): Promise<boolean> {
-  const runId = buildRetryRunId(row.run_id);
+  const runId = buildRetryRunId();
   const retryFeedback = buildRetryFeedbackFromRow(row);
   const nextAiRawDebug = mergeAiRawDebugWithRetryFeedback(row.ai_raw_debug, retryFeedback);
 
@@ -419,7 +444,7 @@ async function requeueToPending(
   row: RetryRow,
   payload: StateResourcePayload
 ): Promise<boolean> {
-  const runId = buildRetryRunId(row.run_id);
+  const runId = buildRetryRunId();
 
   const transition = await pool.query(
     `
@@ -471,8 +496,9 @@ async function requeueToPending(
 export async function runStateResourcesRetrySweeper(options: RetryOptions = {}): Promise<RetrySweepResult> {
   const { maxItems = 200 } = options;
 
-  const databaseUrl = process.env.DATABASE_URL ?? "postgresql://localhost:5432/voteapp";
-  const redisUrl = process.env.REDIS_URL ?? "redis://localhost:6379";
+  loadProjectEnv();
+  const databaseUrl = readRequiredInfraEnv("DATABASE_URL");
+  const redisUrl = readRequiredInfraEnv("REDIS_URL");
 
   const pool = new Pool({ connectionString: databaseUrl });
   const redis = createClient({ url: redisUrl });

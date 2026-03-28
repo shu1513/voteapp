@@ -259,8 +259,12 @@ function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCand
 }
 
 function shouldTrySecondPromptForModel(result: Exclude<EnrichStateResourcesResult, { ok: true }>): boolean {
-  // A second prompt is not useful when the provider/model is not callable.
-  return result.errorCode !== "CONFIGURATION_ERROR" && result.errorCode !== "UNSUPPORTED_PROVIDER";
+  // Second prompt variant should only be used for content-shape issues, not transport/provider health failures.
+  return (
+    result.errorCode === "INVALID_JSON" ||
+    result.errorCode === "SCHEMA_MISMATCH" ||
+    result.errorCode === "MISSING_REQUIRED_FIELDS"
+  );
 }
 
 function formatFallbackFailureReason(

@@ -1,4 +1,5 @@
 import { isIP } from "node:net";
+import { lookup as dnsLookup } from "node:dns/promises";
 import {
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_SOURCE_FIELDS,
@@ -85,19 +86,8 @@ function normalizeWhitespace(input: string): string {
   return input.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim();
 }
 
-function isBlockedCitationHostname(hostname: string): boolean {
-  const host = hostname.toLowerCase().replace(/^\[|\]$/g, "");
-  if (
-    host === "localhost" ||
-    host.endsWith(".localhost") ||
-    host.endsWith(".local") ||
-    host.endsWith(".internal") ||
-    host === "metadata.google.internal" ||
-    host === "metadata"
-  ) {
-    return true;
-  }
-
+function isPrivateIpLiteral(hostnameOrIp: string): boolean {
+  const host = hostnameOrIp.toLowerCase().replace(/^\[|\]$/g, "");
   const ipVersion = isIP(host);
   if (ipVersion === 4) {
     const octets = host.split(".").map((part) => Number.parseInt(part, 10));
@@ -120,20 +110,53 @@ function isBlockedCitationHostname(hostname: string): boolean {
   }
 
   if (ipVersion === 6) {
-    const normalized = host.replace(/^\[|\]$/g, "").toLowerCase();
     return (
-      normalized === "::1" ||
-      normalized === "::" ||
-      normalized.startsWith("fc") ||
-      normalized.startsWith("fd") ||
-      normalized.startsWith("fe8") ||
-      normalized.startsWith("fe9") ||
-      normalized.startsWith("fea") ||
-      normalized.startsWith("feb")
+      host === "::1" ||
+      host === "::" ||
+      host.startsWith("fc") ||
+      host.startsWith("fd") ||
+      host.startsWith("fe8") ||
+      host.startsWith("fe9") ||
+      host.startsWith("fea") ||
+      host.startsWith("feb")
     );
   }
 
   return false;
+}
+
+function isBlockedCitationHostname(hostname: string): boolean {
+  const host = hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  if (
+    host === "localhost" ||
+    host.endsWith(".localhost") ||
+    host.endsWith(".local") ||
+    host.endsWith(".internal") ||
+    host === "metadata.google.internal" ||
+    host === "metadata"
+  ) {
+    return true;
+  }
+
+  return isPrivateIpLiteral(host);
+}
+
+async function resolvesToBlockedPrivateIp(hostname: string): Promise<boolean> {
+  const host = hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  if (!host || isIP(host) > 0) {
+    return false;
+  }
+
+  try {
+    const records = await dnsLookup(host, {
+      all: true,
+      verbatim: true,
+    });
+    return records.some((record) => isPrivateIpLiteral(record.address));
+  } catch {
+    // Best-effort DNS safety check: keep flow resilient if DNS resolution is unavailable.
+    return false;
+  }
 }
 
 function isAllowedCitationContentType(contentType: string): boolean {
@@ -177,6 +200,9 @@ async function fetchCitationEvidenceSnippet(
   if (isBlockedCitationHostname(inputParsed.hostname)) {
     return { ok: false, reason: "citation URL points to a blocked/private host" };
   }
+  if (await resolvesToBlockedPrivateIp(inputParsed.hostname)) {
+    return { ok: false, reason: "citation URL hostname resolves to a blocked/private IP" };
+  }
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), CITATION_FETCH_TIMEOUT_MS);
@@ -206,6 +232,9 @@ async function fetchCitationEvidenceSnippet(
 
     if (isBlockedCitationHostname(finalParsed.hostname)) {
       return { ok: false, reason: "citation final URL points to a blocked/private host" };
+    }
+    if (await resolvesToBlockedPrivateIp(finalParsed.hostname)) {
+      return { ok: false, reason: "citation final URL hostname resolves to a blocked/private IP" };
     }
 
     const contentType = response.headers.get("content-type") ?? "";

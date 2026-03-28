@@ -76,6 +76,7 @@ export function buildRetryFeedbackPromptLines(retryFeedback: RetryFeedback | nul
     return [];
   }
 
+  // Keep prompt payload keys snake_case for stable JSON prompt format across providers.
   const payload = {
     previous_failure_reason: normalized.previousFailureReason,
     failed_citation_urls: normalized.failedCitationUrls,

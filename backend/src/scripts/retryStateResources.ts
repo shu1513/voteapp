@@ -7,6 +7,9 @@ function readPositiveIntegerArg(prefix: string): number | undefined {
   }
 
   const raw = arg.slice(prefix.length).trim();
+  if (!/^\d+$/.test(raw)) {
+    throw new Error(`Invalid ${prefix} value: ${raw}. Expected a positive integer.`);
+  }
   const parsed = Number.parseInt(raw, 10);
   if (!Number.isFinite(parsed) || parsed <= 0) {
     throw new Error(`Invalid ${prefix} value: ${raw}. Expected a positive integer.`);

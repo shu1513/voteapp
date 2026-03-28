@@ -60,6 +60,14 @@ function ensureDotEnvLoaded(): void {
 }
 
 /**
+ * Loads project .env once from common locations.
+ * Useful for scripts that only need non-AI infra variables.
+ */
+export function loadProjectEnv(): void {
+  ensureDotEnvLoaded();
+}
+
+/**
  * Reads a required environment variable, with optional fallback.
  */
 function readEnv(name: string, fallback?: string): string {
