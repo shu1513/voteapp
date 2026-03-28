@@ -39,7 +39,6 @@ function ensureDotEnvLoaded(): void {
   if (didAttemptDotEnvLoad) {
     return;
   }
-  didAttemptDotEnvLoad = true;
 
   const moduleDir = dirname(fileURLToPath(import.meta.url));
   const candidates = [
@@ -55,9 +54,12 @@ function ensureDotEnvLoaded(): void {
     }
     seen.add(candidate);
     if (tryLoadDotEnvFile(candidate)) {
+      didAttemptDotEnvLoad = true;
       return;
     }
   }
+
+  didAttemptDotEnvLoad = true;
 }
 
 /**
