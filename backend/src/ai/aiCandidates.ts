@@ -12,6 +12,8 @@ export type AiCandidate = {
 export const AI_CANDIDATES: readonly AiCandidate[] = [
   { provider: "openai", model: "gpt-4o-mini" },
   { provider: "claude", model: "claude-haiku-4-5-20251001" },
+  { provider: "openai", model: "gpt-5.2" },
+  { provider: "claude", model: "claude-opus-4-1-20250805" },
 ] as const;
 
 export const DEFAULT_AI_CANDIDATE: AiCandidate = AI_CANDIDATES[0];

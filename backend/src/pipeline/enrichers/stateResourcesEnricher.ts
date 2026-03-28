@@ -3,12 +3,15 @@ import { createClient } from "redis";
 
 import { buildEnrichmentConfigFromEnv, enrichStateResources } from "../../ai/enrichStateResources.js";
 import { AI_CANDIDATES } from "../../ai/aiCandidates.js";
+import { normalizeRetryFeedback } from "../../ai/retryFeedback.js";
 import type {
   AiProvider,
   EnrichStateResourcesConfig,
   EnrichStateResourcesInput,
   EnrichStateResourcesResult,
   EvidenceSnippet,
+  PromptVariant,
+  RetryFeedback,
 } from "../../ai/types.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
@@ -44,6 +47,8 @@ type StagingRow = {
   model: string | null;
   prompt_version: string | null;
   reason: string | null;
+  failure_debug: unknown;
+  ai_raw_debug: unknown;
 };
 
 type DraftParseResult =
@@ -72,6 +77,7 @@ type EnrichmentCandidate = {
 
 type EnrichmentAttemptFailure = {
   candidate: EnrichmentCandidate;
+  promptVariant: PromptVariant;
   errorCode: string;
   reason: string;
   retryable: boolean;
@@ -84,6 +90,7 @@ const VOTE_ORG_POLLING_LOCATOR_URL = "https://www.vote.org/polling-place-locator
 const VOTE_ORG_POLLING_FETCH_TIMEOUT_MS = 10_000;
 const VOTE_ORG_RETRY_BACKOFF_INITIAL_MS = 60_000;
 const VOTE_ORG_RETRY_BACKOFF_MAX_MS = 15 * 60_000;
+const SAME_PASS_FAILED_URL_MEMORY_LIMIT = 100;
 let voteOrgPollingMapPromise: Promise<Map<string, string>> | null = null;
 let voteOrgLastLoadFailureAt: number | null = null;
 let voteOrgRetryBackoffMs = VOTE_ORG_RETRY_BACKOFF_INITIAL_MS;
@@ -94,6 +101,63 @@ let voteOrgRetryBackoffMs = VOTE_ORG_RETRY_BACKOFF_INITIAL_MS;
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
+}
+
+function extractAiRawDebug(failureDebug: Record<string, unknown> | undefined): Record<string, unknown> | null {
+  if (!failureDebug) {
+    return null;
+  }
+
+  const aiRawDebug: Record<string, unknown> = {};
+  for (const key of [
+    "draft_snapshot",
+    "retry_feedback",
+    "provider_prompt_has_retry_feedback",
+    "provider_prompt_retry_feedback_snapshot",
+    "provider_response_text",
+    "provider_response_payload",
+    "ai_payload_before_grounding",
+  ]) {
+    const value = failureDebug[key];
+    if (value !== undefined) {
+      aiRawDebug[key] = value;
+    }
+  }
+
+  return Object.keys(aiRawDebug).length > 0 ? aiRawDebug : null;
+}
+
+function extractRetryFeedbackFromRow(row: StagingRow): EnrichStateResourcesInput["retryFeedback"] {
+  const fromAiRawDebug =
+    typeof row.ai_raw_debug === "object" &&
+    row.ai_raw_debug !== null &&
+    !Array.isArray(row.ai_raw_debug) &&
+    "retry_feedback" in row.ai_raw_debug
+      ? normalizeRetryFeedback((row.ai_raw_debug as Record<string, unknown>).retry_feedback)
+      : null;
+
+  if (fromAiRawDebug) {
+    return fromAiRawDebug;
+  }
+
+  const fromFailureDebug =
+    typeof row.failure_debug === "object" &&
+    row.failure_debug !== null &&
+    !Array.isArray(row.failure_debug) &&
+    "retry_feedback" in row.failure_debug
+      ? normalizeRetryFeedback((row.failure_debug as Record<string, unknown>).retry_feedback)
+      : null;
+
+  if (fromFailureDebug) {
+    return fromFailureDebug;
+  }
+
+  return normalizeRetryFeedback({
+    previousFailureReason: row.reason,
+    failedCitationUrls: [],
+    retryCount: null,
+    failedAt: null,
+  });
 }
 
 /**
@@ -135,6 +199,34 @@ function splitStoredModel(storedModel: string | null): Pick<EnricherProcessResul
   };
 }
 
+function mergeEvidenceSnippets(
+  baseEvidence: EvidenceSnippet[],
+  additionalEvidence: EvidenceSnippet[]
+): EvidenceSnippet[] {
+  const merged = [...baseEvidence];
+  const seenUrls = new Set(
+    baseEvidence
+      .map((item) => normalizeHttpUrl(item.url))
+      .filter((url): url is string => typeof url === "string")
+  );
+
+  for (const snippet of additionalEvidence) {
+    const normalized = normalizeHttpUrl(snippet.url);
+    if (!normalized || seenUrls.has(normalized)) {
+      continue;
+    }
+
+    seenUrls.add(normalized);
+    merged.push({
+      url: normalized,
+      title: snippet.title,
+      snippet: snippet.snippet,
+    });
+  }
+
+  return merged;
+}
+
 function candidateKey(candidate: EnrichmentCandidate): string {
   return `${candidate.provider}:${candidate.model}`;
 }
@@ -157,27 +249,18 @@ function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCand
     chain.push(candidate);
   };
 
-  addCandidate(configured);
   for (const candidate of AI_CANDIDATES) {
     addCandidate(candidate);
   }
+  // Keep cycling order deterministic (cheap -> expensive); append configured model only if not listed.
+  addCandidate(configured);
 
   return chain;
 }
 
-function shouldTryNextCandidate(result: Exclude<EnrichStateResourcesResult, { ok: true }>): boolean {
-  if (result.retryable) {
-    return true;
-  }
-
-  // Conservative fallback on provider/model-specific output/config failures.
-  // Do not fail over deterministic contract failures that indicate invalid upstream input.
-  return (
-    result.errorCode === "CONFIGURATION_ERROR" ||
-    result.errorCode === "UNSUPPORTED_PROVIDER" ||
-    result.errorCode === "INVALID_JSON" ||
-    result.errorCode === "MISSING_REQUIRED_FIELDS"
-  );
+function shouldTrySecondPromptForModel(result: Exclude<EnrichStateResourcesResult, { ok: true }>): boolean {
+  // A second prompt is not useful when the provider/model is not callable.
+  return result.errorCode !== "CONFIGURATION_ERROR" && result.errorCode !== "UNSUPPORTED_PROVIDER";
 }
 
 function formatFallbackFailureReason(
@@ -189,9 +272,80 @@ function formatFallbackFailureReason(
   }
 
   const summary = attempts
-    .map((attempt) => `${attempt.candidate.provider}:${attempt.candidate.model}:${attempt.errorCode}`)
+    .map(
+      (attempt) =>
+        `${attempt.candidate.provider}:${attempt.candidate.model}:${attempt.promptVariant}:${attempt.errorCode}`
+    )
     .join(" -> ");
   return `[${finalFailure.errorCode}] ${finalFailure.reason} | candidates=${summary}`;
+}
+
+function isObjectRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function extractHttpUrlsFromText(text: string): string[] {
+  const matches = text.match(/https?:\/\/[^\s"'<>)}\]]+/g) ?? [];
+  const normalized: string[] = [];
+  const seen = new Set<string>();
+
+  for (const match of matches) {
+    const cleaned = match.replace(/[.,;:!?]+$/g, "");
+    if (cleaned.length === 0 || seen.has(cleaned)) {
+      continue;
+    }
+    seen.add(cleaned);
+    normalized.push(cleaned);
+  }
+
+  return normalized;
+}
+
+function extractFailedCitationUrlsFromFailure(
+  failure: Exclude<EnrichStateResourcesResult, { ok: true }>
+): string[] {
+  const urls = new Set<string>();
+
+  if (isObjectRecord(failure.failureDebug) && Array.isArray(failure.failureDebug.failed_citation_urls)) {
+    for (const raw of failure.failureDebug.failed_citation_urls) {
+      if (!isNonEmptyString(raw)) {
+        continue;
+      }
+      const normalized = normalizeHttpUrl(raw);
+      urls.add(normalized ?? raw.trim());
+    }
+  }
+
+  for (const rawUrl of extractHttpUrlsFromText(failure.reason)) {
+    const normalized = normalizeHttpUrl(rawUrl);
+    urls.add(normalized ?? rawUrl);
+  }
+
+  return Array.from(urls);
+}
+
+function mergeRetryFeedbackForSamePass(
+  current: RetryFeedback | null | undefined,
+  failure: Exclude<EnrichStateResourcesResult, { ok: true }>
+): RetryFeedback {
+  const normalizedCurrent = normalizeRetryFeedback(current) ?? {
+    previousFailureReason: null,
+    failedCitationUrls: [],
+    retryCount: null,
+    failedAt: null,
+  };
+
+  const mergedUrls = new Set<string>(normalizedCurrent.failedCitationUrls);
+  for (const url of extractFailedCitationUrlsFromFailure(failure)) {
+    mergedUrls.add(url);
+  }
+
+  return {
+    previousFailureReason: failure.reason,
+    failedCitationUrls: Array.from(mergedUrls).slice(0, SAME_PASS_FAILED_URL_MEMORY_LIMIT),
+    retryCount: (normalizedCurrent.retryCount ?? 0) + 1,
+    failedAt: new Date().toISOString(),
+  };
 }
 
 async function enrichWithCandidates(
@@ -199,31 +353,46 @@ async function enrichWithCandidates(
   config: EnrichStateResourcesConfig
 ): Promise<{ result: EnrichStateResourcesResult; attempts: EnrichmentAttemptFailure[] }> {
   const chain = buildCandidateChain(config);
+  const promptVariants: PromptVariant[] = ["default", "citation_repair"];
   const attempts: EnrichmentAttemptFailure[] = [];
   let lastFailure: Exclude<EnrichStateResourcesResult, { ok: true }> | null = null;
+  let currentRetryFeedback = normalizeRetryFeedback(input.retryFeedback ?? null);
 
   for (const candidate of chain) {
-    const candidateConfig: EnrichStateResourcesConfig = {
-      ...config,
-      provider: candidate.provider,
-      model: candidate.model,
-    };
+    for (let variantIndex = 0; variantIndex < promptVariants.length; variantIndex += 1) {
+      const promptVariant = promptVariants[variantIndex];
+      const candidateConfig: EnrichStateResourcesConfig = {
+        ...config,
+        provider: candidate.provider,
+        model: candidate.model,
+      };
 
-    const result = await enrichStateResources(input, candidateConfig);
-    if (result.ok) {
-      return { result, attempts };
-    }
-    lastFailure = result;
+      const result = await enrichStateResources(
+        {
+          ...input,
+          promptVariant,
+          retryFeedback: currentRetryFeedback,
+        },
+        candidateConfig
+      );
+      if (result.ok) {
+        return { result, attempts };
+      }
+      lastFailure = result;
+      currentRetryFeedback = mergeRetryFeedbackForSamePass(currentRetryFeedback, result);
 
-    attempts.push({
-      candidate,
-      errorCode: result.errorCode,
-      reason: result.reason,
-      retryable: result.retryable,
-    });
+      attempts.push({
+        candidate,
+        promptVariant,
+        errorCode: result.errorCode,
+        reason: result.reason,
+        retryable: result.retryable,
+      });
 
-    if (!shouldTryNextCandidate(result)) {
-      return { result, attempts };
+      const hasAnotherPromptVariant = variantIndex < promptVariants.length - 1;
+      if (!hasAnotherPromptVariant || !shouldTrySecondPromptForModel(result)) {
+        break;
+      }
     }
   }
 
@@ -465,7 +634,8 @@ async function reclaimPendingEntries(
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
-      SELECT ingest_key, run_id, payload, status, schema_version, model, prompt_version, reason
+      SELECT ingest_key, run_id, payload, status, schema_version, model, prompt_version, reason, ai_raw_debug
+           , failure_debug
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -499,6 +669,8 @@ async function markFailedPending(
   pool: Pool,
   ingestKey: string,
   reason: string,
+  failureDebug: Record<string, unknown> | null,
+  aiRawDebug: Record<string, unknown> | null,
   expectedRunId: string | null
 ): Promise<void> {
   await pool.query(
@@ -506,13 +678,22 @@ async function markFailedPending(
       UPDATE staging_items
       SET status = 'failed',
           reason = $2,
+          failure_debug = $3::jsonb,
+          ai_raw_debug = $4::jsonb,
           updated_at = now()
       WHERE ingest_key = $1
-        AND item_type = $3
+        AND item_type = $5
         AND status = 'pending'
-        AND run_id IS NOT DISTINCT FROM $4
+        AND run_id IS NOT DISTINCT FROM $6
     `,
-    [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES, expectedRunId]
+    [
+      ingestKey,
+      reason,
+      failureDebug ? JSON.stringify(failureDebug) : null,
+      aiRawDebug ? JSON.stringify(aiRawDebug) : null,
+      STAGING_ITEM_TYPE_STATE_RESOURCES,
+      expectedRunId,
+    ]
   );
 }
 
@@ -538,6 +719,7 @@ async function applyEnrichment(
   pool: Pool,
   ingestKey: string,
   payload: EnrichedStagingPayload,
+  aiRawDebug: Record<string, unknown> | null,
   promptVersion: string,
   provider: string,
   model: string,
@@ -550,13 +732,15 @@ async function applyEnrichment(
           schema_version = $3,
           model = $4,
           prompt_version = $5,
+          ai_raw_debug = $6::jsonb,
           reason = NULL,
+          failure_debug = NULL,
           updated_at = now()
       WHERE ingest_key = $1
-        AND item_type = $6
+        AND item_type = $7
         AND status = 'pending'
-        AND (schema_version = $7 OR schema_version IS NULL)
-        AND run_id IS NOT DISTINCT FROM $8
+        AND (schema_version = $8 OR schema_version IS NULL)
+        AND run_id IS NOT DISTINCT FROM $9
     `,
     [
       ingestKey,
@@ -564,6 +748,7 @@ async function applyEnrichment(
       STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
       `${provider}:${model}`,
       promptVersion,
+      aiRawDebug ? JSON.stringify(aiRawDebug) : null,
       STAGING_ITEM_TYPE_STATE_RESOURCES,
       STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
       expectedRunId,
@@ -670,6 +855,12 @@ async function processMessage(
       pool,
       ingestKey,
       reason,
+      {
+        stage: "enricher",
+        failure_type: "unsupported_schema_version",
+        schema_version: row.schema_version,
+      },
+      null,
       expectedRunId
     );
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
@@ -686,7 +877,17 @@ async function processMessage(
 
   const draft = parseDraftPayload(row.payload);
   if (!draft.ok) {
-    await markFailedPending(pool, ingestKey, draft.reason, expectedRunId);
+    await markFailedPending(
+      pool,
+      ingestKey,
+      draft.reason,
+      {
+        stage: "enricher",
+        failure_type: "draft_parse",
+      },
+      null,
+      expectedRunId
+    );
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     const storedModel = splitStoredModel(row.model);
     return {
@@ -702,7 +903,17 @@ async function processMessage(
   const evidence = await collectStateResourceEvidence(draft.draft);
   if (evidence.length === 0) {
     const reason = "enricher could not collect evidence snippets";
-    await markFailedPending(pool, ingestKey, reason, expectedRunId);
+    await markFailedPending(
+      pool,
+      ingestKey,
+      reason,
+      {
+        stage: "enricher",
+        failure_type: "evidence_collection",
+      },
+      null,
+      expectedRunId
+    );
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     const storedModel = splitStoredModel(row.model);
     return {
@@ -736,6 +947,7 @@ async function processMessage(
       draft: draft.draft,
       evidence: enrichedEvidence,
       promptVersion: row.prompt_version ?? envPromptVersion,
+      retryFeedback: extractRetryFeedbackFromRow(row),
     },
     enrichmentConfig
   );
@@ -757,7 +969,30 @@ async function processMessage(
       };
     }
 
-    await markFailedPending(pool, ingestKey, reason, expectedRunId);
+    await markFailedPending(
+      pool,
+      ingestKey,
+      reason,
+      {
+        stage: "enricher",
+        failure_type: "ai_enrichment",
+        final_error_code: enrichmentResult.errorCode,
+        final_retryable: enrichmentResult.retryable,
+        final_provider: lastAttempt?.provider ?? null,
+        final_model: lastAttempt?.model ?? null,
+        attempts: attempts.map((attempt) => ({
+          provider: attempt.candidate.provider,
+          model: attempt.candidate.model,
+          prompt_variant: attempt.promptVariant,
+          error_code: attempt.errorCode,
+          retryable: attempt.retryable,
+          reason: attempt.reason,
+        })),
+        ...(enrichmentResult.failureDebug ?? {}),
+      },
+      extractAiRawDebug(enrichmentResult.failureDebug),
+      expectedRunId
+    );
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
     return {
       outcome: "failed",
@@ -769,15 +1004,17 @@ async function processMessage(
     };
   }
 
+  const finalEvidence = mergeEvidenceSnippets(enrichedEvidence, enrichmentResult.verifiedCitationEvidence);
   const enrichedPayload: EnrichedStagingPayload = {
     ...enrichmentResult.payload,
-    evidence: enrichedEvidence,
+    evidence: finalEvidence,
   };
 
   const didUpdate = await applyEnrichment(
     pool,
     ingestKey,
     enrichedPayload,
+    enrichmentResult.aiRawDebug,
     enrichmentResult.promptVersion,
     enrichmentResult.provider,
     enrichmentResult.model,

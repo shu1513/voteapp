@@ -31,6 +31,22 @@ function hasAnyKeyword(text: string, keywords: string[]): boolean {
   return keywords.some((keyword) => lower.includes(keyword));
 }
 
+function hasClearIdRequirementStatement(text: string): boolean {
+  const lower = text.toLowerCase();
+  const patterns = [
+    /\b(?:voter\s+)?id\s+is\s+required\b/,
+    /\b(?:voter\s+)?id\s+required\b/,
+    /\brequires?\s+(?:a\s+)?(?:valid\s+)?(?:photo\s+)?id\b/,
+    /\b(?:voter\s+)?id\s+is\s+not\s+required\b/,
+    /\bno\s+(?:photo\s+)?id\s+(?:is\s+)?required\b/,
+    /\bdo(?:es)?\s+not\s+require\s+(?:a\s+)?(?:photo\s+)?(?:voter\s+)?id\b/,
+    /\b(?:no|without)\s+(?:voter\s+)?id\b/,
+    /\bidentification\s+is\s+(?:not\s+)?required\b/,
+  ];
+
+  return patterns.some((pattern) => pattern.test(lower));
+}
+
 function looksLikeMockBoilerplate(field: "vote_by_mail_info" | "polling_hours" | "id_requirements", text: string): boolean {
   const normalized = text.trim().toLowerCase();
   if (
@@ -81,8 +97,7 @@ function validateStateSpecificFieldQuality(payload: StateResourcePayload): strin
     return "polling_hours must include concrete opening/closing times or explicit county/precinct variance";
   }
 
-  const idKeywords = ["id required", "require id", "photo id", "identification", "no id", "not require"];
-  if (!hasAnyKeyword(payload.id_requirements, idKeywords)) {
+  if (!hasClearIdRequirementStatement(payload.id_requirements)) {
     return "id_requirements must clearly state whether voter identification is required";
   }
 

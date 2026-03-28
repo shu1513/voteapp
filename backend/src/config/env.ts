@@ -1,3 +1,6 @@
+import { existsSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { DEFAULT_AI_CANDIDATE } from "../ai/aiCandidates.js";
 import type { AiProvider } from "../ai/types.js";
 
@@ -12,6 +15,49 @@ export type PipelineEnv = {
   ANTHROPIC_API_KEY?: string;
   GEMINI_API_KEY?: string;
 };
+
+let didAttemptDotEnvLoad = false;
+
+function tryLoadDotEnvFile(path: string): boolean {
+  if (!existsSync(path)) {
+    return false;
+  }
+  try {
+    process.loadEnvFile(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Loads .env once from common project paths when present.
+ * Existing exported vars still take precedence over file values.
+ */
+function ensureDotEnvLoaded(): void {
+  if (didAttemptDotEnvLoad) {
+    return;
+  }
+  didAttemptDotEnvLoad = true;
+
+  const moduleDir = dirname(fileURLToPath(import.meta.url));
+  const candidates = [
+    resolve(process.cwd(), ".env"),
+    resolve(process.cwd(), "backend", ".env"),
+    resolve(moduleDir, "../../.env"),
+  ];
+
+  const seen = new Set<string>();
+  for (const candidate of candidates) {
+    if (seen.has(candidate)) {
+      continue;
+    }
+    seen.add(candidate);
+    if (tryLoadDotEnvFile(candidate)) {
+      return;
+    }
+  }
+}
 
 /**
  * Reads a required environment variable, with optional fallback.
@@ -54,13 +100,14 @@ function readPositiveIntegerEnv(name: string, fallback: number): number {
  * Returns normalized runtime configuration for the pipeline.
  */
 export function getPipelineEnv(): PipelineEnv {
+  ensureDotEnvLoaded();
   return {
     DATABASE_URL: readEnv("DATABASE_URL", "postgresql://localhost:5432/voteapp"),
     REDIS_URL: readEnv("REDIS_URL", "redis://localhost:6379"),
     AI_PROVIDER: readAiProvider(),
     AI_MODEL: readEnv("AI_MODEL", DEFAULT_AI_CANDIDATE.model),
     AI_TIMEOUT_MS: readPositiveIntegerEnv("AI_TIMEOUT_MS", 30000),
-    PROMPT_VERSION: readEnv("PROMPT_VERSION", "state_resources_v1"),
+    PROMPT_VERSION: readEnv("PROMPT_VERSION", "state_resources_v2"),
     OPENAI_API_KEY: readOptionalEnv("OPENAI_API_KEY"),
     ANTHROPIC_API_KEY: readOptionalEnv("ANTHROPIC_API_KEY"),
     GEMINI_API_KEY: readOptionalEnv("GEMINI_API_KEY"),

@@ -17,6 +17,39 @@ function draft(overrides: Partial<StateResourceDraftPayload> = {}): StateResourc
 }
 
 describe("collectStateResourceEvidence", () => {
+  it("uses all configured seed sources by default", async () => {
+    const hits: string[] = [];
+    const seedSources = [
+      "https://seed.example.org/polling/",
+      "https://seed.example.org/registration/",
+      "https://seed.example.org/mail/",
+      "https://seed.example.org/id/",
+      "https://seed.example.org/hours/",
+      "https://seed.example.org/extra-a/",
+      "https://seed.example.org/extra-b/",
+    ];
+
+    const fetchImpl: typeof fetch = async (input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : input.toString();
+      hits.push(url);
+      return new Response("Evidence text for testing.", {
+        status: 200,
+        headers: { "content-type": "text/plain; charset=utf-8" },
+      });
+    };
+
+    const evidence = await collectStateResourceEvidence(
+      draft({
+        seed_sources: seedSources,
+        allow_open_web_research: false,
+      }),
+      { fetchImpl }
+    );
+
+    expect(hits.length).toBe(seedSources.length);
+    expect(evidence.length).toBe(seedSources.length);
+  });
+
   it("does not crawl discovered links when allow_open_web_research is false", async () => {
     const hits: string[] = [];
     const fetchImpl: typeof fetch = async (input: RequestInfo | URL) => {

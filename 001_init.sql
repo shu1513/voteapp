@@ -159,6 +159,8 @@ CREATE TABLE staging_items (
     payload jsonb NOT NULL,
     status text NOT NULL DEFAULT 'pending',
     reason text,
+    failure_debug jsonb,
+    ai_raw_debug jsonb,
     run_id text,
     model text,
     schema_version text,
@@ -173,6 +175,10 @@ CREATE TABLE staging_items (
         CHECK (status IN ('pending', 'validated', 'rejected', 'written', 'failed')),
     CONSTRAINT chk_staging_items_payload_json
         CHECK (jsonb_typeof(payload) = 'object'),
+    CONSTRAINT chk_staging_items_failure_debug_json
+        CHECK (failure_debug IS NULL OR jsonb_typeof(failure_debug) = 'object'),
+    CONSTRAINT chk_staging_items_ai_raw_debug_json
+        CHECK (ai_raw_debug IS NULL OR jsonb_typeof(ai_raw_debug) = 'object'),
     CONSTRAINT chk_staging_items_reason_for_failures
         CHECK (
             (status IN ('rejected', 'failed') AND reason IS NOT NULL)

@@ -94,7 +94,7 @@ describe("enrichStateResources", () => {
     expect(fetchSpy).not.toHaveBeenCalled();
   });
 
-  it("re-grounds citations to collected evidence URLs", async () => {
+  it("accepts citation URLs that are valid even when not present in collected evidence", async () => {
     globalThis.fetch = vi.fn(async () => openAiResponse(validPayload())) as unknown as typeof fetch;
 
     const result = await enrichStateResources(
@@ -120,13 +120,9 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      for (const key of Object.keys(result.payload.sources) as Array<keyof typeof result.payload.sources>) {
-        for (const citation of result.payload.sources[key]) {
-          expect(citation.source_url).toBe("https://irrelevant.example.org/only-source");
-        }
-      }
+      expect(result.payload.sources.vote_by_mail_info[0]?.source_url).toBe("https://www.vote.org/absentee-ballot");
     }
-    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+    expect(globalThis.fetch).toHaveBeenCalled();
   });
 
   it("returns success when citations are grounded in evidence URLs", async () => {
@@ -159,6 +155,178 @@ describe("enrichStateResources", () => {
       expect(result.schemaVersion).toBe("state_resources_enrichment_v1");
     }
     expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("verifies and appends AI-cited URLs that are outside pre-collected evidence", async () => {
+    const additionalCitationUrl = "https://www.sos.ca.gov/elections/voting-options/vote-mail";
+    globalThis.fetch = vi.fn(async (input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : input.toString();
+      if (url.includes("/v1/chat/completions")) {
+        return openAiResponse(
+          validPayload({
+            sources: {
+              polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
+              voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+              vote_by_mail_info: [{ source_name: "California Secretary of State", source_url: additionalCitationUrl }],
+              polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
+              id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
+            },
+          })
+        );
+      }
+
+      if (url.startsWith(additionalCitationUrl)) {
+        return new Response(
+          "<html><head><title>California Secretary of State</title></head><body>Vote by mail deadlines and return rules.</body></html>",
+          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
+        );
+      }
+
+      return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
+    }) as unknown as typeof fetch;
+
+    const result = await enrichStateResources(
+      {
+        ingestKey: "k3b",
+        draft: draft(),
+        evidence: [
+          { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
+          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
+          { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
+          { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
+        ],
+        promptVersion: "state_resources_v1",
+      },
+      {
+        provider: "openai",
+        model: "gpt-5-mini",
+        timeoutMs: 1000,
+        openAiApiKey: "test-key",
+      }
+    );
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.verifiedCitationEvidence.some((item) => item.url === additionalCitationUrl)).toBe(true);
+    }
+  });
+
+  it("rejects when an AI-cited URL outside evidence cannot be verified", async () => {
+    const additionalCitationUrl = "https://www.sos.ca.gov/elections/voting-options/vote-mail";
+    globalThis.fetch = vi.fn(async (input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : input.toString();
+      if (url.includes("/v1/chat/completions")) {
+        return openAiResponse(
+          validPayload({
+            sources: {
+              polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
+              voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+              vote_by_mail_info: [{ source_name: "California Secretary of State", source_url: additionalCitationUrl }],
+              polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
+              id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
+            },
+          })
+        );
+      }
+
+      if (url.startsWith(additionalCitationUrl)) {
+        return new Response("upstream unavailable", { status: 503, headers: { "content-type": "text/plain" } });
+      }
+
+      return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
+    }) as unknown as typeof fetch;
+
+    const result = await enrichStateResources(
+      {
+        ingestKey: "k3c",
+        draft: draft(),
+        evidence: [
+          { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
+          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
+          { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
+          { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
+        ],
+        promptVersion: "state_resources_v1",
+      },
+      {
+        provider: "openai",
+        model: "gpt-5-mini",
+        timeoutMs: 1000,
+        openAiApiKey: "test-key",
+      }
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errorCode).toBe("SCHEMA_MISMATCH");
+      expect(result.reason).toContain("could not be verified");
+    }
+  });
+
+  it("captures all failed citation URLs from one enrichment attempt", async () => {
+    const badMailUrl = "https://example.org/mail-info";
+    const badHoursUrl = "https://example.org/polling-hours";
+
+    globalThis.fetch = vi.fn(async (input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : input.toString();
+      if (url.includes("/v1/chat/completions")) {
+        return openAiResponse(
+          validPayload({
+            sources: {
+              polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
+              voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+              vote_by_mail_info: [{ source_name: "Mail rules", source_url: badMailUrl }],
+              polling_hours: [{ source_name: "Hours rules", source_url: badHoursUrl }],
+              id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
+            },
+          })
+        );
+      }
+
+      if (url.startsWith(badMailUrl)) {
+        return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
+      }
+
+      if (url.startsWith(badHoursUrl)) {
+        return new Response("forbidden", { status: 403, headers: { "content-type": "text/plain" } });
+      }
+
+      return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
+    }) as unknown as typeof fetch;
+
+    const result = await enrichStateResources(
+      {
+        ingestKey: "k3d",
+        draft: draft(),
+        evidence: [
+          { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
+          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
+          { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
+          { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
+        ],
+        promptVersion: "state_resources_v1",
+      },
+      {
+        provider: "openai",
+        model: "gpt-5-mini",
+        timeoutMs: 1000,
+        openAiApiKey: "test-key",
+      }
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errorCode).toBe("SCHEMA_MISMATCH");
+      const failureDebug = (result.failureDebug ?? {}) as Record<string, unknown>;
+      const failedCitationUrls = Array.isArray(failureDebug.failed_citation_urls)
+        ? (failureDebug.failed_citation_urls as unknown[])
+        : [];
+      expect(failedCitationUrls).toContain(badMailUrl);
+      expect(failedCitationUrls).toContain(badHoursUrl);
+    }
   });
 
   it("rejects URL-only text for vote_by_mail_info", async () => {
@@ -556,5 +724,39 @@ describe("enrichStateResources", () => {
     if (result.ok) {
       expect(result.payload.sources.id_requirements[0].source_url).toBe(officialIdUrl);
     }
+  });
+
+  it("accepts explicit 'id is required' phrasing for id_requirements", async () => {
+    globalThis.fetch = vi.fn(async () =>
+      openAiResponse(
+        validPayload({
+          id_requirements:
+            "Voter ID is required at the polls in California, with limited exceptions for eligible provisional voters.",
+        })
+      )
+    ) as unknown as typeof fetch;
+
+    const result = await enrichStateResources(
+      {
+        ingestKey: "k13",
+        draft: draft(),
+        evidence: [
+          { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
+          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
+          { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
+          { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
+        ],
+        promptVersion: "state_resources_v1",
+      },
+      {
+        provider: "openai",
+        model: "gpt-5-mini",
+        timeoutMs: 1000,
+        openAiApiKey: "test-key",
+      }
+    );
+
+    expect(result.ok).toBe(true);
   });
 });
