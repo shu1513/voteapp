@@ -25,8 +25,9 @@ function tryLoadDotEnvFile(path: string): boolean {
   try {
     process.loadEnvFile(path);
     return true;
-  } catch {
-    return false;
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to load environment file at ${path}: ${reason}`);
   }
 }
 

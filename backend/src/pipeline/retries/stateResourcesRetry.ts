@@ -355,7 +355,7 @@ async function loadRetryRows(pool: Pool, maxItems: number): Promise<RetryRow[]> 
            , failure_debug
       FROM staging_items
       WHERE item_type = $1
-        AND status IN ('failed', 'rejected')
+        AND status IN ('failed', 'rejected', 'requeueing')
       ORDER BY updated_at ASC
       LIMIT $2
     `,
@@ -397,7 +397,7 @@ async function requeueToDraft(
     `
       UPDATE staging_items
       SET payload = $2::jsonb,
-          status = 'pending',
+          status = 'requeueing',
           reason = NULL,
           failure_debug = NULL,
           ai_raw_debug = $3::jsonb,
@@ -408,7 +408,7 @@ async function requeueToDraft(
           updated_at = now()
       WHERE ingest_key = $1
         AND item_type = $6
-        AND status IN ('failed', 'rejected')
+        AND status IN ('failed', 'rejected', 'requeueing')
     `,
     [
       row.ingest_key,
@@ -431,6 +431,29 @@ async function requeueToDraft(
       run_id: runId,
       payload: JSON.stringify(draft),
     });
+
+    const finalize = await pool.query(
+      `
+        UPDATE staging_items
+        SET status = 'pending',
+            updated_at = now()
+        WHERE ingest_key = $1
+          AND item_type = $2
+          AND status = 'requeueing'
+          AND run_id IS NOT DISTINCT FROM $3
+      `,
+      [row.ingest_key, STAGING_ITEM_TYPE_STATE_RESOURCES, runId]
+    );
+
+    if (finalize.rowCount !== 1) {
+      await markRetryFailure(
+        pool,
+        row.ingest_key,
+        "retry finalize to pending failed after draft stream enqueue"
+      );
+      return false;
+    }
+
     return true;
   } catch (error) {
     await markRetryFailure(pool, row.ingest_key, `retry enqueue to draft failed: ${toReason(error)}`);
@@ -450,7 +473,7 @@ async function requeueToPending(
     `
       UPDATE staging_items
       SET payload = $2::jsonb,
-          status = 'pending',
+          status = 'requeueing',
           reason = NULL,
           failure_debug = NULL,
           schema_version = $3,
@@ -460,7 +483,7 @@ async function requeueToPending(
           updated_at = now()
       WHERE ingest_key = $1
         AND item_type = $5
-        AND status IN ('failed', 'rejected')
+        AND status IN ('failed', 'rejected', 'requeueing')
     `,
     [
       row.ingest_key,
@@ -481,6 +504,29 @@ async function requeueToPending(
       item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
       run_id: runId,
     });
+
+    const finalize = await pool.query(
+      `
+        UPDATE staging_items
+        SET status = 'pending',
+            updated_at = now()
+        WHERE ingest_key = $1
+          AND item_type = $2
+          AND status = 'requeueing'
+          AND run_id IS NOT DISTINCT FROM $3
+      `,
+      [row.ingest_key, STAGING_ITEM_TYPE_STATE_RESOURCES, runId]
+    );
+
+    if (finalize.rowCount !== 1) {
+      await markRetryFailure(
+        pool,
+        row.ingest_key,
+        "retry finalize to pending failed after pending stream enqueue"
+      );
+      return false;
+    }
+
     return true;
   } catch (error) {
     await markRetryFailure(pool, row.ingest_key, `retry enqueue to pending failed: ${toReason(error)}`);
@@ -489,7 +535,7 @@ async function requeueToPending(
 }
 
 /**
- * Retries failed/rejected state_resources rows:
+ * Retries failed/rejected/requeueing state_resources rows:
  * - duplicate-citation rejections are auto-deduped and revalidated
  * - rows with draft snapshots are requeued for fresh AI enrichment
  */
@@ -517,6 +563,23 @@ export async function runStateResourcesRetrySweeper(options: RetryOptions = {}):
     for (const row of rows) {
       try {
         const reason = row.reason ?? "";
+
+        if (row.status === "requeueing" && row.schema_version === STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION) {
+          const enrichedPayload = parseEnrichedPayload(row.payload);
+          if (!enrichedPayload) {
+            failed += 1;
+            await markRetryFailure(pool, row.ingest_key, "retry requeueing recovery failed: invalid enriched payload");
+            continue;
+          }
+
+          const ok = await requeueToPending(pool, redis, row, enrichedPayload);
+          if (ok) {
+            requeuedToPending += 1;
+          } else {
+            failed += 1;
+          }
+          continue;
+        }
 
         if (
           row.status === "rejected" &&

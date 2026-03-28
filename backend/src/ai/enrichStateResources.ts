@@ -181,6 +181,55 @@ function stripHtmlToText(input: string): string {
   return normalizeWhitespace(withoutTags);
 }
 
+async function readResponseTextWithByteLimit(
+  response: Response,
+  maxBytes: number,
+  controller: AbortController
+): Promise<{ ok: true; text: string } | { ok: false; reason: string }> {
+  if (!response.body) {
+    const fallback = await response.text();
+    const fallbackSize = new TextEncoder().encode(fallback).length;
+    if (fallbackSize > maxBytes) {
+      return { ok: false, reason: "citation URL response body is too large" };
+    }
+    return { ok: true, text: fallback };
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let totalBytes = 0;
+  let text = "";
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        break;
+      }
+
+      if (value) {
+        totalBytes += value.byteLength;
+        if (totalBytes > maxBytes) {
+          try {
+            await reader.cancel();
+          } catch {
+            // no-op; best effort cancellation.
+          }
+          controller.abort();
+          return { ok: false, reason: "citation URL response body is too large" };
+        }
+
+        text += decoder.decode(value, { stream: true });
+      }
+    }
+
+    text += decoder.decode();
+    return { ok: true, text };
+  } finally {
+    reader.releaseLock();
+  }
+}
+
 async function fetchCitationEvidenceSnippet(
   citationUrl: string,
   fallbackSourceName: string
@@ -250,10 +299,11 @@ async function fetchCitationEvidenceSnippet(
       }
     }
 
-    const bodyText = await response.text();
-    if (bodyText.length > CITATION_MAX_RESPONSE_BYTES) {
-      return { ok: false, reason: "citation URL response body is too large" };
+    const bodyTextResult = await readResponseTextWithByteLimit(response, CITATION_MAX_RESPONSE_BYTES, controller);
+    if (!bodyTextResult.ok) {
+      return bodyTextResult;
     }
+    const bodyText = bodyTextResult.text;
 
     const textForSnippet = contentType.toLowerCase().includes("text/html")
       ? stripHtmlToText(bodyText)

@@ -172,7 +172,7 @@ CREATE TABLE staging_items (
     CONSTRAINT chk_staging_items_type
         CHECK (item_type IN ('district', 'candidate', 'election', 'proposition', 'candidate_record', 'state_resources')),
     CONSTRAINT chk_staging_items_status
-        CHECK (status IN ('pending', 'validated', 'rejected', 'written', 'failed')),
+        CHECK (status IN ('pending', 'validated', 'rejected', 'written', 'failed', 'requeueing')),
     CONSTRAINT chk_staging_items_payload_json
         CHECK (jsonb_typeof(payload) = 'object'),
     CONSTRAINT chk_staging_items_failure_debug_json
