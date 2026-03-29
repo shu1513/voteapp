@@ -257,6 +257,8 @@ export async function upsertRecurringStateResourcesRefreshJobs(
   const queue = createStateResourcesSchedulerQueue();
 
   try {
+    await queue.removeJobScheduler(STATE_RESOURCES_PRE_ELECTION_WEEKLY_SCHEDULER_ID);
+
     await queue.upsertJobScheduler(
       STATE_RESOURCES_ANNUAL_SCHEDULER_ID,
       {
@@ -273,8 +275,6 @@ export async function upsertRecurringStateResourcesRefreshJobs(
         opts: defaultJobOptions(),
       }
     );
-
-    await queue.removeJobScheduler(STATE_RESOURCES_PRE_ELECTION_WEEKLY_SCHEDULER_ID);
   } finally {
     await queue.close();
   }
