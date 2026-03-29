@@ -1,12 +1,21 @@
 import type {
   EnrichStateResourcesConfig,
   EnrichStateResourcesInput,
+  PromptVariant,
   ProviderGenerateResult,
 } from "../types.js";
+import { buildRetryFeedbackPromptLines } from "../retryFeedback.js";
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
+}
+
+function trimDebugText(input: string, maxChars = 20_000): string {
+  if (input.length <= maxChars) {
+    return input;
+  }
+  return `${input.slice(0, maxChars)}...`;
 }
 
 /**
@@ -23,23 +32,54 @@ function extractJsonCandidate(text: string): string {
   return trimmed;
 }
 
-function buildPrompt(input: EnrichStateResourcesInput): string {
+function buildPromptVariantLines(promptVariant: PromptVariant | undefined): string[] {
+  if (promptVariant !== "citation_repair") {
+    return [];
+  }
+
+  return [
+    "Citation-repair mode:",
+    "- Keep the same factual meaning as prior attempt; replace broken citations only.",
+    "- Replace blocked/not-found citations with different verifiable URLs.",
+    "- Do not reuse any URL listed in failed_citation_urls.",
+  ];
+}
+
+function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: string[]): string {
+  const promptVariantLines = buildPromptVariantLines(input.promptVariant);
+
   return [
     "Return only one JSON object with these keys exactly:",
     "state_fips, state_abbreviation, state_name, polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements, sources.",
     "sources must include keys: polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements.",
     "Each sources[key] must be an array of {source_name, source_url}.",
-    "Each source_url must exactly match one of the Evidence snippets URLs. Do not invent or rewrite URLs.",
+    "Prefer using Evidence snippets URLs when possible.",
+    "You may cite additional public URLs if they directly support the claim; do not invent or rewrite URLs.",
     "polling_place_url and voter_registration_url must be URLs.",
     "vote_by_mail_info, polling_hours, and id_requirements must be plain-language text summaries, not URLs.",
     "For vote_by_mail_info: include at least one concrete state rule detail (e.g., request deadline, return deadline, postmark/received rule, or return methods).",
     "For polling_hours: include statewide opening/closing times when available; otherwise explicitly state that hours vary by county/precinct.",
-    "For id_requirements: explicitly state whether voter ID is required at polls, and major exceptions if applicable.",
-    "For sources.vote_by_mail_info, sources.polling_hours, and sources.id_requirements: include at least one citation each.",
-    "Prefer official state/local election office or .gov sources for those three fields when available (not strictly required if unavailable in evidence).",
+    "For id_requirements: first sentence must be exactly one of these patterns with the draft state name:",
+    "\"Voter ID is required at the polls in <STATE>.\" or \"Voter ID is not required at the polls in <STATE>.\"",
+    "Then add one short sentence for major exceptions, if any.",
+    "Do not use ambiguous first-sentence phrasing like \"may\", \"can depend\", or \"varies\" without explicitly saying required vs not required.",
+    "For full-sentence summary fields (vote_by_mail_info, polling_hours, id_requirements), provide at least one citation each.",
+    "sources.id_requirements must include at least one citation that directly supports the required/not-required claim in id_requirements.",
+    "Self-check before final output: id_requirements must contain either \"is required\" or \"is not required\".",
+    "Source guidance:",
+    "- Prefer official election sources (.gov, secretary of state, county elections) when available and keep citations.",
+    "- If official sources are hard to find, use reliable secondary sources and keep citations.",
+    "- If sources disagree, do additional research and choose one final rule using this priority:",
+    "  1) official state/county election source",
+    "  2) most credible sources",
+    "  3) most recent update/publication date",
+    "- Keep summaries plain and practical.",
+    "- URL quality rule: Do not cite URLs that are broken, login-only, or unrelated landing pages.",
     "Do not output generic templates; each of those three fields must be specific to the draft state.",
     "Prefer official state/local election office polling-place URLs over aggregator URLs when evidence includes both.",
     "Do not add markdown fences or commentary.",
+    ...(promptVariantLines.length > 0 ? ["", ...promptVariantLines] : []),
+    ...(retryFeedbackLines.length > 0 ? ["", ...retryFeedbackLines] : []),
     "",
     "Draft input:",
     JSON.stringify(input.draft),
@@ -64,6 +104,13 @@ export async function geminiProvider(
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), config.timeoutMs);
+  const retryFeedbackLines = buildRetryFeedbackPromptLines(input.retryFeedback);
+  const prompt = buildPrompt(input, retryFeedbackLines);
+  const promptDebugMeta = {
+    provider_prompt_variant: input.promptVariant ?? "default",
+    provider_prompt_has_retry_feedback: retryFeedbackLines.length > 0,
+    provider_prompt_retry_feedback_snapshot: retryFeedbackLines.length > 0 ? retryFeedbackLines.join("\n") : null,
+  } as const;
   const url = `https://generativelanguage.googleapis.com/v1/models/${encodeURIComponent(
     config.model
   )}:generateContent?key=${encodeURIComponent(config.geminiApiKey)}`;
@@ -81,7 +128,7 @@ export async function geminiProvider(
         contents: [
           {
             role: "user",
-            parts: [{ text: buildPrompt(input) }],
+            parts: [{ text: prompt }],
           },
         ],
       }),
@@ -96,6 +143,10 @@ export async function geminiProvider(
           retryable: true,
           errorCode: "RATE_LIMIT",
           reason: `Gemini rate limit: ${bodyText}`,
+          failureDebug: {
+            ...promptDebugMeta,
+            provider_response_text: trimDebugText(bodyText),
+          },
         };
       }
 
@@ -105,6 +156,10 @@ export async function geminiProvider(
           retryable: true,
           errorCode: "TEMP_PROVIDER_ERROR",
           reason: `Gemini temporary error ${response.status}: ${bodyText}`,
+          failureDebug: {
+            ...promptDebugMeta,
+            provider_response_text: trimDebugText(bodyText),
+          },
         };
       }
 
@@ -113,6 +168,10 @@ export async function geminiProvider(
         retryable: false,
         errorCode: "CONFIGURATION_ERROR",
         reason: `Gemini request failed ${response.status}: ${bodyText}`,
+        failureDebug: {
+          ...promptDebugMeta,
+          provider_response_text: trimDebugText(bodyText),
+        },
       };
     }
 
@@ -136,13 +195,17 @@ export async function geminiProvider(
 
     try {
       const parsed = JSON.parse(extractJsonCandidate(text));
-      return { ok: true, rawPayload: parsed };
+      return { ok: true, rawPayload: parsed, rawText: text, debugMeta: promptDebugMeta };
     } catch (error) {
       return {
         ok: false,
         retryable: false,
         errorCode: "INVALID_JSON",
         reason: `Gemini content was not valid JSON: ${toReason(error)}`,
+        failureDebug: {
+          ...promptDebugMeta,
+          provider_response_text: trimDebugText(text),
+        },
       };
     }
   } catch (error) {

@@ -7,6 +7,8 @@ This repo currently uses SQL files directly (no migration framework yet).
 Application code now depends on these `staging_items` columns for `state_resources` pipeline:
 - `schema_version`
 - `prompt_version`
+- `failure_debug`
+- `ai_raw_debug`
 
 If those columns/constraints are missing in an environment, producer/validator/writer behavior will break.
 
@@ -36,6 +38,12 @@ ALTER TABLE staging_items
   ADD COLUMN IF NOT EXISTS prompt_version text;
 
 ALTER TABLE staging_items
+  ADD COLUMN IF NOT EXISTS failure_debug jsonb;
+
+ALTER TABLE staging_items
+  ADD COLUMN IF NOT EXISTS ai_raw_debug jsonb;
+
+ALTER TABLE staging_items
   DROP CONSTRAINT IF EXISTS chk_staging_items_state_resources_metadata;
 
 ALTER TABLE staging_items
@@ -47,6 +55,20 @@ ALTER TABLE staging_items
       AND prompt_version IS NOT NULL AND btrim(prompt_version) <> ''
     )
   );
+
+ALTER TABLE staging_items
+  DROP CONSTRAINT IF EXISTS chk_staging_items_failure_debug_json;
+
+ALTER TABLE staging_items
+  ADD CONSTRAINT chk_staging_items_failure_debug_json
+  CHECK (failure_debug IS NULL OR jsonb_typeof(failure_debug) = 'object');
+
+ALTER TABLE staging_items
+  DROP CONSTRAINT IF EXISTS chk_staging_items_ai_raw_debug_json;
+
+ALTER TABLE staging_items
+  ADD CONSTRAINT chk_staging_items_ai_raw_debug_json
+  CHECK (ai_raw_debug IS NULL OR jsonb_typeof(ai_raw_debug) = 'object');
 ```
 
 ## Pipeline stream expectations

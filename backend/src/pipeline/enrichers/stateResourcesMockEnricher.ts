@@ -508,9 +508,6 @@ function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSn
       if (!normalizedCitationUrl) {
         return `mock payload sources.${key}.source_url must be valid http(s)`;
       }
-      if (!evidenceUrlSet.has(normalizedCitationUrl)) {
-        return `mock payload sources.${key}.source_url must come from collected evidence URLs`;
-      }
     }
   }
 

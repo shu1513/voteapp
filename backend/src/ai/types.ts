@@ -4,6 +4,7 @@ import type {
 } from "../types/stateResource.js";
 
 export type AiProvider = "openai" | "claude" | "gemini";
+export type PromptVariant = "default" | "citation_repair";
 
 export type EvidenceSnippet = {
   url: string;
@@ -11,11 +12,20 @@ export type EvidenceSnippet = {
   snippet: string;
 };
 
+export type RetryFeedback = {
+  previousFailureReason: string | null;
+  failedCitationUrls: string[];
+  retryCount: number | null;
+  failedAt: string | null;
+};
+
 export type EnrichStateResourcesInput = {
   ingestKey: string;
   draft: StateResourceDraftPayload;
   evidence: EvidenceSnippet[];
   promptVersion: string;
+  promptVariant?: PromptVariant;
+  retryFeedback?: RetryFeedback | null;
 };
 
 export type EnrichStateResourcesConfig = {
@@ -45,12 +55,14 @@ export type EnrichmentFailure =
       retryable: true;
       reason: string;
       errorCode: RetryableErrorCode;
+      failureDebug?: Record<string, unknown>;
     }
   | {
       ok: false;
       retryable: false;
       reason: string;
       errorCode: PermanentErrorCode;
+      failureDebug?: Record<string, unknown>;
     };
 
 export type EnrichmentSuccess = {
@@ -60,12 +72,14 @@ export type EnrichmentSuccess = {
   provider: AiProvider;
   model: string;
   promptVersion: string;
+  aiRawDebug: Record<string, unknown> | null;
+  verifiedCitationEvidence: EvidenceSnippet[];
 };
 
 export type EnrichStateResourcesResult = EnrichmentSuccess | EnrichmentFailure;
 
 export type ProviderGenerateResult =
-  | { ok: true; rawPayload: unknown }
+  | { ok: true; rawPayload: unknown; rawText?: string; debugMeta?: Record<string, unknown> }
   | EnrichmentFailure;
 
 export type ProviderAdapter = (

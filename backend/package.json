@@ -8,12 +8,17 @@
     "state-resources:enrich-mock": "tsx src/scripts/enrichStateResourcesMock.ts",
     "state-resources:validate": "tsx src/scripts/validateStateResources.ts",
     "state-resources:write": "tsx src/scripts/writeStateResources.ts",
+    "state-resources:retry": "tsx src/scripts/retryStateResources.ts",
     "state-resources:health": "tsx src/scripts/stateResourcesHealth.ts",
+    "state-resources:scheduler:upsert": "tsx src/scripts/upsertStateResourcesAnnualScheduler.ts",
+    "state-resources:scheduler:worker": "tsx src/scripts/runStateResourcesSchedulerWorker.ts",
+    "state-resources:scheduler:trigger": "tsx src/scripts/triggerStateResourcesRefresh.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
+    "bullmq": "^5.71.1",
     "pg": "^8.13.1",
     "redis": "^4.7.0"
   },
@@ -23,5 +28,8 @@
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "vitest": "^2.1.9"
+  },
+  "engines": {
+    "node": ">=20.12.0"
   }
 }

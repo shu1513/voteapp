@@ -175,6 +175,8 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
               payload = EXCLUDED.payload,
               status = 'pending',
               reason = NULL,
+              failure_debug = NULL,
+              ai_raw_debug = NULL,
               run_id = EXCLUDED.run_id,
               model = EXCLUDED.model,
               schema_version = EXCLUDED.schema_version,
@@ -235,10 +237,18 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
             UPDATE staging_items
             SET status = 'failed',
                 reason = $2,
+                failure_debug = jsonb_build_object(
+                  'stage', 'producer',
+                  'error', $2
+                ),
+                ai_raw_debug = NULL,
                 updated_at = now()
             WHERE ingest_key = $1
+              AND item_type = $3
+              AND status = 'pending'
+              AND run_id IS NOT DISTINCT FROM $4
           `,
-          [ingestKey, reason]
+          [ingestKey, reason, STAGING_ITEM_TYPE_STATE_RESOURCES, runId]
         );
 
         observer.record({

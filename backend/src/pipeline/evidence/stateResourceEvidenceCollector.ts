@@ -33,6 +33,7 @@ type UrlSafetyOptions = {
 
 const DEFAULT_FETCH_TIMEOUT_MS = 10_000;
 const DEFAULT_MAX_SEED_URLS = 5;
+const HARD_MAX_SEED_URLS = 50;
 const DEFAULT_MAX_DISCOVERED_URLS = 5;
 const DEFAULT_MAX_EVIDENCE_SNIPPETS = 8;
 const DEFAULT_SNIPPET_MAX_CHARS = 800;
@@ -737,7 +738,8 @@ export async function collectStateResourceEvidence(
     hostSafetyCache: new Map<string, boolean>(),
   };
   const fetchTimeoutMs = options.fetchTimeoutMs ?? DEFAULT_FETCH_TIMEOUT_MS;
-  const maxSeedUrls = options.maxSeedUrls ?? DEFAULT_MAX_SEED_URLS;
+  const requestedMaxSeedUrls = options.maxSeedUrls ?? Math.max(DEFAULT_MAX_SEED_URLS, draft.seed_sources.length);
+  const maxSeedUrls = Math.min(requestedMaxSeedUrls, HARD_MAX_SEED_URLS);
   const maxDiscoveredUrls = options.maxDiscoveredUrls ?? DEFAULT_MAX_DISCOVERED_URLS;
   const maxEvidenceSnippets = options.maxEvidenceSnippets ?? DEFAULT_MAX_EVIDENCE_SNIPPETS;
   const snippetMaxChars = options.snippetMaxChars ?? DEFAULT_SNIPPET_MAX_CHARS;
