@@ -67,13 +67,10 @@ function readPositiveIntegerEnv(name: string, fallback: number): number {
 }
 
 function readSchedulerRuntimeConfig(): SchedulerRuntimeConfig {
-  const legacyAnnualCron = process.env.STATE_RESOURCES_ANNUAL_CRON?.trim();
-  const legacyAnnualTz = process.env.STATE_RESOURCES_ANNUAL_TZ?.trim();
-
   return {
     queueName: process.env.STATE_RESOURCES_SCHEDULER_QUEUE?.trim() || "state_resources_maintenance",
-    monthlyCron: process.env.STATE_RESOURCES_MONTHLY_CRON?.trim() || legacyAnnualCron || "0 3 1 * *",
-    monthlyTz: process.env.STATE_RESOURCES_MONTHLY_TZ?.trim() || legacyAnnualTz || "UTC",
+    monthlyCron: process.env.STATE_RESOURCES_MONTHLY_CRON?.trim() || "0 3 1 * *",
+    monthlyTz: process.env.STATE_RESOURCES_MONTHLY_TZ?.trim() || "UTC",
     maxPasses: readPositiveIntegerEnv("STATE_RESOURCES_SCHEDULER_MAX_PASSES", 3),
     batchSize: readPositiveIntegerEnv("STATE_RESOURCES_SCHEDULER_BATCH_SIZE", 200),
     blockMs: readPositiveIntegerEnv("STATE_RESOURCES_SCHEDULER_BLOCK_MS", 250),
