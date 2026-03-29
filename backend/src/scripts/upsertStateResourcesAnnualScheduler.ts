@@ -1,15 +1,10 @@
-import { upsertAnnualStateResourcesRefreshJob } from "../scheduler/stateResourcesScheduler.js";
+import { upsertRecurringStateResourcesRefreshJobs } from "../scheduler/stateResourcesScheduler.js";
 
-const dryRun = process.argv.includes("--dry-run");
-const force = process.argv.includes("--force");
-
-upsertAnnualStateResourcesRefreshJob({ dryRun, force })
+upsertRecurringStateResourcesRefreshJobs()
   .then(() => {
-    console.log(
-      `state_resources annual scheduler upserted (dryRun=${dryRun} force=${force})`
-    );
+    console.log("state_resources recurring scheduler upserted (monthly)");
   })
   .catch((error) => {
-    console.error("state_resources annual scheduler upsert failed:", error);
+    console.error("state_resources recurring scheduler upsert failed:", error);
     process.exit(1);
   });

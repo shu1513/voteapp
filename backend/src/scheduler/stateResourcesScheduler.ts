@@ -11,17 +11,21 @@ import { runStateResourcesRetrySweeper } from "../pipeline/retries/stateResource
 
 export const STATE_RESOURCES_REFRESH_JOB_NAME = "state_resources_refresh";
 export const STATE_RESOURCES_ANNUAL_SCHEDULER_ID = "state_resources_annual_refresh";
+export const STATE_RESOURCES_PRE_ELECTION_WEEKLY_SCHEDULER_ID = "state_resources_pre_election_weekly_refresh";
 
 export type StateResourcesRefreshJobData = {
   dryRun?: boolean;
   force?: boolean;
-  triggeredBy?: "annual" | "manual";
+  triggeredBy?: "annual" | "monthly" | "manual" | "unknown";
   requestedAt?: string;
 };
 
 export type StateResourcesRefreshJobResult = {
   dryRun: boolean;
   force: boolean;
+  triggeredBy: NonNullable<StateResourcesRefreshJobData["triggeredBy"]>;
+  skipped: boolean;
+  skipReason: string | null;
   passes: number;
   retrySweeps: number;
   requeuedToDraft: number;
@@ -32,8 +36,8 @@ export type StateResourcesRefreshJobResult = {
 
 type SchedulerRuntimeConfig = {
   queueName: string;
-  annualCron: string;
-  annualTz: string;
+  monthlyCron: string;
+  monthlyTz: string;
   maxPasses: number;
   batchSize: number;
   blockMs: number;
@@ -65,8 +69,8 @@ function readPositiveIntegerEnv(name: string, fallback: number): number {
 function readSchedulerRuntimeConfig(): SchedulerRuntimeConfig {
   return {
     queueName: process.env.STATE_RESOURCES_SCHEDULER_QUEUE?.trim() || "state_resources_maintenance",
-    annualCron: process.env.STATE_RESOURCES_ANNUAL_CRON?.trim() || "0 3 15 1 *",
-    annualTz: process.env.STATE_RESOURCES_ANNUAL_TZ?.trim() || "UTC",
+    monthlyCron: process.env.STATE_RESOURCES_MONTHLY_CRON?.trim() || "0 3 1 * *",
+    monthlyTz: process.env.STATE_RESOURCES_MONTHLY_TZ?.trim() || "UTC",
     maxPasses: readPositiveIntegerEnv("STATE_RESOURCES_SCHEDULER_MAX_PASSES", 3),
     batchSize: readPositiveIntegerEnv("STATE_RESOURCES_SCHEDULER_BATCH_SIZE", 200),
     blockMs: readPositiveIntegerEnv("STATE_RESOURCES_SCHEDULER_BLOCK_MS", 250),
@@ -233,7 +237,7 @@ async function drainCurrentWork(
 }
 
 /**
- * Creates the BullMQ queue used for annual and manual state_resources refresh jobs.
+ * Creates the BullMQ queue used for recurring and manual state_resources refresh jobs.
  */
 export function createStateResourcesSchedulerQueue(): Queue<StateResourcesRefreshJobData> {
   return new Queue<StateResourcesRefreshJobData>(getQueueName(), {
@@ -243,27 +247,30 @@ export function createStateResourcesSchedulerQueue(): Queue<StateResourcesRefres
 }
 
 /**
- * Upserts the yearly scheduler that creates one refresh job each year.
+ * Upserts recurring scheduler:
+ * - monthly full refresh
  */
-export async function upsertAnnualStateResourcesRefreshJob(
+export async function upsertRecurringStateResourcesRefreshJobs(
   jobData: StateResourcesRefreshJobData = {}
 ): Promise<void> {
   const config = readSchedulerRuntimeConfig();
   const queue = createStateResourcesSchedulerQueue();
 
   try {
+    await queue.removeJobScheduler(STATE_RESOURCES_PRE_ELECTION_WEEKLY_SCHEDULER_ID);
+
     await queue.upsertJobScheduler(
       STATE_RESOURCES_ANNUAL_SCHEDULER_ID,
       {
-        pattern: config.annualCron,
-        tz: config.annualTz,
+        pattern: config.monthlyCron,
+        tz: config.monthlyTz,
       },
       {
         name: STATE_RESOURCES_REFRESH_JOB_NAME,
         data: {
           dryRun: Boolean(jobData.dryRun),
           force: Boolean(jobData.force),
-          triggeredBy: "annual",
+          triggeredBy: "monthly",
         },
         opts: defaultJobOptions(),
       }
@@ -271,6 +278,16 @@ export async function upsertAnnualStateResourcesRefreshJob(
   } finally {
     await queue.close();
   }
+}
+
+/**
+ * Backward-compatible alias (historical name).
+ * @deprecated Use upsertRecurringStateResourcesRefreshJobs.
+ */
+export async function upsertAnnualStateResourcesRefreshJob(
+  jobData: StateResourcesRefreshJobData = {}
+): Promise<void> {
+  await upsertRecurringStateResourcesRefreshJobs(jobData);
 }
 
 /**
@@ -310,15 +327,23 @@ export async function runStateResourcesRefreshJob(
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const dryRun = Boolean(data.dryRun);
   const force = Boolean(data.force);
+  const triggeredBy = data.triggeredBy ?? "unknown";
   const startedAt = new Date().toISOString();
 
   try {
+    if (!data.triggeredBy) {
+      console.warn("state_resources refresh job missing triggeredBy; recording as unknown");
+    }
+
     await runStateResourcesProducer({ dryRun, force });
 
     if (dryRun) {
       return {
         dryRun,
         force,
+        triggeredBy,
+        skipped: false,
+        skipReason: null,
         passes: 0,
         retrySweeps: 0,
         requeuedToDraft: 0,
@@ -360,6 +385,9 @@ export async function runStateResourcesRefreshJob(
     return {
       dryRun,
       force,
+      triggeredBy,
+      skipped: false,
+      skipReason: null,
       passes,
       retrySweeps,
       requeuedToDraft,
