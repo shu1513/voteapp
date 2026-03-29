@@ -16,7 +16,7 @@ export const STATE_RESOURCES_PRE_ELECTION_WEEKLY_SCHEDULER_ID = "state_resources
 export type StateResourcesRefreshJobData = {
   dryRun?: boolean;
   force?: boolean;
-  triggeredBy?: "annual" | "monthly" | "manual";
+  triggeredBy?: "annual" | "monthly" | "manual" | "unknown";
   requestedAt?: string;
 };
 
@@ -282,6 +282,7 @@ export async function upsertRecurringStateResourcesRefreshJobs(
 
 /**
  * Backward-compatible alias (historical name).
+ * @deprecated Use upsertRecurringStateResourcesRefreshJobs.
  */
 export async function upsertAnnualStateResourcesRefreshJob(
   jobData: StateResourcesRefreshJobData = {}
@@ -326,10 +327,14 @@ export async function runStateResourcesRefreshJob(
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const dryRun = Boolean(data.dryRun);
   const force = Boolean(data.force);
-  const triggeredBy = data.triggeredBy ?? "manual";
+  const triggeredBy = data.triggeredBy ?? "unknown";
   const startedAt = new Date().toISOString();
 
   try {
+    if (!data.triggeredBy) {
+      console.warn("state_resources refresh job missing triggeredBy; recording as unknown");
+    }
+
     await runStateResourcesProducer({ dryRun, force });
 
     if (dryRun) {
