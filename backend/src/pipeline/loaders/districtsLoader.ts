@@ -43,8 +43,13 @@ type DistrictLoadSummary = {
 };
 
 function parsePopulation(value: string): number {
-  const parsed = Number.parseInt(value, 10);
-  if (!Number.isFinite(parsed) || parsed < 0) {
+  const trimmed = value.trim();
+  if (!/^\d+$/.test(trimmed)) {
+    throw new Error(`Invalid population value from Census: ${value}`);
+  }
+
+  const parsed = Number(trimmed);
+  if (!Number.isSafeInteger(parsed) || parsed < 0) {
     throw new Error(`Invalid population value from Census: ${value}`);
   }
   return parsed;
@@ -238,7 +243,6 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
     throw new Error("DATABASE_URL is required for districts loader");
   }
   const pool = new Pool({ connectionString: databaseUrl });
-  const client = await pool.connect();
 
   let inserted = 0;
   let updated = 0;
@@ -246,31 +250,34 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
 
   try {
     const codeColumn = await detectDistrictCodeColumn(pool);
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      await client.query("SELECT pg_advisory_xact_lock(hashtext($1)::bigint)", [`districts_loader:${options.type}`]);
+      for (const row of rows) {
+        const existing = await loadExistingDistrict(client, codeColumn, row.district_type, row.geoid_compact);
+        if (!existing) {
+          await insertDistrict(client, codeColumn, row);
+          inserted += 1;
+          continue;
+        }
 
-    await client.query("BEGIN");
-    await client.query("SELECT pg_advisory_xact_lock(hashtext($1)::bigint)", [`districts_loader:${options.type}`]);
-    for (const row of rows) {
-      const existing = await loadExistingDistrict(client, codeColumn, row.district_type, row.geoid_compact);
-      if (!existing) {
-        await insertDistrict(client, codeColumn, row);
-        inserted += 1;
-        continue;
+        if (isSameDistrict(existing, row)) {
+          skipped += 1;
+          continue;
+        }
+
+        await updateDistrict(client, codeColumn, row);
+        updated += 1;
       }
-
-      if (isSameDistrict(existing, row)) {
-        skipped += 1;
-        continue;
-      }
-
-      await updateDistrict(client, codeColumn, row);
-      updated += 1;
+      await client.query("COMMIT");
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
     }
-    await client.query("COMMIT");
-  } catch (error) {
-    await client.query("ROLLBACK");
-    throw error;
   } finally {
-    client.release();
     await pool.end();
   }
 
