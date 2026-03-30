@@ -280,6 +280,7 @@ async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
       SET vote_power_score = scored.vote_power_score
       FROM scored
       WHERE public.districts.id = scored.id
+        AND public.districts.vote_power_score IS DISTINCT FROM scored.vote_power_score
     `
   );
 }
