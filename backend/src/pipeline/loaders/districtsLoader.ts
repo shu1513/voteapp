@@ -1,10 +1,11 @@
-import { Pool } from "pg";
+import { Pool, type PoolClient } from "pg";
 
 import { loadProjectEnv } from "../../config/env.js";
 import { STATE_ABBR_BY_FIPS, getStateAbbreviationByFips, normalizeFips } from "../../constants/usStates.js";
 
 export const DISTRICTS_ACS_YEAR = 2024;
 export const CENSUS_STATES_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=state:*`;
+const CENSUS_FETCH_TIMEOUT_MS = 30_000;
 
 export type DistrictLoadType = "state";
 
@@ -100,13 +101,27 @@ export function parseStateDistrictRows(data: unknown): StateDistrictRow[] {
 }
 
 async function fetchStateDistrictRows(): Promise<StateDistrictRow[]> {
-  const response = await fetch(CENSUS_STATES_DISTRICTS_URL);
-  if (!response.ok) {
-    throw new Error(`Census API request failed: ${response.status} ${response.statusText}`);
-  }
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), CENSUS_FETCH_TIMEOUT_MS);
 
-  const data: unknown = await response.json();
-  return parseStateDistrictRows(data);
+  try {
+    const response = await fetch(CENSUS_STATES_DISTRICTS_URL, {
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      throw new Error(`Census API request failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data: unknown = await response.json();
+    return parseStateDistrictRows(data);
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      throw new Error(`Census API request timed out after ${CENSUS_FETCH_TIMEOUT_MS}ms`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 async function detectDistrictCodeColumn(pool: Pool): Promise<DistrictCodeColumnName> {
@@ -132,12 +147,12 @@ async function detectDistrictCodeColumn(pool: Pool): Promise<DistrictCodeColumnN
 }
 
 async function loadExistingDistrict(
-  pool: Pool,
+  client: PoolClient,
   codeColumn: DistrictCodeColumnName,
   districtType: string,
   geoidCompact: string
 ): Promise<ExistingDistrictRecord | null> {
-  const result = await pool.query<ExistingDistrictRecord>(
+  const result = await client.query<ExistingDistrictRecord>(
     `
       SELECT name, state, state_fips, population
       FROM districts
@@ -160,8 +175,8 @@ function isSameDistrict(existing: ExistingDistrictRecord, next: StateDistrictRow
   );
 }
 
-async function insertDistrict(pool: Pool, codeColumn: DistrictCodeColumnName, row: StateDistrictRow): Promise<void> {
-  await pool.query(
+async function insertDistrict(client: PoolClient, codeColumn: DistrictCodeColumnName, row: StateDistrictRow): Promise<void> {
+  await client.query(
     `
       INSERT INTO districts
         (${codeColumn}, name, state, state_fips, district_type, population, last_researched)
@@ -172,8 +187,8 @@ async function insertDistrict(pool: Pool, codeColumn: DistrictCodeColumnName, ro
   );
 }
 
-async function updateDistrict(pool: Pool, codeColumn: DistrictCodeColumnName, row: StateDistrictRow): Promise<void> {
-  await pool.query(
+async function updateDistrict(client: PoolClient, codeColumn: DistrictCodeColumnName, row: StateDistrictRow): Promise<void> {
+  await client.query(
     `
       UPDATE districts
       SET name = $3,
@@ -213,8 +228,12 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
   }
 
   loadProjectEnv();
-  const databaseUrl = process.env.DATABASE_URL ?? "postgresql://localhost:5432/voteapp";
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl || databaseUrl.trim().length === 0) {
+    throw new Error("DATABASE_URL is required for districts loader");
+  }
   const pool = new Pool({ connectionString: databaseUrl });
+  const client = await pool.connect();
 
   let inserted = 0;
   let updated = 0;
@@ -223,11 +242,11 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
   try {
     const codeColumn = await detectDistrictCodeColumn(pool);
 
-    await pool.query("BEGIN");
+    await client.query("BEGIN");
     for (const row of rows) {
-      const existing = await loadExistingDistrict(pool, codeColumn, row.district_type, row.geoid_compact);
+      const existing = await loadExistingDistrict(client, codeColumn, row.district_type, row.geoid_compact);
       if (!existing) {
-        await insertDistrict(pool, codeColumn, row);
+        await insertDistrict(client, codeColumn, row);
         inserted += 1;
         continue;
       }
@@ -237,14 +256,15 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
         continue;
       }
 
-      await updateDistrict(pool, codeColumn, row);
+      await updateDistrict(client, codeColumn, row);
       updated += 1;
     }
-    await pool.query("COMMIT");
+    await client.query("COMMIT");
   } catch (error) {
-    await pool.query("ROLLBACK");
+    await client.query("ROLLBACK");
     throw error;
   } finally {
+    client.release();
     await pool.end();
   }
 
