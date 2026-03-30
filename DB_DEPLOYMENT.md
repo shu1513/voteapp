@@ -23,7 +23,8 @@ If those columns/constraints are missing in an environment, producer/validator/w
 Run:
 
 ```bash
-psql -d <db_name> -f /Users/shu/voteApp/001_init.sql
+cd /path/to/voteApp
+psql -d <db_name> -f ./001_init.sql
 ```
 
 ## Existing environment with data (manual patch for this change)
@@ -74,25 +75,25 @@ ALTER TABLE staging_items
 To remove obsolete district columns in existing environments:
 
 ```bash
-psql -d <db_name> -f /Users/shu/voteApp/005_drop_district_registered_voters_and_boundary_data.sql
+psql -d <db_name> -f ./005_drop_district_registered_voters_and_boundary_data.sql
 ```
 
 To migrate district type values (`city` -> `place`, `school` -> `school_unified`) and enable school subtypes:
 
 ```bash
-psql -d <db_name> -f /Users/shu/voteApp/006_migrate_district_type_place_and_school_variants.sql
+psql -d <db_name> -f ./006_migrate_district_type_place_and_school_variants.sql
 ```
 
 To rename district identifier column and relax uniqueness safely for compact GEOIDs:
 
 ```bash
-psql -d <db_name> -f /Users/shu/voteApp/007_rename_district_fips_code_to_geoid_compact.sql
+psql -d <db_name> -f ./007_rename_district_fips_code_to_geoid_compact.sql
 ```
 
 If `008_rename_district_type_place_to_incorporated_place.sql` was applied, migrate district type back to `place`:
 
 ```bash
-psql -d <db_name> -f /Users/shu/voteApp/009_rename_district_type_incorporated_place_to_place.sql
+psql -d <db_name> -f ./009_rename_district_type_incorporated_place_to_place.sql
 ```
 
 ## Pipeline stream expectations
