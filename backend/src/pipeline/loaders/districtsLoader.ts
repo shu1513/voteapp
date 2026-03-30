@@ -5,21 +5,22 @@ import { STATE_ABBR_BY_FIPS, getStateAbbreviationByFips, normalizeFips } from ".
 
 export const DISTRICTS_ACS_YEAR = 2024;
 export const CENSUS_STATES_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=state:*`;
+export const CENSUS_US_HOUSE_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=congressional+district:*`;
 const CENSUS_FETCH_TIMEOUT_MS = 30_000;
 
-export type DistrictLoadType = "state";
+export type DistrictLoadType = "state" | "us_house";
 
 export type DistrictLoadOptions = {
   type: DistrictLoadType;
   dryRun?: boolean;
 };
 
-type StateDistrictRow = {
+type DistrictRow = {
   geoid_compact: string;
   name: string;
   state: string;
   state_fips: string;
-  district_type: "us_senate";
+  district_type: "us_senate" | "us_house";
   population: number;
 };
 
@@ -58,13 +59,13 @@ function parsePopulation(value: string): number {
 /**
  * Parses the Census state endpoint into districts rows for the us_senate district_type.
  */
-export function parseStateDistrictRows(data: unknown): StateDistrictRow[] {
+export function parseStateDistrictRows(data: unknown): DistrictRow[] {
   if (!Array.isArray(data) || data.length < 2) {
     throw new Error("Unexpected Census response format: expected array with header and rows");
   }
 
   const rows = data.slice(1);
-  const result: StateDistrictRow[] = [];
+  const result: DistrictRow[] = [];
 
   for (const row of rows) {
     if (!Array.isArray(row) || row.length < 3) {
@@ -110,20 +111,100 @@ export function parseStateDistrictRows(data: unknown): StateDistrictRow[] {
   return result.sort((a, b) => a.state_fips.localeCompare(b.state_fips));
 }
 
-async function fetchStateDistrictRows(): Promise<StateDistrictRow[]> {
+/**
+ * Parses Census congressional district rows into us_house districts.
+ * - Keeps 50 states + DC.
+ * - Excludes "ZZ" not-defined aggregate rows.
+ * - Uses compact geoid format: {state_fips}{district_code}, e.g. "0601", "0200", "1198".
+ */
+export function parseUsHouseDistrictRows(data: unknown): DistrictRow[] {
+  if (!Array.isArray(data) || data.length < 2) {
+    throw new Error("Unexpected Census response format: expected array with header and rows");
+  }
+
+  const rows = data.slice(1);
+  const result: DistrictRow[] = [];
+
+  for (const row of rows) {
+    if (!Array.isArray(row) || row.length < 4) {
+      continue;
+    }
+
+    const [nameRaw, populationRaw, stateRaw, districtRaw] = row;
+    if (
+      typeof nameRaw !== "string" ||
+      typeof populationRaw !== "string" ||
+      typeof stateRaw !== "string" ||
+      typeof districtRaw !== "string"
+    ) {
+      continue;
+    }
+
+    const stateFips = normalizeFips(stateRaw.trim());
+    if (!Object.hasOwn(STATE_ABBR_BY_FIPS, stateFips)) {
+      // Excludes territories and keeps 50 states + DC.
+      continue;
+    }
+
+    const districtCode = districtRaw.trim().toUpperCase();
+    if (districtCode === "ZZ") {
+      // Census aggregate: "Congressional Districts not defined".
+      continue;
+    }
+    if (!/^\d{2}$/.test(districtCode)) {
+      throw new Error(`Unexpected congressional district code from Census: ${districtRaw}`);
+    }
+
+    const population = parsePopulation(populationRaw.trim());
+    if (population <= 0) {
+      throw new Error(`Invalid congressional district population from Census: ${populationRaw}`);
+    }
+
+    const stateAbbreviation = getStateAbbreviationByFips(stateFips);
+    result.push({
+      geoid_compact: `${stateFips}${districtCode}`,
+      name: nameRaw.trim(),
+      state: stateAbbreviation,
+      state_fips: stateFips,
+      district_type: "us_house",
+      population,
+    });
+  }
+
+  const expectedStates = Object.keys(STATE_ABBR_BY_FIPS).length;
+  const distinctFips = new Set(result.map((item) => item.state_fips));
+  if (distinctFips.size !== expectedStates) {
+    const missing = Object.keys(STATE_ABBR_BY_FIPS)
+      .sort()
+      .filter((fips) => !distinctFips.has(fips));
+    throw new Error(
+      `Expected congressional district rows for ${expectedStates} states (50 + DC), got ${distinctFips.size}. Missing: ${missing.join(", ")}`
+    );
+  }
+
+  const geoids = result.map((item) => item.geoid_compact);
+  const distinctGeoids = new Set(geoids);
+  if (geoids.length !== distinctGeoids.size) {
+    const duplicates = [...new Set(geoids.filter((geoid, index, all) => all.indexOf(geoid) !== index))].sort();
+    throw new Error(`Duplicate congressional district rows returned by Census: ${duplicates.join(", ")}`);
+  }
+
+  return result.sort((a, b) => a.geoid_compact.localeCompare(b.geoid_compact));
+}
+
+async function fetchCensusRows(url: string): Promise<unknown> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), CENSUS_FETCH_TIMEOUT_MS);
 
   try {
-    const response = await fetch(CENSUS_STATES_DISTRICTS_URL, {
+    const response = await fetch(url, {
       signal: controller.signal,
     });
     if (!response.ok) {
       throw new Error(`Census API request failed: ${response.status} ${response.statusText}`);
     }
 
-    const data: unknown = await response.json();
-    return parseStateDistrictRows(data);
+    return (await response.json()) as unknown;
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") {
       throw new Error(`Census API request timed out after ${CENSUS_FETCH_TIMEOUT_MS}ms`);
@@ -132,6 +213,16 @@ async function fetchStateDistrictRows(): Promise<StateDistrictRow[]> {
   } finally {
     clearTimeout(timeout);
   }
+}
+
+async function fetchStateDistrictRows(): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_STATES_DISTRICTS_URL);
+  return parseStateDistrictRows(data);
+}
+
+async function fetchUsHouseDistrictRows(): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_US_HOUSE_DISTRICTS_URL);
+  return parseUsHouseDistrictRows(data);
 }
 
 async function detectDistrictCodeColumn(pool: Pool): Promise<DistrictCodeColumnName> {
@@ -176,7 +267,7 @@ async function loadExistingDistrict(
   return result.rows[0] ?? null;
 }
 
-function isSameDistrict(existing: ExistingDistrictRecord, next: StateDistrictRow): boolean {
+function isSameDistrict(existing: ExistingDistrictRecord, next: DistrictRow): boolean {
   return (
     existing.name === next.name &&
     existing.state === next.state &&
@@ -185,7 +276,7 @@ function isSameDistrict(existing: ExistingDistrictRecord, next: StateDistrictRow
   );
 }
 
-async function insertDistrict(client: PoolClient, codeColumn: DistrictCodeColumnName, row: StateDistrictRow): Promise<void> {
+async function insertDistrict(client: PoolClient, codeColumn: DistrictCodeColumnName, row: DistrictRow): Promise<void> {
   await client.query(
     `
       INSERT INTO public.districts
@@ -197,7 +288,7 @@ async function insertDistrict(client: PoolClient, codeColumn: DistrictCodeColumn
   );
 }
 
-async function updateDistrict(client: PoolClient, codeColumn: DistrictCodeColumnName, row: StateDistrictRow): Promise<void> {
+async function updateDistrict(client: PoolClient, codeColumn: DistrictCodeColumnName, row: DistrictRow): Promise<void> {
   await client.query(
     `
       UPDATE public.districts
@@ -287,20 +378,28 @@ async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
 
 /**
  * Loads districts from Census into the districts table.
- * Phase 1 supports only statewide us_senate rows (2024 state:* endpoint).
+ * Supported types:
+ * - state -> us_senate rows (2024 state:* endpoint)
+ * - us_house -> congressional district rows (2024 congressional+district:* endpoint)
  */
 export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<DistrictLoadSummary> {
   const dryRun = Boolean(options.dryRun);
-  if (options.type !== "state") {
+  let sourceUrl: string;
+  let rows: DistrictRow[];
+  if (options.type === "state") {
+    sourceUrl = CENSUS_STATES_DISTRICTS_URL;
+    rows = await fetchStateDistrictRows();
+  } else if (options.type === "us_house") {
+    sourceUrl = CENSUS_US_HOUSE_DISTRICTS_URL;
+    rows = await fetchUsHouseDistrictRows();
+  } else {
     throw new Error(`Unsupported districts load type: ${options.type}`);
   }
-
-  const rows = await fetchStateDistrictRows();
 
   if (dryRun) {
     return {
       type: options.type,
-      sourceUrl: CENSUS_STATES_DISTRICTS_URL,
+      sourceUrl,
       totalCandidates: rows.length,
       inserted: 0,
       updated: 0,
@@ -357,7 +456,7 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
 
   return {
     type: options.type,
-    sourceUrl: CENSUS_STATES_DISTRICTS_URL,
+    sourceUrl,
     totalCandidates: rows.length,
     inserted,
     updated,
