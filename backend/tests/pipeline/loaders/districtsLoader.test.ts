@@ -61,4 +61,15 @@ describe("parseStateDistrictRows", () => {
 
     expect(() => parseStateDistrictRows(data)).toThrow(/Invalid population value/);
   });
+
+  it("throws when Census returns duplicate state rows", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state"]];
+    for (const fips of allFips) {
+      data.push([`State ${fips}`, "1000", fips]);
+    }
+    data.push(["Duplicate California", "2000", "06"]);
+
+    expect(() => parseStateDistrictRows(data)).toThrow(/Duplicate state rows returned by Census: 06/);
+  });
 });

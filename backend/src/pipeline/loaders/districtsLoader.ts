@@ -89,7 +89,12 @@ export function parseStateDistrictRows(data: unknown): StateDistrictRow[] {
   }
 
   const expected = Object.keys(STATE_ABBR_BY_FIPS).length;
-  const distinctFips = new Set(result.map((item) => item.state_fips));
+  const allFips = result.map((item) => item.state_fips);
+  const distinctFips = new Set(allFips);
+  if (allFips.length !== distinctFips.size) {
+    const duplicates = [...new Set(allFips.filter((fips, index, all) => all.indexOf(fips) !== index))].sort();
+    throw new Error(`Duplicate state rows returned by Census: ${duplicates.join(", ")}`);
+  }
   if (distinctFips.size !== expected) {
     const missing = Object.keys(STATE_ABBR_BY_FIPS)
       .sort()
@@ -155,7 +160,7 @@ async function loadExistingDistrict(
   const result = await client.query<ExistingDistrictRecord>(
     `
       SELECT name, state, state_fips, population
-      FROM districts
+      FROM public.districts
       WHERE district_type = $1
         AND ${codeColumn} = $2
       LIMIT 1
@@ -178,7 +183,7 @@ function isSameDistrict(existing: ExistingDistrictRecord, next: StateDistrictRow
 async function insertDistrict(client: PoolClient, codeColumn: DistrictCodeColumnName, row: StateDistrictRow): Promise<void> {
   await client.query(
     `
-      INSERT INTO districts
+      INSERT INTO public.districts
         (${codeColumn}, name, state, state_fips, district_type, population, last_researched)
       VALUES
         ($1, $2, $3, $4, $5, $6, now())
@@ -190,7 +195,7 @@ async function insertDistrict(client: PoolClient, codeColumn: DistrictCodeColumn
 async function updateDistrict(client: PoolClient, codeColumn: DistrictCodeColumnName, row: StateDistrictRow): Promise<void> {
   await client.query(
     `
-      UPDATE districts
+      UPDATE public.districts
       SET name = $3,
           state = $4,
           state_fips = $5,
@@ -243,6 +248,7 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
     const codeColumn = await detectDistrictCodeColumn(pool);
 
     await client.query("BEGIN");
+    await client.query("SELECT pg_advisory_xact_lock(hashtext($1)::bigint)", [`districts_loader:${options.type}`]);
     for (const row of rows) {
       const existing = await loadExistingDistrict(client, codeColumn, row.district_type, row.geoid_compact);
       if (!existing) {
