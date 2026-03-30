@@ -2,11 +2,14 @@ import { describe, expect, it } from "vitest";
 
 import {
   EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024,
+  EXPECTED_PLACE_ROWS_50_PLUS_DC_2024,
   parseCountyDistrictRows,
+  parsePlaceDistrictRows,
   parseStateDistrictRows,
   parseUsHouseDistrictRows,
 } from "../../../src/pipeline/loaders/districtsLoader.js";
 import { COUNTY_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/countyGeoids2024.js";
+import { PLACE_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/placeGeoids2024.js";
 import { STATE_ABBR_BY_FIPS } from "../../../src/constants/usStates.js";
 
 describe("parseStateDistrictRows", () => {
@@ -232,5 +235,102 @@ describe("parseCountyDistrictRows", () => {
     expect(() => parseCountyDistrictRows(mutated)).toThrow(/County GEOID set mismatch/);
     expect(() => parseCountyDistrictRows(mutated)).toThrow(/missing=1/);
     expect(() => parseCountyDistrictRows(mutated)).toThrow(/unexpected=1/);
+  });
+});
+
+describe("parsePlaceDistrictRows", () => {
+  function buildCanonicalPlaceData(): unknown[] {
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "place"]];
+    for (const geoid of PLACE_GEOIDS_50_PLUS_DC_2024) {
+      const state = geoid.slice(0, 2);
+      const place = geoid.slice(2);
+      data.push([`Place ${place}, State ${state}`, "1000", state, place]);
+    }
+    return data;
+  }
+
+  it("parses complete place rows and excludes territories", () => {
+    const data = buildCanonicalPlaceData();
+    data.push(["Aceitunas comunidad, Puerto Rico", "1369", "72", "00186"]);
+
+    const rows = parsePlaceDistrictRows(data);
+    expect(rows).toHaveLength(EXPECTED_PLACE_ROWS_50_PLUS_DC_2024);
+    expect(rows.some((row) => row.state_fips === "72")).toBe(false);
+
+    const dc = rows.find((row) => row.state_fips === "11" && row.geoid_compact === "1150000");
+    const california = rows.find((row) => row.geoid_compact === "0600135");
+    expect(dc).toBeTruthy();
+    expect(california).toBeTruthy();
+  });
+
+  it("allows zero population values from official place payloads", () => {
+    const data = buildCanonicalPlaceData();
+    const rows = data.slice(1) as string[][];
+    const targetIndex = rows.findIndex((row) => row[2] === "06" && row[3] === "00135");
+    expect(targetIndex).toBeGreaterThanOrEqual(0);
+    rows[targetIndex][1] = "0";
+
+    const parsed = parsePlaceDistrictRows([data[0], ...rows]);
+    const target = parsed.find((row) => row.geoid_compact === "0600135");
+    expect(target?.population).toBe(0);
+  });
+
+  it("throws on unexpected place code", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "place"]];
+    for (const fips of allFips) {
+      const placeCode = fips === "06" ? "ABCDE" : "00001";
+      data.push([`Place ${placeCode}, State ${fips}`, "1000", fips, placeCode]);
+    }
+
+    expect(() => parsePlaceDistrictRows(data)).toThrow(/Unexpected place code/);
+  });
+
+  it("throws when place rows are missing a supported state", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "place"]];
+    for (const fips of allFips) {
+      if (fips === "56") {
+        continue;
+      }
+      data.push([`Place 00001, State ${fips}`, "1000", fips, "00001"]);
+    }
+
+    expect(() => parsePlaceDistrictRows(data)).toThrow(/Missing: 56/);
+  });
+
+  it("throws when place payload is truncated even if all states are present", () => {
+    const complete = buildCanonicalPlaceData();
+    const header = complete[0];
+    const rows = complete.slice(1);
+    const truncated = [header, ...rows.slice(1)];
+    expect(() => parsePlaceDistrictRows(truncated)).toThrow(
+      new RegExp(`Expected ${EXPECTED_PLACE_ROWS_50_PLUS_DC_2024} place rows`)
+    );
+  });
+
+  it("throws on duplicate place geoid rows", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "place"]];
+    for (const fips of allFips) {
+      data.push([`Place 00001, State ${fips}`, "1000", fips, "00001"]);
+    }
+    data.push(["Duplicate California Place 00001", "2000", "06", "00001"]);
+
+    expect(() => parsePlaceDistrictRows(data)).toThrow(/Duplicate place rows returned by Census: 0600001/);
+  });
+
+  it("throws when place payload swaps one canonical geoid for an unexpected one", () => {
+    const complete = buildCanonicalPlaceData();
+    const rows = complete.slice(1) as string[][];
+
+    const targetIndex = rows.findIndex((row) => row[2] === "06" && row[3] === "00135");
+    expect(targetIndex).toBeGreaterThanOrEqual(0);
+    rows[targetIndex] = ["Place 99999, State 06", "1000", "06", "99999"];
+
+    const mutated: unknown[] = [complete[0], ...rows];
+    expect(() => parsePlaceDistrictRows(mutated)).toThrow(/Place GEOID set mismatch/);
+    expect(() => parsePlaceDistrictRows(mutated)).toThrow(/missing=1/);
+    expect(() => parsePlaceDistrictRows(mutated)).toThrow(/unexpected=1/);
   });
 });
