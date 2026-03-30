@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseStateDistrictRows } from "../../../src/pipeline/loaders/districtsLoader.js";
+import { parseStateDistrictRows, parseUsHouseDistrictRows } from "../../../src/pipeline/loaders/districtsLoader.js";
 import { STATE_ABBR_BY_FIPS } from "../../../src/constants/usStates.js";
 
 describe("parseStateDistrictRows", () => {
@@ -71,5 +71,75 @@ describe("parseStateDistrictRows", () => {
     data.push(["Duplicate California", "2000", "06"]);
 
     expect(() => parseStateDistrictRows(data)).toThrow(/Duplicate state rows returned by Census: 06/);
+  });
+});
+
+describe("parseUsHouseDistrictRows", () => {
+  it("parses valid congressional rows, filters ZZ, and excludes territories", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "congressional district"]];
+
+    for (const fips of allFips) {
+      const districtCode = fips === "02" ? "00" : fips === "11" ? "98" : "01";
+      data.push([`Congressional District ${districtCode}, State ${fips}`, "1000", fips, districtCode]);
+    }
+
+    data.push(["Congressional Districts not defined, California", "0", "06", "ZZ"]);
+    data.push(["Resident Commissioner District, Puerto Rico", "3200000", "72", "98"]);
+
+    const rows = parseUsHouseDistrictRows(data);
+    expect(rows).toHaveLength(allFips.length);
+    expect(rows.some((row) => row.state_fips === "72")).toBe(false);
+
+    const alaska = rows.find((row) => row.state_fips === "02");
+    const dc = rows.find((row) => row.state_fips === "11");
+    const california = rows.find((row) => row.state_fips === "06");
+    expect(alaska).toMatchObject({
+      geoid_compact: "0200",
+      district_type: "us_house",
+    });
+    expect(dc).toMatchObject({
+      geoid_compact: "1198",
+      district_type: "us_house",
+    });
+    expect(california).toMatchObject({
+      geoid_compact: "0601",
+      district_type: "us_house",
+    });
+  });
+
+  it("throws on unexpected congressional district code", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "congressional district"]];
+    for (const fips of allFips) {
+      const districtCode = fips === "06" ? "AA" : "01";
+      data.push([`Congressional District ${districtCode}, State ${fips}`, "1000", fips, districtCode]);
+    }
+
+    expect(() => parseUsHouseDistrictRows(data)).toThrow(/Unexpected congressional district code/);
+  });
+
+  it("throws when congressional rows are missing a supported state", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "congressional district"]];
+    for (const fips of allFips) {
+      if (fips === "56") {
+        continue;
+      }
+      data.push([`Congressional District 01, State ${fips}`, "1000", fips, "01"]);
+    }
+
+    expect(() => parseUsHouseDistrictRows(data)).toThrow(/Missing: 56/);
+  });
+
+  it("throws on duplicate congressional geoid rows", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "congressional district"]];
+    for (const fips of allFips) {
+      data.push([`Congressional District 01, State ${fips}`, "1000", fips, "01"]);
+    }
+    data.push(["Duplicate California 01", "2000", "06", "01"]);
+
+    expect(() => parseUsHouseDistrictRows(data)).toThrow(/Duplicate congressional district rows returned by Census: 0601/);
   });
 });
