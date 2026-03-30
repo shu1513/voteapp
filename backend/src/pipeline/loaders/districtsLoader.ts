@@ -1,5 +1,6 @@
 import { Pool, type PoolClient } from "pg";
 
+import { COUNTY_GEOIDS_50_PLUS_DC_2024, COUNTY_GEOIDS_50_PLUS_DC_2024_SET } from "../../constants/countyGeoids2024.js";
 import { loadProjectEnv } from "../../config/env.js";
 import { STATE_ABBR_BY_FIPS, getStateAbbreviationByFips, normalizeFips } from "../../constants/usStates.js";
 
@@ -7,7 +8,7 @@ export const DISTRICTS_ACS_YEAR = 2024;
 export const CENSUS_STATES_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=state:*`;
 export const CENSUS_US_HOUSE_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=congressional+district:*`;
 export const CENSUS_COUNTY_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=county:*`;
-export const EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024 = 3144;
+export const EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024 = COUNTY_GEOIDS_50_PLUS_DC_2024.length;
 const CENSUS_FETCH_TIMEOUT_MS = 30_000;
 
 export type DistrictLoadType = "state" | "us_house" | "county";
@@ -270,6 +271,16 @@ export function parseCountyDistrictRows(data: unknown): DistrictRow[] {
   if (result.length !== EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024) {
     throw new Error(
       `Expected ${EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024} county rows for 2024 (50 + DC), got ${result.length}`
+    );
+  }
+
+  const missingGeoids = COUNTY_GEOIDS_50_PLUS_DC_2024.filter((geoid) => !distinctGeoids.has(geoid));
+  const unexpectedGeoids = [...distinctGeoids].filter((geoid) => !COUNTY_GEOIDS_50_PLUS_DC_2024_SET.has(geoid)).sort();
+  if (missingGeoids.length > 0 || unexpectedGeoids.length > 0) {
+    const missingPreview = missingGeoids.slice(0, 10).join(", ");
+    const unexpectedPreview = unexpectedGeoids.slice(0, 10).join(", ");
+    throw new Error(
+      `County GEOID set mismatch for 2024 (50 + DC): missing=${missingGeoids.length}${missingPreview ? ` [${missingPreview}]` : ""}, unexpected=${unexpectedGeoids.length}${unexpectedPreview ? ` [${unexpectedPreview}]` : ""}`
     );
   }
 
