@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { parseCountyDistrictRows, parseStateDistrictRows, parseUsHouseDistrictRows } from "../../../src/pipeline/loaders/districtsLoader.js";
+import {
+  EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024,
+  parseCountyDistrictRows,
+  parseStateDistrictRows,
+  parseUsHouseDistrictRows,
+} from "../../../src/pipeline/loaders/districtsLoader.js";
 import { STATE_ABBR_BY_FIPS } from "../../../src/constants/usStates.js";
 
 describe("parseStateDistrictRows", () => {
@@ -145,29 +150,49 @@ describe("parseUsHouseDistrictRows", () => {
 });
 
 describe("parseCountyDistrictRows", () => {
-  it("parses valid county rows and excludes territories", () => {
-    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+  function buildSyntheticCountyData(totalRows: number): unknown[] {
+    const fipsList = Object.keys(STATE_ABBR_BY_FIPS).sort();
     const data: unknown[] = [["NAME", "B01001_001E", "state", "county"]];
+    if (fipsList.length === 0) {
+      return data;
+    }
 
-    for (const fips of allFips) {
+    // Ensure every state appears at least once.
+    for (const fips of fipsList) {
       data.push([`County 001, State ${fips}`, "1000", fips, "001"]);
     }
+
+    let remaining = totalRows - fipsList.length;
+    let stateIndex = 0;
+    const countyCounterByState = new Map<string, number>();
+    for (const fips of fipsList) {
+      countyCounterByState.set(fips, 1);
+    }
+
+    while (remaining > 0) {
+      const fips = fipsList[stateIndex % fipsList.length];
+      const nextCounty = (countyCounterByState.get(fips) ?? 1) + 1;
+      countyCounterByState.set(fips, nextCounty);
+      data.push([`County ${String(nextCounty).padStart(3, "0")}, State ${fips}`, "1000", fips, String(nextCounty).padStart(3, "0")]);
+      stateIndex += 1;
+      remaining -= 1;
+    }
+
+    return data;
+  }
+
+  it("parses complete county rows and excludes territories", () => {
+    const data = buildSyntheticCountyData(EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024);
     data.push(["Adjuntas Municipio, Puerto Rico", "17960", "72", "001"]);
 
     const rows = parseCountyDistrictRows(data);
-    expect(rows).toHaveLength(allFips.length);
+    expect(rows).toHaveLength(EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024);
     expect(rows.some((row) => row.state_fips === "72")).toBe(false);
 
-    const dc = rows.find((row) => row.state_fips === "11");
-    const california = rows.find((row) => row.state_fips === "06");
-    expect(dc).toMatchObject({
-      geoid_compact: "11001",
-      district_type: "county",
-    });
-    expect(california).toMatchObject({
-      geoid_compact: "06001",
-      district_type: "county",
-    });
+    const dc = rows.find((row) => row.state_fips === "11" && row.geoid_compact === "11001");
+    const california = rows.find((row) => row.geoid_compact === "06001");
+    expect(dc).toBeTruthy();
+    expect(california).toBeTruthy();
   });
 
   it("throws on unexpected county code", () => {
@@ -192,6 +217,16 @@ describe("parseCountyDistrictRows", () => {
     }
 
     expect(() => parseCountyDistrictRows(data)).toThrow(/Missing: 56/);
+  });
+
+  it("throws when county payload is truncated even if all states are present", () => {
+    const complete = buildSyntheticCountyData(EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024);
+    const header = complete[0];
+    const rows = complete.slice(1);
+    const truncated = [header, ...rows.slice(1)];
+    expect(() => parseCountyDistrictRows(truncated)).toThrow(
+      new RegExp(`Expected ${EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024} county rows`)
+    );
   });
 
   it("throws on duplicate county geoid rows", () => {

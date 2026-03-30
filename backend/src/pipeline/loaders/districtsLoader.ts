@@ -7,6 +7,7 @@ export const DISTRICTS_ACS_YEAR = 2024;
 export const CENSUS_STATES_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=state:*`;
 export const CENSUS_US_HOUSE_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=congressional+district:*`;
 export const CENSUS_COUNTY_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=county:*`;
+export const EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024 = 3144;
 const CENSUS_FETCH_TIMEOUT_MS = 30_000;
 
 export type DistrictLoadType = "state" | "us_house" | "county";
@@ -264,6 +265,12 @@ export function parseCountyDistrictRows(data: unknown): DistrictRow[] {
   if (geoids.length !== distinctGeoids.size) {
     const duplicates = [...new Set(geoids.filter((geoid, index, all) => all.indexOf(geoid) !== index))].sort();
     throw new Error(`Duplicate county rows returned by Census: ${duplicates.join(", ")}`);
+  }
+
+  if (result.length !== EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024) {
+    throw new Error(
+      `Expected ${EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024} county rows for 2024 (50 + DC), got ${result.length}`
+    );
   }
 
   return result.sort((a, b) => a.geoid_compact.localeCompare(b.geoid_compact));
