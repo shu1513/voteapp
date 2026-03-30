@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { parseStateDistrictRows, parseUsHouseDistrictRows } from "../../../src/pipeline/loaders/districtsLoader.js";
+import {
+  EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024,
+  parseCountyDistrictRows,
+  parseStateDistrictRows,
+  parseUsHouseDistrictRows,
+} from "../../../src/pipeline/loaders/districtsLoader.js";
+import { COUNTY_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/countyGeoids2024.js";
 import { STATE_ABBR_BY_FIPS } from "../../../src/constants/usStates.js";
 
 describe("parseStateDistrictRows", () => {
@@ -141,5 +147,90 @@ describe("parseUsHouseDistrictRows", () => {
     data.push(["Duplicate California 01", "2000", "06", "01"]);
 
     expect(() => parseUsHouseDistrictRows(data)).toThrow(/Duplicate congressional district rows returned by Census: 0601/);
+  });
+});
+
+describe("parseCountyDistrictRows", () => {
+  function buildCanonicalCountyData(): unknown[] {
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "county"]];
+    for (const geoid of COUNTY_GEOIDS_50_PLUS_DC_2024) {
+      const state = geoid.slice(0, 2);
+      const county = geoid.slice(2);
+      data.push([`County ${county}, State ${state}`, "1000", state, county]);
+    }
+    return data;
+  }
+
+  it("parses complete county rows and excludes territories", () => {
+    const data = buildCanonicalCountyData();
+    data.push(["Adjuntas Municipio, Puerto Rico", "17960", "72", "001"]);
+
+    const rows = parseCountyDistrictRows(data);
+    expect(rows).toHaveLength(EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024);
+    expect(rows.some((row) => row.state_fips === "72")).toBe(false);
+
+    const dc = rows.find((row) => row.state_fips === "11" && row.geoid_compact === "11001");
+    const california = rows.find((row) => row.geoid_compact === "06001");
+    expect(dc).toBeTruthy();
+    expect(california).toBeTruthy();
+  });
+
+  it("throws on unexpected county code", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "county"]];
+    for (const fips of allFips) {
+      const countyCode = fips === "06" ? "AA1" : "001";
+      data.push([`County ${countyCode}, State ${fips}`, "1000", fips, countyCode]);
+    }
+
+    expect(() => parseCountyDistrictRows(data)).toThrow(/Unexpected county code/);
+  });
+
+  it("throws when county rows are missing a supported state", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "county"]];
+    for (const fips of allFips) {
+      if (fips === "56") {
+        continue;
+      }
+      data.push([`County 001, State ${fips}`, "1000", fips, "001"]);
+    }
+
+    expect(() => parseCountyDistrictRows(data)).toThrow(/Missing: 56/);
+  });
+
+  it("throws when county payload is truncated even if all states are present", () => {
+    const complete = buildCanonicalCountyData();
+    const header = complete[0];
+    const rows = complete.slice(1);
+    const truncated = [header, ...rows.slice(1)];
+    expect(() => parseCountyDistrictRows(truncated)).toThrow(
+      new RegExp(`Expected ${EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024} county rows`)
+    );
+  });
+
+  it("throws on duplicate county geoid rows", () => {
+    const allFips = Object.keys(STATE_ABBR_BY_FIPS);
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "county"]];
+    for (const fips of allFips) {
+      data.push([`County 001, State ${fips}`, "1000", fips, "001"]);
+    }
+    data.push(["Duplicate California County 001", "2000", "06", "001"]);
+
+    expect(() => parseCountyDistrictRows(data)).toThrow(/Duplicate county rows returned by Census: 06001/);
+  });
+
+  it("throws when county payload swaps one canonical geoid for an unexpected one", () => {
+    const complete = buildCanonicalCountyData();
+    const rows = complete.slice(1) as string[][];
+
+    const targetIndex = rows.findIndex((row) => row[2] === "06" && row[3] === "001");
+    expect(targetIndex).toBeGreaterThanOrEqual(0);
+    rows[targetIndex] = ["County 999, State 06", "1000", "06", "999"];
+
+    const mutated: unknown[] = [complete[0], ...rows];
+    expect(() => parseCountyDistrictRows(mutated)).toThrow(/County GEOID set mismatch/);
+    expect(() => parseCountyDistrictRows(mutated)).toThrow(/missing=1/);
+    expect(() => parseCountyDistrictRows(mutated)).toThrow(/unexpected=1/);
   });
 });
