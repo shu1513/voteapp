@@ -2,9 +2,9 @@ import { Pool, type PoolClient } from "pg";
 
 import { COUNTY_GEOIDS_50_PLUS_DC_2024, COUNTY_GEOIDS_50_PLUS_DC_2024_SET } from "../../constants/countyGeoids2024.js";
 import {
-  INCORPORATED_PLACE_GEOIDS_50_PLUS_DC_2024,
-  INCORPORATED_PLACE_GEOIDS_50_PLUS_DC_2024_SET,
-} from "../../constants/incorporatedPlaceGeoids2024.js";
+  PLACE_GEOIDS_50_PLUS_DC_2024,
+  PLACE_GEOIDS_50_PLUS_DC_2024_SET,
+} from "../../constants/placeGeoids2024.js";
 import { loadProjectEnv } from "../../config/env.js";
 import { STATE_ABBR_BY_FIPS, getStateAbbreviationByFips, normalizeFips } from "../../constants/usStates.js";
 
@@ -12,12 +12,12 @@ export const DISTRICTS_ACS_YEAR = 2024;
 export const CENSUS_STATES_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=state:*`;
 export const CENSUS_US_HOUSE_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=congressional+district:*`;
 export const CENSUS_COUNTY_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=county:*`;
-export const CENSUS_INCORPORATED_PLACE_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=place:*`;
+export const CENSUS_PLACE_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=place:*`;
 export const EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024 = COUNTY_GEOIDS_50_PLUS_DC_2024.length;
-export const EXPECTED_INCORPORATED_PLACE_ROWS_50_PLUS_DC_2024 = INCORPORATED_PLACE_GEOIDS_50_PLUS_DC_2024.length;
+export const EXPECTED_PLACE_ROWS_50_PLUS_DC_2024 = PLACE_GEOIDS_50_PLUS_DC_2024.length;
 const CENSUS_FETCH_TIMEOUT_MS = 30_000;
 
-export type DistrictLoadType = "state" | "us_house" | "county" | "incorporated_place";
+export type DistrictLoadType = "state" | "us_house" | "county" | "place";
 
 export type DistrictLoadOptions = {
   type: DistrictLoadType;
@@ -29,7 +29,7 @@ type DistrictRow = {
   name: string;
   state: string;
   state_fips: string;
-  district_type: "us_senate" | "us_house" | "county" | "incorporated_place";
+  district_type: "us_senate" | "us_house" | "county" | "place";
   population: number;
 };
 
@@ -294,13 +294,13 @@ export function parseCountyDistrictRows(data: unknown): DistrictRow[] {
 }
 
 /**
- * Parses Census place rows into incorporated_place districts.
+ * Parses Census place rows into place districts.
  * - Keeps 50 states + DC.
  * - Excludes territories (e.g., Puerto Rico).
  * - Uses compact geoid format: {state_fips}{place_code}, e.g. "0600100", "1150000".
  * - Allows zero population rows present in official Census place payloads.
  */
-export function parseIncorporatedPlaceDistrictRows(data: unknown): DistrictRow[] {
+export function parsePlaceDistrictRows(data: unknown): DistrictRow[] {
   if (!Array.isArray(data) || data.length < 2) {
     throw new Error("Unexpected Census response format: expected array with header and rows");
   }
@@ -340,7 +340,7 @@ export function parseIncorporatedPlaceDistrictRows(data: unknown): DistrictRow[]
       name: nameRaw.trim(),
       state: getStateAbbreviationByFips(stateFips),
       state_fips: stateFips,
-      district_type: "incorporated_place",
+      district_type: "place",
       population,
     });
   }
@@ -352,7 +352,7 @@ export function parseIncorporatedPlaceDistrictRows(data: unknown): DistrictRow[]
       .sort()
       .filter((fips) => !distinctFips.has(fips));
     throw new Error(
-      `Expected incorporated place rows for ${expectedStates} states (50 + DC), got ${distinctFips.size}. Missing: ${missing.join(", ")}`
+      `Expected place rows for ${expectedStates} states (50 + DC), got ${distinctFips.size}. Missing: ${missing.join(", ")}`
     );
   }
 
@@ -360,24 +360,22 @@ export function parseIncorporatedPlaceDistrictRows(data: unknown): DistrictRow[]
   const distinctGeoids = new Set(geoids);
   if (geoids.length !== distinctGeoids.size) {
     const duplicates = [...new Set(geoids.filter((geoid, index, all) => all.indexOf(geoid) !== index))].sort();
-    throw new Error(`Duplicate incorporated place rows returned by Census: ${duplicates.join(", ")}`);
+    throw new Error(`Duplicate place rows returned by Census: ${duplicates.join(", ")}`);
   }
 
-  if (result.length !== EXPECTED_INCORPORATED_PLACE_ROWS_50_PLUS_DC_2024) {
+  if (result.length !== EXPECTED_PLACE_ROWS_50_PLUS_DC_2024) {
     throw new Error(
-      `Expected ${EXPECTED_INCORPORATED_PLACE_ROWS_50_PLUS_DC_2024} incorporated place rows for 2024 (50 + DC), got ${result.length}`
+      `Expected ${EXPECTED_PLACE_ROWS_50_PLUS_DC_2024} place rows for 2024 (50 + DC), got ${result.length}`
     );
   }
 
-  const missingGeoids = INCORPORATED_PLACE_GEOIDS_50_PLUS_DC_2024.filter((geoid) => !distinctGeoids.has(geoid));
-  const unexpectedGeoids = [...distinctGeoids]
-    .filter((geoid) => !INCORPORATED_PLACE_GEOIDS_50_PLUS_DC_2024_SET.has(geoid))
-    .sort();
+  const missingGeoids = PLACE_GEOIDS_50_PLUS_DC_2024.filter((geoid) => !distinctGeoids.has(geoid));
+  const unexpectedGeoids = [...distinctGeoids].filter((geoid) => !PLACE_GEOIDS_50_PLUS_DC_2024_SET.has(geoid)).sort();
   if (missingGeoids.length > 0 || unexpectedGeoids.length > 0) {
     const missingPreview = missingGeoids.slice(0, 10).join(", ");
     const unexpectedPreview = unexpectedGeoids.slice(0, 10).join(", ");
     throw new Error(
-      `Incorporated place GEOID set mismatch for 2024 (50 + DC): missing=${missingGeoids.length}${missingPreview ? ` [${missingPreview}]` : ""}, unexpected=${unexpectedGeoids.length}${unexpectedPreview ? ` [${unexpectedPreview}]` : ""}`
+      `Place GEOID set mismatch for 2024 (50 + DC): missing=${missingGeoids.length}${missingPreview ? ` [${missingPreview}]` : ""}, unexpected=${unexpectedGeoids.length}${unexpectedPreview ? ` [${unexpectedPreview}]` : ""}`
     );
   }
 
@@ -422,9 +420,9 @@ async function fetchCountyDistrictRows(): Promise<DistrictRow[]> {
   return parseCountyDistrictRows(data);
 }
 
-async function fetchIncorporatedPlaceDistrictRows(): Promise<DistrictRow[]> {
-  const data = await fetchCensusRows(CENSUS_INCORPORATED_PLACE_DISTRICTS_URL);
-  return parseIncorporatedPlaceDistrictRows(data);
+async function fetchPlaceDistrictRows(): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_PLACE_DISTRICTS_URL);
+  return parsePlaceDistrictRows(data);
 }
 
 async function detectDistrictCodeColumn(pool: Pool): Promise<DistrictCodeColumnName> {
@@ -584,7 +582,7 @@ async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
  * - state -> us_senate rows (2024 state:* endpoint)
  * - us_house -> congressional district rows (2024 congressional+district:* endpoint)
  * - county -> county rows (2024 county:* endpoint)
- * - incorporated_place -> place rows (2024 place:* endpoint)
+ * - place -> place rows (2024 place:* endpoint)
  */
 export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<DistrictLoadSummary> {
   const dryRun = Boolean(options.dryRun);
@@ -599,9 +597,9 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
   } else if (options.type === "county") {
     sourceUrl = CENSUS_COUNTY_DISTRICTS_URL;
     rows = await fetchCountyDistrictRows();
-  } else if (options.type === "incorporated_place") {
-    sourceUrl = CENSUS_INCORPORATED_PLACE_DISTRICTS_URL;
-    rows = await fetchIncorporatedPlaceDistrictRows();
+  } else if (options.type === "place") {
+    sourceUrl = CENSUS_PLACE_DISTRICTS_URL;
+    rows = await fetchPlaceDistrictRows();
   } else {
     throw new Error(`Unsupported districts load type: ${options.type}`);
   }

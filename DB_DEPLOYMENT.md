@@ -89,6 +89,12 @@ To rename district identifier column and relax uniqueness safely for compact GEO
 psql -d <db_name> -f /Users/shu/voteApp/007_rename_district_fips_code_to_geoid_compact.sql
 ```
 
+If `008_rename_district_type_place_to_incorporated_place.sql` was applied, migrate district type back to `place`:
+
+```bash
+psql -d <db_name> -f /Users/shu/voteApp/009_rename_district_type_incorporated_place_to_place.sql
+```
+
 ## Pipeline stream expectations
 
 - Producer writes draft items to `staging:draft` only.
