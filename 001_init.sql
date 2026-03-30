@@ -108,18 +108,31 @@ CREATE INDEX idx_users_deleted_at ON users (deleted_at);
 
 CREATE TABLE districts (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    fips_code text NOT NULL UNIQUE,
+    geoid_compact text NOT NULL,
     name text NOT NULL,
     state text NOT NULL,
     state_fips text NOT NULL,
     district_type text NOT NULL,
     population integer NOT NULL CHECK (population >= 0),
-    registered_voters integer CHECK (registered_voters IS NULL OR registered_voters >= 0),
     vote_power_score numeric(5,2) CHECK (vote_power_score IS NULL OR (vote_power_score >= 0 AND vote_power_score <= 100)),
     last_researched timestamptz,
     created_at timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT chk_district_type
-        CHECK (district_type IN ('us_senate', 'us_house', 'state_upper', 'state_lower', 'county', 'city', 'school')),
+        CHECK (
+            district_type IN (
+                'us_senate',
+                'us_house',
+                'state_upper',
+                'state_lower',
+                'county',
+                'place',
+                'school_elementary',
+                'school_secondary',
+                'school_unified'
+            )
+        ),
+    CONSTRAINT uq_districts_type_geoid_compact
+        UNIQUE (district_type, geoid_compact),
     CONSTRAINT uq_districts_id_district_type
         UNIQUE (id, district_type)
 );
@@ -145,7 +158,19 @@ CREATE TABLE user_districts (
     CONSTRAINT uq_user_districts_user_id_district_id
         UNIQUE (user_id, district_id),
     CONSTRAINT chk_user_districts_type
-        CHECK (district_type IN ('us_senate', 'us_house', 'state_upper', 'state_lower', 'county', 'city', 'school'))
+        CHECK (
+            district_type IN (
+                'us_senate',
+                'us_house',
+                'state_upper',
+                'state_lower',
+                'county',
+                'place',
+                'school_elementary',
+                'school_secondary',
+                'school_unified'
+            )
+        )
 );
 
 CREATE INDEX idx_user_districts_user_id ON user_districts (user_id);

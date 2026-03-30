@@ -71,6 +71,24 @@ ALTER TABLE staging_items
   CHECK (ai_raw_debug IS NULL OR jsonb_typeof(ai_raw_debug) = 'object');
 ```
 
+To remove obsolete district columns in existing environments:
+
+```bash
+psql -d <db_name> -f /Users/shu/voteApp/005_drop_district_registered_voters_and_boundary_data.sql
+```
+
+To migrate district type values (`city` -> `place`, `school` -> `school_unified`) and enable school subtypes:
+
+```bash
+psql -d <db_name> -f /Users/shu/voteApp/006_migrate_district_type_place_and_school_variants.sql
+```
+
+To rename district identifier column and relax uniqueness safely for compact GEOIDs:
+
+```bash
+psql -d <db_name> -f /Users/shu/voteApp/007_rename_district_fips_code_to_geoid_compact.sql
+```
+
 ## Pipeline stream expectations
 
 - Producer writes draft items to `staging:draft` only.
