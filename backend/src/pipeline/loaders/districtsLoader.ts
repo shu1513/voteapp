@@ -214,6 +214,77 @@ async function updateDistrict(client: PoolClient, codeColumn: DistrictCodeColumn
 }
 
 /**
+ * Recomputes vote_power_score for every district row using a log-scaled inverse-population model:
+ *   score_i = 100 * ln(max_scope_pop / pop_i) / ln(max_scope_pop / min_scope_pop)
+ *
+ * Why this model:
+ * - Population-based structural measure that works across district types.
+ * - Log scaling keeps scores interpretable (avoids extreme swings from raw inverse population).
+ * - Bounded output (0..100) with deterministic behavior for edge cases.
+ *
+ * Scope rules:
+ * - us_senate/us_house: national scope per district_type.
+ * - all other district types: state-level scope (district_type + state_fips).
+ */
+async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
+  await client.query(
+    `
+      WITH scoped AS (
+        SELECT
+          id,
+          district_type,
+          state_fips,
+          population::numeric AS population,
+          CASE
+            -- Federal congressional types compare nationally.
+            WHEN district_type IN ('us_senate', 'us_house') THEN district_type
+            -- Other types compare within the same state.
+            ELSE district_type || ':' || COALESCE(state_fips, '')
+          END AS scope_key
+        FROM public.districts
+      ),
+      scope_stats AS (
+        SELECT
+          scope_key,
+          MIN(population) AS min_population,
+          MAX(population) AS max_population
+        FROM scoped
+        WHERE population IS NOT NULL
+          AND population > 0
+        GROUP BY scope_key
+      ),
+      scored AS (
+        SELECT
+          scoped.id,
+          CASE
+            WHEN scoped.population IS NULL OR scoped.population <= 0 THEN NULL::numeric
+            WHEN scope_stats.scope_key IS NULL THEN NULL::numeric
+            WHEN scope_stats.max_population = scope_stats.min_population THEN 50::numeric
+            ELSE ROUND(
+              LEAST(
+                100::numeric,
+                GREATEST(
+                  0::numeric,
+                  100::numeric
+                    * (LN(scope_stats.max_population) - LN(scoped.population))
+                    / NULLIF(LN(scope_stats.max_population) - LN(scope_stats.min_population), 0::numeric)
+                )
+              ),
+              2
+            )
+          END AS vote_power_score
+        FROM scoped
+        LEFT JOIN scope_stats ON scope_stats.scope_key = scoped.scope_key
+      )
+      UPDATE public.districts
+      SET vote_power_score = scored.vote_power_score
+      FROM scored
+      WHERE public.districts.id = scored.id
+    `
+  );
+}
+
+/**
  * Loads districts from Census into the districts table.
  * Phase 1 supports only statewide us_senate rows (2024 state:* endpoint).
  */
@@ -270,6 +341,8 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
         await updateDistrict(client, codeColumn, row);
         updated += 1;
       }
+
+      await recomputeVotePowerScores(client);
       await client.query("COMMIT");
     } catch (error) {
       await client.query("ROLLBACK");
