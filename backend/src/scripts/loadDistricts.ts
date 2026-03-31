@@ -7,6 +7,7 @@ function readTypeArg(argv: string[]): DistrictLoadType {
 
   if (
     value === "state" ||
+    value === "state_upper" ||
     value === "us_house" ||
     value === "county" ||
     value === "place" ||
@@ -18,7 +19,7 @@ function readTypeArg(argv: string[]): DistrictLoadType {
   }
 
   throw new Error(
-    `Invalid --type value: ${value}. Supported: state, us_house, county, place, school_unified, school_secondary, school_elementary`
+    `Invalid --type value: ${value}. Supported: state, state_upper, us_house, county, place, school_unified, school_secondary, school_elementary`
   );
 }
 

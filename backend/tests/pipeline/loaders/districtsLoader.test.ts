@@ -6,12 +6,14 @@ import {
   EXPECTED_SCHOOL_ELEMENTARY_ROWS_2024,
   EXPECTED_SCHOOL_SECONDARY_ROWS_2024,
   EXPECTED_SCHOOL_UNIFIED_ROWS_50_PLUS_DC_2024,
+  EXPECTED_STATE_UPPER_ROWS_2024,
   parseCountyDistrictRows,
   parsePlaceDistrictRows,
   parseSchoolElementaryDistrictRows,
   parseSchoolSecondaryDistrictRows,
   parseSchoolUnifiedDistrictRows,
   parseStateDistrictRows,
+  parseStateUpperDistrictRows,
   parseUsHouseDistrictRows,
 } from "../../../src/pipeline/loaders/districtsLoader.js";
 import { COUNTY_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/countyGeoids2024.js";
@@ -21,6 +23,7 @@ import {
   SCHOOL_ELEMENTARY_STATE_FIPS_2024,
 } from "../../../src/constants/schoolElementaryGeoids2024.js";
 import { SCHOOL_SECONDARY_GEOIDS_2024, SCHOOL_SECONDARY_STATE_FIPS_2024 } from "../../../src/constants/schoolSecondaryGeoids2024.js";
+import { STATE_UPPER_GEOIDS_2024 } from "../../../src/constants/stateUpperGeoids2024.js";
 import { SCHOOL_UNIFIED_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/schoolUnifiedGeoids2024.js";
 import { STATE_ABBR_BY_FIPS } from "../../../src/constants/usStates.js";
 
@@ -93,6 +96,89 @@ describe("parseStateDistrictRows", () => {
 
     expect(() => parseStateDistrictRows(data)).toThrow(/Duplicate state rows returned by Census: 06/);
   });
+});
+
+describe("parseStateUpperDistrictRows", () => {
+  function buildCanonicalStateUpperData(): unknown[] {
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "state legislative district (upper chamber)"]];
+    for (const geoid of STATE_UPPER_GEOIDS_2024) {
+      const state = geoid.slice(0, 2);
+      const district = geoid.slice(2);
+      data.push([`State Senate District ${district}, State ${state}`, "1000", state, district]);
+    }
+    return data;
+  }
+
+  it("includes a known stable upper chamber GEOID from live Census examples", () => {
+    expect(STATE_UPPER_GEOIDS_2024.includes("0200I")).toBe(true);
+  });
+
+  it("parses complete state_upper rows and excludes territories", () => {
+    const data = buildCanonicalStateUpperData();
+    data.push(["Territory State Senate District 001", "1000", "72", "001"]);
+
+    const rows = parseStateUpperDistrictRows(data);
+    expect(rows).toHaveLength(EXPECTED_STATE_UPPER_ROWS_2024);
+    expect(rows.some((row) => row.state_fips === "72")).toBe(false);
+
+    const alaskaAlpha = rows.find((row) => row.geoid_compact === "0200I");
+    const california = rows.find((row) => row.geoid_compact === "06001");
+    expect(alaskaAlpha).toBeTruthy();
+    expect(california).toBeTruthy();
+  });
+
+  it("throws on unexpected upper chamber district code", () => {
+    const data = buildCanonicalStateUpperData();
+    const rows = data.slice(1) as string[][];
+    const targetIndex = rows.findIndex((row) => row[2] === "06" && row[3] === "001");
+    expect(targetIndex).toBeGreaterThanOrEqual(0);
+    rows[targetIndex][3] = "ZZZZ";
+
+    expect(() => parseStateUpperDistrictRows([data[0], ...rows])).toThrow(/Unexpected upper chamber district code/);
+  });
+
+  it("throws when state_upper rows are missing an expected state", () => {
+    const data = buildCanonicalStateUpperData();
+    const rows = data.slice(1) as string[][];
+    const filteredRows = rows.filter((row) => row[2] !== "56");
+
+    expect(() => parseStateUpperDistrictRows([data[0], ...filteredRows])).toThrow(
+      /coverage mismatch.*missing=1 \[56\]/
+    );
+  });
+
+  it("throws when state_upper payload is truncated", () => {
+    const data = buildCanonicalStateUpperData();
+    const rows = data.slice(1) as string[][];
+    const truncated = [data[0], ...rows.slice(1)];
+
+    expect(() => parseStateUpperDistrictRows(truncated)).toThrow(
+      new RegExp(`Expected ${EXPECTED_STATE_UPPER_ROWS_2024} state upper district rows`)
+    );
+  });
+
+  it("throws on duplicate state_upper geoid rows", () => {
+    const data = buildCanonicalStateUpperData();
+    const rows = data.slice(1) as string[][];
+    rows.push(["Duplicate Alaska Upper 00I", "2000", "02", "00I"]);
+
+    expect(() => parseStateUpperDistrictRows([data[0], ...rows])).toThrow(
+      /Duplicate state upper district rows returned by Census: 0200I/
+    );
+  });
+
+  it("throws when state_upper payload swaps one canonical geoid for an unexpected one", () => {
+    const data = buildCanonicalStateUpperData();
+    const rows = data.slice(1) as string[][];
+    const targetIndex = rows.findIndex((row) => row[2] === "02" && row[3] === "00I");
+    expect(targetIndex).toBeGreaterThanOrEqual(0);
+    rows[targetIndex] = ["State Senate District ZZZ, State 02", "1000", "02", "ZZZ"];
+
+    expect(() => parseStateUpperDistrictRows([data[0], ...rows])).toThrow(/State upper district GEOID set mismatch/);
+    expect(() => parseStateUpperDistrictRows([data[0], ...rows])).toThrow(/missing=1/);
+    expect(() => parseStateUpperDistrictRows([data[0], ...rows])).toThrow(/unexpected=1/);
+  });
+
 });
 
 describe("parseUsHouseDistrictRows", () => {
