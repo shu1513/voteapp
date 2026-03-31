@@ -969,6 +969,12 @@ async function deleteDistrict(
           FROM public.propositions AS p
           WHERE p.district_id = d.id
         )
+        AND NOT EXISTS (
+          SELECT 1
+          FROM public.user_districts AS ud
+          WHERE ud.district_id = d.id
+            AND ud.district_type = d.district_type
+        )
     `,
     [districtType, geoidCompact]
   );
