@@ -14,6 +14,11 @@ import {
   SCHOOL_SECONDARY_GEOIDS_2024_SET,
   SCHOOL_SECONDARY_STATE_FIPS_2024,
 } from "../../constants/schoolSecondaryGeoids2024.js";
+import {
+  SCHOOL_ELEMENTARY_GEOIDS_2024,
+  SCHOOL_ELEMENTARY_GEOIDS_2024_SET,
+  SCHOOL_ELEMENTARY_STATE_FIPS_2024,
+} from "../../constants/schoolElementaryGeoids2024.js";
 import { loadProjectEnv } from "../../config/env.js";
 import { STATE_ABBR_BY_FIPS, getStateAbbreviationByFips, normalizeFips } from "../../constants/usStates.js";
 
@@ -24,13 +29,22 @@ export const CENSUS_COUNTY_DISTRICTS_URL = `https://api.census.gov/data/${DISTRI
 export const CENSUS_PLACE_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=place:*`;
 export const CENSUS_SCHOOL_UNIFIED_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=school+district+(unified):*`;
 export const CENSUS_SCHOOL_SECONDARY_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=school+district+(secondary):*`;
+export const CENSUS_SCHOOL_ELEMENTARY_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=school+district+(elementary):*`;
 export const EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024 = COUNTY_GEOIDS_50_PLUS_DC_2024.length;
 export const EXPECTED_PLACE_ROWS_50_PLUS_DC_2024 = PLACE_GEOIDS_50_PLUS_DC_2024.length;
 export const EXPECTED_SCHOOL_UNIFIED_ROWS_50_PLUS_DC_2024 = SCHOOL_UNIFIED_GEOIDS_50_PLUS_DC_2024.length;
 export const EXPECTED_SCHOOL_SECONDARY_ROWS_2024 = SCHOOL_SECONDARY_GEOIDS_2024.length;
+export const EXPECTED_SCHOOL_ELEMENTARY_ROWS_2024 = SCHOOL_ELEMENTARY_GEOIDS_2024.length;
 const CENSUS_FETCH_TIMEOUT_MS = 30_000;
 
-export type DistrictLoadType = "state" | "us_house" | "county" | "place" | "school_unified" | "school_secondary";
+export type DistrictLoadType =
+  | "state"
+  | "us_house"
+  | "county"
+  | "place"
+  | "school_unified"
+  | "school_secondary"
+  | "school_elementary";
 
 export type DistrictLoadOptions = {
   type: DistrictLoadType;
@@ -42,7 +56,14 @@ type DistrictRow = {
   name: string;
   state: string;
   state_fips: string;
-  district_type: "us_senate" | "us_house" | "county" | "place" | "school_unified" | "school_secondary";
+  district_type:
+    | "us_senate"
+    | "us_house"
+    | "county"
+    | "place"
+    | "school_unified"
+    | "school_secondary"
+    | "school_elementary";
   population: number;
 };
 
@@ -584,6 +605,100 @@ export function parseSchoolSecondaryDistrictRows(data: unknown): DistrictRow[] {
   return result.sort((a, b) => a.geoid_compact.localeCompare(b.geoid_compact));
 }
 
+/**
+ * Parses Census elementary school district rows into school_elementary districts.
+ * - Keeps only supported states in this endpoint's 2024 coverage.
+ * - Excludes territories.
+ * - Excludes 99999 "Remainder of <state>" aggregate rows.
+ * - Uses compact geoid format: {state_fips}{district_code}, e.g. "0602610", "0406300".
+ */
+export function parseSchoolElementaryDistrictRows(data: unknown): DistrictRow[] {
+  if (!Array.isArray(data) || data.length < 2) {
+    throw new Error("Unexpected Census response format: expected array with header and rows");
+  }
+
+  const rows = data.slice(1);
+  const result: DistrictRow[] = [];
+
+  for (const row of rows) {
+    if (!Array.isArray(row) || row.length < 4) {
+      continue;
+    }
+
+    const [nameRaw, populationRaw, stateRaw, districtRaw] = row;
+    if (
+      typeof nameRaw !== "string" ||
+      typeof populationRaw !== "string" ||
+      typeof stateRaw !== "string" ||
+      typeof districtRaw !== "string"
+    ) {
+      continue;
+    }
+
+    const stateFips = normalizeFips(stateRaw.trim());
+    if (!Object.hasOwn(STATE_ABBR_BY_FIPS, stateFips)) {
+      // Excludes territories.
+      continue;
+    }
+
+    const districtCode = districtRaw.trim();
+    if (!/^\d{5}$/.test(districtCode)) {
+      throw new Error(`Unexpected elementary school district code from Census: ${districtRaw}`);
+    }
+    if (districtCode === "99999") {
+      // Census aggregate row: "Remainder of <state>".
+      continue;
+    }
+
+    const population = parsePopulation(populationRaw.trim());
+    result.push({
+      geoid_compact: `${stateFips}${districtCode}`,
+      name: nameRaw.trim(),
+      state: getStateAbbreviationByFips(stateFips),
+      state_fips: stateFips,
+      district_type: "school_elementary",
+      population,
+    });
+  }
+
+  const expectedStateSet = new Set(SCHOOL_ELEMENTARY_STATE_FIPS_2024);
+  const distinctFips = new Set(result.map((item) => item.state_fips));
+  const missingStates = SCHOOL_ELEMENTARY_STATE_FIPS_2024.filter((fips) => !distinctFips.has(fips));
+  const unexpectedStates = [...distinctFips].filter((fips) => !expectedStateSet.has(fips)).sort();
+  if (missingStates.length > 0 || unexpectedStates.length > 0) {
+    throw new Error(
+      `Elementary school district state coverage mismatch for 2024: expected=${expectedStateSet.size}, actual=${distinctFips.size}, missing=${missingStates.length}${missingStates.length > 0 ? ` [${missingStates.join(", ")}]` : ""}, unexpected=${unexpectedStates.length}${unexpectedStates.length > 0 ? ` [${unexpectedStates.join(", ")}]` : ""}`
+    );
+  }
+
+  const geoids = result.map((item) => item.geoid_compact);
+  const distinctGeoids = new Set(geoids);
+  if (geoids.length !== distinctGeoids.size) {
+    const duplicates = [...new Set(geoids.filter((geoid, index, all) => all.indexOf(geoid) !== index))].sort();
+    throw new Error(`Duplicate elementary school district rows returned by Census: ${duplicates.join(", ")}`);
+  }
+
+  if (result.length !== EXPECTED_SCHOOL_ELEMENTARY_ROWS_2024) {
+    throw new Error(
+      `Expected ${EXPECTED_SCHOOL_ELEMENTARY_ROWS_2024} elementary school district rows for 2024, got ${result.length}`
+    );
+  }
+
+  const missingGeoids = SCHOOL_ELEMENTARY_GEOIDS_2024.filter((geoid) => !distinctGeoids.has(geoid));
+  const unexpectedGeoids = [...distinctGeoids]
+    .filter((geoid) => !SCHOOL_ELEMENTARY_GEOIDS_2024_SET.has(geoid))
+    .sort();
+  if (missingGeoids.length > 0 || unexpectedGeoids.length > 0) {
+    const missingPreview = missingGeoids.slice(0, 10).join(", ");
+    const unexpectedPreview = unexpectedGeoids.slice(0, 10).join(", ");
+    throw new Error(
+      `Elementary school district GEOID set mismatch for 2024: missing=${missingGeoids.length}${missingPreview ? ` [${missingPreview}]` : ""}, unexpected=${unexpectedGeoids.length}${unexpectedPreview ? ` [${unexpectedPreview}]` : ""}`
+    );
+  }
+
+  return result.sort((a, b) => a.geoid_compact.localeCompare(b.geoid_compact));
+}
+
 async function fetchCensusRows(url: string): Promise<unknown> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), CENSUS_FETCH_TIMEOUT_MS);
@@ -635,6 +750,11 @@ async function fetchSchoolUnifiedDistrictRows(): Promise<DistrictRow[]> {
 async function fetchSchoolSecondaryDistrictRows(): Promise<DistrictRow[]> {
   const data = await fetchCensusRows(CENSUS_SCHOOL_SECONDARY_DISTRICTS_URL);
   return parseSchoolSecondaryDistrictRows(data);
+}
+
+async function fetchSchoolElementaryDistrictRows(): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_SCHOOL_ELEMENTARY_DISTRICTS_URL);
+  return parseSchoolElementaryDistrictRows(data);
 }
 
 async function detectDistrictCodeColumn(pool: Pool): Promise<DistrictCodeColumnName> {
@@ -797,6 +917,7 @@ async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
  * - place -> place rows (2024 place:* endpoint)
  * - school_unified -> unified school district rows (2024 school+district+(unified):* endpoint)
  * - school_secondary -> secondary school district rows (2024 school+district+(secondary):* endpoint)
+ * - school_elementary -> elementary school district rows (2024 school+district+(elementary):* endpoint)
  */
 export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<DistrictLoadSummary> {
   const dryRun = Boolean(options.dryRun);
@@ -820,6 +941,9 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
   } else if (options.type === "school_secondary") {
     sourceUrl = CENSUS_SCHOOL_SECONDARY_DISTRICTS_URL;
     rows = await fetchSchoolSecondaryDistrictRows();
+  } else if (options.type === "school_elementary") {
+    sourceUrl = CENSUS_SCHOOL_ELEMENTARY_DISTRICTS_URL;
+    rows = await fetchSchoolElementaryDistrictRows();
   } else {
     throw new Error(`Unsupported districts load type: ${options.type}`);
   }
