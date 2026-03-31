@@ -563,6 +563,11 @@ describe("parseSchoolElementaryDistrictRows", () => {
     return data;
   }
 
+  it("includes a known stable elementary GEOID from live Census examples", () => {
+    // Anaheim Elementary School District (CA) from live geocoder/API checks.
+    expect(SCHOOL_ELEMENTARY_GEOIDS_2024.includes("0602610")).toBe(true);
+  });
+
   it("parses complete school_elementary rows, excludes territories, and skips remainder aggregates", () => {
     const data = buildCanonicalSchoolElementaryData();
     data.push(["Remainder of California, California", "1234", "06", "99999"]);
