@@ -963,7 +963,7 @@ async function deleteDistrict(
     [districtType, geoidCompact]
   );
 
-  return result.rowCount > 0;
+  return (result.rowCount ?? 0) > 0;
 }
 
 /**
