@@ -11,6 +11,7 @@
     "state-resources:retry": "tsx src/scripts/retryStateResources.ts",
     "state-resources:health": "tsx src/scripts/stateResourcesHealth.ts",
     "districts:load": "tsx src/scripts/loadDistricts.ts",
+    "districts:load:all": "tsx src/scripts/loadAllDistricts.ts",
     "state-resources:scheduler:upsert": "tsx src/scripts/upsertStateResourcesAnnualScheduler.ts",
     "state-resources:scheduler:worker": "tsx src/scripts/runStateResourcesSchedulerWorker.ts",
     "state-resources:scheduler:trigger": "tsx src/scripts/triggerStateResourcesRefresh.ts",
