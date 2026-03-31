@@ -1,4 +1,4 @@
-// Generated from 2024 ACS5 secondary school district endpoint for supported states (50 + DC).
+// Generated from 2024 ACS5 secondary school district endpoint for states with reported secondary districts.
 // Source: https://api.census.gov/data/2024/acs/acs5?get=NAME,B01001_001E&for=school+district+(secondary):*
 // Excludes 99999 "Remainder of <state>" aggregate rows and excludes territories.
 

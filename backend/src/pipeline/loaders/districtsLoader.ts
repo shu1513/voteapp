@@ -548,18 +548,14 @@ export function parseSchoolSecondaryDistrictRows(data: unknown): DistrictRow[] {
     });
   }
 
-  const expectedStates = SCHOOL_SECONDARY_STATE_FIPS_2024.length;
   const expectedStateSet = new Set(SCHOOL_SECONDARY_STATE_FIPS_2024);
   const distinctFips = new Set(result.map((item) => item.state_fips));
-  if (distinctFips.size !== expectedStates) {
-    const missing = SCHOOL_SECONDARY_STATE_FIPS_2024.filter((fips) => !distinctFips.has(fips));
-    throw new Error(
-      `Expected secondary school district rows for ${expectedStates} states, got ${distinctFips.size}. Missing: ${missing.join(", ")}`
-    );
-  }
+  const missingStates = SCHOOL_SECONDARY_STATE_FIPS_2024.filter((fips) => !distinctFips.has(fips));
   const unexpectedStates = [...distinctFips].filter((fips) => !expectedStateSet.has(fips)).sort();
-  if (unexpectedStates.length > 0) {
-    throw new Error(`Unexpected states in secondary school district rows: ${unexpectedStates.join(", ")}`);
+  if (missingStates.length > 0 || unexpectedStates.length > 0) {
+    throw new Error(
+      `Secondary school district state coverage mismatch for 2024: expected=${expectedStateSet.size}, actual=${distinctFips.size}, missing=${missingStates.length}${missingStates.length > 0 ? ` [${missingStates.join(", ")}]` : ""}, unexpected=${unexpectedStates.length}${unexpectedStates.length > 0 ? ` [${unexpectedStates.join(", ")}]` : ""}`
+    );
   }
 
   const geoids = result.map((item) => item.geoid_compact);

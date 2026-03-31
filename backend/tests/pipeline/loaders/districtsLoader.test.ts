@@ -496,7 +496,9 @@ describe("parseSchoolSecondaryDistrictRows", () => {
     const rows = data.slice(1) as string[][];
     const filteredRows = rows.filter((row) => row[2] !== "55");
 
-    expect(() => parseSchoolSecondaryDistrictRows([data[0], ...filteredRows])).toThrow(/Missing: 55/);
+    expect(() => parseSchoolSecondaryDistrictRows([data[0], ...filteredRows])).toThrow(
+      /state coverage mismatch.*missing=1 \[55\]/
+    );
   });
 
   it("throws when school_secondary payload is truncated", () => {
@@ -539,7 +541,7 @@ describe("parseSchoolSecondaryDistrictRows", () => {
     rows.push(["Secondary School District 00001, State 01", "1000", "01", "00001"]);
 
     expect(() => parseSchoolSecondaryDistrictRows([data[0], ...rows])).toThrow(
-      new RegExp(`Expected secondary school district rows for ${SCHOOL_SECONDARY_STATE_FIPS_2024.length} states`)
+      new RegExp(`state coverage mismatch for 2024: expected=${SCHOOL_SECONDARY_STATE_FIPS_2024.length}`)
     );
   });
 });
