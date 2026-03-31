@@ -11,13 +11,14 @@ function readTypeArg(argv: string[]): DistrictLoadType {
     value === "county" ||
     value === "place" ||
     value === "school_unified" ||
-    value === "school_secondary"
+    value === "school_secondary" ||
+    value === "school_elementary"
   ) {
     return value;
   }
 
   throw new Error(
-    `Invalid --type value: ${value}. Supported: state, us_house, county, place, school_unified, school_secondary`
+    `Invalid --type value: ${value}. Supported: state, us_house, county, place, school_unified, school_secondary, school_elementary`
   );
 }
 
