@@ -6,6 +6,7 @@ import {
   EXPECTED_SCHOOL_ELEMENTARY_ROWS_2024,
   EXPECTED_SCHOOL_SECONDARY_ROWS_2024,
   EXPECTED_SCHOOL_UNIFIED_ROWS_50_PLUS_DC_2024,
+  EXPECTED_STATE_LOWER_ROWS_2024,
   EXPECTED_STATE_UPPER_ROWS_2024,
   parseCountyDistrictRows,
   parsePlaceDistrictRows,
@@ -13,9 +14,11 @@ import {
   parseSchoolSecondaryDistrictRows,
   parseSchoolUnifiedDistrictRows,
   parseStateDistrictRows,
+  parseStateLowerDistrictRows,
   parseStateUpperDistrictRows,
   parseUsHouseDistrictRows,
 } from "../../../src/pipeline/loaders/districtsLoader.js";
+import { STATE_LOWER_GEOIDS_2024 } from "../../../src/constants/stateLowerGeoids2024.js";
 import { COUNTY_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/countyGeoids2024.js";
 import { PLACE_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/placeGeoids2024.js";
 import {
@@ -179,6 +182,89 @@ describe("parseStateUpperDistrictRows", () => {
     expect(() => parseStateUpperDistrictRows([data[0], ...rows])).toThrow(/unexpected=1/);
   });
 
+});
+
+describe("parseStateLowerDistrictRows", () => {
+  function buildCanonicalStateLowerData(): unknown[] {
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "state legislative district (lower chamber)"]];
+    for (const geoid of STATE_LOWER_GEOIDS_2024) {
+      const state = geoid.slice(0, 2);
+      const district = geoid.slice(2);
+      data.push([`State House District ${district}, State ${state}`, "1000", state, district]);
+    }
+    return data;
+  }
+
+  it("includes known stable lower chamber GEOIDs from live Census examples", () => {
+    expect(STATE_LOWER_GEOIDS_2024.includes("01001")).toBe(true);
+    expect(STATE_LOWER_GEOIDS_2024.includes("50A-1")).toBe(true);
+  });
+
+  it("parses complete state_lower rows and excludes territories", () => {
+    const data = buildCanonicalStateLowerData();
+    data.push(["Territory State House District 001", "1000", "72", "001"]);
+
+    const rows = parseStateLowerDistrictRows(data);
+    expect(rows).toHaveLength(EXPECTED_STATE_LOWER_ROWS_2024);
+    expect(rows.some((row) => row.state_fips === "72")).toBe(false);
+
+    const alabama = rows.find((row) => row.geoid_compact === "01001");
+    const vermont = rows.find((row) => row.geoid_compact === "50A-1");
+    expect(alabama).toBeTruthy();
+    expect(vermont).toBeTruthy();
+  });
+
+  it("throws on unexpected lower chamber district code", () => {
+    const data = buildCanonicalStateLowerData();
+    const rows = data.slice(1) as string[][];
+    const targetIndex = rows.findIndex((row) => row[2] === "06" && row[3] === "001");
+    expect(targetIndex).toBeGreaterThanOrEqual(0);
+    rows[targetIndex][3] = "TOOLONG";
+
+    expect(() => parseStateLowerDistrictRows([data[0], ...rows])).toThrow(/Unexpected lower chamber district code/);
+  });
+
+  it("throws when state_lower rows are missing an expected state", () => {
+    const data = buildCanonicalStateLowerData();
+    const rows = data.slice(1) as string[][];
+    const filteredRows = rows.filter((row) => row[2] !== "56");
+
+    expect(() => parseStateLowerDistrictRows([data[0], ...filteredRows])).toThrow(
+      /coverage mismatch.*missing=1 \[56\]/
+    );
+  });
+
+  it("throws when state_lower payload is truncated", () => {
+    const data = buildCanonicalStateLowerData();
+    const rows = data.slice(1) as string[][];
+    const truncated = [data[0], ...rows.slice(1)];
+
+    expect(() => parseStateLowerDistrictRows(truncated)).toThrow(
+      new RegExp(`Expected ${EXPECTED_STATE_LOWER_ROWS_2024} state lower district rows`)
+    );
+  });
+
+  it("throws on duplicate state_lower geoid rows", () => {
+    const data = buildCanonicalStateLowerData();
+    const rows = data.slice(1) as string[][];
+    rows.push(["Duplicate Vermont Lower A-1", "2000", "50", "A-1"]);
+
+    expect(() => parseStateLowerDistrictRows([data[0], ...rows])).toThrow(
+      /Duplicate state lower district rows returned by Census: 50A-1/
+    );
+  });
+
+  it("throws when state_lower payload swaps one canonical geoid for an unexpected one", () => {
+    const data = buildCanonicalStateLowerData();
+    const rows = data.slice(1) as string[][];
+    const targetIndex = rows.findIndex((row) => row[2] === "50" && row[3] === "A-1");
+    expect(targetIndex).toBeGreaterThanOrEqual(0);
+    rows[targetIndex] = ["State House District ZZZ, State 50", "1000", "50", "ZZZ"];
+
+    expect(() => parseStateLowerDistrictRows([data[0], ...rows])).toThrow(/State lower district GEOID set mismatch/);
+    expect(() => parseStateLowerDistrictRows([data[0], ...rows])).toThrow(/missing=1/);
+    expect(() => parseStateLowerDistrictRows([data[0], ...rows])).toThrow(/unexpected=1/);
+  });
 });
 
 describe("parseUsHouseDistrictRows", () => {
