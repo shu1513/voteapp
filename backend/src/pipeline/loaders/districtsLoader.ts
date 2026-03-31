@@ -24,6 +24,11 @@ import {
   STATE_UPPER_GEOIDS_2024_SET,
   STATE_UPPER_STATE_FIPS_2024,
 } from "../../constants/stateUpperGeoids2024.js";
+import {
+  STATE_LOWER_GEOIDS_2024,
+  STATE_LOWER_GEOIDS_2024_SET,
+  STATE_LOWER_STATE_FIPS_2024,
+} from "../../constants/stateLowerGeoids2024.js";
 import { loadProjectEnv } from "../../config/env.js";
 import { STATE_ABBR_BY_FIPS, getStateAbbreviationByFips, normalizeFips } from "../../constants/usStates.js";
 
@@ -36,21 +41,28 @@ export const CENSUS_SCHOOL_UNIFIED_DISTRICTS_URL = `https://api.census.gov/data/
 export const CENSUS_SCHOOL_SECONDARY_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=school+district+(secondary):*`;
 export const CENSUS_SCHOOL_ELEMENTARY_DISTRICTS_URL = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=school+district+(elementary):*`;
 export const CENSUS_STATE_UPPER_DISTRICTS_URL_PATTERN = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=state+legislative+district+(upper+chamber):*&in=state:{state_fips}`;
+export const CENSUS_STATE_LOWER_DISTRICTS_URL_PATTERN = `https://api.census.gov/data/${DISTRICTS_ACS_YEAR}/acs/acs5?get=NAME,B01001_001E&for=state+legislative+district+(lower+chamber):*&in=state:{state_fips}`;
 export const EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024 = COUNTY_GEOIDS_50_PLUS_DC_2024.length;
 export const EXPECTED_PLACE_ROWS_50_PLUS_DC_2024 = PLACE_GEOIDS_50_PLUS_DC_2024.length;
 export const EXPECTED_SCHOOL_UNIFIED_ROWS_50_PLUS_DC_2024 = SCHOOL_UNIFIED_GEOIDS_50_PLUS_DC_2024.length;
 export const EXPECTED_SCHOOL_SECONDARY_ROWS_2024 = SCHOOL_SECONDARY_GEOIDS_2024.length;
 export const EXPECTED_SCHOOL_ELEMENTARY_ROWS_2024 = SCHOOL_ELEMENTARY_GEOIDS_2024.length;
 export const EXPECTED_STATE_UPPER_ROWS_2024 = STATE_UPPER_GEOIDS_2024.length;
+export const EXPECTED_STATE_LOWER_ROWS_2024 = STATE_LOWER_GEOIDS_2024.length;
 const CENSUS_FETCH_TIMEOUT_MS = 30_000;
 
 function buildStateUpperDistrictsUrl(stateFips: string): string {
   return CENSUS_STATE_UPPER_DISTRICTS_URL_PATTERN.replace("{state_fips}", stateFips);
 }
 
+function buildStateLowerDistrictsUrl(stateFips: string): string {
+  return CENSUS_STATE_LOWER_DISTRICTS_URL_PATTERN.replace("{state_fips}", stateFips);
+}
+
 export type DistrictLoadType =
   | "state"
   | "state_upper"
+  | "state_lower"
   | "us_house"
   | "county"
   | "place"
@@ -71,6 +83,7 @@ type DistrictRow = {
   district_type:
     | "us_senate"
     | "state_upper"
+    | "state_lower"
     | "us_house"
     | "county"
     | "place"
@@ -245,6 +258,90 @@ export function parseStateUpperDistrictRows(data: unknown): DistrictRow[] {
     const unexpectedPreview = unexpectedGeoids.slice(0, 10).join(", ");
     throw new Error(
       `State upper district GEOID set mismatch for 2024: missing=${missingGeoids.length}${missingPreview ? ` [${missingPreview}]` : ""}, unexpected=${unexpectedGeoids.length}${unexpectedPreview ? ` [${unexpectedPreview}]` : ""}`
+    );
+  }
+
+  return result.sort((a, b) => a.geoid_compact.localeCompare(b.geoid_compact));
+}
+
+/**
+ * Parses Census state legislative lower chamber rows into state_lower districts.
+ * - Coverage is states with lower chambers for 2024 (excludes DC + Nebraska).
+ * - District code is 3-char SLDL and may be alphanumeric/hyphen (e.g., "A-1").
+ * - Uses compact geoid format: {state_fips}{SLDL}, e.g. "01001", "50A-1".
+ */
+export function parseStateLowerDistrictRows(data: unknown): DistrictRow[] {
+  if (!Array.isArray(data) || data.length < 2) {
+    throw new Error("Unexpected Census response format: expected array with header and rows");
+  }
+
+  const rows = data.slice(1);
+  const result: DistrictRow[] = [];
+
+  for (const row of rows) {
+    if (!Array.isArray(row) || row.length < 4) {
+      continue;
+    }
+
+    const [nameRaw, populationRaw, stateRaw, districtRaw] = row;
+    if (
+      typeof nameRaw !== "string" ||
+      typeof populationRaw !== "string" ||
+      typeof stateRaw !== "string" ||
+      typeof districtRaw !== "string"
+    ) {
+      continue;
+    }
+
+    const stateFips = normalizeFips(stateRaw.trim());
+    if (!Object.hasOwn(STATE_ABBR_BY_FIPS, stateFips)) {
+      continue;
+    }
+
+    const districtCode = districtRaw.trim().toUpperCase();
+    if (!/^[0-9A-Z-]{3}$/.test(districtCode)) {
+      throw new Error(`Unexpected lower chamber district code from Census: ${districtRaw}`);
+    }
+
+    const population = parsePopulation(populationRaw.trim());
+    result.push({
+      geoid_compact: `${stateFips}${districtCode}`,
+      name: nameRaw.trim(),
+      state: getStateAbbreviationByFips(stateFips),
+      state_fips: stateFips,
+      district_type: "state_lower",
+      population,
+    });
+  }
+
+  const expectedStateSet = new Set(STATE_LOWER_STATE_FIPS_2024);
+  const distinctFips = new Set(result.map((item) => item.state_fips));
+  const missingStates = STATE_LOWER_STATE_FIPS_2024.filter((fips) => !distinctFips.has(fips));
+  const unexpectedStates = [...distinctFips].filter((fips) => !expectedStateSet.has(fips)).sort();
+  if (missingStates.length > 0 || unexpectedStates.length > 0) {
+    throw new Error(
+      `State lower district coverage mismatch for 2024: expected=${expectedStateSet.size}, actual=${distinctFips.size}, missing=${missingStates.length}${missingStates.length > 0 ? ` [${missingStates.join(", ")}]` : ""}, unexpected=${unexpectedStates.length}${unexpectedStates.length > 0 ? ` [${unexpectedStates.join(", ")}]` : ""}`
+    );
+  }
+
+  const geoids = result.map((item) => item.geoid_compact);
+  const distinctGeoids = new Set(geoids);
+  if (geoids.length !== distinctGeoids.size) {
+    const duplicates = [...new Set(geoids.filter((geoid, index, all) => all.indexOf(geoid) !== index))].sort();
+    throw new Error(`Duplicate state lower district rows returned by Census: ${duplicates.join(", ")}`);
+  }
+
+  if (result.length !== EXPECTED_STATE_LOWER_ROWS_2024) {
+    throw new Error(`Expected ${EXPECTED_STATE_LOWER_ROWS_2024} state lower district rows for 2024, got ${result.length}`);
+  }
+
+  const missingGeoids = STATE_LOWER_GEOIDS_2024.filter((geoid) => !distinctGeoids.has(geoid));
+  const unexpectedGeoids = [...distinctGeoids].filter((geoid) => !STATE_LOWER_GEOIDS_2024_SET.has(geoid)).sort();
+  if (missingGeoids.length > 0 || unexpectedGeoids.length > 0) {
+    const missingPreview = missingGeoids.slice(0, 10).join(", ");
+    const unexpectedPreview = unexpectedGeoids.slice(0, 10).join(", ");
+    throw new Error(
+      `State lower district GEOID set mismatch for 2024: missing=${missingGeoids.length}${missingPreview ? ` [${missingPreview}]` : ""}, unexpected=${unexpectedGeoids.length}${unexpectedPreview ? ` [${unexpectedPreview}]` : ""}`
     );
   }
 
@@ -839,6 +936,21 @@ async function fetchStateUpperDistrictRows(): Promise<DistrictRow[]> {
   return parseStateUpperDistrictRows(combinedRows);
 }
 
+async function fetchStateLowerDistrictRows(): Promise<DistrictRow[]> {
+  const combinedRows: unknown[] = [["NAME", "B01001_001E", "state", "state legislative district (lower chamber)"]];
+
+  for (const stateFips of STATE_LOWER_STATE_FIPS_2024) {
+    const stateData = await fetchCensusRows(buildStateLowerDistrictsUrl(stateFips));
+    if (!Array.isArray(stateData) || stateData.length < 2) {
+      throw new Error(`Unexpected Census response format for lower chamber state ${stateFips}`);
+    }
+
+    combinedRows.push(...stateData.slice(1));
+  }
+
+  return parseStateLowerDistrictRows(combinedRows);
+}
+
 async function fetchUsHouseDistrictRows(): Promise<DistrictRow[]> {
   const data = await fetchCensusRows(CENSUS_US_HOUSE_DISTRICTS_URL);
   return parseUsHouseDistrictRows(data);
@@ -1059,6 +1171,7 @@ async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
  * Supported types:
  * - state -> us_senate rows (2024 state:* endpoint)
  * - state_upper -> state legislative upper chamber rows (2024 ...upper+chamber... endpoint, one call per state)
+ * - state_lower -> state legislative lower chamber rows (2024 ...lower+chamber... endpoint, one call per state with lower chamber)
  * - us_house -> congressional district rows (2024 congressional+district:* endpoint)
  * - county -> county rows (2024 county:* endpoint)
  * - place -> place rows (2024 place:* endpoint)
@@ -1076,6 +1189,9 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
   } else if (options.type === "state_upper") {
     sourceUrl = CENSUS_STATE_UPPER_DISTRICTS_URL_PATTERN;
     rows = await fetchStateUpperDistrictRows();
+  } else if (options.type === "state_lower") {
+    sourceUrl = CENSUS_STATE_LOWER_DISTRICTS_URL_PATTERN;
+    rows = await fetchStateLowerDistrictRows();
   } else if (options.type === "us_house") {
     sourceUrl = CENSUS_US_HOUSE_DISTRICTS_URL;
     rows = await fetchUsHouseDistrictRows();
