@@ -5,11 +5,20 @@ function readTypeArg(argv: string[]): DistrictLoadType {
   const typeArg = argv.find((arg) => arg.startsWith(prefix));
   const value = typeArg ? typeArg.slice(prefix.length).trim() : "state";
 
-  if (value === "state" || value === "us_house" || value === "county" || value === "place" || value === "school_unified") {
+  if (
+    value === "state" ||
+    value === "us_house" ||
+    value === "county" ||
+    value === "place" ||
+    value === "school_unified" ||
+    value === "school_secondary"
+  ) {
     return value;
   }
 
-  throw new Error(`Invalid --type value: ${value}. Supported: state, us_house, county, place, school_unified`);
+  throw new Error(
+    `Invalid --type value: ${value}. Supported: state, us_house, county, place, school_unified, school_secondary`
+  );
 }
 
 const type = readTypeArg(process.argv.slice(2));
