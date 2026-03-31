@@ -3,15 +3,18 @@ import { describe, expect, it } from "vitest";
 import {
   EXPECTED_COUNTY_ROWS_50_PLUS_DC_2024,
   EXPECTED_PLACE_ROWS_50_PLUS_DC_2024,
+  EXPECTED_SCHOOL_SECONDARY_ROWS_2024,
   EXPECTED_SCHOOL_UNIFIED_ROWS_50_PLUS_DC_2024,
   parseCountyDistrictRows,
   parsePlaceDistrictRows,
+  parseSchoolSecondaryDistrictRows,
   parseSchoolUnifiedDistrictRows,
   parseStateDistrictRows,
   parseUsHouseDistrictRows,
 } from "../../../src/pipeline/loaders/districtsLoader.js";
 import { COUNTY_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/countyGeoids2024.js";
 import { PLACE_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/placeGeoids2024.js";
+import { SCHOOL_SECONDARY_GEOIDS_2024, SCHOOL_SECONDARY_STATE_FIPS_2024 } from "../../../src/constants/schoolSecondaryGeoids2024.js";
 import { SCHOOL_UNIFIED_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/schoolUnifiedGeoids2024.js";
 import { STATE_ABBR_BY_FIPS } from "../../../src/constants/usStates.js";
 
@@ -434,5 +437,111 @@ describe("parseSchoolUnifiedDistrictRows", () => {
     expect(() => parseSchoolUnifiedDistrictRows(mutated)).toThrow(/Unified school district GEOID set mismatch/);
     expect(() => parseSchoolUnifiedDistrictRows(mutated)).toThrow(/missing=1/);
     expect(() => parseSchoolUnifiedDistrictRows(mutated)).toThrow(/unexpected=1/);
+  });
+});
+
+describe("parseSchoolSecondaryDistrictRows", () => {
+  function buildCanonicalSchoolSecondaryData(): unknown[] {
+    const data: unknown[] = [["NAME", "B01001_001E", "state", "school district (secondary)"]];
+    for (const geoid of SCHOOL_SECONDARY_GEOIDS_2024) {
+      const state = geoid.slice(0, 2);
+      const district = geoid.slice(2);
+      data.push([`Secondary School District ${district}, State ${state}`, "1000", state, district]);
+    }
+    return data;
+  }
+
+  it("parses complete school_secondary rows, excludes territories, and skips remainder aggregates", () => {
+    const data = buildCanonicalSchoolSecondaryData();
+    data.push(["Remainder of California, California", "1234", "06", "99999"]);
+    data.push(["Puerto Rico Department of Education, Puerto Rico", "3234309", "72", "00030"]);
+
+    const rows = parseSchoolSecondaryDistrictRows(data);
+    expect(rows).toHaveLength(EXPECTED_SCHOOL_SECONDARY_ROWS_2024);
+    expect(rows.some((row) => row.state_fips === "72")).toBe(false);
+    expect(rows.some((row) => row.geoid_compact.endsWith("99999"))).toBe(false);
+
+    const california = rows.find((row) => row.geoid_compact === "0602630");
+    const wisconsin = rows.find((row) => row.geoid_compact === "5505490");
+    expect(california).toBeTruthy();
+    expect(wisconsin).toBeTruthy();
+  });
+
+  it("allows zero population values from official payloads", () => {
+    const data = buildCanonicalSchoolSecondaryData();
+    const rows = data.slice(1) as string[][];
+    const targetIndex = rows.findIndex((row) => row[2] === "17" && row[3] === "04170");
+    expect(targetIndex).toBeGreaterThanOrEqual(0);
+    rows[targetIndex][1] = "0";
+
+    const parsed = parseSchoolSecondaryDistrictRows([data[0], ...rows]);
+    const target = parsed.find((row) => row.geoid_compact === "1704170");
+    expect(target?.population).toBe(0);
+  });
+
+  it("throws on unexpected secondary district code", () => {
+    const data = buildCanonicalSchoolSecondaryData();
+    const rows = data.slice(1) as string[][];
+    const targetIndex = rows.findIndex((row) => row[2] === "06");
+    expect(targetIndex).toBeGreaterThanOrEqual(0);
+    rows[targetIndex][3] = "ABCDE";
+
+    expect(() => parseSchoolSecondaryDistrictRows([data[0], ...rows])).toThrow(
+      /Unexpected secondary school district code/
+    );
+  });
+
+  it("throws when school_secondary rows are missing an expected state", () => {
+    const data = buildCanonicalSchoolSecondaryData();
+    const rows = data.slice(1) as string[][];
+    const filteredRows = rows.filter((row) => row[2] !== "55");
+
+    expect(() => parseSchoolSecondaryDistrictRows([data[0], ...filteredRows])).toThrow(
+      /state coverage mismatch.*missing=1 \[55\]/
+    );
+  });
+
+  it("throws when school_secondary payload is truncated", () => {
+    const data = buildCanonicalSchoolSecondaryData();
+    const rows = data.slice(1) as string[][];
+    const truncated = [data[0], ...rows.slice(1)];
+
+    expect(() => parseSchoolSecondaryDistrictRows(truncated)).toThrow(
+      new RegExp(`Expected ${EXPECTED_SCHOOL_SECONDARY_ROWS_2024} secondary school district rows`)
+    );
+  });
+
+  it("throws on duplicate school_secondary geoid rows", () => {
+    const data = buildCanonicalSchoolSecondaryData();
+    const rows = data.slice(1) as string[][];
+    const target = rows.find((row) => row[2] === "06" && row[3] === "02630");
+    expect(target).toBeTruthy();
+    rows.push(["Duplicate California Secondary 02630", "2000", "06", "02630"]);
+
+    expect(() => parseSchoolSecondaryDistrictRows([data[0], ...rows])).toThrow(
+      /Duplicate secondary school district rows returned by Census: 0602630/
+    );
+  });
+
+  it("throws when school_secondary payload swaps one canonical geoid for an unexpected one", () => {
+    const data = buildCanonicalSchoolSecondaryData();
+    const rows = data.slice(1) as string[][];
+    const targetIndex = rows.findIndex((row) => row[2] === "06" && row[3] === "02630");
+    expect(targetIndex).toBeGreaterThanOrEqual(0);
+    rows[targetIndex] = ["Secondary School District 99998, State 06", "1000", "06", "99998"];
+
+    expect(() => parseSchoolSecondaryDistrictRows([data[0], ...rows])).toThrow(/Secondary school district GEOID set mismatch/);
+    expect(() => parseSchoolSecondaryDistrictRows([data[0], ...rows])).toThrow(/missing=1/);
+    expect(() => parseSchoolSecondaryDistrictRows([data[0], ...rows])).toThrow(/unexpected=1/);
+  });
+
+  it("throws when an unexpected secondary state appears", () => {
+    const data = buildCanonicalSchoolSecondaryData();
+    const rows = data.slice(1) as string[][];
+    rows.push(["Secondary School District 00001, State 01", "1000", "01", "00001"]);
+
+    expect(() => parseSchoolSecondaryDistrictRows([data[0], ...rows])).toThrow(
+      new RegExp(`state coverage mismatch for 2024: expected=${SCHOOL_SECONDARY_STATE_FIPS_2024.length}`)
+    );
   });
 });
