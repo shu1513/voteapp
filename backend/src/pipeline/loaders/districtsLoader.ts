@@ -956,9 +956,19 @@ async function deleteDistrict(
 ): Promise<boolean> {
   const result = await client.query(
     `
-      DELETE FROM public.districts
-      WHERE district_type = $1
-        AND ${codeColumn} = $2
+      DELETE FROM public.districts AS d
+      WHERE d.district_type = $1
+        AND d.${codeColumn} = $2
+        AND NOT EXISTS (
+          SELECT 1
+          FROM public.elections AS e
+          WHERE e.district_id = d.id
+        )
+        AND NOT EXISTS (
+          SELECT 1
+          FROM public.propositions AS p
+          WHERE p.district_id = d.id
+        )
     `,
     [districtType, geoidCompact]
   );
