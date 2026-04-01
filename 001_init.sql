@@ -234,6 +234,7 @@ CREATE TABLE elections (
     registration_deadline date,
     early_voting_start date,
     early_voting_end date,
+    sources jsonb NOT NULL DEFAULT '[]'::jsonb,
     results_status text,
     last_researched timestamptz,
     created_at timestamptz NOT NULL DEFAULT now(),
@@ -251,7 +252,9 @@ CREATE TABLE elections (
             early_voting_start IS NULL
             OR early_voting_end IS NULL
             OR early_voting_end >= early_voting_start
-        )
+        ),
+    CONSTRAINT chk_elections_sources_json
+        CHECK (jsonb_typeof(sources) = 'array')
 );
 
 CREATE INDEX idx_elections_district_id ON elections (district_id);

@@ -96,6 +96,12 @@ If `008_rename_district_type_place_to_incorporated_place.sql` was applied, migra
 psql -d <db_name> -f ./009_rename_district_type_incorporated_place_to_place.sql
 ```
 
+To add election-level sources JSON storage:
+
+```bash
+psql -d <db_name> -f ./010_add_elections_sources.sql
+```
+
 ## Pipeline stream expectations
 
 - Producer writes draft items to `staging:draft` only.
