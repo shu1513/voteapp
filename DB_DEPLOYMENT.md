@@ -24,7 +24,7 @@ Run:
 
 ```bash
 cd /path/to/voteApp
-psql -d <db_name> -f ./001_init.sql
+psql -d <db_name> -f ./db/migrations/001_init.sql
 ```
 
 ## Existing environment with data (manual patch for this change)
@@ -75,31 +75,37 @@ ALTER TABLE staging_items
 To remove obsolete district columns in existing environments:
 
 ```bash
-psql -d <db_name> -f ./005_drop_district_registered_voters_and_boundary_data.sql
+psql -d <db_name> -f ./db/migrations/005_drop_district_registered_voters_and_boundary_data.sql
 ```
 
 To migrate district type values (`city` -> `place`, `school` -> `school_unified`) and enable school subtypes:
 
 ```bash
-psql -d <db_name> -f ./006_migrate_district_type_place_and_school_variants.sql
+psql -d <db_name> -f ./db/migrations/006_migrate_district_type_place_and_school_variants.sql
 ```
 
 To rename district identifier column and relax uniqueness safely for compact GEOIDs:
 
 ```bash
-psql -d <db_name> -f ./007_rename_district_fips_code_to_geoid_compact.sql
+psql -d <db_name> -f ./db/migrations/007_rename_district_fips_code_to_geoid_compact.sql
 ```
 
 If `008_rename_district_type_place_to_incorporated_place.sql` was applied, migrate district type back to `place`:
 
 ```bash
-psql -d <db_name> -f ./009_rename_district_type_incorporated_place_to_place.sql
+psql -d <db_name> -f ./db/migrations/009_rename_district_type_incorporated_place_to_place.sql
 ```
 
 To add election-level sources JSON storage:
 
 ```bash
-psql -d <db_name> -f ./010_add_elections_sources.sql
+psql -d <db_name> -f ./db/migrations/010_add_elections_sources.sql
+```
+
+To enforce non-empty `elections.sources` arrays:
+
+```bash
+psql -d <db_name> -f ./db/migrations/011_enforce_non_empty_elections_sources.sql
 ```
 
 ## Pipeline stream expectations
