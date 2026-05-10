@@ -1,11 +1,28 @@
+-- Safety migration for mixed deployment histories:
+-- - Fresh databases created from 001_init.sql already have elections.sources.
+-- - Older/divergent environments may still be missing the column.
+-- This file is idempotent and safe in both cases:
+-- it ensures the column exists, validates existing data, enforces NOT NULL +
+-- non-empty array constraint, and removes any conflicting default.
 ALTER TABLE elections
-  ADD COLUMN IF NOT EXISTS sources jsonb NOT NULL DEFAULT '[]'::jsonb;
+  ADD COLUMN IF NOT EXISTS sources jsonb;
 
 DO $$
 DECLARE
+  null_count bigint;
   invalid_type_count bigint;
   empty_array_count bigint;
 BEGIN
+  SELECT COUNT(*) INTO null_count
+  FROM elections
+  WHERE sources IS NULL;
+
+  IF null_count > 0 THEN
+    RAISE EXCEPTION
+      'Cannot enforce non-empty elections.sources: % row(s) have NULL sources. Backfill sources first.',
+      null_count;
+  END IF;
+
   SELECT COUNT(*) INTO invalid_type_count
   FROM elections
   WHERE jsonb_typeof(sources) <> 'array';
@@ -26,6 +43,9 @@ BEGIN
       empty_array_count;
   END IF;
 
+  ALTER TABLE elections
+  ALTER COLUMN sources SET NOT NULL;
+
   IF EXISTS (
     SELECT 1
     FROM pg_constraint
@@ -41,3 +61,6 @@ BEGIN
   CHECK (jsonb_typeof(sources) = 'array' AND jsonb_array_length(sources) > 0);
 END
 $$;
+
+ALTER TABLE elections
+ALTER COLUMN sources DROP DEFAULT;

@@ -234,7 +234,7 @@ CREATE TABLE elections (
     registration_deadline date,
     early_voting_start date,
     early_voting_end date,
-    sources jsonb NOT NULL DEFAULT '[]'::jsonb,
+    sources jsonb NOT NULL,
     results_status text,
     last_researched timestamptz,
     created_at timestamptz NOT NULL DEFAULT now(),
