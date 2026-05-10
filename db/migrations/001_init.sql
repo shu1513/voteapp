@@ -254,7 +254,7 @@ CREATE TABLE elections (
             OR early_voting_end >= early_voting_start
         ),
     CONSTRAINT chk_elections_sources_json
-        CHECK (jsonb_typeof(sources) = 'array')
+        CHECK (jsonb_typeof(sources) = 'array' AND jsonb_array_length(sources) > 0)
 );
 
 CREATE INDEX idx_elections_district_id ON elections (district_id);
