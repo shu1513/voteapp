@@ -10,6 +10,7 @@ export type AiCandidate = {
  * Keep this list intentionally short and explicit.
  */
 export const AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "gemini", model: "gemini-2.5-flash-lite" },
   { provider: "openai", model: "gpt-4o-mini" },
   { provider: "claude", model: "claude-haiku-4-5-20251001" },
   { provider: "openai", model: "gpt-5.2" },
