@@ -1,14 +1,25 @@
 export const CENSUS_STATES_API_URL =
   "https://api.census.gov/data/2024/acs/acs5?get=NAME,B01001_001E&for=state:*";
 
-export const STATE_RESOURCE_SEED_SOURCES = [
+export const STATE_RESOURCE_POLLING_REFERENCE_SEEDS = [
   "https://www.vote.org/polling-place-locator/",
   "https://www.nass.org/can-i-vote/find-your-polling-place",
   "https://www.usvotefoundation.org/find-my-polling-place",
-  "https://www.usa.gov/register-to-vote",
-  "https://www.vote.org/absentee-ballot/",
-  "https://www.nass.org/can-i-vote",
-  "https://www.usvotefoundation.org/voter-id-laws",
+] as const;
+
+export const STATE_RESOURCE_GENERAL_REFERENCE_SEEDS = [
+  "https://www.vote.org/",
+] as const;
+
+export const STATE_RESOURCE_MAIL_REFERENCE_SEEDS = ["https://vote.gov/register"] as const;
+export const STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEEDS = ["https://vote.gov/register"] as const;
+
+// Backward-compatible combined seed list used by current draft payload schema.
+export const STATE_RESOURCE_SEED_SOURCES = [
+  ...STATE_RESOURCE_POLLING_REFERENCE_SEEDS,
+  ...STATE_RESOURCE_GENERAL_REFERENCE_SEEDS,
+  ...STATE_RESOURCE_MAIL_REFERENCE_SEEDS,
+  ...STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEEDS,
 ] as const;
 
 // Documentation/audit reference for deterministic FIPS -> abbreviation mapping.

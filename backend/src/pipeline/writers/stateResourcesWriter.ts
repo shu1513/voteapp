@@ -3,6 +3,8 @@ import { createClient } from "redis";
 
 import {
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
+  STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
+  STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
   STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
 } from "../../contracts/stateResourceEnrichmentContract.js";
@@ -13,9 +15,10 @@ import {
   STAGING_VALIDATED_STREAM,
   STAGING_WRITTEN_STREAM,
 } from "../../config/stateResourcePipeline.js";
-import type { SourceCitation, StateResourcePayload, StateResourceSources } from "../../types/stateResource.js";
+import type { StateResourcePayload, StateResourceSources } from "../../types/stateResource.js";
 import { createStageObserver } from "../utils/observability.js";
 import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
+import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 
 type WriterOptions = {
   once?: boolean;
@@ -69,15 +72,22 @@ function isNonEmptyString(value: unknown): value is string {
 }
 
 /**
- * Returns true when one source citation object has the required fields.
+ * Normalizes a citation URL from supported payload formats.
  */
-function isValidCitation(value: unknown): value is SourceCitation {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    return false;
+function normalizeCitationUrl(value: unknown): string | null {
+  if (typeof value === "string") {
+    return normalizeHttpUrl(value);
   }
 
-  const item = value as Record<string, unknown>;
-  return isNonEmptyString(item.source_url) && isNonEmptyString(item.source_name);
+  // Backward-compatible parsing for older payload objects.
+  if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+    const item = value as Record<string, unknown>;
+    if (isNonEmptyString(item.source_url)) {
+      return normalizeHttpUrl(item.source_url);
+    }
+  }
+
+  return null;
 }
 
 function parseProviderModel(value: string | null): { provider: string | null; model: string | null } {
@@ -116,6 +126,30 @@ function parseStateResourcePayload(payload: unknown): ParseResult {
     }
   }
 
+  for (const key of STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS) {
+    if (typeof input[key] !== "boolean") {
+      return { ok: false, reason: `payload.${key} must be boolean` };
+    }
+  }
+  if (!Object.hasOwn(input, "online_registration_deadline_rule")) {
+    return { ok: false, reason: "payload.online_registration_deadline_rule must be present (string or null)" };
+  }
+  if (!(input.online_registration_deadline_rule === null || isNonEmptyString(input.online_registration_deadline_rule))) {
+    return { ok: false, reason: "payload.online_registration_deadline_rule must be null or non-empty string" };
+  }
+  if (input.online_registration_available === true && input.online_registration_deadline_rule === null) {
+    return {
+      ok: false,
+      reason: "payload.online_registration_deadline_rule must be string when online_registration_available=true",
+    };
+  }
+  if (input.online_registration_available === false && input.online_registration_deadline_rule !== null) {
+    return {
+      ok: false,
+      reason: "payload.online_registration_deadline_rule must be null when online_registration_available=false",
+    };
+  }
+
   if (typeof input.sources !== "object" || input.sources === null || Array.isArray(input.sources)) {
     return { ok: false, reason: "payload.sources must be an object" };
   }
@@ -127,9 +161,14 @@ function parseStateResourcePayload(payload: unknown): ParseResult {
       return { ok: false, reason: `payload.sources.${key} must be a non-empty array` };
     }
 
-    if (!citations.every(isValidCitation)) {
-      return { ok: false, reason: `payload.sources.${key} contains invalid citation entries` };
+    if (!citations.every((citation) => normalizeCitationUrl(citation) !== null)) {
+      return { ok: false, reason: `payload.sources.${key} contains invalid citation URLs` };
     }
+  }
+
+  const normalizedSources = {} as StateResourceSources;
+  for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
+    normalizedSources[key] = (sources[key] as unknown[]).map((citation) => normalizeCitationUrl(citation) as string);
   }
 
   return {
@@ -139,11 +178,16 @@ function parseStateResourcePayload(payload: unknown): ParseResult {
       state_abbreviation: (input.state_abbreviation as string).trim(),
       state_name: (input.state_name as string).trim(),
       polling_place_url: (input.polling_place_url as string).trim(),
-      voter_registration_url: (input.voter_registration_url as string).trim(),
+      voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
       vote_by_mail_info: (input.vote_by_mail_info as string).trim(),
       polling_hours: (input.polling_hours as string).trim(),
       id_requirements: (input.id_requirements as string).trim(),
-      sources: sources as StateResourceSources,
+      online_registration_available: input.online_registration_available as boolean,
+      online_registration_deadline_rule:
+        input.online_registration_deadline_rule === null
+          ? null
+          : (input.online_registration_deadline_rule as string).trim(),
+      sources: normalizedSources,
     },
   };
 }
@@ -264,9 +308,11 @@ async function writeStateResourceAndMarkWritten(
           vote_by_mail_info,
           polling_hours,
           id_requirements,
+          online_registration_available,
+          online_registration_deadline_rule,
           sources
         ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::jsonb
         )
         ON CONFLICT (state_fips) DO UPDATE SET
           state_abbreviation = EXCLUDED.state_abbreviation,
@@ -276,6 +322,8 @@ async function writeStateResourceAndMarkWritten(
           vote_by_mail_info = EXCLUDED.vote_by_mail_info,
           polling_hours = EXCLUDED.polling_hours,
           id_requirements = EXCLUDED.id_requirements,
+          online_registration_available = EXCLUDED.online_registration_available,
+          online_registration_deadline_rule = EXCLUDED.online_registration_deadline_rule,
           sources = EXCLUDED.sources
       `,
       [
@@ -287,6 +335,8 @@ async function writeStateResourceAndMarkWritten(
         payload.vote_by_mail_info,
         payload.polling_hours,
         payload.id_requirements,
+        payload.online_registration_available,
+        payload.online_registration_deadline_rule,
         JSON.stringify(payload.sources),
       ]
     );

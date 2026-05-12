@@ -2,6 +2,7 @@ import { isIP } from "node:net";
 import { lookup as dnsLookup } from "node:dns/promises";
 import {
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
+  STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   STATE_RESOURCE_SOURCE_FIELDS,
 } from "../contracts/stateResourceEnrichmentContract.js";
 import type { PipelineEnv } from "../config/env.js";
@@ -353,6 +354,7 @@ async function verifyAndCollectAdditionalCitationEvidence(
       .map((item) => normalizeHttpUrl(item.url))
       .filter((url): url is string => typeof url === "string")
   );
+  knownEvidenceUrls.add(STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL);
   const verifiedCitationEvidence: EvidenceSnippet[] = [];
   const seenNewCitationUrls = new Set<string>();
   const verificationFailures: Array<{
@@ -363,11 +365,11 @@ async function verifyAndCollectAdditionalCitationEvidence(
 
   for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
     for (const citation of payload.sources[key]) {
-      const normalizedCitationUrl = normalizeHttpUrl(citation.source_url);
+      const normalizedCitationUrl = normalizeHttpUrl(citation);
       if (!normalizedCitationUrl) {
         verificationFailures.push({
           field: key,
-          url: citation.source_url,
+          url: citation,
           reason: "invalid citation URL",
         });
         continue;
@@ -377,7 +379,7 @@ async function verifyAndCollectAdditionalCitationEvidence(
         continue;
       }
 
-      const fetched = await fetchCitationEvidenceSnippet(normalizedCitationUrl, citation.source_name);
+      const fetched = await fetchCitationEvidenceSnippet(normalizedCitationUrl, getHostname(normalizedCitationUrl));
       if (!fetched.ok) {
         verificationFailures.push({
           field: key,
@@ -540,10 +542,9 @@ function preferOfficialPollingPlaceUrl(
           normalized,
           hasStateSignal(normalized, item.title, item.snippet, draft.state_name, draft.state_abbreviation)
         ),
-        sourceName: item.title.trim().length > 0 ? item.title.trim() : getHostname(normalized),
       };
     })
-    .filter((item): item is { normalizedUrl: string; score: number; sourceName: string } => item !== null)
+    .filter((item): item is { normalizedUrl: string; score: number } => item !== null)
     .sort((a, b) => b.score - a.score);
 
   const best = candidates[0];
@@ -557,17 +558,14 @@ function preferOfficialPollingPlaceUrl(
   }
 
   const hasCitation = payload.sources.polling_place_url.some((citation) => {
-    const normalizedCitationUrl = normalizeHttpUrl(citation.source_url);
+    const normalizedCitationUrl = normalizeHttpUrl(citation);
     return normalizedCitationUrl === best.normalizedUrl;
   });
 
   const pollingPlaceCitations = hasCitation
     ? payload.sources.polling_place_url
     : [
-        {
-          source_name: best.sourceName.length > 0 ? best.sourceName : getHostname(best.normalizedUrl),
-          source_url: best.normalizedUrl,
-        },
+        best.normalizedUrl,
         ...payload.sources.polling_place_url,
       ];
 
@@ -611,7 +609,7 @@ function buildEvidenceUrlSet(
 function validateCitationUrls(payload: StateResourcePayload): string | null {
   for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
     for (const citation of payload.sources[key]) {
-      const normalizedCitationUrl = normalizeHttpUrl(citation.source_url);
+      const normalizedCitationUrl = normalizeHttpUrl(citation);
       if (!normalizedCitationUrl) {
         return `sources.${key} contains an invalid citation URL`;
       }
@@ -624,7 +622,7 @@ function validateCitationUrls(payload: StateResourcePayload): string | null {
 function chooseFallbackEvidenceUrl(
   field: (typeof STATE_RESOURCE_SOURCE_FIELDS)[number],
   evidence: EnrichStateResourcesInput["evidence"]
-): { url: string; sourceName: string } | null {
+): string | null {
   const scored = evidence
     .map((item) => {
       const normalizedUrl = normalizeHttpUrl(item.url);
@@ -665,17 +663,13 @@ function chooseFallbackEvidenceUrl(
         return null;
       }
 
-      return {
-        url: normalizedUrl,
-        sourceName: item.title.trim().length > 0 ? item.title.trim() : getHostname(normalizedUrl),
-        score,
-      };
+      return { url: normalizedUrl, score };
     })
-    .filter((item): item is { url: string; sourceName: string; score: number } => item !== null)
+    .filter((item): item is { url: string; score: number } => item !== null)
     .sort((a, b) => b.score - a.score);
 
   if (scored.length > 0) {
-    return { url: scored[0].url, sourceName: scored[0].sourceName };
+    return scored[0].url;
   }
 
   const first = evidence
@@ -684,12 +678,9 @@ function chooseFallbackEvidenceUrl(
       if (!normalizedUrl) {
         return null;
       }
-      return {
-        url: normalizedUrl,
-        sourceName: item.title.trim().length > 0 ? item.title.trim() : getHostname(normalizedUrl),
-      };
+      return normalizedUrl;
     })
-    .find((item): item is { url: string; sourceName: string } => item !== null);
+    .find((item): item is string => item !== null);
 
   return first ?? null;
 }
@@ -697,7 +688,7 @@ function chooseFallbackEvidenceUrl(
 function choosePreferredOfficialCitationForField(
   field: "vote_by_mail_info" | "polling_hours" | "id_requirements",
   evidence: EnrichStateResourcesInput["evidence"]
-): { url: string; sourceName: string } | null {
+): string | null {
   const ranked = evidence
     .map((item) => {
       const normalizedUrl = normalizeHttpUrl(item.url);
@@ -723,50 +714,17 @@ function choosePreferredOfficialCitationForField(
 
       return {
         url: normalizedUrl,
-        sourceName: item.title.trim().length > 0 ? item.title.trim() : getHostname(normalizedUrl),
         score: relevance,
       };
     })
-    .filter(
-      (item): item is { url: string; sourceName: string; score: number } =>
-        item !== null && item.score > 0
-    )
+    .filter((item): item is { url: string; score: number } => item !== null && item.score > 0)
     .sort((a, b) => b.score - a.score);
 
   if (ranked.length === 0) {
     return null;
   }
 
-  return {
-    url: ranked[0].url,
-    sourceName: ranked[0].sourceName,
-  };
-}
-
-function getEvidenceSourceNameForUrl(
-  targetUrl: string,
-  evidence: EnrichStateResourcesInput["evidence"]
-): string | null {
-  const normalizedTarget = normalizeHttpUrl(targetUrl);
-  if (!normalizedTarget) {
-    return null;
-  }
-
-  for (const item of evidence) {
-    const normalizedEvidenceUrl = normalizeHttpUrl(item.url);
-    if (normalizedEvidenceUrl !== normalizedTarget) {
-      continue;
-    }
-
-    const trimmedTitle = item.title.trim();
-    if (trimmedTitle.length > 0) {
-      return trimmedTitle;
-    }
-
-    return getHostname(normalizedTarget);
-  }
-
-  return null;
+  return ranked[0].url;
 }
 
 function chooseDraftPollingSeedUrl(draft: EnrichStateResourcesInput["draft"]): string | null {
@@ -802,7 +760,7 @@ function isCuratedStatePollingUrl(url: string, draft: EnrichStateResourcesInput[
 }
 
 /**
- * Normalizes AI citations and deduplicates URL entries by normalized source_url.
+ * Normalizes AI citations and deduplicates URL entries.
  * Applies deterministic fallbacks only for URL fields (not legal summary text fields).
  */
 function groundCitationsToEvidence(
@@ -815,42 +773,33 @@ function groundCitationsToEvidence(
     const seen = new Set<string>();
     const grounded = payload.sources[key]
       .map((citation) => {
-        const normalized = normalizeHttpUrl(citation.source_url);
+        const normalized = normalizeHttpUrl(citation);
         if (!normalized || seen.has(normalized)) {
           return null;
         }
         seen.add(normalized);
-        return {
-          source_name: citation.source_name.trim().length > 0 ? citation.source_name.trim() : getHostname(normalized),
-          source_url: normalized,
-        };
+        return normalized;
       })
-      .filter((citation): citation is { source_name: string; source_url: string } => citation !== null);
+      .filter((citation): citation is string => citation !== null);
 
     if (grounded.length === 0 && !isLegalSummaryCitationField(key)) {
       const fallback = chooseFallbackEvidenceUrl(key, evidence);
       if (fallback) {
-        grounded.push({
-          source_name: fallback.sourceName,
-          source_url: fallback.url,
-        });
-        seen.add(fallback.url);
+        grounded.push(fallback);
+        seen.add(fallback);
       }
     }
 
     if (isPreferredOfficialCitationField(key)) {
       const hasOfficialCitation = grounded.some((citation) =>
-        isOfficialElectionSource(citation.source_url, citation.source_name)
+        isOfficialElectionSource(citation)
       );
 
       if (!hasOfficialCitation) {
         const preferredOfficial = choosePreferredOfficialCitationForField(key, evidence);
-        if (preferredOfficial && !seen.has(preferredOfficial.url)) {
-          grounded.unshift({
-            source_name: preferredOfficial.sourceName,
-            source_url: preferredOfficial.url,
-          });
-          seen.add(preferredOfficial.url);
+        if (preferredOfficial && !seen.has(preferredOfficial)) {
+          grounded.unshift(preferredOfficial);
+          seen.add(preferredOfficial);
         }
       }
     }
@@ -978,6 +927,14 @@ export async function enrichStateResources(
 
   const pollingNormalizedPayload = preferOfficialPollingPlaceUrl(parsed.payload, input.evidence, input.draft);
   let normalizedPayload = groundCitationsToEvidence(pollingNormalizedPayload, input.evidence);
+  normalizedPayload = {
+    ...normalizedPayload,
+    voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
+    sources: {
+      ...normalizedPayload.sources,
+      voter_registration_url: [STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL],
+    },
+  };
   const pollingSeedFallback = chooseDraftPollingSeedUrl(input.draft);
   if (pollingSeedFallback) {
     const normalizedCurrentPollingUrl = normalizeHttpUrl(normalizedPayload.polling_place_url);
@@ -991,19 +948,12 @@ export async function enrichStateResources(
       const fallbackChangedPollingUrl = normalizedCurrentPollingUrl !== pollingSeedFallback;
 
       if (fallbackChangedPollingUrl) {
-        const fallbackSourceName =
-          getEvidenceSourceNameForUrl(pollingSeedFallback, input.evidence) ?? getHostname(pollingSeedFallback);
         normalizedPayload = {
           ...normalizedPayload,
           polling_place_url: pollingSeedFallback,
           sources: {
             ...normalizedPayload.sources,
-            polling_place_url: [
-              {
-                source_name: fallbackSourceName,
-                source_url: pollingSeedFallback,
-              },
-            ],
+            polling_place_url: [pollingSeedFallback],
           },
         };
       } else {

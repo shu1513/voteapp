@@ -108,6 +108,24 @@ To enforce non-empty `elections.sources` arrays:
 psql -d <db_name> -f ./db/migrations/011_enforce_non_empty_elections_sources.sql
 ```
 
+To add state online-registration fields and required `state_resources.sources` keys:
+
+```bash
+psql -d <db_name> -f ./db/migrations/012_add_state_resources_online_registration_fields.sql
+```
+
+To migrate `state_resources.sources` citations to URL-only arrays (drop `source_name` storage):
+
+```bash
+psql -d <db_name> -f ./db/migrations/013_state_resources_sources_urls_only.sql
+```
+
+To enforce `online_registration_available` as strictly non-null (`true`/`false` only):
+
+```bash
+psql -d <db_name> -f ./db/migrations/014_enforce_state_resources_online_registration_available_not_null.sql
+```
+
 ## Pipeline stream expectations
 
 - Producer writes draft items to `staging:draft` only.

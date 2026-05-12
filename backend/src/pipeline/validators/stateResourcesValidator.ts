@@ -6,8 +6,11 @@ import {
   STATE_RESOURCE_DRAFT_MARKER_FIELDS,
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIPS_REGEX,
+  STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH,
+  STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
+  STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
   STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
   STATE_RESOURCE_TEXT_MIN_LENGTH,
@@ -180,7 +183,7 @@ function getEvidenceBySourceForField(
 ): Map<string, EvidenceSnippet[]> {
   const citationUrls = new Set<string>();
   for (const citation of citations) {
-    const normalized = normalizeHttpUrl(citation.source_url);
+    const normalized = normalizeHttpUrl(citation);
     if (normalized) {
       citationUrls.add(normalized);
     }
@@ -454,24 +457,20 @@ function detectConflictWarnings(payload: StateResourcePayload, evidence: Evidenc
 }
 
 /**
- * Validates one citation object inside a sources array.
+ * Validates one citation URL inside a sources array.
  */
 function validateSourceCitation(value: unknown): value is SourceCitation {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    return false;
+  if (typeof value === "string") {
+    return isHttpUrl(value);
   }
 
-  const item = value as Record<string, unknown>;
-
-  if (!isNonEmptyString(item.source_name)) {
-    return false;
+  // Backward-compatible validation for older object citations.
+  if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+    const item = value as Record<string, unknown>;
+    return isNonEmptyString(item.source_url) && isHttpUrl(item.source_url);
   }
 
-  if (!isNonEmptyString(item.source_url)) {
-    return false;
-  }
-
-  return isHttpUrl(item.source_url);
+  return false;
 }
 
 /**
@@ -483,6 +482,7 @@ function validateSources(value: unknown): { ok: true; sources: StateResourceSour
   }
 
   const obj = value as Record<string, unknown>;
+  const normalizedSources = {} as StateResourceSources;
 
   for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
     const citations = obj[key];
@@ -492,15 +492,19 @@ function validateSources(value: unknown): { ok: true; sources: StateResourceSour
     }
 
     const seenNormalizedUrls = new Set<string>();
+    const normalizedBucket: string[] = [];
     for (const citation of citations) {
       if (!validateSourceCitation(citation)) {
         return {
           ok: false,
-          reason: `sources.${key} contains an invalid citation (requires source_name + http(s) source_url)`,
+          reason: `sources.${key} contains an invalid citation URL`,
         };
       }
 
-      const normalizedCitationUrl = normalizeHttpUrl(citation.source_url);
+      const normalizedCitationUrl =
+        typeof citation === "string"
+          ? normalizeHttpUrl(citation)
+          : normalizeHttpUrl((citation as { source_url: string }).source_url);
       if (!normalizedCitationUrl) {
         return {
           ok: false,
@@ -511,11 +515,14 @@ function validateSources(value: unknown): { ok: true; sources: StateResourceSour
       if (seenNormalizedUrls.has(normalizedCitationUrl)) {
         return {
           ok: false,
-          reason: `sources.${key} contains duplicate citation source_url values`,
+          reason: `sources.${key} contains duplicate citation URLs`,
         };
       }
       seenNormalizedUrls.add(normalizedCitationUrl);
+      normalizedBucket.push(normalizedCitationUrl);
     }
+
+    normalizedSources[key] = normalizedBucket;
   }
 
   const allowedKeys = new Set(STATE_RESOURCE_SOURCE_FIELDS);
@@ -524,7 +531,7 @@ function validateSources(value: unknown): { ok: true; sources: StateResourceSour
     return { ok: false, reason: `sources contains unsupported keys: ${extraKeys.join(", ")}` };
   }
 
-  return { ok: true, sources: obj as StateResourceSources };
+  return { ok: true, sources: normalizedSources };
 }
 
 /**
@@ -544,6 +551,16 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       reasons.push(`${key} is required and must be a non-empty string`);
     }
   }
+  for (const key of STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS) {
+    if (typeof input[key] !== "boolean") {
+      reasons.push(`${key} is required and must be boolean`);
+    }
+  }
+  if (!Object.hasOwn(input, "online_registration_deadline_rule")) {
+    reasons.push("online_registration_deadline_rule is required and must be null or non-empty string");
+  } else if (!(input.online_registration_deadline_rule === null || isNonEmptyString(input.online_registration_deadline_rule))) {
+    reasons.push("online_registration_deadline_rule must be null or a non-empty string");
+  }
 
   if (reasons.length > 0) {
     if (looksLikeDraftPayload) {
@@ -560,6 +577,11 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   const vote_by_mail_info = (input.vote_by_mail_info as string).trim();
   const polling_hours = (input.polling_hours as string).trim();
   const id_requirements = (input.id_requirements as string).trim();
+  const online_registration_available = input.online_registration_available as boolean;
+  const online_registration_deadline_rule =
+    input.online_registration_deadline_rule === null
+      ? null
+      : (input.online_registration_deadline_rule as string).trim();
 
   if (!STATE_RESOURCE_FIPS_REGEX.test(state_fips)) {
     reasons.push("state_fips must be exactly two digits");
@@ -583,6 +605,15 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   if (!isHttpUrl(voter_registration_url)) {
     reasons.push("voter_registration_url must be a valid http(s) URL");
   }
+  if (voter_registration_url !== STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL) {
+    reasons.push(`voter_registration_url must be exactly ${STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL}`);
+  }
+  if (online_registration_available && online_registration_deadline_rule === null) {
+    reasons.push("online_registration_deadline_rule must be provided when online_registration_available is true");
+  }
+  if (!online_registration_available && online_registration_deadline_rule !== null) {
+    reasons.push("online_registration_deadline_rule must be null when online_registration_available is false");
+  }
 
   if (vote_by_mail_info.length > STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH) {
     reasons.push(`vote_by_mail_info must be ${STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH} characters or fewer`);
@@ -594,6 +625,14 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 
   if (id_requirements.length > STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH) {
     reasons.push(`id_requirements must be ${STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH} characters or fewer`);
+  }
+  if (
+    online_registration_deadline_rule !== null &&
+    online_registration_deadline_rule.length > STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH
+  ) {
+    reasons.push(
+      `online_registration_deadline_rule must be ${STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH} characters or fewer`
+    );
   }
 
   if (isUrlOnlyText(vote_by_mail_info)) {
@@ -607,6 +646,9 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   if (isUrlOnlyText(id_requirements)) {
     reasons.push("id_requirements must be plain-language text, not a URL");
   }
+  if (online_registration_deadline_rule !== null && isUrlOnlyText(online_registration_deadline_rule)) {
+    reasons.push("online_registration_deadline_rule must be plain-language text, not a URL");
+  }
 
   if (vote_by_mail_info.length < STATE_RESOURCE_TEXT_MIN_LENGTH) {
     reasons.push(`vote_by_mail_info must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
@@ -618,6 +660,12 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 
   if (id_requirements.length < STATE_RESOURCE_TEXT_MIN_LENGTH) {
     reasons.push(`id_requirements must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
+  }
+  if (
+    online_registration_deadline_rule !== null &&
+    online_registration_deadline_rule.length < STATE_RESOURCE_TEXT_MIN_LENGTH
+  ) {
+    reasons.push(`online_registration_deadline_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
   }
 
   try {
@@ -651,6 +699,8 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       vote_by_mail_info,
       polling_hours,
       id_requirements,
+      online_registration_available,
+      online_registration_deadline_rule,
       sources: sourcesResult.sources,
     },
     warnings: detectConflictWarnings(
@@ -663,6 +713,8 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
         vote_by_mail_info,
         polling_hours,
         id_requirements,
+        online_registration_available,
+        online_registration_deadline_rule,
         sources: sourcesResult.sources,
       },
       extractEvidenceSnippets(input)

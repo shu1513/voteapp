@@ -54,7 +54,9 @@ AS $$
                 'voter_registration_url',
                 'vote_by_mail_info',
                 'polling_hours',
-                'id_requirements'
+                'id_requirements',
+                'online_registration_available',
+                'online_registration_deadline_rule'
             ]) AS required_key
             WHERE NOT (
                 data ? required_key
@@ -71,19 +73,18 @@ AS $$
                     'voter_registration_url',
                     'vote_by_mail_info',
                     'polling_hours',
-                    'id_requirements'
+                    'id_requirements',
+                    'online_registration_available',
+                    'online_registration_deadline_rule'
                 )
                 OR jsonb_typeof(value) <> 'array'
                 OR EXISTS (
                     SELECT 1
                     FROM jsonb_array_elements(value) AS item
                     WHERE
-                        jsonb_typeof(item) <> 'object'
-                        OR NOT (item ? 'source_url' AND item ? 'source_name')
-                        OR jsonb_typeof(item->'source_url') <> 'string'
-                        OR jsonb_typeof(item->'source_name') <> 'string'
-                        OR btrim(item->>'source_url') = ''
-                        OR btrim(item->>'source_name') = ''
+                        jsonb_typeof(item) <> 'string'
+                        OR btrim(item #>> '{}') = ''
+                        OR (item #>> '{}') !~ '^https?://'
                 )
         );
 $$;
@@ -450,15 +451,35 @@ CREATE TABLE state_resources (
     vote_by_mail_info text NOT NULL,
     polling_hours text NOT NULL,
     id_requirements text NOT NULL,
+    online_registration_available boolean NOT NULL,
+    online_registration_deadline_rule text,
     sources jsonb NOT NULL,
     CONSTRAINT chk_state_fips_format CHECK (state_fips ~ '^[0-9]{2}$'),
     CONSTRAINT chk_state_abbreviation_format CHECK (state_abbreviation ~ '^[A-Z]{2}$'),
+    CONSTRAINT chk_state_resources_voter_registration_url_fixed
+        CHECK (voter_registration_url = 'https://vote.gov/register'),
     CONSTRAINT chk_state_resources_vote_by_mail_info_text
         CHECK (btrim(vote_by_mail_info) <> '' AND char_length(vote_by_mail_info) <= 4000),
     CONSTRAINT chk_state_resources_polling_hours_text
         CHECK (btrim(polling_hours) <> '' AND char_length(polling_hours) <= 1000),
     CONSTRAINT chk_state_resources_id_requirements_text
         CHECK (btrim(id_requirements) <> '' AND char_length(id_requirements) <= 4000),
+    CONSTRAINT chk_state_resources_online_registration_deadline_rule_text
+        CHECK (
+            online_registration_deadline_rule IS NULL
+            OR (btrim(online_registration_deadline_rule) <> '' AND char_length(online_registration_deadline_rule) <= 1000)
+        ),
+    CONSTRAINT chk_state_resources_online_registration_consistency
+        CHECK (
+            (
+                online_registration_available = true
+                AND online_registration_deadline_rule IS NOT NULL
+            )
+            OR (
+                online_registration_available = false
+                AND online_registration_deadline_rule IS NULL
+            )
+        ),
     CONSTRAINT chk_state_resources_sources
         CHECK (is_valid_state_resource_sources(sources))
 );

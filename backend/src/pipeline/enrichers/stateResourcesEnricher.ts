@@ -90,7 +90,9 @@ const VOTE_ORG_POLLING_LOCATOR_URL = "https://www.vote.org/polling-place-locator
 const VOTE_ORG_POLLING_FETCH_TIMEOUT_MS = 10_000;
 const VOTE_ORG_RETRY_BACKOFF_INITIAL_MS = 60_000;
 const VOTE_ORG_RETRY_BACKOFF_MAX_MS = 15 * 60_000;
+const VOTE_GOV_REGISTER_BASE_URL = "https://vote.gov/register";
 const SAME_PASS_FAILED_URL_MEMORY_LIMIT = 100;
+const SAME_PASS_FAILED_DETAILS_MEMORY_LIMIT = 100;
 let voteOrgPollingMapPromise: Promise<Map<string, string>> | null = null;
 let voteOrgLastLoadFailureAt: number | null = null;
 let voteOrgRetryBackoffMs = VOTE_ORG_RETRY_BACKOFF_INITIAL_MS;
@@ -155,6 +157,7 @@ function extractRetryFeedbackFromRow(row: StagingRow): EnrichStateResourcesInput
   return normalizeRetryFeedback({
     previousFailureReason: row.reason,
     failedCitationUrls: [],
+    failedCitationDetails: [],
     retryCount: null,
     failedAt: null,
   });
@@ -181,6 +184,23 @@ function isHttpUrl(value: string): boolean {
 
 function normalizeStateKey(stateName: string): string {
   return stateName.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function toStateSlug(stateName: string): string | null {
+  const slug = stateName
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return slug.length > 0 ? slug : null;
+}
+
+function buildStateScopedReferenceUrl(baseUrl: string, stateName: string): string | null {
+  const slug = toStateSlug(stateName);
+  if (!slug) {
+    return null;
+  }
+  return normalizeHttpUrl(`${baseUrl}/${slug}`);
 }
 
 function splitStoredModel(storedModel: string | null): Pick<EnricherProcessResult, "provider" | "model"> {
@@ -259,12 +279,9 @@ function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCand
 }
 
 function shouldTrySecondPromptForModel(result: Exclude<EnrichStateResourcesResult, { ok: true }>): boolean {
-  // Second prompt variant should only be used for content-shape issues, not transport/provider health failures.
-  return (
-    result.errorCode === "INVALID_JSON" ||
-    result.errorCode === "SCHEMA_MISMATCH" ||
-    result.errorCode === "MISSING_REQUIRED_FIELDS"
-  );
+  // For callable models, always run a second in-model retry (citation_repair) with retry feedback.
+  // Only skip when the provider/model itself is fundamentally not callable.
+  return result.errorCode !== "CONFIGURATION_ERROR" && result.errorCode !== "UNSUPPORTED_PROVIDER";
 }
 
 function formatFallbackFailureReason(
@@ -328,6 +345,39 @@ function extractFailedCitationUrlsFromFailure(
   return Array.from(urls);
 }
 
+function extractFailedCitationDetailsFromFailure(
+  failure: Exclude<EnrichStateResourcesResult, { ok: true }>
+): Array<{ url: string; reason: string }> {
+  const details: Array<{ url: string; reason: string }> = [];
+  const seen = new Set<string>();
+
+  const rawFailures =
+    isObjectRecord(failure.failureDebug) &&
+    Array.isArray(failure.failureDebug.citation_verification_failures)
+      ? failure.failureDebug.citation_verification_failures
+      : [];
+
+  for (const item of rawFailures) {
+    if (!isObjectRecord(item) || !isNonEmptyString(item.url) || !isNonEmptyString(item.reason)) {
+      continue;
+    }
+
+    const normalizedUrl = normalizeHttpUrl(item.url) ?? item.url.trim();
+    const normalizedReason = item.reason.trim();
+    const key = `${normalizedUrl}|||${normalizedReason}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    details.push({
+      url: normalizedUrl,
+      reason: normalizedReason,
+    });
+  }
+
+  return details;
+}
+
 function mergeRetryFeedbackForSamePass(
   current: RetryFeedback | null | undefined,
   failure: Exclude<EnrichStateResourcesResult, { ok: true }>
@@ -335,6 +385,7 @@ function mergeRetryFeedbackForSamePass(
   const normalizedCurrent = normalizeRetryFeedback(current) ?? {
     previousFailureReason: null,
     failedCitationUrls: [],
+    failedCitationDetails: [],
     retryCount: null,
     failedAt: null,
   };
@@ -344,9 +395,18 @@ function mergeRetryFeedbackForSamePass(
     mergedUrls.add(url);
   }
 
+  const mergedDetails = new Map<string, { url: string; reason: string }>();
+  for (const detail of normalizedCurrent.failedCitationDetails) {
+    mergedDetails.set(`${detail.url}|||${detail.reason}`, detail);
+  }
+  for (const detail of extractFailedCitationDetailsFromFailure(failure)) {
+    mergedDetails.set(`${detail.url}|||${detail.reason}`, detail);
+  }
+
   return {
     previousFailureReason: failure.reason,
     failedCitationUrls: Array.from(mergedUrls).slice(0, SAME_PASS_FAILED_URL_MEMORY_LIMIT),
+    failedCitationDetails: Array.from(mergedDetails.values()).slice(0, SAME_PASS_FAILED_DETAILS_MEMORY_LIMIT),
     retryCount: (normalizedCurrent.retryCount ?? 0) + 1,
     failedAt: new Date().toISOString(),
   };
@@ -943,6 +1003,18 @@ async function processMessage(
         snippet: `${draft.draft.state_name} polling place locator`,
       });
     }
+  }
+
+  const voteByMailReferenceUrl = buildStateScopedReferenceUrl(VOTE_GOV_REGISTER_BASE_URL, draft.draft.state_name);
+  if (
+    voteByMailReferenceUrl &&
+    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === voteByMailReferenceUrl)
+  ) {
+    enrichedEvidence.unshift({
+      url: voteByMailReferenceUrl,
+      title: "Vote.gov state registration page",
+      snippet: `${draft.draft.state_name} vote-by-mail and online registration starting reference`,
+    });
   }
 
   const { result: enrichmentResult, attempts } = await enrichWithCandidates(

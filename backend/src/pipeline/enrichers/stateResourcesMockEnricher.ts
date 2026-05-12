@@ -13,6 +13,8 @@ import {
   STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIPS_REGEX,
+  STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
+  STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
   STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
@@ -155,13 +157,6 @@ function parseDraftPayload(payload: unknown): DraftParseResult {
 type EnrichedStagingPayload = StateResourcePayload & {
   evidence: EvidenceSnippet[];
 };
-
-/**
- * Derives a citation source name from evidence title.
- */
-function sourceNameFromEvidence(evidence: EvidenceSnippet): string {
-  return evidence.title.trim().length > 0 ? evidence.title.trim() : "source";
-}
 
 function normalizeStateKey(stateName: string): string {
   return stateName.trim().toLowerCase().replace(/\s+/g, " ");
@@ -420,22 +415,29 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
   const voteByMailInfo = `${draft.state_name} voters can request and return vote-by-mail ballots based on state deadlines and local election rules.`;
   const pollingHours = "Polling locations usually open and close at posted local hours on election day.";
   const idRequirements = `${draft.state_name} voter ID requirements depend on election type and local/state rules.`;
+  const onlineRegistrationDeadlineRule = `${draft.state_name} online voter registration deadlines vary by election and are posted on the official state registration page.`;
 
   const sources: StateResourceSources = {
     polling_place_url: [
-      { source_name: sourceNameFromEvidence(pollingPlaceEvidence), source_url: pollingPlaceEvidence.url },
+      pollingPlaceEvidence.url,
     ],
     voter_registration_url: [
-      { source_name: sourceNameFromEvidence(registrationEvidence), source_url: registrationEvidence.url },
+      STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
     ],
     vote_by_mail_info: [
-      { source_name: sourceNameFromEvidence(voteByMailEvidence), source_url: voteByMailEvidence.url },
+      voteByMailEvidence.url,
     ],
     polling_hours: [
-      { source_name: sourceNameFromEvidence(pollingHoursEvidence), source_url: pollingHoursEvidence.url },
+      pollingHoursEvidence.url,
     ],
     id_requirements: [
-      { source_name: sourceNameFromEvidence(idRequirementsEvidence), source_url: idRequirementsEvidence.url },
+      idRequirementsEvidence.url,
+    ],
+    online_registration_available: [
+      registrationEvidence.url,
+    ],
+    online_registration_deadline_rule: [
+      registrationEvidence.url,
     ],
   };
 
@@ -444,10 +446,12 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     state_abbreviation: draft.state_abbreviation,
     state_name: draft.state_name,
     polling_place_url: pollingPlaceEvidence.url,
-    voter_registration_url: registrationEvidence.url,
+    voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
     vote_by_mail_info: voteByMailInfo,
     polling_hours: pollingHours,
     id_requirements: idRequirements,
+    online_registration_available: true,
+    online_registration_deadline_rule: onlineRegistrationDeadlineRule,
     sources,
   };
 }
@@ -474,6 +478,11 @@ function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSn
       return `mock payload missing required field: ${key}`;
     }
   }
+  for (const key of STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS) {
+    if (typeof payload[key] !== "boolean") {
+      return `mock payload missing required boolean field: ${key}`;
+    }
+  }
 
   if (!STATE_RESOURCE_FIPS_REGEX.test(payload.state_fips)) {
     return "mock payload state_fips must be exactly two digits";
@@ -486,6 +495,12 @@ function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSn
   }
   if (!isHttpUrl(payload.voter_registration_url)) {
     return "mock payload voter_registration_url must be a valid http(s) URL";
+  }
+  if (payload.online_registration_available && payload.online_registration_deadline_rule === null) {
+    return "mock payload online_registration_deadline_rule must be set when online registration is available";
+  }
+  if (!payload.online_registration_available && payload.online_registration_deadline_rule !== null) {
+    return "mock payload online_registration_deadline_rule must be null when online registration is unavailable";
   }
   if (payload.vote_by_mail_info.length > STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH) {
     return `mock payload vote_by_mail_info must be ${STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH} chars or fewer`;
@@ -501,12 +516,12 @@ function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSn
     }
 
     for (const citation of bucket) {
-      if (!isNonEmptyString(citation.source_name) || !isNonEmptyString(citation.source_url)) {
-        return `mock payload sources.${key} citations require source_name + source_url`;
+      if (!isNonEmptyString(citation)) {
+        return `mock payload sources.${key} citations require non-empty URL strings`;
       }
-      const normalizedCitationUrl = normalizeHttpUrl(citation.source_url.trim());
+      const normalizedCitationUrl = normalizeHttpUrl(citation.trim());
       if (!normalizedCitationUrl) {
-        return `mock payload sources.${key}.source_url must be valid http(s)`;
+        return `mock payload sources.${key} must contain valid http(s) URLs`;
       }
     }
   }

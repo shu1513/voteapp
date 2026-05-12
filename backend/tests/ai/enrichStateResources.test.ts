@@ -35,26 +35,45 @@ function floridaDraft() {
 }
 
 function validPayload(overrides: Record<string, unknown> = {}) {
-  return {
+  const base = {
     state_fips: "06",
     state_abbreviation: "CA",
     state_name: "California",
     polling_place_url: "https://www.vote.org/polling-place-locator/",
-    voter_registration_url: "https://www.usa.gov/register-to-vote",
+    voter_registration_url: "https://vote.gov/register",
     vote_by_mail_info:
       "California allows any registered voter to vote by mail, and ballots must be returned by election day under state deadline rules.",
     polling_hours:
       "California polling places are generally open from 7:00 a.m. to 8:00 p.m. on election day, with local guidance for special cases.",
     id_requirements:
       "California generally does not require voter ID at the polls, except limited first-time federal voter cases.",
+    online_registration_available: true,
+    online_registration_deadline_rule:
+      "California allows online voter registration up to 15 days before Election Day.",
     sources: {
       polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
-      voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+      voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
       vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
       polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
       id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
+      online_registration_available: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register" },
+      ],
+      online_registration_deadline_rule: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register" },
+      ],
     },
+  };
+
+  const overrideSources =
+    typeof overrides.sources === "object" && overrides.sources !== null && !Array.isArray(overrides.sources)
+      ? (overrides.sources as Record<string, unknown>)
+      : undefined;
+
+  return {
+    ...base,
     ...overrides,
+    sources: overrideSources ? { ...base.sources, ...overrideSources } : base.sources,
   };
 }
 
@@ -120,7 +139,7 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.payload.sources.vote_by_mail_info[0]?.source_url).toBe("https://www.vote.org/absentee-ballot");
+      expect(result.payload.sources.vote_by_mail_info[0]).toBe("https://www.vote.org/absentee-ballot");
     }
     expect(globalThis.fetch).toHaveBeenCalled();
   });
@@ -134,7 +153,7 @@ describe("enrichStateResources", () => {
         draft: draft(),
         evidence: [
           { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -157,6 +176,82 @@ describe("enrichStateResources", () => {
     expect(globalThis.fetch).toHaveBeenCalledTimes(1);
   });
 
+  it("accepts null online_registration_deadline_rule when online registration is unavailable", async () => {
+    globalThis.fetch = vi.fn(async () =>
+      openAiResponse(
+        validPayload({
+          online_registration_available: false,
+          online_registration_deadline_rule: null,
+        })
+      )
+    ) as unknown as typeof fetch;
+
+    const result = await enrichStateResources(
+      {
+        ingestKey: "k3-null-online-registration-rule",
+        draft: draft(),
+        evidence: [
+          { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
+          { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
+          { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
+          { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
+        ],
+        promptVersion: "state_resources_v1",
+      },
+      {
+        provider: "openai",
+        model: "gpt-5-mini",
+        timeoutMs: 1000,
+        openAiApiKey: "test-key",
+      }
+    );
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.online_registration_available).toBe(false);
+      expect(result.payload.online_registration_deadline_rule).toBeNull();
+    }
+  });
+
+  it("normalizes online registration fields to null when availability is false", async () => {
+    globalThis.fetch = vi.fn(async () =>
+      openAiResponse(
+        validPayload({
+          online_registration_available: false,
+          online_registration_deadline_rule: "This state does not offer online voter registration.",
+        })
+      )
+    ) as unknown as typeof fetch;
+
+    const result = await enrichStateResources(
+      {
+        ingestKey: "k3-normalize-online-registration-rule",
+        draft: draft(),
+        evidence: [
+          { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
+          { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
+          { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
+          { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
+        ],
+        promptVersion: "state_resources_v1",
+      },
+      {
+        provider: "openai",
+        model: "gpt-5-mini",
+        timeoutMs: 1000,
+        openAiApiKey: "test-key",
+      }
+    );
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.online_registration_available).toBe(false);
+      expect(result.payload.online_registration_deadline_rule).toBeNull();
+    }
+  });
+
   it("verifies and appends AI-cited URLs that are outside pre-collected evidence", async () => {
     const additionalCitationUrl = "https://www.sos.ca.gov/elections/voting-options/vote-mail";
     globalThis.fetch = vi.fn(async (input: RequestInfo | URL) => {
@@ -166,7 +261,7 @@ describe("enrichStateResources", () => {
           validPayload({
             sources: {
               polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
-              voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+              voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
               vote_by_mail_info: [{ source_name: "California Secretary of State", source_url: additionalCitationUrl }],
               polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
               id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
@@ -191,7 +286,7 @@ describe("enrichStateResources", () => {
         draft: draft(),
         evidence: [
           { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -221,7 +316,7 @@ describe("enrichStateResources", () => {
           validPayload({
             sources: {
               polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
-              voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+              voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
               vote_by_mail_info: [{ source_name: "California Secretary of State", source_url: additionalCitationUrl }],
               polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
               id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
@@ -243,7 +338,7 @@ describe("enrichStateResources", () => {
         draft: draft(),
         evidence: [
           { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -276,7 +371,7 @@ describe("enrichStateResources", () => {
           validPayload({
             sources: {
               polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
-              voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+              voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
               vote_by_mail_info: [{ source_name: "Mail rules", source_url: badMailUrl }],
               polling_hours: [{ source_name: "Hours rules", source_url: badHoursUrl }],
               id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
@@ -302,7 +397,7 @@ describe("enrichStateResources", () => {
         draft: draft(),
         evidence: [
           { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -344,7 +439,7 @@ describe("enrichStateResources", () => {
         draft: draft(),
         evidence: [
           { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -382,7 +477,7 @@ describe("enrichStateResources", () => {
         draft: draft(),
         evidence: [
           { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -419,7 +514,7 @@ describe("enrichStateResources", () => {
         draft: draft(),
         evidence: [
           { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -451,7 +546,7 @@ describe("enrichStateResources", () => {
             polling_place_url: [
               { source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" },
             ],
-            voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+            voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
             vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
@@ -471,7 +566,7 @@ describe("enrichStateResources", () => {
             title: "California Secretary of State",
             snippet: "Find your polling place and registration resources",
           },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -489,7 +584,7 @@ describe("enrichStateResources", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.payload.polling_place_url).toBe(officialPollingUrl);
-      expect(result.payload.sources.polling_place_url[0].source_url).toBe(officialPollingUrl);
+      expect(result.payload.sources.polling_place_url[0]).toBe(officialPollingUrl);
     }
   });
 
@@ -498,12 +593,12 @@ describe("enrichStateResources", () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
-          polling_place_url: "https://www.usa.gov/register-to-vote",
+          polling_place_url: "https://vote.gov/register",
           sources: {
             polling_place_url: [
-              { source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" },
+              { source_name: "Vote.gov", source_url: "https://vote.gov/register" },
             ],
-            voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+            voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
             vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
@@ -517,7 +612,7 @@ describe("enrichStateResources", () => {
         ingestKey: "k6",
         draft: draft(),
         evidence: [
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration info" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration info" },
           { url: officialPollingUrl, title: "California Secretary of State", snippet: "Find your polling place" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
@@ -543,10 +638,10 @@ describe("enrichStateResources", () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
-          polling_place_url: "https://www.usa.gov/register-to-vote",
+          polling_place_url: "https://vote.gov/register",
           sources: {
-            polling_place_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
-            voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+            polling_place_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
+            voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
             vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
@@ -560,7 +655,7 @@ describe("enrichStateResources", () => {
         ingestKey: "k10",
         draft: draft(),
         evidence: [
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration info" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration info" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -588,10 +683,10 @@ describe("enrichStateResources", () => {
           state_fips: "01",
           state_abbreviation: "AL",
           state_name: "Alabama",
-          polling_place_url: "https://www.usa.gov/register-to-vote",
+          polling_place_url: "https://vote.gov/register",
           sources: {
-            polling_place_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
-            voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+            polling_place_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
+            voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
             vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
@@ -612,7 +707,7 @@ describe("enrichStateResources", () => {
         ingestKey: "k11",
         draft: alabamaDraftInput,
         evidence: [
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration info" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration info" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -645,7 +740,7 @@ describe("enrichStateResources", () => {
             polling_place_url: [
               { source_name: "California SOS", source_url: "https://www.sos.ca.gov/elections/polling-place" },
             ],
-            voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+            voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
             vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
@@ -661,7 +756,7 @@ describe("enrichStateResources", () => {
         evidence: [
           { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place locator" },
           { url: "https://www.sos.ca.gov/elections/polling-place", title: "California SOS", snippet: "Find your polling place in California" },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration info" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration info" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
@@ -689,7 +784,7 @@ describe("enrichStateResources", () => {
         validPayload({
           sources: {
             polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
-            voter_registration_url: [{ source_name: "USA.gov", source_url: "https://www.usa.gov/register-to-vote" }],
+            voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
             vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
@@ -704,7 +799,7 @@ describe("enrichStateResources", () => {
         draft: draft(),
         evidence: [
           { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID info" },
@@ -722,7 +817,7 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.payload.sources.id_requirements[0].source_url).toBe(officialIdUrl);
+      expect(result.payload.sources.id_requirements[0]).toBe(officialIdUrl);
     }
   });
 
@@ -742,7 +837,7 @@ describe("enrichStateResources", () => {
         draft: draft(),
         evidence: [
           { url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "Polling place" },
-          { url: "https://www.usa.gov/register-to-vote", title: "USA.gov", snippet: "Registration" },
+          { url: "https://vote.gov/register", title: "Vote.gov", snippet: "Registration" },
           { url: "https://www.vote.org/absentee-ballot/", title: "Vote.org", snippet: "Mail vote" },
           { url: "https://www.nass.org/can-i-vote", title: "NASS", snippet: "Hours" },
           { url: "https://www.usvotefoundation.org/voter-id-laws", title: "USVF", snippet: "ID" },
