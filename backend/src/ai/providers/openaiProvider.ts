@@ -7,20 +7,10 @@ import type {
 import { buildRetryFeedbackPromptLines } from "../retryFeedback.js";
 
 const OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
-const SOURCE_CITATION_SCHEMA = {
-  type: "object",
-  additionalProperties: false,
-  required: ["source_name", "source_url"],
-  properties: {
-    source_name: { type: "string" },
-    source_url: { type: "string" },
-  },
-} as const;
-
 const SOURCES_BUCKET_SCHEMA = {
   type: "array",
   minItems: 1,
-  items: SOURCE_CITATION_SCHEMA,
+  items: { type: "string" },
 } as const;
 
 const STATE_RESOURCE_JSON_SCHEMA = {
@@ -38,6 +28,8 @@ const STATE_RESOURCE_JSON_SCHEMA = {
       "vote_by_mail_info",
       "polling_hours",
       "id_requirements",
+      "online_registration_available",
+      "online_registration_deadline_rule",
       "sources",
     ],
     properties: {
@@ -49,6 +41,10 @@ const STATE_RESOURCE_JSON_SCHEMA = {
       vote_by_mail_info: { type: "string" },
       polling_hours: { type: "string" },
       id_requirements: { type: "string" },
+      online_registration_available: { type: "boolean" },
+      online_registration_deadline_rule: {
+        anyOf: [{ type: "string" }, { type: "null" }],
+      },
       sources: {
         type: "object",
         additionalProperties: false,
@@ -58,6 +54,8 @@ const STATE_RESOURCE_JSON_SCHEMA = {
           "vote_by_mail_info",
           "polling_hours",
           "id_requirements",
+          "online_registration_available",
+          "online_registration_deadline_rule",
         ],
         properties: {
           polling_place_url: SOURCES_BUCKET_SCHEMA,
@@ -65,6 +63,8 @@ const STATE_RESOURCE_JSON_SCHEMA = {
           vote_by_mail_info: SOURCES_BUCKET_SCHEMA,
           polling_hours: SOURCES_BUCKET_SCHEMA,
           id_requirements: SOURCES_BUCKET_SCHEMA,
+          online_registration_available: SOURCES_BUCKET_SCHEMA,
+          online_registration_deadline_rule: SOURCES_BUCKET_SCHEMA,
         },
       },
     },
@@ -101,13 +101,26 @@ function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: strin
 
   return [
     "Return only one JSON object with these keys exactly:",
-    "state_fips, state_abbreviation, state_name, polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements, sources.",
-    "sources must include keys: polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements.",
-    "Each sources[key] must be an array of {source_name, source_url}.",
+    "state_fips, state_abbreviation, state_name, polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements, online_registration_available, online_registration_deadline_rule, sources.",
+    "sources must include keys: polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements, online_registration_available, online_registration_deadline_rule.",
+    "Each sources[key] must be an array of URL strings.",
     "Prefer using Evidence snippets URLs when possible.",
     "You may cite additional public URLs if they directly support the claim; do not invent or rewrite URLs.",
-    "polling_place_url and voter_registration_url must be URLs.",
+    "Per-field citation rule:",
+    "- For each field, research until you find URL(s) that directly support the final statement.",
+    "- Write the field only from those supporting URL(s).",
+    "- In sources[field_name], include only URL(s) that were actually used to support that field's final text.",
+    "- Do not include attempted URLs that lacked the needed information.",
+    "polling_place_url must be a URL.",
+    "Set voter_registration_url exactly to https://vote.gov/register (do not research this field).",
+    "For polling_place_url, start from polling reference seed URLs in Evidence snippets, then expand if needed.",
+    "online_registration_available must be boolean true or false.",
+    "If online_registration_available is false, set online_registration_deadline_rule to null.",
+    "online_registration_deadline_rule must be a short plain-language sentence (not URL) when online registration is available; otherwise null.",
+    "For online_registration_available and online_registration_deadline_rule, start with the Vote.gov state registration reference URL in Evidence snippets (https://vote.gov/register/<state-name-lowercase>).",
+    "You may use additional sources beyond that reference URL when needed; it is a starting point, not a restriction.",
     "vote_by_mail_info, polling_hours, and id_requirements must be plain-language text summaries, not URLs.",
+    "For vote_by_mail_info, start with the Vote.gov state registration reference URL in Evidence snippets (https://vote.gov/register/<state-name-lowercase>) before expanding to additional sources.",
     "For vote_by_mail_info: include at least one concrete state rule detail (e.g., request deadline, return deadline, postmark/received rule, or return methods).",
     "For polling_hours: include statewide opening/closing times when available; otherwise explicitly state that hours vary by county/precinct.",
     "For id_requirements: first sentence must be exactly one of these patterns with the draft state name:",
@@ -115,6 +128,7 @@ function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: strin
     "Then add one short sentence for major exceptions, if any.",
     "Do not use ambiguous first-sentence phrasing like \"may\", \"can depend\", or \"varies\" without explicitly saying required vs not required.",
     "For full-sentence summary fields (vote_by_mail_info, polling_hours, id_requirements), provide at least one citation each.",
+    "For online_registration_available and online_registration_deadline_rule, provide at least one citation each.",
     "sources.id_requirements must include at least one citation that directly supports the required/not-required claim in id_requirements.",
     "Self-check before final output: id_requirements must contain either \"is required\" or \"is not required\".",
     "Source guidance:",

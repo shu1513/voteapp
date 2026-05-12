@@ -26,6 +26,13 @@ export const STATE_RESOURCE_REQUIRED_TEXT_FIELDS = [
 ] as const satisfies ReadonlyArray<keyof StateResourcePayload>;
 
 /**
+ * Required boolean fields in the enriched payload.
+ */
+export const STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS = [
+  "online_registration_available",
+] as const satisfies ReadonlyArray<keyof StateResourcePayload>;
+
+/**
  * Required per-field source buckets in state_resources.sources.
  */
 export const STATE_RESOURCE_SOURCE_FIELDS = [
@@ -34,7 +41,11 @@ export const STATE_RESOURCE_SOURCE_FIELDS = [
   "vote_by_mail_info",
   "polling_hours",
   "id_requirements",
+  "online_registration_available",
+  "online_registration_deadline_rule",
 ] as const satisfies ReadonlyArray<keyof StateResourceSources>;
+
+export const STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL = "https://vote.gov/register" as const;
 
 /**
  * Keys that identify producer drafts (not yet AI-enriched).
@@ -51,4 +62,5 @@ export const STATE_RESOURCE_ABBREVIATION_REGEX = /^[A-Z]{2}$/;
 export const STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH = 4000;
 export const STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH = 1000;
 export const STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH = 4000;
+export const STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH = 1000;
 export const STATE_RESOURCE_TEXT_MIN_LENGTH = 12;

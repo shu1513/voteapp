@@ -5,10 +5,13 @@ import {
   ALLOW_OPEN_WEB_RESEARCH,
   CENSUS_STATES_API_URL,
   EXPECTED_STATE_RESOURCE_STATE_COUNT,
+  STATE_RESOURCE_MAIL_REFERENCE_SEEDS,
+  STATE_RESOURCE_GENERAL_REFERENCE_SEEDS,
+  STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEEDS,
+  STATE_RESOURCE_POLLING_REFERENCE_SEEDS,
   STATE_ABBREVIATION_REFERENCE_URL,
   STAGING_DRAFT_STREAM,
   STAGING_ITEM_TYPE_STATE_RESOURCES,
-  STATE_RESOURCE_SEED_SOURCES,
 } from "../../config/stateResourcePipeline.js";
 import { getPipelineEnv } from "../../config/env.js";
 import { STATE_RESOURCE_DRAFT_SCHEMA_VERSION } from "../../contracts/stateResourceEnrichmentContract.js";
@@ -108,7 +111,12 @@ function toDraftPayload(state: CensusState): StateResourceDraftPayload {
     population_estimate: state.population_estimate,
     census_source_url: CENSUS_STATES_API_URL,
     state_abbreviation_reference_url: STATE_ABBREVIATION_REFERENCE_URL,
-    seed_sources: STATE_RESOURCE_SEED_SOURCES,
+    seed_sources: [
+      ...STATE_RESOURCE_POLLING_REFERENCE_SEEDS,
+      ...STATE_RESOURCE_GENERAL_REFERENCE_SEEDS,
+      ...STATE_RESOURCE_MAIL_REFERENCE_SEEDS,
+      ...STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEEDS,
+    ],
     allow_open_web_research: ALLOW_OPEN_WEB_RESEARCH,
   };
 }

@@ -1,7 +1,10 @@
 import {
   STATE_RESOURCE_ABBREVIATION_REGEX,
   STATE_RESOURCE_FIPS_REGEX,
+  STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
+  STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
+  STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
   STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH,
@@ -104,23 +107,22 @@ function validateStateSpecificFieldQuality(payload: StateResourcePayload): strin
   return null;
 }
 
-function sanitizeCitation(value: unknown): { source_name: string; source_url: string } | null {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    return null;
+function sanitizeCitationUrl(value: unknown): string | null {
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    return isHttpUrl(trimmed) ? trimmed : null;
   }
 
-  const item = value as Record<string, unknown>;
-  if (!isNonEmptyString(item.source_name) || !isNonEmptyString(item.source_url)) {
-    return null;
+  // Backward-compatible read path for older object citations.
+  if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+    const item = value as Record<string, unknown>;
+    if (isNonEmptyString(item.source_url)) {
+      const trimmed = item.source_url.trim();
+      return isHttpUrl(trimmed) ? trimmed : null;
+    }
   }
 
-  const source_name = item.source_name.trim();
-  const source_url = item.source_url.trim();
-  if (!isHttpUrl(source_url)) {
-    return null;
-  }
-
-  return { source_name, source_url };
+  return null;
 }
 
 /**
@@ -143,6 +145,37 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     }
   }
 
+  for (const key of STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS) {
+    if (typeof input[key] !== "boolean") {
+      return {
+        ok: false,
+        reason: `Missing required boolean field: ${key}`,
+        errorCode: "MISSING_REQUIRED_FIELDS",
+      };
+    }
+  }
+
+  if (!Object.hasOwn(input, "online_registration_deadline_rule")) {
+    return {
+      ok: false,
+      reason: "Missing required field: online_registration_deadline_rule",
+      errorCode: "MISSING_REQUIRED_FIELDS",
+    };
+  }
+  if (!(input.online_registration_deadline_rule === null || isNonEmptyString(input.online_registration_deadline_rule))) {
+    return {
+      ok: false,
+      reason: "online_registration_deadline_rule must be null or a non-empty string",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+
+  // Canonical normalization: if online registration is not available,
+  // force deadline rule to null instead of failing.
+  if (input.online_registration_available === false) {
+    input.online_registration_deadline_rule = null;
+  }
+
   if (typeof input.sources !== "object" || input.sources === null || Array.isArray(input.sources)) {
     return {
       ok: false,
@@ -163,13 +196,13 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
       };
     }
 
-    const sanitizedBucket: Array<{ source_name: string; source_url: string }> = [];
+    const sanitizedBucket: string[] = [];
     for (const citation of citations) {
-      const sanitized = sanitizeCitation(citation);
+      const sanitized = sanitizeCitationUrl(citation);
       if (!sanitized) {
         return {
           ok: false,
-          reason: `sources.${key} contains invalid citation entries`,
+          reason: `sources.${key} contains invalid citation URLs`,
           errorCode: "SCHEMA_MISMATCH",
         };
       }
@@ -178,16 +211,20 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
 
     sanitizedSources[key] = sanitizedBucket;
   }
+  sanitizedSources.voter_registration_url = [STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL];
 
   const payload: StateResourcePayload = {
     state_fips: (input.state_fips as string).trim(),
     state_abbreviation: (input.state_abbreviation as string).trim(),
     state_name: (input.state_name as string).trim(),
     polling_place_url: (input.polling_place_url as string).trim(),
-    voter_registration_url: (input.voter_registration_url as string).trim(),
+    voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
     vote_by_mail_info: (input.vote_by_mail_info as string).trim(),
     polling_hours: (input.polling_hours as string).trim(),
     id_requirements: (input.id_requirements as string).trim(),
+    online_registration_available: input.online_registration_available as boolean,
+    online_registration_deadline_rule:
+      input.online_registration_deadline_rule === null ? null : (input.online_registration_deadline_rule as string).trim(),
     sources: sanitizedSources,
   };
 
@@ -219,6 +256,13 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     };
   }
 
+  if (payload.online_registration_available && payload.online_registration_deadline_rule === null) {
+    return {
+      ok: false,
+      reason: "online_registration_deadline_rule must be provided when online_registration_available is true",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
   if (payload.vote_by_mail_info.length > STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH) {
     return {
       ok: false,
@@ -231,6 +275,17 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     return {
       ok: false,
       reason: `polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} characters or fewer`,
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+
+  if (
+    payload.online_registration_deadline_rule !== null &&
+    payload.online_registration_deadline_rule.length > STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH
+  ) {
+    return {
+      ok: false,
+      reason: `online_registration_deadline_rule must be ${STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH} characters or fewer`,
       errorCode: "SCHEMA_MISMATCH",
     };
   }
@@ -255,6 +310,14 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     return {
       ok: false,
       reason: "id_requirements must be plain-language text, not a URL",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+
+  if (payload.online_registration_deadline_rule !== null && isUrlOnlyText(payload.online_registration_deadline_rule)) {
+    return {
+      ok: false,
+      reason: "online_registration_deadline_rule must be plain-language text, not a URL",
       errorCode: "SCHEMA_MISMATCH",
     };
   }

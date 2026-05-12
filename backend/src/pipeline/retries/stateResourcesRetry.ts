@@ -12,6 +12,7 @@ import {
   STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIPS_REGEX,
+  STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   STATE_RESOURCE_SOURCE_FIELDS,
 } from "../../contracts/stateResourceEnrichmentContract.js";
 import { normalizeRetryFeedback } from "../../ai/retryFeedback.js";
@@ -43,7 +44,7 @@ export type RetrySweepResult = {
   failed: number;
 };
 
-const DUPLICATE_CITATION_FRAGMENT = "contains duplicate citation source_url values";
+const DUPLICATE_CITATION_FRAGMENT = "contains duplicate citation URLs";
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
@@ -135,6 +136,42 @@ function extractFailedCitationUrlsFromFailureDebug(failureDebug: unknown): strin
   return Array.from(urls);
 }
 
+function extractFailedCitationDetailsFromFailureDebug(
+  failureDebug: unknown
+): Array<{ url: string; reason: string }> {
+  if (!isObjectRecord(failureDebug)) {
+    return [];
+  }
+
+  const details: Array<{ url: string; reason: string }> = [];
+  const seen = new Set<string>();
+  const rawFailures = failureDebug.citation_verification_failures;
+
+  if (!Array.isArray(rawFailures)) {
+    return details;
+  }
+
+  for (const item of rawFailures) {
+    if (!isObjectRecord(item) || !isNonEmptyString(item.url) || !isNonEmptyString(item.reason)) {
+      continue;
+    }
+
+    const normalizedUrl = normalizeHttpUrl(item.url) ?? item.url.trim();
+    const normalizedReason = item.reason.trim();
+    const key = `${normalizedUrl}|||${normalizedReason}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    details.push({
+      url: normalizedUrl,
+      reason: normalizedReason,
+    });
+  }
+
+  return details;
+}
+
 function buildRetryFeedbackFromRow(row: RetryRow): Record<string, unknown> {
   const previousFeedback =
     isObjectRecord(row.ai_raw_debug) && "retry_feedback" in row.ai_raw_debug
@@ -142,6 +179,11 @@ function buildRetryFeedbackFromRow(row: RetryRow): Record<string, unknown> {
       : null;
 
   const failedCitationUrls = new Set<string>(previousFeedback?.failedCitationUrls ?? []);
+  const failedCitationDetails = new Map<string, { url: string; reason: string }>();
+  for (const detail of previousFeedback?.failedCitationDetails ?? []) {
+    failedCitationDetails.set(`${detail.url}|||${detail.reason}`, detail);
+  }
+
   if (isNonEmptyString(row.reason)) {
     for (const url of extractHttpUrlsFromText(row.reason)) {
       failedCitationUrls.add(url);
@@ -151,10 +193,14 @@ function buildRetryFeedbackFromRow(row: RetryRow): Record<string, unknown> {
   for (const url of extractFailedCitationUrlsFromFailureDebug(row.failure_debug)) {
     failedCitationUrls.add(url);
   }
+  for (const detail of extractFailedCitationDetailsFromFailureDebug(row.failure_debug)) {
+    failedCitationDetails.set(`${detail.url}|||${detail.reason}`, detail);
+  }
 
   return {
     previousFailureReason: isNonEmptyString(row.reason) ? row.reason.trim() : null,
     failedCitationUrls: Array.from(failedCitationUrls).slice(0, 50),
+    failedCitationDetails: Array.from(failedCitationDetails.values()).slice(0, 50),
     retryCount: (previousFeedback?.retryCount ?? 0) + 1,
     failedAt: new Date().toISOString(),
   };
@@ -167,12 +213,19 @@ function mergeAiRawDebugWithRetryFeedback(aiRawDebug: unknown, retryFeedback: Re
 }
 
 function isSourceCitation(value: unknown): value is SourceCitation {
-  return (
-    isObjectRecord(value) &&
-    isNonEmptyString(value.source_name) &&
-    isNonEmptyString(value.source_url) &&
-    isHttpUrl(value.source_url)
-  );
+  if (typeof value === "string") {
+    return isHttpUrl(value);
+  }
+
+  // Backward-compatible read path for older object citations.
+  return isObjectRecord(value) && isNonEmptyString(value.source_url) && isHttpUrl(value.source_url);
+}
+
+function normalizeSourceCitation(value: SourceCitation | { source_url: string }): string | null {
+  if (typeof value === "string") {
+    return normalizeHttpUrl(value);
+  }
+  return normalizeHttpUrl(value.source_url);
 }
 
 function parseDraftPayload(value: unknown): StateResourceDraftPayload | null {
@@ -263,6 +316,23 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     }
   }
 
+  if (typeof input.online_registration_available !== "boolean") {
+    return null;
+  }
+  if (!Object.hasOwn(input, "online_registration_deadline_rule")) {
+    return null;
+  }
+  if (!(input.online_registration_deadline_rule === null || isNonEmptyString(input.online_registration_deadline_rule))) {
+    return null;
+  }
+
+  if (input.online_registration_available === true && input.online_registration_deadline_rule === null) {
+    return null;
+  }
+  if (input.online_registration_available === false && input.online_registration_deadline_rule !== null) {
+    return null;
+  }
+
   if (!isObjectRecord(input.sources)) {
     return null;
   }
@@ -278,21 +348,31 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     }
   }
 
+  const normalizeBucket = (bucket: unknown): string[] =>
+    (bucket as Array<SourceCitation | { source_url: string }>)
+      .map((citation) => normalizeSourceCitation(citation))
+      .filter((citation): citation is string => typeof citation === "string");
+
   return {
     state_fips: (input.state_fips as string).trim(),
     state_abbreviation: (input.state_abbreviation as string).trim(),
     state_name: (input.state_name as string).trim(),
     polling_place_url: (input.polling_place_url as string).trim(),
-    voter_registration_url: (input.voter_registration_url as string).trim(),
+    voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
     vote_by_mail_info: (input.vote_by_mail_info as string).trim(),
     polling_hours: (input.polling_hours as string).trim(),
     id_requirements: (input.id_requirements as string).trim(),
+    online_registration_available: input.online_registration_available as boolean,
+    online_registration_deadline_rule:
+      input.online_registration_deadline_rule === null ? null : (input.online_registration_deadline_rule as string).trim(),
     sources: {
-      polling_place_url: sources.polling_place_url as SourceCitation[],
-      voter_registration_url: sources.voter_registration_url as SourceCitation[],
-      vote_by_mail_info: sources.vote_by_mail_info as SourceCitation[],
-      polling_hours: sources.polling_hours as SourceCitation[],
-      id_requirements: sources.id_requirements as SourceCitation[],
+      polling_place_url: normalizeBucket(sources.polling_place_url),
+      voter_registration_url: normalizeBucket(sources.voter_registration_url),
+      vote_by_mail_info: normalizeBucket(sources.vote_by_mail_info),
+      polling_hours: normalizeBucket(sources.polling_hours),
+      id_requirements: normalizeBucket(sources.id_requirements),
+      online_registration_available: normalizeBucket(sources.online_registration_available),
+      online_registration_deadline_rule: normalizeBucket(sources.online_registration_deadline_rule),
     },
   };
 }
@@ -313,12 +393,14 @@ function dedupeSources(payload: StateResourcePayload): { payload: StateResourceP
     vote_by_mail_info: [],
     polling_hours: [],
     id_requirements: [],
+    online_registration_available: [],
+    online_registration_deadline_rule: [],
   };
 
   for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
     const seen = new Set<string>();
     for (const citation of payload.sources[key]) {
-      const normalized = normalizeHttpUrl(citation.source_url);
+      const normalized = normalizeHttpUrl(citation);
       if (!normalized) {
         continue;
       }
@@ -327,10 +409,7 @@ function dedupeSources(payload: StateResourcePayload): { payload: StateResourceP
         continue;
       }
       seen.add(normalized);
-      nextSources[key].push({
-        source_name: citation.source_name.trim(),
-        source_url: normalized,
-      });
+      nextSources[key].push(normalized);
     }
   }
 

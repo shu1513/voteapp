@@ -30,6 +30,9 @@ function buildInput(withRetryFeedback: boolean) {
           retryFeedback: {
             previousFailureReason: "sources.polling_hours citation URL could not be verified",
             failedCitationUrls: ["https://example.gov/bad-hours-url"],
+            failedCitationDetails: [
+              { url: "https://example.gov/bad-hours-url", reason: "citation fetch returned status 403" },
+            ],
             retryCount: 2,
             failedAt: "2026-03-27T23:00:00.000Z",
           },
@@ -67,6 +70,8 @@ describe("openAiProvider prompt retry feedback", () => {
     }
     expect(capturedBody).toContain("Previous attempt feedback (retry context):");
     expect(capturedBody).toContain("https://example.gov/bad-hours-url");
+    expect(capturedBody).toContain("failed_citation_details");
+    expect(capturedBody).toContain("citation fetch returned status 403");
     expect(capturedBody).toContain("Do not reuse any URL listed in failed_citation_urls.");
   });
 

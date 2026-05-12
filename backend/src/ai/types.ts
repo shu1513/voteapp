@@ -15,6 +15,10 @@ export type EvidenceSnippet = {
 export type RetryFeedback = {
   previousFailureReason: string | null;
   failedCitationUrls: string[];
+  failedCitationDetails: Array<{
+    url: string;
+    reason: string;
+  }>;
   retryCount: number | null;
   failedAt: string | null;
 };

@@ -1,9 +1,6 @@
 export type StateResourceItemType = "state_resources";
 
-export type SourceCitation = {
-  source_url: string;
-  source_name: string;
-};
+export type SourceCitation = string;
 
 export type StateResourceSources = {
   polling_place_url: SourceCitation[];
@@ -11,6 +8,8 @@ export type StateResourceSources = {
   vote_by_mail_info: SourceCitation[];
   polling_hours: SourceCitation[];
   id_requirements: SourceCitation[];
+  online_registration_available: SourceCitation[];
+  online_registration_deadline_rule: SourceCitation[];
 };
 
 export type StateResourcePayload = {
@@ -22,6 +21,8 @@ export type StateResourcePayload = {
   vote_by_mail_info: string;
   polling_hours: string;
   id_requirements: string;
+  online_registration_available: boolean;
+  online_registration_deadline_rule: string | null;
   sources: StateResourceSources;
 };
 

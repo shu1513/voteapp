@@ -17,6 +17,11 @@ describe("normalizeRetryFeedback", () => {
         "https://example.com/a",
         " https://example.com/b ",
       ],
+      failedCitationDetails: [
+        { url: "https://example.com/a", reason: "citation fetch returned status 403" },
+        { url: "https://example.com/a", reason: "citation fetch returned status 403" },
+        { url: "https://example.com/b", reason: "citation fetch returned status 404" },
+      ],
       retryCount: 2.8,
       failedAt: " 2026-03-27T23:00:00.000Z ",
     });
@@ -24,6 +29,10 @@ describe("normalizeRetryFeedback", () => {
     expect(normalized).toEqual({
       previousFailureReason: "citation url failed",
       failedCitationUrls: ["https://example.com/a", "https://example.com/b"],
+      failedCitationDetails: [
+        { url: "https://example.com/a", reason: "citation fetch returned status 403" },
+        { url: "https://example.com/b", reason: "citation fetch returned status 404" },
+      ],
       retryCount: 2,
       failedAt: "2026-03-27T23:00:00.000Z",
     });
@@ -39,12 +48,15 @@ describe("buildRetryFeedbackPromptLines", () => {
     const lines = buildRetryFeedbackPromptLines({
       previousFailureReason: "sources.polling_hours citation URL could not be verified",
       failedCitationUrls: ["https://example.com/bad-link"],
+      failedCitationDetails: [{ url: "https://example.com/bad-link", reason: "citation fetch returned status 403" }],
       retryCount: 3,
       failedAt: "2026-03-27T23:00:00.000Z",
     });
 
     expect(lines.join("\n")).toContain("Previous attempt feedback (retry context):");
     expect(lines.join("\n")).toContain("https://example.com/bad-link");
+    expect(lines.join("\n")).toContain("citation fetch returned status 403");
     expect(lines.join("\n")).toContain("Do not reuse any URL listed in failed_citation_urls.");
+    expect(lines.join("\n")).toContain("Use failed_citation_details to avoid the same URL failure patterns");
   });
 });
