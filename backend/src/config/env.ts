@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { DEFAULT_AI_CANDIDATE } from "../ai/aiCandidates.js";
 import type { AiProvider } from "../ai/types.js";
+import { readCensusApiKeysFromEnv } from "./censusApi.js";
 
 export type PipelineEnv = {
   DATABASE_URL: string;
@@ -11,6 +12,7 @@ export type PipelineEnv = {
   AI_MODEL: string;
   AI_TIMEOUT_MS: number;
   PROMPT_VERSION: string;
+  CENSUS_API_KEYS: string[];
   OPENAI_API_KEY?: string;
   ANTHROPIC_API_KEY?: string;
   GEMINI_API_KEY?: string;
@@ -119,6 +121,7 @@ export function getPipelineEnv(): PipelineEnv {
     AI_MODEL: readEnv("AI_MODEL", DEFAULT_AI_CANDIDATE.model),
     AI_TIMEOUT_MS: readPositiveIntegerEnv("AI_TIMEOUT_MS", 30000),
     PROMPT_VERSION: readEnv("PROMPT_VERSION", "state_resources_v2"),
+    CENSUS_API_KEYS: readCensusApiKeysFromEnv(process.env),
     OPENAI_API_KEY: readOptionalEnv("OPENAI_API_KEY"),
     ANTHROPIC_API_KEY: readOptionalEnv("ANTHROPIC_API_KEY"),
     GEMINI_API_KEY: readOptionalEnv("GEMINI_API_KEY"),
