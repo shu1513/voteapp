@@ -164,7 +164,9 @@ type StateRow = { state_fips: string; state_abbreviation: string; state_name: st
       })
     );
   } finally {
-    await redis.quit();
+    if (redis.isOpen) {
+      await redis.quit();
+    }
     await pool.end();
   }
 })().catch((error) => {
