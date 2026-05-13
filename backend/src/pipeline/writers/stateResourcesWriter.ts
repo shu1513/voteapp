@@ -182,6 +182,7 @@ function parseStateResourcePayload(payload: unknown): ParseResult {
       vote_by_mail_info: (input.vote_by_mail_info as string).trim(),
       polling_hours: (input.polling_hours as string).trim(),
       id_requirements: (input.id_requirements as string).trim(),
+      same_day_registration_available: input.same_day_registration_available as boolean,
       online_registration_available: input.online_registration_available as boolean,
       online_registration_deadline_rule:
         input.online_registration_deadline_rule === null
@@ -308,11 +309,12 @@ async function writeStateResourceAndMarkWritten(
           vote_by_mail_info,
           polling_hours,
           id_requirements,
+          same_day_registration_available,
           online_registration_available,
           online_registration_deadline_rule,
           sources
         ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::jsonb
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::jsonb
         )
         ON CONFLICT (state_fips) DO UPDATE SET
           state_abbreviation = EXCLUDED.state_abbreviation,
@@ -322,6 +324,7 @@ async function writeStateResourceAndMarkWritten(
           vote_by_mail_info = EXCLUDED.vote_by_mail_info,
           polling_hours = EXCLUDED.polling_hours,
           id_requirements = EXCLUDED.id_requirements,
+          same_day_registration_available = EXCLUDED.same_day_registration_available,
           online_registration_available = EXCLUDED.online_registration_available,
           online_registration_deadline_rule = EXCLUDED.online_registration_deadline_rule,
           sources = EXCLUDED.sources
@@ -335,6 +338,7 @@ async function writeStateResourceAndMarkWritten(
         payload.vote_by_mail_info,
         payload.polling_hours,
         payload.id_requirements,
+        payload.same_day_registration_available,
         payload.online_registration_available,
         payload.online_registration_deadline_rule,
         JSON.stringify(payload.sources),

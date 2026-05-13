@@ -29,6 +29,7 @@ export const STATE_RESOURCE_REQUIRED_TEXT_FIELDS = [
  * Required boolean fields in the enriched payload.
  */
 export const STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS = [
+  "same_day_registration_available",
   "online_registration_available",
 ] as const satisfies ReadonlyArray<keyof StateResourcePayload>;
 
@@ -41,6 +42,7 @@ export const STATE_RESOURCE_SOURCE_FIELDS = [
   "vote_by_mail_info",
   "polling_hours",
   "id_requirements",
+  "same_day_registration_available",
   "online_registration_available",
   "online_registration_deadline_rule",
 ] as const satisfies ReadonlyArray<keyof StateResourceSources>;

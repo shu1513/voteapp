@@ -8,6 +8,7 @@ export type StateResourceSources = {
   vote_by_mail_info: SourceCitation[];
   polling_hours: SourceCitation[];
   id_requirements: SourceCitation[];
+  same_day_registration_available: SourceCitation[];
   online_registration_available: SourceCitation[];
   online_registration_deadline_rule: SourceCitation[];
 };
@@ -21,6 +22,7 @@ export type StateResourcePayload = {
   vote_by_mail_info: string;
   polling_hours: string;
   id_requirements: string;
+  same_day_registration_available: boolean;
   online_registration_available: boolean;
   online_registration_deadline_rule: string | null;
   sources: StateResourceSources;

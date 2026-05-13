@@ -222,6 +222,7 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     vote_by_mail_info: (input.vote_by_mail_info as string).trim(),
     polling_hours: (input.polling_hours as string).trim(),
     id_requirements: (input.id_requirements as string).trim(),
+    same_day_registration_available: input.same_day_registration_available as boolean,
     online_registration_available: input.online_registration_available as boolean,
     online_registration_deadline_rule:
       input.online_registration_deadline_rule === null ? null : (input.online_registration_deadline_rule as string).trim(),

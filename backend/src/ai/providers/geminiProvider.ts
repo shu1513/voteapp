@@ -50,8 +50,8 @@ function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: strin
 
   return [
     "Return only one JSON object with these keys exactly:",
-    "state_fips, state_abbreviation, state_name, polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements, online_registration_available, online_registration_deadline_rule, sources.",
-    "sources must include keys: polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements, online_registration_available, online_registration_deadline_rule.",
+    "state_fips, state_abbreviation, state_name, polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule, sources.",
+    "sources must include keys: polling_place_url, voter_registration_url, vote_by_mail_info, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule.",
     "Each sources[key] must be an array of URL strings.",
     "Prefer using Evidence snippets URLs when possible.",
     "You may cite additional public URLs if they directly support the claim; do not invent or rewrite URLs.",
@@ -63,6 +63,7 @@ function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: strin
     "polling_place_url must be a URL.",
     "Set voter_registration_url exactly to https://vote.gov/register (do not research this field).",
     "For polling_place_url, start from polling reference seed URLs in Evidence snippets, then expand if needed.",
+    "same_day_registration_available must be boolean true or false.",
     "online_registration_available must be boolean true or false.",
     "If online_registration_available is false, set online_registration_deadline_rule to null.",
     "online_registration_deadline_rule must be a short plain-language sentence (not URL) when online registration is available; otherwise null.",
@@ -77,7 +78,7 @@ function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: strin
     "Then add one short sentence for major exceptions, if any.",
     "Do not use ambiguous first-sentence phrasing like \"may\", \"can depend\", or \"varies\" without explicitly saying required vs not required.",
     "For full-sentence summary fields (vote_by_mail_info, polling_hours, id_requirements), provide at least one citation each.",
-    "For online_registration_available and online_registration_deadline_rule, provide at least one citation each.",
+    "For same_day_registration_available, online_registration_available, and online_registration_deadline_rule, provide at least one citation each.",
     "sources.id_requirements must include at least one citation that directly supports the required/not-required claim in id_requirements.",
     "Self-check before final output: id_requirements must contain either \"is required\" or \"is not required\".",
     "Source guidance:",

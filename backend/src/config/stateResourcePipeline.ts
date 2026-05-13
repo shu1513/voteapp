@@ -9,6 +9,7 @@ export const STATE_RESOURCE_POLLING_REFERENCE_SEEDS = [
 
 export const STATE_RESOURCE_GENERAL_REFERENCE_SEEDS = [
   "https://www.vote.org/",
+  "https://www.ncsl.org/elections-and-campaigns/same-day-voter-registration",
 ] as const;
 
 export const STATE_RESOURCE_MAIL_REFERENCE_SEEDS = ["https://vote.gov/register"] as const;

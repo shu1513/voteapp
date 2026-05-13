@@ -433,6 +433,9 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     id_requirements: [
       idRequirementsEvidence.url,
     ],
+    same_day_registration_available: [
+      registrationEvidence.url,
+    ],
     online_registration_available: [
       registrationEvidence.url,
     ],
@@ -450,6 +453,7 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     vote_by_mail_info: voteByMailInfo,
     polling_hours: pollingHours,
     id_requirements: idRequirements,
+    same_day_registration_available: true,
     online_registration_available: true,
     online_registration_deadline_rule: onlineRegistrationDeadlineRule,
     sources,
