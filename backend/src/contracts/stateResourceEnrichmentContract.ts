@@ -20,7 +20,6 @@ export const STATE_RESOURCE_REQUIRED_TEXT_FIELDS = [
   "state_name",
   "polling_place_url",
   "voter_registration_url",
-  "vote_by_mail_info",
   "polling_hours",
   "id_requirements",
 ] as const satisfies ReadonlyArray<keyof StateResourcePayload>;
@@ -29,6 +28,7 @@ export const STATE_RESOURCE_REQUIRED_TEXT_FIELDS = [
  * Required boolean fields in the enriched payload.
  */
 export const STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS = [
+  "mail_voting_available",
   "same_day_registration_available",
   "online_registration_available",
 ] as const satisfies ReadonlyArray<keyof StateResourcePayload>;
@@ -39,7 +39,10 @@ export const STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS = [
 export const STATE_RESOURCE_SOURCE_FIELDS = [
   "polling_place_url",
   "voter_registration_url",
-  "vote_by_mail_info",
+  "mail_voting_available",
+  "mail_ballot_request_deadline_rule",
+  "mail_ballot_return_deadline_rule",
+  "mail_ballot_return_deadline_type",
   "polling_hours",
   "id_requirements",
   "same_day_registration_available",
@@ -61,7 +64,8 @@ export const STATE_RESOURCE_DRAFT_MARKER_FIELDS = [
 export const STATE_RESOURCE_FIPS_REGEX = /^[0-9]{2}$/;
 export const STATE_RESOURCE_ABBREVIATION_REGEX = /^[A-Z]{2}$/;
 
-export const STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH = 4000;
+export const STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH = 1000;
+export const STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH = 1000;
 export const STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH = 1000;
 export const STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH = 4000;
 export const STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH = 1000;

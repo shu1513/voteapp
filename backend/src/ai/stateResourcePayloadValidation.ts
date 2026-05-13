@@ -1,13 +1,14 @@
 import {
   STATE_RESOURCE_ABBREVIATION_REGEX,
   STATE_RESOURCE_FIPS_REGEX,
+  STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH,
+  STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
   STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
   STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
-  STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH,
 } from "../contracts/stateResourceEnrichmentContract.js";
 import type { StateResourcePayload, StateResourceSources } from "../types/stateResource.js";
 import { isUrlOnlyText } from "../utils/isUrlOnlyText.js";
@@ -29,11 +30,6 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
-function hasAnyKeyword(text: string, keywords: string[]): boolean {
-  const lower = text.toLowerCase();
-  return keywords.some((keyword) => lower.includes(keyword));
-}
-
 function hasClearIdRequirementStatement(text: string): boolean {
   const lower = text.toLowerCase();
   const patterns = [
@@ -50,10 +46,18 @@ function hasClearIdRequirementStatement(text: string): boolean {
   return patterns.some((pattern) => pattern.test(lower));
 }
 
-function looksLikeMockBoilerplate(field: "vote_by_mail_info" | "polling_hours" | "id_requirements", text: string): boolean {
+function hasAnyKeyword(text: string, keywords: string[]): boolean {
+  const lower = text.toLowerCase();
+  return keywords.some((keyword) => lower.includes(keyword));
+}
+
+function looksLikeMockBoilerplate(
+  field: "mail_ballot_return_deadline_rule" | "polling_hours" | "id_requirements",
+  text: string
+): boolean {
   const normalized = text.trim().toLowerCase();
   if (
-    field === "vote_by_mail_info" &&
+    field === "mail_ballot_return_deadline_rule" &&
     /^(?:[a-z .'-]+ voters can request and return|voters can request and return) vote-by-mail ballots based on state deadlines and local election rules\.?$/.test(
       normalized
     )
@@ -78,9 +82,15 @@ function looksLikeMockBoilerplate(field: "vote_by_mail_info" | "polling_hours" |
   return false;
 }
 
+function isValidMailDeadlineType(value: unknown): value is "postmarked_by" | "received_by" {
+  return value === "postmarked_by" || value === "received_by";
+}
+
 function validateStateSpecificFieldQuality(payload: StateResourcePayload): string | null {
-  if (looksLikeMockBoilerplate("vote_by_mail_info", payload.vote_by_mail_info)) {
-    return "vote_by_mail_info is generic boilerplate; include state-specific legal details";
+  if (payload.mail_ballot_return_deadline_rule !== null) {
+    if (looksLikeMockBoilerplate("mail_ballot_return_deadline_rule", payload.mail_ballot_return_deadline_rule)) {
+      return "mail_ballot_return_deadline_rule is generic boilerplate; include state-specific legal details";
+    }
   }
   if (looksLikeMockBoilerplate("polling_hours", payload.polling_hours)) {
     return "polling_hours is generic boilerplate; include state-specific hours detail";
@@ -89,9 +99,21 @@ function validateStateSpecificFieldQuality(payload: StateResourcePayload): strin
     return "id_requirements is generic boilerplate; include state-specific ID policy";
   }
 
-  const voteByMailKeywords = ["deadline", "postmark", "request", "return", "received", "drop box", "mail", "absentee"];
-  if (!hasAnyKeyword(payload.vote_by_mail_info, voteByMailKeywords)) {
-    return "vote_by_mail_info must include at least one concrete vote-by-mail rule detail";
+  if (
+    payload.mail_voting_available &&
+    payload.mail_ballot_return_deadline_rule !== null &&
+    !hasAnyKeyword(payload.mail_ballot_return_deadline_rule, [
+      "deadline",
+      "postmark",
+      "request",
+      "return",
+      "received",
+      "drop box",
+      "mail",
+      "absentee",
+    ])
+  ) {
+    return "mail_ballot_return_deadline_rule must include at least one concrete vote-by-mail rule detail";
   }
 
   const pollingHoursHasTime = /\b\d{1,2}(:\d{2})?\s?(a\.?m\.?|p\.?m\.?)\b/i.test(payload.polling_hours);
@@ -154,6 +176,48 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
       };
     }
   }
+  if (!Object.hasOwn(input, "mail_ballot_request_deadline_rule")) {
+    return {
+      ok: false,
+      reason: "Missing required field: mail_ballot_request_deadline_rule",
+      errorCode: "MISSING_REQUIRED_FIELDS",
+    };
+  }
+  if (!(input.mail_ballot_request_deadline_rule === null || isNonEmptyString(input.mail_ballot_request_deadline_rule))) {
+    return {
+      ok: false,
+      reason: "mail_ballot_request_deadline_rule must be null or a non-empty string",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (!Object.hasOwn(input, "mail_ballot_return_deadline_rule")) {
+    return {
+      ok: false,
+      reason: "Missing required field: mail_ballot_return_deadline_rule",
+      errorCode: "MISSING_REQUIRED_FIELDS",
+    };
+  }
+  if (!(input.mail_ballot_return_deadline_rule === null || isNonEmptyString(input.mail_ballot_return_deadline_rule))) {
+    return {
+      ok: false,
+      reason: "mail_ballot_return_deadline_rule must be null or a non-empty string",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (!Object.hasOwn(input, "mail_ballot_return_deadline_type")) {
+    return {
+      ok: false,
+      reason: "Missing required field: mail_ballot_return_deadline_type",
+      errorCode: "MISSING_REQUIRED_FIELDS",
+    };
+  }
+  if (!(input.mail_ballot_return_deadline_type === null || isValidMailDeadlineType(input.mail_ballot_return_deadline_type))) {
+    return {
+      ok: false,
+      reason: "mail_ballot_return_deadline_type must be null, postmarked_by, or received_by",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
 
   if (!Object.hasOwn(input, "online_registration_deadline_rule")) {
     return {
@@ -174,6 +238,11 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
   // force deadline rule to null instead of failing.
   if (input.online_registration_available === false) {
     input.online_registration_deadline_rule = null;
+  }
+  if (input.mail_voting_available === false) {
+    input.mail_ballot_request_deadline_rule = null;
+    input.mail_ballot_return_deadline_rule = null;
+    input.mail_ballot_return_deadline_type = null;
   }
 
   if (typeof input.sources !== "object" || input.sources === null || Array.isArray(input.sources)) {
@@ -219,7 +288,15 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     state_name: (input.state_name as string).trim(),
     polling_place_url: (input.polling_place_url as string).trim(),
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
-    vote_by_mail_info: (input.vote_by_mail_info as string).trim(),
+    mail_voting_available: input.mail_voting_available as boolean,
+    mail_ballot_request_deadline_rule:
+      input.mail_ballot_request_deadline_rule === null ? null : (input.mail_ballot_request_deadline_rule as string).trim(),
+    mail_ballot_return_deadline_rule:
+      input.mail_ballot_return_deadline_rule === null ? null : (input.mail_ballot_return_deadline_rule as string).trim(),
+    mail_ballot_return_deadline_type:
+      input.mail_ballot_return_deadline_type === null
+        ? null
+        : (input.mail_ballot_return_deadline_type as "postmarked_by" | "received_by"),
     polling_hours: (input.polling_hours as string).trim(),
     id_requirements: (input.id_requirements as string).trim(),
     same_day_registration_available: input.same_day_registration_available as boolean,
@@ -264,10 +341,71 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
       errorCode: "SCHEMA_MISMATCH",
     };
   }
-  if (payload.vote_by_mail_info.length > STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH) {
+  if (payload.mail_voting_available && payload.mail_ballot_return_deadline_rule === null) {
     return {
       ok: false,
-      reason: `vote_by_mail_info must be ${STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH} characters or fewer`,
+      reason: "mail_ballot_return_deadline_rule must be provided when mail_voting_available is true",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (payload.mail_voting_available && payload.mail_ballot_return_deadline_type === null) {
+    return {
+      ok: false,
+      reason: "mail_ballot_return_deadline_type must be provided when mail_voting_available is true",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (!payload.mail_voting_available) {
+    if (payload.mail_ballot_request_deadline_rule !== null) {
+      return {
+        ok: false,
+        reason: "mail_ballot_request_deadline_rule must be null when mail_voting_available is false",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
+    if (payload.mail_ballot_return_deadline_rule !== null) {
+      return {
+        ok: false,
+        reason: "mail_ballot_return_deadline_rule must be null when mail_voting_available is false",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
+    if (payload.mail_ballot_return_deadline_type !== null) {
+      return {
+        ok: false,
+        reason: "mail_ballot_return_deadline_type must be null when mail_voting_available is false",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
+  }
+
+  if (
+    payload.mail_ballot_request_deadline_rule !== null &&
+    payload.mail_ballot_request_deadline_rule.length > STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH
+  ) {
+    return {
+      ok: false,
+      reason: `mail_ballot_request_deadline_rule must be ${STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH} characters or fewer`,
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (
+    payload.mail_ballot_return_deadline_rule !== null &&
+    payload.mail_ballot_return_deadline_rule.length > STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH
+  ) {
+    return {
+      ok: false,
+      reason: `mail_ballot_return_deadline_rule must be ${STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH} characters or fewer`,
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (
+    payload.mail_ballot_return_deadline_type !== null &&
+    !isValidMailDeadlineType(payload.mail_ballot_return_deadline_type)
+  ) {
+    return {
+      ok: false,
+      reason: "mail_ballot_return_deadline_type must be postmarked_by or received_by",
       errorCode: "SCHEMA_MISMATCH",
     };
   }
@@ -291,10 +429,17 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     };
   }
 
-  if (isUrlOnlyText(payload.vote_by_mail_info)) {
+  if (payload.mail_ballot_request_deadline_rule !== null && isUrlOnlyText(payload.mail_ballot_request_deadline_rule)) {
     return {
       ok: false,
-      reason: "vote_by_mail_info must be plain-language text, not a URL",
+      reason: "mail_ballot_request_deadline_rule must be plain-language text, not a URL",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (payload.mail_ballot_return_deadline_rule !== null && isUrlOnlyText(payload.mail_ballot_return_deadline_rule)) {
+    return {
+      ok: false,
+      reason: "mail_ballot_return_deadline_rule must be plain-language text, not a URL",
       errorCode: "SCHEMA_MISMATCH",
     };
   }

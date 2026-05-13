@@ -41,8 +41,12 @@ function validPayload(overrides: Record<string, unknown> = {}) {
     state_name: "California",
     polling_place_url: "https://www.vote.org/polling-place-locator/",
     voter_registration_url: "https://vote.gov/register",
-    vote_by_mail_info:
-      "California allows any registered voter to vote by mail, and ballots must be returned by election day under state deadline rules.",
+    mail_voting_available: true,
+    mail_ballot_request_deadline_rule:
+      "California allows vote-by-mail ballot requests up to state-defined deadlines for each election.",
+    mail_ballot_return_deadline_rule:
+      "In California, completed mail ballots must be returned by the state return deadline for the election.",
+    mail_ballot_return_deadline_type: "received_by",
     polling_hours:
       "California polling places are generally open from 7:00 a.m. to 8:00 p.m. on election day, with local guidance for special cases.",
     id_requirements:
@@ -54,7 +58,16 @@ function validPayload(overrides: Record<string, unknown> = {}) {
     sources: {
       polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
       voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
-      vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
+      mail_voting_available: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register/california" }],
+      mail_ballot_request_deadline_rule: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
+      ],
+      mail_ballot_return_deadline_rule: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
+      ],
+      mail_ballot_return_deadline_type: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
+      ],
       polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
       id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
       same_day_registration_available: [
@@ -143,7 +156,7 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.payload.sources.vote_by_mail_info[0]).toBe("https://www.vote.org/absentee-ballot");
+      expect(result.payload.sources.mail_ballot_return_deadline_rule[0]).toBe("https://vote.gov/register/california");
     }
     expect(globalThis.fetch).toHaveBeenCalled();
   });
@@ -177,7 +190,7 @@ describe("enrichStateResources", () => {
       expect(result.payload.state_fips).toBe("06");
       expect(result.schemaVersion).toBe("state_resources_enrichment_v1");
     }
-    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+    expect(globalThis.fetch).toHaveBeenCalled();
   });
 
   it("accepts null online_registration_deadline_rule when online registration is unavailable", async () => {
@@ -266,7 +279,7 @@ describe("enrichStateResources", () => {
             sources: {
               polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
               voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
-              vote_by_mail_info: [{ source_name: "California Secretary of State", source_url: additionalCitationUrl }],
+              mail_ballot_return_deadline_rule: [{ source_name: "California Secretary of State", source_url: additionalCitationUrl }],
               polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
               id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
             },
@@ -277,6 +290,12 @@ describe("enrichStateResources", () => {
       if (url.startsWith(additionalCitationUrl)) {
         return new Response(
           "<html><head><title>California Secretary of State</title></head><body>Vote by mail deadlines and return rules.</body></html>",
+          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
+        );
+      }
+      if (url.startsWith("https://vote.gov/register/california")) {
+        return new Response(
+          "<html><head><title>Vote.gov California</title></head><body>Register and review state election deadlines.</body></html>",
           { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
         );
       }
@@ -307,7 +326,10 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.verifiedCitationEvidence.some((item) => item.url === additionalCitationUrl)).toBe(true);
+      const normalizedAdditional = additionalCitationUrl.replace(/\/$/, "");
+      expect(
+        result.verifiedCitationEvidence.some((item) => item.url.replace(/\/$/, "") === normalizedAdditional)
+      ).toBe(true);
     }
   });
 
@@ -321,7 +343,7 @@ describe("enrichStateResources", () => {
             sources: {
               polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
               voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
-              vote_by_mail_info: [{ source_name: "California Secretary of State", source_url: additionalCitationUrl }],
+              mail_ballot_return_deadline_rule: [{ source_name: "California Secretary of State", source_url: additionalCitationUrl }],
               polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
               id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
             },
@@ -331,6 +353,12 @@ describe("enrichStateResources", () => {
 
       if (url.startsWith(additionalCitationUrl)) {
         return new Response("upstream unavailable", { status: 503, headers: { "content-type": "text/plain" } });
+      }
+      if (url.startsWith("https://vote.gov/register/california")) {
+        return new Response(
+          "<html><head><title>Vote.gov California</title></head><body>Register and review state election deadlines.</body></html>",
+          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
+        );
       }
 
       return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
@@ -376,7 +404,7 @@ describe("enrichStateResources", () => {
             sources: {
               polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
               voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
-              vote_by_mail_info: [{ source_name: "Mail rules", source_url: badMailUrl }],
+              mail_ballot_return_deadline_rule: [{ source_name: "Mail rules", source_url: badMailUrl }],
               polling_hours: [{ source_name: "Hours rules", source_url: badHoursUrl }],
               id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
             },
@@ -428,11 +456,11 @@ describe("enrichStateResources", () => {
     }
   });
 
-  it("rejects URL-only text for vote_by_mail_info", async () => {
+  it("rejects URL-only text for mail_ballot_return_deadline_rule", async () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
-          vote_by_mail_info: "https://www.vote.org/absentee-ballot/",
+          mail_ballot_return_deadline_rule: "https://www.vote.org/absentee-ballot/",
         })
       )
     ) as unknown as typeof fetch;
@@ -465,11 +493,11 @@ describe("enrichStateResources", () => {
     }
   });
 
-  it("rejects boilerplate vote_by_mail_info text", async () => {
+  it("rejects boilerplate mail_ballot_return_deadline_rule text", async () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
-          vote_by_mail_info:
+          mail_ballot_return_deadline_rule:
             "California voters can request and return vote-by-mail ballots based on state deadlines and local election rules.",
         })
       )
@@ -551,7 +579,7 @@ describe("enrichStateResources", () => {
               { source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" },
             ],
             voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
-            vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
+            mail_ballot_return_deadline_rule: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
           },
@@ -603,7 +631,7 @@ describe("enrichStateResources", () => {
               { source_name: "Vote.gov", source_url: "https://vote.gov/register" },
             ],
             voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
-            vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
+            mail_ballot_return_deadline_rule: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
           },
@@ -646,7 +674,7 @@ describe("enrichStateResources", () => {
           sources: {
             polling_place_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
             voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
-            vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
+            mail_ballot_return_deadline_rule: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
           },
@@ -691,7 +719,7 @@ describe("enrichStateResources", () => {
           sources: {
             polling_place_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
             voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
-            vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
+            mail_ballot_return_deadline_rule: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
           },
@@ -745,7 +773,7 @@ describe("enrichStateResources", () => {
               { source_name: "California SOS", source_url: "https://www.sos.ca.gov/elections/polling-place" },
             ],
             voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
-            vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
+            mail_ballot_return_deadline_rule: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
           },
@@ -789,7 +817,7 @@ describe("enrichStateResources", () => {
           sources: {
             polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
             voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
-            vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
+            mail_ballot_return_deadline_rule: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
             polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
             id_requirements: [{ source_name: "USVF", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
           },

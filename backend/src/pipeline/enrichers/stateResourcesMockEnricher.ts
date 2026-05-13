@@ -14,11 +14,12 @@ import {
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIPS_REGEX,
   STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
+  STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH,
+  STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
   STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
-  STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH,
 } from "../../contracts/stateResourceEnrichmentContract.js";
 import { collectStateResourceEvidence } from "../evidence/stateResourceEvidenceCollector.js";
 import type { EvidenceSnippet } from "../../ai/types.js";
@@ -412,7 +413,8 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     return null;
   }
 
-  const voteByMailInfo = `${draft.state_name} voters can request and return vote-by-mail ballots based on state deadlines and local election rules.`;
+  const mailBallotRequestDeadlineRule = `In ${draft.state_name}, request deadlines are set by state election guidance and can vary by election.`;
+  const mailBallotReturnDeadlineRule = `In ${draft.state_name}, completed mail ballots must be returned by the applicable state deadline.`;
   const pollingHours = "Polling locations usually open and close at posted local hours on election day.";
   const idRequirements = `${draft.state_name} voter ID requirements depend on election type and local/state rules.`;
   const onlineRegistrationDeadlineRule = `${draft.state_name} online voter registration deadlines vary by election and are posted on the official state registration page.`;
@@ -424,7 +426,16 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     voter_registration_url: [
       STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
     ],
-    vote_by_mail_info: [
+    mail_voting_available: [
+      voteByMailEvidence.url,
+    ],
+    mail_ballot_request_deadline_rule: [
+      voteByMailEvidence.url,
+    ],
+    mail_ballot_return_deadline_rule: [
+      voteByMailEvidence.url,
+    ],
+    mail_ballot_return_deadline_type: [
       voteByMailEvidence.url,
     ],
     polling_hours: [
@@ -450,7 +461,10 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     state_name: draft.state_name,
     polling_place_url: pollingPlaceEvidence.url,
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
-    vote_by_mail_info: voteByMailInfo,
+    mail_voting_available: true,
+    mail_ballot_request_deadline_rule: mailBallotRequestDeadlineRule,
+    mail_ballot_return_deadline_rule: mailBallotReturnDeadlineRule,
+    mail_ballot_return_deadline_type: "received_by",
     polling_hours: pollingHours,
     id_requirements: idRequirements,
     same_day_registration_available: true,
@@ -506,8 +520,23 @@ function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSn
   if (!payload.online_registration_available && payload.online_registration_deadline_rule !== null) {
     return "mock payload online_registration_deadline_rule must be null when online registration is unavailable";
   }
-  if (payload.vote_by_mail_info.length > STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH) {
-    return `mock payload vote_by_mail_info must be ${STATE_RESOURCE_VOTE_BY_MAIL_MAX_LENGTH} chars or fewer`;
+  if (payload.mail_voting_available && payload.mail_ballot_return_deadline_rule === null) {
+    return "mock payload mail_ballot_return_deadline_rule must be set when mail voting is available";
+  }
+  if (payload.mail_voting_available && payload.mail_ballot_return_deadline_type === null) {
+    return "mock payload mail_ballot_return_deadline_type must be set when mail voting is available";
+  }
+  if (
+    payload.mail_ballot_request_deadline_rule !== null &&
+    payload.mail_ballot_request_deadline_rule.length > STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH
+  ) {
+    return `mock payload mail_ballot_request_deadline_rule must be ${STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH} chars or fewer`;
+  }
+  if (
+    payload.mail_ballot_return_deadline_rule !== null &&
+    payload.mail_ballot_return_deadline_rule.length > STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH
+  ) {
+    return `mock payload mail_ballot_return_deadline_rule must be ${STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH} chars or fewer`;
   }
   if (payload.polling_hours.length > STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH) {
     return `mock payload polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} chars or fewer`;
