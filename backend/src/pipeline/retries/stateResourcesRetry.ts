@@ -316,6 +316,9 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     }
   }
 
+  if (typeof input.same_day_registration_available !== "boolean") {
+    return null;
+  }
   if (typeof input.online_registration_available !== "boolean") {
     return null;
   }
@@ -362,6 +365,7 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     vote_by_mail_info: (input.vote_by_mail_info as string).trim(),
     polling_hours: (input.polling_hours as string).trim(),
     id_requirements: (input.id_requirements as string).trim(),
+    same_day_registration_available: input.same_day_registration_available as boolean,
     online_registration_available: input.online_registration_available as boolean,
     online_registration_deadline_rule:
       input.online_registration_deadline_rule === null ? null : (input.online_registration_deadline_rule as string).trim(),
@@ -371,6 +375,7 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
       vote_by_mail_info: normalizeBucket(sources.vote_by_mail_info),
       polling_hours: normalizeBucket(sources.polling_hours),
       id_requirements: normalizeBucket(sources.id_requirements),
+      same_day_registration_available: normalizeBucket(sources.same_day_registration_available),
       online_registration_available: normalizeBucket(sources.online_registration_available),
       online_registration_deadline_rule: normalizeBucket(sources.online_registration_deadline_rule),
     },
@@ -393,6 +398,7 @@ function dedupeSources(payload: StateResourcePayload): { payload: StateResourceP
     vote_by_mail_info: [],
     polling_hours: [],
     id_requirements: [],
+    same_day_registration_available: [],
     online_registration_available: [],
     online_registration_deadline_rule: [],
   };

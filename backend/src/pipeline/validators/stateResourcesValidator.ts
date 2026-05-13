@@ -577,6 +577,7 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   const vote_by_mail_info = (input.vote_by_mail_info as string).trim();
   const polling_hours = (input.polling_hours as string).trim();
   const id_requirements = (input.id_requirements as string).trim();
+  const same_day_registration_available = input.same_day_registration_available as boolean;
   const online_registration_available = input.online_registration_available as boolean;
   const online_registration_deadline_rule =
     input.online_registration_deadline_rule === null
@@ -699,6 +700,7 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       vote_by_mail_info,
       polling_hours,
       id_requirements,
+      same_day_registration_available,
       online_registration_available,
       online_registration_deadline_rule,
       sources: sourcesResult.sources,
@@ -713,6 +715,7 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
         vote_by_mail_info,
         polling_hours,
         id_requirements,
+        same_day_registration_available,
         online_registration_available,
         online_registration_deadline_rule,
         sources: sourcesResult.sources,

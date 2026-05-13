@@ -126,6 +126,18 @@ To enforce `online_registration_available` as strictly non-null (`true`/`false` 
 psql -d <db_name> -f ./db/migrations/014_enforce_state_resources_online_registration_available_not_null.sql
 ```
 
+To remove `official_online_registration_link` and fix `voter_registration_url` to `https://vote.gov/register`:
+
+```bash
+psql -d <db_name> -f ./db/migrations/015_remove_state_resources_official_online_registration_link.sql
+```
+
+To add `same_day_registration_available` and require `sources.same_day_registration_available` citations:
+
+```bash
+psql -d <db_name> -f ./db/migrations/016_add_state_resources_same_day_registration_available.sql
+```
+
 ## Pipeline stream expectations
 
 - Producer writes draft items to `staging:draft` only.

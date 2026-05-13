@@ -39,9 +39,13 @@ const AGGREGATOR_HOSTS = new Set([
 ]);
 
 const PREFERRED_OFFICIAL_CITATION_FIELDS = new Set<
-  "vote_by_mail_info" | "polling_hours" | "id_requirements"
->(["vote_by_mail_info", "polling_hours", "id_requirements"]);
-type PreferredOfficialCitationField = "vote_by_mail_info" | "polling_hours" | "id_requirements";
+  "vote_by_mail_info" | "polling_hours" | "id_requirements" | "same_day_registration_available"
+>(["vote_by_mail_info", "polling_hours", "id_requirements", "same_day_registration_available"]);
+type PreferredOfficialCitationField =
+  | "vote_by_mail_info"
+  | "polling_hours"
+  | "id_requirements"
+  | "same_day_registration_available";
 const LEGAL_SUMMARY_CITATION_FIELDS = new Set<PreferredOfficialCitationField>([
   "vote_by_mail_info",
   "polling_hours",
@@ -653,6 +657,10 @@ function chooseFallbackEvidenceUrl(
         if (/\b(voter id|id law|identification|photo id)\b/.test(lower)) {
           score += 100;
         }
+      } else if (field === "same_day_registration_available") {
+        if (/\b(same[-\s]?day registration|election day registration|conditional voter registration)\b/.test(lower)) {
+          score += 100;
+        }
       }
 
       if (isPreferredOfficialCitationField(field) && isOfficialElectionSource(normalizedUrl, item.title, item.snippet)) {
@@ -686,7 +694,7 @@ function chooseFallbackEvidenceUrl(
 }
 
 function choosePreferredOfficialCitationForField(
-  field: "vote_by_mail_info" | "polling_hours" | "id_requirements",
+  field: "vote_by_mail_info" | "polling_hours" | "id_requirements" | "same_day_registration_available",
   evidence: EnrichStateResourcesInput["evidence"]
 ): string | null {
   const ranked = evidence
@@ -709,6 +717,12 @@ function choosePreferredOfficialCitationForField(
         relevance += 100;
       }
       if (field === "id_requirements" && /\b(voter id|id law|identification|photo id)\b/.test(lower)) {
+        relevance += 100;
+      }
+      if (
+        field === "same_day_registration_available" &&
+        /\b(same[-\s]?day registration|election day registration|conditional voter registration)\b/.test(lower)
+      ) {
         relevance += 100;
       }
 

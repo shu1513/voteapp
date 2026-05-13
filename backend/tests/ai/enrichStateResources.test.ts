@@ -47,6 +47,7 @@ function validPayload(overrides: Record<string, unknown> = {}) {
       "California polling places are generally open from 7:00 a.m. to 8:00 p.m. on election day, with local guidance for special cases.",
     id_requirements:
       "California generally does not require voter ID at the polls, except limited first-time federal voter cases.",
+    same_day_registration_available: true,
     online_registration_available: true,
     online_registration_deadline_rule:
       "California allows online voter registration up to 15 days before Election Day.",
@@ -56,6 +57,9 @@ function validPayload(overrides: Record<string, unknown> = {}) {
       vote_by_mail_info: [{ source_name: "Vote.org", source_url: "https://www.vote.org/absentee-ballot/" }],
       polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
       id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
+      same_day_registration_available: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register" },
+      ],
       online_registration_available: [
         { source_name: "Vote.gov", source_url: "https://vote.gov/register" },
       ],

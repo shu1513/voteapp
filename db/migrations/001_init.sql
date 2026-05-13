@@ -55,6 +55,7 @@ AS $$
                 'vote_by_mail_info',
                 'polling_hours',
                 'id_requirements',
+                'same_day_registration_available',
                 'online_registration_available',
                 'online_registration_deadline_rule'
             ]) AS required_key
@@ -74,6 +75,7 @@ AS $$
                     'vote_by_mail_info',
                     'polling_hours',
                     'id_requirements',
+                    'same_day_registration_available',
                     'online_registration_available',
                     'online_registration_deadline_rule'
                 )
@@ -451,6 +453,7 @@ CREATE TABLE state_resources (
     vote_by_mail_info text NOT NULL,
     polling_hours text NOT NULL,
     id_requirements text NOT NULL,
+    same_day_registration_available boolean NOT NULL,
     online_registration_available boolean NOT NULL,
     online_registration_deadline_rule text,
     sources jsonb NOT NULL,
