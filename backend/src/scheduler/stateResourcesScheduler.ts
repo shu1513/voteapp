@@ -8,6 +8,7 @@ import { runStateResourcesEnricher } from "../pipeline/enrichers/stateResourcesE
 import { runStateResourcesValidator } from "../pipeline/validators/stateResourcesValidator.js";
 import { runStateResourcesWriter } from "../pipeline/writers/stateResourcesWriter.js";
 import { runStateResourcesRetrySweeper } from "../pipeline/retries/stateResourcesRetry.js";
+import { STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION } from "../contracts/stateResourceEnrichmentContract.js";
 
 export const STATE_RESOURCES_REFRESH_JOB_NAME = "state_resources_refresh";
 export const STATE_RESOURCES_ANNUAL_SCHEDULER_ID = "state_resources_annual_refresh";
@@ -144,7 +145,7 @@ async function loadStateResourceStageCounts(pool: Pool): Promise<StateResourceSt
           WHERE status = 'pending' AND schema_version = 'state_resources_draft_v1'
         )::text AS draft_pending,
         count(*) FILTER (
-          WHERE status = 'pending' AND schema_version = 'state_resources_enrichment_v1'
+          WHERE status = 'pending' AND schema_version = $1
         )::text AS enriched_pending,
         count(*) FILTER (WHERE status = 'validated')::text AS validated,
         count(*) FILTER (WHERE status = 'failed')::text AS failed,
@@ -152,7 +153,8 @@ async function loadStateResourceStageCounts(pool: Pool): Promise<StateResourceSt
         count(*) FILTER (WHERE status = 'written')::text AS written
       FROM staging_items
       WHERE item_type = 'state_resources'
-    `
+    `,
+    [STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION]
   );
 
   const row = result.rows[0];

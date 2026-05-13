@@ -305,7 +305,6 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     "state_name",
     "polling_place_url",
     "voter_registration_url",
-    "vote_by_mail_info",
     "polling_hours",
     "id_requirements",
   ];
@@ -328,12 +327,53 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
   if (!(input.online_registration_deadline_rule === null || isNonEmptyString(input.online_registration_deadline_rule))) {
     return null;
   }
+  if (!Object.hasOwn(input, "mail_ballot_request_deadline_rule")) {
+    return null;
+  }
+  if (!(input.mail_ballot_request_deadline_rule === null || isNonEmptyString(input.mail_ballot_request_deadline_rule))) {
+    return null;
+  }
+  if (!Object.hasOwn(input, "mail_ballot_return_deadline_rule")) {
+    return null;
+  }
+  if (!(input.mail_ballot_return_deadline_rule === null || isNonEmptyString(input.mail_ballot_return_deadline_rule))) {
+    return null;
+  }
+  if (!Object.hasOwn(input, "mail_ballot_return_deadline_type")) {
+    return null;
+  }
+  if (
+    !(
+      input.mail_ballot_return_deadline_type === null ||
+      input.mail_ballot_return_deadline_type === "postmarked_by" ||
+      input.mail_ballot_return_deadline_type === "received_by"
+    )
+  ) {
+    return null;
+  }
 
   if (input.online_registration_available === true && input.online_registration_deadline_rule === null) {
     return null;
   }
   if (input.online_registration_available === false && input.online_registration_deadline_rule !== null) {
     return null;
+  }
+  if (input.mail_voting_available === true && input.mail_ballot_return_deadline_rule === null) {
+    return null;
+  }
+  if (input.mail_voting_available === true && input.mail_ballot_return_deadline_type === null) {
+    return null;
+  }
+  if (input.mail_voting_available === false) {
+    if (input.mail_ballot_request_deadline_rule !== null) {
+      return null;
+    }
+    if (input.mail_ballot_return_deadline_rule !== null) {
+      return null;
+    }
+    if (input.mail_ballot_return_deadline_type !== null) {
+      return null;
+    }
   }
 
   if (!isObjectRecord(input.sources)) {
@@ -362,7 +402,19 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     state_name: (input.state_name as string).trim(),
     polling_place_url: (input.polling_place_url as string).trim(),
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
-    vote_by_mail_info: (input.vote_by_mail_info as string).trim(),
+    mail_voting_available: input.mail_voting_available as boolean,
+    mail_ballot_request_deadline_rule:
+      input.mail_ballot_request_deadline_rule === null
+        ? null
+        : (input.mail_ballot_request_deadline_rule as string).trim(),
+    mail_ballot_return_deadline_rule:
+      input.mail_ballot_return_deadline_rule === null
+        ? null
+        : (input.mail_ballot_return_deadline_rule as string).trim(),
+    mail_ballot_return_deadline_type:
+      input.mail_ballot_return_deadline_type === null
+        ? null
+        : (input.mail_ballot_return_deadline_type as "postmarked_by" | "received_by"),
     polling_hours: (input.polling_hours as string).trim(),
     id_requirements: (input.id_requirements as string).trim(),
     same_day_registration_available: input.same_day_registration_available as boolean,
@@ -372,7 +424,10 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     sources: {
       polling_place_url: normalizeBucket(sources.polling_place_url),
       voter_registration_url: normalizeBucket(sources.voter_registration_url),
-      vote_by_mail_info: normalizeBucket(sources.vote_by_mail_info),
+      mail_voting_available: normalizeBucket(sources.mail_voting_available),
+      mail_ballot_request_deadline_rule: normalizeBucket(sources.mail_ballot_request_deadline_rule),
+      mail_ballot_return_deadline_rule: normalizeBucket(sources.mail_ballot_return_deadline_rule),
+      mail_ballot_return_deadline_type: normalizeBucket(sources.mail_ballot_return_deadline_type),
       polling_hours: normalizeBucket(sources.polling_hours),
       id_requirements: normalizeBucket(sources.id_requirements),
       same_day_registration_available: normalizeBucket(sources.same_day_registration_available),
@@ -395,7 +450,10 @@ function dedupeSources(payload: StateResourcePayload): { payload: StateResourceP
   const nextSources: StateResourcePayload["sources"] = {
     polling_place_url: [],
     voter_registration_url: [],
-    vote_by_mail_info: [],
+    mail_voting_available: [],
+    mail_ballot_request_deadline_rule: [],
+    mail_ballot_return_deadline_rule: [],
+    mail_ballot_return_deadline_type: [],
     polling_hours: [],
     id_requirements: [],
     same_day_registration_available: [],

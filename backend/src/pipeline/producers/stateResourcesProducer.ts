@@ -35,6 +35,16 @@ type ProducerOptions = {
   force?: boolean;
 };
 
+export type StateResourcesProducerResult = {
+  runId: string;
+  enqueued: number;
+  skipped: number;
+  failed: number;
+  totalCandidates: number;
+  dryRun: boolean;
+  force: boolean;
+};
+
 /**
  * Converts unknown errors into a bounded reason string suitable for persistence.
  */
@@ -126,7 +136,9 @@ function buildIngestKey(stateFips: string, runYear: number): string {
 /**
  * Produces draft state_resources staging items and enqueues them to the draft stream.
  */
-export async function runStateResourcesProducer(options: ProducerOptions = {}): Promise<void> {
+export async function runStateResourcesProducer(
+  options: ProducerOptions = {}
+): Promise<StateResourcesProducerResult> {
   const { dryRun = false, force = false } = options;
   const env = getPipelineEnv();
   const runYear = new Date().getUTCFullYear();
@@ -148,7 +160,15 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
     observer.flush({ dry_run: true, fetched: payloads.length, force });
     console.log(`[DRY RUN] fetched ${payloads.length} state_resources draft items`);
     console.log(payloads.slice(0, 3));
-    return;
+    return {
+      runId,
+      enqueued: 0,
+      skipped: 0,
+      failed: 0,
+      totalCandidates: payloads.length,
+      dryRun: true,
+      force,
+    };
   }
 
   const pool = new Pool({ connectionString: env.DATABASE_URL });
@@ -274,4 +294,14 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
   console.log(
     `state_resources producer completed. enqueued=${enqueued} skipped=${skipped} failed=${failed} force=${force}`
   );
+
+  return {
+    runId,
+    enqueued,
+    skipped,
+    failed,
+    totalCandidates: payloads.length,
+    dryRun: false,
+    force,
+  };
 }

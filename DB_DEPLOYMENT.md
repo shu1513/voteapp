@@ -138,6 +138,12 @@ To add `same_day_registration_available` and require `sources.same_day_registrat
 psql -d <db_name> -f ./db/migrations/016_add_state_resources_same_day_registration_available.sql
 ```
 
+To replace legacy `vote_by_mail_info` with structured mail-ballot fields:
+
+```bash
+psql -d <db_name> -f ./db/migrations/017_replace_vote_by_mail_with_structured_mail_fields.sql
+```
+
 ## Pipeline stream expectations
 
 - Producer writes draft items to `staging:draft` only.

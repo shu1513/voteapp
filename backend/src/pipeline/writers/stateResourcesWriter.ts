@@ -149,6 +149,48 @@ function parseStateResourcePayload(payload: unknown): ParseResult {
       reason: "payload.online_registration_deadline_rule must be null when online_registration_available=false",
     };
   }
+  if (!Object.hasOwn(input, "mail_ballot_request_deadline_rule")) {
+    return { ok: false, reason: "payload.mail_ballot_request_deadline_rule must be present (string or null)" };
+  }
+  if (!(input.mail_ballot_request_deadline_rule === null || isNonEmptyString(input.mail_ballot_request_deadline_rule))) {
+    return { ok: false, reason: "payload.mail_ballot_request_deadline_rule must be null or non-empty string" };
+  }
+  if (!Object.hasOwn(input, "mail_ballot_return_deadline_rule")) {
+    return { ok: false, reason: "payload.mail_ballot_return_deadline_rule must be present (string or null)" };
+  }
+  if (!(input.mail_ballot_return_deadline_rule === null || isNonEmptyString(input.mail_ballot_return_deadline_rule))) {
+    return { ok: false, reason: "payload.mail_ballot_return_deadline_rule must be null or non-empty string" };
+  }
+  if (!Object.hasOwn(input, "mail_ballot_return_deadline_type")) {
+    return { ok: false, reason: "payload.mail_ballot_return_deadline_type must be present (postmarked_by|received_by|null)" };
+  }
+  const mailType = input.mail_ballot_return_deadline_type;
+  if (!(mailType === null || mailType === "postmarked_by" || mailType === "received_by")) {
+    return { ok: false, reason: "payload.mail_ballot_return_deadline_type must be postmarked_by, received_by, or null" };
+  }
+  if (input.mail_voting_available === true && input.mail_ballot_return_deadline_rule === null) {
+    return {
+      ok: false,
+      reason: "payload.mail_ballot_return_deadline_rule must be string when mail_voting_available=true",
+    };
+  }
+  if (input.mail_voting_available === true && input.mail_ballot_return_deadline_type === null) {
+    return {
+      ok: false,
+      reason: "payload.mail_ballot_return_deadline_type must be set when mail_voting_available=true",
+    };
+  }
+  if (input.mail_voting_available === false) {
+    if (input.mail_ballot_request_deadline_rule !== null) {
+      return { ok: false, reason: "payload.mail_ballot_request_deadline_rule must be null when mail_voting_available=false" };
+    }
+    if (input.mail_ballot_return_deadline_rule !== null) {
+      return { ok: false, reason: "payload.mail_ballot_return_deadline_rule must be null when mail_voting_available=false" };
+    }
+    if (input.mail_ballot_return_deadline_type !== null) {
+      return { ok: false, reason: "payload.mail_ballot_return_deadline_type must be null when mail_voting_available=false" };
+    }
+  }
 
   if (typeof input.sources !== "object" || input.sources === null || Array.isArray(input.sources)) {
     return { ok: false, reason: "payload.sources must be an object" };
@@ -179,7 +221,19 @@ function parseStateResourcePayload(payload: unknown): ParseResult {
       state_name: (input.state_name as string).trim(),
       polling_place_url: (input.polling_place_url as string).trim(),
       voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
-      vote_by_mail_info: (input.vote_by_mail_info as string).trim(),
+      mail_voting_available: input.mail_voting_available as boolean,
+      mail_ballot_request_deadline_rule:
+        input.mail_ballot_request_deadline_rule === null
+          ? null
+          : (input.mail_ballot_request_deadline_rule as string).trim(),
+      mail_ballot_return_deadline_rule:
+        input.mail_ballot_return_deadline_rule === null
+          ? null
+          : (input.mail_ballot_return_deadline_rule as string).trim(),
+      mail_ballot_return_deadline_type:
+        input.mail_ballot_return_deadline_type === null
+          ? null
+          : (input.mail_ballot_return_deadline_type as "postmarked_by" | "received_by"),
       polling_hours: (input.polling_hours as string).trim(),
       id_requirements: (input.id_requirements as string).trim(),
       same_day_registration_available: input.same_day_registration_available as boolean,
@@ -306,7 +360,10 @@ async function writeStateResourceAndMarkWritten(
           state_name,
           polling_place_url,
           voter_registration_url,
-          vote_by_mail_info,
+          mail_voting_available,
+          mail_ballot_request_deadline_rule,
+          mail_ballot_return_deadline_rule,
+          mail_ballot_return_deadline_type,
           polling_hours,
           id_requirements,
           same_day_registration_available,
@@ -314,14 +371,17 @@ async function writeStateResourceAndMarkWritten(
           online_registration_deadline_rule,
           sources
         ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::jsonb
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15::jsonb
         )
         ON CONFLICT (state_fips) DO UPDATE SET
           state_abbreviation = EXCLUDED.state_abbreviation,
           state_name = EXCLUDED.state_name,
           polling_place_url = EXCLUDED.polling_place_url,
           voter_registration_url = EXCLUDED.voter_registration_url,
-          vote_by_mail_info = EXCLUDED.vote_by_mail_info,
+          mail_voting_available = EXCLUDED.mail_voting_available,
+          mail_ballot_request_deadline_rule = EXCLUDED.mail_ballot_request_deadline_rule,
+          mail_ballot_return_deadline_rule = EXCLUDED.mail_ballot_return_deadline_rule,
+          mail_ballot_return_deadline_type = EXCLUDED.mail_ballot_return_deadline_type,
           polling_hours = EXCLUDED.polling_hours,
           id_requirements = EXCLUDED.id_requirements,
           same_day_registration_available = EXCLUDED.same_day_registration_available,
@@ -335,7 +395,10 @@ async function writeStateResourceAndMarkWritten(
         payload.state_name,
         payload.polling_place_url,
         payload.voter_registration_url,
-        payload.vote_by_mail_info,
+        payload.mail_voting_available,
+        payload.mail_ballot_request_deadline_rule,
+        payload.mail_ballot_return_deadline_rule,
+        payload.mail_ballot_return_deadline_type,
         payload.polling_hours,
         payload.id_requirements,
         payload.same_day_registration_available,

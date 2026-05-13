@@ -39,15 +39,33 @@ const AGGREGATOR_HOSTS = new Set([
 ]);
 
 const PREFERRED_OFFICIAL_CITATION_FIELDS = new Set<
-  "vote_by_mail_info" | "polling_hours" | "id_requirements" | "same_day_registration_available"
->(["vote_by_mail_info", "polling_hours", "id_requirements", "same_day_registration_available"]);
+  | "mail_voting_available"
+  | "mail_ballot_request_deadline_rule"
+  | "mail_ballot_return_deadline_rule"
+  | "mail_ballot_return_deadline_type"
+  | "polling_hours"
+  | "id_requirements"
+  | "same_day_registration_available"
+>([
+  "mail_voting_available",
+  "mail_ballot_request_deadline_rule",
+  "mail_ballot_return_deadline_rule",
+  "mail_ballot_return_deadline_type",
+  "polling_hours",
+  "id_requirements",
+  "same_day_registration_available",
+]);
 type PreferredOfficialCitationField =
-  | "vote_by_mail_info"
+  | "mail_voting_available"
+  | "mail_ballot_request_deadline_rule"
+  | "mail_ballot_return_deadline_rule"
+  | "mail_ballot_return_deadline_type"
   | "polling_hours"
   | "id_requirements"
   | "same_day_registration_available";
 const LEGAL_SUMMARY_CITATION_FIELDS = new Set<PreferredOfficialCitationField>([
-  "vote_by_mail_info",
+  "mail_ballot_request_deadline_rule",
+  "mail_ballot_return_deadline_rule",
   "polling_hours",
   "id_requirements",
 ]);
@@ -645,7 +663,12 @@ function chooseFallbackEvidenceUrl(
         if (/\b(register|registration|voter registration)\b/.test(lower)) {
           score += 100;
         }
-      } else if (field === "vote_by_mail_info") {
+      } else if (
+        field === "mail_voting_available" ||
+        field === "mail_ballot_request_deadline_rule" ||
+        field === "mail_ballot_return_deadline_rule" ||
+        field === "mail_ballot_return_deadline_type"
+      ) {
         if (/\b(absentee|mail ballot|vote by mail|vote-by-mail|drop box|postmark)\b/.test(lower)) {
           score += 100;
         }
@@ -694,7 +717,14 @@ function chooseFallbackEvidenceUrl(
 }
 
 function choosePreferredOfficialCitationForField(
-  field: "vote_by_mail_info" | "polling_hours" | "id_requirements" | "same_day_registration_available",
+  field:
+    | "mail_voting_available"
+    | "mail_ballot_request_deadline_rule"
+    | "mail_ballot_return_deadline_rule"
+    | "mail_ballot_return_deadline_type"
+    | "polling_hours"
+    | "id_requirements"
+    | "same_day_registration_available",
   evidence: EnrichStateResourcesInput["evidence"]
 ): string | null {
   const ranked = evidence
@@ -710,7 +740,13 @@ function choosePreferredOfficialCitationForField(
       const lower = `${normalizedUrl} ${item.title} ${item.snippet}`.toLowerCase();
       let relevance = 0;
 
-      if (field === "vote_by_mail_info" && /\b(absentee|mail ballot|vote by mail|vote-by-mail|drop box|postmark|deadline)\b/.test(lower)) {
+      if (
+        (field === "mail_voting_available" ||
+          field === "mail_ballot_request_deadline_rule" ||
+          field === "mail_ballot_return_deadline_rule" ||
+          field === "mail_ballot_return_deadline_type") &&
+        /\b(absentee|mail ballot|vote by mail|vote-by-mail|drop box|postmark|deadline|received)\b/.test(lower)
+      ) {
         relevance += 100;
       }
       if (field === "polling_hours" && /\b(hours|open|close|polling hours|election day)\b/.test(lower)) {

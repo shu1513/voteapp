@@ -52,7 +52,10 @@ AS $$
             FROM unnest(ARRAY[
                 'polling_place_url',
                 'voter_registration_url',
-                'vote_by_mail_info',
+                'mail_voting_available',
+                'mail_ballot_request_deadline_rule',
+                'mail_ballot_return_deadline_rule',
+                'mail_ballot_return_deadline_type',
                 'polling_hours',
                 'id_requirements',
                 'same_day_registration_available',
@@ -72,7 +75,10 @@ AS $$
                 key NOT IN (
                     'polling_place_url',
                     'voter_registration_url',
-                    'vote_by_mail_info',
+                    'mail_voting_available',
+                    'mail_ballot_request_deadline_rule',
+                    'mail_ballot_return_deadline_rule',
+                    'mail_ballot_return_deadline_type',
                     'polling_hours',
                     'id_requirements',
                     'same_day_registration_available',
@@ -450,7 +456,10 @@ CREATE TABLE state_resources (
     state_name text NOT NULL UNIQUE,
     polling_place_url text NOT NULL,
     voter_registration_url text NOT NULL,
-    vote_by_mail_info text NOT NULL,
+    mail_voting_available boolean NOT NULL,
+    mail_ballot_request_deadline_rule text,
+    mail_ballot_return_deadline_rule text,
+    mail_ballot_return_deadline_type text,
     polling_hours text NOT NULL,
     id_requirements text NOT NULL,
     same_day_registration_available boolean NOT NULL,
@@ -461,8 +470,35 @@ CREATE TABLE state_resources (
     CONSTRAINT chk_state_abbreviation_format CHECK (state_abbreviation ~ '^[A-Z]{2}$'),
     CONSTRAINT chk_state_resources_voter_registration_url_fixed
         CHECK (voter_registration_url = 'https://vote.gov/register'),
-    CONSTRAINT chk_state_resources_vote_by_mail_info_text
-        CHECK (btrim(vote_by_mail_info) <> '' AND char_length(vote_by_mail_info) <= 4000),
+    CONSTRAINT chk_state_resources_mail_ballot_request_deadline_rule_text
+        CHECK (
+            mail_ballot_request_deadline_rule IS NULL
+            OR (btrim(mail_ballot_request_deadline_rule) <> '' AND char_length(mail_ballot_request_deadline_rule) <= 1000)
+        ),
+    CONSTRAINT chk_state_resources_mail_ballot_return_deadline_rule_text
+        CHECK (
+            mail_ballot_return_deadline_rule IS NULL
+            OR (btrim(mail_ballot_return_deadline_rule) <> '' AND char_length(mail_ballot_return_deadline_rule) <= 1000)
+        ),
+    CONSTRAINT chk_state_resources_mail_ballot_return_deadline_type
+        CHECK (
+            mail_ballot_return_deadline_type IS NULL
+            OR mail_ballot_return_deadline_type IN ('postmarked_by', 'received_by')
+        ),
+    CONSTRAINT chk_state_resources_mail_voting_consistency
+        CHECK (
+            (
+                mail_voting_available = true
+                AND mail_ballot_return_deadline_rule IS NOT NULL
+                AND mail_ballot_return_deadline_type IS NOT NULL
+            )
+            OR (
+                mail_voting_available = false
+                AND mail_ballot_request_deadline_rule IS NULL
+                AND mail_ballot_return_deadline_rule IS NULL
+                AND mail_ballot_return_deadline_type IS NULL
+            )
+        ),
     CONSTRAINT chk_state_resources_polling_hours_text
         CHECK (btrim(polling_hours) <> '' AND char_length(polling_hours) <= 1000),
     CONSTRAINT chk_state_resources_id_requirements_text
