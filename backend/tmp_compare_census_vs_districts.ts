@@ -63,9 +63,12 @@ function withStateFips(patternUrl: string, stateFips: string): string {
   return patternUrl.replace("{state_fips}", stateFips);
 }
 
-function toRecordMap(rows: DistrictLike[]): Map<string, DistrictLike> {
+function toRecordMap(rows: DistrictLike[], source: string): Map<string, DistrictLike> {
   const map = new Map<string, DistrictLike>();
   for (const row of rows) {
+    if (map.has(row.geoid_compact)) {
+      throw new Error(`Duplicate geoid_compact in ${source}: ${row.geoid_compact}`);
+    }
     map.set(row.geoid_compact, row);
   }
   return map;
@@ -165,8 +168,8 @@ async function loadDistrictsFromDb(pool: Pool, districtType: DistrictType, codeC
 }
 
 function compareType(districtType: DistrictType, censusRows: DistrictLike[], dbRows: DistrictLike[]): ComparisonSummary {
-  const censusMap = toRecordMap(censusRows);
-  const dbMap = toRecordMap(dbRows);
+  const censusMap = toRecordMap(censusRows, `${districtType}:census`);
+  const dbMap = toRecordMap(dbRows, `${districtType}:db`);
 
   const missingInDb: string[] = [];
   const fieldMismatches: Array<{

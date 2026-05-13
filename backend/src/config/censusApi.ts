@@ -119,7 +119,10 @@ export async function fetchCensusJsonWithKeyRotation(
         throw error;
       }
     } catch (error) {
-      if (error instanceof DOMException && error.name === "AbortError") {
+      if (
+        (error instanceof DOMException && error.name === "AbortError") ||
+        (error instanceof Error && error.name === "AbortError")
+      ) {
         throw error;
       }
 

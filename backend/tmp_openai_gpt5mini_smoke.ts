@@ -40,7 +40,7 @@ async function main(): Promise<void> {
   );
 
   if (!result.ok) {
-    console.log(
+    console.error(
       JSON.stringify(
         {
           ok: false,
