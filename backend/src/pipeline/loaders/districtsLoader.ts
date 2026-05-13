@@ -29,6 +29,7 @@ import {
   STATE_LOWER_GEOIDS_2024_SET,
   STATE_LOWER_STATE_FIPS_2024,
 } from "../../constants/stateLowerGeoids2024.js";
+import { fetchCensusJsonWithKeyRotation, readCensusApiKeysFromEnv } from "../../config/censusApi.js";
 import { loadProjectEnv } from "../../config/env.js";
 import { STATE_ABBR_BY_FIPS, getStateAbbreviationByFips, normalizeFips } from "../../constants/usStates.js";
 
@@ -893,19 +894,12 @@ export function parseSchoolElementaryDistrictRows(data: unknown): DistrictRow[] 
   return result.sort((a, b) => a.geoid_compact.localeCompare(b.geoid_compact));
 }
 
-async function fetchCensusRows(url: string): Promise<unknown> {
+async function fetchCensusRows(url: string, censusApiKeys: readonly string[]): Promise<unknown> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), CENSUS_FETCH_TIMEOUT_MS);
 
   try {
-    const response = await fetch(url, {
-      signal: controller.signal,
-    });
-    if (!response.ok) {
-      throw new Error(`Census API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    return (await response.json()) as unknown;
+    return await fetchCensusJsonWithKeyRotation(url, censusApiKeys, controller.signal);
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") {
       throw new Error(`Census API request timed out after ${CENSUS_FETCH_TIMEOUT_MS}ms`);
@@ -916,16 +910,16 @@ async function fetchCensusRows(url: string): Promise<unknown> {
   }
 }
 
-async function fetchStateDistrictRows(): Promise<DistrictRow[]> {
-  const data = await fetchCensusRows(CENSUS_STATES_DISTRICTS_URL);
+async function fetchStateDistrictRows(censusApiKeys: readonly string[]): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_STATES_DISTRICTS_URL, censusApiKeys);
   return parseStateDistrictRows(data);
 }
 
-async function fetchStateUpperDistrictRows(): Promise<DistrictRow[]> {
+async function fetchStateUpperDistrictRows(censusApiKeys: readonly string[]): Promise<DistrictRow[]> {
   const combinedRows: unknown[] = [["NAME", "B01001_001E", "state", "state legislative district (upper chamber)"]];
 
   for (const stateFips of STATE_UPPER_STATE_FIPS_2024) {
-    const stateData = await fetchCensusRows(buildStateUpperDistrictsUrl(stateFips));
+    const stateData = await fetchCensusRows(buildStateUpperDistrictsUrl(stateFips), censusApiKeys);
     if (!Array.isArray(stateData) || stateData.length < 2) {
       throw new Error(`Unexpected Census response format for upper chamber state ${stateFips}`);
     }
@@ -936,11 +930,11 @@ async function fetchStateUpperDistrictRows(): Promise<DistrictRow[]> {
   return parseStateUpperDistrictRows(combinedRows);
 }
 
-async function fetchStateLowerDistrictRows(): Promise<DistrictRow[]> {
+async function fetchStateLowerDistrictRows(censusApiKeys: readonly string[]): Promise<DistrictRow[]> {
   const combinedRows: unknown[] = [["NAME", "B01001_001E", "state", "state legislative district (lower chamber)"]];
 
   for (const stateFips of STATE_LOWER_STATE_FIPS_2024) {
-    const stateData = await fetchCensusRows(buildStateLowerDistrictsUrl(stateFips));
+    const stateData = await fetchCensusRows(buildStateLowerDistrictsUrl(stateFips), censusApiKeys);
     if (!Array.isArray(stateData) || stateData.length < 2) {
       throw new Error(`Unexpected Census response format for lower chamber state ${stateFips}`);
     }
@@ -951,33 +945,33 @@ async function fetchStateLowerDistrictRows(): Promise<DistrictRow[]> {
   return parseStateLowerDistrictRows(combinedRows);
 }
 
-async function fetchUsHouseDistrictRows(): Promise<DistrictRow[]> {
-  const data = await fetchCensusRows(CENSUS_US_HOUSE_DISTRICTS_URL);
+async function fetchUsHouseDistrictRows(censusApiKeys: readonly string[]): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_US_HOUSE_DISTRICTS_URL, censusApiKeys);
   return parseUsHouseDistrictRows(data);
 }
 
-async function fetchCountyDistrictRows(): Promise<DistrictRow[]> {
-  const data = await fetchCensusRows(CENSUS_COUNTY_DISTRICTS_URL);
+async function fetchCountyDistrictRows(censusApiKeys: readonly string[]): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_COUNTY_DISTRICTS_URL, censusApiKeys);
   return parseCountyDistrictRows(data);
 }
 
-async function fetchPlaceDistrictRows(): Promise<DistrictRow[]> {
-  const data = await fetchCensusRows(CENSUS_PLACE_DISTRICTS_URL);
+async function fetchPlaceDistrictRows(censusApiKeys: readonly string[]): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_PLACE_DISTRICTS_URL, censusApiKeys);
   return parsePlaceDistrictRows(data);
 }
 
-async function fetchSchoolUnifiedDistrictRows(): Promise<DistrictRow[]> {
-  const data = await fetchCensusRows(CENSUS_SCHOOL_UNIFIED_DISTRICTS_URL);
+async function fetchSchoolUnifiedDistrictRows(censusApiKeys: readonly string[]): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_SCHOOL_UNIFIED_DISTRICTS_URL, censusApiKeys);
   return parseSchoolUnifiedDistrictRows(data);
 }
 
-async function fetchSchoolSecondaryDistrictRows(): Promise<DistrictRow[]> {
-  const data = await fetchCensusRows(CENSUS_SCHOOL_SECONDARY_DISTRICTS_URL);
+async function fetchSchoolSecondaryDistrictRows(censusApiKeys: readonly string[]): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_SCHOOL_SECONDARY_DISTRICTS_URL, censusApiKeys);
   return parseSchoolSecondaryDistrictRows(data);
 }
 
-async function fetchSchoolElementaryDistrictRows(): Promise<DistrictRow[]> {
-  const data = await fetchCensusRows(CENSUS_SCHOOL_ELEMENTARY_DISTRICTS_URL);
+async function fetchSchoolElementaryDistrictRows(censusApiKeys: readonly string[]): Promise<DistrictRow[]> {
+  const data = await fetchCensusRows(CENSUS_SCHOOL_ELEMENTARY_DISTRICTS_URL, censusApiKeys);
   return parseSchoolElementaryDistrictRows(data);
 }
 
@@ -1180,36 +1174,42 @@ async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
  * - school_elementary -> elementary school district rows (2024 school+district+(elementary):* endpoint)
  */
 export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<DistrictLoadSummary> {
+  loadProjectEnv();
+  const censusApiKeys = readCensusApiKeysFromEnv(process.env);
+  if (censusApiKeys.length === 0) {
+    throw new Error("At least one Census API key is required (CENSUS_API_KEY_1, _2, or _3).");
+  }
+
   const dryRun = Boolean(options.dryRun);
   let sourceUrl: string;
   let rows: DistrictRow[];
   if (options.type === "state") {
     sourceUrl = CENSUS_STATES_DISTRICTS_URL;
-    rows = await fetchStateDistrictRows();
+    rows = await fetchStateDistrictRows(censusApiKeys);
   } else if (options.type === "state_upper") {
     sourceUrl = CENSUS_STATE_UPPER_DISTRICTS_URL_PATTERN;
-    rows = await fetchStateUpperDistrictRows();
+    rows = await fetchStateUpperDistrictRows(censusApiKeys);
   } else if (options.type === "state_lower") {
     sourceUrl = CENSUS_STATE_LOWER_DISTRICTS_URL_PATTERN;
-    rows = await fetchStateLowerDistrictRows();
+    rows = await fetchStateLowerDistrictRows(censusApiKeys);
   } else if (options.type === "us_house") {
     sourceUrl = CENSUS_US_HOUSE_DISTRICTS_URL;
-    rows = await fetchUsHouseDistrictRows();
+    rows = await fetchUsHouseDistrictRows(censusApiKeys);
   } else if (options.type === "county") {
     sourceUrl = CENSUS_COUNTY_DISTRICTS_URL;
-    rows = await fetchCountyDistrictRows();
+    rows = await fetchCountyDistrictRows(censusApiKeys);
   } else if (options.type === "place") {
     sourceUrl = CENSUS_PLACE_DISTRICTS_URL;
-    rows = await fetchPlaceDistrictRows();
+    rows = await fetchPlaceDistrictRows(censusApiKeys);
   } else if (options.type === "school_unified") {
     sourceUrl = CENSUS_SCHOOL_UNIFIED_DISTRICTS_URL;
-    rows = await fetchSchoolUnifiedDistrictRows();
+    rows = await fetchSchoolUnifiedDistrictRows(censusApiKeys);
   } else if (options.type === "school_secondary") {
     sourceUrl = CENSUS_SCHOOL_SECONDARY_DISTRICTS_URL;
-    rows = await fetchSchoolSecondaryDistrictRows();
+    rows = await fetchSchoolSecondaryDistrictRows(censusApiKeys);
   } else if (options.type === "school_elementary") {
     sourceUrl = CENSUS_SCHOOL_ELEMENTARY_DISTRICTS_URL;
-    rows = await fetchSchoolElementaryDistrictRows();
+    rows = await fetchSchoolElementaryDistrictRows(censusApiKeys);
   } else {
     throw new Error(`Unsupported districts load type: ${options.type}`);
   }
@@ -1226,7 +1226,6 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
     };
   }
 
-  loadProjectEnv();
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl || databaseUrl.trim().length === 0) {
     throw new Error("DATABASE_URL is required for districts loader");

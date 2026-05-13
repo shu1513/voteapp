@@ -14,6 +14,7 @@ import {
   STAGING_ITEM_TYPE_STATE_RESOURCES,
 } from "../../config/stateResourcePipeline.js";
 import { getPipelineEnv } from "../../config/env.js";
+import { fetchCensusJsonWithKeyRotation } from "../../config/censusApi.js";
 import { STATE_RESOURCE_DRAFT_SCHEMA_VERSION } from "../../contracts/stateResourceEnrichmentContract.js";
 import {
   getStateAbbreviationByFips,
@@ -45,14 +46,8 @@ function toReason(error: unknown): string {
 /**
  * Fetches 50 states + DC from the Census API and normalizes the response.
  */
-async function fetchCensusStates(): Promise<CensusState[]> {
-  const response = await fetch(CENSUS_STATES_API_URL);
-
-  if (!response.ok) {
-    throw new Error(`Census API request failed: ${response.status} ${response.statusText}`);
-  }
-
-  const data: unknown = await response.json();
+async function fetchCensusStates(censusApiKeys: readonly string[]): Promise<CensusState[]> {
+  const data = await fetchCensusJsonWithKeyRotation(CENSUS_STATES_API_URL, censusApiKeys);
 
   if (!Array.isArray(data) || data.length < 2) {
     throw new Error("Unexpected Census response format: expected array with header and rows");
@@ -142,7 +137,7 @@ export async function runStateResourcesProducer(options: ProducerOptions = {}): 
     prompt_version: env.PROMPT_VERSION,
   });
 
-  const states = await fetchCensusStates();
+  const states = await fetchCensusStates(env.CENSUS_API_KEYS);
   const payloads = states.map(toDraftPayload);
 
   if (dryRun) {
