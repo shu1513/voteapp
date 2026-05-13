@@ -9,7 +9,7 @@ export const STATE_RESOURCE_DRAFT_SCHEMA_VERSION = "state_resources_draft_v1" as
  * Version tag for the state_resources enrichment contract.
  * Keep this stable for one schema shape; bump only on breaking payload changes.
  */
-export const STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION = "state_resources_enrichment_v1" as const;
+export const STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION = "state_resources_enrichment_v2" as const;
 
 /**
  * Required text fields that an enriched state_resources payload must include.

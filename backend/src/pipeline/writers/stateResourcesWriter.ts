@@ -371,7 +371,7 @@ async function writeStateResourceAndMarkWritten(
           online_registration_deadline_rule,
           sources
         ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14::jsonb
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15::jsonb
         )
         ON CONFLICT (state_fips) DO UPDATE SET
           state_abbreviation = EXCLUDED.state_abbreviation,

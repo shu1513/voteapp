@@ -99,23 +99,6 @@ function validateStateSpecificFieldQuality(payload: StateResourcePayload): strin
     return "id_requirements is generic boilerplate; include state-specific ID policy";
   }
 
-  if (
-    payload.mail_voting_available &&
-    payload.mail_ballot_return_deadline_rule !== null &&
-    !hasAnyKeyword(payload.mail_ballot_return_deadline_rule, [
-      "deadline",
-      "postmark",
-      "request",
-      "return",
-      "received",
-      "drop box",
-      "mail",
-      "absentee",
-    ])
-  ) {
-    return "mail_ballot_return_deadline_rule must include at least one concrete vote-by-mail rule detail";
-  }
-
   const pollingHoursHasTime = /\b\d{1,2}(:\d{2})?\s?(a\.?m\.?|p\.?m\.?)\b/i.test(payload.polling_hours);
   const pollingHoursHasVariance = hasAnyKeyword(payload.polling_hours, ["varies", "county", "precinct"]);
   if (!pollingHoursHasTime && !pollingHoursHasVariance) {

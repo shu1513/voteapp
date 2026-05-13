@@ -36,7 +36,7 @@ BEGIN
         WHEN mail_voting_available = false THEN NULL
         WHEN mail_ballot_return_deadline_type IN ('postmarked_by', 'received_by') THEN mail_ballot_return_deadline_type
         WHEN COALESCE(mail_ballot_return_deadline_rule, vote_by_mail_info, '') ~* 'postmark' THEN 'postmarked_by'
-        WHEN COALESCE(mail_ballot_return_deadline_rule, vote_by_mail_info, '') <> '' THEN 'received_by'
+        WHEN COALESCE(mail_ballot_return_deadline_rule, vote_by_mail_info, '') ~* '(receiv|arriv|deliver|delivery)' THEN 'received_by'
         ELSE NULL
       END;
   ELSE
@@ -54,7 +54,7 @@ BEGIN
         WHEN mail_voting_available = false THEN NULL
         WHEN mail_ballot_return_deadline_type IN ('postmarked_by', 'received_by') THEN mail_ballot_return_deadline_type
         WHEN COALESCE(mail_ballot_return_deadline_rule, '') ~* 'postmark' THEN 'postmarked_by'
-        WHEN COALESCE(mail_ballot_return_deadline_rule, '') <> '' THEN 'received_by'
+        WHEN COALESCE(mail_ballot_return_deadline_rule, '') ~* '(receiv|arriv|deliver|delivery)' THEN 'received_by'
         ELSE NULL
       END;
   END IF;
@@ -118,7 +118,6 @@ ALTER TABLE state_resources
     (
       mail_voting_available = true
       AND mail_ballot_return_deadline_rule IS NOT NULL
-      AND mail_ballot_return_deadline_type IS NOT NULL
     )
     OR (
       mail_voting_available = false

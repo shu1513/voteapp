@@ -188,7 +188,7 @@ describe("enrichStateResources", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.payload.state_fips).toBe("06");
-      expect(result.schemaVersion).toBe("state_resources_enrichment_v1");
+      expect(result.schemaVersion).toBe("state_resources_enrichment_v2");
     }
     expect(globalThis.fetch).toHaveBeenCalled();
   });
