@@ -23,27 +23,12 @@ async function main(): Promise<void> {
   const startedAt = Date.now();
 
   try {
-    await runStateResourcesProducer({ force: true, dryRun: false });
-
-    const runRow = await pool.query<{ run_id: string; total: string }>(
-      `
-      SELECT run_id, COUNT(*)::text AS total
-      FROM staging_items
-      WHERE item_type = 'state_resources'
-        AND run_id LIKE 'state_resources_%'
-      GROUP BY run_id
-      ORDER BY MAX(updated_at) DESC
-      LIMIT 1
-      `
-    );
-
-    const runId = runRow.rows[0]?.run_id;
-    const runCount = Number.parseInt(runRow.rows[0]?.total ?? '0', 10);
-    if (!runId) {
-      throw new Error('Unable to determine producer run_id from staging_items');
+    const produced = await runStateResourcesProducer({ force: true, dryRun: false });
+    const runId = produced.runId;
+    const targetCount = produced.enqueued;
+    if (targetCount <= 0) {
+      throw new Error(`Producer run ${runId} did not enqueue any items`);
     }
-
-    const targetCount = runCount;
 
     const fetchStatus = async (): Promise<StatusCounts> => {
       const result = await pool.query<{ status: string; count: string }>(
@@ -84,6 +69,7 @@ async function main(): Promise<void> {
     );
 
     const maxRounds = 20;
+    let converged = false;
     for (let round = 1; round <= maxRounds; round += 1) {
       const roundStartedAt = Date.now();
 
@@ -112,6 +98,7 @@ async function main(): Promise<void> {
       );
 
       if (done) {
+        converged = true;
         break;
       }
 
@@ -143,6 +130,20 @@ async function main(): Promise<void> {
         modelUsage: modelUsage.rows.map((r) => ({ model: r.model, count: Number.parseInt(r.count, 10) })),
       })
     );
+
+    const finalDone =
+      finalStatus.written === targetCount &&
+      finalStatus.pending === 0 &&
+      finalStatus.validated === 0 &&
+      finalStatus.failed === 0 &&
+      finalStatus.rejected === 0 &&
+      finalStatus.requeueing === 0;
+
+    if (!converged || !finalDone) {
+      throw new Error(
+        `Pipeline did not converge within ${maxRounds} rounds for run_id=${runId}. Final status=${JSON.stringify(finalStatus)}`
+      );
+    }
   } finally {
     await pool.end();
   }

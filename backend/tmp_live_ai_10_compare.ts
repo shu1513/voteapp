@@ -119,6 +119,7 @@ type StateRow = { state_fips: string; state_abbreviation: string; state_name: st
     }
 
     const maxRounds = 8;
+    let completed = false;
     for (let round = 1; round <= maxRounds; round += 1) {
       const roundStart = Date.now();
       await runStateResourcesEnricher({ once: true, batchSize: 100, blockMs: 1000 });
@@ -139,6 +140,7 @@ type StateRow = { state_fips: string; state_abbreviation: string; state_name: st
       );
 
       if (done) {
+        completed = true;
         break;
       }
 
@@ -149,6 +151,12 @@ type StateRow = { state_fips: string; state_abbreviation: string; state_name: st
     }
 
     const finalStatus = await fetchStatus();
+    if (!completed) {
+      throw new Error(
+        `Run ${runId} did not complete within ${maxRounds} rounds: ${JSON.stringify(finalStatus.raw)}`
+      );
+    }
+
     const modelUsage = await pool.query<{ model: string | null; count: string }>(
       `
       SELECT model, COUNT(*)::text AS count
