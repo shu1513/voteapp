@@ -376,7 +376,6 @@ async function verifyAndCollectAdditionalCitationEvidence(
       .map((item) => normalizeHttpUrl(item.url))
       .filter((url): url is string => typeof url === "string")
   );
-  knownEvidenceUrls.add(STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL);
   const verifiedCitationEvidence: EvidenceSnippet[] = [];
   const seenNewCitationUrls = new Set<string>();
   const verificationFailures: Array<{
@@ -657,10 +656,6 @@ function chooseFallbackEvidenceUrl(
 
       if (field === "polling_place_url") {
         if (isLikelyPollingPlaceUrl(normalizedUrl, item.title, item.snippet)) {
-          score += 100;
-        }
-      } else if (field === "voter_registration_url") {
-        if (/\b(register|registration|voter registration)\b/.test(lower)) {
           score += 100;
         }
       } else if (
@@ -944,89 +939,14 @@ export async function enrichStateResources(
   const expectedStateAbbreviation = input.draft.state_abbreviation.trim();
   const expectedStateName = input.draft.state_name.trim();
 
-  // Deterministic identity fields must match draft input (do not let AI alter them).
-  if (parsed.payload.state_fips !== expectedStateFips) {
-    return {
-      ok: false,
-      retryable: false,
-      errorCode: "SCHEMA_MISMATCH",
-      reason: "state_fips in AI output must match draft state_fips",
-      failureDebug: providerFailureDebug,
-    };
-  }
-
-  if (parsed.payload.state_abbreviation !== expectedStateAbbreviation) {
-    return {
-      ok: false,
-      retryable: false,
-      errorCode: "SCHEMA_MISMATCH",
-      reason: "state_abbreviation in AI output must match draft state_abbreviation",
-      failureDebug: providerFailureDebug,
-    };
-  }
-
-  if (parsed.payload.state_name !== expectedStateName) {
-    return {
-      ok: false,
-      retryable: false,
-      errorCode: "SCHEMA_MISMATCH",
-      reason: "state_name in AI output must match draft state_name",
-      failureDebug: providerFailureDebug,
-    };
-  }
-
-  const pollingNormalizedPayload = preferOfficialPollingPlaceUrl(parsed.payload, input.evidence, input.draft);
-  let normalizedPayload = groundCitationsToEvidence(pollingNormalizedPayload, input.evidence);
+  let normalizedPayload = groundCitationsToEvidence(parsed.payload, input.evidence);
   normalizedPayload = {
     ...normalizedPayload,
+    state_fips: expectedStateFips,
+    state_abbreviation: expectedStateAbbreviation,
+    state_name: expectedStateName,
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
-    sources: {
-      ...normalizedPayload.sources,
-      voter_registration_url: [STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL],
-    },
   };
-  const pollingSeedFallback = chooseDraftPollingSeedUrl(input.draft);
-  if (pollingSeedFallback) {
-    const normalizedCurrentPollingUrl = normalizeHttpUrl(normalizedPayload.polling_place_url);
-    if (
-      (
-        !normalizedCurrentPollingUrl ||
-        !isLikelyPollingPlaceUrlByUrl(normalizedCurrentPollingUrl) ||
-        isAggregatorUrl(normalizedCurrentPollingUrl)
-      )
-    ) {
-      const fallbackChangedPollingUrl = normalizedCurrentPollingUrl !== pollingSeedFallback;
-
-      if (fallbackChangedPollingUrl) {
-        normalizedPayload = {
-          ...normalizedPayload,
-          polling_place_url: pollingSeedFallback,
-          sources: {
-            ...normalizedPayload.sources,
-            polling_place_url: [pollingSeedFallback],
-          },
-        };
-      } else {
-        normalizedPayload = {
-          ...normalizedPayload,
-          polling_place_url: pollingSeedFallback,
-        };
-      }
-    }
-  }
-
-  if (
-    !isLikelyPollingPlaceUrlByUrl(normalizedPayload.polling_place_url) &&
-    !isCuratedStatePollingUrl(normalizedPayload.polling_place_url, input.draft)
-  ) {
-    return {
-      ok: false,
-      retryable: false,
-      errorCode: "SCHEMA_MISMATCH",
-      reason: "polling_place_url must be a polling-place locator URL, not a registration/mail/id URL",
-      failureDebug: providerFailureDebug,
-    };
-  }
 
   for (const field of LEGAL_SUMMARY_CITATION_FIELDS) {
     if (normalizedPayload.sources[field].length === 0) {

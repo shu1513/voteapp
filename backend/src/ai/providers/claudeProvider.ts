@@ -52,8 +52,8 @@ function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: strin
 
   return [
     "Return only one JSON object with these keys exactly:",
-    "state_fips, state_abbreviation, state_name, polling_place_url, voter_registration_url, mail_voting_available, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, mail_ballot_return_deadline_type, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule, sources.",
-    "sources must include keys: polling_place_url, voter_registration_url, mail_voting_available, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, mail_ballot_return_deadline_type, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule.",
+    "polling_place_url, mail_voting_available, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, mail_ballot_return_deadline_type, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule, sources.",
+    "sources must include keys: polling_place_url, mail_voting_available, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, mail_ballot_return_deadline_type, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule.",
     "Each sources[key] must be an array of URL strings.",
     "Prefer using Evidence snippets URLs when possible.",
     "You may cite additional public URLs if they directly support the claim; do not invent or rewrite URLs.",
@@ -63,7 +63,6 @@ function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: strin
     "- In sources[field_name], include only URL(s) that were actually used to support that field's final text.",
     "- Do not include attempted URLs that lacked the needed information.",
     "polling_place_url must be a URL.",
-    "Set voter_registration_url exactly to https://vote.gov/register (do not research this field).",
     "For polling_place_url, start from polling reference seed URLs in Evidence snippets, then expand if needed.",
     "same_day_registration_available must be boolean true or false.",
     "mail_voting_available must be boolean true or false.",
@@ -95,7 +94,6 @@ function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: strin
     "  3) most recent update/publication date",
     "- Keep summaries plain and practical.",
     "- URL quality rule: Do not cite URLs that are broken, login-only, or unrelated landing pages.",
-    "Do not output generic templates; mail and ID/hours fields must be specific to the draft state.",
     "Prefer official state/local election office polling-place URLs over aggregator URLs when evidence includes both.",
     "Do not add markdown fences or commentary.",
     ...(promptVariantLines.length > 0 ? ["", ...promptVariantLines] : []),

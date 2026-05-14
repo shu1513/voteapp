@@ -25,7 +25,6 @@ import {
   STAGING_STATE_RESOURCES_VALIDATOR_GROUP,
   STAGING_VALIDATED_STREAM,
 } from "../../config/stateResourcePipeline.js";
-import { CURATED_STATE_POLLING_URL_BY_FIPS } from "../../constants/curatedPollingUrls.js";
 import { getStateAbbreviationByFips } from "../../constants/usStates.js";
 import type {
   SourceCitation,
@@ -34,7 +33,6 @@ import type {
 } from "../../types/stateResource.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { isUrlOnlyText } from "../../utils/isUrlOnlyText.js";
-import { isLikelyPollingPlaceUrl } from "../../utils/isLikelyPollingPlaceUrl.js";
 import { createStageObserver } from "../utils/observability.js";
 import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
 
@@ -102,17 +100,6 @@ function isHttpUrl(value: string): boolean {
   } catch {
     return false;
   }
-}
-
-function isCuratedPollingUrlForState(stateFips: string, pollingPlaceUrl: string): boolean {
-  const curated = CURATED_STATE_POLLING_URL_BY_FIPS[stateFips];
-  if (!curated) {
-    return false;
-  }
-
-  const normalizedCurated = normalizeHttpUrl(curated);
-  const normalizedUrl = normalizeHttpUrl(pollingPlaceUrl);
-  return typeof normalizedCurated === "string" && normalizedCurated === normalizedUrl;
 }
 
 type EvidenceSnippet = {
@@ -625,14 +612,6 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   if (!isHttpUrl(polling_place_url)) {
     reasons.push("polling_place_url must be a valid http(s) URL");
   }
-  if (
-    isHttpUrl(polling_place_url) &&
-    !isLikelyPollingPlaceUrl(polling_place_url) &&
-    !isCuratedPollingUrlForState(state_fips, polling_place_url)
-  ) {
-    reasons.push("polling_place_url must be a polling-place locator URL, not a registration/mail/id URL");
-  }
-
   if (!isHttpUrl(voter_registration_url)) {
     reasons.push("voter_registration_url must be a valid http(s) URL");
   }

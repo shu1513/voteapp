@@ -18,6 +18,7 @@ import { fetchCensusJsonWithKeyRotation } from "../../config/censusApi.js";
 import { STATE_RESOURCE_DRAFT_SCHEMA_VERSION } from "../../contracts/stateResourceEnrichmentContract.js";
 import {
   getStateAbbreviationByFips,
+  getStateNameByFips,
   normalizeFips,
   STATE_ABBR_BY_FIPS,
 } from "../../constants/usStates.js";
@@ -25,7 +26,6 @@ import type { StateResourceDraftPayload } from "../../types/stateResource.js";
 import { createStageObserver } from "../utils/observability.js";
 
 type CensusState = {
-  state_name: string;
   state_fips: string;
   population_estimate: number | null;
 };
@@ -71,9 +71,9 @@ async function fetchCensusStates(censusApiKeys: readonly string[]): Promise<Cens
       continue;
     }
 
-    const [nameRaw, populationRaw, fipsRaw] = row;
+    const [_nameRaw, populationRaw, fipsRaw] = row;
 
-    if (typeof nameRaw !== "string" || typeof populationRaw !== "string" || typeof fipsRaw !== "string") {
+    if (typeof _nameRaw !== "string" || typeof populationRaw !== "string" || typeof fipsRaw !== "string") {
       continue;
     }
 
@@ -86,7 +86,6 @@ async function fetchCensusStates(censusApiKeys: readonly string[]): Promise<Cens
 
     const parsedPopulation = Number.parseInt(populationRaw, 10);
     states.push({
-      state_name: nameRaw.trim(),
       state_fips,
       population_estimate: Number.isFinite(parsedPopulation) ? parsedPopulation : null,
     });
@@ -112,7 +111,7 @@ function toDraftPayload(state: CensusState): StateResourceDraftPayload {
   return {
     state_fips: state.state_fips,
     state_abbreviation: getStateAbbreviationByFips(state.state_fips),
-    state_name: state.state_name,
+    state_name: getStateNameByFips(state.state_fips),
     population_estimate: state.population_estimate,
     census_source_url: CENSUS_STATES_API_URL,
     state_abbreviation_reference_url: STATE_ABBREVIATION_REFERENCE_URL,

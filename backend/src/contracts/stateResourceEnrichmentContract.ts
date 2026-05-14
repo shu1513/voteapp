@@ -38,7 +38,6 @@ export const STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS = [
  */
 export const STATE_RESOURCE_SOURCE_FIELDS = [
   "polling_place_url",
-  "voter_registration_url",
   "mail_voting_available",
   "mail_ballot_request_deadline_rule",
   "mail_ballot_return_deadline_rule",

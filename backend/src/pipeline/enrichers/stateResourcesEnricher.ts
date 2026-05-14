@@ -252,11 +252,6 @@ function candidateKey(candidate: EnrichmentCandidate): string {
 }
 
 function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCandidate[] {
-  const configured: EnrichmentCandidate = {
-    provider: config.provider,
-    model: config.model,
-  };
-
   const seen = new Set<string>();
   const chain: EnrichmentCandidate[] = [];
 
@@ -272,8 +267,6 @@ function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCand
   for (const candidate of AI_CANDIDATES) {
     addCandidate(candidate);
   }
-  // Keep cycling order deterministic (cheap -> expensive); append configured model only if not listed.
-  addCandidate(configured);
 
   return chain;
 }
@@ -420,9 +413,13 @@ async function enrichWithCandidates(
   const promptVariants: PromptVariant[] = ["default", "citation_repair"];
   const attempts: EnrichmentAttemptFailure[] = [];
   let lastFailure: Exclude<EnrichStateResourcesResult, { ok: true }> | null = null;
-  let currentRetryFeedback = normalizeRetryFeedback(input.retryFeedback ?? null);
 
   for (const candidate of chain) {
+    // Per-model retry context:
+    // - first attempt for each model gets a fresh start (no accumulated chain errors)
+    // - second attempt for the same model gets only that model's immediate failure feedback
+    let sameModelRetryFeedback: RetryFeedback | null = null;
+
     for (let variantIndex = 0; variantIndex < promptVariants.length; variantIndex += 1) {
       const promptVariant = promptVariants[variantIndex];
       const candidateConfig: EnrichStateResourcesConfig = {
@@ -435,7 +432,7 @@ async function enrichWithCandidates(
         {
           ...input,
           promptVariant,
-          retryFeedback: currentRetryFeedback,
+          retryFeedback: variantIndex === 0 ? null : sameModelRetryFeedback,
         },
         candidateConfig
       );
@@ -443,7 +440,7 @@ async function enrichWithCandidates(
         return { result, attempts };
       }
       lastFailure = result;
-      currentRetryFeedback = mergeRetryFeedbackForSamePass(currentRetryFeedback, result);
+      sameModelRetryFeedback = mergeRetryFeedbackForSamePass(sameModelRetryFeedback, result);
 
       attempts.push({
         candidate,

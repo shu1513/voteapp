@@ -304,7 +304,6 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     "state_abbreviation",
     "state_name",
     "polling_place_url",
-    "voter_registration_url",
     "polling_hours",
     "id_requirements",
   ];
@@ -423,7 +422,6 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
       input.online_registration_deadline_rule === null ? null : (input.online_registration_deadline_rule as string).trim(),
     sources: {
       polling_place_url: normalizeBucket(sources.polling_place_url),
-      voter_registration_url: normalizeBucket(sources.voter_registration_url),
       mail_voting_available: normalizeBucket(sources.mail_voting_available),
       mail_ballot_request_deadline_rule: normalizeBucket(sources.mail_ballot_request_deadline_rule),
       mail_ballot_return_deadline_rule: normalizeBucket(sources.mail_ballot_return_deadline_rule),
@@ -449,7 +447,6 @@ function dedupeSources(payload: StateResourcePayload): { payload: StateResourceP
   let changed = false;
   const nextSources: StateResourcePayload["sources"] = {
     polling_place_url: [],
-    voter_registration_url: [],
     mail_voting_available: [],
     mail_ballot_request_deadline_rule: [],
     mail_ballot_return_deadline_rule: [],

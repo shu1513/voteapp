@@ -493,7 +493,7 @@ describe("enrichStateResources", () => {
     }
   });
 
-  it("rejects boilerplate mail_ballot_return_deadline_rule text", async () => {
+  it("allows generic mail_ballot_return_deadline_rule text", async () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
@@ -524,14 +524,10 @@ describe("enrichStateResources", () => {
       }
     );
 
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.errorCode).toBe("SCHEMA_MISMATCH");
-      expect(result.reason).toContain("generic boilerplate");
-    }
+    expect(result.ok).toBe(true);
   });
 
-  it("rejects boilerplate id_requirements text with state-name prefix", async () => {
+  it("does not use boilerplate-specific rejection for id_requirements text", async () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
@@ -564,11 +560,12 @@ describe("enrichStateResources", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.errorCode).toBe("SCHEMA_MISMATCH");
-      expect(result.reason).toContain("generic boilerplate");
+      expect(result.reason).not.toContain("generic boilerplate");
+      expect(result.reason).toContain("must clearly state whether voter identification is required");
     }
   });
 
-  it("prefers official polling_place_url from evidence over aggregator URL", async () => {
+  it("does not auto-rewrite polling_place_url from evidence", async () => {
     const officialPollingUrl = "https://www.sos.ca.gov/elections/polling-place";
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
@@ -615,12 +612,11 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.payload.polling_place_url).toBe(officialPollingUrl);
-      expect(result.payload.sources.polling_place_url[0]).toBe(officialPollingUrl);
+      expect(result.payload.polling_place_url).toBe("https://www.vote.org/polling-place-locator/");
     }
   });
 
-  it("replaces non-polling polling_place_url with best polling URL from evidence", async () => {
+  it("does not reject or rewrite non-polling-shaped polling_place_url", async () => {
     const officialPollingUrl = "https://www.sos.ca.gov/elections/polling-place";
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
@@ -662,11 +658,11 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.payload.polling_place_url).toBe(officialPollingUrl);
+      expect(result.payload.polling_place_url).toBe("https://vote.gov/register");
     }
   });
 
-  it("falls back to draft polling seed URL when evidence has no polling candidate", async () => {
+  it("does not force polling seed fallback when evidence has no polling candidate", async () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
@@ -704,11 +700,11 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.payload.polling_place_url).toBe("https://www.vote.org/polling-place-locator");
+      expect(result.payload.polling_place_url).toBe("https://vote.gov/register");
     }
   });
 
-  it("uses deterministic state polling fallback for known missing states", async () => {
+  it("does not force deterministic state polling fallback", async () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
@@ -756,11 +752,11 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.payload.polling_place_url).toBe("https://myinfo.alabamavotes.gov/voterview");
+      expect(result.payload.polling_place_url).toBe("https://vote.gov/register");
     }
   });
 
-  it("does not keep another state's official polling URL when state-specific signal is missing", async () => {
+  it("does not auto-rewrite another state's official polling URL", async () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
@@ -805,7 +801,7 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.payload.polling_place_url).toBe("https://www.vote.org/polling-place-locator");
+      expect(result.payload.polling_place_url).toBe("https://www.sos.ca.gov/elections/polling-place");
     }
   });
 

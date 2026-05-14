@@ -1,17 +1,20 @@
 import {
-  STATE_RESOURCE_ABBREVIATION_REGEX,
-  STATE_RESOURCE_FIPS_REGEX,
   STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
   STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
   STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
-  STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
 } from "../contracts/stateResourceEnrichmentContract.js";
 import type { StateResourcePayload, StateResourceSources } from "../types/stateResource.js";
 import { isUrlOnlyText } from "../utils/isUrlOnlyText.js";
+
+const AI_REQUIRED_TEXT_FIELDS: ReadonlyArray<keyof StateResourcePayload> = [
+  "polling_place_url",
+  "polling_hours",
+  "id_requirements",
+];
 
 type ParseResult =
   | { ok: true; payload: StateResourcePayload }
@@ -51,54 +54,11 @@ function hasAnyKeyword(text: string, keywords: string[]): boolean {
   return keywords.some((keyword) => lower.includes(keyword));
 }
 
-function looksLikeMockBoilerplate(
-  field: "mail_ballot_return_deadline_rule" | "polling_hours" | "id_requirements",
-  text: string
-): boolean {
-  const normalized = text.trim().toLowerCase();
-  if (
-    field === "mail_ballot_return_deadline_rule" &&
-    /^(?:[a-z .'-]+ voters can request and return|voters can request and return) vote-by-mail ballots based on state deadlines and local election rules\.?$/.test(
-      normalized
-    )
-  ) {
-    return true;
-  }
-
-  if (
-    field === "polling_hours" &&
-    /^polling locations usually open and close at posted local hours on election day\.?$/.test(normalized)
-  ) {
-    return true;
-  }
-
-  if (
-    field === "id_requirements" &&
-    /^(?:[a-z .'-]+ voter id requirements depend on|voter id requirements depend on) election type and local\/state rules\.?$/.test(normalized)
-  ) {
-    return true;
-  }
-
-  return false;
-}
-
 function isValidMailDeadlineType(value: unknown): value is "postmarked_by" | "received_by" {
   return value === "postmarked_by" || value === "received_by";
 }
 
 function validateStateSpecificFieldQuality(payload: StateResourcePayload): string | null {
-  if (payload.mail_ballot_return_deadline_rule !== null) {
-    if (looksLikeMockBoilerplate("mail_ballot_return_deadline_rule", payload.mail_ballot_return_deadline_rule)) {
-      return "mail_ballot_return_deadline_rule is generic boilerplate; include state-specific legal details";
-    }
-  }
-  if (looksLikeMockBoilerplate("polling_hours", payload.polling_hours)) {
-    return "polling_hours is generic boilerplate; include state-specific hours detail";
-  }
-  if (looksLikeMockBoilerplate("id_requirements", payload.id_requirements)) {
-    return "id_requirements is generic boilerplate; include state-specific ID policy";
-  }
-
   const pollingHoursHasTime = /\b\d{1,2}(:\d{2})?\s?(a\.?m\.?|p\.?m\.?)\b/i.test(payload.polling_hours);
   const pollingHoursHasVariance = hasAnyKeyword(payload.polling_hours, ["varies", "county", "precinct"]);
   if (!pollingHoursHasTime && !pollingHoursHasVariance) {
@@ -140,7 +100,7 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
 
   const input = raw as Record<string, unknown>;
 
-  for (const key of STATE_RESOURCE_REQUIRED_TEXT_FIELDS) {
+  for (const key of AI_REQUIRED_TEXT_FIELDS) {
     if (!isNonEmptyString(input[key])) {
       return {
         ok: false,
@@ -263,12 +223,11 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
 
     sanitizedSources[key] = sanitizedBucket;
   }
-  sanitizedSources.voter_registration_url = [STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL];
 
   const payload: StateResourcePayload = {
-    state_fips: (input.state_fips as string).trim(),
-    state_abbreviation: (input.state_abbreviation as string).trim(),
-    state_name: (input.state_name as string).trim(),
+    state_fips: isNonEmptyString(input.state_fips) ? input.state_fips.trim() : "",
+    state_abbreviation: isNonEmptyString(input.state_abbreviation) ? input.state_abbreviation.trim() : "",
+    state_name: isNonEmptyString(input.state_name) ? input.state_name.trim() : "",
     polling_place_url: (input.polling_place_url as string).trim(),
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
     mail_voting_available: input.mail_voting_available as boolean,
@@ -288,22 +247,6 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
       input.online_registration_deadline_rule === null ? null : (input.online_registration_deadline_rule as string).trim(),
     sources: sanitizedSources,
   };
-
-  if (!STATE_RESOURCE_FIPS_REGEX.test(payload.state_fips)) {
-    return {
-      ok: false,
-      reason: "state_fips must be exactly two digits",
-      errorCode: "SCHEMA_MISMATCH",
-    };
-  }
-
-  if (!STATE_RESOURCE_ABBREVIATION_REGEX.test(payload.state_abbreviation)) {
-    return {
-      ok: false,
-      reason: "state_abbreviation must be two uppercase letters",
-      errorCode: "SCHEMA_MISMATCH",
-    };
-  }
 
   if (!isHttpUrl(payload.polling_place_url)) {
     return { ok: false, reason: "polling_place_url must be a valid http(s) URL", errorCode: "SCHEMA_MISMATCH" };

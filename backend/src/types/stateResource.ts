@@ -4,7 +4,6 @@ export type SourceCitation = string;
 
 export type StateResourceSources = {
   polling_place_url: SourceCitation[];
-  voter_registration_url: SourceCitation[];
   mail_voting_available: SourceCitation[];
   mail_ballot_request_deadline_rule: SourceCitation[];
   mail_ballot_return_deadline_rule: SourceCitation[];

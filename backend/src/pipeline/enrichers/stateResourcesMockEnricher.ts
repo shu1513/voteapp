@@ -423,9 +423,6 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     polling_place_url: [
       pollingPlaceEvidence.url,
     ],
-    voter_registration_url: [
-      STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
-    ],
     mail_voting_available: [
       voteByMailEvidence.url,
     ],

@@ -130,3 +130,49 @@ describe("openAiProvider prompt retry feedback", () => {
     expect(capturedBody).not.toContain("Previous attempt feedback (retry context):");
   });
 });
+
+describe("openAiProvider temperature behavior", () => {
+  it("omits explicit temperature for gpt-5 models", async () => {
+    let capturedBody = "";
+    globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      capturedBody = typeof init?.body === "string" ? init.body : "";
+      return new Response(JSON.stringify({ choices: [{ message: { content: "{}" } }] }), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    }) as unknown as typeof fetch;
+
+    const result = await openAiProvider(buildInput(false), {
+      provider: "openai",
+      model: "gpt-5.5",
+      timeoutMs: 1000,
+      openAiApiKey: "test-key",
+    });
+
+    expect(result.ok).toBe(true);
+    const body = JSON.parse(capturedBody) as Record<string, unknown>;
+    expect(body).not.toHaveProperty("temperature");
+  });
+
+  it("keeps explicit temperature for non-gpt-5 models", async () => {
+    let capturedBody = "";
+    globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      capturedBody = typeof init?.body === "string" ? init.body : "";
+      return new Response(JSON.stringify({ choices: [{ message: { content: "{}" } }] }), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    }) as unknown as typeof fetch;
+
+    const result = await openAiProvider(buildInput(false), {
+      provider: "openai",
+      model: "gpt-4o-mini",
+      timeoutMs: 1000,
+      openAiApiKey: "test-key",
+    });
+
+    expect(result.ok).toBe(true);
+    const body = JSON.parse(capturedBody) as Record<string, unknown>;
+    expect(body).toHaveProperty("temperature", 0);
+  });
+});
