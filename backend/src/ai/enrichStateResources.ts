@@ -43,31 +43,46 @@ const PREFERRED_OFFICIAL_CITATION_FIELDS = new Set<
   | "mail_ballot_request_deadline_rule"
   | "mail_ballot_return_deadline_rule"
   | "mail_ballot_return_deadline_type"
+  | "early_voting_available"
+  | "early_voting_start_date_rule"
+  | "early_voting_end_date_rule"
   | "polling_hours"
   | "id_requirements"
   | "same_day_registration_available"
+  | "in_person_registration_deadline_rule"
 >([
   "mail_voting_available",
   "mail_ballot_request_deadline_rule",
   "mail_ballot_return_deadline_rule",
   "mail_ballot_return_deadline_type",
+  "early_voting_available",
+  "early_voting_start_date_rule",
+  "early_voting_end_date_rule",
   "polling_hours",
   "id_requirements",
   "same_day_registration_available",
+  "in_person_registration_deadline_rule",
 ]);
 type PreferredOfficialCitationField =
   | "mail_voting_available"
   | "mail_ballot_request_deadline_rule"
   | "mail_ballot_return_deadline_rule"
   | "mail_ballot_return_deadline_type"
+  | "early_voting_available"
+  | "early_voting_start_date_rule"
+  | "early_voting_end_date_rule"
   | "polling_hours"
   | "id_requirements"
-  | "same_day_registration_available";
+  | "same_day_registration_available"
+  | "in_person_registration_deadline_rule";
 const LEGAL_SUMMARY_CITATION_FIELDS = new Set<PreferredOfficialCitationField>([
   "mail_ballot_request_deadline_rule",
   "mail_ballot_return_deadline_rule",
+  "early_voting_start_date_rule",
+  "early_voting_end_date_rule",
   "polling_hours",
   "id_requirements",
+  "in_person_registration_deadline_rule",
 ]);
 const CITATION_FETCH_TIMEOUT_MS = 8_000;
 const CITATION_MAX_RESPONSE_BYTES = 1_000_000;
@@ -667,6 +682,14 @@ function chooseFallbackEvidenceUrl(
         if (/\b(absentee|mail ballot|vote by mail|vote-by-mail|drop box|postmark)\b/.test(lower)) {
           score += 100;
         }
+      } else if (
+        field === "early_voting_available" ||
+        field === "early_voting_start_date_rule" ||
+        field === "early_voting_end_date_rule"
+      ) {
+        if (/\b(early voting|in-person voting|advance voting|before election day|election day)\b/.test(lower)) {
+          score += 100;
+        }
       } else if (field === "polling_hours") {
         if (/\b(hours|open|close|polling hours|election day)\b/.test(lower)) {
           score += 100;
@@ -677,6 +700,10 @@ function chooseFallbackEvidenceUrl(
         }
       } else if (field === "same_day_registration_available") {
         if (/\b(same[-\s]?day registration|election day registration|conditional voter registration)\b/.test(lower)) {
+          score += 100;
+        }
+      } else if (field === "in_person_registration_deadline_rule") {
+        if (/\b(in[-\s]?person|register|registration|deadline|election day|before election)\b/.test(lower)) {
           score += 100;
         }
       }
@@ -717,9 +744,13 @@ function choosePreferredOfficialCitationForField(
     | "mail_ballot_request_deadline_rule"
     | "mail_ballot_return_deadline_rule"
     | "mail_ballot_return_deadline_type"
+    | "early_voting_available"
+    | "early_voting_start_date_rule"
+    | "early_voting_end_date_rule"
     | "polling_hours"
     | "id_requirements"
-    | "same_day_registration_available",
+    | "same_day_registration_available"
+    | "in_person_registration_deadline_rule",
   evidence: EnrichStateResourcesInput["evidence"]
 ): string | null {
   const ranked = evidence
@@ -744,6 +775,14 @@ function choosePreferredOfficialCitationForField(
       ) {
         relevance += 100;
       }
+      if (
+        (field === "early_voting_available" ||
+          field === "early_voting_start_date_rule" ||
+          field === "early_voting_end_date_rule") &&
+        /\b(early voting|in-person voting|advance voting|before election day|election day)\b/.test(lower)
+      ) {
+        relevance += 100;
+      }
       if (field === "polling_hours" && /\b(hours|open|close|polling hours|election day)\b/.test(lower)) {
         relevance += 100;
       }
@@ -753,6 +792,12 @@ function choosePreferredOfficialCitationForField(
       if (
         field === "same_day_registration_available" &&
         /\b(same[-\s]?day registration|election day registration|conditional voter registration)\b/.test(lower)
+      ) {
+        relevance += 100;
+      }
+      if (
+        field === "in_person_registration_deadline_rule" &&
+        /\b(in[-\s]?person|register|registration|deadline|election day|before election)\b/.test(lower)
       ) {
         relevance += 100;
       }

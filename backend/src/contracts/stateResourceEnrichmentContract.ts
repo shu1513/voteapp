@@ -9,7 +9,7 @@ export const STATE_RESOURCE_DRAFT_SCHEMA_VERSION = "state_resources_draft_v1" as
  * Version tag for the state_resources enrichment contract.
  * Keep this stable for one schema shape; bump only on breaking payload changes.
  */
-export const STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION = "state_resources_enrichment_v2" as const;
+export const STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION = "state_resources_enrichment_v4" as const;
 
 /**
  * Required text fields that an enriched state_resources payload must include.
@@ -22,6 +22,7 @@ export const STATE_RESOURCE_REQUIRED_TEXT_FIELDS = [
   "voter_registration_url",
   "polling_hours",
   "id_requirements",
+  "in_person_registration_deadline_rule",
 ] as const satisfies ReadonlyArray<keyof StateResourcePayload>;
 
 /**
@@ -29,6 +30,7 @@ export const STATE_RESOURCE_REQUIRED_TEXT_FIELDS = [
  */
 export const STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS = [
   "mail_voting_available",
+  "early_voting_available",
   "same_day_registration_available",
   "online_registration_available",
 ] as const satisfies ReadonlyArray<keyof StateResourcePayload>;
@@ -42,14 +44,32 @@ export const STATE_RESOURCE_SOURCE_FIELDS = [
   "mail_ballot_request_deadline_rule",
   "mail_ballot_return_deadline_rule",
   "mail_ballot_return_deadline_type",
+  "early_voting_available",
+  "early_voting_start_date_rule",
+  "early_voting_end_date_rule",
   "polling_hours",
   "id_requirements",
   "same_day_registration_available",
   "online_registration_available",
   "online_registration_deadline_rule",
+  "in_person_registration_deadline_rule",
 ] as const satisfies ReadonlyArray<keyof StateResourceSources>;
 
 export const STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL = "https://vote.gov/register" as const;
+
+export const STATE_RESOURCE_ID_REQUIREMENT_VALUES = [
+  "Strict photo ID",
+  "Strict non-photo ID",
+  "Non-strict photo ID",
+  "Non-strict, non-photo ID",
+  "No document required to vote",
+] as const;
+
+export type StateResourceIdRequirementValue = (typeof STATE_RESOURCE_ID_REQUIREMENT_VALUES)[number];
+
+export function isValidStateResourceIdRequirementValue(value: string): value is StateResourceIdRequirementValue {
+  return (STATE_RESOURCE_ID_REQUIREMENT_VALUES as readonly string[]).includes(value);
+}
 
 /**
  * Keys that identify producer drafts (not yet AI-enriched).
@@ -68,4 +88,7 @@ export const STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH = 1000;
 export const STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH = 1000;
 export const STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH = 4000;
 export const STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH = 1000;
+export const STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH = 1000;
+export const STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH = 1000;
+export const STATE_RESOURCE_EARLY_VOTING_END_DATE_RULE_MAX_LENGTH = 1000;
 export const STATE_RESOURCE_TEXT_MIN_LENGTH = 12;

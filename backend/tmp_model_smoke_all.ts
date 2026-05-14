@@ -87,35 +87,51 @@ async function run(): Promise<void> {
   for (const candidate of CANDIDATES) {
     const startedAt = performance.now();
     const provider = providerByName[candidate.provider];
-    const result = await provider(INPUT, {
-      ...baseConfig,
-      provider: candidate.provider,
-      model: candidate.model,
-    });
-    const elapsedMs = Math.round(performance.now() - startedAt);
+    try {
+      const result = await provider(INPUT, {
+        ...baseConfig,
+        provider: candidate.provider,
+        model: candidate.model,
+      });
+      const elapsedMs = Math.round(performance.now() - startedAt);
 
-    if (result.ok) {
+      if (result.ok) {
+        summary.push({
+          provider: candidate.provider,
+          model: candidate.model,
+          ok: true,
+          callable: true,
+          elapsedMs,
+        });
+        continue;
+      }
+
+      const modelNotFound = isModelNotFoundFailure(result.reason);
       summary.push({
         provider: candidate.provider,
         model: candidate.model,
-        ok: true,
-        callable: true,
+        ok: false,
+        callable: !modelNotFound,
+        retryable: result.retryable,
+        errorCode: result.errorCode,
+        reason: result.reason,
         elapsedMs,
       });
-      continue;
+    } catch (error) {
+      const elapsedMs = Math.round(performance.now() - startedAt);
+      const reason = error instanceof Error ? error.message : String(error);
+      const modelNotFound = isModelNotFoundFailure(reason);
+      summary.push({
+        provider: candidate.provider,
+        model: candidate.model,
+        ok: false,
+        callable: !modelNotFound,
+        retryable: false,
+        errorCode: "UNHANDLED_EXCEPTION",
+        reason,
+        elapsedMs,
+      });
     }
-
-    const modelNotFound = isModelNotFoundFailure(result.reason);
-    summary.push({
-      provider: candidate.provider,
-      model: candidate.model,
-      ok: false,
-      callable: !modelNotFound,
-      retryable: result.retryable,
-      errorCode: result.errorCode,
-      reason: result.reason,
-      elapsedMs,
-    });
   }
 
   console.log(JSON.stringify({ type: "model_smoke_summary", summary }, null, 2));
@@ -125,4 +141,3 @@ run().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
-

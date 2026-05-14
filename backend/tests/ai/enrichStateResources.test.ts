@@ -47,14 +47,20 @@ function validPayload(overrides: Record<string, unknown> = {}) {
     mail_ballot_return_deadline_rule:
       "In California, completed mail ballots must be returned by the state return deadline for the election.",
     mail_ballot_return_deadline_type: "received_by",
+    early_voting_available: true,
+    early_voting_start_date_rule:
+      "California early voting typically begins before Election Day as scheduled by county election officials.",
+    early_voting_end_date_rule:
+      "California early voting generally ends on or shortly before Election Day based on local election schedules.",
     polling_hours:
       "California polling places are generally open from 7:00 a.m. to 8:00 p.m. on election day, with local guidance for special cases.",
-    id_requirements:
-      "California generally does not require voter ID at the polls, except limited first-time federal voter cases.",
+    id_requirements: "Non-strict photo ID",
     same_day_registration_available: true,
     online_registration_available: true,
     online_registration_deadline_rule:
       "California allows online voter registration up to 15 days before Election Day.",
+    in_person_registration_deadline_rule:
+      "California in-person voter registration at county elections offices is available through Election Day under same-day registration rules.",
     sources: {
       polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
       voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
@@ -68,6 +74,15 @@ function validPayload(overrides: Record<string, unknown> = {}) {
       mail_ballot_return_deadline_type: [
         { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
       ],
+      early_voting_available: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
+      ],
+      early_voting_start_date_rule: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
+      ],
+      early_voting_end_date_rule: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
+      ],
       polling_hours: [{ source_name: "NASS", source_url: "https://www.nass.org/can-i-vote" }],
       id_requirements: [{ source_name: "US Vote Foundation", source_url: "https://www.usvotefoundation.org/voter-id-laws" }],
       same_day_registration_available: [
@@ -78,6 +93,9 @@ function validPayload(overrides: Record<string, unknown> = {}) {
       ],
       online_registration_deadline_rule: [
         { source_name: "Vote.gov", source_url: "https://vote.gov/register" },
+      ],
+      in_person_registration_deadline_rule: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
       ],
     },
   };
@@ -188,7 +206,7 @@ describe("enrichStateResources", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.payload.state_fips).toBe("06");
-      expect(result.schemaVersion).toBe("state_resources_enrichment_v2");
+      expect(result.schemaVersion).toBe("state_resources_enrichment_v4");
     }
     expect(globalThis.fetch).toHaveBeenCalled();
   });
@@ -527,7 +545,7 @@ describe("enrichStateResources", () => {
     expect(result.ok).toBe(true);
   });
 
-  it("does not use boilerplate-specific rejection for id_requirements text", async () => {
+  it("rejects id_requirements values outside the allowed category set", async () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
@@ -561,7 +579,7 @@ describe("enrichStateResources", () => {
     if (!result.ok) {
       expect(result.errorCode).toBe("SCHEMA_MISMATCH");
       expect(result.reason).not.toContain("generic boilerplate");
-      expect(result.reason).toContain("must clearly state whether voter identification is required");
+      expect(result.reason).toContain("must be one of the allowed ID requirement categories");
     }
   });
 
@@ -849,7 +867,7 @@ describe("enrichStateResources", () => {
     }
   });
 
-  it("accepts explicit 'id is required' phrasing for id_requirements", async () => {
+  it("rejects free-form 'id is required' phrasing for id_requirements", async () => {
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
         validPayload({
@@ -880,6 +898,10 @@ describe("enrichStateResources", () => {
       }
     );
 
-    expect(result.ok).toBe(true);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errorCode).toBe("SCHEMA_MISMATCH");
+      expect(result.reason).toContain("must be one of the allowed ID requirement categories");
+    }
   });
 });

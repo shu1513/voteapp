@@ -15,6 +15,12 @@ import type {
 } from "../../ai/types.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
+  STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED,
+  STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED,
+  STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_REFERENCE_SEED,
+  STATE_RESOURCE_MAIL_REFERENCE_SEED,
+  STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEED,
+  STATE_RESOURCE_SAME_DAY_REGISTRATION_DEADLINE_REFERENCE_SEED,
   STAGING_DRAFT_STREAM,
   STAGING_ITEM_TYPE_STATE_RESOURCES,
   STAGING_PENDING_STREAM,
@@ -90,7 +96,6 @@ const VOTE_ORG_POLLING_LOCATOR_URL = "https://www.vote.org/polling-place-locator
 const VOTE_ORG_POLLING_FETCH_TIMEOUT_MS = 10_000;
 const VOTE_ORG_RETRY_BACKOFF_INITIAL_MS = 60_000;
 const VOTE_ORG_RETRY_BACKOFF_MAX_MS = 15 * 60_000;
-const VOTE_GOV_REGISTER_BASE_URL = "https://vote.gov/register";
 const SAME_PASS_FAILED_URL_MEMORY_LIMIT = 100;
 const SAME_PASS_FAILED_DETAILS_MEMORY_LIMIT = 100;
 let voteOrgPollingMapPromise: Promise<Map<string, string>> | null = null;
@@ -200,7 +205,17 @@ function buildStateScopedReferenceUrl(baseUrl: string, stateName: string): strin
   if (!slug) {
     return null;
   }
-  return normalizeHttpUrl(`${baseUrl}/${slug}`);
+  return normalizeHttpUrl(`${baseUrl.replace(/\/+$/, "")}/${slug}`);
+}
+
+function buildStateScopedReferenceFromSeed(
+  seed: string,
+  stateName: string
+): string | null {
+  if (!seed) {
+    return null;
+  }
+  return buildStateScopedReferenceUrl(seed, stateName);
 }
 
 function splitStoredModel(storedModel: string | null): Pick<EnricherProcessResult, "provider" | "model"> {
@@ -1002,15 +1017,84 @@ async function processMessage(
     }
   }
 
-  const voteByMailReferenceUrl = buildStateScopedReferenceUrl(VOTE_GOV_REGISTER_BASE_URL, draft.draft.state_name);
+  const sameDayReferenceUrl = normalizeHttpUrl(STATE_RESOURCE_SAME_DAY_REGISTRATION_DEADLINE_REFERENCE_SEED);
   if (
-    voteByMailReferenceUrl &&
-    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === voteByMailReferenceUrl)
+    sameDayReferenceUrl &&
+    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === sameDayReferenceUrl)
   ) {
     enrichedEvidence.unshift({
-      url: voteByMailReferenceUrl,
+      url: sameDayReferenceUrl,
+      title: "NCSL",
+      snippet: `${draft.draft.state_name} same-day registration starting reference`,
+    });
+  }
+
+  const earlyVotingReferenceUrl = normalizeHttpUrl(STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED);
+  if (
+    earlyVotingReferenceUrl &&
+    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === earlyVotingReferenceUrl)
+  ) {
+    enrichedEvidence.unshift({
+      url: earlyVotingReferenceUrl,
+      title: "NCSL",
+      snippet: `${draft.draft.state_name} early voting starting reference`,
+    });
+  }
+
+  const idRequirementsReferenceUrl = normalizeHttpUrl(STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED);
+  if (
+    idRequirementsReferenceUrl &&
+    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === idRequirementsReferenceUrl)
+  ) {
+    enrichedEvidence.unshift({
+      url: idRequirementsReferenceUrl,
+      title: "NCSL",
+      snippet: `${draft.draft.state_name} voter ID requirements starting reference`,
+    });
+  }
+
+  const onlineRegistrationReferenceUrl = buildStateScopedReferenceFromSeed(
+    STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEED,
+    draft.draft.state_name
+  );
+  if (
+    onlineRegistrationReferenceUrl &&
+    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === onlineRegistrationReferenceUrl)
+  ) {
+    enrichedEvidence.unshift({
+      url: onlineRegistrationReferenceUrl,
       title: "Vote.gov state registration page",
-      snippet: `${draft.draft.state_name} vote-by-mail and online registration starting reference`,
+      snippet: `${draft.draft.state_name} online registration starting reference`,
+    });
+  }
+
+  const mailReferenceUrl = buildStateScopedReferenceFromSeed(
+    STATE_RESOURCE_MAIL_REFERENCE_SEED,
+    draft.draft.state_name
+  );
+  if (
+    mailReferenceUrl &&
+    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === mailReferenceUrl)
+  ) {
+    enrichedEvidence.unshift({
+      url: mailReferenceUrl,
+      title: "Vote.gov state registration page",
+      snippet: `${draft.draft.state_name} mail voting starting reference`,
+    });
+  }
+
+  const inPersonReferenceUrl = buildStateScopedReferenceFromSeed(
+    STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_REFERENCE_SEED,
+    draft.draft.state_name
+  );
+  if (
+    inPersonReferenceUrl &&
+    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === inPersonReferenceUrl)
+  ) {
+    enrichedEvidence.unshift({
+      url: inPersonReferenceUrl,
+      title: "Vote.gov state registration page",
+      snippet: `${draft.draft.state_name} in-person registration starting reference`,
     });
   }
 

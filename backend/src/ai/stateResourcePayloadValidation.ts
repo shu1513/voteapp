@@ -1,4 +1,8 @@
 import {
+  STATE_RESOURCE_EARLY_VOTING_END_DATE_RULE_MAX_LENGTH,
+  STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH,
+  STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH,
+  isValidStateResourceIdRequirementValue,
   STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
@@ -14,6 +18,7 @@ const AI_REQUIRED_TEXT_FIELDS: ReadonlyArray<keyof StateResourcePayload> = [
   "polling_place_url",
   "polling_hours",
   "id_requirements",
+  "in_person_registration_deadline_rule",
 ];
 
 type ParseResult =
@@ -33,22 +38,6 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
-function hasClearIdRequirementStatement(text: string): boolean {
-  const lower = text.toLowerCase();
-  const patterns = [
-    /\b(?:voter\s+)?id\s+is\s+required\b/,
-    /\b(?:voter\s+)?id\s+required\b/,
-    /\brequires?\s+(?:a\s+)?(?:valid\s+)?(?:photo\s+)?id\b/,
-    /\b(?:voter\s+)?id\s+is\s+not\s+required\b/,
-    /\bno\s+(?:photo\s+)?id\s+(?:is\s+)?required\b/,
-    /\bdo(?:es)?\s+not\s+require\s+(?:a\s+)?(?:photo\s+)?(?:voter\s+)?id\b/,
-    /\b(?:no|without)\s+(?:voter\s+)?id\b/,
-    /\bidentification\s+is\s+(?:not\s+)?required\b/,
-  ];
-
-  return patterns.some((pattern) => pattern.test(lower));
-}
-
 function hasAnyKeyword(text: string, keywords: string[]): boolean {
   const lower = text.toLowerCase();
   return keywords.some((keyword) => lower.includes(keyword));
@@ -65,8 +54,8 @@ function validateStateSpecificFieldQuality(payload: StateResourcePayload): strin
     return "polling_hours must include concrete opening/closing times or explicit county/precinct variance";
   }
 
-  if (!hasClearIdRequirementStatement(payload.id_requirements)) {
-    return "id_requirements must clearly state whether voter identification is required";
+  if (!isValidStateResourceIdRequirementValue(payload.id_requirements)) {
+    return "id_requirements must be one of the allowed ID requirement categories";
   }
 
   return null;
@@ -161,6 +150,34 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
       errorCode: "SCHEMA_MISMATCH",
     };
   }
+  if (!Object.hasOwn(input, "early_voting_start_date_rule")) {
+    return {
+      ok: false,
+      reason: "Missing required field: early_voting_start_date_rule",
+      errorCode: "MISSING_REQUIRED_FIELDS",
+    };
+  }
+  if (!(input.early_voting_start_date_rule === null || isNonEmptyString(input.early_voting_start_date_rule))) {
+    return {
+      ok: false,
+      reason: "early_voting_start_date_rule must be null or a non-empty string",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (!Object.hasOwn(input, "early_voting_end_date_rule")) {
+    return {
+      ok: false,
+      reason: "Missing required field: early_voting_end_date_rule",
+      errorCode: "MISSING_REQUIRED_FIELDS",
+    };
+  }
+  if (!(input.early_voting_end_date_rule === null || isNonEmptyString(input.early_voting_end_date_rule))) {
+    return {
+      ok: false,
+      reason: "early_voting_end_date_rule must be null or a non-empty string",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
 
   if (!Object.hasOwn(input, "online_registration_deadline_rule")) {
     return {
@@ -186,6 +203,10 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     input.mail_ballot_request_deadline_rule = null;
     input.mail_ballot_return_deadline_rule = null;
     input.mail_ballot_return_deadline_type = null;
+  }
+  if (input.early_voting_available === false) {
+    input.early_voting_start_date_rule = null;
+    input.early_voting_end_date_rule = null;
   }
 
   if (typeof input.sources !== "object" || input.sources === null || Array.isArray(input.sources)) {
@@ -239,12 +260,18 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
       input.mail_ballot_return_deadline_type === null
         ? null
         : (input.mail_ballot_return_deadline_type as "postmarked_by" | "received_by"),
+    early_voting_available: input.early_voting_available as boolean,
+    early_voting_start_date_rule:
+      input.early_voting_start_date_rule === null ? null : (input.early_voting_start_date_rule as string).trim(),
+    early_voting_end_date_rule:
+      input.early_voting_end_date_rule === null ? null : (input.early_voting_end_date_rule as string).trim(),
     polling_hours: (input.polling_hours as string).trim(),
     id_requirements: (input.id_requirements as string).trim(),
     same_day_registration_available: input.same_day_registration_available as boolean,
     online_registration_available: input.online_registration_available as boolean,
     online_registration_deadline_rule:
       input.online_registration_deadline_rule === null ? null : (input.online_registration_deadline_rule as string).trim(),
+    in_person_registration_deadline_rule: (input.in_person_registration_deadline_rule as string).trim(),
     sources: sanitizedSources,
   };
 
@@ -280,6 +307,36 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
       reason: "mail_ballot_return_deadline_type must be provided when mail_voting_available is true",
       errorCode: "SCHEMA_MISMATCH",
     };
+  }
+  if (payload.early_voting_available && payload.early_voting_start_date_rule === null) {
+    return {
+      ok: false,
+      reason: "early_voting_start_date_rule must be provided when early_voting_available is true",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (payload.early_voting_available && payload.early_voting_end_date_rule === null) {
+    return {
+      ok: false,
+      reason: "early_voting_end_date_rule must be provided when early_voting_available is true",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (!payload.early_voting_available) {
+    if (payload.early_voting_start_date_rule !== null) {
+      return {
+        ok: false,
+        reason: "early_voting_start_date_rule must be null when early_voting_available is false",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
+    if (payload.early_voting_end_date_rule !== null) {
+      return {
+        ok: false,
+        reason: "early_voting_end_date_rule must be null when early_voting_available is false",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
   }
   if (!payload.mail_voting_available) {
     if (payload.mail_ballot_request_deadline_rule !== null) {
@@ -326,6 +383,26 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     };
   }
   if (
+    payload.early_voting_start_date_rule !== null &&
+    payload.early_voting_start_date_rule.length > STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH
+  ) {
+    return {
+      ok: false,
+      reason: `early_voting_start_date_rule must be ${STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH} characters or fewer`,
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (
+    payload.early_voting_end_date_rule !== null &&
+    payload.early_voting_end_date_rule.length > STATE_RESOURCE_EARLY_VOTING_END_DATE_RULE_MAX_LENGTH
+  ) {
+    return {
+      ok: false,
+      reason: `early_voting_end_date_rule must be ${STATE_RESOURCE_EARLY_VOTING_END_DATE_RULE_MAX_LENGTH} characters or fewer`,
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (
     payload.mail_ballot_return_deadline_type !== null &&
     !isValidMailDeadlineType(payload.mail_ballot_return_deadline_type)
   ) {
@@ -354,6 +431,15 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
       errorCode: "SCHEMA_MISMATCH",
     };
   }
+  if (
+    payload.in_person_registration_deadline_rule.length > STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH
+  ) {
+    return {
+      ok: false,
+      reason: `in_person_registration_deadline_rule must be ${STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH} characters or fewer`,
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
 
   if (payload.mail_ballot_request_deadline_rule !== null && isUrlOnlyText(payload.mail_ballot_request_deadline_rule)) {
     return {
@@ -366,6 +452,20 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     return {
       ok: false,
       reason: "mail_ballot_return_deadline_rule must be plain-language text, not a URL",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (payload.early_voting_start_date_rule !== null && isUrlOnlyText(payload.early_voting_start_date_rule)) {
+    return {
+      ok: false,
+      reason: "early_voting_start_date_rule must be plain-language text, not a URL",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (payload.early_voting_end_date_rule !== null && isUrlOnlyText(payload.early_voting_end_date_rule)) {
+    return {
+      ok: false,
+      reason: "early_voting_end_date_rule must be plain-language text, not a URL",
       errorCode: "SCHEMA_MISMATCH",
     };
   }
@@ -390,6 +490,13 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     return {
       ok: false,
       reason: "online_registration_deadline_rule must be plain-language text, not a URL",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (isUrlOnlyText(payload.in_person_registration_deadline_rule)) {
+    return {
+      ok: false,
+      reason: "in_person_registration_deadline_rule must be plain-language text, not a URL",
       errorCode: "SCHEMA_MISMATCH",
     };
   }

@@ -4,10 +4,14 @@ import { createClient } from "redis";
 import {
   STATE_RESOURCE_ABBREVIATION_REGEX,
   STATE_RESOURCE_DRAFT_MARKER_FIELDS,
+  STATE_RESOURCE_EARLY_VOTING_END_DATE_RULE_MAX_LENGTH,
+  STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH,
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIPS_REGEX,
   STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH,
+  STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH,
+  isValidStateResourceIdRequirementValue,
   STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
@@ -570,6 +574,16 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   ) {
     reasons.push("mail_ballot_return_deadline_type must be postmarked_by, received_by, or null");
   }
+  if (!Object.hasOwn(input, "early_voting_start_date_rule")) {
+    reasons.push("early_voting_start_date_rule is required and must be null or non-empty string");
+  } else if (!(input.early_voting_start_date_rule === null || isNonEmptyString(input.early_voting_start_date_rule))) {
+    reasons.push("early_voting_start_date_rule must be null or a non-empty string");
+  }
+  if (!Object.hasOwn(input, "early_voting_end_date_rule")) {
+    reasons.push("early_voting_end_date_rule is required and must be null or non-empty string");
+  } else if (!(input.early_voting_end_date_rule === null || isNonEmptyString(input.early_voting_end_date_rule))) {
+    reasons.push("early_voting_end_date_rule must be null or a non-empty string");
+  }
 
   if (reasons.length > 0) {
     if (looksLikeDraftPayload) {
@@ -594,12 +608,22 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       : (input.mail_ballot_return_deadline_type as "postmarked_by" | "received_by");
   const polling_hours = (input.polling_hours as string).trim();
   const id_requirements = (input.id_requirements as string).trim();
+  const early_voting_available = input.early_voting_available as boolean;
+  const early_voting_start_date_rule =
+    input.early_voting_start_date_rule === null
+      ? null
+      : (input.early_voting_start_date_rule as string).trim();
+  const early_voting_end_date_rule =
+    input.early_voting_end_date_rule === null
+      ? null
+      : (input.early_voting_end_date_rule as string).trim();
   const same_day_registration_available = input.same_day_registration_available as boolean;
   const online_registration_available = input.online_registration_available as boolean;
   const online_registration_deadline_rule =
     input.online_registration_deadline_rule === null
       ? null
       : (input.online_registration_deadline_rule as string).trim();
+  const in_person_registration_deadline_rule = (input.in_person_registration_deadline_rule as string).trim();
 
   if (!STATE_RESOURCE_FIPS_REGEX.test(state_fips)) {
     reasons.push("state_fips must be exactly two digits");
@@ -640,6 +664,18 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   if (!mail_voting_available && mail_ballot_return_deadline_type !== null) {
     reasons.push("mail_ballot_return_deadline_type must be null when mail_voting_available is false");
   }
+  if (early_voting_available && early_voting_start_date_rule === null) {
+    reasons.push("early_voting_start_date_rule must be provided when early_voting_available is true");
+  }
+  if (early_voting_available && early_voting_end_date_rule === null) {
+    reasons.push("early_voting_end_date_rule must be provided when early_voting_available is true");
+  }
+  if (!early_voting_available && early_voting_start_date_rule !== null) {
+    reasons.push("early_voting_start_date_rule must be null when early_voting_available is false");
+  }
+  if (!early_voting_available && early_voting_end_date_rule !== null) {
+    reasons.push("early_voting_end_date_rule must be null when early_voting_available is false");
+  }
 
   if (
     mail_ballot_request_deadline_rule !== null &&
@@ -657,6 +693,22 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       `mail_ballot_return_deadline_rule must be ${STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH} characters or fewer`
     );
   }
+  if (
+    early_voting_start_date_rule !== null &&
+    early_voting_start_date_rule.length > STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH
+  ) {
+    reasons.push(
+      `early_voting_start_date_rule must be ${STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH} characters or fewer`
+    );
+  }
+  if (
+    early_voting_end_date_rule !== null &&
+    early_voting_end_date_rule.length > STATE_RESOURCE_EARLY_VOTING_END_DATE_RULE_MAX_LENGTH
+  ) {
+    reasons.push(
+      `early_voting_end_date_rule must be ${STATE_RESOURCE_EARLY_VOTING_END_DATE_RULE_MAX_LENGTH} characters or fewer`
+    );
+  }
 
   if (polling_hours.length > STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH) {
     reasons.push(`polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} characters or fewer`);
@@ -664,6 +716,11 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 
   if (id_requirements.length > STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH) {
     reasons.push(`id_requirements must be ${STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH} characters or fewer`);
+  }
+  if (!isValidStateResourceIdRequirementValue(id_requirements)) {
+    reasons.push(
+      "id_requirements must be one of: Strict photo ID, Strict non-photo ID, Non-strict photo ID, Non-strict, non-photo ID, No document required to vote"
+    );
   }
   if (
     online_registration_deadline_rule !== null &&
@@ -673,12 +730,25 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       `online_registration_deadline_rule must be ${STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH} characters or fewer`
     );
   }
+  if (
+    in_person_registration_deadline_rule.length > STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH
+  ) {
+    reasons.push(
+      `in_person_registration_deadline_rule must be ${STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH} characters or fewer`
+    );
+  }
 
   if (mail_ballot_request_deadline_rule !== null && isUrlOnlyText(mail_ballot_request_deadline_rule)) {
     reasons.push("mail_ballot_request_deadline_rule must be plain-language text, not a URL");
   }
   if (mail_ballot_return_deadline_rule !== null && isUrlOnlyText(mail_ballot_return_deadline_rule)) {
     reasons.push("mail_ballot_return_deadline_rule must be plain-language text, not a URL");
+  }
+  if (early_voting_start_date_rule !== null && isUrlOnlyText(early_voting_start_date_rule)) {
+    reasons.push("early_voting_start_date_rule must be plain-language text, not a URL");
+  }
+  if (early_voting_end_date_rule !== null && isUrlOnlyText(early_voting_end_date_rule)) {
+    reasons.push("early_voting_end_date_rule must be plain-language text, not a URL");
   }
 
   if (isUrlOnlyText(polling_hours)) {
@@ -690,6 +760,9 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   }
   if (online_registration_deadline_rule !== null && isUrlOnlyText(online_registration_deadline_rule)) {
     reasons.push("online_registration_deadline_rule must be plain-language text, not a URL");
+  }
+  if (isUrlOnlyText(in_person_registration_deadline_rule)) {
+    reasons.push("in_person_registration_deadline_rule must be plain-language text, not a URL");
   }
 
   if (
@@ -704,6 +777,18 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   ) {
     reasons.push(`mail_ballot_return_deadline_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
   }
+  if (
+    early_voting_start_date_rule !== null &&
+    early_voting_start_date_rule.length < STATE_RESOURCE_TEXT_MIN_LENGTH
+  ) {
+    reasons.push(`early_voting_start_date_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
+  }
+  if (
+    early_voting_end_date_rule !== null &&
+    early_voting_end_date_rule.length < STATE_RESOURCE_TEXT_MIN_LENGTH
+  ) {
+    reasons.push(`early_voting_end_date_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
+  }
 
   if (polling_hours.length < STATE_RESOURCE_TEXT_MIN_LENGTH) {
     reasons.push(`polling_hours must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
@@ -717,6 +802,9 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
     online_registration_deadline_rule.length < STATE_RESOURCE_TEXT_MIN_LENGTH
   ) {
     reasons.push(`online_registration_deadline_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
+  }
+  if (in_person_registration_deadline_rule.length < STATE_RESOURCE_TEXT_MIN_LENGTH) {
+    reasons.push(`in_person_registration_deadline_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
   }
 
   try {
@@ -751,11 +839,15 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       mail_ballot_request_deadline_rule,
       mail_ballot_return_deadline_rule,
       mail_ballot_return_deadline_type,
+      early_voting_available,
+      early_voting_start_date_rule,
+      early_voting_end_date_rule,
       polling_hours,
       id_requirements,
       same_day_registration_available,
       online_registration_available,
       online_registration_deadline_rule,
+      in_person_registration_deadline_rule,
       sources: sourcesResult.sources,
     },
     warnings: detectConflictWarnings(
@@ -769,11 +861,15 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
         mail_ballot_request_deadline_rule,
         mail_ballot_return_deadline_rule,
         mail_ballot_return_deadline_type,
+        early_voting_available,
+        early_voting_start_date_rule,
+        early_voting_end_date_rule,
         polling_hours,
         id_requirements,
         same_day_registration_available,
         online_registration_available,
         online_registration_deadline_rule,
+        in_person_registration_deadline_rule,
         sources: sourcesResult.sources,
       },
       extractEvidenceSnippets(input)

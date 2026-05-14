@@ -416,8 +416,11 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
   const mailBallotRequestDeadlineRule = `In ${draft.state_name}, request deadlines are set by state election guidance and can vary by election.`;
   const mailBallotReturnDeadlineRule = `In ${draft.state_name}, completed mail ballots must be returned by the applicable state deadline.`;
   const pollingHours = "Polling locations usually open and close at posted local hours on election day.";
-  const idRequirements = `${draft.state_name} voter ID requirements depend on election type and local/state rules.`;
+  const idRequirements = "Non-strict photo ID";
   const onlineRegistrationDeadlineRule = `${draft.state_name} online voter registration deadlines vary by election and are posted on the official state registration page.`;
+  const inPersonRegistrationDeadlineRule = `${draft.state_name} in-person voter registration deadlines vary by election and are posted by state or local election officials.`;
+  const earlyVotingStartDateRule = `${draft.state_name} early voting start dates vary by election and are published by state or local election offices.`;
+  const earlyVotingEndDateRule = `${draft.state_name} early voting end dates are set by election authorities and can differ by election.`;
 
   const sources: StateResourceSources = {
     polling_place_url: [
@@ -435,6 +438,15 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     mail_ballot_return_deadline_type: [
       voteByMailEvidence.url,
     ],
+    early_voting_available: [
+      registrationEvidence.url,
+    ],
+    early_voting_start_date_rule: [
+      registrationEvidence.url,
+    ],
+    early_voting_end_date_rule: [
+      registrationEvidence.url,
+    ],
     polling_hours: [
       pollingHoursEvidence.url,
     ],
@@ -450,6 +462,9 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     online_registration_deadline_rule: [
       registrationEvidence.url,
     ],
+    in_person_registration_deadline_rule: [
+      registrationEvidence.url,
+    ],
   };
 
   return {
@@ -462,11 +477,15 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     mail_ballot_request_deadline_rule: mailBallotRequestDeadlineRule,
     mail_ballot_return_deadline_rule: mailBallotReturnDeadlineRule,
     mail_ballot_return_deadline_type: "received_by",
+    early_voting_available: true,
+    early_voting_start_date_rule: earlyVotingStartDateRule,
+    early_voting_end_date_rule: earlyVotingEndDateRule,
     polling_hours: pollingHours,
     id_requirements: idRequirements,
     same_day_registration_available: true,
     online_registration_available: true,
     online_registration_deadline_rule: onlineRegistrationDeadlineRule,
+    in_person_registration_deadline_rule: inPersonRegistrationDeadlineRule,
     sources,
   };
 }
@@ -522,6 +541,18 @@ function validateMockPayload(payload: StateResourcePayload, evidence: EvidenceSn
   }
   if (payload.mail_voting_available && payload.mail_ballot_return_deadline_type === null) {
     return "mock payload mail_ballot_return_deadline_type must be set when mail voting is available";
+  }
+  if (payload.early_voting_available && payload.early_voting_start_date_rule === null) {
+    return "mock payload early_voting_start_date_rule must be set when early voting is available";
+  }
+  if (payload.early_voting_available && payload.early_voting_end_date_rule === null) {
+    return "mock payload early_voting_end_date_rule must be set when early voting is available";
+  }
+  if (!payload.early_voting_available && payload.early_voting_start_date_rule !== null) {
+    return "mock payload early_voting_start_date_rule must be null when early voting is unavailable";
+  }
+  if (!payload.early_voting_available && payload.early_voting_end_date_rule !== null) {
+    return "mock payload early_voting_end_date_rule must be null when early voting is unavailable";
   }
   if (
     payload.mail_ballot_request_deadline_rule !== null &&
