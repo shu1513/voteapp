@@ -44,6 +44,7 @@ import {
   STATE_RESOURCE_SOURCE_FIELDS,
 } from "../../contracts/stateResourceEnrichmentContract.js";
 import { getDeterministicEarlyVotingByFips } from "../../constants/stateEarlyVotingByFips.js";
+import { getDeterministicIdRequirementByFips } from "../../constants/stateIdRequirementsByFips.js";
 import { getDeterministicPollingHoursByFips } from "../../constants/statePollingHoursByFips.js";
 import { collectStateResourceEvidence } from "../evidence/stateResourceEvidenceCollector.js";
 import type {
@@ -1330,6 +1331,40 @@ async function processMessage(
       ];
       progressEntry.provider = "backend";
       progressEntry.model = "deterministic_polling_hours";
+      progressEntry.promptVersion = finalPromptVersion;
+      progressEntry.lastErrorCode = null;
+      progressEntry.lastReason = null;
+
+      await saveDraftProgress(pool, ingestKey, attachGroupProgressToDraft(draft.draft, progress), expectedRunId);
+
+      applyGroupPayload(mergedFields, fixedPayload);
+      finalEvidence = mergeEvidenceSnippets(finalEvidence, progressEntry.evidence);
+      finalProvider = progressEntry.provider;
+      finalModel = progressEntry.model;
+      continue;
+    }
+
+    if (group === "id_requirements") {
+      const fixedIdRequirement =
+        getDeterministicIdRequirementByFips(draft.draft.state_fips) ?? "No document required to vote";
+      const fixedPayload: GroupPayloadFragment = {
+        id_requirements: fixedIdRequirement,
+        sources: {
+          id_requirements: [STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED],
+        },
+      };
+
+      progressEntry.status = "validated";
+      progressEntry.attempts += 1;
+      progressEntry.payload = fixedPayload;
+      progressEntry.evidence = [
+        {
+          url: STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED,
+          title: "NCSL voter ID",
+        },
+      ];
+      progressEntry.provider = "backend";
+      progressEntry.model = "deterministic_id_requirements";
       progressEntry.promptVersion = finalPromptVersion;
       progressEntry.lastErrorCode = null;
       progressEntry.lastReason = null;

@@ -1,0 +1,62 @@
+/**
+ * Deterministic statewide voter ID requirement category keyed by 2-digit state FIPS (50 states + DC).
+ * Source reference for all rows:
+ * https://www.ncsl.org/elections-and-campaigns/voter-id
+ */
+export const STATE_ID_REQUIREMENTS_BY_FIPS: Readonly<Record<string, string>> = {
+  "01": "Non-strict photo ID",
+  "02": "Non-strict photo ID",
+  "04": "Strict photo ID",
+  "05": "Strict photo ID",
+  "06": "Non-strict, non-photo ID",
+  "08": "Non-strict photo ID",
+  "09": "No document required to vote",
+  "10": "No document required to vote",
+  "11": "No document required to vote",
+  "12": "Strict photo ID",
+  "13": "Strict photo ID",
+  "15": "No document required to vote",
+  "16": "No document required to vote",
+  "17": "No document required to vote",
+  "18": "Non-strict photo ID",
+  "19": "No document required to vote",
+  "20": "No document required to vote",
+  "21": "Non-strict photo ID",
+  "22": "No document required to vote",
+  "23": "No document required to vote",
+  "24": "No document required to vote",
+  "25": "No document required to vote",
+  "26": "No document required to vote",
+  "27": "No document required to vote",
+  "28": "Strict photo ID",
+  "29": "Strict photo ID",
+  "30": "No document required to vote",
+  "31": "No document required to vote",
+  "32": "No document required to vote",
+  "33": "No document required to vote",
+  "34": "No document required to vote",
+  "35": "No document required to vote",
+  "36": "No document required to vote",
+  "37": "No document required to vote",
+  "38": "Non-strict photo ID",
+  "39": "Non-strict photo ID",
+  "40": "Non-strict photo ID",
+  "41": "No document required to vote",
+  "42": "No document required to vote",
+  "44": "No document required to vote",
+  "45": "Non-strict photo ID",
+  "46": "Non-strict photo ID",
+  "47": "Strict photo ID",
+  "48": "Strict photo ID",
+  "49": "No document required to vote",
+  "50": "No document required to vote",
+  "51": "Strict photo ID",
+  "53": "No document required to vote",
+  "54": "Strict photo ID",
+  "55": "Strict photo ID",
+  "56": "Strict photo ID",
+} as const;
+
+export function getDeterministicIdRequirementByFips(stateFips: string): string | null {
+  return STATE_ID_REQUIREMENTS_BY_FIPS[stateFips] ?? null;
+}
