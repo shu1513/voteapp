@@ -17,11 +17,10 @@ type Candidate = {
 
 const CANDIDATES: Candidate[] = [
   { provider: "gemini", model: "gemini-2.5-flash-lite" },
-  { provider: "gemini", model: "gemini-3.1-flash-lite" },
   { provider: "openai", model: "gpt-5.4-mini" },
   { provider: "claude", model: "claude-sonnet-4-6" },
   { provider: "gemini", model: "gemini-2.5-pro" },
-  { provider: "claude", model: "claude-opus-4-7" },
+  { provider: "claude", model: "claude-opus-4-6" },
 ];
 
 const INPUT: EnrichStateResourcesInput = {

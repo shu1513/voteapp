@@ -7,10 +7,9 @@ import {
   STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
-  STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
-  STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   STATE_RESOURCE_SOURCE_FIELDS,
 } from "../contracts/stateResourceEnrichmentContract.js";
+import { parseCanonicalStateResourcePayload } from "../contracts/stateResourcePayloadContract.js";
 import type { StateResourcePayload, StateResourceSources } from "../types/stateResource.js";
 import {
   getStateResourceFieldGroupConfig,
@@ -474,111 +473,6 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
 
   const input = raw as Record<string, unknown>;
 
-  for (const key of AI_REQUIRED_TEXT_FIELDS) {
-    if (!isNonEmptyString(input[key])) {
-      return {
-        ok: false,
-        reason: `Missing required field: ${key}`,
-        errorCode: "MISSING_REQUIRED_FIELDS",
-      };
-    }
-  }
-
-  for (const key of STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS) {
-    if (typeof input[key] !== "boolean") {
-      return {
-        ok: false,
-        reason: `Missing required boolean field: ${key}`,
-        errorCode: "MISSING_REQUIRED_FIELDS",
-      };
-    }
-  }
-  if (!Object.hasOwn(input, "mail_ballot_request_deadline_rule")) {
-    return {
-      ok: false,
-      reason: "Missing required field: mail_ballot_request_deadline_rule",
-      errorCode: "MISSING_REQUIRED_FIELDS",
-    };
-  }
-  if (!(input.mail_ballot_request_deadline_rule === null || isNonEmptyString(input.mail_ballot_request_deadline_rule))) {
-    return {
-      ok: false,
-      reason: "mail_ballot_request_deadline_rule must be null or a non-empty string",
-      errorCode: "SCHEMA_MISMATCH",
-    };
-  }
-  if (!Object.hasOwn(input, "mail_ballot_return_deadline_rule")) {
-    return {
-      ok: false,
-      reason: "Missing required field: mail_ballot_return_deadline_rule",
-      errorCode: "MISSING_REQUIRED_FIELDS",
-    };
-  }
-  if (!(input.mail_ballot_return_deadline_rule === null || isNonEmptyString(input.mail_ballot_return_deadline_rule))) {
-    return {
-      ok: false,
-      reason: "mail_ballot_return_deadline_rule must be null or a non-empty string",
-      errorCode: "SCHEMA_MISMATCH",
-    };
-  }
-  if (!Object.hasOwn(input, "mail_ballot_return_deadline_type")) {
-    return {
-      ok: false,
-      reason: "Missing required field: mail_ballot_return_deadline_type",
-      errorCode: "MISSING_REQUIRED_FIELDS",
-    };
-  }
-  if (!(input.mail_ballot_return_deadline_type === null || isValidMailDeadlineType(input.mail_ballot_return_deadline_type))) {
-    return {
-      ok: false,
-      reason: "mail_ballot_return_deadline_type must be null, postmarked_by, or received_by",
-      errorCode: "SCHEMA_MISMATCH",
-    };
-  }
-  if (!Object.hasOwn(input, "early_voting_start_date_rule")) {
-    return {
-      ok: false,
-      reason: "Missing required field: early_voting_start_date_rule",
-      errorCode: "MISSING_REQUIRED_FIELDS",
-    };
-  }
-  if (!(input.early_voting_start_date_rule === null || isNonEmptyString(input.early_voting_start_date_rule))) {
-    return {
-      ok: false,
-      reason: "early_voting_start_date_rule must be null or a non-empty string",
-      errorCode: "SCHEMA_MISMATCH",
-    };
-  }
-  if (!Object.hasOwn(input, "early_voting_end_date_rule")) {
-    return {
-      ok: false,
-      reason: "Missing required field: early_voting_end_date_rule",
-      errorCode: "MISSING_REQUIRED_FIELDS",
-    };
-  }
-  if (!(input.early_voting_end_date_rule === null || isNonEmptyString(input.early_voting_end_date_rule))) {
-    return {
-      ok: false,
-      reason: "early_voting_end_date_rule must be null or a non-empty string",
-      errorCode: "SCHEMA_MISMATCH",
-    };
-  }
-
-  if (!Object.hasOwn(input, "online_registration_deadline_rule")) {
-    return {
-      ok: false,
-      reason: "Missing required field: online_registration_deadline_rule",
-      errorCode: "MISSING_REQUIRED_FIELDS",
-    };
-  }
-  if (!(input.online_registration_deadline_rule === null || isNonEmptyString(input.online_registration_deadline_rule))) {
-    return {
-      ok: false,
-      reason: "online_registration_deadline_rule must be null or a non-empty string",
-      errorCode: "SCHEMA_MISMATCH",
-    };
-  }
-
   // Canonical normalization: if online registration is not available,
   // force deadline rule to null instead of failing.
   if (input.online_registration_available === false) {
@@ -594,71 +488,22 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     input.early_voting_end_date_rule = null;
   }
 
-  if (typeof input.sources !== "object" || input.sources === null || Array.isArray(input.sources)) {
+  const parsedCanonical = parseCanonicalStateResourcePayload(input);
+  if (!parsedCanonical.ok) {
+    const missingLikeReason =
+      parsedCanonical.reason.includes("must be a non-empty string") ||
+      parsedCanonical.reason.includes("must be boolean") ||
+      parsedCanonical.reason.includes("must be present") ||
+      parsedCanonical.reason.includes("must be a non-empty array") ||
+      parsedCanonical.reason.includes("must be an object");
     return {
       ok: false,
-      reason: "Missing or invalid sources object",
-      errorCode: "MISSING_REQUIRED_FIELDS",
+      reason: parsedCanonical.reason,
+      errorCode: missingLikeReason ? "MISSING_REQUIRED_FIELDS" : "SCHEMA_MISMATCH",
     };
   }
 
-  const sourcesObj = input.sources as Record<string, unknown>;
-  const sanitizedSources = {} as StateResourceSources;
-  for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
-    const citations = sourcesObj[key];
-    if (!Array.isArray(citations) || citations.length === 0) {
-      return {
-        ok: false,
-        reason: `sources.${key} must be a non-empty array`,
-        errorCode: "MISSING_REQUIRED_FIELDS",
-      };
-    }
-
-    const sanitizedBucket: string[] = [];
-    for (const citation of citations) {
-      const sanitized = sanitizeCitationUrl(citation);
-      if (!sanitized) {
-        return {
-          ok: false,
-          reason: `sources.${key} contains invalid citation URLs`,
-          errorCode: "SCHEMA_MISMATCH",
-        };
-      }
-      sanitizedBucket.push(sanitized);
-    }
-
-    sanitizedSources[key] = sanitizedBucket;
-  }
-
-  const payload: StateResourcePayload = {
-    state_fips: isNonEmptyString(input.state_fips) ? input.state_fips.trim() : "",
-    state_abbreviation: isNonEmptyString(input.state_abbreviation) ? input.state_abbreviation.trim() : "",
-    state_name: isNonEmptyString(input.state_name) ? input.state_name.trim() : "",
-    polling_place_url: (input.polling_place_url as string).trim(),
-    voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
-    mail_voting_available: input.mail_voting_available as boolean,
-    mail_ballot_request_deadline_rule:
-      input.mail_ballot_request_deadline_rule === null ? null : (input.mail_ballot_request_deadline_rule as string).trim(),
-    mail_ballot_return_deadline_rule:
-      input.mail_ballot_return_deadline_rule === null ? null : (input.mail_ballot_return_deadline_rule as string).trim(),
-    mail_ballot_return_deadline_type:
-      input.mail_ballot_return_deadline_type === null
-        ? null
-        : (input.mail_ballot_return_deadline_type as "postmarked_by" | "received_by"),
-    early_voting_available: input.early_voting_available as boolean,
-    early_voting_start_date_rule:
-      input.early_voting_start_date_rule === null ? null : (input.early_voting_start_date_rule as string).trim(),
-    early_voting_end_date_rule:
-      input.early_voting_end_date_rule === null ? null : (input.early_voting_end_date_rule as string).trim(),
-    polling_hours: (input.polling_hours as string).trim(),
-    id_requirements: (input.id_requirements as string).trim(),
-    same_day_registration_available: input.same_day_registration_available as boolean,
-    online_registration_available: input.online_registration_available as boolean,
-    online_registration_deadline_rule:
-      input.online_registration_deadline_rule === null ? null : (input.online_registration_deadline_rule as string).trim(),
-    in_person_registration_deadline_rule: (input.in_person_registration_deadline_rule as string).trim(),
-    sources: sanitizedSources,
-  };
+  const payload = parsedCanonical.payload;
 
   if (!isHttpUrl(payload.polling_place_url)) {
     return { ok: false, reason: "polling_place_url must be a valid http(s) URL", errorCode: "SCHEMA_MISMATCH" };

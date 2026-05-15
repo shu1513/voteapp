@@ -16,11 +16,10 @@ import {
   STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
-  STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
-  STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
   STATE_RESOURCE_TEXT_MIN_LENGTH,
 } from "../../contracts/stateResourceEnrichmentContract.js";
+import { parseCanonicalStateResourcePayload } from "../../contracts/stateResourcePayloadContract.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_ITEM_TYPE_STATE_RESOURCES,
@@ -537,93 +536,36 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   const input = payload as Record<string, unknown>;
   const reasons: string[] = [];
   const looksLikeDraftPayload = STATE_RESOURCE_DRAFT_MARKER_FIELDS.some((key) => Object.hasOwn(input, key));
-
-  for (const key of STATE_RESOURCE_REQUIRED_TEXT_FIELDS) {
-    if (!isNonEmptyString(input[key])) {
-      reasons.push(`${key} is required and must be a non-empty string`);
-    }
-  }
-  for (const key of STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS) {
-    if (typeof input[key] !== "boolean") {
-      reasons.push(`${key} is required and must be boolean`);
-    }
-  }
-  if (!Object.hasOwn(input, "online_registration_deadline_rule")) {
-    reasons.push("online_registration_deadline_rule is required and must be null or non-empty string");
-  } else if (!(input.online_registration_deadline_rule === null || isNonEmptyString(input.online_registration_deadline_rule))) {
-    reasons.push("online_registration_deadline_rule must be null or a non-empty string");
-  }
-  if (!Object.hasOwn(input, "mail_ballot_request_deadline_rule")) {
-    reasons.push("mail_ballot_request_deadline_rule is required and must be null or non-empty string");
-  } else if (!(input.mail_ballot_request_deadline_rule === null || isNonEmptyString(input.mail_ballot_request_deadline_rule))) {
-    reasons.push("mail_ballot_request_deadline_rule must be null or a non-empty string");
-  }
-  if (!Object.hasOwn(input, "mail_ballot_return_deadline_rule")) {
-    reasons.push("mail_ballot_return_deadline_rule is required and must be null or non-empty string");
-  } else if (!(input.mail_ballot_return_deadline_rule === null || isNonEmptyString(input.mail_ballot_return_deadline_rule))) {
-    reasons.push("mail_ballot_return_deadline_rule must be null or a non-empty string");
-  }
-  if (!Object.hasOwn(input, "mail_ballot_return_deadline_type")) {
-    reasons.push("mail_ballot_return_deadline_type is required and must be postmarked_by, received_by, or null");
-  } else if (
-    !(
-      input.mail_ballot_return_deadline_type === null ||
-      input.mail_ballot_return_deadline_type === "postmarked_by" ||
-      input.mail_ballot_return_deadline_type === "received_by"
-    )
-  ) {
-    reasons.push("mail_ballot_return_deadline_type must be postmarked_by, received_by, or null");
-  }
-  if (!Object.hasOwn(input, "early_voting_start_date_rule")) {
-    reasons.push("early_voting_start_date_rule is required and must be null or non-empty string");
-  } else if (!(input.early_voting_start_date_rule === null || isNonEmptyString(input.early_voting_start_date_rule))) {
-    reasons.push("early_voting_start_date_rule must be null or a non-empty string");
-  }
-  if (!Object.hasOwn(input, "early_voting_end_date_rule")) {
-    reasons.push("early_voting_end_date_rule is required and must be null or non-empty string");
-  } else if (!(input.early_voting_end_date_rule === null || isNonEmptyString(input.early_voting_end_date_rule))) {
-    reasons.push("early_voting_end_date_rule must be null or a non-empty string");
-  }
-
-  if (reasons.length > 0) {
+  const parsed = parseCanonicalStateResourcePayload(payload);
+  if (!parsed.ok) {
+    reasons.push(parsed.reason);
     if (looksLikeDraftPayload) {
       reasons.unshift("payload is a census draft and has not been AI-enriched with required state_resources fields yet");
     }
     return { ok: false, reasons };
   }
 
-  const state_fips = (input.state_fips as string).trim();
-  const state_abbreviation = (input.state_abbreviation as string).trim();
-  const state_name = (input.state_name as string).trim();
-  const polling_place_url = (input.polling_place_url as string).trim();
-  const voter_registration_url = (input.voter_registration_url as string).trim();
-  const mail_voting_available = input.mail_voting_available as boolean;
-  const mail_ballot_request_deadline_rule =
-    input.mail_ballot_request_deadline_rule === null ? null : (input.mail_ballot_request_deadline_rule as string).trim();
-  const mail_ballot_return_deadline_rule =
-    input.mail_ballot_return_deadline_rule === null ? null : (input.mail_ballot_return_deadline_rule as string).trim();
-  const mail_ballot_return_deadline_type =
-    input.mail_ballot_return_deadline_type === null
-      ? null
-      : (input.mail_ballot_return_deadline_type as "postmarked_by" | "received_by");
-  const polling_hours = (input.polling_hours as string).trim();
-  const id_requirements = (input.id_requirements as string).trim();
-  const early_voting_available = input.early_voting_available as boolean;
-  const early_voting_start_date_rule =
-    input.early_voting_start_date_rule === null
-      ? null
-      : (input.early_voting_start_date_rule as string).trim();
-  const early_voting_end_date_rule =
-    input.early_voting_end_date_rule === null
-      ? null
-      : (input.early_voting_end_date_rule as string).trim();
-  const same_day_registration_available = input.same_day_registration_available as boolean;
-  const online_registration_available = input.online_registration_available as boolean;
-  const online_registration_deadline_rule =
-    input.online_registration_deadline_rule === null
-      ? null
-      : (input.online_registration_deadline_rule as string).trim();
-  const in_person_registration_deadline_rule = (input.in_person_registration_deadline_rule as string).trim();
+  const canonicalPayload = parsed.payload;
+  const {
+    state_fips,
+    state_abbreviation,
+    state_name,
+    polling_place_url,
+    voter_registration_url,
+    mail_voting_available,
+    mail_ballot_request_deadline_rule,
+    mail_ballot_return_deadline_rule,
+    mail_ballot_return_deadline_type,
+    early_voting_available,
+    early_voting_start_date_rule,
+    early_voting_end_date_rule,
+    polling_hours,
+    id_requirements,
+    same_day_registration_available,
+    online_registration_available,
+    online_registration_deadline_rule,
+    in_person_registration_deadline_rule,
+  } = canonicalPayload;
 
   if (!STATE_RESOURCE_FIPS_REGEX.test(state_fips)) {
     reasons.push("state_fips must be exactly two digits");
@@ -818,7 +760,7 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
     reasons.push(toReason(error));
   }
 
-  const sourcesResult = validateSources(input.sources);
+  const sourcesResult = validateSources(canonicalPayload.sources);
   if (!sourcesResult.ok) {
     reasons.push(sourcesResult.reason);
   }
@@ -827,53 +769,15 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
     return { ok: false, reasons };
   }
 
+  const normalizedPayload: StateResourcePayload = {
+    ...canonicalPayload,
+    sources: sourcesResult.sources,
+  };
+
   return {
     ok: true,
-    payload: {
-      state_fips,
-      state_abbreviation,
-      state_name,
-      polling_place_url,
-      voter_registration_url,
-      mail_voting_available,
-      mail_ballot_request_deadline_rule,
-      mail_ballot_return_deadline_rule,
-      mail_ballot_return_deadline_type,
-      early_voting_available,
-      early_voting_start_date_rule,
-      early_voting_end_date_rule,
-      polling_hours,
-      id_requirements,
-      same_day_registration_available,
-      online_registration_available,
-      online_registration_deadline_rule,
-      in_person_registration_deadline_rule,
-      sources: sourcesResult.sources,
-    },
-    warnings: detectConflictWarnings(
-      {
-        state_fips,
-        state_abbreviation,
-        state_name,
-        polling_place_url,
-        voter_registration_url,
-        mail_voting_available,
-        mail_ballot_request_deadline_rule,
-        mail_ballot_return_deadline_rule,
-        mail_ballot_return_deadline_type,
-        early_voting_available,
-        early_voting_start_date_rule,
-        early_voting_end_date_rule,
-        polling_hours,
-        id_requirements,
-        same_day_registration_available,
-        online_registration_available,
-        online_registration_deadline_rule,
-        in_person_registration_deadline_rule,
-        sources: sourcesResult.sources,
-      },
-      extractEvidenceSnippets(input)
-    ),
+    payload: normalizedPayload,
+    warnings: detectConflictWarnings(normalizedPayload, extractEvidenceSnippets(input)),
   };
 }
 
