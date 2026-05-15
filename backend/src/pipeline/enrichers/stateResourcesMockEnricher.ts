@@ -296,7 +296,7 @@ function scorePollingEvidence(item: EvidenceSnippet, draft: StateResourceDraftPa
   const host = getHostname(normalizedUrl);
   const urlLower = normalizedUrl.toLowerCase();
   const titleLower = item.title.toLowerCase();
-  const snippetLower = item.snippet.toLowerCase();
+  const snippetLower = (item.snippet ?? "").toLowerCase();
   const combined = `${titleLower} ${snippetLower}`;
   const stateNameLower = draft.state_name.trim().toLowerCase();
   const stateSlug = stateNameLower.replace(/\s+/g, "-");
@@ -306,7 +306,7 @@ function scorePollingEvidence(item: EvidenceSnippet, draft: StateResourceDraftPa
   const hasOnlyNonPollingSignal =
     /\b(register|registration|absentee|mail|id[-\s]?laws?|identification)\b/.test(combined) &&
     !hasPollingSignal;
-  const stateSignal = hasStateSignal(normalizedUrl, item.title, item.snippet, draft);
+  const stateSignal = hasStateSignal(normalizedUrl, item.title, item.snippet ?? "", draft);
 
   let score = 0;
 

@@ -5,6 +5,7 @@ import type {
   ProviderGenerateResult,
 } from "../types.js";
 import { buildRetryFeedbackPromptLines } from "../retryFeedback.js";
+import { buildScopedOpenAiJsonSchema, buildScopedPrompt } from "./stateResourceScopedOutput.js";
 
 const OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
 const SOURCES_BUCKET_SCHEMA = {
@@ -124,6 +125,59 @@ function trimDebugText(input: string, maxChars = 20_000): string {
   return `${input.slice(0, maxChars)}...`;
 }
 
+function extractLeadingJsonObject(
+  text: string
+): { candidate: string; trailing: string } | null {
+  const trimmed = text.trimStart();
+  if (!trimmed.startsWith("{")) {
+    return null;
+  }
+
+  let depth = 0;
+  let inString = false;
+  let escaping = false;
+
+  for (let i = 0; i < trimmed.length; i += 1) {
+    const ch = trimmed[i];
+
+    if (inString) {
+      if (escaping) {
+        escaping = false;
+      } else if (ch === "\\") {
+        escaping = true;
+      } else if (ch === "\"") {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (ch === "\"") {
+      inString = true;
+      continue;
+    }
+
+    if (ch === "{") {
+      depth += 1;
+      continue;
+    }
+
+    if (ch === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return {
+          candidate: trimmed.slice(0, i + 1),
+          trailing: trimmed.slice(i + 1),
+        };
+      }
+      if (depth < 0) {
+        return null;
+      }
+    }
+  }
+
+  return null;
+}
+
 function buildPromptVariantLines(promptVariant: PromptVariant | undefined): string[] {
   if (promptVariant !== "citation_repair") {
     return [];
@@ -139,13 +193,29 @@ function buildPromptVariantLines(promptVariant: PromptVariant | undefined): stri
 
 function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: string[]): string {
   const promptVariantLines = buildPromptVariantLines(input.promptVariant);
+  const scopedPrompt = buildScopedPrompt(input);
+  if (scopedPrompt) {
+    return [
+      scopedPrompt,
+      "Prefer official election sources (.gov, secretary of state, county elections) when available.",
+      "Do not add markdown fences or commentary.",
+      ...(promptVariantLines.length > 0 ? ["", ...promptVariantLines] : []),
+      ...(retryFeedbackLines.length > 0 ? ["", ...retryFeedbackLines] : []),
+      "",
+      "Draft input:",
+      JSON.stringify(input.draft),
+      "",
+      "Evidence URLs:",
+      JSON.stringify(input.evidence),
+    ].join("\n");
+  }
 
   return [
     "Return only one JSON object with these keys exactly:",
     "polling_place_url, mail_voting_available, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, mail_ballot_return_deadline_type, early_voting_available, early_voting_start_date_rule, early_voting_end_date_rule, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule, in_person_registration_deadline_rule, sources.",
     "sources must include keys: polling_place_url, mail_voting_available, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, mail_ballot_return_deadline_type, early_voting_available, early_voting_start_date_rule, early_voting_end_date_rule, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule, in_person_registration_deadline_rule.",
     "Each sources[key] must be an array of URL strings.",
-    "Prefer using Evidence snippets URLs when possible.",
+    "Prefer using Evidence URLs when possible.",
     "You may cite additional public URLs if they directly support the claim; do not invent or rewrite URLs.",
     "Per-field citation rule:",
     "- For each field, research until you find URL(s) that directly support the final statement.",
@@ -153,31 +223,31 @@ function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: strin
     "- In sources[field_name], include only URL(s) that were actually used to support that field's final text.",
     "- Do not include attempted URLs that lacked the needed information.",
     "polling_place_url must be a URL.",
-    "For polling_place_url, start from polling reference seed URLs in Evidence snippets, then expand if needed.",
+    "For polling_place_url, start from polling reference seed URLs in Evidence URLs, then expand if needed.",
     "same_day_registration_available must be boolean true or false.",
-    "For same_day_registration_available, start with the NCSL same-day registration reference URL in Evidence snippets (https://www.ncsl.org/elections-and-campaigns/same-day-voter-registration).",
+    "For same_day_registration_available, start with the NCSL same-day registration reference URL in Evidence URLs (https://www.ncsl.org/elections-and-campaigns/same-day-voter-registration).",
     "online_registration_available must be boolean true or false.",
     "If online_registration_available is false, set online_registration_deadline_rule to null.",
     "online_registration_deadline_rule must be a short plain-language sentence (not URL) when online registration is available; otherwise null.",
     "in_person_registration_deadline_rule must be a short plain-language sentence (not URL).",
-    "For in_person_registration_deadline_rule, start with the Vote.gov state registration reference URL in Evidence snippets (https://vote.gov/register/<state-name-lowercase>).",
-    "For online_registration_available and online_registration_deadline_rule, start with the Vote.gov state registration reference URL in Evidence snippets (https://vote.gov/register/<state-name-lowercase>).",
+    "For in_person_registration_deadline_rule, start with the Vote.gov state registration reference URL in Evidence URLs (https://vote.gov/register/<state-name-lowercase>).",
+    "For online_registration_available and online_registration_deadline_rule, start with the Vote.gov state registration reference URL in Evidence URLs (https://vote.gov/register/<state-name-lowercase>).",
     "You may use additional sources beyond that reference URL when needed; it is a starting point, not a restriction.",
     "mail_voting_available must be boolean true or false.",
     "If mail_voting_available is false, set mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, and mail_ballot_return_deadline_type to null.",
     "If mail_voting_available is true, set mail_ballot_return_deadline_rule and mail_ballot_return_deadline_type (postmarked_by or received_by).",
     "early_voting_available must be boolean true or false.",
-    "For early_voting_available, early_voting_start_date_rule, and early_voting_end_date_rule, start with the NCSL early in-person voting reference URL in Evidence snippets (https://www.ncsl.org/elections-and-campaigns/early-in-person-voting).",
+    "For early_voting_available, early_voting_start_date_rule, and early_voting_end_date_rule, start with the NCSL early in-person voting reference URL in Evidence URLs (https://www.ncsl.org/elections-and-campaigns/early-in-person-voting).",
     "If early_voting_available is false, set early_voting_start_date_rule and early_voting_end_date_rule to null.",
     "If early_voting_available is true, set both early_voting_start_date_rule and early_voting_end_date_rule to short plain-language sentences (not URLs).",
     "mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, early_voting_start_date_rule, and early_voting_end_date_rule must be short plain-language sentences (not URLs) when present.",
-    "For mail-voting fields, start with the Vote.gov state registration reference URL in Evidence snippets (https://vote.gov/register/<state-name-lowercase>) before expanding to additional sources.",
+    "For mail-voting fields, start with the Vote.gov state registration reference URL in Evidence URLs (https://vote.gov/register/<state-name-lowercase>) before expanding to additional sources.",
     "For mail_ballot_return_deadline_rule: include a concrete state rule detail.",
     "polling_hours and id_requirements must be plain-language text summaries, not URLs.",
     "For polling_hours: include statewide opening/closing times when available; otherwise explicitly state that hours vary by county/precinct.",
     "For id_requirements, output exactly one value from this set and nothing else:",
     "\"Strict photo ID\", \"Strict non-photo ID\", \"Non-strict photo ID\", \"Non-strict, non-photo ID\", \"No document required to vote\".",
-    "For id_requirements, start with the NCSL voter ID reference URL in Evidence snippets (https://www.ncsl.org/elections-and-campaigns/voter-id).",
+    "For id_requirements, start with the NCSL voter ID reference URL in Evidence URLs (https://www.ncsl.org/elections-and-campaigns/voter-id).",
     "For full-sentence summary fields (mail_ballot_request_deadline_rule when present, mail_ballot_return_deadline_rule when present, early_voting_start_date_rule when present, early_voting_end_date_rule when present, polling_hours, id_requirements, in_person_registration_deadline_rule), provide at least one citation each.",
     "For mail_voting_available, mail_ballot_return_deadline_type when present, early_voting_available, same_day_registration_available, online_registration_available, and online_registration_deadline_rule, provide at least one citation each.",
     "sources.id_requirements must include at least one citation that directly supports the chosen id_requirements category.",
@@ -198,7 +268,7 @@ function buildPrompt(input: EnrichStateResourcesInput, retryFeedbackLines: strin
     "Draft input:",
     JSON.stringify(input.draft),
     "",
-    "Evidence snippets:",
+    "Evidence URLs:",
     JSON.stringify(input.evidence),
   ].join("\n");
 }
@@ -225,6 +295,7 @@ export async function openAiProvider(
   const timeout = setTimeout(() => controller.abort(), config.timeoutMs);
   const retryFeedbackLines = buildRetryFeedbackPromptLines(input.retryFeedback);
   const prompt = buildPrompt(input, retryFeedbackLines);
+  const scopedSchema = buildScopedOpenAiJsonSchema(input.fieldGroup);
   const promptDebugMeta = {
     provider_prompt_variant: input.promptVariant ?? "default",
     provider_prompt_has_retry_feedback: retryFeedbackLines.length > 0,
@@ -236,7 +307,7 @@ export async function openAiProvider(
       model: config.model,
       response_format: {
         type: "json_schema",
-        json_schema: STATE_RESOURCE_JSON_SCHEMA,
+        json_schema: scopedSchema ?? STATE_RESOURCE_JSON_SCHEMA,
       },
       messages: [
         {
@@ -319,8 +390,36 @@ export async function openAiProvider(
       };
     }
 
+    const extraction = extractLeadingJsonObject(content);
+    if (!extraction) {
+      return {
+        ok: false,
+        retryable: false,
+        errorCode: "INVALID_JSON",
+        reason: "OpenAI content did not start with a valid JSON object",
+        failureDebug: {
+          ...promptDebugMeta,
+          provider_response_text: trimDebugText(content),
+        },
+      };
+    }
+
+    const trailing = extraction.trailing.trim();
+    if (trailing.length > 0 && trailing !== extraction.candidate.trim()) {
+      return {
+        ok: false,
+        retryable: false,
+        errorCode: "INVALID_JSON",
+        reason: "OpenAI content had non-JSON or non-duplicate trailing output after first JSON object",
+        failureDebug: {
+          ...promptDebugMeta,
+          provider_response_text: trimDebugText(content),
+        },
+      };
+    }
+
     try {
-      const parsed = JSON.parse(content);
+      const parsed = JSON.parse(extraction.candidate);
       return { ok: true, rawPayload: parsed, rawText: content, debugMeta: promptDebugMeta };
     } catch (error) {
       return {

@@ -122,8 +122,8 @@ function openAiResponse(payload: unknown): Response {
 }
 
 describe("enrichStateResources", () => {
-  it("fails fast on missing evidence before provider call", async () => {
-    const fetchSpy = vi.fn();
+  it("allows empty evidence and still calls provider/citation verification", async () => {
+    const fetchSpy = vi.fn(async () => openAiResponse(validPayload()));
     globalThis.fetch = fetchSpy as unknown as typeof fetch;
 
     const result = await enrichStateResources(
@@ -137,15 +137,12 @@ describe("enrichStateResources", () => {
         provider: "openai",
         model: "gpt-5-mini",
         timeoutMs: 1000,
+        openAiApiKey: "test-key",
       }
     );
 
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.errorCode).toBe("SCHEMA_MISMATCH");
-      expect(result.reason).toContain("evidence snippets are required");
-    }
-    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(result.ok).toBe(true);
+    expect(fetchSpy).toHaveBeenCalled();
   });
 
   it("accepts citation URLs that are valid even when not present in collected evidence", async () => {
@@ -410,7 +407,7 @@ describe("enrichStateResources", () => {
     }
   });
 
-  it("captures all failed citation URLs from one enrichment attempt", async () => {
+  it("captures failed citation URLs while allowing 403 citation fetches", async () => {
     const badMailUrl = "https://example.org/mail-info";
     const badHoursUrl = "https://example.org/polling-hours";
 
@@ -470,7 +467,7 @@ describe("enrichStateResources", () => {
         ? (failureDebug.failed_citation_urls as unknown[])
         : [];
       expect(failedCitationUrls).toContain(badMailUrl);
-      expect(failedCitationUrls).toContain(badHoursUrl);
+      expect(failedCitationUrls).not.toContain(badHoursUrl);
     }
   });
 

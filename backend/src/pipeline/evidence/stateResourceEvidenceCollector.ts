@@ -10,9 +10,9 @@ type EvidenceCollectorOptions = {
   enforceDnsResolution?: boolean;
   fetchTimeoutMs?: number;
   maxSeedUrls?: number;
-  maxDiscoveredUrls?: number;
   maxEvidenceSnippets?: number;
   snippetMaxChars?: number;
+  focusTerms?: readonly string[];
 };
 
 type DnsLookupFn = (hostname: string) => Promise<string[]>;
@@ -20,9 +20,7 @@ type DnsLookupFn = (hostname: string) => Promise<string[]>;
 type FetchPageResult = {
   url: string;
   title: string;
-  snippet: string;
-  discoveredUrls: string[];
-  stateSpecificPollingUrl?: string;
+  snippet?: string;
 };
 
 type UrlSafetyOptions = {
@@ -34,7 +32,6 @@ type UrlSafetyOptions = {
 const DEFAULT_FETCH_TIMEOUT_MS = 10_000;
 const DEFAULT_MAX_SEED_URLS = 5;
 const HARD_MAX_SEED_URLS = 50;
-const DEFAULT_MAX_DISCOVERED_URLS = 5;
 const DEFAULT_MAX_EVIDENCE_SNIPPETS = 8;
 const DEFAULT_SNIPPET_MAX_CHARS = 800;
 const DEFAULT_MAX_RESPONSE_BYTES = 1_000_000; // 1 MB cap for buffered page text.
@@ -78,7 +75,7 @@ function stripInvalidUnicode(input: string): string {
 }
 
 /**
- * Sanitizes text for compact snippet storage.
+ * Sanitizes text for compact parsing.
  */
 function normalizeWhitespace(input: string): string {
   // PostgreSQL jsonb rejects some control chars (notably null); strip before storing.
@@ -580,7 +577,13 @@ function escapeRegexLiteral(input: string): string {
 /**
  * Builds a bounded snippet, prioritizing text near state name/abbreviation.
  */
-function buildSnippet(text: string, stateName: string, stateAbbreviation: string, maxChars: number): string {
+function buildSnippet(
+  text: string,
+  stateName: string,
+  stateAbbreviation: string,
+  maxChars: number,
+  focusTerms: readonly string[]
+): string {
   if (!text) {
     return "";
   }
@@ -591,9 +594,23 @@ function buildSnippet(text: string, stateName: string, stateAbbreviation: string
   const lowered = text.toLowerCase();
   const targetA = stateName.toLowerCase();
   const targetB = escapeRegexLiteral(safeAbbreviation.toLowerCase());
-  const idx = lowered.indexOf(targetA);
-  const altIdx = targetB.length > 0 ? new RegExp(`\\b${targetB}\\b`).exec(lowered)?.index ?? -1 : -1;
-  const anchor = idx >= 0 ? idx : altIdx;
+  const stateNameIdx = lowered.indexOf(targetA);
+  const stateAbbreviationIdx = targetB.length > 0 ? new RegExp(`\\b${targetB}\\b`).exec(lowered)?.index ?? -1 : -1;
+
+  let focusIdx = -1;
+  for (const rawTerm of focusTerms) {
+    const term = normalizeWhitespace(rawTerm).toLowerCase();
+    if (term.length < 3) {
+      continue;
+    }
+    const idx = lowered.indexOf(term);
+    if (idx >= 0 && (focusIdx < 0 || idx < focusIdx)) {
+      focusIdx = idx;
+    }
+  }
+
+  const anchorCandidates = [focusIdx, stateNameIdx, stateAbbreviationIdx].filter((idx) => idx >= 0);
+  const anchor = anchorCandidates.length > 0 ? Math.min(...anchorCandidates) : -1;
 
   if (anchor >= 0) {
     const start = Math.max(0, anchor - Math.floor(maxChars / 3));
@@ -605,7 +622,8 @@ function buildSnippet(text: string, stateName: string, stateAbbreviation: string
 }
 
 /**
- * Fetches one page, extracts a snippet, and returns newly discovered links.
+ * Fetches one seed page and extracts optional snippet text.
+ * Snippet text is optional: include it only when readable content is available.
  */
 async function fetchPageEvidence(
   url: string,
@@ -613,10 +631,10 @@ async function fetchPageEvidence(
   fetchImpl: typeof fetch,
   fetchTimeoutMs: number,
   snippetMaxChars: number,
-  maxDiscoveredUrls: number,
   allowOpenWebResearch: boolean,
   allowedSeedHosts: Set<string>,
-  safetyOptions: UrlSafetyOptions
+  safetyOptions: UrlSafetyOptions,
+  focusTerms: readonly string[]
 ): Promise<FetchPageResult | null> {
   if (!(await isSafeFetchUrl(url, safetyOptions))) {
     return null;
@@ -677,30 +695,12 @@ async function fetchPageEvidence(
       ? htmlToText(raw)
       : normalizeWhitespace(raw);
 
-    const snippet = buildSnippet(text, draft.state_name, draft.state_abbreviation, snippetMaxChars);
-    if (!snippet) {
-      return null;
-    }
-
-    const discoveredUrls = contentType.includes("html")
-      ? extractDiscoveredUrls(
-          raw,
-          responseSourceUrl,
-          maxDiscoveredUrls,
-          draft.state_name,
-          draft.state_abbreviation
-        )
-      : [];
-    const stateSpecificPollingUrl = contentType.includes("html")
-      ? extractVoteOrgStatePollingUrl(raw, responseSourceUrl, draft.state_name) ?? undefined
-      : undefined;
+    const snippet = buildSnippet(text, draft.state_name, draft.state_abbreviation, snippetMaxChars, focusTerms) ?? undefined;
 
     return {
       url: responseSourceUrl,
       title,
-      snippet,
-      discoveredUrls,
-      stateSpecificPollingUrl,
+      ...(snippet ? { snippet } : {}),
     };
   } catch {
     return null;
@@ -710,18 +710,7 @@ async function fetchPageEvidence(
 }
 
 /**
- * Produces fallback evidence when live fetch is unavailable.
- */
-function fallbackEvidence(url: string, draft: StateResourceDraftPayload): EvidenceSnippet {
-  return {
-    url,
-    title: hostAsSourceName(url),
-    snippet: `Seed source captured for ${draft.state_name} voting information. Live page fetch was unavailable during collection.`,
-  };
-}
-
-/**
- * Collects evidence snippets starting from seed URLs and discovered links.
+ * Collects URL-first evidence from the configured seed URLs only.
  * The collection algorithm is deterministic given consistent network responses.
  * Safe to run before AI enrichment.
  */
@@ -740,9 +729,9 @@ export async function collectStateResourceEvidence(
   const fetchTimeoutMs = options.fetchTimeoutMs ?? DEFAULT_FETCH_TIMEOUT_MS;
   const requestedMaxSeedUrls = options.maxSeedUrls ?? Math.max(DEFAULT_MAX_SEED_URLS, draft.seed_sources.length);
   const maxSeedUrls = Math.min(requestedMaxSeedUrls, HARD_MAX_SEED_URLS);
-  const maxDiscoveredUrls = options.maxDiscoveredUrls ?? DEFAULT_MAX_DISCOVERED_URLS;
   const maxEvidenceSnippets = options.maxEvidenceSnippets ?? DEFAULT_MAX_EVIDENCE_SNIPPETS;
   const snippetMaxChars = options.snippetMaxChars ?? DEFAULT_SNIPPET_MAX_CHARS;
+  const focusTerms = options.focusTerms ?? [];
 
   const normalizedSeedCandidates = Array.from(
     new Set(
@@ -774,7 +763,6 @@ export async function collectStateResourceEvidence(
 
   const evidence: EvidenceSnippet[] = [];
   const seenUrls = new Set<string>();
-  const discoveredQueue: string[] = [];
 
   for (const seedUrl of seedUrls) {
     const page = await fetchPageEvidence(
@@ -783,10 +771,10 @@ export async function collectStateResourceEvidence(
       fetchImpl,
       fetchTimeoutMs,
       snippetMaxChars,
-      maxDiscoveredUrls,
       draft.allow_open_web_research,
       allowedSeedHosts,
-      safetyOptions
+      safetyOptions,
+      focusTerms
     );
 
     if (page) {
@@ -795,84 +783,14 @@ export async function collectStateResourceEvidence(
         evidence.push({
           url: page.url,
           title: page.title,
-          snippet: page.snippet,
+          ...(page.snippet ? { snippet: page.snippet } : {}),
         });
       }
-
-      if (page.stateSpecificPollingUrl && !seenUrls.has(page.stateSpecificPollingUrl)) {
-        seenUrls.add(page.stateSpecificPollingUrl);
-        evidence.push({
-          url: page.stateSpecificPollingUrl,
-          title: hostAsSourceName(page.stateSpecificPollingUrl),
-          snippet: `State-specific polling place locator link extracted for ${draft.state_name}.`,
-        });
-      }
-
-      if (draft.allow_open_web_research) {
-        const trustedVoteOrgStateDiscoveredUrl =
-          isVoteOrgPollingLocatorUrl(page.url) && page.discoveredUrls.length > 0 ? page.discoveredUrls[0] : null;
-
-        for (const discovered of page.discoveredUrls) {
-          const isTrustedVoteOrgStateLink = discovered === trustedVoteOrgStateDiscoveredUrl;
-
-          if (!isTrustedVoteOrgStateLink && !(await isSafeFetchUrl(discovered, safetyOptions))) {
-            continue;
-          }
-          if (!seenUrls.has(discovered) && discoveredQueue.length < maxDiscoveredUrls) {
-            discoveredQueue.push(discovered);
-            seenUrls.add(discovered);
-          }
-        }
-      }
-    } else if (!seenUrls.has(seedUrl)) {
-      seenUrls.add(seedUrl);
-      evidence.push(fallbackEvidence(seedUrl, draft));
     }
 
     if (evidence.length >= maxEvidenceSnippets) {
       return evidence.slice(0, maxEvidenceSnippets);
     }
-  }
-
-  if (draft.allow_open_web_research) {
-    for (const discoveredUrl of discoveredQueue) {
-      if (evidence.length >= maxEvidenceSnippets) {
-        break;
-      }
-
-      const page = await fetchPageEvidence(
-        discoveredUrl,
-        draft,
-        fetchImpl,
-        fetchTimeoutMs,
-        snippetMaxChars,
-        maxDiscoveredUrls,
-        draft.allow_open_web_research,
-        allowedSeedHosts,
-        safetyOptions
-      );
-
-      if (page) {
-        const exists = evidence.some((item) => item.url === page.url);
-        if (!exists) {
-          evidence.push({
-            url: page.url,
-            title: page.title,
-            snippet: page.snippet,
-          });
-        }
-      } else {
-        const exists = evidence.some((item) => item.url === discoveredUrl);
-        if (!exists) {
-          evidence.push(fallbackEvidence(discoveredUrl, draft));
-        }
-      }
-    }
-  }
-
-  // Last-resort fallback for extreme failure cases.
-  if (evidence.length === 0 && seedUrls.length > 0) {
-    return [fallbackEvidence(seedUrls[0], draft)];
   }
 
   return evidence.slice(0, maxEvidenceSnippets);

@@ -97,7 +97,7 @@ describe("collectStateResourceEvidence", () => {
     expect(hits.some((url) => url.startsWith("http://127.0.0.1"))).toBe(false);
   });
 
-  it("falls back when response is non-text or oversized", async () => {
+  it("drops evidence when response is non-text or oversized", async () => {
     const binaryFetch: typeof fetch = async () =>
       new Response(new Uint8Array([1, 2, 3, 4]), {
         status: 200,
@@ -105,8 +105,7 @@ describe("collectStateResourceEvidence", () => {
       });
 
     const binaryEvidence = await collectStateResourceEvidence(draft(), { fetchImpl: binaryFetch });
-    expect(binaryEvidence.length).toBe(1);
-    expect(binaryEvidence[0].snippet).toContain("Live page fetch was unavailable");
+    expect(binaryEvidence.length).toBe(0);
 
     const oversizedText = "x".repeat(1_200_000);
     const largeFetch: typeof fetch = async () =>
@@ -116,8 +115,7 @@ describe("collectStateResourceEvidence", () => {
       });
 
     const largeEvidence = await collectStateResourceEvidence(draft(), { fetchImpl: largeFetch });
-    expect(largeEvidence.length).toBe(1);
-    expect(largeEvidence[0].snippet).toContain("Live page fetch was unavailable");
+    expect(largeEvidence.length).toBe(0);
   });
 
   it("rejects unsafe redirected final URL targets", async () => {
@@ -131,8 +129,7 @@ describe("collectStateResourceEvidence", () => {
       }) as unknown as Response;
 
     const evidence = await collectStateResourceEvidence(draft(), { fetchImpl });
-    expect(evidence.length).toBe(1);
-    expect(evidence[0].snippet).toContain("Live page fetch was unavailable");
+    expect(evidence.length).toBe(0);
   });
 
   it("can enforce DNS safety checks for hostnames", async () => {
@@ -156,7 +153,28 @@ describe("collectStateResourceEvidence", () => {
     expect(evidence.length).toBe(0);
   });
 
-  it("prioritizes state-specific polling locator links discovered from pages", async () => {
+  it("returns URL-first evidence without requiring snippet text", async () => {
+    const fetchImpl: typeof fetch = async () =>
+      new Response(
+        "California election information. General overview. Misc text. Mail ballot return deadline is Election Day at 8 p.m.",
+        {
+          status: 200,
+          headers: { "content-type": "text/plain; charset=utf-8" },
+        }
+      );
+
+    const evidence = await collectStateResourceEvidence(draft(), {
+      fetchImpl,
+      snippetMaxChars: 70,
+      focusTerms: ["mail ballot return deadline"],
+    });
+
+    expect(evidence.length).toBeGreaterThan(0);
+    expect(evidence[0]?.url).toBeTruthy();
+    expect(evidence[0]?.title).toBeTruthy();
+  });
+
+  it("does not crawl discovered links from seed pages", async () => {
     const hits: string[] = [];
     const fetchImpl: typeof fetch = async (input: RequestInfo | URL) => {
       const url = typeof input === "string" ? input : input.toString();
@@ -175,35 +193,21 @@ describe("collectStateResourceEvidence", () => {
         );
       }
 
-      if (url.startsWith("https://www.sos.ca.gov/elections/polling-place")) {
-        return new Response(
-          "<html><head><title>CA SOS</title></head><body>Find your polling place in California.</body></html>",
-          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
-        );
-      }
-
-      if (url.startsWith("https://www.vote.org/polling-place-locator/")) {
-        return new Response(
-          "<html><head><title>Vote.org</title></head><body>General polling locator page.</body></html>",
-          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
-        );
-      }
-
       return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
     };
 
     const evidence = await collectStateResourceEvidence(draft(), {
       fetchImpl,
       maxSeedUrls: 1,
-      maxDiscoveredUrls: 2,
       maxEvidenceSnippets: 3,
     });
 
-    expect(evidence.some((item) => item.url.startsWith("https://www.sos.ca.gov/elections/polling-place"))).toBe(true);
-    expect(hits.some((url) => url.startsWith("https://www.sos.ca.gov/elections/polling-place"))).toBe(true);
+    expect(evidence.some((item) => item.url.startsWith("https://seed.example.org/polling"))).toBe(true);
+    expect(hits.some((url) => url.startsWith("https://www.sos.ca.gov/elections/polling-place"))).toBe(false);
+    expect(hits.some((url) => url.startsWith("https://www.vote.org/polling-place-locator/"))).toBe(false);
   });
 
-  it("extracts Vote.org state-specific polling link for the target state", async () => {
+  it("uses only seed URLs even when Vote.org page includes state-specific links", async () => {
     const hits: string[] = [];
     const fetchImpl: typeof fetch = async (input: RequestInfo | URL) => {
       const url = typeof input === "string" ? input : input.toString();
@@ -222,13 +226,6 @@ describe("collectStateResourceEvidence", () => {
         );
       }
 
-      if (url.startsWith("https://www.voterfocus.com/PrecinctFinder/addressSearch")) {
-        return new Response(
-          "<html><head><title>Florida Polling</title></head><body>Florida polling place finder.</body></html>",
-          { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
-        );
-      }
-
       return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
     };
 
@@ -242,16 +239,14 @@ describe("collectStateResourceEvidence", () => {
       {
         fetchImpl,
         maxSeedUrls: 1,
-        maxDiscoveredUrls: 2,
         maxEvidenceSnippets: 3,
       }
     );
 
+    expect(evidence.every((item) => item.url.startsWith("https://www.vote.org/polling-place-locator"))).toBe(true);
     expect(
-      evidence.some((item) =>
-        item.url.startsWith("https://www.voterfocus.com/PrecinctFinder/addressSearch?county=ALA")
-      )
-    ).toBe(true);
+      hits.some((url) => url.startsWith("https://www.voterfocus.com/PrecinctFinder/addressSearch"))
+    ).toBe(false);
     expect(hits.some((url) => url.startsWith("https://www.vote.org/polling-place-locator"))).toBe(true);
   });
 });

@@ -576,7 +576,7 @@ async function requeueToDraft(
   pool: Pool,
   redis: ReturnType<typeof createClient>,
   row: RetryRow,
-  draft: StateResourceDraftPayload
+  draftPayload: Record<string, unknown>
 ): Promise<boolean> {
   const runId = buildRetryRunId();
   const retryFeedback = buildRetryFeedbackFromRow(row);
@@ -601,7 +601,7 @@ async function requeueToDraft(
     `,
     [
       row.ingest_key,
-      JSON.stringify(draft),
+      JSON.stringify(draftPayload),
       JSON.stringify(nextAiRawDebug),
       STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
       runId,
@@ -618,7 +618,7 @@ async function requeueToDraft(
       ingest_key: row.ingest_key,
       item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
       run_id: runId,
-      payload: JSON.stringify(draft),
+      payload: JSON.stringify(draftPayload),
     });
 
     const finalize = await pool.query(
@@ -806,7 +806,12 @@ export async function runStateResourcesRetrySweeper(options: RetryOptions = {}):
           continue;
         }
 
-        const ok = await requeueToDraft(pool, redis, row, draft);
+        const draftPayloadToRequeue: Record<string, unknown> =
+          draftFromPayload && isObjectRecord(row.payload)
+            ? (row.payload as Record<string, unknown>)
+            : ({ ...draft } as Record<string, unknown>);
+
+        const ok = await requeueToDraft(pool, redis, row, draftPayloadToRequeue);
         if (ok) {
           requeuedToDraft += 1;
         } else {

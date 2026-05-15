@@ -109,7 +109,7 @@ function isHttpUrl(value: string): boolean {
 type EvidenceSnippet = {
   url: string;
   title: string;
-  snippet: string;
+  snippet?: string;
 };
 
 function normalizeSpace(value: string): string {
@@ -150,7 +150,7 @@ function extractEvidenceSnippets(input: Record<string, unknown>): EvidenceSnippe
     }
 
     const item = entry as Record<string, unknown>;
-    if (!isNonEmptyString(item.url) || !isNonEmptyString(item.snippet)) {
+    if (!isNonEmptyString(item.url)) {
       continue;
     }
 
@@ -162,7 +162,7 @@ function extractEvidenceSnippets(input: Record<string, unknown>): EvidenceSnippe
     snippets.push({
       url: normalizedUrl,
       title: isNonEmptyString(item.title) ? normalizeSpace(item.title) : "",
-      snippet: normalizeSpace(item.snippet),
+      ...(isNonEmptyString(item.snippet) ? { snippet: normalizeSpace(item.snippet) } : {}),
     });
   }
 
@@ -201,7 +201,7 @@ function deriveIdRequirementStance(snippets: EvidenceSnippet[]): IdRequirementSt
   let hasNotRequiredSignal = false;
 
   for (const snippet of snippets) {
-    const text = `${snippet.title}. ${snippet.snippet}`.toLowerCase();
+    const text = `${snippet.title}. ${snippet.snippet ?? ""}`.toLowerCase();
     const sentences = text.split(/[.!?]+/g);
 
     for (const rawSentence of sentences) {
@@ -272,7 +272,7 @@ function extractVoteByMailFacts(snippets: EvidenceSnippet[]): VoteByMailFacts {
   };
 
   for (const snippet of snippets) {
-    const text = `${snippet.title}. ${snippet.snippet}`.toLowerCase();
+    const text = `${snippet.title}. ${snippet.snippet ?? ""}`.toLowerCase();
 
     const requestMatches = text.matchAll(/\b(?:request|apply)[^.]{0,80}\b(\d{1,2})\s+days?\s+before\b/g);
     for (const match of requestMatches) {
@@ -380,12 +380,12 @@ function extractPollingHoursFacts(snippets: EvidenceSnippet[]): PollingHoursFact
     /\b(\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?))\s*(?:-|to|until)\s*(\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?))\b/gi;
 
   for (const snippet of snippets) {
-    const lower = `${snippet.title} ${snippet.snippet}`.toLowerCase();
+    const lower = `${snippet.title} ${snippet.snippet ?? ""}`.toLowerCase();
     if (/var(y|ies)\s+by\s+(county|precinct|location)/.test(lower)) {
       facts.hasVarySignal = true;
     }
 
-    const text = `${snippet.title}. ${snippet.snippet}`;
+    const text = `${snippet.title}. ${snippet.snippet ?? ""}`;
     for (const match of text.matchAll(rangeRegex)) {
       const start = parseTwelveHourToMinutes(match[1] ?? "");
       const end = parseTwelveHourToMinutes(match[2] ?? "");
