@@ -1185,13 +1185,10 @@ export async function enrichStateResourcesGroup(
       })
       .filter((citation): citation is string => citation !== null);
 
-    // Prefer citations that match fetched evidence for this group when available.
+    // Preserve all citations but prefer evidence-backed URLs first.
     const evidenceBacked = normalized.filter((url) => knownEvidenceUrls.has(url));
-    if (evidenceBacked.length > 0) {
-      groundedSources[key] = evidenceBacked;
-      continue;
-    }
-    groundedSources[key] = normalized;
+    const additionalCitations = normalized.filter((url) => !knownEvidenceUrls.has(url));
+    groundedSources[key] = [...evidenceBacked, ...additionalCitations];
   }
 
   const citationEvidenceResult = await verifyAndCollectAdditionalCitationEvidenceForFields(
