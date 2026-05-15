@@ -1,33 +1,58 @@
 import { Pool } from "pg";
 import { createClient } from "redis";
 
-import { buildEnrichmentConfigFromEnv, enrichStateResources } from "../../ai/enrichStateResources.js";
+import {
+  buildEnrichmentConfigFromEnv,
+  enrichStateResourcesGroup,
+  type EnrichStateResourceGroupResult,
+} from "../../ai/enrichStateResources.js";
 import { AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { normalizeRetryFeedback } from "../../ai/retryFeedback.js";
 import type {
   AiProvider,
   EnrichStateResourcesConfig,
   EnrichStateResourcesInput,
-  EnrichStateResourcesResult,
   EvidenceSnippet,
   PromptVariant,
   RetryFeedback,
 } from "../../ai/types.js";
+import {
+  STATE_RESOURCE_FIELD_GROUP_ORDER,
+  type StateResourceFieldGroup,
+} from "../../ai/stateResourceFieldGroups.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
+  STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED,
+  STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED,
+  STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_REFERENCE_SEED,
+  STATE_RESOURCE_MAIL_REFERENCE_SEED,
+  STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEED,
+  STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED,
+  STATE_RESOURCE_POLLING_PLACES_REFERENCE_SEEDS,
+  STATE_RESOURCE_SAME_DAY_REGISTRATION_DEADLINE_REFERENCE_SEED,
   STAGING_DRAFT_STREAM,
   STAGING_ITEM_TYPE_STATE_RESOURCES,
   STAGING_PENDING_STREAM,
   STAGING_STATE_RESOURCES_ENRICHER_GROUP,
 } from "../../config/stateResourcePipeline.js";
 import {
+  STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   STATE_RESOURCE_ABBREVIATION_REGEX,
   STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIPS_REGEX,
+  STATE_RESOURCE_SOURCE_FIELDS,
 } from "../../contracts/stateResourceEnrichmentContract.js";
+import { getDeterministicEarlyVotingByFips } from "../../constants/stateEarlyVotingByFips.js";
+import { getDeterministicIdRequirementByFips } from "../../constants/stateIdRequirementsByFips.js";
+import { getDeterministicPollingHoursByFips } from "../../constants/statePollingHoursByFips.js";
 import { collectStateResourceEvidence } from "../evidence/stateResourceEvidenceCollector.js";
-import type { StateResourceDraftPayload, StateResourcePayload } from "../../types/stateResource.js";
+import type {
+  StateResourceDraftPayload,
+  StateResourcePayload,
+  StateResourceSources,
+} from "../../types/stateResource.js";
+import { parseStateResourcePayloadFromAi } from "../../ai/stateResourcePayloadValidation.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { createStageObserver } from "../utils/observability.js";
 import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
@@ -82,6 +107,33 @@ type EnrichmentAttemptFailure = {
   reason: string;
   retryable: boolean;
 };
+type RetryFeedbackFailureShape = {
+  reason: string;
+  failureDebug?: Record<string, unknown>;
+};
+
+type GroupPayloadFragment = Partial<Omit<StateResourcePayload, "sources">> & {
+  sources: Partial<StateResourceSources>;
+};
+
+type GroupProgressEntry = {
+  status: "pending" | "validated";
+  attempts: number;
+  payload: GroupPayloadFragment | null;
+  evidence: EvidenceSnippet[];
+  provider: string | null;
+  model: string | null;
+  promptVersion: string | null;
+  lastErrorCode: string | null;
+  lastReason: string | null;
+};
+
+type GroupProgressState = {
+  version: 1;
+  groups: Record<StateResourceFieldGroup, GroupProgressEntry>;
+};
+
+const GROUP_PROGRESS_PAYLOAD_KEY = "__state_resource_group_progress";
 
 // Evidence crawl + provider call can run for >2 minutes; keep reclaim window above worst-case work.
 const RECLAIM_MIN_IDLE_MS = 240_000;
@@ -90,7 +142,6 @@ const VOTE_ORG_POLLING_LOCATOR_URL = "https://www.vote.org/polling-place-locator
 const VOTE_ORG_POLLING_FETCH_TIMEOUT_MS = 10_000;
 const VOTE_ORG_RETRY_BACKOFF_INITIAL_MS = 60_000;
 const VOTE_ORG_RETRY_BACKOFF_MAX_MS = 15 * 60_000;
-const VOTE_GOV_REGISTER_BASE_URL = "https://vote.gov/register";
 const SAME_PASS_FAILED_URL_MEMORY_LIMIT = 100;
 const SAME_PASS_FAILED_DETAILS_MEMORY_LIMIT = 100;
 let voteOrgPollingMapPromise: Promise<Map<string, string>> | null = null;
@@ -200,7 +251,217 @@ function buildStateScopedReferenceUrl(baseUrl: string, stateName: string): strin
   if (!slug) {
     return null;
   }
-  return normalizeHttpUrl(`${baseUrl}/${slug}`);
+  return normalizeHttpUrl(`${baseUrl.replace(/\/+$/, "")}/${slug}`);
+}
+
+function buildStateScopedReferenceFromSeed(
+  seed: string,
+  stateName: string
+): string | null {
+  if (!seed) {
+    return null;
+  }
+  return buildStateScopedReferenceUrl(seed, stateName);
+}
+
+function createInitialGroupProgressState(): GroupProgressState {
+  const groups = {} as Record<StateResourceFieldGroup, GroupProgressEntry>;
+  for (const group of STATE_RESOURCE_FIELD_GROUP_ORDER) {
+    groups[group] = {
+      status: "pending",
+      attempts: 0,
+      payload: null,
+      evidence: [],
+      provider: null,
+      model: null,
+      promptVersion: null,
+      lastErrorCode: null,
+      lastReason: null,
+    };
+  }
+  return {
+    version: 1,
+    groups,
+  };
+}
+
+function sanitizeEvidenceSnippets(value: unknown): EvidenceSnippet[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const normalized: EvidenceSnippet[] = [];
+  for (const item of value) {
+    if (!isObjectRecord(item)) {
+      continue;
+    }
+    if (!isNonEmptyString(item.url)) {
+      continue;
+    }
+    const normalizedUrl = normalizeHttpUrl(item.url);
+    if (!normalizedUrl) {
+      continue;
+    }
+    normalized.push({
+      url: normalizedUrl,
+      title: isNonEmptyString(item.title) ? item.title : normalizedUrl,
+      ...(isNonEmptyString(item.snippet) ? { snippet: item.snippet } : {}),
+    });
+  }
+  return normalized;
+}
+
+function sanitizeGroupPayloadFragment(value: unknown): GroupPayloadFragment | null {
+  if (!isObjectRecord(value)) {
+    return null;
+  }
+
+  const payload = value as Record<string, unknown>;
+  if (!isObjectRecord(payload.sources)) {
+    return null;
+  }
+
+  const sources: Partial<StateResourceSources> = {};
+  for (const [key, raw] of Object.entries(payload.sources)) {
+    if (!Array.isArray(raw)) {
+      continue;
+    }
+    const normalized = raw
+      .map((citation) => (typeof citation === "string" ? normalizeHttpUrl(citation) : null))
+      .filter((citation): citation is string => typeof citation === "string");
+    if (normalized.length > 0) {
+      (sources as Record<string, string[]>)[key] = normalized;
+    }
+  }
+
+  return {
+    ...(payload as Partial<StateResourcePayload>),
+    sources,
+  };
+}
+
+function extractGroupProgressFromPayload(payload: unknown): GroupProgressState {
+  const initial = createInitialGroupProgressState();
+  if (!isObjectRecord(payload) || !isObjectRecord(payload[GROUP_PROGRESS_PAYLOAD_KEY])) {
+    return initial;
+  }
+
+  const rawProgress = payload[GROUP_PROGRESS_PAYLOAD_KEY];
+  if (!isObjectRecord(rawProgress) || !isObjectRecord(rawProgress.groups)) {
+    return initial;
+  }
+
+  for (const group of STATE_RESOURCE_FIELD_GROUP_ORDER) {
+    const rawEntry = rawProgress.groups[group];
+    if (!isObjectRecord(rawEntry)) {
+      continue;
+    }
+
+    initial.groups[group] = {
+      status: rawEntry.status === "validated" ? "validated" : "pending",
+      attempts: typeof rawEntry.attempts === "number" && Number.isFinite(rawEntry.attempts) ? rawEntry.attempts : 0,
+      payload: sanitizeGroupPayloadFragment(rawEntry.payload),
+      evidence: sanitizeEvidenceSnippets(rawEntry.evidence),
+      provider: isNonEmptyString(rawEntry.provider) ? rawEntry.provider : null,
+      model: isNonEmptyString(rawEntry.model) ? rawEntry.model : null,
+      promptVersion: isNonEmptyString(rawEntry.promptVersion) ? rawEntry.promptVersion : null,
+      lastErrorCode: isNonEmptyString(rawEntry.lastErrorCode) ? rawEntry.lastErrorCode : null,
+      lastReason: isNonEmptyString(rawEntry.lastReason) ? rawEntry.lastReason : null,
+    };
+  }
+
+  return initial;
+}
+
+function attachGroupProgressToDraft(
+  draft: StateResourceDraftPayload,
+  progress: GroupProgressState
+): Record<string, unknown> {
+  return {
+    ...draft,
+    [GROUP_PROGRESS_PAYLOAD_KEY]: progress,
+  };
+}
+
+function buildGroupSeedSources(group: StateResourceFieldGroup, draft: StateResourceDraftPayload): string[] {
+  if (group === "mail") {
+    const scoped = buildStateScopedReferenceFromSeed(STATE_RESOURCE_MAIL_REFERENCE_SEED, draft.state_name);
+    return scoped ? [scoped] : [STATE_RESOURCE_MAIL_REFERENCE_SEED];
+  }
+
+  if (group === "online_registration") {
+    const scoped = buildStateScopedReferenceFromSeed(
+      STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEED,
+      draft.state_name
+    );
+    return scoped ? [scoped] : [STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEED];
+  }
+
+  if (group === "early_voting") {
+    return [STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED];
+  }
+
+  if (group === "polling_hours") {
+    return [STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED];
+  }
+
+  if (group === "polling_place") {
+    return [...STATE_RESOURCE_POLLING_PLACES_REFERENCE_SEEDS];
+  }
+
+  if (group === "same_day_registration") {
+    return [STATE_RESOURCE_SAME_DAY_REGISTRATION_DEADLINE_REFERENCE_SEED];
+  }
+
+  if (group === "id_requirements") {
+    return [STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED];
+  }
+
+  const scoped = buildStateScopedReferenceFromSeed(
+    STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_REFERENCE_SEED,
+    draft.state_name
+  );
+  return scoped ? [scoped] : [STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_REFERENCE_SEED];
+}
+
+function buildGroupFocusTerms(group: StateResourceFieldGroup): readonly string[] {
+  if (group === "mail") {
+    return ["absentee ballot", "mail ballot", "postmark", "received by", "ballot return deadline"];
+  }
+  if (group === "online_registration") {
+    return ["online voter registration", "register online", "registration deadline"];
+  }
+  if (group === "early_voting") {
+    return ["early voting", "in-person early voting", "early voting period"];
+  }
+  if (group === "polling_hours") {
+    return ["polling hours", "polls open", "polls close", "election day hours"];
+  }
+  if (group === "polling_place") {
+    return ["polling place", "find your polling place", "polling place locator"];
+  }
+  if (group === "same_day_registration") {
+    return ["same day registration", "election day registration", "conditional voter registration"];
+  }
+  if (group === "id_requirements") {
+    return ["voter id", "photo id", "identification required", "id requirement"];
+  }
+  return ["in person registration", "voter registration deadline", "registration cutoff"];
+}
+
+function applyGroupPayload(
+  target: Partial<Omit<StateResourcePayload, "sources">> & { sources: Partial<StateResourceSources> },
+  fragment: GroupPayloadFragment
+): void {
+  for (const [key, value] of Object.entries(fragment)) {
+    if (key === "sources") {
+      continue;
+    }
+    (target as Record<string, unknown>)[key] = value;
+  }
+  for (const [key, value] of Object.entries(fragment.sources)) {
+    (target.sources as Record<string, string[]>)[key] = value as string[];
+  }
 }
 
 function splitStoredModel(storedModel: string | null): Pick<EnricherProcessResult, "provider" | "model"> {
@@ -240,7 +501,7 @@ function mergeEvidenceSnippets(
     merged.push({
       url: normalized,
       title: snippet.title,
-      snippet: snippet.snippet,
+      ...(isNonEmptyString(snippet.snippet) ? { snippet: snippet.snippet } : {}),
     });
   }
 
@@ -252,11 +513,6 @@ function candidateKey(candidate: EnrichmentCandidate): string {
 }
 
 function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCandidate[] {
-  const configured: EnrichmentCandidate = {
-    provider: config.provider,
-    model: config.model,
-  };
-
   const seen = new Set<string>();
   const chain: EnrichmentCandidate[] = [];
 
@@ -272,20 +528,18 @@ function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCand
   for (const candidate of AI_CANDIDATES) {
     addCandidate(candidate);
   }
-  // Keep cycling order deterministic (cheap -> expensive); append configured model only if not listed.
-  addCandidate(configured);
 
   return chain;
 }
 
-function shouldTrySecondPromptForModel(result: Exclude<EnrichStateResourcesResult, { ok: true }>): boolean {
+function shouldTrySecondPromptForModel(result: { errorCode: string }): boolean {
   // For callable models, always run a second in-model retry (citation_repair) with retry feedback.
   // Only skip when the provider/model itself is fundamentally not callable.
   return result.errorCode !== "CONFIGURATION_ERROR" && result.errorCode !== "UNSUPPORTED_PROVIDER";
 }
 
 function formatFallbackFailureReason(
-  finalFailure: Exclude<EnrichStateResourcesResult, { ok: true }>,
+  finalFailure: { errorCode: string; reason: string },
   attempts: EnrichmentAttemptFailure[]
 ): string {
   if (attempts.length <= 1) {
@@ -323,7 +577,7 @@ function extractHttpUrlsFromText(text: string): string[] {
 }
 
 function extractFailedCitationUrlsFromFailure(
-  failure: Exclude<EnrichStateResourcesResult, { ok: true }>
+  failure: RetryFeedbackFailureShape
 ): string[] {
   const urls = new Set<string>();
 
@@ -346,7 +600,7 @@ function extractFailedCitationUrlsFromFailure(
 }
 
 function extractFailedCitationDetailsFromFailure(
-  failure: Exclude<EnrichStateResourcesResult, { ok: true }>
+  failure: RetryFeedbackFailureShape
 ): Array<{ url: string; reason: string }> {
   const details: Array<{ url: string; reason: string }> = [];
   const seen = new Set<string>();
@@ -380,7 +634,7 @@ function extractFailedCitationDetailsFromFailure(
 
 function mergeRetryFeedbackForSamePass(
   current: RetryFeedback | null | undefined,
-  failure: Exclude<EnrichStateResourcesResult, { ok: true }>
+  failure: RetryFeedbackFailureShape
 ): RetryFeedback {
   const normalizedCurrent = normalizeRetryFeedback(current) ?? {
     previousFailureReason: null,
@@ -412,17 +666,18 @@ function mergeRetryFeedbackForSamePass(
   };
 }
 
-async function enrichWithCandidates(
-  input: EnrichStateResourcesInput,
+async function enrichGroupWithCandidates(
+  input: EnrichStateResourcesInput & { fieldGroup: StateResourceFieldGroup },
   config: EnrichStateResourcesConfig
-): Promise<{ result: EnrichStateResourcesResult; attempts: EnrichmentAttemptFailure[] }> {
+): Promise<{ result: EnrichStateResourceGroupResult; attempts: EnrichmentAttemptFailure[] }> {
   const chain = buildCandidateChain(config);
   const promptVariants: PromptVariant[] = ["default", "citation_repair"];
   const attempts: EnrichmentAttemptFailure[] = [];
-  let lastFailure: Exclude<EnrichStateResourcesResult, { ok: true }> | null = null;
-  let currentRetryFeedback = normalizeRetryFeedback(input.retryFeedback ?? null);
+  let lastFailure: Exclude<EnrichStateResourceGroupResult, { ok: true }> | null = null;
 
   for (const candidate of chain) {
+    let sameModelRetryFeedback: RetryFeedback | null = null;
+
     for (let variantIndex = 0; variantIndex < promptVariants.length; variantIndex += 1) {
       const promptVariant = promptVariants[variantIndex];
       const candidateConfig: EnrichStateResourcesConfig = {
@@ -431,11 +686,11 @@ async function enrichWithCandidates(
         model: candidate.model,
       };
 
-      const result = await enrichStateResources(
+      const result = await enrichStateResourcesGroup(
         {
           ...input,
           promptVariant,
-          retryFeedback: currentRetryFeedback,
+          retryFeedback: variantIndex === 0 ? null : sameModelRetryFeedback,
         },
         candidateConfig
       );
@@ -443,7 +698,7 @@ async function enrichWithCandidates(
         return { result, attempts };
       }
       lastFailure = result;
-      currentRetryFeedback = mergeRetryFeedbackForSamePass(currentRetryFeedback, result);
+      sameModelRetryFeedback = mergeRetryFeedbackForSamePass(sameModelRetryFeedback, result);
 
       attempts.push({
         candidate,
@@ -822,6 +1077,35 @@ async function applyEnrichment(
   return result.rowCount === 1;
 }
 
+async function saveDraftProgress(
+  pool: Pool,
+  ingestKey: string,
+  payload: Record<string, unknown>,
+  expectedRunId: string | null
+): Promise<boolean> {
+  const result = await pool.query(
+    `
+      UPDATE staging_items
+      SET payload = $2::jsonb,
+          updated_at = now()
+      WHERE ingest_key = $1
+        AND item_type = $3
+        AND status = 'pending'
+        AND (schema_version = $4 OR schema_version IS NULL)
+        AND run_id IS NOT DISTINCT FROM $5
+    `,
+    [
+      ingestKey,
+      JSON.stringify(payload),
+      STAGING_ITEM_TYPE_STATE_RESOURCES,
+      STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
+      expectedRunId,
+    ]
+  );
+
+  return result.rowCount === 1;
+}
+
 /**
  * Processes one draft message through evidence + AI enrichment and routes to pending validation.
  */
@@ -964,79 +1248,248 @@ async function processMessage(
     };
   }
 
-  const evidence = await collectStateResourceEvidence(draft.draft);
-  if (evidence.length === 0) {
-    const reason = "enricher could not collect evidence snippets";
-    await markFailedPending(
-      pool,
-      ingestKey,
-      reason,
-      {
-        stage: "enricher",
-        failure_type: "evidence_collection",
-      },
-      null,
-      expectedRunId
-    );
-    await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
-    const storedModel = splitStoredModel(row.model);
-    return {
-      outcome: "failed",
-      reason,
-      schemaVersion: row.schema_version,
-      promptVersion: row.prompt_version,
-      provider: storedModel.provider,
-      model: storedModel.model,
-    };
-  }
+  const progress = extractGroupProgressFromPayload(row.payload);
+  const mergedFields: Partial<Omit<StateResourcePayload, "sources">> & { sources: Partial<StateResourceSources> } = {
+    sources: {},
+  };
+  let finalEvidence: EvidenceSnippet[] = [];
+  let finalProvider: string | null = null;
+  let finalModel: string | null = null;
+  let finalPromptVersion = row.prompt_version ?? envPromptVersion;
+  let finalAiRawDebug: Record<string, unknown> | null = null;
 
-  const enrichedEvidence = [...evidence];
-  if (draft.draft.allow_open_web_research) {
-    const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
-    if (
-      voteOrgPollingUrl &&
-      !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === normalizeHttpUrl(voteOrgPollingUrl))
-    ) {
-      enrichedEvidence.unshift({
-        url: voteOrgPollingUrl,
-        title: "Vote.org",
-        snippet: `${draft.draft.state_name} polling place locator`,
-      });
+  for (const group of STATE_RESOURCE_FIELD_GROUP_ORDER) {
+    const progressEntry = progress.groups[group];
+
+    if (progressEntry.status === "validated" && progressEntry.payload) {
+      applyGroupPayload(mergedFields, progressEntry.payload);
+      finalEvidence = mergeEvidenceSnippets(finalEvidence, progressEntry.evidence);
+      finalProvider = progressEntry.provider ?? finalProvider;
+      finalModel = progressEntry.model ?? finalModel;
+      finalPromptVersion = progressEntry.promptVersion ?? finalPromptVersion;
+      continue;
     }
-  }
 
-  const voteByMailReferenceUrl = buildStateScopedReferenceUrl(VOTE_GOV_REGISTER_BASE_URL, draft.draft.state_name);
-  if (
-    voteByMailReferenceUrl &&
-    !enrichedEvidence.some((item) => normalizeHttpUrl(item.url) === voteByMailReferenceUrl)
-  ) {
-    enrichedEvidence.unshift({
-      url: voteByMailReferenceUrl,
-      title: "Vote.gov state registration page",
-      snippet: `${draft.draft.state_name} vote-by-mail and online registration starting reference`,
+    if (group === "early_voting") {
+      const deterministicEarlyVoting = getDeterministicEarlyVotingByFips(draft.draft.state_fips) ?? {
+        available: false,
+        start: null,
+        end: null,
+      };
+      const fixedPayload: GroupPayloadFragment = {
+        early_voting_available: deterministicEarlyVoting.available,
+        early_voting_start_date_rule: deterministicEarlyVoting.start,
+        early_voting_end_date_rule: deterministicEarlyVoting.end,
+        sources: {
+          early_voting_available: [STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED],
+          early_voting_start_date_rule: [STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED],
+          early_voting_end_date_rule: [STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED],
+        },
+      };
+
+      progressEntry.status = "validated";
+      progressEntry.attempts += 1;
+      progressEntry.payload = fixedPayload;
+      progressEntry.evidence = [
+        {
+          url: STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED,
+          title: "NCSL early voting",
+        },
+      ];
+      progressEntry.provider = "backend";
+      progressEntry.model = "deterministic_early_voting";
+      progressEntry.promptVersion = finalPromptVersion;
+      progressEntry.lastErrorCode = null;
+      progressEntry.lastReason = null;
+
+      await saveDraftProgress(pool, ingestKey, attachGroupProgressToDraft(draft.draft, progress), expectedRunId);
+
+      applyGroupPayload(mergedFields, fixedPayload);
+      finalEvidence = mergeEvidenceSnippets(finalEvidence, progressEntry.evidence);
+      finalProvider = progressEntry.provider;
+      finalModel = progressEntry.model;
+      continue;
+    }
+
+    if (group === "polling_hours") {
+      const fixedPollingHours = getDeterministicPollingHoursByFips(draft.draft.state_fips) ?? "Not specified.";
+      const fixedPayload: GroupPayloadFragment = {
+        polling_hours: fixedPollingHours,
+        sources: {
+          polling_hours: [STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED],
+        },
+      };
+
+      progressEntry.status = "validated";
+      progressEntry.attempts += 1;
+      progressEntry.payload = fixedPayload;
+      progressEntry.evidence = [
+        {
+          url: STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED,
+          title: "NCSL polling places",
+        },
+      ];
+      progressEntry.provider = "backend";
+      progressEntry.model = "deterministic_polling_hours";
+      progressEntry.promptVersion = finalPromptVersion;
+      progressEntry.lastErrorCode = null;
+      progressEntry.lastReason = null;
+
+      await saveDraftProgress(pool, ingestKey, attachGroupProgressToDraft(draft.draft, progress), expectedRunId);
+
+      applyGroupPayload(mergedFields, fixedPayload);
+      finalEvidence = mergeEvidenceSnippets(finalEvidence, progressEntry.evidence);
+      finalProvider = progressEntry.provider;
+      finalModel = progressEntry.model;
+      continue;
+    }
+
+    if (group === "id_requirements") {
+      const fixedIdRequirement =
+        getDeterministicIdRequirementByFips(draft.draft.state_fips) ?? "No document required to vote";
+      const fixedPayload: GroupPayloadFragment = {
+        id_requirements: fixedIdRequirement,
+        sources: {
+          id_requirements: [STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED],
+        },
+      };
+
+      progressEntry.status = "validated";
+      progressEntry.attempts += 1;
+      progressEntry.payload = fixedPayload;
+      progressEntry.evidence = [
+        {
+          url: STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED,
+          title: "NCSL voter ID",
+        },
+      ];
+      progressEntry.provider = "backend";
+      progressEntry.model = "deterministic_id_requirements";
+      progressEntry.promptVersion = finalPromptVersion;
+      progressEntry.lastErrorCode = null;
+      progressEntry.lastReason = null;
+
+      await saveDraftProgress(pool, ingestKey, attachGroupProgressToDraft(draft.draft, progress), expectedRunId);
+
+      applyGroupPayload(mergedFields, fixedPayload);
+      finalEvidence = mergeEvidenceSnippets(finalEvidence, progressEntry.evidence);
+      finalProvider = progressEntry.provider;
+      finalModel = progressEntry.model;
+      continue;
+    }
+
+    const groupDraft: StateResourceDraftPayload = {
+      ...draft.draft,
+      seed_sources: buildGroupSeedSources(group, draft.draft),
+    };
+
+    let groupEvidence = await collectStateResourceEvidence(groupDraft, {
+      focusTerms: buildGroupFocusTerms(group),
     });
-  }
+    if (group === "polling_place" && draft.draft.allow_open_web_research) {
+      const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
+      if (
+        voteOrgPollingUrl &&
+        !groupEvidence.some((item) => normalizeHttpUrl(item.url) === normalizeHttpUrl(voteOrgPollingUrl))
+      ) {
+        groupEvidence = [
+          {
+            url: voteOrgPollingUrl,
+            title: "Vote.org",
+          },
+          ...groupEvidence,
+        ];
+      }
+    }
 
-  const { result: enrichmentResult, attempts } = await enrichWithCandidates(
-    {
-      ingestKey,
-      draft: draft.draft,
-      evidence: enrichedEvidence,
-      promptVersion: row.prompt_version ?? envPromptVersion,
-      retryFeedback: extractRetryFeedbackFromRow(row),
-    },
-    enrichmentConfig
-  );
+    if (groupEvidence.length === 0) {
+      // If seed pages are blocked/unreadable (e.g. bot-protected), still pass
+      // normalized seed URLs to AI as starting references instead of hard-failing.
+      const seedFallbackEvidence = groupDraft.seed_sources
+        .map((url) => normalizeHttpUrl(url))
+        .filter((url): url is string => typeof url === "string")
+        .map((url) => ({
+          url,
+          title: (() => {
+            try {
+              return new URL(url).hostname.replace(/^www\./, "");
+            } catch {
+              return "source";
+            }
+          })(),
+        }));
 
-  if (!enrichmentResult.ok) {
-    const reason = formatFallbackFailureReason(enrichmentResult, attempts);
-    const lastAttempt = attempts[attempts.length - 1]?.candidate ?? null;
+      if (seedFallbackEvidence.length > 0) {
+        groupEvidence = seedFallbackEvidence;
+      } else {
+        // No fetched evidence and no usable seed URL: allow model to research directly.
+        // Citation verification still runs on model-returned source URLs.
+        groupEvidence = [];
+      }
+    }
 
-    if (enrichmentResult.retryable) {
-      // Keep message unacked so it can be reclaimed/retried with backoff.
-      console.warn(`enricher retryable failure ingest_key=${ingestKey}: ${reason}`);
+    const { result: groupResult, attempts } = await enrichGroupWithCandidates(
+      {
+        ingestKey,
+        draft: groupDraft,
+        evidence: groupEvidence,
+        promptVersion: finalPromptVersion,
+        retryFeedback: extractRetryFeedbackFromRow(row),
+        fieldGroup: group,
+      },
+      enrichmentConfig
+    );
+
+    if (!groupResult.ok) {
+      const reason = `[group=${group}] ${formatFallbackFailureReason(groupResult, attempts)}`;
+      const lastAttempt = attempts[attempts.length - 1]?.candidate ?? null;
+      progressEntry.status = "pending";
+      progressEntry.attempts += 1;
+      progressEntry.lastErrorCode = groupResult.errorCode;
+      progressEntry.lastReason = reason;
+      await saveDraftProgress(pool, ingestKey, attachGroupProgressToDraft(draft.draft, progress), expectedRunId);
+
+      if (groupResult.retryable) {
+        console.warn(`enricher retryable failure ingest_key=${ingestKey} group=${group}: ${reason}`);
+        return {
+          outcome: "retry",
+          reason,
+          schemaVersion: row.schema_version,
+          promptVersion: row.prompt_version,
+          provider: lastAttempt?.provider ?? null,
+          model: lastAttempt?.model ?? null,
+        };
+      }
+
+      await markFailedPending(
+        pool,
+        ingestKey,
+        reason,
+        {
+          stage: "enricher",
+          failure_type: "ai_enrichment_group",
+          field_group: group,
+          final_error_code: groupResult.errorCode,
+          final_retryable: groupResult.retryable,
+          final_provider: lastAttempt?.provider ?? null,
+          final_model: lastAttempt?.model ?? null,
+          group_attempts: progressEntry.attempts,
+          attempts: attempts.map((attempt) => ({
+            provider: attempt.candidate.provider,
+            model: attempt.candidate.model,
+            prompt_variant: attempt.promptVariant,
+            error_code: attempt.errorCode,
+            retryable: attempt.retryable,
+            reason: attempt.reason,
+          })),
+          ...(groupResult.failureDebug ?? {}),
+        },
+        extractAiRawDebug(groupResult.failureDebug),
+        expectedRunId
+      );
+      await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
       return {
-        outcome: "retry",
+        outcome: "failed",
         reason,
         schemaVersion: row.schema_version,
         promptVersion: row.prompt_version,
@@ -1045,28 +1498,42 @@ async function processMessage(
       };
     }
 
+    progressEntry.status = "validated";
+    progressEntry.attempts += 1;
+    progressEntry.payload = groupResult.payload;
+    progressEntry.evidence = mergeEvidenceSnippets(groupEvidence, groupResult.verifiedCitationEvidence);
+    progressEntry.provider = groupResult.provider;
+    progressEntry.model = groupResult.model;
+    progressEntry.promptVersion = groupResult.promptVersion;
+    progressEntry.lastErrorCode = null;
+    progressEntry.lastReason = null;
+
+    await saveDraftProgress(pool, ingestKey, attachGroupProgressToDraft(draft.draft, progress), expectedRunId);
+
+    applyGroupPayload(mergedFields, groupResult.payload);
+    finalEvidence = mergeEvidenceSnippets(finalEvidence, progressEntry.evidence);
+    finalProvider = groupResult.provider;
+    finalModel = groupResult.model;
+    finalPromptVersion = groupResult.promptVersion;
+    finalAiRawDebug = groupResult.aiRawDebug;
+  }
+
+  const missingSourceKeys = STATE_RESOURCE_SOURCE_FIELDS.filter((key) => {
+    const bucket = mergedFields.sources[key];
+    return !Array.isArray(bucket) || bucket.length === 0;
+  });
+  if (missingSourceKeys.length > 0) {
+    const reason = `final merge missing source keys: ${missingSourceKeys.join(", ")}`;
     await markFailedPending(
       pool,
       ingestKey,
       reason,
       {
         stage: "enricher",
-        failure_type: "ai_enrichment",
-        final_error_code: enrichmentResult.errorCode,
-        final_retryable: enrichmentResult.retryable,
-        final_provider: lastAttempt?.provider ?? null,
-        final_model: lastAttempt?.model ?? null,
-        attempts: attempts.map((attempt) => ({
-          provider: attempt.candidate.provider,
-          model: attempt.candidate.model,
-          prompt_variant: attempt.promptVariant,
-          error_code: attempt.errorCode,
-          retryable: attempt.retryable,
-          reason: attempt.reason,
-        })),
-        ...(enrichmentResult.failureDebug ?? {}),
+        failure_type: "final_merge",
+        missing_sources: missingSourceKeys,
       },
-      extractAiRawDebug(enrichmentResult.failureDebug),
+      null,
       expectedRunId
     );
     await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
@@ -1075,25 +1542,74 @@ async function processMessage(
       reason,
       schemaVersion: row.schema_version,
       promptVersion: row.prompt_version,
-      provider: lastAttempt?.provider ?? null,
-      model: lastAttempt?.model ?? null,
+      provider: finalProvider,
+      model: finalModel,
     };
   }
 
-  const finalEvidence = mergeEvidenceSnippets(enrichedEvidence, enrichmentResult.verifiedCitationEvidence);
   const enrichedPayload: EnrichedStagingPayload = {
-    ...enrichmentResult.payload,
+    state_fips: draft.draft.state_fips,
+    state_abbreviation: draft.draft.state_abbreviation,
+    state_name: draft.draft.state_name,
+    polling_place_url: (mergedFields.polling_place_url as string) ?? "",
+    voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
+    mail_voting_available: (mergedFields.mail_voting_available as boolean) ?? false,
+    mail_ballot_request_deadline_rule:
+      (mergedFields.mail_ballot_request_deadline_rule as string | null | undefined) ?? null,
+    mail_ballot_return_deadline_rule:
+      (mergedFields.mail_ballot_return_deadline_rule as string | null | undefined) ?? null,
+    mail_ballot_return_deadline_type:
+      (mergedFields.mail_ballot_return_deadline_type as "postmarked_by" | "received_by" | null | undefined) ?? null,
+    early_voting_available: (mergedFields.early_voting_available as boolean) ?? false,
+    early_voting_start_date_rule:
+      (mergedFields.early_voting_start_date_rule as string | null | undefined) ?? null,
+    early_voting_end_date_rule:
+      (mergedFields.early_voting_end_date_rule as string | null | undefined) ?? null,
+    polling_hours: (mergedFields.polling_hours as string) ?? "",
+    id_requirements: (mergedFields.id_requirements as string) ?? "",
+    same_day_registration_available: (mergedFields.same_day_registration_available as boolean) ?? false,
+    online_registration_available: (mergedFields.online_registration_available as boolean) ?? false,
+    online_registration_deadline_rule:
+      (mergedFields.online_registration_deadline_rule as string | null | undefined) ?? null,
+    in_person_registration_deadline_rule:
+      (mergedFields.in_person_registration_deadline_rule as string) ?? "",
+    sources: mergedFields.sources as StateResourceSources,
     evidence: finalEvidence,
   };
+
+  const mergedValidation = parseStateResourcePayloadFromAi(enrichedPayload);
+  if (!mergedValidation.ok) {
+    const reason = `final merged payload failed validation: ${mergedValidation.reason}`;
+    await markFailedPending(
+      pool,
+      ingestKey,
+      reason,
+      {
+        stage: "enricher",
+        failure_type: "final_merge_validation",
+      },
+      null,
+      expectedRunId
+    );
+    await redis.xAck(STAGING_DRAFT_STREAM, STAGING_STATE_RESOURCES_ENRICHER_GROUP, messageId);
+    return {
+      outcome: "failed",
+      reason,
+      schemaVersion: row.schema_version,
+      promptVersion: row.prompt_version,
+      provider: finalProvider,
+      model: finalModel,
+    };
+  }
 
   const didUpdate = await applyEnrichment(
     pool,
     ingestKey,
     enrichedPayload,
-    enrichmentResult.aiRawDebug,
-    enrichmentResult.promptVersion,
-    enrichmentResult.provider,
-    enrichmentResult.model,
+    finalAiRawDebug,
+    finalPromptVersion,
+    finalProvider ?? enrichmentConfig.provider,
+    finalModel ?? enrichmentConfig.model,
     expectedRunId
   );
 
@@ -1104,8 +1620,8 @@ async function processMessage(
       reason: null,
       schemaVersion: row.schema_version,
       promptVersion: row.prompt_version,
-      provider: enrichmentResult.provider,
-      model: enrichmentResult.model,
+      provider: finalProvider,
+      model: finalModel,
     };
   }
 
@@ -1116,9 +1632,9 @@ async function processMessage(
       outcome: "enriched",
       reason: null,
       schemaVersion: STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
-      promptVersion: enrichmentResult.promptVersion,
-      provider: enrichmentResult.provider,
-      model: enrichmentResult.model,
+      promptVersion: finalPromptVersion,
+      provider: finalProvider,
+      model: finalModel,
     };
   } catch {
     // Keep message unacked for XAUTOCLAIM recovery.
@@ -1126,9 +1642,9 @@ async function processMessage(
       outcome: "retry",
       reason: "redis publish/ack failed after enrichment",
       schemaVersion: STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
-      promptVersion: enrichmentResult.promptVersion,
-      provider: enrichmentResult.provider,
-      model: enrichmentResult.model,
+      promptVersion: finalPromptVersion,
+      provider: finalProvider,
+      model: finalModel,
     };
   }
 }

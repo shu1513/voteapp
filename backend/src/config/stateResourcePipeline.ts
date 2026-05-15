@@ -1,26 +1,35 @@
 export const CENSUS_STATES_API_URL =
   "https://api.census.gov/data/2024/acs/acs5?get=NAME,B01001_001E&for=state:*";
 
-export const STATE_RESOURCE_POLLING_REFERENCE_SEEDS = [
+export const STATE_RESOURCE_POLLING_PLACES_REFERENCE_SEEDS = [
   "https://www.vote.org/polling-place-locator/",
   "https://www.nass.org/can-i-vote/find-your-polling-place",
   "https://www.usvotefoundation.org/find-my-polling-place",
 ] as const;
+export const STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED =
+  "https://www.ncsl.org/elections-and-campaigns/polling-places";
+export const STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED =
+  "https://www.ncsl.org/elections-and-campaigns/voter-id";
 
-export const STATE_RESOURCE_GENERAL_REFERENCE_SEEDS = [
-  "https://www.vote.org/",
-  "https://www.ncsl.org/elections-and-campaigns/same-day-voter-registration",
-] as const;
+export const STATE_RESOURCE_SAME_DAY_REGISTRATION_DEADLINE_REFERENCE_SEED =
+  "https://www.ncsl.org/elections-and-campaigns/same-day-voter-registration";
+export const STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED =
+  "https://www.ncsl.org/elections-and-campaigns/early-in-person-voting";
 
-export const STATE_RESOURCE_MAIL_REFERENCE_SEEDS = ["https://vote.gov/register"] as const;
-export const STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEEDS = ["https://vote.gov/register"] as const;
+export const STATE_RESOURCE_MAIL_REFERENCE_SEED = "https://vote.gov/register";
+export const STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEED = "https://vote.gov/register";
+export const STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_REFERENCE_SEED = "https://vote.gov/register";
 
 // Backward-compatible combined seed list used by current draft payload schema.
 export const STATE_RESOURCE_SEED_SOURCES = [
-  ...STATE_RESOURCE_POLLING_REFERENCE_SEEDS,
-  ...STATE_RESOURCE_GENERAL_REFERENCE_SEEDS,
-  ...STATE_RESOURCE_MAIL_REFERENCE_SEEDS,
-  ...STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEEDS,
+  ...STATE_RESOURCE_POLLING_PLACES_REFERENCE_SEEDS,
+  STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED,
+  STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED,
+  STATE_RESOURCE_SAME_DAY_REGISTRATION_DEADLINE_REFERENCE_SEED,
+  STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED,
+  STATE_RESOURCE_MAIL_REFERENCE_SEED,
+  STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEED,
+  STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_REFERENCE_SEED,
 ] as const;
 
 // Documentation/audit reference for deterministic FIPS -> abbreviation mapping.

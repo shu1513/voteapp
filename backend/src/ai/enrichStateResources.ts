@@ -14,14 +14,19 @@ import type {
   EnrichStateResourcesResult,
   ProviderAdapter,
 } from "./types.js";
-import { parseStateResourcePayloadFromAi } from "./stateResourcePayloadValidation.js";
+import {
+  parseStateResourceGroupPayloadFromAi,
+  parseStateResourcePayloadFromAi,
+} from "./stateResourcePayloadValidation.js";
 import { openAiProvider } from "./providers/openaiProvider.js";
 import { claudeProvider } from "./providers/claudeProvider.js";
 import { geminiProvider } from "./providers/geminiProvider.js";
-import type { StateResourcePayload } from "../types/stateResource.js";
+import type { StateResourcePayload, StateResourceSources } from "../types/stateResource.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
-import { isLikelyPollingPlaceUrl as isLikelyPollingPlaceUrlByUrl } from "../utils/isLikelyPollingPlaceUrl.js";
-import { CURATED_STATE_POLLING_URL_BY_FIPS } from "../constants/curatedPollingUrls.js";
+import {
+  getStateResourceFieldGroupConfig,
+  type StateResourceFieldGroup,
+} from "./stateResourceFieldGroups.js";
 
 const PROVIDER_ADAPTERS: Record<AiProvider, ProviderAdapter> = {
   openai: openAiProvider,
@@ -29,77 +34,15 @@ const PROVIDER_ADAPTERS: Record<AiProvider, ProviderAdapter> = {
   gemini: geminiProvider,
 };
 
-const AGGREGATOR_HOSTS = new Set([
-  "vote.org",
-  "www.vote.org",
-  "nass.org",
-  "www.nass.org",
-  "usvotefoundation.org",
-  "www.usvotefoundation.org",
-]);
-
-const PREFERRED_OFFICIAL_CITATION_FIELDS = new Set<
-  | "mail_voting_available"
-  | "mail_ballot_request_deadline_rule"
-  | "mail_ballot_return_deadline_rule"
-  | "mail_ballot_return_deadline_type"
-  | "polling_hours"
-  | "id_requirements"
-  | "same_day_registration_available"
->([
-  "mail_voting_available",
-  "mail_ballot_request_deadline_rule",
-  "mail_ballot_return_deadline_rule",
-  "mail_ballot_return_deadline_type",
-  "polling_hours",
-  "id_requirements",
-  "same_day_registration_available",
-]);
-type PreferredOfficialCitationField =
-  | "mail_voting_available"
-  | "mail_ballot_request_deadline_rule"
-  | "mail_ballot_return_deadline_rule"
-  | "mail_ballot_return_deadline_type"
-  | "polling_hours"
-  | "id_requirements"
-  | "same_day_registration_available";
-const LEGAL_SUMMARY_CITATION_FIELDS = new Set<PreferredOfficialCitationField>([
-  "mail_ballot_request_deadline_rule",
-  "mail_ballot_return_deadline_rule",
-  "polling_hours",
-  "id_requirements",
-]);
 const CITATION_FETCH_TIMEOUT_MS = 8_000;
 const CITATION_MAX_RESPONSE_BYTES = 1_000_000;
+type ScopedGroupPayload = Partial<Omit<StateResourcePayload, "sources">> & {
+  sources: Partial<StateResourceSources>;
+};
 
 function getHostname(url: string): string {
   try {
     return new URL(url).hostname.toLowerCase();
-  } catch {
-    return "";
-  }
-}
-
-function isAggregatorUrl(url: string): boolean {
-  const host = getHostname(url);
-  return AGGREGATOR_HOSTS.has(host);
-}
-
-function isPreferredOfficialCitationField(
-  field: (typeof STATE_RESOURCE_SOURCE_FIELDS)[number]
-): field is PreferredOfficialCitationField {
-  return PREFERRED_OFFICIAL_CITATION_FIELDS.has(field as PreferredOfficialCitationField);
-}
-
-function isLegalSummaryCitationField(
-  field: (typeof STATE_RESOURCE_SOURCE_FIELDS)[number]
-): field is PreferredOfficialCitationField {
-  return LEGAL_SUMMARY_CITATION_FIELDS.has(field as PreferredOfficialCitationField);
-}
-
-function getPathname(url: string): string {
-  try {
-    return new URL(url).pathname.toLowerCase();
   } catch {
     return "";
   }
@@ -204,55 +147,6 @@ function stripHtmlToText(input: string): string {
   return normalizeWhitespace(withoutTags);
 }
 
-async function readResponseTextWithByteLimit(
-  response: Response,
-  maxBytes: number,
-  controller: AbortController
-): Promise<{ ok: true; text: string } | { ok: false; reason: string }> {
-  if (!response.body) {
-    const fallback = await response.text();
-    const fallbackSize = new TextEncoder().encode(fallback).length;
-    if (fallbackSize > maxBytes) {
-      return { ok: false, reason: "citation URL response body is too large" };
-    }
-    return { ok: true, text: fallback };
-  }
-
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-  let totalBytes = 0;
-  let text = "";
-
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) {
-        break;
-      }
-
-      if (value) {
-        totalBytes += value.byteLength;
-        if (totalBytes > maxBytes) {
-          try {
-            await reader.cancel();
-          } catch {
-            // no-op; best effort cancellation.
-          }
-          controller.abort();
-          return { ok: false, reason: "citation URL response body is too large" };
-        }
-
-        text += decoder.decode(value, { stream: true });
-      }
-    }
-
-    text += decoder.decode();
-    return { ok: true, text };
-  } finally {
-    reader.releaseLock();
-  }
-}
-
 async function fetchCitationEvidenceSnippet(
   citationUrl: string,
   fallbackSourceName: string
@@ -278,15 +172,45 @@ async function fetchCitationEvidenceSnippet(
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), CITATION_FETCH_TIMEOUT_MS);
+  let response: Response | null = null;
 
   try {
-    const response = await fetch(normalizedInputUrl, {
+    response = await fetch(normalizedInputUrl, {
       method: "GET",
       redirect: "follow",
       signal: controller.signal,
     });
 
     if (!response.ok) {
+      if (response.status === 403) {
+        const finalUrl = normalizeHttpUrl(response.url || normalizedInputUrl);
+        if (!finalUrl) {
+          return { ok: false, reason: "citation final URL is invalid after redirects" };
+        }
+
+        let finalParsed: URL;
+        try {
+          finalParsed = new URL(finalUrl);
+        } catch {
+          return { ok: false, reason: "citation final URL is not parseable" };
+        }
+
+        if (isBlockedCitationHostname(finalParsed.hostname)) {
+          return { ok: false, reason: "citation final URL points to a blocked/private host" };
+        }
+        if (await resolvesToBlockedPrivateIp(finalParsed.hostname)) {
+          return { ok: false, reason: "citation final URL hostname resolves to a blocked/private IP" };
+        }
+
+        const sourceName = normalizeWhitespace(fallbackSourceName) || getHostname(finalUrl) || "source";
+        return {
+          ok: true,
+          snippet: {
+            url: finalUrl,
+            title: sourceName,
+          },
+        };
+      }
       return { ok: false, reason: `citation fetch returned status ${response.status}` };
     }
 
@@ -322,30 +246,13 @@ async function fetchCitationEvidenceSnippet(
       }
     }
 
-    const bodyTextResult = await readResponseTextWithByteLimit(response, CITATION_MAX_RESPONSE_BYTES, controller);
-    if (!bodyTextResult.ok) {
-      return bodyTextResult;
-    }
-    const bodyText = bodyTextResult.text;
-
-    const textForSnippet = contentType.toLowerCase().includes("text/html")
-      ? stripHtmlToText(bodyText)
-      : normalizeWhitespace(bodyText);
-
-    if (!textForSnippet) {
-      return { ok: false, reason: "citation URL did not provide readable text content" };
-    }
-
-    const titleMatch = /<title\b[^>]*>([\s\S]*?)<\/title>/i.exec(bodyText);
-    const extractedTitle = titleMatch ? normalizeWhitespace(stripHtmlToText(titleMatch[1])) : "";
-    const sourceName = extractedTitle || normalizeWhitespace(fallbackSourceName) || getHostname(finalUrl) || "source";
+    const sourceName = normalizeWhitespace(fallbackSourceName) || getHostname(finalUrl) || "source";
 
     return {
       ok: true,
       snippet: {
         url: finalUrl,
         title: sourceName,
-        snippet: textForSnippet.slice(0, 800),
       },
     };
   } catch (error) {
@@ -355,6 +262,14 @@ async function fetchCitationEvidenceSnippet(
     }
     return { ok: false, reason: `citation URL fetch failed: ${message}` };
   } finally {
+    // We validate headers/url only; always cancel body to release sockets promptly.
+    if (response) {
+      try {
+        await response.body?.cancel();
+      } catch {
+        // best effort: do not mask the primary result
+      }
+    }
     clearTimeout(timeout);
   }
 }
@@ -376,7 +291,6 @@ async function verifyAndCollectAdditionalCitationEvidence(
       .map((item) => normalizeHttpUrl(item.url))
       .filter((url): url is string => typeof url === "string")
   );
-  knownEvidenceUrls.add(STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL);
   const verifiedCitationEvidence: EvidenceSnippet[] = [];
   const seenNewCitationUrls = new Set<string>();
   const verificationFailures: Array<{
@@ -436,169 +350,97 @@ async function verifyAndCollectAdditionalCitationEvidence(
   return { ok: true, verifiedCitationEvidence };
 }
 
-function isOfficialElectionSource(url: string, sourceName = "", snippet = ""): boolean {
-  const host = getHostname(url);
-  const pathname = getPathname(url);
-  const text = `${host} ${pathname} ${sourceName} ${snippet}`.toLowerCase();
+async function verifyAndCollectAdditionalCitationEvidenceForFields(
+  sources: Partial<StateResourceSources>,
+  sourceFields: readonly (keyof StateResourceSources)[],
+  evidence: EnrichStateResourcesInput["evidence"]
+): Promise<
+  | { ok: true; verifiedCitationEvidence: EvidenceSnippet[] }
+  | {
+      ok: false;
+      reason: string;
+      failedCitationUrls: string[];
+      failures: Array<{ field: keyof StateResourceSources; url: string; reason: string }>;
+    }
+> {
+  const knownEvidenceUrls = new Set(
+    evidence
+      .map((item) => normalizeHttpUrl(item.url))
+      .filter((url): url is string => typeof url === "string")
+  );
+  const verifiedCitationEvidence: EvidenceSnippet[] = [];
+  const seenNewCitationUrls = new Set<string>();
+  const verificationFailures: Array<{
+    field: keyof StateResourceSources;
+    url: string;
+    reason: string;
+  }> = [];
 
-  if (host.endsWith(".gov")) {
-    return true;
-  }
+  for (const key of sourceFields) {
+    const citations = sources[key];
+    if (!Array.isArray(citations) || citations.length === 0) {
+      verificationFailures.push({
+        field: key,
+        url: "",
+        reason: "missing required source citations",
+      });
+      continue;
+    }
 
-  if (/(sos|secretary-?of-?state|board-?of-?elections|county clerk|elections?)/i.test(text)) {
-    return true;
-  }
+    for (const citation of citations) {
+      const normalizedCitationUrl = normalizeHttpUrl(citation);
+      if (!normalizedCitationUrl) {
+        verificationFailures.push({
+          field: key,
+          url: citation,
+          reason: "invalid citation URL",
+        });
+        continue;
+      }
 
-  return false;
-}
+      if (knownEvidenceUrls.has(normalizedCitationUrl) || seenNewCitationUrls.has(normalizedCitationUrl)) {
+        continue;
+      }
 
-function hasStateSignal(url: string, title: string, snippet: string, stateName: string, stateAbbreviation: string): boolean {
-  const lowerUrl = url.toLowerCase();
-  const stateNameLower = stateName.trim().toLowerCase();
-  const stateSlug = stateNameLower.replace(/\s+/g, "-");
-  const stateCompact = stateNameLower.replace(/[^a-z0-9]/g, "");
-  const urlCompact = lowerUrl.replace(/[^a-z0-9]/g, "");
-  const abbreviationLower = stateAbbreviation.trim().toLowerCase();
-  const titleLower = title.toLowerCase();
-  const snippetLower = snippet.toLowerCase();
+      const fetched = await fetchCitationEvidenceSnippet(normalizedCitationUrl, getHostname(normalizedCitationUrl));
+      if (!fetched.ok) {
+        verificationFailures.push({
+          field: key,
+          url: normalizedCitationUrl,
+          reason: fetched.reason,
+        });
+        continue;
+      }
 
-  if (
-    titleLower.includes(stateNameLower) ||
-    snippetLower.includes(stateNameLower) ||
-    lowerUrl.includes(`/${stateSlug}`) ||
-    (stateCompact.length > 3 && urlCompact.includes(stateCompact))
-  ) {
-    return true;
-  }
-
-  if (abbreviationLower.length === 2) {
-    if (lowerUrl.includes(`.${abbreviationLower}.`) || lowerUrl.includes(`/${abbreviationLower}/`)) {
-      return true;
+      seenNewCitationUrls.add(fetched.snippet.url);
+      knownEvidenceUrls.add(fetched.snippet.url);
+      verifiedCitationEvidence.push(fetched.snippet);
     }
   }
 
-  return false;
-}
+  if (verificationFailures.length > 0) {
+    const failedCitationUrls = Array.from(
+      new Set(
+        verificationFailures
+          .map((failure) => failure.url)
+          .filter((url) => url.length > 0)
+      )
+    ).slice(0, 100);
+    const reasonPreview = verificationFailures
+      .slice(0, 3)
+      .map((failure) => `sources.${failure.field}${failure.url ? ` (${failure.url})` : ""}: ${failure.reason}`)
+      .join("; ");
+    const extraCount = verificationFailures.length > 3 ? ` (+${verificationFailures.length - 3} more)` : "";
 
-function isLikelyPollingPlaceUrl(url: string, title: string, snippet: string): boolean {
-  if (isLikelyPollingPlaceUrlByUrl(url)) {
-    return true;
+    return {
+      ok: false,
+      reason: `citation URL(s) could not be verified for ${verificationFailures.length} citation(s): ${reasonPreview}${extraCount}`,
+      failedCitationUrls,
+      failures: verificationFailures,
+    };
   }
 
-  const combined = `${url} ${title} ${snippet}`.toLowerCase();
-
-  if (/\b(polling|polling-place|polling place|find-your-polling-place|locator)\b/.test(combined)) {
-    return true;
-  }
-
-  if (/\b(register|registration|absentee|mail|id[-\s]?laws?|identification)\b/.test(combined)) {
-    return false;
-  }
-
-  return false;
-}
-
-function scorePollingCandidate(url: string, stateSignal: boolean): number {
-  const host = getHostname(url);
-  let score = 0;
-
-  if (host.endsWith(".gov")) {
-    score += 50;
-  }
-
-  if (/(sos|secretary-?of-?state|elections?)/i.test(host + url)) {
-    score += 20;
-  }
-
-  if (/polling|polling-place|find-your-polling-place|locator/i.test(url)) {
-    score += 10;
-  }
-
-  if (isAggregatorUrl(url)) {
-    score -= 40;
-  }
-
-  if (stateSignal) {
-    score += 120;
-  } else if (!isAggregatorUrl(url)) {
-    // Strongly discourage official URLs that point to a different state.
-    score -= 220;
-  }
-
-  return score;
-}
-
-/**
- * When evidence contains both aggregator and official polling URLs, prefer the official URL.
- */
-function preferOfficialPollingPlaceUrl(
-  payload: StateResourcePayload,
-  evidence: EnrichStateResourcesInput["evidence"],
-  draft: EnrichStateResourcesInput["draft"]
-): StateResourcePayload {
-  const normalizedCurrent = normalizeHttpUrl(payload.polling_place_url);
-  if (!normalizedCurrent) {
-    return payload;
-  }
-  const currentLooksLikePollingUrl = isLikelyPollingPlaceUrlByUrl(normalizedCurrent);
-  const mustCorrectCurrent = !currentLooksLikePollingUrl;
-  const currentHasStateSignal = hasStateSignal(normalizedCurrent, "", "", draft.state_name, draft.state_abbreviation);
-  if (!isAggregatorUrl(normalizedCurrent) && currentLooksLikePollingUrl && currentHasStateSignal) {
-    return payload;
-  }
-
-  const candidates = evidence
-    .map((item) => {
-      const normalized = normalizeHttpUrl(item.url);
-      if (!normalized) {
-        return null;
-      }
-
-      if (!isLikelyPollingPlaceUrl(normalized, item.title, item.snippet)) {
-        return null;
-      }
-
-      return {
-        normalizedUrl: normalized,
-        score: scorePollingCandidate(
-          normalized,
-          hasStateSignal(normalized, item.title, item.snippet, draft.state_name, draft.state_abbreviation)
-        ),
-      };
-    })
-    .filter((item): item is { normalizedUrl: string; score: number } => item !== null)
-    .sort((a, b) => b.score - a.score);
-
-  const best = candidates[0];
-  if (!best) {
-    return payload;
-  }
-
-  // If current URL is valid but low quality (aggregator), only replace with a strong non-aggregator candidate.
-  if (!mustCorrectCurrent && currentHasStateSignal && (best.score <= 0 || isAggregatorUrl(best.normalizedUrl))) {
-    return payload;
-  }
-
-  const hasCitation = payload.sources.polling_place_url.some((citation) => {
-    const normalizedCitationUrl = normalizeHttpUrl(citation);
-    return normalizedCitationUrl === best.normalizedUrl;
-  });
-
-  const pollingPlaceCitations = hasCitation
-    ? payload.sources.polling_place_url
-    : [
-        best.normalizedUrl,
-        ...payload.sources.polling_place_url,
-      ];
-
-  return {
-    ...payload,
-    polling_place_url: best.normalizedUrl,
-    sources: {
-      ...payload.sources,
-      polling_place_url: pollingPlaceCitations,
-    },
-  };
+  return { ok: true, verifiedCitationEvidence };
 }
 
 /**
@@ -607,8 +449,14 @@ function preferOfficialPollingPlaceUrl(
 function buildEvidenceUrlSet(
   evidence: EnrichStateResourcesInput["evidence"]
 ): { ok: true } | { ok: false; reason: string } {
-  if (!Array.isArray(evidence) || evidence.length === 0) {
-    return { ok: false, reason: "evidence snippets are required for citation grounding" };
+  if (!Array.isArray(evidence)) {
+    return { ok: false, reason: "evidence must be an array" };
+  }
+
+  // Evidence can be empty (seed URLs may be blocked/unreadable). In that case,
+  // the model can still research and we verify returned citations independently.
+  if (evidence.length === 0) {
+    return { ok: true };
   }
 
   const urlSet = new Set(
@@ -618,7 +466,7 @@ function buildEvidenceUrlSet(
   );
 
   if (urlSet.size === 0) {
-    return { ok: false, reason: "evidence snippets must contain valid http(s) URLs" };
+    return { ok: false, reason: "evidence entries must contain valid http(s) URLs" };
   }
 
   return { ok: true };
@@ -641,181 +489,12 @@ function validateCitationUrls(payload: StateResourcePayload): string | null {
   return null;
 }
 
-function chooseFallbackEvidenceUrl(
-  field: (typeof STATE_RESOURCE_SOURCE_FIELDS)[number],
-  evidence: EnrichStateResourcesInput["evidence"]
-): string | null {
-  const scored = evidence
-    .map((item) => {
-      const normalizedUrl = normalizeHttpUrl(item.url);
-      if (!normalizedUrl) {
-        return null;
-      }
-
-      const lower = `${normalizedUrl} ${item.title} ${item.snippet}`.toLowerCase();
-      let score = 0;
-
-      if (field === "polling_place_url") {
-        if (isLikelyPollingPlaceUrl(normalizedUrl, item.title, item.snippet)) {
-          score += 100;
-        }
-      } else if (field === "voter_registration_url") {
-        if (/\b(register|registration|voter registration)\b/.test(lower)) {
-          score += 100;
-        }
-      } else if (
-        field === "mail_voting_available" ||
-        field === "mail_ballot_request_deadline_rule" ||
-        field === "mail_ballot_return_deadline_rule" ||
-        field === "mail_ballot_return_deadline_type"
-      ) {
-        if (/\b(absentee|mail ballot|vote by mail|vote-by-mail|drop box|postmark)\b/.test(lower)) {
-          score += 100;
-        }
-      } else if (field === "polling_hours") {
-        if (/\b(hours|open|close|polling hours|election day)\b/.test(lower)) {
-          score += 100;
-        }
-      } else if (field === "id_requirements") {
-        if (/\b(voter id|id law|identification|photo id)\b/.test(lower)) {
-          score += 100;
-        }
-      } else if (field === "same_day_registration_available") {
-        if (/\b(same[-\s]?day registration|election day registration|conditional voter registration)\b/.test(lower)) {
-          score += 100;
-        }
-      }
-
-      if (isPreferredOfficialCitationField(field) && isOfficialElectionSource(normalizedUrl, item.title, item.snippet)) {
-        score += 40;
-      }
-
-      if (score === 0) {
-        return null;
-      }
-
-      return { url: normalizedUrl, score };
-    })
-    .filter((item): item is { url: string; score: number } => item !== null)
-    .sort((a, b) => b.score - a.score);
-
-  if (scored.length > 0) {
-    return scored[0].url;
-  }
-
-  const first = evidence
-    .map((item) => {
-      const normalizedUrl = normalizeHttpUrl(item.url);
-      if (!normalizedUrl) {
-        return null;
-      }
-      return normalizedUrl;
-    })
-    .find((item): item is string => item !== null);
-
-  return first ?? null;
-}
-
-function choosePreferredOfficialCitationForField(
-  field:
-    | "mail_voting_available"
-    | "mail_ballot_request_deadline_rule"
-    | "mail_ballot_return_deadline_rule"
-    | "mail_ballot_return_deadline_type"
-    | "polling_hours"
-    | "id_requirements"
-    | "same_day_registration_available",
-  evidence: EnrichStateResourcesInput["evidence"]
-): string | null {
-  const ranked = evidence
-    .map((item) => {
-      const normalizedUrl = normalizeHttpUrl(item.url);
-      if (!normalizedUrl) {
-        return null;
-      }
-      if (!isOfficialElectionSource(normalizedUrl, item.title, item.snippet)) {
-        return null;
-      }
-
-      const lower = `${normalizedUrl} ${item.title} ${item.snippet}`.toLowerCase();
-      let relevance = 0;
-
-      if (
-        (field === "mail_voting_available" ||
-          field === "mail_ballot_request_deadline_rule" ||
-          field === "mail_ballot_return_deadline_rule" ||
-          field === "mail_ballot_return_deadline_type") &&
-        /\b(absentee|mail ballot|vote by mail|vote-by-mail|drop box|postmark|deadline|received)\b/.test(lower)
-      ) {
-        relevance += 100;
-      }
-      if (field === "polling_hours" && /\b(hours|open|close|polling hours|election day)\b/.test(lower)) {
-        relevance += 100;
-      }
-      if (field === "id_requirements" && /\b(voter id|id law|identification|photo id)\b/.test(lower)) {
-        relevance += 100;
-      }
-      if (
-        field === "same_day_registration_available" &&
-        /\b(same[-\s]?day registration|election day registration|conditional voter registration)\b/.test(lower)
-      ) {
-        relevance += 100;
-      }
-
-      return {
-        url: normalizedUrl,
-        score: relevance,
-      };
-    })
-    .filter((item): item is { url: string; score: number } => item !== null && item.score > 0)
-    .sort((a, b) => b.score - a.score);
-
-  if (ranked.length === 0) {
-    return null;
-  }
-
-  return ranked[0].url;
-}
-
-function chooseDraftPollingSeedUrl(draft: EnrichStateResourcesInput["draft"]): string | null {
-  const stateSpecificFallback = CURATED_STATE_POLLING_URL_BY_FIPS[draft.state_fips];
-  if (stateSpecificFallback) {
-    const normalizedFallback = normalizeHttpUrl(stateSpecificFallback);
-    if (normalizedFallback) {
-      return normalizedFallback;
-    }
-  }
-
-  for (const seed of draft.seed_sources) {
-    const normalized = normalizeHttpUrl(seed);
-    if (!normalized) {
-      continue;
-    }
-    if (isLikelyPollingPlaceUrlByUrl(normalized)) {
-      return normalized;
-    }
-  }
-  return null;
-}
-
-function isCuratedStatePollingUrl(url: string, draft: EnrichStateResourcesInput["draft"]): boolean {
-  const curated = CURATED_STATE_POLLING_URL_BY_FIPS[draft.state_fips];
-  if (!curated) {
-    return false;
-  }
-
-  const normalizedCurated = normalizeHttpUrl(curated);
-  const normalizedUrl = normalizeHttpUrl(url);
-  return typeof normalizedCurated === "string" && normalizedCurated === normalizedUrl;
-}
-
 /**
  * Normalizes AI citations and deduplicates URL entries.
  * Applies deterministic fallbacks only for URL fields (not legal summary text fields).
  */
 function groundCitationsToEvidence(
-  payload: StateResourcePayload,
-  evidence: EnrichStateResourcesInput["evidence"]
+  payload: StateResourcePayload
 ): StateResourcePayload {
   const groundedSources = {} as StateResourcePayload["sources"];
 
@@ -831,28 +510,6 @@ function groundCitationsToEvidence(
         return normalized;
       })
       .filter((citation): citation is string => citation !== null);
-
-    if (grounded.length === 0 && !isLegalSummaryCitationField(key)) {
-      const fallback = chooseFallbackEvidenceUrl(key, evidence);
-      if (fallback) {
-        grounded.push(fallback);
-        seen.add(fallback);
-      }
-    }
-
-    if (isPreferredOfficialCitationField(key)) {
-      const hasOfficialCitation = grounded.some((citation) =>
-        isOfficialElectionSource(citation)
-      );
-
-      if (!hasOfficialCitation) {
-        const preferredOfficial = choosePreferredOfficialCitationForField(key, evidence);
-        if (preferredOfficial && !seen.has(preferredOfficial)) {
-          grounded.unshift(preferredOfficial);
-          seen.add(preferredOfficial);
-        }
-      }
-    }
 
     groundedSources[key] = grounded;
   }
@@ -944,91 +601,24 @@ export async function enrichStateResources(
   const expectedStateAbbreviation = input.draft.state_abbreviation.trim();
   const expectedStateName = input.draft.state_name.trim();
 
-  // Deterministic identity fields must match draft input (do not let AI alter them).
-  if (parsed.payload.state_fips !== expectedStateFips) {
-    return {
-      ok: false,
-      retryable: false,
-      errorCode: "SCHEMA_MISMATCH",
-      reason: "state_fips in AI output must match draft state_fips",
-      failureDebug: providerFailureDebug,
-    };
-  }
-
-  if (parsed.payload.state_abbreviation !== expectedStateAbbreviation) {
-    return {
-      ok: false,
-      retryable: false,
-      errorCode: "SCHEMA_MISMATCH",
-      reason: "state_abbreviation in AI output must match draft state_abbreviation",
-      failureDebug: providerFailureDebug,
-    };
-  }
-
-  if (parsed.payload.state_name !== expectedStateName) {
-    return {
-      ok: false,
-      retryable: false,
-      errorCode: "SCHEMA_MISMATCH",
-      reason: "state_name in AI output must match draft state_name",
-      failureDebug: providerFailureDebug,
-    };
-  }
-
-  const pollingNormalizedPayload = preferOfficialPollingPlaceUrl(parsed.payload, input.evidence, input.draft);
-  let normalizedPayload = groundCitationsToEvidence(pollingNormalizedPayload, input.evidence);
+  let normalizedPayload = groundCitationsToEvidence(parsed.payload);
+  const normalizedPollingPlaceUrl = normalizeHttpUrl(normalizedPayload.polling_place_url);
+  const groundedPollingPlaceUrl =
+    normalizedPayload.sources.polling_place_url.find(
+      (citation) => normalizeHttpUrl(citation) === normalizedPollingPlaceUrl
+    ) ??
+    normalizedPayload.sources.polling_place_url[0] ??
+    normalizedPayload.polling_place_url;
   normalizedPayload = {
     ...normalizedPayload,
+    polling_place_url: groundedPollingPlaceUrl,
+    state_fips: expectedStateFips,
+    state_abbreviation: expectedStateAbbreviation,
+    state_name: expectedStateName,
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
-    sources: {
-      ...normalizedPayload.sources,
-      voter_registration_url: [STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL],
-    },
   };
-  const pollingSeedFallback = chooseDraftPollingSeedUrl(input.draft);
-  if (pollingSeedFallback) {
-    const normalizedCurrentPollingUrl = normalizeHttpUrl(normalizedPayload.polling_place_url);
-    if (
-      (
-        !normalizedCurrentPollingUrl ||
-        !isLikelyPollingPlaceUrlByUrl(normalizedCurrentPollingUrl) ||
-        isAggregatorUrl(normalizedCurrentPollingUrl)
-      )
-    ) {
-      const fallbackChangedPollingUrl = normalizedCurrentPollingUrl !== pollingSeedFallback;
 
-      if (fallbackChangedPollingUrl) {
-        normalizedPayload = {
-          ...normalizedPayload,
-          polling_place_url: pollingSeedFallback,
-          sources: {
-            ...normalizedPayload.sources,
-            polling_place_url: [pollingSeedFallback],
-          },
-        };
-      } else {
-        normalizedPayload = {
-          ...normalizedPayload,
-          polling_place_url: pollingSeedFallback,
-        };
-      }
-    }
-  }
-
-  if (
-    !isLikelyPollingPlaceUrlByUrl(normalizedPayload.polling_place_url) &&
-    !isCuratedStatePollingUrl(normalizedPayload.polling_place_url, input.draft)
-  ) {
-    return {
-      ok: false,
-      retryable: false,
-      errorCode: "SCHEMA_MISMATCH",
-      reason: "polling_place_url must be a polling-place locator URL, not a registration/mail/id URL",
-      failureDebug: providerFailureDebug,
-    };
-  }
-
-  for (const field of LEGAL_SUMMARY_CITATION_FIELDS) {
+  for (const field of STATE_RESOURCE_SOURCE_FIELDS) {
     if (normalizedPayload.sources[field].length === 0) {
       return {
         ok: false,
@@ -1070,6 +660,154 @@ export async function enrichStateResources(
     ok: true,
     payload: normalizedPayload,
     schemaVersion: STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
+    provider: config.provider,
+    model: config.model,
+    promptVersion: input.promptVersion,
+    aiRawDebug,
+    verifiedCitationEvidence: citationEvidenceResult.verifiedCitationEvidence,
+  };
+}
+
+export type EnrichStateResourceGroupResult =
+  | {
+      ok: true;
+      fieldGroup: StateResourceFieldGroup;
+      payload: ScopedGroupPayload;
+      provider: AiProvider;
+      model: string;
+      promptVersion: string;
+      aiRawDebug: Record<string, unknown> | null;
+      verifiedCitationEvidence: EvidenceSnippet[];
+    }
+  | {
+      ok: false;
+      retryable: boolean;
+      reason: string;
+      errorCode:
+        | "RATE_LIMIT"
+        | "TIMEOUT"
+        | "TEMP_PROVIDER_ERROR"
+        | "INVALID_JSON"
+        | "SCHEMA_MISMATCH"
+        | "MISSING_REQUIRED_FIELDS"
+        | "CONFIGURATION_ERROR"
+        | "UNSUPPORTED_PROVIDER";
+      failureDebug?: Record<string, unknown>;
+    };
+
+export async function enrichStateResourcesGroup(
+  input: EnrichStateResourcesInput & { fieldGroup: StateResourceFieldGroup },
+  config: EnrichStateResourcesConfig
+): Promise<EnrichStateResourceGroupResult> {
+  const adapter = PROVIDER_ADAPTERS[config.provider];
+  if (!adapter) {
+    return {
+      ok: false,
+      retryable: false,
+      errorCode: "UNSUPPORTED_PROVIDER",
+      reason: `Unsupported AI provider: ${config.provider}`,
+    };
+  }
+
+  const evidenceCheck = buildEvidenceUrlSet(input.evidence);
+  if (!evidenceCheck.ok) {
+    return {
+      ok: false,
+      retryable: false,
+      errorCode: "SCHEMA_MISMATCH",
+      reason: evidenceCheck.reason,
+    };
+  }
+
+  const generated = await adapter(input, config);
+  if (!generated.ok) {
+    return generated;
+  }
+
+  const providerFailureDebug = {
+    draft_snapshot: input.draft,
+    retry_feedback: input.retryFeedback ?? null,
+    field_group: input.fieldGroup,
+    ...(generated.debugMeta ?? {}),
+    provider_response_text: generated.rawText ?? null,
+    provider_response_payload: generated.rawPayload,
+  } as const;
+
+  const parsed = parseStateResourceGroupPayloadFromAi(generated.rawPayload, input.fieldGroup);
+  if (!parsed.ok) {
+    return {
+      ok: false,
+      retryable: false,
+      errorCode: parsed.errorCode,
+      reason: parsed.reason,
+      failureDebug: providerFailureDebug,
+    };
+  }
+
+  const aiRawDebug = {
+    draft_snapshot: input.draft,
+    retry_feedback: input.retryFeedback ?? null,
+    field_group: input.fieldGroup,
+    ...(generated.debugMeta ?? {}),
+    provider_response_text: generated.rawText ?? null,
+    provider_response_payload: generated.rawPayload,
+    ai_payload_before_grounding: parsed.payload,
+  } as const;
+
+  const groupConfig = getStateResourceFieldGroupConfig(input.fieldGroup);
+  const groundedSources = {} as Partial<StateResourceSources>;
+  const knownEvidenceUrls = new Set(
+    input.evidence
+      .map((item) => normalizeHttpUrl(item.url))
+      .filter((url): url is string => typeof url === "string")
+  );
+
+  for (const key of groupConfig.sourceKeys) {
+    const citations = parsed.payload.sources[key] ?? [];
+    const seen = new Set<string>();
+    const normalized = citations
+      .map((citation) => {
+        const normalized = normalizeHttpUrl(citation);
+        if (!normalized || seen.has(normalized)) {
+          return null;
+        }
+        seen.add(normalized);
+        return normalized;
+      })
+      .filter((citation): citation is string => citation !== null);
+
+    // Preserve all citations but prefer evidence-backed URLs first.
+    const evidenceBacked = normalized.filter((url) => knownEvidenceUrls.has(url));
+    const additionalCitations = normalized.filter((url) => !knownEvidenceUrls.has(url));
+    groundedSources[key] = [...evidenceBacked, ...additionalCitations];
+  }
+
+  const citationEvidenceResult = await verifyAndCollectAdditionalCitationEvidenceForFields(
+    groundedSources,
+    groupConfig.sourceKeys,
+    input.evidence
+  );
+  if (!citationEvidenceResult.ok) {
+    return {
+      ok: false,
+      retryable: false,
+      errorCode: "SCHEMA_MISMATCH",
+      reason: citationEvidenceResult.reason,
+      failureDebug: {
+        ...providerFailureDebug,
+        failed_citation_urls: citationEvidenceResult.failedCitationUrls,
+        citation_verification_failures: citationEvidenceResult.failures,
+      },
+    };
+  }
+
+  return {
+    ok: true,
+    fieldGroup: input.fieldGroup,
+    payload: {
+      ...parsed.payload,
+      sources: groundedSources,
+    },
     provider: config.provider,
     model: config.model,
     promptVersion: input.promptVersion,

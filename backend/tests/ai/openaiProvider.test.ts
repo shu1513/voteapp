@@ -130,3 +130,137 @@ describe("openAiProvider prompt retry feedback", () => {
     expect(capturedBody).not.toContain("Previous attempt feedback (retry context):");
   });
 });
+
+describe("openAiProvider temperature behavior", () => {
+  it("omits explicit temperature for gpt-5 models", async () => {
+    let capturedBody = "";
+    globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      capturedBody = typeof init?.body === "string" ? init.body : "";
+      return new Response(JSON.stringify({ choices: [{ message: { content: "{}" } }] }), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    }) as unknown as typeof fetch;
+
+    const result = await openAiProvider(buildInput(false), {
+      provider: "openai",
+      model: "gpt-5.5",
+      timeoutMs: 1000,
+      openAiApiKey: "test-key",
+    });
+
+    expect(result.ok).toBe(true);
+    const body = JSON.parse(capturedBody) as Record<string, unknown>;
+    expect(body).not.toHaveProperty("temperature");
+  });
+
+  it("keeps explicit temperature for non-gpt-5 models", async () => {
+    let capturedBody = "";
+    globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      capturedBody = typeof init?.body === "string" ? init.body : "";
+      return new Response(JSON.stringify({ choices: [{ message: { content: "{}" } }] }), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    }) as unknown as typeof fetch;
+
+    const result = await openAiProvider(buildInput(false), {
+      provider: "openai",
+      model: "gpt-4o-mini",
+      timeoutMs: 1000,
+      openAiApiKey: "test-key",
+    });
+
+    expect(result.ok).toBe(true);
+    const body = JSON.parse(capturedBody) as Record<string, unknown>;
+    expect(body).toHaveProperty("temperature", 0);
+  });
+});
+
+describe("openAiProvider scoped prompt formatting", () => {
+  it("includes strict JSON-only instruction and a valid JSON example for grouped prompts", async () => {
+    let capturedBody = "";
+    globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      capturedBody = typeof init?.body === "string" ? init.body : "";
+      return new Response(JSON.stringify({ choices: [{ message: { content: "{}" } }] }), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    }) as unknown as typeof fetch;
+
+    const input = buildInput(false);
+    input.fieldGroup = "online_registration";
+    const result = await openAiProvider(input, {
+      provider: "openai",
+      model: "gpt-4o-mini",
+      timeoutMs: 1000,
+      openAiApiKey: "test-key",
+    });
+
+    expect(result.ok).toBe(true);
+    const requestBody = JSON.parse(capturedBody) as {
+      messages: Array<{ role: string; content: string }>;
+    };
+    const userPrompt = requestBody.messages.find((m) => m.role === "user")?.content ?? "";
+    expect(userPrompt).toContain("Output must be raw JSON only (single object). No prose, no markdown, no code fences.");
+    expect(userPrompt).toContain("Valid JSON example for this group:");
+    expect(userPrompt).toContain("\"online_registration_available\":true");
+    expect(userPrompt).toContain("\"online_registration_deadline_rule\":");
+  });
+});
+
+describe("openAiProvider JSON parsing hardening", () => {
+  it("accepts duplicated back-to-back identical JSON objects", async () => {
+    const objectText =
+      '{"online_registration_available":true,"online_registration_deadline_rule":"Online registration closes 15 days before Election Day.","sources":{"online_registration_available":["https://vote.gov/register/california"],"online_registration_deadline_rule":["https://vote.gov/register/california"]}}';
+
+    globalThis.fetch = vi.fn(async () => {
+      return new Response(
+        JSON.stringify({
+          choices: [{ message: { content: `${objectText}\n${objectText}` } }],
+        }),
+        { status: 200, headers: { "content-type": "application/json" } }
+      );
+    }) as unknown as typeof fetch;
+
+    const input = buildInput(false);
+    input.fieldGroup = "online_registration";
+    const result = await openAiProvider(input, {
+      provider: "openai",
+      model: "gpt-4o-mini",
+      timeoutMs: 1000,
+      openAiApiKey: "test-key",
+    });
+
+    expect(result.ok).toBe(true);
+  });
+
+  it("rejects non-duplicate trailing content after the first JSON object", async () => {
+    const objectText =
+      '{"online_registration_available":true,"online_registration_deadline_rule":"Online registration closes 15 days before Election Day.","sources":{"online_registration_available":["https://vote.gov/register/california"],"online_registration_deadline_rule":["https://vote.gov/register/california"]}}';
+
+    globalThis.fetch = vi.fn(async () => {
+      return new Response(
+        JSON.stringify({
+          choices: [{ message: { content: `${objectText}\nThis is extra prose.` } }],
+        }),
+        { status: 200, headers: { "content-type": "application/json" } }
+      );
+    }) as unknown as typeof fetch;
+
+    const input = buildInput(false);
+    input.fieldGroup = "online_registration";
+    const result = await openAiProvider(input, {
+      provider: "openai",
+      model: "gpt-4o-mini",
+      timeoutMs: 1000,
+      openAiApiKey: "test-key",
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errorCode).toBe("INVALID_JSON");
+      expect(result.reason).toContain("trailing output");
+    }
+  });
+});

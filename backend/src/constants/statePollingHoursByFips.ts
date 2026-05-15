@@ -1,0 +1,62 @@
+/**
+ * Deterministic statewide polling-hours summaries keyed by 2-digit state FIPS (50 states + DC).
+ * Source reference for all rows:
+ * https://www.ncsl.org/elections-and-campaigns/polling-places
+ */
+export const STATE_POLLING_HOURS_BY_FIPS: Readonly<Record<string, string | null>> = {
+  "01": "7 a.m. to 7 p.m.",
+  "02": "7 a.m. to 8 p.m.",
+  "04": "6 a.m. to 7 p.m.",
+  "05": "7:30 a.m. to 7:30 p.m.",
+  "06": "7 a.m. to 8 p.m.",
+  "08": "7 a.m. to 7 p.m.",
+  "09": "6 a.m. to 8 p.m.",
+  "10": "7 a.m. to 8 p.m.",
+  "11": "7 a.m. to 8 p.m.",
+  "12": "7 a.m. to 7 p.m.",
+  "13": "7 a.m. to 7 p.m. Until 8 p.m. for cities with a population of 300,000 or more.",
+  "15": "7 a.m. to 7 p.m.",
+  "16": "8 a.m. to 8 p.m. County clerks may opt to open at 7 a.m. during primary or general elections.",
+  "17": "6 a.m. to 7 p.m.",
+  "18": "6 a.m. to 6 p.m.",
+  "19": "7 a.m. to 8 p.m.",
+  "20": "7 a.m. to 7 p.m. for counties in central time zone. 6 a.m. to 6 p.m. for counties in mountain time zone.",
+  "21": "6 a.m. to 6 p.m.",
+  "22": "7 a.m. to 8 p.m. Polls open at 6 a.m. for congressional elections.",
+  "23": "6-8 a.m. to 8 p.m. Opening times are flexible and may be as late as 10 a.m. depending on size of the municipality.",
+  "24": "7 a.m. to 8 p.m.",
+  "25": "5:45-7 a.m. to 8 p.m. Opening times are flexible.",
+  "26": "7 a.m. to 8 p.m.",
+  "27": "7 a.m. to 8 p.m.",
+  "28": "7 a.m. to 7 p.m.",
+  "29": "6 a.m. to 7 p.m.",
+  "30": "7 a.m. to 8 p.m.",
+  "31": "7 a.m. to 7 p.m. in mountain time zone. 8 a.m. to 8 p.m. in central time zone.",
+  "32": "7 a.m. to 7 p.m.",
+  "33": "Municipalities determine opening time, but must open by 11 a.m. and close no earlier than 7 p.m.",
+  "34": "6 a.m. to 8 p.m.",
+  "35": "7 a.m. to 7 p.m.",
+  "36": "6 a.m. to 9 p.m.",
+  "37": "6:30 a.m. to 7:30 p.m.",
+  "38": "Open between 7-9 a.m. and close between 7-9 p.m.",
+  "39": "6:30 a.m. to 7:30 p.m.",
+  "40": "7 a.m. to 7 p.m.",
+  "41": "Not specified.",
+  "42": "7 a.m. to 8 p.m.",
+  "44": "7 a.m. to 8 p.m.",
+  "45": "7 a.m. to 7 p.m.",
+  "46": "7 a.m. to 7 p.m.",
+  "47": "Opening times vary by county. Polls close at 8 p.m. in eastern time zone and 7 p.m. in central time zone.",
+  "48": "7 a.m. to 7 p.m.",
+  "49": "7 a.m. to 8 p.m.",
+  "50": "Polls open between 5-10 a.m. as determined by towns. Polls close at 7 p.m.",
+  "51": "6 a.m. to 7 p.m.",
+  "53": "Opening time is not specified. Polling places close at 8 p.m.",
+  "54": "6:30 a.m. to 7:30 p.m.",
+  "55": "7 a.m. to 8 p.m.",
+  "56": "7 a.m. to 7 p.m.",
+} as const;
+
+export function getDeterministicPollingHoursByFips(stateFips: string): string | null {
+  return STATE_POLLING_HOURS_BY_FIPS[stateFips] ?? null;
+}

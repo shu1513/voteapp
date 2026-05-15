@@ -13,6 +13,7 @@ import {
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIPS_REGEX,
   STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
+  isValidStateResourceIdRequirementValue,
   STATE_RESOURCE_SOURCE_FIELDS,
 } from "../../contracts/stateResourceEnrichmentContract.js";
 import { normalizeRetryFeedback } from "../../ai/retryFeedback.js";
@@ -304,9 +305,9 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     "state_abbreviation",
     "state_name",
     "polling_place_url",
-    "voter_registration_url",
     "polling_hours",
     "id_requirements",
+    "in_person_registration_deadline_rule",
   ];
 
   for (const key of requiredTextFields) {
@@ -314,7 +315,16 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
       return null;
     }
   }
+  if (!isValidStateResourceIdRequirementValue((input.id_requirements as string).trim())) {
+    return null;
+  }
 
+  if (typeof input.mail_voting_available !== "boolean") {
+    return null;
+  }
+  if (typeof input.early_voting_available !== "boolean") {
+    return null;
+  }
   if (typeof input.same_day_registration_available !== "boolean") {
     return null;
   }
@@ -351,6 +361,18 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
   ) {
     return null;
   }
+  if (!Object.hasOwn(input, "early_voting_start_date_rule")) {
+    return null;
+  }
+  if (!(input.early_voting_start_date_rule === null || isNonEmptyString(input.early_voting_start_date_rule))) {
+    return null;
+  }
+  if (!Object.hasOwn(input, "early_voting_end_date_rule")) {
+    return null;
+  }
+  if (!(input.early_voting_end_date_rule === null || isNonEmptyString(input.early_voting_end_date_rule))) {
+    return null;
+  }
 
   if (input.online_registration_available === true && input.online_registration_deadline_rule === null) {
     return null;
@@ -374,6 +396,18 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     if (input.mail_ballot_return_deadline_type !== null) {
       return null;
     }
+  }
+  if (input.early_voting_available === true && input.early_voting_start_date_rule === null) {
+    return null;
+  }
+  if (input.early_voting_available === true && input.early_voting_end_date_rule === null) {
+    return null;
+  }
+  if (input.early_voting_available === false && input.early_voting_start_date_rule !== null) {
+    return null;
+  }
+  if (input.early_voting_available === false && input.early_voting_end_date_rule !== null) {
+    return null;
   }
 
   if (!isObjectRecord(input.sources)) {
@@ -415,24 +449,33 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
       input.mail_ballot_return_deadline_type === null
         ? null
         : (input.mail_ballot_return_deadline_type as "postmarked_by" | "received_by"),
+    early_voting_available: input.early_voting_available as boolean,
+    early_voting_start_date_rule:
+      input.early_voting_start_date_rule === null ? null : (input.early_voting_start_date_rule as string).trim(),
+    early_voting_end_date_rule:
+      input.early_voting_end_date_rule === null ? null : (input.early_voting_end_date_rule as string).trim(),
     polling_hours: (input.polling_hours as string).trim(),
     id_requirements: (input.id_requirements as string).trim(),
     same_day_registration_available: input.same_day_registration_available as boolean,
     online_registration_available: input.online_registration_available as boolean,
     online_registration_deadline_rule:
       input.online_registration_deadline_rule === null ? null : (input.online_registration_deadline_rule as string).trim(),
+    in_person_registration_deadline_rule: (input.in_person_registration_deadline_rule as string).trim(),
     sources: {
       polling_place_url: normalizeBucket(sources.polling_place_url),
-      voter_registration_url: normalizeBucket(sources.voter_registration_url),
       mail_voting_available: normalizeBucket(sources.mail_voting_available),
       mail_ballot_request_deadline_rule: normalizeBucket(sources.mail_ballot_request_deadline_rule),
       mail_ballot_return_deadline_rule: normalizeBucket(sources.mail_ballot_return_deadline_rule),
       mail_ballot_return_deadline_type: normalizeBucket(sources.mail_ballot_return_deadline_type),
+      early_voting_available: normalizeBucket(sources.early_voting_available),
+      early_voting_start_date_rule: normalizeBucket(sources.early_voting_start_date_rule),
+      early_voting_end_date_rule: normalizeBucket(sources.early_voting_end_date_rule),
       polling_hours: normalizeBucket(sources.polling_hours),
       id_requirements: normalizeBucket(sources.id_requirements),
       same_day_registration_available: normalizeBucket(sources.same_day_registration_available),
       online_registration_available: normalizeBucket(sources.online_registration_available),
       online_registration_deadline_rule: normalizeBucket(sources.online_registration_deadline_rule),
+      in_person_registration_deadline_rule: normalizeBucket(sources.in_person_registration_deadline_rule),
     },
   };
 }
@@ -449,16 +492,19 @@ function dedupeSources(payload: StateResourcePayload): { payload: StateResourceP
   let changed = false;
   const nextSources: StateResourcePayload["sources"] = {
     polling_place_url: [],
-    voter_registration_url: [],
     mail_voting_available: [],
     mail_ballot_request_deadline_rule: [],
     mail_ballot_return_deadline_rule: [],
     mail_ballot_return_deadline_type: [],
+    early_voting_available: [],
+    early_voting_start_date_rule: [],
+    early_voting_end_date_rule: [],
     polling_hours: [],
     id_requirements: [],
     same_day_registration_available: [],
     online_registration_available: [],
     online_registration_deadline_rule: [],
+    in_person_registration_deadline_rule: [],
   };
 
   for (const key of STATE_RESOURCE_SOURCE_FIELDS) {
@@ -530,7 +576,7 @@ async function requeueToDraft(
   pool: Pool,
   redis: ReturnType<typeof createClient>,
   row: RetryRow,
-  draft: StateResourceDraftPayload
+  draftPayload: Record<string, unknown>
 ): Promise<boolean> {
   const runId = buildRetryRunId();
   const retryFeedback = buildRetryFeedbackFromRow(row);
@@ -555,7 +601,7 @@ async function requeueToDraft(
     `,
     [
       row.ingest_key,
-      JSON.stringify(draft),
+      JSON.stringify(draftPayload),
       JSON.stringify(nextAiRawDebug),
       STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
       runId,
@@ -572,7 +618,7 @@ async function requeueToDraft(
       ingest_key: row.ingest_key,
       item_type: STAGING_ITEM_TYPE_STATE_RESOURCES,
       run_id: runId,
-      payload: JSON.stringify(draft),
+      payload: JSON.stringify(draftPayload),
     });
 
     const finalize = await pool.query(
@@ -760,7 +806,12 @@ export async function runStateResourcesRetrySweeper(options: RetryOptions = {}):
           continue;
         }
 
-        const ok = await requeueToDraft(pool, redis, row, draft);
+        const draftPayloadToRequeue: Record<string, unknown> =
+          draftFromPayload && isObjectRecord(row.payload)
+            ? (row.payload as Record<string, unknown>)
+            : ({ ...draft } as Record<string, unknown>);
+
+        const ok = await requeueToDraft(pool, redis, row, draftPayloadToRequeue);
         if (ok) {
           requeuedToDraft += 1;
         } else {

@@ -2,6 +2,7 @@ import type {
   StateResourceDraftPayload,
   StateResourcePayload,
 } from "../types/stateResource.js";
+import type { StateResourceFieldGroup } from "./stateResourceFieldGroups.js";
 
 export type AiProvider = "openai" | "claude" | "gemini";
 export type PromptVariant = "default" | "citation_repair";
@@ -9,7 +10,8 @@ export type PromptVariant = "default" | "citation_repair";
 export type EvidenceSnippet = {
   url: string;
   title: string;
-  snippet: string;
+  // Deprecated: enrichment now uses URL-first evidence; snippet text is optional.
+  snippet?: string;
 };
 
 export type RetryFeedback = {
@@ -30,6 +32,7 @@ export type EnrichStateResourcesInput = {
   promptVersion: string;
   promptVariant?: PromptVariant;
   retryFeedback?: RetryFeedback | null;
+  fieldGroup?: StateResourceFieldGroup;
 };
 
 export type EnrichStateResourcesConfig = {
@@ -72,7 +75,7 @@ export type EnrichmentFailure =
 export type EnrichmentSuccess = {
   ok: true;
   payload: StateResourcePayload;
-  schemaVersion: "state_resources_enrichment_v2";
+  schemaVersion: "state_resources_enrichment_v4";
   provider: AiProvider;
   model: string;
   promptVersion: string;

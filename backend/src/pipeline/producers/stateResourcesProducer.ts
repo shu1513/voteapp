@@ -5,10 +5,14 @@ import {
   ALLOW_OPEN_WEB_RESEARCH,
   CENSUS_STATES_API_URL,
   EXPECTED_STATE_RESOURCE_STATE_COUNT,
-  STATE_RESOURCE_MAIL_REFERENCE_SEEDS,
-  STATE_RESOURCE_GENERAL_REFERENCE_SEEDS,
-  STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEEDS,
-  STATE_RESOURCE_POLLING_REFERENCE_SEEDS,
+  STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED,
+  STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED,
+  STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_REFERENCE_SEED,
+  STATE_RESOURCE_MAIL_REFERENCE_SEED,
+  STATE_RESOURCE_SAME_DAY_REGISTRATION_DEADLINE_REFERENCE_SEED,
+  STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEED,
+  STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED,
+  STATE_RESOURCE_POLLING_PLACES_REFERENCE_SEEDS,
   STATE_ABBREVIATION_REFERENCE_URL,
   STAGING_DRAFT_STREAM,
   STAGING_ITEM_TYPE_STATE_RESOURCES,
@@ -18,6 +22,7 @@ import { fetchCensusJsonWithKeyRotation } from "../../config/censusApi.js";
 import { STATE_RESOURCE_DRAFT_SCHEMA_VERSION } from "../../contracts/stateResourceEnrichmentContract.js";
 import {
   getStateAbbreviationByFips,
+  getStateNameByFips,
   normalizeFips,
   STATE_ABBR_BY_FIPS,
 } from "../../constants/usStates.js";
@@ -25,7 +30,6 @@ import type { StateResourceDraftPayload } from "../../types/stateResource.js";
 import { createStageObserver } from "../utils/observability.js";
 
 type CensusState = {
-  state_name: string;
   state_fips: string;
   population_estimate: number | null;
 };
@@ -71,9 +75,9 @@ async function fetchCensusStates(censusApiKeys: readonly string[]): Promise<Cens
       continue;
     }
 
-    const [nameRaw, populationRaw, fipsRaw] = row;
+    const [_nameRaw, populationRaw, fipsRaw] = row;
 
-    if (typeof nameRaw !== "string" || typeof populationRaw !== "string" || typeof fipsRaw !== "string") {
+    if (typeof _nameRaw !== "string" || typeof populationRaw !== "string" || typeof fipsRaw !== "string") {
       continue;
     }
 
@@ -86,7 +90,6 @@ async function fetchCensusStates(censusApiKeys: readonly string[]): Promise<Cens
 
     const parsedPopulation = Number.parseInt(populationRaw, 10);
     states.push({
-      state_name: nameRaw.trim(),
       state_fips,
       population_estimate: Number.isFinite(parsedPopulation) ? parsedPopulation : null,
     });
@@ -112,16 +115,20 @@ function toDraftPayload(state: CensusState): StateResourceDraftPayload {
   return {
     state_fips: state.state_fips,
     state_abbreviation: getStateAbbreviationByFips(state.state_fips),
-    state_name: state.state_name,
+    state_name: getStateNameByFips(state.state_fips),
     population_estimate: state.population_estimate,
     census_source_url: CENSUS_STATES_API_URL,
     state_abbreviation_reference_url: STATE_ABBREVIATION_REFERENCE_URL,
-    seed_sources: [
-      ...STATE_RESOURCE_POLLING_REFERENCE_SEEDS,
-      ...STATE_RESOURCE_GENERAL_REFERENCE_SEEDS,
-      ...STATE_RESOURCE_MAIL_REFERENCE_SEEDS,
-      ...STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEEDS,
-    ],
+    seed_sources: Array.from(new Set([
+      ...STATE_RESOURCE_POLLING_PLACES_REFERENCE_SEEDS,
+      STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED,
+      STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED,
+      STATE_RESOURCE_SAME_DAY_REGISTRATION_DEADLINE_REFERENCE_SEED,
+      STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED,
+      STATE_RESOURCE_MAIL_REFERENCE_SEED,
+      STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEED,
+      STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_REFERENCE_SEED,
+    ])),
     allow_open_web_research: ALLOW_OPEN_WEB_RESEARCH,
   };
 }

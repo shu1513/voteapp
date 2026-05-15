@@ -4,19 +4,22 @@ import { createClient } from "redis";
 import {
   STATE_RESOURCE_ABBREVIATION_REGEX,
   STATE_RESOURCE_DRAFT_MARKER_FIELDS,
+  STATE_RESOURCE_EARLY_VOTING_END_DATE_RULE_MAX_LENGTH,
+  STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH,
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIPS_REGEX,
   STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH,
+  STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH,
+  isValidStateResourceIdRequirementValue,
   STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
-  STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
-  STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
   STATE_RESOURCE_TEXT_MIN_LENGTH,
 } from "../../contracts/stateResourceEnrichmentContract.js";
+import { parseCanonicalStateResourcePayload } from "../../contracts/stateResourcePayloadContract.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_ITEM_TYPE_STATE_RESOURCES,
@@ -25,7 +28,6 @@ import {
   STAGING_STATE_RESOURCES_VALIDATOR_GROUP,
   STAGING_VALIDATED_STREAM,
 } from "../../config/stateResourcePipeline.js";
-import { CURATED_STATE_POLLING_URL_BY_FIPS } from "../../constants/curatedPollingUrls.js";
 import { getStateAbbreviationByFips } from "../../constants/usStates.js";
 import type {
   SourceCitation,
@@ -34,7 +36,6 @@ import type {
 } from "../../types/stateResource.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { isUrlOnlyText } from "../../utils/isUrlOnlyText.js";
-import { isLikelyPollingPlaceUrl } from "../../utils/isLikelyPollingPlaceUrl.js";
 import { createStageObserver } from "../utils/observability.js";
 import { hasRunIdMismatch, normalizeRunId } from "../utils/runIdGuard.js";
 
@@ -104,21 +105,10 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
-function isCuratedPollingUrlForState(stateFips: string, pollingPlaceUrl: string): boolean {
-  const curated = CURATED_STATE_POLLING_URL_BY_FIPS[stateFips];
-  if (!curated) {
-    return false;
-  }
-
-  const normalizedCurated = normalizeHttpUrl(curated);
-  const normalizedUrl = normalizeHttpUrl(pollingPlaceUrl);
-  return typeof normalizedCurated === "string" && normalizedCurated === normalizedUrl;
-}
-
 type EvidenceSnippet = {
   url: string;
   title: string;
-  snippet: string;
+  snippet?: string;
 };
 
 function normalizeSpace(value: string): string {
@@ -159,7 +149,7 @@ function extractEvidenceSnippets(input: Record<string, unknown>): EvidenceSnippe
     }
 
     const item = entry as Record<string, unknown>;
-    if (!isNonEmptyString(item.url) || !isNonEmptyString(item.snippet)) {
+    if (!isNonEmptyString(item.url)) {
       continue;
     }
 
@@ -171,7 +161,7 @@ function extractEvidenceSnippets(input: Record<string, unknown>): EvidenceSnippe
     snippets.push({
       url: normalizedUrl,
       title: isNonEmptyString(item.title) ? normalizeSpace(item.title) : "",
-      snippet: normalizeSpace(item.snippet),
+      ...(isNonEmptyString(item.snippet) ? { snippet: normalizeSpace(item.snippet) } : {}),
     });
   }
 
@@ -210,7 +200,7 @@ function deriveIdRequirementStance(snippets: EvidenceSnippet[]): IdRequirementSt
   let hasNotRequiredSignal = false;
 
   for (const snippet of snippets) {
-    const text = `${snippet.title}. ${snippet.snippet}`.toLowerCase();
+    const text = `${snippet.title}. ${snippet.snippet ?? ""}`.toLowerCase();
     const sentences = text.split(/[.!?]+/g);
 
     for (const rawSentence of sentences) {
@@ -281,7 +271,7 @@ function extractVoteByMailFacts(snippets: EvidenceSnippet[]): VoteByMailFacts {
   };
 
   for (const snippet of snippets) {
-    const text = `${snippet.title}. ${snippet.snippet}`.toLowerCase();
+    const text = `${snippet.title}. ${snippet.snippet ?? ""}`.toLowerCase();
 
     const requestMatches = text.matchAll(/\b(?:request|apply)[^.]{0,80}\b(\d{1,2})\s+days?\s+before\b/g);
     for (const match of requestMatches) {
@@ -389,12 +379,12 @@ function extractPollingHoursFacts(snippets: EvidenceSnippet[]): PollingHoursFact
     /\b(\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?))\s*(?:-|to|until)\s*(\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?))\b/gi;
 
   for (const snippet of snippets) {
-    const lower = `${snippet.title} ${snippet.snippet}`.toLowerCase();
+    const lower = `${snippet.title} ${snippet.snippet ?? ""}`.toLowerCase();
     if (/var(y|ies)\s+by\s+(county|precinct|location)/.test(lower)) {
       facts.hasVarySignal = true;
     }
 
-    const text = `${snippet.title}. ${snippet.snippet}`;
+    const text = `${snippet.title}. ${snippet.snippet ?? ""}`;
     for (const match of text.matchAll(rangeRegex)) {
       const start = parseTwelveHourToMinutes(match[1] ?? "");
       const end = parseTwelveHourToMinutes(match[2] ?? "");
@@ -546,73 +536,36 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   const input = payload as Record<string, unknown>;
   const reasons: string[] = [];
   const looksLikeDraftPayload = STATE_RESOURCE_DRAFT_MARKER_FIELDS.some((key) => Object.hasOwn(input, key));
-
-  for (const key of STATE_RESOURCE_REQUIRED_TEXT_FIELDS) {
-    if (!isNonEmptyString(input[key])) {
-      reasons.push(`${key} is required and must be a non-empty string`);
-    }
-  }
-  for (const key of STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS) {
-    if (typeof input[key] !== "boolean") {
-      reasons.push(`${key} is required and must be boolean`);
-    }
-  }
-  if (!Object.hasOwn(input, "online_registration_deadline_rule")) {
-    reasons.push("online_registration_deadline_rule is required and must be null or non-empty string");
-  } else if (!(input.online_registration_deadline_rule === null || isNonEmptyString(input.online_registration_deadline_rule))) {
-    reasons.push("online_registration_deadline_rule must be null or a non-empty string");
-  }
-  if (!Object.hasOwn(input, "mail_ballot_request_deadline_rule")) {
-    reasons.push("mail_ballot_request_deadline_rule is required and must be null or non-empty string");
-  } else if (!(input.mail_ballot_request_deadline_rule === null || isNonEmptyString(input.mail_ballot_request_deadline_rule))) {
-    reasons.push("mail_ballot_request_deadline_rule must be null or a non-empty string");
-  }
-  if (!Object.hasOwn(input, "mail_ballot_return_deadline_rule")) {
-    reasons.push("mail_ballot_return_deadline_rule is required and must be null or non-empty string");
-  } else if (!(input.mail_ballot_return_deadline_rule === null || isNonEmptyString(input.mail_ballot_return_deadline_rule))) {
-    reasons.push("mail_ballot_return_deadline_rule must be null or a non-empty string");
-  }
-  if (!Object.hasOwn(input, "mail_ballot_return_deadline_type")) {
-    reasons.push("mail_ballot_return_deadline_type is required and must be postmarked_by, received_by, or null");
-  } else if (
-    !(
-      input.mail_ballot_return_deadline_type === null ||
-      input.mail_ballot_return_deadline_type === "postmarked_by" ||
-      input.mail_ballot_return_deadline_type === "received_by"
-    )
-  ) {
-    reasons.push("mail_ballot_return_deadline_type must be postmarked_by, received_by, or null");
-  }
-
-  if (reasons.length > 0) {
+  const parsed = parseCanonicalStateResourcePayload(payload);
+  if (!parsed.ok) {
+    reasons.push(parsed.reason);
     if (looksLikeDraftPayload) {
       reasons.unshift("payload is a census draft and has not been AI-enriched with required state_resources fields yet");
     }
     return { ok: false, reasons };
   }
 
-  const state_fips = (input.state_fips as string).trim();
-  const state_abbreviation = (input.state_abbreviation as string).trim();
-  const state_name = (input.state_name as string).trim();
-  const polling_place_url = (input.polling_place_url as string).trim();
-  const voter_registration_url = (input.voter_registration_url as string).trim();
-  const mail_voting_available = input.mail_voting_available as boolean;
-  const mail_ballot_request_deadline_rule =
-    input.mail_ballot_request_deadline_rule === null ? null : (input.mail_ballot_request_deadline_rule as string).trim();
-  const mail_ballot_return_deadline_rule =
-    input.mail_ballot_return_deadline_rule === null ? null : (input.mail_ballot_return_deadline_rule as string).trim();
-  const mail_ballot_return_deadline_type =
-    input.mail_ballot_return_deadline_type === null
-      ? null
-      : (input.mail_ballot_return_deadline_type as "postmarked_by" | "received_by");
-  const polling_hours = (input.polling_hours as string).trim();
-  const id_requirements = (input.id_requirements as string).trim();
-  const same_day_registration_available = input.same_day_registration_available as boolean;
-  const online_registration_available = input.online_registration_available as boolean;
-  const online_registration_deadline_rule =
-    input.online_registration_deadline_rule === null
-      ? null
-      : (input.online_registration_deadline_rule as string).trim();
+  const canonicalPayload = parsed.payload;
+  const {
+    state_fips,
+    state_abbreviation,
+    state_name,
+    polling_place_url,
+    voter_registration_url,
+    mail_voting_available,
+    mail_ballot_request_deadline_rule,
+    mail_ballot_return_deadline_rule,
+    mail_ballot_return_deadline_type,
+    early_voting_available,
+    early_voting_start_date_rule,
+    early_voting_end_date_rule,
+    polling_hours,
+    id_requirements,
+    same_day_registration_available,
+    online_registration_available,
+    online_registration_deadline_rule,
+    in_person_registration_deadline_rule,
+  } = canonicalPayload;
 
   if (!STATE_RESOURCE_FIPS_REGEX.test(state_fips)) {
     reasons.push("state_fips must be exactly two digits");
@@ -625,14 +578,6 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   if (!isHttpUrl(polling_place_url)) {
     reasons.push("polling_place_url must be a valid http(s) URL");
   }
-  if (
-    isHttpUrl(polling_place_url) &&
-    !isLikelyPollingPlaceUrl(polling_place_url) &&
-    !isCuratedPollingUrlForState(state_fips, polling_place_url)
-  ) {
-    reasons.push("polling_place_url must be a polling-place locator URL, not a registration/mail/id URL");
-  }
-
   if (!isHttpUrl(voter_registration_url)) {
     reasons.push("voter_registration_url must be a valid http(s) URL");
   }
@@ -661,6 +606,18 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   if (!mail_voting_available && mail_ballot_return_deadline_type !== null) {
     reasons.push("mail_ballot_return_deadline_type must be null when mail_voting_available is false");
   }
+  if (early_voting_available && early_voting_start_date_rule === null) {
+    reasons.push("early_voting_start_date_rule must be provided when early_voting_available is true");
+  }
+  if (early_voting_available && early_voting_end_date_rule === null) {
+    reasons.push("early_voting_end_date_rule must be provided when early_voting_available is true");
+  }
+  if (!early_voting_available && early_voting_start_date_rule !== null) {
+    reasons.push("early_voting_start_date_rule must be null when early_voting_available is false");
+  }
+  if (!early_voting_available && early_voting_end_date_rule !== null) {
+    reasons.push("early_voting_end_date_rule must be null when early_voting_available is false");
+  }
 
   if (
     mail_ballot_request_deadline_rule !== null &&
@@ -678,6 +635,22 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       `mail_ballot_return_deadline_rule must be ${STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH} characters or fewer`
     );
   }
+  if (
+    early_voting_start_date_rule !== null &&
+    early_voting_start_date_rule.length > STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH
+  ) {
+    reasons.push(
+      `early_voting_start_date_rule must be ${STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH} characters or fewer`
+    );
+  }
+  if (
+    early_voting_end_date_rule !== null &&
+    early_voting_end_date_rule.length > STATE_RESOURCE_EARLY_VOTING_END_DATE_RULE_MAX_LENGTH
+  ) {
+    reasons.push(
+      `early_voting_end_date_rule must be ${STATE_RESOURCE_EARLY_VOTING_END_DATE_RULE_MAX_LENGTH} characters or fewer`
+    );
+  }
 
   if (polling_hours.length > STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH) {
     reasons.push(`polling_hours must be ${STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH} characters or fewer`);
@@ -685,6 +658,11 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
 
   if (id_requirements.length > STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH) {
     reasons.push(`id_requirements must be ${STATE_RESOURCE_ID_REQUIREMENTS_MAX_LENGTH} characters or fewer`);
+  }
+  if (!isValidStateResourceIdRequirementValue(id_requirements)) {
+    reasons.push(
+      "id_requirements must be one of: Strict photo ID, Strict non-photo ID, Non-strict photo ID, Non-strict, non-photo ID, No document required to vote"
+    );
   }
   if (
     online_registration_deadline_rule !== null &&
@@ -694,12 +672,25 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
       `online_registration_deadline_rule must be ${STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH} characters or fewer`
     );
   }
+  if (
+    in_person_registration_deadline_rule.length > STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH
+  ) {
+    reasons.push(
+      `in_person_registration_deadline_rule must be ${STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH} characters or fewer`
+    );
+  }
 
   if (mail_ballot_request_deadline_rule !== null && isUrlOnlyText(mail_ballot_request_deadline_rule)) {
     reasons.push("mail_ballot_request_deadline_rule must be plain-language text, not a URL");
   }
   if (mail_ballot_return_deadline_rule !== null && isUrlOnlyText(mail_ballot_return_deadline_rule)) {
     reasons.push("mail_ballot_return_deadline_rule must be plain-language text, not a URL");
+  }
+  if (early_voting_start_date_rule !== null && isUrlOnlyText(early_voting_start_date_rule)) {
+    reasons.push("early_voting_start_date_rule must be plain-language text, not a URL");
+  }
+  if (early_voting_end_date_rule !== null && isUrlOnlyText(early_voting_end_date_rule)) {
+    reasons.push("early_voting_end_date_rule must be plain-language text, not a URL");
   }
 
   if (isUrlOnlyText(polling_hours)) {
@@ -711,6 +702,9 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   }
   if (online_registration_deadline_rule !== null && isUrlOnlyText(online_registration_deadline_rule)) {
     reasons.push("online_registration_deadline_rule must be plain-language text, not a URL");
+  }
+  if (isUrlOnlyText(in_person_registration_deadline_rule)) {
+    reasons.push("in_person_registration_deadline_rule must be plain-language text, not a URL");
   }
 
   if (
@@ -724,6 +718,18 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
     mail_ballot_return_deadline_rule.length < STATE_RESOURCE_TEXT_MIN_LENGTH
   ) {
     reasons.push(`mail_ballot_return_deadline_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
+  }
+  if (
+    early_voting_start_date_rule !== null &&
+    early_voting_start_date_rule.length < STATE_RESOURCE_TEXT_MIN_LENGTH
+  ) {
+    reasons.push(`early_voting_start_date_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
+  }
+  if (
+    early_voting_end_date_rule !== null &&
+    early_voting_end_date_rule.length < STATE_RESOURCE_TEXT_MIN_LENGTH
+  ) {
+    reasons.push(`early_voting_end_date_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
   }
 
   if (polling_hours.length < STATE_RESOURCE_TEXT_MIN_LENGTH) {
@@ -739,6 +745,9 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   ) {
     reasons.push(`online_registration_deadline_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
   }
+  if (in_person_registration_deadline_rule.length < STATE_RESOURCE_TEXT_MIN_LENGTH) {
+    reasons.push(`in_person_registration_deadline_rule must be at least ${STATE_RESOURCE_TEXT_MIN_LENGTH} characters`);
+  }
 
   try {
     const expectedAbbreviation = getStateAbbreviationByFips(state_fips);
@@ -751,7 +760,7 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
     reasons.push(toReason(error));
   }
 
-  const sourcesResult = validateSources(input.sources);
+  const sourcesResult = validateSources(canonicalPayload.sources);
   if (!sourcesResult.ok) {
     reasons.push(sourcesResult.reason);
   }
@@ -760,45 +769,15 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
     return { ok: false, reasons };
   }
 
+  const normalizedPayload: StateResourcePayload = {
+    ...canonicalPayload,
+    sources: sourcesResult.sources,
+  };
+
   return {
     ok: true,
-    payload: {
-      state_fips,
-      state_abbreviation,
-      state_name,
-      polling_place_url,
-      voter_registration_url,
-      mail_voting_available,
-      mail_ballot_request_deadline_rule,
-      mail_ballot_return_deadline_rule,
-      mail_ballot_return_deadline_type,
-      polling_hours,
-      id_requirements,
-      same_day_registration_available,
-      online_registration_available,
-      online_registration_deadline_rule,
-      sources: sourcesResult.sources,
-    },
-    warnings: detectConflictWarnings(
-      {
-        state_fips,
-        state_abbreviation,
-        state_name,
-        polling_place_url,
-        voter_registration_url,
-        mail_voting_available,
-        mail_ballot_request_deadline_rule,
-        mail_ballot_return_deadline_rule,
-        mail_ballot_return_deadline_type,
-        polling_hours,
-        id_requirements,
-        same_day_registration_available,
-        online_registration_available,
-        online_registration_deadline_rule,
-        sources: sourcesResult.sources,
-      },
-      extractEvidenceSnippets(input)
-    ),
+    payload: normalizedPayload,
+    warnings: detectConflictWarnings(normalizedPayload, extractEvidenceSnippets(input)),
   };
 }
 

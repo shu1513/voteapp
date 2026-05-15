@@ -5,11 +5,9 @@ import { AI_CANDIDATES, DEFAULT_AI_CANDIDATE } from "../../src/ai/aiCandidates.t
 describe("AI_CANDIDATES", () => {
   it("contains the current ordered model cycle (cheap to expensive)", () => {
     expect(AI_CANDIDATES).toEqual([
-      { provider: "gemini", model: "gemini-2.5-flash-lite" },
       { provider: "openai", model: "gpt-5.4-mini" },
-      { provider: "claude", model: "claude-haiku-4-5-20251001" },
-      { provider: "openai", model: "gpt-5.2" },
-      { provider: "claude", model: "claude-opus-4-1-20250805" },
+      { provider: "claude", model: "claude-sonnet-4-6" },
+      { provider: "gemini", model: "gemini-2.5-pro" },
     ]);
   });
 

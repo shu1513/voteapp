@@ -51,16 +51,19 @@ AS $$
             SELECT 1
             FROM unnest(ARRAY[
                 'polling_place_url',
-                'voter_registration_url',
                 'mail_voting_available',
                 'mail_ballot_request_deadline_rule',
                 'mail_ballot_return_deadline_rule',
                 'mail_ballot_return_deadline_type',
+                'early_voting_available',
+                'early_voting_start_date_rule',
+                'early_voting_end_date_rule',
                 'polling_hours',
                 'id_requirements',
                 'same_day_registration_available',
                 'online_registration_available',
-                'online_registration_deadline_rule'
+                'online_registration_deadline_rule',
+                'in_person_registration_deadline_rule'
             ]) AS required_key
             WHERE NOT (
                 data ? required_key
@@ -74,16 +77,19 @@ AS $$
             WHERE
                 key NOT IN (
                     'polling_place_url',
-                    'voter_registration_url',
                     'mail_voting_available',
                     'mail_ballot_request_deadline_rule',
                     'mail_ballot_return_deadline_rule',
                     'mail_ballot_return_deadline_type',
+                    'early_voting_available',
+                    'early_voting_start_date_rule',
+                    'early_voting_end_date_rule',
                     'polling_hours',
                     'id_requirements',
                     'same_day_registration_available',
                     'online_registration_available',
-                    'online_registration_deadline_rule'
+                    'online_registration_deadline_rule',
+                    'in_person_registration_deadline_rule'
                 )
                 OR jsonb_typeof(value) <> 'array'
                 OR EXISTS (
@@ -460,11 +466,15 @@ CREATE TABLE state_resources (
     mail_ballot_request_deadline_rule text,
     mail_ballot_return_deadline_rule text,
     mail_ballot_return_deadline_type text,
+    early_voting_available boolean NOT NULL,
+    early_voting_start_date_rule text,
+    early_voting_end_date_rule text,
     polling_hours text NOT NULL,
     id_requirements text NOT NULL,
     same_day_registration_available boolean NOT NULL,
     online_registration_available boolean NOT NULL,
     online_registration_deadline_rule text,
+    in_person_registration_deadline_rule text NOT NULL,
     sources jsonb NOT NULL,
     CONSTRAINT chk_state_fips_format CHECK (state_fips ~ '^[0-9]{2}$'),
     CONSTRAINT chk_state_abbreviation_format CHECK (state_abbreviation ~ '^[A-Z]{2}$'),
@@ -502,7 +512,38 @@ CREATE TABLE state_resources (
     CONSTRAINT chk_state_resources_polling_hours_text
         CHECK (btrim(polling_hours) <> '' AND char_length(polling_hours) <= 1000),
     CONSTRAINT chk_state_resources_id_requirements_text
-        CHECK (btrim(id_requirements) <> '' AND char_length(id_requirements) <= 4000),
+        CHECK (
+            id_requirements IN (
+                'Strict photo ID',
+                'Strict non-photo ID',
+                'Non-strict photo ID',
+                'Non-strict, non-photo ID',
+                'No document required to vote'
+            )
+        ),
+    CONSTRAINT chk_state_resources_early_voting_start_date_rule_text
+        CHECK (
+            early_voting_start_date_rule IS NULL
+            OR (btrim(early_voting_start_date_rule) <> '' AND char_length(early_voting_start_date_rule) <= 1000)
+        ),
+    CONSTRAINT chk_state_resources_early_voting_end_date_rule_text
+        CHECK (
+            early_voting_end_date_rule IS NULL
+            OR (btrim(early_voting_end_date_rule) <> '' AND char_length(early_voting_end_date_rule) <= 1000)
+        ),
+    CONSTRAINT chk_state_resources_early_voting_consistency
+        CHECK (
+            (
+                early_voting_available = true
+                AND early_voting_start_date_rule IS NOT NULL
+                AND early_voting_end_date_rule IS NOT NULL
+            )
+            OR (
+                early_voting_available = false
+                AND early_voting_start_date_rule IS NULL
+                AND early_voting_end_date_rule IS NULL
+            )
+        ),
     CONSTRAINT chk_state_resources_online_registration_deadline_rule_text
         CHECK (
             online_registration_deadline_rule IS NULL
@@ -518,6 +559,11 @@ CREATE TABLE state_resources (
                 online_registration_available = false
                 AND online_registration_deadline_rule IS NULL
             )
+        ),
+    CONSTRAINT chk_state_resources_in_person_registration_deadline_rule_text
+        CHECK (
+            btrim(in_person_registration_deadline_rule) <> ''
+            AND char_length(in_person_registration_deadline_rule) <= 1000
         ),
     CONSTRAINT chk_state_resources_sources
         CHECK (is_valid_state_resource_sources(sources))
