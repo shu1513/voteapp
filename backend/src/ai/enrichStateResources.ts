@@ -23,8 +23,6 @@ import { claudeProvider } from "./providers/claudeProvider.js";
 import { geminiProvider } from "./providers/geminiProvider.js";
 import type { StateResourcePayload, StateResourceSources } from "../types/stateResource.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
-import { isLikelyPollingPlaceUrl as isLikelyPollingPlaceUrlByUrl } from "../utils/isLikelyPollingPlaceUrl.js";
-import { CURATED_STATE_POLLING_URL_BY_FIPS } from "../constants/curatedPollingUrls.js";
 import {
   getStateResourceFieldGroupConfig,
   type StateResourceFieldGroup,
@@ -36,65 +34,6 @@ const PROVIDER_ADAPTERS: Record<AiProvider, ProviderAdapter> = {
   gemini: geminiProvider,
 };
 
-const AGGREGATOR_HOSTS = new Set([
-  "vote.org",
-  "www.vote.org",
-  "nass.org",
-  "www.nass.org",
-  "usvotefoundation.org",
-  "www.usvotefoundation.org",
-]);
-
-const PREFERRED_OFFICIAL_CITATION_FIELDS = new Set<
-  | "mail_voting_available"
-  | "mail_ballot_request_deadline_rule"
-  | "mail_ballot_return_deadline_rule"
-  | "mail_ballot_return_deadline_type"
-  | "early_voting_available"
-  | "early_voting_start_date_rule"
-  | "early_voting_end_date_rule"
-  | "polling_hours"
-  | "id_requirements"
-  | "same_day_registration_available"
-  | "online_registration_deadline_rule"
-  | "in_person_registration_deadline_rule"
->([
-  "mail_voting_available",
-  "mail_ballot_request_deadline_rule",
-  "mail_ballot_return_deadline_rule",
-  "mail_ballot_return_deadline_type",
-  "early_voting_available",
-  "early_voting_start_date_rule",
-  "early_voting_end_date_rule",
-  "polling_hours",
-  "id_requirements",
-  "same_day_registration_available",
-  "online_registration_deadline_rule",
-  "in_person_registration_deadline_rule",
-]);
-type PreferredOfficialCitationField =
-  | "mail_voting_available"
-  | "mail_ballot_request_deadline_rule"
-  | "mail_ballot_return_deadline_rule"
-  | "mail_ballot_return_deadline_type"
-  | "early_voting_available"
-  | "early_voting_start_date_rule"
-  | "early_voting_end_date_rule"
-  | "polling_hours"
-  | "id_requirements"
-  | "same_day_registration_available"
-  | "online_registration_deadline_rule"
-  | "in_person_registration_deadline_rule";
-const LEGAL_SUMMARY_CITATION_FIELDS = new Set<PreferredOfficialCitationField>([
-  "mail_ballot_request_deadline_rule",
-  "mail_ballot_return_deadline_rule",
-  "early_voting_start_date_rule",
-  "early_voting_end_date_rule",
-  "polling_hours",
-  "id_requirements",
-  "online_registration_deadline_rule",
-  "in_person_registration_deadline_rule",
-]);
 const CITATION_FETCH_TIMEOUT_MS = 8_000;
 const CITATION_MAX_RESPONSE_BYTES = 1_000_000;
 type ScopedGroupPayload = Partial<Omit<StateResourcePayload, "sources">> & {
@@ -104,31 +43,6 @@ type ScopedGroupPayload = Partial<Omit<StateResourcePayload, "sources">> & {
 function getHostname(url: string): string {
   try {
     return new URL(url).hostname.toLowerCase();
-  } catch {
-    return "";
-  }
-}
-
-function isAggregatorUrl(url: string): boolean {
-  const host = getHostname(url);
-  return AGGREGATOR_HOSTS.has(host);
-}
-
-function isPreferredOfficialCitationField(
-  field: (typeof STATE_RESOURCE_SOURCE_FIELDS)[number]
-): field is PreferredOfficialCitationField {
-  return PREFERRED_OFFICIAL_CITATION_FIELDS.has(field as PreferredOfficialCitationField);
-}
-
-function isLegalSummaryCitationField(
-  field: (typeof STATE_RESOURCE_SOURCE_FIELDS)[number]
-): field is PreferredOfficialCitationField {
-  return LEGAL_SUMMARY_CITATION_FIELDS.has(field as PreferredOfficialCitationField);
-}
-
-function getPathname(url: string): string {
-  try {
-    return new URL(url).pathname.toLowerCase();
   } catch {
     return "";
   }
@@ -233,55 +147,6 @@ function stripHtmlToText(input: string): string {
   return normalizeWhitespace(withoutTags);
 }
 
-async function readResponseTextWithByteLimit(
-  response: Response,
-  maxBytes: number,
-  controller: AbortController
-): Promise<{ ok: true; text: string } | { ok: false; reason: string }> {
-  if (!response.body) {
-    const fallback = await response.text();
-    const fallbackSize = new TextEncoder().encode(fallback).length;
-    if (fallbackSize > maxBytes) {
-      return { ok: false, reason: "citation URL response body is too large" };
-    }
-    return { ok: true, text: fallback };
-  }
-
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-  let totalBytes = 0;
-  let text = "";
-
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) {
-        break;
-      }
-
-      if (value) {
-        totalBytes += value.byteLength;
-        if (totalBytes > maxBytes) {
-          try {
-            await reader.cancel();
-          } catch {
-            // no-op; best effort cancellation.
-          }
-          controller.abort();
-          return { ok: false, reason: "citation URL response body is too large" };
-        }
-
-        text += decoder.decode(value, { stream: true });
-      }
-    }
-
-    text += decoder.decode();
-    return { ok: true, text };
-  } finally {
-    reader.releaseLock();
-  }
-}
-
 async function fetchCitationEvidenceSnippet(
   citationUrl: string,
   fallbackSourceName: string
@@ -307,9 +172,10 @@ async function fetchCitationEvidenceSnippet(
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), CITATION_FETCH_TIMEOUT_MS);
+  let response: Response | null = null;
 
   try {
-    const response = await fetch(normalizedInputUrl, {
+    response = await fetch(normalizedInputUrl, {
       method: "GET",
       redirect: "follow",
       signal: controller.signal,
@@ -396,6 +262,14 @@ async function fetchCitationEvidenceSnippet(
     }
     return { ok: false, reason: `citation URL fetch failed: ${message}` };
   } finally {
+    // We validate headers/url only; always cancel body to release sockets promptly.
+    if (response) {
+      try {
+        await response.body?.cancel();
+      } catch {
+        // best effort: do not mask the primary result
+      }
+    }
     clearTimeout(timeout);
   }
 }
@@ -569,171 +443,6 @@ async function verifyAndCollectAdditionalCitationEvidenceForFields(
   return { ok: true, verifiedCitationEvidence };
 }
 
-function isOfficialElectionSource(url: string, sourceName = "", snippet = ""): boolean {
-  const host = getHostname(url);
-  const pathname = getPathname(url);
-  const text = `${host} ${pathname} ${sourceName} ${snippet}`.toLowerCase();
-
-  if (host.endsWith(".gov")) {
-    return true;
-  }
-
-  if (/(sos|secretary-?of-?state|board-?of-?elections|county clerk|elections?)/i.test(text)) {
-    return true;
-  }
-
-  return false;
-}
-
-function hasStateSignal(url: string, title: string, snippet: string, stateName: string, stateAbbreviation: string): boolean {
-  const lowerUrl = url.toLowerCase();
-  const stateNameLower = stateName.trim().toLowerCase();
-  const stateSlug = stateNameLower.replace(/\s+/g, "-");
-  const stateCompact = stateNameLower.replace(/[^a-z0-9]/g, "");
-  const urlCompact = lowerUrl.replace(/[^a-z0-9]/g, "");
-  const abbreviationLower = stateAbbreviation.trim().toLowerCase();
-  const titleLower = title.toLowerCase();
-  const snippetLower = snippet.toLowerCase();
-
-  if (
-    titleLower.includes(stateNameLower) ||
-    snippetLower.includes(stateNameLower) ||
-    lowerUrl.includes(`/${stateSlug}`) ||
-    (stateCompact.length > 3 && urlCompact.includes(stateCompact))
-  ) {
-    return true;
-  }
-
-  if (abbreviationLower.length === 2) {
-    if (lowerUrl.includes(`.${abbreviationLower}.`) || lowerUrl.includes(`/${abbreviationLower}/`)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function isLikelyPollingPlaceUrl(url: string, title: string, snippet: string): boolean {
-  if (isLikelyPollingPlaceUrlByUrl(url)) {
-    return true;
-  }
-
-  const combined = `${url} ${title} ${snippet}`.toLowerCase();
-
-  if (/\b(polling|polling-place|polling place|find-your-polling-place|locator)\b/.test(combined)) {
-    return true;
-  }
-
-  if (/\b(register|registration|absentee|mail|id[-\s]?laws?|identification)\b/.test(combined)) {
-    return false;
-  }
-
-  return false;
-}
-
-function scorePollingCandidate(url: string, stateSignal: boolean): number {
-  const host = getHostname(url);
-  let score = 0;
-
-  if (host.endsWith(".gov")) {
-    score += 50;
-  }
-
-  if (/(sos|secretary-?of-?state|elections?)/i.test(host + url)) {
-    score += 20;
-  }
-
-  if (/polling|polling-place|find-your-polling-place|locator/i.test(url)) {
-    score += 10;
-  }
-
-  if (isAggregatorUrl(url)) {
-    score -= 40;
-  }
-
-  if (stateSignal) {
-    score += 120;
-  } else if (!isAggregatorUrl(url)) {
-    // Strongly discourage official URLs that point to a different state.
-    score -= 220;
-  }
-
-  return score;
-}
-
-/**
- * When evidence contains both aggregator and official polling URLs, prefer the official URL.
- */
-function preferOfficialPollingPlaceUrl(
-  payload: StateResourcePayload,
-  evidence: EnrichStateResourcesInput["evidence"],
-  draft: EnrichStateResourcesInput["draft"]
-): StateResourcePayload {
-  const normalizedCurrent = normalizeHttpUrl(payload.polling_place_url);
-  if (!normalizedCurrent) {
-    return payload;
-  }
-  const currentLooksLikePollingUrl = isLikelyPollingPlaceUrlByUrl(normalizedCurrent);
-  const mustCorrectCurrent = !currentLooksLikePollingUrl;
-  const currentHasStateSignal = hasStateSignal(normalizedCurrent, "", "", draft.state_name, draft.state_abbreviation);
-  if (!isAggregatorUrl(normalizedCurrent) && currentLooksLikePollingUrl && currentHasStateSignal) {
-    return payload;
-  }
-
-  const candidates = evidence
-    .map((item) => {
-      const normalized = normalizeHttpUrl(item.url);
-      if (!normalized) {
-        return null;
-      }
-
-      if (!isLikelyPollingPlaceUrl(normalized, item.title, item.snippet ?? "")) {
-        return null;
-      }
-
-      return {
-        normalizedUrl: normalized,
-        score: scorePollingCandidate(
-          normalized,
-          hasStateSignal(normalized, item.title, item.snippet ?? "", draft.state_name, draft.state_abbreviation)
-        ),
-      };
-    })
-    .filter((item): item is { normalizedUrl: string; score: number } => item !== null)
-    .sort((a, b) => b.score - a.score);
-
-  const best = candidates[0];
-  if (!best) {
-    return payload;
-  }
-
-  // If current URL is valid but low quality (aggregator), only replace with a strong non-aggregator candidate.
-  if (!mustCorrectCurrent && currentHasStateSignal && (best.score <= 0 || isAggregatorUrl(best.normalizedUrl))) {
-    return payload;
-  }
-
-  const hasCitation = payload.sources.polling_place_url.some((citation) => {
-    const normalizedCitationUrl = normalizeHttpUrl(citation);
-    return normalizedCitationUrl === best.normalizedUrl;
-  });
-
-  const pollingPlaceCitations = hasCitation
-    ? payload.sources.polling_place_url
-    : [
-        best.normalizedUrl,
-        ...payload.sources.polling_place_url,
-      ];
-
-  return {
-    ...payload,
-    polling_place_url: best.normalizedUrl,
-    sources: {
-      ...payload.sources,
-      polling_place_url: pollingPlaceCitations,
-    },
-  };
-}
-
 /**
  * Builds normalized evidence URL set and validates evidence preconditions.
  */
@@ -778,124 +487,6 @@ function validateCitationUrls(payload: StateResourcePayload): string | null {
   }
 
   return null;
-}
-
-function choosePreferredOfficialCitationForField(
-  field:
-    | "mail_voting_available"
-    | "mail_ballot_request_deadline_rule"
-    | "mail_ballot_return_deadline_rule"
-    | "mail_ballot_return_deadline_type"
-    | "early_voting_available"
-    | "early_voting_start_date_rule"
-    | "early_voting_end_date_rule"
-    | "polling_hours"
-    | "id_requirements"
-    | "same_day_registration_available"
-    | "online_registration_deadline_rule"
-    | "in_person_registration_deadline_rule",
-  evidence: EnrichStateResourcesInput["evidence"]
-): string | null {
-  const ranked = evidence
-    .map((item) => {
-      const normalizedUrl = normalizeHttpUrl(item.url);
-      if (!normalizedUrl) {
-        return null;
-      }
-      if (!isOfficialElectionSource(normalizedUrl, item.title, item.snippet ?? "")) {
-        return null;
-      }
-
-      const lower = `${normalizedUrl} ${item.title} ${item.snippet ?? ""}`.toLowerCase();
-      let relevance = 0;
-
-      if (
-        (field === "mail_voting_available" ||
-          field === "mail_ballot_request_deadline_rule" ||
-          field === "mail_ballot_return_deadline_rule" ||
-          field === "mail_ballot_return_deadline_type") &&
-        /\b(absentee|mail ballot|vote by mail|vote-by-mail|drop box|postmark|deadline|received)\b/.test(lower)
-      ) {
-        relevance += 100;
-      }
-      if (
-        (field === "early_voting_available" ||
-          field === "early_voting_start_date_rule" ||
-          field === "early_voting_end_date_rule") &&
-        /\b(early voting|in-person voting|advance voting|before election day|election day)\b/.test(lower)
-      ) {
-        relevance += 100;
-      }
-      if (field === "polling_hours" && /\b(hours|open|close|polling hours|election day)\b/.test(lower)) {
-        relevance += 100;
-      }
-      if (field === "id_requirements" && /\b(voter id|id law|identification|photo id)\b/.test(lower)) {
-        relevance += 100;
-      }
-      if (
-        field === "same_day_registration_available" &&
-        /\b(same[-\s]?day registration|election day registration|conditional voter registration)\b/.test(lower)
-      ) {
-        relevance += 100;
-      }
-      if (
-        field === "online_registration_deadline_rule" &&
-        /\b(online registration|register online|registration deadline|deadline|before election|election day)\b/.test(lower)
-      ) {
-        relevance += 100;
-      }
-      if (
-        field === "in_person_registration_deadline_rule" &&
-        /\b(in[-\s]?person|register|registration|deadline|election day|before election)\b/.test(lower)
-      ) {
-        relevance += 100;
-      }
-
-      return {
-        url: normalizedUrl,
-        score: relevance,
-      };
-    })
-    .filter((item): item is { url: string; score: number } => item !== null && item.score > 0)
-    .sort((a, b) => b.score - a.score);
-
-  if (ranked.length === 0) {
-    return null;
-  }
-
-  return ranked[0].url;
-}
-
-function chooseDraftPollingSeedUrl(draft: EnrichStateResourcesInput["draft"]): string | null {
-  const stateSpecificFallback = CURATED_STATE_POLLING_URL_BY_FIPS[draft.state_fips];
-  if (stateSpecificFallback) {
-    const normalizedFallback = normalizeHttpUrl(stateSpecificFallback);
-    if (normalizedFallback) {
-      return normalizedFallback;
-    }
-  }
-
-  for (const seed of draft.seed_sources) {
-    const normalized = normalizeHttpUrl(seed);
-    if (!normalized) {
-      continue;
-    }
-    if (isLikelyPollingPlaceUrlByUrl(normalized)) {
-      return normalized;
-    }
-  }
-  return null;
-}
-
-function isCuratedStatePollingUrl(url: string, draft: EnrichStateResourcesInput["draft"]): boolean {
-  const curated = CURATED_STATE_POLLING_URL_BY_FIPS[draft.state_fips];
-  if (!curated) {
-    return false;
-  }
-
-  const normalizedCurated = normalizeHttpUrl(curated);
-  const normalizedUrl = normalizeHttpUrl(url);
-  return typeof normalizedCurated === "string" && normalizedCurated === normalizedUrl;
 }
 
 /**
