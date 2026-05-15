@@ -45,6 +45,27 @@ WHERE
   OR jsonb_typeof(sources->'in_person_registration_deadline_rule') <> 'array'
   OR jsonb_array_length(sources->'in_person_registration_deadline_rule') = 0;
 
+UPDATE state_resources
+SET in_person_registration_deadline_rule = COALESCE(
+  NULLIF(btrim(online_registration_deadline_rule), ''),
+  'See official state election office guidance for in-person registration deadlines.'
+)
+WHERE in_person_registration_deadline_rule IS NULL
+  OR btrim(in_person_registration_deadline_rule) = '';
+
+ALTER TABLE state_resources
+  ALTER COLUMN in_person_registration_deadline_rule SET NOT NULL;
+
+ALTER TABLE state_resources
+  DROP CONSTRAINT IF EXISTS chk_state_resources_in_person_registration_deadline_rule_text;
+
+ALTER TABLE state_resources
+  ADD CONSTRAINT chk_state_resources_in_person_registration_deadline_rule_text
+  CHECK (
+    btrim(in_person_registration_deadline_rule) <> ''
+    AND char_length(in_person_registration_deadline_rule) <= 1000
+  );
+
 CREATE OR REPLACE FUNCTION is_valid_state_resource_sources(data jsonb)
 RETURNS boolean
 LANGUAGE sql

@@ -14,18 +14,4 @@ SET id_requirements = CASE
 END;
 
 ALTER TABLE state_resources
-  DROP CONSTRAINT IF EXISTS chk_state_resources_id_requirements_text;
-
--- NOT VALID keeps migration safe for legacy rows while enforcing all new/updated rows.
-ALTER TABLE state_resources
-  ADD CONSTRAINT chk_state_resources_id_requirements_text
-  CHECK (
-    id_requirements IN (
-      'Strict photo ID',
-      'Strict non-photo ID',
-      'Non-strict photo ID',
-      'Non-strict, non-photo ID',
-      'No document required to vote'
-    )
-  )
-  NOT VALID;
+  VALIDATE CONSTRAINT chk_state_resources_id_requirements_text;

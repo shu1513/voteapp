@@ -630,7 +630,7 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.payload.polling_place_url).toBe("https://www.vote.org/polling-place-locator/");
+      expect(result.payload.polling_place_url).toBe("https://www.vote.org/polling-place-locator");
     }
   });
 
@@ -823,7 +823,7 @@ describe("enrichStateResources", () => {
     }
   });
 
-  it("prefers official citation for id_requirements when available", async () => {
+  it("does not auto-rewrite id_requirements citations from evidence", async () => {
     const officialIdUrl = "https://www.sos.ca.gov/elections/voter-id";
     globalThis.fetch = vi.fn(async () =>
       openAiResponse(
@@ -863,7 +863,7 @@ describe("enrichStateResources", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.payload.sources.id_requirements[0]).toBe(officialIdUrl);
+      expect(result.payload.sources.id_requirements[0]).toBe("https://www.usvotefoundation.org/voter-id-laws");
     }
   });
 

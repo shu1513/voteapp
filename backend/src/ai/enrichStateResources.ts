@@ -49,6 +49,7 @@ const PREFERRED_OFFICIAL_CITATION_FIELDS = new Set<
   | "polling_hours"
   | "id_requirements"
   | "same_day_registration_available"
+  | "online_registration_deadline_rule"
   | "in_person_registration_deadline_rule"
 >([
   "mail_voting_available",
@@ -61,6 +62,7 @@ const PREFERRED_OFFICIAL_CITATION_FIELDS = new Set<
   "polling_hours",
   "id_requirements",
   "same_day_registration_available",
+  "online_registration_deadline_rule",
   "in_person_registration_deadline_rule",
 ]);
 type PreferredOfficialCitationField =
@@ -74,6 +76,7 @@ type PreferredOfficialCitationField =
   | "polling_hours"
   | "id_requirements"
   | "same_day_registration_available"
+  | "online_registration_deadline_rule"
   | "in_person_registration_deadline_rule";
 const LEGAL_SUMMARY_CITATION_FIELDS = new Set<PreferredOfficialCitationField>([
   "mail_ballot_request_deadline_rule",
@@ -82,6 +85,7 @@ const LEGAL_SUMMARY_CITATION_FIELDS = new Set<PreferredOfficialCitationField>([
   "early_voting_end_date_rule",
   "polling_hours",
   "id_requirements",
+  "online_registration_deadline_rule",
   "in_person_registration_deadline_rule",
 ]);
 const CITATION_FETCH_TIMEOUT_MS = 8_000;
@@ -750,6 +754,7 @@ function choosePreferredOfficialCitationForField(
     | "polling_hours"
     | "id_requirements"
     | "same_day_registration_available"
+    | "online_registration_deadline_rule"
     | "in_person_registration_deadline_rule",
   evidence: EnrichStateResourcesInput["evidence"]
 ): string | null {
@@ -792,6 +797,12 @@ function choosePreferredOfficialCitationForField(
       if (
         field === "same_day_registration_available" &&
         /\b(same[-\s]?day registration|election day registration|conditional voter registration)\b/.test(lower)
+      ) {
+        relevance += 100;
+      }
+      if (
+        field === "online_registration_deadline_rule" &&
+        /\b(online registration|register online|registration deadline|deadline|before election|election day)\b/.test(lower)
       ) {
         relevance += 100;
       }
@@ -854,8 +865,7 @@ function isCuratedStatePollingUrl(url: string, draft: EnrichStateResourcesInput[
  * Applies deterministic fallbacks only for URL fields (not legal summary text fields).
  */
 function groundCitationsToEvidence(
-  payload: StateResourcePayload,
-  evidence: EnrichStateResourcesInput["evidence"]
+  payload: StateResourcePayload
 ): StateResourcePayload {
   const groundedSources = {} as StateResourcePayload["sources"];
 
@@ -871,28 +881,6 @@ function groundCitationsToEvidence(
         return normalized;
       })
       .filter((citation): citation is string => citation !== null);
-
-    if (grounded.length === 0 && !isLegalSummaryCitationField(key)) {
-      const fallback = chooseFallbackEvidenceUrl(key, evidence);
-      if (fallback) {
-        grounded.push(fallback);
-        seen.add(fallback);
-      }
-    }
-
-    if (isPreferredOfficialCitationField(key)) {
-      const hasOfficialCitation = grounded.some((citation) =>
-        isOfficialElectionSource(citation)
-      );
-
-      if (!hasOfficialCitation) {
-        const preferredOfficial = choosePreferredOfficialCitationForField(key, evidence);
-        if (preferredOfficial && !seen.has(preferredOfficial)) {
-          grounded.unshift(preferredOfficial);
-          seen.add(preferredOfficial);
-        }
-      }
-    }
 
     groundedSources[key] = grounded;
   }
@@ -984,16 +972,24 @@ export async function enrichStateResources(
   const expectedStateAbbreviation = input.draft.state_abbreviation.trim();
   const expectedStateName = input.draft.state_name.trim();
 
-  let normalizedPayload = groundCitationsToEvidence(parsed.payload, input.evidence);
+  let normalizedPayload = groundCitationsToEvidence(parsed.payload);
+  const normalizedPollingPlaceUrl = normalizeHttpUrl(normalizedPayload.polling_place_url);
+  const groundedPollingPlaceUrl =
+    normalizedPayload.sources.polling_place_url.find(
+      (citation) => normalizeHttpUrl(citation) === normalizedPollingPlaceUrl
+    ) ??
+    normalizedPayload.sources.polling_place_url[0] ??
+    normalizedPayload.polling_place_url;
   normalizedPayload = {
     ...normalizedPayload,
+    polling_place_url: groundedPollingPlaceUrl,
     state_fips: expectedStateFips,
     state_abbreviation: expectedStateAbbreviation,
     state_name: expectedStateName,
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   };
 
-  for (const field of LEGAL_SUMMARY_CITATION_FIELDS) {
+  for (const field of STATE_RESOURCE_SOURCE_FIELDS) {
     if (normalizedPayload.sources[field].length === 0) {
       return {
         ok: false,
