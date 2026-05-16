@@ -135,7 +135,7 @@ CREATE TABLE districts (
     CONSTRAINT chk_district_type
         CHECK (
             district_type IN (
-                'us_senate',
+                'statewide',
                 'us_house',
                 'state_upper',
                 'state_lower',
@@ -175,7 +175,7 @@ CREATE TABLE user_districts (
     CONSTRAINT chk_user_districts_type
         CHECK (
             district_type IN (
-                'us_senate',
+                'statewide',
                 'us_house',
                 'state_upper',
                 'state_lower',
@@ -242,16 +242,12 @@ CREATE INDEX idx_staging_items_run_id ON staging_items (run_id);
 CREATE TABLE elections (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     district_id uuid NOT NULL,
-    title text NOT NULL,
+    official_ballot_title text NOT NULL,
     description text,
     election_type text NOT NULL,
     election_date date NOT NULL,
-    registration_deadline date,
-    early_voting_start date,
-    early_voting_end date,
     sources jsonb NOT NULL,
     results_status text,
-    last_researched timestamptz,
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT fk_elections_district
@@ -262,12 +258,6 @@ CREATE TABLE elections (
         CHECK (election_type IN ('general', 'primary', 'special', 'runoff')),
     CONSTRAINT chk_results_status
         CHECK (results_status IS NULL OR results_status IN ('preliminary', 'updated', 'final')),
-    CONSTRAINT chk_early_voting_window
-        CHECK (
-            early_voting_start IS NULL
-            OR early_voting_end IS NULL
-            OR early_voting_end >= early_voting_start
-        ),
     CONSTRAINT chk_elections_sources_json
         CHECK (jsonb_typeof(sources) = 'array' AND jsonb_array_length(sources) > 0)
 );

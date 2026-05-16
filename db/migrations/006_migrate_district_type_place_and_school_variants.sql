@@ -30,6 +30,7 @@ ALTER TABLE districts
   CHECK (
     district_type IN (
       'us_senate',
+      'statewide',
       'us_house',
       'state_upper',
       'state_lower',
@@ -46,6 +47,7 @@ ALTER TABLE user_districts
   CHECK (
     district_type IN (
       'us_senate',
+      'statewide',
       'us_house',
       'state_upper',
       'state_lower',

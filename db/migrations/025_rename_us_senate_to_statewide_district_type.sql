@@ -9,19 +9,21 @@ ALTER TABLE districts
 ALTER TABLE user_districts
   DROP CONSTRAINT IF EXISTS chk_user_districts_type;
 
+ALTER TABLE user_districts
+  DROP CONSTRAINT IF EXISTS chk_user_district_type;
+
 UPDATE districts
-SET district_type = 'place'
-WHERE district_type = 'incorporated_place';
+SET district_type = 'statewide'
+WHERE district_type = 'us_senate';
 
 UPDATE user_districts
-SET district_type = 'place'
-WHERE district_type = 'incorporated_place';
+SET district_type = 'statewide'
+WHERE district_type = 'us_senate';
 
 ALTER TABLE districts
   ADD CONSTRAINT chk_district_type
   CHECK (
     district_type IN (
-      'us_senate',
       'statewide',
       'us_house',
       'state_upper',
@@ -38,7 +40,6 @@ ALTER TABLE user_districts
   ADD CONSTRAINT chk_user_districts_type
   CHECK (
     district_type IN (
-      'us_senate',
       'statewide',
       'us_house',
       'state_upper',
