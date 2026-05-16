@@ -31,7 +31,7 @@ import { SCHOOL_UNIFIED_GEOIDS_50_PLUS_DC_2024 } from "../../../src/constants/sc
 import { STATE_ABBR_BY_FIPS } from "../../../src/constants/usStates.js";
 
 describe("parseStateDistrictRows", () => {
-  it("parses valid state rows and maps state abbreviation + us_senate type", () => {
+  it("parses valid state rows and maps state abbreviation + statewide type", () => {
     const data: unknown[] = [["NAME", "B01001_001E", "state"]];
     for (const fips of Object.keys(STATE_ABBR_BY_FIPS)) {
       if (fips === "01") {
@@ -54,14 +54,14 @@ describe("parseStateDistrictRows", () => {
       geoid_compact: "01",
       state_fips: "01",
       state: "AL",
-      district_type: "us_senate",
+      district_type: "statewide",
       population: 5086768,
     });
     expect(california).toMatchObject({
       geoid_compact: "06",
       state_fips: "06",
       state: "CA",
-      district_type: "us_senate",
+      district_type: "statewide",
       population: 39287377,
     });
   });

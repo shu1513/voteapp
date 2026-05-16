@@ -26,7 +26,7 @@ import { STATE_LOWER_STATE_FIPS_2024 } from "./src/constants/stateLowerGeoids202
 import { STATE_UPPER_STATE_FIPS_2024 } from "./src/constants/stateUpperGeoids2024.js";
 
 type DistrictType =
-  | "us_senate"
+  | "statewide"
   | "state_upper"
   | "state_lower"
   | "us_house"
@@ -115,7 +115,7 @@ async function fetchAllDistrictsFromCensus(censusApiKeys: readonly string[]): Pr
   const keepPositivePopulation = (rows: DistrictLike[]) => rows.filter((row) => row.population > 0);
 
   return {
-    us_senate: keepPositivePopulation(parseStateDistrictRows(stateData) as DistrictLike[]),
+    statewide: keepPositivePopulation(parseStateDistrictRows(stateData) as DistrictLike[]),
     state_upper: keepPositivePopulation(parseStateUpperDistrictRows(upperCombined) as DistrictLike[]),
     state_lower: keepPositivePopulation(parseStateLowerDistrictRows(lowerCombined) as DistrictLike[]),
     us_house: keepPositivePopulation(parseUsHouseDistrictRows(usHouseData) as DistrictLike[]),
@@ -235,7 +235,7 @@ async function main(): Promise<void> {
     const codeColumn = await detectDistrictCodeColumn(pool);
 
     const districtTypes: DistrictType[] = [
-      "us_senate",
+      "statewide",
       "state_upper",
       "state_lower",
       "us_house",

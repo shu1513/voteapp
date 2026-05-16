@@ -82,7 +82,7 @@ type DistrictRow = {
   state: string;
   state_fips: string;
   district_type:
-    | "us_senate"
+    | "statewide"
     | "state_upper"
     | "state_lower"
     | "us_house"
@@ -127,7 +127,7 @@ function parsePopulation(value: string): number {
 }
 
 /**
- * Parses the Census state endpoint into districts rows for the us_senate district_type.
+ * Parses the Census state endpoint into districts rows for the statewide district_type.
  */
 export function parseStateDistrictRows(data: unknown): DistrictRow[] {
   if (!Array.isArray(data) || data.length < 2) {
@@ -159,7 +159,7 @@ export function parseStateDistrictRows(data: unknown): DistrictRow[] {
       name: nameRaw.trim(),
       state: stateAbbreviation,
       state_fips: stateFips,
-      district_type: "us_senate",
+      district_type: "statewide",
       population: parsePopulation(populationRaw.trim()),
     });
   }
@@ -1098,7 +1098,7 @@ async function deleteDistrict(
  * - Bounded output (0..100) with deterministic behavior for edge cases.
  *
  * Scope rules:
- * - us_senate/us_house: national scope per district_type.
+ * - statewide/us_house: national scope per district_type.
  * - all other district types: state-level scope (district_type + state_fips).
  */
 async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
@@ -1112,7 +1112,7 @@ async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
           population::numeric AS population,
           CASE
             -- Federal congressional types compare nationally.
-            WHEN district_type IN ('us_senate', 'us_house') THEN district_type
+            WHEN district_type IN ('statewide', 'us_house') THEN district_type
             -- Other types compare within the same state.
             ELSE district_type || ':' || COALESCE(state_fips, '')
           END AS scope_key
@@ -1163,7 +1163,7 @@ async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
 /**
  * Loads districts from Census into the districts table.
  * Supported types:
- * - state -> us_senate rows (2024 state:* endpoint)
+ * - state -> statewide rows (2024 state:* endpoint)
  * - state_upper -> state legislative upper chamber rows (2024 ...upper+chamber... endpoint, one call per state)
  * - state_lower -> state legislative lower chamber rows (2024 ...lower+chamber... endpoint, one call per state with lower chamber)
  * - us_house -> congressional district rows (2024 congressional+district:* endpoint)
