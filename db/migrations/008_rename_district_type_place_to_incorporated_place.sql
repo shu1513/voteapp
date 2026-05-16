@@ -21,6 +21,7 @@ ALTER TABLE districts
   ADD CONSTRAINT chk_district_type
   CHECK (
     district_type IN (
+      'us_senate',
       'statewide',
       'us_house',
       'state_upper',
@@ -37,6 +38,7 @@ ALTER TABLE user_districts
   ADD CONSTRAINT chk_user_districts_type
   CHECK (
     district_type IN (
+      'us_senate',
       'statewide',
       'us_house',
       'state_upper',
