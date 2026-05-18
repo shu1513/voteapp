@@ -17,7 +17,6 @@ function draft() {
     census_source_url: "https://api.census.gov/data/2024/acs/acs5?get=NAME,B01001_001E&for=state:*",
     state_abbreviation_reference_url: "https://pe.usps.com/text/pub28/28apb.htm",
     seed_sources: ["https://www.vote.org/polling-place-locator/"],
-    allow_open_web_research: true,
   };
 }
 
@@ -30,7 +29,6 @@ function floridaDraft() {
     census_source_url: "https://api.census.gov/data/2024/acs/acs5?get=NAME,B01001_001E&for=state:*",
     state_abbreviation_reference_url: "https://pe.usps.com/text/pub28/28apb.htm",
     seed_sources: ["https://www.vote.org/polling-place-locator/"],
-    allow_open_web_research: true,
   };
 }
 
@@ -115,7 +113,7 @@ function validPayload(overrides: Record<string, unknown> = {}) {
 function openAiResponse(payload: unknown): Response {
   return new Response(
     JSON.stringify({
-      choices: [{ message: { content: JSON.stringify(payload) } }],
+      output_text: JSON.stringify(payload),
     }),
     { status: 200, headers: { "content-type": "application/json" } }
   );
@@ -288,7 +286,7 @@ describe("enrichStateResources", () => {
     const additionalCitationUrl = "https://www.sos.ca.gov/elections/voting-options/vote-mail";
     globalThis.fetch = vi.fn(async (input: RequestInfo | URL) => {
       const url = typeof input === "string" ? input : input.toString();
-      if (url.includes("/v1/chat/completions")) {
+      if (url.includes("/v1/responses")) {
         return openAiResponse(
           validPayload({
             sources: {
@@ -352,7 +350,7 @@ describe("enrichStateResources", () => {
     const additionalCitationUrl = "https://www.sos.ca.gov/elections/voting-options/vote-mail";
     globalThis.fetch = vi.fn(async (input: RequestInfo | URL) => {
       const url = typeof input === "string" ? input : input.toString();
-      if (url.includes("/v1/chat/completions")) {
+      if (url.includes("/v1/responses")) {
         return openAiResponse(
           validPayload({
             sources: {
@@ -413,7 +411,7 @@ describe("enrichStateResources", () => {
 
     globalThis.fetch = vi.fn(async (input: RequestInfo | URL) => {
       const url = typeof input === "string" ? input : input.toString();
-      if (url.includes("/v1/chat/completions")) {
+      if (url.includes("/v1/responses")) {
         return openAiResponse(
           validPayload({
             sources: {

@@ -6,7 +6,7 @@ import {
   enrichStateResourcesGroup,
   type EnrichStateResourceGroupResult,
 } from "../../ai/enrichStateResources.js";
-import { AI_CANDIDATES } from "../../ai/aiCandidates.js";
+import { STATE_RESOURCES_AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { normalizeRetryFeedback } from "../../ai/retryFeedback.js";
 import type {
   AiProvider,
@@ -106,6 +106,7 @@ type EnrichmentAttemptFailure = {
   errorCode: string;
   reason: string;
   retryable: boolean;
+  failureDebug?: Record<string, unknown>;
 };
 type RetryFeedbackFailureShape = {
   reason: string;
@@ -525,7 +526,7 @@ function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCand
     chain.push(candidate);
   };
 
-  for (const candidate of AI_CANDIDATES) {
+  for (const candidate of STATE_RESOURCES_AI_CANDIDATES) {
     addCandidate(candidate);
   }
 
@@ -535,7 +536,11 @@ function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCand
 function shouldTrySecondPromptForModel(result: { errorCode: string }): boolean {
   // For callable models, always run a second in-model retry (citation_repair) with retry feedback.
   // Only skip when the provider/model itself is fundamentally not callable.
-  return result.errorCode !== "CONFIGURATION_ERROR" && result.errorCode !== "UNSUPPORTED_PROVIDER";
+  return (
+    result.errorCode !== "CONFIGURATION_ERROR" &&
+    result.errorCode !== "UNSUPPORTED_PROVIDER" &&
+    result.errorCode !== "RATE_LIMIT"
+  );
 }
 
 function formatFallbackFailureReason(
@@ -706,6 +711,7 @@ async function enrichGroupWithCandidates(
         errorCode: result.errorCode,
         reason: result.reason,
         retryable: result.retryable,
+        failureDebug: result.failureDebug,
       });
 
       const hasAnotherPromptVariant = variantIndex < promptVariants.length - 1;
@@ -854,10 +860,6 @@ function parseDraftPayload(payload: unknown): DraftParseResult {
     return { ok: false, reason: "draft.seed_sources must be a non-empty string array" };
   }
 
-  if (typeof input.allow_open_web_research !== "boolean") {
-    return { ok: false, reason: "draft.allow_open_web_research must be boolean" };
-  }
-
   const normalized: StateResourceDraftPayload = {
     state_fips: (input.state_fips as string).trim(),
     state_abbreviation: (input.state_abbreviation as string).trim(),
@@ -869,7 +871,6 @@ function parseDraftPayload(payload: unknown): DraftParseResult {
     census_source_url: (input.census_source_url as string).trim(),
     state_abbreviation_reference_url: (input.state_abbreviation_reference_url as string).trim(),
     seed_sources: (seedSources as string[]).map((item) => item.trim()),
-    allow_open_web_research: input.allow_open_web_research,
   };
 
   if (!normalized.seed_sources.every((url) => isHttpUrl(url))) {
@@ -1386,7 +1387,7 @@ async function processMessage(
     let groupEvidence = await collectStateResourceEvidence(groupDraft, {
       focusTerms: buildGroupFocusTerms(group),
     });
-    if (group === "polling_place" && draft.draft.allow_open_web_research) {
+    if (group === "polling_place") {
       const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
       if (
         voteOrgPollingUrl &&
@@ -1481,6 +1482,7 @@ async function processMessage(
             error_code: attempt.errorCode,
             retryable: attempt.retryable,
             reason: attempt.reason,
+            failure_debug: attempt.failureDebug ?? null,
           })),
           ...(groupResult.failureDebug ?? {}),
         },

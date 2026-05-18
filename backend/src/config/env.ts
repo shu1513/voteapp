@@ -11,6 +11,7 @@ export type PipelineEnv = {
   AI_PROVIDER: AiProvider;
   AI_MODEL: string;
   AI_TIMEOUT_MS: number;
+  ANTHROPIC_WEB_SEARCH_MAX_USES: number;
   PROMPT_VERSION: string;
   CENSUS_API_KEYS: string[];
   OPENAI_API_KEY?: string;
@@ -119,7 +120,8 @@ export function getPipelineEnv(): PipelineEnv {
     REDIS_URL: readEnv("REDIS_URL", "redis://localhost:6379"),
     AI_PROVIDER: readAiProvider(),
     AI_MODEL: readEnv("AI_MODEL", DEFAULT_AI_CANDIDATE.model),
-    AI_TIMEOUT_MS: readPositiveIntegerEnv("AI_TIMEOUT_MS", 30000),
+    AI_TIMEOUT_MS: readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
+    ANTHROPIC_WEB_SEARCH_MAX_USES: readPositiveIntegerEnv("ANTHROPIC_WEB_SEARCH_MAX_USES", 3),
     PROMPT_VERSION: readEnv("PROMPT_VERSION", "state_resources_v2"),
     CENSUS_API_KEYS: readCensusApiKeysFromEnv(process.env),
     OPENAI_API_KEY: readOptionalEnv("OPENAI_API_KEY"),

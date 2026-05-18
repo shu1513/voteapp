@@ -20,7 +20,6 @@ function buildInput(withRetryFeedback: boolean) {
       census_source_url: "https://api.census.gov/data/2024/acs/acs5?get=NAME,B01001_001E&for=state:*",
       state_abbreviation_reference_url: "https://pe.usps.com/text/pub28/28apb.htm",
       seed_sources: ["https://www.vote.org/polling-place-locator/"],
-      allow_open_web_research: true,
     },
     evidence: [{ url: "https://www.vote.org/polling-place-locator/", title: "Vote.org", snippet: "CA polling place" }],
     promptVersion: "state_resources_v1",
@@ -48,7 +47,7 @@ describe("openAiProvider prompt retry feedback", () => {
       capturedBody = typeof init?.body === "string" ? init.body : "";
       return new Response(
         JSON.stringify({
-          choices: [{ message: { content: "{}" } }],
+          output_text: "{}",
         }),
         { status: 200, headers: { "content-type": "application/json" } }
       );
@@ -81,7 +80,7 @@ describe("openAiProvider prompt retry feedback", () => {
       capturedBody = typeof init?.body === "string" ? init.body : "";
       return new Response(
         JSON.stringify({
-          choices: [{ message: { content: "{}" } }],
+          output_text: "{}",
         }),
         { status: 200, headers: { "content-type": "application/json" } }
       );
@@ -110,7 +109,7 @@ describe("openAiProvider prompt retry feedback", () => {
       capturedBody = typeof init?.body === "string" ? init.body : "";
       return new Response(
         JSON.stringify({
-          choices: [{ message: { content: "{}" } }],
+          output_text: "{}",
         }),
         { status: 200, headers: { "content-type": "application/json" } }
       );
@@ -136,7 +135,7 @@ describe("openAiProvider temperature behavior", () => {
     let capturedBody = "";
     globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
       capturedBody = typeof init?.body === "string" ? init.body : "";
-      return new Response(JSON.stringify({ choices: [{ message: { content: "{}" } }] }), {
+      return new Response(JSON.stringify({ output_text: "{}" }), {
         status: 200,
         headers: { "content-type": "application/json" },
       });
@@ -158,7 +157,7 @@ describe("openAiProvider temperature behavior", () => {
     let capturedBody = "";
     globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
       capturedBody = typeof init?.body === "string" ? init.body : "";
-      return new Response(JSON.stringify({ choices: [{ message: { content: "{}" } }] }), {
+      return new Response(JSON.stringify({ output_text: "{}" }), {
         status: 200,
         headers: { "content-type": "application/json" },
       });
@@ -182,7 +181,7 @@ describe("openAiProvider scoped prompt formatting", () => {
     let capturedBody = "";
     globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
       capturedBody = typeof init?.body === "string" ? init.body : "";
-      return new Response(JSON.stringify({ choices: [{ message: { content: "{}" } }] }), {
+      return new Response(JSON.stringify({ output_text: "{}" }), {
         status: 200,
         headers: { "content-type": "application/json" },
       });
@@ -199,9 +198,16 @@ describe("openAiProvider scoped prompt formatting", () => {
 
     expect(result.ok).toBe(true);
     const requestBody = JSON.parse(capturedBody) as {
-      messages: Array<{ role: string; content: string }>;
+      input: Array<{
+        role: string;
+        content: Array<{ type: string; text?: string }>;
+      }>;
     };
-    const userPrompt = requestBody.messages.find((m) => m.role === "user")?.content ?? "";
+    const userPrompt =
+      requestBody.input
+        .find((m) => m.role === "user")
+        ?.content.find((c) => c.type === "input_text")
+        ?.text ?? "";
     expect(userPrompt).toContain("Output must be raw JSON only (single object). No prose, no markdown, no code fences.");
     expect(userPrompt).toContain("Valid JSON example for this group:");
     expect(userPrompt).toContain("\"online_registration_available\":true");
@@ -217,7 +223,7 @@ describe("openAiProvider JSON parsing hardening", () => {
     globalThis.fetch = vi.fn(async () => {
       return new Response(
         JSON.stringify({
-          choices: [{ message: { content: `${objectText}\n${objectText}` } }],
+          output_text: `${objectText}\n${objectText}`,
         }),
         { status: 200, headers: { "content-type": "application/json" } }
       );
@@ -242,7 +248,7 @@ describe("openAiProvider JSON parsing hardening", () => {
     globalThis.fetch = vi.fn(async () => {
       return new Response(
         JSON.stringify({
-          choices: [{ message: { content: `${objectText}\nThis is extra prose.` } }],
+          output_text: `${objectText}\nThis is extra prose.`,
         }),
         { status: 200, headers: { "content-type": "application/json" } }
       );

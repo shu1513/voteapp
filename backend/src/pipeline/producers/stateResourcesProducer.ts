@@ -2,7 +2,6 @@ import { Pool } from "pg";
 import { createClient } from "redis";
 
 import {
-  ALLOW_OPEN_WEB_RESEARCH,
   CENSUS_STATES_API_URL,
   EXPECTED_STATE_RESOURCE_STATE_COUNT,
   STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED,
@@ -129,7 +128,6 @@ function toDraftPayload(state: CensusState): StateResourceDraftPayload {
       STATE_RESOURCE_ONLINE_REGISTRATION_REFERENCE_SEED,
       STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_REFERENCE_SEED,
     ])),
-    allow_open_web_research: ALLOW_OPEN_WEB_RESEARCH,
   };
 }
 

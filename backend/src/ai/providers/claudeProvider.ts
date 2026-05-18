@@ -5,6 +5,11 @@ import type {
 } from "../types.js";
 import { buildRetryFeedbackPromptLines } from "../retryFeedback.js";
 import { buildStateResourcesPrompt } from "./stateResourcesPrompt.js";
+import {
+  extractProviderRateLimitDebugHeaders,
+  updateProviderModelCooldownFromHeaders,
+  waitForProviderModelCooldown,
+} from "../providerRateLimitGate.js";
 
 const ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages";
 
@@ -58,29 +63,46 @@ export async function claudeProvider(
   } as const;
 
   try {
+    await waitForProviderModelCooldown("claude", config.model);
+
+    const requestBody: Record<string, unknown> = {
+      model: config.model,
+      max_tokens: 2000,
+      temperature: 0,
+      system: "You are a strict JSON generator for civic data. Use evidence-based factual summaries only.",
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    };
+    const headers: Record<string, string> = {
+      "x-api-key": config.anthropicApiKey,
+      "anthropic-version": "2023-06-01",
+      "content-type": "application/json",
+    };
+    requestBody.tools = [
+      {
+        type: "web_search_20250305",
+        name: "web_search",
+        max_uses: Math.max(1, Math.floor(config.anthropicWebSearchMaxUses ?? 3)),
+      },
+    ];
+    headers["anthropic-beta"] = "web-search-2025-03-05";
+
     const response = await fetch(ANTHROPIC_MESSAGES_URL, {
       method: "POST",
-      headers: {
-        "x-api-key": config.anthropicApiKey,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        model: config.model,
-        max_tokens: 2000,
-        temperature: 0,
-        system: "You are a strict JSON generator for civic data. Use evidence-based factual summaries only.",
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-      }),
+      headers,
+      body: JSON.stringify(requestBody),
       signal: controller.signal,
     });
 
     if (!response.ok) {
+      const rateLimitHeaders = extractProviderRateLimitDebugHeaders(response.headers);
+      updateProviderModelCooldownFromHeaders("claude", config.model, response.headers, {
+        onRateLimitedResponse: response.status === 429,
+      });
       const bodyText = await response.text();
       if (response.status === 429) {
         return {
@@ -91,6 +113,7 @@ export async function claudeProvider(
           failureDebug: {
             ...promptDebugMeta,
             provider_response_text: trimDebugText(bodyText),
+            provider_rate_limit_headers: rateLimitHeaders,
           },
         };
       }
@@ -104,6 +127,7 @@ export async function claudeProvider(
           failureDebug: {
             ...promptDebugMeta,
             provider_response_text: trimDebugText(bodyText),
+            provider_rate_limit_headers: rateLimitHeaders,
           },
         };
       }
@@ -116,9 +140,12 @@ export async function claudeProvider(
         failureDebug: {
           ...promptDebugMeta,
           provider_response_text: trimDebugText(bodyText),
+          provider_rate_limit_headers: rateLimitHeaders,
         },
       };
     }
+
+    updateProviderModelCooldownFromHeaders("claude", config.model, response.headers);
 
     const data = (await response.json()) as {
       content?: Array<{ type?: string; text?: string }>;

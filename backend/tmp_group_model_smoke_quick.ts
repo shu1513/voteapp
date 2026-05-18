@@ -1,5 +1,5 @@
 import { loadProjectEnv, getPipelineEnv } from "./src/config/env.ts";
-import { AI_CANDIDATES } from "./src/ai/aiCandidates.ts";
+import { STATE_RESOURCES_AI_CANDIDATES } from "./src/ai/aiCandidates.ts";
 import { enrichStateResourcesGroup } from "./src/ai/enrichStateResources.ts";
 import type { EnrichStateResourcesConfig, EnrichStateResourcesInput } from "./src/ai/types.ts";
 
@@ -34,7 +34,7 @@ async function run(): Promise<void> {
     reason?: string;
   }> = [];
 
-  for (const candidate of AI_CANDIDATES) {
+  for (const candidate of STATE_RESOURCES_AI_CANDIDATES) {
     const config: EnrichStateResourcesConfig = {
       provider: candidate.provider,
       model: candidate.model,

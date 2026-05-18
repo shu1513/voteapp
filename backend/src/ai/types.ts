@@ -39,6 +39,7 @@ export type EnrichStateResourcesConfig = {
   provider: AiProvider;
   model: string;
   timeoutMs: number;
+  anthropicWebSearchMaxUses?: number;
   openAiApiKey?: string;
   anthropicApiKey?: string;
   geminiApiKey?: string;

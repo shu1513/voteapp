@@ -254,10 +254,6 @@ function parseDraftPayload(value: unknown): StateResourceDraftPayload | null {
     return null;
   }
 
-  if (typeof input.allow_open_web_research !== "boolean") {
-    return null;
-  }
-
   const state_fips = (input.state_fips as string).trim();
   const state_abbreviation = (input.state_abbreviation as string).trim();
   if (!STATE_RESOURCE_FIPS_REGEX.test(state_fips) || !STATE_RESOURCE_ABBREVIATION_REGEX.test(state_abbreviation)) {
@@ -290,7 +286,6 @@ function parseDraftPayload(value: unknown): StateResourceDraftPayload | null {
     census_source_url: censusSourceUrl,
     state_abbreviation_reference_url: stateAbbreviationReferenceUrl,
     seed_sources: normalizedSeedSources,
-    allow_open_web_research: input.allow_open_web_research,
   };
 }
 

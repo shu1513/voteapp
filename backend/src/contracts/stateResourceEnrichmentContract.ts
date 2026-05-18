@@ -77,7 +77,6 @@ export function isValidStateResourceIdRequirementValue(value: string): value is 
 export const STATE_RESOURCE_DRAFT_MARKER_FIELDS = [
   "census_source_url",
   "seed_sources",
-  "allow_open_web_research",
 ] as const;
 
 export const STATE_RESOURCE_FIPS_REGEX = /^[0-9]{2}$/;

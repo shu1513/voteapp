@@ -528,6 +528,7 @@ export function buildEnrichmentConfigFromEnv(env: PipelineEnv): EnrichStateResou
     provider: env.AI_PROVIDER,
     model: env.AI_MODEL,
     timeoutMs: env.AI_TIMEOUT_MS,
+    anthropicWebSearchMaxUses: env.ANTHROPIC_WEB_SEARCH_MAX_USES,
     openAiApiKey: env.OPENAI_API_KEY,
     anthropicApiKey: env.ANTHROPIC_API_KEY,
     geminiApiKey: env.GEMINI_API_KEY,
