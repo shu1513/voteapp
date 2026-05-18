@@ -4,114 +4,9 @@ import type {
   ProviderGenerateResult,
 } from "../types.js";
 import { buildRetryFeedbackPromptLines } from "../retryFeedback.js";
-import { buildScopedOpenAiJsonSchema } from "./stateResourceScopedOutput.js";
 import { buildStateResourcesPrompt } from "./stateResourcesPrompt.js";
 
-const OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
-const SOURCES_BUCKET_SCHEMA = {
-  type: "array",
-  minItems: 1,
-  items: { type: "string" },
-} as const;
-
-const STATE_RESOURCE_JSON_SCHEMA = {
-  name: "state_resource_payload",
-  strict: true,
-  schema: {
-    type: "object",
-    additionalProperties: false,
-    required: [
-      "polling_place_url",
-      "mail_voting_available",
-      "mail_ballot_request_deadline_rule",
-      "mail_ballot_return_deadline_rule",
-      "mail_ballot_return_deadline_type",
-      "early_voting_available",
-      "early_voting_start_date_rule",
-      "early_voting_end_date_rule",
-      "polling_hours",
-      "id_requirements",
-      "same_day_registration_available",
-      "online_registration_available",
-      "online_registration_deadline_rule",
-      "in_person_registration_deadline_rule",
-      "sources",
-    ],
-    properties: {
-      polling_place_url: { type: "string" },
-      mail_voting_available: { type: "boolean" },
-      mail_ballot_request_deadline_rule: {
-        anyOf: [{ type: "string" }, { type: "null" }],
-      },
-      mail_ballot_return_deadline_rule: {
-        anyOf: [{ type: "string" }, { type: "null" }],
-      },
-      mail_ballot_return_deadline_type: {
-        anyOf: [{ type: "string", enum: ["postmarked_by", "received_by"] }, { type: "null" }],
-      },
-      early_voting_available: { type: "boolean" },
-      early_voting_start_date_rule: {
-        anyOf: [{ type: "string" }, { type: "null" }],
-      },
-      early_voting_end_date_rule: {
-        anyOf: [{ type: "string" }, { type: "null" }],
-      },
-      polling_hours: { type: "string" },
-      id_requirements: {
-        type: "string",
-        enum: [
-          "Strict photo ID",
-          "Strict non-photo ID",
-          "Non-strict photo ID",
-          "Non-strict, non-photo ID",
-          "No document required to vote",
-        ],
-      },
-      same_day_registration_available: { type: "boolean" },
-      online_registration_available: { type: "boolean" },
-      online_registration_deadline_rule: {
-        anyOf: [{ type: "string" }, { type: "null" }],
-      },
-      in_person_registration_deadline_rule: { type: "string" },
-      sources: {
-        type: "object",
-        additionalProperties: false,
-        required: [
-          "polling_place_url",
-          "mail_voting_available",
-          "mail_ballot_request_deadline_rule",
-          "mail_ballot_return_deadline_rule",
-          "mail_ballot_return_deadline_type",
-          "early_voting_available",
-          "early_voting_start_date_rule",
-          "early_voting_end_date_rule",
-          "polling_hours",
-          "id_requirements",
-          "same_day_registration_available",
-          "online_registration_available",
-          "online_registration_deadline_rule",
-          "in_person_registration_deadline_rule",
-        ],
-        properties: {
-          polling_place_url: SOURCES_BUCKET_SCHEMA,
-          mail_voting_available: SOURCES_BUCKET_SCHEMA,
-          mail_ballot_request_deadline_rule: SOURCES_BUCKET_SCHEMA,
-          mail_ballot_return_deadline_rule: SOURCES_BUCKET_SCHEMA,
-          mail_ballot_return_deadline_type: SOURCES_BUCKET_SCHEMA,
-          early_voting_available: SOURCES_BUCKET_SCHEMA,
-          early_voting_start_date_rule: SOURCES_BUCKET_SCHEMA,
-          early_voting_end_date_rule: SOURCES_BUCKET_SCHEMA,
-          polling_hours: SOURCES_BUCKET_SCHEMA,
-          id_requirements: SOURCES_BUCKET_SCHEMA,
-          same_day_registration_available: SOURCES_BUCKET_SCHEMA,
-          online_registration_available: SOURCES_BUCKET_SCHEMA,
-          online_registration_deadline_rule: SOURCES_BUCKET_SCHEMA,
-          in_person_registration_deadline_rule: SOURCES_BUCKET_SCHEMA,
-        },
-      },
-    },
-  },
-} as const;
+const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
@@ -179,8 +74,95 @@ function extractLeadingJsonObject(
 }
 
 function shouldSetExplicitTemperature(model: string): boolean {
-  // GPT-5-family chat completions require default temperature behavior.
+  // GPT-5-family should use default temperature behavior.
   return !model.toLowerCase().startsWith("gpt-5");
+}
+
+function extractResponsesOutputText(responsePayload: unknown): string | null {
+  if (typeof responsePayload !== "object" || responsePayload === null) {
+    return null;
+  }
+  const input = responsePayload as Record<string, unknown>;
+  if (typeof input.output_text === "string" && input.output_text.trim().length > 0) {
+    return input.output_text;
+  }
+  const output = input.output;
+  if (!Array.isArray(output)) {
+    return null;
+  }
+
+  const parts: string[] = [];
+  for (const item of output) {
+    if (typeof item !== "object" || item === null || Array.isArray(item)) {
+      continue;
+    }
+    const outputItem = item as Record<string, unknown>;
+    if (outputItem.type !== "message") {
+      continue;
+    }
+    const content = outputItem.content;
+    if (!Array.isArray(content)) {
+      continue;
+    }
+    for (const contentPart of content) {
+      if (typeof contentPart !== "object" || contentPart === null || Array.isArray(contentPart)) {
+        continue;
+      }
+      const outputPart = contentPart as Record<string, unknown>;
+      if (outputPart.type !== "output_text" || typeof outputPart.text !== "string") {
+        continue;
+      }
+      const text = outputPart.text.trim();
+      if (text.length > 0) {
+        parts.push(text);
+      }
+    }
+  }
+
+  return parts.length > 0 ? parts.join("\n") : null;
+}
+
+function extractOpenAiWebSearchSources(responsePayload: unknown): Array<{ url?: string; title?: string }> {
+  if (typeof responsePayload !== "object" || responsePayload === null) {
+    return [];
+  }
+  const input = responsePayload as Record<string, unknown>;
+  const output = input.output;
+  if (!Array.isArray(output)) {
+    return [];
+  }
+
+  const sources: Array<{ url?: string; title?: string }> = [];
+  for (const item of output) {
+    if (typeof item !== "object" || item === null || Array.isArray(item)) {
+      continue;
+    }
+    const outputItem = item as Record<string, unknown>;
+    if (outputItem.type !== "web_search_call") {
+      continue;
+    }
+    const action = outputItem.action;
+    if (typeof action !== "object" || action === null || Array.isArray(action)) {
+      continue;
+    }
+    const actionRecord = action as Record<string, unknown>;
+    const rawSources = actionRecord.sources;
+    if (!Array.isArray(rawSources)) {
+      continue;
+    }
+    for (const source of rawSources) {
+      if (typeof source !== "object" || source === null || Array.isArray(source)) {
+        continue;
+      }
+      const sourceRecord = source as Record<string, unknown>;
+      sources.push({
+        ...(typeof sourceRecord.url === "string" ? { url: sourceRecord.url } : {}),
+        ...(typeof sourceRecord.title === "string" ? { title: sourceRecord.title } : {}),
+      });
+    }
+  }
+
+  return sources;
 }
 
 export async function openAiProvider(
@@ -200,7 +182,6 @@ export async function openAiProvider(
   const timeout = setTimeout(() => controller.abort(), config.timeoutMs);
   const retryFeedbackLines = buildRetryFeedbackPromptLines(input.retryFeedback);
   const prompt = buildStateResourcesPrompt(input, retryFeedbackLines);
-  const scopedSchema = buildScopedOpenAiJsonSchema(input.fieldGroup);
   const promptDebugMeta = {
     provider_prompt_variant: input.promptVariant ?? "default",
     provider_prompt_has_retry_feedback: retryFeedbackLines.length > 0,
@@ -210,28 +191,31 @@ export async function openAiProvider(
   try {
     const requestBody: Record<string, unknown> = {
       model: config.model,
-      response_format: {
-        type: "json_schema",
-        json_schema: scopedSchema ?? STATE_RESOURCE_JSON_SCHEMA,
-      },
-      messages: [
+      input: [
         {
           role: "system",
-          content:
-            "You are a strict JSON generator for civic data. Use evidence-based factual summaries only.",
+          content: [
+            {
+              type: "input_text",
+              text: "You are a strict JSON generator for civic data. Use evidence-based factual summaries only.",
+            },
+          ],
         },
         {
           role: "user",
-          content: prompt,
+          content: [{ type: "input_text", text: prompt }],
         },
       ],
+      tools: [{ type: "web_search" }],
+      tool_choice: "auto",
+      include: ["web_search_call.action.sources"],
     };
 
     if (shouldSetExplicitTemperature(config.model)) {
       requestBody.temperature = 0;
     }
 
-    const response = await fetch(OPENAI_CHAT_COMPLETIONS_URL, {
+    const response = await fetch(OPENAI_RESPONSES_URL, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${config.openAiApiKey}`,
@@ -248,7 +232,7 @@ export async function openAiProvider(
           ok: false,
           retryable: true,
           errorCode: "RATE_LIMIT",
-          reason: `OpenAI rate limit: ${bodyText}`,
+          reason: `OpenAI responses rate limit: ${bodyText}`,
           failureDebug: {
             ...promptDebugMeta,
             provider_response_text: trimDebugText(bodyText),
@@ -261,7 +245,7 @@ export async function openAiProvider(
           ok: false,
           retryable: true,
           errorCode: "TEMP_PROVIDER_ERROR",
-          reason: `OpenAI temporary error ${response.status}: ${bodyText}`,
+          reason: `OpenAI responses temporary error ${response.status}: ${bodyText}`,
           failureDebug: {
             ...promptDebugMeta,
             provider_response_text: trimDebugText(bodyText),
@@ -273,7 +257,7 @@ export async function openAiProvider(
         ok: false,
         retryable: false,
         errorCode: "CONFIGURATION_ERROR",
-        reason: `OpenAI request failed ${response.status}: ${bodyText}`,
+        reason: `OpenAI responses request failed ${response.status}: ${bodyText}`,
         failureDebug: {
           ...promptDebugMeta,
           provider_response_text: trimDebugText(bodyText),
@@ -281,19 +265,22 @@ export async function openAiProvider(
       };
     }
 
-    const data = (await response.json()) as {
-      choices?: Array<{ message?: { content?: string } }>;
-    };
-
-    const content = data.choices?.[0]?.message?.content;
+    const data = (await response.json()) as Record<string, unknown>;
+    const content = extractResponsesOutputText(data);
     if (!content || content.trim().length === 0) {
       return {
         ok: false,
         retryable: false,
         errorCode: "INVALID_JSON",
-        reason: "OpenAI returned empty content",
+        reason: "OpenAI responses returned empty assistant text",
+        failureDebug: {
+          ...promptDebugMeta,
+          provider_response_payload: data,
+        },
       };
     }
+
+    const webSearchSources = extractOpenAiWebSearchSources(data);
 
     const extraction = extractLeadingJsonObject(content);
     if (!extraction) {
@@ -305,6 +292,8 @@ export async function openAiProvider(
         failureDebug: {
           ...promptDebugMeta,
           provider_response_text: trimDebugText(content),
+          web_search_sources: webSearchSources,
+          web_search_sources_count: webSearchSources.length,
         },
       };
     }
@@ -319,13 +308,25 @@ export async function openAiProvider(
         failureDebug: {
           ...promptDebugMeta,
           provider_response_text: trimDebugText(content),
+          web_search_sources: webSearchSources,
+          web_search_sources_count: webSearchSources.length,
         },
       };
     }
 
     try {
       const parsed = JSON.parse(extraction.candidate);
-      return { ok: true, rawPayload: parsed, rawText: content, debugMeta: promptDebugMeta };
+      return {
+        ok: true,
+        rawPayload: parsed,
+        rawText: content,
+        debugMeta: {
+          ...promptDebugMeta,
+          openai_api_mode: "responses_web_search",
+          web_search_sources: webSearchSources,
+          web_search_sources_count: webSearchSources.length,
+        },
+      };
     } catch (error) {
       return {
         ok: false,
@@ -335,6 +336,8 @@ export async function openAiProvider(
         failureDebug: {
           ...promptDebugMeta,
           provider_response_text: trimDebugText(content),
+          web_search_sources: webSearchSources,
+          web_search_sources_count: webSearchSources.length,
         },
       };
     }
@@ -345,7 +348,7 @@ export async function openAiProvider(
         ok: false,
         retryable: true,
         errorCode: "TIMEOUT",
-        reason: `OpenAI request timed out after ${config.timeoutMs}ms`,
+        reason: `OpenAI responses request timed out after ${config.timeoutMs}ms`,
       };
     }
 
@@ -353,7 +356,7 @@ export async function openAiProvider(
       ok: false,
       retryable: true,
       errorCode: "TEMP_PROVIDER_ERROR",
-      reason: `OpenAI request error: ${reason}`,
+      reason: `OpenAI responses request error: ${reason}`,
     };
   } finally {
     clearTimeout(timeout);

@@ -6,19 +6,25 @@ import {
   STATE_RESOURCES_AI_CANDIDATES,
 } from "../../src/ai/aiCandidates.ts";
 
-const expectedOrderedCandidates = [
+const expectedStateResourcesCandidates = [
   { provider: "openai", model: "gpt-5.4-mini" },
   { provider: "claude", model: "claude-sonnet-4-6" },
   { provider: "gemini", model: "gemini-2.5-pro" },
 ] as const;
 
+const expectedElectionsCandidates = [
+  { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "openai", model: "gpt-5.4-mini" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
 describe("state/elections AI candidate lists", () => {
   it("contains the current ordered model cycle for state resources", () => {
-    expect(STATE_RESOURCES_AI_CANDIDATES).toEqual(expectedOrderedCandidates);
+    expect(STATE_RESOURCES_AI_CANDIDATES).toEqual(expectedStateResourcesCandidates);
   });
 
   it("contains the current ordered model cycle for elections", () => {
-    expect(ELECTIONS_AI_CANDIDATES).toEqual(expectedOrderedCandidates);
+    expect(ELECTIONS_AI_CANDIDATES).toEqual(expectedElectionsCandidates);
   });
 
   it("exposes the first state-resources entry as default", () => {

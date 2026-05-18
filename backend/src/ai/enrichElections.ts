@@ -2,13 +2,18 @@ import { ELECTIONS_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import { buildElectionsPrompt } from "./providers/electionsPrompt.js";
 import {
+  extractProviderRateLimitDebugHeaders,
+  updateProviderModelCooldownFromHeaders,
+  waitForProviderModelCooldown,
+} from "./providerRateLimitGate.js";
+import {
   ELECTION_ENRICHMENT_SCHEMA_VERSION,
 } from "../contracts/electionEnrichmentContract.js";
 import { parseCanonicalElectionPayload } from "../contracts/electionPayloadContract.js";
 import type { AiProvider } from "./types.js";
 import type { ElectionDraftPayload, ElectionEnrichedPayload } from "../types/election.js";
 
-const OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
+const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages";
 
 type RetryableErrorCode = "RATE_LIMIT" | "TIMEOUT" | "TEMP_PROVIDER_ERROR";
@@ -44,6 +49,8 @@ export type EnrichElectionsInput = {
 
 export type EnrichElectionsConfig = {
   timeoutMs: number;
+  anthropicWebSearchMaxUses?: number;
+  openAiUseResponsesWebSearch?: boolean;
   openAiApiKey?: string;
   anthropicApiKey?: string;
   geminiApiKey?: string;
@@ -69,33 +76,142 @@ function extractJsonCandidate(text: string): string {
   return trimmed;
 }
 
+function extractResponsesOutputText(responsePayload: unknown): string | null {
+  if (typeof responsePayload !== "object" || responsePayload === null) {
+    return null;
+  }
+  const input = responsePayload as Record<string, unknown>;
+
+  if (typeof input.output_text === "string" && input.output_text.trim().length > 0) {
+    return input.output_text;
+  }
+
+  const output = input.output;
+  if (!Array.isArray(output)) {
+    return null;
+  }
+
+  const parts: string[] = [];
+  for (const item of output) {
+    if (typeof item !== "object" || item === null || Array.isArray(item)) {
+      continue;
+    }
+    const outputItem = item as Record<string, unknown>;
+    if (outputItem.type !== "message") {
+      continue;
+    }
+
+    const content = outputItem.content;
+    if (!Array.isArray(content)) {
+      continue;
+    }
+
+    for (const contentPart of content) {
+      if (typeof contentPart !== "object" || contentPart === null || Array.isArray(contentPart)) {
+        continue;
+      }
+      const outputPart = contentPart as Record<string, unknown>;
+      if (outputPart.type !== "output_text" || typeof outputPart.text !== "string") {
+        continue;
+      }
+      const text = outputPart.text.trim();
+      if (text.length > 0) {
+        parts.push(text);
+      }
+    }
+  }
+
+  if (parts.length === 0) {
+    return null;
+  }
+  return parts.join("\n");
+}
+
+function extractOpenAiWebSearchSources(responsePayload: unknown): Array<{ url?: string; title?: string }> {
+  if (typeof responsePayload !== "object" || responsePayload === null) {
+    return [];
+  }
+  const input = responsePayload as Record<string, unknown>;
+  const output = input.output;
+  if (!Array.isArray(output)) {
+    return [];
+  }
+
+  const sources: Array<{ url?: string; title?: string }> = [];
+  for (const item of output) {
+    if (typeof item !== "object" || item === null || Array.isArray(item)) {
+      continue;
+    }
+    const outputItem = item as Record<string, unknown>;
+    if (outputItem.type !== "web_search_call") {
+      continue;
+    }
+    const action = outputItem.action;
+    if (typeof action !== "object" || action === null || Array.isArray(action)) {
+      continue;
+    }
+    const actionRecord = action as Record<string, unknown>;
+    const rawSources = actionRecord.sources;
+    if (!Array.isArray(rawSources)) {
+      continue;
+    }
+    for (const source of rawSources) {
+      if (typeof source !== "object" || source === null || Array.isArray(source)) {
+        continue;
+      }
+      const sourceRecord = source as Record<string, unknown>;
+      sources.push({
+        ...(typeof sourceRecord.url === "string" ? { url: sourceRecord.url } : {}),
+        ...(typeof sourceRecord.title === "string" ? { title: sourceRecord.title } : {}),
+      });
+    }
+  }
+
+  return sources;
+}
+
 function shouldSetExplicitTemperature(model: string): boolean {
   return !model.toLowerCase().startsWith("gpt-5");
 }
 
-async function callOpenAi(
+async function callOpenAiResponsesWithWebSearch(
   prompt: string,
   model: string,
   apiKey: string,
   timeoutMs: number
-): Promise<{ ok: true; parsed: unknown; rawText: string } | ElectionEnrichmentFailure> {
+): Promise<
+  | { ok: true; parsed: unknown; rawText: string; responsesDebug?: Record<string, unknown> }
+  | ElectionEnrichmentFailure
+> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const requestBody: Record<string, unknown> = {
       model,
-      messages: [
-        { role: "system", content: "Return strict JSON only." },
-        { role: "user", content: prompt },
+      input: [
+        {
+          role: "system",
+          content: [{ type: "input_text", text: "Return strict JSON only." }],
+        },
+        {
+          role: "user",
+          content: [{ type: "input_text", text: prompt }],
+        },
       ],
-      response_format: { type: "json_object" },
+      tools: [
+        {
+          type: "web_search",
+        },
+      ],
+      tool_choice: "auto",
+      include: ["web_search_call.action.sources"],
     };
     if (shouldSetExplicitTemperature(model)) {
       requestBody.temperature = 0;
     }
 
-    const response = await fetch(OPENAI_CHAT_COMPLETIONS_URL, {
+    const response = await fetch(OPENAI_RESPONSES_URL, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -108,49 +224,92 @@ async function callOpenAi(
     if (!response.ok) {
       const bodyText = await response.text();
       if (response.status === 429) {
-        return { ok: false, retryable: true, errorCode: "RATE_LIMIT", reason: `OpenAI rate limit: ${bodyText}` };
+        return {
+          ok: false,
+          retryable: true,
+          errorCode: "RATE_LIMIT",
+          reason: `OpenAI responses rate limit: ${bodyText}`,
+          failureDebug: {
+            provider_response_text: trimDebugText(bodyText),
+          },
+        };
       }
       if (response.status >= 500) {
         return {
           ok: false,
           retryable: true,
           errorCode: "TEMP_PROVIDER_ERROR",
-          reason: `OpenAI temporary error ${response.status}: ${bodyText}`,
+          reason: `OpenAI responses temporary error ${response.status}: ${bodyText}`,
+          failureDebug: {
+            provider_response_text: trimDebugText(bodyText),
+          },
         };
       }
       return {
         ok: false,
         retryable: false,
         errorCode: "CONFIGURATION_ERROR",
-        reason: `OpenAI request failed ${response.status}: ${bodyText}`,
+        reason: `OpenAI responses request failed ${response.status}: ${bodyText}`,
+        failureDebug: {
+          provider_response_text: trimDebugText(bodyText),
+        },
       };
     }
 
-    const data = (await response.json()) as {
-      choices?: Array<{ message?: { content?: string } }>;
-    };
-    const text = data.choices?.[0]?.message?.content;
+    const data = (await response.json()) as Record<string, unknown>;
+    const text = extractResponsesOutputText(data);
     if (!text || text.trim().length === 0) {
-      return { ok: false, retryable: false, errorCode: "INVALID_JSON", reason: "OpenAI returned empty content" };
+      return {
+        ok: false,
+        retryable: false,
+        errorCode: "INVALID_JSON",
+        reason: "OpenAI responses returned empty assistant text",
+        failureDebug: {
+          provider_response_payload: data,
+        },
+      };
     }
 
+    const webSearchSources = extractOpenAiWebSearchSources(data);
     try {
-      return { ok: true, parsed: JSON.parse(extractJsonCandidate(text)), rawText: text };
+      return {
+        ok: true,
+        parsed: JSON.parse(extractJsonCandidate(text)),
+        rawText: text,
+        responsesDebug: {
+          web_search_sources: webSearchSources,
+          web_search_sources_count: webSearchSources.length,
+        },
+      };
     } catch (error) {
       return {
         ok: false,
         retryable: false,
         errorCode: "INVALID_JSON",
-        reason: `OpenAI returned invalid JSON: ${toReason(error)}`,
-        failureDebug: { provider_response_text: trimDebugText(text) },
+        reason: `OpenAI responses returned invalid JSON: ${toReason(error)}`,
+        failureDebug: {
+          provider_response_text: trimDebugText(text),
+          web_search_sources: webSearchSources,
+          web_search_sources_count: webSearchSources.length,
+        },
       };
     }
   } catch (error) {
     const reason = toReason(error);
     if (reason.toLowerCase().includes("aborted")) {
-      return { ok: false, retryable: true, errorCode: "TIMEOUT", reason: `OpenAI request timed out after ${timeoutMs}ms` };
+      return {
+        ok: false,
+        retryable: true,
+        errorCode: "TIMEOUT",
+        reason: `OpenAI responses request timed out after ${timeoutMs}ms`,
+      };
     }
-    return { ok: false, retryable: true, errorCode: "TEMP_PROVIDER_ERROR", reason: `OpenAI request error: ${reason}` };
+    return {
+      ok: false,
+      retryable: true,
+      errorCode: "TEMP_PROVIDER_ERROR",
+      reason: `OpenAI responses request error: ${reason}`,
+    };
   } finally {
     clearTimeout(timeout);
   }
@@ -160,33 +319,60 @@ async function callClaude(
   prompt: string,
   model: string,
   apiKey: string,
-  timeoutMs: number
+  timeoutMs: number,
+  webSearchMaxUses = 3
 ): Promise<{ ok: true; parsed: unknown; rawText: string } | ElectionEnrichmentFailure> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    await waitForProviderModelCooldown("claude", model);
+
+    const requestBody: Record<string, unknown> = {
+      model,
+      max_tokens: 4000,
+      temperature: 0,
+      system: "Return strict JSON only.",
+      messages: [{ role: "user", content: prompt }],
+    };
+    const headers: Record<string, string> = {
+      "x-api-key": apiKey,
+      "anthropic-version": "2023-06-01",
+      "content-type": "application/json",
+    };
+    requestBody.tools = [
+      {
+        type: "web_search_20250305",
+        name: "web_search",
+        max_uses: Math.max(1, Math.floor(webSearchMaxUses)),
+      },
+    ];
+    headers["anthropic-beta"] = "web-search-2025-03-05";
+
     const response = await fetch(ANTHROPIC_MESSAGES_URL, {
       method: "POST",
-      headers: {
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        model,
-        max_tokens: 4000,
-        temperature: 0,
-        system: "Return strict JSON only.",
-        messages: [{ role: "user", content: prompt }],
-      }),
+      headers,
+      body: JSON.stringify(requestBody),
       signal: controller.signal,
     });
 
     if (!response.ok) {
+      const rateLimitHeaders = extractProviderRateLimitDebugHeaders(response.headers);
+      updateProviderModelCooldownFromHeaders("claude", model, response.headers, {
+        onRateLimitedResponse: response.status === 429,
+      });
       const bodyText = await response.text();
       if (response.status === 429) {
-        return { ok: false, retryable: true, errorCode: "RATE_LIMIT", reason: `Claude rate limit: ${bodyText}` };
+        return {
+          ok: false,
+          retryable: true,
+          errorCode: "RATE_LIMIT",
+          reason: `Claude rate limit: ${bodyText}`,
+          failureDebug: {
+            provider_response_text: trimDebugText(bodyText),
+            provider_rate_limit_headers: rateLimitHeaders,
+          },
+        };
       }
       if (response.status >= 500) {
         return {
@@ -194,6 +380,10 @@ async function callClaude(
           retryable: true,
           errorCode: "TEMP_PROVIDER_ERROR",
           reason: `Claude temporary error ${response.status}: ${bodyText}`,
+          failureDebug: {
+            provider_response_text: trimDebugText(bodyText),
+            provider_rate_limit_headers: rateLimitHeaders,
+          },
         };
       }
       return {
@@ -201,8 +391,14 @@ async function callClaude(
         retryable: false,
         errorCode: "CONFIGURATION_ERROR",
         reason: `Claude request failed ${response.status}: ${bodyText}`,
+        failureDebug: {
+          provider_response_text: trimDebugText(bodyText),
+          provider_rate_limit_headers: rateLimitHeaders,
+        },
       };
     }
+
+    updateProviderModelCooldownFromHeaders("claude", model, response.headers);
 
     const data = (await response.json()) as {
       content?: Array<{ type?: string; text?: string }>;
@@ -304,23 +500,61 @@ async function callGemini(
   }
 }
 
+async function callOpenAi(
+  prompt: string,
+  model: string,
+  apiKey: string,
+  timeoutMs: number,
+  options?: {
+    useResponsesWebSearch?: boolean;
+  }
+): Promise<{ ok: true; parsed: unknown; rawText: string; debugMeta?: Record<string, unknown> } | ElectionEnrichmentFailure> {
+  void options;
+  const responsesResult = await callOpenAiResponsesWithWebSearch(
+    prompt,
+    model,
+    apiKey,
+    timeoutMs
+  );
+  if (responsesResult.ok) {
+    return {
+      ok: true,
+      parsed: responsesResult.parsed,
+      rawText: responsesResult.rawText,
+      debugMeta: {
+        openai_api_mode: "responses_web_search",
+        ...(responsesResult.responsesDebug ?? {}),
+      },
+    };
+  }
+  return responsesResult;
+}
+
 async function callProvider(
   candidate: AiCandidate,
   prompt: string,
   config: EnrichElectionsConfig
-): Promise<{ ok: true; parsed: unknown; rawText: string } | ElectionEnrichmentFailure> {
+): Promise<{ ok: true; parsed: unknown; rawText: string; debugMeta?: Record<string, unknown> } | ElectionEnrichmentFailure> {
   if (candidate.provider === "openai") {
     if (!config.openAiApiKey) {
       return { ok: false, retryable: false, errorCode: "CONFIGURATION_ERROR", reason: "OPENAI_API_KEY is missing" };
     }
-    return callOpenAi(prompt, candidate.model, config.openAiApiKey, config.timeoutMs);
+    return callOpenAi(prompt, candidate.model, config.openAiApiKey, config.timeoutMs, {
+      useResponsesWebSearch: config.openAiUseResponsesWebSearch,
+    });
   }
-  if (candidate.provider === "claude") {
-    if (!config.anthropicApiKey) {
-      return { ok: false, retryable: false, errorCode: "CONFIGURATION_ERROR", reason: "ANTHROPIC_API_KEY is missing" };
+    if (candidate.provider === "claude") {
+      if (!config.anthropicApiKey) {
+        return { ok: false, retryable: false, errorCode: "CONFIGURATION_ERROR", reason: "ANTHROPIC_API_KEY is missing" };
+      }
+      return callClaude(
+        prompt,
+        candidate.model,
+        config.anthropicApiKey,
+        config.timeoutMs,
+        config.anthropicWebSearchMaxUses
+      );
     }
-    return callClaude(prompt, candidate.model, config.anthropicApiKey, config.timeoutMs);
-  }
   if (!config.geminiApiKey) {
     return { ok: false, retryable: false, errorCode: "CONFIGURATION_ERROR", reason: "GEMINI_API_KEY is missing" };
   }
@@ -331,6 +565,8 @@ export function buildEnrichElectionsConfigFromEnv(): EnrichElectionsConfig {
   const env = getPipelineEnv();
   return {
     timeoutMs: env.AI_TIMEOUT_MS,
+    anthropicWebSearchMaxUses: env.ANTHROPIC_WEB_SEARCH_MAX_USES,
+    openAiUseResponsesWebSearch: env.OPENAI_ELECTIONS_USE_RESPONSES_WEB_SEARCH,
     openAiApiKey: env.OPENAI_API_KEY,
     anthropicApiKey: env.ANTHROPIC_API_KEY,
     geminiApiKey: env.GEMINI_API_KEY,
@@ -354,6 +590,7 @@ export async function enrichElections(
     reason: string;
     errorCode: string;
     retryable: boolean;
+    failureDebug?: Record<string, unknown>;
   }> = [];
 
   for (const candidate of candidates) {
@@ -365,6 +602,7 @@ export async function enrichElections(
         reason: generated.reason,
         errorCode: generated.errorCode,
         retryable: generated.retryable,
+        failureDebug: generated.failureDebug,
       });
       if (!generated.retryable) {
         continue;
@@ -393,6 +631,7 @@ export async function enrichElections(
       promptVersion: input.promptVersion,
       aiRawDebug: {
         provider_response_text: trimDebugText(generated.rawText),
+        ...(generated.debugMeta ?? {}),
       },
     };
   }

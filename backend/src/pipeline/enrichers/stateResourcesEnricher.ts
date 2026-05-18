@@ -106,6 +106,7 @@ type EnrichmentAttemptFailure = {
   errorCode: string;
   reason: string;
   retryable: boolean;
+  failureDebug?: Record<string, unknown>;
 };
 type RetryFeedbackFailureShape = {
   reason: string;
@@ -535,7 +536,11 @@ function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCand
 function shouldTrySecondPromptForModel(result: { errorCode: string }): boolean {
   // For callable models, always run a second in-model retry (citation_repair) with retry feedback.
   // Only skip when the provider/model itself is fundamentally not callable.
-  return result.errorCode !== "CONFIGURATION_ERROR" && result.errorCode !== "UNSUPPORTED_PROVIDER";
+  return (
+    result.errorCode !== "CONFIGURATION_ERROR" &&
+    result.errorCode !== "UNSUPPORTED_PROVIDER" &&
+    result.errorCode !== "RATE_LIMIT"
+  );
 }
 
 function formatFallbackFailureReason(
@@ -706,6 +711,7 @@ async function enrichGroupWithCandidates(
         errorCode: result.errorCode,
         reason: result.reason,
         retryable: result.retryable,
+        failureDebug: result.failureDebug,
       });
 
       const hasAnotherPromptVariant = variantIndex < promptVariants.length - 1;
@@ -1481,6 +1487,7 @@ async function processMessage(
             error_code: attempt.errorCode,
             retryable: attempt.retryable,
             reason: attempt.reason,
+            failure_debug: attempt.failureDebug ?? null,
           })),
           ...(groupResult.failureDebug ?? {}),
         },

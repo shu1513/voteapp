@@ -20,8 +20,8 @@ export const STATE_RESOURCES_AI_CANDIDATES: readonly AiCandidate[] = [
  * Kept separate from state-resources to allow independent tuning.
  */
 export const ELECTIONS_AI_CANDIDATES: readonly AiCandidate[] = [
-  { provider: "openai", model: "gpt-5.4-mini" },
   { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "openai", model: "gpt-5.4-mini" },
   { provider: "gemini", model: "gemini-2.5-pro" },
 ] as const;
 

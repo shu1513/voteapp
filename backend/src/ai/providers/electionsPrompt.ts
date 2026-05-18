@@ -49,6 +49,9 @@ export function buildElectionsPrompt(args: {
 }`,
     "",
     "Rules:",
+    "- Actively search the public web for this task.",
+    "- Use web access to verify upcoming contests for this exact district scope.",
+    "- If one source is insufficient, continue to additional sources until you can confirm or rule out contests.",
     "- entries may be an empty array when no upcoming contest is found.",
     "- race_type must be one of: office, ballot_measure.",
     "- Focus on upcoming elections only; do not include past elections.",
@@ -64,5 +67,8 @@ export function buildElectionsPrompt(args: {
       ? "- This is a review pass after validator soft-fail. Decide approve/reject in review_decision."
       : "- review_decision should be approve when your output is within district scope; otherwise reject.",
     retrySection,
+    "",
+    "Draft input:",
+    JSON.stringify(draft),
   ].join("\n");
 }
