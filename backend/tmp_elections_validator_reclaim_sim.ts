@@ -87,6 +87,12 @@ async function main(): Promise<void> {
   const runId = `validator_reclaim_sim_${new Date().toISOString()}`;
   const ingestKey = `${runId}:row`;
   const crashConsumer = `sim_crash_${Date.now()}`;
+  let inserted = false;
+  let streamId: string | null = null;
+  let deliveredId: string | null = null;
+  let cleanupDbDeleted = 0;
+  let cleanupStreamDeleted = 0;
+  let summary: Record<string, unknown> | null = null;
 
   try {
     await redis.connect();
@@ -138,15 +144,15 @@ async function main(): Promise<void> {
         ELECTION_PROMPT_VERSION,
       ]
     );
+    inserted = true;
 
-    const streamId = await redis.xAdd(STAGING_PENDING_STREAM, "*", {
+    streamId = await redis.xAdd(STAGING_PENDING_STREAM, "*", {
       ingest_key: ingestKey,
       item_type: STAGING_ITEM_TYPE_ELECTION,
       run_id: runId,
       payload: JSON.stringify(payload),
     });
 
-    let deliveredId: string | null = null;
     for (let i = 0; i < 10; i += 1) {
       const batches = await redis.xReadGroup(
         STAGING_ELECTIONS_VALIDATOR_GROUP,
@@ -200,49 +206,68 @@ async function main(): Promise<void> {
     const pendingAfter = await listPendingForConsumer(redis, crashConsumer);
     const afterHasTarget = pendingAfter.some((entry) => entry.id === deliveredId);
 
-    const cleanupDb = await pool.query(
-      `
-        DELETE FROM staging_items
-        WHERE ingest_key = $1
-          AND item_type = $2
-      `,
-      [ingestKey, STAGING_ITEM_TYPE_ELECTION]
-    );
-    const cleanupStream = await redis.xDel(STAGING_PENDING_STREAM, deliveredId);
+    summary = {
+      ok: true,
+      runId,
+      ingestKey,
+      streamId,
+      deliveredId,
+      before: {
+        crashConsumer,
+        pendingCount: pendingBefore.length,
+        targetInPending: beforeHasTarget,
+      },
+      after: {
+        pendingCount: pendingAfter.length,
+        targetInPending: afterHasTarget,
+        stagingStatus: statusRow.rows[0]?.status ?? null,
+        stagingReason: statusRow.rows[0]?.reason ?? null,
+      },
+    };
+  } finally {
+    if (inserted) {
+      try {
+        const cleanupDb = await pool.query(
+          `
+            DELETE FROM staging_items
+            WHERE ingest_key = $1
+              AND item_type = $2
+          `,
+          [ingestKey, STAGING_ITEM_TYPE_ELECTION]
+        );
+        cleanupDbDeleted = cleanupDb.rowCount ?? 0;
+      } catch (error) {
+        console.error(`reclaim sim cleanup warning (db delete): ${toReason(error)}`);
+      }
+    }
+    const cleanupStreamId = deliveredId ?? streamId;
+    if (redis.isOpen && cleanupStreamId) {
+      try {
+        cleanupStreamDeleted = await redis.xDel(STAGING_PENDING_STREAM, cleanupStreamId);
+      } catch (error) {
+        console.error(`reclaim sim cleanup warning (stream delete): ${toReason(error)}`);
+      }
+    }
+    if (redis.isOpen) {
+      await redis.quit();
+    }
+    await pool.end();
+  }
 
+  if (summary) {
     console.log(
       JSON.stringify(
         {
-          ok: true,
-          runId,
-          ingestKey,
-          streamId,
-          deliveredId,
-          before: {
-            crashConsumer,
-            pendingCount: pendingBefore.length,
-            targetInPending: beforeHasTarget,
-          },
-          after: {
-            pendingCount: pendingAfter.length,
-            targetInPending: afterHasTarget,
-            stagingStatus: statusRow.rows[0]?.status ?? null,
-            stagingReason: statusRow.rows[0]?.reason ?? null,
-          },
+          ...summary,
           cleanup: {
-            stagingRowsDeleted: cleanupDb.rowCount ?? 0,
-            streamEntriesDeleted: cleanupStream,
+            stagingRowsDeleted: cleanupDbDeleted,
+            streamEntriesDeleted: cleanupStreamDeleted,
           },
         },
         null,
         2
       )
     );
-  } finally {
-    if (redis.isOpen) {
-      await redis.quit();
-    }
-    await pool.end();
   }
 }
 
