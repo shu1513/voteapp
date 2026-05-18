@@ -42,6 +42,17 @@ async function main(): Promise<void> {
     );
 
     const report: unknown[] = [];
+    const foundIds = new Set(rows.rows.map((r) => r.id));
+    for (const id of TARGET_IDS) {
+      if (!foundIds.has(id)) {
+        report.push({
+          district: { id },
+          ok: false,
+          reason: "district row not found",
+        });
+      }
+    }
+
     for (const row of rows.rows) {
       const draft: ElectionDraftPayload = {
         district_id: row.id,
@@ -90,6 +101,8 @@ async function main(): Promise<void> {
       JSON.stringify(
         {
           type: "vt_address_elections_probe",
+          expectedTargetCount: TARGET_IDS.length,
+          foundTargetCount: rows.rows.length,
           total: report.length,
           report,
         },

@@ -120,6 +120,28 @@ async function main(): Promise<void> {
       });
     }
 
+    const foreignWorkload = await pool.query<{
+      status: string;
+      count: string;
+    }>(
+      `
+      SELECT status, COUNT(*)::text AS count
+      FROM staging_items
+      WHERE item_type = 'election'
+        AND status IN ('pending', 'validated')
+        AND run_id IS DISTINCT FROM $1
+      GROUP BY status
+      `,
+      [runId]
+    );
+    if ((foreignWorkload.rowCount ?? 0) > 0) {
+      throw new Error(
+        `Refusing shared-stream run: found foreign election workload in pending/validated states (${foreignWorkload.rows
+          .map((r) => `${r.status}=${r.count}`)
+          .join(", ")})`
+      );
+    }
+
     await runElectionsValidator({ once: true, batchSize: 20, blockMs: 1000 });
     await runElectionsWriter({ once: true, batchSize: 20, blockMs: 1000 });
 
@@ -138,6 +160,11 @@ async function main(): Promise<void> {
       [runId]
     );
 
+    const writtenDistrictIds = stagingRows.rows
+      .filter((row) => row.status === "written")
+      .map((row) => row.ingest_key.split(":row:")[1])
+      .filter((id): id is string => typeof id === "string" && id.length > 0);
+
     const written = await pool.query<{
       district_id: string;
       official_ballot_title: string;
@@ -151,7 +178,7 @@ async function main(): Promise<void> {
       WHERE district_id = ANY($1::uuid[])
       ORDER BY district_id, election_date, official_ballot_title
       `,
-      [districts.rows.map((r) => r.id)]
+      [writtenDistrictIds]
     );
 
     console.log(

@@ -13,11 +13,11 @@ async function main(): Promise<void> {
   const config = buildEnrichElectionsConfigFromEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
-  await redis.connect();
-
-  const runId = `live_then_validate_${new Date().toISOString()}`;
 
   try {
+    await redis.connect();
+    const runId = `live_then_validate_${new Date().toISOString()}`;
+
     const district = await pool.query<{ id: string; name: string; district_type: string; state: string }>(
       `SELECT id, name, district_type, state
        FROM public.districts
@@ -119,7 +119,9 @@ async function main(): Promise<void> {
       )
     );
   } finally {
-    await redis.quit();
+    if (redis.isOpen) {
+      await redis.quit();
+    }
     await pool.end();
   }
 }

@@ -398,10 +398,18 @@ export async function enrichElections(
   }
 
   const finalFailure = failures[failures.length - 1];
+  const anyRetryable = failures.some((failure) => failure.retryable);
+  const firstPermanentFailure = failures.find((failure) => !failure.retryable && failure.errorCode);
+  const firstRetryableFailure = failures.find((failure) => failure.retryable && failure.errorCode);
+  const selectedErrorCode =
+    firstPermanentFailure?.errorCode ??
+    firstRetryableFailure?.errorCode ??
+    "TEMP_PROVIDER_ERROR";
+
   return {
     ok: false,
-    retryable: finalFailure?.retryable ?? false,
-    errorCode: (finalFailure?.errorCode as RetryableErrorCode | PermanentErrorCode | undefined) ?? "TEMP_PROVIDER_ERROR",
+    retryable: anyRetryable,
+    errorCode: selectedErrorCode as RetryableErrorCode | PermanentErrorCode,
     reason: finalFailure?.reason ?? "No AI candidates available for election enrichment",
     failureDebug: {
       attempts: failures,

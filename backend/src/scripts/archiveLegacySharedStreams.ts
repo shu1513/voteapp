@@ -10,7 +10,7 @@ type LegacyStreamPlan = {
   firstEntryId: string | null;
   lastEntryId: string | null;
   archiveKey: string | null;
-  action: "skip_missing" | "skip_non_stream" | "would_archive" | "archived";
+  action: "skip_missing" | "skip_non_stream" | "skip_error" | "would_archive" | "archived";
   error?: string;
 };
 
@@ -96,9 +96,10 @@ async function archiveLegacyStreams(apply: boolean): Promise<void> {
 
   const redis = createClient({ url: redisUrl });
   const batchId = compactUtcTimestamp();
-  await redis.connect();
 
   try {
+    await redis.connect();
+
     const plans: LegacyStreamPlan[] = [];
 
     for (const legacyKey of LEGACY_SHARED_STREAM_KEYS) {
@@ -116,7 +117,7 @@ async function archiveLegacyStreams(apply: boolean): Promise<void> {
           firstEntryId: null,
           lastEntryId: null,
           archiveKey: null,
-          action: "skip_non_stream",
+          action: "skip_error",
           error: message,
         });
       }
@@ -128,7 +129,6 @@ async function archiveLegacyStreams(apply: boolean): Promise<void> {
           {
             mode: "dry_run",
             batchId,
-            redisUrl,
             plans,
             note: "Run with --apply to archive (rename) legacy shared stream keys.",
           },
@@ -169,7 +169,6 @@ async function archiveLegacyStreams(apply: boolean): Promise<void> {
         {
           mode: "apply",
           batchId,
-          redisUrl,
           results,
         },
         null,
@@ -177,7 +176,9 @@ async function archiveLegacyStreams(apply: boolean): Promise<void> {
       )
     );
   } finally {
-    await redis.quit();
+    if (redis.isOpen) {
+      await redis.quit();
+    }
   }
 }
 

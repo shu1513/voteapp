@@ -35,6 +35,10 @@ type StagingRow = {
   failure_debug: unknown;
 };
 
+// Provider calls can take tens of seconds; keep reclaim idle window above normal processing time.
+const RECLAIM_MIN_IDLE_MS = 240_000;
+const RECLAIM_MAX_BATCHES = 20;
+
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
@@ -108,6 +112,50 @@ async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow 
   return result.rows[0] ?? null;
 }
 
+async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string | null> {
+  const result = await pool.query<{ status: string }>(
+    `
+      SELECT status
+      FROM staging_items
+      WHERE ingest_key = $1
+        AND item_type = $2
+    `,
+    [ingestKey, STAGING_ITEM_TYPE_ELECTION]
+  );
+  return result.rows[0]?.status ?? null;
+}
+
+async function reclaimPendingEntries(
+  redis: ReturnType<typeof createClient>,
+  consumerName: string,
+  batchSize: number
+): Promise<Array<{ id: string; message: Record<string, string> }>> {
+  const reclaimed: Array<{ id: string; message: Record<string, string> }> = [];
+  let cursor = "0-0";
+
+  for (let i = 0; i < RECLAIM_MAX_BATCHES; i += 1) {
+    const claim = await redis.xAutoClaim(
+      STAGING_DRAFT_STREAM,
+      STAGING_ELECTIONS_ENRICHER_GROUP,
+      consumerName,
+      RECLAIM_MIN_IDLE_MS,
+      cursor,
+      { COUNT: batchSize }
+    );
+    cursor = claim.nextId;
+    if (!claim.messages || claim.messages.length === 0) {
+      break;
+    }
+    reclaimed.push(
+      ...claim.messages
+        .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
+        .map((entry) => ({ id: entry.id, message: entry.message as Record<string, string> }))
+    );
+  }
+
+  return reclaimed;
+}
+
 export async function runElectionsEnricher(options: EnricherOptions = {}): Promise<void> {
   const { once = false, batchSize = 25, blockMs = 5000 } = options;
   const env = getPipelineEnv();
@@ -116,38 +164,24 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
   const redis = createClient({ url: env.REDIS_URL });
   const consumerName = `elections_enricher_${process.pid}_${Date.now()}`;
 
-  await redis.connect();
-  await ensureConsumerGroup(redis);
-
   try {
-    do {
-      const batches = await redis.xReadGroup(
-        STAGING_ELECTIONS_ENRICHER_GROUP,
-        consumerName,
-        [{ key: STAGING_DRAFT_STREAM, id: ">" }],
-        { COUNT: batchSize, BLOCK: blockMs }
-      );
+    await redis.connect();
+    await ensureConsumerGroup(redis);
 
-      if (!batches || batches.length === 0) {
-        if (once) {
-          break;
-        }
-        continue;
-      }
+    const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
+      for (const entry of entries) {
+        const ingestKey = entry.message.ingest_key;
+        const itemType = entry.message.item_type;
 
-      for (const batch of batches) {
-        for (const message of batch.messages) {
-          const ingestKey = message.message.ingest_key;
-          const itemType = message.message.item_type;
-
+        try {
           if (!ingestKey || itemType !== STAGING_ITEM_TYPE_ELECTION) {
-            await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, message.id);
+            await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, entry.id);
             continue;
           }
 
           const row = await getStagingRow(pool, ingestKey);
           if (!row || row.status !== "pending" || row.schema_version !== ELECTION_DRAFT_SCHEMA_VERSION) {
-            await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, message.id);
+            await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, entry.id);
             continue;
           }
 
@@ -164,7 +198,7 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
               `,
               [ingestKey, "invalid election draft payload shape", STAGING_ITEM_TYPE_ELECTION]
             );
-            await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, message.id);
+            await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, entry.id);
             continue;
           }
 
@@ -199,7 +233,7 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
                 STAGING_ITEM_TYPE_ELECTION,
               ]
             );
-            await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, message.id);
+            await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, entry.id);
             continue;
           }
 
@@ -235,8 +269,63 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
             run_id: row.run_id ?? "",
             payload: JSON.stringify(result.payload),
           });
-          await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, message.id);
+          await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, entry.id);
+        } catch (error) {
+          const reason = toReason(error);
+          if (!ingestKey) {
+            try {
+              await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, entry.id);
+            } catch {
+              // keep unacked when ack fails; reclaim pass will retry later
+            }
+            console.error(`elections enricher message error (missing ingest key): ${reason}`);
+            continue;
+          }
+
+          const status = await getStagingStatus(pool, ingestKey);
+          if (status === "pending") {
+            // leave unacked so reclaim pass can retry
+            console.warn(`elections enricher retrying ingest_key=${ingestKey}: ${reason}`);
+            continue;
+          }
+
+          try {
+            await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, entry.id);
+          } catch {
+            // keep unacked when ack fails; reclaim pass will retry later
+          }
+          console.error(`elections enricher message error ingest_key=${ingestKey}: ${reason}`);
         }
+      }
+    };
+
+    do {
+      const reclaimed = await reclaimPendingEntries(redis, consumerName, batchSize);
+      if (reclaimed.length > 0) {
+        await handleEntries(reclaimed);
+      }
+
+      const batches = await redis.xReadGroup(
+        STAGING_ELECTIONS_ENRICHER_GROUP,
+        consumerName,
+        [{ key: STAGING_DRAFT_STREAM, id: ">" }],
+        { COUNT: batchSize, BLOCK: blockMs }
+      );
+
+      if (!batches || batches.length === 0) {
+        if (once) {
+          break;
+        }
+        continue;
+      }
+
+      for (const batch of batches) {
+        await handleEntries(
+          batch.messages.map((message) => ({
+            id: message.id,
+            message: message.message as Record<string, string>,
+          }))
+        );
       }
 
       if (once) {
@@ -244,7 +333,15 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
       }
     } while (true);
   } finally {
-    await redis.quit();
-    await pool.end();
+    try {
+      await redis.quit();
+    } catch (error) {
+      console.error("elections enricher cleanup warning (redis.quit):", toReason(error));
+    }
+    try {
+      await pool.end();
+    } catch (error) {
+      console.error("elections enricher cleanup warning (pool.end):", toReason(error));
+    }
   }
 }

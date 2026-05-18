@@ -41,6 +41,9 @@ async function main(): Promise<void> {
   });
 
   const text = await response.text();
+  if (!response.ok) {
+    throw new Error(`OpenAI chat/completions failed (${response.status}): ${text}`);
+  }
   console.log(JSON.stringify({ status: response.status, body: text }, null, 2));
 }
 

@@ -68,4 +68,44 @@ describe("parseCanonicalElectionPayload", () => {
 
     expect(result.ok).toBe(false);
   });
+
+  it("rejects impossible calendar dates", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-02-30",
+          description: "General election for governor.",
+          race_type: "office",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
+  });
+
+  it("accepts valid leap-day dates", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2028-02-29",
+          description: "General election for governor.",
+          race_type: "office",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+  });
 });

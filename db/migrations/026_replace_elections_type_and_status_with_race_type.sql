@@ -11,7 +11,7 @@ ALTER TABLE elections
 
 UPDATE elections
 SET race_type = CASE
-  WHEN official_ballot_title ~* '(proposition|measure|amendment|referendum|initiative|bond|question)'
+  WHEN official_ballot_title ~* '\m(proposition|measure|amendment|referendum|initiative|bond|question)\M'
     THEN 'ballot_measure'
   ELSE 'office'
 END

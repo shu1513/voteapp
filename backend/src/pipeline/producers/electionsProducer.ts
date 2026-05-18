@@ -58,13 +58,14 @@ export async function runElectionsProducer(options: ProducerOptions = {}): Promi
 
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
-  await redis.connect();
 
   let enqueued = 0;
   let skipped = 0;
   let failed = 0;
 
   try {
+    await redis.connect();
+
     const districtsResult = await pool.query<DistrictRow>(
       `
         SELECT id, name, district_type, state
@@ -141,32 +142,41 @@ export async function runElectionsProducer(options: ProducerOptions = {}): Promi
       } catch (error) {
         failed += 1;
         const reason = toReason(error);
-        await pool.query(
-          `
-            INSERT INTO staging_items
-              (ingest_key, item_type, payload, status, reason, run_id, model, schema_version, prompt_version)
-            VALUES
-              ($1, $2, $3::jsonb, 'failed', $4, $5, $6, $7, $8)
-            ON CONFLICT (ingest_key) DO UPDATE SET
-              status = 'failed',
-              reason = EXCLUDED.reason,
-              run_id = EXCLUDED.run_id,
-              model = EXCLUDED.model,
-              schema_version = EXCLUDED.schema_version,
-              prompt_version = EXCLUDED.prompt_version,
-              updated_at = now()
-          `,
-          [
-            ingestKey,
-            STAGING_ITEM_TYPE_ELECTION,
-            serializedPayload,
-            reason,
+        try {
+          await pool.query(
+            `
+              INSERT INTO staging_items
+                (ingest_key, item_type, payload, status, reason, run_id, model, schema_version, prompt_version)
+              VALUES
+                ($1, $2, $3::jsonb, 'failed', $4, $5, $6, $7, $8)
+              ON CONFLICT (ingest_key) DO UPDATE SET
+                status = 'failed',
+                reason = EXCLUDED.reason,
+                run_id = EXCLUDED.run_id,
+                model = EXCLUDED.model,
+                schema_version = EXCLUDED.schema_version,
+                prompt_version = EXCLUDED.prompt_version,
+                updated_at = now()
+            `,
+            [
+              ingestKey,
+              STAGING_ITEM_TYPE_ELECTION,
+              serializedPayload,
+              reason,
+              runId,
+              `${env.AI_PROVIDER}:${env.AI_MODEL}`,
+              ELECTION_DRAFT_SCHEMA_VERSION,
+              ELECTION_PROMPT_VERSION,
+            ]
+          );
+        } catch (persistError) {
+          console.error("elections producer failed to persist failed staging item:", {
             runId,
-            `${env.AI_PROVIDER}:${env.AI_MODEL}`,
-            ELECTION_DRAFT_SCHEMA_VERSION,
-            ELECTION_PROMPT_VERSION,
-          ]
-        );
+            ingestKey,
+            originalReason: reason,
+            persistReason: toReason(persistError),
+          });
+        }
       }
     }
 
@@ -180,7 +190,14 @@ export async function runElectionsProducer(options: ProducerOptions = {}): Promi
       force,
     };
   } finally {
-    await redis.quit();
-    await pool.end();
+    const settled = await Promise.allSettled([
+      redis.isOpen ? redis.quit() : Promise.resolve(),
+      pool.end(),
+    ]);
+    for (const result of settled) {
+      if (result.status === "rejected") {
+        console.error("elections producer cleanup warning:", toReason(result.reason));
+      }
+    }
   }
 }

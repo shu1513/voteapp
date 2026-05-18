@@ -41,7 +41,7 @@ async function main(): Promise<void> {
         const started = Date.now();
         const res = await enrichElections(
           {
-            ingestKey: `matrix:${draft.district_type}:${draft.state}`,
+            ingestKey: `matrix:${draft.district_type}:${draft.state}:${draft.district_id}:${c.provider}:${c.model}`,
             draft,
             promptVersion: ELECTION_PROMPT_VERSION,
             softRetryCount: 0,
