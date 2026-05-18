@@ -6,13 +6,23 @@ export type AiCandidate = {
 };
 
 /**
- * Curated default AI candidates that have passed live smoke checks in this project.
+ * Curated state-resources AI candidates that have passed live smoke checks in this project.
  * Keep this list intentionally short and explicit.
  */
-export const AI_CANDIDATES: readonly AiCandidate[] = [
+export const STATE_RESOURCES_AI_CANDIDATES: readonly AiCandidate[] = [
   { provider: "openai", model: "gpt-5.4-mini" },
   { provider: "claude", model: "claude-sonnet-4-6" },
   { provider: "gemini", model: "gemini-2.5-pro" },
 ] as const;
 
-export const DEFAULT_AI_CANDIDATE: AiCandidate = AI_CANDIDATES[0];
+/**
+ * Curated elections AI candidates.
+ * Kept separate from state-resources to allow independent tuning.
+ */
+export const ELECTIONS_AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "openai", model: "gpt-5.4-mini" },
+  { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
+export const DEFAULT_AI_CANDIDATE: AiCandidate = STATE_RESOURCES_AI_CANDIDATES[0];

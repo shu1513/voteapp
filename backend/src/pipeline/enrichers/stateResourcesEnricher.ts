@@ -6,7 +6,7 @@ import {
   enrichStateResourcesGroup,
   type EnrichStateResourceGroupResult,
 } from "../../ai/enrichStateResources.js";
-import { AI_CANDIDATES } from "../../ai/aiCandidates.js";
+import { STATE_RESOURCES_AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { normalizeRetryFeedback } from "../../ai/retryFeedback.js";
 import type {
   AiProvider,
@@ -525,7 +525,7 @@ function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCand
     chain.push(candidate);
   };
 
-  for (const candidate of AI_CANDIDATES) {
+  for (const candidate of STATE_RESOURCES_AI_CANDIDATES) {
     addCandidate(candidate);
   }
 

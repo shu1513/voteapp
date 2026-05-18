@@ -244,20 +244,17 @@ CREATE TABLE elections (
     district_id uuid NOT NULL,
     official_ballot_title text NOT NULL,
     description text,
-    election_type text NOT NULL,
+    race_type text NOT NULL,
     election_date date NOT NULL,
     sources jsonb NOT NULL,
-    results_status text,
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT fk_elections_district
         FOREIGN KEY (district_id)
         REFERENCES districts(id)
         ON DELETE RESTRICT,
-    CONSTRAINT chk_election_type
-        CHECK (election_type IN ('general', 'primary', 'special', 'runoff')),
-    CONSTRAINT chk_results_status
-        CHECK (results_status IS NULL OR results_status IN ('preliminary', 'updated', 'final')),
+    CONSTRAINT chk_elections_race_type
+        CHECK (race_type IN ('office', 'ballot_measure')),
     CONSTRAINT chk_elections_sources_json
         CHECK (jsonb_typeof(sources) = 'array' AND jsonb_array_length(sources) > 0)
 );

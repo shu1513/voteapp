@@ -2,7 +2,7 @@ import { performance } from "node:perf_hooks";
 import { Pool } from "pg";
 
 import { loadProjectEnv, getPipelineEnv } from "./src/config/env.ts";
-import { AI_CANDIDATES } from "./src/ai/aiCandidates.ts";
+import { STATE_RESOURCES_AI_CANDIDATES } from "./src/ai/aiCandidates.ts";
 import type { EnrichStateResourcesConfig, EnrichStateResourcesInput, RetryFeedback } from "./src/ai/types.ts";
 import { enrichStateResourcesGroup } from "./src/ai/enrichStateResources.ts";
 import { STATE_RESOURCE_FIELD_GROUP_ORDER, type StateResourceFieldGroup } from "./src/ai/stateResourceFieldGroups.ts";
@@ -254,7 +254,7 @@ async function main(): Promise<void> {
         let groupSucceeded = false;
         let retryFeedback: RetryFeedback | null = null;
 
-        for (const candidate of AI_CANDIDATES) {
+        for (const candidate of STATE_RESOURCES_AI_CANDIDATES) {
           for (const promptVariant of ["default", "citation_repair"] as const) {
             const modelKey = `${candidate.provider}:${candidate.model}`;
             modelAttempts.set(modelKey, (modelAttempts.get(modelKey) ?? 0) + 1);

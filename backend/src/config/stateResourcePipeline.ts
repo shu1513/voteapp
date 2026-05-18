@@ -38,11 +38,11 @@ export const STATE_ABBREVIATION_REFERENCE_URL =
 
 export const ALLOW_OPEN_WEB_RESEARCH = true;
 
-export const STAGING_DRAFT_STREAM = "staging:draft";
-export const STAGING_PENDING_STREAM = "staging:pending";
-export const STAGING_VALIDATED_STREAM = "staging:validated";
-export const STAGING_REJECTED_STREAM = "staging:rejected";
-export const STAGING_WRITTEN_STREAM = "staging:written";
+export const STAGING_DRAFT_STREAM = "staging:state_resources:draft";
+export const STAGING_PENDING_STREAM = "staging:state_resources:pending";
+export const STAGING_VALIDATED_STREAM = "staging:state_resources:validated";
+export const STAGING_REJECTED_STREAM = "staging:state_resources:rejected";
+export const STAGING_WRITTEN_STREAM = "staging:state_resources:written";
 
 export const STAGING_STATE_RESOURCES_VALIDATOR_GROUP = "state_resources_validator";
 export const STAGING_STATE_RESOURCES_WRITER_GROUP = "state_resources_writer";
