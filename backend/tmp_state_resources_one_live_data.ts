@@ -16,7 +16,6 @@ async function main(): Promise<void> {
         census_source_url: "https://api.census.gov/data/2024/acs/acs5?get=NAME,B01001_001E&for=state:*",
         state_abbreviation_reference_url: "https://pe.usps.com/text/pub28/28apb.htm",
         seed_sources: ["https://vote.gov/register/california"],
-        allow_open_web_research: true,
       },
       evidence: [
         {

@@ -72,7 +72,6 @@ type StateRow = { state_fips: string; state_abbreviation: string; state_name: st
         census_source_url: 'https://api.census.gov/data/2024/acs/acs5?get=NAME,B01001_001E&for=state:*',
         state_abbreviation_reference_url: STATE_ABBREVIATION_REFERENCE_URL,
         seed_sources: [...STATE_RESOURCE_SEED_SOURCES],
-        allow_open_web_research: true,
       };
 
       await pool.query(

@@ -14,7 +14,7 @@ const expectedStateResourcesCandidates = [
 
 const expectedElectionsCandidates = [
   { provider: "claude", model: "claude-sonnet-4-6" },
-  { provider: "openai", model: "gpt-5.4-mini" },
+  { provider: "openai", model: "gpt-5.5" },
   { provider: "gemini", model: "gemini-2.5-pro" },
 ] as const;
 

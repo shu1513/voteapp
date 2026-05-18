@@ -234,7 +234,6 @@ async function main(): Promise<void> {
           census_source_url: null,
           state_abbreviation_reference_url: null,
           seed_sources: seedSources,
-          allow_open_web_research: false,
         };
 
         let evidence = await collectStateResourceEvidence(groupDraft);

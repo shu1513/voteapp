@@ -11,7 +11,6 @@ function draft(overrides: Partial<StateResourceDraftPayload> = {}): StateResourc
     census_source_url: "https://api.census.gov/data/2024/acs/acs5?get=NAME,B01001_001E&for=state:*",
     state_abbreviation_reference_url: "https://pe.usps.com/text/pub28/28apb.htm",
     seed_sources: ["https://seed.example.org/polling/"],
-    allow_open_web_research: true,
     ...overrides,
   };
 }
@@ -41,7 +40,6 @@ describe("collectStateResourceEvidence", () => {
     const evidence = await collectStateResourceEvidence(
       draft({
         seed_sources: seedSources,
-        allow_open_web_research: false,
       }),
       { fetchImpl }
     );
@@ -50,7 +48,7 @@ describe("collectStateResourceEvidence", () => {
     expect(evidence.length).toBe(seedSources.length);
   });
 
-  it("does not crawl discovered links when allow_open_web_research is false", async () => {
+  it("does not crawl discovered links from a seed page with relative links", async () => {
     const hits: string[] = [];
     const fetchImpl: typeof fetch = async (input: RequestInfo | URL) => {
       const url = typeof input === "string" ? input : input.toString();
@@ -66,7 +64,7 @@ describe("collectStateResourceEvidence", () => {
       return new Response("not found", { status: 404, headers: { "content-type": "text/plain" } });
     };
 
-    const evidence = await collectStateResourceEvidence(draft({ allow_open_web_research: false }), { fetchImpl });
+    const evidence = await collectStateResourceEvidence(draft(), { fetchImpl });
 
     expect(evidence.length).toBeGreaterThan(0);
     expect(hits.some((url) => url.includes("/register"))).toBe(false);

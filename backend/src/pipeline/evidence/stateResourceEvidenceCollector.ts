@@ -383,17 +383,10 @@ async function fetchPageEvidence(
   fetchImpl: typeof fetch,
   fetchTimeoutMs: number,
   snippetMaxChars: number,
-  allowOpenWebResearch: boolean,
-  allowedSeedHosts: Set<string>,
   safetyOptions: UrlSafetyOptions,
   focusTerms: readonly string[]
 ): Promise<FetchPageResult | null> {
   if (!(await isSafeFetchUrl(url, safetyOptions))) {
-    return null;
-  }
-
-  const urlHost = new URL(url).hostname.toLowerCase().replace(/^\[|\]$/g, "");
-  if (!allowOpenWebResearch && !allowedSeedHosts.has(urlHost)) {
     return null;
   }
 
@@ -421,11 +414,6 @@ async function fetchPageEvidence(
     }
 
     if (!(await isSafeFetchUrl(responseSourceUrl, safetyOptions))) {
-      return null;
-    }
-
-    const finalHost = new URL(responseSourceUrl).hostname.toLowerCase().replace(/^\[|\]$/g, "");
-    if (!allowOpenWebResearch && !allowedSeedHosts.has(finalHost)) {
       return null;
     }
 
@@ -503,16 +491,6 @@ export async function collectStateResourceEvidence(
     }
   }
 
-  const allowedSeedHosts = new Set(
-    seedUrls.map((url) => {
-      try {
-        return new URL(url).hostname.toLowerCase().replace(/^\[|\]$/g, "");
-      } catch {
-        return "";
-      }
-    }).filter((host) => host.length > 0)
-  );
-
   const evidence: EvidenceSnippet[] = [];
   const seenUrls = new Set<string>();
 
@@ -523,8 +501,6 @@ export async function collectStateResourceEvidence(
       fetchImpl,
       fetchTimeoutMs,
       snippetMaxChars,
-      draft.allow_open_web_research,
-      allowedSeedHosts,
       safetyOptions,
       focusTerms
     );

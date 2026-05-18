@@ -12,7 +12,6 @@ export type PipelineEnv = {
   AI_MODEL: string;
   AI_TIMEOUT_MS: number;
   ANTHROPIC_WEB_SEARCH_MAX_USES: number;
-  OPENAI_ELECTIONS_USE_RESPONSES_WEB_SEARCH: boolean;
   PROMPT_VERSION: string;
   CENSUS_API_KEYS: string[];
   OPENAI_API_KEY?: string;
@@ -111,21 +110,6 @@ function readPositiveIntegerEnv(name: string, fallback: number): number {
   return parsed;
 }
 
-function readBooleanEnv(name: string, fallback: boolean): boolean {
-  const raw = process.env[name];
-  if (!raw || raw.trim().length === 0) {
-    return fallback;
-  }
-  const normalized = raw.trim().toLowerCase();
-  if (normalized === "1" || normalized === "true" || normalized === "yes" || normalized === "on") {
-    return true;
-  }
-  if (normalized === "0" || normalized === "false" || normalized === "no" || normalized === "off") {
-    return false;
-  }
-  throw new Error(`Invalid ${name}: ${raw}. Expected boolean true/false (or 1/0, yes/no, on/off).`);
-}
-
 /**
  * Returns normalized runtime configuration for the pipeline.
  */
@@ -138,7 +122,6 @@ export function getPipelineEnv(): PipelineEnv {
     AI_MODEL: readEnv("AI_MODEL", DEFAULT_AI_CANDIDATE.model),
     AI_TIMEOUT_MS: readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
     ANTHROPIC_WEB_SEARCH_MAX_USES: readPositiveIntegerEnv("ANTHROPIC_WEB_SEARCH_MAX_USES", 3),
-    OPENAI_ELECTIONS_USE_RESPONSES_WEB_SEARCH: readBooleanEnv("OPENAI_ELECTIONS_USE_RESPONSES_WEB_SEARCH", true),
     PROMPT_VERSION: readEnv("PROMPT_VERSION", "state_resources_v2"),
     CENSUS_API_KEYS: readCensusApiKeysFromEnv(process.env),
     OPENAI_API_KEY: readOptionalEnv("OPENAI_API_KEY"),

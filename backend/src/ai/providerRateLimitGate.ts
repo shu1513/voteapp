@@ -67,18 +67,20 @@ function bumpBlockedUntil(provider: string, model: string, msFromNow: number): v
 
 export async function waitForProviderModelCooldown(provider: string, model: string): Promise<void> {
   const key = keyFor(provider, model);
-  const blockedUntil = blockedUntilByProviderModel.get(key);
-  if (!blockedUntil) {
-    return;
-  }
+  while (true) {
+    const blockedUntil = blockedUntilByProviderModel.get(key);
+    if (!blockedUntil) {
+      return;
+    }
 
-  const waitMs = blockedUntil - Date.now();
-  if (waitMs <= 0) {
-    blockedUntilByProviderModel.delete(key);
-    return;
-  }
+    const waitMs = blockedUntil - Date.now();
+    if (waitMs <= 0) {
+      blockedUntilByProviderModel.delete(key);
+      continue;
+    }
 
-  await sleep(waitMs);
+    await sleep(waitMs);
+  }
 }
 
 /**

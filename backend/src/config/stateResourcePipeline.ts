@@ -36,8 +36,6 @@ export const STATE_RESOURCE_SEED_SOURCES = [
 export const STATE_ABBREVIATION_REFERENCE_URL =
   "https://pe.usps.com/text/pub28/28apb.htm";
 
-export const ALLOW_OPEN_WEB_RESEARCH = true;
-
 export const STAGING_DRAFT_STREAM = "staging:state_resources:draft";
 export const STAGING_PENDING_STREAM = "staging:state_resources:pending";
 export const STAGING_VALIDATED_STREAM = "staging:state_resources:validated";

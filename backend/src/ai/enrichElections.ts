@@ -50,7 +50,6 @@ export type EnrichElectionsInput = {
 export type EnrichElectionsConfig = {
   timeoutMs: number;
   anthropicWebSearchMaxUses?: number;
-  openAiUseResponsesWebSearch?: boolean;
   openAiApiKey?: string;
   anthropicApiKey?: string;
   geminiApiKey?: string;
@@ -199,11 +198,7 @@ async function callOpenAiResponsesWithWebSearch(
           content: [{ type: "input_text", text: prompt }],
         },
       ],
-      tools: [
-        {
-          type: "web_search",
-        },
-      ],
+      tools: [{ type: "web_search" }],
       tool_choice: "auto",
       include: ["web_search_call.action.sources"],
     };
@@ -504,12 +499,8 @@ async function callOpenAi(
   prompt: string,
   model: string,
   apiKey: string,
-  timeoutMs: number,
-  options?: {
-    useResponsesWebSearch?: boolean;
-  }
+  timeoutMs: number
 ): Promise<{ ok: true; parsed: unknown; rawText: string; debugMeta?: Record<string, unknown> } | ElectionEnrichmentFailure> {
-  void options;
   const responsesResult = await callOpenAiResponsesWithWebSearch(
     prompt,
     model,
@@ -539,9 +530,7 @@ async function callProvider(
     if (!config.openAiApiKey) {
       return { ok: false, retryable: false, errorCode: "CONFIGURATION_ERROR", reason: "OPENAI_API_KEY is missing" };
     }
-    return callOpenAi(prompt, candidate.model, config.openAiApiKey, config.timeoutMs, {
-      useResponsesWebSearch: config.openAiUseResponsesWebSearch,
-    });
+    return callOpenAi(prompt, candidate.model, config.openAiApiKey, config.timeoutMs);
   }
     if (candidate.provider === "claude") {
       if (!config.anthropicApiKey) {
@@ -566,7 +555,6 @@ export function buildEnrichElectionsConfigFromEnv(): EnrichElectionsConfig {
   return {
     timeoutMs: env.AI_TIMEOUT_MS,
     anthropicWebSearchMaxUses: env.ANTHROPIC_WEB_SEARCH_MAX_USES,
-    openAiUseResponsesWebSearch: env.OPENAI_ELECTIONS_USE_RESPONSES_WEB_SEARCH,
     openAiApiKey: env.OPENAI_API_KEY,
     anthropicApiKey: env.ANTHROPIC_API_KEY,
     geminiApiKey: env.GEMINI_API_KEY,
@@ -640,16 +628,17 @@ export async function enrichElections(
   const anyRetryable = failures.some((failure) => failure.retryable);
   const firstPermanentFailure = failures.find((failure) => !failure.retryable && failure.errorCode);
   const firstRetryableFailure = failures.find((failure) => failure.retryable && failure.errorCode);
-  const selectedErrorCode =
-    firstPermanentFailure?.errorCode ??
-    firstRetryableFailure?.errorCode ??
-    "TEMP_PROVIDER_ERROR";
+  const selectedFailure = anyRetryable
+    ? (firstRetryableFailure ?? finalFailure)
+    : (firstPermanentFailure ?? finalFailure);
 
   return {
     ok: false,
-    retryable: anyRetryable,
-    errorCode: selectedErrorCode as RetryableErrorCode | PermanentErrorCode,
-    reason: finalFailure?.reason ?? "No AI candidates available for election enrichment",
+    retryable: selectedFailure?.retryable ?? false,
+    errorCode:
+      (selectedFailure?.errorCode as RetryableErrorCode | PermanentErrorCode | undefined) ??
+      "TEMP_PROVIDER_ERROR",
+    reason: selectedFailure?.reason ?? "No AI candidates available for election enrichment",
     failureDebug: {
       attempts: failures,
       prompt_preview: trimDebugText(prompt, 6000),

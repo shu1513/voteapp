@@ -860,10 +860,6 @@ function parseDraftPayload(payload: unknown): DraftParseResult {
     return { ok: false, reason: "draft.seed_sources must be a non-empty string array" };
   }
 
-  if (typeof input.allow_open_web_research !== "boolean") {
-    return { ok: false, reason: "draft.allow_open_web_research must be boolean" };
-  }
-
   const normalized: StateResourceDraftPayload = {
     state_fips: (input.state_fips as string).trim(),
     state_abbreviation: (input.state_abbreviation as string).trim(),
@@ -875,7 +871,6 @@ function parseDraftPayload(payload: unknown): DraftParseResult {
     census_source_url: (input.census_source_url as string).trim(),
     state_abbreviation_reference_url: (input.state_abbreviation_reference_url as string).trim(),
     seed_sources: (seedSources as string[]).map((item) => item.trim()),
-    allow_open_web_research: input.allow_open_web_research,
   };
 
   if (!normalized.seed_sources.every((url) => isHttpUrl(url))) {
@@ -1392,7 +1387,7 @@ async function processMessage(
     let groupEvidence = await collectStateResourceEvidence(groupDraft, {
       focusTerms: buildGroupFocusTerms(group),
     });
-    if (group === "polling_place" && draft.draft.allow_open_web_research) {
+    if (group === "polling_place") {
       const voteOrgPollingUrl = await getVoteOrgPollingUrlForState(draft.draft.state_name);
       if (
         voteOrgPollingUrl &&
