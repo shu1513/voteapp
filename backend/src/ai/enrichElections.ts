@@ -48,6 +48,40 @@ type ProviderFailureAttempt = {
   failureDebug?: Record<string, unknown>;
 };
 
+function normalizeGeneratedPayloadForContestFamily(
+  contestFamily: ElectionContestFamily,
+  payload: unknown
+): unknown {
+  const forcedRaceType =
+    contestFamily === "ballot_measure"
+      ? "ballot_measure"
+      : contestFamily === "non_judicial_office" || contestFamily === "judicial_office"
+        ? "office"
+        : null;
+
+  if (!forcedRaceType) {
+    return payload;
+  }
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+    return payload;
+  }
+
+  const record = payload as Record<string, unknown>;
+  if (!Array.isArray(record.entries)) {
+    return payload;
+  }
+
+  const normalizedEntries = record.entries.map((entry) => {
+    if (typeof entry !== "object" || entry === null || Array.isArray(entry)) {
+      return entry;
+    }
+    const row = entry as Record<string, unknown>;
+    return { ...row, race_type: forcedRaceType };
+  });
+
+  return { ...record, entries: normalizedEntries };
+}
+
 type ElectionEnrichmentSuccess = {
   ok: true;
   payload: ElectionEnrichedPayload;
@@ -252,8 +286,27 @@ function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayl
 }
 
 function containsJudicialMarker(entry: ElectionEntryPayload): boolean {
-  const text = `${entry.official_ballot_title} ${entry.description}`.toLowerCase();
+  const text = entry.official_ballot_title.toLowerCase();
   return /\b(judge|justice|judicial|superior court|court of appeals|supreme court|retention)\b/.test(text);
+}
+
+function containsBallotMeasureMarker(entry: ElectionEntryPayload): boolean {
+  const text = entry.official_ballot_title.toLowerCase();
+  return /\b(proposition|measure|amendment|referendum|initiative|bond|question)\b/.test(text);
+}
+
+function containsOfficeMarker(entry: ElectionEntryPayload): boolean {
+  const text = entry.official_ballot_title.toLowerCase();
+  return /\b(member, board|board of|sheriff|assessor|clerk|treasurer|controller|attorney|superintendent|mayor|council|governor|secretary|judge|justice|commissioner|auditor)\b/.test(
+    text
+  );
+}
+
+function containsNonJudicialOfficeMarker(entry: ElectionEntryPayload): boolean {
+  const text = entry.official_ballot_title.toLowerCase();
+  return /\b(member, board|board of|sheriff|assessor|clerk|treasurer|controller|attorney|superintendent|mayor|council|governor|secretary|commissioner|auditor)\b/.test(
+    text
+  );
 }
 
 function validateContestFamilySoft(
@@ -265,7 +318,11 @@ function validateContestFamilySoft(
   }
 
   if (family === "ballot_measure") {
-    const hasOffice = entries.some((entry) => entry.race_type === "office");
+    const hasOffice = entries.some(
+      (entry) =>
+        entry.race_type === "office" ||
+        (containsOfficeMarker(entry) && !containsBallotMeasureMarker(entry))
+    );
     if (hasOffice) {
       return { ok: false, reason: "ballot_measure family returned office entries" };
     }
@@ -273,9 +330,17 @@ function validateContestFamilySoft(
   }
 
   if (family === "judicial_office") {
-    const hasBallotMeasure = entries.some((entry) => entry.race_type === "ballot_measure");
+    const hasBallotMeasure = entries.some(
+      (entry) => entry.race_type === "ballot_measure" || containsBallotMeasureMarker(entry)
+    );
     if (hasBallotMeasure) {
       return { ok: false, reason: "judicial_office family returned ballot_measure entries" };
+    }
+    const hasNonJudicialOffice = entries.some(
+      (entry) => containsNonJudicialOfficeMarker(entry) && !containsJudicialMarker(entry)
+    );
+    if (hasNonJudicialOffice) {
+      return { ok: false, reason: "judicial_office family returned non-judicial office entries" };
     }
     const hasJudicial = entries.some((entry) => containsJudicialMarker(entry));
     if (!hasJudicial) {
@@ -285,7 +350,9 @@ function validateContestFamilySoft(
   }
 
   // non_judicial_office: keep this light-touch and only reject obvious mismatches.
-  const hasBallotMeasure = entries.some((entry) => entry.race_type === "ballot_measure");
+  const hasBallotMeasure = entries.some(
+    (entry) => entry.race_type === "ballot_measure" || containsBallotMeasureMarker(entry)
+  );
   if (hasBallotMeasure) {
     return { ok: false, reason: "non_judicial_office family returned ballot_measure entries" };
   }
@@ -774,7 +841,11 @@ async function runPromptWithCandidates(
       continue;
     }
 
-    const parsed = parseAiElectionEntriesPayload(generated.parsed);
+    const normalizedGeneratedPayload = normalizeGeneratedPayloadForContestFamily(
+      contestFamily,
+      generated.parsed
+    );
+    const parsed = parseAiElectionEntriesPayload(normalizedGeneratedPayload);
     if (!parsed.ok) {
       failures.push({
         provider: candidate.provider,

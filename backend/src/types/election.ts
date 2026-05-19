@@ -1,6 +1,7 @@
 export type ElectionItemType = "election";
 
 export type ElectionRaceType = "office" | "ballot_measure";
+export type ElectionStage = "primary" | "general" | "runoff" | "special";
 
 export type ElectionDistrictType =
   | "statewide"
@@ -18,6 +19,7 @@ export type ElectionEntryPayload = {
   election_date: string; // YYYY-MM-DD
   description: string;
   race_type: ElectionRaceType;
+  election_stage?: ElectionStage;
   sources: string[];
 };
 

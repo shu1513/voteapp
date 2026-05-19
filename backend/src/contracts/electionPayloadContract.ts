@@ -6,6 +6,7 @@ import type {
 import {
   ELECTION_ALLOWED_DISTRICT_TYPES,
   ELECTION_RACE_TYPES,
+  ELECTION_STAGES,
 } from "./electionEnrichmentContract.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
@@ -50,6 +51,10 @@ function isDistrictType(value: unknown): value is ElectionDistrictType {
   return typeof value === "string" && ELECTION_ALLOWED_DISTRICT_TYPES.includes(value as ElectionDistrictType);
 }
 
+function isElectionStage(value: unknown): value is NonNullable<ElectionEntryPayload["election_stage"]> {
+  return typeof value === "string" && ELECTION_STAGES.includes(value as NonNullable<ElectionEntryPayload["election_stage"]>);
+}
+
 function normalizeSources(value: unknown): string[] | null {
   if (!Array.isArray(value) || value.length === 0) {
     return null;
@@ -74,7 +79,10 @@ function normalizeSources(value: unknown): string[] | null {
   return normalized.length > 0 ? normalized : null;
 }
 
-function parseEntry(value: unknown): ElectionEntryPayload | null {
+function parseEntry(
+  value: unknown,
+  options?: { allowDescriptionField: boolean }
+): ElectionEntryPayload | null {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     return null;
   }
@@ -86,9 +94,11 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
   if (!isNonEmptyString(input.election_date) || !isIsoDate(input.election_date.trim())) {
     return null;
   }
-  const impactText = isNonEmptyString(input.office_or_measure_impact)
-    ? input.office_or_measure_impact.trim()
-    : (isNonEmptyString(input.description) ? input.description.trim() : null);
+  const impactText = isNonEmptyString(input.impact)
+    ? input.impact.trim()
+    : options?.allowDescriptionField && isNonEmptyString(input.description)
+      ? input.description.trim()
+      : null;
   if (!impactText) {
     return null;
   }
@@ -100,12 +110,24 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
     return null;
   }
 
+  let electionStage: ElectionEntryPayload["election_stage"] | undefined;
+  if (input.election_stage !== undefined) {
+    if (input.race_type !== "office") {
+      return null;
+    }
+    if (!isElectionStage(input.election_stage)) {
+      return null;
+    }
+    electionStage = input.election_stage;
+  }
+
   return {
     official_ballot_title: input.official_ballot_title.trim(),
     election_date: input.election_date.trim(),
-    // Canonical payload keeps historical "description" field; AI prompt now uses office_or_measure_impact.
+    // Canonical payload keeps historical "description" field; AI prompt now uses "impact".
     description: impactText,
     race_type: input.race_type as "office" | "ballot_measure",
+    ...(electionStage ? { election_stage: electionStage } : {}),
     sources,
   };
 }
@@ -153,7 +175,7 @@ export function parseAiElectionEntriesPayload(payload: unknown): ParseAiEntriesR
 
   const entries: ElectionEntryPayload[] = [];
   for (const row of input.entries) {
-    const parsed = parseEntry(row);
+    const parsed = parseEntry(row, { allowDescriptionField: false });
     if (!parsed) {
       return { ok: false, reason: "payload.entries contains invalid row" };
     }
@@ -200,7 +222,7 @@ export function parseCanonicalElectionPayload(payload: unknown): ParseResult {
 
   const entries: ElectionEntryPayload[] = [];
   for (const row of input.entries) {
-    const parsed = parseEntry(row);
+    const parsed = parseEntry(row, { allowDescriptionField: true });
     if (!parsed) {
       return { ok: false, reason: "payload.entries contains invalid row" };
     }
