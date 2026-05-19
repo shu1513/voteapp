@@ -112,6 +112,9 @@ function parseEntry(
 
   let electionStage: ElectionEntryPayload["election_stage"] | undefined;
   if (input.election_stage !== undefined) {
+    if (input.race_type !== "office") {
+      return null;
+    }
     if (!isElectionStage(input.election_stage)) {
       return null;
     }
