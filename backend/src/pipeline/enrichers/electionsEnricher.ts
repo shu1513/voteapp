@@ -267,7 +267,7 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
               ELECTION_ENRICHMENT_SCHEMA_VERSION,
               `${result.provider}:${result.model}`,
               result.promptVersion,
-              JSON.stringify(nextFailureDebug),
+              nextFailureDebug ? JSON.stringify(nextFailureDebug) : null,
               JSON.stringify(result.aiRawDebug ?? {}),
               STAGING_ITEM_TYPE_ELECTION,
             ]

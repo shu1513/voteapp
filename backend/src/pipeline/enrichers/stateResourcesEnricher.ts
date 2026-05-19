@@ -61,6 +61,7 @@ type EnricherOptions = {
   once?: boolean;
   batchSize?: number;
   blockMs?: number;
+  reclaimMinIdleMs?: number;
 };
 
 type StagingRow = {
@@ -1001,7 +1002,8 @@ async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Prom
 async function reclaimPendingEntries(
   redis: ReturnType<typeof createClient>,
   consumerName: string,
-  batchSize: number
+  batchSize: number,
+  reclaimMinIdleMs: number
 ): Promise<Array<{ id: string; message: Record<string, string> }>> {
   const reclaimed: Array<{ id: string; message: Record<string, string> }> = [];
   let cursor = "0-0";
@@ -1011,7 +1013,7 @@ async function reclaimPendingEntries(
       STAGING_DRAFT_STREAM,
       STAGING_STATE_RESOURCES_ENRICHER_GROUP,
       consumerName,
-      RECLAIM_MIN_IDLE_MS,
+      reclaimMinIdleMs,
       cursor,
       { COUNT: batchSize }
     );
@@ -1652,7 +1654,7 @@ async function processMessage(
  * Runs the real AI enricher worker loop.
  */
 export async function runStateResourcesEnricher(options: EnricherOptions = {}): Promise<void> {
-  const { once = false, batchSize = 20, blockMs = 5000 } = options;
+  const { once = false, batchSize = 20, blockMs = 5000, reclaimMinIdleMs = RECLAIM_MIN_IDLE_MS } = options;
 
   const env = getPipelineEnv();
   const enrichmentConfig = buildEnrichmentConfigFromEnv(env);
@@ -1805,7 +1807,7 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
     let keepRunning = true;
 
     while (keepRunning) {
-      const reclaimed = await reclaimPendingEntries(redis, consumerName, batchSize);
+      const reclaimed = await reclaimPendingEntries(redis, consumerName, batchSize, reclaimMinIdleMs);
       if (reclaimed.length > 0) {
         await handleEntries(reclaimed);
       }

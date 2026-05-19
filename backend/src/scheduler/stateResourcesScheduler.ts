@@ -177,6 +177,7 @@ async function runOneDrainRound(config: SchedulerRuntimeConfig): Promise<void> {
     once: true,
     batchSize: config.batchSize,
     blockMs: config.blockMs,
+    reclaimMinIdleMs: DRAIN_RECLAIM_MIN_IDLE_MS,
   });
   await runStateResourcesValidator({
     once: true,
