@@ -49,7 +49,7 @@ type ParseResult =
   | { ok: true; payload: StateResourcePayload }
   | { ok: false; reason: string };
 
-const RECLAIM_MIN_IDLE_MS = 30_000;
+const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
 
 /**
@@ -529,7 +529,7 @@ export async function runStateResourcesWriter(options: WriterOptions = {}): Prom
   const observer = createStageObserver("writer", {
     provider: env.AI_PROVIDER,
     model: env.AI_MODEL,
-    prompt_version: env.PROMPT_VERSION,
+    prompt_version: env.STATE_RESOURCES_PROMPT_VERSION,
   });
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });

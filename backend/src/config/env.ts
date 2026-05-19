@@ -12,7 +12,7 @@ export type PipelineEnv = {
   AI_MODEL: string;
   AI_TIMEOUT_MS: number;
   ANTHROPIC_WEB_SEARCH_MAX_USES: number;
-  PROMPT_VERSION: string;
+  STATE_RESOURCES_PROMPT_VERSION: string;
   CENSUS_API_KEYS: string[];
   OPENAI_API_KEY?: string;
   ANTHROPIC_API_KEY?: string;
@@ -122,7 +122,7 @@ export function getPipelineEnv(): PipelineEnv {
     AI_MODEL: readEnv("AI_MODEL", DEFAULT_AI_CANDIDATE.model),
     AI_TIMEOUT_MS: readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
     ANTHROPIC_WEB_SEARCH_MAX_USES: readPositiveIntegerEnv("ANTHROPIC_WEB_SEARCH_MAX_USES", 3),
-    PROMPT_VERSION: readEnv("PROMPT_VERSION", "state_resources_v2"),
+    STATE_RESOURCES_PROMPT_VERSION: readEnv("STATE_RESOURCES_PROMPT_VERSION", "state_resources_v2"),
     CENSUS_API_KEYS: readCensusApiKeysFromEnv(process.env),
     OPENAI_API_KEY: readOptionalEnv("OPENAI_API_KEY"),
     ANTHROPIC_API_KEY: readOptionalEnv("ANTHROPIC_API_KEY"),

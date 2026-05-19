@@ -117,6 +117,12 @@ type GroupPayloadFragment = Partial<Omit<StateResourcePayload, "sources">> & {
   sources: Partial<StateResourceSources>;
 };
 
+type DeterministicGroupOutput = {
+  payload: GroupPayloadFragment;
+  evidence: EvidenceSnippet[];
+  model: string;
+};
+
 type GroupProgressEntry = {
   status: "pending" | "validated";
   attempts: number;
@@ -135,6 +141,11 @@ type GroupProgressState = {
 };
 
 const GROUP_PROGRESS_PAYLOAD_KEY = "__state_resource_group_progress";
+const DETERMINISTIC_GROUPS: ReadonlySet<StateResourceFieldGroup> = new Set([
+  "early_voting",
+  "polling_hours",
+  "id_requirements",
+]);
 
 // Evidence crawl + provider call can run for >2 minutes; keep reclaim window above worst-case work.
 const RECLAIM_MIN_IDLE_MS = 240_000;
@@ -448,6 +459,78 @@ function buildGroupFocusTerms(group: StateResourceFieldGroup): readonly string[]
     return ["voter id", "photo id", "identification required", "id requirement"];
   }
   return ["in person registration", "voter registration deadline", "registration cutoff"];
+}
+
+function buildDeterministicGroupOutput(
+  group: StateResourceFieldGroup,
+  stateFips: string
+): DeterministicGroupOutput | null {
+  if (!DETERMINISTIC_GROUPS.has(group)) {
+    return null;
+  }
+
+  if (group === "early_voting") {
+    const deterministicEarlyVoting = getDeterministicEarlyVotingByFips(stateFips) ?? {
+      available: false,
+      start: null,
+      end: null,
+    };
+    return {
+      payload: {
+        early_voting_available: deterministicEarlyVoting.available,
+        early_voting_start_date_rule: deterministicEarlyVoting.start,
+        early_voting_end_date_rule: deterministicEarlyVoting.end,
+        sources: {
+          early_voting_available: [STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED],
+          early_voting_start_date_rule: [STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED],
+          early_voting_end_date_rule: [STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED],
+        },
+      },
+      evidence: [
+        {
+          url: STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED,
+          title: "NCSL early voting",
+        },
+      ],
+      model: "deterministic_early_voting",
+    };
+  }
+
+  if (group === "polling_hours") {
+    const fixedPollingHours = getDeterministicPollingHoursByFips(stateFips) ?? "Not specified.";
+    return {
+      payload: {
+        polling_hours: fixedPollingHours,
+        sources: {
+          polling_hours: [STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED],
+        },
+      },
+      evidence: [
+        {
+          url: STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED,
+          title: "NCSL polling places",
+        },
+      ],
+      model: "deterministic_polling_hours",
+    };
+  }
+
+  const fixedIdRequirement = getDeterministicIdRequirementByFips(stateFips) ?? "No document required to vote";
+  return {
+    payload: {
+      id_requirements: fixedIdRequirement,
+      sources: {
+        id_requirements: [STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED],
+      },
+    },
+    evidence: [
+      {
+        url: STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED,
+        title: "NCSL voter ID",
+      },
+    ],
+    model: "deterministic_id_requirements",
+  };
 }
 
 function applyGroupPayload(
@@ -1271,108 +1354,22 @@ async function processMessage(
       continue;
     }
 
-    if (group === "early_voting") {
-      const deterministicEarlyVoting = getDeterministicEarlyVotingByFips(draft.draft.state_fips) ?? {
-        available: false,
-        start: null,
-        end: null,
-      };
-      const fixedPayload: GroupPayloadFragment = {
-        early_voting_available: deterministicEarlyVoting.available,
-        early_voting_start_date_rule: deterministicEarlyVoting.start,
-        early_voting_end_date_rule: deterministicEarlyVoting.end,
-        sources: {
-          early_voting_available: [STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED],
-          early_voting_start_date_rule: [STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED],
-          early_voting_end_date_rule: [STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED],
-        },
-      };
-
+    const deterministicGroup = buildDeterministicGroupOutput(group, draft.draft.state_fips);
+    if (deterministicGroup) {
+      // Explicitly short-circuit AI/evidence orchestration for deterministic groups.
       progressEntry.status = "validated";
       progressEntry.attempts += 1;
-      progressEntry.payload = fixedPayload;
-      progressEntry.evidence = [
-        {
-          url: STATE_RESOURCE_EARLY_VOTING_REFERENCE_SEED,
-          title: "NCSL early voting",
-        },
-      ];
+      progressEntry.payload = deterministicGroup.payload;
+      progressEntry.evidence = deterministicGroup.evidence;
       progressEntry.provider = "backend";
-      progressEntry.model = "deterministic_early_voting";
+      progressEntry.model = deterministicGroup.model;
       progressEntry.promptVersion = finalPromptVersion;
       progressEntry.lastErrorCode = null;
       progressEntry.lastReason = null;
 
       await saveDraftProgress(pool, ingestKey, attachGroupProgressToDraft(draft.draft, progress), expectedRunId);
 
-      applyGroupPayload(mergedFields, fixedPayload);
-      finalEvidence = mergeEvidenceSnippets(finalEvidence, progressEntry.evidence);
-      finalProvider = progressEntry.provider;
-      finalModel = progressEntry.model;
-      continue;
-    }
-
-    if (group === "polling_hours") {
-      const fixedPollingHours = getDeterministicPollingHoursByFips(draft.draft.state_fips) ?? "Not specified.";
-      const fixedPayload: GroupPayloadFragment = {
-        polling_hours: fixedPollingHours,
-        sources: {
-          polling_hours: [STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED],
-        },
-      };
-
-      progressEntry.status = "validated";
-      progressEntry.attempts += 1;
-      progressEntry.payload = fixedPayload;
-      progressEntry.evidence = [
-        {
-          url: STATE_RESOURCE_POLLING_HOURS_REFERENCE_SEED,
-          title: "NCSL polling places",
-        },
-      ];
-      progressEntry.provider = "backend";
-      progressEntry.model = "deterministic_polling_hours";
-      progressEntry.promptVersion = finalPromptVersion;
-      progressEntry.lastErrorCode = null;
-      progressEntry.lastReason = null;
-
-      await saveDraftProgress(pool, ingestKey, attachGroupProgressToDraft(draft.draft, progress), expectedRunId);
-
-      applyGroupPayload(mergedFields, fixedPayload);
-      finalEvidence = mergeEvidenceSnippets(finalEvidence, progressEntry.evidence);
-      finalProvider = progressEntry.provider;
-      finalModel = progressEntry.model;
-      continue;
-    }
-
-    if (group === "id_requirements") {
-      const fixedIdRequirement =
-        getDeterministicIdRequirementByFips(draft.draft.state_fips) ?? "No document required to vote";
-      const fixedPayload: GroupPayloadFragment = {
-        id_requirements: fixedIdRequirement,
-        sources: {
-          id_requirements: [STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED],
-        },
-      };
-
-      progressEntry.status = "validated";
-      progressEntry.attempts += 1;
-      progressEntry.payload = fixedPayload;
-      progressEntry.evidence = [
-        {
-          url: STATE_RESOURCE_ID_REQUIREMENTS_REFERENCE_SEED,
-          title: "NCSL voter ID",
-        },
-      ];
-      progressEntry.provider = "backend";
-      progressEntry.model = "deterministic_id_requirements";
-      progressEntry.promptVersion = finalPromptVersion;
-      progressEntry.lastErrorCode = null;
-      progressEntry.lastReason = null;
-
-      await saveDraftProgress(pool, ingestKey, attachGroupProgressToDraft(draft.draft, progress), expectedRunId);
-
-      applyGroupPayload(mergedFields, fixedPayload);
+      applyGroupPayload(mergedFields, deterministicGroup.payload);
       finalEvidence = mergeEvidenceSnippets(finalEvidence, progressEntry.evidence);
       finalProvider = progressEntry.provider;
       finalModel = progressEntry.model;
@@ -1662,7 +1659,7 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
   const observer = createStageObserver("enricher", {
     provider: enrichmentConfig.provider,
     model: enrichmentConfig.model,
-    prompt_version: env.PROMPT_VERSION,
+    prompt_version: env.STATE_RESOURCES_PROMPT_VERSION,
   });
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
@@ -1684,7 +1681,7 @@ export async function runStateResourcesEnricher(options: EnricherOptions = {}): 
         const result = await processMessage(
           pool,
           redis,
-          env.PROMPT_VERSION,
+          env.STATE_RESOURCES_PROMPT_VERSION,
           enrichmentConfig,
           entry.id,
           entry.message

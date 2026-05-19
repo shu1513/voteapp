@@ -151,7 +151,7 @@ export async function runStateResourcesProducer(
   const observer = createStageObserver("producer", {
     run_id: runId,
     model: env.AI_MODEL,
-    prompt_version: env.PROMPT_VERSION,
+    prompt_version: env.STATE_RESOURCES_PROMPT_VERSION,
   });
 
   const states = await fetchCensusStates(env.CENSUS_API_KEYS);
@@ -220,9 +220,9 @@ export async function runStateResourcesProducer(
             STAGING_ITEM_TYPE_STATE_RESOURCES,
             serializedPayload,
             runId,
-            env.AI_MODEL,
+            `${env.AI_PROVIDER}:${env.AI_MODEL}`,
             STATE_RESOURCE_DRAFT_SCHEMA_VERSION,
-            env.PROMPT_VERSION,
+            env.STATE_RESOURCES_PROMPT_VERSION,
             force,
           ]
         );

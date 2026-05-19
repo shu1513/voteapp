@@ -31,15 +31,11 @@ export function buildElectionsPrompt(args: {
     "",
     "Return strict JSON with this exact shape:",
     `{
-  "district_id": ${escapeJson(draft.district_id)},
-  "district_name": ${escapeJson(draft.district_name)},
-  "district_type": ${escapeJson(draft.district_type)},
-  "state": ${escapeJson(draft.state)},
   "entries": [
     {
       "official_ballot_title": "exact title shown on ballot",
       "election_date": "YYYY-MM-DD",
-      "description": "brief factual description",
+      "office_or_measure_impact": "what this office does OR what this measure changes",
       "race_type": "office or ballot_measure",
       "sources": ["https://..."]
     }
@@ -54,6 +50,9 @@ export function buildElectionsPrompt(args: {
     "- If one source is insufficient, continue to additional sources until you can confirm or rule out contests.",
     "- entries may be an empty array when no upcoming contest is found.",
     "- race_type must be one of: office, ballot_measure.",
+    "- office_or_measure_impact: Explain what this office does (if race_type=office) or what this measure would actually change if passed (if race_type=ballot_measure), in concrete, no fluff real-world terms.",
+    "- Example office_or_measure_impact for office: \"Leads the county sheriff's department, oversees patrol and jail operations, and sets local law-enforcement priorities.\"",
+    "- Example office_or_measure_impact for ballot_measure: \"Increases county sales tax by 0.5% for five years to fund county hospital and clinic services.\"",
     "- Focus on upcoming elections only; do not include past elections.",
     "- Use only contests in this exact district scope (no parent or child scope contests).",
     "- Prefer official election sources first (state/county/city/school election offices).",

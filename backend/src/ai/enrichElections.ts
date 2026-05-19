@@ -9,7 +9,7 @@ import {
 import {
   ELECTION_ENRICHMENT_SCHEMA_VERSION,
 } from "../contracts/electionEnrichmentContract.js";
-import { parseCanonicalElectionPayload } from "../contracts/electionPayloadContract.js";
+import { parseAiElectionEntriesPayload } from "../contracts/electionPayloadContract.js";
 import type { AiProvider } from "./types.js";
 import type { ElectionDraftPayload, ElectionEnrichedPayload } from "../types/election.js";
 
@@ -186,6 +186,8 @@ async function callOpenAiResponsesWithWebSearch(
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    await waitForProviderModelCooldown("openai", model);
+
     const requestBody: Record<string, unknown> = {
       model,
       input: [
@@ -217,6 +219,10 @@ async function callOpenAiResponsesWithWebSearch(
     });
 
     if (!response.ok) {
+      const rateLimitHeaders = extractProviderRateLimitDebugHeaders(response.headers);
+      updateProviderModelCooldownFromHeaders("openai", model, response.headers, {
+        onRateLimitedResponse: response.status === 429,
+      });
       const bodyText = await response.text();
       if (response.status === 429) {
         return {
@@ -226,6 +232,7 @@ async function callOpenAiResponsesWithWebSearch(
           reason: `OpenAI responses rate limit: ${bodyText}`,
           failureDebug: {
             provider_response_text: trimDebugText(bodyText),
+            provider_rate_limit_headers: rateLimitHeaders,
           },
         };
       }
@@ -237,6 +244,7 @@ async function callOpenAiResponsesWithWebSearch(
           reason: `OpenAI responses temporary error ${response.status}: ${bodyText}`,
           failureDebug: {
             provider_response_text: trimDebugText(bodyText),
+            provider_rate_limit_headers: rateLimitHeaders,
           },
         };
       }
@@ -247,9 +255,12 @@ async function callOpenAiResponsesWithWebSearch(
         reason: `OpenAI responses request failed ${response.status}: ${bodyText}`,
         failureDebug: {
           provider_response_text: trimDebugText(bodyText),
+          provider_rate_limit_headers: rateLimitHeaders,
         },
       };
     }
+
+    updateProviderModelCooldownFromHeaders("openai", model, response.headers);
 
     const data = (await response.json()) as Record<string, unknown>;
     const text = extractResponsesOutputText(data);
@@ -435,6 +446,8 @@ async function callGemini(
   const url = `https://generativelanguage.googleapis.com/v1/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
   try {
+    await waitForProviderModelCooldown("gemini", model);
+
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -446,9 +459,21 @@ async function callGemini(
     });
 
     if (!response.ok) {
+      const rateLimitHeaders = extractProviderRateLimitDebugHeaders(response.headers);
+      updateProviderModelCooldownFromHeaders("gemini", model, response.headers, {
+        onRateLimitedResponse: response.status === 429,
+      });
       const bodyText = await response.text();
       if (response.status === 429) {
-        return { ok: false, retryable: true, errorCode: "RATE_LIMIT", reason: `Gemini rate limit: ${bodyText}` };
+        return {
+          ok: false,
+          retryable: true,
+          errorCode: "RATE_LIMIT",
+          reason: `Gemini rate limit: ${bodyText}`,
+          failureDebug: {
+            provider_rate_limit_headers: rateLimitHeaders,
+          },
+        };
       }
       if (response.status >= 500) {
         return {
@@ -456,6 +481,9 @@ async function callGemini(
           retryable: true,
           errorCode: "TEMP_PROVIDER_ERROR",
           reason: `Gemini temporary error ${response.status}: ${bodyText}`,
+          failureDebug: {
+            provider_rate_limit_headers: rateLimitHeaders,
+          },
         };
       }
       return {
@@ -463,8 +491,13 @@ async function callGemini(
         retryable: false,
         errorCode: "CONFIGURATION_ERROR",
         reason: `Gemini request failed ${response.status}: ${bodyText}`,
+        failureDebug: {
+          provider_rate_limit_headers: rateLimitHeaders,
+        },
       };
     }
+
+    updateProviderModelCooldownFromHeaders("gemini", model, response.headers);
 
     const data = (await response.json()) as {
       candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
@@ -598,7 +631,7 @@ export async function enrichElections(
       continue;
     }
 
-    const parsed = parseCanonicalElectionPayload(generated.parsed);
+    const parsed = parseAiElectionEntriesPayload(generated.parsed);
     if (!parsed.ok) {
       failures.push({
         provider: candidate.provider,
@@ -610,9 +643,19 @@ export async function enrichElections(
       continue;
     }
 
+    const canonicalPayload: ElectionEnrichedPayload = {
+      district_id: input.draft.district_id,
+      district_name: input.draft.district_name,
+      district_type: input.draft.district_type,
+      state: input.draft.state,
+      entries: parsed.payload.entries,
+      ...(parsed.payload.review_decision ? { review_decision: parsed.payload.review_decision } : {}),
+      ...(parsed.payload.review_reason ? { review_reason: parsed.payload.review_reason } : {}),
+    };
+
     return {
       ok: true,
-      payload: parsed.payload,
+      payload: canonicalPayload,
       provider: candidate.provider,
       model: candidate.model,
       schemaVersion: ELECTION_ENRICHMENT_SCHEMA_VERSION,

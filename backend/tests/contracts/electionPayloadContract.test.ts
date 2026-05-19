@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseCanonicalElectionPayload } from "../../src/contracts/electionPayloadContract.js";
+import { parseAiElectionEntriesPayload, parseCanonicalElectionPayload } from "../../src/contracts/electionPayloadContract.js";
 
 describe("parseCanonicalElectionPayload", () => {
   it("parses valid payload", () => {
@@ -107,5 +107,67 @@ describe("parseCanonicalElectionPayload", () => {
     });
 
     expect(result.ok).toBe(true);
+  });
+});
+
+describe("parseAiElectionEntriesPayload", () => {
+  it("parses office_or_measure_impact and maps it to canonical description", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "County Sheriff",
+          election_date: "2026-11-03",
+          office_or_measure_impact:
+            "Leads the county sheriff's department, oversees patrol and jail operations, and sets local law-enforcement priorities.",
+          race_type: "office",
+          sources: ["https://example.gov/elections/sheriff"],
+        },
+      ],
+      review_decision: "approve",
+      review_reason: "In scope",
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries).toHaveLength(1);
+      expect(result.payload.entries[0].description).toContain("Leads the county sheriff");
+    }
+  });
+
+  it("parses valid entries-only AI payload", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          description: "General election for governor.",
+          race_type: "office",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+      review_decision: "approve",
+      review_reason: "In scope",
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries).toHaveLength(1);
+      expect(result.payload.review_decision).toBe("approve");
+    }
+  });
+
+  it("rejects invalid entries row in AI payload", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          description: "General election for governor.",
+          race_type: "bad_value",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+    expect(result.ok).toBe(false);
   });
 });

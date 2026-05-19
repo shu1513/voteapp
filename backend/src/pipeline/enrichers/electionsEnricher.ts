@@ -237,6 +237,15 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
             continue;
           }
 
+          const nextFailureDebug =
+            softRetryCount > 0
+              ? {
+                  soft_retry_count: softRetryCount,
+                  validation_feedback: reviewFeedback,
+                  soft_retry_at: new Date().toISOString(),
+                }
+              : null;
+
           await pool.query(
             `
               UPDATE staging_items
@@ -245,12 +254,12 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
                   model = $4,
                   prompt_version = $5,
                   reason = NULL,
-                  failure_debug = NULL,
-                  ai_raw_debug = $6::jsonb,
+                  failure_debug = $6::jsonb,
+                  ai_raw_debug = $7::jsonb,
                   status = 'pending',
                   updated_at = now()
               WHERE ingest_key = $1
-                AND item_type = $7
+                AND item_type = $8
             `,
             [
               ingestKey,
@@ -258,6 +267,7 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
               ELECTION_ENRICHMENT_SCHEMA_VERSION,
               `${result.provider}:${result.model}`,
               result.promptVersion,
+              JSON.stringify(nextFailureDebug),
               JSON.stringify(result.aiRawDebug ?? {}),
               STAGING_ITEM_TYPE_ELECTION,
             ]

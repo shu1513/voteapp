@@ -76,7 +76,7 @@ type ValidatorProcessResult = {
   model: string | null;
 };
 
-const RECLAIM_MIN_IDLE_MS = 30_000;
+const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
 /**
  * Converts an unknown error into a bounded, persistable string.
@@ -1193,7 +1193,7 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
   const observer = createStageObserver("validator", {
     provider: env.AI_PROVIDER,
     model: env.AI_MODEL,
-    prompt_version: env.PROMPT_VERSION,
+    prompt_version: env.STATE_RESOURCES_PROMPT_VERSION,
   });
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
