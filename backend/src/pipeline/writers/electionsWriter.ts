@@ -124,11 +124,13 @@ async function writeElectionsForDistrict(
             description,
             election_date,
             race_type,
+            election_stage,
             sources
-          ) VALUES ($1, $2, $3, $4::date, $5, $6::jsonb)
+          ) VALUES ($1, $2, $3, $4::date, $5, $6, $7::jsonb)
           ON CONFLICT (district_id, official_ballot_title, election_date) DO UPDATE SET
             description = EXCLUDED.description,
             race_type = EXCLUDED.race_type,
+            election_stage = COALESCE(EXCLUDED.election_stage, elections.election_stage),
             sources = EXCLUDED.sources,
             updated_at = now()
         `,
@@ -138,6 +140,7 @@ async function writeElectionsForDistrict(
           entry.description,
           entry.election_date,
           entry.race_type,
+          entry.election_stage ?? null,
           JSON.stringify(entry.sources),
         ]
       );

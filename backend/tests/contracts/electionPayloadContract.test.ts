@@ -111,13 +111,13 @@ describe("parseCanonicalElectionPayload", () => {
 });
 
 describe("parseAiElectionEntriesPayload", () => {
-  it("parses office_or_measure_impact and maps it to canonical description", () => {
+  it("parses impact and maps it to canonical description", () => {
     const result = parseAiElectionEntriesPayload({
       entries: [
         {
           official_ballot_title: "County Sheriff",
           election_date: "2026-11-03",
-          office_or_measure_impact:
+          impact:
             "Leads the county sheriff's department, oversees patrol and jail operations, and sets local law-enforcement priorities.",
           race_type: "office",
           sources: ["https://example.gov/elections/sheriff"],
@@ -140,7 +140,7 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          description: "General election for governor.",
+          impact: "Leads the state executive branch and signs or vetoes legislation.",
           race_type: "office",
           sources: ["https://example.gov/elections/governor"],
         },
@@ -156,14 +156,65 @@ describe("parseAiElectionEntriesPayload", () => {
     }
   });
 
+  it("parses optional election_stage when valid", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          impact: "Leads the state executive branch and signs or vetoes legislation.",
+          race_type: "office",
+          election_stage: "general",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries[0].election_stage).toBe("general");
+    }
+  });
+
   it("rejects invalid entries row in AI payload", () => {
     const result = parseAiElectionEntriesPayload({
       entries: [
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          description: "General election for governor.",
+          impact: "Leads the state executive branch and signs or vetoes legislation.",
           race_type: "bad_value",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it("rejects invalid election_stage", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          impact: "Leads the state executive branch and signs or vetoes legislation.",
+          race_type: "office",
+          election_stage: "invalid",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it("rejects AI payloads that use description instead of impact", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          description: "General election for governor.",
+          race_type: "office",
           sources: ["https://example.gov/elections/governor"],
         },
       ],
