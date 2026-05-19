@@ -46,6 +46,7 @@ type SchedulerRuntimeConfig = {
 };
 
 const DRAIN_RECLAIM_MIN_IDLE_MS = 30_000;
+const DRAIN_ENRICHER_RECLAIM_MIN_IDLE_MS = 240_000;
 
 type StateResourceStageCounts = {
   total: number;
@@ -177,7 +178,7 @@ async function runOneDrainRound(config: SchedulerRuntimeConfig): Promise<void> {
     once: true,
     batchSize: config.batchSize,
     blockMs: config.blockMs,
-    reclaimMinIdleMs: DRAIN_RECLAIM_MIN_IDLE_MS,
+    reclaimMinIdleMs: DRAIN_ENRICHER_RECLAIM_MIN_IDLE_MS,
   });
   await runStateResourcesValidator({
     once: true,

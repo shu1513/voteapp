@@ -74,7 +74,13 @@ async function ensureSchemaMigrationsTable(db: Queryable): Promise<void> {
 async function listMigrationFiles(): Promise<string[]> {
   const dir = getMigrationsDir();
   const names = await readdir(dir);
-  return names.filter((name) => MIGRATION_FILE_RE.test(name)).sort((a, b) => a.localeCompare(b));
+  return names
+    .filter((name) => MIGRATION_FILE_RE.test(name))
+    .sort((a, b) => {
+      const aOrder = Number.parseInt(a.split("_", 1)[0] ?? "", 10);
+      const bOrder = Number.parseInt(b.split("_", 1)[0] ?? "", 10);
+      return aOrder - bOrder || a.localeCompare(b);
+    });
 }
 
 async function readMigrationFile(filename: string): Promise<{ filename: string; sql: string; checksum: string }> {

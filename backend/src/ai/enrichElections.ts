@@ -848,6 +848,8 @@ export async function enrichElections(
   const reviewReasons: string[] = [];
   const providerModelLabels: string[] = [];
   const providerFamilyLabels: string[] = [];
+  let primaryProvider: AiProvider | null = null;
+  let primaryModel: string | null = null;
 
   for (const family of familyPlan) {
     const prompt = buildElectionsPrompt({
@@ -874,6 +876,12 @@ export async function enrichElections(
     mergedEntries.push(...outcome.entries);
     providerModelLabels.push(`${outcome.provider}:${outcome.model}`);
     providerFamilyLabels.push(`${outcome.provider}:${outcome.model}:${family}`);
+    if (!primaryProvider) {
+      primaryProvider = outcome.provider;
+    }
+    if (!primaryModel) {
+      primaryModel = outcome.model;
+    }
     if (outcome.reviewDecision) {
       reviewDecisions.push(outcome.reviewDecision);
     }
@@ -898,8 +906,8 @@ export async function enrichElections(
   return {
     ok: true,
     payload: canonicalPayload,
-    provider: providerModelLabels[0]?.split(":")[0] as AiProvider,
-    model: providerModelLabels[0] ?? "unknown:unknown",
+    provider: primaryProvider ?? (providerModelLabels[0]?.split(":")[0] as AiProvider),
+    model: primaryModel ?? "unknown",
     schemaVersion: ELECTION_ENRICHMENT_SCHEMA_VERSION,
     promptVersion: input.promptVersion,
     aiRawDebug: {
