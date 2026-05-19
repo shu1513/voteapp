@@ -905,7 +905,7 @@ export async function runStateResourcesMockEnricher(options: MockEnricherOptions
   const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
     for (const entry of entries) {
       try {
-        const outcome = await processMessage(pool, redis, env.PROMPT_VERSION, entry.id, entry.message);
+        const outcome = await processMessage(pool, redis, env.STATE_RESOURCES_PROMPT_VERSION, entry.id, entry.message);
         if (outcome === "enriched") {
           enriched += 1;
         } else if (outcome === "recovered") {

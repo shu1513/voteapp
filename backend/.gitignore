@@ -5,3 +5,7 @@ coverage/
 
 .env
 .env.*
+
+# Local ad-hoc probes and one-off scripts.
+scratch/*
+!scratch/README.md

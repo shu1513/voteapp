@@ -91,11 +91,12 @@ export function updateProviderModelCooldownFromHeaders(
   provider: string,
   model: string,
   headers: Headers,
-  options?: { onRateLimitedResponse?: boolean }
+  options?: { onRateLimitedResponse?: boolean; retryAfterBufferMs?: number }
 ): void {
+  const retryAfterBufferMs = Math.max(0, Math.floor(options?.retryAfterBufferMs ?? 0));
   const retryAfterMs = parseRetryAfterToMs(headers.get("retry-after"));
   if (retryAfterMs !== null) {
-    bumpBlockedUntil(provider, model, retryAfterMs);
+    bumpBlockedUntil(provider, model, retryAfterMs + retryAfterBufferMs);
   }
 
   const inputRemaining = parseRoundedInteger(headers.get("anthropic-ratelimit-input-tokens-remaining"));

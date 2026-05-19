@@ -1,5 +1,11 @@
 import type { ElectionDraftPayload } from "../../types/election.js";
 
+export type ElectionContestFamily =
+  | "all"
+  | "non_judicial_office"
+  | "judicial_office"
+  | "ballot_measure";
+
 function escapeJson(value: string): string {
   return JSON.stringify(value);
 }
@@ -8,8 +14,9 @@ export function buildElectionsPrompt(args: {
   draft: ElectionDraftPayload;
   softRetryCount: number;
   reviewFeedbackLines: string[];
+  contestFamily?: ElectionContestFamily;
 }): string {
-  const { draft, softRetryCount, reviewFeedbackLines } = args;
+  const { draft, softRetryCount, reviewFeedbackLines, contestFamily = "all" } = args;
   const retrySection =
     reviewFeedbackLines.length > 0
       ? [
@@ -19,6 +26,62 @@ export function buildElectionsPrompt(args: {
           "Fix only the issues above and keep valid content.",
         ].join("\n")
       : "";
+  const familySection =
+    contestFamily === "all"
+      ? []
+      : [
+          "",
+          `Contest family for this call: ${contestFamily}`,
+          contestFamily === "non_judicial_office"
+            ? "- Return only non-judicial office contests for this district scope (executive/legislative/administrative local offices)."
+            : contestFamily === "judicial_office"
+              ? "- Return only judicial office contests for this district scope (judge/justice/retention)."
+              : "- Return only ballot measure contests for this district scope.",
+          contestFamily === "non_judicial_office"
+            ? "- For every entry in this call, set race_type to office. Exclude all ballot measures and all judicial contests."
+            : contestFamily === "judicial_office"
+              ? "- For every entry in this call, set race_type to office. Exclude all ballot measures and all non-judicial offices."
+              : "- For every entry in this call, set race_type to ballot_measure. Exclude all office contests.",
+          contestFamily === "non_judicial_office"
+            ? '- Non-judicial office examples: Governor, Lieutenant Governor, Secretary of State, Treasurer, Controller, Attorney General, Superintendent of Public Instruction, Board of Supervisors, Sheriff, Assessor, County Clerk, Mayor, City Council.'
+            : contestFamily === "judicial_office"
+              ? '- Judicial examples: "Judge of the Superior Court, Office No. X", "Justice of the Supreme Court (Retention)", "Court of Appeal Justice (Retention)".'
+              : '- Ballot measure examples: Proposition, Measure, Bond, Charter Amendment, Referendum, Initiative, Advisory Question.',
+        ];
+  const includeReviewFieldsInShape = softRetryCount > 0;
+  const scopePriorityLine =
+    draft.district_type === "statewide"
+      ? "- Source priority for this scope: prefer official state secretary-of-state/state election office pages first."
+      : draft.district_type === "county"
+        ? "- Source priority for this scope: prefer official county registrar/county elections office pages first (including official list-of-offices pages)."
+        : draft.district_type === "place"
+          ? "- Source priority for this scope: prefer official city/town clerk or local elections office pages first."
+          : "";
+  const outputShape = includeReviewFieldsInShape
+    ? `{
+  "entries": [
+    {
+      "official_ballot_title": "exact title shown on ballot",
+      "election_date": "YYYY-MM-DD",
+      "office_or_measure_impact": "what this office does OR what this measure changes",
+      "race_type": "office or ballot_measure",
+      "sources": ["https://..."]
+    }
+  ],
+  "review_decision": "approve or reject",
+  "review_reason": "short reason"
+}`
+    : `{
+  "entries": [
+    {
+      "official_ballot_title": "exact title shown on ballot",
+      "election_date": "YYYY-MM-DD",
+      "office_or_measure_impact": "what this office does OR what this measure changes",
+      "race_type": "office or ballot_measure",
+      "sources": ["https://..."]
+    }
+  ]
+}`;
 
   return [
     "You are extracting upcoming election entries for exactly one district scope.",
@@ -30,23 +93,7 @@ export function buildElectionsPrompt(args: {
     `- state: ${escapeJson(draft.state)}`,
     "",
     "Return strict JSON with this exact shape:",
-    `{
-  "district_id": ${escapeJson(draft.district_id)},
-  "district_name": ${escapeJson(draft.district_name)},
-  "district_type": ${escapeJson(draft.district_type)},
-  "state": ${escapeJson(draft.state)},
-  "entries": [
-    {
-      "official_ballot_title": "exact title shown on ballot",
-      "election_date": "YYYY-MM-DD",
-      "description": "brief factual description",
-      "race_type": "office or ballot_measure",
-      "sources": ["https://..."]
-    }
-  ],
-  "review_decision": "approve or reject",
-  "review_reason": "short reason"
-}`,
+    outputShape,
     "",
     "Rules:",
     "- Actively search the public web for this task.",
@@ -54,18 +101,23 @@ export function buildElectionsPrompt(args: {
     "- If one source is insufficient, continue to additional sources until you can confirm or rule out contests.",
     "- entries may be an empty array when no upcoming contest is found.",
     "- race_type must be one of: office, ballot_measure.",
+    "- office_or_measure_impact: Explain what this office does (if race_type=office) or what this measure would actually change if passed (if race_type=ballot_measure), in concrete, no fluff real-world terms.",
+    "- Example office_or_measure_impact for office: \"Leads the county sheriff's department, oversees patrol and jail operations, and sets local law-enforcement priorities.\"",
+    "- Example office_or_measure_impact for ballot_measure: \"Increases county sales tax by 0.5% for five years to fund county hospital and clinic services.\"",
     "- Focus on upcoming elections only; do not include past elections.",
     "- Use only contests in this exact district scope (no parent or child scope contests).",
     "- Prefer official election sources first (state/county/city/school election offices).",
     "- If official sources are unavailable or unclear, use reliable third-party sources and keep citations.",
     "- Prefer official (.gov / election office) URLs over third-party URLs when both support the same entry.",
-    "- Use the official contest label/title from the election authority when available.",
+    "- Copy official_ballot_title exactly as shown on the ballot when available; do not paraphrase.",
+    scopePriorityLine,
+    ...familySection,
     "- If scope is uncertain, exclude the entry instead of guessing.",
     "- sources must list the URLs you used for each entry, and each entry should include at least one directly supporting source URL.",
     "- return JSON only (no prose, no markdown).",
     softRetryCount > 0
-      ? "- This is a review pass after validator soft-fail. Decide approve/reject in review_decision."
-      : "- review_decision should be approve when your output is within district scope; otherwise reject.",
+      ? "- This is a review pass after validator soft-fail. Include review_decision (approve/reject) and review_reason."
+      : "",
     retrySection,
     "",
     "Draft input:",

@@ -96,10 +96,11 @@ async function writeElectionsForDistrict(
 ): Promise<boolean> {
   await client.query("BEGIN");
   try {
+    const nextStatus = payload.entries.length === 0 ? "no_results" : "written";
     const statusUpdate = await client.query(
       `
         UPDATE staging_items
-        SET status = 'written',
+        SET status = $3,
             reason = NULL,
             written_at = now(),
             updated_at = now()
@@ -107,14 +108,12 @@ async function writeElectionsForDistrict(
           AND item_type = $2
           AND status = 'validated'
       `,
-      [ingestKey, STAGING_ITEM_TYPE_ELECTION]
+      [ingestKey, STAGING_ITEM_TYPE_ELECTION, nextStatus]
     );
     if (statusUpdate.rowCount !== 1) {
       await client.query("ROLLBACK");
       return false;
     }
-
-    await client.query(`DELETE FROM public.elections WHERE district_id = $1`, [payload.district_id]);
 
     for (const entry of payload.entries) {
       await client.query(
@@ -127,6 +126,11 @@ async function writeElectionsForDistrict(
             race_type,
             sources
           ) VALUES ($1, $2, $3, $4::date, $5, $6::jsonb)
+          ON CONFLICT (district_id, official_ballot_title, election_date) DO UPDATE SET
+            description = EXCLUDED.description,
+            race_type = EXCLUDED.race_type,
+            sources = EXCLUDED.sources,
+            updated_at = now()
         `,
         [
           payload.district_id,
@@ -203,12 +207,12 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
             } finally {
               client.release();
             }
-          } else if (row.status !== "written") {
+          } else if (row.status !== "written" && row.status !== "no_results") {
             await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
             continue;
           }
 
-          // If DB is already written (including reclaimed post-commit failures), re-emit handoff and ack.
+          // If DB is already persisted (including reclaimed post-commit failures), re-emit handoff and ack.
           await redis.xAdd(STAGING_WRITTEN_STREAM, "*", {
             ingest_key: ingestKey,
             item_type: STAGING_ITEM_TYPE_ELECTION,

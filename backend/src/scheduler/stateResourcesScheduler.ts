@@ -11,13 +11,14 @@ import { runStateResourcesRetrySweeper } from "../pipeline/retries/stateResource
 import { STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION } from "../contracts/stateResourceEnrichmentContract.js";
 
 export const STATE_RESOURCES_REFRESH_JOB_NAME = "state_resources_refresh";
-export const STATE_RESOURCES_ANNUAL_SCHEDULER_ID = "state_resources_annual_refresh";
+// Legacy persisted scheduler key; keep value stable to avoid duplicate recurring schedulers.
+export const STATE_RESOURCES_RECURRING_SCHEDULER_ID = "state_resources_annual_refresh";
 export const STATE_RESOURCES_PRE_ELECTION_WEEKLY_SCHEDULER_ID = "state_resources_pre_election_weekly_refresh";
 
 export type StateResourcesRefreshJobData = {
   dryRun?: boolean;
   force?: boolean;
-  triggeredBy?: "annual" | "monthly" | "manual" | "unknown";
+  triggeredBy?: "annual" | "monthly" | "quarterly" | "manual" | "unknown";
   requestedAt?: string;
 };
 
@@ -43,6 +44,9 @@ type SchedulerRuntimeConfig = {
   batchSize: number;
   blockMs: number;
 };
+
+const DRAIN_RECLAIM_MIN_IDLE_MS = 30_000;
+const DRAIN_ENRICHER_RECLAIM_MIN_IDLE_MS = 240_000;
 
 type StateResourceStageCounts = {
   total: number;
@@ -70,7 +74,7 @@ function readPositiveIntegerEnv(name: string, fallback: number): number {
 function readSchedulerRuntimeConfig(): SchedulerRuntimeConfig {
   return {
     queueName: process.env.STATE_RESOURCES_SCHEDULER_QUEUE?.trim() || "state_resources_maintenance",
-    monthlyCron: process.env.STATE_RESOURCES_MONTHLY_CRON?.trim() || "0 3 1 * *",
+    monthlyCron: process.env.STATE_RESOURCES_MONTHLY_CRON?.trim() || "0 3 1 */3 *",
     monthlyTz: process.env.STATE_RESOURCES_MONTHLY_TZ?.trim() || "UTC",
     maxPasses: readPositiveIntegerEnv("STATE_RESOURCES_SCHEDULER_MAX_PASSES", 3),
     batchSize: readPositiveIntegerEnv("STATE_RESOURCES_SCHEDULER_BATCH_SIZE", 200),
@@ -174,16 +178,19 @@ async function runOneDrainRound(config: SchedulerRuntimeConfig): Promise<void> {
     once: true,
     batchSize: config.batchSize,
     blockMs: config.blockMs,
+    reclaimMinIdleMs: DRAIN_ENRICHER_RECLAIM_MIN_IDLE_MS,
   });
   await runStateResourcesValidator({
     once: true,
     batchSize: config.batchSize,
     blockMs: config.blockMs,
+    reclaimMinIdleMs: DRAIN_RECLAIM_MIN_IDLE_MS,
   });
   await runStateResourcesWriter({
     once: true,
     batchSize: config.batchSize,
     blockMs: config.blockMs,
+    reclaimMinIdleMs: DRAIN_RECLAIM_MIN_IDLE_MS,
   });
 }
 
@@ -250,7 +257,7 @@ export function createStateResourcesSchedulerQueue(): Queue<StateResourcesRefres
 
 /**
  * Upserts recurring scheduler:
- * - monthly full refresh
+ * - quarterly full refresh
  */
 export async function upsertRecurringStateResourcesRefreshJobs(
   jobData: StateResourcesRefreshJobData = {}
@@ -262,7 +269,7 @@ export async function upsertRecurringStateResourcesRefreshJobs(
     await queue.removeJobScheduler(STATE_RESOURCES_PRE_ELECTION_WEEKLY_SCHEDULER_ID);
 
     await queue.upsertJobScheduler(
-      STATE_RESOURCES_ANNUAL_SCHEDULER_ID,
+      STATE_RESOURCES_RECURRING_SCHEDULER_ID,
       {
         pattern: config.monthlyCron,
         tz: config.monthlyTz,
@@ -272,7 +279,7 @@ export async function upsertRecurringStateResourcesRefreshJobs(
         data: {
           dryRun: Boolean(jobData.dryRun),
           force: Boolean(jobData.force),
-          triggeredBy: "monthly",
+          triggeredBy: "quarterly",
         },
         opts: defaultJobOptions(),
       }
@@ -280,16 +287,6 @@ export async function upsertRecurringStateResourcesRefreshJobs(
   } finally {
     await queue.close();
   }
-}
-
-/**
- * Backward-compatible alias (historical name).
- * @deprecated Use upsertRecurringStateResourcesRefreshJobs.
- */
-export async function upsertAnnualStateResourcesRefreshJob(
-  jobData: StateResourcesRefreshJobData = {}
-): Promise<void> {
-  await upsertRecurringStateResourcesRefreshJobs(jobData);
 }
 
 /**

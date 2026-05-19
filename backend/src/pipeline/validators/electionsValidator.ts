@@ -72,20 +72,40 @@ function currentUtcDateYmd(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
+function utcDateYmdDaysAgo(daysAgo: number): string {
+  const now = new Date();
+  const utcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const shifted = new Date(utcMidnight - daysAgo * 24 * 60 * 60 * 1000);
+  return shifted.toISOString().slice(0, 10);
+}
+
 function isHardScopeMismatch(districtType: ElectionDistrictType, entry: ElectionEntryPayload): string | null {
-  const text = normalize(`${entry.official_ballot_title} ${entry.description}`);
-  const usSenate = /\bu\.?s\.?\s+senate\b/.test(text) || /\bunited states senate\b/.test(text);
+  const titleText = normalize(entry.official_ballot_title);
+  const descriptionText = normalize(entry.description);
+  const scopeText = entry.race_type === "office" ? `${titleText} ${descriptionText}` : titleText;
+
+  const usSenate = /\bu\.?s\.?\s+senate\b/.test(scopeText) || /\bunited states senate\b/.test(scopeText);
   const usHouse =
-    /\bu\.?s\.?\s+house\b/.test(text) ||
-    /\bu\.?s\.?\s+house\s+of\s+representatives?\b/.test(text) ||
-    /\brepresentative in congress\b/.test(text) ||
-    /\bcongressional district\b/.test(text);
-  const stateSenate = /\bstate senate\b/.test(text) || /\bsenate district\b/.test(text);
-  const stateHouse = /\bstate house\b/.test(text) || /\bstate assembly\b/.test(text) || /\bstate representative\b/.test(text);
-  const governorLike = /\bgovernor\b|\blieutenant governor\b|\battorney general\b|\bsecretary of state\b/.test(text);
-  const countyLike = /\bcounty\b|\bsheriff\b|\bcounty commissioner\b|\bcounty clerk\b/.test(text);
-  const cityLike = /\bcity\b|\bmayor\b|\bcity council\b|\balderman\b/.test(text);
-  const schoolLike = /\bschool board\b|\bschool district\b|\bboard of education\b/.test(text);
+    /\bu\.?s\.?\s+house\b/.test(scopeText) ||
+    /\bu\.?s\.?\s+house\s+of\s+representatives?\b/.test(scopeText) ||
+    /\brepresentative in congress\b/.test(scopeText) ||
+    /\bcongressional district\b/.test(scopeText);
+  const stateSenate = /\bstate senate\b/.test(scopeText) || /\bsenate district\b/.test(scopeText);
+  const stateHouse = /\bstate house\b/.test(scopeText) || /\bstate assembly\b/.test(scopeText) || /\bstate representative\b/.test(scopeText);
+
+  // Only use broad office-level mismatch signals for office races to avoid over-rejecting ballot-measure text.
+  const governorLike =
+    entry.race_type === "office" &&
+    /\bgovernor\b|\blieutenant governor\b|\battorney general\b|\bsecretary of state\b/.test(scopeText);
+  const countyLike =
+    entry.race_type === "office" &&
+    /\bcounty\b|\bsheriff\b|\bcounty commissioner\b|\bcounty clerk\b/.test(scopeText);
+  const cityLike =
+    entry.race_type === "office" &&
+    /\bcity\b|\bmayor\b|\bcity council\b|\balderman\b/.test(scopeText);
+  const schoolLike =
+    entry.race_type === "office" &&
+    /\bschool board\b|\bschool district\b|\bboard of education\b/.test(scopeText);
 
   if (districtType === "place" && (usSenate || usHouse || stateSenate || stateHouse || governorLike || countyLike || schoolLike)) {
     return "place scope contains clearly non-place race";
@@ -160,12 +180,15 @@ function validateScope(payload: ElectionEnrichedPayload): ValidationResult {
   const reasons: string[] = [];
   let severity: ValidationSeverity = "pass";
   const todayUtc = currentUtcDateYmd();
+  const oldestAllowedDate = utcDateYmdDaysAgo(1);
 
   for (const entry of payload.entries) {
-    if (entry.election_date < todayUtc) {
+    if (entry.election_date < oldestAllowedDate) {
       return {
         severity: "hard_fail",
-        reasons: [`election_date is in the past (${entry.election_date} < ${todayUtc}): ${entry.official_ballot_title}`],
+        reasons: [
+          `election_date is too far in the past (${entry.election_date} < ${oldestAllowedDate}, UTC 1-day grace): ${entry.official_ballot_title}`,
+        ],
       };
     }
 
@@ -335,8 +358,9 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
 
           if (validation.severity === "soft_fail") {
             if (softRetryCount === 0) {
+              const nextSoftRetryCount = softRetryCount + 1;
               const failureDebug = {
-                soft_retry_count: 1,
+                soft_retry_count: nextSoftRetryCount,
                 validation_feedback: validation.reasons,
                 soft_retry_at: new Date().toISOString(),
               };
@@ -365,7 +389,6 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
                 ingest_key: ingestKey,
                 item_type: STAGING_ITEM_TYPE_ELECTION,
                 run_id: row.run_id ?? "",
-                payload: JSON.stringify(parsed.payload),
               });
 
               await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);

@@ -2,7 +2,7 @@ import { upsertRecurringStateResourcesRefreshJobs } from "../scheduler/stateReso
 
 upsertRecurringStateResourcesRefreshJobs()
   .then(() => {
-    console.log("state_resources recurring scheduler upserted (monthly)");
+    console.log("state_resources recurring scheduler upserted (quarterly)");
   })
   .catch((error) => {
     console.error("state_resources recurring scheduler upsert failed:", error);

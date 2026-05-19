@@ -1,157 +1,55 @@
-# Database Deployment Notes (Current Approach)
+# Database Deployment (Tracked Migrations)
 
-This repo currently uses SQL files directly (no migration framework yet).
+This project now uses a lightweight migration tracker:
+- SQL files remain in `db/migrations/`
+- applied history is stored in DB table `schema_migrations`
+- runner script: `backend/src/scripts/dbMigrate.ts`
 
-## Why this matters
+## Commands
 
-Application code now depends on these `staging_items` columns for `state_resources` pipeline:
-- `schema_version`
-- `prompt_version`
-- `failure_debug`
-- `ai_raw_debug`
+From `backend/`:
 
-If those columns/constraints are missing in an environment, producer/validator/writer behavior will break.
+```bash
+npm run db:migrate:status
+npm run db:migrate
+npm run db:migrate:baseline
+```
+
+What each does:
+- `db:migrate:status`: shows applied/pending migration files.
+- `db:migrate`: applies pending SQL files in filename order and records each in `schema_migrations`.
+- `db:migrate:baseline`: marks all current migration files as already applied **without executing SQL**.
+
+## When to use baseline
+
+Use baseline once for an existing environment where migrations were applied manually in the past.
+
+Typical one-time flow for an existing DB:
+1. Ensure schema is already in expected state.
+2. Run `npm run db:migrate:baseline`.
+3. From then on, use only `npm run db:migrate`.
+
+Do **not** run baseline on fresh DBs.
+
+## Fresh environment
+
+For a fresh DB:
+
+```bash
+cd backend
+npm run db:migrate
+```
+
+This applies all migration files from `001_init.sql` onward and records them.
 
 ## Safe deploy order
 
-1. Apply database schema changes first.
+1. Apply DB migrations first.
 2. Deploy backend code second.
 3. Run pipeline jobs after both are in sync.
 
-## New environment (local, fresh staging, fresh prod clone)
+## Notes
 
-Run:
-
-```bash
-cd /path/to/voteApp
-psql -d <db_name> -f ./db/migrations/001_init.sql
-```
-
-## Existing environment with data (manual patch for this change)
-
-Run this before deploying backend code that expects `schema_version`:
-
-```sql
-ALTER TABLE staging_items
-  ADD COLUMN IF NOT EXISTS schema_version text;
-
-ALTER TABLE staging_items
-  ADD COLUMN IF NOT EXISTS prompt_version text;
-
-ALTER TABLE staging_items
-  ADD COLUMN IF NOT EXISTS failure_debug jsonb;
-
-ALTER TABLE staging_items
-  ADD COLUMN IF NOT EXISTS ai_raw_debug jsonb;
-
-ALTER TABLE staging_items
-  DROP CONSTRAINT IF EXISTS chk_staging_items_state_resources_metadata;
-
-ALTER TABLE staging_items
-  ADD CONSTRAINT chk_staging_items_state_resources_metadata
-  CHECK (
-    item_type <> 'state_resources'
-    OR (
-      schema_version IS NOT NULL AND btrim(schema_version) <> ''
-      AND prompt_version IS NOT NULL AND btrim(prompt_version) <> ''
-    )
-  );
-
-ALTER TABLE staging_items
-  DROP CONSTRAINT IF EXISTS chk_staging_items_failure_debug_json;
-
-ALTER TABLE staging_items
-  ADD CONSTRAINT chk_staging_items_failure_debug_json
-  CHECK (failure_debug IS NULL OR jsonb_typeof(failure_debug) = 'object');
-
-ALTER TABLE staging_items
-  DROP CONSTRAINT IF EXISTS chk_staging_items_ai_raw_debug_json;
-
-ALTER TABLE staging_items
-  ADD CONSTRAINT chk_staging_items_ai_raw_debug_json
-  CHECK (ai_raw_debug IS NULL OR jsonb_typeof(ai_raw_debug) = 'object');
-```
-
-To remove obsolete district columns in existing environments:
-
-```bash
-psql -d <db_name> -f ./db/migrations/005_drop_district_registered_voters_and_boundary_data.sql
-```
-
-To migrate district type values (`city` -> `place`, `school` -> `school_unified`) and enable school subtypes:
-
-```bash
-psql -d <db_name> -f ./db/migrations/006_migrate_district_type_place_and_school_variants.sql
-```
-
-To rename district identifier column and relax uniqueness safely for compact GEOIDs:
-
-```bash
-psql -d <db_name> -f ./db/migrations/007_rename_district_fips_code_to_geoid_compact.sql
-```
-
-If `008_rename_district_type_place_to_incorporated_place.sql` was applied, migrate district type back to `place`:
-
-```bash
-psql -d <db_name> -f ./db/migrations/009_rename_district_type_incorporated_place_to_place.sql
-```
-
-To add election-level sources JSON storage:
-
-```bash
-psql -d <db_name> -f ./db/migrations/010_add_elections_sources.sql
-```
-
-To enforce non-empty `elections.sources` arrays:
-
-```bash
-psql -d <db_name> -f ./db/migrations/011_enforce_non_empty_elections_sources.sql
-```
-
-To add state online-registration fields and required `state_resources.sources` keys:
-
-```bash
-psql -d <db_name> -f ./db/migrations/012_add_state_resources_online_registration_fields.sql
-```
-
-To migrate `state_resources.sources` citations to URL-only arrays (drop `source_name` storage):
-
-```bash
-psql -d <db_name> -f ./db/migrations/013_state_resources_sources_urls_only.sql
-```
-
-To enforce `online_registration_available` as strictly non-null (`true`/`false` only):
-
-```bash
-psql -d <db_name> -f ./db/migrations/014_enforce_state_resources_online_registration_available_not_null.sql
-```
-
-To remove `official_online_registration_link` and fix `voter_registration_url` to `https://vote.gov/register`:
-
-```bash
-psql -d <db_name> -f ./db/migrations/015_remove_state_resources_official_online_registration_link.sql
-```
-
-To add `same_day_registration_available` and require `sources.same_day_registration_available` citations:
-
-```bash
-psql -d <db_name> -f ./db/migrations/016_add_state_resources_same_day_registration_available.sql
-```
-
-To replace legacy `vote_by_mail_info` with structured mail-ballot fields:
-
-```bash
-psql -d <db_name> -f ./db/migrations/017_replace_vote_by_mail_with_structured_mail_fields.sql
-```
-
-## Pipeline stream expectations
-
-- Producer writes draft items to `staging:draft` only.
-- Validator reads only `staging:pending` (enriched items).
-- Writer reads only `staging:validated`.
-
-This avoids draft rows being rejected as if they were enriched payloads.
-
-## Later improvement
-
-Adopt a real migration tool (for example `node-pg-migrate`) and move schema changes to versioned migration files.
+- Migration runner enforces checksum consistency for already-applied files.
+- Do not edit historical migration files after they are applied in shared environments.
+- Add new migrations as new numbered files (e.g., `029_...sql`).

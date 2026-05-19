@@ -13,6 +13,17 @@ type ParseResult =
   | { ok: true; payload: ElectionEnrichedPayload }
   | { ok: false; reason: string };
 
+type ParseAiEntriesResult =
+  | {
+      ok: true;
+      payload: {
+        entries: ElectionEntryPayload[];
+        review_decision?: "approve" | "reject";
+        review_reason?: string;
+      };
+    }
+  | { ok: false; reason: string };
+
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
@@ -75,7 +86,10 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
   if (!isNonEmptyString(input.election_date) || !isIsoDate(input.election_date.trim())) {
     return null;
   }
-  if (!isNonEmptyString(input.description)) {
+  const impactText = isNonEmptyString(input.office_or_measure_impact)
+    ? input.office_or_measure_impact.trim()
+    : (isNonEmptyString(input.description) ? input.description.trim() : null);
+  if (!impactText) {
     return null;
   }
   if (typeof input.race_type !== "string" || !ELECTION_RACE_TYPES.includes(input.race_type as "office" | "ballot_measure")) {
@@ -89,9 +103,75 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
   return {
     official_ballot_title: input.official_ballot_title.trim(),
     election_date: input.election_date.trim(),
-    description: input.description.trim(),
+    // Canonical payload keeps historical "description" field; AI prompt now uses office_or_measure_impact.
+    description: impactText,
     race_type: input.race_type as "office" | "ballot_measure",
     sources,
+  };
+}
+
+function parseReviewDecisionAndReason(input: Record<string, unknown>): {
+  ok: true;
+  review_decision?: "approve" | "reject";
+  review_reason?: string;
+} | {
+  ok: false;
+  reason: string;
+} {
+  let reviewDecision: "approve" | "reject" | undefined;
+  if (input.review_decision !== undefined) {
+    if (input.review_decision !== "approve" && input.review_decision !== "reject") {
+      return { ok: false, reason: "payload.review_decision must be approve|reject when present" };
+    }
+    reviewDecision = input.review_decision;
+  }
+
+  let reviewReason: string | undefined;
+  if (input.review_reason !== undefined) {
+    if (!isNonEmptyString(input.review_reason)) {
+      return { ok: false, reason: "payload.review_reason must be non-empty string when present" };
+    }
+    reviewReason = input.review_reason.trim();
+  }
+
+  return {
+    ok: true,
+    ...(reviewDecision ? { review_decision: reviewDecision } : {}),
+    ...(reviewReason ? { review_reason: reviewReason } : {}),
+  };
+}
+
+export function parseAiElectionEntriesPayload(payload: unknown): ParseAiEntriesResult {
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+    return { ok: false, reason: "payload must be an object" };
+  }
+
+  const input = payload as Record<string, unknown>;
+  if (!Array.isArray(input.entries)) {
+    return { ok: false, reason: "payload.entries must be array" };
+  }
+
+  const entries: ElectionEntryPayload[] = [];
+  for (const row of input.entries) {
+    const parsed = parseEntry(row);
+    if (!parsed) {
+      return { ok: false, reason: "payload.entries contains invalid row" };
+    }
+    entries.push(parsed);
+  }
+
+  const review = parseReviewDecisionAndReason(input);
+  if (!review.ok) {
+    return review;
+  }
+
+  return {
+    ok: true,
+    payload: {
+      entries,
+      ...(review.review_decision ? { review_decision: review.review_decision } : {}),
+      ...(review.review_reason ? { review_reason: review.review_reason } : {}),
+    },
   };
 }
 
@@ -127,20 +207,9 @@ export function parseCanonicalElectionPayload(payload: unknown): ParseResult {
     entries.push(parsed);
   }
 
-  let reviewDecision: "approve" | "reject" | undefined;
-  if (input.review_decision !== undefined) {
-    if (input.review_decision !== "approve" && input.review_decision !== "reject") {
-      return { ok: false, reason: "payload.review_decision must be approve|reject when present" };
-    }
-    reviewDecision = input.review_decision;
-  }
-
-  let reviewReason: string | undefined;
-  if (input.review_reason !== undefined) {
-    if (!isNonEmptyString(input.review_reason)) {
-      return { ok: false, reason: "payload.review_reason must be non-empty string when present" };
-    }
-    reviewReason = input.review_reason.trim();
+  const review = parseReviewDecisionAndReason(input);
+  if (!review.ok) {
+    return review;
   }
 
   return {
@@ -151,8 +220,8 @@ export function parseCanonicalElectionPayload(payload: unknown): ParseResult {
       district_type: input.district_type,
       state: input.state.trim(),
       entries,
-      ...(reviewDecision ? { review_decision: reviewDecision } : {}),
-      ...(reviewReason ? { review_reason: reviewReason } : {}),
+      ...(review.review_decision ? { review_decision: review.review_decision } : {}),
+      ...(review.review_reason ? { review_reason: review.review_reason } : {}),
     },
   };
 }
