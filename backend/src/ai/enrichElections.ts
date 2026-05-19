@@ -182,11 +182,14 @@ async function callOpenAiResponsesWithWebSearch(
   | { ok: true; parsed: unknown; rawText: string; responsesDebug?: Record<string, unknown> }
   | ElectionEnrichmentFailure
 > {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  let controller: AbortController | null = null;
+  let timeout: ReturnType<typeof setTimeout> | null = null;
 
   try {
     await waitForProviderModelCooldown("openai", model);
+    const requestController = new AbortController();
+    controller = requestController;
+    timeout = setTimeout(() => requestController.abort(), timeoutMs);
 
     const requestBody: Record<string, unknown> = {
       model,
@@ -215,7 +218,7 @@ async function callOpenAiResponsesWithWebSearch(
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
-      signal: controller.signal,
+      signal: controller!.signal,
     });
 
     if (!response.ok) {
@@ -317,7 +320,9 @@ async function callOpenAiResponsesWithWebSearch(
       reason: `OpenAI responses request error: ${reason}`,
     };
   } finally {
-    clearTimeout(timeout);
+    if (timeout) {
+      clearTimeout(timeout);
+    }
   }
 }
 
@@ -328,11 +333,14 @@ async function callClaude(
   timeoutMs: number,
   webSearchMaxUses = 3
 ): Promise<{ ok: true; parsed: unknown; rawText: string } | ElectionEnrichmentFailure> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  let controller: AbortController | null = null;
+  let timeout: ReturnType<typeof setTimeout> | null = null;
 
   try {
     await waitForProviderModelCooldown("claude", model);
+    const requestController = new AbortController();
+    controller = requestController;
+    timeout = setTimeout(() => requestController.abort(), timeoutMs);
 
     const requestBody: Record<string, unknown> = {
       model,
@@ -359,7 +367,7 @@ async function callClaude(
       method: "POST",
       headers,
       body: JSON.stringify(requestBody),
-      signal: controller.signal,
+      signal: controller!.signal,
     });
 
     if (!response.ok) {
@@ -431,7 +439,9 @@ async function callClaude(
     }
     return { ok: false, retryable: true, errorCode: "TEMP_PROVIDER_ERROR", reason: `Claude request error: ${reason}` };
   } finally {
-    clearTimeout(timeout);
+    if (timeout) {
+      clearTimeout(timeout);
+    }
   }
 }
 
@@ -441,12 +451,15 @@ async function callGemini(
   apiKey: string,
   timeoutMs: number
 ): Promise<{ ok: true; parsed: unknown; rawText: string } | ElectionEnrichmentFailure> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  let controller: AbortController | null = null;
+  let timeout: ReturnType<typeof setTimeout> | null = null;
   const url = `https://generativelanguage.googleapis.com/v1/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
   try {
     await waitForProviderModelCooldown("gemini", model);
+    const requestController = new AbortController();
+    controller = requestController;
+    timeout = setTimeout(() => requestController.abort(), timeoutMs);
 
     const response = await fetch(url, {
       method: "POST",
@@ -455,7 +468,7 @@ async function callGemini(
         generationConfig: { temperature: 0 },
         contents: [{ role: "user", parts: [{ text: prompt }] }],
       }),
-      signal: controller.signal,
+      signal: controller!.signal,
     });
 
     if (!response.ok) {
@@ -524,7 +537,9 @@ async function callGemini(
     }
     return { ok: false, retryable: true, errorCode: "TEMP_PROVIDER_ERROR", reason: `Gemini request error: ${reason}` };
   } finally {
-    clearTimeout(timeout);
+    if (timeout) {
+      clearTimeout(timeout);
+    }
   }
 }
 

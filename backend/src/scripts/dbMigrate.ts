@@ -167,15 +167,26 @@ async function main(): Promise<void> {
         throw new Error("Cannot baseline: schema_migrations is not empty. Use --status and run normal apply.");
       }
 
-      for (const migration of migrations) {
-        await client.query(
-          `
-            INSERT INTO schema_migrations (filename, checksum)
-            VALUES ($1, $2)
-            ON CONFLICT (filename) DO NOTHING
-          `,
-          [migration.filename, migration.checksum]
-        );
+      await client.query("BEGIN");
+      try {
+        for (const migration of migrations) {
+          await client.query(
+            `
+              INSERT INTO schema_migrations (filename, checksum)
+              VALUES ($1, $2)
+              ON CONFLICT (filename) DO NOTHING
+            `,
+            [migration.filename, migration.checksum]
+          );
+        }
+        await client.query("COMMIT");
+      } catch (error) {
+        try {
+          await client.query("ROLLBACK");
+        } catch {
+          // best-effort rollback for baseline
+        }
+        throw error;
       }
 
       console.log(

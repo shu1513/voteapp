@@ -43,6 +43,7 @@ type ValidatorOptions = {
   once?: boolean;
   batchSize?: number;
   blockMs?: number;
+  reclaimMinIdleMs?: number;
 };
 
 type ValidationResult =
@@ -895,7 +896,8 @@ async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Prom
 async function reclaimPendingEntries(
   redis: ReturnType<typeof createClient>,
   consumerName: string,
-  batchSize: number
+  batchSize: number,
+  reclaimMinIdleMs: number
 ): Promise<Array<{ id: string; message: Record<string, string> }>> {
   const reclaimed: Array<{ id: string; message: Record<string, string> }> = [];
   let cursor = "0-0";
@@ -905,7 +907,7 @@ async function reclaimPendingEntries(
       STAGING_PENDING_STREAM,
       STAGING_STATE_RESOURCES_VALIDATOR_GROUP,
       consumerName,
-      RECLAIM_MIN_IDLE_MS,
+      reclaimMinIdleMs,
       cursor,
       { COUNT: batchSize }
     );
@@ -1187,6 +1189,7 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
     once = false,
     batchSize = 20,
     blockMs = 5000,
+    reclaimMinIdleMs = RECLAIM_MIN_IDLE_MS,
   } = options;
 
   const env = getPipelineEnv();
@@ -1314,7 +1317,12 @@ export async function runStateResourcesValidator(options: ValidatorOptions = {})
     let keepRunning = true;
 
     while (keepRunning) {
-      const reclaimed = await reclaimPendingEntries(redis, consumerName, batchSize);
+      const reclaimed = await reclaimPendingEntries(
+        redis,
+        consumerName,
+        batchSize,
+        reclaimMinIdleMs
+      );
       if (reclaimed.length > 0) {
         await handleEntries(reclaimed);
       }

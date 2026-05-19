@@ -18,7 +18,7 @@ export const STATE_RESOURCES_PRE_ELECTION_WEEKLY_SCHEDULER_ID = "state_resources
 export type StateResourcesRefreshJobData = {
   dryRun?: boolean;
   force?: boolean;
-  triggeredBy?: "annual" | "monthly" | "manual" | "unknown";
+  triggeredBy?: "annual" | "monthly" | "quarterly" | "manual" | "unknown";
   requestedAt?: string;
 };
 
@@ -44,6 +44,8 @@ type SchedulerRuntimeConfig = {
   batchSize: number;
   blockMs: number;
 };
+
+const DRAIN_RECLAIM_MIN_IDLE_MS = 30_000;
 
 type StateResourceStageCounts = {
   total: number;
@@ -180,11 +182,13 @@ async function runOneDrainRound(config: SchedulerRuntimeConfig): Promise<void> {
     once: true,
     batchSize: config.batchSize,
     blockMs: config.blockMs,
+    reclaimMinIdleMs: DRAIN_RECLAIM_MIN_IDLE_MS,
   });
   await runStateResourcesWriter({
     once: true,
     batchSize: config.batchSize,
     blockMs: config.blockMs,
+    reclaimMinIdleMs: DRAIN_RECLAIM_MIN_IDLE_MS,
   });
 }
 
@@ -273,7 +277,7 @@ export async function upsertRecurringStateResourcesRefreshJobs(
         data: {
           dryRun: Boolean(jobData.dryRun),
           force: Boolean(jobData.force),
-          triggeredBy: "monthly",
+          triggeredBy: "quarterly",
         },
         opts: defaultJobOptions(),
       }

@@ -207,12 +207,12 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
             } finally {
               client.release();
             }
-          } else if (row.status !== "written") {
+          } else if (row.status !== "written" && row.status !== "no_results") {
             await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
             continue;
           }
 
-          // If DB is already written (including reclaimed post-commit failures), re-emit handoff and ack.
+          // If DB is already persisted (including reclaimed post-commit failures), re-emit handoff and ack.
           await redis.xAdd(STAGING_WRITTEN_STREAM, "*", {
             ingest_key: ingestKey,
             item_type: STAGING_ITEM_TYPE_ELECTION,
