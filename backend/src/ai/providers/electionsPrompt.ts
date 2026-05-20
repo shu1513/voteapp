@@ -147,7 +147,7 @@ ${entryShapeLines}
       ? [
           "",
           "Starting reference URLs (use these first, then expand research as needed):",
-          ...seedUrls.map((url) => `- ${url}`),
+          ...seedUrls.map((url) => `- ${escapeJson(url)}`),
         ]
       : []),
     "",
