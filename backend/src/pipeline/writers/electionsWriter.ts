@@ -10,6 +10,8 @@ import {
 } from "../../config/electionsPipeline.js";
 import { parseCanonicalElectionPayload } from "../../contracts/electionPayloadContract.js";
 import type { ElectionEnrichedPayload } from "../../types/election.js";
+import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
+import type { ElectionContestFamily } from "../../ai/providers/electionsPrompt.js";
 
 type WriterOptions = {
   once?: boolean;
@@ -22,6 +24,7 @@ type StagingRow = {
   payload: unknown;
   status: string;
   run_id: string | null;
+  ai_raw_debug: unknown;
 };
 
 // Writing elections + downstream publish can take time; only reclaim clearly stale pending entries.
@@ -48,6 +51,7 @@ async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow 
   const result = await pool.query<StagingRow>(
     `
       SELECT ingest_key, payload, status, run_id
+           , ai_raw_debug
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -89,10 +93,51 @@ async function reclaimPendingEntries(
   return reclaimed;
 }
 
+function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionContestFamily, string[]>> {
+  if (typeof aiRawDebug !== "object" || aiRawDebug === null || Array.isArray(aiRawDebug)) {
+    return {};
+  }
+  const record = aiRawDebug as Record<string, unknown>;
+  const raw = record.family_source_urls;
+  if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
+    return {};
+  }
+
+  const families: ElectionContestFamily[] = [
+    "all",
+    "non_judicial_office",
+    "judicial_office",
+    "ballot_measure",
+  ];
+  const result: Partial<Record<ElectionContestFamily, string[]>> = {};
+  const sourceRecord = raw as Record<string, unknown>;
+
+  for (const family of families) {
+    const list = sourceRecord[family];
+    if (!Array.isArray(list) || list.length === 0) {
+      continue;
+    }
+    const urls = [
+      ...new Set(
+        list
+          .filter((item): item is string => typeof item === "string")
+          .map((item) => normalizeHttpUrl(item))
+          .filter((item): item is string => Boolean(item))
+      ),
+    ];
+    if (urls.length > 0) {
+      result[family] = urls;
+    }
+  }
+
+  return result;
+}
+
 async function writeElectionsForDistrict(
   client: PoolClient,
   ingestKey: string,
-  payload: ElectionEnrichedPayload
+  payload: ElectionEnrichedPayload,
+  familySeedUrls: Partial<Record<ElectionContestFamily, string[]>>
 ): Promise<boolean> {
   await client.query("BEGIN");
   try {
@@ -142,6 +187,41 @@ async function writeElectionsForDistrict(
           entry.race_type,
           entry.election_stage ?? null,
           JSON.stringify(entry.sources),
+        ]
+      );
+    }
+
+    const seedRows: Array<{ family: string; url: string }> = [];
+    const seenSeedKeys = new Set<string>();
+    for (const [family, urls] of Object.entries(familySeedUrls)) {
+      for (const url of urls ?? []) {
+        const key = `${family}::${url}`;
+        if (seenSeedKeys.has(key)) {
+          continue;
+        }
+        seenSeedKeys.add(key);
+        seedRows.push({ family, url });
+      }
+    }
+
+    if (seedRows.length > 0) {
+      await client.query(
+        `
+          INSERT INTO election_seed_urls (district_id, contest_family, url, last_seen_at)
+          SELECT
+            $1::uuid,
+            seed.contest_family,
+            seed.url,
+            now()
+          FROM unnest($2::text[], $3::text[]) AS seed(contest_family, url)
+          ON CONFLICT (district_id, contest_family, url) DO UPDATE
+          SET last_seen_at = EXCLUDED.last_seen_at,
+              updated_at = now()
+        `,
+        [
+          payload.district_id,
+          seedRows.map((row) => row.family),
+          seedRows.map((row) => row.url),
         ]
       );
     }
@@ -200,9 +280,10 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
           }
 
           if (row.status === "validated") {
+            const familySeedUrls = extractFamilySeedUrls(row.ai_raw_debug);
             const client = await pool.connect();
             try {
-              const wrote = await writeElectionsForDistrict(client, ingestKey, parsed.payload);
+              const wrote = await writeElectionsForDistrict(client, ingestKey, parsed.payload, familySeedUrls);
               if (!wrote) {
                 await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
                 continue;

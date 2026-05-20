@@ -100,6 +100,8 @@ export type EnrichElectionsInput = {
   promptVersion: string;
   softRetryCount: number;
   reviewFeedback: string[];
+  seedUrls?: readonly string[];
+  seedUrlsByFamily?: Partial<Record<ElectionContestFamily, readonly string[]>>;
 };
 
 export type EnrichElectionsConfig = {
@@ -919,15 +921,21 @@ export async function enrichElections(
   const reviewReasons: string[] = [];
   const providerModelLabels: string[] = [];
   const providerFamilyLabels: string[] = [];
+  const familySourceUrls: Partial<Record<ElectionContestFamily, string[]>> = {};
   let primaryProvider: AiProvider | null = null;
   let primaryModel: string | null = null;
 
   for (const family of familyPlan) {
+    const familySeedUrls =
+      input.seedUrlsByFamily?.[family] ??
+      (family === "all" ? input.seedUrls : undefined) ??
+      [];
     const prompt = buildElectionsPrompt({
       draft: input.draft,
       softRetryCount: input.softRetryCount,
       reviewFeedbackLines: input.reviewFeedback,
       contestFamily: family,
+      seedUrls: familySeedUrls,
     });
     const outcome = await runPromptWithCandidates(prompt, family, config, candidates);
     if (!outcome.ok) {
@@ -947,6 +955,8 @@ export async function enrichElections(
     mergedEntries.push(...outcome.entries);
     providerModelLabels.push(`${outcome.provider}:${outcome.model}`);
     providerFamilyLabels.push(`${outcome.provider}:${outcome.model}:${family}`);
+    const dedupedFamilySources = [...new Set(outcome.entries.flatMap((entry) => entry.sources))];
+    familySourceUrls[family] = dedupedFamilySources;
     if (!primaryProvider) {
       primaryProvider = outcome.provider;
     }
@@ -986,6 +996,7 @@ export async function enrichElections(
       providers: providerFamilyLabels,
       provider_models: providerModelLabels,
       family_debug: mergedDebug,
+      family_source_urls: familySourceUrls,
     },
   };
 }

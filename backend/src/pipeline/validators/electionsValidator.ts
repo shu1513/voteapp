@@ -176,6 +176,24 @@ function isSoftScopeAmbiguous(districtType: ElectionDistrictType, entry: Electio
   return null;
 }
 
+function ballotMeasureTitleQualityIssue(entry: ElectionEntryPayload): string | null {
+  if (entry.race_type !== "ballot_measure") {
+    return null;
+  }
+
+  const title = entry.official_ballot_title.trim();
+  const isQuestionLike =
+    title.includes("?") ||
+    /\bbe adopted\b/i.test(title) ||
+    /\bdo you\b/i.test(title);
+  const isTooLong = title.length > 140;
+
+  if (isQuestionLike || isTooLong) {
+    return "ballot_measure title looks like question/description text instead of official measure label/title";
+  }
+  return null;
+}
+
 function validateScope(payload: ElectionEnrichedPayload): ValidationResult {
   const reasons: string[] = [];
   let severity: ValidationSeverity = "pass";
@@ -204,6 +222,12 @@ function validateScope(payload: ElectionEnrichedPayload): ValidationResult {
     if (softReason) {
       severity = "soft_fail";
       reasons.push(`${softReason}: ${entry.official_ballot_title}`);
+    }
+
+    const titleQualityReason = ballotMeasureTitleQualityIssue(entry);
+    if (titleQualityReason) {
+      severity = "soft_fail";
+      reasons.push(`${titleQualityReason}: ${entry.official_ballot_title}`);
     }
   }
 
