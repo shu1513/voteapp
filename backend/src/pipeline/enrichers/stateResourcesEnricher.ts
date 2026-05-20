@@ -617,14 +617,44 @@ function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCand
   return chain;
 }
 
-function shouldTrySecondPromptForModel(result: { errorCode: string }): boolean {
-  // For callable models, always run a second in-model retry (citation_repair) with retry feedback.
-  // Only skip when the provider/model itself is fundamentally not callable.
-  return (
-    result.errorCode !== "CONFIGURATION_ERROR" &&
-    result.errorCode !== "UNSUPPORTED_PROVIDER" &&
-    result.errorCode !== "RATE_LIMIT"
-  );
+function isCitationUrlFailure(result: {
+  errorCode: string;
+  reason: string;
+  failureDebug?: Record<string, unknown>;
+}): boolean {
+  if (result.errorCode !== "SCHEMA_MISMATCH") {
+    return false;
+  }
+
+  if (isObjectRecord(result.failureDebug)) {
+    const failedUrls = result.failureDebug.failed_citation_urls;
+    if (Array.isArray(failedUrls) && failedUrls.length > 0) {
+      return true;
+    }
+    const verificationFailures = result.failureDebug.citation_verification_failures;
+    if (Array.isArray(verificationFailures) && verificationFailures.length > 0) {
+      return true;
+    }
+  }
+
+  return result.reason.toLowerCase().includes("citation url");
+}
+
+function shouldTrySecondPromptForModel(result: {
+  errorCode: string;
+  reason: string;
+  failureDebug?: Record<string, unknown>;
+}): boolean {
+  // Retry same model once only for citation URL verification failures.
+  // For non-URL failures, move directly to next model.
+  if (
+    result.errorCode === "CONFIGURATION_ERROR" ||
+    result.errorCode === "UNSUPPORTED_PROVIDER" ||
+    result.errorCode === "RATE_LIMIT"
+  ) {
+    return false;
+  }
+  return isCitationUrlFailure(result);
 }
 
 function formatFallbackFailureReason(
@@ -763,9 +793,10 @@ async function enrichGroupWithCandidates(
   const promptVariants: PromptVariant[] = ["default", "citation_repair"];
   const attempts: EnrichmentAttemptFailure[] = [];
   let lastFailure: Exclude<EnrichStateResourceGroupResult, { ok: true }> | null = null;
+  let cumulativeRetryFeedback: RetryFeedback | null = input.retryFeedback ?? null;
 
   for (const candidate of chain) {
-    let sameModelRetryFeedback: RetryFeedback | null = null;
+    let sameModelRetryFeedback: RetryFeedback | null = cumulativeRetryFeedback;
 
     for (let variantIndex = 0; variantIndex < promptVariants.length; variantIndex += 1) {
       const promptVariant = promptVariants[variantIndex];
@@ -779,7 +810,7 @@ async function enrichGroupWithCandidates(
         {
           ...input,
           promptVariant,
-          retryFeedback: variantIndex === 0 ? null : sameModelRetryFeedback,
+          retryFeedback: sameModelRetryFeedback,
         },
         candidateConfig
       );
@@ -787,7 +818,10 @@ async function enrichGroupWithCandidates(
         return { result, attempts };
       }
       lastFailure = result;
-      sameModelRetryFeedback = mergeRetryFeedbackForSamePass(sameModelRetryFeedback, result);
+      if (isCitationUrlFailure(result)) {
+        sameModelRetryFeedback = mergeRetryFeedbackForSamePass(sameModelRetryFeedback, result);
+        cumulativeRetryFeedback = sameModelRetryFeedback;
+      }
 
       attempts.push({
         candidate,

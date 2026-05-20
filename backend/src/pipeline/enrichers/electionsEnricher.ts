@@ -68,11 +68,66 @@ function parseReviewFeedback(failureDebug: unknown): string[] {
   if (!isObjectRecord(failureDebug)) {
     return [];
   }
-  const raw = failureDebug.validation_feedback;
-  if (!Array.isArray(raw)) {
-    return [];
+  const validationFeedback = new Set<string>();
+  const citationFeedback = new Set<string>();
+  const MAX_FEEDBACK_LINES = 15;
+  const MAX_CITATION_LINES = 5;
+
+  const rawValidationFeedback = failureDebug.validation_feedback;
+  if (Array.isArray(rawValidationFeedback)) {
+    for (const item of rawValidationFeedback) {
+      if (typeof item === "string" && item.trim().length > 0) {
+        validationFeedback.add(item.trim());
+      }
+    }
   }
-  return raw.filter((item): item is string => typeof item === "string" && item.trim().length > 0).map((item) => item.trim());
+
+  const rawCitationFailures = failureDebug.citation_verification_failures;
+  if (Array.isArray(rawCitationFailures)) {
+    for (const item of rawCitationFailures) {
+      if (!isObjectRecord(item)) {
+        continue;
+      }
+      const url = typeof item.url === "string" ? item.url.trim() : "";
+      const reason = typeof item.reason === "string" ? item.reason.trim() : "";
+      if (!url || !reason) {
+        continue;
+      }
+      citationFeedback.add(`Source URL failed verification: ${url} (${reason})`);
+    }
+  }
+
+  const rawFailedCitationUrls = failureDebug.failed_citation_urls;
+  if (Array.isArray(rawFailedCitationUrls)) {
+    for (const item of rawFailedCitationUrls) {
+      if (typeof item !== "string") {
+        continue;
+      }
+      const url = item.trim();
+      if (!url) {
+        continue;
+      }
+      citationFeedback.add(`Source URL failed verification: ${url}`);
+    }
+  }
+
+  const result: string[] = [];
+
+  for (const line of citationFeedback) {
+    if (result.length >= MAX_CITATION_LINES) {
+      break;
+    }
+    result.push(line);
+  }
+
+  for (const line of validationFeedback) {
+    if (result.length >= MAX_FEEDBACK_LINES) {
+      break;
+    }
+    result.push(line);
+  }
+
+  return result;
 }
 
 function parseDraftPayload(payload: unknown): ElectionDraftPayload | null {

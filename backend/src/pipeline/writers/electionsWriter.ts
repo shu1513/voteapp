@@ -3,6 +3,8 @@ import { createClient } from "redis";
 
 import { getPipelineEnv } from "../../config/env.js";
 import {
+  STAGING_BALLOT_MEASURE_DRAFT_STREAM,
+  STAGING_ITEM_TYPE_BALLOT_MEASURE,
   STAGING_ELECTIONS_WRITER_GROUP,
   STAGING_ITEM_TYPE_ELECTION,
   STAGING_VALIDATED_STREAM,
@@ -27,9 +29,33 @@ type StagingRow = {
   ai_raw_debug: unknown;
 };
 
+type WriteResult = {
+  wrote: boolean;
+  ballotMeasureElectionIds: string[];
+};
+
 // Writing elections + downstream publish can take time; only reclaim clearly stale pending entries.
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
+const BALLOT_MEASURE_EMIT_MARKER_PREFIX = "staging:ballot_measure_emitted:";
+const EMIT_BALLOT_MEASURE_DRAFT_IF_NEEDED_LUA = `
+if redis.call("EXISTS", KEYS[2]) == 1 then
+  return 0
+end
+redis.call(
+  "XADD",
+  KEYS[1],
+  "*",
+  "election_id",
+  ARGV[1],
+  "item_type",
+  ARGV[2],
+  "run_id",
+  ARGV[3]
+)
+redis.call("SET", KEYS[2], ARGV[4])
+return 1
+`;
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
@@ -133,12 +159,63 @@ function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionCont
   return result;
 }
 
+async function resolveBallotMeasureElectionIds(
+  pool: Pool,
+  payload: ElectionEnrichedPayload
+): Promise<string[]> {
+  const ballotEntries = payload.entries.filter((entry) => entry.race_type === "ballot_measure");
+  if (ballotEntries.length === 0) {
+    return [];
+  }
+
+  const titles = ballotEntries.map((entry) => entry.official_ballot_title);
+  const dates = ballotEntries.map((entry) => entry.election_date);
+
+  const result = await pool.query<{ id: string }>(
+    `
+      SELECT e.id
+      FROM public.elections AS e
+      JOIN unnest($2::text[], $3::date[]) AS m(official_ballot_title, election_date)
+        ON e.official_ballot_title = m.official_ballot_title
+       AND e.election_date = m.election_date
+      WHERE e.district_id = $1
+        AND e.race_type = 'ballot_measure'
+    `,
+    [payload.district_id, titles, dates]
+  );
+
+  return [...new Set(result.rows.map((row) => row.id))];
+}
+
+async function enqueueBallotMeasureDrafts(
+  redis: ReturnType<typeof createClient>,
+  electionIds: readonly string[],
+  runId: string | null
+): Promise<void> {
+  const emittedAt = new Date().toISOString();
+  const uniqueElectionIds = [...new Set(electionIds)];
+  for (const electionId of uniqueElectionIds) {
+    const markerKey = `${BALLOT_MEASURE_EMIT_MARKER_PREFIX}${electionId}`;
+    await redis.sendCommand([
+      "EVAL",
+      EMIT_BALLOT_MEASURE_DRAFT_IF_NEEDED_LUA,
+      "2",
+      STAGING_BALLOT_MEASURE_DRAFT_STREAM,
+      markerKey,
+      electionId,
+      STAGING_ITEM_TYPE_BALLOT_MEASURE,
+      runId ?? "",
+      emittedAt,
+    ]);
+  }
+}
+
 async function writeElectionsForDistrict(
   client: PoolClient,
   ingestKey: string,
   payload: ElectionEnrichedPayload,
   familySeedUrls: Partial<Record<ElectionContestFamily, string[]>>
-): Promise<boolean> {
+): Promise<WriteResult> {
   await client.query("BEGIN");
   try {
     const nextStatus = payload.entries.length === 0 ? "no_results" : "written";
@@ -157,11 +234,12 @@ async function writeElectionsForDistrict(
     );
     if (statusUpdate.rowCount !== 1) {
       await client.query("ROLLBACK");
-      return false;
+      return { wrote: false, ballotMeasureElectionIds: [] };
     }
 
+    const ballotMeasureElectionIds: string[] = [];
     for (const entry of payload.entries) {
-      await client.query(
+      const upsertResult = await client.query<{ id: string; race_type: string }>(
         `
           INSERT INTO public.elections (
             district_id,
@@ -178,6 +256,7 @@ async function writeElectionsForDistrict(
             election_stage = COALESCE(EXCLUDED.election_stage, elections.election_stage),
             sources = EXCLUDED.sources,
             updated_at = now()
+          RETURNING id, race_type
         `,
         [
           payload.district_id,
@@ -189,6 +268,10 @@ async function writeElectionsForDistrict(
           JSON.stringify(entry.sources),
         ]
       );
+      const row = upsertResult.rows?.[0];
+      if (row?.race_type === "ballot_measure") {
+        ballotMeasureElectionIds.push(row.id);
+      }
     }
 
     const seedRows: Array<{ family: string; url: string }> = [];
@@ -227,7 +310,10 @@ async function writeElectionsForDistrict(
     }
 
     await client.query("COMMIT");
-    return true;
+    return {
+      wrote: true,
+      ballotMeasureElectionIds,
+    };
   } catch (error) {
     await client.query("ROLLBACK");
     throw error;
@@ -281,19 +367,41 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
 
           if (row.status === "validated") {
             const familySeedUrls = extractFamilySeedUrls(row.ai_raw_debug);
+            let ballotMeasureElectionIds: string[] = [];
             const client = await pool.connect();
             try {
-              const wrote = await writeElectionsForDistrict(client, ingestKey, parsed.payload, familySeedUrls);
-              if (!wrote) {
+              const writeResult = await writeElectionsForDistrict(
+                client,
+                ingestKey,
+                parsed.payload,
+                familySeedUrls
+              );
+              if (!writeResult.wrote) {
+                const latestRow = await getStagingRow(pool, ingestKey);
+                if (latestRow?.status === "written" || latestRow?.status === "no_results") {
+                  const recoveredIds = await resolveBallotMeasureElectionIds(pool, parsed.payload);
+                  await enqueueBallotMeasureDrafts(redis, recoveredIds, latestRow.run_id);
+                  await redis.xAdd(STAGING_WRITTEN_STREAM, "*", {
+                    ingest_key: ingestKey,
+                    item_type: STAGING_ITEM_TYPE_ELECTION,
+                    run_id: latestRow.run_id ?? "",
+                    payload: JSON.stringify(parsed.payload),
+                  });
+                }
                 await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
                 continue;
               }
+              ballotMeasureElectionIds = writeResult.ballotMeasureElectionIds;
             } finally {
               client.release();
             }
+            await enqueueBallotMeasureDrafts(redis, ballotMeasureElectionIds, row.run_id);
           } else if (row.status !== "written" && row.status !== "no_results") {
             await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
             continue;
+          } else {
+            const ballotMeasureElectionIds = await resolveBallotMeasureElectionIds(pool, parsed.payload);
+            await enqueueBallotMeasureDrafts(redis, ballotMeasureElectionIds, row.run_id);
           }
 
           // If DB is already persisted (including reclaimed post-commit failures), re-emit handoff and ack.

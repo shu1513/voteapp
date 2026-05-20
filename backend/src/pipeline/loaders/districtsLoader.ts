@@ -1072,7 +1072,7 @@ async function deleteDistrict(
         )
         AND NOT EXISTS (
           SELECT 1
-          FROM public.propositions AS p
+          FROM public.ballot_measures AS p
           WHERE p.district_id = d.id
         )
         AND NOT EXISTS (
