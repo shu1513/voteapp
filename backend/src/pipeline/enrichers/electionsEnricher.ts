@@ -68,13 +68,16 @@ function parseReviewFeedback(failureDebug: unknown): string[] {
   if (!isObjectRecord(failureDebug)) {
     return [];
   }
-  const feedback = new Set<string>();
+  const validationFeedback = new Set<string>();
+  const citationFeedback = new Set<string>();
+  const MAX_FEEDBACK_LINES = 15;
+  const MAX_CITATION_LINES = 5;
 
   const rawValidationFeedback = failureDebug.validation_feedback;
   if (Array.isArray(rawValidationFeedback)) {
     for (const item of rawValidationFeedback) {
       if (typeof item === "string" && item.trim().length > 0) {
-        feedback.add(item.trim());
+        validationFeedback.add(item.trim());
       }
     }
   }
@@ -90,7 +93,7 @@ function parseReviewFeedback(failureDebug: unknown): string[] {
       if (!url || !reason) {
         continue;
       }
-      feedback.add(`Source URL failed verification: ${url} (${reason})`);
+      citationFeedback.add(`Source URL failed verification: ${url} (${reason})`);
     }
   }
 
@@ -104,11 +107,27 @@ function parseReviewFeedback(failureDebug: unknown): string[] {
       if (!url) {
         continue;
       }
-      feedback.add(`Source URL failed verification: ${url}`);
+      citationFeedback.add(`Source URL failed verification: ${url}`);
     }
   }
 
-  return [...feedback].slice(0, 15);
+  const result: string[] = [];
+
+  for (const line of citationFeedback) {
+    if (result.length >= MAX_CITATION_LINES) {
+      break;
+    }
+    result.push(line);
+  }
+
+  for (const line of validationFeedback) {
+    if (result.length >= MAX_FEEDBACK_LINES) {
+      break;
+    }
+    result.push(line);
+  }
+
+  return result;
 }
 
 function parseDraftPayload(payload: unknown): ElectionDraftPayload | null {

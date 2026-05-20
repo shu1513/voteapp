@@ -370,7 +370,26 @@ type CitationVerificationFailure = {
   entry_title: string;
   url: string;
   reason: string;
+  failureType: "transient" | "permanent";
 };
+
+function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
+  const normalized = reason.toLowerCase();
+
+  if (
+    normalized.includes("timed out") ||
+    normalized.includes("fetch failed") ||
+    normalized.includes("status 500") ||
+    normalized.includes("status 502") ||
+    normalized.includes("status 503") ||
+    normalized.includes("status 504") ||
+    normalized.includes("status 429")
+  ) {
+    return "transient";
+  }
+
+  return "permanent";
+}
 
 async function verifyUniqueElectionSourceUrls(
   urls: string[],
@@ -413,7 +432,18 @@ async function verifyUniqueElectionSourceUrls(
 async function verifyElectionEntrySources(
   entries: ElectionEntryPayload[],
   timeoutMs: number
-): Promise<{ ok: true } | { ok: false; reason: string; failedCitationUrls: string[]; failures: CitationVerificationFailure[] }> {
+): Promise<
+  | { ok: true }
+  | {
+      ok: false;
+      reason: string;
+      retryable: boolean;
+      failedCitationUrls: string[];
+      failures: CitationVerificationFailure[];
+      permanentFailures: CitationVerificationFailure[];
+      transientFailures: CitationVerificationFailure[];
+    }
+> {
   const uniqueUrls = [...new Set(entries.flatMap((entry) => entry.sources))];
   const verificationByUrl = await verifyUniqueElectionSourceUrls(uniqueUrls, timeoutMs);
   const failures: CitationVerificationFailure[] = [];
@@ -426,14 +456,17 @@ async function verifyElectionEntrySources(
           entry_title: entry.official_ballot_title,
           url: sourceUrl,
           reason: "citation URL verification did not return a result",
+          failureType: "transient",
         });
         continue;
       }
       if (!verification.ok) {
+        const failureType = classifyCitationVerificationFailure(verification.reason);
         failures.push({
           entry_title: entry.official_ballot_title,
           url: sourceUrl,
           reason: verification.reason,
+          failureType,
         });
       }
     }
@@ -443,17 +476,27 @@ async function verifyElectionEntrySources(
     return { ok: true };
   }
 
-  const failedCitationUrls = [...new Set(failures.map((failure) => failure.url))].slice(0, 100);
-  const reasonPreview = failures
+  const permanentFailures = failures.filter((failure) => failure.failureType === "permanent");
+  const transientFailures = failures.filter((failure) => failure.failureType === "transient");
+  const retryable = permanentFailures.length === 0 && transientFailures.length > 0;
+  const reasonFailures = retryable ? transientFailures : permanentFailures;
+  const failedCitationUrls = [...new Set(permanentFailures.map((failure) => failure.url))].slice(0, 100);
+  const reasonPreview = reasonFailures
     .slice(0, 3)
     .map((failure) => `${failure.entry_title} (${failure.url}): ${failure.reason}`)
     .join("; ");
-  const extraCount = failures.length > 3 ? ` (+${failures.length - 3} more)` : "";
+  const extraCount = reasonFailures.length > 3 ? ` (+${reasonFailures.length - 3} more)` : "";
+  const reasonPrefix = retryable
+    ? `citation URL verification had transient failures for ${transientFailures.length} citation(s)`
+    : `citation URL(s) could not be verified for ${permanentFailures.length} citation(s)`;
   return {
     ok: false,
-    reason: `citation URL(s) could not be verified for ${failures.length} citation(s): ${reasonPreview}${extraCount}`,
+    reason: `${reasonPrefix}: ${reasonPreview}${extraCount}`,
+    retryable,
     failedCitationUrls,
     failures,
+    permanentFailures,
+    transientFailures,
   };
 }
 
@@ -983,17 +1026,19 @@ async function runPromptWithCandidates(
           provider: candidate.provider,
           model: candidate.model,
           reason: citationVerification.reason,
-          errorCode: "SCHEMA_MISMATCH",
-          retryable: false,
+          errorCode: citationVerification.retryable ? "TEMP_PROVIDER_ERROR" : "SCHEMA_MISMATCH",
+          retryable: citationVerification.retryable,
           failureDebug: {
             failed_citation_urls: citationVerification.failedCitationUrls,
             citation_verification_failures: citationVerification.failures,
+            permanent_citation_verification_failures: citationVerification.permanentFailures,
+            transient_citation_verification_failures: citationVerification.transientFailures,
           },
         });
 
         const canRetrySameModel = attempt === 0;
-        if (canRetrySameModel) {
-          const newFeedbackLines = citationVerification.failures.slice(0, 10).map(
+        if (canRetrySameModel && !citationVerification.retryable) {
+          const newFeedbackLines = citationVerification.permanentFailures.slice(0, 10).map(
             (failure) =>
               `Do not use or cite this URL for "${failure.entry_title}": ${failure.url} (${failure.reason})`
           );

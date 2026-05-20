@@ -37,6 +37,25 @@ type WriteResult = {
 // Writing elections + downstream publish can take time; only reclaim clearly stale pending entries.
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
+const BALLOT_MEASURE_EMIT_MARKER_PREFIX = "staging:ballot_measure_emitted:";
+const EMIT_BALLOT_MEASURE_DRAFT_IF_NEEDED_LUA = `
+if redis.call("EXISTS", KEYS[2]) == 1 then
+  return 0
+end
+redis.call(
+  "XADD",
+  KEYS[1],
+  "*",
+  "election_id",
+  ARGV[1],
+  "item_type",
+  ARGV[2],
+  "run_id",
+  ARGV[3]
+)
+redis.call("SET", KEYS[2], ARGV[4])
+return 1
+`;
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
@@ -160,6 +179,7 @@ async function resolveBallotMeasureElectionIds(
         ON e.official_ballot_title = m.official_ballot_title
        AND e.election_date = m.election_date
       WHERE e.district_id = $1
+        AND e.race_type = 'ballot_measure'
     `,
     [payload.district_id, titles, dates]
   );
@@ -172,13 +192,21 @@ async function enqueueBallotMeasureDrafts(
   electionIds: readonly string[],
   runId: string | null
 ): Promise<void> {
+  const emittedAt = new Date().toISOString();
   const uniqueElectionIds = [...new Set(electionIds)];
   for (const electionId of uniqueElectionIds) {
-    await redis.xAdd(STAGING_BALLOT_MEASURE_DRAFT_STREAM, "*", {
-      election_id: electionId,
-      item_type: STAGING_ITEM_TYPE_BALLOT_MEASURE,
-      run_id: runId ?? "",
-    });
+    const markerKey = `${BALLOT_MEASURE_EMIT_MARKER_PREFIX}${electionId}`;
+    await redis.sendCommand([
+      "EVAL",
+      EMIT_BALLOT_MEASURE_DRAFT_IF_NEEDED_LUA,
+      "2",
+      STAGING_BALLOT_MEASURE_DRAFT_STREAM,
+      markerKey,
+      electionId,
+      STAGING_ITEM_TYPE_BALLOT_MEASURE,
+      runId ?? "",
+      emittedAt,
+    ]);
   }
 }
 
@@ -349,6 +377,17 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
                 familySeedUrls
               );
               if (!writeResult.wrote) {
+                const latestRow = await getStagingRow(pool, ingestKey);
+                if (latestRow?.status === "written" || latestRow?.status === "no_results") {
+                  const recoveredIds = await resolveBallotMeasureElectionIds(pool, parsed.payload);
+                  await enqueueBallotMeasureDrafts(redis, recoveredIds, latestRow.run_id);
+                  await redis.xAdd(STAGING_WRITTEN_STREAM, "*", {
+                    ingest_key: ingestKey,
+                    item_type: STAGING_ITEM_TYPE_ELECTION,
+                    run_id: latestRow.run_id ?? "",
+                    payload: JSON.stringify(parsed.payload),
+                  });
+                }
                 await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
                 continue;
               }

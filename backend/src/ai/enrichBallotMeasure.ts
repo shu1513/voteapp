@@ -101,6 +101,9 @@ function shouldSetExplicitTemperature(model: string): boolean {
   return !model.toLowerCase().startsWith("gpt-5");
 }
 
+const MAX_SOURCE_URLS_TO_VERIFY = 20;
+const SOURCE_URL_VERIFY_CONCURRENCY = 4;
+
 function extractResponsesOutputText(responsePayload: unknown): string | null {
   if (typeof responsePayload !== "object" || responsePayload === null) {
     return null;
@@ -333,15 +336,36 @@ async function validateBallotMeasurePayload(
     };
   }
 
-  const uniqueSourceUrls = [...new Set(parsed.sources)];
-  const sourceChecks = await Promise.all(
-    uniqueSourceUrls.map(async (url) => ({
-      url,
-      verification: await verifyHttpUrlReachability(url, {
-        timeoutMs: Math.min(timeoutMs, 8_000),
-        allowStatusCodes: [403],
-      }),
-    }))
+  const uniqueSourceUrls = [...new Set(parsed.sources)].slice(0, MAX_SOURCE_URLS_TO_VERIFY);
+  type SourceCheck = {
+    url: string;
+    verification: Awaited<ReturnType<typeof verifyHttpUrlReachability>>;
+  };
+  const sourceChecks: SourceCheck[] = new Array(uniqueSourceUrls.length);
+  const concurrency = Math.max(
+    1,
+    Math.min(SOURCE_URL_VERIFY_CONCURRENCY, uniqueSourceUrls.length)
+  );
+  let cursor = 0;
+  await Promise.all(
+    Array.from({ length: concurrency }, async () => {
+      while (true) {
+        const index = cursor;
+        cursor += 1;
+        if (index >= uniqueSourceUrls.length) {
+          return;
+        }
+
+        const url = uniqueSourceUrls[index];
+        sourceChecks[index] = {
+          url,
+          verification: await verifyHttpUrlReachability(url, {
+            timeoutMs: Math.min(timeoutMs, 8_000),
+            allowStatusCodes: [403],
+          }),
+        };
+      }
+    })
   );
 
   const badSourceChecks = sourceChecks.flatMap((check) =>
