@@ -15,8 +15,9 @@ export function buildElectionsPrompt(args: {
   softRetryCount: number;
   reviewFeedbackLines: string[];
   contestFamily?: ElectionContestFamily;
+  seedUrls?: readonly string[];
 }): string {
-  const { draft, softRetryCount, reviewFeedbackLines, contestFamily = "all" } = args;
+  const { draft, softRetryCount, reviewFeedbackLines, contestFamily = "all", seedUrls = [] } = args;
   const includeElectionStageInOutput = contestFamily !== "ballot_measure";
   const isBallotFamily = contestFamily === "ballot_measure";
   const isOfficeOnlyFamily =
@@ -132,6 +133,7 @@ ${entryShapeLines}
     "- Focus on upcoming elections only; do not include past elections.",
     "- Use only contests in this exact district scope (no parent or child scope contests).",
     "- Copy official_ballot_title exactly as shown on the ballot when available; do not paraphrase.",
+    "- For ballot measures, official_ballot_title must be the actual official measure label/title from the election authority (for example: Measure ER or Proposition 4), not the full ballot question sentence.",
     includeOfficialSourcePriorityLine ? scopePriorityLine : ballotOfficialPreferenceLine,
     ...familySection,
     "- If scope is uncertain, exclude the entry instead of guessing.",
@@ -141,6 +143,13 @@ ${entryShapeLines}
       ? "- This is a review pass after validator soft-fail. Include review_decision (approve/reject) and review_reason."
       : "",
     retrySection,
+    ...(seedUrls.length > 0
+      ? [
+          "",
+          "Starting reference URLs (use these first, then expand research as needed):",
+          ...seedUrls.map((url) => `- ${escapeJson(url)}`),
+        ]
+      : []),
     "",
     "Draft input:",
     JSON.stringify(draft),

@@ -5,6 +5,7 @@ import {
   buildEnrichElectionsConfigFromEnv,
   enrichElections,
 } from "../../ai/enrichElections.js";
+import type { ElectionContestFamily } from "../../ai/providers/electionsPrompt.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_DRAFT_STREAM,
@@ -35,9 +36,16 @@ type StagingRow = {
   failure_debug: unknown;
 };
 
+type SeedSourceRow = {
+  url: string;
+  last_seen_at: Date;
+};
+
 // Provider calls can take tens of seconds; keep reclaim idle window above normal processing time.
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
+const SEED_MAX_URLS = 5;
+const SEED_FRESHNESS_DAYS = 180;
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
@@ -85,6 +93,80 @@ function parseDraftPayload(payload: unknown): ElectionDraftPayload | null {
     district_name: input.district_name.trim(),
     district_type: input.district_type as ElectionDraftPayload["district_type"],
     state: input.state.trim(),
+  };
+}
+
+function isPreferredElectionSeedUrl(urlText: string): boolean {
+  try {
+    const hostname = new URL(urlText).hostname.toLowerCase();
+    return (
+      hostname.endsWith(".gov") ||
+      hostname === "ballotpedia.org" ||
+      hostname.endsWith(".ballotpedia.org")
+    );
+  } catch {
+    return false;
+  }
+}
+
+function sortSeedUrls(urls: SeedSourceRow[]): string[] {
+  const unique = new Map<string, SeedSourceRow>();
+  for (const row of urls) {
+    const prior = unique.get(row.url);
+    if (!prior || row.last_seen_at > prior.last_seen_at) {
+      unique.set(row.url, row);
+    }
+  }
+
+  return [...unique.values()]
+    .sort((left, right) => {
+      const leftPreferred = isPreferredElectionSeedUrl(left.url) ? 1 : 0;
+      const rightPreferred = isPreferredElectionSeedUrl(right.url) ? 1 : 0;
+      if (leftPreferred !== rightPreferred) {
+        return rightPreferred - leftPreferred;
+      }
+      return right.last_seen_at.getTime() - left.last_seen_at.getTime();
+    })
+    .slice(0, SEED_MAX_URLS)
+    .map((row) => row.url);
+}
+
+async function loadSeedUrlsForDistrict(
+  pool: Pool,
+  districtId: string,
+  contestFamily: ElectionContestFamily
+): Promise<string[]> {
+  const result = await pool.query<SeedSourceRow>(
+    `
+      SELECT
+        url,
+        last_seen_at
+      FROM election_seed_urls
+      WHERE district_id = $1
+        AND contest_family = $2
+        AND last_seen_at >= now() - make_interval(days => $3::int)
+    `,
+    [districtId, contestFamily, SEED_FRESHNESS_DAYS]
+  );
+  return sortSeedUrls(result.rows);
+}
+
+async function buildSeedUrlsByFamily(
+  pool: Pool,
+  draft: ElectionDraftPayload
+): Promise<Partial<Record<ElectionContestFamily, readonly string[]>>> {
+  const [nonJudicialSeeds, judicialSeeds, ballotSeeds, allSeeds] = await Promise.all([
+    loadSeedUrlsForDistrict(pool, draft.district_id, "non_judicial_office"),
+    loadSeedUrlsForDistrict(pool, draft.district_id, "judicial_office"),
+    loadSeedUrlsForDistrict(pool, draft.district_id, "ballot_measure"),
+    loadSeedUrlsForDistrict(pool, draft.district_id, "all"),
+  ]);
+
+  return {
+    all: allSeeds,
+    non_judicial_office: nonJudicialSeeds,
+    judicial_office: judicialSeeds,
+    ballot_measure: ballotSeeds,
   };
 }
 
@@ -204,6 +286,7 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
 
           const softRetryCount = parseSoftRetryCount(row.failure_debug);
           const reviewFeedback = parseReviewFeedback(row.failure_debug);
+          const seedUrlsByFamily = await buildSeedUrlsByFamily(pool, draft);
           const result = await enrichElections(
             {
               ingestKey,
@@ -211,6 +294,7 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
               promptVersion: ELECTION_PROMPT_VERSION,
               softRetryCount,
               reviewFeedback,
+              seedUrlsByFamily,
             },
             config
           );
