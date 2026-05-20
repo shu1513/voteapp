@@ -68,11 +68,47 @@ function parseReviewFeedback(failureDebug: unknown): string[] {
   if (!isObjectRecord(failureDebug)) {
     return [];
   }
-  const raw = failureDebug.validation_feedback;
-  if (!Array.isArray(raw)) {
-    return [];
+  const feedback = new Set<string>();
+
+  const rawValidationFeedback = failureDebug.validation_feedback;
+  if (Array.isArray(rawValidationFeedback)) {
+    for (const item of rawValidationFeedback) {
+      if (typeof item === "string" && item.trim().length > 0) {
+        feedback.add(item.trim());
+      }
+    }
   }
-  return raw.filter((item): item is string => typeof item === "string" && item.trim().length > 0).map((item) => item.trim());
+
+  const rawCitationFailures = failureDebug.citation_verification_failures;
+  if (Array.isArray(rawCitationFailures)) {
+    for (const item of rawCitationFailures) {
+      if (!isObjectRecord(item)) {
+        continue;
+      }
+      const url = typeof item.url === "string" ? item.url.trim() : "";
+      const reason = typeof item.reason === "string" ? item.reason.trim() : "";
+      if (!url || !reason) {
+        continue;
+      }
+      feedback.add(`Source URL failed verification: ${url} (${reason})`);
+    }
+  }
+
+  const rawFailedCitationUrls = failureDebug.failed_citation_urls;
+  if (Array.isArray(rawFailedCitationUrls)) {
+    for (const item of rawFailedCitationUrls) {
+      if (typeof item !== "string") {
+        continue;
+      }
+      const url = item.trim();
+      if (!url) {
+        continue;
+      }
+      feedback.add(`Source URL failed verification: ${url}`);
+    }
+  }
+
+  return [...feedback].slice(0, 15);
 }
 
 function parseDraftPayload(payload: unknown): ElectionDraftPayload | null {

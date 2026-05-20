@@ -19,6 +19,7 @@ import type {
   ElectionEnrichedPayload,
   ElectionEntryPayload,
 } from "../types/election.js";
+import { verifyHttpUrlReachability } from "./urlReachability.js";
 
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages";
@@ -363,6 +364,97 @@ function validateContestFamilySoft(
     return { ok: false, reason: "non_judicial_office family appears fully judicial" };
   }
   return { ok: true };
+}
+
+type CitationVerificationFailure = {
+  entry_title: string;
+  url: string;
+  reason: string;
+};
+
+async function verifyUniqueElectionSourceUrls(
+  urls: string[],
+  timeoutMs: number
+): Promise<Map<string, Awaited<ReturnType<typeof verifyHttpUrlReachability>>>> {
+  const results = new Map<string, Awaited<ReturnType<typeof verifyHttpUrlReachability>>>();
+  if (urls.length === 0) {
+    return results;
+  }
+
+  const maxConcurrency = 6;
+  const workerCount = Math.min(maxConcurrency, urls.length);
+  let nextIndex = 0;
+
+  const workers = Array.from({ length: workerCount }, async () => {
+    while (true) {
+      const currentIndex = nextIndex;
+      nextIndex += 1;
+      if (currentIndex >= urls.length) {
+        return;
+      }
+
+      const sourceUrl = urls[currentIndex];
+      if (!sourceUrl) {
+        continue;
+      }
+
+      const verification = await verifyHttpUrlReachability(sourceUrl, {
+        timeoutMs: Math.min(timeoutMs, 8_000),
+        allowStatusCodes: [403],
+      });
+      results.set(sourceUrl, verification);
+    }
+  });
+
+  await Promise.all(workers);
+  return results;
+}
+
+async function verifyElectionEntrySources(
+  entries: ElectionEntryPayload[],
+  timeoutMs: number
+): Promise<{ ok: true } | { ok: false; reason: string; failedCitationUrls: string[]; failures: CitationVerificationFailure[] }> {
+  const uniqueUrls = [...new Set(entries.flatMap((entry) => entry.sources))];
+  const verificationByUrl = await verifyUniqueElectionSourceUrls(uniqueUrls, timeoutMs);
+  const failures: CitationVerificationFailure[] = [];
+
+  for (const entry of entries) {
+    for (const sourceUrl of entry.sources) {
+      const verification = verificationByUrl.get(sourceUrl);
+      if (!verification) {
+        failures.push({
+          entry_title: entry.official_ballot_title,
+          url: sourceUrl,
+          reason: "citation URL verification did not return a result",
+        });
+        continue;
+      }
+      if (!verification.ok) {
+        failures.push({
+          entry_title: entry.official_ballot_title,
+          url: sourceUrl,
+          reason: verification.reason,
+        });
+      }
+    }
+  }
+
+  if (failures.length === 0) {
+    return { ok: true };
+  }
+
+  const failedCitationUrls = [...new Set(failures.map((failure) => failure.url))].slice(0, 100);
+  const reasonPreview = failures
+    .slice(0, 3)
+    .map((failure) => `${failure.entry_title} (${failure.url}): ${failure.reason}`)
+    .join("; ");
+  const extraCount = failures.length > 3 ? ` (+${failures.length - 3} more)` : "";
+  return {
+    ok: false,
+    reason: `citation URL(s) could not be verified for ${failures.length} citation(s): ${reasonPreview}${extraCount}`,
+    failedCitationUrls,
+    failures,
+  };
 }
 
 async function callOpenAiResponsesWithWebSearch(
@@ -828,63 +920,107 @@ async function runPromptWithCandidates(
     }
 > {
   const failures: ProviderFailureAttempt[] = [];
+  const cumulativeBlockedUrlFeedback = new Set<string>();
 
   for (const candidate of candidates) {
-    const generated = await callProvider(candidate, prompt, config);
-    if (!generated.ok) {
-      failures.push({
+    let retryFeedbackLines: string[] = [...cumulativeBlockedUrlFeedback];
+
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const promptWithFeedback =
+        retryFeedbackLines.length > 0
+          ? [
+              prompt,
+              "",
+              "Previous feedback to address:",
+              ...retryFeedbackLines.map((line, index) => `${index + 1}. ${line}`),
+              "Fix only the issues above and keep valid content.",
+            ].join("\n")
+          : prompt;
+      const generated = await callProvider(candidate, promptWithFeedback, config);
+      if (!generated.ok) {
+        failures.push({
+          provider: candidate.provider,
+          model: candidate.model,
+          reason: generated.reason,
+          errorCode: generated.errorCode,
+          retryable: generated.retryable,
+          failureDebug: generated.failureDebug,
+        });
+        break;
+      }
+
+      const normalizedGeneratedPayload = normalizeGeneratedPayloadForContestFamily(
+        contestFamily,
+        generated.parsed
+      );
+      const parsed = parseAiElectionEntriesPayload(normalizedGeneratedPayload);
+      if (!parsed.ok) {
+        failures.push({
+          provider: candidate.provider,
+          model: candidate.model,
+          reason: parsed.reason,
+          errorCode: "SCHEMA_MISMATCH",
+          retryable: false,
+        });
+        break;
+      }
+
+      const familyValidation = validateContestFamilySoft(contestFamily, parsed.payload.entries);
+      if (!familyValidation.ok) {
+        failures.push({
+          provider: candidate.provider,
+          model: candidate.model,
+          reason: familyValidation.reason,
+          errorCode: "SCHEMA_MISMATCH",
+          retryable: false,
+        });
+        break;
+      }
+
+      const citationVerification = await verifyElectionEntrySources(parsed.payload.entries, config.timeoutMs);
+      if (!citationVerification.ok) {
+        failures.push({
+          provider: candidate.provider,
+          model: candidate.model,
+          reason: citationVerification.reason,
+          errorCode: "SCHEMA_MISMATCH",
+          retryable: false,
+          failureDebug: {
+            failed_citation_urls: citationVerification.failedCitationUrls,
+            citation_verification_failures: citationVerification.failures,
+          },
+        });
+
+        const canRetrySameModel = attempt === 0;
+        if (canRetrySameModel) {
+          const newFeedbackLines = citationVerification.failures.slice(0, 10).map(
+            (failure) =>
+              `Do not use or cite this URL for "${failure.entry_title}": ${failure.url} (${failure.reason})`
+          );
+          for (const line of newFeedbackLines) {
+            cumulativeBlockedUrlFeedback.add(line);
+          }
+          retryFeedbackLines = [...cumulativeBlockedUrlFeedback].slice(0, 20);
+          continue;
+        }
+        break;
+      }
+
+      return {
+        ok: true,
+        entries: parsed.payload.entries,
+        ...(parsed.payload.review_decision
+          ? { reviewDecision: parsed.payload.review_decision }
+          : {}),
+        ...(parsed.payload.review_reason ? { reviewReason: parsed.payload.review_reason } : {}),
         provider: candidate.provider,
         model: candidate.model,
-        reason: generated.reason,
-        errorCode: generated.errorCode,
-        retryable: generated.retryable,
-        failureDebug: generated.failureDebug,
-      });
-      continue;
+        aiRawDebug: {
+          provider_response_text: trimDebugText(generated.rawText),
+          ...(generated.debugMeta ?? {}),
+        },
+      };
     }
-
-    const normalizedGeneratedPayload = normalizeGeneratedPayloadForContestFamily(
-      contestFamily,
-      generated.parsed
-    );
-    const parsed = parseAiElectionEntriesPayload(normalizedGeneratedPayload);
-    if (!parsed.ok) {
-      failures.push({
-        provider: candidate.provider,
-        model: candidate.model,
-        reason: parsed.reason,
-        errorCode: "SCHEMA_MISMATCH",
-        retryable: false,
-      });
-      continue;
-    }
-
-    const familyValidation = validateContestFamilySoft(contestFamily, parsed.payload.entries);
-    if (!familyValidation.ok) {
-      failures.push({
-        provider: candidate.provider,
-        model: candidate.model,
-        reason: familyValidation.reason,
-        errorCode: "SCHEMA_MISMATCH",
-        retryable: false,
-      });
-      continue;
-    }
-
-    return {
-      ok: true,
-      entries: parsed.payload.entries,
-      ...(parsed.payload.review_decision
-        ? { reviewDecision: parsed.payload.review_decision }
-        : {}),
-      ...(parsed.payload.review_reason ? { reviewReason: parsed.payload.review_reason } : {}),
-      provider: candidate.provider,
-      model: candidate.model,
-      aiRawDebug: {
-        provider_response_text: trimDebugText(generated.rawText),
-        ...(generated.debugMeta ?? {}),
-      },
-    };
   }
 
   const finalFailure = failures[failures.length - 1];

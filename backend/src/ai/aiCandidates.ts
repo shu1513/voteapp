@@ -25,4 +25,15 @@ export const ELECTIONS_AI_CANDIDATES: readonly AiCandidate[] = [
   { provider: "gemini", model: "gemini-2.5-pro" },
 ] as const;
 
+/**
+ * Curated ballot-measures AI candidates.
+ * Kept separate from elections/state-resources to allow independent tuning.
+ */
+export const BALLOT_MEASURES_AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "gemini", model: "gemini-3.5-flash" },
+  { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "openai", model: "gpt-5.5" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
 export const DEFAULT_AI_CANDIDATE: AiCandidate = STATE_RESOURCES_AI_CANDIDATES[0];

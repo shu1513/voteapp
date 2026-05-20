@@ -27,7 +27,7 @@ export function buildElectionsPrompt(args: {
     reviewFeedbackLines.length > 0
       ? [
           "",
-          "Previous validator feedback to address:",
+          "Previous feedback to address:",
           ...reviewFeedbackLines.map((line, index) => `${index + 1}. ${line}`),
           "Fix only the issues above and keep valid content.",
         ].join("\n")

@@ -16,6 +16,7 @@
     "elections:enrich": "tsx src/scripts/enrichElections.ts",
     "elections:validate": "tsx src/scripts/validateElections.ts",
     "elections:write": "tsx src/scripts/writeElections.ts",
+    "ballot-measures:enrich": "tsx src/scripts/enrichBallotMeasures.ts",
     "db:migrate": "tsx src/scripts/dbMigrate.ts",
     "db:migrate:status": "tsx src/scripts/dbMigrate.ts --status",
     "db:migrate:baseline": "tsx src/scripts/dbMigrate.ts --baseline",
