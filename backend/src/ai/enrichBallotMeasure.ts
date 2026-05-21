@@ -1,26 +1,21 @@
 import { BALLOT_MEASURES_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
-  extractProviderRateLimitDebugHeaders,
-  updateProviderModelCooldownFromHeaders,
-  waitForProviderModelCooldown,
-} from "./providerRateLimitGate.js";
+  callResearchProvider,
+  trimDebugText,
+  type ResearchErrorCode,
+} from "./researchProviderClient.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 import type { AiProvider } from "./types.js";
 import { buildBallotMeasuresPrompt } from "./providers/ballotMeasuresPrompt.js";
 import { verifyHttpUrlReachability } from "./urlReachability.js";
 
-const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
-const ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages";
-const GEMINI_GENERATE_CONTENT_URL = "https://generativelanguage.googleapis.com/v1beta/models";
-
-type RetryableErrorCode = "RATE_LIMIT" | "TIMEOUT" | "TEMP_PROVIDER_ERROR";
-type PermanentErrorCode = "INVALID_JSON" | "SCHEMA_MISMATCH" | "CONFIGURATION_ERROR";
+type BallotMeasureErrorCode = ResearchErrorCode | "SCHEMA_MISMATCH";
 
 type EnrichmentFailure = {
   ok: false;
   retryable: boolean;
-  errorCode: RetryableErrorCode | PermanentErrorCode;
+  errorCode: BallotMeasureErrorCode;
   reason: string;
   failureDebug?: Record<string, unknown>;
 };
@@ -29,7 +24,7 @@ type ProviderFailureAttempt = {
   provider: string;
   model: string;
   reason: string;
-  errorCode: string;
+  errorCode: BallotMeasureErrorCode;
   retryable: boolean;
   failureDebug?: Record<string, unknown>;
 };
@@ -79,168 +74,9 @@ export type BallotMeasureAiResult =
     }
   | EnrichmentFailure;
 
-function toReason(error: unknown): string {
-  const message = error instanceof Error ? error.message : String(error);
-  return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
-}
-
-function trimDebugText(input: string, maxChars = 20_000): string {
-  return input.length <= maxChars ? input : `${input.slice(0, maxChars)}...`;
-}
-
-function extractJsonCandidate(text: string): string {
-  const trimmed = text.trim();
-  const fenced = /```(?:json)?\s*([\s\S]*?)\s*```/i.exec(trimmed);
-  if (fenced?.[1]) {
-    return fenced[1].trim();
-  }
-  return trimmed;
-}
-
-function shouldSetExplicitTemperature(model: string): boolean {
-  return !model.toLowerCase().startsWith("gpt-5");
-}
-
 const MAX_SOURCE_URLS_TO_VERIFY = 20;
 const SOURCE_URL_VERIFY_CONCURRENCY = 4;
-
-function extractResponsesOutputText(responsePayload: unknown): string | null {
-  if (typeof responsePayload !== "object" || responsePayload === null) {
-    return null;
-  }
-  const input = responsePayload as Record<string, unknown>;
-  if (typeof input.output_text === "string" && input.output_text.trim().length > 0) {
-    return input.output_text;
-  }
-
-  const output = input.output;
-  if (!Array.isArray(output)) {
-    return null;
-  }
-
-  const parts: string[] = [];
-  for (const item of output) {
-    if (typeof item !== "object" || item === null || Array.isArray(item)) {
-      continue;
-    }
-    const outputItem = item as Record<string, unknown>;
-    if (outputItem.type !== "message") {
-      continue;
-    }
-    const content = outputItem.content;
-    if (!Array.isArray(content)) {
-      continue;
-    }
-    for (const contentPart of content) {
-      if (typeof contentPart !== "object" || contentPart === null || Array.isArray(contentPart)) {
-        continue;
-      }
-      const outputPart = contentPart as Record<string, unknown>;
-      if (outputPart.type !== "output_text" || typeof outputPart.text !== "string") {
-        continue;
-      }
-      const text = outputPart.text.trim();
-      if (text.length > 0) {
-        parts.push(text);
-      }
-    }
-  }
-
-  return parts.length > 0 ? parts.join("\n") : null;
-}
-
-function extractOpenAiWebSearchUrls(responsePayload: unknown): string[] {
-  if (typeof responsePayload !== "object" || responsePayload === null) {
-    return [];
-  }
-  const input = responsePayload as Record<string, unknown>;
-  const output = input.output;
-  if (!Array.isArray(output)) {
-    return [];
-  }
-
-  const urls: string[] = [];
-  const seen = new Set<string>();
-  for (const item of output) {
-    if (typeof item !== "object" || item === null || Array.isArray(item)) {
-      continue;
-    }
-    const outputItem = item as Record<string, unknown>;
-    if (outputItem.type !== "web_search_call") {
-      continue;
-    }
-    const action = outputItem.action;
-    if (typeof action !== "object" || action === null || Array.isArray(action)) {
-      continue;
-    }
-    const actionRecord = action as Record<string, unknown>;
-    const rawSources = actionRecord.sources;
-    if (!Array.isArray(rawSources)) {
-      continue;
-    }
-    for (const source of rawSources) {
-      if (typeof source !== "object" || source === null || Array.isArray(source)) {
-        continue;
-      }
-      const sourceRecord = source as Record<string, unknown>;
-      if (typeof sourceRecord.url !== "string") {
-        continue;
-      }
-      const normalized = normalizeHttpUrl(sourceRecord.url);
-      if (!normalized || seen.has(normalized)) {
-        continue;
-      }
-      seen.add(normalized);
-      urls.push(normalized);
-    }
-  }
-
-  return urls;
-}
-
-function extractClaudeWebSearchUrls(responsePayload: unknown): string[] {
-  if (typeof responsePayload !== "object" || responsePayload === null) {
-    return [];
-  }
-  const input = responsePayload as Record<string, unknown>;
-  const content = input.content;
-  if (!Array.isArray(content)) {
-    return [];
-  }
-
-  const urls: string[] = [];
-  const seen = new Set<string>();
-  for (const block of content) {
-    if (typeof block !== "object" || block === null || Array.isArray(block)) {
-      continue;
-    }
-    const blockRecord = block as Record<string, unknown>;
-    if (blockRecord.type !== "web_search_tool_result") {
-      continue;
-    }
-    const blockContent = blockRecord.content;
-    if (!Array.isArray(blockContent)) {
-      continue;
-    }
-    for (const item of blockContent) {
-      if (typeof item !== "object" || item === null || Array.isArray(item)) {
-        continue;
-      }
-      const itemRecord = item as Record<string, unknown>;
-      if (typeof itemRecord.url !== "string") {
-        continue;
-      }
-      const normalized = normalizeHttpUrl(itemRecord.url);
-      if (!normalized || seen.has(normalized)) {
-        continue;
-      }
-      seen.add(normalized);
-      urls.push(normalized);
-    }
-  }
-
-  return urls;
-}
+const CLAUDE_INTER_CALL_DELAY_MS = 20_000;
 
 function parseBallotMeasureAiPayload(payload: unknown): {
   ok: true;
@@ -407,422 +243,37 @@ async function validateBallotMeasurePayload(
   };
 }
 
-async function callOpenAi(
-  prompt: string,
-  model: string,
-  apiKey: string,
-  timeoutMs: number
-): Promise<{ ok: true; parsed: unknown; rawText: string; debugMeta?: Record<string, unknown> } | EnrichmentFailure> {
-  let timeout: ReturnType<typeof setTimeout> | null = null;
-  try {
-    await waitForProviderModelCooldown("openai", model);
-    const controller = new AbortController();
-    timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-    const requestBody: Record<string, unknown> = {
-      model,
-      input: [
-        {
-          role: "system",
-          content: [{ type: "input_text", text: "Return strict JSON only." }],
-        },
-        {
-          role: "user",
-          content: [{ type: "input_text", text: prompt }],
-        },
-      ],
-      tools: [{ type: "web_search" }],
-      tool_choice: "auto",
-      include: ["web_search_call.action.sources"],
-    };
-    if (shouldSetExplicitTemperature(model)) {
-      requestBody.temperature = 0;
-    }
-
-    const response = await fetch(OPENAI_RESPONSES_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-      signal: controller.signal,
-    });
-
-    if (!response.ok) {
-      const rateLimitHeaders = extractProviderRateLimitDebugHeaders(response.headers);
-      updateProviderModelCooldownFromHeaders("openai", model, response.headers, {
-        onRateLimitedResponse: response.status === 429,
-      });
-      const bodyText = await response.text();
-      if (response.status === 429) {
-        return {
-          ok: false,
-          retryable: true,
-          errorCode: "RATE_LIMIT",
-          reason: `OpenAI responses rate limit: ${bodyText}`,
-          failureDebug: {
-            provider_response_text: trimDebugText(bodyText),
-            provider_rate_limit_headers: rateLimitHeaders,
-          },
-        };
-      }
-      if (response.status >= 500) {
-        return {
-          ok: false,
-          retryable: true,
-          errorCode: "TEMP_PROVIDER_ERROR",
-          reason: `OpenAI responses temporary error ${response.status}: ${bodyText}`,
-          failureDebug: {
-            provider_response_text: trimDebugText(bodyText),
-            provider_rate_limit_headers: rateLimitHeaders,
-          },
-        };
-      }
-      return {
-        ok: false,
-        retryable: false,
-        errorCode: "CONFIGURATION_ERROR",
-        reason: `OpenAI responses request failed ${response.status}: ${bodyText}`,
-        failureDebug: {
-          provider_response_text: trimDebugText(bodyText),
-          provider_rate_limit_headers: rateLimitHeaders,
-        },
-      };
-    }
-
-    updateProviderModelCooldownFromHeaders("openai", model, response.headers);
-    const data = (await response.json()) as Record<string, unknown>;
-    const text = extractResponsesOutputText(data);
-    if (!text || text.trim().length === 0) {
-      return { ok: false, retryable: false, errorCode: "INVALID_JSON", reason: "OpenAI returned empty assistant text" };
-    }
-
-    try {
-      const webSearchUrls = extractOpenAiWebSearchUrls(data);
-      return {
-        ok: true,
-        parsed: JSON.parse(extractJsonCandidate(text)),
-        rawText: text,
-        debugMeta: {
-          web_search_urls: webSearchUrls,
-          web_search_urls_count: webSearchUrls.length,
-        },
-      };
-    } catch (error) {
-      return {
-        ok: false,
-        retryable: false,
-        errorCode: "INVALID_JSON",
-        reason: `OpenAI returned invalid JSON: ${toReason(error)}`,
-        failureDebug: {
-          provider_response_text: trimDebugText(text),
-        },
-      };
-    }
-  } catch (error) {
-    const reason = toReason(error);
-    if (reason.toLowerCase().includes("aborted")) {
-      return {
-        ok: false,
-        retryable: true,
-        errorCode: "TIMEOUT",
-        reason: `OpenAI request timed out after ${timeoutMs}ms`,
-      };
-    }
-    return {
-      ok: false,
-      retryable: true,
-      errorCode: "TEMP_PROVIDER_ERROR",
-      reason: `OpenAI request error: ${reason}`,
-    };
-  } finally {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-  }
-}
-
-async function callClaude(
-  prompt: string,
-  model: string,
-  apiKey: string,
-  timeoutMs: number,
-  webSearchMaxUses = 3
-): Promise<{ ok: true; parsed: unknown; rawText: string; debugMeta?: Record<string, unknown> } | EnrichmentFailure> {
-  let timeout: ReturnType<typeof setTimeout> | null = null;
-
-  try {
-    await waitForProviderModelCooldown("claude", model);
-    const controller = new AbortController();
-    timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-    const requestBody: Record<string, unknown> = {
-      model,
-      max_tokens: 4000,
-      temperature: 0,
-      system: "Return strict JSON only.",
-      messages: [{ role: "user", content: prompt }],
-      tools: [
-        {
-          type: "web_search_20250305",
-          name: "web_search",
-          max_uses: Math.max(1, Math.floor(webSearchMaxUses)),
-        },
-      ],
-    };
-
-    const response = await fetch(ANTHROPIC_MESSAGES_URL, {
-      method: "POST",
-      headers: {
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json",
-        "anthropic-beta": "web-search-2025-03-05",
-      },
-      body: JSON.stringify(requestBody),
-      signal: controller.signal,
-    });
-
-    if (!response.ok) {
-      const rateLimitHeaders = extractProviderRateLimitDebugHeaders(response.headers);
-      updateProviderModelCooldownFromHeaders("claude", model, response.headers, {
-        onRateLimitedResponse: response.status === 429,
-        retryAfterBufferMs: 10_000,
-      });
-      const bodyText = await response.text();
-      if (response.status === 429) {
-        return {
-          ok: false,
-          retryable: true,
-          errorCode: "RATE_LIMIT",
-          reason: `Claude rate limit: ${bodyText}`,
-          failureDebug: {
-            provider_response_text: trimDebugText(bodyText),
-            provider_rate_limit_headers: rateLimitHeaders,
-          },
-        };
-      }
-      if (response.status >= 500) {
-        return {
-          ok: false,
-          retryable: true,
-          errorCode: "TEMP_PROVIDER_ERROR",
-          reason: `Claude temporary error ${response.status}: ${bodyText}`,
-          failureDebug: {
-            provider_response_text: trimDebugText(bodyText),
-            provider_rate_limit_headers: rateLimitHeaders,
-          },
-        };
-      }
-      return {
-        ok: false,
-        retryable: false,
-        errorCode: "CONFIGURATION_ERROR",
-        reason: `Claude request failed ${response.status}: ${bodyText}`,
-        failureDebug: {
-          provider_response_text: trimDebugText(bodyText),
-          provider_rate_limit_headers: rateLimitHeaders,
-        },
-      };
-    }
-
-    updateProviderModelCooldownFromHeaders("claude", model, response.headers);
-
-    const data = (await response.json()) as {
-      content?: Array<{ type?: string; text?: string }>;
-    };
-    const text = data.content?.find((part) => part.type === "text")?.text;
-    if (!text || text.trim().length === 0) {
-      return { ok: false, retryable: false, errorCode: "INVALID_JSON", reason: "Claude returned empty content" };
-    }
-    try {
-      const webSearchUrls = extractClaudeWebSearchUrls(data);
-      return {
-        ok: true,
-        parsed: JSON.parse(extractJsonCandidate(text)),
-        rawText: text,
-        debugMeta: {
-          web_search_urls: webSearchUrls,
-          web_search_urls_count: webSearchUrls.length,
-        },
-      };
-    } catch (error) {
-      return {
-        ok: false,
-        retryable: false,
-        errorCode: "INVALID_JSON",
-        reason: `Claude returned invalid JSON: ${toReason(error)}`,
-        failureDebug: {
-          provider_response_text: trimDebugText(text),
-        },
-      };
-    }
-  } catch (error) {
-    const reason = toReason(error);
-    if (reason.toLowerCase().includes("aborted")) {
-      return {
-        ok: false,
-        retryable: true,
-        errorCode: "TIMEOUT",
-        reason: `Claude request timed out after ${timeoutMs}ms`,
-      };
-    }
-
-    return {
-      ok: false,
-      retryable: true,
-      errorCode: "TEMP_PROVIDER_ERROR",
-      reason: `Claude request error: ${reason}`,
-    };
-  } finally {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-  }
-}
-
-async function callGemini(
-  prompt: string,
-  model: string,
-  apiKey: string,
-  timeoutMs: number
-): Promise<{ ok: true; parsed: unknown; rawText: string; debugMeta?: Record<string, unknown> } | EnrichmentFailure> {
-  let timeout: ReturnType<typeof setTimeout> | null = null;
-
-  try {
-    await waitForProviderModelCooldown("gemini", model);
-    const controller = new AbortController();
-    timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-    const response = await fetch(
-      `${GEMINI_GENERATE_CONTENT_URL}/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0,
-            responseMimeType: "application/json",
-          },
-        }),
-        signal: controller.signal,
-      }
-    );
-
-    if (!response.ok) {
-      const rateLimitHeaders = extractProviderRateLimitDebugHeaders(response.headers);
-      updateProviderModelCooldownFromHeaders("gemini", model, response.headers, {
-        onRateLimitedResponse: response.status === 429,
-      });
-      const bodyText = await response.text();
-      if (response.status === 429) {
-        return {
-          ok: false,
-          retryable: true,
-          errorCode: "RATE_LIMIT",
-          reason: `Gemini rate limit: ${bodyText}`,
-          failureDebug: {
-            provider_response_text: trimDebugText(bodyText),
-            provider_rate_limit_headers: rateLimitHeaders,
-          },
-        };
-      }
-      if (response.status >= 500) {
-        return {
-          ok: false,
-          retryable: true,
-          errorCode: "TEMP_PROVIDER_ERROR",
-          reason: `Gemini temporary error ${response.status}: ${bodyText}`,
-          failureDebug: {
-            provider_response_text: trimDebugText(bodyText),
-            provider_rate_limit_headers: rateLimitHeaders,
-          },
-        };
-      }
-      return {
-        ok: false,
-        retryable: false,
-        errorCode: "CONFIGURATION_ERROR",
-        reason: `Gemini request failed ${response.status}: ${bodyText}`,
-        failureDebug: {
-          provider_response_text: trimDebugText(bodyText),
-          provider_rate_limit_headers: rateLimitHeaders,
-        },
-      };
-    }
-
-    updateProviderModelCooldownFromHeaders("gemini", model, response.headers);
-
-    const data = (await response.json()) as {
-      candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
-    };
-
-    const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text ?? "").join("").trim();
-    if (!text) {
-      return { ok: false, retryable: false, errorCode: "INVALID_JSON", reason: "Gemini returned empty content" };
-    }
-
-    try {
-      return { ok: true, parsed: JSON.parse(extractJsonCandidate(text)), rawText: text };
-    } catch (error) {
-      return {
-        ok: false,
-        retryable: false,
-        errorCode: "INVALID_JSON",
-        reason: `Gemini returned invalid JSON: ${toReason(error)}`,
-        failureDebug: {
-          provider_response_text: trimDebugText(text),
-        },
-      };
-    }
-  } catch (error) {
-    const reason = toReason(error);
-    if (reason.toLowerCase().includes("aborted")) {
-      return {
-        ok: false,
-        retryable: true,
-        errorCode: "TIMEOUT",
-        reason: `Gemini request timed out after ${timeoutMs}ms`,
-      };
-    }
-    return {
-      ok: false,
-      retryable: true,
-      errorCode: "TEMP_PROVIDER_ERROR",
-      reason: `Gemini request error: ${reason}`,
-    };
-  } finally {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-  }
-}
-
 async function callProvider(
   candidate: AiCandidate,
   prompt: string,
   config: BallotMeasureAiConfig
 ): Promise<{ ok: true; parsed: unknown; rawText: string; debugMeta?: Record<string, unknown> } | EnrichmentFailure> {
-  if (candidate.provider === "openai") {
-    if (!config.openAiApiKey) {
-      return { ok: false, retryable: false, errorCode: "CONFIGURATION_ERROR", reason: "OPENAI_API_KEY is missing" };
-    }
-    return callOpenAi(prompt, candidate.model, config.openAiApiKey, config.timeoutMs);
+  const providerResult = await callResearchProvider(candidate, prompt, {
+    timeoutMs: config.timeoutMs,
+    anthropicWebSearchMaxUses: config.anthropicWebSearchMaxUses,
+    claudeInterCallDelayMs: CLAUDE_INTER_CALL_DELAY_MS,
+    claudeRetryAfterBufferMs: 10_000,
+    openAiApiKey: config.openAiApiKey,
+    anthropicApiKey: config.anthropicApiKey,
+    geminiApiKey: config.geminiApiKey,
+    geminiApiVersion: "v1beta",
+    geminiResponseMimeTypeJson: true,
+  });
+  if (providerResult.ok) {
+    return {
+      ok: true,
+      parsed: providerResult.parsed,
+      rawText: providerResult.rawText,
+      debugMeta: providerResult.debugMeta,
+    };
   }
-
-  if (candidate.provider === "claude") {
-    if (!config.anthropicApiKey) {
-      return { ok: false, retryable: false, errorCode: "CONFIGURATION_ERROR", reason: "ANTHROPIC_API_KEY is missing" };
-    }
-    return callClaude(prompt, candidate.model, config.anthropicApiKey, config.timeoutMs, config.anthropicWebSearchMaxUses);
-  }
-
-  if (!config.geminiApiKey) {
-    return { ok: false, retryable: false, errorCode: "CONFIGURATION_ERROR", reason: "GEMINI_API_KEY is missing" };
-  }
-  return callGemini(prompt, candidate.model, config.geminiApiKey, config.timeoutMs);
+  return {
+    ok: false,
+    retryable: providerResult.retryable,
+    errorCode: providerResult.errorCode,
+    reason: providerResult.reason,
+    failureDebug: providerResult.failureDebug,
+  };
 }
 
 export function buildBallotMeasureAiConfigFromEnv(): BallotMeasureAiConfig {
@@ -933,7 +384,7 @@ export async function enrichBallotMeasure(
   return {
     ok: false,
     retryable: selected?.retryable ?? false,
-    errorCode: (selected?.errorCode as RetryableErrorCode | PermanentErrorCode | undefined) ?? "TEMP_PROVIDER_ERROR",
+    errorCode: selected?.errorCode ?? "TEMP_PROVIDER_ERROR",
     reason: selected?.reason ?? "No AI candidates available for ballot-measure enrichment",
     failureDebug: {
       attempts: failures,
