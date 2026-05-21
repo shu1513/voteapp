@@ -155,6 +155,27 @@ describe("researchProviderClient", () => {
     }
   });
 
+  it("classifies AbortError as TIMEOUT", async () => {
+    const abortError = new Error("request aborted");
+    (abortError as Error & { name: string }).name = "AbortError";
+    globalThis.fetch = vi.fn(async () => {
+      throw abortError;
+    }) as unknown as typeof fetch;
+
+    const candidate: AiCandidate = { provider: "openai", model: "gpt-5.4-mini" };
+    const result = await callResearchProvider(candidate, "prompt", {
+      timeoutMs: 1_000,
+      openAiApiKey: "test-openai-key",
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.retryable).toBe(true);
+      expect(result.errorCode).toBe("TIMEOUT");
+      expect(result.reason).toContain("timed out");
+    }
+  });
+
   it("reports provider api-key presence accurately", () => {
     expect(
       hasProviderApiKey("openai", { timeoutMs: 1_000, openAiApiKey: "x" })

@@ -91,6 +91,19 @@ export function toReason(error: unknown): string {
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
 }
 
+function isAbortError(error: unknown): boolean {
+  if (typeof error === "object" && error !== null && "name" in error) {
+    const name = (error as { name?: unknown }).name;
+    if (name === "AbortError") {
+      return true;
+    }
+  }
+
+  // Fallback for environments that do not preserve AbortError.name consistently.
+  const reason = toReason(error).toLowerCase();
+  return reason.includes("aborted");
+}
+
 export function trimDebugText(input: string, maxChars = 20_000): string {
   return input.length <= maxChars ? input : `${input.slice(0, maxChars)}...`;
 }
@@ -374,8 +387,7 @@ async function callOpenAi(
       };
     }
   } catch (error) {
-    const reason = toReason(error);
-    if (reason.toLowerCase().includes("aborted")) {
+    if (isAbortError(error)) {
       return {
         ok: false,
         retryable: true,
@@ -383,6 +395,7 @@ async function callOpenAi(
         reason: `OpenAI request timed out after ${config.timeoutMs}ms`,
       };
     }
+    const reason = toReason(error);
     return {
       ok: false,
       retryable: true,
@@ -513,8 +526,7 @@ async function callClaude(
         };
       }
     } catch (error) {
-      const reason = toReason(error);
-      if (reason.toLowerCase().includes("aborted")) {
+      if (isAbortError(error)) {
         return {
           ok: false,
           retryable: true,
@@ -522,6 +534,7 @@ async function callClaude(
           reason: `Claude request timed out after ${config.timeoutMs}ms`,
         };
       }
+      const reason = toReason(error);
 
       return {
         ok: false,
@@ -643,8 +656,7 @@ async function callGemini(
       };
     }
   } catch (error) {
-    const reason = toReason(error);
-    if (reason.toLowerCase().includes("aborted")) {
+    if (isAbortError(error)) {
       return {
         ok: false,
         retryable: true,
@@ -652,6 +664,7 @@ async function callGemini(
         reason: `Gemini request timed out after ${config.timeoutMs}ms`,
       };
     }
+    const reason = toReason(error);
     return {
       ok: false,
       retryable: true,
