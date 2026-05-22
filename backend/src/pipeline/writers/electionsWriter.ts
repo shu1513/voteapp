@@ -322,12 +322,15 @@ async function writeElectionsForDistrict(
             description,
             election_date,
             race_type,
+            is_partisan,
             election_stage,
             sources
-          ) VALUES ($1, $2, $3, $4::date, $5, $6, $7::jsonb)
+          ) VALUES ($1, $2, $3, $4::date, $5, $6, $7, $8::jsonb)
           ON CONFLICT (district_id, official_ballot_title, election_date) DO UPDATE SET
             description = EXCLUDED.description,
             race_type = EXCLUDED.race_type,
+            -- Keep prior partisanship when a subsequent run omits it (e.g., mixed-state school contests).
+            is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan),
             election_stage = COALESCE(EXCLUDED.election_stage, elections.election_stage),
             sources = EXCLUDED.sources,
             updated_at = now()
@@ -339,6 +342,7 @@ async function writeElectionsForDistrict(
           entry.description,
           entry.election_date,
           entry.race_type,
+          entry.is_partisan ?? null,
           entry.election_stage ?? null,
           JSON.stringify(entry.sources),
         ]

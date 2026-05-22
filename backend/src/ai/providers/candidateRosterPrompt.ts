@@ -4,11 +4,13 @@ export type CandidateRosterPromptInput = {
   state: string;
   electionDate: string;
   officialBallotTitle: string;
+  includeParty?: boolean;
   seedUrls?: readonly string[];
   reviewFeedbackLines?: readonly string[];
 };
 
 export function buildCandidateRosterPrompt(input: CandidateRosterPromptInput): string {
+  const includeParty = input.includeParty !== false;
   const seedUrls = input.seedUrls ?? [];
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
 
@@ -28,7 +30,7 @@ export function buildCandidateRosterPrompt(input: CandidateRosterPromptInput): s
     '  "candidates": [',
     "    {",
     '      "display_name": "candidate name exactly as listed",',
-    '      "party": "party label when clearly known (optional)",',
+    ...(includeParty ? ['      "party": "party label when clearly known (optional)",'] : []),
     '      "is_incumbent": true,',
     '      "sources": ["https://..."]',
     "    }",

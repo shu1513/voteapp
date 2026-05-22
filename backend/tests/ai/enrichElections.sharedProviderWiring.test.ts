@@ -78,7 +78,7 @@ describe("enrichElections shared provider wiring", () => {
       expect(result.payload.entries).toHaveLength(1);
       expect(result.payload.entries[0]?.official_ballot_title).toBe("School Board Member");
       expect(result.payload.entries[0]?.race_type).toBe("office");
+      expect(result.payload.entries[0]?.is_partisan).toBe(false);
     }
   });
 });
-

@@ -11,6 +11,7 @@ import {
   parseCandidateProfilePayload,
 } from "../contracts/candidateProfilePayloadContract.js";
 import { buildCandidateProfilePrompt } from "./providers/candidateProfilePrompt.js";
+import { resolveIncludePartyForCandidateContest } from "./candidatePartisanship.js";
 import type { AiProvider } from "./types.js";
 
 type CandidateProfileErrorCode = ResearchErrorCode | "SCHEMA_MISMATCH";
@@ -46,6 +47,7 @@ export type EnrichCandidateProfileInput = {
   state: string;
   electionDate: string;
   officialBallotTitle: string;
+  electionIsPartisan?: boolean | null;
   rosterParty?: string;
   rosterIncumbent?: boolean;
   seedUrls: readonly string[];
@@ -71,6 +73,11 @@ export type EnrichCandidateProfileResult =
 
 const CLAUDE_INTER_CALL_DELAY_MS = 20_000;
 const CLAUDE_RETRY_AFTER_BUFFER_MS = 10_000;
+
+function removePartyFromProfile(profile: CandidateProfilePayload): CandidateProfilePayload {
+  const { party: _party, ...rest } = profile;
+  return rest;
+}
 
 function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
   const normalized = reason.toLowerCase();
@@ -244,6 +251,12 @@ export async function enrichCandidateProfile(
   config: EnrichCandidateProfileConfig,
   candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
 ): Promise<EnrichCandidateProfileResult> {
+  const includeParty = resolveIncludePartyForCandidateContest({
+    districtType: input.districtType,
+    state: input.state,
+    officialBallotTitle: input.officialBallotTitle,
+    electionIsPartisan: input.electionIsPartisan,
+  });
   const failures: ProviderFailureAttempt[] = [];
   const cumulativeBlockedUrlFeedback = new Set<string>();
 
@@ -253,6 +266,7 @@ export async function enrichCandidateProfile(
     for (let attempt = 0; attempt < 2; attempt += 1) {
       const prompt = buildCandidateProfilePrompt({
         ...input,
+        includeParty,
         reviewFeedbackLines,
       });
 
@@ -291,7 +305,8 @@ export async function enrichCandidateProfile(
         break;
       }
 
-      const citationVerification = await verifyCandidateProfileSources(parsed.payload, config.timeoutMs);
+      const normalizedProfile = includeParty ? parsed.payload : removePartyFromProfile(parsed.payload);
+      const citationVerification = await verifyCandidateProfileSources(normalizedProfile, config.timeoutMs);
       if (!citationVerification.ok) {
         failures.push({
           provider: candidate.provider,
@@ -326,9 +341,10 @@ export async function enrichCandidateProfile(
         ok: true,
         provider: candidate.provider,
         model: candidate.model,
-        profile: parsed.payload,
+        profile: normalizedProfile,
         aiRawDebug: {
           provider_response_text: trimDebugText(generated.rawText),
+          profile_prompt_variant: includeParty ? "standard" : "nonpartisan",
           ...(generated.debugMeta ?? {}),
         },
       };
@@ -351,6 +367,7 @@ export async function enrichCandidateProfile(
       prompt_preview: trimDebugText(
         buildCandidateProfilePrompt({
           ...input,
+          includeParty,
           reviewFeedbackLines: [],
         }),
         6000

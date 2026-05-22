@@ -121,12 +121,25 @@ function parseEntry(
     electionStage = input.election_stage;
   }
 
+  let isPartisan: boolean | undefined;
+  if (input.is_partisan !== undefined && input.is_partisan !== null) {
+    if (typeof input.is_partisan !== "boolean") {
+      return null;
+    }
+    if (input.race_type === "ballot_measure" && input.is_partisan) {
+      isPartisan = false;
+    } else {
+      isPartisan = input.is_partisan;
+    }
+  }
+
   return {
     official_ballot_title: input.official_ballot_title.trim(),
     election_date: input.election_date.trim(),
     // Canonical payload keeps historical "description" field; AI prompt now uses "impact".
     description: impactText,
     race_type: input.race_type as "office" | "ballot_measure",
+    ...(isPartisan !== undefined ? { is_partisan: isPartisan } : {}),
     ...(electionStage ? { election_stage: electionStage } : {}),
     sources,
   };

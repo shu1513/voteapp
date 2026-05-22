@@ -5,6 +5,7 @@ export type CandidateProfilePromptInput = {
   state: string;
   electionDate: string;
   officialBallotTitle: string;
+  includeParty?: boolean;
   rosterParty?: string;
   rosterIncumbent?: boolean;
   seedUrls?: readonly string[];
@@ -12,6 +13,7 @@ export type CandidateProfilePromptInput = {
 };
 
 export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput): string {
+  const includeParty = input.includeParty !== false;
   const seedUrls = input.seedUrls ?? [];
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
 
@@ -26,7 +28,7 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     `- state: "${input.state}"`,
     `- election_date: "${input.electionDate}"`,
     `- official_ballot_title: "${input.officialBallotTitle}"`,
-    ...(input.rosterParty ? [`- roster_party_hint: "${input.rosterParty}"`] : []),
+    ...(includeParty && input.rosterParty ? [`- roster_party_hint: "${input.rosterParty}"`] : []),
     ...(input.rosterIncumbent !== undefined
       ? [`- roster_is_incumbent_hint: ${input.rosterIncumbent ? "true" : "false"}`]
       : []),
@@ -36,7 +38,7 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     '  "display_name": "name for display",',
     '  "first_name": "first name",',
     '  "last_name": "last name",',
-    '  "party": "party label (optional)",',
+    ...(includeParty ? ['  "party": "party label (optional)",'] : []),
     '  "date_of_birth": "YYYY-MM-DD (optional)",',
     '  "twitter_handle": "handle without URL, optional",',
     '  "linkedin_url": "https://... (optional)",',

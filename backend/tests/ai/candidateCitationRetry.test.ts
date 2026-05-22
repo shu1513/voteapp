@@ -147,4 +147,437 @@ describe("candidate citation verification retry behavior", () => {
       'Do not use or cite this URL for "John Smith": https://bad.example/404 (citation fetch returned status 404)'
     );
   });
+
+  it("omits party in nonpartisan school roster prompts and strips returned party", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        candidates: [
+          {
+            display_name: "Jane Doe",
+            party: "Independent",
+            is_incumbent: false,
+            sources: ["https://good.example/profile"],
+          },
+        ],
+      },
+      rawText: "school-roster",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateRoster(
+      {
+        districtName: "Baldwin Park Unified School District, California",
+        districtType: "school_unified",
+        state: "CA",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "Governing Board Member",
+        seedUrls: [],
+      },
+      {
+        timeoutMs: 90000,
+      },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.candidates).toEqual([
+      {
+        display_name: "Jane Doe",
+        is_incumbent: false,
+        sources: ["https://good.example/profile"],
+      },
+    ]);
+
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).not.toContain('"party": "party label when clearly known (optional)"');
+  });
+
+  it("omits party in judicial roster prompts", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        candidates: [
+          {
+            display_name: "Alex Kim",
+            party: "Nonpartisan",
+            sources: ["https://good.example/judge"],
+          },
+        ],
+      },
+      rawText: "judicial-roster",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateRoster(
+      {
+        districtName: "Los Angeles County, California",
+        districtType: "county",
+        state: "CA",
+        electionDate: "2026-06-02",
+        officialBallotTitle: "Judge of the Superior Court, Office No. 2",
+        seedUrls: [],
+      },
+      {
+        timeoutMs: 90000,
+      },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.candidates[0]).toEqual({
+      display_name: "Alex Kim",
+      sources: ["https://good.example/judge"],
+    });
+
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).not.toContain('"party": "party label when clearly known (optional)"');
+  });
+
+  it("omits party in nonpartisan profile prompts and strips returned party", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        display_name: "Pat Lee",
+        first_name: "Pat",
+        last_name: "Lee",
+        party: "Independent",
+        sources: ["https://good.example/profile"],
+      },
+      rawText: "profile-nonpartisan",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateProfile(
+      {
+        candidateDisplayName: "Pat Lee",
+        districtName: "Baldwin Park Unified School District, California",
+        districtType: "school_unified",
+        state: "CA",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "Governing Board Member",
+        rosterParty: "Independent",
+        seedUrls: [],
+      },
+      {
+        timeoutMs: 90000,
+      },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.profile).toEqual({
+      display_name: "Pat Lee",
+      first_name: "Pat",
+      last_name: "Lee",
+      sources: ["https://good.example/profile"],
+    });
+
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).not.toContain('"party": "party label (optional)"');
+    expect(prompt).not.toContain("- roster_party_hint:");
+  });
+
+  it("treats 'Court of Appeal' (singular) contests as nonpartisan", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        candidates: [
+          {
+            display_name: "Taylor Kim",
+            party: "Democrat",
+            sources: ["https://good.example/court-of-appeal"],
+          },
+        ],
+      },
+      rawText: "court-of-appeal-roster",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateRoster(
+      {
+        districtName: "California",
+        districtType: "statewide",
+        state: "CA",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "Court of Appeal, Second Appellate District",
+        seedUrls: [],
+      },
+      {
+        timeoutMs: 90000,
+      },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.candidates[0]).toEqual({
+      display_name: "Taylor Kim",
+      sources: ["https://good.example/court-of-appeal"],
+    });
+
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).not.toContain('"party": "party label when clearly known (optional)"');
+  });
+
+  it("keeps party for judicial contests in partisan-judicial states", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        candidates: [
+          {
+            display_name: "Jordan Smith",
+            party: "Democrat",
+            sources: ["https://good.example/tx-judge"],
+          },
+        ],
+      },
+      rawText: "tx-judicial-roster",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateRoster(
+      {
+        districtName: "Texas",
+        districtType: "statewide",
+        state: "TX",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "Justice, Supreme Court, Place 3",
+        seedUrls: [],
+      },
+      { timeoutMs: 90000 },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.candidates[0]).toEqual({
+      display_name: "Jordan Smith",
+      party: "Democrat",
+      sources: ["https://good.example/tx-judge"],
+    });
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).toContain('"party": "party label when clearly known (optional)"');
+  });
+
+  it("keeps party for profile enrichment in partisan-judicial states", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        display_name: "Jordan Smith",
+        first_name: "Jordan",
+        last_name: "Smith",
+        party: "Democrat",
+        sources: ["https://good.example/tx-profile"],
+      },
+      rawText: "tx-judicial-profile",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateProfile(
+      {
+        candidateDisplayName: "Jordan Smith",
+        districtName: "Texas",
+        districtType: "statewide",
+        state: "TX",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "Justice, Supreme Court, Place 3",
+        rosterParty: "Democrat",
+        seedUrls: [],
+      },
+      { timeoutMs: 90000 },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.profile.party).toBe("Democrat");
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).toContain('"party": "party label (optional)"');
+    expect(prompt).toContain('- roster_party_hint: "Democrat"');
+  });
+
+  it("keeps party for school contests in states with partisan or mixed school ballots", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        candidates: [
+          {
+            display_name: "Jordan Smith",
+            party: "Independent",
+            sources: ["https://good.example/pa-school"],
+          },
+        ],
+      },
+      rawText: "pa-school-roster",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateRoster(
+      {
+        districtName: "Pennsylvania",
+        districtType: "school_unified",
+        state: "PA",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "School Board Director",
+        seedUrls: [],
+      },
+      { timeoutMs: 90000 },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.candidates[0]).toEqual({
+      display_name: "Jordan Smith",
+      party: "Independent",
+      sources: ["https://good.example/pa-school"],
+    });
+
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).toContain('"party": "party label when clearly known (optional)"');
+  });
+
+  it("keeps party for school profile enrichment in states with partisan or mixed school ballots", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        display_name: "Jordan Smith",
+        first_name: "Jordan",
+        last_name: "Smith",
+        party: "Independent",
+        sources: ["https://good.example/pa-school-profile"],
+      },
+      rawText: "pa-school-profile",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateProfile(
+      {
+        candidateDisplayName: "Jordan Smith",
+        districtName: "Pennsylvania",
+        districtType: "school_unified",
+        state: "PA",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "School Board Director",
+        rosterParty: "Independent",
+        seedUrls: [],
+      },
+      { timeoutMs: 90000 },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.profile.party).toBe("Independent");
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).toContain('"party": "party label (optional)"');
+    expect(prompt).toContain('- roster_party_hint: "Independent"');
+  });
+
+  it("uses electionIsPartisan=false to omit party in roster prompts", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        candidates: [
+          {
+            display_name: "Morgan Price",
+            party: "Democrat",
+            sources: ["https://good.example/morgan"],
+          },
+        ],
+      },
+      rawText: "roster-election-is-partisan-false",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateRoster(
+      {
+        districtName: "Los Angeles County, California",
+        districtType: "county",
+        state: "CA",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "Assessor",
+        electionIsPartisan: false,
+        seedUrls: [],
+      },
+      { timeoutMs: 90000 },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.candidates[0]).toEqual({
+      display_name: "Morgan Price",
+      sources: ["https://good.example/morgan"],
+    });
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).not.toContain('"party": "party label when clearly known (optional)"');
+  });
+
+  it("uses electionIsPartisan=false to omit party in profile prompts", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        display_name: "Morgan Price",
+        first_name: "Morgan",
+        last_name: "Price",
+        party: "Democrat",
+        sources: ["https://good.example/morgan-profile"],
+      },
+      rawText: "profile-election-is-partisan-false",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateProfile(
+      {
+        candidateDisplayName: "Morgan Price",
+        districtName: "Los Angeles County, California",
+        districtType: "county",
+        state: "CA",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "Assessor",
+        electionIsPartisan: false,
+        rosterParty: "Democrat",
+        seedUrls: [],
+      },
+      { timeoutMs: 90000 },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.profile).toEqual({
+      display_name: "Morgan Price",
+      first_name: "Morgan",
+      last_name: "Price",
+      sources: ["https://good.example/morgan-profile"],
+    });
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).not.toContain('"party": "party label (optional)"');
+    expect(prompt).not.toContain("- roster_party_hint:");
+  });
 });

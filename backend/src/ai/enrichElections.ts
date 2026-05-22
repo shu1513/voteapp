@@ -13,6 +13,7 @@ import {
   ELECTION_ENRICHMENT_SCHEMA_VERSION,
 } from "../contracts/electionEnrichmentContract.js";
 import { parseAiElectionEntriesPayload } from "../contracts/electionPayloadContract.js";
+import { resolveElectionIsPartisan } from "./electionPartisanshipPolicy.js";
 import type { AiProvider } from "./types.js";
 import type {
   ElectionDraftPayload,
@@ -44,6 +45,7 @@ type ProviderFailureAttempt = {
 };
 
 function normalizeGeneratedPayloadForContestFamily(
+  draft: ElectionDraftPayload,
   contestFamily: ElectionContestFamily,
   payload: unknown
 ): unknown {
@@ -54,9 +56,6 @@ function normalizeGeneratedPayloadForContestFamily(
         ? "office"
         : null;
 
-  if (!forcedRaceType) {
-    return payload;
-  }
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
     return payload;
   }
@@ -71,7 +70,35 @@ function normalizeGeneratedPayloadForContestFamily(
       return entry;
     }
     const row = entry as Record<string, unknown>;
-    return { ...row, race_type: forcedRaceType };
+    const nextRow: Record<string, unknown> = forcedRaceType
+      ? { ...row, race_type: forcedRaceType }
+      : { ...row };
+    const raceType = nextRow.race_type === "office" || nextRow.race_type === "ballot_measure"
+      ? nextRow.race_type
+      : null;
+    const officialBallotTitle =
+      typeof nextRow.official_ballot_title === "string" ? nextRow.official_ballot_title : "";
+    const aiIsPartisan =
+      typeof nextRow.is_partisan === "boolean" ? nextRow.is_partisan : undefined;
+
+    if (!raceType) {
+      return nextRow;
+    }
+
+    const resolvedIsPartisan = resolveElectionIsPartisan({
+      draft,
+      contestFamily,
+      raceType,
+      officialBallotTitle,
+      aiValue: aiIsPartisan,
+    });
+
+    if (resolvedIsPartisan === undefined) {
+      const { is_partisan: _ignored, ...withoutIsPartisan } = nextRow;
+      return withoutIsPartisan;
+    }
+
+    return { ...nextRow, is_partisan: resolvedIsPartisan };
   });
 
   return { ...record, entries: normalizedEntries };
@@ -401,6 +428,7 @@ export function buildEnrichElectionsConfigFromEnv(): EnrichElectionsConfig {
 }
 
 async function runPromptWithCandidates(
+  draft: ElectionDraftPayload,
   prompt: string,
   contestFamily: ElectionContestFamily,
   config: EnrichElectionsConfig,
@@ -454,6 +482,7 @@ async function runPromptWithCandidates(
       }
 
       const normalizedGeneratedPayload = normalizeGeneratedPayloadForContestFamily(
+        draft,
         contestFamily,
         generated.parsed
       );
@@ -577,7 +606,7 @@ export async function enrichElections(
       contestFamily: family,
       seedUrls: familySeedUrls,
     });
-    const outcome = await runPromptWithCandidates(prompt, family, config, candidates);
+    const outcome = await runPromptWithCandidates(input.draft, prompt, family, config, candidates);
     if (!outcome.ok) {
       return {
         ok: false,

@@ -176,6 +176,26 @@ describe("parseAiElectionEntriesPayload", () => {
     }
   });
 
+  it("parses optional is_partisan for office entries", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          impact: "Leads the state executive branch and signs or vetoes legislation.",
+          race_type: "office",
+          is_partisan: true,
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries[0].is_partisan).toBe(true);
+    }
+  });
+
   it("rejects invalid entries row in AI payload", () => {
     const result = parseAiElectionEntriesPayload({
       entries: [
@@ -205,6 +225,41 @@ describe("parseAiElectionEntriesPayload", () => {
       ],
     });
     expect(result.ok).toBe(false);
+  });
+
+  it("rejects non-boolean is_partisan", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          impact: "Leads the state executive branch and signs or vetoes legislation.",
+          race_type: "office",
+          is_partisan: "yes",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it("coerces ballot_measure is_partisan=true to false", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "Measure A",
+          election_date: "2026-11-03",
+          impact: "Raises sales tax for transportation projects.",
+          race_type: "ballot_measure",
+          is_partisan: true,
+          sources: ["https://example.gov/elections/measure-a"],
+        },
+      ],
+    });
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries[0].is_partisan).toBe(false);
+    }
   });
 
   it("rejects AI payloads that use description instead of impact", () => {

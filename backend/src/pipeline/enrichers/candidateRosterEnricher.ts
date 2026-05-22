@@ -30,6 +30,7 @@ type ElectionRow = {
   state: string;
   election_date: string;
   official_ballot_title: string;
+  is_partisan: boolean | null;
   sources: unknown;
 };
 
@@ -392,6 +393,7 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
         d.state,
         e.election_date::text AS election_date,
         e.official_ballot_title,
+        e.is_partisan,
         e.sources
       FROM public.elections AS e
       JOIN public.districts AS d
@@ -517,6 +519,7 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
                 state: election.state,
                 electionDate: election.election_date,
                 officialBallotTitle: election.official_ballot_title,
+                electionIsPartisan: election.is_partisan,
                 seedUrls: parseSeedUrls(election.sources),
               },
               aiConfig

@@ -11,6 +11,7 @@ import {
   parseCandidateRosterPayload,
 } from "../contracts/candidateRosterPayloadContract.js";
 import { buildCandidateRosterPrompt } from "./providers/candidateRosterPrompt.js";
+import { resolveIncludePartyForCandidateContest } from "./candidatePartisanship.js";
 import { normalizeCandidateName } from "../utils/candidateIdentity.js";
 import type { AiProvider } from "./types.js";
 
@@ -46,6 +47,7 @@ export type EnrichCandidateRosterInput = {
   state: string;
   electionDate: string;
   officialBallotTitle: string;
+  electionIsPartisan?: boolean | null;
   seedUrls: readonly string[];
 };
 
@@ -69,6 +71,22 @@ export type EnrichCandidateRosterResult =
 
 const CLAUDE_INTER_CALL_DELAY_MS = 20_000;
 const CLAUDE_RETRY_AFTER_BUFFER_MS = 10_000;
+
+function shouldIncludePartyInRosterOutput(input: EnrichCandidateRosterInput): boolean {
+  return resolveIncludePartyForCandidateContest({
+    districtType: input.districtType,
+    state: input.state,
+    officialBallotTitle: input.officialBallotTitle,
+    electionIsPartisan: input.electionIsPartisan,
+  });
+}
+
+function removePartyFromCandidates(candidates: CandidateRosterEntry[]): CandidateRosterEntry[] {
+  return candidates.map((candidate) => {
+    const { party: _party, ...rest } = candidate;
+    return rest;
+  });
+}
 
 function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
   const normalized = reason.toLowerCase();
@@ -260,6 +278,7 @@ export async function enrichCandidateRoster(
   config: EnrichCandidateRosterConfig,
   candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
 ): Promise<EnrichCandidateRosterResult> {
+  const includeParty = shouldIncludePartyInRosterOutput(input);
   const failures: ProviderFailureAttempt[] = [];
   const cumulativeBlockedUrlFeedback = new Set<string>();
 
@@ -269,6 +288,7 @@ export async function enrichCandidateRoster(
     for (let attempt = 0; attempt < 2; attempt += 1) {
       const prompt = buildCandidateRosterPrompt({
         ...input,
+        includeParty,
         reviewFeedbackLines,
       });
 
@@ -308,7 +328,8 @@ export async function enrichCandidateRoster(
       }
 
       const dedupedCandidates = dedupeCandidatesByDisplayName(parsed.payload.candidates);
-      const citationVerification = await verifyCandidateRosterSources(dedupedCandidates, config.timeoutMs);
+      const normalizedCandidates = includeParty ? dedupedCandidates : removePartyFromCandidates(dedupedCandidates);
+      const citationVerification = await verifyCandidateRosterSources(normalizedCandidates, config.timeoutMs);
       if (!citationVerification.ok) {
         failures.push({
           provider: candidate.provider,
@@ -343,9 +364,10 @@ export async function enrichCandidateRoster(
         ok: true,
         provider: candidate.provider,
         model: candidate.model,
-        candidates: dedupedCandidates,
+        candidates: normalizedCandidates,
         aiRawDebug: {
           provider_response_text: trimDebugText(generated.rawText),
+          roster_prompt_variant: includeParty ? "standard" : "nonpartisan",
           ...(generated.debugMeta ?? {}),
         },
       };
@@ -368,6 +390,7 @@ export async function enrichCandidateRoster(
       prompt_preview: trimDebugText(
         buildCandidateRosterPrompt({
           ...input,
+          includeParty,
           reviewFeedbackLines: [],
         }),
         6000
