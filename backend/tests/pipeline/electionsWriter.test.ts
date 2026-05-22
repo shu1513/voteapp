@@ -13,6 +13,7 @@ const redisXAutoClaimMock = vi.fn(async () => ({ nextId: "0-0", messages: [] }))
 const redisXReadGroupMock = vi.fn();
 const redisXAckMock = vi.fn(async () => 1);
 const redisXAddMock = vi.fn(async () => "1-0");
+const redisSendCommandMock = vi.fn(async () => 1);
 
 vi.mock("pg", () => {
   return {
@@ -34,6 +35,7 @@ vi.mock("redis", () => {
       xReadGroup: redisXReadGroupMock,
       xAck: redisXAckMock,
       xAdd: redisXAddMock,
+      sendCommand: redisSendCommandMock,
     })),
   };
 });
