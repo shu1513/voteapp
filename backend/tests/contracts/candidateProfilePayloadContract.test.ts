@@ -27,6 +27,35 @@ describe("parseCandidateProfilePayload", () => {
     expect(parsed.payload.fec_ids).toEqual(["H0XX00000"]);
   });
 
+  it("accepts twitter profile URL and normalizes to handle", () => {
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      twitter_handle: "https://x.com/Jane_Doe",
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    expect(parsed.payload.twitter_handle).toBe("jane_doe");
+  });
+
+  it("rejects malformed twitter handle", () => {
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      twitter_handle: "https://example.org/not-twitter",
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(false);
+  });
+
   it("rejects non-office website URL", () => {
     const parsed = parseCandidateProfilePayload({
       display_name: "Jane Doe",

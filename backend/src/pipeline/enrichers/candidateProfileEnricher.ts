@@ -338,7 +338,13 @@ function matchesByHardIdentifier(profile: CandidateProfilePayload, row: Existing
   }
 
   if (profile.twitter_handle && row.twitter_handle) {
-    if (normalizeTwitterHandle(profile.twitter_handle) === normalizeTwitterHandle(row.twitter_handle)) {
+    const normalizedProfileHandle = normalizeTwitterHandle(profile.twitter_handle);
+    const normalizedRowHandle = normalizeTwitterHandle(row.twitter_handle);
+    if (
+      normalizedProfileHandle &&
+      normalizedRowHandle &&
+      normalizedProfileHandle === normalizedRowHandle
+    ) {
       return true;
     }
   }

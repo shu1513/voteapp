@@ -1,4 +1,5 @@
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
+import { normalizeTwitterHandle } from "../utils/candidateIdentity.js";
 
 export type CandidateProfilePayload = {
   display_name: string;
@@ -81,12 +82,6 @@ function normalizeOptionalStringArray(value: unknown): string[] | null | undefin
   return normalized;
 }
 
-function normalizeTwitterHandle(value: string): string {
-  const trimmed = value.trim();
-  const withoutPrefix = trimmed.startsWith("@") ? trimmed.slice(1) : trimmed;
-  return withoutPrefix.toLowerCase();
-}
-
 export function parseCandidateProfilePayload(payload: unknown):
   | { ok: true; payload: CandidateProfilePayload }
   | { ok: false; reason: string } {
@@ -131,7 +126,11 @@ export function parseCandidateProfilePayload(payload: unknown):
     if (!isNonEmptyString(input.twitter_handle)) {
       return { ok: false, reason: "payload.twitter_handle must be non-empty string when present" };
     }
-    twitterHandle = normalizeTwitterHandle(input.twitter_handle);
+    const normalized = normalizeTwitterHandle(input.twitter_handle);
+    if (!normalized) {
+      return { ok: false, reason: "payload.twitter_handle must be a valid handle when present" };
+    }
+    twitterHandle = normalized;
   }
 
   let linkedinUrl: string | undefined;

@@ -8,10 +8,44 @@ export function normalizeCandidateName(value: string): string {
     .trim();
 }
 
-export function normalizeTwitterHandle(value: string): string {
+export function normalizeTwitterHandle(value: string): string | null {
   const trimmed = value.trim();
-  const withoutPrefix = trimmed.startsWith("@") ? trimmed.slice(1) : trimmed;
-  return withoutPrefix.toLowerCase();
+  if (trimmed.length === 0) {
+    return null;
+  }
+
+  let rawHandle = trimmed;
+  if (/^https?:\/\//i.test(trimmed)) {
+    try {
+      const parsed = new URL(trimmed);
+      const hostname = parsed.hostname.toLowerCase();
+      const allowedHostnames = new Set([
+        "x.com",
+        "www.x.com",
+        "twitter.com",
+        "www.twitter.com",
+        "mobile.twitter.com",
+        "m.twitter.com",
+      ]);
+      if (!allowedHostnames.has(hostname)) {
+        return null;
+      }
+      const pathToken = parsed.pathname.split("/").filter((token) => token.length > 0)[0];
+      if (!pathToken) {
+        return null;
+      }
+      rawHandle = pathToken;
+    } catch {
+      return null;
+    }
+  }
+
+  const withoutPrefix = rawHandle.startsWith("@") ? rawHandle.slice(1) : rawHandle;
+  const lowered = withoutPrefix.toLowerCase();
+  if (!/^[a-z0-9_]{1,15}$/.test(lowered)) {
+    return null;
+  }
+  return lowered;
 }
 
 export function normalizeOptionalUrl(value: string | null | undefined): string | null {

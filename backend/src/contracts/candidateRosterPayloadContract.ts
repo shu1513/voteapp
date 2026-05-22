@@ -1,4 +1,5 @@
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
+import { normalizeCandidateName } from "../utils/candidateIdentity.js";
 
 export type CandidateRosterEntry = {
   display_name: string;
@@ -91,11 +92,21 @@ export function parseCandidateRosterPayload(payload: unknown):
   }
 
   const candidates: CandidateRosterEntry[] = [];
+  const seenDisplayNames = new Set<string>();
   for (const row of input.candidates) {
     const parsed = parseEntry(row);
     if (!parsed) {
       return { ok: false, reason: "payload.candidates contains invalid row" };
     }
+    const normalizedDisplayName = normalizeCandidateName(parsed.display_name);
+    const dedupeKey =
+      normalizedDisplayName.length > 0
+        ? normalizedDisplayName
+        : parsed.display_name.trim().toLowerCase();
+    if (seenDisplayNames.has(dedupeKey)) {
+      continue;
+    }
+    seenDisplayNames.add(dedupeKey);
     candidates.push(parsed);
   }
 

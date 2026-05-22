@@ -57,7 +57,11 @@ vi.mock("../../src/config/env.js", () => {
 
 import { runElectionsWriter } from "../../src/pipeline/writers/electionsWriter.js";
 import {
+  STAGING_BALLOT_MEASURE_DRAFT_STREAM,
+  STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
   STAGING_ELECTIONS_WRITER_GROUP,
+  STAGING_ITEM_TYPE_BALLOT_MEASURE,
+  STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
   STAGING_ITEM_TYPE_ELECTION,
   STAGING_VALIDATED_STREAM,
   STAGING_WRITTEN_STREAM,
@@ -190,5 +194,86 @@ describe("runElectionsWriter", () => {
       String(call[0]).includes("SET status = $3")
     );
     expect(statusUpdateCall?.[1]?.[2]).toBe("written");
+  });
+
+  it("enqueues ballot-measure and candidate-roster drafts via Lua sendCommand", async () => {
+    const payload = {
+      district_id: "d-1",
+      district_name: "Vermont",
+      district_type: "statewide",
+      state: "VT",
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2099-11-03",
+          description: "Office election",
+          race_type: "office",
+          sources: ["https://example.org/office"],
+        },
+        {
+          official_ballot_title: "Measure A",
+          election_date: "2099-11-03",
+          description: "Ballot measure election",
+          race_type: "ballot_measure",
+          sources: ["https://example.org/measure"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      if (sql.includes("INSERT INTO public.elections")) {
+        const raceType = String(params?.[4] ?? "");
+        if (raceType === "office") {
+          return { rowCount: 1, rows: [{ id: "00000000-0000-0000-0000-000000000101", race_type: "office" }] };
+        }
+        if (raceType === "ballot_measure") {
+          return {
+            rowCount: 1,
+            rows: [{ id: "00000000-0000-0000-0000-000000000202", race_type: "ballot_measure" }],
+          };
+        }
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisSendCommandMock).toHaveBeenCalledTimes(2);
+
+    const sendCommandCalls = redisSendCommandMock.mock.calls.map((call) => call[0] as string[]);
+
+    expect(sendCommandCalls).toEqual(
+      expect.arrayContaining([
+        expect.arrayContaining([
+          "EVAL",
+          STAGING_BALLOT_MEASURE_DRAFT_STREAM,
+          expect.stringContaining("staging:ballot_measure_emitted:"),
+          "00000000-0000-0000-0000-000000000202",
+          STAGING_ITEM_TYPE_BALLOT_MEASURE,
+          "run_1",
+        ]),
+        expect.arrayContaining([
+          "EVAL",
+          STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
+          expect.stringContaining("staging:candidate_roster_emitted:"),
+          "00000000-0000-0000-0000-000000000101",
+          STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
+          "run_1",
+        ]),
+      ])
+    );
   });
 });
