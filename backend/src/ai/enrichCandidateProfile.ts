@@ -50,6 +50,7 @@ export type EnrichCandidateProfileInput = {
   electionIsPartisan?: boolean | null;
   rosterParty?: string;
   rosterIncumbent?: boolean;
+  disambiguationHint?: string;
   seedUrls: readonly string[];
 };
 

@@ -38,7 +38,7 @@ describe("parseCandidateRosterPayload", () => {
     expect(parsed.ok).toBe(false);
   });
 
-  it("dedupes duplicate candidate display names within one payload", () => {
+  it("preserves duplicate candidate display names within one payload", () => {
     const parsed = parseCandidateRosterPayload({
       candidates: [
         {
@@ -64,6 +64,11 @@ describe("parseCandidateRosterPayload", () => {
         display_name: "Jane Doe",
         party: "Independent",
         sources: ["https://example.org/a"],
+      },
+      {
+        display_name: "JANE   DOE",
+        party: "Party X",
+        sources: ["https://example.org/b"],
       },
     ]);
   });

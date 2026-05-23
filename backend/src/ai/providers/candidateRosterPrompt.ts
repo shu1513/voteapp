@@ -42,7 +42,7 @@ export function buildCandidateRosterPrompt(input: CandidateRosterPromptInput): s
     "- Return only people running in this exact contest (no other districts or offices).",
     "- candidates can be an empty array if no roster is found.",
     "- Do not include candidate profile details in this call.",
-    "- Deduplicate candidates by display_name.",
+    "- Do not deduplicate by display_name; include each ballot-listed candidate row, even for same-name candidates.",
     "- Each candidate must include at least one supporting source URL.",
     "- return JSON only (no prose, no markdown).",
     ...(seedUrls.length > 0

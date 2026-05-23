@@ -326,10 +326,12 @@ async function loadSameNameCandidates(
 function hasAtLeastOneHardIdentifier(profile: CandidateProfilePayload): boolean {
   const hasFec = (profile.fec_ids?.length ?? 0) > 0;
   const hasStateFiling = (profile.state_filing_ids?.length ?? 0) > 0;
+  const hasOfficialWebsite = Boolean(normalizeOptionalUrl(profile.official_website_url));
   return Boolean(
     profile.date_of_birth ||
       profile.twitter_handle ||
       profile.linkedin_url ||
+      hasOfficialWebsite ||
       hasFec ||
       hasStateFiling
   );
@@ -354,6 +356,12 @@ function matchesByHardIdentifier(profile: CandidateProfilePayload, row: Existing
 
   if (profile.linkedin_url && row.linkedin_url) {
     if (normalizeOptionalUrl(profile.linkedin_url) === normalizeOptionalUrl(row.linkedin_url)) {
+      return true;
+    }
+  }
+
+  if (profile.official_website_url && row.official_website_url) {
+    if (normalizeOptionalUrl(profile.official_website_url) === normalizeOptionalUrl(row.official_website_url)) {
       return true;
     }
   }
@@ -485,6 +493,8 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
         const electionId = entry.message.election_id;
         const itemType = entry.message.item_type;
         const candidateDisplayName = entry.message.candidate_display_name;
+        const disambiguationHint = entry.message.disambiguation_hint?.trim() || undefined;
+        const skipPerElectionNameDedupe = parseBooleanField(entry.message.skip_per_election_name_dedupe) === true;
 
         try {
           const deliveryCount = await getDeliveryCount(redis, entry.id);
@@ -514,7 +524,7 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             continue;
           }
 
-          if (await electionAlreadyHasCandidateName(pool, electionId, candidateDisplayName)) {
+          if (!skipPerElectionNameDedupe && (await electionAlreadyHasCandidateName(pool, electionId, candidateDisplayName))) {
             await redis.xAck(
               STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
               STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
@@ -556,6 +566,7 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               electionIsPartisan: election.is_partisan,
               rosterParty: effectiveRosterParty,
               rosterIncumbent,
+              disambiguationHint,
               seedUrls: mergeSeedUrls(messageSeedUrls, electionSeedUrls),
             },
             aiConfig
@@ -570,6 +581,16 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           }
 
           const profile = aiResult.profile;
+          if (skipPerElectionNameDedupe && !hasAtLeastOneHardIdentifier(profile)) {
+            await parkMessage(
+              redis,
+              entry,
+              "duplicate-name candidate profile lacks hard identifiers; skipped to avoid mismatched person write",
+              deliveryCount
+            );
+            continue;
+          }
+
           const existingCandidates = await loadSameNameCandidates(pool, profile, election.state);
 
           let candidateId: string | null = null;

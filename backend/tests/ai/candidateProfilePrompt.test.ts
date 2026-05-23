@@ -33,4 +33,26 @@ describe("buildCandidateProfilePrompt", () => {
     expect(prompt).not.toContain('"party": "party label (optional)"');
     expect(prompt).not.toContain("- roster_party_hint:");
   });
+
+  it("includes disambiguation hint only when provided", () => {
+    const withHint = buildCandidateProfilePrompt({
+      ...baseInput,
+      includeParty: true,
+      disambiguationHint: "Democrat on county sample ballot",
+    });
+    expect(withHint).toContain('- roster_disambiguation_hint: "Democrat on county sample ballot"');
+    expect(withHint).toContain("Use roster_disambiguation_hint to target this person only.");
+    expect(withHint).toContain(
+      "When identity is uncertain, prefer null/omission for identity fields over guessing another person's identifiers."
+    );
+
+    const withoutHint = buildCandidateProfilePrompt({
+      ...baseInput,
+      includeParty: true,
+    });
+    expect(withoutHint).not.toContain("- roster_disambiguation_hint:");
+    expect(withoutHint).not.toContain(
+      "When identity is uncertain, prefer null/omission for identity fields over guessing another person's identifiers."
+    );
+  });
 });
