@@ -18,4 +18,8 @@ describe("normalizeElectionTitleKey", () => {
   it("normalizes leading zeros in office number", () => {
     expect(normalizeElectionTitleKey("Judge, Office No. 002")).toBe("judge office no 2");
   });
+
+  it("does not rewrite no as a word prefix (Office North)", () => {
+    expect(normalizeElectionTitleKey("Office North District")).toBe("office north district");
+  });
 });

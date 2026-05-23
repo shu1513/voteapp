@@ -11,7 +11,7 @@ SET official_ballot_title_key = trim(
         regexp_replace(
           regexp_replace(
             lower(official_ballot_title),
-            '\moffice[[:space:]]*no\.?[[:space:]]*',
+            '\moffice[[:space:]]*no(?=\.|[[:space:]]|[0-9])\.?[[:space:]]*',
             'office no ',
             'g'
           ),
