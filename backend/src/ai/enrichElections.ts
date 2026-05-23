@@ -21,6 +21,7 @@ import type {
   ElectionEntryPayload,
 } from "../types/election.js";
 import { verifyHttpUrlReachability } from "./urlReachability.js";
+import { normalizeElectionTitleKey } from "../utils/normalizeElectionTitleKey.js";
 
 const CLAUDE_INTER_CALL_DELAY_MS = 20_000;
 const CLAUDE_RETRY_AFTER_BUFFER_MS = 10_000;
@@ -140,7 +141,6 @@ function needsContestFamilySplit(districtType: ElectionDraftPayload["district_ty
 
 function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayload[] {
   const byKey = new Map<string, ElectionEntryPayload>();
-  const normalizeKey = (value: string): string => value.toLowerCase().replace(/\s+/g, " ").trim();
   const mergeSources = (left: string[], right: string[]): string[] => {
     const seen = new Set<string>();
     const combined: string[] = [];
@@ -155,7 +155,7 @@ function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayl
   };
 
   for (const entry of entries) {
-    const key = `${entry.election_date}::${normalizeKey(entry.official_ballot_title)}`;
+    const key = `${entry.election_date}::${normalizeElectionTitleKey(entry.official_ballot_title)}`;
     const prior = byKey.get(key);
     if (!prior) {
       byKey.set(key, entry);

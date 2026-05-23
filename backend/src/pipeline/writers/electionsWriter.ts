@@ -15,6 +15,7 @@ import {
 import { parseCanonicalElectionPayload } from "../../contracts/electionPayloadContract.js";
 import type { ElectionEnrichedPayload } from "../../types/election.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
+import { normalizeElectionTitleKey } from "../../utils/normalizeElectionTitleKey.js";
 import type { ElectionContestFamily } from "../../ai/providers/electionsPrompt.js";
 
 type WriterOptions = {
@@ -190,20 +191,20 @@ async function resolveBallotMeasureElectionIds(
     return [];
   }
 
-  const titles = ballotEntries.map((entry) => entry.official_ballot_title);
+  const titleKeys = ballotEntries.map((entry) => normalizeElectionTitleKey(entry.official_ballot_title));
   const dates = ballotEntries.map((entry) => entry.election_date);
 
   const result = await pool.query<{ id: string }>(
     `
       SELECT e.id
       FROM public.elections AS e
-      JOIN unnest($2::text[], $3::date[]) AS m(official_ballot_title, election_date)
-        ON e.official_ballot_title = m.official_ballot_title
+      JOIN unnest($2::text[], $3::date[]) AS m(official_ballot_title_key, election_date)
+        ON e.official_ballot_title_key = m.official_ballot_title_key
        AND e.election_date = m.election_date
       WHERE e.district_id = $1
         AND e.race_type = 'ballot_measure'
     `,
-    [payload.district_id, titles, dates]
+    [payload.district_id, titleKeys, dates]
   );
 
   return [...new Set(result.rows.map((row) => row.id))];
@@ -218,20 +219,20 @@ async function resolveOfficeElectionIds(
     return [];
   }
 
-  const titles = officeEntries.map((entry) => entry.official_ballot_title);
+  const titleKeys = officeEntries.map((entry) => normalizeElectionTitleKey(entry.official_ballot_title));
   const dates = officeEntries.map((entry) => entry.election_date);
 
   const result = await pool.query<{ id: string }>(
     `
       SELECT e.id
       FROM public.elections AS e
-      JOIN unnest($2::text[], $3::date[]) AS o(official_ballot_title, election_date)
-        ON e.official_ballot_title = o.official_ballot_title
+      JOIN unnest($2::text[], $3::date[]) AS o(official_ballot_title_key, election_date)
+        ON e.official_ballot_title_key = o.official_ballot_title_key
        AND e.election_date = o.election_date
       WHERE e.district_id = $1
         AND e.race_type = 'office'
     `,
-    [payload.district_id, titles, dates]
+    [payload.district_id, titleKeys, dates]
   );
 
   return [...new Set(result.rows.map((row) => row.id))];
@@ -311,6 +312,15 @@ async function writeElectionsForDistrict(
       return { wrote: false, ballotMeasureElectionIds: [], officeElectionIds: [] };
     }
 
+    await client.query(
+      `
+        UPDATE public.districts
+        SET last_elections_searched_at = now()
+        WHERE id = $1
+      `,
+      [payload.district_id]
+    );
+
     const ballotMeasureElectionIds: string[] = [];
     const officeElectionIds: string[] = [];
     for (const entry of payload.entries) {
@@ -319,14 +329,15 @@ async function writeElectionsForDistrict(
           INSERT INTO public.elections (
             district_id,
             official_ballot_title,
+            official_ballot_title_key,
             description,
             election_date,
             race_type,
             is_partisan,
             election_stage,
             sources
-          ) VALUES ($1, $2, $3, $4::date, $5, $6, $7, $8::jsonb)
-          ON CONFLICT (district_id, official_ballot_title, election_date) DO UPDATE SET
+          ) VALUES ($1, $2, $3, $4, $5::date, $6, $7, $8, $9::jsonb)
+          ON CONFLICT (district_id, official_ballot_title_key, election_date) DO UPDATE SET
             description = EXCLUDED.description,
             race_type = EXCLUDED.race_type,
             -- Keep prior partisanship when a subsequent run omits it (e.g., mixed-state school contests).
@@ -339,6 +350,7 @@ async function writeElectionsForDistrict(
         [
           payload.district_id,
           entry.official_ballot_title,
+          normalizeElectionTitleKey(entry.official_ballot_title),
           entry.description,
           entry.election_date,
           entry.race_type,

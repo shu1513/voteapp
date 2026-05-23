@@ -130,6 +130,11 @@ describe("runElectionsWriter", () => {
     );
     expect(statusUpdateCall).toBeTruthy();
     expect(statusUpdateCall?.[1]?.[2]).toBe("no_results");
+    const districtTimestampUpdateCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("UPDATE public.districts")
+    );
+    expect(districtTimestampUpdateCall).toBeTruthy();
+    expect(districtTimestampUpdateCall?.[1]?.[0]).toBe("d-1");
 
     const insertElectionCall = clientQueryMock.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.elections")
@@ -186,16 +191,21 @@ describe("runElectionsWriter", () => {
     expect(deleteCall).toBeUndefined();
 
     const upsertCall = clientQueryMock.mock.calls.find((call) =>
-      String(call[0]).includes("ON CONFLICT (district_id, official_ballot_title, election_date) DO UPDATE SET")
+      String(call[0]).includes("ON CONFLICT (district_id, official_ballot_title_key, election_date) DO UPDATE SET")
     );
     expect(upsertCall).toBeTruthy();
     expect(String(upsertCall?.[0])).toContain("is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan)");
-    expect(upsertCall?.[1]?.[5]).toBeNull();
+    expect(upsertCall?.[1]?.[6]).toBeNull();
 
     const statusUpdateCall = clientQueryMock.mock.calls.find((call) =>
       String(call[0]).includes("SET status = $3")
     );
     expect(statusUpdateCall?.[1]?.[2]).toBe("written");
+    const districtTimestampUpdateCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("UPDATE public.districts")
+    );
+    expect(districtTimestampUpdateCall).toBeTruthy();
+    expect(districtTimestampUpdateCall?.[1]?.[0]).toBe("d-1");
   });
 
   it("enqueues ballot-measure and candidate-roster drafts via Lua sendCommand", async () => {
@@ -237,7 +247,7 @@ describe("runElectionsWriter", () => {
 
     clientQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
       if (sql.includes("INSERT INTO public.elections")) {
-        const raceType = String(params?.[4] ?? "");
+        const raceType = String(params?.[5] ?? "");
         if (raceType === "office") {
           return { rowCount: 1, rows: [{ id: "00000000-0000-0000-0000-000000000101", race_type: "office" }] };
         }
