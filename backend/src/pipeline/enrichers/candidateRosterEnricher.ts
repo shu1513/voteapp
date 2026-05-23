@@ -3,6 +3,9 @@ import { createClient } from "redis";
 
 import {
   buildCandidateRosterConfigFromEnv,
+  type CandidateDuplicateDisambiguationInput,
+  type CandidateDuplicateDisambiguationResult,
+  disambiguateCandidateDuplicateGroup,
   enrichCandidateRoster,
 } from "../../ai/enrichCandidateRoster.js";
 import { getPipelineEnv } from "../../config/env.js";
@@ -41,6 +44,17 @@ type CandidateRosterStagingRow = {
   run_id: string | null;
 };
 
+export type CandidateRosterResolvedEntry = CandidateRosterEntry & {
+  roster_index: number;
+  disambiguation_hint?: string;
+  skip_per_election_name_dedupe?: boolean;
+};
+
+type DisambiguateDuplicateGroupFn = (
+  input: CandidateDuplicateDisambiguationInput,
+  config: ReturnType<typeof buildCandidateRosterConfigFromEnv>
+) => Promise<CandidateDuplicateDisambiguationResult>;
+
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
 const MAX_SEED_URLS = 8;
@@ -70,10 +84,16 @@ redis.call(
   ARGV[6],
   "seed_urls",
   ARGV[7],
+  "roster_index",
+  ARGV[8],
+  "disambiguation_hint",
+  ARGV[9],
+  "skip_per_election_name_dedupe",
+  ARGV[10],
   "emitted_at",
-  ARGV[8]
+  ARGV[11]
 )
-redis.call("SET", KEYS[2], ARGV[8])
+redis.call("SET", KEYS[2], ARGV[11])
 return 1
 `;
 
@@ -123,7 +143,7 @@ function rosterIngestKeyForElection(electionId: string): string {
   return `${CANDIDATE_ROSTER_STAGING_PREFIX}${electionId}`;
 }
 
-function extractRosterCandidatesFromStagingPayload(payload: unknown): CandidateRosterEntry[] | null {
+function extractRosterCandidatesFromStagingPayload(payload: unknown): CandidateRosterResolvedEntry[] | null {
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
     return null;
   }
@@ -131,11 +151,35 @@ function extractRosterCandidatesFromStagingPayload(payload: unknown): CandidateR
   if (!Array.isArray(input.candidates)) {
     return null;
   }
-  const parsed = parseCandidateRosterPayload({ candidates: input.candidates });
-  if (!parsed.ok) {
-    return null;
+
+  const resolved: CandidateRosterResolvedEntry[] = [];
+  for (const [rowIndex, row] of input.candidates.entries()) {
+    const parsedRow = parseCandidateRosterPayload({ candidates: [row] });
+    if (!parsedRow.ok || parsedRow.payload.candidates.length !== 1) {
+      return null;
+    }
+    if (typeof row !== "object" || row === null || Array.isArray(row)) {
+      return null;
+    }
+    const raw = row as Record<string, unknown>;
+    const rosterIndex =
+      Number.isInteger(raw.roster_index) && Number(raw.roster_index) >= 0 ? Number(raw.roster_index) : rowIndex;
+
+    const disambiguationHint =
+      typeof raw.disambiguation_hint === "string" && raw.disambiguation_hint.trim().length > 0
+        ? raw.disambiguation_hint.trim()
+        : undefined;
+    const skipNameDedupe =
+      raw.skip_per_election_name_dedupe === true ? true : raw.skip_per_election_name_dedupe === false ? false : undefined;
+
+    resolved.push({
+      ...parsedRow.payload.candidates[0]!,
+      roster_index: rosterIndex,
+      ...(disambiguationHint ? { disambiguation_hint: disambiguationHint } : {}),
+      ...(skipNameDedupe !== undefined ? { skip_per_election_name_dedupe: skipNameDedupe } : {}),
+    });
   }
-  return parsed.payload.candidates;
+  return resolved;
 }
 
 async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Promise<void> {
@@ -282,7 +326,7 @@ async function markCandidateRosterStagingValidated(
   pool: Pool,
   ingestKey: string,
   electionId: string,
-  candidates: CandidateRosterEntry[],
+  candidates: CandidateRosterResolvedEntry[],
   runId: string | null,
   aiRawDebug: Record<string, unknown> | null
 ): Promise<void> {
@@ -377,10 +421,193 @@ async function filterAlreadyLinkedCandidates(
       .filter((name) => name.length > 0)
   );
 
+  const inputNameCounts = new Map<string, number>();
+  for (const candidate of candidates) {
+    const normalizedName = normalizeCandidateName(candidate.display_name);
+    if (normalizedName.length === 0) {
+      continue;
+    }
+    inputNameCounts.set(normalizedName, (inputNameCounts.get(normalizedName) ?? 0) + 1);
+  }
+
   return candidates.filter((candidate) => {
     const normalizedName = normalizeCandidateName(candidate.display_name);
-    return normalizedName.length > 0 && !linkedNames.has(normalizedName);
+    if (normalizedName.length === 0) {
+      return false;
+    }
+    if ((inputNameCounts.get(normalizedName) ?? 0) > 1) {
+      return true;
+    }
+    return !linkedNames.has(normalizedName);
   });
+}
+
+export async function resolveCandidateRosterForProfileDrafts(
+  input: {
+    districtName: string;
+    districtType: string;
+    state: string;
+    electionDate: string;
+    officialBallotTitle: string;
+    electionIsPartisan?: boolean | null;
+    seedUrls: readonly string[];
+    candidates: CandidateRosterEntry[];
+  },
+  aiConfig: ReturnType<typeof buildCandidateRosterConfigFromEnv>,
+  disambiguateDuplicateGroup: DisambiguateDuplicateGroupFn = disambiguateCandidateDuplicateGroup
+): Promise<{
+  resolvedCandidates: CandidateRosterResolvedEntry[];
+  debug: Record<string, unknown>;
+}> {
+  const indexedCandidates = input.candidates.map((candidate, rosterIndex) => ({
+    ...candidate,
+    roster_index: rosterIndex,
+  }));
+
+  const resolvedCandidates: CandidateRosterResolvedEntry[] = [];
+  const grouped = new Map<string, CandidateRosterResolvedEntry[]>();
+  for (const candidate of indexedCandidates) {
+    const key = normalizeCandidateName(candidate.display_name);
+    if (key.length === 0) {
+      resolvedCandidates.push(candidate);
+      continue;
+    }
+    const existing = grouped.get(key);
+    if (existing) {
+      existing.push(candidate);
+    } else {
+      grouped.set(key, [candidate]);
+    }
+  }
+
+  const duplicateGroupsDebug: Array<Record<string, unknown>> = [];
+
+  for (const group of grouped.values()) {
+    if (group.length <= 1) {
+      resolvedCandidates.push(group[0]!);
+      continue;
+    }
+
+    const normalizedPartySet = new Set(
+      group
+        .map((candidate) => candidate.party?.trim().toLowerCase() ?? "")
+        .filter((party) => party.length > 0)
+    );
+
+    if (normalizedPartySet.size > 1) {
+      for (const candidate of group) {
+        resolvedCandidates.push({
+          ...candidate,
+          skip_per_election_name_dedupe: true,
+        });
+      }
+      duplicateGroupsDebug.push({
+        duplicate_display_name: group[0]!.display_name,
+        strategy: "party_diff_fast_path",
+        group_size: group.length,
+        selected_count: group.length,
+      });
+      continue;
+    }
+
+    const disambiguationResult = await disambiguateDuplicateGroup(
+      {
+        districtName: input.districtName,
+        districtType: input.districtType,
+        state: input.state,
+        electionDate: input.electionDate,
+        officialBallotTitle: input.officialBallotTitle,
+        electionIsPartisan: input.electionIsPartisan,
+        duplicateDisplayName: group[0]!.display_name,
+        options: group.map((candidate) => ({
+          roster_index: candidate.roster_index,
+          display_name: candidate.display_name,
+          party: candidate.party,
+          is_incumbent: candidate.is_incumbent,
+          sources: candidate.sources,
+        })),
+        seedUrls: input.seedUrls,
+      },
+      aiConfig
+    );
+
+    if (!disambiguationResult.ok) {
+      duplicateGroupsDebug.push({
+        duplicate_display_name: group[0]!.display_name,
+        strategy: "ai_failure_fallback_keep_one",
+        group_size: group.length,
+        reason: disambiguationResult.reason,
+      });
+      resolvedCandidates.push(group[0]!);
+      continue;
+    }
+
+    const clearByIndex = new Map<number, string>();
+    const ambiguousIndexes: number[] = [];
+    const mergedByTarget = new Map<number, number[]>();
+    for (const person of disambiguationResult.people) {
+      if (person.status === "clear" && person.disambiguation_hint) {
+        if (!clearByIndex.has(person.roster_index)) {
+          clearByIndex.set(person.roster_index, person.disambiguation_hint);
+        }
+      } else if (person.status === "ambiguous") {
+        ambiguousIndexes.push(person.roster_index);
+      } else if (person.status === "same_as_other" && person.same_as_roster_index !== undefined) {
+        const merged = mergedByTarget.get(person.same_as_roster_index) ?? [];
+        if (!merged.includes(person.roster_index)) {
+          merged.push(person.roster_index);
+        }
+        mergedByTarget.set(person.same_as_roster_index, merged);
+      }
+    }
+
+    for (const candidate of group) {
+      const hint = clearByIndex.get(candidate.roster_index);
+      if (!hint) {
+        continue;
+      }
+      resolvedCandidates.push({
+        ...candidate,
+        skip_per_election_name_dedupe: true,
+        disambiguation_hint: hint,
+      });
+    }
+
+    if (clearByIndex.size === 0) {
+      // Conservative fallback when AI cannot clear any row in this duplicate-name group.
+      resolvedCandidates.push(group[0]!);
+      duplicateGroupsDebug.push({
+        duplicate_display_name: group[0]!.display_name,
+        strategy: "ai_all_ambiguous_keep_one",
+        group_size: group.length,
+        selected_roster_index: group[0]!.roster_index,
+        dropped_ambiguous_roster_indexes: ambiguousIndexes,
+      });
+      continue;
+    }
+
+    duplicateGroupsDebug.push({
+      duplicate_display_name: group[0]!.display_name,
+      strategy: "ai_person_level_partial_keep",
+      group_size: group.length,
+      selected_count: clearByIndex.size,
+      kept_roster_indexes: [...clearByIndex.keys()],
+      dropped_ambiguous_roster_indexes: ambiguousIndexes,
+      merged_roster_indexes: Object.fromEntries(
+        [...mergedByTarget.entries()].map(([targetIndex, mergedIndexes]) => [
+          `merged_into_${targetIndex}`,
+          mergedIndexes,
+        ])
+      ),
+    });
+  }
+
+  return {
+    resolvedCandidates,
+    debug: {
+      duplicate_groups: duplicateGroupsDebug,
+    },
+  };
 }
 
 async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionRow | null> {
@@ -414,8 +641,11 @@ async function enqueueCandidateProfileDraft(
     electionId: string;
     runId: string | null;
     displayName: string;
+    rosterIndex: number;
     rosterParty?: string;
     rosterIsIncumbent?: boolean;
+    disambiguationHint?: string;
+    skipPerElectionNameDedupe?: boolean;
     seedUrls: readonly string[];
   }
 ): Promise<void> {
@@ -425,7 +655,7 @@ async function enqueueCandidateProfileDraft(
   }
 
   const emittedAt = new Date().toISOString();
-  const markerKey = `${PROFILE_DRAFT_EMIT_MARKER_PREFIX}${input.electionId}:${normalizedName}`;
+  const markerKey = `${PROFILE_DRAFT_EMIT_MARKER_PREFIX}${input.electionId}:${normalizedName}:${input.rosterIndex}`;
 
   await redis.sendCommand([
     "EVAL",
@@ -440,6 +670,9 @@ async function enqueueCandidateProfileDraft(
     input.rosterParty ?? "",
     input.rosterIsIncumbent === undefined ? "" : input.rosterIsIncumbent ? "true" : "false",
     JSON.stringify(input.seedUrls),
+    String(input.rosterIndex),
+    input.disambiguationHint ?? "",
+    input.skipPerElectionNameDedupe ? "true" : "false",
     emittedAt,
   ]);
 }
@@ -508,7 +741,7 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
             continue;
           }
 
-          let candidatesForFanout: CandidateRosterEntry[] | null = null;
+          let candidatesForFanout: CandidateRosterResolvedEntry[] | null = null;
           if (stagingRow.status === "validated" || stagingRow.status === "written") {
             candidatesForFanout = extractRosterCandidatesFromStagingPayload(stagingRow.payload) ?? [];
           } else {
@@ -540,15 +773,32 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
             }
 
             const filteredCandidates = await filterAlreadyLinkedCandidates(pool, electionId, aiResult.candidates);
+            const resolved = await resolveCandidateRosterForProfileDrafts(
+              {
+                districtName: election.district_name,
+                districtType: election.district_type,
+                state: election.state,
+                electionDate: election.election_date,
+                officialBallotTitle: election.official_ballot_title,
+                electionIsPartisan: election.is_partisan,
+                seedUrls: parseSeedUrls(election.sources),
+                candidates: filteredCandidates,
+              },
+              aiConfig
+            );
+            const mergedRosterDebug = {
+              ...(aiResult.aiRawDebug ?? {}),
+              duplicate_resolution: resolved.debug,
+            };
             await markCandidateRosterStagingValidated(
               pool,
               ingestKey,
               electionId,
-              filteredCandidates,
+              resolved.resolvedCandidates,
               runId || stagingRow.run_id,
-              aiResult.aiRawDebug
+              mergedRosterDebug
             );
-            candidatesForFanout = filteredCandidates;
+            candidatesForFanout = resolved.resolvedCandidates;
           }
 
           const electionSeedUrls = parseSeedUrls(election.sources);
@@ -557,8 +807,11 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
               electionId,
               runId,
               displayName: candidate.display_name,
+              rosterIndex: candidate.roster_index,
               rosterParty: candidate.party,
               rosterIsIncumbent: candidate.is_incumbent,
+              disambiguationHint: candidate.disambiguation_hint,
+              skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
               seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
             });
           }

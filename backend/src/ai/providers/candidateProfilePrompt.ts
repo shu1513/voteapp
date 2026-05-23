@@ -8,6 +8,7 @@ export type CandidateProfilePromptInput = {
   includeParty?: boolean;
   rosterParty?: string;
   rosterIncumbent?: boolean;
+  disambiguationHint?: string;
   seedUrls?: readonly string[];
   reviewFeedbackLines?: readonly string[];
 };
@@ -32,6 +33,7 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     ...(input.rosterIncumbent !== undefined
       ? [`- roster_is_incumbent_hint: ${input.rosterIncumbent ? "true" : "false"}`]
       : []),
+    ...(input.disambiguationHint ? [`- roster_disambiguation_hint: "${input.disambiguationHint}"`] : []),
     "",
     "Return JSON with this exact shape:",
     "{",
@@ -51,6 +53,12 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     "",
     "Rules:",
     "- Research this exact person running in this exact election context; avoid same-name mismatches.",
+    ...(input.disambiguationHint
+      ? ["- Use roster_disambiguation_hint to target this person only. If evidence conflicts, do not guess."]
+      : []),
+    ...(input.disambiguationHint
+      ? ["- When identity is uncertain, prefer null/omission for identity fields over guessing another person's identifiers."]
+      : []),
     "- official_website_url is optional.",
     "- date_of_birth, twitter_handle, linkedin_url, fec_ids, state_filing_ids are optional.",
     "- Use null/omission for unknown optional fields; do not invent.",
