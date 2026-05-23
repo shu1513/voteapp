@@ -5,6 +5,7 @@ import {
   buildCandidateProfileConfigFromEnv,
   enrichCandidateProfile,
 } from "../../ai/enrichCandidateProfile.js";
+import { resolveIncludePartyForCandidateContest } from "../../ai/candidatePartisanship.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
@@ -34,6 +35,7 @@ type ElectionRow = {
   district_type: string;
   election_date: string;
   official_ballot_title: string;
+  is_partisan: boolean | null;
   sources: unknown;
 };
 
@@ -240,6 +242,7 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
         d.district_type,
         e.election_date::text AS election_date,
         e.official_ballot_title,
+        e.is_partisan,
         e.sources
       FROM public.elections AS e
       JOIN public.districts AS d
@@ -378,8 +381,11 @@ async function insertCandidate(
   client: PoolClient,
   profile: CandidateProfilePayload,
   state: string,
-  rosterParty: string | undefined
+  rosterParty: string | undefined,
+  includeParty: boolean
 ): Promise<string> {
+  const storedParty = includeParty ? profile.party ?? rosterParty ?? "Unknown" : null;
+
   const insertResult = await client.query<{ id: string }>(
     `
       INSERT INTO public.candidates (
@@ -419,7 +425,7 @@ async function insertCandidate(
       profile.first_name,
       profile.last_name,
       profile.date_of_birth ?? null,
-      profile.party ?? rosterParty ?? "Unknown",
+      storedParty,
       profile.summary ?? null,
       profile.twitter_handle ?? null,
       profile.linkedin_url ?? null,
@@ -528,6 +534,13 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           }
 
           const rosterParty = entry.message.roster_party?.trim() || undefined;
+          const includeParty = resolveIncludePartyForCandidateContest({
+            districtType: election.district_type,
+            state: election.state,
+            officialBallotTitle: election.official_ballot_title,
+            electionIsPartisan: election.is_partisan,
+          });
+          const effectiveRosterParty = includeParty ? rosterParty : undefined;
           const rosterIncumbent = parseBooleanField(entry.message.roster_is_incumbent);
           const messageSeedUrls = parseSeedUrls(entry.message.seed_urls);
           const electionSeedUrls = parseSeedUrls(election.sources);
@@ -540,7 +553,8 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               state: election.state,
               electionDate: election.election_date,
               officialBallotTitle: election.official_ballot_title,
-              rosterParty,
+              electionIsPartisan: election.is_partisan,
+              rosterParty: effectiveRosterParty,
               rosterIncumbent,
               seedUrls: mergeSeedUrls(messageSeedUrls, electionSeedUrls),
             },
@@ -571,7 +585,13 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             await client.query("BEGIN");
 
             if (!candidateId) {
-              candidateId = await insertCandidate(client, profile, election.state, rosterParty);
+              candidateId = await insertCandidate(
+                client,
+                profile,
+                election.state,
+                effectiveRosterParty,
+                includeParty
+              );
             }
 
             await upsertCandidateElection(client, candidateId, electionId, rosterIncumbent);

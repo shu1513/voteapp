@@ -189,6 +189,8 @@ describe("runElectionsWriter", () => {
       String(call[0]).includes("ON CONFLICT (district_id, official_ballot_title, election_date) DO UPDATE SET")
     );
     expect(upsertCall).toBeTruthy();
+    expect(String(upsertCall?.[0])).toContain("is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan)");
+    expect(upsertCall?.[1]?.[5]).toBeNull();
 
     const statusUpdateCall = clientQueryMock.mock.calls.find((call) =>
       String(call[0]).includes("SET status = $3")

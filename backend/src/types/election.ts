@@ -19,6 +19,7 @@ export type ElectionEntryPayload = {
   election_date: string; // YYYY-MM-DD
   description: string;
   race_type: ElectionRaceType;
+  is_partisan?: boolean;
   election_stage?: ElectionStage;
   sources: string[];
 };

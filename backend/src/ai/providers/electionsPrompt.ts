@@ -1,4 +1,5 @@
 import type { ElectionDraftPayload } from "../../types/election.js";
+import { shouldAskIsPartisanInPrompt } from "../electionPartisanshipPolicy.js";
 
 export type ElectionContestFamily =
   | "all"
@@ -19,6 +20,7 @@ export function buildElectionsPrompt(args: {
 }): string {
   const { draft, softRetryCount, reviewFeedbackLines, contestFamily = "all", seedUrls = [] } = args;
   const includeElectionStageInOutput = contestFamily !== "ballot_measure";
+  const includeIsPartisanInOutput = shouldAskIsPartisanInPrompt({ draft, contestFamily });
   const isBallotFamily = contestFamily === "ballot_measure";
   const isOfficeOnlyFamily =
     contestFamily === "non_judicial_office" || contestFamily === "judicial_office";
@@ -72,6 +74,7 @@ export function buildElectionsPrompt(args: {
     ...(includeElectionStageInOutput
       ? ['      "election_stage": "primary | general | runoff | special",']
       : []),
+    ...(includeIsPartisanInOutput ? ['      "is_partisan": true,'] : []),
     isBallotFamily
       ? '      "impact": "what this measure changes",'
       : isOfficeOnlyFamily
@@ -121,6 +124,13 @@ ${entryShapeLines}
           includeRaceTypeInOutput
             ? "- election_stage is optional and only applies when race_type is office; include it only when clearly known from source. When included, set one of: primary, general, runoff, special."
             : "- election_stage is optional; include it only when clearly known from source. When included, set one of: primary, general, runoff, special.",
+        ]
+      : []),
+    ...(includeIsPartisanInOutput
+      ? [
+          includeRaceTypeInOutput
+            ? "- is_partisan applies to office contests: set true for partisan offices and false for nonpartisan offices; for ballot measures set false."
+            : "- is_partisan: set true for partisan contests and false for nonpartisan contests.",
         ]
       : []),
     isBallotFamily
