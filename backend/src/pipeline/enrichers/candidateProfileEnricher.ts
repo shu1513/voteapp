@@ -326,10 +326,12 @@ async function loadSameNameCandidates(
 function hasAtLeastOneHardIdentifier(profile: CandidateProfilePayload): boolean {
   const hasFec = (profile.fec_ids?.length ?? 0) > 0;
   const hasStateFiling = (profile.state_filing_ids?.length ?? 0) > 0;
+  const hasOfficialWebsite = Boolean(normalizeOptionalUrl(profile.official_website_url));
   return Boolean(
     profile.date_of_birth ||
       profile.twitter_handle ||
       profile.linkedin_url ||
+      hasOfficialWebsite ||
       hasFec ||
       hasStateFiling
   );
@@ -354,6 +356,12 @@ function matchesByHardIdentifier(profile: CandidateProfilePayload, row: Existing
 
   if (profile.linkedin_url && row.linkedin_url) {
     if (normalizeOptionalUrl(profile.linkedin_url) === normalizeOptionalUrl(row.linkedin_url)) {
+      return true;
+    }
+  }
+
+  if (profile.official_website_url && row.official_website_url) {
+    if (normalizeOptionalUrl(profile.official_website_url) === normalizeOptionalUrl(row.official_website_url)) {
       return true;
     }
   }

@@ -33,7 +33,9 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     ...(input.rosterIncumbent !== undefined
       ? [`- roster_is_incumbent_hint: ${input.rosterIncumbent ? "true" : "false"}`]
       : []),
-    ...(input.disambiguationHint ? [`- roster_disambiguation_hint: "${input.disambiguationHint}"`] : []),
+    ...(input.disambiguationHint
+      ? [`- roster_disambiguation_hint: ${JSON.stringify(input.disambiguationHint)}`]
+      : []),
     "",
     "Return JSON with this exact shape:",
     "{",

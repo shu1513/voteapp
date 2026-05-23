@@ -49,6 +49,9 @@ export type CandidateRosterResolvedEntry = CandidateRosterEntry & {
   disambiguation_hint?: string;
   skip_per_election_name_dedupe?: boolean;
 };
+type CandidateRosterIndexedEntry = CandidateRosterEntry & {
+  roster_index: number;
+};
 
 type DisambiguateDuplicateGroupFn = (
   input: CandidateDuplicateDisambiguationInput,
@@ -397,8 +400,8 @@ async function recordCandidateRosterAiFailure(
 async function filterAlreadyLinkedCandidates(
   pool: Pool,
   electionId: string,
-  candidates: CandidateRosterEntry[]
-): Promise<CandidateRosterEntry[]> {
+  candidates: CandidateRosterIndexedEntry[]
+): Promise<CandidateRosterIndexedEntry[]> {
   if (candidates.length === 0) {
     return [];
   }
@@ -451,7 +454,7 @@ export async function resolveCandidateRosterForProfileDrafts(
     officialBallotTitle: string;
     electionIsPartisan?: boolean | null;
     seedUrls: readonly string[];
-    candidates: CandidateRosterEntry[];
+    candidates: CandidateRosterIndexedEntry[];
   },
   aiConfig: ReturnType<typeof buildCandidateRosterConfigFromEnv>,
   disambiguateDuplicateGroup: DisambiguateDuplicateGroupFn = disambiguateCandidateDuplicateGroup
@@ -459,14 +462,9 @@ export async function resolveCandidateRosterForProfileDrafts(
   resolvedCandidates: CandidateRosterResolvedEntry[];
   debug: Record<string, unknown>;
 }> {
-  const indexedCandidates = input.candidates.map((candidate, rosterIndex) => ({
-    ...candidate,
-    roster_index: rosterIndex,
-  }));
-
   const resolvedCandidates: CandidateRosterResolvedEntry[] = [];
   const grouped = new Map<string, CandidateRosterResolvedEntry[]>();
-  for (const candidate of indexedCandidates) {
+  for (const candidate of input.candidates) {
     const key = normalizeCandidateName(candidate.display_name);
     if (key.length === 0) {
       resolvedCandidates.push(candidate);
@@ -743,7 +741,10 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
 
           let candidatesForFanout: CandidateRosterResolvedEntry[] | null = null;
           if (stagingRow.status === "validated" || stagingRow.status === "written") {
-            candidatesForFanout = extractRosterCandidatesFromStagingPayload(stagingRow.payload) ?? [];
+            candidatesForFanout = extractRosterCandidatesFromStagingPayload(stagingRow.payload);
+            if (!candidatesForFanout) {
+              throw new Error(`invalid candidate roster staging payload for ${ingestKey}`);
+            }
           } else {
             const aiResult = await enrichCandidateRoster(
               {
@@ -772,7 +773,11 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
               continue;
             }
 
-            const filteredCandidates = await filterAlreadyLinkedCandidates(pool, electionId, aiResult.candidates);
+            const indexedCandidates: CandidateRosterIndexedEntry[] = aiResult.candidates.map((candidate, rosterIndex) => ({
+              ...candidate,
+              roster_index: rosterIndex,
+            }));
+            const filteredCandidates = await filterAlreadyLinkedCandidates(pool, electionId, indexedCandidates);
             const resolved = await resolveCandidateRosterForProfileDrafts(
               {
                 districtName: election.district_name,

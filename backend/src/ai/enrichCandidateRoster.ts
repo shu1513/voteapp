@@ -514,6 +514,18 @@ export async function disambiguateCandidateDuplicateGroup(
   config: EnrichCandidateRosterConfig,
   candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
 ): Promise<CandidateDuplicateDisambiguationResult> {
+  const optionIndexes = input.options.map((option) => option.roster_index);
+  const expectedOptionIndexes = new Set(optionIndexes);
+  if (expectedOptionIndexes.size !== optionIndexes.length) {
+    return {
+      ok: false,
+      retryable: false,
+      errorCode: "SCHEMA_MISMATCH",
+      reason: "options[].roster_index must be unique",
+      failureDebug: { option_indexes: optionIndexes },
+    };
+  }
+
   const failures: ProviderFailureAttempt[] = [];
   const cumulativeBlockedUrlFeedback = new Set<string>();
 
@@ -554,7 +566,7 @@ export async function disambiguateCandidateDuplicateGroup(
 
       const parsed = parseDuplicateDisambiguationPayload(
         generated.parsed,
-        new Set(input.options.map((option) => option.roster_index))
+        expectedOptionIndexes
       );
       if (!parsed.ok) {
         failures.push({

@@ -4,6 +4,7 @@ import {
   resolveCandidateRosterForProfileDrafts,
   type CandidateRosterResolvedEntry,
 } from "../../src/pipeline/enrichers/candidateRosterEnricher.js";
+import type { CandidateRosterEntry } from "../../src/contracts/candidateRosterPayloadContract.js";
 
 const baseInput = {
   districtName: "Los Angeles County, California",
@@ -22,6 +23,12 @@ const aiConfig = {
   geminiApiKey: "test",
 };
 
+function withRosterIndexes(
+  candidates: CandidateRosterEntry[]
+): Array<CandidateRosterEntry & { roster_index: number }> {
+  return candidates.map((candidate, rosterIndex) => ({ ...candidate, roster_index: rosterIndex }));
+}
+
 describe("resolveCandidateRosterForProfileDrafts", () => {
   it("keeps same-name rows when party differs (no AI disambiguation call)", async () => {
     const disambiguateMock = vi.fn();
@@ -29,7 +36,7 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
     const result = await resolveCandidateRosterForProfileDrafts(
       {
         ...baseInput,
-        candidates: [
+        candidates: withRosterIndexes([
           {
             display_name: "John Smith",
             party: "Democrat",
@@ -40,7 +47,7 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
             party: "Republican",
             sources: ["https://example.org/b"],
           },
-        ],
+        ]),
       },
       aiConfig,
       disambiguateMock
@@ -77,7 +84,7 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
     const result = await resolveCandidateRosterForProfileDrafts(
       {
         ...baseInput,
-        candidates: [
+        candidates: withRosterIndexes([
           {
             display_name: "Jane Doe",
             sources: ["https://example.org/a"],
@@ -86,7 +93,7 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
             display_name: "Jane Doe",
             sources: ["https://example.org/b"],
           },
-        ],
+        ]),
       },
       aiConfig,
       disambiguateMock
@@ -144,7 +151,7 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
     const result = await resolveCandidateRosterForProfileDrafts(
       {
         ...baseInput,
-        candidates: [
+        candidates: withRosterIndexes([
           {
             display_name: "Alex Kim",
             sources: ["https://example.org/1"],
@@ -165,7 +172,7 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
             display_name: "Unique Name",
             sources: ["https://example.org/u"],
           },
-        ],
+        ]),
       },
       aiConfig,
       disambiguateMock
@@ -203,7 +210,7 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
     const result = await resolveCandidateRosterForProfileDrafts(
       {
         ...baseInput,
-        candidates: [
+        candidates: withRosterIndexes([
           {
             display_name: "Jordan Blake",
             sources: ["https://example.org/a"],
@@ -212,7 +219,7 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
             display_name: "Jordan Blake",
             sources: ["https://example.org/b"],
           },
-        ],
+        ]),
       },
       aiConfig,
       disambiguateMock
@@ -222,5 +229,51 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
     expect(result.resolvedCandidates).toHaveLength(1);
     expect(result.resolvedCandidates[0]?.display_name).toBe("Jordan Blake");
     expect(result.resolvedCandidates[0]?.skip_per_election_name_dedupe).toBeUndefined();
+  });
+
+  it("preserves original roster_index after upstream filtering", async () => {
+    const disambiguateMock = vi.fn().mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "gpt-test",
+      people: [
+        {
+          roster_index: 1,
+          status: "clear",
+          disambiguation_hint: "candidate with district filing page",
+          sources: ["https://example.org/d1"],
+        },
+        {
+          roster_index: 2,
+          status: "clear",
+          disambiguation_hint: "candidate with campaign site",
+          sources: ["https://example.org/d2"],
+        },
+      ],
+      aiRawDebug: null,
+    });
+
+    const result = await resolveCandidateRosterForProfileDrafts(
+      {
+        ...baseInput,
+        candidates: [
+          {
+            display_name: "Chris Park",
+            roster_index: 1,
+            sources: ["https://example.org/c1"],
+          },
+          {
+            display_name: "Chris Park",
+            roster_index: 2,
+            sources: ["https://example.org/c2"],
+          },
+        ],
+      },
+      aiConfig,
+      disambiguateMock
+    );
+
+    expect(result.resolvedCandidates).toHaveLength(2);
+    expect(result.resolvedCandidates.map((row) => row.roster_index)).toEqual([1, 2]);
   });
 });
