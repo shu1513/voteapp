@@ -4,7 +4,6 @@ import { createClient } from "redis";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_BALLOT_MEASURE_DRAFT_STREAM,
-  STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
   STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
   STAGING_ITEM_TYPE_BALLOT_MEASURE,
   STAGING_ELECTIONS_WRITER_GROUP,
@@ -17,6 +16,12 @@ import type { ElectionEnrichedPayload } from "../../types/election.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { normalizeElectionTitleKey } from "../../utils/normalizeElectionTitleKey.js";
 import type { ElectionContestFamily } from "../../ai/providers/electionsPrompt.js";
+import { enqueueCandidateRosterDrafts } from "../candidates/candidateRosterDraftEmitter.js";
+import {
+  defaultOfficeCandidateEligibilityConfig,
+  evaluateOfficeCandidateEligibilityByElectionIds,
+  summarizeOfficeCandidateEligibilityReasons,
+} from "../candidates/officeCandidateEligibility.js";
 
 type WriterOptions = {
   once?: boolean;
@@ -42,26 +47,9 @@ type WriteResult = {
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
 const BALLOT_MEASURE_EMIT_MARKER_PREFIX = "staging:ballot_measure_emitted:";
-const CANDIDATE_ROSTER_EMIT_MARKER_PREFIX = "staging:candidate_roster_emitted:";
+const ENABLE_CANDIDATE_ROSTER_WRITER_ELIGIBILITY_FILTER =
+  process.env.CANDIDATE_ROSTER_ENABLE_WRITER_ELIGIBILITY_FILTER === "true";
 const EMIT_BALLOT_MEASURE_DRAFT_IF_NEEDED_LUA = `
-if redis.call("EXISTS", KEYS[2]) == 1 then
-  return 0
-end
-redis.call(
-  "XADD",
-  KEYS[1],
-  "*",
-  "election_id",
-  ARGV[1],
-  "item_type",
-  ARGV[2],
-  "run_id",
-  ARGV[3]
-)
-redis.call("SET", KEYS[2], ARGV[4])
-return 1
-`;
-const EMIT_CANDIDATE_ROSTER_DRAFT_IF_NEEDED_LUA = `
 if redis.call("EXISTS", KEYS[2]) == 1 then
   return 0
 end
@@ -261,27 +249,29 @@ async function enqueueBallotMeasureDrafts(
   }
 }
 
-async function enqueueCandidateRosterDrafts(
-  redis: ReturnType<typeof createClient>,
-  electionIds: readonly string[],
-  runId: string | null
-): Promise<void> {
-  const emittedAt = new Date().toISOString();
-  const uniqueElectionIds = [...new Set(electionIds)];
-  for (const electionId of uniqueElectionIds) {
-    const markerKey = `${CANDIDATE_ROSTER_EMIT_MARKER_PREFIX}${electionId}`;
-    await redis.sendCommand([
-      "EVAL",
-      EMIT_CANDIDATE_ROSTER_DRAFT_IF_NEEDED_LUA,
-      "2",
-      STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
-      markerKey,
-      electionId,
-      STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
-      runId ?? "",
-      emittedAt,
-    ]);
+async function selectWriterEligibleOfficeElectionIds(
+  pool: Pool,
+  officeElectionIds: readonly string[],
+  context: string
+): Promise<string[]> {
+  if (!ENABLE_CANDIDATE_ROSTER_WRITER_ELIGIBILITY_FILTER || officeElectionIds.length === 0) {
+    return [...new Set(officeElectionIds)];
   }
+
+  const config = defaultOfficeCandidateEligibilityConfig();
+  const rows = await evaluateOfficeCandidateEligibilityByElectionIds(pool, officeElectionIds, config);
+  const counts = summarizeOfficeCandidateEligibilityReasons(rows);
+  const eligibleIds = rows.filter((row) => row.reason === "eligible").map((row) => row.election_id);
+
+  console.log(
+    `candidate-roster writer eligibility (${context}) as_of=${config.asOfDate}: ` +
+      `input=${officeElectionIds.length} eligible=${eligibleIds.length} ` +
+      `already_written=${counts.already_written} not_nearest=${counts.not_nearest_in_track} ` +
+      `buffer_blocked=${counts.buffer_not_elapsed} too_far_in_future=${counts.too_far_in_future} ` +
+      `not_upcoming=${counts.not_upcoming}`
+  );
+
+  return eligibleIds;
 }
 
 async function writeElectionsForDistrict(
@@ -508,8 +498,13 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
                 if (latestRow?.status === "written" || latestRow?.status === "no_results") {
                   const recoveredBallotMeasureIds = await resolveBallotMeasureElectionIds(pool, parsed.payload);
                   const recoveredOfficeIds = await resolveOfficeElectionIds(pool, parsed.payload);
+                  const recoveredEligibleOfficeIds = await selectWriterEligibleOfficeElectionIds(
+                    pool,
+                    recoveredOfficeIds,
+                    "recovery"
+                  );
                   await enqueueBallotMeasureDrafts(redis, recoveredBallotMeasureIds, latestRow.run_id);
-                  await enqueueCandidateRosterDrafts(redis, recoveredOfficeIds, latestRow.run_id);
+                  await enqueueCandidateRosterDrafts(redis, recoveredEligibleOfficeIds, latestRow.run_id);
                   await redis.xAdd(STAGING_WRITTEN_STREAM, "*", {
                     ingest_key: ingestKey,
                     item_type: STAGING_ITEM_TYPE_ELECTION,
@@ -525,16 +520,26 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
             } finally {
               client.release();
             }
+            const eligibleOfficeElectionIds = await selectWriterEligibleOfficeElectionIds(
+              pool,
+              officeElectionIds,
+              "validated-write"
+            );
             await enqueueBallotMeasureDrafts(redis, ballotMeasureElectionIds, row.run_id);
-            await enqueueCandidateRosterDrafts(redis, officeElectionIds, row.run_id);
+            await enqueueCandidateRosterDrafts(redis, eligibleOfficeElectionIds, row.run_id);
           } else if (row.status !== "written" && row.status !== "no_results") {
             await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
             continue;
           } else {
             const ballotMeasureElectionIds = await resolveBallotMeasureElectionIds(pool, parsed.payload);
             const officeElectionIds = await resolveOfficeElectionIds(pool, parsed.payload);
+            const eligibleOfficeElectionIds = await selectWriterEligibleOfficeElectionIds(
+              pool,
+              officeElectionIds,
+              "replay-written"
+            );
             await enqueueBallotMeasureDrafts(redis, ballotMeasureElectionIds, row.run_id);
-            await enqueueCandidateRosterDrafts(redis, officeElectionIds, row.run_id);
+            await enqueueCandidateRosterDrafts(redis, eligibleOfficeElectionIds, row.run_id);
           }
 
           // If DB is already persisted (including reclaimed post-commit failures), re-emit handoff and ack.

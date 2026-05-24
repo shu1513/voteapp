@@ -19,6 +19,10 @@ import {
 } from "../../config/electionsPipeline.js";
 import { normalizeCandidateName } from "../../utils/candidateIdentity.js";
 import { parseCandidateRosterPayload, type CandidateRosterEntry } from "../../contracts/candidateRosterPayloadContract.js";
+import {
+  defaultOfficeCandidateEligibilityConfig,
+  getOfficeCandidateEligibilityForElectionId,
+} from "../candidates/officeCandidateEligibility.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -64,6 +68,8 @@ const MAX_SEED_URLS = 8;
 const MAX_DELIVERY_ATTEMPTS = 8;
 const PROFILE_DRAFT_EMIT_MARKER_PREFIX = "staging:candidate_profile_draft_emitted:";
 const CANDIDATE_ROSTER_STAGING_PREFIX = "candidate_roster:";
+const ENABLE_CANDIDATE_ROSTER_ENRICHER_ELIGIBILITY_GATE =
+  process.env.CANDIDATE_ROSTER_ENABLE_ENRICHER_ELIGIBILITY_GATE === "true";
 
 const EMIT_CANDIDATE_PROFILE_DRAFT_IF_NEEDED_LUA = `
 if redis.call("EXISTS", KEYS[2]) == 1 then
@@ -715,6 +721,25 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
               entry.id
             );
             continue;
+          }
+
+          if (ENABLE_CANDIDATE_ROSTER_ENRICHER_ELIGIBILITY_GATE) {
+            const eligibility = await getOfficeCandidateEligibilityForElectionId(
+              pool,
+              electionId,
+              defaultOfficeCandidateEligibilityConfig()
+            );
+            if (eligibility.reason !== "eligible") {
+              console.log(
+                `candidate-roster enricher eligibility-gate skip election_id=${electionId} reason=${eligibility.reason}`
+              );
+              await redis.xAck(
+                STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
+                STAGING_CANDIDATE_ROSTER_ENRICHER_GROUP,
+                entry.id
+              );
+              continue;
+            }
           }
 
           const ingestKey = rosterIngestKeyForElection(electionId);
