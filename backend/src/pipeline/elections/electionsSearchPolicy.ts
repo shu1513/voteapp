@@ -24,9 +24,8 @@ export type ElectionsSearchPolicy = {
 export function readElectionsSearchPolicyFromEnv(): ElectionsSearchPolicy {
   return {
     asOfDate: toIsoDate(new Date()),
-    cooldownDays: readPositiveIntegerEnv("ELECTIONS_RESEARCH_COOLDOWN_DAYS", 180),
+    cooldownDays: readPositiveIntegerEnv("ELECTIONS_SEARCH_COOLDOWN_DAYS", 180),
     maxEnqueuePerRun: readPositiveIntegerEnv("ELECTIONS_SEARCH_MAX_ENQUEUE_PER_RUN", 5000),
     enabled: process.env.ELECTIONS_SEARCH_ROLLOVER_ENABLED === "true",
   };
 }
-
