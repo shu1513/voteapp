@@ -1,0 +1,88 @@
+import { describe, expect, it, vi } from "vitest";
+import type { Pool } from "pg";
+
+import {
+  defaultOfficeCandidateEligibilityConfig,
+  evaluateOfficeCandidateEligibilityByElectionIds,
+  getOfficeCandidateEligibilityForElectionId,
+  summarizeOfficeCandidateEligibilityReasons,
+  type OfficeCandidateEligibilityRow,
+} from "../../src/pipeline/candidates/officeCandidateEligibility.js";
+
+describe("officeCandidateEligibility", () => {
+  it("uses expected default config values", () => {
+    const config = defaultOfficeCandidateEligibilityConfig();
+    expect(config.defaultBufferDays).toBe(7);
+    expect(config.shortStageGapDays).toBe(60);
+    expect(config.shortStageBufferDays).toBe(3);
+    expect(config.asOfDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  });
+
+  it("dedupes election ids before query", async () => {
+    const query = vi.fn(async () => ({ rows: [] }));
+    const pool = { query } as unknown as Pool;
+    const config = defaultOfficeCandidateEligibilityConfig();
+
+    await evaluateOfficeCandidateEligibilityByElectionIds(
+      pool,
+      ["id-1", "id-2", "id-1"],
+      config
+    );
+
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(query.mock.calls[0]?.[1]?.[0]).toEqual(["id-1", "id-2"]);
+  });
+
+  it("returns not_office_or_missing fallback when selector has no row", async () => {
+    const query = vi.fn(async () => ({ rows: [] }));
+    const pool = { query } as unknown as Pool;
+    const config = defaultOfficeCandidateEligibilityConfig();
+
+    const row = await getOfficeCandidateEligibilityForElectionId(pool, "missing-id", config);
+    expect(row.reason).toBe("not_office_or_missing");
+    expect(row.election_id).toBe("missing-id");
+  });
+
+  it("summarizes eligibility reasons", () => {
+    const rows: OfficeCandidateEligibilityRow[] = [
+      {
+        election_id: "1",
+        reason: "eligible",
+        prior_election_date: null,
+        stage_gap_days: null,
+        buffer_days: 7,
+        eligible_after_date: null,
+      },
+      {
+        election_id: "2",
+        reason: "not_nearest_in_track",
+        prior_election_date: "2026-06-02",
+        stage_gap_days: 154,
+        buffer_days: 7,
+        eligible_after_date: "2026-06-09",
+      },
+      {
+        election_id: "3",
+        reason: "buffer_not_elapsed",
+        prior_election_date: "2026-09-15",
+        stage_gap_days: 49,
+        buffer_days: 3,
+        eligible_after_date: "2026-09-18",
+      },
+      {
+        election_id: "4",
+        reason: "too_far_in_future",
+        prior_election_date: null,
+        stage_gap_days: null,
+        buffer_days: 7,
+        eligible_after_date: null,
+      },
+    ];
+
+    const summary = summarizeOfficeCandidateEligibilityReasons(rows);
+    expect(summary.eligible).toBe(1);
+    expect(summary.not_nearest_in_track).toBe(1);
+    expect(summary.buffer_not_elapsed).toBe(1);
+    expect(summary.too_far_in_future).toBe(1);
+  });
+});
