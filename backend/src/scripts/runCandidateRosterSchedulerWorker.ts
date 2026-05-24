@@ -27,8 +27,10 @@ async function main(): Promise<void> {
   const shutdown = async (): Promise<void> => {
     try {
       await worker.close();
-    } finally {
       process.exit(0);
+    } catch (error) {
+      console.error("candidate_roster scheduler worker shutdown failed:", error);
+      process.exit(1);
     }
   };
 
@@ -44,4 +46,3 @@ main().catch((error) => {
   console.error("candidate_roster scheduler worker crashed:", error);
   process.exit(1);
 });
-

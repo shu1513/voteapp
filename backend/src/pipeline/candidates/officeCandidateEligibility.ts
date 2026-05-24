@@ -82,7 +82,7 @@ const ELIGIBILITY_SELECT_SQL = `
   SELECT
     b.id AS election_id,
     CASE
-      WHEN b.race_type <> 'office' THEN 'not_office_or_missing'
+      WHEN b.race_type <> 'office' OR b.district_id IS NULL OR b.district_type IS NULL THEN 'not_office_or_missing'
       WHEN b.election_date < $2::date THEN 'not_upcoming'
       WHEN rw.ingest_key IS NOT NULL THEN 'already_written'
       WHEN nu.nearest_date IS DISTINCT FROM b.election_date THEN 'not_nearest_in_track'
