@@ -191,11 +191,14 @@ describe("runElectionsWriter", () => {
     expect(deleteCall).toBeUndefined();
 
     const upsertCall = clientQueryMock.mock.calls.find((call) =>
-      String(call[0]).includes("ON CONFLICT (district_id, official_ballot_title_key, election_date) DO UPDATE SET")
+      String(call[0]).includes(
+        "ON CONFLICT (district_id, official_ballot_title_key, election_date) DO UPDATE SET"
+      )
     );
     expect(upsertCall).toBeTruthy();
     expect(String(upsertCall?.[0])).toContain("is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan)");
     expect(upsertCall?.[1]?.[6]).toBeNull();
+    expect(upsertCall?.[1]?.[7]).toBeNull();
 
     const statusUpdateCall = clientQueryMock.mock.calls.find((call) =>
       String(call[0]).includes("SET status = $3")
@@ -287,5 +290,58 @@ describe("runElectionsWriter", () => {
         ]),
       ])
     );
+  });
+
+  it("upserts senate metadata for U.S. Senate office entries", async () => {
+    const payload = {
+      district_id: "d-1",
+      district_name: "Vermont",
+      district_type: "statewide",
+      state: "VT",
+      entries: [
+        {
+          official_ballot_title: "United States Senator (Unexpired Term)",
+          election_date: "2099-11-03",
+          description: "Serves in the U.S. Senate.",
+          race_type: "office",
+          senate_class: "class_i",
+          term_end_year: "2031",
+          sources: ["https://example.org/senate"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("INSERT INTO public.elections")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-00000000ABCD", race_type: "office" }],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    const senateMetadataUpsertCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.election_senate_metadata")
+    );
+    expect(senateMetadataUpsertCall).toBeTruthy();
+    expect(senateMetadataUpsertCall?.[1]?.[0]).toEqual(["00000000-0000-0000-0000-00000000ABCD"]);
+    expect(senateMetadataUpsertCall?.[1]?.[1]).toEqual(["class_i"]);
+    expect(senateMetadataUpsertCall?.[1]?.[2]).toEqual(["2031"]);
   });
 });

@@ -63,6 +63,34 @@ describe("electionPartisanshipPolicy", () => {
     ).toBe(false);
   });
 
+  it("never asks AI for us_senate family and forces partisan true", () => {
+    expect(
+      shouldAskIsPartisanInPrompt({
+        draft: {
+          district_id: "d-1",
+          district_name: "California",
+          district_type: "statewide",
+          state: "CA",
+        },
+        contestFamily: "us_senate",
+      })
+    ).toBe(false);
+
+    const resolved = resolveElectionIsPartisan({
+      draft: {
+        district_id: "d-1",
+        district_name: "California",
+        district_type: "statewide",
+        state: "CA",
+      },
+      contestFamily: "us_senate",
+      raceType: "office",
+      officialBallotTitle: "United States Senator",
+      aiValue: undefined,
+    });
+    expect(resolved).toBe(true);
+  });
+
   it("forces ballot_measure to nonpartisan", () => {
     const resolved = resolveElectionIsPartisan({
       draft: {

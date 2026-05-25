@@ -2,6 +2,7 @@ export type ElectionItemType = "election";
 
 export type ElectionRaceType = "office" | "ballot_measure";
 export type ElectionStage = "primary" | "general" | "runoff" | "special";
+export type ElectionSenateClass = "class_i" | "class_ii" | "class_iii";
 
 export type ElectionDistrictType =
   | "statewide"
@@ -21,6 +22,8 @@ export type ElectionEntryPayload = {
   race_type: ElectionRaceType;
   is_partisan?: boolean;
   election_stage?: ElectionStage;
+  senate_class?: ElectionSenateClass;
+  term_end_year?: string;
   sources: string[];
 };
 

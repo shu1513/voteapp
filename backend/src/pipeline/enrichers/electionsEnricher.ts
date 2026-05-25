@@ -210,10 +210,11 @@ async function buildSeedUrlsByFamily(
   pool: Pool,
   draft: ElectionDraftPayload
 ): Promise<Partial<Record<ElectionContestFamily, readonly string[]>>> {
-  const [nonJudicialSeeds, judicialSeeds, ballotSeeds, allSeeds] = await Promise.all([
+  const [nonJudicialSeeds, judicialSeeds, ballotSeeds, senateSeeds, allSeeds] = await Promise.all([
     loadSeedUrlsForDistrict(pool, draft.district_id, "non_judicial_office"),
     loadSeedUrlsForDistrict(pool, draft.district_id, "judicial_office"),
     loadSeedUrlsForDistrict(pool, draft.district_id, "ballot_measure"),
+    loadSeedUrlsForDistrict(pool, draft.district_id, "us_senate"),
     loadSeedUrlsForDistrict(pool, draft.district_id, "all"),
   ]);
 
@@ -222,6 +223,7 @@ async function buildSeedUrlsByFamily(
     non_judicial_office: nonJudicialSeeds,
     judicial_office: judicialSeeds,
     ballot_measure: ballotSeeds,
+    us_senate: senateSeeds,
   };
 }
 

@@ -15,6 +15,7 @@ import { parseCanonicalElectionPayload } from "../../contracts/electionPayloadCo
 import type { ElectionEnrichedPayload } from "../../types/election.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { normalizeElectionTitleKey } from "../../utils/normalizeElectionTitleKey.js";
+import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
 import type { ElectionContestFamily } from "../../ai/providers/electionsPrompt.js";
 import { enqueueCandidateRosterDrafts } from "../candidates/candidateRosterDraftEmitter.js";
 import {
@@ -145,6 +146,7 @@ function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionCont
     "non_judicial_office",
     "judicial_office",
     "ballot_measure",
+    "us_senate",
   ];
   const result: Partial<Record<ElectionContestFamily, string[]>> = {};
   const sourceRecord = raw as Record<string, unknown>;
@@ -313,6 +315,11 @@ async function writeElectionsForDistrict(
 
     const ballotMeasureElectionIds: string[] = [];
     const officeElectionIds: string[] = [];
+    const senateMetadataRows: Array<{
+      election_id: string;
+      senate_class: string | null;
+      term_end_year: string | null;
+    }> = [];
     for (const entry of payload.entries) {
       const upsertResult = await client.query<{ id: string; race_type: string }>(
         `
@@ -354,7 +361,40 @@ async function writeElectionsForDistrict(
         ballotMeasureElectionIds.push(row.id);
       } else if (row?.race_type === "office") {
         officeElectionIds.push(row.id);
+        if (isUsSenateOfficeTitle(entry.official_ballot_title)) {
+          senateMetadataRows.push({
+            election_id: row.id,
+            senate_class: entry.senate_class ?? null,
+            term_end_year: entry.term_end_year ?? null,
+          });
+        }
       }
+    }
+
+    if (senateMetadataRows.length > 0) {
+      await client.query(
+        `
+          INSERT INTO public.election_senate_metadata (
+            election_id,
+            senate_class,
+            term_end_year
+          )
+          SELECT
+            m.election_id,
+            m.senate_class,
+            m.term_end_year
+          FROM unnest($1::uuid[], $2::text[], $3::text[]) AS m(election_id, senate_class, term_end_year)
+          ON CONFLICT (election_id) DO UPDATE
+          SET senate_class = EXCLUDED.senate_class,
+              term_end_year = EXCLUDED.term_end_year,
+              updated_at = now()
+        `,
+        [
+          senateMetadataRows.map((row) => row.election_id),
+          senateMetadataRows.map((row) => row.senate_class),
+          senateMetadataRows.map((row) => row.term_end_year),
+        ]
+      );
     }
 
     const seedRows: Array<{ family: string; url: string }> = [];
