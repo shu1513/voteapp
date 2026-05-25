@@ -54,6 +54,7 @@ import {
   STAGING_ELECTIONS_VALIDATOR_GROUP,
   STAGING_ITEM_TYPE_ELECTION,
   STAGING_PENDING_STREAM,
+  STAGING_REJECTED_STREAM,
   STAGING_VALIDATED_STREAM,
 } from "../../src/config/electionsPipeline.js";
 import { ELECTION_ENRICHMENT_SCHEMA_VERSION } from "../../src/contracts/electionEnrichmentContract.js";
@@ -140,5 +141,106 @@ describe("runElectionsValidator", () => {
         item_type: STAGING_ITEM_TYPE_ELECTION,
       })
     );
+  });
+
+  it("hard-rejects statewide entries that look like state legislative races", async () => {
+    const payload = {
+      district_id: "d-2",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "State Senator, District 12",
+          election_date: "2099-11-03",
+          description: "State senate office contest.",
+          race_type: "office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:1",
+            payload,
+            status: "pending",
+            run_id: "run_2",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      STAGING_REJECTED_STREAM,
+      "*",
+      expect.objectContaining({
+        ingest_key: "elections:test:1",
+        item_type: STAGING_ITEM_TYPE_ELECTION,
+      })
+    );
+
+    expect(redisXAddMock).not.toHaveBeenCalledWith(
+      STAGING_VALIDATED_STREAM,
+      "*",
+      expect.objectContaining({
+        ingest_key: "elections:test:1",
+      })
+    );
+  });
+
+  it("accepts statewide entries for U.S. Senate contests", async () => {
+    const payload = {
+      district_id: "d-3",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "United States Senator",
+          election_date: "2099-11-03",
+          description: "Federal statewide office.",
+          race_type: "office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:1",
+            payload,
+            status: "pending",
+            run_id: "run_3",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      STAGING_VALIDATED_STREAM,
+      "*",
+      expect.objectContaining({
+        ingest_key: "elections:test:1",
+        item_type: STAGING_ITEM_TYPE_ELECTION,
+      })
+    );
+
+    const rejectedCall = redisXAddMock.mock.calls.find((call) => call[0] === STAGING_REJECTED_STREAM);
+    expect(rejectedCall).toBeUndefined();
   });
 });

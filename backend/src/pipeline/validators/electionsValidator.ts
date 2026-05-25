@@ -92,6 +92,43 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
     /\bcongressional district\b/.test(scopeText);
   const stateSenate = /\bstate senate\b/.test(scopeText) || /\bsenate district\b/.test(scopeText);
   const stateHouse = /\bstate house\b/.test(scopeText) || /\bstate assembly\b/.test(scopeText) || /\bstate representative\b/.test(scopeText);
+  const hasFederalMarker =
+    /\bu\.?\s*s\.?\b/.test(scopeText) ||
+    /\bunited states\b/.test(scopeText) ||
+    /\bcongress\b/.test(scopeText) ||
+    /\bcongressional\b/.test(scopeText);
+  const statewideStateUpperLike =
+    /\bstate senate\b/.test(scopeText) ||
+    /\bstate senator\b/.test(scopeText) ||
+    /\bsenate district\b/.test(scopeText) ||
+    /\bsenator district\b/.test(scopeText) ||
+    /\bsenator,\s*district\b/.test(scopeText) ||
+    /\bmember of the senate\b/.test(scopeText) ||
+    /\bsenator in the general assembly\b/.test(scopeText);
+  const statewideStateLowerLike =
+    /\bstate house\b/.test(scopeText) ||
+    /\bstate representative\b/.test(scopeText) ||
+    /\bhouse of representatives district\b/.test(scopeText) ||
+    /\brepresentative district\b/.test(scopeText) ||
+    /\brepresentative in the general assembly\b/.test(scopeText) ||
+    /\bmember of the house of representatives\b/.test(scopeText) ||
+    /\bstate assembly\b/.test(scopeText) ||
+    /\bassembly district\b/.test(scopeText) ||
+    /\bassemblymember\b/.test(scopeText) ||
+    /\bmember of the assembly\b/.test(scopeText) ||
+    /\bgeneral assembly district\b/.test(scopeText) ||
+    /\bmember of the general assembly\b/.test(scopeText) ||
+    /\bhouse of delegates\b/.test(scopeText) ||
+    /\bdelegate district\b/.test(scopeText) ||
+    /\bmember of the house of delegates\b/.test(scopeText);
+  const statewideLegislativeDistrictLike =
+    /\blegislature district\b/.test(scopeText) ||
+    /\blegislative district\b/.test(scopeText) ||
+    /\bmember of the legislature\b/.test(scopeText) ||
+    /\bstate legislature district\b/.test(scopeText);
+  const statewideStateLegislativeLike =
+    !hasFederalMarker &&
+    (statewideStateUpperLike || statewideStateLowerLike || statewideLegislativeDistrictLike);
 
   // Only use broad office-level mismatch signals for office races to avoid over-rejecting ballot-measure text.
   const governorLike =
@@ -131,8 +168,14 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
     return "school scope contains clearly non-school race";
   }
 
-  if (districtType === "statewide" && (countyLike || cityLike || schoolLike)) {
-    return "statewide scope contains clearly local race";
+  if (
+    districtType === "statewide" &&
+    (countyLike ||
+      cityLike ||
+      schoolLike ||
+      (entry.race_type === "office" && (usHouse || statewideStateLegislativeLike)))
+  ) {
+    return "statewide scope contains clearly non-statewide race";
   }
 
   return null;
