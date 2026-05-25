@@ -22,6 +22,7 @@ import type {
 } from "../types/election.js";
 import { verifyHttpUrlReachability } from "./urlReachability.js";
 import { normalizeElectionTitleKey } from "../utils/normalizeElectionTitleKey.js";
+import { hasSpecialSeatMarker, isUsSenateOfficeTitle } from "../utils/senateOffice.js";
 
 const CLAUDE_INTER_CALL_DELAY_MS = 20_000;
 const CLAUDE_RETRY_AFTER_BUFFER_MS = 10_000;
@@ -53,7 +54,7 @@ function normalizeGeneratedPayloadForContestFamily(
   const forcedRaceType =
     contestFamily === "ballot_measure"
       ? "ballot_measure"
-      : contestFamily === "non_judicial_office" || contestFamily === "judicial_office"
+      : contestFamily === "non_judicial_office" || contestFamily === "judicial_office" || contestFamily === "us_senate"
         ? "office"
         : null;
 
@@ -172,6 +173,173 @@ function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayl
   return [...byKey.values()];
 }
 
+type UsSenateResolutionNote = {
+  election_date: string;
+  action: "collapsed_to_one";
+  reason: string;
+  kept_official_ballot_title: string;
+  dropped_official_ballot_titles: string[];
+};
+
+function scoreUsSenateEntry(entry: ElectionEntryPayload): number {
+  let score = 0;
+  if (entry.term_end_year) {
+    score += 100;
+  }
+  if (entry.senate_class) {
+    score += 50;
+  }
+  if (hasSpecialSeatMarker(entry)) {
+    score += 10;
+  }
+  score += Math.min(entry.sources.length, 5);
+  score += Math.min(entry.description.length / 200, 5);
+  return score;
+}
+
+function pickCanonicalUsSenateEntry(entries: readonly ElectionEntryPayload[]): ElectionEntryPayload {
+  let best = entries[0]!;
+  let bestScore = scoreUsSenateEntry(best);
+  for (let i = 1; i < entries.length; i += 1) {
+    const candidate = entries[i]!;
+    const candidateScore = scoreUsSenateEntry(candidate);
+    if (candidateScore > bestScore) {
+      best = candidate;
+      bestScore = candidateScore;
+    }
+  }
+  return best;
+}
+
+type UsSenatePairValidation =
+  | { status: "valid" }
+  | { status: "invalid"; reason: string }
+  | { status: "indistinguishable"; reason: string };
+
+function validateTwoEntryUsSenatePair(
+  electionDate: string,
+  left: ElectionEntryPayload,
+  right: ElectionEntryPayload
+): UsSenatePairValidation {
+  if (left.senate_class && right.senate_class && left.senate_class === right.senate_class) {
+    return {
+      status: "invalid",
+      reason: `Two U.S. Senate entries on ${electionDate} have identical senate_class (${left.senate_class}); these cannot be distinct seats.`,
+    };
+  }
+  if (left.term_end_year && right.term_end_year && left.term_end_year === right.term_end_year) {
+    return {
+      status: "invalid",
+      reason: `Two U.S. Senate entries on ${electionDate} have identical term_end_year (${left.term_end_year}); these cannot be distinct seats.`,
+    };
+  }
+
+  const leftTitleKey = normalizeElectionTitleKey(left.official_ballot_title);
+  const rightTitleKey = normalizeElectionTitleKey(right.official_ballot_title);
+  if (leftTitleKey === rightTitleKey) {
+    return {
+      status: "indistinguishable",
+      reason:
+        `Two U.S. Senate entries on ${electionDate} normalize to the same official_ballot_title key (${leftTitleKey}); provide seat-distinguishing official ballot labels (for example, regular vs unexpired/special).`,
+    };
+  }
+
+  if (left.term_end_year && right.term_end_year && left.term_end_year !== right.term_end_year) {
+    return { status: "valid" };
+  }
+  if (left.senate_class && right.senate_class && left.senate_class !== right.senate_class) {
+    return { status: "valid" };
+  }
+
+  const leftSpecial = hasSpecialSeatMarker(left);
+  const rightSpecial = hasSpecialSeatMarker(right);
+  if (leftSpecial !== rightSpecial) {
+    return { status: "valid" };
+  }
+
+  return {
+    status: "indistinguishable",
+    reason:
+      `Could not distinguish two U.S. Senate entries on ${electionDate} by class, term end year, or special-vs-regular evidence.`,
+  };
+}
+
+function resolveUsSenateEntries(
+  entries: ElectionEntryPayload[],
+  attempt: number
+): {
+  entries: ElectionEntryPayload[];
+  shouldRetry: boolean;
+  retryFeedback?: string;
+  notes: UsSenateResolutionNote[];
+} {
+  const notes: UsSenateResolutionNote[] = [];
+  const groups = new Map<string, ElectionEntryPayload[]>();
+  for (const entry of entries) {
+    const key = entry.election_date;
+    const prior = groups.get(key);
+    if (!prior) {
+      groups.set(key, [entry]);
+      continue;
+    }
+    prior.push(entry);
+  }
+
+  for (const [electionDate, group] of groups.entries()) {
+    if (group.length <= 1) {
+      continue;
+    }
+    if (group.length > 2) {
+      const reason = `U.S. Senate entries on ${electionDate} must contain at most two seats, but ${group.length} were returned.`;
+      if (attempt === 0) {
+        return { entries, shouldRetry: true, retryFeedback: reason, notes: [] };
+      }
+      const canonical = pickCanonicalUsSenateEntry(group);
+      const dropped = group.filter((entry) => entry !== canonical);
+      groups.set(electionDate, [canonical]);
+      notes.push({
+        election_date: electionDate,
+        action: "collapsed_to_one",
+        reason,
+        kept_official_ballot_title: canonical.official_ballot_title,
+        dropped_official_ballot_titles: dropped.map((entry) => entry.official_ballot_title),
+      });
+      continue;
+    }
+
+    const [left, right] = group;
+    if (!left || !right) {
+      continue;
+    }
+    const validation = validateTwoEntryUsSenatePair(electionDate, left, right);
+    if (validation.status === "valid") {
+      continue;
+    }
+
+    if (attempt === 0) {
+      return { entries, shouldRetry: true, retryFeedback: validation.reason, notes: [] };
+    }
+
+    const canonical = pickCanonicalUsSenateEntry(group);
+    const dropped = canonical === left ? right : left;
+    groups.set(electionDate, [canonical]);
+    notes.push({
+      election_date: electionDate,
+      action: "collapsed_to_one",
+      reason: validation.reason,
+      kept_official_ballot_title: canonical.official_ballot_title,
+      dropped_official_ballot_titles: [dropped.official_ballot_title],
+    });
+  }
+
+  const resolved: ElectionEntryPayload[] = [];
+  for (const group of groups.values()) {
+    resolved.push(...group);
+  }
+
+  return { entries: resolved, shouldRetry: false, notes };
+}
+
 function containsJudicialMarker(entry: ElectionEntryPayload): boolean {
   const text = entry.official_ballot_title.toLowerCase();
   return /\b(judge|justice|judicial|superior court|court of appeals|supreme court|retention)\b/.test(text);
@@ -194,6 +362,10 @@ function containsNonJudicialOfficeMarker(entry: ElectionEntryPayload): boolean {
   return /\b(member, board|board of|sheriff|assessor|clerk|treasurer|controller|attorney|superintendent|mayor|council|governor|secretary|commissioner|auditor)\b/.test(
     text
   );
+}
+
+function containsUsSenateMarker(entry: ElectionEntryPayload): boolean {
+  return isUsSenateOfficeTitle(entry.official_ballot_title);
 }
 
 function validateContestFamilySoft(
@@ -236,6 +408,20 @@ function validateContestFamilySoft(
     return { ok: true };
   }
 
+  if (family === "us_senate") {
+    const hasBallotMeasure = entries.some(
+      (entry) => entry.race_type === "ballot_measure" || containsBallotMeasureMarker(entry)
+    );
+    if (hasBallotMeasure) {
+      return { ok: false, reason: "us_senate family returned ballot_measure entries" };
+    }
+    const hasNonSenate = entries.some((entry) => !containsUsSenateMarker(entry));
+    if (hasNonSenate) {
+      return { ok: false, reason: "us_senate family returned non-Senate office entries" };
+    }
+    return { ok: true };
+  }
+
   // non_judicial_office: keep this light-touch and only reject obvious mismatches.
   const hasBallotMeasure = entries.some(
     (entry) => entry.race_type === "ballot_measure" || containsBallotMeasureMarker(entry)
@@ -246,6 +432,10 @@ function validateContestFamilySoft(
   const allJudicial = entries.every((entry) => containsJudicialMarker(entry));
   if (allJudicial) {
     return { ok: false, reason: "non_judicial_office family appears fully judicial" };
+  }
+  const hasUsSenate = entries.some((entry) => containsUsSenateMarker(entry));
+  if (hasUsSenate) {
+    return { ok: false, reason: "non_judicial_office family returned U.S. Senate entries" };
   }
   return { ok: true };
 }
@@ -452,10 +642,10 @@ async function runPromptWithCandidates(
     }
 > {
   const failures: ProviderFailureAttempt[] = [];
-  const cumulativeBlockedUrlFeedback = new Set<string>();
+  const cumulativeRetryFeedback = new Set<string>();
 
   for (const candidate of candidates) {
-    let retryFeedbackLines: string[] = [...cumulativeBlockedUrlFeedback];
+    let retryFeedbackLines: string[] = [...cumulativeRetryFeedback];
 
     for (let attempt = 0; attempt < 2; attempt += 1) {
       const promptWithFeedback =
@@ -510,7 +700,23 @@ async function runPromptWithCandidates(
         break;
       }
 
-      const citationVerification = await verifyElectionEntrySources(parsed.payload.entries, config.timeoutMs);
+      let resolvedEntries = parsed.payload.entries;
+      const usSenateResolutionNotes: UsSenateResolutionNote[] = [];
+      if (contestFamily === "us_senate") {
+        const resolution = resolveUsSenateEntries(parsed.payload.entries, attempt);
+        if (resolution.shouldRetry) {
+          const feedbackLine = resolution.retryFeedback
+            ? `${resolution.retryFeedback} Differentiate seats (not parties) and provide class, term_end_year, or special/unexpired evidence.`
+            : "Could not distinguish U.S. Senate seats. Differentiate seats (not parties) and provide class, term_end_year, or special/unexpired evidence.";
+          cumulativeRetryFeedback.add(feedbackLine);
+          retryFeedbackLines = [...cumulativeRetryFeedback].slice(0, 20);
+          continue;
+        }
+        resolvedEntries = resolution.entries;
+        usSenateResolutionNotes.push(...resolution.notes);
+      }
+
+      const citationVerification = await verifyElectionEntrySources(resolvedEntries, config.timeoutMs);
       if (!citationVerification.ok) {
         failures.push({
           provider: candidate.provider,
@@ -533,9 +739,9 @@ async function runPromptWithCandidates(
               `Do not use or cite this URL for "${failure.entry_title}": ${failure.url} (${failure.reason})`
           );
           for (const line of newFeedbackLines) {
-            cumulativeBlockedUrlFeedback.add(line);
+            cumulativeRetryFeedback.add(line);
           }
-          retryFeedbackLines = [...cumulativeBlockedUrlFeedback].slice(0, 20);
+          retryFeedbackLines = [...cumulativeRetryFeedback].slice(0, 20);
           continue;
         }
         break;
@@ -543,7 +749,7 @@ async function runPromptWithCandidates(
 
       return {
         ok: true,
-        entries: parsed.payload.entries,
+        entries: resolvedEntries,
         ...(parsed.payload.review_decision
           ? { reviewDecision: parsed.payload.review_decision }
           : {}),
@@ -552,6 +758,9 @@ async function runPromptWithCandidates(
         model: candidate.model,
         aiRawDebug: {
           provider_response_text: trimDebugText(generated.rawText),
+          ...(usSenateResolutionNotes.length > 0
+            ? { us_senate_resolution_notes: usSenateResolutionNotes }
+            : {}),
           ...(generated.debugMeta ?? {}),
         },
       };
@@ -580,9 +789,12 @@ export async function enrichElections(
   config: EnrichElectionsConfig,
   candidates: readonly AiCandidate[] = ELECTIONS_AI_CANDIDATES
 ): Promise<EnrichElectionsResult> {
-  const familyPlan: ElectionContestFamily[] = needsContestFamilySplit(input.draft.district_type)
-    ? ["non_judicial_office", "judicial_office", "ballot_measure"]
-    : ["all"];
+  const familyPlan: ElectionContestFamily[] =
+    input.draft.district_type === "statewide"
+      ? ["non_judicial_office", "judicial_office", "ballot_measure", "us_senate"]
+      : needsContestFamilySplit(input.draft.district_type)
+        ? ["non_judicial_office", "judicial_office", "ballot_measure"]
+        : ["all"];
 
   const mergedEntries: ElectionEntryPayload[] = [];
   const mergedDebug: Record<string, unknown> = {};

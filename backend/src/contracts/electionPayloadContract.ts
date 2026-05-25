@@ -6,6 +6,7 @@ import type {
 import {
   ELECTION_ALLOWED_DISTRICT_TYPES,
   ELECTION_RACE_TYPES,
+  ELECTION_SENATE_CLASSES,
   ELECTION_STAGES,
 } from "./electionEnrichmentContract.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
@@ -53,6 +54,10 @@ function isDistrictType(value: unknown): value is ElectionDistrictType {
 
 function isElectionStage(value: unknown): value is NonNullable<ElectionEntryPayload["election_stage"]> {
   return typeof value === "string" && ELECTION_STAGES.includes(value as NonNullable<ElectionEntryPayload["election_stage"]>);
+}
+
+function isElectionSenateClass(value: unknown): value is NonNullable<ElectionEntryPayload["senate_class"]> {
+  return typeof value === "string" && ELECTION_SENATE_CLASSES.includes(value as NonNullable<ElectionEntryPayload["senate_class"]>);
 }
 
 function normalizeSources(value: unknown): string[] | null {
@@ -121,6 +126,32 @@ function parseEntry(
     electionStage = input.election_stage;
   }
 
+  let senateClass: ElectionEntryPayload["senate_class"] | undefined;
+  if (input.senate_class !== undefined && input.senate_class !== null) {
+    if (input.race_type !== "office") {
+      return null;
+    }
+    if (!isElectionSenateClass(input.senate_class)) {
+      return null;
+    }
+    senateClass = input.senate_class;
+  }
+
+  let termEndYear: string | undefined;
+  if (input.term_end_year !== undefined && input.term_end_year !== null) {
+    if (input.race_type !== "office") {
+      return null;
+    }
+    if (!isNonEmptyString(input.term_end_year)) {
+      return null;
+    }
+    const normalized = input.term_end_year.trim();
+    if (!/^\d{4}$/.test(normalized)) {
+      return null;
+    }
+    termEndYear = normalized;
+  }
+
   let isPartisan: boolean | undefined;
   if (input.is_partisan !== undefined && input.is_partisan !== null) {
     if (typeof input.is_partisan !== "boolean") {
@@ -141,6 +172,8 @@ function parseEntry(
     race_type: input.race_type as "office" | "ballot_measure",
     ...(isPartisan !== undefined ? { is_partisan: isPartisan } : {}),
     ...(electionStage ? { election_stage: electionStage } : {}),
+    ...(senateClass ? { senate_class: senateClass } : {}),
+    ...(termEndYear ? { term_end_year: termEndYear } : {}),
     sources,
   };
 }

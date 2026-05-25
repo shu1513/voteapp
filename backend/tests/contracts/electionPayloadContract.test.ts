@@ -276,4 +276,58 @@ describe("parseAiElectionEntriesPayload", () => {
     });
     expect(result.ok).toBe(false);
   });
+
+  it("parses optional senate_class and term_end_year for office entries", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "United States Senator",
+          election_date: "2026-11-03",
+          impact: "Represents the state in the U.S. Senate.",
+          race_type: "office",
+          senate_class: "class_i",
+          term_end_year: "2031",
+          sources: ["https://example.gov/elections/us-senate"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries[0].senate_class).toBe("class_i");
+      expect(result.payload.entries[0].term_end_year).toBe("2031");
+    }
+  });
+
+  it("rejects invalid senate_class", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "United States Senator",
+          election_date: "2026-11-03",
+          impact: "Represents the state in the U.S. Senate.",
+          race_type: "office",
+          senate_class: "class_iv",
+          sources: ["https://example.gov/elections/us-senate"],
+        },
+      ],
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it("rejects non-string term_end_year", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "United States Senator",
+          election_date: "2026-11-03",
+          impact: "Represents the state in the U.S. Senate.",
+          race_type: "office",
+          term_end_year: 2031,
+          sources: ["https://example.gov/elections/us-senate"],
+        },
+      ],
+    });
+    expect(result.ok).toBe(false);
+  });
 });

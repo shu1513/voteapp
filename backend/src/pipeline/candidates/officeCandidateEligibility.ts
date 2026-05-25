@@ -130,7 +130,7 @@ const ELIGIBILITY_SELECT_SQL = `
     END AS eligible_after_date
   FROM base AS b
   LEFT JOIN nearest_upcoming AS nu
-    ON nu.district_id = b.district_id
+   ON nu.district_id = b.district_id
    AND nu.official_ballot_title_key = b.official_ballot_title_key
   LEFT JOIN prior_stage AS ps
     ON ps.id = b.id
@@ -242,7 +242,7 @@ const ELIGIBILITY_SELECT_UPCOMING_OFFICES_SQL = `
     END AS eligible_after_date
   FROM base AS b
   LEFT JOIN nearest_upcoming AS nu
-    ON nu.district_id = b.district_id
+   ON nu.district_id = b.district_id
    AND nu.official_ballot_title_key = b.official_ballot_title_key
   LEFT JOIN prior_stage AS ps
     ON ps.id = b.id

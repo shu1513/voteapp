@@ -1,6 +1,6 @@
 import type { ElectionDraftPayload, ElectionRaceType } from "../types/election.js";
 
-type ContestFamily = "all" | "non_judicial_office" | "judicial_office" | "ballot_measure";
+type ContestFamily = "all" | "non_judicial_office" | "judicial_office" | "ballot_measure" | "us_senate";
 type SchoolPartisanshipMode = "partisan" | "mixed" | "nonpartisan";
 type PartisanshipMode = "force_true" | "force_false" | "ask_ai";
 
@@ -80,6 +80,10 @@ function getPartisanshipModeForContest(args: {
 }): PartisanshipMode {
   if (args.raceType === "ballot_measure" || args.contestFamily === "ballot_measure") {
     return "force_false";
+  }
+
+  if (args.contestFamily === "us_senate") {
+    return "force_true";
   }
 
   if (isSchoolDistrictType(args.draft.district_type)) {

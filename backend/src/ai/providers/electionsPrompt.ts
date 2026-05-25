@@ -5,7 +5,8 @@ export type ElectionContestFamily =
   | "all"
   | "non_judicial_office"
   | "judicial_office"
-  | "ballot_measure";
+  | "ballot_measure"
+  | "us_senate";
 
 function escapeJson(value: string): string {
   return JSON.stringify(value);
@@ -20,10 +21,13 @@ export function buildElectionsPrompt(args: {
 }): string {
   const { draft, softRetryCount, reviewFeedbackLines, contestFamily = "all", seedUrls = [] } = args;
   const includeElectionStageInOutput = contestFamily !== "ballot_measure";
+  const includeSenateMetadataInOutput = contestFamily === "us_senate";
   const includeIsPartisanInOutput = shouldAskIsPartisanInPrompt({ draft, contestFamily });
   const isBallotFamily = contestFamily === "ballot_measure";
   const isOfficeOnlyFamily =
-    contestFamily === "non_judicial_office" || contestFamily === "judicial_office";
+    contestFamily === "non_judicial_office" ||
+    contestFamily === "judicial_office" ||
+    contestFamily === "us_senate";
   const includeRaceTypeInOutput = contestFamily === "all";
   const retrySection =
     reviewFeedbackLines.length > 0
@@ -41,19 +45,25 @@ export function buildElectionsPrompt(args: {
           "",
           `Contest family for this call: ${contestFamily}`,
           contestFamily === "non_judicial_office"
-            ? "- Return only non-judicial office contests for this district scope (executive/legislative/administrative local offices)."
+            ? "- Return only non-federal, non-judicial office contests for this district scope (executive/legislative/administrative local offices)."
             : contestFamily === "judicial_office"
               ? "- Return only judicial office contests for this district scope (judge/justice/retention)."
+              : contestFamily === "us_senate"
+                ? "- Return only U.S. Senate contests for this statewide scope."
               : "- Return only ballot measure contests for this district scope.",
           contestFamily === "non_judicial_office"
-            ? "- Exclude all ballot measures and all judicial contests."
+            ? "- Exclude all ballot measures, all judicial contests, and all federal contests (including U.S. Senate and U.S. House)."
             : contestFamily === "judicial_office"
               ? "- Exclude all ballot measures and all non-judicial offices."
+              : contestFamily === "us_senate"
+                ? "- Exclude all ballot measures and all non-Senate office contests."
               : "- Exclude all office contests.",
           contestFamily === "non_judicial_office"
             ? '- Non-judicial office examples: Governor, Lieutenant Governor, Secretary of State, Treasurer, Controller, Attorney General, Superintendent of Public Instruction, Board of Supervisors, Sheriff, Assessor, County Clerk, Mayor, City Council.'
             : contestFamily === "judicial_office"
               ? '- Judicial examples: "Judge of the Superior Court, Office No. X", "Justice of the Supreme Court (Retention)", "Court of Appeal Justice (Retention)".'
+              : contestFamily === "us_senate"
+                ? '- U.S. Senate examples: "United States Senator", "United States Senator (Unexpired Term)".'
               : '- Ballot measure examples: Proposition, Measure, Bond, Charter Amendment, Referendum, Initiative, Advisory Question.',
         ];
   const includeReviewFieldsInShape = softRetryCount > 0;
@@ -73,6 +83,12 @@ export function buildElectionsPrompt(args: {
     '      "election_date": "YYYY-MM-DD",',
     ...(includeElectionStageInOutput
       ? ['      "election_stage": "primary | general | runoff | special",']
+      : []),
+    ...(includeSenateMetadataInOutput
+      ? [
+          '      "senate_class": "class_i | class_ii | class_iii (optional when clearly supported by sources)",',
+          '      "term_end_year": "YYYY (optional when clearly supported by sources)",',
+        ]
       : []),
     ...(includeIsPartisanInOutput ? ['      "is_partisan": true,'] : []),
     isBallotFamily
@@ -139,13 +155,29 @@ ${entryShapeLines}
         ? "- impact: Explain what this office does, in concrete, no fluff real-world terms."
         : "- impact: Explain what this office does (if race_type=office) or what this measure would actually change if passed (if race_type=ballot_measure), in concrete, no fluff real-world terms.",
     "- Example impact for office: \"Leads the county sheriff's department, oversees patrol and jail operations, and sets local law-enforcement priorities.\"",
-    "- Example impact for ballot_measure: \"Increases county sales tax by 0.5% for five years to fund county hospital and clinic services.\"",
+    ...(isBallotFamily || includeRaceTypeInOutput
+      ? [
+          "- Example impact for ballot_measure: \"Increases county sales tax by 0.5% for five years to fund county hospital and clinic services.\"",
+        ]
+      : []),
     "- Focus on upcoming elections only; do not include past elections.",
     "- Use only contests in this exact district scope (no parent or child scope contests).",
     "- Copy official_ballot_title exactly as shown on the ballot when available; do not paraphrase.",
-    "- For ballot measures, official_ballot_title must be the actual official measure label/title from the election authority (for example: Measure ER or Proposition 4), not the full ballot question sentence.",
+    ...(isBallotFamily || includeRaceTypeInOutput
+      ? [
+          "- For ballot measures, official_ballot_title must be the actual official measure label/title from the election authority (for example: Measure ER or Proposition 4), not the full ballot question sentence.",
+        ]
+      : []),
     includeOfficialSourcePriorityLine ? scopePriorityLine : ballotOfficialPreferenceLine,
     ...familySection,
+    ...(contestFamily === "us_senate"
+      ? [
+          "- Determine how many distinct U.S. Senate seats are being contested in this election. If one seat is contested, return one entry. If two distinct seats are contested (for example, regular term + unexpired term), return two separate entries.",
+          "- senate_class is optional. Include only when clearly supported by sources. Allowed values: class_i, class_ii, class_iii.",
+          "- term_end_year is optional. Include only when clearly supported by sources as a 4-digit string (YYYY).",
+          "- If senate_class or term_end_year is unclear, omit it instead of guessing.",
+        ]
+      : []),
     "- If scope is uncertain, exclude the entry instead of guessing.",
     "- sources must list the URLs you used for each entry, and each entry should include at least one directly supporting source URL.",
     "- return JSON only (no prose, no markdown).",
