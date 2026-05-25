@@ -93,7 +93,8 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
   const stateSenate = /\bstate senate\b/.test(scopeText) || /\bsenate district\b/.test(scopeText);
   const stateHouse = /\bstate house\b/.test(scopeText) || /\bstate assembly\b/.test(scopeText) || /\bstate representative\b/.test(scopeText);
   const hasFederalMarker =
-    /\bu\.?\s*s\.?\b/.test(scopeText) ||
+    usSenate ||
+    usHouse ||
     /\bunited states\b/.test(scopeText) ||
     /\bcongress\b/.test(scopeText) ||
     /\bcongressional\b/.test(scopeText);
