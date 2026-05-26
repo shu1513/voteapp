@@ -4,11 +4,18 @@ export type CandidateRosterEntry = {
   display_name: string;
   party?: string;
   is_incumbent?: boolean;
+  fec_ids?: string[];
+  state_filing_ids?: string[];
   sources: string[];
 };
 
 export type CandidateRosterPayload = {
   candidates: CandidateRosterEntry[];
+};
+
+type CandidateRosterParseOptions = {
+  requireFecIds?: boolean;
+  allowFecIds?: boolean;
 };
 
 function isNonEmptyString(value: unknown): value is string {
@@ -39,7 +46,29 @@ function normalizeSources(value: unknown): string[] | null {
   return normalized.length > 0 ? normalized : null;
 }
 
-function parseEntry(value: unknown): CandidateRosterEntry | null {
+function normalizeOptionalStringArray(value: unknown): string[] | null | undefined {
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+  if (!Array.isArray(value)) {
+    return null;
+  }
+  const normalized: string[] = [];
+  const seen = new Set<string>();
+  for (const item of value) {
+    if (!isNonEmptyString(item)) {
+      return null;
+    }
+    const text = item.trim();
+    if (!seen.has(text)) {
+      seen.add(text);
+      normalized.push(text);
+    }
+  }
+  return normalized;
+}
+
+function parseEntry(value: unknown, options: CandidateRosterParseOptions): CandidateRosterEntry | null {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     return null;
   }
@@ -70,15 +99,37 @@ function parseEntry(value: unknown): CandidateRosterEntry | null {
     isIncumbent = input.is_incumbent;
   }
 
+  const allowFecIds = options.allowFecIds !== false;
+  const requireFecIds = options.requireFecIds === true;
+  const fecIds = allowFecIds ? normalizeOptionalStringArray(input.fec_ids) : undefined;
+  if (allowFecIds && fecIds === null) {
+    return null;
+  }
+  const normalizedFecIds = fecIds ?? undefined;
+  if (requireFecIds && (!normalizedFecIds || normalizedFecIds.length === 0)) {
+    return null;
+  }
+
+  const stateFilingIds = normalizeOptionalStringArray(input.state_filing_ids);
+  if (stateFilingIds === null) {
+    return null;
+  }
+  const normalizedStateFilingIds = stateFilingIds ?? undefined;
+
   return {
     display_name: input.display_name.trim(),
     ...(party ? { party } : {}),
     ...(isIncumbent !== undefined ? { is_incumbent: isIncumbent } : {}),
+    ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),
+    ...(normalizedStateFilingIds !== undefined ? { state_filing_ids: normalizedStateFilingIds } : {}),
     sources,
   };
 }
 
-export function parseCandidateRosterPayload(payload: unknown):
+export function parseCandidateRosterPayload(
+  payload: unknown,
+  options: CandidateRosterParseOptions = {}
+):
   | { ok: true; payload: CandidateRosterPayload }
   | { ok: false; reason: string } {
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
@@ -92,7 +143,7 @@ export function parseCandidateRosterPayload(payload: unknown):
 
   const candidates: CandidateRosterEntry[] = [];
   for (const row of input.candidates) {
-    const parsed = parseEntry(row);
+    const parsed = parseEntry(row, options);
     if (!parsed) {
       return { ok: false, reason: "payload.candidates contains invalid row" };
     }

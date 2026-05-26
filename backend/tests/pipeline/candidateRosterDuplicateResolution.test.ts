@@ -30,6 +30,68 @@ function withRosterIndexes(
 }
 
 describe("resolveCandidateRosterForProfileDrafts", () => {
+  it("preserves fec_ids for federal singleton rows (no duplicate-name group)", async () => {
+    const disambiguateMock = vi.fn();
+
+    const result = await resolveCandidateRosterForProfileDrafts(
+      {
+        ...baseInput,
+        districtType: "us_house",
+        officialBallotTitle: "United States Representative, District 12",
+        candidates: withRosterIndexes([
+          {
+            display_name: "Casey Rivera",
+            fec_ids: ["H0CA12000"],
+            sources: ["https://example.org/singleton"],
+          },
+        ]),
+      },
+      aiConfig,
+      disambiguateMock
+    );
+
+    expect(disambiguateMock).not.toHaveBeenCalled();
+    expect(result.resolvedCandidates).toHaveLength(1);
+    expect(result.resolvedCandidates[0]?.display_name).toBe("Casey Rivera");
+    expect(result.resolvedCandidates[0]?.fec_ids).toEqual(["H0CA12000"]);
+    expect(result.resolvedCandidates[0]?.skip_per_election_name_dedupe).toBeUndefined();
+  });
+
+  it("skips AI duplicate disambiguation for federal races and keeps all same-name rows", async () => {
+    const disambiguateMock = vi.fn();
+
+    const result = await resolveCandidateRosterForProfileDrafts(
+      {
+        ...baseInput,
+        districtType: "us_house",
+        officialBallotTitle: "United States Representative, District 12",
+        candidates: withRosterIndexes([
+          {
+            display_name: "Taylor Johnson",
+            party: "Democrat",
+            fec_ids: ["H0CA12000"],
+            sources: ["https://example.org/a"],
+          },
+          {
+            display_name: "Taylor Johnson",
+            party: "Democrat",
+            fec_ids: ["H0CA99999"],
+            sources: ["https://example.org/b"],
+          },
+        ]),
+      },
+      aiConfig,
+      disambiguateMock
+    );
+
+    expect(disambiguateMock).not.toHaveBeenCalled();
+    expect(result.resolvedCandidates).toHaveLength(2);
+    for (const row of result.resolvedCandidates) {
+      expect(row.skip_per_election_name_dedupe).toBe(true);
+      expect(row.disambiguation_hint).toBeUndefined();
+    }
+  });
+
   it("keeps same-name rows when party differs (no AI disambiguation call)", async () => {
     const disambiguateMock = vi.fn();
 
@@ -58,6 +120,45 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
     for (const row of result.resolvedCandidates) {
       expect(row.skip_per_election_name_dedupe).toBe(true);
       expect(row.disambiguation_hint).toBeUndefined();
+    }
+  });
+
+  it("uses state_filing_ids to resolve state-level duplicate names before AI disambiguation", async () => {
+    const disambiguateMock = vi.fn();
+
+    const result = await resolveCandidateRosterForProfileDrafts(
+      {
+        ...baseInput,
+        districtType: "state_lower",
+        officialBallotTitle: "State Representative, District 7",
+        candidates: withRosterIndexes([
+          {
+            display_name: "Jordan Smith",
+            state_filing_ids: ["CA-001"],
+            sources: ["https://example.org/a"],
+          },
+          {
+            display_name: "Jordan Smith",
+            state_filing_ids: ["CA-002"],
+            sources: ["https://example.org/b"],
+          },
+          {
+            display_name: "Jordan Smith",
+            state_filing_ids: ["CA-001"],
+            sources: ["https://example.org/c"],
+          },
+        ]),
+      },
+      aiConfig,
+      disambiguateMock
+    );
+
+    expect(disambiguateMock).not.toHaveBeenCalled();
+    expect(result.resolvedCandidates).toHaveLength(2);
+    const filingSets = result.resolvedCandidates.map((row) => row.state_filing_ids ?? []);
+    expect(filingSets).toEqual([["CA-001"], ["CA-002"]]);
+    for (const row of result.resolvedCandidates) {
+      expect(row.skip_per_election_name_dedupe).toBe(true);
     }
   });
 

@@ -67,4 +67,41 @@ describe("parseCandidateProfilePayload", () => {
 
     expect(parsed.ok).toBe(false);
   });
+
+  it("requires fec_ids in federal mode when configured", () => {
+    const parsed = parseCandidateProfilePayload(
+      {
+        display_name: "Jane Doe",
+        first_name: "Jane",
+        last_name: "Doe",
+        sources: ["https://example.org/profile"],
+      },
+      { requireFecIds: true, allowFecIds: true }
+    );
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toContain("fec_ids");
+  });
+
+  it("ignores fec_ids when mode disallows it", () => {
+    const parsed = parseCandidateProfilePayload(
+      {
+        display_name: "Jane Doe",
+        first_name: "Jane",
+        last_name: "Doe",
+        fec_ids: ["H0XX00000"],
+        sources: ["https://example.org/profile"],
+      },
+      { allowFecIds: false }
+    );
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+    expect(parsed.payload.fec_ids).toBeUndefined();
+  });
 });

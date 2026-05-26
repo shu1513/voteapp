@@ -1,3 +1,6 @@
+import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
+import type { CandidateResearchMode } from "../candidateResearchMode.js";
+
 export type CandidateProfilePromptInput = {
   candidateDisplayName: string;
   districtName: string;
@@ -5,16 +8,22 @@ export type CandidateProfilePromptInput = {
   state: string;
   electionDate: string;
   officialBallotTitle: string;
-  includeParty?: boolean;
+  electionStage?: string | null;
+  senateClass?: string | null;
+  termEndYear?: string | null;
+  researchMode: CandidateResearchMode;
   rosterParty?: string;
   rosterIncumbent?: boolean;
+  rosterFecIds?: readonly string[];
+  rosterStateFilingIds?: readonly string[];
   disambiguationHint?: string;
   seedUrls?: readonly string[];
   reviewFeedbackLines?: readonly string[];
 };
 
 export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput): string {
-  const includeParty = input.includeParty !== false;
+  const includeSenateContext = isUsSenateOfficeTitle(input.officialBallotTitle);
+  const includeFecIds = input.researchMode !== "state_level";
   const seedUrls = input.seedUrls ?? [];
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
 
@@ -29,12 +38,21 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     `- state: "${input.state}"`,
     `- election_date: "${input.electionDate}"`,
     `- official_ballot_title: "${input.officialBallotTitle}"`,
-    ...(includeParty && input.rosterParty ? [`- roster_party_hint: "${input.rosterParty}"`] : []),
+    `- research_mode: "${input.researchMode}"`,
+    ...(includeSenateContext && input.electionStage ? [`- election_stage: "${input.electionStage}"`] : []),
+    ...(includeSenateContext && input.senateClass ? [`- senate_class: "${input.senateClass}"`] : []),
+    ...(includeSenateContext && input.termEndYear ? [`- term_end_year: "${input.termEndYear}"`] : []),
     ...(input.rosterIncumbent !== undefined
-      ? [`- roster_is_incumbent_hint: ${input.rosterIncumbent ? "true" : "false"}`]
+      ? [`- is_incumbent: ${input.rosterIncumbent ? "true" : "false"}`]
       : []),
     ...(input.disambiguationHint
       ? [`- roster_disambiguation_hint: ${JSON.stringify(input.disambiguationHint)}`]
+      : []),
+    ...(includeFecIds && (input.rosterFecIds?.length ?? 0) > 0
+      ? [`- candidate_fec_ids: ${JSON.stringify(input.rosterFecIds)}`]
+      : []),
+    ...(!includeFecIds && (input.rosterStateFilingIds?.length ?? 0) > 0
+      ? [`- candidate_state_filing_ids: ${JSON.stringify(input.rosterStateFilingIds)}`]
       : []),
     "",
     "Return JSON with this exact shape:",
@@ -42,13 +60,10 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     '  "display_name": "name for display",',
     '  "first_name": "first name",',
     '  "last_name": "last name",',
-    ...(includeParty ? ['  "party": "party label (optional)",'] : []),
-    '  "date_of_birth": "YYYY-MM-DD (optional)",',
-    '  "twitter_handle": "handle without URL, optional",',
+    ...(!includeFecIds ? ['  "date_of_birth": "YYYY-MM-DD (optional)",'] : []),
+    '  "twitter_handle": "handle without URL (optional)",',
     '  "linkedin_url": "https://... (optional)",',
     '  "official_website_url": "https://... (optional)",',
-    '  "fec_ids": ["..."],',
-    '  "state_filing_ids": ["..."],',
     '  "summary": "short neutral bio summary (optional)",',
     '  "sources": ["https://..."]',
     "}",
@@ -61,8 +76,13 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     ...(input.disambiguationHint
       ? ["- When identity is uncertain, prefer null/omission for identity fields over guessing another person's identifiers."]
       : []),
-    "- official_website_url is optional.",
-    "- date_of_birth, twitter_handle, linkedin_url, fec_ids, state_filing_ids are optional.",
+    ...(!includeFecIds ? ["- Do not include fec_ids for this state-level contest."] : []),
+    ...(includeFecIds
+      ? ["- For this federal contest, do not include date_of_birth; backend stores it as null."]
+      : ["- date_of_birth, twitter_handle (without URL), linkedin_url, official_website_url are optional."]),
+    ...(includeFecIds
+      ? ["- twitter_handle (without URL), linkedin_url, official_website_url are optional."]
+      : []),
     "- Use null/omission for unknown optional fields; do not invent.",
     "- Include sources used for this profile and identity evidence.",
     "- return JSON only (no prose, no markdown).",

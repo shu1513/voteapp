@@ -1,3 +1,6 @@
+import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
+import type { CandidateResearchMode } from "../candidateResearchMode.js";
+
 export type CandidateDuplicateOption = {
   roster_index: number;
   party?: string;
@@ -11,6 +14,10 @@ export type CandidateRosterDisambiguationPromptInput = {
   state: string;
   electionDate: string;
   officialBallotTitle: string;
+  electionStage?: string | null;
+  senateClass?: string | null;
+  termEndYear?: string | null;
+  researchMode: CandidateResearchMode;
   electionIsPartisan?: boolean | null;
   duplicateDisplayName: string;
   options: CandidateDuplicateOption[];
@@ -21,6 +28,8 @@ export type CandidateRosterDisambiguationPromptInput = {
 export function buildCandidateRosterDisambiguationPrompt(
   input: CandidateRosterDisambiguationPromptInput
 ): string {
+  const includeSenateContext = isUsSenateOfficeTitle(input.officialBallotTitle);
+  const includeFecIds = input.researchMode !== "state_level";
   const seedUrls = input.seedUrls ?? [];
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
 
@@ -34,6 +43,16 @@ export function buildCandidateRosterDisambiguationPrompt(
     `- state: ${JSON.stringify(input.state)}`,
     `- election_date: ${JSON.stringify(input.electionDate)}`,
     `- official_ballot_title: ${JSON.stringify(input.officialBallotTitle)}`,
+    `- research_mode: ${JSON.stringify(input.researchMode)}`,
+    ...(includeSenateContext && input.electionStage
+      ? [`- election_stage: ${JSON.stringify(input.electionStage)}`]
+      : []),
+    ...(includeSenateContext && input.senateClass
+      ? [`- senate_class: ${JSON.stringify(input.senateClass)}`]
+      : []),
+    ...(includeSenateContext && input.termEndYear
+      ? [`- term_end_year: ${JSON.stringify(input.termEndYear)}`]
+      : []),
     `- election_is_partisan: ${input.electionIsPartisan === true ? "true" : input.electionIsPartisan === false ? "false" : "unknown"}`,
     `- duplicate_display_name: ${JSON.stringify(input.duplicateDisplayName)}`,
     "",
@@ -55,6 +74,7 @@ export function buildCandidateRosterDisambiguationPrompt(
     '      "status": "clear | ambiguous | same_as_other",',
     '      "disambiguation_hint": "short hint that distinguishes this person in this election (required when status=clear)",',
     '      "same_as_roster_index": 0,',
+    ...(includeFecIds ? ['      "fec_ids": ["required FEC candidate ID(s)"],'] : []),
     '      "sources": ["https://..."]',
     "    }",
     "  ]",
@@ -67,6 +87,9 @@ export function buildCandidateRosterDisambiguationPrompt(
     "- Set status=ambiguous when evidence is insufficient for that specific row.",
     "- If status=same_as_other, same_as_roster_index is required and must point to a row marked clear.",
     "- If status=same_as_other, do not include disambiguation_hint.",
+    ...(includeFecIds
+      ? ["- For this federal contest, fec_ids is required on every people row and must include one or more FEC candidate IDs."]
+      : ["- Do not include fec_ids for this state-level contest."]),
     "- Every returned people row must include at least one supporting source URL.",
     "- disambiguation_hint is required when status=clear and should be concise and specific to this election context.",
     "- disambiguation_hint must be omitted when status=ambiguous or status=same_as_other.",

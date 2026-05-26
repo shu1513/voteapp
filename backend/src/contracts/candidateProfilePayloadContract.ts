@@ -16,6 +16,11 @@ export type CandidateProfilePayload = {
   sources: string[];
 };
 
+type CandidateProfilePayloadParseOptions = {
+  requireFecIds?: boolean;
+  allowFecIds?: boolean;
+};
+
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
@@ -82,7 +87,10 @@ function normalizeOptionalStringArray(value: unknown): string[] | null | undefin
   return normalized;
 }
 
-export function parseCandidateProfilePayload(payload: unknown):
+export function parseCandidateProfilePayload(
+  payload: unknown,
+  options: CandidateProfilePayloadParseOptions = {}
+):
   | { ok: true; payload: CandidateProfilePayload }
   | { ok: false; reason: string } {
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
@@ -157,9 +165,15 @@ export function parseCandidateProfilePayload(payload: unknown):
     officialWebsiteUrl = normalized;
   }
 
-  const fecIds = normalizeOptionalStringArray(input.fec_ids);
-  if (fecIds === null) {
+  const allowFecIds = options.allowFecIds !== false;
+  const requireFecIds = options.requireFecIds === true;
+  const fecIds = allowFecIds ? normalizeOptionalStringArray(input.fec_ids) : undefined;
+  if (allowFecIds && fecIds === null) {
     return { ok: false, reason: "payload.fec_ids must be string array when present" };
+  }
+  const normalizedFecIds = fecIds ?? undefined;
+  if (requireFecIds && (!normalizedFecIds || normalizedFecIds.length === 0)) {
+    return { ok: false, reason: "payload.fec_ids must contain at least one FEC ID for federal contests" };
   }
 
   const stateFilingIds = normalizeOptionalStringArray(input.state_filing_ids);
@@ -186,7 +200,7 @@ export function parseCandidateProfilePayload(payload: unknown):
       ...(twitterHandle ? { twitter_handle: twitterHandle } : {}),
       ...(linkedinUrl ? { linkedin_url: linkedinUrl } : {}),
       ...(officialWebsiteUrl ? { official_website_url: officialWebsiteUrl } : {}),
-      ...(fecIds !== undefined ? { fec_ids: fecIds } : {}),
+      ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),
       ...(stateFilingIds !== undefined ? { state_filing_ids: stateFilingIds } : {}),
       ...(summary ? { summary } : {}),
       sources,

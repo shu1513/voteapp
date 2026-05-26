@@ -1,0 +1,34 @@
+import { isUsSenateOfficeTitle } from "../utils/senateOffice.js";
+
+export type CandidateResearchMode = "federal_us_senate" | "federal_us_house" | "state_level";
+
+function normalize(text: string): string {
+  return text.toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function isUsHouseOfficeTitle(title: string): boolean {
+  const text = normalize(title);
+  return (
+    /\bu\.?\s*s\.?\s+house\b/.test(text) ||
+    /\bunited states house\b/.test(text) ||
+    /\bu\.?\s*s\.?\s+representative\b/.test(text) ||
+    /\bunited states representative\b/.test(text) ||
+    /\bmember of congress\b/.test(text) ||
+    /\bcongressional district\b/.test(text)
+  );
+}
+
+export function resolveCandidateResearchMode(input: {
+  districtType: string;
+  officialBallotTitle: string;
+}): CandidateResearchMode {
+  if (isUsSenateOfficeTitle(input.officialBallotTitle)) {
+    return "federal_us_senate";
+  }
+
+  if (input.districtType === "us_house" || isUsHouseOfficeTitle(input.officialBallotTitle)) {
+    return "federal_us_house";
+  }
+
+  return "state_level";
+}
