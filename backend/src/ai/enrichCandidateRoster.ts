@@ -13,6 +13,7 @@ import {
 import { buildCandidateRosterPrompt } from "./providers/candidateRosterPrompt.js";
 import { buildCandidateRosterDisambiguationPrompt } from "./providers/candidateRosterDisambiguationPrompt.js";
 import { resolveIncludePartyForCandidateContest } from "./candidatePartisanship.js";
+import { resolveCandidateResearchMode } from "./candidateResearchMode.js";
 import type { AiProvider } from "./types.js";
 
 type CandidateRosterErrorCode = ResearchErrorCode | "SCHEMA_MISMATCH";
@@ -47,6 +48,9 @@ export type EnrichCandidateRosterInput = {
   state: string;
   electionDate: string;
   officialBallotTitle: string;
+  electionStage?: string | null;
+  senateClass?: string | null;
+  termEndYear?: string | null;
   electionIsPartisan?: boolean | null;
   seedUrls: readonly string[];
 };
@@ -83,6 +87,9 @@ export type CandidateDuplicateDisambiguationInput = {
   state: string;
   electionDate: string;
   officialBallotTitle: string;
+  electionStage?: string | null;
+  senateClass?: string | null;
+  termEndYear?: string | null;
   electionIsPartisan?: boolean | null;
   duplicateDisplayName: string;
   options: CandidateDuplicateOption[];
@@ -94,6 +101,7 @@ export type CandidateDuplicateDisambiguationPerson = {
   status: "clear" | "ambiguous" | "same_as_other";
   disambiguation_hint?: string;
   same_as_roster_index?: number;
+  fec_ids?: string[];
   sources: string[];
 };
 
@@ -140,6 +148,30 @@ function classifyCitationVerificationFailure(reason: string): "transient" | "per
     return "transient";
   }
   return "permanent";
+}
+
+function normalizeOptionalStringArray(value: unknown): string[] | null | undefined {
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+  if (!Array.isArray(value)) {
+    return null;
+  }
+
+  const normalized: string[] = [];
+  const seen = new Set<string>();
+  for (const item of value) {
+    if (typeof item !== "string" || item.trim().length === 0) {
+      return null;
+    }
+    const text = item.trim();
+    if (seen.has(text)) {
+      continue;
+    }
+    seen.add(text);
+    normalized.push(text);
+  }
+  return normalized;
 }
 
 async function verifyUniqueCandidateSourceUrls(
@@ -286,7 +318,8 @@ async function callProvider(
 
 function parseDuplicateDisambiguationPayload(
   payload: unknown,
-  expectedOptionIndexes: ReadonlySet<number>
+  expectedOptionIndexes: ReadonlySet<number>,
+  options: { allowFecIds: boolean; requireFecIds: boolean }
 ):
   | {
       ok: true;
@@ -382,12 +415,27 @@ function parseDuplicateDisambiguationPayload(
       person.status === "same_as_other" && Number.isInteger(person.same_as_roster_index)
         ? Number(person.same_as_roster_index)
         : undefined;
+    if (!options.allowFecIds && person.fec_ids !== undefined && person.fec_ids !== null) {
+      return { ok: false, reason: "payload.people[].fec_ids is not allowed in state-level mode" };
+    }
+    const parsedFecIds = options.allowFecIds ? normalizeOptionalStringArray(person.fec_ids) : undefined;
+    if (options.allowFecIds && parsedFecIds === null) {
+      return { ok: false, reason: "payload.people[].fec_ids must be string array when present" };
+    }
+    const normalizedFecIds = parsedFecIds ?? undefined;
+    if (options.requireFecIds && (!normalizedFecIds || normalizedFecIds.length === 0)) {
+      return {
+        ok: false,
+        reason: "payload.people[].fec_ids must contain at least one FEC ID for federal contests",
+      };
+    }
 
     people.push({
       roster_index: rosterIndex,
       status: person.status,
       ...(clearHint ? { disambiguation_hint: clearHint } : {}),
       ...(mergeTargetIndex !== undefined ? { same_as_roster_index: mergeTargetIndex } : {}),
+      ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),
       sources: normalizedSources,
     });
   }
@@ -528,6 +576,11 @@ export async function disambiguateCandidateDuplicateGroup(
 
   const failures: ProviderFailureAttempt[] = [];
   const cumulativeBlockedUrlFeedback = new Set<string>();
+  const researchMode = resolveCandidateResearchMode({
+    districtType: input.districtType,
+    officialBallotTitle: input.officialBallotTitle,
+  });
+  const includeFecIds = researchMode !== "state_level";
 
   for (const candidate of candidates) {
     let reviewFeedbackLines: string[] = [...cumulativeBlockedUrlFeedback];
@@ -539,6 +592,10 @@ export async function disambiguateCandidateDuplicateGroup(
         state: input.state,
         electionDate: input.electionDate,
         officialBallotTitle: input.officialBallotTitle,
+        electionStage: input.electionStage,
+        senateClass: input.senateClass,
+        termEndYear: input.termEndYear,
+        researchMode,
         electionIsPartisan: input.electionIsPartisan,
         duplicateDisplayName: input.duplicateDisplayName,
         options: input.options.map((option) => ({
@@ -566,7 +623,8 @@ export async function disambiguateCandidateDuplicateGroup(
 
       const parsed = parseDuplicateDisambiguationPayload(
         generated.parsed,
-        expectedOptionIndexes
+        expectedOptionIndexes,
+        { allowFecIds: includeFecIds, requireFecIds: includeFecIds }
       );
       if (!parsed.ok) {
         failures.push({
@@ -652,6 +710,7 @@ export async function disambiguateCandidateDuplicateGroup(
         aiRawDebug: {
           provider_response_text: trimDebugText(generated.rawText),
           disambiguation_prompt_variant: "duplicate_name_group",
+          disambiguation_research_mode: researchMode,
           ...(generated.debugMeta ?? {}),
         },
       };
@@ -678,6 +737,10 @@ export async function disambiguateCandidateDuplicateGroup(
           state: input.state,
           electionDate: input.electionDate,
           officialBallotTitle: input.officialBallotTitle,
+          electionStage: input.electionStage,
+          senateClass: input.senateClass,
+          termEndYear: input.termEndYear,
+          researchMode,
           electionIsPartisan: input.electionIsPartisan,
           duplicateDisplayName: input.duplicateDisplayName,
           options: input.options.map((option) => ({
@@ -713,6 +776,11 @@ export async function enrichCandidateRoster(
   candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
 ): Promise<EnrichCandidateRosterResult> {
   const includeParty = shouldIncludePartyInRosterOutput(input);
+  const researchMode = resolveCandidateResearchMode({
+    districtType: input.districtType,
+    officialBallotTitle: input.officialBallotTitle,
+  });
+  const includeFecIds = researchMode !== "state_level";
   const failures: ProviderFailureAttempt[] = [];
   const cumulativeBlockedUrlFeedback = new Set<string>();
 
@@ -722,6 +790,7 @@ export async function enrichCandidateRoster(
     for (let attempt = 0; attempt < 2; attempt += 1) {
       const prompt = buildCandidateRosterPrompt({
         ...input,
+        researchMode,
         includeParty,
         reviewFeedbackLines,
       });
@@ -739,7 +808,10 @@ export async function enrichCandidateRoster(
         break;
       }
 
-      const parsed = parseCandidateRosterPayload(generated.parsed);
+      const parsed = parseCandidateRosterPayload(generated.parsed, {
+        allowFecIds: includeFecIds,
+        requireFecIds: includeFecIds,
+      });
       if (!parsed.ok) {
         failures.push({
           provider: candidate.provider,
@@ -803,6 +875,7 @@ export async function enrichCandidateRoster(
         aiRawDebug: {
           provider_response_text: trimDebugText(generated.rawText),
           roster_prompt_variant: includeParty ? "standard" : "nonpartisan",
+          roster_research_mode: researchMode,
           ...(generated.debugMeta ?? {}),
         },
       };
@@ -825,6 +898,7 @@ export async function enrichCandidateRoster(
       prompt_preview: trimDebugText(
         buildCandidateRosterPrompt({
           ...input,
+          researchMode,
           includeParty,
           reviewFeedbackLines: [],
         }),

@@ -11,7 +11,7 @@ import {
   parseCandidateProfilePayload,
 } from "../contracts/candidateProfilePayloadContract.js";
 import { buildCandidateProfilePrompt } from "./providers/candidateProfilePrompt.js";
-import { resolveIncludePartyForCandidateContest } from "./candidatePartisanship.js";
+import { resolveCandidateResearchMode } from "./candidateResearchMode.js";
 import type { AiProvider } from "./types.js";
 
 type CandidateProfileErrorCode = ResearchErrorCode | "SCHEMA_MISMATCH";
@@ -47,9 +47,14 @@ export type EnrichCandidateProfileInput = {
   state: string;
   electionDate: string;
   officialBallotTitle: string;
+  electionStage?: string | null;
+  senateClass?: string | null;
+  termEndYear?: string | null;
   electionIsPartisan?: boolean | null;
   rosterParty?: string;
   rosterIncumbent?: boolean;
+  rosterFecIds?: readonly string[];
+  rosterStateFilingIds?: readonly string[];
   disambiguationHint?: string;
   seedUrls: readonly string[];
 };
@@ -78,6 +83,24 @@ const CLAUDE_RETRY_AFTER_BUFFER_MS = 10_000;
 function removePartyFromProfile(profile: CandidateProfilePayload): CandidateProfilePayload {
   const { party: _party, ...rest } = profile;
   return rest;
+}
+
+function removeDateOfBirthFromProfile(profile: CandidateProfilePayload): CandidateProfilePayload {
+  const { date_of_birth: _dateOfBirth, ...rest } = profile;
+  return rest;
+}
+
+function removeStateFilingIdsFromProfile(profile: CandidateProfilePayload): CandidateProfilePayload {
+  const { state_filing_ids: _stateFilingIds, ...rest } = profile;
+  return rest;
+}
+
+function normalizeFecIds(values: readonly string[] | undefined): string[] {
+  return [...new Set((values ?? []).map((value) => value.trim().toUpperCase()).filter((value) => value.length > 0))];
+}
+
+function normalizeStateFilingIds(values: readonly string[] | undefined): string[] {
+  return [...new Set((values ?? []).map((value) => value.trim().toUpperCase()).filter((value) => value.length > 0))];
 }
 
 function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
@@ -252,12 +275,25 @@ export async function enrichCandidateProfile(
   config: EnrichCandidateProfileConfig,
   candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
 ): Promise<EnrichCandidateProfileResult> {
-  const includeParty = resolveIncludePartyForCandidateContest({
+  const researchMode = resolveCandidateResearchMode({
     districtType: input.districtType,
-    state: input.state,
     officialBallotTitle: input.officialBallotTitle,
-    electionIsPartisan: input.electionIsPartisan,
   });
+  const includeFecIds = researchMode !== "state_level";
+  const backendCandidateFecIds = normalizeFecIds(input.rosterFecIds);
+  const backendCandidateStateFilingIds = normalizeStateFilingIds(input.rosterStateFilingIds);
+  if (includeFecIds && backendCandidateFecIds.length === 0) {
+    return {
+      ok: false,
+      retryable: false,
+      errorCode: "SCHEMA_MISMATCH",
+      reason: "candidate_fec_ids is required in context for federal profile enrichment",
+      failureDebug: {
+        research_mode: researchMode,
+        candidate_display_name: input.candidateDisplayName,
+      },
+    };
+  }
   const failures: ProviderFailureAttempt[] = [];
   const cumulativeBlockedUrlFeedback = new Set<string>();
 
@@ -267,7 +303,7 @@ export async function enrichCandidateProfile(
     for (let attempt = 0; attempt < 2; attempt += 1) {
       const prompt = buildCandidateProfilePrompt({
         ...input,
-        includeParty,
+        researchMode,
         reviewFeedbackLines,
       });
 
@@ -284,7 +320,10 @@ export async function enrichCandidateProfile(
         break;
       }
 
-      const parsed = parseCandidateProfilePayload(generated.parsed);
+      const parsed = parseCandidateProfilePayload(generated.parsed, {
+        allowFecIds: false,
+        requireFecIds: false,
+      });
       if (!parsed.ok) {
         failures.push({
           provider: candidate.provider,
@@ -306,8 +345,18 @@ export async function enrichCandidateProfile(
         break;
       }
 
-      const normalizedProfile = includeParty ? parsed.payload : removePartyFromProfile(parsed.payload);
-      const citationVerification = await verifyCandidateProfileSources(normalizedProfile, config.timeoutMs);
+      const normalizedProfile = removePartyFromProfile(parsed.payload);
+      const normalizedProfileWithFederalDobPolicy = includeFecIds
+        ? removeStateFilingIdsFromProfile(removeDateOfBirthFromProfile(normalizedProfile))
+        : normalizedProfile;
+      const profileWithBackendFecIds = includeFecIds
+        ? { ...normalizedProfileWithFederalDobPolicy, fec_ids: backendCandidateFecIds }
+        : normalizedProfileWithFederalDobPolicy;
+      const profileWithBackendIds =
+        !includeFecIds && backendCandidateStateFilingIds.length > 0
+          ? { ...profileWithBackendFecIds, state_filing_ids: backendCandidateStateFilingIds }
+          : profileWithBackendFecIds;
+      const citationVerification = await verifyCandidateProfileSources(profileWithBackendIds, config.timeoutMs);
       if (!citationVerification.ok) {
         failures.push({
           provider: candidate.provider,
@@ -342,10 +391,16 @@ export async function enrichCandidateProfile(
         ok: true,
         provider: candidate.provider,
         model: candidate.model,
-        profile: normalizedProfile,
+        profile: profileWithBackendIds,
         aiRawDebug: {
           provider_response_text: trimDebugText(generated.rawText),
-          profile_prompt_variant: includeParty ? "standard" : "nonpartisan",
+          profile_prompt_variant: researchMode,
+          profile_research_mode: researchMode,
+          profile_backend_fec_ids: includeFecIds ? backendCandidateFecIds : undefined,
+          profile_backend_state_filing_ids:
+            !includeFecIds && backendCandidateStateFilingIds.length > 0
+              ? backendCandidateStateFilingIds
+              : undefined,
           ...(generated.debugMeta ?? {}),
         },
       };
@@ -368,7 +423,7 @@ export async function enrichCandidateProfile(
       prompt_preview: trimDebugText(
         buildCandidateProfilePrompt({
           ...input,
-          includeParty,
+          researchMode,
           reviewFeedbackLines: [],
         }),
         6000

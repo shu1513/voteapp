@@ -8,6 +8,7 @@ import {
   disambiguateCandidateDuplicateGroup,
   enrichCandidateRoster,
 } from "../../ai/enrichCandidateRoster.js";
+import { resolveCandidateResearchMode } from "../../ai/candidateResearchMode.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
@@ -37,6 +38,9 @@ type ElectionRow = {
   state: string;
   election_date: string;
   official_ballot_title: string;
+  election_stage: string | null;
+  senate_class: string | null;
+  term_end_year: string | null;
   is_partisan: boolean | null;
   sources: unknown;
 };
@@ -99,10 +103,14 @@ redis.call(
   ARGV[9],
   "skip_per_election_name_dedupe",
   ARGV[10],
+  "roster_fec_ids",
+  ARGV[11],
+  "roster_state_filing_ids",
+  ARGV[12],
   "emitted_at",
-  ARGV[11]
+  ARGV[13]
 )
-redis.call("SET", KEYS[2], ARGV[11])
+redis.call("SET", KEYS[2], ARGV[13])
 return 1
 `;
 
@@ -148,6 +156,14 @@ function mergeSeedUrls(...lists: Array<readonly string[] | undefined>): string[]
   return merged;
 }
 
+function normalizeFecIds(values: readonly string[] | undefined): string[] {
+  return [...new Set((values ?? []).map((value) => value.trim().toUpperCase()).filter((value) => value.length > 0))].sort();
+}
+
+function normalizeStateFilingIds(values: readonly string[] | undefined): string[] {
+  return [...new Set((values ?? []).map((value) => value.trim().toUpperCase()).filter((value) => value.length > 0))].sort();
+}
+
 function rosterIngestKeyForElection(electionId: string): string {
   return `${CANDIDATE_ROSTER_STAGING_PREFIX}${electionId}`;
 }
@@ -180,11 +196,16 @@ function extractRosterCandidatesFromStagingPayload(payload: unknown): CandidateR
         : undefined;
     const skipNameDedupe =
       raw.skip_per_election_name_dedupe === true ? true : raw.skip_per_election_name_dedupe === false ? false : undefined;
+    const fecIds =
+      Array.isArray(raw.fec_ids) && raw.fec_ids.every((item) => typeof item === "string")
+        ? [...new Set(raw.fec_ids.map((item) => item.trim()).filter((item) => item.length > 0))]
+        : undefined;
 
     resolved.push({
       ...parsedRow.payload.candidates[0]!,
       roster_index: rosterIndex,
       ...(disambiguationHint ? { disambiguation_hint: disambiguationHint } : {}),
+      ...(fecIds && fecIds.length > 0 ? { fec_ids: fecIds } : {}),
       ...(skipNameDedupe !== undefined ? { skip_per_election_name_dedupe: skipNameDedupe } : {}),
     });
   }
@@ -458,6 +479,9 @@ export async function resolveCandidateRosterForProfileDrafts(
     state: string;
     electionDate: string;
     officialBallotTitle: string;
+    electionStage?: string | null;
+    senateClass?: string | null;
+    termEndYear?: string | null;
     electionIsPartisan?: boolean | null;
     seedUrls: readonly string[];
     candidates: CandidateRosterIndexedEntry[];
@@ -468,6 +492,11 @@ export async function resolveCandidateRosterForProfileDrafts(
   resolvedCandidates: CandidateRosterResolvedEntry[];
   debug: Record<string, unknown>;
 }> {
+  const researchMode = resolveCandidateResearchMode({
+    districtType: input.districtType,
+    officialBallotTitle: input.officialBallotTitle,
+  });
+  const isFederalMode = researchMode === "federal_us_house" || researchMode === "federal_us_senate";
   const resolvedCandidates: CandidateRosterResolvedEntry[] = [];
   const grouped = new Map<string, CandidateRosterResolvedEntry[]>();
   for (const candidate of input.candidates) {
@@ -514,6 +543,98 @@ export async function resolveCandidateRosterForProfileDrafts(
       continue;
     }
 
+    if (isFederalMode) {
+      const byFecKey = new Map<string, CandidateRosterResolvedEntry>();
+      for (const candidate of group) {
+        const fecIds = normalizeFecIds(candidate.fec_ids);
+        const fecKey = fecIds.join("|");
+        const existing = byFecKey.get(fecKey);
+        if (!existing) {
+          byFecKey.set(fecKey, {
+            ...candidate,
+            skip_per_election_name_dedupe: true,
+            fec_ids: fecIds,
+          });
+          continue;
+        }
+
+        const mergedSources = [...new Set([...existing.sources, ...candidate.sources])];
+        byFecKey.set(fecKey, {
+          ...existing,
+          sources: mergedSources,
+          ...(existing.party ? {} : candidate.party ? { party: candidate.party } : {}),
+          ...(existing.is_incumbent !== undefined
+            ? {}
+            : candidate.is_incumbent !== undefined
+              ? { is_incumbent: candidate.is_incumbent }
+              : {}),
+        });
+      }
+
+      for (const candidate of byFecKey.values()) {
+        resolvedCandidates.push({
+          ...candidate,
+          skip_per_election_name_dedupe: true,
+        });
+      }
+      duplicateGroupsDebug.push({
+        duplicate_display_name: group[0]!.display_name,
+        strategy: "federal_fec_strict_no_ai_disambiguation",
+        group_size: group.length,
+        selected_count: byFecKey.size,
+        dropped_same_fec_count: Math.max(0, group.length - byFecKey.size),
+        research_mode: researchMode,
+      });
+      continue;
+    }
+
+    const allHaveStateFilingIds = group.every(
+      (candidate) => normalizeStateFilingIds(candidate.state_filing_ids).length > 0
+    );
+    if (allHaveStateFilingIds) {
+      const byStateFilingKey = new Map<string, CandidateRosterResolvedEntry>();
+      for (const candidate of group) {
+        const filingIds = normalizeStateFilingIds(candidate.state_filing_ids);
+        const filingKey = filingIds.join("|");
+        const existing = byStateFilingKey.get(filingKey);
+        if (!existing) {
+          byStateFilingKey.set(filingKey, {
+            ...candidate,
+            state_filing_ids: filingIds,
+            skip_per_election_name_dedupe: true,
+          });
+          continue;
+        }
+
+        const mergedSources = [...new Set([...existing.sources, ...candidate.sources])];
+        byStateFilingKey.set(filingKey, {
+          ...existing,
+          sources: mergedSources,
+          ...(existing.party ? {} : candidate.party ? { party: candidate.party } : {}),
+          ...(existing.is_incumbent !== undefined
+            ? {}
+            : candidate.is_incumbent !== undefined
+              ? { is_incumbent: candidate.is_incumbent }
+              : {}),
+        });
+      }
+
+      for (const candidate of byStateFilingKey.values()) {
+        resolvedCandidates.push({
+          ...candidate,
+          skip_per_election_name_dedupe: true,
+        });
+      }
+      duplicateGroupsDebug.push({
+        duplicate_display_name: group[0]!.display_name,
+        strategy: "state_filing_ids_strict_no_ai_disambiguation",
+        group_size: group.length,
+        selected_count: byStateFilingKey.size,
+        dropped_same_state_filing_ids_count: Math.max(0, group.length - byStateFilingKey.size),
+      });
+      continue;
+    }
+
     const disambiguationResult = await disambiguateDuplicateGroup(
       {
         districtName: input.districtName,
@@ -521,6 +642,9 @@ export async function resolveCandidateRosterForProfileDrafts(
         state: input.state,
         electionDate: input.electionDate,
         officialBallotTitle: input.officialBallotTitle,
+        electionStage: input.electionStage,
+        senateClass: input.senateClass,
+        termEndYear: input.termEndYear,
         electionIsPartisan: input.electionIsPartisan,
         duplicateDisplayName: group[0]!.display_name,
         options: group.map((candidate) => ({
@@ -546,13 +670,16 @@ export async function resolveCandidateRosterForProfileDrafts(
       continue;
     }
 
-    const clearByIndex = new Map<number, string>();
+    const clearByIndex = new Map<number, { hint: string; fecIds: string[] | undefined }>();
     const ambiguousIndexes: number[] = [];
     const mergedByTarget = new Map<number, number[]>();
     for (const person of disambiguationResult.people) {
       if (person.status === "clear" && person.disambiguation_hint) {
         if (!clearByIndex.has(person.roster_index)) {
-          clearByIndex.set(person.roster_index, person.disambiguation_hint);
+          clearByIndex.set(person.roster_index, {
+            hint: person.disambiguation_hint,
+            fecIds: person.fec_ids,
+          });
         }
       } else if (person.status === "ambiguous") {
         ambiguousIndexes.push(person.roster_index);
@@ -566,14 +693,15 @@ export async function resolveCandidateRosterForProfileDrafts(
     }
 
     for (const candidate of group) {
-      const hint = clearByIndex.get(candidate.roster_index);
-      if (!hint) {
+      const clear = clearByIndex.get(candidate.roster_index);
+      if (!clear) {
         continue;
       }
       resolvedCandidates.push({
         ...candidate,
         skip_per_election_name_dedupe: true,
-        disambiguation_hint: hint,
+        disambiguation_hint: clear.hint,
+        ...(clear.fecIds && clear.fecIds.length > 0 ? { fec_ids: clear.fecIds } : {}),
       });
     }
 
@@ -624,11 +752,16 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
         d.state,
         e.election_date::text AS election_date,
         e.official_ballot_title,
+        e.election_stage::text AS election_stage,
+        sm.senate_class,
+        sm.term_end_year,
         e.is_partisan,
         e.sources
       FROM public.elections AS e
       JOIN public.districts AS d
         ON d.id = e.district_id
+      LEFT JOIN public.election_senate_metadata AS sm
+        ON sm.election_id = e.id
       WHERE e.id = $1
         AND e.race_type = 'office'
       LIMIT 1
@@ -649,6 +782,8 @@ async function enqueueCandidateProfileDraft(
     rosterParty?: string;
     rosterIsIncumbent?: boolean;
     disambiguationHint?: string;
+    fecIds?: readonly string[];
+    stateFilingIdsHint?: readonly string[];
     skipPerElectionNameDedupe?: boolean;
     seedUrls: readonly string[];
   }
@@ -677,6 +812,8 @@ async function enqueueCandidateProfileDraft(
     String(input.rosterIndex),
     input.disambiguationHint ?? "",
     input.skipPerElectionNameDedupe ? "true" : "false",
+    JSON.stringify(input.fecIds ?? []),
+    JSON.stringify(input.stateFilingIdsHint ?? []),
     emittedAt,
   ]);
 }
@@ -778,6 +915,9 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
                 state: election.state,
                 electionDate: election.election_date,
                 officialBallotTitle: election.official_ballot_title,
+                electionStage: election.election_stage,
+                senateClass: election.senate_class,
+                termEndYear: election.term_end_year,
                 electionIsPartisan: election.is_partisan,
                 seedUrls: parseSeedUrls(election.sources),
               },
@@ -810,6 +950,9 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
                 state: election.state,
                 electionDate: election.election_date,
                 officialBallotTitle: election.official_ballot_title,
+                electionStage: election.election_stage,
+                senateClass: election.senate_class,
+                termEndYear: election.term_end_year,
                 electionIsPartisan: election.is_partisan,
                 seedUrls: parseSeedUrls(election.sources),
                 candidates: filteredCandidates,
@@ -841,6 +984,8 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
               rosterParty: candidate.party,
               rosterIsIncumbent: candidate.is_incumbent,
               disambiguationHint: candidate.disambiguation_hint,
+              fecIds: candidate.fec_ids,
+              stateFilingIdsHint: candidate.state_filing_ids,
               skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
               seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
             });

@@ -35,6 +35,9 @@ type ElectionRow = {
   district_type: string;
   election_date: string;
   official_ballot_title: string;
+  election_stage: string | null;
+  senate_class: string | null;
+  term_end_year: string | null;
   is_partisan: boolean | null;
   sources: unknown;
 };
@@ -117,6 +120,17 @@ function parseOptionalStringArray(raw: unknown): string[] {
     .filter((item): item is string => typeof item === "string")
     .map((item) => item.trim())
     .filter((item) => item.length > 0);
+}
+
+function parseSerializedStringArray(raw: string | undefined): string[] {
+  if (!raw || raw.trim().length === 0) {
+    return [];
+  }
+  try {
+    return parseOptionalStringArray(JSON.parse(raw));
+  } catch {
+    return [];
+  }
 }
 
 function normalizeIdList(values: readonly string[] | undefined): string[] {
@@ -242,11 +256,16 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
         d.district_type,
         e.election_date::text AS election_date,
         e.official_ballot_title,
+        e.election_stage::text AS election_stage,
+        sm.senate_class,
+        sm.term_end_year,
         e.is_partisan,
         e.sources
       FROM public.elections AS e
       JOIN public.districts AS d
         ON d.id = e.district_id
+      LEFT JOIN public.election_senate_metadata AS sm
+        ON sm.election_id = e.id
       WHERE e.id = $1
         AND e.race_type = 'office'
       LIMIT 1
@@ -392,7 +411,7 @@ async function insertCandidate(
   rosterParty: string | undefined,
   includeParty: boolean
 ): Promise<string> {
-  const storedParty = includeParty ? profile.party ?? rosterParty ?? "Unknown" : null;
+  const storedParty = includeParty ? rosterParty ?? "Unknown" : null;
 
   const insertResult = await client.query<{ id: string }>(
     `
@@ -495,6 +514,8 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
         const candidateDisplayName = entry.message.candidate_display_name;
         const disambiguationHint = entry.message.disambiguation_hint?.trim() || undefined;
         const skipPerElectionNameDedupe = parseBooleanField(entry.message.skip_per_election_name_dedupe) === true;
+        const rosterFecIds = parseSerializedStringArray(entry.message.roster_fec_ids);
+        const rosterStateFilingIds = parseSerializedStringArray(entry.message.roster_state_filing_ids);
 
         try {
           const deliveryCount = await getDeliveryCount(redis, entry.id);
@@ -563,9 +584,14 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               state: election.state,
               electionDate: election.election_date,
               officialBallotTitle: election.official_ballot_title,
+              electionStage: election.election_stage,
+              senateClass: election.senate_class,
+              termEndYear: election.term_end_year,
               electionIsPartisan: election.is_partisan,
               rosterParty: effectiveRosterParty,
               rosterIncumbent,
+              rosterFecIds,
+              rosterStateFilingIds,
               disambiguationHint,
               seedUrls: mergeSeedUrls(messageSeedUrls, electionSeedUrls),
             },

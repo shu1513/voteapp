@@ -126,4 +126,113 @@ describe("disambiguateCandidateDuplicateGroup validation", () => {
       },
     ]);
   });
+
+  it("rejects fec_ids in state-level duplicate disambiguation mode", async () => {
+    callResearchProviderMock.mockResolvedValue({
+      ok: true,
+      parsed: {
+        people: [
+          {
+            roster_index: 0,
+            status: "clear",
+            disambiguation_hint: "incumbent",
+            fec_ids: ["H0XX00000"],
+            sources: ["https://example.org/a"],
+          },
+          {
+            roster_index: 1,
+            status: "same_as_other",
+            same_as_roster_index: 0,
+            fec_ids: ["H0XX00000"],
+            sources: ["https://example.org/b"],
+          },
+        ],
+      },
+      rawText: "state-level-with-fec",
+    });
+
+    const result = await disambiguateCandidateDuplicateGroup(baseInput, baseConfig, [
+      { provider: "openai", model: "gpt-test" },
+    ]);
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.reason).toContain("not allowed in state-level mode");
+  });
+
+  it("requires fec_ids for federal duplicate disambiguation mode", async () => {
+    callResearchProviderMock.mockResolvedValue({
+      ok: true,
+      parsed: {
+        people: [
+          {
+            roster_index: 0,
+            status: "clear",
+            disambiguation_hint: "listed on FEC filing",
+            sources: ["https://example.org/a"],
+          },
+          {
+            roster_index: 1,
+            status: "same_as_other",
+            same_as_roster_index: 0,
+            sources: ["https://example.org/b"],
+          },
+        ],
+      },
+      rawText: "missing-fec",
+    });
+
+    const result = await disambiguateCandidateDuplicateGroup(
+      {
+        ...baseInput,
+        districtType: "us_house",
+        officialBallotTitle: "United States Representative, District 12",
+      },
+      baseConfig,
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.reason).toContain("fec_ids");
+  });
+
+  it("accepts federal duplicate disambiguation response when fec_ids are present", async () => {
+    callResearchProviderMock.mockResolvedValue({
+      ok: true,
+      parsed: {
+        people: [
+          {
+            roster_index: 0,
+            status: "clear",
+            disambiguation_hint: "listed on FEC filing",
+            fec_ids: ["H0CA12000"],
+            sources: ["https://example.org/a"],
+          },
+          {
+            roster_index: 1,
+            status: "same_as_other",
+            same_as_roster_index: 0,
+            fec_ids: ["H0CA12000"],
+            sources: ["https://example.org/b"],
+          },
+        ],
+      },
+      rawText: "with-fec",
+    });
+
+    const result = await disambiguateCandidateDuplicateGroup(
+      {
+        ...baseInput,
+        districtType: "us_house",
+        officialBallotTitle: "United States Representative, District 12",
+      },
+      baseConfig,
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.people[0]?.fec_ids).toEqual(["H0CA12000"]);
+  });
 });

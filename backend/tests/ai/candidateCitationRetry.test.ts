@@ -284,7 +284,7 @@ describe("candidate citation verification retry behavior", () => {
 
     const prompt = callResearchProviderMock.mock.calls[0]?.[1];
     expect(prompt).not.toContain('"party": "party label (optional)"');
-    expect(prompt).not.toContain("- roster_party_hint:");
+    expect(prompt).not.toContain("- party:");
   });
 
   it("treats 'Court of Appeal' (singular) contests as nonpartisan", async () => {
@@ -406,10 +406,10 @@ describe("candidate citation verification retry behavior", () => {
     if (!result.ok) {
       return;
     }
-    expect(result.profile.party).toBe("Democrat");
+    expect(result.profile.party).toBeUndefined();
     const prompt = callResearchProviderMock.mock.calls[0]?.[1];
-    expect(prompt).toContain('"party": "party label (optional)"');
-    expect(prompt).toContain('- roster_party_hint: "Democrat"');
+    expect(prompt).not.toContain('"party": "party label (optional)"');
+    expect(prompt).not.toContain('- party: "Democrat"');
   });
 
   it("keeps party for school contests in states with partisan or mixed school ballots", async () => {
@@ -488,10 +488,10 @@ describe("candidate citation verification retry behavior", () => {
     if (!result.ok) {
       return;
     }
-    expect(result.profile.party).toBe("Independent");
+    expect(result.profile.party).toBeUndefined();
     const prompt = callResearchProviderMock.mock.calls[0]?.[1];
-    expect(prompt).toContain('"party": "party label (optional)"');
-    expect(prompt).toContain('- roster_party_hint: "Independent"');
+    expect(prompt).not.toContain('"party": "party label (optional)"');
+    expect(prompt).not.toContain('- party: "Independent"');
   });
 
   it("uses electionIsPartisan=false to omit party in roster prompts", async () => {
@@ -578,6 +578,88 @@ describe("candidate citation verification retry behavior", () => {
     });
     const prompt = callResearchProviderMock.mock.calls[0]?.[1];
     expect(prompt).not.toContain('"party": "party label (optional)"');
-    expect(prompt).not.toContain("- roster_party_hint:");
+    expect(prompt).not.toContain("- party:");
+  });
+
+  it("uses backend candidate_fec_ids and stores null date_of_birth for federal profiles", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        display_name: "Casey Rivera",
+        first_name: "Casey",
+        last_name: "Rivera",
+        date_of_birth: "1980-01-01",
+        state_filing_ids: ["CA-SHOULD-BE-REMOVED"],
+        sources: ["https://good.example/casey-profile"],
+      },
+      rawText: "federal-profile-no-fec-in-output",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateProfile(
+      {
+        candidateDisplayName: "Casey Rivera",
+        districtName: "California Congressional District 12",
+        districtType: "us_house",
+        state: "CA",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "United States Representative, District 12",
+        rosterFecIds: ["H0CA12000"],
+        seedUrls: [],
+      },
+      { timeoutMs: 90000 },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.profile.fec_ids).toEqual(["H0CA12000"]);
+    expect(result.profile.date_of_birth).toBeUndefined();
+    expect(result.profile.state_filing_ids).toBeUndefined();
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).toContain('- candidate_fec_ids: ["H0CA12000"]');
+    expect(prompt).toContain("do not include date_of_birth; backend stores it as null.");
+    expect(prompt).not.toContain('"date_of_birth": "YYYY-MM-DD (optional)"');
+    expect(prompt).not.toContain('"fec_ids":');
+  });
+
+  it("uses backend candidate_state_filing_ids when provided for state-level profiles", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        display_name: "Jordan Lee",
+        first_name: "Jordan",
+        last_name: "Lee",
+        state_filing_ids: ["SHOULD_NOT_WIN"],
+        sources: ["https://good.example/jordan-profile"],
+      },
+      rawText: "state-profile-backend-state-filing-ids",
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({ ok: true });
+
+    const result = await enrichCandidateProfile(
+      {
+        candidateDisplayName: "Jordan Lee",
+        districtName: "Los Angeles County, California",
+        districtType: "county",
+        state: "CA",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "Assessor",
+        rosterStateFilingIds: ["ca-1234", "CA-5678"],
+        seedUrls: [],
+      },
+      { timeoutMs: 90000 },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.profile.state_filing_ids).toEqual(["CA-1234", "CA-5678"]);
+    const prompt = callResearchProviderMock.mock.calls[0]?.[1];
+    expect(prompt).toContain('- candidate_state_filing_ids: ["ca-1234","CA-5678"]');
   });
 });

@@ -1,9 +1,16 @@
+import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
+import type { CandidateResearchMode } from "../candidateResearchMode.js";
+
 export type CandidateRosterPromptInput = {
   districtName: string;
   districtType: string;
   state: string;
   electionDate: string;
   officialBallotTitle: string;
+  electionStage?: string | null;
+  senateClass?: string | null;
+  termEndYear?: string | null;
+  researchMode: CandidateResearchMode;
   includeParty?: boolean;
   seedUrls?: readonly string[];
   reviewFeedbackLines?: readonly string[];
@@ -11,6 +18,8 @@ export type CandidateRosterPromptInput = {
 
 export function buildCandidateRosterPrompt(input: CandidateRosterPromptInput): string {
   const includeParty = input.includeParty !== false;
+  const includeSenateContext = isUsSenateOfficeTitle(input.officialBallotTitle);
+  const includeFecIds = input.researchMode !== "state_level";
   const seedUrls = input.seedUrls ?? [];
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
 
@@ -24,14 +33,20 @@ export function buildCandidateRosterPrompt(input: CandidateRosterPromptInput): s
     `- state: "${input.state}"`,
     `- election_date: "${input.electionDate}"`,
     `- official_ballot_title: "${input.officialBallotTitle}"`,
+    `- research_mode: "${input.researchMode}"`,
+    ...(includeSenateContext && input.electionStage ? [`- election_stage: "${input.electionStage}"`] : []),
+    ...(includeSenateContext && input.senateClass ? [`- senate_class: "${input.senateClass}"`] : []),
+    ...(includeSenateContext && input.termEndYear ? [`- term_end_year: "${input.termEndYear}"`] : []),
     "",
     "Return JSON with this exact shape:",
     "{",
     '  "candidates": [',
     "    {",
-    '      "display_name": "candidate name exactly as listed",',
+    '      "display_name": "candidate name appears exactly as listed on the official ballot",',
     ...(includeParty ? ['      "party": "party label when clearly known (optional)",'] : []),
     '      "is_incumbent": true,',
+    ...(includeFecIds ? ['      "fec_ids": ["required FEC candidate ID(s)"],'] : []),
+    ...(!includeFecIds ? ['      "state_filing_ids": ["state filing ID(s) (optional)"],'] : []),
     '      "sources": ["https://..."]',
     "    }",
     "  ]",
@@ -39,10 +54,13 @@ export function buildCandidateRosterPrompt(input: CandidateRosterPromptInput): s
     "",
     "Rules:",
     "- Actively search the public web for this exact contest.",
-    "- Return only people running in this exact contest (no other districts or offices).",
+    "- Return only candidates running in this exact contest (no other districts or offices).",
     "- candidates can be an empty array if no roster is found.",
-    "- Do not include candidate profile details in this call.",
+    "- display_name must match the ballot-listed candidate name exactly when available (do not substitute legal/full names).",
     "- Do not deduplicate by display_name; include each ballot-listed candidate row, even for same-name candidates.",
+    ...(includeFecIds
+      ? ["- For this federal contest, fec_ids is required for each candidate and must include one or more FEC candidate IDs."]
+      : []),
     "- Each candidate must include at least one supporting source URL.",
     "- return JSON only (no prose, no markdown).",
     ...(seedUrls.length > 0
