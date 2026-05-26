@@ -18,7 +18,11 @@ function readPositiveIntegerEnv(name: string, fallback: number): number {
   if (!raw || raw.trim().length === 0) {
     return fallback;
   }
-  const parsed = Number.parseInt(raw, 10);
+  const normalized = raw.trim();
+  if (!/^[1-9]\d*$/.test(normalized)) {
+    throw new Error(`Invalid positive integer env ${name}: ${raw}`);
+  }
+  const parsed = Number.parseInt(normalized, 10);
   if (!Number.isFinite(parsed) || parsed <= 0) {
     throw new Error(`Invalid positive integer env ${name}: ${raw}`);
   }
@@ -63,4 +67,3 @@ export function readSourceUrlHealthPolicyFromEnv(now: Date = new Date()): Source
     concurrency: readPositiveIntegerEnv("ELECTIONS_SOURCE_URL_HEALTH_CONCURRENCY", 6),
   };
 }
-

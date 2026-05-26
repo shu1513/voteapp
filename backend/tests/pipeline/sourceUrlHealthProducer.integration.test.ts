@@ -10,7 +10,7 @@ describe("runSourceUrlHealthProducer", () => {
     vi.clearAllMocks();
   });
 
-  it("preserves hard-failure streak on transient checks in producer flow", async () => {
+  it("preserves hard-failure streak and last status/error on transient checks in producer flow", async () => {
     const priorFirstHardFailedAt = new Date("2026-05-01T00:00:00.000Z");
     const priorLastHardFailedAt = new Date("2026-05-10T00:00:00.000Z");
     const priorLastError = "citation fetch returned status 404";
@@ -50,7 +50,6 @@ describe("runSourceUrlHealthProducer", () => {
     verifyHttpUrlReachabilityMock.mockResolvedValue({
       ok: false,
       reason: "citation URL fetch timed out",
-      statusCode: null,
     });
 
     vi.doMock("pg", () => ({

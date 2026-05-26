@@ -17,7 +17,6 @@ export type UrlReachabilitySuccess = {
 export type UrlReachabilityFailure = {
   ok: false;
   reason: string;
-  statusCode?: number | null;
 };
 
 export type UrlReachabilityResult = UrlReachabilitySuccess | UrlReachabilityFailure;
@@ -151,11 +150,7 @@ export async function verifyHttpUrlReachability(
     }
 
     if (!response.ok && !allowStatusCodes.has(response.status)) {
-      return {
-        ok: false,
-        reason: `citation fetch returned status ${response.status}`,
-        statusCode: response.status,
-      };
+      return { ok: false, reason: `citation fetch returned status ${response.status}` };
     }
 
     const finalUrl = normalizeHttpUrl(response.url || normalizedInputUrl);
@@ -177,9 +172,9 @@ export async function verifyHttpUrlReachability(
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     if (message.toLowerCase().includes("aborted")) {
-      return { ok: false, reason: "citation URL fetch timed out", statusCode: null };
+      return { ok: false, reason: "citation URL fetch timed out" };
     }
-    return { ok: false, reason: `citation URL fetch failed: ${message}`, statusCode: null };
+    return { ok: false, reason: `citation URL fetch failed: ${message}` };
   } finally {
     if (response) {
       try {

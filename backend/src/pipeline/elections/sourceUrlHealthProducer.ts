@@ -68,12 +68,23 @@ function toReason(error: unknown): string {
 }
 
 function parseStatusCodeFromReason(reason: string): number | null {
-  const match = reason.match(/status\s+(\d{3})/i);
-  if (!match) {
-    return null;
+  const patterns = [
+    /\bstatus\s+(\d{3})\b/i,
+    /\bhttp\s+(\d{3})\b/i,
+    /\b(\d{3})\s+not\s+found\b/i,
+    /\b(\d{3})\s+gone\b/i,
+  ];
+  for (const pattern of patterns) {
+    const match = reason.match(pattern);
+    if (!match) {
+      continue;
+    }
+    const parsed = Number.parseInt(match[1] ?? "", 10);
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
   }
-  const parsed = Number.parseInt(match[1] ?? "", 10);
-  return Number.isFinite(parsed) ? parsed : null;
+  return null;
 }
 
 export function classifyUrlHealthCheckResult(result: UrlReachabilityResult): UrlHealthClassification {
@@ -85,10 +96,7 @@ export function classifyUrlHealthCheckResult(result: UrlReachabilityResult): Url
     };
   }
 
-  const statusCode =
-    typeof result.statusCode === "number"
-      ? result.statusCode
-      : parseStatusCodeFromReason(result.reason);
+  const statusCode = parseStatusCodeFromReason(result.reason);
   if (statusCode === 404 || statusCode === 410) {
     return {
       outcome: "hard_fail",

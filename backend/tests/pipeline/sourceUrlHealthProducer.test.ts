@@ -11,17 +11,15 @@ describe("sourceUrlHealthProducer helpers", () => {
     const classified = classifyUrlHealthCheckResult({
       ok: false,
       reason: "citation fetch returned status 404",
-      statusCode: 404,
     });
     expect(classified.outcome).toBe("hard_fail");
     expect(classified.statusCode).toBe(404);
   });
 
-  it("prefers structured statusCode over reason text parsing", () => {
+  it("parses HTTP-prefixed status codes from reason text", () => {
     const classified = classifyUrlHealthCheckResult({
       ok: false,
       reason: "HTTP 404 Not Found",
-      statusCode: 404,
     });
     expect(classified.outcome).toBe("hard_fail");
     expect(classified.statusCode).toBe(404);

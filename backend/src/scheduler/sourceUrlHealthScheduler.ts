@@ -37,11 +37,20 @@ function readSchedulerRuntimeConfig(): SourceUrlHealthSchedulerRuntimeConfig {
 
 function toConnectionOptions(redisUrl: string): ConnectionOptions {
   const parsed = new URL(redisUrl);
+  const parsedPort = parsed.port ? Number.parseInt(parsed.port, 10) : 6379;
+  const parsedDb =
+    parsed.pathname.length > 1 ? Number.parseInt(parsed.pathname.slice(1), 10) : 0;
+  if (!Number.isInteger(parsedPort) || parsedPort <= 0) {
+    throw new Error(`Invalid REDIS_URL port in source_url_health scheduler: ${redisUrl}`);
+  }
+  if (!Number.isInteger(parsedDb) || parsedDb < 0) {
+    throw new Error(`Invalid REDIS_URL db index in source_url_health scheduler: ${redisUrl}`);
+  }
 
   const opts: ConnectionOptions = {
     host: parsed.hostname,
-    port: parsed.port ? Number.parseInt(parsed.port, 10) : 6379,
-    db: parsed.pathname.length > 1 ? Number.parseInt(parsed.pathname.slice(1), 10) : 0,
+    port: parsedPort,
+    db: parsedDb,
     maxRetriesPerRequest: null,
   };
 
@@ -162,4 +171,3 @@ export function createSourceUrlHealthSchedulerWorker(): Worker<
     concurrency: 1,
   });
 }
-

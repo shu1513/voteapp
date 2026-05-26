@@ -21,6 +21,10 @@ async function main(): Promise<void> {
     console.error(`source_url_health scheduler worker failed jobId=${job?.id ?? "unknown"}:`, error);
   });
 
+  worker.on("error", (error) => {
+    console.error("source_url_health scheduler worker error:", error);
+  });
+
   const shutdown = async (): Promise<void> => {
     try {
       await worker.close();
@@ -43,4 +47,3 @@ main().catch((error) => {
   console.error("source_url_health scheduler worker crashed:", error);
   process.exitCode = 1;
 });
-
