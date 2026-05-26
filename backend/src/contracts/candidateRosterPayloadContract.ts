@@ -101,6 +101,9 @@ function parseEntry(value: unknown, options: CandidateRosterParseOptions): Candi
 
   const allowFecIds = options.allowFecIds !== false;
   const requireFecIds = options.requireFecIds === true;
+  if (!allowFecIds && input.fec_ids !== undefined && input.fec_ids !== null) {
+    return null;
+  }
   const fecIds = allowFecIds ? normalizeOptionalStringArray(input.fec_ids) : undefined;
   if (allowFecIds && fecIds === null) {
     return null;

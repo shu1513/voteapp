@@ -127,6 +127,39 @@ describe("disambiguateCandidateDuplicateGroup validation", () => {
     ]);
   });
 
+  it("rejects fec_ids in state-level duplicate disambiguation mode", async () => {
+    callResearchProviderMock.mockResolvedValue({
+      ok: true,
+      parsed: {
+        people: [
+          {
+            roster_index: 0,
+            status: "clear",
+            disambiguation_hint: "incumbent",
+            fec_ids: ["H0XX00000"],
+            sources: ["https://example.org/a"],
+          },
+          {
+            roster_index: 1,
+            status: "same_as_other",
+            same_as_roster_index: 0,
+            fec_ids: ["H0XX00000"],
+            sources: ["https://example.org/b"],
+          },
+        ],
+      },
+      rawText: "state-level-with-fec",
+    });
+
+    const result = await disambiguateCandidateDuplicateGroup(baseInput, baseConfig, [
+      { provider: "openai", model: "gpt-test" },
+    ]);
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.reason).toContain("not allowed in state-level mode");
+  });
+
   it("requires fec_ids for federal duplicate disambiguation mode", async () => {
     callResearchProviderMock.mockResolvedValue({
       ok: true,

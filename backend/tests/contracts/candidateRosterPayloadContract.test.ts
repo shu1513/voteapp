@@ -112,6 +112,23 @@ describe("parseCandidateRosterPayload", () => {
     expect(parsed.payload.candidates[0]?.fec_ids).toEqual(["H0XX00000"]);
   });
 
+  it("rejects fec_ids when allowFecIds is disabled (state-level mode)", () => {
+    const parsed = parseCandidateRosterPayload(
+      {
+        candidates: [
+          {
+            display_name: "Jane Doe",
+            fec_ids: ["H0XX00000"],
+            sources: ["https://example.org/a"],
+          },
+        ],
+      },
+      { allowFecIds: false }
+    );
+
+    expect(parsed.ok).toBe(false);
+  });
+
   it("accepts optional state_filing_ids when present", () => {
     const parsed = parseCandidateRosterPayload({
       candidates: [

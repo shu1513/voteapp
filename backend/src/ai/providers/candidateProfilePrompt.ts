@@ -76,7 +76,6 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     ...(input.disambiguationHint
       ? ["- When identity is uncertain, prefer null/omission for identity fields over guessing another person's identifiers."]
       : []),
-    ...(!includeFecIds ? ["- Do not include fec_ids for this state-level contest."] : []),
     ...(includeFecIds
       ? ["- For this federal contest, do not include date_of_birth; backend stores it as null."]
       : ["- date_of_birth, twitter_handle (without URL), linkedin_url, official_website_url are optional."]),

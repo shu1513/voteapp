@@ -89,7 +89,7 @@ export function buildCandidateRosterDisambiguationPrompt(
     "- If status=same_as_other, do not include disambiguation_hint.",
     ...(includeFecIds
       ? ["- For this federal contest, fec_ids is required on every people row and must include one or more FEC candidate IDs."]
-      : ["- Do not include fec_ids for this state-level contest."]),
+      : []),
     "- Every returned people row must include at least one supporting source URL.",
     "- disambiguation_hint is required when status=clear and should be concise and specific to this election context.",
     "- disambiguation_hint must be omitted when status=ambiguous or status=same_as_other.",

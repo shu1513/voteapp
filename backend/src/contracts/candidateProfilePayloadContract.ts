@@ -167,6 +167,9 @@ export function parseCandidateProfilePayload(
 
   const allowFecIds = options.allowFecIds !== false;
   const requireFecIds = options.requireFecIds === true;
+  if (!allowFecIds && input.fec_ids !== undefined && input.fec_ids !== null) {
+    return { ok: false, reason: "payload.fec_ids is not allowed for this contest mode" };
+  }
   const fecIds = allowFecIds ? normalizeOptionalStringArray(input.fec_ids) : undefined;
   if (allowFecIds && fecIds === null) {
     return { ok: false, reason: "payload.fec_ids must be string array when present" };

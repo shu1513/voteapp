@@ -86,7 +86,7 @@ describe("parseCandidateProfilePayload", () => {
     expect(parsed.reason).toContain("fec_ids");
   });
 
-  it("ignores fec_ids when mode disallows it", () => {
+  it("rejects fec_ids when mode disallows it", () => {
     const parsed = parseCandidateProfilePayload(
       {
         display_name: "Jane Doe",
@@ -98,10 +98,6 @@ describe("parseCandidateProfilePayload", () => {
       { allowFecIds: false }
     );
 
-    expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
-    expect(parsed.payload.fec_ids).toBeUndefined();
+    expect(parsed.ok).toBe(false);
   });
 });

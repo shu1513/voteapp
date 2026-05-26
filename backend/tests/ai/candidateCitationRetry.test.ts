@@ -589,6 +589,7 @@ describe("candidate citation verification retry behavior", () => {
         first_name: "Casey",
         last_name: "Rivera",
         date_of_birth: "1980-01-01",
+        state_filing_ids: ["CA-SHOULD-BE-REMOVED"],
         sources: ["https://good.example/casey-profile"],
       },
       rawText: "federal-profile-no-fec-in-output",
@@ -616,6 +617,7 @@ describe("candidate citation verification retry behavior", () => {
     }
     expect(result.profile.fec_ids).toEqual(["H0CA12000"]);
     expect(result.profile.date_of_birth).toBeUndefined();
+    expect(result.profile.state_filing_ids).toBeUndefined();
     const prompt = callResearchProviderMock.mock.calls[0]?.[1];
     expect(prompt).toContain('- candidate_fec_ids: ["H0CA12000"]');
     expect(prompt).toContain("do not include date_of_birth; backend stores it as null.");

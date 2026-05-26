@@ -415,6 +415,9 @@ function parseDuplicateDisambiguationPayload(
       person.status === "same_as_other" && Number.isInteger(person.same_as_roster_index)
         ? Number(person.same_as_roster_index)
         : undefined;
+    if (!options.allowFecIds && person.fec_ids !== undefined && person.fec_ids !== null) {
+      return { ok: false, reason: "payload.people[].fec_ids is not allowed in state-level mode" };
+    }
     const parsedFecIds = options.allowFecIds ? normalizeOptionalStringArray(person.fec_ids) : undefined;
     if (options.allowFecIds && parsedFecIds === null) {
       return { ok: false, reason: "payload.people[].fec_ids must be string array when present" };

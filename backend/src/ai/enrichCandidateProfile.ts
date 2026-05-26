@@ -90,6 +90,11 @@ function removeDateOfBirthFromProfile(profile: CandidateProfilePayload): Candida
   return rest;
 }
 
+function removeStateFilingIdsFromProfile(profile: CandidateProfilePayload): CandidateProfilePayload {
+  const { state_filing_ids: _stateFilingIds, ...rest } = profile;
+  return rest;
+}
+
 function normalizeFecIds(values: readonly string[] | undefined): string[] {
   return [...new Set((values ?? []).map((value) => value.trim().toUpperCase()).filter((value) => value.length > 0))];
 }
@@ -342,7 +347,7 @@ export async function enrichCandidateProfile(
 
       const normalizedProfile = removePartyFromProfile(parsed.payload);
       const normalizedProfileWithFederalDobPolicy = includeFecIds
-        ? removeDateOfBirthFromProfile(normalizedProfile)
+        ? removeStateFilingIdsFromProfile(removeDateOfBirthFromProfile(normalizedProfile))
         : normalizedProfile;
       const profileWithBackendFecIds = includeFecIds
         ? { ...normalizedProfileWithFederalDobPolicy, fec_ids: backendCandidateFecIds }
