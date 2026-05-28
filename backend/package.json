@@ -19,6 +19,8 @@
     "elections:search:scheduler:upsert": "tsx src/scripts/upsertElectionsSearchDailyScheduler.ts",
     "elections:search:scheduler:worker": "tsx src/scripts/runElectionsSearchSchedulerWorker.ts",
     "elections:search:scheduler:trigger": "tsx src/scripts/triggerElectionsSearchRollover.ts",
+    "elections:offices:unmatched:health": "tsx src/scripts/unmatchedOfficesHealth.ts",
+    "elections:offices:seed": "tsx src/scripts/seedOffices.ts",
     "source-urls:health:scheduler:upsert": "tsx src/scripts/upsertSourceUrlHealthDailyScheduler.ts",
     "source-urls:health:scheduler:worker": "tsx src/scripts/runSourceUrlHealthSchedulerWorker.ts",
     "source-urls:health:scheduler:trigger": "tsx src/scripts/triggerSourceUrlHealthCheck.ts",

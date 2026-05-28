@@ -23,6 +23,7 @@ import {
   evaluateOfficeCandidateEligibilityByElectionIds,
   summarizeOfficeCandidateEligibilityReasons,
 } from "../candidates/officeCandidateEligibility.js";
+import { OfficeMatcher } from "../elections/officeMatcher.js";
 
 type WriterOptions = {
   once?: boolean;
@@ -315,12 +316,74 @@ async function writeElectionsForDistrict(
 
     const ballotMeasureElectionIds: string[] = [];
     const officeElectionIds: string[] = [];
+    const officeMatcher = new OfficeMatcher(client);
+    const officeMatchCounts: Record<"alias_exact" | "deterministic_fallback" | "none" | "ambiguous", number> = {
+      alias_exact: 0,
+      deterministic_fallback: 0,
+      none: 0,
+      ambiguous: 0,
+    };
+    const unresolvedOfficeMatches: Array<{
+      method: "none" | "ambiguous";
+      confidence: number;
+      officialBallotTitle: string;
+      normalizedAlias: string;
+    }> = [];
+    const aliasRowsToInsert: Array<{
+      office_id: string;
+      scope: string;
+      alias_text: string;
+      normalized_alias: string;
+    }> = [];
+    const seenAliasKeys = new Set<string>();
     const senateMetadataRows: Array<{
       election_id: string;
       senate_class: string | null;
       term_end_year: string | null;
     }> = [];
     for (const entry of payload.entries) {
+      let matchedOfficeId: string | null = null;
+      if (entry.race_type === "office") {
+        const officeMatch = await officeMatcher.resolve({
+          scope: payload.district_type,
+          districtName: payload.district_name,
+          state: payload.state,
+          officialBallotTitle: entry.official_ballot_title,
+        });
+        officeMatchCounts[officeMatch.method] += 1;
+        matchedOfficeId = officeMatch.officeId;
+        if (officeMatch.method === "none" || officeMatch.method === "ambiguous") {
+          unresolvedOfficeMatches.push({
+            method: officeMatch.method,
+            confidence: officeMatch.confidence,
+            officialBallotTitle: entry.official_ballot_title,
+            normalizedAlias: officeMatch.normalizedAlias,
+          });
+        }
+
+        if (
+          officeMatch.officeId &&
+          officeMatch.shouldPersistAlias &&
+          officeMatch.normalizedAlias.length > 0
+        ) {
+          const aliasKey = `${payload.district_type}::${officeMatch.normalizedAlias}`;
+          if (!seenAliasKeys.has(aliasKey)) {
+            seenAliasKeys.add(aliasKey);
+            aliasRowsToInsert.push({
+              office_id: officeMatch.officeId,
+              scope: payload.district_type,
+              alias_text: entry.official_ballot_title,
+              normalized_alias: officeMatch.normalizedAlias,
+            });
+            officeMatcher.rememberAlias(
+              payload.district_type,
+              officeMatch.normalizedAlias,
+              officeMatch.officeId
+            );
+          }
+        }
+      }
+
       const upsertResult = await client.query<{ id: string; race_type: string }>(
         `
           INSERT INTO public.elections (
@@ -332,14 +395,16 @@ async function writeElectionsForDistrict(
             race_type,
             is_partisan,
             election_stage,
-            sources
-          ) VALUES ($1, $2, $3, $4, $5::date, $6, $7, $8, $9::jsonb)
+            sources,
+            office_id
+          ) VALUES ($1, $2, $3, $4, $5::date, $6, $7, $8, $9::jsonb, $10::uuid)
           ON CONFLICT (district_id, official_ballot_title_key, election_date) DO UPDATE SET
             description = EXCLUDED.description,
             race_type = EXCLUDED.race_type,
             -- Keep prior partisanship when a subsequent run omits it (e.g., mixed-state school contests).
             is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan),
             election_stage = COALESCE(EXCLUDED.election_stage, elections.election_stage),
+            office_id = COALESCE(EXCLUDED.office_id, elections.office_id),
             sources = EXCLUDED.sources,
             updated_at = now()
           RETURNING id, race_type
@@ -354,6 +419,7 @@ async function writeElectionsForDistrict(
           entry.is_partisan ?? null,
           entry.election_stage ?? null,
           JSON.stringify(entry.sources),
+          matchedOfficeId,
         ]
       );
       const row = upsertResult.rows?.[0];
@@ -369,6 +435,59 @@ async function writeElectionsForDistrict(
           });
         }
       }
+    }
+
+    if (
+      officeMatchCounts.alias_exact +
+        officeMatchCounts.deterministic_fallback +
+        officeMatchCounts.none +
+        officeMatchCounts.ambiguous >
+      0
+    ) {
+      console.log(
+        `office-matcher summary ingest_key=${ingestKey} district_id=${payload.district_id} scope=${payload.district_type} ` +
+          `alias_exact=${officeMatchCounts.alias_exact} fallback=${officeMatchCounts.deterministic_fallback} ` +
+          `none=${officeMatchCounts.none} ambiguous=${officeMatchCounts.ambiguous}`
+      );
+    }
+
+    for (const unresolved of unresolvedOfficeMatches) {
+      console.log(
+        `office-matcher unresolved ingest_key=${ingestKey} district_id=${payload.district_id} scope=${payload.district_type} ` +
+          `method=${unresolved.method} confidence=${unresolved.confidence.toFixed(3)} ` +
+          `title=${JSON.stringify(unresolved.officialBallotTitle)} normalized_alias=${JSON.stringify(unresolved.normalizedAlias)}`
+      );
+    }
+
+    if (aliasRowsToInsert.length > 0) {
+      await client.query(
+        `
+          INSERT INTO public.office_title_aliases (
+            office_id,
+            scope,
+            alias_text,
+            normalized_alias
+          )
+          SELECT
+            a.office_id,
+            a.scope,
+            a.alias_text,
+            a.normalized_alias
+          FROM unnest($1::uuid[], $2::text[], $3::text[], $4::text[]) AS a(
+            office_id,
+            scope,
+            alias_text,
+            normalized_alias
+          )
+          ON CONFLICT (scope, normalized_alias) DO NOTHING
+        `,
+        [
+          aliasRowsToInsert.map((row) => row.office_id),
+          aliasRowsToInsert.map((row) => row.scope),
+          aliasRowsToInsert.map((row) => row.alias_text),
+          aliasRowsToInsert.map((row) => row.normalized_alias),
+        ]
+      );
     }
 
     if (senateMetadataRows.length > 0) {
