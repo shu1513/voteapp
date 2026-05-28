@@ -47,7 +47,11 @@ async function main(): Promise<void> {
       type: "unmatched_offices_health",
       ts: new Date().toISOString(),
       limit,
-      unmatched_count: result.rows.length,
+      groups_returned: result.rows.length,
+      total_unmatched: result.rows.reduce(
+        (sum, row) => sum + Number.parseInt(row.count, 10),
+        0
+      ),
       rows: result.rows.map((row) => ({
         district_type: row.district_type,
         official_ballot_title: row.official_ballot_title,
@@ -65,4 +69,3 @@ main().catch((error) => {
   console.error("unmatched offices health check failed:", error);
   process.exit(1);
 });
-

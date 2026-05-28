@@ -275,7 +275,7 @@ const SEED_OFFICES: SeedOffice[] = [
 function assertNoDuplicateSeedKeys(rows: readonly SeedOffice[]): void {
   const seen = new Set<string>();
   for (const row of rows) {
-    const key = `${row.scope}::${row.canonicalName.toLowerCase()}`;
+    const key = `${row.scope}::${row.canonicalName.trim().toLowerCase()}`;
     if (seen.has(key)) {
       throw new Error(`Duplicate office seed key: ${key}`);
     }
@@ -330,8 +330,9 @@ async function main(): Promise<void> {
   };
   const scopeCounts = new Map<ElectionDistrictType, number>();
 
-  const client = await pool.connect();
+  let client: PoolClient | undefined;
   try {
+    client = await pool.connect();
     await client.query("BEGIN");
     for (const row of SEED_OFFICES) {
       const outcome = await upsertOffice(client, row);
@@ -340,10 +341,12 @@ async function main(): Promise<void> {
     }
     await client.query("COMMIT");
   } catch (error) {
-    await client.query("ROLLBACK");
+    if (client) {
+      await client.query("ROLLBACK");
+    }
     throw error;
   } finally {
-    client.release();
+    client?.release();
     await pool.end();
   }
 
@@ -363,4 +366,3 @@ main().catch((error) => {
   console.error("offices seed failed:", error);
   process.exit(1);
 });
-
