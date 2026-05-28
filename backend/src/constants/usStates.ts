@@ -60,6 +60,10 @@ export const STATE_NAME_BY_FIPS: Record<string, string> = Object.fromEntries(
   Object.entries(STATE_INFO_BY_FIPS).map(([fips, info]) => [fips, info.name])
 );
 
+export const STATE_NAME_BY_ABBREVIATION: Record<string, string> = Object.fromEntries(
+  Object.values(STATE_INFO_BY_FIPS).map((info) => [info.abbreviation, info.name])
+);
+
 /**
  * Normalizes a state FIPS value to a two-character string.
  */
@@ -95,4 +99,16 @@ export function getStateNameByFips(fips: string): string {
   }
 
   return stateName;
+}
+
+/**
+ * Returns canonical state name for a USPS two-letter abbreviation.
+ * Returns undefined when the abbreviation is not in the supported 50 states + DC map.
+ */
+export function getStateNameByAbbreviation(abbreviation: string): string | undefined {
+  const normalized = abbreviation.trim().toUpperCase();
+  if (!/^[A-Z]{2}$/.test(normalized)) {
+    return undefined;
+  }
+  return STATE_NAME_BY_ABBREVIATION[normalized];
 }
