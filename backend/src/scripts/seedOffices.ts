@@ -2,6 +2,7 @@ import { Pool, type PoolClient } from "pg";
 
 import { getPipelineEnv } from "../config/env.js";
 import type { ElectionDistrictType } from "../types/election.js";
+import { normalizeElectionTitleKey } from "../utils/normalizeElectionTitleKey.js";
 
 type SeedOffice = {
   scope: ElectionDistrictType;
@@ -10,6 +11,12 @@ type SeedOffice = {
 };
 
 type SeedOutcome = "inserted" | "updated" | "unchanged";
+
+type SeedOfficeAlias = {
+  scope: ElectionDistrictType;
+  officeCanonicalName: string;
+  aliasText: string;
+};
 
 const SEED_OFFICES: SeedOffice[] = [
   {
@@ -272,12 +279,67 @@ const SEED_OFFICES: SeedOffice[] = [
   },
 ];
 
+const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
+  {
+    scope: "us_house",
+    officeCanonicalName: "United States Representative",
+    aliasText: "United States Representative in Congress",
+  },
+  {
+    scope: "us_house",
+    officeCanonicalName: "United States Representative",
+    aliasText: "U.S. Representative in Congress",
+  },
+  {
+    scope: "us_house",
+    officeCanonicalName: "United States Representative",
+    aliasText: "Representative in Congress",
+  },
+  {
+    scope: "us_house",
+    officeCanonicalName: "United States Representative",
+    aliasText: "United States Representative",
+  },
+  {
+    scope: "us_house",
+    officeCanonicalName: "United States Representative",
+    aliasText: "Member, House of Representatives",
+  },
+  {
+    scope: "us_house",
+    officeCanonicalName: "United States Representative",
+    aliasText: "House of Representatives",
+  },
+  {
+    scope: "us_house",
+    officeCanonicalName: "United States Representative",
+    aliasText: "U.S. House of Representatives",
+  },
+  {
+    scope: "us_house",
+    officeCanonicalName: "United States Representative",
+    aliasText: "US House of Representatives",
+  },
+];
+
 function assertNoDuplicateSeedKeys(rows: readonly SeedOffice[]): void {
   const seen = new Set<string>();
   for (const row of rows) {
     const key = `${row.scope}::${row.canonicalName.trim().toLowerCase()}`;
     if (seen.has(key)) {
       throw new Error(`Duplicate office seed key: ${key}`);
+    }
+    seen.add(key);
+  }
+}
+
+function assertNoDuplicateSeedAliasKeys(rows: readonly SeedOfficeAlias[]): void {
+  const seen = new Set<string>();
+  for (const row of rows) {
+    const normalizedAlias = normalizeElectionTitleKey(row.aliasText);
+    const key = `${row.scope}::${normalizedAlias}`;
+    if (seen.has(key)) {
+      throw new Error(`Duplicate office alias seed key: ${key}`);
     }
     seen.add(key);
   }
@@ -316,8 +378,83 @@ async function upsertOffice(client: PoolClient, row: SeedOffice): Promise<SeedOu
   return "unchanged";
 }
 
+async function resolveOfficeIdByScopeAndName(
+  client: PoolClient,
+  row: SeedOfficeAlias
+): Promise<string> {
+  const result = await client.query<{ id: string }>(
+    `
+      SELECT id
+      FROM public.offices
+      WHERE scope = $1
+        AND canonical_name = $2
+      LIMIT 1
+    `,
+    [row.scope, row.officeCanonicalName]
+  );
+
+  const officeId = result.rows?.[0]?.id;
+  if (!officeId) {
+    throw new Error(
+      `Missing canonical office for alias seed: scope=${row.scope} canonical_name=${row.officeCanonicalName}`
+    );
+  }
+  return officeId;
+}
+
+async function upsertOfficeAlias(client: PoolClient, row: SeedOfficeAlias): Promise<SeedOutcome> {
+  const officeId = await resolveOfficeIdByScopeAndName(client, row);
+  const normalizedAlias = normalizeElectionTitleKey(row.aliasText);
+  if (!normalizedAlias) {
+    throw new Error(
+      `Alias seed normalized to empty key: scope=${row.scope} alias_text=${JSON.stringify(row.aliasText)}`
+    );
+  }
+
+  const updated = await client.query<{ id: string }>(
+    `
+      UPDATE public.office_title_aliases
+      SET office_id = $1,
+          alias_text = $4,
+          updated_at = now()
+      WHERE scope = $2
+        AND normalized_alias = $3
+        AND (
+          office_id IS DISTINCT FROM $1
+          OR alias_text IS DISTINCT FROM $4
+        )
+      RETURNING id
+    `,
+    [officeId, row.scope, normalizedAlias, row.aliasText]
+  );
+  if (updated.rowCount === 1) {
+    return "updated";
+  }
+
+  const inserted = await client.query<{ id: string }>(
+    `
+      INSERT INTO public.office_title_aliases (
+        office_id,
+        scope,
+        alias_text,
+        normalized_alias
+      )
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (scope, normalized_alias) DO NOTHING
+      RETURNING id
+    `,
+    [officeId, row.scope, row.aliasText, normalizedAlias]
+  );
+  if (inserted.rowCount === 1) {
+    return "inserted";
+  }
+
+  return "unchanged";
+}
+
 async function main(): Promise<void> {
   assertNoDuplicateSeedKeys(SEED_OFFICES);
+  assertNoDuplicateSeedAliasKeys(SEED_OFFICE_ALIASES);
 
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
@@ -329,6 +466,12 @@ async function main(): Promise<void> {
     unchanged: 0,
   };
   const scopeCounts = new Map<ElectionDistrictType, number>();
+  const aliasOutcomeCounts: Record<SeedOutcome, number> = {
+    inserted: 0,
+    updated: 0,
+    unchanged: 0,
+  };
+  const aliasScopeCounts = new Map<ElectionDistrictType, number>();
 
   let client: PoolClient | undefined;
   try {
@@ -338,6 +481,11 @@ async function main(): Promise<void> {
       const outcome = await upsertOffice(client, row);
       outcomeCounts[outcome] += 1;
       scopeCounts.set(row.scope, (scopeCounts.get(row.scope) ?? 0) + 1);
+    }
+    for (const row of SEED_OFFICE_ALIASES) {
+      const outcome = await upsertOfficeAlias(client, row);
+      aliasOutcomeCounts[outcome] += 1;
+      aliasScopeCounts.set(row.scope, (aliasScopeCounts.get(row.scope) ?? 0) + 1);
     }
     await client.query("COMMIT");
   } catch (error) {
@@ -357,6 +505,9 @@ async function main(): Promise<void> {
     total_seed_rows: SEED_OFFICES.length,
     outcomes: outcomeCounts,
     by_scope: Array.from(scopeCounts.entries()).map(([scope, count]) => ({ scope, count })),
+    alias_seed_rows: SEED_OFFICE_ALIASES.length,
+    alias_outcomes: aliasOutcomeCounts,
+    alias_by_scope: Array.from(aliasScopeCounts.entries()).map(([scope, count]) => ({ scope, count })),
   };
 
   console.log(JSON.stringify(output, null, 2));
