@@ -27,6 +27,7 @@ describe("enrichBallotMeasure shared provider wiring", () => {
       ok: true,
       parsed: {
         official_measure_url: "https://example.org/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
         what_yes_means: "Approves a county sales tax increase for health services.",
         what_no_means: "Keeps current tax rates and funding levels.",
         sources: [
@@ -70,8 +71,8 @@ describe("enrichBallotMeasure shared provider wiring", () => {
       expect(result.provider).toBe("openai");
       expect(result.model).toBe("gpt-5.4-mini");
       expect(result.officialMeasureUrl).toBe("https://example.org/measure-er.pdf");
+      expect(result.summary).toBe("County measure to increase sales tax for public health services.");
       expect(result.researchUrls).toContain("https://example.org/measure-er.pdf");
     }
   });
 });
-
