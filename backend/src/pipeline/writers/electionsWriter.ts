@@ -375,11 +375,6 @@ async function writeElectionsForDistrict(
               alias_text: entry.official_ballot_title,
               normalized_alias: officeMatch.aliasMemoryKey,
             });
-            officeMatcher.rememberAlias(
-              payload.district_type,
-              officeMatch.aliasMemoryKey,
-              officeMatch.officeId
-            );
           }
         }
       }
