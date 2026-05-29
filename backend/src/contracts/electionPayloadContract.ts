@@ -84,10 +84,7 @@ function normalizeSources(value: unknown): string[] | null {
   return normalized.length > 0 ? normalized : null;
 }
 
-function parseEntry(
-  value: unknown,
-  options?: { allowDescriptionField: boolean }
-): ElectionEntryPayload | null {
+function parseEntry(value: unknown): ElectionEntryPayload | null {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     return null;
   }
@@ -97,14 +94,6 @@ function parseEntry(
     return null;
   }
   if (!isNonEmptyString(input.election_date) || !isIsoDate(input.election_date.trim())) {
-    return null;
-  }
-  const impactText = isNonEmptyString(input.impact)
-    ? input.impact.trim()
-    : options?.allowDescriptionField && isNonEmptyString(input.description)
-      ? input.description.trim()
-      : null;
-  if (!impactText) {
     return null;
   }
   if (typeof input.race_type !== "string" || !ELECTION_RACE_TYPES.includes(input.race_type as "office" | "ballot_measure")) {
@@ -167,8 +156,6 @@ function parseEntry(
   return {
     official_ballot_title: input.official_ballot_title.trim(),
     election_date: input.election_date.trim(),
-    // Canonical payload keeps historical "description" field; AI prompt now uses "impact".
-    description: impactText,
     race_type: input.race_type as "office" | "ballot_measure",
     ...(isPartisan !== undefined ? { is_partisan: isPartisan } : {}),
     ...(electionStage ? { election_stage: electionStage } : {}),
@@ -221,7 +208,7 @@ export function parseAiElectionEntriesPayload(payload: unknown): ParseAiEntriesR
 
   const entries: ElectionEntryPayload[] = [];
   for (const row of input.entries) {
-    const parsed = parseEntry(row, { allowDescriptionField: false });
+    const parsed = parseEntry(row);
     if (!parsed) {
       return { ok: false, reason: "payload.entries contains invalid row" };
     }
@@ -268,7 +255,7 @@ export function parseCanonicalElectionPayload(payload: unknown): ParseResult {
 
   const entries: ElectionEntryPayload[] = [];
   for (const row of input.entries) {
-    const parsed = parseEntry(row, { allowDescriptionField: true });
+    const parsed = parseEntry(row);
     if (!parsed) {
       return { ok: false, reason: "payload.entries contains invalid row" };
     }

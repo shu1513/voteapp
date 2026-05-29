@@ -56,7 +56,7 @@ export function buildElectionsPrompt(args: {
             : contestFamily === "judicial_office"
               ? "- Exclude all ballot measures and all non-judicial offices."
               : contestFamily === "us_senate"
-                ? "- Exclude all ballot measures and all non-Senate office contests."
+                ? "- Exclude all ballot measures and all non-U.S.-Senate office contests."
               : "- Exclude all office contests.",
           contestFamily === "non_judicial_office"
             ? '- Non-judicial office examples: Governor, Lieutenant Governor, Secretary of State, Treasurer, Controller, Attorney General, Superintendent of Public Instruction, Board of Supervisors, Sheriff, Assessor, County Clerk, Mayor, City Council.'
@@ -91,11 +91,6 @@ export function buildElectionsPrompt(args: {
         ]
       : []),
     ...(includeIsPartisanInOutput ? ['      "is_partisan": true,'] : []),
-    isBallotFamily
-      ? '      "impact": "what this measure changes",'
-      : isOfficeOnlyFamily
-        ? '      "impact": "what this office does",'
-        : '      "impact": "what this office does OR what this measure changes",',
     ...(includeRaceTypeInOutput ? ['      "race_type": "office or ballot_measure",'] : []),
     '      "sources": ["https://..."]',
   ].join("\n");
@@ -149,23 +144,12 @@ ${entryShapeLines}
             : "- is_partisan: set true for partisan contests and false for nonpartisan contests.",
         ]
       : []),
-    isBallotFamily
-      ? "- impact: Explain what this measure would actually change if passed, in concrete, no fluff real-world terms."
-      : isOfficeOnlyFamily
-        ? "- impact: Explain what this office does, in concrete, no fluff real-world terms."
-        : "- impact: Explain what this office does (if race_type=office) or what this measure would actually change if passed (if race_type=ballot_measure), in concrete, no fluff real-world terms.",
-    "- Example impact for office: \"Leads the county sheriff's department, oversees patrol and jail operations, and sets local law-enforcement priorities.\"",
-    ...(isBallotFamily || includeRaceTypeInOutput
-      ? [
-          "- Example impact for ballot_measure: \"Increases county sales tax by 0.5% for five years to fund county hospital and clinic services.\"",
-        ]
-      : []),
     "- Focus on upcoming elections only; do not include past elections.",
     "- Use only contests in this exact district scope (no parent or child scope contests).",
     "- Copy official_ballot_title exactly as shown on the ballot when available; do not paraphrase.",
     ...(isBallotFamily || includeRaceTypeInOutput
       ? [
-          "- For ballot measures, official_ballot_title must be the actual official measure label/title from the election authority (for example: Measure ER or Proposition 4), not the full ballot question sentence.",
+          "- For ballot measures, official_ballot_title must be the actual official measure label/title from the election authority (for example: Measure ER or Proposition 4).",
         ]
       : []),
     includeOfficialSourcePriorityLine ? scopePriorityLine : ballotOfficialPreferenceLine,

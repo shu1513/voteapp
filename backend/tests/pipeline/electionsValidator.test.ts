@@ -89,7 +89,6 @@ describe("runElectionsValidator", () => {
         {
           official_ballot_title: "General Election",
           election_date: "2099-11-03",
-          description: "General election.",
           race_type: "office",
           sources: ["https://example.org/election"],
         },
@@ -153,7 +152,6 @@ describe("runElectionsValidator", () => {
         {
           official_ballot_title: "State Senator, District 12",
           election_date: "2099-11-03",
-          description: "State senate office contest.",
           race_type: "office",
           sources: ["https://example.org/election"],
         },
@@ -206,7 +204,6 @@ describe("runElectionsValidator", () => {
         {
           official_ballot_title: "United States Senator",
           election_date: "2099-11-03",
-          description: "Federal statewide office.",
           race_type: "office",
           sources: ["https://example.org/election"],
         },

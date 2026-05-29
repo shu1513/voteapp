@@ -161,7 +161,6 @@ describe("runElectionsWriter", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2099-11-03",
-          description: "General election",
           race_type: "office",
           sources: ["https://example.org/election"],
         },
@@ -197,8 +196,8 @@ describe("runElectionsWriter", () => {
     );
     expect(upsertCall).toBeTruthy();
     expect(String(upsertCall?.[0])).toContain("is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan)");
+    expect(upsertCall?.[1]?.[5]).toBeNull();
     expect(upsertCall?.[1]?.[6]).toBeNull();
-    expect(upsertCall?.[1]?.[7]).toBeNull();
 
     const statusUpdateCall = clientQueryMock.mock.calls.find((call) =>
       String(call[0]).includes("SET status = $3")
@@ -221,14 +220,12 @@ describe("runElectionsWriter", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2099-11-03",
-          description: "Office election",
           race_type: "office",
           sources: ["https://example.org/office"],
         },
         {
           official_ballot_title: "Measure A",
           election_date: "2099-11-03",
-          description: "Ballot measure election",
           race_type: "ballot_measure",
           sources: ["https://example.org/measure"],
         },
@@ -250,7 +247,7 @@ describe("runElectionsWriter", () => {
 
     clientQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
       if (sql.includes("INSERT INTO public.elections")) {
-        const raceType = String(params?.[5] ?? "");
+        const raceType = String(params?.[4] ?? "");
         if (raceType === "office") {
           return { rowCount: 1, rows: [{ id: "00000000-0000-0000-0000-000000000101", race_type: "office" }] };
         }
@@ -302,7 +299,6 @@ describe("runElectionsWriter", () => {
         {
           official_ballot_title: "United States Senator (Unexpired Term)",
           election_date: "2099-11-03",
-          description: "Serves in the U.S. Senate.",
           race_type: "office",
           senate_class: "class_i",
           term_end_year: "2031",

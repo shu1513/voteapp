@@ -18,7 +18,6 @@ export type ElectionDistrictType =
 export type ElectionEntryPayload = {
   official_ballot_title: string;
   election_date: string; // YYYY-MM-DD
-  description: string;
   race_type: ElectionRaceType;
   is_partisan?: boolean;
   election_stage?: ElectionStage;

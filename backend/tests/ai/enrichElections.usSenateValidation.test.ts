@@ -17,7 +17,6 @@ vi.mock("../../src/ai/urlReachability.ts", () => ({
 function makeOfficeEntry(input: {
   title: string;
   date: string;
-  description: string;
   senate_class?: "class_i" | "class_ii" | "class_iii";
   term_end_year?: string;
   election_stage?: "primary" | "general" | "runoff" | "special";
@@ -25,7 +24,6 @@ function makeOfficeEntry(input: {
   return {
     official_ballot_title: input.title,
     election_date: input.date,
-    impact: input.description,
     race_type: "office" as const,
     ...(input.senate_class ? { senate_class: input.senate_class } : {}),
     ...(input.term_end_year ? { term_end_year: input.term_end_year } : {}),
@@ -58,13 +56,11 @@ describe("enrichElections U.S. Senate pair validation", () => {
               makeOfficeEntry({
                 title: "United States Senator",
                 date: "2026-11-03",
-                description: "Regular seat.",
                 senate_class: "class_i",
               }),
               makeOfficeEntry({
                 title: "United States Senator (Unexpired Term)",
                 date: "2026-11-03",
-                description: "Special seat.",
                 senate_class: "class_ii",
                 election_stage: "special",
               }),
@@ -114,13 +110,11 @@ describe("enrichElections U.S. Senate pair validation", () => {
               makeOfficeEntry({
                 title: "United States Senator",
                 date: "2026-11-03",
-                description: "Regular seat.",
                 term_end_year: "2031",
               }),
               makeOfficeEntry({
                 title: "United States Senator (Unexpired Term)",
                 date: "2026-11-03",
-                description: "Special seat.",
                 term_end_year: "2029",
                 election_stage: "special",
               }),
@@ -173,13 +167,11 @@ describe("enrichElections U.S. Senate pair validation", () => {
                 makeOfficeEntry({
                   title: "United States Senator",
                   date: "2026-11-03",
-                  description: "Seat A",
                   senate_class: "class_ii",
                 }),
                 makeOfficeEntry({
                   title: "United States Senator (Unexpired Term)",
                   date: "2026-11-03",
-                  description: "Seat B",
                   senate_class: "class_ii",
                   election_stage: "special",
                 }),
@@ -196,13 +188,11 @@ describe("enrichElections U.S. Senate pair validation", () => {
               makeOfficeEntry({
                 title: "United States Senator",
                 date: "2026-11-03",
-                description: "Seat A",
                 senate_class: "class_ii",
               }),
               makeOfficeEntry({
                 title: "United States Senator (Unexpired Term)",
                 date: "2026-11-03",
-                description: "Seat B",
                 senate_class: "class_iii",
                 election_stage: "special",
               }),
@@ -255,13 +245,11 @@ describe("enrichElections U.S. Senate pair validation", () => {
                 makeOfficeEntry({
                   title: "United States Senator",
                   date: "2026-11-03",
-                  description: "Seat A",
                   senate_class: "class_i",
                 }),
                 makeOfficeEntry({
                   title: "United States Senator",
                   date: "2026-11-03",
-                  description: "Seat B",
                   senate_class: "class_iii",
                 }),
               ],
@@ -277,13 +265,11 @@ describe("enrichElections U.S. Senate pair validation", () => {
               makeOfficeEntry({
                 title: "United States Senator",
                 date: "2026-11-03",
-                description: "Seat A",
                 senate_class: "class_i",
               }),
               makeOfficeEntry({
                 title: "United States Senator (Unexpired Term)",
                 date: "2026-11-03",
-                description: "Seat B",
                 senate_class: "class_iii",
                 election_stage: "special",
               }),
@@ -333,12 +319,10 @@ describe("enrichElections U.S. Senate pair validation", () => {
               makeOfficeEntry({
                 title: "United States Senator",
                 date: "2026-11-03",
-                description: "Seat A",
               }),
               makeOfficeEntry({
                 title: "United States Senator",
                 date: "2026-11-03",
-                description: "Seat B",
               }),
             ],
           },

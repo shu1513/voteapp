@@ -13,7 +13,6 @@ describe("parseCanonicalElectionPayload", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          description: "General election for governor.",
           race_type: "office",
           sources: ["https://example.gov/elections/governor"],
         },
@@ -39,7 +38,6 @@ describe("parseCanonicalElectionPayload", () => {
         {
           official_ballot_title: "Measure A",
           election_date: "2026-11-03",
-          description: "Measure text",
           race_type: "measure",
           sources: ["https://example.gov/elections/measure-a"],
         },
@@ -59,7 +57,6 @@ describe("parseCanonicalElectionPayload", () => {
         {
           official_ballot_title: "Measure A",
           election_date: "2026-11-03",
-          description: "Measure text",
           race_type: "ballot_measure",
           sources: ["ftp://example.gov/elections/measure-a"],
         },
@@ -79,7 +76,6 @@ describe("parseCanonicalElectionPayload", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-02-30",
-          description: "General election for governor.",
           race_type: "office",
           sources: ["https://example.gov/elections/governor"],
         },
@@ -99,7 +95,6 @@ describe("parseCanonicalElectionPayload", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2028-02-29",
-          description: "General election for governor.",
           race_type: "office",
           sources: ["https://example.gov/elections/governor"],
         },
@@ -111,14 +106,12 @@ describe("parseCanonicalElectionPayload", () => {
 });
 
 describe("parseAiElectionEntriesPayload", () => {
-  it("parses impact and maps it to canonical description", () => {
+  it("parses valid AI entries without requiring impact", () => {
     const result = parseAiElectionEntriesPayload({
       entries: [
         {
           official_ballot_title: "County Sheriff",
           election_date: "2026-11-03",
-          impact:
-            "Leads the county sheriff's department, oversees patrol and jail operations, and sets local law-enforcement priorities.",
           race_type: "office",
           sources: ["https://example.gov/elections/sheriff"],
         },
@@ -130,7 +123,7 @@ describe("parseAiElectionEntriesPayload", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.payload.entries).toHaveLength(1);
-      expect(result.payload.entries[0].description).toContain("Leads the county sheriff");
+      expect(result.payload.entries[0]).not.toHaveProperty("description");
     }
   });
 
@@ -140,7 +133,6 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          impact: "Leads the state executive branch and signs or vetoes legislation.",
           race_type: "office",
           sources: ["https://example.gov/elections/governor"],
         },
@@ -162,7 +154,6 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          impact: "Leads the state executive branch and signs or vetoes legislation.",
           race_type: "office",
           election_stage: "general",
           sources: ["https://example.gov/elections/governor"],
@@ -182,7 +173,6 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          impact: "Leads the state executive branch and signs or vetoes legislation.",
           race_type: "office",
           is_partisan: true,
           sources: ["https://example.gov/elections/governor"],
@@ -202,7 +192,6 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          impact: "Leads the state executive branch and signs or vetoes legislation.",
           race_type: "bad_value",
           sources: ["https://example.gov/elections/governor"],
         },
@@ -217,7 +206,6 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          impact: "Leads the state executive branch and signs or vetoes legislation.",
           race_type: "office",
           election_stage: "invalid",
           sources: ["https://example.gov/elections/governor"],
@@ -233,7 +221,6 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          impact: "Leads the state executive branch and signs or vetoes legislation.",
           race_type: "office",
           is_partisan: "yes",
           sources: ["https://example.gov/elections/governor"],
@@ -249,7 +236,6 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "Measure A",
           election_date: "2026-11-03",
-          impact: "Raises sales tax for transportation projects.",
           race_type: "ballot_measure",
           is_partisan: true,
           sources: ["https://example.gov/elections/measure-a"],
@@ -262,7 +248,7 @@ describe("parseAiElectionEntriesPayload", () => {
     }
   });
 
-  it("rejects AI payloads that use description instead of impact", () => {
+  it("accepts AI payloads that include legacy description field", () => {
     const result = parseAiElectionEntriesPayload({
       entries: [
         {
@@ -274,7 +260,7 @@ describe("parseAiElectionEntriesPayload", () => {
         },
       ],
     });
-    expect(result.ok).toBe(false);
+    expect(result.ok).toBe(true);
   });
 
   it("parses optional senate_class and term_end_year for office entries", () => {
@@ -283,7 +269,6 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "United States Senator",
           election_date: "2026-11-03",
-          impact: "Represents the state in the U.S. Senate.",
           race_type: "office",
           senate_class: "class_i",
           term_end_year: "2031",
@@ -305,7 +290,6 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "United States Senator",
           election_date: "2026-11-03",
-          impact: "Represents the state in the U.S. Senate.",
           race_type: "office",
           senate_class: "class_iv",
           sources: ["https://example.gov/elections/us-senate"],
@@ -321,7 +305,6 @@ describe("parseAiElectionEntriesPayload", () => {
         {
           official_ballot_title: "United States Senator",
           election_date: "2026-11-03",
-          impact: "Represents the state in the U.S. Senate.",
           race_type: "office",
           term_end_year: 2031,
           sources: ["https://example.gov/elections/us-senate"],
