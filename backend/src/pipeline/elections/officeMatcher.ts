@@ -35,6 +35,7 @@ export type OfficeMatchResult = {
   method: OfficeMatchMethod;
   confidence: number;
   normalizedAlias: string;
+  aliasMemoryKey: string;
   shouldPersistAlias: boolean;
 };
 
@@ -289,18 +290,24 @@ export class OfficeMatcher {
         method: "none",
         confidence: 0,
         normalizedAlias,
+        aliasMemoryKey: "",
         shouldPersistAlias: false,
       };
     }
 
     const aliases = await this.loadAliases(input.scope);
-    const exactOfficeId = aliases.get(normalizedAlias);
+    const titleMatcherKey = toMatcherKeyFromBallotTitle(input);
+    let exactOfficeId = aliases.get(normalizedAlias);
+    if (!exactOfficeId && titleMatcherKey.length > 0 && titleMatcherKey !== normalizedAlias) {
+      exactOfficeId = aliases.get(titleMatcherKey);
+    }
     if (exactOfficeId) {
       return {
         officeId: exactOfficeId,
         method: "alias_exact",
         confidence: 1,
         normalizedAlias,
+        aliasMemoryKey: titleMatcherKey.length > 0 ? titleMatcherKey : normalizedAlias,
         shouldPersistAlias: false,
       };
     }
@@ -312,11 +319,11 @@ export class OfficeMatcher {
         method: "none",
         confidence: 0,
         normalizedAlias,
+        aliasMemoryKey: titleMatcherKey,
         shouldPersistAlias: false,
       };
     }
 
-    const titleMatcherKey = toMatcherKeyFromBallotTitle(input);
     const titleTokens = toMatcherTokens(titleMatcherKey);
     const scored = offices
       .map((office) => ({
@@ -332,6 +339,7 @@ export class OfficeMatcher {
         method: "none",
         confidence: top?.score ?? 0,
         normalizedAlias,
+        aliasMemoryKey: titleMatcherKey,
         shouldPersistAlias: false,
       };
     }
@@ -343,6 +351,7 @@ export class OfficeMatcher {
         method: "ambiguous",
         confidence: top.score,
         normalizedAlias,
+        aliasMemoryKey: titleMatcherKey,
         shouldPersistAlias: false,
       };
     }
@@ -352,6 +361,7 @@ export class OfficeMatcher {
       method: "deterministic_fallback",
       confidence: top.score,
       normalizedAlias,
+      aliasMemoryKey: titleMatcherKey,
       shouldPersistAlias: true,
     };
   }

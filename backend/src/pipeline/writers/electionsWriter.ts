@@ -364,22 +364,17 @@ async function writeElectionsForDistrict(
         if (
           officeMatch.officeId &&
           officeMatch.shouldPersistAlias &&
-          officeMatch.normalizedAlias.length > 0
+          officeMatch.aliasMemoryKey.length > 0
         ) {
-          const aliasKey = `${payload.district_type}::${officeMatch.normalizedAlias}`;
+          const aliasKey = `${payload.district_type}::${officeMatch.aliasMemoryKey}`;
           if (!seenAliasKeys.has(aliasKey)) {
             seenAliasKeys.add(aliasKey);
             aliasRowsToInsert.push({
               office_id: officeMatch.officeId,
               scope: payload.district_type,
               alias_text: entry.official_ballot_title,
-              normalized_alias: officeMatch.normalizedAlias,
+              normalized_alias: officeMatch.aliasMemoryKey,
             });
-            officeMatcher.rememberAlias(
-              payload.district_type,
-              officeMatch.normalizedAlias,
-              officeMatch.officeId
-            );
           }
         }
       }

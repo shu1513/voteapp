@@ -169,4 +169,60 @@ describe("OfficeMatcher", () => {
     expect(result.officeId).toBe("office-us-senator");
     expect(result.method).toBe("deterministic_fallback");
   });
+
+  it("uses stripped matcher key for alias-memory persistence", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { us_house: [] },
+      officesByScope: {
+        us_house: [{ id: "office-us-house", canonical_name: "United States Representative" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "us_house",
+      districtName: "Congressional District 31 (119th Congress), California",
+      state: "CA",
+      officialBallotTitle: "United States Representative, 31st District",
+    });
+
+    expect(result.officeId).toBe("office-us-house");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.normalizedAlias).toBe("united states representative 31st district");
+    expect(result.aliasMemoryKey).toBe("united states representative");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("reads learned alias memory from stripped key on subsequent resolve", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { us_house: [] },
+      officesByScope: {
+        us_house: [{ id: "office-us-house", canonical_name: "United States Representative" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+
+    const first = await matcher.resolve({
+      scope: "us_house",
+      districtName: "Congressional District 31 (119th Congress), California",
+      state: "CA",
+      officialBallotTitle: "United States Representative, 31st District",
+    });
+    expect(first.method).toBe("deterministic_fallback");
+    expect(first.officeId).toBe("office-us-house");
+    expect(first.aliasMemoryKey).toBe("united states representative");
+
+    matcher.rememberAlias("us_house", first.aliasMemoryKey, "office-us-house");
+
+    const second = await matcher.resolve({
+      scope: "us_house",
+      districtName: "Congressional District 31 (119th Congress), California",
+      state: "CA",
+      officialBallotTitle: "United States Representative, 31st District",
+    });
+    expect(second.method).toBe("alias_exact");
+    expect(second.officeId).toBe("office-us-house");
+    expect(second.shouldPersistAlias).toBe(false);
+  });
 });
