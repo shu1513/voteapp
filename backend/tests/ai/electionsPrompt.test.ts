@@ -67,7 +67,7 @@ describe("buildElectionsPrompt partisanship field gating", () => {
 
     expect(prompt).toContain("Contest family for this call: us_senate");
     expect(prompt).toContain("Return only U.S. Senate contests for this statewide scope.");
-    expect(prompt).toContain("Exclude all ballot measures and all non-Senate office contests.");
+    expect(prompt).toContain("Exclude all ballot measures and all non-U.S.-Senate office contests.");
     expect(prompt).toContain("\"senate_class\": \"class_i | class_ii | class_iii");
     expect(prompt).toContain("\"term_end_year\": \"YYYY");
     expect(prompt).not.toContain("\"is_partisan\":");

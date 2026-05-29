@@ -14,8 +14,8 @@ export function isUsSenateOfficeTitle(title: string): boolean {
   );
 }
 
-export function hasSpecialSeatMarker(entry: Pick<ElectionEntryPayload, "official_ballot_title" | "description" | "election_stage">): boolean {
-  const combined = normalize(`${entry.official_ballot_title} ${entry.description}`);
+export function hasSpecialSeatMarker(entry: Pick<ElectionEntryPayload, "official_ballot_title" | "election_stage">): boolean {
+  const combined = normalize(entry.official_ballot_title);
   return (
     entry.election_stage === "special" ||
     /\bunexpired term\b/.test(combined) ||

@@ -81,8 +81,7 @@ function utcDateYmdDaysAgo(daysAgo: number): string {
 
 function isHardScopeMismatch(districtType: ElectionDistrictType, entry: ElectionEntryPayload): string | null {
   const titleText = normalize(entry.official_ballot_title);
-  const descriptionText = normalize(entry.description);
-  const scopeText = entry.race_type === "office" ? `${titleText} ${descriptionText}` : titleText;
+  const scopeText = titleText;
 
   const usSenate = /\bu\.?s\.?\s+senate\b/.test(scopeText) || /\bunited states senate\b/.test(scopeText);
   const usHouse =
@@ -183,7 +182,7 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
 }
 
 function isSoftScopeAmbiguous(districtType: ElectionDistrictType, entry: ElectionEntryPayload): string | null {
-  const text = normalize(`${entry.official_ballot_title} ${entry.description}`);
+  const text = normalize(entry.official_ballot_title);
 
   if (
     districtType === "us_house" &&

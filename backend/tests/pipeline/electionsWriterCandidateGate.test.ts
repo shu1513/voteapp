@@ -120,14 +120,12 @@ describe("runElectionsWriter candidate roster eligibility gate", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-06-02",
-          description: "Office",
           race_type: "office",
           sources: ["https://example.org/1"],
         },
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          description: "Office",
           race_type: "office",
           sources: ["https://example.org/2"],
         },
@@ -270,14 +268,12 @@ describe("runElectionsWriter candidate roster eligibility gate", () => {
         {
           official_ballot_title: "Governor",
           election_date: "2026-06-02",
-          description: "Office",
           race_type: "office",
           sources: ["https://example.org/1"],
         },
         {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
-          description: "Office",
           race_type: "office",
           sources: ["https://example.org/2"],
         },

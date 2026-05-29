@@ -165,9 +165,6 @@ function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayl
     byKey.set(key, {
       ...prior,
       sources: mergeSources(prior.sources, entry.sources),
-      // Prefer a longer explanation when two entries collide.
-      description:
-        entry.description.length > prior.description.length ? entry.description : prior.description,
     });
   }
   return [...byKey.values()];
@@ -193,7 +190,6 @@ function scoreUsSenateEntry(entry: ElectionEntryPayload): number {
     score += 10;
   }
   score += Math.min(entry.sources.length, 5);
-  score += Math.min(entry.description.length / 200, 5);
   return score;
 }
 
