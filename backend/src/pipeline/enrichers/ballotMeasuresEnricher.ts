@@ -266,6 +266,7 @@ export async function runBallotMeasuresEnricher(options: EnricherOptions = {}): 
                 district_id,
                 election_id,
                 official_ballot_title,
+                summary,
                 what_yes_means,
                 what_no_means,
                 result,
@@ -273,13 +274,14 @@ export async function runBallotMeasuresEnricher(options: EnricherOptions = {}): 
                 official_measure_url,
                 last_researched
               )
-              VALUES ($1, $2, $3, $4, $5, NULL, $6::jsonb, $7, now())
+              VALUES ($1, $2, $3, $4, $5, $6, NULL, $7::jsonb, $8, now())
               ON CONFLICT (election_id) DO NOTHING
             `,
             [
               election.district_id,
               election.id,
               election.official_ballot_title,
+              aiResult.summary,
               aiResult.whatYesMeans,
               aiResult.whatNoMeans,
               JSON.stringify(aiResult.researchUrls),

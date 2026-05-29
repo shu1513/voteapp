@@ -33,6 +33,7 @@ type BallotMeasureValidationResult =
   | {
       ok: true;
       officialMeasureUrl: string;
+      summary: string;
       whatYesMeans: string;
       whatNoMeans: string;
       sources: string[];
@@ -67,6 +68,7 @@ export type BallotMeasureAiResult =
       provider: AiProvider;
       model: string;
       officialMeasureUrl: string;
+      summary: string;
       whatYesMeans: string;
       whatNoMeans: string;
       researchUrls: string[];
@@ -81,6 +83,7 @@ const CLAUDE_INTER_CALL_DELAY_MS = 20_000;
 function parseBallotMeasureAiPayload(payload: unknown): {
   ok: true;
   officialMeasureUrl: string;
+  summary: string;
   whatYesMeans: string;
   whatNoMeans: string;
   sources: string[];
@@ -95,6 +98,9 @@ function parseBallotMeasureAiPayload(payload: unknown): {
   const input = payload as Record<string, unknown>;
   if (typeof input.official_measure_url !== "string") {
     return { ok: false, reason: "official_measure_url must be string" };
+  }
+  if (typeof input.summary !== "string") {
+    return { ok: false, reason: "summary must be string" };
   }
   if (typeof input.what_yes_means !== "string") {
     return { ok: false, reason: "what_yes_means must be string" };
@@ -111,10 +117,11 @@ function parseBallotMeasureAiPayload(payload: unknown): {
     return { ok: false, reason: "official_measure_url must be valid http(s) URL" };
   }
 
+  const summary = input.summary.trim();
   const whatYesMeans = input.what_yes_means.trim();
   const whatNoMeans = input.what_no_means.trim();
-  if (whatYesMeans.length === 0 || whatNoMeans.length === 0) {
-    return { ok: false, reason: "what_yes_means/what_no_means must be non-empty" };
+  if (summary.length === 0 || whatYesMeans.length === 0 || whatNoMeans.length === 0) {
+    return { ok: false, reason: "summary/what_yes_means/what_no_means must be non-empty" };
   }
 
   const sources: string[] = [];
@@ -140,6 +147,7 @@ function parseBallotMeasureAiPayload(payload: unknown): {
   return {
     ok: true,
     officialMeasureUrl,
+    summary,
     whatYesMeans,
     whatNoMeans,
     sources,
@@ -237,6 +245,7 @@ async function validateBallotMeasurePayload(
   return {
     ok: true,
     officialMeasureUrl: officialVerification.finalUrl,
+    summary: parsed.summary,
     whatYesMeans: parsed.whatYesMeans,
     whatNoMeans: parsed.whatNoMeans,
     sources: [...new Set(normalizedSources)],
@@ -346,6 +355,7 @@ export async function enrichBallotMeasure(
         provider: candidate.provider,
         model: candidate.model,
         officialMeasureUrl: validation.officialMeasureUrl,
+        summary: validation.summary,
         whatYesMeans: validation.whatYesMeans,
         whatNoMeans: validation.whatNoMeans,
         researchUrls: (() => {
