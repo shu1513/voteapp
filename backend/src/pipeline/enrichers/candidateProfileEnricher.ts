@@ -526,6 +526,7 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       SELECT fec_ids, state_filing_ids
       FROM public.candidates
       WHERE id = $1
+        AND deleted_at IS NULL
       FOR UPDATE
     `,
     [candidateId]
