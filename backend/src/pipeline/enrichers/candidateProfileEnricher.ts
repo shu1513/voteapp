@@ -139,6 +139,48 @@ function normalizeIdList(values: readonly string[] | undefined): string[] {
     .filter((value) => value.length > 0);
 }
 
+export function mergeIdentifierLists(
+  existing: readonly string[] | undefined,
+  incoming: readonly string[] | undefined
+): string[] | undefined {
+  const merged: string[] = [];
+  const seen = new Set<string>();
+
+  for (const source of [existing ?? [], incoming ?? []]) {
+    for (const value of source) {
+      const trimmed = value.trim();
+      if (trimmed.length === 0) {
+        continue;
+      }
+      const normalized = trimmed.toLowerCase();
+      if (seen.has(normalized)) {
+        continue;
+      }
+      seen.add(normalized);
+      merged.push(trimmed);
+    }
+  }
+
+  return merged.length > 0 ? merged : undefined;
+}
+
+function haveSameNormalizedIdentifierSet(
+  left: readonly string[] | undefined,
+  right: readonly string[] | undefined
+): boolean {
+  const leftSet = new Set(normalizeIdList(left));
+  const rightSet = new Set(normalizeIdList(right));
+  if (leftSet.size !== rightSet.size) {
+    return false;
+  }
+  for (const value of leftSet) {
+    if (!rightSet.has(value)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function parseBooleanField(raw: string | undefined): boolean | undefined {
   if (raw === "true") {
     return true;
@@ -471,6 +513,57 @@ async function insertCandidate(
   return id;
 }
 
+async function mergeCandidateIdentifiersForExistingCandidate(
+  client: PoolClient,
+  candidateId: string,
+  profile: CandidateProfilePayload
+): Promise<void> {
+  const locked = await client.query<{
+    fec_ids: unknown;
+    state_filing_ids: unknown;
+  }>(
+    `
+      SELECT fec_ids, state_filing_ids
+      FROM public.candidates
+      WHERE id = $1
+        AND deleted_at IS NULL
+      FOR UPDATE
+    `,
+    [candidateId]
+  );
+  const current = locked.rows[0];
+  if (!current) {
+    return;
+  }
+
+  const existingFecIds = parseOptionalStringArray(current.fec_ids);
+  const existingStateFilingIds = parseOptionalStringArray(current.state_filing_ids);
+
+  const mergedFecIds = mergeIdentifierLists(existingFecIds, profile.fec_ids);
+  const mergedStateFilingIds = mergeIdentifierLists(existingStateFilingIds, profile.state_filing_ids);
+
+  const fecIdsChanged = !haveSameNormalizedIdentifierSet(existingFecIds, mergedFecIds);
+  const stateFilingChanged = !haveSameNormalizedIdentifierSet(existingStateFilingIds, mergedStateFilingIds);
+  if (!fecIdsChanged && !stateFilingChanged) {
+    return;
+  }
+
+  await client.query(
+    `
+      UPDATE public.candidates
+      SET fec_ids = $2::jsonb,
+          state_filing_ids = $3::jsonb,
+          updated_at = now()
+      WHERE id = $1
+    `,
+    [
+      candidateId,
+      mergedFecIds ? JSON.stringify(mergedFecIds) : null,
+      mergedStateFilingIds ? JSON.stringify(mergedStateFilingIds) : null,
+    ]
+  );
+}
+
 async function upsertCandidateElection(
   client: PoolClient,
   candidateId: string,
@@ -620,10 +713,12 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           const existingCandidates = await loadSameNameCandidates(pool, profile, election.state);
 
           let candidateId: string | null = null;
+          let matchedCandidateRow: ExistingCandidateRow | null = null;
           if (hasAtLeastOneHardIdentifier(profile)) {
             const matched = existingCandidates.filter((row) => matchesByHardIdentifier(profile, row));
             if (matched.length === 1) {
-              candidateId = matched[0]!.id;
+              matchedCandidateRow = matched[0]!;
+              candidateId = matchedCandidateRow.id;
             }
           }
 
@@ -638,6 +733,12 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
                 election.state,
                 effectiveRosterParty,
                 includeParty
+              );
+            } else if (matchedCandidateRow) {
+              await mergeCandidateIdentifiersForExistingCandidate(
+                client,
+                matchedCandidateRow.id,
+                profile
               );
             }
 
