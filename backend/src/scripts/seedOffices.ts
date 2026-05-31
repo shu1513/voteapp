@@ -129,21 +129,9 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "state_lower",
-    canonicalName: "State Representative",
+    canonicalName: "State Lower Chamber Legislator",
     summary:
       "Represents a district in the state lower legislative chamber and votes on state laws and budget policy.",
-  },
-  {
-    scope: "state_lower",
-    canonicalName: "State Assembly Member",
-    summary:
-      "Represents a district in the state lower chamber where it is named an assembly and votes on state laws.",
-  },
-  {
-    scope: "state_lower",
-    canonicalName: "House Delegate",
-    summary:
-      "Represents a district in state lower chambers that use delegate titles and votes on state legislation.",
   },
   {
     scope: "county",
@@ -280,6 +268,66 @@ const SEED_OFFICES: SeedOffice[] = [
 ];
 
 const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
+  {
+    scope: "statewide",
+    officeCanonicalName: "Lieutenant Governor",
+    aliasText: "Lt. Governor",
+  },
+  {
+    scope: "state_upper",
+    officeCanonicalName: "State Senator",
+    aliasText: "Member of the Legislature",
+  },
+  {
+    scope: "state_upper",
+    officeCanonicalName: "State Senator",
+    aliasText: "Member of the State Senate",
+  },
+  {
+    scope: "state_lower",
+    officeCanonicalName: "State Lower Chamber Legislator",
+    aliasText: "House Delegate",
+  },
+  {
+    scope: "state_lower",
+    officeCanonicalName: "State Lower Chamber Legislator",
+    aliasText: "State Assembly Member",
+  },
+  {
+    scope: "state_lower",
+    officeCanonicalName: "State Lower Chamber Legislator",
+    aliasText: "State Representative",
+  },
+  {
+    scope: "state_lower",
+    officeCanonicalName: "State Lower Chamber Legislator",
+    aliasText: "Representative in the General Assembly",
+  },
+  {
+    scope: "state_lower",
+    officeCanonicalName: "State Lower Chamber Legislator",
+    aliasText: "Representative in General Court",
+  },
+  {
+    scope: "state_lower",
+    officeCanonicalName: "State Lower Chamber Legislator",
+    aliasText: "State Delegate",
+  },
+  {
+    scope: "state_lower",
+    officeCanonicalName: "State Lower Chamber Legislator",
+    aliasText: "Member, House of Delegates",
+  },
+  {
+    scope: "state_lower",
+    officeCanonicalName: "State Lower Chamber Legislator",
+    aliasText: "Member of the Assembly",
+  },
+  {
+    scope: "state_lower",
+    officeCanonicalName: "State Lower Chamber Legislator",
+    aliasText: "Member of the State Assembly",
+  },
   {
     scope: "us_house",
     officeCanonicalName: "United States Representative",

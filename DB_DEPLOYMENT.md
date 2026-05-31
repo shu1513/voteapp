@@ -48,6 +48,16 @@ This applies all migration files from `001_init.sql` onward and records them.
 2. Deploy backend code second.
 3. Run pipeline jobs after both are in sync.
 
+## Seeded Domain Data Order
+
+After `db:migrate`, run domain seed scripts in this order:
+
+1. `npm run elections:offices:seed`
+2. `npm run db:seed:research-areas`
+3. `npm run db:seed:office-research-areas`
+
+This order ensures office and alias rows exist before office-to-research-area mappings are seeded.
+
 ## Notes
 
 - Migration runner enforces checksum consistency for already-applied files.
