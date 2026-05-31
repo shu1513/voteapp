@@ -46,10 +46,15 @@ async function main(): Promise<void> {
     rowCount = sumAffectedRows(result);
     await client.query("COMMIT");
   } catch (error) {
+    const originalError = error;
     if (client) {
-      await client.query("ROLLBACK");
+      try {
+        await client.query("ROLLBACK");
+      } catch (rollbackError) {
+        console.error("office research areas seed rollback failed:", rollbackError);
+      }
     }
-    throw error;
+    throw originalError;
   } finally {
     client?.release();
     await pool.end();
