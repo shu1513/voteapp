@@ -34,6 +34,8 @@
     "db:migrate": "tsx src/scripts/dbMigrate.ts",
     "db:migrate:status": "tsx src/scripts/dbMigrate.ts --status",
     "db:migrate:baseline": "tsx src/scripts/dbMigrate.ts --baseline",
+    "db:seed:research-areas": "tsx src/scripts/seedResearchAreas.ts",
+    "db:seed:office-research-areas": "tsx src/scripts/seedOfficeResearchAreas.ts",
     "streams:archive-legacy-shared": "tsx src/scripts/archiveLegacySharedStreams.ts",
     "state-resources:scheduler:upsert": "tsx src/scripts/upsertStateResourcesAnnualScheduler.ts",
     "state-resources:scheduler:worker": "tsx src/scripts/runStateResourcesSchedulerWorker.ts",
