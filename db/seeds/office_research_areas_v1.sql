@@ -71,6 +71,211 @@ DECLARE
   desired_slugs text[] := ARRAY[
     'government_spending_and_deficit_reduction',
     'personal_income_tax_relief',
+    'public_education_quality',
+    'public_safety_and_crime_control',
+    'healthcare_affordability',
+    'social_programs_and_welfare',
+    'public_infrastructure',
+    'housing_affordability',
+    'environment_and_public_health',
+    'womens_reproductive_rights',
+    'election_integrity',
+    'civil_rights',
+    'data_privacy',
+    'corporate_accountability',
+    'anti_corruption',
+    'government_efficiency'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'state_upper'
+    AND canonical_name = 'State Senator';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=state_upper canonical_name=State Senator, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for state_upper mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM (
+    SELECT id
+    FROM public.offices
+    WHERE scope = 'state_upper'
+      AND canonical_name = 'State Senator'
+    LIMIT 1
+  ) office
+  JOIN (
+    SELECT id
+    FROM public.research_areas
+    WHERE slug = ANY (desired_slugs)
+  ) area
+    ON true
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_spending_and_deficit_reduction',
+    'personal_income_tax_relief',
+    'public_education_quality',
+    'public_safety_and_crime_control',
+    'healthcare_affordability',
+    'social_programs_and_welfare',
+    'public_infrastructure',
+    'housing_affordability',
+    'environment_and_public_health',
+    'womens_reproductive_rights',
+    'election_integrity',
+    'civil_rights',
+    'data_privacy',
+    'corporate_accountability',
+    'anti_corruption',
+    'government_efficiency'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'state_lower'
+    AND canonical_name = 'State Lower Chamber Legislator';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=state_lower canonical_name=State Lower Chamber Legislator, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for state_lower mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM (
+    SELECT id
+    FROM public.offices
+    WHERE scope = 'state_lower'
+      AND canonical_name = 'State Lower Chamber Legislator'
+    LIMIT 1
+  ) office
+  JOIN (
+    SELECT id
+    FROM public.research_areas
+    WHERE slug = ANY (desired_slugs)
+  ) area
+    ON true
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_education_quality',
+    'public_safety_and_crime_control',
+    'healthcare_affordability',
+    'social_programs_and_welfare',
+    'government_spending_and_deficit_reduction',
+    'government_efficiency',
+    'public_infrastructure',
+    'environment_and_public_health',
+    'housing_affordability',
+    'personal_income_tax_relief',
+    'womens_reproductive_rights',
+    'civil_rights',
+    'data_privacy',
+    'corporate_accountability',
+    'anti_corruption'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'Governor';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=Governor, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for governor mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM (
+    SELECT id
+    FROM public.offices
+    WHERE scope = 'statewide'
+      AND canonical_name = 'Governor'
+    LIMIT 1
+  ) office
+  JOIN (
+    SELECT id
+    FROM public.research_areas
+    WHERE slug = ANY (desired_slugs)
+  ) area
+    ON true
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_spending_and_deficit_reduction',
+    'personal_income_tax_relief',
     'healthcare_affordability',
     'social_programs_and_welfare',
     'public_infrastructure',
