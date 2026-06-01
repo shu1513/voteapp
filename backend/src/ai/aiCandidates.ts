@@ -49,4 +49,25 @@ export const CANDIDATES_AI_CANDIDATES: readonly AiCandidate[] = [
   { provider: "gemini", model: "gemini-2.5-pro" },
 ] as const;
 
+/**
+ * Curated candidate-record discovery AI candidates.
+ * Kept separate from roster/profile to allow independent tuning.
+ */
+export const CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "openai", model: "gpt-5.4-mini" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
+/**
+ * Curated candidate-record area-labeling AI candidates.
+ * Kept separate from discovery to allow independent tuning.
+ */
+export const CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "gemini", model: "gemini-2.5-flash-lite" },
+  { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "openai", model: "gpt-5.4-mini" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
 export const DEFAULT_AI_CANDIDATE: AiCandidate = STATE_RESOURCES_AI_CANDIDATES[0];
