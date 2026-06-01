@@ -7,7 +7,6 @@ export type CandidateRecordUpsertInput = {
   title: string;
   description: string;
   sourceUrl: string;
-  sourceName: string;
   eventDate: string | Date;
 };
 
@@ -48,18 +47,16 @@ function toEventDateKey(value: string | Date): string {
 export function buildCandidateRecordIdentityKey(input: {
   title: string;
   sourceUrl: string;
-  sourceName: string;
   eventDate: string | Date;
 }): string {
   const payload = [
-    "v1",
+    "v2",
     normalizeUrlForIdentity(input.sourceUrl),
     toEventDateKey(input.eventDate),
     normalizeTextForIdentity(input.title),
-    normalizeTextForIdentity(input.sourceName),
   ].join("|");
 
-  return `v1_${createHash("md5").update(payload).digest("hex")}`;
+  return `v2_${createHash("md5").update(payload).digest("hex")}`;
 }
 
 export async function upsertCandidateRecords(
@@ -73,7 +70,6 @@ export async function upsertCandidateRecords(
     const identityKey = buildCandidateRecordIdentityKey({
       title: record.title,
       sourceUrl: record.sourceUrl,
-      sourceName: record.sourceName,
       eventDate: record.eventDate,
     });
 
@@ -86,17 +82,15 @@ export async function upsertCandidateRecords(
           title,
           description,
           source_url,
-          source_name,
           event_date,
           record_identity_key
         )
-        VALUES ($1, $2, $3, $4, $5, $6::date, $7)
+        VALUES ($1, $2, $3, $4, $5::date, $6)
         ON CONFLICT (candidate_id, record_identity_key)
         DO UPDATE SET
           title = EXCLUDED.title,
           description = EXCLUDED.description,
           source_url = EXCLUDED.source_url,
-          source_name = EXCLUDED.source_name,
           event_date = EXCLUDED.event_date
         RETURNING (xmax = 0) AS inserted
       `,
@@ -105,7 +99,6 @@ export async function upsertCandidateRecords(
         record.title,
         record.description,
         record.sourceUrl,
-        record.sourceName,
         eventDate,
         identityKey,
       ]

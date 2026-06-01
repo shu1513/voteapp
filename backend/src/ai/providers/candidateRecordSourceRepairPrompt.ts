@@ -5,7 +5,6 @@ export type CandidateRecordSourceRepairPromptBadRecord = {
   title: string;
   description: string;
   sourceUrl: string;
-  sourceName: string;
   eventDate: string;
   failureReason: string;
 };
@@ -32,7 +31,7 @@ export function buildCandidateRecordSourceRepairPrompt(
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
 
   return [
-    "You are repairing candidate-record source citations for records with failed URLs.",
+    "You are repairing bad candidate-record rows (schema issues and/or bad citation URLs).",
     "Return strict JSON only.",
     "",
     "Candidate + election context:",
@@ -42,7 +41,7 @@ export function buildCandidateRecordSourceRepairPrompt(
     `- state: \"${input.state}\"`,
     `- election_date: \"${input.electionDate}\"`,
     `- official_ballot_title: \"${input.officialBallotTitle}\"`,
-    ...(includeSenateContext && input.electionStage ? [`- election_stage: \"${input.electionStage}\"`] : []),
+    ...(input.electionStage ? [`- election_stage: \"${input.electionStage}\"`] : []),
     ...(includeSenateContext && input.senateClass ? [`- senate_class: \"${input.senateClass}\"`] : []),
     ...(includeSenateContext && input.termEndYear ? [`- term_end_year: \"${input.termEndYear}\"`] : []),
     "",
@@ -56,7 +55,6 @@ export function buildCandidateRecordSourceRepairPrompt(
       `- bad_index: ${record.badIndex}`,
       `  title: ${JSON.stringify(record.title)}`,
       `  description: ${JSON.stringify(record.description)}`,
-      `  source_name: ${JSON.stringify(record.sourceName)}`,
       `  source_url: ${JSON.stringify(record.sourceUrl)}`,
       `  event_date: ${JSON.stringify(record.eventDate)}`,
       `  failure_reason: ${JSON.stringify(record.failureReason)}`,
@@ -67,8 +65,10 @@ export function buildCandidateRecordSourceRepairPrompt(
     '  "repairs": [',
     "    {",
     '      "bad_index": 0,',
+    '      "title": "short record title",',
+    '      "description": "neutral factual description of the record",',
     '      "source_url": "https://...",',
-    '      "source_name": "publisher/source name"',
+    '      "event_date": "YYYY-MM-DD"',
     "    },",
     "    {",
     '      "bad_index": 1,',
@@ -79,11 +79,12 @@ export function buildCandidateRecordSourceRepairPrompt(
     "}",
     "",
     "Rules:",
-    "- Do not change claim content: title, description, and event_date are immutable and must stay as-is.",
-    "- You may only replace citation fields (source_url and source_name).",
+    "- Return corrected full rows for bad_index values you can confidently repair.",
+    "- You may fix title, description, source_url, and event_date when needed.",
     "- You may return fewer than all bad_index values; unresolved items can be omitted or returned with no_replacement=true.",
     "- Never reuse any URL listed in blocked URLs.",
     "- source_url must be a valid public http(s) URL.",
+    "- event_date must be YYYY-MM-DD.",
     "- Do not invent sources; if no reliable source exists, return no_replacement=true.",
     "- return JSON only (no prose, no markdown).",
     ...(reviewFeedbackLines.length > 0

@@ -30,6 +30,10 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     });
     expect(prompt).not.toContain("- since_date:");
     expect(prompt).not.toContain("event_date >= since_date");
+    expect(prompt).toContain("If the action/event date is unknown, use the source publication date.");
+    expect(prompt).toContain(
+      "If neither action/event date nor publication date is available, omit that record."
+    );
   });
 
   it("includes senate context fields for senate office titles when provided", () => {
@@ -44,5 +48,19 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).toContain('- election_stage: "general"');
     expect(prompt).toContain('- senate_class: "class_i"');
     expect(prompt).toContain('- term_end_year: "2031"');
+  });
+
+  it("includes election_stage for non-senate offices when provided", () => {
+    const prompt = buildCandidateRecordDiscoveryPrompt({
+      ...baseInput,
+      officialBallotTitle: "Governor",
+      electionStage: "primary",
+      senateClass: "class_i",
+      termEndYear: "2031",
+    });
+
+    expect(prompt).toContain('- election_stage: "primary"');
+    expect(prompt).not.toContain("- senate_class:");
+    expect(prompt).not.toContain("- term_end_year:");
   });
 });

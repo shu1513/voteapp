@@ -78,6 +78,8 @@ From `backend/`:
 3. Upsert the recurring daily scheduler job.
 4. Trigger one manual dry run window by setting low cap first:
    - `CANDIDATE_RECORDS_ROLLOVER_MAX_ENQUEUE=100`
+   - `npm run candidates:record:scheduler:trigger -- --force`
+   - Without `--force`, this trigger is a no-op while `CANDIDATE_RECORD_ENABLE_DAILY_ROLLOVER_PRODUCER=false`.
 5. Enable `CANDIDATE_RECORD_ENABLE_DAILY_ROLLOVER_PRODUCER=true`.
 6. Observe emitted/skipped counts for 1-2 daily cycles, then raise cap.
 
@@ -87,6 +89,17 @@ From `backend/`:
 2. `CANDIDATE_RECORDS_SEARCH_COOLDOWN_DAYS` (default `30`)
 3. `CANDIDATE_RECORDS_ROLLOVER_MAX_ENQUEUE` (default `2000`)
 4. `CANDIDATE_RECORDS_OVERLAP_DAYS` (default `45`)
+
+### Candidate record live AI validation
+
+From `backend/` (non-prod DB/Redis only):
+
+1. AI-level probe (discovery + combined schema/url repair + area labeling):
+   - `npm run candidates:record:live:ai-probe`
+   - Optional target: `npm run candidates:record:live:ai-probe -- --candidate-id=<uuid> --election-id=<uuid>`
+2. Pipeline smoke (enqueue one candidate/election draft, run enricher, snapshot before/after):
+   - `npm run candidates:record:live:pipeline-smoke`
+   - Optional target: `npm run candidates:record:live:pipeline-smoke -- --candidate-id=<uuid> --election-id=<uuid> --loops=3 --batch-size=50`
 
 ## Notes
 

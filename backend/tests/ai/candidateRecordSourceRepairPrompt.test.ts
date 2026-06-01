@@ -18,7 +18,6 @@ describe("buildCandidateRecordSourceRepairPrompt", () => {
           title: "Record title",
           description: "Record description",
           sourceUrl: "https://bad.example/404",
-          sourceName: "Bad Source",
           eventDate: "2026-01-01",
           failureReason: "citation fetch returned status 404",
         },
@@ -29,6 +28,24 @@ describe("buildCandidateRecordSourceRepairPrompt", () => {
     expect(prompt).toContain("https://bad.example/404");
     expect(prompt).toContain('"no_replacement": true');
     expect(prompt).toContain("You may return fewer than all bad_index values");
-    expect(prompt).toContain("title, description, and event_date are immutable");
+    expect(prompt).toContain("You may fix title, description, source_url, and event_date when needed.");
+  });
+
+  it("includes election_stage for non-senate offices when provided", () => {
+    const prompt = buildCandidateRecordSourceRepairPrompt({
+      candidateDisplayName: "Jane Doe",
+      districtName: "California",
+      districtType: "statewide",
+      state: "CA",
+      electionDate: "2026-11-03",
+      officialBallotTitle: "Governor",
+      electionStage: "primary",
+      blockedUrls: [],
+      badRecords: [],
+    });
+
+    expect(prompt).toContain('- election_stage: "primary"');
+    expect(prompt).not.toContain("- senate_class:");
+    expect(prompt).not.toContain("- term_end_year:");
   });
 });

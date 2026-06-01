@@ -32,6 +32,8 @@
     "candidates:roster:scheduler:trigger": "tsx src/scripts/triggerCandidateRosterRollover.ts",
     "candidates:profile:enrich": "tsx src/scripts/enrichCandidateProfiles.ts",
     "candidates:record:enrich": "tsx src/scripts/enrichCandidateRecords.ts",
+    "candidates:record:live:ai-probe": "tsx src/scripts/liveCandidateRecordAiProbe.ts",
+    "candidates:record:live:pipeline-smoke": "tsx src/scripts/liveCandidateRecordPipelineSmoke.ts",
     "candidates:record:produce-rollover": "tsx src/scripts/produceCandidateRecordRollover.ts",
     "candidates:record:scheduler:upsert": "tsx src/scripts/upsertCandidateRecordDailyScheduler.ts",
     "candidates:record:scheduler:worker": "tsx src/scripts/runCandidateRecordSchedulerWorker.ts",

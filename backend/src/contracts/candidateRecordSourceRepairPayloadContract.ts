@@ -2,8 +2,10 @@ import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 export type CandidateRecordSourceRepair = {
   bad_index: number;
+  title: string;
+  description: string;
   source_url: string;
-  source_name: string;
+  event_date: string;
 };
 
 export type CandidateRecordSourceRepairPayload = {
@@ -17,6 +19,24 @@ type ParseOptions = {
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
+}
+
+function normalizeEventDate(value: unknown): string | null {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    return null;
+  }
+  const trimmed = value.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+    return trimmed;
+  }
+  const parsed = new Date(trimmed);
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+  const year = String(parsed.getFullYear()).padStart(4, "0");
+  const month = String(parsed.getMonth() + 1).padStart(2, "0");
+  const day = String(parsed.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function parseBadIndex(value: unknown): number | null {
@@ -72,10 +92,14 @@ export function parseCandidateRecordSourceRepairPayload(
       continue;
     }
 
-    if (!isNonEmptyString(row.source_url) || !isNonEmptyString(row.source_name)) {
+    if (
+      !isNonEmptyString(row.title) ||
+      !isNonEmptyString(row.description) ||
+      !isNonEmptyString(row.source_url)
+    ) {
       return {
         ok: false,
-        reason: "payload.repairs rows require source_url and source_name unless no_replacement=true",
+        reason: "payload.repairs rows require title, description, and source_url unless no_replacement=true",
       };
     }
 
@@ -83,11 +107,17 @@ export function parseCandidateRecordSourceRepairPayload(
     if (!sourceUrl) {
       return { ok: false, reason: "payload.repairs[].source_url must be valid http(s) URL" };
     }
+    const eventDate = normalizeEventDate(row.event_date);
+    if (!eventDate) {
+      return { ok: false, reason: "payload.repairs[].event_date must be parseable date" };
+    }
 
     repairs.push({
       bad_index: badIndex,
+      title: row.title.trim(),
+      description: row.description.trim(),
       source_url: sourceUrl,
-      source_name: row.source_name.trim(),
+      event_date: eventDate,
     });
   }
 

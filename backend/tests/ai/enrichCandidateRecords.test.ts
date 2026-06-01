@@ -30,14 +30,12 @@ describe("enrichCandidateRecords", () => {
             title: "Voted on Bill A",
             description: "Cast vote in committee.",
             source_url: "https://good.example/a",
-            source_name: "State Legislature",
             event_date: "2026-01-05",
           },
           {
             title: "Townhall statement",
             description: "Discussed issue in event.",
             source_url: "https://bad.example/404",
-            source_name: "Unknown Blog",
             event_date: "2026-01-10",
           },
         ],
@@ -96,7 +94,6 @@ describe("enrichCandidateRecords", () => {
             title: "Policy release",
             description: "Released policy statement.",
             source_url: "https://slow.example/timeout",
-            source_name: "Official Site",
             event_date: "2026-02-01",
           },
         ],
@@ -133,5 +130,60 @@ describe("enrichCandidateRecords", () => {
     expect(result.records).toHaveLength(0);
     expect(result.droppedRecords).toHaveLength(1);
     expect(result.droppedRecords[0]?.failureType).toBe("transient");
+  });
+
+  it("keeps valid rows and marks schema-invalid rows as dropped for repair", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        records: [
+          {
+            title: "Valid record",
+            description: "Valid description",
+            source_url: "https://good.example/valid",
+            event_date: "2026-02-01",
+          },
+          {
+            title: "Missing date record",
+            description: "Has no date",
+            source_url: "https://good.example/missing-date",
+          },
+        ],
+      },
+      rawText: "ok",
+    });
+
+    verifyHttpUrlReachabilityMock.mockResolvedValue({
+      ok: true,
+      normalizedUrl: "https://good.example/valid",
+      finalUrl: "https://good.example/valid",
+      status: 200,
+    });
+
+    const result = await enrichCandidateRecords(
+      {
+        candidateDisplayName: "Jane Doe",
+        districtName: "California",
+        districtType: "statewide",
+        state: "CA",
+        electionDate: "2026-11-03",
+        officialBallotTitle: "Governor",
+        seedUrls: [],
+      },
+      {
+        timeoutMs: 90000,
+      },
+      [{ provider: "openai", model: "gpt-test" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+
+    expect(result.records).toHaveLength(1);
+    expect(result.droppedRecords).toHaveLength(1);
+    expect(result.droppedRecords[0]?.failureKind).toBe("schema");
+    expect(result.droppedRecords[0]?.reason).toContain("schema invalid row index=1");
   });
 });

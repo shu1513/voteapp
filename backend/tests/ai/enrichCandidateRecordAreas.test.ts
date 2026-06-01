@@ -18,7 +18,6 @@ describe("enrichCandidateRecordAreas", () => {
             title: "Record title",
             description: "Record description",
             sourceUrl: "https://example.org/a",
-            sourceName: "Example",
             eventDate: "2026-05-01",
           },
         ],

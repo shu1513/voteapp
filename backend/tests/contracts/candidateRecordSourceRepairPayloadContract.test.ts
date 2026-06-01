@@ -7,7 +7,13 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
     const parsed = parseCandidateRecordSourceRepairPayload(
       {
         repairs: [
-          { bad_index: 0, source_url: "https://example.org/a", source_name: "Example" },
+          {
+            bad_index: 0,
+            title: "Record A",
+            description: "Description A",
+            source_url: "https://example.org/a",
+            event_date: "2026-01-01",
+          },
           { bad_index: 1, no_replacement: true, reason: "no reliable source" },
         ],
       },
@@ -20,7 +26,13 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
     }
 
     expect(parsed.payload.repairs).toEqual([
-      { bad_index: 0, source_url: "https://example.org/a", source_name: "Example" },
+      {
+        bad_index: 0,
+        title: "Record A",
+        description: "Description A",
+        source_url: "https://example.org/a",
+        event_date: "2026-01-01",
+      },
     ]);
     expect(parsed.payload.no_replacement_indexes).toEqual([1]);
   });
@@ -29,7 +41,13 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
     const parsed = parseCandidateRecordSourceRepairPayload(
       {
         repairs: [
-          { bad_index: 0, source_url: "https://example.org/a", source_name: "Example" },
+          {
+            bad_index: 0,
+            title: "Record A",
+            description: "Description A",
+            source_url: "https://example.org/a",
+            event_date: "2026-01-01",
+          },
           { bad_index: 0, no_replacement: true },
         ],
       },
@@ -42,7 +60,15 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
   it("rejects out-of-range bad_index", () => {
     const parsed = parseCandidateRecordSourceRepairPayload(
       {
-        repairs: [{ bad_index: 2, source_url: "https://example.org/a", source_name: "Example" }],
+        repairs: [
+          {
+            bad_index: 2,
+            title: "Record A",
+            description: "Description A",
+            source_url: "https://example.org/a",
+            event_date: "2026-01-01",
+          },
+        ],
       },
       { badRecordCount: 2 }
     );

@@ -42,7 +42,6 @@ describe("enrichCandidateRecordSourcesRepair", () => {
             title: "Record",
             description: "Desc",
             sourceUrl: "https://bad.example/404",
-            sourceName: "Bad",
             eventDate: "2026-01-01",
             failureReason: "404",
           },

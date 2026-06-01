@@ -10,14 +10,12 @@ describe("buildCandidateRecordIdentityKey", () => {
     const left = buildCandidateRecordIdentityKey({
       title: "  City-Council   Vote  ",
       sourceUrl: "HTTPS://Example.com/path///",
-      sourceName: " Local News ",
       eventDate: "2026-05-01",
     });
 
     const right = buildCandidateRecordIdentityKey({
       title: "city council vote",
       sourceUrl: "https://example.com/path",
-      sourceName: "local news",
       eventDate: new Date("2026-05-01T12:00:00.000Z"),
     });
 
@@ -28,13 +26,11 @@ describe("buildCandidateRecordIdentityKey", () => {
     const first = buildCandidateRecordIdentityKey({
       title: "City Council Vote",
       sourceUrl: "https://example.com/path",
-      sourceName: "Local News",
       eventDate: "2026-05-01",
     });
     const second = buildCandidateRecordIdentityKey({
       title: "City Council Vote",
       sourceUrl: "https://example.com/path",
-      sourceName: "Local News",
       eventDate: "2026-05-02",
     });
 
@@ -56,7 +52,6 @@ describe("upsertCandidateRecords", () => {
         title: "Record A",
         description: "Desc A",
         sourceUrl: "https://example.com/a",
-        sourceName: "Example",
         eventDate: "2026-04-01",
       },
       {
@@ -64,7 +59,6 @@ describe("upsertCandidateRecords", () => {
         title: "Record B",
         description: "Desc B",
         sourceUrl: "https://example.com/b",
-        sourceName: "Example",
         eventDate: "2026-04-02",
       },
     ]);

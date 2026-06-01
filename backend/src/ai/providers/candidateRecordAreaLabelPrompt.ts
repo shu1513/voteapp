@@ -4,7 +4,6 @@ export type CandidateRecordAreaLabelPromptRecord = {
   title: string;
   description: string;
   sourceUrl: string;
-  sourceName: string;
   eventDate: string;
 };
 
@@ -38,7 +37,7 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
     `- state: "${input.state}"`,
     `- election_date: "${input.electionDate}"`,
     `- official_ballot_title: "${input.officialBallotTitle}"`,
-    ...(includeSenateContext && input.electionStage ? [`- election_stage: "${input.electionStage}"`] : []),
+    ...(input.electionStage ? [`- election_stage: "${input.electionStage}"`] : []),
     ...(includeSenateContext && input.senateClass ? [`- senate_class: "${input.senateClass}"`] : []),
     ...(includeSenateContext && input.termEndYear ? [`- term_end_year: "${input.termEndYear}"`] : []),
     "",
@@ -50,7 +49,6 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
       `- record_index: ${index}`,
       `  title: ${JSON.stringify(record.title)}`,
       `  description: ${JSON.stringify(record.description)}`,
-      `  source_name: ${JSON.stringify(record.sourceName)}`,
       `  source_url: ${JSON.stringify(record.sourceUrl)}`,
       `  event_date: ${JSON.stringify(record.eventDate)}`,
     ]),

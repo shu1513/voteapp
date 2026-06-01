@@ -6,7 +6,7 @@ import {
   type ResearchErrorCode,
 } from "./researchProviderClient.js";
 import {
-  parseCandidateRecordDiscoveryPayload,
+  parseCandidateRecordDiscoveryPayloadPartial,
   type CandidateDiscoveredRecord,
 } from "../contracts/candidateRecordDiscoveryPayloadContract.js";
 import { buildCandidateRecordDiscoveryPrompt } from "./providers/candidateRecordDiscoveryPrompt.js";
@@ -61,9 +61,15 @@ export type EnrichCandidateRecordsResult =
       model: string;
       records: CandidateDiscoveredRecord[];
       droppedRecords: Array<{
-        record: CandidateDiscoveredRecord;
+        record: {
+          title: string;
+          description: string;
+          source_url: string;
+          event_date: string;
+        };
         reason: string;
         failureType: "transient" | "permanent";
+        failureKind: "schema" | "source_url";
       }>;
       aiRawDebug: Record<string, unknown> | null;
     }
@@ -135,6 +141,7 @@ async function verifyCandidateRecordSources(
     record: CandidateDiscoveredRecord;
     reason: string;
     failureType: "transient" | "permanent";
+    failureKind: "source_url";
   }>;
 }> {
   const uniqueUrls = [...new Set(records.map((record) => record.source_url))];
@@ -144,6 +151,7 @@ async function verifyCandidateRecordSources(
     record: CandidateDiscoveredRecord;
     reason: string;
     failureType: "transient" | "permanent";
+    failureKind: "source_url";
   }> = [];
 
   for (const record of records) {
@@ -153,6 +161,7 @@ async function verifyCandidateRecordSources(
         record,
         reason: "citation URL verification did not return a result",
         failureType: "transient",
+        failureKind: "source_url",
       });
       continue;
     }
@@ -162,6 +171,7 @@ async function verifyCandidateRecordSources(
         record,
         reason: verification.reason,
         failureType: classifyCitationVerificationFailure(verification.reason),
+        failureKind: "source_url",
       });
       continue;
     }
@@ -246,7 +256,7 @@ export async function enrichCandidateRecords(
         break;
       }
 
-      const parsed = parseCandidateRecordDiscoveryPayload(generated.parsed);
+      const parsed = parseCandidateRecordDiscoveryPayloadPartial(generated.parsed);
       if (!parsed.ok) {
         const feedbackLine = `Fix payload schema: ${parsed.reason}.`;
         reviewFeedbackLines.add(feedbackLine);
@@ -271,17 +281,33 @@ export async function enrichCandidateRecords(
         parsed.payload.records,
         config.timeoutMs
       );
+      const schemaDroppedRecords = parsed.invalid_rows.map((row) => ({
+        record: {
+          title: row.raw_record.title,
+          description: row.raw_record.description,
+          source_url: row.raw_record.source_url,
+          event_date: row.raw_record.event_date,
+        },
+        reason: `schema invalid row index=${row.index}: ${row.reason}`,
+        failureType: "permanent" as const,
+        failureKind: "schema" as const,
+      }));
+      const droppedRecords = [...sourceVerification.droppedRecords, ...schemaDroppedRecords];
 
       return {
         ok: true,
         provider: candidate.provider,
         model: candidate.model,
         records: sourceVerification.verifiedRecords,
-        droppedRecords: sourceVerification.droppedRecords,
+        droppedRecords,
         aiRawDebug: {
           raw_response_preview: trimDebugText(generated.rawText),
-          dropped_records_count: sourceVerification.droppedRecords.length,
+          dropped_records_count: droppedRecords.length,
+          dropped_records_source_url_count: sourceVerification.droppedRecords.length,
+          dropped_records_schema_count: schemaDroppedRecords.length,
           verified_records_count: sourceVerification.verifiedRecords.length,
+          parsed_valid_row_count: parsed.payload.records.length,
+          parsed_invalid_row_count: parsed.invalid_rows.length,
           debug_meta: generated.debugMeta ?? null,
         },
       };

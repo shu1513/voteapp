@@ -358,7 +358,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     ? ` (+${discovered.droppedRecords.length - 5} more)`
                     : "";
                 console.warn(
-                  `candidate-record enricher found unverified source URLs candidate_id=${claimedCandidateId} count=${discovered.droppedRecords.length}; attempting repair: ${droppedPreview}${droppedSuffix}`
+                  `candidate-record enricher found repairable bad rows candidate_id=${claimedCandidateId} count=${discovered.droppedRecords.length}; attempting repair: ${droppedPreview}${droppedSuffix}`
                 );
               }
 
@@ -374,7 +374,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     title: record.title,
                     description: record.description,
                     sourceUrl: record.source_url,
-                    sourceName: record.source_name,
                     eventDate: record.event_date,
                   }))
                 );
@@ -384,7 +383,11 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
 
               if (discovered.droppedRecords.length > 0) {
                 const blockedUrls = [
-                  ...new Set(discovered.droppedRecords.map((item) => item.record.source_url)),
+                  ...new Set(
+                    discovered.droppedRecords
+                      .filter((item) => item.failureKind === "source_url")
+                      .map((item) => item.record.source_url)
+                  ),
                 ];
                 const repair = await enrichCandidateRecordSourcesRepair(
                   {
@@ -403,7 +406,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                       title: item.record.title,
                       description: item.record.description,
                       sourceUrl: item.record.source_url,
-                      sourceName: item.record.source_name,
                       eventDate: item.record.event_date,
                       failureReason: item.reason,
                     })),
@@ -468,9 +470,10 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     }
 
                     repairedVerifiedRecords.push({
-                      ...originalBad.record,
+                      title: suggestion.title,
+                      description: suggestion.description,
                       source_url: verification.finalUrl,
-                      source_name: suggestion.source_name,
+                      event_date: suggestion.event_date,
                     });
                     if (originalBad.failureType === "transient") {
                       transientDropCount = Math.max(0, transientDropCount - 1);
@@ -496,7 +499,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                         title: record.title,
                         description: record.description,
                         sourceUrl: record.source_url,
-                        sourceName: record.source_name,
                         eventDate: record.event_date,
                       }))
                     );
@@ -562,7 +564,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                 buildCandidateRecordIdentityKey({
                   title: record.title,
                   sourceUrl: record.source_url,
-                  sourceName: record.source_name,
                   eventDate: record.event_date,
                 })
               );
@@ -588,7 +589,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     title: record.title,
                     description: record.description,
                     sourceUrl: record.source_url,
-                    sourceName: record.source_name,
                     eventDate: record.event_date,
                   })),
                 },
@@ -609,7 +609,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                 const identityKey = buildCandidateRecordIdentityKey({
                   title: sourceRecord.title,
                   sourceUrl: sourceRecord.source_url,
-                  sourceName: sourceRecord.source_name,
                   eventDate: sourceRecord.event_date,
                 });
                 const candidateRecordId = persistedByIdentity.get(identityKey);

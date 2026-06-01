@@ -16,7 +16,6 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
         title: "Backed police staffing expansion plan",
         description: "Supported budget increase for police staffing in city budget vote.",
         sourceUrl: "https://example.org/news/a",
-        sourceName: "Example News",
         eventDate: "2026-03-12",
       },
     ],
@@ -43,5 +42,18 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
     expect(prompt).toContain('- election_stage: "general"');
     expect(prompt).toContain('- senate_class: "class_i"');
     expect(prompt).toContain('- term_end_year: "2031"');
+  });
+
+  it("includes election_stage for non-senate offices when provided", () => {
+    const prompt = buildCandidateRecordAreaLabelPrompt({
+      ...baseInput,
+      officialBallotTitle: "Governor",
+      electionStage: "primary",
+      senateClass: "class_i",
+      termEndYear: "2031",
+    });
+    expect(prompt).toContain('- election_stage: "primary"');
+    expect(prompt).not.toContain("- senate_class:");
+    expect(prompt).not.toContain("- term_end_year:");
   });
 });
