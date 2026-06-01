@@ -34,6 +34,8 @@
     "candidates:record:enrich": "tsx src/scripts/enrichCandidateRecords.ts",
     "candidates:record:live:ai-probe": "tsx src/scripts/liveCandidateRecordAiProbe.ts",
     "candidates:record:live:pipeline-smoke": "tsx src/scripts/liveCandidateRecordPipelineSmoke.ts",
+    "candidates:record:migration-066:preflight": "tsx src/scripts/checkCandidateRecordV2KeyCollisions.ts",
+    "candidates:record:migration-066:rehome-tags": "tsx src/scripts/prepareCandidateRecord066TagRehome.ts",
     "candidates:record:produce-rollover": "tsx src/scripts/produceCandidateRecordRollover.ts",
     "candidates:record:scheduler:upsert": "tsx src/scripts/upsertCandidateRecordDailyScheduler.ts",
     "candidates:record:scheduler:worker": "tsx src/scripts/runCandidateRecordSchedulerWorker.ts",

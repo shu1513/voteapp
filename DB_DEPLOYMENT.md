@@ -107,3 +107,24 @@ From `backend/` (non-prod DB/Redis only):
 - Do not edit historical migration files after they are applied in shared environments.
 - Add new migrations as new numbered files (e.g., `029_...sql`).
 - Ballot-measure detail rows are intentionally constrained to 0-or-1 per `elections.id` (`UNIQUE (election_id)`), as enforced by migration `035_propositions_unique_election_id.sql`.
+
+## Candidate record migration 066 preflight
+
+Before applying `066_drop_candidate_records_source_name.sql` in environments with existing `candidate_records` data:
+
+1. Run preflight check from `backend/`:
+   - `npm run candidates:record:migration-066:preflight`
+2. Confirm:
+   - `safe_to_apply_migration_066 = true`
+   - `collision_group_count = 0`
+
+If collisions exist (`collision_group_count > 0`):
+
+1. Rehome candidate-record area tags to the projected survivor rows:
+   - `npm run candidates:record:migration-066:rehome-tags`
+2. Then apply migrations:
+   - `npm run db:migrate`
+
+Note: do not edit already-applied migration files. Migration checksums are enforced.
+
+After `066` in shared environments, apply `067_fix_candidate_record_v2_title_normalization.sql` via normal `npm run db:migrate` to align SQL key normalization with runtime identity-key trimming.

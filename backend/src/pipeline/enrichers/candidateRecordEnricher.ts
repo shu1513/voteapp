@@ -33,6 +33,10 @@ import {
   type CandidateRecordsSearchMetrics,
 } from "../candidates/candidateRecordsSearchLifecycle.js";
 import { loadCandidateElectionOfficeContext } from "../candidates/candidateRecordOfficeContext.js";
+import {
+  buildCandidateRecordRunProcessedMarkerKey,
+  CANDIDATE_RECORD_RUN_PROCESSED_MARKER_TTL_SECONDS,
+} from "../candidates/candidateRecordRunMarkers.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { decideCandidateRecordOutcome } from "../candidates/candidateRecordOutcomePolicy.js";
 
@@ -261,6 +265,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
         const candidateId = entry.message.candidate_id;
         const electionId = entry.message.election_id;
         const itemType = entry.message.item_type;
+        const runId = (entry.message.run_id ?? "").trim();
 
         try {
           const deliveryCount = await getDeliveryCount(redis, entry.id);
@@ -662,6 +667,13 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
             console.log(
               `candidate-record enricher skipped candidate_id=${candidateId} election_id=${electionId} reason=${lifecycleResult.reason}`
             );
+          }
+
+          if (runId.length > 0) {
+            const markerKey = buildCandidateRecordRunProcessedMarkerKey(runId);
+            await redis.set(markerKey, lifecycleResult.status, {
+              EX: CANDIDATE_RECORD_RUN_PROCESSED_MARKER_TTL_SECONDS,
+            });
           }
 
           await redis.xAck(

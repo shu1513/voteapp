@@ -3,6 +3,7 @@ import { createClient } from "redis";
 
 import { getPipelineEnv } from "../config/env.js";
 import { enqueueCandidateRecordDrafts } from "../pipeline/candidates/candidateRecordDraftEmitter.js";
+import { buildCandidateRecordRunProcessedMarkerKey } from "../pipeline/candidates/candidateRecordRunMarkers.js";
 import { runCandidateRecordEnricher } from "../pipeline/enrichers/candidateRecordEnricher.js";
 
 type CandidateElectionPair = {
@@ -142,24 +143,33 @@ async function main(): Promise<void> {
 
     const startedAt = new Date();
     const before = await loadSnapshot(pool, pair.candidateId);
+    const runId = `candidate_record_live_pipeline_smoke_${startedAt.toISOString()}`;
 
     await redis.connect();
+    const runMarkerKey = buildCandidateRecordRunProcessedMarkerKey(runId);
+    await redis.del(runMarkerKey);
     const enqueue = await enqueueCandidateRecordDrafts(redis, [
       {
         candidateId: pair.candidateId,
         electionId: pair.electionId,
-        runId: `candidate_record_live_pipeline_smoke_${startedAt.toISOString()}`,
+        runId,
       },
     ]);
 
     let completedInWindow = false;
+    let processedStatus: string | null = null;
     for (let i = 0; i < loops; i += 1) {
       await runCandidateRecordEnricher({ once: true, batchSize, blockMs: 2000 });
+      processedStatus = await redis.get(runMarkerKey);
+      if (processedStatus) {
+        completedInWindow = true;
+        break;
+      }
       const snapshot = await loadSnapshot(pool, pair.candidateId);
       const lastSearchedAt = toTimestamp(snapshot.lastRecordsSearchedAt);
       if (lastSearchedAt !== null && lastSearchedAt >= startedAt.getTime()) {
-        completedInWindow = true;
-        break;
+        // Timestamp is still useful context, but success is tied to run-specific marker.
+        continue;
       }
     }
 
@@ -172,6 +182,8 @@ async function main(): Promise<void> {
       election_id: pair.electionId,
       started_at: startedAt.toISOString(),
       enqueue,
+      run_id: runId,
+      processed_status: processedStatus,
       completed_in_window: completedInWindow,
       before,
       after,
