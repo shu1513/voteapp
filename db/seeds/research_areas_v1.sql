@@ -101,6 +101,11 @@ VALUES
     'Protect equal rights, anti-discrimination enforcement, and fair treatment under law.'
   ),
   (
+    'general',
+    'General',
+    'General candidate record not mapped to a specific office research area.'
+  ),
+  (
     'public_education_quality',
     'Public Education Quality',
     'Strengthen student outcomes through effective teaching, standards, funding, and accountability.'

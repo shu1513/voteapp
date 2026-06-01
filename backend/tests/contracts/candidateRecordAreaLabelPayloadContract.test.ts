@@ -1,0 +1,71 @@
+import { describe, expect, it } from "vitest";
+
+import { parseCandidateRecordAreaLabelPayload } from "../../src/contracts/candidateRecordAreaLabelPayloadContract.js";
+
+describe("parseCandidateRecordAreaLabelPayload", () => {
+  it("parses valid labels with non-general stance and general without stance", () => {
+    const parsed = parseCandidateRecordAreaLabelPayload(
+      {
+        labels: [
+          { record_index: 0, research_area_slug: "government_efficiency", stance: "for" },
+          { record_index: 1, research_area_slug: "general" },
+        ],
+      },
+      {
+        allowedResearchAreaSlugs: new Set(["general", "government_efficiency"]),
+        recordCount: 2,
+        requireLabelForEveryRecord: true,
+      }
+    );
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+    expect(parsed.payload.labels).toEqual([
+      { record_index: 0, research_area_slug: "government_efficiency", stance: "for" },
+      { record_index: 1, research_area_slug: "general" },
+    ]);
+  });
+
+  it("rejects out-of-scope research area slug", () => {
+    const parsed = parseCandidateRecordAreaLabelPayload(
+      {
+        labels: [{ record_index: 0, research_area_slug: "immigration", stance: "neutral" }],
+      },
+      { allowedResearchAreaSlugs: new Set(["general", "government_efficiency"]) }
+    );
+
+    expect(parsed.ok).toBe(false);
+  });
+
+  it("rejects stance on general", () => {
+    const parsed = parseCandidateRecordAreaLabelPayload({
+      labels: [{ record_index: 0, research_area_slug: "general", stance: "neutral" }],
+    });
+
+    expect(parsed.ok).toBe(false);
+  });
+
+  it("rejects missing stance on non-general label", () => {
+    const parsed = parseCandidateRecordAreaLabelPayload({
+      labels: [{ record_index: 0, research_area_slug: "government_efficiency" }],
+    });
+
+    expect(parsed.ok).toBe(false);
+  });
+
+  it("rejects missing coverage when requireLabelForEveryRecord is true", () => {
+    const parsed = parseCandidateRecordAreaLabelPayload(
+      {
+        labels: [{ record_index: 0, research_area_slug: "general" }],
+      },
+      { recordCount: 2, requireLabelForEveryRecord: true, allowedResearchAreaSlugs: new Set(["general"]) }
+    );
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("missing at least one label for record_index=1");
+    }
+  });
+});

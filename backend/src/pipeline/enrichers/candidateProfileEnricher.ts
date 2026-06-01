@@ -13,6 +13,7 @@ import {
   STAGING_CANDIDATE_PROFILE_REJECTED_STREAM,
   STAGING_ITEM_TYPE_CANDIDATE_PROFILE,
 } from "../../config/electionsPipeline.js";
+import { enqueueCandidateRecordDrafts } from "../candidates/candidateRecordDraftEmitter.js";
 import type { CandidateProfilePayload } from "../../contracts/candidateProfilePayloadContract.js";
 import {
   hasNormalizedIntersection,
@@ -605,6 +606,7 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
         const electionId = entry.message.election_id;
         const itemType = entry.message.item_type;
         const candidateDisplayName = entry.message.candidate_display_name;
+        const runId = entry.message.run_id ?? null;
         const disambiguationHint = entry.message.disambiguation_hint?.trim() || undefined;
         const skipPerElectionNameDedupe = parseBooleanField(entry.message.skip_per_election_name_dedupe) === true;
         const rosterFecIds = parseSerializedStringArray(entry.message.roster_fec_ids);
@@ -750,6 +752,14 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           } finally {
             client.release();
           }
+
+          await enqueueCandidateRecordDrafts(redis, [
+            {
+              candidateId,
+              electionId,
+              runId,
+            },
+          ]);
 
           await redis.xAck(
             STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
