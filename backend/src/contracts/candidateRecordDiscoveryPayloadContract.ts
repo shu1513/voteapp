@@ -1,7 +1,6 @@
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 export type CandidateDiscoveredRecord = {
-  title: string;
   description: string;
   source_url: string;
   event_date: string;
@@ -15,7 +14,6 @@ export type CandidateRecordDiscoveryInvalidRow = {
   index: number;
   reason: string;
   raw_record: {
-    title: string;
     description: string;
     source_url: string;
     event_date: string;
@@ -56,8 +54,8 @@ function parseEntry(
   }
 
   const input = value as Record<string, unknown>;
-  if (!isNonEmptyString(input.title) || !isNonEmptyString(input.description)) {
-    return { ok: false, reason: "title and description must be non-empty strings" };
+  if (!isNonEmptyString(input.description)) {
+    return { ok: false, reason: "description must be non-empty string" };
   }
 
   if (!isNonEmptyString(input.source_url)) {
@@ -76,7 +74,6 @@ function parseEntry(
   return {
     ok: true,
     record: {
-      title: input.title.trim(),
       description: input.description.trim(),
       source_url: sourceUrl,
       event_date: eventDate,
@@ -110,7 +107,6 @@ export function parseCandidateRecordDiscoveryPayloadPartial(payload: unknown):
         index,
         reason: parsed.reason,
         raw_record: {
-          title: normalizeRawString(rowObject.title),
           description: normalizeRawString(rowObject.description),
           source_url: normalizeRawString(rowObject.source_url),
           event_date: normalizeRawString(rowObject.event_date),
@@ -118,7 +114,7 @@ export function parseCandidateRecordDiscoveryPayloadPartial(payload: unknown):
       });
       continue;
     }
-    const dedupeKey = `${parsed.record.source_url}|${parsed.record.event_date}|${parsed.record.title.toLowerCase()}`;
+    const dedupeKey = `${parsed.record.source_url}|${parsed.record.event_date}|${parsed.record.description.toLowerCase()}`;
     if (seen.has(dedupeKey)) {
       continue;
     }

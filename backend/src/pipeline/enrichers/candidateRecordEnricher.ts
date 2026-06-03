@@ -211,26 +211,6 @@ async function parkMessage(
   await redis.xAck(STAGING_CANDIDATE_RECORD_DRAFT_STREAM, STAGING_CANDIDATE_RECORD_ENRICHER_GROUP, entry.id);
 }
 
-async function loadPersistedRecordIdByIdentity(
-  pool: Pool,
-  candidateId: string,
-  identityKeys: readonly string[]
-): Promise<Map<string, string>> {
-  if (identityKeys.length === 0) {
-    return new Map();
-  }
-  const result = await pool.query<{ id: string; record_identity_key: string }>(
-    `
-      SELECT id, record_identity_key
-      FROM public.candidate_records
-      WHERE candidate_id = $1
-        AND record_identity_key = ANY($2::text[])
-    `,
-    [candidateId, identityKeys]
-  );
-  return new Map(result.rows.map((row) => [row.record_identity_key, row.id]));
-}
-
 export async function runCandidateRecordEnricher(options: EnricherOptions = {}): Promise<void> {
   const { once = false, batchSize = 25, blockMs = 5000 } = options;
   const env = getPipelineEnv();
@@ -356,7 +336,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               if (discovered.droppedRecords.length > 0) {
                 const droppedPreview = discovered.droppedRecords
                   .slice(0, 5)
-                  .map((item) => `${item.record.title} (${item.record.source_url}): ${item.reason}`)
+                  .map((item) => `${item.record.description} (${item.record.source_url}): ${item.reason}`)
                   .join("; ");
                 const droppedSuffix =
                   discovered.droppedRecords.length > 5
@@ -370,13 +350,13 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               let insertedCount = 0;
               let dedupedCount = 0;
               const recordsForTagging = [...discovered.records];
+              const persistedByIdentity = new Map<string, string>();
 
               if (discovered.records.length > 0) {
                 const firstPassUpsert = await upsertCandidateRecords(
                   pool,
                   discovered.records.map((record) => ({
                     candidateId: claimedCandidateId,
-                    title: record.title,
                     description: record.description,
                     sourceUrl: record.source_url,
                     eventDate: record.event_date,
@@ -384,6 +364,9 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                 );
                 insertedCount += firstPassUpsert.inserted;
                 dedupedCount += firstPassUpsert.updated;
+                for (const [key, id] of firstPassUpsert.recordIdsByIdentityKey) {
+                  persistedByIdentity.set(key, id);
+                }
               }
 
               if (discovered.droppedRecords.length > 0) {
@@ -408,7 +391,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     blockedUrls,
                     badRecords: discovered.droppedRecords.map((item, badIndex) => ({
                       badIndex,
-                      title: item.record.title,
                       description: item.record.description,
                       sourceUrl: item.record.source_url,
                       eventDate: item.record.event_date,
@@ -475,7 +457,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     }
 
                     repairedVerifiedRecords.push({
-                      title: suggestion.title,
                       description: suggestion.description,
                       source_url: verification.finalUrl,
                       event_date: suggestion.event_date,
@@ -501,7 +482,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                       pool,
                       repairedVerifiedRecords.map((record) => ({
                         candidateId: claimedCandidateId,
-                        title: record.title,
                         description: record.description,
                         sourceUrl: record.source_url,
                         eventDate: record.event_date,
@@ -509,6 +489,9 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     );
                     insertedCount += secondPassUpsert.inserted;
                     dedupedCount += secondPassUpsert.updated;
+                    for (const [key, id] of secondPassUpsert.recordIdsByIdentityKey) {
+                      persistedByIdentity.set(key, id);
+                    }
                     recordsForTagging.push(...repairedVerifiedRecords);
                     stats.repaired_verified_count += repairedVerifiedRecords.length;
                   }
@@ -565,19 +548,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               }
               const allowedSlugs = [...new Set(allowedAreas.map((row) => row.slug))];
 
-              const identityKeys = recordsForTagging.map((record) =>
-                buildCandidateRecordIdentityKey({
-                  title: record.title,
-                  sourceUrl: record.source_url,
-                  eventDate: record.event_date,
-                })
-              );
-              const persistedByIdentity = await loadPersistedRecordIdByIdentity(
-                pool,
-                claimedCandidateId,
-                identityKeys
-              );
-
               const areaLabels = await enrichCandidateRecordAreas(
                 {
                   candidateDisplayName: context.candidateDisplayName,
@@ -591,7 +561,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                   termEndYear: context.termEndYear,
                   allowedResearchAreaSlugs: allowedSlugs,
                   records: recordsForTagging.map((record) => ({
-                    title: record.title,
                     description: record.description,
                     sourceUrl: record.source_url,
                     eventDate: record.event_date,
@@ -612,7 +581,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                   throw new Error(`record_index out of range in labels: ${label.record_index}`);
                 }
                 const identityKey = buildCandidateRecordIdentityKey({
-                  title: sourceRecord.title,
+                  description: sourceRecord.description,
                   sourceUrl: sourceRecord.source_url,
                   eventDate: sourceRecord.event_date,
                 });

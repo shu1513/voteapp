@@ -1,3 +1,5 @@
+import { isNonStanceResearchAreaSlug } from "../pipeline/candidates/candidateRecordResearchAreaPolicy.js";
+
 export type CandidateRecordAreaLabel = {
   record_index: number;
   research_area_slug: string;
@@ -51,10 +53,10 @@ function parseLabel(value: unknown, options: ParseOptions): CandidateRecordAreaL
   }
 
   const stance = normalizeStance(input.stance);
-  if (slug === "general" && stance !== null) {
+  if (isNonStanceResearchAreaSlug(slug) && stance !== null) {
     return null;
   }
-  if (slug !== "general" && stance === null) {
+  if (!isNonStanceResearchAreaSlug(slug) && stance === null) {
     return null;
   }
 

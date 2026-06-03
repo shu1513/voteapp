@@ -1,7 +1,6 @@
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
 
 export type CandidateRecordAreaLabelPromptRecord = {
-  title: string;
   description: string;
   sourceUrl: string;
   eventDate: string;
@@ -42,12 +41,11 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
     ...(includeSenateContext && input.termEndYear ? [`- term_end_year: "${input.termEndYear}"`] : []),
     "",
     `Allowed research area slugs for this office (use only these): ${JSON.stringify(input.allowedResearchAreaSlugs)}`,
-    "Special rule: use research_area_slug='general' when no specific allowed area applies.",
+    "Special non-stance areas: use research_area_slug='general' when no specific allowed area applies; use research_area_slug='legal_and_ethics_record' for documented criminal convictions, official ethics findings, sanctions, disciplinary actions, court judgments, enforcement actions, or verified public accountability records.",
     "",
     "Records to classify (record_index is required in output):",
     ...input.records.flatMap((record, index) => [
       `- record_index: ${index}`,
-      `  title: ${JSON.stringify(record.title)}`,
       `  description: ${JSON.stringify(record.description)}`,
       `  source_url: ${JSON.stringify(record.sourceUrl)}`,
       `  event_date: ${JSON.stringify(record.eventDate)}`,
@@ -69,8 +67,8 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
     "- You may assign multiple area labels to the same record_index when relevant.",
     "- Use only slugs from the allowed list.",
     "- If no specific allowed area applies, use research_area_slug='general'.",
-    "- When research_area_slug='general', omit stance.",
-    "- When research_area_slug!='general', stance is required and must be for|against|neutral.",
+    "- When research_area_slug is 'general' or 'legal_and_ethics_record', omit stance.",
+    "- For all other research_area_slug values, stance is required and must be for|against|neutral.",
     "- Do not repeat the same (record_index, research_area_slug) pair.",
     "- return JSON only (no prose, no markdown).",
     ...(reviewFeedbackLines.length > 0

@@ -3,17 +3,18 @@ import { describe, expect, it } from "vitest";
 import { parseCandidateRecordAreaLabelPayload } from "../../src/contracts/candidateRecordAreaLabelPayloadContract.js";
 
 describe("parseCandidateRecordAreaLabelPayload", () => {
-  it("parses valid labels with non-general stance and general without stance", () => {
+  it("parses valid labels with stance areas and non-stance universal areas", () => {
     const parsed = parseCandidateRecordAreaLabelPayload(
       {
         labels: [
           { record_index: 0, research_area_slug: "government_efficiency", stance: "for" },
           { record_index: 1, research_area_slug: "general" },
+          { record_index: 2, research_area_slug: "legal_and_ethics_record" },
         ],
       },
       {
-        allowedResearchAreaSlugs: new Set(["general", "government_efficiency"]),
-        recordCount: 2,
+        allowedResearchAreaSlugs: new Set(["general", "legal_and_ethics_record", "government_efficiency"]),
+        recordCount: 3,
         requireLabelForEveryRecord: true,
       }
     );
@@ -25,6 +26,7 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
     expect(parsed.payload.labels).toEqual([
       { record_index: 0, research_area_slug: "government_efficiency", stance: "for" },
       { record_index: 1, research_area_slug: "general" },
+      { record_index: 2, research_area_slug: "legal_and_ethics_record" },
     ]);
   });
 
@@ -42,6 +44,14 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
   it("rejects stance on general", () => {
     const parsed = parseCandidateRecordAreaLabelPayload({
       labels: [{ record_index: 0, research_area_slug: "general", stance: "neutral" }],
+    });
+
+    expect(parsed.ok).toBe(false);
+  });
+
+  it("rejects stance on legal_and_ethics_record", () => {
+    const parsed = parseCandidateRecordAreaLabelPayload({
+      labels: [{ record_index: 0, research_area_slug: "legal_and_ethics_record", stance: "neutral" }],
     });
 
     expect(parsed.ok).toBe(false);

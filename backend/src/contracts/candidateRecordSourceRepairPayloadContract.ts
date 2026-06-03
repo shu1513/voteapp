@@ -2,7 +2,6 @@ import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 export type CandidateRecordSourceRepair = {
   bad_index: number;
-  title: string;
   description: string;
   source_url: string;
   event_date: string;
@@ -92,14 +91,10 @@ export function parseCandidateRecordSourceRepairPayload(
       continue;
     }
 
-    if (
-      !isNonEmptyString(row.title) ||
-      !isNonEmptyString(row.description) ||
-      !isNonEmptyString(row.source_url)
-    ) {
+    if (!isNonEmptyString(row.description) || !isNonEmptyString(row.source_url)) {
       return {
         ok: false,
-        reason: "payload.repairs rows require title, description, and source_url unless no_replacement=true",
+        reason: "payload.repairs rows require description and source_url unless no_replacement=true",
       };
     }
 
@@ -114,7 +109,6 @@ export function parseCandidateRecordSourceRepairPayload(
 
     repairs.push({
       bad_index: badIndex,
-      title: row.title.trim(),
       description: row.description.trim(),
       source_url: sourceUrl,
       event_date: eventDate,

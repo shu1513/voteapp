@@ -1,5 +1,11 @@
 import type { PoolClient } from "pg";
 
+import {
+  GENERAL_RESEARCH_AREA_SLUG,
+  LEGAL_AND_ETHICS_RESEARCH_AREA_SLUG,
+  isNonStanceResearchAreaSlug,
+} from "./candidateRecordResearchAreaPolicy.js";
+
 type Queryable = Pick<PoolClient, "query">;
 
 export type CandidateRecordAreaStance = "for" | "against" | "neutral";
@@ -54,21 +60,20 @@ export async function loadAllowedResearchAreasForElection(
         JOIN public.research_areas ra
           ON ra.id = ora.research_area_id
       ),
-      general_area AS (
+      universal_areas AS (
         SELECT ra.id, ra.slug
         FROM public.research_areas ra
-        WHERE ra.slug = 'general'
-        LIMIT 1
+        WHERE ra.slug = ANY($2::text[])
       )
       SELECT DISTINCT id, slug
       FROM (
         SELECT id, slug FROM office_bound
         UNION ALL
-        SELECT id, slug FROM general_area
+        SELECT id, slug FROM universal_areas
       ) merged
       ORDER BY slug ASC
     `,
-    [electionId]
+    [electionId, [GENERAL_RESEARCH_AREA_SLUG, LEGAL_AND_ETHICS_RESEARCH_AREA_SLUG]]
   );
 
   return result.rows;
@@ -87,21 +92,20 @@ export async function loadAllowedResearchAreasForOfficeId(
           ON ra.id = ora.research_area_id
         WHERE ora.office_id = $1::uuid
       ),
-      general_area AS (
+      universal_areas AS (
         SELECT ra.id, ra.slug
         FROM public.research_areas ra
-        WHERE ra.slug = 'general'
-        LIMIT 1
+        WHERE ra.slug = ANY($2::text[])
       )
       SELECT DISTINCT id, slug
       FROM (
         SELECT id, slug FROM office_bound
         UNION ALL
-        SELECT id, slug FROM general_area
+        SELECT id, slug FROM universal_areas
       ) merged
       ORDER BY slug ASC
     `,
-    [officeId]
+    [officeId, [GENERAL_RESEARCH_AREA_SLUG, LEGAL_AND_ETHICS_RESEARCH_AREA_SLUG]]
   );
 
   return result.rows;
@@ -127,11 +131,11 @@ export function validateCandidateRecordAreaLabels(
       continue;
     }
 
-    if (slug === "general") {
+    if (isNonStanceResearchAreaSlug(slug)) {
       if (stance !== null) {
         failures.push({
           index: i,
-          reason: "research_area_slug 'general' must not include stance",
+          reason: `research_area_slug '${slug}' must not include stance`,
         });
         continue;
       }

@@ -21,7 +21,6 @@ describe("parseCandidateRecordDiscoveryPayload", () => {
     }
     expect(parsed.payload.records).toEqual([
       {
-        title: "Sponsored Bill 101",
         description: "Sponsored a bill on public transit funding.",
         source_url: "https://example.org/news/story",
         event_date: "2026-04-05",
@@ -33,7 +32,6 @@ describe("parseCandidateRecordDiscoveryPayload", () => {
     const parsed = parseCandidateRecordDiscoveryPayload({
       records: [
         {
-          title: "Town hall",
           description: "Candidate hosted a town hall.",
           source_url: "https://example.org/townhall",
           event_date: "April 5, 2026",
@@ -52,7 +50,6 @@ describe("parseCandidateRecordDiscoveryPayload", () => {
     const parsed = parseCandidateRecordDiscoveryPayload({
       records: [
         {
-          title: "Record",
           description: "",
           source_url: "https://example.org",
           event_date: "2026-04-05",
@@ -63,18 +60,16 @@ describe("parseCandidateRecordDiscoveryPayload", () => {
     expect(parsed.ok).toBe(false);
   });
 
-  it("dedupes duplicate rows by normalized source/date/title", () => {
+  it("dedupes duplicate rows by normalized source/date/description", () => {
     const parsed = parseCandidateRecordDiscoveryPayload({
       records: [
         {
-          title: "Town hall on housing",
-          description: "First copy",
+          description: "Town hall on housing.",
           source_url: "https://example.org/a/",
           event_date: "2026-01-01",
         },
         {
-          title: "town hall on housing",
-          description: "Second copy",
+          description: "town hall on housing.",
           source_url: "https://example.org/a",
           event_date: "2026-01-01",
         },
