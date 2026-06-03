@@ -16,7 +16,10 @@ import { parseCandidateRecordDiscoveryPayloadPartial } from "../contracts/candid
 import { verifyHttpUrlReachability } from "../ai/urlReachability.js";
 import { getPipelineEnv } from "../config/env.js";
 import { loadCandidateElectionOfficeContext } from "../pipeline/candidates/candidateRecordOfficeContext.js";
-import { loadAllowedResearchAreasForOfficeId } from "../pipeline/candidates/candidateRecordAreaTagging.js";
+import {
+  loadAllResearchAreas,
+  loadAllowedResearchAreasForOfficeId,
+} from "../pipeline/candidates/candidateRecordAreaTagging.js";
 
 type CandidateElectionPair = {
   candidateId: string;
@@ -74,7 +77,6 @@ async function findCandidateElectionPair(pool: Pool): Promise<CandidateElectionP
         ON e.id = ce.election_id
       WHERE c.deleted_at IS NULL
         AND e.race_type = 'office'
-        AND e.office_id IS NOT NULL
       ORDER BY ce.created_at DESC, ce.id DESC
       LIMIT 1
     `
@@ -115,10 +117,12 @@ async function main(): Promise<void> {
       );
     }
 
-    const allowedAreas = await loadAllowedResearchAreasForOfficeId(pool, context.officeId);
+    const allowedAreas = context.officeId
+      ? await loadAllowedResearchAreasForOfficeId(pool, context.officeId)
+      : await loadAllResearchAreas(pool);
     const allowedSlugs = [...new Set(allowedAreas.map((row) => row.slug))];
     if (allowedSlugs.length === 0) {
-      throw new Error(`No allowed research areas for office_id=${context.officeId}`);
+      throw new Error("No allowed research areas for live candidate-record AI probe");
     }
 
     const discovery = await enrichCandidateRecords(

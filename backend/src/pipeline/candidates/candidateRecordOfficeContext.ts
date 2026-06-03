@@ -14,7 +14,7 @@ export type CandidateElectionOfficeContext = {
   electionStage: string | null;
   senateClass: string | null;
   termEndYear: string | null;
-  officeId: string;
+  officeId: string | null;
   electionSources: unknown;
 };
 
@@ -51,7 +51,6 @@ export async function loadCandidateElectionOfficeContext(
       WHERE ce.candidate_id = $1
         AND ce.election_id = $2
         AND c.deleted_at IS NULL
-        AND e.office_id IS NOT NULL
       LIMIT 1
     `,
     [candidateId, electionId]

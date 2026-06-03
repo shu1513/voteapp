@@ -41,44 +41,6 @@ function normalizeStance(value: CandidateRecordAreaStance | null | undefined): C
   return value;
 }
 
-export async function loadAllowedResearchAreasForElection(
-  client: Queryable,
-  electionId: string
-): Promise<AllowedResearchArea[]> {
-  const result = await client.query<AllowedResearchArea>(
-    `
-      WITH election_office AS (
-        SELECT office_id
-        FROM public.elections
-        WHERE id = $1
-      ),
-      office_bound AS (
-        SELECT DISTINCT ra.id, ra.slug
-        FROM election_office eo
-        JOIN public.office_research_areas ora
-          ON ora.office_id = eo.office_id
-        JOIN public.research_areas ra
-          ON ra.id = ora.research_area_id
-      ),
-      universal_areas AS (
-        SELECT ra.id, ra.slug
-        FROM public.research_areas ra
-        WHERE ra.slug = ANY($2::text[])
-      )
-      SELECT DISTINCT id, slug
-      FROM (
-        SELECT id, slug FROM office_bound
-        UNION ALL
-        SELECT id, slug FROM universal_areas
-      ) merged
-      ORDER BY slug ASC
-    `,
-    [electionId, [GENERAL_RESEARCH_AREA_SLUG, LEGAL_AND_ETHICS_RESEARCH_AREA_SLUG]]
-  );
-
-  return result.rows;
-}
-
 export async function loadAllowedResearchAreasForOfficeId(
   client: Queryable,
   officeId: string
@@ -111,6 +73,18 @@ export async function loadAllowedResearchAreasForOfficeId(
   return result.rows;
 }
 
+export async function loadAllResearchAreas(client: Queryable): Promise<AllowedResearchArea[]> {
+  const result = await client.query<AllowedResearchArea>(
+    `
+      SELECT id, slug
+      FROM public.research_areas
+      ORDER BY slug ASC
+    `
+  );
+
+  return result.rows;
+}
+
 export function validateCandidateRecordAreaLabels(
   labels: readonly CandidateRecordAreaLabelInput[],
   allowedResearchAreaSlugs: ReadonlySet<string>
@@ -126,7 +100,7 @@ export function validateCandidateRecordAreaLabels(
     if (!allowedResearchAreaSlugs.has(slug)) {
       failures.push({
         index: i,
-        reason: `research_area_slug '${slug}' is not allowed for this office`,
+        reason: `research_area_slug '${slug}' is not allowed for this candidate/election context`,
       });
       continue;
     }

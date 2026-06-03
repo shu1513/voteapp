@@ -23,6 +23,7 @@ import {
 } from "../../config/electionsPipeline.js";
 import { buildCandidateRecordIdentityKey, upsertCandidateRecords } from "../candidates/candidateRecordStore.js";
 import {
+  loadAllResearchAreas,
   loadAllowedResearchAreasForOfficeId,
   upsertCandidateRecordAreaTags,
   validateCandidateRecordAreaLabels,
@@ -542,9 +543,16 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               }
               recordDropStats();
 
-              const allowedAreas = await loadAllowedResearchAreasForOfficeId(pool, context.officeId);
+              const allowedAreas = context.officeId
+                ? await loadAllowedResearchAreasForOfficeId(pool, context.officeId)
+                : await loadAllResearchAreas(pool);
               if (allowedAreas.length === 0) {
-                throw new Error(`no allowed research areas found for office_id=${context.officeId}`);
+                throw new Error("no allowed research areas found for candidate record labeling");
+              }
+              if (!context.officeId) {
+                console.log(
+                  `candidate-record enricher using all research areas because election office_id is null candidate_id=${claimedCandidateId} election_id=${context.electionId}`
+                );
               }
               const allowedSlugs = [...new Set(allowedAreas.map((row) => row.slug))];
 

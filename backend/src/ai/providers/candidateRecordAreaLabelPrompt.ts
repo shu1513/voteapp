@@ -40,7 +40,7 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
     ...(includeSenateContext && input.senateClass ? [`- senate_class: "${input.senateClass}"`] : []),
     ...(includeSenateContext && input.termEndYear ? [`- term_end_year: "${input.termEndYear}"`] : []),
     "",
-    `Allowed research area slugs for this office (use only these): ${JSON.stringify(input.allowedResearchAreaSlugs)}`,
+    `Allowed research area slugs for this candidate/election context (use only these): ${JSON.stringify(input.allowedResearchAreaSlugs)}`,
     "Special non-stance areas: use research_area_slug='general' when no specific allowed area applies; use research_area_slug='legal_and_ethics_record' for documented criminal convictions, official ethics findings, sanctions, disciplinary actions, court judgments, enforcement actions, or verified public accountability records.",
     "",
     "Records to classify (record_index is required in output):",
