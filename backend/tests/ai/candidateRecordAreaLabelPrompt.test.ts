@@ -18,7 +18,6 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
     ],
     records: [
       {
-        title: "Backed police staffing expansion plan",
         description: "Supported budget increase for police staffing in city budget vote.",
         sourceUrl: "https://example.org/news/a",
         eventDate: "2026-03-12",

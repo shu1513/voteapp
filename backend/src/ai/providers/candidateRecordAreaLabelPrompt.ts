@@ -1,7 +1,6 @@
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
 
 export type CandidateRecordAreaLabelPromptRecord = {
-  title: string;
   description: string;
   sourceUrl: string;
   eventDate: string;
@@ -47,7 +46,6 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
     "Records to classify (record_index is required in output):",
     ...input.records.flatMap((record, index) => [
       `- record_index: ${index}`,
-      `  title: ${JSON.stringify(record.title)}`,
       `  description: ${JSON.stringify(record.description)}`,
       `  source_url: ${JSON.stringify(record.sourceUrl)}`,
       `  event_date: ${JSON.stringify(record.eventDate)}`,

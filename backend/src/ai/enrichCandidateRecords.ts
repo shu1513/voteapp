@@ -62,7 +62,6 @@ export type EnrichCandidateRecordsResult =
       records: CandidateDiscoveredRecord[];
       droppedRecords: Array<{
         record: {
-          title: string;
           description: string;
           source_url: string;
           event_date: string;
@@ -283,7 +282,6 @@ export async function enrichCandidateRecords(
       );
       const schemaDroppedRecords = parsed.invalid_rows.map((row) => ({
         record: {
-          title: row.raw_record.title,
           description: row.raw_record.description,
           source_url: row.raw_record.source_url,
           event_date: row.raw_record.event_date,

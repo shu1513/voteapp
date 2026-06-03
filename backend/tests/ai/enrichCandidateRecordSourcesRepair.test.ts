@@ -39,7 +39,6 @@ describe("enrichCandidateRecordSourcesRepair", () => {
         badRecords: [
           {
             badIndex: 0,
-            title: "Record",
             description: "Desc",
             sourceUrl: "https://bad.example/404",
             eventDate: "2026-01-01",

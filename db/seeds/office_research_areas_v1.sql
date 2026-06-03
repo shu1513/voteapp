@@ -4,8 +4,8 @@ DECLARE
     'national_defense',
     'peaceful_foreign_policy',
     'foreign_trade',
-    'government_spending_and_deficit_reduction',
-    'personal_income_tax_relief',
+    'government_spending_reduction',
+    'personal_income_tax_reduction',
     'healthcare_affordability',
     'social_programs_and_welfare',
     'immigration',
@@ -69,8 +69,8 @@ $$;
 DO $$
 DECLARE
   desired_slugs text[] := ARRAY[
-    'government_spending_and_deficit_reduction',
-    'personal_income_tax_relief',
+    'government_spending_reduction',
+    'personal_income_tax_reduction',
     'public_education_quality',
     'public_safety_and_crime_control',
     'healthcare_affordability',
@@ -138,8 +138,8 @@ $$;
 DO $$
 DECLARE
   desired_slugs text[] := ARRAY[
-    'government_spending_and_deficit_reduction',
-    'personal_income_tax_relief',
+    'government_spending_reduction',
+    'personal_income_tax_reduction',
     'public_education_quality',
     'public_safety_and_crime_control',
     'healthcare_affordability',
@@ -211,12 +211,12 @@ DECLARE
     'public_safety_and_crime_control',
     'healthcare_affordability',
     'social_programs_and_welfare',
-    'government_spending_and_deficit_reduction',
+    'government_spending_reduction',
     'government_efficiency',
     'public_infrastructure',
     'environment_and_public_health',
     'housing_affordability',
-    'personal_income_tax_relief',
+    'personal_income_tax_reduction',
     'womens_reproductive_rights',
     'civil_rights',
     'data_privacy',
@@ -274,8 +274,8 @@ $$;
 DO $$
 DECLARE
   desired_slugs text[] := ARRAY[
-    'government_spending_and_deficit_reduction',
-    'personal_income_tax_relief',
+    'government_spending_reduction',
+    'personal_income_tax_reduction',
     'healthcare_affordability',
     'social_programs_and_welfare',
     'public_infrastructure',

@@ -6,8 +6,8 @@ VALUES
     'Protect air, water, climate, and community health through standards, enforcement, and prevention.'
   ),
   (
-    'cost_of_living_and_inflation_reduction',
-    'Cost of Living and Inflation Reduction',
+    'cost_of_living_reduction',
+    'Cost of Living Reduction',
     'Lower household costs by improving price stability, competition, reduce or eliminate tariffs, and increase foreign trade.'
   ),
   (
@@ -21,13 +21,13 @@ VALUES
     'Improve safety through effective policing, prevention, accountability, and justice system performance.'
   ),
   (
-    'government_spending_and_deficit_reduction',
-    'Government Spending and Deficit Reduction',
+    'government_spending_reduction',
+    'Government Spending Reduction',
     'Control public spending growth and reduce long-term fiscal deficits responsibly.'
   ),
   (
-    'personal_income_tax_relief',
-    'Personal Income Tax Relief',
+    'personal_income_tax_reduction',
+    'Personal Income Tax Reduction',
     'Lower personal income tax.'
   ),
   (

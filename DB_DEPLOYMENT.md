@@ -108,23 +108,12 @@ From `backend/` (non-prod DB/Redis only):
 - Add new migrations as new numbered files (e.g., `029_...sql`).
 - Ballot-measure detail rows are intentionally constrained to 0-or-1 per `elections.id` (`UNIQUE (election_id)`), as enforced by migration `035_propositions_unique_election_id.sql`.
 
-## Candidate record migration 066 preflight
+## Candidate record identity migrations
 
-Before applying `066_drop_candidate_records_source_name.sql` in environments with existing `candidate_records` data:
+Candidate record identity is now managed entirely through forward migrations:
 
-1. Run preflight check from `backend/`:
-   - `npm run candidates:record:migration-066:preflight`
-2. Confirm:
-   - `safe_to_apply_migration_066 = true`
-   - `collision_group_count = 0`
+1. `066_drop_candidate_records_source_name.sql` moved identity keys to the old v2 shape.
+2. `067_fix_candidate_record_v2_title_normalization.sql` fixed v2 SQL/runtime normalization parity.
+3. `069_drop_candidate_records_title_and_rekey_v3.sql` rekeys records to the current v3 shape based on `description`, `source_url`, and `event_date`, rehomes area tags for duplicate rows, and drops `candidate_records.title`.
 
-If collisions exist (`collision_group_count > 0`):
-
-1. Rehome candidate-record area tags to the projected survivor rows:
-   - `npm run candidates:record:migration-066:rehome-tags`
-2. Then apply migrations:
-   - `npm run db:migrate`
-
-Note: do not edit already-applied migration files. Migration checksums are enforced.
-
-After `066` in shared environments, apply `067_fix_candidate_record_v2_title_normalization.sql` via normal `npm run db:migrate` to align SQL key normalization with runtime identity-key trimming.
+The old migration-066 helper scripts were removed because they queried `candidate_records.title` and are invalid after `069`. For current deployments, run `npm run db:migrate`; do not run obsolete v2 preflight/rehome commands.

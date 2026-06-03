@@ -2,7 +2,6 @@ import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
 
 export type CandidateRecordSourceRepairPromptBadRecord = {
   badIndex: number;
-  title: string;
   description: string;
   sourceUrl: string;
   eventDate: string;
@@ -53,7 +52,6 @@ export function buildCandidateRecordSourceRepairPrompt(
     "Bad records to repair:",
     ...input.badRecords.flatMap((record) => [
       `- bad_index: ${record.badIndex}`,
-      `  title: ${JSON.stringify(record.title)}`,
       `  description: ${JSON.stringify(record.description)}`,
       `  source_url: ${JSON.stringify(record.sourceUrl)}`,
       `  event_date: ${JSON.stringify(record.eventDate)}`,
@@ -65,7 +63,6 @@ export function buildCandidateRecordSourceRepairPrompt(
     '  "repairs": [',
     "    {",
     '      "bad_index": 0,',
-    '      "title": "short record title",',
     '      "description": "neutral factual description of the record",',
     '      "source_url": "https://...",',
     '      "event_date": "YYYY-MM-DD"',
@@ -80,7 +77,7 @@ export function buildCandidateRecordSourceRepairPrompt(
     "",
     "Rules:",
     "- Return corrected full rows for bad_index values you can confidently repair.",
-    "- You may fix title, description, source_url, and event_date when needed.",
+    "- You may fix description, source_url, and event_date when needed.",
     "- You may return fewer than all bad_index values; unresolved items can be omitted or returned with no_replacement=true.",
     "- Never reuse any URL listed in blocked URLs.",
     "- source_url must be a valid public http(s) URL.",

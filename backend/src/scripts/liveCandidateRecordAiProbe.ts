@@ -153,7 +153,6 @@ async function main(): Promise<void> {
     if (!hasSchemaBad) {
       combinedBad.push({
         record: {
-          title: baseRecord.title,
           description: baseRecord.description,
           source_url: baseRecord.source_url,
           event_date: "",
@@ -167,7 +166,6 @@ async function main(): Promise<void> {
     if (!hasUrlBad) {
       combinedBad.push({
         record: {
-          title: baseRecord.title,
           description: baseRecord.description,
           source_url: "https://example.invalid/not-found",
           event_date: baseRecord.event_date,
@@ -200,7 +198,6 @@ async function main(): Promise<void> {
         blockedUrls,
         badRecords: combinedBad.map((item, idx) => ({
           badIndex: idx,
-          title: item.record.title,
           description: item.record.description,
           sourceUrl: item.record.source_url,
           eventDate: item.record.event_date,
@@ -215,7 +212,6 @@ async function main(): Promise<void> {
     }
 
     const repairedRecordCandidates = repair.repairs.map((row) => ({
-      title: row.title,
       description: row.description,
       source_url: row.source_url,
       event_date: row.event_date,
@@ -261,7 +257,6 @@ async function main(): Promise<void> {
         termEndYear: context.termEndYear,
         allowedResearchAreaSlugs: allowedSlugs,
         records: recordsForAreaLabel.map((row) => ({
-          title: row.title,
           description: row.description,
           sourceUrl: row.source_url,
           eventDate: row.event_date,

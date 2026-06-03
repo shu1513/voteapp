@@ -27,13 +27,11 @@ describe("enrichCandidateRecords", () => {
       parsed: {
         records: [
           {
-            title: "Voted on Bill A",
             description: "Cast vote in committee.",
             source_url: "https://good.example/a",
             event_date: "2026-01-05",
           },
           {
-            title: "Townhall statement",
             description: "Discussed issue in event.",
             source_url: "https://bad.example/404",
             event_date: "2026-01-10",
@@ -91,7 +89,6 @@ describe("enrichCandidateRecords", () => {
       parsed: {
         records: [
           {
-            title: "Policy release",
             description: "Released policy statement.",
             source_url: "https://slow.example/timeout",
             event_date: "2026-02-01",
@@ -138,13 +135,11 @@ describe("enrichCandidateRecords", () => {
       parsed: {
         records: [
           {
-            title: "Valid record",
             description: "Valid description",
             source_url: "https://good.example/valid",
             event_date: "2026-02-01",
           },
           {
-            title: "Missing date record",
             description: "Has no date",
             source_url: "https://good.example/missing-date",
           },

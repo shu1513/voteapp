@@ -15,7 +15,6 @@ describe("buildCandidateRecordSourceRepairPrompt", () => {
       badRecords: [
         {
           badIndex: 0,
-          title: "Record title",
           description: "Record description",
           sourceUrl: "https://bad.example/404",
           eventDate: "2026-01-01",
@@ -28,7 +27,8 @@ describe("buildCandidateRecordSourceRepairPrompt", () => {
     expect(prompt).toContain("https://bad.example/404");
     expect(prompt).toContain('"no_replacement": true');
     expect(prompt).toContain("You may return fewer than all bad_index values");
-    expect(prompt).toContain("You may fix title, description, source_url, and event_date when needed.");
+    expect(prompt).toContain("You may fix description, source_url, and event_date when needed.");
+    expect(prompt).not.toContain('"title"');
   });
 
   it("includes election_stage for non-senate offices when provided", () => {

@@ -9,7 +9,6 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
         repairs: [
           {
             bad_index: 0,
-            title: "Record A",
             description: "Description A",
             source_url: "https://example.org/a",
             event_date: "2026-01-01",
@@ -28,7 +27,6 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
     expect(parsed.payload.repairs).toEqual([
       {
         bad_index: 0,
-        title: "Record A",
         description: "Description A",
         source_url: "https://example.org/a",
         event_date: "2026-01-01",
@@ -43,7 +41,6 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
         repairs: [
           {
             bad_index: 0,
-            title: "Record A",
             description: "Description A",
             source_url: "https://example.org/a",
             event_date: "2026-01-01",
@@ -63,7 +60,6 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
         repairs: [
           {
             bad_index: 2,
-            title: "Record A",
             description: "Description A",
             source_url: "https://example.org/a",
             event_date: "2026-01-01",

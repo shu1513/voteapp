@@ -30,10 +30,13 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     });
     expect(prompt).not.toContain("- since_date:");
     expect(prompt).not.toContain("event_date >= since_date");
-    expect(prompt).toContain("If the action/event date is unknown, use the source publication date.");
+    expect(prompt).toContain(
+      "event_date must be YYYY-MM-DD; use the action/event date when known, otherwise use the source publication date."
+    );
     expect(prompt).toContain(
       "If neither action/event date nor publication date is available, omit that record."
     );
+    expect(prompt).not.toContain('"title"');
   });
 
   it("includes senate context fields for senate office titles when provided", () => {
@@ -71,14 +74,12 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
       "Focus on records that evaluate fitness/competence for this office and the candidate's background relevant to office duties."
     );
     expect(prompt).toContain(
-      "Research reliable public records about this exact candidate that show concrete actions or accountability relevant to this office, such as votes, sponsored legislation, official decisions, public policy statements, budgets managed, committee work, finance records, legal/ethics scrutiny, prior government service, professional achievements or failures, and documented positions on key issues."
+      "Research reliable public records about this exact candidate that show concrete actions or accountability such as votes, sponsored legislation, official decisions, public policy statements, budgets managed, committee work, finance records, legal/ethics scrutiny/documented criminal convictions, prior government service, professional achievements or failures, and documented positions on key issues."
     );
     expect(prompt).toContain(
-      "Include documented criminal convictions, official ethics findings, sanctions, disciplinary actions, court judgments, enforcement actions, or verified public accountability records when they exist. Do not include rumors or unverified accusations."
+      "Do not include pure candidacy announcements, such as records whose only substance is that the person is running, filed to run, launched a campaign, appears on a ballot, or is listed in a voter guide."
     );
-    expect(prompt).toContain(
-      "Hard rule: no pure candidacy announcement/profile rows. Do not return records whose only substance is that the person is running, filed to run, launched a campaign, appears on a ballot, or is listed in a voter guide."
-    );
+    expect(prompt).not.toContain("Do not include rumors or unverified accusations.");
     expect(prompt).not.toContain("Return records only about this exact candidate in this election context");
     expect(prompt).not.toContain("Good records include:");
     expect(prompt).not.toContain("Prefer records that reveal a stance or governing record");
