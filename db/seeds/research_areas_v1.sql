@@ -106,6 +106,11 @@ VALUES
     'General candidate record not mapped to a specific office research area.'
   ),
   (
+    'legal_and_ethics_record',
+    'Legal and Ethics Record',
+    'Documented criminal convictions, official ethics findings, sanctions, disciplinary actions, court judgments, enforcement actions, or other verified public accountability records.'
+  ),
+  (
     'public_education_quality',
     'Public Education Quality',
     'Strengthen student outcomes through effective teaching, standards, funding, and accountability.'

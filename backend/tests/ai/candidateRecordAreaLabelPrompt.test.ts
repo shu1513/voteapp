@@ -10,7 +10,12 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
     state: "CA",
     electionDate: "2026-11-03",
     officialBallotTitle: "Governor",
-    allowedResearchAreaSlugs: ["general", "government_efficiency", "public_safety_and_crime_control"],
+    allowedResearchAreaSlugs: [
+      "general",
+      "legal_and_ethics_record",
+      "government_efficiency",
+      "public_safety_and_crime_control",
+    ],
     records: [
       {
         title: "Backed police staffing expansion plan",
@@ -25,10 +30,13 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
   it("includes allowed slugs and general stance rule", () => {
     const prompt = buildCandidateRecordAreaLabelPrompt(baseInput);
     expect(prompt).toContain(
-      'Allowed research area slugs for this office (use only these): ["general","government_efficiency","public_safety_and_crime_control"]'
+      'Allowed research area slugs for this office (use only these): ["general","legal_and_ethics_record","government_efficiency","public_safety_and_crime_control"]'
     );
-    expect(prompt).toContain("When research_area_slug='general', omit stance.");
-    expect(prompt).toContain("When research_area_slug!='general', stance is required and must be for|against|neutral.");
+    expect(prompt).toContain(
+      "Special non-stance areas: use research_area_slug='general' when no specific allowed area applies; use research_area_slug='legal_and_ethics_record' for documented criminal convictions"
+    );
+    expect(prompt).toContain("When research_area_slug is 'general' or 'legal_and_ethics_record', omit stance.");
+    expect(prompt).toContain("For all other research_area_slug values, stance is required and must be for|against|neutral.");
   });
 
   it("includes senate context when senate title is used", () => {

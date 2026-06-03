@@ -63,4 +63,24 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).not.toContain("- senate_class:");
     expect(prompt).not.toContain("- term_end_year:");
   });
+
+  it("enforces competence/background objective and hard exclusion for candidacy-only rows", () => {
+    const prompt = buildCandidateRecordDiscoveryPrompt(baseInput);
+
+    expect(prompt).toContain(
+      "Focus on records that evaluate fitness/competence for this office and the candidate's background relevant to office duties."
+    );
+    expect(prompt).toContain(
+      "Research reliable public records about this exact candidate that show concrete actions or accountability relevant to this office, such as votes, sponsored legislation, official decisions, public policy statements, budgets managed, committee work, finance records, legal/ethics scrutiny, prior government service, professional achievements or failures, and documented positions on key issues."
+    );
+    expect(prompt).toContain(
+      "Include documented criminal convictions, official ethics findings, sanctions, disciplinary actions, court judgments, enforcement actions, or verified public accountability records when they exist. Do not include rumors or unverified accusations."
+    );
+    expect(prompt).toContain(
+      "Hard rule: no pure candidacy announcement/profile rows. Do not return records whose only substance is that the person is running, filed to run, launched a campaign, appears on a ballot, or is listed in a voter guide."
+    );
+    expect(prompt).not.toContain("Return records only about this exact candidate in this election context");
+    expect(prompt).not.toContain("Good records include:");
+    expect(prompt).not.toContain("Prefer records that reveal a stance or governing record");
+  });
 });
