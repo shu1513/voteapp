@@ -1,38 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  loadAllResearchAreas,
   loadAllowedResearchAreasForOfficeId,
-  loadAllowedResearchAreasForElection,
   upsertCandidateRecordAreaTags,
   validateCandidateRecordAreaLabels,
 } from "../../src/pipeline/candidates/candidateRecordAreaTagging.js";
-
-describe("loadAllowedResearchAreasForElection", () => {
-  it("returns office-bound areas plus universal non-stance areas", async () => {
-    const query = vi.fn().mockResolvedValueOnce({
-      rows: [
-        { id: "ra1", slug: "general" },
-        { id: "ra3", slug: "legal_and_ethics_record" },
-        { id: "ra2", slug: "government_efficiency" },
-      ],
-    });
-
-    const result = await loadAllowedResearchAreasForElection({ query }, "election-1");
-
-    expect(result).toEqual([
-      { id: "ra1", slug: "general" },
-      { id: "ra3", slug: "legal_and_ethics_record" },
-      { id: "ra2", slug: "government_efficiency" },
-    ]);
-    expect(query).toHaveBeenCalledTimes(1);
-    expect(query.mock.calls[0]?.[0]).toContain("office_research_areas");
-    expect(query.mock.calls[0]?.[0]).toContain("ra.slug = ANY($2::text[])");
-    expect(query.mock.calls[0]?.[1]).toEqual([
-      "election-1",
-      ["general", "legal_and_ethics_record"],
-    ]);
-  });
-});
 
 describe("loadAllowedResearchAreasForOfficeId", () => {
   it("returns office-bound areas plus universal non-stance areas by office id", async () => {
@@ -57,6 +30,29 @@ describe("loadAllowedResearchAreasForOfficeId", () => {
       "office-1",
       ["general", "legal_and_ethics_record"],
     ]);
+  });
+});
+
+describe("loadAllResearchAreas", () => {
+  it("returns every research area for unmatched-office fallback", async () => {
+    const query = vi.fn().mockResolvedValueOnce({
+      rows: [
+        { id: "ra1", slug: "general" },
+        { id: "ra2", slug: "government_efficiency" },
+        { id: "ra3", slug: "legal_and_ethics_record" },
+      ],
+    });
+
+    const result = await loadAllResearchAreas({ query });
+
+    expect(result).toEqual([
+      { id: "ra1", slug: "general" },
+      { id: "ra2", slug: "government_efficiency" },
+      { id: "ra3", slug: "legal_and_ethics_record" },
+    ]);
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(query.mock.calls[0]?.[0]).toContain("FROM public.research_areas");
+    expect(query.mock.calls[0]?.[0]).not.toContain("office_research_areas");
   });
 });
 
@@ -115,7 +111,7 @@ describe("validateCandidateRecordAreaLabels", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.failures[0]?.reason).toContain("not allowed for this office");
+      expect(result.failures[0]?.reason).toContain("not allowed for this candidate/election context");
     }
   });
 

@@ -29,7 +29,7 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
   it("includes allowed slugs and general stance rule", () => {
     const prompt = buildCandidateRecordAreaLabelPrompt(baseInput);
     expect(prompt).toContain(
-      'Allowed research area slugs for this office (use only these): ["general","legal_and_ethics_record","government_efficiency","public_safety_and_crime_control"]'
+      'Allowed research area slugs for this candidate/election context (use only these): ["general","legal_and_ethics_record","government_efficiency","public_safety_and_crime_control"]'
     );
     expect(prompt).toContain(
       "Special non-stance areas: use research_area_slug='general' when no specific allowed area applies; use research_area_slug='legal_and_ethics_record' for documented criminal convictions"

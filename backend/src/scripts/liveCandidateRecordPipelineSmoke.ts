@@ -53,7 +53,6 @@ async function findCandidateElectionPair(pool: Pool): Promise<CandidateElectionP
         ON e.id = ce.election_id
       WHERE c.deleted_at IS NULL
         AND e.race_type = 'office'
-        AND e.office_id IS NOT NULL
       ORDER BY ce.created_at DESC, ce.id DESC
       LIMIT 1
     `
