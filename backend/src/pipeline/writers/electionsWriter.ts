@@ -12,7 +12,7 @@ import {
   STAGING_WRITTEN_STREAM,
 } from "../../config/electionsPipeline.js";
 import { parseCanonicalElectionPayload } from "../../contracts/electionPayloadContract.js";
-import type { ElectionContestFamily, ElectionEnrichedPayload } from "../../types/election.js";
+import type { ElectionContestScope, ElectionEnrichedPayload } from "../../types/election.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { normalizeElectionTitleKey } from "../../utils/normalizeElectionTitleKey.js";
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
@@ -131,7 +131,7 @@ async function reclaimPendingEntries(
   return reclaimed;
 }
 
-function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionContestFamily, string[]>> {
+function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionContestScope, string[]>> {
   if (typeof aiRawDebug !== "object" || aiRawDebug === null || Array.isArray(aiRawDebug)) {
     return {};
   }
@@ -141,14 +141,14 @@ function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionCont
     return {};
   }
 
-  const families: ElectionContestFamily[] = [
+  const families: ElectionContestScope[] = [
     "all",
     "non_judicial_office",
     "judicial_office",
     "ballot_measure",
     "us_senate",
   ];
-  const result: Partial<Record<ElectionContestFamily, string[]>> = {};
+  const result: Partial<Record<ElectionContestScope, string[]>> = {};
   const sourceRecord = raw as Record<string, unknown>;
 
   for (const family of families) {
@@ -280,7 +280,7 @@ async function writeElectionsForDistrict(
   client: PoolClient,
   ingestKey: string,
   payload: ElectionEnrichedPayload,
-  familySeedUrls: Partial<Record<ElectionContestFamily, string[]>>,
+  familySeedUrls: Partial<Record<ElectionContestScope, string[]>>,
   runId: string | null
 ): Promise<WriteResult> {
   await client.query("BEGIN");
@@ -403,8 +403,6 @@ async function writeElectionsForDistrict(
               WHEN EXCLUDED.discovery_contest_family IS NULL THEN elections.discovery_contest_family
               WHEN elections.discovery_contest_family = EXCLUDED.discovery_contest_family
                 THEN elections.discovery_contest_family
-              WHEN elections.discovery_contest_family = 'all' THEN EXCLUDED.discovery_contest_family
-              WHEN EXCLUDED.discovery_contest_family = 'all' THEN elections.discovery_contest_family
               WHEN elections.discovery_contest_family = 'us_senate'
                 AND EXCLUDED.discovery_contest_family = 'non_judicial_office'
                 THEN 'us_senate'

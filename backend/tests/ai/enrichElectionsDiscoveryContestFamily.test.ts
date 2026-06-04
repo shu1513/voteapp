@@ -99,14 +99,13 @@ describe("enrichElections discovery contest family provenance", () => {
     );
   });
 
-  it("keeps specific family over all during dedupe", async () => {
+  it("keeps specific family over missing provenance during dedupe", async () => {
     const { dedupeMergedEntries } = await import("../../src/ai/enrichElections.ts");
 
     const result = dedupeMergedEntries([
       {
         ...buildEntry("County Clerk"),
         race_type: "office",
-        discovery_contest_family: "all",
       },
       {
         ...buildEntry("County Clerk"),

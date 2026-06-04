@@ -58,6 +58,23 @@ function isElectionContestFamily(value: unknown): value is ElectionContestFamily
   return typeof value === "string" && ELECTION_CONTEST_FAMILIES.includes(value as ElectionContestFamily);
 }
 
+function isDiscoveryContestFamilyCompatible(args: {
+  raceType: "office" | "ballot_measure";
+  discoveryContestFamily: ElectionContestFamily;
+  hasSenateMetadata: boolean;
+}): boolean {
+  if (args.raceType === "ballot_measure") {
+    return args.discoveryContestFamily === "ballot_measure";
+  }
+  if (args.discoveryContestFamily === "ballot_measure") {
+    return false;
+  }
+  if (args.hasSenateMetadata) {
+    return args.discoveryContestFamily === "us_senate";
+  }
+  return true;
+}
+
 function isElectionStage(value: unknown): value is NonNullable<ElectionEntryPayload["election_stage"]> {
   return typeof value === "string" && ELECTION_STAGES.includes(value as NonNullable<ElectionEntryPayload["election_stage"]>);
 }
@@ -105,6 +122,7 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
   if (typeof input.race_type !== "string" || !ELECTION_RACE_TYPES.includes(input.race_type as "office" | "ballot_measure")) {
     return null;
   }
+  const raceType = input.race_type as "office" | "ballot_measure";
   const sources = normalizeSources(input.sources);
   if (!sources) {
     return null;
@@ -112,7 +130,7 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
 
   let electionStage: ElectionEntryPayload["election_stage"] | undefined;
   if (input.election_stage !== undefined) {
-    if (input.race_type !== "office") {
+    if (raceType !== "office") {
       return null;
     }
     if (!isElectionStage(input.election_stage)) {
@@ -123,7 +141,7 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
 
   let senateClass: ElectionEntryPayload["senate_class"] | undefined;
   if (input.senate_class !== undefined && input.senate_class !== null) {
-    if (input.race_type !== "office") {
+    if (raceType !== "office") {
       return null;
     }
     if (!isElectionSenateClass(input.senate_class)) {
@@ -134,7 +152,7 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
 
   let termEndYear: string | undefined;
   if (input.term_end_year !== undefined && input.term_end_year !== null) {
-    if (input.race_type !== "office") {
+    if (raceType !== "office") {
       return null;
     }
     if (!isNonEmptyString(input.term_end_year)) {
@@ -152,7 +170,7 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
     if (typeof input.is_partisan !== "boolean") {
       return null;
     }
-    if (input.race_type === "ballot_measure" && input.is_partisan) {
+    if (raceType === "ballot_measure" && input.is_partisan) {
       isPartisan = false;
     } else {
       isPartisan = input.is_partisan;
@@ -165,12 +183,21 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
       return null;
     }
     discoveryContestFamily = input.discovery_contest_family;
+    if (
+      !isDiscoveryContestFamilyCompatible({
+        raceType,
+        discoveryContestFamily,
+        hasSenateMetadata: Boolean(senateClass || termEndYear),
+      })
+    ) {
+      return null;
+    }
   }
 
   return {
     official_ballot_title: input.official_ballot_title.trim(),
     election_date: input.election_date.trim(),
-    race_type: input.race_type as "office" | "ballot_measure",
+    race_type: raceType,
     ...(isPartisan !== undefined ? { is_partisan: isPartisan } : {}),
     ...(electionStage ? { election_stage: electionStage } : {}),
     ...(senateClass ? { senate_class: senateClass } : {}),

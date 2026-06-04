@@ -14,6 +14,7 @@ import { resolveElectionIsPartisan } from "./electionPartisanshipPolicy.js";
 import type { AiProvider } from "./types.js";
 import type {
   ElectionContestFamily,
+  ElectionContestScope,
   ElectionDraftPayload,
   ElectionEnrichedPayload,
   ElectionEntryPayload,
@@ -46,7 +47,7 @@ type ProviderFailureAttempt = {
 
 function normalizeGeneratedPayloadForContestFamily(
   draft: ElectionDraftPayload,
-  contestFamily: ElectionContestFamily,
+  contestFamily: ElectionContestScope,
   payload: unknown
 ): unknown {
   const forcedRaceType =
@@ -123,7 +124,7 @@ export type EnrichElectionsInput = {
   softRetryCount: number;
   reviewFeedback: string[];
   seedUrls?: readonly string[];
-  seedUrlsByFamily?: Partial<Record<ElectionContestFamily, readonly string[]>>;
+  seedUrlsByFamily?: Partial<Record<ElectionContestScope, readonly string[]>>;
 };
 
 export type EnrichElectionsConfig = {
@@ -136,6 +137,10 @@ export type EnrichElectionsConfig = {
 
 function needsContestFamilySplit(districtType: ElectionDraftPayload["district_type"]): boolean {
   return districtType === "statewide" || districtType === "county" || districtType === "place";
+}
+
+function toDiscoveryContestFamily(scope: ElectionContestScope): ElectionContestFamily | undefined {
+  return scope === "all" ? undefined : scope;
 }
 
 export function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayload[] {
@@ -161,12 +166,6 @@ export function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEn
       return incoming;
     }
     if (!incoming || existing === incoming) {
-      return existing;
-    }
-    if (existing === "all") {
-      return incoming;
-    }
-    if (incoming === "all") {
       return existing;
     }
     if (
@@ -396,7 +395,7 @@ function containsUsSenateMarker(entry: ElectionEntryPayload): boolean {
 }
 
 function validateContestFamilySoft(
-  family: ElectionContestFamily,
+  family: ElectionContestScope,
   entries: ElectionEntryPayload[]
 ): { ok: true } | { ok: false; reason: string } {
   if (family === "all" || entries.length === 0) {
@@ -647,7 +646,7 @@ export function buildEnrichElectionsConfigFromEnv(): EnrichElectionsConfig {
 async function runPromptWithCandidates(
   draft: ElectionDraftPayload,
   prompt: string,
-  contestFamily: ElectionContestFamily,
+  contestFamily: ElectionContestScope,
   config: EnrichElectionsConfig,
   candidates: readonly AiCandidate[]
 ): Promise<
@@ -816,7 +815,7 @@ export async function enrichElections(
   config: EnrichElectionsConfig,
   candidates: readonly AiCandidate[] = ELECTIONS_AI_CANDIDATES
 ): Promise<EnrichElectionsResult> {
-  const familyPlan: ElectionContestFamily[] =
+  const familyPlan: ElectionContestScope[] =
     input.draft.district_type === "statewide"
       ? ["non_judicial_office", "judicial_office", "ballot_measure", "us_senate"]
       : needsContestFamilySplit(input.draft.district_type)
@@ -829,7 +828,7 @@ export async function enrichElections(
   const reviewReasons: string[] = [];
   const providerModelLabels: string[] = [];
   const providerFamilyLabels: string[] = [];
-  const familySourceUrls: Partial<Record<ElectionContestFamily, string[]>> = {};
+  const familySourceUrls: Partial<Record<ElectionContestScope, string[]>> = {};
   let primaryProvider: AiProvider | null = null;
   let primaryModel: string | null = null;
 
@@ -860,10 +859,11 @@ export async function enrichElections(
       };
     }
 
+    const discoveryContestFamily = toDiscoveryContestFamily(family);
     mergedEntries.push(
       ...outcome.entries.map((entry) => ({
         ...entry,
-        discovery_contest_family: family,
+        ...(discoveryContestFamily ? { discovery_contest_family: discoveryContestFamily } : {}),
       }))
     );
     providerModelLabels.push(`${outcome.provider}:${outcome.model}`);

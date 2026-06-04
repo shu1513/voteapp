@@ -1,7 +1,7 @@
-import type { ElectionContestFamily, ElectionDraftPayload } from "../../types/election.js";
+import type { ElectionContestScope, ElectionDraftPayload } from "../../types/election.js";
 import { shouldAskIsPartisanInPrompt } from "../electionPartisanshipPolicy.js";
 
-export type { ElectionContestFamily };
+export type { ElectionContestScope };
 
 function escapeJson(value: string): string {
   return JSON.stringify(value);
@@ -11,7 +11,7 @@ export function buildElectionsPrompt(args: {
   draft: ElectionDraftPayload;
   softRetryCount: number;
   reviewFeedbackLines: string[];
-  contestFamily?: ElectionContestFamily;
+  contestFamily?: ElectionContestScope;
   seedUrls?: readonly string[];
 }): string {
   const { draft, softRetryCount, reviewFeedbackLines, contestFamily = "all", seedUrls = [] } = args;

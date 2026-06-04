@@ -106,10 +106,9 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     const prompt = buildCandidateRecordDiscoveryPrompt({
       ...baseInput,
       officialBallotTitle: "Judge of the Superior Court",
-      discoveryContestFamily: "all",
     });
 
-    expect(prompt).toContain('- discovery_contest_family: "all"');
+    expect(prompt).not.toContain("- discovery_contest_family:");
     expect(prompt).not.toContain("this exact judicial candidate");
     expect(prompt).toContain(
       "Research reliable public records about this exact candidate that show concrete actions or accountability"
