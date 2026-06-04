@@ -1,5 +1,7 @@
 BEGIN;
 
+LOCK TABLE public.elections IN ACCESS EXCLUSIVE MODE;
+
 UPDATE public.elections
 SET discovery_contest_family = NULL
 WHERE discovery_contest_family = 'all';
