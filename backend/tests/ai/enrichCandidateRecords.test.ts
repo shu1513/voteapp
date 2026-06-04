@@ -61,7 +61,6 @@ describe("enrichCandidateRecords", () => {
         state: "CA",
         electionDate: "2026-06-02",
         officialBallotTitle: "Assessor",
-        seedUrls: [],
       },
       {
         timeoutMs: 90000,
@@ -111,7 +110,6 @@ describe("enrichCandidateRecords", () => {
         state: "CA",
         electionDate: "2026-11-03",
         officialBallotTitle: "Governor",
-        seedUrls: [],
       },
       {
         timeoutMs: 90000,
@@ -163,7 +161,6 @@ describe("enrichCandidateRecords", () => {
         state: "CA",
         electionDate: "2026-11-03",
         officialBallotTitle: "Governor",
-        seedUrls: [],
       },
       {
         timeoutMs: 90000,

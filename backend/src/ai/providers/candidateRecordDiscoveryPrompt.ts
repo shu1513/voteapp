@@ -1,4 +1,5 @@
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
+import type { ElectionContestFamily } from "../../types/election.js";
 
 export type CandidateRecordDiscoveryPromptInput = {
   candidateDisplayName: string;
@@ -10,15 +11,18 @@ export type CandidateRecordDiscoveryPromptInput = {
   electionStage?: string | null;
   senateClass?: string | null;
   termEndYear?: string | null;
+  discoveryContestFamily?: ElectionContestFamily | null;
   sinceDate?: string | null;
-  seedUrls?: readonly string[];
   reviewFeedbackLines?: readonly string[];
 };
 
 export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscoveryPromptInput): string {
   const includeSenateContext = isUsSenateOfficeTitle(input.officialBallotTitle);
-  const seedUrls = input.seedUrls ?? [];
+  const useJudicialRecordObjective = input.discoveryContestFamily === "judicial_office";
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
+  const objectiveRule = useJudicialRecordObjective
+    ? "- Research reliable public records about this exact judicial candidate that show legal competence, ethics, and documented legal record, such as notable cases, rulings, prior prosecutor/defense/judicial service, published legal work, and disciplinary records/controversies."
+    : "- Research reliable public records about this exact candidate that show concrete actions or accountability such as votes, sponsored legislation, official decisions, public policy statements, budgets managed, committee work, finance records, legal/ethics scrutiny/documented criminal convictions, prior government service, professional achievements or failures, and documented positions on key issues.";
 
   return [
     "You are researching substantive public records about one election candidate.",
@@ -32,6 +36,7 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
     `- state: "${input.state}"`,
     `- election_date: "${input.electionDate}"`,
     `- official_ballot_title: "${input.officialBallotTitle}"`,
+    ...(input.discoveryContestFamily ? [`- discovery_contest_family: "${input.discoveryContestFamily}"`] : []),
     ...(input.electionStage ? [`- election_stage: "${input.electionStage}"`] : []),
     ...(includeSenateContext && input.senateClass ? [`- senate_class: "${input.senateClass}"`] : []),
     ...(includeSenateContext && input.termEndYear ? [`- term_end_year: "${input.termEndYear}"`] : []),
@@ -49,7 +54,12 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
     "}",
     "",
     "Rules:",
-    "- Research reliable public records about this exact candidate that show concrete actions or accountability such as votes, sponsored legislation, official decisions, public policy statements, budgets managed, committee work, finance records, legal/ethics scrutiny/documented criminal convictions, prior government service, professional achievements or failures, and documented positions on key issues.",
+    objectiveRule,
+    ...(useJudicialRecordObjective
+      ? [
+          "- Describe what the candidate actually did in the case and its effects/impacts.",
+        ]
+      : []),
     ...(input.sinceDate ? ['- Include only records with event_date >= since_date.'] : []),
     "- records may be an empty array if no reliable records are found.",
     "- Do not include pure candidacy announcements, such as records whose only substance is that the person is running, filed to run, launched a campaign, appears on a ballot, or is listed in a voter guide.",
@@ -59,13 +69,6 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
     "- Use one row per concrete record; do not duplicate the same source/event.",
     "- Keep descriptions neutral and factual.",
     "- return JSON only (no prose, no markdown).",
-    ...(seedUrls.length > 0
-      ? [
-          "",
-          "Starting reference URLs (use these first, then expand research as needed):",
-          ...seedUrls.map((url) => `- ${JSON.stringify(url)}`),
-        ]
-      : []),
     ...(reviewFeedbackLines.length > 0
       ? [
           "",

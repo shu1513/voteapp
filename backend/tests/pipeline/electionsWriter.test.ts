@@ -162,6 +162,7 @@ describe("runElectionsWriter", () => {
           official_ballot_title: "Governor",
           election_date: "2099-11-03",
           race_type: "office",
+          discovery_contest_family: "non_judicial_office",
           sources: ["https://example.org/election"],
         },
       ],
@@ -196,8 +197,11 @@ describe("runElectionsWriter", () => {
     );
     expect(upsertCall).toBeTruthy();
     expect(String(upsertCall?.[0])).toContain("is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan)");
+    expect(String(upsertCall?.[0])).toContain("discovery_contest_family");
+    expect(String(upsertCall?.[0])).toContain("EXCLUDED.discovery_contest_family = 'us_senate'");
     expect(upsertCall?.[1]?.[5]).toBeNull();
     expect(upsertCall?.[1]?.[6]).toBeNull();
+    expect(upsertCall?.[1]?.[9]).toBe("non_judicial_office");
 
     const statusUpdateCall = clientQueryMock.mock.calls.find((call) =>
       String(call[0]).includes("SET status = $3")

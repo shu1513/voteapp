@@ -5,7 +5,6 @@ import {
   buildEnrichElectionsConfigFromEnv,
   enrichElections,
 } from "../../ai/enrichElections.js";
-import type { ElectionContestFamily } from "../../ai/providers/electionsPrompt.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_DRAFT_STREAM,
@@ -18,7 +17,7 @@ import {
   ELECTION_ENRICHMENT_SCHEMA_VERSION,
   ELECTION_PROMPT_VERSION,
 } from "../../contracts/electionEnrichmentContract.js";
-import type { ElectionDraftPayload } from "../../types/election.js";
+import type { ElectionContestFamily, ElectionDraftPayload } from "../../types/election.js";
 
 type EnricherOptions = {
   once?: boolean;

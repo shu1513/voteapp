@@ -12,6 +12,7 @@ import {
 import { buildCandidateRecordDiscoveryPrompt } from "./providers/candidateRecordDiscoveryPrompt.js";
 import type { AiProvider } from "./types.js";
 import { verifyHttpUrlReachability } from "./urlReachability.js";
+import type { ElectionContestFamily } from "../types/election.js";
 
 type CandidateRecordDiscoveryErrorCode = ResearchErrorCode | "SCHEMA_MISMATCH";
 
@@ -42,8 +43,8 @@ export type EnrichCandidateRecordsInput = {
   electionStage?: string | null;
   senateClass?: string | null;
   termEndYear?: string | null;
+  discoveryContestFamily?: ElectionContestFamily | null;
   sinceDate?: string | null;
-  seedUrls: readonly string[];
 };
 
 export type EnrichCandidateRecordsConfig = {

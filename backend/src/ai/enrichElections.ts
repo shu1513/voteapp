@@ -1,9 +1,6 @@
 import { ELECTIONS_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
-import {
-  buildElectionsPrompt,
-  type ElectionContestFamily,
-} from "./providers/electionsPrompt.js";
+import { buildElectionsPrompt } from "./providers/electionsPrompt.js";
 import {
   callResearchProvider,
   trimDebugText,
@@ -16,6 +13,7 @@ import { parseAiElectionEntriesPayload } from "../contracts/electionPayloadContr
 import { resolveElectionIsPartisan } from "./electionPartisanshipPolicy.js";
 import type { AiProvider } from "./types.js";
 import type {
+  ElectionContestFamily,
   ElectionDraftPayload,
   ElectionEnrichedPayload,
   ElectionEntryPayload,
@@ -140,7 +138,7 @@ function needsContestFamilySplit(districtType: ElectionDraftPayload["district_ty
   return districtType === "statewide" || districtType === "county" || districtType === "place";
 }
 
-function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayload[] {
+export function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayload[] {
   const byKey = new Map<string, ElectionEntryPayload>();
   const mergeSources = (left: string[], right: string[]): string[] => {
     const seen = new Set<string>();
@@ -154,6 +152,34 @@ function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayl
     }
     return combined;
   };
+  const mergeDiscoveryContestFamily = (
+    existing: ElectionEntryPayload["discovery_contest_family"],
+    incoming: ElectionEntryPayload["discovery_contest_family"],
+    key: string
+  ): ElectionEntryPayload["discovery_contest_family"] => {
+    if (!existing) {
+      return incoming;
+    }
+    if (!incoming || existing === incoming) {
+      return existing;
+    }
+    if (existing === "all") {
+      return incoming;
+    }
+    if (incoming === "all") {
+      return existing;
+    }
+    if (
+      (existing === "us_senate" && incoming === "non_judicial_office") ||
+      (existing === "non_judicial_office" && incoming === "us_senate")
+    ) {
+      return "us_senate";
+    }
+    console.warn(
+      `election family provenance conflict key=${key} existing=${existing} incoming=${incoming}; keeping existing`
+    );
+    return existing;
+  };
 
   for (const entry of entries) {
     const key = `${entry.election_date}::${normalizeElectionTitleKey(entry.official_ballot_title)}`;
@@ -164,6 +190,11 @@ function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayl
     }
     byKey.set(key, {
       ...prior,
+      discovery_contest_family: mergeDiscoveryContestFamily(
+        prior.discovery_contest_family,
+        entry.discovery_contest_family,
+        key
+      ),
       sources: mergeSources(prior.sources, entry.sources),
     });
   }
@@ -829,7 +860,12 @@ export async function enrichElections(
       };
     }
 
-    mergedEntries.push(...outcome.entries);
+    mergedEntries.push(
+      ...outcome.entries.map((entry) => ({
+        ...entry,
+        discovery_contest_family: family,
+      }))
+    );
     providerModelLabels.push(`${outcome.provider}:${outcome.model}`);
     providerFamilyLabels.push(`${outcome.provider}:${outcome.model}:${family}`);
     const dedupedFamilySources = [...new Set(outcome.entries.flatMap((entry) => entry.sources))];

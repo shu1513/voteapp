@@ -49,7 +49,6 @@ type EnricherOptions = {
 
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
-const MAX_SEED_URLS = 8;
 const MAX_DELIVERY_ATTEMPTS = 8;
 
 type CandidateRecordEnricherBatchStats = {
@@ -69,34 +68,6 @@ type CandidateRecordEnricherBatchStats = {
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
-}
-
-function parseSeedUrls(raw: unknown): string[] {
-  if (typeof raw === "string") {
-    try {
-      return parseSeedUrls(JSON.parse(raw));
-    } catch {
-      return [];
-    }
-  }
-
-  if (!Array.isArray(raw)) {
-    return [];
-  }
-
-  const urls: string[] = [];
-  for (const item of raw) {
-    if (typeof item !== "string") {
-      continue;
-    }
-    const trimmed = item.trim();
-    if (trimmed.length === 0) {
-      continue;
-    }
-    urls.push(trimmed);
-  }
-
-  return [...new Set(urls)].slice(0, MAX_SEED_URLS);
 }
 
 function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
@@ -286,8 +257,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
             stats.missing_context_skips += 1;
             continue;
           }
-          const seedUrls = parseSeedUrls(context.electionSources);
-
           const lifecycleResult = await runCandidateRecordsSearchLifecycle(
             pool,
             {
@@ -306,8 +275,8 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                   electionStage: context.electionStage,
                   senateClass: context.senateClass,
                   termEndYear: context.termEndYear,
+                  discoveryContestFamily: context.discoveryContestFamily,
                   sinceDate: window.sinceDate,
-                  seedUrls,
                 },
                 recordsConfig
               );

@@ -14,6 +14,7 @@ describe("parseCanonicalElectionPayload", () => {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
           race_type: "office",
+          discovery_contest_family: "non_judicial_office",
           sources: ["https://example.gov/elections/governor"],
         },
       ],
@@ -25,7 +26,28 @@ describe("parseCanonicalElectionPayload", () => {
     if (result.ok) {
       expect(result.payload.entries).toHaveLength(1);
       expect(result.payload.entries[0].race_type).toBe("office");
+      expect(result.payload.entries[0].discovery_contest_family).toBe("non_judicial_office");
     }
+  });
+
+  it("rejects invalid discovery_contest_family", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          race_type: "office",
+          discovery_contest_family: "bad_family",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
   });
 
   it("rejects invalid race_type", () => {

@@ -1,8 +1,10 @@
 import type {
+  ElectionContestFamily,
   ElectionDistrictType,
   ElectionEnrichedPayload,
   ElectionEntryPayload,
 } from "../types/election.js";
+import { ELECTION_CONTEST_FAMILIES } from "../types/election.js";
 import {
   ELECTION_ALLOWED_DISTRICT_TYPES,
   ELECTION_RACE_TYPES,
@@ -50,6 +52,10 @@ function isIsoDate(value: string): boolean {
 
 function isDistrictType(value: unknown): value is ElectionDistrictType {
   return typeof value === "string" && ELECTION_ALLOWED_DISTRICT_TYPES.includes(value as ElectionDistrictType);
+}
+
+function isElectionContestFamily(value: unknown): value is ElectionContestFamily {
+  return typeof value === "string" && ELECTION_CONTEST_FAMILIES.includes(value as ElectionContestFamily);
 }
 
 function isElectionStage(value: unknown): value is NonNullable<ElectionEntryPayload["election_stage"]> {
@@ -153,6 +159,14 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
     }
   }
 
+  let discoveryContestFamily: ElectionContestFamily | undefined;
+  if (input.discovery_contest_family !== undefined && input.discovery_contest_family !== null) {
+    if (!isElectionContestFamily(input.discovery_contest_family)) {
+      return null;
+    }
+    discoveryContestFamily = input.discovery_contest_family;
+  }
+
   return {
     official_ballot_title: input.official_ballot_title.trim(),
     election_date: input.election_date.trim(),
@@ -161,6 +175,7 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
     ...(electionStage ? { election_stage: electionStage } : {}),
     ...(senateClass ? { senate_class: senateClass } : {}),
     ...(termEndYear ? { term_end_year: termEndYear } : {}),
+    ...(discoveryContestFamily ? { discovery_contest_family: discoveryContestFamily } : {}),
     sources,
   };
 }

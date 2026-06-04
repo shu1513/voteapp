@@ -1,12 +1,7 @@
-import type { ElectionDraftPayload } from "../../types/election.js";
+import type { ElectionContestFamily, ElectionDraftPayload } from "../../types/election.js";
 import { shouldAskIsPartisanInPrompt } from "../electionPartisanshipPolicy.js";
 
-export type ElectionContestFamily =
-  | "all"
-  | "non_judicial_office"
-  | "judicial_office"
-  | "ballot_measure"
-  | "us_senate";
+export type { ElectionContestFamily };
 
 function escapeJson(value: string): string {
   return JSON.stringify(value);
