@@ -12,11 +12,10 @@ import {
   STAGING_WRITTEN_STREAM,
 } from "../../config/electionsPipeline.js";
 import { parseCanonicalElectionPayload } from "../../contracts/electionPayloadContract.js";
-import type { ElectionEnrichedPayload } from "../../types/election.js";
+import type { ElectionContestScope, ElectionEnrichedPayload } from "../../types/election.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { normalizeElectionTitleKey } from "../../utils/normalizeElectionTitleKey.js";
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
-import type { ElectionContestFamily } from "../../ai/providers/electionsPrompt.js";
 import { enqueueCandidateRosterDrafts } from "../candidates/candidateRosterDraftEmitter.js";
 import {
   defaultOfficeCandidateEligibilityConfig,
@@ -132,7 +131,7 @@ async function reclaimPendingEntries(
   return reclaimed;
 }
 
-function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionContestFamily, string[]>> {
+function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionContestScope, string[]>> {
   if (typeof aiRawDebug !== "object" || aiRawDebug === null || Array.isArray(aiRawDebug)) {
     return {};
   }
@@ -142,14 +141,14 @@ function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionCont
     return {};
   }
 
-  const families: ElectionContestFamily[] = [
+  const families: ElectionContestScope[] = [
     "all",
     "non_judicial_office",
     "judicial_office",
     "ballot_measure",
     "us_senate",
   ];
-  const result: Partial<Record<ElectionContestFamily, string[]>> = {};
+  const result: Partial<Record<ElectionContestScope, string[]>> = {};
   const sourceRecord = raw as Record<string, unknown>;
 
   for (const family of families) {
@@ -281,7 +280,7 @@ async function writeElectionsForDistrict(
   client: PoolClient,
   ingestKey: string,
   payload: ElectionEnrichedPayload,
-  familySeedUrls: Partial<Record<ElectionContestFamily, string[]>>,
+  familySeedUrls: Partial<Record<ElectionContestScope, string[]>>,
   runId: string | null
 ): Promise<WriteResult> {
   await client.query("BEGIN");
@@ -390,14 +389,28 @@ async function writeElectionsForDistrict(
             is_partisan,
             election_stage,
             sources,
-            office_id
-          ) VALUES ($1, $2, $3, $4::date, $5, $6, $7, $8::jsonb, $9::uuid)
+            office_id,
+            discovery_contest_family
+          ) VALUES ($1, $2, $3, $4::date, $5, $6, $7, $8::jsonb, $9::uuid, $10)
           ON CONFLICT (district_id, official_ballot_title_key, election_date) DO UPDATE SET
             race_type = EXCLUDED.race_type,
             -- Keep prior partisanship when a subsequent run omits it (e.g., mixed-state school contests).
             is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan),
             election_stage = COALESCE(EXCLUDED.election_stage, elections.election_stage),
             office_id = COALESCE(EXCLUDED.office_id, elections.office_id),
+            discovery_contest_family = CASE
+              WHEN elections.discovery_contest_family IS NULL THEN EXCLUDED.discovery_contest_family
+              WHEN EXCLUDED.discovery_contest_family IS NULL THEN elections.discovery_contest_family
+              WHEN elections.discovery_contest_family = EXCLUDED.discovery_contest_family
+                THEN elections.discovery_contest_family
+              WHEN elections.discovery_contest_family = 'us_senate'
+                AND EXCLUDED.discovery_contest_family = 'non_judicial_office'
+                THEN 'us_senate'
+              WHEN elections.discovery_contest_family = 'non_judicial_office'
+                AND EXCLUDED.discovery_contest_family = 'us_senate'
+                THEN 'us_senate'
+              ELSE elections.discovery_contest_family
+            END,
             sources = EXCLUDED.sources,
             updated_at = now()
           RETURNING id, race_type
@@ -412,6 +425,7 @@ async function writeElectionsForDistrict(
           entry.election_stage ?? null,
           JSON.stringify(entry.sources),
           matchedOfficeId,
+          entry.discovery_contest_family ?? null,
         ]
       );
       const row = upsertResult.rows?.[0];

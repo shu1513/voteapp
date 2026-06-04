@@ -35,34 +35,6 @@ function parseFlagValue(name: string): string | null {
   return token.slice(prefix.length).trim() || null;
 }
 
-function parseSeedUrls(raw: unknown): string[] {
-  if (typeof raw === "string") {
-    try {
-      return parseSeedUrls(JSON.parse(raw));
-    } catch {
-      return [];
-    }
-  }
-
-  if (!Array.isArray(raw)) {
-    return [];
-  }
-
-  const urls: string[] = [];
-  for (const item of raw) {
-    if (typeof item !== "string") {
-      continue;
-    }
-    const trimmed = item.trim();
-    if (trimmed.length === 0) {
-      continue;
-    }
-    urls.push(trimmed);
-  }
-
-  return [...new Set(urls)].slice(0, 8);
-}
-
 async function findCandidateElectionPair(pool: Pool): Promise<CandidateElectionPair | null> {
   const result = await pool.query<{
     candidate_id: string;
@@ -136,7 +108,7 @@ async function main(): Promise<void> {
         electionStage: context.electionStage,
         senateClass: context.senateClass,
         termEndYear: context.termEndYear,
-        seedUrls: parseSeedUrls(context.electionSources),
+        discoveryContestFamily: context.discoveryContestFamily,
       },
       buildCandidateRecordsConfigFromEnv()
     );

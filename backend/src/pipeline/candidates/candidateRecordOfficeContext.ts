@@ -1,4 +1,5 @@
 import type { PoolClient } from "pg";
+import type { ElectionContestFamily } from "../../types/election.js";
 
 type Queryable = Pick<PoolClient, "query">;
 
@@ -15,6 +16,7 @@ export type CandidateElectionOfficeContext = {
   senateClass: string | null;
   termEndYear: string | null;
   officeId: string | null;
+  discoveryContestFamily: ElectionContestFamily | null;
   electionSources: unknown;
 };
 
@@ -38,6 +40,7 @@ export async function loadCandidateElectionOfficeContext(
         sm.senate_class AS "senateClass",
         sm.term_end_year AS "termEndYear",
         e.office_id::text AS "officeId",
+        e.discovery_contest_family AS "discoveryContestFamily",
         e.sources AS "electionSources"
       FROM public.candidate_elections ce
       JOIN public.candidates c

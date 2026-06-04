@@ -1,9 +1,6 @@
 import { ELECTIONS_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
-import {
-  buildElectionsPrompt,
-  type ElectionContestFamily,
-} from "./providers/electionsPrompt.js";
+import { buildElectionsPrompt } from "./providers/electionsPrompt.js";
 import {
   callResearchProvider,
   trimDebugText,
@@ -16,6 +13,8 @@ import { parseAiElectionEntriesPayload } from "../contracts/electionPayloadContr
 import { resolveElectionIsPartisan } from "./electionPartisanshipPolicy.js";
 import type { AiProvider } from "./types.js";
 import type {
+  ElectionContestFamily,
+  ElectionContestScope,
   ElectionDraftPayload,
   ElectionEnrichedPayload,
   ElectionEntryPayload,
@@ -48,7 +47,7 @@ type ProviderFailureAttempt = {
 
 function normalizeGeneratedPayloadForContestFamily(
   draft: ElectionDraftPayload,
-  contestFamily: ElectionContestFamily,
+  contestFamily: ElectionContestScope,
   payload: unknown
 ): unknown {
   const forcedRaceType =
@@ -125,7 +124,7 @@ export type EnrichElectionsInput = {
   softRetryCount: number;
   reviewFeedback: string[];
   seedUrls?: readonly string[];
-  seedUrlsByFamily?: Partial<Record<ElectionContestFamily, readonly string[]>>;
+  seedUrlsByFamily?: Partial<Record<ElectionContestScope, readonly string[]>>;
 };
 
 export type EnrichElectionsConfig = {
@@ -140,7 +139,11 @@ function needsContestFamilySplit(districtType: ElectionDraftPayload["district_ty
   return districtType === "statewide" || districtType === "county" || districtType === "place";
 }
 
-function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayload[] {
+function toDiscoveryContestFamily(scope: ElectionContestScope): ElectionContestFamily | undefined {
+  return scope === "all" ? undefined : scope;
+}
+
+export function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayload[] {
   const byKey = new Map<string, ElectionEntryPayload>();
   const mergeSources = (left: string[], right: string[]): string[] => {
     const seen = new Set<string>();
@@ -154,6 +157,28 @@ function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayl
     }
     return combined;
   };
+  const mergeDiscoveryContestFamily = (
+    existing: ElectionEntryPayload["discovery_contest_family"],
+    incoming: ElectionEntryPayload["discovery_contest_family"],
+    key: string
+  ): ElectionEntryPayload["discovery_contest_family"] => {
+    if (!existing) {
+      return incoming;
+    }
+    if (!incoming || existing === incoming) {
+      return existing;
+    }
+    if (
+      (existing === "us_senate" && incoming === "non_judicial_office") ||
+      (existing === "non_judicial_office" && incoming === "us_senate")
+    ) {
+      return "us_senate";
+    }
+    console.warn(
+      `election family provenance conflict key=${key} existing=${existing} incoming=${incoming}; keeping existing`
+    );
+    return existing;
+  };
 
   for (const entry of entries) {
     const key = `${entry.election_date}::${normalizeElectionTitleKey(entry.official_ballot_title)}`;
@@ -164,6 +189,11 @@ function dedupeMergedEntries(entries: ElectionEntryPayload[]): ElectionEntryPayl
     }
     byKey.set(key, {
       ...prior,
+      discovery_contest_family: mergeDiscoveryContestFamily(
+        prior.discovery_contest_family,
+        entry.discovery_contest_family,
+        key
+      ),
       sources: mergeSources(prior.sources, entry.sources),
     });
   }
@@ -365,7 +395,7 @@ function containsUsSenateMarker(entry: ElectionEntryPayload): boolean {
 }
 
 function validateContestFamilySoft(
-  family: ElectionContestFamily,
+  family: ElectionContestScope,
   entries: ElectionEntryPayload[]
 ): { ok: true } | { ok: false; reason: string } {
   if (family === "all" || entries.length === 0) {
@@ -616,7 +646,7 @@ export function buildEnrichElectionsConfigFromEnv(): EnrichElectionsConfig {
 async function runPromptWithCandidates(
   draft: ElectionDraftPayload,
   prompt: string,
-  contestFamily: ElectionContestFamily,
+  contestFamily: ElectionContestScope,
   config: EnrichElectionsConfig,
   candidates: readonly AiCandidate[]
 ): Promise<
@@ -785,7 +815,7 @@ export async function enrichElections(
   config: EnrichElectionsConfig,
   candidates: readonly AiCandidate[] = ELECTIONS_AI_CANDIDATES
 ): Promise<EnrichElectionsResult> {
-  const familyPlan: ElectionContestFamily[] =
+  const familyPlan: ElectionContestScope[] =
     input.draft.district_type === "statewide"
       ? ["non_judicial_office", "judicial_office", "ballot_measure", "us_senate"]
       : needsContestFamilySplit(input.draft.district_type)
@@ -798,7 +828,7 @@ export async function enrichElections(
   const reviewReasons: string[] = [];
   const providerModelLabels: string[] = [];
   const providerFamilyLabels: string[] = [];
-  const familySourceUrls: Partial<Record<ElectionContestFamily, string[]>> = {};
+  const familySourceUrls: Partial<Record<ElectionContestScope, string[]>> = {};
   let primaryProvider: AiProvider | null = null;
   let primaryModel: string | null = null;
 
@@ -829,7 +859,13 @@ export async function enrichElections(
       };
     }
 
-    mergedEntries.push(...outcome.entries);
+    const discoveryContestFamily = toDiscoveryContestFamily(family);
+    mergedEntries.push(
+      ...outcome.entries.map((entry) => ({
+        ...entry,
+        ...(discoveryContestFamily ? { discovery_contest_family: discoveryContestFamily } : {}),
+      }))
+    );
     providerModelLabels.push(`${outcome.provider}:${outcome.model}`);
     providerFamilyLabels.push(`${outcome.provider}:${outcome.model}:${family}`);
     const dedupedFamilySources = [...new Set(outcome.entries.flatMap((entry) => entry.sources))];

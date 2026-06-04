@@ -5,7 +5,6 @@ import {
   buildEnrichElectionsConfigFromEnv,
   enrichElections,
 } from "../../ai/enrichElections.js";
-import type { ElectionContestFamily } from "../../ai/providers/electionsPrompt.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
   STAGING_DRAFT_STREAM,
@@ -18,7 +17,7 @@ import {
   ELECTION_ENRICHMENT_SCHEMA_VERSION,
   ELECTION_PROMPT_VERSION,
 } from "../../contracts/electionEnrichmentContract.js";
-import type { ElectionDraftPayload } from "../../types/election.js";
+import type { ElectionContestScope, ElectionDraftPayload } from "../../types/election.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -189,7 +188,7 @@ function sortSeedUrls(urls: SeedSourceRow[]): string[] {
 async function loadSeedUrlsForDistrict(
   pool: Pool,
   districtId: string,
-  contestFamily: ElectionContestFamily
+  contestFamily: ElectionContestScope
 ): Promise<string[]> {
   const result = await pool.query<SeedSourceRow>(
     `
@@ -209,7 +208,7 @@ async function loadSeedUrlsForDistrict(
 async function buildSeedUrlsByFamily(
   pool: Pool,
   draft: ElectionDraftPayload
-): Promise<Partial<Record<ElectionContestFamily, readonly string[]>>> {
+): Promise<Partial<Record<ElectionContestScope, readonly string[]>>> {
   const [nonJudicialSeeds, judicialSeeds, ballotSeeds, senateSeeds, allSeeds] = await Promise.all([
     loadSeedUrlsForDistrict(pool, draft.district_id, "non_judicial_office"),
     loadSeedUrlsForDistrict(pool, draft.district_id, "judicial_office"),

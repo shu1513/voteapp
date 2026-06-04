@@ -19,6 +19,7 @@ describe("loadCandidateElectionOfficeContext", () => {
           senateClass: null,
           termEndYear: null,
           officeId: "office-1",
+          discoveryContestFamily: "non_judicial_office",
           electionSources: ["https://example.org"],
         },
       ],
@@ -28,6 +29,7 @@ describe("loadCandidateElectionOfficeContext", () => {
 
     expect(result?.candidateId).toBe("cand-1");
     expect(result?.officeId).toBe("office-1");
+    expect(result?.discoveryContestFamily).toBe("non_judicial_office");
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).toContain("FROM public.candidate_elections ce");
     expect(query.mock.calls[0]?.[0]).not.toContain("e.office_id IS NOT NULL");
@@ -50,6 +52,7 @@ describe("loadCandidateElectionOfficeContext", () => {
           senateClass: null,
           termEndYear: null,
           officeId: null,
+          discoveryContestFamily: null,
           electionSources: [],
         },
       ],
@@ -59,6 +62,7 @@ describe("loadCandidateElectionOfficeContext", () => {
 
     expect(result?.candidateId).toBe("cand-1");
     expect(result?.officeId).toBeNull();
+    expect(result?.discoveryContestFamily).toBeNull();
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).not.toContain("e.office_id IS NOT NULL");
   });

@@ -14,6 +14,7 @@ describe("parseCanonicalElectionPayload", () => {
           official_ballot_title: "Governor",
           election_date: "2026-11-03",
           race_type: "office",
+          discovery_contest_family: "non_judicial_office",
           sources: ["https://example.gov/elections/governor"],
         },
       ],
@@ -25,7 +26,109 @@ describe("parseCanonicalElectionPayload", () => {
     if (result.ok) {
       expect(result.payload.entries).toHaveLength(1);
       expect(result.payload.entries[0].race_type).toBe("office");
+      expect(result.payload.entries[0].discovery_contest_family).toBe("non_judicial_office");
     }
+  });
+
+  it("rejects invalid discovery_contest_family", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          race_type: "office",
+          discovery_contest_family: "bad_family",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
+  });
+
+  it("rejects ballot measure rows with office discovery family", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Measure A",
+          election_date: "2026-11-03",
+          race_type: "ballot_measure",
+          discovery_contest_family: "judicial_office",
+          sources: ["https://example.gov/elections/measure-a"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
+  });
+
+  it("rejects office rows with ballot_measure discovery family", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          race_type: "office",
+          discovery_contest_family: "ballot_measure",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
+  });
+
+  it("rejects all as persisted discovery family", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          race_type: "office",
+          discovery_contest_family: "all",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
+  });
+
+  it("rejects senate metadata with non-senate discovery family", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "United States Senator",
+          election_date: "2026-11-03",
+          race_type: "office",
+          senate_class: "class_i",
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.gov/elections/us-senate"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
   });
 
   it("rejects invalid race_type", () => {
