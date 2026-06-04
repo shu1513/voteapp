@@ -16,6 +16,7 @@ import {
 } from "../../contracts/electionEnrichmentContract.js";
 import { parseCanonicalElectionPayload } from "../../contracts/electionPayloadContract.js";
 import type { ElectionDistrictType, ElectionEnrichedPayload, ElectionEntryPayload } from "../../types/election.js";
+import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
 
 type ValidatorOptions = {
   once?: boolean;
@@ -68,6 +69,60 @@ function hasAny(text: string, patterns: RegExp[]): boolean {
   return patterns.some((pattern) => pattern.test(text));
 }
 
+const STATE_UPPER_STRICT_MARKERS = [
+  /\bstate senate\b/,
+  /\bstate senator\b/,
+  /\bsenate district\b/,
+  /\bsenator district\b/,
+  /\bsenator,\s*district\b/,
+  /\bmember of the senate\b/,
+  /\bmember of the state senate\b/,
+  /\bsenator in the general assembly\b/,
+  /\bupper chamber\b/,
+];
+
+const STATE_UPPER_MARKERS = [
+  ...STATE_UPPER_STRICT_MARKERS,
+  /\bmember of the legislature\b/,
+  /\blegislature district\b/,
+  /\blegislative district\b/,
+  /\bstate legislature district\b/,
+];
+
+const STATE_LOWER_STRICT_MARKERS = [
+  /\bstate house\b/,
+  /\bstate representative\b/,
+  /\bstate delegate\b/,
+  /\bhouse delegate\b/,
+  /\bhouse of representatives district\b/,
+  /\brepresentative district\b/,
+  /\bmember of the house of representatives\b/,
+  /\bmember,\s*house of representatives\b/,
+  /\bstate assembly\b/,
+  /\bassembly district\b/,
+  /\bassemblymember\b/,
+  /\bassembly member\b/,
+  /\bmember of the assembly\b/,
+  /\bmember of the state assembly\b/,
+  /\bhouse of delegates\b/,
+  /\bdelegate district\b/,
+  /\bmember of the house of delegates\b/,
+  /\bmember,\s*house of delegates\b/,
+  /\blower chamber\b/,
+];
+
+const STATE_LOWER_MARKERS = [
+  ...STATE_LOWER_STRICT_MARKERS,
+  /\brepresentative in the general assembly\b/,
+  /\brepresentative in general assembly\b/,
+  /\brepresentative in the general court\b/,
+  /\brepresentative in general court\b/,
+  /\bgeneral assembly district\b/,
+  /\bmember of the general assembly\b/,
+  /\bgeneral court district\b/,
+  /\bmember of the general court\b/,
+];
+
 function currentUtcDateYmd(): string {
   return new Date().toISOString().slice(0, 10);
 }
@@ -83,52 +138,23 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
   const titleText = normalize(entry.official_ballot_title);
   const scopeText = titleText;
 
-  const usSenate = /\bu\.?s\.?\s+senate\b/.test(scopeText) || /\bunited states senate\b/.test(scopeText);
+  const usSenate = isUsSenateOfficeTitle(entry.official_ballot_title);
   const usHouse =
     /\bu\.?s\.?\s+house\b/.test(scopeText) ||
     /\bu\.?s\.?\s+house\s+of\s+representatives?\b/.test(scopeText) ||
     /\brepresentative in congress\b/.test(scopeText) ||
     /\bcongressional district\b/.test(scopeText);
-  const stateSenate = /\bstate senate\b/.test(scopeText) || /\bsenate district\b/.test(scopeText);
-  const stateHouse = /\bstate house\b/.test(scopeText) || /\bstate assembly\b/.test(scopeText) || /\bstate representative\b/.test(scopeText);
+  const stateSenate = !usSenate && hasAny(scopeText, STATE_UPPER_STRICT_MARKERS);
+  const stateHouse = hasAny(scopeText, STATE_LOWER_STRICT_MARKERS);
   const hasFederalMarker =
     usSenate ||
     usHouse ||
     /\bunited states\b/.test(scopeText) ||
     /\bcongress\b/.test(scopeText) ||
     /\bcongressional\b/.test(scopeText);
-  const statewideStateUpperLike =
-    /\bstate senate\b/.test(scopeText) ||
-    /\bstate senator\b/.test(scopeText) ||
-    /\bsenate district\b/.test(scopeText) ||
-    /\bsenator district\b/.test(scopeText) ||
-    /\bsenator,\s*district\b/.test(scopeText) ||
-    /\bmember of the senate\b/.test(scopeText) ||
-    /\bsenator in the general assembly\b/.test(scopeText);
-  const statewideStateLowerLike =
-    /\bstate house\b/.test(scopeText) ||
-    /\bstate representative\b/.test(scopeText) ||
-    /\bhouse of representatives district\b/.test(scopeText) ||
-    /\brepresentative district\b/.test(scopeText) ||
-    /\brepresentative in the general assembly\b/.test(scopeText) ||
-    /\bmember of the house of representatives\b/.test(scopeText) ||
-    /\bstate assembly\b/.test(scopeText) ||
-    /\bassembly district\b/.test(scopeText) ||
-    /\bassemblymember\b/.test(scopeText) ||
-    /\bmember of the assembly\b/.test(scopeText) ||
-    /\bgeneral assembly district\b/.test(scopeText) ||
-    /\bmember of the general assembly\b/.test(scopeText) ||
-    /\bhouse of delegates\b/.test(scopeText) ||
-    /\bdelegate district\b/.test(scopeText) ||
-    /\bmember of the house of delegates\b/.test(scopeText);
-  const statewideLegislativeDistrictLike =
-    /\blegislature district\b/.test(scopeText) ||
-    /\blegislative district\b/.test(scopeText) ||
-    /\bmember of the legislature\b/.test(scopeText) ||
-    /\bstate legislature district\b/.test(scopeText);
   const statewideStateLegislativeLike =
     !hasFederalMarker &&
-    (statewideStateUpperLike || statewideStateLowerLike || statewideLegislativeDistrictLike);
+    (hasAny(scopeText, STATE_UPPER_MARKERS) || hasAny(scopeText, STATE_LOWER_MARKERS));
 
   // Only use broad office-level mismatch signals for office races to avoid over-rejecting ballot-measure text.
   const governorLike =
@@ -196,11 +222,11 @@ function isSoftScopeAmbiguous(districtType: ElectionDistrictType, entry: Electio
     return "us_house entry lacks clear us_house markers";
   }
 
-  if (districtType === "state_upper" && !hasAny(text, [/\bstate senate\b/, /\bsenate district\b/, /\bupper chamber\b/])) {
+  if (districtType === "state_upper" && !hasAny(text, STATE_UPPER_MARKERS)) {
     return "state_upper entry lacks clear state_upper markers";
   }
 
-  if (districtType === "state_lower" && !hasAny(text, [/\bstate house\b/, /\bstate assembly\b/, /\blower chamber\b/, /\bstate representative\b/])) {
+  if (districtType === "state_lower" && !hasAny(text, STATE_LOWER_MARKERS)) {
     return "state_lower entry lacks clear state_lower markers";
   }
 

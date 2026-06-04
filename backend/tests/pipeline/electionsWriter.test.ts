@@ -293,6 +293,392 @@ describe("runElectionsWriter", () => {
     );
   });
 
+  it("persists school-scope office titles as aliases for School Board Member", async () => {
+    const payload = {
+      district_id: "d-school",
+      district_name: "Baldwin Park Unified School District",
+      district_type: "school_unified",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Governing Board Trustee, Area 3",
+          election_date: "2099-11-03",
+          race_type: "office",
+          sources: ["https://example.org/school-board"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 1, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000333", canonical_name: "School Board Member" }],
+        };
+      }
+      if (sql.includes("INSERT INTO public.elections")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000444", race_type: "office" }],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    const aliasInsertCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.office_title_aliases")
+    );
+    expect(aliasInsertCall).toBeTruthy();
+    expect(aliasInsertCall?.[1]?.[0]).toEqual(["00000000-0000-0000-0000-000000000333"]);
+    expect(aliasInsertCall?.[1]?.[1]).toEqual(["school_unified"]);
+    expect(aliasInsertCall?.[1]?.[2]).toEqual(["Governing Board Trustee, Area 3"]);
+    expect(aliasInsertCall?.[1]?.[3]).toEqual(["governing board trustee area 3"]);
+  });
+
+  it("persists us_house office titles as aliases for United States Representative", async () => {
+    const payload = {
+      district_id: "d-us-house",
+      district_name: "Congressional District 31 (119th Congress), California",
+      district_type: "us_house",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Member of Congress, 31st District",
+          election_date: "2099-11-03",
+          race_type: "office",
+          sources: ["https://example.org/us-house"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 1, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000555", canonical_name: "United States Representative" }],
+        };
+      }
+      if (sql.includes("INSERT INTO public.elections")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000666", race_type: "office" }],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    const aliasInsertCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.office_title_aliases")
+    );
+    expect(aliasInsertCall).toBeTruthy();
+    expect(aliasInsertCall?.[1]?.[0]).toEqual(["00000000-0000-0000-0000-000000000555"]);
+    expect(aliasInsertCall?.[1]?.[1]).toEqual(["us_house"]);
+    expect(aliasInsertCall?.[1]?.[2]).toEqual(["Member of Congress, 31st District"]);
+    expect(aliasInsertCall?.[1]?.[3]).toEqual(["member of congress"]);
+  });
+
+  it("persists state_upper office titles as aliases for State Senator", async () => {
+    const payload = {
+      district_id: "d-state-upper",
+      district_name: "California State Senate District 12",
+      district_type: "state_upper",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Member of the Legislature, District 12",
+          election_date: "2099-11-03",
+          race_type: "office",
+          sources: ["https://example.org/state-upper"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 1, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000556", canonical_name: "State Senator" }],
+        };
+      }
+      if (sql.includes("INSERT INTO public.elections")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000667", race_type: "office" }],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    const aliasInsertCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.office_title_aliases")
+    );
+    expect(aliasInsertCall).toBeTruthy();
+    expect(aliasInsertCall?.[1]?.[0]).toEqual(["00000000-0000-0000-0000-000000000556"]);
+    expect(aliasInsertCall?.[1]?.[1]).toEqual(["state_upper"]);
+    expect(aliasInsertCall?.[1]?.[2]).toEqual(["Member of the Legislature, District 12"]);
+    expect(aliasInsertCall?.[1]?.[3]).toEqual(["member of the legislature"]);
+  });
+
+  it("persists state_lower office titles as aliases for State Lower Chamber Legislator", async () => {
+    const payload = {
+      district_id: "d-state-lower",
+      district_name: "Massachusetts State House District 7",
+      district_type: "state_lower",
+      state: "MA",
+      entries: [
+        {
+          official_ballot_title: "Representative in General Court, District 7",
+          election_date: "2099-11-03",
+          race_type: "office",
+          sources: ["https://example.org/state-lower"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 1, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 1,
+          rows: [
+            {
+              id: "00000000-0000-0000-0000-000000000557",
+              canonical_name: "State Lower Chamber Legislator",
+            },
+          ],
+        };
+      }
+      if (sql.includes("INSERT INTO public.elections")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000668", race_type: "office" }],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    const aliasInsertCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.office_title_aliases")
+    );
+    expect(aliasInsertCall).toBeTruthy();
+    expect(aliasInsertCall?.[1]?.[0]).toEqual(["00000000-0000-0000-0000-000000000557"]);
+    expect(aliasInsertCall?.[1]?.[1]).toEqual(["state_lower"]);
+    expect(aliasInsertCall?.[1]?.[2]).toEqual(["Representative in General Court, District 7"]);
+    expect(aliasInsertCall?.[1]?.[3]).toEqual(["representative in general court"]);
+  });
+
+  it("persists clear statewide U.S. Senate titles as aliases for United States Senator", async () => {
+    const payload = {
+      district_id: "d-statewide",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "U.S. Senate (Special Election)",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "special",
+          senate_class: "class_i",
+          term_end_year: "2031",
+          sources: ["https://example.org/us-senate"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 1, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 2,
+          rows: [
+            { id: "00000000-0000-0000-0000-000000000777", canonical_name: "Governor" },
+            { id: "00000000-0000-0000-0000-000000000888", canonical_name: "United States Senator" },
+          ],
+        };
+      }
+      if (sql.includes("INSERT INTO public.elections")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000999", race_type: "office" }],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    const aliasInsertCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.office_title_aliases")
+    );
+    expect(aliasInsertCall).toBeTruthy();
+    expect(aliasInsertCall?.[1]?.[0]).toEqual(["00000000-0000-0000-0000-000000000888"]);
+    expect(aliasInsertCall?.[1]?.[1]).toEqual(["statewide"]);
+    expect(aliasInsertCall?.[1]?.[2]).toEqual(["U.S. Senate (Special Election)"]);
+    expect(aliasInsertCall?.[1]?.[3]).toEqual(["united states senate special election"]);
+  });
+
+  it("uses us_senate family provenance to persist generic Senate titles as United States Senator aliases", async () => {
+    const payload = {
+      district_id: "d-statewide",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Senator",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "special",
+          senate_class: "class_i",
+          term_end_year: "2031",
+          discovery_contest_family: "us_senate",
+          sources: ["https://example.org/us-senate"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 1, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 2,
+          rows: [
+            { id: "00000000-0000-0000-0000-000000000777", canonical_name: "Governor" },
+            { id: "00000000-0000-0000-0000-000000000888", canonical_name: "United States Senator" },
+          ],
+        };
+      }
+      if (sql.includes("INSERT INTO public.elections")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000999", race_type: "office" }],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    const aliasInsertCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.office_title_aliases")
+    );
+    expect(aliasInsertCall).toBeTruthy();
+    expect(aliasInsertCall?.[1]?.[0]).toEqual(["00000000-0000-0000-0000-000000000888"]);
+    expect(aliasInsertCall?.[1]?.[1]).toEqual(["statewide"]);
+    expect(aliasInsertCall?.[1]?.[2]).toEqual(["Senator"]);
+    expect(aliasInsertCall?.[1]?.[3]).toEqual(["senator"]);
+
+    const senateMetadataUpsertCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.election_senate_metadata")
+    );
+    expect(senateMetadataUpsertCall).toBeTruthy();
+    expect(senateMetadataUpsertCall?.[1]?.[0]).toEqual(["00000000-0000-0000-0000-000000000999"]);
+    expect(senateMetadataUpsertCall?.[1]?.[1]).toEqual(["class_i"]);
+    expect(senateMetadataUpsertCall?.[1]?.[2]).toEqual(["2031"]);
+  });
+
   it("upserts senate metadata for U.S. Senate office entries", async () => {
     const payload = {
       district_id: "d-1",

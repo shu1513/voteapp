@@ -348,6 +348,7 @@ async function writeElectionsForDistrict(
           districtName: payload.district_name,
           state: payload.state,
           officialBallotTitle: entry.official_ballot_title,
+          discoveryContestFamily: entry.discovery_contest_family,
         });
         officeMatchCounts[officeMatch.method] += 1;
         matchedOfficeId = officeMatch.officeId;
@@ -433,7 +434,7 @@ async function writeElectionsForDistrict(
         ballotMeasureElectionIds.push(row.id);
       } else if (row?.race_type === "office") {
         officeElectionIds.push(row.id);
-        if (isUsSenateOfficeTitle(entry.official_ballot_title)) {
+        if (entry.discovery_contest_family === "us_senate" || isUsSenateOfficeTitle(entry.official_ballot_title)) {
           senateMetadataRows.push({
             election_id: row.id,
             senate_class: entry.senate_class ?? null,

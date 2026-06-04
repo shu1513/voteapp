@@ -170,6 +170,133 @@ describe("OfficeMatcher", () => {
     expect(result.method).toBe("deterministic_fallback");
   });
 
+  it("maps clear statewide U.S. Senate titles to United States Senator and persists alias memory", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { statewide: [] },
+      officesByScope: {
+        statewide: [
+          { id: "office-governor", canonical_name: "Governor" },
+          { id: "office-us-senator", canonical_name: "United States Senator" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "statewide",
+      districtName: "California",
+      state: "CA",
+      officialBallotTitle: "U.S. Senate (Special Election)",
+    });
+
+    expect(result.officeId).toBe("office-us-senator");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.confidence).toBe(1);
+    expect(result.aliasMemoryKey).toBe("united states senate special election");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("maps us_senate family entries to United States Senator even with generic senate title", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { statewide: [] },
+      officesByScope: {
+        statewide: [
+          { id: "office-governor", canonical_name: "Governor" },
+          { id: "office-us-senator", canonical_name: "United States Senator" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "statewide",
+      districtName: "California",
+      state: "CA",
+      officialBallotTitle: "Senator",
+      discoveryContestFamily: "us_senate",
+    });
+
+    expect(result.officeId).toBe("office-us-senator");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.confidence).toBe(1);
+    expect(result.aliasMemoryKey).toBe("senator");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("does not force non-Senate statewide titles to United States Senator", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { statewide: [] },
+      officesByScope: {
+        statewide: [
+          { id: "office-governor", canonical_name: "Governor" },
+          { id: "office-us-senator", canonical_name: "United States Senator" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "statewide",
+      districtName: "California",
+      state: "CA",
+      officialBallotTitle: "California Governor",
+    });
+
+    expect(result.officeId).toBe("office-governor");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.officeId).not.toBe("office-us-senator");
+  });
+
+  it("does not let us_senate family provenance override a clearly different office title", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { statewide: [] },
+      officesByScope: {
+        statewide: [
+          { id: "office-governor", canonical_name: "Governor" },
+          { id: "office-us-senator", canonical_name: "United States Senator" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "statewide",
+      districtName: "California",
+      state: "CA",
+      officialBallotTitle: "Governor",
+      discoveryContestFamily: "us_senate",
+    });
+
+    expect(result.officeId).toBe("office-governor");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.officeId).not.toBe("office-us-senator");
+  });
+
+  it("does not treat state senate titles as compatible with us_senate provenance", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { statewide: [] },
+      officesByScope: {
+        statewide: [
+          { id: "office-governor", canonical_name: "Governor" },
+          { id: "office-us-senator", canonical_name: "United States Senator" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "statewide",
+      districtName: "California",
+      state: "CA",
+      officialBallotTitle: "State Senator",
+      discoveryContestFamily: "us_senate",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
+    expect(result.officeId).not.toBe("office-us-senator");
+  });
+
   it("uses stripped matcher key for alias-memory persistence", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { us_house: [] },
@@ -224,5 +351,183 @@ describe("OfficeMatcher", () => {
     expect(second.method).toBe("alias_exact");
     expect(second.officeId).toBe("office-us-house");
     expect(second.shouldPersistAlias).toBe(false);
+  });
+
+  it("maps us_house office titles to United States Representative and persists alias memory", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { us_house: [] },
+      officesByScope: {
+        us_house: [{ id: "office-us-house", canonical_name: "United States Representative" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "us_house",
+      districtName: "Congressional District 31 (119th Congress), California",
+      state: "CA",
+      officialBallotTitle: "Member of Congress, 31st District",
+    });
+
+    expect(result.officeId).toBe("office-us-house");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.confidence).toBe(1);
+    expect(result.aliasMemoryKey).toBe("member of congress");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("returns none for us_house when United States Representative office row is missing", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { us_house: [] },
+      officesByScope: {
+        us_house: [],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "us_house",
+      districtName: "Congressional District 31 (119th Congress), California",
+      state: "CA",
+      officialBallotTitle: "Member of Congress, 31st District",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
+  it("maps state_upper office titles to State Senator and persists alias memory", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { state_upper: [] },
+      officesByScope: {
+        state_upper: [{ id: "office-state-senator", canonical_name: "State Senator" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "state_upper",
+      districtName: "California State Senate District 12",
+      state: "CA",
+      officialBallotTitle: "Member of the Legislature, District 12",
+    });
+
+    expect(result.officeId).toBe("office-state-senator");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.confidence).toBe(1);
+    expect(result.aliasMemoryKey).toBe("member of the legislature");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("returns none for state_upper when State Senator office row is missing", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { state_upper: [] },
+      officesByScope: {
+        state_upper: [],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "state_upper",
+      districtName: "California State Senate District 12",
+      state: "CA",
+      officialBallotTitle: "Member of the Legislature, District 12",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
+  it("maps state_lower office titles to State Lower Chamber Legislator and persists alias memory", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { state_lower: [] },
+      officesByScope: {
+        state_lower: [
+          { id: "office-state-lower", canonical_name: "State Lower Chamber Legislator" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "state_lower",
+      districtName: "Massachusetts State House District 7",
+      state: "MA",
+      officialBallotTitle: "Representative in General Court, District 7",
+    });
+
+    expect(result.officeId).toBe("office-state-lower");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.confidence).toBe(1);
+    expect(result.aliasMemoryKey).toBe("representative in general court");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("returns none for state_lower when State Lower Chamber Legislator office row is missing", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { state_lower: [] },
+      officesByScope: {
+        state_lower: [],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "state_lower",
+      districtName: "Massachusetts State House District 7",
+      state: "MA",
+      officialBallotTitle: "Representative in General Court, District 7",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
+  it("maps school-scope office titles to School Board Member and persists alias memory", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { school_unified: [] },
+      officesByScope: {
+        school_unified: [{ id: "office-school-board", canonical_name: "School Board Member" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "school_unified",
+      districtName: "Baldwin Park Unified School District",
+      state: "CA",
+      officialBallotTitle: "Governing Board Trustee, Area 3",
+    });
+
+    expect(result.officeId).toBe("office-school-board");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.confidence).toBe(1);
+    expect(result.aliasMemoryKey).toBe("governing board trustee area 3");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("returns none for school scopes when School Board Member office row is missing", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { school_elementary: [] },
+      officesByScope: {
+        school_elementary: [],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "school_elementary",
+      districtName: "Sample Elementary School District",
+      state: "CA",
+      officialBallotTitle: "Governing Board Member",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
+    expect(result.shouldPersistAlias).toBe(false);
   });
 });
