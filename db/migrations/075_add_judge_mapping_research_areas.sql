@@ -1,14 +1,11 @@
+BEGIN;
+
 INSERT INTO public.research_areas (slug, name, description)
 VALUES
   (
     'environment_and_public_health',
     'Environment and Public Health',
     'Protect air, water, climate, and community health through standards, enforcement, and prevention.'
-  ),
-  (
-    'cost_of_living_reduction',
-    'Cost of Living Reduction',
-    'Lower household costs by improving price stability, competition, reduce or eliminate tariffs, and increase foreign trade.'
   ),
   (
     'healthcare_affordability',
@@ -19,16 +16,6 @@ VALUES
     'public_safety_and_crime_control',
     'Public Safety and Crime Control',
     'Improve safety through effective policing, prevention, accountability, and justice system performance.'
-  ),
-  (
-    'government_spending_reduction',
-    'Government Spending Reduction',
-    'Control public spending growth and reduce long-term fiscal deficits responsibly.'
-  ),
-  (
-    'personal_income_tax_reduction',
-    'Personal Income Tax Reduction',
-    'Lower personal income tax.'
   ),
   (
     'womens_reproductive_rights',
@@ -71,26 +58,6 @@ VALUES
     'Improve service delivery, reduce waste, and modernize administrative operations.'
   ),
   (
-    'national_defense',
-    'National Defense',
-    'Maintain military readiness and deterrence to protect national security interests.'
-  ),
-  (
-    'foreign_trade',
-    'Foreign Trade',
-    'Facilitate cross-country trade so each country focuses on what it does best, while expanding fair and mutually beneficial exchange.'
-  ),
-  (
-    'public_infrastructure',
-    'Public Infrastructure',
-    'Build and maintain transportation, utilities, and civic systems that support daily life and growth.'
-  ),
-  (
-    'peaceful_foreign_policy',
-    'Peaceful Foreign Policy',
-    'Prioritize diplomacy and de-escalation instead of war.'
-  ),
-  (
     'housing_affordability',
     'Housing Affordability',
     'Increase housing supply and reduce cost burdens for renters and homebuyers.'
@@ -99,26 +66,6 @@ VALUES
     'civil_rights',
     'Civil Rights',
     'Protect equal rights, anti-discrimination enforcement, and fair treatment under law.'
-  ),
-  (
-    'general',
-    'General',
-    'General candidate record not mapped to a specific office research area.'
-  ),
-  (
-    'integrity_and_ethics',
-    'Integrity and Ethics',
-    'Documented criminal convictions, official ethics findings, sanctions, disciplinary actions, court judgments, enforcement actions, or other verified public accountability records.'
-  ),
-  (
-    'legal_competence',
-    'Legal Competence',
-    'Evaluate legal reasoning, courtroom performance, case handling, rulings, legal writing, and professional command of the law.'
-  ),
-  (
-    'impartiality',
-    'Impartiality',
-    'Evaluate fairness, neutrality, evenhanded treatment, and independence from improper bias or influence.'
   ),
   (
     'public_education_quality',
@@ -130,3 +77,5 @@ DO UPDATE SET
   name = EXCLUDED.name,
   description = EXCLUDED.description,
   updated_at = now();
+
+COMMIT;

@@ -94,7 +94,10 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
 
     expect(prompt).toContain('- discovery_contest_family: "judicial_office"');
     expect(prompt).toContain(
-      "Research reliable public records about this exact judicial candidate that show legal competence, ethics, and documented legal record"
+      "Research the web for publicly available reliable records about this exact judicial candidate, focusing on evidence for evaluating the candidate's legal competence, integrity and ethics, impartiality, and professional record."
+    );
+    expect(prompt).toContain(
+      "Relevant sources may include notable cases, rulings, prior prosecutorial, defense, or judicial service, published legal work, disciplinary records, ethics complaints, controversies, and other verified public records."
     );
     expect(prompt).toContain(
       "Describe what the candidate actually did in the case and its effects/impacts."

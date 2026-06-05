@@ -487,6 +487,150 @@ describe("OfficeMatcher", () => {
     expect(result.shouldPersistAlias).toBe(false);
   });
 
+  it("maps statewide judicial-family titles to State Level Judge and persists alias memory", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { statewide: [] },
+      officesByScope: {
+        statewide: [{ id: "office-state-judge", canonical_name: "State Level Judge" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "statewide",
+      districtName: "California",
+      state: "CA",
+      officialBallotTitle: "Justice of the Supreme Court",
+      discoveryContestFamily: "judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-state-judge");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.confidence).toBe(1);
+    expect(result.aliasMemoryKey).toBe("justice of the supreme court");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("maps county judicial-family titles to County Level Judge and persists alias memory", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [{ id: "office-county-judge", canonical_name: "County Level Judge" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Los Angeles County",
+      state: "CA",
+      officialBallotTitle: "Superior Court Judge, Office No. 7",
+      discoveryContestFamily: "judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-judge");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.confidence).toBe(1);
+    expect(result.aliasMemoryKey).toBe("superior court judge");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("maps place judicial-family titles to Place Level Judge and persists alias memory", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { place: [] },
+      officesByScope: {
+        place: [{ id: "office-place-judge", canonical_name: "Place Level Judge" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "place",
+      districtName: "Sample City",
+      state: "CA",
+      officialBallotTitle: "Municipal Judge",
+      discoveryContestFamily: "judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-place-judge");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.confidence).toBe(1);
+    expect(result.aliasMemoryKey).toBe("municipal judge");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("does not force-map a mis-stamped statewide non-judicial title to State Level Judge", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { statewide: [] },
+      officesByScope: {
+        statewide: [
+          { id: "office-state-judge", canonical_name: "State Level Judge" },
+          { id: "office-governor", canonical_name: "Governor" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "statewide",
+      districtName: "California",
+      state: "CA",
+      officialBallotTitle: "Governor",
+      discoveryContestFamily: "judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-governor");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("does not force-map District Attorney to County Level Judge under judicial provenance", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-judge", canonical_name: "County Level Judge" },
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Washoe County",
+      state: "NV",
+      officialBallotTitle: "District Attorney",
+      discoveryContestFamily: "judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-district-attorney");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("returns none for a judicial-family title with no judicial marker or office match", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [{ id: "office-county-judge", canonical_name: "County Level Judge" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Washoe County",
+      state: "NV",
+      officialBallotTitle: "Public Administrator",
+      discoveryContestFamily: "judicial_office",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
   it("maps school-scope office titles to School Board Member and persists alias memory", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { school_unified: [] },

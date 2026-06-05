@@ -48,6 +48,9 @@ const US_HOUSE_CANONICAL_NAME = "United States Representative";
 const STATE_UPPER_CANONICAL_NAME = "State Senator";
 const STATE_LOWER_CANONICAL_NAME = "State Lower Chamber Legislator";
 const SCHOOL_BOARD_CANONICAL_NAME = "School Board Member";
+const STATE_LEVEL_JUDGE_CANONICAL_NAME = "State Level Judge";
+const COUNTY_LEVEL_JUDGE_CANONICAL_NAME = "County Level Judge";
+const PLACE_LEVEL_JUDGE_CANONICAL_NAME = "Place Level Judge";
 const SCHOOL_DISTRICT_SCOPES = new Set<ElectionDistrictType>([
   "school_elementary",
   "school_secondary",
@@ -82,6 +85,51 @@ const NON_US_SENATE_OFFICE_MARKERS = [
   /\bjustice\b/,
   /\bcourt\b/,
   /\bschool\b/,
+  /\bboard of education\b/,
+];
+const JUDICIAL_TITLE_ALLOW_MARKERS = [
+  /\bjudge\b/,
+  /\bjustice\b/,
+  /\bcourt\b/,
+  /\bjudicial\b/,
+  /\bmagistrate\b/,
+  /\bretention\b/,
+  /\bretain(?:ed|ing)?\b/,
+];
+const NON_JUDICIAL_TITLE_MARKERS = [
+  /\bdistrict attorney\b/,
+  /\bcounty district attorney\b/,
+  /\bprosecuting attorney\b/,
+  /\bcounty prosecutor\b/,
+  /\bprosecutor\b/,
+  /\battorney general\b/,
+  /\bgovernor\b/,
+  /\blieutenant governor\b/,
+  /\bsenate\b/,
+  /\bsenator\b/,
+  /\brepresentative\b/,
+  /\bhouse\b/,
+  /\bassembly\b/,
+  /\bdelegate\b/,
+  /\bmayor\b/,
+  /\bcity council\b/,
+  /\btown council\b/,
+  /\bcouncil member\b/,
+  /\balderman\b/,
+  /\bsheriff\b/,
+  /\bassessor\b/,
+  /\bclerk\b/,
+  /\brecorder\b/,
+  /\btreasurer\b/,
+  /\bcoroner\b/,
+  /\bsecretary of state\b/,
+  /\bauditor\b/,
+  /\bcomptroller\b/,
+  /\bcontroller\b/,
+  /\bcounty commissioner\b/,
+  /\bboard of supervisors\b/,
+  /\bsuperintendent\b/,
+  /\bschool board\b/,
   /\bboard of education\b/,
 ];
 // Tuned so a plain partial token overlap (around F1 ~= 0.5) is rejected unless boosted by stronger
@@ -216,6 +264,26 @@ function isUsSenateCompatibleTitle(titleMatcherKey: string): boolean {
     return false;
   }
   return !NON_US_SENATE_OFFICE_MARKERS.some((pattern) => pattern.test(titleMatcherKey));
+}
+
+function isJudicialCompatibleTitle(titleMatcherKey: string): boolean {
+  if (!JUDICIAL_TITLE_ALLOW_MARKERS.some((pattern) => pattern.test(titleMatcherKey))) {
+    return false;
+  }
+  return !NON_JUDICIAL_TITLE_MARKERS.some((pattern) => pattern.test(titleMatcherKey));
+}
+
+function judgeCanonicalNameForScope(scope: ElectionDistrictType): string | null {
+  if (scope === "statewide") {
+    return STATE_LEVEL_JUDGE_CANONICAL_NAME;
+  }
+  if (scope === "county") {
+    return COUNTY_LEVEL_JUDGE_CANONICAL_NAME;
+  }
+  if (scope === "place") {
+    return PLACE_LEVEL_JUDGE_CANONICAL_NAME;
+  }
+  return null;
 }
 
 function hasPhrase(text: string, phrase: string): boolean {
@@ -456,6 +524,23 @@ export class OfficeMatcher {
       );
       if (match) {
         return match;
+      }
+    }
+
+    if (
+      input.discoveryContestFamily === "judicial_office" &&
+      isJudicialCompatibleTitle(titleMatcherKey)
+    ) {
+      const judgeCanonicalName = judgeCanonicalNameForScope(input.scope);
+      if (judgeCanonicalName) {
+        const match = toSingleScopeOfficeMatch(
+          findSingleScopeOffice(offices, judgeCanonicalName),
+          normalizedAlias,
+          titleMatcherKey
+        );
+        if (match) {
+          return match;
+        }
       }
     }
 

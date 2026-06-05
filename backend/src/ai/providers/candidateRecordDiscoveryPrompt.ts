@@ -21,7 +21,7 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
   const useJudicialRecordObjective = input.discoveryContestFamily === "judicial_office";
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
   const objectiveRule = useJudicialRecordObjective
-    ? "- Research reliable public records about this exact judicial candidate that show legal competence, ethics, and documented legal record, such as notable cases, rulings, prior prosecutor/defense/judicial service, published legal work, and disciplinary records/controversies."
+    ? "- Research the web for publicly available reliable records about this exact judicial candidate, focusing on evidence for evaluating the candidate's legal competence, integrity and ethics, impartiality, and professional record. Relevant sources may include notable cases, rulings, prior prosecutorial, defense, or judicial service, published legal work, disciplinary records, ethics complaints, controversies, and other verified public records."
     : "- Research reliable public records about this exact candidate that show concrete actions or accountability such as votes, sponsored legislation, official decisions, public policy statements, budgets managed, committee work, finance records, legal/ethics scrutiny/documented criminal convictions, prior government service, professional achievements or failures, and documented positions on key issues.";
 
   return [

@@ -1,6 +1,182 @@
 DO $$
 DECLARE
   desired_slugs text[] := ARRAY[
+    'civil_rights',
+    'election_integrity',
+    'womens_reproductive_rights',
+    'public_safety_and_crime_control',
+    'corporate_accountability',
+    'data_privacy',
+    'environment_and_public_health',
+    'healthcare_affordability',
+    'social_programs_and_welfare',
+    'housing_affordability',
+    'public_education_quality',
+    'anti_corruption',
+    'government_efficiency',
+    'immigration',
+    'legal_competence',
+    'impartiality'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'State Level Judge';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=State Level Judge, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for state-level judge mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'State Level Judge'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_safety_and_crime_control',
+    'civil_rights',
+    'housing_affordability',
+    'corporate_accountability',
+    'data_privacy',
+    'anti_corruption',
+    'government_efficiency',
+    'election_integrity',
+    'environment_and_public_health',
+    'healthcare_affordability',
+    'social_programs_and_welfare',
+    'womens_reproductive_rights',
+    'public_education_quality',
+    'immigration',
+    'legal_competence',
+    'impartiality'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'County Level Judge';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=County Level Judge, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for county-level judge mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'County Level Judge'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_safety_and_crime_control',
+    'civil_rights',
+    'government_efficiency',
+    'housing_affordability',
+    'data_privacy',
+    'corporate_accountability',
+    'anti_corruption',
+    'legal_competence',
+    'impartiality'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'place'
+    AND canonical_name = 'Place Level Judge';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=place canonical_name=Place Level Judge, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for place-level judge mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'place'
+    AND office.canonical_name = 'Place Level Judge'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
     'national_defense',
     'peaceful_foreign_policy',
     'foreign_trade',
@@ -221,7 +397,9 @@ DECLARE
     'civil_rights',
     'data_privacy',
     'corporate_accountability',
-    'anti_corruption'
+    'anti_corruption',
+    'legal_competence',
+    'impartiality'
   ]::text[];
   expected_area_count integer;
   office_count integer;

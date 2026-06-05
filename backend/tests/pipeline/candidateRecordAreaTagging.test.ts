@@ -12,7 +12,7 @@ describe("loadAllowedResearchAreasForOfficeId", () => {
     const query = vi.fn().mockResolvedValueOnce({
       rows: [
         { id: "ra1", slug: "general" },
-        { id: "ra3", slug: "legal_and_ethics_record" },
+        { id: "ra3", slug: "integrity_and_ethics" },
         { id: "ra2", slug: "government_efficiency" },
       ],
     });
@@ -21,14 +21,14 @@ describe("loadAllowedResearchAreasForOfficeId", () => {
 
     expect(result).toEqual([
       { id: "ra1", slug: "general" },
-      { id: "ra3", slug: "legal_and_ethics_record" },
+      { id: "ra3", slug: "integrity_and_ethics" },
       { id: "ra2", slug: "government_efficiency" },
     ]);
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).toContain("WHERE ora.office_id = $1::uuid");
     expect(query.mock.calls[0]?.[1]).toEqual([
       "office-1",
-      ["general", "legal_and_ethics_record"],
+      ["general", "integrity_and_ethics"],
     ]);
   });
 });
@@ -39,7 +39,7 @@ describe("loadAllResearchAreas", () => {
       rows: [
         { id: "ra1", slug: "general" },
         { id: "ra2", slug: "government_efficiency" },
-        { id: "ra3", slug: "legal_and_ethics_record" },
+        { id: "ra3", slug: "integrity_and_ethics" },
       ],
     });
 
@@ -48,7 +48,7 @@ describe("loadAllResearchAreas", () => {
     expect(result).toEqual([
       { id: "ra1", slug: "general" },
       { id: "ra2", slug: "government_efficiency" },
-      { id: "ra3", slug: "legal_and_ethics_record" },
+      { id: "ra3", slug: "integrity_and_ethics" },
     ]);
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).toContain("FROM public.research_areas");
@@ -58,7 +58,7 @@ describe("loadAllResearchAreas", () => {
 
 describe("validateCandidateRecordAreaLabels", () => {
   it("accepts office-area label with stance and universal labels without stance", () => {
-    const allowed = new Set(["general", "legal_and_ethics_record", "government_efficiency"]);
+    const allowed = new Set(["general", "integrity_and_ethics", "government_efficiency"]);
     const result = validateCandidateRecordAreaLabels(
       [
         {
@@ -73,7 +73,7 @@ describe("validateCandidateRecordAreaLabels", () => {
         },
         {
           candidateRecordId: "rec-3",
-          researchAreaSlug: "legal_and_ethics_record",
+          researchAreaSlug: "integrity_and_ethics",
           stance: null,
         },
       ],
@@ -95,7 +95,7 @@ describe("validateCandidateRecordAreaLabels", () => {
         },
         {
           candidateRecordId: "rec-3",
-          researchAreaSlug: "legal_and_ethics_record",
+          researchAreaSlug: "integrity_and_ethics",
           stance: null,
         },
       ],
@@ -128,10 +128,10 @@ describe("validateCandidateRecordAreaLabels", () => {
     }
   });
 
-  it("rejects legal_and_ethics_record labels when stance is provided", () => {
-    const allowed = new Set(["legal_and_ethics_record"]);
+  it("rejects integrity_and_ethics labels when stance is provided", () => {
+    const allowed = new Set(["integrity_and_ethics"]);
     const result = validateCandidateRecordAreaLabels(
-      [{ candidateRecordId: "rec-1", researchAreaSlug: "legal_and_ethics_record", stance: "neutral" }],
+      [{ candidateRecordId: "rec-1", researchAreaSlug: "integrity_and_ethics", stance: "neutral" }],
       allowed
     );
 
@@ -161,12 +161,12 @@ describe("upsertCandidateRecordAreaTags", () => {
     const labels = [
       { candidateRecordId: "rec-1", researchAreaSlug: "government_efficiency", stance: "against" as const },
       { candidateRecordId: "rec-2", researchAreaSlug: "general", stance: null },
-      { candidateRecordId: "rec-3", researchAreaSlug: "legal_and_ethics_record", stance: null },
+      { candidateRecordId: "rec-3", researchAreaSlug: "integrity_and_ethics", stance: null },
     ];
     const map = new Map<string, string>([
       ["government_efficiency", "ra-eff"],
       ["general", "ra-general"],
-      ["legal_and_ethics_record", "ra-legal"],
+      ["integrity_and_ethics", "ra-legal"],
     ]);
 
     const result = await upsertCandidateRecordAreaTags({ query }, labels, map);

@@ -2,7 +2,7 @@ import type { PoolClient } from "pg";
 
 import {
   GENERAL_RESEARCH_AREA_SLUG,
-  LEGAL_AND_ETHICS_RESEARCH_AREA_SLUG,
+  INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG,
   isNonStanceResearchAreaSlug,
 } from "./candidateRecordResearchAreaPolicy.js";
 
@@ -67,7 +67,7 @@ export async function loadAllowedResearchAreasForOfficeId(
       ) merged
       ORDER BY slug ASC
     `,
-    [officeId, [GENERAL_RESEARCH_AREA_SLUG, LEGAL_AND_ETHICS_RESEARCH_AREA_SLUG]]
+    [officeId, [GENERAL_RESEARCH_AREA_SLUG, INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG]]
   );
 
   return result.rows;
