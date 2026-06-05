@@ -99,15 +99,9 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "statewide",
-    canonicalName: "State Supreme Court Justice",
+    canonicalName: "State Level Judge",
     summary:
-      "Serves on the state's highest court and decides appeals and constitutional questions under state law.",
-  },
-  {
-    scope: "statewide",
-    canonicalName: "State Court of Appeals Judge",
-    summary:
-      "Hears appellate cases and reviews trial-court decisions for legal error under state law.",
+      "Serves in a statewide judicial role, reviewing cases and applying state constitutional, statutory, and procedural law.",
   },
   {
     scope: "statewide",
@@ -153,15 +147,15 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
-    canonicalName: "County Clerk",
+    canonicalName: "District Attorney",
     summary:
-      "Maintains key county records and may administer elections, filings, and licensing functions.",
+      "Serves as the county prosecutor, making charging decisions and representing the public in criminal prosecutions.",
   },
   {
     scope: "county",
-    canonicalName: "District Attorney",
+    canonicalName: "County Clerk",
     summary:
-      "Prosecutes criminal cases on behalf of the state or county within local trial courts.",
+      "Maintains key county records and may administer elections, filings, and licensing functions.",
   },
   {
     scope: "county",
@@ -195,15 +189,9 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
-    canonicalName: "Superior Court Judge",
+    canonicalName: "County Level Judge",
     summary:
-      "Hears civil and criminal matters in trial courts and issues rulings based on state law and procedure.",
-  },
-  {
-    scope: "county",
-    canonicalName: "Probate Judge",
-    summary:
-      "Handles probate-related matters such as estates, guardianships, and related judicial proceedings.",
+      "Serves in a county-level judicial role, hearing cases and issuing rulings under state and local court procedure.",
   },
   {
     scope: "place",
@@ -231,9 +219,9 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "place",
-    canonicalName: "Municipal Judge",
+    canonicalName: "Place Level Judge",
     summary:
-      "Presides over municipal court cases, including ordinance and code matters under local jurisdiction.",
+      "Serves in a municipal or place-level judicial role, handling local court matters and applying relevant law and procedure.",
   },
   {
     scope: "place",
@@ -272,6 +260,26 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "statewide",
     officeCanonicalName: "Lieutenant Governor",
     aliasText: "Lt. Governor",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Level Judge",
+    aliasText: "State Supreme Court Justice",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Level Judge",
+    aliasText: "State Court of Appeals Judge",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Level Judge",
+    aliasText: "Judge",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Level Judge",
+    aliasText: "Justice",
   },
   {
     scope: "state_upper",
@@ -367,6 +375,51 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "us_house",
     officeCanonicalName: "United States Representative",
     aliasText: "US House of Representatives",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "District Attorney",
+    aliasText: "District Attorney",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "District Attorney",
+    aliasText: "County District Attorney",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "District Attorney",
+    aliasText: "Prosecuting Attorney",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "District Attorney",
+    aliasText: "County Prosecutor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Level Judge",
+    aliasText: "Superior Court Judge",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Level Judge",
+    aliasText: "Probate Judge",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Level Judge",
+    aliasText: "Judge",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Place Level Judge",
+    aliasText: "Municipal Judge",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Place Level Judge",
+    aliasText: "Judge",
   },
 ];
 

@@ -1,8 +1,9 @@
 import type { PoolClient } from "pg";
 
 import { getStateNameByAbbreviation } from "../../constants/usStates.js";
-import type { ElectionDistrictType } from "../../types/election.js";
+import type { ElectionContestFamily, ElectionDistrictType } from "../../types/election.js";
 import { normalizeElectionTitleKey } from "../../utils/normalizeElectionTitleKey.js";
+import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
 
 type OfficeAliasRow = {
   office_id: string;
@@ -26,6 +27,7 @@ type OfficeMatchInput = {
   districtName: string;
   state: string;
   officialBallotTitle: string;
+  discoveryContestFamily?: ElectionContestFamily;
 };
 
 type OfficeMatchMethod = "alias_exact" | "deterministic_fallback" | "none" | "ambiguous";
@@ -41,6 +43,95 @@ export type OfficeMatchResult = {
 
 const MIN_CONFIDENCE = 0.56;
 const MIN_MARGIN = 0.12;
+const US_SENATE_CANONICAL_NAME = "United States Senator";
+const US_HOUSE_CANONICAL_NAME = "United States Representative";
+const STATE_UPPER_CANONICAL_NAME = "State Senator";
+const STATE_LOWER_CANONICAL_NAME = "State Lower Chamber Legislator";
+const SCHOOL_BOARD_CANONICAL_NAME = "School Board Member";
+const STATE_LEVEL_JUDGE_CANONICAL_NAME = "State Level Judge";
+const COUNTY_LEVEL_JUDGE_CANONICAL_NAME = "County Level Judge";
+const PLACE_LEVEL_JUDGE_CANONICAL_NAME = "Place Level Judge";
+const SCHOOL_DISTRICT_SCOPES = new Set<ElectionDistrictType>([
+  "school_elementary",
+  "school_secondary",
+  "school_unified",
+]);
+const NON_US_SENATE_OFFICE_MARKERS = [
+  /\bstate senate\b/,
+  /\bstate senator\b/,
+  /\bgovernor\b/,
+  /\blieutenant governor\b/,
+  /\battorney general\b/,
+  /\bsecretary of state\b/,
+  /\btreasurer\b/,
+  /\bauditor\b/,
+  /\bcomptroller\b/,
+  /\bcontroller\b/,
+  /\bcommissioner\b/,
+  /\bsuperintendent\b/,
+  /\brepresentative\b/,
+  /\bhouse\b/,
+  /\bassembly\b/,
+  /\bdelegate\b/,
+  /\bmayor\b/,
+  /\bcouncil\b/,
+  /\balderman\b/,
+  /\bsheriff\b/,
+  /\bassessor\b/,
+  /\bclerk\b/,
+  /\brecorder\b/,
+  /\bcoroner\b/,
+  /\bjudge\b/,
+  /\bjustice\b/,
+  /\bcourt\b/,
+  /\bschool\b/,
+  /\bboard of education\b/,
+];
+const JUDICIAL_TITLE_ALLOW_MARKERS = [
+  /\bjudge\b/,
+  /\bjustice\b/,
+  /\bcourt\b/,
+  /\bjudicial\b/,
+  /\bmagistrate\b/,
+  /\bretention\b/,
+  /\bretain(?:ed|ing)?\b/,
+];
+const NON_JUDICIAL_TITLE_MARKERS = [
+  /\bdistrict attorney\b/,
+  /\bcounty district attorney\b/,
+  /\bprosecuting attorney\b/,
+  /\bcounty prosecutor\b/,
+  /\bprosecutor\b/,
+  /\battorney general\b/,
+  /\bgovernor\b/,
+  /\blieutenant governor\b/,
+  /\bsenate\b/,
+  /\bsenator\b/,
+  /\brepresentative\b/,
+  /\bhouse\b/,
+  /\bassembly\b/,
+  /\bdelegate\b/,
+  /\bmayor\b/,
+  /\bcity council\b/,
+  /\btown council\b/,
+  /\bcouncil member\b/,
+  /\balderman\b/,
+  /\bsheriff\b/,
+  /\bassessor\b/,
+  /\bclerk\b/,
+  /\brecorder\b/,
+  /\btreasurer\b/,
+  /\bcoroner\b/,
+  /\bsecretary of state\b/,
+  /\bauditor\b/,
+  /\bcomptroller\b/,
+  /\bcontroller\b/,
+  /\bcounty commissioner\b/,
+  /\bboard of supervisors\b/,
+  /\bsuperintendent\b/,
+  /\bschool board\b/,
+  /\bboard of education\b/,
+];
 // Tuned so a plain partial token overlap (around F1 ~= 0.5) is rejected unless boosted by stronger
 // canonical phrase agreement. This keeps deterministic fallback conservative.
 const STOPWORDS = new Set([
@@ -140,6 +231,59 @@ function toMatcherKeyFromCanonicalName(canonicalName: string): string {
   const normalized = normalizeMatcherText(canonicalName);
   const withoutSeat = stripSeatSuffixes(normalized);
   return withoutSeat.length > 0 ? withoutSeat : normalized;
+}
+
+function isSchoolDistrictScope(scope: ElectionDistrictType): boolean {
+  return SCHOOL_DISTRICT_SCOPES.has(scope);
+}
+
+function findSingleScopeOffice(offices: OfficeCandidate[], canonicalName: string): OfficeCandidate | undefined {
+  return offices.find((office) => office.canonicalName === canonicalName);
+}
+
+function toSingleScopeOfficeMatch(
+  office: OfficeCandidate | undefined,
+  normalizedAlias: string,
+  titleMatcherKey: string
+): OfficeMatchResult | null {
+  if (!office) {
+    return null;
+  }
+  return {
+    officeId: office.id,
+    method: "deterministic_fallback",
+    confidence: 1,
+    normalizedAlias,
+    aliasMemoryKey: titleMatcherKey,
+    shouldPersistAlias: titleMatcherKey.length > 0,
+  };
+}
+
+function isUsSenateCompatibleTitle(titleMatcherKey: string): boolean {
+  if (!/\bsenate\b|\bsenator\b/.test(titleMatcherKey)) {
+    return false;
+  }
+  return !NON_US_SENATE_OFFICE_MARKERS.some((pattern) => pattern.test(titleMatcherKey));
+}
+
+function isJudicialCompatibleTitle(titleMatcherKey: string): boolean {
+  if (!JUDICIAL_TITLE_ALLOW_MARKERS.some((pattern) => pattern.test(titleMatcherKey))) {
+    return false;
+  }
+  return !NON_JUDICIAL_TITLE_MARKERS.some((pattern) => pattern.test(titleMatcherKey));
+}
+
+function judgeCanonicalNameForScope(scope: ElectionDistrictType): string | null {
+  if (scope === "statewide") {
+    return STATE_LEVEL_JUDGE_CANONICAL_NAME;
+  }
+  if (scope === "county") {
+    return COUNTY_LEVEL_JUDGE_CANONICAL_NAME;
+  }
+  if (scope === "place") {
+    return PLACE_LEVEL_JUDGE_CANONICAL_NAME;
+  }
+  return null;
 }
 
 function hasPhrase(text: string, phrase: string): boolean {
@@ -322,6 +466,82 @@ export class OfficeMatcher {
         aliasMemoryKey: titleMatcherKey,
         shouldPersistAlias: false,
       };
+    }
+
+    if (isSchoolDistrictScope(input.scope)) {
+      const match = toSingleScopeOfficeMatch(
+        findSingleScopeOffice(offices, SCHOOL_BOARD_CANONICAL_NAME),
+        normalizedAlias,
+        titleMatcherKey
+      );
+      if (match) {
+        return match;
+      }
+    }
+
+    if (input.scope === "us_house") {
+      const match = toSingleScopeOfficeMatch(
+        findSingleScopeOffice(offices, US_HOUSE_CANONICAL_NAME),
+        normalizedAlias,
+        titleMatcherKey
+      );
+      if (match) {
+        return match;
+      }
+    }
+
+    if (input.scope === "state_upper") {
+      const match = toSingleScopeOfficeMatch(
+        findSingleScopeOffice(offices, STATE_UPPER_CANONICAL_NAME),
+        normalizedAlias,
+        titleMatcherKey
+      );
+      if (match) {
+        return match;
+      }
+    }
+
+    if (input.scope === "state_lower") {
+      const match = toSingleScopeOfficeMatch(
+        findSingleScopeOffice(offices, STATE_LOWER_CANONICAL_NAME),
+        normalizedAlias,
+        titleMatcherKey
+      );
+      if (match) {
+        return match;
+      }
+    }
+
+    if (
+      input.scope === "statewide" &&
+      (isUsSenateOfficeTitle(input.officialBallotTitle) ||
+        (input.discoveryContestFamily === "us_senate" && isUsSenateCompatibleTitle(titleMatcherKey)))
+    ) {
+      const match = toSingleScopeOfficeMatch(
+        findSingleScopeOffice(offices, US_SENATE_CANONICAL_NAME),
+        normalizedAlias,
+        titleMatcherKey
+      );
+      if (match) {
+        return match;
+      }
+    }
+
+    if (
+      input.discoveryContestFamily === "judicial_office" &&
+      isJudicialCompatibleTitle(titleMatcherKey)
+    ) {
+      const judgeCanonicalName = judgeCanonicalNameForScope(input.scope);
+      if (judgeCanonicalName) {
+        const match = toSingleScopeOfficeMatch(
+          findSingleScopeOffice(offices, judgeCanonicalName),
+          normalizedAlias,
+          titleMatcherKey
+        );
+        if (match) {
+          return match;
+        }
+      }
     }
 
     const titleTokens = toMatcherTokens(titleMatcherKey);

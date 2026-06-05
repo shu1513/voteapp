@@ -9,11 +9,11 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
         labels: [
           { record_index: 0, research_area_slug: "government_efficiency", stance: "for" },
           { record_index: 1, research_area_slug: "general" },
-          { record_index: 2, research_area_slug: "legal_and_ethics_record" },
+          { record_index: 2, research_area_slug: "integrity_and_ethics" },
         ],
       },
       {
-        allowedResearchAreaSlugs: new Set(["general", "legal_and_ethics_record", "government_efficiency"]),
+        allowedResearchAreaSlugs: new Set(["general", "integrity_and_ethics", "government_efficiency"]),
         recordCount: 3,
         requireLabelForEveryRecord: true,
       }
@@ -26,7 +26,7 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
     expect(parsed.payload.labels).toEqual([
       { record_index: 0, research_area_slug: "government_efficiency", stance: "for" },
       { record_index: 1, research_area_slug: "general" },
-      { record_index: 2, research_area_slug: "legal_and_ethics_record" },
+      { record_index: 2, research_area_slug: "integrity_and_ethics" },
     ]);
   });
 
@@ -49,9 +49,9 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
     expect(parsed.ok).toBe(false);
   });
 
-  it("rejects stance on legal_and_ethics_record", () => {
+  it("rejects stance on integrity_and_ethics", () => {
     const parsed = parseCandidateRecordAreaLabelPayload({
-      labels: [{ record_index: 0, research_area_slug: "legal_and_ethics_record", stance: "neutral" }],
+      labels: [{ record_index: 0, research_area_slug: "integrity_and_ethics", stance: "neutral" }],
     });
 
     expect(parsed.ok).toBe(false);
