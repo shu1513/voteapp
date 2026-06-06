@@ -54,7 +54,7 @@ export function buildElectionsPrompt(args: {
                 ? "- Exclude all ballot measures and all non-U.S.-Senate office contests."
               : "- Exclude all office contests.",
           contestFamily === "non_judicial_office"
-            ? '- Non-judicial office examples: Governor, Lieutenant Governor, Secretary of State, Treasurer, Controller, Attorney General, Superintendent of Public Instruction, Board of Supervisors, Sheriff, Assessor, County Clerk, Mayor, City Council.'
+            ? '- Non-judicial office examples: Governor, Lieutenant Governor, Secretary of State, Treasurer, Controller, Attorney General, Superintendent of Public Instruction, County Supervisor, Sheriff, Assessor, County Clerk, Mayor, City Council.'
             : contestFamily === "judicial_office"
               ? '- Judicial examples: "Judge of the Superior Court, Office No. X", "Justice of the Supreme Court (Retention)", "Court of Appeal Justice (Retention)".'
               : contestFamily === "us_senate"

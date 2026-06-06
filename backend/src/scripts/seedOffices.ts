@@ -110,6 +110,36 @@ const SEED_OFFICES: SeedOffice[] = [
       "Sets or oversees statewide education policy, standards, and governance for the public school system.",
   },
   {
+    scope: "statewide",
+    canonicalName: "State Board of Regents Member",
+    summary:
+      "Serves on a statewide higher-education governing board overseeing public university systems, budgets, policy, and institutional governance.",
+  },
+  {
+    scope: "statewide",
+    canonicalName: "State Board of Equalization Member",
+    summary:
+      "Oversees state tax administration, property assessment equalization, taxpayer appeals, and related fiscal oversight duties assigned by state law.",
+  },
+  {
+    scope: "statewide",
+    canonicalName: "Labor Commissioner",
+    summary:
+      "Oversees labor standards, workplace protections, employment regulation, and workforce-related enforcement duties assigned by state law.",
+  },
+  {
+    scope: "statewide",
+    canonicalName: "Land Commissioner",
+    summary:
+      "Manages state public lands, land records, natural resource revenues, and related stewardship duties assigned by state law.",
+  },
+  {
+    scope: "statewide",
+    canonicalName: "Railroad Commissioner",
+    summary:
+      "Regulates rail, energy, oil and gas, pipeline, or utility sectors where those duties are assigned to a state railroad commission.",
+  },
+  {
     scope: "us_house",
     canonicalName: "United States Representative",
     summary:
@@ -135,9 +165,9 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
-    canonicalName: "Board of Supervisors",
+    canonicalName: "County Supervisor",
     summary:
-      "County governing board responsible for county budgets, ordinances, services, and administrative oversight.",
+      "Serves on the county governing board responsible for county budgets, ordinances, services, and administrative oversight.",
   },
   {
     scope: "county",
@@ -165,6 +195,12 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "County Auditor",
+    summary:
+      "Audits county finances, oversees fiscal controls, and may administer records, payments, or elections duties assigned by state law.",
+  },
+  {
+    scope: "county",
     canonicalName: "County Treasurer",
     summary:
       "Manages county funds, receipts, and disbursements, and may oversee tax collection or investment operations.",
@@ -174,6 +210,12 @@ const SEED_OFFICES: SeedOffice[] = [
     canonicalName: "County Recorder",
     summary:
       "Records and preserves public documents such as deeds, liens, and other official county filings.",
+  },
+  {
+    scope: "county",
+    canonicalName: "Clerk of Court",
+    summary:
+      "Maintains court records, manages filings and case documents, and supports public access to court administration.",
   },
   {
     scope: "county",
@@ -236,6 +278,30 @@ const SEED_OFFICES: SeedOffice[] = [
       "Serves on the town legislative body, setting policy, budgets, and oversight for municipal operations.",
   },
   {
+    scope: "place",
+    canonicalName: "Town Moderator",
+    summary:
+      "Presides over town meetings or local deliberative proceedings, helping manage procedure, debate, and public votes.",
+  },
+  {
+    scope: "place",
+    canonicalName: "Municipal Assessor",
+    summary:
+      "Determines local property valuations used for municipal taxation and maintains assessment records.",
+  },
+  {
+    scope: "place",
+    canonicalName: "Municipal Attorney",
+    summary:
+      "Provides legal representation and advice for municipal government and may handle local legal matters assigned by law.",
+  },
+  {
+    scope: "place",
+    canonicalName: "Municipal Constable",
+    summary:
+      "Performs local law enforcement, civil process, or public safety duties assigned by municipal or state law.",
+  },
+  {
     scope: "school_elementary",
     canonicalName: "School Board Member",
     summary:
@@ -256,6 +322,11 @@ const SEED_OFFICES: SeedOffice[] = [
 ];
 
 const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
+  {
+    scope: "statewide",
+    officeCanonicalName: "Lieutenant Governor",
+    aliasText: "Lieutenant Governor",
+  },
   {
     scope: "statewide",
     officeCanonicalName: "Lieutenant Governor",
@@ -280,6 +351,241 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "statewide",
     officeCanonicalName: "State Level Judge",
     aliasText: "Justice",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Regents Member",
+    aliasText: "State Board of Regents",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Regents Member",
+    aliasText: "Board of Regents",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Regents Member",
+    aliasText: "Regent",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Regents Member",
+    aliasText: "University Regent",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Regents Member",
+    aliasText: "State University Regent",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Regents Member",
+    aliasText: "Member, Board of Regents",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Regents Member",
+    aliasText: "Member of the Board of Regents",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Equalization Member",
+    aliasText: "State Board of Equalization Member",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Equalization Member",
+    aliasText: "Board of Equalization Member",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Equalization Member",
+    aliasText: "Member, State Board of Equalization",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Equalization Member",
+    aliasText: "Member of the State Board of Equalization",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Equalization Member",
+    aliasText: "Equalization Board Member",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Board of Equalization Member",
+    aliasText: "State Equalization Board Member",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Labor Commissioner",
+    aliasText: "Labor Commissioner",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Labor Commissioner",
+    aliasText: "Commissioner of Labor",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Labor Commissioner",
+    aliasText: "Commissioner of Labor and Industries",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Labor Commissioner",
+    aliasText: "Labor and Industries Commissioner",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Land Commissioner",
+    aliasText: "Land Commissioner",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Land Commissioner",
+    aliasText: "Commissioner of Public Lands",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Land Commissioner",
+    aliasText: "Commissioner of State Lands",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Land Commissioner",
+    aliasText: "Commissioner of the General Land Office",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Land Commissioner",
+    aliasText: "General Land Office Commissioner",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Railroad Commissioner",
+    aliasText: "Railroad Commissioner",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Railroad Commissioner",
+    aliasText: "Commissioner, Railroad Commission",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Railroad Commissioner",
+    aliasText: "Railroad Commission Member",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Railroad Commissioner",
+    aliasText: "Member, Railroad Commission",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Comptroller",
+    aliasText: "State Comptroller",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Comptroller",
+    aliasText: "Comptroller of Public Accounts",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Comptroller",
+    aliasText: "Comptroller of the Treasury",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Comptroller",
+    aliasText: "Controller",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Comptroller",
+    aliasText: "State Controller",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Commissioner of Insurance",
+    aliasText: "Insurance Commissioner",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Attorney General",
+    aliasText: "Attorney General",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Attorney General",
+    aliasText: "State Attorney General",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Attorney General",
+    aliasText: "Commonwealth Attorney General",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Attorney General",
+    aliasText: "Attorney General and Reporter",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Treasurer",
+    aliasText: "State Treasurer",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Treasurer",
+    aliasText: "Treasurer of State",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Treasurer",
+    aliasText: "Commonwealth Treasurer",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Treasurer",
+    aliasText: "Treasurer",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Auditor",
+    aliasText: "State Auditor",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Auditor",
+    aliasText: "Auditor of State",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Auditor",
+    aliasText: "Auditor of Public Accounts",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Auditor",
+    aliasText: "State Auditor and Inspector",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "State Auditor",
+    aliasText: "State Auditor of Accounts",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Secretary of State",
+    aliasText: "Secretary of State",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Secretary of State",
+    aliasText: "Secretary of the Commonwealth",
   },
   {
     scope: "state_upper",
@@ -378,6 +684,71 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
   {
     scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "County Supervisor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Supervisor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Member, Board of Supervisors",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Board of Supervisors Member",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Member of the Board of Supervisors",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Board of Supervisors",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "County Board Supervisor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "County Council Member",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "County Board Member",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "County Legislator",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Parish Police Juror",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Fiscal Court Member",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Quorum Court Member",
+  },
+  {
+    scope: "county",
     officeCanonicalName: "District Attorney",
     aliasText: "District Attorney",
   },
@@ -398,6 +769,51 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
   {
     scope: "county",
+    officeCanonicalName: "County Auditor",
+    aliasText: "County Auditor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Auditor",
+    aliasText: "Auditor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Auditor",
+    aliasText: "County Controller",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Auditor",
+    aliasText: "County Comptroller",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "Clerk of Court",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "Clerk of the Court",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "Circuit Clerk",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "Court Clerk",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "County Court Clerk",
+  },
+  {
+    scope: "county",
     officeCanonicalName: "County Level Judge",
     aliasText: "Superior Court Judge",
   },
@@ -410,6 +826,161 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Level Judge",
     aliasText: "Judge",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "City Council Member",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "Council Member",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "City Councilor",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "Municipal Council Member",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "Municipal Governing Board Member",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Town Council Member",
+    aliasText: "Town Council Member",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Town Council Member",
+    aliasText: "Town Board Member",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Town Council Member",
+    aliasText: "Select Board Member",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Town Council Member",
+    aliasText: "Town Select Board Member",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Clerk",
+    aliasText: "City Clerk",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Clerk",
+    aliasText: "Municipal Clerk",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Clerk",
+    aliasText: "Town Clerk",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Clerk",
+    aliasText: "Village Clerk",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Treasurer",
+    aliasText: "City Treasurer",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Treasurer",
+    aliasText: "Municipal Treasurer",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Treasurer",
+    aliasText: "Town Treasurer",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Treasurer",
+    aliasText: "Village Treasurer",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Town Moderator",
+    aliasText: "Town Moderator",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Town Moderator",
+    aliasText: "Moderator",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Assessor",
+    aliasText: "Municipal Assessor",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Assessor",
+    aliasText: "City Assessor",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Assessor",
+    aliasText: "Town Assessor",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Assessor",
+    aliasText: "Village Assessor",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Attorney",
+    aliasText: "Municipal Attorney",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Attorney",
+    aliasText: "City Attorney",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Attorney",
+    aliasText: "Town Attorney",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Attorney",
+    aliasText: "Village Attorney",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Constable",
+    aliasText: "Municipal Constable",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Constable",
+    aliasText: "City Constable",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Constable",
+    aliasText: "Town Constable",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Constable",
+    aliasText: "Village Constable",
   },
   {
     scope: "place",
@@ -435,14 +1006,18 @@ function assertNoDuplicateSeedKeys(rows: readonly SeedOffice[]): void {
 }
 
 function assertNoDuplicateSeedAliasKeys(rows: readonly SeedOfficeAlias[]): void {
-  const seen = new Set<string>();
+  const seen = new Map<string, string>();
   for (const row of rows) {
     const normalizedAlias = normalizeElectionTitleKey(row.aliasText);
     const key = `${row.scope}::${normalizedAlias}`;
-    if (seen.has(key)) {
-      throw new Error(`Duplicate office alias seed key: ${key}`);
+    const owner = `${row.scope}::${row.officeCanonicalName}`;
+    const existingOwner = seen.get(key);
+    if (existingOwner) {
+      throw new Error(
+        `Duplicate office alias seed key: ${key} claimed by ${existingOwner} and ${owner}`
+      );
     }
-    seen.add(key);
+    seen.set(key, owner);
   }
 }
 
@@ -512,24 +1087,49 @@ async function upsertOfficeAlias(client: PoolClient, row: SeedOfficeAlias): Prom
     );
   }
 
-  const updated = await client.query<{ id: string }>(
+  const existing = await client.query<{
+    id: string;
+    office_id: string;
+    alias_text: string;
+    canonical_name: string;
+  }>(
     `
-      UPDATE public.office_title_aliases
-      SET office_id = $1,
-          alias_text = $4,
-          updated_at = now()
-      WHERE scope = $2
-        AND normalized_alias = $3
-        AND (
-          office_id IS DISTINCT FROM $1
-          OR alias_text IS DISTINCT FROM $4
-        )
-      RETURNING id
+      SELECT alias.id,
+             alias.office_id,
+             alias.alias_text,
+             office.canonical_name
+      FROM public.office_title_aliases alias
+      JOIN public.offices office
+        ON office.id = alias.office_id
+      WHERE alias.scope = $1
+        AND alias.normalized_alias = $2
+      LIMIT 1
     `,
-    [officeId, row.scope, normalizedAlias, row.aliasText]
+    [row.scope, normalizedAlias]
   );
-  if (updated.rowCount === 1) {
-    return "updated";
+
+  const existingAlias = existing.rows[0];
+  if (existingAlias && existingAlias.office_id !== officeId) {
+    throw new Error(
+      `Office alias collision: scope=${row.scope} normalized_alias=${normalizedAlias} ` +
+        `already maps to ${existingAlias.canonical_name}; refused to remap to ${row.officeCanonicalName}`
+    );
+  }
+
+  if (existingAlias) {
+    const updated = await client.query<{ id: string }>(
+      `
+        UPDATE public.office_title_aliases
+        SET alias_text = $3,
+            updated_at = now()
+        WHERE scope = $1
+          AND normalized_alias = $2
+          AND alias_text IS DISTINCT FROM $3
+        RETURNING id
+      `,
+      [row.scope, normalizedAlias, row.aliasText]
+    );
+    return updated.rowCount === 1 ? "updated" : "unchanged";
   }
 
   const inserted = await client.query<{ id: string }>(
@@ -548,6 +1148,27 @@ async function upsertOfficeAlias(client: PoolClient, row: SeedOfficeAlias): Prom
   );
   if (inserted.rowCount === 1) {
     return "inserted";
+  }
+
+  const raced = await client.query<{ office_id: string; canonical_name: string }>(
+    `
+      SELECT alias.office_id, office.canonical_name
+      FROM public.office_title_aliases alias
+      JOIN public.offices office
+        ON office.id = alias.office_id
+      WHERE alias.scope = $1
+        AND alias.normalized_alias = $2
+      LIMIT 1
+    `,
+    [row.scope, normalizedAlias]
+  );
+
+  const racedAlias = raced.rows[0];
+  if (racedAlias && racedAlias.office_id !== officeId) {
+    throw new Error(
+      `Office alias collision after insert race: scope=${row.scope} normalized_alias=${normalizedAlias} ` +
+        `maps to ${racedAlias.canonical_name}; refused to remap to ${row.officeCanonicalName}`
+    );
   }
 
   return "unchanged";

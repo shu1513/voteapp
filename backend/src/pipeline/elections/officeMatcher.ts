@@ -298,6 +298,13 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
     return 0;
   }
 
+  if (
+    hasPhrase(titleMatcherKey, "township supervisor") &&
+    office.canonicalMatcherKey === "county supervisor"
+  ) {
+    return 0;
+  }
+
   const titleSet = new Set(titleTokens);
   let intersectionCount = 0;
   for (const token of office.canonicalTokens) {
