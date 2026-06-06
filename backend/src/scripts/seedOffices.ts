@@ -1122,14 +1122,41 @@ async function upsertOfficeAlias(client: PoolClient, row: SeedOfficeAlias): Prom
         UPDATE public.office_title_aliases
         SET alias_text = $3,
             updated_at = now()
-        WHERE scope = $1
-          AND normalized_alias = $2
+        WHERE id = $1
+          AND office_id = $2
           AND alias_text IS DISTINCT FROM $3
         RETURNING id
       `,
-      [row.scope, normalizedAlias, row.aliasText]
+      [existingAlias.id, officeId, row.aliasText]
     );
-    return updated.rowCount === 1 ? "updated" : "unchanged";
+    if (updated.rowCount === 1) {
+      return "updated";
+    }
+
+    const verified = await client.query<{ office_id: string; canonical_name: string }>(
+      `
+        SELECT alias.office_id, office.canonical_name
+        FROM public.office_title_aliases alias
+        JOIN public.offices office
+          ON office.id = alias.office_id
+        WHERE alias.id = $1
+        LIMIT 1
+      `,
+      [existingAlias.id]
+    );
+    const verifiedAlias = verified.rows[0];
+    if (!verifiedAlias) {
+      throw new Error(
+        `Office alias disappeared during seed: scope=${row.scope} normalized_alias=${normalizedAlias}`
+      );
+    }
+    if (verifiedAlias.office_id !== officeId) {
+      throw new Error(
+        `Office alias collision during update: scope=${row.scope} normalized_alias=${normalizedAlias} ` +
+          `maps to ${verifiedAlias.canonical_name}; refused to remap to ${row.officeCanonicalName}`
+      );
+    }
+    return "unchanged";
   }
 
   const inserted = await client.query<{ id: string }>(
@@ -1150,9 +1177,17 @@ async function upsertOfficeAlias(client: PoolClient, row: SeedOfficeAlias): Prom
     return "inserted";
   }
 
-  const raced = await client.query<{ office_id: string; canonical_name: string }>(
+  const raced = await client.query<{
+    id: string;
+    office_id: string;
+    alias_text: string;
+    canonical_name: string;
+  }>(
     `
-      SELECT alias.office_id, office.canonical_name
+      SELECT alias.id,
+             alias.office_id,
+             alias.alias_text,
+             office.canonical_name
       FROM public.office_title_aliases alias
       JOIN public.offices office
         ON office.id = alias.office_id
@@ -1169,6 +1204,49 @@ async function upsertOfficeAlias(client: PoolClient, row: SeedOfficeAlias): Prom
       `Office alias collision after insert race: scope=${row.scope} normalized_alias=${normalizedAlias} ` +
         `maps to ${racedAlias.canonical_name}; refused to remap to ${row.officeCanonicalName}`
     );
+  }
+
+  if (racedAlias) {
+    const updated = await client.query<{ id: string }>(
+      `
+        UPDATE public.office_title_aliases
+        SET alias_text = $3,
+            updated_at = now()
+        WHERE id = $1
+          AND office_id = $2
+          AND alias_text IS DISTINCT FROM $3
+        RETURNING id
+      `,
+      [racedAlias.id, officeId, row.aliasText]
+    );
+    if (updated.rowCount === 1) {
+      return "updated";
+    }
+
+    const verified = await client.query<{ office_id: string; canonical_name: string }>(
+      `
+        SELECT alias.office_id, office.canonical_name
+        FROM public.office_title_aliases alias
+        JOIN public.offices office
+          ON office.id = alias.office_id
+        WHERE alias.id = $1
+        LIMIT 1
+      `,
+      [racedAlias.id]
+    );
+    const verifiedAlias = verified.rows[0];
+    if (!verifiedAlias) {
+      throw new Error(
+        `Office alias disappeared after insert race: scope=${row.scope} normalized_alias=${normalizedAlias}`
+      );
+    }
+    if (verifiedAlias.office_id !== officeId) {
+      throw new Error(
+        `Office alias collision after insert race update: scope=${row.scope} normalized_alias=${normalizedAlias} ` +
+          `maps to ${verifiedAlias.canonical_name}; refused to remap to ${row.officeCanonicalName}`
+      );
+    }
+    return "unchanged";
   }
 
   return "unchanged";

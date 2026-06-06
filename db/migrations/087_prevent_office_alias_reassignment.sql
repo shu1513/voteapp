@@ -1,8 +1,5 @@
 BEGIN;
 
--- This guard is intentionally installed after historical office consolidation
--- migrations. Future migrations that deliberately rehome aliases must handle
--- that explicitly instead of using ON CONFLICT ... DO UPDATE SET office_id.
 CREATE OR REPLACE FUNCTION public.prevent_office_title_alias_reassignment()
 RETURNS trigger
 LANGUAGE plpgsql
