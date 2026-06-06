@@ -107,6 +107,8 @@ From `backend/` (non-prod DB/Redis only):
 - Do not edit historical migration files after they are applied in shared environments.
 - Add new migrations as new numbered files (e.g., `029_...sql`).
 - Ballot-measure detail rows are intentionally constrained to 0-or-1 per `elections.id` (`UNIQUE (election_id)`), as enforced by migration `035_propositions_unique_election_id.sql`.
+- Migration `087_prevent_office_alias_reassignment.sql` prevents changing `office_title_aliases.office_id`.
+  Future migrations that intentionally rehome aliases must handle that explicitly instead of using `ON CONFLICT ... DO UPDATE SET office_id`.
 
 ## Candidate record identity migrations
 

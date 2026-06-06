@@ -76,11 +76,16 @@ describe("OfficeMatcher", () => {
   it("respects scope and avoids cross-scope office matching", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: {
-        county: [],
+        county: [
+          {
+            office_id: "office-county-supervisor",
+            normalized_alias: normalizeElectionTitleKey("Los Angeles County Board of Supervisors, District 1"),
+          },
+        ],
         statewide: [],
       },
       officesByScope: {
-        county: [{ id: "office-board-supervisors", canonical_name: "Board of Supervisors" }],
+        county: [{ id: "office-county-supervisor", canonical_name: "County Supervisor" }],
         statewide: [{ id: "office-governor", canonical_name: "Governor" }],
       },
     });
@@ -102,8 +107,28 @@ describe("OfficeMatcher", () => {
       state: "CA",
       officialBallotTitle: "Los Angeles County Board of Supervisors, District 1",
     });
-    expect(countyResult.officeId).toBe("office-board-supervisors");
-    expect(countyResult.method).toBe("deterministic_fallback");
+    expect(countyResult.officeId).toBe("office-county-supervisor");
+    expect(countyResult.method).toBe("alias_exact");
+  });
+
+  it("does not match township supervisor to county supervisor", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [{ id: "office-county-supervisor", canonical_name: "County Supervisor" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Example County",
+      state: "OH",
+      officialBallotTitle: "Township Supervisor",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
   });
 
   it("ignores election-stage words when matching office titles", async () => {

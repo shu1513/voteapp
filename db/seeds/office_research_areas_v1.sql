@@ -61,6 +61,2143 @@ $$;
 
 DO $$
 DECLARE
+  expected_office_count integer := 5;
+  expected_pair_count integer;
+  office_count integer;
+  pair_count integer;
+BEGIN
+  WITH desired(scope, canonical_name, slug) AS (
+    VALUES
+      ('statewide', 'Labor Commissioner', 'civil_rights'),
+      ('statewide', 'Labor Commissioner', 'corporate_accountability'),
+      ('statewide', 'Labor Commissioner', 'cost_of_living_reduction'),
+      ('statewide', 'Labor Commissioner', 'healthcare_affordability'),
+      ('statewide', 'Labor Commissioner', 'social_programs_and_welfare'),
+      ('statewide', 'Labor Commissioner', 'government_efficiency'),
+      ('statewide', 'Labor Commissioner', 'anti_corruption'),
+      ('statewide', 'Labor Commissioner', 'data_privacy'),
+      ('statewide', 'Land Commissioner', 'environment_and_public_health'),
+      ('statewide', 'Land Commissioner', 'public_infrastructure'),
+      ('statewide', 'Land Commissioner', 'housing_affordability'),
+      ('statewide', 'Land Commissioner', 'cost_of_living_reduction'),
+      ('statewide', 'Land Commissioner', 'government_efficiency'),
+      ('statewide', 'Land Commissioner', 'government_spending_reduction'),
+      ('statewide', 'Land Commissioner', 'anti_corruption'),
+      ('statewide', 'Land Commissioner', 'corporate_accountability'),
+      ('statewide', 'Land Commissioner', 'data_privacy'),
+      ('statewide', 'Railroad Commissioner', 'cost_of_living_reduction'),
+      ('statewide', 'Railroad Commissioner', 'public_infrastructure'),
+      ('statewide', 'Railroad Commissioner', 'environment_and_public_health'),
+      ('statewide', 'Railroad Commissioner', 'corporate_accountability'),
+      ('statewide', 'Railroad Commissioner', 'government_efficiency'),
+      ('statewide', 'Railroad Commissioner', 'anti_corruption'),
+      ('statewide', 'Railroad Commissioner', 'data_privacy'),
+      ('statewide', 'Railroad Commissioner', 'public_safety_and_crime_control'),
+      ('county', 'County Auditor', 'government_spending_reduction'),
+      ('county', 'County Auditor', 'government_efficiency'),
+      ('county', 'County Auditor', 'anti_corruption'),
+      ('county', 'County Auditor', 'data_privacy'),
+      ('county', 'County Auditor', 'corporate_accountability'),
+      ('county', 'County Auditor', 'civil_rights'),
+      ('county', 'County Auditor', 'election_integrity'),
+      ('county', 'Clerk of Court', 'civil_rights'),
+      ('county', 'Clerk of Court', 'public_safety_and_crime_control'),
+      ('county', 'Clerk of Court', 'government_efficiency'),
+      ('county', 'Clerk of Court', 'data_privacy'),
+      ('county', 'Clerk of Court', 'anti_corruption'),
+      ('county', 'Clerk of Court', 'social_programs_and_welfare')
+  )
+  SELECT COUNT(DISTINCT scope || ':' || canonical_name), COUNT(*)
+  INTO office_count, expected_pair_count
+  FROM desired;
+
+  IF office_count <> expected_office_count THEN
+    RAISE EXCEPTION
+      'Expected % new elected office mappings, found %',
+      expected_office_count,
+      office_count;
+  END IF;
+
+  WITH desired(scope, canonical_name, slug) AS (
+    VALUES
+      ('statewide', 'Labor Commissioner', 'civil_rights'),
+      ('statewide', 'Labor Commissioner', 'corporate_accountability'),
+      ('statewide', 'Labor Commissioner', 'cost_of_living_reduction'),
+      ('statewide', 'Labor Commissioner', 'healthcare_affordability'),
+      ('statewide', 'Labor Commissioner', 'social_programs_and_welfare'),
+      ('statewide', 'Labor Commissioner', 'government_efficiency'),
+      ('statewide', 'Labor Commissioner', 'anti_corruption'),
+      ('statewide', 'Labor Commissioner', 'data_privacy'),
+      ('statewide', 'Land Commissioner', 'environment_and_public_health'),
+      ('statewide', 'Land Commissioner', 'public_infrastructure'),
+      ('statewide', 'Land Commissioner', 'housing_affordability'),
+      ('statewide', 'Land Commissioner', 'cost_of_living_reduction'),
+      ('statewide', 'Land Commissioner', 'government_efficiency'),
+      ('statewide', 'Land Commissioner', 'government_spending_reduction'),
+      ('statewide', 'Land Commissioner', 'anti_corruption'),
+      ('statewide', 'Land Commissioner', 'corporate_accountability'),
+      ('statewide', 'Land Commissioner', 'data_privacy'),
+      ('statewide', 'Railroad Commissioner', 'cost_of_living_reduction'),
+      ('statewide', 'Railroad Commissioner', 'public_infrastructure'),
+      ('statewide', 'Railroad Commissioner', 'environment_and_public_health'),
+      ('statewide', 'Railroad Commissioner', 'corporate_accountability'),
+      ('statewide', 'Railroad Commissioner', 'government_efficiency'),
+      ('statewide', 'Railroad Commissioner', 'anti_corruption'),
+      ('statewide', 'Railroad Commissioner', 'data_privacy'),
+      ('statewide', 'Railroad Commissioner', 'public_safety_and_crime_control'),
+      ('county', 'County Auditor', 'government_spending_reduction'),
+      ('county', 'County Auditor', 'government_efficiency'),
+      ('county', 'County Auditor', 'anti_corruption'),
+      ('county', 'County Auditor', 'data_privacy'),
+      ('county', 'County Auditor', 'corporate_accountability'),
+      ('county', 'County Auditor', 'civil_rights'),
+      ('county', 'County Auditor', 'election_integrity'),
+      ('county', 'Clerk of Court', 'civil_rights'),
+      ('county', 'Clerk of Court', 'public_safety_and_crime_control'),
+      ('county', 'Clerk of Court', 'government_efficiency'),
+      ('county', 'Clerk of Court', 'data_privacy'),
+      ('county', 'Clerk of Court', 'anti_corruption'),
+      ('county', 'Clerk of Court', 'social_programs_and_welfare')
+  ),
+  resolved AS (
+    SELECT office.id AS office_id, area.id AS research_area_id
+    FROM desired
+    JOIN public.offices office
+      ON office.scope = desired.scope
+     AND office.canonical_name = desired.canonical_name
+    JOIN public.research_areas area
+      ON area.slug = desired.slug
+  )
+  SELECT COUNT(*)
+  INTO pair_count
+  FROM resolved;
+
+  IF pair_count <> expected_pair_count THEN
+    RAISE EXCEPTION
+      'Expected % new elected office research area pairs, found %',
+      expected_pair_count,
+      pair_count;
+  END IF;
+
+  WITH desired(scope, canonical_name, slug) AS (
+    VALUES
+      ('statewide', 'Labor Commissioner', 'civil_rights'),
+      ('statewide', 'Labor Commissioner', 'corporate_accountability'),
+      ('statewide', 'Labor Commissioner', 'cost_of_living_reduction'),
+      ('statewide', 'Labor Commissioner', 'healthcare_affordability'),
+      ('statewide', 'Labor Commissioner', 'social_programs_and_welfare'),
+      ('statewide', 'Labor Commissioner', 'government_efficiency'),
+      ('statewide', 'Labor Commissioner', 'anti_corruption'),
+      ('statewide', 'Labor Commissioner', 'data_privacy'),
+      ('statewide', 'Land Commissioner', 'environment_and_public_health'),
+      ('statewide', 'Land Commissioner', 'public_infrastructure'),
+      ('statewide', 'Land Commissioner', 'housing_affordability'),
+      ('statewide', 'Land Commissioner', 'cost_of_living_reduction'),
+      ('statewide', 'Land Commissioner', 'government_efficiency'),
+      ('statewide', 'Land Commissioner', 'government_spending_reduction'),
+      ('statewide', 'Land Commissioner', 'anti_corruption'),
+      ('statewide', 'Land Commissioner', 'corporate_accountability'),
+      ('statewide', 'Land Commissioner', 'data_privacy'),
+      ('statewide', 'Railroad Commissioner', 'cost_of_living_reduction'),
+      ('statewide', 'Railroad Commissioner', 'public_infrastructure'),
+      ('statewide', 'Railroad Commissioner', 'environment_and_public_health'),
+      ('statewide', 'Railroad Commissioner', 'corporate_accountability'),
+      ('statewide', 'Railroad Commissioner', 'government_efficiency'),
+      ('statewide', 'Railroad Commissioner', 'anti_corruption'),
+      ('statewide', 'Railroad Commissioner', 'data_privacy'),
+      ('statewide', 'Railroad Commissioner', 'public_safety_and_crime_control'),
+      ('county', 'County Auditor', 'government_spending_reduction'),
+      ('county', 'County Auditor', 'government_efficiency'),
+      ('county', 'County Auditor', 'anti_corruption'),
+      ('county', 'County Auditor', 'data_privacy'),
+      ('county', 'County Auditor', 'corporate_accountability'),
+      ('county', 'County Auditor', 'civil_rights'),
+      ('county', 'County Auditor', 'election_integrity'),
+      ('county', 'Clerk of Court', 'civil_rights'),
+      ('county', 'Clerk of Court', 'public_safety_and_crime_control'),
+      ('county', 'Clerk of Court', 'government_efficiency'),
+      ('county', 'Clerk of Court', 'data_privacy'),
+      ('county', 'Clerk of Court', 'anti_corruption'),
+      ('county', 'Clerk of Court', 'social_programs_and_welfare')
+  )
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM desired
+  JOIN public.offices office
+    ON office.scope = desired.scope
+   AND office.canonical_name = desired.canonical_name
+  JOIN public.research_areas area
+    ON area.slug = desired.slug
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  expected_office_count integer := 9;
+  expected_pair_count integer;
+  office_count integer;
+  pair_count integer;
+BEGIN
+  WITH desired(canonical_name, slug) AS (
+    VALUES
+      ('Alderman', 'government_spending_reduction'),
+      ('Alderman', 'government_efficiency'),
+      ('Alderman', 'public_infrastructure'),
+      ('Alderman', 'housing_affordability'),
+      ('Alderman', 'environment_and_public_health'),
+      ('Alderman', 'public_safety_and_crime_control'),
+      ('Alderman', 'social_programs_and_welfare'),
+      ('Alderman', 'civil_rights'),
+      ('Alderman', 'anti_corruption'),
+      ('Alderman', 'corporate_accountability'),
+      ('Alderman', 'data_privacy'),
+      ('City Clerk', 'election_integrity'),
+      ('City Clerk', 'government_efficiency'),
+      ('City Clerk', 'data_privacy'),
+      ('City Clerk', 'anti_corruption'),
+      ('City Clerk', 'civil_rights'),
+      ('City Clerk', 'corporate_accountability'),
+      ('City Council Member', 'government_spending_reduction'),
+      ('City Council Member', 'government_efficiency'),
+      ('City Council Member', 'public_infrastructure'),
+      ('City Council Member', 'housing_affordability'),
+      ('City Council Member', 'environment_and_public_health'),
+      ('City Council Member', 'public_safety_and_crime_control'),
+      ('City Council Member', 'social_programs_and_welfare'),
+      ('City Council Member', 'civil_rights'),
+      ('City Council Member', 'anti_corruption'),
+      ('City Council Member', 'corporate_accountability'),
+      ('City Council Member', 'data_privacy'),
+      ('City Treasurer', 'government_spending_reduction'),
+      ('City Treasurer', 'government_efficiency'),
+      ('City Treasurer', 'anti_corruption'),
+      ('City Treasurer', 'data_privacy'),
+      ('City Treasurer', 'corporate_accountability'),
+      ('City Treasurer', 'public_infrastructure'),
+      ('Municipal Assessor', 'housing_affordability'),
+      ('Municipal Assessor', 'government_efficiency'),
+      ('Municipal Assessor', 'anti_corruption'),
+      ('Municipal Assessor', 'data_privacy'),
+      ('Municipal Assessor', 'corporate_accountability'),
+      ('Municipal Assessor', 'civil_rights'),
+      ('Municipal Attorney', 'government_efficiency'),
+      ('Municipal Attorney', 'civil_rights'),
+      ('Municipal Attorney', 'anti_corruption'),
+      ('Municipal Attorney', 'public_safety_and_crime_control'),
+      ('Municipal Attorney', 'corporate_accountability'),
+      ('Municipal Attorney', 'data_privacy'),
+      ('Municipal Attorney', 'housing_affordability'),
+      ('Municipal Attorney', 'environment_and_public_health'),
+      ('Municipal Attorney', 'public_infrastructure'),
+      ('Municipal Constable', 'public_safety_and_crime_control'),
+      ('Municipal Constable', 'civil_rights'),
+      ('Municipal Constable', 'housing_affordability'),
+      ('Municipal Constable', 'government_efficiency'),
+      ('Municipal Constable', 'data_privacy'),
+      ('Municipal Constable', 'anti_corruption'),
+      ('Town Council Member', 'government_spending_reduction'),
+      ('Town Council Member', 'government_efficiency'),
+      ('Town Council Member', 'public_infrastructure'),
+      ('Town Council Member', 'housing_affordability'),
+      ('Town Council Member', 'environment_and_public_health'),
+      ('Town Council Member', 'public_safety_and_crime_control'),
+      ('Town Council Member', 'social_programs_and_welfare'),
+      ('Town Council Member', 'civil_rights'),
+      ('Town Council Member', 'anti_corruption'),
+      ('Town Council Member', 'corporate_accountability'),
+      ('Town Council Member', 'data_privacy'),
+      ('Town Moderator', 'government_efficiency'),
+      ('Town Moderator', 'civil_rights'),
+      ('Town Moderator', 'election_integrity'),
+      ('Town Moderator', 'anti_corruption')
+  )
+  SELECT COUNT(DISTINCT canonical_name), COUNT(*)
+  INTO office_count, expected_pair_count
+  FROM desired;
+
+  IF office_count <> expected_office_count THEN
+    RAISE EXCEPTION
+      'Expected % place offices in requested mapping, found %',
+      expected_office_count,
+      office_count;
+  END IF;
+
+  WITH desired(canonical_name, slug) AS (
+    VALUES
+      ('Alderman', 'government_spending_reduction'),
+      ('Alderman', 'government_efficiency'),
+      ('Alderman', 'public_infrastructure'),
+      ('Alderman', 'housing_affordability'),
+      ('Alderman', 'environment_and_public_health'),
+      ('Alderman', 'public_safety_and_crime_control'),
+      ('Alderman', 'social_programs_and_welfare'),
+      ('Alderman', 'civil_rights'),
+      ('Alderman', 'anti_corruption'),
+      ('Alderman', 'corporate_accountability'),
+      ('Alderman', 'data_privacy'),
+      ('City Clerk', 'election_integrity'),
+      ('City Clerk', 'government_efficiency'),
+      ('City Clerk', 'data_privacy'),
+      ('City Clerk', 'anti_corruption'),
+      ('City Clerk', 'civil_rights'),
+      ('City Clerk', 'corporate_accountability'),
+      ('City Council Member', 'government_spending_reduction'),
+      ('City Council Member', 'government_efficiency'),
+      ('City Council Member', 'public_infrastructure'),
+      ('City Council Member', 'housing_affordability'),
+      ('City Council Member', 'environment_and_public_health'),
+      ('City Council Member', 'public_safety_and_crime_control'),
+      ('City Council Member', 'social_programs_and_welfare'),
+      ('City Council Member', 'civil_rights'),
+      ('City Council Member', 'anti_corruption'),
+      ('City Council Member', 'corporate_accountability'),
+      ('City Council Member', 'data_privacy'),
+      ('City Treasurer', 'government_spending_reduction'),
+      ('City Treasurer', 'government_efficiency'),
+      ('City Treasurer', 'anti_corruption'),
+      ('City Treasurer', 'data_privacy'),
+      ('City Treasurer', 'corporate_accountability'),
+      ('City Treasurer', 'public_infrastructure'),
+      ('Municipal Assessor', 'housing_affordability'),
+      ('Municipal Assessor', 'government_efficiency'),
+      ('Municipal Assessor', 'anti_corruption'),
+      ('Municipal Assessor', 'data_privacy'),
+      ('Municipal Assessor', 'corporate_accountability'),
+      ('Municipal Assessor', 'civil_rights'),
+      ('Municipal Attorney', 'government_efficiency'),
+      ('Municipal Attorney', 'civil_rights'),
+      ('Municipal Attorney', 'anti_corruption'),
+      ('Municipal Attorney', 'public_safety_and_crime_control'),
+      ('Municipal Attorney', 'corporate_accountability'),
+      ('Municipal Attorney', 'data_privacy'),
+      ('Municipal Attorney', 'housing_affordability'),
+      ('Municipal Attorney', 'environment_and_public_health'),
+      ('Municipal Attorney', 'public_infrastructure'),
+      ('Municipal Constable', 'public_safety_and_crime_control'),
+      ('Municipal Constable', 'civil_rights'),
+      ('Municipal Constable', 'housing_affordability'),
+      ('Municipal Constable', 'government_efficiency'),
+      ('Municipal Constable', 'data_privacy'),
+      ('Municipal Constable', 'anti_corruption'),
+      ('Town Council Member', 'government_spending_reduction'),
+      ('Town Council Member', 'government_efficiency'),
+      ('Town Council Member', 'public_infrastructure'),
+      ('Town Council Member', 'housing_affordability'),
+      ('Town Council Member', 'environment_and_public_health'),
+      ('Town Council Member', 'public_safety_and_crime_control'),
+      ('Town Council Member', 'social_programs_and_welfare'),
+      ('Town Council Member', 'civil_rights'),
+      ('Town Council Member', 'anti_corruption'),
+      ('Town Council Member', 'corporate_accountability'),
+      ('Town Council Member', 'data_privacy'),
+      ('Town Moderator', 'government_efficiency'),
+      ('Town Moderator', 'civil_rights'),
+      ('Town Moderator', 'election_integrity'),
+      ('Town Moderator', 'anti_corruption')
+  ),
+  resolved AS (
+    SELECT office.id AS office_id, area.id AS research_area_id
+    FROM desired
+    JOIN public.offices office
+      ON office.scope = 'place'
+     AND office.canonical_name = desired.canonical_name
+    JOIN public.research_areas area
+      ON area.slug = desired.slug
+  )
+  SELECT COUNT(*)
+  INTO pair_count
+  FROM resolved;
+
+  IF pair_count <> expected_pair_count THEN
+    RAISE EXCEPTION
+      'Expected % place office research area pairs, found %',
+      expected_pair_count,
+      pair_count;
+  END IF;
+
+  WITH desired(canonical_name, slug) AS (
+    VALUES
+      ('Alderman', 'government_spending_reduction'),
+      ('Alderman', 'government_efficiency'),
+      ('Alderman', 'public_infrastructure'),
+      ('Alderman', 'housing_affordability'),
+      ('Alderman', 'environment_and_public_health'),
+      ('Alderman', 'public_safety_and_crime_control'),
+      ('Alderman', 'social_programs_and_welfare'),
+      ('Alderman', 'civil_rights'),
+      ('Alderman', 'anti_corruption'),
+      ('Alderman', 'corporate_accountability'),
+      ('Alderman', 'data_privacy'),
+      ('City Clerk', 'election_integrity'),
+      ('City Clerk', 'government_efficiency'),
+      ('City Clerk', 'data_privacy'),
+      ('City Clerk', 'anti_corruption'),
+      ('City Clerk', 'civil_rights'),
+      ('City Clerk', 'corporate_accountability'),
+      ('City Council Member', 'government_spending_reduction'),
+      ('City Council Member', 'government_efficiency'),
+      ('City Council Member', 'public_infrastructure'),
+      ('City Council Member', 'housing_affordability'),
+      ('City Council Member', 'environment_and_public_health'),
+      ('City Council Member', 'public_safety_and_crime_control'),
+      ('City Council Member', 'social_programs_and_welfare'),
+      ('City Council Member', 'civil_rights'),
+      ('City Council Member', 'anti_corruption'),
+      ('City Council Member', 'corporate_accountability'),
+      ('City Council Member', 'data_privacy'),
+      ('City Treasurer', 'government_spending_reduction'),
+      ('City Treasurer', 'government_efficiency'),
+      ('City Treasurer', 'anti_corruption'),
+      ('City Treasurer', 'data_privacy'),
+      ('City Treasurer', 'corporate_accountability'),
+      ('City Treasurer', 'public_infrastructure'),
+      ('Municipal Assessor', 'housing_affordability'),
+      ('Municipal Assessor', 'government_efficiency'),
+      ('Municipal Assessor', 'anti_corruption'),
+      ('Municipal Assessor', 'data_privacy'),
+      ('Municipal Assessor', 'corporate_accountability'),
+      ('Municipal Assessor', 'civil_rights'),
+      ('Municipal Attorney', 'government_efficiency'),
+      ('Municipal Attorney', 'civil_rights'),
+      ('Municipal Attorney', 'anti_corruption'),
+      ('Municipal Attorney', 'public_safety_and_crime_control'),
+      ('Municipal Attorney', 'corporate_accountability'),
+      ('Municipal Attorney', 'data_privacy'),
+      ('Municipal Attorney', 'housing_affordability'),
+      ('Municipal Attorney', 'environment_and_public_health'),
+      ('Municipal Attorney', 'public_infrastructure'),
+      ('Municipal Constable', 'public_safety_and_crime_control'),
+      ('Municipal Constable', 'civil_rights'),
+      ('Municipal Constable', 'housing_affordability'),
+      ('Municipal Constable', 'government_efficiency'),
+      ('Municipal Constable', 'data_privacy'),
+      ('Municipal Constable', 'anti_corruption'),
+      ('Town Council Member', 'government_spending_reduction'),
+      ('Town Council Member', 'government_efficiency'),
+      ('Town Council Member', 'public_infrastructure'),
+      ('Town Council Member', 'housing_affordability'),
+      ('Town Council Member', 'environment_and_public_health'),
+      ('Town Council Member', 'public_safety_and_crime_control'),
+      ('Town Council Member', 'social_programs_and_welfare'),
+      ('Town Council Member', 'civil_rights'),
+      ('Town Council Member', 'anti_corruption'),
+      ('Town Council Member', 'corporate_accountability'),
+      ('Town Council Member', 'data_privacy'),
+      ('Town Moderator', 'government_efficiency'),
+      ('Town Moderator', 'civil_rights'),
+      ('Town Moderator', 'election_integrity'),
+      ('Town Moderator', 'anti_corruption')
+  ),
+  target_offices AS (
+    SELECT id
+    FROM public.offices
+    WHERE scope = 'place'
+      AND canonical_name IN (SELECT DISTINCT canonical_name FROM desired)
+  ),
+  resolved AS (
+    SELECT office.id AS office_id, area.id AS research_area_id
+    FROM desired
+    JOIN public.offices office
+      ON office.scope = 'place'
+     AND office.canonical_name = desired.canonical_name
+    JOIN public.research_areas area
+      ON area.slug = desired.slug
+  )
+  DELETE FROM public.office_research_areas existing
+  WHERE existing.office_id IN (SELECT id FROM target_offices)
+    AND NOT EXISTS (
+      SELECT 1
+      FROM resolved
+      WHERE resolved.office_id = existing.office_id
+        AND resolved.research_area_id = existing.research_area_id
+    );
+
+  WITH desired(canonical_name, slug) AS (
+    VALUES
+      ('Alderman', 'government_spending_reduction'),
+      ('Alderman', 'government_efficiency'),
+      ('Alderman', 'public_infrastructure'),
+      ('Alderman', 'housing_affordability'),
+      ('Alderman', 'environment_and_public_health'),
+      ('Alderman', 'public_safety_and_crime_control'),
+      ('Alderman', 'social_programs_and_welfare'),
+      ('Alderman', 'civil_rights'),
+      ('Alderman', 'anti_corruption'),
+      ('Alderman', 'corporate_accountability'),
+      ('Alderman', 'data_privacy'),
+      ('City Clerk', 'election_integrity'),
+      ('City Clerk', 'government_efficiency'),
+      ('City Clerk', 'data_privacy'),
+      ('City Clerk', 'anti_corruption'),
+      ('City Clerk', 'civil_rights'),
+      ('City Clerk', 'corporate_accountability'),
+      ('City Council Member', 'government_spending_reduction'),
+      ('City Council Member', 'government_efficiency'),
+      ('City Council Member', 'public_infrastructure'),
+      ('City Council Member', 'housing_affordability'),
+      ('City Council Member', 'environment_and_public_health'),
+      ('City Council Member', 'public_safety_and_crime_control'),
+      ('City Council Member', 'social_programs_and_welfare'),
+      ('City Council Member', 'civil_rights'),
+      ('City Council Member', 'anti_corruption'),
+      ('City Council Member', 'corporate_accountability'),
+      ('City Council Member', 'data_privacy'),
+      ('City Treasurer', 'government_spending_reduction'),
+      ('City Treasurer', 'government_efficiency'),
+      ('City Treasurer', 'anti_corruption'),
+      ('City Treasurer', 'data_privacy'),
+      ('City Treasurer', 'corporate_accountability'),
+      ('City Treasurer', 'public_infrastructure'),
+      ('Municipal Assessor', 'housing_affordability'),
+      ('Municipal Assessor', 'government_efficiency'),
+      ('Municipal Assessor', 'anti_corruption'),
+      ('Municipal Assessor', 'data_privacy'),
+      ('Municipal Assessor', 'corporate_accountability'),
+      ('Municipal Assessor', 'civil_rights'),
+      ('Municipal Attorney', 'government_efficiency'),
+      ('Municipal Attorney', 'civil_rights'),
+      ('Municipal Attorney', 'anti_corruption'),
+      ('Municipal Attorney', 'public_safety_and_crime_control'),
+      ('Municipal Attorney', 'corporate_accountability'),
+      ('Municipal Attorney', 'data_privacy'),
+      ('Municipal Attorney', 'housing_affordability'),
+      ('Municipal Attorney', 'environment_and_public_health'),
+      ('Municipal Attorney', 'public_infrastructure'),
+      ('Municipal Constable', 'public_safety_and_crime_control'),
+      ('Municipal Constable', 'civil_rights'),
+      ('Municipal Constable', 'housing_affordability'),
+      ('Municipal Constable', 'government_efficiency'),
+      ('Municipal Constable', 'data_privacy'),
+      ('Municipal Constable', 'anti_corruption'),
+      ('Town Council Member', 'government_spending_reduction'),
+      ('Town Council Member', 'government_efficiency'),
+      ('Town Council Member', 'public_infrastructure'),
+      ('Town Council Member', 'housing_affordability'),
+      ('Town Council Member', 'environment_and_public_health'),
+      ('Town Council Member', 'public_safety_and_crime_control'),
+      ('Town Council Member', 'social_programs_and_welfare'),
+      ('Town Council Member', 'civil_rights'),
+      ('Town Council Member', 'anti_corruption'),
+      ('Town Council Member', 'corporate_accountability'),
+      ('Town Council Member', 'data_privacy'),
+      ('Town Moderator', 'government_efficiency'),
+      ('Town Moderator', 'civil_rights'),
+      ('Town Moderator', 'election_integrity'),
+      ('Town Moderator', 'anti_corruption')
+  )
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM desired
+  JOIN public.offices office
+    ON office.scope = 'place'
+   AND office.canonical_name = desired.canonical_name
+  JOIN public.research_areas area
+    ON area.slug = desired.slug
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'election_integrity',
+    'government_efficiency',
+    'civil_rights',
+    'anti_corruption'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'place'
+    AND canonical_name = 'Town Moderator';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=place canonical_name=Town Moderator, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for town moderator mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'place'
+    AND office.canonical_name = 'Town Moderator'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'housing_affordability',
+    'government_efficiency',
+    'anti_corruption',
+    'data_privacy',
+    'corporate_accountability',
+    'civil_rights'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'place'
+    AND canonical_name = 'Municipal Assessor';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=place canonical_name=Municipal Assessor, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for municipal assessor mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'place'
+    AND office.canonical_name = 'Municipal Assessor'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_efficiency',
+    'civil_rights',
+    'anti_corruption',
+    'public_safety_and_crime_control',
+    'corporate_accountability',
+    'data_privacy',
+    'housing_affordability',
+    'environment_and_public_health',
+    'public_infrastructure'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'place'
+    AND canonical_name = 'Municipal Attorney';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=place canonical_name=Municipal Attorney, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for municipal attorney mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'place'
+    AND office.canonical_name = 'Municipal Attorney'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_safety_and_crime_control',
+    'civil_rights',
+    'housing_affordability',
+    'government_efficiency',
+    'data_privacy',
+    'anti_corruption'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'place'
+    AND canonical_name = 'Municipal Constable';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=place canonical_name=Municipal Constable, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for municipal constable mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'place'
+    AND office.canonical_name = 'Municipal Constable'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'environment_and_public_health',
+    'corporate_accountability',
+    'government_efficiency',
+    'social_programs_and_welfare',
+    'cost_of_living_reduction',
+    'public_infrastructure',
+    'foreign_trade',
+    'anti_corruption'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'Commissioner of Agriculture';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=Commissioner of Agriculture, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for commissioner of agriculture mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'Commissioner of Agriculture'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'healthcare_affordability',
+    'cost_of_living_reduction',
+    'corporate_accountability',
+    'civil_rights',
+    'data_privacy',
+    'government_efficiency',
+    'anti_corruption',
+    'housing_affordability'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'Commissioner of Insurance';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=Commissioner of Insurance, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for commissioner of insurance mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'Commissioner of Insurance'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'cost_of_living_reduction',
+    'public_infrastructure',
+    'environment_and_public_health',
+    'corporate_accountability',
+    'government_efficiency',
+    'anti_corruption',
+    'data_privacy',
+    'civil_rights'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'Corporation Commissioner';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=Corporation Commissioner, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for corporation commissioner mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'Corporation Commissioner'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'cost_of_living_reduction',
+    'public_infrastructure',
+    'environment_and_public_health',
+    'corporate_accountability',
+    'government_efficiency',
+    'anti_corruption',
+    'data_privacy',
+    'civil_rights'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'Public Service Commissioner';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=Public Service Commissioner, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for public service commissioner mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'Public Service Commissioner'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_education_quality',
+    'civil_rights',
+    'government_efficiency',
+    'government_spending_reduction',
+    'data_privacy',
+    'social_programs_and_welfare',
+    'public_safety_and_crime_control',
+    'healthcare_affordability',
+    'anti_corruption',
+    'environment_and_public_health',
+    'public_infrastructure'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'State Board of Education Member';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=State Board of Education Member, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for state board of education member mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'State Board of Education Member'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_education_quality',
+    'government_efficiency',
+    'government_spending_reduction',
+    'civil_rights',
+    'social_programs_and_welfare',
+    'data_privacy',
+    'public_safety_and_crime_control',
+    'healthcare_affordability',
+    'anti_corruption',
+    'environment_and_public_health',
+    'public_infrastructure'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'Superintendent of Public Instruction';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=Superintendent of Public Instruction, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for superintendent of public instruction mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'Superintendent of Public Instruction'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_efficiency',
+    'government_spending_reduction',
+    'anti_corruption',
+    'public_safety_and_crime_control',
+    'civil_rights',
+    'public_infrastructure',
+    'corporate_accountability'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'Lieutenant Governor';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=Lieutenant Governor, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for lieutenant governor mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'Lieutenant Governor'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'election_integrity',
+    'government_efficiency',
+    'anti_corruption',
+    'data_privacy',
+    'civil_rights',
+    'corporate_accountability'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'Secretary of State';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=Secretary of State, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for secretary of state mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'Secretary of State'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_efficiency',
+    'anti_corruption',
+    'government_spending_reduction',
+    'data_privacy',
+    'corporate_accountability',
+    'civil_rights'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'State Auditor';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=State Auditor, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for state auditor mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'State Auditor'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_spending_reduction',
+    'government_efficiency',
+    'anti_corruption',
+    'corporate_accountability',
+    'data_privacy',
+    'public_infrastructure'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'State Treasurer';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=State Treasurer, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for state treasurer mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'State Treasurer'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_spending_reduction',
+    'government_efficiency',
+    'anti_corruption',
+    'corporate_accountability',
+    'data_privacy'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'Comptroller';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=Comptroller, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for comptroller mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'Comptroller'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_safety_and_crime_control',
+    'civil_rights',
+    'corporate_accountability',
+    'anti_corruption',
+    'data_privacy',
+    'environment_and_public_health',
+    'healthcare_affordability',
+    'social_programs_and_welfare',
+    'government_efficiency',
+    'election_integrity',
+    'womens_reproductive_rights',
+    'immigration',
+    'housing_affordability'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'Attorney General';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=Attorney General, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for attorney general mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'Attorney General'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_efficiency',
+    'government_spending_reduction',
+    'public_safety_and_crime_control',
+    'public_infrastructure',
+    'housing_affordability',
+    'environment_and_public_health',
+    'social_programs_and_welfare',
+    'civil_rights',
+    'anti_corruption',
+    'corporate_accountability',
+    'data_privacy'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'place'
+    AND canonical_name = 'Mayor';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=place canonical_name=Mayor, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for mayor mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'place'
+    AND office.canonical_name = 'Mayor'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_education_quality',
+    'government_spending_reduction',
+    'government_efficiency',
+    'civil_rights',
+    'data_privacy',
+    'anti_corruption',
+    'corporate_accountability'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'State Board of Regents Member';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=State Board of Regents Member, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for state board of regents mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'State Board of Regents Member'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'housing_affordability',
+    'cost_of_living_reduction',
+    'government_efficiency',
+    'government_spending_reduction',
+    'anti_corruption',
+    'corporate_accountability',
+    'civil_rights',
+    'data_privacy'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'statewide'
+    AND canonical_name = 'State Board of Equalization Member';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=statewide canonical_name=State Board of Equalization Member, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for state board of equalization mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'statewide'
+    AND office.canonical_name = 'State Board of Equalization Member'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_safety_and_crime_control',
+    'civil_rights',
+    'government_efficiency',
+    'anti_corruption',
+    'data_privacy',
+    'social_programs_and_welfare'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'Sheriff';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=Sheriff, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for sheriff mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'Sheriff'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'housing_affordability',
+    'government_efficiency',
+    'anti_corruption',
+    'data_privacy',
+    'corporate_accountability',
+    'civil_rights'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'County Assessor';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=County Assessor, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for county assessor mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'County Assessor'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_spending_reduction',
+    'government_efficiency',
+    'public_infrastructure',
+    'housing_affordability',
+    'environment_and_public_health',
+    'healthcare_affordability',
+    'social_programs_and_welfare',
+    'public_safety_and_crime_control',
+    'anti_corruption',
+    'corporate_accountability',
+    'civil_rights',
+    'data_privacy',
+    'election_integrity'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'County Supervisor';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=County Supervisor, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for county supervisor mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'County Supervisor'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'election_integrity',
+    'government_efficiency',
+    'data_privacy',
+    'anti_corruption',
+    'civil_rights',
+    'corporate_accountability'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'County Clerk';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=County Clerk, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for county clerk mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'County Clerk'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_spending_reduction',
+    'government_efficiency',
+    'public_infrastructure',
+    'housing_affordability',
+    'environment_and_public_health',
+    'healthcare_affordability',
+    'social_programs_and_welfare',
+    'public_safety_and_crime_control',
+    'anti_corruption',
+    'corporate_accountability',
+    'civil_rights',
+    'data_privacy',
+    'election_integrity'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'County Commissioner';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=County Commissioner, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for county commissioner mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'County Commissioner'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_safety_and_crime_control',
+    'environment_and_public_health',
+    'civil_rights',
+    'data_privacy',
+    'anti_corruption',
+    'government_efficiency',
+    'social_programs_and_welfare'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'County Coroner';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=County Coroner, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for county coroner mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'County Coroner'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'housing_affordability',
+    'data_privacy',
+    'government_efficiency',
+    'anti_corruption',
+    'civil_rights',
+    'corporate_accountability'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'County Recorder';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=County Recorder, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for county recorder mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'County Recorder'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_education_quality',
+    'government_efficiency',
+    'government_spending_reduction',
+    'civil_rights',
+    'social_programs_and_welfare',
+    'data_privacy',
+    'public_safety_and_crime_control',
+    'healthcare_affordability',
+    'anti_corruption',
+    'environment_and_public_health',
+    'public_infrastructure'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'County Superintendent of Schools';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=County Superintendent of Schools, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for county superintendent of schools mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'County Superintendent of Schools'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_spending_reduction',
+    'government_efficiency',
+    'anti_corruption',
+    'data_privacy',
+    'housing_affordability',
+    'corporate_accountability',
+    'civil_rights'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'County Treasurer';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=County Treasurer, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for county treasurer mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'County Treasurer'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_scopes text[] := ARRAY[
+    'school_elementary',
+    'school_secondary',
+    'school_unified'
+  ]::text[];
+  desired_slugs text[] := ARRAY[
+    'public_education_quality',
+    'government_spending_reduction',
+    'government_efficiency',
+    'civil_rights',
+    'public_safety_and_crime_control',
+    'social_programs_and_welfare',
+    'data_privacy',
+    'anti_corruption',
+    'environment_and_public_health',
+    'public_infrastructure'
+  ]::text[];
+  expected_scope_count integer;
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_scope_count := COALESCE(array_length(desired_scopes, 1), 0);
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = ANY (desired_scopes)
+    AND canonical_name = 'School Board Member';
+
+  IF office_count <> expected_scope_count THEN
+    RAISE EXCEPTION
+      'Expected exactly % School Board Member office rows across school scopes, found %',
+      expected_scope_count,
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for school board mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = ANY (desired_scopes)
+    AND office.canonical_name = 'School Board Member'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
+    'public_safety_and_crime_control',
+    'civil_rights',
+    'anti_corruption',
+    'government_efficiency',
+    'corporate_accountability',
+    'data_privacy',
+    'social_programs_and_welfare'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'District Attorney';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=District Attorney, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for district attorney mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'District Attorney'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
   desired_slugs text[] := ARRAY[
     'public_safety_and_crime_control',
     'civil_rights',
