@@ -121,7 +121,7 @@ function parseResearchAreaTags(
       return { ok: false, reason: "research_area_tags[].stance must be for or against" };
     }
     if (seenSlugs.has(slug)) {
-      continue;
+      return { ok: false, reason: `research_area_tags has duplicate research_area_slug '${slug}'` };
     }
     seenSlugs.add(slug);
     tags.push({

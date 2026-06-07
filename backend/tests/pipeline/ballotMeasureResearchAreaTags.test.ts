@@ -8,22 +8,35 @@ import {
 
 describe("loadAllowedBallotMeasureResearchAreas", () => {
   it("loads the explicit ballot-measure research-area policy list", async () => {
+    const rows = BALLOT_MEASURE_RESEARCH_AREA_SLUGS.map((slug, index) => ({
+      id: `ra-${index}`,
+      slug,
+    }));
     const query = vi.fn().mockResolvedValueOnce({
-      rows: [
-        { id: "ra-health", slug: "healthcare_affordability" },
-        { id: "ra-tax", slug: "cost_of_living_reduction" },
-      ],
+      rows,
     });
 
     const result = await loadAllowedBallotMeasureResearchAreas({ query });
 
-    expect(result).toEqual([
-      { id: "ra-health", slug: "healthcare_affordability" },
-      { id: "ra-tax", slug: "cost_of_living_reduction" },
-    ]);
+    expect(result).toEqual(rows);
     expect(query).toHaveBeenCalledWith(expect.stringContaining("FROM public.research_areas"), [
       BALLOT_MEASURE_RESEARCH_AREA_SLUGS,
     ]);
+  });
+
+  it("fails when the research-area catalog is missing configured ballot-measure slugs", async () => {
+    const query = vi.fn().mockResolvedValueOnce({
+      rows: BALLOT_MEASURE_RESEARCH_AREA_SLUGS.filter((slug) => slug !== "healthcare_affordability").map(
+        (slug, index) => ({
+          id: `ra-${index}`,
+          slug,
+        })
+      ),
+    });
+
+    await expect(loadAllowedBallotMeasureResearchAreas({ query })).rejects.toThrow(
+      "Missing research_areas rows for ballot-measure slugs: healthcare_affordability"
+    );
   });
 });
 

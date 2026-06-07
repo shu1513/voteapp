@@ -49,6 +49,14 @@ export async function loadAllowedBallotMeasureResearchAreas(
     [BALLOT_MEASURE_RESEARCH_AREA_SLUGS]
   );
 
+  const loadedSlugs = new Set(result.rows.map((row) => row.slug));
+  const missingSlugs = BALLOT_MEASURE_RESEARCH_AREA_SLUGS.filter((slug) => !loadedSlugs.has(slug));
+  if (missingSlugs.length > 0) {
+    throw new Error(
+      `Missing research_areas rows for ballot-measure slugs: ${missingSlugs.join(", ")}`
+    );
+  }
+
   return result.rows;
 }
 

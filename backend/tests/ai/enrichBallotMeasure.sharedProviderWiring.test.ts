@@ -137,6 +137,50 @@ describe("enrichBallotMeasure shared provider wiring", () => {
     }
   });
 
+  it("rejects duplicate research-area tags for the same slug", async () => {
+    callResearchProviderMock.mockResolvedValue({
+      ok: true,
+      parsed: {
+        official_measure_url: "https://example.org/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
+        what_yes_means: "Approves a county sales tax increase for health services.",
+        what_no_means: "Keeps current tax rates and funding levels.",
+        research_area_tags: [
+          { research_area_slug: "healthcare_affordability", stance: "for" },
+          { research_area_slug: "healthcare_affordability", stance: "against" },
+        ],
+        sources: ["https://example.org/measure-er.pdf"],
+      },
+      rawText: "{\"official_measure_url\":\"https://example.org/measure-er.pdf\"}",
+      debugMeta: {},
+    });
+
+    const { enrichBallotMeasure } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await enrichBallotMeasure(
+      {
+        districtName: "Los Angeles County, California",
+        districtType: "county",
+        state: "CA",
+        electionDate: "2026-06-02",
+        officialBallotTitle: "Measure ER",
+        seedUrls: [],
+        allowedResearchAreaSlugs: ["healthcare_affordability"],
+      },
+      {
+        timeoutMs: 1000,
+        openAiApiKey: "test-openai-key",
+      },
+      [{ provider: "openai", model: "gpt-5.4-mini" }]
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain(
+        "research_area_tags has duplicate research_area_slug 'healthcare_affordability'"
+      );
+    }
+  });
+
   it("retries when official_measure_url returns 403 and asks the model to actively investigate it", async () => {
     callResearchProviderMock
       .mockResolvedValueOnce({

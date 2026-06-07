@@ -61,6 +61,7 @@ import {
   STAGING_ITEM_TYPE_BALLOT_MEASURE,
 } from "../../src/config/electionsPipeline.js";
 import { runBallotMeasuresEnricher } from "../../src/pipeline/enrichers/ballotMeasuresEnricher.js";
+import { BALLOT_MEASURE_RESEARCH_AREA_SLUGS as BALLOT_MEASURE_ALLOWED_SLUGS } from "../../src/pipeline/ballotMeasures/ballotMeasureResearchAreaTags.js";
 
 describe("runBallotMeasuresEnricher", () => {
   beforeEach(() => {
@@ -116,10 +117,15 @@ describe("runBallotMeasuresEnricher", () => {
       })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({
-        rows: [
-          { id: "ra-health", slug: "healthcare_affordability" },
-          { id: "ra-cost", slug: "cost_of_living_reduction" },
-        ],
+        rows: BALLOT_MEASURE_ALLOWED_SLUGS.map((slug) => ({
+          id:
+            slug === "healthcare_affordability"
+              ? "ra-health"
+              : slug === "cost_of_living_reduction"
+                ? "ra-cost"
+                : `ra-${slug}`,
+          slug,
+        })),
       });
     mocks.clientQueryMock.mockImplementation(async (sql: string) => {
       const text = String(sql);
@@ -136,7 +142,7 @@ describe("runBallotMeasuresEnricher", () => {
     expect(mocks.enrichBallotMeasureMock).toHaveBeenCalledWith(
       expect.objectContaining({
         officialBallotTitle: "Measure H",
-        allowedResearchAreaSlugs: ["healthcare_affordability", "cost_of_living_reduction"],
+        allowedResearchAreaSlugs: BALLOT_MEASURE_ALLOWED_SLUGS,
       }),
       expect.objectContaining({ timeoutMs: 90000 })
     );
