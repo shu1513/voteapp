@@ -2534,9 +2534,7 @@ DECLARE
     'civil_rights',
     'data_privacy',
     'corporate_accountability',
-    'anti_corruption',
-    'legal_competence',
-    'impartiality'
+    'anti_corruption'
   ]::text[];
   expected_area_count integer;
   office_count integer;
@@ -2585,6 +2583,14 @@ BEGIN
   ON CONFLICT (office_id, research_area_id) DO NOTHING;
 END
 $$;
+
+DELETE FROM public.office_research_areas ora
+USING public.offices office, public.research_areas area
+WHERE ora.office_id = office.id
+  AND ora.research_area_id = area.id
+  AND office.scope = 'statewide'
+  AND office.canonical_name = 'Governor'
+  AND area.slug IN ('legal_competence', 'impartiality');
 
 DO $$
 DECLARE

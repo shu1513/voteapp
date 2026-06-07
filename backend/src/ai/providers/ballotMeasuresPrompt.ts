@@ -5,6 +5,7 @@ export type BallotMeasurePromptInput = {
   electionDate: string;
   officialBallotTitle: string;
   seedUrls: readonly string[];
+  allowedResearchAreaSlugs: readonly string[];
   reviewFeedbackLines?: readonly string[];
 };
 
@@ -40,6 +41,9 @@ export function buildBallotMeasuresPrompt(input: BallotMeasurePromptInput): stri
     '  "summary": "neutral plain-language summary of the measure’s real-world policy impact if enacted",',
     '  "what_yes_means": "plain-language voter impact if YES",',
     '  "what_no_means": "plain-language voter impact if NO",',
+    '  "research_area_tags": [',
+    '    { "research_area_slug": "housing_affordability", "stance": "for" }',
+    "  ],",
     '  "sources": ["https://..."]',
     "}",
     "",
@@ -48,8 +52,18 @@ export function buildBallotMeasuresPrompt(input: BallotMeasurePromptInput): stri
     "- official_measure_url must point to the source where a reader can view the full official measure text in its entirety (for example, the election authority's official measure page or official PDF text).",
     "- summary must be a neutral, concise plain-language summary of the measure’s real-world policy impact if enacted.",
     "- what_yes_means and what_no_means must be concrete and neutral.",
+    "- research_area_tags describes the likely policy effect if YES wins / the measure passes.",
+    '- For research_area_tags, "for" means the YES outcome advances that research area’s goal.',
+    '- For research_area_tags, "against" means the YES outcome cuts against that research area’s goal.',
+    "- Do not tag an area if the effect is mixed, indirect, unclear, or not meaningfully directional.",
+    "- Do not use stance to describe which campaign side supports the measure.",
+    "- research_area_tags must use only allowed research_area_slug values.",
+    "- Return an empty research_area_tags array only if no allowed area clearly applies.",
     "- sources must include all URLs you used for this research.",
     "- return JSON only (no prose, no markdown).",
+    "",
+    "Allowed research_area_slug values:",
+    ...input.allowedResearchAreaSlugs.map((slug) => `- ${escapeJson(slug)}`),
     ...retrySection,
     ...(input.seedUrls.length > 0
       ? [

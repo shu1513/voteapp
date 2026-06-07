@@ -12,6 +12,10 @@ import {
   STAGING_BALLOT_MEASURE_REJECTED_STREAM,
   STAGING_ITEM_TYPE_BALLOT_MEASURE,
 } from "../../config/electionsPipeline.js";
+import {
+  loadAllowedBallotMeasureResearchAreas,
+  upsertBallotMeasureResearchAreaTags,
+} from "../ballotMeasures/ballotMeasureResearchAreaTags.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -28,6 +32,11 @@ type ElectionRow = {
   election_date: string;
   official_ballot_title: string;
   sources: unknown;
+};
+
+type BallotMeasureRow = {
+  id: string;
+  research_area_tags_researched_at: Date | null;
 };
 
 const RECLAIM_MIN_IDLE_MS = 240_000;
@@ -178,18 +187,17 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
   return result.rows[0] ?? null;
 }
 
-async function ballotMeasureExists(pool: Pool, electionId: string): Promise<boolean> {
-  const result = await pool.query<{ exists: boolean }>(
+async function getBallotMeasureRow(pool: Pool, electionId: string): Promise<BallotMeasureRow | null> {
+  const result = await pool.query<BallotMeasureRow>(
     `
-      SELECT EXISTS (
-        SELECT 1
-        FROM public.ballot_measures
-        WHERE election_id = $1
-      ) AS exists
+      SELECT id, research_area_tags_researched_at
+      FROM public.ballot_measures
+      WHERE election_id = $1
+      LIMIT 1
     `,
     [electionId]
   );
-  return result.rows[0]?.exists === true;
+  return result.rows[0] ?? null;
 }
 
 export async function runBallotMeasuresEnricher(options: EnricherOptions = {}): Promise<void> {
@@ -229,17 +237,19 @@ export async function runBallotMeasuresEnricher(options: EnricherOptions = {}): 
             continue;
           }
 
-          if (await ballotMeasureExists(pool, electionId)) {
-            await redis.xAck(STAGING_BALLOT_MEASURE_DRAFT_STREAM, STAGING_BALLOT_MEASURE_ENRICHER_GROUP, entry.id);
-            continue;
-          }
-
           const election = await getElectionRow(pool, electionId);
           if (!election) {
             await redis.xAck(STAGING_BALLOT_MEASURE_DRAFT_STREAM, STAGING_BALLOT_MEASURE_ENRICHER_GROUP, entry.id);
             continue;
           }
 
+          const existingBallotMeasure = await getBallotMeasureRow(pool, electionId);
+          if (existingBallotMeasure?.research_area_tags_researched_at) {
+            await redis.xAck(STAGING_BALLOT_MEASURE_DRAFT_STREAM, STAGING_BALLOT_MEASURE_ENRICHER_GROUP, entry.id);
+            continue;
+          }
+
+          const allowedResearchAreas = await loadAllowedBallotMeasureResearchAreas(pool);
           const aiResult = await enrichBallotMeasure(
             {
               districtName: election.district_name,
@@ -248,6 +258,7 @@ export async function runBallotMeasuresEnricher(options: EnricherOptions = {}): 
               electionDate: election.election_date,
               officialBallotTitle: election.official_ballot_title,
               seedUrls: parseSeedUrls(election.sources),
+              allowedResearchAreaSlugs: allowedResearchAreas.map((area) => area.slug),
             },
             aiConfig
           );
@@ -260,34 +271,70 @@ export async function runBallotMeasuresEnricher(options: EnricherOptions = {}): 
             continue;
           }
 
-          await pool.query(
-            `
-              INSERT INTO public.ballot_measures (
-                district_id,
-                election_id,
-                official_ballot_title,
-                summary,
-                what_yes_means,
-                what_no_means,
-                result,
-                source_url,
-                official_measure_url,
-                last_researched
-              )
-              VALUES ($1, $2, $3, $4, $5, $6, NULL, $7::jsonb, $8, now())
-              ON CONFLICT (election_id) DO NOTHING
-            `,
-            [
-              election.district_id,
-              election.id,
-              election.official_ballot_title,
-              aiResult.summary,
-              aiResult.whatYesMeans,
-              aiResult.whatNoMeans,
-              JSON.stringify(aiResult.researchUrls),
-              aiResult.officialMeasureUrl,
-            ]
-          );
+          const client = await pool.connect();
+          try {
+            await client.query("BEGIN");
+            const measureResult = await client.query<{ id: string }>(
+              `
+                INSERT INTO public.ballot_measures (
+                  district_id,
+                  election_id,
+                  official_ballot_title,
+                  summary,
+                  what_yes_means,
+                  what_no_means,
+                  result,
+                  source_url,
+                  official_measure_url,
+                  last_researched,
+                  research_area_tags_researched_at
+                )
+                VALUES ($1, $2, $3, $4, $5, $6, NULL, $7::jsonb, $8, now(), now())
+                ON CONFLICT (election_id)
+                DO UPDATE SET
+                  official_ballot_title = EXCLUDED.official_ballot_title,
+                  summary = EXCLUDED.summary,
+                  what_yes_means = EXCLUDED.what_yes_means,
+                  what_no_means = EXCLUDED.what_no_means,
+                  source_url = EXCLUDED.source_url,
+                  official_measure_url = EXCLUDED.official_measure_url,
+                  last_researched = now(),
+                  research_area_tags_researched_at = now(),
+                  updated_at = now()
+                RETURNING id
+              `,
+              [
+                election.district_id,
+                election.id,
+                election.official_ballot_title,
+                aiResult.summary,
+                aiResult.whatYesMeans,
+                aiResult.whatNoMeans,
+                JSON.stringify(aiResult.researchUrls),
+                aiResult.officialMeasureUrl,
+              ]
+            );
+            const ballotMeasureId = measureResult.rows[0]?.id;
+            if (!ballotMeasureId) {
+              throw new Error(`ballot measure upsert returned no id for election_id=${election.id}`);
+            }
+            await upsertBallotMeasureResearchAreaTags(
+              client,
+              ballotMeasureId,
+              aiResult.researchAreaTags,
+              new Map(allowedResearchAreas.map((area) => [area.slug, area.id]))
+            );
+            await client.query("COMMIT");
+          } catch (error) {
+            try {
+              await client.query("ROLLBACK");
+            } catch {
+              // best-effort rollback; original error is more useful
+            }
+            throw error;
+          } finally {
+            client.release();
+          }
 
           await redis.xAck(STAGING_BALLOT_MEASURE_DRAFT_STREAM, STAGING_BALLOT_MEASURE_ENRICHER_GROUP, entry.id);
         } catch (error) {
