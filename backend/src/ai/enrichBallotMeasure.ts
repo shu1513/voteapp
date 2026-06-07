@@ -36,12 +36,17 @@ type BallotMeasureValidationResult =
       summary: string;
       whatYesMeans: string;
       whatNoMeans: string;
+      researchAreaTags: BallotMeasureResearchAreaTag[];
       sources: string[];
+      officialMeasureUrlVerification: {
+        status: number;
+      };
     }
   | {
       ok: false;
       reason: string;
       blockedUrls: string[];
+      reviewFeedbackLines?: string[];
       failureDebug?: Record<string, unknown>;
     };
 
@@ -52,6 +57,7 @@ export type BallotMeasureAiInput = {
   electionDate: string;
   officialBallotTitle: string;
   seedUrls: readonly string[];
+  allowedResearchAreaSlugs: readonly string[];
 };
 
 export type BallotMeasureAiConfig = {
@@ -60,6 +66,11 @@ export type BallotMeasureAiConfig = {
   openAiApiKey?: string;
   anthropicApiKey?: string;
   geminiApiKey?: string;
+};
+
+export type BallotMeasureResearchAreaTag = {
+  researchAreaSlug: string;
+  stance: "for" | "against";
 };
 
 export type BallotMeasureAiResult =
@@ -71,6 +82,7 @@ export type BallotMeasureAiResult =
       summary: string;
       whatYesMeans: string;
       whatNoMeans: string;
+      researchAreaTags: BallotMeasureResearchAreaTag[];
       researchUrls: string[];
       aiRawDebug: Record<string, unknown> | null;
     }
@@ -80,12 +92,54 @@ const MAX_SOURCE_URLS_TO_VERIFY = 20;
 const SOURCE_URL_VERIFY_CONCURRENCY = 4;
 const CLAUDE_INTER_CALL_DELAY_MS = 20_000;
 
-function parseBallotMeasureAiPayload(payload: unknown): {
+function parseResearchAreaTags(
+  value: unknown,
+  allowedResearchAreaSlugs: ReadonlySet<string>
+): { ok: true; tags: BallotMeasureResearchAreaTag[] } | { ok: false; reason: string } {
+  if (!Array.isArray(value)) {
+    return { ok: false, reason: "research_area_tags must be array" };
+  }
+
+  const tags: BallotMeasureResearchAreaTag[] = [];
+  const seenSlugs = new Set<string>();
+  for (const rawTag of value) {
+    if (typeof rawTag !== "object" || rawTag === null || Array.isArray(rawTag)) {
+      return { ok: false, reason: "research_area_tags entries must be objects" };
+    }
+    const tag = rawTag as Record<string, unknown>;
+    if (typeof tag.research_area_slug !== "string") {
+      return { ok: false, reason: "research_area_tags[].research_area_slug must be string" };
+    }
+    const slug = tag.research_area_slug.trim().toLowerCase();
+    if (slug.length === 0) {
+      return { ok: false, reason: "research_area_tags[].research_area_slug must be non-empty" };
+    }
+    if (!allowedResearchAreaSlugs.has(slug)) {
+      return { ok: false, reason: `research_area_slug '${slug}' is not allowed for ballot measures` };
+    }
+    if (tag.stance !== "for" && tag.stance !== "against") {
+      return { ok: false, reason: "research_area_tags[].stance must be for or against" };
+    }
+    if (seenSlugs.has(slug)) {
+      return { ok: false, reason: `research_area_tags has duplicate research_area_slug '${slug}'` };
+    }
+    seenSlugs.add(slug);
+    tags.push({
+      researchAreaSlug: slug,
+      stance: tag.stance,
+    });
+  }
+
+  return { ok: true, tags };
+}
+
+function parseBallotMeasureAiPayload(payload: unknown, allowedResearchAreaSlugs: ReadonlySet<string>): {
   ok: true;
   officialMeasureUrl: string;
   summary: string;
   whatYesMeans: string;
   whatNoMeans: string;
+  researchAreaTags: BallotMeasureResearchAreaTag[];
   sources: string[];
 } | {
   ok: false;
@@ -110,6 +164,10 @@ function parseBallotMeasureAiPayload(payload: unknown): {
   }
   if (!Array.isArray(input.sources)) {
     return { ok: false, reason: "sources must be array" };
+  }
+  const researchAreaTags = parseResearchAreaTags(input.research_area_tags, allowedResearchAreaSlugs);
+  if (!researchAreaTags.ok) {
+    return { ok: false, reason: researchAreaTags.reason };
   }
 
   const officialMeasureUrl = normalizeHttpUrl(input.official_measure_url);
@@ -150,15 +208,17 @@ function parseBallotMeasureAiPayload(payload: unknown): {
     summary,
     whatYesMeans,
     whatNoMeans,
+    researchAreaTags: researchAreaTags.tags,
     sources,
   };
 }
 
 async function validateBallotMeasurePayload(
   payload: unknown,
-  timeoutMs: number
+  timeoutMs: number,
+  allowedResearchAreaSlugs: ReadonlySet<string>
 ): Promise<BallotMeasureValidationResult> {
-  const parsed = parseBallotMeasureAiPayload(payload);
+  const parsed = parseBallotMeasureAiPayload(payload, allowedResearchAreaSlugs);
   if (!parsed.ok) {
     return { ok: false, reason: parsed.reason, blockedUrls: [] };
   }
@@ -176,6 +236,26 @@ async function validateBallotMeasurePayload(
       failureDebug: {
         official_measure_url: parsed.officialMeasureUrl,
         official_measure_url_verification_reason: officialVerification.reason,
+      },
+    };
+  }
+  if (officialVerification.status === 403) {
+    const officialUrl = officialVerification.finalUrl;
+    return {
+      ok: false,
+      reason: `official_measure_url returned HTTP 403 from automated verification: ${officialUrl}`,
+      blockedUrls: [],
+      reviewFeedbackLines: [
+        "The previous official_measure_url returned HTTP 403 / AccessDenied from automated verification.",
+        "Actively investigate that URL and related official election-authority pages.",
+        "Do not return that URL again as official_measure_url.",
+        "Use a directly reachable official full-text URL or official PDF instead.",
+        "You may keep the 403 URL only in sources if it is official and useful, but official_measure_url must be directly reachable.",
+        "Do not replace it with a non-official source unless no official source exists.",
+      ],
+      failureDebug: {
+        official_measure_url: officialUrl,
+        official_measure_url_verification_status: 403,
       },
     };
   }
@@ -248,7 +328,11 @@ async function validateBallotMeasurePayload(
     summary: parsed.summary,
     whatYesMeans: parsed.whatYesMeans,
     whatNoMeans: parsed.whatNoMeans,
+    researchAreaTags: parsed.researchAreaTags,
     sources: [...new Set(normalizedSources)],
+    officialMeasureUrlVerification: {
+      status: officialVerification.status,
+    },
   };
 }
 
@@ -325,7 +409,11 @@ export async function enrichBallotMeasure(
         break;
       }
 
-      const validation = await validateBallotMeasurePayload(generated.parsed, config.timeoutMs);
+      const validation = await validateBallotMeasurePayload(
+        generated.parsed,
+        config.timeoutMs,
+        new Set(input.allowedResearchAreaSlugs.map((slug) => slug.trim().toLowerCase()))
+      );
       if (!validation.ok) {
         failures.push({
           provider: candidate.provider,
@@ -343,7 +431,13 @@ export async function enrichBallotMeasure(
           for (const blockedUrl of validation.blockedUrls) {
             cumulativeBlockedUrlFeedback.add(`Do not use or cite this URL: ${blockedUrl}`);
           }
-          cumulativeBlockedUrlFeedback.add(`Fix this validation issue: ${validation.reason}`);
+          if (validation.reviewFeedbackLines && validation.reviewFeedbackLines.length > 0) {
+            for (const line of validation.reviewFeedbackLines) {
+              cumulativeBlockedUrlFeedback.add(line);
+            }
+          } else {
+            cumulativeBlockedUrlFeedback.add(`Fix this validation issue: ${validation.reason}`);
+          }
           reviewFeedbackLines = [...cumulativeBlockedUrlFeedback].slice(0, 20);
           continue;
         }
@@ -358,6 +452,7 @@ export async function enrichBallotMeasure(
         summary: validation.summary,
         whatYesMeans: validation.whatYesMeans,
         whatNoMeans: validation.whatNoMeans,
+        researchAreaTags: validation.researchAreaTags,
         researchUrls: (() => {
           const urls = new Set<string>();
           for (const url of validation.sources) {
@@ -379,6 +474,7 @@ export async function enrichBallotMeasure(
         })(),
         aiRawDebug: {
           provider_response_text: trimDebugText(generated.rawText),
+          official_measure_url_verification: validation.officialMeasureUrlVerification,
           ...(generated.debugMeta ?? {}),
         },
       };
