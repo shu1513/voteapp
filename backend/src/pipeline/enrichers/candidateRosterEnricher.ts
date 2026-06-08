@@ -11,11 +11,9 @@ import {
 import { resolveCandidateResearchMode } from "../../ai/candidateResearchMode.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
-  STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
   STAGING_CANDIDATE_ROSTER_REJECTED_STREAM,
   STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
   STAGING_CANDIDATE_ROSTER_ENRICHER_GROUP,
-  STAGING_ITEM_TYPE_CANDIDATE_PROFILE,
   STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
 } from "../../config/electionsPipeline.js";
 import { normalizeCandidateName } from "../../utils/candidateIdentity.js";
@@ -24,6 +22,7 @@ import {
   defaultOfficeCandidateEligibilityConfig,
   getOfficeCandidateEligibilityForElectionId,
 } from "../candidates/officeCandidateEligibility.js";
+import { enqueueCandidateProfileDrafts } from "../candidates/candidateProfileDraftEmitter.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -70,49 +69,9 @@ const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
 const MAX_SEED_URLS = 8;
 const MAX_DELIVERY_ATTEMPTS = 8;
-const PROFILE_DRAFT_EMIT_MARKER_PREFIX = "staging:candidate_profile_draft_emitted:";
 const CANDIDATE_ROSTER_STAGING_PREFIX = "candidate_roster:";
 const ENABLE_CANDIDATE_ROSTER_ENRICHER_ELIGIBILITY_GATE =
   process.env.CANDIDATE_ROSTER_ENABLE_ENRICHER_ELIGIBILITY_GATE === "true";
-
-const EMIT_CANDIDATE_PROFILE_DRAFT_IF_NEEDED_LUA = `
-if redis.call("EXISTS", KEYS[2]) == 1 then
-  return 0
-end
-redis.call(
-  "XADD",
-  KEYS[1],
-  "*",
-  "election_id",
-  ARGV[1],
-  "item_type",
-  ARGV[2],
-  "run_id",
-  ARGV[3],
-  "candidate_display_name",
-  ARGV[4],
-  "roster_party",
-  ARGV[5],
-  "roster_is_incumbent",
-  ARGV[6],
-  "seed_urls",
-  ARGV[7],
-  "roster_index",
-  ARGV[8],
-  "disambiguation_hint",
-  ARGV[9],
-  "skip_per_election_name_dedupe",
-  ARGV[10],
-  "roster_fec_ids",
-  ARGV[11],
-  "roster_state_filing_ids",
-  ARGV[12],
-  "emitted_at",
-  ARGV[13]
-)
-redis.call("SET", KEYS[2], ARGV[13])
-return 1
-`;
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
@@ -772,52 +731,6 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
   return result.rows[0] ?? null;
 }
 
-async function enqueueCandidateProfileDraft(
-  redis: ReturnType<typeof createClient>,
-  input: {
-    electionId: string;
-    runId: string | null;
-    displayName: string;
-    rosterIndex: number;
-    rosterParty?: string;
-    rosterIsIncumbent?: boolean;
-    disambiguationHint?: string;
-    fecIds?: readonly string[];
-    stateFilingIdsHint?: readonly string[];
-    skipPerElectionNameDedupe?: boolean;
-    seedUrls: readonly string[];
-  }
-): Promise<void> {
-  const normalizedName = normalizeCandidateName(input.displayName);
-  if (normalizedName.length === 0) {
-    return;
-  }
-
-  const emittedAt = new Date().toISOString();
-  const markerKey = `${PROFILE_DRAFT_EMIT_MARKER_PREFIX}${input.electionId}:${normalizedName}:${input.rosterIndex}`;
-
-  await redis.sendCommand([
-    "EVAL",
-    EMIT_CANDIDATE_PROFILE_DRAFT_IF_NEEDED_LUA,
-    "2",
-    STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
-    markerKey,
-    input.electionId,
-    STAGING_ITEM_TYPE_CANDIDATE_PROFILE,
-    input.runId ?? "",
-    input.displayName,
-    input.rosterParty ?? "",
-    input.rosterIsIncumbent === undefined ? "" : input.rosterIsIncumbent ? "true" : "false",
-    JSON.stringify(input.seedUrls),
-    String(input.rosterIndex),
-    input.disambiguationHint ?? "",
-    input.skipPerElectionNameDedupe ? "true" : "false",
-    JSON.stringify(input.fecIds ?? []),
-    JSON.stringify(input.stateFilingIdsHint ?? []),
-    emittedAt,
-  ]);
-}
-
 export async function runCandidateRosterEnricher(options: EnricherOptions = {}): Promise<void> {
   const { once = false, batchSize = 25, blockMs = 5000 } = options;
   const env = getPipelineEnv();
@@ -976,19 +889,21 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
 
           const electionSeedUrls = parseSeedUrls(election.sources);
           for (const candidate of candidatesForFanout) {
-            await enqueueCandidateProfileDraft(redis, {
-              electionId,
-              runId,
-              displayName: candidate.display_name,
-              rosterIndex: candidate.roster_index,
-              rosterParty: candidate.party,
-              rosterIsIncumbent: candidate.is_incumbent,
-              disambiguationHint: candidate.disambiguation_hint,
-              fecIds: candidate.fec_ids,
-              stateFilingIdsHint: candidate.state_filing_ids,
-              skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
-              seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
-            });
+            await enqueueCandidateProfileDrafts(redis, [
+              {
+                electionId,
+                runId,
+                displayName: candidate.display_name,
+                rosterIndex: candidate.roster_index,
+                rosterParty: candidate.party,
+                rosterIsIncumbent: candidate.is_incumbent,
+                disambiguationHint: candidate.disambiguation_hint,
+                fecIds: candidate.fec_ids,
+                stateFilingIdsHint: candidate.state_filing_ids,
+                skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
+                seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
+              },
+            ]);
           }
 
           await markCandidateRosterStagingWritten(pool, ingestKey);
