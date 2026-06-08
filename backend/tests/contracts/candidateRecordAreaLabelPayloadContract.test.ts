@@ -54,7 +54,7 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
 
   it("rejects stance on general", () => {
     const parsed = parseCandidateRecordAreaLabelPayload({
-      labels: [{ record_index: 0, research_area_slug: "general", stance: "neutral" }],
+      labels: [{ record_index: 0, research_area_slug: "general", stance: "for" }],
     });
 
     expect(parsed.ok).toBe(false);
@@ -62,7 +62,7 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
 
   it("rejects stance on integrity_and_ethics", () => {
     const parsed = parseCandidateRecordAreaLabelPayload({
-      labels: [{ record_index: 0, research_area_slug: "integrity_and_ethics", stance: "neutral" }],
+      labels: [{ record_index: 0, research_area_slug: "integrity_and_ethics", stance: "against" }],
     });
 
     expect(parsed.ok).toBe(false);
