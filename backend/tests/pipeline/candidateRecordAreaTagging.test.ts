@@ -118,7 +118,7 @@ describe("validateCandidateRecordAreaLabels", () => {
   it("rejects general labels when stance is provided", () => {
     const allowed = new Set(["general"]);
     const result = validateCandidateRecordAreaLabels(
-      [{ candidateRecordId: "rec-1", researchAreaSlug: "general", stance: "neutral" }],
+      [{ candidateRecordId: "rec-1", researchAreaSlug: "general", stance: "neutral" as never }],
       allowed
     );
 
@@ -131,7 +131,7 @@ describe("validateCandidateRecordAreaLabels", () => {
   it("rejects integrity_and_ethics labels when stance is provided", () => {
     const allowed = new Set(["integrity_and_ethics"]);
     const result = validateCandidateRecordAreaLabels(
-      [{ candidateRecordId: "rec-1", researchAreaSlug: "integrity_and_ethics", stance: "neutral" }],
+      [{ candidateRecordId: "rec-1", researchAreaSlug: "integrity_and_ethics", stance: "neutral" as never }],
       allowed
     );
 
@@ -151,6 +151,19 @@ describe("validateCandidateRecordAreaLabels", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.failures[0]?.reason).toContain("requires stance");
+    }
+  });
+
+  it("rejects neutral stance for specific research areas", () => {
+    const allowed = new Set(["government_efficiency"]);
+    const result = validateCandidateRecordAreaLabels(
+      [{ candidateRecordId: "rec-1", researchAreaSlug: "government_efficiency", stance: "neutral" as never }],
+      allowed
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.failures[0]?.reason).toContain("requires stance (for|against)");
     }
   });
 });
