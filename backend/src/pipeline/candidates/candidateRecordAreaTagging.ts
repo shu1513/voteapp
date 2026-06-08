@@ -8,7 +8,7 @@ import {
 
 type Queryable = Pick<PoolClient, "query">;
 
-export type CandidateRecordAreaStance = "for" | "against" | "neutral";
+export type CandidateRecordAreaStance = "for" | "against";
 
 export type CandidateRecordAreaLabelInput = {
   candidateRecordId: string;
@@ -34,11 +34,11 @@ function normalizeSlug(value: string): string {
   return value.trim().toLowerCase();
 }
 
-function normalizeStance(value: CandidateRecordAreaStance | null | undefined): CandidateRecordAreaStance | null {
-  if (value === null || value === undefined) {
-    return null;
+function normalizeStance(value: unknown): CandidateRecordAreaStance | null {
+  if (value === "for" || value === "against") {
+    return value;
   }
-  return value;
+  return null;
 }
 
 export async function loadAllowedResearchAreasForOfficeId(
@@ -95,7 +95,9 @@ export function validateCandidateRecordAreaLabels(
   for (let i = 0; i < labels.length; i += 1) {
     const label = labels[i]!;
     const slug = normalizeSlug(label.researchAreaSlug);
-    const stance = normalizeStance(label.stance);
+    const rawStance = label.stance;
+    const stance = normalizeStance(rawStance);
+    const stanceWasProvided = rawStance !== undefined && rawStance !== null;
 
     if (!allowedResearchAreaSlugs.has(slug)) {
       failures.push({
@@ -106,7 +108,7 @@ export function validateCandidateRecordAreaLabels(
     }
 
     if (isNonStanceResearchAreaSlug(slug)) {
-      if (stance !== null) {
+      if (stanceWasProvided) {
         failures.push({
           index: i,
           reason: `research_area_slug '${slug}' must not include stance`,
@@ -124,7 +126,7 @@ export function validateCandidateRecordAreaLabels(
     if (!stance) {
       failures.push({
         index: i,
-        reason: `research_area_slug '${slug}' requires stance (for|against|neutral)`,
+        reason: `research_area_slug '${slug}' requires stance (for|against)`,
       });
       continue;
     }

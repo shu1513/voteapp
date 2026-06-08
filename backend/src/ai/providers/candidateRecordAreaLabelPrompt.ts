@@ -57,7 +57,7 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
     "    {",
     '      "record_index": 0,',
     '      "research_area_slug": "one allowed slug",',
-    '      "stance": "for | against | neutral"',
+    '      "stance": "for | against"',
     "    }",
     "  ]",
     "}",
@@ -68,7 +68,7 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
     "- Use only slugs from the allowed list.",
     "- If no specific allowed area applies, use research_area_slug='general'.",
     "- When research_area_slug is 'general' or 'integrity_and_ethics', omit stance.",
-    "- For all other research_area_slug values, stance is required and must be for|against|neutral.",
+    "- For all other research_area_slug values, stance is required and must be for|against.",
     "- Do not repeat the same (record_index, research_area_slug) pair.",
     "- return JSON only (no prose, no markdown).",
     ...(reviewFeedbackLines.length > 0

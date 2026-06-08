@@ -3,7 +3,7 @@ import { isNonStanceResearchAreaSlug } from "../pipeline/candidates/candidateRec
 export type CandidateRecordAreaLabel = {
   record_index: number;
   research_area_slug: string;
-  stance?: "for" | "against" | "neutral";
+  stance?: "for" | "against";
 };
 
 export type CandidateRecordAreaLabelPayload = {
@@ -24,7 +24,7 @@ function normalizeStance(value: unknown): CandidateRecordAreaLabel["stance"] | n
   if (value === undefined || value === null) {
     return null;
   }
-  if (value === "for" || value === "against" || value === "neutral") {
+  if (value === "for" || value === "against") {
     return value;
   }
   return null;
@@ -52,8 +52,13 @@ function parseLabel(value: unknown, options: ParseOptions): CandidateRecordAreaL
     return null;
   }
 
-  const stance = normalizeStance(input.stance);
-  if (isNonStanceResearchAreaSlug(slug) && stance !== null) {
+  const rawStance = input.stance;
+  const stance = normalizeStance(rawStance);
+  const stanceWasProvided = rawStance !== undefined && rawStance !== null;
+  if (stanceWasProvided && stance === null) {
+    return null;
+  }
+  if (isNonStanceResearchAreaSlug(slug) && stanceWasProvided) {
     return null;
   }
   if (!isNonStanceResearchAreaSlug(slug) && stance === null) {

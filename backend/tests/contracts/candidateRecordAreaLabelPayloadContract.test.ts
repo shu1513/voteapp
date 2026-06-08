@@ -33,9 +33,20 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
   it("rejects out-of-scope research area slug", () => {
     const parsed = parseCandidateRecordAreaLabelPayload(
       {
-        labels: [{ record_index: 0, research_area_slug: "immigration", stance: "neutral" }],
+        labels: [{ record_index: 0, research_area_slug: "immigration", stance: "for" }],
       },
       { allowedResearchAreaSlugs: new Set(["general", "government_efficiency"]) }
+    );
+
+    expect(parsed.ok).toBe(false);
+  });
+
+  it("rejects neutral stance on specific research areas", () => {
+    const parsed = parseCandidateRecordAreaLabelPayload(
+      {
+        labels: [{ record_index: 0, research_area_slug: "government_efficiency", stance: "neutral" }],
+      },
+      { allowedResearchAreaSlugs: new Set(["government_efficiency"]) }
     );
 
     expect(parsed.ok).toBe(false);

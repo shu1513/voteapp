@@ -35,7 +35,8 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
       "Special non-stance areas: use research_area_slug='general' when no specific allowed area applies; use research_area_slug='integrity_and_ethics' for documented criminal convictions"
     );
     expect(prompt).toContain("When research_area_slug is 'general' or 'integrity_and_ethics', omit stance.");
-    expect(prompt).toContain("For all other research_area_slug values, stance is required and must be for|against|neutral.");
+    expect(prompt).toContain("For all other research_area_slug values, stance is required and must be for|against.");
+    expect(prompt).toContain('"stance": "for | against"');
   });
 
   it("includes senate context when senate title is used", () => {
