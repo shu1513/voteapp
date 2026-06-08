@@ -14,15 +14,17 @@ function parseNumberFlag(prefix: string, fallback: number): number {
 
 async function main(): Promise<void> {
   const once = process.argv.includes("--once");
+  const concurrency = parseNumberFlag("--concurrency", 1);
   if (once) {
     await runElectionResultsEnricher({
       once: true,
       blockMs: parseNumberFlag("--block-ms", 5000),
+      concurrency,
     });
     return;
   }
 
-  const worker = createElectionResultSearchWorker();
+  const worker = createElectionResultSearchWorker(concurrency);
   worker.on("ready", () => {
     console.log("election_result search worker ready");
   });

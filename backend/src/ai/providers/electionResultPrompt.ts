@@ -8,11 +8,15 @@ export type ElectionResultPromptInput = {
   reviewFeedbackLines?: readonly string[];
 };
 
+function q(value: string): string {
+  return JSON.stringify(value);
+}
+
 function formatStringList(values: readonly string[]): string {
   if (values.length === 0) {
     return "none";
   }
-  return values.map((value) => `"${value}"`).join(", ");
+  return values.map(q).join(", ");
 }
 
 function formatCandidateRoster(context: ElectionResultContext): string[] {
@@ -24,11 +28,11 @@ function formatCandidateRoster(context: ElectionResultContext): string[] {
     "  candidates:",
     ...context.candidates.map((candidate) =>
       [
-        `    - candidate_election_id: "${candidate.candidateElectionId}"`,
-        `candidate_id: "${candidate.candidateId}"`,
-        `name: "${candidate.displayName}"`,
-        `party: "${candidate.party}"`,
-        `status: "${candidate.status}"`,
+        `    - candidate_election_id: ${q(candidate.candidateElectionId)}`,
+        `candidate_id: ${q(candidate.candidateId)}`,
+        `name: ${q(candidate.displayName)}`,
+        `party: ${q(candidate.party)}`,
+        `status: ${q(candidate.status)}`,
         `fec_ids: [${formatStringList(candidate.fecIds)}]`,
         `state_filing_ids: [${formatStringList(candidate.stateFilingIds)}]`,
       ].join("; ")
@@ -38,25 +42,25 @@ function formatCandidateRoster(context: ElectionResultContext): string[] {
 
 function formatElectionContext(context: ElectionResultContext): string[] {
   return [
-    `- election_id: "${context.electionId}"`,
-    `  race_type: "${context.raceType}"`,
-    `  official_ballot_title: "${context.officialBallotTitle}"`,
-    `  election_date: "${context.electionDate}"`,
-    `  district_name: "${context.district.name}"`,
-    `  district_type: "${context.district.districtType}"`,
-    `  state: "${context.district.state}"`,
-    ...(context.electionStage ? [`  election_stage: "${context.electionStage}"`] : []),
+    `- election_id: ${q(context.electionId)}`,
+    `  race_type: ${q(context.raceType)}`,
+    `  official_ballot_title: ${q(context.officialBallotTitle)}`,
+    `  election_date: ${q(context.electionDate)}`,
+    `  district_name: ${q(context.district.name)}`,
+    `  district_type: ${q(context.district.districtType)}`,
+    `  state: ${q(context.district.state)}`,
+    ...(context.electionStage ? [`  election_stage: ${q(context.electionStage)}`] : []),
     ...(context.discoveryContestFamily
-      ? [`  discovery_contest_family: "${context.discoveryContestFamily}"`]
+      ? [`  discovery_contest_family: ${q(context.discoveryContestFamily)}`]
       : []),
     ...(context.sourceUrls.length > 0
       ? [`  known_election_source_urls: [${formatStringList(context.sourceUrls)}]`]
       : []),
     ...(context.ballotMeasure
       ? [
-          `  ballot_measure_id: "${context.ballotMeasure.ballotMeasureId}"`,
+          `  ballot_measure_id: ${q(context.ballotMeasure.ballotMeasureId)}`,
           ...(context.ballotMeasure.officialMeasureUrl
-            ? [`  official_measure_url: "${context.ballotMeasure.officialMeasureUrl}"`]
+            ? [`  official_measure_url: ${q(context.ballotMeasure.officialMeasureUrl)}`]
             : []),
         ]
       : []),
@@ -79,8 +83,8 @@ export function buildElectionResultPrompt(input: ElectionResultPromptInput): str
     "Return strict JSON only.",
     "",
     "Search context:",
-    `- pass_type: "${input.passType}"`,
-    `- scheduled_for: "${input.scheduledFor}"`,
+    `- pass_type: ${q(input.passType)}`,
+    `- scheduled_for: ${q(input.scheduledFor)}`,
     "",
     "Elections to research:",
     ...input.contexts.flatMap(formatElectionContext),

@@ -292,10 +292,14 @@ export async function processElectionResultSearchJob(
   }
 }
 
-export function createElectionResultSearchWorker(): Worker<
+export function createElectionResultSearchWorker(concurrency = 1): Worker<
   ElectionResultSearchJobData,
   ElectionResultSearchJobResult
 > {
+  if (!Number.isInteger(concurrency) || concurrency <= 0) {
+    throw new Error(`Invalid election result worker concurrency: ${concurrency}`);
+  }
+
   const env = getPipelineEnv();
   const processor: Processor<ElectionResultSearchJobData, ElectionResultSearchJobResult> = async (job) => {
     if (job.name !== ELECTION_RESULT_SEARCH_JOB_NAME) {
@@ -309,14 +313,14 @@ export function createElectionResultSearchWorker(): Worker<
     processor,
     {
       connection: toConnectionOptions(env.REDIS_URL),
-      concurrency: 1,
+      concurrency,
     }
   );
 }
 
 export async function runElectionResultsEnricher(options: ElectionResultsEnricherOptions = {}): Promise<void> {
-  const { once = false, blockMs = 5000 } = options;
-  const worker = createElectionResultSearchWorker();
+  const { once = false, blockMs = 5000, concurrency = 1 } = options;
+  const worker = createElectionResultSearchWorker(concurrency);
 
   if (!once) {
     return;

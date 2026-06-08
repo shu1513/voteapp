@@ -56,6 +56,24 @@ describe("matchCandidateElectionResultWinner", () => {
     expect(match.winner.candidate_election_id).toBe(JANE.candidateElectionId);
   });
 
+  it("canonicalizes matched winner identity from the roster", () => {
+    const match = matchCandidateElectionResultWinner(
+      {
+        candidate_name: "Jane Q Candidate",
+        party: "Democrat",
+      },
+      [JANE, JOHN]
+    );
+
+    expect(match.method).toBe("exact_name_party");
+    expect(match.winner).toMatchObject({
+      candidate_election_id: JANE.candidateElectionId,
+      candidate_id: JANE.candidateId,
+      candidate_name: JANE.displayName,
+      party: JANE.party,
+    });
+  });
+
   it("matches exact normalized name when party is absent", () => {
     const match = matchCandidateElectionResultWinner(
       {

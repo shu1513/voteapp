@@ -81,6 +81,36 @@ describe("buildElectionResultPrompt", () => {
     expect(prompt).toContain("For ballot measures, winners must be []");
   });
 
+  it("escapes quoted and multiline context values", () => {
+    const prompt = buildElectionResultPrompt({
+      passType: "election_night",
+      scheduledFor: "2026-06-03T03:10:00.000Z",
+      contexts: [
+        makeContext({
+          officialBallotTitle: 'Measure "A"\nSchool Bond',
+          district: {
+            ...makeContext().district,
+            name: 'Los Angeles "Unified"\nSchool District',
+          },
+          candidates: [
+            {
+              ...makeContext().candidates[0]!,
+              displayName: 'Jane "JJ"\nCandidate',
+              party: 'Independent "No Party"',
+              fecIds: ['H8"CA"\n39174'],
+            },
+          ],
+        }),
+      ],
+    });
+
+    expect(prompt).toContain('official_ballot_title: "Measure \\"A\\"\\nSchool Bond"');
+    expect(prompt).toContain('district_name: "Los Angeles \\"Unified\\"\\nSchool District"');
+    expect(prompt).toContain('name: "Jane \\"JJ\\"\\nCandidate"');
+    expect(prompt).toContain('party: "Independent \\"No Party\\""');
+    expect(prompt).toContain('fec_ids: ["H8\\"CA\\"\\n39174"]');
+  });
+
   it("rejects oversized chunks", () => {
     expect(() =>
       buildElectionResultPrompt({

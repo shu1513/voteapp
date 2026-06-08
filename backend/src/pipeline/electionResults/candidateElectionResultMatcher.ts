@@ -158,8 +158,8 @@ function toMatchedWinner(
     ...winner,
     candidate_election_id: candidate.candidateElectionId,
     candidate_id: candidate.candidateId,
-    candidate_name: winner.candidate_name || candidate.displayName,
-    party: winner.party || candidate.party || undefined,
+    candidate_name: candidate.displayName,
+    party: candidate.party ?? winner.party ?? undefined,
   };
 }
 

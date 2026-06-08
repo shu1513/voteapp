@@ -12,6 +12,7 @@ const poolConnectMock = vi.fn();
 const poolEndMock = vi.fn(async () => {});
 const clientQueryMock = vi.fn();
 const clientReleaseMock = vi.fn();
+const workerMock = vi.fn();
 
 function officeContext(overrides: Partial<ElectionResultContext> = {}): ElectionResultContext {
   return {
@@ -90,6 +91,7 @@ describe("processElectionResultSearchJob", () => {
   beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
+    workerMock.mockReset();
 
     poolQueryMock.mockImplementation(async (sql: string) => {
       const text = String(sql);
@@ -272,5 +274,63 @@ describe("processElectionResultSearchJob", () => {
     expect(args[13]).toBe("Winner/advancer reported by election result source for Governor.");
     expect(args[14]).toBe("false");
     expect(redisFanoutClient.del).toHaveBeenCalledWith(`staging:election_result_emitted:certified:${ELECTION_ID}`);
+  });
+
+  it("passes configured concurrency to the BullMQ search worker", async () => {
+    vi.doMock("bullmq", () => ({
+      Worker: workerMock,
+    }));
+
+    vi.doMock("../../src/config/env.js", () => ({
+      getPipelineEnv: () => ({
+        DATABASE_URL: "postgresql://localhost:5432/test",
+        REDIS_URL: "redis://localhost:6379/0",
+        AI_PROVIDER: "openai",
+        AI_MODEL: "gpt-5.4-mini",
+        AI_TIMEOUT_MS: 90000,
+        ANTHROPIC_WEB_SEARCH_MAX_USES: 3,
+        STATE_RESOURCES_PROMPT_VERSION: "state_resources_v2",
+        CENSUS_API_KEYS: [],
+      }),
+    }));
+
+    const { createElectionResultSearchWorker } = await import(
+      "../../src/pipeline/enrichers/electionResultsEnricher.js"
+    );
+
+    createElectionResultSearchWorker(4);
+
+    expect(workerMock).toHaveBeenCalledWith(
+      "election_result_search",
+      expect.any(Function),
+      expect.objectContaining({
+        concurrency: 4,
+      })
+    );
+  });
+
+  it("rejects invalid election result worker concurrency", async () => {
+    vi.doMock("bullmq", () => ({
+      Worker: workerMock,
+    }));
+
+    vi.doMock("../../src/config/env.js", () => ({
+      getPipelineEnv: () => ({
+        DATABASE_URL: "postgresql://localhost:5432/test",
+        REDIS_URL: "redis://localhost:6379/0",
+        AI_PROVIDER: "openai",
+        AI_MODEL: "gpt-5.4-mini",
+        AI_TIMEOUT_MS: 90000,
+        ANTHROPIC_WEB_SEARCH_MAX_USES: 3,
+        STATE_RESOURCES_PROMPT_VERSION: "state_resources_v2",
+        CENSUS_API_KEYS: [],
+      }),
+    }));
+
+    const { createElectionResultSearchWorker } = await import(
+      "../../src/pipeline/enrichers/electionResultsEnricher.js"
+    );
+
+    expect(() => createElectionResultSearchWorker(0)).toThrow("Invalid election result worker concurrency");
   });
 });

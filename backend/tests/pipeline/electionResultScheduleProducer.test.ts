@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const poolQueryMock = vi.fn();
 const poolEndMock = vi.fn(async () => {});
@@ -11,7 +11,10 @@ const redisSetMock = vi.fn(async () => "OK");
 const redisQuitMock = vi.fn(async () => {});
 
 describe("runElectionResultScheduleProducer", () => {
+  let originalEnv: NodeJS.ProcessEnv;
+
   beforeEach(() => {
+    originalEnv = { ...process.env };
     vi.resetModules();
     vi.clearAllMocks();
     poolQueryMock.mockReset();
@@ -23,6 +26,10 @@ describe("runElectionResultScheduleProducer", () => {
     process.env.ELECTION_RESULTS_LOOKAHEAD_HOURS = "6";
     process.env.ELECTION_RESULTS_MAX_GROUPS_PER_RUN = "10";
     process.env.ELECTION_RESULT_SEARCH_QUEUE = "election_result_search_test";
+  });
+
+  afterEach(() => {
+    process.env = originalEnv;
   });
 
   it("returns disabled summary when feature flag is off", async () => {
