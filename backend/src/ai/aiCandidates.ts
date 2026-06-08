@@ -39,6 +39,16 @@ export const BALLOT_MEASURES_AI_CANDIDATES: readonly AiCandidate[] = [
 ] as const;
 
 /**
+ * Curated election-result AI candidates.
+ * Kept separate because result search has stricter source-authority rules than election discovery.
+ */
+export const ELECTION_RESULTS_AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "openai", model: "gpt-5.5" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
+/**
  * Curated candidate-discovery/profile AI candidates.
  * Used by candidate roster/profile enrichers.
  */

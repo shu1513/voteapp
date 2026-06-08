@@ -454,7 +454,7 @@ async function insertCandidate(
   rosterParty: string | undefined,
   includeParty: boolean
 ): Promise<string> {
-  const storedParty = includeParty ? rosterParty ?? "Unknown" : null;
+  const storedParty = includeParty ? rosterParty ?? profile.party ?? "Unknown" : "Nonpartisan";
 
   const insertResult = await client.query<{ id: string }>(
     `
