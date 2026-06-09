@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
+import { Readable } from "node:stream";
+import type { IncomingMessage, RequestListener, ServerResponse } from "node:http";
 
-import { handleAddressApiRequest } from "../../src/api/addressApiServer.js";
+import { createAddressApiRequestHandler, handleAddressApiRequest } from "../../src/api/addressApiServer.js";
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
 
@@ -36,6 +38,52 @@ const resolvedAddress: AddressResolutionResult = {
 
 const districtId = "11111111-1111-4111-8111-111111111111";
 const secondDistrictId = "22222222-2222-4222-8222-222222222222";
+
+async function invokeRequestHandler(
+  handler: RequestListener,
+  input: {
+    method: string;
+    path: string;
+    body: string;
+    remoteAddress?: string;
+    headers?: Record<string, string>;
+  }
+): Promise<{ statusCode: number; headers: Record<string, string>; body: string }> {
+  const request = Readable.from([input.body]) as IncomingMessage;
+  Object.assign(request, {
+    method: input.method,
+    url: input.path,
+    headers: input.headers ?? {},
+    socket: {
+      remoteAddress: input.remoteAddress ?? "127.0.0.1",
+    },
+  });
+
+  return await new Promise((resolve) => {
+    const response = {
+      writeHead: vi.fn((statusCode: number, headers: Record<string, string>) => {
+        response.statusCode = statusCode;
+        response.headers = headers;
+        return response;
+      }),
+      end: vi.fn((body?: string) => {
+        resolve({
+          statusCode: response.statusCode,
+          headers: response.headers,
+          body: body ?? "",
+        });
+        return response;
+      }),
+      statusCode: 200,
+      headers: {} as Record<string, string>,
+    } as unknown as ServerResponse & {
+      statusCode: number;
+      headers: Record<string, string>;
+    };
+
+    handler(request, response);
+  });
+}
 
 describe("handleAddressApiRequest", () => {
   it("serves POST /api/address/resolve", async () => {
@@ -262,6 +310,34 @@ describe("handleAddressApiRequest", () => {
         },
       },
     });
+    expect(rateLimit).toHaveBeenCalledWith({
+      clientIp: "203.0.113.10",
+      method: "POST",
+      pathname: "/api/address/resolve",
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rate limits POST address requests before reading oversized bodies", async () => {
+    const resolveAddress = vi.fn();
+    const rateLimit = vi.fn().mockReturnValue({ allowed: false, retryAfterSeconds: 7 });
+    const handler = createAddressApiRequestHandler({ resolveAddress, rateLimit });
+
+    const response = await invokeRequestHandler(handler, {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: "x".repeat(16 * 1024 + 1),
+      remoteAddress: "203.0.113.10",
+    });
+
+    expect(response.statusCode).toBe(429);
+    expect(JSON.parse(response.body)).toEqual({
+      error: {
+        code: "rate_limited",
+        message: "Too many requests. Try again later.",
+      },
+    });
+    expect(response.headers).toMatchObject({ "retry-after": "7" });
     expect(rateLimit).toHaveBeenCalledWith({
       clientIp: "203.0.113.10",
       method: "POST",

@@ -334,6 +334,31 @@ function mapErrorToResponse(error: unknown): { statusCode: number; code: ApiErro
   return { statusCode: 500, code: "internal_error", message };
 }
 
+function evaluateRateLimit(
+  input: {
+    clientIp: string;
+    method: string;
+    pathname: string;
+  },
+  options: AddressApiServerOptions,
+  corsHeaders: Record<string, string>
+): AddressApiResponse | null {
+  if (!options.rateLimit) {
+    return null;
+  }
+
+  const rateLimit = options.rateLimit(input);
+  if (rateLimit.allowed) {
+    return null;
+  }
+
+  const retryAfterSeconds = Math.max(1, Math.ceil(rateLimit.retryAfterSeconds ?? 1));
+  return toErrorResponse(429, "rate_limited", "Too many requests. Try again later.", {
+    ...corsHeaders,
+    "retry-after": String(retryAfterSeconds),
+  });
+}
+
 export async function handleAddressApiRequest(
   input: AddressApiRequestInput,
   options: AddressApiServerOptions
@@ -352,19 +377,17 @@ export async function handleAddressApiRequest(
     return toEmptyResponse(204, cors.headers);
   }
 
-  if (options.rateLimit) {
-    const rateLimit = options.rateLimit({
+  const rateLimitResponse = evaluateRateLimit(
+    {
       clientIp: input.clientIp ?? "unknown",
       method: input.method,
       pathname: url.pathname,
-    });
-    if (!rateLimit.allowed) {
-      const retryAfterSeconds = Math.max(1, Math.ceil(rateLimit.retryAfterSeconds ?? 1));
-      return toErrorResponse(429, "rate_limited", "Too many requests. Try again later.", {
-        ...cors.headers,
-        "retry-after": String(retryAfterSeconds),
-      });
-    }
+    },
+    options,
+    cors.headers
+  );
+  if (rateLimitResponse) {
+    return rateLimitResponse;
   }
 
   if (url.pathname === BALLOT_LOOKUP_PATH) {
@@ -435,10 +458,11 @@ export function createAddressApiRequestHandler(options: AddressApiServerOptions)
       try {
         const method = request.method ?? "GET";
         const path = request.url ?? "/";
+        const url = new URL(path, "http://localhost");
         const remoteAddress = request.socket.remoteAddress ?? "unknown";
         const clientIp =
           options.resolveClientIp?.({ headers: request.headers, remoteAddress })?.trim() || remoteAddress;
-        if (new URL(path, "http://localhost").pathname !== ADDRESS_RESOLVE_PATH || method !== "POST") {
+        if (url.pathname !== ADDRESS_RESOLVE_PATH || method !== "POST") {
           writeApiResponse(
             response,
             await handleAddressApiRequest({ method, path, rawBody: "", headers: request.headers, clientIp }, options)
@@ -446,10 +470,30 @@ export function createAddressApiRequestHandler(options: AddressApiServerOptions)
           return;
         }
 
+        const cors = resolveCorsHeaders(request.headers, options.allowedOrigins);
+        if (cors.ok) {
+          const rateLimitResponse = evaluateRateLimit(
+            {
+              clientIp,
+              method,
+              pathname: url.pathname,
+            },
+            options,
+            cors.headers
+          );
+          if (rateLimitResponse) {
+            writeApiResponse(response, rateLimitResponse);
+            return;
+          }
+        }
+
         const rawBody = await readRequestBody(request, MAX_ADDRESS_REQUEST_BODY_BYTES);
         writeApiResponse(
           response,
-          await handleAddressApiRequest({ method, path, rawBody, headers: request.headers, clientIp }, options)
+          await handleAddressApiRequest(
+            { method, path, rawBody, headers: request.headers, clientIp },
+            { ...options, rateLimit: undefined }
+          )
         );
       } catch (error) {
         const mapped = mapErrorToResponse(error);
