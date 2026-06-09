@@ -12,6 +12,7 @@
     "state-resources:health": "tsx src/scripts/stateResourcesHealth.ts",
     "districts:load": "tsx src/scripts/loadDistricts.ts",
     "districts:load:all": "tsx src/scripts/loadAllDistricts.ts",
+    "address:api": "tsx src/scripts/runAddressApiServer.ts",
     "elections:produce": "tsx src/scripts/produceElections.ts",
     "elections:enrich": "tsx src/scripts/enrichElections.ts",
     "elections:validate": "tsx src/scripts/validateElections.ts",
