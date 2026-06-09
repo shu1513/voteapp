@@ -1,0 +1,596 @@
+import type { Pool, PoolClient } from "pg";
+
+import type { ElectionContestFamily, ElectionDistrictType, ElectionRaceType, ElectionStage } from "../../types/election.js";
+import type { CandidateElectionStatus, ElectionResultPassType } from "../../types/electionResults.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+
+export type BallotLookupDistrict = {
+  id: string;
+  district_type: ElectionDistrictType;
+  geoid_compact: string;
+  name: string;
+  state: string;
+  state_fips: string;
+};
+
+export type BallotLookupResearchAreaTag = {
+  research_area_id: string;
+  slug: string;
+  name: string;
+  stance: "for" | "against" | null;
+};
+
+export type BallotLookupCandidateRecord = {
+  id: string;
+  description: string;
+  source_url: string;
+  event_date: string;
+  created_at: string;
+  research_area_tags: BallotLookupResearchAreaTag[];
+};
+
+export type BallotLookupCandidate = {
+  candidate_election_id: string;
+  candidate_id: string;
+  display_name: string;
+  party: string;
+  is_incumbent: boolean;
+  status: CandidateElectionStatus;
+  summary: string | null;
+  current_office: string | null;
+  state: string;
+  fec_ids: string[];
+  state_filing_ids: string[];
+  records: BallotLookupCandidateRecord[];
+};
+
+export type BallotLookupElectionResultWinner = {
+  candidate_election_id?: string;
+  candidate_id?: string;
+  candidate_name?: string;
+  party?: string;
+};
+
+export type BallotLookupElectionResult = {
+  id: string;
+  pass_type: ElectionResultPassType;
+  result_status: string;
+  outcome: string;
+  winners: BallotLookupElectionResultWinner[];
+  match_status: string;
+  source_url: string;
+  source_type: string;
+  retrieved_at: string;
+};
+
+export type BallotLookupBallotMeasureResult = {
+  id: string;
+  pass_type: ElectionResultPassType;
+  result_status: string;
+  outcome: string;
+  source_url: string;
+  source_type: string;
+  retrieved_at: string;
+};
+
+export type BallotLookupBallotMeasure = {
+  id: string;
+  official_ballot_title: string;
+  summary: string | null;
+  what_yes_means: string;
+  what_no_means: string;
+  result: "passed" | "failed" | null;
+  source_urls: string[];
+  official_measure_url: string | null;
+  research_area_tags: BallotLookupResearchAreaTag[];
+  results: BallotLookupBallotMeasureResult[];
+};
+
+export type BallotLookupElection = {
+  id: string;
+  district_id: string;
+  district: BallotLookupDistrict;
+  race_type: ElectionRaceType;
+  official_ballot_title: string;
+  election_date: string;
+  election_stage: ElectionStage | null;
+  is_partisan: boolean | null;
+  discovery_contest_family: ElectionContestFamily | null;
+  sources: string[];
+  candidates: BallotLookupCandidate[];
+  ballot_measure: BallotLookupBallotMeasure | null;
+  results: BallotLookupElectionResult[];
+};
+
+export type BallotLookupResult = {
+  district_ids: string[];
+  districts: BallotLookupDistrict[];
+  elections: BallotLookupElection[];
+};
+
+type DistrictRow = BallotLookupDistrict;
+
+type ElectionRow = {
+  election_id: string;
+  district_id: string;
+  district_type: ElectionDistrictType;
+  geoid_compact: string;
+  district_name: string;
+  state: string;
+  state_fips: string;
+  race_type: ElectionRaceType;
+  official_ballot_title: string;
+  election_date: string;
+  election_stage: ElectionStage | null;
+  is_partisan: boolean | null;
+  discovery_contest_family: ElectionContestFamily | null;
+  sources: unknown;
+};
+
+type CandidateRow = {
+  election_id: string;
+  candidate_election_id: string;
+  candidate_id: string;
+  display_name: string;
+  party: string;
+  is_incumbent: boolean;
+  status: CandidateElectionStatus;
+  summary: string | null;
+  current_office: string | null;
+  state: string;
+  fec_ids: unknown;
+  state_filing_ids: unknown;
+};
+
+type CandidateRecordRow = {
+  candidate_id: string;
+  candidate_record_id: string;
+  description: string;
+  source_url: string;
+  event_date: string;
+  created_at: string;
+};
+
+type CandidateRecordTagRow = {
+  candidate_record_id: string;
+  research_area_id: string;
+  slug: string;
+  name: string;
+  stance: "for" | "against" | null;
+};
+
+type BallotMeasureRow = {
+  election_id: string;
+  ballot_measure_id: string;
+  official_ballot_title: string;
+  summary: string | null;
+  what_yes_means: string;
+  what_no_means: string;
+  result: "passed" | "failed" | null;
+  source_url: unknown;
+  official_measure_url: string | null;
+};
+
+type BallotMeasureTagRow = {
+  ballot_measure_id: string;
+  research_area_id: string;
+  slug: string;
+  name: string;
+  stance: "for" | "against";
+};
+
+type ElectionResultRow = {
+  election_id: string;
+  id: string;
+  pass_type: ElectionResultPassType;
+  result_status: string;
+  outcome: string;
+  winners: unknown;
+  match_status: string;
+  source_url: string;
+  source_type: string;
+  retrieved_at: string;
+};
+
+type BallotMeasureResultRow = {
+  ballot_measure_id: string;
+  id: string;
+  pass_type: ElectionResultPassType;
+  result_status: string;
+  outcome: string;
+  source_url: string;
+  source_type: string;
+  retrieved_at: string;
+};
+
+function normalizeIds(ids: readonly string[]): string[] {
+  return [...new Set(ids.map((id) => id.trim()).filter((id) => id.length > 0))];
+}
+
+function parseStringArray(raw: unknown): string[] {
+  if (!Array.isArray(raw)) {
+    return [];
+  }
+  return [
+    ...new Set(
+      raw
+        .filter((item): item is string => typeof item === "string")
+        .map((item) => item.trim())
+        .filter((item) => item.length > 0)
+    ),
+  ];
+}
+
+function normalizeOptionalString(value: unknown): string | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+}
+
+function parseWinners(raw: unknown): BallotLookupElectionResultWinner[] {
+  if (!Array.isArray(raw)) {
+    return [];
+  }
+
+  return raw.flatMap((item): BallotLookupElectionResultWinner[] => {
+    if (typeof item !== "object" || item === null || Array.isArray(item)) {
+      return [];
+    }
+    const row = item as Record<string, unknown>;
+    const winner: BallotLookupElectionResultWinner = {};
+    const candidateElectionId = normalizeOptionalString(row.candidate_election_id);
+    const candidateId = normalizeOptionalString(row.candidate_id);
+    const candidateName = normalizeOptionalString(row.candidate_name);
+    const party = normalizeOptionalString(row.party);
+    if (candidateElectionId) {
+      winner.candidate_election_id = candidateElectionId;
+    }
+    if (candidateId) {
+      winner.candidate_id = candidateId;
+    }
+    if (candidateName) {
+      winner.candidate_name = candidateName;
+    }
+    if (party) {
+      winner.party = party;
+    }
+    return Object.keys(winner).length > 0 ? [winner] : [];
+  });
+}
+
+function groupBy<T, K extends string>(rows: readonly T[], getKey: (row: T) => K): Map<K, T[]> {
+  const grouped = new Map<K, T[]>();
+  for (const row of rows) {
+    const key = getKey(row);
+    const list = grouped.get(key) ?? [];
+    list.push(row);
+    grouped.set(key, list);
+  }
+  return grouped;
+}
+
+function toDistrict(row: DistrictRow | ElectionRow): BallotLookupDistrict {
+  const id = "district_id" in row ? row.district_id : row.id;
+  const name = "district_name" in row ? row.district_name : row.name;
+  return {
+    id,
+    district_type: row.district_type,
+    geoid_compact: row.geoid_compact,
+    name,
+    state: row.state,
+    state_fips: row.state_fips,
+  };
+}
+
+function mapResearchAreaTag(row: CandidateRecordTagRow | BallotMeasureTagRow): BallotLookupResearchAreaTag {
+  return {
+    research_area_id: row.research_area_id,
+    slug: row.slug,
+    name: row.name,
+    stance: row.stance,
+  };
+}
+
+export async function lookupBallotByDistrictIds(
+  db: Queryable,
+  districtIds: readonly string[]
+): Promise<BallotLookupResult> {
+  const ids = normalizeIds(districtIds);
+  if (ids.length === 0) {
+    return { district_ids: [], districts: [], elections: [] };
+  }
+
+  const districtResult = await db.query<DistrictRow>(
+    `
+      SELECT
+        id,
+        district_type,
+        geoid_compact,
+        name,
+        state,
+        state_fips
+      FROM public.districts
+      WHERE id = ANY($1::uuid[])
+      ORDER BY array_position($1::uuid[], id), district_type, name
+    `,
+    [ids]
+  );
+
+  const electionResult = await db.query<ElectionRow>(
+    `
+      SELECT
+        e.id AS election_id,
+        d.id AS district_id,
+        d.district_type,
+        d.geoid_compact,
+        d.name AS district_name,
+        d.state,
+        d.state_fips,
+        e.race_type,
+        e.official_ballot_title,
+        e.election_date::text AS election_date,
+        e.election_stage,
+        e.is_partisan,
+        e.discovery_contest_family,
+        e.sources
+      FROM public.elections AS e
+      JOIN public.districts AS d
+        ON d.id = e.district_id
+      WHERE e.district_id = ANY($1::uuid[])
+      ORDER BY e.election_date ASC, e.race_type ASC, e.official_ballot_title ASC, e.id ASC
+    `,
+    [ids]
+  );
+
+  const electionIds = electionResult.rows.map((row) => row.election_id);
+  if (electionIds.length === 0) {
+    return {
+      district_ids: ids,
+      districts: districtResult.rows.map(toDistrict),
+      elections: [],
+    };
+  }
+
+  const candidateResult = await db.query<CandidateRow>(
+    `
+        SELECT
+          ce.election_id,
+          ce.id AS candidate_election_id,
+          c.id AS candidate_id,
+          COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name)) AS display_name,
+          c.party,
+          ce.is_incumbent,
+          ce.status,
+          c.summary,
+          c.current_office,
+          c.state,
+          c.fec_ids,
+          c.state_filing_ids
+        FROM public.candidate_elections AS ce
+        JOIN public.candidates AS c
+          ON c.id = ce.candidate_id
+        WHERE ce.election_id = ANY($1::uuid[])
+          AND c.deleted_at IS NULL
+        ORDER BY
+          ce.election_id,
+          lower(COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name))),
+          ce.id
+      `,
+    [electionIds]
+  );
+  const ballotMeasureResult = await db.query<BallotMeasureRow>(
+    `
+        SELECT
+          bm.election_id,
+          bm.id AS ballot_measure_id,
+          bm.official_ballot_title,
+          bm.summary,
+          bm.what_yes_means,
+          bm.what_no_means,
+          bm.result,
+          bm.source_url,
+          bm.official_measure_url
+        FROM public.ballot_measures AS bm
+        WHERE bm.election_id = ANY($1::uuid[])
+        ORDER BY bm.election_id, bm.id
+      `,
+    [electionIds]
+  );
+  const officeResult = await db.query<ElectionResultRow>(
+    `
+        SELECT
+          er.election_id,
+          er.id,
+          er.pass_type,
+          er.result_status,
+          er.outcome,
+          er.winners,
+          er.match_status,
+          er.source_url,
+          er.source_type,
+          er.retrieved_at::text AS retrieved_at
+        FROM public.election_results AS er
+        WHERE er.election_id = ANY($1::uuid[])
+        ORDER BY er.election_id, er.pass_type, er.retrieved_at DESC
+      `,
+    [electionIds]
+  );
+  const ballotMeasureOutcomeResult = await db.query<BallotMeasureResultRow>(
+    `
+        SELECT
+          bmr.ballot_measure_id,
+          bmr.id,
+          bmr.pass_type,
+          bmr.result_status,
+          bmr.outcome,
+          bmr.source_url,
+          bmr.source_type,
+          bmr.retrieved_at::text AS retrieved_at
+        FROM public.ballot_measure_results AS bmr
+        JOIN public.ballot_measures AS bm
+          ON bm.id = bmr.ballot_measure_id
+        WHERE bm.election_id = ANY($1::uuid[])
+        ORDER BY bmr.ballot_measure_id, bmr.pass_type, bmr.retrieved_at DESC
+      `,
+    [electionIds]
+  );
+
+  const candidateIds = [...new Set(candidateResult.rows.map((row) => row.candidate_id))];
+  const ballotMeasureIds = ballotMeasureResult.rows.map((row) => row.ballot_measure_id);
+
+  const candidateRecordResult =
+    candidateIds.length === 0
+      ? { rows: [] as CandidateRecordRow[] }
+      : await db.query<CandidateRecordRow>(
+          `
+            SELECT
+              cr.candidate_id,
+              cr.id AS candidate_record_id,
+              cr.description,
+              cr.source_url,
+              cr.event_date::text AS event_date,
+              cr.created_at::text AS created_at
+            FROM public.candidate_records AS cr
+            WHERE cr.candidate_id = ANY($1::uuid[])
+            ORDER BY cr.candidate_id, cr.event_date DESC, cr.created_at DESC, cr.id
+          `,
+          [candidateIds]
+        );
+  const candidateRecordTagResult =
+    candidateIds.length === 0
+      ? { rows: [] as CandidateRecordTagRow[] }
+      : await db.query<CandidateRecordTagRow>(
+          `
+            SELECT
+              cr.id AS candidate_record_id,
+              ra.id AS research_area_id,
+              ra.slug,
+              ra.name,
+              tag.stance
+            FROM public.candidate_records AS cr
+            JOIN public.candidate_record_area_tags AS tag
+              ON tag.candidate_record_id = cr.id
+            JOIN public.research_areas AS ra
+              ON ra.id = tag.research_area_id
+            WHERE cr.candidate_id = ANY($1::uuid[])
+            ORDER BY cr.id, ra.slug
+          `,
+          [candidateIds]
+        );
+  const ballotMeasureTagResult =
+    ballotMeasureIds.length === 0
+      ? { rows: [] as BallotMeasureTagRow[] }
+      : await db.query<BallotMeasureTagRow>(
+          `
+            SELECT
+              tag.ballot_measure_id,
+              ra.id AS research_area_id,
+              ra.slug,
+              ra.name,
+              tag.stance
+            FROM public.ballot_measure_research_area_tags AS tag
+            JOIN public.research_areas AS ra
+              ON ra.id = tag.research_area_id
+            WHERE tag.ballot_measure_id = ANY($1::uuid[])
+            ORDER BY tag.ballot_measure_id, ra.slug
+          `,
+          [ballotMeasureIds]
+        );
+
+  const candidateRecordTagsByRecord = groupBy(candidateRecordTagResult.rows, (row) => row.candidate_record_id);
+  const candidateRecordsByCandidate = new Map<string, BallotLookupCandidateRecord[]>();
+  for (const row of candidateRecordResult.rows) {
+    const list = candidateRecordsByCandidate.get(row.candidate_id) ?? [];
+    list.push({
+      id: row.candidate_record_id,
+      description: row.description,
+      source_url: row.source_url,
+      event_date: row.event_date,
+      created_at: row.created_at,
+      research_area_tags: (candidateRecordTagsByRecord.get(row.candidate_record_id) ?? []).map(mapResearchAreaTag),
+    });
+    candidateRecordsByCandidate.set(row.candidate_id, list);
+  }
+
+  const candidatesByElection = new Map<string, BallotLookupCandidate[]>();
+  for (const row of candidateResult.rows) {
+    const list = candidatesByElection.get(row.election_id) ?? [];
+    list.push({
+      candidate_election_id: row.candidate_election_id,
+      candidate_id: row.candidate_id,
+      display_name: row.display_name,
+      party: row.party,
+      is_incumbent: row.is_incumbent,
+      status: row.status,
+      summary: row.summary,
+      current_office: row.current_office,
+      state: row.state,
+      fec_ids: parseStringArray(row.fec_ids),
+      state_filing_ids: parseStringArray(row.state_filing_ids),
+      records: candidateRecordsByCandidate.get(row.candidate_id) ?? [],
+    });
+    candidatesByElection.set(row.election_id, list);
+  }
+
+  const ballotMeasureTagsByMeasure = groupBy(ballotMeasureTagResult.rows, (row) => row.ballot_measure_id);
+  const ballotMeasureResultsByMeasure = groupBy(ballotMeasureOutcomeResult.rows, (row) => row.ballot_measure_id);
+  const ballotMeasureByElection = new Map<string, BallotLookupBallotMeasure>();
+  for (const row of ballotMeasureResult.rows) {
+    ballotMeasureByElection.set(row.election_id, {
+      id: row.ballot_measure_id,
+      official_ballot_title: row.official_ballot_title,
+      summary: row.summary,
+      what_yes_means: row.what_yes_means,
+      what_no_means: row.what_no_means,
+      result: row.result,
+      source_urls: parseStringArray(row.source_url),
+      official_measure_url: row.official_measure_url,
+      research_area_tags: (ballotMeasureTagsByMeasure.get(row.ballot_measure_id) ?? []).map(mapResearchAreaTag),
+      results: (ballotMeasureResultsByMeasure.get(row.ballot_measure_id) ?? []).map((result) => ({
+        id: result.id,
+        pass_type: result.pass_type,
+        result_status: result.result_status,
+        outcome: result.outcome,
+        source_url: result.source_url,
+        source_type: result.source_type,
+        retrieved_at: result.retrieved_at,
+      })),
+    });
+  }
+
+  const officeResultsByElection = groupBy(officeResult.rows, (row) => row.election_id);
+  const elections: BallotLookupElection[] = electionResult.rows.map((row) => ({
+    id: row.election_id,
+    district_id: row.district_id,
+    district: toDistrict(row),
+    race_type: row.race_type,
+    official_ballot_title: row.official_ballot_title,
+    election_date: row.election_date,
+    election_stage: row.election_stage,
+    is_partisan: row.is_partisan,
+    discovery_contest_family: row.discovery_contest_family,
+    sources: parseStringArray(row.sources),
+    candidates: candidatesByElection.get(row.election_id) ?? [],
+    ballot_measure: ballotMeasureByElection.get(row.election_id) ?? null,
+    results: (officeResultsByElection.get(row.election_id) ?? []).map((result) => ({
+      id: result.id,
+      pass_type: result.pass_type,
+      result_status: result.result_status,
+      outcome: result.outcome,
+      winners: parseWinners(result.winners),
+      match_status: result.match_status,
+      source_url: result.source_url,
+      source_type: result.source_type,
+      retrieved_at: result.retrieved_at,
+    })),
+  }));
+
+  return {
+    district_ids: ids,
+    districts: districtResult.rows.map(toDistrict),
+    elections,
+  };
+}

@@ -1,17 +1,34 @@
 import { createServer, type IncomingMessage, type RequestListener, type Server, type ServerResponse } from "node:http";
+import type { BallotLookupResult } from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
+import type { SaveUserDistrictsResult } from "../pipeline/address/userDistricts.js";
 import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeocoder.js";
 
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
+export const BALLOT_LOOKUP_PATH = "/api/ballot";
 const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
-const CORS_ALLOW_METHODS = "POST, OPTIONS";
+const MAX_BALLOT_DISTRICT_IDS = 50;
+const CORS_ALLOW_METHODS = "GET, POST, OPTIONS";
 const CORS_ALLOW_HEADERS = "content-type";
 const CORS_MAX_AGE_SECONDS = "600";
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export type AddressApiServerOptions = {
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
+  lookupBallot?: (districtIds: readonly string[]) => Promise<BallotLookupResult>;
+  resolveUserId?: (headers: Record<string, string | string[] | undefined> | undefined) => string | null | undefined;
+  saveUserDistricts?: (
+    userId: string,
+    districts: AddressResolutionResult["districts"]
+  ) => Promise<SaveUserDistrictsResult>;
   allowedOrigins?: readonly string[];
   logDiagnostics?: (diagnostics: AddressResolutionDiagnostics) => void;
+};
+
+export type AddressResolvePayload = {
+  address: string;
+  include_ballot: boolean;
+  save_districts: boolean;
 };
 
 export type AddressApiRequestInput = {
@@ -34,6 +51,10 @@ export type PublicAddressResolutionResult = {
     lng: number;
   };
   districts: AddressResolutionResult["districts"];
+  ballot?: BallotLookupResult;
+  saved_user_districts?: {
+    district_count: number;
+  };
 };
 
 export type AddressResolutionDiagnostics = {
@@ -48,6 +69,7 @@ type ApiErrorCode =
   | "method_not_allowed"
   | "invalid_json"
   | "invalid_request"
+  | "auth_required"
   | "address_not_found"
   | "upstream_unavailable"
   | "bad_upstream_response"
@@ -146,7 +168,17 @@ async function readRequestBody(request: IncomingMessage, maxBytes: number): Prom
   return Buffer.concat(chunks).toString("utf8");
 }
 
-function parseAddressPayload(rawBody: string): string {
+function parseBooleanField(value: unknown, fieldName: string): boolean {
+  if (value === undefined) {
+    return false;
+  }
+  if (typeof value !== "boolean") {
+    throw new TypeError(`Request field ${fieldName} must be boolean when provided`);
+  }
+  return value;
+}
+
+function parseAddressPayload(rawBody: string): AddressResolvePayload {
   let parsed: unknown;
   try {
     parsed = JSON.parse(rawBody);
@@ -163,7 +195,32 @@ function parseAddressPayload(rawBody: string): string {
     throw new TypeError("Request body must include non-empty string field: address");
   }
 
-  return address.trim();
+  return {
+    address: address.trim(),
+    include_ballot: parseBooleanField((parsed as { include_ballot?: unknown }).include_ballot, "include_ballot"),
+    save_districts: parseBooleanField((parsed as { save_districts?: unknown }).save_districts, "save_districts"),
+  };
+}
+
+function parseDistrictIds(url: URL): string[] {
+  const rawValues = url.searchParams
+    .getAll("district_ids")
+    .flatMap((value) => value.split(","))
+    .map((value) => value.trim())
+    .filter((value) => value.length > 0);
+
+  const districtIds = [...new Set(rawValues)];
+  if (districtIds.length === 0) {
+    throw new TypeError("Query parameter district_ids must include at least one district UUID");
+  }
+  if (districtIds.length > MAX_BALLOT_DISTRICT_IDS) {
+    throw new TypeError(`Query parameter district_ids supports at most ${MAX_BALLOT_DISTRICT_IDS} UUIDs`);
+  }
+  const invalidId = districtIds.find((id) => !UUID_PATTERN.test(id));
+  if (invalidId) {
+    throw new TypeError(`Query parameter district_ids contains invalid UUID: ${invalidId}`);
+  }
+  return districtIds;
 }
 
 function normalizeAllowedOrigins(origins: readonly string[] | undefined): Set<string> {
@@ -212,11 +269,15 @@ function resolveCorsHeaders(
   };
 }
 
-function toPublicAddressResolution(result: AddressResolutionResult): PublicAddressResolutionResult {
+function toPublicAddressResolution(
+  result: AddressResolutionResult,
+  extras: Pick<PublicAddressResolutionResult, "ballot" | "saved_user_districts"> = {}
+): PublicAddressResolutionResult {
   return {
     matched_address: result.matched_address,
     coordinates: result.coordinates,
     districts: result.districts,
+    ...extras,
   };
 }
 
@@ -263,7 +324,7 @@ export async function handleAddressApiRequest(
 ): Promise<AddressApiResponse> {
   const url = new URL(input.path, "http://localhost");
   const cors = resolveCorsHeaders(input.headers, options.allowedOrigins);
-  if (url.pathname !== ADDRESS_RESOLVE_PATH) {
+  if (url.pathname !== ADDRESS_RESOLVE_PATH && url.pathname !== BALLOT_LOOKUP_PATH) {
     return toErrorResponse(404, "not_found", "Not found", cors.headers);
   }
 
@@ -275,6 +336,27 @@ export async function handleAddressApiRequest(
     return toEmptyResponse(204, cors.headers);
   }
 
+  if (url.pathname === BALLOT_LOOKUP_PATH) {
+    if (input.method !== "GET") {
+      return toErrorResponse(405, "method_not_allowed", "Use GET /api/ballot?district_ids=...", {
+        ...cors.headers,
+        allow: "GET",
+      });
+    }
+    if (!options.lookupBallot) {
+      return toErrorResponse(500, "internal_error", "Ballot lookup is not configured", cors.headers);
+    }
+
+    try {
+      const districtIds = parseDistrictIds(url);
+      const result = await options.lookupBallot(districtIds);
+      return toJsonResponse(200, result, cors.headers);
+    } catch (error) {
+      const mapped = mapErrorToResponse(error);
+      return toErrorResponse(mapped.statusCode, mapped.code, mapped.message, cors.headers);
+    }
+  }
+
   if (input.method !== "POST") {
     return toErrorResponse(405, "method_not_allowed", "Use POST /api/address/resolve", {
       ...cors.headers,
@@ -283,10 +365,33 @@ export async function handleAddressApiRequest(
   }
 
   try {
-    const address = parseAddressPayload(input.rawBody);
-    const result = await options.resolveAddress(address);
+    const payload = parseAddressPayload(input.rawBody);
+    const result = await options.resolveAddress(payload.address);
     options.logDiagnostics?.(toAddressResolutionDiagnostics(result));
-    return toJsonResponse(200, toPublicAddressResolution(result), cors.headers);
+
+    const districtIds = result.districts.map((district) => district.id);
+    const extras: Pick<PublicAddressResolutionResult, "ballot" | "saved_user_districts"> = {};
+
+    if (payload.include_ballot) {
+      if (!options.lookupBallot) {
+        return toErrorResponse(500, "internal_error", "Ballot lookup is not configured", cors.headers);
+      }
+      extras.ballot = await options.lookupBallot(districtIds);
+    }
+
+    if (payload.save_districts) {
+      const userId = options.resolveUserId?.(input.headers)?.trim() || null;
+      if (!userId) {
+        return toErrorResponse(401, "auth_required", "Login is required to save user districts", cors.headers);
+      }
+      if (!options.saveUserDistricts) {
+        return toErrorResponse(500, "internal_error", "User district saving is not configured", cors.headers);
+      }
+      const saved = await options.saveUserDistricts(userId, result.districts);
+      extras.saved_user_districts = { district_count: saved.district_count };
+    }
+
+    return toJsonResponse(200, toPublicAddressResolution(result, extras), cors.headers);
   } catch (error) {
     const mapped = mapErrorToResponse(error);
     return toErrorResponse(mapped.statusCode, mapped.code, mapped.message, cors.headers);

@@ -78,6 +78,24 @@ describe("addressDistrictResolver", () => {
     ]);
   });
 
+  it("uses MTFCC as the authoritative type when both MTFCC and layer name are present", () => {
+    const result = resolveAddressDistrictKeysFromGeographies({
+      Counties: [{ GEOID: "06037", NAME: "Los Angeles County", MTFCC: "G4020" }],
+    });
+
+    expect(result.warnings).toEqual([]);
+    expect(result.district_keys).toEqual([
+      {
+        district_type: "county",
+        geoid_compact: "06037",
+        source: "mtfcc",
+        layer_name: "Counties",
+        mtfcc: "G4020",
+        name: "Los Angeles County",
+      },
+    ]);
+  });
+
   it("skips features when MTFCC and layer name disagree", () => {
     const result = resolveAddressDistrictKeysFromGeographies({
       Counties: [{ GEOID: "06037", NAME: "Los Angeles County", MTFCC: "G5200" }],

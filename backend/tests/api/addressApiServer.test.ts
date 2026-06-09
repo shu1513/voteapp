@@ -34,6 +34,9 @@ const resolvedAddress: AddressResolutionResult = {
   warnings: [],
 };
 
+const districtId = "11111111-1111-4111-8111-111111111111";
+const secondDistrictId = "22222222-2222-4222-8222-222222222222";
+
 describe("handleAddressApiRequest", () => {
   it("serves POST /api/address/resolve", async () => {
     const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
@@ -66,6 +69,121 @@ describe("handleAddressApiRequest", () => {
     });
   });
 
+  it("can include ballot data in an address response without saving user districts", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+    const lookupBallot = vi.fn().mockResolvedValue({
+      district_ids: ["district-la"],
+      districts: resolvedAddress.districts,
+      elections: [],
+    });
+    const saveUserDistricts = vi.fn();
+
+    const response = await handleAddressApiRequest(
+      {
+        method: "POST",
+        path: "/api/address/resolve",
+        rawBody: JSON.stringify({
+          address: "3921 Harlan Ave Baldwin Park CA 91706",
+          include_ballot: true,
+        }),
+      },
+      { resolveAddress, lookupBallot, saveUserDistricts }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toMatchObject({
+      matched_address: resolvedAddress.matched_address,
+      districts: resolvedAddress.districts,
+      ballot: {
+        district_ids: ["district-la"],
+        elections: [],
+      },
+    });
+    expect(lookupBallot).toHaveBeenCalledWith(["district-la"]);
+    expect(saveUserDistricts).not.toHaveBeenCalled();
+  });
+
+  it("saves resolved districts only when requested by an authenticated user", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+    const saveUserDistricts = vi.fn().mockResolvedValue({ user_id: districtId, district_count: 1 });
+
+    const response = await handleAddressApiRequest(
+      {
+        method: "POST",
+        path: "/api/address/resolve",
+        rawBody: JSON.stringify({
+          address: "3921 Harlan Ave Baldwin Park CA 91706",
+          save_districts: true,
+        }),
+        headers: { "x-user-id": districtId },
+      },
+      {
+        resolveAddress,
+        saveUserDistricts,
+        resolveUserId: (headers) => String(headers?.["x-user-id"] ?? ""),
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toMatchObject({
+      matched_address: resolvedAddress.matched_address,
+      saved_user_districts: { district_count: 1 },
+    });
+    expect(saveUserDistricts).toHaveBeenCalledWith(districtId, resolvedAddress.districts);
+  });
+
+  it("rejects save_districts for anonymous users", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+    const saveUserDistricts = vi.fn();
+
+    const response = await handleAddressApiRequest(
+      {
+        method: "POST",
+        path: "/api/address/resolve",
+        rawBody: JSON.stringify({
+          address: "3921 Harlan Ave Baldwin Park CA 91706",
+          save_districts: true,
+        }),
+      },
+      { resolveAddress, saveUserDistricts }
+    );
+
+    expect(response).toEqual({
+      statusCode: 401,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: {
+        error: {
+          code: "auth_required",
+          message: "Login is required to save user districts",
+        },
+      },
+    });
+    expect(resolveAddress).toHaveBeenCalledOnce();
+    expect(saveUserDistricts).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-boolean address option fields", async () => {
+    const resolveAddress = vi.fn();
+
+    const response = await handleAddressApiRequest(
+      {
+        method: "POST",
+        path: "/api/address/resolve",
+        rawBody: JSON.stringify({ address: "3921 Harlan Ave", include_ballot: "yes" }),
+      },
+      { resolveAddress }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Request field include_ballot must be boolean when provided",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
   it("adds CORS headers for allowed origins", async () => {
     const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
 
@@ -82,7 +200,7 @@ describe("handleAddressApiRequest", () => {
     expect(response.statusCode).toBe(200);
     expect(response.headers).toMatchObject({
       "access-control-allow-origin": "http://localhost:3000",
-      "access-control-allow-methods": "POST, OPTIONS",
+      "access-control-allow-methods": "GET, POST, OPTIONS",
       "access-control-allow-headers": "content-type",
       "access-control-max-age": "600",
       vary: "Origin",
@@ -106,7 +224,7 @@ describe("handleAddressApiRequest", () => {
       statusCode: 204,
       headers: {
         "access-control-allow-origin": "http://localhost:3000",
-        "access-control-allow-methods": "POST, OPTIONS",
+        "access-control-allow-methods": "GET, POST, OPTIONS",
         "access-control-allow-headers": "content-type",
         "access-control-max-age": "600",
         vary: "Origin",
@@ -142,6 +260,80 @@ describe("handleAddressApiRequest", () => {
       },
     });
     expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("serves GET /api/ballot with comma-separated district IDs", async () => {
+    const resolveAddress = vi.fn();
+    const lookupBallot = vi.fn().mockResolvedValue({
+      district_ids: [districtId, secondDistrictId],
+      districts: [],
+      elections: [],
+    });
+
+    await expect(
+      handleAddressApiRequest(
+        {
+          method: "GET",
+          path: `/api/ballot?district_ids=${districtId},${secondDistrictId},${districtId}`,
+          rawBody: "",
+        },
+        { resolveAddress, lookupBallot }
+      )
+    ).resolves.toEqual({
+      statusCode: 200,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: {
+        district_ids: [districtId, secondDistrictId],
+        districts: [],
+        elections: [],
+      },
+    });
+    expect(lookupBallot).toHaveBeenCalledWith([districtId, secondDistrictId]);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects invalid ballot district IDs before lookup", async () => {
+    const resolveAddress = vi.fn();
+    const lookupBallot = vi.fn();
+
+    const response = await handleAddressApiRequest(
+      { method: "GET", path: "/api/ballot?district_ids=not-a-uuid", rawBody: "" },
+      { resolveAddress, lookupBallot }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Query parameter district_ids contains invalid UUID: not-a-uuid",
+      },
+    });
+    expect(lookupBallot).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-GET ballot requests", async () => {
+    const resolveAddress = vi.fn();
+    const lookupBallot = vi.fn();
+
+    const response = await handleAddressApiRequest(
+      { method: "POST", path: `/api/ballot?district_ids=${districtId}`, rawBody: "" },
+      { resolveAddress, lookupBallot }
+    );
+
+    expect(response).toEqual({
+      statusCode: 405,
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        allow: "GET",
+      },
+      body: {
+        error: {
+          code: "method_not_allowed",
+          message: "Use GET /api/ballot?district_ids=...",
+        },
+      },
+    });
+    expect(lookupBallot).not.toHaveBeenCalled();
   });
 
   it("rejects non-POST methods", async () => {
