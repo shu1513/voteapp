@@ -3,6 +3,7 @@ import type { BallotLookupResult } from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { SaveUserDistrictsResult } from "../pipeline/address/userDistricts.js";
 import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeocoder.js";
+import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
@@ -12,6 +13,17 @@ const CORS_ALLOW_METHODS = "GET, POST, OPTIONS";
 const CORS_ALLOW_HEADERS = "content-type";
 const CORS_MAX_AGE_SECONDS = "600";
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export type AddressApiRateLimitInput = {
+  clientIp: string;
+  method: string;
+  pathname: string;
+};
+
+export type AddressApiRateLimitResult = {
+  allowed: boolean;
+  retryAfterSeconds?: number;
+};
 
 export type AddressApiServerOptions = {
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
@@ -23,6 +35,8 @@ export type AddressApiServerOptions = {
   ) => Promise<SaveUserDistrictsResult>;
   allowedOrigins?: readonly string[];
   logDiagnostics?: (diagnostics: AddressResolutionDiagnostics) => void;
+  rateLimit?: (input: AddressApiRateLimitInput) => AddressApiRateLimitResult;
+  resolveClientIp?: (input: AddressApiClientIpInput) => string;
 };
 
 export type AddressResolvePayload = {
@@ -36,6 +50,7 @@ export type AddressApiRequestInput = {
   path: string;
   rawBody: string;
   headers?: Record<string, string | string[] | undefined>;
+  clientIp?: string;
 };
 
 export type AddressApiResponse = {
@@ -70,6 +85,7 @@ type ApiErrorCode =
   | "invalid_json"
   | "invalid_request"
   | "auth_required"
+  | "rate_limited"
   | "address_not_found"
   | "upstream_unavailable"
   | "bad_upstream_response"
@@ -318,6 +334,31 @@ function mapErrorToResponse(error: unknown): { statusCode: number; code: ApiErro
   return { statusCode: 500, code: "internal_error", message };
 }
 
+function evaluateRateLimit(
+  input: {
+    clientIp: string;
+    method: string;
+    pathname: string;
+  },
+  options: AddressApiServerOptions,
+  corsHeaders: Record<string, string>
+): AddressApiResponse | null {
+  if (!options.rateLimit) {
+    return null;
+  }
+
+  const rateLimit = options.rateLimit(input);
+  if (rateLimit.allowed) {
+    return null;
+  }
+
+  const retryAfterSeconds = Math.max(1, Math.ceil(rateLimit.retryAfterSeconds ?? 1));
+  return toErrorResponse(429, "rate_limited", "Too many requests. Try again later.", {
+    ...corsHeaders,
+    "retry-after": String(retryAfterSeconds),
+  });
+}
+
 export async function handleAddressApiRequest(
   input: AddressApiRequestInput,
   options: AddressApiServerOptions
@@ -334,6 +375,19 @@ export async function handleAddressApiRequest(
 
   if (input.method === "OPTIONS") {
     return toEmptyResponse(204, cors.headers);
+  }
+
+  const rateLimitResponse = evaluateRateLimit(
+    {
+      clientIp: input.clientIp ?? "unknown",
+      method: input.method,
+      pathname: url.pathname,
+    },
+    options,
+    cors.headers
+  );
+  if (rateLimitResponse) {
+    return rateLimitResponse;
   }
 
   if (url.pathname === BALLOT_LOOKUP_PATH) {
@@ -404,13 +458,43 @@ export function createAddressApiRequestHandler(options: AddressApiServerOptions)
       try {
         const method = request.method ?? "GET";
         const path = request.url ?? "/";
-        if (new URL(path, "http://localhost").pathname !== ADDRESS_RESOLVE_PATH || method !== "POST") {
-          writeApiResponse(response, await handleAddressApiRequest({ method, path, rawBody: "", headers: request.headers }, options));
+        const url = new URL(path, "http://localhost");
+        const remoteAddress = request.socket.remoteAddress ?? "unknown";
+        const clientIp =
+          options.resolveClientIp?.({ headers: request.headers, remoteAddress })?.trim() || remoteAddress;
+        if (url.pathname !== ADDRESS_RESOLVE_PATH || method !== "POST") {
+          writeApiResponse(
+            response,
+            await handleAddressApiRequest({ method, path, rawBody: "", headers: request.headers, clientIp }, options)
+          );
           return;
         }
 
+        const cors = resolveCorsHeaders(request.headers, options.allowedOrigins);
+        if (cors.ok) {
+          const rateLimitResponse = evaluateRateLimit(
+            {
+              clientIp,
+              method,
+              pathname: url.pathname,
+            },
+            options,
+            cors.headers
+          );
+          if (rateLimitResponse) {
+            writeApiResponse(response, rateLimitResponse);
+            return;
+          }
+        }
+
         const rawBody = await readRequestBody(request, MAX_ADDRESS_REQUEST_BODY_BYTES);
-        writeApiResponse(response, await handleAddressApiRequest({ method, path, rawBody, headers: request.headers }, options));
+        writeApiResponse(
+          response,
+          await handleAddressApiRequest(
+            { method, path, rawBody, headers: request.headers, clientIp },
+            { ...options, rateLimit: undefined }
+          )
+        );
       } catch (error) {
         const mapped = mapErrorToResponse(error);
         writeError(response, mapped.statusCode, mapped.code, mapped.message);
