@@ -209,6 +209,7 @@ describe("handleAddressApiRequest", () => {
 
   it("handles CORS preflight for allowed origins", async () => {
     const resolveAddress = vi.fn();
+    const rateLimit = vi.fn();
 
     const response = await handleAddressApiRequest(
       {
@@ -217,7 +218,7 @@ describe("handleAddressApiRequest", () => {
         rawBody: "",
         headers: { origin: "http://localhost:3000" },
       },
-      { resolveAddress, allowedOrigins: ["http://localhost:3000"] }
+      { resolveAddress, allowedOrigins: ["http://localhost:3000"], rateLimit }
     );
 
     expect(response).toEqual({
@@ -229,6 +230,42 @@ describe("handleAddressApiRequest", () => {
         "access-control-max-age": "600",
         vary: "Origin",
       },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+    expect(rateLimit).not.toHaveBeenCalled();
+  });
+
+  it("rate limits non-preflight address API requests", async () => {
+    const resolveAddress = vi.fn();
+    const rateLimit = vi.fn().mockReturnValue({ allowed: false, retryAfterSeconds: 42 });
+
+    const response = await handleAddressApiRequest(
+      {
+        method: "POST",
+        path: "/api/address/resolve",
+        rawBody: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+        clientIp: "203.0.113.10",
+      },
+      { resolveAddress, rateLimit }
+    );
+
+    expect(response).toEqual({
+      statusCode: 429,
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        "retry-after": "42",
+      },
+      body: {
+        error: {
+          code: "rate_limited",
+          message: "Too many requests. Try again later.",
+        },
+      },
+    });
+    expect(rateLimit).toHaveBeenCalledWith({
+      clientIp: "203.0.113.10",
+      method: "POST",
+      pathname: "/api/address/resolve",
     });
     expect(resolveAddress).not.toHaveBeenCalled();
   });

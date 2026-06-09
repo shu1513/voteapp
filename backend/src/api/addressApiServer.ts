@@ -3,6 +3,7 @@ import type { BallotLookupResult } from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { SaveUserDistrictsResult } from "../pipeline/address/userDistricts.js";
 import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeocoder.js";
+import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
@@ -12,6 +13,17 @@ const CORS_ALLOW_METHODS = "GET, POST, OPTIONS";
 const CORS_ALLOW_HEADERS = "content-type";
 const CORS_MAX_AGE_SECONDS = "600";
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export type AddressApiRateLimitInput = {
+  clientIp: string;
+  method: string;
+  pathname: string;
+};
+
+export type AddressApiRateLimitResult = {
+  allowed: boolean;
+  retryAfterSeconds?: number;
+};
 
 export type AddressApiServerOptions = {
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
@@ -23,6 +35,8 @@ export type AddressApiServerOptions = {
   ) => Promise<SaveUserDistrictsResult>;
   allowedOrigins?: readonly string[];
   logDiagnostics?: (diagnostics: AddressResolutionDiagnostics) => void;
+  rateLimit?: (input: AddressApiRateLimitInput) => AddressApiRateLimitResult;
+  resolveClientIp?: (input: AddressApiClientIpInput) => string;
 };
 
 export type AddressResolvePayload = {
@@ -36,6 +50,7 @@ export type AddressApiRequestInput = {
   path: string;
   rawBody: string;
   headers?: Record<string, string | string[] | undefined>;
+  clientIp?: string;
 };
 
 export type AddressApiResponse = {
@@ -70,6 +85,7 @@ type ApiErrorCode =
   | "invalid_json"
   | "invalid_request"
   | "auth_required"
+  | "rate_limited"
   | "address_not_found"
   | "upstream_unavailable"
   | "bad_upstream_response"
@@ -336,6 +352,21 @@ export async function handleAddressApiRequest(
     return toEmptyResponse(204, cors.headers);
   }
 
+  if (options.rateLimit) {
+    const rateLimit = options.rateLimit({
+      clientIp: input.clientIp ?? "unknown",
+      method: input.method,
+      pathname: url.pathname,
+    });
+    if (!rateLimit.allowed) {
+      const retryAfterSeconds = Math.max(1, Math.ceil(rateLimit.retryAfterSeconds ?? 1));
+      return toErrorResponse(429, "rate_limited", "Too many requests. Try again later.", {
+        ...cors.headers,
+        "retry-after": String(retryAfterSeconds),
+      });
+    }
+  }
+
   if (url.pathname === BALLOT_LOOKUP_PATH) {
     if (input.method !== "GET") {
       return toErrorResponse(405, "method_not_allowed", "Use GET /api/ballot?district_ids=...", {
@@ -404,13 +435,22 @@ export function createAddressApiRequestHandler(options: AddressApiServerOptions)
       try {
         const method = request.method ?? "GET";
         const path = request.url ?? "/";
+        const remoteAddress = request.socket.remoteAddress ?? "unknown";
+        const clientIp =
+          options.resolveClientIp?.({ headers: request.headers, remoteAddress })?.trim() || remoteAddress;
         if (new URL(path, "http://localhost").pathname !== ADDRESS_RESOLVE_PATH || method !== "POST") {
-          writeApiResponse(response, await handleAddressApiRequest({ method, path, rawBody: "", headers: request.headers }, options));
+          writeApiResponse(
+            response,
+            await handleAddressApiRequest({ method, path, rawBody: "", headers: request.headers, clientIp }, options)
+          );
           return;
         }
 
         const rawBody = await readRequestBody(request, MAX_ADDRESS_REQUEST_BODY_BYTES);
-        writeApiResponse(response, await handleAddressApiRequest({ method, path, rawBody, headers: request.headers }, options));
+        writeApiResponse(
+          response,
+          await handleAddressApiRequest({ method, path, rawBody, headers: request.headers, clientIp }, options)
+        );
       } catch (error) {
         const mapped = mapErrorToResponse(error);
         writeError(response, mapped.statusCode, mapped.code, mapped.message);

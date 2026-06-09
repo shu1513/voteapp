@@ -1,8 +1,15 @@
 import { Pool } from "pg";
 import { createClient } from "redis";
 
+import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
 import { loadProjectEnv } from "../config/env.js";
 import { createAddressApiServer, type AddressResolutionDiagnostics } from "../api/addressApiServer.js";
+import {
+  createInMemoryAddressApiRateLimiter,
+  DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_BUCKETS,
+  DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_REQUESTS,
+  DEFAULT_ADDRESS_API_RATE_LIMIT_WINDOW_MS,
+} from "../api/addressApiRateLimiter.js";
 import { lookupBallotByDistrictIds } from "../pipeline/address/ballotLookup.js";
 import { resolveAddressToDistricts } from "../pipeline/address/addressResolverService.js";
 import { DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS } from "../pipeline/address/addressResolutionCache.js";
@@ -111,7 +118,36 @@ async function main(): Promise<void> {
       `address API trusting user id header "${trustedUserIdHeader}"; ensure the edge proxy strips client-supplied copies`
     );
   }
+  // Security boundary: only trust a client-IP header when a trusted proxy/gateway
+  // owns that header and strips client-supplied copies. Otherwise rate limiting uses
+  // the direct socket IP.
+  const trustedClientIpHeader = readOptionalEnv("ADDRESS_API_TRUSTED_CLIENT_IP_HEADER");
+  if (trustedClientIpHeader) {
+    console.warn(
+      `address API trusting client IP header "${trustedClientIpHeader}"; ensure the edge proxy strips client-supplied copies`
+    );
+  }
   const addressCacheEnabled = readBooleanEnv("ADDRESS_LOOKUP_CACHE_ENABLED", true);
+  const rateLimitEnabled = readBooleanEnv("ADDRESS_API_RATE_LIMIT_ENABLED", true);
+  const rateLimitWindowMs = readPositiveIntegerEnv(
+    "ADDRESS_API_RATE_LIMIT_WINDOW_MS",
+    DEFAULT_ADDRESS_API_RATE_LIMIT_WINDOW_MS
+  );
+  const rateLimitMaxRequests = readPositiveIntegerEnv(
+    "ADDRESS_API_RATE_LIMIT_MAX_REQUESTS",
+    DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_REQUESTS
+  );
+  const rateLimitMaxBuckets = readPositiveIntegerEnv(
+    "ADDRESS_API_RATE_LIMIT_MAX_BUCKETS",
+    DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_BUCKETS
+  );
+  const rateLimit = rateLimitEnabled
+    ? createInMemoryAddressApiRateLimiter({
+        windowMs: rateLimitWindowMs,
+        maxRequests: rateLimitMaxRequests,
+        maxBuckets: rateLimitMaxBuckets,
+      })
+    : undefined;
   const addressCacheTtlSeconds = readPositiveIntegerEnv(
     "ADDRESS_LOOKUP_CACHE_TTL_SECONDS",
     DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS
@@ -130,6 +166,8 @@ async function main(): Promise<void> {
 
   const server = createAddressApiServer({
     allowedOrigins,
+    rateLimit,
+    resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader),
     logDiagnostics: logAddressResolutionDiagnostics,
     lookupBallot: (districtIds) => lookupBallotByDistrictIds(pool, districtIds),
     resolveUserId: (headers) =>
