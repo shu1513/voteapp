@@ -1,0 +1,1 @@
+export const MAX_INITIALIZE_DISTRICT_IDS = 50;

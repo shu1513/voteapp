@@ -1,12 +1,22 @@
+import { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
+import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
+
+export { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
+export { UUID_PATTERN } from "../utils/uuid.js";
+
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
+export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 export const MAX_BALLOT_DISTRICT_IDS = 50;
-export const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export type AddressResolvePayload = {
   address: string;
+};
+
+export type InitializeUserDistrictsPayload = {
+  district_ids: string[];
 };
 
 export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
@@ -35,6 +45,49 @@ export function parseAddressPayload(rawBody: string): AddressResolvePayload {
   return parseAddressBodyValue(parsed);
 }
 
+export function parseInitializeUserDistrictsBodyValue(parsed: unknown): InitializeUserDistrictsPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const districtIds = (parsed as { district_ids?: unknown }).district_ids;
+  if (!Array.isArray(districtIds)) {
+    throw new TypeError("Request body must include array field: district_ids");
+  }
+
+  const normalizedDistrictIds: string[] = [];
+  const seen = new Set<string>();
+  for (const rawDistrictId of districtIds) {
+    if (typeof rawDistrictId !== "string") {
+      throw new TypeError("district_ids must contain only UUID strings");
+    }
+    const districtId = rawDistrictId.trim();
+    if (districtId.length === 0) {
+      continue;
+    }
+    if (!isUuid(districtId)) {
+      throw new TypeError(`district_ids contains invalid UUID: ${districtId}`);
+    }
+    const dedupeKey = districtId.toLowerCase();
+    if (seen.has(dedupeKey)) {
+      continue;
+    }
+    seen.add(dedupeKey);
+    normalizedDistrictIds.push(districtId);
+  }
+
+  if (normalizedDistrictIds.length === 0) {
+    throw new TypeError("district_ids must include at least one district UUID");
+  }
+  if (normalizedDistrictIds.length > MAX_INITIALIZE_DISTRICT_IDS) {
+    throw new TypeError(`district_ids supports at most ${MAX_INITIALIZE_DISTRICT_IDS} UUIDs`);
+  }
+
+  return {
+    district_ids: normalizedDistrictIds,
+  };
+}
+
 export function parseDistrictIds(url: URL): string[] {
   const rawValues = url.searchParams
     .getAll("district_ids")
@@ -49,7 +102,7 @@ export function parseDistrictIds(url: URL): string[] {
   if (districtIds.length > MAX_BALLOT_DISTRICT_IDS) {
     throw new TypeError(`Query parameter district_ids supports at most ${MAX_BALLOT_DISTRICT_IDS} UUIDs`);
   }
-  const invalidId = districtIds.find((id) => !UUID_PATTERN.test(id));
+  const invalidId = districtIds.find((id) => !isUuid(id));
   if (invalidId) {
     throw new TypeError(`Query parameter district_ids contains invalid UUID: ${invalidId}`);
   }
@@ -65,7 +118,7 @@ export function parseElectionId(url: URL): string {
   if (electionId.length === 0 || electionId.includes("/")) {
     throw new TypeError("Election detail path must be /api/elections/:election_id");
   }
-  if (!UUID_PATTERN.test(electionId)) {
+  if (!isUuid(electionId)) {
     throw new TypeError(`Election detail path contains invalid UUID: ${electionId}`);
   }
   return electionId;

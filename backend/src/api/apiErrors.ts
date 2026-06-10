@@ -1,4 +1,5 @@
 import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeocoder.js";
+import { InitializeUserDistrictsError } from "../pipeline/users/userDistrictInitializer.js";
 import type { ApiErrorCode } from "./apiResponses.js";
 
 export type MappedApiError = {
@@ -28,9 +29,14 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
       return { statusCode: 503, code: "upstream_unavailable", message: error.message };
     }
   }
+  if (error instanceof InitializeUserDistrictsError) {
+    if (error.code === "invalid_user_id" || error.code === "user_not_found") {
+      return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
+    }
+    return { statusCode: 400, code: "invalid_request", message: error.message };
+  }
   if (error instanceof Error && error.message.startsWith("request body exceeds")) {
     return { statusCode: 413, code: "invalid_request", message: error.message };
   }
-  const message = error instanceof Error ? error.message : String(error);
-  return { statusCode: 500, code: "internal_error", message };
+  return { statusCode: 500, code: "internal_error", message: "Internal error" };
 }

@@ -2,6 +2,7 @@ import type { Server } from "node:http";
 import { Pool } from "pg";
 import { createClient } from "redis";
 
+import { createTrustedUserIdResolver } from "../api/addressApiAuth.js";
 import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
 import type { AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
 import { createApiApp } from "../api/apiServer.js";
@@ -21,6 +22,7 @@ import {
   DEFAULT_CENSUS_ADDRESS_GEOCODER_TIMEOUT_MS,
   DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE,
 } from "../pipeline/address/censusAddressGeocoder.js";
+import { initializeUserDistricts } from "../pipeline/users/userDistrictInitializer.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -108,6 +110,15 @@ async function main(): Promise<void> {
       `address API trusting client IP header "${trustedClientIpHeader}"; ensure the edge proxy strips client-supplied copies`
     );
   }
+  // Security boundary: only trust a user-id header when an authenticated gateway
+  // injects it and strips client-supplied copies. If unset, authenticated routes
+  // fail closed with 401.
+  const trustedUserIdHeader = readOptionalEnv("API_TRUSTED_USER_ID_HEADER");
+  if (trustedUserIdHeader) {
+    console.warn(
+      `API trusting authenticated user header "${trustedUserIdHeader}"; ensure the edge proxy authenticates requests and strips client-supplied copies`
+    );
+  }
   const addressCacheEnabled = readBooleanEnv("ADDRESS_LOOKUP_CACHE_ENABLED", true);
   const rateLimitEnabled = readBooleanEnv("ADDRESS_API_RATE_LIMIT_ENABLED", true);
   const rateLimitWindowMs = readPositiveIntegerEnv(
@@ -149,9 +160,11 @@ async function main(): Promise<void> {
     allowedOrigins,
     rateLimit,
     resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader),
+    resolveAuthenticatedUserId: createTrustedUserIdResolver(trustedUserIdHeader),
     logDiagnostics: logAddressResolutionDiagnostics,
     lookupBallotSummaries: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
+    initializeUserDistricts: ({ userId, districtIds }) => initializeUserDistricts(pool, userId, districtIds),
     resolveAddress: (address) =>
       resolveAddressToDistricts(pool, address, {
         cache: redis?.isOpen ? redis : undefined,

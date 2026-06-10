@@ -8,9 +8,11 @@ import {
   ELECTION_DETAIL_PATH_PREFIX,
   isElectionDetailPath,
   MAX_ADDRESS_REQUEST_BODY_BYTES,
+  ME_DISTRICTS_INITIALIZE_PATH,
   parseAddressBodyValue,
   parseDistrictIds,
   parseElectionId,
+  parseInitializeUserDistrictsBodyValue,
 } from "./apiValidation.js";
 import { toAddressResolutionDiagnostics, toPublicAddressResolution } from "./addressApiResponses.js";
 import { toEmptyResponse, toErrorResponse, toJsonResponse, type ApiResponse } from "./apiResponses.js";
@@ -27,7 +29,12 @@ type ExpressBodyParserError = Error & {
 };
 
 function isKnownApiPath(pathname: string): boolean {
-  return pathname === ADDRESS_RESOLVE_PATH || pathname === BALLOT_LOOKUP_PATH || isElectionDetailPath(pathname);
+  return (
+    pathname === ADDRESS_RESOLVE_PATH ||
+    pathname === BALLOT_LOOKUP_PATH ||
+    pathname === ME_DISTRICTS_INITIALIZE_PATH ||
+    isElectionDetailPath(pathname)
+  );
 }
 
 function getCorsHeaders(response: Response<unknown, ApiResponseLocals>): Record<string, string> {
@@ -104,16 +111,38 @@ function createRateLimitMiddleware(options: AddressApiServerOptions) {
   };
 }
 
-function createAddressJsonParser() {
+function createJsonBodyParser() {
   const parseJson = express.json({
     limit: MAX_ADDRESS_REQUEST_BODY_BYTES,
     strict: true,
-    type: "*/*",
+    type: ["application/json", "application/*+json"],
   });
 
+  function hasJsonContentType(request: Request): boolean {
+    const rawContentType = request.headers["content-type"];
+    const contentType = Array.isArray(rawContentType) ? rawContentType[0] : rawContentType;
+    const mediaType = contentType?.split(";")[0]?.trim().toLowerCase();
+    return mediaType === "application/json" || mediaType?.endsWith("+json") === true;
+  }
+
   return (request: Request, response: Response, next: NextFunction): void => {
-    if (request.path !== ADDRESS_RESOLVE_PATH || request.method !== "POST") {
+    if (
+      request.method !== "POST" ||
+      (request.path !== ADDRESS_RESOLVE_PATH && request.path !== ME_DISTRICTS_INITIALIZE_PATH)
+    ) {
       next();
+      return;
+    }
+    if (!hasJsonContentType(request)) {
+      sendApiResponse(
+        response,
+        toErrorResponse(
+          415,
+          "unsupported_media_type",
+          "Content-Type must be application/json",
+          getCorsHeaders(response)
+        )
+      );
       return;
     }
     parseJson(request, response, next);
@@ -173,6 +202,54 @@ async function dispatchApiRequest(
       return;
     }
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_DISTRICTS_INITIALIZE_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/me/districts/initialize", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+    if (!options.initializeUserDistricts) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "User district initialization is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const userId = options.resolveAuthenticatedUserId({ headers: request.headers })?.trim();
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    const payload = parseInitializeUserDistrictsBodyValue(request.body);
+    const result = await options.initializeUserDistricts({
+      userId,
+      districtIds: payload.district_ids,
+    });
+    sendApiResponse(
+      response,
+      toJsonResponse(
+        200,
+        {
+          status: result.status,
+          district_count: result.districtCount,
+        },
+        corsHeaders
+      )
+    );
     return;
   }
 
@@ -247,7 +324,7 @@ export function createApiApp(options: AddressApiServerOptions): Express {
   app.use(createClientIpMiddleware(options));
   app.use(createCorsAndPreflightMiddleware(options));
   app.use(createRateLimitMiddleware(options));
-  app.use(createAddressJsonParser());
+  app.use(createJsonBodyParser());
   app.use((request, response, next) => {
     void dispatchApiRequest(request, response, options).catch(next);
   });
