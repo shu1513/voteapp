@@ -10,7 +10,7 @@ import {
   DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_REQUESTS,
   DEFAULT_ADDRESS_API_RATE_LIMIT_WINDOW_MS,
 } from "../api/addressApiRateLimiter.js";
-import { lookupBallotByDistrictIds } from "../pipeline/address/ballotLookup.js";
+import { lookupBallotSummariesByDistrictIds, lookupElectionDetailById } from "../pipeline/address/ballotLookup.js";
 import { resolveAddressToDistricts } from "../pipeline/address/addressResolverService.js";
 import { DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS } from "../pipeline/address/addressResolutionCache.js";
 import { saveUserDistricts } from "../pipeline/address/userDistricts.js";
@@ -169,7 +169,8 @@ async function main(): Promise<void> {
     rateLimit,
     resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader),
     logDiagnostics: logAddressResolutionDiagnostics,
-    lookupBallot: (districtIds) => lookupBallotByDistrictIds(pool, districtIds),
+    lookupBallotSummaries: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
+    lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
     resolveUserId: (headers) =>
       trustedUserIdHeader ? readHeader(headers, trustedUserIdHeader)?.trim() || null : null,
     saveUserDistricts: (userId, districts) => saveUserDistricts(pool, userId, districts),

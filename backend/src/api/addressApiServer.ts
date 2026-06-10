@@ -1,5 +1,5 @@
 import { createServer, type IncomingMessage, type RequestListener, type Server, type ServerResponse } from "node:http";
-import type { BallotLookupResult } from "../pipeline/address/ballotLookup.js";
+import type { BallotLookupElection, BallotSummaryResult } from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { SaveUserDistrictsResult } from "../pipeline/address/userDistricts.js";
 import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeocoder.js";
@@ -7,6 +7,7 @@ import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
+export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
 const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 const MAX_BALLOT_DISTRICT_IDS = 50;
 const CORS_ALLOW_METHODS = "GET, POST, OPTIONS";
@@ -27,7 +28,8 @@ export type AddressApiRateLimitResult = {
 
 export type AddressApiServerOptions = {
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
-  lookupBallot?: (districtIds: readonly string[]) => Promise<BallotLookupResult>;
+  lookupBallotSummaries?: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
+  lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
   resolveUserId?: (headers: Record<string, string | string[] | undefined> | undefined) => string | null | undefined;
   saveUserDistricts?: (
     userId: string,
@@ -41,7 +43,6 @@ export type AddressApiServerOptions = {
 
 export type AddressResolvePayload = {
   address: string;
-  include_ballot: boolean;
   save_districts: boolean;
 };
 
@@ -61,12 +62,7 @@ export type AddressApiResponse = {
 
 export type PublicAddressResolutionResult = {
   matched_address: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
   districts: AddressResolutionResult["districts"];
-  ballot?: BallotLookupResult;
   saved_user_districts?: {
     district_count: number;
   };
@@ -213,7 +209,6 @@ function parseAddressPayload(rawBody: string): AddressResolvePayload {
 
   return {
     address: address.trim(),
-    include_ballot: parseBooleanField((parsed as { include_ballot?: unknown }).include_ballot, "include_ballot"),
     save_districts: parseBooleanField((parsed as { save_districts?: unknown }).save_districts, "save_districts"),
   };
 }
@@ -237,6 +232,21 @@ function parseDistrictIds(url: URL): string[] {
     throw new TypeError(`Query parameter district_ids contains invalid UUID: ${invalidId}`);
   }
   return districtIds;
+}
+
+function isElectionDetailPath(pathname: string): boolean {
+  return pathname.startsWith(ELECTION_DETAIL_PATH_PREFIX);
+}
+
+function parseElectionId(url: URL): string {
+  const electionId = url.pathname.slice(ELECTION_DETAIL_PATH_PREFIX.length).trim();
+  if (electionId.length === 0 || electionId.includes("/")) {
+    throw new TypeError("Election detail path must be /api/elections/:election_id");
+  }
+  if (!UUID_PATTERN.test(electionId)) {
+    throw new TypeError(`Election detail path contains invalid UUID: ${electionId}`);
+  }
+  return electionId;
 }
 
 function normalizeAllowedOrigins(origins: readonly string[] | undefined): Set<string> {
@@ -287,11 +297,10 @@ function resolveCorsHeaders(
 
 function toPublicAddressResolution(
   result: AddressResolutionResult,
-  extras: Pick<PublicAddressResolutionResult, "ballot" | "saved_user_districts"> = {}
+  extras: Pick<PublicAddressResolutionResult, "saved_user_districts"> = {}
 ): PublicAddressResolutionResult {
   return {
     matched_address: result.matched_address,
-    coordinates: result.coordinates,
     districts: result.districts,
     ...extras,
   };
@@ -365,7 +374,7 @@ export async function handleAddressApiRequest(
 ): Promise<AddressApiResponse> {
   const url = new URL(input.path, "http://localhost");
   const cors = resolveCorsHeaders(input.headers, options.allowedOrigins);
-  if (url.pathname !== ADDRESS_RESOLVE_PATH && url.pathname !== BALLOT_LOOKUP_PATH) {
+  if (url.pathname !== ADDRESS_RESOLVE_PATH && url.pathname !== BALLOT_LOOKUP_PATH && !isElectionDetailPath(url.pathname)) {
     return toErrorResponse(404, "not_found", "Not found", cors.headers);
   }
 
@@ -397,13 +406,37 @@ export async function handleAddressApiRequest(
         allow: "GET",
       });
     }
-    if (!options.lookupBallot) {
+    if (!options.lookupBallotSummaries) {
       return toErrorResponse(500, "internal_error", "Ballot lookup is not configured", cors.headers);
     }
 
     try {
       const districtIds = parseDistrictIds(url);
-      const result = await options.lookupBallot(districtIds);
+      const result = await options.lookupBallotSummaries(districtIds);
+      return toJsonResponse(200, result, cors.headers);
+    } catch (error) {
+      const mapped = mapErrorToResponse(error);
+      return toErrorResponse(mapped.statusCode, mapped.code, mapped.message, cors.headers);
+    }
+  }
+
+  if (isElectionDetailPath(url.pathname)) {
+    if (input.method !== "GET") {
+      return toErrorResponse(405, "method_not_allowed", "Use GET /api/elections/:election_id", {
+        ...cors.headers,
+        allow: "GET",
+      });
+    }
+    if (!options.lookupElectionDetail) {
+      return toErrorResponse(500, "internal_error", "Election detail lookup is not configured", cors.headers);
+    }
+
+    try {
+      const electionId = parseElectionId(url);
+      const result = await options.lookupElectionDetail(electionId);
+      if (!result) {
+        return toErrorResponse(404, "not_found", "Election not found", cors.headers);
+      }
       return toJsonResponse(200, result, cors.headers);
     } catch (error) {
       const mapped = mapErrorToResponse(error);
@@ -423,15 +456,7 @@ export async function handleAddressApiRequest(
     const result = await options.resolveAddress(payload.address);
     options.logDiagnostics?.(toAddressResolutionDiagnostics(result));
 
-    const districtIds = result.districts.map((district) => district.id);
-    const extras: Pick<PublicAddressResolutionResult, "ballot" | "saved_user_districts"> = {};
-
-    if (payload.include_ballot) {
-      if (!options.lookupBallot) {
-        return toErrorResponse(500, "internal_error", "Ballot lookup is not configured", cors.headers);
-      }
-      extras.ballot = await options.lookupBallot(districtIds);
-    }
+    const extras: Pick<PublicAddressResolutionResult, "saved_user_districts"> = {};
 
     if (payload.save_districts) {
       const userId = options.resolveUserId?.(input.headers)?.trim() || null;

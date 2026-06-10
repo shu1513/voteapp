@@ -38,6 +38,7 @@ const resolvedAddress: AddressResolutionResult = {
 
 const districtId = "11111111-1111-4111-8111-111111111111";
 const secondDistrictId = "22222222-2222-4222-8222-222222222222";
+const electionId = "33333333-3333-4333-8333-333333333333";
 
 async function invokeRequestHandler(
   handler: RequestListener,
@@ -104,7 +105,6 @@ describe("handleAddressApiRequest", () => {
       headers: { "content-type": "application/json; charset=utf-8" },
       body: {
         matched_address: "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
-        coordinates: { lat: 34.082500135664, lng: -117.981072355887 },
         districts: resolvedAddress.districts,
       },
     });
@@ -117,13 +117,9 @@ describe("handleAddressApiRequest", () => {
     });
   });
 
-  it("can include ballot data in an address response without saving user districts", async () => {
+  it("does not include ballot data in an address response", async () => {
     const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
-    const lookupBallot = vi.fn().mockResolvedValue({
-      district_ids: ["district-la"],
-      districts: resolvedAddress.districts,
-      elections: [],
-    });
+    const lookupBallotSummaries = vi.fn();
     const saveUserDistricts = vi.fn();
 
     const response = await handleAddressApiRequest(
@@ -132,22 +128,18 @@ describe("handleAddressApiRequest", () => {
         path: "/api/address/resolve",
         rawBody: JSON.stringify({
           address: "3921 Harlan Ave Baldwin Park CA 91706",
-          include_ballot: true,
         }),
       },
-      { resolveAddress, lookupBallot, saveUserDistricts }
+      { resolveAddress, lookupBallotSummaries, saveUserDistricts }
     );
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toMatchObject({
       matched_address: resolvedAddress.matched_address,
       districts: resolvedAddress.districts,
-      ballot: {
-        district_ids: ["district-la"],
-        elections: [],
-      },
     });
-    expect(lookupBallot).toHaveBeenCalledWith(["district-la"]);
+    expect(response.body).not.toHaveProperty("ballot");
+    expect(lookupBallotSummaries).not.toHaveBeenCalled();
     expect(saveUserDistricts).not.toHaveBeenCalled();
   });
 
@@ -210,14 +202,14 @@ describe("handleAddressApiRequest", () => {
     expect(saveUserDistricts).not.toHaveBeenCalled();
   });
 
-  it("rejects non-boolean address option fields", async () => {
+  it("rejects non-boolean save_districts field", async () => {
     const resolveAddress = vi.fn();
 
     const response = await handleAddressApiRequest(
       {
         method: "POST",
         path: "/api/address/resolve",
-        rawBody: JSON.stringify({ address: "3921 Harlan Ave", include_ballot: "yes" }),
+        rawBody: JSON.stringify({ address: "3921 Harlan Ave", save_districts: "yes" }),
       },
       { resolveAddress }
     );
@@ -226,7 +218,7 @@ describe("handleAddressApiRequest", () => {
     expect(response.body).toEqual({
       error: {
         code: "invalid_request",
-        message: "Request field include_ballot must be boolean when provided",
+        message: "Request field save_districts must be boolean when provided",
       },
     });
     expect(resolveAddress).not.toHaveBeenCalled();
@@ -377,7 +369,7 @@ describe("handleAddressApiRequest", () => {
 
   it("serves GET /api/ballot with comma-separated district IDs", async () => {
     const resolveAddress = vi.fn();
-    const lookupBallot = vi.fn().mockResolvedValue({
+    const lookupBallotSummaries = vi.fn().mockResolvedValue({
       district_ids: [districtId, secondDistrictId],
       districts: [],
       elections: [],
@@ -390,7 +382,7 @@ describe("handleAddressApiRequest", () => {
           path: `/api/ballot?district_ids=${districtId},${secondDistrictId},${districtId}`,
           rawBody: "",
         },
-        { resolveAddress, lookupBallot }
+        { resolveAddress, lookupBallotSummaries }
       )
     ).resolves.toEqual({
       statusCode: 200,
@@ -401,17 +393,17 @@ describe("handleAddressApiRequest", () => {
         elections: [],
       },
     });
-    expect(lookupBallot).toHaveBeenCalledWith([districtId, secondDistrictId]);
+    expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId, secondDistrictId]);
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
   it("rejects invalid ballot district IDs before lookup", async () => {
     const resolveAddress = vi.fn();
-    const lookupBallot = vi.fn();
+    const lookupBallotSummaries = vi.fn();
 
     const response = await handleAddressApiRequest(
       { method: "GET", path: "/api/ballot?district_ids=not-a-uuid", rawBody: "" },
-      { resolveAddress, lookupBallot }
+      { resolveAddress, lookupBallotSummaries }
     );
 
     expect(response.statusCode).toBe(400);
@@ -421,16 +413,58 @@ describe("handleAddressApiRequest", () => {
         message: "Query parameter district_ids contains invalid UUID: not-a-uuid",
       },
     });
-    expect(lookupBallot).not.toHaveBeenCalled();
+    expect(lookupBallotSummaries).not.toHaveBeenCalled();
+  });
+
+  it("rejects missing ballot district IDs before lookup", async () => {
+    const resolveAddress = vi.fn();
+    const lookupBallotSummaries = vi.fn();
+
+    const response = await handleAddressApiRequest(
+      { method: "GET", path: "/api/ballot", rawBody: "" },
+      { resolveAddress, lookupBallotSummaries }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Query parameter district_ids must include at least one district UUID",
+      },
+    });
+    expect(lookupBallotSummaries).not.toHaveBeenCalled();
+  });
+
+  it("rejects too many ballot district IDs before lookup", async () => {
+    const resolveAddress = vi.fn();
+    const lookupBallotSummaries = vi.fn();
+    const tooManyDistrictIds = Array.from(
+      { length: 51 },
+      (_, index) => `11111111-1111-4111-8111-${String(index + 1).padStart(12, "0")}`
+    ).join(",");
+
+    const response = await handleAddressApiRequest(
+      { method: "GET", path: `/api/ballot?district_ids=${tooManyDistrictIds}`, rawBody: "" },
+      { resolveAddress, lookupBallotSummaries }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Query parameter district_ids supports at most 50 UUIDs",
+      },
+    });
+    expect(lookupBallotSummaries).not.toHaveBeenCalled();
   });
 
   it("rejects non-GET ballot requests", async () => {
     const resolveAddress = vi.fn();
-    const lookupBallot = vi.fn();
+    const lookupBallotSummaries = vi.fn();
 
     const response = await handleAddressApiRequest(
       { method: "POST", path: `/api/ballot?district_ids=${districtId}`, rawBody: "" },
-      { resolveAddress, lookupBallot }
+      { resolveAddress, lookupBallotSummaries }
     );
 
     expect(response).toEqual({
@@ -446,7 +480,139 @@ describe("handleAddressApiRequest", () => {
         },
       },
     });
-    expect(lookupBallot).not.toHaveBeenCalled();
+    expect(lookupBallotSummaries).not.toHaveBeenCalled();
+  });
+
+  it("serves GET /api/elections/:election_id", async () => {
+    const resolveAddress = vi.fn();
+    const lookupElectionDetail = vi.fn().mockResolvedValue({
+      id: electionId,
+      district_id: districtId,
+      district: {
+        id: districtId,
+        district_type: "county",
+        geoid_compact: "06037",
+        name: "Los Angeles County",
+        state: "CA",
+        state_fips: "06",
+      },
+      race_type: "office",
+      official_ballot_title: "Sheriff",
+      election_date: "2026-06-02",
+      election_stage: "primary",
+      is_partisan: false,
+      discovery_contest_family: "non_judicial_office",
+      sources: [],
+      candidates: [],
+      ballot_measure: null,
+      results: [],
+    });
+
+    await expect(
+      handleAddressApiRequest(
+        {
+          method: "GET",
+          path: `/api/elections/${electionId}`,
+          rawBody: "",
+        },
+        { resolveAddress, lookupElectionDetail }
+      )
+    ).resolves.toMatchObject({
+      statusCode: 200,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: {
+        id: electionId,
+        race_type: "office",
+        official_ballot_title: "Sheriff",
+      },
+    });
+    expect(lookupElectionDetail).toHaveBeenCalledWith(electionId);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 404 when election detail is missing", async () => {
+    const resolveAddress = vi.fn();
+    const lookupElectionDetail = vi.fn().mockResolvedValue(null);
+
+    const response = await handleAddressApiRequest(
+      { method: "GET", path: `/api/elections/${electionId}`, rawBody: "" },
+      { resolveAddress, lookupElectionDetail }
+    );
+
+    expect(response).toEqual({
+      statusCode: 404,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: {
+        error: {
+          code: "not_found",
+          message: "Election not found",
+        },
+      },
+    });
+    expect(lookupElectionDetail).toHaveBeenCalledWith(electionId);
+  });
+
+  it("rejects invalid election detail IDs before lookup", async () => {
+    const resolveAddress = vi.fn();
+    const lookupElectionDetail = vi.fn();
+
+    const response = await handleAddressApiRequest(
+      { method: "GET", path: "/api/elections/not-a-uuid", rawBody: "" },
+      { resolveAddress, lookupElectionDetail }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Election detail path contains invalid UUID: not-a-uuid",
+      },
+    });
+    expect(lookupElectionDetail).not.toHaveBeenCalled();
+  });
+
+  it("rejects malformed election detail paths before lookup", async () => {
+    const resolveAddress = vi.fn();
+    const lookupElectionDetail = vi.fn();
+
+    const response = await handleAddressApiRequest(
+      { method: "GET", path: `/api/elections/${electionId}/extra`, rawBody: "" },
+      { resolveAddress, lookupElectionDetail }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Election detail path must be /api/elections/:election_id",
+      },
+    });
+    expect(lookupElectionDetail).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-GET election detail requests", async () => {
+    const resolveAddress = vi.fn();
+    const lookupElectionDetail = vi.fn();
+
+    const response = await handleAddressApiRequest(
+      { method: "POST", path: `/api/elections/${electionId}`, rawBody: "" },
+      { resolveAddress, lookupElectionDetail }
+    );
+
+    expect(response).toEqual({
+      statusCode: 405,
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        allow: "GET",
+      },
+      body: {
+        error: {
+          code: "method_not_allowed",
+          message: "Use GET /api/elections/:election_id",
+        },
+      },
+    });
+    expect(lookupElectionDetail).not.toHaveBeenCalled();
   });
 
   it("rejects non-POST methods", async () => {
