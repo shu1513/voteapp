@@ -1,4 +1,4 @@
-import type { AddressApiRateLimitInput, AddressApiRateLimitResult } from "./addressApiServer.js";
+import type { AddressApiRateLimitInput, AddressApiRateLimitResult } from "./addressApiTypes.js";
 
 export const DEFAULT_ADDRESS_API_RATE_LIMIT_WINDOW_MS = 60_000;
 export const DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_REQUESTS = 60;

@@ -1,9 +1,11 @@
+import type { Server } from "node:http";
 import { Pool } from "pg";
 import { createClient } from "redis";
 
 import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
+import type { AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
+import { createApiApp } from "../api/apiServer.js";
 import { loadProjectEnv } from "../config/env.js";
-import { createAddressApiServer, type AddressResolutionDiagnostics } from "../api/addressApiServer.js";
 import {
   createInMemoryAddressApiRateLimiter,
   DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_BUCKETS,
@@ -143,7 +145,7 @@ async function main(): Promise<void> {
     }
   }
 
-  const server = createAddressApiServer({
+  const app = createApiApp({
     allowedOrigins,
     rateLimit,
     resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader),
@@ -166,8 +168,14 @@ async function main(): Promise<void> {
       }),
   });
 
-  await new Promise<void>((resolve) => {
-    server.listen(port, host, resolve);
+  let server: Server | null = null;
+  await new Promise<void>((resolve, reject) => {
+    const startedServer = app.listen(port, host, () => {
+      startedServer.off("error", reject);
+      resolve();
+    });
+    startedServer.once("error", reject);
+    server = startedServer;
   });
 
   console.log(
@@ -178,6 +186,10 @@ async function main(): Promise<void> {
 
   const shutdown = async (): Promise<void> => {
     await new Promise<void>((resolve, reject) => {
+      if (!server) {
+        resolve();
+        return;
+      }
       server.close((error) => {
         if (error) {
           reject(error);
