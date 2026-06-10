@@ -30,8 +30,8 @@ export function toJsonResponse(
   return {
     statusCode,
     headers: {
-      "content-type": "application/json; charset=utf-8",
       ...extraHeaders,
+      "content-type": "application/json; charset=utf-8",
     },
     body,
   };

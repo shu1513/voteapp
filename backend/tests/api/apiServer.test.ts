@@ -1,6 +1,6 @@
 import { type IncomingMessage, ServerResponse } from "node:http";
 import { Readable, Writable } from "node:stream";
-import type { Express } from "express";
+import express, { type Express } from "express";
 import { describe, expect, it, vi } from "vitest";
 
 import { createApiApp } from "../../src/api/apiServer.js";
@@ -126,6 +126,27 @@ describe("createApiApp", () => {
       missing_district_keys: [],
       warnings: [],
     });
+  });
+
+  it("does not fail successful address responses when diagnostics logging throws", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+    const logDiagnostics = vi.fn(() => {
+      throw new Error("diagnostics sink failed");
+    });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, logDiagnostics }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      matched_address: resolvedAddress.matched_address,
+      districts: resolvedAddress.districts,
+    });
+    expect(logDiagnostics).toHaveBeenCalledOnce();
   });
 
   it("handles allowed CORS preflight before rate limiting", async () => {
@@ -610,6 +631,31 @@ describe("createApiApp", () => {
 
     expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId]);
     expect(lookupElectionDetail).toHaveBeenCalledWith(electionId);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("dispatches routes correctly when mounted under a path prefix", async () => {
+    const resolveAddress = vi.fn();
+    const lookupBallotSummaries = vi.fn().mockResolvedValue({
+      district_ids: [districtId],
+      districts: [],
+      elections: [],
+    });
+    const mountedApp = express();
+    mountedApp.use("/v1", createApiApp({ resolveAddress, lookupBallotSummaries }));
+
+    const response = await invokeExpressApp(mountedApp, {
+      method: "GET",
+      path: `/v1/api/ballot?district_ids=${districtId}`,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      district_ids: [districtId],
+      districts: [],
+      elections: [],
+    });
+    expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId]);
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 

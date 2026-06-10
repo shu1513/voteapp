@@ -125,7 +125,7 @@ async function dispatchApiRequest(
   response: Response<unknown, ApiResponseLocals>,
   options: AddressApiServerOptions
 ): Promise<void> {
-  const url = new URL(request.originalUrl || request.url, "http://localhost");
+  const url = new URL(request.url, "http://localhost");
   const corsHeaders = getCorsHeaders(response);
 
   if (url.pathname === BALLOT_LOOKUP_PATH) {
@@ -189,7 +189,13 @@ async function dispatchApiRequest(
 
   const payload = parseAddressBodyValue(request.body);
   const result = await options.resolveAddress(payload.address);
-  options.logDiagnostics?.(toAddressResolutionDiagnostics(result));
+  if (options.logDiagnostics) {
+    try {
+      options.logDiagnostics(toAddressResolutionDiagnostics(result));
+    } catch {
+      // Diagnostics are best-effort; do not fail an otherwise successful request.
+    }
+  }
 
   sendApiResponse(response, toJsonResponse(200, toPublicAddressResolution(result), corsHeaders));
 }
