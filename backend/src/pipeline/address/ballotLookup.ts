@@ -21,6 +21,20 @@ export type BallotLookupResearchAreaTag = {
   stance: "for" | "against" | null;
 };
 
+export type BallotLookupResearchAreaSummary = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+};
+
+export type BallotLookupOfficeSummary = {
+  id: string;
+  scope: ElectionDistrictType;
+  canonical_name: string;
+  summary: string;
+};
+
 export type BallotLookupCandidateRecord = {
   id: string;
   description: string;
@@ -103,10 +117,29 @@ export type BallotLookupElection = {
   results: BallotLookupElectionResult[];
 };
 
-export type BallotLookupResult = {
+export type BallotLookupElectionSummary = {
+  id: string;
+  district_id: string;
+  district: BallotLookupDistrict;
+  race_type: ElectionRaceType;
+  official_ballot_title: string;
+  election_date: string;
+  election_stage: ElectionStage | null;
+  is_partisan: boolean | null;
+  discovery_contest_family: ElectionContestFamily | null;
+  sources: string[];
+  candidate_count: number;
+  ballot_measure_id: string | null;
+  has_results: boolean;
+  current_result_outcome: string | null;
+  office: BallotLookupOfficeSummary | null;
+  research_areas: BallotLookupResearchAreaSummary[];
+};
+
+export type BallotSummaryResult = {
   district_ids: string[];
   districts: BallotLookupDistrict[];
-  elections: BallotLookupElection[];
+  elections: BallotLookupElectionSummary[];
 };
 
 type DistrictRow = BallotLookupDistrict;
@@ -126,6 +159,36 @@ type ElectionRow = {
   is_partisan: boolean | null;
   discovery_contest_family: ElectionContestFamily | null;
   sources: unknown;
+};
+
+type ElectionSummaryRow = ElectionRow & {
+  office_id: string | null;
+  office_scope: ElectionDistrictType | null;
+  office_canonical_name: string | null;
+  office_summary: string | null;
+};
+
+type CandidateCountRow = {
+  election_id: string;
+  candidate_count: number;
+};
+
+type BallotMeasureSummaryRow = {
+  election_id: string;
+  ballot_measure_id: string;
+};
+
+type OfficeResearchAreaSummaryRow = {
+  office_id: string;
+  research_area_id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+};
+
+type ElectionResultSummaryRow = {
+  election_id: string;
+  outcome: string;
 };
 
 type CandidateRow = {
@@ -272,7 +335,7 @@ function groupBy<T, K extends string>(rows: readonly T[], getKey: (row: T) => K)
   return grouped;
 }
 
-function toDistrict(row: DistrictRow | ElectionRow): BallotLookupDistrict {
+function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): BallotLookupDistrict {
   const id = "district_id" in row ? row.district_id : row.id;
   const name = "district_name" in row ? row.district_name : row.name;
   return {
@@ -294,64 +357,10 @@ function mapResearchAreaTag(row: CandidateRecordTagRow | BallotMeasureTagRow): B
   };
 }
 
-export async function lookupBallotByDistrictIds(
-  db: Queryable,
-  districtIds: readonly string[]
-): Promise<BallotLookupResult> {
-  const ids = normalizeIds(districtIds);
-  if (ids.length === 0) {
-    return { district_ids: [], districts: [], elections: [] };
-  }
-
-  const districtResult = await db.query<DistrictRow>(
-    `
-      SELECT
-        id,
-        district_type,
-        geoid_compact,
-        name,
-        state,
-        state_fips
-      FROM public.districts
-      WHERE id = ANY($1::uuid[])
-      ORDER BY array_position($1::uuid[], id), district_type, name
-    `,
-    [ids]
-  );
-
-  const electionResult = await db.query<ElectionRow>(
-    `
-      SELECT
-        e.id AS election_id,
-        d.id AS district_id,
-        d.district_type,
-        d.geoid_compact,
-        d.name AS district_name,
-        d.state,
-        d.state_fips,
-        e.race_type,
-        e.official_ballot_title,
-        e.election_date::text AS election_date,
-        e.election_stage,
-        e.is_partisan,
-        e.discovery_contest_family,
-        e.sources
-      FROM public.elections AS e
-      JOIN public.districts AS d
-        ON d.id = e.district_id
-      WHERE e.district_id = ANY($1::uuid[])
-      ORDER BY e.election_date ASC, e.race_type ASC, e.official_ballot_title ASC, e.id ASC
-    `,
-    [ids]
-  );
-
-  const electionIds = electionResult.rows.map((row) => row.election_id);
+async function loadFullElectionDetails(db: Queryable, electionRows: readonly ElectionRow[]): Promise<BallotLookupElection[]> {
+  const electionIds = electionRows.map((row) => row.election_id);
   if (electionIds.length === 0) {
-    return {
-      district_ids: ids,
-      districts: districtResult.rows.map(toDistrict),
-      elections: [],
-    };
+    return [];
   }
 
   const candidateResult = await db.query<CandidateRow>(
@@ -562,7 +571,7 @@ export async function lookupBallotByDistrictIds(
   }
 
   const officeResultsByElection = groupBy(officeResult.rows, (row) => row.election_id);
-  const elections: BallotLookupElection[] = electionResult.rows.map((row) => ({
+  return electionRows.map((row) => ({
     id: row.election_id,
     district_id: row.district_id,
     district: toDistrict(row),
@@ -587,10 +596,266 @@ export async function lookupBallotByDistrictIds(
       retrieved_at: result.retrieved_at,
     })),
   }));
+}
+
+export async function lookupBallotSummariesByDistrictIds(
+  db: Queryable,
+  districtIds: readonly string[]
+): Promise<BallotSummaryResult> {
+  const ids = normalizeIds(districtIds);
+  if (ids.length === 0) {
+    return { district_ids: [], districts: [], elections: [] };
+  }
+
+  const districtResult = await db.query<DistrictRow>(
+    `
+      SELECT
+        id,
+        district_type,
+        geoid_compact,
+        name,
+        state,
+        state_fips
+      FROM public.districts
+      WHERE id = ANY($1::uuid[])
+      ORDER BY array_position($1::uuid[], id), district_type, name
+    `,
+    [ids]
+  );
+
+  const electionResult = await db.query<ElectionSummaryRow>(
+    `
+      SELECT
+        e.id AS election_id,
+        d.id AS district_id,
+        d.district_type,
+        d.geoid_compact,
+        d.name AS district_name,
+        d.state,
+        d.state_fips,
+        e.race_type,
+        e.official_ballot_title,
+        e.election_date::text AS election_date,
+        e.election_stage,
+        e.is_partisan,
+        e.discovery_contest_family,
+        e.sources,
+        office.id AS office_id,
+        office.scope AS office_scope,
+        office.canonical_name AS office_canonical_name,
+        office.summary AS office_summary
+      FROM public.elections AS e
+      JOIN public.districts AS d
+        ON d.id = e.district_id
+      LEFT JOIN public.offices AS office
+        ON office.id = e.office_id
+      WHERE e.district_id = ANY($1::uuid[])
+      ORDER BY e.election_date ASC, e.race_type ASC, e.official_ballot_title ASC, e.id ASC
+    `,
+    [ids]
+  );
+
+  const electionIds = electionResult.rows.map((row) => row.election_id);
+  if (electionIds.length === 0) {
+    return {
+      district_ids: ids,
+      districts: districtResult.rows.map(toDistrict),
+      elections: [],
+    };
+  }
+
+  const candidateCountResult = await db.query<CandidateCountRow>(
+    `
+      SELECT
+        ce.election_id,
+        COUNT(*)::int AS candidate_count
+      FROM public.candidate_elections AS ce
+      JOIN public.candidates AS c
+        ON c.id = ce.candidate_id
+      WHERE ce.election_id = ANY($1::uuid[])
+        AND c.deleted_at IS NULL
+      GROUP BY ce.election_id
+    `,
+    [electionIds]
+  );
+
+  const ballotMeasureResult = await db.query<BallotMeasureSummaryRow>(
+    `
+      SELECT
+        bm.election_id,
+        bm.id AS ballot_measure_id
+      FROM public.ballot_measures AS bm
+      WHERE bm.election_id = ANY($1::uuid[])
+      ORDER BY bm.election_id, bm.id
+    `,
+    [electionIds]
+  );
+
+  const officeIds = [
+    ...new Set(
+      electionResult.rows
+        .map((row) => row.office_id)
+        .filter((officeId): officeId is string => typeof officeId === "string" && officeId.length > 0)
+    ),
+  ];
+  const officeResearchAreaResult =
+    officeIds.length === 0
+      ? { rows: [] as OfficeResearchAreaSummaryRow[] }
+      : await db.query<OfficeResearchAreaSummaryRow>(
+          `
+            SELECT
+              link.office_id,
+              area.id AS research_area_id,
+              area.slug,
+              area.name,
+              area.description
+            FROM public.office_research_areas AS link
+            JOIN public.research_areas AS area
+              ON area.id = link.research_area_id
+            WHERE link.office_id = ANY($1::uuid[])
+            ORDER BY link.office_id, area.slug
+          `,
+          [officeIds]
+        );
+
+  const resultSummaryResult = await db.query<ElectionResultSummaryRow>(
+    `
+      WITH all_results AS (
+        SELECT
+          er.election_id,
+          er.outcome,
+          er.pass_type,
+          er.retrieved_at
+        FROM public.election_results AS er
+        WHERE er.election_id = ANY($1::uuid[])
+
+        UNION ALL
+
+        SELECT
+          bm.election_id,
+          bmr.outcome,
+          bmr.pass_type,
+          bmr.retrieved_at
+        FROM public.ballot_measure_results AS bmr
+        JOIN public.ballot_measures AS bm
+          ON bm.id = bmr.ballot_measure_id
+        WHERE bm.election_id = ANY($1::uuid[])
+      ),
+      ranked AS (
+        SELECT
+          election_id,
+          outcome,
+          row_number() OVER (
+            PARTITION BY election_id
+            ORDER BY
+              CASE pass_type
+                WHEN 'certified' THEN 1
+                WHEN 'election_night' THEN 2
+                ELSE 3
+              END,
+              retrieved_at DESC,
+              outcome ASC
+          ) AS rn
+        FROM all_results
+      )
+      SELECT election_id, outcome
+      FROM ranked
+      WHERE rn = 1
+    `,
+    [electionIds]
+  );
+
+  const candidateCountsByElection = new Map(
+    candidateCountResult.rows.map((row) => [row.election_id, row.candidate_count])
+  );
+  const ballotMeasureIdsByElection = new Map<string, string>();
+  for (const row of ballotMeasureResult.rows) {
+    if (!ballotMeasureIdsByElection.has(row.election_id)) {
+      ballotMeasureIdsByElection.set(row.election_id, row.ballot_measure_id);
+    }
+  }
+  const researchAreasByOffice = groupBy(officeResearchAreaResult.rows, (row) => row.office_id);
+  const resultOutcomeByElection = new Map(resultSummaryResult.rows.map((row) => [row.election_id, row.outcome]));
+
+  const elections: BallotLookupElectionSummary[] = electionResult.rows.map((row) => {
+    const currentResultOutcome = resultOutcomeByElection.get(row.election_id) ?? null;
+    // Office columns are nullable only because this is a LEFT JOIN; resolved office rows have non-empty fields.
+    const office =
+      row.office_id && row.office_scope && row.office_canonical_name && row.office_summary
+        ? {
+            id: row.office_id,
+            scope: row.office_scope,
+            canonical_name: row.office_canonical_name,
+            summary: row.office_summary,
+          }
+        : null;
+
+    return {
+      id: row.election_id,
+      district_id: row.district_id,
+      district: toDistrict(row),
+      race_type: row.race_type,
+      official_ballot_title: row.official_ballot_title,
+      election_date: row.election_date,
+      election_stage: row.election_stage,
+      is_partisan: row.is_partisan,
+      discovery_contest_family: row.discovery_contest_family,
+      sources: parseStringArray(row.sources),
+      candidate_count: candidateCountsByElection.get(row.election_id) ?? 0,
+      ballot_measure_id: ballotMeasureIdsByElection.get(row.election_id) ?? null,
+      has_results: currentResultOutcome !== null,
+      current_result_outcome: currentResultOutcome,
+      office,
+      research_areas: row.office_id
+        ? (researchAreasByOffice.get(row.office_id) ?? []).map((area) => ({
+            id: area.research_area_id,
+            slug: area.slug,
+            name: area.name,
+            description: area.description,
+          }))
+        : [],
+    };
+  });
 
   return {
     district_ids: ids,
     districts: districtResult.rows.map(toDistrict),
     elections,
   };
+}
+
+export async function lookupElectionDetailById(db: Queryable, electionId: string): Promise<BallotLookupElection | null> {
+  const trimmedElectionId = electionId.trim();
+  if (trimmedElectionId.length === 0) {
+    return null;
+  }
+
+  const electionResult = await db.query<ElectionRow>(
+    `
+      SELECT
+        e.id AS election_id,
+        d.id AS district_id,
+        d.district_type,
+        d.geoid_compact,
+        d.name AS district_name,
+        d.state,
+        d.state_fips,
+        e.race_type,
+        e.official_ballot_title,
+        e.election_date::text AS election_date,
+        e.election_stage,
+        e.is_partisan,
+        e.discovery_contest_family,
+        e.sources
+      FROM public.elections AS e
+      JOIN public.districts AS d
+        ON d.id = e.district_id
+      WHERE e.id = $1::uuid
+      LIMIT 1
+    `,
+    [trimmedElectionId]
+  );
+
+  const details = await loadFullElectionDetails(db, electionResult.rows);
+  return details[0] ?? null;
 }
