@@ -779,6 +779,7 @@ export async function lookupBallotSummariesByDistrictIds(
 
   const elections: BallotLookupElectionSummary[] = electionResult.rows.map((row) => {
     const currentResultOutcome = resultOutcomeByElection.get(row.election_id) ?? null;
+    // Office columns are nullable only because this is a LEFT JOIN; resolved office rows have non-empty fields.
     const office =
       row.office_id && row.office_scope && row.office_canonical_name && row.office_summary
         ? {

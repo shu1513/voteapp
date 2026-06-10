@@ -203,6 +203,13 @@ describe("lookupBallotSummariesByDistrictIds", () => {
 });
 
 describe("lookupElectionDetailById", () => {
+  it("returns null without querying for empty election IDs", async () => {
+    const query = vi.fn();
+
+    await expect(lookupElectionDetailById({ query }, "   ")).resolves.toBeNull();
+    expect(query).not.toHaveBeenCalled();
+  });
+
   it("returns null without detail queries when the election does not exist", async () => {
     const query = vi.fn().mockResolvedValueOnce({ rows: [] });
 

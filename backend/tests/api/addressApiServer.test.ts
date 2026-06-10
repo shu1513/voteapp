@@ -139,6 +139,7 @@ describe("handleAddressApiRequest", () => {
       districts: resolvedAddress.districts,
     });
     expect(response.body).not.toHaveProperty("ballot");
+    expect(response.body).not.toHaveProperty("coordinates");
     expect(lookupBallotSummaries).not.toHaveBeenCalled();
     expect(saveUserDistricts).not.toHaveBeenCalled();
   });
