@@ -1,7 +1,6 @@
 import { createServer, type IncomingMessage, type RequestListener, type Server, type ServerResponse } from "node:http";
 import type { BallotLookupElection, BallotSummaryResult } from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
-import type { SaveUserDistrictsResult } from "../pipeline/address/userDistricts.js";
 import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeocoder.js";
 import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 
@@ -30,11 +29,6 @@ export type AddressApiServerOptions = {
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
   lookupBallotSummaries?: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
-  resolveUserId?: (headers: Record<string, string | string[] | undefined> | undefined) => string | null | undefined;
-  saveUserDistricts?: (
-    userId: string,
-    districts: AddressResolutionResult["districts"]
-  ) => Promise<SaveUserDistrictsResult>;
   allowedOrigins?: readonly string[];
   logDiagnostics?: (diagnostics: AddressResolutionDiagnostics) => void;
   rateLimit?: (input: AddressApiRateLimitInput) => AddressApiRateLimitResult;
@@ -43,7 +37,6 @@ export type AddressApiServerOptions = {
 
 export type AddressResolvePayload = {
   address: string;
-  save_districts: boolean;
 };
 
 export type AddressApiRequestInput = {
@@ -63,9 +56,6 @@ export type AddressApiResponse = {
 export type PublicAddressResolutionResult = {
   matched_address: string;
   districts: AddressResolutionResult["districts"];
-  saved_user_districts?: {
-    district_count: number;
-  };
 };
 
 export type AddressResolutionDiagnostics = {
@@ -80,7 +70,6 @@ type ApiErrorCode =
   | "method_not_allowed"
   | "invalid_json"
   | "invalid_request"
-  | "auth_required"
   | "rate_limited"
   | "address_not_found"
   | "upstream_unavailable"
@@ -180,16 +169,6 @@ async function readRequestBody(request: IncomingMessage, maxBytes: number): Prom
   return Buffer.concat(chunks).toString("utf8");
 }
 
-function parseBooleanField(value: unknown, fieldName: string): boolean {
-  if (value === undefined) {
-    return false;
-  }
-  if (typeof value !== "boolean") {
-    throw new TypeError(`Request field ${fieldName} must be boolean when provided`);
-  }
-  return value;
-}
-
 function parseAddressPayload(rawBody: string): AddressResolvePayload {
   let parsed: unknown;
   try {
@@ -209,7 +188,6 @@ function parseAddressPayload(rawBody: string): AddressResolvePayload {
 
   return {
     address: address.trim(),
-    save_districts: parseBooleanField((parsed as { save_districts?: unknown }).save_districts, "save_districts"),
   };
 }
 
@@ -295,14 +273,10 @@ function resolveCorsHeaders(
   };
 }
 
-function toPublicAddressResolution(
-  result: AddressResolutionResult,
-  extras: Pick<PublicAddressResolutionResult, "saved_user_districts"> = {}
-): PublicAddressResolutionResult {
+function toPublicAddressResolution(result: AddressResolutionResult): PublicAddressResolutionResult {
   return {
     matched_address: result.matched_address,
     districts: result.districts,
-    ...extras,
   };
 }
 
@@ -456,21 +430,7 @@ export async function handleAddressApiRequest(
     const result = await options.resolveAddress(payload.address);
     options.logDiagnostics?.(toAddressResolutionDiagnostics(result));
 
-    const extras: Pick<PublicAddressResolutionResult, "saved_user_districts"> = {};
-
-    if (payload.save_districts) {
-      const userId = options.resolveUserId?.(input.headers)?.trim() || null;
-      if (!userId) {
-        return toErrorResponse(401, "auth_required", "Login is required to save user districts", cors.headers);
-      }
-      if (!options.saveUserDistricts) {
-        return toErrorResponse(500, "internal_error", "User district saving is not configured", cors.headers);
-      }
-      const saved = await options.saveUserDistricts(userId, result.districts);
-      extras.saved_user_districts = { district_count: saved.district_count };
-    }
-
-    return toJsonResponse(200, toPublicAddressResolution(result, extras), cors.headers);
+    return toJsonResponse(200, toPublicAddressResolution(result), cors.headers);
   } catch (error) {
     const mapped = mapErrorToResponse(error);
     return toErrorResponse(mapped.statusCode, mapped.code, mapped.message, cors.headers);

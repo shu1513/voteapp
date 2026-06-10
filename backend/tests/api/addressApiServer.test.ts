@@ -120,7 +120,6 @@ describe("handleAddressApiRequest", () => {
   it("does not include ballot data in an address response", async () => {
     const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
     const lookupBallotSummaries = vi.fn();
-    const saveUserDistricts = vi.fn();
 
     const response = await handleAddressApiRequest(
       {
@@ -130,7 +129,7 @@ describe("handleAddressApiRequest", () => {
           address: "3921 Harlan Ave Baldwin Park CA 91706",
         }),
       },
-      { resolveAddress, lookupBallotSummaries, saveUserDistricts }
+      { resolveAddress, lookupBallotSummaries }
     );
 
     expect(response.statusCode).toBe(200);
@@ -141,88 +140,6 @@ describe("handleAddressApiRequest", () => {
     expect(response.body).not.toHaveProperty("ballot");
     expect(response.body).not.toHaveProperty("coordinates");
     expect(lookupBallotSummaries).not.toHaveBeenCalled();
-    expect(saveUserDistricts).not.toHaveBeenCalled();
-  });
-
-  it("saves resolved districts only when requested by an authenticated user", async () => {
-    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
-    const saveUserDistricts = vi.fn().mockResolvedValue({ user_id: districtId, district_count: 1 });
-
-    const response = await handleAddressApiRequest(
-      {
-        method: "POST",
-        path: "/api/address/resolve",
-        rawBody: JSON.stringify({
-          address: "3921 Harlan Ave Baldwin Park CA 91706",
-          save_districts: true,
-        }),
-        headers: { "x-user-id": districtId },
-      },
-      {
-        resolveAddress,
-        saveUserDistricts,
-        resolveUserId: (headers) => String(headers?.["x-user-id"] ?? ""),
-      }
-    );
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toMatchObject({
-      matched_address: resolvedAddress.matched_address,
-      saved_user_districts: { district_count: 1 },
-    });
-    expect(saveUserDistricts).toHaveBeenCalledWith(districtId, resolvedAddress.districts);
-  });
-
-  it("rejects save_districts for anonymous users", async () => {
-    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
-    const saveUserDistricts = vi.fn();
-
-    const response = await handleAddressApiRequest(
-      {
-        method: "POST",
-        path: "/api/address/resolve",
-        rawBody: JSON.stringify({
-          address: "3921 Harlan Ave Baldwin Park CA 91706",
-          save_districts: true,
-        }),
-      },
-      { resolveAddress, saveUserDistricts }
-    );
-
-    expect(response).toEqual({
-      statusCode: 401,
-      headers: { "content-type": "application/json; charset=utf-8" },
-      body: {
-        error: {
-          code: "auth_required",
-          message: "Login is required to save user districts",
-        },
-      },
-    });
-    expect(resolveAddress).toHaveBeenCalledOnce();
-    expect(saveUserDistricts).not.toHaveBeenCalled();
-  });
-
-  it("rejects non-boolean save_districts field", async () => {
-    const resolveAddress = vi.fn();
-
-    const response = await handleAddressApiRequest(
-      {
-        method: "POST",
-        path: "/api/address/resolve",
-        rawBody: JSON.stringify({ address: "3921 Harlan Ave", save_districts: "yes" }),
-      },
-      { resolveAddress }
-    );
-
-    expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual({
-      error: {
-        code: "invalid_request",
-        message: "Request field save_districts must be boolean when provided",
-      },
-    });
-    expect(resolveAddress).not.toHaveBeenCalled();
   });
 
   it("adds CORS headers for allowed origins", async () => {
