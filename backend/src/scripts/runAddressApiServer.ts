@@ -13,7 +13,6 @@ import {
 import { lookupBallotSummariesByDistrictIds, lookupElectionDetailById } from "../pipeline/address/ballotLookup.js";
 import { resolveAddressToDistricts } from "../pipeline/address/addressResolverService.js";
 import { DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS } from "../pipeline/address/addressResolutionCache.js";
-import { saveUserDistricts } from "../pipeline/address/userDistricts.js";
 import {
   DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK,
   DEFAULT_CENSUS_ADDRESS_GEOCODER_LAYERS,
@@ -76,17 +75,6 @@ function readOptionalEnv(name: string): string | null {
   return value && value.length > 0 ? value : null;
 }
 
-function readHeader(
-  headers: Record<string, string | string[] | undefined> | undefined,
-  name: string
-): string | undefined {
-  const value = headers?.[name.toLowerCase()] ?? headers?.[name];
-  if (Array.isArray(value)) {
-    return value[0];
-  }
-  return value;
-}
-
 function logAddressResolutionDiagnostics(diagnostics: AddressResolutionDiagnostics): void {
   if (diagnostics.missing_district_keys.length === 0 && diagnostics.warnings.length === 0) {
     return;
@@ -109,15 +97,6 @@ async function main(): Promise<void> {
   const host = process.env.ADDRESS_API_HOST?.trim() || "127.0.0.1";
   const port = readPort();
   const allowedOrigins = readAllowedOrigins();
-  // Security boundary: this header must be injected by a trusted auth proxy/gateway
-  // after stripping any client-supplied copy. Do not expose this server directly with
-  // ADDRESS_API_TRUSTED_USER_ID_HEADER enabled, or clients could spoof user IDs.
-  const trustedUserIdHeader = readOptionalEnv("ADDRESS_API_TRUSTED_USER_ID_HEADER");
-  if (trustedUserIdHeader) {
-    console.warn(
-      `address API trusting user id header "${trustedUserIdHeader}"; ensure the edge proxy strips client-supplied copies`
-    );
-  }
   // Security boundary: only trust a client-IP header when a trusted proxy/gateway
   // owns that header and strips client-supplied copies. Otherwise rate limiting uses
   // the direct socket IP.
@@ -171,9 +150,6 @@ async function main(): Promise<void> {
     logDiagnostics: logAddressResolutionDiagnostics,
     lookupBallotSummaries: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
-    resolveUserId: (headers) =>
-      trustedUserIdHeader ? readHeader(headers, trustedUserIdHeader)?.trim() || null : null,
-    saveUserDistricts: (userId, districts) => saveUserDistricts(pool, userId, districts),
     resolveAddress: (address) =>
       resolveAddressToDistricts(pool, address, {
         cache: redis?.isOpen ? redis : undefined,
