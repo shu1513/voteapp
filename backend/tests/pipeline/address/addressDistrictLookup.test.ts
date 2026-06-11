@@ -24,7 +24,7 @@ describe("lookupAddressDistricts", () => {
           state: "CA",
           state_fips: "06",
           population: 39287377,
-          vote_power_score: "42.50",
+          representation_power_score: "42.50",
         },
         {
           id: "district-la",
@@ -34,7 +34,7 @@ describe("lookupAddressDistricts", () => {
           state: "CA",
           state_fips: "06",
           population: 9876482,
-          vote_power_score: null,
+          representation_power_score: null,
         },
       ],
     });
@@ -61,7 +61,7 @@ describe("lookupAddressDistricts", () => {
           state: "CA",
           state_fips: "06",
           population: 39287377,
-          vote_power_score: 42.5,
+          representation_power_score: 42.5,
         },
         {
           id: "district-la",
@@ -71,7 +71,7 @@ describe("lookupAddressDistricts", () => {
           state: "CA",
           state_fips: "06",
           population: 9876482,
-          vote_power_score: null,
+          representation_power_score: null,
         },
       ],
       missing_district_keys: [],
@@ -89,7 +89,7 @@ describe("lookupAddressDistricts", () => {
           state: "CA",
           state_fips: "06",
           population: 9876482,
-          vote_power_score: 10,
+          representation_power_score: 10,
         },
       ],
     });
@@ -121,7 +121,7 @@ describe("lookupAddressDistricts", () => {
           state: "CA",
           state_fips: "06",
           population: 761000,
-          vote_power_score: "73.20",
+          representation_power_score: "73.20",
         },
       ],
     });
@@ -145,7 +145,7 @@ describe("lookupAddressDistricts", () => {
         state: "CA",
         state_fips: "06",
         population: 761000,
-        vote_power_score: 73.2,
+        representation_power_score: 73.2,
       },
     ]);
   });

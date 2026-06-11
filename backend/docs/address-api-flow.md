@@ -29,7 +29,7 @@ Response:
       "state": "CA",
       "state_fips": "06",
       "population": 9876482,
-      "vote_power_score": 12.3
+      "representation_power_score": 12.3
     }
   ]
 }

@@ -44,7 +44,7 @@ describe("address lookup workflow", () => {
           state: "CA",
           state_fips: "06",
           population: 39287377,
-          vote_power_score: null,
+          representation_power_score: null,
         },
         {
           id: "district-house-31",
@@ -54,7 +54,7 @@ describe("address lookup workflow", () => {
           state: "CA",
           state_fips: "06",
           population: 760000,
-          vote_power_score: "72.10",
+          representation_power_score: "72.10",
         },
         {
           id: "district-senate-22",
@@ -64,7 +64,7 @@ describe("address lookup workflow", () => {
           state: "CA",
           state_fips: "06",
           population: 988000,
-          vote_power_score: null,
+          representation_power_score: null,
         },
         {
           id: "district-assembly-48",
@@ -74,7 +74,7 @@ describe("address lookup workflow", () => {
           state: "CA",
           state_fips: "06",
           population: 494000,
-          vote_power_score: null,
+          representation_power_score: null,
         },
         {
           id: "district-la-county",
@@ -84,7 +84,7 @@ describe("address lookup workflow", () => {
           state: "CA",
           state_fips: "06",
           population: 9876482,
-          vote_power_score: "12.30",
+          representation_power_score: "12.30",
         },
         {
           id: "district-baldwin-park",
@@ -94,7 +94,7 @@ describe("address lookup workflow", () => {
           state: "CA",
           state_fips: "06",
           population: 70000,
-          vote_power_score: null,
+          representation_power_score: null,
         },
       ],
     });

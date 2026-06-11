@@ -39,7 +39,7 @@ async function seedUserAndDistricts(pool: Pool): Promise<void> {
         state_fips,
         district_type,
         population,
-        vote_power_score
+        representation_power_score
       )
       VALUES
         ($1, '06037', 'Los Angeles County', 'CA', '06', 'county', 100, 1.00),

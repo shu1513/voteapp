@@ -17,7 +17,7 @@ export type AddressResolvedDistrict = {
   state: string;
   state_fips: string;
   population: number;
-  vote_power_score: number | null;
+  representation_power_score: number | null;
 };
 
 export type AddressDistrictLookupResult = {
@@ -33,7 +33,7 @@ type DistrictRow = {
   state: string;
   state_fips: string;
   population: number;
-  vote_power_score: string | number | null;
+  representation_power_score: string | number | null;
 };
 
 function normalizeLookupKeys(keys: readonly (AddressDistrictKey | AddressDistrictLookupKey)[]): AddressDistrictLookupKey[] {
@@ -61,7 +61,7 @@ function normalizeLookupKeys(keys: readonly (AddressDistrictKey | AddressDistric
   return normalized;
 }
 
-function parseVotePowerScore(value: string | number | null): number | null {
+function parseRepresentationPowerScore(value: string | number | null): number | null {
   if (value === null) {
     return null;
   }
@@ -81,7 +81,7 @@ function toResolvedDistrict(row: DistrictRow): AddressResolvedDistrict {
     state: row.state,
     state_fips: row.state_fips,
     population: row.population,
-    vote_power_score: parseVotePowerScore(row.vote_power_score),
+    representation_power_score: parseRepresentationPowerScore(row.representation_power_score),
   };
 }
 
@@ -114,7 +114,7 @@ export async function lookupAddressDistricts(
         d.state,
         d.state_fips,
         d.population,
-        d.vote_power_score
+        d.representation_power_score
       FROM requested
       JOIN public.districts AS d
         ON d.district_type = requested.district_type
