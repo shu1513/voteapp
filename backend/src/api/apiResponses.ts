@@ -1,8 +1,10 @@
 export type ApiErrorCode =
   | "not_found"
   | "method_not_allowed"
+  | "unauthorized"
   | "invalid_json"
   | "invalid_request"
+  | "unsupported_media_type"
   | "rate_limited"
   | "address_not_found"
   | "upstream_unavailable"

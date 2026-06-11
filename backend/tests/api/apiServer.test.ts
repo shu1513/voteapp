@@ -4,8 +4,10 @@ import express, { type Express } from "express";
 import { describe, expect, it, vi } from "vitest";
 
 import { createApiApp } from "../../src/api/apiServer.js";
+import { MAX_INITIALIZE_DISTRICT_IDS } from "../../src/api/apiValidation.js";
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
+import { InitializeUserDistrictsError } from "../../src/pipeline/users/userDistrictInitializer.js";
 
 const resolvedAddress: AddressResolutionResult = {
   matched_address: "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
@@ -39,6 +41,10 @@ const resolvedAddress: AddressResolutionResult = {
 
 const districtId = "11111111-1111-4111-8111-111111111111";
 const electionId = "33333333-3333-4333-8333-333333333333";
+
+function makeDistrictId(index: number): string {
+  return `11111111-1111-4111-8111-${index.toString().padStart(12, "0")}`;
+}
 
 async function invokeExpressApp(
   app: Express,
@@ -126,6 +132,26 @@ describe("createApiApp", () => {
       missing_district_keys: [],
       warnings: [],
     });
+  });
+
+  it("keeps address resolve read-only even when user district initialization is configured", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const initializeUserDistricts = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, initializeUserDistricts }),
+      {
+        method: "POST",
+        path: "/api/address/resolve",
+        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(initializeUserDistricts).not.toHaveBeenCalled();
+    expect(resolveAuthenticatedUserId).not.toHaveBeenCalled();
   });
 
   it("does not fail successful address responses when diagnostics logging throws", async () => {
@@ -357,6 +383,46 @@ describe("createApiApp", () => {
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
+  it("rejects non-JSON content types before parsing address resolve bodies", async () => {
+    const resolveAddress = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      headers: { "content-type": "text/plain" },
+    });
+
+    expect(response.statusCode).toBe(415);
+    expect(response.body).toEqual({
+      error: {
+        code: "unsupported_media_type",
+        message: "Content-Type must be application/json",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-application +json content types before parsing bodies", async () => {
+    const resolveAddress = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      headers: { "content-type": "text/plain+json" },
+    });
+
+    expect(response.statusCode).toBe(415);
+    expect(response.body).toEqual({
+      error: {
+        code: "unsupported_media_type",
+        message: "Content-Type must be application/json",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
   it("maps empty JSON bodies to invalid_request", async () => {
     const resolveAddress = vi.fn();
 
@@ -470,7 +536,7 @@ describe("createApiApp", () => {
     expect(response.body).toEqual({
       error: {
         code: "internal_error",
-        message: "database went sideways",
+        message: "Internal error",
       },
     });
   });
@@ -479,7 +545,8 @@ describe("createApiApp", () => {
     const resolveAddress = vi.fn();
     const lookupBallotSummaries = vi.fn();
     const lookupElectionDetail = vi.fn();
-    const app = createApiApp({ resolveAddress, lookupBallotSummaries, lookupElectionDetail });
+    const initializeUserDistricts = vi.fn();
+    const app = createApiApp({ resolveAddress, lookupBallotSummaries, lookupElectionDetail, initializeUserDistricts });
 
     const ballotResponse = await invokeExpressApp(app, {
       method: "POST",
@@ -520,9 +587,23 @@ describe("createApiApp", () => {
       },
     });
 
+    const initializeResponse = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/me/districts/initialize",
+    });
+    expect(initializeResponse.statusCode).toBe(405);
+    expect(initializeResponse.headers).toMatchObject({ allow: "POST" });
+    expect(initializeResponse.body).toEqual({
+      error: {
+        code: "method_not_allowed",
+        message: "Use POST /api/me/districts/initialize",
+      },
+    });
+
     expect(resolveAddress).not.toHaveBeenCalled();
     expect(lookupBallotSummaries).not.toHaveBeenCalled();
     expect(lookupElectionDetail).not.toHaveBeenCalled();
+    expect(initializeUserDistricts).not.toHaveBeenCalled();
   });
 
   it("rate limits known-path wrong methods before returning 405", async () => {
@@ -632,6 +713,284 @@ describe("createApiApp", () => {
     expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId]);
     expect(lookupElectionDetail).toHaveBeenCalledWith(electionId);
     expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("initializes authenticated user districts", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const initializeUserDistricts = vi.fn().mockResolvedValue({
+      status: "initialized",
+      districtCount: 1,
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, initializeUserDistricts }),
+      {
+        method: "POST",
+        path: "/api/me/districts/initialize",
+        body: JSON.stringify({ district_ids: [districtId, districtId.toUpperCase()] }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      status: "initialized",
+      district_count: 1,
+    });
+    expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
+      headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
+    });
+    expect(initializeUserDistricts).toHaveBeenCalledWith({
+      userId: "99999999-9999-4999-8999-999999999999",
+      districtIds: [districtId],
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("supports anonymous resolve followed by post-signup district initialization", async () => {
+    const resolvedAddressWithUuidDistrict = {
+      ...resolvedAddress,
+      districts: resolvedAddress.districts.map((district) => ({ ...district, id: districtId })),
+    };
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddressWithUuidDistrict);
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const initializeUserDistricts = vi.fn().mockResolvedValue({
+      status: "initialized",
+      districtCount: 1,
+    });
+    const app = createApiApp({ resolveAddress, resolveAuthenticatedUserId, initializeUserDistricts });
+
+    const resolveResponse = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      headers: { "content-type": "application/json" },
+    });
+    expect(resolveResponse.statusCode).toBe(200);
+    expect(resolveResponse.body).toEqual({
+      matched_address: resolvedAddressWithUuidDistrict.matched_address,
+      districts: resolvedAddressWithUuidDistrict.districts,
+    });
+    expect(initializeUserDistricts).not.toHaveBeenCalled();
+
+    const returnedDistrictIds = (resolveResponse.body as { districts: Array<{ id: string }> }).districts.map(
+      (district) => district.id
+    );
+    const initializeResponse = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/me/districts/initialize",
+      body: JSON.stringify({ district_ids: returnedDistrictIds }),
+      headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+    });
+
+    expect(initializeResponse.statusCode).toBe(200);
+    expect(initializeResponse.body).toEqual({
+      status: "initialized",
+      district_count: 1,
+    });
+    expect(initializeUserDistricts).toHaveBeenCalledWith({
+      userId: "99999999-9999-4999-8999-999999999999",
+      districtIds: [districtId],
+    });
+  });
+
+  it("returns already_initialized for users with existing saved districts", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const initializeUserDistricts = vi.fn().mockResolvedValue({
+      status: "already_initialized",
+      districtCount: 7,
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, initializeUserDistricts }),
+      {
+        method: "POST",
+        path: "/api/me/districts/initialize",
+        body: JSON.stringify({ district_ids: [districtId] }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      status: "already_initialized",
+      district_count: 7,
+    });
+    expect(initializeUserDistricts).toHaveBeenCalledOnce();
+  });
+
+  it("rejects district initialization when authentication is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const initializeUserDistricts = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, initializeUserDistricts }), {
+      method: "POST",
+      path: "/api/me/districts/initialize",
+      body: JSON.stringify({ district_ids: [districtId] }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(initializeUserDistricts).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when district initialization storage is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, resolveAuthenticatedUserId }), {
+      method: "POST",
+      path: "/api/me/districts/initialize",
+      body: JSON.stringify({ district_ids: [districtId] }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "User district initialization is not configured",
+      },
+    });
+  });
+
+  it("rejects district initialization without an authenticated user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(null);
+    const initializeUserDistricts = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, initializeUserDistricts }),
+      {
+        method: "POST",
+        path: "/api/me/districts/initialize",
+        body: JSON.stringify({ district_ids: [districtId] }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(initializeUserDistricts).not.toHaveBeenCalled();
+  });
+
+  it("rejects invalid district initialization payloads before calling the store", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const initializeUserDistricts = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, initializeUserDistricts }),
+      {
+        method: "POST",
+        path: "/api/me/districts/initialize",
+        body: JSON.stringify({ district_ids: ["not-a-uuid"] }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "district_ids contains invalid UUID: not-a-uuid",
+      },
+    });
+    expect(initializeUserDistricts).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-JSON content types before parsing district initialization bodies", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const initializeUserDistricts = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, initializeUserDistricts }),
+      {
+        method: "POST",
+        path: "/api/me/districts/initialize",
+        body: JSON.stringify({ district_ids: [districtId] }),
+        headers: { "content-type": "text/plain" },
+      }
+    );
+
+    expect(response.statusCode).toBe(415);
+    expect(response.body).toEqual({
+      error: {
+        code: "unsupported_media_type",
+        message: "Content-Type must be application/json",
+      },
+    });
+    expect(resolveAuthenticatedUserId).not.toHaveBeenCalled();
+    expect(initializeUserDistricts).not.toHaveBeenCalled();
+  });
+
+  it("rejects too many district IDs before calling the initialize store", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const initializeUserDistricts = vi.fn();
+    const districtIds = Array.from({ length: MAX_INITIALIZE_DISTRICT_IDS + 1 }, (_value, index) =>
+      makeDistrictId(index + 1)
+    );
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, initializeUserDistricts }),
+      {
+        method: "POST",
+        path: "/api/me/districts/initialize",
+        body: JSON.stringify({ district_ids: districtIds }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: `district_ids supports at most ${MAX_INITIALIZE_DISTRICT_IDS} UUIDs`,
+      },
+    });
+    expect(initializeUserDistricts).not.toHaveBeenCalled();
+  });
+
+  it("maps initialize store errors to API errors", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const initializeUserDistricts = vi
+      .fn()
+      .mockRejectedValue(new InitializeUserDistrictsError("unknown_district_ids", `Unknown district IDs: ${districtId}`));
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, initializeUserDistricts }),
+      {
+        method: "POST",
+        path: "/api/me/districts/initialize",
+        body: JSON.stringify({ district_ids: [districtId] }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: `Unknown district IDs: ${districtId}`,
+      },
+    });
   });
 
   it("dispatches routes correctly when mounted under a path prefix", async () => {
