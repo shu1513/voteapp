@@ -24,7 +24,7 @@ describe("resolveAddressToDistricts", () => {
           state: "CA",
           state_fips: "06",
           population: 9876482,
-          vote_power_score: "12.30",
+          representation_power_score: "12.30",
         },
       ],
     });
@@ -72,7 +72,7 @@ describe("resolveAddressToDistricts", () => {
           state: "CA",
           state_fips: "06",
           population: 9876482,
-          vote_power_score: 12.3,
+          representation_power_score: 12.3,
         },
       ],
       missing_district_keys: [{ district_type: "place", geoid_compact: "0603666" }],
@@ -143,7 +143,7 @@ describe("resolveAddressToDistricts", () => {
           state: "CA",
           state_fips: "06",
           population: 9876482,
-          vote_power_score: "12.30",
+          representation_power_score: "12.30",
         },
       ],
     });
@@ -167,7 +167,7 @@ describe("resolveAddressToDistricts", () => {
         state: "CA",
         state_fips: "06",
         population: 9876482,
-        vote_power_score: 12.3,
+        representation_power_score: 12.3,
       },
     ]);
   });

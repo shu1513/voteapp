@@ -1089,7 +1089,7 @@ async function deleteDistrict(
 }
 
 /**
- * Recomputes vote_power_score for every district row using a log-scaled inverse-population model:
+ * Recomputes representation_power_score for every district row using a log-scaled inverse-population model:
  *   score_i = 100 * ln(max_scope_pop / pop_i) / ln(max_scope_pop / min_scope_pop)
  *
  * Why this model:
@@ -1101,7 +1101,7 @@ async function deleteDistrict(
  * - statewide/us_house: national scope per district_type.
  * - all other district types: state-level scope (district_type + state_fips).
  */
-async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
+async function recomputeRepresentationPowerScores(client: PoolClient): Promise<void> {
   await client.query(
     `
       WITH scoped AS (
@@ -1147,15 +1147,15 @@ async function recomputeVotePowerScores(client: PoolClient): Promise<void> {
               ),
               2
             )
-          END AS vote_power_score
+          END AS representation_power_score
         FROM scoped
         LEFT JOIN scope_stats ON scope_stats.scope_key = scoped.scope_key
       )
       UPDATE public.districts
-      SET vote_power_score = scored.vote_power_score
+      SET representation_power_score = scored.representation_power_score
       FROM scored
       WHERE public.districts.id = scored.id
-        AND public.districts.vote_power_score IS DISTINCT FROM scored.vote_power_score
+        AND public.districts.representation_power_score IS DISTINCT FROM scored.representation_power_score
     `
   );
 }
@@ -1269,7 +1269,7 @@ export async function runDistrictsLoader(options: DistrictLoadOptions): Promise<
         updated += 1;
       }
 
-      await recomputeVotePowerScores(client);
+      await recomputeRepresentationPowerScores(client);
       await client.query("COMMIT");
     } catch (error) {
       await client.query("ROLLBACK");
