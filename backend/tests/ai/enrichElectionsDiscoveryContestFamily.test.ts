@@ -139,4 +139,104 @@ describe("enrichElections discovery contest family provenance", () => {
     expect(result[0].discovery_contest_family).toBe("us_senate");
     expect(warnSpy).not.toHaveBeenCalled();
   });
+
+  it("drops presidential entries from non-judicial family results without discarding valid offices", async () => {
+    callResearchProviderMock.mockImplementation(async (_candidate, prompt: string) => {
+      if (prompt.includes("Contest family for this call: non_judicial_office")) {
+        return {
+          ok: true,
+          parsed: {
+            entries: [
+              buildEntry("Governor"),
+              buildEntry("President and Vice President"),
+            ],
+          },
+          rawText: "{}",
+          debugMeta: {},
+        };
+      }
+      return buildEmptyResult();
+    });
+
+    const { enrichElections } = await import("../../src/ai/enrichElections.ts");
+    const result = await enrichElections(
+      {
+        ingestKey: "test:family:president-filter",
+        draft: {
+          district_id: "district-1",
+          district_name: "California",
+          district_type: "statewide",
+          state: "CA",
+        },
+        promptVersion: "elections_v2",
+        softRetryCount: 0,
+        reviewFeedback: [],
+      },
+      { timeoutMs: 1000, openAiApiKey: "test-key" },
+      [{ provider: "openai", model: "gpt-5.4-mini" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries).toHaveLength(1);
+      expect(result.payload.entries[0].official_ballot_title).toBe("Governor");
+      expect(result.payload.entries[0].discovery_contest_family).toBe("non_judicial_office");
+      expect(result.aiRawDebug?.family_debug).toMatchObject({
+        non_judicial_office: {
+          dropped_presidential_titles: ["President and Vice President"],
+        },
+      });
+    }
+  });
+
+  it("retries when non-judicial family results contain only presidential entries", async () => {
+    let nonJudicialCalls = 0;
+    callResearchProviderMock.mockImplementation(async (_candidate, prompt: string) => {
+      if (prompt.includes("Contest family for this call: non_judicial_office")) {
+        nonJudicialCalls += 1;
+        if (nonJudicialCalls === 1) {
+          return {
+            ok: true,
+            parsed: { entries: [buildEntry("President and Vice President")] },
+            rawText: "{}",
+            debugMeta: {},
+          };
+        }
+        expect(prompt).toContain("returned only presidential contests");
+        return {
+          ok: true,
+          parsed: { entries: [buildEntry("Governor")] },
+          rawText: "{}",
+          debugMeta: {},
+        };
+      }
+      return buildEmptyResult();
+    });
+
+    const { enrichElections } = await import("../../src/ai/enrichElections.ts");
+    const result = await enrichElections(
+      {
+        ingestKey: "test:family:president-only-retry",
+        draft: {
+          district_id: "district-1",
+          district_name: "California",
+          district_type: "statewide",
+          state: "CA",
+        },
+        promptVersion: "elections_v2",
+        softRetryCount: 0,
+        reviewFeedback: [],
+      },
+      { timeoutMs: 1000, openAiApiKey: "test-key" },
+      [{ provider: "openai", model: "gpt-5.4-mini" }]
+    );
+
+    expect(nonJudicialCalls).toBe(2);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries.map((entry) => entry.official_ballot_title)).toEqual([
+        "Governor",
+      ]);
+    }
+  });
 });

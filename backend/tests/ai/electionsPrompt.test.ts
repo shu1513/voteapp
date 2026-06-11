@@ -76,4 +76,22 @@ describe("buildElectionsPrompt partisanship field gating", () => {
       "For ballot measures, official_ballot_title must be the actual official measure label/title"
     );
   });
+
+  it("excludes presidential contests from statewide non-judicial discovery", () => {
+    const prompt = buildElectionsPrompt({
+      draft: {
+        district_id: "d-1",
+        district_name: "California",
+        district_type: "statewide",
+        state: "CA",
+      },
+      softRetryCount: 0,
+      reviewFeedbackLines: [],
+      contestFamily: "non_judicial_office",
+    });
+
+    expect(prompt).toContain(
+      "Exclude all ballot measures, all judicial contests, all federal contests (including President, Vice President, presidential electors, U.S. Senate, and U.S. House)."
+    );
+  });
 });

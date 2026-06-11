@@ -242,6 +242,129 @@ describe("runElectionsValidator", () => {
     expect(rejectedCall).toBeUndefined();
   });
 
+  it("soft-retries when standard election discovery returns only presidential contests", async () => {
+    const payload = {
+      district_id: "d-president",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "President and Vice President",
+          election_date: "2099-11-03",
+          race_type: "office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:1",
+            payload,
+            status: "pending",
+            run_id: "run_president",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      STAGING_DRAFT_STREAM,
+      "*",
+      expect.objectContaining({
+        ingest_key: "elections:test:1",
+        item_type: STAGING_ITEM_TYPE_ELECTION,
+      })
+    );
+
+    const rejectedCall = redisXAddMock.mock.calls.find((call) => call[0] === STAGING_REJECTED_STREAM);
+    expect(rejectedCall).toBeUndefined();
+
+    expect(redisXAddMock).not.toHaveBeenCalledWith(
+      STAGING_VALIDATED_STREAM,
+      "*",
+      expect.objectContaining({
+        ingest_key: "elections:test:1",
+      })
+    );
+  });
+
+  it("drops presidential contests while validating remaining statewide offices", async () => {
+    const payload = {
+      district_id: "d-president-mixed",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2099-11-03",
+          race_type: "office",
+          sources: ["https://example.org/election/governor"],
+        },
+        {
+          official_ballot_title: "President and Vice President",
+          election_date: "2099-11-03",
+          race_type: "office",
+          sources: ["https://example.org/election/president"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:1",
+            payload,
+            status: "pending",
+            run_id: "run_president_mixed",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      STAGING_VALIDATED_STREAM,
+      "*",
+      expect.objectContaining({
+        ingest_key: "elections:test:1",
+        item_type: STAGING_ITEM_TYPE_ELECTION,
+      })
+    );
+
+    const validatedCall = redisXAddMock.mock.calls.find((call) => call[0] === STAGING_VALIDATED_STREAM);
+    const validatedPayload = JSON.parse(String((validatedCall?.[2] as Record<string, string> | undefined)?.payload));
+    expect(validatedPayload.entries).toEqual([
+      expect.objectContaining({ official_ballot_title: "Governor" }),
+    ]);
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("payload = $3::jsonb")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const storedPayload = JSON.parse(String(updateValidatedCall?.[1]?.[2]));
+    expect(storedPayload.entries).toEqual([
+      expect.objectContaining({ official_ballot_title: "Governor" }),
+    ]);
+
+    const rejectedCall = redisXAddMock.mock.calls.find((call) => call[0] === STAGING_REJECTED_STREAM);
+    expect(rejectedCall).toBeUndefined();
+  });
+
   it("accepts state_upper entries with legislature-style upper chamber titles", async () => {
     const payload = {
       district_id: "d-4",

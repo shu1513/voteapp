@@ -47,7 +47,7 @@ export function buildElectionsPrompt(args: {
                 ? "- Return only U.S. Senate contests for this statewide scope."
               : "- Return only ballot measure contests for this district scope.",
           contestFamily === "non_judicial_office"
-            ? "- Exclude all ballot measures, all judicial contests, and all federal contests (including U.S. Senate and U.S. House)."
+            ? "- Exclude all ballot measures, all judicial contests, all federal contests (including President, Vice President, presidential electors, U.S. Senate, and U.S. House)."
             : contestFamily === "judicial_office"
               ? "- Exclude all ballot measures and all non-judicial offices."
               : contestFamily === "us_senate"
