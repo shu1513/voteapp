@@ -58,6 +58,9 @@ describe("presidentialCycles", () => {
     expect(() => getUpcomingPresidentialElectionYears(new Date("2026-06-11T12:00:00.000Z"), 0)).toThrow(
       "Invalid presidential cycle count"
     );
+    expect(() => getUpcomingPresidentialElectionYears(new Date("2026-06-11T12:00:00.000Z"), 20)).toThrow(
+      "Only 19 supported presidential cycles remain through 2100"
+    );
   });
 
   it("builds general and party primary cycle seeds", () => {
@@ -219,6 +222,21 @@ describe("presidentialCycles", () => {
     ).rejects.toThrow("Primary presidential cycle seed electionDate must be null");
 
     expect(query).not.toHaveBeenCalled();
+
+    await expect(
+      upsertPresidentialCycles({ query }, [
+        {
+          electionYear: 2028,
+          stage: "primary",
+          party: " Democratic ",
+          electionDate: null,
+          status: "upcoming",
+          sources: [],
+        },
+      ])
+    ).rejects.toThrow("Primary presidential cycle seed party must be trimmed");
+
+    expect(query).not.toHaveBeenCalled();
   });
 
   it("rejects invalid general cycle seeds before issuing SQL", async () => {
@@ -251,6 +269,33 @@ describe("presidentialCycles", () => {
         },
       ])
     ).rejects.toThrow("Invalid general presidential election date for 2028");
+
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it("validates the full seed batch before issuing any SQL", async () => {
+    const query = vi.fn();
+
+    await expect(
+      upsertPresidentialCycles({ query }, [
+        {
+          electionYear: 2028,
+          stage: "general",
+          party: null,
+          electionDate: "2028-11-07",
+          status: "upcoming",
+          sources: [],
+        },
+        {
+          electionYear: 2028,
+          stage: "primary",
+          party: " Democratic ",
+          electionDate: null,
+          status: "upcoming",
+          sources: [],
+        },
+      ])
+    ).rejects.toThrow("Primary presidential cycle seed party must be trimmed");
 
     expect(query).not.toHaveBeenCalled();
   });

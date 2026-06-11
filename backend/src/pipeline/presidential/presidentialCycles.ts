@@ -13,6 +13,8 @@ export type PresidentialCycleSeed = {
 
 export const DEFAULT_PRESIDENTIAL_CYCLE_COUNT = 5;
 export const DEFAULT_PRESIDENTIAL_PRIMARY_PARTIES = ["Democratic", "Republican"] as const;
+const MIN_PRESIDENTIAL_ELECTION_YEAR = 2000;
+const MAX_PRESIDENTIAL_ELECTION_YEAR = 2100;
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -23,7 +25,11 @@ export type UpsertPresidentialCyclesResult = {
 };
 
 function assertValidYear(year: number): void {
-  if (!Number.isInteger(year) || year < 2000 || year > 2100) {
+  if (
+    !Number.isInteger(year) ||
+    year < MIN_PRESIDENTIAL_ELECTION_YEAR ||
+    year > MAX_PRESIDENTIAL_ELECTION_YEAR
+  ) {
     throw new Error(`Invalid presidential election year: ${year}`);
   }
 }
@@ -57,6 +63,9 @@ function assertValidCycleSeed(seed: PresidentialCycleSeed): void {
   if (seed.stage === "primary") {
     if (!seed.party || seed.party.trim().length === 0) {
       throw new Error("Primary presidential cycle seed party is required");
+    }
+    if (seed.party !== seed.party.trim()) {
+      throw new Error("Primary presidential cycle seed party must be trimmed");
     }
     if (seed.electionDate !== null) {
       throw new Error("Primary presidential cycle seed electionDate must be null");
@@ -96,7 +105,7 @@ export function getUpcomingPresidentialElectionYears(
 
   const years: number[] = [];
   let year = fromDate.getUTCFullYear();
-  while (years.length < count) {
+  while (years.length < count && year <= MAX_PRESIDENTIAL_ELECTION_YEAR) {
     if (isPresidentialElectionYear(year)) {
       const electionDate = getPresidentialGeneralElectionDate(year);
       const electionHasPassed = fromDate.toISOString().slice(0, 10) > electionDate;
@@ -105,6 +114,11 @@ export function getUpcomingPresidentialElectionYears(
       }
     }
     year += 1;
+  }
+  if (years.length < count) {
+    throw new Error(
+      `Invalid presidential cycle count: ${count}. Only ${years.length} supported presidential cycles remain through ${MAX_PRESIDENTIAL_ELECTION_YEAR}.`
+    );
   }
   return years;
 }
@@ -201,10 +215,13 @@ export async function upsertPresidentialCycles(
   db: Queryable,
   seeds: readonly PresidentialCycleSeed[]
 ): Promise<UpsertPresidentialCyclesResult> {
+  for (const seed of seeds) {
+    assertValidCycleSeed(seed);
+  }
+
   let changed = 0;
 
   for (const seed of seeds) {
-    assertValidCycleSeed(seed);
     const didChange =
       seed.stage === "general"
         ? await upsertGeneralPresidentialCycle(db, seed)

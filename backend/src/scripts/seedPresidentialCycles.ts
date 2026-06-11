@@ -18,10 +18,10 @@ async function main(): Promise<void> {
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const startedAt = new Date();
-  const seeds = buildPresidentialCycleSeeds(startedAt);
 
   let client: PoolClient | undefined;
   try {
+    const seeds = buildPresidentialCycleSeeds(startedAt);
     client = await pool.connect();
     await client.query("BEGIN");
     const result = await upsertPresidentialCycles(client, seeds);
