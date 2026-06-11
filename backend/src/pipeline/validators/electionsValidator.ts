@@ -16,7 +16,7 @@ import {
 } from "../../contracts/electionEnrichmentContract.js";
 import { parseCanonicalElectionPayload } from "../../contracts/electionPayloadContract.js";
 import type { ElectionDistrictType, ElectionEnrichedPayload, ElectionEntryPayload } from "../../types/election.js";
-import { isPresidentialOfficeTitle } from "../../utils/presidentialOffice.js";
+import { filterPresidentialElectionEntries } from "../../utils/presidentialOffice.js";
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
 
 type ValidatorOptions = {
@@ -270,26 +270,17 @@ function ballotMeasureTitleQualityIssue(entry: ElectionEntryPayload): string | n
 }
 
 function filterPresidentialEntries(payload: ElectionEnrichedPayload): PresidentialEntryFilterResult {
-  const keptEntries: ElectionEntryPayload[] = [];
-  const removedTitles: string[] = [];
-
-  for (const entry of payload.entries) {
-    if (entry.race_type === "office" && isPresidentialOfficeTitle(entry.official_ballot_title)) {
-      removedTitles.push(entry.official_ballot_title);
-      continue;
-    }
-    keptEntries.push(entry);
-  }
+  const result = filterPresidentialElectionEntries(payload.entries);
 
   return {
     payload:
-      removedTitles.length === 0
+      result.removedTitles.length === 0
         ? payload
         : {
             ...payload,
-            entries: keptEntries,
+            entries: result.entries,
           },
-    removedTitles,
+    removedTitles: result.removedTitles,
   };
 }
 

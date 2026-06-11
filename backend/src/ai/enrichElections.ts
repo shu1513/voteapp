@@ -21,7 +21,7 @@ import type {
 } from "../types/election.js";
 import { verifyHttpUrlReachability } from "./urlReachability.js";
 import { normalizeElectionTitleKey } from "../utils/normalizeElectionTitleKey.js";
-import { isPresidentialOfficeTitle } from "../utils/presidentialOffice.js";
+import { filterPresidentialElectionEntries } from "../utils/presidentialOffice.js";
 import { hasSpecialSeatMarker, isUsSenateOfficeTitle } from "../utils/senateOffice.js";
 
 const CLAUDE_INTER_CALL_DELAY_MS = 20_000;
@@ -402,17 +402,8 @@ function filterPresidentialEntriesForContestFamily(
   if (family !== "non_judicial_office") {
     return { entries, droppedTitles: [] };
   }
-
-  const kept: ElectionEntryPayload[] = [];
-  const droppedTitles: string[] = [];
-  for (const entry of entries) {
-    if (entry.race_type === "office" && isPresidentialOfficeTitle(entry.official_ballot_title)) {
-      droppedTitles.push(entry.official_ballot_title);
-      continue;
-    }
-    kept.push(entry);
-  }
-  return { entries: kept, droppedTitles };
+  const result = filterPresidentialElectionEntries(entries);
+  return { entries: result.entries, droppedTitles: result.removedTitles };
 }
 
 function validateContestFamilySoft(

@@ -95,6 +95,40 @@ BEFORE UPDATE ON public.presidential_cycle_candidates
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at();
 
+CREATE OR REPLACE FUNCTION public.enforce_presidential_cycle_candidate_party()
+RETURNS trigger AS $$
+DECLARE
+  cycle_stage text;
+  cycle_party text;
+BEGIN
+  SELECT stage, party
+  INTO cycle_stage, cycle_party
+  FROM public.presidential_cycles
+  WHERE id = NEW.cycle_id
+  FOR UPDATE;
+
+  IF cycle_stage IS NULL THEN
+    RAISE EXCEPTION 'Missing presidential cycle for candidate: %', NEW.cycle_id;
+  END IF;
+
+  IF cycle_stage = 'primary'
+     AND lower(trim(NEW.party)) <> lower(trim(cycle_party)) THEN
+    RAISE EXCEPTION
+      'Candidate party (%) must match primary cycle party (%) for cycle %',
+      NEW.party, cycle_party, NEW.cycle_id;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_presidential_cycle_candidates_party_consistency
+  ON public.presidential_cycle_candidates;
+CREATE TRIGGER trg_presidential_cycle_candidates_party_consistency
+BEFORE INSERT OR UPDATE OF cycle_id, party ON public.presidential_cycle_candidates
+FOR EACH ROW
+EXECUTE FUNCTION public.enforce_presidential_cycle_candidate_party();
+
 CREATE TABLE IF NOT EXISTS public.presidential_state_primary_dates (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   cycle_id uuid NOT NULL,
@@ -133,7 +167,8 @@ BEGIN
   SELECT stage
   INTO cycle_stage
   FROM public.presidential_cycles
-  WHERE id = NEW.cycle_id;
+  WHERE id = NEW.cycle_id
+  FOR UPDATE;
 
   IF cycle_stage IS NULL THEN
     RAISE EXCEPTION 'Missing presidential cycle for primary date: %', NEW.cycle_id;
@@ -177,5 +212,29 @@ CREATE TRIGGER trg_presidential_cycles_preserve_primary_date_parent
 BEFORE UPDATE OF stage ON public.presidential_cycles
 FOR EACH ROW
 EXECUTE FUNCTION public.prevent_presidential_cycle_stage_invalidating_primary_dates();
+
+CREATE OR REPLACE FUNCTION public.prevent_presidential_cycle_party_invalidating_candidates()
+RETURNS trigger AS $$
+BEGIN
+  IF NEW.stage = 'primary'
+     AND EXISTS (
+       SELECT 1
+       FROM public.presidential_cycle_candidates AS cycle_candidate
+       WHERE cycle_candidate.cycle_id = NEW.id
+         AND lower(trim(cycle_candidate.party)) <> lower(trim(NEW.party))
+     ) THEN
+    RAISE EXCEPTION 'Cannot set presidential primary cycle % to party % while candidates with different parties reference it', NEW.id, NEW.party;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_presidential_cycles_preserve_candidate_party
+  ON public.presidential_cycles;
+CREATE TRIGGER trg_presidential_cycles_preserve_candidate_party
+BEFORE UPDATE OF stage, party ON public.presidential_cycles
+FOR EACH ROW
+EXECUTE FUNCTION public.prevent_presidential_cycle_party_invalidating_candidates();
 
 COMMIT;
