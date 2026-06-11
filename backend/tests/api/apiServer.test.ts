@@ -403,6 +403,26 @@ describe("createApiApp", () => {
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
+  it("rejects non-application +json content types before parsing bodies", async () => {
+    const resolveAddress = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      headers: { "content-type": "text/plain+json" },
+    });
+
+    expect(response.statusCode).toBe(415);
+    expect(response.body).toEqual({
+      error: {
+        code: "unsupported_media_type",
+        message: "Content-Type must be application/json",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
   it("maps empty JSON bodies to invalid_request", async () => {
     const resolveAddress = vi.fn();
 

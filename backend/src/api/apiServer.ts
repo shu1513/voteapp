@@ -122,7 +122,7 @@ function createJsonBodyParser() {
     const rawContentType = request.headers["content-type"];
     const contentType = Array.isArray(rawContentType) ? rawContentType[0] : rawContentType;
     const mediaType = contentType?.split(";")[0]?.trim().toLowerCase();
-    return mediaType === "application/json" || mediaType?.endsWith("+json") === true;
+    return mediaType === "application/json" || (mediaType?.startsWith("application/") === true && mediaType.endsWith("+json"));
   }
 
   return (request: Request, response: Response, next: NextFunction): void => {
