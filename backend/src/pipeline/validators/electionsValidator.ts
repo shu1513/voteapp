@@ -16,6 +16,7 @@ import {
 } from "../../contracts/electionEnrichmentContract.js";
 import { parseCanonicalElectionPayload } from "../../contracts/electionPayloadContract.js";
 import type { ElectionDistrictType, ElectionEnrichedPayload, ElectionEntryPayload } from "../../types/election.js";
+import { isPresidentialOfficeTitle } from "../../utils/presidentialOffice.js";
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
 
 type ValidatorOptions = {
@@ -29,6 +30,11 @@ type ValidationSeverity = "pass" | "soft_fail" | "hard_fail";
 type ValidationResult = {
   severity: ValidationSeverity;
   reasons: string[];
+};
+
+type PresidentialEntryFilterResult = {
+  payload: ElectionEnrichedPayload;
+  removedTitles: string[];
 };
 
 type StagingRow = {
@@ -263,6 +269,30 @@ function ballotMeasureTitleQualityIssue(entry: ElectionEntryPayload): string | n
   return null;
 }
 
+function filterPresidentialEntries(payload: ElectionEnrichedPayload): PresidentialEntryFilterResult {
+  const keptEntries: ElectionEntryPayload[] = [];
+  const removedTitles: string[] = [];
+
+  for (const entry of payload.entries) {
+    if (entry.race_type === "office" && isPresidentialOfficeTitle(entry.official_ballot_title)) {
+      removedTitles.push(entry.official_ballot_title);
+      continue;
+    }
+    keptEntries.push(entry);
+  }
+
+  return {
+    payload:
+      removedTitles.length === 0
+        ? payload
+        : {
+            ...payload,
+            entries: keptEntries,
+          },
+    removedTitles,
+  };
+}
+
 function validateScope(payload: ElectionEnrichedPayload): ValidationResult {
   const reasons: string[] = [];
   let severity: ValidationSeverity = "pass";
@@ -423,8 +453,71 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
             continue;
           }
 
-          const validation = validateScope(parsed.payload);
           const softRetryCount = parseSoftRetryCount(row.failure_debug);
+          const presidentialFilter = filterPresidentialEntries(parsed.payload);
+          const payloadForValidation = presidentialFilter.payload;
+          if (presidentialFilter.removedTitles.length > 0 && payloadForValidation.entries.length === 0) {
+            const reason = `presidential entries excluded from standard election discovery: ${presidentialFilter.removedTitles.join(", ")}`;
+            if (softRetryCount === 0) {
+              const failureDebug = {
+                soft_retry_count: 1,
+                validation_feedback: [reason],
+                soft_retry_at: new Date().toISOString(),
+              };
+
+              await pool.query(
+                `
+                  UPDATE staging_items
+                  SET status = 'pending',
+                      reason = $2,
+                      failure_debug = $3::jsonb,
+                      schema_version = $4,
+                      updated_at = now()
+                  WHERE ingest_key = $1
+                    AND item_type = $5
+                `,
+                [
+                  ingestKey,
+                  `soft_fail: ${reason}`,
+                  JSON.stringify(failureDebug),
+                  ELECTION_DRAFT_SCHEMA_VERSION,
+                  STAGING_ITEM_TYPE_ELECTION,
+                ]
+              );
+
+              await redis.xAdd(STAGING_DRAFT_STREAM, "*", {
+                ingest_key: ingestKey,
+                item_type: STAGING_ITEM_TYPE_ELECTION,
+                run_id: row.run_id ?? "",
+              });
+
+              await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+              continue;
+            }
+
+            const rejectReason = `soft_fail_final: ${reason}`;
+            await pool.query(
+              `
+                UPDATE staging_items
+                SET status = 'rejected',
+                    reason = $2,
+                    updated_at = now()
+                WHERE ingest_key = $1
+                  AND item_type = $3
+              `,
+              [ingestKey, rejectReason, STAGING_ITEM_TYPE_ELECTION]
+            );
+            await redis.xAdd(STAGING_REJECTED_STREAM, "*", {
+              ingest_key: ingestKey,
+              item_type: STAGING_ITEM_TYPE_ELECTION,
+              run_id: row.run_id ?? "",
+              reason: rejectReason,
+            });
+            await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+            continue;
+          }
+
+          const validation = validateScope(payloadForValidation);
 
           if (validation.severity === "hard_fail") {
             const reason = `hard_fail: ${validation.reasons.join("; ")}`;
@@ -493,19 +586,20 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
                 `
                   UPDATE staging_items
                   SET status = 'validated',
+                      payload = $3::jsonb,
                       reason = NULL,
                       validated_at = now(),
                       updated_at = now()
                   WHERE ingest_key = $1
                     AND item_type = $2
                 `,
-                [ingestKey, STAGING_ITEM_TYPE_ELECTION]
+                [ingestKey, STAGING_ITEM_TYPE_ELECTION, JSON.stringify(payloadForValidation)]
               );
               await redis.xAdd(STAGING_VALIDATED_STREAM, "*", {
                 ingest_key: ingestKey,
                 item_type: STAGING_ITEM_TYPE_ELECTION,
                 run_id: row.run_id ?? "",
-                payload: JSON.stringify(parsed.payload),
+                payload: JSON.stringify(payloadForValidation),
               });
               await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
               continue;
@@ -537,20 +631,21 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
             `
               UPDATE staging_items
               SET status = 'validated',
+                  payload = $3::jsonb,
                   reason = NULL,
                   validated_at = now(),
                   updated_at = now()
               WHERE ingest_key = $1
                 AND item_type = $2
             `,
-            [ingestKey, STAGING_ITEM_TYPE_ELECTION]
+            [ingestKey, STAGING_ITEM_TYPE_ELECTION, JSON.stringify(payloadForValidation)]
           );
 
           await redis.xAdd(STAGING_VALIDATED_STREAM, "*", {
             ingest_key: ingestKey,
             item_type: STAGING_ITEM_TYPE_ELECTION,
             run_id: row.run_id ?? "",
-            payload: JSON.stringify(parsed.payload),
+            payload: JSON.stringify(payloadForValidation),
           });
           await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
         } catch (error) {

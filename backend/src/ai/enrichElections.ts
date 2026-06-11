@@ -21,6 +21,7 @@ import type {
 } from "../types/election.js";
 import { verifyHttpUrlReachability } from "./urlReachability.js";
 import { normalizeElectionTitleKey } from "../utils/normalizeElectionTitleKey.js";
+import { isPresidentialOfficeTitle } from "../utils/presidentialOffice.js";
 import { hasSpecialSeatMarker, isUsSenateOfficeTitle } from "../utils/senateOffice.js";
 
 const CLAUDE_INTER_CALL_DELAY_MS = 20_000;
@@ -394,6 +395,26 @@ function containsUsSenateMarker(entry: ElectionEntryPayload): boolean {
   return isUsSenateOfficeTitle(entry.official_ballot_title);
 }
 
+function filterPresidentialEntriesForContestFamily(
+  family: ElectionContestScope,
+  entries: ElectionEntryPayload[]
+): { entries: ElectionEntryPayload[]; droppedTitles: string[] } {
+  if (family !== "non_judicial_office") {
+    return { entries, droppedTitles: [] };
+  }
+
+  const kept: ElectionEntryPayload[] = [];
+  const droppedTitles: string[] = [];
+  for (const entry of entries) {
+    if (entry.race_type === "office" && isPresidentialOfficeTitle(entry.official_ballot_title)) {
+      droppedTitles.push(entry.official_ballot_title);
+      continue;
+    }
+    kept.push(entry);
+  }
+  return { entries: kept, droppedTitles };
+}
+
 function validateContestFamilySoft(
   family: ElectionContestScope,
   entries: ElectionEntryPayload[]
@@ -714,7 +735,23 @@ async function runPromptWithCandidates(
         break;
       }
 
-      const familyValidation = validateContestFamilySoft(contestFamily, parsed.payload.entries);
+      const presidentialFilter = filterPresidentialEntriesForContestFamily(
+        contestFamily,
+        parsed.payload.entries
+      );
+      if (
+        presidentialFilter.droppedTitles.length > 0 &&
+        presidentialFilter.entries.length === 0 &&
+        attempt === 0
+      ) {
+        cumulativeRetryFeedback.add(
+          "The non_judicial_office family returned only presidential contests. Exclude President, Vice President, presidential electors, presidential primaries, and presidential preference contests; return only non-presidential state or local offices for this district."
+        );
+        retryFeedbackLines = [...cumulativeRetryFeedback].slice(0, 20);
+        continue;
+      }
+
+      const familyValidation = validateContestFamilySoft(contestFamily, presidentialFilter.entries);
       if (!familyValidation.ok) {
         failures.push({
           provider: candidate.provider,
@@ -726,10 +763,10 @@ async function runPromptWithCandidates(
         break;
       }
 
-      let resolvedEntries = parsed.payload.entries;
+      let resolvedEntries = presidentialFilter.entries;
       const usSenateResolutionNotes: UsSenateResolutionNote[] = [];
       if (contestFamily === "us_senate") {
-        const resolution = resolveUsSenateEntries(parsed.payload.entries, attempt);
+        const resolution = resolveUsSenateEntries(presidentialFilter.entries, attempt);
         if (resolution.shouldRetry) {
           const feedbackLine = resolution.retryFeedback
             ? `${resolution.retryFeedback} Differentiate seats (not parties) and provide class, term_end_year, or special/unexpired evidence.`
@@ -786,6 +823,9 @@ async function runPromptWithCandidates(
           provider_response_text: trimDebugText(generated.rawText),
           ...(usSenateResolutionNotes.length > 0
             ? { us_senate_resolution_notes: usSenateResolutionNotes }
+            : {}),
+          ...(presidentialFilter.droppedTitles.length > 0
+            ? { dropped_presidential_titles: presidentialFilter.droppedTitles }
             : {}),
           ...(generated.debugMeta ?? {}),
         },
