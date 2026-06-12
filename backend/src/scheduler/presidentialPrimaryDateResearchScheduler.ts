@@ -579,11 +579,12 @@ async function runAdaptivePresidentialPrimaryDateResearchRolloverJob(input: {
     const producerResult = await runPresidentialPrimaryDateResearchProducer({
       dryRun: input.dryRun,
       force: input.force,
+      now,
     });
     const finalSync = await syncPresidentialPrimaryDateResearchScheduler(pool, queue, {
       dryRun: input.dryRun,
       force: input.force,
-      now: new Date(),
+      now,
     });
 
     return {

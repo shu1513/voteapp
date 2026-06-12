@@ -122,8 +122,109 @@ describe("presidentialPrimaryDateResearchScheduler", () => {
       expect(producerMock).toHaveBeenCalledWith({
         dryRun: true,
         force: true,
+        now: new Date("2027-03-08T00:00:00.000Z"),
       });
       expect(queueInstance.upsertJobScheduler).toHaveBeenCalledTimes(2);
+      expect(queueClose).toHaveBeenCalledTimes(1);
+      expect(poolEnd).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("uses one rollover timestamp for initial and final adaptive sync", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2028-12-06T23:59:59.999Z"));
+
+    const poolEnd = vi.fn(async () => undefined);
+    const queueClose = vi.fn(async () => undefined);
+    const queueInstance = {
+      upsertJobScheduler: vi.fn(async () => undefined),
+      removeJobScheduler: vi.fn(async () => true),
+      getJob: vi.fn(async () => undefined),
+      add: vi.fn(async () => ({ id: "completion" })),
+      close: queueClose,
+    };
+    const producerMock = vi.fn(async () => {
+      vi.setSystemTime(new Date("2028-12-07T00:00:00.000Z"));
+      return {
+        enabled: true,
+        forced: false,
+        dryRun: false,
+        now: "2028-12-06T23:59:59.999Z",
+        maxRowsPerRun: 200,
+        maxStatesPerJob: 10,
+        maxJobsPerRun: 20,
+        cyclesScanned: 1,
+        eligibleCycleCount: 1,
+        bootstrapRequestedRowCount: 0,
+        bootstrapInsertedRowCount: 0,
+        dueRowCount: 1,
+        dueGroupCount: 1,
+        selectedGroupCount: 1,
+        maxRowsHit: false,
+        maxGroupsHit: false,
+        enqueuedJobCount: 1,
+        updatedJobCount: 0,
+        skippedActiveJobCount: 0,
+      };
+    });
+
+    try {
+      vi.doMock("pg", () => ({
+        Pool: vi.fn(() => ({
+          query: vi.fn(async () => ({
+            rows: [
+              {
+                cycle_id: "cycle-2028-democratic",
+                election_year: 2028,
+                official_found_count: "50",
+              },
+            ],
+          })),
+          end: poolEnd,
+        })),
+      }));
+      vi.doMock("bullmq", () => ({
+        Queue: vi.fn(() => queueInstance),
+        Worker: vi.fn(),
+      }));
+      vi.doMock("../../src/pipeline/producers/presidentialPrimaryDateResearchProducer.js", () => ({
+        runPresidentialPrimaryDateResearchProducer: producerMock,
+        PRESIDENTIAL_PRIMARY_DATE_RESEARCH_JOB_NAME: "presidential_primary_date_research",
+      }));
+
+      const { runPresidentialPrimaryDateResearchRolloverJob } = await import(
+        "../../src/scheduler/presidentialPrimaryDateResearchScheduler.js"
+      );
+
+      const result = await runPresidentialPrimaryDateResearchRolloverJob({
+        triggeredBy: "daily",
+      });
+
+      expect(result.schedulerState?.mode).toBe("active");
+      expect(result.schedulerSync).toEqual({
+        dailyScheduler: "upserted",
+        activationJob: "none",
+        activationScheduledFor: null,
+        completionJob: "scheduled",
+        completionScheduledFor: "2028-12-07T00:00:00.000Z",
+      });
+      expect(queueInstance.upsertJobScheduler).toHaveBeenCalledTimes(2);
+      expect(queueInstance.removeJobScheduler).not.toHaveBeenCalledWith(
+        "presidential_primary_date_research_daily_rollover"
+      );
+      expect(queueInstance.add).toHaveBeenCalledWith(
+        "presidential_primary_date_research_rollover",
+        expect.objectContaining({
+          triggeredBy: "completion",
+          requestedAt: "2028-12-06T23:59:59.999Z",
+        }),
+        expect.objectContaining({
+          delay: 1,
+          jobId: "presidential_primary_date_research_completion",
+        })
+      );
       expect(queueClose).toHaveBeenCalledTimes(1);
       expect(poolEnd).toHaveBeenCalledTimes(1);
     } finally {
@@ -227,6 +328,7 @@ describe("presidentialPrimaryDateResearchScheduler", () => {
       expect(producerMock).toHaveBeenCalledWith({
         dryRun: true,
         force: true,
+        now: new Date("2027-03-08T00:00:00.000Z"),
       });
       expect(queueClose).toHaveBeenCalledTimes(1);
       expect(poolEnd).toHaveBeenCalledTimes(1);
