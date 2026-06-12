@@ -8,8 +8,7 @@ type RedisSendCommandClient = {
   sendCommand(args: string[]): Promise<unknown>;
 };
 
-export type CandidateProfileDraftEmitInput = {
-  electionId: string;
+type CandidateProfileDraftBaseInput = {
   runId: string | null;
   displayName: string;
   rosterIndex: number;
@@ -22,6 +21,22 @@ export type CandidateProfileDraftEmitInput = {
   seedUrls: readonly string[];
   dedupeKey?: string;
 };
+
+export type ElectionCandidateProfileDraftEmitInput = CandidateProfileDraftBaseInput & {
+  contextType?: "election";
+  electionId: string;
+  presidentialCycleId?: never;
+};
+
+export type PresidentialCycleCandidateProfileDraftEmitInput = CandidateProfileDraftBaseInput & {
+  contextType: "presidential_cycle";
+  presidentialCycleId: string;
+  electionId?: never;
+};
+
+export type CandidateProfileDraftEmitInput =
+  | ElectionCandidateProfileDraftEmitInput
+  | PresidentialCycleCandidateProfileDraftEmitInput;
 
 const PROFILE_DRAFT_EMIT_MARKER_PREFIX = "staging:candidate_profile_draft_emitted:";
 
@@ -58,7 +73,11 @@ redis.call(
   "roster_state_filing_ids",
   ARGV[12],
   "emitted_at",
-  ARGV[13]
+  ARGV[13],
+  "context_type",
+  ARGV[14],
+  "presidential_cycle_id",
+  ARGV[15]
 )
 redis.call("SET", KEYS[2], ARGV[13])
 return 1
@@ -82,11 +101,30 @@ function normalizeSeedUrls(values: readonly string[]): string[] {
   return urls;
 }
 
+function contextTypeForInput(input: CandidateProfileDraftEmitInput): "election" | "presidential_cycle" {
+  return input.contextType ?? "election";
+}
+
+function electionIdForInput(input: CandidateProfileDraftEmitInput): string {
+  return input.contextType === "presidential_cycle" ? "" : input.electionId.trim();
+}
+
+function presidentialCycleIdForInput(input: CandidateProfileDraftEmitInput): string {
+  return input.contextType === "presidential_cycle" ? input.presidentialCycleId.trim() : "";
+}
+
+function contextIdForInput(input: CandidateProfileDraftEmitInput): string {
+  return input.contextType === "presidential_cycle" ? input.presidentialCycleId.trim() : input.electionId.trim();
+}
+
 function markerKeyForInput(input: CandidateProfileDraftEmitInput, normalizedName: string): string {
   if (input.dedupeKey?.trim()) {
     return `${PROFILE_DRAFT_EMIT_MARKER_PREFIX}${input.dedupeKey.trim()}`;
   }
-  return `${PROFILE_DRAFT_EMIT_MARKER_PREFIX}${input.electionId}:${normalizedName}:${input.rosterIndex}`;
+  if (input.contextType === "presidential_cycle") {
+    return `${PROFILE_DRAFT_EMIT_MARKER_PREFIX}presidential_cycle:${input.presidentialCycleId.trim()}:${normalizedName}:${input.rosterIndex}`;
+  }
+  return `${PROFILE_DRAFT_EMIT_MARKER_PREFIX}${input.electionId.trim()}:${normalizedName}:${input.rosterIndex}`;
 }
 
 export async function enqueueCandidateProfileDrafts(
@@ -99,10 +137,10 @@ export async function enqueueCandidateProfileDrafts(
   const seenMarkerKeys = new Set<string>();
 
   for (const input of inputs) {
-    const electionId = input.electionId.trim();
+    const contextId = contextIdForInput(input);
     const displayName = input.displayName.trim();
     const normalizedName = normalizeCandidateName(displayName);
-    if (electionId.length === 0 || normalizedName.length === 0) {
+    if (contextId.length === 0 || normalizedName.length === 0) {
       continue;
     }
 
@@ -119,7 +157,7 @@ export async function enqueueCandidateProfileDrafts(
       "2",
       STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
       markerKey,
-      electionId,
+      electionIdForInput(input),
       STAGING_ITEM_TYPE_CANDIDATE_PROFILE,
       input.runId ?? "",
       displayName,
@@ -132,6 +170,8 @@ export async function enqueueCandidateProfileDrafts(
       JSON.stringify(normalizeStringArray(input.fecIds, (value) => value.toUpperCase())),
       JSON.stringify(normalizeStringArray(input.stateFilingIdsHint, (value) => value.toUpperCase())),
       emittedAt,
+      contextTypeForInput(input),
+      presidentialCycleIdForInput(input),
     ]);
 
     const value = typeof raw === "number" ? raw : Number.parseInt(String(raw), 10);

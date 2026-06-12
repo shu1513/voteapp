@@ -45,7 +45,7 @@ export type EnrichCandidateProfileInput = {
   districtName: string;
   districtType: string;
   state: string;
-  electionDate: string;
+  electionDate?: string | null;
   officialBallotTitle: string;
   electionStage?: string | null;
   senateClass?: string | null;

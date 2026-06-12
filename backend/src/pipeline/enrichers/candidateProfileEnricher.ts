@@ -1,4 +1,4 @@
-import { Pool, type PoolClient } from "pg";
+import { Pool } from "pg";
 import { createClient } from "redis";
 
 import {
@@ -14,14 +14,22 @@ import {
   STAGING_ITEM_TYPE_CANDIDATE_PROFILE,
 } from "../../config/electionsPipeline.js";
 import { enqueueCandidateRecordDrafts } from "../candidates/candidateRecordDraftEmitter.js";
-import type { CandidateProfilePayload } from "../../contracts/candidateProfilePayloadContract.js";
 import {
-  hasNormalizedIntersection,
   normalizeCandidateName,
-  normalizeOptionalUrl,
-  normalizeTwitterHandle,
   splitDisplayNameToFirstLast,
 } from "../../utils/candidateIdentity.js";
+import {
+  findOrCreateCandidateFromProfile,
+  hasAtLeastOneHardIdentifier,
+} from "../candidates/candidateProfileIdentity.js";
+import {
+  upsertCandidateElection,
+  upsertPresidentialCycleCandidate,
+} from "../candidates/candidateProfileLinks.js";
+import {
+  loadPresidentialCycleProfileContext,
+  type PresidentialCycleProfileContext,
+} from "../presidential/presidentialProfileContext.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -43,18 +51,43 @@ type ElectionRow = {
   sources: unknown;
 };
 
-type ExistingCandidateRow = {
-  id: string;
-  first_name: string;
-  last_name: string;
-  date_of_birth: string | null;
-  twitter_handle: string | null;
-  linkedin_url: string | null;
-  official_website_url: string | null;
-  fec_ids: unknown;
-  state_filing_ids: unknown;
-  state: string;
-};
+type CandidateProfileDraftContextType = "election" | "presidential_cycle";
+
+type CandidateProfileResolvedContext =
+  | {
+      type: "election";
+      contextId: string;
+      state: string;
+      districtName: string;
+      districtType: string;
+      electionDate: string;
+      officialBallotTitle: string;
+      electionStage: string | null;
+      senateClass: string | null;
+      termEndYear: string | null;
+      electionIsPartisan: boolean | null;
+      includeParty: boolean;
+      rosterParty: string | undefined;
+      rosterIncumbent: boolean | undefined;
+      seedUrls: readonly string[];
+    }
+  | {
+      type: "presidential_cycle";
+      contextId: string;
+      state: "US";
+      districtName: "United States";
+      districtType: "presidential";
+      electionDate: string | null;
+      officialBallotTitle: string;
+      electionStage: "primary" | "general";
+      senateClass: null;
+      termEndYear: null;
+      electionIsPartisan: true;
+      includeParty: true;
+      rosterParty: string;
+      rosterIncumbent: undefined;
+      seedUrls: readonly string[];
+    };
 
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
@@ -134,54 +167,6 @@ function parseSerializedStringArray(raw: string | undefined): string[] {
   }
 }
 
-function normalizeIdList(values: readonly string[] | undefined): string[] {
-  return (values ?? [])
-    .map((value) => value.trim().toLowerCase())
-    .filter((value) => value.length > 0);
-}
-
-export function mergeIdentifierLists(
-  existing: readonly string[] | undefined,
-  incoming: readonly string[] | undefined
-): string[] | undefined {
-  const merged: string[] = [];
-  const seen = new Set<string>();
-
-  for (const source of [existing ?? [], incoming ?? []]) {
-    for (const value of source) {
-      const trimmed = value.trim();
-      if (trimmed.length === 0) {
-        continue;
-      }
-      const normalized = trimmed.toLowerCase();
-      if (seen.has(normalized)) {
-        continue;
-      }
-      seen.add(normalized);
-      merged.push(trimmed);
-    }
-  }
-
-  return merged.length > 0 ? merged : undefined;
-}
-
-function haveSameNormalizedIdentifierSet(
-  left: readonly string[] | undefined,
-  right: readonly string[] | undefined
-): boolean {
-  const leftSet = new Set(normalizeIdList(left));
-  const rightSet = new Set(normalizeIdList(right));
-  if (leftSet.size !== rightSet.size) {
-    return false;
-  }
-  for (const value of leftSet) {
-    if (!rightSet.has(value)) {
-      return false;
-    }
-  }
-  return true;
-}
-
 function parseBooleanField(raw: string | undefined): boolean | undefined {
   if (raw === "true") {
     return true;
@@ -190,6 +175,16 @@ function parseBooleanField(raw: string | undefined): boolean | undefined {
     return false;
   }
   return undefined;
+}
+
+function draftContextType(message: Record<string, string>): CandidateProfileDraftContextType {
+  return message.context_type === "presidential_cycle" ? "presidential_cycle" : "election";
+}
+
+function draftContextId(message: Record<string, string>, contextType: CandidateProfileDraftContextType): string {
+  return contextType === "presidential_cycle"
+    ? (message.presidential_cycle_id ?? "").trim()
+    : (message.election_id ?? "").trim();
 }
 
 async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Promise<void> {
@@ -282,6 +277,8 @@ async function parkMessage(
     delivery_count: deliveryCount === null ? "" : String(deliveryCount),
     original_stream_id: entry.id,
     election_id: entry.message.election_id ?? "",
+    context_type: entry.message.context_type ?? "",
+    presidential_cycle_id: entry.message.presidential_cycle_id ?? "",
     candidate_display_name: entry.message.candidate_display_name ?? "",
     item_type: entry.message.item_type ?? "",
     run_id: entry.message.run_id ?? "",
@@ -355,238 +352,88 @@ async function electionAlreadyHasCandidateName(
   return false;
 }
 
-async function loadSameNameCandidates(
-  pool: Pool,
-  profile: CandidateProfilePayload,
-  state: string
-): Promise<ExistingCandidateRow[]> {
-  const result = await pool.query<ExistingCandidateRow>(
-    `
-      SELECT
-        id,
-        first_name,
-        last_name,
-        date_of_birth::text AS date_of_birth,
-        twitter_handle,
-        linkedin_url,
-        official_website_url,
-        fec_ids,
-        state_filing_ids,
-        state
-      FROM public.candidates
-      WHERE deleted_at IS NULL
-        AND lower(first_name) = lower($1)
-        AND lower(last_name) = lower($2)
-        AND state = $3
-    `,
-    [profile.first_name, profile.last_name, state]
-  );
-
-  return result.rows;
-}
-
-function hasAtLeastOneHardIdentifier(profile: CandidateProfilePayload): boolean {
-  const hasFec = (profile.fec_ids?.length ?? 0) > 0;
-  const hasStateFiling = (profile.state_filing_ids?.length ?? 0) > 0;
-  const hasOfficialWebsite = Boolean(normalizeOptionalUrl(profile.official_website_url));
-  return Boolean(
-    profile.date_of_birth ||
-      profile.twitter_handle ||
-      profile.linkedin_url ||
-      hasOfficialWebsite ||
-      hasFec ||
-      hasStateFiling
-  );
-}
-
-function matchesByHardIdentifier(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
-  if (profile.date_of_birth && row.date_of_birth && profile.date_of_birth === row.date_of_birth) {
-    return true;
-  }
-
-  if (profile.twitter_handle && row.twitter_handle) {
-    const normalizedProfileHandle = normalizeTwitterHandle(profile.twitter_handle);
-    const normalizedRowHandle = normalizeTwitterHandle(row.twitter_handle);
-    if (
-      normalizedProfileHandle &&
-      normalizedRowHandle &&
-      normalizedProfileHandle === normalizedRowHandle
-    ) {
-      return true;
-    }
-  }
-
-  if (profile.linkedin_url && row.linkedin_url) {
-    if (normalizeOptionalUrl(profile.linkedin_url) === normalizeOptionalUrl(row.linkedin_url)) {
-      return true;
-    }
-  }
-
-  if (profile.official_website_url && row.official_website_url) {
-    if (normalizeOptionalUrl(profile.official_website_url) === normalizeOptionalUrl(row.official_website_url)) {
-      return true;
-    }
-  }
-
-  const profileFecIds = normalizeIdList(profile.fec_ids);
-  const rowFecIds = normalizeIdList(parseOptionalStringArray(row.fec_ids));
-  if (profileFecIds.length > 0 && rowFecIds.length > 0 && hasNormalizedIntersection(profileFecIds, rowFecIds)) {
-    return true;
-  }
-
-  const profileStateFilingIds = normalizeIdList(profile.state_filing_ids);
-  const rowStateFilingIds = normalizeIdList(parseOptionalStringArray(row.state_filing_ids));
-  if (
-    profileStateFilingIds.length > 0 &&
-    rowStateFilingIds.length > 0 &&
-    hasNormalizedIntersection(profileStateFilingIds, rowStateFilingIds)
-  ) {
-    return true;
-  }
-
-  return false;
-}
-
-async function insertCandidate(
-  client: PoolClient,
-  profile: CandidateProfilePayload,
-  state: string,
+function effectivePresidentialParty(
   rosterParty: string | undefined,
-  includeParty: boolean
-): Promise<string> {
-  const storedParty = includeParty ? rosterParty ?? profile.party ?? "Unknown" : "Nonpartisan";
-
-  const insertResult = await client.query<{ id: string }>(
-    `
-      INSERT INTO public.candidates (
-        display_name,
-        first_name,
-        last_name,
-        date_of_birth,
-        party,
-        summary,
-        twitter_handle,
-        linkedin_url,
-        fec_ids,
-        state_filing_ids,
-        state,
-        official_website_url,
-        last_researched
-      )
-      VALUES (
-        $1,
-        $2,
-        $3,
-        $4::date,
-        $5,
-        $6,
-        $7,
-        $8,
-        $9::jsonb,
-        $10::jsonb,
-        $11,
-        $12,
-        now()
-      )
-      RETURNING id
-    `,
-    [
-      profile.display_name,
-      profile.first_name,
-      profile.last_name,
-      profile.date_of_birth ?? null,
-      storedParty,
-      profile.summary ?? null,
-      profile.twitter_handle ?? null,
-      profile.linkedin_url ?? null,
-      profile.fec_ids ? JSON.stringify(profile.fec_ids) : null,
-      profile.state_filing_ids ? JSON.stringify(profile.state_filing_ids) : null,
-      state,
-      profile.official_website_url ?? null,
-    ]
-  );
-
-  const id = insertResult.rows[0]?.id;
-  if (!id) {
-    throw new Error("candidate insert returned no id");
+  context: PresidentialCycleProfileContext
+): string | undefined {
+  const cycleParty = context.party?.trim();
+  if (context.stage === "primary") {
+    return cycleParty && cycleParty.length > 0 ? cycleParty : undefined;
   }
-
-  return id;
+  return rosterParty ?? (cycleParty && cycleParty.length > 0 ? cycleParty : undefined);
 }
 
-async function mergeCandidateIdentifiersForExistingCandidate(
-  client: PoolClient,
-  candidateId: string,
-  profile: CandidateProfilePayload
-): Promise<void> {
-  const locked = await client.query<{
-    fec_ids: unknown;
-    state_filing_ids: unknown;
-  }>(
-    `
-      SELECT fec_ids, state_filing_ids
-      FROM public.candidates
-      WHERE id = $1
-        AND deleted_at IS NULL
-      FOR UPDATE
-    `,
-    [candidateId]
-  );
-  const current = locked.rows[0];
-  if (!current) {
-    return;
+async function resolveElectionDraftContext(input: {
+  pool: Pool;
+  electionId: string;
+  rosterParty: string | undefined;
+  rosterIncumbent: boolean | undefined;
+  messageSeedUrls: readonly string[];
+}): Promise<CandidateProfileResolvedContext | null> {
+  const election = await getElectionRow(input.pool, input.electionId);
+  if (!election) {
+    return null;
   }
 
-  const existingFecIds = parseOptionalStringArray(current.fec_ids);
-  const existingStateFilingIds = parseOptionalStringArray(current.state_filing_ids);
+  const includeParty = resolveIncludePartyForCandidateContest({
+    districtType: election.district_type,
+    state: election.state,
+    officialBallotTitle: election.official_ballot_title,
+    electionIsPartisan: election.is_partisan,
+  });
+  const rosterParty = includeParty ? input.rosterParty : undefined;
 
-  const mergedFecIds = mergeIdentifierLists(existingFecIds, profile.fec_ids);
-  const mergedStateFilingIds = mergeIdentifierLists(existingStateFilingIds, profile.state_filing_ids);
-
-  const fecIdsChanged = !haveSameNormalizedIdentifierSet(existingFecIds, mergedFecIds);
-  const stateFilingChanged = !haveSameNormalizedIdentifierSet(existingStateFilingIds, mergedStateFilingIds);
-  if (!fecIdsChanged && !stateFilingChanged) {
-    return;
-  }
-
-  await client.query(
-    `
-      UPDATE public.candidates
-      SET fec_ids = $2::jsonb,
-          state_filing_ids = $3::jsonb,
-          updated_at = now()
-      WHERE id = $1
-    `,
-    [
-      candidateId,
-      mergedFecIds ? JSON.stringify(mergedFecIds) : null,
-      mergedStateFilingIds ? JSON.stringify(mergedStateFilingIds) : null,
-    ]
-  );
+  return {
+    type: "election",
+    contextId: input.electionId,
+    state: election.state,
+    districtName: election.district_name,
+    districtType: election.district_type,
+    electionDate: election.election_date,
+    officialBallotTitle: election.official_ballot_title,
+    electionStage: election.election_stage,
+    senateClass: election.senate_class,
+    termEndYear: election.term_end_year,
+    electionIsPartisan: election.is_partisan,
+    includeParty,
+    rosterParty,
+    rosterIncumbent: input.rosterIncumbent,
+    seedUrls: mergeSeedUrls(input.messageSeedUrls, parseSeedUrls(election.sources)),
+  };
 }
 
-async function upsertCandidateElection(
-  client: PoolClient,
-  candidateId: string,
-  electionId: string,
-  isIncumbent: boolean | undefined
-): Promise<void> {
-  await client.query(
-    `
-      INSERT INTO public.candidate_elections (
-        candidate_id,
-        election_id,
-        is_incumbent,
-        status
-      )
-      VALUES ($1, $2, $3, 'declared')
-      ON CONFLICT (candidate_id, election_id) DO UPDATE
-      SET is_incumbent = EXCLUDED.is_incumbent,
-          status = EXCLUDED.status,
-          updated_at = now()
-    `,
-    [candidateId, electionId, isIncumbent ?? false]
-  );
+async function resolvePresidentialCycleDraftContext(input: {
+  pool: Pool;
+  presidentialCycleId: string;
+  rosterParty: string | undefined;
+  messageSeedUrls: readonly string[];
+}): Promise<CandidateProfileResolvedContext | null> {
+  const context = await loadPresidentialCycleProfileContext(input.pool, input.presidentialCycleId);
+  if (!context) {
+    return null;
+  }
+  const rosterParty = effectivePresidentialParty(input.rosterParty, context);
+  if (!rosterParty) {
+    throw new Error(`presidential cycle profile draft is missing party for cycle ${input.presidentialCycleId}`);
+  }
+
+  return {
+    type: "presidential_cycle",
+    contextId: context.cycleId,
+    state: context.state,
+    districtName: context.districtName,
+    districtType: context.districtType,
+    electionDate: context.electionDate,
+    officialBallotTitle: context.officialBallotTitle,
+    electionStage: context.electionStage,
+    senateClass: null,
+    termEndYear: null,
+    electionIsPartisan: context.electionIsPartisan,
+    includeParty: true,
+    rosterParty,
+    rosterIncumbent: undefined,
+    seedUrls: mergeSeedUrls(input.messageSeedUrls, context.seedUrls),
+  };
 }
 
 export async function runCandidateProfileEnricher(options: EnricherOptions = {}): Promise<void> {
@@ -603,7 +450,12 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
 
     const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
       for (const entry of entries) {
-        const electionId = entry.message.election_id;
+        const contextType = draftContextType(entry.message);
+        const contextId = draftContextId(entry.message, contextType);
+        const contextLabel =
+          contextType === "presidential_cycle"
+            ? `presidential_cycle_id=${contextId || "unknown"}`
+            : `election_id=${contextId || "unknown"}`;
         const itemType = entry.message.item_type;
         const candidateDisplayName = entry.message.candidate_display_name;
         const runId = entry.message.run_id ?? null;
@@ -622,13 +474,13 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               deliveryCount
             );
             console.warn(
-              `candidate-profile enricher parked stream_id=${entry.id} election_id=${electionId ?? "unknown"} candidate=${candidateDisplayName ?? "unknown"} after ${deliveryCount} deliveries`
+              `candidate-profile enricher parked stream_id=${entry.id} ${contextLabel} candidate=${candidateDisplayName ?? "unknown"} after ${deliveryCount} deliveries`
             );
             continue;
           }
 
           if (
-            !electionId ||
+            !contextId ||
             !candidateDisplayName ||
             itemType !== STAGING_ITEM_TYPE_CANDIDATE_PROFILE
           ) {
@@ -640,17 +492,11 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             continue;
           }
 
-          if (!skipPerElectionNameDedupe && (await electionAlreadyHasCandidateName(pool, electionId, candidateDisplayName))) {
-            await redis.xAck(
-              STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
-              STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
-              entry.id
-            );
-            continue;
-          }
-
-          const election = await getElectionRow(pool, electionId);
-          if (!election) {
+          if (
+            contextType === "election" &&
+            !skipPerElectionNameDedupe &&
+            (await electionAlreadyHasCandidateName(pool, contextId, candidateDisplayName))
+          ) {
             await redis.xAck(
               STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
               STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
@@ -660,42 +506,57 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           }
 
           const rosterParty = entry.message.roster_party?.trim() || undefined;
-          const includeParty = resolveIncludePartyForCandidateContest({
-            districtType: election.district_type,
-            state: election.state,
-            officialBallotTitle: election.official_ballot_title,
-            electionIsPartisan: election.is_partisan,
-          });
-          const effectiveRosterParty = includeParty ? rosterParty : undefined;
           const rosterIncumbent = parseBooleanField(entry.message.roster_is_incumbent);
           const messageSeedUrls = parseSeedUrls(entry.message.seed_urls);
-          const electionSeedUrls = parseSeedUrls(election.sources);
+          const draftContext =
+            contextType === "presidential_cycle"
+              ? await resolvePresidentialCycleDraftContext({
+                  pool,
+                  presidentialCycleId: contextId,
+                  rosterParty,
+                  messageSeedUrls,
+                })
+              : await resolveElectionDraftContext({
+                  pool,
+                  electionId: contextId,
+                  rosterParty,
+                  rosterIncumbent,
+                  messageSeedUrls,
+                });
+          if (!draftContext) {
+            await redis.xAck(
+              STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
+              STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
+              entry.id
+            );
+            continue;
+          }
 
           const aiResult = await enrichCandidateProfile(
             {
               candidateDisplayName,
-              districtName: election.district_name,
-              districtType: election.district_type,
-              state: election.state,
-              electionDate: election.election_date,
-              officialBallotTitle: election.official_ballot_title,
-              electionStage: election.election_stage,
-              senateClass: election.senate_class,
-              termEndYear: election.term_end_year,
-              electionIsPartisan: election.is_partisan,
-              rosterParty: effectiveRosterParty,
-              rosterIncumbent,
+              districtName: draftContext.districtName,
+              districtType: draftContext.districtType,
+              state: draftContext.state,
+              electionDate: draftContext.electionDate,
+              officialBallotTitle: draftContext.officialBallotTitle,
+              electionStage: draftContext.electionStage,
+              senateClass: draftContext.senateClass,
+              termEndYear: draftContext.termEndYear,
+              electionIsPartisan: draftContext.electionIsPartisan,
+              rosterParty: draftContext.rosterParty,
+              rosterIncumbent: draftContext.rosterIncumbent,
               rosterFecIds,
               rosterStateFilingIds,
               disambiguationHint,
-              seedUrls: mergeSeedUrls(messageSeedUrls, electionSeedUrls),
+              seedUrls: draftContext.seedUrls,
             },
             aiConfig
           );
 
           if (!aiResult.ok) {
             console.warn(
-              `candidate-profile enricher retrying election_id=${electionId} candidate=${candidateDisplayName}: ${aiResult.errorCode} ${aiResult.reason}`
+              `candidate-profile enricher retrying ${contextLabel} candidate=${candidateDisplayName}: ${aiResult.errorCode} ${aiResult.reason}`
             );
             // Leave unacked so reclaim retries.
             continue;
@@ -712,39 +573,37 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             continue;
           }
 
-          const existingCandidates = await loadSameNameCandidates(pool, profile, election.state);
-
-          let candidateId: string | null = null;
-          let matchedCandidateRow: ExistingCandidateRow | null = null;
-          if (hasAtLeastOneHardIdentifier(profile)) {
-            const matched = existingCandidates.filter((row) => matchesByHardIdentifier(profile, row));
-            if (matched.length === 1) {
-              matchedCandidateRow = matched[0]!;
-              candidateId = matchedCandidateRow.id;
-            }
-          }
-
           const client = await pool.connect();
+          let candidateId: string;
           try {
             await client.query("BEGIN");
 
-            if (!candidateId) {
-              candidateId = await insertCandidate(
-                client,
-                profile,
-                election.state,
-                effectiveRosterParty,
-                includeParty
-              );
-            } else if (matchedCandidateRow) {
-              await mergeCandidateIdentifiersForExistingCandidate(
-                client,
-                matchedCandidateRow.id,
-                profile
-              );
-            }
+            const candidateResult = await findOrCreateCandidateFromProfile({
+              client,
+              profile,
+              state: draftContext.state,
+              rosterParty: draftContext.rosterParty,
+              includeParty: draftContext.includeParty,
+              allowCrossStateHardIdentifierMatch: draftContext.type === "presidential_cycle",
+            });
+            candidateId = candidateResult.candidateId;
 
-            await upsertCandidateElection(client, candidateId, electionId, rosterIncumbent);
+            if (draftContext.type === "presidential_cycle") {
+              await upsertPresidentialCycleCandidate({
+                client,
+                cycleId: draftContext.contextId,
+                candidateId,
+                party: draftContext.rosterParty,
+                sources: profile.sources,
+              });
+            } else {
+              await upsertCandidateElection({
+                client,
+                candidateId,
+                electionId: draftContext.contextId,
+                isIncumbent: draftContext.rosterIncumbent,
+              });
+            }
             await client.query("COMMIT");
           } catch (error) {
             await client.query("ROLLBACK");
@@ -753,13 +612,15 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             client.release();
           }
 
-          await enqueueCandidateRecordDrafts(redis, [
-            {
-              candidateId,
-              electionId,
-              runId,
-            },
-          ]);
+          if (draftContext.type === "election") {
+            await enqueueCandidateRecordDrafts(redis, [
+              {
+                candidateId,
+                electionId: draftContext.contextId,
+                runId,
+              },
+            ]);
+          }
 
           await redis.xAck(
             STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
@@ -769,7 +630,7 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
         } catch (error) {
           const reason = toReason(error);
           console.warn(
-            `candidate-profile enricher retrying election_id=${electionId ?? "unknown"} candidate=${candidateDisplayName ?? "unknown"}: ${reason}`
+            `candidate-profile enricher retrying ${contextLabel} candidate=${candidateDisplayName ?? "unknown"}: ${reason}`
           );
           // Leave unacked so reclaim retries.
         }
