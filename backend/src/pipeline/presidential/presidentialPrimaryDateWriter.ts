@@ -12,12 +12,14 @@ type Queryable = {
 
 export type PresidentialPrimaryDateWriteInput = {
   cycleId: string;
+  electionYear: number;
   payload: PresidentialPrimaryDatePayload;
   researchedAt?: Date;
 };
 
 export type PresidentialPrimaryDateErrorMarkInput = {
   cycleId: string;
+  electionYear: number;
   stateFipsList: readonly string[];
   error: string;
   researchedAt?: Date;
@@ -98,7 +100,10 @@ export async function writePresidentialPrimaryDatePayloadRows(
 ): Promise<PresidentialPrimaryDateWriteResult> {
   const researchedAt = input.researchedAt ?? new Date();
   assertValidDate(researchedAt, "researchedAt");
-  const nextResearchAt = addPresidentialPrimaryDateResearchRetryDelay(researchedAt);
+  const nextResearchAt = addPresidentialPrimaryDateResearchRetryDelay(
+    researchedAt,
+    input.electionYear
+  );
 
   let rowsUpdated = 0;
   let officialFoundCount = 0;
@@ -132,7 +137,10 @@ export async function markPresidentialPrimaryDateResearchError(
     throw new Error("markPresidentialPrimaryDateResearchError requires at least one state_fips");
   }
 
-  const nextResearchAt = addPresidentialPrimaryDateResearchRetryDelay(researchedAt);
+  const nextResearchAt = addPresidentialPrimaryDateResearchRetryDelay(
+    researchedAt,
+    input.electionYear
+  );
   const result = await db.query(
     `
       UPDATE public.presidential_state_primary_dates

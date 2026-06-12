@@ -61,7 +61,7 @@ type DueGroup = {
   party: string;
   scheduledFor: Date;
   stateFipsList: string[];
-  batchIndex: number;
+  partitionId: number;
 };
 
 export type PresidentialPrimaryDateResearchProducerResult = {
@@ -180,9 +180,9 @@ function createPresidentialPrimaryDateResearchQueue(): Queue<PresidentialPrimary
 
 export function buildPresidentialPrimaryDateResearchJobId(input: {
   cycleId: string;
-  batchIndex: number;
+  partitionId: number;
 }): string {
-  return `presidential-primary-dates:${input.cycleId}:batch:${input.batchIndex}`;
+  return `presidential-primary-dates:${input.cycleId}:partition:${input.partitionId}`;
 }
 
 function assertValidDate(date: Date, label: string): void {
@@ -191,7 +191,16 @@ function assertValidDate(date: Date, label: string): void {
   }
 }
 
+function buildStateFipsPartitionLookup(maxStatesPerJob: number): Map<string, number> {
+  const lookup = new Map<string, number>();
+  PRESIDENTIAL_PRIMARY_DATE_STATE_FIPS.forEach((stateFips, index) => {
+    lookup.set(stateFips, Math.floor(index / maxStatesPerJob));
+  });
+  return lookup;
+}
+
 function chunkRowsByCycle(rows: readonly PresidentialPrimaryDateDueRow[], maxStatesPerJob: number): DueGroup[] {
+  const partitionByStateFips = buildStateFipsPartitionLookup(maxStatesPerJob);
   const byCycle = new Map<string, PresidentialPrimaryDateDueRow[]>();
   for (const row of rows) {
     const existing = byCycle.get(row.cycle_id);
@@ -204,21 +213,34 @@ function chunkRowsByCycle(rows: readonly PresidentialPrimaryDateDueRow[], maxSta
 
   const groups: DueGroup[] = [];
   for (const cycleRows of byCycle.values()) {
-    const sortedRows = [...cycleRows].sort((a, b) => a.state_fips.localeCompare(b.state_fips));
-    const first = sortedRows[0];
+    const first = cycleRows[0];
     if (!first) {
       continue;
     }
-    for (let start = 0, batchIndex = 0; start < sortedRows.length; start += maxStatesPerJob, batchIndex += 1) {
-      const chunk = sortedRows.slice(start, start + maxStatesPerJob);
+    const rowsByPartition = new Map<number, PresidentialPrimaryDateDueRow[]>();
+    for (const row of cycleRows) {
+      const partitionId = partitionByStateFips.get(row.state_fips);
+      if (partitionId === undefined) {
+        throw new Error(`Unknown presidential primary date state_fips for partitioning: ${row.state_fips}`);
+      }
+      const existing = rowsByPartition.get(partitionId);
+      if (existing) {
+        existing.push(row);
+      } else {
+        rowsByPartition.set(partitionId, [row]);
+      }
+    }
+
+    for (const [partitionId, partitionRows] of rowsByPartition) {
+      const sortedRows = [...partitionRows].sort((a, b) => a.state_fips.localeCompare(b.state_fips));
       groups.push({
         cycleId: first.cycle_id,
         cycleName: first.cycle_name,
         electionYear: first.election_year,
         party: first.party,
         scheduledFor: new Date(),
-        stateFipsList: chunk.map((row) => row.state_fips),
-        batchIndex,
+        stateFipsList: sortedRows.map((row) => row.state_fips),
+        partitionId,
       });
     }
   }
@@ -228,7 +250,7 @@ function chunkRowsByCycle(rows: readonly PresidentialPrimaryDateDueRow[], maxSta
     if (cycleDiff !== 0) return cycleDiff;
     const partyDiff = a.party.localeCompare(b.party);
     if (partyDiff !== 0) return partyDiff;
-    return a.batchIndex - b.batchIndex;
+    return a.partitionId - b.partitionId;
   });
 }
 
@@ -325,7 +347,7 @@ async function upsertResearchJob(
 ): Promise<UpsertOutcome> {
   const jobId = buildPresidentialPrimaryDateResearchJobId({
     cycleId: group.cycleId,
-    batchIndex: group.batchIndex,
+    partitionId: group.partitionId,
   });
   const existing = await queue.getJob(jobId);
   let stateFipsList = group.stateFipsList;

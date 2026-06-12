@@ -150,7 +150,7 @@ describe("processPresidentialPrimaryDateResearchJob", () => {
       not_official_yet_count: 0,
       error_count: 2,
       rows_updated: 2,
-      next_research_at: "2027-03-14T00:00:00.000Z",
+      next_research_at: "2027-04-07T00:00:00.000Z",
       error: "results missing state_fips: 12",
     });
     expect(clientQueryMock).toHaveBeenCalledWith("BEGIN");
@@ -213,7 +213,7 @@ describe("processPresidentialPrimaryDateResearchJob", () => {
       not_official_yet_count: 0,
       error_count: 1,
       rows_updated: 2,
-      next_research_at: "2027-03-14T00:00:00.000Z",
+      next_research_at: "2027-04-07T00:00:00.000Z",
       provider: "claude",
       model: "claude-sonnet-4-6",
     });
@@ -224,7 +224,7 @@ describe("processPresidentialPrimaryDateResearchJob", () => {
       CYCLE_ID,
       ["12"],
       RESEARCHED_AT.toISOString(),
-      "2027-03-14T00:00:00.000Z",
+      "2027-04-07T00:00:00.000Z",
       "Partial presidential primary date research failure: 12: presidential primary date source URL is not reachable",
     ]);
     expect(clientQueryMock).toHaveBeenCalledWith("COMMIT");
@@ -363,5 +363,38 @@ describe("createPresidentialPrimaryDateResearchWorker", () => {
     expect(() => createPresidentialPrimaryDateResearchWorker(0)).toThrow(
       "Invalid presidential primary date research worker concurrency"
     );
+  });
+
+  it("once mode waits for drained instead of closing after the first completed job", async () => {
+    const handlers = new Map<string, (...args: never[]) => void>();
+    const close = vi.fn(async () => {});
+    workerMock.mockImplementation(
+      () =>
+        ({
+          once: vi.fn((event: string, handler: (...args: never[]) => void) => {
+            handlers.set(event, handler);
+            return undefined;
+          }),
+          close,
+        }) as never
+    );
+
+    const { runPresidentialPrimaryDateResearchEnricher } = await import(
+      "../../src/pipeline/enrichers/presidentialPrimaryDateResearchEnricher.js"
+    );
+
+    const run = runPresidentialPrimaryDateResearchEnricher({
+      once: true,
+      blockMs: 10_000,
+      concurrency: 2,
+    });
+
+    handlers.get("completed")?.();
+    await Promise.resolve();
+    expect(close).not.toHaveBeenCalled();
+
+    handlers.get("drained")?.();
+    await expect(run).resolves.toBeUndefined();
+    expect(close).toHaveBeenCalledTimes(1);
   });
 });

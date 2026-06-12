@@ -101,7 +101,7 @@ export function buildPresidentialPrimaryDatePrompt(input: PresidentialPrimaryDat
     "Rules:",
     "- Return exactly one result row for each provided state_fips; do not return rows for unprovided states.",
     `- Research only the ${input.electionYear} ${party} presidential primary or presidential preference primary date.`,
-    "- Use official sources for official_found: state election office, secretary of state, official state election calendar, official state party page, official national party page, or official statute/calendar page. News articles, blogs, Wikipedia, and unofficial calendars are not sufficient.",
+    "- Use official sources for official_found: state election office, secretary of state, official state election calendar, official national party page, or official statute/calendar page. News articles, blogs, Wikipedia, and unofficial calendars are not sufficient for official_found.",
     "- If an official date is set, return status=\"official_found\" and primary_date as YYYY-MM-DD.",
     "- If no official date is set yet, return status=\"not_official_yet\" and primary_date=null.",
     "- Do not infer a date from prior cycles unless an official source says that date applies to this election year and party.",

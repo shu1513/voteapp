@@ -209,7 +209,7 @@ describe("runPresidentialPrimaryDateResearchProducer", () => {
         scheduled_for: "2027-03-07T00:00:00.000Z",
       }),
       expect.objectContaining({
-        jobId: `presidential-primary-dates:${DEMOCRATIC_CYCLE_ID}:batch:0`,
+        jobId: `presidential-primary-dates:${DEMOCRATIC_CYCLE_ID}:partition:0`,
         attempts: 3,
         backoff: {
           type: "exponential",
@@ -224,7 +224,7 @@ describe("runPresidentialPrimaryDateResearchProducer", () => {
         state_fips_list: ["04"],
       }),
       expect.objectContaining({
-        jobId: `presidential-primary-dates:${DEMOCRATIC_CYCLE_ID}:batch:1`,
+        jobId: `presidential-primary-dates:${DEMOCRATIC_CYCLE_ID}:partition:1`,
       })
     );
     expect(queueAddMock).toHaveBeenCalledWith(
@@ -235,7 +235,7 @@ describe("runPresidentialPrimaryDateResearchProducer", () => {
         state_fips_list: ["06"],
       }),
       expect.objectContaining({
-        jobId: `presidential-primary-dates:${REPUBLICAN_CYCLE_ID}:batch:0`,
+        jobId: `presidential-primary-dates:${REPUBLICAN_CYCLE_ID}:partition:2`,
       })
     );
   });
@@ -283,6 +283,53 @@ describe("runPresidentialPrimaryDateResearchProducer", () => {
     expect(queueCloseMock).not.toHaveBeenCalled();
   });
 
+  it("uses stable partition job ids even when earlier states are not due", async () => {
+    mockRuntime();
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [{ cycle_id: DEMOCRATIC_CYCLE_ID, cycle_name: "2028 Democratic presidential primary", election_year: 2028, party: "Democratic" }],
+      })
+      .mockResolvedValueOnce({
+        rows: [{ id: DEMOCRATIC_CYCLE_ID, stage: "primary" }],
+      })
+      .mockResolvedValueOnce({ rows: [{ inserted_count: 0 }] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            cycle_id: DEMOCRATIC_CYCLE_ID,
+            cycle_name: "2028 Democratic presidential primary",
+            election_year: 2028,
+            party: "Democratic",
+            state_fips: "04",
+            date_research_status: "pending",
+            next_research_at: null,
+          },
+        ],
+      });
+
+    const { runPresidentialPrimaryDateResearchProducer } = await import(
+      "../../src/pipeline/producers/presidentialPrimaryDateResearchProducer.js"
+    );
+
+    const result = await runPresidentialPrimaryDateResearchProducer({
+      now: new Date("2027-03-07T00:00:00.000Z"),
+    });
+
+    expect(result).toMatchObject({
+      dueGroupCount: 1,
+      enqueuedJobCount: 1,
+    });
+    expect(queueAddMock).toHaveBeenCalledWith(
+      "presidential_primary_date_research",
+      expect.objectContaining({
+        state_fips_list: ["04"],
+      }),
+      expect.objectContaining({
+        jobId: `presidential-primary-dates:${DEMOCRATIC_CYCLE_ID}:partition:1`,
+      })
+    );
+  });
+
   it("updates an existing non-active job by unioning state lists", async () => {
     const existingJob = {
       data: {
@@ -317,7 +364,7 @@ describe("runPresidentialPrimaryDateResearchProducer", () => {
             cycle_name: "2028 Democratic presidential primary",
             election_year: 2028,
             party: "Democratic",
-            state_fips: "04",
+            state_fips: "01",
             date_research_status: "pending",
             next_research_at: null,
           },
@@ -341,10 +388,10 @@ describe("runPresidentialPrimaryDateResearchProducer", () => {
     expect(queueAddMock).toHaveBeenCalledWith(
       "presidential_primary_date_research",
       expect.objectContaining({
-        state_fips_list: ["01", "02", "04"],
+        state_fips_list: ["01", "02"],
       }),
       expect.objectContaining({
-        jobId: `presidential-primary-dates:${DEMOCRATIC_CYCLE_ID}:batch:0`,
+        jobId: `presidential-primary-dates:${DEMOCRATIC_CYCLE_ID}:partition:0`,
       })
     );
   });

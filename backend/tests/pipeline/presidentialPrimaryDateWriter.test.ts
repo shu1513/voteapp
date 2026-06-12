@@ -7,7 +7,7 @@ import {
 
 const CYCLE_ID = "00000000-0000-4000-8000-000000000001";
 const RESEARCHED_AT = new Date("2027-03-07T00:00:00.000Z");
-const NEXT_RESEARCH_AT = "2027-03-14T00:00:00.000Z";
+const NEXT_RESEARCH_AT = "2027-04-07T00:00:00.000Z";
 
 function makeDb(rowCount = 1) {
   return {
@@ -21,6 +21,7 @@ describe("presidentialPrimaryDateWriter", () => {
 
     const result = await writePresidentialPrimaryDatePayloadRows(db as never, {
       cycleId: CYCLE_ID,
+      electionYear: 2028,
       researchedAt: RESEARCHED_AT,
       payload: {
         results: [
@@ -54,11 +55,12 @@ describe("presidentialPrimaryDateWriter", () => {
     ]);
   });
 
-  it("writes not_official_yet rows with a weekly next_research_at", async () => {
+  it("writes not_official_yet rows with a monthly next_research_at early in the research window", async () => {
     const db = makeDb();
 
     const result = await writePresidentialPrimaryDatePayloadRows(db as never, {
       cycleId: CYCLE_ID,
+      electionYear: 2028,
       researchedAt: RESEARCHED_AT,
       payload: {
         results: [
@@ -99,6 +101,7 @@ describe("presidentialPrimaryDateWriter", () => {
 
     const result = await markPresidentialPrimaryDateResearchError(db as never, {
       cycleId: CYCLE_ID,
+      electionYear: 2028,
       stateFipsList: ["06", "12", "06"],
       researchedAt: RESEARCHED_AT,
       error: "source URL is not reachable",
@@ -123,6 +126,7 @@ describe("presidentialPrimaryDateWriter", () => {
     await expect(
       writePresidentialPrimaryDatePayloadRows(db as never, {
         cycleId: CYCLE_ID,
+        electionYear: 2028,
         researchedAt: RESEARCHED_AT,
         payload: {
           results: [

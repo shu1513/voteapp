@@ -1,7 +1,11 @@
 import { getPresidentialGeneralElectionDate } from "./presidentialCycles.js";
 
 export const PRESIDENTIAL_PRIMARY_DATE_RESEARCH_LEAD_MONTHS = 20;
-export const PRESIDENTIAL_PRIMARY_DATE_RESEARCH_RETRY_DAYS = 7;
+export const PRESIDENTIAL_PRIMARY_DATE_RESEARCH_BIWEEKLY_START_MONTHS_BEFORE_GENERAL = 16;
+export const PRESIDENTIAL_PRIMARY_DATE_RESEARCH_WEEKLY_START_MONTHS_BEFORE_GENERAL = 12;
+export const PRESIDENTIAL_PRIMARY_DATE_RESEARCH_BIWEEKLY_RETRY_DAYS = 14;
+export const PRESIDENTIAL_PRIMARY_DATE_RESEARCH_WEEKLY_RETRY_DAYS = 7;
+export const PRESIDENTIAL_PRIMARY_DATE_RESEARCH_STOP_GRACE_DAYS = 30;
 
 export type PresidentialPrimaryDateResearchStatus =
   | "pending"
@@ -12,6 +16,7 @@ export type PresidentialPrimaryDateResearchStatus =
 export type PresidentialPrimaryDateResearchEligibilityReason =
   | "due"
   | "before_research_window"
+  | "after_research_window"
   | "already_official"
   | "not_due";
 
@@ -107,10 +112,40 @@ function addUtcMonths(date: Date, months: number): Date {
   );
 }
 
-export function addPresidentialPrimaryDateResearchRetryDelay(fromDate: Date): Date {
+function addUtcDays(date: Date, days: number): Date {
+  assertValidDate(date, "date");
+  return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
+}
+
+export function addPresidentialPrimaryDateResearchRetryDelay(
+  fromDate: Date,
+  electionYear: number
+): Date {
   assertValidDate(fromDate, "retry reference date");
+  const generalElectionDate = parseIsoDateUtc(
+    getPresidentialGeneralElectionDate(electionYear),
+    "general election date"
+  );
+  const biweeklyStartAt = addUtcMonths(
+    generalElectionDate,
+    -PRESIDENTIAL_PRIMARY_DATE_RESEARCH_BIWEEKLY_START_MONTHS_BEFORE_GENERAL
+  );
+  const weeklyStartAt = addUtcMonths(
+    generalElectionDate,
+    -PRESIDENTIAL_PRIMARY_DATE_RESEARCH_WEEKLY_START_MONTHS_BEFORE_GENERAL
+  );
+
+  if (fromDate.getTime() < biweeklyStartAt.getTime()) {
+    return addUtcMonths(fromDate, 1);
+  }
+
+  const retryDays =
+    fromDate.getTime() < weeklyStartAt.getTime()
+      ? PRESIDENTIAL_PRIMARY_DATE_RESEARCH_BIWEEKLY_RETRY_DAYS
+      : PRESIDENTIAL_PRIMARY_DATE_RESEARCH_WEEKLY_RETRY_DAYS;
+
   return new Date(
-    fromDate.getTime() + PRESIDENTIAL_PRIMARY_DATE_RESEARCH_RETRY_DAYS * 24 * 60 * 60 * 1000
+    fromDate.getTime() + retryDays * 24 * 60 * 60 * 1000
   );
 }
 
@@ -122,6 +157,14 @@ export function getPresidentialPrimaryDateResearchStartAt(electionYear: number):
   return addUtcMonths(generalElectionDate, -PRESIDENTIAL_PRIMARY_DATE_RESEARCH_LEAD_MONTHS);
 }
 
+export function getPresidentialPrimaryDateResearchStopAt(electionYear: number): Date {
+  const generalElectionDate = parseIsoDateUtc(
+    getPresidentialGeneralElectionDate(electionYear),
+    "general election date"
+  );
+  return addUtcDays(generalElectionDate, PRESIDENTIAL_PRIMARY_DATE_RESEARCH_STOP_GRACE_DAYS);
+}
+
 export function evaluatePresidentialPrimaryDateResearchEligibility(
   input: PresidentialPrimaryDateResearchEligibilityInput
 ): PresidentialPrimaryDateResearchEligibility {
@@ -130,6 +173,16 @@ export function evaluatePresidentialPrimaryDateResearchEligibility(
   assertValidResearchStatus(input.dateResearchStatus);
 
   const researchStartAt = getPresidentialPrimaryDateResearchStartAt(input.electionYear);
+  const researchStopAt = getPresidentialPrimaryDateResearchStopAt(input.electionYear);
+  if (input.dateResearchStatus === "official_found") {
+    return {
+      eligible: false,
+      reason: "already_official",
+      researchStartAt,
+      nextEligibleAt: null,
+    };
+  }
+
   if (now.getTime() < researchStartAt.getTime()) {
     return {
       eligible: false,
@@ -139,10 +192,10 @@ export function evaluatePresidentialPrimaryDateResearchEligibility(
     };
   }
 
-  if (input.dateResearchStatus === "official_found") {
+  if (now.getTime() >= researchStopAt.getTime()) {
     return {
       eligible: false,
-      reason: "already_official",
+      reason: "after_research_window",
       researchStartAt,
       nextEligibleAt: null,
     };

@@ -230,7 +230,7 @@ export async function validatePresidentialPrimaryDateSourceUrls(
       reviewFeedbackLines: [
         "One or more presidential primary date source URLs failed automated verification.",
         ...failedChecks.map((check) => `Do not reuse this unreachable/dead source URL: ${check.url} (${check.reason})`),
-        "Replace failed URLs with reachable official state election, secretary of state, state party, national party, or official calendar pages.",
+        "Replace failed URLs with reachable official state election, secretary of state, national party, or official calendar pages.",
         "If no official date is set yet, cite the official page or calendar checked and return status=\"not_official_yet\".",
       ],
       failureDebug: {
@@ -273,7 +273,7 @@ export async function validatePresidentialPrimaryDateSourceUrls(
       reviewFeedbackLines: [
         "One or more official_found presidential primary date rows were backed only by secondary/non-official-looking sources.",
         ...unofficialRows.map((row) => `Find an official source for state_fips=${row.state_fips}, or return status=\"not_official_yet\" if no official date is set.`),
-        "Official sources include state election office, secretary of state, official state election calendar, official state party page, national party page, or official statute/calendar page.",
+        "Official sources include state election office, secretary of state, official state election calendar, national party page, or official statute/calendar page.",
         "Do not use news articles, blogs, Wikipedia, or unofficial calendars as the only source for official_found.",
       ],
       failureDebug: {
@@ -340,7 +340,7 @@ export async function validatePresidentialPrimaryDateSourceUrlsPartial(
         reviewFeedbackLines: [
           `For state_fips=${row.state_fips}, one or more source URLs failed automated verification.`,
           ...failedUrls.map((url) => `Do not reuse this unreachable/dead source URL: ${url} (${failedCheckByUrl.get(url)})`),
-          `Replace failed URLs for state_fips=${row.state_fips} with reachable official state election, secretary of state, state party, national party, or official calendar pages.`,
+          `Replace failed URLs for state_fips=${row.state_fips} with reachable official state election, secretary of state, national party, or official calendar pages.`,
         ],
         failureDebug: {
           failed_presidential_primary_date_source_urls: failedUrls.map((url) => ({
@@ -363,7 +363,7 @@ export async function validatePresidentialPrimaryDateSourceUrlsPartial(
         blockedUrls: [],
         reviewFeedbackLines: [
           `Find an official source for state_fips=${row.state_fips}, or return status=\"not_official_yet\" if no official date is set.`,
-          "Official sources include state election office, secretary of state, official state election calendar, official state party page, national party page, or official statute/calendar page.",
+          "Official sources include state election office, secretary of state, official state election calendar, national party page, or official statute/calendar page.",
           "Do not use news articles, blogs, Wikipedia, or unofficial calendars as the only source for official_found.",
         ],
         failureDebug: {

@@ -1,7 +1,10 @@
 import { createPresidentialPrimaryDateResearchSchedulerWorker } from "../scheduler/presidentialPrimaryDateResearchScheduler.js";
 
+const SHUTDOWN_TIMEOUT_MS = 30_000;
+
 async function main(): Promise<void> {
   const worker = createPresidentialPrimaryDateResearchSchedulerWorker();
+  let shutdownPromise: Promise<void> | null = null;
 
   worker.on("ready", () => {
     console.log("presidential primary date research scheduler worker ready");
@@ -30,14 +33,32 @@ async function main(): Promise<void> {
     console.error("presidential primary date research scheduler worker error:", error);
   });
 
-  const shutdown = async (): Promise<void> => {
-    try {
-      await worker.close();
-      process.exit(0);
-    } catch (error) {
-      console.error("presidential primary date research scheduler worker shutdown failed:", error);
-      process.exit(1);
+  const shutdown = (): Promise<void> => {
+    if (shutdownPromise) {
+      return shutdownPromise;
     }
+
+    shutdownPromise = new Promise<void>((resolve) => {
+      const timeout = setTimeout(() => {
+        console.error("presidential primary date research scheduler worker shutdown timed out");
+        process.exit(1);
+      }, SHUTDOWN_TIMEOUT_MS);
+      timeout.unref();
+
+      void worker.close().then(
+        () => {
+          clearTimeout(timeout);
+          process.exit(0);
+        },
+        (error) => {
+          clearTimeout(timeout);
+          console.error("presidential primary date research scheduler worker shutdown failed:", error);
+          process.exit(1);
+        }
+      ).finally(resolve);
+    });
+
+    return shutdownPromise;
   };
 
   process.on("SIGINT", () => {

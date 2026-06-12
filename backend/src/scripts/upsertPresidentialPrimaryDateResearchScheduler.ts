@@ -1,8 +1,17 @@
 import { upsertRecurringPresidentialPrimaryDateResearchJobs } from "../scheduler/presidentialPrimaryDateResearchScheduler.js";
 
 async function main(): Promise<void> {
-  await upsertRecurringPresidentialPrimaryDateResearchJobs();
-  console.log("presidential primary date research daily scheduler upserted");
+  const result = await upsertRecurringPresidentialPrimaryDateResearchJobs();
+  console.log(
+    [
+      "presidential primary date research scheduler synced",
+      `mode=${result.state.mode}`,
+      `daily=${result.dailyScheduler}`,
+      `activation=${result.activationJob}`,
+      `activation_scheduled_for=${result.activationScheduledFor ?? "none"}`,
+      `missing_rows=${result.state.missingStatePartyRowCount}`,
+    ].join(" ")
+  );
 }
 
 main().catch((error) => {

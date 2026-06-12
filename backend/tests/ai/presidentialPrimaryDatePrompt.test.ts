@@ -24,7 +24,7 @@ describe("buildPresidentialPrimaryDatePrompt", () => {
     expect(prompt).toContain('"state_fips": "copy exactly from the provided state_fips"');
     expect(prompt).toContain('"primary_date": "YYYY-MM-DD when officially set, otherwise null"');
     expect(prompt).toContain("Use official sources for official_found: state election office");
-    expect(prompt).toContain("News articles, blogs, Wikipedia, and unofficial calendars are not sufficient");
+    expect(prompt).toContain("News articles, blogs, Wikipedia, and unofficial calendars are not sufficient for official_found");
     expect(prompt).toContain("Do not infer a date from prior cycles");
     expect(prompt).toContain("Return exactly one result row for each provided state_fips");
   });

@@ -239,6 +239,7 @@ export async function processPresidentialPrimaryDateResearchJob(
       const errorWrite = await withTransaction(pool, (client) =>
         markPresidentialPrimaryDateResearchError(client, {
           cycleId: job.cycle_id,
+          electionYear: job.election_year,
           stateFipsList: dueStateFipsList,
           error: aiResult.reason,
           researchedAt,
@@ -262,6 +263,7 @@ export async function processPresidentialPrimaryDateResearchJob(
     const writeResult = await withTransaction(pool, async (client) => {
       const validWrite = await writePresidentialPrimaryDatePayloadRows(client, {
         cycleId: job.cycle_id,
+        electionYear: job.election_year,
         payload: aiResult.payload,
         researchedAt,
       });
@@ -275,6 +277,7 @@ export async function processPresidentialPrimaryDateResearchJob(
       }
       const errorWrite = await markPresidentialPrimaryDateResearchError(client, {
         cycleId: job.cycle_id,
+        electionYear: job.election_year,
         stateFipsList: aiResult.failedRows.map((failure) => failure.state_fips),
         error: `Partial presidential primary date research failure: ${aiResult.failedRows
           .map((failure) => `${failure.state_fips}: ${failure.reason}`)
@@ -354,7 +357,7 @@ export async function runPresidentialPrimaryDateResearchEnricher(
       void worker.close().then(resolve, reject);
     }, blockMs);
 
-    worker.once("completed", () => {
+    worker.once("drained", () => {
       clearTimeout(timeout);
       void worker.close().then(resolve, reject);
     });
