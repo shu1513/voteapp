@@ -6,7 +6,7 @@ export type CandidateProfilePromptInput = {
   districtName: string;
   districtType: string;
   state: string;
-  electionDate: string;
+  electionDate?: string | null;
   officialBallotTitle: string;
   electionStage?: string | null;
   senateClass?: string | null;
@@ -36,7 +36,7 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     `- district_name: "${input.districtName}"`,
     `- district_type: "${input.districtType}"`,
     `- state: "${input.state}"`,
-    `- election_date: "${input.electionDate}"`,
+    ...(input.electionDate ? [`- election_date: "${input.electionDate}"`] : []),
     `- official_ballot_title: "${input.officialBallotTitle}"`,
     `- research_mode: "${input.researchMode}"`,
     ...(includeSenateContext && input.electionStage ? [`- election_stage: "${input.electionStage}"`] : []),

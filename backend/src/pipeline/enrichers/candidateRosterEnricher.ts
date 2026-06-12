@@ -455,7 +455,7 @@ export async function resolveCandidateRosterForProfileDrafts(
     districtType: input.districtType,
     officialBallotTitle: input.officialBallotTitle,
   });
-  const isFederalMode = researchMode === "federal_us_house" || researchMode === "federal_us_senate";
+  const isFederalMode = researchMode !== "state_level";
   const resolvedCandidates: CandidateRosterResolvedEntry[] = [];
   const grouped = new Map<string, CandidateRosterResolvedEntry[]>();
   for (const candidate of input.candidates) {

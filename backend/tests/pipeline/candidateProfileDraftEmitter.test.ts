@@ -41,6 +41,8 @@ describe("enqueueCandidateProfileDrafts", () => {
     expect(args[14]).toBe("true");
     expect(args[15]).toBe(JSON.stringify(["H123"]));
     expect(args[16]).toBe(JSON.stringify(["SF-1"]));
+    expect(args[18]).toBe("election");
+    expect(args[19]).toBe("");
   });
 
   it("supports explicit dedupe keys for non-roster producers", async () => {
@@ -63,6 +65,39 @@ describe("enqueueCandidateProfileDrafts", () => {
     const args = sendCommand.mock.calls[0]?.[0] as string[];
     expect(args[4]).toBe("staging:candidate_profile_draft_emitted:election_result_winner:e-1:pat connolly");
     expect(args[14]).toBe("false");
+    expect(args[18]).toBe("election");
+    expect(args[19]).toBe("");
+  });
+
+  it("emits presidential-cycle drafts with presidential context fields", async () => {
+    const sendCommand = vi.fn().mockResolvedValueOnce(1);
+
+    const result = await enqueueCandidateProfileDrafts(
+      { sendCommand },
+      [
+        {
+          contextType: "presidential_cycle",
+          presidentialCycleId: "cycle-2028-dem",
+          runId: "run-1",
+          displayName: "Jane President",
+          rosterIndex: 0,
+          rosterParty: "Democratic",
+          fecIds: [" p80000001 "],
+          seedUrls: ["https://fec.gov/data/candidate/P80000001"],
+        },
+      ]
+    );
+
+    expect(result).toEqual({ emittedCount: 1, skippedCount: 0 });
+    const args = sendCommand.mock.calls[0]?.[0] as string[];
+    expect(args[4]).toContain(
+      "staging:candidate_profile_draft_emitted:presidential_cycle:cycle-2028-dem:jane president:0"
+    );
+    expect(args[5]).toBe("");
+    expect(args[6]).toBe("candidate_profile");
+    expect(args[15]).toBe(JSON.stringify(["P80000001"]));
+    expect(args[18]).toBe("presidential_cycle");
+    expect(args[19]).toBe("cycle-2028-dem");
   });
 
   it("skips duplicate marker keys in the same batch", async () => {

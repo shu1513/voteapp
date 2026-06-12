@@ -1,6 +1,7 @@
 import { isUsSenateOfficeTitle } from "../utils/senateOffice.js";
+import { isPresidentialOfficeTitle } from "../utils/presidentialOffice.js";
 
-export type CandidateResearchMode = "federal_us_senate" | "federal_us_house" | "state_level";
+export type CandidateResearchMode = "federal_president" | "federal_us_senate" | "federal_us_house" | "state_level";
 
 function normalize(text: string): string {
   return text.toLowerCase().replace(/\s+/g, " ").trim();
@@ -22,6 +23,10 @@ export function resolveCandidateResearchMode(input: {
   districtType: string;
   officialBallotTitle: string;
 }): CandidateResearchMode {
+  if (input.districtType === "presidential" || isPresidentialOfficeTitle(input.officialBallotTitle)) {
+    return "federal_president";
+  }
+
   if (isUsSenateOfficeTitle(input.officialBallotTitle)) {
     return "federal_us_senate";
   }
