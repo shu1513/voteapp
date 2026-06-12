@@ -49,6 +49,16 @@ export const ELECTION_RESULTS_AI_CANDIDATES: readonly AiCandidate[] = [
 ] as const;
 
 /**
+ * Curated presidential primary-date AI candidates.
+ * This is official-source web research, so keep the order aligned with election-result searches.
+ */
+export const PRESIDENTIAL_PRIMARY_DATE_AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "openai", model: "gpt-5.5" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
+/**
  * Curated candidate-discovery/profile AI candidates.
  * Used by candidate roster/profile enrichers.
  */
