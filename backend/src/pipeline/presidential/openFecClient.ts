@@ -92,7 +92,7 @@ function normalizeNonEmpty(value: string, fieldName: string): string {
 
 function normalizeFecCandidateId(value: string): string {
   const normalized = normalizeNonEmpty(value, "fecCandidateId").toUpperCase();
-  if (!/^P[0-9A-Z]+$/.test(normalized)) {
+  if (!/^P\d{8}$/.test(normalized)) {
     throw new OpenFecClientError("invalid_request", `Invalid presidential FEC candidate ID: ${value}`);
   }
   return normalized;
@@ -211,7 +211,7 @@ function parseCandidateRow(row: unknown): OpenFecPresidentialCandidate | null {
 
   const fecCandidateId = getString(row, "candidate_id", "candidateId");
   const name = getString(row, "name", "candidate_name", "candidateName");
-  if (!fecCandidateId || !name || !/^P[0-9A-Z]+$/i.test(fecCandidateId)) {
+  if (!fecCandidateId || !name || !/^P\d{8}$/i.test(fecCandidateId)) {
     return null;
   }
 

@@ -114,6 +114,7 @@ export async function enrichPresidentialRoster(
   candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
 ): Promise<PresidentialRosterAiResult> {
   const failures: ProviderFailureAttempt[] = [];
+  const expectedParty = input.stage === "primary" ? input.party?.trim() || null : null;
 
   for (const candidate of candidates) {
     let reviewFeedbackLines: string[] = [];
@@ -137,7 +138,7 @@ export async function enrichPresidentialRoster(
       }
 
       const parsed = parsePresidentialRosterPayload(generated.parsed, {
-        expectedParty: input.stage === "primary" ? input.party : null,
+        expectedParty,
       });
       if (!parsed.ok) {
         failures.push({

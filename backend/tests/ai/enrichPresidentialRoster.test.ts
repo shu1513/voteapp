@@ -106,4 +106,36 @@ describe("enrichPresidentialRoster", () => {
     expect(secondPrompt).toContain("Previous feedback to fix:");
     expect(secondPrompt).toContain("candidate.party does not match expected party Democratic");
   });
+
+  it("normalizes expected primary party before schema validation", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        candidates: [
+          {
+            display_name: "Jane President",
+            party: "Democratic",
+            sources: ["https://example.org/jane"],
+            status: "active",
+          },
+        ],
+      },
+      rawText: "{\"candidates\":[]}",
+    });
+
+    const { enrichPresidentialRoster } = await import("../../src/ai/enrichPresidentialRoster.js");
+    const result = await enrichPresidentialRoster(
+      {
+        cycleId: "cycle-1",
+        electionYear: 2028,
+        stage: "primary",
+        party: " Democratic ",
+      },
+      { timeoutMs: 30_000 },
+      [{ provider: "claude", model: "claude-sonnet-4-6" }]
+    );
+
+    expect(result.ok).toBe(true);
+    expect(callResearchProviderMock).toHaveBeenCalledTimes(1);
+  });
 });

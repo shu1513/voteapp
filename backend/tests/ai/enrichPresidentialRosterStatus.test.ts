@@ -107,6 +107,41 @@ describe("enrichPresidentialRosterStatus", () => {
     expect(secondPrompt).toContain("candidate_id candidate-x was not provided for verification");
   });
 
+  it("normalizes expected candidate IDs before schema validation", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        candidates: [
+          {
+            candidate_id: "candidate-1",
+            status: "active",
+            sources: ["https://example.org/jane"],
+            notes: "Still campaigning.",
+          },
+        ],
+      },
+      rawText: "{\"candidates\":[]}",
+    });
+
+    const { enrichPresidentialRosterStatus } = await import("../../src/ai/enrichPresidentialRosterStatus.js");
+    const result = await enrichPresidentialRosterStatus(
+      {
+        ...input,
+        candidates: [
+          {
+            ...input.candidates[0]!,
+            candidateId: " candidate-1 ",
+          },
+        ],
+      },
+      { timeoutMs: 30_000 },
+      [{ provider: "claude", model: "claude-sonnet-4-6" }]
+    );
+
+    expect(result.ok).toBe(true);
+    expect(callResearchProviderMock).toHaveBeenCalledTimes(1);
+  });
+
   it("returns provider failures with a status prompt preview", async () => {
     callResearchProviderMock.mockResolvedValueOnce({
       ok: false,

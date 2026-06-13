@@ -124,6 +124,20 @@ describe("parsePresidentialRosterPayload", () => {
         ],
       }).ok
     ).toBe(false);
+
+    expect(
+      parsePresidentialRosterPayload({
+        candidates: [
+          {
+            display_name: "Jane President",
+            party: "Democratic",
+            fec_candidate_id: "PABCDEFGH",
+            sources: ["https://example.org/a"],
+            status: "active",
+          },
+        ],
+      }).ok
+    ).toBe(false);
   });
 
   it("rejects non-object payloads and missing candidates array", () => {

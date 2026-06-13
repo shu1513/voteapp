@@ -70,6 +70,14 @@ function matched(fecCandidateId: string): PresidentialCandidateFecMatch {
   };
 }
 
+function fuzzyMatched(fecCandidateId: string): PresidentialCandidateFecMatch {
+  return {
+    ...matched(fecCandidateId),
+    method: "fuzzy_name_party",
+    confidence: 0.95,
+  };
+}
+
 function emptyReconciliationLoader() {
   return vi.fn().mockResolvedValue([]);
 }
@@ -266,6 +274,53 @@ describe("enrichPresidentialRosterCycle", () => {
       }),
     });
     expect(redis.sendCommand).not.toHaveBeenCalled();
+  });
+
+  it("does not demote withdrawn candidates matched only fuzzily", async () => {
+    const db = makeDb();
+    const redis = { sendCommand: vi.fn().mockResolvedValue(1) };
+
+    const result = await enrichPresidentialRosterCycle({
+      db,
+      redis,
+      electionYear: 2028,
+      party: "Democratic",
+      aiConfig: { timeoutMs: 1000 },
+      fecOptions: { apiKeys: ["fec-key"], timeoutMs: 1000 },
+      enrichRoster: vi.fn().mockResolvedValue({
+        ok: true,
+        provider: "claude",
+        model: "claude-sonnet-4-6",
+        aiRawDebug: null,
+        candidates: [
+          {
+            display_name: "Jane Suspended",
+            party: "Democratic",
+            sources: ["https://example.org/jane"],
+            status: "withdrawn",
+          },
+        ],
+      } satisfies PresidentialRosterAiResult),
+      matchCandidate: vi.fn().mockResolvedValue(fuzzyMatched("P80000001")),
+      loadActiveCandidatesForReconciliation: emptyReconciliationLoader(),
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      withdrawnSkippedCount: 1,
+      withdrawnDemotedCount: 0,
+    });
+    expect(result.ok ? result.matches : []).toEqual([
+      expect.objectContaining({
+        displayName: "Jane Suspended",
+        matchStatus: "matched",
+        method: "fuzzy_name_party",
+        admissionStatus: "not_admitted",
+        admissionReason: "withdrawn candidate matched only fuzzily; existing links are not automatically demoted",
+        reason: "automatic withdrawal requires exact_fec_id or exact_name_party match",
+      }),
+    ]);
+    expect(db.query).toHaveBeenCalledTimes(1);
   });
 
   it("tracks ambiguous FEC matches without emitting profile drafts", async () => {

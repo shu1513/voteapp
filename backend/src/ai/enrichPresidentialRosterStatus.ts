@@ -114,7 +114,7 @@ export function buildPresidentialRosterStatusAiConfigFromEnv(): PresidentialRost
 }
 
 function expectedCandidateIds(input: PresidentialRosterStatusAiInput): string[] {
-  return input.candidates.map((candidate) => candidate.candidateId);
+  return input.candidates.map((candidate) => candidate.candidateId.trim());
 }
 
 export async function enrichPresidentialRosterStatus(

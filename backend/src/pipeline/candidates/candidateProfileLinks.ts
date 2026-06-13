@@ -100,6 +100,7 @@ export async function withdrawPresidentialCycleCandidateByFecId(input: {
       FROM public.candidates AS candidate
       WHERE cycle_candidate.candidate_id = candidate.id
         AND cycle_candidate.cycle_id = $1
+        AND cycle_candidate.status <> 'withdrawn'
         AND candidate.deleted_at IS NULL
         AND EXISTS (
           SELECT 1

@@ -12,7 +12,7 @@ describe("loadActivePresidentialCycleCandidatesForReconciliation", () => {
           first_name: "Jane",
           last_name: "President",
           party: "Democratic",
-          fec_ids: [" p80000001 ", "P80000001", "H0CA00001", "P80000002"],
+          fec_ids: [" p80000001 ", "P80000001", "H0CA00001", "PABCDEFGH", "P80000002"],
           cycle_sources: [" https://example.org/a ", "https://example.org/a", "https://example.org/b"],
         },
       ],

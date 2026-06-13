@@ -43,7 +43,7 @@ function normalizeFecIds(raw: unknown): string[] {
   const seen = new Set<string>();
   for (const value of parseStringArray(raw)) {
     const fecId = value.toUpperCase();
-    if (!/^P[0-9A-Z]+$/.test(fecId) || seen.has(fecId)) {
+    if (!/^P\d{8}$/.test(fecId) || seen.has(fecId)) {
       continue;
     }
     seen.add(fecId);

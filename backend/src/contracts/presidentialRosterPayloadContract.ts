@@ -59,7 +59,7 @@ function normalizeFecCandidateId(value: unknown): string | null | undefined {
     return null;
   }
   const normalized = value.trim().toUpperCase();
-  return /^P[0-9A-Z]+$/.test(normalized) ? normalized : null;
+  return /^P\d{8}$/.test(normalized) ? normalized : null;
 }
 
 function normalizeSources(value: unknown): string[] | null {

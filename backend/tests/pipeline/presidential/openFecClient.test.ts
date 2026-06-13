@@ -206,6 +206,7 @@ describe("openFecClient", () => {
     ).toThrow(OpenFecClientError);
 
     expect(() => buildOpenFecPresidentialCandidateByIdUrl("H0CA00001")).toThrow(OpenFecClientError);
+    expect(() => buildOpenFecPresidentialCandidateByIdUrl("PABCDEFGH")).toThrow(OpenFecClientError);
 
     await expect(
       fetchOpenFecJsonWithKeyRotation("https://api.open.fec.gov/v1/candidates/search/?office=P", {

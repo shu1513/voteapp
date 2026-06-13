@@ -244,6 +244,10 @@ function hasAnyFecId(candidate: ActivePresidentialCycleCandidateForReconciliatio
   return candidate.fecIds.some((fecId) => fecIds.has(fecId.trim().toUpperCase()));
 }
 
+function isExactPresidentialFecMatch(match: PresidentialCandidateFecMatch): boolean {
+  return match.matchStatus === "matched" && (match.method === "exact_fec_id" || match.method === "exact_name_party");
+}
+
 async function verifyOmittedActiveCandidates(input: {
   db: Queryable;
   cycle: PresidentialRosterCycleRow;
@@ -439,7 +443,7 @@ export async function enrichPresidentialRosterCycle(
     if (candidate.status === "withdrawn") {
       withdrawnSkippedCount += 1;
       const demoteResult =
-        !input.dryRun && match.matchStatus === "matched" && match.matchedFecId
+        !input.dryRun && isExactPresidentialFecMatch(match) && match.matchedFecId
           ? await withdrawPresidentialCycleCandidateByFecId({
               db: input.db,
               cycleId: cycle.id,
@@ -455,14 +459,18 @@ export async function enrichPresidentialRosterCycle(
         admissionStatus: "not_admitted",
         admissionReason:
           match.matchStatus === "matched"
-            ? demoteResult.updatedCount > 0
-              ? "OpenFEC-confirmed withdrawn candidate demoted existing presidential roster link"
-              : "OpenFEC-confirmed withdrawn candidate has no existing presidential roster link to demote"
+            ? isExactPresidentialFecMatch(match)
+              ? demoteResult.updatedCount > 0
+                ? "OpenFEC-confirmed withdrawn candidate demoted existing presidential roster link"
+                : "OpenFEC-confirmed withdrawn candidate has no existing presidential roster link to demote"
+              : "withdrawn candidate matched only fuzzily; existing links are not automatically demoted"
             : "withdrawn candidates are not admitted to the presidential roster in v1",
         ...(match.matchedFecId ? { matchedFecId: match.matchedFecId } : {}),
         reason:
           match.matchStatus === "matched"
-            ? "withdrawn candidates are not emitted as profile drafts; existing links are demoted when present"
+            ? isExactPresidentialFecMatch(match)
+              ? "withdrawn candidates are not emitted as profile drafts; existing links are demoted when present"
+              : "automatic withdrawal requires exact_fec_id or exact_name_party match"
             : match.reason ?? "withdrawn candidate was not OpenFEC-confirmed",
       });
       continue;

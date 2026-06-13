@@ -113,6 +113,7 @@ describe("withdrawPresidentialCycleCandidateByFecId", () => {
     const sql = String(query.mock.calls[0]?.[0]);
     expect(sql).toContain("UPDATE public.presidential_cycle_candidates");
     expect(sql).toContain("jsonb_array_elements_text(candidate.fec_ids)");
+    expect(sql).toContain("cycle_candidate.status <> 'withdrawn'");
     expect(query.mock.calls[0]?.[1]).toEqual(["cycle-1", "P80000001"]);
   });
 
