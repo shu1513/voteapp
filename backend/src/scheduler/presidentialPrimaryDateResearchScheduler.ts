@@ -155,7 +155,7 @@ export async function loadPresidentialPrimaryDateResearchSchedulerState(
         ON pspd.cycle_id = pc.id
        AND pspd.state_fips = ANY($1::text[])
       WHERE pc.stage = 'primary'
-        AND pc.status IN ('upcoming', 'active')
+        AND pc.status = 'active'
       GROUP BY pc.id, pc.election_year
       ORDER BY pc.election_year ASC, pc.id ASC
     `,

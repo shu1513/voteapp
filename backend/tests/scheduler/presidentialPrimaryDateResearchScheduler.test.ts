@@ -657,7 +657,7 @@ describe("presidentialPrimaryDateResearchScheduler", () => {
     expect(poolEnd).toHaveBeenCalledTimes(1);
   });
 
-  it("reports complete when no active/upcoming primary cycles need dates", async () => {
+  it("reports complete when no active primary cycles need dates", async () => {
     const query = vi.fn(async () => ({ rows: [] }));
     vi.doMock("../../src/pipeline/producers/presidentialPrimaryDateResearchProducer.js", () => ({
       runPresidentialPrimaryDateResearchProducer: vi.fn(),

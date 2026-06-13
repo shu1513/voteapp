@@ -48,7 +48,7 @@ export async function completeExpiredPresidentialPrimaryCycles(
       SELECT id, election_year
       FROM public.presidential_cycles
       WHERE stage = 'primary'
-        AND status IN ('upcoming', 'active')
+        AND status = 'active'
       ORDER BY election_year ASC, party ASC, id ASC
     `
   );
@@ -72,7 +72,7 @@ export async function completeExpiredPresidentialPrimaryCycles(
       UPDATE public.presidential_cycles
       SET status = 'completed'
       WHERE id = ANY($1::uuid[])
-        AND status IN ('upcoming', 'active')
+        AND status = 'active'
       RETURNING id
     `,
     [expiredCycleIds]
