@@ -50,6 +50,7 @@
     "db:seed:research-areas": "tsx src/scripts/seedResearchAreas.ts",
     "db:seed:office-research-areas": "tsx src/scripts/seedOfficeResearchAreas.ts",
     "db:seed:presidential-cycles": "tsx src/scripts/seedPresidentialCycles.ts",
+    "presidential-candidates:roster:enrich": "tsx src/scripts/enrichPresidentialRoster.ts",
     "presidential-primary-cycles:complete-expired": "tsx src/scripts/completeExpiredPresidentialPrimaryCycles.ts",
     "presidential-primary-dates:enrich": "tsx src/scripts/enrichPresidentialPrimaryDates.ts",
     "presidential-primary-dates:scheduler:upsert": "tsx src/scripts/upsertPresidentialPrimaryDateResearchScheduler.ts",

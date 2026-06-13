@@ -1,5 +1,7 @@
 import type { PoolClient } from "pg";
 
+type Queryable = Pick<PoolClient, "query">;
+
 export type PresidentialCycleCandidateStatus = "active" | "withdrawn";
 
 function requireNonEmpty(value: string, fieldName: string): string {
@@ -80,4 +82,56 @@ export async function upsertPresidentialCycleCandidate(input: {
     `,
     [cycleId, candidateId, party, status, JSON.stringify(sources)]
   );
+}
+
+export async function withdrawPresidentialCycleCandidateByFecId(input: {
+  db: Queryable;
+  cycleId: string;
+  fecCandidateId: string;
+}): Promise<{ updatedCount: number }> {
+  const cycleId = requireNonEmpty(input.cycleId, "presidential cycle id");
+  const fecCandidateId = requireNonEmpty(input.fecCandidateId, "presidential FEC candidate id").toUpperCase();
+
+  const result = await input.db.query(
+    `
+      UPDATE public.presidential_cycle_candidates AS cycle_candidate
+      SET status = 'withdrawn',
+          updated_at = now()
+      FROM public.candidates AS candidate
+      WHERE cycle_candidate.candidate_id = candidate.id
+        AND cycle_candidate.cycle_id = $1
+        AND candidate.deleted_at IS NULL
+        AND EXISTS (
+          SELECT 1
+          FROM jsonb_array_elements_text(candidate.fec_ids) AS fec_id(value)
+          WHERE upper(trim(fec_id.value)) = $2
+        )
+    `,
+    [cycleId, fecCandidateId]
+  );
+
+  return { updatedCount: result.rowCount ?? 0 };
+}
+
+export async function withdrawPresidentialCycleCandidateByCandidateId(input: {
+  db: Queryable;
+  cycleId: string;
+  candidateId: string;
+}): Promise<{ updatedCount: number }> {
+  const cycleId = requireNonEmpty(input.cycleId, "presidential cycle id");
+  const candidateId = requireNonEmpty(input.candidateId, "candidate id");
+
+  const result = await input.db.query(
+    `
+      UPDATE public.presidential_cycle_candidates
+      SET status = 'withdrawn',
+          updated_at = now()
+      WHERE cycle_id = $1
+        AND candidate_id = $2
+        AND status <> 'withdrawn'
+    `,
+    [cycleId, candidateId]
+  );
+
+  return { updatedCount: result.rowCount ?? 0 };
 }
