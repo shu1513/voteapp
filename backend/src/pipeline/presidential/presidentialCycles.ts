@@ -7,7 +7,7 @@ export type PresidentialCycleSeed = {
   stage: PresidentialCycleStage;
   party: string | null;
   electionDate: string | null;
-  status: "upcoming";
+  status: "active";
   sources: readonly unknown[];
 };
 
@@ -45,7 +45,7 @@ function assertValidCycleSeed(seed: PresidentialCycleSeed): void {
   if (!isPresidentialElectionYear(seed.electionYear)) {
     throw new Error(`Year is not a presidential election year: ${seed.electionYear}`);
   }
-  if (seed.status !== "upcoming") {
+  if (seed.status !== "active") {
     throw new Error(`Unsupported presidential cycle seed status: ${seed.status}`);
   }
   if (!Array.isArray(seed.sources)) {
@@ -146,7 +146,7 @@ export function buildPresidentialCycleSeeds(
       stage: "general",
       party: null,
       electionDate: getPresidentialGeneralElectionDate(electionYear),
-      status: "upcoming",
+      status: "active",
       sources: [],
     });
 
@@ -156,7 +156,7 @@ export function buildPresidentialCycleSeeds(
         stage: "primary",
         party,
         electionDate: null,
-        status: "upcoming",
+        status: "active",
         sources: [],
       });
     }

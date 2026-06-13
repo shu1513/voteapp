@@ -264,7 +264,7 @@ async function listPrimaryCycles(pool: Pool): Promise<PresidentialPrimaryCycleRo
         party
       FROM public.presidential_cycles
       WHERE stage = 'primary'
-        AND status IN ('upcoming', 'active')
+        AND status = 'active'
       ORDER BY election_year ASC, party ASC, id ASC
     `
   );

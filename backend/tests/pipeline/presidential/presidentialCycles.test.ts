@@ -72,7 +72,7 @@ describe("presidentialCycles", () => {
         stage: "general",
         party: null,
         electionDate: "2028-11-07",
-        status: "upcoming",
+        status: "active",
         sources: [],
       },
       {
@@ -80,7 +80,7 @@ describe("presidentialCycles", () => {
         stage: "primary",
         party: "Democratic",
         electionDate: null,
-        status: "upcoming",
+        status: "active",
         sources: [],
       },
       {
@@ -88,7 +88,7 @@ describe("presidentialCycles", () => {
         stage: "primary",
         party: "Republican",
         electionDate: null,
-        status: "upcoming",
+        status: "active",
         sources: [],
       },
       {
@@ -96,7 +96,7 @@ describe("presidentialCycles", () => {
         stage: "general",
         party: null,
         electionDate: "2032-11-02",
-        status: "upcoming",
+        status: "active",
         sources: [],
       },
       {
@@ -104,7 +104,7 @@ describe("presidentialCycles", () => {
         stage: "primary",
         party: "Democratic",
         electionDate: null,
-        status: "upcoming",
+        status: "active",
         sources: [],
       },
       {
@@ -112,7 +112,7 @@ describe("presidentialCycles", () => {
         stage: "primary",
         party: "Republican",
         electionDate: null,
-        status: "upcoming",
+        status: "active",
         sources: [],
       },
     ]);
@@ -172,14 +172,14 @@ describe("presidentialCycles", () => {
     expect(query.mock.calls[0][0]).toContain("ON CONFLICT (election_year) WHERE stage = 'general'");
     expect(query.mock.calls[0][0]).toContain("election_date = EXCLUDED.election_date");
     expect(query.mock.calls[0][0]).not.toContain("status = EXCLUDED.status");
-    expect(query.mock.calls[0][1]).toEqual([2028, "2028-11-07", "upcoming", "[]"]);
+    expect(query.mock.calls[0][1]).toEqual([2028, "2028-11-07", "active", "[]"]);
 
     expect(query.mock.calls[1][0]).toContain("ON CONFLICT (election_year, party) WHERE stage = 'primary'");
     expect(query.mock.calls[1][0]).toContain("DO NOTHING");
-    expect(query.mock.calls[1][1]).toEqual([2028, "Democratic", "upcoming", "[]"]);
+    expect(query.mock.calls[1][1]).toEqual([2028, "Democratic", "active", "[]"]);
 
     expect(query.mock.calls[2][0]).toContain("ON CONFLICT (election_year, party) WHERE stage = 'primary'");
-    expect(query.mock.calls[2][1]).toEqual([2028, "Republican", "upcoming", "[]"]);
+    expect(query.mock.calls[2][1]).toEqual([2028, "Republican", "active", "[]"]);
   });
 
   it("returns unchanged for an empty upsert seed list without querying", async () => {
@@ -215,7 +215,7 @@ describe("presidentialCycles", () => {
           stage: "primary",
           party: "Democratic",
           electionDate: "2028-11-07",
-          status: "upcoming",
+          status: "active",
           sources: [],
         },
       ])
@@ -230,7 +230,7 @@ describe("presidentialCycles", () => {
           stage: "primary",
           party: " Democratic ",
           electionDate: null,
-          status: "upcoming",
+          status: "active",
           sources: [],
         },
       ])
@@ -249,7 +249,7 @@ describe("presidentialCycles", () => {
           stage: "general",
           party: "Democratic",
           electionDate: "2028-11-07",
-          status: "upcoming",
+          status: "active",
           sources: [],
         },
       ])
@@ -264,7 +264,7 @@ describe("presidentialCycles", () => {
           stage: "general",
           party: null,
           electionDate: "2028-11-08",
-          status: "upcoming",
+          status: "active",
           sources: [],
         },
       ])
@@ -283,7 +283,7 @@ describe("presidentialCycles", () => {
           stage: "general",
           party: null,
           electionDate: "2028-11-07",
-          status: "upcoming",
+          status: "active",
           sources: [],
         },
         {
@@ -291,7 +291,7 @@ describe("presidentialCycles", () => {
           stage: "primary",
           party: " Democratic ",
           electionDate: null,
-          status: "upcoming",
+          status: "active",
           sources: [],
         },
       ])
