@@ -10,7 +10,10 @@ const redisXReadGroupMock = vi.hoisted(() => vi.fn());
 const redisXAckMock = vi.hoisted(() => vi.fn());
 const redisSetMock = vi.hoisted(() => vi.fn());
 const poolQueryMock = vi.hoisted(() => vi.fn());
+const poolConnectMock = vi.hoisted(() => vi.fn());
+const poolClientReleaseMock = vi.hoisted(() => vi.fn());
 const enrichCandidateRecordsMock = vi.hoisted(() => vi.fn());
+const enrichCandidateRecordAreasMock = vi.hoisted(() => vi.fn());
 const runLifecycleMock = vi.hoisted(() => vi.fn());
 const summarizeLifecycleMock = vi.hoisted(() => vi.fn());
 const loadElectionContextMock = vi.hoisted(() => vi.fn());
@@ -19,6 +22,7 @@ const loadPresidentialContextMock = vi.hoisted(() => vi.fn());
 vi.mock("pg", () => ({
   Pool: vi.fn(() => ({
     query: poolQueryMock,
+    connect: poolConnectMock,
     end: poolEndMock,
   })),
 }));
@@ -57,7 +61,7 @@ vi.mock("../../src/ai/enrichCandidateRecordSourcesRepair.js", () => ({
 
 vi.mock("../../src/ai/enrichCandidateRecordAreas.js", () => ({
   buildCandidateRecordAreasConfigFromEnv: vi.fn(() => ({ timeoutMs: 1000 })),
-  enrichCandidateRecordAreas: vi.fn(),
+  enrichCandidateRecordAreas: enrichCandidateRecordAreasMock,
 }));
 
 vi.mock("../../src/pipeline/candidates/candidateRecordOfficeContext.js", () => ({
@@ -70,6 +74,10 @@ vi.mock("../../src/pipeline/candidates/candidateRecordsSearchLifecycle.js", () =
   summarizeCandidateRecordsLifecycleResults: summarizeLifecycleMock,
 }));
 
+import {
+  PRESIDENTIAL_CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES,
+  PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES,
+} from "../../src/ai/aiCandidates.js";
 import { runCandidateRecordEnricher } from "../../src/pipeline/enrichers/candidateRecordEnricher.js";
 
 describe("runCandidateRecordEnricher presidential-cycle routing", () => {
@@ -83,6 +91,11 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
     redisXAckMock.mockResolvedValue(1);
     redisSetMock.mockResolvedValue("OK");
     poolQueryMock.mockResolvedValue({ rows: [] });
+    poolConnectMock.mockResolvedValue({
+      query: poolQueryMock,
+      release: poolClientReleaseMock,
+    });
+    poolClientReleaseMock.mockReturnValue(undefined);
     redisXReadGroupMock.mockResolvedValue([
       {
         name: "staging:candidates:record:draft",
@@ -126,6 +139,13 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
       droppedRecords: [],
       aiRawDebug: null,
       provider: "openai",
+      model: "test-model",
+    });
+    enrichCandidateRecordAreasMock.mockResolvedValue({
+      ok: true,
+      labels: [],
+      aiRawDebug: null,
+      provider: "claude",
       model: "test-model",
     });
     runLifecycleMock.mockImplementation(async (_pool, options, executeSearch) => {
@@ -176,10 +196,11 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
         electionDate: "2028-11-07",
         officialBallotTitle: "President of the United States, 2028 Democratic primary",
         electionStage: "primary",
-        existingRecordsToAvoid: [],
       }),
-      { timeoutMs: 1000 }
+      { timeoutMs: 1000 },
+      PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES
     );
+    expect(enrichCandidateRecordsMock.mock.calls[0]?.[0]).not.toHaveProperty("existingRecordsToAvoid");
     expect(redisSetMock).toHaveBeenCalledWith("staging:candidate_record_run_processed:run-president", "completed", {
       EX: 86_400,
     });
@@ -190,35 +211,212 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
     );
   });
 
-  it("passes existing presidential candidate records as duplicate-avoidance context", async () => {
+  it("keeps existing records when a presidential refresh completes with no new records", async () => {
     poolQueryMock.mockResolvedValue({
-      rows: [
-        {
-          description: "Jane President signed a foreign trade agreement.",
-          sourceUrl: "https://example.gov/trade",
-          eventDate: "2024-08-01",
-        },
-      ],
+      rows: [],
+      rowCount: 3,
     });
 
     await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
 
-    expect(poolQueryMock).toHaveBeenCalledWith(
-      expect.stringContaining("FROM public.candidate_records"),
-      ["candidate-president", 40]
+    expect(poolConnectMock).not.toHaveBeenCalled();
+    expect(poolQueryMock).not.toHaveBeenCalledWith(
+      expect.stringContaining("DELETE FROM public.candidate_records"),
+      expect.anything()
     );
+    expect(enrichCandidateRecordsMock.mock.calls[0]?.[0]).not.toHaveProperty("existingRecordsToAvoid");
+  });
+
+  it("uses presidential AI candidates for presidential record discovery and area labeling", async () => {
+    enrichCandidateRecordsMock.mockResolvedValue({
+      ok: true,
+      records: [
+        {
+          description: "Jane President signed a national defense authorization bill.",
+          source_url: "https://example.gov/defense",
+          event_date: "2025-05-01",
+        },
+      ],
+      droppedRecords: [],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    enrichCandidateRecordAreasMock.mockResolvedValue({
+      ok: true,
+      labels: [
+        {
+          record_index: 0,
+          research_area_slug: "general",
+        },
+      ],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    poolQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("DELETE FROM public.candidate_records")) {
+        return { rows: [], rowCount: 2 };
+      }
+      if (sql.includes("SELECT id, description, record_identity_key")) {
+        return { rows: [] };
+      }
+      if (sql.includes("INSERT INTO public.candidate_records")) {
+        return { rows: [{ id: "record-1", inserted: true }], rowCount: 1 };
+      }
+      if (sql.includes("WITH office_bound")) {
+        return { rows: [{ id: "area-general", slug: "general" }] };
+      }
+      if (sql.includes("INSERT INTO public.candidate_record_area_tags")) {
+        return { rows: [], rowCount: 1 };
+      }
+      return { rows: [], rowCount: 0 };
+    });
+
+    await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
     expect(enrichCandidateRecordsMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        existingRecordsToAvoid: [
+        candidateDisplayName: "Jane President",
+        officialBallotTitle: "President of the United States, 2028 Democratic primary",
+      }),
+      { timeoutMs: 1000 },
+      PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES
+    );
+    expect(enrichCandidateRecordAreasMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        candidateDisplayName: "Jane President",
+        allowedResearchAreaSlugs: ["general"],
+        records: [
           {
-            description: "Jane President signed a foreign trade agreement.",
-            sourceUrl: "https://example.gov/trade",
-            eventDate: "2024-08-01",
+            description: "Jane President signed a national defense authorization bill.",
+            sourceUrl: "https://example.gov/defense",
+            eventDate: "2025-05-01",
           },
         ],
       }),
-      { timeoutMs: 1000 }
+      { timeoutMs: 1000 },
+      PRESIDENTIAL_CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES
     );
+  });
+
+  it("rolls back presidential replacement when the replacement insert fails", async () => {
+    enrichCandidateRecordsMock.mockResolvedValue({
+      ok: true,
+      records: [
+        {
+          description: "Jane President signed a national defense authorization bill.",
+          source_url: "https://example.gov/defense",
+          event_date: "2025-05-01",
+        },
+      ],
+      droppedRecords: [],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    enrichCandidateRecordAreasMock.mockResolvedValue({
+      ok: true,
+      labels: [
+        {
+          record_index: 0,
+          research_area_slug: "general",
+        },
+      ],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    poolQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("WITH office_bound")) {
+        return { rows: [{ id: "area-general", slug: "general" }] };
+      }
+      if (sql.includes("DELETE FROM public.candidate_records")) {
+        return { rows: [], rowCount: 2 };
+      }
+      if (sql.includes("SELECT id, description, record_identity_key")) {
+        return { rows: [] };
+      }
+      if (sql.includes("INSERT INTO public.candidate_records")) {
+        throw new Error("insert failed");
+      }
+      return { rows: [], rowCount: 0 };
+    });
+
+    await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(poolQueryMock).toHaveBeenCalledWith("BEGIN");
+    expect(poolQueryMock).toHaveBeenCalledWith("ROLLBACK");
+    expect(poolQueryMock.mock.calls.some((call) => call[0] === "COMMIT")).toBe(false);
+    expect(poolClientReleaseMock).toHaveBeenCalled();
+    expect(redisXAckMock).not.toHaveBeenCalledWith(
+      "staging:candidates:record:draft",
+      "candidate_record_enricher",
+      "1-0"
+    );
+  });
+
+  it("counts presidential label validation failures in batch stats", async () => {
+    enrichCandidateRecordsMock.mockResolvedValue({
+      ok: true,
+      records: [
+        {
+          description: "Jane President signed a national defense authorization bill.",
+          source_url: "https://example.gov/defense",
+          event_date: "2025-05-01",
+        },
+      ],
+      droppedRecords: [],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    enrichCandidateRecordAreasMock.mockResolvedValue({
+      ok: true,
+      labels: [
+        {
+          record_index: 0,
+          research_area_slug: "unknown_area",
+        },
+      ],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    poolQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("WITH office_bound")) {
+        return { rows: [{ id: "area-general", slug: "general" }] };
+      }
+      if (sql.includes("DELETE FROM public.candidate_records")) {
+        return { rows: [], rowCount: 2 };
+      }
+      if (sql.includes("SELECT id, description, record_identity_key")) {
+        return { rows: [] };
+      }
+      if (sql.includes("INSERT INTO public.candidate_records")) {
+        return { rows: [{ id: "record-1", inserted: true }], rowCount: 1 };
+      }
+      return { rows: [], rowCount: 0 };
+    });
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => undefined);
+
+    await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    try {
+      expect(poolQueryMock).toHaveBeenCalledWith("BEGIN");
+      expect(poolQueryMock).toHaveBeenCalledWith("ROLLBACK");
+      expect(poolQueryMock.mock.calls.some((call) => call[0] === "COMMIT")).toBe(false);
+      expect(consoleLogSpy).toHaveBeenCalledWith(
+        expect.stringContaining("label_validation_rejected=1")
+      );
+      expect(redisXAckMock).not.toHaveBeenCalledWith(
+        "staging:candidates:record:draft",
+        "candidate_record_enricher",
+        "1-0"
+      );
+    } finally {
+      consoleLogSpy.mockRestore();
+    }
   });
 
   it("loads vice-president presidential context for running-mate record drafts", async () => {
@@ -285,10 +483,11 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
         electionDate: "2028-11-07",
         officialBallotTitle: "Vice President of the United States, 2028 general election",
         electionStage: "general",
-        existingRecordsToAvoid: [],
       }),
-      { timeoutMs: 1000 }
+      { timeoutMs: 1000 },
+      PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES
     );
+    expect(enrichCandidateRecordsMock.mock.calls[0]?.[0]).not.toHaveProperty("existingRecordsToAvoid");
     expect(redisXAckMock).toHaveBeenCalledWith(
       "staging:candidates:record:draft",
       "candidate_record_enricher",
@@ -346,10 +545,11 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
         officialBallotTitle: "Governor",
         electionStage: "general",
         discoveryContestFamily: "non_judicial_office",
-        existingRecordsToAvoid: [],
       }),
-      { timeoutMs: 1000 }
+      { timeoutMs: 1000 },
+      undefined
     );
+    expect(enrichCandidateRecordsMock.mock.calls[0]?.[0]).not.toHaveProperty("existingRecordsToAvoid");
     expect(redisXAckMock).toHaveBeenCalledWith(
       "staging:candidates:record:draft",
       "candidate_record_enricher",

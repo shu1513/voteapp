@@ -100,6 +100,13 @@ const RECLAIM_MAX_BATCHES = 20;
 const MAX_SEED_URLS = 8;
 const MAX_DELIVERY_ATTEMPTS = 8;
 
+class ParkCandidateProfileDraftError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ParkCandidateProfileDraftError";
+  }
+}
+
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
@@ -500,9 +507,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
         const rosterStateFilingIds = parseSerializedStringArray(entry.message.roster_state_filing_ids);
         const parentPresidentialCandidateFecId =
           entry.message.parent_presidential_candidate_fec_id?.trim().toUpperCase() || undefined;
+        let deliveryCount: number | null = null;
 
         try {
-          const deliveryCount = await getDeliveryCount(redis, entry.id);
+          deliveryCount = await getDeliveryCount(redis, entry.id);
           if (deliveryCount !== null && deliveryCount >= MAX_DELIVERY_ATTEMPTS) {
             await parkMessage(
               redis,
@@ -672,6 +680,11 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
                     `parent presidential cycle candidate not found for FEC ID ${parentPresidentialCandidateFecId ?? ""}`
                   );
                 }
+                if (parentCandidateId === candidateId) {
+                  throw new ParkCandidateProfileDraftError(
+                    `vice president profile resolved to the parent presidential candidate for FEC ID ${parentPresidentialCandidateFecId ?? ""}`
+                  );
+                }
                 await setPresidentialCycleCandidateRunningMate({
                   db: client,
                   cycleId: draftContext.contextId,
@@ -741,6 +754,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           );
         } catch (error) {
           const reason = toReason(error);
+          if (error instanceof ParkCandidateProfileDraftError) {
+            await parkMessage(redis, entry, reason, deliveryCount);
+            continue;
+          }
           console.warn(
             `candidate-profile enricher retrying ${contextLabel} candidate=${candidateDisplayName ?? "unknown"}: ${reason}`
           );

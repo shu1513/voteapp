@@ -23,6 +23,10 @@ export type CandidateRecordSourceRepairPromptInput = {
   reviewFeedbackLines?: readonly string[];
 };
 
+function shouldIncludeState(input: CandidateRecordSourceRepairPromptInput): boolean {
+  return !(input.districtType === "presidential" && input.state.trim().toUpperCase() === "US");
+}
+
 export function buildCandidateRecordSourceRepairPrompt(
   input: CandidateRecordSourceRepairPromptInput
 ): string {
@@ -37,7 +41,7 @@ export function buildCandidateRecordSourceRepairPrompt(
     `- candidate_display_name: \"${input.candidateDisplayName}\"`,
     `- district_name: \"${input.districtName}\"`,
     `- district_type: \"${input.districtType}\"`,
-    `- state: \"${input.state}\"`,
+    ...(shouldIncludeState(input) ? [`- state: \"${input.state}\"`] : []),
     `- election_date: \"${input.electionDate}\"`,
     `- official_ballot_title: \"${input.officialBallotTitle}\"`,
     ...(input.electionStage ? [`- election_stage: \"${input.electionStage}\"`] : []),

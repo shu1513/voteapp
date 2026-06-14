@@ -79,6 +79,26 @@ export const PRESIDENTIAL_PROFILE_AI_CANDIDATES: readonly AiCandidate[] = [
 ] as const;
 
 /**
+ * Curated presidential candidate-record discovery AI candidates.
+ * Kept separate so presidential/vice-presidential records can use stronger national-office tuning.
+ */
+export const PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "claude", model: "claude-opus-4-8" },
+  { provider: "openai", model: "gpt-5.5" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
+/**
+ * Curated presidential candidate-record area-labeling AI candidates.
+ * This is the second candidate-record AI pass, so keep Sonnet first for presidential/VP records.
+ */
+export const PRESIDENTIAL_CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "openai", model: "gpt-5.5" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
+/**
  * Curated candidate-discovery/profile AI candidates.
  * Used by candidate roster/profile enrichers.
  */

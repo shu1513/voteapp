@@ -85,26 +85,21 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).not.toContain("Prefer records that reveal a stance or governing record");
   });
 
-  it("includes existing records to avoid when provided", () => {
+  it("omits state for presidential United States prompts", () => {
     const prompt = buildCandidateRecordDiscoveryPrompt({
-      ...baseInput,
-      existingRecordsToAvoid: [
-        {
-          description: "Candidate signed the 2024 infrastructure law.",
-          sourceUrl: "https://example.gov/infrastructure",
-          eventDate: "2024-05-01",
-        },
-      ],
+      candidateDisplayName: "Jane President",
+      districtName: "United States",
+      districtType: "presidential",
+      state: "US",
+      electionDate: "2028-11-07",
+      officialBallotTitle: "President of the United States, 2028 Democratic primary",
+      electionStage: "primary",
     });
 
-    expect(prompt).toContain("Existing candidate records already stored");
+    expect(prompt).toContain('- district_type: "presidential"');
+    expect(prompt).not.toContain("- state:");
     expect(prompt).toContain(
-      'description: "Candidate signed the 2024 infrastructure law."'
-    );
-    expect(prompt).toContain('source_url: "https://example.gov/infrastructure"');
-    expect(prompt).toContain('event_date: "2024-05-01"');
-    expect(prompt).toContain(
-      "Do not return records that describe the same substantive action/event as any Existing candidate record"
+      '- official_ballot_title: "President of the United States, 2028 Democratic primary"'
     );
   });
 

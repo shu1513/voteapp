@@ -10,7 +10,6 @@ import {
   type CandidateDiscoveredRecord,
 } from "../contracts/candidateRecordDiscoveryPayloadContract.js";
 import { buildCandidateRecordDiscoveryPrompt } from "./providers/candidateRecordDiscoveryPrompt.js";
-import type { CandidateRecordDiscoveryExistingRecord } from "./providers/candidateRecordDiscoveryPrompt.js";
 import type { AiProvider } from "./types.js";
 import { verifyHttpUrlReachability } from "./urlReachability.js";
 import type { ElectionContestFamily } from "../types/election.js";
@@ -46,7 +45,6 @@ export type EnrichCandidateRecordsInput = {
   termEndYear?: string | null;
   discoveryContestFamily?: ElectionContestFamily | null;
   sinceDate?: string | null;
-  existingRecordsToAvoid?: readonly CandidateRecordDiscoveryExistingRecord[];
 };
 
 export type EnrichCandidateRecordsConfig = {

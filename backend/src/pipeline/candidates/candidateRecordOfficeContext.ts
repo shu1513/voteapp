@@ -147,8 +147,15 @@ export async function loadCandidatePresidentialCycleOfficeContext(
         office.id::text AS "officeId",
         cycle.sources AS "sources"
       FROM public.candidates AS c
+      JOIN public.presidential_cycle_candidates AS cycle_candidate
+        ON cycle_candidate.cycle_id = $2
+       AND (
+         ($4 = 'president' AND cycle_candidate.candidate_id = c.id)
+         OR
+         ($4 = 'vice_president' AND cycle_candidate.running_mate_candidate_id = c.id)
+       )
       JOIN public.presidential_cycles AS cycle
-        ON cycle.id = $2
+        ON cycle.id = cycle_candidate.cycle_id
       JOIN public.offices AS office
         ON office.scope = 'presidential'
        AND office.canonical_name = $3
@@ -156,7 +163,7 @@ export async function loadCandidatePresidentialCycleOfficeContext(
         AND c.deleted_at IS NULL
       LIMIT 1
     `,
-    [trimmedCandidateId, trimmedCycleId, officeName]
+    [trimmedCandidateId, trimmedCycleId, officeName, role]
   );
 
   const row = result.rows[0];

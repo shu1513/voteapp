@@ -123,11 +123,15 @@ describe("loadCandidatePresidentialCycleOfficeContext", () => {
     });
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).toContain("JOIN public.offices AS office");
+    expect(query.mock.calls[0]?.[0]).toContain("JOIN public.presidential_cycle_candidates AS cycle_candidate");
+    expect(query.mock.calls[0]?.[0]).toContain("$4 = 'president'");
+    expect(query.mock.calls[0]?.[0]).toContain("cycle_candidate.candidate_id = c.id");
     expect(query.mock.calls[0]?.[0]).toContain("office.scope = 'presidential'");
     expect(query.mock.calls[0]?.[1]).toEqual([
       "cand-president",
       "cycle-2028",
       "President of the United States",
+      "president",
     ]);
   });
 
@@ -162,7 +166,10 @@ describe("loadCandidatePresidentialCycleOfficeContext", () => {
       "cand-vp",
       "cycle-2028",
       "Vice President of the United States",
+      "vice_president",
     ]);
+    expect(query.mock.calls[0]?.[0]).toContain("$4 = 'vice_president'");
+    expect(query.mock.calls[0]?.[0]).toContain("cycle_candidate.running_mate_candidate_id = c.id");
   });
 
   it("returns null for blank candidate or cycle ids", async () => {

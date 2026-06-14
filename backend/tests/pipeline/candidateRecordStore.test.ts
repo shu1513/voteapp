@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   buildCandidateRecordIdentityKey,
-  loadRecentCandidateRecordsForDuplicateAvoidance,
+  deleteCandidateRecordsForReplacementRefresh,
   scoreCandidateRecordDescriptionSimilarity,
   upsertCandidateRecords,
 } from "../../src/pipeline/candidates/candidateRecordStore.js";
@@ -125,41 +125,25 @@ describe("upsertCandidateRecords", () => {
   });
 });
 
-describe("loadRecentCandidateRecordsForDuplicateAvoidance", () => {
-  it("loads bounded recent records for duplicate-avoidance prompt context", async () => {
-    const query = vi.fn().mockResolvedValue({
-      rows: [
-        {
-          description: "Candidate signed a public safety bill.",
-          sourceUrl: "https://example.gov/bill",
-          eventDate: "2024-06-01",
-        },
-      ],
-    });
+describe("deleteCandidateRecordsForReplacementRefresh", () => {
+  it("deletes all candidate records for a candidate and returns the deleted count", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 4 });
 
-    const result = await loadRecentCandidateRecordsForDuplicateAvoidance(
-      { query },
-      " candidate-1 ",
-      100
-    );
+    await expect(
+      deleteCandidateRecordsForReplacementRefresh({ query }, " candidate-1 ")
+    ).resolves.toEqual({ deletedCount: 4 });
 
-    expect(result).toEqual([
-      {
-        description: "Candidate signed a public safety bill.",
-        sourceUrl: "https://example.gov/bill",
-        eventDate: "2024-06-01",
-      },
-    ]);
-    expect(query).toHaveBeenCalledWith(expect.stringContaining("FROM public.candidate_records"), [
+    expect(query).toHaveBeenCalledWith(expect.stringContaining("DELETE FROM public.candidate_records"), [
       "candidate-1",
-      40,
     ]);
   });
 
-  it("returns no records without querying when candidate ID is blank", async () => {
+  it("does not query when candidate ID is blank", async () => {
     const query = vi.fn();
 
-    await expect(loadRecentCandidateRecordsForDuplicateAvoidance({ query }, "   ")).resolves.toEqual([]);
+    await expect(deleteCandidateRecordsForReplacementRefresh({ query }, "   ")).resolves.toEqual({
+      deletedCount: 0,
+    });
     expect(query).not.toHaveBeenCalled();
   });
 });
