@@ -21,6 +21,10 @@ export type CandidateRecordAreaLabelPromptInput = {
   reviewFeedbackLines?: readonly string[];
 };
 
+function shouldIncludeState(input: CandidateRecordAreaLabelPromptInput): boolean {
+  return !(input.districtType === "presidential" && input.state.trim().toUpperCase() === "US");
+}
+
 export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLabelPromptInput): string {
   const includeSenateContext = isUsSenateOfficeTitle(input.officialBallotTitle);
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
@@ -33,7 +37,7 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
     `- candidate_display_name: "${input.candidateDisplayName}"`,
     `- district_name: "${input.districtName}"`,
     `- district_type: "${input.districtType}"`,
-    `- state: "${input.state}"`,
+    ...(shouldIncludeState(input) ? [`- state: "${input.state}"`] : []),
     `- election_date: "${input.electionDate}"`,
     `- official_ballot_title: "${input.officialBallotTitle}"`,
     ...(input.electionStage ? [`- election_stage: "${input.electionStage}"`] : []),

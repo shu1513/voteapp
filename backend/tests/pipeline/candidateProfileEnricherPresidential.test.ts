@@ -56,6 +56,7 @@ vi.mock("../../src/pipeline/candidates/candidateRecordDraftEmitter.js", () => ({
 }));
 
 import { runCandidateProfileEnricher } from "../../src/pipeline/enrichers/candidateProfileEnricher.js";
+import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
 describe("runCandidateProfileEnricher presidential cycle routing", () => {
   beforeEach(() => {
@@ -124,6 +125,12 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       if (text.includes("INSERT INTO public.presidential_cycle_candidates")) {
         return { rows: [], rowCount: 1 };
       }
+      if (text.includes("FROM public.presidential_cycle_candidates AS cycle_candidate")) {
+        return { rows: [{ candidate_id: "candidate-parent" }], rowCount: 1 };
+      }
+      if (text.includes("UPDATE public.presidential_cycle_candidates")) {
+        return { rows: [], rowCount: 1 };
+      }
       if (text.includes("INSERT INTO public.candidate_elections")) {
         return { rows: [], rowCount: 1 };
       }
@@ -162,7 +169,8 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
         rosterFecIds: ["P80000001"],
         seedUrls: ["https://www.fec.gov/data/candidate/P80000001", "https://example.gov/primary"],
       }),
-      { timeoutMs: 1000 }
+      { timeoutMs: 1000 },
+      PRESIDENTIAL_PROFILE_AI_CANDIDATES
     );
 
     const executedSql = clientQueryMock.mock.calls.map((call) => String(call[0]));
@@ -180,11 +188,224 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       "active",
       JSON.stringify(["https://www.fec.gov/data/candidate/P80000001"]),
     ]);
-    expect(enqueueCandidateRecordDraftsMock).not.toHaveBeenCalled();
+    expect(
+      clientQueryMock.mock.calls.some((call) =>
+        String(call[0]).includes("presidential_profile_researched = true")
+      )
+    ).toBe(true);
+    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
+      {
+        contextType: "presidential_cycle",
+        candidateId: "candidate-1",
+        presidentialCycleId: "cycle-1",
+        presidentialRole: "president",
+        runId: "run-1",
+      },
+    ]);
     expect(redisXAckMock).toHaveBeenCalledWith(
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
       "1-0"
+    );
+  });
+
+  it("links vice-president profile drafts as running mates without creating presidential candidate links", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-2",
+            message: {
+              context_type: "presidential_cycle",
+              presidential_cycle_id: "cycle-1",
+              presidential_role: "vice_president",
+              parent_presidential_candidate_fec_id: "P80000001",
+              item_type: "candidate_profile",
+              candidate_display_name: "Pat Running Mate",
+              roster_party: "Democratic",
+              seed_urls: JSON.stringify(["https://example.gov/running-mate"]),
+              run_id: "run-vp",
+            },
+          },
+        ],
+      },
+    ]);
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Pat Running Mate",
+        first_name: "Pat",
+        last_name: "Running Mate",
+        party: "Democratic",
+        official_website_url: "https://example.gov/running-mate",
+        sources: ["https://example.gov/running-mate"],
+      },
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(enrichCandidateProfileMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        candidateDisplayName: "Pat Running Mate",
+        officialBallotTitle: "Vice President of the United States, 2028 Democratic primary",
+        rosterParty: "Democratic",
+        rosterFecIds: [],
+        allowMissingFederalFecIds: true,
+      }),
+      { timeoutMs: 1000 },
+      PRESIDENTIAL_PROFILE_AI_CANDIDATES
+    );
+
+    const executedSql = clientQueryMock.mock.calls.map((call) => String(call[0]));
+    expect(executedSql.some((sql) => sql.includes("INSERT INTO public.candidates"))).toBe(true);
+    expect(executedSql.some((sql) => sql.includes("INSERT INTO public.presidential_cycle_candidates"))).toBe(false);
+    expect(
+      clientQueryMock.mock.calls.some(
+        (call) =>
+          String(call[0]).includes("running_mate_candidate_id = $3::uuid") &&
+          JSON.stringify(call[1]) === JSON.stringify(["cycle-1", "candidate-parent", "candidate-1"])
+      )
+    ).toBe(true);
+    expect(
+      clientQueryMock.mock.calls.some((call) =>
+        String(call[0]).includes("running_mate_profile_researched = true")
+      )
+    ).toBe(true);
+    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
+      {
+        contextType: "presidential_cycle",
+        candidateId: "candidate-1",
+        presidentialCycleId: "cycle-1",
+        presidentialRole: "vice_president",
+        runId: "run-vp",
+      },
+    ]);
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-2"
+    );
+  });
+
+  it("parks vice-president drafts that resolve to the parent presidential candidate", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-4",
+            message: {
+              context_type: "presidential_cycle",
+              presidential_cycle_id: "cycle-1",
+              presidential_role: "vice_president",
+              parent_presidential_candidate_fec_id: "P80000001",
+              item_type: "candidate_profile",
+              candidate_display_name: "Jane President",
+              roster_party: "Democratic",
+              seed_urls: JSON.stringify(["https://example.gov/running-mate"]),
+              run_id: "run-self-vp",
+            },
+          },
+        ],
+      },
+    ]);
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Jane President",
+        first_name: "Jane",
+        last_name: "President",
+        party: "Democratic",
+        sources: ["https://example.gov/running-mate"],
+      },
+    });
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      const text = String(sql);
+      if (text === "BEGIN" || text === "ROLLBACK") {
+        return { rows: [], rowCount: null };
+      }
+      if (text.includes("FROM public.candidates")) {
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("INSERT INTO public.candidates")) {
+        return { rows: [{ id: "candidate-1" }], rowCount: 1 };
+      }
+      if (text.includes("FROM public.presidential_cycle_candidates AS cycle_candidate")) {
+        return { rows: [{ candidate_id: "candidate-1" }], rowCount: 1 };
+      }
+      throw new Error(`Unexpected client query: ${text}`);
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(clientQueryMock).toHaveBeenCalledWith("ROLLBACK");
+    expect(
+      clientQueryMock.mock.calls.some((call) =>
+        String(call[0]).includes("running_mate_candidate_id = $3::uuid")
+      )
+    ).toBe(false);
+    expect(enqueueCandidateRecordDraftsMock).not.toHaveBeenCalled();
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:rejected",
+      "*",
+      expect.objectContaining({
+        reason: "vice president profile resolved to the parent presidential candidate for FEC ID P80000001",
+        presidential_role: "vice_president",
+        parent_presidential_candidate_fec_id: "P80000001",
+      })
+    );
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-4"
+    );
+  });
+
+  it("parks president profile drafts that are missing roster FEC IDs", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-3",
+            message: {
+              context_type: "presidential_cycle",
+              presidential_cycle_id: "cycle-1",
+              presidential_role: "president",
+              item_type: "candidate_profile",
+              candidate_display_name: "No FEC President",
+              roster_party: "Democratic",
+              seed_urls: JSON.stringify(["https://example.gov/no-fec"]),
+              run_id: "run-no-fec",
+            },
+          },
+        ],
+      },
+    ]);
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(enrichCandidateProfileMock).not.toHaveBeenCalled();
+    expect(poolConnectMock).not.toHaveBeenCalled();
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:rejected",
+      "*",
+      expect.objectContaining({
+        reason: "president profile draft requires at least one roster_fec_ids value",
+        presidential_role: "president",
+      })
+    );
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-3"
     );
   });
 

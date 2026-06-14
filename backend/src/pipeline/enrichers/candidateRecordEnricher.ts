@@ -1,6 +1,11 @@
 import { Pool } from "pg";
+import type { PoolClient } from "pg";
 import { createClient } from "redis";
 
+import {
+  PRESIDENTIAL_CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES,
+  PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES,
+} from "../../ai/aiCandidates.js";
 import {
   buildCandidateRecordsConfigFromEnv,
   enrichCandidateRecords,
@@ -21,8 +26,15 @@ import {
   STAGING_CANDIDATE_RECORD_REJECTED_STREAM,
   STAGING_ITEM_TYPE_CANDIDATE_RECORD,
 } from "../../config/electionsPipeline.js";
-import { buildCandidateRecordIdentityKey, upsertCandidateRecords } from "../candidates/candidateRecordStore.js";
 import {
+  buildCandidateRecordIdentityKey,
+  deleteCandidateRecordsForReplacementRefresh,
+  type CandidateRecordUpsertInput,
+  upsertCandidateRecords,
+} from "../candidates/candidateRecordStore.js";
+import {
+  type AllowedResearchArea,
+  type CandidateRecordAreaLabelInput,
   loadAllResearchAreas,
   loadAllowedResearchAreasForOfficeId,
   upsertCandidateRecordAreaTags,
@@ -33,7 +45,11 @@ import {
   summarizeCandidateRecordsLifecycleResults,
   type CandidateRecordsSearchMetrics,
 } from "../candidates/candidateRecordsSearchLifecycle.js";
-import { loadCandidateElectionOfficeContext } from "../candidates/candidateRecordOfficeContext.js";
+import {
+  loadCandidateElectionOfficeContext,
+  loadCandidatePresidentialCycleOfficeContext,
+  type CandidateRecordPresidentialRole,
+} from "../candidates/candidateRecordOfficeContext.js";
 import {
   buildCandidateRecordRunProcessedMarkerKey,
   CANDIDATE_RECORD_RUN_PROCESSED_MARKER_TTL_SECONDS,
@@ -65,9 +81,140 @@ type CandidateRecordEnricherBatchStats = {
   unresolved_after_repair_count: number;
 };
 
+type RecordForTagging = {
+  description: string;
+  source_url: string;
+  event_date: string;
+};
+
+type AreaLabelForWrite = {
+  record_index: number;
+  research_area_slug: string;
+  stance?: "for" | "against";
+};
+
+class CandidateRecordLabelValidationError extends Error {
+  readonly failureCount: number;
+
+  constructor(reason: string, failureCount: number) {
+    super(`candidate record label validation failed: ${reason}`);
+    this.name = "CandidateRecordLabelValidationError";
+    this.failureCount = failureCount;
+  }
+}
+
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
+}
+
+function toCandidateRecordUpsertInput(
+  candidateId: string,
+  records: readonly RecordForTagging[]
+): CandidateRecordUpsertInput[] {
+  return records.map((record) => ({
+    candidateId,
+    description: record.description,
+    sourceUrl: record.source_url,
+    eventDate: record.event_date,
+  }));
+}
+
+function buildLabelsForValidation(input: {
+  labels: readonly AreaLabelForWrite[];
+  recordsForTagging: readonly RecordForTagging[];
+  persistedByIdentity: ReadonlyMap<string, string>;
+  candidateId: string;
+}): CandidateRecordAreaLabelInput[] {
+  return input.labels.map((label) => {
+    const sourceRecord = input.recordsForTagging[label.record_index];
+    if (!sourceRecord) {
+      throw new Error(`record_index out of range in labels: ${label.record_index}`);
+    }
+    const identityKey = buildCandidateRecordIdentityKey({
+      description: sourceRecord.description,
+      sourceUrl: sourceRecord.source_url,
+      eventDate: sourceRecord.event_date,
+    });
+    const candidateRecordId = input.persistedByIdentity.get(identityKey);
+    if (!candidateRecordId) {
+      throw new Error(
+        `missing candidate_record id for identity key ${identityKey} (candidate_id=${input.candidateId})`
+      );
+    }
+    return {
+      candidateRecordId,
+      researchAreaSlug: label.research_area_slug,
+      stance: label.stance ?? null,
+    };
+  });
+}
+
+async function rollbackQuietly(client: PoolClient): Promise<void> {
+  try {
+    await client.query("ROLLBACK");
+  } catch (error) {
+    console.error("candidate-record enricher cleanup warning (ROLLBACK):", toReason(error));
+  }
+}
+
+async function replacePresidentialCandidateRecordsAtomically(input: {
+  pool: Pool;
+  candidateId: string;
+  recordsForTagging: readonly RecordForTagging[];
+  labels: readonly AreaLabelForWrite[];
+  allowedSlugs: readonly string[];
+  allowedAreas: readonly AllowedResearchArea[];
+}): Promise<{
+  deletedCount: number;
+  insertedCount: number;
+  dedupedCount: number;
+  taggedSpecificCount: number;
+  taggedGeneralCount: number;
+}> {
+  const client = await input.pool.connect();
+  try {
+    await client.query("BEGIN");
+    const deleted = await deleteCandidateRecordsForReplacementRefresh(client, input.candidateId);
+    const upsert = await upsertCandidateRecords(
+      client,
+      toCandidateRecordUpsertInput(input.candidateId, input.recordsForTagging)
+    );
+    const labelsForValidation = buildLabelsForValidation({
+      labels: input.labels,
+      recordsForTagging: input.recordsForTagging,
+      persistedByIdentity: upsert.recordIdsByIdentityKey,
+      candidateId: input.candidateId,
+    });
+    const validation = validateCandidateRecordAreaLabels(
+      labelsForValidation,
+      new Set(input.allowedSlugs)
+    );
+    if (!validation.ok) {
+      const reason = validation.failures.map((failure) => failure.reason).join("; ");
+      throw new CandidateRecordLabelValidationError(reason, validation.failures.length);
+    }
+
+    const researchAreaIdBySlug = new Map(input.allowedAreas.map((area) => [area.slug, area.id]));
+    await upsertCandidateRecordAreaTags(client, validation.normalized, researchAreaIdBySlug);
+    await client.query("COMMIT");
+
+    const taggedGeneralCount = validation.normalized.filter(
+      (label) => label.researchAreaSlug === "general"
+    ).length;
+    return {
+      deletedCount: deleted.deletedCount,
+      insertedCount: upsert.inserted,
+      dedupedCount: upsert.updated,
+      taggedGeneralCount,
+      taggedSpecificCount: validation.normalized.length - taggedGeneralCount,
+    };
+  } catch (error) {
+    await rollbackQuietly(client);
+    throw error;
+  } finally {
+    client.release();
+  }
 }
 
 function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
@@ -84,6 +231,15 @@ function classifyCitationVerificationFailure(reason: string): "transient" | "per
     return "transient";
   }
   return "permanent";
+}
+
+function parseCandidateRecordContextType(value: string | undefined): "election" | "presidential_cycle" {
+  return value === "presidential_cycle" ? "presidential_cycle" : "election";
+}
+
+function parsePresidentialRole(value: string | undefined): CandidateRecordPresidentialRole | null {
+  const trimmed = value?.trim();
+  return trimmed === "president" || trimmed === "vice_president" ? trimmed : null;
 }
 
 async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Promise<void> {
@@ -177,6 +333,9 @@ async function parkMessage(
     original_stream_id: entry.id,
     candidate_id: entry.message.candidate_id ?? "",
     election_id: entry.message.election_id ?? "",
+    context_type: entry.message.context_type ?? "",
+    presidential_cycle_id: entry.message.presidential_cycle_id ?? "",
+    presidential_role: entry.message.presidential_role ?? "",
     item_type: entry.message.item_type ?? "",
     run_id: entry.message.run_id ?? "",
   });
@@ -216,8 +375,15 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
       for (const entry of entries) {
         const candidateId = entry.message.candidate_id;
         const electionId = entry.message.election_id;
+        const contextType = parseCandidateRecordContextType(entry.message.context_type);
+        const presidentialCycleId = (entry.message.presidential_cycle_id ?? "").trim();
+        const presidentialRole = parsePresidentialRole(entry.message.presidential_role);
         const itemType = entry.message.item_type;
         const runId = (entry.message.run_id ?? "").trim();
+        const contextLabel =
+          contextType === "presidential_cycle"
+            ? `presidential_cycle_id=${presidentialCycleId || "unknown"} role=${presidentialRole ?? "unknown"}`
+            : `election_id=${electionId ?? "unknown"}`;
 
         try {
           const deliveryCount = await getDeliveryCount(redis, entry.id);
@@ -229,13 +395,17 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               deliveryCount
             );
             console.warn(
-              `candidate-record enricher parked stream_id=${entry.id} candidate_id=${candidateId ?? "unknown"} election_id=${electionId ?? "unknown"} after ${deliveryCount} deliveries`
+              `candidate-record enricher parked stream_id=${entry.id} candidate_id=${candidateId ?? "unknown"} ${contextLabel} after ${deliveryCount} deliveries`
             );
             stats.parked_count += 1;
             continue;
           }
 
-          if (!candidateId || !electionId || itemType !== STAGING_ITEM_TYPE_CANDIDATE_RECORD) {
+          const hasRequiredContext =
+            contextType === "presidential_cycle"
+              ? presidentialCycleId.length > 0 && presidentialRole !== null
+              : Boolean(electionId);
+          if (!candidateId || !hasRequiredContext || itemType !== STAGING_ITEM_TYPE_CANDIDATE_RECORD) {
             await redis.xAck(
               STAGING_CANDIDATE_RECORD_DRAFT_STREAM,
               STAGING_CANDIDATE_RECORD_ENRICHER_GROUP,
@@ -246,7 +416,15 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
             continue;
           }
 
-          const context = await loadCandidateElectionOfficeContext(pool, candidateId, electionId);
+          const context =
+            contextType === "presidential_cycle"
+              ? await loadCandidatePresidentialCycleOfficeContext(
+                  pool,
+                  candidateId,
+                  presidentialCycleId,
+                  presidentialRole!
+                )
+              : await loadCandidateElectionOfficeContext(pool, candidateId, electionId ?? "");
           if (!context) {
             await redis.xAck(
               STAGING_CANDIDATE_RECORD_DRAFT_STREAM,
@@ -262,6 +440,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
             {
               candidateId,
               asOf: new Date(),
+              ignoreCooldown: contextType === "presidential_cycle",
             },
             async ({ candidateId: claimedCandidateId, window }): Promise<CandidateRecordsSearchMetrics> => {
               const discovered = await enrichCandidateRecords(
@@ -278,7 +457,10 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                   discoveryContestFamily: context.discoveryContestFamily,
                   sinceDate: window.sinceDate,
                 },
-                recordsConfig
+                recordsConfig,
+                contextType === "presidential_cycle"
+                  ? PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES
+                  : undefined
               );
 
               if (!discovered.ok) {
@@ -322,15 +504,10 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               const recordsForTagging = [...discovered.records];
               const persistedByIdentity = new Map<string, string>();
 
-              if (discovered.records.length > 0) {
+              if (discovered.records.length > 0 && contextType !== "presidential_cycle") {
                 const firstPassUpsert = await upsertCandidateRecords(
                   pool,
-                  discovered.records.map((record) => ({
-                    candidateId: claimedCandidateId,
-                    description: record.description,
-                    sourceUrl: record.source_url,
-                    eventDate: record.event_date,
-                  }))
+                  toCandidateRecordUpsertInput(claimedCandidateId, discovered.records)
                 );
                 insertedCount += firstPassUpsert.inserted;
                 dedupedCount += firstPassUpsert.updated;
@@ -448,19 +625,16 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                   }
 
                   if (repairedVerifiedRecords.length > 0) {
-                    const secondPassUpsert = await upsertCandidateRecords(
-                      pool,
-                      repairedVerifiedRecords.map((record) => ({
-                        candidateId: claimedCandidateId,
-                        description: record.description,
-                        sourceUrl: record.source_url,
-                        eventDate: record.event_date,
-                      }))
-                    );
-                    insertedCount += secondPassUpsert.inserted;
-                    dedupedCount += secondPassUpsert.updated;
-                    for (const [key, id] of secondPassUpsert.recordIdsByIdentityKey) {
-                      persistedByIdentity.set(key, id);
+                    if (contextType !== "presidential_cycle") {
+                      const secondPassUpsert = await upsertCandidateRecords(
+                        pool,
+                        toCandidateRecordUpsertInput(claimedCandidateId, repairedVerifiedRecords)
+                      );
+                      insertedCount += secondPassUpsert.inserted;
+                      dedupedCount += secondPassUpsert.updated;
+                      for (const [key, id] of secondPassUpsert.recordIdsByIdentityKey) {
+                        persistedByIdentity.set(key, id);
+                      }
                     }
                     recordsForTagging.push(...repairedVerifiedRecords);
                     stats.repaired_verified_count += repairedVerifiedRecords.length;
@@ -520,7 +694,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               }
               if (!context.officeId) {
                 console.log(
-                  `candidate-record enricher using all research areas because election office_id is null candidate_id=${claimedCandidateId} election_id=${context.electionId}`
+                  `candidate-record enricher using all research areas because office_id is null candidate_id=${claimedCandidateId} ${contextLabel}`
                 );
               }
               const allowedSlugs = [...new Set(allowedAreas.map((row) => row.slug))];
@@ -543,7 +717,10 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     eventDate: record.event_date,
                   })),
                 },
-                areasConfig
+                areasConfig,
+                contextType === "presidential_cycle"
+                  ? PRESIDENTIAL_CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES
+                  : undefined
               );
 
               if (!areaLabels.ok) {
@@ -552,46 +729,58 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                 );
               }
 
-              const labelsForValidation = areaLabels.labels.map((label) => {
-                const sourceRecord = recordsForTagging[label.record_index];
-                if (!sourceRecord) {
-                  throw new Error(`record_index out of range in labels: ${label.record_index}`);
+              let taggedGeneralCount = 0;
+              let taggedSpecificCount = 0;
+              if (contextType === "presidential_cycle") {
+                try {
+                  const replacement = await replacePresidentialCandidateRecordsAtomically({
+                    pool,
+                    candidateId: claimedCandidateId,
+                    recordsForTagging,
+                    labels: areaLabels.labels,
+                    allowedSlugs,
+                    allowedAreas,
+                  });
+                  insertedCount += replacement.insertedCount;
+                  dedupedCount += replacement.dedupedCount;
+                  taggedGeneralCount = replacement.taggedGeneralCount;
+                  taggedSpecificCount = replacement.taggedSpecificCount;
+                  if (replacement.deletedCount > 0) {
+                    console.log(
+                      `candidate-record enricher atomically replaced presidential records candidate_id=${claimedCandidateId} deleted=${replacement.deletedCount} inserted=${replacement.insertedCount} deduped=${replacement.dedupedCount}`
+                    );
+                  }
+                } catch (error) {
+                  if (error instanceof CandidateRecordLabelValidationError) {
+                    stats.label_validation_rejected_count += error.failureCount;
+                  }
+                  throw error;
                 }
-                const identityKey = buildCandidateRecordIdentityKey({
-                  description: sourceRecord.description,
-                  sourceUrl: sourceRecord.source_url,
-                  eventDate: sourceRecord.event_date,
+              } else {
+                const labelsForValidation = buildLabelsForValidation({
+                  labels: areaLabels.labels,
+                  recordsForTagging,
+                  persistedByIdentity,
+                  candidateId: claimedCandidateId,
                 });
-                const candidateRecordId = persistedByIdentity.get(identityKey);
-                if (!candidateRecordId) {
-                  throw new Error(
-                    `missing candidate_record id for identity key ${identityKey} (candidate_id=${claimedCandidateId})`
-                  );
+                const validation = validateCandidateRecordAreaLabels(
+                  labelsForValidation,
+                  new Set(allowedSlugs)
+                );
+                if (!validation.ok) {
+                  stats.label_validation_rejected_count += validation.failures.length;
+                  const reason = validation.failures.map((failure) => failure.reason).join("; ");
+                  throw new Error(`candidate record label validation failed: ${reason}`);
                 }
-                return {
-                  candidateRecordId,
-                  researchAreaSlug: label.research_area_slug,
-                  stance: label.stance ?? null,
-                };
-              });
 
-              const validation = validateCandidateRecordAreaLabels(
-                labelsForValidation,
-                new Set(allowedSlugs)
-              );
-              if (!validation.ok) {
-                stats.label_validation_rejected_count += validation.failures.length;
-                const reason = validation.failures.map((failure) => failure.reason).join("; ");
-                throw new Error(`candidate record label validation failed: ${reason}`);
+                const researchAreaIdBySlug = new Map(allowedAreas.map((area) => [area.slug, area.id]));
+                await upsertCandidateRecordAreaTags(pool, validation.normalized, researchAreaIdBySlug);
+
+                taggedGeneralCount = validation.normalized.filter(
+                  (label) => label.researchAreaSlug === "general"
+                ).length;
+                taggedSpecificCount = validation.normalized.length - taggedGeneralCount;
               }
-
-              const researchAreaIdBySlug = new Map(allowedAreas.map((area) => [area.slug, area.id]));
-              await upsertCandidateRecordAreaTags(pool, validation.normalized, researchAreaIdBySlug);
-
-              const taggedGeneralCount = validation.normalized.filter(
-                (label) => label.researchAreaSlug === "general"
-              ).length;
-              const taggedSpecificCount = validation.normalized.length - taggedGeneralCount;
 
               return {
                 discovered_count: discoveredTotalCount,
@@ -607,11 +796,11 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
 
           if (lifecycleResult.status === "completed") {
             console.log(
-              `candidate-record enricher completed candidate_id=${candidateId} election_id=${electionId} window_mode=${lifecycleResult.window.mode} since=${lifecycleResult.window.sinceDate ?? "full"} discovered=${lifecycleResult.metrics.discovered_count} inserted=${lifecycleResult.metrics.inserted_count} deduped=${lifecycleResult.metrics.deduped_count} tagged_specific=${lifecycleResult.metrics.tagged_specific_count} tagged_general=${lifecycleResult.metrics.tagged_general_count}`
+              `candidate-record enricher completed candidate_id=${candidateId} ${contextLabel} window_mode=${lifecycleResult.window.mode} since=${lifecycleResult.window.sinceDate ?? "full"} discovered=${lifecycleResult.metrics.discovered_count} inserted=${lifecycleResult.metrics.inserted_count} deduped=${lifecycleResult.metrics.deduped_count} tagged_specific=${lifecycleResult.metrics.tagged_specific_count} tagged_general=${lifecycleResult.metrics.tagged_general_count}`
             );
           } else {
             console.log(
-              `candidate-record enricher skipped candidate_id=${candidateId} election_id=${electionId} reason=${lifecycleResult.reason}`
+              `candidate-record enricher skipped candidate_id=${candidateId} ${contextLabel} reason=${lifecycleResult.reason}`
             );
           }
 
@@ -631,7 +820,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
         } catch (error) {
           const reason = toReason(error);
           console.warn(
-            `candidate-record enricher retrying candidate_id=${candidateId ?? "unknown"} election_id=${electionId ?? "unknown"}: ${reason}`
+            `candidate-record enricher retrying candidate_id=${candidateId ?? "unknown"} ${contextLabel}: ${reason}`
           );
           stats.retried_count += 1;
           // Leave unacked so reclaim retries.

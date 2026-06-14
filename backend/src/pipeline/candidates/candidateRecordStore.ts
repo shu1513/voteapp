@@ -52,6 +52,26 @@ function toEventDateKey(value: string | Date): string {
   return parsed.toISOString().slice(0, 10);
 }
 
+export async function deleteCandidateRecordsForReplacementRefresh(
+  client: Pick<PoolClient, "query">,
+  candidateId: string
+): Promise<{ deletedCount: number }> {
+  const trimmedCandidateId = candidateId.trim();
+  if (trimmedCandidateId.length === 0) {
+    return { deletedCount: 0 };
+  }
+
+  const result = await client.query(
+    `
+      DELETE FROM public.candidate_records
+      WHERE candidate_id = $1
+    `,
+    [trimmedCandidateId]
+  );
+
+  return { deletedCount: result.rowCount ?? 0 };
+}
+
 export function buildCandidateRecordIdentityKey(input: {
   description: string;
   sourceUrl: string;

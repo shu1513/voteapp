@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   buildCandidateRecordIdentityKey,
+  deleteCandidateRecordsForReplacementRefresh,
   scoreCandidateRecordDescriptionSimilarity,
   upsertCandidateRecords,
 } from "../../src/pipeline/candidates/candidateRecordStore.js";
@@ -121,5 +122,28 @@ describe("upsertCandidateRecords", () => {
     expect(result.recordIdsByIdentityKey.size).toBe(1);
     expect(query).toHaveBeenCalledTimes(2);
     expect(query.mock.calls[1]?.[0]).toContain("UPDATE public.candidate_records");
+  });
+});
+
+describe("deleteCandidateRecordsForReplacementRefresh", () => {
+  it("deletes all candidate records for a candidate and returns the deleted count", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 4 });
+
+    await expect(
+      deleteCandidateRecordsForReplacementRefresh({ query }, " candidate-1 ")
+    ).resolves.toEqual({ deletedCount: 4 });
+
+    expect(query).toHaveBeenCalledWith(expect.stringContaining("DELETE FROM public.candidate_records"), [
+      "candidate-1",
+    ]);
+  });
+
+  it("does not query when candidate ID is blank", async () => {
+    const query = vi.fn();
+
+    await expect(deleteCandidateRecordsForReplacementRefresh({ query }, "   ")).resolves.toEqual({
+      deletedCount: 0,
+    });
+    expect(query).not.toHaveBeenCalled();
   });
 });

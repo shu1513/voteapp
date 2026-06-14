@@ -7,6 +7,7 @@ export type CandidateRecordsClaimInput = {
   asOf?: Date;
   cooldownDays?: number;
   leaseHours?: number;
+  ignoreCooldown?: boolean;
 };
 
 export type CandidateRecordsClaimResult = {
@@ -41,6 +42,7 @@ export async function claimCandidateRecordsSearch(
   const asOf = input.asOf ?? new Date();
   const cooldownDays = input.cooldownDays ?? DEFAULT_COOLDOWN_DAYS;
   const leaseHours = input.leaseHours ?? DEFAULT_LEASE_HOURS;
+  const ignoreCooldown = input.ignoreCooldown === true;
 
   const result = await client.query<{
     id: string;
@@ -54,6 +56,8 @@ export async function claimCandidateRecordsSearch(
       WHERE id = $1
         AND deleted_at IS NULL
         AND (
+          $5::boolean = true
+          OR
           last_records_searched_at IS NULL
           OR last_records_searched_at < ($2::timestamptz - make_interval(days => $3::int))
         )
@@ -66,7 +70,7 @@ export async function claimCandidateRecordsSearch(
         last_records_searched_at::text,
         last_records_researched_through::text
     `,
-    [input.candidateId, asOf.toISOString(), cooldownDays, leaseHours]
+    [input.candidateId, asOf.toISOString(), cooldownDays, leaseHours, ignoreCooldown]
   );
 
   const row = result.rows[0];

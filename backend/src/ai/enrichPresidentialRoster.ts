@@ -1,4 +1,4 @@
-import { CANDIDATES_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
+import { PRESIDENTIAL_ROSTER_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   parsePresidentialRosterPayload,
@@ -111,7 +111,7 @@ export function buildPresidentialRosterAiConfigFromEnv(): PresidentialRosterAiCo
 export async function enrichPresidentialRoster(
   input: PresidentialRosterAiInput,
   config: PresidentialRosterAiConfig,
-  candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = PRESIDENTIAL_ROSTER_AI_CANDIDATES
 ): Promise<PresidentialRosterAiResult> {
   const failures: ProviderFailureAttempt[] = [];
   const expectedParty = input.stage === "primary" ? input.party?.trim() || null : null;

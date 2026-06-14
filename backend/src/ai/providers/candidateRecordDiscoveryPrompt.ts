@@ -16,6 +16,10 @@ export type CandidateRecordDiscoveryPromptInput = {
   reviewFeedbackLines?: readonly string[];
 };
 
+function shouldIncludeState(input: CandidateRecordDiscoveryPromptInput): boolean {
+  return !(input.districtType === "presidential" && input.state.trim().toUpperCase() === "US");
+}
+
 export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscoveryPromptInput): string {
   const includeSenateContext = isUsSenateOfficeTitle(input.officialBallotTitle);
   const useJudicialRecordObjective = input.discoveryContestFamily === "judicial_office";
@@ -33,7 +37,7 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
     `- candidate_display_name: "${input.candidateDisplayName}"`,
     `- district_name: "${input.districtName}"`,
     `- district_type: "${input.districtType}"`,
-    `- state: "${input.state}"`,
+    ...(shouldIncludeState(input) ? [`- state: "${input.state}"`] : []),
     `- election_date: "${input.electionDate}"`,
     `- official_ballot_title: "${input.officialBallotTitle}"`,
     ...(input.discoveryContestFamily ? [`- discovery_contest_family: "${input.discoveryContestFamily}"`] : []),

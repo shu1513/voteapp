@@ -2,12 +2,19 @@ import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 export type PresidentialRosterCandidateStatus = "active" | "withdrawn";
 
+export type PresidentialRosterRunningMate = {
+  display_name: string;
+  fec_candidate_id?: string;
+  sources: string[];
+};
+
 export type PresidentialRosterCandidate = {
   display_name: string;
   party: string;
   fec_candidate_id?: string;
   sources: string[];
   status: PresidentialRosterCandidateStatus;
+  running_mate?: PresidentialRosterRunningMate;
 };
 
 export type PresidentialRosterPayload = {
@@ -87,6 +94,44 @@ function normalizeSources(value: unknown): string[] | null {
   return normalized.length > 0 ? normalized : null;
 }
 
+function parseRunningMate(
+  value: unknown
+): { ok: true; runningMate: PresidentialRosterRunningMate | undefined } | { ok: false; reason: string } {
+  if (value === undefined) {
+    return { ok: true, runningMate: undefined };
+  }
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    return { ok: false, reason: "candidate.running_mate must be an object when present" };
+  }
+
+  const input = value as Record<string, unknown>;
+  if (!isNonEmptyString(input.display_name)) {
+    return { ok: false, reason: "candidate.running_mate.display_name must be non-empty string" };
+  }
+
+  const sources = normalizeSources(input.sources);
+  if (!sources) {
+    return { ok: false, reason: "candidate.running_mate.sources must contain valid URL strings" };
+  }
+
+  const fecCandidateId = normalizeFecCandidateId(input.fec_candidate_id);
+  if (fecCandidateId === null) {
+    return {
+      ok: false,
+      reason: "candidate.running_mate.fec_candidate_id must be a presidential FEC ID when present",
+    };
+  }
+
+  return {
+    ok: true,
+    runningMate: {
+      display_name: input.display_name.trim(),
+      ...(fecCandidateId ? { fec_candidate_id: fecCandidateId } : {}),
+      sources,
+    },
+  };
+}
+
 function parseCandidate(
   value: unknown,
   options: PresidentialRosterPayloadParseOptions
@@ -126,6 +171,11 @@ function parseCandidate(
     return { ok: false, reason: "candidate.fec_candidate_id must be a presidential FEC ID when present" };
   }
 
+  const runningMate = parseRunningMate(input.running_mate);
+  if (!runningMate.ok) {
+    return { ok: false, reason: runningMate.reason };
+  }
+
   return {
     ok: true,
     candidate: {
@@ -134,6 +184,7 @@ function parseCandidate(
       ...(fecCandidateId ? { fec_candidate_id: fecCandidateId } : {}),
       sources,
       status,
+      ...(runningMate.runningMate ? { running_mate: runningMate.runningMate } : {}),
     },
   };
 }

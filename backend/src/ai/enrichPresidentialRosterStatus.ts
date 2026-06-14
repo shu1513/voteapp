@@ -1,4 +1,4 @@
-import { CANDIDATES_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
+import { PRESIDENTIAL_ROSTER_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   parsePresidentialRosterStatusPayload,
@@ -120,7 +120,7 @@ function expectedCandidateIds(input: PresidentialRosterStatusAiInput): string[] 
 export async function enrichPresidentialRosterStatus(
   input: PresidentialRosterStatusAiInput,
   config: PresidentialRosterStatusAiConfig,
-  candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = PRESIDENTIAL_ROSTER_AI_CANDIDATES
 ): Promise<PresidentialRosterStatusAiResult> {
   const failures: ProviderFailureAttempt[] = [];
 

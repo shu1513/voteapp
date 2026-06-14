@@ -14,7 +14,6 @@ function validPayload(overrides: Record<string, unknown> = {}): Record<string, u
         status: "official_found",
         primary_date: "2028-03-07",
         sources: ["https://elections.example.gov/2028-primary"],
-        notes: "Official calendar lists the date.",
       },
       {
         state_fips: "11",
@@ -22,7 +21,6 @@ function validPayload(overrides: Record<string, unknown> = {}): Record<string, u
         status: "not_official_yet",
         primary_date: null,
         sources: ["https://dcboe.example.gov/calendar"],
-        notes: "The checked calendar does not list the 2028 presidential primary yet.",
       },
     ],
     ...overrides,
@@ -45,7 +43,7 @@ describe("parsePresidentialPrimaryDatePayload", () => {
           status: "official_found",
           primary_date: "2028-03-07",
           sources: ["https://elections.example.gov/2028-primary"],
-          notes: "Official calendar lists the date.",
+          notes: "",
         },
         {
           state_fips: "11",
@@ -53,7 +51,7 @@ describe("parsePresidentialPrimaryDatePayload", () => {
           status: "not_official_yet",
           primary_date: null,
           sources: ["https://dcboe.example.gov/calendar"],
-          notes: "The checked calendar does not list the 2028 presidential primary yet.",
+          notes: "",
         },
       ]);
     }

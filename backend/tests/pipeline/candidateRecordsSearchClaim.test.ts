@@ -51,6 +51,40 @@ describe("claimCandidateRecordsSearch", () => {
       lastRecordsResearchedThrough: null,
     });
   });
+
+  it("can bypass searched-at cooldown while keeping the active-claim lease gate", async () => {
+    const query = vi.fn().mockResolvedValueOnce({
+      rows: [
+        {
+          id: "cand-5",
+          last_records_searched_at: "2026-05-01T00:00:00.000Z",
+          last_records_researched_through: "2026-05-01",
+        },
+      ],
+    });
+
+    const result = await claimCandidateRecordsSearch(
+      { query },
+      {
+        candidateId: "cand-5",
+        asOf: new Date("2026-05-15T00:00:00.000Z"),
+        cooldownDays: 30,
+        leaseHours: 2,
+        ignoreCooldown: true,
+      }
+    );
+
+    expect(result.claimed).toBe(true);
+    expect(query.mock.calls[0]?.[0]).toContain("$5::boolean = true");
+    expect(query.mock.calls[0]?.[0]).toContain("records_search_claimed_at IS NULL");
+    expect(query.mock.calls[0]?.[1]).toEqual([
+      "cand-5",
+      "2026-05-15T00:00:00.000Z",
+      30,
+      2,
+      true,
+    ]);
+  });
 });
 
 describe("markCandidateRecordsSearchCompleted", () => {

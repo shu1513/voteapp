@@ -24,6 +24,8 @@ export type ElectionDistrictType =
   | "school_secondary"
   | "school_unified";
 
+export type OfficeScope = ElectionDistrictType | "presidential";
+
 export type ElectionEntryPayload = {
   official_ballot_title: string;
   election_date: string; // YYYY-MM-DD

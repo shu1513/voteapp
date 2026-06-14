@@ -9,15 +9,13 @@ describe("parsePresidentialRosterStatusPayload", () => {
         candidates: [
           {
             candidate_id: "candidate-2",
-            status: "UNKNOWN",
+            status: "ACTIVE",
             sources: ["https://example.org/b", "https://example.org/b"],
-            notes: " Could not confirm current status. ",
           },
           {
             candidate_id: "candidate-1",
             status: "withdrawn",
             sources: [" https://example.org/a "],
-            notes: "Suspended campaign.",
           },
         ],
       },
@@ -34,13 +32,11 @@ describe("parsePresidentialRosterStatusPayload", () => {
         candidate_id: "candidate-1",
         status: "withdrawn",
         sources: ["https://example.org/a"],
-        notes: "Suspended campaign.",
       },
       {
         candidate_id: "candidate-2",
-        status: "unknown",
+        status: "active",
         sources: ["https://example.org/b"],
-        notes: "Could not confirm current status.",
       },
     ]);
   });
@@ -53,7 +49,6 @@ describe("parsePresidentialRosterStatusPayload", () => {
             candidate_id: "candidate-x",
             status: "active",
             sources: ["https://example.org/a"],
-            notes: "Still running.",
           },
         ],
       },
@@ -72,13 +67,11 @@ describe("parsePresidentialRosterStatusPayload", () => {
             candidate_id: "candidate-1",
             status: "active",
             sources: ["https://example.org/a"],
-            notes: "Still running.",
           },
           {
             candidate_id: "candidate-1",
             status: "withdrawn",
             sources: ["https://example.org/b"],
-            notes: "Suspended.",
           },
         ],
       },
@@ -94,7 +87,6 @@ describe("parsePresidentialRosterStatusPayload", () => {
             candidate_id: "candidate-1",
             status: "active",
             sources: ["https://example.org/a"],
-            notes: "Still running.",
           },
         ],
       },
@@ -104,16 +96,15 @@ describe("parsePresidentialRosterStatusPayload", () => {
     expect(missing.ok ? "" : missing.reason).toContain("payload is missing candidate_id rows: candidate-2");
   });
 
-  it("rejects invalid status, sources, and notes", () => {
+  it("rejects invalid status and sources", () => {
     expect(
       parsePresidentialRosterStatusPayload(
         {
           candidates: [
             {
               candidate_id: "candidate-1",
-              status: "maybe",
+              status: "unknown",
               sources: ["https://example.org/a"],
-              notes: "Still running.",
             },
           ],
         },
@@ -129,23 +120,6 @@ describe("parsePresidentialRosterStatusPayload", () => {
               candidate_id: "candidate-1",
               status: "active",
               sources: [],
-              notes: "Still running.",
-            },
-          ],
-        },
-        { expectedCandidateIds: ["candidate-1"] }
-      ).ok
-    ).toBe(false);
-
-    expect(
-      parsePresidentialRosterStatusPayload(
-        {
-          candidates: [
-            {
-              candidate_id: "candidate-1",
-              status: "active",
-              sources: ["https://example.org/a"],
-              notes: " ",
             },
           ],
         },

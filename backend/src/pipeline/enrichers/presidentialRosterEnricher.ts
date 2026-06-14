@@ -15,7 +15,11 @@ import {
 } from "../../ai/enrichPresidentialRosterStatus.js";
 import type { AiCandidate } from "../../ai/aiCandidates.js";
 import type { PresidentialRosterCandidate } from "../../contracts/presidentialRosterPayloadContract.js";
-import { enqueueCandidateProfileDrafts } from "../candidates/candidateProfileDraftEmitter.js";
+import {
+  enqueueCandidateProfileDrafts,
+  type CandidateProfileDraftEmitInput,
+} from "../candidates/candidateProfileDraftEmitter.js";
+import { normalizeCandidateName } from "../../utils/candidateIdentity.js";
 import {
   withdrawPresidentialCycleCandidateByCandidateId,
   withdrawPresidentialCycleCandidateByFecId,
@@ -44,6 +48,26 @@ type PresidentialRosterCycleRow = {
   election_year: number;
   stage: PresidentialCycleStage;
   party: string | null;
+};
+
+type ExistingPresidentialCycleCandidateRow = {
+  candidate_id: string;
+  presidential_profile_researched: boolean;
+  running_mate_candidate_id: string | null;
+  running_mate_profile_researched: boolean;
+  running_mate_display_name: string | null;
+  running_mate_first_name: string | null;
+  running_mate_last_name: string | null;
+  running_mate_fec_ids: unknown;
+};
+
+type ExistingPresidentialCycleCandidate = {
+  candidateId: string;
+  presidentialProfileResearched: boolean;
+  runningMateCandidateId: string | null;
+  runningMateProfileResearched: boolean;
+  runningMateDisplayName: string | null;
+  runningMateFecIds: string[];
 };
 
 export const PRESIDENTIAL_ROSTER_ADMISSION_POLICY = "fec_confirmed_only" as const;
@@ -83,7 +107,6 @@ export type PresidentialRosterStatusVerificationSummary = {
   checkedCount: number;
   withdrawnCount: number;
   activeCount: number;
-  unknownCount: number;
   skippedCount: number;
   demotedCount: number;
   dryRun: boolean;
@@ -175,6 +198,39 @@ function cycleName(row: PresidentialRosterCycleRow): string {
   return `${row.election_year} ${row.party ?? ""} presidential primary`.replace(/\s+/g, " ").trim();
 }
 
+function parseFecIds(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  const normalized: string[] = [];
+  const seen = new Set<string>();
+  for (const item of value) {
+    if (typeof item !== "string") {
+      continue;
+    }
+    const fecId = item.trim().toUpperCase();
+    if (!/^P\d{8}$/.test(fecId) || seen.has(fecId)) {
+      continue;
+    }
+    seen.add(fecId);
+    normalized.push(fecId);
+  }
+  return normalized;
+}
+
+function displayNameFromParts(input: {
+  displayName: string | null;
+  firstName: string | null;
+  lastName: string | null;
+}): string | null {
+  const storedDisplayName = input.displayName?.trim();
+  if (storedDisplayName) {
+    return storedDisplayName;
+  }
+  const firstLast = `${input.firstName ?? ""} ${input.lastName ?? ""}`.replace(/\s+/g, " ").trim();
+  return firstLast.length > 0 ? firstLast : null;
+}
+
 async function loadPresidentialRosterCycle(
   db: Queryable,
   input: PresidentialRosterCycleLookup
@@ -199,6 +255,60 @@ async function loadPresidentialRosterCycle(
   return result.rows[0] ?? null;
 }
 
+async function loadExistingPresidentialCycleCandidateByFecId(input: {
+  db: Queryable;
+  cycleId: string;
+  fecCandidateId: string;
+}): Promise<ExistingPresidentialCycleCandidate | null> {
+  const fecCandidateId = input.fecCandidateId.trim().toUpperCase();
+  const result = await input.db.query<ExistingPresidentialCycleCandidateRow>(
+    `
+      SELECT
+        cycle_candidate.candidate_id,
+        cycle_candidate.presidential_profile_researched,
+        cycle_candidate.running_mate_candidate_id,
+        cycle_candidate.running_mate_profile_researched,
+        running_mate.display_name AS running_mate_display_name,
+        running_mate.first_name AS running_mate_first_name,
+        running_mate.last_name AS running_mate_last_name,
+        running_mate.fec_ids AS running_mate_fec_ids
+      FROM public.presidential_cycle_candidates AS cycle_candidate
+      JOIN public.candidates AS candidate
+        ON candidate.id = cycle_candidate.candidate_id
+      LEFT JOIN public.candidates AS running_mate
+        ON running_mate.id = cycle_candidate.running_mate_candidate_id
+       AND running_mate.deleted_at IS NULL
+      WHERE cycle_candidate.cycle_id = $1
+        AND candidate.deleted_at IS NULL
+        AND EXISTS (
+          SELECT 1
+          FROM jsonb_array_elements_text(candidate.fec_ids) AS fec_id(value)
+          WHERE upper(trim(fec_id.value)) = $2
+        )
+      LIMIT 1
+    `,
+    [input.cycleId, fecCandidateId]
+  );
+
+  const row = result.rows[0];
+  if (!row) {
+    return null;
+  }
+
+  return {
+    candidateId: row.candidate_id,
+    presidentialProfileResearched: row.presidential_profile_researched === true,
+    runningMateCandidateId: row.running_mate_candidate_id,
+    runningMateProfileResearched: row.running_mate_profile_researched === true,
+    runningMateDisplayName: displayNameFromParts({
+      displayName: row.running_mate_display_name,
+      firstName: row.running_mate_first_name,
+      lastName: row.running_mate_last_name,
+    }),
+    runningMateFecIds: parseFecIds(row.running_mate_fec_ids),
+  };
+}
+
 function toDraftInput(input: {
   cycle: PresidentialRosterCycleRow;
   runId: string | null;
@@ -218,6 +328,7 @@ function toDraftInput(input: {
   return {
     contextType: "presidential_cycle" as const,
     presidentialCycleId: input.cycle.id,
+    presidentialRole: "president" as const,
     runId: input.runId,
     displayName: input.candidate.display_name,
     rosterIndex: input.rosterIndex,
@@ -227,6 +338,52 @@ function toDraftInput(input: {
     disambiguationHint: `Candidate reported for ${cycleName(input.cycle)}; matched to OpenFEC candidate ${input.match.matchedFecId}.`,
     dedupeKey: `presidential_cycle:${input.cycle.id}:fec:${input.match.matchedFecId.toUpperCase()}`,
   };
+}
+
+function toRunningMateDraftInput(input: {
+  cycle: PresidentialRosterCycleRow;
+  runId: string | null;
+  rosterIndex: number;
+  candidate: PresidentialRosterCandidate;
+  parentFecCandidateId: string;
+}): CandidateProfileDraftEmitInput | null {
+  if (!input.candidate.running_mate) {
+    return null;
+  }
+  const rosterParty = input.cycle.stage === "primary" ? input.cycle.party : input.candidate.party;
+  if (!rosterParty) {
+    throw new Error(`Missing presidential running mate roster party for cycle ${input.cycle.id}`);
+  }
+  const parentFecCandidateId = input.parentFecCandidateId.trim().toUpperCase();
+  const runningMateFecId = input.candidate.running_mate.fec_candidate_id?.trim().toUpperCase();
+  const normalizedRunningMateName = normalizeCandidateName(input.candidate.running_mate.display_name);
+  return {
+    contextType: "presidential_cycle",
+    presidentialCycleId: input.cycle.id,
+    presidentialRole: "vice_president",
+    parentPresidentialCandidateFecId: parentFecCandidateId,
+    runId: input.runId,
+    displayName: input.candidate.running_mate.display_name,
+    rosterIndex: input.rosterIndex,
+    rosterParty,
+    ...(runningMateFecId ? { fecIds: [runningMateFecId] } : {}),
+    seedUrls: input.candidate.running_mate.sources,
+    disambiguationHint: `Officially announced running mate for ${input.candidate.display_name} in ${cycleName(input.cycle)}.`,
+    dedupeKey: `presidential_cycle:${input.cycle.id}:running_mate:${parentFecCandidateId}:${normalizedRunningMateName}`,
+  };
+}
+
+function runningMateMatchesExisting(
+  runningMate: NonNullable<PresidentialRosterCandidate["running_mate"]>,
+  existing: ExistingPresidentialCycleCandidate
+): boolean {
+  const fecCandidateId = runningMate.fec_candidate_id?.trim().toUpperCase();
+  if (fecCandidateId) {
+    return existing.runningMateFecIds.includes(fecCandidateId);
+  }
+  const incomingName = normalizeCandidateName(runningMate.display_name);
+  const existingName = existing.runningMateDisplayName ? normalizeCandidateName(existing.runningMateDisplayName) : "";
+  return incomingName.length > 0 && incomingName === existingName;
 }
 
 function normalizeFecIdSet(values: Iterable<string>): Set<string> {
@@ -276,7 +433,6 @@ async function verifyOmittedActiveCandidates(input: {
         checkedCount: 0,
         withdrawnCount: 0,
         activeCount: 0,
-        unknownCount: 0,
         skippedCount: activeCandidates.length,
         demotedCount: 0,
         dryRun: input.dryRun,
@@ -306,7 +462,6 @@ async function verifyOmittedActiveCandidates(input: {
         checkedCount: omittedCandidates.length,
         withdrawnCount: 0,
         activeCount: 0,
-        unknownCount: 0,
         skippedCount: activeCandidates.length - omittedCandidates.length,
         demotedCount: 0,
         dryRun: input.dryRun,
@@ -318,7 +473,6 @@ async function verifyOmittedActiveCandidates(input: {
     const omittedByCandidateId = new Map(omittedCandidates.map((candidate) => [candidate.candidateId, candidate]));
     let withdrawnCount = 0;
     let activeCount = 0;
-    let unknownCount = 0;
     let demotedCount = 0;
 
     for (const candidateStatus of statusResult.candidates) {
@@ -335,8 +489,6 @@ async function verifyOmittedActiveCandidates(input: {
         }
       } else if (candidateStatus.status === "active") {
         activeCount += 1;
-      } else {
-        unknownCount += 1;
       }
     }
 
@@ -344,7 +496,6 @@ async function verifyOmittedActiveCandidates(input: {
       checkedCount: statusResult.candidates.length,
       withdrawnCount,
       activeCount,
-      unknownCount,
       skippedCount: activeCandidates.length - omittedCandidates.length,
       demotedCount,
       dryRun: input.dryRun,
@@ -356,7 +507,6 @@ async function verifyOmittedActiveCandidates(input: {
       checkedCount: 0,
       withdrawnCount: 0,
       activeCount: 0,
-      unknownCount: 0,
       skippedCount: 0,
       demotedCount: 0,
       dryRun: input.dryRun,
@@ -428,8 +578,9 @@ export async function enrichPresidentialRosterCycle(
   let unmatchedCount = 0;
   let withdrawnSkippedCount = 0;
   let withdrawnDemotedCount = 0;
+  let preSkippedDraftCount = 0;
   const matches: NonNullable<Extract<PresidentialRosterEnricherResult, { ok: true }>["matches"]> = [];
-  const drafts: ReturnType<typeof toDraftInput>[] = [];
+  const drafts: CandidateProfileDraftEmitInput[] = [];
   const currentActiveMatchedFecIds = new Set<string>();
 
   for (const [rosterIndex, candidate] of aiResult.candidates.entries()) {
@@ -497,15 +648,49 @@ export async function enrichPresidentialRosterCycle(
       if (match.matchedFecId) {
         currentActiveMatchedFecIds.add(match.matchedFecId);
       }
-      drafts.push(
-        toDraftInput({
-          cycle,
-          runId: input.runId ?? null,
-          rosterIndex,
-          candidate,
-          match,
-        })
-      );
+      const existing =
+        !input.dryRun && match.matchedFecId
+          ? await loadExistingPresidentialCycleCandidateByFecId({
+              db: input.db,
+              cycleId: cycle.id,
+              fecCandidateId: match.matchedFecId,
+            })
+          : null;
+
+      if (existing?.presidentialProfileResearched) {
+        preSkippedDraftCount += 1;
+      } else {
+        drafts.push(
+          toDraftInput({
+            cycle,
+            runId: input.runId ?? null,
+            rosterIndex,
+            candidate,
+            match,
+          })
+        );
+      }
+
+      if (candidate.running_mate && match.matchedFecId) {
+        if (
+          existing?.runningMateCandidateId &&
+          existing.runningMateProfileResearched &&
+          runningMateMatchesExisting(candidate.running_mate, existing)
+        ) {
+          preSkippedDraftCount += 1;
+        } else {
+          const runningMateDraft = toRunningMateDraftInput({
+            cycle,
+            runId: input.runId ?? null,
+            rosterIndex,
+            candidate,
+            parentFecCandidateId: match.matchedFecId,
+          });
+          if (runningMateDraft) {
+            drafts.push(runningMateDraft);
+          }
+        }
+      }
       continue;
     }
     if (match.matchStatus === "ambiguous") {
@@ -546,7 +731,7 @@ export async function enrichPresidentialRosterCycle(
     withdrawnSkippedCount,
     withdrawnDemotedCount,
     emittedCount: emitResult.emittedCount,
-    skippedCount: emitResult.skippedCount,
+    skippedCount: preSkippedDraftCount + emitResult.skippedCount,
     dryRun: input.dryRun === true,
     admissionPolicy: PRESIDENTIAL_ROSTER_ADMISSION_POLICY,
     statusVerification,

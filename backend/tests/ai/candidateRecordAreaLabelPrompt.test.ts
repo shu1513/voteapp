@@ -64,4 +64,20 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
     expect(prompt).not.toContain("- senate_class:");
     expect(prompt).not.toContain("- term_end_year:");
   });
+
+  it("omits state for presidential United States prompts", () => {
+    const prompt = buildCandidateRecordAreaLabelPrompt({
+      ...baseInput,
+      candidateDisplayName: "Jane President",
+      districtName: "United States",
+      districtType: "presidential",
+      state: "US",
+      electionDate: "2028-11-07",
+      officialBallotTitle: "President of the United States, 2028 general election",
+      electionStage: "general",
+    });
+
+    expect(prompt).toContain('- district_type: "presidential"');
+    expect(prompt).not.toContain("- state:");
+  });
 });

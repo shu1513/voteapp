@@ -85,6 +85,24 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).not.toContain("Prefer records that reveal a stance or governing record");
   });
 
+  it("omits state for presidential United States prompts", () => {
+    const prompt = buildCandidateRecordDiscoveryPrompt({
+      candidateDisplayName: "Jane President",
+      districtName: "United States",
+      districtType: "presidential",
+      state: "US",
+      electionDate: "2028-11-07",
+      officialBallotTitle: "President of the United States, 2028 Democratic primary",
+      electionStage: "primary",
+    });
+
+    expect(prompt).toContain('- district_type: "presidential"');
+    expect(prompt).not.toContain("- state:");
+    expect(prompt).toContain(
+      '- official_ballot_title: "President of the United States, 2028 Democratic primary"'
+    );
+  });
+
   it("uses judicial record objective only when discovery family is judicial_office", () => {
     const prompt = buildCandidateRecordDiscoveryPrompt({
       ...baseInput,

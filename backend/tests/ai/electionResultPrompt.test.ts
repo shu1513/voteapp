@@ -48,6 +48,7 @@ describe("buildElectionResultPrompt", () => {
     expect(prompt).toContain('"election_id": "provided election_id"');
     expect(prompt).toContain('candidate_election_id: "10000000-0000-0000-0000-000000000001"');
     expect(prompt).toContain('"candidate_name": "required only when no candidate_election_id is available"');
+    expect(prompt).not.toContain('"notes"');
     expect(prompt).not.toContain('"candidate_id": "provided candidate_id when matched"');
     expect(prompt).toContain("Candidate winners must use the provided candidate_election_id when the winner appears in the provided roster.");
     expect(prompt).toContain("Return exactly one result row for each provided election_id");

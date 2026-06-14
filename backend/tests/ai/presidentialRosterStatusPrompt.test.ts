@@ -28,9 +28,12 @@ describe("buildPresidentialRosterStatusPrompt", () => {
     expect(prompt).toContain('candidate_id: "candidate-1"');
     expect(prompt).toContain('display_name: "Jane President"');
     expect(prompt).toContain('fec_ids: ["P80000001"]');
-    expect(prompt).toContain('"status": "active|withdrawn|unknown"');
+    expect(prompt).toContain('"status": "active|withdrawn"');
+    expect(prompt).not.toContain('"notes"');
     expect(prompt).toContain("Return exactly one result row for each provided candidate_id.");
     expect(prompt).toContain("Do not infer withdrawal just because the candidate was missing from the latest roster list.");
+    expect(prompt).not.toContain("Use status=unknown");
+    expect(prompt).not.toContain("notes must briefly explain");
   });
 
   it("supports general-cycle prompt wording and retry feedback", () => {
