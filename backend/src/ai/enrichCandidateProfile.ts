@@ -57,6 +57,7 @@ export type EnrichCandidateProfileInput = {
   rosterStateFilingIds?: readonly string[];
   disambiguationHint?: string;
   seedUrls: readonly string[];
+  allowMissingFederalFecIds?: boolean;
 };
 
 export type EnrichCandidateProfileConfig = {
@@ -282,7 +283,7 @@ export async function enrichCandidateProfile(
   const includeFecIds = researchMode !== "state_level";
   const backendCandidateFecIds = normalizeFecIds(input.rosterFecIds);
   const backendCandidateStateFilingIds = normalizeStateFilingIds(input.rosterStateFilingIds);
-  if (includeFecIds && backendCandidateFecIds.length === 0) {
+  if (includeFecIds && backendCandidateFecIds.length === 0 && input.allowMissingFederalFecIds !== true) {
     return {
       ok: false,
       retryable: false,

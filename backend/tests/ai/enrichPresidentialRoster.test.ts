@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { PRESIDENTIAL_ROSTER_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
 const callResearchProviderMock = vi.hoisted(() => vi.fn());
 
@@ -137,5 +138,40 @@ describe("enrichPresidentialRoster", () => {
 
     expect(result.ok).toBe(true);
     expect(callResearchProviderMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("uses the dedicated presidential roster model list by default", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        candidates: [
+          {
+            display_name: "Jane President",
+            party: "Democratic",
+            sources: ["https://example.org/jane"],
+            status: "active",
+          },
+        ],
+      },
+      rawText: "{\"candidates\":[]}",
+    });
+
+    const { enrichPresidentialRoster } = await import("../../src/ai/enrichPresidentialRoster.js");
+    const result = await enrichPresidentialRoster(
+      {
+        cycleId: "cycle-1",
+        electionYear: 2028,
+        stage: "primary",
+        party: "Democratic",
+      },
+      { timeoutMs: 30_000 }
+    );
+
+    expect(result.ok).toBe(true);
+    expect(callResearchProviderMock).toHaveBeenCalledWith(
+      PRESIDENTIAL_ROSTER_AI_CANDIDATES[0],
+      expect.any(String),
+      expect.objectContaining({ timeoutMs: 30_000 })
+    );
   });
 });

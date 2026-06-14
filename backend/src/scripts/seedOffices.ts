@@ -1,11 +1,11 @@
 import { Pool, type PoolClient } from "pg";
 
 import { getPipelineEnv } from "../config/env.js";
-import type { ElectionDistrictType } from "../types/election.js";
+import type { OfficeScope } from "../types/election.js";
 import { normalizeElectionTitleKey } from "../utils/normalizeElectionTitleKey.js";
 
 type SeedOffice = {
-  scope: ElectionDistrictType;
+  scope: OfficeScope;
   canonicalName: string;
   summary: string;
 };
@@ -13,12 +13,24 @@ type SeedOffice = {
 type SeedOutcome = "inserted" | "updated" | "unchanged";
 
 type SeedOfficeAlias = {
-  scope: ElectionDistrictType;
+  scope: OfficeScope;
   officeCanonicalName: string;
   aliasText: string;
 };
 
 const SEED_OFFICES: SeedOffice[] = [
+  {
+    scope: "presidential",
+    canonicalName: "President of the United States",
+    summary:
+      "Serves as head of state and head of government, leading the federal executive branch and carrying out duties assigned by the U.S. Constitution.",
+  },
+  {
+    scope: "presidential",
+    canonicalName: "Vice President of the United States",
+    summary:
+      "Serves as the president of the U.S. Senate, succeeds to the presidency if needed, and performs executive duties assigned by the president or law.",
+  },
   {
     scope: "statewide",
     canonicalName: "United States Senator",
@@ -322,6 +334,46 @@ const SEED_OFFICES: SeedOffice[] = [
 ];
 
 const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
+  {
+    scope: "presidential",
+    officeCanonicalName: "President of the United States",
+    aliasText: "President of the United States",
+  },
+  {
+    scope: "presidential",
+    officeCanonicalName: "President of the United States",
+    aliasText: "President",
+  },
+  {
+    scope: "presidential",
+    officeCanonicalName: "President of the United States",
+    aliasText: "U.S. President",
+  },
+  {
+    scope: "presidential",
+    officeCanonicalName: "President of the United States",
+    aliasText: "US President",
+  },
+  {
+    scope: "presidential",
+    officeCanonicalName: "Vice President of the United States",
+    aliasText: "Vice President of the United States",
+  },
+  {
+    scope: "presidential",
+    officeCanonicalName: "Vice President of the United States",
+    aliasText: "Vice President",
+  },
+  {
+    scope: "presidential",
+    officeCanonicalName: "Vice President of the United States",
+    aliasText: "U.S. Vice President",
+  },
+  {
+    scope: "presidential",
+    officeCanonicalName: "Vice President of the United States",
+    aliasText: "US Vice President",
+  },
   {
     scope: "statewide",
     officeCanonicalName: "Lieutenant Governor",
@@ -1265,13 +1317,13 @@ async function main(): Promise<void> {
     updated: 0,
     unchanged: 0,
   };
-  const scopeCounts = new Map<ElectionDistrictType, number>();
+  const scopeCounts = new Map<OfficeScope, number>();
   const aliasOutcomeCounts: Record<SeedOutcome, number> = {
     inserted: 0,
     updated: 0,
     unchanged: 0,
   };
-  const aliasScopeCounts = new Map<ElectionDistrictType, number>();
+  const aliasScopeCounts = new Map<OfficeScope, number>();
 
   let client: PoolClient | undefined;
   try {

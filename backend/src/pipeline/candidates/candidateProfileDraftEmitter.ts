@@ -8,6 +8,8 @@ type RedisSendCommandClient = {
   sendCommand(args: string[]): Promise<unknown>;
 };
 
+export type PresidentialProfileDraftRole = "president" | "vice_president";
+
 type CandidateProfileDraftBaseInput = {
   runId: string | null;
   displayName: string;
@@ -26,11 +28,15 @@ export type ElectionCandidateProfileDraftEmitInput = CandidateProfileDraftBaseIn
   contextType?: "election";
   electionId: string;
   presidentialCycleId?: never;
+  presidentialRole?: never;
+  parentPresidentialCandidateFecId?: never;
 };
 
 export type PresidentialCycleCandidateProfileDraftEmitInput = CandidateProfileDraftBaseInput & {
   contextType: "presidential_cycle";
   presidentialCycleId: string;
+  presidentialRole?: PresidentialProfileDraftRole;
+  parentPresidentialCandidateFecId?: string;
   electionId?: never;
 };
 
@@ -77,7 +83,11 @@ redis.call(
   "context_type",
   ARGV[14],
   "presidential_cycle_id",
-  ARGV[15]
+  ARGV[15],
+  "presidential_role",
+  ARGV[16],
+  "parent_presidential_candidate_fec_id",
+  ARGV[17]
 )
 redis.call("SET", KEYS[2], ARGV[13])
 return 1
@@ -111,6 +121,14 @@ function electionIdForInput(input: CandidateProfileDraftEmitInput): string {
 
 function presidentialCycleIdForInput(input: CandidateProfileDraftEmitInput): string {
   return input.contextType === "presidential_cycle" ? input.presidentialCycleId.trim() : "";
+}
+
+function presidentialRoleForInput(input: CandidateProfileDraftEmitInput): string {
+  return input.contextType === "presidential_cycle" ? input.presidentialRole ?? "president" : "";
+}
+
+function parentPresidentialCandidateFecIdForInput(input: CandidateProfileDraftEmitInput): string {
+  return input.contextType === "presidential_cycle" ? input.parentPresidentialCandidateFecId?.trim().toUpperCase() ?? "" : "";
 }
 
 function contextIdForInput(input: CandidateProfileDraftEmitInput): string {
@@ -172,6 +190,8 @@ export async function enqueueCandidateProfileDrafts(
       emittedAt,
       contextTypeForInput(input),
       presidentialCycleIdForInput(input),
+      presidentialRoleForInput(input),
+      parentPresidentialCandidateFecIdForInput(input),
     ]);
 
     const value = typeof raw === "number" ? raw : Number.parseInt(String(raw), 10);

@@ -5,6 +5,7 @@ import {
   buildCandidateProfileConfigFromEnv,
   enrichCandidateProfile,
 } from "../../ai/enrichCandidateProfile.js";
+import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { resolveIncludePartyForCandidateContest } from "../../ai/candidatePartisanship.js";
 import { getPipelineEnv } from "../../config/env.js";
 import {
@@ -23,6 +24,10 @@ import {
   hasAtLeastOneHardIdentifier,
 } from "../candidates/candidateProfileIdentity.js";
 import {
+  findPresidentialCycleCandidateIdByFecId,
+  markPresidentialCycleCandidateProfileResearched,
+  markPresidentialCycleCandidateRunningMateProfileResearched,
+  setPresidentialCycleCandidateRunningMate,
   upsertCandidateElection,
   upsertPresidentialCycleCandidate,
 } from "../candidates/candidateProfileLinks.js";
@@ -52,6 +57,7 @@ type ElectionRow = {
 };
 
 type CandidateProfileDraftContextType = "election" | "presidential_cycle";
+type PresidentialProfileDraftRole = "president" | "vice_president";
 
 type CandidateProfileResolvedContext =
   | {
@@ -187,6 +193,32 @@ function draftContextId(message: Record<string, string>, contextType: CandidateP
     : (message.election_id ?? "").trim();
 }
 
+function draftPresidentialRole(
+  message: Record<string, string>,
+  contextType: CandidateProfileDraftContextType
+): PresidentialProfileDraftRole | null {
+  if (contextType !== "presidential_cycle") {
+    return null;
+  }
+  const role = (message.presidential_role ?? "").trim();
+  if (role.length === 0) {
+    return "president";
+  }
+  return role === "president" || role === "vice_president" ? role : null;
+}
+
+function officialBallotTitleForPresidentialRole(
+  context: Extract<CandidateProfileResolvedContext, { type: "presidential_cycle" }>,
+  role: PresidentialProfileDraftRole
+): string {
+  if (role === "president") {
+    return context.officialBallotTitle;
+  }
+  const year = context.electionDate ? new Date(context.electionDate).getUTCFullYear() : null;
+  const cycleLabel = context.officialBallotTitle.replace(/^President of the United States,\s*/i, "");
+  return `Vice President of the United States, ${cycleLabel || (year ? `${year} presidential cycle` : "presidential cycle")}`;
+}
+
 async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Promise<void> {
   try {
     await redis.xGroupCreate(
@@ -279,6 +311,8 @@ async function parkMessage(
     election_id: entry.message.election_id ?? "",
     context_type: entry.message.context_type ?? "",
     presidential_cycle_id: entry.message.presidential_cycle_id ?? "",
+    presidential_role: entry.message.presidential_role ?? "",
+    parent_presidential_candidate_fec_id: entry.message.parent_presidential_candidate_fec_id ?? "",
     candidate_display_name: entry.message.candidate_display_name ?? "",
     item_type: entry.message.item_type ?? "",
     run_id: entry.message.run_id ?? "",
@@ -452,6 +486,7 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
       for (const entry of entries) {
         const contextType = draftContextType(entry.message);
         const contextId = draftContextId(entry.message, contextType);
+        const presidentialRole = draftPresidentialRole(entry.message, contextType);
         const contextLabel =
           contextType === "presidential_cycle"
             ? `presidential_cycle_id=${contextId || "unknown"}`
@@ -463,6 +498,8 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
         const skipPerElectionNameDedupe = parseBooleanField(entry.message.skip_per_election_name_dedupe) === true;
         const rosterFecIds = parseSerializedStringArray(entry.message.roster_fec_ids);
         const rosterStateFilingIds = parseSerializedStringArray(entry.message.roster_state_filing_ids);
+        const parentPresidentialCandidateFecId =
+          entry.message.parent_presidential_candidate_fec_id?.trim().toUpperCase() || undefined;
 
         try {
           const deliveryCount = await getDeliveryCount(redis, entry.id);
@@ -479,6 +516,11 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             continue;
           }
 
+          if (contextType === "presidential_cycle" && presidentialRole === null) {
+            await parkMessage(redis, entry, "invalid presidential_role for presidential profile draft", deliveryCount);
+            continue;
+          }
+
           if (
             !contextId ||
             !candidateDisplayName ||
@@ -488,6 +530,30 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
               STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
               entry.id
+            );
+            continue;
+          }
+
+          if (contextType === "presidential_cycle" && presidentialRole === "president" && rosterFecIds.length === 0) {
+            await parkMessage(
+              redis,
+              entry,
+              "president profile draft requires at least one roster_fec_ids value",
+              deliveryCount
+            );
+            continue;
+          }
+
+          if (
+            contextType === "presidential_cycle" &&
+            presidentialRole === "vice_president" &&
+            !parentPresidentialCandidateFecId
+          ) {
+            await parkMessage(
+              redis,
+              entry,
+              "vice president profile draft requires parent_presidential_candidate_fec_id",
+              deliveryCount
             );
             continue;
           }
@@ -532,27 +598,33 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             continue;
           }
 
-          const aiResult = await enrichCandidateProfile(
-            {
-              candidateDisplayName,
-              districtName: draftContext.districtName,
-              districtType: draftContext.districtType,
-              state: draftContext.state,
-              electionDate: draftContext.electionDate,
-              officialBallotTitle: draftContext.officialBallotTitle,
-              electionStage: draftContext.electionStage,
-              senateClass: draftContext.senateClass,
-              termEndYear: draftContext.termEndYear,
-              electionIsPartisan: draftContext.electionIsPartisan,
-              rosterParty: draftContext.rosterParty,
-              rosterIncumbent: draftContext.rosterIncumbent,
-              rosterFecIds,
-              rosterStateFilingIds,
-              disambiguationHint,
-              seedUrls: draftContext.seedUrls,
-            },
-            aiConfig
-          );
+          const profileInput = {
+            candidateDisplayName,
+            districtName: draftContext.districtName,
+            districtType: draftContext.districtType,
+            state: draftContext.state,
+            electionDate: draftContext.electionDate,
+            officialBallotTitle:
+              draftContext.type === "presidential_cycle"
+                ? officialBallotTitleForPresidentialRole(draftContext, presidentialRole ?? "president")
+                : draftContext.officialBallotTitle,
+            electionStage: draftContext.electionStage,
+            senateClass: draftContext.senateClass,
+            termEndYear: draftContext.termEndYear,
+            electionIsPartisan: draftContext.electionIsPartisan,
+            rosterParty: draftContext.rosterParty,
+            rosterIncumbent: draftContext.rosterIncumbent,
+            rosterFecIds,
+            rosterStateFilingIds,
+            disambiguationHint,
+            seedUrls: draftContext.seedUrls,
+            allowMissingFederalFecIds:
+              draftContext.type === "presidential_cycle" && presidentialRole === "vice_president",
+          };
+          const aiResult =
+            draftContext.type === "presidential_cycle"
+              ? await enrichCandidateProfile(profileInput, aiConfig, PRESIDENTIAL_PROFILE_AI_CANDIDATES)
+              : await enrichCandidateProfile(profileInput, aiConfig);
 
           if (!aiResult.ok) {
             console.warn(
@@ -589,13 +661,43 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             candidateId = candidateResult.candidateId;
 
             if (draftContext.type === "presidential_cycle") {
-              await upsertPresidentialCycleCandidate({
-                client,
-                cycleId: draftContext.contextId,
-                candidateId,
-                party: draftContext.rosterParty,
-                sources: profile.sources,
-              });
+              if (presidentialRole === "vice_president") {
+                const parentCandidateId = await findPresidentialCycleCandidateIdByFecId({
+                  db: client,
+                  cycleId: draftContext.contextId,
+                  fecCandidateId: parentPresidentialCandidateFecId ?? "",
+                });
+                if (!parentCandidateId) {
+                  throw new Error(
+                    `parent presidential cycle candidate not found for FEC ID ${parentPresidentialCandidateFecId ?? ""}`
+                  );
+                }
+                await setPresidentialCycleCandidateRunningMate({
+                  db: client,
+                  cycleId: draftContext.contextId,
+                  candidateId: parentCandidateId,
+                  runningMateCandidateId: candidateId,
+                });
+                await markPresidentialCycleCandidateRunningMateProfileResearched({
+                  db: client,
+                  cycleId: draftContext.contextId,
+                  candidateId: parentCandidateId,
+                  runningMateCandidateId: candidateId,
+                });
+              } else {
+                await upsertPresidentialCycleCandidate({
+                  client,
+                  cycleId: draftContext.contextId,
+                  candidateId,
+                  party: draftContext.rosterParty,
+                  sources: profile.sources,
+                });
+                await markPresidentialCycleCandidateProfileResearched({
+                  db: client,
+                  cycleId: draftContext.contextId,
+                  candidateId,
+                });
+              }
             } else {
               await upsertCandidateElection({
                 client,
@@ -617,6 +719,16 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               {
                 candidateId,
                 electionId: draftContext.contextId,
+                runId,
+              },
+            ]);
+          } else {
+            await enqueueCandidateRecordDrafts(redis, [
+              {
+                contextType: "presidential_cycle",
+                candidateId,
+                presidentialCycleId: draftContext.contextId,
+                presidentialRole: presidentialRole ?? "president",
                 runId,
               },
             ]);

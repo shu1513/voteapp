@@ -126,9 +126,8 @@ export function buildPresidentialRosterStatusPrompt(input: PresidentialRosterSta
     '  "candidates": [',
     "    {",
     '      "candidate_id": "one of the provided candidate_id values",',
-    '      "status": "active|withdrawn|unknown",',
-    '      "sources": ["https://..."],',
-    '      "notes": "short reason"',
+    '      "status": "active|withdrawn",',
+    '      "sources": ["https://..."]',
     "    }",
     "  ]",
     "}",
@@ -138,10 +137,8 @@ export function buildPresidentialRosterStatusPrompt(input: PresidentialRosterSta
     "- Do not return rows for candidates not listed in Candidates to verify.",
     "- Use status=withdrawn only when there is clear evidence the candidate suspended, ended, withdrew, or is no longer running for this cycle.",
     "- Use status=active when there is evidence the candidate is still running for this cycle.",
-    "- Use status=unknown when evidence is unclear, stale, conflicting, or unavailable.",
     "- Do not infer withdrawal just because the candidate was missing from the latest roster list.",
     "- Each result must include at least one source URL for the page checked.",
-    "- notes must briefly explain the evidence behind the status.",
     "- return JSON only (no prose, no markdown).",
     ...(reviewFeedbackLines.length > 0
       ? [

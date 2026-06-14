@@ -151,6 +151,47 @@ describe("runCandidateRecordsSearchLifecycle", () => {
     expect(query).toHaveBeenCalledTimes(2);
     expect(query.mock.calls[1]?.[0]).toContain("last_records_searched_at = now()");
   });
+
+  it("forwards ignoreCooldown to the claim query", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: "cand-presidential",
+            last_records_searched_at: "2026-05-01T00:00:00.000Z",
+            last_records_researched_through: "2026-05-01",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    const executeSearch = vi.fn().mockResolvedValue({
+      discovered_count: 0,
+      inserted_count: 0,
+      deduped_count: 0,
+      tagged_specific_count: 0,
+      tagged_general_count: 0,
+    });
+
+    await runCandidateRecordsSearchLifecycle(
+      { query },
+      {
+        candidateId: "cand-presidential",
+        asOf: new Date("2026-05-15T00:00:00.000Z"),
+        ignoreCooldown: true,
+      },
+      executeSearch
+    );
+
+    expect(query.mock.calls[0]?.[1]).toEqual([
+      "cand-presidential",
+      "2026-05-15T00:00:00.000Z",
+      30,
+      2,
+      true,
+    ]);
+  });
 });
 
 describe("summarizeCandidateRecordsLifecycleResults", () => {

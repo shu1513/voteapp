@@ -54,7 +54,6 @@ function validOfficePayload(overrides: Record<string, unknown> = {}): Record<str
         ],
         source_url: "https://elections.example.gov/results",
         source_type: "official",
-        notes: "Unofficial complete result.",
         ...overrides,
       },
     ],
@@ -72,6 +71,7 @@ describe("parseElectionResultPayload", () => {
     if (parsed.ok) {
       expect(parsed.payload.results[0]?.match_status).toBe("matched");
       expect(parsed.payload.results[0]?.source_url).toBe("https://elections.example.gov/results");
+      expect(parsed.payload.results[0]?.notes).toBe("");
       expect(parsed.payload.results[0]?.winners[0]).toEqual({
         candidate_election_id: CANDIDATE_ELECTION_ID,
         candidate_id: CANDIDATE_ID,

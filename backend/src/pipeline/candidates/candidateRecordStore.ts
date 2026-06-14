@@ -9,6 +9,12 @@ export type CandidateRecordUpsertInput = {
   eventDate: string | Date;
 };
 
+export type CandidateRecordDuplicateAvoidanceRecord = {
+  description: string;
+  sourceUrl: string;
+  eventDate: string;
+};
+
 type UpsertResult = {
   inserted: number;
   updated: number;
@@ -23,6 +29,7 @@ type ExistingRecordCandidate = {
 };
 
 const DESCRIPTION_SIMILARITY_UPDATE_THRESHOLD = 0.86;
+const MAX_DUPLICATE_AVOIDANCE_RECORDS = 40;
 
 function normalizeTextForIdentity(value: string): string {
   return value
@@ -50,6 +57,44 @@ function toEventDateKey(value: string | Date): string {
     return trimmed;
   }
   return parsed.toISOString().slice(0, 10);
+}
+
+export async function loadRecentCandidateRecordsForDuplicateAvoidance(
+  client: Pick<PoolClient, "query">,
+  candidateId: string,
+  limit = MAX_DUPLICATE_AVOIDANCE_RECORDS
+): Promise<CandidateRecordDuplicateAvoidanceRecord[]> {
+  const trimmedCandidateId = candidateId.trim();
+  if (trimmedCandidateId.length === 0) {
+    return [];
+  }
+
+  const boundedLimit = Number.isInteger(limit)
+    ? Math.min(Math.max(limit, 0), MAX_DUPLICATE_AVOIDANCE_RECORDS)
+    : MAX_DUPLICATE_AVOIDANCE_RECORDS;
+  if (boundedLimit === 0) {
+    return [];
+  }
+
+  const result = await client.query<{
+    description: string;
+    sourceUrl: string;
+    eventDate: string;
+  }>(
+    `
+      SELECT
+        description,
+        source_url AS "sourceUrl",
+        event_date::text AS "eventDate"
+      FROM public.candidate_records
+      WHERE candidate_id = $1
+      ORDER BY event_date DESC, created_at DESC, id DESC
+      LIMIT $2
+    `,
+    [trimmedCandidateId, boundedLimit]
+  );
+
+  return result.rows;
 }
 
 export function buildCandidateRecordIdentityKey(input: {

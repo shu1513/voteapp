@@ -1,12 +1,11 @@
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
-export type PresidentialRosterStatus = "active" | "withdrawn" | "unknown";
+export type PresidentialRosterStatus = "active" | "withdrawn";
 
 export type PresidentialRosterStatusCandidate = {
   candidate_id: string;
   status: PresidentialRosterStatus;
   sources: string[];
-  notes: string;
 };
 
 export type PresidentialRosterStatusPayload = {
@@ -17,7 +16,7 @@ export type PresidentialRosterStatusPayloadParseOptions = {
   expectedCandidateIds: readonly string[];
 };
 
-const STATUS_SET = new Set<string>(["active", "withdrawn", "unknown"]);
+const STATUS_SET = new Set<string>(["active", "withdrawn"]);
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
@@ -89,16 +88,12 @@ function parseCandidate(
 
   const status = normalizeStatus(input.status);
   if (!status) {
-    return { ok: false, reason: "candidate.status must be active, withdrawn, or unknown" };
+    return { ok: false, reason: "candidate.status must be active or withdrawn" };
   }
 
   const sources = normalizeSources(input.sources);
   if (!sources) {
     return { ok: false, reason: "candidate.sources must contain valid URL strings" };
-  }
-
-  if (!isNonEmptyString(input.notes)) {
-    return { ok: false, reason: "candidate.notes must be non-empty string" };
   }
 
   return {
@@ -107,7 +102,6 @@ function parseCandidate(
       candidate_id: candidateId,
       status,
       sources,
-      notes: input.notes.trim(),
     },
   };
 }

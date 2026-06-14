@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { loadCandidateElectionOfficeContext } from "../../src/pipeline/candidates/candidateRecordOfficeContext.js";
+import {
+  loadCandidateElectionOfficeContext,
+  loadCandidatePresidentialCycleOfficeContext,
+} from "../../src/pipeline/candidates/candidateRecordOfficeContext.js";
 
 describe("loadCandidateElectionOfficeContext", () => {
   it("returns context for linked candidate-election pair with office_id", async () => {
@@ -73,5 +76,105 @@ describe("loadCandidateElectionOfficeContext", () => {
     const result = await loadCandidateElectionOfficeContext({ query }, "cand-x", "e-x");
 
     expect(result).toBeNull();
+  });
+});
+
+describe("loadCandidatePresidentialCycleOfficeContext", () => {
+  it("returns President office context for presidential-cycle record drafts", async () => {
+    const query = vi.fn().mockResolvedValueOnce({
+      rows: [
+        {
+          candidateId: "cand-president",
+          candidateDisplayName: "Jane President",
+          presidentialCycleId: "cycle-2028",
+          electionYear: 2028,
+          stage: "primary",
+          party: "Democratic",
+          officeId: "office-president",
+          sources: ["https://example.gov/cycle"],
+        },
+      ],
+    });
+
+    const result = await loadCandidatePresidentialCycleOfficeContext(
+      { query },
+      " cand-president ",
+      " cycle-2028 ",
+      "president"
+    );
+
+    expect(result).toEqual({
+      candidateId: "cand-president",
+      candidateDisplayName: "Jane President",
+      electionId: "",
+      presidentialCycleId: "cycle-2028",
+      presidentialRole: "president",
+      districtName: "United States",
+      districtType: "presidential",
+      state: "US",
+      electionDate: "2028-11-07",
+      officialBallotTitle: "President of the United States, 2028 Democratic primary",
+      electionStage: "primary",
+      senateClass: null,
+      termEndYear: null,
+      officeId: "office-president",
+      discoveryContestFamily: null,
+      electionSources: ["https://example.gov/cycle"],
+    });
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(query.mock.calls[0]?.[0]).toContain("JOIN public.offices AS office");
+    expect(query.mock.calls[0]?.[0]).toContain("office.scope = 'presidential'");
+    expect(query.mock.calls[0]?.[1]).toEqual([
+      "cand-president",
+      "cycle-2028",
+      "President of the United States",
+    ]);
+  });
+
+  it("returns Vice President office context for running-mate record drafts", async () => {
+    const query = vi.fn().mockResolvedValueOnce({
+      rows: [
+        {
+          candidateId: "cand-vp",
+          candidateDisplayName: "Pat Running Mate",
+          presidentialCycleId: "cycle-2028",
+          electionYear: 2028,
+          stage: "general",
+          party: null,
+          officeId: "office-vp",
+          sources: [],
+        },
+      ],
+    });
+
+    const result = await loadCandidatePresidentialCycleOfficeContext(
+      { query },
+      "cand-vp",
+      "cycle-2028",
+      "vice_president"
+    );
+
+    expect(result?.officeId).toBe("office-vp");
+    expect(result?.officialBallotTitle).toBe(
+      "Vice President of the United States, 2028 general election"
+    );
+    expect(query.mock.calls[0]?.[1]).toEqual([
+      "cand-vp",
+      "cycle-2028",
+      "Vice President of the United States",
+    ]);
+  });
+
+  it("returns null for blank candidate or cycle ids", async () => {
+    const query = vi.fn();
+
+    await expect(
+      loadCandidatePresidentialCycleOfficeContext({ query }, " ", "cycle-2028", "president")
+    ).resolves.toBeNull();
+    await expect(
+      loadCandidatePresidentialCycleOfficeContext({ query }, "cand-1", " ", "president")
+    ).resolves.toBeNull();
+
+    expect(query).not.toHaveBeenCalled();
   });
 });

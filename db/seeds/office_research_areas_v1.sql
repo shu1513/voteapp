@@ -61,6 +61,178 @@ $$;
 
 DO $$
 DECLARE
+  expected_pair_count integer;
+  resolved_pair_count integer;
+BEGIN
+  WITH desired(scope, canonical_name, slug) AS (
+    VALUES
+      ('presidential', 'President of the United States', 'national_defense'),
+      ('presidential', 'President of the United States', 'peaceful_foreign_policy'),
+      ('presidential', 'President of the United States', 'foreign_trade'),
+      ('presidential', 'President of the United States', 'immigration'),
+      ('presidential', 'President of the United States', 'government_spending_reduction'),
+      ('presidential', 'President of the United States', 'personal_income_tax_reduction'),
+      ('presidential', 'President of the United States', 'cost_of_living_reduction'),
+      ('presidential', 'President of the United States', 'healthcare_affordability'),
+      ('presidential', 'President of the United States', 'social_programs_and_welfare'),
+      ('presidential', 'President of the United States', 'environment_and_public_health'),
+      ('presidential', 'President of the United States', 'public_infrastructure'),
+      ('presidential', 'President of the United States', 'public_safety_and_crime_control'),
+      ('presidential', 'President of the United States', 'civil_rights'),
+      ('presidential', 'President of the United States', 'womens_reproductive_rights'),
+      ('presidential', 'President of the United States', 'corporate_accountability'),
+      ('presidential', 'President of the United States', 'data_privacy'),
+      ('presidential', 'President of the United States', 'anti_corruption'),
+      ('presidential', 'President of the United States', 'government_efficiency'),
+      ('presidential', 'President of the United States', 'housing_affordability'),
+      ('presidential', 'President of the United States', 'public_education_quality'),
+      ('presidential', 'President of the United States', 'election_integrity'),
+      ('presidential', 'Vice President of the United States', 'government_spending_reduction'),
+      ('presidential', 'Vice President of the United States', 'government_efficiency'),
+      ('presidential', 'Vice President of the United States', 'anti_corruption'),
+      ('presidential', 'Vice President of the United States', 'election_integrity'),
+      ('presidential', 'Vice President of the United States', 'civil_rights'),
+      ('presidential', 'Vice President of the United States', 'national_defense'),
+      ('presidential', 'Vice President of the United States', 'peaceful_foreign_policy'),
+      ('presidential', 'Vice President of the United States', 'foreign_trade'),
+      ('presidential', 'Vice President of the United States', 'immigration'),
+      ('presidential', 'Vice President of the United States', 'public_safety_and_crime_control'),
+      ('presidential', 'Vice President of the United States', 'healthcare_affordability'),
+      ('presidential', 'Vice President of the United States', 'social_programs_and_welfare'),
+      ('presidential', 'Vice President of the United States', 'environment_and_public_health'),
+      ('presidential', 'Vice President of the United States', 'public_infrastructure'),
+      ('presidential', 'Vice President of the United States', 'personal_income_tax_reduction'),
+      ('presidential', 'Vice President of the United States', 'cost_of_living_reduction'),
+      ('presidential', 'Vice President of the United States', 'corporate_accountability'),
+      ('presidential', 'Vice President of the United States', 'data_privacy'),
+      ('presidential', 'Vice President of the United States', 'womens_reproductive_rights'),
+      ('presidential', 'Vice President of the United States', 'housing_affordability'),
+      ('presidential', 'Vice President of the United States', 'public_education_quality')
+  )
+  SELECT COUNT(*)
+  INTO expected_pair_count
+  FROM desired;
+
+  WITH desired(scope, canonical_name, slug) AS (
+    VALUES
+      ('presidential', 'President of the United States', 'national_defense'),
+      ('presidential', 'President of the United States', 'peaceful_foreign_policy'),
+      ('presidential', 'President of the United States', 'foreign_trade'),
+      ('presidential', 'President of the United States', 'immigration'),
+      ('presidential', 'President of the United States', 'government_spending_reduction'),
+      ('presidential', 'President of the United States', 'personal_income_tax_reduction'),
+      ('presidential', 'President of the United States', 'cost_of_living_reduction'),
+      ('presidential', 'President of the United States', 'healthcare_affordability'),
+      ('presidential', 'President of the United States', 'social_programs_and_welfare'),
+      ('presidential', 'President of the United States', 'environment_and_public_health'),
+      ('presidential', 'President of the United States', 'public_infrastructure'),
+      ('presidential', 'President of the United States', 'public_safety_and_crime_control'),
+      ('presidential', 'President of the United States', 'civil_rights'),
+      ('presidential', 'President of the United States', 'womens_reproductive_rights'),
+      ('presidential', 'President of the United States', 'corporate_accountability'),
+      ('presidential', 'President of the United States', 'data_privacy'),
+      ('presidential', 'President of the United States', 'anti_corruption'),
+      ('presidential', 'President of the United States', 'government_efficiency'),
+      ('presidential', 'President of the United States', 'housing_affordability'),
+      ('presidential', 'President of the United States', 'public_education_quality'),
+      ('presidential', 'President of the United States', 'election_integrity'),
+      ('presidential', 'Vice President of the United States', 'government_spending_reduction'),
+      ('presidential', 'Vice President of the United States', 'government_efficiency'),
+      ('presidential', 'Vice President of the United States', 'anti_corruption'),
+      ('presidential', 'Vice President of the United States', 'election_integrity'),
+      ('presidential', 'Vice President of the United States', 'civil_rights'),
+      ('presidential', 'Vice President of the United States', 'national_defense'),
+      ('presidential', 'Vice President of the United States', 'peaceful_foreign_policy'),
+      ('presidential', 'Vice President of the United States', 'foreign_trade'),
+      ('presidential', 'Vice President of the United States', 'immigration'),
+      ('presidential', 'Vice President of the United States', 'public_safety_and_crime_control'),
+      ('presidential', 'Vice President of the United States', 'healthcare_affordability'),
+      ('presidential', 'Vice President of the United States', 'social_programs_and_welfare'),
+      ('presidential', 'Vice President of the United States', 'environment_and_public_health'),
+      ('presidential', 'Vice President of the United States', 'public_infrastructure'),
+      ('presidential', 'Vice President of the United States', 'personal_income_tax_reduction'),
+      ('presidential', 'Vice President of the United States', 'cost_of_living_reduction'),
+      ('presidential', 'Vice President of the United States', 'corporate_accountability'),
+      ('presidential', 'Vice President of the United States', 'data_privacy'),
+      ('presidential', 'Vice President of the United States', 'womens_reproductive_rights'),
+      ('presidential', 'Vice President of the United States', 'housing_affordability'),
+      ('presidential', 'Vice President of the United States', 'public_education_quality')
+  )
+  SELECT COUNT(*)
+  INTO resolved_pair_count
+  FROM desired
+  JOIN public.offices AS office
+    ON office.scope = desired.scope
+   AND office.canonical_name = desired.canonical_name
+  JOIN public.research_areas AS area
+    ON area.slug = desired.slug;
+
+  IF resolved_pair_count <> expected_pair_count THEN
+    RAISE EXCEPTION
+      'Expected % presidential office research-area pairs to resolve, found %',
+      expected_pair_count,
+      resolved_pair_count;
+  END IF;
+
+  WITH desired(scope, canonical_name, slug) AS (
+    VALUES
+      ('presidential', 'President of the United States', 'national_defense'),
+      ('presidential', 'President of the United States', 'peaceful_foreign_policy'),
+      ('presidential', 'President of the United States', 'foreign_trade'),
+      ('presidential', 'President of the United States', 'immigration'),
+      ('presidential', 'President of the United States', 'government_spending_reduction'),
+      ('presidential', 'President of the United States', 'personal_income_tax_reduction'),
+      ('presidential', 'President of the United States', 'cost_of_living_reduction'),
+      ('presidential', 'President of the United States', 'healthcare_affordability'),
+      ('presidential', 'President of the United States', 'social_programs_and_welfare'),
+      ('presidential', 'President of the United States', 'environment_and_public_health'),
+      ('presidential', 'President of the United States', 'public_infrastructure'),
+      ('presidential', 'President of the United States', 'public_safety_and_crime_control'),
+      ('presidential', 'President of the United States', 'civil_rights'),
+      ('presidential', 'President of the United States', 'womens_reproductive_rights'),
+      ('presidential', 'President of the United States', 'corporate_accountability'),
+      ('presidential', 'President of the United States', 'data_privacy'),
+      ('presidential', 'President of the United States', 'anti_corruption'),
+      ('presidential', 'President of the United States', 'government_efficiency'),
+      ('presidential', 'President of the United States', 'housing_affordability'),
+      ('presidential', 'President of the United States', 'public_education_quality'),
+      ('presidential', 'President of the United States', 'election_integrity'),
+      ('presidential', 'Vice President of the United States', 'government_spending_reduction'),
+      ('presidential', 'Vice President of the United States', 'government_efficiency'),
+      ('presidential', 'Vice President of the United States', 'anti_corruption'),
+      ('presidential', 'Vice President of the United States', 'election_integrity'),
+      ('presidential', 'Vice President of the United States', 'civil_rights'),
+      ('presidential', 'Vice President of the United States', 'national_defense'),
+      ('presidential', 'Vice President of the United States', 'peaceful_foreign_policy'),
+      ('presidential', 'Vice President of the United States', 'foreign_trade'),
+      ('presidential', 'Vice President of the United States', 'immigration'),
+      ('presidential', 'Vice President of the United States', 'public_safety_and_crime_control'),
+      ('presidential', 'Vice President of the United States', 'healthcare_affordability'),
+      ('presidential', 'Vice President of the United States', 'social_programs_and_welfare'),
+      ('presidential', 'Vice President of the United States', 'environment_and_public_health'),
+      ('presidential', 'Vice President of the United States', 'public_infrastructure'),
+      ('presidential', 'Vice President of the United States', 'personal_income_tax_reduction'),
+      ('presidential', 'Vice President of the United States', 'cost_of_living_reduction'),
+      ('presidential', 'Vice President of the United States', 'corporate_accountability'),
+      ('presidential', 'Vice President of the United States', 'data_privacy'),
+      ('presidential', 'Vice President of the United States', 'womens_reproductive_rights'),
+      ('presidential', 'Vice President of the United States', 'housing_affordability'),
+      ('presidential', 'Vice President of the United States', 'public_education_quality')
+  )
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM desired
+  JOIN public.offices AS office
+    ON office.scope = desired.scope
+   AND office.canonical_name = desired.canonical_name
+  JOIN public.research_areas AS area
+    ON area.slug = desired.slug
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
   expected_office_count integer := 5;
   expected_pair_count integer;
   office_count integer;

@@ -13,6 +13,11 @@ describe("parsePresidentialRosterPayload", () => {
             fec_candidate_id: " p80000001 ",
             sources: ["https://example.org/a", "https://example.org/a"],
             status: "ACTIVE",
+            running_mate: {
+              display_name: " Pat Running Mate ",
+              fec_candidate_id: " p80000002 ",
+              sources: ["https://example.org/mate", "https://example.org/mate"],
+            },
           },
           {
             display_name: "Pat Suspended",
@@ -37,6 +42,11 @@ describe("parsePresidentialRosterPayload", () => {
         fec_candidate_id: "P80000001",
         sources: ["https://example.org/a"],
         status: "active",
+        running_mate: {
+          display_name: "Pat Running Mate",
+          fec_candidate_id: "P80000002",
+          sources: ["https://example.org/mate"],
+        },
       },
       {
         display_name: "Pat Suspended",
@@ -138,6 +148,44 @@ describe("parsePresidentialRosterPayload", () => {
         ],
       }).ok
     ).toBe(false);
+
+    expect(
+      parsePresidentialRosterPayload({
+        candidates: [
+          {
+            display_name: "Jane President",
+            party: "Democratic",
+            sources: ["https://example.org/a"],
+            status: "active",
+            running_mate: {
+              display_name: "Pat Running Mate",
+              fec_candidate_id: "S80000002",
+              sources: ["https://example.org/mate"],
+            },
+          },
+        ],
+      }).ok
+    ).toBe(false);
+  });
+
+  it("rejects running mates with invalid source URLs", () => {
+    const parsed = parsePresidentialRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane President",
+          party: "Democratic",
+          sources: ["https://example.org/a"],
+          status: "active",
+          running_mate: {
+            display_name: "Pat Running Mate",
+            sources: ["not a url"],
+          },
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    expect(parsed.ok ? "" : parsed.reason).toContain("candidate.running_mate.sources");
   });
 
   it("rejects non-object payloads and missing candidates array", () => {

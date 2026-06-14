@@ -21,7 +21,11 @@ import {
   STAGING_CANDIDATE_RECORD_REJECTED_STREAM,
   STAGING_ITEM_TYPE_CANDIDATE_RECORD,
 } from "../../config/electionsPipeline.js";
-import { buildCandidateRecordIdentityKey, upsertCandidateRecords } from "../candidates/candidateRecordStore.js";
+import {
+  buildCandidateRecordIdentityKey,
+  loadRecentCandidateRecordsForDuplicateAvoidance,
+  upsertCandidateRecords,
+} from "../candidates/candidateRecordStore.js";
 import {
   loadAllResearchAreas,
   loadAllowedResearchAreasForOfficeId,
@@ -33,7 +37,11 @@ import {
   summarizeCandidateRecordsLifecycleResults,
   type CandidateRecordsSearchMetrics,
 } from "../candidates/candidateRecordsSearchLifecycle.js";
-import { loadCandidateElectionOfficeContext } from "../candidates/candidateRecordOfficeContext.js";
+import {
+  loadCandidateElectionOfficeContext,
+  loadCandidatePresidentialCycleOfficeContext,
+  type CandidateRecordPresidentialRole,
+} from "../candidates/candidateRecordOfficeContext.js";
 import {
   buildCandidateRecordRunProcessedMarkerKey,
   CANDIDATE_RECORD_RUN_PROCESSED_MARKER_TTL_SECONDS,
@@ -84,6 +92,15 @@ function classifyCitationVerificationFailure(reason: string): "transient" | "per
     return "transient";
   }
   return "permanent";
+}
+
+function parseCandidateRecordContextType(value: string | undefined): "election" | "presidential_cycle" {
+  return value === "presidential_cycle" ? "presidential_cycle" : "election";
+}
+
+function parsePresidentialRole(value: string | undefined): CandidateRecordPresidentialRole | null {
+  const trimmed = value?.trim();
+  return trimmed === "president" || trimmed === "vice_president" ? trimmed : null;
 }
 
 async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Promise<void> {
@@ -177,6 +194,9 @@ async function parkMessage(
     original_stream_id: entry.id,
     candidate_id: entry.message.candidate_id ?? "",
     election_id: entry.message.election_id ?? "",
+    context_type: entry.message.context_type ?? "",
+    presidential_cycle_id: entry.message.presidential_cycle_id ?? "",
+    presidential_role: entry.message.presidential_role ?? "",
     item_type: entry.message.item_type ?? "",
     run_id: entry.message.run_id ?? "",
   });
@@ -216,8 +236,15 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
       for (const entry of entries) {
         const candidateId = entry.message.candidate_id;
         const electionId = entry.message.election_id;
+        const contextType = parseCandidateRecordContextType(entry.message.context_type);
+        const presidentialCycleId = (entry.message.presidential_cycle_id ?? "").trim();
+        const presidentialRole = parsePresidentialRole(entry.message.presidential_role);
         const itemType = entry.message.item_type;
         const runId = (entry.message.run_id ?? "").trim();
+        const contextLabel =
+          contextType === "presidential_cycle"
+            ? `presidential_cycle_id=${presidentialCycleId || "unknown"} role=${presidentialRole ?? "unknown"}`
+            : `election_id=${electionId ?? "unknown"}`;
 
         try {
           const deliveryCount = await getDeliveryCount(redis, entry.id);
@@ -229,13 +256,17 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               deliveryCount
             );
             console.warn(
-              `candidate-record enricher parked stream_id=${entry.id} candidate_id=${candidateId ?? "unknown"} election_id=${electionId ?? "unknown"} after ${deliveryCount} deliveries`
+              `candidate-record enricher parked stream_id=${entry.id} candidate_id=${candidateId ?? "unknown"} ${contextLabel} after ${deliveryCount} deliveries`
             );
             stats.parked_count += 1;
             continue;
           }
 
-          if (!candidateId || !electionId || itemType !== STAGING_ITEM_TYPE_CANDIDATE_RECORD) {
+          const hasRequiredContext =
+            contextType === "presidential_cycle"
+              ? presidentialCycleId.length > 0 && presidentialRole !== null
+              : Boolean(electionId);
+          if (!candidateId || !hasRequiredContext || itemType !== STAGING_ITEM_TYPE_CANDIDATE_RECORD) {
             await redis.xAck(
               STAGING_CANDIDATE_RECORD_DRAFT_STREAM,
               STAGING_CANDIDATE_RECORD_ENRICHER_GROUP,
@@ -246,7 +277,15 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
             continue;
           }
 
-          const context = await loadCandidateElectionOfficeContext(pool, candidateId, electionId);
+          const context =
+            contextType === "presidential_cycle"
+              ? await loadCandidatePresidentialCycleOfficeContext(
+                  pool,
+                  candidateId,
+                  presidentialCycleId,
+                  presidentialRole!
+                )
+              : await loadCandidateElectionOfficeContext(pool, candidateId, electionId ?? "");
           if (!context) {
             await redis.xAck(
               STAGING_CANDIDATE_RECORD_DRAFT_STREAM,
@@ -262,6 +301,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
             {
               candidateId,
               asOf: new Date(),
+              ignoreCooldown: contextType === "presidential_cycle",
             },
             async ({ candidateId: claimedCandidateId, window }): Promise<CandidateRecordsSearchMetrics> => {
               const discovered = await enrichCandidateRecords(
@@ -277,6 +317,10 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                   termEndYear: context.termEndYear,
                   discoveryContestFamily: context.discoveryContestFamily,
                   sinceDate: window.sinceDate,
+                  existingRecordsToAvoid:
+                    contextType === "presidential_cycle"
+                      ? await loadRecentCandidateRecordsForDuplicateAvoidance(pool, claimedCandidateId)
+                      : [],
                 },
                 recordsConfig
               );
@@ -520,7 +564,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               }
               if (!context.officeId) {
                 console.log(
-                  `candidate-record enricher using all research areas because election office_id is null candidate_id=${claimedCandidateId} election_id=${context.electionId}`
+                  `candidate-record enricher using all research areas because office_id is null candidate_id=${claimedCandidateId} ${contextLabel}`
                 );
               }
               const allowedSlugs = [...new Set(allowedAreas.map((row) => row.slug))];
@@ -607,11 +651,11 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
 
           if (lifecycleResult.status === "completed") {
             console.log(
-              `candidate-record enricher completed candidate_id=${candidateId} election_id=${electionId} window_mode=${lifecycleResult.window.mode} since=${lifecycleResult.window.sinceDate ?? "full"} discovered=${lifecycleResult.metrics.discovered_count} inserted=${lifecycleResult.metrics.inserted_count} deduped=${lifecycleResult.metrics.deduped_count} tagged_specific=${lifecycleResult.metrics.tagged_specific_count} tagged_general=${lifecycleResult.metrics.tagged_general_count}`
+              `candidate-record enricher completed candidate_id=${candidateId} ${contextLabel} window_mode=${lifecycleResult.window.mode} since=${lifecycleResult.window.sinceDate ?? "full"} discovered=${lifecycleResult.metrics.discovered_count} inserted=${lifecycleResult.metrics.inserted_count} deduped=${lifecycleResult.metrics.deduped_count} tagged_specific=${lifecycleResult.metrics.tagged_specific_count} tagged_general=${lifecycleResult.metrics.tagged_general_count}`
             );
           } else {
             console.log(
-              `candidate-record enricher skipped candidate_id=${candidateId} election_id=${electionId} reason=${lifecycleResult.reason}`
+              `candidate-record enricher skipped candidate_id=${candidateId} ${contextLabel} reason=${lifecycleResult.reason}`
             );
           }
 
@@ -631,7 +675,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
         } catch (error) {
           const reason = toReason(error);
           console.warn(
-            `candidate-record enricher retrying candidate_id=${candidateId ?? "unknown"} election_id=${electionId ?? "unknown"}: ${reason}`
+            `candidate-record enricher retrying candidate_id=${candidateId ?? "unknown"} ${contextLabel}: ${reason}`
           );
           stats.retried_count += 1;
           // Leave unacked so reclaim retries.

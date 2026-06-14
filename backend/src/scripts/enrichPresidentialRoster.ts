@@ -138,7 +138,6 @@ function toScriptSummary(result: PresidentialRosterEnricherResult) {
       checked_count: result.statusVerification.checkedCount,
       withdrawn_count: result.statusVerification.withdrawnCount,
       active_count: result.statusVerification.activeCount,
-      unknown_count: result.statusVerification.unknownCount,
       skipped_count: result.statusVerification.skippedCount,
       demoted_count: result.statusVerification.demotedCount,
       ...(result.statusVerification.errorCode ? { error_code: result.statusVerification.errorCode } : {}),

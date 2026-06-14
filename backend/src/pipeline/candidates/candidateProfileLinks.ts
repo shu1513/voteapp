@@ -84,6 +84,110 @@ export async function upsertPresidentialCycleCandidate(input: {
   );
 }
 
+export async function markPresidentialCycleCandidateProfileResearched(input: {
+  db: Queryable;
+  cycleId: string;
+  candidateId: string;
+}): Promise<{ updatedCount: number }> {
+  const cycleId = requireNonEmpty(input.cycleId, "presidential cycle id");
+  const candidateId = requireNonEmpty(input.candidateId, "candidate id");
+
+  const result = await input.db.query(
+    `
+      UPDATE public.presidential_cycle_candidates
+      SET presidential_profile_researched = true,
+          updated_at = now()
+      WHERE cycle_id = $1
+        AND candidate_id = $2
+        AND presidential_profile_researched = false
+    `,
+    [cycleId, candidateId]
+  );
+
+  return { updatedCount: result.rowCount ?? 0 };
+}
+
+export async function findPresidentialCycleCandidateIdByFecId(input: {
+  db: Queryable;
+  cycleId: string;
+  fecCandidateId: string;
+}): Promise<string | null> {
+  const cycleId = requireNonEmpty(input.cycleId, "presidential cycle id");
+  const fecCandidateId = requireNonEmpty(input.fecCandidateId, "presidential FEC candidate id").toUpperCase();
+
+  const result = await input.db.query<{ candidate_id: string }>(
+    `
+      SELECT cycle_candidate.candidate_id
+      FROM public.presidential_cycle_candidates AS cycle_candidate
+      JOIN public.candidates AS candidate
+        ON candidate.id = cycle_candidate.candidate_id
+      WHERE cycle_candidate.cycle_id = $1
+        AND candidate.deleted_at IS NULL
+        AND EXISTS (
+          SELECT 1
+          FROM jsonb_array_elements_text(candidate.fec_ids) AS fec_id(value)
+          WHERE upper(trim(fec_id.value)) = $2
+        )
+      LIMIT 1
+    `,
+    [cycleId, fecCandidateId]
+  );
+
+  return result.rows[0]?.candidate_id ?? null;
+}
+
+export async function setPresidentialCycleCandidateRunningMate(input: {
+  db: Queryable;
+  cycleId: string;
+  candidateId: string;
+  runningMateCandidateId: string;
+}): Promise<{ updatedCount: number }> {
+  const cycleId = requireNonEmpty(input.cycleId, "presidential cycle id");
+  const candidateId = requireNonEmpty(input.candidateId, "candidate id");
+  const runningMateCandidateId = requireNonEmpty(input.runningMateCandidateId, "running mate candidate id");
+
+  const result = await input.db.query(
+    `
+      UPDATE public.presidential_cycle_candidates
+      SET running_mate_profile_researched = false,
+          running_mate_candidate_id = $3::uuid,
+          updated_at = now()
+      WHERE cycle_id = $1
+        AND candidate_id = $2
+        AND running_mate_candidate_id IS DISTINCT FROM $3::uuid
+    `,
+    [cycleId, candidateId, runningMateCandidateId]
+  );
+
+  return { updatedCount: result.rowCount ?? 0 };
+}
+
+export async function markPresidentialCycleCandidateRunningMateProfileResearched(input: {
+  db: Queryable;
+  cycleId: string;
+  candidateId: string;
+  runningMateCandidateId: string;
+}): Promise<{ updatedCount: number }> {
+  const cycleId = requireNonEmpty(input.cycleId, "presidential cycle id");
+  const candidateId = requireNonEmpty(input.candidateId, "candidate id");
+  const runningMateCandidateId = requireNonEmpty(input.runningMateCandidateId, "running mate candidate id");
+
+  const result = await input.db.query(
+    `
+      UPDATE public.presidential_cycle_candidates
+      SET running_mate_profile_researched = true,
+          updated_at = now()
+      WHERE cycle_id = $1
+        AND candidate_id = $2
+        AND running_mate_candidate_id = $3::uuid
+        AND running_mate_profile_researched = false
+    `,
+    [cycleId, candidateId, runningMateCandidateId]
+  );
+
+  return { updatedCount: result.rowCount ?? 0 };
+}
+
 export async function withdrawPresidentialCycleCandidateByFecId(input: {
   db: Queryable;
   cycleId: string;

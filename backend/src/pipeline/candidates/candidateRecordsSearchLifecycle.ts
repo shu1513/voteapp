@@ -123,6 +123,7 @@ export async function runCandidateRecordsSearchLifecycle(
     asOf: options.asOf,
     cooldownDays: options.cooldownDays,
     leaseHours: options.leaseHours,
+    ignoreCooldown: options.ignoreCooldown,
   });
 
   if (!claim.claimed) {

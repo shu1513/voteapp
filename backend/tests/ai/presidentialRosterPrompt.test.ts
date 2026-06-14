@@ -17,13 +17,24 @@ describe("buildPresidentialRosterPrompt", () => {
     expect(prompt).toContain("- election_year: 2028");
     expect(prompt).toContain('- stage: "primary"');
     expect(prompt).toContain('- party: "Democratic"');
-    expect(prompt).toContain('"display_name": "candidate name as used publicly; ballot-listed name if available"');
+    expect(prompt).toContain('"display_name": "candidate name; ballot-listed name if available"');
     expect(prompt).toContain('"fec_candidate_id": "FEC presidential candidate ID if known, otherwise omit"');
     expect(prompt).toContain('"status": "active|withdrawn"');
+    expect(prompt).toContain('"running_mate": {');
+    expect(prompt).toContain('"display_name": "officially announced running mate name"');
+    expect(prompt).toContain("Include running_mate only if the candidate has officially announced a running mate");
+    expect(prompt).toContain("omit running_mate if none is officially announced");
+    expect(prompt).toContain("Do not include speculative, rumored, shortlist, possible, or expected running mates.");
     expect(prompt).not.toContain("campaign_website_url");
-    expect(prompt).toContain("Return only candidates meaningfully running for the 2028 Democratic presidential nomination.");
-    expect(prompt).toContain("Do not return independent candidates, third-party candidates, or general-election-only candidates.");
-    expect(prompt).toContain("Do not return every person who filed an FEC statement");
+    expect(prompt).toContain("Return only candidates formally running for the 2028 Democratic presidential nomination.");
+    expect(prompt).not.toContain(
+      "Do not return independent candidates, third-party candidates, or general-election-only candidates."
+    );
+    expect(prompt).not.toContain("Every candidate.party must be");
+    expect(prompt).not.toContain("possible-contender names");
+    expect(prompt).toContain(
+      "Only return people who have formally declared, filed with the FEC, or launched an official campaign. If no candidates meet this standard, return candidates: []."
+    );
   });
 
   it("trims party and includes retry feedback", () => {
@@ -51,7 +62,7 @@ describe("buildPresidentialRosterPrompt", () => {
 
     expect(prompt).toContain('election_name: "2028 presidential general election"');
     expect(prompt).not.toContain("- party:");
-    expect(prompt).toContain("Return only candidates meaningfully running in the presidential general election.");
+    expect(prompt).toContain("Return only candidates formally running in the presidential general election.");
     expect(prompt).toContain("Include major-party nominees and ballot-qualified third-party or independent candidates");
   });
 

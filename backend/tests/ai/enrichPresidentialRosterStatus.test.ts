@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { PRESIDENTIAL_ROSTER_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
 const callResearchProviderMock = vi.hoisted(() => vi.fn());
 
@@ -37,7 +38,6 @@ describe("enrichPresidentialRosterStatus", () => {
             candidate_id: "candidate-1",
             status: "WITHDRAWN",
             sources: ["https://example.org/jane-withdrawn"],
-            notes: "Suspended campaign.",
           },
         ],
       },
@@ -58,7 +58,6 @@ describe("enrichPresidentialRosterStatus", () => {
         candidate_id: "candidate-1",
         status: "withdrawn",
         sources: ["https://example.org/jane-withdrawn"],
-        notes: "Suspended campaign.",
       },
     ]);
     expect(result.aiRawDebug?.provider_debug).toBe("ok");
@@ -74,7 +73,6 @@ describe("enrichPresidentialRosterStatus", () => {
               candidate_id: "candidate-x",
               status: "withdrawn",
               sources: ["https://example.org/wrong"],
-              notes: "Wrong candidate.",
             },
           ],
         },
@@ -86,9 +84,8 @@ describe("enrichPresidentialRosterStatus", () => {
           candidates: [
             {
               candidate_id: "candidate-1",
-              status: "unknown",
+              status: "active",
               sources: ["https://example.org/jane"],
-              notes: "Could not confirm current status.",
             },
           ],
         },
@@ -116,7 +113,6 @@ describe("enrichPresidentialRosterStatus", () => {
             candidate_id: "candidate-1",
             status: "active",
             sources: ["https://example.org/jane"],
-            notes: "Still campaigning.",
           },
         ],
       },
@@ -164,6 +160,32 @@ describe("enrichPresidentialRosterStatus", () => {
     });
     expect(result.ok ? undefined : result.failureDebug?.prompt_preview).toContain(
       "verifying the current status of presidential candidates omitted"
+    );
+  });
+
+  it("uses the dedicated presidential roster model list by default", async () => {
+    callResearchProviderMock.mockResolvedValueOnce({
+      ok: true,
+      parsed: {
+        candidates: [
+          {
+            candidate_id: "candidate-1",
+            status: "active",
+            sources: ["https://example.org/jane"],
+          },
+        ],
+      },
+      rawText: "{\"candidates\":[]}",
+    });
+
+    const { enrichPresidentialRosterStatus } = await import("../../src/ai/enrichPresidentialRosterStatus.js");
+    const result = await enrichPresidentialRosterStatus(input, { timeoutMs: 30_000 });
+
+    expect(result.ok).toBe(true);
+    expect(callResearchProviderMock).toHaveBeenCalledWith(
+      PRESIDENTIAL_ROSTER_AI_CANDIDATES[0],
+      expect.any(String),
+      expect.objectContaining({ timeoutMs: 30_000 })
     );
   });
 });

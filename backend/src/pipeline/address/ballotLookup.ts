@@ -1,6 +1,12 @@
 import type { Pool, PoolClient } from "pg";
 
-import type { ElectionContestFamily, ElectionDistrictType, ElectionRaceType, ElectionStage } from "../../types/election.js";
+import type {
+  ElectionContestFamily,
+  ElectionDistrictType,
+  ElectionRaceType,
+  ElectionStage,
+  OfficeScope,
+} from "../../types/election.js";
 import type { CandidateElectionStatus, ElectionResultPassType } from "../../types/electionResults.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -30,7 +36,7 @@ export type BallotLookupResearchAreaSummary = {
 
 export type BallotLookupOfficeSummary = {
   id: string;
-  scope: ElectionDistrictType;
+  scope: OfficeScope;
   canonical_name: string;
   summary: string;
 };
@@ -163,7 +169,7 @@ type ElectionRow = {
 
 type ElectionSummaryRow = ElectionRow & {
   office_id: string | null;
-  office_scope: ElectionDistrictType | null;
+  office_scope: OfficeScope | null;
   office_canonical_name: string | null;
   office_summary: string | null;
 };

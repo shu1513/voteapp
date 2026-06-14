@@ -15,7 +15,13 @@ function makeDb(row: Record<string, unknown> | null = {
   party: "Democratic",
 }) {
   return {
-    query: vi.fn().mockResolvedValue({ rows: row ? [row] : [] }),
+    query: vi.fn(async (sql: string) => {
+      const text = String(sql);
+      if (text.includes("FROM public.presidential_cycles")) {
+        return { rows: row ? [row] : [], rowCount: row ? 1 : 0 };
+      }
+      return { rows: [], rowCount: 0 };
+    }),
   };
 }
 
@@ -97,6 +103,20 @@ function activeCycleCandidate(input: {
   };
 }
 
+function existingCycleCandidateRow(overrides: Record<string, unknown> = {}) {
+  return {
+    candidate_id: "candidate-jane",
+    presidential_profile_researched: false,
+    running_mate_candidate_id: null,
+    running_mate_profile_researched: false,
+    running_mate_display_name: null,
+    running_mate_first_name: null,
+    running_mate_last_name: null,
+    running_mate_fec_ids: [],
+    ...overrides,
+  };
+}
+
 describe("enrichPresidentialRosterCycle", () => {
   it("loads a primary cycle, matches FEC candidates, and emits presidential profile drafts", async () => {
     const db = makeDb();
@@ -112,6 +132,7 @@ describe("enrichPresidentialRosterCycle", () => {
           },
         ],
       })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 })
       .mockResolvedValueOnce({ rows: [], rowCount: 1 });
     const redis = { sendCommand: vi.fn().mockResolvedValue(1) };
     const enrichRoster = vi.fn().mockResolvedValue(successfulAiResult());
@@ -201,6 +222,8 @@ describe("enrichPresidentialRosterCycle", () => {
     expect(args[15]).toBe(JSON.stringify(["P80000001"]));
     expect(args[18]).toBe("presidential_cycle");
     expect(args[19]).toBe(CYCLE_ID);
+    expect(args[20]).toBe("president");
+    expect(args[21]).toBe("");
     expect(result.ok ? result.matches : []).toEqual([
       expect.objectContaining({
         displayName: "Jane President",
@@ -225,10 +248,213 @@ describe("enrichPresidentialRosterCycle", () => {
       }),
     ]);
     expect(db.query).toHaveBeenNthCalledWith(
-      2,
+      3,
       expect.stringContaining("UPDATE public.presidential_cycle_candidates"),
       [CYCLE_ID, "P80000003"]
     );
+  });
+
+  it("skips presidential profile drafts when the existing cycle candidate was already researched", async () => {
+    const db = makeDb();
+    db.query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: CYCLE_ID,
+            election_year: 2028,
+            stage: "primary",
+            party: "Democratic",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          existingCycleCandidateRow({
+            presidential_profile_researched: true,
+          }),
+        ],
+        rowCount: 1,
+      });
+    const redis = { sendCommand: vi.fn().mockResolvedValue(1) };
+
+    const result = await enrichPresidentialRosterCycle({
+      db,
+      redis,
+      electionYear: 2028,
+      stage: "primary",
+      party: "Democratic",
+      runId: "run-1",
+      aiConfig: { timeoutMs: 1000 },
+      fecOptions: { apiKeys: ["fec-key"], timeoutMs: 1000 },
+      enrichRoster: vi.fn().mockResolvedValue({
+        ok: true,
+        provider: "claude",
+        model: "claude-sonnet-4-6",
+        aiRawDebug: null,
+        candidates: [
+          {
+            display_name: "Jane President",
+            party: "Democratic",
+            fec_candidate_id: "P80000001",
+            sources: ["https://example.org/jane"],
+            status: "active",
+          },
+        ],
+      } satisfies PresidentialRosterAiResult),
+      matchCandidate: vi.fn().mockResolvedValue(matched("P80000001")),
+      loadActiveCandidatesForReconciliation: emptyReconciliationLoader(),
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      matchedCount: 1,
+      emittedCount: 0,
+      skippedCount: 1,
+    });
+    expect(redis.sendCommand).not.toHaveBeenCalled();
+  });
+
+  it("emits a vice-president profile draft when a running mate is officially announced", async () => {
+    const db = makeDb();
+    db.query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: CYCLE_ID,
+            election_year: 2028,
+            stage: "primary",
+            party: "Democratic",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 });
+    const redis = { sendCommand: vi.fn().mockResolvedValue(1) };
+
+    const result = await enrichPresidentialRosterCycle({
+      db,
+      redis,
+      electionYear: 2028,
+      stage: "primary",
+      party: "Democratic",
+      runId: "run-1",
+      aiConfig: { timeoutMs: 1000 },
+      fecOptions: { apiKeys: ["fec-key"], timeoutMs: 1000 },
+      enrichRoster: vi.fn().mockResolvedValue({
+        ok: true,
+        provider: "claude",
+        model: "claude-sonnet-4-6",
+        aiRawDebug: null,
+        candidates: [
+          {
+            display_name: "Jane President",
+            party: "Democratic",
+            fec_candidate_id: "P80000001",
+            sources: ["https://example.org/jane"],
+            status: "active",
+            running_mate: {
+              display_name: "Pat Running Mate",
+              fec_candidate_id: "P80000002",
+              sources: ["https://example.org/pat"],
+            },
+          },
+        ],
+      } satisfies PresidentialRosterAiResult),
+      matchCandidate: vi.fn().mockResolvedValue(matched("P80000001")),
+      loadActiveCandidatesForReconciliation: emptyReconciliationLoader(),
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      matchedCount: 1,
+      emittedCount: 2,
+      skippedCount: 0,
+    });
+    expect(redis.sendCommand).toHaveBeenCalledTimes(2);
+    const presidentArgs = redis.sendCommand.mock.calls[0]?.[0] as string[];
+    const runningMateArgs = redis.sendCommand.mock.calls[1]?.[0] as string[];
+    expect(presidentArgs[8]).toBe("Jane President");
+    expect(presidentArgs[20]).toBe("president");
+    expect(runningMateArgs[8]).toBe("Pat Running Mate");
+    expect(runningMateArgs[15]).toBe(JSON.stringify(["P80000002"]));
+    expect(runningMateArgs[18]).toBe("presidential_cycle");
+    expect(runningMateArgs[19]).toBe(CYCLE_ID);
+    expect(runningMateArgs[20]).toBe("vice_president");
+    expect(runningMateArgs[21]).toBe("P80000001");
+    expect(runningMateArgs[13]).toContain("Officially announced running mate for Jane President");
+  });
+
+  it("skips a running mate draft when the same linked running mate was already researched", async () => {
+    const db = makeDb();
+    db.query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: CYCLE_ID,
+            election_year: 2028,
+            stage: "primary",
+            party: "Democratic",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          existingCycleCandidateRow({
+            running_mate_candidate_id: "candidate-running-mate",
+            running_mate_profile_researched: true,
+            running_mate_display_name: "Pat Running Mate",
+            running_mate_fec_ids: ["P80000002"],
+          }),
+        ],
+        rowCount: 1,
+      });
+    const redis = { sendCommand: vi.fn().mockResolvedValue(1) };
+
+    const result = await enrichPresidentialRosterCycle({
+      db,
+      redis,
+      electionYear: 2028,
+      stage: "primary",
+      party: "Democratic",
+      runId: "run-1",
+      aiConfig: { timeoutMs: 1000 },
+      fecOptions: { apiKeys: ["fec-key"], timeoutMs: 1000 },
+      enrichRoster: vi.fn().mockResolvedValue({
+        ok: true,
+        provider: "claude",
+        model: "claude-sonnet-4-6",
+        aiRawDebug: null,
+        candidates: [
+          {
+            display_name: "Jane President",
+            party: "Democratic",
+            fec_candidate_id: "P80000001",
+            sources: ["https://example.org/jane"],
+            status: "active",
+            running_mate: {
+              display_name: "Pat Running Mate",
+              fec_candidate_id: "P80000002",
+              sources: ["https://example.org/pat"],
+            },
+          },
+        ],
+      } satisfies PresidentialRosterAiResult),
+      matchCandidate: vi.fn().mockResolvedValue(matched("P80000001")),
+      loadActiveCandidatesForReconciliation: emptyReconciliationLoader(),
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      matchedCount: 1,
+      emittedCount: 1,
+      skippedCount: 1,
+    });
+    expect(redis.sendCommand).toHaveBeenCalledTimes(1);
+    const args = redis.sendCommand.mock.calls[0]?.[0] as string[];
+    expect(args[8]).toBe("Jane President");
+    expect(args[20]).toBe("president");
   });
 
   it("does not emit drafts in dry-run mode", async () => {
@@ -320,7 +546,9 @@ describe("enrichPresidentialRosterCycle", () => {
         reason: "automatic withdrawal requires exact_fec_id or exact_name_party match",
       }),
     ]);
-    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(
+      db.query.mock.calls.some((call) => String(call[0]).includes("UPDATE public.presidential_cycle_candidates"))
+    ).toBe(false);
   });
 
   it("tracks ambiguous FEC matches without emitting profile drafts", async () => {
@@ -444,6 +672,7 @@ describe("enrichPresidentialRosterCycle", () => {
           },
         ],
       })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 })
       .mockResolvedValueOnce({ rows: [], rowCount: 1 });
     const redis = { sendCommand: vi.fn().mockResolvedValue(1) };
     const loadActiveCandidatesForReconciliation = vi.fn().mockResolvedValue([
@@ -468,7 +697,6 @@ describe("enrichPresidentialRosterCycle", () => {
           candidate_id: "candidate-old",
           status: "withdrawn",
           sources: ["https://example.org/old-withdrawn"],
-          notes: "Candidate suspended the campaign.",
         },
       ],
     } satisfies PresidentialRosterStatusAiResult);
@@ -507,7 +735,6 @@ describe("enrichPresidentialRosterCycle", () => {
         checkedCount: 1,
         withdrawnCount: 1,
         activeCount: 0,
-        unknownCount: 0,
         skippedCount: 1,
         demotedCount: 1,
         dryRun: false,
@@ -530,7 +757,7 @@ describe("enrichPresidentialRosterCycle", () => {
       undefined
     );
     expect(db.query).toHaveBeenNthCalledWith(
-      2,
+      3,
       expect.stringContaining("UPDATE public.presidential_cycle_candidates"),
       [CYCLE_ID, "candidate-old"]
     );
@@ -580,7 +807,6 @@ describe("enrichPresidentialRosterCycle", () => {
         checkedCount: 0,
         withdrawnCount: 0,
         activeCount: 0,
-        unknownCount: 0,
         skippedCount: 1,
         demotedCount: 0,
         dryRun: false,
@@ -589,7 +815,7 @@ describe("enrichPresidentialRosterCycle", () => {
     expect(enrichRosterStatus).not.toHaveBeenCalled();
   });
 
-  it("keeps omitted candidates when status verification returns active or unknown", async () => {
+  it("keeps omitted candidates when status verification returns active", async () => {
     const db = makeDb();
     const redis = { sendCommand: vi.fn().mockResolvedValue(1) };
     const enrichRosterStatus = vi.fn().mockResolvedValue({
@@ -602,13 +828,6 @@ describe("enrichPresidentialRosterCycle", () => {
           candidate_id: "candidate-active",
           status: "active",
           sources: ["https://example.org/active"],
-          notes: "Still campaigning.",
-        },
-        {
-          candidate_id: "candidate-unknown",
-          status: "unknown",
-          sources: ["https://example.org/unknown"],
-          notes: "Evidence was unclear.",
         },
       ],
     } satisfies PresidentialRosterStatusAiResult);
@@ -634,11 +853,6 @@ describe("enrichPresidentialRosterCycle", () => {
           displayName: "Active Candidate",
           fecIds: ["P80000004"],
         }),
-        activeCycleCandidate({
-          candidateId: "candidate-unknown",
-          displayName: "Unknown Candidate",
-          fecIds: ["P80000005"],
-        }),
       ]),
       enrichRosterStatus,
     });
@@ -646,10 +860,9 @@ describe("enrichPresidentialRosterCycle", () => {
     expect(result).toMatchObject({
       ok: true,
       statusVerification: expect.objectContaining({
-        checkedCount: 2,
+        checkedCount: 1,
         withdrawnCount: 0,
         activeCount: 1,
-        unknownCount: 1,
         demotedCount: 0,
       }),
     });
@@ -783,7 +996,6 @@ describe("enrichPresidentialRosterCycle", () => {
             candidate_id: "candidate-old",
             status: "withdrawn",
             sources: ["https://example.org/old-withdrawn"],
-            notes: "Candidate suspended the campaign.",
           },
         ],
       } satisfies PresidentialRosterStatusAiResult),

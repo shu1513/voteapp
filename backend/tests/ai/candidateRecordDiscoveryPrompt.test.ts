@@ -85,6 +85,29 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).not.toContain("Prefer records that reveal a stance or governing record");
   });
 
+  it("includes existing records to avoid when provided", () => {
+    const prompt = buildCandidateRecordDiscoveryPrompt({
+      ...baseInput,
+      existingRecordsToAvoid: [
+        {
+          description: "Candidate signed the 2024 infrastructure law.",
+          sourceUrl: "https://example.gov/infrastructure",
+          eventDate: "2024-05-01",
+        },
+      ],
+    });
+
+    expect(prompt).toContain("Existing candidate records already stored");
+    expect(prompt).toContain(
+      'description: "Candidate signed the 2024 infrastructure law."'
+    );
+    expect(prompt).toContain('source_url: "https://example.gov/infrastructure"');
+    expect(prompt).toContain('event_date: "2024-05-01"');
+    expect(prompt).toContain(
+      "Do not return records that describe the same substantive action/event as any Existing candidate record"
+    );
+  });
+
   it("uses judicial record objective only when discovery family is judicial_office", () => {
     const prompt = buildCandidateRecordDiscoveryPrompt({
       ...baseInput,

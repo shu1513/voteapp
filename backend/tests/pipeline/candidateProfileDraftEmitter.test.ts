@@ -98,6 +98,39 @@ describe("enqueueCandidateProfileDrafts", () => {
     expect(args[15]).toBe(JSON.stringify(["P80000001"]));
     expect(args[18]).toBe("presidential_cycle");
     expect(args[19]).toBe("cycle-2028-dem");
+    expect(args[20]).toBe("president");
+    expect(args[21]).toBe("");
+  });
+
+  it("emits vice-president profile draft role fields for running mates", async () => {
+    const sendCommand = vi.fn().mockResolvedValueOnce(1);
+
+    const result = await enqueueCandidateProfileDrafts(
+      { sendCommand },
+      [
+        {
+          contextType: "presidential_cycle",
+          presidentialCycleId: "cycle-2028-dem",
+          presidentialRole: "vice_president",
+          parentPresidentialCandidateFecId: " p80000001 ",
+          runId: "run-1",
+          displayName: "Pat Running Mate",
+          rosterIndex: 1,
+          rosterParty: "Democratic",
+          fecIds: [" p80000002 "],
+          seedUrls: ["https://example.gov/running-mate"],
+        },
+      ]
+    );
+
+    expect(result).toEqual({ emittedCount: 1, skippedCount: 0 });
+    const args = sendCommand.mock.calls[0]?.[0] as string[];
+    expect(args[8]).toBe("Pat Running Mate");
+    expect(args[15]).toBe(JSON.stringify(["P80000002"]));
+    expect(args[18]).toBe("presidential_cycle");
+    expect(args[19]).toBe("cycle-2028-dem");
+    expect(args[20]).toBe("vice_president");
+    expect(args[21]).toBe("P80000001");
   });
 
   it("skips duplicate marker keys in the same batch", async () => {
