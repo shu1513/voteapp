@@ -69,6 +69,16 @@ export const PRESIDENTIAL_ROSTER_AI_CANDIDATES: readonly AiCandidate[] = [
 ] as const;
 
 /**
+ * Curated presidential nominee AI candidates.
+ * Nominee detection has higher consequence than roster refreshes, so keep it separately tunable.
+ */
+export const PRESIDENTIAL_NOMINEE_AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "claude", model: "claude-opus-4-8" },
+  { provider: "openai", model: "gpt-5.5" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
+/**
  * Curated presidential candidate profile AI candidates.
  * Presidential profile work is national identity research, so keep it tuned separately from local profile enrichment.
  */
