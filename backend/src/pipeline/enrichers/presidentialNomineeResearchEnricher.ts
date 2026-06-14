@@ -218,6 +218,7 @@ export async function processPresidentialNomineeResearchJob(
   const researchedAt = options.researchedAt ?? new Date();
   const enrichNominee = options.enrichNomineeForCycle ?? enrichPresidentialNomineeForCycle;
   const promoteNominee = options.promoteNominee ?? promotePresidentialNomineeFromResolution;
+  let trackedFailure = false;
 
   try {
     const nomineeResult = await enrichNominee({
@@ -236,6 +237,7 @@ export async function processPresidentialNomineeResearchJob(
         researchedAt,
         error: nomineeResult.error,
       });
+      trackedFailure = true;
       if (nomineeResult.retryable) {
         throw toRetryableNomineeError(nomineeResult);
       }
@@ -266,10 +268,25 @@ export async function processPresidentialNomineeResearchJob(
           researchedAt,
           error,
         });
+        trackedFailure = true;
         return summarizePromotionError(job, nomineeResult, error, tracking);
       }
       throw error;
     }
+  } catch (error) {
+    if (!trackedFailure) {
+      try {
+        await markPresidentialNomineeResearchError(pool, {
+          cycleId: job.cycle_id,
+          electionYear: job.election_year,
+          researchedAt,
+          error,
+        });
+      } catch {
+        // Preserve the original failure so BullMQ retries the real cause.
+      }
+    }
+    throw error;
   } finally {
     if (shouldClosePool) {
       await pool.end();

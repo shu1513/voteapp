@@ -3,6 +3,8 @@ import {
   runPresidentialRosterResearchEnricher,
 } from "../pipeline/enrichers/presidentialRosterResearchEnricher.js";
 
+const SHUTDOWN_TIMEOUT_MS = 30_000;
+
 function parseNumberFlag(prefix: string, fallback: number): number {
   const arg = process.argv.find((token) => token.startsWith(`${prefix}=`));
   if (!arg) {
@@ -48,15 +50,28 @@ async function main(): Promise<void> {
     if (shutdownPromise) {
       return shutdownPromise;
     }
-    shutdownPromise = worker.close().then(
-      () => {
-        process.exit(0);
-      },
-      (error) => {
-        console.error("presidential roster research worker shutdown failed:", error);
+    shutdownPromise = new Promise<void>((resolve) => {
+      const timeout = setTimeout(() => {
+        console.error("presidential roster research worker shutdown timed out");
         process.exit(1);
-      }
-    );
+      }, SHUTDOWN_TIMEOUT_MS);
+      timeout.unref();
+
+      void worker
+        .close()
+        .then(
+          () => {
+            clearTimeout(timeout);
+            process.exit(0);
+          },
+          (error) => {
+            clearTimeout(timeout);
+            console.error("presidential roster research worker shutdown failed:", error);
+            process.exit(1);
+          }
+        )
+        .finally(resolve);
+    });
     return shutdownPromise;
   };
 

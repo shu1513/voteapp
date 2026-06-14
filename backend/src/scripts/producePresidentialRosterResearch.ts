@@ -5,11 +5,11 @@ function parseNumberFlag(prefix: string): number | undefined {
   if (!arg) {
     return undefined;
   }
-  const value = Number.parseInt(arg.slice(prefix.length + 1), 10);
-  if (!Number.isInteger(value) || value <= 0) {
+  const raw = arg.slice(prefix.length + 1);
+  if (!/^[1-9]\d*$/.test(raw)) {
     throw new Error(`Invalid ${prefix} value: ${arg}`);
   }
-  return value;
+  return Number(raw);
 }
 
 async function main(): Promise<void> {

@@ -124,6 +124,49 @@ describe("processPresidentialRosterResearchJob", () => {
     });
   });
 
+  it("closes a locally-created pool when Redis connection fails", async () => {
+    vi.resetModules();
+    const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [] });
+    const end = vi.fn().mockResolvedValue(undefined);
+    const connect = vi.fn().mockRejectedValue(new Error("redis down"));
+    const enrichRosterCycle = vi.fn();
+
+    vi.doMock("pg", () => ({
+      Pool: vi.fn(() => ({ query, end })),
+    }));
+    vi.doMock("redis", () => ({
+      createClient: vi.fn(() => ({
+        on: vi.fn(),
+        connect,
+        quit: vi.fn(),
+      })),
+    }));
+
+    const { processPresidentialRosterResearchJob: processJob } = await import(
+      "../../src/pipeline/enrichers/presidentialRosterResearchEnricher.js"
+    );
+
+    await expect(
+      processJob(job(), {
+        researchedAt: new Date("2027-03-07T12:00:00.000Z"),
+        enrichRosterCycle,
+      })
+    ).rejects.toThrow("redis down");
+
+    expect(enrichRosterCycle).not.toHaveBeenCalled();
+    expect(query).toHaveBeenCalledWith(expect.stringContaining("roster_research_last_status = 'failed'"), [
+      cycleId,
+      "2027-03-07T12:00:00.000Z",
+      "2027-03-14T12:00:00.000Z",
+      "redis down",
+    ]);
+    expect(end).toHaveBeenCalledTimes(1);
+
+    vi.doUnmock("pg");
+    vi.doUnmock("redis");
+    vi.resetModules();
+  });
+
   it("rejects invalid job payloads before calling the roster enricher", async () => {
     const enrichRosterCycle = vi.fn();
 

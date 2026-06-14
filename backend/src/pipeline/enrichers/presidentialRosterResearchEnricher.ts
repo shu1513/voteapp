@@ -177,12 +177,12 @@ export async function processPresidentialRosterResearchJob(
   const pool = options.pool ?? new Pool({ connectionString: env.DATABASE_URL });
   const shouldClosePool = !options.pool;
   let redis: RedisClient | null = null;
-  const redisClient =
-    options.redis ?? ((redis = await connectRedis(env.REDIS_URL)) as RedisSendCommandClient);
   const researchedAt = options.researchedAt ?? new Date();
   const enrichRosterCycle = options.enrichRosterCycle ?? enrichPresidentialRosterCycle;
 
   try {
+    const redisClient =
+      options.redis ?? ((redis = await connectRedis(env.REDIS_URL)) as RedisSendCommandClient);
     const result = await enrichRosterCycle({
       db: pool,
       redis: redisClient,
@@ -209,12 +209,16 @@ export async function processPresidentialRosterResearchJob(
     });
     return summarizeSuccess(job, result, writeResult);
   } catch (error) {
-    await markPresidentialRosterResearchError(pool, {
-      cycleId: job.cycle_id,
-      electionYear: job.election_year,
-      researchedAt,
-      error,
-    });
+    try {
+      await markPresidentialRosterResearchError(pool, {
+        cycleId: job.cycle_id,
+        electionYear: job.election_year,
+        researchedAt,
+        error,
+      });
+    } catch {
+      // Preserve the original failure so BullMQ retries the real cause.
+    }
     throw error;
   } finally {
     if (redis) {

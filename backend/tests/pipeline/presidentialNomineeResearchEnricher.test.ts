@@ -233,6 +233,46 @@ describe("processPresidentialNomineeResearchJob", () => {
     });
   });
 
+  it("tracks unexpected nominee research exceptions before rethrowing", async () => {
+    const query = vi.fn().mockResolvedValue({ rowCount: 1 });
+
+    await expect(
+      processPresidentialNomineeResearchJob(job(), {
+        pool: { query } as never,
+        researchedAt: new Date("2028-02-07T12:00:00.000Z"),
+        enrichNomineeForCycle: vi.fn().mockRejectedValue(new Error("provider exploded")),
+        promoteNominee: vi.fn(),
+      })
+    ).rejects.toThrow("provider exploded");
+
+    expect(query).toHaveBeenCalledWith(expect.stringContaining("nominee_research_last_status = 'failed'"), [
+      CYCLE_ID,
+      "2028-02-07T12:00:00.000Z",
+      "2028-02-09T12:00:00.000Z",
+      "provider exploded",
+    ]);
+  });
+
+  it("tracks unexpected promotion exceptions before rethrowing", async () => {
+    const query = vi.fn().mockResolvedValue({ rowCount: 1 });
+
+    await expect(
+      processPresidentialNomineeResearchJob(job(), {
+        pool: { query } as never,
+        researchedAt: new Date("2028-02-07T12:00:00.000Z"),
+        enrichNomineeForCycle: vi.fn().mockResolvedValue(matchedNomineeResult()),
+        promoteNominee: vi.fn().mockRejectedValue(new Error("database unavailable")),
+      })
+    ).rejects.toThrow("database unavailable");
+
+    expect(query).toHaveBeenCalledWith(expect.stringContaining("nominee_research_last_status = 'failed'"), [
+      CYCLE_ID,
+      "2028-02-07T12:00:00.000Z",
+      "2028-02-09T12:00:00.000Z",
+      "database unavailable",
+    ]);
+  });
+
   it("rejects invalid jobs before running nominee research", async () => {
     const enrichNomineeForCycle = vi.fn();
 

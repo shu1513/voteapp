@@ -204,7 +204,15 @@ async function upsertResearchJob(
     if (ACTIVE_JOB_STATES.has(state)) {
       return "skipped_active";
     }
-    await existing.remove();
+    try {
+      await existing.remove();
+    } catch (error) {
+      const latestState = await (existing as Job).getState();
+      if (ACTIVE_JOB_STATES.has(latestState)) {
+        return "skipped_active";
+      }
+      throw error;
+    }
   }
 
   await queue.add(
@@ -257,10 +265,11 @@ export async function runPresidentialNomineeResearchProducer(
 
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
-  const queue = dryRun ? null : createPresidentialNomineeResearchQueue();
+  let queue: Queue<PresidentialNomineeResearchJobData> | null = null;
   const runId = `presidential_nominee_research_${now.toISOString()}`;
 
   try {
+    queue = dryRun ? null : createPresidentialNomineeResearchQueue();
     const cycles = await listPrimaryCycles(pool);
     const dueCycles = filterDueCycles(cycles, now);
     const selectedCycles = dueCycles.slice(0, maxCyclesPerRun);

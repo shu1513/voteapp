@@ -17,6 +17,7 @@ describe("runPresidentialRosterResearchProducer", () => {
   });
 
   it("does nothing when disabled and not forced", async () => {
+    process.env.PRESIDENTIAL_ROSTER_RESEARCH_ENABLED = "false";
     const Pool = vi.fn();
     vi.doMock("pg", () => ({ Pool }));
 
@@ -86,5 +87,85 @@ describe("runPresidentialRosterResearchProducer", () => {
       ["Democratic", "Republican"],
     ]);
     expect(end).toHaveBeenCalled();
+  });
+
+  it("skips an existing job that becomes active before removal", async () => {
+    process.env.PRESIDENTIAL_ROSTER_RESEARCH_ENABLED = "true";
+    process.env.DATABASE_URL = "postgres://example";
+    process.env.REDIS_URL = "redis://localhost:6379/0";
+    const query = vi.fn().mockResolvedValue({
+      rows: [
+        {
+          cycle_id: cycleId,
+          election_year: 2028,
+          stage: "primary",
+          party: "Democratic",
+          status: "active",
+          roster_research_last_attempted_at: null,
+          roster_research_next_at: null,
+        },
+      ],
+    });
+    const end = vi.fn().mockResolvedValue(undefined);
+    const close = vi.fn().mockResolvedValue(undefined);
+    const add = vi.fn();
+    const existingJob = {
+      getState: vi.fn().mockResolvedValueOnce("waiting").mockResolvedValueOnce("active"),
+      remove: vi.fn().mockRejectedValue(new Error("job is locked")),
+    };
+    vi.doMock("pg", () => ({ Pool: vi.fn(() => ({ query, end })) }));
+    vi.doMock("bullmq", () => ({
+      Queue: vi.fn(() => ({
+        add,
+        close,
+        getJob: vi.fn().mockResolvedValue(existingJob),
+      })),
+    }));
+
+    const { runPresidentialRosterResearchProducer } = await import(
+      "../../../src/pipeline/producers/presidentialRosterResearchProducer.js"
+    );
+
+    const result = await runPresidentialRosterResearchProducer({
+      now: new Date("2027-03-07T00:00:00.000Z"),
+      maxCyclesPerRun: 10,
+    });
+
+    expect(result).toMatchObject({
+      skippedActiveJobCount: 1,
+      enqueuedJobCount: 0,
+      updatedJobCount: 0,
+    });
+    expect(add).not.toHaveBeenCalled();
+    expect(close).toHaveBeenCalled();
+    expect(end).toHaveBeenCalled();
+  });
+
+  it("closes the pool when queue creation fails", async () => {
+    process.env.PRESIDENTIAL_ROSTER_RESEARCH_ENABLED = "true";
+    process.env.DATABASE_URL = "postgres://example";
+    process.env.REDIS_URL = "redis://localhost:6379/0";
+    const query = vi.fn();
+    const end = vi.fn().mockResolvedValue(undefined);
+    vi.doMock("pg", () => ({ Pool: vi.fn(() => ({ query, end })) }));
+    vi.doMock("bullmq", () => ({
+      Queue: vi.fn(() => {
+        throw new Error("queue init failed");
+      }),
+    }));
+
+    const { runPresidentialRosterResearchProducer } = await import(
+      "../../../src/pipeline/producers/presidentialRosterResearchProducer.js"
+    );
+
+    await expect(
+      runPresidentialRosterResearchProducer({
+        now: new Date("2027-03-07T00:00:00.000Z"),
+        maxCyclesPerRun: 10,
+      })
+    ).rejects.toThrow("queue init failed");
+
+    expect(query).not.toHaveBeenCalled();
+    expect(end).toHaveBeenCalledTimes(1);
   });
 });

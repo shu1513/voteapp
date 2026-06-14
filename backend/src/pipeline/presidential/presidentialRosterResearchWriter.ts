@@ -15,6 +15,13 @@ function toErrorSummary(error: unknown): string {
   return trimmed.length > 500 ? `${trimmed.slice(0, 497)}...` : trimmed || "unknown error";
 }
 
+function requireUpdatedOneCycle(rowCount: number | null, label: string, cycleId: string): number {
+  if (rowCount !== 1) {
+    throw new Error(`${label} expected to update exactly one presidential primary cycle, updated ${rowCount ?? 0}: ${cycleId}`);
+  }
+  return rowCount;
+}
+
 export async function markPresidentialRosterResearchSuccess(
   db: Queryable,
   input: {
@@ -37,9 +44,14 @@ export async function markPresidentialRosterResearchSuccess(
     `,
     [input.cycleId, input.researchedAt.toISOString(), nextResearchAt?.toISOString() ?? null]
   );
+  const rowsUpdated = requireUpdatedOneCycle(
+    result.rowCount,
+    "presidential roster research success tracking",
+    input.cycleId
+  );
 
   return {
-    rowsUpdated: result.rowCount ?? 0,
+    rowsUpdated,
     nextResearchAt: nextResearchAt?.toISOString() ?? null,
   };
 }
@@ -72,9 +84,14 @@ export async function markPresidentialRosterResearchError(
       toErrorSummary(input.error),
     ]
   );
+  const rowsUpdated = requireUpdatedOneCycle(
+    result.rowCount,
+    "presidential roster research error tracking",
+    input.cycleId
+  );
 
   return {
-    rowsUpdated: result.rowCount ?? 0,
+    rowsUpdated,
     nextResearchAt: nextResearchAt?.toISOString() ?? null,
   };
 }
