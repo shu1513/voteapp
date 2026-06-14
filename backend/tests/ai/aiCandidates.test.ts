@@ -6,6 +6,7 @@ import {
   ELECTIONS_AI_CANDIDATES,
   PRESIDENTIAL_CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES,
   PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES,
+  PRESIDENTIAL_NOMINEE_AI_CANDIDATES,
   PRESIDENTIAL_PROFILE_AI_CANDIDATES,
   PRESIDENTIAL_ROSTER_AI_CANDIDATES,
   STATE_RESOURCES_AI_CANDIDATES,
@@ -32,6 +33,12 @@ const expectedCandidatesWorkflowCandidates = [
 ] as const;
 
 const expectedPresidentialRosterCandidates = [
+  { provider: "claude", model: "claude-opus-4-8" },
+  { provider: "openai", model: "gpt-5.5" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
+const expectedPresidentialNomineeCandidates = [
   { provider: "claude", model: "claude-opus-4-8" },
   { provider: "openai", model: "gpt-5.5" },
   { provider: "gemini", model: "gemini-2.5-pro" },
@@ -70,6 +77,10 @@ describe("state/elections AI candidate lists", () => {
 
   it("contains the current ordered model cycle for presidential roster research", () => {
     expect(PRESIDENTIAL_ROSTER_AI_CANDIDATES).toEqual(expectedPresidentialRosterCandidates);
+  });
+
+  it("contains the current ordered model cycle for presidential nominee research", () => {
+    expect(PRESIDENTIAL_NOMINEE_AI_CANDIDATES).toEqual(expectedPresidentialNomineeCandidates);
   });
 
   it("contains the current ordered model cycle for presidential profile research", () => {
