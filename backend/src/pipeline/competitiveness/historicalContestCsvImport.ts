@@ -25,8 +25,6 @@ const REQUIRED_MEDSL_COLUMNS = [
   "state_po",
   "state_fips",
   "office",
-  "district",
-  "candidatevotes",
   "totalvotes",
 ] as const;
 
@@ -102,8 +100,23 @@ function requireColumn(headerIndex: Map<string, number>, column: string): number
   return index;
 }
 
+function requireAnyColumn(headerIndex: Map<string, number>, columns: readonly string[]): number {
+  for (const column of columns) {
+    const index = headerIndex.get(column);
+    if (index !== undefined) {
+      return index;
+    }
+  }
+  throw new Error(`Missing required MEDSL CSV column: ${columns.join(" or ")}`);
+}
+
 function cell(cells: readonly string[], index: number): string {
   return cells[index]?.trim() ?? "";
+}
+
+function isStatewideMitOffice(value: string): boolean {
+  const office = value.trim().replace(/\s+/g, " ").toUpperCase();
+  return office === "US PRESIDENT" || office === "US SENATE" || office === "GOVERNOR";
 }
 
 export function parseMedslHistoricalContestCsv(csv: string): MedslHistoricalContestCandidateRow[] {
@@ -124,24 +137,29 @@ export function parseMedslHistoricalContestCsv(csv: string): MedslHistoricalCont
   const indexes = Object.fromEntries(
     REQUIRED_MEDSL_COLUMNS.map((column) => [column, requireColumn(headerIndex, column)])
   ) as Record<(typeof REQUIRED_MEDSL_COLUMNS)[number], number>;
+  const candidateVotesIndex = requireAnyColumn(headerIndex, ["candidatevotes", "votes"]);
+  const districtIndex = headerIndex.get("district");
   const partySimplifiedIndex = headerIndex.get("party_simplified");
   const partyDetailedIndex = headerIndex.get("party_detailed");
   const candidateIndex = headerIndex.get("candidate");
   const stageIndex = headerIndex.get("stage");
 
-  return rows.slice(1).map((cells) => ({
-    year: cell(cells, indexes.year),
-    state_po: cell(cells, indexes.state_po),
-    state_fips: cell(cells, indexes.state_fips),
-    office: cell(cells, indexes.office),
-    district: cell(cells, indexes.district),
-    candidate: candidateIndex === undefined ? null : cell(cells, candidateIndex),
-    candidatevotes: cell(cells, indexes.candidatevotes),
-    totalvotes: cell(cells, indexes.totalvotes),
-    party_simplified: partySimplifiedIndex === undefined ? null : cell(cells, partySimplifiedIndex),
-    party_detailed: partyDetailedIndex === undefined ? null : cell(cells, partyDetailedIndex),
-    stage: stageIndex === undefined ? null : cell(cells, stageIndex),
-  }));
+  return rows.slice(1).map((cells) => {
+    const office = cell(cells, indexes.office);
+    return {
+      year: cell(cells, indexes.year),
+      state_po: cell(cells, indexes.state_po),
+      state_fips: cell(cells, indexes.state_fips),
+      office,
+      district: districtIndex === undefined && isStatewideMitOffice(office) ? "STATEWIDE" : cell(cells, districtIndex ?? -1),
+      candidate: candidateIndex === undefined ? null : cell(cells, candidateIndex),
+      candidatevotes: cell(cells, candidateVotesIndex),
+      totalvotes: cell(cells, indexes.totalvotes),
+      party_simplified: partySimplifiedIndex === undefined ? null : cell(cells, partySimplifiedIndex),
+      party_detailed: partyDetailedIndex === undefined ? null : cell(cells, partyDetailedIndex),
+      stage: stageIndex === undefined ? null : cell(cells, stageIndex),
+    };
+  });
 }
 
 export async function importHistoricalContestMarginsFromCsv(

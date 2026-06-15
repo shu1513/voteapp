@@ -61,6 +61,11 @@ const HISTORICAL_TYPE_TO_DISTRICT_TYPE: Record<HistoricalContestOfficeType, Hist
   STATE_HOUSE: "state_lower",
 };
 
+function normalizeStateFips(value: string): string | null {
+  const stateFips = value.trim().padStart(2, "0");
+  return /^[0-9]{2}$/.test(stateFips) ? stateFips : null;
+}
+
 export function mapOfficeCanonicalNameToHistoricalOfficeType(
   officeCanonicalName: string | null | undefined
 ): HistoricalContestOfficeType | null {
@@ -88,7 +93,10 @@ export function toMitDistrict(input: {
 }): string | null {
   const districtType = input.districtType;
   const geoidCompact = input.geoidCompact.trim();
-  const stateFips = input.stateFips.trim().padStart(2, "0");
+  const stateFips = normalizeStateFips(input.stateFips);
+  if (!stateFips) {
+    return null;
+  }
 
   if (districtType === "statewide") {
     return geoidCompact === stateFips ? "STATEWIDE" : null;
@@ -111,7 +119,10 @@ export function fromMitDistrict(input: {
   mitDistrict: string;
   stateFips: string;
 }): string | null {
-  const stateFips = input.stateFips.trim().padStart(2, "0");
+  const stateFips = normalizeStateFips(input.stateFips);
+  if (!stateFips) {
+    return null;
+  }
   const mitDistrict = input.mitDistrict.trim().toUpperCase();
 
   if (input.districtType === "statewide") {
@@ -157,7 +168,10 @@ export function buildHistoricalContestLookupKey(
     return null;
   }
 
-  const stateFips = input.stateFips.trim().padStart(2, "0");
+  const stateFips = normalizeStateFips(input.stateFips);
+  if (!stateFips) {
+    return null;
+  }
 
   return {
     state: getStateAbbreviationByFips(stateFips),

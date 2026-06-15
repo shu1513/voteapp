@@ -81,6 +81,16 @@ CREATE TABLE IF NOT EXISTS public.historical_contest_margins (
       winner_votes IS NULL
       OR runner_up_votes IS NULL
       OR winner_votes >= runner_up_votes
+    ),
+  CONSTRAINT chk_historical_contest_margins_winner_votes_le_total
+    CHECK (winner_votes IS NULL OR winner_votes <= total_votes),
+  CONSTRAINT chk_historical_contest_margins_runner_up_votes_le_total
+    CHECK (runner_up_votes IS NULL OR runner_up_votes <= total_votes),
+  CONSTRAINT chk_historical_contest_margins_top_two_votes_le_total
+    CHECK (
+      winner_votes IS NULL
+      OR runner_up_votes IS NULL
+      OR winner_votes + runner_up_votes <= total_votes
     )
 );
 

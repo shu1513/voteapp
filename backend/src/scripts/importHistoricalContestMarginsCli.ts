@@ -30,6 +30,8 @@ export const HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS = {
 
 export type HistoricalContestMarginImportPresetName = keyof typeof HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS;
 
+const HISTORICAL_CONTEST_CSV_FETCH_TIMEOUT_MS = 30_000;
+
 function readValueFlag(args: readonly string[], name: string): string | undefined {
   const prefix = `${name}=`;
   const arg = args.find((token) => token.startsWith(prefix));
@@ -43,10 +45,17 @@ function parseHttpUrl(value: string, flagName: string): string {
   } catch {
     throw new Error(`Invalid ${flagName} URL: ${value}`);
   }
-  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
-    throw new Error(`Invalid ${flagName} URL protocol: ${parsed.protocol}`);
+  if (parsed.protocol !== "https:") {
+    throw new Error(`Invalid ${flagName} URL protocol: ${parsed.protocol}. Only https is allowed.`);
   }
   return parsed.toString();
+}
+
+function isAbortError(error: unknown): boolean {
+  return (
+    (error instanceof DOMException && error.name === "AbortError") ||
+    (error instanceof Error && error.name === "AbortError")
+  );
 }
 
 function parsePreset(value: string | undefined): HistoricalContestMarginImportPresetName | null {
@@ -93,11 +102,26 @@ export function parseHistoricalContestMarginImportArgs(args: readonly string[]):
 }
 
 export async function fetchHistoricalContestCsv(url: string): Promise<string> {
-  const response = await fetch(url, {
-    headers: {
-      accept: "text/csv,text/plain;q=0.9,*/*;q=0.1",
-    },
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), HISTORICAL_CONTEST_CSV_FETCH_TIMEOUT_MS);
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      headers: {
+        accept: "text/csv,text/plain;q=0.9,*/*;q=0.1",
+      },
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (isAbortError(error)) {
+      throw new Error(
+        `Failed to fetch historical contest CSV: request timed out after ${HISTORICAL_CONTEST_CSV_FETCH_TIMEOUT_MS}ms for ${url}`
+      );
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
   if (!response.ok) {
     throw new Error(`Failed to fetch historical contest CSV: ${response.status} ${response.statusText}`);
   }

@@ -167,6 +167,7 @@ async function listPrimaryCycles(pool: Pool): Promise<PresidentialRosterResearch
         roster_research_next_at::text AS roster_research_next_at
       FROM public.presidential_cycles
       WHERE stage = 'primary'
+        AND status = 'active'
         AND party = ANY($1::text[])
       ORDER BY election_year ASC, party ASC, id ASC
     `,

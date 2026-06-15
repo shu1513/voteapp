@@ -77,6 +77,7 @@ type ContestAccumulator = {
   mitDistrict: string;
   staleAfterRedistricting: boolean;
   totalVotes: number;
+  rows: MedslHistoricalContestCandidateRow[];
   candidates: ContestCandidateLine[];
 };
 
@@ -230,7 +231,7 @@ function rowToContestAccumulator(input: {
   row: MedslHistoricalContestCandidateRow;
   staleAfterRedistricting: boolean;
 }):
-  | { ok: true; accumulator: Omit<ContestAccumulator, "candidates">; candidate: ContestCandidateLine }
+  | { ok: true; accumulator: Omit<ContestAccumulator, "candidates" | "rows">; candidate: ContestCandidateLine }
   | { ok: false; skipped: HistoricalContestNormalizationSkippedRow } {
   const electionYear = parseElectionYear(input.row.year);
   if (electionYear === null) {
@@ -371,25 +372,34 @@ export function normalizeMedslHistoricalContestMargins(input: {
     const existing = contests.get(parsed.accumulator.key);
     if (existing) {
       existing.totalVotes = Math.max(existing.totalVotes, parsed.accumulator.totalVotes);
+      existing.rows.push(row);
       existing.candidates.push(parsed.candidate);
       continue;
     }
 
     contests.set(parsed.accumulator.key, {
       ...parsed.accumulator,
+      rows: [row],
       candidates: [parsed.candidate],
     });
   }
 
-  const records = [...contests.values()]
-    .map(contestToRecord)
-    .filter((record): record is HistoricalContestMarginRecord => record !== null)
-    .sort((left, right) =>
-      left.state.localeCompare(right.state) ||
-      left.office_type.localeCompare(right.office_type) ||
-      left.district_key.localeCompare(right.district_key) ||
-      left.election_year - right.election_year
-    );
+  const records: HistoricalContestMarginRecord[] = [];
+  for (const contest of contests.values()) {
+    const record = contestToRecord(contest);
+    if (record) {
+      records.push(record);
+      continue;
+    }
+    skippedRows.push(...contest.rows.map((row) => ({ reason: "invalid_votes" as const, row })));
+  }
+
+  records.sort((left, right) =>
+    left.state.localeCompare(right.state) ||
+    left.office_type.localeCompare(right.office_type) ||
+    left.district_key.localeCompare(right.district_key) ||
+    left.election_year - right.election_year
+  );
 
   return { records, skippedRows };
 }

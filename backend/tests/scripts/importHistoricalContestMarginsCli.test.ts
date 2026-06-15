@@ -93,10 +93,14 @@ describe("importHistoricalContestMarginsCli", () => {
     ).toThrow("Provide exactly one input flag");
   });
 
-  it("rejects non-http URL imports", () => {
+  it("rejects non-https URL imports", () => {
+    expect(() =>
+      parseHistoricalContestMarginImportArgs(["--url=http://example.test/local.csv", "--source=MIT_2024"])
+    ).toThrow("Invalid --url URL protocol: http:. Only https is allowed.");
+
     expect(() =>
       parseHistoricalContestMarginImportArgs(["--url=file:///tmp/local.csv", "--source=MIT_2024"])
-    ).toThrow("Invalid --url URL protocol: file:");
+    ).toThrow("Invalid --url URL protocol: file:. Only https is allowed.");
   });
 
   it("rejects unknown presets", () => {
@@ -117,11 +121,25 @@ describe("importHistoricalContestMarginsCli", () => {
     await expect(fetchHistoricalContestCsv("https://example.test/contest.csv")).resolves.toBe(
       "year,state_po\n2024,CA\n"
     );
-    expect(fetch).toHaveBeenCalledWith("https://example.test/contest.csv", {
-      headers: {
-        accept: "text/csv,text/plain;q=0.9,*/*;q=0.1",
-      },
-    });
+    expect(fetch).toHaveBeenCalledWith(
+      "https://example.test/contest.csv",
+      expect.objectContaining({
+        headers: {
+          accept: "text/csv,text/plain;q=0.9,*/*;q=0.1",
+        },
+        signal: expect.any(AbortSignal),
+      })
+    );
+  });
+
+  it("throws a clear error when remote CSV fetches time out", async () => {
+    const abortError = new Error("aborted");
+    abortError.name = "AbortError";
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(abortError));
+
+    await expect(fetchHistoricalContestCsv("https://example.test/slow.csv")).rejects.toThrow(
+      "Failed to fetch historical contest CSV: request timed out after 30000ms for https://example.test/slow.csv"
+    );
   });
 
   it("throws on failed remote CSV fetch", async () => {

@@ -47,6 +47,7 @@ describe("historicalContestKeys", () => {
     expect(toMitDistrict({ districtType: "county", geoidCompact: "06037", stateFips: "06" })).toBeNull();
     expect(toMitDistrict({ districtType: "us_house", geoidCompact: "1231", stateFips: "06" })).toBeNull();
     expect(toMitDistrict({ districtType: "state_upper", geoidCompact: "06A01", stateFips: "06" })).toBeNull();
+    expect(toMitDistrict({ districtType: "us_house", geoidCompact: "0A31", stateFips: "A" })).toBeNull();
   });
 
   it("converts MIT district keys back to app district GEOIDs", () => {
@@ -59,6 +60,7 @@ describe("historicalContestKeys", () => {
   it("returns null when MIT district keys cannot map back to app district GEOIDs", () => {
     expect(fromMitDistrict({ districtType: "statewide", mitDistrict: "001", stateFips: "06" })).toBeNull();
     expect(fromMitDistrict({ districtType: "us_house", mitDistrict: "AT-LARGE", stateFips: "06" })).toBeNull();
+    expect(fromMitDistrict({ districtType: "us_house", mitDistrict: "031", stateFips: "A" })).toBeNull();
   });
 
   it("builds lookup keys for supported current election summaries", () => {
@@ -112,6 +114,15 @@ describe("historicalContestKeys", () => {
         districtType: "us_house",
         geoidCompact: "0631",
         stateFips: "06",
+      })
+    ).toBeNull();
+
+    expect(
+      buildHistoricalContestLookupKey({
+        officeCanonicalName: "United States Representative",
+        districtType: "us_house",
+        geoidCompact: "0A31",
+        stateFips: "A",
       })
     ).toBeNull();
   });

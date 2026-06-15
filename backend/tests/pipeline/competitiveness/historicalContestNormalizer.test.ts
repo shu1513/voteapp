@@ -226,6 +226,21 @@ describe("historicalContestNormalizer", () => {
     });
   });
 
+  it("reports contest-level invalid vote totals as skipped rows", () => {
+    const result = normalizeMedslHistoricalContestMargins({
+      source: "MIT_2024",
+      rows: [
+        row({ candidate: "Candidate One", candidatevotes: 60, totalvotes: 100, party_simplified: "DEMOCRAT" }),
+        row({ candidate: "Candidate Two", candidatevotes: 50, totalvotes: 100, party_simplified: "REPUBLICAN" }),
+      ],
+    });
+
+    expect(result.records).toEqual([]);
+    expect(result.skippedRows).toHaveLength(2);
+    expect(result.skippedRows.map((skipped) => skipped.reason)).toEqual(["invalid_votes", "invalid_votes"]);
+    expect(result.skippedRows.map((skipped) => skipped.row.candidate)).toEqual(["Candidate One", "Candidate Two"]);
+  });
+
   it("skips unsupported and malformed rows without throwing", () => {
     const result = normalizeMedslHistoricalContestMargins({
       source: "MIT_2024",

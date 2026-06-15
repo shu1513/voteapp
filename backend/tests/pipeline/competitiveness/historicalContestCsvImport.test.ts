@@ -43,6 +43,29 @@ describe("historicalContestCsvImport", () => {
     ]);
   });
 
+  it("parses statewide MEDSL files that use votes and omit district", () => {
+    const statewideCsv = [
+      "year,state,state_po,state_fips,office,candidate,party_detailed,party_simplified,votes,totalvotes,stage",
+      "2024,ARIZONA,AZ,04,US SENATE,RUBEN GALLEGO,DEMOCRAT,DEMOCRAT,1676335,3347964,GEN",
+    ].join("\n");
+
+    expect(parseMedslHistoricalContestCsv(statewideCsv)).toEqual([
+      {
+        year: "2024",
+        state_po: "AZ",
+        state_fips: "04",
+        office: "US SENATE",
+        district: "STATEWIDE",
+        candidate: "RUBEN GALLEGO",
+        candidatevotes: "1676335",
+        totalvotes: "3347964",
+        party_simplified: "DEMOCRAT",
+        party_detailed: "DEMOCRAT",
+        stage: "GEN",
+      },
+    ]);
+  });
+
   it("throws when required MEDSL columns are missing", () => {
     expect(() => parseMedslHistoricalContestCsv("year,state_po\n2024,CA\n")).toThrow(
       "Missing required MEDSL CSV column: state_fips"

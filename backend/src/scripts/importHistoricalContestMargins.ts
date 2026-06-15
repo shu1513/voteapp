@@ -7,6 +7,12 @@ import {
   parseHistoricalContestMarginImportArgs,
 } from "./importHistoricalContestMarginsCli.js";
 
+const dryRunDb: Pick<PoolClient, "query"> = {
+  query: async () => {
+    throw new Error("dry-run historical contest import should not execute database queries");
+  },
+};
+
 async function rollbackQuietly(client: PoolClient): Promise<void> {
   try {
     await client.query("ROLLBACK");
@@ -18,18 +24,18 @@ async function rollbackQuietly(client: PoolClient): Promise<void> {
 async function main(): Promise<void> {
   const args = parseHistoricalContestMarginImportArgs(process.argv.slice(2));
   const input = await loadHistoricalContestMarginImportInput(args);
-  const env = getPipelineEnv();
-  const pool = new Pool({ connectionString: env.DATABASE_URL });
+  const env = args.dryRun ? null : getPipelineEnv();
+  const pool = env ? new Pool({ connectionString: env.DATABASE_URL }) : null;
   const startedAt = new Date();
 
   let client: PoolClient | undefined;
   try {
-    client = await pool.connect();
-    if (!args.dryRun) {
+    if (pool) {
+      client = await pool.connect();
       await client.query("BEGIN");
     }
 
-    const result = await importHistoricalContestMarginsFromCsv(client, {
+    const result = await importHistoricalContestMarginsFromCsv(client ?? dryRunDb, {
       csv: input.csv,
       source: args.source,
       sourceUrl: input.sourceUrl,
@@ -38,7 +44,7 @@ async function main(): Promise<void> {
       importedAt: startedAt,
     });
 
-    if (!args.dryRun) {
+    if (client) {
       await client.query("COMMIT");
     }
 
@@ -71,13 +77,13 @@ async function main(): Promise<void> {
       )
     );
   } catch (error) {
-    if (client && !args.dryRun) {
+    if (client) {
       await rollbackQuietly(client);
     }
     throw error;
   } finally {
     client?.release();
-    await pool.end();
+    await pool?.end();
   }
 }
 
