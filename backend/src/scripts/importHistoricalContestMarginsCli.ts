@@ -62,7 +62,7 @@ function parsePreset(value: string | undefined): HistoricalContestMarginImportPr
   if (!preset) {
     return null;
   }
-  if (!(preset in HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS)) {
+  if (!Object.prototype.hasOwnProperty.call(HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS, preset)) {
     throw new Error(
       `Unknown historical contest import preset: ${preset}. ` +
         `Known presets: ${listVerifiedHistoricalContestSourcePresets().join(", ")}`

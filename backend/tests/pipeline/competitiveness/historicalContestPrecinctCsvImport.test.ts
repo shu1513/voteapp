@@ -150,6 +150,55 @@ describe("historicalContestPrecinctCsvImport", () => {
     ]);
   });
 
+  it("does not drop candidates that have split modes when another candidate has TOTAL mode", () => {
+    expect(
+      aggregateMedslPrecinctRowsToCandidateRows([
+        row({ candidate: "Candidate One", votes: "100", mode: "TOTAL" }),
+        row({
+          candidate: "Candidate Two",
+          votes: "40",
+          mode: "ABSENTEE",
+          party_simplified: "REPUBLICAN",
+          party_detailed: "REPUBLICAN",
+        }),
+        row({
+          candidate: "Candidate Two",
+          votes: "30",
+          mode: "NOT ABSENTEE",
+          party_simplified: "REPUBLICAN",
+          party_detailed: "REPUBLICAN",
+        }),
+      ])
+    ).toEqual([
+      {
+        year: "2024",
+        state_po: "CA",
+        state_fips: "06",
+        office: "US HOUSE",
+        district: "012",
+        candidate: "Candidate One",
+        candidatevotes: "100",
+        totalvotes: "170",
+        party_simplified: "DEMOCRAT",
+        party_detailed: "DEMOCRAT",
+        stage: "GEN",
+      },
+      {
+        year: "2024",
+        state_po: "CA",
+        state_fips: "06",
+        office: "US HOUSE",
+        district: "012",
+        candidate: "Candidate Two",
+        candidatevotes: "70",
+        totalvotes: "170",
+        party_simplified: "REPUBLICAN",
+        party_detailed: "REPUBLICAN",
+        stage: "GEN",
+      },
+    ]);
+  });
+
   it("sums non-total modes when no TOTAL mode exists", () => {
     expect(
       aggregateMedslPrecinctRowsToCandidateRows([
@@ -298,6 +347,86 @@ describe("historicalContestPrecinctCsvImport", () => {
         totalvotes: "420",
       },
     ]);
+  });
+
+  it("reports missing non-statewide districts instead of aggregating them into a shared district", async () => {
+    const csv = [
+      "year,state_po,state_fips,office,district,candidate,party_simplified,party_detailed,votes,stage,mode",
+      "2024,CA,06,US HOUSE,,House Democrat,DEMOCRAT,DEMOCRAT,600,GEN,TOTAL",
+      "2024,CA,06,US HOUSE,,House Republican,REPUBLICAN,REPUBLICAN,400,GEN,TOTAL",
+    ].join("\n");
+
+    await expect(
+      importHistoricalContestMarginsFromPrecinctCsv(
+        { query: vi.fn() } as never,
+        {
+          csv,
+          source: "MIT_2024",
+          dryRun: true,
+        }
+      )
+    ).resolves.toMatchObject({
+      parsedRows: 2,
+      aggregatedRows: 2,
+      normalizedRecords: 0,
+      skippedRows: [
+        {
+          reason: "invalid_district",
+          row: {
+            candidate: "House Democrat",
+            district: "",
+          },
+        },
+        {
+          reason: "invalid_district",
+          row: {
+            candidate: "House Republican",
+            district: "",
+          },
+        },
+      ],
+    });
+  });
+
+  it("keeps special elections separate and skips them instead of merging them with regular contests", async () => {
+    const csv = [
+      "year,state_po,state_fips,office,district,candidate,party_simplified,party_detailed,votes,stage,mode,special",
+      "2024,CA,06,US HOUSE,012,Regular Democrat,DEMOCRAT,DEMOCRAT,600,GEN,TOTAL,FALSE",
+      "2024,CA,06,US HOUSE,012,Regular Republican,REPUBLICAN,REPUBLICAN,400,GEN,TOTAL,FALSE",
+      "2024,CA,06,US HOUSE,012,Special Democrat,DEMOCRAT,DEMOCRAT,300,GEN,TOTAL,TRUE",
+      "2024,CA,06,US HOUSE,012,Special Republican,REPUBLICAN,REPUBLICAN,200,GEN,TOTAL,TRUE",
+    ].join("\n");
+
+    await expect(
+      importHistoricalContestMarginsFromPrecinctCsv(
+        { query: vi.fn() } as never,
+        {
+          csv,
+          source: "MIT_2024",
+          dryRun: true,
+        }
+      )
+    ).resolves.toMatchObject({
+      parsedRows: 4,
+      aggregatedRows: 4,
+      normalizedRecords: 1,
+      skippedRows: [
+        {
+          reason: "special_election",
+          row: {
+            candidate: "Special Democrat",
+            special: "TRUE",
+          },
+        },
+        {
+          reason: "special_election",
+          row: {
+            candidate: "Special Republican",
+            special: "TRUE",
+          },
+        },
+      ],
+    });
   });
 
   it("parses and aggregates precinct CSV in one call", () => {

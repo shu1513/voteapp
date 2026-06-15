@@ -81,14 +81,14 @@ async function rollbackQuietly(client: PoolClient, preset: string): Promise<void
 async function importVerifiedSource(input: {
   db: Pick<PoolClient, "query">;
   source: HistoricalContestSourceDefinition;
+  csv: string;
   dryRun: boolean;
   importedAt: Date;
 }): Promise<SourceImportSummary> {
-  const csv = await fetchHistoricalContestCsv(input.source.sourceUrl);
   const result = await importVerifiedSourceByFormat({
     db: input.db,
     source: input.source,
-    csv,
+    csv: input.csv,
     dryRun: input.dryRun,
     importedAt: input.importedAt,
   });
@@ -116,6 +116,7 @@ async function importVerifiedSourceWithTransaction(input: {
   dryRun: boolean;
   importedAt: Date;
 }): Promise<SourceImportSummary> {
+  const csv = await fetchHistoricalContestCsv(input.source.sourceUrl);
   let client: PoolClient | undefined;
   try {
     if (input.pool) {
@@ -126,6 +127,7 @@ async function importVerifiedSourceWithTransaction(input: {
     const summary = await importVerifiedSource({
       db: client ?? dryRunDb,
       source: input.source,
+      csv,
       dryRun: input.dryRun,
       importedAt: input.importedAt,
     });

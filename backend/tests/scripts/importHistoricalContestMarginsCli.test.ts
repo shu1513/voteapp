@@ -143,6 +143,12 @@ describe("importHistoricalContestMarginsCli", () => {
     );
   });
 
+  it("rejects inherited object property names as presets", () => {
+    expect(() => parseHistoricalContestMarginImportArgs(["--preset=constructor"])).toThrow(
+      "Unknown historical contest import preset: constructor"
+    );
+  });
+
   it("fetches remote CSV text", async () => {
     vi.stubGlobal(
       "fetch",

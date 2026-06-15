@@ -3,6 +3,7 @@ import { Pool, type PoolClient } from "pg";
 import { getPipelineEnv } from "../config/env.js";
 import { importHistoricalContestMarginsFromCsv } from "../pipeline/competitiveness/historicalContestCsvImport.js";
 import { importHistoricalContestMarginsFromPrecinctCsv } from "../pipeline/competitiveness/historicalContestPrecinctCsvImport.js";
+import type { HistoricalContestSourceFormat } from "../pipeline/competitiveness/historicalContestSources.js";
 import {
   loadHistoricalContestMarginImportInput,
   parseHistoricalContestMarginImportArgs,
@@ -32,7 +33,7 @@ async function importHistoricalContestMarginsForFormat(
     csv: string;
     source: string;
     sourceUrl: string | null;
-    format: string;
+    format: HistoricalContestSourceFormat;
     staleAfterRedistricting: boolean;
     dryRun: boolean;
     importedAt: Date;
@@ -47,11 +48,12 @@ async function importHistoricalContestMarginsForFormat(
     importedAt: input.importedAt,
   };
 
-  if (input.format === "medsl_precinct_csv") {
-    return await importHistoricalContestMarginsFromPrecinctCsv(db, options);
+  switch (input.format) {
+    case "medsl_aggregate_csv":
+      return await importHistoricalContestMarginsFromCsv(db, options);
+    case "medsl_precinct_csv":
+      return await importHistoricalContestMarginsFromPrecinctCsv(db, options);
   }
-
-  return await importHistoricalContestMarginsFromCsv(db, options);
 }
 
 async function main(): Promise<void> {

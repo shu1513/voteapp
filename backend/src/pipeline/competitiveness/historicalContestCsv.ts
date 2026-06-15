@@ -70,7 +70,7 @@ export function buildCsvHeaderIndex(header: readonly string[]): Map<string, numb
 }
 
 export function normalizeCsvHeader(value: string): string {
-  return value.trim().toLowerCase();
+  return value.replace(/^\uFEFF/, "").trim().toLowerCase();
 }
 
 export function requireCsvColumn(headerIndex: ReadonlyMap<string, number>, column: string): number {

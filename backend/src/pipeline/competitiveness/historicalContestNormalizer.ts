@@ -23,6 +23,7 @@ export type MedslHistoricalContestCandidateRow = {
   party_simplified?: string | null;
   party_detailed?: string | null;
   stage?: string | null;
+  special?: string | null;
 };
 
 export type HistoricalContestMarginRecord = {
@@ -52,6 +53,7 @@ export type HistoricalContestNormalizationSkippedRow = {
     | "invalid_year"
     | "invalid_state"
     | "non_general_stage"
+    | "special_election"
     | "unsupported_office"
     | "invalid_district"
     | "invalid_votes";
@@ -207,6 +209,11 @@ function isGeneralElectionStage(stage: string | null | undefined): boolean {
   return !normalized || normalized === "GEN" || normalized === "GENERAL";
 }
 
+function isSpecialElection(value: string | null | undefined): boolean {
+  const normalized = value?.trim().toUpperCase();
+  return normalized === "TRUE" || normalized === "YES" || normalized === "Y" || normalized === "1";
+}
+
 function toContestKey(input: {
   source: string;
   electionYear: number;
@@ -251,6 +258,10 @@ function rowToContestAccumulator(input: {
 
   if (!isGeneralElectionStage(input.row.stage)) {
     return { ok: false, skipped: { reason: "non_general_stage", row: input.row } };
+  }
+
+  if (isSpecialElection(input.row.special)) {
+    return { ok: false, skipped: { reason: "special_election", row: input.row } };
   }
 
   const mitOffice = normalizeMitOffice(input.row.office);

@@ -177,6 +177,10 @@ function outputDistrict(row: MedslHistoricalContestPrecinctRow): string {
   return row.district ?? (isStatewideMitOffice(row.office) ? "STATEWIDE" : "");
 }
 
+function hasOutputDistrict(row: MedslHistoricalContestPrecinctRow): boolean {
+  return outputDistrict(row).length > 0;
+}
+
 function contestKey(row: MedslHistoricalContestPrecinctRow): string {
   return [
     normalizeKeyText(row.year),
@@ -185,6 +189,7 @@ function contestKey(row: MedslHistoricalContestPrecinctRow): string {
     normalizeKeyText(row.office),
     normalizeKeyText(outputDistrict(row)),
     normalizeKeyText(row.stage),
+    normalizeKeyText(row.special),
   ].join("|");
 }
 
@@ -219,6 +224,27 @@ function chooseLargestVoteParty(partyVotes: Map<string, number>): string | null 
 function representativeCandidateName(value: string | null): string | null {
   const normalized = normalizeText(value);
   return normalized.length > 0 ? normalized : null;
+}
+
+function candidateRowFromPrecinctRow(
+  row: MedslHistoricalContestPrecinctRow,
+  candidateVotes: string,
+  totalVotes: string
+): MedslHistoricalContestCandidateRow {
+  return {
+    year: row.year,
+    state_po: row.state_po,
+    state_fips: row.state_fips,
+    office: row.office,
+    district: outputDistrict(row),
+    candidate: representativeCandidateName(row.candidate),
+    candidatevotes: candidateVotes,
+    totalvotes: totalVotes,
+    party_simplified: row.party_simplified,
+    party_detailed: row.party_detailed,
+    stage: row.stage,
+    ...(isTruthyMedslBoolean(row.special) ? { special: row.special } : {}),
+  };
 }
 
 export function parseMedslHistoricalContestPrecinctCsv(csv: string): MedslHistoricalContestPrecinctRow[] {
@@ -275,28 +301,21 @@ export function aggregateMedslPrecinctRowsToCandidateRows(
   rows: readonly MedslHistoricalContestPrecinctRow[]
 ): MedslHistoricalContestCandidateRow[] {
   const contests = new Map<string, ParsedPrecinctVoteRow[]>();
-  const invalidVoteRows: MedslHistoricalContestCandidateRow[] = [];
+  const passThroughRows: MedslHistoricalContestCandidateRow[] = [];
 
   for (const row of rows) {
     if (!isCandidateVoteRow(row)) {
       continue;
     }
 
+    if (!hasOutputDistrict(row)) {
+      passThroughRows.push(candidateRowFromPrecinctRow(row, row.votes, row.votes));
+      continue;
+    }
+
     const votes = parseNonNegativeInteger(row.votes);
     if (votes === null) {
-      invalidVoteRows.push({
-        year: row.year,
-        state_po: row.state_po,
-        state_fips: row.state_fips,
-        office: row.office,
-        district: outputDistrict(row),
-        candidate: representativeCandidateName(row.candidate),
-        candidatevotes: row.votes,
-        totalvotes: row.votes,
-        party_simplified: row.party_simplified,
-        party_detailed: row.party_detailed,
-        stage: row.stage,
-      });
+      passThroughRows.push(candidateRowFromPrecinctRow(row, row.votes, row.votes));
       continue;
     }
 
@@ -309,10 +328,18 @@ export function aggregateMedslPrecinctRowsToCandidateRows(
   const candidateRows: MedslHistoricalContestCandidateRow[] = [];
 
   for (const contestRows of contests.values()) {
-    const hasTotalMode = contestRows.some(({ row }) => normalizeKeyText(row.mode) === "TOTAL");
-    const selectedRows = hasTotalMode
-      ? contestRows.filter(({ row }) => normalizeKeyText(row.mode) === "TOTAL")
-      : contestRows;
+    const rowsByCandidate = new Map<string, ParsedPrecinctVoteRow[]>();
+    for (const parsedRow of contestRows) {
+      const key = candidateKey(parsedRow.row);
+      const existing = rowsByCandidate.get(key) ?? [];
+      existing.push(parsedRow);
+      rowsByCandidate.set(key, existing);
+    }
+
+    const selectedRows = [...rowsByCandidate.values()].flatMap((candidateRowsForContest) => {
+      const totalRows = candidateRowsForContest.filter(({ row }) => normalizeKeyText(row.mode) === "TOTAL");
+      return totalRows.length > 0 ? totalRows : candidateRowsForContest;
+    });
     const firstRow = selectedRows[0]?.row;
     if (!firstRow) {
       continue;
@@ -347,11 +374,12 @@ export function aggregateMedslPrecinctRowsToCandidateRows(
         party_simplified: chooseLargestVoteParty(candidate.partySimplifiedVotes),
         party_detailed: chooseLargestVoteParty(candidate.partyDetailedVotes),
         stage: firstRow.stage,
+        ...(isTruthyMedslBoolean(firstRow.special) ? { special: firstRow.special } : {}),
       });
     }
   }
 
-  return [...candidateRows, ...invalidVoteRows].sort((left, right) =>
+  return [...candidateRows, ...passThroughRows].sort((left, right) =>
     String(left.year).localeCompare(String(right.year)) ||
     left.state_po.localeCompare(right.state_po) ||
     left.office.localeCompare(right.office) ||
