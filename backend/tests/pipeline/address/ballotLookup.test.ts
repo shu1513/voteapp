@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   lookupBallotSummariesByDistrictIds,
@@ -14,6 +14,11 @@ const candidateElectionId = "55555555-5555-4555-8555-555555555555";
 const candidateRecordId = "66666666-6666-4666-8666-666666666666";
 const ballotMeasureId = "77777777-7777-4777-8777-777777777777";
 const researchAreaId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+});
 
 describe("lookupBallotSummariesByDistrictIds", () => {
   it("returns an empty summary result without querying for empty district IDs", async () => {
@@ -204,6 +209,8 @@ describe("lookupBallotSummariesByDistrictIds", () => {
   });
 
   it("attaches historical competitiveness to supported office summaries", async () => {
+    const fetch = vi.fn().mockRejectedValue(new Error("runtime ballot lookup must not fetch historical data"));
+    vi.stubGlobal("fetch", fetch);
     const houseDistrictId = "99999999-9999-4999-8999-999999999991";
     const houseElectionId = "99999999-9999-4999-8999-999999999992";
     const houseOfficeId = "99999999-9999-4999-8999-999999999993";
@@ -297,6 +304,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       },
     });
     expect(query).toHaveBeenCalledTimes(7);
+    expect(fetch).not.toHaveBeenCalled();
     expect(query.mock.calls[6]?.[0]).toContain("public.historical_contest_margins");
     expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual([
       {
