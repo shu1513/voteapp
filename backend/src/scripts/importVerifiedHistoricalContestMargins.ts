@@ -32,6 +32,20 @@ type SourceImportSummary = {
   skipped_reasons: Record<string, number>;
 };
 
+type DataverseDatasetFile = {
+  url: string;
+  label: string;
+};
+
+const DATAVERSE_DATASET_FETCH_TIMEOUT_MS = 30_000;
+
+function isAbortError(error: unknown): boolean {
+  return (
+    (error instanceof DOMException && error.name === "AbortError") ||
+    (error instanceof Error && error.name === "AbortError")
+  );
+}
+
 function countSkippedReasons(
   skippedRows: readonly { reason: string }[]
 ): Record<string, number> {
@@ -51,13 +65,15 @@ async function importVerifiedSourceByFormat(input: {
   db: Pick<PoolClient, "query">;
   source: HistoricalContestSourceDefinition;
   csv: string;
+  sourceUrl: string;
   dryRun: boolean;
   importedAt: Date;
 }): Promise<VerifiedImportResult> {
   const options = {
     csv: input.csv,
     source: input.source.source,
-    sourceUrl: input.source.sourceUrl,
+    sourceUrl: input.sourceUrl,
+    officeTypes: input.source.officeTypes,
     staleAfterRedistricting: input.source.staleAfterRedistricting,
     dryRun: input.dryRun,
     importedAt: input.importedAt,
@@ -82,6 +98,7 @@ async function importVerifiedSource(input: {
   db: Pick<PoolClient, "query">;
   source: HistoricalContestSourceDefinition;
   csv: string;
+  sourceUrl: string;
   dryRun: boolean;
   importedAt: Date;
 }): Promise<SourceImportSummary> {
@@ -89,6 +106,7 @@ async function importVerifiedSource(input: {
     db: input.db,
     source: input.source,
     csv: input.csv,
+    sourceUrl: input.sourceUrl,
     dryRun: input.dryRun,
     importedAt: input.importedAt,
   });
@@ -110,41 +128,155 @@ async function importVerifiedSource(input: {
   };
 }
 
+function mergeSourceSummaries(summaries: readonly SourceImportSummary[]): SourceImportSummary {
+  const [first] = summaries;
+  if (!first) {
+    throw new Error("Cannot merge empty historical contest source summaries");
+  }
+
+  return {
+    ...first,
+    parsed_rows: summaries.reduce((sum, summary) => sum + summary.parsed_rows, 0),
+    aggregated_rows: summaries.some((summary) => summary.aggregated_rows !== null)
+      ? summaries.reduce((sum, summary) => sum + (summary.aggregated_rows ?? 0), 0)
+      : null,
+    normalized_records: summaries.reduce((sum, summary) => sum + summary.normalized_records, 0),
+    skipped_rows: summaries.reduce((sum, summary) => sum + summary.skipped_rows, 0),
+    rows_written: summaries.reduce((sum, summary) => sum + summary.rows_written, 0),
+    skipped_reasons: summaries.reduce<Record<string, number>>((counts, summary) => {
+      for (const [reason, count] of Object.entries(summary.skipped_reasons)) {
+        counts[reason] = (counts[reason] ?? 0) + count;
+      }
+      return counts;
+    }, {}),
+  };
+}
+
+function isHistoricalContestDataFile(label: string): boolean {
+  return /\.(csv|tsv|tab)$/i.test(label.trim());
+}
+
+function normalizeDataverseDataFileUrl(fileId: unknown): string | null {
+  const parsed = typeof fileId === "number" ? fileId : typeof fileId === "string" ? Number(fileId) : Number.NaN;
+  if (!Number.isSafeInteger(parsed) || parsed <= 0) {
+    return null;
+  }
+  return `https://dataverse.harvard.edu/api/access/datafile/${parsed}`;
+}
+
+async function loadDataverseDatasetFiles(persistentId: string): Promise<DataverseDatasetFile[]> {
+  const url = new URL("https://dataverse.harvard.edu/api/datasets/:persistentId");
+  url.searchParams.set("persistentId", persistentId);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), DATAVERSE_DATASET_FETCH_TIMEOUT_MS);
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      headers: {
+        accept: "application/json",
+      },
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (isAbortError(error)) {
+      throw new Error(
+        `Failed to load Dataverse dataset ${persistentId}: request timed out after ${DATAVERSE_DATASET_FETCH_TIMEOUT_MS}ms`
+      );
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+  if (!response.ok) {
+    throw new Error(`Failed to load Dataverse dataset ${persistentId}: ${response.status} ${response.statusText}`);
+  }
+
+  const payload = (await response.json()) as {
+    data?: {
+      latestVersion?: {
+        files?: Array<{
+          label?: unknown;
+          dataFile?: {
+            id?: unknown;
+          };
+        }>;
+      };
+    };
+  };
+
+  return (payload.data?.latestVersion?.files ?? []).flatMap((file): DataverseDatasetFile[] => {
+    const label = typeof file.label === "string" ? file.label : "";
+    const url = normalizeDataverseDataFileUrl(file.dataFile?.id);
+    return url && isHistoricalContestDataFile(label) ? [{ url, label }] : [];
+  });
+}
+
+async function resolveSourceFileUrls(source: HistoricalContestSourceDefinition): Promise<string[]> {
+  if (source.sourceFiles?.length) {
+    return [...source.sourceFiles];
+  }
+
+  const discovery = source.sourceFileDiscovery;
+  if (!discovery) {
+    return [source.sourceUrl];
+  }
+
+  const files = (
+    await Promise.all(discovery.dataverseDatasetPersistentIds.map((persistentId) => loadDataverseDatasetFiles(persistentId)))
+  ).flat();
+  if (files.length === 0) {
+    throw new Error(`No Dataverse source files found for ${source.preset}`);
+  }
+  return files
+    .sort((left, right) => left.label.localeCompare(right.label))
+    .map((file) => file.url);
+}
+
 async function importVerifiedSourceWithTransaction(input: {
   pool: Pool | null;
   source: HistoricalContestSourceDefinition;
   dryRun: boolean;
   importedAt: Date;
 }): Promise<SourceImportSummary> {
-  const csv = await fetchHistoricalContestCsv(input.source.sourceUrl);
-  let client: PoolClient | undefined;
-  try {
-    if (input.pool) {
-      client = await input.pool.connect();
-      await client.query("BEGIN");
-    }
+  const sourceFiles = await resolveSourceFileUrls(input.source);
+  const summaries: SourceImportSummary[] = [];
 
-    const summary = await importVerifiedSource({
-      db: client ?? dryRunDb,
-      source: input.source,
-      csv,
-      dryRun: input.dryRun,
-      importedAt: input.importedAt,
+  for (const sourceUrl of sourceFiles) {
+    const csv = await fetchHistoricalContestCsv(sourceUrl, {
+      downloadMode: input.source.downloadMode,
     });
+    let client: PoolClient | undefined;
+    try {
+      if (input.pool) {
+        client = await input.pool.connect();
+        await client.query("BEGIN");
+      }
 
-    if (client) {
-      await client.query("COMMIT");
-    }
+      const summary = await importVerifiedSource({
+        db: client ?? dryRunDb,
+        source: input.source,
+        csv,
+        sourceUrl,
+        dryRun: input.dryRun,
+        importedAt: input.importedAt,
+      });
 
-    return summary;
-  } catch (error) {
-    if (client) {
-      await rollbackQuietly(client, input.source.preset);
+      if (client) {
+        await client.query("COMMIT");
+      }
+
+      summaries.push(summary);
+    } catch (error) {
+      if (client) {
+        await rollbackQuietly(client, input.source.preset);
+      }
+      throw error;
+    } finally {
+      client?.release();
     }
-    throw error;
-  } finally {
-    client?.release();
   }
+
+  return mergeSourceSummaries(summaries);
 }
 
 async function main(): Promise<void> {
@@ -153,9 +285,12 @@ async function main(): Promise<void> {
   const pool = env ? new Pool({ connectionString: env.DATABASE_URL }) : null;
   const startedAt = new Date();
   const summaries: SourceImportSummary[] = [];
+  const sources = args.preset
+    ? VERIFIED_HISTORICAL_CONTEST_SOURCES.filter((source) => source.preset === args.preset)
+    : VERIFIED_HISTORICAL_CONTEST_SOURCES;
 
   try {
-    for (const source of VERIFIED_HISTORICAL_CONTEST_SOURCES) {
+    for (const source of sources) {
       summaries.push(
         await importVerifiedSourceWithTransaction({
           pool,

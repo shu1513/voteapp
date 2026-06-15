@@ -106,6 +106,36 @@ describe("historicalContestPrecinctCsvImport", () => {
     );
   });
 
+  it("applies the office allowlist during precinct imports", async () => {
+    const query = vi.fn();
+    const mixedOfficeCsv = [
+      "year,state_po,state_fips,office,district,candidate,votes,party_simplified,stage,mode",
+      "2024,CA,06,US PRESIDENT,,President One,600,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,06,US PRESIDENT,,President Two,400,REPUBLICAN,GEN,TOTAL",
+      "2024,CA,06,GOVERNOR,,Governor One,550,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,06,GOVERNOR,,Governor Two,450,REPUBLICAN,GEN,TOTAL",
+    ].join("\n");
+
+    await expect(
+      importHistoricalContestMarginsFromPrecinctCsv(
+        { query } as never,
+        {
+          csv: mixedOfficeCsv,
+          source: "MIT_2024",
+          officeTypes: ["GOVERNOR"],
+          dryRun: true,
+        }
+      )
+    ).resolves.toMatchObject({
+      parsedRows: 4,
+      aggregatedRows: 4,
+      normalizedRecords: 1,
+      skippedRows: [{ reason: "excluded_office" }, { reason: "excluded_office" }],
+      writeResult: null,
+    });
+    expect(query).not.toHaveBeenCalled();
+  });
+
   it("aggregates TOTAL mode precinct rows instead of double-counting split modes", () => {
     expect(
       aggregateMedslPrecinctRowsToCandidateRows([

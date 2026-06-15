@@ -1,10 +1,12 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
+import type { HistoricalContestOfficeType } from "../pipeline/competitiveness/historicalContestKeys.js";
 import {
   type HistoricalContestSourceFormat,
   listVerifiedHistoricalContestSourcePresets,
   VERIFIED_HISTORICAL_CONTEST_SOURCE_BY_PRESET,
+  type HistoricalContestSourceDownloadMode,
   type VerifiedHistoricalContestSourcePreset,
 } from "../pipeline/competitiveness/historicalContestSources.js";
 
@@ -15,6 +17,7 @@ export type HistoricalContestMarginImportArgs = {
   source: string;
   sourceUrl: string | null;
   format: HistoricalContestSourceFormat;
+  officeTypes: readonly HistoricalContestOfficeType[] | null;
   dryRun: boolean;
   staleAfterRedistricting: boolean;
 };
@@ -30,6 +33,18 @@ export const HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS = VERIFIED_HISTORICAL_CONT
 export type HistoricalContestMarginImportPresetName = VerifiedHistoricalContestSourcePreset;
 
 const HISTORICAL_CONTEST_CSV_FETCH_TIMEOUT_MS = 30_000;
+
+export type DataverseGuestbookResponseInput = {
+  name?: string;
+  email?: string;
+  institution?: string;
+  position?: string;
+};
+
+export type HistoricalContestCsvFetchOptions = {
+  downloadMode?: HistoricalContestSourceDownloadMode;
+  dataverseGuestbookResponse?: DataverseGuestbookResponseInput;
+};
 
 function readValueFlag(args: readonly string[], name: string): string | undefined {
   const prefix = `${name}=`;
@@ -55,6 +70,78 @@ function isAbortError(error: unknown): boolean {
     (error instanceof DOMException && error.name === "AbortError") ||
     (error instanceof Error && error.name === "AbortError")
   );
+}
+
+function readGuestbookResponseValue(
+  input: DataverseGuestbookResponseInput | undefined,
+  key: keyof DataverseGuestbookResponseInput,
+  envName: string,
+  fallback: string
+): string {
+  const value = input?.[key]?.trim() || process.env[envName]?.trim() || fallback;
+  if (!value) {
+    throw new Error(`Missing Dataverse guestbook response value: ${envName}`);
+  }
+  return value;
+}
+
+export function buildDataverseGuestbookResponse(input?: DataverseGuestbookResponseInput): Record<string, unknown> {
+  return {
+    name: readGuestbookResponseValue(
+      input,
+      "name",
+      "DATAVERSE_GUESTBOOK_NAME",
+      "VoteApp Historical Contest Importer"
+    ),
+    email: readGuestbookResponseValue(
+      input,
+      "email",
+      "DATAVERSE_GUESTBOOK_EMAIL",
+      "data-import@example.invalid"
+    ),
+    institution: readGuestbookResponseValue(input, "institution", "DATAVERSE_GUESTBOOK_INSTITUTION", "VoteApp"),
+    position: readGuestbookResponseValue(input, "position", "DATAVERSE_GUESTBOOK_POSITION", "Data importer"),
+    answers: [],
+  };
+}
+
+function withDataverseSignedDownloadParam(url: string): string {
+  const parsed = new URL(url);
+  parsed.searchParams.set("signed", "true");
+  return parsed.toString();
+}
+
+function extractDataverseSignedUrl(payload: unknown): string {
+  if (typeof payload === "string" && payload.trim().length > 0) {
+    return payload.trim();
+  }
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+    throw new Error("Dataverse guestbook response did not include a signed URL");
+  }
+
+  const record = payload as Record<string, unknown>;
+  const data = record.data;
+  if (typeof data === "string" && data.trim().length > 0) {
+    return data.trim();
+  }
+  if (typeof data === "object" && data !== null && !Array.isArray(data)) {
+    const dataRecord = data as Record<string, unknown>;
+    const signedUrl = dataRecord.signedUrl ?? dataRecord.url;
+    if (typeof signedUrl === "string" && signedUrl.trim().length > 0) {
+      return signedUrl.trim();
+    }
+  }
+
+  throw new Error("Dataverse guestbook response did not include a signed URL");
+}
+
+function validateDataverseSignedUrl(signedUrl: string, requestedUrl: string): string {
+  const parsedSignedUrl = new URL(parseHttpUrl(signedUrl, "Dataverse signed URL"));
+  const parsedRequestedUrl = new URL(requestedUrl);
+  if (parsedSignedUrl.hostname !== parsedRequestedUrl.hostname) {
+    throw new Error(`Dataverse guestbook returned signed URL for unexpected host: ${parsedSignedUrl.hostname}`);
+  }
+  return parsedSignedUrl.toString();
 }
 
 function parsePreset(value: string | undefined): HistoricalContestMarginImportPresetName | null {
@@ -93,6 +180,15 @@ export function parseHistoricalContestMarginImportArgs(args: readonly string[]):
   }
 
   const presetConfig = preset ? HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS[preset] : null;
+  if (
+    presetConfig &&
+    (("sourceFiles" in presetConfig && presetConfig.sourceFiles?.length) ||
+      ("sourceFileDiscovery" in presetConfig && presetConfig.sourceFileDiscovery))
+  ) {
+    throw new Error(
+      `Historical contest import preset ${presetConfig.preset} has multiple source files; use the verified import script.`
+    );
+  }
   const sourceUrl = readValueFlag(args, "--source-url")?.trim() || null;
   const normalizedUrl = url ? parseHttpUrl(url, "--url") : null;
   const presetUrl = presetConfig ? parseHttpUrl(presetConfig.sourceUrl, "--preset") : null;
@@ -113,20 +209,23 @@ export function parseHistoricalContestMarginImportArgs(args: readonly string[]):
     source,
     sourceUrl: sourceUrl ? parseHttpUrl(sourceUrl, "--source-url") : presetUrl ?? normalizedUrl,
     format: explicitFormat ?? presetConfig?.format ?? "medsl_aggregate_csv",
+    officeTypes: presetConfig?.officeTypes ?? null,
     dryRun: args.includes("--dry-run"),
     staleAfterRedistricting: args.includes("--stale-after-redistricting"),
   };
 }
 
-export async function fetchHistoricalContestCsv(url: string): Promise<string> {
+async function fetchTextWithTimeout(url: string, init: RequestInit = {}): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), HISTORICAL_CONTEST_CSV_FETCH_TIMEOUT_MS);
-  let response: Response;
+  const headers = new Headers(init.headers);
+  if (!headers.has("accept")) {
+    headers.set("accept", "text/csv,text/plain;q=0.9,*/*;q=0.1");
+  }
   try {
-    response = await fetch(url, {
-      headers: {
-        accept: "text/csv,text/plain;q=0.9,*/*;q=0.1",
-      },
+    return await fetch(url, {
+      ...init,
+      headers,
       signal: controller.signal,
     });
   } catch (error) {
@@ -139,6 +238,53 @@ export async function fetchHistoricalContestCsv(url: string): Promise<string> {
   } finally {
     clearTimeout(timeoutId);
   }
+}
+
+async function fetchDataverseSignedCsv(
+  url: string,
+  options: HistoricalContestCsvFetchOptions
+): Promise<string> {
+  const response = await fetchTextWithTimeout(withDataverseSignedDownloadParam(url), {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(buildDataverseGuestbookResponse(options.dataverseGuestbookResponse)),
+  });
+  const responseText = await response.text();
+  if (!response.ok) {
+    throw new Error(
+      `Failed to submit Dataverse guestbook response: ${response.status} ${response.statusText}: ${responseText}`
+    );
+  }
+
+  let payload: unknown;
+  try {
+    payload = JSON.parse(responseText);
+  } catch {
+    throw new Error("Dataverse guestbook response was not valid JSON");
+  }
+
+  const signedUrl = validateDataverseSignedUrl(extractDataverseSignedUrl(payload), url);
+  const signedResponse = await fetchTextWithTimeout(signedUrl);
+  if (!signedResponse.ok) {
+    throw new Error(
+      `Failed to fetch signed Dataverse historical contest CSV: ${signedResponse.status} ${signedResponse.statusText}`
+    );
+  }
+  return await signedResponse.text();
+}
+
+export async function fetchHistoricalContestCsv(
+  url: string,
+  options: HistoricalContestCsvFetchOptions = {}
+): Promise<string> {
+  if (options.downloadMode === "dataverse_guestbook") {
+    return await fetchDataverseSignedCsv(url, options);
+  }
+
+  const response = await fetchTextWithTimeout(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch historical contest CSV: ${response.status} ${response.statusText}`);
   }

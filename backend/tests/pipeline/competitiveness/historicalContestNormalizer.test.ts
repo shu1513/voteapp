@@ -157,6 +157,90 @@ describe("historicalContestNormalizer", () => {
     });
   });
 
+  it("does not mark statewide contests stale after redistricting", () => {
+    const result = normalizeMedslHistoricalContestMargins({
+      source: "MIT_2020",
+      staleAfterRedistricting: true,
+      rows: [
+        row({
+          office: "GOVERNOR",
+          district: "STATEWIDE",
+          candidatevotes: 5_100_000,
+          totalvotes: 10_000_000,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "GOVERNOR",
+          district: "STATEWIDE",
+          candidatevotes: 4_900_000,
+          totalvotes: 10_000_000,
+          party_simplified: "REPUBLICAN",
+        }),
+      ],
+    });
+
+    expect(result.records).toHaveLength(1);
+    expect(result.records[0]).toMatchObject({
+      office_type: "GOVERNOR",
+      district_type: "statewide",
+      stale_after_redistricting: false,
+    });
+  });
+
+  it("skips recognized offices that are outside the source allowlist", () => {
+    const result = normalizeMedslHistoricalContestMargins({
+      source: "MIT_2024",
+      officeTypes: ["GOVERNOR"],
+      rows: [
+        row({
+          office: "US PRESIDENT",
+          district: "STATEWIDE",
+          candidate: "Presidential Candidate",
+          candidatevotes: 6_000_000,
+          totalvotes: 10_000_000,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "US PRESIDENT",
+          district: "STATEWIDE",
+          candidate: "Other Presidential Candidate",
+          candidatevotes: 4_000_000,
+          totalvotes: 10_000_000,
+          party_simplified: "REPUBLICAN",
+        }),
+        row({
+          office: "GOVERNOR",
+          district: "STATEWIDE",
+          candidate: "Governor Candidate",
+          candidatevotes: 5_500_000,
+          totalvotes: 10_000_000,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "GOVERNOR",
+          district: "STATEWIDE",
+          candidate: "Other Governor Candidate",
+          candidatevotes: 4_500_000,
+          totalvotes: 10_000_000,
+          party_simplified: "REPUBLICAN",
+        }),
+      ],
+    });
+
+    expect(result.records).toHaveLength(1);
+    expect(result.records[0]).toMatchObject({
+      office_type: "GOVERNOR",
+      district_type: "statewide",
+      district_key: "06",
+      margin_percent: 10,
+    });
+    expect(result.skippedRows).toHaveLength(2);
+    expect(result.skippedRows.map((skipped) => skipped.reason)).toEqual([
+      "excluded_office",
+      "excluded_office",
+    ]);
+  });
+
   it("normalizes state legislative districts to five-character compact GEOIDs", () => {
     const result = normalizeMedslHistoricalContestMargins({
       source: "MIT_2024",

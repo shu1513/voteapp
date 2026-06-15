@@ -66,6 +66,29 @@ describe("historicalContestCsvImport", () => {
     ]);
   });
 
+  it("parses tab-separated MEDSL rows", () => {
+    const tsv = [
+      "year\tstate_po\tstate_fips\toffice\tdistrict\tstage\tcandidate\tparty_detailed\tparty_simplified\tcandidatevotes\ttotalvotes",
+      "2024\tCA\t06\tUS HOUSE\t31\tGEN\tJohnson\tRepublican\tREPUBLICAN\t90800\t200000",
+    ].join("\n");
+
+    expect(parseMedslHistoricalContestCsv(tsv)).toEqual([
+      {
+        year: "2024",
+        state_po: "CA",
+        state_fips: "06",
+        office: "US HOUSE",
+        district: "31",
+        candidate: "Johnson",
+        candidatevotes: "90800",
+        totalvotes: "200000",
+        party_simplified: "REPUBLICAN",
+        party_detailed: "Republican",
+        stage: "GEN",
+      },
+    ]);
+  });
+
   it("parses statewide MEDSL files that use votes and omit district", () => {
     const statewideCsv = [
       "year,state,state_po,state_fips,office,candidate,party_detailed,party_simplified,votes,totalvotes,stage",
@@ -112,6 +135,35 @@ describe("historicalContestCsvImport", () => {
       parsedRows: 2,
       normalizedRecords: 1,
       skippedRows: [],
+      writeResult: null,
+    });
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it("applies the office allowlist during aggregate imports", async () => {
+    const query = vi.fn();
+    const mixedOfficeCsv = [
+      "year,state_po,state_fips,office,district,stage,candidate,party_detailed,party_simplified,candidatevotes,totalvotes",
+      "2024,CA,06,US PRESIDENT,STATEWIDE,GEN,President One,Democrat,DEMOCRAT,600,1000",
+      "2024,CA,06,US PRESIDENT,STATEWIDE,GEN,President Two,Republican,REPUBLICAN,400,1000",
+      "2024,CA,06,GOVERNOR,STATEWIDE,GEN,Governor One,Democrat,DEMOCRAT,550,1000",
+      "2024,CA,06,GOVERNOR,STATEWIDE,GEN,Governor Two,Republican,REPUBLICAN,450,1000",
+    ].join("\n");
+
+    await expect(
+      importHistoricalContestMarginsFromCsv(
+        { query } as never,
+        {
+          csv: mixedOfficeCsv,
+          source: "MIT_2024",
+          officeTypes: ["GOVERNOR"],
+          dryRun: true,
+        }
+      )
+    ).resolves.toMatchObject({
+      parsedRows: 4,
+      normalizedRecords: 1,
+      skippedRows: [{ reason: "excluded_office" }, { reason: "excluded_office" }],
       writeResult: null,
     });
     expect(query).not.toHaveBeenCalled();

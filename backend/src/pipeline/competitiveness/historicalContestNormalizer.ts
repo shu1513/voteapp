@@ -55,6 +55,7 @@ export type HistoricalContestNormalizationSkippedRow = {
     | "non_general_stage"
     | "special_election"
     | "unsupported_office"
+    | "excluded_office"
     | "invalid_district"
     | "invalid_votes";
   row: MedslHistoricalContestCandidateRow;
@@ -237,6 +238,7 @@ function rowToContestAccumulator(input: {
   sourceUrl: string | null;
   row: MedslHistoricalContestCandidateRow;
   staleAfterRedistricting: boolean;
+  allowedOfficeTypes: ReadonlySet<HistoricalContestOfficeType> | null;
 }):
   | { ok: true; accumulator: Omit<ContestAccumulator, "candidates" | "rows">; candidate: ContestCandidateLine }
   | { ok: false; skipped: HistoricalContestNormalizationSkippedRow } {
@@ -268,6 +270,9 @@ function rowToContestAccumulator(input: {
   const officeType = MIT_OFFICE_TO_HISTORICAL_TYPE[mitOffice];
   if (!officeType) {
     return { ok: false, skipped: { reason: "unsupported_office", row: input.row } };
+  }
+  if (input.allowedOfficeTypes && !input.allowedOfficeTypes.has(officeType)) {
+    return { ok: false, skipped: { reason: "excluded_office", row: input.row } };
   }
 
   const districtType = expectedDistrictTypeForHistoricalOffice(officeType);
@@ -304,7 +309,7 @@ function rowToContestAccumulator(input: {
       districtKey,
       mitOffice: mapHistoricalOfficeTypeToMitOffice(officeType),
       mitDistrict,
-      staleAfterRedistricting: input.staleAfterRedistricting,
+      staleAfterRedistricting: districtType !== "statewide" && input.staleAfterRedistricting,
       totalVotes,
     },
     candidate: {
@@ -358,6 +363,7 @@ export function normalizeMedslHistoricalContestMargins(input: {
   source: string;
   sourceUrl?: string | null;
   rows: readonly MedslHistoricalContestCandidateRow[];
+  officeTypes?: readonly HistoricalContestOfficeType[];
   staleAfterRedistricting?: boolean;
 }): HistoricalContestNormalizationResult {
   const source = input.source.trim();
@@ -372,9 +378,16 @@ export function normalizeMedslHistoricalContestMargins(input: {
   const skippedRows: HistoricalContestNormalizationSkippedRow[] = [];
   const sourceUrl = input.sourceUrl?.trim() || null;
   const staleAfterRedistricting = input.staleAfterRedistricting ?? false;
+  const allowedOfficeTypes = input.officeTypes?.length ? new Set(input.officeTypes) : null;
 
   for (const row of input.rows) {
-    const parsed = rowToContestAccumulator({ source, sourceUrl, row, staleAfterRedistricting });
+    const parsed = rowToContestAccumulator({
+      source,
+      sourceUrl,
+      row,
+      staleAfterRedistricting,
+      allowedOfficeTypes,
+    });
     if (!parsed.ok) {
       skippedRows.push(parsed.skipped);
       continue;

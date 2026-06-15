@@ -1,4 +1,10 @@
+function detectDelimiter(csv: string): "," | "\t" {
+  const [firstLine = ""] = csv.split(/\r?\n/, 1);
+  return firstLine.includes("\t") && !firstLine.includes(",") ? "\t" : ",";
+}
+
 export function parseCsvRows(csv: string): string[][] {
+  const delimiter = detectDelimiter(csv);
   const rows: string[][] = [];
   let row: string[] = [];
   let field = "";
@@ -25,7 +31,7 @@ export function parseCsvRows(csv: string): string[][] {
       continue;
     }
 
-    if (char === ",") {
+    if (char === delimiter) {
       row.push(field);
       field = "";
       continue;

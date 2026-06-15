@@ -9,8 +9,9 @@ import type {
 } from "../../types/election.js";
 import type { CandidateElectionStatus, ElectionResultPassType } from "../../types/electionResults.js";
 import {
-  lookupHistoricalContestMargins,
-  type HistoricalContestMarginLookupRecord,
+  calculateWeightedHistoricalContestMargin,
+  lookupHistoricalContestMarginRows,
+  type HistoricalContestWeightedMarginLookupRecord,
 } from "../competitiveness/historicalContestMarginLookup.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
 
@@ -46,7 +47,9 @@ export type BallotLookupOfficeSummary = {
   summary: string;
 };
 
-export type BallotLookupHistoricalCompetitiveness = {
+export type BallotLookupHistoricalCompetitivenessMethod = "latest" | "weighted_last_3";
+
+export type BallotLookupHistoricalCompetitivenessContest = {
   source: string;
   source_url: string | null;
   election_year: number;
@@ -55,6 +58,24 @@ export type BallotLookupHistoricalCompetitiveness = {
   margin_percent: number;
   competitiveness_label: HistoricalContestCompetitivenessLabel;
   stale_after_redistricting: boolean;
+  weight?: number;
+};
+
+export type BallotLookupHistoricalCompetitiveness = {
+  display_label: string;
+  display_description: string;
+  source: string;
+  source_url: string | null;
+  election_year: number;
+  winner_party: string | null;
+  runner_up_party: string | null;
+  margin_percent: number;
+  competitiveness_label: HistoricalContestCompetitivenessLabel;
+  stale_after_redistricting: boolean;
+  method?: BallotLookupHistoricalCompetitivenessMethod;
+  weights?: number[];
+  election_years?: number[];
+  contests_used?: BallotLookupHistoricalCompetitivenessContest[];
 };
 
 export type BallotLookupCandidateRecord = {
@@ -391,21 +412,88 @@ function electionYear(electionDate: string): number | null {
 }
 
 function toHistoricalCompetitiveness(
-  row: HistoricalContestMarginLookupRecord | undefined
+  row: HistoricalContestWeightedMarginLookupRecord | undefined
 ): BallotLookupHistoricalCompetitiveness | null {
-  if (!row) {
+  const latestContest = row?.contests_used[0];
+  if (!row || !latestContest) {
     return null;
   }
+
   return {
+    display_label: historicalCompetitivenessDisplayLabel(row.competitiveness_label),
+    display_description: historicalCompetitivenessDisplayDescription(row),
     source: row.source,
     source_url: row.source_url,
-    election_year: row.election_year,
-    winner_party: row.winner_party,
-    runner_up_party: row.runner_up_party,
+    election_year: latestContest.election_year,
+    winner_party: latestContest.winner_party,
+    runner_up_party: latestContest.runner_up_party,
     margin_percent: row.margin_percent,
     competitiveness_label: row.competitiveness_label,
     stale_after_redistricting: row.stale_after_redistricting,
+    method: row.method,
+    weights: [...row.weights],
+    election_years: row.election_years,
+    contests_used: row.contests_used.map((contest) => ({
+      source: contest.source,
+      source_url: contest.source_url,
+      election_year: contest.election_year,
+      winner_party: contest.winner_party,
+      runner_up_party: contest.runner_up_party,
+      margin_percent: contest.margin_percent,
+      competitiveness_label: contest.competitiveness_label,
+      stale_after_redistricting: contest.stale_after_redistricting,
+      weight: contest.weight,
+    })),
   };
+}
+
+function historicalCompetitivenessDisplayLabel(label: HistoricalContestCompetitivenessLabel): string {
+  switch (label) {
+    case "toss_up":
+      return "Historically a toss-up";
+    case "very_competitive":
+    case "competitive":
+      return "Historically competitive";
+    case "somewhat_competitive":
+      return "Historically somewhat competitive";
+    case "safe":
+      return "Historically safe";
+  }
+}
+
+function historicalOfficeDisplayName(officeType: HistoricalContestWeightedMarginLookupRecord["office_type"]): string {
+  switch (officeType) {
+    case "US_PRESIDENT":
+      return "President";
+    case "US_SENATE":
+      return "U.S. Senate";
+    case "US_HOUSE":
+      return "U.S. House";
+    case "GOVERNOR":
+      return "Governor";
+    case "STATE_SENATE":
+      return "State Senate";
+    case "STATE_HOUSE":
+      return "State House";
+  }
+}
+
+function formatYearList(years: readonly number[]): string {
+  if (years.length === 1) {
+    return String(years[0]);
+  }
+  if (years.length === 2) {
+    return `${years[0]} and ${years[1]}`;
+  }
+  return `${years.slice(0, -1).join(", ")}, and ${years[years.length - 1]}`;
+}
+
+function historicalCompetitivenessDisplayDescription(row: HistoricalContestWeightedMarginLookupRecord): string {
+  const office = historicalOfficeDisplayName(row.office_type);
+  if (row.election_years.length === 1) {
+    return `Based on the ${row.election_years[0]} ${office} result.`;
+  }
+  return `Based on weighted margins from ${formatYearList(row.election_years)} ${office} results.`;
 }
 
 async function loadFullElectionDetails(db: Queryable, electionRows: readonly ElectionRow[]): Promise<BallotLookupElection[]> {
@@ -827,7 +915,7 @@ export async function lookupBallotSummariesByDistrictIds(
   }
   const researchAreasByOffice = groupBy(officeResearchAreaResult.rows, (row) => row.office_id);
   const resultOutcomeByElection = new Map(resultSummaryResult.rows.map((row) => [row.election_id, row.outcome]));
-  const historicalMarginsByElection = await lookupHistoricalContestMargins(
+  const historicalRowsByElection = await lookupHistoricalContestMarginRows(
     db,
     electionResult.rows.map((row) => ({
       lookupId: row.election_id,
@@ -838,6 +926,12 @@ export async function lookupBallotSummariesByDistrictIds(
       currentElectionYear: electionYear(row.election_date),
       maxElectionYear: priorElectionYear(row.election_date),
     }))
+  );
+  const historicalMarginsByElection = new Map(
+    [...historicalRowsByElection].flatMap(([electionId, rows]) => {
+      const weightedMargin = calculateWeightedHistoricalContestMargin(rows);
+      return weightedMargin ? [[electionId, weightedMargin] as const] : [];
+    })
   );
 
   const elections: BallotLookupElectionSummary[] = electionResult.rows.map((row) => {
