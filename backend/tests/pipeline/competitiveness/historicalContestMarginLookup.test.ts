@@ -1,10 +1,122 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  calculateWeightedHistoricalContestMargin,
+  HISTORICAL_CONTEST_WEIGHTED_MARGIN_METHOD,
+  HISTORICAL_CONTEST_WEIGHTED_MARGIN_WEIGHTS,
+  lookupHistoricalContestMarginRows,
   lookupHistoricalContestMargins,
+  type HistoricalContestMarginLookupRecord,
 } from "../../../src/pipeline/competitiveness/historicalContestMarginLookup.js";
 
+function marginRow(
+  overrides: Partial<HistoricalContestMarginLookupRecord> = {}
+): HistoricalContestMarginLookupRecord {
+  return {
+    id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    lookup_id: "ca-governor",
+    source: "MIT_2024",
+    source_url: "https://example.test/source.csv",
+    election_year: 2024,
+    state: "CA",
+    state_fips: "06",
+    office_type: "GOVERNOR",
+    district_type: "statewide",
+    district_key: "06",
+    mit_office: "GOVERNOR",
+    mit_district: "STATEWIDE",
+    winner_party: "DEMOCRAT",
+    runner_up_party: "REPUBLICAN",
+    winner_votes: 600,
+    runner_up_votes: 400,
+    total_votes: 1000,
+    margin_percent: 20,
+    competitiveness_label: "safe",
+    stale_after_redistricting: false,
+    imported_at: "2026-06-14 12:00:00+00",
+    ...overrides,
+  };
+}
+
 describe("historicalContestMarginLookup", () => {
+  it("defines the weighted last-three margin contract", () => {
+    expect(HISTORICAL_CONTEST_WEIGHTED_MARGIN_METHOD).toBe("weighted_last_3");
+    expect(HISTORICAL_CONTEST_WEIGHTED_MARGIN_WEIGHTS).toEqual([0.5, 0.3, 0.2]);
+  });
+
+  it("calculates weighted margins from the latest three contests with 50-30-20 weights", () => {
+    expect(
+      calculateWeightedHistoricalContestMargin([
+        marginRow({ id: "2022", election_year: 2022, margin_percent: 20, competitiveness_label: "safe" }),
+        marginRow({ id: "2018", election_year: 2018, margin_percent: 10, competitiveness_label: "competitive" }),
+        marginRow({ id: "2014", election_year: 2014, margin_percent: 2, competitiveness_label: "toss_up" }),
+      ])
+    ).toMatchObject({
+      lookup_id: "ca-governor",
+      method: "weighted_last_3",
+      weights: [0.5, 0.3, 0.2],
+      election_years: [2022, 2018, 2014],
+      margin_percent: 13.4,
+      competitiveness_label: "somewhat_competitive",
+      stale_after_redistricting: false,
+      contests_used: [
+        { election_year: 2022, margin_percent: 20, weight: 0.5 },
+        { election_year: 2018, margin_percent: 10, weight: 0.3 },
+        { election_year: 2014, margin_percent: 2, weight: 0.2 },
+      ],
+    });
+  });
+
+  it("renormalizes weights when only two contests exist", () => {
+    expect(
+      calculateWeightedHistoricalContestMargin([
+        marginRow({ id: "2022", election_year: 2022, margin_percent: 20 }),
+        marginRow({ id: "2018", election_year: 2018, margin_percent: 4, competitiveness_label: "very_competitive" }),
+      ])
+    ).toMatchObject({
+      weights: [0.625, 0.375],
+      election_years: [2022, 2018],
+      margin_percent: 14,
+      competitiveness_label: "somewhat_competitive",
+      contests_used: [
+        { election_year: 2022, weight: 0.625 },
+        { election_year: 2018, weight: 0.375 },
+      ],
+    });
+  });
+
+  it("uses one contest as a pass-through weighted result", () => {
+    expect(
+      calculateWeightedHistoricalContestMargin([
+        marginRow({ election_year: 2022, margin_percent: 4, competitiveness_label: "very_competitive" }),
+      ])
+    ).toMatchObject({
+      weights: [1],
+      election_years: [2022],
+      margin_percent: 4,
+      competitiveness_label: "very_competitive",
+      contests_used: [{ election_year: 2022, weight: 1 }],
+    });
+  });
+
+  it("sorts contests newest first and ignores rows after the first three", () => {
+    expect(
+      calculateWeightedHistoricalContestMargin([
+        marginRow({ id: "2014", election_year: 2014, margin_percent: 2 }),
+        marginRow({ id: "2010", election_year: 2010, margin_percent: 100 }),
+        marginRow({ id: "2022", election_year: 2022, margin_percent: 20 }),
+        marginRow({ id: "2018", election_year: 2018, margin_percent: 10 }),
+      ])
+    ).toMatchObject({
+      election_years: [2022, 2018, 2014],
+      margin_percent: 13.4,
+    });
+  });
+
+  it("returns null when no historical contests are available", () => {
+    expect(calculateWeightedHistoricalContestMargin([])).toBeNull();
+  });
+
   it("does not query when no inputs can be mapped to historical contest keys", async () => {
     const query = vi.fn();
 
@@ -53,6 +165,8 @@ describe("historicalContestMarginLookup", () => {
 
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).toContain("jsonb_to_recordset");
+    expect(query.mock.calls[0]?.[0]).toContain("ROW_NUMBER() OVER");
+    expect(query.mock.calls[0]?.[0]).toContain("WHERE row_rank <= 3");
     expect(JSON.parse(query.mock.calls[0]?.[1]?.[0] as string)).toEqual([
       {
         lookup_id: "house-ca-31",
@@ -109,6 +223,89 @@ describe("historicalContestMarginLookup", () => {
         district_key: "0631",
         mit_office: "US HOUSE",
         mit_district: "031",
+      },
+    ]);
+  });
+
+  it("applies the same post-redistricting floor to state legislative weighted row lookups", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [] });
+
+    await lookupHistoricalContestMarginRows({ query } as never, [
+      {
+        lookupId: "ca-state-senate-22",
+        officeCanonicalName: "State Senator",
+        districtType: "state_upper",
+        geoidCompact: "06022",
+        stateFips: "06",
+        currentElectionYear: 2026,
+        maxElectionYear: 2024,
+      },
+      {
+        lookupId: "ca-state-house-48",
+        officeCanonicalName: "State Lower Chamber Legislator",
+        districtType: "state_lower",
+        geoidCompact: "06048",
+        stateFips: "06",
+        currentElectionYear: 2026,
+        maxElectionYear: 2024,
+      },
+    ]);
+
+    expect(JSON.parse(query.mock.calls[0]?.[1]?.[0] as string)).toEqual([
+      {
+        lookup_id: "ca-state-senate-22",
+        min_election_year: 2022,
+        max_election_year: 2024,
+        state: "CA",
+        state_fips: "06",
+        office_type: "STATE_SENATE",
+        district_type: "state_upper",
+        district_key: "06022",
+        mit_office: "STATE SENATE",
+        mit_district: "022",
+      },
+      {
+        lookup_id: "ca-state-house-48",
+        min_election_year: 2022,
+        max_election_year: 2024,
+        state: "CA",
+        state_fips: "06",
+        office_type: "STATE_HOUSE",
+        district_type: "state_lower",
+        district_key: "06048",
+        mit_office: "STATE HOUSE",
+        mit_district: "048",
+      },
+    ]);
+  });
+
+  it("does not apply redistricting floors to statewide historical lookups", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [] });
+
+    await lookupHistoricalContestMarginRows({ query } as never, [
+      {
+        lookupId: "ca-governor",
+        officeCanonicalName: "Governor",
+        districtType: "statewide",
+        geoidCompact: "06",
+        stateFips: "06",
+        currentElectionYear: 2026,
+        maxElectionYear: 2024,
+      },
+    ]);
+
+    expect(JSON.parse(query.mock.calls[0]?.[1]?.[0] as string)).toEqual([
+      {
+        lookup_id: "ca-governor",
+        min_election_year: null,
+        max_election_year: 2024,
+        state: "CA",
+        state_fips: "06",
+        office_type: "GOVERNOR",
+        district_type: "statewide",
+        district_key: "06",
+        mit_office: "GOVERNOR",
+        mit_district: "STATEWIDE",
       },
     ]);
   });
@@ -175,6 +372,161 @@ describe("historicalContestMarginLookup", () => {
       stale_after_redistricting: false,
       imported_at: "2026-06-14 12:00:00+00",
     });
+  });
+
+  it("returns up to three matched historical margin rows per lookup ID", async () => {
+    const query = vi.fn().mockResolvedValue({
+      rows: [
+        {
+          id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          lookup_id: "ca-governor",
+          source: "MIT_2022",
+          source_url: "https://example.test/2022.csv",
+          election_year: 2022,
+          state: "CA",
+          state_fips: "06",
+          office_type: "GOVERNOR",
+          district_type: "statewide",
+          district_key: "06",
+          mit_office: "GOVERNOR",
+          mit_district: "STATEWIDE",
+          winner_party: "DEMOCRAT",
+          runner_up_party: "REPUBLICAN",
+          winner_votes: "600",
+          runner_up_votes: "400",
+          total_votes: "1000",
+          margin_percent: "20.00",
+          competitiveness_label: "safe",
+          stale_after_redistricting: false,
+          imported_at: "2026-06-14 12:00:00+00",
+        },
+        {
+          id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+          lookup_id: "ca-governor",
+          source: "MIT_2018",
+          source_url: "https://example.test/2018.csv",
+          election_year: 2018,
+          state: "CA",
+          state_fips: "06",
+          office_type: "GOVERNOR",
+          district_type: "statewide",
+          district_key: "06",
+          mit_office: "GOVERNOR",
+          mit_district: "STATEWIDE",
+          winner_party: "DEMOCRAT",
+          runner_up_party: "REPUBLICAN",
+          winner_votes: "550",
+          runner_up_votes: "450",
+          total_votes: "1000",
+          margin_percent: "10.00",
+          competitiveness_label: "competitive",
+          stale_after_redistricting: false,
+          imported_at: "2026-06-14 12:00:00+00",
+        },
+        {
+          id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          lookup_id: "ca-governor",
+          source: "MIT_2014",
+          source_url: "https://example.test/2014.csv",
+          election_year: 2014,
+          state: "CA",
+          state_fips: "06",
+          office_type: "GOVERNOR",
+          district_type: "statewide",
+          district_key: "06",
+          mit_office: "GOVERNOR",
+          mit_district: "STATEWIDE",
+          winner_party: "DEMOCRAT",
+          runner_up_party: "REPUBLICAN",
+          winner_votes: "510",
+          runner_up_votes: "490",
+          total_votes: "1000",
+          margin_percent: "2.00",
+          competitiveness_label: "toss_up",
+          stale_after_redistricting: false,
+          imported_at: "2026-06-14 12:00:00+00",
+        },
+      ],
+    });
+
+    const result = await lookupHistoricalContestMarginRows({ query } as never, [
+      {
+        lookupId: "ca-governor",
+        officeCanonicalName: "Governor",
+        districtType: "statewide",
+        geoidCompact: "06",
+        stateFips: "06",
+        maxElectionYear: 2024,
+      },
+    ]);
+
+    expect(result.get("ca-governor")?.map((row) => row.election_year)).toEqual([2022, 2018, 2014]);
+    expect(result.get("ca-governor")?.map((row) => row.margin_percent)).toEqual([20, 10, 2]);
+  });
+
+  it("keeps the compatibility lookup returning only the latest row", async () => {
+    const query = vi.fn().mockResolvedValue({
+      rows: [
+        {
+          id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          lookup_id: "ca-governor",
+          source: "MIT_2022",
+          source_url: "https://example.test/2022.csv",
+          election_year: 2022,
+          state: "CA",
+          state_fips: "06",
+          office_type: "GOVERNOR",
+          district_type: "statewide",
+          district_key: "06",
+          mit_office: "GOVERNOR",
+          mit_district: "STATEWIDE",
+          winner_party: "DEMOCRAT",
+          runner_up_party: "REPUBLICAN",
+          winner_votes: "600",
+          runner_up_votes: "400",
+          total_votes: "1000",
+          margin_percent: "20.00",
+          competitiveness_label: "safe",
+          stale_after_redistricting: false,
+          imported_at: "2026-06-14 12:00:00+00",
+        },
+        {
+          id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+          lookup_id: "ca-governor",
+          source: "MIT_2018",
+          source_url: "https://example.test/2018.csv",
+          election_year: 2018,
+          state: "CA",
+          state_fips: "06",
+          office_type: "GOVERNOR",
+          district_type: "statewide",
+          district_key: "06",
+          mit_office: "GOVERNOR",
+          mit_district: "STATEWIDE",
+          winner_party: "DEMOCRAT",
+          runner_up_party: "REPUBLICAN",
+          winner_votes: "550",
+          runner_up_votes: "450",
+          total_votes: "1000",
+          margin_percent: "10.00",
+          competitiveness_label: "competitive",
+          stale_after_redistricting: false,
+          imported_at: "2026-06-14 12:00:00+00",
+        },
+      ],
+    });
+
+    const result = await lookupHistoricalContestMargins({ query } as never, [
+      {
+        lookupId: "ca-governor",
+        officeCanonicalName: "Governor",
+        districtType: "statewide",
+        geoidCompact: "06",
+        stateFips: "06",
+      },
+    ]);
+
+    expect(result.get("ca-governor")?.election_year).toBe(2022);
   });
 
   it("dedupes repeated lookup IDs after trimming", async () => {

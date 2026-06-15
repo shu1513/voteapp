@@ -66,6 +66,29 @@ describe("historicalContestCsvImport", () => {
     ]);
   });
 
+  it("parses tab-separated MEDSL rows", () => {
+    const tsv = [
+      "year\tstate_po\tstate_fips\toffice\tdistrict\tstage\tcandidate\tparty_detailed\tparty_simplified\tcandidatevotes\ttotalvotes",
+      "2024\tCA\t06\tUS HOUSE\t31\tGEN\tJohnson\tRepublican\tREPUBLICAN\t90800\t200000",
+    ].join("\n");
+
+    expect(parseMedslHistoricalContestCsv(tsv)).toEqual([
+      {
+        year: "2024",
+        state_po: "CA",
+        state_fips: "06",
+        office: "US HOUSE",
+        district: "31",
+        candidate: "Johnson",
+        candidatevotes: "90800",
+        totalvotes: "200000",
+        party_simplified: "REPUBLICAN",
+        party_detailed: "Republican",
+        stage: "GEN",
+      },
+    ]);
+  });
+
   it("parses statewide MEDSL files that use votes and omit district", () => {
     const statewideCsv = [
       "year,state,state_po,state_fips,office,candidate,party_detailed,party_simplified,votes,totalvotes,stage",

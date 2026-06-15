@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  buildDataverseGuestbookResponse,
   fetchHistoricalContestCsv,
   parseHistoricalContestMarginImportArgs,
 } from "../../src/scripts/importHistoricalContestMarginsCli.js";
@@ -77,6 +78,31 @@ describe("importHistoricalContestMarginsCli", () => {
     });
   });
 
+  it("parses known MEDSL precinct presets with their catalog format", () => {
+    expect(parseHistoricalContestMarginImportArgs(["--preset=medsl-2024-house-precinct", "--dry-run"])).toEqual({
+      inputKind: "preset",
+      input: "https://dataverse.harvard.edu/api/access/datafile/13731101",
+      preset: "medsl-2024-house-precinct",
+      source: "MIT_2024",
+      sourceUrl: "https://dataverse.harvard.edu/api/access/datafile/13731101",
+      format: "medsl_precinct_csv",
+      dryRun: true,
+      staleAfterRedistricting: false,
+    });
+  });
+
+  it("rejects multi-file presets for the single-source import script", () => {
+    expect(() => parseHistoricalContestMarginImportArgs(["--preset=medsl-2024-state-precinct"])).toThrow(
+      "Historical contest import preset medsl-2024-state-precinct has multiple source files; use the verified import script."
+    );
+    expect(() => parseHistoricalContestMarginImportArgs(["--preset=medsl-2022-precinct"])).toThrow(
+      "Historical contest import preset medsl-2022-precinct has multiple source files; use the verified import script."
+    );
+    expect(() => parseHistoricalContestMarginImportArgs(["--preset=medsl-2020-precinct-by-state"])).toThrow(
+      "Historical contest import preset medsl-2020-precinct-by-state has multiple source files; use the verified import script."
+    );
+  });
+
   it("allows preset source overrides", () => {
     expect(
       parseHistoricalContestMarginImportArgs([
@@ -139,7 +165,7 @@ describe("importHistoricalContestMarginsCli", () => {
 
   it("rejects unknown presets", () => {
     expect(() => parseHistoricalContestMarginImportArgs(["--preset=medsl-2024-governor-state"])).toThrow(
-      "Known presets: medsl-2024-president-state, medsl-2024-senate-state"
+      "Known presets: medsl-2024-president-state, medsl-2024-senate-state, medsl-2024-house-precinct, medsl-2022-precinct, medsl-2020-precinct-by-state, medsl-2018-precinct-by-state, medsl-2024-state-precinct"
     );
   });
 
@@ -164,10 +190,80 @@ describe("importHistoricalContestMarginsCli", () => {
     expect(fetch).toHaveBeenCalledWith(
       "https://example.test/contest.csv",
       expect.objectContaining({
-        headers: {
-          accept: "text/csv,text/plain;q=0.9,*/*;q=0.1",
-        },
+        headers: expect.any(Headers),
         signal: expect.any(AbortSignal),
+      })
+    );
+  });
+
+  it("builds Dataverse guestbook responses from explicit values", () => {
+    expect(
+      buildDataverseGuestbookResponse({
+        name: "Importer",
+        email: "importer@example.test",
+        institution: "VoteApp Test",
+        position: "Test runner",
+      })
+    ).toEqual({
+      name: "Importer",
+      email: "importer@example.test",
+      institution: "VoteApp Test",
+      position: "Test runner",
+      answers: [],
+    });
+  });
+
+  it("fetches guestbook-gated Dataverse CSV text through a signed URL", async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        text: vi.fn().mockResolvedValue(
+          JSON.stringify({
+            status: "OK",
+            data: {
+              signedUrl: "https://dataverse.harvard.edu/api/v1/access/datafile/123?token=signed",
+            },
+          })
+        ),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        text: vi.fn().mockResolvedValue("year,state_po\n2020,CA\n"),
+      });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(
+      fetchHistoricalContestCsv("https://dataverse.harvard.edu/api/access/datafile/123", {
+        downloadMode: "dataverse_guestbook",
+        dataverseGuestbookResponse: {
+          name: "Importer",
+          email: "importer@example.test",
+          institution: "VoteApp Test",
+          position: "Test runner",
+        },
+      })
+    ).resolves.toBe("year,state_po\n2020,CA\n");
+
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      1,
+      "https://dataverse.harvard.edu/api/access/datafile/123?signed=true",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({
+          name: "Importer",
+          email: "importer@example.test",
+          institution: "VoteApp Test",
+          position: "Test runner",
+          answers: [],
+        }),
+        headers: expect.any(Headers),
+      })
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      "https://dataverse.harvard.edu/api/v1/access/datafile/123?token=signed",
+      expect.objectContaining({
+        headers: expect.any(Headers),
       })
     );
   });
