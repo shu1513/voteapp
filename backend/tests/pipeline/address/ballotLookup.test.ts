@@ -163,6 +163,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
               description: "Crime, policing, and public safety.",
             },
           ],
+          historical_competitiveness: null,
         },
         {
           id: measureElectionId,
@@ -188,6 +189,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           current_result_outcome: null,
           office: null,
           research_areas: [],
+          historical_competitiveness: null,
         },
       ],
     });
@@ -199,6 +201,117 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     expect(JSON.stringify(result)).not.toContain("candidates");
     expect(JSON.stringify(result)).not.toContain("candidate_record");
     expect(JSON.stringify(result)).not.toContain("what_yes_means");
+  });
+
+  it("attaches historical competitiveness to supported office summaries", async () => {
+    const houseDistrictId = "99999999-9999-4999-8999-999999999991";
+    const houseElectionId = "99999999-9999-4999-8999-999999999992";
+    const houseOfficeId = "99999999-9999-4999-8999-999999999993";
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: houseDistrictId,
+            district_type: "us_house",
+            geoid_compact: "0631",
+            name: "California's 31st Congressional District",
+            state: "CA",
+            state_fips: "06",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: houseElectionId,
+            district_id: houseDistrictId,
+            district_type: "us_house",
+            geoid_compact: "0631",
+            district_name: "California's 31st Congressional District",
+            state: "CA",
+            state_fips: "06",
+            race_type: "office",
+            official_ballot_title: "United States Representative District 31",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_id: houseOfficeId,
+            office_scope: "us_house",
+            office_canonical_name: "United States Representative",
+            office_summary: "Federal lower-chamber legislator.",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [{ election_id: houseElectionId, candidate_count: 2 }] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            lookup_id: houseElectionId,
+            source: "MIT_2024",
+            source_url: "https://github.com/MEDSL/2024-elections-official",
+            election_year: 2024,
+            state: "CA",
+            state_fips: "06",
+            office_type: "US_HOUSE",
+            district_type: "us_house",
+            district_key: "0631",
+            mit_office: "US HOUSE",
+            mit_district: "031",
+            winner_party: "DEMOCRAT",
+            runner_up_party: "REPUBLICAN",
+            winner_votes: "109200",
+            runner_up_votes: "90800",
+            total_votes: "200000",
+            margin_percent: "9.20",
+            competitiveness_label: "competitive",
+            stale_after_redistricting: false,
+            imported_at: "2026-06-14 12:00:00+00",
+          },
+        ],
+      });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [houseDistrictId]);
+
+    expect(result.elections).toHaveLength(1);
+    expect(result.elections[0]).toMatchObject({
+      id: houseElectionId,
+      office: {
+        canonical_name: "United States Representative",
+      },
+      historical_competitiveness: {
+        source: "MIT_2024",
+        source_url: "https://github.com/MEDSL/2024-elections-official",
+        election_year: 2024,
+        winner_party: "DEMOCRAT",
+        runner_up_party: "REPUBLICAN",
+        margin_percent: 9.2,
+        competitiveness_label: "competitive",
+        stale_after_redistricting: false,
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(7);
+    expect(query.mock.calls[6]?.[0]).toContain("public.historical_contest_margins");
+    expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual([
+      {
+        lookup_id: houseElectionId,
+        min_election_year: 2022,
+        max_election_year: 2025,
+        state: "CA",
+        state_fips: "06",
+        office_type: "US_HOUSE",
+        district_type: "us_house",
+        district_key: "0631",
+        mit_office: "US HOUSE",
+        mit_district: "031",
+      },
+    ]);
   });
 });
 

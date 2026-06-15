@@ -51,15 +51,6 @@ describe("runPresidentialNomineeResearchProducer", () => {
           nominee_research_last_attempted_at: null,
           nominee_research_next_at: null,
         },
-        {
-          cycle_id: "22222222-2222-4222-8222-222222222222",
-          election_year: 2028,
-          stage: "primary",
-          party: "Republican",
-          status: "completed",
-          nominee_research_last_attempted_at: null,
-          nominee_research_next_at: null,
-        },
       ],
     });
     const end = vi.fn().mockResolvedValue(undefined);
@@ -78,13 +69,14 @@ describe("runPresidentialNomineeResearchProducer", () => {
     expect(result).toMatchObject({
       enabled: true,
       dryRun: true,
-      cyclesScanned: 2,
+      cyclesScanned: 1,
       dueCycleCount: 1,
       selectedCycleCount: 1,
       enqueuedJobCount: 0,
     });
     const sql = String(query.mock.calls[0]?.[0]);
     expect(sql).toContain("FROM public.presidential_cycles");
+    expect(sql).toContain("status = 'active'");
     expect(sql).toContain("EXISTS");
     expect(sql).toContain("general_cycle.stage = 'general'");
     expect(sql).toContain("general_cycle.party IS NULL");

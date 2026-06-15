@@ -8,6 +8,11 @@ import type {
   OfficeScope,
 } from "../../types/election.js";
 import type { CandidateElectionStatus, ElectionResultPassType } from "../../types/electionResults.js";
+import {
+  lookupHistoricalContestMargins,
+  type HistoricalContestMarginLookupRecord,
+} from "../competitiveness/historicalContestMarginLookup.js";
+import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -39,6 +44,17 @@ export type BallotLookupOfficeSummary = {
   scope: OfficeScope;
   canonical_name: string;
   summary: string;
+};
+
+export type BallotLookupHistoricalCompetitiveness = {
+  source: string;
+  source_url: string | null;
+  election_year: number;
+  winner_party: string | null;
+  runner_up_party: string | null;
+  margin_percent: number;
+  competitiveness_label: HistoricalContestCompetitivenessLabel;
+  stale_after_redistricting: boolean;
 };
 
 export type BallotLookupCandidateRecord = {
@@ -140,6 +156,7 @@ export type BallotLookupElectionSummary = {
   current_result_outcome: string | null;
   office: BallotLookupOfficeSummary | null;
   research_areas: BallotLookupResearchAreaSummary[];
+  historical_competitiveness: BallotLookupHistoricalCompetitiveness | null;
 };
 
 export type BallotSummaryResult = {
@@ -360,6 +377,34 @@ function mapResearchAreaTag(row: CandidateRecordTagRow | BallotMeasureTagRow): B
     slug: row.slug,
     name: row.name,
     stance: row.stance,
+  };
+}
+
+function priorElectionYear(electionDate: string): number | null {
+  const year = Number.parseInt(electionDate.slice(0, 4), 10);
+  return Number.isInteger(year) ? year - 1 : null;
+}
+
+function electionYear(electionDate: string): number | null {
+  const year = Number.parseInt(electionDate.slice(0, 4), 10);
+  return Number.isInteger(year) ? year : null;
+}
+
+function toHistoricalCompetitiveness(
+  row: HistoricalContestMarginLookupRecord | undefined
+): BallotLookupHistoricalCompetitiveness | null {
+  if (!row) {
+    return null;
+  }
+  return {
+    source: row.source,
+    source_url: row.source_url,
+    election_year: row.election_year,
+    winner_party: row.winner_party,
+    runner_up_party: row.runner_up_party,
+    margin_percent: row.margin_percent,
+    competitiveness_label: row.competitiveness_label,
+    stale_after_redistricting: row.stale_after_redistricting,
   };
 }
 
@@ -782,6 +827,18 @@ export async function lookupBallotSummariesByDistrictIds(
   }
   const researchAreasByOffice = groupBy(officeResearchAreaResult.rows, (row) => row.office_id);
   const resultOutcomeByElection = new Map(resultSummaryResult.rows.map((row) => [row.election_id, row.outcome]));
+  const historicalMarginsByElection = await lookupHistoricalContestMargins(
+    db,
+    electionResult.rows.map((row) => ({
+      lookupId: row.election_id,
+      officeCanonicalName: row.office_canonical_name,
+      districtType: row.district_type,
+      geoidCompact: row.geoid_compact,
+      stateFips: row.state_fips,
+      currentElectionYear: electionYear(row.election_date),
+      maxElectionYear: priorElectionYear(row.election_date),
+    }))
+  );
 
   const elections: BallotLookupElectionSummary[] = electionResult.rows.map((row) => {
     const currentResultOutcome = resultOutcomeByElection.get(row.election_id) ?? null;
@@ -820,6 +877,7 @@ export async function lookupBallotSummariesByDistrictIds(
             description: area.description,
           }))
         : [],
+      historical_competitiveness: toHistoricalCompetitiveness(historicalMarginsByElection.get(row.election_id)),
     };
   });
 

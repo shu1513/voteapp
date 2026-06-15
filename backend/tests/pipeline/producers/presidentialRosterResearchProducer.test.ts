@@ -51,15 +51,6 @@ describe("runPresidentialRosterResearchProducer", () => {
           roster_research_last_attempted_at: null,
           roster_research_next_at: null,
         },
-        {
-          cycle_id: "22222222-2222-4222-8222-222222222222",
-          election_year: 2028,
-          stage: "primary",
-          party: "Republican",
-          status: "completed",
-          roster_research_last_attempted_at: null,
-          roster_research_next_at: null,
-        },
       ],
     });
     const end = vi.fn().mockResolvedValue(undefined);
@@ -78,14 +69,15 @@ describe("runPresidentialRosterResearchProducer", () => {
     expect(result).toMatchObject({
       enabled: true,
       dryRun: true,
-      cyclesScanned: 2,
+      cyclesScanned: 1,
       dueCycleCount: 1,
       selectedCycleCount: 1,
       enqueuedJobCount: 0,
     });
-    expect(query).toHaveBeenCalledWith(expect.stringContaining("FROM public.presidential_cycles"), [
-      ["Democratic", "Republican"],
-    ]);
+    const sql = String(query.mock.calls[0]?.[0]);
+    expect(sql).toContain("FROM public.presidential_cycles");
+    expect(sql).toContain("status = 'active'");
+    expect(query.mock.calls[0]?.[1]).toEqual([["Democratic", "Republican"]]);
     expect(end).toHaveBeenCalled();
   });
 

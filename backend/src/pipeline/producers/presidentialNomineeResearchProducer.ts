@@ -160,6 +160,7 @@ async function listPrimaryCycles(pool: Pool): Promise<PresidentialNomineeResearc
         nominee_research_next_at::text AS nominee_research_next_at
       FROM public.presidential_cycles
       WHERE stage = 'primary'
+        AND status = 'active'
         AND party = ANY($1::text[])
         AND EXISTS (
           SELECT 1
