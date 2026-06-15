@@ -44,6 +44,7 @@ describe("importHistoricalContestMarginsCli", () => {
       source: "MIT_2024",
       sourceUrl: "https://raw.githubusercontent.com/MEDSL/2024-elections-official/main/2024-senate-state.csv",
       format: "medsl_aggregate_csv",
+      officeTypes: null,
       dryRun: false,
       staleAfterRedistricting: false,
     });
@@ -73,6 +74,7 @@ describe("importHistoricalContestMarginsCli", () => {
       source: "MIT_2024",
       sourceUrl: "https://raw.githubusercontent.com/MEDSL/2024-elections-official/main/2024-president-state.csv",
       format: "medsl_aggregate_csv",
+      officeTypes: ["US_PRESIDENT"],
       dryRun: true,
       staleAfterRedistricting: false,
     });
@@ -86,6 +88,7 @@ describe("importHistoricalContestMarginsCli", () => {
       source: "MIT_2024",
       sourceUrl: "https://dataverse.harvard.edu/api/access/datafile/13731101",
       format: "medsl_precinct_csv",
+      officeTypes: ["US_HOUSE"],
       dryRun: true,
       staleAfterRedistricting: false,
     });
@@ -266,6 +269,28 @@ describe("importHistoricalContestMarginsCli", () => {
         headers: expect.any(Headers),
       })
     );
+  });
+
+  it("rejects guestbook signed URLs for unexpected hosts", async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce({
+      ok: true,
+      text: vi.fn().mockResolvedValue(
+        JSON.stringify({
+          status: "OK",
+          data: {
+            signedUrl: "https://evil.test/api/access/datafile/123?token=signed",
+          },
+        })
+      ),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(
+      fetchHistoricalContestCsv("https://dataverse.harvard.edu/api/access/datafile/123", {
+        downloadMode: "dataverse_guestbook",
+      })
+    ).rejects.toThrow("Dataverse guestbook returned signed URL for unexpected host: evil.test");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it("throws a clear error when remote CSV fetches time out", async () => {

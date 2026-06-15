@@ -166,7 +166,8 @@ describe("historicalContestMarginLookup", () => {
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).toContain("jsonb_to_recordset");
     expect(query.mock.calls[0]?.[0]).toContain("ROW_NUMBER() OVER");
-    expect(query.mock.calls[0]?.[0]).toContain("WHERE row_rank <= 3");
+    expect(query.mock.calls[0]?.[0]).toContain("WHERE row_rank <= $2");
+    expect(query.mock.calls[0]?.[1]?.[1]).toBe(HISTORICAL_CONTEST_WEIGHTED_MARGIN_WEIGHTS.length);
     expect(JSON.parse(query.mock.calls[0]?.[1]?.[0] as string)).toEqual([
       {
         lookup_id: "house-ca-31",

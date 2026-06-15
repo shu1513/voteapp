@@ -3,6 +3,7 @@ import { Pool, type PoolClient } from "pg";
 import { getPipelineEnv } from "../config/env.js";
 import { importHistoricalContestMarginsFromCsv } from "../pipeline/competitiveness/historicalContestCsvImport.js";
 import { importHistoricalContestMarginsFromPrecinctCsv } from "../pipeline/competitiveness/historicalContestPrecinctCsvImport.js";
+import type { HistoricalContestOfficeType } from "../pipeline/competitiveness/historicalContestKeys.js";
 import type { HistoricalContestSourceFormat } from "../pipeline/competitiveness/historicalContestSources.js";
 import {
   loadHistoricalContestMarginImportInput,
@@ -34,6 +35,7 @@ async function importHistoricalContestMarginsForFormat(
     source: string;
     sourceUrl: string | null;
     format: HistoricalContestSourceFormat;
+    officeTypes?: readonly HistoricalContestOfficeType[] | null;
     staleAfterRedistricting: boolean;
     dryRun: boolean;
     importedAt: Date;
@@ -43,6 +45,7 @@ async function importHistoricalContestMarginsForFormat(
     csv: input.csv,
     source: input.source,
     sourceUrl: input.sourceUrl,
+    officeTypes: input.officeTypes ?? undefined,
     staleAfterRedistricting: input.staleAfterRedistricting,
     dryRun: input.dryRun,
     importedAt: input.importedAt,
@@ -75,6 +78,7 @@ async function main(): Promise<void> {
       source: args.source,
       sourceUrl: input.sourceUrl,
       format: args.format,
+      officeTypes: args.officeTypes,
       staleAfterRedistricting: args.staleAfterRedistricting,
       dryRun: args.dryRun,
       importedAt: startedAt,

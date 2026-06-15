@@ -12,6 +12,7 @@ import {
   type HistoricalContestNormalizationSkippedRow,
   type MedslHistoricalContestCandidateRow,
 } from "./historicalContestNormalizer.js";
+import type { HistoricalContestOfficeType } from "./historicalContestKeys.js";
 import {
   upsertHistoricalContestMargins,
   type HistoricalContestMarginWriteResult,
@@ -398,6 +399,7 @@ export async function importHistoricalContestMarginsFromPrecinctCsv(
     csv: string;
     source: string;
     sourceUrl?: string | null;
+    officeTypes?: readonly HistoricalContestOfficeType[];
     staleAfterRedistricting?: boolean;
     dryRun?: boolean;
     importedAt?: Date;
@@ -409,6 +411,7 @@ export async function importHistoricalContestMarginsFromPrecinctCsv(
     source: input.source,
     sourceUrl: input.sourceUrl,
     rows: aggregatedRows,
+    officeTypes: input.officeTypes,
     staleAfterRedistricting: input.staleAfterRedistricting,
   });
 

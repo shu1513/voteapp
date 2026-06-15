@@ -55,6 +55,17 @@ Ballot summaries expose this field on office-race summaries:
         "competitiveness_label": "competitive",
         "stale_after_redistricting": false,
         "weight": 0.625
+      },
+      {
+        "source": "MIT_2022",
+        "source_url": "https://...",
+        "election_year": 2022,
+        "winner_party": "DEMOCRAT",
+        "runner_up_party": "REPUBLICAN",
+        "margin_percent": 14.3,
+        "competitiveness_label": "somewhat_competitive",
+        "stale_after_redistricting": false,
+        "weight": 0.375
       }
     ]
   }
@@ -122,10 +133,10 @@ The verified importer handles this by requesting a signed Dataverse download URL
 Configure these optional values for the submitted guestbook response:
 
 ```bash
-DATAVERSE_GUESTBOOK_NAME=VoteApp Historical Contest Importer
+DATAVERSE_GUESTBOOK_NAME="VoteApp Historical Contest Importer"
 DATAVERSE_GUESTBOOK_EMAIL=data-import@example.invalid
 DATAVERSE_GUESTBOOK_INSTITUTION=VoteApp
-DATAVERSE_GUESTBOOK_POSITION=Data importer
+DATAVERSE_GUESTBOOK_POSITION="Data importer"
 ```
 
 ## Commands

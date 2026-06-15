@@ -37,6 +37,15 @@ type DataverseDatasetFile = {
   label: string;
 };
 
+const DATAVERSE_DATASET_FETCH_TIMEOUT_MS = 30_000;
+
+function isAbortError(error: unknown): boolean {
+  return (
+    (error instanceof DOMException && error.name === "AbortError") ||
+    (error instanceof Error && error.name === "AbortError")
+  );
+}
+
 function countSkippedReasons(
   skippedRows: readonly { reason: string }[]
 ): Record<string, number> {
@@ -64,6 +73,7 @@ async function importVerifiedSourceByFormat(input: {
     csv: input.csv,
     source: input.source.source,
     sourceUrl: input.sourceUrl,
+    officeTypes: input.source.officeTypes,
     staleAfterRedistricting: input.source.staleAfterRedistricting,
     dryRun: input.dryRun,
     importedAt: input.importedAt,
@@ -143,7 +153,7 @@ function mergeSourceSummaries(summaries: readonly SourceImportSummary[]): Source
 }
 
 function isHistoricalContestDataFile(label: string): boolean {
-  return /\.(csv|tab)$/i.test(label.trim());
+  return /\.(csv|tsv|tab)$/i.test(label.trim());
 }
 
 function normalizeDataverseDataFileUrl(fileId: unknown): string | null {
@@ -157,11 +167,26 @@ function normalizeDataverseDataFileUrl(fileId: unknown): string | null {
 async function loadDataverseDatasetFiles(persistentId: string): Promise<DataverseDatasetFile[]> {
   const url = new URL("https://dataverse.harvard.edu/api/datasets/:persistentId");
   url.searchParams.set("persistentId", persistentId);
-  const response = await fetch(url, {
-    headers: {
-      accept: "application/json",
-    },
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), DATAVERSE_DATASET_FETCH_TIMEOUT_MS);
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      headers: {
+        accept: "application/json",
+      },
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (isAbortError(error)) {
+      throw new Error(
+        `Failed to load Dataverse dataset ${persistentId}: request timed out after ${DATAVERSE_DATASET_FETCH_TIMEOUT_MS}ms`
+      );
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
   if (!response.ok) {
     throw new Error(`Failed to load Dataverse dataset ${persistentId}: ${response.status} ${response.statusText}`);
   }

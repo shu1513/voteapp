@@ -140,6 +140,35 @@ describe("historicalContestCsvImport", () => {
     expect(query).not.toHaveBeenCalled();
   });
 
+  it("applies the office allowlist during aggregate imports", async () => {
+    const query = vi.fn();
+    const mixedOfficeCsv = [
+      "year,state_po,state_fips,office,district,stage,candidate,party_detailed,party_simplified,candidatevotes,totalvotes",
+      "2024,CA,06,US PRESIDENT,STATEWIDE,GEN,President One,Democrat,DEMOCRAT,600,1000",
+      "2024,CA,06,US PRESIDENT,STATEWIDE,GEN,President Two,Republican,REPUBLICAN,400,1000",
+      "2024,CA,06,GOVERNOR,STATEWIDE,GEN,Governor One,Democrat,DEMOCRAT,550,1000",
+      "2024,CA,06,GOVERNOR,STATEWIDE,GEN,Governor Two,Republican,REPUBLICAN,450,1000",
+    ].join("\n");
+
+    await expect(
+      importHistoricalContestMarginsFromCsv(
+        { query } as never,
+        {
+          csv: mixedOfficeCsv,
+          source: "MIT_2024",
+          officeTypes: ["GOVERNOR"],
+          dryRun: true,
+        }
+      )
+    ).resolves.toMatchObject({
+      parsedRows: 4,
+      normalizedRecords: 1,
+      skippedRows: [{ reason: "excluded_office" }, { reason: "excluded_office" }],
+      writeResult: null,
+    });
+    expect(query).not.toHaveBeenCalled();
+  });
+
   it("writes normalized records when dry-run mode is off", async () => {
     const query = vi.fn().mockResolvedValue({ rowCount: 1 });
 

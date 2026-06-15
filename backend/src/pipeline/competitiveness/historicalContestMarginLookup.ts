@@ -361,10 +361,10 @@ export async function lookupHistoricalContestMarginRows(
         stale_after_redistricting,
         imported_at
       FROM ranked_margins
-      WHERE row_rank <= 3
+      WHERE row_rank <= $2
       ORDER BY lookup_id, row_rank
     `,
-    [JSON.stringify(keys)]
+    [JSON.stringify(keys), HISTORICAL_CONTEST_WEIGHTED_MARGIN_WEIGHTS.length]
   );
 
   const rowsByLookupId = new Map<string, HistoricalContestMarginLookupRecord[]>();

@@ -37,8 +37,15 @@ describe("historicalContestSources", () => {
       for (const sourceFile of source.sourceFiles ?? []) {
         expect(sourceFile.startsWith("https://")).toBe(true);
       }
+      if (source.sourceFiles) {
+        expect(new Set(source.sourceFiles).size).toBe(source.sourceFiles.length);
+      }
       for (const persistentId of source.sourceFileDiscovery?.dataverseDatasetPersistentIds ?? []) {
         expect(persistentId.startsWith("doi:10.7910/DVN/")).toBe(true);
+      }
+      if (source.sourceFileDiscovery?.dataverseDatasetPersistentIds) {
+        const persistentIds = source.sourceFileDiscovery.dataverseDatasetPersistentIds;
+        expect(new Set(persistentIds).size).toBe(persistentIds.length);
       }
       expect(source.electionYear).toBeGreaterThanOrEqual(1800);
       expect(source.electionYear).toBeLessThanOrEqual(2100);

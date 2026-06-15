@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
+import type { HistoricalContestOfficeType } from "../pipeline/competitiveness/historicalContestKeys.js";
 import {
   type HistoricalContestSourceFormat,
   listVerifiedHistoricalContestSourcePresets,
@@ -16,6 +17,7 @@ export type HistoricalContestMarginImportArgs = {
   source: string;
   sourceUrl: string | null;
   format: HistoricalContestSourceFormat;
+  officeTypes: readonly HistoricalContestOfficeType[] | null;
   dryRun: boolean;
   staleAfterRedistricting: boolean;
 };
@@ -133,6 +135,15 @@ function extractDataverseSignedUrl(payload: unknown): string {
   throw new Error("Dataverse guestbook response did not include a signed URL");
 }
 
+function validateDataverseSignedUrl(signedUrl: string, requestedUrl: string): string {
+  const parsedSignedUrl = new URL(parseHttpUrl(signedUrl, "Dataverse signed URL"));
+  const parsedRequestedUrl = new URL(requestedUrl);
+  if (parsedSignedUrl.hostname !== parsedRequestedUrl.hostname) {
+    throw new Error(`Dataverse guestbook returned signed URL for unexpected host: ${parsedSignedUrl.hostname}`);
+  }
+  return parsedSignedUrl.toString();
+}
+
 function parsePreset(value: string | undefined): HistoricalContestMarginImportPresetName | null {
   const preset = value?.trim();
   if (!preset) {
@@ -198,6 +209,7 @@ export function parseHistoricalContestMarginImportArgs(args: readonly string[]):
     source,
     sourceUrl: sourceUrl ? parseHttpUrl(sourceUrl, "--source-url") : presetUrl ?? normalizedUrl,
     format: explicitFormat ?? presetConfig?.format ?? "medsl_aggregate_csv",
+    officeTypes: presetConfig?.officeTypes ?? null,
     dryRun: args.includes("--dry-run"),
     staleAfterRedistricting: args.includes("--stale-after-redistricting"),
   };
@@ -254,7 +266,7 @@ async function fetchDataverseSignedCsv(
     throw new Error("Dataverse guestbook response was not valid JSON");
   }
 
-  const signedUrl = extractDataverseSignedUrl(payload);
+  const signedUrl = validateDataverseSignedUrl(extractDataverseSignedUrl(payload), url);
   const signedResponse = await fetchTextWithTimeout(signedUrl);
   if (!signedResponse.ok) {
     throw new Error(
