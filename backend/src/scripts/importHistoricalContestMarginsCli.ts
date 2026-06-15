@@ -1,12 +1,20 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
+import {
+  type HistoricalContestSourceFormat,
+  listVerifiedHistoricalContestSourcePresets,
+  VERIFIED_HISTORICAL_CONTEST_SOURCE_BY_PRESET,
+  type VerifiedHistoricalContestSourcePreset,
+} from "../pipeline/competitiveness/historicalContestSources.js";
+
 export type HistoricalContestMarginImportArgs = {
   inputKind: "file" | "url" | "preset";
   input: string;
   preset: HistoricalContestMarginImportPresetName | null;
   source: string;
   sourceUrl: string | null;
+  format: HistoricalContestSourceFormat;
   dryRun: boolean;
   staleAfterRedistricting: boolean;
 };
@@ -17,18 +25,9 @@ export type HistoricalContestMarginImportInput = {
   sourceUrl: string | null;
 };
 
-export const HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS = {
-  "medsl-2024-president-state": {
-    url: "https://raw.githubusercontent.com/MEDSL/2024-elections-official/main/2024-president-state.csv",
-    source: "MIT_2024",
-  },
-  "medsl-2024-senate-state": {
-    url: "https://raw.githubusercontent.com/MEDSL/2024-elections-official/main/2024-senate-state.csv",
-    source: "MIT_2024",
-  },
-} as const;
+export const HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS = VERIFIED_HISTORICAL_CONTEST_SOURCE_BY_PRESET;
 
-export type HistoricalContestMarginImportPresetName = keyof typeof HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS;
+export type HistoricalContestMarginImportPresetName = VerifiedHistoricalContestSourcePreset;
 
 const HISTORICAL_CONTEST_CSV_FETCH_TIMEOUT_MS = 30_000;
 
@@ -63,19 +62,31 @@ function parsePreset(value: string | undefined): HistoricalContestMarginImportPr
   if (!preset) {
     return null;
   }
-  if (!(preset in HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS)) {
+  if (!Object.prototype.hasOwnProperty.call(HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS, preset)) {
     throw new Error(
       `Unknown historical contest import preset: ${preset}. ` +
-        `Known presets: ${Object.keys(HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS).join(", ")}`
+        `Known presets: ${listVerifiedHistoricalContestSourcePresets().join(", ")}`
     );
   }
   return preset as HistoricalContestMarginImportPresetName;
+}
+
+function parseFormat(value: string | undefined): HistoricalContestSourceFormat | null {
+  const format = value?.trim();
+  if (!format) {
+    return null;
+  }
+  if (format !== "medsl_aggregate_csv" && format !== "medsl_precinct_csv") {
+    throw new Error(`Unknown historical contest import format: ${format}`);
+  }
+  return format;
 }
 
 export function parseHistoricalContestMarginImportArgs(args: readonly string[]): HistoricalContestMarginImportArgs {
   const file = readValueFlag(args, "--file")?.trim();
   const url = readValueFlag(args, "--url")?.trim();
   const preset = parsePreset(readValueFlag(args, "--preset"));
+  const explicitFormat = parseFormat(readValueFlag(args, "--format"));
   const inputCount = [file, url, preset].filter(Boolean).length;
   if (inputCount !== 1) {
     throw new Error("Provide exactly one input flag: --file=..., --url=..., or --preset=...");
@@ -84,10 +95,15 @@ export function parseHistoricalContestMarginImportArgs(args: readonly string[]):
   const presetConfig = preset ? HISTORICAL_CONTEST_MARGIN_IMPORT_PRESETS[preset] : null;
   const sourceUrl = readValueFlag(args, "--source-url")?.trim() || null;
   const normalizedUrl = url ? parseHttpUrl(url, "--url") : null;
-  const presetUrl = presetConfig ? parseHttpUrl(presetConfig.url, "--preset") : null;
+  const presetUrl = presetConfig ? parseHttpUrl(presetConfig.sourceUrl, "--preset") : null;
   const source = readValueFlag(args, "--source")?.trim() || presetConfig?.source;
   if (!source) {
     throw new Error("Missing required flag: --source=...");
+  }
+  if (presetConfig && explicitFormat && explicitFormat !== presetConfig.format) {
+    throw new Error(
+      `Preset ${presetConfig.preset} uses format ${presetConfig.format}; received --format=${explicitFormat}`
+    );
   }
 
   return {
@@ -96,6 +112,7 @@ export function parseHistoricalContestMarginImportArgs(args: readonly string[]):
     preset,
     source,
     sourceUrl: sourceUrl ? parseHttpUrl(sourceUrl, "--source-url") : presetUrl ?? normalizedUrl,
+    format: explicitFormat ?? presetConfig?.format ?? "medsl_aggregate_csv",
     dryRun: args.includes("--dry-run"),
     staleAfterRedistricting: args.includes("--stale-after-redistricting"),
   };

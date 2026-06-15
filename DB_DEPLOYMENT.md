@@ -58,6 +58,53 @@ After `db:migrate`, run domain seed scripts in this order:
 
 This order ensures office and alias rows exist before office-to-research-area mappings are seeded.
 
+## Historical Competitiveness Data
+
+Historical competitiveness margins are imported into `public.historical_contest_margins` and then read locally by ballot
+summary lookups. Runtime API requests do **not** call MIT/MEDSL.
+
+After `db:migrate`, import the verified MIT/MEDSL sources:
+
+```bash
+cd backend
+npm run competitiveness:import:verified
+npm run competitiveness:status
+```
+
+For a manual annual refresh after MIT/MEDSL publishes updated verified sources, use:
+
+```bash
+npm run competitiveness:refresh
+```
+
+This is intentionally a manual/deploy job for now, not a BullMQ scheduler.
+
+Use `--dry-run` first in new environments if you want to verify remote fetch/parsing without writing rows:
+
+```bash
+npm run competitiveness:import:verified -- --dry-run
+```
+
+Current verified remote coverage is intentionally limited to parser-compatible MEDSL aggregate CSVs:
+
+1. 2024 President, statewide
+2. 2024 U.S. Senate, statewide
+
+The manual importer also supports extracted MEDSL per-state precinct CSVs for U.S. House, Governor, State Senate, and State
+House. Use `medsl_precinct_csv` only after extracting the CSV from the MEDSL state ZIP:
+
+```bash
+npm run competitiveness:import -- \
+  --file=/path/to/nc24.csv \
+  --source=MIT_2024 \
+  --source-url=https://github.com/MEDSL/2024-elections-official \
+  --format=medsl_precinct_csv \
+  --dry-run
+```
+
+Do not add MEDSL per-state ZIP URLs directly to verified sources yet. The importer supports precinct CSV aggregation, but it
+does not unzip remote files or depend on a ZIP library.
+
 ## Candidate Record Rollover Rollout
 
 Candidate record research now has a daily rollover scheduler and a feature flag gate.

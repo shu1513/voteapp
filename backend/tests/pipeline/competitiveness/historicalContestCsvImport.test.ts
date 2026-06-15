@@ -43,6 +43,29 @@ describe("historicalContestCsvImport", () => {
     ]);
   });
 
+  it("parses MEDSL CSV rows when the first header has a UTF-8 BOM", () => {
+    const bomCsv = [
+      "\uFEFFyear,state_po,state_fips,office,district,stage,candidate,party_detailed,party_simplified,candidatevotes,totalvotes",
+      "2024,CA,06,US HOUSE,31,GEN,Johnson,Republican,REPUBLICAN,90800,200000",
+    ].join("\n");
+
+    expect(parseMedslHistoricalContestCsv(bomCsv)).toEqual([
+      {
+        year: "2024",
+        state_po: "CA",
+        state_fips: "06",
+        office: "US HOUSE",
+        district: "31",
+        candidate: "Johnson",
+        candidatevotes: "90800",
+        totalvotes: "200000",
+        party_simplified: "REPUBLICAN",
+        party_detailed: "Republican",
+        stage: "GEN",
+      },
+    ]);
+  });
+
   it("parses statewide MEDSL files that use votes and omit district", () => {
     const statewideCsv = [
       "year,state,state_po,state_fips,office,candidate,party_detailed,party_simplified,votes,totalvotes,stage",

@@ -23,6 +23,7 @@ describe("importHistoricalContestMarginsCli", () => {
       inputKind: "file",
       source: "MIT_2024",
       sourceUrl: "https://github.com/MEDSL/2024-elections-official",
+      format: "medsl_aggregate_csv",
       dryRun: true,
       staleAfterRedistricting: true,
     });
@@ -41,8 +42,25 @@ describe("importHistoricalContestMarginsCli", () => {
       preset: null,
       source: "MIT_2024",
       sourceUrl: "https://raw.githubusercontent.com/MEDSL/2024-elections-official/main/2024-senate-state.csv",
+      format: "medsl_aggregate_csv",
       dryRun: false,
       staleAfterRedistricting: false,
+    });
+  });
+
+  it("parses precinct CSV imports", () => {
+    const args = parseHistoricalContestMarginImportArgs([
+      "--file=./tmp/ca24.csv",
+      "--source=MIT_2024",
+      "--format=medsl_precinct_csv",
+      "--dry-run",
+    ]);
+
+    expect(args).toMatchObject({
+      inputKind: "file",
+      source: "MIT_2024",
+      format: "medsl_precinct_csv",
+      dryRun: true,
     });
   });
 
@@ -53,6 +71,7 @@ describe("importHistoricalContestMarginsCli", () => {
       preset: "medsl-2024-president-state",
       source: "MIT_2024",
       sourceUrl: "https://raw.githubusercontent.com/MEDSL/2024-elections-official/main/2024-president-state.csv",
+      format: "medsl_aggregate_csv",
       dryRun: true,
       staleAfterRedistricting: false,
     });
@@ -103,9 +122,30 @@ describe("importHistoricalContestMarginsCli", () => {
     ).toThrow("Invalid --url URL protocol: file:. Only https is allowed.");
   });
 
+  it("rejects unknown import formats", () => {
+    expect(() =>
+      parseHistoricalContestMarginImportArgs(["--file=./local.csv", "--source=MIT_2024", "--format=zip"])
+    ).toThrow("Unknown historical contest import format: zip");
+  });
+
+  it("rejects preset format overrides that do not match the catalog", () => {
+    expect(() =>
+      parseHistoricalContestMarginImportArgs([
+        "--preset=medsl-2024-president-state",
+        "--format=medsl_precinct_csv",
+      ])
+    ).toThrow("Preset medsl-2024-president-state uses format medsl_aggregate_csv");
+  });
+
   it("rejects unknown presets", () => {
     expect(() => parseHistoricalContestMarginImportArgs(["--preset=medsl-2024-governor-state"])).toThrow(
       "Known presets: medsl-2024-president-state, medsl-2024-senate-state"
+    );
+  });
+
+  it("rejects inherited object property names as presets", () => {
+    expect(() => parseHistoricalContestMarginImportArgs(["--preset=constructor"])).toThrow(
+      "Unknown historical contest import preset: constructor"
     );
   });
 
