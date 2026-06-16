@@ -14,7 +14,10 @@ import {
   type HistoricalContestNormalizationSkippedRow,
   type MedslHistoricalContestCandidateRow,
 } from "./historicalContestNormalizer.js";
-import type { HistoricalContestOfficeType } from "./historicalContestKeys.js";
+import {
+  mapHistoricalOfficeTypeToMitOffice,
+  type HistoricalContestOfficeType,
+} from "./historicalContestKeys.js";
 import {
   upsertHistoricalContestMargins,
   type HistoricalContestMarginWriteResult,
@@ -62,6 +65,12 @@ type CandidateVoteAccumulator = {
   votes: number;
   partySimplifiedVotes: Map<string, number>;
   partyDetailedVotes: Map<string, number>;
+};
+
+type CountyContestIdentity = {
+  officeType: HistoricalContestOfficeType;
+  office: string;
+  district: string;
 };
 
 const REQUIRED_MEDSL_PRECINCT_COLUMNS = [
@@ -174,7 +183,138 @@ function isStatewideMitOffice(value: string): boolean {
   return isStatewideHistoricalContestMitOffice(value);
 }
 
+function normalizeFipsComponent(value: string | null | undefined): string | null {
+  const normalized = normalizeKeyText(value);
+  return /^[0-9]+$/.test(normalized) ? normalized : null;
+}
+
+function normalizeCountyFips(row: MedslHistoricalContestPrecinctRow): string | null {
+  const stateFips = normalizeFipsComponent(row.state_fips)?.padStart(2, "0") ?? null;
+  if (!stateFips || !/^[0-9]{2}$/.test(stateFips)) {
+    return null;
+  }
+
+  const countyFips = normalizeFipsComponent(row.county_fips);
+  if (!countyFips) {
+    return null;
+  }
+
+  if (/^[0-9]{3}$/.test(countyFips)) {
+    return `${stateFips}${countyFips}`;
+  }
+  if (/^[0-9]{5}$/.test(countyFips) && countyFips.startsWith(stateFips)) {
+    return countyFips;
+  }
+  return null;
+}
+
+function isCountywideDistrict(row: MedslHistoricalContestPrecinctRow, countyFips: string): boolean {
+  const rawDistrict = normalizeKeyText(row.district);
+  if (!rawDistrict) {
+    return true;
+  }
+  if (!/^[0-9]+$/.test(rawDistrict)) {
+    return false;
+  }
+  const district = rawDistrict;
+  return district === countyFips || district.padStart(3, "0") === countyFips.slice(2);
+}
+
+function withoutCountyPrefix(office: string, countyName: string): { office: string; hadCountyPrefix: boolean } {
+  const normalizedCountyName = normalizeCandidateBucket(countyName).replace(/\s+COUNTY$/, "");
+  if (!normalizedCountyName) {
+    return {
+      office,
+      hadCountyPrefix: office.startsWith("COUNTY "),
+    };
+  }
+
+  for (const prefix of [`${normalizedCountyName} COUNTY `, `${normalizedCountyName} `]) {
+    if (office.startsWith(prefix)) {
+      return {
+        office: office.slice(prefix.length).trim(),
+        hadCountyPrefix: true,
+      };
+    }
+  }
+
+  return {
+    office,
+    hadCountyPrefix: office.startsWith("COUNTY "),
+  };
+}
+
+function countyOfficeTypeForLabel(
+  officeLabel: string,
+  hadCountyPrefix: boolean
+): HistoricalContestOfficeType | null {
+  // County labels are intentionally exact. Bare labels such as "CLERK" are
+  // accepted only after the row is already proven countywide by county FIPS.
+  switch (officeLabel) {
+    case "COUNTY SHERIFF":
+    case "SHERIFF":
+      return "COUNTY_SHERIFF";
+    case "COUNTY CLERK":
+    case "CLERK":
+      return "COUNTY_CLERK";
+    case "COUNTY ASSESSOR":
+    case "ASSESSOR":
+      return "COUNTY_ASSESSOR";
+    case "COUNTY AUDITOR":
+    case "AUDITOR":
+      return "COUNTY_AUDITOR";
+    case "COUNTY TREASURER":
+    case "TREASURER":
+      return "COUNTY_TREASURER";
+    case "COUNTY RECORDER":
+    case "RECORDER":
+      return "COUNTY_RECORDER";
+    case "COUNTY CORONER":
+    case "CORONER":
+      return "COUNTY_CORONER";
+    case "COUNTY DISTRICT ATTORNEY":
+    case "COUNTY ATTORNEY":
+    case "COUNTY PROSECUTING ATTORNEY":
+    case "COUNTY PROSECUTOR":
+    case "DISTRICT ATTORNEY":
+    case "ATTORNEY":
+    case "PROSECUTING ATTORNEY":
+    case "PROSECUTOR":
+      return hadCountyPrefix ? "DISTRICT_ATTORNEY" : null;
+    default:
+      return null;
+  }
+}
+
+function countyContestIdentity(row: MedslHistoricalContestPrecinctRow): CountyContestIdentity | null {
+  const countyFips = normalizeCountyFips(row);
+  if (!countyFips || !isCountywideDistrict(row, countyFips)) {
+    return null;
+  }
+
+  const office = normalizeCandidateBucket(row.office);
+  const stripped = withoutCountyPrefix(office, row.county_name ?? row.jurisdiction_name ?? "");
+  const officeType = countyOfficeTypeForLabel(stripped.office, stripped.hadCountyPrefix);
+  if (!officeType) {
+    return null;
+  }
+
+  return {
+    officeType,
+    office: mapHistoricalOfficeTypeToMitOffice(officeType),
+    district: countyFips,
+  };
+}
+
+function outputOffice(row: MedslHistoricalContestPrecinctRow): string {
+  return countyContestIdentity(row)?.office ?? row.office;
+}
+
 function outputDistrict(row: MedslHistoricalContestPrecinctRow): string {
+  const countyContest = countyContestIdentity(row);
+  if (countyContest) {
+    return countyContest.district;
+  }
   return row.district ?? (isStatewideMitOffice(row.office) ? "STATEWIDE" : "");
 }
 
@@ -187,7 +327,7 @@ function contestKey(row: MedslHistoricalContestPrecinctRow): string {
     normalizeKeyText(row.year),
     normalizeKeyText(row.state_po),
     normalizeKeyText(row.state_fips),
-    normalizeKeyText(row.office),
+    normalizeKeyText(outputOffice(row)),
     normalizeKeyText(outputDistrict(row)),
     normalizeKeyText(row.stage),
     normalizeKeyText(row.special),
@@ -236,7 +376,7 @@ function candidateRowFromPrecinctRow(
     year: row.year,
     state_po: row.state_po,
     state_fips: row.state_fips,
-    office: row.office,
+    office: outputOffice(row),
     district: outputDistrict(row),
     candidate: representativeCandidateName(row.candidate),
     candidatevotes: candidateVotes,
@@ -368,7 +508,7 @@ export function aggregateMedslPrecinctRowsToCandidateRows(
         year: firstRow.year,
         state_po: firstRow.state_po,
         state_fips: firstRow.state_fips,
-        office: firstRow.office,
+        office: outputOffice(firstRow),
         district: outputDistrict(firstRow),
         candidate: candidate.candidate,
         candidatevotes: String(candidate.votes),

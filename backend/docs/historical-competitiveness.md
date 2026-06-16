@@ -23,8 +23,18 @@ Historical competitiveness is currently linked for:
 - Superintendent of Public Instruction
 - Commissioner of Agriculture
 - Commissioner of Insurance
+- Labor Commissioner
+- Land Commissioner
 - State Senator
 - State lower chamber legislator
+- Sheriff
+- District Attorney
+- County Clerk
+- County Assessor
+- County Auditor
+- County Treasurer
+- County Recorder
+- County Coroner
 
 The lookup uses the office canonical name plus district identity:
 
@@ -32,6 +42,12 @@ The lookup uses the office canonical name plus district identity:
 - U.S. House uses the congressional district key.
 - State Senate uses the state upper chamber district key.
 - State House / Assembly uses the state lower chamber district key.
+- Supported county offices use the county FIPS district key.
+
+County historical imports are intentionally narrow. The precinct importer only accepts
+countywide rows with a valid county FIPS and safe office labels. It does not import
+county commission/supervisor seats, city offices, school boards, constables, judicial
+offices, or generic multi-county district-attorney rows.
 
 ## API Shape
 
@@ -114,12 +130,12 @@ Example: a `45-40-15` race has a `5` point margin because the denominator is all
 
 ## Redistricting Guard
 
-District-level races are only compared within the current redistricting cycle.
+U.S. House and state-legislative races are only compared within the current redistricting cycle.
 
 For a 2026 U.S. House or state-legislative election, lookup ignores rows before 2022.
 For a 2032 U.S. House or state-legislative election, lookup ignores rows before 2032.
 
-Statewide races do not use this redistricting floor.
+Statewide and countywide races do not use this redistricting floor.
 
 ## Verified Import Sources
 

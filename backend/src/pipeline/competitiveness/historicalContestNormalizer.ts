@@ -123,8 +123,25 @@ const MIT_OFFICE_TO_HISTORICAL_TYPE: Record<string, HistoricalContestOfficeType>
   "COMMISSIONER OF AGRICULTURE": "COMMISSIONER_OF_AGRICULTURE",
   "INSURANCE COMMISSIONER": "COMMISSIONER_OF_INSURANCE",
   "COMMISSIONER OF INSURANCE": "COMMISSIONER_OF_INSURANCE",
+  "LABOR COMMISSIONER": "LABOR_COMMISSIONER",
+  "COMMISSIONER OF LABOR": "LABOR_COMMISSIONER",
+  "COMMISSIONER OF LABOR AND INDUSTRIES": "LABOR_COMMISSIONER",
+  "LABOR AND INDUSTRIES COMMISSIONER": "LABOR_COMMISSIONER",
+  "LAND COMMISSIONER": "LAND_COMMISSIONER",
+  "COMMISSIONER OF PUBLIC LANDS": "LAND_COMMISSIONER",
+  "COMMISSIONER OF STATE LANDS": "LAND_COMMISSIONER",
+  "COMMISSIONER OF THE GENERAL LAND OFFICE": "LAND_COMMISSIONER",
+  "GENERAL LAND OFFICE COMMISSIONER": "LAND_COMMISSIONER",
   "STATE SENATE": "STATE_SENATE",
   "STATE HOUSE": "STATE_HOUSE",
+  "COUNTY SHERIFF": "COUNTY_SHERIFF",
+  "DISTRICT ATTORNEY": "DISTRICT_ATTORNEY",
+  "COUNTY CLERK": "COUNTY_CLERK",
+  "COUNTY ASSESSOR": "COUNTY_ASSESSOR",
+  "COUNTY AUDITOR": "COUNTY_AUDITOR",
+  "COUNTY TREASURER": "COUNTY_TREASURER",
+  "COUNTY RECORDER": "COUNTY_RECORDER",
+  "COUNTY CORONER": "COUNTY_CORONER",
 };
 
 function normalizeText(value: string | number | null | undefined): string {
@@ -243,6 +260,10 @@ function isSpecialElection(value: string | null | undefined): boolean {
   return normalized === "TRUE" || normalized === "YES" || normalized === "Y" || normalized === "1";
 }
 
+function canBeStaleAfterRedistricting(districtType: HistoricalContestDistrictType): boolean {
+  return districtType === "us_house" || districtType === "state_upper" || districtType === "state_lower";
+}
+
 function toContestKey(input: {
   source: string;
   electionYear: number;
@@ -304,7 +325,12 @@ function rowToContestAccumulator(input: {
   }
 
   const districtType = expectedDistrictTypeForHistoricalOffice(officeType);
-  const mitDistrict = districtType === "statewide" ? "STATEWIDE" : normalizeMitDistrict(input.row.district);
+  const mitDistrict =
+    districtType === "statewide"
+      ? "STATEWIDE"
+      : districtType === "county"
+        ? normalizeText(input.row.district).toUpperCase()
+        : normalizeMitDistrict(input.row.district);
   const districtKey = fromMitDistrict({ districtType, mitDistrict, stateFips });
   if (!districtKey) {
     return { ok: false, skipped: { reason: "invalid_district", row: input.row } };
@@ -337,7 +363,7 @@ function rowToContestAccumulator(input: {
       districtKey,
       mitOffice: mapHistoricalOfficeTypeToMitOffice(officeType),
       mitDistrict,
-      staleAfterRedistricting: districtType !== "statewide" && input.staleAfterRedistricting,
+      staleAfterRedistricting: canBeStaleAfterRedistricting(districtType) && input.staleAfterRedistricting,
       totalVotes,
     },
     candidate: {

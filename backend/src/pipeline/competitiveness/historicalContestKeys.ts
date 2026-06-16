@@ -15,15 +15,25 @@ export const HISTORICAL_CONTEST_OFFICE_TYPES = [
   "SUPERINTENDENT_OF_PUBLIC_INSTRUCTION",
   "COMMISSIONER_OF_AGRICULTURE",
   "COMMISSIONER_OF_INSURANCE",
+  "LABOR_COMMISSIONER",
+  "LAND_COMMISSIONER",
   "STATE_SENATE",
   "STATE_HOUSE",
+  "COUNTY_SHERIFF",
+  "DISTRICT_ATTORNEY",
+  "COUNTY_CLERK",
+  "COUNTY_ASSESSOR",
+  "COUNTY_AUDITOR",
+  "COUNTY_TREASURER",
+  "COUNTY_RECORDER",
+  "COUNTY_CORONER",
 ] as const;
 
 export type HistoricalContestOfficeType = (typeof HISTORICAL_CONTEST_OFFICE_TYPES)[number];
 
 export type HistoricalContestDistrictType = Extract<
   ElectionDistrictType,
-  "statewide" | "us_house" | "state_upper" | "state_lower"
+  "statewide" | "us_house" | "state_upper" | "state_lower" | "county"
 >;
 
 export type HistoricalContestLookupKey = {
@@ -57,8 +67,18 @@ const OFFICE_TO_HISTORICAL_TYPE: Record<string, HistoricalContestOfficeType> = {
   "Superintendent of Public Instruction": "SUPERINTENDENT_OF_PUBLIC_INSTRUCTION",
   "Commissioner of Agriculture": "COMMISSIONER_OF_AGRICULTURE",
   "Commissioner of Insurance": "COMMISSIONER_OF_INSURANCE",
+  "Labor Commissioner": "LABOR_COMMISSIONER",
+  "Land Commissioner": "LAND_COMMISSIONER",
   "State Senator": "STATE_SENATE",
   "State Lower Chamber Legislator": "STATE_HOUSE",
+  Sheriff: "COUNTY_SHERIFF",
+  "District Attorney": "DISTRICT_ATTORNEY",
+  "County Clerk": "COUNTY_CLERK",
+  "County Assessor": "COUNTY_ASSESSOR",
+  "County Auditor": "COUNTY_AUDITOR",
+  "County Treasurer": "COUNTY_TREASURER",
+  "County Recorder": "COUNTY_RECORDER",
+  "County Coroner": "COUNTY_CORONER",
 };
 
 // Canonical MIT/MEDSL-style labels used for lookup keys and API context. These
@@ -77,8 +97,18 @@ const HISTORICAL_TYPE_TO_MIT_OFFICE: Record<HistoricalContestOfficeType, string>
   SUPERINTENDENT_OF_PUBLIC_INSTRUCTION: "SUPERINTENDENT OF PUBLIC INSTRUCTION",
   COMMISSIONER_OF_AGRICULTURE: "COMMISSIONER OF AGRICULTURE",
   COMMISSIONER_OF_INSURANCE: "COMMISSIONER OF INSURANCE",
+  LABOR_COMMISSIONER: "LABOR COMMISSIONER",
+  LAND_COMMISSIONER: "LAND COMMISSIONER",
   STATE_SENATE: "STATE SENATE",
   STATE_HOUSE: "STATE HOUSE",
+  COUNTY_SHERIFF: "COUNTY SHERIFF",
+  DISTRICT_ATTORNEY: "DISTRICT ATTORNEY",
+  COUNTY_CLERK: "COUNTY CLERK",
+  COUNTY_ASSESSOR: "COUNTY ASSESSOR",
+  COUNTY_AUDITOR: "COUNTY AUDITOR",
+  COUNTY_TREASURER: "COUNTY TREASURER",
+  COUNTY_RECORDER: "COUNTY RECORDER",
+  COUNTY_CORONER: "COUNTY CORONER",
 };
 
 const HISTORICAL_TYPE_TO_DISTRICT_TYPE: Record<HistoricalContestOfficeType, HistoricalContestDistrictType> = {
@@ -95,8 +125,18 @@ const HISTORICAL_TYPE_TO_DISTRICT_TYPE: Record<HistoricalContestOfficeType, Hist
   SUPERINTENDENT_OF_PUBLIC_INSTRUCTION: "statewide",
   COMMISSIONER_OF_AGRICULTURE: "statewide",
   COMMISSIONER_OF_INSURANCE: "statewide",
+  LABOR_COMMISSIONER: "statewide",
+  LAND_COMMISSIONER: "statewide",
   STATE_SENATE: "state_upper",
   STATE_HOUSE: "state_lower",
+  COUNTY_SHERIFF: "county",
+  DISTRICT_ATTORNEY: "county",
+  COUNTY_CLERK: "county",
+  COUNTY_ASSESSOR: "county",
+  COUNTY_AUDITOR: "county",
+  COUNTY_TREASURER: "county",
+  COUNTY_RECORDER: "county",
+  COUNTY_CORONER: "county",
 };
 
 function normalizeStateFips(value: string): string | null {
@@ -140,6 +180,10 @@ export function toMitDistrict(input: {
     return geoidCompact === stateFips ? "STATEWIDE" : null;
   }
 
+  if (districtType === "county") {
+    return geoidCompact.startsWith(stateFips) && /^[0-9]{5}$/.test(geoidCompact) ? geoidCompact : null;
+  }
+
   if (districtType !== "us_house" && districtType !== "state_upper" && districtType !== "state_lower") {
     return null;
   }
@@ -165,6 +209,10 @@ export function fromMitDistrict(input: {
 
   if (input.districtType === "statewide") {
     return mitDistrict === "STATEWIDE" ? stateFips : null;
+  }
+
+  if (input.districtType === "county") {
+    return mitDistrict.startsWith(stateFips) && /^[0-9]{5}$/.test(mitDistrict) ? mitDistrict : null;
   }
 
   if (!/^[0-9]+$/.test(mitDistrict)) {

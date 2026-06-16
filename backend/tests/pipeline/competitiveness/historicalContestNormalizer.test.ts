@@ -224,11 +224,43 @@ describe("historicalContestNormalizer", () => {
           totalvotes: 1_000_000,
           party_simplified: "REPUBLICAN",
         }),
+        row({
+          office: "LABOR COMMISSIONER",
+          district: "STATEWIDE",
+          candidate: "Labor Candidate",
+          candidatevotes: 580_000,
+          totalvotes: 1_000_000,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "LABOR COMMISSIONER",
+          district: "STATEWIDE",
+          candidate: "Other Labor Candidate",
+          candidatevotes: 420_000,
+          totalvotes: 1_000_000,
+          party_simplified: "REPUBLICAN",
+        }),
+        row({
+          office: "LAND COMMISSIONER",
+          district: "STATEWIDE",
+          candidate: "Land Candidate",
+          candidatevotes: 570_000,
+          totalvotes: 1_000_000,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "LAND COMMISSIONER",
+          district: "STATEWIDE",
+          candidate: "Other Land Candidate",
+          candidatevotes: 430_000,
+          totalvotes: 1_000_000,
+          party_simplified: "REPUBLICAN",
+        }),
       ],
     });
 
     expect(result.skippedRows).toEqual([]);
-    expect(result.records).toHaveLength(2);
+    expect(result.records).toHaveLength(4);
     expect(result.records).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -248,6 +280,24 @@ describe("historicalContestNormalizer", () => {
           mit_district: "STATEWIDE",
           stale_after_redistricting: false,
           margin_percent: 2,
+        }),
+        expect.objectContaining({
+          office_type: "LABOR_COMMISSIONER",
+          district_type: "statewide",
+          district_key: "06",
+          mit_office: "LABOR COMMISSIONER",
+          mit_district: "STATEWIDE",
+          stale_after_redistricting: false,
+          margin_percent: 16,
+        }),
+        expect.objectContaining({
+          office_type: "LAND_COMMISSIONER",
+          district_type: "statewide",
+          district_key: "06",
+          mit_office: "LAND COMMISSIONER",
+          mit_district: "STATEWIDE",
+          stale_after_redistricting: false,
+          margin_percent: 14,
         }),
       ])
     );
@@ -305,6 +355,38 @@ describe("historicalContestNormalizer", () => {
           totalvotes: 100,
           party_simplified: "REPUBLICAN",
         }),
+        row({
+          office: "COMMISSIONER OF LABOR AND INDUSTRIES",
+          district: "STATEWIDE",
+          candidate: "Labor Candidate",
+          candidatevotes: 56,
+          totalvotes: 100,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "COMMISSIONER OF LABOR AND INDUSTRIES",
+          district: "STATEWIDE",
+          candidate: "Other Labor Candidate",
+          candidatevotes: 44,
+          totalvotes: 100,
+          party_simplified: "REPUBLICAN",
+        }),
+        row({
+          office: "COMMISSIONER OF THE GENERAL LAND OFFICE",
+          district: "STATEWIDE",
+          candidate: "Land Candidate",
+          candidatevotes: 54,
+          totalvotes: 100,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "COMMISSIONER OF THE GENERAL LAND OFFICE",
+          district: "STATEWIDE",
+          candidate: "Other Land Candidate",
+          candidatevotes: 46,
+          totalvotes: 100,
+          party_simplified: "REPUBLICAN",
+        }),
       ],
     });
 
@@ -312,8 +394,87 @@ describe("historicalContestNormalizer", () => {
     expect(result.records.map((record) => record.office_type).sort()).toEqual([
       "COMMISSIONER_OF_INSURANCE",
       "COMPTROLLER",
+      "LABOR_COMMISSIONER",
+      "LAND_COMMISSIONER",
       "STATE_TREASURER",
     ]);
+  });
+
+  it("normalizes canonical countywide office labels with county FIPS districts", () => {
+    const result = normalizeMedslHistoricalContestMargins({
+      source: "MIT_2024",
+      staleAfterRedistricting: true,
+      rows: [
+        row({
+          state_po: "WA",
+          state_fips: "53",
+          office: "COUNTY SHERIFF",
+          district: "53011",
+          candidate: "Sheriff Candidate",
+          candidatevotes: 56_000,
+          totalvotes: 100_000,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          state_po: "WA",
+          state_fips: "53",
+          office: "COUNTY SHERIFF",
+          district: "53011",
+          candidate: "Other Sheriff Candidate",
+          candidatevotes: 44_000,
+          totalvotes: 100_000,
+          party_simplified: "REPUBLICAN",
+        }),
+        row({
+          state_po: "WA",
+          state_fips: "53",
+          office: "DISTRICT ATTORNEY",
+          district: "53033",
+          candidate: "Prosecutor Candidate",
+          candidatevotes: 52_000,
+          totalvotes: 100_000,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          state_po: "WA",
+          state_fips: "53",
+          office: "DISTRICT ATTORNEY",
+          district: "53033",
+          candidate: "Other Prosecutor Candidate",
+          candidatevotes: 48_000,
+          totalvotes: 100_000,
+          party_simplified: "REPUBLICAN",
+        }),
+      ],
+    });
+
+    expect(result.skippedRows).toEqual([]);
+    expect(result.records).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          state: "WA",
+          state_fips: "53",
+          office_type: "COUNTY_SHERIFF",
+          district_type: "county",
+          district_key: "53011",
+          mit_office: "COUNTY SHERIFF",
+          mit_district: "53011",
+          margin_percent: 12,
+          stale_after_redistricting: false,
+        }),
+        expect.objectContaining({
+          state: "WA",
+          state_fips: "53",
+          office_type: "DISTRICT_ATTORNEY",
+          district_type: "county",
+          district_key: "53033",
+          mit_office: "DISTRICT ATTORNEY",
+          mit_district: "53033",
+          margin_percent: 4,
+          stale_after_redistricting: false,
+        }),
+      ])
+    );
   });
 
   it("does not normalize generic, local, or ambiguous statewide executive-looking office labels", () => {
@@ -326,6 +487,9 @@ describe("historicalContestNormalizer", () => {
         row({ office: "COUNTY AUDITOR", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
         row({ office: "CONTROLLER", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
         row({ office: "COMMISSIONER", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "LABOR", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "LAND", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "PUBLIC LANDS BOARD", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
         row({ office: "CORPORATION COMMISSIONER", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
         row({ office: "PUBLIC SERVICE COMMISSIONER", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
         row({ office: "PRESIDENT, PUBLIC SERVICE COMMISSION", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
@@ -336,6 +500,9 @@ describe("historicalContestNormalizer", () => {
     expect(result.records).toEqual([]);
     expect(result.skippedRows.map((skipped) => skipped.reason)).toEqual([
       "unsupported_office",
+      "invalid_district",
+      "unsupported_office",
+      "invalid_district",
       "unsupported_office",
       "unsupported_office",
       "unsupported_office",

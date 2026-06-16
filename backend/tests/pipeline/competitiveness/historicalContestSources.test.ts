@@ -24,8 +24,18 @@ const CURRENTLY_IMPORTABLE_HISTORICAL_CONTEST_OFFICE_TYPES = [
   "SUPERINTENDENT_OF_PUBLIC_INSTRUCTION",
   "COMMISSIONER_OF_AGRICULTURE",
   "COMMISSIONER_OF_INSURANCE",
+  "LABOR_COMMISSIONER",
+  "LAND_COMMISSIONER",
   "STATE_SENATE",
   "STATE_HOUSE",
+  "COUNTY_SHERIFF",
+  "DISTRICT_ATTORNEY",
+  "COUNTY_CLERK",
+  "COUNTY_ASSESSOR",
+  "COUNTY_AUDITOR",
+  "COUNTY_TREASURER",
+  "COUNTY_RECORDER",
+  "COUNTY_CORONER",
 ] as const satisfies readonly HistoricalContestOfficeType[];
 
 const STATEWIDE_EXECUTIVE_HISTORICAL_CONTEST_OFFICE_TYPES = [
@@ -38,6 +48,8 @@ const STATEWIDE_EXECUTIVE_HISTORICAL_CONTEST_OFFICE_TYPES = [
   "SUPERINTENDENT_OF_PUBLIC_INSTRUCTION",
   "COMMISSIONER_OF_AGRICULTURE",
   "COMMISSIONER_OF_INSURANCE",
+  "LABOR_COMMISSIONER",
+  "LAND_COMMISSIONER",
 ] as const satisfies readonly HistoricalContestOfficeType[];
 
 const STATE_OFFICE_SOURCE_PRESETS = [
@@ -47,6 +59,17 @@ const STATE_OFFICE_SOURCE_PRESETS = [
   "medsl-2016-state-precinct",
   "medsl-2024-state-precinct",
 ] as const;
+
+const COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES = [
+  "COUNTY_SHERIFF",
+  "DISTRICT_ATTORNEY",
+  "COUNTY_CLERK",
+  "COUNTY_ASSESSOR",
+  "COUNTY_AUDITOR",
+  "COUNTY_TREASURER",
+  "COUNTY_RECORDER",
+  "COUNTY_CORONER",
+] as const satisfies readonly HistoricalContestOfficeType[];
 
 const FEDERAL_ONLY_SOURCE_PRESETS = [
   "medsl-2024-president-state",
@@ -138,6 +161,20 @@ describe("historicalContestSources", () => {
     }
   });
 
+  it("enables safe county offices only on per-state precinct sources", () => {
+    for (const preset of STATE_OFFICE_SOURCE_PRESETS) {
+      const source = VERIFIED_HISTORICAL_CONTEST_SOURCE_BY_PRESET[preset];
+      expect(source.officeTypes).toEqual(expect.arrayContaining(COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES));
+    }
+
+    for (const preset of FEDERAL_ONLY_SOURCE_PRESETS) {
+      const source = VERIFIED_HISTORICAL_CONTEST_SOURCE_BY_PRESET[preset];
+      for (const officeType of COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES) {
+        expect(source.officeTypes).not.toContain(officeType);
+      }
+    }
+  });
+
   it("covers multiple election years for weighted historical margins", () => {
     expect(new Set(VERIFIED_HISTORICAL_CONTEST_SOURCES.map((source) => source.electionYear))).toEqual(
       new Set([2016, 2018, 2020, 2022, 2024])
@@ -148,6 +185,14 @@ describe("historicalContestSources", () => {
     ).map((source) => source.electionYear);
 
     expect(new Set(governorYears)).toEqual(new Set([2016, 2018, 2020, 2022, 2024]));
+
+    for (const officeType of COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES) {
+      const countyOfficeYears = VERIFIED_HISTORICAL_CONTEST_SOURCES.filter((source) =>
+        source.officeTypes.includes(officeType)
+      ).map((source) => source.electionYear);
+
+      expect(new Set(countyOfficeYears)).toEqual(new Set([2016, 2018, 2020, 2022, 2024]));
+    }
   });
 
   it("uses per-state files for large precinct imports", () => {

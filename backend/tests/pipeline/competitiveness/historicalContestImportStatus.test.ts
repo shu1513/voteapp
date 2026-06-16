@@ -39,12 +39,22 @@ describe("historicalContestImportStatus", () => {
           latest_imported_at: "2026-06-15T03:04:05.000Z",
           source_urls: ["https://doi.org/10.7910/DVN/UYQIEP"],
         },
+        {
+          source: "MIT_2022",
+          election_year: 2022,
+          office_type: "COUNTY_SHERIFF",
+          district_type: "county",
+          stale_after_redistricting: false,
+          row_count: "7",
+          latest_imported_at: "2026-06-15T04:05:06.000Z",
+          source_urls: ["https://doi.org/10.7910/DVN/UYQIEP"],
+        },
       ],
     });
 
     const status = await loadHistoricalContestImportStatus({ query });
 
-    expect(status.total_records).toBe(109);
+    expect(status.total_records).toBe(116);
     expect(status.groups).toEqual([
       {
         source: "MIT_2024",
@@ -76,6 +86,16 @@ describe("historicalContestImportStatus", () => {
         stale_after_redistricting: false,
         row_count: 44,
         latest_imported_at: "2026-06-15T03:04:05.000Z",
+        source_urls: ["https://doi.org/10.7910/DVN/UYQIEP"],
+      },
+      {
+        source: "MIT_2022",
+        election_year: 2022,
+        office_type: "COUNTY_SHERIFF",
+        district_type: "county",
+        stale_after_redistricting: false,
+        row_count: 7,
+        latest_imported_at: "2026-06-15T04:05:06.000Z",
         source_urls: ["https://doi.org/10.7910/DVN/UYQIEP"],
       },
     ]);
@@ -118,7 +138,25 @@ describe("historicalContestImportStatus", () => {
       row_count: 44,
       latest_imported_at: "2026-06-15T03:04:05.000Z",
     });
+    expect(verifiedByPresetAndOffice.get("medsl-2022-precinct:COUNTY_SHERIFF")).toMatchObject({
+      source: "MIT_2022",
+      source_url: "https://doi.org/10.7910/DVN/UYQIEP",
+      format: "medsl_precinct_csv",
+      election_year: 2022,
+      imported: true,
+      row_count: 7,
+      latest_imported_at: "2026-06-15T04:05:06.000Z",
+    });
     expect(verifiedByPresetAndOffice.get("medsl-2024-state-precinct:STATE_TREASURER")).toMatchObject({
+      source: "MIT_2024",
+      source_url: "https://doi.org/10.7910/DVN/NYTPDU",
+      format: "medsl_precinct_csv",
+      election_year: 2024,
+      imported: false,
+      row_count: 0,
+      latest_imported_at: null,
+    });
+    expect(verifiedByPresetAndOffice.get("medsl-2024-state-precinct:COUNTY_SHERIFF")).toMatchObject({
       source: "MIT_2024",
       source_url: "https://doi.org/10.7910/DVN/NYTPDU",
       format: "medsl_precinct_csv",

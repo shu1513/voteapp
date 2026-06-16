@@ -122,8 +122,8 @@ describe("historicalContestMarginLookup", () => {
 
     const result = await lookupHistoricalContestMargins({ query } as never, [
       {
-        lookupId: "county-sheriff",
-        officeCanonicalName: "Sheriff",
+        lookupId: "county-commissioner",
+        officeCanonicalName: "County Commissioner",
         districtType: "county",
         geoidCompact: "06037",
         stateFips: "06",
@@ -280,7 +280,7 @@ describe("historicalContestMarginLookup", () => {
     ]);
   });
 
-  it("does not apply redistricting floors to statewide historical lookups", async () => {
+  it("does not apply redistricting floors to statewide or county historical lookups", async () => {
     const query = vi.fn().mockResolvedValue({ rows: [] });
 
     await lookupHistoricalContestMarginRows({ query } as never, [
@@ -289,6 +289,15 @@ describe("historicalContestMarginLookup", () => {
         officeCanonicalName: "Governor",
         districtType: "statewide",
         geoidCompact: "06",
+        stateFips: "06",
+        currentElectionYear: 2026,
+        maxElectionYear: 2024,
+      },
+      {
+        lookupId: "la-sheriff",
+        officeCanonicalName: "Sheriff",
+        districtType: "county",
+        geoidCompact: "06037",
         stateFips: "06",
         currentElectionYear: 2026,
         maxElectionYear: 2024,
@@ -307,6 +316,18 @@ describe("historicalContestMarginLookup", () => {
         district_key: "06",
         mit_office: "GOVERNOR",
         mit_district: "STATEWIDE",
+      },
+      {
+        lookup_id: "la-sheriff",
+        min_election_year: null,
+        max_election_year: 2024,
+        state: "CA",
+        state_fips: "06",
+        office_type: "COUNTY_SHERIFF",
+        district_type: "county",
+        district_key: "06037",
+        mit_office: "COUNTY SHERIFF",
+        mit_district: "06037",
       },
     ]);
   });

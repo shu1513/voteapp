@@ -197,6 +197,207 @@ describe("historicalContestPrecinctCsvImport", () => {
     expect(query).not.toHaveBeenCalled();
   });
 
+  it("normalizes safe countywide precinct office labels before import", async () => {
+    const query = vi.fn();
+    const countyOfficeCsv = [
+      "year,state_po,state_fips,county_name,county_fips,office,district,candidate,votes,party_simplified,stage,mode",
+      "2024,WA,53,CLARK,011,CLARK COUNTY SHERIFF,,Sheriff One,56000,DEMOCRAT,GEN,TOTAL",
+      "2024,WA,53,CLARK,011,CLARK COUNTY SHERIFF,,Sheriff Two,44000,REPUBLICAN,GEN,TOTAL",
+      "2024,WA,53,KING,53033,KING COUNTY PROSECUTING ATTORNEY,,Prosecutor One,52000,DEMOCRAT,GEN,TOTAL",
+      "2024,WA,53,KING,53033,KING COUNTY PROSECUTING ATTORNEY,,Prosecutor Two,48000,REPUBLICAN,GEN,TOTAL",
+    ].join("\n");
+
+    await expect(
+      importHistoricalContestMarginsFromPrecinctCsv(
+        { query } as never,
+        {
+          csv: countyOfficeCsv,
+          source: "MIT_2024",
+          officeTypes: ["COUNTY_SHERIFF", "DISTRICT_ATTORNEY"],
+          dryRun: true,
+        }
+      )
+    ).resolves.toMatchObject({
+      parsedRows: 4,
+      aggregatedRows: 4,
+      normalizedRecords: 2,
+      skippedRows: [],
+      writeResult: null,
+    });
+    expect(query).not.toHaveBeenCalled();
+
+    expect(parseAndAggregateMedslHistoricalContestPrecinctCsv(countyOfficeCsv)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          office: "COUNTY SHERIFF",
+          district: "53011",
+          candidate: "Sheriff One",
+          candidatevotes: "56000",
+          totalvotes: "100000",
+        }),
+        expect.objectContaining({
+          office: "DISTRICT ATTORNEY",
+          district: "53033",
+          candidate: "Prosecutor One",
+          candidatevotes: "52000",
+          totalvotes: "100000",
+        }),
+      ])
+    );
+  });
+
+  it("normalizes every supported countywide office type during precinct imports", async () => {
+    const query = vi.fn();
+    const supportedCountyOfficeTypes = [
+      "COUNTY_SHERIFF",
+      "DISTRICT_ATTORNEY",
+      "COUNTY_CLERK",
+      "COUNTY_ASSESSOR",
+      "COUNTY_AUDITOR",
+      "COUNTY_TREASURER",
+      "COUNTY_RECORDER",
+      "COUNTY_CORONER",
+    ] as const;
+    const rows = [
+      ["CLARK COUNTY SHERIFF", "Sheriff"],
+      ["CLARK COUNTY PROSECUTOR", "Prosecutor"],
+      ["CLARK COUNTY CLERK", "Clerk"],
+      ["CLARK COUNTY ASSESSOR", "Assessor"],
+      ["CLARK COUNTY AUDITOR", "Auditor"],
+      ["CLARK COUNTY TREASURER", "Treasurer"],
+      ["CLARK COUNTY RECORDER", "Recorder"],
+      ["CLARK COUNTY CORONER", "Coroner"],
+    ].flatMap(([office, candidate]) => [
+      `2024,WA,53,CLARK,011,${office},,${candidate} One,56000,DEMOCRAT,GEN,TOTAL`,
+      `2024,WA,53,CLARK,011,${office},,${candidate} Two,44000,REPUBLICAN,GEN,TOTAL`,
+    ]);
+    const countyOfficeCsv = [
+      "year,state_po,state_fips,county_name,county_fips,office,district,candidate,votes,party_simplified,stage,mode",
+      ...rows,
+    ].join("\n");
+
+    await expect(
+      importHistoricalContestMarginsFromPrecinctCsv(
+        { query } as never,
+        {
+          csv: countyOfficeCsv,
+          source: "MIT_2024",
+          officeTypes: supportedCountyOfficeTypes,
+          dryRun: true,
+        }
+      )
+    ).resolves.toMatchObject({
+      parsedRows: 16,
+      aggregatedRows: 16,
+      normalizedRecords: 8,
+      skippedRows: [],
+      writeResult: null,
+    });
+    expect(query).not.toHaveBeenCalled();
+
+    const aggregateOffices = new Set(
+      parseAndAggregateMedslHistoricalContestPrecinctCsv(countyOfficeCsv).map((row) => row.office)
+    );
+    expect(aggregateOffices).toEqual(
+      new Set([
+        "COUNTY SHERIFF",
+        "DISTRICT ATTORNEY",
+        "COUNTY CLERK",
+        "COUNTY ASSESSOR",
+        "COUNTY AUDITOR",
+        "COUNTY TREASURER",
+        "COUNTY RECORDER",
+        "COUNTY CORONER",
+      ])
+    );
+  });
+
+  it("normalizes county attorney labels as district attorney when county-scoped", async () => {
+    const query = vi.fn();
+    const countyOfficeCsv = [
+      "year,state_po,state_fips,county_name,county_fips,office,district,candidate,votes,party_simplified,stage,mode",
+      "2024,MN,27,HENNEPIN,053,HENNEPIN COUNTY ATTORNEY,,Attorney One,56000,DEMOCRAT,GEN,TOTAL",
+      "2024,MN,27,HENNEPIN,053,HENNEPIN COUNTY ATTORNEY,,Attorney Two,44000,REPUBLICAN,GEN,TOTAL",
+      "2024,IA,19,POLK,153,COUNTY ATTORNEY,,County Attorney One,52000,DEMOCRAT,GEN,TOTAL",
+      "2024,IA,19,POLK,153,COUNTY ATTORNEY,,County Attorney Two,48000,REPUBLICAN,GEN,TOTAL",
+    ].join("\n");
+
+    await expect(
+      importHistoricalContestMarginsFromPrecinctCsv(
+        { query } as never,
+        {
+          csv: countyOfficeCsv,
+          source: "MIT_2024",
+          officeTypes: ["DISTRICT_ATTORNEY"],
+          dryRun: true,
+        }
+      )
+    ).resolves.toMatchObject({
+      parsedRows: 4,
+      aggregatedRows: 4,
+      normalizedRecords: 2,
+      skippedRows: [],
+      writeResult: null,
+    });
+    expect(query).not.toHaveBeenCalled();
+
+    expect(parseAndAggregateMedslHistoricalContestPrecinctCsv(countyOfficeCsv)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          office: "DISTRICT ATTORNEY",
+          district: "27053",
+          candidate: "Attorney One",
+          candidatevotes: "56000",
+          totalvotes: "100000",
+        }),
+        expect.objectContaining({
+          office: "DISTRICT ATTORNEY",
+          district: "19153",
+          candidate: "County Attorney One",
+          candidatevotes: "52000",
+          totalvotes: "100000",
+        }),
+      ])
+    );
+  });
+
+  it("leaves unsafe county, city, and seat-designated precinct offices unsupported", async () => {
+    const query = vi.fn();
+    const unsafeCountyOfficeCsv = [
+      "year,state_po,state_fips,county_name,county_fips,office,district,candidate,votes,party_simplified,stage,mode",
+      "2024,TX,48,HARRIS,201,HARRIS COUNTY COMMISSIONER,,Commissioner One,600,DEMOCRAT,GEN,TOTAL",
+      "2024,TX,48,HARRIS,201,HARRIS COUNTY COMMISSIONER,,Commissioner Two,400,REPUBLICAN,GEN,TOTAL",
+      "2024,TX,48,HARRIS,201,DISTRICT ATTORNEY,,District Attorney One,550,DEMOCRAT,GEN,TOTAL",
+      "2024,TX,48,HARRIS,201,DISTRICT ATTORNEY,,District Attorney Two,450,REPUBLICAN,GEN,TOTAL",
+      "2024,AR,05,BENTON,007,CITY OF BENTONVILLE MAYOR,,Mayor One,520,DEMOCRAT,GEN,TOTAL",
+      "2024,AR,05,BENTON,007,CITY OF BENTONVILLE MAYOR,,Mayor Two,480,REPUBLICAN,GEN,TOTAL",
+      "2024,AL,01,JEFFERSON,073,JEFFERSON COUNTY CONSTABLE,,Constable One,510,DEMOCRAT,GEN,TOTAL",
+      "2024,AL,01,JEFFERSON,073,JEFFERSON COUNTY CONSTABLE,,Constable Two,490,REPUBLICAN,GEN,TOTAL",
+      "2024,WA,53,CLARK,011,CLARK COUNTY SHERIFF,2,Sheriff District One,530,DEMOCRAT,GEN,TOTAL",
+      "2024,WA,53,CLARK,011,CLARK COUNTY SHERIFF,2,Sheriff District Two,470,REPUBLICAN,GEN,TOTAL",
+      "2024,WA,53,CLARK,011,CLARK COUNTY SHERIFF,COUNTYWIDE,Sheriff Text One,530,DEMOCRAT,GEN,TOTAL",
+      "2024,WA,53,CLARK,011,CLARK COUNTY SHERIFF,COUNTYWIDE,Sheriff Text Two,470,REPUBLICAN,GEN,TOTAL",
+    ].join("\n");
+
+    await expect(
+      importHistoricalContestMarginsFromPrecinctCsv(
+        { query } as never,
+        {
+          csv: unsafeCountyOfficeCsv,
+          source: "MIT_2024",
+          officeTypes: ["COUNTY_SHERIFF", "DISTRICT_ATTORNEY"],
+          dryRun: true,
+        }
+      )
+    ).resolves.toMatchObject({
+      parsedRows: 12,
+      aggregatedRows: 12,
+      normalizedRecords: 0,
+      writeResult: null,
+    });
+    expect(query).not.toHaveBeenCalled();
+  });
+
   it("aggregates TOTAL mode precinct rows instead of double-counting split modes", () => {
     expect(
       aggregateMedslPrecinctRowsToCandidateRows([
