@@ -219,8 +219,13 @@ function isCountywideDistrict(row: MedslHistoricalContestPrecinctRow, countyFips
   if (!/^[0-9]+$/.test(rawDistrict)) {
     return false;
   }
-  const district = rawDistrict;
-  return district === countyFips || district.padStart(3, "0") === countyFips.slice(2);
+  if (/^[0-9]{1,3}$/.test(rawDistrict)) {
+    return rawDistrict.padStart(3, "0") === countyFips.slice(2);
+  }
+  if (/^[0-9]{4,5}$/.test(rawDistrict)) {
+    return rawDistrict.padStart(5, "0") === countyFips;
+  }
+  return false;
 }
 
 function withoutCountyPrefix(office: string, countyName: string): { office: string; hadCountyPrefix: boolean } {
