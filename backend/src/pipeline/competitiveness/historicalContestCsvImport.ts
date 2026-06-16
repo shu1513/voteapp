@@ -8,6 +8,7 @@ import {
   requireCsvColumn,
 } from "./historicalContestCsv.js";
 import {
+  isStatewideHistoricalContestMitOffice,
   normalizeMedslHistoricalContestMargins,
   type HistoricalContestMarginRecord,
   type HistoricalContestNormalizationSkippedRow,
@@ -36,11 +37,6 @@ const REQUIRED_MEDSL_COLUMNS = [
   "totalvotes",
 ] as const;
 
-function isStatewideMitOffice(value: string): boolean {
-  const office = value.trim().replace(/\s+/g, " ").toUpperCase();
-  return office === "US PRESIDENT" || office === "US SENATE" || office === "GOVERNOR";
-}
-
 export function parseMedslHistoricalContestCsv(csv: string): MedslHistoricalContestCandidateRow[] {
   const rows = parseCsvRows(csv);
   const header = rows[0];
@@ -68,7 +64,9 @@ export function parseMedslHistoricalContestCsv(csv: string): MedslHistoricalCont
       state_fips: csvCell(cells, indexes.state_fips),
       office,
       district:
-        districtIndex === undefined && isStatewideMitOffice(office) ? "STATEWIDE" : csvCell(cells, districtIndex ?? -1),
+        districtIndex === undefined && isStatewideHistoricalContestMitOffice(office)
+          ? "STATEWIDE"
+          : csvCell(cells, districtIndex ?? -1),
       candidate: candidateIndex === undefined ? null : csvCell(cells, candidateIndex),
       candidatevotes: csvCell(cells, candidateVotesIndex),
       totalvotes: csvCell(cells, indexes.totalvotes),

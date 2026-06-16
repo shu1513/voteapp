@@ -96,6 +96,37 @@ describe("historicalContestPrecinctCsvImport", () => {
     ]);
   });
 
+  it("parses older MEDSL precinct aliases from 2016 files", () => {
+    const csv = [
+      "year,stage,special,state,state_postal,state_fips,county_name,precinct,candidate,office,district,writein,party,mode,votes,candidate_party",
+      "2016,GEN,FALSE,California,CA,06,ALAMEDA,1001,Candidate One,US PRESIDENT,,FALSE,democrat,TOTAL,500,DEMOCRAT",
+    ].join("\n");
+
+    expect(parseMedslHistoricalContestPrecinctCsv(csv)).toEqual([
+      {
+        year: "2016",
+        state_po: "CA",
+        state_fips: "06",
+        office: "US PRESIDENT",
+        district: null,
+        candidate: "Candidate One",
+        votes: "500",
+        party_simplified: "democrat",
+        party_detailed: "DEMOCRAT",
+        stage: "GEN",
+        mode: "TOTAL",
+        writein: "FALSE",
+        precinct: "1001",
+        county_name: "ALAMEDA",
+        county_fips: null,
+        jurisdiction_name: null,
+        jurisdiction_fips: null,
+        dataverse: null,
+        special: "FALSE",
+      },
+    ]);
+  });
+
   it("returns no rows for empty CSV input", () => {
     expect(parseMedslHistoricalContestPrecinctCsv("")).toEqual([]);
   });
@@ -123,6 +154,36 @@ describe("historicalContestPrecinctCsvImport", () => {
           csv: mixedOfficeCsv,
           source: "MIT_2024",
           officeTypes: ["GOVERNOR"],
+          dryRun: true,
+        }
+      )
+    ).resolves.toMatchObject({
+      parsedRows: 4,
+      aggregatedRows: 4,
+      normalizedRecords: 1,
+      skippedRows: [{ reason: "excluded_office" }, { reason: "excluded_office" }],
+      writeResult: null,
+    });
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it("allows newly supported statewide executive offices during precinct imports", async () => {
+    const query = vi.fn();
+    const mixedOfficeCsv = [
+      "year,state_po,state_fips,office,district,candidate,votes,party_simplified,stage,mode",
+      "2024,CA,06,STATE TREASURER,,Treasurer One,520,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,06,STATE TREASURER,,Treasurer Two,480,REPUBLICAN,GEN,TOTAL",
+      "2024,CA,06,US PRESIDENT,,President One,600,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,06,US PRESIDENT,,President Two,400,REPUBLICAN,GEN,TOTAL",
+    ].join("\n");
+
+    await expect(
+      importHistoricalContestMarginsFromPrecinctCsv(
+        { query } as never,
+        {
+          csv: mixedOfficeCsv,
+          source: "MIT_2024",
+          officeTypes: ["STATE_TREASURER"],
           dryRun: true,
         }
       )

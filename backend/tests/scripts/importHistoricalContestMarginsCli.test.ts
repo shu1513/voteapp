@@ -104,6 +104,9 @@ describe("importHistoricalContestMarginsCli", () => {
     expect(() => parseHistoricalContestMarginImportArgs(["--preset=medsl-2020-precinct-by-state"])).toThrow(
       "Historical contest import preset medsl-2020-precinct-by-state has multiple source files; use the verified import script."
     );
+    expect(() => parseHistoricalContestMarginImportArgs(["--preset=medsl-2016-state-precinct"])).toThrow(
+      "Historical contest import preset medsl-2016-state-precinct has multiple source files; use the verified import script."
+    );
   });
 
   it("allows preset source overrides", () => {
@@ -168,7 +171,7 @@ describe("importHistoricalContestMarginsCli", () => {
 
   it("rejects unknown presets", () => {
     expect(() => parseHistoricalContestMarginImportArgs(["--preset=medsl-2024-governor-state"])).toThrow(
-      "Known presets: medsl-2024-president-state, medsl-2024-senate-state, medsl-2024-house-precinct, medsl-2022-precinct, medsl-2020-precinct-by-state, medsl-2018-precinct-by-state, medsl-2024-state-precinct"
+      "Known presets: medsl-2024-president-state, medsl-2024-senate-state, medsl-2024-house-precinct, medsl-2022-precinct, medsl-2020-precinct-by-state, medsl-2018-precinct-by-state, medsl-2016-president-precinct, medsl-2016-senate-precinct, medsl-2016-house-precinct, medsl-2016-state-precinct, medsl-2024-state-precinct"
     );
   });
 
