@@ -45,6 +45,39 @@ function matchedNomineeResult(): Extract<PresidentialNomineeEnricherResult, { ok
 }
 
 describe("processPresidentialNomineeResearchJob", () => {
+  it("returns a disabled result without DB, AI, or promotion work when presidential elections are disabled", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+    const query = vi.fn();
+    const enrichNomineeForCycle = vi.fn();
+    const promoteNominee = vi.fn();
+
+    try {
+      const result = await processPresidentialNomineeResearchJob(job(), {
+        pool: { query } as never,
+        researchedAt: new Date("2028-02-07T12:00:00.000Z"),
+        enrichNomineeForCycle,
+        promoteNominee,
+      });
+
+      expect(result).toEqual({
+        cycle_id: CYCLE_ID,
+        election_year: 2028,
+        party: "Democratic",
+        ok: true,
+        candidate_count: 0,
+        resolution_status: "disabled",
+        nominee_research_rows_updated: 0,
+        next_research_at: null,
+        disabled: true,
+      });
+      expect(query).not.toHaveBeenCalled();
+      expect(enrichNomineeForCycle).not.toHaveBeenCalled();
+      expect(promoteNominee).not.toHaveBeenCalled();
+    } finally {
+      delete process.env.PRESIDENTIAL_ELECTIONS_ENABLED;
+    }
+  });
+
   it("runs nominee research and promotes a matched nominee", async () => {
     const query = vi.fn().mockResolvedValue({ rowCount: 1 });
     const enrichNomineeForCycle = vi.fn().mockResolvedValue(matchedNomineeResult());

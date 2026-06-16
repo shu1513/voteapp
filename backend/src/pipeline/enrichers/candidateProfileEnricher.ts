@@ -8,6 +8,7 @@ import {
 import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { resolveIncludePartyForCandidateContest } from "../../ai/candidatePartisanship.js";
 import { getPipelineEnv } from "../../config/env.js";
+import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
 import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
   STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
@@ -526,6 +527,18 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
 
           if (contextType === "presidential_cycle" && presidentialRole === null) {
             await parkMessage(redis, entry, "invalid presidential_role for presidential profile draft", deliveryCount);
+            continue;
+          }
+
+          if (contextType === "presidential_cycle" && !isPresidentialElectionsEnabled()) {
+            await redis.xAck(
+              STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
+              STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
+              entry.id
+            );
+            console.log(
+              `candidate-profile enricher skipped disabled presidential draft ${contextLabel} candidate=${candidateDisplayName ?? "unknown"}`
+            );
             continue;
           }
 

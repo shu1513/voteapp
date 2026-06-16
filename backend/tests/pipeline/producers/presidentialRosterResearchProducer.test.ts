@@ -38,7 +38,33 @@ describe("runPresidentialRosterResearchProducer", () => {
     expect(Pool).not.toHaveBeenCalled();
   });
 
+  it("does nothing when the master presidential flag is disabled even when forced", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+    process.env.PRESIDENTIAL_ROSTER_RESEARCH_ENABLED = "true";
+    const Pool = vi.fn();
+    vi.doMock("pg", () => ({ Pool }));
+
+    const { runPresidentialRosterResearchProducer } = await import(
+      "../../../src/pipeline/producers/presidentialRosterResearchProducer.js"
+    );
+
+    const result = await runPresidentialRosterResearchProducer({
+      force: true,
+      now: new Date("2027-03-07T00:00:00.000Z"),
+    });
+
+    expect(result).toMatchObject({
+      enabled: false,
+      forced: true,
+      cyclesScanned: 0,
+      dueCycleCount: 0,
+      selectedCycleCount: 0,
+    });
+    expect(Pool).not.toHaveBeenCalled();
+  });
+
   it("selects due active primary cycles in dry-run mode", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "true";
     process.env.PRESIDENTIAL_ROSTER_RESEARCH_ENABLED = "true";
     const query = vi.fn().mockResolvedValue({
       rows: [
@@ -82,6 +108,7 @@ describe("runPresidentialRosterResearchProducer", () => {
   });
 
   it("skips an existing job that becomes active before removal", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "true";
     process.env.PRESIDENTIAL_ROSTER_RESEARCH_ENABLED = "true";
     process.env.DATABASE_URL = "postgres://example";
     process.env.REDIS_URL = "redis://localhost:6379/0";
@@ -134,6 +161,7 @@ describe("runPresidentialRosterResearchProducer", () => {
   });
 
   it("closes the pool when queue creation fails", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "true";
     process.env.PRESIDENTIAL_ROSTER_RESEARCH_ENABLED = "true";
     process.env.DATABASE_URL = "postgres://example";
     process.env.REDIS_URL = "redis://localhost:6379/0";

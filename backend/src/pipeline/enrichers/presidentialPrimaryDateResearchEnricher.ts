@@ -10,6 +10,7 @@ import {
 } from "../../ai/enrichPresidentialPrimaryDates.js";
 import type { AiCandidate } from "../../ai/aiCandidates.js";
 import { getPipelineEnv } from "../../config/env.js";
+import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
 import {
   PRESIDENTIAL_PRIMARY_DATE_RESEARCH_JOB_NAME,
   type PresidentialPrimaryDateResearchJobData,
@@ -38,6 +39,7 @@ export type PresidentialPrimaryDateResearchJobResult = {
   next_research_at: string | null;
   provider?: string;
   model?: string;
+  disabled?: boolean;
   error?: string;
 };
 
@@ -194,6 +196,22 @@ export async function processPresidentialPrimaryDateResearchJob(
   } = {}
 ): Promise<PresidentialPrimaryDateResearchJobResult> {
   const job = assertValidJob(rawJob);
+  if (!isPresidentialElectionsEnabled()) {
+    return {
+      cycle_id: job.cycle_id,
+      election_year: job.election_year,
+      party: job.party,
+      requested_state_count: job.state_fips_list.length,
+      skipped_state_count: job.state_fips_list.length,
+      official_found_count: 0,
+      not_official_yet_count: 0,
+      error_count: 0,
+      rows_updated: 0,
+      next_research_at: null,
+      disabled: true,
+    };
+  }
+
   const env = getPipelineEnv();
   const pool = options.pool ?? new Pool({ connectionString: env.DATABASE_URL });
   const shouldClosePool = !options.pool;

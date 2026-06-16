@@ -3,6 +3,7 @@ import type { ConnectionOptions } from "bullmq";
 import { Pool, type PoolClient } from "pg";
 
 import { getPipelineEnv } from "../config/env.js";
+import { isPresidentialElectionsEnabled } from "../config/featureFlags.js";
 import {
   runPresidentialPrimaryDateResearchProducer,
   type PresidentialPrimaryDateResearchProducerResult,
@@ -90,7 +91,7 @@ export type SyncPresidentialPrimaryDateResearchSchedulerOptions = {
 
 export type SyncPresidentialPrimaryDateResearchSchedulerResult = {
   state: PresidentialPrimaryDateResearchSchedulerState;
-  dailyScheduler: "upserted" | "removed";
+  dailyScheduler: "upserted" | "removed" | "disabled";
   activationJob: "scheduled" | "removed" | "none";
   activationScheduledFor: string | null;
   completionJob: "scheduled" | "removed" | "none";
@@ -305,6 +306,33 @@ function buildEmptyProducerResult(input: {
   };
 }
 
+function buildDisabledSchedulerState(now: Date): PresidentialPrimaryDateResearchSchedulerState {
+  return {
+    mode: "complete",
+    now: now.toISOString(),
+    cycleCount: 0,
+    incompleteCycleCount: 0,
+    activeMissingCycleCount: 0,
+    expiredCycleCount: 0,
+    expiredIncompleteCycleCount: 0,
+    missingStatePartyRowCount: 0,
+    expiredMissingStatePartyRowCount: 0,
+    nextActivationAt: null,
+    nextCompletionAt: null,
+  };
+}
+
+function buildDisabledSchedulerSync(now: Date): SyncPresidentialPrimaryDateResearchSchedulerResult {
+  return {
+    state: buildDisabledSchedulerState(now),
+    dailyScheduler: "disabled",
+    activationJob: "none",
+    activationScheduledFor: null,
+    completionJob: "none",
+    completionScheduledFor: null,
+  };
+}
+
 async function removeActivationJob(queue: SchedulerQueueLike): Promise<ActivationJobRemovalResult> {
   const existing = await queue.getJob(PRESIDENTIAL_PRIMARY_DATE_RESEARCH_ACTIVATION_JOB_ID);
   if (!existing) {
@@ -500,6 +528,11 @@ export function createPresidentialPrimaryDateResearchSchedulerQueue(): Queue<Pre
 export async function upsertRecurringPresidentialPrimaryDateResearchJobs(
   jobData: PresidentialPrimaryDateResearchRolloverJobData = {}
 ): Promise<SyncPresidentialPrimaryDateResearchSchedulerResult> {
+  const now = new Date();
+  if (!isPresidentialElectionsEnabled()) {
+    return buildDisabledSchedulerSync(now);
+  }
+
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const queue = createPresidentialPrimaryDateResearchSchedulerQueue();
@@ -518,6 +551,10 @@ export async function upsertRecurringPresidentialPrimaryDateResearchJobs(
 export async function enqueueManualPresidentialPrimaryDateResearchJob(
   jobData: PresidentialPrimaryDateResearchRolloverJobData = {}
 ): Promise<string> {
+  if (!isPresidentialElectionsEnabled()) {
+    return "disabled";
+  }
+
   const queue = createPresidentialPrimaryDateResearchSchedulerQueue();
 
   try {
@@ -607,11 +644,23 @@ export async function runPresidentialPrimaryDateResearchRolloverJob(
   const force = Boolean(data.force);
   const triggeredBy = data.triggeredBy ?? "unknown";
   const dryRun = Boolean(data.dryRun);
+  const now = new Date();
 
   if (!data.triggeredBy) {
     console.warn(
       "presidential primary date research rollover job missing triggeredBy; recording as unknown"
     );
+  }
+
+  if (!isPresidentialElectionsEnabled()) {
+    const schedulerSync = buildDisabledSchedulerSync(now);
+    return {
+      ...buildEmptyProducerResult({ dryRun, force, now }),
+      force,
+      triggeredBy,
+      schedulerState: schedulerSync.state,
+      schedulerSync: toSchedulerSyncSummary(schedulerSync),
+    };
   }
 
   return runAdaptivePresidentialPrimaryDateResearchRolloverJob({

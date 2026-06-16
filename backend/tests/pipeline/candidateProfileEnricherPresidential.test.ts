@@ -61,6 +61,7 @@ import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../src/ai/aiCandidates.js
 describe("runCandidateProfileEnricher presidential cycle routing", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    delete process.env.PRESIDENTIAL_ELECTIONS_ENABLED;
     redisConnectMock.mockResolvedValue(undefined);
     redisQuitMock.mockResolvedValue(undefined);
     redisXGroupCreateMock.mockResolvedValue(undefined);
@@ -151,6 +152,23 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
         sources: ["https://www.fec.gov/data/candidate/P80000001"],
       },
     });
+  });
+
+  it("acks and skips presidential profile drafts when presidential elections are disabled", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-0"
+    );
+    expect(poolQueryMock).not.toHaveBeenCalled();
+    expect(poolConnectMock).not.toHaveBeenCalled();
+    expect(enrichCandidateProfileMock).not.toHaveBeenCalled();
+    expect(enqueueCandidateRecordDraftsMock).not.toHaveBeenCalled();
+    expect(redisXAddMock).not.toHaveBeenCalled();
   });
 
   it("links presidential profile drafts to presidential cycle candidates only", async () => {
@@ -410,6 +428,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
   });
 
   it("preserves election profile drafts as candidate election links with record drafts", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
     redisXReadGroupMock.mockResolvedValue([
       {
         name: "staging:candidates:profile:draft",

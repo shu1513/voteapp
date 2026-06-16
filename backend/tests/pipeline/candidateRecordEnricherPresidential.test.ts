@@ -83,6 +83,7 @@ import { runCandidateRecordEnricher } from "../../src/pipeline/enrichers/candida
 describe("runCandidateRecordEnricher presidential-cycle routing", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    delete process.env.PRESIDENTIAL_ELECTIONS_ENABLED;
     redisConnectMock.mockResolvedValue(undefined);
     redisQuitMock.mockResolvedValue(undefined);
     redisXGroupCreateMock.mockResolvedValue(undefined);
@@ -167,6 +168,25 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
       tagged_specific_count: 0,
       tagged_general_count: 0,
     });
+  });
+
+  it("acks and skips presidential record drafts when presidential elections are disabled", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+
+    await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:record:draft",
+      "candidate_record_enricher",
+      "1-0"
+    );
+    expect(loadPresidentialContextMock).not.toHaveBeenCalled();
+    expect(loadElectionContextMock).not.toHaveBeenCalled();
+    expect(runLifecycleMock).not.toHaveBeenCalled();
+    expect(enrichCandidateRecordsMock).not.toHaveBeenCalled();
+    expect(enrichCandidateRecordAreasMock).not.toHaveBeenCalled();
+    expect(poolQueryMock).not.toHaveBeenCalled();
+    expect(poolConnectMock).not.toHaveBeenCalled();
   });
 
   it("loads presidential context and passes it to candidate-record discovery", async () => {
@@ -496,6 +516,7 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
   });
 
   it("keeps normal election record drafts on the election context path without cooldown bypass", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
     redisXReadGroupMock.mockResolvedValue([
       {
         name: "staging:candidates:record:draft",

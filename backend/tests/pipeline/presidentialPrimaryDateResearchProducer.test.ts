@@ -80,6 +80,30 @@ describe("runPresidentialPrimaryDateResearchProducer", () => {
     });
   });
 
+  it("returns disabled summary when the master presidential flag is off even when forced", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+    process.env.PRESIDENTIAL_PRIMARY_DATES_RESEARCH_ENABLED = "true";
+    mockRuntime();
+
+    const { runPresidentialPrimaryDateResearchProducer } = await import(
+      "../../src/pipeline/producers/presidentialPrimaryDateResearchProducer.js"
+    );
+
+    const result = await runPresidentialPrimaryDateResearchProducer({
+      force: true,
+      now: new Date("2027-03-07T00:00:00.000Z"),
+    });
+
+    expect(result).toMatchObject({
+      enabled: false,
+      forced: true,
+      dueRowCount: 0,
+      enqueuedJobCount: 0,
+    });
+    expect(poolQueryMock).not.toHaveBeenCalled();
+    expect(queueAddMock).not.toHaveBeenCalled();
+  });
+
   it("rejects invalid positive integer option overrides", async () => {
     const { runPresidentialPrimaryDateResearchProducer } = await import(
       "../../src/pipeline/producers/presidentialPrimaryDateResearchProducer.js"
@@ -94,6 +118,7 @@ describe("runPresidentialPrimaryDateResearchProducer", () => {
   });
 
   it("skips cycles before the 20-month research window opens", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "true";
     mockRuntime();
     poolQueryMock.mockResolvedValueOnce({
       rows: [{ cycle_id: DEMOCRATIC_CYCLE_ID, cycle_name: "2028 Democratic presidential primary", election_year: 2028, party: "Democratic" }],
@@ -121,6 +146,7 @@ describe("runPresidentialPrimaryDateResearchProducer", () => {
   });
 
   it("bootstraps due cycles and enqueues grouped research jobs", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "true";
     mockRuntime();
     poolQueryMock
       .mockResolvedValueOnce({

@@ -4,6 +4,12 @@ async function main(): Promise<void> {
   const force = process.argv.includes("--force");
   const dryRun = process.argv.includes("--dry-run");
   const jobId = await enqueueManualPresidentialRosterResearchJob({ force, dryRun });
+  if (jobId === "disabled") {
+    console.log(
+      `presidential roster research schedule disabled; no job enqueued force=${force} dryRun=${dryRun}`
+    );
+    return;
+  }
   console.log(
     `presidential roster research schedule job enqueued jobId=${jobId} force=${force} dryRun=${dryRun}`
   );

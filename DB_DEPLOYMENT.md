@@ -105,6 +105,29 @@ npm run competitiveness:import -- \
 Do not add MEDSL per-state ZIP URLs directly to verified sources yet. The importer supports precinct CSV aggregation, but it
 does not unzip remote files or depend on a ZIP library.
 
+## Presidential Feature Flag
+
+`PRESIDENTIAL_ELECTIONS_ENABLED` is the master runtime flag for presidential-only research and enrichment. It defaults to
+`true` when unset.
+
+When set to `false`:
+
+1. Presidential roster, nominee, and primary-date producers return disabled/no-op summaries.
+2. Presidential scheduler upsert/trigger/worker scripts exit without enqueuing work.
+3. Already-queued `presidential_cycle` candidate profile and candidate record draft messages are acknowledged as no-ops.
+4. Normal non-presidential election profile and record enrichment still runs.
+
+The per-feature flags such as `PRESIDENTIAL_ROSTER_RESEARCH_ENABLED`,
+`PRESIDENTIAL_NOMINEE_RESEARCH_ENABLED`, and `PRESIDENTIAL_PRIMARY_DATES_RESEARCH_ENABLED` still control their individual
+jobs, but `PRESIDENTIAL_ELECTIONS_ENABLED=false` wins over those flags and over manual `--force`.
+
+Because disabled `presidential_cycle` profile/record drafts are acknowledged rather than parked, toggling the flag off drains
+those in-flight drafts. Re-enabling presidential elections relies on later roster/profile runs to enqueue fresh draft work.
+
+Before deploying this flag layer, confirm presidential flag values in each environment are explicit booleans. The parser
+accepts `true`/`false`, `1`/`0`, `yes`/`no`, and `on`/`off`; invalid values such as `enabled` now fail fast instead of being
+silently treated as disabled.
+
 ## Candidate Record Rollover Rollout
 
 Candidate record research now has a daily rollover scheduler and a feature flag gate.

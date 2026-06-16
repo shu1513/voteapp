@@ -3,6 +3,7 @@ import type { ConnectionOptions, Job } from "bullmq";
 import { Pool } from "pg";
 
 import { getPipelineEnv } from "../../config/env.js";
+import { isPresidentialFeatureEnabled } from "../../config/featureFlags.js";
 import {
   PRESIDENTIAL_NOMINEE_RESEARCH_JOB_NAME,
   type PresidentialNomineeResearchJobData,
@@ -31,7 +32,6 @@ export type PresidentialNomineeResearchProducerOptions = {
 };
 
 type ProducerPolicy = {
-  enabled: boolean;
   maxCyclesPerRun: number;
 };
 
@@ -114,7 +114,6 @@ function toConnectionOptions(redisUrl: string): ConnectionOptions {
 
 function readProducerPolicy(): ProducerPolicy {
   return {
-    enabled: process.env.PRESIDENTIAL_NOMINEE_RESEARCH_ENABLED === "true",
     maxCyclesPerRun: parsePositiveIntegerEnv("PRESIDENTIAL_NOMINEE_RESEARCH_MAX_CYCLES_PER_RUN", 10),
   };
 }
@@ -240,7 +239,7 @@ export async function runPresidentialNomineeResearchProducer(
   const policy = readProducerPolicy();
   const force = Boolean(options.force);
   const dryRun = Boolean(options.dryRun);
-  const enabled = force || policy.enabled;
+  const enabled = isPresidentialFeatureEnabled("PRESIDENTIAL_NOMINEE_RESEARCH_ENABLED", force);
   const now = options.now ?? new Date();
   assertValidDate(now, "now");
 

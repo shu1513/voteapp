@@ -41,6 +41,7 @@ describe("processPresidentialPrimaryDateResearchJob", () => {
   beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
+    delete process.env.PRESIDENTIAL_ELECTIONS_ENABLED;
     poolQueryMock.mockResolvedValue({
       rowCount: 1,
       rows: [{ state_fips: "06", cycle_name: "2028 Democratic presidential primary" }],
@@ -313,6 +314,38 @@ describe("processPresidentialPrimaryDateResearchJob", () => {
       rows_updated: 0,
       next_research_at: null,
     });
+  });
+
+  it("returns a disabled result without DB or AI work when presidential elections are disabled", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+
+    const { processPresidentialPrimaryDateResearchJob } = await import(
+      "../../src/pipeline/enrichers/presidentialPrimaryDateResearchEnricher.js"
+    );
+    const result = await processPresidentialPrimaryDateResearchJob(
+      makeJob({ state_fips_list: ["06", "12"] }),
+      {
+        pool: makePool() as never,
+        researchedAt: RESEARCHED_AT,
+      }
+    );
+
+    expect(result).toEqual({
+      cycle_id: CYCLE_ID,
+      election_year: 2028,
+      party: "Democratic",
+      requested_state_count: 2,
+      skipped_state_count: 2,
+      official_found_count: 0,
+      not_official_yet_count: 0,
+      error_count: 0,
+      rows_updated: 0,
+      next_research_at: null,
+      disabled: true,
+    });
+    expect(poolQueryMock).not.toHaveBeenCalled();
+    expect(clientQueryMock).not.toHaveBeenCalled();
+    expect(enrichMock).not.toHaveBeenCalled();
   });
 });
 

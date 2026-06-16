@@ -1,3 +1,4 @@
+import { isPresidentialElectionsEnabled } from "../config/featureFlags.js";
 import {
   createPresidentialRosterResearchWorker,
   runPresidentialRosterResearchEnricher,
@@ -15,6 +16,11 @@ function parseNumberFlag(prefix: string, fallback: number): number {
 }
 
 async function main(): Promise<void> {
+  if (!isPresidentialElectionsEnabled()) {
+    console.log("presidential roster research worker disabled; exiting");
+    return;
+  }
+
   const once = process.argv.includes("--once");
   const concurrency = parseNumberFlag("--concurrency", 1);
 

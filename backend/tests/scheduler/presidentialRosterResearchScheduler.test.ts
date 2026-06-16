@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-describe("runPresidentialNomineeResearchRolloverJob", () => {
+describe("presidentialRosterResearchScheduler", () => {
   const originalEnv = { ...process.env };
 
   beforeEach(() => {
@@ -16,13 +16,13 @@ describe("runPresidentialNomineeResearchRolloverJob", () => {
   });
 
   it("passes dryRun/force through and preserves triggeredBy", async () => {
-    vi.doMock("../../src/pipeline/producers/presidentialNomineeResearchProducer.js", () => ({
-      runPresidentialNomineeResearchProducer: vi.fn(
+    vi.doMock("../../src/pipeline/producers/presidentialRosterResearchProducer.js", () => ({
+      runPresidentialRosterResearchProducer: vi.fn(
         async (input: { dryRun?: boolean; force?: boolean }) => ({
           enabled: true,
           forced: Boolean(input?.force),
           dryRun: Boolean(input?.dryRun),
-          now: "2028-02-07T00:00:00.000Z",
+          now: "2027-03-07T00:00:00.000Z",
           maxCyclesPerRun: 10,
           cyclesScanned: 2,
           dueCycleCount: 1,
@@ -35,11 +35,11 @@ describe("runPresidentialNomineeResearchRolloverJob", () => {
       ),
     }));
 
-    const { runPresidentialNomineeResearchRolloverJob } = await import(
-      "../../src/scheduler/presidentialNomineeResearchScheduler.js"
+    const { runPresidentialRosterResearchRolloverJob } = await import(
+      "../../src/scheduler/presidentialRosterResearchScheduler.js"
     );
 
-    const result = await runPresidentialNomineeResearchRolloverJob({
+    const result = await runPresidentialRosterResearchRolloverJob({
       dryRun: true,
       force: true,
       triggeredBy: "manual",
@@ -60,12 +60,12 @@ describe("runPresidentialNomineeResearchRolloverJob", () => {
     }));
 
     const {
-      enqueueManualPresidentialNomineeResearchJob,
-      upsertRecurringPresidentialNomineeResearchJobs,
-    } = await import("../../src/scheduler/presidentialNomineeResearchScheduler.js");
+      enqueueManualPresidentialRosterResearchJob,
+      upsertRecurringPresidentialRosterResearchJobs,
+    } = await import("../../src/scheduler/presidentialRosterResearchScheduler.js");
 
-    await expect(enqueueManualPresidentialNomineeResearchJob({ force: true })).resolves.toBe("disabled");
-    await expect(upsertRecurringPresidentialNomineeResearchJobs({ force: true })).resolves.toBeUndefined();
+    await expect(enqueueManualPresidentialRosterResearchJob({ force: true })).resolves.toBe("disabled");
+    await expect(upsertRecurringPresidentialRosterResearchJobs({ force: true })).resolves.toBeUndefined();
     expect(Queue).not.toHaveBeenCalled();
   });
 });

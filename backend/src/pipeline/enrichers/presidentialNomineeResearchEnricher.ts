@@ -5,6 +5,7 @@ import { Pool } from "pg";
 import type { AiCandidate } from "../../ai/aiCandidates.js";
 import type { PresidentialNomineeAiConfig } from "../../ai/enrichPresidentialNominee.js";
 import { getPipelineEnv } from "../../config/env.js";
+import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
 import {
   enrichPresidentialNomineeForCycle,
   type PresidentialNomineeEnricherInput,
@@ -51,6 +52,7 @@ export type PresidentialNomineeResearchJobResult = {
   general_cycle_id?: string;
   nominee_research_rows_updated?: number;
   next_research_at?: string | null;
+  disabled?: boolean;
   error?: string;
   error_code?: string;
 };
@@ -212,6 +214,20 @@ export async function processPresidentialNomineeResearchJob(
   } = {}
 ): Promise<PresidentialNomineeResearchJobResult> {
   const job = assertValidJob(rawJob);
+  if (!isPresidentialElectionsEnabled()) {
+    return {
+      cycle_id: job.cycle_id,
+      election_year: job.election_year,
+      party: job.party,
+      ok: true,
+      candidate_count: 0,
+      resolution_status: "disabled",
+      nominee_research_rows_updated: 0,
+      next_research_at: null,
+      disabled: true,
+    };
+  }
+
   const env = getPipelineEnv();
   const pool = options.pool ?? new Pool({ connectionString: env.DATABASE_URL });
   const shouldClosePool = !options.pool;

@@ -1,8 +1,14 @@
+import { isPresidentialElectionsEnabled } from "../config/featureFlags.js";
 import { createPresidentialPrimaryDateResearchSchedulerWorker } from "../scheduler/presidentialPrimaryDateResearchScheduler.js";
 
 const SHUTDOWN_TIMEOUT_MS = 30_000;
 
 async function main(): Promise<void> {
+  if (!isPresidentialElectionsEnabled()) {
+    console.log("presidential primary date research scheduler worker disabled; exiting");
+    return;
+  }
+
   const worker = createPresidentialPrimaryDateResearchSchedulerWorker();
   let shutdownPromise: Promise<void> | null = null;
 

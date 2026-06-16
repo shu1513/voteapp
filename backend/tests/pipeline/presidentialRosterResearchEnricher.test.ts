@@ -65,6 +65,38 @@ function failedRosterResult(): Extract<PresidentialRosterEnricherResult, { ok: f
 }
 
 describe("processPresidentialRosterResearchJob", () => {
+  it("returns a disabled result without DB, Redis, or AI work when presidential elections are disabled", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+    const query = vi.fn();
+    const sendCommand = vi.fn();
+    const enrichRosterCycle = vi.fn();
+
+    try {
+      const result = await processPresidentialRosterResearchJob(job(), {
+        pool: { query } as never,
+        redis: { sendCommand },
+        researchedAt: new Date("2027-03-07T12:00:00.000Z"),
+        enrichRosterCycle,
+      });
+
+      expect(result).toMatchObject<Partial<PresidentialRosterResearchJobResult>>({
+        ok: true,
+        rows_updated: 0,
+        next_research_at: null,
+        ai_candidate_count: 0,
+        matched_count: 0,
+        emitted_count: 0,
+        skipped_count: 0,
+        disabled: true,
+      });
+      expect(query).not.toHaveBeenCalled();
+      expect(sendCommand).not.toHaveBeenCalled();
+      expect(enrichRosterCycle).not.toHaveBeenCalled();
+    } finally {
+      delete process.env.PRESIDENTIAL_ELECTIONS_ENABLED;
+    }
+  });
+
   it("runs the roster enricher and records successful schedule tracking", async () => {
     const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [] });
     const enrichRosterCycle = vi.fn().mockResolvedValue(successfulRosterResult());
