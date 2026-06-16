@@ -199,11 +199,14 @@ function normalizeCountyFips(row: MedslHistoricalContestPrecinctRow): string | n
     return null;
   }
 
-  if (/^[0-9]{3}$/.test(countyFips)) {
-    return `${stateFips}${countyFips}`;
+  if (/^[0-9]{1,3}$/.test(countyFips)) {
+    return `${stateFips}${countyFips.padStart(3, "0")}`;
   }
-  if (/^[0-9]{5}$/.test(countyFips) && countyFips.startsWith(stateFips)) {
-    return countyFips;
+  if (/^[0-9]{4,5}$/.test(countyFips)) {
+    const fullCountyFips = countyFips.padStart(5, "0");
+    if (fullCountyFips.startsWith(stateFips)) {
+      return fullCountyFips;
+    }
   }
   return null;
 }

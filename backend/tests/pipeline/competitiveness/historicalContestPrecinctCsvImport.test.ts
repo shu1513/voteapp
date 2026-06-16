@@ -246,6 +246,45 @@ describe("historicalContestPrecinctCsvImport", () => {
     );
   });
 
+  it("normalizes unpadded county FIPS values during countywide precinct imports", () => {
+    const countyOfficeCsv = [
+      "year,state_po,state_fips,county_name,county_fips,office,district,candidate,votes,party_simplified,stage,mode",
+      "2024,CA,6,LOS ANGELES,37,LOS ANGELES COUNTY SHERIFF,,Sheriff One,56000,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,6,LOS ANGELES,37,LOS ANGELES COUNTY SHERIFF,,Sheriff Two,44000,REPUBLICAN,GEN,TOTAL",
+      "2024,CA,6,LOS ANGELES,6037,LOS ANGELES COUNTY CLERK,,Clerk One,52000,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,6,LOS ANGELES,6037,LOS ANGELES COUNTY CLERK,,Clerk Two,48000,REPUBLICAN,GEN,TOTAL",
+      "2024,CA,06,LOS ANGELES,037,LOS ANGELES COUNTY RECORDER,,Recorder One,51000,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,06,LOS ANGELES,037,LOS ANGELES COUNTY RECORDER,,Recorder Two,49000,REPUBLICAN,GEN,TOTAL",
+      "2024,CA,06,LOS ANGELES,06037,LOS ANGELES COUNTY CORONER,,Coroner One,50500,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,06,LOS ANGELES,06037,LOS ANGELES COUNTY CORONER,,Coroner Two,49500,REPUBLICAN,GEN,TOTAL",
+    ].join("\n");
+
+    expect(parseAndAggregateMedslHistoricalContestPrecinctCsv(countyOfficeCsv)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          office: "COUNTY SHERIFF",
+          district: "06037",
+          candidate: "Sheriff One",
+        }),
+        expect.objectContaining({
+          office: "COUNTY CLERK",
+          district: "06037",
+          candidate: "Clerk One",
+        }),
+        expect.objectContaining({
+          office: "COUNTY RECORDER",
+          district: "06037",
+          candidate: "Recorder One",
+        }),
+        expect.objectContaining({
+          office: "COUNTY CORONER",
+          district: "06037",
+          candidate: "Coroner One",
+        }),
+      ])
+    );
+  });
+
   it("normalizes every supported countywide office type during precinct imports", async () => {
     const query = vi.fn();
     const supportedCountyOfficeTypes = [
