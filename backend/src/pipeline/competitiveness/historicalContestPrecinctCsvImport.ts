@@ -179,10 +179,6 @@ function isCandidateVoteRow(row: MedslHistoricalContestPrecinctRow): boolean {
   return !(isTruthyMedslBoolean(row.writein) && isGenericWriteInBucket(candidate));
 }
 
-function isStatewideMitOffice(value: string): boolean {
-  return isStatewideHistoricalContestMitOffice(value);
-}
-
 function normalizeFipsComponent(value: string | null | undefined): string | null {
   const normalized = normalizeKeyText(value);
   return /^[0-9]+$/.test(normalized) ? normalized : null;
@@ -315,7 +311,7 @@ function outputDistrict(row: MedslHistoricalContestPrecinctRow): string {
   if (countyContest) {
     return countyContest.district;
   }
-  return row.district ?? (isStatewideMitOffice(row.office) ? "STATEWIDE" : "");
+  return row.district ?? (isStatewideHistoricalContestMitOffice(row.office) ? "STATEWIDE" : "");
 }
 
 function hasOutputDistrict(row: MedslHistoricalContestPrecinctRow): boolean {

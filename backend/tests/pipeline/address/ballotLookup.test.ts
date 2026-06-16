@@ -756,6 +756,8 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     const statewideDistrictId = "88888888-8888-4888-8888-888888888881";
     const attorneyGeneralElectionId = "88888888-8888-4888-8888-888888888882";
     const attorneyGeneralOfficeId = "88888888-8888-4888-8888-888888888883";
+    const fetch = vi.fn().mockRejectedValue(new Error("runtime ballot lookup must not fetch historical data"));
+    vi.stubGlobal("fetch", fetch);
     const query = vi
       .fn()
       .mockResolvedValueOnce({
@@ -868,6 +870,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       },
     });
     expect(query).toHaveBeenCalledTimes(7);
+    expect(fetch).not.toHaveBeenCalled();
     expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual([
       {
         lookup_id: attorneyGeneralElectionId,
