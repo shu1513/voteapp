@@ -156,6 +156,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
 
   it("acks and skips presidential profile drafts when presidential elections are disabled", async () => {
     process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+    redisSendCommandMock.mockResolvedValueOnce([["1-0", "consumer", 0, 8]]);
 
     await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
 
@@ -166,6 +167,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     );
     expect(poolQueryMock).not.toHaveBeenCalled();
     expect(poolConnectMock).not.toHaveBeenCalled();
+    expect(redisSendCommandMock).not.toHaveBeenCalled();
     expect(enrichCandidateProfileMock).not.toHaveBeenCalled();
     expect(enqueueCandidateRecordDraftsMock).not.toHaveBeenCalled();
     expect(redisXAddMock).not.toHaveBeenCalled();

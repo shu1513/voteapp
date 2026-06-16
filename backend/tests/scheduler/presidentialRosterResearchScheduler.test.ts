@@ -51,9 +51,25 @@ describe("presidentialRosterResearchScheduler", () => {
     expect(result.enqueuedJobCount).toBe(1);
   });
 
-  it("does not enqueue manual or recurring scheduler jobs when the master flag is off", async () => {
+  it("does not enqueue manual jobs and removes the recurring scheduler when the master flag is off", async () => {
     process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
-    const Queue = vi.fn();
+    const queueInstance = {
+      removeJobScheduler: vi.fn(async () => true),
+      close: vi.fn(async () => undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
+    vi.doMock("../../src/config/env.js", () => ({
+      getPipelineEnv: () => ({
+        DATABASE_URL: "postgresql://localhost:5432/test",
+        REDIS_URL: "redis://localhost:6379/0",
+        AI_PROVIDER: "openai",
+        AI_MODEL: "gpt-5.4-mini",
+        AI_TIMEOUT_MS: 90000,
+        ANTHROPIC_WEB_SEARCH_MAX_USES: 3,
+        STATE_RESOURCES_PROMPT_VERSION: "state_resources_v2",
+        CENSUS_API_KEYS: [],
+      }),
+    }));
     vi.doMock("bullmq", () => ({
       Queue,
       Worker: vi.fn(),
@@ -66,6 +82,10 @@ describe("presidentialRosterResearchScheduler", () => {
 
     await expect(enqueueManualPresidentialRosterResearchJob({ force: true })).resolves.toBe("disabled");
     await expect(upsertRecurringPresidentialRosterResearchJobs({ force: true })).resolves.toBeUndefined();
-    expect(Queue).not.toHaveBeenCalled();
+    expect(Queue).toHaveBeenCalledTimes(1);
+    expect(queueInstance.removeJobScheduler).toHaveBeenCalledWith(
+      "presidential_roster_research_daily_rollover"
+    );
+    expect(queueInstance.close).toHaveBeenCalledTimes(1);
   });
 });

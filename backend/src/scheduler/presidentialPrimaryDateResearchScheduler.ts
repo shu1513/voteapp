@@ -530,6 +530,14 @@ export async function upsertRecurringPresidentialPrimaryDateResearchJobs(
 ): Promise<SyncPresidentialPrimaryDateResearchSchedulerResult> {
   const now = new Date();
   if (!isPresidentialElectionsEnabled()) {
+    const queue = createPresidentialPrimaryDateResearchSchedulerQueue();
+    try {
+      await queue.removeJobScheduler(PRESIDENTIAL_PRIMARY_DATE_RESEARCH_DAILY_SCHEDULER_ID);
+      await removeActivationJob(queue);
+      await removeCompletionJob(queue);
+    } finally {
+      await queue.close();
+    }
     return buildDisabledSchedulerSync(now);
   }
 

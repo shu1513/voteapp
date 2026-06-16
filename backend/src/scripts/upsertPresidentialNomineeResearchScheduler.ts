@@ -1,19 +1,20 @@
 import { isPresidentialElectionsEnabled } from "../config/featureFlags.js";
 import { upsertRecurringPresidentialNomineeResearchJobs } from "../scheduler/presidentialNomineeResearchScheduler.js";
 
-if (!isPresidentialElectionsEnabled()) {
-  console.log("presidential nominee research recurring scheduler disabled; no scheduler upserted");
-  process.exit(0);
+async function main(): Promise<void> {
+  const enabled = isPresidentialElectionsEnabled();
+  await upsertRecurringPresidentialNomineeResearchJobs({
+    dryRun: process.argv.includes("--dry-run"),
+    force: process.argv.includes("--force"),
+  });
+  console.log(
+    enabled
+      ? "presidential nominee research recurring scheduler upserted (daily rollover)"
+      : "presidential nominee research recurring scheduler disabled; scheduler cleanup completed"
+  );
 }
 
-upsertRecurringPresidentialNomineeResearchJobs({
-  dryRun: process.argv.includes("--dry-run"),
-  force: process.argv.includes("--force"),
-})
-  .then(() => {
-    console.log("presidential nominee research recurring scheduler upserted (daily rollover)");
-  })
-  .catch((error) => {
-    console.error("presidential nominee research recurring scheduler upsert failed:", error);
-    process.exit(1);
-  });
+main().catch((error) => {
+  console.error("presidential nominee research recurring scheduler upsert failed:", error);
+  process.exit(1);
+});

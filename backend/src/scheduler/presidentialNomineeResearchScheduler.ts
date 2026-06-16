@@ -100,6 +100,12 @@ export async function upsertRecurringPresidentialNomineeResearchJobs(
   jobData: PresidentialNomineeResearchRolloverJobData = {}
 ): Promise<void> {
   if (!isPresidentialElectionsEnabled()) {
+    const queue = createPresidentialNomineeResearchSchedulerQueue();
+    try {
+      await queue.removeJobScheduler(PRESIDENTIAL_NOMINEE_RESEARCH_DAILY_SCHEDULER_ID);
+    } finally {
+      await queue.close();
+    }
     return;
   }
 

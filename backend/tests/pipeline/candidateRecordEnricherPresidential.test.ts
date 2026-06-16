@@ -172,6 +172,7 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
 
   it("acks and skips presidential record drafts when presidential elections are disabled", async () => {
     process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+    redisSendCommandMock.mockResolvedValueOnce([["1-0", "consumer", 0, 8]]);
 
     await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
 
@@ -180,6 +181,7 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
       "candidate_record_enricher",
       "1-0"
     );
+    expect(redisSendCommandMock).not.toHaveBeenCalled();
     expect(loadPresidentialContextMock).not.toHaveBeenCalled();
     expect(loadElectionContextMock).not.toHaveBeenCalled();
     expect(runLifecycleMock).not.toHaveBeenCalled();

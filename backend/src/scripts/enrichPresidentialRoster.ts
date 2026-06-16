@@ -168,7 +168,6 @@ export function toEnrichPresidentialRosterScriptOutput(input: {
 
 async function main(): Promise<void> {
   const startedAt = new Date();
-  const options = parseEnrichPresidentialRosterScriptArgs(process.argv.slice(2), startedAt);
   if (!isPresidentialElectionsEnabled()) {
     console.log(
       JSON.stringify(
@@ -176,11 +175,6 @@ async function main(): Promise<void> {
           type: "presidential_roster_enrichment",
           ts: new Date().toISOString(),
           started_at: startedAt.toISOString(),
-          election_year: options.electionYear,
-          stage: options.stage,
-          party: options.party,
-          dry_run: options.dryRun,
-          run_id: options.runId,
           enabled: false,
           summary: { ok: true, skipped: true, reason: "presidential elections disabled" },
         },
@@ -190,6 +184,7 @@ async function main(): Promise<void> {
     );
     return;
   }
+  const options = parseEnrichPresidentialRosterScriptArgs(process.argv.slice(2), startedAt);
 
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });

@@ -1385,9 +1385,14 @@ describe("presidentialPrimaryDateResearchScheduler", () => {
     expect(queueInstance.close).toHaveBeenCalledTimes(1);
   });
 
-  it("does not enqueue manual or recurring scheduler jobs when the master flag is off", async () => {
+  it("does not enqueue manual jobs and removes scheduled work when the master flag is off", async () => {
     process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
-    const Queue = vi.fn();
+    const queueInstance = {
+      removeJobScheduler: vi.fn(async () => true),
+      getJob: vi.fn(async () => undefined),
+      close: vi.fn(async () => undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
     const Pool = vi.fn();
     vi.doMock("pg", () => ({ Pool }));
     vi.doMock("bullmq", () => ({
@@ -1412,7 +1417,17 @@ describe("presidentialPrimaryDateResearchScheduler", () => {
       },
       dailyScheduler: "disabled",
     });
-    expect(Queue).not.toHaveBeenCalled();
+    expect(Queue).toHaveBeenCalledTimes(1);
+    expect(queueInstance.removeJobScheduler).toHaveBeenCalledWith(
+      "presidential_primary_date_research_daily_rollover"
+    );
+    expect(queueInstance.getJob).toHaveBeenCalledWith(
+      "presidential_primary_date_research_activation"
+    );
+    expect(queueInstance.getJob).toHaveBeenCalledWith(
+      "presidential_primary_date_research_completion"
+    );
+    expect(queueInstance.close).toHaveBeenCalledTimes(1);
     expect(Pool).not.toHaveBeenCalled();
   });
 
