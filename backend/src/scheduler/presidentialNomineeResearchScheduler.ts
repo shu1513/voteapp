@@ -2,6 +2,7 @@ import { Queue, Worker, type JobsOptions, type Processor } from "bullmq";
 import type { ConnectionOptions } from "bullmq";
 
 import { getPipelineEnv } from "../config/env.js";
+import { isPresidentialElectionsEnabled } from "../config/featureFlags.js";
 import {
   runPresidentialNomineeResearchProducer,
   type PresidentialNomineeResearchProducerResult,
@@ -98,6 +99,16 @@ export function createPresidentialNomineeResearchSchedulerQueue(): Queue<Preside
 export async function upsertRecurringPresidentialNomineeResearchJobs(
   jobData: PresidentialNomineeResearchRolloverJobData = {}
 ): Promise<void> {
+  if (!isPresidentialElectionsEnabled()) {
+    const queue = createPresidentialNomineeResearchSchedulerQueue();
+    try {
+      await queue.removeJobScheduler(PRESIDENTIAL_NOMINEE_RESEARCH_DAILY_SCHEDULER_ID);
+    } finally {
+      await queue.close();
+    }
+    return;
+  }
+
   const config = readSchedulerRuntimeConfig();
   const queue = createPresidentialNomineeResearchSchedulerQueue();
 
@@ -126,6 +137,10 @@ export async function upsertRecurringPresidentialNomineeResearchJobs(
 export async function enqueueManualPresidentialNomineeResearchJob(
   jobData: PresidentialNomineeResearchRolloverJobData = {}
 ): Promise<string> {
+  if (!isPresidentialElectionsEnabled()) {
+    return "disabled";
+  }
+
   const queue = createPresidentialNomineeResearchSchedulerQueue();
 
   try {

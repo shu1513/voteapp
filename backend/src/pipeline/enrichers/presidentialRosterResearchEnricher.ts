@@ -4,6 +4,7 @@ import { Pool } from "pg";
 import { createClient } from "redis";
 
 import { getPipelineEnv } from "../../config/env.js";
+import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
 import {
   PRESIDENTIAL_ROSTER_RESEARCH_JOB_NAME,
   type PresidentialRosterResearchJobData,
@@ -37,6 +38,7 @@ export type PresidentialRosterResearchJobResult = {
   matched_count?: number;
   emitted_count?: number;
   skipped_count?: number;
+  disabled?: boolean;
   error?: string;
   error_code?: string;
 };
@@ -173,6 +175,22 @@ export async function processPresidentialRosterResearchJob(
   } = {}
 ): Promise<PresidentialRosterResearchJobResult> {
   const job = assertValidJob(rawJob);
+  if (!isPresidentialElectionsEnabled()) {
+    return {
+      cycle_id: job.cycle_id,
+      election_year: job.election_year,
+      party: job.party,
+      ok: true,
+      rows_updated: 0,
+      next_research_at: null,
+      ai_candidate_count: 0,
+      matched_count: 0,
+      emitted_count: 0,
+      skipped_count: 0,
+      disabled: true,
+    };
+  }
+
   const env = getPipelineEnv();
   const pool = options.pool ?? new Pool({ connectionString: env.DATABASE_URL });
   const shouldClosePool = !options.pool;

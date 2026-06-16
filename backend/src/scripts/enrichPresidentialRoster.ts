@@ -3,6 +3,7 @@ import { createClient } from "redis";
 import { pathToFileURL } from "node:url";
 
 import { getPipelineEnv } from "../config/env.js";
+import { isPresidentialElectionsEnabled } from "../config/featureFlags.js";
 import {
   enrichPresidentialRosterCycle,
   type PresidentialRosterEnricherResult,
@@ -167,7 +168,24 @@ export function toEnrichPresidentialRosterScriptOutput(input: {
 
 async function main(): Promise<void> {
   const startedAt = new Date();
+  if (!isPresidentialElectionsEnabled()) {
+    console.log(
+      JSON.stringify(
+        {
+          type: "presidential_roster_enrichment",
+          ts: new Date().toISOString(),
+          started_at: startedAt.toISOString(),
+          enabled: false,
+          summary: { ok: true, skipped: true, reason: "presidential elections disabled" },
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
   const options = parseEnrichPresidentialRosterScriptArgs(process.argv.slice(2), startedAt);
+
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   let redis: RedisClient | null = null;

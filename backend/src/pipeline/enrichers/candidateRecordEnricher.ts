@@ -20,6 +20,7 @@ import {
 } from "../../ai/enrichCandidateRecordAreas.js";
 import { verifyHttpUrlReachability } from "../../ai/urlReachability.js";
 import { getPipelineEnv } from "../../config/env.js";
+import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
 import {
   STAGING_CANDIDATE_RECORD_DRAFT_STREAM,
   STAGING_CANDIDATE_RECORD_ENRICHER_GROUP,
@@ -384,8 +385,23 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
           contextType === "presidential_cycle"
             ? `presidential_cycle_id=${presidentialCycleId || "unknown"} role=${presidentialRole ?? "unknown"}`
             : `election_id=${electionId ?? "unknown"}`;
+        const presidentialDisabled =
+          contextType === "presidential_cycle" && !isPresidentialElectionsEnabled();
 
         try {
+          if (presidentialDisabled) {
+            await redis.xAck(
+              STAGING_CANDIDATE_RECORD_DRAFT_STREAM,
+              STAGING_CANDIDATE_RECORD_ENRICHER_GROUP,
+              entry.id
+            );
+            stats.acked_count += 1;
+            console.log(
+              `candidate-record enricher skipped disabled presidential draft candidate_id=${candidateId ?? "unknown"} ${contextLabel}`
+            );
+            continue;
+          }
+
           const deliveryCount = await getDeliveryCount(redis, entry.id);
           if (deliveryCount !== null && deliveryCount >= MAX_DELIVERY_ATTEMPTS) {
             await parkMessage(

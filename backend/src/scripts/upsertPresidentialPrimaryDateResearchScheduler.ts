@@ -1,7 +1,14 @@
+import { isPresidentialElectionsEnabled } from "../config/featureFlags.js";
 import { upsertRecurringPresidentialPrimaryDateResearchJobs } from "../scheduler/presidentialPrimaryDateResearchScheduler.js";
 
 async function main(): Promise<void> {
+  const enabled = isPresidentialElectionsEnabled();
   const result = await upsertRecurringPresidentialPrimaryDateResearchJobs();
+  if (!enabled) {
+    console.log("presidential primary date research scheduler disabled; scheduler cleanup completed");
+    return;
+  }
+
   console.log(
     [
       "presidential primary date research scheduler synced",

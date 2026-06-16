@@ -8,6 +8,7 @@ import {
 import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { resolveIncludePartyForCandidateContest } from "../../ai/candidatePartisanship.js";
 import { getPipelineEnv } from "../../config/env.js";
+import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
 import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
   STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
@@ -508,8 +509,22 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
         const parentPresidentialCandidateFecId =
           entry.message.parent_presidential_candidate_fec_id?.trim().toUpperCase() || undefined;
         let deliveryCount: number | null = null;
+        const presidentialDisabled =
+          contextType === "presidential_cycle" && !isPresidentialElectionsEnabled();
 
         try {
+          if (presidentialDisabled) {
+            await redis.xAck(
+              STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
+              STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
+              entry.id
+            );
+            console.log(
+              `candidate-profile enricher skipped disabled presidential draft ${contextLabel} candidate=${candidateDisplayName ?? "unknown"}`
+            );
+            continue;
+          }
+
           deliveryCount = await getDeliveryCount(redis, entry.id);
           if (deliveryCount !== null && deliveryCount >= MAX_DELIVERY_ATTEMPTS) {
             await parkMessage(

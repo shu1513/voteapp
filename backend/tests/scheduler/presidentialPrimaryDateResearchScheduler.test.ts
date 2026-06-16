@@ -17,6 +17,7 @@ describe("presidentialPrimaryDateResearchScheduler", () => {
     delete process.env.PRESIDENTIAL_PRIMARY_DATE_RESEARCH_SCHEDULER_QUEUE;
     delete process.env.PRESIDENTIAL_PRIMARY_DATE_RESEARCH_DAILY_CRON;
     delete process.env.PRESIDENTIAL_PRIMARY_DATE_RESEARCH_DAILY_TZ;
+    delete process.env.PRESIDENTIAL_ELECTIONS_ENABLED;
 
     vi.doMock("../../src/config/env.js", () => ({
       getPipelineEnv: () => ({
@@ -130,6 +131,53 @@ describe("presidentialPrimaryDateResearchScheduler", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it("returns a disabled rollover result without touching DB or Redis when the master flag is off", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+    const Pool = vi.fn();
+    const Queue = vi.fn();
+    const producerMock = vi.fn();
+    vi.doMock("pg", () => ({ Pool }));
+    vi.doMock("bullmq", () => ({
+      Queue,
+      Worker: vi.fn(),
+    }));
+    vi.doMock("../../src/pipeline/producers/presidentialPrimaryDateResearchProducer.js", () => ({
+      runPresidentialPrimaryDateResearchProducer: producerMock,
+      PRESIDENTIAL_PRIMARY_DATE_RESEARCH_JOB_NAME: "presidential_primary_date_research",
+    }));
+
+    const { runPresidentialPrimaryDateResearchRolloverJob } = await import(
+      "../../src/scheduler/presidentialPrimaryDateResearchScheduler.js"
+    );
+
+    const result = await runPresidentialPrimaryDateResearchRolloverJob({
+      dryRun: true,
+      force: true,
+      triggeredBy: "manual",
+    });
+
+    expect(result).toMatchObject({
+      enabled: false,
+      force: true,
+      triggeredBy: "manual",
+      cyclesScanned: 0,
+      dueRowCount: 0,
+      enqueuedJobCount: 0,
+      schedulerState: {
+        mode: "complete",
+        cycleCount: 0,
+      },
+      schedulerSync: {
+        dailyScheduler: "disabled",
+        activationJob: "none",
+        completionJob: "none",
+      },
+    });
+    expect(Pool).not.toHaveBeenCalled();
+    expect(Queue).not.toHaveBeenCalled();
+    expect(producerMock).not.toHaveBeenCalled();
   });
 
   it("uses one rollover timestamp for initial and final adaptive sync", async () => {
@@ -1335,6 +1383,52 @@ describe("presidentialPrimaryDateResearchScheduler", () => {
       }
     );
     expect(queueInstance.close).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not enqueue manual jobs and removes scheduled work when the master flag is off", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+    const queueInstance = {
+      removeJobScheduler: vi.fn(async () => true),
+      getJob: vi.fn(async () => undefined),
+      close: vi.fn(async () => undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
+    const Pool = vi.fn();
+    vi.doMock("pg", () => ({ Pool }));
+    vi.doMock("bullmq", () => ({
+      Queue,
+      Worker: vi.fn(),
+    }));
+    vi.doMock("../../src/pipeline/producers/presidentialPrimaryDateResearchProducer.js", () => ({
+      runPresidentialPrimaryDateResearchProducer: vi.fn(),
+      PRESIDENTIAL_PRIMARY_DATE_RESEARCH_JOB_NAME: "presidential_primary_date_research",
+    }));
+
+    const {
+      enqueueManualPresidentialPrimaryDateResearchJob,
+      upsertRecurringPresidentialPrimaryDateResearchJobs,
+    } = await import("../../src/scheduler/presidentialPrimaryDateResearchScheduler.js");
+
+    await expect(enqueueManualPresidentialPrimaryDateResearchJob({ force: true })).resolves.toBe("disabled");
+    await expect(upsertRecurringPresidentialPrimaryDateResearchJobs({ force: true })).resolves.toMatchObject({
+      state: {
+        mode: "complete",
+        cycleCount: 0,
+      },
+      dailyScheduler: "disabled",
+    });
+    expect(Queue).toHaveBeenCalledTimes(1);
+    expect(queueInstance.removeJobScheduler).toHaveBeenCalledWith(
+      "presidential_primary_date_research_daily_rollover"
+    );
+    expect(queueInstance.getJob).toHaveBeenCalledWith(
+      "presidential_primary_date_research_activation"
+    );
+    expect(queueInstance.getJob).toHaveBeenCalledWith(
+      "presidential_primary_date_research_completion"
+    );
+    expect(queueInstance.close).toHaveBeenCalledTimes(1);
+    expect(Pool).not.toHaveBeenCalled();
   });
 
   it("rejects unsupported Redis URL protocols before creating the scheduler queue", async () => {

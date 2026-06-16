@@ -3,6 +3,7 @@ import type { ConnectionOptions, Job } from "bullmq";
 import { Pool } from "pg";
 
 import { getPipelineEnv } from "../../config/env.js";
+import { isPresidentialFeatureEnabled } from "../../config/featureFlags.js";
 import {
   ensurePresidentialStatePrimaryDateRows,
   PRESIDENTIAL_PRIMARY_DATE_STATE_FIPS,
@@ -48,7 +49,6 @@ type ProducerOptions = {
 };
 
 type ProducerPolicy = {
-  enabled: boolean;
   maxRowsPerRun: number;
   maxStatesPerJob: number;
   maxJobsPerRun: number;
@@ -147,7 +147,6 @@ function toConnectionOptions(redisUrl: string): ConnectionOptions {
 
 function readProducerPolicy(): ProducerPolicy {
   return {
-    enabled: process.env.PRESIDENTIAL_PRIMARY_DATES_RESEARCH_ENABLED === "true",
     maxRowsPerRun: parsePositiveIntegerEnv("PRESIDENTIAL_PRIMARY_DATES_RESEARCH_MAX_ROWS_PER_RUN", 200),
     maxStatesPerJob: parsePositiveIntegerEnv("PRESIDENTIAL_PRIMARY_DATES_RESEARCH_MAX_STATES_PER_JOB", 10),
     maxJobsPerRun: parsePositiveIntegerEnv("PRESIDENTIAL_PRIMARY_DATES_RESEARCH_MAX_JOBS_PER_RUN", 20),
@@ -392,7 +391,7 @@ export async function runPresidentialPrimaryDateResearchProducer(
   const policy = readProducerPolicy();
   const force = Boolean(options.force);
   const dryRun = Boolean(options.dryRun);
-  const enabled = force || policy.enabled;
+  const enabled = isPresidentialFeatureEnabled("PRESIDENTIAL_PRIMARY_DATES_RESEARCH_ENABLED", force);
   const now = options.now ?? new Date();
   assertValidDate(now, "now");
 

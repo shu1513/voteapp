@@ -2,6 +2,7 @@ import { Queue, Worker, type JobsOptions, type Processor } from "bullmq";
 import type { ConnectionOptions } from "bullmq";
 
 import { getPipelineEnv } from "../config/env.js";
+import { isPresidentialElectionsEnabled } from "../config/featureFlags.js";
 import {
   runPresidentialRosterResearchProducer,
   type PresidentialRosterResearchProducerResult,
@@ -94,6 +95,16 @@ export function createPresidentialRosterResearchSchedulerQueue(): Queue<Presiden
 export async function upsertRecurringPresidentialRosterResearchJobs(
   jobData: PresidentialRosterResearchRolloverJobData = {}
 ): Promise<void> {
+  if (!isPresidentialElectionsEnabled()) {
+    const queue = createPresidentialRosterResearchSchedulerQueue();
+    try {
+      await queue.removeJobScheduler(PRESIDENTIAL_ROSTER_RESEARCH_DAILY_SCHEDULER_ID);
+    } finally {
+      await queue.close();
+    }
+    return;
+  }
+
   const config = readSchedulerRuntimeConfig();
   const queue = createPresidentialRosterResearchSchedulerQueue();
 
@@ -122,6 +133,10 @@ export async function upsertRecurringPresidentialRosterResearchJobs(
 export async function enqueueManualPresidentialRosterResearchJob(
   jobData: PresidentialRosterResearchRolloverJobData = {}
 ): Promise<string> {
+  if (!isPresidentialElectionsEnabled()) {
+    return "disabled";
+  }
+
   const queue = createPresidentialRosterResearchSchedulerQueue();
 
   try {
