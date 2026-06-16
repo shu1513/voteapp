@@ -246,6 +246,53 @@ describe("historicalContestPrecinctCsvImport", () => {
     );
   });
 
+  it("normalizes unpadded county FIPS values during countywide precinct imports", () => {
+    const countyOfficeCsv = [
+      "year,state_po,state_fips,county_name,county_fips,office,district,candidate,votes,party_simplified,stage,mode",
+      "2024,CA,6,LOS ANGELES,37,LOS ANGELES COUNTY SHERIFF,6037,Sheriff One,56000,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,6,LOS ANGELES,37,LOS ANGELES COUNTY SHERIFF,6037,Sheriff Two,44000,REPUBLICAN,GEN,TOTAL",
+      "2024,CA,6,LOS ANGELES,6037,LOS ANGELES COUNTY CLERK,,Clerk One,52000,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,6,LOS ANGELES,6037,LOS ANGELES COUNTY CLERK,,Clerk Two,48000,REPUBLICAN,GEN,TOTAL",
+      "2024,CA,06,LOS ANGELES,037,LOS ANGELES COUNTY RECORDER,,Recorder One,51000,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,06,LOS ANGELES,037,LOS ANGELES COUNTY RECORDER,,Recorder Two,49000,REPUBLICAN,GEN,TOTAL",
+      "2024,CA,06,LOS ANGELES,06037,LOS ANGELES COUNTY CORONER,,Coroner One,50500,DEMOCRAT,GEN,TOTAL",
+      "2024,CA,06,LOS ANGELES,06037,LOS ANGELES COUNTY CORONER,,Coroner Two,49500,REPUBLICAN,GEN,TOTAL",
+    ].join("\n");
+
+    expect(parseAndAggregateMedslHistoricalContestPrecinctCsv(countyOfficeCsv)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          office: "COUNTY SHERIFF",
+          district: "06037",
+          candidate: "Sheriff One",
+          candidatevotes: "56000",
+          totalvotes: "100000",
+        }),
+        expect.objectContaining({
+          office: "COUNTY CLERK",
+          district: "06037",
+          candidate: "Clerk One",
+          candidatevotes: "52000",
+          totalvotes: "100000",
+        }),
+        expect.objectContaining({
+          office: "COUNTY RECORDER",
+          district: "06037",
+          candidate: "Recorder One",
+          candidatevotes: "51000",
+          totalvotes: "100000",
+        }),
+        expect.objectContaining({
+          office: "COUNTY CORONER",
+          district: "06037",
+          candidate: "Coroner One",
+          candidatevotes: "50500",
+          totalvotes: "100000",
+        }),
+      ])
+    );
+  });
+
   it("normalizes every supported countywide office type during precinct imports", async () => {
     const query = vi.fn();
     const supportedCountyOfficeTypes = [
