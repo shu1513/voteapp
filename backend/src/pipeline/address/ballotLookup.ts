@@ -489,10 +489,30 @@ function historicalOfficeDisplayName(officeType: HistoricalContestWeightedMargin
       return "Commissioner of Agriculture";
     case "COMMISSIONER_OF_INSURANCE":
       return "Commissioner of Insurance";
+    case "LABOR_COMMISSIONER":
+      return "Labor Commissioner";
+    case "LAND_COMMISSIONER":
+      return "Land Commissioner";
     case "STATE_SENATE":
       return "State Senate";
     case "STATE_HOUSE":
       return "State House";
+    case "COUNTY_SHERIFF":
+      return "Sheriff";
+    case "DISTRICT_ATTORNEY":
+      return "District Attorney";
+    case "COUNTY_CLERK":
+      return "County Clerk";
+    case "COUNTY_ASSESSOR":
+      return "County Assessor";
+    case "COUNTY_AUDITOR":
+      return "County Auditor";
+    case "COUNTY_TREASURER":
+      return "County Treasurer";
+    case "COUNTY_RECORDER":
+      return "County Recorder";
+    case "COUNTY_CORONER":
+      return "County Coroner";
   }
 }
 

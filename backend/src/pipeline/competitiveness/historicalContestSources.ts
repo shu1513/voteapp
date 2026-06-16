@@ -31,6 +31,8 @@ const STATEWIDE_EXECUTIVE_HISTORICAL_CONTEST_OFFICE_TYPES = [
   "SUPERINTENDENT_OF_PUBLIC_INSTRUCTION",
   "COMMISSIONER_OF_AGRICULTURE",
   "COMMISSIONER_OF_INSURANCE",
+  "LABOR_COMMISSIONER",
+  "LAND_COMMISSIONER",
 ] as const satisfies readonly HistoricalContestOfficeType[];
 
 const STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES = [
@@ -38,6 +40,22 @@ const STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES = [
   ...STATEWIDE_EXECUTIVE_HISTORICAL_CONTEST_OFFICE_TYPES,
   "STATE_SENATE",
   "STATE_HOUSE",
+] as const satisfies readonly HistoricalContestOfficeType[];
+
+const COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES = [
+  "COUNTY_SHERIFF",
+  "DISTRICT_ATTORNEY",
+  "COUNTY_CLERK",
+  "COUNTY_ASSESSOR",
+  "COUNTY_AUDITOR",
+  "COUNTY_TREASURER",
+  "COUNTY_RECORDER",
+  "COUNTY_CORONER",
+] as const satisfies readonly HistoricalContestOfficeType[];
+
+const STATE_AND_COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES = [
+  ...STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES,
+  ...COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES,
 ] as const satisfies readonly HistoricalContestOfficeType[];
 
 const MEDSL_2024_STATE_PRECINCT_FILES = [
@@ -183,7 +201,7 @@ export const VERIFIED_HISTORICAL_CONTEST_SOURCES = [
     sourceFiles: MEDSL_2022_PRECINCT_FILES,
     format: "medsl_precinct_csv",
     electionYear: 2022,
-    officeTypes: ["US_SENATE", "US_HOUSE", ...STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES],
+    officeTypes: ["US_SENATE", "US_HOUSE", ...STATE_AND_COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES],
     staleAfterRedistricting: false,
   },
   {
@@ -196,7 +214,7 @@ export const VERIFIED_HISTORICAL_CONTEST_SOURCES = [
     downloadMode: "dataverse_guestbook",
     format: "medsl_precinct_csv",
     electionYear: 2020,
-    officeTypes: ["US_PRESIDENT", "US_SENATE", "US_HOUSE", ...STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES],
+    officeTypes: ["US_PRESIDENT", "US_SENATE", "US_HOUSE", ...STATE_AND_COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES],
     staleAfterRedistricting: true,
   },
   {
@@ -209,7 +227,7 @@ export const VERIFIED_HISTORICAL_CONTEST_SOURCES = [
     downloadMode: "dataverse_guestbook",
     format: "medsl_precinct_csv",
     electionYear: 2018,
-    officeTypes: ["US_SENATE", "US_HOUSE", ...STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES],
+    officeTypes: ["US_SENATE", "US_HOUSE", ...STATE_AND_COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES],
     staleAfterRedistricting: true,
   },
   {
@@ -261,7 +279,7 @@ export const VERIFIED_HISTORICAL_CONTEST_SOURCES = [
     downloadMode: "dataverse_guestbook",
     format: "medsl_precinct_csv",
     electionYear: 2016,
-    officeTypes: STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES,
+    officeTypes: STATE_AND_COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES,
     staleAfterRedistricting: true,
   },
   {
@@ -271,7 +289,7 @@ export const VERIFIED_HISTORICAL_CONTEST_SOURCES = [
     sourceFiles: MEDSL_2024_STATE_PRECINCT_FILES,
     format: "medsl_precinct_csv",
     electionYear: 2024,
-    officeTypes: STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES,
+    officeTypes: STATE_AND_COUNTY_HISTORICAL_CONTEST_OFFICE_TYPES,
     staleAfterRedistricting: false,
   },
 ] as const satisfies readonly HistoricalContestSourceDefinition[];

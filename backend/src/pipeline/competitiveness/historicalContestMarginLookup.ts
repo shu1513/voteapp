@@ -147,7 +147,12 @@ function minHistoricalElectionYearForKey(
   key: HistoricalContestLookupKey,
   currentElectionYear: number | null
 ): number | null {
-  if (key.district_type === "statewide" || currentElectionYear === null) {
+  if (
+    currentElectionYear === null ||
+    (key.district_type !== "us_house" &&
+      key.district_type !== "state_upper" &&
+      key.district_type !== "state_lower")
+  ) {
     return null;
   }
   return redistrictingCycleStartYear(currentElectionYear);
