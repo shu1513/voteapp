@@ -21,6 +21,25 @@ export type HistoricalContestSourceDefinition = {
   staleAfterRedistricting: boolean;
 };
 
+const STATEWIDE_EXECUTIVE_HISTORICAL_CONTEST_OFFICE_TYPES = [
+  "LIEUTENANT_GOVERNOR",
+  "SECRETARY_OF_STATE",
+  "ATTORNEY_GENERAL",
+  "STATE_TREASURER",
+  "STATE_AUDITOR",
+  "COMPTROLLER",
+  "SUPERINTENDENT_OF_PUBLIC_INSTRUCTION",
+  "COMMISSIONER_OF_AGRICULTURE",
+  "COMMISSIONER_OF_INSURANCE",
+] as const satisfies readonly HistoricalContestOfficeType[];
+
+const STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES = [
+  "GOVERNOR",
+  ...STATEWIDE_EXECUTIVE_HISTORICAL_CONTEST_OFFICE_TYPES,
+  "STATE_SENATE",
+  "STATE_HOUSE",
+] as const satisfies readonly HistoricalContestOfficeType[];
+
 const MEDSL_2024_STATE_PRECINCT_FILES = [
   "https://dataverse.harvard.edu/api/access/datafile/13731163",
   "https://dataverse.harvard.edu/api/access/datafile/13731172",
@@ -164,7 +183,7 @@ export const VERIFIED_HISTORICAL_CONTEST_SOURCES = [
     sourceFiles: MEDSL_2022_PRECINCT_FILES,
     format: "medsl_precinct_csv",
     electionYear: 2022,
-    officeTypes: ["US_SENATE", "US_HOUSE", "GOVERNOR", "STATE_SENATE", "STATE_HOUSE"],
+    officeTypes: ["US_SENATE", "US_HOUSE", ...STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES],
     staleAfterRedistricting: false,
   },
   {
@@ -177,7 +196,7 @@ export const VERIFIED_HISTORICAL_CONTEST_SOURCES = [
     downloadMode: "dataverse_guestbook",
     format: "medsl_precinct_csv",
     electionYear: 2020,
-    officeTypes: ["US_PRESIDENT", "US_SENATE", "US_HOUSE", "GOVERNOR", "STATE_SENATE", "STATE_HOUSE"],
+    officeTypes: ["US_PRESIDENT", "US_SENATE", "US_HOUSE", ...STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES],
     staleAfterRedistricting: true,
   },
   {
@@ -190,7 +209,59 @@ export const VERIFIED_HISTORICAL_CONTEST_SOURCES = [
     downloadMode: "dataverse_guestbook",
     format: "medsl_precinct_csv",
     electionYear: 2018,
-    officeTypes: ["US_SENATE", "US_HOUSE", "GOVERNOR", "STATE_SENATE", "STATE_HOUSE"],
+    officeTypes: ["US_SENATE", "US_HOUSE", ...STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES],
+    staleAfterRedistricting: true,
+  },
+  {
+    preset: "medsl-2016-president-precinct",
+    source: "MIT_2016",
+    sourceUrl: "https://doi.org/10.7910/DVN/LYWX3D",
+    sourceFileDiscovery: {
+      dataverseDatasetPersistentIds: ["doi:10.7910/DVN/LYWX3D"],
+    },
+    downloadMode: "dataverse_guestbook",
+    format: "medsl_precinct_csv",
+    electionYear: 2016,
+    officeTypes: ["US_PRESIDENT"],
+    staleAfterRedistricting: false,
+  },
+  {
+    preset: "medsl-2016-senate-precinct",
+    source: "MIT_2016",
+    sourceUrl: "https://doi.org/10.7910/DVN/NLTQAD",
+    sourceFileDiscovery: {
+      dataverseDatasetPersistentIds: ["doi:10.7910/DVN/NLTQAD"],
+    },
+    downloadMode: "dataverse_guestbook",
+    format: "medsl_precinct_csv",
+    electionYear: 2016,
+    officeTypes: ["US_SENATE"],
+    staleAfterRedistricting: false,
+  },
+  {
+    preset: "medsl-2016-house-precinct",
+    source: "MIT_2016",
+    sourceUrl: "https://doi.org/10.7910/DVN/PSKDUJ",
+    sourceFileDiscovery: {
+      dataverseDatasetPersistentIds: ["doi:10.7910/DVN/PSKDUJ"],
+    },
+    downloadMode: "dataverse_guestbook",
+    format: "medsl_precinct_csv",
+    electionYear: 2016,
+    officeTypes: ["US_HOUSE"],
+    staleAfterRedistricting: true,
+  },
+  {
+    preset: "medsl-2016-state-precinct",
+    source: "MIT_2016",
+    sourceUrl: "https://doi.org/10.7910/DVN/GSZG1O",
+    sourceFileDiscovery: {
+      dataverseDatasetPersistentIds: ["doi:10.7910/DVN/GSZG1O"],
+    },
+    downloadMode: "dataverse_guestbook",
+    format: "medsl_precinct_csv",
+    electionYear: 2016,
+    officeTypes: STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES,
     staleAfterRedistricting: true,
   },
   {
@@ -200,7 +271,7 @@ export const VERIFIED_HISTORICAL_CONTEST_SOURCES = [
     sourceFiles: MEDSL_2024_STATE_PRECINCT_FILES,
     format: "medsl_precinct_csv",
     electionYear: 2024,
-    officeTypes: ["GOVERNOR", "STATE_SENATE", "STATE_HOUSE"],
+    officeTypes: STATE_OFFICE_HISTORICAL_CONTEST_OFFICE_TYPES,
     staleAfterRedistricting: false,
   },
 ] as const satisfies readonly HistoricalContestSourceDefinition[];

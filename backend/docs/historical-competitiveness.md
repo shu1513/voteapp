@@ -14,12 +14,21 @@ Historical competitiveness is currently linked for:
 - United States Senator
 - United States Representative
 - Governor
+- Lieutenant Governor
+- Secretary of State
+- Attorney General
+- State Treasurer
+- State Auditor
+- Comptroller / State Controller
+- Superintendent of Public Instruction
+- Commissioner of Agriculture
+- Commissioner of Insurance
 - State Senator
 - State lower chamber legislator
 
 The lookup uses the office canonical name plus district identity:
 
-- President, U.S. Senate, and Governor use the statewide district key.
+- President, U.S. Senate, Governor, and supported statewide executive offices use the statewide district key.
 - U.S. House uses the congressional district key.
 - State Senate uses the state upper chamber district key.
 - State House / Assembly uses the state lower chamber district key.
@@ -123,12 +132,16 @@ The verified importer currently includes these source presets:
 - `medsl-2022-precinct`
 - `medsl-2020-precinct-by-state`
 - `medsl-2018-precinct-by-state`
+- `medsl-2016-president-precinct`
+- `medsl-2016-senate-precinct`
+- `medsl-2016-house-precinct`
+- `medsl-2016-state-precinct`
 
 The 2024 president and senate sources are aggregate CSVs from the MEDSL GitHub
-repository. The 2024 House, 2024 state-office, 2022, 2020, and 2018 sources are
-Dataverse files.
+repository. The 2024 House, 2024 state-office, 2022, 2020, 2018, and 2016 sources
+are Dataverse files.
 
-The 2020 and 2018 Dataverse files require a guestbook response before download.
+The 2020, 2018, and 2016 Dataverse files can require a guestbook response before download.
 The verified importer handles this by requesting a signed Dataverse download URL.
 Configure these optional values for the submitted guestbook response:
 
@@ -147,6 +160,7 @@ Dry-run one verified source:
 
 ```bash
 npm run competitiveness:import:verified -- --preset=medsl-2024-president-state --dry-run
+npm run competitiveness:import:verified -- --preset=medsl-2024-state-precinct --dry-run
 ```
 
 Import one verified source:

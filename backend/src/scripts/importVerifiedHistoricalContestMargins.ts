@@ -16,7 +16,7 @@ const dryRunDb: Pick<PoolClient, "query"> = {
   },
 };
 
-type SourceImportSummary = {
+export type VerifiedHistoricalContestSourceImportSummary = {
   preset: string;
   source: string;
   source_url: string;
@@ -94,14 +94,14 @@ async function rollbackQuietly(client: PoolClient, preset: string): Promise<void
   }
 }
 
-async function importVerifiedSource(input: {
+export async function importVerifiedHistoricalContestSource(input: {
   db: Pick<PoolClient, "query">;
   source: HistoricalContestSourceDefinition;
   csv: string;
   sourceUrl: string;
   dryRun: boolean;
   importedAt: Date;
-}): Promise<SourceImportSummary> {
+}): Promise<VerifiedHistoricalContestSourceImportSummary> {
   const result = await importVerifiedSourceByFormat({
     db: input.db,
     source: input.source,
@@ -128,7 +128,9 @@ async function importVerifiedSource(input: {
   };
 }
 
-function mergeSourceSummaries(summaries: readonly SourceImportSummary[]): SourceImportSummary {
+function mergeSourceSummaries(
+  summaries: readonly VerifiedHistoricalContestSourceImportSummary[]
+): VerifiedHistoricalContestSourceImportSummary {
   const [first] = summaries;
   if (!first) {
     throw new Error("Cannot merge empty historical contest source summaries");
@@ -237,9 +239,9 @@ async function importVerifiedSourceWithTransaction(input: {
   source: HistoricalContestSourceDefinition;
   dryRun: boolean;
   importedAt: Date;
-}): Promise<SourceImportSummary> {
+}): Promise<VerifiedHistoricalContestSourceImportSummary> {
   const sourceFiles = await resolveSourceFileUrls(input.source);
-  const summaries: SourceImportSummary[] = [];
+  const summaries: VerifiedHistoricalContestSourceImportSummary[] = [];
 
   for (const sourceUrl of sourceFiles) {
     const csv = await fetchHistoricalContestCsv(sourceUrl, {
@@ -252,7 +254,7 @@ async function importVerifiedSourceWithTransaction(input: {
         await client.query("BEGIN");
       }
 
-      const summary = await importVerifiedSource({
+      const summary = await importVerifiedHistoricalContestSource({
         db: client ?? dryRunDb,
         source: input.source,
         csv,
@@ -284,7 +286,7 @@ async function main(): Promise<void> {
   const env = args.dryRun ? null : getPipelineEnv();
   const pool = env ? new Pool({ connectionString: env.DATABASE_URL }) : null;
   const startedAt = new Date();
-  const summaries: SourceImportSummary[] = [];
+  const summaries: VerifiedHistoricalContestSourceImportSummary[] = [];
   const sources = args.preset
     ? VERIFIED_HISTORICAL_CONTEST_SOURCES.filter((source) => source.preset === args.preset)
     : VERIFIED_HISTORICAL_CONTEST_SOURCES;

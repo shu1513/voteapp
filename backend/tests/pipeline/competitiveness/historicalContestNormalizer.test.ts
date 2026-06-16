@@ -187,6 +187,167 @@ describe("historicalContestNormalizer", () => {
     });
   });
 
+  it("normalizes safe statewide executive MIT office labels exactly", () => {
+    const result = normalizeMedslHistoricalContestMargins({
+      source: "MIT_2024",
+      staleAfterRedistricting: true,
+      rows: [
+        row({
+          office: "STATE TREASURER",
+          district: "STATEWIDE",
+          candidate: "Treasurer Candidate",
+          candidatevotes: 550_000,
+          totalvotes: 1_000_000,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "STATE TREASURER",
+          district: "STATEWIDE",
+          candidate: "Other Treasurer Candidate",
+          candidatevotes: 450_000,
+          totalvotes: 1_000_000,
+          party_simplified: "REPUBLICAN",
+        }),
+        row({
+          office: "ATTORNEY GENERAL",
+          district: "STATEWIDE",
+          candidate: "Attorney Candidate",
+          candidatevotes: 510_000,
+          totalvotes: 1_000_000,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "ATTORNEY GENERAL",
+          district: "STATEWIDE",
+          candidate: "Other Attorney Candidate",
+          candidatevotes: 490_000,
+          totalvotes: 1_000_000,
+          party_simplified: "REPUBLICAN",
+        }),
+      ],
+    });
+
+    expect(result.skippedRows).toEqual([]);
+    expect(result.records).toHaveLength(2);
+    expect(result.records).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          office_type: "STATE_TREASURER",
+          district_type: "statewide",
+          district_key: "06",
+          mit_office: "STATE TREASURER",
+          mit_district: "STATEWIDE",
+          stale_after_redistricting: false,
+          margin_percent: 10,
+        }),
+        expect.objectContaining({
+          office_type: "ATTORNEY_GENERAL",
+          district_type: "statewide",
+          district_key: "06",
+          mit_office: "ATTORNEY GENERAL",
+          mit_district: "STATEWIDE",
+          stale_after_redistricting: false,
+          margin_percent: 2,
+        }),
+      ])
+    );
+  });
+
+  it("normalizes selected exact statewide executive label variants", () => {
+    const result = normalizeMedslHistoricalContestMargins({
+      source: "MIT_2024",
+      rows: [
+        row({
+          office: "TREASURER OF STATE",
+          district: "STATEWIDE",
+          candidate: "Candidate One",
+          candidatevotes: 60,
+          totalvotes: 100,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "TREASURER OF STATE",
+          district: "STATEWIDE",
+          candidate: "Candidate Two",
+          candidatevotes: 40,
+          totalvotes: 100,
+          party_simplified: "REPUBLICAN",
+        }),
+        row({
+          office: "STATE CONTROLLER",
+          district: "STATEWIDE",
+          candidate: "Controller Candidate",
+          candidatevotes: 55,
+          totalvotes: 100,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "STATE CONTROLLER",
+          district: "STATEWIDE",
+          candidate: "Other Controller Candidate",
+          candidatevotes: 45,
+          totalvotes: 100,
+          party_simplified: "REPUBLICAN",
+        }),
+        row({
+          office: "COMMISSIONER OF INSURANCE",
+          district: "STATEWIDE",
+          candidate: "Insurance Candidate",
+          candidatevotes: 53,
+          totalvotes: 100,
+          party_simplified: "DEMOCRAT",
+        }),
+        row({
+          office: "COMMISSIONER OF INSURANCE",
+          district: "STATEWIDE",
+          candidate: "Other Insurance Candidate",
+          candidatevotes: 47,
+          totalvotes: 100,
+          party_simplified: "REPUBLICAN",
+        }),
+      ],
+    });
+
+    expect(result.skippedRows).toEqual([]);
+    expect(result.records.map((record) => record.office_type).sort()).toEqual([
+      "COMMISSIONER_OF_INSURANCE",
+      "COMPTROLLER",
+      "STATE_TREASURER",
+    ]);
+  });
+
+  it("does not normalize generic, local, or ambiguous statewide executive-looking office labels", () => {
+    const result = normalizeMedslHistoricalContestMargins({
+      source: "MIT_2024",
+      rows: [
+        row({ office: "TREASURER", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "COUNTY TREASURER", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "AUDITOR", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "COUNTY AUDITOR", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "CONTROLLER", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "COMMISSIONER", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "CORPORATION COMMISSIONER", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "PUBLIC SERVICE COMMISSIONER", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "PRESIDENT, PUBLIC SERVICE COMMISSION", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+        row({ office: "REGISTERED VOTERS", district: "STATEWIDE", candidatevotes: 60, totalvotes: 100 }),
+      ],
+    });
+
+    expect(result.records).toEqual([]);
+    expect(result.skippedRows.map((skipped) => skipped.reason)).toEqual([
+      "unsupported_office",
+      "unsupported_office",
+      "unsupported_office",
+      "unsupported_office",
+      "unsupported_office",
+      "unsupported_office",
+      "unsupported_office",
+      "unsupported_office",
+      "unsupported_office",
+      "unsupported_office",
+    ]);
+  });
+
   it("skips recognized offices that are outside the source allowlist", () => {
     const result = normalizeMedslHistoricalContestMargins({
       source: "MIT_2024",

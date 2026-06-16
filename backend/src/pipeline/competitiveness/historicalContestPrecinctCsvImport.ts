@@ -4,9 +4,11 @@ import {
   buildCsvHeaderIndex,
   csvCell,
   parseCsvRows,
+  requireAnyCsvColumn,
   requireCsvColumn,
 } from "./historicalContestCsv.js";
 import {
+  isStatewideHistoricalContestMitOffice,
   normalizeMedslHistoricalContestMargins,
   type HistoricalContestMarginRecord,
   type HistoricalContestNormalizationSkippedRow,
@@ -64,7 +66,6 @@ type CandidateVoteAccumulator = {
 
 const REQUIRED_MEDSL_PRECINCT_COLUMNS = [
   "year",
-  "state_po",
   "state_fips",
   "office",
   "votes",
@@ -170,8 +171,7 @@ function isCandidateVoteRow(row: MedslHistoricalContestPrecinctRow): boolean {
 }
 
 function isStatewideMitOffice(value: string): boolean {
-  const office = normalizeKeyText(value);
-  return office === "US PRESIDENT" || office === "US SENATE" || office === "GOVERNOR";
+  return isStatewideHistoricalContestMitOffice(value);
 }
 
 function outputDistrict(row: MedslHistoricalContestPrecinctRow): string {
@@ -259,11 +259,12 @@ export function parseMedslHistoricalContestPrecinctCsv(csv: string): MedslHistor
   const indexes = Object.fromEntries(
     REQUIRED_MEDSL_PRECINCT_COLUMNS.map((column) => [column, requireCsvColumn(headerIndex, column)])
   ) as Record<(typeof REQUIRED_MEDSL_PRECINCT_COLUMNS)[number], number>;
+  const statePostalIndex = requireAnyCsvColumn(headerIndex, ["state_po", "state_postal"]);
 
   const candidateIndex = headerIndex.get("candidate");
   const districtIndex = headerIndex.get("district");
-  const partySimplifiedIndex = headerIndex.get("party_simplified");
-  const partyDetailedIndex = headerIndex.get("party_detailed");
+  const partySimplifiedIndex = headerIndex.get("party_simplified") ?? headerIndex.get("party");
+  const partyDetailedIndex = headerIndex.get("party_detailed") ?? headerIndex.get("candidate_party");
   const stageIndex = headerIndex.get("stage");
   const modeIndex = headerIndex.get("mode");
   const writeinIndex = headerIndex.get("writein");
@@ -277,7 +278,7 @@ export function parseMedslHistoricalContestPrecinctCsv(csv: string): MedslHistor
 
   return rows.slice(1).map((cells) => ({
     year: csvCell(cells, indexes.year),
-    state_po: csvCell(cells, indexes.state_po),
+    state_po: csvCell(cells, statePostalIndex),
     state_fips: csvCell(cells, indexes.state_fips),
     office: csvCell(cells, indexes.office),
     district: optionalCell(cells, districtIndex),

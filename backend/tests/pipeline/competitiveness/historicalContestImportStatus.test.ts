@@ -29,12 +29,22 @@ describe("historicalContestImportStatus", () => {
           latest_imported_at: "2026-06-15T02:03:04.000Z",
           source_urls: ["https://github.com/MEDSL/2024-elections-official"],
         },
+        {
+          source: "MIT_2022",
+          election_year: 2022,
+          office_type: "ATTORNEY_GENERAL",
+          district_type: "statewide",
+          stale_after_redistricting: false,
+          row_count: "44",
+          latest_imported_at: "2026-06-15T03:04:05.000Z",
+          source_urls: ["https://doi.org/10.7910/DVN/UYQIEP"],
+        },
       ],
     });
 
     const status = await loadHistoricalContestImportStatus({ query });
 
-    expect(status.total_records).toBe(65);
+    expect(status.total_records).toBe(109);
     expect(status.groups).toEqual([
       {
         source: "MIT_2024",
@@ -57,6 +67,16 @@ describe("historicalContestImportStatus", () => {
         row_count: 14,
         latest_imported_at: "2026-06-15T02:03:04.000Z",
         source_urls: ["https://github.com/MEDSL/2024-elections-official"],
+      },
+      {
+        source: "MIT_2022",
+        election_year: 2022,
+        office_type: "ATTORNEY_GENERAL",
+        district_type: "statewide",
+        stale_after_redistricting: false,
+        row_count: 44,
+        latest_imported_at: "2026-06-15T03:04:05.000Z",
+        source_urls: ["https://doi.org/10.7910/DVN/UYQIEP"],
       },
     ]);
 
@@ -85,6 +105,24 @@ describe("historicalContestImportStatus", () => {
       source_url: "https://doi.org/10.7910/DVN/UYQIEP",
       format: "medsl_precinct_csv",
       election_year: 2022,
+      imported: false,
+      row_count: 0,
+      latest_imported_at: null,
+    });
+    expect(verifiedByPresetAndOffice.get("medsl-2022-precinct:ATTORNEY_GENERAL")).toMatchObject({
+      source: "MIT_2022",
+      source_url: "https://doi.org/10.7910/DVN/UYQIEP",
+      format: "medsl_precinct_csv",
+      election_year: 2022,
+      imported: true,
+      row_count: 44,
+      latest_imported_at: "2026-06-15T03:04:05.000Z",
+    });
+    expect(verifiedByPresetAndOffice.get("medsl-2024-state-precinct:STATE_TREASURER")).toMatchObject({
+      source: "MIT_2024",
+      source_url: "https://doi.org/10.7910/DVN/NYTPDU",
+      format: "medsl_precinct_csv",
+      election_year: 2024,
       imported: false,
       row_count: 0,
       latest_imported_at: null,

@@ -373,6 +373,138 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       },
     ]);
   });
+
+  it("attaches historical competitiveness to supported statewide executive office summaries", async () => {
+    const statewideDistrictId = "88888888-8888-4888-8888-888888888881";
+    const attorneyGeneralElectionId = "88888888-8888-4888-8888-888888888882";
+    const attorneyGeneralOfficeId = "88888888-8888-4888-8888-888888888883";
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: statewideDistrictId,
+            district_type: "statewide",
+            geoid_compact: "06",
+            name: "California",
+            state: "CA",
+            state_fips: "06",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: attorneyGeneralElectionId,
+            district_id: statewideDistrictId,
+            district_type: "statewide",
+            geoid_compact: "06",
+            district_name: "California",
+            state: "CA",
+            state_fips: "06",
+            race_type: "office",
+            official_ballot_title: "Attorney General",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_id: attorneyGeneralOfficeId,
+            office_scope: "statewide",
+            office_canonical_name: "Attorney General",
+            office_summary: "State chief legal officer.",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [{ election_id: attorneyGeneralElectionId, candidate_count: 2 }] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: "88888888-8888-4888-8888-888888888884",
+            lookup_id: attorneyGeneralElectionId,
+            source: "MIT_2022",
+            source_url: "https://doi.org/10.7910/DVN/UYQIEP",
+            election_year: 2022,
+            state: "CA",
+            state_fips: "06",
+            office_type: "ATTORNEY_GENERAL",
+            district_type: "statewide",
+            district_key: "06",
+            mit_office: "ATTORNEY GENERAL",
+            mit_district: "STATEWIDE",
+            winner_party: "DEMOCRAT",
+            runner_up_party: "REPUBLICAN",
+            winner_votes: "1035000",
+            runner_up_votes: "1000000",
+            total_votes: "2035000",
+            margin_percent: "1.72",
+            competitiveness_label: "toss_up",
+            stale_after_redistricting: false,
+            imported_at: "2026-06-14 12:00:00+00",
+          },
+        ],
+      });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [statewideDistrictId]);
+
+    expect(result.elections).toHaveLength(1);
+    expect(result.elections[0]).toMatchObject({
+      id: attorneyGeneralElectionId,
+      district: {
+        district_type: "statewide",
+        geoid_compact: "06",
+      },
+      office: {
+        canonical_name: "Attorney General",
+      },
+      historical_competitiveness: {
+        display_label: "Historically a toss-up",
+        display_description: "Based on the 2022 Attorney General result.",
+        source: "MIT_2022",
+        source_url: "https://doi.org/10.7910/DVN/UYQIEP",
+        election_year: 2022,
+        winner_party: "DEMOCRAT",
+        runner_up_party: "REPUBLICAN",
+        margin_percent: 1.72,
+        competitiveness_label: "toss_up",
+        stale_after_redistricting: false,
+        method: "weighted_last_3",
+        weights: [1],
+        election_years: [2022],
+        contests_used: [
+          {
+            source: "MIT_2022",
+            source_url: "https://doi.org/10.7910/DVN/UYQIEP",
+            election_year: 2022,
+            winner_party: "DEMOCRAT",
+            runner_up_party: "REPUBLICAN",
+            margin_percent: 1.72,
+            competitiveness_label: "toss_up",
+            stale_after_redistricting: false,
+            weight: 1,
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(7);
+    expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual([
+      {
+        lookup_id: attorneyGeneralElectionId,
+        min_election_year: null,
+        max_election_year: 2025,
+        state: "CA",
+        state_fips: "06",
+        office_type: "ATTORNEY_GENERAL",
+        district_type: "statewide",
+        district_key: "06",
+        mit_office: "ATTORNEY GENERAL",
+        mit_district: "STATEWIDE",
+      },
+    ]);
+  });
 });
 
 describe("lookupElectionDetailById", () => {

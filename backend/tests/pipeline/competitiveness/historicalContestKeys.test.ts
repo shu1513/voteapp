@@ -15,12 +15,32 @@ describe("historicalContestKeys", () => {
     expect(mapOfficeCanonicalNameToHistoricalOfficeType("United States Senator")).toBe("US_SENATE");
     expect(mapOfficeCanonicalNameToHistoricalOfficeType("United States Representative")).toBe("US_HOUSE");
     expect(mapOfficeCanonicalNameToHistoricalOfficeType("Governor")).toBe("GOVERNOR");
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("Lieutenant Governor")).toBe("LIEUTENANT_GOVERNOR");
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("Secretary of State")).toBe("SECRETARY_OF_STATE");
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("Attorney General")).toBe("ATTORNEY_GENERAL");
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("State Treasurer")).toBe("STATE_TREASURER");
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("State Auditor")).toBe("STATE_AUDITOR");
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("Comptroller")).toBe("COMPTROLLER");
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("Superintendent of Public Instruction")).toBe(
+      "SUPERINTENDENT_OF_PUBLIC_INSTRUCTION"
+    );
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("Commissioner of Agriculture")).toBe(
+      "COMMISSIONER_OF_AGRICULTURE"
+    );
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("Commissioner of Insurance")).toBe(
+      "COMMISSIONER_OF_INSURANCE"
+    );
     expect(mapOfficeCanonicalNameToHistoricalOfficeType("State Senator")).toBe("STATE_SENATE");
     expect(mapOfficeCanonicalNameToHistoricalOfficeType("State Lower Chamber Legislator")).toBe("STATE_HOUSE");
   });
 
   it("returns null for unsupported offices and blank office names", () => {
     expect(mapOfficeCanonicalNameToHistoricalOfficeType("Sheriff")).toBeNull();
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("County Treasurer")).toBeNull();
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("County Auditor")).toBeNull();
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("County Commissioner")).toBeNull();
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("Corporation Commissioner")).toBeNull();
+    expect(mapOfficeCanonicalNameToHistoricalOfficeType("Public Service Commissioner")).toBeNull();
     expect(mapOfficeCanonicalNameToHistoricalOfficeType("")).toBeNull();
     expect(mapOfficeCanonicalNameToHistoricalOfficeType(null)).toBeNull();
   });
@@ -28,8 +48,22 @@ describe("historicalContestKeys", () => {
   it("maps historical office types to MIT office labels and expected district types", () => {
     expect(mapHistoricalOfficeTypeToMitOffice("US_HOUSE")).toBe("US HOUSE");
     expect(mapHistoricalOfficeTypeToMitOffice("STATE_HOUSE")).toBe("STATE HOUSE");
+    expect(mapHistoricalOfficeTypeToMitOffice("LIEUTENANT_GOVERNOR")).toBe("LIEUTENANT GOVERNOR");
+    expect(mapHistoricalOfficeTypeToMitOffice("SECRETARY_OF_STATE")).toBe("SECRETARY OF STATE");
+    expect(mapHistoricalOfficeTypeToMitOffice("ATTORNEY_GENERAL")).toBe("ATTORNEY GENERAL");
+    expect(mapHistoricalOfficeTypeToMitOffice("STATE_TREASURER")).toBe("STATE TREASURER");
+    expect(mapHistoricalOfficeTypeToMitOffice("STATE_AUDITOR")).toBe("STATE AUDITOR");
+    expect(mapHistoricalOfficeTypeToMitOffice("COMPTROLLER")).toBe("STATE CONTROLLER");
+    expect(mapHistoricalOfficeTypeToMitOffice("SUPERINTENDENT_OF_PUBLIC_INSTRUCTION")).toBe(
+      "SUPERINTENDENT OF PUBLIC INSTRUCTION"
+    );
+    expect(mapHistoricalOfficeTypeToMitOffice("COMMISSIONER_OF_AGRICULTURE")).toBe("COMMISSIONER OF AGRICULTURE");
+    expect(mapHistoricalOfficeTypeToMitOffice("COMMISSIONER_OF_INSURANCE")).toBe("COMMISSIONER OF INSURANCE");
     expect(expectedDistrictTypeForHistoricalOffice("US_PRESIDENT")).toBe("statewide");
     expect(expectedDistrictTypeForHistoricalOffice("US_HOUSE")).toBe("us_house");
+    expect(expectedDistrictTypeForHistoricalOffice("ATTORNEY_GENERAL")).toBe("statewide");
+    expect(expectedDistrictTypeForHistoricalOffice("STATE_TREASURER")).toBe("statewide");
+    expect(expectedDistrictTypeForHistoricalOffice("SUPERINTENDENT_OF_PUBLIC_INSTRUCTION")).toBe("statewide");
     expect(expectedDistrictTypeForHistoricalOffice("STATE_SENATE")).toBe("state_upper");
     expect(expectedDistrictTypeForHistoricalOffice("STATE_HOUSE")).toBe("state_lower");
   });
@@ -96,6 +130,35 @@ describe("historicalContestKeys", () => {
       mit_office: "GOVERNOR",
       mit_district: "STATEWIDE",
     });
+
+    expect(
+      buildHistoricalContestLookupKey({
+        officeCanonicalName: "Attorney General",
+        districtType: "statewide",
+        geoidCompact: "06",
+        stateFips: "06",
+      })
+    ).toMatchObject({
+      state: "CA",
+      office_type: "ATTORNEY_GENERAL",
+      district_type: "statewide",
+      district_key: "06",
+      mit_office: "ATTORNEY GENERAL",
+      mit_district: "STATEWIDE",
+    });
+
+    expect(
+      buildHistoricalContestLookupKey({
+        officeCanonicalName: "State Treasurer",
+        districtType: "statewide",
+        geoidCompact: "06",
+        stateFips: "06",
+      })
+    ).toMatchObject({
+      office_type: "STATE_TREASURER",
+      district_type: "statewide",
+      mit_office: "STATE TREASURER",
+    });
   });
 
   it("returns null for unsupported or mismatched lookup inputs", () => {
@@ -113,6 +176,15 @@ describe("historicalContestKeys", () => {
         officeCanonicalName: "United States Senator",
         districtType: "us_house",
         geoidCompact: "0631",
+        stateFips: "06",
+      })
+    ).toBeNull();
+
+    expect(
+      buildHistoricalContestLookupKey({
+        officeCanonicalName: "Attorney General",
+        districtType: "county",
+        geoidCompact: "06037",
         stateFips: "06",
       })
     ).toBeNull();

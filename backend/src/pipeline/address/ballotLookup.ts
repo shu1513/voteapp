@@ -471,6 +471,24 @@ function historicalOfficeDisplayName(officeType: HistoricalContestWeightedMargin
       return "U.S. House";
     case "GOVERNOR":
       return "Governor";
+    case "LIEUTENANT_GOVERNOR":
+      return "Lieutenant Governor";
+    case "SECRETARY_OF_STATE":
+      return "Secretary of State";
+    case "ATTORNEY_GENERAL":
+      return "Attorney General";
+    case "STATE_TREASURER":
+      return "State Treasurer";
+    case "STATE_AUDITOR":
+      return "State Auditor";
+    case "COMPTROLLER":
+      return "Comptroller";
+    case "SUPERINTENDENT_OF_PUBLIC_INSTRUCTION":
+      return "Superintendent of Public Instruction";
+    case "COMMISSIONER_OF_AGRICULTURE":
+      return "Commissioner of Agriculture";
+    case "COMMISSIONER_OF_INSURANCE":
+      return "Commissioner of Insurance";
     case "STATE_SENATE":
       return "State Senate";
     case "STATE_HOUSE":
