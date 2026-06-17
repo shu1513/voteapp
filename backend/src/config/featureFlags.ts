@@ -22,3 +22,11 @@ export function isPresidentialElectionsEnabled(): boolean {
 export function isPresidentialFeatureEnabled(featureEnvName: string, force = false): boolean {
   return isPresidentialElectionsEnabled() && (force || readBooleanEnv(featureEnvName, false));
 }
+
+export function isCandidateFinanceEnabled(): boolean {
+  return readBooleanEnv("CANDIDATE_FINANCE_ENABLED", false);
+}
+
+export function isCandidateFinanceSyncEnabled(force = false): boolean {
+  return isCandidateFinanceEnabled() && (force || readBooleanEnv("CANDIDATE_FINANCE_SYNC_ENABLED", false));
+}
