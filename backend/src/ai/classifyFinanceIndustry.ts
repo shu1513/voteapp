@@ -184,9 +184,8 @@ export async function classifyFinanceIndustriesWithAi(input: {
     const generated = await callProvider(candidate, prompt, config);
     if (!generated.ok) {
       lastFailure = generated;
-      if (!generated.retryable) {
-        break;
-      }
+      // A non-retryable failure is provider-local here (for example, one missing API key).
+      // Keep falling through so partially configured deployments can use a later provider.
       continue;
     }
 

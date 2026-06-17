@@ -84,14 +84,30 @@ describe("classifyFinanceIndustriesWithAi", () => {
     ]);
   });
 
-  it("does not try later providers after a non-retryable provider failure", async () => {
-    callResearchProviderMock.mockResolvedValueOnce({
-      ok: false,
-      retryable: false,
-      errorCode: "CONFIGURATION_ERROR",
-      reason: "bad key",
-      failureDebug: { provider: "openai" },
-    });
+  it("tries later providers after a non-retryable provider-local failure", async () => {
+    callResearchProviderMock
+      .mockResolvedValueOnce({
+        ok: false,
+        retryable: false,
+        errorCode: "CONFIGURATION_ERROR",
+        reason: "OPENAI_API_KEY is missing",
+        failureDebug: { provider: "openai" },
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        parsed: {
+          classifications: [
+            {
+              label_type: "employer",
+              normalized_label: "ACME",
+              industry_slug: "technology",
+              confidence: "high",
+            },
+          ],
+        },
+        rawText: "{}",
+        debugMeta: {},
+      });
 
     const result = await classifyFinanceIndustriesWithAi({
       aiCandidates,
@@ -106,13 +122,19 @@ describe("classifyFinanceIndustriesWithAi", () => {
       ],
     });
 
-    expect(result).toEqual({
-      ok: false,
-      retryable: false,
-      errorCode: "CONFIGURATION_ERROR",
-      reason: "bad key",
-      failureDebug: { provider: "openai" },
+    expect(result).toMatchObject({
+      ok: true,
+      provider: "claude",
+      model: "model-b",
+      classifications: [
+        {
+          rawLabel: "Acme LLC",
+          labelType: "employer",
+          normalizedLabel: "ACME",
+          industrySlug: "technology",
+        },
+      ],
     });
-    expect(callResearchProviderMock).toHaveBeenCalledTimes(1);
+    expect(callResearchProviderMock).toHaveBeenCalledTimes(2);
   });
 });
