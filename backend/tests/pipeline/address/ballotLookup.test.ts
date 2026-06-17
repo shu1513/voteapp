@@ -44,6 +44,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             name: "Los Angeles County",
             state: "CA",
             state_fips: "06",
+            representation_power_score: "72.5",
           },
         ],
       })
@@ -57,6 +58,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             district_name: "Los Angeles County",
             state: "CA",
             state_fips: "06",
+            representation_power_score: "72.5",
             race_type: "office",
             official_ballot_title: "Sheriff",
             election_date: "2026-06-02",
@@ -77,6 +79,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             district_name: "Los Angeles County",
             state: "CA",
             state_fips: "06",
+            representation_power_score: "72.5",
             race_type: "ballot_measure",
             official_ballot_title: "Measure H",
             election_date: "2026-06-02",
@@ -132,6 +135,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           name: "Los Angeles County",
           state: "CA",
           state_fips: "06",
+          representation_power_score: 72.5,
         },
       ],
       elections: [
@@ -145,6 +149,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             name: "Los Angeles County",
             state: "CA",
             state_fips: "06",
+            representation_power_score: 72.5,
           },
           race_type: "office",
           official_ballot_title: "Sheriff",
@@ -172,6 +177,14 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             },
           ],
           historical_competitiveness: null,
+          vote_power: {
+            score: 73,
+            label: "high",
+            confidence: "medium",
+            representation_level: "high",
+            decisiveness_level: "unknown",
+            factors: ["high_representation", "missing_decisiveness_data"],
+          },
         },
         {
           id: measureElectionId,
@@ -183,6 +196,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             name: "Los Angeles County",
             state: "CA",
             state_fips: "06",
+            representation_power_score: 72.5,
           },
           race_type: "ballot_measure",
           official_ballot_title: "Measure H",
@@ -198,6 +212,14 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           office: null,
           research_areas: [],
           historical_competitiveness: null,
+          vote_power: {
+            score: 85,
+            label: "very_high",
+            confidence: "high",
+            representation_level: "high",
+            decisiveness_level: "unknown",
+            factors: ["high_representation", "direct_vote_on_policy"],
+          },
         },
       ],
     });
@@ -357,6 +379,14 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             weight: 0.375,
           },
         ],
+      },
+      vote_power: {
+        score: 45,
+        label: "medium",
+        confidence: "medium",
+        representation_level: "unknown",
+        decisiveness_level: "medium",
+        factors: ["missing_representation_data", "medium_decisiveness"],
       },
     });
     expect(query).toHaveBeenCalledTimes(7);
@@ -769,6 +799,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             name: "California",
             state: "CA",
             state_fips: "06",
+            representation_power_score: "90",
           },
         ],
       })
@@ -782,6 +813,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             district_name: "California",
             state: "CA",
             state_fips: "06",
+            representation_power_score: "90",
             race_type: "office",
             official_ballot_title: "Attorney General",
             election_date: "2026-11-03",
@@ -796,7 +828,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           },
         ],
       })
-      .mockResolvedValueOnce({ rows: [{ election_id: attorneyGeneralElectionId, candidate_count: 2 }] })
+      .mockResolvedValueOnce({ rows: [{ election_id: attorneyGeneralElectionId, candidate_count: 1 }] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
@@ -868,6 +900,14 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           },
         ],
       },
+      vote_power: {
+        score: 25,
+        label: "low",
+        confidence: "high",
+        representation_level: "high",
+        decisiveness_level: "none",
+        factors: ["high_representation", "uncontested_race"],
+      },
     });
     expect(query).toHaveBeenCalledTimes(7);
     expect(fetch).not.toHaveBeenCalled();
@@ -916,6 +956,7 @@ describe("lookupElectionDetailById", () => {
             district_name: "Los Angeles County",
             state: "CA",
             state_fips: "06",
+            representation_power_score: "64.25",
             race_type: "office",
             official_ballot_title: "Sheriff",
             election_date: "2026-06-02",
@@ -991,6 +1032,9 @@ describe("lookupElectionDetailById", () => {
     expect(result).toMatchObject({
       id: officeElectionId,
       district_id: districtId,
+      district: {
+        representation_power_score: 64.25,
+      },
       race_type: "office",
       official_ballot_title: "Sheriff",
       candidates: [
@@ -1027,6 +1071,7 @@ describe("lookupElectionDetailById", () => {
             district_name: "Los Angeles County",
             state: "CA",
             state_fips: "06",
+            representation_power_score: "48.75",
             race_type: "ballot_measure",
             official_ballot_title: "Measure H",
             election_date: "2026-06-02",
@@ -1085,6 +1130,9 @@ describe("lookupElectionDetailById", () => {
     expect(result).toMatchObject({
       id: measureElectionId,
       district_id: districtId,
+      district: {
+        representation_power_score: 48.75,
+      },
       race_type: "ballot_measure",
       official_ballot_title: "Measure H",
       candidates: [],

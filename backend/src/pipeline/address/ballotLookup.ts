@@ -14,6 +14,7 @@ import {
   type HistoricalContestWeightedMarginLookupRecord,
 } from "../competitiveness/historicalContestMarginLookup.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
+import { calculateVotePower, type VotePowerResult } from "./votePower.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -24,6 +25,7 @@ export type BallotLookupDistrict = {
   name: string;
   state: string;
   state_fips: string;
+  representation_power_score: number | null;
 };
 
 export type BallotLookupResearchAreaTag = {
@@ -178,6 +180,7 @@ export type BallotLookupElectionSummary = {
   office: BallotLookupOfficeSummary | null;
   research_areas: BallotLookupResearchAreaSummary[];
   historical_competitiveness: BallotLookupHistoricalCompetitiveness | null;
+  vote_power: VotePowerResult;
 };
 
 export type BallotSummaryResult = {
@@ -186,7 +189,9 @@ export type BallotSummaryResult = {
   elections: BallotLookupElectionSummary[];
 };
 
-type DistrictRow = BallotLookupDistrict;
+type DistrictRow = Omit<BallotLookupDistrict, "representation_power_score"> & {
+  representation_power_score: string | number | null;
+};
 
 type ElectionRow = {
   election_id: string;
@@ -196,6 +201,7 @@ type ElectionRow = {
   district_name: string;
   state: string;
   state_fips: string;
+  representation_power_score: string | number | null;
   race_type: ElectionRaceType;
   official_ballot_title: string;
   election_date: string;
@@ -379,6 +385,14 @@ function groupBy<T, K extends string>(rows: readonly T[], getKey: (row: T) => K)
   return grouped;
 }
 
+function parseRepresentationPowerScore(value: string | number | null | undefined): number | null {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  const parsed = typeof value === "number" ? value : Number.parseFloat(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
 function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): BallotLookupDistrict {
   const id = "district_id" in row ? row.district_id : row.id;
   const name = "district_name" in row ? row.district_name : row.name;
@@ -389,6 +403,7 @@ function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): Ballot
     name,
     state: row.state,
     state_fips: row.state_fips,
+    representation_power_score: parseRepresentationPowerScore(row.representation_power_score),
   };
 }
 
@@ -792,7 +807,8 @@ export async function lookupBallotSummariesByDistrictIds(
         geoid_compact,
         name,
         state,
-        state_fips
+        state_fips,
+        representation_power_score
       FROM public.districts
       WHERE id = ANY($1::uuid[])
       ORDER BY array_position($1::uuid[], id), district_type, name
@@ -810,6 +826,7 @@ export async function lookupBallotSummariesByDistrictIds(
         d.name AS district_name,
         d.state,
         d.state_fips,
+        d.representation_power_score,
         e.race_type,
         e.official_ballot_title,
         e.election_date::text AS election_date,
@@ -985,10 +1002,14 @@ export async function lookupBallotSummariesByDistrictIds(
           }
         : null;
 
+    const district = toDistrict(row);
+    const candidateCount = candidateCountsByElection.get(row.election_id) ?? 0;
+    const historicalCompetitiveness = toHistoricalCompetitiveness(historicalMarginsByElection.get(row.election_id));
+
     return {
       id: row.election_id,
       district_id: row.district_id,
-      district: toDistrict(row),
+      district,
       race_type: row.race_type,
       official_ballot_title: row.official_ballot_title,
       election_date: row.election_date,
@@ -996,7 +1017,7 @@ export async function lookupBallotSummariesByDistrictIds(
       is_partisan: row.is_partisan,
       discovery_contest_family: row.discovery_contest_family,
       sources: parseStringArray(row.sources),
-      candidate_count: candidateCountsByElection.get(row.election_id) ?? 0,
+      candidate_count: candidateCount,
       ballot_measure_id: ballotMeasureIdsByElection.get(row.election_id) ?? null,
       has_results: currentResultOutcome !== null,
       current_result_outcome: currentResultOutcome,
@@ -1009,7 +1030,13 @@ export async function lookupBallotSummariesByDistrictIds(
             description: area.description,
           }))
         : [],
-      historical_competitiveness: toHistoricalCompetitiveness(historicalMarginsByElection.get(row.election_id)),
+      historical_competitiveness: historicalCompetitiveness,
+      vote_power: calculateVotePower({
+        raceType: row.race_type,
+        candidateCount,
+        representationPowerScore: district.representation_power_score,
+        competitivenessLabel: historicalCompetitiveness?.competitiveness_label,
+      }),
     };
   });
 
@@ -1036,6 +1063,7 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
         d.name AS district_name,
         d.state,
         d.state_fips,
+        d.representation_power_score,
         e.race_type,
         e.official_ballot_title,
         e.election_date::text AS election_date,
