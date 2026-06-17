@@ -82,6 +82,7 @@ describe("candidateFinanceSyncScheduler", () => {
   it("runs the due finance sync when enabled", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
+    process.env.CANDIDATE_FINANCE_ENABLED = "true";
     process.env.CANDIDATE_FINANCE_SYNC_ENABLED = "true";
     process.env.FEC_API_KEY_1 = "k1";
 
@@ -153,6 +154,7 @@ describe("candidateFinanceSyncScheduler", () => {
 
   it("upserts recurring jobs with configured queue payload", async () => {
     process.env.REDIS_URL = "redis://localhost:6379/0";
+    process.env.CANDIDATE_FINANCE_ENABLED = "true";
     process.env.CANDIDATE_FINANCE_SYNC_DAILY_CRON = "5 9 * * *";
     process.env.CANDIDATE_FINANCE_SYNC_DAILY_TZ = "America/Los_Angeles";
 
@@ -200,6 +202,32 @@ describe("candidateFinanceSyncScheduler", () => {
       })
     );
     expect(queueInstance.close).toHaveBeenCalledTimes(1);
+  });
+
+  it("rejects malformed Redis DB path segments", async () => {
+    process.env.CANDIDATE_FINANCE_ENABLED = "true";
+
+    const Queue = vi.fn();
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+    vi.doMock("../../src/config/env.js", () => ({
+      getPipelineEnv: () => ({
+        DATABASE_URL: "postgresql://localhost:5432/test",
+        REDIS_URL: "redis://localhost:6379/0/foo",
+        AI_PROVIDER: "openai",
+        AI_MODEL: "gpt-5.4-mini",
+        AI_TIMEOUT_MS: 90000,
+        ANTHROPIC_WEB_SEARCH_MAX_USES: 3,
+        STATE_RESOURCES_PROMPT_VERSION: "state_resources_v2",
+        CENSUS_API_KEYS: [],
+      }),
+    }));
+
+    const { upsertRecurringCandidateFinanceSyncJobs } = await import(
+      "../../src/scheduler/candidateFinanceSyncScheduler.js"
+    );
+
+    await expect(upsertRecurringCandidateFinanceSyncJobs()).rejects.toThrow("Invalid REDIS_URL db index");
+    expect(Queue).not.toHaveBeenCalled();
   });
 
   it("removes the recurring scheduler when the master finance flag is disabled", async () => {
@@ -257,6 +285,8 @@ describe("candidateFinanceSyncScheduler", () => {
   });
 
   it("enqueues manual jobs with requested options", async () => {
+    process.env.CANDIDATE_FINANCE_ENABLED = "true";
+
     const queueInstance = {
       add: vi.fn().mockResolvedValue({ id: "finance-job-1" }),
       close: vi.fn().mockResolvedValue(undefined),

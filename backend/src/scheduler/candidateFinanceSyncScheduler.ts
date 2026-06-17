@@ -63,7 +63,11 @@ function toConnectionOptions(redisUrl: string): ConnectionOptions {
     throw new Error(`Unsupported REDIS_URL protocol: ${parsed.protocol}`);
   }
   const parsedPort = parsed.port ? Number.parseInt(parsed.port, 10) : 6379;
-  const parsedDb = parsed.pathname.length > 1 ? Number.parseInt(parsed.pathname.slice(1), 10) : 0;
+  const dbSegment = parsed.pathname.length > 1 ? parsed.pathname.slice(1) : "0";
+  if (!/^\d+$/.test(dbSegment)) {
+    throw new Error(`Invalid REDIS_URL db index: ${parsed.pathname}`);
+  }
+  const parsedDb = Number(dbSegment);
 
   if (!Number.isInteger(parsedPort) || parsedPort <= 0) {
     throw new Error(`Invalid REDIS_URL port: ${parsed.port}`);

@@ -18,6 +18,7 @@ const researchAreaId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
 });
 
 describe("lookupBallotSummariesByDistrictIds", () => {
@@ -1027,7 +1028,6 @@ describe("lookupElectionDetailById", () => {
           },
         ],
       })
-      .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -1100,12 +1100,13 @@ describe("lookupElectionDetailById", () => {
         factors: ["medium_representation", "uncontested_race"],
       },
     });
-    expect(query).toHaveBeenCalledTimes(9);
+    expect(query).toHaveBeenCalledTimes(8);
     expect(query.mock.calls[0]?.[1]).toEqual([officeElectionId]);
-    expect(query.mock.calls[8]?.[0]).toContain("public.historical_contest_margins");
+    expect(query.mock.calls[7]?.[0]).toContain("public.historical_contest_margins");
   });
 
   it("includes locally synced FEC finance summaries for candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
       .mockResolvedValueOnce({

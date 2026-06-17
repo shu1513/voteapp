@@ -2,6 +2,7 @@ import {
   enqueueManualCandidateFinanceSyncJob,
   type CandidateFinanceSyncJobData,
 } from "../scheduler/candidateFinanceSyncScheduler.js";
+import { loadProjectEnv } from "../config/env.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -48,6 +49,7 @@ function parseJobData(args: readonly string[]): CandidateFinanceSyncJobData {
 }
 
 async function main(): Promise<void> {
+  loadProjectEnv();
   const jobData = parseJobData(process.argv.slice(2));
   const jobId = await enqueueManualCandidateFinanceSyncJob(jobData);
   console.log(

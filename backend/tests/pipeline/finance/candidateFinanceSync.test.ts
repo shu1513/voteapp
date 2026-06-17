@@ -108,6 +108,7 @@ describe("candidateFinanceSync", () => {
     expect(db.query).toHaveBeenCalledTimes(13);
     expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.candidate_finance_summaries");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("total_receipts = EXCLUDED.total_receipts");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("WHEN $15::boolean THEN EXCLUDED.outside_support_total");
     expect(String(db.query.mock.calls[0]?.[0])).not.toContain("COALESCE(EXCLUDED.total_receipts");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       "P80001571",
@@ -124,6 +125,7 @@ describe("candidateFinanceSync", () => {
       null,
       "https://www.fec.gov/data/candidate/P80001571/?cycle=2024",
       "2026-01-02T03:04:05.000Z",
+      false,
     ]);
 
     const directBreakdownCalls = db.query.mock.calls.filter((call) =>
@@ -269,6 +271,7 @@ describe("candidateFinanceSync", () => {
       String(call[0]).includes("INSERT INTO public.candidate_finance_summaries")
     );
     expect(summaryCall?.[1]?.slice(10, 12)).toEqual([500, 200]);
+    expect(summaryCall?.[1]?.at(-1)).toBe(true);
 
     const outsideGroupCalls = db.query.mock.calls.filter((call) =>
       String(call[0]).includes("INSERT INTO public.candidate_finance_outside_groups (")
@@ -439,18 +442,14 @@ describe("candidateFinanceSync", () => {
       getCommitteeAggregatesByOccupation: vi.fn().mockResolvedValue([]),
       getCommitteeAggregatesBySize: vi.fn().mockResolvedValue([]),
     });
-    const financeIndustryClassifier = vi.fn();
-
     const result = await syncCandidateFinance({
       db,
       fecCandidateId: "P80001571",
       electionYear: 2024,
       openFecOptions: { apiKeys: ["k1"] },
       fecClient,
-      financeIndustryClassifier,
     });
 
-    expect(financeIndustryClassifier).not.toHaveBeenCalled();
     expect(result.industryBreakdownsWritten).toBe(1);
     expect(result.classificationsWritten).toBe(1);
   });
@@ -533,7 +532,7 @@ describe("candidateFinanceSync", () => {
       electionYear: 2024,
       dryRun: false,
       directCommitteeCount: 0,
-      summaryWritten: false,
+      summaryWritten: true,
       directBreakdownsWritten: 0,
       industryBreakdownsWritten: 0,
       classificationsWritten: 0,
@@ -544,8 +543,26 @@ describe("candidateFinanceSync", () => {
       outsideOpposeTotal: null,
     });
     expect(fecClient.getCommitteeAggregatesByEmployer).not.toHaveBeenCalled();
-    expect(db.query).toHaveBeenCalledTimes(1);
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("DELETE FROM public.candidate_finance_direct_breakdowns");
+    expect(db.query).toHaveBeenCalledTimes(2);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.candidate_finance_summaries");
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      "P80001571",
+      2024,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      expect.any(String),
+      false,
+    ]);
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("DELETE FROM public.candidate_finance_direct_breakdowns");
   });
 
   it("rejects invalid input before calling FEC", async () => {

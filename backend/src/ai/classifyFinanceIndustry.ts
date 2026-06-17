@@ -46,6 +46,10 @@ export type FinanceIndustryClassificationAiResult =
 const ALLOWED_INDUSTRY_SLUGS = new Set<string>(FINANCE_INDUSTRY_SLUGS);
 const ALLOWED_CONFIDENCES = new Set<FinanceClassificationConfidence>(["high", "medium", "low", "unknown"]);
 
+function classificationIdentityKey(labelType: string, normalizedLabel: string): string {
+  return `${labelType.trim().toLowerCase()}:${normalizedLabel.trim()}`;
+}
+
 function toReason(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
@@ -82,7 +86,9 @@ function parseFinanceIndustryPayload(
     throw new Error("Expected classifications array");
   }
 
-  const expectedByNormalizedLabel = new Map(labels.map((label) => [label.normalizedLabel, label]));
+  const expectedByCompositeKey = new Map(
+    labels.map((label) => [classificationIdentityKey(label.labelType, label.normalizedLabel), label])
+  );
   const parsed: FinanceLabelClassification[] = [];
   const seen = new Set<string>();
 
@@ -91,12 +97,14 @@ function parseFinanceIndustryPayload(
       continue;
     }
     const record = entry as Record<string, unknown>;
+    const labelType = typeof record.label_type === "string" ? record.label_type.trim() : "";
     const normalizedLabel = typeof record.normalized_label === "string" ? record.normalized_label.trim() : "";
-    const expected = expectedByNormalizedLabel.get(normalizedLabel);
-    if (!expected || seen.has(normalizedLabel)) {
+    const key = classificationIdentityKey(labelType, normalizedLabel);
+    const expected = expectedByCompositeKey.get(key);
+    if (!expected || seen.has(key)) {
       continue;
     }
-    seen.add(normalizedLabel);
+    seen.add(key);
 
     const industrySlug = parseIndustrySlug(record.industry_slug);
     const confidence = parseConfidence(record.confidence, Boolean(industrySlug));
@@ -177,7 +185,7 @@ export async function classifyFinanceIndustriesWithAi(input: {
     if (!generated.ok) {
       lastFailure = generated;
       if (!generated.retryable) {
-        continue;
+        break;
       }
       continue;
     }

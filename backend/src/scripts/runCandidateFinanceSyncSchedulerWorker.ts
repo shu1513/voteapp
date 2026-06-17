@@ -1,9 +1,11 @@
 import { isCandidateFinanceEnabled } from "../config/featureFlags.js";
+import { loadProjectEnv } from "../config/env.js";
 import { createCandidateFinanceSyncSchedulerWorker } from "../scheduler/candidateFinanceSyncScheduler.js";
 
 const SHUTDOWN_TIMEOUT_MS = 30_000;
 
 async function main(): Promise<void> {
+  loadProjectEnv();
   if (!isCandidateFinanceEnabled()) {
     console.log("candidate_finance sync scheduler worker disabled; exiting");
     return;
@@ -26,6 +28,10 @@ async function main(): Promise<void> {
 
   worker.on("failed", (job, error) => {
     console.error(`candidate_finance sync scheduler worker failed jobId=${job?.id ?? "unknown"}:`, error);
+  });
+
+  worker.on("error", (error) => {
+    console.error("candidate_finance sync scheduler worker error:", error);
   });
 
   const shutdown = (): Promise<void> => {

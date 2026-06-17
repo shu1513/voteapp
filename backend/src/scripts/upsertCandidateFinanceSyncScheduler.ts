@@ -1,4 +1,5 @@
 import { isCandidateFinanceEnabled } from "../config/featureFlags.js";
+import { loadProjectEnv } from "../config/env.js";
 import {
   upsertRecurringCandidateFinanceSyncJobs,
   type CandidateFinanceSyncJobData,
@@ -49,6 +50,7 @@ function parseJobData(args: readonly string[]): CandidateFinanceSyncJobData {
 }
 
 async function main(): Promise<void> {
+  loadProjectEnv();
   const jobData = parseJobData(process.argv.slice(2));
   const enabled = isCandidateFinanceEnabled();
   await upsertRecurringCandidateFinanceSyncJobs(jobData);

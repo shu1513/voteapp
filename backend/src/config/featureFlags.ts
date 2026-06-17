@@ -24,7 +24,7 @@ export function isPresidentialFeatureEnabled(featureEnvName: string, force = fal
 }
 
 export function isCandidateFinanceEnabled(): boolean {
-  return readBooleanEnv("CANDIDATE_FINANCE_ENABLED", true);
+  return readBooleanEnv("CANDIDATE_FINANCE_ENABLED", false);
 }
 
 export function isCandidateFinanceSyncEnabled(force = false): boolean {

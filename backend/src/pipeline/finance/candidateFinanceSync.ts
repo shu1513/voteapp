@@ -548,7 +548,7 @@ async function resolveFinanceIndustryClassifications(input: {
   minAmount: number;
   dryRun: boolean;
 }): Promise<void> {
-  if (input.dryRun || !input.classifier) {
+  if (input.dryRun) {
     return;
   }
   const directBreakdowns = [...input.directBreakdowns];
@@ -574,7 +574,7 @@ async function resolveFinanceIndustryClassifications(input: {
     classifications: input.classifications,
     minAmount: input.minAmount,
   });
-  if (remainingCandidates.length === 0) {
+  if (remainingCandidates.length === 0 || !input.classifier) {
     return;
   }
 
@@ -638,14 +638,11 @@ async function upsertSummary(input: {
   db: Queryable;
   totals: OpenFecFinanceCandidateTotals | null;
   outsideTotals: OpenFecOutsideSpendingTotals | null;
+  outsideTotalsFetched: boolean;
   fecCandidateId: string;
   electionYear: number;
   syncedAt: Date;
 }): Promise<void> {
-  if (!input.totals && !input.outsideTotals) {
-    return;
-  }
-
   await input.db.query(
     `
       INSERT INTO public.candidate_finance_summaries (
@@ -675,8 +672,14 @@ async function upsertSummary(input: {
         individual_unitemized_total = EXCLUDED.individual_unitemized_total,
         other_committee_contributions = EXCLUDED.other_committee_contributions,
         transfers_from_affiliated_committees = EXCLUDED.transfers_from_affiliated_committees,
-        outside_support_total = EXCLUDED.outside_support_total,
-        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        outside_support_total = CASE
+          WHEN $15::boolean THEN EXCLUDED.outside_support_total
+          ELSE candidate_finance_summaries.outside_support_total
+        END,
+        outside_oppose_total = CASE
+          WHEN $15::boolean THEN EXCLUDED.outside_oppose_total
+          ELSE candidate_finance_summaries.outside_oppose_total
+        END,
         source_url = EXCLUDED.source_url,
         last_synced_at = EXCLUDED.last_synced_at
     `,
@@ -695,6 +698,7 @@ async function upsertSummary(input: {
       input.outsideTotals?.opposeTotal ?? null,
       input.totals?.sourceUrl ?? input.outsideTotals?.sourceUrl ?? null,
       input.syncedAt.toISOString(),
+      input.outsideTotalsFetched,
     ]
   );
 }
@@ -938,12 +942,14 @@ async function writeCandidateFinanceSync(input: {
   outsideBreakdowns: Iterable<OutsideGroupBreakdown>;
   classifications: Iterable<FinanceLabelClassification>;
   replaceOutsideFinanceRows: boolean;
+  outsideTotalsFetched: boolean;
 }): Promise<void> {
   await withFinanceWriteTransaction(input.db, async (db) => {
     await upsertSummary({
       db,
       totals: input.totals,
       outsideTotals: input.outsideTotals,
+      outsideTotalsFetched: input.outsideTotalsFetched,
       fecCandidateId: input.fecCandidateId,
       electionYear: input.electionYear,
       syncedAt: input.syncedAt,
@@ -1054,6 +1060,7 @@ export async function syncCandidateFinance(input: CandidateFinanceSyncInput): Pr
       outsideBreakdowns: outsideBreakdowns.values(),
       classifications: classifications.values(),
       replaceOutsideFinanceRows: includeOutside,
+      outsideTotalsFetched: includeOutside,
     });
   }
 
@@ -1062,7 +1069,7 @@ export async function syncCandidateFinance(input: CandidateFinanceSyncInput): Pr
     electionYear,
     dryRun: input.dryRun === true,
     directCommitteeCount: directCommittees.length,
-    summaryWritten: Boolean((totals || outsideFinance?.outsideTotals) && !input.dryRun),
+    summaryWritten: !input.dryRun,
     directBreakdownsWritten: input.dryRun ? 0 : directBreakdowns.size,
     industryBreakdownsWritten: input.dryRun
       ? 0

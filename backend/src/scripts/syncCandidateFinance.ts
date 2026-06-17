@@ -128,11 +128,11 @@ export function toSyncCandidateFinanceScriptOutput(input: {
 async function main(): Promise<void> {
   const startedAt = new Date();
   loadProjectEnv();
-  const options = parseSyncCandidateFinanceScriptArgs(process.argv.slice(2));
   if (!isCandidateFinanceEnabled()) {
     console.log("candidate_finance sync disabled; no FEC data fetched");
     return;
   }
+  const options = parseSyncCandidateFinanceScriptArgs(process.argv.slice(2));
 
   const apiKeys = readOpenFecApiKeysFromEnv();
   const timeoutMs = options.timeoutMs ?? DEFAULT_OPEN_FEC_TIMEOUT_MS;

@@ -24,6 +24,8 @@ describe("financeIndustryClassificationPrompt", () => {
     expect(prompt).not.toContain("media_entertainment");
     expect(prompt).not.toContain("crypto");
     expect(prompt).not.toContain("labor");
+    expect(prompt).toContain("Return exactly one classification for each (label_type, normalized_label) input pair.");
+    expect(prompt).toContain('"label_type": "employer"');
     expect(prompt).toContain('"normalized_label": "ACME QUANTUM LABS"');
   });
 });
