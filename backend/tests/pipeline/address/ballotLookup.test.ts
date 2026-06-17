@@ -1027,6 +1027,7 @@ describe("lookupElectionDetailById", () => {
           },
         ],
       })
+      .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -1070,6 +1071,7 @@ describe("lookupElectionDetailById", () => {
           candidate_election_id: candidateElectionId,
           candidate_id: candidateId,
           display_name: "Pat Connolly",
+          finance_summary: null,
           records: [
             {
               id: candidateRecordId,
@@ -1098,9 +1100,246 @@ describe("lookupElectionDetailById", () => {
         factors: ["medium_representation", "uncontested_race"],
       },
     });
-    expect(query).toHaveBeenCalledTimes(8);
+    expect(query).toHaveBeenCalledTimes(9);
     expect(query.mock.calls[0]?.[1]).toEqual([officeElectionId]);
-    expect(query.mock.calls[7]?.[0]).toContain("public.historical_contest_margins");
+    expect(query.mock.calls[8]?.[0]).toContain("public.historical_contest_margins");
+  });
+
+  it("includes locally synced FEC finance summaries for candidate detail", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "06",
+            district_name: "California",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "U.S. Senate",
+            election_date: "2024-11-05",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "federal",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Pat Connolly",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: null,
+            state: "CA",
+            fec_ids: ["S4CA00001"],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            fec_candidate_id: "S4CA00001",
+            election_year: 2024,
+            total_receipts: "1000.50",
+            total_disbursements: "700.25",
+            cash_on_hand: "300.00",
+            debts_owed: "10.00",
+            outside_support_total: "5000.00",
+            outside_oppose_total: "125.50",
+            last_synced_at: "2026-01-02 03:04:05+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Attorney",
+            amount: "400.00",
+            contributor_count: 4,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "employer",
+            category_name: "Google LLC",
+            amount: "350.00",
+            contributor_count: 3,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "industry",
+            category_name: "technology",
+            amount: "350.00",
+            contributor_count: 3,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "C00000001",
+            committee_name: "Support Candidate PAC",
+            support_oppose: "support",
+            amount: "5000.00",
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "C00000002",
+            committee_name: "Oppose Candidate PAC",
+            support_oppose: "oppose",
+            amount: "125.50",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "technology",
+            amount: "2500.00",
+            contributor_count: "8",
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "finance_investment",
+            amount: "125.50",
+            contributor_count: "1",
+          },
+        ],
+      });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "FEC",
+      cycle: 2024,
+      fec_candidate_id: "S4CA00001",
+      last_synced_at: "2026-01-02 03:04:05+00",
+      direct_campaign: {
+        total_raised: 1000.5,
+        total_spent: 700.25,
+        cash_on_hand: 300,
+        debts_owed: 10,
+        top_occupations: [{ category_name: "Attorney", amount: 400, contributor_count: 4 }],
+        top_employers: [{ category_name: "Google LLC", amount: 350, contributor_count: 3 }],
+        top_industries: [{ category_name: "technology", amount: 350, contributor_count: 3 }],
+      },
+      outside_spending: {
+        support_total: 5000,
+        oppose_total: 125.5,
+        top_supporting_groups: [
+          {
+            committee_id: "C00000001",
+            committee_name: "Support Candidate PAC",
+            support_oppose: "support",
+            amount: 5000,
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "C00000002",
+            committee_name: "Oppose Candidate PAC",
+            support_oppose: "oppose",
+            amount: 125.5,
+          },
+        ],
+        top_supporting_industries: [{ category_name: "technology", amount: 2500, contributor_count: 8 }],
+        top_opposing_industries: [{ category_name: "finance_investment", amount: 125.5, contributor_count: 1 }],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(11);
+    expect(query.mock.calls[7]?.[0]).toContain("public.candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.candidate_finance_direct_breakdowns");
+    expect(query.mock.calls[9]?.[0]).toContain("public.candidate_finance_outside_groups");
+    expect(query.mock.calls[10]?.[0]).toContain("public.candidate_finance_outside_group_breakdowns");
+  });
+
+  it("omits finance summaries without querying finance tables when candidate finance is disabled", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "06",
+            district_name: "California",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "U.S. Senate",
+            election_date: "2024-11-05",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "federal",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Pat Connolly",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: null,
+            state: "CA",
+            fec_ids: ["S4CA00001"],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toBeNull();
+    expect(query).toHaveBeenCalledTimes(7);
+    expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("candidate_finance");
   });
 
   it("loads full detail for one ballot measure election by election ID", async () => {

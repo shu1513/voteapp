@@ -15,6 +15,7 @@ import {
 } from "../competitiveness/historicalContestMarginLookup.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
 import { calculateVotePower, type VotePowerResult } from "./votePower.js";
+import { isCandidateFinanceEnabled } from "../../config/featureFlags.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -89,6 +90,43 @@ export type BallotLookupCandidateRecord = {
   research_area_tags: BallotLookupResearchAreaTag[];
 };
 
+export type BallotLookupFinanceBreakdown = {
+  category_name: string;
+  amount: number;
+  contributor_count: number | null;
+};
+
+export type BallotLookupFinanceOutsideGroup = {
+  committee_id: string;
+  committee_name: string;
+  support_oppose: "support" | "oppose";
+  amount: number;
+};
+
+export type BallotLookupFinanceSummary = {
+  source: "FEC";
+  cycle: number;
+  fec_candidate_id: string;
+  last_synced_at: string;
+  direct_campaign: {
+    total_raised: number | null;
+    total_spent: number | null;
+    cash_on_hand: number | null;
+    debts_owed: number | null;
+    top_occupations: BallotLookupFinanceBreakdown[];
+    top_employers: BallotLookupFinanceBreakdown[];
+    top_industries: BallotLookupFinanceBreakdown[];
+  };
+  outside_spending: {
+    support_total: number | null;
+    oppose_total: number | null;
+    top_supporting_groups: BallotLookupFinanceOutsideGroup[];
+    top_opposing_groups: BallotLookupFinanceOutsideGroup[];
+    top_supporting_industries: BallotLookupFinanceBreakdown[];
+    top_opposing_industries: BallotLookupFinanceBreakdown[];
+  };
+};
+
 export type BallotLookupCandidate = {
   candidate_election_id: string;
   candidate_id: string;
@@ -102,6 +140,7 @@ export type BallotLookupCandidate = {
   fec_ids: string[];
   state_filing_ids: string[];
   records: BallotLookupCandidateRecord[];
+  finance_summary: BallotLookupFinanceSummary | null;
 };
 
 export type BallotLookupElectionResultWinner = {
@@ -325,6 +364,54 @@ type BallotMeasureResultRow = {
   retrieved_at: string;
 };
 
+type CandidateFinanceSummaryRequest = {
+  candidate_id: string;
+  election_id: string;
+  fec_candidate_id: string;
+  election_year: number;
+};
+
+type CandidateFinanceSummaryRow = {
+  candidate_id: string;
+  election_id: string;
+  fec_candidate_id: string;
+  election_year: number;
+  total_receipts: string | number | null;
+  total_disbursements: string | number | null;
+  cash_on_hand: string | number | null;
+  debts_owed: string | number | null;
+  outside_support_total: string | number | null;
+  outside_oppose_total: string | number | null;
+  last_synced_at: string;
+};
+
+type CandidateFinanceDirectBreakdownRow = {
+  candidate_id: string;
+  election_id: string;
+  category_type: "occupation" | "employer" | "industry";
+  category_name: string;
+  amount: string | number;
+  contributor_count: number | null;
+};
+
+type CandidateFinanceOutsideGroupRow = {
+  candidate_id: string;
+  election_id: string;
+  committee_id: string;
+  committee_name: string;
+  support_oppose: "support" | "oppose";
+  amount: string | number;
+};
+
+type CandidateFinanceOutsideIndustryRow = {
+  candidate_id: string;
+  election_id: string;
+  support_oppose: "support" | "oppose";
+  category_name: string;
+  amount: string | number;
+  contributor_count: string | number | null;
+};
+
 function normalizeIds(ids: readonly string[]): string[] {
   return [...new Set(ids.map((id) => id.trim()).filter((id) => id.length > 0))];
 }
@@ -402,6 +489,82 @@ function parseRepresentationPowerScore(value: string | number | null | undefined
     return null;
   }
   return Math.min(100, Math.max(0, parsed));
+}
+
+function parseFinanceAmount(value: string | number | null | undefined): number | null {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  const parsed = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function parseFinanceCount(value: string | number | null | undefined): number | null {
+  const parsed = parseFinanceAmount(value);
+  return parsed === null ? null : Math.trunc(parsed);
+}
+
+function candidateElectionKey(candidateId: string, electionId: string): string {
+  return `${candidateId}\u0000${electionId}`;
+}
+
+function normalizeFecCandidateIdForFinance(value: string): string | null {
+  const normalized = value.trim().toUpperCase();
+  return /^[HPS][0-9A-Z]{8}$/.test(normalized) ? normalized : null;
+}
+
+function mapFinanceBreakdown(row: {
+  category_name: string;
+  amount: string | number;
+  contributor_count: string | number | null;
+}): BallotLookupFinanceBreakdown {
+  return {
+    category_name: row.category_name,
+    amount: parseFinanceAmount(row.amount) ?? 0,
+    contributor_count: parseFinanceCount(row.contributor_count),
+  };
+}
+
+function buildFinanceSummaryRequests(
+  candidateRows: readonly CandidateRow[],
+  electionRows: readonly ElectionRow[]
+): CandidateFinanceSummaryRequest[] {
+  const electionYearById = new Map(electionRows.map((row) => [row.election_id, electionYear(row.election_date)]));
+  const requests = new Map<string, CandidateFinanceSummaryRequest>();
+
+  for (const row of candidateRows) {
+    const year = electionYearById.get(row.election_id) ?? null;
+    if (year === null) {
+      continue;
+    }
+    for (const rawFecId of parseStringArray(row.fec_ids)) {
+      const fecCandidateId = normalizeFecCandidateIdForFinance(rawFecId);
+      if (!fecCandidateId) {
+        continue;
+      }
+      const key = `${row.candidate_id}\u0000${row.election_id}\u0000${fecCandidateId}\u0000${year}`;
+      requests.set(key, {
+        candidate_id: row.candidate_id,
+        election_id: row.election_id,
+        fec_candidate_id: fecCandidateId,
+        election_year: year,
+      });
+    }
+  }
+
+  return [...requests.values()];
+}
+
+function addFinanceBreakdown(
+  map: Map<string, BallotLookupFinanceBreakdown[]>,
+  candidateId: string,
+  electionId: string,
+  row: BallotLookupFinanceBreakdown
+): void {
+  const key = candidateElectionKey(candidateId, electionId);
+  const list = map.get(key) ?? [];
+  list.push(row);
+  map.set(key, list);
 }
 
 function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): BallotLookupDistrict {
@@ -586,6 +749,268 @@ async function loadHistoricalCompetitivenessByElection(
   );
 }
 
+async function loadCandidateFinanceSummariesByCandidateElection(
+  db: Queryable,
+  candidateRows: readonly CandidateRow[],
+  electionRows: readonly ElectionRow[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
+  if (!isCandidateFinanceEnabled()) {
+    return new Map();
+  }
+
+  const requests = buildFinanceSummaryRequests(candidateRows, electionRows);
+  if (requests.length === 0) {
+    return new Map();
+  }
+
+  const summaryResult = await db.query<CandidateFinanceSummaryRow>(
+    `
+      WITH requested AS (
+        SELECT
+          candidate_id::uuid AS candidate_id,
+          election_id::uuid AS election_id,
+          fec_candidate_id,
+          election_year
+        FROM jsonb_to_recordset($1::jsonb) AS x(
+          candidate_id text,
+          election_id text,
+          fec_candidate_id text,
+          election_year int
+        )
+      )
+      SELECT DISTINCT ON (requested.candidate_id, requested.election_id)
+        requested.candidate_id::text AS candidate_id,
+        requested.election_id::text AS election_id,
+        summary.fec_candidate_id,
+        summary.election_year,
+        summary.total_receipts,
+        summary.total_disbursements,
+        summary.cash_on_hand,
+        summary.debts_owed,
+        summary.outside_support_total,
+        summary.outside_oppose_total,
+        summary.last_synced_at::text AS last_synced_at
+      FROM requested
+      JOIN public.candidate_finance_summaries AS summary
+        ON summary.fec_candidate_id = requested.fec_candidate_id
+       AND summary.election_year = requested.election_year
+      ORDER BY requested.candidate_id, requested.election_id, summary.last_synced_at DESC, summary.id
+    `,
+    [JSON.stringify(requests)]
+  );
+
+  if (summaryResult.rows.length === 0) {
+    return new Map();
+  }
+
+  const selectedRequests = summaryResult.rows.map((row) => ({
+    candidate_id: row.candidate_id,
+    election_id: row.election_id,
+    fec_candidate_id: row.fec_candidate_id,
+    election_year: row.election_year,
+  }));
+
+  const directBreakdownResult = await db.query<CandidateFinanceDirectBreakdownRow>(
+    `
+      WITH selected AS (
+        SELECT
+          candidate_id::uuid AS candidate_id,
+          election_id::uuid AS election_id,
+          fec_candidate_id,
+          election_year
+        FROM jsonb_to_recordset($1::jsonb) AS x(
+          candidate_id text,
+          election_id text,
+          fec_candidate_id text,
+          election_year int
+        )
+      ),
+      ranked AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          breakdown.category_type,
+          breakdown.category_name,
+          breakdown.amount,
+          breakdown.contributor_count,
+          row_number() OVER (
+            PARTITION BY selected.candidate_id, selected.election_id, breakdown.category_type
+            ORDER BY breakdown.amount DESC, breakdown.category_name ASC
+          ) AS rn
+        FROM selected
+        JOIN public.candidate_finance_direct_breakdowns AS breakdown
+          ON breakdown.fec_candidate_id = selected.fec_candidate_id
+         AND breakdown.election_year = selected.election_year
+        WHERE breakdown.category_type IN ('occupation', 'employer', 'industry')
+      )
+      SELECT candidate_id, election_id, category_type, category_name, amount, contributor_count
+      FROM ranked
+      WHERE rn <= 5
+      ORDER BY candidate_id, election_id, category_type, amount DESC, category_name ASC
+    `,
+    [JSON.stringify(selectedRequests)]
+  );
+
+  const outsideGroupResult = await db.query<CandidateFinanceOutsideGroupRow>(
+    `
+      WITH selected AS (
+        SELECT
+          candidate_id::uuid AS candidate_id,
+          election_id::uuid AS election_id,
+          fec_candidate_id,
+          election_year
+        FROM jsonb_to_recordset($1::jsonb) AS x(
+          candidate_id text,
+          election_id text,
+          fec_candidate_id text,
+          election_year int
+        )
+      ),
+      ranked AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          outside_group.committee_id,
+          outside_group.committee_name,
+          outside_group.support_oppose,
+          outside_group.amount,
+          row_number() OVER (
+            PARTITION BY selected.candidate_id, selected.election_id, outside_group.support_oppose
+            ORDER BY outside_group.amount DESC, outside_group.committee_name ASC
+          ) AS rn
+        FROM selected
+        JOIN public.candidate_finance_outside_groups AS outside_group
+          ON outside_group.fec_candidate_id = selected.fec_candidate_id
+         AND outside_group.election_year = selected.election_year
+      )
+      SELECT candidate_id, election_id, committee_id, committee_name, support_oppose, amount
+      FROM ranked
+      WHERE rn <= 5
+      ORDER BY candidate_id, election_id, support_oppose, amount DESC, committee_name ASC
+    `,
+    [JSON.stringify(selectedRequests)]
+  );
+
+  const outsideIndustryResult = await db.query<CandidateFinanceOutsideIndustryRow>(
+    `
+      WITH selected AS (
+        SELECT
+          candidate_id::uuid AS candidate_id,
+          election_id::uuid AS election_id,
+          fec_candidate_id,
+          election_year
+        FROM jsonb_to_recordset($1::jsonb) AS x(
+          candidate_id text,
+          election_id text,
+          fec_candidate_id text,
+          election_year int
+        )
+      ),
+      grouped AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          breakdown.support_oppose,
+          breakdown.category_name,
+          sum(breakdown.amount) AS amount,
+          CASE
+            WHEN count(breakdown.contributor_count) = 0 THEN NULL
+            ELSE sum(breakdown.contributor_count)
+          END AS contributor_count
+        FROM selected
+        JOIN public.candidate_finance_outside_group_breakdowns AS breakdown
+          ON breakdown.fec_candidate_id = selected.fec_candidate_id
+         AND breakdown.election_year = selected.election_year
+        WHERE breakdown.category_type = 'industry'
+        GROUP BY selected.candidate_id, selected.election_id, breakdown.support_oppose, breakdown.category_name
+      ),
+      ranked AS (
+        SELECT
+          *,
+          row_number() OVER (
+            PARTITION BY candidate_id, election_id, support_oppose
+            ORDER BY amount DESC, category_name ASC
+          ) AS rn
+        FROM grouped
+      )
+      SELECT candidate_id, election_id, support_oppose, category_name, amount, contributor_count
+      FROM ranked
+      WHERE rn <= 5
+      ORDER BY candidate_id, election_id, support_oppose, amount DESC, category_name ASC
+    `,
+    [JSON.stringify(selectedRequests)]
+  );
+
+  const directOccupationsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  const directEmployersByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  const directIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  for (const row of directBreakdownResult.rows) {
+    const mapped = mapFinanceBreakdown(row);
+    if (row.category_type === "occupation") {
+      addFinanceBreakdown(directOccupationsByCandidateElection, row.candidate_id, row.election_id, mapped);
+    } else if (row.category_type === "employer") {
+      addFinanceBreakdown(directEmployersByCandidateElection, row.candidate_id, row.election_id, mapped);
+    } else {
+      addFinanceBreakdown(directIndustriesByCandidateElection, row.candidate_id, row.election_id, mapped);
+    }
+  }
+
+  const supportingGroupsByCandidateElection = new Map<string, BallotLookupFinanceOutsideGroup[]>();
+  const opposingGroupsByCandidateElection = new Map<string, BallotLookupFinanceOutsideGroup[]>();
+  for (const row of outsideGroupResult.rows) {
+    const key = candidateElectionKey(row.candidate_id, row.election_id);
+    const map = row.support_oppose === "support" ? supportingGroupsByCandidateElection : opposingGroupsByCandidateElection;
+    const list = map.get(key) ?? [];
+    list.push({
+      committee_id: row.committee_id,
+      committee_name: row.committee_name,
+      support_oppose: row.support_oppose,
+      amount: parseFinanceAmount(row.amount) ?? 0,
+    });
+    map.set(key, list);
+  }
+
+  const supportingIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  const opposingIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  for (const row of outsideIndustryResult.rows) {
+    const map =
+      row.support_oppose === "support" ? supportingIndustriesByCandidateElection : opposingIndustriesByCandidateElection;
+    addFinanceBreakdown(map, row.candidate_id, row.election_id, mapFinanceBreakdown(row));
+  }
+
+  return new Map(
+    summaryResult.rows.map((row) => {
+      const key = candidateElectionKey(row.candidate_id, row.election_id);
+      return [
+        key,
+        {
+          source: "FEC",
+          cycle: row.election_year,
+          fec_candidate_id: row.fec_candidate_id,
+          last_synced_at: row.last_synced_at,
+          direct_campaign: {
+            total_raised: parseFinanceAmount(row.total_receipts),
+            total_spent: parseFinanceAmount(row.total_disbursements),
+            cash_on_hand: parseFinanceAmount(row.cash_on_hand),
+            debts_owed: parseFinanceAmount(row.debts_owed),
+            top_occupations: directOccupationsByCandidateElection.get(key) ?? [],
+            top_employers: directEmployersByCandidateElection.get(key) ?? [],
+            top_industries: directIndustriesByCandidateElection.get(key) ?? [],
+          },
+          outside_spending: {
+            support_total: parseFinanceAmount(row.outside_support_total),
+            oppose_total: parseFinanceAmount(row.outside_oppose_total),
+            top_supporting_groups: supportingGroupsByCandidateElection.get(key) ?? [],
+            top_opposing_groups: opposingGroupsByCandidateElection.get(key) ?? [],
+            top_supporting_industries: supportingIndustriesByCandidateElection.get(key) ?? [],
+            top_opposing_industries: opposingIndustriesByCandidateElection.get(key) ?? [],
+          },
+        } satisfies BallotLookupFinanceSummary,
+      ];
+    })
+  );
+}
+
 async function loadFullElectionDetails(
   db: Queryable,
   electionRows: readonly ElectionRow[]
@@ -741,6 +1166,11 @@ async function loadFullElectionDetails(
           [ballotMeasureIds]
         );
 
+  const financeSummaryByCandidateElection = await loadCandidateFinanceSummariesByCandidateElection(
+    db,
+    candidateResult.rows,
+    electionRows
+  );
   const candidateRecordTagsByRecord = groupBy(candidateRecordTagResult.rows, (row) => row.candidate_record_id);
   const candidateRecordsByCandidate = new Map<string, BallotLookupCandidateRecord[]>();
   for (const row of candidateRecordResult.rows) {
@@ -772,6 +1202,8 @@ async function loadFullElectionDetails(
       fec_ids: parseStringArray(row.fec_ids),
       state_filing_ids: parseStringArray(row.state_filing_ids),
       records: candidateRecordsByCandidate.get(row.candidate_id) ?? [],
+      finance_summary:
+        financeSummaryByCandidateElection.get(candidateElectionKey(row.candidate_id, row.election_id)) ?? null,
     });
     candidatesByElection.set(row.election_id, list);
   }

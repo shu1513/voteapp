@@ -26,7 +26,7 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
   const objectiveRule = useJudicialRecordObjective
     ? "- Research the web for publicly available reliable records about this exact judicial candidate, focusing on evidence for evaluating the candidate's legal competence, integrity and ethics, impartiality, and professional record. Relevant sources may include notable cases, rulings, prior prosecutorial, defense, or judicial service, published legal work, disciplinary records, ethics complaints, controversies, and other verified public records."
-    : "- Research reliable public records about this exact candidate that show concrete actions or accountability such as votes, sponsored legislation, official decisions, public policy statements, budgets managed, committee work, finance records, legal/ethics scrutiny/documented criminal convictions, prior government service, professional achievements or failures, and documented positions on key issues.";
+    : "- Research reliable public records about this exact candidate that show concrete actions or accountability such as votes, sponsored legislation, official decisions, committee work, legal/ethics scrutiny/documented criminal convictions, prior government service, professional achievements or failures, and documented positions on key issues.";
 
   return [
     "You are researching substantive public records about one election candidate.",
@@ -66,12 +66,13 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
       : []),
     ...(input.sinceDate ? ['- Include only records with event_date >= since_date.'] : []),
     "- records may be an empty array if no reliable records are found.",
-    "- Do not include pure candidacy announcements, such as records whose only substance is that the person is running, filed to run, launched a campaign, appears on a ballot, or is listed in a voter guide.",
+    "- Do not include pure candidacy announcements.",
     "- Each record must include source_url and event_date.",
     "- event_date must be YYYY-MM-DD; use the action/event date when known, otherwise use the source publication date.",
     "- If neither action/event date nor publication date is available, omit that record.",
     "- Use one row per concrete record; do not duplicate the same source/event.",
     "- Keep descriptions neutral and factual.",
+    "- For damaging claims, require official/legal sources or reputable news and do not state allegations as proven facts.",
     "- return JSON only (no prose, no markdown).",
     ...(reviewFeedbackLines.length > 0
       ? [

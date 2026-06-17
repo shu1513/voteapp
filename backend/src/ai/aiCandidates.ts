@@ -139,4 +139,14 @@ export const CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES: readonly AiCandidate[] =
   { provider: "gemini", model: "gemini-2.5-pro" },
 ] as const;
 
+/**
+ * Curated finance industry classification AI candidates.
+ * This is narrow taxonomy classification, not web research; keep it separate and easy to tune.
+ */
+export const FINANCE_INDUSTRY_CLASSIFICATION_AI_CANDIDATES: readonly AiCandidate[] = [
+  { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "openai", model: "gpt-5.4-mini" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
+] as const;
+
 export const DEFAULT_AI_CANDIDATE: AiCandidate = STATE_RESOURCES_AI_CANDIDATES[0];
