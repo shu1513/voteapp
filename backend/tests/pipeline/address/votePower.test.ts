@@ -74,6 +74,16 @@ describe("decisivenessLevelFromContest", () => {
       })
     ).toBe("unknown");
   });
+
+  it("treats unexpected competitiveness labels as unknown", () => {
+    expect(
+      decisivenessLevelFromContest({
+        raceType: "office",
+        candidateCount: 2,
+        competitivenessLabel: "not_a_real_label" as never,
+      })
+    ).toBe("unknown");
+  });
 });
 
 describe("calculateVotePower", () => {

@@ -96,6 +96,8 @@ export function decisivenessLevelFromContest(input: {
     case null:
     case undefined:
       return "unknown";
+    default:
+      return "unknown";
   }
 }
 
@@ -196,13 +198,12 @@ function calculateScore(input: {
   if (representationPowerScore !== null && input.representationLevel !== "unknown" && decisivenessLevel !== "unknown") {
     const representationNorm = representationPowerScore / 100;
     const decisivenessNorm =
-      decisivenessLevel === "none" ? 0 : DECISIVENESS_SCORE_BY_LABEL[input.competitivenessLabel ?? "safe"];
+      decisivenessLevel === "none" ? 0 : DECISIVENESS_SCORE_BY_LABEL[input.competitivenessLabel!];
     raw = 100 * (0.45 * representationNorm + 0.55 * decisivenessNorm);
   } else if (representationPowerScore !== null && input.representationLevel !== "unknown") {
     raw = representationPowerScore;
   } else if (decisivenessLevel !== "unknown") {
-    raw =
-      decisivenessLevel === "none" ? 0 : 100 * DECISIVENESS_SCORE_BY_LABEL[input.competitivenessLabel ?? "safe"];
+    raw = decisivenessLevel === "none" ? 0 : 100 * DECISIVENESS_SCORE_BY_LABEL[input.competitivenessLabel!];
   } else {
     return null;
   }

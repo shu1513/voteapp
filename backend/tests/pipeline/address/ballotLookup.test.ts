@@ -964,6 +964,7 @@ describe("lookupElectionDetailById", () => {
             is_partisan: false,
             discovery_contest_family: "non_judicial_office",
             sources: ["https://example.test/elections"],
+            office_canonical_name: "Sheriff",
           },
         ],
       })
@@ -1025,6 +1026,33 @@ describe("lookupElectionDetailById", () => {
             stance: "for",
           },
         ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: "10101010-1010-4010-8010-101010101010",
+            lookup_id: officeElectionId,
+            source: "MIT_2022",
+            source_url: "https://doi.org/10.7910/DVN/UYQIEP",
+            election_year: 2022,
+            state: "CA",
+            state_fips: "06",
+            office_type: "COUNTY_SHERIFF",
+            district_type: "county",
+            district_key: "06037",
+            mit_office: "COUNTY SHERIFF",
+            mit_district: "06037",
+            winner_party: "DEMOCRAT",
+            runner_up_party: "REPUBLICAN",
+            winner_votes: "56000",
+            runner_up_votes: "44000",
+            total_votes: "100000",
+            margin_percent: "12.00",
+            competitiveness_label: "somewhat_competitive",
+            stale_after_redistricting: false,
+            imported_at: "2026-06-14 12:00:00+00",
+          },
+        ],
       });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
@@ -1053,9 +1081,26 @@ describe("lookupElectionDetailById", () => {
       ],
       ballot_measure: null,
       results: [{ outcome: "won", match_status: "matched" }],
+      historical_competitiveness: {
+        display_label: "Historically somewhat competitive",
+        display_description: "Based on the 2022 Sheriff result.",
+        source: "MIT_2022",
+        election_year: 2022,
+        margin_percent: 12,
+        competitiveness_label: "somewhat_competitive",
+      },
+      vote_power: {
+        score: 25,
+        label: "low",
+        confidence: "high",
+        representation_level: "medium",
+        decisiveness_level: "none",
+        factors: ["medium_representation", "uncontested_race"],
+      },
     });
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     expect(query.mock.calls[0]?.[1]).toEqual([officeElectionId]);
+    expect(query.mock.calls[7]?.[0]).toContain("public.historical_contest_margins");
   });
 
   it("loads full detail for one ballot measure election by election ID", async () => {
@@ -1071,7 +1116,7 @@ describe("lookupElectionDetailById", () => {
             district_name: "Los Angeles County",
             state: "CA",
             state_fips: "06",
-            representation_power_score: "48.75",
+            representation_power_score: "148.75",
             race_type: "ballot_measure",
             official_ballot_title: "Measure H",
             election_date: "2026-06-02",
@@ -1079,6 +1124,7 @@ describe("lookupElectionDetailById", () => {
             is_partisan: null,
             discovery_contest_family: "ballot_measure",
             sources: ["https://example.test/measure"],
+            office_canonical_name: null,
           },
         ],
       })
@@ -1131,7 +1177,7 @@ describe("lookupElectionDetailById", () => {
       id: measureElectionId,
       district_id: districtId,
       district: {
-        representation_power_score: 48.75,
+        representation_power_score: 100,
       },
       race_type: "ballot_measure",
       official_ballot_title: "Measure H",
@@ -1147,6 +1193,15 @@ describe("lookupElectionDetailById", () => {
         official_measure_url: "https://example.test/measure-h/full-text",
         research_area_tags: [{ slug: "healthcare_affordability", stance: "for" }],
         results: [{ outcome: "passed", result_status: "certified" }],
+      },
+      historical_competitiveness: null,
+      vote_power: {
+        score: 100,
+        label: "very_high",
+        confidence: "high",
+        representation_level: "high",
+        decisiveness_level: "unknown",
+        factors: ["high_representation", "direct_vote_on_policy"],
       },
     });
     expect(query).toHaveBeenCalledTimes(6);
