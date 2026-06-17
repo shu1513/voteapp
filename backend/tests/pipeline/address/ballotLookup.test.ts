@@ -945,6 +945,7 @@ describe("lookupElectionDetailById", () => {
   });
 
   it("loads full detail for one office election by election ID", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
       .mockResolvedValueOnce({
