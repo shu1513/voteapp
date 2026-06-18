@@ -152,7 +152,7 @@ describe("candidateFinanceSync", () => {
       expect.arrayContaining([
         ["Google LLC", "employer", "GOOGLE", "technology", "high", "rule"],
         ["Energy Transfer LP", "employer", "ENERGY TRANSFER", "oil_gas_energy", "high", "rule"],
-        ["Attorney", "occupation", "ATTORNEY", "legal", "high", "rule"],
+        ["Attorney", "occupation", "ATTORNEY", "lawyers_and_legal_services", "high", "rule"],
         ["Retired", "occupation", "RETIRED", null, "high", "rule"],
       ])
     );
