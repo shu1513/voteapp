@@ -22,6 +22,7 @@ describe("financeIndustryClassificationPrompt", () => {
     expect(prompt).toContain("pharmaceuticals");
     expect(prompt).toContain("lawyers_and_legal_services");
     expect(prompt).toContain("agriculture_and_food");
+    expect(prompt).toContain("waste_management");
     expect(prompt).toContain("labor_unions");
     expect(prompt).toContain("environmental_group");
     expect(prompt).not.toContain("public_sector");

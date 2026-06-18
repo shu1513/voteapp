@@ -480,6 +480,44 @@ describe("candidateFinanceSync", () => {
     expect(result.classificationsWritten).toBe(1);
   });
 
+  it("does not call AI fallback for known non-industry employer labels", async () => {
+    const db = createMockDb();
+    const fecClient = createFecClient({
+      getCommitteeAggregatesByEmployer: vi.fn().mockResolvedValue([
+        { type: "employer", label: "Self-employed", amount: 250_000, count: 4 },
+      ]),
+      getCommitteeAggregatesByOccupation: vi.fn().mockResolvedValue([]),
+      getCommitteeAggregatesBySize: vi.fn().mockResolvedValue([]),
+    });
+    const financeIndustryClassifier = vi.fn();
+
+    const result = await syncCandidateFinance({
+      db,
+      fecCandidateId: "P80001571",
+      electionYear: 2024,
+      openFecOptions: { apiKeys: ["k1"] },
+      fecClient,
+      financeIndustryClassifier,
+    });
+
+    expect(financeIndustryClassifier).not.toHaveBeenCalled();
+    expect(result.directBreakdownsWritten).toBe(1);
+    expect(result.industryBreakdownsWritten).toBe(0);
+    expect(result.classificationsWritten).toBe(1);
+
+    const classificationCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.finance_label_classifications")
+    );
+    expect(classificationCall?.[1]).toEqual([
+      "Self-employed",
+      "employer",
+      "SELF EMPLOYED",
+      null,
+      "high",
+      "rule",
+    ]);
+  });
+
   it("does not write when dryRun is true", async () => {
     const db = createMockDb();
     const fecClient = createFecClient();

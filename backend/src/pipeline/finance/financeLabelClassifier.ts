@@ -16,6 +16,7 @@ export const FINANCE_INDUSTRY_SLUGS = [
   "insurance",
   "hospitality",
   "transportation",
+  "waste_management",
   "labor_unions",
   "environmental_group",
 ] as const;
@@ -51,11 +52,30 @@ const KNOWN_NON_INDUSTRY_OCCUPATIONS = new Set([
   "HOMEMAKER",
   "NONE",
   "NOT EMPLOYED",
-  "NOT-EMPLOYED",
   "RETIRED",
   "SELF EMPLOYED",
-  "SELF-EMPLOYED",
   "UNEMPLOYED",
+]);
+
+const KNOWN_NON_INDUSTRY_ORGANIZATION_LABELS = new Set([
+  "DISABLED",
+  "DOD",
+  "GSA",
+  "HOMEMAKER",
+  "INFORMATION REQUESTED",
+  "N A",
+  "NC DPS",
+  "NONE",
+  "NOT EMPLOYED",
+  "NULL",
+  "RETIRED",
+  "SELF",
+  "SELF EMPLOYED",
+  "AMERICA FIRST POLICY INSTITUTE",
+  "STATE OF ILLINOIS",
+  "STUDENT",
+  "UNEMPLOYED",
+  "USPS",
 ]);
 
 const EXACT_OCCUPATION_RULES = new Map<string, ClassificationRule>([
@@ -86,10 +106,14 @@ const EXACT_ORGANIZATION_RULES = new Map<string, ClassificationRule>([
   ["APPLE", { industrySlug: "technology", confidence: "high", name: "organization_exact_apple" }],
   ["AMAZON", { industrySlug: "technology", confidence: "high", name: "organization_exact_amazon" }],
   ["PALANTIR", { industrySlug: "technology", confidence: "high", name: "organization_exact_palantir" }],
+  ["ASANA", { industrySlug: "technology", confidence: "high", name: "organization_exact_asana" }],
+  ["ORACLE", { industrySlug: "technology", confidence: "high", name: "organization_exact_oracle" }],
+  ["RIPPLE", { industrySlug: "technology", confidence: "medium", name: "organization_exact_ripple" }],
   ["ENERGY TRANSFER", { industrySlug: "oil_gas_energy", confidence: "high", name: "organization_exact_energy_transfer" }],
   ["CONTINENTAL RESOURCES", { industrySlug: "oil_gas_energy", confidence: "high", name: "organization_exact_continental_resources" }],
   ["GEO SOUTHERN ENERGY", { industrySlug: "oil_gas_energy", confidence: "high", name: "organization_exact_geo_southern" }],
   ["MIDLAND ENERGY", { industrySlug: "oil_gas_energy", confidence: "high", name: "organization_exact_midland_energy" }],
+  ["ALLIANCE RESOURCE PARTNERS", { industrySlug: "oil_gas_energy", confidence: "high", name: "organization_exact_alliance_resource_partners" }],
   ["KAISER", { industrySlug: "healthcare", confidence: "high", name: "organization_exact_kaiser" }],
   ["HCA", { industrySlug: "healthcare", confidence: "high", name: "organization_exact_hca" }],
   ["UNITEDHEALTH", { industrySlug: "healthcare", confidence: "high", name: "organization_exact_unitedhealth" }],
@@ -98,15 +122,34 @@ const EXACT_ORGANIZATION_RULES = new Map<string, ClassificationRule>([
   ["ELI LILLY", { industrySlug: "pharmaceuticals", confidence: "high", name: "organization_exact_eli_lilly" }],
   ["JOHNSON AND JOHNSON", { industrySlug: "pharmaceuticals", confidence: "high", name: "organization_exact_johnson_and_johnson" }],
   ["CANTOR FITZGERALD", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_cantor" }],
+  ["ELLIOTT MANAGEMENT", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_elliott_management" }],
   ["ELLIOTT INVESTMENT MANAGEMENT", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_elliott" }],
   ["GREYLOCK", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_greylock" }],
+  ["GREYLOCK PARTNERS", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_greylock_partners" }],
   ["PAULSON CAPITAL", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_paulson" }],
   ["WINKLEVOSS CAPITAL", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_winklevoss" }],
+  ["A16Z", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_a16z" }],
+  ["ANDREESSEN HOROWITZ", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_andreessen_horowitz" }],
+  ["APOLLO MANAGEMENT", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_apollo_management" }],
+  // Known misspelling observed in OpenFEC employer data.
+  ["APOLLO MANAMGEMENT", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_apollo_management_misspelled" }],
+  ["JANE STREET", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_jane_street" }],
+  ["THE BAUPOST GROUP", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_baupost" }],
+  ["TRIAN FUND MANAGEMENT", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_trian_fund_management" }],
+  ["VALOR EQUITY PARTNERS", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_valor_equity_partners" }],
+  ["BLOOMBERG", { industrySlug: "finance_investment", confidence: "medium", name: "organization_exact_bloomberg" }],
+  ["WALTON ENTERPRISES", { industrySlug: "finance_investment", confidence: "high", name: "organization_exact_walton_enterprises" }],
   ["LOCKHEED MARTIN", { industrySlug: "defense_aerospace", confidence: "high", name: "organization_exact_lockheed" }],
   ["BOEING", { industrySlug: "defense_aerospace", confidence: "high", name: "organization_exact_boeing" }],
   ["NORTHROP GRUMMAN", { industrySlug: "defense_aerospace", confidence: "high", name: "organization_exact_northrop" }],
   ["PRATT INDUSTRIES", { industrySlug: "manufacturing", confidence: "high", name: "organization_exact_pratt" }],
+  ["HAWORTH", { industrySlug: "manufacturing", confidence: "high", name: "organization_exact_haworth" }],
   ["ULINE", { industrySlug: "manufacturing", confidence: "high", name: "organization_exact_uline" }],
+  ["MOUNTAIRE", { industrySlug: "agriculture_and_food", confidence: "high", name: "organization_exact_mountaire" }],
+  ["MOUNTAIRE FARMS", { industrySlug: "agriculture_and_food", confidence: "high", name: "organization_exact_mountaire_farms" }],
+  ["AMERICAN AIRLINES", { industrySlug: "transportation", confidence: "high", name: "organization_exact_american_airlines" }],
+  ["SOUTHERN WASTE SYSTEMS", { industrySlug: "waste_management", confidence: "medium", name: "organization_exact_southern_waste_systems" }],
+  ["HENDRICKS HOLDING", { industrySlug: "construction", confidence: "medium", name: "organization_exact_hendricks_holding" }],
   ["AFL CIO", { industrySlug: "labor_unions", confidence: "high", name: "organization_exact_afl_cio" }],
   ["SEIU", { industrySlug: "labor_unions", confidence: "high", name: "organization_exact_seiu" }],
   ["TEAMSTERS", { industrySlug: "labor_unions", confidence: "high", name: "organization_exact_teamsters" }],
@@ -139,6 +182,7 @@ const ORGANIZATION_PATTERN_RULES: readonly PatternRule[] = [
   { pattern: /\b(FARM|RANCH|AGRICULTURE|FOODS?|DAIRY|MEAT|GRAIN)\b/, industrySlug: "agriculture_and_food", confidence: "medium", name: "organization_pattern_agriculture" },
   { pattern: /\b(MANUFACTURING|INDUSTRIES|FACTORY|STEEL|MOTORS)\b/, industrySlug: "manufacturing", confidence: "medium", name: "organization_pattern_manufacturing" },
   { pattern: /\b(INSURANCE|ASSURANCE)\b/, industrySlug: "insurance", confidence: "medium", name: "organization_pattern_insurance" },
+  { pattern: /\b(WASTE MANAGEMENT|WASTE SYSTEMS|WASTE SERVICES|RECYCLING|LANDFILL|DISPOSAL)\b/, industrySlug: "waste_management", confidence: "medium", name: "organization_pattern_waste_management" },
   { pattern: /\b(ENVIRONMENTAL|CONSERVATION|CLIMATE|SIERRA CLUB)\b/, industrySlug: "environmental_group", confidence: "medium", name: "organization_pattern_environmental_group" },
 ];
 
@@ -220,6 +264,14 @@ function classifyOrganization(
   labelType: FinanceLabelType,
   normalizedLabel: string
 ): FinanceLabelClassification | null {
+  if (KNOWN_NON_INDUSTRY_ORGANIZATION_LABELS.has(normalizedLabel)) {
+    return fromRule(rawLabel, labelType, normalizedLabel, {
+      industrySlug: null,
+      confidence: "high",
+      name: "organization_known_non_industry",
+    });
+  }
+
   const exact = EXACT_ORGANIZATION_RULES.get(normalizedLabel);
   if (exact) {
     return fromRule(rawLabel, labelType, normalizedLabel, exact);
