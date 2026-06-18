@@ -7,15 +7,18 @@ export type FinanceIndustryClassificationPromptLabel = {
   rawLabel: string;
   labelType: Extract<FinanceLabelType, "employer" | "donor">;
   normalizedLabel: string;
+  amount: number;
 };
 
 export function buildFinanceIndustryClassificationPrompt(input: {
   labels: readonly FinanceIndustryClassificationPromptLabel[];
 }): string {
   const labelsJson = JSON.stringify(
-    input.labels.map((label, index) => ({
-      id: String(index + 1),
-      label: label.rawLabel,
+    input.labels.map((label) => ({
+      raw_label: label.rawLabel,
+      label_type: label.labelType,
+      normalized_label: label.normalizedLabel,
+      amount: label.amount,
     })),
     null,
     2
@@ -29,7 +32,7 @@ export function buildFinanceIndustryClassificationPrompt(input: {
     "- If the label is a political committee, campaign committee, PAC, candidate committee, party committee, or ideological group, return unknown.",
     "- If the employer/organization is ambiguous, generic, self-employed, retired, unavailable, or not enough information, return unknown.",
     "- Do not invent industries. Prefer unknown over guessing.",
-    "- Return exactly one classification for each input id.",
+    "- Return exactly one classification for each (label_type, normalized_label) input pair.",
     "",
     `Allowed industry_slug values: ${FINANCE_INDUSTRY_SLUGS.join(", ")}, unknown`,
     "",
@@ -41,7 +44,8 @@ export function buildFinanceIndustryClassificationPrompt(input: {
       {
         classifications: [
           {
-            id: "1",
+            label_type: "employer",
+            normalized_label: "NORMALIZED LABEL FROM INPUT",
             industry_slug: "technology",
             confidence: "high",
           },

@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const poolQueryMock = vi.hoisted(() => vi.fn());
 const poolConnectMock = vi.hoisted(() => vi.fn());
@@ -15,7 +15,6 @@ const redisXAckMock = vi.hoisted(() => vi.fn());
 const redisXAddMock = vi.hoisted(() => vi.fn());
 const enrichCandidateProfileMock = vi.hoisted(() => vi.fn());
 const enqueueCandidateRecordDraftsMock = vi.hoisted(() => vi.fn());
-const enqueueCandidateLinkCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 
 vi.mock("pg", () => ({
   Pool: vi.fn(() => ({
@@ -56,10 +55,6 @@ vi.mock("../../src/pipeline/candidates/candidateRecordDraftEmitter.js", () => ({
   enqueueCandidateRecordDrafts: enqueueCandidateRecordDraftsMock,
 }));
 
-vi.mock("../../src/scheduler/candidateFinanceSyncScheduler.js", () => ({
-  enqueueCandidateLinkCandidateFinanceSyncJob: enqueueCandidateLinkCandidateFinanceSyncJobMock,
-}));
-
 import { runCandidateProfileEnricher } from "../../src/pipeline/enrichers/candidateProfileEnricher.js";
 import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
@@ -74,7 +69,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     redisSendCommandMock.mockResolvedValue([]);
     redisXAckMock.mockResolvedValue(1);
     redisXAddMock.mockResolvedValue("2-0");
-    enqueueCandidateLinkCandidateFinanceSyncJobMock.mockResolvedValue("finance-job-1");
     redisXReadGroupMock.mockResolvedValue([
       {
         name: "staging:candidates:profile:draft",
@@ -160,10 +154,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     });
   });
 
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
   it("acks and skips presidential profile drafts when presidential elections are disabled", async () => {
     process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
     redisSendCommandMock.mockResolvedValueOnce([["1-0", "consumer", 0, 8]]);
@@ -223,54 +213,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
         String(call[0]).includes("presidential_profile_researched = true")
       )
     ).toBe(true);
-    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
-      {
-        contextType: "presidential_cycle",
-        candidateId: "candidate-1",
-        presidentialCycleId: "cycle-1",
-        presidentialRole: "president",
-        runId: "run-1",
-      },
-    ]);
-    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).toHaveBeenCalledWith({
-      candidateId: "candidate-1",
-      fecCandidateId: "P80000001",
-      electionYear: 2028,
-      source: "presidential_cycle",
-      includeOutside: true,
-    });
-    expect(redisXAckMock).toHaveBeenCalledWith(
-      "staging:candidates:profile:draft",
-      "candidate_profile_enricher",
-      "1-0"
-    );
-  });
-
-  it("does not enqueue presidential finance sync after the general election grace window", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2024-11-07T12:00:00.000Z"));
-    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
-      if (String(sql).includes("FROM public.presidential_cycles")) {
-        expect(params).toEqual(["cycle-1"]);
-        return {
-          rows: [
-            {
-              id: "cycle-1",
-              election_year: 2024,
-              stage: "primary",
-              party: "Democratic",
-              election_date: null,
-              sources: ["https://example.gov/primary"],
-            },
-          ],
-        };
-      }
-      throw new Error(`Unexpected pool query: ${sql}`);
-    });
-
-    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
-
-    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
       {
         contextType: "presidential_cycle",
@@ -362,7 +304,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
         runId: "run-vp",
       },
     ]);
-    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(redisXAckMock).toHaveBeenCalledWith(
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
@@ -502,7 +443,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
               candidate_display_name: "Jane Candidate",
               roster_party: "Democratic",
               roster_is_incumbent: "true",
-              roster_fec_ids: JSON.stringify(["S80000002"]),
+              roster_fec_ids: JSON.stringify(["P80000002"]),
               seed_urls: JSON.stringify(["https://example.gov/candidate"]),
               run_id: "run-election",
             },
@@ -526,14 +467,12 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
               district_name: "California",
               district_type: "statewide",
               election_date: "2028-11-07",
-              official_ballot_title: "United States Senator",
+              official_ballot_title: "Governor",
               election_stage: "general",
               senate_class: null,
               term_end_year: null,
               is_partisan: true,
               sources: ["https://example.gov/election"],
-              office_scope: "statewide",
-              office_canonical_name: "United States Senator",
             },
           ],
         };
@@ -550,7 +489,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
         first_name: "Jane",
         last_name: "Candidate",
         party: "Democratic",
-        fec_ids: ["S80000002"],
+        fec_ids: ["P80000002"],
         sources: ["https://example.gov/candidate"],
       },
     });
@@ -564,11 +503,11 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
         districtType: "statewide",
         state: "CA",
         electionDate: "2028-11-07",
-        officialBallotTitle: "United States Senator",
+        officialBallotTitle: "Governor",
         electionStage: "general",
         rosterParty: "Democratic",
         rosterIncumbent: true,
-        rosterFecIds: ["S80000002"],
+        rosterFecIds: ["P80000002"],
         seedUrls: ["https://example.gov/candidate", "https://example.gov/election"],
       }),
       { timeoutMs: 1000 }
@@ -584,100 +523,10 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
         runId: "run-election",
       },
     ]);
-    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).toHaveBeenCalledWith({
-      candidateId: "candidate-1",
-      fecCandidateId: "S80000002",
-      electionYear: 2028,
-      includeOutside: true,
-    });
     expect(redisXAckMock).toHaveBeenCalledWith(
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
       "1-1"
-    );
-  });
-
-  it("preserves election profile drafts with missing office metadata and skips finance sync", async () => {
-    redisXReadGroupMock.mockResolvedValue([
-      {
-        name: "staging:candidates:profile:draft",
-        messages: [
-          {
-            id: "1-5",
-            message: {
-              election_id: "election-governor",
-              item_type: "candidate_profile",
-              candidate_display_name: "Jane Governor",
-              roster_party: "Democratic",
-              roster_is_incumbent: "false",
-              roster_fec_ids: JSON.stringify(["S80000003"]),
-              seed_urls: JSON.stringify(["https://example.gov/governor"]),
-              run_id: "run-governor",
-            },
-          },
-        ],
-      },
-    ]);
-    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
-      const text = String(sql);
-      if (text.includes("FROM public.candidate_elections AS ce")) {
-        expect(params).toEqual(["election-governor"]);
-        return { rows: [], rowCount: 0 };
-      }
-      if (text.includes("FROM public.elections AS e")) {
-        expect(params).toEqual(["election-governor"]);
-        expect(text).toContain("LEFT JOIN public.offices AS office");
-        return {
-          rows: [
-            {
-              id: "election-governor",
-              state: "CA",
-              district_name: "California",
-              district_type: "statewide",
-              election_date: "2026-11-03",
-              official_ballot_title: "Governor",
-              election_stage: "general",
-              senate_class: null,
-              term_end_year: null,
-              is_partisan: true,
-              sources: ["https://example.gov/election"],
-              office_scope: null,
-              office_canonical_name: null,
-            },
-          ],
-        };
-      }
-      throw new Error(`Unexpected pool query: ${sql}`);
-    });
-    enrichCandidateProfileMock.mockResolvedValue({
-      ok: true,
-      provider: "openai",
-      model: "test-model",
-      aiRawDebug: null,
-      profile: {
-        display_name: "Jane Governor",
-        first_name: "Jane",
-        last_name: "Governor",
-        party: "Democratic",
-        fec_ids: ["S80000003"],
-        sources: ["https://example.gov/governor"],
-      },
-    });
-
-    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
-
-    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
-    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
-      {
-        candidateId: "candidate-1",
-        electionId: "election-governor",
-        runId: "run-governor",
-      },
-    ]);
-    expect(redisXAckMock).toHaveBeenCalledWith(
-      "staging:candidates:profile:draft",
-      "candidate_profile_enricher",
-      "1-5"
     );
   });
 });

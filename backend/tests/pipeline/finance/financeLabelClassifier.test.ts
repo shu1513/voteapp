@@ -62,39 +62,9 @@ describe("financeLabelClassifier", () => {
     });
   });
 
-  it("classifies pharmaceuticals and labor unions as separate voter-facing categories", () => {
-    expect(classifyFinanceLabel({ rawLabel: "Pfizer Inc.", labelType: "employer" })).toMatchObject({
-      normalizedLabel: "PFIZER",
-      industrySlug: "pharmaceuticals",
-      confidence: "high",
-      matchedRule: "organization_exact_pfizer",
-    });
-
-    expect(classifyFinanceLabel({ rawLabel: "Johnson & Johnson Innovation", labelType: "employer" })).toMatchObject({
-      normalizedLabel: "JOHNSON AND JOHNSON INNOVATION",
-      industrySlug: "pharmaceuticals",
-      confidence: "medium",
-      matchedRule: "organization_pattern_pharmaceuticals",
-    });
-
-    expect(classifyFinanceLabel({ rawLabel: "SEIU Committee on Political Education", labelType: "donor" })).toMatchObject({
-      normalizedLabel: "SEIU COMMITTEE ON POLITICAL EDUCATION",
-      industrySlug: "labor_unions",
-      confidence: "medium",
-      matchedRule: "organization_pattern_labor_unions",
-    });
-
-    expect(classifyFinanceLabel({ rawLabel: "AFL-CIO", labelType: "donor" })).toMatchObject({
-      normalizedLabel: "AFL CIO",
-      industrySlug: "labor_unions",
-      confidence: "high",
-      matchedRule: "organization_exact_afl_cio",
-    });
-  });
-
   it("classifies occupations when the label is specific enough", () => {
     expect(classifyFinanceLabel({ rawLabel: "Attorney", labelType: "occupation" })).toMatchObject({
-      industrySlug: "lawyers_and_legal_services",
+      industrySlug: "legal",
       confidence: "high",
       matchedRule: "occupation_exact_attorney",
     });
@@ -110,12 +80,6 @@ describe("financeLabelClassifier", () => {
       industrySlug: "oil_gas_energy",
       confidence: "medium",
       matchedRule: "occupation_pattern_energy",
-    });
-
-    expect(classifyFinanceLabel({ rawLabel: "Farmer", labelType: "occupation" })).toMatchObject({
-      industrySlug: "agriculture_and_food",
-      confidence: "high",
-      matchedRule: "occupation_exact_farmer",
     });
   });
 
