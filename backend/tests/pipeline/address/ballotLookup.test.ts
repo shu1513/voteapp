@@ -1356,7 +1356,7 @@ describe("lookupElectionDetailById", () => {
             contributor_count: 8,
             source_url: "https://www.fec.gov/data/independent-expenditures/",
             explanation:
-              "technology is a top outside-spending support industry because Google LLC contributed to Support Candidate PAC, which reported independent spending supporting this candidate.",
+              "Technology is a top outside-spending support industry because Google LLC contributed to Support Candidate PAC, which reported independent spending supporting this candidate.",
             supporting_organizations: [
               {
                 organization_name: "Google LLC",
