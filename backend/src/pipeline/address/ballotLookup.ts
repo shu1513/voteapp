@@ -94,6 +94,7 @@ export type BallotLookupFinanceBreakdown = {
   category_name: string;
   amount: number;
   contributor_count: number | null;
+  source_url: string | null;
 };
 
 export type BallotLookupFinanceOutsideGroup = {
@@ -101,6 +102,27 @@ export type BallotLookupFinanceOutsideGroup = {
   committee_name: string;
   support_oppose: "support" | "oppose";
   amount: number;
+  source_url: string | null;
+};
+
+export type BallotLookupFinanceOutsideIndustrySupportEvidence = {
+  organization_name: string;
+  organization_type: "employer" | "donor";
+  amount: number;
+  contributor_count: number | null;
+  committee_id: string;
+  committee_name: string;
+  source_url: string | null;
+};
+
+export type BallotLookupFinanceOutsideIndustrySupportSummary = BallotLookupFinanceBreakdown & {
+  explanation: string;
+  supporting_organizations: BallotLookupFinanceOutsideIndustrySupportEvidence[];
+};
+
+export type BallotLookupFinanceBackingSummary = {
+  top_direct_donor_occupations: BallotLookupFinanceBreakdown[];
+  top_outside_supporting_industries: BallotLookupFinanceOutsideIndustrySupportSummary[];
 };
 
 export type BallotLookupFinanceSummary = {
@@ -125,6 +147,7 @@ export type BallotLookupFinanceSummary = {
     top_supporting_industries: BallotLookupFinanceBreakdown[];
     top_opposing_industries: BallotLookupFinanceBreakdown[];
   };
+  backing_summary: BallotLookupFinanceBackingSummary;
 };
 
 export type BallotLookupCandidate = {
@@ -382,6 +405,7 @@ type CandidateFinanceSummaryRow = {
   debts_owed: string | number | null;
   outside_support_total: string | number | null;
   outside_oppose_total: string | number | null;
+  source_url: string | null;
   last_synced_at: string;
 };
 
@@ -392,6 +416,7 @@ type CandidateFinanceDirectBreakdownRow = {
   category_name: string;
   amount: string | number;
   contributor_count: number | null;
+  source_url: string | null;
 };
 
 type CandidateFinanceOutsideGroupRow = {
@@ -401,6 +426,7 @@ type CandidateFinanceOutsideGroupRow = {
   committee_name: string;
   support_oppose: "support" | "oppose";
   amount: string | number;
+  source_url: string | null;
 };
 
 type CandidateFinanceOutsideIndustryRow = {
@@ -410,6 +436,20 @@ type CandidateFinanceOutsideIndustryRow = {
   category_name: string;
   amount: string | number;
   contributor_count: string | number | null;
+  source_url: string | null;
+};
+
+type CandidateFinanceOutsideIndustryEvidenceRow = {
+  candidate_id: string;
+  election_id: string;
+  industry_name: string;
+  organization_name: string;
+  organization_type: "employer" | "donor";
+  amount: string | number;
+  contributor_count: string | number | null;
+  committee_id: string;
+  committee_name: string;
+  source_url: string | null;
 };
 
 function normalizeIds(ids: readonly string[]): string[] {
@@ -513,15 +553,33 @@ function normalizeFecCandidateIdForFinance(value: string): string | null {
   return /^[HPS][0-9A-Z]{8}$/.test(normalized) ? normalized : null;
 }
 
-function mapFinanceBreakdown(row: {
-  category_name: string;
-  amount: string | number;
-  contributor_count: string | number | null;
-}): BallotLookupFinanceBreakdown {
+const GENERIC_FEC_DATA_SOURCE_URL = "https://www.fec.gov/data/";
+const GENERIC_FEC_OUTSIDE_SPENDING_SOURCE_URL = "https://www.fec.gov/data/independent-expenditures/";
+
+function firstNonEmptySourceUrl(...urls: Array<string | null | undefined>): string | null {
+  for (const url of urls) {
+    const trimmed = url?.trim();
+    if (trimmed) {
+      return trimmed;
+    }
+  }
+  return null;
+}
+
+function mapFinanceBreakdown(
+  row: {
+    category_name: string;
+    amount: string | number;
+    contributor_count: string | number | null;
+    source_url?: string | null;
+  },
+  fallbackSourceUrl: string | null = null
+): BallotLookupFinanceBreakdown {
   return {
     category_name: row.category_name,
     amount: parseFinanceAmount(row.amount) ?? 0,
     contributor_count: parseFinanceCount(row.contributor_count),
+    source_url: firstNonEmptySourceUrl(row.source_url, fallbackSourceUrl),
   };
 }
 
@@ -565,6 +623,72 @@ function addFinanceBreakdown(
   const list = map.get(key) ?? [];
   list.push(row);
   map.set(key, list);
+}
+
+function formatShortList(values: readonly string[]): string {
+  const unique = [...new Set(values.map((value) => value.trim()).filter((value) => value.length > 0))];
+  if (unique.length === 0) {
+    return "reported organizations";
+  }
+  if (unique.length === 1) {
+    return unique[0]!;
+  }
+  if (unique.length === 2) {
+    return `${unique[0]} and ${unique[1]}`;
+  }
+  return `${unique.slice(0, -1).join(", ")}, and ${unique[unique.length - 1]}`;
+}
+
+const FINANCE_INDUSTRY_DISPLAY_NAMES: Record<string, string> = {
+  agriculture_and_food: "Agriculture and food",
+  construction: "Construction",
+  defense_aerospace: "Defense and aerospace",
+  education: "Education",
+  environmental_group: "Environmental groups",
+  finance_investment: "Finance and investment",
+  healthcare: "Healthcare",
+  hospitality: "Hospitality",
+  insurance: "Insurance",
+  labor_unions: "Labor unions",
+  lawyers_and_legal_services: "Lawyers and legal services",
+  manufacturing: "Manufacturing",
+  oil_gas_energy: "Oil, gas, and energy",
+  pharmaceuticals: "Pharmaceuticals",
+  real_estate: "Real estate",
+  technology: "Technology",
+  transportation: "Transportation",
+  waste_management: "Waste management",
+};
+
+function financeIndustryDisplayName(industryName: string): string {
+  const trimmed = industryName.trim();
+  if (!trimmed) {
+    return "This industry";
+  }
+  return (
+    FINANCE_INDUSTRY_DISPLAY_NAMES[trimmed] ??
+    trimmed
+      .split("_")
+      .filter((part) => part.length > 0)
+      .map((part, index) => (index === 0 ? part.charAt(0).toUpperCase() + part.slice(1).toLowerCase() : part.toLowerCase()))
+      .join(" ")
+  );
+}
+
+function buildOutsideIndustrySupportExplanation(
+  industryName: string,
+  evidence: readonly BallotLookupFinanceOutsideIndustrySupportEvidence[]
+): string {
+  const displayName = financeIndustryDisplayName(industryName);
+  if (evidence.length === 0) {
+    return `${displayName} is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported independent spending supporting this candidate.`;
+  }
+
+  return `${displayName} is a top outside-spending support industry because ${formatShortList(
+    evidence.map((item) => item.organization_name)
+  )} contributed to ${formatShortList(
+    evidence.map((item) => item.committee_name)
+  )}, which reported independent spending supporting this candidate.`;
 }
 
 function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): BallotLookupDistrict {
@@ -789,6 +913,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
         summary.debts_owed,
         summary.outside_support_total,
         summary.outside_oppose_total,
+        summary.source_url,
         summary.last_synced_at::text AS last_synced_at
       FROM requested
       JOIN public.candidate_finance_summaries AS summary
@@ -833,6 +958,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
           breakdown.category_name,
           breakdown.amount,
           breakdown.contributor_count,
+          breakdown.source_url,
           row_number() OVER (
             PARTITION BY selected.candidate_id, selected.election_id, breakdown.category_type
             ORDER BY breakdown.amount DESC, breakdown.category_name ASC
@@ -843,7 +969,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
          AND breakdown.election_year = selected.election_year
         WHERE breakdown.category_type IN ('occupation', 'employer', 'industry')
       )
-      SELECT candidate_id, election_id, category_type, category_name, amount, contributor_count
+      SELECT candidate_id, election_id, category_type, category_name, amount, contributor_count, source_url
       FROM ranked
       WHERE rn <= 5
       ORDER BY candidate_id, election_id, category_type, amount DESC, category_name ASC
@@ -874,6 +1000,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
           outside_group.committee_name,
           outside_group.support_oppose,
           outside_group.amount,
+          outside_group.source_url,
           row_number() OVER (
             PARTITION BY selected.candidate_id, selected.election_id, outside_group.support_oppose
             ORDER BY outside_group.amount DESC, outside_group.committee_name ASC
@@ -883,7 +1010,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
           ON outside_group.fec_candidate_id = selected.fec_candidate_id
          AND outside_group.election_year = selected.election_year
       )
-      SELECT candidate_id, election_id, committee_id, committee_name, support_oppose, amount
+      SELECT candidate_id, election_id, committee_id, committee_name, support_oppose, amount, source_url
       FROM ranked
       WHERE rn <= 5
       ORDER BY candidate_id, election_id, support_oppose, amount DESC, committee_name ASC
@@ -916,7 +1043,8 @@ async function loadCandidateFinanceSummariesByCandidateElection(
           CASE
             WHEN count(breakdown.contributor_count) = 0 THEN NULL
             ELSE sum(breakdown.contributor_count)
-          END AS contributor_count
+          END AS contributor_count,
+          min(breakdown.source_url) FILTER (WHERE breakdown.source_url IS NOT NULL) AS source_url
         FROM selected
         JOIN public.candidate_finance_outside_group_breakdowns AS breakdown
           ON breakdown.fec_candidate_id = selected.fec_candidate_id
@@ -933,7 +1061,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
           ) AS rn
         FROM grouped
       )
-      SELECT candidate_id, election_id, support_oppose, category_name, amount, contributor_count
+      SELECT candidate_id, election_id, support_oppose, category_name, amount, contributor_count, source_url
       FROM ranked
       WHERE rn <= 5
       ORDER BY candidate_id, election_id, support_oppose, amount DESC, category_name ASC
@@ -941,11 +1069,132 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     [JSON.stringify(selectedRequests)]
   );
 
+  const outsideIndustryEvidenceResult = await db.query<CandidateFinanceOutsideIndustryEvidenceRow>(
+    `
+      WITH selected AS (
+        SELECT
+          candidate_id::uuid AS candidate_id,
+          election_id::uuid AS election_id,
+          fec_candidate_id,
+          election_year
+        FROM jsonb_to_recordset($1::jsonb) AS x(
+          candidate_id text,
+          election_id text,
+          fec_candidate_id text,
+          election_year int
+        )
+      ),
+      top_industries AS (
+        SELECT *
+        FROM (
+          SELECT
+            selected.candidate_id::text AS candidate_id,
+            selected.election_id::text AS election_id,
+            industry.category_name AS industry_name,
+            row_number() OVER (
+              PARTITION BY selected.candidate_id, selected.election_id
+              ORDER BY sum(industry.amount) DESC, industry.category_name ASC
+            ) AS rn
+          FROM selected
+          JOIN public.candidate_finance_outside_group_breakdowns AS industry
+            ON industry.fec_candidate_id = selected.fec_candidate_id
+           AND industry.election_year = selected.election_year
+          WHERE industry.support_oppose = 'support'
+            AND industry.category_type = 'industry'
+          GROUP BY selected.candidate_id, selected.election_id, industry.category_name
+        ) ranked_industries
+        WHERE rn <= 5
+      ),
+      evidence AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          top_industries.industry_name,
+          breakdown.category_name AS organization_name,
+          breakdown.category_type AS organization_type,
+          breakdown.amount,
+          breakdown.contributor_count,
+          breakdown.committee_id,
+          COALESCE(outside_group.committee_name, breakdown.committee_id) AS committee_name,
+          COALESCE(breakdown.source_url, outside_group.source_url) AS source_url,
+          row_number() OVER (
+            PARTITION BY selected.candidate_id, selected.election_id, top_industries.industry_name
+            ORDER BY breakdown.amount DESC, breakdown.category_name ASC, breakdown.committee_id ASC
+          ) AS rn
+        FROM selected
+        JOIN top_industries
+          ON top_industries.candidate_id = selected.candidate_id::text
+         AND top_industries.election_id = selected.election_id::text
+        JOIN public.candidate_finance_outside_group_breakdowns AS breakdown
+          ON breakdown.fec_candidate_id = selected.fec_candidate_id
+         AND breakdown.election_year = selected.election_year
+         AND breakdown.support_oppose = 'support'
+         AND breakdown.category_type IN ('employer', 'donor')
+        CROSS JOIN LATERAL (
+          SELECT
+            btrim(
+              regexp_replace(
+                regexp_replace(
+                  btrim(
+                    regexp_replace(
+                      regexp_replace(
+                        regexp_replace(upper(replace(breakdown.category_name, '&', ' AND ')), '[^A-Z0-9]+', ' ', 'g'),
+                        '\\m(INC|INCORPORATED|LLC|L L C|LP|L P|LLP|L L P|LTD|LIMITED|CO|COMPANY|CORP|CORPORATION|PLC)\\M',
+                        ' ',
+                        'g'
+                      ),
+                      '\\s+',
+                      ' ',
+                      'g'
+                    )
+                  ),
+                  '\\s+',
+                  ' ',
+                  'g'
+                ),
+                '^\\s+|\\s+$',
+                '',
+                'g'
+              )
+            ) AS normalized_label
+        ) AS normalized_breakdown
+        JOIN public.finance_label_classifications AS classification
+          ON classification.label_type = breakdown.category_type
+         AND classification.normalized_label = normalized_breakdown.normalized_label
+         AND classification.industry_slug = top_industries.industry_name
+        LEFT JOIN public.candidate_finance_outside_groups AS outside_group
+          ON outside_group.fec_candidate_id = breakdown.fec_candidate_id
+         AND outside_group.election_year = breakdown.election_year
+         AND outside_group.committee_id = breakdown.committee_id
+         AND outside_group.support_oppose = breakdown.support_oppose
+      )
+      SELECT
+        candidate_id,
+        election_id,
+        industry_name,
+        organization_name,
+        organization_type,
+        amount,
+        contributor_count,
+        committee_id,
+        committee_name,
+        source_url
+      FROM evidence
+      WHERE rn <= 3
+      ORDER BY candidate_id, election_id, industry_name, amount DESC, organization_name ASC
+    `,
+    [JSON.stringify(selectedRequests)]
+  );
+
   const directOccupationsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const directEmployersByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const directIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  const summaryByCandidateElection = new Map(
+    summaryResult.rows.map((row) => [candidateElectionKey(row.candidate_id, row.election_id), row])
+  );
   for (const row of directBreakdownResult.rows) {
-    const mapped = mapFinanceBreakdown(row);
+    const summary = summaryByCandidateElection.get(candidateElectionKey(row.candidate_id, row.election_id));
+    const mapped = mapFinanceBreakdown(row, summary?.source_url ?? GENERIC_FEC_DATA_SOURCE_URL);
     if (row.category_type === "occupation") {
       addFinanceBreakdown(directOccupationsByCandidateElection, row.candidate_id, row.election_id, mapped);
     } else if (row.category_type === "employer") {
@@ -966,6 +1215,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
       committee_name: row.committee_name,
       support_oppose: row.support_oppose,
       amount: parseFinanceAmount(row.amount) ?? 0,
+      source_url: firstNonEmptySourceUrl(row.source_url, GENERIC_FEC_OUTSIDE_SPENDING_SOURCE_URL),
     });
     map.set(key, list);
   }
@@ -975,12 +1225,48 @@ async function loadCandidateFinanceSummariesByCandidateElection(
   for (const row of outsideIndustryResult.rows) {
     const map =
       row.support_oppose === "support" ? supportingIndustriesByCandidateElection : opposingIndustriesByCandidateElection;
-    addFinanceBreakdown(map, row.candidate_id, row.election_id, mapFinanceBreakdown(row));
+    addFinanceBreakdown(
+      map,
+      row.candidate_id,
+      row.election_id,
+      mapFinanceBreakdown(row, GENERIC_FEC_OUTSIDE_SPENDING_SOURCE_URL)
+    );
+  }
+
+  const outsideIndustryEvidenceByCandidateElectionAndIndustry = new Map<
+    string,
+    BallotLookupFinanceOutsideIndustrySupportEvidence[]
+  >();
+  for (const row of outsideIndustryEvidenceResult.rows) {
+    const key = `${candidateElectionKey(row.candidate_id, row.election_id)}\u0000${row.industry_name}`;
+    const list = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(key) ?? [];
+    list.push({
+      organization_name: row.organization_name,
+      organization_type: row.organization_type,
+      amount: parseFinanceAmount(row.amount) ?? 0,
+      contributor_count: parseFinanceCount(row.contributor_count),
+      committee_id: row.committee_id,
+      committee_name: row.committee_name,
+      source_url: firstNonEmptySourceUrl(row.source_url, GENERIC_FEC_OUTSIDE_SPENDING_SOURCE_URL),
+    });
+    outsideIndustryEvidenceByCandidateElectionAndIndustry.set(key, list);
   }
 
   return new Map(
     summaryResult.rows.map((row) => {
       const key = candidateElectionKey(row.candidate_id, row.election_id);
+      const topDirectDonorOccupations = directOccupationsByCandidateElection.get(key) ?? [];
+      const topOutsideSupportingIndustries = (supportingIndustriesByCandidateElection.get(key) ?? []).map(
+        (industry): BallotLookupFinanceOutsideIndustrySupportSummary => {
+          const evidenceKey = `${key}\u0000${industry.category_name}`;
+          const supportingOrganizations = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(evidenceKey) ?? [];
+          return {
+            ...industry,
+            explanation: buildOutsideIndustrySupportExplanation(industry.category_name, supportingOrganizations),
+            supporting_organizations: supportingOrganizations,
+          };
+        }
+      );
       return [
         key,
         {
@@ -993,7 +1279,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
             total_spent: parseFinanceAmount(row.total_disbursements),
             cash_on_hand: parseFinanceAmount(row.cash_on_hand),
             debts_owed: parseFinanceAmount(row.debts_owed),
-            top_occupations: directOccupationsByCandidateElection.get(key) ?? [],
+            top_occupations: topDirectDonorOccupations,
             top_employers: directEmployersByCandidateElection.get(key) ?? [],
             top_industries: directIndustriesByCandidateElection.get(key) ?? [],
           },
@@ -1004,6 +1290,10 @@ async function loadCandidateFinanceSummariesByCandidateElection(
             top_opposing_groups: opposingGroupsByCandidateElection.get(key) ?? [],
             top_supporting_industries: supportingIndustriesByCandidateElection.get(key) ?? [],
             top_opposing_industries: opposingIndustriesByCandidateElection.get(key) ?? [],
+          },
+          backing_summary: {
+            top_direct_donor_occupations: topDirectDonorOccupations,
+            top_outside_supporting_industries: topOutsideSupportingIndustries,
           },
         } satisfies BallotLookupFinanceSummary,
       ];

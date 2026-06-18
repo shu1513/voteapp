@@ -58,7 +58,7 @@ describe("openFecFinanceClient", () => {
       "https://api.open.fec.gov/v1/schedules/schedule_a/by_employer/"
     );
     expect(employerUrl.searchParams.get("committee_id")).toBe("C00867937");
-    expect(employerUrl.searchParams.get("cycle")).toBe("2024");
+    expect(employerUrl.searchParams.get("two_year_transaction_period")).toBe("2024");
     expect(employerUrl.searchParams.get("per_page")).toBe("25");
     expect(employerUrl.searchParams.get("sort")).toBe("-total");
 
@@ -203,14 +203,32 @@ describe("openFecFinanceClient", () => {
         { committeeId: "C00703975", electionYear: 2024, perPage: 5 },
         { apiKeys: ["k1"], fetchImpl, timeoutMs: 1000 }
       )
-    ).resolves.toEqual([{ type: "employer", label: "Google", amount: 3121141.49, count: 1000 }]);
+    ).resolves.toEqual([
+      {
+        type: "employer",
+        label: "Google",
+        amount: 3121141.49,
+        count: 1000,
+        sourceUrl:
+          "https://www.fec.gov/data/receipts/individual-contributions/?committee_id=C00703975&two_year_transaction_period=2024",
+      },
+    ]);
 
     await expect(
       getCommitteeAggregatesByOccupation(
         { committeeId: "C00703975", electionYear: 2024, perPage: 5 },
         { apiKeys: ["k1"], fetchImpl, timeoutMs: 1000 }
       )
-    ).resolves.toEqual([{ type: "occupation", label: "Attorney", amount: 47061962.12, count: 2000 }]);
+    ).resolves.toEqual([
+      {
+        type: "occupation",
+        label: "Attorney",
+        amount: 47061962.12,
+        count: 2000,
+        sourceUrl:
+          "https://www.fec.gov/data/receipts/individual-contributions/?committee_id=C00703975&two_year_transaction_period=2024",
+      },
+    ]);
   });
 
   it("parses outside spending totals and groups", async () => {
