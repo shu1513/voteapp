@@ -243,7 +243,7 @@ function addAggregateBreakdowns(
       categoryName: aggregate.label,
       amount: aggregate.amount,
       contributorCount: toNullableCount(aggregate.count),
-      sourceUrl: null,
+      sourceUrl: aggregate.sourceUrl,
     });
   }
 }
@@ -262,7 +262,7 @@ function addOutsideAggregateBreakdowns(input: {
       categoryName: aggregate.label,
       amount: aggregate.amount,
       contributorCount: toNullableCount(aggregate.count),
-      sourceUrl: null,
+      sourceUrl: aggregate.sourceUrl,
     });
   }
 }
@@ -618,7 +618,7 @@ function addIndustryBreakdownsFromClassifications(input: {
       categoryName: classification.industrySlug,
       amount: breakdown.amount,
       contributorCount: breakdown.contributorCount,
-      sourceUrl: null,
+      sourceUrl: breakdown.sourceUrl,
     });
   }
 
@@ -639,7 +639,7 @@ function addIndustryBreakdownsFromClassifications(input: {
       categoryName: classification.industrySlug,
       amount: breakdown.amount,
       contributorCount: breakdown.contributorCount,
-      sourceUrl: null,
+      sourceUrl: breakdown.sourceUrl,
     });
   }
 }

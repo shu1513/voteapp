@@ -49,6 +49,7 @@ export type OpenFecFinanceAggregate = {
   label: string;
   amount: number;
   count?: number;
+  sourceUrl: string;
 };
 
 export type OpenFecOutsideSpendingTotals = {
@@ -311,7 +312,11 @@ function parseCommitteeTotalsRow(row: unknown, committeeId: string, electionYear
   };
 }
 
-function parseAggregateRow(row: unknown, type: OpenFecFinanceAggregateType): OpenFecFinanceAggregate | null {
+function parseAggregateRow(
+  row: unknown,
+  type: OpenFecFinanceAggregateType,
+  sourceUrlValue: string
+): OpenFecFinanceAggregate | null {
   if (!isRecord(row)) {
     return null;
   }
@@ -326,6 +331,7 @@ function parseAggregateRow(row: unknown, type: OpenFecFinanceAggregateType): Ope
     label,
     amount,
     ...(count !== undefined ? { count } : {}),
+    sourceUrl: sourceUrlValue,
   };
 }
 
@@ -384,7 +390,7 @@ export function buildOpenFecCommitteeAggregateUrl(input: OpenFecFinanceAggregate
   };
   return apiUrl(endpointByType[input.type], {
     committee_id: normalizeCommitteeId(input.committeeId),
-    cycle: normalizeElectionYear(input.electionYear),
+    two_year_transaction_period: normalizeElectionYear(input.electionYear),
     per_page: normalizePerPage(input.perPage),
     sort: "-total",
   });
@@ -452,9 +458,22 @@ async function getCommitteeAggregates(
   input: OpenFecFinanceAggregateInput & { type: OpenFecFinanceAggregateType },
   options: OpenFecClientOptions
 ): Promise<OpenFecFinanceAggregate[]> {
-  const payload = await fetchOpenFecJsonWithKeyRotation(buildOpenFecCommitteeAggregateUrl(input), options);
+  const normalizedCommitteeId = normalizeCommitteeId(input.committeeId);
+  const normalizedElectionYear = normalizeElectionYear(input.electionYear);
+  const payload = await fetchOpenFecJsonWithKeyRotation(
+    buildOpenFecCommitteeAggregateUrl({
+      ...input,
+      committeeId: normalizedCommitteeId,
+      electionYear: normalizedElectionYear,
+    }),
+    options
+  );
+  const aggregateSourceUrl = sourceUrl("/data/receipts/individual-contributions/", {
+    committee_id: normalizedCommitteeId,
+    two_year_transaction_period: normalizedElectionYear,
+  });
   return extractResults(payload)
-    .map((row) => parseAggregateRow(row, input.type))
+    .map((row) => parseAggregateRow(row, input.type, aggregateSourceUrl))
     .filter((row): row is OpenFecFinanceAggregate => row !== null);
 }
 

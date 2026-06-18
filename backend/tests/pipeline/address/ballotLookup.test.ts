@@ -1168,6 +1168,7 @@ describe("lookupElectionDetailById", () => {
             debts_owed: "10.00",
             outside_support_total: "5000.00",
             outside_oppose_total: "125.50",
+            source_url: "https://www.fec.gov/data/candidate/S4CA00001/?cycle=2024",
             last_synced_at: "2026-01-02 03:04:05+00",
           },
         ],
@@ -1181,6 +1182,7 @@ describe("lookupElectionDetailById", () => {
             category_name: "Attorney",
             amount: "400.00",
             contributor_count: 4,
+            source_url: null,
           },
           {
             candidate_id: candidateId,
@@ -1189,6 +1191,7 @@ describe("lookupElectionDetailById", () => {
             category_name: "Google LLC",
             amount: "350.00",
             contributor_count: 3,
+            source_url: "https://www.fec.gov/data/receipts/individual-contributions/?committee_id=C00000001",
           },
           {
             candidate_id: candidateId,
@@ -1197,6 +1200,7 @@ describe("lookupElectionDetailById", () => {
             category_name: "technology",
             amount: "350.00",
             contributor_count: 3,
+            source_url: "https://www.fec.gov/data/receipts/individual-contributions/?committee_id=C00000001",
           },
         ],
       })
@@ -1209,6 +1213,7 @@ describe("lookupElectionDetailById", () => {
             committee_name: "Support Candidate PAC",
             support_oppose: "support",
             amount: "5000.00",
+            source_url: "https://www.fec.gov/data/independent-expenditures/?committee_id=C00000001",
           },
           {
             candidate_id: candidateId,
@@ -1217,6 +1222,7 @@ describe("lookupElectionDetailById", () => {
             committee_name: "Oppose Candidate PAC",
             support_oppose: "oppose",
             amount: "125.50",
+            source_url: "https://www.fec.gov/data/independent-expenditures/?committee_id=C00000002",
           },
         ],
       })
@@ -1229,6 +1235,7 @@ describe("lookupElectionDetailById", () => {
             category_name: "technology",
             amount: "2500.00",
             contributor_count: "8",
+            source_url: null,
           },
           {
             candidate_id: candidateId,
@@ -1237,6 +1244,23 @@ describe("lookupElectionDetailById", () => {
             category_name: "finance_investment",
             amount: "125.50",
             contributor_count: "1",
+            source_url: "https://www.fec.gov/data/receipts/individual-contributions/?committee_id=C00000002",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "technology",
+            organization_name: "Google LLC",
+            organization_type: "employer",
+            amount: "2000.00",
+            contributor_count: "6",
+            committee_id: "C00000001",
+            committee_name: "Support Candidate PAC",
+            source_url: null,
           },
         ],
       });
@@ -1253,9 +1277,30 @@ describe("lookupElectionDetailById", () => {
         total_spent: 700.25,
         cash_on_hand: 300,
         debts_owed: 10,
-        top_occupations: [{ category_name: "Attorney", amount: 400, contributor_count: 4 }],
-        top_employers: [{ category_name: "Google LLC", amount: 350, contributor_count: 3 }],
-        top_industries: [{ category_name: "technology", amount: 350, contributor_count: 3 }],
+        top_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 400,
+            contributor_count: 4,
+            source_url: "https://www.fec.gov/data/candidate/S4CA00001/?cycle=2024",
+          },
+        ],
+        top_employers: [
+          {
+            category_name: "Google LLC",
+            amount: 350,
+            contributor_count: 3,
+            source_url: "https://www.fec.gov/data/receipts/individual-contributions/?committee_id=C00000001",
+          },
+        ],
+        top_industries: [
+          {
+            category_name: "technology",
+            amount: 350,
+            contributor_count: 3,
+            source_url: "https://www.fec.gov/data/receipts/individual-contributions/?committee_id=C00000001",
+          },
+        ],
       },
       outside_spending: {
         support_total: 5000,
@@ -1266,6 +1311,7 @@ describe("lookupElectionDetailById", () => {
             committee_name: "Support Candidate PAC",
             support_oppose: "support",
             amount: 5000,
+            source_url: "https://www.fec.gov/data/independent-expenditures/?committee_id=C00000001",
           },
         ],
         top_opposing_groups: [
@@ -1274,17 +1320,66 @@ describe("lookupElectionDetailById", () => {
             committee_name: "Oppose Candidate PAC",
             support_oppose: "oppose",
             amount: 125.5,
+            source_url: "https://www.fec.gov/data/independent-expenditures/?committee_id=C00000002",
           },
         ],
-        top_supporting_industries: [{ category_name: "technology", amount: 2500, contributor_count: 8 }],
-        top_opposing_industries: [{ category_name: "finance_investment", amount: 125.5, contributor_count: 1 }],
+        top_supporting_industries: [
+          {
+            category_name: "technology",
+            amount: 2500,
+            contributor_count: 8,
+            source_url: "https://www.fec.gov/data/independent-expenditures/",
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "finance_investment",
+            amount: 125.5,
+            contributor_count: 1,
+            source_url: "https://www.fec.gov/data/receipts/individual-contributions/?committee_id=C00000002",
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 400,
+            contributor_count: 4,
+            source_url: "https://www.fec.gov/data/candidate/S4CA00001/?cycle=2024",
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "technology",
+            amount: 2500,
+            contributor_count: 8,
+            source_url: "https://www.fec.gov/data/independent-expenditures/",
+            explanation:
+              "technology is a top outside-spending support industry because Google LLC contributed to Support Candidate PAC, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "Google LLC",
+                organization_type: "employer",
+                amount: 2000,
+                contributor_count: 6,
+                committee_id: "C00000001",
+                committee_name: "Support Candidate PAC",
+                source_url: "https://www.fec.gov/data/independent-expenditures/",
+              },
+            ],
+          },
+        ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(11);
+    expect(query).toHaveBeenCalledTimes(12);
     expect(query.mock.calls[7]?.[0]).toContain("public.candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.candidate_finance_direct_breakdowns");
     expect(query.mock.calls[9]?.[0]).toContain("public.candidate_finance_outside_groups");
     expect(query.mock.calls[10]?.[0]).toContain("public.candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
+    expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
+    expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
   it("omits finance summaries without querying finance tables when candidate finance is disabled", async () => {
