@@ -10,7 +10,6 @@ describe("financeIndustryClassificationPrompt", () => {
           rawLabel: "Acme Quantum Labs LLC",
           labelType: "employer",
           normalizedLabel: "ACME QUANTUM LABS",
-          amount: 50_000,
         },
       ],
     });
@@ -30,8 +29,11 @@ describe("financeIndustryClassificationPrompt", () => {
     expect(prompt).not.toContain("retail");
     expect(prompt).not.toContain("media_entertainment");
     expect(prompt).not.toContain("crypto");
-    expect(prompt).toContain("Return exactly one classification for each (label_type, normalized_label) input pair.");
-    expect(prompt).toContain('"label_type": "employer"');
-    expect(prompt).toContain('"normalized_label": "ACME QUANTUM LABS"');
+    expect(prompt).toContain("Return exactly one classification for each input id.");
+    expect(prompt).toContain('"id": "1"');
+    expect(prompt).toContain('"label": "Acme Quantum Labs LLC"');
+    expect(prompt).not.toContain('"amount"');
+    expect(prompt).not.toContain('"label_type"');
+    expect(prompt).not.toContain('"normalized_label"');
   });
 });

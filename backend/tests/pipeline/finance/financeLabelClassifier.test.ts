@@ -70,11 +70,25 @@ describe("financeLabelClassifier", () => {
       matchedRule: "organization_exact_pfizer",
     });
 
+    expect(classifyFinanceLabel({ rawLabel: "Johnson & Johnson Innovation", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "JOHNSON AND JOHNSON INNOVATION",
+      industrySlug: "pharmaceuticals",
+      confidence: "medium",
+      matchedRule: "organization_pattern_pharmaceuticals",
+    });
+
     expect(classifyFinanceLabel({ rawLabel: "SEIU Committee on Political Education", labelType: "donor" })).toMatchObject({
       normalizedLabel: "SEIU COMMITTEE ON POLITICAL EDUCATION",
       industrySlug: "labor_unions",
       confidence: "medium",
       matchedRule: "organization_pattern_labor_unions",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "AFL-CIO", labelType: "donor" })).toMatchObject({
+      normalizedLabel: "AFL CIO",
+      industrySlug: "labor_unions",
+      confidence: "high",
+      matchedRule: "organization_exact_afl_cio",
     });
   });
 
