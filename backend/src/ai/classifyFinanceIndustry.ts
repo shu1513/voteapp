@@ -88,7 +88,7 @@ function parseFinanceIndustryPayload(
 
   for (const entry of classifications) {
     if (typeof entry !== "object" || entry === null || Array.isArray(entry)) {
-      continue;
+      throw new Error("Classification entry must be an object");
     }
     const record = entry as Record<string, unknown>;
     const id =
@@ -96,8 +96,11 @@ function parseFinanceIndustryPayload(
         ? String(record.id).trim()
         : "";
     const expected = expectedById.get(id);
-    if (!expected || seen.has(id)) {
-      continue;
+    if (!expected) {
+      throw new Error(`Unexpected classification id: ${id || "(missing)"}`);
+    }
+    if (seen.has(id)) {
+      throw new Error(`Duplicate classification id: ${id}`);
     }
     seen.add(id);
 
@@ -112,6 +115,10 @@ function parseFinanceIndustryPayload(
       classificationSource: industrySlug ? "ai" : "unknown",
       matchedRule: null,
     });
+  }
+
+  if (seen.size !== expectedById.size) {
+    throw new Error("Expected one classification for each input id");
   }
 
   return parsed;

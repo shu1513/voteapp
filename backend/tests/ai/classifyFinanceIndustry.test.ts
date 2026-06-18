@@ -19,7 +19,7 @@ describe("classifyFinanceIndustriesWithAi", () => {
     callResearchProviderMock.mockReset();
   });
 
-  it("matches classifications by label type and normalized label", async () => {
+  it("matches classifications by input id while preserving label context", async () => {
     callResearchProviderMock.mockResolvedValueOnce({
       ok: true,
       parsed: {
@@ -129,6 +129,125 @@ describe("classifyFinanceIndustriesWithAi", () => {
         },
       ],
     });
+    expect(callResearchProviderMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("tries later providers when a provider omits an expected classification id", async () => {
+    callResearchProviderMock
+      .mockResolvedValueOnce({
+        ok: true,
+        parsed: {
+          classifications: [
+            {
+              id: "1",
+              industry_slug: "technology",
+              confidence: "high",
+            },
+          ],
+        },
+        rawText: "{}",
+        debugMeta: {},
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        parsed: {
+          classifications: [
+            {
+              id: "1",
+              industry_slug: "technology",
+              confidence: "high",
+            },
+            {
+              id: "2",
+              industry_slug: "unknown",
+              confidence: "unknown",
+            },
+          ],
+        },
+        rawText: "{}",
+        debugMeta: {},
+      });
+
+    const result = await classifyFinanceIndustriesWithAi({
+      aiCandidates,
+      config: { timeoutMs: 1000 },
+      labels: [
+        {
+          rawLabel: "Acme LLC",
+          labelType: "employer",
+          normalizedLabel: "ACME",
+        },
+        {
+          rawLabel: "Unknown Group",
+          labelType: "donor",
+          normalizedLabel: "UNKNOWN GROUP",
+        },
+      ],
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      provider: "claude",
+      model: "model-b",
+      classifications: [
+        {
+          rawLabel: "Acme LLC",
+          labelType: "employer",
+          normalizedLabel: "ACME",
+          industrySlug: "technology",
+          classificationSource: "ai",
+        },
+        {
+          rawLabel: "Unknown Group",
+          labelType: "donor",
+          normalizedLabel: "UNKNOWN GROUP",
+          industrySlug: null,
+          classificationSource: "unknown",
+        },
+      ],
+    });
+    expect(callResearchProviderMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("returns schema mismatch when every provider returns incomplete classifications", async () => {
+    callResearchProviderMock.mockResolvedValue({
+      ok: true,
+      parsed: {
+        classifications: [
+          {
+            id: "1",
+            industry_slug: "technology",
+            confidence: "high",
+          },
+        ],
+      },
+      rawText: "{}",
+      debugMeta: {},
+    });
+
+    const result = await classifyFinanceIndustriesWithAi({
+      aiCandidates,
+      config: { timeoutMs: 1000 },
+      labels: [
+        {
+          rawLabel: "Acme LLC",
+          labelType: "employer",
+          normalizedLabel: "ACME",
+        },
+        {
+          rawLabel: "Missing LLC",
+          labelType: "employer",
+          normalizedLabel: "MISSING",
+        },
+      ],
+    });
+
+    expect(result).toMatchObject({
+      ok: false,
+      retryable: true,
+      errorCode: "SCHEMA_MISMATCH",
+    });
+    expect(result.ok ? "" : result.reason).toContain("Expected one classification for each input id");
     expect(callResearchProviderMock).toHaveBeenCalledTimes(2);
   });
 });
