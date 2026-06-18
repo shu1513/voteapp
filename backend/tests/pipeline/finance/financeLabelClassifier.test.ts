@@ -28,6 +28,27 @@ describe("financeLabelClassifier", () => {
       classificationSource: "rule",
       matchedRule: "organization_pattern_technology",
     });
+
+    expect(classifyFinanceLabel({ rawLabel: "Asana", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "ASANA",
+      industrySlug: "technology",
+      confidence: "high",
+      matchedRule: "organization_exact_asana",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Oracle Corporation", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "ORACLE",
+      industrySlug: "technology",
+      confidence: "high",
+      matchedRule: "organization_exact_oracle",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Ripple", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "RIPPLE",
+      industrySlug: "technology",
+      confidence: "medium",
+      matchedRule: "organization_exact_ripple",
+    });
   });
 
   it("classifies known energy and finance organizations", () => {
@@ -43,6 +64,48 @@ describe("financeLabelClassifier", () => {
       industrySlug: "finance_investment",
       confidence: "high",
       matchedRule: "organization_exact_cantor",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Alliance Resource Partners LP", labelType: "donor" })).toMatchObject({
+      normalizedLabel: "ALLIANCE RESOURCE PARTNERS",
+      industrySlug: "oil_gas_energy",
+      confidence: "high",
+      matchedRule: "organization_exact_alliance_resource_partners",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Andreessen Horowitz", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "ANDREESSEN HOROWITZ",
+      industrySlug: "finance_investment",
+      confidence: "high",
+      matchedRule: "organization_exact_andreessen_horowitz",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Valor Equity Partners", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "VALOR EQUITY PARTNERS",
+      industrySlug: "finance_investment",
+      confidence: "high",
+      matchedRule: "organization_exact_valor_equity_partners",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Elliott Management Corp", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "ELLIOTT MANAGEMENT",
+      industrySlug: "finance_investment",
+      confidence: "high",
+      matchedRule: "organization_exact_elliott_management",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Bloomberg Inc.", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "BLOOMBERG",
+      industrySlug: "finance_investment",
+      confidence: "medium",
+      matchedRule: "organization_exact_bloomberg",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Walton Enterprises Inc", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "WALTON ENTERPRISES",
+      industrySlug: "finance_investment",
+      confidence: "high",
+      matchedRule: "organization_exact_walton_enterprises",
     });
   });
 
@@ -92,6 +155,52 @@ describe("financeLabelClassifier", () => {
     });
   });
 
+  it("classifies clear transportation, manufacturing, and agriculture organizations", () => {
+    expect(classifyFinanceLabel({ rawLabel: "American Airlines", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "AMERICAN AIRLINES",
+      industrySlug: "transportation",
+      confidence: "high",
+      matchedRule: "organization_exact_american_airlines",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Haworth Inc.", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "HAWORTH",
+      industrySlug: "manufacturing",
+      confidence: "high",
+      matchedRule: "organization_exact_haworth",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Mountaire Farms", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "MOUNTAIRE FARMS",
+      industrySlug: "agriculture_and_food",
+      confidence: "high",
+      matchedRule: "organization_exact_mountaire_farms",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Hendricks Holding Co Inc", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "HENDRICKS HOLDING",
+      industrySlug: "construction",
+      confidence: "medium",
+      matchedRule: "organization_exact_hendricks_holding",
+    });
+  });
+
+  it("classifies waste management organizations separately from environmental advocacy groups", () => {
+    expect(classifyFinanceLabel({ rawLabel: "Southern Waste Systems", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "SOUTHERN WASTE SYSTEMS",
+      industrySlug: "waste_management",
+      confidence: "medium",
+      matchedRule: "organization_exact_southern_waste_systems",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Acme Waste Management", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "ACME WASTE MANAGEMENT",
+      industrySlug: "waste_management",
+      confidence: "medium",
+      matchedRule: "organization_pattern_waste_management",
+    });
+  });
+
   it("classifies occupations when the label is specific enough", () => {
     expect(classifyFinanceLabel({ rawLabel: "Attorney", labelType: "occupation" })).toMatchObject({
       industrySlug: "lawyers_and_legal_services",
@@ -133,6 +242,38 @@ describe("financeLabelClassifier", () => {
       industrySlug: null,
       confidence: "high",
       classificationSource: "rule",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Self-employed", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "SELF EMPLOYED",
+      industrySlug: null,
+      confidence: "high",
+      classificationSource: "rule",
+      matchedRule: "organization_known_non_industry",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Information Requested", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "INFORMATION REQUESTED",
+      industrySlug: null,
+      confidence: "high",
+      classificationSource: "rule",
+      matchedRule: "organization_known_non_industry",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "USPS", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "USPS",
+      industrySlug: null,
+      confidence: "high",
+      classificationSource: "rule",
+      matchedRule: "organization_known_non_industry",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "America First Policy Institute", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "AMERICA FIRST POLICY INSTITUTE",
+      industrySlug: null,
+      confidence: "high",
+      classificationSource: "rule",
+      matchedRule: "organization_known_non_industry",
     });
   });
 

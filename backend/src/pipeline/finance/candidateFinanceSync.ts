@@ -439,6 +439,16 @@ function mergeClassification(
   }
 }
 
+function shouldSendClassificationToAi(classification: FinanceLabelClassification | undefined): boolean {
+  if (!classification) {
+    return true;
+  }
+  if (classification.industrySlug) {
+    return false;
+  }
+  return classification.classificationSource === "unknown";
+}
+
 function collectAiClassificationCandidates(input: {
   directBreakdowns: Iterable<DirectBreakdown>;
   outsideBreakdowns: Iterable<OutsideGroupBreakdown>;
@@ -457,7 +467,7 @@ function collectAiClassificationCandidates(input: {
     }
     const key = classificationKey("employer", normalizedLabel);
     const classification = input.classifications.get(key);
-    if (classification?.industrySlug) {
+    if (!shouldSendClassificationToAi(classification)) {
       return;
     }
     const existing = candidates.get(key);
