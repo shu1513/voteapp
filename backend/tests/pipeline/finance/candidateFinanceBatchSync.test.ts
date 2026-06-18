@@ -62,11 +62,35 @@ describe("candidateFinanceBatchSync", () => {
     expect(String(db.query.mock.calls[0]?.[0])).toContain("office.canonical_name = 'United States Senator'");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("office.canonical_name = 'United States Representative'");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.presidential_cycle_candidates");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("general_cycle.election_date");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain(">= ($1::date - make_interval(days => $4::int))");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       "2026-06-01T00:00:00.000Z",
       7,
       25,
       30,
+      730,
+    ]);
+  });
+
+  it("uses a one-day post-election grace window by default for due selection", async () => {
+    const db = createMockDb();
+
+    await syncDueCandidateFinance({
+      db,
+      openFecOptions: { apiKeys: ["k1"], timeoutMs: 1000 },
+      syncCandidateFinanceFn: vi.fn(),
+      now: new Date("2026-06-01T00:00:00.000Z"),
+    });
+
+    expect(String(db.query.mock.calls[0]?.[0])).toContain(
+      "e.election_date >= ($1::date - make_interval(days => $4::int))"
+    );
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      "2026-06-01T00:00:00.000Z",
+      7,
+      25,
+      1,
       730,
     ]);
   });
@@ -117,6 +141,7 @@ describe("candidateFinanceBatchSync", () => {
       includeOutside: true,
       maxCandidates: 2,
       staleAfterDays: 3,
+      electionLookbackDays: 30,
       perPage: 10,
       outsideGroupLimit: 5,
     });
@@ -148,6 +173,13 @@ describe("candidateFinanceBatchSync", () => {
         outsideGroupLimit: 5,
       })
     );
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      "2026-06-01T00:00:00.000Z",
+      3,
+      2,
+      30,
+      730,
+    ]);
   });
 
   it("rejects invalid batch options before querying", async () => {

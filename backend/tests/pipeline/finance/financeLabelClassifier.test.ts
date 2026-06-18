@@ -62,9 +62,25 @@ describe("financeLabelClassifier", () => {
     });
   });
 
+  it("classifies pharmaceuticals and labor unions as separate voter-facing categories", () => {
+    expect(classifyFinanceLabel({ rawLabel: "Pfizer Inc.", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "PFIZER",
+      industrySlug: "pharmaceuticals",
+      confidence: "high",
+      matchedRule: "organization_exact_pfizer",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "SEIU Committee on Political Education", labelType: "donor" })).toMatchObject({
+      normalizedLabel: "SEIU COMMITTEE ON POLITICAL EDUCATION",
+      industrySlug: "labor_unions",
+      confidence: "medium",
+      matchedRule: "organization_pattern_labor_unions",
+    });
+  });
+
   it("classifies occupations when the label is specific enough", () => {
     expect(classifyFinanceLabel({ rawLabel: "Attorney", labelType: "occupation" })).toMatchObject({
-      industrySlug: "legal",
+      industrySlug: "lawyers_and_legal_services",
       confidence: "high",
       matchedRule: "occupation_exact_attorney",
     });
@@ -80,6 +96,12 @@ describe("financeLabelClassifier", () => {
       industrySlug: "oil_gas_energy",
       confidence: "medium",
       matchedRule: "occupation_pattern_energy",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Farmer", labelType: "occupation" })).toMatchObject({
+      industrySlug: "agriculture_and_food",
+      confidence: "high",
+      matchedRule: "occupation_exact_farmer",
     });
   });
 
