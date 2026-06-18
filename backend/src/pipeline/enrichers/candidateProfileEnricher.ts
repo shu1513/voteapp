@@ -9,7 +9,6 @@ import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { resolveIncludePartyForCandidateContest } from "../../ai/candidatePartisanship.js";
 import { getPipelineEnv } from "../../config/env.js";
 import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
-import { enqueueCandidateLinkCandidateFinanceSyncJob } from "../../scheduler/candidateFinanceSyncScheduler.js";
 import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
   STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
@@ -33,7 +32,6 @@ import {
   upsertCandidateElection,
   upsertPresidentialCycleCandidate,
 } from "../candidates/candidateProfileLinks.js";
-import { getPresidentialGeneralElectionDate } from "../presidential/presidentialCycles.js";
 import {
   loadPresidentialCycleProfileContext,
   type PresidentialCycleProfileContext,
@@ -57,8 +55,6 @@ type ElectionRow = {
   term_end_year: string | null;
   is_partisan: boolean | null;
   sources: unknown;
-  office_scope: string | null;
-  office_canonical_name: string | null;
 };
 
 type CandidateProfileDraftContextType = "election" | "presidential_cycle";
@@ -77,8 +73,6 @@ type CandidateProfileResolvedContext =
       senateClass: string | null;
       termEndYear: string | null;
       electionIsPartisan: boolean | null;
-      officeScope: string | null;
-      officeCanonicalName: string | null;
       includeParty: boolean;
       rosterParty: string | undefined;
       rosterIncumbent: boolean | undefined;
@@ -87,7 +81,6 @@ type CandidateProfileResolvedContext =
   | {
       type: "presidential_cycle";
       contextId: string;
-      electionYear: number;
       state: "US";
       districtName: "United States";
       districtType: "presidential";
@@ -107,10 +100,6 @@ const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
 const MAX_SEED_URLS = 8;
 const MAX_DELIVERY_ATTEMPTS = 8;
-const US_SENATE_FEC_ID_PATTERN = /^S[0-9A-Z]{8}$/;
-const US_HOUSE_FEC_ID_PATTERN = /^H[0-9A-Z]{8}$/;
-const PRESIDENTIAL_FEC_ID_PATTERN = /^P[0-9A-Z]{8}$/;
-const POST_ELECTION_FINANCE_SYNC_GRACE_DAYS = 1;
 
 class ParkCandidateProfileDraftError extends Error {
   constructor(message: string) {
@@ -189,130 +178,6 @@ function parseSerializedStringArray(raw: string | undefined): string[] {
     return parseOptionalStringArray(JSON.parse(raw));
   } catch {
     return [];
-  }
-}
-
-function electionYearFromDateText(value: string): number | null {
-  const yearText = value.trim().slice(0, 4);
-  if (!/^\d{4}$/.test(yearText)) {
-    return null;
-  }
-  const year = Number(yearText);
-  return Number.isInteger(year) ? year : null;
-}
-
-function utcDateFromIsoDate(value: string): Date {
-  return new Date(`${value}T00:00:00.000Z`);
-}
-
-function addUtcDays(date: Date, days: number): Date {
-  const copy = new Date(date.getTime());
-  copy.setUTCDate(copy.getUTCDate() + days);
-  return copy;
-}
-
-function isWithinPresidentialFinanceSyncWindow(electionYear: number, now = new Date()): boolean {
-  const generalElectionDate = utcDateFromIsoDate(getPresidentialGeneralElectionDate(electionYear));
-  const deadline = addUtcDays(generalElectionDate, POST_ELECTION_FINANCE_SYNC_GRACE_DAYS);
-  return now.toISOString().slice(0, 10) <= deadline.toISOString().slice(0, 10);
-}
-
-function normalizeFederalFecIds(values: readonly string[] | undefined): string[] {
-  const normalized: string[] = [];
-  const seen = new Set<string>();
-  for (const value of values ?? []) {
-    const id = value.trim().toUpperCase();
-    if (!/^[HPS][0-9A-Z]{8}$/.test(id) || seen.has(id)) {
-      continue;
-    }
-    seen.add(id);
-    normalized.push(id);
-  }
-  return normalized;
-}
-
-function selectElectionFinanceFecId(input: {
-  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
-  fecIds: readonly string[] | undefined;
-}): string | null {
-  const ids = normalizeFederalFecIds(input.fecIds);
-  if (
-    input.context.officeScope === "statewide" &&
-    input.context.officeCanonicalName === "United States Senator"
-  ) {
-    return ids.find((id) => US_SENATE_FEC_ID_PATTERN.test(id)) ?? null;
-  }
-  if (
-    input.context.officeScope === "us_house" &&
-    input.context.officeCanonicalName === "United States Representative"
-  ) {
-    return ids.find((id) => US_HOUSE_FEC_ID_PATTERN.test(id)) ?? null;
-  }
-  return null;
-}
-
-async function enqueueCandidateFinanceSyncForLinkedElection(input: {
-  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
-  candidateId: string;
-  fecIds: readonly string[] | undefined;
-}): Promise<void> {
-  const electionYear = electionYearFromDateText(input.context.electionDate);
-  const fecCandidateId = selectElectionFinanceFecId({
-    context: input.context,
-    fecIds: input.fecIds,
-  });
-  if (!electionYear || !fecCandidateId) {
-    return;
-  }
-
-  try {
-    await enqueueCandidateLinkCandidateFinanceSyncJob({
-      candidateId: input.candidateId,
-      fecCandidateId,
-      electionYear,
-      includeOutside: true,
-    });
-  } catch (error) {
-    const reason = toReason(error);
-    console.warn(
-      `candidate-profile enricher could not enqueue finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
-    );
-  }
-}
-
-async function enqueueCandidateFinanceSyncForPresidentialCycle(input: {
-  context: Extract<CandidateProfileResolvedContext, { type: "presidential_cycle" }>;
-  presidentialRole: PresidentialProfileDraftRole;
-  candidateId: string;
-  fecIds: readonly string[] | undefined;
-}): Promise<void> {
-  if (input.presidentialRole !== "president") {
-    return;
-  }
-  if (!isWithinPresidentialFinanceSyncWindow(input.context.electionYear)) {
-    return;
-  }
-
-  const fecCandidateId = normalizeFederalFecIds(input.fecIds).find((id) =>
-    PRESIDENTIAL_FEC_ID_PATTERN.test(id)
-  );
-  if (!fecCandidateId) {
-    return;
-  }
-
-  try {
-    await enqueueCandidateLinkCandidateFinanceSyncJob({
-      candidateId: input.candidateId,
-      fecCandidateId,
-      electionYear: input.context.electionYear,
-      source: "presidential_cycle",
-      includeOutside: true,
-    });
-  } catch (error) {
-    const reason = toReason(error);
-    console.warn(
-      `candidate-profile enricher could not enqueue presidential finance sync for candidate=${input.candidateId} cycle=${input.context.contextId}: ${reason}`
-    );
   }
 }
 
@@ -477,14 +342,10 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
         sm.senate_class,
         sm.term_end_year,
         e.is_partisan,
-        e.sources,
-        office.scope AS office_scope,
-        office.canonical_name AS office_canonical_name
+        e.sources
       FROM public.elections AS e
       JOIN public.districts AS d
         ON d.id = e.district_id
-      LEFT JOIN public.offices AS office
-        ON office.id = e.office_id
       LEFT JOIN public.election_senate_metadata AS sm
         ON sm.election_id = e.id
       WHERE e.id = $1
@@ -576,8 +437,6 @@ async function resolveElectionDraftContext(input: {
     senateClass: election.senate_class,
     termEndYear: election.term_end_year,
     electionIsPartisan: election.is_partisan,
-    officeScope: election.office_scope,
-    officeCanonicalName: election.office_canonical_name,
     includeParty,
     rosterParty,
     rosterIncumbent: input.rosterIncumbent,
@@ -603,7 +462,6 @@ async function resolvePresidentialCycleDraftContext(input: {
   return {
     type: "presidential_cycle",
     contextId: context.cycleId,
-    electionYear: context.electionYear,
     state: context.state,
     districtName: context.districtName,
     districtType: context.districtType,
@@ -885,11 +743,6 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           }
 
           if (draftContext.type === "election") {
-            await enqueueCandidateFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-              fecIds: profile.fec_ids,
-            });
             await enqueueCandidateRecordDrafts(redis, [
               {
                 candidateId,
@@ -898,12 +751,6 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               },
             ]);
           } else {
-            await enqueueCandidateFinanceSyncForPresidentialCycle({
-              context: draftContext,
-              presidentialRole: presidentialRole ?? "president",
-              candidateId,
-              fecIds: [...(profile.fec_ids ?? []), ...rosterFecIds],
-            });
             await enqueueCandidateRecordDrafts(redis, [
               {
                 contextType: "presidential_cycle",
