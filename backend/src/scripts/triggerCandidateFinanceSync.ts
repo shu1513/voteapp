@@ -1,3 +1,5 @@
+import { pathToFileURL } from "node:url";
+
 import {
   enqueueManualCandidateFinanceSyncJob,
   type CandidateFinanceSyncJobData,
@@ -33,11 +35,19 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(value);
 }
 
-function parseJobData(args: readonly string[]): CandidateFinanceSyncJobData {
+function parseOptionalStringFlag(args: readonly string[], name: string): string | undefined {
+  const value = parseFlagValue(args, name)?.trim();
+  return value && value.length > 0 ? value : undefined;
+}
+
+export function parseCandidateFinanceSyncTriggerArgs(args: readonly string[]): CandidateFinanceSyncJobData {
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),
     includeOutside: args.includes("--include-outside"),
+    candidateId: parseOptionalStringFlag(args, "--candidate-id"),
+    fecCandidateId: parseOptionalStringFlag(args, "--fec-id"),
+    electionYear: parsePositiveIntegerFlag(args, "--year"),
     maxCandidates: parsePositiveIntegerFlag(args, "--max-candidates"),
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
@@ -50,16 +60,21 @@ function parseJobData(args: readonly string[]): CandidateFinanceSyncJobData {
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  const jobData = parseJobData(process.argv.slice(2));
+  const jobData = parseCandidateFinanceSyncTriggerArgs(process.argv.slice(2));
   const jobId = await enqueueManualCandidateFinanceSyncJob(jobData);
   console.log(
     `candidate_finance sync job enqueued (jobId=${jobId} force=${Boolean(jobData.force)} dryRun=${Boolean(
       jobData.dryRun
-    )} includeOutside=${Boolean(jobData.includeOutside)})`
+    )} includeOutside=${Boolean(jobData.includeOutside)} fecCandidateId=${jobData.fecCandidateId ?? "batch"} year=${
+      jobData.electionYear ?? "batch"
+    })`
   );
 }
 
-main().catch((error) => {
-  console.error("candidate_finance sync trigger failed:", error);
-  process.exit(1);
-});
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    console.error("candidate_finance sync trigger failed:", error);
+    process.exit(1);
+  });
+}

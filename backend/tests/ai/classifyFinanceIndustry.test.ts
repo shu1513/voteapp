@@ -25,14 +25,12 @@ describe("classifyFinanceIndustriesWithAi", () => {
       parsed: {
         classifications: [
           {
-            label_type: "employer",
-            normalized_label: "ACME",
+            id: "1",
             industry_slug: "technology",
             confidence: "high",
           },
           {
-            label_type: "donor",
-            normalized_label: "ACME",
+            id: "2",
             industry_slug: "environmental_group",
             confidence: "medium",
           },
@@ -50,13 +48,11 @@ describe("classifyFinanceIndustriesWithAi", () => {
           rawLabel: "Acme LLC",
           labelType: "employer",
           normalizedLabel: "ACME",
-          amount: 250_000,
         },
         {
           rawLabel: "Acme Advocacy",
           labelType: "donor",
           normalizedLabel: "ACME",
-          amount: 500_000,
         },
       ],
     });
@@ -98,8 +94,7 @@ describe("classifyFinanceIndustriesWithAi", () => {
         parsed: {
           classifications: [
             {
-              label_type: "employer",
-              normalized_label: "ACME",
+              id: "1",
               industry_slug: "technology",
               confidence: "high",
             },
@@ -117,7 +112,6 @@ describe("classifyFinanceIndustriesWithAi", () => {
           rawLabel: "Acme LLC",
           labelType: "employer",
           normalizedLabel: "ACME",
-          amount: 250_000,
         },
       ],
     });

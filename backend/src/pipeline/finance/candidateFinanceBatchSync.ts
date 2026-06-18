@@ -70,7 +70,8 @@ type CandidateFinanceDueQueryRow = {
 
 const DEFAULT_MAX_CANDIDATES = 25;
 const DEFAULT_STALE_AFTER_DAYS = 7;
-const DEFAULT_ELECTION_LOOKBACK_DAYS = 30;
+// Keep one extra calendar day so UTC scheduler timing cannot skip election-night finance syncs.
+const DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS = 1;
 const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
 
 function assertValidDate(date: Date, label: string): void {
@@ -148,6 +149,9 @@ export async function listDueCandidateFinanceSyncRows(
         FROM public.presidential_cycle_candidates AS cycle_candidate
         JOIN public.presidential_cycles AS cycle
           ON cycle.id = cycle_candidate.cycle_id
+        LEFT JOIN public.presidential_cycles AS general_cycle
+          ON general_cycle.election_year = cycle.election_year
+         AND general_cycle.stage = 'general'
         JOIN public.candidates AS c
           ON c.id = cycle_candidate.candidate_id
         CROSS JOIN LATERAL jsonb_array_elements_text(c.fec_ids) AS fec_id(value)
@@ -155,6 +159,14 @@ export async function listDueCandidateFinanceSyncRows(
           AND cycle.status = 'active'
           AND cycle_candidate.status = 'active'
           AND cycle.election_year BETWEEN extract(year from $1::date)::int - 1 AND extract(year from $1::date)::int + 4
+          AND COALESCE(
+            general_cycle.election_date,
+            (
+              make_date(cycle.election_year, 11, 1)
+              + (((1 - extract(dow from make_date(cycle.election_year, 11, 1))::int + 7) % 7) + 1)
+                * interval '1 day'
+            )::date
+          ) >= ($1::date - make_interval(days => $4::int))
           AND upper(trim(fec_id.value)) ~ '^P[0-9A-Z]{8}$'
       ),
       candidate_fecs AS (
@@ -221,7 +233,7 @@ export async function syncDueCandidateFinance(
   const staleAfterDays = normalizePositiveInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "staleAfterDays");
   const electionLookbackDays = normalizePositiveInteger(
     input.electionLookbackDays,
-    DEFAULT_ELECTION_LOOKBACK_DAYS,
+    DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS,
     "electionLookbackDays"
   );
   const electionLookaheadDays = normalizePositiveInteger(
