@@ -6,8 +6,11 @@ import { getPipelineEnv } from "../config/env.js";
 import { isCandidateFinanceEnabled, isCandidateFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
   syncDueCandidateFinance,
+  type CandidateFinanceBatchSyncItemResult,
   type CandidateFinanceBatchSyncResult,
+  type CandidateFinanceDueRow,
 } from "../pipeline/finance/candidateFinanceBatchSync.js";
+import { syncCandidateFinance } from "../pipeline/finance/candidateFinanceSync.js";
 import { DEFAULT_OPEN_FEC_TIMEOUT_MS, readOpenFecApiKeysFromEnv } from "../pipeline/presidential/openFecClient.js";
 
 export const CANDIDATE_FINANCE_SYNC_JOB_NAME = "candidate_finance_sync_due";
@@ -24,7 +27,11 @@ export type CandidateFinanceSyncJobData = {
   perPage?: number;
   outsideGroupLimit?: number;
   timeoutMs?: number;
-  triggeredBy?: "daily" | "manual" | "unknown";
+  candidateId?: string;
+  fecCandidateId?: string;
+  electionYear?: number;
+  source?: CandidateFinanceDueRow["source"];
+  triggeredBy?: "daily" | "manual" | "candidate_link" | "unknown";
   requestedAt?: string;
 };
 
@@ -55,6 +62,17 @@ function assertPositiveInteger(value: number | undefined, label: string): void {
   if (value !== undefined && (!Number.isInteger(value) || value <= 0)) {
     throw new Error(`Invalid candidate finance sync scheduler ${label}: ${value}`);
   }
+}
+
+function normalizeTargetFecCandidateId(value: string | undefined): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  const normalized = value.trim().toUpperCase();
+  if (!/^[HPS][0-9A-Z]{8}$/.test(normalized)) {
+    throw new Error(`Invalid candidate finance sync scheduler fecCandidateId: ${value}`);
+  }
+  return normalized;
 }
 
 function toConnectionOptions(redisUrl: string): ConnectionOptions {
@@ -118,6 +136,16 @@ function assertValidJobOptions(data: CandidateFinanceSyncJobData): void {
   assertPositiveInteger(data.perPage, "perPage");
   assertPositiveInteger(data.outsideGroupLimit, "outsideGroupLimit");
   assertPositiveInteger(data.timeoutMs, "timeoutMs");
+  if (
+    data.electionYear !== undefined &&
+    (!Number.isInteger(data.electionYear) || data.electionYear < 1970 || data.electionYear > 2100)
+  ) {
+    throw new Error(`Invalid candidate finance sync scheduler electionYear: ${data.electionYear}`);
+  }
+  normalizeTargetFecCandidateId(data.fecCandidateId);
+  if ((data.fecCandidateId === undefined) !== (data.electionYear === undefined)) {
+    throw new Error("candidate finance sync scheduler targeted jobs require both fecCandidateId and electionYear");
+  }
 }
 
 export function createCandidateFinanceSyncSchedulerQueue(): Queue<CandidateFinanceSyncJobData> {
@@ -198,6 +226,10 @@ export async function enqueueManualCandidateFinanceSyncJob(
         perPage: jobData.perPage,
         outsideGroupLimit: jobData.outsideGroupLimit,
         timeoutMs: jobData.timeoutMs,
+        candidateId: jobData.candidateId,
+        fecCandidateId: jobData.fecCandidateId?.trim().toUpperCase(),
+        electionYear: jobData.electionYear,
+        source: jobData.source,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -207,6 +239,84 @@ export async function enqueueManualCandidateFinanceSyncJob(
   } finally {
     await queue.close();
   }
+}
+
+export async function enqueueCandidateLinkCandidateFinanceSyncJob(input: {
+  candidateId: string;
+  fecCandidateId: string;
+  electionYear: number;
+  source?: CandidateFinanceDueRow["source"];
+  includeOutside?: boolean;
+  perPage?: number;
+  outsideGroupLimit?: number;
+  timeoutMs?: number;
+}): Promise<string> {
+  const jobData: CandidateFinanceSyncJobData = {
+    candidateId: input.candidateId,
+    fecCandidateId: input.fecCandidateId,
+    electionYear: input.electionYear,
+    source: input.source ?? "candidate_election",
+    force: false,
+    includeOutside: input.includeOutside,
+    perPage: input.perPage,
+    outsideGroupLimit: input.outsideGroupLimit,
+    timeoutMs: input.timeoutMs,
+  };
+  assertValidJobOptions(jobData);
+  if (!isCandidateFinanceSyncEnabled(false)) {
+    return "disabled";
+  }
+
+  const queue = createCandidateFinanceSyncSchedulerQueue();
+
+  try {
+    const job = await queue.add(
+      CANDIDATE_FINANCE_SYNC_JOB_NAME,
+      {
+        ...jobData,
+        fecCandidateId: jobData.fecCandidateId?.trim().toUpperCase(),
+        triggeredBy: "candidate_link",
+        requestedAt: new Date().toISOString(),
+      },
+      defaultJobOptions()
+    );
+    return job.id ?? "unknown";
+  } finally {
+    await queue.close();
+  }
+}
+
+function buildTargetedSyncResult(input: {
+  dryRun: boolean;
+  includeOutside: boolean;
+  now: Date;
+  candidateId: string | undefined;
+  fecCandidateId: string;
+  electionYear: number;
+  source: CandidateFinanceDueRow["source"];
+  result: Awaited<ReturnType<typeof syncCandidateFinance>>;
+}): CandidateFinanceBatchSyncResult {
+  const item: CandidateFinanceBatchSyncItemResult = {
+    candidateId: input.candidateId ?? "",
+    fecCandidateId: input.fecCandidateId,
+    electionYear: input.electionYear,
+    source: input.source,
+    ok: true,
+    result: input.result,
+  };
+
+  return {
+    dryRun: input.dryRun,
+    includeOutside: input.includeOutside,
+    now: input.now.toISOString(),
+    staleAfterDays: 0,
+    maxCandidates: 1,
+    dueCandidateCount: 1,
+    selectedCandidateCount: 1,
+    syncedCandidateCount: 1,
+    failedCandidateCount: 0,
+    results: [item],
+  };
 }
 
 export async function runCandidateFinanceSyncJob(
@@ -250,6 +360,37 @@ export async function runCandidateFinanceSyncJob(
 
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   try {
+    const targetedFecCandidateId = normalizeTargetFecCandidateId(data.fecCandidateId);
+    if (targetedFecCandidateId && data.electionYear !== undefined) {
+      const result = await syncCandidateFinance({
+        db: pool,
+        fecCandidateId: targetedFecCandidateId,
+        electionYear: data.electionYear,
+        openFecOptions: { apiKeys, timeoutMs: data.timeoutMs ?? DEFAULT_OPEN_FEC_TIMEOUT_MS },
+        now,
+        dryRun,
+        includeOutside,
+        perPage: data.perPage,
+        outsideGroupLimit: data.outsideGroupLimit,
+      });
+
+      return {
+        enabled: true,
+        force,
+        triggeredBy,
+        ...buildTargetedSyncResult({
+          dryRun,
+          includeOutside,
+          now,
+          candidateId: data.candidateId,
+          fecCandidateId: targetedFecCandidateId,
+          electionYear: data.electionYear,
+          source: data.source ?? "candidate_election",
+          result,
+        }),
+      };
+    }
+
     const result = await syncDueCandidateFinance({
       db: pool,
       openFecOptions: { apiKeys, timeoutMs: data.timeoutMs ?? DEFAULT_OPEN_FEC_TIMEOUT_MS },
