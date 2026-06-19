@@ -2,8 +2,13 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
+import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isCaliforniaCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
+import {
+  loadCalAccessCommitteeResolutionData,
+  loadCalAccessReceiptRowsForCommittees,
+} from "../pipeline/californiaFinance/calAccessRawDataLoader.js";
 import {
   syncCaliforniaCandidateFinance,
   type CaliforniaCandidateFinanceSyncResult,
@@ -22,6 +27,10 @@ export type SyncCaliforniaCandidateFinanceScriptOptions = {
   includeOutside: boolean;
   force: boolean;
   timeoutMs?: number;
+  rawZipPath?: string;
+  rawCacheDir?: string;
+  aiClassifyIndustries: boolean;
+  aiClassificationMinAmount?: number;
 };
 
 type DryRunDb = {
@@ -106,6 +115,10 @@ export function parseSyncCaliforniaCandidateFinanceScriptArgs(
     includeOutside: !args.includes("--skip-outside"),
     force: args.includes("--force"),
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
+    rawZipPath: parseOptionalStringFlag(args, "--raw-zip"),
+    rawCacheDir: parseOptionalStringFlag(args, "--raw-cache-dir"),
+    aiClassifyIndustries: args.includes("--ai-classify-industries"),
+    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -138,6 +151,7 @@ export function toSyncCaliforniaCandidateFinanceScriptOutput(input: {
     controlled_committee_id: input.options.controlledCommitteeId,
     dry_run: input.options.dryRun,
     include_outside: input.options.includeOutside,
+    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -155,6 +169,20 @@ async function main(): Promise<void> {
   const pool = options.dryRun ? null : new Pool({ connectionString: getDatabaseUrl() });
 
   try {
+    const resolutionData = await loadCalAccessCommitteeResolutionData({
+      zipPath: options.rawZipPath,
+      cacheDir: options.rawCacheDir,
+    });
+    const receiptData = resolutionData
+      ? await loadCalAccessReceiptRowsForCommittees({
+          zipPath: options.rawZipPath ?? resolutionData.zipPath,
+          cacheDir: options.rawCacheDir,
+          sourceUrl: resolutionData.sourceUrl,
+          committeeIds: [options.controlledCommitteeId],
+          campaignCoverRows: resolutionData.campaignCoverRows,
+        })
+      : null;
+    const controlledCommitteeKey = options.controlledCommitteeId.trim().toUpperCase();
     const result = await syncCaliforniaCandidateFinance({
       db: pool ?? createDryRunDb(),
       candidateId: options.candidateId,
@@ -168,6 +196,22 @@ async function main(): Promise<void> {
       dryRun: options.dryRun,
       includeOutside: options.includeOutside,
       powerSearchOptions: options.timeoutMs ? { timeoutMs: options.timeoutMs } : undefined,
+      directReceiptRows: receiptData?.receiptRowsByCommitteeId.get(controlledCommitteeKey),
+      controlledCommitteeFilingIds: receiptData?.controlledCommitteeFilingIdsByCommitteeId.get(controlledCommitteeKey),
+      directSourceUrl: receiptData?.sourceUrl ?? resolutionData?.sourceUrl,
+      loadOutsideReceiptRowsForCommittees: resolutionData
+        ? (committeeIds) =>
+            loadCalAccessReceiptRowsForCommittees({
+              zipPath: options.rawZipPath ?? resolutionData.zipPath,
+              cacheDir: options.rawCacheDir,
+              sourceUrl: resolutionData.sourceUrl,
+              committeeIds,
+              campaignCoverRows: resolutionData.campaignCoverRows,
+            })
+        : undefined,
+      financeIndustryClassifier:
+        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
+      aiClassificationMinAmount: options.aiClassificationMinAmount,
       now: startedAt,
     });
 

@@ -5,7 +5,18 @@ import {
   type CaliforniaCandidateFinancePowerSearchClient,
   type CaliforniaCandidateFinanceSyncResult,
 } from "./californiaCandidateFinanceSync.js";
+import {
+  autoLinkMissingCaliforniaCandidateFinanceLinks,
+} from "./californiaCandidateFinanceAutoLink.js";
+import {
+  loadCalAccessCommitteeResolutionData,
+  loadCalAccessReceiptRowsForCommittees,
+  type CalAccessCommitteeReceiptData,
+  type CalAccessCommitteeResolutionData,
+} from "./calAccessRawDataLoader.js";
+import type { CalAccessReceiptRow } from "./californiaDirectContributionAggregator.js";
 import { type CaliforniaPowerSearchClientOptions } from "./californiaPowerSearchClient.js";
+import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -32,6 +43,13 @@ export type CaliforniaCandidateFinanceBatchSyncInput = {
   electionLookaheadDays?: number;
   powerSearchOptions?: CaliforniaPowerSearchClientOptions;
   powerSearchClient?: CaliforniaCandidateFinancePowerSearchClient;
+  rawDataZipPath?: string;
+  rawDataCacheDir?: string;
+  rawDataResolutionData?: CalAccessCommitteeResolutionData | null;
+  rawDataReceiptData?: CalAccessCommitteeReceiptData | null;
+  autoLinkMissingLinks?: boolean;
+  financeIndustryClassifier?: FinanceIndustryClassifier;
+  aiClassificationMinAmount?: number;
   syncCaliforniaCandidateFinanceFn?: typeof syncCaliforniaCandidateFinance;
 };
 
@@ -71,6 +89,10 @@ type CaliforniaCandidateFinanceDueQueryRow = {
   total_due_rows: string | number;
 };
 
+type CalAccessReceiptRowsForCommitteesLoader = (
+  committeeIds: readonly string[]
+) => Promise<CalAccessCommitteeReceiptData | null>;
+
 const DEFAULT_MAX_CANDIDATES = 25;
 const DEFAULT_STALE_AFTER_DAYS = 7;
 // Keep one extra calendar day so UTC scheduler timing cannot skip election-night finance syncs.
@@ -94,6 +116,126 @@ function normalizePositiveInteger(value: number | undefined, fallback: number, l
 function parseTotalDueRows(value: string | number | undefined): number {
   const parsed = typeof value === "number" ? value : Number(value);
   return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : 0;
+}
+
+function normalizeCommitteeId(value: string): string {
+  return value.trim().toUpperCase();
+}
+
+function normalizeCommitteeIds(values: readonly string[]): string[] {
+  return [...new Set(values.map(normalizeCommitteeId).filter(Boolean))];
+}
+
+function mergeReceiptDataCache(
+  target: CalAccessCommitteeReceiptData,
+  source: CalAccessCommitteeReceiptData
+): void {
+  for (const [committeeId, rows] of source.receiptRowsByCommitteeId.entries()) {
+    target.receiptRowsByCommitteeId.set(normalizeCommitteeId(committeeId), rows);
+  }
+  for (const [committeeId, filingIds] of source.controlledCommitteeFilingIdsByCommitteeId.entries()) {
+    target.controlledCommitteeFilingIdsByCommitteeId.set(
+      normalizeCommitteeId(committeeId),
+      normalizeCommitteeIds(filingIds)
+    );
+  }
+}
+
+function subsetReceiptDataCache(
+  cache: CalAccessCommitteeReceiptData,
+  committeeIds: readonly string[]
+): CalAccessCommitteeReceiptData | null {
+  const normalizedIds = normalizeCommitteeIds(committeeIds);
+  if (normalizedIds.length === 0) {
+    return null;
+  }
+
+  const receiptRowsByCommitteeId = new Map<string, CalAccessReceiptRow[]>();
+  const controlledCommitteeFilingIdsByCommitteeId = new Map<string, string[]>();
+  for (const committeeId of normalizedIds) {
+    const rows = cache.receiptRowsByCommitteeId.get(committeeId);
+    if (rows) {
+      receiptRowsByCommitteeId.set(committeeId, rows);
+    }
+    const filingIds = cache.controlledCommitteeFilingIdsByCommitteeId.get(committeeId);
+    if (filingIds) {
+      controlledCommitteeFilingIdsByCommitteeId.set(committeeId, filingIds);
+    }
+  }
+
+  return {
+    zipPath: cache.zipPath,
+    sourceUrl: cache.sourceUrl,
+    receiptRowsByCommitteeId,
+    controlledCommitteeFilingIdsByCommitteeId,
+  };
+}
+
+export function createCalAccessReceiptRowsForCommitteesCache(input: {
+  initialData?: CalAccessCommitteeReceiptData | null;
+  load: CalAccessReceiptRowsForCommitteesLoader;
+}): CalAccessReceiptRowsForCommitteesLoader {
+  let cache: CalAccessCommitteeReceiptData | null = input.initialData
+    ? {
+        zipPath: input.initialData.zipPath,
+        sourceUrl: input.initialData.sourceUrl,
+        receiptRowsByCommitteeId: new Map(
+          [...input.initialData.receiptRowsByCommitteeId.entries()].map(([committeeId, rows]) => [
+            normalizeCommitteeId(committeeId),
+            rows,
+          ])
+        ),
+        controlledCommitteeFilingIdsByCommitteeId: new Map(
+          [...input.initialData.controlledCommitteeFilingIdsByCommitteeId.entries()].map(([committeeId, filingIds]) => [
+            normalizeCommitteeId(committeeId),
+            normalizeCommitteeIds(filingIds),
+          ])
+        ),
+      }
+    : null;
+  const attemptedCommitteeIds = new Set<string>([
+    ...(cache?.receiptRowsByCommitteeId.keys() ?? []),
+    ...(cache?.controlledCommitteeFilingIdsByCommitteeId.keys() ?? []),
+  ]);
+
+  return async (committeeIds: readonly string[]) => {
+    const normalizedIds = normalizeCommitteeIds(committeeIds);
+    if (normalizedIds.length === 0) {
+      return null;
+    }
+
+    const missingIds = normalizedIds.filter((committeeId) => !attemptedCommitteeIds.has(committeeId));
+    if (missingIds.length > 0) {
+      const loaded = await input.load(missingIds);
+      for (const committeeId of missingIds) {
+        attemptedCommitteeIds.add(committeeId);
+      }
+      if (loaded) {
+        if (cache) {
+          mergeReceiptDataCache(cache, loaded);
+        } else {
+          cache = {
+            zipPath: loaded.zipPath,
+            sourceUrl: loaded.sourceUrl,
+            receiptRowsByCommitteeId: new Map(
+              [...loaded.receiptRowsByCommitteeId.entries()].map(([committeeId, rows]) => [
+                normalizeCommitteeId(committeeId),
+                rows,
+              ])
+            ),
+            controlledCommitteeFilingIdsByCommitteeId: new Map(
+              [...loaded.controlledCommitteeFilingIdsByCommitteeId.entries()].map(([committeeId, filingIds]) => [
+                normalizeCommitteeId(committeeId),
+                normalizeCommitteeIds(filingIds),
+              ])
+            ),
+          };
+        }
+      }
+    }
+
+    return cache ? subsetReceiptDataCache(cache, normalizedIds) : null;
+  };
 }
 
 function mapDueRow(row: CaliforniaCandidateFinanceDueQueryRow): CaliforniaCandidateFinanceDueRow {
@@ -217,6 +359,24 @@ export async function syncDueCaliforniaCandidateFinance(
   const includeOutside = input.includeOutside !== false;
   const dryRun = input.dryRun === true;
   const syncFn = input.syncCaliforniaCandidateFinanceFn ?? syncCaliforniaCandidateFinance;
+  const resolutionData =
+    input.rawDataResolutionData === undefined
+      ? await loadCalAccessCommitteeResolutionData({
+          zipPath: input.rawDataZipPath,
+          cacheDir: input.rawDataCacheDir,
+        })
+      : input.rawDataResolutionData;
+
+  if (input.autoLinkMissingLinks !== false && resolutionData) {
+    await autoLinkMissingCaliforniaCandidateFinanceLinks({
+      db: input.db,
+      now,
+      maxCandidates,
+      electionLookbackDays,
+      electionLookaheadDays,
+      resolutionData,
+    });
+  }
 
   const due = await listDueCaliforniaCandidateFinanceSyncRows(input.db, {
     now,
@@ -225,9 +385,33 @@ export async function syncDueCaliforniaCandidateFinance(
     electionLookbackDays,
     electionLookaheadDays,
   });
+  const receiptData =
+    input.rawDataReceiptData === undefined && resolutionData && due.rows.length > 0
+      ? await loadCalAccessReceiptRowsForCommittees({
+          zipPath: input.rawDataZipPath ?? resolutionData.zipPath,
+          cacheDir: input.rawDataCacheDir,
+          sourceUrl: resolutionData.sourceUrl,
+          committeeIds: due.rows.map((row) => row.controlledCommitteeId),
+          campaignCoverRows: resolutionData.campaignCoverRows,
+        })
+      : input.rawDataReceiptData;
+  const loadOutsideReceiptRowsForCommittees = resolutionData
+    ? createCalAccessReceiptRowsForCommitteesCache({
+        initialData: receiptData,
+        load: (committeeIds: readonly string[]) =>
+          loadCalAccessReceiptRowsForCommittees({
+            zipPath: input.rawDataZipPath ?? resolutionData.zipPath,
+            cacheDir: input.rawDataCacheDir,
+            sourceUrl: resolutionData.sourceUrl,
+            committeeIds,
+            campaignCoverRows: resolutionData.campaignCoverRows,
+          }),
+      })
+    : undefined;
 
   const results: CaliforniaCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
+    const committeeKey = normalizeCommitteeId(row.controlledCommitteeId);
     try {
       const result = await syncFn({
         db: input.db,
@@ -243,6 +427,12 @@ export async function syncDueCaliforniaCandidateFinance(
         includeOutside,
         powerSearchOptions: input.powerSearchOptions,
         powerSearchClient: input.powerSearchClient,
+        directReceiptRows: receiptData?.receiptRowsByCommitteeId.get(committeeKey),
+        controlledCommitteeFilingIds: receiptData?.controlledCommitteeFilingIdsByCommitteeId.get(committeeKey),
+        directSourceUrl: receiptData?.sourceUrl ?? resolutionData?.sourceUrl,
+        loadOutsideReceiptRowsForCommittees,
+        financeIndustryClassifier: input.financeIndustryClassifier,
+        aiClassificationMinAmount: input.aiClassificationMinAmount,
         now,
       });
       results.push({

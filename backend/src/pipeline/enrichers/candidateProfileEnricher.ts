@@ -9,6 +9,10 @@ import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { resolveIncludePartyForCandidateContest } from "../../ai/candidatePartisanship.js";
 import { getPipelineEnv } from "../../config/env.js";
 import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
+import {
+  buildCaliforniaCandidateFinanceLinkedElectionSyncJobId,
+  enqueueManualCaliforniaCandidateFinanceSyncJob,
+} from "../../scheduler/californiaCandidateFinanceSyncScheduler.js";
 import { enqueueCandidateLinkCandidateFinanceSyncJob } from "../../scheduler/candidateFinanceSyncScheduler.js";
 import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
@@ -38,6 +42,7 @@ import {
   loadPresidentialCycleProfileContext,
   type PresidentialCycleProfileContext,
 } from "../presidential/presidentialProfileContext.js";
+import { isCaliforniaFinanceEligibleOffice } from "../californiaFinance/californiaFinanceEligibleOffices.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -276,6 +281,38 @@ async function enqueueCandidateFinanceSyncForLinkedElection(input: {
     const reason = toReason(error);
     console.warn(
       `candidate-profile enricher could not enqueue finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
+async function enqueueCaliforniaFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (
+    input.context.state !== "CA" ||
+    !isCaliforniaFinanceEligibleOffice({
+      officeScope: input.context.officeScope,
+      officeCanonicalName: input.context.officeCanonicalName,
+    })
+  ) {
+    return;
+  }
+
+  try {
+    await enqueueManualCaliforniaCandidateFinanceSyncJob(
+      {
+        includeOutside: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: buildCaliforniaCandidateFinanceLinkedElectionSyncJobId(),
+      }
+    );
+  } catch (error) {
+    const reason = toReason(error);
+    console.warn(
+      `candidate-profile enricher could not enqueue California finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
     );
   }
 }
@@ -889,6 +926,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               context: draftContext,
               candidateId,
               fecIds: profile.fec_ids,
+            });
+            await enqueueCaliforniaFinanceSyncForLinkedElection({
+              context: draftContext,
+              candidateId,
             });
             await enqueueCandidateRecordDrafts(redis, [
               {

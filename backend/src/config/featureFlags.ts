@@ -41,3 +41,10 @@ export function isCaliforniaCampaignFinanceSyncEnabled(force = false): boolean {
     (force || readBooleanEnv("CALIFORNIA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
   );
 }
+
+export function isCaliforniaCampaignFinanceRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isCaliforniaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}

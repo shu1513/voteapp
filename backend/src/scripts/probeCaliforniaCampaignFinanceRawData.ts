@@ -48,10 +48,11 @@ function readValueFlags(args: readonly string[], name: string): string[] {
     }
     if (arg === name) {
       const next = args[index + 1];
-      if (next && !next.startsWith("--")) {
-        values.push(next);
-        index += 1;
+      if (!next || next.startsWith("--")) {
+        throw new Error(`Missing value for ${name}`);
       }
+      values.push(next);
+      index += 1;
     }
   }
 

@@ -461,7 +461,7 @@ type CandidateFinanceOutsideIndustryEvidenceRow = {
 type CaliforniaFinanceSummaryRow = {
   candidate_id: string;
   election_id: string;
-  controlled_committee_id: string;
+  controlled_committee_id: string | null;
   election_year: number;
   total_receipts: string | number | null;
   total_disbursements: string | number | null;
@@ -479,7 +479,7 @@ type CaliforniaFinanceDirectBreakdownRow = {
   category_type: "occupation" | "employer" | "industry";
   category_name: string;
   amount: string | number;
-  contributor_count: number | null;
+  contributor_count: string | number | null;
   source_url: string | null;
 };
 
@@ -1404,19 +1404,22 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
           election_id text
         )
       )
-      SELECT DISTINCT ON (requested.candidate_id, requested.election_id)
+      SELECT
         requested.candidate_id::text AS candidate_id,
         requested.election_id::text AS election_id,
-        link.controlled_committee_id,
-        summary.election_year,
-        summary.total_receipts,
-        summary.total_disbursements,
-        summary.cash_on_hand,
-        summary.debts_owed,
-        summary.outside_support_total,
-        summary.outside_oppose_total,
-        summary.source_url,
-        summary.last_synced_at::text AS last_synced_at
+        CASE
+          WHEN count(DISTINCT link.controlled_committee_id) = 1 THEN min(link.controlled_committee_id)
+          ELSE NULL
+        END AS controlled_committee_id,
+        max(summary.election_year) AS election_year,
+        CASE WHEN count(summary.total_receipts) = 0 THEN NULL ELSE sum(summary.total_receipts) END AS total_receipts,
+        CASE WHEN count(summary.total_disbursements) = 0 THEN NULL ELSE sum(summary.total_disbursements) END AS total_disbursements,
+        CASE WHEN count(summary.cash_on_hand) = 0 THEN NULL ELSE sum(summary.cash_on_hand) END AS cash_on_hand,
+        CASE WHEN count(summary.debts_owed) = 0 THEN NULL ELSE sum(summary.debts_owed) END AS debts_owed,
+        max(summary.outside_support_total) AS outside_support_total,
+        max(summary.outside_oppose_total) AS outside_oppose_total,
+        min(summary.source_url) FILTER (WHERE summary.source_url IS NOT NULL) AS source_url,
+        max(summary.last_synced_at)::text AS last_synced_at
       FROM requested
       JOIN public.ca_candidate_finance_links AS link
         ON link.candidate_id = requested.candidate_id
@@ -1425,7 +1428,7 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
       JOIN public.ca_candidate_finance_summaries AS summary
         ON summary.link_id = link.id
        AND summary.election_year = link.election_year
-      ORDER BY requested.candidate_id, requested.election_id, summary.last_synced_at DESC, summary.id
+      GROUP BY requested.candidate_id, requested.election_id
     `,
     [JSON.stringify(requests)]
   );
@@ -1450,19 +1453,18 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
           election_id text
         )
       ),
-      ranked AS (
+      grouped AS (
         SELECT
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
           breakdown.category_type,
           breakdown.category_name,
-          breakdown.amount,
-          breakdown.contributor_count,
-          breakdown.source_url,
-          row_number() OVER (
-            PARTITION BY selected.candidate_id, selected.election_id, breakdown.category_type
-            ORDER BY breakdown.amount DESC, breakdown.category_name ASC
-          ) AS rn
+          sum(breakdown.amount) AS amount,
+          CASE
+            WHEN count(breakdown.contributor_count) = 0 THEN NULL
+            ELSE sum(breakdown.contributor_count)
+          END AS contributor_count,
+          min(breakdown.source_url) FILTER (WHERE breakdown.source_url IS NOT NULL) AS source_url
         FROM selected
         JOIN public.ca_candidate_finance_links AS link
           ON link.candidate_id = selected.candidate_id
@@ -1472,6 +1474,16 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
           ON breakdown.link_id = link.id
          AND breakdown.election_year = link.election_year
         WHERE breakdown.category_type IN ('occupation', 'employer', 'industry')
+        GROUP BY selected.candidate_id, selected.election_id, breakdown.category_type, breakdown.category_name
+      ),
+      ranked AS (
+        SELECT
+          *,
+          row_number() OVER (
+            PARTITION BY candidate_id, election_id, category_type
+            ORDER BY amount DESC, category_name ASC
+          ) AS rn
+        FROM grouped
       )
       SELECT candidate_id, election_id, category_type, category_name, amount, contributor_count, source_url
       FROM ranked
@@ -1492,19 +1504,15 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
           election_id text
         )
       ),
-      ranked AS (
+      grouped AS (
         SELECT
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
           outside_group.committee_id,
-          outside_group.committee_name,
+          min(outside_group.committee_name) AS committee_name,
           outside_group.support_oppose,
-          outside_group.amount,
-          outside_group.source_url,
-          row_number() OVER (
-            PARTITION BY selected.candidate_id, selected.election_id, outside_group.support_oppose
-            ORDER BY outside_group.amount DESC, outside_group.committee_name ASC
-          ) AS rn
+          max(outside_group.amount) AS amount,
+          min(outside_group.source_url) FILTER (WHERE outside_group.source_url IS NOT NULL) AS source_url
         FROM selected
         JOIN public.ca_candidate_finance_links AS link
           ON link.candidate_id = selected.candidate_id
@@ -1513,6 +1521,16 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
         JOIN public.ca_candidate_finance_outside_groups AS outside_group
           ON outside_group.link_id = link.id
          AND outside_group.election_year = link.election_year
+        GROUP BY selected.candidate_id, selected.election_id, outside_group.committee_id, outside_group.support_oppose
+      ),
+      ranked AS (
+        SELECT
+          *,
+          row_number() OVER (
+            PARTITION BY candidate_id, election_id, support_oppose
+            ORDER BY amount DESC, committee_name ASC
+          ) AS rn
+        FROM grouped
       )
       SELECT candidate_id, election_id, committee_id, committee_name, support_oppose, amount, source_url
       FROM ranked
@@ -1533,16 +1551,17 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
           election_id text
         )
       ),
-      grouped AS (
+      per_group AS (
         SELECT
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
+          breakdown.committee_id,
           breakdown.support_oppose,
           breakdown.category_name,
-          sum(breakdown.amount) AS amount,
+          max(breakdown.amount) AS amount,
           CASE
             WHEN count(breakdown.contributor_count) = 0 THEN NULL
-            ELSE sum(breakdown.contributor_count)
+            ELSE max(breakdown.contributor_count)
           END AS contributor_count,
           min(breakdown.source_url) FILTER (WHERE breakdown.source_url IS NOT NULL) AS source_url
         FROM selected
@@ -1554,7 +1573,27 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
           ON breakdown.link_id = link.id
          AND breakdown.election_year = link.election_year
         WHERE breakdown.category_type = 'industry'
-        GROUP BY selected.candidate_id, selected.election_id, breakdown.support_oppose, breakdown.category_name
+        GROUP BY
+          selected.candidate_id,
+          selected.election_id,
+          breakdown.committee_id,
+          breakdown.support_oppose,
+          breakdown.category_name
+      ),
+      grouped AS (
+        SELECT
+          candidate_id,
+          election_id,
+          support_oppose,
+          category_name,
+          sum(amount) AS amount,
+          CASE
+            WHEN count(contributor_count) = 0 THEN NULL
+            ELSE sum(contributor_count)
+          END AS contributor_count,
+          min(source_url) FILTER (WHERE source_url IS NOT NULL) AS source_url
+        FROM per_group
+        GROUP BY candidate_id, election_id, support_oppose, category_name
       ),
       ranked AS (
         SELECT

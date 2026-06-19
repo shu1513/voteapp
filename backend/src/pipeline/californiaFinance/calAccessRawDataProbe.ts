@@ -38,6 +38,7 @@ export type CalAccessRawDataFileSample = {
   rowObjects: Record<string, string>[];
   truncated: boolean;
 };
+export type CalAccessRawDataRow = Record<string, string>;
 
 export type CalAccessRawDataProbeInput = {
   zipPath: string;
@@ -282,6 +283,9 @@ async function readEntryTextSample(input: {
   }
 
   const dataOffset = await readEntryDataOffset(input.zipPath, input.entry);
+  if (input.entry.compressedSize === 0) {
+    return { text: "", truncated: false };
+  }
   const source = createReadStream(input.zipPath, {
     start: dataOffset,
     end: dataOffset + input.entry.compressedSize - 1,
@@ -336,6 +340,17 @@ function parseTabDelimitedSample(input: {
   truncated: boolean;
 }): CalAccessRawDataFileSample {
   const normalized = input.text.replace(/^\uFEFF/, "");
+  if (normalized.length === 0) {
+    return {
+      fileName: input.fileName,
+      delimiter: "tab",
+      encoding: "utf8",
+      headers: [],
+      rows: [],
+      rowObjects: [],
+      truncated: input.truncated,
+    };
+  }
   const lines = normalized
     .split(/\r?\n/)
     .map((line) => line.replace(/\r$/, ""))
@@ -358,6 +373,120 @@ function parseTabDelimitedSample(input: {
     rowObjects,
     truncated: input.truncated || lines.length > input.maxRowsPerFile + 1,
   };
+}
+
+function rowObjectFromValues(headers: readonly string[], row: readonly string[]): CalAccessRawDataRow {
+  return Object.fromEntries(headers.map((header, index) => [header || `column_${index + 1}`, row[index] ?? ""]));
+}
+
+export async function readCalAccessRawDataTableRows(input: {
+  zipPath: string;
+  fileName: string;
+  predicate?: (row: CalAccessRawDataRow) => boolean;
+  maxRows?: number;
+}): Promise<CalAccessRawDataRow[]> {
+  const maxRows = input.maxRows;
+  if (maxRows !== undefined && (!Number.isInteger(maxRows) || maxRows <= 0)) {
+    throw new Error(`Invalid CAL-ACCESS raw data maxRows: ${maxRows}`);
+  }
+
+  const entries = await readZipEntries(input.zipPath);
+  const entry = entries.find((candidate) => candidate.fileName === input.fileName);
+  if (!entry || entry.isDirectory) {
+    throw new Error(`CAL-ACCESS raw data table not found in ZIP: ${input.fileName}`);
+  }
+  if (entry.encrypted) {
+    throw new Error(`Encrypted CAL-ACCESS ZIP entries are not supported: ${entry.fileName}`);
+  }
+  if (entry.compressionMethodCode !== 0 && entry.compressionMethodCode !== 8) {
+    throw new Error(
+      `Unsupported CAL-ACCESS ZIP compression method ${entry.compressionMethodCode} for ${entry.fileName}`
+    );
+  }
+  if (entry.compressedSize === 0) {
+    return [];
+  }
+
+  const dataOffset = await readEntryDataOffset(input.zipPath, entry);
+  const source = createReadStream(input.zipPath, {
+    start: dataOffset,
+    end: dataOffset + entry.compressedSize - 1,
+  });
+  const stream = entry.compressionMethodCode === 8 ? source.pipe(createInflateRaw()) : source;
+  const decoder = new StringDecoder("utf8");
+
+  return await new Promise((resolve, reject) => {
+    const rows: CalAccessRawDataRow[] = [];
+    let buffer = "";
+    let headers: string[] | null = null;
+    let settled = false;
+
+    const finish = (): void => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      source.destroy();
+      if (stream !== source) {
+        stream.destroy();
+      }
+      resolve(rows);
+    };
+
+    const processLine = (rawLine: string): void => {
+      const line = rawLine.replace(/\r$/, "");
+      if (headers === null) {
+        headers = line.replace(/^\uFEFF/, "").split("\t").map((header) => header.trim());
+        return;
+      }
+      if (line.length === 0) {
+        return;
+      }
+      const row = rowObjectFromValues(headers, line.split("\t"));
+      if (!input.predicate || input.predicate(row)) {
+        rows.push(row);
+        if (maxRows !== undefined && rows.length >= maxRows) {
+          finish();
+        }
+      }
+    };
+
+    const processBuffer = (final: boolean): void => {
+      const lines = buffer.split(/\n/);
+      buffer = final ? "" : (lines.pop() ?? "");
+      for (const line of lines) {
+        if (settled) {
+          return;
+        }
+        processLine(line);
+      }
+      if (final && buffer.length > 0 && !settled) {
+        processLine(buffer);
+      }
+    };
+
+    stream.on("data", (chunk: Buffer) => {
+      if (settled) {
+        return;
+      }
+      buffer += decoder.write(chunk);
+      processBuffer(false);
+    });
+    stream.on("end", () => {
+      if (settled) {
+        return;
+      }
+      buffer += decoder.end();
+      processBuffer(true);
+      finish();
+    });
+    stream.on("error", (error: Error) => {
+      if (!settled) {
+        settled = true;
+        reject(error);
+      }
+    });
+  });
 }
 
 function selectEntries(input: {

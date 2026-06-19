@@ -108,7 +108,7 @@ function collectAiClassificationCandidates(input: {
   const candidates = new Map<string, FinanceIndustryClassificationCandidate>();
 
   const addCandidate = (breakdown: { categoryType: string; categoryName: string; amount: number }): void => {
-    if (breakdown.categoryType !== "employer" || breakdown.amount < input.minAmount) {
+    if (breakdown.categoryType !== "employer") {
       return;
     }
     const normalizedLabel = normalizeFinanceLabel(breakdown.categoryName, "employer");
@@ -140,7 +140,7 @@ function collectAiClassificationCandidates(input: {
     addCandidate(breakdown);
   }
 
-  return [...candidates.values()];
+  return [...candidates.values()].filter((candidate) => candidate.amount >= input.minAmount);
 }
 
 function mapClassificationRow(row: FinanceClassificationRow): FinanceLabelClassification {

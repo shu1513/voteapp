@@ -42,11 +42,17 @@ const CAL_ACCESS_OFFICE_CODE_LABELS: Record<string, readonly string[]> = {
   ATG: ["attorney general"],
   CON: ["controller", "state controller", "comptroller"],
   TRE: ["treasurer", "state treasurer"],
-  INS: ["insurance commissioner"],
+  INS: ["insurance commissioner", "commissioner of insurance"],
   SPI: ["superintendent of public instruction", "superintendent"],
   SEN: ["state senator", "state senate"],
-  ASM: ["assembly", "state assembly", "member of the state assembly", "assembly member"],
-  BOE: ["board of equalization"],
+  ASM: [
+    "assembly",
+    "state assembly",
+    "member of the state assembly",
+    "assembly member",
+    "state lower chamber legislator",
+  ],
+  BOE: ["board of equalization", "state board of equalization member"],
 };
 
 function requireNonEmpty(value: string, label: string): string {

@@ -12,6 +12,8 @@ describe("triggerCaliforniaCandidateFinanceSync script", () => {
         "--lookback-days",
         "2",
         "--timeout-ms=5000",
+        "--raw-zip=/tmp/dbwebexport.zip",
+        "--ai-classify-industries",
       ])
     ).toEqual({
       dryRun: false,
@@ -22,6 +24,10 @@ describe("triggerCaliforniaCandidateFinanceSync script", () => {
       electionLookbackDays: 2,
       electionLookaheadDays: undefined,
       timeoutMs: 5000,
+      rawDataZipPath: "/tmp/dbwebexport.zip",
+      rawDataCacheDir: undefined,
+      aiClassifyIndustries: true,
+      aiClassificationMinAmount: undefined,
     });
   });
 

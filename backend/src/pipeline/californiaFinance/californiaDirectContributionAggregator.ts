@@ -150,13 +150,17 @@ function isReceiptForControlledCommittee(input: {
   controlledCommitteeId: string;
   controlledCommitteeFilingIds: Set<string>;
 }): boolean {
+  const filingId = normalizeId(value(input.row, "FILING_ID"));
+  if (input.controlledCommitteeFilingIds.size > 0) {
+    return filingId.length > 0 && input.controlledCommitteeFilingIds.has(filingId);
+  }
+
   const rowCommitteeId = normalizeId(value(input.row, "CMTE_ID"));
   if (rowCommitteeId && rowCommitteeId === input.controlledCommitteeId) {
     return true;
   }
 
-  const filingId = normalizeId(value(input.row, "FILING_ID"));
-  return filingId.length > 0 && input.controlledCommitteeFilingIds.has(filingId);
+  return false;
 }
 
 function toDirectBreakdowns(input: {

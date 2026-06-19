@@ -166,6 +166,77 @@ describe("californiaCandidateFinanceSync", () => {
     expect(db.query).not.toHaveBeenCalled();
   });
 
+  it("writes outside group donor breakdowns and derived industries from CAL-ACCESS receipts", async () => {
+    const db = createMockDb();
+    const powerSearchClient = createPowerSearchClient();
+
+    const result = await syncCaliforniaCandidateFinance({
+      db,
+      ...baseInput(),
+      powerSearchClient,
+      outsideReceiptRowsByCommitteeId: new Map([
+        [
+          "1267335",
+          [
+            receipt({
+              CMTE_ID: "1267335",
+              FILING_ID: "F99",
+              CTRIB_EMP: "Google LLC",
+              CTRIB_OCC: "Engineer",
+              AMOUNT: "300.00",
+            }),
+          ],
+        ],
+      ]),
+      outsideReceiptSourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+    });
+
+    expect(result).toMatchObject({
+      outsideGroupsWritten: 2,
+      outsideGroupBreakdownsWritten: 3,
+    });
+
+    const outsideBreakdownCalls = db.query.mock.calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.ca_candidate_finance_outside_group_breakdowns")
+    );
+    expect(outsideBreakdownCalls.map((call) => call[1]?.slice(2, 8))).toEqual(
+      expect.arrayContaining([
+        ["1267335", "support", "employer", "Google LLC", 300, 1],
+        ["1267335", "support", "occupation", "Engineer", 300, 1],
+        ["1267335", "support", "industry", "technology", 300, 1],
+      ])
+    );
+  });
+
+  it("matches outside group receipts by filing id when filing ids are available", async () => {
+    const db = createMockDb();
+    const powerSearchClient = createPowerSearchClient();
+
+    const result = await syncCaliforniaCandidateFinance({
+      db,
+      ...baseInput(),
+      powerSearchClient,
+      outsideReceiptRowsByCommitteeId: new Map([
+        [
+          "1267335",
+          [
+            receipt({ CMTE_ID: "", FILING_ID: "F42", CTRIB_EMP: "Google LLC", AMOUNT: "300.00" }),
+            receipt({ CMTE_ID: "1267335", FILING_ID: "F99", CTRIB_EMP: "Hospital", AMOUNT: "900.00" }),
+          ],
+        ],
+      ]),
+      outsideCommitteeFilingIdsByCommitteeId: new Map([["1267335", ["F42"]]]),
+      outsideReceiptSourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+    });
+
+    expect(result.outsideGroupBreakdownsWritten).toBe(3);
+    const outsideBreakdownCalls = db.query.mock.calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.ca_candidate_finance_outside_group_breakdowns")
+    );
+    expect(outsideBreakdownCalls.map((call) => call[1]?.[6])).toContain(300);
+    expect(outsideBreakdownCalls.map((call) => call[1]?.[6])).not.toContain(900);
+  });
+
   it("writes a heartbeat summary when outside spending is disabled", async () => {
     const db = createMockDb();
     const powerSearchClient = createPowerSearchClient();
@@ -264,6 +335,40 @@ describe("californiaCandidateFinanceSync", () => {
     expect(
       db.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.ca_candidate_finance_direct_breakdowns"))
     ).toBe(true);
+  });
+
+  it("reports a written summary when direct receipts produce a summary and outside spending is empty", async () => {
+    const db = createMockDb();
+    const powerSearchClient = createPowerSearchClient({
+      summarizeIndependentSpendingByCandidate: vi.fn().mockResolvedValue(null),
+    });
+
+    const result = await syncCaliforniaCandidateFinance({
+      db,
+      ...baseInput(),
+      powerSearchClient,
+      directReceiptRows: [receipt({ TRAN_ID: "T1", AMOUNT: "125.00" })],
+      directSourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+    });
+
+    expect(result.summaryWritten).toBe(true);
+    expect(powerSearchClient.summarizeIndependentSpendingByCandidate).toHaveBeenCalledTimes(1);
+
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ca_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      125,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+      "2026-02-03T04:05:06.000Z",
+    ]);
   });
 
   it("uses shared AI industry classification for high-value unknown direct employers", async () => {

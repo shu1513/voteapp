@@ -53,6 +53,10 @@ export function parseUpsertCaliforniaCandidateFinanceSyncSchedulerArgs(
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
+    rawDataZipPath: parseFlagValue(args, "--raw-zip")?.trim() || undefined,
+    rawDataCacheDir: parseFlagValue(args, "--raw-cache-dir")?.trim() || undefined,
+    aiClassifyIndustries: args.includes("--ai-classify-industries"),
+    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 

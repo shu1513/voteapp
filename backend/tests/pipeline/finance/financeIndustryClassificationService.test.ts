@@ -128,6 +128,44 @@ describe("financeIndustryClassificationService", () => {
     expect(classifications.size).toBe(0);
   });
 
+  it("applies the AI classification threshold after aggregating split employer amounts", async () => {
+    const db = createDb();
+    const classifications = new Map<string, FinanceLabelClassification>();
+    const classifier = vi.fn().mockResolvedValue([aiClassification()]);
+
+    await resolveFinanceIndustryClassifications({
+      db,
+      directBreakdowns: [
+        {
+          categoryType: "employer",
+          categoryName: "Acme Quantum Labs LLC",
+          amount: 60_000,
+        },
+        {
+          categoryType: "employer",
+          categoryName: "ACME QUANTUM LABS",
+          amount: 50_000,
+        },
+      ],
+      outsideBreakdowns: [],
+      classifications,
+      classifier,
+      minAmount: 100_000,
+      dryRun: false,
+    });
+
+    expect(classifier).toHaveBeenCalledWith({
+      labels: [
+        {
+          rawLabel: "Acme Quantum Labs LLC",
+          labelType: "employer",
+          normalizedLabel: "ACME QUANTUM LABS",
+          amount: 110_000,
+        },
+      ],
+    });
+  });
+
   it("keeps finance syncs successful when AI classification fails", async () => {
     const db = createDb();
     const classifications = new Map<string, FinanceLabelClassification>();

@@ -28,6 +28,9 @@ describe("syncCaliforniaCandidateFinance script", () => {
         "--skip-outside",
         "--force",
         "--timeout-ms=5000",
+        "--raw-zip=/tmp/dbwebexport.zip",
+        "--ai-classify-industries",
+        "--ai-min-amount=250000",
       ])
     ).toEqual({
       candidateId: CANDIDATE_ID,
@@ -42,6 +45,10 @@ describe("syncCaliforniaCandidateFinance script", () => {
       includeOutside: false,
       force: true,
       timeoutMs: 5000,
+      rawZipPath: "/tmp/dbwebexport.zip",
+      rawCacheDir: undefined,
+      aiClassifyIndustries: true,
+      aiClassificationMinAmount: 250000,
     });
   });
 

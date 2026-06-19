@@ -62,6 +62,9 @@ describe("refreshCaliforniaCampaignFinanceRawData script", () => {
     expect(() => parseRefreshCaliforniaCampaignFinanceRawDataScriptArgs(["--timeout-ms=10abc"])).toThrow(
       "Invalid --timeout-ms value: 10abc"
     );
+    expect(() => parseRefreshCaliforniaCampaignFinanceRawDataScriptArgs(["--url", "--force"])).toThrow(
+      "Missing value for --url"
+    );
   });
 
   it("downloads a changed artifact into the cache and writes metadata", async () => {

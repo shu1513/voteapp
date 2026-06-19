@@ -2,6 +2,7 @@ import { Queue, Worker, type JobsOptions, type Processor } from "bullmq";
 import type { ConnectionOptions } from "bullmq";
 import { Pool } from "pg";
 
+import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   isCaliforniaCampaignFinanceEnabled,
@@ -25,6 +26,10 @@ export type CaliforniaCandidateFinanceSyncJobData = {
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
   timeoutMs?: number;
+  rawDataZipPath?: string;
+  rawDataCacheDir?: string;
+  aiClassifyIndustries?: boolean;
+  aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -33,6 +38,10 @@ export type CaliforniaCandidateFinanceSyncJobResult = CaliforniaCandidateFinance
   enabled: boolean;
   force: boolean;
   triggeredBy: NonNullable<CaliforniaCandidateFinanceSyncJobData["triggeredBy"]>;
+};
+
+export type CaliforniaCandidateFinanceSyncEnqueueOptions = {
+  jobId?: string;
 };
 
 type CaliforniaCandidateFinanceSyncSchedulerRuntimeConfig = {
@@ -113,12 +122,29 @@ function defaultJobOptions(): JobsOptions {
   };
 }
 
+function normalizeOptionalJobId(value: string | undefined): string | undefined {
+  const trimmed = value?.trim();
+  if (!trimmed) {
+    return undefined;
+  }
+  if (trimmed.includes(":")) {
+    throw new Error("California finance sync scheduler jobId must not contain ':'");
+  }
+  return trimmed;
+}
+
+function jobOptionsWithId(jobId: string | undefined): JobsOptions {
+  const normalizedJobId = normalizeOptionalJobId(jobId);
+  return normalizedJobId ? { ...defaultJobOptions(), jobId: normalizedJobId } : defaultJobOptions();
+}
+
 function assertValidJobOptions(data: CaliforniaCandidateFinanceSyncJobData): void {
   assertPositiveInteger(data.maxCandidates, "maxCandidates");
   assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
   assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
   assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
   assertPositiveInteger(data.timeoutMs, "timeoutMs");
+  assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
 }
 
 export function createCaliforniaCandidateFinanceSyncSchedulerQueue(): Queue<CaliforniaCandidateFinanceSyncJobData> {
@@ -126,6 +152,13 @@ export function createCaliforniaCandidateFinanceSyncSchedulerQueue(): Queue<Cali
     connection: getQueueConnection(),
     defaultJobOptions: defaultJobOptions(),
   });
+}
+
+export function buildCaliforniaCandidateFinanceLinkedElectionSyncJobId(now = new Date()): string {
+  if (!(now instanceof Date) || Number.isNaN(now.getTime())) {
+    throw new Error("Invalid California finance linked-election sync job date");
+  }
+  return `california-candidate-finance-linked-election-sync-${now.toISOString().slice(0, 10)}`;
 }
 
 export async function upsertRecurringCaliforniaCandidateFinanceSyncJobs(
@@ -163,6 +196,10 @@ export async function upsertRecurringCaliforniaCandidateFinanceSyncJobs(
           electionLookbackDays: jobData.electionLookbackDays,
           electionLookaheadDays: jobData.electionLookaheadDays,
           timeoutMs: jobData.timeoutMs,
+          rawDataZipPath: jobData.rawDataZipPath,
+          rawDataCacheDir: jobData.rawDataCacheDir,
+          aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
+          aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -174,7 +211,8 @@ export async function upsertRecurringCaliforniaCandidateFinanceSyncJobs(
 }
 
 export async function enqueueManualCaliforniaCandidateFinanceSyncJob(
-  jobData: CaliforniaCandidateFinanceSyncJobData = {}
+  jobData: CaliforniaCandidateFinanceSyncJobData = {},
+  options: CaliforniaCandidateFinanceSyncEnqueueOptions = {}
 ): Promise<string> {
   assertValidJobOptions(jobData);
   if (!isCaliforniaCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
@@ -195,10 +233,14 @@ export async function enqueueManualCaliforniaCandidateFinanceSyncJob(
         electionLookbackDays: jobData.electionLookbackDays,
         electionLookaheadDays: jobData.electionLookaheadDays,
         timeoutMs: jobData.timeoutMs,
+        rawDataZipPath: jobData.rawDataZipPath,
+        rawDataCacheDir: jobData.rawDataCacheDir,
+        aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
+        aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
-      defaultJobOptions()
+      jobOptionsWithId(options.jobId)
     );
     return job.id ?? "unknown";
   } finally {
@@ -252,6 +294,11 @@ export async function runCaliforniaCandidateFinanceSyncJob(
       electionLookbackDays: data.electionLookbackDays,
       electionLookaheadDays: data.electionLookaheadDays,
       powerSearchOptions: data.timeoutMs ? { timeoutMs: data.timeoutMs } : undefined,
+      rawDataZipPath: data.rawDataZipPath,
+      rawDataCacheDir: data.rawDataCacheDir,
+      financeIndustryClassifier:
+        data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
+      aiClassificationMinAmount: data.aiClassificationMinAmount,
     });
 
     return {

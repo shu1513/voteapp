@@ -13,7 +13,7 @@ function coverRow(overrides: Partial<CalAccessCampaignCoverRow> = {}): CalAccess
     FILER_NAML: "Newsom for California Governor 2026",
     ELECT_DATE: "11/3/2026 12:00:00 AM",
     CMTTE_TYPE: "C",
-    CONTROL_YN: "N",
+    CONTROL_YN: "Y",
     CAND_NAML: "NEWSOM",
     CAND_NAMF: "GAVIN",
     CAND_NAMT: "",
@@ -59,6 +59,50 @@ describe("californiaCandidateCommitteeResolver", () => {
       status: "matched",
       controlledCommitteeId: "1456045",
     });
+  });
+
+  it("matches app canonical office names to California office labels", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "State Lower Chamber Legislator",
+        electionYear: 2026,
+        campaignCoverRows: [
+          coverRow({
+            OFFICE_CD: "ASM",
+            OFFIC_DSCR: "State Assembly",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", controlledCommitteeId: "1456045" });
+
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "State Board of Equalization Member",
+        electionYear: 2026,
+        campaignCoverRows: [
+          coverRow({
+            OFFICE_CD: "BOE",
+            OFFIC_DSCR: "Board of Equalization",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", controlledCommitteeId: "1456045" });
+
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Commissioner of Insurance",
+        electionYear: 2026,
+        campaignCoverRows: [
+          coverRow({
+            OFFICE_CD: "INS",
+            OFFIC_DSCR: "Insurance Commissioner",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", controlledCommitteeId: "1456045" });
   });
 
   it("uses filer-name rows when the cover row committee name is missing", () => {

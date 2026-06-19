@@ -5,6 +5,7 @@ import { loadProjectEnv } from "../config/env.js";
 import {
   CAL_ACCESS_RAW_DATA_FETCH_TIMEOUT_MS,
   CAL_ACCESS_RAW_DATA_ZIP_URL,
+  DEFAULT_CAL_ACCESS_RAW_DATA_CACHE_DIR,
   parseCalAccessHttpsUrl,
   refreshCalAccessRawDataArtifactCache,
 } from "../pipeline/californiaFinance/calAccessRawDataArtifactCache.js";
@@ -14,7 +15,7 @@ import {
 } from "../pipeline/californiaFinance/calAccessRawDataManifest.js";
 import { probeCalAccessRawDataZip } from "../pipeline/californiaFinance/calAccessRawDataProbe.js";
 
-export const DEFAULT_CAL_ACCESS_RAW_DATA_CACHE_DIR = "scratch/california-campaign-finance";
+export { DEFAULT_CAL_ACCESS_RAW_DATA_CACHE_DIR };
 
 export type RefreshCaliforniaCampaignFinanceRawDataScriptOptions = {
   url: string;
@@ -36,10 +37,11 @@ function readValueFlags(args: readonly string[], name: string): string[] {
     }
     if (arg === name) {
       const next = args[index + 1];
-      if (next && !next.startsWith("--")) {
-        values.push(next);
-        index += 1;
+      if (!next || next.startsWith("--")) {
+        throw new Error(`Missing value for ${name}`);
       }
+      values.push(next);
+      index += 1;
     }
   }
 

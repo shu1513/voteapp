@@ -160,6 +160,13 @@ describe("californiaFinanceWriter", () => {
       outsideGroupBreakdownsWritten: 0,
     });
     const sql = db.query.mock.calls.map((call) => String(call[0]));
+    const summarySql = sql.find((statement) => statement.includes("INSERT INTO public.ca_candidate_finance_summaries"));
+    expect(summarySql).toContain(
+      "total_receipts = COALESCE(EXCLUDED.total_receipts, ca_candidate_finance_summaries.total_receipts)"
+    );
+    expect(summarySql).toContain(
+      "outside_support_total = COALESCE(EXCLUDED.outside_support_total, ca_candidate_finance_summaries.outside_support_total)"
+    );
     expect(sql.some((statement) => statement.includes("DELETE FROM public.ca_candidate_finance_direct_breakdowns"))).toBe(false);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.ca_candidate_finance_outside_groups"))).toBe(false);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.ca_candidate_finance_outside_group_breakdowns"))).toBe(

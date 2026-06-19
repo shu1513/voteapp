@@ -1629,6 +1629,19 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[8]?.[0]).toContain("public.ca_candidate_finance_direct_breakdowns");
     expect(query.mock.calls[9]?.[0]).toContain("public.ca_candidate_finance_outside_groups");
     expect(query.mock.calls[10]?.[0]).toContain("public.ca_candidate_finance_outside_group_breakdowns");
+    expect(String(query.mock.calls[7]?.[0])).not.toContain("DISTINCT ON");
+    expect(String(query.mock.calls[7]?.[0])).toContain("sum(summary.total_receipts)");
+    expect(String(query.mock.calls[7]?.[0])).toContain("max(summary.outside_support_total)");
+    expect(String(query.mock.calls[7]?.[0])).toContain("count(DISTINCT link.controlled_committee_id)");
+    expect(String(query.mock.calls[8]?.[0])).toContain(
+      "GROUP BY selected.candidate_id, selected.election_id, breakdown.category_type, breakdown.category_name"
+    );
+    expect(String(query.mock.calls[9]?.[0])).toContain("max(outside_group.amount)");
+    expect(String(query.mock.calls[9]?.[0])).toContain(
+      "GROUP BY selected.candidate_id, selected.election_id, outside_group.committee_id, outside_group.support_oppose"
+    );
+    expect(String(query.mock.calls[10]?.[0])).toContain("per_group AS");
+    expect(String(query.mock.calls[10]?.[0])).toContain("max(breakdown.amount)");
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("public.candidate_finance_summaries");
   });
 

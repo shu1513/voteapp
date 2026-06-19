@@ -7,6 +7,7 @@ import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 
 export const CAL_ACCESS_RAW_DATA_ZIP_URL = "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip";
 export const CAL_ACCESS_RAW_DATA_FETCH_TIMEOUT_MS = 30_000;
+export const DEFAULT_CAL_ACCESS_RAW_DATA_CACHE_DIR = "scratch/california-campaign-finance";
 export const CAL_ACCESS_RAW_DATA_CACHE_ZIP_FILE_NAME = "dbwebexport.zip";
 export const CAL_ACCESS_RAW_DATA_CACHE_METADATA_FILE_NAME = "dbwebexport.metadata.json";
 

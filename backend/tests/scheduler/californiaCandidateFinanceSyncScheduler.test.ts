@@ -359,4 +359,60 @@ describe("californiaCandidateFinanceSyncScheduler", () => {
     );
     expect(queueInstance.close).toHaveBeenCalledTimes(1);
   });
+
+  it("dedupes manual jobs when an explicit job id is provided", async () => {
+    process.env.CALIFORNIA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.CALIFORNIA_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    const queueInstance = {
+      add: vi.fn().mockResolvedValue({ id: "california-candidate-finance-linked-election-sync-2026-06-01" }),
+      close: vi.fn().mockResolvedValue(undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+    vi.doMock("../../src/config/env.js", () => ({
+      getPipelineEnv: () => ({
+        DATABASE_URL: "postgresql://localhost:5432/test",
+        REDIS_URL: "redis://localhost:6379/0",
+        AI_PROVIDER: "openai",
+        AI_MODEL: "gpt-5.4-mini",
+        AI_TIMEOUT_MS: 90000,
+        ANTHROPIC_WEB_SEARCH_MAX_USES: 3,
+        STATE_RESOURCES_PROMPT_VERSION: "state_resources_v2",
+        CENSUS_API_KEYS: [],
+      }),
+    }));
+
+    const {
+      buildCaliforniaCandidateFinanceLinkedElectionSyncJobId,
+      enqueueManualCaliforniaCandidateFinanceSyncJob,
+    } = await import("../../src/scheduler/californiaCandidateFinanceSyncScheduler.js");
+
+    const jobId = buildCaliforniaCandidateFinanceLinkedElectionSyncJobId(
+      new Date("2026-06-01T12:00:00.000Z")
+    );
+
+    await expect(
+      enqueueManualCaliforniaCandidateFinanceSyncJob(
+        {
+          force: true,
+          includeOutside: true,
+        },
+        { jobId }
+      )
+    ).resolves.toBe("california-candidate-finance-linked-election-sync-2026-06-01");
+
+    expect(queueInstance.add).toHaveBeenCalledWith(
+      "california_candidate_finance_sync_due",
+      expect.objectContaining({
+        force: true,
+        includeOutside: true,
+        triggeredBy: "manual",
+      }),
+      expect.objectContaining({
+        jobId: "california-candidate-finance-linked-election-sync-2026-06-01",
+      })
+    );
+    expect(queueInstance.close).toHaveBeenCalledTimes(1);
+  });
 });

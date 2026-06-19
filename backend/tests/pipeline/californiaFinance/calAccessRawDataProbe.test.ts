@@ -8,6 +8,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import {
   listCalAccessRawDataZipEntries,
   probeCalAccessRawDataZip,
+  readCalAccessRawDataTableRows,
 } from "../../../src/pipeline/californiaFinance/calAccessRawDataProbe.js";
 
 type ZipFixtureEntry = {
@@ -162,6 +163,28 @@ describe("calAccessRawDataProbe", () => {
     });
   });
 
+  it("handles empty file entries without creating an invalid read range", async () => {
+    const zipPath = await writeFixtureZip([{ fileName: "CalAccess/DBEXPORT/EMPTY.TSV", content: "" }]);
+
+    await expect(
+      probeCalAccessRawDataZip({
+        zipPath,
+        selectedFileNames: ["CalAccess/DBEXPORT/EMPTY.TSV"],
+      })
+    ).resolves.toMatchObject({
+      missingFileNames: [],
+      samples: [
+        {
+          fileName: "CalAccess/DBEXPORT/EMPTY.TSV",
+          headers: [],
+          rows: [],
+          rowObjects: [],
+          truncated: false,
+        },
+      ],
+    });
+  });
+
   it("samples deflated entries selected by filename pattern", async () => {
     const zipPath = await writeFixtureZip([
       {
@@ -198,6 +221,27 @@ describe("calAccessRawDataProbe", () => {
         ],
         truncated: false,
       },
+    ]);
+  });
+
+  it("streams full table rows with an optional predicate", async () => {
+    const zipPath = await writeFixtureZip([
+      {
+        fileName: "CalAccess/DATA/RCPT_CD.TSV",
+        content: "CMTE_ID\tFILING_ID\tAMOUNT\n1456045\tF1\t100.00\n9999999\tF2\t250.00\n1456045\tF3\t75.00\n",
+        compressionMethod: 8,
+      },
+    ]);
+
+    await expect(
+      readCalAccessRawDataTableRows({
+        zipPath,
+        fileName: "CalAccess/DATA/RCPT_CD.TSV",
+        predicate: (row) => row.CMTE_ID === "1456045",
+      })
+    ).resolves.toEqual([
+      { CMTE_ID: "1456045", FILING_ID: "F1", AMOUNT: "100.00" },
+      { CMTE_ID: "1456045", FILING_ID: "F3", AMOUNT: "75.00" },
     ]);
   });
 

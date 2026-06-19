@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  createCalAccessReceiptRowsForCommitteesCache,
   listDueCaliforniaCandidateFinanceSyncRows,
   syncDueCaliforniaCandidateFinance,
 } from "../../../src/pipeline/californiaFinance/californiaCandidateFinanceBatchSync.js";
@@ -170,6 +171,7 @@ describe("californiaCandidateFinanceBatchSync", () => {
       staleAfterDays: 3,
       electionLookbackDays: 30,
       powerSearchOptions: { timeoutMs: 1000 },
+      rawDataResolutionData: null,
     });
 
     expect(result).toMatchObject({
@@ -202,6 +204,8 @@ describe("californiaCandidateFinanceBatchSync", () => {
         sourceUrl: "https://powersearch.sos.ca.gov/",
         includeOutside: true,
         powerSearchOptions: { timeoutMs: 1000 },
+        directReceiptRows: undefined,
+        controlledCommitteeFilingIds: undefined,
       })
     );
     expect(db.query.mock.calls[0]?.[1]).toEqual([
@@ -211,6 +215,173 @@ describe("californiaCandidateFinanceBatchSync", () => {
       30,
       730,
     ]);
+  });
+
+  it("auto-links missing California finance links and passes cached direct receipt rows into sync", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Gavin Newsom",
+              election_year: 2026,
+              office_name: "Governor",
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "55555555-5555-4555-8555-555555555555" }] })
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Gavin Newsom",
+              election_year: 2026,
+              office_name: "Governor",
+              controlled_committee_id: "1456045",
+              controlled_committee_name: "Newsom for California Governor 2026",
+              source_url: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+              last_synced_at: null,
+              total_due_rows: "1",
+            },
+          ],
+        }),
+    };
+    const syncCaliforniaCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      dryRun: false,
+      outsideIncluded: true,
+      linkWritten: true,
+      summaryWritten: true,
+      directBreakdownsWritten: 3,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+    });
+    const financeIndustryClassifier = vi.fn();
+    const receiptRow = { CMTE_ID: "1456045", FILING_ID: "F1", AMOUNT: "100.00" };
+
+    await syncDueCaliforniaCandidateFinance({
+      db,
+      syncCaliforniaCandidateFinanceFn,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      financeIndustryClassifier,
+      aiClassificationMinAmount: 100_000,
+      rawDataResolutionData: {
+        zipPath: "/tmp/dbwebexport.zip",
+        sourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+        campaignCoverRows: [
+          {
+            FILING_ID: "F1",
+            FILER_ID: "1456045",
+            FILER_NAML: "Newsom for California Governor 2026",
+            ELECT_DATE: "11/3/2026 12:00:00 AM",
+            CAND_NAML: "NEWSOM",
+            CAND_NAMF: "GAVIN",
+            OFFICE_CD: "GOV",
+            OFFIC_DSCR: "Governor",
+          },
+        ],
+        filerNameRows: [],
+      },
+      rawDataReceiptData: {
+        zipPath: "/tmp/dbwebexport.zip",
+        sourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+        receiptRowsByCommitteeId: new Map([["1456045", [receiptRow]]]),
+        controlledCommitteeFilingIdsByCommitteeId: new Map([["1456045", ["F1"]]]),
+      },
+    });
+
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.candidate_elections AS candidate_election");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain(
+      "(office.scope || '::' || office.canonical_name) = ANY($5::text[])"
+    );
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      "2026-06-01T00:00:00.000Z",
+      25,
+      1,
+      730,
+      expect.arrayContaining([
+        "statewide::Governor",
+        "statewide::State Board of Equalization Member",
+        "state_upper::State Senator",
+        "state_lower::State Lower Chamber Legislator",
+      ]),
+    ]);
+    expect(db.query.mock.calls[0]?.[1]?.[4]).not.toContain("statewide::United States Senator");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.ca_candidate_finance_links");
+    expect(String(db.query.mock.calls[2]?.[0])).toContain("FROM public.ca_candidate_finance_links AS link");
+    expect(syncCaliforniaCandidateFinanceFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        directReceiptRows: [receiptRow],
+        controlledCommitteeFilingIds: ["F1"],
+        directSourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+        loadOutsideReceiptRowsForCommittees: expect.any(Function),
+        financeIndustryClassifier,
+        aiClassificationMinAmount: 100_000,
+      })
+    );
+  });
+
+  it("caches CAL-ACCESS receipt loads across overlapping outside committee requests", async () => {
+    const rowA = { CMTE_ID: "A1", FILING_ID: "FA", AMOUNT: "100.00" };
+    const rowB = { CMTE_ID: "B2", FILING_ID: "FB", AMOUNT: "200.00" };
+    const rowC = { CMTE_ID: "C3", FILING_ID: "FC", AMOUNT: "300.00" };
+    const load = vi.fn(async (committeeIds: readonly string[]) => ({
+      zipPath: "/tmp/dbwebexport.zip",
+      sourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+      receiptRowsByCommitteeId: new Map(
+        committeeIds.flatMap((committeeId) => {
+          if (committeeId === "A1") {
+            return [[committeeId, [rowA]]];
+          }
+          if (committeeId === "B2") {
+            return [[committeeId, [rowB]]];
+          }
+          if (committeeId === "C3") {
+            return [[committeeId, [rowC]]];
+          }
+          return [];
+        })
+      ),
+      controlledCommitteeFilingIdsByCommitteeId: new Map(
+        committeeIds.flatMap((committeeId) => {
+          if (committeeId === "A1") {
+            return [[committeeId, ["FA"]]];
+          }
+          if (committeeId === "B2") {
+            return [[committeeId, ["FB"]]];
+          }
+          if (committeeId === "C3") {
+            return [[committeeId, ["FC"]]];
+          }
+          return [];
+        })
+      ),
+    }));
+    const cachedLoad = createCalAccessReceiptRowsForCommitteesCache({ load });
+
+    const first = await cachedLoad([" a1 ", "B2"]);
+    const second = await cachedLoad(["b2", "C3"]);
+    const third = await cachedLoad(["D4"]);
+    const fourth = await cachedLoad(["d4"]);
+
+    expect(load).toHaveBeenCalledTimes(3);
+    expect(load.mock.calls[0]?.[0]).toEqual(["A1", "B2"]);
+    expect(load.mock.calls[1]?.[0]).toEqual(["C3"]);
+    expect(load.mock.calls[2]?.[0]).toEqual(["D4"]);
+    expect(first?.receiptRowsByCommitteeId.get("A1")).toEqual([rowA]);
+    expect(first?.receiptRowsByCommitteeId.get("B2")).toEqual([rowB]);
+    expect(second?.receiptRowsByCommitteeId.get("B2")).toEqual([rowB]);
+    expect(second?.receiptRowsByCommitteeId.get("C3")).toEqual([rowC]);
+    expect(third?.receiptRowsByCommitteeId.size).toBe(0);
+    expect(fourth?.receiptRowsByCommitteeId.size).toBe(0);
   });
 
   it("rejects invalid batch options before querying", async () => {

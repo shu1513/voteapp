@@ -18,6 +18,9 @@ describe("syncDueCaliforniaCandidateFinance script", () => {
         "--lookback-days=10",
         "--lookahead-days=365",
         "--timeout-ms=5000",
+        "--raw-cache-dir=/tmp/calaccess",
+        "--ai-classify-industries",
+        "--ai-min-amount=250000",
       ])
     ).toEqual({
       dryRun: true,
@@ -28,6 +31,10 @@ describe("syncDueCaliforniaCandidateFinance script", () => {
       electionLookbackDays: 10,
       electionLookaheadDays: 365,
       timeoutMs: 5000,
+      rawZipPath: undefined,
+      rawCacheDir: "/tmp/calaccess",
+      aiClassifyIndustries: true,
+      aiClassificationMinAmount: 250000,
     });
   });
 
