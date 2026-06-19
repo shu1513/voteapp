@@ -135,6 +135,63 @@ describe("californiaPowerSearchClient", () => {
     });
   });
 
+  it("filters independent expenditure rows to the requested candidate name", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(
+      jsonResponse({
+        amount: 3,
+        payload: [
+          {
+            Amount: 100,
+            ExpenderID: "1",
+            ExpenderName: "Support Group",
+            TargetCandidateName: "Newsom, Gavin",
+            ExpenderPosition: "S",
+          },
+          {
+            Amount: 200,
+            ExpenderID: "2",
+            ExpenderName: "Also Support",
+            TargetCandidateName: "Gavin Newsom",
+            ExpenderPosition: "S",
+          },
+          {
+            Amount: 300,
+            ExpenderID: "3",
+            ExpenderName: "Wrong Candidate Group",
+            TargetCandidateName: "Newsom, Jennifer",
+            ExpenderPosition: "S",
+          },
+        ],
+      })
+    ) as unknown as typeof fetch;
+
+    await expect(
+      summarizeCaliforniaIndependentSpendingByCandidate(
+        { candidateName: "Gavin Newsom", electionYear: 2022 },
+        { fetchImpl, timeoutMs: 1000 }
+      )
+    ).resolves.toMatchObject({
+      supportTotal: 300,
+      opposeTotal: 0,
+      groups: [
+        {
+          expenderId: "2",
+          expenderName: "Also Support",
+          amount: 200,
+        },
+        {
+          expenderId: "1",
+          expenderName: "Support Group",
+          amount: 100,
+        },
+      ],
+    });
+  });
+
+  it("rejects California election years before Power Search coverage", () => {
+    expect(() => toCaliforniaElectionCycle(2000)).toThrow("Invalid California election year");
+  });
+
   it("summarizes independent spending totals and groups", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       jsonResponse({

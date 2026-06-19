@@ -167,6 +167,48 @@ describe("californiaFinanceWriter", () => {
     );
   });
 
+  it("uses current snapshot keys when cleaning repeated writes with the same timestamp", async () => {
+    const db = createMockDb();
+    const syncedAt = new Date("2026-02-03T04:05:06.000Z");
+
+    await replaceCaliforniaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt,
+      directBreakdowns: [
+        {
+          categoryType: "occupation",
+          categoryName: "Attorney",
+          amount: 700,
+        },
+      ],
+    });
+    await replaceCaliforniaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt,
+      directBreakdowns: [
+        {
+          categoryType: "occupation",
+          categoryName: "Teacher",
+          amount: 500,
+        },
+      ],
+    });
+
+    const directDeleteCalls = db.query.mock.calls.filter((call) =>
+      String(call[0]).includes("DELETE FROM public.ca_candidate_finance_direct_breakdowns")
+    );
+    const lastDelete = directDeleteCalls.at(-1);
+    expect(String(lastDelete?.[0])).toContain("jsonb_to_recordset");
+    expect(String(lastDelete?.[0])).not.toContain("last_synced_at <");
+    expect(lastDelete?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      JSON.stringify([{ category_type: "occupation", category_name: "Teacher" }]),
+    ]);
+  });
+
   it("rolls back and releases the client when a transactional write fails", async () => {
     const client = {
       query: vi
@@ -206,6 +248,22 @@ describe("californiaFinanceWriter", () => {
         },
       })
     ).rejects.toThrow("California controlled committee id is required");
+
+    expect(db.query).not.toHaveBeenCalled();
+  });
+
+  it("rejects election years before California Power Search coverage", async () => {
+    const db = createMockDb();
+
+    await expect(
+      upsertCaliforniaFinanceLink({
+        db,
+        link: {
+          ...baseLink(),
+          electionYear: 2000,
+        },
+      })
+    ).rejects.toThrow("Invalid California finance election year");
 
     expect(db.query).not.toHaveBeenCalled();
   });

@@ -24,7 +24,9 @@ async function main(): Promise<void> {
 
   worker.on("completed", (job, result) => {
     console.log(
-      `California campaign finance sync scheduler worker completed jobId=${job.id} result=${JSON.stringify(result)}`
+      "California campaign finance sync scheduler worker completed " +
+        `jobId=${job.id} selected=${result.selectedCandidateCount} synced=${result.syncedCandidateCount} ` +
+        `failed=${result.failedCandidateCount} dryRun=${result.dryRun} includeOutside=${result.includeOutside}`
     );
   });
 

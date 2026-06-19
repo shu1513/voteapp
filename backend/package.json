@@ -47,6 +47,8 @@
     "candidates:finance:sync": "tsx src/scripts/syncCandidateFinance.ts",
     "california-candidates:finance:sync": "tsx src/scripts/syncCaliforniaCandidateFinance.ts",
     "california-candidates:finance:sync-due": "tsx src/scripts/syncDueCaliforniaCandidateFinance.ts",
+    "california-candidates:finance:raw:probe": "tsx src/scripts/probeCaliforniaCampaignFinanceRawData.ts",
+    "california-candidates:finance:raw:refresh": "tsx src/scripts/refreshCaliforniaCampaignFinanceRawData.ts",
     "california-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertCaliforniaCandidateFinanceSyncScheduler.ts",
     "california-candidates:finance:scheduler:worker": "tsx src/scripts/runCaliforniaCandidateFinanceSyncSchedulerWorker.ts",
     "california-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerCaliforniaCandidateFinanceSync.ts",

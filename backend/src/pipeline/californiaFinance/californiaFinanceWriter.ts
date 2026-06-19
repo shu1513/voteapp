@@ -1,5 +1,8 @@
 import type { Pool, PoolClient } from "pg";
 
+import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
   connect?: () => Promise<PoolClient>;
@@ -69,6 +72,7 @@ export type CaliforniaFinanceSnapshotInput = {
   directBreakdowns?: readonly CaliforniaFinanceDirectBreakdownInput[];
   outsideGroups?: readonly CaliforniaFinanceOutsideGroupInput[];
   outsideGroupBreakdowns?: readonly CaliforniaFinanceOutsideGroupBreakdownInput[];
+  classifications?: readonly FinanceLabelClassification[];
 };
 
 export type CaliforniaFinanceSnapshotWriteResult = {
@@ -88,7 +92,7 @@ function requireNonEmpty(value: string, fieldName: string): string {
 }
 
 function normalizeElectionYear(value: number): number {
-  if (!Number.isInteger(value) || value < 1970 || value > 2100) {
+  if (!Number.isInteger(value) || value < 2001 || value > 2100) {
     throw new Error(`Invalid California finance election year: ${value}`);
   }
   return value;
@@ -393,16 +397,28 @@ async function deleteStaleDirectBreakdowns(input: {
   db: Queryable;
   linkId: string;
   electionYear: number;
-  syncedAt: Date;
+  breakdowns: readonly CaliforniaFinanceDirectBreakdownInput[];
 }): Promise<void> {
+  const keys = input.breakdowns.map((breakdown) => ({
+    category_type: breakdown.categoryType,
+    category_name: requireNonEmpty(breakdown.categoryName, "California finance direct breakdown category"),
+  }));
   await input.db.query(
     `
       DELETE FROM public.ca_candidate_finance_direct_breakdowns
       WHERE link_id = $1::uuid
         AND election_year = $2
-        AND last_synced_at < $3::timestamptz
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            category_type text,
+            category_name text
+          )
+          WHERE keep.category_type = ca_candidate_finance_direct_breakdowns.category_type
+            AND keep.category_name = ca_candidate_finance_direct_breakdowns.category_name
+        )
     `,
-    [requireNonEmpty(input.linkId, "California finance link id"), normalizeElectionYear(input.electionYear), input.syncedAt.toISOString()]
+    [requireNonEmpty(input.linkId, "California finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
   );
 }
 
@@ -410,30 +426,60 @@ async function deleteStaleOutsideRows(input: {
   db: Queryable;
   linkId: string;
   electionYear: number;
-  syncedAt: Date;
+  groups: readonly CaliforniaFinanceOutsideGroupInput[];
+  breakdowns: readonly CaliforniaFinanceOutsideGroupBreakdownInput[];
 }): Promise<void> {
-  const params = [
-    requireNonEmpty(input.linkId, "California finance link id"),
-    normalizeElectionYear(input.electionYear),
-    input.syncedAt.toISOString(),
-  ];
+  const linkId = requireNonEmpty(input.linkId, "California finance link id");
+  const electionYear = normalizeElectionYear(input.electionYear);
+
+  const breakdownKeys = input.breakdowns.map((breakdown) => ({
+    committee_id: requireNonEmpty(breakdown.committeeId, "California outside breakdown committee id"),
+    support_oppose: breakdown.supportOppose,
+    category_type: breakdown.categoryType,
+    category_name: requireNonEmpty(breakdown.categoryName, "California outside breakdown category"),
+  }));
   await input.db.query(
     `
       DELETE FROM public.ca_candidate_finance_outside_group_breakdowns
       WHERE link_id = $1::uuid
         AND election_year = $2
-        AND last_synced_at < $3::timestamptz
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            committee_id text,
+            support_oppose text,
+            category_type text,
+            category_name text
+          )
+          WHERE keep.committee_id = ca_candidate_finance_outside_group_breakdowns.committee_id
+            AND keep.support_oppose = ca_candidate_finance_outside_group_breakdowns.support_oppose
+            AND keep.category_type = ca_candidate_finance_outside_group_breakdowns.category_type
+            AND keep.category_name = ca_candidate_finance_outside_group_breakdowns.category_name
+        )
     `,
-    params
+    [linkId, electionYear, JSON.stringify(breakdownKeys)]
   );
+
+  const groupKeys = input.groups.map((group) => ({
+    committee_id: requireNonEmpty(group.committeeId, "California outside group committee id"),
+    support_oppose: group.supportOppose,
+  }));
   await input.db.query(
     `
       DELETE FROM public.ca_candidate_finance_outside_groups
       WHERE link_id = $1::uuid
         AND election_year = $2
-        AND last_synced_at < $3::timestamptz
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            committee_id text,
+            support_oppose text
+          )
+          WHERE keep.committee_id = ca_candidate_finance_outside_groups.committee_id
+            AND keep.support_oppose = ca_candidate_finance_outside_groups.support_oppose
+        )
     `,
-    params
+    [linkId, electionYear, JSON.stringify(groupKeys)]
   );
 }
 
@@ -456,7 +502,7 @@ export async function replaceCaliforniaCandidateFinanceSnapshot(
       await upsertDirectBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
     }
     if (input.directBreakdowns) {
-      await deleteStaleDirectBreakdowns({ db, linkId, electionYear, syncedAt });
+      await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: input.directBreakdowns });
     }
 
     for (const group of input.outsideGroups ?? []) {
@@ -466,7 +512,17 @@ export async function replaceCaliforniaCandidateFinanceSnapshot(
       await upsertOutsideGroupBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
     }
     if (input.outsideGroups || input.outsideGroupBreakdowns) {
-      await deleteStaleOutsideRows({ db, linkId, electionYear, syncedAt });
+      await deleteStaleOutsideRows({
+        db,
+        linkId,
+        electionYear,
+        groups: input.outsideGroups ?? [],
+        breakdowns: input.outsideGroupBreakdowns ?? [],
+      });
+    }
+
+    for (const classification of input.classifications ?? []) {
+      await upsertFinanceLabelClassification({ db, classification });
     }
 
     return {

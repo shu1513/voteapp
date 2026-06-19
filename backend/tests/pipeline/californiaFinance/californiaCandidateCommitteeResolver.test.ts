@@ -1,0 +1,190 @@
+import { describe, expect, it } from "vitest";
+
+import {
+  resolveCaliforniaCandidateCommittee,
+  type CalAccessCampaignCoverRow,
+} from "../../../src/pipeline/californiaFinance/californiaCandidateCommitteeResolver.js";
+
+function coverRow(overrides: Partial<CalAccessCampaignCoverRow> = {}): CalAccessCampaignCoverRow {
+  return {
+    FILING_ID: "1",
+    FORM_TYPE: "F460",
+    FILER_ID: "1456045",
+    FILER_NAML: "Newsom for California Governor 2026",
+    ELECT_DATE: "11/3/2026 12:00:00 AM",
+    CMTTE_TYPE: "C",
+    CONTROL_YN: "N",
+    CAND_NAML: "NEWSOM",
+    CAND_NAMF: "GAVIN",
+    CAND_NAMT: "",
+    OFFICE_CD: "GOV",
+    OFFIC_DSCR: "Governor",
+    JURIS_CD: "STW",
+    DIST_NO: "",
+    SUP_OPP_CD: "",
+    ...overrides,
+  };
+}
+
+describe("californiaCandidateCommitteeResolver", () => {
+  it("matches a candidate committee by exact candidate, office, and election year", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow()],
+        sourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+      })
+    ).toEqual({
+      status: "matched",
+      controlledCommitteeId: "1456045",
+      controlledCommitteeName: "Newsom for California Governor 2026",
+      confidence: "exact",
+      source: "cal_access",
+      sourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+      matchedCoverRowCount: 1,
+    });
+  });
+
+  it("tolerates last-first input and middle initials without fuzzy matching", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Newsom, Gavin C.",
+        officeName: "GOV",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow()],
+      })
+    ).toMatchObject({
+      status: "matched",
+      controlledCommitteeId: "1456045",
+    });
+  });
+
+  it("uses filer-name rows when the cover row committee name is missing", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow({ FILER_NAML: "" })],
+        filerNameRows: [
+          {
+            FILER_ID: "1456045",
+            FILER_TYPE: "CTL",
+            STATUS: "ACTIVE",
+            NAML: "NEWSOM FOR GOVERNOR 2026",
+            NAMF: "",
+            CITY: "SACRAMENTO",
+            ST: "CA",
+          },
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      controlledCommitteeName: "NEWSOM FOR GOVERNOR 2026",
+    });
+  });
+
+  it("returns ambiguous instead of guessing when multiple committees match", () => {
+    const result = resolveCaliforniaCandidateCommittee({
+      candidateName: "Gavin Newsom",
+      officeName: "Governor",
+      electionYear: 2026,
+      campaignCoverRows: [
+        coverRow({ FILER_ID: "1456045", FILER_NAML: "Newsom for California Governor 2026" }),
+        coverRow({ FILER_ID: "1999999", FILER_NAML: "Californians for Newsom 2026" }),
+      ],
+    });
+
+    expect(result).toEqual({
+      status: "ambiguous",
+      reason: "multiple_matching_committees",
+      candidateNameNormalized: "GAVIN NEWSOM",
+      officeNameNormalized: "GOVERNOR",
+      matches: [
+        {
+          controlledCommitteeId: "1456045",
+          controlledCommitteeName: "Newsom for California Governor 2026",
+          confidence: "exact",
+          source: "cal_access",
+          sourceUrl: null,
+          matchedCoverRowCount: 1,
+        },
+        {
+          controlledCommitteeId: "1999999",
+          controlledCommitteeName: "Californians for Newsom 2026",
+          confidence: "exact",
+          source: "cal_access",
+          sourceUrl: null,
+          matchedCoverRowCount: 1,
+        },
+      ],
+    });
+  });
+
+  it("returns unmatched when candidate, office, or election year do not line up", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Attorney General",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow()],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
+
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Governor",
+        electionYear: 2030,
+        campaignCoverRows: [coverRow()],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
+
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Jennifer Newsom",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow()],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
+  });
+
+  it("does not fuzzy-match candidate typos", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsome",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow()],
+      })
+    ).toEqual({
+      status: "unmatched",
+      reason: "no_candidate_office_year_match",
+      candidateNameNormalized: "GAVIN NEWSOME",
+      officeNameNormalized: "GOVERNOR",
+    });
+  });
+
+  it("validates required resolver inputs", () => {
+    expect(() =>
+      resolveCaliforniaCandidateCommittee({
+        candidateName: " ",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [],
+      })
+    ).toThrow("candidateName is required");
+
+    expect(() =>
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Governor",
+        electionYear: 1899,
+        campaignCoverRows: [],
+      })
+    ).toThrow("Invalid California committee resolver election year");
+  });
+});

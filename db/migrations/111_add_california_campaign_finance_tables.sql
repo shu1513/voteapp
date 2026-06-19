@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS public.ca_candidate_finance_links (
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
   CONSTRAINT ca_candidate_finance_links_year_check
-    CHECK (election_year BETWEEN 1970 AND 2100),
+    CHECK (election_year BETWEEN 2001 AND 2100),
   CONSTRAINT ca_candidate_finance_links_candidate_name_check
     CHECK (btrim(candidate_name_normalized) <> ''),
   CONSTRAINT ca_candidate_finance_links_office_name_check
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS public.ca_candidate_finance_summaries (
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
   CONSTRAINT ca_candidate_finance_summaries_year_check
-    CHECK (election_year BETWEEN 1970 AND 2100),
+    CHECK (election_year BETWEEN 2001 AND 2100),
   CONSTRAINT ca_candidate_finance_summaries_amounts_check
     CHECK (
       (total_receipts IS NULL OR total_receipts >= 0)
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS public.ca_candidate_finance_direct_breakdowns (
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
   CONSTRAINT ca_candidate_finance_direct_breakdowns_year_check
-    CHECK (election_year BETWEEN 1970 AND 2100),
+    CHECK (election_year BETWEEN 2001 AND 2100),
   CONSTRAINT ca_candidate_finance_direct_breakdowns_type_check
     CHECK (category_type IN ('occupation', 'employer', 'industry', 'contribution_size')),
   CONSTRAINT ca_candidate_finance_direct_breakdowns_name_check
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS public.ca_candidate_finance_outside_groups (
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
   CONSTRAINT ca_candidate_finance_outside_groups_year_check
-    CHECK (election_year BETWEEN 1970 AND 2100),
+    CHECK (election_year BETWEEN 2001 AND 2100),
   CONSTRAINT ca_candidate_finance_outside_groups_committee_id_check
     CHECK (btrim(committee_id) <> ''),
   CONSTRAINT ca_candidate_finance_outside_groups_committee_name_check
@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS public.ca_candidate_finance_outside_group_breakdowns 
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
   CONSTRAINT ca_candidate_finance_outside_group_breakdowns_year_check
-    CHECK (election_year BETWEEN 1970 AND 2100),
+    CHECK (election_year BETWEEN 2001 AND 2100),
   CONSTRAINT ca_candidate_finance_outside_group_breakdowns_committee_id_check
     CHECK (btrim(committee_id) <> ''),
   CONSTRAINT ca_candidate_finance_outside_group_breakdowns_support_oppose_check

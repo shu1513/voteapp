@@ -1,3 +1,5 @@
+import { pathToFileURL } from "node:url";
+
 import { loadProjectEnv } from "../config/env.js";
 import { isCaliforniaCampaignFinanceEnabled } from "../config/featureFlags.js";
 import {
@@ -15,18 +17,23 @@ function parseFlagValue(args: readonly string[], name: string): string | null {
   const index = args.indexOf(name);
   if (index >= 0) {
     const next = args[index + 1];
-    if (next && !next.startsWith("--")) {
-      return next;
+    if (!next || next.startsWith("--")) {
+      throw new Error(`Missing ${name} value`);
     }
+    return next;
   }
 
   return null;
 }
 
 function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
-  const value = parseFlagValue(args, name)?.trim();
-  if (!value) {
+  const raw = parseFlagValue(args, name);
+  if (raw === null) {
     return undefined;
+  }
+  const value = raw.trim();
+  if (value.length === 0) {
+    throw new Error(`Invalid ${name} value: ${raw}`);
   }
   if (!/^[1-9]\d*$/.test(value)) {
     throw new Error(`Invalid ${name} value: ${value}`);
@@ -34,7 +41,9 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(value);
 }
 
-function parseJobData(args: readonly string[]): CaliforniaCandidateFinanceSyncJobData {
+export function parseUpsertCaliforniaCandidateFinanceSyncSchedulerArgs(
+  args: readonly string[]
+): CaliforniaCandidateFinanceSyncJobData {
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),
@@ -49,7 +58,7 @@ function parseJobData(args: readonly string[]): CaliforniaCandidateFinanceSyncJo
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  const jobData = parseJobData(process.argv.slice(2));
+  const jobData = parseUpsertCaliforniaCandidateFinanceSyncSchedulerArgs(process.argv.slice(2));
   const enabled = isCaliforniaCampaignFinanceEnabled();
   await upsertRecurringCaliforniaCandidateFinanceSyncJobs(jobData);
   console.log(
@@ -59,7 +68,10 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch((error) => {
-  console.error("California campaign finance recurring scheduler upsert failed:", error);
-  process.exit(1);
-});
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    console.error("California campaign finance recurring scheduler upsert failed:", error);
+    process.exit(1);
+  });
+}

@@ -1356,7 +1356,7 @@ describe("lookupElectionDetailById", () => {
             contributor_count: 8,
             source_url: "https://www.fec.gov/data/independent-expenditures/",
             explanation:
-              "Technology is a top outside-spending support industry because Google LLC contributed to Support Candidate PAC, which reported independent spending supporting this candidate.",
+              "The Technology category is a top outside-spending support industry because Google LLC contributed to Support Candidate PAC, which reported independent spending supporting this candidate.",
             supporting_organizations: [
               {
                 organization_name: "Google LLC",
@@ -1439,13 +1439,13 @@ describe("lookupElectionDetailById", () => {
             election_id: officeElectionId,
             controlled_committee_id: "1456045",
             election_year: 2026,
-            total_receipts: null,
+            total_receipts: "2750.00",
             total_disbursements: null,
             cash_on_hand: null,
             debts_owed: null,
             outside_support_total: "300.00",
             outside_oppose_total: "50.00",
-            source_url: "https://powersearch.sos.ca.gov:3000/ie/search?candidatename=Newsom%2C+Gavin&electioncycle=2025",
+            source_url: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
             last_synced_at: "2026-02-03 04:05:06+00",
           },
         ],
@@ -1460,6 +1460,24 @@ describe("lookupElectionDetailById", () => {
             amount: "125.00",
             contributor_count: 2,
             source_url: "https://powersearch.sos.ca.gov/advanced.php",
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "employer",
+            category_name: "Google LLC",
+            amount: "2500.00",
+            contributor_count: 4,
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "industry",
+            category_name: "technology",
+            amount: "2500.00",
+            contributor_count: 4,
+            source_url: null,
           },
         ],
       })
@@ -1485,7 +1503,28 @@ describe("lookupElectionDetailById", () => {
           },
         ],
       })
-      .mockResolvedValueOnce({ rows: [] });
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "environmental_group",
+            amount: "175.00",
+            contributor_count: "3",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "50.00",
+            contributor_count: "1",
+            source_url: "https://powersearch.sos.ca.gov:3000/ie/search?candidatename=Newsom%2C+Gavin&electioncycle=2025",
+          },
+        ],
+      });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
@@ -1496,7 +1535,7 @@ describe("lookupElectionDetailById", () => {
       controlled_committee_id: "1456045",
       last_synced_at: "2026-02-03 04:05:06+00",
       direct_campaign: {
-        total_raised: null,
+        total_raised: 2750,
         total_spent: null,
         cash_on_hand: null,
         debts_owed: null,
@@ -1508,8 +1547,22 @@ describe("lookupElectionDetailById", () => {
             source_url: "https://powersearch.sos.ca.gov/advanced.php",
           },
         ],
-        top_employers: [],
-        top_industries: [],
+        top_employers: [
+          {
+            category_name: "Google LLC",
+            amount: 2500,
+            contributor_count: 4,
+            source_url: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+          },
+        ],
+        top_industries: [
+          {
+            category_name: "technology",
+            amount: 2500,
+            contributor_count: 4,
+            source_url: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+          },
+        ],
       },
       outside_spending: {
         support_total: 300,
@@ -1532,8 +1585,22 @@ describe("lookupElectionDetailById", () => {
             source_url: "https://powersearch.sos.ca.gov:3000/",
           },
         ],
-        top_supporting_industries: [],
-        top_opposing_industries: [],
+        top_supporting_industries: [
+          {
+            category_name: "environmental_group",
+            amount: 175,
+            contributor_count: 3,
+            source_url: "https://powersearch.sos.ca.gov:3000/",
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 50,
+            contributor_count: 1,
+            source_url: "https://powersearch.sos.ca.gov:3000/ie/search?candidatename=Newsom%2C+Gavin&electioncycle=2025",
+          },
+        ],
       },
       backing_summary: {
         top_direct_donor_occupations: [
@@ -1544,7 +1611,17 @@ describe("lookupElectionDetailById", () => {
             source_url: "https://powersearch.sos.ca.gov/advanced.php",
           },
         ],
-        top_outside_supporting_industries: [],
+        top_outside_supporting_industries: [
+          {
+            category_name: "environmental_group",
+            amount: 175,
+            contributor_count: 3,
+            source_url: "https://powersearch.sos.ca.gov:3000/",
+            explanation:
+              "The Environmental groups category is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported independent spending supporting this candidate.",
+            supporting_organizations: [],
+          },
+        ],
       },
     });
     expect(query).toHaveBeenCalledTimes(11);

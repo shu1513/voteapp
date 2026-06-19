@@ -759,10 +759,10 @@ function buildOutsideIndustrySupportExplanation(
 ): string {
   const displayName = financeIndustryDisplayName(industryName);
   if (evidence.length === 0) {
-    return `${displayName} is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported independent spending supporting this candidate.`;
+    return `The ${displayName} category is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported independent spending supporting this candidate.`;
   }
 
-  return `${displayName} is a top outside-spending support industry because ${formatShortList(
+  return `The ${displayName} category is a top outside-spending support industry because ${formatShortList(
     evidence.map((item) => item.organization_name)
   )} contributed to ${formatShortList(
     evidence.map((item) => item.committee_name)
@@ -1675,6 +1675,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
   const fecSummaries = await loadFecCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
 
   const merged = new Map(californiaSummaries);
+  // Federal FEC summaries intentionally win when both sources exist for the same candidate/election.
   for (const [key, summary] of fecSummaries) {
     merged.set(key, summary);
   }

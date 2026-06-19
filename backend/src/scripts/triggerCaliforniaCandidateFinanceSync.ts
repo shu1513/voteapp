@@ -16,18 +16,23 @@ function parseFlagValue(args: readonly string[], name: string): string | null {
   const index = args.indexOf(name);
   if (index >= 0) {
     const next = args[index + 1];
-    if (next && !next.startsWith("--")) {
-      return next;
+    if (!next || next.startsWith("--")) {
+      throw new Error(`Missing ${name} value`);
     }
+    return next;
   }
 
   return null;
 }
 
 function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
-  const value = parseFlagValue(args, name)?.trim();
-  if (!value) {
+  const raw = parseFlagValue(args, name);
+  if (raw === null) {
     return undefined;
+  }
+  const value = raw.trim();
+  if (value.length === 0) {
+    throw new Error(`Invalid ${name} value: ${raw}`);
   }
   if (!/^[1-9]\d*$/.test(value)) {
     throw new Error(`Invalid ${name} value: ${value}`);
@@ -54,6 +59,10 @@ async function main(): Promise<void> {
   loadProjectEnv();
   const jobData = parseCaliforniaCandidateFinanceSyncTriggerArgs(process.argv.slice(2));
   const jobId = await enqueueManualCaliforniaCandidateFinanceSyncJob(jobData);
+  if (jobId === "disabled") {
+    console.log("California campaign finance sync is disabled; job was not enqueued");
+    return;
+  }
   console.log(
     `California campaign finance sync job enqueued (jobId=${jobId} force=${Boolean(
       jobData.force

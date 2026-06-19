@@ -89,6 +89,36 @@ function normalizeCandidateName(value: string): string {
   return normalized;
 }
 
+function candidateNameMatchKeys(value: string): Set<string> {
+  const compact = normalizeCandidateName(value)
+    .toUpperCase()
+    .replace(/[.'"]/g, "")
+    .replace(/[^A-Z0-9, ]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const keys = new Set<string>([compact.replace(/,/g, "").replace(/\s+/g, " ").trim()]);
+  const commaParts = compact
+    .split(",")
+    .map((part) => part.trim())
+    .filter((part) => part.length > 0);
+
+  if (commaParts.length === 2) {
+    keys.add(`${commaParts[1]} ${commaParts[0]}`.replace(/\s+/g, " ").trim());
+  }
+
+  return keys;
+}
+
+function candidateNamesMatch(left: string, right: string): boolean {
+  const leftKeys = candidateNameMatchKeys(left);
+  for (const key of candidateNameMatchKeys(right)) {
+    if (leftKeys.has(key)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function normalizeElectionYear(value: number): number {
   if (!Number.isInteger(value) || value < 2001 || value > 2100) {
     throw new CaliforniaPowerSearchClientError("invalid_request", `Invalid California election year: ${value}`);
@@ -252,7 +282,10 @@ function parseIndependentExpenditurePayload(
   const reportedRowCount = getNumber(payload, "amount");
   const expenditures = payload.payload
     .map((row) => parseIndependentExpenditureRow(row, input.sourceUrl))
-    .filter((row): row is CaliforniaIndependentExpenditure => row !== null);
+    .filter(
+      (row): row is CaliforniaIndependentExpenditure =>
+        row !== null && candidateNamesMatch(row.candidateName, candidateName)
+    );
 
   return {
     candidateName,

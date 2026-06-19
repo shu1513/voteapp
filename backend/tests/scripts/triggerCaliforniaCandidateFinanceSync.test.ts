@@ -37,6 +37,9 @@ describe("triggerCaliforniaCandidateFinanceSync script", () => {
     expect(() => parseCaliforniaCandidateFinanceSyncTriggerArgs(["--max-candidates=5x"])).toThrow(
       "Invalid --max-candidates value"
     );
+    expect(() => parseCaliforniaCandidateFinanceSyncTriggerArgs(["--max-candidates"])).toThrow(
+      "Missing --max-candidates value"
+    );
     expect(() => parseCaliforniaCandidateFinanceSyncTriggerArgs(["--timeout-ms=0"])).toThrow(
       "Invalid --timeout-ms value"
     );
