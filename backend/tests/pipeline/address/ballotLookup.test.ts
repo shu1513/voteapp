@@ -1382,6 +1382,179 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced California finance summaries for California candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("CALIFORNIA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "06",
+            district_name: "California",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Gavin Newsom",
+            party: "Democratic",
+            is_incumbent: true,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "CA",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            controlled_committee_id: "1456045",
+            election_year: 2026,
+            total_receipts: null,
+            total_disbursements: null,
+            cash_on_hand: null,
+            debts_owed: null,
+            outside_support_total: "300.00",
+            outside_oppose_total: "50.00",
+            source_url: "https://powersearch.sos.ca.gov:3000/ie/search?candidatename=Newsom%2C+Gavin&electioncycle=2025",
+            last_synced_at: "2026-02-03 04:05:06+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Attorney",
+            amount: "125.00",
+            contributor_count: 2,
+            source_url: "https://powersearch.sos.ca.gov/advanced.php",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "1267335",
+            committee_name: "Democratic Club of Ventura",
+            support_oppose: "support",
+            amount: "300.00",
+            source_url: "https://powersearch.sos.ca.gov:3000/ie/search?candidatename=Newsom%2C+Gavin&electioncycle=2025",
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "1442978",
+            committee_name: "SAFE CA INC",
+            support_oppose: "oppose",
+            amount: "50.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "CALIFORNIA_SOS",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "1456045",
+      last_synced_at: "2026-02-03 04:05:06+00",
+      direct_campaign: {
+        total_raised: null,
+        total_spent: null,
+        cash_on_hand: null,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 125,
+            contributor_count: 2,
+            source_url: "https://powersearch.sos.ca.gov/advanced.php",
+          },
+        ],
+        top_employers: [],
+        top_industries: [],
+      },
+      outside_spending: {
+        support_total: 300,
+        oppose_total: 50,
+        top_supporting_groups: [
+          {
+            committee_id: "1267335",
+            committee_name: "Democratic Club of Ventura",
+            support_oppose: "support",
+            amount: 300,
+            source_url: "https://powersearch.sos.ca.gov:3000/ie/search?candidatename=Newsom%2C+Gavin&electioncycle=2025",
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "1442978",
+            committee_name: "SAFE CA INC",
+            support_oppose: "oppose",
+            amount: 50,
+            source_url: "https://powersearch.sos.ca.gov:3000/",
+          },
+        ],
+        top_supporting_industries: [],
+        top_opposing_industries: [],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 125,
+            contributor_count: 2,
+            source_url: "https://powersearch.sos.ca.gov/advanced.php",
+          },
+        ],
+        top_outside_supporting_industries: [],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(11);
+    expect(query.mock.calls[7]?.[0]).toContain("public.ca_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.ca_candidate_finance_direct_breakdowns");
+    expect(query.mock.calls[9]?.[0]).toContain("public.ca_candidate_finance_outside_groups");
+    expect(query.mock.calls[10]?.[0]).toContain("public.ca_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("public.candidate_finance_summaries");
+  });
+
   it("omits finance summaries without querying finance tables when candidate finance is disabled", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi
