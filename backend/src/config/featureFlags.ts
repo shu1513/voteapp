@@ -48,3 +48,21 @@ export function isCaliforniaCampaignFinanceRawDataRefreshEnabled(force = false):
     (force || readBooleanEnv("CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
   );
 }
+
+export function isColoradoCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("COLORADO_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isColoradoCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isColoradoCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("COLORADO_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isColoradoTracerRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isColoradoCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}

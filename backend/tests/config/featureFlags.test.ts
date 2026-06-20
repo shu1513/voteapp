@@ -2,7 +2,11 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import {
   isCaliforniaCampaignFinanceEnabled,
+  isCaliforniaCampaignFinanceRawDataRefreshEnabled,
   isCaliforniaCampaignFinanceSyncEnabled,
+  isColoradoCampaignFinanceEnabled,
+  isColoradoCampaignFinanceSyncEnabled,
+  isColoradoTracerRawDataRefreshEnabled,
   isPresidentialElectionsEnabled,
   isPresidentialFeatureEnabled,
 } from "../../src/config/featureFlags.js";
@@ -11,6 +15,10 @@ const ORIGINAL_VALUE = process.env.PRESIDENTIAL_ELECTIONS_ENABLED;
 const ORIGINAL_ROSTER_VALUE = process.env.PRESIDENTIAL_ROSTER_RESEARCH_ENABLED;
 const ORIGINAL_CALIFORNIA_FINANCE_VALUE = process.env.CALIFORNIA_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_CALIFORNIA_FINANCE_SYNC_VALUE = process.env.CALIFORNIA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_CALIFORNIA_RAW_REFRESH_VALUE = process.env.CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED;
+const ORIGINAL_COLORADO_FINANCE_VALUE = process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_COLORADO_FINANCE_SYNC_VALUE = process.env.COLORADO_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_COLORADO_RAW_REFRESH_VALUE = process.env.COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED;
 
 describe("featureFlags", () => {
   afterEach(() => {
@@ -33,6 +41,26 @@ describe("featureFlags", () => {
       delete process.env.CALIFORNIA_CAMPAIGN_FINANCE_SYNC_ENABLED;
     } else {
       process.env.CALIFORNIA_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_CALIFORNIA_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_CALIFORNIA_RAW_REFRESH_VALUE === undefined) {
+      delete process.env.CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED;
+    } else {
+      process.env.CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED = ORIGINAL_CALIFORNIA_RAW_REFRESH_VALUE;
+    }
+    if (ORIGINAL_COLORADO_FINANCE_VALUE === undefined) {
+      delete process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_COLORADO_FINANCE_VALUE;
+    }
+    if (ORIGINAL_COLORADO_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.COLORADO_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.COLORADO_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_COLORADO_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_COLORADO_RAW_REFRESH_VALUE === undefined) {
+      delete process.env.COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED;
+    } else {
+      process.env.COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED = ORIGINAL_COLORADO_RAW_REFRESH_VALUE;
     }
   });
 
@@ -120,5 +148,65 @@ describe("featureFlags", () => {
 
     expect(isCaliforniaCampaignFinanceEnabled()).toBe(true);
     expect(isCaliforniaCampaignFinanceSyncEnabled()).toBe(true);
+  });
+
+  it("requires the California campaign finance master flag before raw data refresh can run", () => {
+    process.env.CALIFORNIA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED = "true";
+
+    expect(isCaliforniaCampaignFinanceRawDataRefreshEnabled()).toBe(false);
+    expect(isCaliforniaCampaignFinanceRawDataRefreshEnabled(true)).toBe(false);
+  });
+
+  it("disables Colorado campaign finance by default", () => {
+    delete process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.COLORADO_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    delete process.env.COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED;
+
+    expect(isColoradoCampaignFinanceEnabled()).toBe(false);
+    expect(isColoradoCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isColoradoTracerRawDataRefreshEnabled()).toBe(false);
+  });
+
+  it("requires the Colorado campaign finance master flag before sync can run", () => {
+    process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.COLORADO_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isColoradoCampaignFinanceEnabled()).toBe(false);
+    expect(isColoradoCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isColoradoCampaignFinanceSyncEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Colorado campaign finance sync flag", () => {
+    process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.COLORADO_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    expect(isColoradoCampaignFinanceEnabled()).toBe(true);
+    expect(isColoradoCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isColoradoCampaignFinanceSyncEnabled(true)).toBe(true);
+  });
+
+  it("enables Colorado campaign finance sync when both flags are enabled", () => {
+    process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.COLORADO_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isColoradoCampaignFinanceEnabled()).toBe(true);
+    expect(isColoradoCampaignFinanceSyncEnabled()).toBe(true);
+  });
+
+  it("requires the Colorado campaign finance master flag before TRACER raw data refresh can run", () => {
+    process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED = "true";
+
+    expect(isColoradoTracerRawDataRefreshEnabled()).toBe(false);
+    expect(isColoradoTracerRawDataRefreshEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Colorado TRACER raw data refresh flag", () => {
+    process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED = "false";
+
+    expect(isColoradoTracerRawDataRefreshEnabled()).toBe(false);
+    expect(isColoradoTracerRawDataRefreshEnabled(true)).toBe(true);
   });
 });
