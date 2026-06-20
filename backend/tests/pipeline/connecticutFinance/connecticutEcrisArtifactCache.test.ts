@@ -62,13 +62,13 @@ describe("Connecticut eCRIS artifact cache", () => {
         period: "election",
       })
     ).toBe(
-      "https://seec.ct.gov/ecrisreporting/Data/eCrisDownloads/exportdatafiles/Receipts2024ElectionYearCandidateExploratoryCommittees.xlsx"
+      "https://seec.ct.gov/ecrisreporting/Data/eCrisDownloads/exportdatafiles/Receipts2024ElectionYearCandidateExploratoryCommittees.csv"
     );
   });
 
-  it("chooses the known current/previous-year default formats", () => {
+  it("defaults to CSV artifacts because the reader is CSV-only", () => {
     expect(defaultConnecticutEcrisArtifactFormat(2026)).toBe("csv");
-    expect(defaultConnecticutEcrisArtifactFormat(2024)).toBe("xlsx");
+    expect(defaultConnecticutEcrisArtifactFormat(2024)).toBe("csv");
     expect(defaultConnecticutEcrisArtifactFormat(2021)).toBe("csv");
   });
 

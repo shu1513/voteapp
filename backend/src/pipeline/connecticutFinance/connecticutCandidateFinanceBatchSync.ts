@@ -4,7 +4,6 @@ import type { Pool, PoolClient } from "pg";
 import {
   DEFAULT_CONNECTICUT_ECRIS_CACHE_DIR,
   buildConnecticutEcrisArtifactUrl,
-  defaultConnecticutEcrisArtifactFormat,
   getConnecticutEcrisArtifactCachePaths,
   readConnecticutEcrisArtifactCacheMetadata,
 } from "./connecticutEcrisArtifactCache.js";
@@ -16,6 +15,12 @@ import {
   syncConnecticutCandidateFinance,
   type ConnecticutCandidateFinanceSyncResult,
 } from "./connecticutCandidateFinanceSync.js";
+import {
+  autoLinkMissingConnecticutCandidateFinanceLinks,
+  buildConnecticutCandidateNamePredicate,
+  listConnecticutCandidateElectionsMissingFinanceLinks,
+  type ConnecticutFinanceAutoLinkCandidateElection,
+} from "./connecticutCandidateFinanceAutoLink.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -49,6 +54,7 @@ export type ConnecticutCandidateFinanceBatchSyncInput = {
   electionLookaheadDays?: number;
   rawDataCacheDir?: string;
   receiptDataByYear?: ReadonlyMap<number, ConnecticutEcrisReceiptDataForYear>;
+  autoLinkMissingLinks?: boolean;
   syncConnecticutCandidateFinanceFn?: typeof syncConnecticutCandidateFinance;
 };
 
@@ -156,6 +162,18 @@ function groupDueRowsByYear(
   return byYear;
 }
 
+function groupAutoLinkCandidatesByYear(
+  rows: readonly ConnecticutFinanceAutoLinkCandidateElection[]
+): Map<number, ConnecticutFinanceAutoLinkCandidateElection[]> {
+  const byYear = new Map<number, ConnecticutFinanceAutoLinkCandidateElection[]>();
+  for (const row of rows) {
+    const yearRows = byYear.get(row.electionYear) ?? [];
+    yearRows.push(row);
+    byYear.set(row.electionYear, yearRows);
+  }
+  return byYear;
+}
+
 function groupReceiptRowsByCommittee(
   rows: readonly ConnecticutEcrisArtifactRow[]
 ): Map<string, ConnecticutEcrisArtifactRow[]> {
@@ -187,6 +205,7 @@ async function loadReceiptDataForYear(input: {
     transactionType: "receipts",
     committeeType: "candidate_exploratory",
     period: "election",
+    format: "csv",
   });
   if (!(await fileExists(paths.filePath))) {
     throw new Error(`Connecticut eCRIS candidate receipt artifact not found for ${input.year}: ${paths.filePath}`);
@@ -195,7 +214,7 @@ async function loadReceiptDataForYear(input: {
   const metadata = await readConnecticutEcrisArtifactCacheMetadata(paths.metadataPath);
   const rows = await readConnecticutEcrisArtifactRows({
     filePath: paths.filePath,
-    format: metadata?.artifact.format ?? defaultConnecticutEcrisArtifactFormat(input.year),
+    format: metadata?.artifact.format ?? "csv",
     predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row["Committee ID"] ?? "")),
   });
 
@@ -209,8 +228,57 @@ async function loadReceiptDataForYear(input: {
         transactionType: "receipts",
         committeeType: "candidate_exploratory",
         period: "election",
+        format: "csv",
       }),
     rowsByCommitteeId: groupReceiptRowsByCommittee(rows),
+  };
+}
+
+async function loadAutoLinkReceiptRowsForYear(input: {
+  year: number;
+  candidates: readonly ConnecticutFinanceAutoLinkCandidateElection[];
+  rawDataCacheDir?: string;
+  receiptDataByYear?: ReadonlyMap<number, ConnecticutEcrisReceiptDataForYear>;
+}): Promise<{ rows: ConnecticutEcrisArtifactRow[]; sourceUrl: string }> {
+  const injected = input.receiptDataByYear?.get(input.year);
+  if (injected) {
+    return {
+      rows: [...injected.rowsByCommitteeId.values()].flat(),
+      sourceUrl: injected.sourceUrl,
+    };
+  }
+
+  const paths = getConnecticutEcrisArtifactCachePaths({
+    cacheDir:
+      input.rawDataCacheDir ??
+      process.env.CONNECTICUT_ECRIS_CACHE_DIR?.trim() ??
+      DEFAULT_CONNECTICUT_ECRIS_CACHE_DIR,
+    year: input.year,
+    transactionType: "receipts",
+    committeeType: "candidate_exploratory",
+    period: "election",
+    format: "csv",
+  });
+  if (!(await fileExists(paths.filePath))) {
+    throw new Error(`Connecticut eCRIS candidate receipt artifact not found for ${input.year}: ${paths.filePath}`);
+  }
+
+  const metadata = await readConnecticutEcrisArtifactCacheMetadata(paths.metadataPath);
+  return {
+    rows: await readConnecticutEcrisArtifactRows({
+      filePath: paths.filePath,
+      format: metadata?.artifact.format ?? "csv",
+      predicate: buildConnecticutCandidateNamePredicate(input.candidates),
+    }),
+    sourceUrl:
+      metadata?.remote.url ??
+      buildConnecticutEcrisArtifactUrl({
+        year: input.year,
+        transactionType: "receipts",
+        committeeType: "candidate_exploratory",
+        period: "election",
+        format: "csv",
+      }),
   };
 }
 
@@ -323,6 +391,44 @@ export async function syncDueConnecticutCandidateFinance(
   const dryRun = input.dryRun === true;
   const syncFn = input.syncConnecticutCandidateFinanceFn ?? syncConnecticutCandidateFinance;
 
+  if (!dryRun && input.autoLinkMissingLinks !== false) {
+    try {
+      const missingLinkCandidates = await listConnecticutCandidateElectionsMissingFinanceLinks(input.db, {
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+      });
+      const receiptRowsByYear = new Map<number, readonly ConnecticutEcrisArtifactRow[]>();
+      const sourceUrlByYear = new Map<number, string>();
+      for (const [year, candidates] of groupAutoLinkCandidatesByYear(missingLinkCandidates).entries()) {
+        const data = await loadAutoLinkReceiptRowsForYear({
+          year,
+          candidates,
+          rawDataCacheDir: input.rawDataCacheDir,
+          receiptDataByYear: input.receiptDataByYear,
+        });
+        receiptRowsByYear.set(year, data.rows);
+        sourceUrlByYear.set(year, data.sourceUrl);
+      }
+      await autoLinkMissingConnecticutCandidateFinanceLinks({
+        db: input.db,
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+        receiptRowsByYear,
+        sourceUrlByYear,
+        candidateElections: missingLinkCandidates,
+      });
+    } catch (error) {
+      console.warn(
+        "Connecticut finance auto-link skipped; continuing with already-linked candidate sync:",
+        error instanceof Error ? error.message : error
+      );
+    }
+  }
+
   const due = await listDueConnecticutCandidateFinanceSyncRows(input.db, {
     now,
     staleAfterDays,
@@ -333,21 +439,39 @@ export async function syncDueConnecticutCandidateFinance(
   const receiptDataByYear = new Map<number, ConnecticutEcrisReceiptDataForYear>(
     input.receiptDataByYear ? [...input.receiptDataByYear.entries()] : []
   );
+  const receiptDataLoadErrorsByYear = new Map<number, string>();
   for (const [year, rows] of groupDueRowsByYear(due.rows).entries()) {
     if (!receiptDataByYear.has(year)) {
-      receiptDataByYear.set(
-        year,
-        await loadReceiptDataForYear({
+      try {
+        receiptDataByYear.set(
           year,
-          committeeIds: rows.map((row) => row.committeeId),
-          rawDataCacheDir: input.rawDataCacheDir,
-        })
-      );
+          await loadReceiptDataForYear({
+            year,
+            committeeIds: rows.map((row) => row.committeeId),
+            rawDataCacheDir: input.rawDataCacheDir,
+          })
+        );
+      } catch (error) {
+        receiptDataLoadErrorsByYear.set(year, error instanceof Error ? error.message : String(error));
+      }
     }
   }
 
   const results: ConnecticutCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
+    const receiptDataLoadError = receiptDataLoadErrorsByYear.get(row.electionYear);
+    if (receiptDataLoadError) {
+      results.push({
+        candidateId: row.candidateId,
+        electionId: row.electionId,
+        electionYear: row.electionYear,
+        committeeId: row.committeeId,
+        ok: false,
+        error: receiptDataLoadError,
+      });
+      continue;
+    }
+
     const receiptData = receiptDataByYear.get(row.electionYear);
     const committeeKey = normalizeCommitteeId(row.committeeId);
     try {

@@ -146,6 +146,7 @@ describe("connecticutCandidateFinanceBatchSync", () => {
       db,
       syncConnecticutCandidateFinanceFn: vi.fn(),
       now: new Date("2026-06-01T00:00:00.000Z"),
+      autoLinkMissingLinks: false,
     });
 
     expect(String(db.query.mock.calls[0]?.[0])).toContain(
@@ -215,6 +216,7 @@ describe("connecticutCandidateFinanceBatchSync", () => {
       maxCandidates: 2,
       staleAfterDays: 3,
       electionLookbackDays: 30,
+      autoLinkMissingLinks: false,
       receiptDataByYear: new Map([
         [
           2026,
@@ -272,6 +274,300 @@ describe("connecticutCandidateFinanceBatchSync", () => {
       30,
       730,
     ]);
+  });
+
+  it("records artifact load failures per year without blocking other due years", async () => {
+    const successfulCandidateId = "55555555-5555-4555-8555-555555555555";
+    const successfulElectionId = "66666666-6666-4666-8666-666666666666";
+    const db = createMockDb([
+      {
+        candidate_id: CANDIDATE_ID,
+        election_id: ELECTION_ID,
+        candidate_name: "Timothy Ackert",
+        election_year: 2025,
+        office_name: "State Lower Chamber Legislator",
+        district: "8",
+        committee_id: "14376",
+        committee_name: "ACKERT FOR THE 8TH",
+        source_url: null,
+        last_synced_at: null,
+        total_due_rows: "2",
+      },
+      {
+        candidate_id: successfulCandidateId,
+        election_id: successfulElectionId,
+        candidate_name: "Jane Doe",
+        election_year: 2026,
+        office_name: "Governor",
+        district: null,
+        committee_id: "20001",
+        committee_name: "DOE FOR GOVERNOR",
+        source_url: null,
+        last_synced_at: null,
+        total_due_rows: "2",
+      },
+    ]);
+    const row = receipt({ "Committee ID": "20001", Amount: "100.00" });
+    const syncConnecticutCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: successfulCandidateId,
+      electionId: successfulElectionId,
+      electionYear: 2026,
+      dryRun: false,
+      resolution: { status: "matched", committeeId: "20001" },
+      linkWritten: true,
+      summaryWritten: true,
+      directBreakdownsWritten: 3,
+      totalReceipts: 100,
+      matchedReceiptRowCount: 1,
+      includedReceiptRowCount: 1,
+      skippedReceiptRowCount: 0,
+    });
+
+    const result = await syncDueConnecticutCandidateFinance({
+      db,
+      syncConnecticutCandidateFinanceFn,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      rawDataCacheDir: "/tmp/voteapp-missing-connecticut-ecris-cache",
+      autoLinkMissingLinks: false,
+      receiptDataByYear: new Map([
+        [
+          2026,
+          receiptDataForYear({
+            year: 2026,
+            rowsByCommitteeId: new Map([["20001", [row]]]),
+          }),
+        ],
+      ]),
+    });
+
+    expect(result).toMatchObject({
+      selectedCandidateCount: 2,
+      syncedCandidateCount: 1,
+      failedCandidateCount: 1,
+    });
+    expect(result.results[0]).toMatchObject({
+      ok: false,
+      candidateId: CANDIDATE_ID,
+      electionYear: 2025,
+      committeeId: "14376",
+    });
+    expect(result.results[0]?.error).toContain("Connecticut eCRIS candidate receipt artifact not found for 2025");
+    expect(result.results[1]).toMatchObject({
+      ok: true,
+      candidateId: successfulCandidateId,
+      electionYear: 2026,
+      committeeId: "20001",
+    });
+    expect(syncConnecticutCandidateFinanceFn).toHaveBeenCalledTimes(1);
+    expect(syncConnecticutCandidateFinanceFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        candidateId: successfulCandidateId,
+        electionId: successfulElectionId,
+        electionYear: 2026,
+        receiptRows: [row],
+      })
+    );
+  });
+
+  it("auto-links missing candidates before listing due rows", async () => {
+    const row = receipt({ "Committee ID": "14376", Amount: "100.00" });
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Timothy Ackert",
+              election_year: 2026,
+              office_name: "State Lower Chamber Legislator",
+              district: "8",
+            },
+          ],
+          rowCount: 1,
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Timothy Ackert",
+              election_year: 2026,
+              office_name: "State Lower Chamber Legislator",
+              district: "8",
+              committee_id: "14376",
+              committee_name: "ACKERT FOR THE 8TH",
+              source_url: "https://seec.ct.gov/portal/ecris/CurPreYears",
+              last_synced_at: null,
+              total_due_rows: "1",
+            },
+          ],
+          rowCount: 1,
+        }),
+    };
+    const syncConnecticutCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      dryRun: false,
+      resolution: { status: "matched", committeeId: "14376" },
+      linkWritten: true,
+      summaryWritten: true,
+      directBreakdownsWritten: 3,
+      totalReceipts: 100,
+      matchedReceiptRowCount: 1,
+      includedReceiptRowCount: 1,
+      skippedReceiptRowCount: 0,
+    });
+
+    const result = await syncDueConnecticutCandidateFinance({
+      db,
+      syncConnecticutCandidateFinanceFn,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      receiptDataByYear: new Map([
+        [
+          2026,
+          receiptDataForYear({
+            year: 2026,
+            sourceUrl: "https://seec.ct.gov/portal/ecris/CurPreYears",
+            rowsByCommitteeId: new Map([["14376", [row]]]),
+          }),
+        ],
+      ]),
+    });
+
+    expect(result).toMatchObject({
+      dueCandidateCount: 1,
+      selectedCandidateCount: 1,
+      syncedCandidateCount: 1,
+      failedCandidateCount: 0,
+    });
+    expect(db.query).toHaveBeenCalledTimes(3);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.candidate_elections AS candidate_election");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.ct_candidate_finance_links");
+    expect(String(db.query.mock.calls[2]?.[0])).toContain("FROM public.ct_candidate_finance_links AS link");
+    expect(syncConnecticutCandidateFinanceFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        electionYear: 2026,
+        receiptRows: [row],
+      })
+    );
+  });
+
+  it("auto-links and writes a direct finance snapshot with the real sync path", async () => {
+    const receiptRows = [
+      receipt({ Amount: "100.00", Occupation: "Attorney" }),
+      receipt({ Amount: "250.00", Occupation: "Teacher" }),
+    ];
+    const db = {
+      query: vi.fn(async (sql: string) => {
+        const text = String(sql);
+        if (text === "BEGIN" || text === "COMMIT" || text === "ROLLBACK") {
+          return { rows: [], rowCount: null };
+        }
+        if (text.includes("FROM public.candidate_elections AS candidate_election")) {
+          return {
+            rows: [
+              {
+                candidate_id: CANDIDATE_ID,
+                election_id: ELECTION_ID,
+                candidate_name: "Timothy Ackert",
+                election_year: 2026,
+                office_name: "State Lower Chamber Legislator",
+                district: "8",
+              },
+            ],
+            rowCount: 1,
+          };
+        }
+        if (text.includes("INSERT INTO public.ct_candidate_finance_links")) {
+          return { rows: [{ id: "link-1" }], rowCount: 1 };
+        }
+        if (text.includes("FROM public.ct_candidate_finance_links AS link")) {
+          return {
+            rows: [
+              {
+                candidate_id: CANDIDATE_ID,
+                election_id: ELECTION_ID,
+                candidate_name: "Timothy Ackert",
+                election_year: 2026,
+                office_name: "State Lower Chamber Legislator",
+                district: "8",
+                committee_id: "14376",
+                committee_name: "ACKERT FOR THE 8TH",
+                source_url: "https://seec.ct.gov/portal/ecris/CurPreYears",
+                last_synced_at: null,
+                total_due_rows: "1",
+              },
+            ],
+            rowCount: 1,
+          };
+        }
+        if (text.includes("INSERT INTO public.ct_candidate_finance_summaries")) {
+          return { rows: [], rowCount: 1 };
+        }
+        if (text.includes("INSERT INTO public.ct_candidate_finance_direct_breakdowns")) {
+          return { rows: [], rowCount: 1 };
+        }
+        if (text.includes("DELETE FROM public.ct_candidate_finance_direct_breakdowns")) {
+          return { rows: [], rowCount: 1 };
+        }
+        throw new Error(`Unexpected query: ${text}`);
+      }),
+    };
+
+    const result = await syncDueConnecticutCandidateFinance({
+      db,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      receiptDataByYear: new Map([
+        [
+          2026,
+          receiptDataForYear({
+            year: 2026,
+            sourceUrl: "https://seec.ct.gov/portal/ecris/CurPreYears",
+            rowsByCommitteeId: new Map([["14376", receiptRows]]),
+          }),
+        ],
+      ]),
+    });
+
+    expect(result).toMatchObject({
+      dueCandidateCount: 1,
+      selectedCandidateCount: 1,
+      syncedCandidateCount: 1,
+      failedCandidateCount: 0,
+    });
+    expect(result.results[0]).toMatchObject({
+      ok: true,
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      committeeId: "14376",
+      result: {
+        linkWritten: true,
+        summaryWritten: true,
+        totalReceipts: 350,
+        matchedReceiptRowCount: 2,
+        includedReceiptRowCount: 2,
+        skippedReceiptRowCount: 0,
+        resolution: {
+          status: "matched",
+          committeeId: "14376",
+          committeeName: "ACKERT FOR THE 8TH",
+        },
+      },
+    });
+
+    const statements = db.query.mock.calls.map((call) => String(call[0]));
+    expect(statements.filter((sql) => sql.includes("INSERT INTO public.ct_candidate_finance_links"))).toHaveLength(2);
+    expect(statements.some((sql) => sql.includes("INSERT INTO public.ct_candidate_finance_summaries"))).toBe(true);
+    expect(statements.some((sql) => sql.includes("INSERT INTO public.ct_candidate_finance_direct_breakdowns"))).toBe(true);
+    expect(statements.some((sql) => sql.includes("DELETE FROM public.ct_candidate_finance_direct_breakdowns"))).toBe(true);
+    expect(statements).toContain("BEGIN");
+    expect(statements).toContain("COMMIT");
   });
 
   it("validates batch options", async () => {

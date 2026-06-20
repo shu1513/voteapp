@@ -32,7 +32,7 @@ export type ConnecticutDirectContributionAggregationResult = {
 type Aggregate = {
   categoryType: ConnecticutFinanceDirectBreakdown["categoryType"];
   categoryName: string;
-  amount: number;
+  amountCents: number;
   contributorCount: number;
 };
 
@@ -78,13 +78,26 @@ function normalizeTextKey(value: string): string {
     .trim();
 }
 
-function parseAmount(raw: string): number | null {
+function parseAmountCents(raw: string): number | null {
   const normalized = raw.replace(/[$,]/g, "").trim();
-  if (normalized.length === 0) {
+  if (normalized.length === 0 || !/^-?\d+(?:\.\d{1,2})?$/.test(normalized)) {
     return null;
   }
-  const parsed = Number(normalized);
-  return Number.isFinite(parsed) ? parsed : null;
+
+  const sign = normalized.startsWith("-") ? -1 : 1;
+  const unsigned = sign === -1 ? normalized.slice(1) : normalized;
+  const [dollarsPart, centsPart = ""] = unsigned.split(".");
+  const dollars = Number.parseInt(dollarsPart, 10);
+  if (!Number.isSafeInteger(dollars)) {
+    return null;
+  }
+  const cents = Number.parseInt(centsPart.padEnd(2, "0"), 10) || 0;
+  const total = dollars * 100 + cents;
+  return Number.isSafeInteger(total) ? sign * total : null;
+}
+
+function centsToDollars(cents: number): number {
+  return cents / 100;
 }
 
 function parseElectionYear(raw: string): number | null {
@@ -129,7 +142,7 @@ function aggregateKey(categoryType: Aggregate["categoryType"], categoryName: str
 
 function addAggregate(
   aggregates: Map<string, Aggregate>,
-  input: { categoryType: Aggregate["categoryType"]; categoryName: string; amount: number }
+  input: { categoryType: Aggregate["categoryType"]; categoryName: string; amountCents: number }
 ): void {
   const categoryName = input.categoryName.trim().replace(/\s+/g, " ");
   if (categoryName.length === 0) {
@@ -142,13 +155,13 @@ function addAggregate(
     aggregates.set(key, {
       categoryType: input.categoryType,
       categoryName,
-      amount: input.amount,
+      amountCents: input.amountCents,
       contributorCount: 1,
     });
     return;
   }
 
-  existing.amount += input.amount;
+  existing.amountCents += input.amountCents;
   existing.contributorCount += 1;
 }
 
@@ -169,12 +182,12 @@ function toDirectBreakdowns(input: {
   for (const categoryType of categoryOrder) {
     const limit = categoryType === "contribution_size" ? Number.POSITIVE_INFINITY : input.maxBreakdownsPerCategory;
     for (const aggregate of (byCategory.get(categoryType) ?? [])
-      .sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName))
+      .sort((left, right) => right.amountCents - left.amountCents || left.categoryName.localeCompare(right.categoryName))
       .slice(0, limit)) {
       result.push({
         categoryType: aggregate.categoryType,
         categoryName: aggregate.categoryName,
-        amount: aggregate.amount,
+        amount: centsToDollars(aggregate.amountCents),
         contributorCount: aggregate.contributorCount,
         sourceUrl: input.sourceUrl,
       });
@@ -198,7 +211,7 @@ export function aggregateConnecticutDirectContributions(
   let matchedReceiptRowCount = 0;
   let includedReceiptRowCount = 0;
   let skippedReceiptRowCount = 0;
-  let totalReceipts = 0;
+  let totalReceiptsCents = 0;
 
   for (const row of input.receiptRows) {
     if (normalizeId(value(row, "Committee ID")) !== committeeId) {
@@ -206,29 +219,34 @@ export function aggregateConnecticutDirectContributions(
     }
     matchedReceiptRowCount += 1;
 
-    const amount = parseAmount(value(row, "Amount"));
-    if (amount === null || amount <= 0 || !isCandidateCommittee(row) || !rowElectionYearMatches(row, electionYear)) {
+    const amountCents = parseAmountCents(value(row, "Amount"));
+    if (
+      amountCents === null ||
+      amountCents <= 0 ||
+      !isCandidateCommittee(row) ||
+      !rowElectionYearMatches(row, electionYear)
+    ) {
       skippedReceiptRowCount += 1;
       continue;
     }
 
     includedReceiptRowCount += 1;
-    totalReceipts += amount;
+    totalReceiptsCents += amountCents;
     addAggregate(aggregates, {
       categoryType: "occupation",
       categoryName: value(row, "Occupation"),
-      amount,
+      amountCents,
     });
     addAggregate(aggregates, {
       categoryType: "contribution_size",
-      categoryName: contributionSizeBucket(amount),
-      amount,
+      categoryName: contributionSizeBucket(centsToDollars(amountCents)),
+      amountCents,
     });
   }
 
   return {
     summary: {
-      totalReceipts,
+      totalReceipts: centsToDollars(totalReceiptsCents),
       sourceUrl: input.sourceUrl ?? null,
     },
     directBreakdowns: toDirectBreakdowns({

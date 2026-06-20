@@ -110,6 +110,23 @@ describe("connecticutFinanceWriter", () => {
     expect(sql.some((statement) => statement.includes("DELETE FROM public.ct_candidate_finance_direct_breakdowns"))).toBe(true);
   });
 
+  it("wraps a supplied queryable in a transaction", async () => {
+    const db = createMockDb();
+
+    const result = await replaceConnecticutCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+      summary: {
+        totalReceipts: 1000,
+      },
+    });
+
+    expect(result.summaryWritten).toBe(true);
+    expect(db.query.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+  });
+
   it("does not delete omitted direct breakdowns", async () => {
     const db = createMockDb();
 

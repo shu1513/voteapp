@@ -115,9 +115,32 @@ function canOpenTransaction(db: Queryable): db is ConnectableQueryable & { conne
   return typeof (db as ConnectableQueryable).connect === "function";
 }
 
+function validateConnecticutFinanceLinkInput(link: ConnecticutFinanceLinkInput): void {
+  requireNonEmpty(link.candidateId, "candidate id");
+  requireNonEmpty(link.electionId, "election id");
+  normalizeElectionYear(link.electionYear);
+  requireNonEmpty(link.candidateNameNormalized, "Connecticut finance candidate name");
+  requireNonEmpty(link.officeName, "Connecticut finance office name");
+  requireNonEmpty(link.committeeId, "Connecticut committee id");
+  requireNonEmpty(link.committeeName, "Connecticut committee name");
+  normalizeNullableDate(link.lastVerifiedAt);
+}
+
 async function withConnecticutFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
   if (!canOpenTransaction(db)) {
-    return await work(db);
+    try {
+      await db.query("BEGIN");
+      const result = await work(db);
+      await db.query("COMMIT");
+      return result;
+    } catch (error) {
+      try {
+        await db.query("ROLLBACK");
+      } catch {
+        // Preserve the original write failure.
+      }
+      throw error;
+    }
   }
 
   const client = await db.connect();
@@ -313,6 +336,7 @@ export async function replaceConnecticutCandidateFinanceSnapshot(
   if (Number.isNaN(syncedAt.getTime())) {
     throw new Error("Invalid Connecticut finance sync timestamp");
   }
+  validateConnecticutFinanceLinkInput(input.link);
   const electionYear = normalizeElectionYear(input.link.electionYear);
 
   return await withConnecticutFinanceTransaction(input.db, async (db) => {

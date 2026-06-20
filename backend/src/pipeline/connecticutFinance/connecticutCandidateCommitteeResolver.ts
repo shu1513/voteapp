@@ -189,6 +189,8 @@ function officeCanonicalNameForInput(input: {
       return "State Treasurer";
     case "STATE SENATOR":
       return "State Senator";
+    case "STATE REPRESENTATIVE":
+      return "State Lower Chamber Legislator";
     case "STATE LOWER CHAMBER LEGISLATOR":
       return "State Lower Chamber Legislator";
     default:

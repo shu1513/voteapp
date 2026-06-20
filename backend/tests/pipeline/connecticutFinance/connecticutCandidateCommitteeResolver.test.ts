@@ -104,6 +104,20 @@ describe("connecticutCandidateCommitteeResolver", () => {
       candidateNameNormalized: "TIMOTHY ACKERT",
       officeNameNormalized: "State Lower Chamber Legislator",
     });
+
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Timothy Ackert",
+        officeName: "State Representative",
+        electionYear: 2026,
+        receiptRows: [receiptRow()],
+      })
+    ).toEqual({
+      status: "unmatched",
+      reason: "missing_legislative_district",
+      candidateNameNormalized: "TIMOTHY ACKERT",
+      officeNameNormalized: "State Lower Chamber Legislator",
+    });
   });
 
   it("returns ambiguous instead of guessing when multiple committees match", () => {

@@ -90,9 +90,14 @@ describe("connecticutCandidateFinanceSync", () => {
       },
     });
 
-    expect(db.query).toHaveBeenCalledTimes(7);
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.ct_candidate_finance_links");
-    expect(db.query.mock.calls[0]?.[1]).toEqual([
+    expect(db.query).toHaveBeenCalledTimes(9);
+    expect(db.query.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+
+    const linkCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ct_candidate_finance_links")
+    );
+    expect(linkCall?.[1]).toEqual([
       CANDIDATE_ID,
       ELECTION_ID,
       2026,
@@ -106,8 +111,11 @@ describe("connecticutCandidateFinanceSync", () => {
       "https://seec.ct.gov/portal/ecris/CurPreYears",
       "2026-02-03T04:05:06.000Z",
     ]);
-    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.ct_candidate_finance_summaries");
-    expect(db.query.mock.calls[1]?.[1]).toEqual([
+
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ct_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
       LINK_ID,
       2026,
       350,
@@ -122,9 +130,9 @@ describe("connecticutCandidateFinanceSync", () => {
         String(call[0]).includes("INSERT INTO public.ct_candidate_finance_direct_breakdowns")
       )
     ).toHaveLength(4);
-    expect(String(db.query.mock.calls.at(-1)?.[0])).toContain(
-      "DELETE FROM public.ct_candidate_finance_direct_breakdowns"
-    );
+    expect(
+      db.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.ct_candidate_finance_direct_breakdowns"))
+    ).toBe(true);
   });
 
   it("aggregates but does not write in dry-run mode", async () => {

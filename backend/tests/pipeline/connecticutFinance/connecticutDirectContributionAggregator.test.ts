@@ -105,7 +105,30 @@ describe("connecticutDirectContributionAggregator", () => {
         expect.objectContaining({ categoryType: "occupation", categoryName: "Attorney", amount: 300 }),
       ])
     );
-    expect(result.directBreakdowns.some((row) => row.categoryType === "employer")).toBe(false);
+    expect(
+      result.directBreakdowns.every(
+        (row) => row.categoryType === "occupation" || row.categoryType === "contribution_size"
+      )
+    ).toBe(true);
+  });
+
+  it("sums cents without floating-point drift", () => {
+    const result = aggregateConnecticutDirectContributions({
+      committeeId: "14376",
+      electionYear: 2026,
+      receiptRows: [
+        receipt({ Amount: "0.10", Occupation: "Engineer" }),
+        receipt({ Amount: "0.20", Occupation: "Engineer" }),
+      ],
+    });
+
+    expect(result.summary.totalReceipts).toBe(0.3);
+    expect(result.directBreakdowns).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ categoryType: "occupation", categoryName: "Engineer", amount: 0.3 }),
+        expect.objectContaining({ categoryType: "contribution_size", categoryName: "$1-$99", amount: 0.3 }),
+      ])
+    );
   });
 
   it("uses ElectionYear instead of transaction-date heuristics", () => {

@@ -4,5 +4,6 @@ export * from "./connecticutEcrisArtifactCache.js";
 export * from "./connecticutEcrisArtifactReader.js";
 export * from "./connecticutFinanceEligibleOffices.js";
 export * from "./connecticutFinanceWriter.js";
+export * from "./connecticutCandidateFinanceAutoLink.js";
 export * from "./connecticutCandidateFinanceSync.js";
 export * from "./connecticutCandidateFinanceBatchSync.js";

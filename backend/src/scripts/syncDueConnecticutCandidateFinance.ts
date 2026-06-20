@@ -23,15 +23,20 @@ function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
   const inline = args.find((arg) => arg.startsWith(inlinePrefix));
   if (inline) {
-    return inline.slice(inlinePrefix.length);
+    const value = inline.slice(inlinePrefix.length).trim();
+    if (value.length === 0) {
+      throw new Error(`Missing ${name} value`);
+    }
+    return value;
   }
 
   const index = args.indexOf(name);
   if (index >= 0) {
     const next = args[index + 1];
-    if (next && !next.startsWith("--")) {
-      return next;
+    if (!next || next.startsWith("--") || next.trim().length === 0) {
+      throw new Error(`Missing ${name} value`);
     }
+    return next.trim();
   }
 
   return null;
@@ -58,12 +63,16 @@ export function parseSyncDueConnecticutCandidateFinanceScriptArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    rawCacheDir: parseFlagValue(args, "--raw-cache-dir")?.trim() || undefined,
+    rawCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
   };
 }
 
 function getDatabaseUrl(): string {
-  return process.env.DATABASE_URL?.trim() || "postgresql://localhost:5432/voteapp";
+  const databaseUrl = process.env.DATABASE_URL?.trim();
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL is required for Connecticut candidate finance due sync");
+  }
+  return databaseUrl;
 }
 
 export function toSyncDueConnecticutCandidateFinanceScriptOutput(input: {

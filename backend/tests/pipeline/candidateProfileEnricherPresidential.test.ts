@@ -20,6 +20,8 @@ const enqueueManualCaliforniaCandidateFinanceSyncJobMock = vi.hoisted(() => vi.f
 const buildCaliforniaCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualColoradoCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 const buildColoradoCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
+const enqueueManualConnecticutCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
+const buildConnecticutCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 
 vi.mock("pg", () => ({
   Pool: vi.fn(() => ({
@@ -76,6 +78,12 @@ vi.mock("../../src/scheduler/coloradoCandidateFinanceSyncScheduler.js", () => ({
   enqueueManualColoradoCandidateFinanceSyncJob: enqueueManualColoradoCandidateFinanceSyncJobMock,
 }));
 
+vi.mock("../../src/scheduler/connecticutCandidateFinanceSyncScheduler.js", () => ({
+  buildConnecticutCandidateFinanceLinkedElectionSyncJobId:
+    buildConnecticutCandidateFinanceLinkedElectionSyncJobIdMock,
+  enqueueManualConnecticutCandidateFinanceSyncJob: enqueueManualConnecticutCandidateFinanceSyncJobMock,
+}));
+
 import { runCandidateProfileEnricher } from "../../src/pipeline/enrichers/candidateProfileEnricher.js";
 import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
@@ -93,11 +101,15 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     enqueueCandidateLinkCandidateFinanceSyncJobMock.mockResolvedValue("finance-job-1");
     enqueueManualCaliforniaCandidateFinanceSyncJobMock.mockResolvedValue("california-finance-job-1");
     enqueueManualColoradoCandidateFinanceSyncJobMock.mockResolvedValue("colorado-finance-job-1");
+    enqueueManualConnecticutCandidateFinanceSyncJobMock.mockResolvedValue("connecticut-finance-job-1");
     buildCaliforniaCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "california-candidate-finance-linked-election-sync-2026-06-01"
     );
     buildColoradoCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "colorado-candidate-finance-linked-election-sync-2026-06-01"
+    );
+    buildConnecticutCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
+      "connecticut-candidate-finance-linked-election-sync-2026-06-01"
     );
     redisXReadGroupMock.mockResolvedValue([
       {
@@ -616,6 +628,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     });
     expect(enqueueManualCaliforniaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(enqueueManualColoradoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualConnecticutCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(redisXAckMock).toHaveBeenCalledWith(
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
@@ -804,6 +817,99 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
       "1-6"
+    );
+  });
+
+  it("dedupes automatic Connecticut finance batch syncs for eligible Connecticut elections", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-7",
+            message: {
+              election_id: "election-ct-sos",
+              item_type: "candidate_profile",
+              candidate_display_name: "Jane Secretary",
+              roster_party: "Democratic",
+              roster_is_incumbent: "false",
+              seed_urls: JSON.stringify(["https://example.gov/secretary"]),
+              run_id: "run-ct-sos",
+            },
+          },
+        ],
+      },
+    ]);
+    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      const text = String(sql);
+      if (text.includes("FROM public.candidate_elections AS ce")) {
+        expect(params).toEqual(["election-ct-sos"]);
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("FROM public.elections AS e")) {
+        expect(params).toEqual(["election-ct-sos"]);
+        return {
+          rows: [
+            {
+              id: "election-ct-sos",
+              state: "CT",
+              district_name: "Connecticut",
+              district_type: "statewide",
+              election_date: "2026-11-03",
+              official_ballot_title: "Secretary of State",
+              election_stage: "general",
+              senate_class: null,
+              term_end_year: null,
+              is_partisan: true,
+              sources: ["https://example.gov/election"],
+              office_scope: "statewide",
+              office_canonical_name: "Secretary of State",
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected pool query: ${sql}`);
+    });
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Jane Secretary",
+        first_name: "Jane",
+        last_name: "Secretary",
+        party: "Democratic",
+        fec_ids: [],
+        sources: ["https://example.gov/secretary"],
+      },
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualCaliforniaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualColoradoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(buildConnecticutCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
+    expect(enqueueManualConnecticutCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
+      {
+        triggeredBy: "manual",
+      },
+      {
+        jobId: "connecticut-candidate-finance-linked-election-sync-2026-06-01",
+      }
+    );
+    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
+      {
+        candidateId: "candidate-1",
+        electionId: "election-ct-sos",
+        runId: "run-ct-sos",
+      },
+    ]);
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-7"
     );
   });
 

@@ -83,13 +83,7 @@ export function parseConnecticutEcrisHttpsUrl(value: string, fieldName = "Connec
 }
 
 export function defaultConnecticutEcrisArtifactFormat(year: number): ConnecticutEcrisArtifactFormat {
-  const normalizedYear = normalizeConnecticutEcrisYear(year);
-  if (normalizedYear >= 2025) {
-    return "csv";
-  }
-  if (normalizedYear >= 2022) {
-    return "xlsx";
-  }
+  normalizeConnecticutEcrisYear(year);
   return "csv";
 }
 

@@ -48,6 +48,18 @@ describe("syncDueConnecticutCandidateFinance script", () => {
     );
   });
 
+  it("rejects missing or blank option values", () => {
+    expect(() => parseSyncDueConnecticutCandidateFinanceScriptArgs(["--stale-after-days"])).toThrow(
+      "Missing --stale-after-days value"
+    );
+    expect(() => parseSyncDueConnecticutCandidateFinanceScriptArgs(["--lookback-days", "--force"])).toThrow(
+      "Missing --lookback-days value"
+    );
+    expect(() => parseSyncDueConnecticutCandidateFinanceScriptArgs(["--raw-cache-dir", "   "])).toThrow(
+      "Missing --raw-cache-dir value"
+    );
+  });
+
   it("formats script output", () => {
     const output = toSyncDueConnecticutCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),

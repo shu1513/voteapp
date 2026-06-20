@@ -19,6 +19,10 @@ import {
   enqueueManualColoradoCandidateFinanceSyncJob,
 } from "../../scheduler/coloradoCandidateFinanceSyncScheduler.js";
 import {
+  buildConnecticutCandidateFinanceLinkedElectionSyncJobId,
+  enqueueManualConnecticutCandidateFinanceSyncJob,
+} from "../../scheduler/connecticutCandidateFinanceSyncScheduler.js";
+import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
   STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
   STAGING_CANDIDATE_PROFILE_REJECTED_STREAM,
@@ -48,6 +52,7 @@ import {
 } from "../presidential/presidentialProfileContext.js";
 import { isCaliforniaFinanceEligibleOffice } from "../californiaFinance/californiaFinanceEligibleOffices.js";
 import { isColoradoFinanceEligibleOffice } from "../coloradoFinance/coloradoFinanceEligibleOffices.js";
+import { isConnecticutFinanceEligibleOffice } from "../connecticutFinance/connecticutFinanceEligibleOffices.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -349,6 +354,37 @@ async function enqueueColoradoFinanceSyncForLinkedElection(input: {
     const reason = toReason(error);
     console.warn(
       `candidate-profile enricher could not enqueue Colorado finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
+async function enqueueConnecticutFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (
+    input.context.state !== "CT" ||
+    !isConnecticutFinanceEligibleOffice({
+      officeScope: input.context.officeScope,
+      officeCanonicalName: input.context.officeCanonicalName,
+    })
+  ) {
+    return;
+  }
+
+  try {
+    await enqueueManualConnecticutCandidateFinanceSyncJob(
+      {
+        triggeredBy: "manual",
+      },
+      {
+        jobId: buildConnecticutCandidateFinanceLinkedElectionSyncJobId(),
+      }
+    );
+  } catch (error) {
+    const reason = toReason(error);
+    console.warn(
+      `candidate-profile enricher could not enqueue Connecticut finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
     );
   }
 }
@@ -968,6 +1004,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               candidateId,
             });
             await enqueueColoradoFinanceSyncForLinkedElection({
+              context: draftContext,
+              candidateId,
+            });
+            await enqueueConnecticutFinanceSyncForLinkedElection({
               context: draftContext,
               candidateId,
             });
