@@ -104,6 +104,34 @@ function contributionCsv(rows: readonly Partial<Record<(typeof COLORADO_TRACER_C
   ].join("\n");
 }
 
+function escapedQuoteBoundaryFixture(): { csv: string; expectedOccupationComments: string } {
+  const header = COLORADO_TRACER_CONTRIBUTION_COLUMNS.join(",");
+  const rowPrefix = COLORADO_TRACER_CONTRIBUTION_COLUMNS.slice(0, -1)
+    .map((column) => {
+      const values: Partial<Record<(typeof COLORADO_TRACER_CONTRIBUTION_COLUMNS)[number], string>> = {
+        CO_ID: "202450001",
+        ContributionAmount: "100.00",
+        ContributionDate: "01/10/2024",
+        CommitteeName: "Candidate Committee",
+        CandidateName: "Alex Example",
+        Employer: "Acme",
+        Occupation: "Attorney",
+      };
+      return values[column] ?? "";
+    })
+    .join(",");
+  const prefixThroughOpeningQuote = `${header}\n${rowPrefix},"`;
+  const paddingLength = 65_536 - prefixThroughOpeningQuote.length - 1;
+  if (paddingLength <= 0) {
+    throw new Error("Colorado TRACER escaped quote boundary fixture prefix is too long");
+  }
+  const expectedOccupationComments = `${"a".repeat(paddingLength)}"quoted`;
+  return {
+    csv: `${prefixThroughOpeningQuote}${"a".repeat(paddingLength)}""quoted"\n`,
+    expectedOccupationComments,
+  };
+}
+
 describe("Colorado TRACER contribution reader", () => {
   afterEach(async () => {
     const dirs = tempDirs;
@@ -227,6 +255,31 @@ describe("Colorado TRACER contribution reader", () => {
         CO_ID: "202450001",
         CandidateName: "Alex Example",
         OccupationComments: "line one\nline two",
+      }),
+    ]);
+  });
+
+  it("streams escaped quotes when the quote pair crosses a chunk boundary", async () => {
+    const fixture = escapedQuoteBoundaryFixture();
+    const zipPath = await writeFixtureZip([
+      {
+        fileName: "2024_ContributionData.csv",
+        compressionMethod: 0,
+        content: fixture.csv,
+      },
+    ]);
+
+    const rows = await readColoradoTracerContributionRows({
+      zipPath,
+      year: 2024,
+      predicate: (row) => row.CandidateName === "Alex Example",
+    });
+
+    expect(rows).toEqual([
+      expect.objectContaining({
+        CO_ID: "202450001",
+        CandidateName: "Alex Example",
+        OccupationComments: fixture.expectedOccupationComments,
       }),
     ]);
   });

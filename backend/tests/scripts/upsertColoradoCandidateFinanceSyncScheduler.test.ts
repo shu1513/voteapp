@@ -36,4 +36,13 @@ describe("upsertColoradoCandidateFinanceSyncScheduler script", () => {
       "Missing --stale-after-days value"
     );
   });
+
+  it("rejects whitespace-only path flags", () => {
+    expect(() => parseUpsertColoradoCandidateFinanceSyncSchedulerArgs(["--raw-zip=   "])).toThrow(
+      "Missing --raw-zip value"
+    );
+    expect(() => parseUpsertColoradoCandidateFinanceSyncSchedulerArgs(["--raw-cache-dir", "   "])).toThrow(
+      "Missing --raw-cache-dir value"
+    );
+  });
 });

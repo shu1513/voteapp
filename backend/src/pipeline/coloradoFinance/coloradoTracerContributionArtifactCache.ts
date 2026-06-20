@@ -238,6 +238,7 @@ export async function readColoradoTracerContributionArtifactCacheMetadata(
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {
       return null;
     }
+    console.warn(`Unexpected error reading Colorado TRACER cache metadata at ${metadataPath}:`, error);
     return null;
   }
 }

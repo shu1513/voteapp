@@ -1547,14 +1547,6 @@ describe("lookupElectionDetailById", () => {
             source_url: "https://powersearch.sos.ca.gov/advanced.php",
           },
         ],
-        top_employers: [
-          {
-            category_name: "Google LLC",
-            amount: 2500,
-            contributor_count: 4,
-            source_url: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
-          },
-        ],
         top_industries: [
           {
             category_name: "technology",
@@ -1761,15 +1753,6 @@ describe("lookupElectionDetailById", () => {
             category_name: "Attorney",
             amount: 750,
             contributor_count: 3,
-            source_url:
-              "https://tracer.sos.colorado.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionData.csv.zip",
-          },
-        ],
-        top_employers: [
-          {
-            category_name: "Acme Inc",
-            amount: 1500,
-            contributor_count: 4,
             source_url:
               "https://tracer.sos.colorado.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionData.csv.zip",
           },

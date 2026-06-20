@@ -46,8 +46,8 @@ export function parseColoradoTracerRawDataRefreshTriggerArgs(
   return {
     force: args.includes("--force"),
     year: parsePositiveIntegerFlag(args, "--year"),
-    url: parseFlagValue(args, "--url")?.trim() || undefined,
-    cacheDir: parseFlagValue(args, "--cache-dir")?.trim() || undefined,
+    url: parseFlagValue(args, "--url") || undefined,
+    cacheDir: parseFlagValue(args, "--cache-dir") || undefined,
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
   };
 }

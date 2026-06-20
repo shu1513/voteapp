@@ -148,6 +148,19 @@ describe("Colorado TRACER contribution artifact cache", () => {
     expect(await readFile(paths.zipPath, "utf8")).toBe("cached-zip");
   });
 
+  it("warns and returns null when cache metadata cannot be parsed", async () => {
+    const cacheDir = await makeTempDir();
+    const paths = getColoradoTracerContributionArtifactCachePaths({ cacheDir, year: 2024 });
+    await writeFile(paths.metadataPath, "{not-json", "utf8");
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    await expect(readColoradoTracerContributionArtifactCacheMetadata(paths.metadataPath)).resolves.toBeNull();
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("Unexpected error reading Colorado TRACER cache metadata"),
+      expect.any(Error)
+    );
+  });
+
   it("redownloads matching metadata when force is true", async () => {
     const cacheDir = await makeTempDir();
     const paths = getColoradoTracerContributionArtifactCachePaths({ cacheDir, year: 2024 });

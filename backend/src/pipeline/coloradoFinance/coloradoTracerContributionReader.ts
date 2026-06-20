@@ -379,6 +379,7 @@ async function streamColoradoTracerContributionRows(input: {
     let inQuotes = false;
     let headerIndexes: Record<(typeof COLORADO_TRACER_CONTRIBUTION_COLUMNS)[number], number> | null = null;
     let settled = false;
+    let pendingQuoteInQuotedField = false;
 
     const rejectOnce = (error: Error): void => {
       if (settled) {
@@ -424,8 +425,19 @@ async function streamColoradoTracerContributionRows(input: {
       field = "";
     };
 
-    const processText = (text: string): void => {
-      for (let index = 0; index < text.length; index += 1) {
+    const processText = (text: string, isFinal = false): void => {
+      let index = 0;
+      if (pendingQuoteInQuotedField) {
+        pendingQuoteInQuotedField = false;
+        if (text[0] === '"') {
+          field += '"';
+          index = 1;
+        } else {
+          inQuotes = false;
+        }
+      }
+
+      for (; index < text.length; index += 1) {
         const char = text[index];
         const next = text[index + 1];
 
@@ -433,6 +445,8 @@ async function streamColoradoTracerContributionRows(input: {
           if (char === '"' && next === '"') {
             field += '"';
             index += 1;
+          } else if (char === '"' && next === undefined && !isFinal) {
+            pendingQuoteInQuotedField = true;
           } else if (char === '"') {
             inQuotes = false;
           } else {
@@ -463,6 +477,11 @@ async function streamColoradoTracerContributionRows(input: {
 
         field += char;
       }
+
+      if (isFinal && pendingQuoteInQuotedField) {
+        pendingQuoteInQuotedField = false;
+        inQuotes = false;
+      }
     };
 
     stream.on("data", (chunk: Buffer) => {
@@ -475,7 +494,7 @@ async function streamColoradoTracerContributionRows(input: {
     });
     stream.on("end", () => {
       try {
-        processText(decoder.end());
+        processText(decoder.end(), true);
         if (inQuotes) {
           throw new Error("Colorado TRACER contribution CSV has an unterminated quoted field");
         }

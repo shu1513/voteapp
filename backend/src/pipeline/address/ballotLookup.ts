@@ -141,7 +141,7 @@ export type BallotLookupFinanceSummary = {
     cash_on_hand: number | null;
     debts_owed: number | null;
     top_occupations: BallotLookupFinanceBreakdown[];
-    top_employers: BallotLookupFinanceBreakdown[];
+    top_employers?: BallotLookupFinanceBreakdown[];
     top_industries: BallotLookupFinanceBreakdown[];
   };
   outside_spending: {
@@ -1733,7 +1733,6 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
             cash_on_hand: parseFinanceAmount(row.cash_on_hand),
             debts_owed: parseFinanceAmount(row.debts_owed),
             top_occupations: topDirectDonorOccupations,
-            top_employers: directEmployersByCandidateElection.get(key) ?? [],
             top_industries: directIndustriesByCandidateElection.get(key) ?? [],
           },
           outside_spending: {
@@ -1899,7 +1898,6 @@ async function loadColoradoCandidateFinanceSummariesByCandidateElection(
             cash_on_hand: null,
             debts_owed: null,
             top_occupations: topDirectDonorOccupations,
-            top_employers: directEmployersByCandidateElection.get(key) ?? [],
             top_industries: directIndustriesByCandidateElection.get(key) ?? [],
           },
           outside_spending: {
