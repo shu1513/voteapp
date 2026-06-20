@@ -200,7 +200,6 @@ function isReceiptForCommittee(input: {
 function toSummaryInput(input: {
   directSummary: CaliforniaFinanceSummaryInput | null;
   outsideSummary: CaliforniaIndependentSpendingSummary | null;
-  includeOutside: boolean;
   fallbackSourceUrl: string | null | undefined;
 }): CaliforniaFinanceSummaryInput | undefined {
   if (input.directSummary || input.outsideSummary) {
@@ -219,12 +218,9 @@ function toSummaryInput(input: {
     }
     return summary;
   }
-  if (!input.includeOutside) {
-    return {
-      sourceUrl: input.fallbackSourceUrl ?? null,
-    };
-  }
-  return undefined;
+  return {
+    sourceUrl: input.fallbackSourceUrl ?? null,
+  };
 }
 
 function directBreakdownKey(input: CaliforniaFinanceDirectBreakdownInput): string {
@@ -586,7 +582,6 @@ export async function syncCaliforniaCandidateFinance(
   const summaryInput = toSummaryInput({
     directSummary: directFinance.summary,
     outsideSummary,
-    includeOutside,
     fallbackSourceUrl: link.sourceUrl,
   });
 

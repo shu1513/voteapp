@@ -174,6 +174,35 @@ describe("californiaFinanceWriter", () => {
     );
   });
 
+  it("preserves outside group breakdowns when only outside groups are refreshed", async () => {
+    const db = createMockDb();
+
+    const result = await replaceCaliforniaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+      outsideGroups: [
+        {
+          committeeId: "1267335",
+          committeeName: "Democratic Club of Ventura",
+          supportOppose: "support",
+          amount: 300,
+          sourceUrl: "https://powersearch.sos.ca.gov:3000/ie/search",
+        },
+      ],
+    });
+
+    expect(result).toMatchObject({
+      outsideGroupsWritten: 1,
+      outsideGroupBreakdownsWritten: 0,
+    });
+    const sql = db.query.mock.calls.map((call) => String(call[0]));
+    expect(sql.some((statement) => statement.includes("DELETE FROM public.ca_candidate_finance_outside_groups"))).toBe(true);
+    expect(sql.some((statement) => statement.includes("DELETE FROM public.ca_candidate_finance_outside_group_breakdowns"))).toBe(
+      false
+    );
+  });
+
   it("uses current snapshot keys when cleaning repeated writes with the same timestamp", async () => {
     const db = createMockDb();
     const syncedAt = new Date("2026-02-03T04:05:06.000Z");

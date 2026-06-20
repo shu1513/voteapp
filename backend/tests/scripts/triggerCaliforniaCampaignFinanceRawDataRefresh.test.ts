@@ -27,5 +27,14 @@ describe("triggerCaliforniaCampaignFinanceRawDataRefresh script", () => {
       "Invalid --timeout-ms value: 5x"
     );
     expect(() => parseCaliforniaCampaignFinanceRawDataRefreshTriggerArgs(["--url"])).toThrow("Missing --url value");
+    expect(() => parseCaliforniaCampaignFinanceRawDataRefreshTriggerArgs(["--url="])).toThrow(
+      "Missing --url value"
+    );
+    expect(() => parseCaliforniaCampaignFinanceRawDataRefreshTriggerArgs(["--cache-dir="])).toThrow(
+      "Missing --cache-dir value"
+    );
+    expect(() => parseCaliforniaCampaignFinanceRawDataRefreshTriggerArgs(["--cache-dir", "   "])).toThrow(
+      "Missing --cache-dir value"
+    );
   });
 });

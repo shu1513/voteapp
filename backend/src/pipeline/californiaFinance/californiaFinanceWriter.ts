@@ -422,11 +422,10 @@ async function deleteStaleDirectBreakdowns(input: {
   );
 }
 
-async function deleteStaleOutsideRows(input: {
+async function deleteStaleOutsideGroupBreakdowns(input: {
   db: Queryable;
   linkId: string;
   electionYear: number;
-  groups: readonly CaliforniaFinanceOutsideGroupInput[];
   breakdowns: readonly CaliforniaFinanceOutsideGroupBreakdownInput[];
 }): Promise<void> {
   const linkId = requireNonEmpty(input.linkId, "California finance link id");
@@ -459,7 +458,16 @@ async function deleteStaleOutsideRows(input: {
     `,
     [linkId, electionYear, JSON.stringify(breakdownKeys)]
   );
+}
 
+async function deleteStaleOutsideGroups(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  groups: readonly CaliforniaFinanceOutsideGroupInput[];
+}): Promise<void> {
+  const linkId = requireNonEmpty(input.linkId, "California finance link id");
+  const electionYear = normalizeElectionYear(input.electionYear);
   const groupKeys = input.groups.map((group) => ({
     committee_id: requireNonEmpty(group.committeeId, "California outside group committee id"),
     support_oppose: group.supportOppose,
@@ -512,13 +520,22 @@ export async function replaceCaliforniaCandidateFinanceSnapshot(
       await upsertOutsideGroupBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
     }
     if (input.outsideGroups || input.outsideGroupBreakdowns) {
-      await deleteStaleOutsideRows({
-        db,
-        linkId,
-        electionYear,
-        groups: input.outsideGroups ?? [],
-        breakdowns: input.outsideGroupBreakdowns ?? [],
-      });
+      if (input.outsideGroupBreakdowns) {
+        await deleteStaleOutsideGroupBreakdowns({
+          db,
+          linkId,
+          electionYear,
+          breakdowns: input.outsideGroupBreakdowns,
+        });
+      }
+      if (input.outsideGroups) {
+        await deleteStaleOutsideGroups({
+          db,
+          linkId,
+          electionYear,
+          groups: input.outsideGroups,
+        });
+      }
     }
 
     for (const classification of input.classifications ?? []) {

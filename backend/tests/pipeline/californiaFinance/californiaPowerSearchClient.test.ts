@@ -188,6 +188,53 @@ describe("californiaPowerSearchClient", () => {
     });
   });
 
+  it("retries independent expenditure searches with California last-first names", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({
+          amount: 0,
+          payload: [],
+        })
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          amount: 1,
+          payload: [
+            {
+              Amount: 500,
+              ExpenderID: "1455754",
+              ExpenderName: "Support Committee",
+              TargetCandidateName: "Wahab, Aisha",
+              ExpenderPosition: "S",
+            },
+          ],
+        })
+      ) as unknown as typeof fetch;
+
+    await expect(
+      summarizeCaliforniaIndependentSpendingByCandidate(
+        { candidateName: "Aisha Wahab", electionYear: 2022 },
+        { fetchImpl, timeoutMs: 1000 }
+      )
+    ).resolves.toMatchObject({
+      candidateName: "Aisha Wahab",
+      supportTotal: 500,
+      opposeTotal: 0,
+      groups: [
+        {
+          expenderId: "1455754",
+          expenderName: "Support Committee",
+          amount: 500,
+        },
+      ],
+    });
+
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    expect(String(fetchImpl.mock.calls[0]?.[0])).toContain("candidatename=Aisha+Wahab");
+    expect(String(fetchImpl.mock.calls[1]?.[0])).toContain("candidatename=Wahab%2C+Aisha");
+  });
+
   it("rejects California election years before Power Search coverage", () => {
     expect(() => toCaliforniaElectionCycle(2000)).toThrow("Invalid California election year");
   });

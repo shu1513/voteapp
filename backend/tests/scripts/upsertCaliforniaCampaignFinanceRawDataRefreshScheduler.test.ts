@@ -26,5 +26,14 @@ describe("upsertCaliforniaCampaignFinanceRawDataRefreshScheduler script", () => 
     expect(() => parseUpsertCaliforniaCampaignFinanceRawDataRefreshSchedulerArgs(["--cache-dir"])).toThrow(
       "Missing --cache-dir value"
     );
+    expect(() => parseUpsertCaliforniaCampaignFinanceRawDataRefreshSchedulerArgs(["--cache-dir="])).toThrow(
+      "Missing --cache-dir value"
+    );
+    expect(() => parseUpsertCaliforniaCampaignFinanceRawDataRefreshSchedulerArgs(["--url="])).toThrow(
+      "Missing --url value"
+    );
+    expect(() => parseUpsertCaliforniaCampaignFinanceRawDataRefreshSchedulerArgs(["--url", "   "])).toThrow(
+      "Missing --url value"
+    );
   });
 });

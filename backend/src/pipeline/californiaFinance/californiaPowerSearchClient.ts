@@ -109,6 +109,23 @@ function candidateNameMatchKeys(value: string): Set<string> {
   return keys;
 }
 
+function independentExpenditureSearchNames(value: string): string[] {
+  const normalized = normalizeCandidateName(value);
+  const names = [normalized];
+  if (normalized.includes(",")) {
+    return names;
+  }
+
+  const parts = normalized.split(" ").filter(Boolean);
+  if (parts.length >= 2) {
+    const lastName = parts[parts.length - 1];
+    const firstNames = parts.slice(0, -1).join(" ");
+    names.push(`${lastName}, ${firstNames}`);
+  }
+
+  return names;
+}
+
 function candidateNamesMatch(left: string, right: string): boolean {
   const leftKeys = candidateNameMatchKeys(left);
   for (const key of candidateNameMatchKeys(right)) {
@@ -339,9 +356,25 @@ export async function searchCaliforniaIndependentExpenditures(
   input: { candidateName: string; electionYear: number },
   options: CaliforniaPowerSearchClientOptions = {}
 ): Promise<CaliforniaIndependentExpenditureSearchResult> {
-  const sourceUrl = buildCaliforniaIndependentExpenditureSearchUrl(input);
-  const payload = await fetchJson(sourceUrl, options);
-  return parseIndependentExpenditurePayload(payload, { ...input, sourceUrl });
+  let emptyResult: CaliforniaIndependentExpenditureSearchResult | null = null;
+
+  for (const candidateName of independentExpenditureSearchNames(input.candidateName)) {
+    const sourceUrl = buildCaliforniaIndependentExpenditureSearchUrl({
+      ...input,
+      candidateName,
+    });
+    const payload = await fetchJson(sourceUrl, options);
+    const parsed = parseIndependentExpenditurePayload(payload, {
+      ...input,
+      sourceUrl,
+    });
+    if (parsed.expenditures.length > 0) {
+      return parsed;
+    }
+    emptyResult ??= parsed;
+  }
+
+  return emptyResult!;
 }
 
 export async function summarizeCaliforniaIndependentSpendingByCandidate(

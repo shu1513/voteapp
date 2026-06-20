@@ -107,7 +107,7 @@ describe("californiaCandidateFinanceSync", () => {
       { candidateName: "Newsom, Gavin", electionYear: 2026 },
       { timeoutMs: 1000 }
     );
-    expect(db.query).toHaveBeenCalledTimes(6);
+    expect(db.query).toHaveBeenCalledTimes(5);
     expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.ca_candidate_finance_links");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       CANDIDATE_ID,
@@ -136,8 +136,12 @@ describe("californiaCandidateFinanceSync", () => {
       "2026-02-03T04:05:06.000Z",
     ]);
     expect(String(db.query.mock.calls[2]?.[0])).toContain("INSERT INTO public.ca_candidate_finance_outside_groups");
-    expect(String(db.query.mock.calls[4]?.[0])).toContain("DELETE FROM public.ca_candidate_finance_outside_group_breakdowns");
-    expect(String(db.query.mock.calls[5]?.[0])).toContain("DELETE FROM public.ca_candidate_finance_outside_groups");
+    expect(String(db.query.mock.calls[4]?.[0])).toContain("DELETE FROM public.ca_candidate_finance_outside_groups");
+    expect(
+      db.query.mock.calls.some((call) =>
+        String(call[0]).includes("DELETE FROM public.ca_candidate_finance_outside_group_breakdowns")
+      )
+    ).toBe(false);
     expect(
       db.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.ca_candidate_finance_direct_breakdowns"))
     ).toBe(false);
@@ -265,6 +269,48 @@ describe("californiaCandidateFinanceSync", () => {
     expect(powerSearchClient.summarizeIndependentSpendingByCandidate).not.toHaveBeenCalled();
     expect(db.query).toHaveBeenCalledTimes(2);
     expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.ca_candidate_finance_links");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.ca_candidate_finance_summaries");
+    expect(db.query.mock.calls[1]?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "https://powersearch.sos.ca.gov/advanced.php",
+      "2026-02-03T04:05:06.000Z",
+    ]);
+  });
+
+  it("writes a heartbeat summary when no outside or direct data is found", async () => {
+    const db = createMockDb();
+    const powerSearchClient = createPowerSearchClient({
+      summarizeIndependentSpendingByCandidate: vi.fn().mockResolvedValue(null),
+    });
+
+    const result = await syncCaliforniaCandidateFinance({
+      db,
+      ...baseInput(),
+      powerSearchClient,
+    });
+
+    expect(result).toEqual({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      dryRun: false,
+      outsideIncluded: true,
+      linkWritten: true,
+      summaryWritten: true,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+    });
+    expect(db.query).toHaveBeenCalledTimes(2);
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.ca_candidate_finance_summaries");
     expect(db.query.mock.calls[1]?.[1]).toEqual([
       LINK_ID,
