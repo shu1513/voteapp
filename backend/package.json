@@ -101,7 +101,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e:proxy": "ADDRESS_API_PROXY_E2E=true vitest run tests/api/addressApiProxy.e2e.test.ts",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "connecticut-candidates:finance:sync-due": "tsx src/scripts/syncDueConnecticutCandidateFinance.ts"
   },
   "dependencies": {
     "bullmq": "^5.71.1",

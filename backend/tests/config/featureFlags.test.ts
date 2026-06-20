@@ -7,6 +7,9 @@ import {
   isColoradoCampaignFinanceEnabled,
   isColoradoCampaignFinanceSyncEnabled,
   isColoradoTracerRawDataRefreshEnabled,
+  isConnecticutCampaignFinanceEnabled,
+  isConnecticutCampaignFinanceSyncEnabled,
+  isConnecticutEcrisRawDataRefreshEnabled,
   isPresidentialElectionsEnabled,
   isPresidentialFeatureEnabled,
 } from "../../src/config/featureFlags.js";
@@ -19,6 +22,9 @@ const ORIGINAL_CALIFORNIA_RAW_REFRESH_VALUE = process.env.CALIFORNIA_CAMPAIGN_FI
 const ORIGINAL_COLORADO_FINANCE_VALUE = process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_COLORADO_FINANCE_SYNC_VALUE = process.env.COLORADO_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_COLORADO_RAW_REFRESH_VALUE = process.env.COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED;
+const ORIGINAL_CONNECTICUT_FINANCE_VALUE = process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_CONNECTICUT_FINANCE_SYNC_VALUE = process.env.CONNECTICUT_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_CONNECTICUT_RAW_REFRESH_VALUE = process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED;
 
 describe("featureFlags", () => {
   afterEach(() => {
@@ -61,6 +67,21 @@ describe("featureFlags", () => {
       delete process.env.COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED;
     } else {
       process.env.COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED = ORIGINAL_COLORADO_RAW_REFRESH_VALUE;
+    }
+    if (ORIGINAL_CONNECTICUT_FINANCE_VALUE === undefined) {
+      delete process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_CONNECTICUT_FINANCE_VALUE;
+    }
+    if (ORIGINAL_CONNECTICUT_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.CONNECTICUT_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.CONNECTICUT_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_CONNECTICUT_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_CONNECTICUT_RAW_REFRESH_VALUE === undefined) {
+      delete process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED;
+    } else {
+      process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED = ORIGINAL_CONNECTICUT_RAW_REFRESH_VALUE;
     }
   });
 
@@ -208,5 +229,57 @@ describe("featureFlags", () => {
 
     expect(isColoradoTracerRawDataRefreshEnabled()).toBe(false);
     expect(isColoradoTracerRawDataRefreshEnabled(true)).toBe(true);
+  });
+
+  it("disables Connecticut campaign finance by default", () => {
+    delete process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.CONNECTICUT_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    delete process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED;
+
+    expect(isConnecticutCampaignFinanceEnabled()).toBe(false);
+    expect(isConnecticutCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isConnecticutEcrisRawDataRefreshEnabled()).toBe(false);
+  });
+
+  it("requires the Connecticut campaign finance master flag before sync can run", () => {
+    process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.CONNECTICUT_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isConnecticutCampaignFinanceEnabled()).toBe(false);
+    expect(isConnecticutCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isConnecticutCampaignFinanceSyncEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Connecticut campaign finance sync flag", () => {
+    process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.CONNECTICUT_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    expect(isConnecticutCampaignFinanceEnabled()).toBe(true);
+    expect(isConnecticutCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isConnecticutCampaignFinanceSyncEnabled(true)).toBe(true);
+  });
+
+  it("enables Connecticut campaign finance sync when both flags are enabled", () => {
+    process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.CONNECTICUT_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isConnecticutCampaignFinanceEnabled()).toBe(true);
+    expect(isConnecticutCampaignFinanceSyncEnabled()).toBe(true);
+  });
+
+  it("requires the Connecticut campaign finance master flag before eCRIS raw data refresh can run", () => {
+    process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED = "true";
+
+    expect(isConnecticutEcrisRawDataRefreshEnabled()).toBe(false);
+    expect(isConnecticutEcrisRawDataRefreshEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Connecticut eCRIS raw data refresh flag", () => {
+    process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED = "false";
+
+    expect(isConnecticutEcrisRawDataRefreshEnabled()).toBe(false);
+    expect(isConnecticutEcrisRawDataRefreshEnabled(true)).toBe(true);
   });
 });
