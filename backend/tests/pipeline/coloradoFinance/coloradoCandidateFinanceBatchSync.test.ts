@@ -287,6 +287,96 @@ describe("coloradoCandidateFinanceBatchSync", () => {
     ]);
   });
 
+  it("continues syncing already-linked candidates when auto-link contribution ZIP is missing", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: "55555555-5555-4555-8555-555555555555",
+              election_id: "66666666-6666-4666-8666-666666666666",
+              candidate_name: "Missing Zip Candidate",
+              election_year: 2025,
+              office_name: "Governor",
+            },
+          ],
+        })
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Jane Doe",
+              election_year: 2026,
+              office_name: "Governor",
+              committee_id: "202650001",
+              committee_name: "Jane Doe for Colorado Governor",
+              tracer_candidate_id: "TRACER-123",
+              source_url: "https://tracer.sos.colorado.gov/",
+              last_synced_at: null,
+              total_due_rows: "1",
+            },
+          ],
+        }),
+    };
+    const row = contribution({ CO_ID: "202650001", ContributionAmount: "100.00" });
+    const syncColoradoCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      dryRun: false,
+      linkWritten: true,
+      summaryWritten: true,
+      directBreakdownsWritten: 3,
+      totalReceipts: 100,
+      matchedContributionRowCount: 1,
+      includedContributionRowCount: 1,
+      skippedContributionRowCount: 0,
+    });
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    try {
+      const result = await syncDueColoradoCandidateFinance({
+        db,
+        syncColoradoCandidateFinanceFn,
+        now: new Date("2026-06-01T00:00:00.000Z"),
+        rawDataCacheDir: "/tmp/voteapp-missing-colorado-finance-cache-for-test",
+        contributionDataByYear: new Map([
+          [
+            2026,
+            contributionDataForYear({
+              year: 2026,
+              rowsByCommitteeId: new Map([["202650001", [row]]]),
+            }),
+          ],
+        ]),
+      });
+
+      expect(result).toMatchObject({
+        dueCandidateCount: 1,
+        selectedCandidateCount: 1,
+        syncedCandidateCount: 1,
+        failedCandidateCount: 0,
+      });
+      expect(syncColoradoCandidateFinanceFn).toHaveBeenCalledTimes(1);
+      expect(syncColoradoCandidateFinanceFn).toHaveBeenCalledWith(
+        expect.objectContaining({
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          contributionRows: [row],
+        })
+      );
+      expect(warnSpy).toHaveBeenCalledWith(
+        "Colorado finance auto-link skipped; continuing with already-linked candidate sync:",
+        expect.stringContaining("Colorado TRACER contribution ZIP not found for 2025")
+      );
+      expect(db.query).toHaveBeenCalledTimes(2);
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
   it("rejects invalid batch options before querying", async () => {
     const db = createMockDb();
 

@@ -383,34 +383,41 @@ export async function syncDueColoradoCandidateFinance(
   const syncFn = input.syncColoradoCandidateFinanceFn ?? syncColoradoCandidateFinance;
 
   if (input.autoLinkMissingLinks !== false) {
-    const missingLinkCandidates = await listColoradoCandidateElectionsMissingFinanceLinks(input.db, {
-      now,
-      maxCandidates,
-      electionLookbackDays,
-      electionLookaheadDays,
-    });
-    const contributionRowsByYear = new Map<number, ColoradoTracerContributionRow[]>();
-    const sourceUrlByYear = new Map<number, string>();
-    for (const [year, candidates] of groupAutoLinkCandidatesByYear(missingLinkCandidates).entries()) {
-      const data = await loadAutoLinkContributionRowsForYear({
-        year,
-        candidates,
-        rawDataZipPath: input.rawDataZipPath,
-        rawDataCacheDir: input.rawDataCacheDir,
+    try {
+      const missingLinkCandidates = await listColoradoCandidateElectionsMissingFinanceLinks(input.db, {
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
       });
-      contributionRowsByYear.set(year, data.rows);
-      sourceUrlByYear.set(year, data.sourceUrl);
+      const contributionRowsByYear = new Map<number, ColoradoTracerContributionRow[]>();
+      const sourceUrlByYear = new Map<number, string>();
+      for (const [year, candidates] of groupAutoLinkCandidatesByYear(missingLinkCandidates).entries()) {
+        const data = await loadAutoLinkContributionRowsForYear({
+          year,
+          candidates,
+          rawDataZipPath: input.rawDataZipPath,
+          rawDataCacheDir: input.rawDataCacheDir,
+        });
+        contributionRowsByYear.set(year, data.rows);
+        sourceUrlByYear.set(year, data.sourceUrl);
+      }
+      await autoLinkMissingColoradoCandidateFinanceLinks({
+        db: input.db,
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+        contributionRowsByYear,
+        sourceUrlByYear,
+        candidateElections: missingLinkCandidates,
+      });
+    } catch (error) {
+      console.warn(
+        "Colorado finance auto-link skipped; continuing with already-linked candidate sync:",
+        error instanceof Error ? error.message : error
+      );
     }
-    await autoLinkMissingColoradoCandidateFinanceLinks({
-      db: input.db,
-      now,
-      maxCandidates,
-      electionLookbackDays,
-      electionLookaheadDays,
-      contributionRowsByYear,
-      sourceUrlByYear,
-      candidateElections: missingLinkCandidates,
-    });
   }
 
   const due = await listDueColoradoCandidateFinanceSyncRows(input.db, {
