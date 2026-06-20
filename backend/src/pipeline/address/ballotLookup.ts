@@ -1522,7 +1522,7 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
         JOIN public.ca_candidate_finance_direct_breakdowns AS breakdown
           ON breakdown.link_id = link.id
          AND breakdown.election_year = link.election_year
-        WHERE breakdown.category_type IN ('occupation', 'employer', 'industry')
+        WHERE breakdown.category_type IN ('occupation', 'industry')
         GROUP BY selected.candidate_id, selected.election_id, breakdown.category_type, breakdown.category_name
       ),
       ranked AS (
@@ -1662,7 +1662,6 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
   );
 
   const directOccupationsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
-  const directEmployersByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const directIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const summaryByCandidateElection = new Map(
     summaryResult.rows.map((row) => [candidateElectionKey(row.candidate_id, row.election_id), row])
@@ -1672,9 +1671,7 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
     const mapped = mapFinanceBreakdown(row, summary?.source_url ?? GENERIC_CA_POWER_SEARCH_SOURCE_URL);
     if (row.category_type === "occupation") {
       addFinanceBreakdown(directOccupationsByCandidateElection, row.candidate_id, row.election_id, mapped);
-    } else if (row.category_type === "employer") {
-      addFinanceBreakdown(directEmployersByCandidateElection, row.candidate_id, row.election_id, mapped);
-    } else {
+    } else if (row.category_type === "industry") {
       addFinanceBreakdown(directIndustriesByCandidateElection, row.candidate_id, row.election_id, mapped);
     }
   }
@@ -1733,6 +1730,7 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
             cash_on_hand: parseFinanceAmount(row.cash_on_hand),
             debts_owed: parseFinanceAmount(row.debts_owed),
             top_occupations: topDirectDonorOccupations,
+            top_employers: [],
             top_industries: directIndustriesByCandidateElection.get(key) ?? [],
           },
           outside_spending: {
@@ -1842,7 +1840,7 @@ async function loadColoradoCandidateFinanceSummariesByCandidateElection(
         JOIN public.co_candidate_finance_direct_breakdowns AS breakdown
           ON breakdown.link_id = link.id
          AND breakdown.election_year = link.election_year
-        WHERE breakdown.category_type IN ('occupation', 'employer', 'industry')
+        WHERE breakdown.category_type IN ('occupation', 'industry')
         GROUP BY selected.candidate_id, selected.election_id, breakdown.category_type, breakdown.category_name
       ),
       ranked AS (
@@ -1863,7 +1861,6 @@ async function loadColoradoCandidateFinanceSummariesByCandidateElection(
   );
 
   const directOccupationsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
-  const directEmployersByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const directIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const summaryByCandidateElection = new Map(
     summaryResult.rows.map((row) => [candidateElectionKey(row.candidate_id, row.election_id), row])
@@ -1873,9 +1870,7 @@ async function loadColoradoCandidateFinanceSummariesByCandidateElection(
     const mapped = mapFinanceBreakdown(row, summary?.source_url ?? GENERIC_COLORADO_TRACER_SOURCE_URL);
     if (row.category_type === "occupation") {
       addFinanceBreakdown(directOccupationsByCandidateElection, row.candidate_id, row.election_id, mapped);
-    } else if (row.category_type === "employer") {
-      addFinanceBreakdown(directEmployersByCandidateElection, row.candidate_id, row.election_id, mapped);
-    } else {
+    } else if (row.category_type === "industry") {
       addFinanceBreakdown(directIndustriesByCandidateElection, row.candidate_id, row.election_id, mapped);
     }
   }
@@ -1898,6 +1893,7 @@ async function loadColoradoCandidateFinanceSummariesByCandidateElection(
             cash_on_hand: null,
             debts_owed: null,
             top_occupations: topDirectDonorOccupations,
+            top_employers: [],
             top_industries: directIndustriesByCandidateElection.get(key) ?? [],
           },
           outside_spending: {

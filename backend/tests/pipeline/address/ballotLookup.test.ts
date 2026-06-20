@@ -1547,6 +1547,7 @@ describe("lookupElectionDetailById", () => {
             source_url: "https://powersearch.sos.ca.gov/advanced.php",
           },
         ],
+        top_employers: [],
         top_industries: [
           {
             category_name: "technology",
@@ -1757,6 +1758,7 @@ describe("lookupElectionDetailById", () => {
               "https://tracer.sos.colorado.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionData.csv.zip",
           },
         ],
+        top_employers: [],
         top_industries: [
           {
             category_name: "technology",
