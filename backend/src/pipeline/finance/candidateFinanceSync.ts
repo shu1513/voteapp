@@ -16,14 +16,23 @@ import {
   listOutsideSpendingGroupsByCandidate,
 } from "./openFecFinanceClient.js";
 import {
-  type FinanceClassificationConfidence,
-  type FinanceClassificationSource,
   type FinanceLabelClassification,
   type FinanceLabelType,
   classifyFinanceLabel,
   normalizeFinanceLabel,
-  type FinanceIndustrySlug,
 } from "./financeLabelClassifier.js";
+import {
+  buildFinanceIndustryBreakdownsFromClassifications,
+  mergeFinanceLabelClassification,
+  resolveFinanceIndustryClassifications,
+  type FinanceIndustryClassificationCandidate as CandidateFinanceIndustryClassificationCandidate,
+  type FinanceIndustryClassifier as CandidateFinanceIndustryClassifier,
+} from "./financeIndustryClassificationService.js";
+
+export type {
+  CandidateFinanceIndustryClassificationCandidate,
+  CandidateFinanceIndustryClassifier,
+};
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -57,17 +66,6 @@ export type CandidateFinanceSyncFecClient = {
   getOutsideSpendingTotalsByCandidate: typeof getOutsideSpendingTotalsByCandidate;
   listOutsideSpendingGroupsByCandidate: typeof listOutsideSpendingGroupsByCandidate;
 };
-
-export type CandidateFinanceIndustryClassificationCandidate = {
-  rawLabel: string;
-  labelType: Extract<FinanceLabelType, "employer" | "donor">;
-  normalizedLabel: string;
-  amount: number;
-};
-
-export type CandidateFinanceIndustryClassifier = (input: {
-  labels: readonly CandidateFinanceIndustryClassificationCandidate[];
-}) => Promise<FinanceLabelClassification[]>;
 
 export type CandidateFinanceSyncResult = {
   fecCandidateId: string;
@@ -267,10 +265,6 @@ function addOutsideAggregateBreakdowns(input: {
   }
 }
 
-function classificationKey(labelType: FinanceLabelType, normalizedLabel: string): string {
-  return `${labelType}\u0000${normalizedLabel}`;
-}
-
 function collectClassifications(
   classifications: Map<string, FinanceLabelClassification>,
   labelType: FinanceLabelType,
@@ -282,10 +276,7 @@ function collectClassifications(
     if (classification.normalizedLabel.length === 0) {
       continue;
     }
-    const key = classificationKey(classification.labelType, classification.normalizedLabel);
-    if (!classifications.has(key)) {
-      classifications.set(key, classification);
-    }
+    mergeFinanceLabelClassification(classifications, classification);
     collected.push(classification);
   }
   return collected;
@@ -414,234 +405,6 @@ function toOutsideBreakdownMap(breakdowns: readonly OutsideGroupBreakdown[]): Ma
     addOutsideBreakdown(map, breakdown);
   }
   return map;
-}
-
-function shouldReplaceClassification(
-  existing: FinanceLabelClassification | undefined,
-  next: FinanceLabelClassification
-): boolean {
-  if (!existing) {
-    return true;
-  }
-  if (!existing.industrySlug && next.industrySlug) {
-    return true;
-  }
-  return existing.classificationSource === "unknown" && next.classificationSource !== "unknown";
-}
-
-function mergeClassification(
-  classifications: Map<string, FinanceLabelClassification>,
-  classification: FinanceLabelClassification
-): void {
-  const key = classificationKey(classification.labelType, classification.normalizedLabel);
-  if (shouldReplaceClassification(classifications.get(key), classification)) {
-    classifications.set(key, classification);
-  }
-}
-
-function shouldSendClassificationToAi(classification: FinanceLabelClassification | undefined): boolean {
-  if (!classification) {
-    return true;
-  }
-  if (classification.industrySlug) {
-    return false;
-  }
-  return classification.classificationSource === "unknown";
-}
-
-function collectAiClassificationCandidates(input: {
-  directBreakdowns: Iterable<DirectBreakdown>;
-  outsideBreakdowns: Iterable<OutsideGroupBreakdown>;
-  classifications: Map<string, FinanceLabelClassification>;
-  minAmount: number;
-}): CandidateFinanceIndustryClassificationCandidate[] {
-  const candidates = new Map<string, CandidateFinanceIndustryClassificationCandidate>();
-
-  const addCandidate = (breakdown: { categoryType: string; categoryName: string; amount: number }): void => {
-    if (breakdown.categoryType !== "employer" || breakdown.amount < input.minAmount) {
-      return;
-    }
-    const normalizedLabel = normalizeFinanceLabel(breakdown.categoryName, "employer");
-    if (!normalizedLabel) {
-      return;
-    }
-    const key = classificationKey("employer", normalizedLabel);
-    const classification = input.classifications.get(key);
-    if (!shouldSendClassificationToAi(classification)) {
-      return;
-    }
-    const existing = candidates.get(key);
-    if (existing) {
-      existing.amount += breakdown.amount;
-      return;
-    }
-    candidates.set(key, {
-      rawLabel: breakdown.categoryName,
-      labelType: "employer",
-      normalizedLabel,
-      amount: breakdown.amount,
-    });
-  };
-
-  for (const breakdown of input.directBreakdowns) {
-    addCandidate(breakdown);
-  }
-  for (const breakdown of input.outsideBreakdowns) {
-    addCandidate(breakdown);
-  }
-
-  return [...candidates.values()];
-}
-
-type FinanceClassificationRow = {
-  raw_label: string;
-  label_type: FinanceLabelType;
-  normalized_label: string;
-  industry_slug: FinanceIndustrySlug | null;
-  confidence: FinanceClassificationConfidence;
-  classification_source: FinanceClassificationSource;
-};
-
-function mapClassificationRow(row: FinanceClassificationRow): FinanceLabelClassification {
-  return {
-    rawLabel: row.raw_label,
-    labelType: row.label_type,
-    normalizedLabel: row.normalized_label,
-    industrySlug: row.industry_slug,
-    confidence: row.confidence,
-    classificationSource: row.classification_source,
-    matchedRule: null,
-  };
-}
-
-async function loadCachedFinanceLabelClassifications(
-  db: Queryable,
-  labels: readonly CandidateFinanceIndustryClassificationCandidate[]
-): Promise<FinanceLabelClassification[]> {
-  if (labels.length === 0) {
-    return [];
-  }
-
-  const valuesSql = labels
-    .map((_label, index) => `($${index * 2 + 1}::text, $${index * 2 + 2}::text)`)
-    .join(", ");
-  const params = labels.flatMap((label) => [label.labelType, label.normalizedLabel]);
-  const result = await db.query<FinanceClassificationRow>(
-    `
-      WITH requested(label_type, normalized_label) AS (
-        VALUES ${valuesSql}
-      )
-      SELECT
-        classification.raw_label,
-        classification.label_type,
-        classification.normalized_label,
-        classification.industry_slug,
-        classification.confidence,
-        classification.classification_source
-      FROM public.finance_label_classifications AS classification
-      JOIN requested
-        ON requested.label_type = classification.label_type
-       AND requested.normalized_label = classification.normalized_label
-    `,
-    params
-  );
-
-  return result.rows.map(mapClassificationRow);
-}
-
-async function resolveFinanceIndustryClassifications(input: {
-  db: Queryable;
-  directBreakdowns: Iterable<DirectBreakdown>;
-  outsideBreakdowns: Iterable<OutsideGroupBreakdown>;
-  classifications: Map<string, FinanceLabelClassification>;
-  classifier: CandidateFinanceIndustryClassifier | undefined;
-  minAmount: number;
-  dryRun: boolean;
-}): Promise<void> {
-  if (input.dryRun) {
-    return;
-  }
-  const directBreakdowns = [...input.directBreakdowns];
-  const outsideBreakdowns = [...input.outsideBreakdowns];
-
-  const initialCandidates = collectAiClassificationCandidates({
-    directBreakdowns,
-    outsideBreakdowns,
-    classifications: input.classifications,
-    minAmount: input.minAmount,
-  });
-  if (initialCandidates.length === 0) {
-    return;
-  }
-
-  for (const classification of await loadCachedFinanceLabelClassifications(input.db, initialCandidates)) {
-    mergeClassification(input.classifications, classification);
-  }
-
-  const remainingCandidates = collectAiClassificationCandidates({
-    directBreakdowns,
-    outsideBreakdowns,
-    classifications: input.classifications,
-    minAmount: input.minAmount,
-  });
-  if (remainingCandidates.length === 0 || !input.classifier) {
-    return;
-  }
-
-  try {
-    const aiClassifications = await input.classifier({ labels: remainingCandidates });
-    for (const classification of aiClassifications) {
-      mergeClassification(input.classifications, classification);
-    }
-  } catch {
-    // Industry labels are enrichment-only. Keep the FEC sync successful if AI classification fails.
-  }
-}
-
-function addIndustryBreakdownsFromClassifications(input: {
-  directBreakdowns: Map<string, DirectBreakdown>;
-  outsideBreakdowns: Map<string, OutsideGroupBreakdown>;
-  classifications: Map<string, FinanceLabelClassification>;
-}): void {
-  const directEmployers = [...input.directBreakdowns.values()].filter(
-    (breakdown) => breakdown.categoryType === "employer"
-  );
-  for (const breakdown of directEmployers) {
-    const classification = input.classifications.get(
-      classificationKey("employer", normalizeFinanceLabel(breakdown.categoryName, "employer"))
-    );
-    if (!classification?.industrySlug) {
-      continue;
-    }
-    addBreakdown(input.directBreakdowns, {
-      categoryType: "industry",
-      categoryName: classification.industrySlug,
-      amount: breakdown.amount,
-      contributorCount: breakdown.contributorCount,
-      sourceUrl: breakdown.sourceUrl,
-    });
-  }
-
-  const outsideEmployers = [...input.outsideBreakdowns.values()].filter(
-    (breakdown) => breakdown.categoryType === "employer"
-  );
-  for (const breakdown of outsideEmployers) {
-    const classification = input.classifications.get(
-      classificationKey("employer", normalizeFinanceLabel(breakdown.categoryName, "employer"))
-    );
-    if (!classification?.industrySlug) {
-      continue;
-    }
-    addOutsideBreakdown(input.outsideBreakdowns, {
-      committeeId: breakdown.committeeId,
-      supportOppose: breakdown.supportOppose,
-      categoryType: "industry",
-      categoryName: classification.industrySlug,
-      amount: breakdown.amount,
-      contributorCount: breakdown.contributorCount,
-      sourceUrl: breakdown.sourceUrl,
-    });
-  }
 }
 
 async function upsertSummary(input: {
@@ -1036,7 +799,7 @@ export async function syncCandidateFinance(input: CandidateFinanceSyncInput): Pr
 
   const classifications = new Map<string, FinanceLabelClassification>();
   for (const classification of [...directFinance.classifications, ...(outsideFinance?.classifications ?? [])]) {
-    mergeClassification(classifications, classification);
+    mergeFinanceLabelClassification(classifications, classification);
   }
   const directBreakdowns = toDirectBreakdownMap(directFinance.breakdowns);
   const outsideBreakdowns = toOutsideBreakdownMap(outsideFinance?.outsideBreakdowns ?? []);
@@ -1051,11 +814,17 @@ export async function syncCandidateFinance(input: CandidateFinanceSyncInput): Pr
     dryRun: input.dryRun === true,
   });
 
-  addIndustryBreakdownsFromClassifications({
-    directBreakdowns,
-    outsideBreakdowns,
+  const industryBreakdowns = buildFinanceIndustryBreakdownsFromClassifications({
+    directBreakdowns: directBreakdowns.values(),
+    outsideBreakdowns: outsideBreakdowns.values(),
     classifications,
   });
+  for (const breakdown of industryBreakdowns.directIndustryBreakdowns) {
+    addBreakdown(directBreakdowns, breakdown);
+  }
+  for (const breakdown of industryBreakdowns.outsideIndustryBreakdowns) {
+    addOutsideBreakdown(outsideBreakdowns, breakdown);
+  }
 
   if (!input.dryRun) {
     await writeCandidateFinanceSync({

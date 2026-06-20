@@ -30,3 +30,21 @@ export function isCandidateFinanceEnabled(): boolean {
 export function isCandidateFinanceSyncEnabled(force = false): boolean {
   return isCandidateFinanceEnabled() && (force || readBooleanEnv("CANDIDATE_FINANCE_SYNC_ENABLED", false));
 }
+
+export function isCaliforniaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("CALIFORNIA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isCaliforniaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isCaliforniaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("CALIFORNIA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isCaliforniaCampaignFinanceRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isCaliforniaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
