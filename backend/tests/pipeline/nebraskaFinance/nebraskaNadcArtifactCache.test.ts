@@ -61,6 +61,23 @@ describe("Nebraska NADC artifact cache", () => {
     );
   });
 
+  it("rejects invalid refresh timestamps before remote fetches", async () => {
+    const cacheDir = await makeTempDir();
+    const fetchImpl = vi.fn<typeof fetch>();
+
+    await expect(
+      refreshNebraskaNadcArtifactCache({
+        year: 2026,
+        artifactKind: "contribution_loan",
+        cacheDir,
+        fetchImpl,
+        now: new Date("not a date"),
+      })
+    ).rejects.toThrow("Invalid Nebraska NADC artifact refresh timestamp");
+
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
   it("downloads and writes cache metadata when the artifact is missing", async () => {
     const cacheDir = await makeTempDir();
     const fetchImpl = vi.fn<typeof fetch>(async (_url, init) => {

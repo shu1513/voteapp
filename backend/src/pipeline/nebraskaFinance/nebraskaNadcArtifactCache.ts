@@ -306,6 +306,10 @@ export async function refreshNebraskaNadcArtifactCache(input: {
 }): Promise<NebraskaNadcArtifactRefreshResult> {
   const artifact = normalizeNebraskaNadcArtifactIdentity(input);
   const paths = getNebraskaNadcArtifactCachePaths({ cacheDir: input.cacheDir, ...artifact });
+  const downloadedAt = input.now ?? new Date();
+  if (Number.isNaN(downloadedAt.getTime())) {
+    throw new Error("Invalid Nebraska NADC artifact refresh timestamp");
+  }
   const remote = await fetchNebraskaNadcArtifactMetadata({
     ...artifact,
     url: input.url,
@@ -342,10 +346,6 @@ export async function refreshNebraskaNadcArtifactCache(input: {
     throw error;
   }
 
-  const downloadedAt = input.now ?? new Date();
-  if (Number.isNaN(downloadedAt.getTime())) {
-    throw new Error("Invalid Nebraska NADC artifact refresh timestamp");
-  }
   const current: NebraskaNadcArtifactCacheMetadata = {
     version: 1,
     artifact,
