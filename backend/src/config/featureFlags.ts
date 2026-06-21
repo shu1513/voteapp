@@ -84,3 +84,21 @@ export function isConnecticutEcrisRawDataRefreshEnabled(force = false): boolean 
     (force || readBooleanEnv("CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED", false))
   );
 }
+
+export function isNebraskaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("NEBRASKA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isNebraskaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isNebraskaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("NEBRASKA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isNebraskaNadcRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isNebraskaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("NEBRASKA_NADC_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}

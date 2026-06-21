@@ -1,0 +1,311 @@
+import type { NebraskaNadcContributionRow } from "./nebraskaNadcArtifactReader.js";
+import {
+  isNebraskaFinanceEligibleOffice,
+  normalizeNebraskaNadcOfficeLabel,
+  type NebraskaFinanceOfficeScope,
+} from "./nebraskaFinanceEligibleOffices.js";
+
+export type NebraskaCandidateCommitteeResolverInput = {
+  candidateName: string;
+  officeScope: string;
+  officeName: string;
+  electionYear: number;
+  district?: string | null;
+  contributionRows: readonly NebraskaNadcContributionRow[];
+  sourceUrl?: string | null;
+};
+
+export type NebraskaCandidateCommitteeMatch = {
+  committeeId: string;
+  committeeName: string;
+  confidence: "exact";
+  source: "nadc_bulk";
+  sourceUrl: string | null;
+  matchedContributionRowCount: number;
+};
+
+export type NebraskaCandidateCommitteeResolution =
+  | ({ status: "matched" } & NebraskaCandidateCommitteeMatch)
+  | {
+      status: "unmatched";
+      reason:
+        | "missing_candidate_name"
+        | "unsupported_office"
+        | "missing_legislative_district"
+        | "no_candidate_committee_match";
+      candidateNameNormalized: string;
+      officeNameNormalized: string;
+    }
+  | {
+      status: "ambiguous";
+      reason: "multiple_matching_committees";
+      candidateNameNormalized: string;
+      officeNameNormalized: string;
+      matches: NebraskaCandidateCommitteeMatch[];
+    };
+
+type CandidateCommitteeAccumulator = {
+  committeeId: string;
+  committeeName: string;
+  rows: NebraskaNadcContributionRow[];
+};
+
+function normalizeElectionYear(value: number): number {
+  if (!Number.isInteger(value) || value < 2021 || value > 2100) {
+    throw new Error(`Invalid Nebraska candidate committee election year: ${value}`);
+  }
+  return value;
+}
+
+function normalizeTextKey(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase()
+    .replace(/&/g, " AND ")
+    .replace(/[^A-Z0-9]+/g, " ")
+    .replace(/\b(THE|OF|FOR)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizePersonName(value: string): string {
+  return normalizeTextKey(value)
+    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export function normalizeNebraskaCandidateNameKeys(value: string): Set<string> {
+  const trimmed = value.trim();
+  const normalized = normalizePersonName(trimmed);
+  const keys = new Set<string>();
+  if (normalized) {
+    keys.add(normalized);
+  }
+
+  const commaParts = trimmed
+    .split(",")
+    .map((part) => normalizePersonName(part))
+    .filter(Boolean);
+  if (commaParts.length >= 2) {
+    const lastName = commaParts[0] ?? "";
+    const firstNames = commaParts.slice(1).join(" ").trim();
+    const flipped = normalizePersonName(`${firstNames} ${lastName}`);
+    if (flipped) {
+      keys.add(flipped);
+      const flippedParts = flipped.split(" ").filter(Boolean);
+      if (flippedParts.length >= 2) {
+        keys.add(`${flippedParts[0]} ${flippedParts[flippedParts.length - 1]}`);
+      }
+    }
+    return keys;
+  }
+
+  const parts = normalized.split(" ").filter(Boolean);
+  if (parts.length >= 2) {
+    keys.add(`${parts[0]} ${parts[parts.length - 1]}`);
+  }
+
+  return keys;
+}
+
+function normalizeDistrict(value: string | null | undefined): string {
+  const trimmed = value?.trim() ?? "";
+  if (!trimmed) {
+    return "";
+  }
+  const numeric = Number(trimmed);
+  if (Number.isInteger(numeric) && numeric >= 0) {
+    return String(numeric);
+  }
+  return normalizeTextKey(trimmed);
+}
+
+function canonicalOfficeNameForInput(officeName: string): string | null {
+  const normalized = normalizeNebraskaNadcOfficeLabel(officeName);
+  switch (normalized) {
+    case "GOVERNOR":
+      return "Governor";
+    case "SECRETARY OF STATE":
+      return "Secretary of State";
+    case "ATTORNEY GENERAL":
+      return "Attorney General";
+    case "STATE TREASURER":
+      return "State Treasurer";
+    case "AUDITOR OF PUBLIC ACCOUNTS":
+    case "STATE AUDITOR":
+      return "State Auditor";
+    case "STATE LEGISLATURE":
+    case "STATE SENATOR":
+      return "State Senator";
+    default:
+      return null;
+  }
+}
+
+function normalizeOfficeScope(value: string): NebraskaFinanceOfficeScope | null {
+  const normalized = value.trim();
+  return normalized === "statewide" || normalized === "state_upper" ? normalized : null;
+}
+
+function isExpectedLegislativeOffice(officeScope: string | null, officeCanonicalName: string | null): boolean {
+  return officeScope === "state_upper" && officeCanonicalName === "State Senator";
+}
+
+function parseNebraskaNadcDateYear(raw: string): number | null {
+  const trimmed = raw.trim();
+  if (!trimmed) {
+    return null;
+  }
+  const slashMatch = /^(\d{1,2})\/(\d{1,2})\/(\d{4})\b/.exec(trimmed);
+  if (slashMatch) {
+    return Number(slashMatch[3]);
+  }
+  const isoMatch = /^(\d{4})-\d{2}-\d{2}/.exec(trimmed);
+  if (isoMatch) {
+    return Number(isoMatch[1]);
+  }
+  return null;
+}
+
+function isElectionCycleContribution(row: NebraskaNadcContributionRow, electionYear: number): boolean {
+  const year = parseNebraskaNadcDateYear(row["Receipt Date"]);
+  return year !== null && year >= electionYear - 1 && year <= electionYear;
+}
+
+function isCandidateCommittee(row: NebraskaNadcContributionRow): boolean {
+  return normalizeTextKey(row["Filer Type"]) === "CANDIDATE COMMITTEE";
+}
+
+function rowMatchesCandidateName(input: {
+  row: NebraskaNadcContributionRow;
+  candidateNameKeys: ReadonlySet<string>;
+}): boolean {
+  for (const key of normalizeNebraskaCandidateNameKeys(input.row["Candidate Name"])) {
+    if (input.candidateNameKeys.has(key)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function toCommitteeMatch(input: {
+  accumulator: CandidateCommitteeAccumulator;
+  sourceUrl: string | null;
+}): NebraskaCandidateCommitteeMatch {
+  return {
+    committeeId: input.accumulator.committeeId,
+    committeeName: input.accumulator.committeeName,
+    confidence: "exact",
+    source: "nadc_bulk",
+    sourceUrl: input.sourceUrl,
+    matchedContributionRowCount: input.accumulator.rows.length,
+  };
+}
+
+export function resolveNebraskaCandidateCommittee(
+  input: NebraskaCandidateCommitteeResolverInput
+): NebraskaCandidateCommitteeResolution {
+  const electionYear = normalizeElectionYear(input.electionYear);
+  const officeScope = normalizeOfficeScope(input.officeScope);
+  const officeCanonicalName = canonicalOfficeNameForInput(input.officeName);
+  const officeNameNormalized = officeCanonicalName ?? normalizeTextKey(input.officeName);
+  const candidateNameKeys = normalizeNebraskaCandidateNameKeys(input.candidateName);
+  const candidateNameNormalized = [...candidateNameKeys][0] ?? normalizePersonName(input.candidateName);
+  const expectedDistrict = normalizeDistrict(input.district);
+
+  if (candidateNameKeys.size === 0) {
+    return {
+      status: "unmatched",
+      reason: "missing_candidate_name",
+      candidateNameNormalized,
+      officeNameNormalized,
+    };
+  }
+  if (
+    !officeScope ||
+    !officeCanonicalName ||
+    !isNebraskaFinanceEligibleOffice({ officeScope, officeCanonicalName })
+  ) {
+    return {
+      status: "unmatched",
+      reason: "unsupported_office",
+      candidateNameNormalized,
+      officeNameNormalized,
+    };
+  }
+  if (isExpectedLegislativeOffice(officeScope, officeCanonicalName) && !expectedDistrict) {
+    return {
+      status: "unmatched",
+      reason: "missing_legislative_district",
+      candidateNameNormalized,
+      officeNameNormalized,
+    };
+  }
+
+  const rowsByCommittee = new Map<string, CandidateCommitteeAccumulator>();
+  for (const row of input.contributionRows) {
+    const committeeId = row["Org ID"].trim().toUpperCase();
+    const committeeName = row["Filer Name"].trim();
+    if (!committeeId || !committeeName) {
+      continue;
+    }
+    if (!isCandidateCommittee(row)) {
+      continue;
+    }
+    if (!isElectionCycleContribution(row, electionYear)) {
+      continue;
+    }
+    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+      continue;
+    }
+
+    const existing = rowsByCommittee.get(committeeId);
+    if (existing) {
+      existing.rows.push(row);
+      continue;
+    }
+    rowsByCommittee.set(committeeId, {
+      committeeId,
+      committeeName,
+      rows: [row],
+    });
+  }
+
+  const matches = [...rowsByCommittee.values()].map((accumulator) =>
+    toCommitteeMatch({ accumulator, sourceUrl: input.sourceUrl ?? null })
+  );
+
+  if (matches.length === 0) {
+    return {
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+      candidateNameNormalized,
+      officeNameNormalized,
+    };
+  }
+  if (matches.length > 1) {
+    return {
+      status: "ambiguous",
+      reason: "multiple_matching_committees",
+      candidateNameNormalized,
+      officeNameNormalized,
+      matches,
+    };
+  }
+
+  const match = matches[0];
+  if (!match) {
+    return {
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+      candidateNameNormalized,
+      officeNameNormalized,
+    };
+  }
+  return {
+    status: "matched",
+    ...match,
+  };
+}

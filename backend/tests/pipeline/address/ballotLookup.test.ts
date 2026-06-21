@@ -1959,6 +1959,162 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");
   });
 
+  it("includes locally synced Nebraska finance summaries with top direct donor occupations", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("CALIFORNIA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("COLORADO_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("CONNECTICUT_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("NEBRASKA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "state_upper",
+            geoid_compact: "31030",
+            district_name: "Nebraska Legislative District 30",
+            state: "NE",
+            state_fips: "31",
+            representation_power_score: "70",
+            race_type: "office",
+            official_ballot_title: "State Senator District 30",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: false,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: "State Senator",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Rick Vest",
+            party: "Nonpartisan",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: null,
+            state: "NE",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "7569",
+            election_year: 2026,
+            total_receipts: "81880.74",
+            direct_contribution_total: "75389.00",
+            source_url:
+              "https://nadc-e.nebraska.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+            last_synced_at: "2026-06-21 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "PROPRIETOR",
+            amount: "500.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "industry",
+            category_name: "agriculture_and_food",
+            amount: "2500.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "NEBRASKA_NADC",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "7569",
+      last_synced_at: "2026-06-21 04:05:00+00",
+      direct_campaign: {
+        total_raised: 75389,
+        total_spent: null,
+        cash_on_hand: null,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "PROPRIETOR",
+            amount: 500,
+            contributor_count: 1,
+            source_url:
+              "https://nadc-e.nebraska.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+          },
+        ],
+        top_employers: [],
+        top_industries: [
+          {
+            category_name: "agriculture_and_food",
+            amount: 2500,
+            contributor_count: 1,
+            source_url:
+              "https://nadc-e.nebraska.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: null,
+        oppose_total: null,
+        top_supporting_groups: [],
+        top_opposing_groups: [],
+        top_supporting_industries: [],
+        top_opposing_industries: [],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "PROPRIETOR",
+            amount: 500,
+            contributor_count: 1,
+            source_url:
+              "https://nadc-e.nebraska.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+          },
+        ],
+        top_outside_supporting_industries: [],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(10);
+    expect(query.mock.calls[7]?.[0]).toContain("public.ne_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.ne_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'industry')");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.ct_candidate_finance");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.co_candidate_finance");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.ca_candidate_finance");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");
+  });
+
   it("omits finance summaries without querying finance tables when candidate finance is disabled", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi

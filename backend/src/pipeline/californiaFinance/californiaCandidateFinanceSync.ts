@@ -87,7 +87,7 @@ export type CaliforniaCandidateFinanceSyncResult = {
 const DEFAULT_POWER_SEARCH_CLIENT: CaliforniaCandidateFinancePowerSearchClient = {
   summarizeIndependentSpendingByCandidate: summarizeCaliforniaIndependentSpendingByCandidate,
 };
-const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 100_000;
+const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
 
 function requireNonEmpty(value: string, fieldName: string): string {
   const trimmed = value.trim();
