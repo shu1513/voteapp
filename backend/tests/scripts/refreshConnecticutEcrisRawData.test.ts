@@ -46,6 +46,8 @@ describe("refreshConnecticutEcrisRawData script", () => {
     expect(() => parseRefreshConnecticutEcrisRawDataScriptArgs(["--year=2026x"])).toThrow(
       "Invalid --year value: 2026x"
     );
+    expect(() => parseRefreshConnecticutEcrisRawDataScriptArgs(["--year="])).toThrow("Missing value for --year");
+    expect(() => parseRefreshConnecticutEcrisRawDataScriptArgs(["--url", "   "])).toThrow("Missing value for --url");
     expect(() => parseRefreshConnecticutEcrisRawDataScriptArgs(["--timeout-ms=5x"])).toThrow(
       "Invalid --timeout-ms value: 5x"
     );

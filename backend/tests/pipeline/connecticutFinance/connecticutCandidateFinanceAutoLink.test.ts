@@ -206,4 +206,70 @@ describe("connecticutCandidateFinanceAutoLink", () => {
     expect(db.query).toHaveBeenCalledTimes(1);
     expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.ct_candidate_finance_links");
   });
+
+  it("continues auto-linking later candidates when one candidate write fails", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockRejectedValueOnce(new Error("temporary write failure"))
+        .mockResolvedValueOnce({ rows: [{ id: "link-2" }], rowCount: 1 }),
+    };
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    await expect(
+      autoLinkMissingConnecticutCandidateFinanceLinks({
+        db,
+        now: NOW,
+        maxCandidates: 25,
+        electionLookbackDays: 1,
+        electionLookaheadDays: 730,
+        candidateElections: [
+          {
+            candidateId: CANDIDATE_ID,
+            electionId: ELECTION_ID,
+            candidateName: "Timothy Ackert",
+            electionYear: 2026,
+            officeName: "State Lower Chamber Legislator",
+            district: "8",
+          },
+          {
+            candidateId: "33333333-3333-4333-8333-333333333333",
+            electionId: "44444444-4444-4444-8444-444444444444",
+            candidateName: "Timothy Ackert",
+            electionYear: 2026,
+            officeName: "State Lower Chamber Legislator",
+            district: "8",
+          },
+        ],
+        receiptRowsByYear: new Map([[2026, [receipt()]]]),
+        sourceUrlByYear: new Map([[2026, "https://seec.ct.gov/portal/ecris/CurPreYears"]]),
+      })
+    ).resolves.toEqual([
+      {
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        status: "error",
+        reason: "auto_link_failed",
+        error: "temporary write failure",
+      },
+      {
+        candidateId: "33333333-3333-4333-8333-333333333333",
+        electionId: "44444444-4444-4444-8444-444444444444",
+        status: "linked",
+        committeeId: "14376",
+      },
+    ]);
+
+    expect(db.query).toHaveBeenCalledTimes(2);
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Connecticut finance auto-link failed for candidate election; continuing:",
+      expect.objectContaining({
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        error: "temporary write failure",
+      })
+    );
+
+    warnSpy.mockRestore();
+  });
 });
