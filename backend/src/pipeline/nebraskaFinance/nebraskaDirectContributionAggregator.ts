@@ -43,7 +43,7 @@ type Aggregate = {
   categoryType: NebraskaFinanceDirectBreakdown["categoryType"];
   categoryName: string;
   amountCents: number;
-  contributorCount: number;
+  contributorKeys: Set<string>;
 };
 
 const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 50;
@@ -194,6 +194,25 @@ function directBusinessDonorIndustry(row: NebraskaNadcContributionRow): string |
   return classification.industrySlug;
 }
 
+function contributorIdentityKey(row: NebraskaNadcContributionRow): string {
+  const parts = [
+    row["Contributor or Transaction Source Type"],
+    row["Contributor or Source Name (Individual Last Name)"],
+    row["First Name"],
+    row["Middle Name"],
+    row.Suffix,
+    row.City,
+    row.State,
+    row.Zip,
+  ]
+    .map(normalizeTextKey)
+    .filter(Boolean);
+  if (parts.length > 0) {
+    return parts.join("\u0000");
+  }
+  return normalizeTextKey(row["Receipt ID"]) || "unknown";
+}
+
 function contributionSizeBucket(amount: number): string {
   if (amount < 100) {
     return "$1-$99";
@@ -219,7 +238,7 @@ function aggregateKey(categoryType: Aggregate["categoryType"], categoryName: str
 
 function addAggregate(
   aggregates: Map<string, Aggregate>,
-  input: { categoryType: Aggregate["categoryType"]; categoryName: string; amountCents: number }
+  input: { categoryType: Aggregate["categoryType"]; categoryName: string; amountCents: number; contributorKey: string }
 ): void {
   const categoryName = input.categoryName.trim().replace(/\s+/g, " ");
   if (categoryName.length === 0) {
@@ -233,13 +252,13 @@ function addAggregate(
       categoryType: input.categoryType,
       categoryName,
       amountCents: input.amountCents,
-      contributorCount: 1,
+      contributorKeys: new Set([input.contributorKey]),
     });
     return;
   }
 
   existing.amountCents += input.amountCents;
-  existing.contributorCount += 1;
+  existing.contributorKeys.add(input.contributorKey);
 }
 
 function toDirectBreakdowns(input: {
@@ -273,7 +292,7 @@ function toDirectBreakdowns(input: {
         categoryType: aggregate.categoryType,
         categoryName: aggregate.categoryName,
         amount: centsToDollars(aggregate.amountCents),
-        contributorCount: aggregate.contributorCount,
+        contributorCount: aggregate.contributorKeys.size,
         sourceUrl: input.sourceUrl,
       });
     }
@@ -324,25 +343,30 @@ export function aggregateNebraskaDirectContributions(
 
     includedContributionRowCount += 1;
     directContributionTotalCents += amountCents;
+    const contributorKey = contributorIdentityKey(row);
     addAggregate(aggregates, {
       categoryType: "occupation",
       categoryName: row.Occupation,
       amountCents,
+      contributorKey,
     });
     addAggregate(aggregates, {
       categoryType: "industry",
       categoryName: directBusinessDonorIndustry(row) ?? "",
       amountCents,
+      contributorKey,
     });
     addAggregate(aggregates, {
       categoryType: "contributor_source_type",
       categoryName: mapNebraskaContributorSourceType(row["Contributor or Transaction Source Type"]),
       amountCents,
+      contributorKey,
     });
     addAggregate(aggregates, {
       categoryType: "contribution_size",
       categoryName: contributionSizeBucket(centsToDollars(amountCents)),
       amountCents,
+      contributorKey,
     });
   }
 

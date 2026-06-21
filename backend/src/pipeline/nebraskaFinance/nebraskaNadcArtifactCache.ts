@@ -1,5 +1,5 @@
 import { createWriteStream } from "node:fs";
-import { mkdir, readFile, rename, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
@@ -201,8 +201,14 @@ export async function downloadNebraskaNadcArtifact(input: {
     throw new Error("Nebraska NADC artifact response did not include a body");
   }
 
-  await pipeline(Readable.fromWeb(response.body as NodeReadableStream<Uint8Array>), createWriteStream(outputPath));
-  const outputStat = await stat(outputPath);
+  let outputStat;
+  try {
+    await pipeline(Readable.fromWeb(response.body as NodeReadableStream<Uint8Array>), createWriteStream(outputPath));
+    outputStat = await stat(outputPath);
+  } catch (error) {
+    await rm(outputPath, { force: true }).catch(() => {});
+    throw error;
+  }
   return {
     ...metadataFromResponse(artifact, normalizedUrl, response),
     outputPath,
@@ -321,14 +327,20 @@ export async function refreshNebraskaNadcArtifactCache(input: {
 
   await mkdir(paths.cacheDir, { recursive: true });
   const tmpPath = `${paths.zipPath}.tmp-${process.pid}-${Date.now()}`;
-  const downloaded = await downloadNebraskaNadcArtifact({
-    ...artifact,
-    url: remote.url,
-    outputPath: tmpPath,
-    fetchImpl: input.fetchImpl,
-    timeoutMs: input.timeoutMs,
-  });
-  await rename(tmpPath, paths.zipPath);
+  let downloaded: NebraskaNadcArtifactDownloadResult;
+  try {
+    downloaded = await downloadNebraskaNadcArtifact({
+      ...artifact,
+      url: remote.url,
+      outputPath: tmpPath,
+      fetchImpl: input.fetchImpl,
+      timeoutMs: input.timeoutMs,
+    });
+    await rename(tmpPath, paths.zipPath);
+  } catch (error) {
+    await rm(tmpPath, { force: true }).catch(() => {});
+    throw error;
+  }
 
   const downloadedAt = input.now ?? new Date();
   if (Number.isNaN(downloadedAt.getTime())) {

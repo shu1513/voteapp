@@ -62,6 +62,15 @@ describe("syncDueNebraskaCandidateFinance script", () => {
     );
   });
 
+  it("rejects duplicate value flags", () => {
+    expect(() =>
+      parseSyncDueNebraskaCandidateFinanceScriptArgs(["--max-candidates=10", "--max-candidates", "20"])
+    ).toThrow("Provide --max-candidates at most once");
+    expect(() =>
+      parseSyncDueNebraskaCandidateFinanceScriptArgs(["--raw-cache-dir=/tmp/a", "--raw-cache-dir=/tmp/b"])
+    ).toThrow("Provide --raw-cache-dir at most once");
+  });
+
   it("formats script output", () => {
     const output = toSyncDueNebraskaCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),

@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -232,5 +232,45 @@ describe("Nebraska NADC artifact cache", () => {
     expect(result.status).toBe("downloaded");
     expect(fetchImpl).toHaveBeenCalledTimes(2);
     expect(await readFile(paths.zipPath, "utf8")).toBe("new-zip");
+  });
+
+  it("cleans up temporary ZIP files when download fails", async () => {
+    const cacheDir = await makeTempDir();
+    const fetchImpl = vi.fn<typeof fetch>(async (_url, init) => {
+      if (init?.method === "HEAD") {
+        return response(null, {
+          "content-length": "8",
+          "content-type": "application/zip",
+          etag: '"ne-2026-a"',
+        });
+      }
+      return new Response(
+        new ReadableStream({
+          start(controller) {
+            controller.enqueue(new TextEncoder().encode("partial"));
+            controller.error(new Error("stream failed"));
+          },
+        }),
+        {
+          status: 200,
+          headers: {
+            "content-length": "8",
+            "content-type": "application/zip",
+            etag: '"ne-2026-a"',
+          },
+        }
+      );
+    });
+
+    await expect(
+      refreshNebraskaNadcArtifactCache({
+        year: 2026,
+        artifactKind: "contribution_loan",
+        cacheDir,
+        fetchImpl,
+      })
+    ).rejects.toThrow("stream failed");
+
+    expect((await readdir(cacheDir)).filter((fileName) => fileName.includes(".tmp-"))).toEqual([]);
   });
 });

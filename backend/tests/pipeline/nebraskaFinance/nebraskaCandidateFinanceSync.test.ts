@@ -136,7 +136,7 @@ describe("nebraskaCandidateFinanceSync", () => {
       "contributor_source_type",
       "individuals",
       350,
-      2,
+      1,
       CONTRIBUTION_SOURCE_URL,
       "2026-02-03T04:05:06.000Z",
     ]);

@@ -2060,7 +2060,7 @@ describe("lookupElectionDetailById", () => {
       controlled_committee_id: "7569",
       last_synced_at: "2026-06-21 04:05:00+00",
       direct_campaign: {
-        total_raised: 75389,
+        total_raised: 81880.74,
         total_spent: null,
         cash_on_hand: null,
         debts_owed: null,

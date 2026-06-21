@@ -1,6 +1,7 @@
 import type { NebraskaNadcContributionRow } from "./nebraskaNadcArtifactReader.js";
 import {
   isNebraskaFinanceEligibleOffice,
+  mapNebraskaNadcJurisdictionOffice,
   normalizeNebraskaNadcOfficeLabel,
   type NebraskaFinanceOfficeScope,
 } from "./nebraskaFinanceEligibleOffices.js";
@@ -49,6 +50,8 @@ type CandidateCommitteeAccumulator = {
   committeeName: string;
   rows: NebraskaNadcContributionRow[];
 };
+
+const NADC_JURISDICTION_OFFICE_FIELD = "Jurisdiction - Office - District or Ballot Description";
 
 function normalizeElectionYear(value: number): number {
   if (!Number.isInteger(value) || value < 2021 || value > 2100) {
@@ -190,6 +193,30 @@ function rowMatchesCandidateName(input: {
   return false;
 }
 
+function rowMatchesExpectedOfficeDistrict(input: {
+  row: NebraskaNadcContributionRow;
+  officeScope: NebraskaFinanceOfficeScope;
+  officeCanonicalName: string;
+  expectedDistrict: string;
+}): boolean {
+  const rawJurisdiction = (input.row as Record<string, string | undefined>)[NADC_JURISDICTION_OFFICE_FIELD]?.trim();
+  if (!rawJurisdiction) {
+    return true;
+  }
+
+  const mapping = mapNebraskaNadcJurisdictionOffice({ jurisdictionOfficeDistrict: rawJurisdiction });
+  if (!mapping) {
+    return false;
+  }
+  if (mapping.officeScope !== input.officeScope || mapping.officeCanonicalName !== input.officeCanonicalName) {
+    return false;
+  }
+  if (isExpectedLegislativeOffice(input.officeScope, input.officeCanonicalName)) {
+    return mapping.district === input.expectedDistrict;
+  }
+  return true;
+}
+
 function toCommitteeMatch(input: {
   accumulator: CandidateCommitteeAccumulator;
   sourceUrl: string | null;
@@ -258,6 +285,16 @@ export function resolveNebraskaCandidateCommittee(
       continue;
     }
     if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+      continue;
+    }
+    if (
+      !rowMatchesExpectedOfficeDistrict({
+        row,
+        officeScope,
+        officeCanonicalName,
+        expectedDistrict,
+      })
+    ) {
       continue;
     }
 

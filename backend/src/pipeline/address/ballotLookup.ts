@@ -2317,7 +2317,7 @@ async function loadNebraskaCandidateFinanceSummariesByCandidateElection(
           controlled_committee_id: row.committee_id,
           last_synced_at: row.last_synced_at,
           direct_campaign: {
-            total_raised: parseFinanceAmount(row.direct_contribution_total),
+            total_raised: parseFinanceAmount(row.total_receipts),
             total_spent: null,
             cash_on_hand: null,
             debts_owed: null,

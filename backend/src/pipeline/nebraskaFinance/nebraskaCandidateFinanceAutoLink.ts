@@ -67,21 +67,17 @@ function mapCandidateElectionRow(row: CandidateElectionQueryRow): NebraskaFinanc
 export function buildNebraskaCandidateNamePredicate(
   candidates: readonly NebraskaFinanceAutoLinkCandidateElection[]
 ): (row: NebraskaNadcContributionRow) => boolean {
-  const candidateNameKeysByYear = new Map<number, Set<string>>();
+  const candidateNameKeys = new Set<string>();
   for (const candidate of candidates) {
-    const keys = candidateNameKeysByYear.get(candidate.electionYear) ?? new Set<string>();
     for (const key of normalizeNebraskaCandidateNameKeys(candidate.candidateName)) {
-      keys.add(key);
+      candidateNameKeys.add(key);
     }
-    candidateNameKeysByYear.set(candidate.electionYear, keys);
   }
 
   return (row) => {
-    for (const keys of candidateNameKeysByYear.values()) {
-      for (const rowKey of normalizeNebraskaCandidateNameKeys(row["Candidate Name"])) {
-        if (keys.has(rowKey)) {
-          return true;
-        }
+    for (const rowKey of normalizeNebraskaCandidateNameKeys(row["Candidate Name"])) {
+      if (candidateNameKeys.has(rowKey)) {
+        return true;
       }
     }
     return false;

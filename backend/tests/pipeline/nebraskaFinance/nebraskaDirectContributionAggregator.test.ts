@@ -47,8 +47,16 @@ describe("nebraskaDirectContributionAggregator", () => {
       sourceUrl: "https://nadc-e.nebraska.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
       contributionRows: [
         contribution({ "Receipt Amount": "100.00", Occupation: "Attorney" }),
-        contribution({ "Receipt Amount": "$250.00", Occupation: "Attorney" }),
-        contribution({ "Receipt Amount": "5,000.00", Occupation: "Teacher" }),
+        contribution({
+          "Receipt Amount": "$250.00",
+          Occupation: "Attorney",
+          "Contributor or Source Name (Individual Last Name)": "Roe",
+        }),
+        contribution({
+          "Receipt Amount": "5,000.00",
+          Occupation: "Teacher",
+          "Contributor or Source Name (Individual Last Name)": "Smith",
+        }),
       ],
     });
 
@@ -106,6 +114,49 @@ describe("nebraskaDirectContributionAggregator", () => {
       includedContributionRowCount: 3,
       skippedContributionRowCount: 0,
     });
+  });
+
+  it("counts distinct contributors instead of contribution rows", () => {
+    const result = aggregateNebraskaDirectContributions({
+      committeeId: "7569",
+      electionYear: 2026,
+      contributionRows: [
+        contribution({ "Receipt ID": "R1", "Receipt Amount": "100", Occupation: "Attorney" }),
+        contribution({ "Receipt ID": "R2", "Receipt Amount": "200", Occupation: "Attorney" }),
+        contribution({
+          "Receipt ID": "R3",
+          "Receipt Amount": "300",
+          Occupation: "Attorney",
+          "Contributor or Source Name (Individual Last Name)": "Roe",
+        }),
+      ],
+    });
+
+    expect(result.directBreakdowns.filter((row) => row.categoryType === "occupation")).toEqual([
+      expect.objectContaining({ categoryName: "Attorney", amount: 600, contributorCount: 2 }),
+    ]);
+    expect(result.directBreakdowns).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          categoryType: "contributor_source_type",
+          categoryName: "individuals",
+          amount: 600,
+          contributorCount: 2,
+        }),
+        expect.objectContaining({
+          categoryType: "contribution_size",
+          categoryName: "$100-$249",
+          amount: 300,
+          contributorCount: 1,
+        }),
+        expect.objectContaining({
+          categoryType: "contribution_size",
+          categoryName: "$250-$499",
+          amount: 300,
+          contributorCount: 1,
+        }),
+      ])
+    );
   });
 
   it("matches committee IDs case-insensitively and does not emit employer breakdowns", () => {

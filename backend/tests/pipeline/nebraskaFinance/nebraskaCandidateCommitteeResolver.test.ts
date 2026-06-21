@@ -204,6 +204,21 @@ describe("nebraskaCandidateCommitteeResolver", () => {
         contributionRows: [contribution({ "Receipt Date": "01/10/2024" })],
       })
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveNebraskaCandidateCommittee({
+        candidateName: "Rick Vest",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "31",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({
+            "Jurisdiction - Office - District or Ballot Description": "NEBRASKA - STATE LEGISLATURE - 30",
+          } as Partial<NebraskaNadcContributionRow>),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
   it("does not fuzzy-match candidate typos", () => {
