@@ -1797,6 +1797,168 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("public.candidate_finance_summaries");
   });
 
+  it("includes locally synced Connecticut finance summaries for Connecticut candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("CALIFORNIA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("COLORADO_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("CONNECTICUT_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "09",
+            district_name: "Connecticut",
+            state: "CT",
+            state_fips: "09",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Doe",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: null,
+            state: "CT",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "12345",
+            election_year: 2026,
+            total_receipts: "4250.00",
+            total_disbursements: "1200.25",
+            source_url:
+              "https://seec.ct.gov/ecrisreporting/Data/eCrisDownloads/exportdatafiles/Receipts2026ElectionYearCandidateExploratoryCommittees.csv",
+            last_synced_at: "2026-02-03 04:05:06+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Attorney",
+            amount: "950.00",
+            contributor_count: "3",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$100-$249",
+            amount: "500.00",
+            contributor_count: "4",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "industry",
+            category_name: "lawyers_and_legal_services",
+            amount: "950.00",
+            contributor_count: "3",
+            source_url: null,
+          },
+        ],
+      });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "CONNECTICUT_ECRIS",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "12345",
+      last_synced_at: "2026-02-03 04:05:06+00",
+      direct_campaign: {
+        total_raised: 4250,
+        total_spent: 1200.25,
+        cash_on_hand: null,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 950,
+            contributor_count: 3,
+            source_url:
+              "https://seec.ct.gov/ecrisreporting/Data/eCrisDownloads/exportdatafiles/Receipts2026ElectionYearCandidateExploratoryCommittees.csv",
+          },
+        ],
+        top_employers: [],
+        top_industries: [
+          {
+            category_name: "lawyers_and_legal_services",
+            amount: 950,
+            contributor_count: 3,
+            source_url:
+              "https://seec.ct.gov/ecrisreporting/Data/eCrisDownloads/exportdatafiles/Receipts2026ElectionYearCandidateExploratoryCommittees.csv",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: null,
+        oppose_total: null,
+        top_supporting_groups: [],
+        top_opposing_groups: [],
+        top_supporting_industries: [],
+        top_opposing_industries: [],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 950,
+            contributor_count: 3,
+            source_url:
+              "https://seec.ct.gov/ecrisreporting/Data/eCrisDownloads/exportdatafiles/Receipts2026ElectionYearCandidateExploratoryCommittees.csv",
+          },
+        ],
+        top_outside_supporting_industries: [],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(9);
+    expect(query.mock.calls[7]?.[0]).toContain("public.ct_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.ct_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'industry')");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.co_candidate_finance");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.ca_candidate_finance");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");
+  });
+
   it("omits finance summaries without querying finance tables when candidate finance is disabled", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi

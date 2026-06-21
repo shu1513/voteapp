@@ -101,7 +101,15 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e:proxy": "ADDRESS_API_PROXY_E2E=true vitest run tests/api/addressApiProxy.e2e.test.ts",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "connecticut-candidates:finance:sync-due": "tsx src/scripts/syncDueConnecticutCandidateFinance.ts",
+    "connecticut-candidates:finance:raw:refresh": "tsx src/scripts/refreshConnecticutEcrisRawData.ts",
+    "connecticut-candidates:finance:raw:scheduler:upsert": "tsx src/scripts/upsertConnecticutEcrisRawDataRefreshScheduler.ts",
+    "connecticut-candidates:finance:raw:scheduler:worker": "tsx src/scripts/runConnecticutEcrisRawDataRefreshSchedulerWorker.ts",
+    "connecticut-candidates:finance:raw:scheduler:trigger": "tsx src/scripts/triggerConnecticutEcrisRawDataRefresh.ts",
+    "connecticut-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertConnecticutCandidateFinanceSyncScheduler.ts",
+    "connecticut-candidates:finance:scheduler:worker": "tsx src/scripts/runConnecticutCandidateFinanceSyncSchedulerWorker.ts",
+    "connecticut-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerConnecticutCandidateFinanceSync.ts"
   },
   "dependencies": {
     "bullmq": "^5.71.1",

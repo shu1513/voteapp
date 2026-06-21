@@ -66,3 +66,21 @@ export function isColoradoTracerRawDataRefreshEnabled(force = false): boolean {
     (force || readBooleanEnv("COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED", false))
   );
 }
+
+export function isConnecticutCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("CONNECTICUT_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isConnecticutCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isConnecticutCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("CONNECTICUT_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isConnecticutEcrisRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isConnecticutCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
