@@ -109,7 +109,9 @@
     "connecticut-candidates:finance:raw:scheduler:trigger": "tsx src/scripts/triggerConnecticutEcrisRawDataRefresh.ts",
     "connecticut-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertConnecticutCandidateFinanceSyncScheduler.ts",
     "connecticut-candidates:finance:scheduler:worker": "tsx src/scripts/runConnecticutCandidateFinanceSyncSchedulerWorker.ts",
-    "connecticut-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerConnecticutCandidateFinanceSync.ts"
+    "connecticut-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerConnecticutCandidateFinanceSync.ts",
+    "nebraska-candidates:finance:sync-due": "tsx src/scripts/syncDueNebraskaCandidateFinance.ts",
+    "nebraska-candidates:finance:raw:refresh": "tsx src/scripts/refreshNebraskaNadcRawData.ts"
   },
   "dependencies": {
     "bullmq": "^5.71.1",

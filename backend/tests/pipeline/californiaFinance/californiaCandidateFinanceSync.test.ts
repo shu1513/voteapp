@@ -446,7 +446,7 @@ describe("californiaCandidateFinanceSync", () => {
         receipt({
           CTRIB_EMP: "Acme Quantum Labs LLC",
           CTRIB_OCC: "Founder",
-          AMOUNT: "150000.00",
+          AMOUNT: "30000.00",
         }),
       ],
       financeIndustryClassifier,
@@ -458,7 +458,7 @@ describe("californiaCandidateFinanceSync", () => {
           rawLabel: "Acme Quantum Labs LLC",
           labelType: "employer",
           normalizedLabel: "ACME QUANTUM LABS",
-          amount: 150_000,
+          amount: 30_000,
         },
       ],
     });
@@ -469,8 +469,8 @@ describe("californiaCandidateFinanceSync", () => {
     );
     expect(directBreakdownCalls.map((call) => call[1]?.slice(2, 6))).toEqual(
       expect.arrayContaining([
-        ["employer", "Acme Quantum Labs LLC", 150_000, 1],
-        ["industry", "technology", 150_000, 1],
+        ["employer", "Acme Quantum Labs LLC", 30_000, 1],
+        ["industry", "technology", 30_000, 1],
       ])
     );
 
