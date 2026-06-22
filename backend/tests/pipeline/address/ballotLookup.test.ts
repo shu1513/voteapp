@@ -2199,8 +2199,8 @@ describe("lookupElectionDetailById", () => {
           {
             candidate_id: candidateId,
             election_id: officeElectionId,
-            category_type: "industry",
-            category_name: "oil_gas_energy",
+            category_type: "contribution_size",
+            category_name: "$1,000-$4,999",
             amount: "25000.00",
             contributor_count: "2",
             source_url: null,
@@ -2232,9 +2232,10 @@ describe("lookupElectionDetailById", () => {
           },
         ],
         top_employers: [],
-        top_industries: [
+        top_industries: [],
+        contribution_size_buckets: [
           {
-            category_name: "oil_gas_energy",
+            category_name: "$1,000-$4,999",
             amount: 25000,
             contributor_count: 2,
             source_url:
@@ -2266,7 +2267,7 @@ describe("lookupElectionDetailById", () => {
     expect(query).toHaveBeenCalledTimes(10);
     expect(query.mock.calls[7]?.[0]).toContain("public.ok_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ok_candidate_finance_direct_breakdowns");
-    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'industry')");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.nm_candidate_finance");
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.ne_candidate_finance");
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");

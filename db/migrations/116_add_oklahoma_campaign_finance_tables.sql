@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS public.ok_candidate_finance_links (
   CONSTRAINT ok_candidate_finance_links_source_url_check
     CHECK (source_url IS NULL OR btrim(source_url) <> ''),
   CONSTRAINT ok_candidate_finance_links_unique
-    UNIQUE (candidate_id, election_id, committee_id)
+    UNIQUE (candidate_id, election_id, committee_id),
+  CONSTRAINT ok_candidate_finance_links_id_year_unique
+    UNIQUE (id, election_year)
 );
 
 CREATE INDEX IF NOT EXISTS ok_candidate_finance_links_election_candidate_idx
@@ -52,7 +54,7 @@ FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 CREATE TABLE IF NOT EXISTS public.ok_candidate_finance_summaries (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  link_id uuid NOT NULL REFERENCES public.ok_candidate_finance_links(id) ON DELETE CASCADE,
+  link_id uuid NOT NULL,
   election_year integer NOT NULL,
   total_receipts numeric(16,2),
   direct_contribution_total numeric(16,2),
@@ -69,6 +71,10 @@ CREATE TABLE IF NOT EXISTS public.ok_candidate_finance_summaries (
     ),
   CONSTRAINT ok_candidate_finance_summaries_source_url_check
     CHECK (source_url IS NULL OR btrim(source_url) <> ''),
+  CONSTRAINT ok_candidate_finance_summaries_link_year_fk
+    FOREIGN KEY (link_id, election_year)
+    REFERENCES public.ok_candidate_finance_links(id, election_year)
+    ON DELETE CASCADE,
   CONSTRAINT ok_candidate_finance_summaries_unique
     UNIQUE (link_id, election_year)
 );
@@ -84,7 +90,7 @@ FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 CREATE TABLE IF NOT EXISTS public.ok_candidate_finance_direct_breakdowns (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  link_id uuid NOT NULL REFERENCES public.ok_candidate_finance_links(id) ON DELETE CASCADE,
+  link_id uuid NOT NULL,
   election_year integer NOT NULL,
   category_type text NOT NULL,
   category_name text NOT NULL,
@@ -106,6 +112,10 @@ CREATE TABLE IF NOT EXISTS public.ok_candidate_finance_direct_breakdowns (
     CHECK (contributor_count IS NULL OR contributor_count >= 0),
   CONSTRAINT ok_candidate_finance_direct_breakdowns_source_url_check
     CHECK (source_url IS NULL OR btrim(source_url) <> ''),
+  CONSTRAINT ok_candidate_finance_direct_breakdowns_link_year_fk
+    FOREIGN KEY (link_id, election_year)
+    REFERENCES public.ok_candidate_finance_links(id, election_year)
+    ON DELETE CASCADE,
   CONSTRAINT ok_candidate_finance_direct_breakdowns_unique
     UNIQUE (link_id, election_year, category_type, category_name)
 );

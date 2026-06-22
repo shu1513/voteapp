@@ -154,6 +154,7 @@ export type BallotLookupFinanceSummary = {
     top_occupations: BallotLookupFinanceBreakdown[];
     top_employers?: BallotLookupFinanceBreakdown[];
     top_industries: BallotLookupFinanceBreakdown[];
+    contribution_size_buckets?: BallotLookupFinanceBreakdown[];
   };
   outside_spending: {
     support_total: number | null;
@@ -663,7 +664,7 @@ type OklahomaFinanceSummaryRow = {
 type OklahomaFinanceDirectBreakdownRow = {
   candidate_id: string;
   election_id: string;
-  category_type: "occupation" | "industry" | "contribution_size";
+  category_type: "occupation" | "contribution_size";
   category_name: string;
   amount: string | number;
   contributor_count: string | number | null;
@@ -2569,7 +2570,7 @@ async function loadOklahomaCandidateFinanceSummariesByCandidateElection(
         JOIN public.ok_candidate_finance_direct_breakdowns AS breakdown
           ON breakdown.link_id = link.id
          AND breakdown.election_year = link.election_year
-        WHERE breakdown.category_type IN ('occupation', 'industry')
+        WHERE breakdown.category_type IN ('occupation', 'contribution_size')
         GROUP BY selected.candidate_id, selected.election_id, breakdown.category_type, breakdown.category_name
       ),
       ranked AS (
@@ -2590,7 +2591,7 @@ async function loadOklahomaCandidateFinanceSummariesByCandidateElection(
   );
 
   const directOccupationsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
-  const directIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  const contributionSizeBucketsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const summaryByCandidateElection = new Map(
     summaryResult.rows.map((row) => [candidateElectionKey(row.candidate_id, row.election_id), row])
   );
@@ -2599,8 +2600,8 @@ async function loadOklahomaCandidateFinanceSummariesByCandidateElection(
     const mapped = mapFinanceBreakdown(row, summary?.source_url ?? GENERIC_OKLAHOMA_GUARDIAN_SOURCE_URL);
     if (row.category_type === "occupation") {
       addFinanceBreakdown(directOccupationsByCandidateElection, row.candidate_id, row.election_id, mapped);
-    } else if (row.category_type === "industry") {
-      addFinanceBreakdown(directIndustriesByCandidateElection, row.candidate_id, row.election_id, mapped);
+    } else if (row.category_type === "contribution_size") {
+      addFinanceBreakdown(contributionSizeBucketsByCandidateElection, row.candidate_id, row.election_id, mapped);
     }
   }
 
@@ -2623,7 +2624,8 @@ async function loadOklahomaCandidateFinanceSummariesByCandidateElection(
             debts_owed: null,
             top_occupations: topDirectDonorOccupations,
             top_employers: [],
-            top_industries: directIndustriesByCandidateElection.get(key) ?? [],
+            top_industries: [],
+            contribution_size_buckets: contributionSizeBucketsByCandidateElection.get(key) ?? [],
           },
           outside_spending: {
             support_total: null,
