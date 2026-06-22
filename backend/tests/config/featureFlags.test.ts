@@ -13,6 +13,9 @@ import {
   isNewMexicoCampaignFinanceEnabled,
   isNewMexicoCampaignFinanceSyncEnabled,
   isNewMexicoCfisRawDataRefreshEnabled,
+  isOklahomaCampaignFinanceEnabled,
+  isOklahomaCampaignFinanceSyncEnabled,
+  isOklahomaGuardianRawDataRefreshEnabled,
   isPresidentialElectionsEnabled,
   isPresidentialFeatureEnabled,
 } from "../../src/config/featureFlags.js";
@@ -31,6 +34,9 @@ const ORIGINAL_CONNECTICUT_RAW_REFRESH_VALUE = process.env.CONNECTICUT_ECRIS_RAW
 const ORIGINAL_NEW_MEXICO_FINANCE_VALUE = process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_NEW_MEXICO_FINANCE_SYNC_VALUE = process.env.NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_NEW_MEXICO_RAW_REFRESH_VALUE = process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED;
+const ORIGINAL_OKLAHOMA_FINANCE_VALUE = process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_OKLAHOMA_FINANCE_SYNC_VALUE = process.env.OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_OKLAHOMA_RAW_REFRESH_VALUE = process.env.OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED;
 
 describe("featureFlags", () => {
   afterEach(() => {
@@ -103,6 +109,21 @@ describe("featureFlags", () => {
       delete process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED;
     } else {
       process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED = ORIGINAL_NEW_MEXICO_RAW_REFRESH_VALUE;
+    }
+    if (ORIGINAL_OKLAHOMA_FINANCE_VALUE === undefined) {
+      delete process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_OKLAHOMA_FINANCE_VALUE;
+    }
+    if (ORIGINAL_OKLAHOMA_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_OKLAHOMA_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_OKLAHOMA_RAW_REFRESH_VALUE === undefined) {
+      delete process.env.OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED;
+    } else {
+      process.env.OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED = ORIGINAL_OKLAHOMA_RAW_REFRESH_VALUE;
     }
   });
 
@@ -354,5 +375,57 @@ describe("featureFlags", () => {
 
     expect(isNewMexicoCfisRawDataRefreshEnabled()).toBe(false);
     expect(isNewMexicoCfisRawDataRefreshEnabled(true)).toBe(true);
+  });
+
+  it("disables Oklahoma campaign finance by default", () => {
+    delete process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    delete process.env.OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED;
+
+    expect(isOklahomaCampaignFinanceEnabled()).toBe(false);
+    expect(isOklahomaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isOklahomaGuardianRawDataRefreshEnabled()).toBe(false);
+  });
+
+  it("requires the Oklahoma campaign finance master flag before sync can run", () => {
+    process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isOklahomaCampaignFinanceEnabled()).toBe(false);
+    expect(isOklahomaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isOklahomaCampaignFinanceSyncEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Oklahoma campaign finance sync flag", () => {
+    process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    expect(isOklahomaCampaignFinanceEnabled()).toBe(true);
+    expect(isOklahomaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isOklahomaCampaignFinanceSyncEnabled(true)).toBe(true);
+  });
+
+  it("enables Oklahoma campaign finance sync when both flags are enabled", () => {
+    process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isOklahomaCampaignFinanceEnabled()).toBe(true);
+    expect(isOklahomaCampaignFinanceSyncEnabled()).toBe(true);
+  });
+
+  it("requires the Oklahoma campaign finance master flag before Guardian raw data refresh can run", () => {
+    process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED = "true";
+
+    expect(isOklahomaGuardianRawDataRefreshEnabled()).toBe(false);
+    expect(isOklahomaGuardianRawDataRefreshEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Oklahoma Guardian raw data refresh flag", () => {
+    process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED = "false";
+
+    expect(isOklahomaGuardianRawDataRefreshEnabled()).toBe(false);
+    expect(isOklahomaGuardianRawDataRefreshEnabled(true)).toBe(true);
   });
 });

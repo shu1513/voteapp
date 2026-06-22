@@ -2115,6 +2115,163 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");
   });
 
+  it("includes locally synced Oklahoma finance summaries with top direct donor occupations", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("CALIFORNIA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("COLORADO_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("CONNECTICUT_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("NEBRASKA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("OKLAHOMA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "state_upper",
+            geoid_compact: "40047",
+            district_name: "Oklahoma Senate District 47",
+            state: "OK",
+            state_fips: "40",
+            representation_power_score: "70",
+            race_type: "office",
+            official_ballot_title: "State Senator District 47",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: false,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: "State Senator",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Brent Dishman",
+            party: "Nonpartisan",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: null,
+            state: "OK",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "11954",
+            election_year: 2026,
+            total_receipts: "120000.00",
+            direct_contribution_total: "95000.00",
+            source_url:
+              "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+            last_synced_at: "2026-06-21 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Attorney",
+            amount: "1500.00",
+            contributor_count: "3",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "industry",
+            category_name: "oil_gas_energy",
+            amount: "25000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "OKLAHOMA_GUARDIAN",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "11954",
+      last_synced_at: "2026-06-21 04:05:00+00",
+      direct_campaign: {
+        total_raised: 120000,
+        total_spent: null,
+        cash_on_hand: null,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 1500,
+            contributor_count: 3,
+            source_url:
+              "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+          },
+        ],
+        top_employers: [],
+        top_industries: [
+          {
+            category_name: "oil_gas_energy",
+            amount: 25000,
+            contributor_count: 2,
+            source_url:
+              "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: null,
+        oppose_total: null,
+        top_supporting_groups: [],
+        top_opposing_groups: [],
+        top_supporting_industries: [],
+        top_opposing_industries: [],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 1500,
+            contributor_count: 3,
+            source_url:
+              "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+          },
+        ],
+        top_outside_supporting_industries: [],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(10);
+    expect(query.mock.calls[7]?.[0]).toContain("public.ok_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.ok_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'industry')");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.nm_candidate_finance");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.ne_candidate_finance");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");
+  });
+
 
   it("includes locally synced New Mexico finance summaries for New Mexico candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
