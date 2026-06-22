@@ -1,5 +1,8 @@
 import type { Pool, PoolClient } from "pg";
 
+import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
   connect?: () => Promise<PoolClient>;
@@ -73,6 +76,7 @@ export type NewMexicoFinanceSnapshotInput = {
   directBreakdowns?: readonly NewMexicoFinanceDirectBreakdownInput[];
   outsideGroups?: readonly NewMexicoFinanceOutsideGroupInput[];
   outsideGroupBreakdowns?: readonly NewMexicoFinanceOutsideGroupBreakdownInput[];
+  classifications?: readonly FinanceLabelClassification[];
 };
 
 export type NewMexicoFinanceSnapshotWriteResult = {
@@ -553,6 +557,10 @@ export async function replaceNewMexicoCandidateFinanceSnapshot(
     }
     if (input.outsideGroups) {
       await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups });
+    }
+
+    for (const classification of input.classifications ?? []) {
+      await upsertFinanceLabelClassification({ db, classification });
     }
 
     return {

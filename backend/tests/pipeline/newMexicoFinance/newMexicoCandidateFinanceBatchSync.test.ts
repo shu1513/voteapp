@@ -13,6 +13,8 @@ import type {
 
 const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
+const OTHER_CANDIDATE_ID = "33333333-3333-4333-8333-333333333333";
+const OTHER_ELECTION_ID = "44444444-4444-4444-8444-444444444444";
 
 function createMockDb(rows: unknown[] = []) {
   return {
@@ -234,6 +236,16 @@ describe("newMexicoCandidateFinanceBatchSync", () => {
       },
     ]);
     const contributionRow = contribution({ OrgID: "1001", "Transaction Amount": "100.00" });
+    const outsideContributionRow = contribution({
+      OrgID: "9001",
+      "Report Entity Type": "PAC - Independent Expenditure",
+      "Committee Name": "Accountable New Mexico",
+      "Transaction ID": "OUT1",
+      "Transaction Amount": "25000.00",
+      "Last Name": "Guzman Construction Solutions LLC",
+      "First Name": "",
+      "Contributor Code": "Other (e.g. business entity)",
+    });
     const expenditureRow = expenditure();
     const syncNewMexicoCandidateFinanceFn = vi.fn().mockResolvedValue({
       candidateId: CANDIDATE_ID,
@@ -271,7 +283,10 @@ describe("newMexicoCandidateFinanceBatchSync", () => {
           2026,
           contributionDataForYear({
             year: 2026,
-            rowsByCommitteeId: new Map([["1001", [contributionRow]]]),
+            rowsByCommitteeId: new Map([
+              ["1001", [contributionRow]],
+              ["9001", [outsideContributionRow]],
+            ]),
           }),
         ],
       ]),
@@ -307,7 +322,7 @@ describe("newMexicoCandidateFinanceBatchSync", () => {
         officeName: "Governor",
         district: null,
         sourceUrl: "https://login.cfis.sos.state.nm.us/",
-        contributionRows: [contributionRow],
+        contributionRows: [contributionRow, outsideContributionRow],
         expenditureRows: [expenditureRow],
         trustedCommittee: {
           committeeId: "1001",
@@ -466,5 +481,88 @@ describe("newMexicoCandidateFinanceBatchSync", () => {
         },
       })
     );
+  });
+
+  it("continues auto-linking available years when another year's contribution artifact is missing", async () => {
+    const contributionRow = contribution({ OrgID: "1001", "Transaction Amount": "100.00" });
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: OTHER_CANDIDATE_ID,
+              election_id: OTHER_ELECTION_ID,
+              candidate_name: "Earlier Candidate",
+              election_year: 2025,
+              office_scope: "statewide",
+              office_name: "Governor",
+              district: null,
+            },
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Deb Haaland",
+              election_year: 2026,
+              office_scope: "statewide",
+              office_name: "Governor",
+              district: null,
+            },
+          ],
+          rowCount: 2,
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
+    };
+
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    try {
+      const result = await syncDueNewMexicoCandidateFinance({
+        db,
+        syncNewMexicoCandidateFinanceFn: vi.fn(),
+        now: new Date("2026-06-01T00:00:00.000Z"),
+        rawDataCacheDir: "/tmp/voteapp-missing-new-mexico-cfis-cache",
+        contributionDataByYear: new Map([
+          [
+            2026,
+            contributionDataForYear({
+              year: 2026,
+              sourceUrl: "https://login.cfis.sos.state.nm.us/",
+              rowsByCommitteeId: new Map([["1001", [contributionRow]]]),
+            }),
+          ],
+        ]),
+      });
+
+      expect(result).toMatchObject({
+        dueCandidateCount: 0,
+        selectedCandidateCount: 0,
+        syncedCandidateCount: 0,
+        failedCandidateCount: 0,
+      });
+      expect(warnSpy).toHaveBeenCalledWith(
+        "New Mexico finance auto-link skipped year 2025:",
+        expect.stringContaining("New Mexico CFIS contribution artifact not found for 2025")
+      );
+    } finally {
+      warnSpy.mockRestore();
+    }
+
+    expect(db.query).toHaveBeenCalledTimes(3);
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.nm_candidate_finance_links");
+    expect(db.query.mock.calls[1]?.[1]).toEqual([
+      CANDIDATE_ID,
+      ELECTION_ID,
+      2026,
+      "DEB HAALAND",
+      "Governor",
+      null,
+      "1001",
+      "Haaland for New Mexico",
+      "active",
+      "cfis_bulk",
+      "https://login.cfis.sos.state.nm.us/",
+      "2026-06-01T00:00:00.000Z",
+    ]);
   });
 });

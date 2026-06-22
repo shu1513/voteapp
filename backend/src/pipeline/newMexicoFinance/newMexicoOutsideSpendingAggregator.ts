@@ -115,7 +115,10 @@ function isCycleYear(input: { rawDate: string; electionYear: number }): boolean 
 
 function isIndependentExpenditureEntity(row: NewMexicoCfisExpenditureRow): boolean {
   const entityType = normalizeTextKey(row["Report Entity Type"]);
-  return entityType.includes("PAC") && entityType.includes("INDEPENDENT EXPENDITURE");
+  return (
+    /\bINDEPENDENT EXPENDITURE\b/.test(entityType) &&
+    /\b(PAC|POLITICAL ACTION COMMITTEE|POLITICAL COMMITTEE)\b/.test(entityType)
+  );
 }
 
 function supportOpposeFromStance(value: string): NewMexicoSupportOppose | null {

@@ -257,6 +257,9 @@ export function resolveNewMexicoCandidateCommittee(
     };
   }
   if (isExpectedLegislativeOffice(officeScope, officeCanonicalName) && !expectedDistrict) {
+    // CFIS contribution rows do not expose office/district. Requiring the app-side
+    // district keeps legislative auto-link inputs explicit, but matching remains
+    // name/candidate-committee/cycle based and must not guess through ambiguity.
     return {
       status: "unmatched",
       reason: "missing_legislative_district",

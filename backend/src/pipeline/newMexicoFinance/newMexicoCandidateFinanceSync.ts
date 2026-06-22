@@ -1,6 +1,16 @@
 import type { Pool, PoolClient } from "pg";
 
 import {
+  buildFinanceIndustryBreakdownsFromClassifications,
+  mergeFinanceLabelClassification,
+  resolveFinanceIndustryClassifications,
+  type FinanceIndustryClassifier,
+} from "../finance/financeIndustryClassificationService.js";
+import {
+  classifyFinanceLabel,
+  type FinanceLabelClassification,
+} from "../finance/financeLabelClassifier.js";
+import {
   normalizeNewMexicoCandidateNameKeys,
   resolveNewMexicoCandidateCommittee,
   type NewMexicoCandidateCommitteeResolution,
@@ -17,9 +27,11 @@ import {
   aggregateNewMexicoOutsideSpending,
   type NewMexicoOutsideSpendingAggregationResult,
 } from "./newMexicoOutsideSpendingAggregator.js";
+import { aggregateNewMexicoOutsideGroupContributions } from "./newMexicoOutsideGroupContributionAggregator.js";
 import {
   replaceNewMexicoCandidateFinanceSnapshot,
   type NewMexicoFinanceLinkInput,
+  type NewMexicoFinanceOutsideGroupBreakdownInput,
   type NewMexicoFinanceOutsideGroupInput,
   type NewMexicoFinanceSummaryInput,
 } from "./newMexicoFinanceWriter.js";
@@ -44,6 +56,8 @@ export type NewMexicoCandidateFinanceSyncInput = {
   dryRun?: boolean;
   directMaxBreakdownsPerCategory?: number;
   outsideMaxGroups?: number;
+  financeIndustryClassifier?: FinanceIndustryClassifier;
+  aiClassificationMinAmount?: number;
   trustedCommittee?: {
     committeeId: string;
     committeeName: string;
@@ -74,6 +88,8 @@ export type NewMexicoCandidateFinanceSyncResult = {
   skippedExpenditureRowCount: number;
 };
 
+const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
+
 function requireNonEmpty(value: string, fieldName: string): string {
   const trimmed = value.trim();
   if (trimmed.length === 0) {
@@ -98,6 +114,14 @@ function normalizeTimestamp(value: Date | undefined): Date {
   const normalized = value ?? new Date();
   if (Number.isNaN(normalized.getTime())) {
     throw new Error("Invalid New Mexico finance sync timestamp");
+  }
+  return normalized;
+}
+
+function normalizeAiClassificationMinAmount(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT;
+  if (!Number.isFinite(normalized) || normalized < 0) {
+    throw new Error(`Invalid New Mexico finance AI classification minimum amount: ${value}`);
   }
   return normalized;
 }
@@ -174,6 +198,131 @@ function toOutsideGroups(
   }));
 }
 
+function toOutsideGroupBreakdowns(input: {
+  outsideGroups: readonly NewMexicoFinanceOutsideGroupInput[] | undefined;
+  contributionRows: readonly NewMexicoCfisContributionRow[];
+  contributionSourceUrl?: string | null;
+  electionYear: number;
+}): NewMexicoFinanceOutsideGroupBreakdownInput[] | undefined {
+  if (!input.outsideGroups) {
+    return undefined;
+  }
+  return aggregateNewMexicoOutsideGroupContributions({
+    electionYear: input.electionYear,
+    outsideGroups: input.outsideGroups,
+    contributionRows: input.contributionRows,
+    sourceUrl: input.contributionSourceUrl ?? null,
+  }).outsideGroupBreakdowns;
+}
+
+function outsideBreakdownKey(breakdown: NewMexicoFinanceOutsideGroupBreakdownInput): string {
+  return [
+    breakdown.committeeId.trim().toUpperCase(),
+    breakdown.supportOppose,
+    breakdown.categoryType,
+    breakdown.categoryName.trim().toUpperCase(),
+  ].join("\u0000");
+}
+
+function toOutsideBreakdownMap(
+  breakdowns: readonly NewMexicoFinanceOutsideGroupBreakdownInput[] | undefined
+): Map<string, NewMexicoFinanceOutsideGroupBreakdownInput> {
+  const mapped = new Map<string, NewMexicoFinanceOutsideGroupBreakdownInput>();
+  for (const breakdown of breakdowns ?? []) {
+    if (breakdown.categoryType === "industry") {
+      continue;
+    }
+    mapped.set(outsideBreakdownKey(breakdown), breakdown);
+  }
+  return mapped;
+}
+
+function collectOutsideClassifications(
+  breakdowns: Iterable<NewMexicoFinanceOutsideGroupBreakdownInput>,
+  minAmount: number
+): Map<string, FinanceLabelClassification> {
+  const classifications = new Map<string, FinanceLabelClassification>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType !== "donor") {
+      continue;
+    }
+    if (breakdown.amount < minAmount) {
+      continue;
+    }
+    const classification = classifyFinanceLabel({
+      rawLabel: breakdown.categoryName,
+      labelType: "donor",
+    });
+    mergeFinanceLabelClassification(classifications, classification);
+  }
+  return classifications;
+}
+
+function addOutsideBreakdown(
+  breakdowns: Map<string, NewMexicoFinanceOutsideGroupBreakdownInput>,
+  breakdown: NewMexicoFinanceOutsideGroupBreakdownInput
+): void {
+  const key = outsideBreakdownKey(breakdown);
+  const existing = breakdowns.get(key);
+  if (!existing) {
+    breakdowns.set(key, breakdown);
+    return;
+  }
+  breakdowns.set(key, {
+    ...existing,
+    amount: Math.round((existing.amount + breakdown.amount) * 100) / 100,
+    contributorCount:
+      existing.contributorCount === null ||
+      existing.contributorCount === undefined ||
+      breakdown.contributorCount === null ||
+      breakdown.contributorCount === undefined
+        ? existing.contributorCount ?? breakdown.contributorCount ?? null
+        : existing.contributorCount + breakdown.contributorCount,
+    sourceUrl: existing.sourceUrl ?? breakdown.sourceUrl,
+  });
+}
+
+async function enrichOutsideGroupIndustryBreakdowns(input: {
+  db: Queryable;
+  outsideGroupBreakdowns: readonly NewMexicoFinanceOutsideGroupBreakdownInput[] | undefined;
+  classifier: FinanceIndustryClassifier | undefined;
+  aiClassificationMinAmount: number;
+  dryRun: boolean;
+}): Promise<{
+  outsideGroupBreakdowns: NewMexicoFinanceOutsideGroupBreakdownInput[] | undefined;
+  classifications: FinanceLabelClassification[];
+}> {
+  if (!input.outsideGroupBreakdowns) {
+    return { outsideGroupBreakdowns: undefined, classifications: [] };
+  }
+
+  const breakdowns = toOutsideBreakdownMap(input.outsideGroupBreakdowns);
+  const classifications = collectOutsideClassifications(breakdowns.values(), input.aiClassificationMinAmount);
+  await resolveFinanceIndustryClassifications({
+    db: input.db,
+    directBreakdowns: [],
+    outsideBreakdowns: breakdowns.values(),
+    classifications,
+    classifier: input.classifier,
+    minAmount: input.aiClassificationMinAmount,
+    dryRun: input.dryRun,
+  });
+
+  const industryBreakdowns = buildFinanceIndustryBreakdownsFromClassifications({
+    directBreakdowns: [],
+    outsideBreakdowns: breakdowns.values(),
+    classifications,
+  });
+  for (const breakdown of industryBreakdowns.outsideIndustryBreakdowns) {
+    addOutsideBreakdown(breakdowns, breakdown);
+  }
+
+  return {
+    outsideGroupBreakdowns: [...breakdowns.values()],
+    classifications: [...classifications.values()],
+  };
+}
+
 function toSummary(input: {
   directFinance: NewMexicoDirectContributionAggregationResult;
   outsideFinance: NewMexicoOutsideSpendingAggregationResult;
@@ -228,6 +377,7 @@ export async function syncNewMexicoCandidateFinance(
   const officeName = requireNonEmpty(input.officeName, "office name");
   const electionYear = normalizeElectionYear(input.electionYear);
   const syncedAt = normalizeTimestamp(input.now);
+  const aiClassificationMinAmount = normalizeAiClassificationMinAmount(input.aiClassificationMinAmount);
   const resolution = input.trustedCommittee
     ? resolveTrustedCommittee(input.trustedCommittee)
     : resolveNewMexicoCandidateCommittee({
@@ -284,6 +434,19 @@ export async function syncNewMexicoCandidateFinance(
       : emptyOutsideResult();
   const outsideDataAvailable = input.expenditureRows !== undefined;
   const outsideGroups = input.expenditureRows !== undefined ? toOutsideGroups(outsideFinance) ?? [] : undefined;
+  const outsideGroupBreakdowns = toOutsideGroupBreakdowns({
+    outsideGroups,
+    contributionRows: input.contributionRows,
+    contributionSourceUrl: input.contributionSourceUrl,
+    electionYear,
+  });
+  const outsideIndustryFinance = await enrichOutsideGroupIndustryBreakdowns({
+    db: input.db,
+    outsideGroupBreakdowns,
+    classifier: input.financeIndustryClassifier,
+    aiClassificationMinAmount,
+    dryRun: input.dryRun === true,
+  });
   const link = toFinanceLink({
     candidateId,
     electionId,
@@ -311,6 +474,8 @@ export async function syncNewMexicoCandidateFinance(
       summary,
       directBreakdowns: directFinance.directBreakdowns,
       outsideGroups,
+      outsideGroupBreakdowns: outsideIndustryFinance.outsideGroupBreakdowns,
+      classifications: outsideIndustryFinance.classifications,
     });
   }
 
@@ -324,7 +489,7 @@ export async function syncNewMexicoCandidateFinance(
     summaryWritten: !input.dryRun,
     directBreakdownsWritten: input.dryRun ? 0 : directFinance.directBreakdowns.length,
     outsideGroupsWritten: input.dryRun ? 0 : outsideGroups?.length ?? 0,
-    outsideGroupBreakdownsWritten: 0,
+    outsideGroupBreakdownsWritten: input.dryRun ? 0 : outsideIndustryFinance.outsideGroupBreakdowns?.length ?? 0,
     totalReceipts: directFinance.summary.totalReceipts,
     directContributionTotal: directFinance.summary.directContributionTotal,
     outsideSupportTotal: outsideDataAvailable ? outsideFinance.summary?.supportTotal ?? 0 : null,

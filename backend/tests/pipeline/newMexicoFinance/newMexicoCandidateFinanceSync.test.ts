@@ -125,6 +125,17 @@ describe("newMexicoCandidateFinanceSync", () => {
         contribution({ "Transaction Amount": "100.00", "Contributor Occupation": "Attorney" }),
         contribution({ "Transaction Amount": "250.00", "Contributor Occupation": "Teacher" }),
         contribution({
+          OrgID: "9001",
+          "Report Entity Type": "PAC - Independent Expenditure",
+          "Committee Name": "Accountable New Mexico",
+          "Transaction ID": "OUT1",
+          "Transaction Amount": "25000.00",
+          "Last Name": "Guzman Construction Solutions LLC",
+          "First Name": "",
+          "Contributor Code": "Other (e.g. business entity)",
+          "Contributor Occupation": "",
+        }),
+        contribution({
           OrgID: "OTHER",
           "Committee Name": "Other Committee",
           "Candidate First Name": "Other",
@@ -145,7 +156,7 @@ describe("newMexicoCandidateFinanceSync", () => {
       summaryWritten: true,
       directBreakdownsWritten: 5,
       outsideGroupsWritten: 1,
-      outsideGroupBreakdownsWritten: 0,
+      outsideGroupBreakdownsWritten: 2,
       totalReceipts: 350,
       directContributionTotal: 350,
       outsideSupportTotal: 1200,
@@ -163,7 +174,7 @@ describe("newMexicoCandidateFinanceSync", () => {
       },
     });
 
-    expect(db.query).toHaveBeenCalledTimes(12);
+    expect(db.query).toHaveBeenCalledTimes(16);
     expect(db.query.mock.calls[0]?.[0]).toBe("BEGIN");
     expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
 
@@ -209,6 +220,47 @@ describe("newMexicoCandidateFinanceSync", () => {
         String(call[0]).includes("INSERT INTO public.nm_candidate_finance_outside_groups")
       )
     ).toHaveLength(1);
+    const outsideBreakdownCalls = db.query.mock.calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.nm_candidate_finance_outside_group_breakdowns")
+    );
+    expect(outsideBreakdownCalls).toHaveLength(2);
+    expect(outsideBreakdownCalls.map((call) => call[1])).toEqual([
+      [
+        LINK_ID,
+        2026,
+        "9001",
+        "support",
+        "donor",
+        "Guzman Construction Solutions LLC",
+        25000,
+        1,
+        CONTRIBUTION_SOURCE_URL,
+        "2026-02-03T04:05:06.000Z",
+      ],
+      [
+        LINK_ID,
+        2026,
+        "9001",
+        "support",
+        "industry",
+        "construction",
+        25000,
+        1,
+        CONTRIBUTION_SOURCE_URL,
+        "2026-02-03T04:05:06.000Z",
+      ],
+    ]);
+    const classificationCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.finance_label_classifications")
+    );
+    expect(classificationCall?.[1]).toEqual([
+      "Guzman Construction Solutions LLC",
+      "donor",
+      "GUZMAN CONSTRUCTION SOLUTIONS",
+      "construction",
+      "medium",
+      "rule",
+    ]);
   });
 
   it("aggregates but does not write in dry-run mode", async () => {

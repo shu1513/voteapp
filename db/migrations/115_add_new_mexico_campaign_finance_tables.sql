@@ -210,7 +210,16 @@ CREATE TABLE IF NOT EXISTS public.nm_candidate_finance_outside_group_breakdowns 
       support_oppose,
       category_type,
       category_name
+    ),
+  CONSTRAINT nm_candidate_finance_outside_group_breakdowns_group_fk
+    FOREIGN KEY (link_id, election_year, committee_id, support_oppose)
+    REFERENCES public.nm_candidate_finance_outside_groups (
+      link_id,
+      election_year,
+      committee_id,
+      support_oppose
     )
+    ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS nm_candidate_finance_outside_group_breakdowns_lookup_idx

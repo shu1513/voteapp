@@ -337,6 +337,7 @@ describe("newMexicoDirectContributionAggregator", () => {
     expect(mapNewMexicoContributorSourceType("Business")).toBe("business_nonprofit_entities");
     expect(mapNewMexicoContributorSourceType("Political Committee")).toBe("pac_independent");
     expect(mapNewMexicoContributorSourceType("Political Party")).toBe("party_committee");
+    expect(mapNewMexicoContributorSourceType("Political Party Committee")).toBe("party_committee");
     expect(mapNewMexicoContributorSourceType("Self Candidate")).toBe("candidate_self");
     expect(mapNewMexicoContributorSourceType("Unknown")).toBe("other");
   });

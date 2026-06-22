@@ -299,6 +299,10 @@ async function readNewMexicoCfisRows<TColumns extends readonly string[]>(input: 
       const parsedRow = rowObjectFromCells(cells, input.columns, indexes);
       if (!input.predicate || input.predicate(parsedRow)) {
         rows.push(parsedRow);
+        if (maxRows !== undefined && rows.length >= maxRows) {
+          resolveOnce();
+          source.destroy();
+        }
       }
     };
 
@@ -321,7 +325,7 @@ async function readNewMexicoCfisRows<TColumns extends readonly string[]>(input: 
         }
       }
 
-      for (; index < text.length; index += 1) {
+      for (; index < text.length && !settled; index += 1) {
         const char = text[index];
         const next = text[index + 1];
 

@@ -245,13 +245,23 @@ export async function downloadNewMexicoCfisArtifact(input: {
     throw new Error("New Mexico CFIS artifact response did not include a body");
   }
 
+  const timeoutMs = input.timeoutMs ?? NEW_MEXICO_CFIS_FETCH_TIMEOUT_MS;
+  let timeout: NodeJS.Timeout | undefined;
   let outputStat;
   try {
-    await pipeline(Readable.fromWeb(response.body as NodeReadableStream<Uint8Array>), createWriteStream(outputPath));
+    const source = Readable.fromWeb(response.body as NodeReadableStream<Uint8Array>);
+    timeout = setTimeout(() => {
+      source.destroy(new Error(`New Mexico CFIS artifact download timed out after ${timeoutMs}ms for ${normalizedUrl}`));
+    }, timeoutMs);
+    await pipeline(source, createWriteStream(outputPath));
     outputStat = await stat(outputPath);
   } catch (error) {
     await rm(outputPath, { force: true }).catch(() => {});
     throw error;
+  } finally {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
   }
   return {
     ...metadataFromResponse(artifact, normalizedUrl, response),
@@ -382,7 +392,12 @@ export async function refreshNewMexicoCfisArtifactCache(input: {
     fetchImpl: input.fetchImpl,
     timeoutMs: input.timeoutMs,
   });
-  await rename(tmpPath, paths.filePath);
+  try {
+    await rename(tmpPath, paths.filePath);
+  } catch (error) {
+    await rm(tmpPath, { force: true }).catch(() => {});
+    throw error;
+  }
 
   const current: NewMexicoCfisArtifactCacheMetadata = {
     version: 1,

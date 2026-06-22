@@ -1,6 +1,7 @@
 import { stat } from "node:fs/promises";
 import type { Pool, PoolClient } from "pg";
 
+import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
 import {
   autoLinkMissingNewMexicoCandidateFinanceLinks,
   buildNewMexicoCandidateNamePredicate,
@@ -68,6 +69,8 @@ export type NewMexicoCandidateFinanceBatchSyncInput = {
   autoLinkMissingLinks?: boolean;
   contributionDataByYear?: ReadonlyMap<number, NewMexicoContributionDataForYear>;
   expenditureDataByYear?: ReadonlyMap<number, NewMexicoExpenditureDataForYear>;
+  financeIndustryClassifier?: FinanceIndustryClassifier;
+  aiClassificationMinAmount?: number;
   syncNewMexicoCandidateFinanceFn?: typeof syncNewMexicoCandidateFinance;
 };
 
@@ -221,6 +224,32 @@ function buildNewMexicoExpenditureCandidatePredicate(
     }
     return false;
   };
+}
+
+function collectCommitteeIdsForContributionLoad(input: {
+  dueRows: readonly NewMexicoCandidateFinanceDueRow[];
+  expenditureRows?: readonly NewMexicoCfisExpenditureRow[];
+}): string[] {
+  const committeeIds = new Set<string>();
+  for (const row of input.dueRows) {
+    const committeeId = normalizeCommitteeId(row.committeeId);
+    if (committeeId) {
+      committeeIds.add(committeeId);
+    }
+  }
+  for (const row of input.expenditureRows ?? []) {
+    const committeeId = normalizeCommitteeId(row.OrgID);
+    if (committeeId) {
+      committeeIds.add(committeeId);
+    }
+  }
+  return [...committeeIds];
+}
+
+function flattenContributionDataRows(
+  contributionData: NewMexicoContributionDataForYear | undefined
+): NewMexicoCfisContributionRow[] {
+  return contributionData ? [...contributionData.rowsByCommitteeId.values()].flat() : [];
 }
 
 async function loadContributionDataForYear(input: {
@@ -445,17 +474,25 @@ export async function syncDueNewMexicoCandidateFinance(
       });
       const contributionRowsByYear = new Map<number, readonly NewMexicoCfisContributionRow[]>();
       const sourceUrlByYear = new Map<number, string>();
+      const skippedAutoLinkYears = new Map<number, string>();
       for (const [year, candidates] of groupAutoLinkCandidatesByYear(missingLinkCandidates).entries()) {
-        const data = await loadAutoLinkContributionRowsForYear({
-          year,
-          candidates,
-          rawDataCacheDir: input.rawDataCacheDir,
-          contributionDataByYear: input.contributionDataByYear,
-        });
-        contributionRowsByYear.set(year, data.rows);
-        sourceUrlByYear.set(year, data.sourceUrl);
+        try {
+          const data = await loadAutoLinkContributionRowsForYear({
+            year,
+            candidates,
+            rawDataCacheDir: input.rawDataCacheDir,
+            contributionDataByYear: input.contributionDataByYear,
+          });
+          contributionRowsByYear.set(year, data.rows);
+          sourceUrlByYear.set(year, data.sourceUrl);
+        } catch (error) {
+          skippedAutoLinkYears.set(year, error instanceof Error ? error.message : String(error));
+        }
       }
-      await autoLinkMissingNewMexicoCandidateFinanceLinks({
+      const autoLinkCandidates = missingLinkCandidates.filter((candidate) =>
+        contributionRowsByYear.has(candidate.electionYear)
+      );
+      const autoLinkResults = await autoLinkMissingNewMexicoCandidateFinanceLinks({
         db: input.db,
         now,
         maxCandidates,
@@ -463,8 +500,16 @@ export async function syncDueNewMexicoCandidateFinance(
         electionLookaheadDays,
         contributionRowsByYear,
         sourceUrlByYear,
-        candidateElections: missingLinkCandidates,
+        candidateElections: autoLinkCandidates,
       });
+      for (const result of autoLinkResults) {
+        if (result.status !== "linked") {
+          console.warn("New Mexico finance auto-link did not link candidate election:", result);
+        }
+      }
+      for (const [year, message] of skippedAutoLinkYears) {
+        console.warn(`New Mexico finance auto-link skipped year ${year}:`, message);
+      }
     } catch (error) {
       console.warn(
         "New Mexico finance auto-link skipped; continuing with already-linked candidate sync:",
@@ -480,27 +525,6 @@ export async function syncDueNewMexicoCandidateFinance(
     electionLookbackDays,
     electionLookaheadDays,
   });
-  const contributionDataByYear = new Map<number, NewMexicoContributionDataForYear>(
-    input.contributionDataByYear ? [...input.contributionDataByYear.entries()] : []
-  );
-  const contributionDataLoadErrorsByYear = new Map<number, string>();
-  for (const [year, rows] of groupDueRowsByYear(due.rows).entries()) {
-    if (!contributionDataByYear.has(year)) {
-      try {
-        contributionDataByYear.set(
-          year,
-          await loadContributionDataForYear({
-            year,
-            committeeIds: rows.map((row) => row.committeeId),
-            rawDataCacheDir: input.rawDataCacheDir,
-          })
-        );
-      } catch (error) {
-        contributionDataLoadErrorsByYear.set(year, error instanceof Error ? error.message : String(error));
-      }
-    }
-  }
-
   const expenditureDataByYear = new Map<number, NewMexicoExpenditureDataForYear>(
     input.expenditureDataByYear ? [...input.expenditureDataByYear.entries()] : []
   );
@@ -526,6 +550,30 @@ export async function syncDueNewMexicoCandidateFinance(
     }
   }
 
+  const contributionDataByYear = new Map<number, NewMexicoContributionDataForYear>(
+    input.contributionDataByYear ? [...input.contributionDataByYear.entries()] : []
+  );
+  const contributionDataLoadErrorsByYear = new Map<number, string>();
+  for (const [year, rows] of groupDueRowsByYear(due.rows).entries()) {
+    if (!contributionDataByYear.has(year)) {
+      try {
+        contributionDataByYear.set(
+          year,
+          await loadContributionDataForYear({
+            year,
+            committeeIds: collectCommitteeIdsForContributionLoad({
+              dueRows: rows,
+              expenditureRows: expenditureDataByYear.get(year)?.rows,
+            }),
+            rawDataCacheDir: input.rawDataCacheDir,
+          })
+        );
+      } catch (error) {
+        contributionDataLoadErrorsByYear.set(year, error instanceof Error ? error.message : String(error));
+      }
+    }
+  }
+
   const results: NewMexicoCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
     const contributionDataLoadError = contributionDataLoadErrorsByYear.get(row.electionYear);
@@ -543,7 +591,6 @@ export async function syncDueNewMexicoCandidateFinance(
 
     const contributionData = contributionDataByYear.get(row.electionYear);
     const expenditureData = expenditureDataByYear.get(row.electionYear);
-    const committeeKey = normalizeCommitteeId(row.committeeId);
     try {
       const result = await syncFn({
         db: input.db,
@@ -555,7 +602,7 @@ export async function syncDueNewMexicoCandidateFinance(
         officeName: row.officeName,
         district: row.district,
         sourceUrl: row.sourceUrl,
-        contributionRows: contributionData?.rowsByCommitteeId.get(committeeKey) ?? [],
+        contributionRows: flattenContributionDataRows(contributionData),
         contributionSourceUrl: contributionData?.sourceUrl,
         expenditureRows: expenditureDataLoadErrorsByYear.has(row.electionYear) ? undefined : expenditureData?.rows ?? [],
         expenditureSourceUrl: expenditureData?.sourceUrl,
@@ -564,6 +611,8 @@ export async function syncDueNewMexicoCandidateFinance(
           committeeName: row.committeeName,
           sourceUrl: row.sourceUrl,
         },
+        financeIndustryClassifier: input.financeIndustryClassifier,
+        aiClassificationMinAmount: input.aiClassificationMinAmount,
         dryRun,
         now,
       });

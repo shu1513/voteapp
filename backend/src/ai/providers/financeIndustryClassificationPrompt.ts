@@ -22,7 +22,7 @@ export function buildFinanceIndustryClassificationPrompt(input: {
   );
 
   return [
-    "Classify FEC campaign-finance employer/organization labels into one industry slug.",
+    "Classify campaign-finance employer, donor, or organization labels into one industry slug.",
     "",
     "Rules:",
     "- Use only the allowed industry_slug values below, or unknown.",

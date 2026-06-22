@@ -26,6 +26,8 @@ describe("syncDueNewMexicoCandidateFinance script", () => {
       electionLookbackDays: 10,
       electionLookaheadDays: 365,
       rawCacheDir: "/tmp/cfis",
+      aiClassifyIndustries: false,
+      aiClassificationMinAmount: undefined,
     });
   });
 
@@ -76,6 +78,7 @@ describe("syncDueNewMexicoCandidateFinance script", () => {
         dryRun: true,
         force: false,
         maxCandidates: 2,
+        aiClassifyIndustries: false,
       },
       result: {
         dryRun: true,

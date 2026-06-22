@@ -89,9 +89,12 @@ function normalizeId(value: string): string {
 
 function normalizeTextKey(value: string): string {
   return value
-    .trim()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toUpperCase()
+    .replace(/&/g, " AND ")
     .replace(/[^A-Z0-9]+/g, " ")
+    .replace(/\b(THE|OF|FOR)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -180,11 +183,11 @@ export function mapNewMexicoContributorSourceType(value: string): NewMexicoContr
   if (/\b(BUSINESS|CORPORATION|CORPORATE|COMPANY|ORGANIZATION|ENTITY|NONPROFIT|NON PROFIT)\b/.test(normalized)) {
     return "business_nonprofit_entities";
   }
-  if (/\b(PAC|POLITICAL COMMITTEE|POLITICAL ACTION COMMITTEE)\b/.test(normalized)) {
-    return "pac_independent";
-  }
   if (/\b(PARTY|POLITICAL PARTY)\b/.test(normalized)) {
     return "party_committee";
+  }
+  if (/\b(PAC|POLITICAL COMMITTEE|POLITICAL ACTION COMMITTEE)\b/.test(normalized)) {
+    return "pac_independent";
   }
   if (/\b(CANDIDATE|SELF)\b/.test(normalized)) {
     return "candidate_self";
