@@ -1,6 +1,7 @@
 import { stat } from "node:fs/promises";
 import type { Pool, PoolClient } from "pg";
 
+import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
 import {
   autoLinkMissingOklahomaCandidateFinanceLinks,
   buildOklahomaCandidateNamePredicate,
@@ -12,6 +13,7 @@ import {
   type OklahomaCandidateFinanceSyncResult,
 } from "./oklahomaCandidateFinanceSync.js";
 import { OKLAHOMA_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./oklahomaFinanceEligibleOffices.js";
+import { discoverOklahomaGuardianIeOutsideSpendingReports } from "./oklahomaGuardianIeOutsideSpendingDiscovery.js";
 import {
   DEFAULT_OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR,
   buildOklahomaGuardianContributionZipUrl,
@@ -22,6 +24,9 @@ import {
   readOklahomaGuardianContributionRows,
   type OklahomaGuardianContributionRow,
 } from "./oklahomaGuardianContributionReader.js";
+import { buildOklahomaGuardianIeOutsideFinanceSnapshot } from "./oklahomaGuardianIeOutsideSpendingAggregator.js";
+import type { OklahomaGuardianIeOutsideSpendingDiscoveryResult } from "./oklahomaGuardianIeOutsideSpendingDiscovery.js";
+import { normalizeOklahomaOutsideGroupCommitteeNameKey } from "./oklahomaOutsideGroupContributionAggregator.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -44,6 +49,7 @@ export type OklahomaContributionDataForYear = {
   zipPath: string;
   sourceUrl: string;
   rowsByCommitteeId: Map<string, OklahomaGuardianContributionRow[]>;
+  rowsByCommitteeName?: Map<string, OklahomaGuardianContributionRow[]>;
 };
 
 export type OklahomaCandidateFinanceBatchSyncInput = {
@@ -57,8 +63,13 @@ export type OklahomaCandidateFinanceBatchSyncInput = {
   rawDataZipPath?: string;
   rawDataCacheDir?: string;
   autoLinkMissingLinks?: boolean;
+  includeOutsideSpending?: boolean;
+  outsideMaxReports?: number;
+  financeIndustryClassifier?: FinanceIndustryClassifier;
+  aiClassificationMinAmount?: number;
   contributionDataByYear?: ReadonlyMap<number, OklahomaContributionDataForYear>;
   syncOklahomaCandidateFinanceFn?: typeof syncOklahomaCandidateFinance;
+  discoverOutsideSpendingReportsFn?: typeof discoverOklahomaGuardianIeOutsideSpendingReports;
 };
 
 export type OklahomaCandidateFinanceBatchSyncItemResult = {
@@ -100,6 +111,7 @@ type OklahomaCandidateFinanceDueQueryRow = {
 
 const DEFAULT_MAX_CANDIDATES = 25;
 const DEFAULT_STALE_AFTER_DAYS = 7;
+const DEFAULT_OUTSIDE_MAX_REPORTS = 10;
 // Keep one extra calendar day so UTC scheduler timing cannot skip election-night finance syncs.
 const DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS = 1;
 const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
@@ -193,6 +205,26 @@ function groupContributionRowsByCommittee(
   return byCommittee;
 }
 
+function groupContributionRowsByCommitteeName(
+  rows: readonly OklahomaGuardianContributionRow[]
+): Map<string, OklahomaGuardianContributionRow[]> {
+  const byCommitteeName = new Map<string, OklahomaGuardianContributionRow[]>();
+  for (const row of rows) {
+    const committeeName = normalizeOklahomaOutsideGroupCommitteeNameKey(row["Committee Name"]);
+    if (!committeeName) {
+      continue;
+    }
+    const existing = byCommitteeName.get(committeeName) ?? [];
+    existing.push(row);
+    byCommitteeName.set(committeeName, existing);
+  }
+  return byCommitteeName;
+}
+
+function dueRowKey(row: Pick<OklahomaCandidateFinanceDueRow, "candidateId" | "electionId">): string {
+  return `${row.candidateId}\u0000${row.electionId}`;
+}
+
 async function loadContributionDataForYear(input: {
   year: number;
   committeeIds: readonly string[];
@@ -227,6 +259,60 @@ async function loadContributionDataForYear(input: {
     zipPath,
     sourceUrl: metadata?.remote.url ?? buildOklahomaGuardianContributionZipUrl({ year: input.year }),
     rowsByCommitteeId: groupContributionRowsByCommittee(rows),
+  };
+}
+
+async function loadOutsideContributionRowsForYear(input: {
+  year: number;
+  committeeNames: readonly string[];
+  rawDataZipPath?: string;
+  rawDataCacheDir?: string;
+  contributionDataByYear?: ReadonlyMap<number, OklahomaContributionDataForYear>;
+}): Promise<{ rows: OklahomaGuardianContributionRow[]; sourceUrl: string }> {
+  const normalizedCommitteeNames = new Set(
+    input.committeeNames.map(normalizeOklahomaOutsideGroupCommitteeNameKey).filter(Boolean)
+  );
+  if (normalizedCommitteeNames.size === 0) {
+    return {
+      rows: [],
+      sourceUrl: buildOklahomaGuardianContributionZipUrl({ year: input.year }),
+    };
+  }
+
+  const injected = input.contributionDataByYear?.get(input.year);
+  if (injected) {
+    const rowsByCommitteeName =
+      injected.rowsByCommitteeName ?? groupContributionRowsByCommitteeName([...injected.rowsByCommitteeId.values()].flat());
+    return {
+      rows: [...normalizedCommitteeNames]
+        .flatMap((committeeName) => rowsByCommitteeName.get(committeeName) ?? []),
+      sourceUrl: injected.sourceUrl,
+    };
+  }
+
+  const cacheDir =
+    input.rawDataCacheDir ??
+    process.env.OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR?.trim() ??
+    DEFAULT_OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR;
+  const paths = getOklahomaGuardianContributionArtifactCachePaths({
+    cacheDir,
+    year: input.year,
+  });
+  const zipPath = input.rawDataZipPath ?? paths.zipPath;
+  if (!(await fileExists(zipPath))) {
+    throw new Error(`Oklahoma Guardian contribution ZIP not found for ${input.year}: ${zipPath}`);
+  }
+
+  const metadata = input.rawDataZipPath
+    ? null
+    : await readOklahomaGuardianContributionArtifactCacheMetadata(paths.metadataPath);
+  return {
+    rows: await readOklahomaGuardianContributionRows({
+      zipPath,
+      year: input.year,
+      predicate: (row) => normalizedCommitteeNames.has(normalizeOklahomaOutsideGroupCommitteeNameKey(row["Committee Name"])),
+    }),
+    sourceUrl: metadata?.remote.url ?? buildOklahomaGuardianContributionZipUrl({ year: input.year }),
   };
 }
 
@@ -385,6 +471,14 @@ export async function syncDueOklahomaCandidateFinance(
   );
   const dryRun = input.dryRun === true;
   const syncFn = input.syncOklahomaCandidateFinanceFn ?? syncOklahomaCandidateFinance;
+  const includeOutsideSpending = input.includeOutsideSpending !== false;
+  const outsideMaxReports = normalizePositiveInteger(
+    input.outsideMaxReports,
+    DEFAULT_OUTSIDE_MAX_REPORTS,
+    "outsideMaxReports"
+  );
+  const shouldPreloadOutsideSpending =
+    includeOutsideSpending && syncFn === syncOklahomaCandidateFinance;
 
   if (!dryRun && input.autoLinkMissingLinks !== false) {
     try {
@@ -449,11 +543,55 @@ export async function syncDueOklahomaCandidateFinance(
     }
   }
 
+  const outsideDiscoveryByRowKey = new Map<string, OklahomaGuardianIeOutsideSpendingDiscoveryResult>();
+  const outsideDiscoveryErrorsByRowKey = new Map<string, unknown>();
+  const outsideCommitteeNamesByYear = new Map<number, Set<string>>();
+  if (shouldPreloadOutsideSpending) {
+    const discoverFn = input.discoverOutsideSpendingReportsFn ?? discoverOklahomaGuardianIeOutsideSpendingReports;
+    for (const row of due.rows) {
+      try {
+        const discovery = await discoverFn({
+          candidateName: row.candidateName,
+          electionYear: row.electionYear,
+          maxReports: outsideMaxReports,
+        });
+        outsideDiscoveryByRowKey.set(dueRowKey(row), discovery);
+        const outsideFinance = buildOklahomaGuardianIeOutsideFinanceSnapshot(discovery.usableReports);
+        const yearCommitteeNames = outsideCommitteeNamesByYear.get(row.electionYear) ?? new Set<string>();
+        for (const outsideGroup of outsideFinance.outsideGroups) {
+          yearCommitteeNames.add(outsideGroup.committeeName);
+        }
+        outsideCommitteeNamesByYear.set(row.electionYear, yearCommitteeNames);
+      } catch (error) {
+        outsideDiscoveryErrorsByRowKey.set(dueRowKey(row), error);
+      }
+    }
+  }
+
+  const outsideContributionRowsByYear = new Map<number, { rows: OklahomaGuardianContributionRow[]; sourceUrl: string }>();
+  for (const [year, committeeNames] of outsideCommitteeNamesByYear.entries()) {
+    outsideContributionRowsByYear.set(
+      year,
+      await loadOutsideContributionRowsForYear({
+        year,
+        committeeNames: [...committeeNames],
+        rawDataZipPath: input.rawDataZipPath,
+        rawDataCacheDir: input.rawDataCacheDir,
+        contributionDataByYear,
+      })
+    );
+  }
+
   const results: OklahomaCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
     const contributionData = contributionDataByYear.get(row.electionYear);
+    const outsideContributionData = outsideContributionRowsByYear.get(row.electionYear);
     const committeeKey = normalizeCommitteeId(row.committeeId);
     try {
+      const outsideDiscoveryError = outsideDiscoveryErrorsByRowKey.get(dueRowKey(row));
+      if (outsideDiscoveryError) {
+        throw outsideDiscoveryError;
+      }
       const result = await syncFn({
         db: input.db,
         candidateId: row.candidateId,
@@ -466,7 +604,15 @@ export async function syncDueOklahomaCandidateFinance(
         sourceUrl: row.sourceUrl,
         dryRun,
         contributionRows: contributionData?.rowsByCommitteeId.get(committeeKey) ?? [],
-        contributionSourceUrl: contributionData?.sourceUrl,
+        outsideContributionRows: outsideContributionData?.rows,
+        contributionSourceUrl: outsideContributionData?.sourceUrl ?? contributionData?.sourceUrl,
+        includeOutsideSpending,
+        outsideMaxReports,
+        discoverOutsideSpendingReportsFn:
+          input.discoverOutsideSpendingReportsFn ?? discoverOklahomaGuardianIeOutsideSpendingReports,
+        outsideDiscoveryResult: outsideDiscoveryByRowKey.get(dueRowKey(row)) ?? null,
+        financeIndustryClassifier: input.financeIndustryClassifier,
+        aiClassificationMinAmount: input.aiClassificationMinAmount,
         now,
       });
       results.push({

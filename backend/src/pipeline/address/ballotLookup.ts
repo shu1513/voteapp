@@ -657,6 +657,8 @@ type OklahomaFinanceSummaryRow = {
   election_year: number;
   total_receipts: string | number | null;
   direct_contribution_total: string | number | null;
+  outside_support_total: string | number | null;
+  outside_oppose_total: string | number | null;
   source_url: string | null;
   last_synced_at: string;
 };
@@ -665,6 +667,26 @@ type OklahomaFinanceDirectBreakdownRow = {
   candidate_id: string;
   election_id: string;
   category_type: "occupation" | "contribution_size";
+  category_name: string;
+  amount: string | number;
+  contributor_count: string | number | null;
+  source_url: string | null;
+};
+
+type OklahomaFinanceOutsideGroupRow = {
+  candidate_id: string;
+  election_id: string;
+  committee_id: string;
+  committee_name: string;
+  support_oppose: "support" | "oppose";
+  amount: string | number;
+  source_url: string | null;
+};
+
+type OklahomaFinanceOutsideIndustryRow = {
+  candidate_id: string;
+  election_id: string;
+  support_oppose: "support" | "oppose";
   category_name: string;
   amount: string | number;
   contributor_count: string | number | null;
@@ -2347,6 +2369,8 @@ async function loadNebraskaCandidateFinanceSummariesByCandidateElection(
           WHEN count(summary.direct_contribution_total) = 0 THEN NULL
           ELSE sum(summary.direct_contribution_total)
         END AS direct_contribution_total,
+        max(summary.outside_support_total) AS outside_support_total,
+        max(summary.outside_oppose_total) AS outside_oppose_total,
         min(summary.source_url) FILTER (WHERE summary.source_url IS NOT NULL) AS source_url,
         max(summary.last_synced_at)::text AS last_synced_at
       FROM requested
@@ -2590,6 +2614,241 @@ async function loadOklahomaCandidateFinanceSummariesByCandidateElection(
     [JSON.stringify(selectedRequests)]
   );
 
+  const outsideGroupResult = await db.query<OklahomaFinanceOutsideGroupRow>(
+    `
+      WITH selected AS (
+        SELECT
+          candidate_id::uuid AS candidate_id,
+          election_id::uuid AS election_id
+        FROM jsonb_to_recordset($1::jsonb) AS x(
+          candidate_id text,
+          election_id text
+        )
+      ),
+      grouped AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          outside_group.committee_id,
+          min(outside_group.committee_name) AS committee_name,
+          outside_group.support_oppose,
+          max(outside_group.amount) AS amount,
+          min(outside_group.source_url) FILTER (WHERE outside_group.source_url IS NOT NULL) AS source_url
+        FROM selected
+        JOIN public.ok_candidate_finance_links AS link
+          ON link.candidate_id = selected.candidate_id
+         AND link.election_id = selected.election_id
+         AND link.link_status = 'active'
+        JOIN public.ok_candidate_finance_outside_groups AS outside_group
+          ON outside_group.link_id = link.id
+         AND outside_group.election_year = link.election_year
+        GROUP BY selected.candidate_id, selected.election_id, outside_group.committee_id, outside_group.support_oppose
+      ),
+      ranked AS (
+        SELECT
+          *,
+          row_number() OVER (
+            PARTITION BY candidate_id, election_id, support_oppose
+            ORDER BY amount DESC, committee_name ASC
+          ) AS rn
+        FROM grouped
+      )
+      SELECT candidate_id, election_id, committee_id, committee_name, support_oppose, amount, source_url
+      FROM ranked
+      WHERE rn <= 5
+      ORDER BY candidate_id, election_id, support_oppose, amount DESC, committee_name ASC
+    `,
+    [JSON.stringify(selectedRequests)]
+  );
+
+  const outsideIndustryResult = await db.query<OklahomaFinanceOutsideIndustryRow>(
+    `
+      WITH selected AS (
+        SELECT
+          candidate_id::uuid AS candidate_id,
+          election_id::uuid AS election_id
+        FROM jsonb_to_recordset($1::jsonb) AS x(
+          candidate_id text,
+          election_id text
+        )
+      ),
+      per_group AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          breakdown.committee_id,
+          breakdown.support_oppose,
+          breakdown.category_name,
+          max(breakdown.amount) AS amount,
+          CASE
+            WHEN count(breakdown.contributor_count) = 0 THEN NULL
+            ELSE max(breakdown.contributor_count)
+          END AS contributor_count,
+          min(breakdown.source_url) FILTER (WHERE breakdown.source_url IS NOT NULL) AS source_url
+        FROM selected
+        JOIN public.ok_candidate_finance_links AS link
+          ON link.candidate_id = selected.candidate_id
+         AND link.election_id = selected.election_id
+         AND link.link_status = 'active'
+        JOIN public.ok_candidate_finance_outside_group_breakdowns AS breakdown
+          ON breakdown.link_id = link.id
+         AND breakdown.election_year = link.election_year
+        WHERE breakdown.category_type = 'industry'
+        GROUP BY
+          selected.candidate_id,
+          selected.election_id,
+          breakdown.committee_id,
+          breakdown.support_oppose,
+          breakdown.category_name
+      ),
+      grouped AS (
+        SELECT
+          candidate_id,
+          election_id,
+          support_oppose,
+          category_name,
+          sum(amount) AS amount,
+          CASE
+            WHEN count(contributor_count) = 0 THEN NULL
+            ELSE sum(contributor_count)
+          END AS contributor_count,
+          min(source_url) FILTER (WHERE source_url IS NOT NULL) AS source_url
+        FROM per_group
+        GROUP BY candidate_id, election_id, support_oppose, category_name
+      ),
+      ranked AS (
+        SELECT
+          *,
+          row_number() OVER (
+            PARTITION BY candidate_id, election_id, support_oppose
+            ORDER BY amount DESC, category_name ASC
+          ) AS rn
+        FROM grouped
+      )
+      SELECT candidate_id, election_id, support_oppose, category_name, amount, contributor_count, source_url
+      FROM ranked
+      WHERE rn <= 5
+      ORDER BY candidate_id, election_id, support_oppose, amount DESC, category_name ASC
+    `,
+    [JSON.stringify(selectedRequests)]
+  );
+
+  const outsideIndustryEvidenceResult = await db.query<CandidateFinanceOutsideIndustryEvidenceRow>(
+    `
+      WITH selected AS (
+        SELECT
+          candidate_id::uuid AS candidate_id,
+          election_id::uuid AS election_id
+        FROM jsonb_to_recordset($1::jsonb) AS x(
+          candidate_id text,
+          election_id text
+        )
+      ),
+      top_industries AS (
+        SELECT *
+        FROM (
+          SELECT
+            selected.candidate_id::text AS candidate_id,
+            selected.election_id::text AS election_id,
+            industry.category_name AS industry_name,
+            row_number() OVER (
+              PARTITION BY selected.candidate_id, selected.election_id
+              ORDER BY sum(industry.amount) DESC, industry.category_name ASC
+            ) AS rn
+          FROM selected
+          JOIN public.ok_candidate_finance_links AS link
+            ON link.candidate_id = selected.candidate_id
+           AND link.election_id = selected.election_id
+           AND link.link_status = 'active'
+          JOIN public.ok_candidate_finance_outside_group_breakdowns AS industry
+            ON industry.link_id = link.id
+           AND industry.election_year = link.election_year
+          WHERE industry.support_oppose = 'support'
+            AND industry.category_type = 'industry'
+          GROUP BY selected.candidate_id, selected.election_id, industry.category_name
+        ) ranked_industries
+        WHERE rn <= 5
+      ),
+      evidence AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          top_industries.industry_name,
+          breakdown.category_name AS organization_name,
+          'donor'::text AS organization_type,
+          breakdown.amount,
+          breakdown.contributor_count,
+          breakdown.committee_id,
+          COALESCE(outside_group.committee_name, breakdown.committee_id) AS committee_name,
+          COALESCE(breakdown.source_url, outside_group.source_url) AS source_url,
+          row_number() OVER (
+            PARTITION BY selected.candidate_id, selected.election_id, top_industries.industry_name
+            ORDER BY breakdown.amount DESC, breakdown.category_name ASC, breakdown.committee_id ASC
+          ) AS rn
+        FROM selected
+        JOIN public.ok_candidate_finance_links AS link
+          ON link.candidate_id = selected.candidate_id
+         AND link.election_id = selected.election_id
+         AND link.link_status = 'active'
+        JOIN top_industries
+          ON top_industries.candidate_id = selected.candidate_id::text
+         AND top_industries.election_id = selected.election_id::text
+        JOIN public.ok_candidate_finance_outside_group_breakdowns AS breakdown
+          ON breakdown.link_id = link.id
+         AND breakdown.election_year = link.election_year
+         AND breakdown.support_oppose = 'support'
+         AND breakdown.category_type = 'donor'
+        CROSS JOIN LATERAL (
+          SELECT
+            btrim(
+              regexp_replace(
+                btrim(
+                  regexp_replace(
+                    regexp_replace(
+                      regexp_replace(upper(replace(breakdown.category_name, '&', ' AND ')), '[^A-Z0-9]+', ' ', 'g'),
+                      '\\m(INC|INCORPORATED|LLC|L L C|LP|L P|LLP|L L P|LTD|LIMITED|CO|COMPANY|CORP|CORPORATION|PLC)\\M',
+                      ' ',
+                      'g'
+                    ),
+                    '\\s+',
+                    ' ',
+                    'g'
+                  )
+                ),
+                '\\s+',
+                ' ',
+                'g'
+              )
+            ) AS normalized_label
+        ) AS normalized_breakdown
+        JOIN public.finance_label_classifications AS classification
+          ON classification.label_type = 'donor'
+         AND classification.normalized_label = normalized_breakdown.normalized_label
+         AND classification.industry_slug = top_industries.industry_name
+        LEFT JOIN public.ok_candidate_finance_outside_groups AS outside_group
+          ON outside_group.link_id = breakdown.link_id
+         AND outside_group.election_year = breakdown.election_year
+         AND outside_group.committee_id = breakdown.committee_id
+         AND outside_group.support_oppose = breakdown.support_oppose
+      )
+      SELECT
+        candidate_id,
+        election_id,
+        industry_name,
+        organization_name,
+        organization_type,
+        amount,
+        contributor_count,
+        committee_id,
+        committee_name,
+        source_url
+      FROM evidence
+      WHERE rn <= 3
+      ORDER BY candidate_id, election_id, industry_name, amount DESC, organization_name ASC
+    `,
+    [JSON.stringify(selectedRequests)]
+  );
+
   const directOccupationsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const contributionSizeBucketsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const summaryByCandidateElection = new Map(
@@ -2605,10 +2864,69 @@ async function loadOklahomaCandidateFinanceSummariesByCandidateElection(
     }
   }
 
+  const supportingGroupsByCandidateElection = new Map<string, BallotLookupFinanceOutsideGroup[]>();
+  const opposingGroupsByCandidateElection = new Map<string, BallotLookupFinanceOutsideGroup[]>();
+  for (const row of outsideGroupResult.rows) {
+    const key = candidateElectionKey(row.candidate_id, row.election_id);
+    const map = row.support_oppose === "support" ? supportingGroupsByCandidateElection : opposingGroupsByCandidateElection;
+    const list = map.get(key) ?? [];
+    list.push({
+      committee_id: row.committee_id,
+      committee_name: row.committee_name,
+      support_oppose: row.support_oppose,
+      amount: parseFinanceAmount(row.amount) ?? 0,
+      source_url: firstNonEmptySourceUrl(row.source_url, GENERIC_OKLAHOMA_GUARDIAN_SOURCE_URL),
+    });
+    map.set(key, list);
+  }
+
+  const supportingIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  const opposingIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  for (const row of outsideIndustryResult.rows) {
+    const map =
+      row.support_oppose === "support" ? supportingIndustriesByCandidateElection : opposingIndustriesByCandidateElection;
+    addFinanceBreakdown(
+      map,
+      row.candidate_id,
+      row.election_id,
+      mapFinanceBreakdown(row, GENERIC_OKLAHOMA_GUARDIAN_SOURCE_URL)
+    );
+  }
+
+  const outsideIndustryEvidenceByCandidateElectionAndIndustry = new Map<
+    string,
+    BallotLookupFinanceOutsideIndustrySupportEvidence[]
+  >();
+  for (const row of outsideIndustryEvidenceResult.rows) {
+    const key = `${candidateElectionKey(row.candidate_id, row.election_id)}\u0000${row.industry_name}`;
+    const list = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(key) ?? [];
+    list.push({
+      organization_name: row.organization_name,
+      organization_type: row.organization_type,
+      amount: parseFinanceAmount(row.amount) ?? 0,
+      contributor_count: parseFinanceCount(row.contributor_count),
+      committee_id: row.committee_id,
+      committee_name: row.committee_name,
+      source_url: firstNonEmptySourceUrl(row.source_url, GENERIC_OKLAHOMA_GUARDIAN_SOURCE_URL),
+    });
+    outsideIndustryEvidenceByCandidateElectionAndIndustry.set(key, list);
+  }
+
   return new Map(
     summaryResult.rows.map((row) => {
       const key = candidateElectionKey(row.candidate_id, row.election_id);
       const topDirectDonorOccupations = directOccupationsByCandidateElection.get(key) ?? [];
+      const topOutsideSupportingIndustries = (supportingIndustriesByCandidateElection.get(key) ?? []).map(
+        (industry): BallotLookupFinanceOutsideIndustrySupportSummary => {
+          const evidenceKey = `${key}\u0000${industry.category_name}`;
+          const supportingOrganizations = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(evidenceKey) ?? [];
+          return {
+            ...industry,
+            explanation: buildOutsideIndustrySupportExplanation(industry.category_name, supportingOrganizations),
+            supporting_organizations: supportingOrganizations,
+          };
+        }
+      );
       return [
         key,
         {
@@ -2628,16 +2946,16 @@ async function loadOklahomaCandidateFinanceSummariesByCandidateElection(
             contribution_size_buckets: contributionSizeBucketsByCandidateElection.get(key) ?? [],
           },
           outside_spending: {
-            support_total: null,
-            oppose_total: null,
-            top_supporting_groups: [],
-            top_opposing_groups: [],
-            top_supporting_industries: [],
-            top_opposing_industries: [],
+            support_total: parseFinanceAmount(row.outside_support_total),
+            oppose_total: parseFinanceAmount(row.outside_oppose_total),
+            top_supporting_groups: supportingGroupsByCandidateElection.get(key) ?? [],
+            top_opposing_groups: opposingGroupsByCandidateElection.get(key) ?? [],
+            top_supporting_industries: supportingIndustriesByCandidateElection.get(key) ?? [],
+            top_opposing_industries: opposingIndustriesByCandidateElection.get(key) ?? [],
           },
           backing_summary: {
             top_direct_donor_occupations: topDirectDonorOccupations,
-            top_outside_supporting_industries: [],
+            top_outside_supporting_industries: topOutsideSupportingIndustries,
           },
         } satisfies BallotLookupFinanceSummary,
       ];

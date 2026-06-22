@@ -74,6 +74,8 @@ describe("oklahomaFinanceWriter", () => {
       summary: {
         totalReceipts: 6250,
         directContributionTotal: 1000,
+        outsideSupportTotal: 300,
+        outsideOpposeTotal: 50,
         sourceUrl: "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
       },
       directBreakdowns: [
@@ -98,6 +100,8 @@ describe("oklahomaFinanceWriter", () => {
       linkId: LINK_ID,
       summaryWritten: true,
       directBreakdownsWritten: 2,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
     });
     expect(db.connect).toHaveBeenCalledTimes(1);
     expect(db.query).not.toHaveBeenCalled();
@@ -116,6 +120,8 @@ describe("oklahomaFinanceWriter", () => {
       2026,
       6250,
       1000,
+      300,
+      50,
       "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
       "2026-02-03T04:05:06.000Z",
     ]);
@@ -156,13 +162,143 @@ describe("oklahomaFinanceWriter", () => {
       linkId: LINK_ID,
       summaryWritten: true,
       directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
     });
     const sql = db.query.mock.calls.map((call) => String(call[0]));
     const summarySql = sql.find((statement) => statement.includes("INSERT INTO public.ok_candidate_finance_summaries"));
-    expect(summarySql).toContain("total_receipts = EXCLUDED.total_receipts");
-    expect(summarySql).toContain("direct_contribution_total = EXCLUDED.direct_contribution_total");
-    expect(summarySql).toContain("source_url = EXCLUDED.source_url");
+    expect(summarySql).toContain("total_receipts = COALESCE(EXCLUDED.total_receipts");
+    expect(summarySql).toContain("direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total");
+    expect(summarySql).toContain("outside_support_total = COALESCE(EXCLUDED.outside_support_total");
+    expect(summarySql).toContain("outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total");
+    expect(summarySql).toContain("source_url = COALESCE(EXCLUDED.source_url");
     expect(sql.some((statement) => statement.includes("DELETE FROM public.ok_candidate_finance_direct_breakdowns"))).toBe(false);
+  });
+
+  it("writes outside groups and cleans stale outside groups only when provided", async () => {
+    const db = createMockDb();
+    const syncedAt = new Date("2026-02-03T04:05:06.000Z");
+
+    const result = await replaceOklahomaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt,
+      summary: {
+        outsideSupportTotal: 0,
+        outsideOpposeTotal: 61597.12,
+        sourceUrl: "https://guardian.ok.gov/PublicSite/PublicReports/IndependentExpenditure.aspx",
+      },
+      outsideGroups: [
+        {
+          committeeId: "THE OKLAHOMA PROJECT",
+          committeeName: "THE OKLAHOMA PROJECT",
+          supportOppose: "oppose",
+          amount: 61597.12,
+          sourceUrl: "https://guardian.ok.gov/PublicSite/PublicReports/IndependentExpenditure.aspx",
+        },
+      ],
+    });
+
+    expect(result).toEqual({
+      linkId: LINK_ID,
+      summaryWritten: true,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 1,
+      outsideGroupBreakdownsWritten: 0,
+    });
+
+    const outsideGroupCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ok_candidate_finance_outside_groups")
+    );
+    expect(outsideGroupCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      "THE OKLAHOMA PROJECT",
+      "THE OKLAHOMA PROJECT",
+      "oppose",
+      61597.12,
+      "https://guardian.ok.gov/PublicSite/PublicReports/IndependentExpenditure.aspx",
+      "2026-02-03T04:05:06.000Z",
+    ]);
+
+    const outsideDeleteCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("DELETE FROM public.ok_candidate_finance_outside_groups")
+    );
+    expect(String(outsideDeleteCall?.[0])).toContain("jsonb_to_recordset");
+    expect(outsideDeleteCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      JSON.stringify([{ committee_id: "THE OKLAHOMA PROJECT", support_oppose: "oppose" }]),
+    ]);
+  });
+
+  it("writes outside group breakdowns and finance label classifications", async () => {
+    const db = createMockDb();
+
+    const result = await replaceOklahomaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+      outsideGroups: [
+        {
+          committeeId: "THE OKLAHOMA PROJECT",
+          committeeName: "THE OKLAHOMA PROJECT",
+          supportOppose: "oppose",
+          amount: 61597.12,
+        },
+      ],
+      outsideGroupBreakdowns: [
+        {
+          committeeId: "THE OKLAHOMA PROJECT",
+          supportOppose: "oppose",
+          categoryType: "donor",
+          categoryName: "Energy Transfer",
+          amount: 50000,
+          contributorCount: 1,
+        },
+        {
+          committeeId: "THE OKLAHOMA PROJECT",
+          supportOppose: "oppose",
+          categoryType: "industry",
+          categoryName: "oil_gas_energy",
+          amount: 50000,
+          contributorCount: 1,
+        },
+      ],
+      classifications: [
+        {
+          rawLabel: "Energy Transfer",
+          labelType: "donor",
+          normalizedLabel: "ENERGY TRANSFER",
+          industrySlug: "oil_gas_energy",
+          confidence: "high",
+          classificationSource: "rule",
+          matchedRule: "organization_exact_energy_transfer",
+        },
+      ],
+    });
+
+    expect(result).toEqual({
+      linkId: LINK_ID,
+      summaryWritten: false,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 1,
+      outsideGroupBreakdownsWritten: 2,
+    });
+
+    expect(
+      db.query.mock.calls.filter((call) =>
+        String(call[0]).includes("INSERT INTO public.ok_candidate_finance_outside_group_breakdowns")
+      )
+    ).toHaveLength(2);
+    expect(
+      db.query.mock.calls.some((call) =>
+        String(call[0]).includes("DELETE FROM public.ok_candidate_finance_outside_group_breakdowns")
+      )
+    ).toBe(true);
+    expect(
+      db.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+    ).toBe(true);
   });
 
   it("uses current snapshot keys when cleaning repeated direct writes with the same timestamp", async () => {

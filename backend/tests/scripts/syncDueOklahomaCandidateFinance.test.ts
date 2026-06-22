@@ -18,6 +18,8 @@ describe("syncDueOklahomaCandidateFinance script", () => {
         "--lookahead-days=365",
         "--raw-cache-dir=/tmp/guardian",
         "--raw-zip=/tmp/2026.zip",
+        "--skip-outside",
+        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -28,6 +30,9 @@ describe("syncDueOklahomaCandidateFinance script", () => {
       electionLookaheadDays: 365,
       rawCacheDir: "/tmp/guardian",
       rawZipPath: "/tmp/2026.zip",
+      includeOutside: false,
+      aiClassifyIndustries: false,
+      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -35,6 +40,8 @@ describe("syncDueOklahomaCandidateFinance script", () => {
     expect(parseSyncDueOklahomaCandidateFinanceScriptArgs([])).toMatchObject({
       dryRun: false,
       force: false,
+      includeOutside: true,
+      aiClassifyIndustries: false,
     });
   });
 
@@ -104,8 +111,15 @@ describe("syncDueOklahomaCandidateFinance script", () => {
               linkWritten: false,
               summaryWritten: false,
               directBreakdownsWritten: 0,
+              outsideIncluded: false,
+              outsideGroupsWritten: 0,
               totalReceipts: 100,
               directContributionTotal: 90,
+              outsideSupportTotal: null,
+              outsideOpposeTotal: null,
+              outsideReportsExamined: 0,
+              outsideUsableReports: 0,
+              outsideSkippedReports: 0,
               matchedContributionRowCount: 1,
               includedContributionRowCount: 1,
               skippedContributionRowCount: 0,

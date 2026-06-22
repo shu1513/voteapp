@@ -122,7 +122,8 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       })
       .mockResolvedValueOnce({
         rows: [],
-      });
+      })
+      .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId, districtId]);
 
@@ -332,7 +333,8 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             imported_at: "2026-06-14 11:00:00+00",
           },
         ],
-      });
+      })
+      .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupBallotSummariesByDistrictIds({ query }, [houseDistrictId]);
 
@@ -1524,7 +1526,8 @@ describe("lookupElectionDetailById", () => {
             source_url: "https://powersearch.sos.ca.gov:3000/ie/search?candidatename=Newsom%2C+Gavin&electioncycle=2025",
           },
         ],
-      });
+      })
+      .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
@@ -2179,6 +2182,8 @@ describe("lookupElectionDetailById", () => {
             election_year: 2026,
             total_receipts: "120000.00",
             direct_contribution_total: "95000.00",
+            outside_support_total: "50000.00",
+            outside_oppose_total: "61597.12",
             source_url:
               "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
             last_synced_at: "2026-06-21 04:05:00+00",
@@ -2204,6 +2209,69 @@ describe("lookupElectionDetailById", () => {
             amount: "25000.00",
             contributor_count: "2",
             source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "THE OKLAHOMA PROJECT",
+            committee_name: "THE OKLAHOMA PROJECT",
+            support_oppose: "support",
+            amount: "50000.00",
+            source_url: "https://guardian.ok.gov/PublicSite/report-support.pdf",
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "OKLAHOMA PROSPERITY",
+            committee_name: "Oklahoma Prosperity",
+            support_oppose: "oppose",
+            amount: "61597.12",
+            source_url: "https://guardian.ok.gov/PublicSite/report-oppose.pdf",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "oil_gas_energy",
+            amount: "50000.00",
+            contributor_count: "1",
+            source_url:
+              "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "25000.00",
+            contributor_count: "2",
+            source_url:
+              "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "oil_gas_energy",
+            organization_name: "Energy Transfer",
+            organization_type: "donor",
+            amount: "50000.00",
+            contributor_count: "1",
+            committee_id: "THE OKLAHOMA PROJECT",
+            committee_name: "THE OKLAHOMA PROJECT",
+            source_url:
+              "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
           },
         ],
       })
@@ -2244,12 +2312,44 @@ describe("lookupElectionDetailById", () => {
         ],
       },
       outside_spending: {
-        support_total: null,
-        oppose_total: null,
-        top_supporting_groups: [],
-        top_opposing_groups: [],
-        top_supporting_industries: [],
-        top_opposing_industries: [],
+        support_total: 50000,
+        oppose_total: 61597.12,
+        top_supporting_groups: [
+          {
+            committee_id: "THE OKLAHOMA PROJECT",
+            committee_name: "THE OKLAHOMA PROJECT",
+            support_oppose: "support",
+            amount: 50000,
+            source_url: "https://guardian.ok.gov/PublicSite/report-support.pdf",
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "OKLAHOMA PROSPERITY",
+            committee_name: "Oklahoma Prosperity",
+            support_oppose: "oppose",
+            amount: 61597.12,
+            source_url: "https://guardian.ok.gov/PublicSite/report-oppose.pdf",
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "oil_gas_energy",
+            amount: 50000,
+            contributor_count: 1,
+            source_url:
+              "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 25000,
+            contributor_count: 2,
+            source_url:
+              "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+          },
+        ],
       },
       backing_summary: {
         top_direct_donor_occupations: [
@@ -2261,13 +2361,38 @@ describe("lookupElectionDetailById", () => {
               "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
           },
         ],
-        top_outside_supporting_industries: [],
+        top_outside_supporting_industries: [
+          {
+            category_name: "oil_gas_energy",
+            amount: 50000,
+            contributor_count: 1,
+            source_url:
+              "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+            explanation:
+              "The Oil, gas, and energy category is a top outside-spending support industry because Energy Transfer contributed to THE OKLAHOMA PROJECT, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "Energy Transfer",
+                organization_type: "donor",
+                amount: 50000,
+                contributor_count: 1,
+                committee_id: "THE OKLAHOMA PROJECT",
+                committee_name: "THE OKLAHOMA PROJECT",
+                source_url:
+                  "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+              },
+            ],
+          },
+        ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(10);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.ok_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ok_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
+    expect(query.mock.calls[9]?.[0]).toContain("public.ok_candidate_finance_outside_groups");
+    expect(query.mock.calls[10]?.[0]).toContain("public.ok_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.nm_candidate_finance");
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.ne_candidate_finance");
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");

@@ -1,5 +1,8 @@
 import type { Pool, PoolClient } from "pg";
 
+import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
   connect?: () => Promise<PoolClient>;
@@ -8,6 +11,8 @@ type ConnectableQueryable = Queryable & {
 export type OklahomaFinanceLinkStatus = "active" | "inactive";
 export type OklahomaFinanceLinkSource = "manual" | "guardian_bulk";
 export type OklahomaFinanceDirectCategoryType = "occupation" | "contribution_size";
+export type OklahomaFinanceSupportOppose = "support" | "oppose";
+export type OklahomaFinanceOutsideCategoryType = "donor" | "industry";
 
 export type OklahomaFinanceLinkInput = {
   candidateId: string;
@@ -27,11 +32,31 @@ export type OklahomaFinanceLinkInput = {
 export type OklahomaFinanceSummaryInput = {
   totalReceipts?: number | null;
   directContributionTotal?: number | null;
+  outsideSupportTotal?: number | null;
+  outsideOpposeTotal?: number | null;
   sourceUrl?: string | null;
 };
 
 export type OklahomaFinanceDirectBreakdownInput = {
   categoryType: OklahomaFinanceDirectCategoryType;
+  categoryName: string;
+  amount: number;
+  contributorCount?: number | null;
+  sourceUrl?: string | null;
+};
+
+export type OklahomaFinanceOutsideGroupInput = {
+  committeeId: string;
+  committeeName: string;
+  supportOppose: OklahomaFinanceSupportOppose;
+  amount: number;
+  sourceUrl?: string | null;
+};
+
+export type OklahomaFinanceOutsideGroupBreakdownInput = {
+  committeeId: string;
+  supportOppose: OklahomaFinanceSupportOppose;
+  categoryType: OklahomaFinanceOutsideCategoryType;
   categoryName: string;
   amount: number;
   contributorCount?: number | null;
@@ -44,12 +69,17 @@ export type OklahomaFinanceSnapshotInput = {
   syncedAt?: Date;
   summary?: OklahomaFinanceSummaryInput;
   directBreakdowns?: readonly OklahomaFinanceDirectBreakdownInput[];
+  outsideGroups?: readonly OklahomaFinanceOutsideGroupInput[];
+  outsideGroupBreakdowns?: readonly OklahomaFinanceOutsideGroupBreakdownInput[];
+  classifications?: readonly FinanceLabelClassification[];
 };
 
 export type OklahomaFinanceSnapshotWriteResult = {
   linkId: string;
   summaryWritten: boolean;
   directBreakdownsWritten: number;
+  outsideGroupsWritten: number;
+  outsideGroupBreakdownsWritten: number;
 };
 
 function requireNonEmpty(value: string, fieldName: string): string {
@@ -232,15 +262,19 @@ async function upsertSummary(input: {
         election_year,
         total_receipts,
         direct_contribution_total,
+        outside_support_total,
+        outside_oppose_total,
         source_url,
         last_synced_at
       )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6::timestamptz)
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
-        total_receipts = EXCLUDED.total_receipts,
-        direct_contribution_total = EXCLUDED.direct_contribution_total,
-        source_url = EXCLUDED.source_url,
+        total_receipts = COALESCE(EXCLUDED.total_receipts, ok_candidate_finance_summaries.total_receipts),
+        direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, ok_candidate_finance_summaries.direct_contribution_total),
+        outside_support_total = COALESCE(EXCLUDED.outside_support_total, ok_candidate_finance_summaries.outside_support_total),
+        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, ok_candidate_finance_summaries.outside_oppose_total),
+        source_url = COALESCE(EXCLUDED.source_url, ok_candidate_finance_summaries.source_url),
         last_synced_at = EXCLUDED.last_synced_at
     `,
     [
@@ -248,6 +282,8 @@ async function upsertSummary(input: {
       normalizeElectionYear(input.electionYear),
       normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
       normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
+      normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
+      normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
       normalizeOptionalText(input.summary.sourceUrl),
       input.syncedAt.toISOString(),
     ]
@@ -294,6 +330,90 @@ async function upsertDirectBreakdown(input: {
   );
 }
 
+async function upsertOutsideGroup(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  group: OklahomaFinanceOutsideGroupInput;
+  syncedAt: Date;
+}): Promise<void> {
+  await input.db.query(
+    `
+      INSERT INTO public.ok_candidate_finance_outside_groups (
+        link_id,
+        election_year,
+        committee_id,
+        committee_name,
+        support_oppose,
+        amount,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
+      ON CONFLICT (link_id, election_year, committee_id, support_oppose)
+      DO UPDATE SET
+        committee_name = EXCLUDED.committee_name,
+        amount = EXCLUDED.amount,
+        source_url = EXCLUDED.source_url,
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Oklahoma finance link id"),
+      normalizeElectionYear(input.electionYear),
+      requireNonEmpty(input.group.committeeId, "Oklahoma outside group committee id"),
+      requireNonEmpty(input.group.committeeName, "Oklahoma outside group committee name"),
+      input.group.supportOppose,
+      normalizeAmount(input.group.amount, "outside group amount"),
+      normalizeOptionalText(input.group.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function upsertOutsideGroupBreakdown(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  breakdown: OklahomaFinanceOutsideGroupBreakdownInput;
+  syncedAt: Date;
+}): Promise<void> {
+  await input.db.query(
+    `
+      INSERT INTO public.ok_candidate_finance_outside_group_breakdowns (
+        link_id,
+        election_year,
+        committee_id,
+        support_oppose,
+        category_type,
+        category_name,
+        amount,
+        contributor_count,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
+      ON CONFLICT (link_id, election_year, committee_id, support_oppose, category_type, category_name)
+      DO UPDATE SET
+        amount = EXCLUDED.amount,
+        contributor_count = EXCLUDED.contributor_count,
+        source_url = EXCLUDED.source_url,
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Oklahoma finance link id"),
+      normalizeElectionYear(input.electionYear),
+      requireNonEmpty(input.breakdown.committeeId, "Oklahoma outside breakdown committee id"),
+      input.breakdown.supportOppose,
+      input.breakdown.categoryType,
+      requireNonEmpty(input.breakdown.categoryName, "Oklahoma outside breakdown category"),
+      normalizeAmount(input.breakdown.amount, "outside group breakdown amount"),
+      normalizeNullableCount(input.breakdown.contributorCount),
+      normalizeOptionalText(input.breakdown.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
 async function deleteStaleDirectBreakdowns(input: {
   db: Queryable;
   linkId: string;
@@ -324,6 +444,72 @@ async function deleteStaleDirectBreakdowns(input: {
   );
 }
 
+async function deleteStaleOutsideGroups(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  groups: readonly OklahomaFinanceOutsideGroupInput[];
+}): Promise<void> {
+  const keys = input.groups.map((group) => ({
+    committee_id: requireNonEmpty(group.committeeId, "Oklahoma outside group committee id"),
+    support_oppose: group.supportOppose,
+  }));
+
+  await input.db.query(
+    `
+      DELETE FROM public.ok_candidate_finance_outside_groups
+      WHERE link_id = $1::uuid
+        AND election_year = $2
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            committee_id text,
+            support_oppose text
+          )
+          WHERE keep.committee_id = ok_candidate_finance_outside_groups.committee_id
+            AND keep.support_oppose = ok_candidate_finance_outside_groups.support_oppose
+        )
+    `,
+    [requireNonEmpty(input.linkId, "Oklahoma finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
+  );
+}
+
+async function deleteStaleOutsideGroupBreakdowns(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  breakdowns: readonly OklahomaFinanceOutsideGroupBreakdownInput[];
+}): Promise<void> {
+  const keys = input.breakdowns.map((breakdown) => ({
+    committee_id: requireNonEmpty(breakdown.committeeId, "Oklahoma outside breakdown committee id"),
+    support_oppose: breakdown.supportOppose,
+    category_type: breakdown.categoryType,
+    category_name: requireNonEmpty(breakdown.categoryName, "Oklahoma outside breakdown category"),
+  }));
+
+  await input.db.query(
+    `
+      DELETE FROM public.ok_candidate_finance_outside_group_breakdowns
+      WHERE link_id = $1::uuid
+        AND election_year = $2
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            committee_id text,
+            support_oppose text,
+            category_type text,
+            category_name text
+          )
+          WHERE keep.committee_id = ok_candidate_finance_outside_group_breakdowns.committee_id
+            AND keep.support_oppose = ok_candidate_finance_outside_group_breakdowns.support_oppose
+            AND keep.category_type = ok_candidate_finance_outside_group_breakdowns.category_type
+            AND keep.category_name = ok_candidate_finance_outside_group_breakdowns.category_name
+        )
+    `,
+    [requireNonEmpty(input.linkId, "Oklahoma finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
+  );
+}
+
 export async function replaceOklahomaCandidateFinanceSnapshot(
   input: OklahomaFinanceSnapshotInput
 ): Promise<OklahomaFinanceSnapshotWriteResult> {
@@ -347,10 +533,34 @@ export async function replaceOklahomaCandidateFinanceSnapshot(
       await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: input.directBreakdowns });
     }
 
+    for (const group of input.outsideGroups ?? []) {
+      await upsertOutsideGroup({ db, linkId, electionYear, group, syncedAt });
+    }
+    for (const breakdown of input.outsideGroupBreakdowns ?? []) {
+      await upsertOutsideGroupBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
+    }
+    if (input.outsideGroupBreakdowns) {
+      await deleteStaleOutsideGroupBreakdowns({
+        db,
+        linkId,
+        electionYear,
+        breakdowns: input.outsideGroupBreakdowns,
+      });
+    }
+    if (input.outsideGroups) {
+      await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups });
+    }
+
+    for (const classification of input.classifications ?? []) {
+      await upsertFinanceLabelClassification({ db, classification });
+    }
+
     return {
       linkId,
       summaryWritten: Boolean(input.summary),
       directBreakdownsWritten: input.directBreakdowns?.length ?? 0,
+      outsideGroupsWritten: input.outsideGroups?.length ?? 0,
+      outsideGroupBreakdownsWritten: input.outsideGroupBreakdowns?.length ?? 0,
     };
   });
 }

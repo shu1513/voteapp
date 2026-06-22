@@ -124,7 +124,16 @@ describe("oklahomaCandidateFinanceSync", () => {
     const summaryCall = db.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.ok_candidate_finance_summaries")
     );
-    expect(summaryCall?.[1]).toEqual([LINK_ID, 2026, 350, 350, CONTRIBUTION_SOURCE_URL, "2026-02-03T04:05:06.000Z"]);
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      350,
+      350,
+      null,
+      null,
+      CONTRIBUTION_SOURCE_URL,
+      "2026-02-03T04:05:06.000Z",
+    ]);
     const directBreakdownCalls = db.query.mock.calls.filter((call) =>
       String(call[0]).includes("INSERT INTO public.ok_candidate_finance_direct_breakdowns")
     );
@@ -141,6 +150,178 @@ describe("oklahomaCandidateFinanceSync", () => {
     ]);
     expect(
       db.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.ok_candidate_finance_direct_breakdowns"))
+    ).toBe(true);
+  });
+
+  it("discovers outside spending when enabled and writes outside totals and groups", async () => {
+    const db = createMockDb();
+    const discoverOutsideSpendingReportsFn = vi.fn().mockResolvedValue({
+      search: {
+        candidateName: "Brent Dishman",
+        dateFrom: "01/01/2026",
+        dateThrough: "12/31/2026",
+        expenditureType: "independent_expenditure",
+        rows: [],
+        sourceUrl: "https://guardian.ok.gov/PublicSite/PublicReports/IndependentExpenditure.aspx",
+      },
+      reportsExamined: 2,
+      usableReports: [
+        {
+          rowIndex: 0,
+          sourceRow: {
+            filerName: "Example PAC",
+            reportDescription: "IE EC SQ Report",
+            periodBegin: "10/01/2026",
+            periodEnd: "10/15/2026",
+            filedDate: "10/16/2026",
+            viewReportPostbackTarget: "target",
+          },
+          spenderName: "Example PAC",
+          candidateName: "BRENT DISHMAN",
+          officeName: "STATE SENATOR",
+          supportOppose: "support",
+          amount: 25,
+          reportingPeriodBegin: "10/01/2026",
+          reportingPeriodEnd: "10/15/2026",
+          reportDescription: "IE EC SQ Report",
+          amended: false,
+          sourceUrl: "https://guardian.ok.gov/PublicSite/PublicReports/IndependentExpenditure.aspx",
+          pdfByteLength: 100,
+        },
+        {
+          rowIndex: 1,
+          sourceRow: {
+            filerName: "Oppose PAC",
+            reportDescription: "IE EC SQ Report",
+            periodBegin: "10/01/2026",
+            periodEnd: "10/15/2026",
+            filedDate: "10/16/2026",
+            viewReportPostbackTarget: "target-2",
+          },
+          spenderName: "Oppose PAC",
+          candidateName: "BRENT DISHMAN",
+          officeName: "STATE SENATOR",
+          supportOppose: "oppose",
+          amount: 10,
+          reportingPeriodBegin: "10/01/2026",
+          reportingPeriodEnd: "10/15/2026",
+          reportDescription: "IE EC SQ Report",
+          amended: false,
+          sourceUrl: "https://guardian.ok.gov/PublicSite/PublicReports/IndependentExpenditure.aspx",
+          pdfByteLength: 100,
+        },
+      ],
+      skippedReports: [
+        {
+          rowIndex: 2,
+          sourceRow: {
+            filerName: "Skipped PAC",
+            reportDescription: "IE EC SQ Report",
+            periodBegin: "10/01/2026",
+            periodEnd: "10/15/2026",
+            filedDate: "10/16/2026",
+            viewReportPostbackTarget: "target-3",
+          },
+          reason: "candidate_not_found",
+        },
+      ],
+    });
+
+    const result = await syncOklahomaCandidateFinance({
+      db,
+      ...baseInput(),
+      contributionRows: [contribution({ "Receipt Amount": "100.00", Occupation: "Attorney" })],
+      outsideContributionRows: [
+        contribution({
+          "Org ID": "OUTSIDE-1",
+          "Committee Type": "Independent Expenditure Committee",
+          "Committee Name": "Example PAC",
+          "Receipt Source Type": "Business",
+          "Last Name": "Energy Transfer",
+          "Receipt Amount": "50000.00",
+        }),
+        contribution({
+          "Org ID": "OUTSIDE-2",
+          "Committee Type": "Independent Expenditure Committee",
+          "Committee Name": "Oppose PAC",
+          "Receipt Source Type": "Business",
+          "Last Name": "Google",
+          "Receipt Amount": "75000.00",
+        }),
+      ],
+      includeOutsideSpending: true,
+      outsideMaxReports: 3,
+      discoverOutsideSpendingReportsFn,
+    });
+
+    expect(discoverOutsideSpendingReportsFn).toHaveBeenCalledWith({
+      candidateName: "Brent Dishman",
+      electionYear: 2026,
+      maxReports: 3,
+    });
+    expect(result).toMatchObject({
+      outsideIncluded: true,
+      outsideGroupsWritten: 2,
+      outsideGroupBreakdownsWritten: 4,
+      outsideSupportTotal: 25,
+      outsideOpposeTotal: 10,
+      outsideReportsExamined: 2,
+      outsideUsableReports: 2,
+      outsideSkippedReports: 1,
+      outsideMatchedContributionRowCount: 2,
+      outsideIncludedContributionRowCount: 2,
+      outsideSkippedContributionRowCount: 0,
+    });
+
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ok_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      100,
+      100,
+      25,
+      10,
+      CONTRIBUTION_SOURCE_URL,
+      "2026-02-03T04:05:06.000Z",
+    ]);
+
+    const outsideGroupCalls = db.query.mock.calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.ok_candidate_finance_outside_groups")
+    );
+    expect(outsideGroupCalls.map((call) => call[1])).toEqual([
+      [
+        LINK_ID,
+        2026,
+        "EXAMPLE PAC",
+        "Example PAC",
+        "support",
+        25,
+        "https://guardian.ok.gov/PublicSite/PublicReports/IndependentExpenditure.aspx",
+        "2026-02-03T04:05:06.000Z",
+      ],
+      [
+        LINK_ID,
+        2026,
+        "OPPOSE PAC",
+        "Oppose PAC",
+        "oppose",
+        10,
+        "https://guardian.ok.gov/PublicSite/PublicReports/IndependentExpenditure.aspx",
+        "2026-02-03T04:05:06.000Z",
+      ],
+    ]);
+    expect(
+      db.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.ok_candidate_finance_outside_groups"))
+    ).toBe(true);
+    expect(
+      db.query.mock.calls.filter((call) =>
+        String(call[0]).includes("INSERT INTO public.ok_candidate_finance_outside_group_breakdowns")
+      )
+    ).toHaveLength(4);
+    expect(
+      db.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
     ).toBe(true);
   });
 

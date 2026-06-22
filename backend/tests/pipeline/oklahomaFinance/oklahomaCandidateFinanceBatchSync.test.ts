@@ -6,6 +6,7 @@ import {
   type OklahomaContributionDataForYear,
 } from "../../../src/pipeline/oklahomaFinance/oklahomaCandidateFinanceBatchSync.js";
 import type { OklahomaGuardianContributionRow } from "../../../src/pipeline/oklahomaFinance/oklahomaGuardianContributionReader.js";
+import type { OklahomaGuardianIeOutsideSpendingDiscoveryResult } from "../../../src/pipeline/oklahomaFinance/oklahomaGuardianIeOutsideSpendingDiscovery.js";
 
 const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
@@ -49,6 +50,7 @@ function contributionDataForYear(input: {
   year: number;
   sourceUrl?: string;
   rowsByCommitteeId: Map<string, OklahomaGuardianContributionRow[]>;
+  rowsByCommitteeName?: Map<string, OklahomaGuardianContributionRow[]>;
 }): OklahomaContributionDataForYear {
   return {
     year: input.year,
@@ -57,6 +59,7 @@ function contributionDataForYear(input: {
       input.sourceUrl ??
       `https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/${input.year}_ContributionLoanExtract.csv.zip`,
     rowsByCommitteeId: input.rowsByCommitteeId,
+    rowsByCommitteeName: input.rowsByCommitteeName,
   };
 }
 
@@ -216,8 +219,15 @@ describe("oklahomaCandidateFinanceBatchSync", () => {
         linkWritten: true,
         summaryWritten: true,
         directBreakdownsWritten: 3,
+        outsideIncluded: true,
+        outsideGroupsWritten: 1,
         totalReceipts: 100,
         directContributionTotal: 90,
+        outsideSupportTotal: 50,
+        outsideOpposeTotal: 0,
+        outsideReportsExamined: 1,
+        outsideUsableReports: 1,
+        outsideSkippedReports: 0,
         matchedContributionRowCount: 1,
         includedContributionRowCount: 1,
         skippedContributionRowCount: 0,
@@ -281,14 +291,198 @@ describe("oklahomaCandidateFinanceBatchSync", () => {
         contributionRows: [row],
         contributionSourceUrl:
           "https://guardian.ok.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionLoanExtract.csv.zip",
+        includeOutsideSpending: true,
+        outsideMaxReports: 10,
+        discoverOutsideSpendingReportsFn: expect.any(Function),
       })
     );
     expect(syncOklahomaCandidateFinanceFn).toHaveBeenCalledWith(
       expect.objectContaining({
         candidateId: "33333333-3333-4333-8333-333333333333",
         contributionRows: [],
+        includeOutsideSpending: true,
+        outsideMaxReports: 10,
+        discoverOutsideSpendingReportsFn: expect.any(Function),
       })
     );
+  });
+
+  it("can disable outside-spending discovery for due syncs", async () => {
+    const db = createMockDb([
+      {
+        candidate_id: CANDIDATE_ID,
+        election_id: ELECTION_ID,
+        candidate_name: "Brent Dishman",
+        election_year: 2026,
+        office_scope: "state_upper",
+        office_name: "State Senator",
+        district: "47",
+        committee_id: "11954",
+        committee_name: "Dishman for Senate",
+        source_url: null,
+        last_synced_at: null,
+        total_due_rows: "1",
+      },
+    ]);
+    const syncOklahomaCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      dryRun: false,
+      resolution: { status: "matched", committeeId: "11954" },
+      linkWritten: true,
+      summaryWritten: true,
+      directBreakdownsWritten: 0,
+      outsideIncluded: false,
+      outsideGroupsWritten: 0,
+      totalReceipts: 0,
+      directContributionTotal: 0,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      outsideReportsExamined: 0,
+      outsideUsableReports: 0,
+      outsideSkippedReports: 0,
+      matchedContributionRowCount: 0,
+      includedContributionRowCount: 0,
+      skippedContributionRowCount: 0,
+    });
+
+    await syncDueOklahomaCandidateFinance({
+      db,
+      syncOklahomaCandidateFinanceFn,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      autoLinkMissingLinks: false,
+      includeOutsideSpending: false,
+      contributionDataByYear: new Map([
+        [
+          2026,
+          contributionDataForYear({
+            year: 2026,
+            rowsByCommitteeId: new Map(),
+          }),
+        ],
+      ]),
+    });
+
+    expect(syncOklahomaCandidateFinanceFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        includeOutsideSpending: false,
+        outsideMaxReports: 10,
+      })
+    );
+  });
+
+  it("preloads outside spender contribution rows for the real due sync path", async () => {
+    const db = createMockDb([
+      {
+        candidate_id: CANDIDATE_ID,
+        election_id: ELECTION_ID,
+        candidate_name: "Kevin Stitt",
+        election_year: 2022,
+        office_scope: "statewide",
+        office_name: "Governor",
+        district: null,
+        committee_id: "11954",
+        committee_name: "Stitt for Governor",
+        source_url: "https://guardian.ok.gov/PublicSite/DataDownload.aspx",
+        last_synced_at: null,
+        total_due_rows: "1",
+      },
+    ]);
+    const candidateRow = contribution({
+      "Org ID": "11954",
+      "Receipt Date": "01/10/2022",
+      "Committee Type": "Candidate Committee",
+      "Committee Name": "Stitt for Governor",
+      "Candidate Name": "Kevin Stitt",
+      "Receipt Amount": "100.00",
+    });
+    const outsideDonorRow = contribution({
+      "Receipt ID": "O1",
+      "Org ID": "90001",
+      "Receipt Date": "02/10/2022",
+      "Receipt Amount": "50000.00",
+      "Receipt Source Type": "Business",
+      "Last Name": "Energy Transfer",
+      "First Name": "",
+      "Committee Type": "Independent Expenditure Committee",
+      "Committee Name": "THE OKLAHOMA PROJECT",
+      "Candidate Name": "",
+      Employer: "",
+      Occupation: "",
+    });
+    const discovery: OklahomaGuardianIeOutsideSpendingDiscoveryResult = {
+      search: {
+        candidateName: "Kevin Stitt",
+        dateFrom: "01/01/2021",
+        dateThrough: "12/31/2022",
+        expenditureType: "independent_expenditure",
+        rows: [],
+        sourceUrl: "https://guardian.ok.gov/PublicSite/SearchPages/IEReports.aspx",
+      },
+      reportsExamined: 1,
+      usableReports: [
+        {
+          rowIndex: 0,
+          sourceRow: {
+            filerName: "THE OKLAHOMA PROJECT",
+            reportDescription: "Independent expenditure",
+            periodBegin: "01/01/2022",
+            periodEnd: "12/31/2022",
+            filedDate: "03/01/2022",
+            viewReportPostbackTarget: "ctl00$MainContent$GridView1$ctl02$lnkView",
+          },
+          spenderName: "THE OKLAHOMA PROJECT",
+          candidateName: "Kevin Stitt",
+          officeName: "Governor",
+          supportOppose: "support",
+          amount: 1234.56,
+          reportingPeriodBegin: "01/01/2022",
+          reportingPeriodEnd: "12/31/2022",
+          reportDescription: "Independent expenditure",
+          amended: false,
+          sourceUrl: "https://guardian.ok.gov/PublicSite/report.pdf",
+          pdfByteLength: 12345,
+        },
+      ],
+      skippedReports: [],
+    };
+    const discoverOutsideSpendingReportsFn = vi.fn().mockResolvedValue(discovery);
+
+    const result = await syncDueOklahomaCandidateFinance({
+      db,
+      now: new Date("2022-06-01T00:00:00.000Z"),
+      dryRun: true,
+      autoLinkMissingLinks: false,
+      contributionDataByYear: new Map([
+        [
+          2022,
+          contributionDataForYear({
+            year: 2022,
+            rowsByCommitteeId: new Map([
+              ["11954", [candidateRow]],
+              ["90001", [outsideDonorRow]],
+            ]),
+          }),
+        ],
+      ]),
+      discoverOutsideSpendingReportsFn,
+    });
+
+    expect(discoverOutsideSpendingReportsFn).toHaveBeenCalledTimes(1);
+    expect(result.results[0]?.result).toMatchObject({
+      dryRun: true,
+      outsideIncluded: true,
+      outsideSupportTotal: 1234.56,
+      outsideOpposeTotal: 0,
+      outsideReportsExamined: 1,
+      outsideUsableReports: 1,
+      outsideSkippedReports: 0,
+      outsideMatchedContributionRowCount: 1,
+      outsideIncludedContributionRowCount: 1,
+      outsideSkippedContributionRowCount: 0,
+      outsideGroupBreakdownsWritten: 0,
+    });
   });
 
   it("rejects invalid batch options before querying", async () => {

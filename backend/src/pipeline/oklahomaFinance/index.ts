@@ -7,3 +7,8 @@ export * from "./oklahomaFinanceEligibleOffices.js";
 export * from "./oklahomaFinanceWriter.js";
 export * from "./oklahomaGuardianContributionArtifactCache.js";
 export * from "./oklahomaGuardianContributionReader.js";
+export * from "./oklahomaGuardianIeReportClient.js";
+export * from "./oklahomaGuardianIeReportParser.js";
+export * from "./oklahomaGuardianIeOutsideSpendingDiscovery.js";
+export * from "./oklahomaGuardianIeOutsideSpendingAggregator.js";
+export * from "./oklahomaOutsideGroupContributionAggregator.js";
