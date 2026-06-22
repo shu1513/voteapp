@@ -120,3 +120,21 @@ export function isNewMexicoCfisRawDataRefreshEnabled(force = false): boolean {
     (force || readBooleanEnv("NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED", false))
   );
 }
+
+export function isOklahomaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("OKLAHOMA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isOklahomaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isOklahomaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isOklahomaGuardianRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isOklahomaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
