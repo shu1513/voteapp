@@ -14,6 +14,8 @@ describe("financeIndustryClassificationPrompt", () => {
       ],
     });
 
+    expect(prompt).toContain("Classify campaign-finance employer, donor, or organization labels");
+    expect(prompt).not.toContain("Classify FEC campaign-finance");
     expect(prompt).toContain("Use only the allowed industry_slug values below, or unknown.");
     expect(prompt).toContain("Prefer unknown over guessing.");
     expect(prompt).toContain("political committee, campaign committee, PAC");

@@ -102,6 +102,52 @@ describe("financeIndustryClassificationService", () => {
     });
   });
 
+  it("calls AI for high-value unknown donor organizations", async () => {
+    const db = createDb();
+    const classifications = new Map<string, FinanceLabelClassification>();
+    const classifier = vi.fn().mockResolvedValue([
+      aiClassification({
+        rawLabel: "Stand for New Mexico",
+        labelType: "donor",
+        normalizedLabel: "STAND FOR NEW MEXICO",
+        industrySlug: "finance_investment",
+      }),
+    ]);
+
+    await resolveFinanceIndustryClassifications({
+      db,
+      directBreakdowns: [],
+      outsideBreakdowns: [
+        {
+          committeeId: "1036307",
+          supportOppose: "oppose",
+          categoryType: "donor",
+          categoryName: "Stand for New Mexico",
+          amount: 860_000,
+        },
+      ],
+      classifications,
+      classifier,
+      minAmount: 25_000,
+      dryRun: false,
+    });
+
+    expect(classifier).toHaveBeenCalledWith({
+      labels: [
+        {
+          rawLabel: "Stand for New Mexico",
+          labelType: "donor",
+          normalizedLabel: "STAND FOR NEW MEXICO",
+          amount: 860_000,
+        },
+      ],
+    });
+    expect(classifications.get(financeClassificationKey("donor", "STAND FOR NEW MEXICO"))).toMatchObject({
+      industrySlug: "finance_investment",
+      classificationSource: "ai",
+    });
+  });
+
   it("does not call AI for labels below the configured amount threshold", async () => {
     const db = createDb();
     const classifications = new Map<string, FinanceLabelClassification>();
@@ -256,6 +302,49 @@ describe("financeIndustryClassificationService", () => {
         amount: 200_000,
         contributorCount: 3,
         sourceUrl: "https://www.fec.gov/outside",
+      },
+    ]);
+  });
+
+  it("builds outside industry breakdowns from donor classifications", () => {
+    const classifications = new Map<string, FinanceLabelClassification>();
+    mergeFinanceLabelClassification(
+      classifications,
+      aiClassification({
+        rawLabel: "Guzman Construction Solutions LLC",
+        labelType: "donor",
+        normalizedLabel: "GUZMAN CONSTRUCTION SOLUTIONS",
+        industrySlug: "construction",
+        confidence: "medium",
+        classificationSource: "rule",
+      })
+    );
+
+    const result = buildFinanceIndustryBreakdownsFromClassifications({
+      directBreakdowns: [],
+      outsideBreakdowns: [
+        {
+          committeeId: "1036307",
+          supportOppose: "oppose",
+          categoryType: "donor",
+          categoryName: "Guzman Construction Solutions LLC",
+          amount: 25_000,
+          contributorCount: 1,
+          sourceUrl: "https://login.cfis.sos.state.nm.us/",
+        },
+      ],
+      classifications,
+    });
+
+    expect(result.outsideIndustryBreakdowns).toEqual([
+      {
+        committeeId: "1036307",
+        supportOppose: "oppose",
+        categoryType: "industry",
+        categoryName: "construction",
+        amount: 25_000,
+        contributorCount: 1,
+        sourceUrl: "https://login.cfis.sos.state.nm.us/",
       },
     ]);
   });

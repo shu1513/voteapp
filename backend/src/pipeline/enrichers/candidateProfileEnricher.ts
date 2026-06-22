@@ -23,6 +23,10 @@ import {
   enqueueManualConnecticutCandidateFinanceSyncJob,
 } from "../../scheduler/connecticutCandidateFinanceSyncScheduler.js";
 import {
+  buildNewMexicoCandidateFinanceLinkedElectionSyncJobId,
+  enqueueManualNewMexicoCandidateFinanceSyncJob,
+} from "../../scheduler/newMexicoCandidateFinanceSyncScheduler.js";
+import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
   STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
   STAGING_CANDIDATE_PROFILE_REJECTED_STREAM,
@@ -53,6 +57,7 @@ import {
 import { isCaliforniaFinanceEligibleOffice } from "../californiaFinance/californiaFinanceEligibleOffices.js";
 import { isColoradoFinanceEligibleOffice } from "../coloradoFinance/coloradoFinanceEligibleOffices.js";
 import { isConnecticutFinanceEligibleOffice } from "../connecticutFinance/connecticutFinanceEligibleOffices.js";
+import { isNewMexicoFinanceEligibleOffice } from "../newMexicoFinance/newMexicoFinanceEligibleOffices.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -385,6 +390,38 @@ async function enqueueConnecticutFinanceSyncForLinkedElection(input: {
     const reason = toReason(error);
     console.warn(
       `candidate-profile enricher could not enqueue Connecticut finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
+async function enqueueNewMexicoFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (
+    input.context.state !== "NM" ||
+    !isNewMexicoFinanceEligibleOffice({
+      officeScope: input.context.officeScope,
+      officeCanonicalName: input.context.officeCanonicalName,
+    })
+  ) {
+    return;
+  }
+
+  try {
+    await enqueueManualNewMexicoCandidateFinanceSyncJob(
+      {
+        aiClassifyIndustries: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: buildNewMexicoCandidateFinanceLinkedElectionSyncJobId(),
+      }
+    );
+  } catch (error) {
+    const reason = toReason(error);
+    console.warn(
+      `candidate-profile enricher could not enqueue New Mexico finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
     );
   }
 }
@@ -1008,6 +1045,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               candidateId,
             });
             await enqueueConnecticutFinanceSyncForLinkedElection({
+              context: draftContext,
+              candidateId,
+            });
+            await enqueueNewMexicoFinanceSyncForLinkedElection({
               context: draftContext,
               candidateId,
             });

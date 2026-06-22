@@ -108,14 +108,15 @@ function collectAiClassificationCandidates(input: {
   const candidates = new Map<string, FinanceIndustryClassificationCandidate>();
 
   const addCandidate = (breakdown: { categoryType: string; categoryName: string; amount: number }): void => {
-    if (breakdown.categoryType !== "employer") {
+    if (breakdown.categoryType !== "employer" && breakdown.categoryType !== "donor") {
       return;
     }
-    const normalizedLabel = normalizeFinanceLabel(breakdown.categoryName, "employer");
+    const labelType = breakdown.categoryType;
+    const normalizedLabel = normalizeFinanceLabel(breakdown.categoryName, labelType);
     if (!normalizedLabel) {
       return;
     }
-    const key = financeClassificationKey("employer", normalizedLabel);
+    const key = financeClassificationKey(labelType, normalizedLabel);
     const classification = input.classifications.get(key);
     if (!shouldSendClassificationToAi(classification)) {
       return;
@@ -127,7 +128,7 @@ function collectAiClassificationCandidates(input: {
     }
     candidates.set(key, {
       rawLabel: breakdown.categoryName,
-      labelType: "employer",
+      labelType,
       normalizedLabel,
       amount: breakdown.amount,
     });
@@ -284,11 +285,12 @@ export function buildFinanceIndustryBreakdownsFromClassifications(input: {
   const outsideIndustryBreakdowns: FinanceIndustryOutsideBreakdown[] = [];
 
   for (const breakdown of input.directBreakdowns) {
-    if (breakdown.categoryType !== "employer") {
+    if (breakdown.categoryType !== "employer" && breakdown.categoryType !== "donor") {
       continue;
     }
+    const labelType = breakdown.categoryType;
     const classification = input.classifications.get(
-      financeClassificationKey("employer", normalizeFinanceLabel(breakdown.categoryName, "employer"))
+      financeClassificationKey(labelType, normalizeFinanceLabel(breakdown.categoryName, labelType))
     );
     if (!classification?.industrySlug) {
       continue;
@@ -303,11 +305,12 @@ export function buildFinanceIndustryBreakdownsFromClassifications(input: {
   }
 
   for (const breakdown of input.outsideBreakdowns) {
-    if (breakdown.categoryType !== "employer") {
+    if (breakdown.categoryType !== "employer" && breakdown.categoryType !== "donor") {
       continue;
     }
+    const labelType = breakdown.categoryType;
     const classification = input.classifications.get(
-      financeClassificationKey("employer", normalizeFinanceLabel(breakdown.categoryName, "employer"))
+      financeClassificationKey(labelType, normalizeFinanceLabel(breakdown.categoryName, labelType))
     );
     if (!classification?.industrySlug) {
       continue;
