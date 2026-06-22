@@ -108,11 +108,11 @@ describe("newMexicoCandidateFinanceAutoLink", () => {
       expect.arrayContaining([
         "statewide::Governor",
         "statewide::Land Commissioner",
-        "state_upper::State Senator",
-        "state_lower::State Lower Chamber Legislator",
       ]),
     ]);
     expect(db.query.mock.calls[0]?.[1]?.[4]).not.toContain("statewide::Commissioner of Insurance");
+    expect(db.query.mock.calls[0]?.[1]?.[4]).not.toContain("state_upper::State Senator");
+    expect(db.query.mock.calls[0]?.[1]?.[4]).not.toContain("state_lower::State Lower Chamber Legislator");
   });
 
   it("links a matched candidate election to the resolved CFIS committee", async () => {
@@ -157,6 +157,35 @@ describe("newMexicoCandidateFinanceAutoLink", () => {
       "https://login.cfis.sos.state.nm.us/",
       "2026-06-01T00:00:00.000Z",
     ]);
+  });
+
+  it("does not auto-link legislative offices because CFIS contribution rows do not prove district", async () => {
+    const db = createMockDb([{ id: "link-1" }]);
+
+    await expect(
+      autoLinkNewMexicoCandidateFinanceForCandidateElection({
+        db,
+        now: NOW,
+        sourceUrl: "https://login.cfis.sos.state.nm.us/",
+        contributionRows: [contribution()],
+        candidateElection: {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          candidateName: "Deb Haaland",
+          electionYear: 2026,
+          officeScope: "state_lower",
+          officeName: "State Lower Chamber Legislator",
+          district: "12",
+        },
+      })
+    ).resolves.toEqual({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      status: "unmatched",
+      reason: "unsupported_office",
+    });
+
+    expect(db.query).not.toHaveBeenCalled();
   });
 
   it("does not write a link when committee resolution is ambiguous", async () => {

@@ -47,6 +47,16 @@ type CandidateElectionQueryRow = {
   district: string | null;
 };
 
+const NEW_MEXICO_FINANCE_AUTO_LINK_OFFICE_KEYS = NEW_MEXICO_FINANCE_ELIGIBLE_OFFICE_KEYS.filter((key) =>
+  key.startsWith("statewide::")
+);
+
+function canAutoLinkFromContributionRows(
+  candidateElection: Pick<NewMexicoFinanceAutoLinkCandidateElection, "officeScope">
+): boolean {
+  return candidateElection.officeScope === "statewide";
+}
+
 function normalizeCandidateNameForStorage(value: string): string {
   const keys = normalizeNewMexicoCandidateNameKeys(value);
   return [...keys][0] ?? value.trim().replace(/\s+/g, " ").toUpperCase();
@@ -160,7 +170,7 @@ export async function listNewMexicoCandidateElectionsMissingFinanceLinks(
       input.maxCandidates,
       input.electionLookbackDays,
       input.electionLookaheadDays,
-      [...NEW_MEXICO_FINANCE_ELIGIBLE_OFFICE_KEYS],
+      [...NEW_MEXICO_FINANCE_AUTO_LINK_OFFICE_KEYS],
     ]
   );
 
@@ -174,6 +184,15 @@ export async function autoLinkNewMexicoCandidateFinanceForCandidateElection(inpu
   sourceUrl: string | null;
   now: Date;
 }): Promise<NewMexicoFinanceAutoLinkResult> {
+  if (!canAutoLinkFromContributionRows(input.candidateElection)) {
+    return {
+      candidateId: input.candidateElection.candidateId,
+      electionId: input.candidateElection.electionId,
+      status: "unmatched",
+      reason: "unsupported_office",
+    };
+  }
+
   const resolution = resolveNewMexicoCandidateCommittee({
     candidateName: input.candidateElection.candidateName,
     officeScope: input.candidateElection.officeScope,

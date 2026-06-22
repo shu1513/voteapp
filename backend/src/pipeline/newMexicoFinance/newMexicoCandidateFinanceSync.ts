@@ -89,6 +89,7 @@ export type NewMexicoCandidateFinanceSyncResult = {
 };
 
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
+const STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT = 25_000;
 
 function requireNonEmpty(value: string, fieldName: string): string {
   const trimmed = value.trim();
@@ -238,15 +239,14 @@ function toOutsideBreakdownMap(
 }
 
 function collectOutsideClassifications(
-  breakdowns: Iterable<NewMexicoFinanceOutsideGroupBreakdownInput>,
-  minAmount: number
+  breakdowns: Iterable<NewMexicoFinanceOutsideGroupBreakdownInput>
 ): Map<string, FinanceLabelClassification> {
   const classifications = new Map<string, FinanceLabelClassification>();
   for (const breakdown of breakdowns) {
     if (breakdown.categoryType !== "donor") {
       continue;
     }
-    if (breakdown.amount < minAmount) {
+    if (breakdown.amount < STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT) {
       continue;
     }
     const classification = classifyFinanceLabel({
@@ -297,7 +297,7 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   const breakdowns = toOutsideBreakdownMap(input.outsideGroupBreakdowns);
-  const classifications = collectOutsideClassifications(breakdowns.values(), input.aiClassificationMinAmount);
+  const classifications = collectOutsideClassifications(breakdowns.values());
   await resolveFinanceIndustryClassifications({
     db: input.db,
     directBreakdowns: [],

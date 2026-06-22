@@ -239,6 +239,17 @@ export function aggregateNewMexicoOutsideGroupContributions(
       outsideGroupKeys.set(groupKey({ committeeId, supportOppose: group.supportOppose }), group);
     }
   }
+  const outsideGroupsByCommitteeId = new Map<string, NewMexicoFinanceOutsideGroupInput[]>();
+  for (const group of outsideGroupKeys.values()) {
+    const committeeId = normalizeId(group.committeeId);
+    const existing = outsideGroupsByCommitteeId.get(committeeId);
+    if (existing) {
+      existing.push(group);
+    } else {
+      outsideGroupsByCommitteeId.set(committeeId, [group]);
+    }
+  }
+
   if (outsideGroupKeys.size === 0) {
     return {
       outsideGroupBreakdowns: [],
@@ -255,7 +266,7 @@ export function aggregateNewMexicoOutsideGroupContributions(
 
   for (const row of input.contributionRows) {
     const committeeId = normalizeId(row.OrgID);
-    const matchingGroups = [...outsideGroupKeys.values()].filter((group) => normalizeId(group.committeeId) === committeeId);
+    const matchingGroups = outsideGroupsByCommitteeId.get(committeeId) ?? [];
     if (matchingGroups.length === 0) {
       continue;
     }

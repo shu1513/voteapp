@@ -145,6 +145,7 @@ describe("newMexicoCandidateFinanceSync", () => {
         }),
       ],
       expenditureRows: [expenditure({ "Expenditure Amount": "1200.00" })],
+      aiClassificationMinAmount: 100_000,
     });
 
     expect(result).toMatchObject({
