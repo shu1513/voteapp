@@ -102,3 +102,21 @@ export function isNebraskaNadcRawDataRefreshEnabled(force = false): boolean {
     (force || readBooleanEnv("NEBRASKA_NADC_RAW_DATA_REFRESH_ENABLED", false))
   );
 }
+
+export function isNewMexicoCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isNewMexicoCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isNewMexicoCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isNewMexicoCfisRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isNewMexicoCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}

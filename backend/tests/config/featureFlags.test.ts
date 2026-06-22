@@ -10,6 +10,9 @@ import {
   isConnecticutCampaignFinanceEnabled,
   isConnecticutCampaignFinanceSyncEnabled,
   isConnecticutEcrisRawDataRefreshEnabled,
+  isNewMexicoCampaignFinanceEnabled,
+  isNewMexicoCampaignFinanceSyncEnabled,
+  isNewMexicoCfisRawDataRefreshEnabled,
   isPresidentialElectionsEnabled,
   isPresidentialFeatureEnabled,
 } from "../../src/config/featureFlags.js";
@@ -25,6 +28,9 @@ const ORIGINAL_COLORADO_RAW_REFRESH_VALUE = process.env.COLORADO_TRACER_RAW_DATA
 const ORIGINAL_CONNECTICUT_FINANCE_VALUE = process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_CONNECTICUT_FINANCE_SYNC_VALUE = process.env.CONNECTICUT_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_CONNECTICUT_RAW_REFRESH_VALUE = process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED;
+const ORIGINAL_NEW_MEXICO_FINANCE_VALUE = process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_NEW_MEXICO_FINANCE_SYNC_VALUE = process.env.NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_NEW_MEXICO_RAW_REFRESH_VALUE = process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED;
 
 describe("featureFlags", () => {
   afterEach(() => {
@@ -82,6 +88,21 @@ describe("featureFlags", () => {
       delete process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED;
     } else {
       process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED = ORIGINAL_CONNECTICUT_RAW_REFRESH_VALUE;
+    }
+    if (ORIGINAL_NEW_MEXICO_FINANCE_VALUE === undefined) {
+      delete process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_NEW_MEXICO_FINANCE_VALUE;
+    }
+    if (ORIGINAL_NEW_MEXICO_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_NEW_MEXICO_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_NEW_MEXICO_RAW_REFRESH_VALUE === undefined) {
+      delete process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED;
+    } else {
+      process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED = ORIGINAL_NEW_MEXICO_RAW_REFRESH_VALUE;
     }
   });
 
@@ -281,5 +302,57 @@ describe("featureFlags", () => {
 
     expect(isConnecticutEcrisRawDataRefreshEnabled()).toBe(false);
     expect(isConnecticutEcrisRawDataRefreshEnabled(true)).toBe(true);
+  });
+
+  it("disables New Mexico campaign finance by default", () => {
+    delete process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    delete process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED;
+
+    expect(isNewMexicoCampaignFinanceEnabled()).toBe(false);
+    expect(isNewMexicoCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isNewMexicoCfisRawDataRefreshEnabled()).toBe(false);
+  });
+
+  it("requires the New Mexico campaign finance master flag before sync can run", () => {
+    process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isNewMexicoCampaignFinanceEnabled()).toBe(false);
+    expect(isNewMexicoCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isNewMexicoCampaignFinanceSyncEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the New Mexico campaign finance sync flag", () => {
+    process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    expect(isNewMexicoCampaignFinanceEnabled()).toBe(true);
+    expect(isNewMexicoCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isNewMexicoCampaignFinanceSyncEnabled(true)).toBe(true);
+  });
+
+  it("enables New Mexico campaign finance sync when both flags are enabled", () => {
+    process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isNewMexicoCampaignFinanceEnabled()).toBe(true);
+    expect(isNewMexicoCampaignFinanceSyncEnabled()).toBe(true);
+  });
+
+  it("requires the New Mexico campaign finance master flag before CFIS raw data refresh can run", () => {
+    process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED = "true";
+
+    expect(isNewMexicoCfisRawDataRefreshEnabled()).toBe(false);
+    expect(isNewMexicoCfisRawDataRefreshEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the New Mexico CFIS raw data refresh flag", () => {
+    process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED = "false";
+
+    expect(isNewMexicoCfisRawDataRefreshEnabled()).toBe(false);
+    expect(isNewMexicoCfisRawDataRefreshEnabled(true)).toBe(true);
   });
 });
