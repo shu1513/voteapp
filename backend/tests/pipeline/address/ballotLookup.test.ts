@@ -2115,6 +2115,242 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");
   });
 
+
+  it("includes locally synced New Mexico finance summaries for New Mexico candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "35",
+            district_name: "New Mexico",
+            state: "NM",
+            state_fips: "35",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Michelle Lujan Grisham",
+            party: "Democratic",
+            is_incumbent: true,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "NM",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "12345",
+            election_year: 2026,
+            total_receipts: "100000.00",
+            direct_contribution_total: "75000.00",
+            total_disbursements: "25000.00",
+            outside_support_total: "50000.00",
+            outside_oppose_total: "1000.00",
+            source_url: "https://login.cfis.sos.state.nm.us/api/DataDownload/GetCSVDownloadReport?year=2026&transactionType=CON",
+            last_synced_at: "2026-06-21 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "ATTORNEY",
+            amount: "20000.00",
+            contributor_count: "12",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "industry",
+            category_name: "lawyers_and_legal_services",
+            amount: "22000.00",
+            contributor_count: "13",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "9001",
+            committee_name: "New Mexico Progress PAC",
+            support_oppose: "support",
+            amount: "50000.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "9002",
+            committee_name: "Oppose Governor PAC",
+            support_oppose: "oppose",
+            amount: "1000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "oil_gas_energy",
+            amount: "45000.00",
+            contributor_count: "4",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "1000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "NEW_MEXICO_CFIS",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "12345",
+      last_synced_at: "2026-06-21 04:05:00+00",
+      direct_campaign: {
+        total_raised: 75000,
+        total_spent: 25000,
+        cash_on_hand: null,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "ATTORNEY",
+            amount: 20000,
+            contributor_count: 12,
+            source_url:
+              "https://login.cfis.sos.state.nm.us/api/DataDownload/GetCSVDownloadReport?year=2026&transactionType=CON",
+          },
+        ],
+        top_employers: [],
+        top_industries: [
+          {
+            category_name: "lawyers_and_legal_services",
+            amount: 22000,
+            contributor_count: 13,
+            source_url:
+              "https://login.cfis.sos.state.nm.us/api/DataDownload/GetCSVDownloadReport?year=2026&transactionType=CON",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 50000,
+        oppose_total: 1000,
+        top_supporting_groups: [
+          {
+            committee_id: "9001",
+            committee_name: "New Mexico Progress PAC",
+            support_oppose: "support",
+            amount: 50000,
+            source_url: "https://www.cfis.state.nm.us/media/CFIS_Data_Download.aspx",
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "9002",
+            committee_name: "Oppose Governor PAC",
+            support_oppose: "oppose",
+            amount: 1000,
+            source_url: "https://www.cfis.state.nm.us/media/CFIS_Data_Download.aspx",
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "oil_gas_energy",
+            amount: 45000,
+            contributor_count: 4,
+            source_url: "https://www.cfis.state.nm.us/media/CFIS_Data_Download.aspx",
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 1000,
+            contributor_count: 1,
+            source_url: "https://www.cfis.state.nm.us/media/CFIS_Data_Download.aspx",
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "ATTORNEY",
+            amount: 20000,
+            contributor_count: 12,
+            source_url:
+              "https://login.cfis.sos.state.nm.us/api/DataDownload/GetCSVDownloadReport?year=2026&transactionType=CON",
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "oil_gas_energy",
+            amount: 45000,
+            contributor_count: 4,
+            source_url: "https://www.cfis.state.nm.us/media/CFIS_Data_Download.aspx",
+            explanation:
+              "The Oil, gas, and energy category is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported independent spending supporting this candidate.",
+            supporting_organizations: [],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(11);
+    expect(query.mock.calls[7]?.[0]).toContain("public.nm_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.nm_candidate_finance_direct_breakdowns");
+    expect(query.mock.calls[9]?.[0]).toContain("public.nm_candidate_finance_outside_groups");
+    expect(query.mock.calls[10]?.[0]).toContain("public.nm_candidate_finance_outside_group_breakdowns");
+  });
+
   it("omits finance summaries without querying finance tables when candidate finance is disabled", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi
