@@ -2539,6 +2539,8 @@ async function loadOklahomaCandidateFinanceSummariesByCandidateElection(
           WHEN count(summary.direct_contribution_total) = 0 THEN NULL
           ELSE sum(summary.direct_contribution_total)
         END AS direct_contribution_total,
+        max(summary.outside_support_total) AS outside_support_total,
+        max(summary.outside_oppose_total) AS outside_oppose_total,
         min(summary.source_url) FILTER (WHERE summary.source_url IS NOT NULL) AS source_url,
         max(summary.last_synced_at)::text AS last_synced_at
       FROM requested

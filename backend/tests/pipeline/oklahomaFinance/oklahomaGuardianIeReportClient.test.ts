@@ -145,7 +145,11 @@ describe("Oklahoma Guardian IE report client", () => {
   });
 
   it("parses embedded Guardian IE report PDF data artifacts", () => {
-    expect(parseOklahomaGuardianIeReportPdfArtifacts(REPORT_PAGE_HTML)).toEqual([
+    expect(
+      parseOklahomaGuardianIeReportPdfArtifacts(`
+        <a href="DATA:APPLICATION/PDF;BASE64,JVBERi0xLjMKJQ==">PDF</a>
+      `)
+    ).toEqual([
       {
         mimeType: "application/pdf",
         dataUrl: "data:application/pdf;base64,JVBERi0xLjMKJQ==",
@@ -190,8 +194,15 @@ describe("Oklahoma Guardian IE report client", () => {
   it("fetches the search page, submits the search, and parses rows", async () => {
     const fetchImpl = vi
       .fn<typeof fetch>()
-      .mockResolvedValueOnce(response(SEARCH_PAGE_HTML))
-      .mockResolvedValueOnce(response(RESULT_PAGE_HTML));
+      .mockResolvedValueOnce(
+        response(SEARCH_PAGE_HTML, {
+          headers: { "set-cookie": "ASP.NET_SessionId=session-2; path=/; HttpOnly" },
+        })
+      )
+      .mockImplementationOnce((_url, init) => {
+        expect(new Headers(init?.headers).get("cookie")).toBe("ASP.NET_SessionId=session-2");
+        return Promise.resolve(response(RESULT_PAGE_HTML));
+      });
 
     const result = await searchOklahomaGuardianIeReports(
       { candidateName: "Stitt", electionYear: 2022 },

@@ -153,6 +153,28 @@ describe("Oklahoma outside group contribution aggregator", () => {
     });
   });
 
+  it("preserves committee-name identity words when matching outside groups", () => {
+    const result = aggregateOklahomaOutsideGroupContributions({
+      electionYear: 2022,
+      outsideGroups: [
+        {
+          committeeId: "THE OKLAHOMA PROJECT",
+          committeeName: "The Oklahoma Project",
+          supportOppose: "oppose",
+          amount: 10,
+        },
+      ],
+      contributionRows: [contribution({ "Committee Name": "Oklahoma Project", "Last Name": "Energy Transfer" })],
+    });
+
+    expect(result).toEqual({
+      outsideGroupBreakdowns: [],
+      matchedContributionRowCount: 0,
+      includedContributionRowCount: 0,
+      skippedContributionRowCount: 0,
+    });
+  });
+
   it("validates options", () => {
     expect(() =>
       aggregateOklahomaOutsideGroupContributions({

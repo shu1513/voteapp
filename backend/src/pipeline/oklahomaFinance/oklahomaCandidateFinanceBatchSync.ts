@@ -590,8 +590,12 @@ export async function syncDueOklahomaCandidateFinance(
     try {
       const outsideDiscoveryError = outsideDiscoveryErrorsByRowKey.get(dueRowKey(row));
       if (outsideDiscoveryError) {
-        throw outsideDiscoveryError;
+        console.warn(
+          "Oklahoma outside-spending discovery skipped; continuing direct finance sync:",
+          outsideDiscoveryError instanceof Error ? outsideDiscoveryError.message : outsideDiscoveryError
+        );
       }
+      const includeOutsideForRow = includeOutsideSpending && !outsideDiscoveryError;
       const result = await syncFn({
         db: input.db,
         candidateId: row.candidateId,
@@ -604,13 +608,13 @@ export async function syncDueOklahomaCandidateFinance(
         sourceUrl: row.sourceUrl,
         dryRun,
         contributionRows: contributionData?.rowsByCommitteeId.get(committeeKey) ?? [],
-        outsideContributionRows: outsideContributionData?.rows,
+        outsideContributionRows: includeOutsideForRow ? outsideContributionData?.rows : undefined,
         contributionSourceUrl: outsideContributionData?.sourceUrl ?? contributionData?.sourceUrl,
-        includeOutsideSpending,
+        includeOutsideSpending: includeOutsideForRow,
         outsideMaxReports,
         discoverOutsideSpendingReportsFn:
           input.discoverOutsideSpendingReportsFn ?? discoverOklahomaGuardianIeOutsideSpendingReports,
-        outsideDiscoveryResult: outsideDiscoveryByRowKey.get(dueRowKey(row)) ?? null,
+        outsideDiscoveryResult: includeOutsideForRow ? outsideDiscoveryByRowKey.get(dueRowKey(row)) ?? null : null,
         financeIndustryClassifier: input.financeIndustryClassifier,
         aiClassificationMinAmount: input.aiClassificationMinAmount,
         now,

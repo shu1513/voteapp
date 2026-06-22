@@ -485,6 +485,70 @@ describe("oklahomaCandidateFinanceBatchSync", () => {
     });
   });
 
+  it("continues direct contribution sync when outside-spending discovery fails", async () => {
+    const db = createMockDb([
+      {
+        candidate_id: CANDIDATE_ID,
+        election_id: ELECTION_ID,
+        candidate_name: "Kevin Stitt",
+        election_year: 2022,
+        office_scope: "statewide",
+        office_name: "Governor",
+        district: null,
+        committee_id: "11954",
+        committee_name: "Stitt for Governor",
+        source_url: "https://guardian.ok.gov/PublicSite/DataDownload.aspx",
+        last_synced_at: null,
+        total_due_rows: "1",
+      },
+    ]);
+    const candidateRow = contribution({
+      "Org ID": "11954",
+      "Receipt Date": "01/10/2022",
+      "Committee Type": "Candidate Committee",
+      "Committee Name": "Stitt for Governor",
+      "Candidate Name": "Kevin Stitt",
+      "Receipt Amount": "100.00",
+    });
+    const discoverOutsideSpendingReportsFn = vi.fn().mockRejectedValue(new Error("Guardian IE probe failed"));
+
+    const result = await syncDueOklahomaCandidateFinance({
+      db,
+      now: new Date("2022-06-01T00:00:00.000Z"),
+      dryRun: true,
+      autoLinkMissingLinks: false,
+      contributionDataByYear: new Map([
+        [
+          2022,
+          contributionDataForYear({
+            year: 2022,
+            rowsByCommitteeId: new Map([["11954", [candidateRow]]]),
+          }),
+        ],
+      ]),
+      discoverOutsideSpendingReportsFn,
+    });
+
+    expect(discoverOutsideSpendingReportsFn).toHaveBeenCalledTimes(1);
+    expect(result).toMatchObject({
+      syncedCandidateCount: 1,
+      failedCandidateCount: 0,
+      results: [
+        {
+          ok: true,
+          result: {
+            dryRun: true,
+            outsideIncluded: false,
+            totalReceipts: 100,
+            directContributionTotal: 100,
+            outsideReportsExamined: 0,
+            outsideUsableReports: 0,
+          },
+        },
+      ],
+    });
+  });
+
   it("rejects invalid batch options before querying", async () => {
     const db = createMockDb();
 

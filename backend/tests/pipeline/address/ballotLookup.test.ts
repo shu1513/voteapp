@@ -2388,6 +2388,8 @@ describe("lookupElectionDetailById", () => {
     });
     expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.ok_candidate_finance_summaries");
+    expect(query.mock.calls[7]?.[0]).toContain("summary.outside_support_total");
+    expect(query.mock.calls[7]?.[0]).toContain("summary.outside_oppose_total");
     expect(query.mock.calls[8]?.[0]).toContain("public.ok_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
     expect(query.mock.calls[9]?.[0]).toContain("public.ok_candidate_finance_outside_groups");

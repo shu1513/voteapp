@@ -69,9 +69,19 @@ function simplePdfWithText(content: string): Buffer {
   return Buffer.from(`%PDF-1.3\n1 0 obj\n<< /Length ${stream.length} >>\nstream\n${stream}\nendstream\nendobj\n%%EOF`, "latin1");
 }
 
+function simplePdfWithRawStream(content: string): Buffer {
+  return Buffer.from(`%PDF-1.3\n1 0 obj\n<< /Length ${content.length} >>\nstream\n${content}\nendstream\nendobj\n%%EOF`, "latin1");
+}
+
 describe("Oklahoma Guardian IE report parser", () => {
   it("extracts text from a simple PDF text stream", () => {
     expect(extractOklahomaGuardianIeReportPdfText(simplePdfWithText("AMENDED:\nNO"))).toContain("AMENDED:\nNO");
+  });
+
+  it("rejects malformed PDF hex text instead of silently dropping trailing characters", () => {
+    expect(() => extractOklahomaGuardianIeReportPdfText(simplePdfWithRawStream("BT <0041F> Tj ET"))).toThrow(
+      "malformed hex text"
+    );
   });
 
   it("parses report-level fields and candidate stances", () => {

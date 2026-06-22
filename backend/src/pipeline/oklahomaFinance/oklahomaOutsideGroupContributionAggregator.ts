@@ -85,8 +85,19 @@ function normalizeTextKey(value: string): string {
     .trim();
 }
 
+function normalizeCommitteeNameKey(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase()
+    .replace(/&/g, " AND ")
+    .replace(/[^A-Z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function normalizeOklahomaOutsideGroupCommitteeNameKey(value: string): string {
-  return normalizeTextKey(value);
+  return normalizeCommitteeNameKey(value);
 }
 
 function parseAmountCents(raw: string): number | null {

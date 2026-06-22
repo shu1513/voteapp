@@ -92,8 +92,16 @@ function simplePdfWithText(content: string): Buffer {
   return Buffer.from(`%PDF-1.3\n1 0 obj\n<< /Length ${stream.length} >>\nstream\n${stream}\nendstream\nendobj\n%%EOF`, "latin1");
 }
 
+function simplePdfWithRawStream(content: string): Buffer {
+  return Buffer.from(`%PDF-1.3\n1 0 obj\n<< /Length ${content.length} >>\nstream\n${content}\nendstream\nendobj\n%%EOF`, "latin1");
+}
+
 function reportPageHtml(text: string): string {
   return `<a href="data:application/pdf;base64,${simplePdfWithText(text).toString("base64")}">PDF</a>`;
+}
+
+function reportPageHtmlFromPdf(pdf: Buffer): string {
+  return `<a href="data:application/pdf;base64,${pdf.toString("base64")}">PDF</a>`;
 }
 
 describe("Oklahoma Guardian IE outside-spending discovery", () => {
@@ -146,5 +154,32 @@ describe("Oklahoma Guardian IE outside-spending discovery", () => {
         { fetchImpl: vi.fn<typeof fetch>() }
       )
     ).rejects.toThrow("Invalid Oklahoma Guardian IE maxReports");
+  });
+
+  it("skips one malformed PDF report instead of failing discovery", async () => {
+    const fetchImpl = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(response(SEARCH_PAGE_HTML))
+      .mockResolvedValueOnce(response(RESULT_PAGE_HTML))
+      .mockResolvedValueOnce(response(SEARCH_PAGE_HTML))
+      .mockResolvedValueOnce(response(RESULT_PAGE_HTML))
+      .mockResolvedValueOnce(response(reportPageHtmlFromPdf(simplePdfWithRawStream("BT <0041F> Tj ET"))));
+
+    const result = await discoverOklahomaGuardianIeOutsideSpendingReports(
+      { candidateName: "Kevin Stitt", electionYear: 2022, maxReports: 1 },
+      { fetchImpl }
+    );
+
+    expect(result).toMatchObject({
+      reportsExamined: 1,
+      usableReports: [],
+      skippedReports: [
+        {
+          rowIndex: 0,
+          reason: "pdf_parse_failed",
+        },
+      ],
+    });
+    expect(result.skippedReports[0]?.errorMessage).toContain("malformed hex text");
   });
 });

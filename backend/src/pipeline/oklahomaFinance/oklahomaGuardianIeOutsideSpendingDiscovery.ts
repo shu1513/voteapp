@@ -42,6 +42,7 @@ export type OklahomaGuardianIeOutsideSpendingSkipReason =
   | "missing_pdf_artifact"
   | "multiple_pdf_artifacts"
   | "empty_pdf_text"
+  | "pdf_parse_failed"
   | "probe_failed";
 
 export type OklahomaGuardianIeOutsideSpendingSkippedReport = {
@@ -140,18 +141,31 @@ async function inspectOneReport(input: {
     return { skipped: { rowIndex: input.rowIndex, sourceRow: input.sourceRow, reason: "multiple_pdf_artifacts" } };
   }
 
-  const text = extractOklahomaGuardianIeReportPdfText(
-    decodeOklahomaGuardianIeReportPdfArtifact(probe.pdfArtifacts[0])
-  );
-  if (!text.trim()) {
-    return { skipped: { rowIndex: input.rowIndex, sourceRow: input.sourceRow, reason: "empty_pdf_text" } };
-  }
+  let parsed: ReturnType<typeof parseOklahomaGuardianIeReportText>;
+  let evaluation: OklahomaGuardianIeReportCandidateEvaluation;
+  try {
+    const text = extractOklahomaGuardianIeReportPdfText(
+      decodeOklahomaGuardianIeReportPdfArtifact(probe.pdfArtifacts[0])
+    );
+    if (!text.trim()) {
+      return { skipped: { rowIndex: input.rowIndex, sourceRow: input.sourceRow, reason: "empty_pdf_text" } };
+    }
 
-  const parsed = parseOklahomaGuardianIeReportText(text);
-  const evaluation = evaluateOklahomaGuardianIeReportForCandidate({
-    parsed,
-    candidateName: input.searchInput.candidateName,
-  });
+    parsed = parseOklahomaGuardianIeReportText(text);
+    evaluation = evaluateOklahomaGuardianIeReportForCandidate({
+      parsed,
+      candidateName: input.searchInput.candidateName,
+    });
+  } catch (error) {
+    return {
+      skipped: {
+        rowIndex: input.rowIndex,
+        sourceRow: input.sourceRow,
+        reason: "pdf_parse_failed",
+        errorMessage: error instanceof Error ? error.message : String(error),
+      },
+    };
+  }
 
   if (evaluation.status === "skipped") {
     return { skipped: skippedFromEvaluation({ rowIndex: input.rowIndex, sourceRow: input.sourceRow, evaluation }) };

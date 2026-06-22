@@ -247,7 +247,10 @@ async function fetchWithTimeout(
         `Oklahoma Guardian IE report request timed out after ${timeoutMs}ms for ${url}`
       );
     }
-    throw error;
+    throw new OklahomaGuardianIeReportClientError(
+      "network_error",
+      `Oklahoma Guardian IE report request failed for ${url}: ${error instanceof Error ? error.message : String(error)}`
+    );
   } finally {
     clearTimeout(timeout);
   }
@@ -405,14 +408,13 @@ function base64DecodedByteLength(value: string): number {
 export function parseOklahomaGuardianIeReportPdfArtifacts(html: string): OklahomaGuardianIeReportPdfArtifact[] {
   const artifacts: OklahomaGuardianIeReportPdfArtifact[] = [];
   for (const match of html.matchAll(/(?:href|src)=["'](data:application\/pdf;base64,([^"']+))["']/gi)) {
-    const dataUrl = decodeHtmlEntities(match[1]);
     const base64 = decodeHtmlEntities(match[2]).replace(/\s+/g, "");
     if (!/^[A-Za-z0-9+/]+={0,2}$/.test(base64)) {
       continue;
     }
     artifacts.push({
       mimeType: "application/pdf",
-      dataUrl,
+      dataUrl: `data:application/pdf;base64,${base64}`,
       base64Length: base64.length,
       byteLength: base64DecodedByteLength(base64),
     });
@@ -524,7 +526,13 @@ export async function searchOklahomaGuardianIeReports(
   const candidateName = normalizeCandidateName(input.candidateName);
   const { dateFrom, dateThrough } = normalizeSearchDates(input);
   const expenditureType = input.expenditureType ?? "independent_expenditure";
-  const searchPageResponse = await fetchWithTimeout(OKLAHOMA_GUARDIAN_IE_REPORT_SEARCH_URL, { method: "GET" }, options);
+  const cookieJar: GuardianCookieJar = new Map();
+  const searchPageResponse = await fetchGuardianSession(
+    OKLAHOMA_GUARDIAN_IE_REPORT_SEARCH_URL,
+    { method: "GET" },
+    options,
+    cookieJar
+  );
   if (!searchPageResponse.ok) {
     throw new OklahomaGuardianIeReportClientError(
       "http_error",
@@ -537,14 +545,15 @@ export async function searchOklahomaGuardianIeReports(
     searchPageHtml,
     search: { ...input, candidateName, dateFrom, dateThrough, expenditureType },
   });
-  const resultResponse = await fetchWithTimeout(
+  const resultResponse = await fetchGuardianSession(
     request.url,
     {
       method: request.method,
       headers: request.headers,
       body: request.body,
     },
-    options
+    options,
+    cookieJar
   );
   if (!resultResponse.ok) {
     throw new OklahomaGuardianIeReportClientError(

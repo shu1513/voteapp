@@ -82,6 +82,9 @@ function decodePdfStringLiteral(value: string): string {
 }
 
 function decodePdfHexText(value: string): string {
+  if (value.length % 4 !== 0) {
+    throw new Error("Oklahoma Guardian IE report PDF has malformed hex text");
+  }
   let decoded = "";
   for (let index = 0; index + 3 < value.length; index += 4) {
     const code = Number.parseInt(value.slice(index, index + 4), 16);
