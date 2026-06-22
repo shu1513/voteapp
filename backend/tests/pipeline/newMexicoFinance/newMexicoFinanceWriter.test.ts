@@ -169,6 +169,29 @@ describe("newMexicoFinanceWriter", () => {
     expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
   });
 
+  it("uses an already-acquired client directly instead of trying to connect it again", async () => {
+    const client = {
+      query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
+      connect: vi.fn().mockResolvedValue(undefined),
+      release: vi.fn(),
+    };
+
+    const result = await replaceNewMexicoCandidateFinanceSnapshot({
+      db: client,
+      link: baseLink(),
+      syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+      summary: {
+        totalReceipts: 1000,
+      },
+    });
+
+    expect(result.summaryWritten).toBe(true);
+    expect(client.connect).not.toHaveBeenCalled();
+    expect(client.release).not.toHaveBeenCalled();
+    expect(client.query.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+  });
+
   it("does not delete omitted direct or outside sections", async () => {
     const db = createMockDb();
 

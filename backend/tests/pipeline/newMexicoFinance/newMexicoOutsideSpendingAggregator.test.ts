@@ -138,6 +138,29 @@ describe("newMexicoOutsideSpendingAggregator", () => {
     });
   });
 
+  it("accepts independent expenditure entity labels that do not include PAC or political committee wording", () => {
+    const result = aggregateNewMexicoOutsideSpending({
+      candidateName: "Deb Haaland",
+      electionYear: 2026,
+      expenditureRows: [
+        expenditure({
+          "Report Entity Type": "Independent Expenditure Committee",
+          "Expenditure Amount": "2500.00",
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      summary: {
+        supportTotal: 2500,
+        opposeTotal: 0,
+      },
+      matchedExpenditureRowCount: 1,
+      includedExpenditureRowCount: 1,
+      skippedExpenditureRowCount: 0,
+    });
+  });
+
   it("matches direct and comma-form candidate names without fuzzy matching", () => {
     expect(
       aggregateNewMexicoOutsideSpending({

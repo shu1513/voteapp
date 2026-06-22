@@ -4,8 +4,11 @@ import type { FinanceLabelClassification } from "../finance/financeLabelClassifi
 import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
-type ConnectableQueryable = Queryable & {
+type PoolLikeQueryable = Queryable & {
   connect?: () => Promise<PoolClient>;
+};
+type ClientLikeQueryable = Queryable & {
+  release?: () => void;
 };
 
 export type NewMexicoFinanceLinkStatus = "active" | "inactive";
@@ -144,8 +147,11 @@ function normalizeNullableCount(value: number | null | undefined): number | null
   return value;
 }
 
-function canOpenTransaction(db: Queryable): db is ConnectableQueryable & { connect: () => Promise<PoolClient> } {
-  return typeof (db as ConnectableQueryable).connect === "function";
+function canOpenTransaction(db: Queryable): db is PoolLikeQueryable & { connect: () => Promise<PoolClient> } {
+  return (
+    typeof (db as PoolLikeQueryable).connect === "function" &&
+    typeof (db as ClientLikeQueryable).release !== "function"
+  );
 }
 
 function validateNewMexicoFinanceLinkInput(link: NewMexicoFinanceLinkInput): void {
