@@ -333,13 +333,6 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   };
 }
 
-function sumOutsideGroups(
-  groups: readonly DistrictOfColumbiaFinanceOutsideGroupInput[],
-  supportOppose: "support" | "oppose"
-): number {
-  return Math.round(groups.filter((group) => group.supportOppose === supportOppose).reduce((sum, group) => sum + group.amount, 0) * 100) / 100;
-}
-
 function emptyResult(input: {
   candidateId: string;
   electionId: string;
@@ -459,8 +452,8 @@ export async function syncDistrictOfColumbiaCandidateFinance(
       ? {
           totalReceipts: directFinance?.summary.totalReceipts ?? null,
           directContributionTotal: directFinance?.summary.directContributionTotal ?? null,
-          outsideSupportTotal: outsideGroups ? sumOutsideGroups(outsideGroups, "support") : null,
-          outsideOpposeTotal: outsideGroups ? sumOutsideGroups(outsideGroups, "oppose") : null,
+          outsideSupportTotal: input.expenditureRecords ? outsideFinance?.summary?.supportTotal ?? 0 : null,
+          outsideOpposeTotal: input.expenditureRecords ? outsideFinance?.summary?.opposeTotal ?? 0 : null,
           sourceUrl: directFinance?.summary.sourceUrl ?? outsideFinance?.summary?.sourceUrl ?? input.sourceUrl ?? null,
         }
       : undefined;

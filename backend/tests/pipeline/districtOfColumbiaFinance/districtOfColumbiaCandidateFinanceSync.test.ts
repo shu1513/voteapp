@@ -212,6 +212,59 @@ describe("districtOfColumbiaCandidateFinanceSync", () => {
     expect(db.connect).not.toHaveBeenCalled();
   });
 
+  it("reports outside totals from all matched groups even when persisted groups are capped", async () => {
+    const db = createMockDb();
+
+    const result = await syncDistrictOfColumbiaCandidateFinance({
+      db,
+      ...baseInput(),
+      trustedCommittee: {
+        committeeKey: "COMMITTEE TO ELECT JANE DOE",
+        committeeName: "Committee To Elect Jane Doe",
+        sourceUrl: SOURCE_URL,
+      },
+      outsideMaxGroups: 1,
+      expenditureRecords: [
+        expenditure({ committeeName: "Small IEC", committeeKey: "SMALL IEC", amount: 500 }),
+        expenditure({ committeeName: "Large IEC", committeeKey: "LARGE IEC", amount: 2500 }),
+        expenditure({
+          committeeName: "Oppose IEC",
+          committeeKey: "OPPOSE IEC",
+          furtherExplanation: "Digital ads opposing Jane Doe",
+          amount: 1000,
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      outsideGroupsWritten: 1,
+      outsideGroupCount: 1,
+      outsideSupportTotal: 3000,
+      outsideOpposeTotal: 1000,
+    });
+
+    const summaryCall = db.client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.dc_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      null,
+      null,
+      null,
+      null,
+      3000,
+      1000,
+      SOURCE_URL,
+      "2026-07-08T09:10:11.000Z",
+    ]);
+    expect(
+      db.client.query.mock.calls.filter((call) =>
+        String(call[0]).includes("INSERT INTO public.dc_candidate_finance_outside_groups")
+      )
+    ).toHaveLength(1);
+  });
+
   it("does not write when committee resolution is unmatched", async () => {
     const db = createMockDb();
 

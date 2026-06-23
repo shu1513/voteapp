@@ -138,6 +138,13 @@ describe("districtOfColumbiaFinanceEligibleOffices", () => {
         seat: "Ward 2",
       })
     ).toEqual({ ocfOffice: "Councilmember", seat: "WARD 2" });
+    expect(
+      toDistrictOfColumbiaOcfOfficeSearchInput({
+        officeScope: "place",
+        officeCanonicalName: "City Council Member",
+        seat: "Chairperson of the Council",
+      })
+    ).toEqual({ ocfOffice: "Chairman of the Council", seat: null });
   });
 
   it("rejects unsafe OCF labels and incomplete app search inputs", () => {

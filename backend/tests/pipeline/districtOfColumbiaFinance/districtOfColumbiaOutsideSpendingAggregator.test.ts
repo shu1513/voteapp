@@ -188,7 +188,7 @@ describe("districtOfColumbiaOutsideSpendingAggregator", () => {
     expect(() =>
       aggregateDistrictOfColumbiaOutsideSpending({
         candidateName: "Phil Mendelson",
-        electionYear: 2013,
+        electionYear: 1999,
         expenditureRecords: [],
       })
     ).toThrow("Invalid D.C. outside spending aggregation election year");

@@ -305,8 +305,8 @@ async function upsertSummary(input: {
         direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, dc_candidate_finance_summaries.direct_contribution_total),
         total_disbursements = COALESCE(EXCLUDED.total_disbursements, dc_candidate_finance_summaries.total_disbursements),
         cash_on_hand = COALESCE(EXCLUDED.cash_on_hand, dc_candidate_finance_summaries.cash_on_hand),
-        outside_support_total = EXCLUDED.outside_support_total,
-        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        outside_support_total = COALESCE(EXCLUDED.outside_support_total, dc_candidate_finance_summaries.outside_support_total),
+        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, dc_candidate_finance_summaries.outside_oppose_total),
         source_url = COALESCE(EXCLUDED.source_url, dc_candidate_finance_summaries.source_url),
         last_synced_at = EXCLUDED.last_synced_at
     `,
@@ -395,7 +395,7 @@ async function upsertOutsideGroup(input: {
     [
       requireNonEmpty(input.linkId, "D.C. finance link id"),
       normalizeElectionYear(input.electionYear),
-      requireNonEmpty(input.group.committeeKey, "D.C. outside group committee key"),
+      normalizeCommitteeKey(requireNonEmpty(input.group.committeeKey, "D.C. outside group committee key")),
       requireNonEmpty(input.group.committeeName, "D.C. outside group committee name"),
       input.group.supportOppose,
       normalizeAmount(input.group.amount, "outside group amount"),
@@ -437,7 +437,7 @@ async function upsertOutsideGroupBreakdown(input: {
     [
       requireNonEmpty(input.linkId, "D.C. finance link id"),
       normalizeElectionYear(input.electionYear),
-      requireNonEmpty(input.breakdown.committeeKey, "D.C. outside breakdown committee key"),
+      normalizeCommitteeKey(requireNonEmpty(input.breakdown.committeeKey, "D.C. outside breakdown committee key")),
       input.breakdown.supportOppose,
       input.breakdown.categoryType,
       requireNonEmpty(input.breakdown.categoryName, "D.C. outside breakdown category"),
@@ -486,7 +486,7 @@ async function deleteStaleOutsideGroupBreakdowns(input: {
   breakdowns: readonly DistrictOfColumbiaFinanceOutsideGroupBreakdownInput[];
 }): Promise<void> {
   const keys = input.breakdowns.map((breakdown) => ({
-    committee_key: requireNonEmpty(breakdown.committeeKey, "D.C. outside breakdown committee key"),
+    committee_key: normalizeCommitteeKey(requireNonEmpty(breakdown.committeeKey, "D.C. outside breakdown committee key")),
     support_oppose: breakdown.supportOppose,
     category_type: breakdown.categoryType,
     category_name: requireNonEmpty(breakdown.categoryName, "D.C. outside breakdown category"),
@@ -522,7 +522,7 @@ async function deleteStaleOutsideGroups(input: {
   groups: readonly DistrictOfColumbiaFinanceOutsideGroupInput[];
 }): Promise<void> {
   const keys = input.groups.map((group) => ({
-    committee_key: requireNonEmpty(group.committeeKey, "D.C. outside group committee key"),
+    committee_key: normalizeCommitteeKey(requireNonEmpty(group.committeeKey, "D.C. outside group committee key")),
     support_oppose: group.supportOppose,
   }));
 

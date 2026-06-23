@@ -357,6 +357,56 @@ describe("districtOfColumbiaCandidateFinanceBatchSync", () => {
     ]);
   });
 
+  it("does not warn for expected unmatched auto-link results", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const db = {
+      query: vi.fn(async (sql: string) => {
+        const text = String(sql);
+        if (text.includes("FROM public.candidate_elections AS candidate_election") && !text.includes("WITH due AS")) {
+          return {
+            rows: [
+              {
+                candidate_id: CANDIDATE_ID,
+                election_id: ELECTION_ID,
+                candidate_name: "Jane Doe",
+                election_year: 2026,
+                office_scope: "place",
+                office_name: "Mayor",
+                seat_text: "Mayor District of Columbia",
+              },
+            ],
+            rowCount: 1,
+          };
+        }
+        if (text.includes("FROM public.dc_candidate_finance_links AS link")) {
+          return { rows: [], rowCount: 0 };
+        }
+        return { rows: [], rowCount: 0 };
+      }),
+      connect: vi.fn(),
+    };
+
+    const result = await syncDueDistrictOfColumbiaCandidateFinance({
+      db,
+      now: NOW,
+      maxCandidates: 5,
+      syncDistrictOfColumbiaCandidateFinanceFn: vi.fn() as never,
+      resolveCandidateCommittee: async () => ({
+        status: "unmatched",
+        reason: "no_candidate_committee_match",
+        candidateNameNormalized: "JANE DOE",
+        officeNameNormalized: "Mayor",
+      }),
+    });
+
+    expect(result).toMatchObject({
+      autoLinkAttemptedCount: 1,
+      autoLinkLinkedCount: 0,
+    });
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
   it("validates batch options", async () => {
     const db = { query: vi.fn(), connect: vi.fn() };
 

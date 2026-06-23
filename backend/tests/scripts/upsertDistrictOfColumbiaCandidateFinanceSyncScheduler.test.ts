@@ -42,4 +42,10 @@ describe("upsertDistrictOfColumbiaCandidateFinanceSyncScheduler script", () => {
       parseUpsertDistrictOfColumbiaCandidateFinanceSyncSchedulerArgs(["--max-candidates=5", "--max-candidates", "10"])
     ).toThrow("Provide --max-candidates at most once");
   });
+
+  it("rejects unknown flags", () => {
+    expect(() => parseUpsertDistrictOfColumbiaCandidateFinanceSyncSchedulerArgs(["--dry-runn"])).toThrow(
+      "Unknown option: --dry-runn"
+    );
+  });
 });

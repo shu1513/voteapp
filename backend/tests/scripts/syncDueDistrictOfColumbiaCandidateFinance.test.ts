@@ -69,6 +69,12 @@ describe("syncDueDistrictOfColumbiaCandidateFinance script", () => {
     ).toThrow("Provide --max-candidates at most once");
   });
 
+  it("rejects unknown flags", () => {
+    expect(() => parseSyncDueDistrictOfColumbiaCandidateFinanceScriptArgs(["--dryrun"])).toThrow(
+      "Unknown option: --dryrun"
+    );
+  });
+
   it("formats script output", () => {
     const output = toSyncDueDistrictOfColumbiaCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),

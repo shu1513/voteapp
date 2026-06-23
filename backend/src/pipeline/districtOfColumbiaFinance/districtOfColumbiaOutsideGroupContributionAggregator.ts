@@ -54,7 +54,7 @@ const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 50;
 const DEFAULT_MIN_INDUSTRY_AMOUNT_CENTS = 25_000 * 100;
 
 function normalizeElectionYear(value: number): number {
-  if (!Number.isInteger(value) || value < 2014 || value > 2100) {
+  if (!Number.isInteger(value) || value < 2000 || value > 2100) {
     throw new Error(`Invalid D.C. outside group contribution election year: ${value}`);
   }
   return value;
@@ -236,7 +236,10 @@ export function aggregateDistrictOfColumbiaOutsideGroupContributions(
   for (const group of input.outsideGroups) {
     const committeeKey = normalizeCommitteeKey(group.committeeKey);
     if (committeeKey) {
-      outsideGroupKeys.set(groupKey({ committeeKey, supportOppose: group.supportOppose }), group);
+      outsideGroupKeys.set(groupKey({ committeeKey, supportOppose: group.supportOppose }), {
+        ...group,
+        committeeKey,
+      });
     }
   }
   const outsideGroupsByCommitteeKey = new Map<string, DistrictOfColumbiaOutsideSpendingGroup[]>();

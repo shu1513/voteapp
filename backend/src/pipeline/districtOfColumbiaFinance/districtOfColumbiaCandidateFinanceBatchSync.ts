@@ -428,7 +428,7 @@ export async function syncDueDistrictOfColumbiaCandidateFinance(
       });
       autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;
       for (const result of autoLinkResults) {
-        if (result.status !== "linked") {
+        if (result.status === "error") {
           console.warn("D.C. finance auto-link did not link candidate election:", result);
         }
       }

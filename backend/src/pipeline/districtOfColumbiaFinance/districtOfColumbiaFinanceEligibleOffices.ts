@@ -110,6 +110,15 @@ const DISTRICT_OF_COLUMBIA_APP_OFFICE_TO_OCF = new Map<string, DistrictOfColumbi
   ])
 );
 
+function isCouncilChairSeatText(value: string | null | undefined): boolean {
+  const normalized = normalizeDistrictOfColumbiaOcfOfficeLabel(value);
+  return (
+    normalized !== null &&
+    /\b(?:CHAIRMAN|CHAIRPERSON|CHAIR)\b/.test(normalized) &&
+    /\bCOUNCIL\b/.test(normalized)
+  );
+}
+
 export function toDistrictOfColumbiaFinanceOfficeKey(input: {
   officeScope: string | null | undefined;
   officeCanonicalName: string | null | undefined;
@@ -208,6 +217,12 @@ export function toDistrictOfColumbiaOcfOfficeSearchInput(input: {
   const definition = DISTRICT_OF_COLUMBIA_APP_OFFICE_TO_OCF.get(officeKey);
   if (!definition) {
     return null;
+  }
+  if (officeKey === "place::City Council Member" && isCouncilChairSeatText(input.seat)) {
+    return {
+      ocfOffice: "Chairman of the Council",
+      seat: null,
+    };
   }
   const seat = definition.requiresSeat ? normalizeDistrictOfColumbiaOcfSeat(input.seat) : null;
   if (definition.requiresSeat && !seat) {

@@ -47,9 +47,33 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+function assertNoUnknownFlags(args: readonly string[], allowedFlags: readonly string[]): void {
+  const allowed = new Set(allowedFlags);
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+    const flag = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
+    if (!allowed.has(flag)) {
+      throw new Error(`Unknown option: ${flag}`);
+    }
+  }
+}
+
 export function parseDistrictOfColumbiaCandidateFinanceSyncTriggerArgs(
   args: readonly string[]
 ): DistrictOfColumbiaCandidateFinanceSyncJobData {
+  assertNoUnknownFlags(args, [
+    "--dry-run",
+    "--force",
+    "--max-candidates",
+    "--stale-after-days",
+    "--lookback-days",
+    "--lookahead-days",
+    "--ai-classify-industries",
+    "--no-ai-classify-industries",
+    "--ai-min-amount",
+  ]);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

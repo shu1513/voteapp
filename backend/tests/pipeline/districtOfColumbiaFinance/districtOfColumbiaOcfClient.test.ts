@@ -108,6 +108,21 @@ describe("districtOfColumbiaOcfClient", () => {
     ]);
   });
 
+  it("detects expenditure-style headers after preamble rows", () => {
+    expect(
+      parseDistrictOfColumbiaOcfCsvRows(
+        'Independent Expenditure Committee Expenditures Report\r\nFiler Name,Payee Name,Purpose Of Expenditure,Expenditure Amount\r\n"DCCSA IEC","Vendor","Independent Expenditures","$500.00"\r\n'
+      )
+    ).toEqual([
+      {
+        filer_name: "DCCSA IEC",
+        payee_name: "Vendor",
+        purpose_of_expenditure: "Independent Expenditures",
+        expenditure_amount: "$500.00",
+      },
+    ]);
+  });
+
   it("maps contribution rows conservatively", () => {
     const record = districtOfColumbiaOcfContributionRecordFromRow({
       committee_name: "Committee To Elect Jane Doe",

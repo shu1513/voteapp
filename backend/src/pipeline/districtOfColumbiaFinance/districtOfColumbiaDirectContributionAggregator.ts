@@ -48,7 +48,7 @@ function requireNonEmpty(value: string, fieldName: string): string {
 }
 
 function normalizeElectionYear(value: number): number {
-  if (!Number.isInteger(value) || value < 2014 || value > 2100) {
+  if (!Number.isInteger(value) || value < 2000 || value > 2100) {
     throw new Error(`Invalid D.C. direct contribution aggregation election year: ${value}`);
   }
   return value;

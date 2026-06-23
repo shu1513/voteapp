@@ -43,6 +43,12 @@ describe("triggerDistrictOfColumbiaCandidateFinanceSync script", () => {
     ).toThrow("Provide --max-candidates at most once");
   });
 
+  it("rejects unknown flags", () => {
+    expect(() => parseDistrictOfColumbiaCandidateFinanceSyncTriggerArgs(["--dry-runn"])).toThrow(
+      "Unknown option: --dry-runn"
+    );
+  });
+
   it("can opt out of AI industry classification", () => {
     expect(parseDistrictOfColumbiaCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
       aiClassifyIndustries: false,

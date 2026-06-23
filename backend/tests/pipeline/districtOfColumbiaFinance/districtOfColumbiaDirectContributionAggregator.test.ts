@@ -258,7 +258,7 @@ describe("districtOfColumbiaDirectContributionAggregator", () => {
     expect(() =>
       aggregateDistrictOfColumbiaDirectContributions({
         committeeKey: "BOWSER FOR MAYOR",
-        electionYear: 2013,
+        electionYear: 1999,
         contributionRecords: [],
       })
     ).toThrow("Invalid D.C. direct contribution aggregation election year");

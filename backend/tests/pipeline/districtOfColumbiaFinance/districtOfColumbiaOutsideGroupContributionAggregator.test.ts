@@ -155,8 +155,18 @@ describe("districtOfColumbiaOutsideGroupContributionAggregator", () => {
     expect(result.includedContributionRowCount).toBe(1);
     expect(result.outsideGroupBreakdowns).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ categoryType: "donor", categoryName: "Guzman Construction Solutions LLC", amount: 25_000 }),
-        expect.objectContaining({ categoryType: "industry", categoryName: "construction", amount: 25_000 }),
+        expect.objectContaining({
+          committeeKey: "DCCSA IEC",
+          categoryType: "donor",
+          categoryName: "Guzman Construction Solutions LLC",
+          amount: 25_000,
+        }),
+        expect.objectContaining({
+          committeeKey: "DCCSA IEC",
+          categoryType: "industry",
+          categoryName: "construction",
+          amount: 25_000,
+        }),
       ])
     );
   });
@@ -209,7 +219,7 @@ describe("districtOfColumbiaOutsideGroupContributionAggregator", () => {
   it("validates inputs", () => {
     expect(() =>
       aggregateDistrictOfColumbiaOutsideGroupContributions({
-        electionYear: 2013,
+        electionYear: 1999,
         outsideGroups: [],
         contributionRecords: [],
       })

@@ -129,7 +129,9 @@ describe("districtOfColumbiaFinanceWriter", () => {
     expect(String(summaryCall?.[0])).toContain(
       "total_receipts = COALESCE(EXCLUDED.total_receipts, dc_candidate_finance_summaries.total_receipts)"
     );
-    expect(String(summaryCall?.[0])).toContain("outside_support_total = EXCLUDED.outside_support_total");
+    expect(String(summaryCall?.[0])).toContain(
+      "outside_support_total = COALESCE(EXCLUDED.outside_support_total, dc_candidate_finance_summaries.outside_support_total)"
+    );
     expect(summaryCall?.[1]).toEqual([
       LINK_ID,
       2026,
@@ -148,6 +150,63 @@ describe("districtOfColumbiaFinanceWriter", () => {
     expect(sql.some((statement) => statement.includes("DELETE FROM public.dc_candidate_finance_direct_breakdowns"))).toBe(true);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.dc_candidate_finance_outside_groups"))).toBe(true);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.dc_candidate_finance_outside_group_breakdowns"))).toBe(true);
+  });
+
+  it("normalizes outside committee keys consistently for groups, breakdowns, and stale deletes", async () => {
+    const db = createMockDb();
+
+    await replaceDistrictOfColumbiaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-07-08T09:10:11.000Z"),
+      outsideGroups: [
+        {
+          committeeKey: " dccsa  iec ",
+          committeeName: "DCCSA IEC",
+          supportOppose: "support",
+          amount: 35000,
+        },
+      ],
+      outsideGroupBreakdowns: [
+        {
+          committeeKey: "DCCSA IEC",
+          supportOppose: "support",
+          categoryType: "industry",
+          categoryName: "education",
+          amount: 35000,
+        },
+      ],
+    });
+
+    const outsideGroupCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.dc_candidate_finance_outside_groups")
+    );
+    const outsideBreakdownCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.dc_candidate_finance_outside_group_breakdowns")
+    );
+    const deleteOutsideBreakdownsCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("DELETE FROM public.dc_candidate_finance_outside_group_breakdowns")
+    );
+    const deleteOutsideGroupsCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("DELETE FROM public.dc_candidate_finance_outside_groups")
+    );
+
+    expect(outsideGroupCall?.[1]?.[2]).toBe("DCCSA IEC");
+    expect(outsideBreakdownCall?.[1]?.[2]).toBe("DCCSA IEC");
+    expect(JSON.parse(String(deleteOutsideBreakdownsCall?.[1]?.[2]))).toEqual([
+      {
+        committee_key: "DCCSA IEC",
+        support_oppose: "support",
+        category_type: "industry",
+        category_name: "education",
+      },
+    ]);
+    expect(JSON.parse(String(deleteOutsideGroupsCall?.[1]?.[2]))).toEqual([
+      {
+        committee_key: "DCCSA IEC",
+        support_oppose: "support",
+      },
+    ]);
   });
 
   it("does not delete omitted breakdown sections", async () => {

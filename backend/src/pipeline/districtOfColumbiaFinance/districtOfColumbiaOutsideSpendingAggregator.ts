@@ -48,7 +48,7 @@ type DirectionMatch = {
 const DEFAULT_MAX_GROUPS = 50;
 
 function normalizeElectionYear(value: number): number {
-  if (!Number.isInteger(value) || value < 2014 || value > 2100) {
+  if (!Number.isInteger(value) || value < 2000 || value > 2100) {
     throw new Error(`Invalid D.C. outside spending aggregation election year: ${value}`);
   }
   return value;

@@ -340,8 +340,11 @@ function parseCsvRows(csv: string): string[][] {
 export function parseDistrictOfColumbiaOcfCsvRows(csv: string): DistrictOfColumbiaOcfCsvRow[] {
   const rows = parseCsvRows(csv);
   const headerIndex = rows.findIndex((row) => {
-    const headers = row.map(normalizeHeader);
-    return headers.includes("committee_name") && headers.includes("amount");
+    const headers = new Set(row.map(normalizeHeader));
+    const hasCommitteeColumn = headers.has("committee_name") || headers.has("filer_name");
+    const hasAmountColumn =
+      headers.has("amount") || headers.has("contribution_amount") || headers.has("receipt_amount") || headers.has("expenditure_amount");
+    return hasCommitteeColumn && hasAmountColumn;
   });
   const headerRow = headerIndex >= 0 ? rows[headerIndex] : rows[0];
   const bodyRows = headerIndex >= 0 ? rows.slice(headerIndex + 1) : rows.slice(1);
