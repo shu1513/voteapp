@@ -24,6 +24,8 @@ const enqueueManualConnecticutCandidateFinanceSyncJobMock = vi.hoisted(() => vi.
 const buildConnecticutCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualNewMexicoCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 const buildNewMexicoCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
+const enqueueManualTexasCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
+const buildTexasCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 
 vi.mock("pg", () => ({
   Pool: vi.fn(() => ({
@@ -92,6 +94,12 @@ vi.mock("../../src/scheduler/newMexicoCandidateFinanceSyncScheduler.js", () => (
   enqueueManualNewMexicoCandidateFinanceSyncJob: enqueueManualNewMexicoCandidateFinanceSyncJobMock,
 }));
 
+vi.mock("../../src/scheduler/texasCandidateFinanceSyncScheduler.js", () => ({
+  buildTexasCandidateFinanceLinkedElectionSyncJobId:
+    buildTexasCandidateFinanceLinkedElectionSyncJobIdMock,
+  enqueueManualTexasCandidateFinanceSyncJob: enqueueManualTexasCandidateFinanceSyncJobMock,
+}));
+
 import { runCandidateProfileEnricher } from "../../src/pipeline/enrichers/candidateProfileEnricher.js";
 import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
@@ -111,6 +119,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     enqueueManualColoradoCandidateFinanceSyncJobMock.mockResolvedValue("colorado-finance-job-1");
     enqueueManualConnecticutCandidateFinanceSyncJobMock.mockResolvedValue("connecticut-finance-job-1");
     enqueueManualNewMexicoCandidateFinanceSyncJobMock.mockResolvedValue("new-mexico-finance-job-1");
+    enqueueManualTexasCandidateFinanceSyncJobMock.mockResolvedValue("texas-finance-job-1");
     buildCaliforniaCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "california-candidate-finance-linked-election-sync-2026-06-01"
     );
@@ -122,6 +131,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     );
     buildNewMexicoCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "new-mexico-candidate-finance-linked-election-sync-2026-06-01"
+    );
+    buildTexasCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
+      "texas-candidate-finance-linked-election-sync-2026-06-01"
     );
     redisXReadGroupMock.mockResolvedValue([
       {
@@ -1019,6 +1031,102 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
       "1-8"
+    );
+  });
+
+  it("dedupes automatic Texas finance batch syncs for eligible Texas elections", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-9",
+            message: {
+              election_id: "election-tx-governor",
+              item_type: "candidate_profile",
+              candidate_display_name: "Jane Governor",
+              roster_party: "Democratic",
+              roster_is_incumbent: "false",
+              seed_urls: JSON.stringify(["https://example.gov/governor"]),
+              run_id: "run-tx-governor",
+            },
+          },
+        ],
+      },
+    ]);
+    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      const text = String(sql);
+      if (text.includes("FROM public.candidate_elections AS ce")) {
+        expect(params).toEqual(["election-tx-governor"]);
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("FROM public.elections AS e")) {
+        expect(params).toEqual(["election-tx-governor"]);
+        return {
+          rows: [
+            {
+              id: "election-tx-governor",
+              state: "TX",
+              district_name: "Texas",
+              district_type: "statewide",
+              election_date: "2026-11-03",
+              official_ballot_title: "Governor",
+              election_stage: "general",
+              senate_class: null,
+              term_end_year: null,
+              is_partisan: true,
+              sources: ["https://example.gov/election"],
+              office_scope: "statewide",
+              office_canonical_name: "Governor",
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected pool query: ${sql}`);
+    });
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Jane Governor",
+        first_name: "Jane",
+        last_name: "Governor",
+        party: "Democratic",
+        fec_ids: [],
+        sources: ["https://example.gov/governor"],
+      },
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualCaliforniaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualColoradoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualConnecticutCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualNewMexicoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(buildTexasCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
+    expect(enqueueManualTexasCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
+      {
+        aiClassifyIndustries: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: "texas-candidate-finance-linked-election-sync-2026-06-01",
+      }
+    );
+    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
+      {
+        candidateId: "candidate-1",
+        electionId: "election-tx-governor",
+        runId: "run-tx-governor",
+      },
+    ]);
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-9"
     );
   });
 

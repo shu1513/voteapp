@@ -1,0 +1,580 @@
+import type { Pool, PoolClient } from "pg";
+
+import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type PoolLikeQueryable = Queryable & {
+  connect?: () => Promise<PoolClient>;
+};
+type ClientLikeQueryable = Queryable & {
+  release?: () => void;
+};
+
+export type TexasFinanceLinkStatus = "active" | "inactive";
+export type TexasFinanceLinkSource = "manual" | "tec_bulk";
+export type TexasFinanceDirectCategoryType = "occupation" | "contribution_size";
+export type TexasFinanceOutsideCategoryType = "donor" | "industry";
+export type TexasFinanceSupportOppose = "support" | "oppose";
+
+export type TexasFinanceLinkInput = {
+  candidateId: string;
+  electionId: string;
+  electionYear: number;
+  candidateNameNormalized: string;
+  officeName: string;
+  district?: string | null;
+  committeeId: string;
+  committeeName: string;
+  linkStatus?: TexasFinanceLinkStatus;
+  linkSource?: TexasFinanceLinkSource;
+  sourceUrl?: string | null;
+  lastVerifiedAt?: Date | null;
+};
+
+export type TexasFinanceSummaryInput = {
+  totalReceipts?: number | null;
+  directContributionTotal?: number | null;
+  totalDisbursements?: number | null;
+  cashOnHand?: number | null;
+  outsideSupportTotal?: number | null;
+  outsideOpposeTotal?: number | null;
+  sourceUrl?: string | null;
+};
+
+export type TexasFinanceDirectBreakdownInput = {
+  categoryType: TexasFinanceDirectCategoryType;
+  categoryName: string;
+  amount: number;
+  contributorCount?: number | null;
+  sourceUrl?: string | null;
+};
+
+export type TexasFinanceOutsideGroupInput = {
+  committeeId: string;
+  committeeName: string;
+  supportOppose: TexasFinanceSupportOppose;
+  amount: number;
+  sourceUrl?: string | null;
+};
+
+export type TexasFinanceOutsideGroupBreakdownInput = {
+  committeeId: string;
+  supportOppose: TexasFinanceSupportOppose;
+  categoryType: TexasFinanceOutsideCategoryType;
+  categoryName: string;
+  amount: number;
+  contributorCount?: number | null;
+  sourceUrl?: string | null;
+};
+
+export type TexasFinanceSnapshotInput = {
+  db: Queryable;
+  link: TexasFinanceLinkInput;
+  syncedAt?: Date;
+  summary?: TexasFinanceSummaryInput;
+  directBreakdowns?: readonly TexasFinanceDirectBreakdownInput[];
+  outsideGroups?: readonly TexasFinanceOutsideGroupInput[];
+  outsideGroupBreakdowns?: readonly TexasFinanceOutsideGroupBreakdownInput[];
+  classifications?: readonly FinanceLabelClassification[];
+};
+
+export type TexasFinanceSnapshotWriteResult = {
+  linkId: string;
+  summaryWritten: boolean;
+  directBreakdownsWritten: number;
+  outsideGroupsWritten: number;
+  outsideGroupBreakdownsWritten: number;
+};
+
+function requireNonEmpty(value: string, fieldName: string): string {
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
+    throw new Error(`${fieldName} is required`);
+  }
+  return trimmed;
+}
+
+function normalizeElectionYear(value: number): number {
+  if (!Number.isInteger(value) || value < 2014 || value > 2100) {
+    throw new Error(`Invalid Texas finance election year: ${value}`);
+  }
+  return value;
+}
+
+function normalizeOptionalText(value: string | null | undefined): string | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function normalizeNullableDate(value: Date | null | undefined): string | null {
+  if (!value) {
+    return null;
+  }
+  if (Number.isNaN(value.getTime())) {
+    throw new Error("Invalid Texas finance timestamp");
+  }
+  return value.toISOString();
+}
+
+function normalizeAmount(value: number, fieldName: string): number {
+  if (!Number.isFinite(value) || value < 0) {
+    throw new Error(`${fieldName} must be a nonnegative number`);
+  }
+  return value;
+}
+
+function normalizeNullableAmount(value: number | null | undefined, fieldName: string): number | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  return normalizeAmount(value, fieldName);
+}
+
+function normalizeNullableCount(value: number | null | undefined): number | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  if (!Number.isInteger(value) || value < 0) {
+    throw new Error("Texas finance contributor count must be a nonnegative integer");
+  }
+  return value;
+}
+
+function canOpenTransaction(db: Queryable): db is PoolLikeQueryable & { connect: () => Promise<PoolClient> } {
+  return (
+    typeof (db as PoolLikeQueryable).connect === "function" &&
+    typeof (db as ClientLikeQueryable).release !== "function"
+  );
+}
+
+function validateTexasFinanceLinkInput(link: TexasFinanceLinkInput): void {
+  requireNonEmpty(link.candidateId, "candidate id");
+  requireNonEmpty(link.electionId, "election id");
+  normalizeElectionYear(link.electionYear);
+  requireNonEmpty(link.candidateNameNormalized, "Texas finance candidate name");
+  requireNonEmpty(link.officeName, "Texas finance office name");
+  requireNonEmpty(link.committeeId, "Texas committee id");
+  requireNonEmpty(link.committeeName, "Texas committee name");
+  normalizeNullableDate(link.lastVerifiedAt);
+}
+
+async function withTexasFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
+  if (!canOpenTransaction(db)) {
+    try {
+      await db.query("BEGIN");
+      const result = await work(db);
+      await db.query("COMMIT");
+      return result;
+    } catch (error) {
+      try {
+        await db.query("ROLLBACK");
+      } catch {
+        // Preserve the original write failure.
+      }
+      throw error;
+    }
+  }
+
+  const client = await db.connect();
+  try {
+    await client.query("BEGIN");
+    const result = await work(client);
+    await client.query("COMMIT");
+    return result;
+  } catch (error) {
+    try {
+      await client.query("ROLLBACK");
+    } catch {
+      // Preserve the original write failure.
+    }
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+export async function upsertTexasFinanceLink(input: {
+  db: Queryable;
+  link: TexasFinanceLinkInput;
+}): Promise<{ linkId: string }> {
+  validateTexasFinanceLinkInput(input.link);
+
+  const result = await input.db.query<{ id: string }>(
+    `
+      INSERT INTO public.tx_candidate_finance_links (
+        candidate_id,
+        election_id,
+        election_year,
+        candidate_name_normalized,
+        office_name,
+        district,
+        committee_id,
+        committee_name,
+        link_status,
+        link_source,
+        source_url,
+        last_verified_at
+      )
+      VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::timestamptz)
+      ON CONFLICT (candidate_id, election_id, committee_id)
+      DO UPDATE SET
+        election_year = EXCLUDED.election_year,
+        candidate_name_normalized = EXCLUDED.candidate_name_normalized,
+        office_name = EXCLUDED.office_name,
+        district = EXCLUDED.district,
+        committee_name = EXCLUDED.committee_name,
+        link_status = EXCLUDED.link_status,
+        link_source = EXCLUDED.link_source,
+        source_url = EXCLUDED.source_url,
+        last_verified_at = EXCLUDED.last_verified_at
+      RETURNING id
+    `,
+    [
+      requireNonEmpty(input.link.candidateId, "candidate id"),
+      requireNonEmpty(input.link.electionId, "election id"),
+      normalizeElectionYear(input.link.electionYear),
+      requireNonEmpty(input.link.candidateNameNormalized, "Texas finance candidate name"),
+      requireNonEmpty(input.link.officeName, "Texas finance office name"),
+      normalizeOptionalText(input.link.district),
+      requireNonEmpty(input.link.committeeId, "Texas committee id"),
+      requireNonEmpty(input.link.committeeName, "Texas committee name"),
+      input.link.linkStatus ?? "active",
+      input.link.linkSource ?? "manual",
+      normalizeOptionalText(input.link.sourceUrl),
+      normalizeNullableDate(input.link.lastVerifiedAt),
+    ]
+  );
+
+  const linkId = result.rows[0]?.id;
+  if (!linkId) {
+    throw new Error("Texas finance link upsert did not return an id");
+  }
+  return { linkId };
+}
+
+async function upsertSummary(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  summary: TexasFinanceSummaryInput;
+  syncedAt: Date;
+}): Promise<void> {
+  await input.db.query(
+    `
+      INSERT INTO public.tx_candidate_finance_summaries (
+        link_id,
+        election_year,
+        total_receipts,
+        direct_contribution_total,
+        total_disbursements,
+        cash_on_hand,
+        outside_support_total,
+        outside_oppose_total,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
+      ON CONFLICT (link_id, election_year)
+      DO UPDATE SET
+        total_receipts = COALESCE(EXCLUDED.total_receipts, tx_candidate_finance_summaries.total_receipts),
+        direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, tx_candidate_finance_summaries.direct_contribution_total),
+        total_disbursements = COALESCE(EXCLUDED.total_disbursements, tx_candidate_finance_summaries.total_disbursements),
+        cash_on_hand = COALESCE(EXCLUDED.cash_on_hand, tx_candidate_finance_summaries.cash_on_hand),
+        outside_support_total = COALESCE(EXCLUDED.outside_support_total, tx_candidate_finance_summaries.outside_support_total),
+        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, tx_candidate_finance_summaries.outside_oppose_total),
+        source_url = COALESCE(EXCLUDED.source_url, tx_candidate_finance_summaries.source_url),
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Texas finance link id"),
+      normalizeElectionYear(input.electionYear),
+      normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
+      normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
+      normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
+      normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
+      normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
+      normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
+      normalizeOptionalText(input.summary.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function upsertDirectBreakdown(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  breakdown: TexasFinanceDirectBreakdownInput;
+  syncedAt: Date;
+}): Promise<void> {
+  await input.db.query(
+    `
+      INSERT INTO public.tx_candidate_finance_direct_breakdowns (
+        link_id,
+        election_year,
+        category_type,
+        category_name,
+        amount,
+        contributor_count,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
+      ON CONFLICT (link_id, election_year, category_type, category_name)
+      DO UPDATE SET
+        amount = EXCLUDED.amount,
+        contributor_count = EXCLUDED.contributor_count,
+        source_url = EXCLUDED.source_url,
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Texas finance link id"),
+      normalizeElectionYear(input.electionYear),
+      input.breakdown.categoryType,
+      requireNonEmpty(input.breakdown.categoryName, "Texas finance direct breakdown category"),
+      normalizeAmount(input.breakdown.amount, "direct breakdown amount"),
+      normalizeNullableCount(input.breakdown.contributorCount),
+      normalizeOptionalText(input.breakdown.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function upsertOutsideGroup(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  group: TexasFinanceOutsideGroupInput;
+  syncedAt: Date;
+}): Promise<void> {
+  await input.db.query(
+    `
+      INSERT INTO public.tx_candidate_finance_outside_groups (
+        link_id,
+        election_year,
+        committee_id,
+        committee_name,
+        support_oppose,
+        amount,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
+      ON CONFLICT (link_id, election_year, committee_id, support_oppose)
+      DO UPDATE SET
+        committee_name = EXCLUDED.committee_name,
+        amount = EXCLUDED.amount,
+        source_url = EXCLUDED.source_url,
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Texas finance link id"),
+      normalizeElectionYear(input.electionYear),
+      requireNonEmpty(input.group.committeeId, "Texas outside group committee id"),
+      requireNonEmpty(input.group.committeeName, "Texas outside group committee name"),
+      input.group.supportOppose,
+      normalizeAmount(input.group.amount, "outside group amount"),
+      normalizeOptionalText(input.group.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function upsertOutsideGroupBreakdown(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  breakdown: TexasFinanceOutsideGroupBreakdownInput;
+  syncedAt: Date;
+}): Promise<void> {
+  await input.db.query(
+    `
+      INSERT INTO public.tx_candidate_finance_outside_group_breakdowns (
+        link_id,
+        election_year,
+        committee_id,
+        support_oppose,
+        category_type,
+        category_name,
+        amount,
+        contributor_count,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
+      ON CONFLICT (link_id, election_year, committee_id, support_oppose, category_type, category_name)
+      DO UPDATE SET
+        amount = EXCLUDED.amount,
+        contributor_count = EXCLUDED.contributor_count,
+        source_url = EXCLUDED.source_url,
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Texas finance link id"),
+      normalizeElectionYear(input.electionYear),
+      requireNonEmpty(input.breakdown.committeeId, "Texas outside breakdown committee id"),
+      input.breakdown.supportOppose,
+      input.breakdown.categoryType,
+      requireNonEmpty(input.breakdown.categoryName, "Texas outside breakdown category"),
+      normalizeAmount(input.breakdown.amount, "outside group breakdown amount"),
+      normalizeNullableCount(input.breakdown.contributorCount),
+      normalizeOptionalText(input.breakdown.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function deleteStaleDirectBreakdowns(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  breakdowns: readonly TexasFinanceDirectBreakdownInput[];
+}): Promise<void> {
+  const keys = input.breakdowns.map((breakdown) => ({
+    category_type: breakdown.categoryType,
+    category_name: requireNonEmpty(breakdown.categoryName, "Texas finance direct breakdown category"),
+  }));
+
+  await input.db.query(
+    `
+      DELETE FROM public.tx_candidate_finance_direct_breakdowns
+      WHERE link_id = $1::uuid
+        AND election_year = $2
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            category_type text,
+            category_name text
+          )
+          WHERE keep.category_type = tx_candidate_finance_direct_breakdowns.category_type
+            AND keep.category_name = tx_candidate_finance_direct_breakdowns.category_name
+        )
+    `,
+    [requireNonEmpty(input.linkId, "Texas finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
+  );
+}
+
+async function deleteStaleOutsideGroupBreakdowns(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  breakdowns: readonly TexasFinanceOutsideGroupBreakdownInput[];
+}): Promise<void> {
+  const keys = input.breakdowns.map((breakdown) => ({
+    committee_id: requireNonEmpty(breakdown.committeeId, "Texas outside breakdown committee id"),
+    support_oppose: breakdown.supportOppose,
+    category_type: breakdown.categoryType,
+    category_name: requireNonEmpty(breakdown.categoryName, "Texas outside breakdown category"),
+  }));
+
+  await input.db.query(
+    `
+      DELETE FROM public.tx_candidate_finance_outside_group_breakdowns
+      WHERE link_id = $1::uuid
+        AND election_year = $2
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            committee_id text,
+            support_oppose text,
+            category_type text,
+            category_name text
+          )
+          WHERE keep.committee_id = tx_candidate_finance_outside_group_breakdowns.committee_id
+            AND keep.support_oppose = tx_candidate_finance_outside_group_breakdowns.support_oppose
+            AND keep.category_type = tx_candidate_finance_outside_group_breakdowns.category_type
+            AND keep.category_name = tx_candidate_finance_outside_group_breakdowns.category_name
+        )
+    `,
+    [requireNonEmpty(input.linkId, "Texas finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
+  );
+}
+
+async function deleteStaleOutsideGroups(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  groups: readonly TexasFinanceOutsideGroupInput[];
+}): Promise<void> {
+  const keys = input.groups.map((group) => ({
+    committee_id: requireNonEmpty(group.committeeId, "Texas outside group committee id"),
+    support_oppose: group.supportOppose,
+  }));
+
+  await input.db.query(
+    `
+      DELETE FROM public.tx_candidate_finance_outside_groups
+      WHERE link_id = $1::uuid
+        AND election_year = $2
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            committee_id text,
+            support_oppose text
+          )
+          WHERE keep.committee_id = tx_candidate_finance_outside_groups.committee_id
+            AND keep.support_oppose = tx_candidate_finance_outside_groups.support_oppose
+        )
+    `,
+    [requireNonEmpty(input.linkId, "Texas finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
+  );
+}
+
+export async function replaceTexasCandidateFinanceSnapshot(
+  input: TexasFinanceSnapshotInput
+): Promise<TexasFinanceSnapshotWriteResult> {
+  const syncedAt = input.syncedAt ?? new Date();
+  if (Number.isNaN(syncedAt.getTime())) {
+    throw new Error("Invalid Texas finance sync timestamp");
+  }
+  validateTexasFinanceLinkInput(input.link);
+  const electionYear = normalizeElectionYear(input.link.electionYear);
+
+  return await withTexasFinanceTransaction(input.db, async (db) => {
+    const { linkId } = await upsertTexasFinanceLink({ db, link: input.link });
+    if (input.summary) {
+      await upsertSummary({ db, linkId, electionYear, summary: input.summary, syncedAt });
+    }
+
+    for (const breakdown of input.directBreakdowns ?? []) {
+      await upsertDirectBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
+    }
+    if (input.directBreakdowns) {
+      await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: input.directBreakdowns });
+    }
+
+    for (const group of input.outsideGroups ?? []) {
+      await upsertOutsideGroup({ db, linkId, electionYear, group, syncedAt });
+    }
+    for (const breakdown of input.outsideGroupBreakdowns ?? []) {
+      await upsertOutsideGroupBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
+    }
+    if (input.outsideGroupBreakdowns) {
+      await deleteStaleOutsideGroupBreakdowns({
+        db,
+        linkId,
+        electionYear,
+        breakdowns: input.outsideGroupBreakdowns,
+      });
+    }
+    if (input.outsideGroups) {
+      await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups });
+    }
+
+    for (const classification of input.classifications ?? []) {
+      await upsertFinanceLabelClassification({ db, classification });
+    }
+
+    return {
+      linkId,
+      summaryWritten: Boolean(input.summary),
+      directBreakdownsWritten: input.directBreakdowns?.length ?? 0,
+      outsideGroupsWritten: input.outsideGroups?.length ?? 0,
+      outsideGroupBreakdownsWritten: input.outsideGroupBreakdowns?.length ?? 0,
+    };
+  });
+}

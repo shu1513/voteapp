@@ -138,3 +138,21 @@ export function isOklahomaGuardianRawDataRefreshEnabled(force = false): boolean 
     (force || readBooleanEnv("OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED", false))
   );
 }
+
+export function isTexasCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("TEXAS_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isTexasCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isTexasCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("TEXAS_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isTexasTecRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isTexasCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("TEXAS_TEC_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}

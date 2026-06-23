@@ -18,6 +18,9 @@ import {
   isOklahomaGuardianRawDataRefreshEnabled,
   isPresidentialElectionsEnabled,
   isPresidentialFeatureEnabled,
+  isTexasCampaignFinanceEnabled,
+  isTexasCampaignFinanceSyncEnabled,
+  isTexasTecRawDataRefreshEnabled,
 } from "../../src/config/featureFlags.js";
 
 const ORIGINAL_VALUE = process.env.PRESIDENTIAL_ELECTIONS_ENABLED;
@@ -37,6 +40,9 @@ const ORIGINAL_NEW_MEXICO_RAW_REFRESH_VALUE = process.env.NEW_MEXICO_CFIS_RAW_DA
 const ORIGINAL_OKLAHOMA_FINANCE_VALUE = process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_OKLAHOMA_FINANCE_SYNC_VALUE = process.env.OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_OKLAHOMA_RAW_REFRESH_VALUE = process.env.OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED;
+const ORIGINAL_TEXAS_FINANCE_VALUE = process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_TEXAS_FINANCE_SYNC_VALUE = process.env.TEXAS_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_TEXAS_RAW_REFRESH_VALUE = process.env.TEXAS_TEC_RAW_DATA_REFRESH_ENABLED;
 
 describe("featureFlags", () => {
   afterEach(() => {
@@ -124,6 +130,21 @@ describe("featureFlags", () => {
       delete process.env.OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED;
     } else {
       process.env.OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED = ORIGINAL_OKLAHOMA_RAW_REFRESH_VALUE;
+    }
+    if (ORIGINAL_TEXAS_FINANCE_VALUE === undefined) {
+      delete process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_TEXAS_FINANCE_VALUE;
+    }
+    if (ORIGINAL_TEXAS_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.TEXAS_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.TEXAS_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_TEXAS_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_TEXAS_RAW_REFRESH_VALUE === undefined) {
+      delete process.env.TEXAS_TEC_RAW_DATA_REFRESH_ENABLED;
+    } else {
+      process.env.TEXAS_TEC_RAW_DATA_REFRESH_ENABLED = ORIGINAL_TEXAS_RAW_REFRESH_VALUE;
     }
   });
 
@@ -427,5 +448,57 @@ describe("featureFlags", () => {
 
     expect(isOklahomaGuardianRawDataRefreshEnabled()).toBe(false);
     expect(isOklahomaGuardianRawDataRefreshEnabled(true)).toBe(true);
+  });
+
+  it("disables Texas campaign finance by default", () => {
+    delete process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.TEXAS_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    delete process.env.TEXAS_TEC_RAW_DATA_REFRESH_ENABLED;
+
+    expect(isTexasCampaignFinanceEnabled()).toBe(false);
+    expect(isTexasCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isTexasTecRawDataRefreshEnabled()).toBe(false);
+  });
+
+  it("requires the Texas campaign finance master flag before sync can run", () => {
+    process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.TEXAS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isTexasCampaignFinanceEnabled()).toBe(false);
+    expect(isTexasCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isTexasCampaignFinanceSyncEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Texas campaign finance sync flag", () => {
+    process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.TEXAS_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    expect(isTexasCampaignFinanceEnabled()).toBe(true);
+    expect(isTexasCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isTexasCampaignFinanceSyncEnabled(true)).toBe(true);
+  });
+
+  it("enables Texas campaign finance sync when both flags are enabled", () => {
+    process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.TEXAS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isTexasCampaignFinanceEnabled()).toBe(true);
+    expect(isTexasCampaignFinanceSyncEnabled()).toBe(true);
+  });
+
+  it("requires the Texas campaign finance master flag before TEC raw data refresh can run", () => {
+    process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.TEXAS_TEC_RAW_DATA_REFRESH_ENABLED = "true";
+
+    expect(isTexasTecRawDataRefreshEnabled()).toBe(false);
+    expect(isTexasTecRawDataRefreshEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Texas TEC raw data refresh flag", () => {
+    process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.TEXAS_TEC_RAW_DATA_REFRESH_ENABLED = "false";
+
+    expect(isTexasTecRawDataRefreshEnabled()).toBe(false);
+    expect(isTexasTecRawDataRefreshEnabled(true)).toBe(true);
   });
 });

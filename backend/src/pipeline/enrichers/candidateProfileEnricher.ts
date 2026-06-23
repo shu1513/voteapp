@@ -31,6 +31,10 @@ import {
   enqueueManualOklahomaCandidateFinanceSyncJob,
 } from "../../scheduler/oklahomaCandidateFinanceSyncScheduler.js";
 import {
+  buildTexasCandidateFinanceLinkedElectionSyncJobId,
+  enqueueManualTexasCandidateFinanceSyncJob,
+} from "../../scheduler/texasCandidateFinanceSyncScheduler.js";
+import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
   STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
   STAGING_CANDIDATE_PROFILE_REJECTED_STREAM,
@@ -63,6 +67,7 @@ import { isColoradoFinanceEligibleOffice } from "../coloradoFinance/coloradoFina
 import { isConnecticutFinanceEligibleOffice } from "../connecticutFinance/connecticutFinanceEligibleOffices.js";
 import { isNewMexicoFinanceEligibleOffice } from "../newMexicoFinance/newMexicoFinanceEligibleOffices.js";
 import { isOklahomaFinanceEligibleOffice } from "../oklahomaFinance/oklahomaFinanceEligibleOffices.js";
+import { isTexasFinanceEligibleOffice } from "../texasFinance/texasFinanceEligibleOffices.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -458,6 +463,38 @@ async function enqueueOklahomaFinanceSyncForLinkedElection(input: {
     const reason = toReason(error);
     console.warn(
       `candidate-profile enricher could not enqueue Oklahoma finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
+async function enqueueTexasFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (
+    input.context.state !== "TX" ||
+    !isTexasFinanceEligibleOffice({
+      officeScope: input.context.officeScope,
+      officeCanonicalName: input.context.officeCanonicalName,
+    })
+  ) {
+    return;
+  }
+
+  try {
+    await enqueueManualTexasCandidateFinanceSyncJob(
+      {
+        aiClassifyIndustries: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: buildTexasCandidateFinanceLinkedElectionSyncJobId(),
+      }
+    );
+  } catch (error) {
+    const reason = toReason(error);
+    console.warn(
+      `candidate-profile enricher could not enqueue Texas finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
     );
   }
 }
@@ -1089,6 +1126,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               candidateId,
             });
             await enqueueOklahomaFinanceSyncForLinkedElection({
+              context: draftContext,
+              candidateId,
+            });
+            await enqueueTexasFinanceSyncForLinkedElection({
               context: draftContext,
               candidateId,
             });
