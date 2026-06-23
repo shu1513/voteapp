@@ -76,7 +76,7 @@ export function parseSyncDueTexasCandidateFinanceScriptArgs(
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     rawCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
     rawZipPath: parseFlagValue(args, "--raw-zip") || undefined,
-    aiClassifyIndustries: args.includes("--ai-classify-industries"),
+    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
     aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }

@@ -35,6 +35,10 @@ import {
   enqueueManualTexasCandidateFinanceSyncJob,
 } from "../../scheduler/texasCandidateFinanceSyncScheduler.js";
 import {
+  buildHawaiiCandidateFinanceLinkedElectionSyncJobId,
+  enqueueManualHawaiiCandidateFinanceSyncJob,
+} from "../../scheduler/hawaiiCandidateFinanceSyncScheduler.js";
+import {
   buildWashingtonCandidateFinanceLinkedElectionSyncJobId,
   enqueueManualWashingtonCandidateFinanceSyncJob,
 } from "../../scheduler/washingtonCandidateFinanceSyncScheduler.js";
@@ -72,6 +76,7 @@ import { isConnecticutFinanceEligibleOffice } from "../connecticutFinance/connec
 import { isNewMexicoFinanceEligibleOffice } from "../newMexicoFinance/newMexicoFinanceEligibleOffices.js";
 import { isOklahomaFinanceEligibleOffice } from "../oklahomaFinance/oklahomaFinanceEligibleOffices.js";
 import { isTexasFinanceEligibleOffice } from "../texasFinance/texasFinanceEligibleOffices.js";
+import { isHawaiiFinanceEligibleOffice } from "../hawaiiFinance/hawaiiFinanceEligibleOffices.js";
 import { isWashingtonFinanceEligibleOffice } from "../washingtonFinance/washingtonFinanceEligibleOffices.js";
 
 type EnricherOptions = {
@@ -306,6 +311,7 @@ async function enqueueCandidateFinanceSyncForLinkedElection(input: {
       fecCandidateId,
       electionYear,
       includeOutside: true,
+      aiClassifyIndustries: true,
     });
   } catch (error) {
     const reason = toReason(error);
@@ -333,6 +339,7 @@ async function enqueueCaliforniaFinanceSyncForLinkedElection(input: {
     await enqueueManualCaliforniaCandidateFinanceSyncJob(
       {
         includeOutside: true,
+        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -504,6 +511,38 @@ async function enqueueTexasFinanceSyncForLinkedElection(input: {
   }
 }
 
+async function enqueueHawaiiFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (
+    input.context.state !== "HI" ||
+    !isHawaiiFinanceEligibleOffice({
+      officeScope: input.context.officeScope,
+      officeCanonicalName: input.context.officeCanonicalName,
+    })
+  ) {
+    return;
+  }
+
+  try {
+    await enqueueManualHawaiiCandidateFinanceSyncJob(
+      {
+        aiClassifyIndustries: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: buildHawaiiCandidateFinanceLinkedElectionSyncJobId(),
+      }
+    );
+  } catch (error) {
+    const reason = toReason(error);
+    console.warn(
+      `candidate-profile enricher could not enqueue Hawaii finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
 async function enqueueWashingtonFinanceSyncForLinkedElection(input: {
   context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
   candidateId: string;
@@ -563,6 +602,7 @@ async function enqueueCandidateFinanceSyncForPresidentialCycle(input: {
       electionYear: input.context.electionYear,
       source: "presidential_cycle",
       includeOutside: true,
+      aiClassifyIndustries: true,
     });
   } catch (error) {
     const reason = toReason(error);
@@ -1167,6 +1207,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               candidateId,
             });
             await enqueueTexasFinanceSyncForLinkedElection({
+              context: draftContext,
+              candidateId,
+            });
+            await enqueueHawaiiFinanceSyncForLinkedElection({
               context: draftContext,
               candidateId,
             });

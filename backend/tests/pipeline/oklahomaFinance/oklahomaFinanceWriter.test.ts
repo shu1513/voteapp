@@ -159,9 +159,13 @@ describe("oklahomaFinanceWriter", () => {
     });
     const sql = db.query.mock.calls.map((call) => String(call[0]));
     const summarySql = sql.find((statement) => statement.includes("INSERT INTO public.ok_candidate_finance_summaries"));
-    expect(summarySql).toContain("total_receipts = EXCLUDED.total_receipts");
-    expect(summarySql).toContain("direct_contribution_total = EXCLUDED.direct_contribution_total");
-    expect(summarySql).toContain("source_url = EXCLUDED.source_url");
+    expect(summarySql).toContain(
+      "total_receipts = COALESCE(EXCLUDED.total_receipts, ok_candidate_finance_summaries.total_receipts)"
+    );
+    expect(summarySql).toContain(
+      "direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, ok_candidate_finance_summaries.direct_contribution_total)"
+    );
+    expect(summarySql).toContain("source_url = COALESCE(EXCLUDED.source_url, ok_candidate_finance_summaries.source_url)");
     expect(sql.some((statement) => statement.includes("DELETE FROM public.ok_candidate_finance_direct_breakdowns"))).toBe(false);
   });
 

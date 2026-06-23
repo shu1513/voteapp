@@ -175,7 +175,7 @@ const ORGANIZATION_PATTERN_RULES: readonly PatternRule[] = [
   { pattern: /\b(HOSPITAL|HEALTH|MEDICAL|CLINIC|KAISER)\b/, industrySlug: "healthcare", confidence: "medium", name: "organization_pattern_healthcare" },
   { pattern: /\b(CAPITAL|INVESTMENT|INVESTMENTS|BANK|FINANCIAL|SECURITIES|VENTURES|HEDGE FUND|PRIVATE EQUITY)\b/, industrySlug: "finance_investment", confidence: "medium", name: "organization_pattern_finance" },
   { pattern: /\b(REAL ESTATE|REALTY|PROPERTIES|PROPERTY|DEVELOPMENT|DEVELOPER)\b/, industrySlug: "real_estate", confidence: "medium", name: "organization_pattern_real_estate" },
-  { pattern: /\b(CONSTRUCTION|BUILDERS|CONTRACTORS|ENGINEERING)\b/, industrySlug: "construction", confidence: "medium", name: "organization_pattern_construction" },
+  { pattern: /\b(CONSTRUCTION|BUILDERS|CONTRACTORS|ENGINEERING|CARPENTERS?)\b/, industrySlug: "construction", confidence: "medium", name: "organization_pattern_construction" },
   { pattern: /\b(UNION|AFL\s+CIO|SEIU|TEAMSTERS|AFSCME|UAW|IBEW|LABORERS)\b/, industrySlug: "labor_unions", confidence: "medium", name: "organization_pattern_labor_unions" },
   { pattern: /\b(UNIVERSITY|COLLEGE|SCHOOL|EDUCATION)\b/, industrySlug: "education", confidence: "medium", name: "organization_pattern_education" },
   { pattern: /\b(AEROSPACE|DEFENSE|MISSILE|LOCKHEED|BOEING|NORTHROP)\b/, industrySlug: "defense_aerospace", confidence: "medium", name: "organization_pattern_defense" },

@@ -3039,6 +3039,271 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced Hawaii finance summaries for Hawaii candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("HAWAII_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "15",
+            district_name: "Hawaii",
+            state: "HI",
+            state_fips: "15",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Aloha",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "HI",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "CC10174",
+            election_year: 2022,
+            total_receipts: "4070153.38",
+            direct_contribution_total: "4070153.38",
+            total_disbursements: null,
+            cash_on_hand: null,
+            outside_support_total: "500557.00",
+            outside_oppose_total: "10000.00",
+            source_url: "https://hicscdata.hawaii.gov/resource/jexd-xbcg.json",
+            last_synced_at: "2026-06-22 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Attorney",
+            amount: "332962.31",
+            contributor_count: "1200",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$1,000-$4,999",
+            amount: "150000.00",
+            contributor_count: "30",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "NC101",
+            committee_name: "Be Change Now",
+            support_oppose: "support",
+            amount: "500557.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "NC202",
+            committee_name: "Hawaii Future PAC",
+            support_oppose: "oppose",
+            amount: "10000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "construction",
+            amount: "2086436.92",
+            contributor_count: "1",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "finance_investment",
+            amount: "50000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "construction",
+            committee_id: "NC101",
+            committee_name: "Be Change Now",
+            support_oppose: "support",
+            organization_name: "Hawaii Carpenters Market Recovery Program Fund",
+            amount: "2086436.92",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "HAWAII_CSC",
+      cycle: 2022,
+      fec_candidate_id: null,
+      controlled_committee_id: "CC10174",
+      last_synced_at: "2026-06-22 04:05:00+00",
+      direct_campaign: {
+        total_raised: 4070153.38,
+        total_spent: null,
+        cash_on_hand: null,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 332962.31,
+            contributor_count: 1200,
+            source_url: "https://hicscdata.hawaii.gov/resource/jexd-xbcg.json",
+          },
+        ],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$1,000-$4,999",
+            amount: 150000,
+            contributor_count: 30,
+            source_url: "https://hicscdata.hawaii.gov/resource/jexd-xbcg.json",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 500557,
+        oppose_total: 10000,
+        top_supporting_groups: [
+          {
+            committee_id: "NC101",
+            committee_name: "Be Change Now",
+            support_oppose: "support",
+            amount: 500557,
+            source_url: "https://hicscdata.hawaii.gov/",
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "NC202",
+            committee_name: "Hawaii Future PAC",
+            support_oppose: "oppose",
+            amount: 10000,
+            source_url: "https://hicscdata.hawaii.gov/",
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "construction",
+            amount: 2086436.92,
+            contributor_count: 1,
+            source_url: "https://hicscdata.hawaii.gov/",
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "finance_investment",
+            amount: 50000,
+            contributor_count: 2,
+            source_url: "https://hicscdata.hawaii.gov/",
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 332962.31,
+            contributor_count: 1200,
+            source_url: "https://hicscdata.hawaii.gov/resource/jexd-xbcg.json",
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "construction",
+            amount: 2086436.92,
+            contributor_count: 1,
+            source_url: "https://hicscdata.hawaii.gov/",
+            explanation:
+              "The Construction category is a top outside-spending support industry because Hawaii Carpenters Market Recovery Program Fund contributed to Be Change Now, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "Hawaii Carpenters Market Recovery Program Fund",
+                organization_type: "donor",
+                amount: 2086436.92,
+                contributor_count: 1,
+                committee_id: "NC101",
+                committee_name: "Be Change Now",
+                source_url: "https://hicscdata.hawaii.gov/",
+              },
+            ],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(12);
+    expect(query.mock.calls[7]?.[0]).toContain("public.hi_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.hi_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
+    expect(query.mock.calls[9]?.[0]).toContain("public.hi_candidate_finance_outside_groups");
+    expect(query.mock.calls[10]?.[0]).toContain("public.hi_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("public.hi_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
+    expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
+    expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
+  });
+
   it("does not query Texas finance tables when Texas campaign finance is disabled", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("TEXAS_CAMPAIGN_FINANCE_ENABLED", "false");

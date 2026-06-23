@@ -47,6 +47,14 @@ describe("syncCandidateFinance script", () => {
     );
   });
 
+  it("can opt out of AI industry classification", () => {
+    expect(
+      parseSyncCandidateFinanceScriptArgs(["--fec-id=P80001571", "--year=2024", "--no-ai-classify-industries"])
+    ).toMatchObject({
+      aiClassifyIndustries: false,
+    });
+  });
+
   it("formats script output", () => {
     const output = toSyncCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),

@@ -106,6 +106,11 @@ describe("coloradoFinanceWriter", () => {
 
     const sql = client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("INSERT INTO public.co_candidate_finance_summaries"))).toBe(true);
+    const summarySql = sql.find((statement) => statement.includes("INSERT INTO public.co_candidate_finance_summaries"));
+    expect(summarySql).toContain(
+      "total_receipts = COALESCE(EXCLUDED.total_receipts, co_candidate_finance_summaries.total_receipts)"
+    );
+    expect(summarySql).toContain("source_url = COALESCE(EXCLUDED.source_url, co_candidate_finance_summaries.source_url)");
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.co_candidate_finance_direct_breakdowns"))).toHaveLength(2);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.co_candidate_finance_direct_breakdowns"))).toBe(true);
   });

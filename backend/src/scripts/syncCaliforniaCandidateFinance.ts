@@ -117,7 +117,7 @@ export function parseSyncCaliforniaCandidateFinanceScriptArgs(
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
     rawZipPath: parseOptionalStringFlag(args, "--raw-zip"),
     rawCacheDir: parseOptionalStringFlag(args, "--raw-cache-dir"),
-    aiClassifyIndustries: args.includes("--ai-classify-industries"),
+    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
     aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }

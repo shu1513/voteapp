@@ -183,6 +183,13 @@ describe("financeLabelClassifier", () => {
       confidence: "medium",
       matchedRule: "organization_exact_hendricks_holding",
     });
+
+    expect(classifyFinanceLabel({ rawLabel: "Hawaii Carpenters Market Recovery Program Fund", labelType: "donor" })).toMatchObject({
+      normalizedLabel: "HAWAII CARPENTERS MARKET RECOVERY PROGRAM FUND",
+      industrySlug: "construction",
+      confidence: "medium",
+      matchedRule: "organization_pattern_construction",
+    });
   });
 
   it("classifies waste management organizations separately from environmental advocacy groups", () => {

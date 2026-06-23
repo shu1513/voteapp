@@ -167,3 +167,14 @@ export function isWashingtonCampaignFinanceSyncEnabled(force = false): boolean {
     (force || readBooleanEnv("WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
   );
 }
+
+export function isHawaiiCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("HAWAII_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isHawaiiCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isHawaiiCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("HAWAII_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}

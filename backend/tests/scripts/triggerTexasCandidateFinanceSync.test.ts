@@ -44,4 +44,10 @@ describe("triggerTexasCandidateFinanceSync script", () => {
       "Missing --raw-cache-dir value"
     );
   });
+
+  it("can opt out of AI industry classification", () => {
+    expect(parseTexasCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
+      aiClassifyIndustries: false,
+    });
+  });
 });
