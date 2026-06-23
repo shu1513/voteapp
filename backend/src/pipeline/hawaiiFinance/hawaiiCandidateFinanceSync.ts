@@ -423,19 +423,27 @@ async function buildOutsideGroupBreakdowns(input: {
 }): Promise<{
   breakdowns: HawaiiFinanceOutsideGroupBreakdownInput[];
   outsideFunderRowCount: number;
+  skippedOutsideGroupFunderLookupCount: number;
 }> {
   const breakdowns: HawaiiFinanceOutsideGroupBreakdownInput[] = [];
   let outsideFunderRowCount = 0;
+  let skippedOutsideGroupFunderLookupCount = 0;
 
   for (const group of input.outsideGroups) {
-    const funders = await input.cscClient.getNoncandidateCommitteeFunders(
-      {
-        committeeId: group.committeeId,
-        electionPeriod: group.electionPeriod,
-        limit: input.maxFundersPerGroup,
-      },
-      input.cscClientOptions
-    );
+    let funders: HawaiiCscAggregate[];
+    try {
+      funders = await input.cscClient.getNoncandidateCommitteeFunders(
+        {
+          committeeId: group.committeeId,
+          electionPeriod: group.electionPeriod,
+          limit: input.maxFundersPerGroup,
+        },
+        input.cscClientOptions
+      );
+    } catch {
+      skippedOutsideGroupFunderLookupCount += 1;
+      continue;
+    }
     outsideFunderRowCount += funders.length;
     for (const funder of funders) {
       breakdowns.push({
@@ -450,7 +458,7 @@ async function buildOutsideGroupBreakdowns(input: {
     }
   }
 
-  return { breakdowns, outsideFunderRowCount };
+  return { breakdowns, outsideFunderRowCount, skippedOutsideGroupFunderLookupCount };
 }
 
 function sumGroups(groups: readonly HawaiiCscIndependentSpendingGroup[], supportOppose: "support" | "oppose"): number {
@@ -640,6 +648,6 @@ export async function syncHawaiiCandidateFinance(
     directContributionSizeRowCount: contributionSizes.length,
     outsideGroupCount: outsideGroups.length,
     outsideFunderRowCount: outsideGroupBreakdowns.outsideFunderRowCount,
-    skippedOutsideGroupFunderLookupCount: 0,
+    skippedOutsideGroupFunderLookupCount: outsideGroupBreakdowns.skippedOutsideGroupFunderLookupCount,
   };
 }

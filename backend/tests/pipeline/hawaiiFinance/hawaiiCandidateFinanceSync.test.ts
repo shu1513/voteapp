@@ -346,6 +346,35 @@ describe("hawaiiCandidateFinanceSync", () => {
     expect(cscClient.getNoncandidateCommitteeFunders).toHaveBeenCalled();
   });
 
+  it("skips a single outside group when its funder lookup fails", async () => {
+    const db = createMockDb();
+    const cscClient = createCscClient();
+    cscClient.getNoncandidateCommitteeFunders
+      .mockRejectedValueOnce(new Error("CSC funder lookup failed"))
+      .mockResolvedValueOnce([
+        { categoryName: "Hawaii Carpenters Market Recovery Program Fund", amount: 2086436.92, count: 1 },
+      ]);
+
+    const result = await syncHawaiiCandidateFinance({
+      db,
+      ...baseInput(),
+      cscClient,
+    });
+
+    expect(result).toMatchObject({
+      summaryWritten: true,
+      outsideGroupsWritten: 2,
+      outsideFunderRowCount: 1,
+      skippedOutsideGroupFunderLookupCount: 1,
+    });
+    expect(cscClient.getNoncandidateCommitteeFunders).toHaveBeenCalledTimes(2);
+    const outsideBreakdownCalls = db.query.mock.calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.hi_candidate_finance_outside_group_breakdowns")
+    );
+    expect(outsideBreakdownCalls).toHaveLength(2);
+    expect(outsideBreakdownCalls.map((call) => call[1]?.[3])).toEqual(["oppose", "oppose"]);
+  });
+
   it("hydrates totals for a trusted committee when the link does not carry a total amount", async () => {
     const db = createMockDb();
     const cscClient = createCscClient();

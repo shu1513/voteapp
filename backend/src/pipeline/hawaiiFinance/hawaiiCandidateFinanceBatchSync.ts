@@ -245,11 +245,13 @@ export async function syncDueHawaiiCandidateFinance(
     "electionLookaheadDays"
   );
   const dryRun = input.dryRun === true;
+  // Daily syncs intentionally auto-link eligible Hawaii candidates unless explicitly disabled.
+  const shouldAutoLinkMissingLinks = !dryRun && input.autoLinkMissingLinks !== false;
   const syncFn = input.syncHawaiiCandidateFinanceFn ?? syncHawaiiCandidateFinance;
   let autoLinkAttemptedCount = 0;
   let autoLinkLinkedCount = 0;
 
-  if (!dryRun && input.autoLinkMissingLinks !== false) {
+  if (shouldAutoLinkMissingLinks) {
     try {
       const missingLinkCandidates: HawaiiFinanceAutoLinkCandidateElection[] =
         await listHawaiiCandidateElectionsMissingFinanceLinks(input.db, {

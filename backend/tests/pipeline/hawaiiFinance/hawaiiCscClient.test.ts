@@ -141,6 +141,7 @@ describe("hawaiiCscClient", () => {
     );
     expect(url.searchParams.get("$select")).toBe("amount");
     expect(url.searchParams.get("$where")).toContain("reg_no = 'CC10174'");
+    expect(url.searchParams.get("$order")).toBe("amount DESC, :id ASC");
 
     const fetchImpl = vi
       .fn()
@@ -167,6 +168,7 @@ describe("hawaiiCscClient", () => {
     expect(url.searchParams.get("$where")).toContain("independent_expenditure");
     expect(url.searchParams.get("$where")).toContain("support_oppose in('Support','Oppose')");
     expect(url.searchParams.get("$where")).toContain("lower(candidate_name_s) like '%green%'");
+    expect(url.searchParams.get("$order")).toBe("amount DESC, noncandidate_committee_name ASC, :id ASC");
 
     const fetchImpl = vi
       .fn()
@@ -253,6 +255,7 @@ describe("hawaiiCscClient", () => {
     expect(url.origin + url.pathname).toBe("https://hicscdata.hawaii.gov/resource/rajm-32md.json");
     expect(url.searchParams.get("$where")).toContain("reg_no = 'NC20760'");
     expect(url.searchParams.get("$where")).toContain("election_period = '2020-2022 (KP2)'");
+    expect(url.searchParams.get("$order")).toBe("amount DESC, contributor_name ASC, :id ASC");
 
     const fetchImpl = vi
       .fn()

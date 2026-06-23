@@ -3379,28 +3379,44 @@ async function loadTexasCandidateFinanceSummariesByCandidateElection(
           election_id text
         )
       ),
+      top_industries_per_group AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          industry.committee_id,
+          industry.category_name AS industry_name,
+          max(industry.amount) AS amount
+        FROM selected
+        JOIN public.tx_candidate_finance_links AS link
+          ON link.candidate_id = selected.candidate_id
+         AND link.election_id = selected.election_id
+         AND link.link_status = 'active'
+        JOIN public.tx_candidate_finance_outside_group_breakdowns AS industry
+          ON industry.link_id = link.id
+         AND industry.election_year = link.election_year
+        WHERE industry.support_oppose = 'support'
+          AND industry.category_type = 'industry'
+        GROUP BY selected.candidate_id, selected.election_id, industry.committee_id, industry.category_name
+      ),
+      top_industries_grouped AS (
+        SELECT
+          candidate_id,
+          election_id,
+          industry_name,
+          sum(amount) AS amount
+        FROM top_industries_per_group
+        GROUP BY candidate_id, election_id, industry_name
+      ),
       top_industries AS (
-        SELECT *
+        SELECT candidate_id, election_id, industry_name
         FROM (
           SELECT
-            selected.candidate_id::text AS candidate_id,
-            selected.election_id::text AS election_id,
-            industry.category_name AS industry_name,
+            *,
             row_number() OVER (
-              PARTITION BY selected.candidate_id, selected.election_id
-              ORDER BY sum(industry.amount) DESC, industry.category_name ASC
+              PARTITION BY candidate_id, election_id
+              ORDER BY amount DESC, industry_name ASC
             ) AS rn
-          FROM selected
-          JOIN public.tx_candidate_finance_links AS link
-            ON link.candidate_id = selected.candidate_id
-           AND link.election_id = selected.election_id
-           AND link.link_status = 'active'
-          JOIN public.tx_candidate_finance_outside_group_breakdowns AS industry
-            ON industry.link_id = link.id
-           AND industry.election_year = link.election_year
-          WHERE industry.support_oppose = 'support'
-            AND industry.category_type = 'industry'
-          GROUP BY selected.candidate_id, selected.election_id, industry.category_name
+          FROM top_industries_grouped
         ) ranked_industries
         WHERE rn <= 5
       ),
@@ -3853,28 +3869,44 @@ async function loadWashingtonCandidateFinanceSummariesByCandidateElection(
           election_id text
         )
       ),
+      top_industries_per_group AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          industry.sponsor_id,
+          industry.category_name AS industry_name,
+          max(industry.amount) AS amount
+        FROM selected
+        JOIN public.wa_candidate_finance_links AS link
+          ON link.candidate_id = selected.candidate_id
+         AND link.election_id = selected.election_id
+         AND link.link_status = 'active'
+        JOIN public.wa_candidate_finance_outside_group_breakdowns AS industry
+          ON industry.link_id = link.id
+         AND industry.election_year = link.election_year
+        WHERE industry.support_oppose = 'support'
+          AND industry.category_type = 'industry'
+        GROUP BY selected.candidate_id, selected.election_id, industry.sponsor_id, industry.category_name
+      ),
+      top_industries_grouped AS (
+        SELECT
+          candidate_id,
+          election_id,
+          industry_name,
+          sum(amount) AS amount
+        FROM top_industries_per_group
+        GROUP BY candidate_id, election_id, industry_name
+      ),
       top_industries AS (
-        SELECT *
+        SELECT candidate_id, election_id, industry_name
         FROM (
           SELECT
-            selected.candidate_id::text AS candidate_id,
-            selected.election_id::text AS election_id,
-            industry.category_name AS industry_name,
+            *,
             row_number() OVER (
-              PARTITION BY selected.candidate_id, selected.election_id
-              ORDER BY sum(industry.amount) DESC, industry.category_name ASC
+              PARTITION BY candidate_id, election_id
+              ORDER BY amount DESC, industry_name ASC
             ) AS rn
-          FROM selected
-          JOIN public.wa_candidate_finance_links AS link
-            ON link.candidate_id = selected.candidate_id
-           AND link.election_id = selected.election_id
-           AND link.link_status = 'active'
-          JOIN public.wa_candidate_finance_outside_group_breakdowns AS industry
-            ON industry.link_id = link.id
-           AND industry.election_year = link.election_year
-          WHERE industry.support_oppose = 'support'
-            AND industry.category_type = 'industry'
-          GROUP BY selected.candidate_id, selected.election_id, industry.category_name
+          FROM top_industries_grouped
         ) ranked_industries
         WHERE rn <= 5
       ),
@@ -4328,28 +4360,44 @@ async function loadHawaiiCandidateFinanceSummariesByCandidateElection(
           election_id text
         )
       ),
+      top_industries_per_group AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          industry.committee_id,
+          industry.category_name AS industry_name,
+          max(industry.amount) AS amount
+        FROM selected
+        JOIN public.hi_candidate_finance_links AS link
+          ON link.candidate_id = selected.candidate_id
+         AND link.election_id = selected.election_id
+         AND link.link_status = 'active'
+        JOIN public.hi_candidate_finance_outside_group_breakdowns AS industry
+          ON industry.link_id = link.id
+         AND industry.election_year = link.election_year
+        WHERE industry.support_oppose = 'support'
+          AND industry.category_type = 'industry'
+        GROUP BY selected.candidate_id, selected.election_id, industry.committee_id, industry.category_name
+      ),
+      top_industries_grouped AS (
+        SELECT
+          candidate_id,
+          election_id,
+          industry_name,
+          sum(amount) AS amount
+        FROM top_industries_per_group
+        GROUP BY candidate_id, election_id, industry_name
+      ),
       top_industries AS (
-        SELECT *
+        SELECT candidate_id, election_id, industry_name
         FROM (
           SELECT
-            selected.candidate_id::text AS candidate_id,
-            selected.election_id::text AS election_id,
-            industry.category_name AS industry_name,
+            *,
             row_number() OVER (
-              PARTITION BY selected.candidate_id, selected.election_id
-              ORDER BY sum(industry.amount) DESC, industry.category_name ASC
+              PARTITION BY candidate_id, election_id
+              ORDER BY amount DESC, industry_name ASC
             ) AS rn
-          FROM selected
-          JOIN public.hi_candidate_finance_links AS link
-            ON link.candidate_id = selected.candidate_id
-           AND link.election_id = selected.election_id
-           AND link.link_status = 'active'
-          JOIN public.hi_candidate_finance_outside_group_breakdowns AS industry
-            ON industry.link_id = link.id
-           AND industry.election_year = link.election_year
-          WHERE industry.support_oppose = 'support'
-            AND industry.category_type = 'industry'
-          GROUP BY selected.candidate_id, selected.election_id, industry.category_name
+          FROM top_industries_grouped
         ) ranked_industries
         WHERE rn <= 5
       ),

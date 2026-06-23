@@ -170,7 +170,9 @@ function validateHawaiiFinanceLinkInput(link: HawaiiFinanceLinkInput): void {
 
 function validateHawaiiFinanceSnapshotInput(input: HawaiiFinanceSnapshotInput): void {
   validateHawaiiFinanceLinkInput(input.link);
-  if (input.outsideGroupBreakdowns && !input.outsideGroups) {
+  const outsideBreakdownCount = input.outsideGroupBreakdowns?.length ?? 0;
+  const outsideGroupCount = input.outsideGroups?.length ?? 0;
+  if (outsideBreakdownCount > 0 && outsideGroupCount === 0) {
     throw new Error("Hawaii outside group breakdowns require outside groups in the same snapshot");
   }
 }

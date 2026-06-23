@@ -2769,6 +2769,8 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[9]?.[0]).toContain("public.tx_candidate_finance_outside_groups");
     expect(query.mock.calls[10]?.[0]).toContain("public.tx_candidate_finance_outside_group_breakdowns");
     expect(query.mock.calls[11]?.[0]).toContain("public.tx_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("top_industries_per_group");
+    expect(query.mock.calls[11]?.[0]).toContain("max(industry.amount) AS amount");
     expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
     expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
@@ -3034,6 +3036,8 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[9]?.[0]).toContain("public.wa_candidate_finance_outside_groups");
     expect(query.mock.calls[10]?.[0]).toContain("public.wa_candidate_finance_outside_group_breakdowns");
     expect(query.mock.calls[11]?.[0]).toContain("public.wa_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("top_industries_per_group");
+    expect(query.mock.calls[11]?.[0]).toContain("max(industry.amount) AS amount");
     expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
     expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
@@ -3299,6 +3303,8 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[9]?.[0]).toContain("public.hi_candidate_finance_outside_groups");
     expect(query.mock.calls[10]?.[0]).toContain("public.hi_candidate_finance_outside_group_breakdowns");
     expect(query.mock.calls[11]?.[0]).toContain("public.hi_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("top_industries_per_group");
+    expect(query.mock.calls[11]?.[0]).toContain("max(industry.amount) AS amount");
     expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
     expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");

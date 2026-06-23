@@ -398,4 +398,48 @@ describe("hawaiiFinanceSnapshotWriter", () => {
     ).rejects.toThrow("Hawaii outside group breakdowns require outside groups in the same snapshot");
     expect(db.connect).not.toHaveBeenCalled();
   });
+
+  it("allows empty outside group breakdowns without outside groups", async () => {
+    const { replaceHawaiiCandidateFinanceSnapshot } = await import(
+      "../../../src/pipeline/hawaiiFinance/hawaiiFinanceWriter.js"
+    );
+    const db = createTransactionalMockDb();
+
+    await expect(
+      replaceHawaiiCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        outsideGroupBreakdowns: [],
+      })
+    ).resolves.toMatchObject({
+      linkId: LINK_ID,
+      outsideGroupBreakdownsWritten: 0,
+    });
+    expect(db.connect).toHaveBeenCalledTimes(1);
+  });
+
+  it("rejects outside group breakdowns with an empty same-snapshot outside group list", async () => {
+    const { replaceHawaiiCandidateFinanceSnapshot } = await import(
+      "../../../src/pipeline/hawaiiFinance/hawaiiFinanceWriter.js"
+    );
+    const db = createTransactionalMockDb();
+
+    await expect(
+      replaceHawaiiCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        outsideGroups: [],
+        outsideGroupBreakdowns: [
+          {
+            committeeId: "NC101",
+            supportOppose: "support",
+            categoryType: "donor",
+            categoryName: "Hawaii Carpenters Market Recovery Program Fund",
+            amount: 2086436.92,
+          },
+        ],
+      })
+    ).rejects.toThrow("Hawaii outside group breakdowns require outside groups in the same snapshot");
+    expect(db.connect).not.toHaveBeenCalled();
+  });
 });

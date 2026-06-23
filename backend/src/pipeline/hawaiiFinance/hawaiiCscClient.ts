@@ -453,7 +453,7 @@ export function buildHawaiiCscContributionSizeRowsUrl(input: HawaiiCscCandidateC
   return buildHawaiiCscDatasetUrl(HAWAII_CSC_CANDIDATE_CONTRIBUTIONS_DATASET, {
     $select: "amount",
     $where: `${committeeWhere(input)} AND ${isNonMonetaryNoPredicate("non_monetary_yes_or_no")}`,
-    $order: "amount DESC",
+    $order: "amount DESC, :id ASC",
     $limit: normalizePageLimit(undefined),
   });
 }
@@ -527,7 +527,7 @@ export function buildHawaiiCscIndependentExpenditureGroupsUrl(input: HawaiiCscIn
   return buildHawaiiCscDatasetUrl(HAWAII_CSC_NONCANDIDATE_EXPENDITURES_DATASET, {
     $select: "noncandidate_committee_name,reg_no,election_period,candidate_name_s,support_oppose,independent_expenditure,amount",
     $where: where.join(" AND "),
-    $order: "amount DESC, noncandidate_committee_name ASC",
+    $order: "amount DESC, noncandidate_committee_name ASC, :id ASC",
     $limit: normalizePageLimit(undefined),
   });
 }
@@ -606,7 +606,7 @@ export function buildHawaiiCscNoncandidateCommitteeFundersUrl(input: HawaiiCscCa
   return buildHawaiiCscDatasetUrl(HAWAII_CSC_NONCANDIDATE_CONTRIBUTIONS_DATASET, {
     $select: "contributor_type,contributor_name,amount",
     $where: `${committeeWhere(input)} AND ${isNonMonetaryNoPredicate("non_monetary_yes_or_no")}`,
-    $order: "amount DESC, contributor_name ASC",
+    $order: "amount DESC, contributor_name ASC, :id ASC",
     $limit: normalizePageLimit(undefined),
   });
 }
