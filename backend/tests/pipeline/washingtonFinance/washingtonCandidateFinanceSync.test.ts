@@ -16,13 +16,20 @@ const CONTRIBUTION_SOURCE_URL = "https://data.wa.gov/resource/kv7h-kjye.json";
 const IE_SOURCE_URL = "https://data.wa.gov/resource/67cp-h962.json";
 
 function createMockDb() {
+  const query = vi.fn(async (sql: string) => {
+    if (String(sql).includes("FROM public.finance_label_classifications AS classification")) {
+      return { rows: [], rowCount: 0 };
+    }
+    return { rows: [{ id: LINK_ID }], rowCount: 1 };
+  });
+  const client = {
+    query,
+    release: vi.fn(),
+  };
   return {
-    query: vi.fn(async (sql: string) => {
-      if (String(sql).includes("FROM public.finance_label_classifications AS classification")) {
-        return { rows: [], rowCount: 0 };
-      }
-      return { rows: [{ id: LINK_ID }], rowCount: 1 };
-    }),
+    query,
+    connect: vi.fn().mockResolvedValue(client),
+    client,
   };
 }
 
@@ -327,6 +334,7 @@ describe("washingtonCandidateFinanceSync", () => {
   it("uses the shared classifier for high-dollar unknown outside organization donors", async () => {
     const db = createMockDb();
     const pdcClient = createPdcClient({
+      sponsorSummaries: [sponsorSummary({ filerId: " FUSEV  147 ", committeeId: " 7777 " })],
       sponsorFunders: [
         {
           categoryName: "Evergreen Strategic Holdings",
@@ -361,6 +369,13 @@ describe("washingtonCandidateFinanceSync", () => {
       outsideGroupBreakdownsWritten: 2,
       outsideFunderRowCount: 1,
     });
+    expect(pdcClient.getSponsorOrganizationFunders).toHaveBeenCalledWith(
+      expect.objectContaining({
+        filerId: "FUSEV  147",
+        committeeId: "7777",
+      }),
+      undefined
+    );
     expect(financeIndustryClassifier).toHaveBeenCalledWith({
       labels: [
         expect.objectContaining({

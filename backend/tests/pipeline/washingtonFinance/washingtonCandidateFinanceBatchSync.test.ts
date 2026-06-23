@@ -138,7 +138,7 @@ describe("washingtonCandidateFinanceBatchSync", () => {
   });
 
   it("uses one post-election grace day by default", async () => {
-    const db = { query: vi.fn(async () => ({ rows: [], rowCount: 0 })) };
+    const db = { query: vi.fn(async () => ({ rows: [], rowCount: 0 })), connect: vi.fn() };
     const syncWashingtonCandidateFinanceFn = vi.fn();
 
     await syncDueWashingtonCandidateFinance({
@@ -178,6 +178,7 @@ describe("washingtonCandidateFinanceBatchSync", () => {
         ],
         rowCount: 2,
       })),
+      connect: vi.fn(),
     };
     const successfulSync = {
       candidateId: CANDIDATE_ID,
@@ -278,6 +279,7 @@ describe("washingtonCandidateFinanceBatchSync", () => {
         }
         return { rows: [], rowCount: 0 };
       }),
+      connect: vi.fn(),
     };
     const resolveCandidateCommittee = vi.fn(async () => matchedResolution());
 

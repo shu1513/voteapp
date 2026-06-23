@@ -36,4 +36,10 @@ describe("upsertWashingtonCandidateFinanceSyncScheduler script", () => {
       "Missing --stale-after-days value"
     );
   });
+
+  it("rejects duplicate flag values", () => {
+    expect(() =>
+      parseUpsertWashingtonCandidateFinanceSyncSchedulerArgs(["--max-candidates=5", "--max-candidates", "10"])
+    ).toThrow("Provide --max-candidates at most once");
+  });
 });

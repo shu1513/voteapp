@@ -261,7 +261,7 @@ export function resolveWashingtonCandidateCommittee(
     };
   }
 
-  const rowsByFiler = new Map<string, CandidateCommitteeAccumulator>();
+  const rowsByCommittee = new Map<string, CandidateCommitteeAccumulator>();
   for (const summary of input.summaries) {
     const filerId = summary.filerId.trim();
     const committeeId = summary.committeeId?.trim();
@@ -288,7 +288,8 @@ export function resolveWashingtonCandidateCommittee(
       continue;
     }
 
-    const accumulator = rowsByFiler.get(filerId) ?? {
+    const committeeKey = `${filerId}\u0000${committeeId}`;
+    const accumulator = rowsByCommittee.get(committeeKey) ?? {
       filerId,
       committeeId,
       committeeName,
@@ -297,10 +298,10 @@ export function resolveWashingtonCandidateCommittee(
       rows: [],
     };
     accumulator.rows.push(summary);
-    rowsByFiler.set(filerId, accumulator);
+    rowsByCommittee.set(committeeKey, accumulator);
   }
 
-  if (rowsByFiler.size === 0) {
+  if (rowsByCommittee.size === 0) {
     return {
       status: "unmatched",
       reason: "no_candidate_committee_match",
@@ -309,7 +310,7 @@ export function resolveWashingtonCandidateCommittee(
     };
   }
 
-  const matches = [...rowsByFiler.values()]
+  const matches = [...rowsByCommittee.values()]
     .map(toCommitteeMatch)
     .sort((left, right) => left.filerId.localeCompare(right.filerId));
 

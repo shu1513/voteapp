@@ -10,8 +10,15 @@ const ELECTION_ID = "22222222-2222-2222-2222-222222222222";
 const LINK_ID = "33333333-3333-3333-3333-333333333333";
 
 function createMockDb() {
+  const query = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
+  const client = {
+    query,
+    release: vi.fn(),
+  };
   return {
-    query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
+    query,
+    connect: vi.fn().mockResolvedValue(client),
+    client,
   };
 }
 
@@ -156,7 +163,8 @@ describe("washingtonFinanceWriter", () => {
       String(call[0]).includes("INSERT INTO public.wa_candidate_finance_summaries")
     );
     expect(String(summaryCall?.[0])).toContain("outside_support_total");
-    expect(String(summaryCall?.[0])).toContain("COALESCE(EXCLUDED.total_receipts");
+    expect(String(summaryCall?.[0])).toContain("total_receipts = EXCLUDED.total_receipts");
+    expect(String(summaryCall?.[0])).not.toContain("COALESCE(");
     expect(summaryCall?.[1]).toEqual([
       LINK_ID,
       2024,
@@ -177,7 +185,25 @@ describe("washingtonFinanceWriter", () => {
     expect(sql.some((statement) => statement.includes("DELETE FROM public.wa_candidate_finance_outside_group_breakdowns"))).toBe(true);
   });
 
-  it("wraps a supplied queryable in a transaction", async () => {
+  it("rejects a supplied query-only wrapper so snapshot writes stay atomic", async () => {
+    const db = {
+      query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
+    };
+
+    await expect(
+      replaceWashingtonCandidateFinanceSnapshot({
+        db: db as never,
+        link: baseLink(),
+        syncedAt: new Date("2024-02-03T04:05:06.000Z"),
+        summary: {
+          totalReceipts: 1000,
+        },
+      })
+    ).rejects.toThrow("Washington finance snapshot writes must receive a Pool");
+    expect(db.query).not.toHaveBeenCalled();
+  });
+
+  it("uses a supplied Pool to open a transaction", async () => {
     const db = createMockDb();
 
     const result = await replaceWashingtonCandidateFinanceSnapshot({
@@ -190,8 +216,10 @@ describe("washingtonFinanceWriter", () => {
     });
 
     expect(result.summaryWritten).toBe(true);
+    expect(db.connect).toHaveBeenCalledTimes(1);
     expect(db.query.mock.calls[0]?.[0]).toBe("BEGIN");
     expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+    expect(db.client.release).toHaveBeenCalledTimes(1);
   });
 
   it("rejects a supplied PoolClient so it cannot commit an outer transaction", async () => {
@@ -202,7 +230,7 @@ describe("washingtonFinanceWriter", () => {
 
     await expect(
       replaceWashingtonCandidateFinanceSnapshot({
-        db: client,
+        db: client as never,
         link: baseLink(),
         syncedAt: new Date("2024-02-03T04:05:06.000Z"),
         summary: {
@@ -235,10 +263,32 @@ describe("washingtonFinanceWriter", () => {
     });
     const sql = db.query.mock.calls.map((call) => String(call[0]));
     const summarySql = sql.find((statement) => statement.includes("INSERT INTO public.wa_candidate_finance_summaries"));
-    expect(summarySql).toContain("outside_support_total = COALESCE(EXCLUDED.outside_support_total");
+    expect(summarySql).toContain("outside_support_total = EXCLUDED.outside_support_total");
+    expect(summarySql).not.toContain("COALESCE(");
     expect(sql.some((statement) => statement.includes("DELETE FROM public.wa_candidate_finance_direct_breakdowns"))).toBe(false);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.wa_candidate_finance_outside_groups"))).toBe(false);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.wa_candidate_finance_outside_group_breakdowns"))).toBe(false);
+  });
+
+  it("requires outside groups when writing outside group breakdowns", async () => {
+    const db = createMockDb();
+
+    await expect(
+      replaceWashingtonCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        outsideGroupBreakdowns: [
+          {
+            sponsorId: "FUSEV  147",
+            supportOppose: "support",
+            categoryType: "donor",
+            categoryName: "Washington Conservation Action Votes",
+            amount: 1000,
+          },
+        ],
+      })
+    ).rejects.toThrow("Washington outside group breakdowns require outside groups in the same snapshot");
+    expect(db.connect).not.toHaveBeenCalled();
   });
 
   it("uses current snapshot keys when cleaning repeated writes with the same timestamp", async () => {

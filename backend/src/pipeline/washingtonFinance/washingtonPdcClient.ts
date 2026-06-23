@@ -445,14 +445,13 @@ function committeeWhere(input: WashingtonPdcCommitteeInput): string {
     throw new WashingtonPdcClientError("invalid_request", "Washington PDC filerId or committeeId is required");
   }
 
-  const ids: string[] = [];
-  if (filerId) {
-    ids.push(`filer_id = ${soqlString(filerId)}`);
-  }
-  if (committeeId) {
-    ids.push(`committee_id = ${soqlString(committeeId)}`);
-  }
-  return `election_year = ${soqlString(String(electionYear))} AND amount > 0 AND (${ids.join(" OR ")})`;
+  const idPredicate =
+    filerId && committeeId
+      ? `filer_id = ${soqlString(filerId)} AND committee_id = ${soqlString(committeeId)}`
+      : filerId
+        ? `filer_id = ${soqlString(filerId)}`
+        : `committee_id = ${soqlString(committeeId!)}`;
+  return `election_year = ${soqlString(String(electionYear))} AND amount > 0 AND (${idPredicate})`;
 }
 
 function aggregateFromRow(row: unknown, defaultCategoryName?: string): WashingtonPdcAggregate | null {

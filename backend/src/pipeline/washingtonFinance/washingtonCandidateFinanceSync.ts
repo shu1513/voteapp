@@ -38,6 +38,7 @@ import {
 } from "./washingtonPdcClient.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & Pick<Pool, "connect">;
 
 type WashingtonPdcDataClient = {
   searchAndResolveCandidateCommittee: (
@@ -79,7 +80,7 @@ type WashingtonPdcDataClient = {
 };
 
 export type WashingtonCandidateFinanceSyncInput = {
-  db: Queryable;
+  db: ConnectableQueryable;
   candidateId: string;
   electionId: string;
   candidateName: string;
@@ -331,10 +332,12 @@ function resolveSponsorCommittee(summaries: readonly WashingtonPdcCandidateSumma
     return { status: "skipped", reason: "ambiguous" };
   }
   const summary = [...usable.values()][0];
+  const filerId = summary.filerId.trim();
+  const committeeId = summary.committeeId?.trim() ?? "";
   return {
     status: "matched",
-    filerId: summary.filerId,
-    committeeId: summary.committeeId ?? "",
+    filerId,
+    committeeId,
     committeeName: summary.filerName,
     sourceUrl: summary.sourceUrl ?? null,
   };
@@ -518,6 +521,8 @@ function toSummary(input: {
   outsideGroups: readonly WashingtonPdcIndependentSpendingGroup[];
   fallbackSourceUrl?: string | null;
 }): WashingtonFinanceSummaryInput {
+  // PDC candidate summaries expose one contribution total; they do not split
+  // total receipts from direct donor receipts in this API path.
   const totalReceipts = input.resolution.contributionsAmount ?? null;
   return {
     totalReceipts,

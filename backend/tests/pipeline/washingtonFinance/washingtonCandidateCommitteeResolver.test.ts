@@ -145,6 +145,33 @@ describe("washingtonCandidateCommitteeResolver", () => {
     });
   });
 
+  it("does not merge distinct committees that share the same filer id", () => {
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "statewide",
+        officeName: "Secretary of State",
+        electionYear: 2024,
+        summaries: [
+          summary({ filerId: "DOEJ--101", committeeId: "4001", filerName: "Jane Doe", office: "SECRETARY OF STATE" }),
+          summary({
+            filerId: "DOEJ--101",
+            committeeId: "4002",
+            filerName: "Jane Doe",
+            office: "SECRETARY OF STATE",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "ambiguous",
+      reason: "multiple_matching_committees",
+      matches: [
+        { filerId: "DOEJ--101", committeeId: "4001" },
+        { filerId: "DOEJ--101", committeeId: "4002" },
+      ],
+    });
+  });
+
   it("returns unmatched for unsupported offices, missing names, inactive rows, and typos", () => {
     expect(
       resolveWashingtonCandidateCommittee({

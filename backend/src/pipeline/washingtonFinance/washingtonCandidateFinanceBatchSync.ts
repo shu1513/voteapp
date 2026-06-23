@@ -15,6 +15,7 @@ import { WASHINGTON_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./washingtonFinanceElig
 import type { WashingtonPdcClientOptions } from "./washingtonPdcClient.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & Pick<Pool, "connect">;
 
 export type WashingtonCandidateFinanceDueRow = {
   candidateId: string;
@@ -33,7 +34,7 @@ export type WashingtonCandidateFinanceDueRow = {
 };
 
 export type WashingtonCandidateFinanceBatchSyncInput = {
-  db: Queryable;
+  db: ConnectableQueryable;
   now?: Date;
   dryRun?: boolean;
   maxCandidates?: number;

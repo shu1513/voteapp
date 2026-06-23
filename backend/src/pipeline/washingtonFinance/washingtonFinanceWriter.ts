@@ -5,7 +5,7 @@ import { upsertFinanceLabelClassification } from "../finance/financeIndustryClas
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
-  connect?: () => Promise<PoolClient>;
+  connect: () => Promise<PoolClient>;
 };
 type ClientLikeQueryable = Queryable & {
   release?: () => void;
@@ -71,7 +71,7 @@ export type WashingtonFinanceOutsideGroupBreakdownInput = {
 };
 
 export type WashingtonFinanceSnapshotInput = {
-  db: Queryable;
+  db: ConnectableQueryable;
   link: WashingtonFinanceLinkInput;
   syncedAt?: Date;
   summary?: WashingtonFinanceSummaryInput;
@@ -146,7 +146,7 @@ function normalizeNullableCount(value: number | null | undefined): number | null
   return value;
 }
 
-function canOpenTransaction(db: Queryable): db is ConnectableQueryable & { connect: () => Promise<PoolClient> } {
+function canOpenTransaction(db: Queryable): db is ConnectableQueryable {
   return (
     typeof (db as ConnectableQueryable).connect === "function" &&
     typeof (db as ClientLikeQueryable).release !== "function"
@@ -169,24 +169,19 @@ function validateWashingtonFinanceLinkInput(link: WashingtonFinanceLinkInput): v
   normalizeNullableDate(link.lastVerifiedAt);
 }
 
+function validateWashingtonFinanceSnapshotInput(input: WashingtonFinanceSnapshotInput): void {
+  validateWashingtonFinanceLinkInput(input.link);
+  if (input.outsideGroupBreakdowns && !input.outsideGroups) {
+    throw new Error("Washington outside group breakdowns require outside groups in the same snapshot");
+  }
+}
+
 async function withWashingtonFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
   if (!canOpenTransaction(db)) {
     if (isClientLikeQueryable(db)) {
       throw new Error("Washington finance snapshot writes must receive a Pool, not a PoolClient");
     }
-    try {
-      await db.query("BEGIN");
-      const result = await work(db);
-      await db.query("COMMIT");
-      return result;
-    } catch (error) {
-      try {
-        await db.query("ROLLBACK");
-      } catch {
-        // Preserve the original write failure.
-      }
-      throw error;
-    }
+    throw new Error("Washington finance snapshot writes must receive a Pool");
   }
 
   const client = await db.connect();
@@ -296,13 +291,13 @@ async function upsertSummary(input: {
       VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
-        total_receipts = COALESCE(EXCLUDED.total_receipts, wa_candidate_finance_summaries.total_receipts),
-        direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, wa_candidate_finance_summaries.direct_contribution_total),
-        total_disbursements = COALESCE(EXCLUDED.total_disbursements, wa_candidate_finance_summaries.total_disbursements),
-        cash_on_hand = COALESCE(EXCLUDED.cash_on_hand, wa_candidate_finance_summaries.cash_on_hand),
-        outside_support_total = COALESCE(EXCLUDED.outside_support_total, wa_candidate_finance_summaries.outside_support_total),
-        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, wa_candidate_finance_summaries.outside_oppose_total),
-        source_url = COALESCE(EXCLUDED.source_url, wa_candidate_finance_summaries.source_url),
+        total_receipts = EXCLUDED.total_receipts,
+        direct_contribution_total = EXCLUDED.direct_contribution_total,
+        total_disbursements = EXCLUDED.total_disbursements,
+        cash_on_hand = EXCLUDED.cash_on_hand,
+        outside_support_total = EXCLUDED.outside_support_total,
+        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        source_url = EXCLUDED.source_url,
         last_synced_at = EXCLUDED.last_synced_at
     `,
     [
@@ -547,7 +542,7 @@ export async function replaceWashingtonCandidateFinanceSnapshot(
   if (Number.isNaN(syncedAt.getTime())) {
     throw new Error("Invalid Washington finance sync timestamp");
   }
-  validateWashingtonFinanceLinkInput(input.link);
+  validateWashingtonFinanceSnapshotInput(input);
   const electionYear = normalizeElectionYear(input.link.electionYear);
 
   return await withWashingtonFinanceTransaction(input.db, async (db) => {

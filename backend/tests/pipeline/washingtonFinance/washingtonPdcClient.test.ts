@@ -311,6 +311,8 @@ describe("washingtonPdcClient", () => {
     );
     expect(url.searchParams.get("$where")).toContain("filer_id = 'FUSEV  101'");
     expect(url.searchParams.get("$where")).toContain("committee_id = '6708'");
+    expect(url.searchParams.get("$where")).toContain("filer_id = 'FUSEV  101' AND committee_id = '6708'");
+    expect(url.searchParams.get("$where")).not.toContain("filer_id = 'FUSEV  101' OR committee_id = '6708'");
     expect(url.searchParams.get("$where")).toContain("contributor_category = 'Organization'");
 
     const fetchImpl = vi
