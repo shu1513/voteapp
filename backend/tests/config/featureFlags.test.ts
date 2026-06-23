@@ -10,6 +10,8 @@ import {
   isConnecticutCampaignFinanceEnabled,
   isConnecticutCampaignFinanceSyncEnabled,
   isConnecticutEcrisRawDataRefreshEnabled,
+  isDistrictOfColumbiaCampaignFinanceEnabled,
+  isDistrictOfColumbiaCampaignFinanceSyncEnabled,
   isNewMexicoCampaignFinanceEnabled,
   isNewMexicoCampaignFinanceSyncEnabled,
   isNewMexicoCfisRawDataRefreshEnabled,
@@ -47,6 +49,8 @@ const ORIGINAL_TEXAS_FINANCE_SYNC_VALUE = process.env.TEXAS_CAMPAIGN_FINANCE_SYN
 const ORIGINAL_TEXAS_RAW_REFRESH_VALUE = process.env.TEXAS_TEC_RAW_DATA_REFRESH_ENABLED;
 const ORIGINAL_WASHINGTON_FINANCE_VALUE = process.env.WASHINGTON_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_WASHINGTON_FINANCE_SYNC_VALUE = process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_DC_FINANCE_VALUE = process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_DC_FINANCE_SYNC_VALUE = process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED;
 
 describe("featureFlags", () => {
   afterEach(() => {
@@ -159,6 +163,16 @@ describe("featureFlags", () => {
       delete process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED;
     } else {
       process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_WASHINGTON_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_DC_FINANCE_VALUE === undefined) {
+      delete process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_DC_FINANCE_VALUE;
+    }
+    if (ORIGINAL_DC_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_DC_FINANCE_SYNC_VALUE;
     }
   });
 
@@ -548,5 +562,39 @@ describe("featureFlags", () => {
 
     expect(isWashingtonCampaignFinanceEnabled()).toBe(true);
     expect(isWashingtonCampaignFinanceSyncEnabled()).toBe(true);
+  });
+
+  it("disables District of Columbia campaign finance by default", () => {
+    delete process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+
+    expect(isDistrictOfColumbiaCampaignFinanceEnabled()).toBe(false);
+    expect(isDistrictOfColumbiaCampaignFinanceSyncEnabled()).toBe(false);
+  });
+
+  it("requires the District of Columbia campaign finance master flag before sync can run", () => {
+    process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isDistrictOfColumbiaCampaignFinanceEnabled()).toBe(false);
+    expect(isDistrictOfColumbiaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isDistrictOfColumbiaCampaignFinanceSyncEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the District of Columbia campaign finance sync flag", () => {
+    process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    expect(isDistrictOfColumbiaCampaignFinanceEnabled()).toBe(true);
+    expect(isDistrictOfColumbiaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isDistrictOfColumbiaCampaignFinanceSyncEnabled(true)).toBe(true);
+  });
+
+  it("enables District of Columbia campaign finance sync when both flags are enabled", () => {
+    process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isDistrictOfColumbiaCampaignFinanceEnabled()).toBe(true);
+    expect(isDistrictOfColumbiaCampaignFinanceSyncEnabled()).toBe(true);
   });
 });

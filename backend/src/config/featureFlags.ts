@@ -178,3 +178,14 @@ export function isHawaiiCampaignFinanceSyncEnabled(force = false): boolean {
     (force || readBooleanEnv("HAWAII_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
   );
 }
+
+export function isDistrictOfColumbiaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isDistrictOfColumbiaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isDistrictOfColumbiaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
