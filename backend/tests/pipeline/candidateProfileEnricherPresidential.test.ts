@@ -32,6 +32,8 @@ const enqueueManualWashingtonCandidateFinanceSyncJobMock = vi.hoisted(() => vi.f
 const buildWashingtonCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualHawaiiCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 const buildHawaiiCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
+const enqueueManualVirginiaCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
+const buildVirginiaCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 
 vi.mock("pg", () => ({
   Pool: vi.fn(() => ({
@@ -125,6 +127,12 @@ vi.mock("../../src/scheduler/washingtonCandidateFinanceSyncScheduler.js", () => 
   enqueueManualWashingtonCandidateFinanceSyncJob: enqueueManualWashingtonCandidateFinanceSyncJobMock,
 }));
 
+vi.mock("../../src/scheduler/virginiaCandidateFinanceSyncScheduler.js", () => ({
+  buildVirginiaCandidateFinanceLinkedElectionSyncJobId:
+    buildVirginiaCandidateFinanceLinkedElectionSyncJobIdMock,
+  enqueueManualVirginiaCandidateFinanceSyncJob: enqueueManualVirginiaCandidateFinanceSyncJobMock,
+}));
+
 import { runCandidateProfileEnricher } from "../../src/pipeline/enrichers/candidateProfileEnricher.js";
 import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
@@ -150,6 +158,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     enqueueManualTexasCandidateFinanceSyncJobMock.mockResolvedValue("texas-finance-job-1");
     enqueueManualWashingtonCandidateFinanceSyncJobMock.mockResolvedValue("washington-finance-job-1");
     enqueueManualHawaiiCandidateFinanceSyncJobMock.mockResolvedValue("hawaii-finance-job-1");
+    enqueueManualVirginiaCandidateFinanceSyncJobMock.mockResolvedValue("virginia-finance-job-1");
     buildCaliforniaCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "california-candidate-finance-linked-election-sync-2026-06-01"
     );
@@ -173,6 +182,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     );
     buildHawaiiCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "hawaii-candidate-finance-linked-election-sync-2026-06-01"
+    );
+    buildVirginiaCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
+      "virginia-candidate-finance-linked-election-sync-2026-06-01"
     );
     redisXReadGroupMock.mockResolvedValue([
       {
@@ -1459,6 +1471,104 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
       "1-11"
+    );
+  });
+
+  it("dedupes automatic Virginia finance batch syncs for eligible Virginia elections", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-12",
+            message: {
+              election_id: "election-va-governor",
+              item_type: "candidate_profile",
+              candidate_display_name: "Jane Commonwealth",
+              roster_party: "Democratic",
+              roster_is_incumbent: "false",
+              seed_urls: JSON.stringify(["https://example.gov/virginia-governor"]),
+              run_id: "run-va-governor",
+            },
+          },
+        ],
+      },
+    ]);
+    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      const text = String(sql);
+      if (text.includes("FROM public.candidate_elections AS ce")) {
+        expect(params).toEqual(["election-va-governor"]);
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("FROM public.elections AS e")) {
+        expect(params).toEqual(["election-va-governor"]);
+        return {
+          rows: [
+            {
+              id: "election-va-governor",
+              state: "VA",
+              district_name: "Virginia",
+              district_type: "statewide",
+              election_date: "2026-11-03",
+              official_ballot_title: "Governor",
+              election_stage: "general",
+              senate_class: null,
+              term_end_year: null,
+              is_partisan: true,
+              sources: ["https://example.gov/election"],
+              office_scope: "statewide",
+              office_canonical_name: "Governor",
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected pool query: ${sql}`);
+    });
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Jane Commonwealth",
+        first_name: "Jane",
+        last_name: "Commonwealth",
+        party: "Democratic",
+        fec_ids: [],
+        sources: ["https://example.gov/virginia-governor"],
+      },
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualCaliforniaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualColoradoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualConnecticutCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualNewMexicoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualTexasCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualWashingtonCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualHawaiiCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(buildVirginiaCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
+    expect(enqueueManualVirginiaCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
+      {
+        triggeredBy: "manual",
+      },
+      {
+        jobId: "virginia-candidate-finance-linked-election-sync-2026-06-01",
+      }
+    );
+    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
+      {
+        candidateId: "candidate-1",
+        electionId: "election-va-governor",
+        runId: "run-va-governor",
+      },
+    ]);
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-12"
     );
   });
 

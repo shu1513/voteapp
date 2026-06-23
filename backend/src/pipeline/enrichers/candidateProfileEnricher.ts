@@ -47,6 +47,10 @@ import {
   enqueueManualWashingtonCandidateFinanceSyncJob,
 } from "../../scheduler/washingtonCandidateFinanceSyncScheduler.js";
 import {
+  buildVirginiaCandidateFinanceLinkedElectionSyncJobId,
+  enqueueManualVirginiaCandidateFinanceSyncJob,
+} from "../../scheduler/virginiaCandidateFinanceSyncScheduler.js";
+import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
   STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
   STAGING_CANDIDATE_PROFILE_REJECTED_STREAM,
@@ -83,6 +87,7 @@ import { isOklahomaFinanceEligibleOffice } from "../oklahomaFinance/oklahomaFina
 import { isTexasFinanceEligibleOffice } from "../texasFinance/texasFinanceEligibleOffices.js";
 import { isHawaiiFinanceEligibleOffice } from "../hawaiiFinance/hawaiiFinanceEligibleOffices.js";
 import { isWashingtonFinanceEligibleOffice } from "../washingtonFinance/washingtonFinanceEligibleOffices.js";
+import { isVirginiaFinanceEligibleOffice } from "../virginiaFinance/virginiaFinanceEligibleOffices.js";
 
 type EnricherOptions = {
   once?: boolean;
@@ -608,6 +613,37 @@ async function enqueueWashingtonFinanceSyncForLinkedElection(input: {
     const reason = toReason(error);
     console.warn(
       `candidate-profile enricher could not enqueue Washington finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
+async function enqueueVirginiaFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (
+    input.context.state !== "VA" ||
+    !isVirginiaFinanceEligibleOffice({
+      officeScope: input.context.officeScope,
+      officeCanonicalName: input.context.officeCanonicalName,
+    })
+  ) {
+    return;
+  }
+
+  try {
+    await enqueueManualVirginiaCandidateFinanceSyncJob(
+      {
+        triggeredBy: "manual",
+      },
+      {
+        jobId: buildVirginiaCandidateFinanceLinkedElectionSyncJobId(),
+      }
+    );
+  } catch (error) {
+    const reason = toReason(error);
+    console.warn(
+      `candidate-profile enricher could not enqueue Virginia finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
     );
   }
 }
@@ -1256,6 +1292,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               candidateId,
             });
             await enqueueWashingtonFinanceSyncForLinkedElection({
+              context: draftContext,
+              candidateId,
+            });
+            await enqueueVirginiaFinanceSyncForLinkedElection({
               context: draftContext,
               candidateId,
             });
