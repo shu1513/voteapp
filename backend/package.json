@@ -132,7 +132,12 @@
     "texas-candidates:finance:raw:scheduler:trigger": "tsx src/scripts/triggerTexasTecRawDataRefresh.ts",
     "texas-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertTexasCandidateFinanceSyncScheduler.ts",
     "texas-candidates:finance:scheduler:worker": "tsx src/scripts/runTexasCandidateFinanceSyncSchedulerWorker.ts",
-    "texas-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerTexasCandidateFinanceSync.ts"
+    "texas-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerTexasCandidateFinanceSync.ts",
+    "washington-candidates:finance:sync-due": "tsx src/scripts/syncDueWashingtonCandidateFinance.ts",
+    "washington-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertWashingtonCandidateFinanceSyncScheduler.ts",
+    "washington-candidates:finance:scheduler:worker": "tsx src/scripts/runWashingtonCandidateFinanceSyncSchedulerWorker.ts",
+    "washington-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerWashingtonCandidateFinanceSync.ts",
+    "washington-candidates:finance:live-probe": "tsx src/scripts/probeWashingtonCandidateFinance.ts"
   },
   "dependencies": {
     "bullmq": "^5.71.1",
