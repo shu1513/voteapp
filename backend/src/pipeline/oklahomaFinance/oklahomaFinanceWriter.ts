@@ -238,9 +238,9 @@ async function upsertSummary(input: {
       VALUES ($1::uuid, $2, $3, $4, $5, $6::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
-        total_receipts = EXCLUDED.total_receipts,
-        direct_contribution_total = EXCLUDED.direct_contribution_total,
-        source_url = EXCLUDED.source_url,
+        total_receipts = COALESCE(EXCLUDED.total_receipts, ok_candidate_finance_summaries.total_receipts),
+        direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, ok_candidate_finance_summaries.direct_contribution_total),
+        source_url = COALESCE(EXCLUDED.source_url, ok_candidate_finance_summaries.source_url),
         last_synced_at = EXCLUDED.last_synced_at
     `,
     [

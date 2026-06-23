@@ -38,4 +38,10 @@ describe("triggerNewMexicoCandidateFinanceSync script", () => {
       "Missing --stale-after-days value"
     );
   });
+
+  it("can opt out of AI industry classification", () => {
+    expect(parseNewMexicoCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
+      aiClassifyIndustries: false,
+    });
+  });
 });

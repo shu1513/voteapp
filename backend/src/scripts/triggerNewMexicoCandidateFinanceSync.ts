@@ -51,7 +51,7 @@ export function parseNewMexicoCandidateFinanceSyncTriggerArgs(
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     rawDataCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
-    aiClassifyIndustries: args.includes("--ai-classify-industries"),
+    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
     aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }

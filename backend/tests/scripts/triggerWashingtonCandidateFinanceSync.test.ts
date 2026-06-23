@@ -42,4 +42,10 @@ describe("triggerWashingtonCandidateFinanceSync script", () => {
       parseWashingtonCandidateFinanceSyncTriggerArgs(["--max-candidates=5", "--max-candidates", "10"])
     ).toThrow("Provide --max-candidates at most once");
   });
+
+  it("can opt out of AI industry classification", () => {
+    expect(parseWashingtonCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
+      aiClassifyIndustries: false,
+    });
+  });
 });

@@ -36,6 +36,13 @@ describe("triggerCaliforniaCandidateFinanceSync script", () => {
       dryRun: true,
       force: false,
       includeOutside: true,
+      aiClassifyIndustries: true,
+    });
+  });
+
+  it("can opt out of AI industry classification", () => {
+    expect(parseCaliforniaCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
+      aiClassifyIndustries: false,
     });
   });
 

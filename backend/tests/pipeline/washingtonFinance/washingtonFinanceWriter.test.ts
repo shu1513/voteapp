@@ -163,8 +163,13 @@ describe("washingtonFinanceWriter", () => {
       String(call[0]).includes("INSERT INTO public.wa_candidate_finance_summaries")
     );
     expect(String(summaryCall?.[0])).toContain("outside_support_total");
-    expect(String(summaryCall?.[0])).toContain("total_receipts = EXCLUDED.total_receipts");
-    expect(String(summaryCall?.[0])).not.toContain("COALESCE(");
+    expect(String(summaryCall?.[0])).toContain(
+      "total_receipts = COALESCE(EXCLUDED.total_receipts, wa_candidate_finance_summaries.total_receipts)"
+    );
+    expect(String(summaryCall?.[0])).toContain(
+      "direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, wa_candidate_finance_summaries.direct_contribution_total)"
+    );
+    expect(String(summaryCall?.[0])).toContain("outside_support_total = EXCLUDED.outside_support_total");
     expect(summaryCall?.[1]).toEqual([
       LINK_ID,
       2024,
@@ -264,7 +269,9 @@ describe("washingtonFinanceWriter", () => {
     const sql = db.query.mock.calls.map((call) => String(call[0]));
     const summarySql = sql.find((statement) => statement.includes("INSERT INTO public.wa_candidate_finance_summaries"));
     expect(summarySql).toContain("outside_support_total = EXCLUDED.outside_support_total");
-    expect(summarySql).not.toContain("COALESCE(");
+    expect(summarySql).toContain(
+      "total_receipts = COALESCE(EXCLUDED.total_receipts, wa_candidate_finance_summaries.total_receipts)"
+    );
     expect(sql.some((statement) => statement.includes("DELETE FROM public.wa_candidate_finance_direct_breakdowns"))).toBe(false);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.wa_candidate_finance_outside_groups"))).toBe(false);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.wa_candidate_finance_outside_group_breakdowns"))).toBe(false);

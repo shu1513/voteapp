@@ -27,6 +27,8 @@ describe("triggerCandidateFinanceSync script", () => {
       perPage: undefined,
       outsideGroupLimit: undefined,
       timeoutMs: 5000,
+      aiClassifyIndustries: true,
+      aiClassificationMinAmount: undefined,
     });
   });
 
@@ -44,6 +46,12 @@ describe("triggerCandidateFinanceSync script", () => {
       candidateId: "candidate-1",
       fecCandidateId: "S80000001",
       electionYear: 2026,
+    });
+  });
+
+  it("can opt out of AI industry classification", () => {
+    expect(parseCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
+      aiClassifyIndustries: false,
     });
   });
 

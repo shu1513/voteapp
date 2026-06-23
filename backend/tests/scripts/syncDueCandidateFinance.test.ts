@@ -47,6 +47,12 @@ describe("syncDueCandidateFinance script", () => {
     );
   });
 
+  it("can opt out of AI industry classification", () => {
+    expect(parseSyncDueCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
+      aiClassifyIndustries: false,
+    });
+  });
+
   it("formats script output", () => {
     const output = toSyncDueCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),

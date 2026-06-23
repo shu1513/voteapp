@@ -39,6 +39,12 @@ describe("syncDueTexasCandidateFinance script", () => {
     expect(parseSyncDueTexasCandidateFinanceScriptArgs([])).toMatchObject({
       dryRun: false,
       force: false,
+      aiClassifyIndustries: true,
+    });
+  });
+
+  it("can opt out of AI industry classification", () => {
+    expect(parseSyncDueTexasCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
       aiClassifyIndustries: false,
     });
   });
