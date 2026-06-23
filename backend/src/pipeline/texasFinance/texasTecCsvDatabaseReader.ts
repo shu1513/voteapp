@@ -287,7 +287,11 @@ async function readFileRange(path: string, position: number, length: number): Pr
 
 function findEndOfCentralDirectory(tail: Buffer): number {
   for (let offset = tail.length - EOCD_MIN_LENGTH; offset >= 0; offset -= 1) {
-    if (tail.readUInt32LE(offset) === EOCD_SIGNATURE) {
+    if (tail.readUInt32LE(offset) !== EOCD_SIGNATURE) {
+      continue;
+    }
+    const commentLength = tail.readUInt16LE(offset + 20);
+    if (offset + EOCD_MIN_LENGTH + commentLength === tail.length) {
       return offset;
     }
   }
@@ -428,7 +432,7 @@ async function streamTexasTecCsvRows(input: {
     );
   }
   if (input.entry.compressedSize === 0) {
-    return [];
+    throw new Error(`Texas TEC CSV entry is empty: ${input.entry.fileName}`);
   }
 
   const dataOffset = await readEntryDataOffset(input.zipPath, input.entry);

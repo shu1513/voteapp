@@ -188,6 +188,26 @@ describe("texasFinanceWriter", () => {
     expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
   });
 
+  it("rejects a supplied PoolClient so it cannot commit an outer transaction", async () => {
+    const client = {
+      query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
+      release: vi.fn(),
+    };
+
+    await expect(
+      replaceTexasCandidateFinanceSnapshot({
+        db: client,
+        link: baseLink(),
+        syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+        summary: {
+          totalReceipts: 1000,
+        },
+      })
+    ).rejects.toThrow("Texas finance snapshot writes must receive a Pool, not a PoolClient");
+    expect(client.query).not.toHaveBeenCalled();
+    expect(client.release).not.toHaveBeenCalled();
+  });
+
   it("does not delete omitted breakdown groups", async () => {
     const db = createMockDb();
 

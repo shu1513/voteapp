@@ -35,7 +35,7 @@ type ZipFixtureEntry = {
 
 const tempDirs: string[] = [];
 
-function makeZip(entries: readonly ZipFixtureEntry[]): Buffer {
+function makeZip(entries: readonly ZipFixtureEntry[], comment: Buffer = Buffer.alloc(0)): Buffer {
   const localParts: Buffer[] = [];
   const centralParts: Buffer[] = [];
   let localOffset = 0;
@@ -102,16 +102,16 @@ function makeZip(entries: readonly ZipFixtureEntry[]): Buffer {
   eocd.writeUInt16LE(entries.length, 10);
   eocd.writeUInt32LE(centralDirectory.length, 12);
   eocd.writeUInt32LE(localOffset, 16);
-  eocd.writeUInt16LE(0, 20);
+  eocd.writeUInt16LE(comment.length, 20);
 
-  return Buffer.concat([...localParts, centralDirectory, eocd]);
+  return Buffer.concat([...localParts, centralDirectory, eocd, comment]);
 }
 
-async function writeFixtureZip(entries: readonly ZipFixtureEntry[]): Promise<string> {
+async function writeFixtureZip(entries: readonly ZipFixtureEntry[], comment?: Buffer): Promise<string> {
   const dir = await mkdtemp(path.join(tmpdir(), "voteapp-tx-tec-reader-"));
   tempDirs.push(dir);
   const zipPath = path.join(dir, "TEC_CF_CSV.zip");
-  await writeFile(zipPath, makeZip(entries));
+  await writeFile(zipPath, makeZip(entries, comment));
   return zipPath;
 }
 
@@ -183,6 +183,21 @@ describe("Texas TEC CSV database reader", () => {
       "contribs_01.csv",
     ]);
     await expect(listTexasTecExpenditureCsvFileNames(zipPath)).resolves.toEqual(["expend_00.csv"]);
+  });
+
+  it("ignores EOCD signature bytes inside the ZIP comment", async () => {
+    const comment = Buffer.from("comment before PK\u0005\u0006 comment after", "binary");
+    const zipPath = await writeFixtureZip(
+      [{ fileName: "filers.csv", content: "recordType,filerIdent\nFILER,1\n" }],
+      comment
+    );
+
+    await expect(listTexasTecCsvDatabaseZipEntries(zipPath)).resolves.toEqual([
+      expect.objectContaining({
+        fileName: "filers.csv",
+        isDirectory: false,
+      }),
+    ]);
   });
 
   it("streams selected CSV table rows with predicate and maxRows", async () => {
@@ -503,6 +518,14 @@ describe("Texas TEC CSV database reader", () => {
     await expect(
       readTexasTecCsvDatabaseTableRows({ zipPath, fileName: "filers.csv", maxRows: 0 })
     ).rejects.toThrow("Invalid Texas TEC CSV database maxRows");
+  });
+
+  it("throws when a requested table entry is empty", async () => {
+    const zipPath = await writeFixtureZip([{ fileName: "filers.csv", content: "" }]);
+
+    await expect(readTexasTecCsvDatabaseTableRows({ zipPath, fileName: "filers.csv" })).rejects.toThrow(
+      "Texas TEC CSV entry is empty: filers.csv"
+    );
   });
 
   it("throws when typed readers receive invalid filenames or missing required columns", async () => {

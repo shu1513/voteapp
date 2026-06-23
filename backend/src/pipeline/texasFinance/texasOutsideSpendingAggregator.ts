@@ -436,16 +436,22 @@ export function aggregateTexasOutsideSpending(
     const committeeId = normalizeId(row.filerIdent);
     const relationship = relationships.get(committeeId);
     const expenditure = expendituresByKey.get(expenditureKey({ filerIdent: row.filerIdent, expendInfoId: row.expendInfoId }));
-    const amountCents = parseAmountCents(row.expendAmount);
     if (
       !committeeId ||
       relationship === undefined ||
       relationship === null ||
       !expenditure ||
-      isInfoOnly(expenditure) ||
+      isInfoOnly(expenditure)
+    ) {
+      skippedCandidateExpenditureRowCount += 1;
+      continue;
+    }
+
+    const amountCents = parseAmountCents(expenditure.expendAmount);
+    if (
       amountCents === null ||
       amountCents <= 0 ||
-      !isCycleYear({ rawDate: row.expendDt, electionYear })
+      !isCycleYear({ rawDate: expenditure.expendDt, electionYear })
     ) {
       skippedCandidateExpenditureRowCount += 1;
       continue;

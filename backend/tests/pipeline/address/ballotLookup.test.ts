@@ -2588,6 +2588,15 @@ describe("lookupElectionDetailById", () => {
             contributor_count: "10",
             source_url: null,
           },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$1,000-$4,999",
+            amount: "40000.00",
+            contributor_count: "8",
+            source_url: null,
+          },
         ],
       })
       .mockResolvedValueOnce({
@@ -2674,6 +2683,14 @@ describe("lookupElectionDetailById", () => {
         ],
         top_employers: [],
         top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$1,000-$4,999",
+            amount: 40000,
+            contributor_count: 8,
+            source_url: "https://www.ethics.state.tx.us/search/cf/",
+          },
+        ],
       },
       outside_spending: {
         support_total: 80000,
@@ -2748,6 +2765,7 @@ describe("lookupElectionDetailById", () => {
     expect(query).toHaveBeenCalledTimes(12);
     expect(query.mock.calls[7]?.[0]).toContain("public.tx_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.tx_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
     expect(query.mock.calls[9]?.[0]).toContain("public.tx_candidate_finance_outside_groups");
     expect(query.mock.calls[10]?.[0]).toContain("public.tx_candidate_finance_outside_group_breakdowns");
     expect(query.mock.calls[11]?.[0]).toContain("public.tx_candidate_finance_outside_group_breakdowns");

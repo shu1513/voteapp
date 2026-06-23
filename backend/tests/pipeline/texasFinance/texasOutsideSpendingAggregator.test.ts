@@ -170,6 +170,40 @@ describe("texasOutsideSpendingAggregator", () => {
     });
   });
 
+  it("uses the joined expenditure row as the amount and date source", () => {
+    const result = aggregateTexasOutsideSpending({
+      candidateName: "Greg Abbott",
+      candidateCommitteeId: "00012345",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2026,
+      sourceUrl: "https://www.ethics.state.tx.us/search/cf/",
+      spacRows: [spac()],
+      expenditureRows: [expenditure({ expendAmount: "1200.00", expendDt: "20261015" })],
+      candidateRows: [candidate({ expendAmount: "999999.00", expendDt: "20240101" })],
+    });
+
+    expect(result).toEqual({
+      summary: {
+        supportTotal: 1200,
+        opposeTotal: 0,
+        groups: [
+          {
+            committeeId: "7001",
+            committeeName: "Texans for Example",
+            supportOppose: "support",
+            amount: 1200,
+            sourceUrl: "https://www.ethics.state.tx.us/search/cf/",
+          },
+        ],
+        sourceUrl: "https://www.ethics.state.tx.us/search/cf/",
+      },
+      matchedCandidateExpenditureRowCount: 1,
+      includedCandidateExpenditureRowCount: 1,
+      skippedCandidateExpenditureRowCount: 0,
+    });
+  });
+
   it("requires exact target office and legislative district matches", () => {
     const result = aggregateTexasOutsideSpending({
       candidateName: "Jane Doe",

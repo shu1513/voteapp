@@ -377,7 +377,18 @@ async function loadTexasTecDataForDueRows(input: {
     zipPath,
     predicate: buildTexasCandidateRowPredicate(input.dueRows),
   });
-  const spacCandidateCommitteeIds = new Set(input.dueRows.map((row) => normalizeId(row.committeeId)).filter(Boolean));
+  const spacCandidateCommitteeIds = new Set<string>();
+  for (const row of input.dueRows) {
+    const committeeIds = receiptCommitteeIdsByCandidateElectionKey.get(candidateElectionKey(row)) ?? [
+      row.committeeId,
+    ];
+    for (const committeeId of committeeIds) {
+      const normalizedCommitteeId = normalizeId(committeeId);
+      if (normalizedCommitteeId) {
+        spacCandidateCommitteeIds.add(normalizedCommitteeId);
+      }
+    }
+  }
   const spacRows = await readTexasTecSpacRows({
     zipPath,
     predicate: (row) => spacCandidateCommitteeIds.has(normalizeId(row.candidateFilerIdent)),

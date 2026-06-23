@@ -39,5 +39,9 @@ describe("triggerTexasCandidateFinanceSync script", () => {
     expect(() => parseTexasCandidateFinanceSyncTriggerArgs(["--stale-after-days"])).toThrow(
       "Missing --stale-after-days value"
     );
+    expect(() => parseTexasCandidateFinanceSyncTriggerArgs(["--raw-zip="])).toThrow("Missing --raw-zip value");
+    expect(() => parseTexasCandidateFinanceSyncTriggerArgs(["--raw-cache-dir", "   "])).toThrow(
+      "Missing --raw-cache-dir value"
+    );
   });
 });

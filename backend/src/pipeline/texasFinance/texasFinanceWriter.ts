@@ -151,6 +151,10 @@ function canOpenTransaction(db: Queryable): db is PoolLikeQueryable & { connect:
   );
 }
 
+function isClientLikeQueryable(db: Queryable): db is ClientLikeQueryable {
+  return typeof (db as ClientLikeQueryable).release === "function";
+}
+
 function validateTexasFinanceLinkInput(link: TexasFinanceLinkInput): void {
   requireNonEmpty(link.candidateId, "candidate id");
   requireNonEmpty(link.electionId, "election id");
@@ -164,6 +168,9 @@ function validateTexasFinanceLinkInput(link: TexasFinanceLinkInput): void {
 
 async function withTexasFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
   if (!canOpenTransaction(db)) {
+    if (isClientLikeQueryable(db)) {
+      throw new Error("Texas finance snapshot writes must receive a Pool, not a PoolClient");
+    }
     try {
       await db.query("BEGIN");
       const result = await work(db);

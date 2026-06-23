@@ -107,6 +107,35 @@ describe("Texas TEC CSV database artifact cache", () => {
     });
   });
 
+  it("rejects downloads whose byte count does not match content-length", async () => {
+    const cacheDir = await makeTempDir();
+    const paths = getTexasTecCsvDatabaseArtifactCachePaths(cacheDir);
+    const fetchImpl = vi.fn<typeof fetch>(async (_url, init) => {
+      if (init?.method === "HEAD") {
+        return response(null, {
+          "content-length": "100",
+          "content-type": "application/zip",
+          etag: "\"tx-tec-short\"",
+        });
+      }
+      return response("short", {
+        "content-length": "100",
+        "content-type": "application/zip",
+        etag: "\"tx-tec-short\"",
+      });
+    });
+
+    await expect(
+      refreshTexasTecCsvDatabaseArtifactCache({
+        cacheDir,
+        fetchImpl,
+        now: new Date("2026-06-21T12:00:00.000Z"),
+      })
+    ).rejects.toThrow("Texas TEC CSV database download size mismatch");
+
+    await expect(readFile(paths.zipPath, "utf8")).rejects.toThrow();
+  });
+
   it("skips download when cached metadata still matches", async () => {
     const cacheDir = await makeTempDir();
     const paths = getTexasTecCsvDatabaseArtifactCachePaths(cacheDir);

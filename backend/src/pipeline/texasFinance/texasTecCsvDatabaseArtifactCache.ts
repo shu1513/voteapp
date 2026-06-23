@@ -7,7 +7,7 @@ import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 
 export const TEXAS_TEC_CSV_DATABASE_URL =
   "https://prd.tecprd.ethicsefile.com/public/cf/public/TEC_CF_CSV.zip";
-export const TEXAS_TEC_CSV_DATABASE_FETCH_TIMEOUT_MS = 30_000;
+export const TEXAS_TEC_CSV_DATABASE_FETCH_TIMEOUT_MS = 900_000;
 export const DEFAULT_TEXAS_TEC_CSV_DATABASE_CACHE_DIR = "scratch/texas-campaign-finance/tec";
 export const TEXAS_TEC_CSV_DATABASE_CACHE_ZIP_FILE_NAME = "TEC_CF_CSV.zip";
 export const TEXAS_TEC_CSV_DATABASE_CACHE_METADATA_FILE_NAME = "TEC_CF_CSV.metadata.json";
@@ -154,8 +154,16 @@ export async function downloadTexasTecCsvDatabase(input: {
     }
   }
 
+  const metadata = metadataFromResponse(normalizedUrl, response);
+  if (metadata.contentLength !== null && outputStat.size !== metadata.contentLength) {
+    await rm(outputPath, { force: true }).catch(() => {});
+    throw new Error(
+      `Texas TEC CSV database download size mismatch: expected ${metadata.contentLength} bytes, received ${outputStat.size} bytes`
+    );
+  }
+
   return {
-    ...metadataFromResponse(normalizedUrl, response),
+    ...metadata,
     outputPath,
     bytesWritten: outputStat.size,
   };

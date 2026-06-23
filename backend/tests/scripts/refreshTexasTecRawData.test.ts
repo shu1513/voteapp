@@ -42,7 +42,7 @@ describe("refreshTexasTecRawData script", () => {
     expect(parseArgs([])).toMatchObject({
       url: "https://prd.tecprd.ethicsefile.com/public/cf/public/TEC_CF_CSV.zip",
       force: false,
-      timeoutMs: 30_000,
+      timeoutMs: 900_000,
     });
     expect(parseArgs([]).cacheDir).toContain("scratch/texas-campaign-finance/tec");
   });

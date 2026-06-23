@@ -59,7 +59,8 @@ type CandidateCommitteeAccumulator = {
 };
 
 function normalizeElectionYear(value: number): number {
-  if (!Number.isInteger(value) || value < 2000 || value > 2100) {
+  // This module relies on the TEC bulk electronic filing data shape we support from 2014 onward.
+  if (!Number.isInteger(value) || value < 2014 || value > 2100) {
     throw new Error(`Invalid Texas candidate committee election year: ${value}`);
   }
   return value;

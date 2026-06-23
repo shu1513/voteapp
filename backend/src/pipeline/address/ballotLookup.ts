@@ -3156,7 +3156,7 @@ async function loadTexasCandidateFinanceSummariesByCandidateElection(
         JOIN public.tx_candidate_finance_direct_breakdowns AS breakdown
           ON breakdown.link_id = link.id
          AND breakdown.election_year = link.election_year
-        WHERE breakdown.category_type = 'occupation'
+        WHERE breakdown.category_type IN ('occupation', 'contribution_size')
         GROUP BY selected.candidate_id, selected.election_id, breakdown.category_type, breakdown.category_name
       ),
       ranked AS (
@@ -3407,13 +3407,18 @@ async function loadTexasCandidateFinanceSummariesByCandidateElection(
   );
 
   const directOccupationsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  const contributionSizeBucketsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const summaryByCandidateElection = new Map(
     summaryResult.rows.map((row) => [candidateElectionKey(row.candidate_id, row.election_id), row])
   );
   for (const row of directBreakdownResult.rows) {
     const summary = summaryByCandidateElection.get(candidateElectionKey(row.candidate_id, row.election_id));
+    const targetMap =
+      row.category_type === "contribution_size"
+        ? contributionSizeBucketsByCandidateElection
+        : directOccupationsByCandidateElection;
     addFinanceBreakdown(
-      directOccupationsByCandidateElection,
+      targetMap,
       row.candidate_id,
       row.election_id,
       mapFinanceBreakdown(row, summary?.source_url ?? GENERIC_TEXAS_TEC_SOURCE_URL)
@@ -3480,6 +3485,7 @@ async function loadTexasCandidateFinanceSummariesByCandidateElection(
     summaryResult.rows.map((row) => {
       const key = candidateElectionKey(row.candidate_id, row.election_id);
       const topDirectDonorOccupations = directOccupationsByCandidateElection.get(key) ?? [];
+      const contributionSizeBuckets = contributionSizeBucketsByCandidateElection.get(key) ?? [];
       const topOutsideSupportingIndustries = (supportingIndustriesByCandidateElection.get(key) ?? []).map(
         (industry): BallotLookupFinanceOutsideIndustrySupportSummary => {
           const evidenceKey = `${key}\u0000${industry.category_name}`;
@@ -3507,6 +3513,7 @@ async function loadTexasCandidateFinanceSummariesByCandidateElection(
             top_occupations: topDirectDonorOccupations,
             top_employers: [],
             top_industries: [],
+            contribution_size_buckets: contributionSizeBuckets,
           },
           outside_spending: {
             support_total: parseFinanceAmount(row.outside_support_total),

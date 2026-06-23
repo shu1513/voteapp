@@ -82,7 +82,8 @@ CREATE TABLE IF NOT EXISTS public.tx_candidate_finance_summaries (
   CONSTRAINT tx_candidate_finance_summaries_link_year_fk
     FOREIGN KEY (link_id, election_year)
     REFERENCES public.tx_candidate_finance_links(id, election_year)
-    ON DELETE CASCADE,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT tx_candidate_finance_summaries_unique
     UNIQUE (link_id, election_year)
 );
@@ -123,7 +124,8 @@ CREATE TABLE IF NOT EXISTS public.tx_candidate_finance_direct_breakdowns (
   CONSTRAINT tx_candidate_finance_direct_breakdowns_link_year_fk
     FOREIGN KEY (link_id, election_year)
     REFERENCES public.tx_candidate_finance_links(id, election_year)
-    ON DELETE CASCADE,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT tx_candidate_finance_direct_breakdowns_unique
     UNIQUE (link_id, election_year, category_type, category_name)
 );
@@ -169,7 +171,8 @@ CREATE TABLE IF NOT EXISTS public.tx_candidate_finance_outside_groups (
   CONSTRAINT tx_candidate_finance_outside_groups_link_year_fk
     FOREIGN KEY (link_id, election_year)
     REFERENCES public.tx_candidate_finance_links(id, election_year)
-    ON DELETE CASCADE,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT tx_candidate_finance_outside_groups_unique
     UNIQUE (link_id, election_year, committee_id, support_oppose)
 );
@@ -236,6 +239,7 @@ CREATE TABLE IF NOT EXISTS public.tx_candidate_finance_outside_group_breakdowns 
       support_oppose
     )
     ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS tx_cff_outside_group_breakdowns_lookup_idx

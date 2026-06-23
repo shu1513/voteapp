@@ -10,16 +10,20 @@ function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
   const inline = args.find((arg) => arg.startsWith(inlinePrefix));
   if (inline) {
-    return inline.slice(inlinePrefix.length);
+    const value = inline.slice(inlinePrefix.length).trim();
+    if (value.length === 0) {
+      throw new Error(`Missing ${name} value`);
+    }
+    return value;
   }
 
   const index = args.indexOf(name);
   if (index >= 0) {
     const next = args[index + 1];
-    if (!next || next.startsWith("--")) {
+    if (!next || next.startsWith("--") || next.trim().length === 0) {
       throw new Error(`Missing ${name} value`);
     }
-    return next;
+    return next.trim();
   }
 
   return null;
@@ -50,8 +54,8 @@ export function parseTexasCandidateFinanceSyncTriggerArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    rawDataZipPath: parseFlagValue(args, "--raw-zip")?.trim() || undefined,
-    rawDataCacheDir: parseFlagValue(args, "--raw-cache-dir")?.trim() || undefined,
+    rawDataZipPath: parseFlagValue(args, "--raw-zip") || undefined,
+    rawDataCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
     aiClassifyIndustries: args.includes("--ai-classify-industries"),
     aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
