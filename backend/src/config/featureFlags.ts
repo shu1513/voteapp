@@ -189,3 +189,14 @@ export function isDistrictOfColumbiaCampaignFinanceSyncEnabled(force = false): b
     (force || readBooleanEnv("DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
   );
 }
+
+export function isVirginiaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isVirginiaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isVirginiaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("VIRGINIA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}

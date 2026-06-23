@@ -332,7 +332,8 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             imported_at: "2026-06-14 11:00:00+00",
           },
         ],
-      });
+      })
+      .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupBallotSummariesByDistrictIds({ query }, [houseDistrictId]);
 
@@ -504,7 +505,8 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             imported_at: "2026-06-14 11:00:00+00",
           },
         ],
-      });
+      })
+      .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupBallotSummariesByDistrictIds({ query }, [countyDistrictId]);
 
@@ -3576,6 +3578,155 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced Virginia finance summaries for Virginia candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "51",
+            district_name: "Virginia",
+            state: "VA",
+            state_fips: "51",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Commonwealth",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "VA",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "CC-25-00001",
+            election_year: 2026,
+            total_receipts: "210000.00",
+            direct_contribution_total: "180000.00",
+            source_url: "https://cfreports.elections.virginia.gov/Committee/Index/CC-25-00001",
+            last_synced_at: "2026-06-22 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Attorney",
+            amount: "90000.00",
+            contributor_count: "30",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$1,000-$4,999",
+            amount: "70000.00",
+            contributor_count: "25",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "VIRGINIA_CFREPORTS",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "CC-25-00001",
+      last_synced_at: "2026-06-22 04:05:00+00",
+      direct_campaign: {
+        total_raised: 180000,
+        total_spent: null,
+        cash_on_hand: null,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 90000,
+            contributor_count: 30,
+            source_url: "https://cfreports.elections.virginia.gov/Committee/Index/CC-25-00001",
+          },
+        ],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$1,000-$4,999",
+            amount: 70000,
+            contributor_count: 25,
+            source_url: "https://cfreports.elections.virginia.gov/Committee/Index/CC-25-00001",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: null,
+        oppose_total: null,
+        top_supporting_groups: [],
+        top_opposing_groups: [],
+        top_supporting_industries: [],
+        top_opposing_industries: [],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 90000,
+            contributor_count: 30,
+            source_url: "https://cfreports.elections.virginia.gov/Committee/Index/CC-25-00001",
+          },
+        ],
+        top_outside_supporting_industries: [],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(10);
+    expect(query.mock.calls[7]?.[0]).toContain("public.va_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.va_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");
+  });
+
   it("does not query Texas finance tables when Texas campaign finance is disabled", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("TEXAS_CAMPAIGN_FINANCE_ENABLED", "false");
@@ -3794,5 +3945,64 @@ describe("lookupElectionDetailById", () => {
     });
     expect(query).toHaveBeenCalledTimes(6);
     expect(query.mock.calls[0]?.[1]).toEqual([measureElectionId]);
+  });
+
+  it("does not load Virginia finance summaries for unsupported Virginia offices", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "county",
+            geoid_compact: "51059",
+            district_name: "Fairfax County",
+            state: "VA",
+            state_fips: "51",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Sheriff",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "county",
+            office_canonical_name: "Sheriff",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Commonwealth",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Sheriff",
+            state: "VA",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toBeNull();
+    expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("va_candidate_finance");
   });
 });
