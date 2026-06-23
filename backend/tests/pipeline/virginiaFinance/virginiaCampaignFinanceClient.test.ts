@@ -149,6 +149,35 @@ describe("virginiaCampaignFinanceClient", () => {
     ]);
   });
 
+  it("keeps parsing committee rows with malformed HTML entities or encoded IDs", () => {
+    expect(
+      parseVirginiaCommitteeSearchResults(
+        `
+          <table>
+            <tr>
+              <td class="committeeName"><div> Jane &#999999999999; Doe for Governor </div></td>
+              <td class="candidateName"><div> Jane Doe </div></td>
+              <td class="committeeType"><div> Candidate Campaign Committee </div></td>
+              <td class="action">
+                <a href="/Committee/Index/%E0%A4%A">View Reports</a>
+              </td>
+            </tr>
+          </table>
+        `,
+        "https://cfreports.elections.virginia.gov/?CommitteeName=Jane"
+      )
+    ).toEqual([
+      {
+        committeeId: "%E0%A4%A",
+        committeeName: "Jane &#999999999999; Doe for Governor",
+        candidateName: "Jane Doe",
+        committeeType: "Candidate Campaign Committee",
+        reportsUrl: "https://cfreports.elections.virginia.gov/Committee/Index/%E0%A4%A",
+        sourceUrl: "https://cfreports.elections.virginia.gov/?CommitteeName=Jane",
+      },
+    ]);
+  });
+
   it("fetches and parses candidate committee search rows", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(textResponse(SEARCH_HTML)) as unknown as typeof fetch;
 

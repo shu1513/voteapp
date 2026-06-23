@@ -8,6 +8,7 @@ import type { VirginiaScheduleAContribution } from "./virginiaCampaignFinanceCli
 import {
   replaceVirginiaCandidateFinanceSnapshot,
   type VirginiaFinanceLinkInput,
+  type VirginiaFinanceLinkSource,
 } from "./virginiaFinanceWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -23,6 +24,7 @@ export type VirginiaCandidateFinanceSyncInput = {
   committeeId: string;
   committeeCode?: string | null;
   committeeName: string;
+  linkSource?: VirginiaFinanceLinkSource;
   sourceUrl?: string | null;
   contributions: readonly VirginiaScheduleAContribution[];
   contributionSourceUrl?: string | null;
@@ -87,7 +89,7 @@ function toFinanceLink(input: VirginiaCandidateFinanceSyncInput & {
     committeeId: requireNonEmpty(input.committeeId, "Virginia committee id"),
     committeeCode: input.committeeCode ?? null,
     committeeName: requireNonEmpty(input.committeeName, "Virginia committee name"),
-    linkSource: "manual",
+    linkSource: input.linkSource ?? "manual",
     sourceUrl: input.sourceUrl ?? null,
     lastVerifiedAt: input.now,
   };

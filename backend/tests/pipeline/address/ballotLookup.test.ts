@@ -3601,7 +3601,8 @@ describe("lookupElectionDetailById", () => {
             is_partisan: true,
             discovery_contest_family: "non_judicial_office",
             sources: ["https://example.test/elections"],
-            office_canonical_name: null,
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
           },
         ],
       })
@@ -3664,6 +3665,7 @@ describe("lookupElectionDetailById", () => {
           },
         ],
       })
+      .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
@@ -3718,7 +3720,7 @@ describe("lookupElectionDetailById", () => {
         top_outside_supporting_industries: [],
       },
     });
-    expect(query).toHaveBeenCalledTimes(9);
+    expect(query).toHaveBeenCalledTimes(10);
     expect(query.mock.calls[7]?.[0]).toContain("public.va_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.va_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -3943,5 +3945,64 @@ describe("lookupElectionDetailById", () => {
     });
     expect(query).toHaveBeenCalledTimes(6);
     expect(query.mock.calls[0]?.[1]).toEqual([measureElectionId]);
+  });
+
+  it("does not load Virginia finance summaries for unsupported Virginia offices", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "county",
+            geoid_compact: "51059",
+            district_name: "Fairfax County",
+            state: "VA",
+            state_fips: "51",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Sheriff",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "county",
+            office_canonical_name: "Sheriff",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Commonwealth",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Sheriff",
+            state: "VA",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toBeNull();
+    expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("va_candidate_finance");
   });
 });

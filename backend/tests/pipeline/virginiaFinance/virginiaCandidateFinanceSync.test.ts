@@ -139,6 +139,14 @@ describe("virginiaCandidateFinanceSync", () => {
     }
   });
 
+  it("preserves non-manual link provenance passed from an existing finance link", async () => {
+    const input = baseInput({ linkSource: "cfreports_search" });
+
+    await syncVirginiaCandidateFinance(input);
+
+    expect(input.db.query.mock.calls[0]?.[1]?.[10]).toBe("cfreports_search");
+  });
+
   it("validates required identifiers before writing", async () => {
     const input = baseInput({
       committeeId: " ",

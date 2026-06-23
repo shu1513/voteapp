@@ -15,6 +15,7 @@ import {
 } from "../competitiveness/historicalContestMarginLookup.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
 import { calculateVotePower, type VotePowerResult } from "./votePower.js";
+import { isVirginiaFinanceEligibleOffice } from "../virginiaFinance/virginiaFinanceEligibleOffices.js";
 import {
   isCaliforniaCampaignFinanceEnabled,
   isCandidateFinanceEnabled,
@@ -302,11 +303,11 @@ type ElectionRow = {
   is_partisan: boolean | null;
   discovery_contest_family: ElectionContestFamily | null;
   sources: unknown;
+  office_scope?: OfficeScope | null;
+  office_canonical_name?: string | null;
 };
 
-type ElectionDetailRow = ElectionRow & {
-  office_canonical_name: string | null;
-};
+type ElectionDetailRow = ElectionRow;
 
 type ElectionSummaryRow = ElectionRow & {
   office_id: string | null;
@@ -1204,7 +1205,14 @@ function buildVirginiaFinanceSummaryRequests(
 ): VirginiaFinanceSummaryRequest[] {
   const electionIds = new Set(
     electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "VA")
+      .filter(
+        (row) =>
+          row.state.trim().toUpperCase() === "VA" &&
+          isVirginiaFinanceEligibleOffice({
+            officeScope: row.office_scope ?? null,
+            officeCanonicalName: row.office_canonical_name ?? null,
+          })
+      )
       .map((row) => row.election_id)
   );
   const requests = new Map<string, VirginiaFinanceSummaryRequest>();
@@ -5928,6 +5936,7 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
         e.is_partisan,
         e.discovery_contest_family,
         e.sources,
+        office.scope AS office_scope,
         office.canonical_name AS office_canonical_name
       FROM public.elections AS e
       JOIN public.districts AS d

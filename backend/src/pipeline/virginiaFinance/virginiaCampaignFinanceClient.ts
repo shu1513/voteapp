@@ -97,10 +97,22 @@ function isAbortError(error: unknown): boolean {
   );
 }
 
+function decodeNumericHtmlEntity(match: string, code: string, radix: number): string {
+  const parsed = Number.parseInt(code, radix);
+  if (!Number.isInteger(parsed) || parsed < 0 || parsed > 0x10ffff) {
+    return match;
+  }
+  try {
+    return String.fromCodePoint(parsed);
+  } catch {
+    return match;
+  }
+}
+
 function decodeHtmlEntities(value: string): string {
   return value
-    .replace(/&#(\d+);/g, (_match, code: string) => String.fromCodePoint(Number.parseInt(code, 10)))
-    .replace(/&#x([0-9a-f]+);/gi, (_match, code: string) => String.fromCodePoint(Number.parseInt(code, 16)))
+    .replace(/&#(\d+);/g, (match, code: string) => decodeNumericHtmlEntity(match, code, 10))
+    .replace(/&#x([0-9a-f]+);/gi, (match, code: string) => decodeNumericHtmlEntity(match, code, 16))
     .replace(/&amp;/g, "&")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
@@ -116,6 +128,14 @@ function stripHtml(value: string): string {
 
 function absoluteVirginiaUrl(value: string): string {
   return new URL(value, VIRGINIA_CAMPAIGN_FINANCE_BASE_URL).toString();
+}
+
+function decodeCommitteeId(value: string): string {
+  try {
+    return decodeURIComponent(value).trim();
+  } catch {
+    return value.trim();
+  }
 }
 
 function parseAmount(raw: string | null): number | null {
@@ -289,9 +309,13 @@ function parseCommitteeSearchRow(rowHtml: string, sourceUrl: string): VirginiaCo
     return null;
   }
   const candidateName = candidateNameMatch?.[1] ? stripHtml(candidateNameMatch[1]) || null : null;
+  const committeeId = decodeCommitteeId(hrefMatch[2]);
+  if (!committeeId) {
+    return null;
+  }
   const reportsUrl = absoluteVirginiaUrl(hrefMatch[1]);
   return {
-    committeeId: decodeURIComponent(hrefMatch[2]).trim(),
+    committeeId,
     committeeName,
     candidateName,
     committeeType,

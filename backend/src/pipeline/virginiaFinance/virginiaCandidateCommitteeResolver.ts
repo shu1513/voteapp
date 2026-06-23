@@ -303,6 +303,6 @@ export async function searchAndResolveVirginiaCandidateCommittee(
   return resolveVirginiaCandidateCommittee({
     ...input,
     committeeResults,
-    ...(input.reportHeadersByCommitteeId ? { reportHeaders } : {}),
+    ...(reportHeaders.length > 0 ? { reportHeaders } : {}),
   });
 }

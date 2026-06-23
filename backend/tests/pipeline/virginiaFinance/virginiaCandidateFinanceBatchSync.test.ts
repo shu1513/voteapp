@@ -26,6 +26,7 @@ function dueRow(overrides: Record<string, unknown> = {}) {
     committee_id: "60e10dc7-c59e-4a79-afca-e688c1efed65",
     committee_code: "CC-23-02436",
     committee_name: "Spanberger for Governor",
+    link_source: "cfreports_search",
     source_url: SOURCE_URL,
     last_synced_at: null,
     total_due_rows: "1",
@@ -118,6 +119,7 @@ describe("virginiaCandidateFinanceBatchSync", () => {
           committeeId: "60e10dc7-c59e-4a79-afca-e688c1efed65",
           committeeCode: "CC-23-02436",
           committeeName: "Spanberger for Governor",
+          linkSource: "cfreports_search",
           sourceUrl: SOURCE_URL,
           lastSyncedAt: null,
         },
@@ -132,6 +134,7 @@ describe("virginiaCandidateFinanceBatchSync", () => {
           committeeId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
           committeeCode: null,
           committeeName: "Jane Doe for Delegate",
+          linkSource: "cfreports_search",
           sourceUrl: null,
           lastSyncedAt: "2026-01-01 00:00:00+00",
         },
@@ -256,6 +259,7 @@ describe("virginiaCandidateFinanceBatchSync", () => {
         committeeId: "60e10dc7-c59e-4a79-afca-e688c1efed65",
         committeeCode: "CC-23-02436",
         committeeName: "Spanberger for Governor",
+        linkSource: "cfreports_search",
         sourceUrl: SOURCE_URL,
         contributions: [contribution()],
         contributionSourceUrl: SOURCE_URL,
@@ -263,6 +267,59 @@ describe("virginiaCandidateFinanceBatchSync", () => {
         now: NOW,
       })
     );
+  });
+
+  it("reuses fetched report data when multiple due rows share a committee", async () => {
+    const db = {
+      query: vi.fn(async () => ({
+        rows: [
+          dueRow({ total_due_rows: "2" }),
+          dueRow({
+            candidate_id: "33333333-3333-4333-8333-333333333333",
+            election_id: "44444444-4444-4444-8444-444444444444",
+            candidate_name: "Abigail Spanberger",
+            total_due_rows: "2",
+          }),
+        ],
+        rowCount: 2,
+      })),
+    };
+    const successfulSync = {
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2025,
+      dryRun: false,
+      linkWritten: true,
+      summaryWritten: true,
+      directBreakdownsWritten: 2,
+      totalReceipts: 250,
+      directContributionTotal: 250,
+      matchedContributionRowCount: 1,
+      includedContributionRowCount: 1,
+      skippedContributionRowCount: 0,
+    };
+    const loadReportDataForCommittee = vi.fn().mockResolvedValue(reportData());
+    const syncVirginiaCandidateFinanceFn = vi.fn().mockResolvedValue(successfulSync);
+
+    const result = await syncDueVirginiaCandidateFinance({
+      db,
+      now: NOW,
+      autoLinkMissingLinks: false,
+      loadReportDataForCommittee,
+      syncVirginiaCandidateFinanceFn: syncVirginiaCandidateFinanceFn as never,
+    });
+
+    expect(result).toMatchObject({
+      selectedCandidateCount: 2,
+      syncedCandidateCount: 2,
+      failedCandidateCount: 0,
+    });
+    expect(loadReportDataForCommittee).toHaveBeenCalledTimes(1);
+    expect(loadReportDataForCommittee).toHaveBeenCalledWith({
+      committeeId: "60e10dc7-c59e-4a79-afca-e688c1efed65",
+      clientOptions: undefined,
+    });
+    expect(syncVirginiaCandidateFinanceFn).toHaveBeenCalledTimes(2);
   });
 
   it("loads only scheduled report XML and ignores large-contribution report IDs", async () => {

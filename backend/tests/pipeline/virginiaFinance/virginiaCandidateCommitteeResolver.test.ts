@@ -269,6 +269,41 @@ describe("virginiaCandidateCommitteeResolver", () => {
     expect(requestUrl.searchParams.get("CommitteeName")).toBe("Abigail Spanberger");
   });
 
+  it("does not force report-header matching when the async wrapper receives an empty header map", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(
+      new Response(
+        `
+          <table>
+            <tr>
+              <td class="committeeName"><div> Spanberger for Governor </div></td>
+              <td class="candidateName"><div> Abigail Spanberger </div></td>
+              <td class="committeeType"><div> Candidate Campaign Committee </div></td>
+              <td><a href="/Committee/Index/60e10dc7-c59e-4a79-afca-e688c1efed65">View Reports</a></td>
+            </tr>
+          </table>
+        `,
+        { status: 200, statusText: "OK" }
+      )
+    ) as unknown as typeof fetch;
+
+    await expect(
+      searchAndResolveVirginiaCandidateCommittee(
+        {
+          candidateName: "Abigail Spanberger",
+          officeScope: "statewide",
+          officeName: "Governor",
+          electionYear: 2025,
+          reportHeadersByCommitteeId: new Map(),
+        },
+        { fetchImpl, timeoutMs: 1000 }
+      )
+    ).resolves.toMatchObject({
+      status: "matched",
+      committeeId: "60e10dc7-c59e-4a79-afca-e688c1efed65",
+      matchedReportHeaderCount: 0,
+    });
+  });
+
   it("does not search the network for unsupported offices", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(jsonResponse([])) as unknown as typeof fetch;
 

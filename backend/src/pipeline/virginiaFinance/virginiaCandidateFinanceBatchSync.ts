@@ -17,6 +17,7 @@ import {
   type VirginiaCandidateFinanceSyncResult,
 } from "./virginiaCandidateFinanceSync.js";
 import { VIRGINIA_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./virginiaFinanceEligibleOffices.js";
+import type { VirginiaFinanceLinkSource } from "./virginiaFinanceWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -31,6 +32,7 @@ export type VirginiaCandidateFinanceDueRow = {
   committeeId: string;
   committeeCode: string | null;
   committeeName: string;
+  linkSource: VirginiaFinanceLinkSource;
   sourceUrl: string | null;
   lastSyncedAt: string | null;
 };
@@ -92,6 +94,7 @@ type VirginiaCandidateFinanceDueQueryRow = {
   committee_id: string;
   committee_code: string | null;
   committee_name: string;
+  link_source: VirginiaFinanceLinkSource;
   source_url: string | null;
   last_synced_at: string | null;
   total_due_rows: string | number;
@@ -139,6 +142,7 @@ function mapDueRow(row: VirginiaCandidateFinanceDueQueryRow): VirginiaCandidateF
     committeeId: row.committee_id,
     committeeCode: row.committee_code,
     committeeName: row.committee_name,
+    linkSource: row.link_source,
     sourceUrl: row.source_url,
     lastSyncedAt: row.last_synced_at,
   };
@@ -191,6 +195,7 @@ export async function listDueVirginiaCandidateFinanceSyncRows(
           link.committee_id,
           link.committee_code,
           link.committee_name,
+          link.link_source,
           link.source_url,
           summary.last_synced_at::text AS last_synced_at,
           COUNT(*) OVER () AS total_due_rows
@@ -238,6 +243,7 @@ export async function listDueVirginiaCandidateFinanceSyncRows(
         committee_id,
         committee_code,
         committee_name,
+        link_source,
         source_url,
         last_synced_at,
         total_due_rows
@@ -328,12 +334,21 @@ export async function syncDueVirginiaCandidateFinance(
   });
 
   const results: VirginiaCandidateFinanceBatchSyncItemResult[] = [];
+  const reportDataByCommitteeId = new Map<string, Promise<VirginiaCandidateFinanceReportData>>();
   for (const row of due.rows) {
     try {
-      const reportData = await loadReportData({
-        committeeId: row.committeeId,
-        clientOptions: input.clientOptions,
-      });
+      let reportDataPromise = reportDataByCommitteeId.get(row.committeeId);
+      if (!reportDataPromise) {
+        reportDataPromise = loadReportData({
+          committeeId: row.committeeId,
+          clientOptions: input.clientOptions,
+        }).catch((error) => {
+          reportDataByCommitteeId.delete(row.committeeId);
+          throw error;
+        });
+        reportDataByCommitteeId.set(row.committeeId, reportDataPromise);
+      }
+      const reportData = await reportDataPromise;
       const result = await syncFn({
         db: input.db,
         candidateId: row.candidateId,
@@ -345,6 +360,7 @@ export async function syncDueVirginiaCandidateFinance(
         committeeId: row.committeeId,
         committeeCode: row.committeeCode,
         committeeName: row.committeeName,
+        linkSource: row.linkSource,
         sourceUrl: row.sourceUrl,
         contributions: reportData.contributions,
         contributionSourceUrl: reportData.sourceUrl,
