@@ -143,7 +143,11 @@
     "hawaii-candidates:finance:scheduler:worker": "tsx src/scripts/runHawaiiCandidateFinanceSyncSchedulerWorker.ts",
     "hawaii-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerHawaiiCandidateFinanceSync.ts",
     "hawaii-candidates:finance:live-probe": "tsx src/scripts/probeHawaiiCandidateFinance.ts",
-    "hawaii-candidates:finance:live-smoke": "tsx src/scripts/smokeHawaiiCandidateFinance.ts"
+    "hawaii-candidates:finance:live-smoke": "tsx src/scripts/smokeHawaiiCandidateFinance.ts",
+    "district-of-columbia-candidates:finance:sync-due": "tsx src/scripts/syncDueDistrictOfColumbiaCandidateFinance.ts",
+    "district-of-columbia-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertDistrictOfColumbiaCandidateFinanceSyncScheduler.ts",
+    "district-of-columbia-candidates:finance:scheduler:worker": "tsx src/scripts/runDistrictOfColumbiaCandidateFinanceSyncSchedulerWorker.ts",
+    "district-of-columbia-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerDistrictOfColumbiaCandidateFinanceSync.ts"
   },
   "dependencies": {
     "bullmq": "^5.71.1",

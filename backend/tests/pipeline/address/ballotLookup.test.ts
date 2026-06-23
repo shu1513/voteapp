@@ -3310,6 +3310,272 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced D.C. finance summaries for D.C. candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "place",
+            geoid_compact: "1150000",
+            district_name: "District of Columbia",
+            state: "DC",
+            state_fips: "11",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Mayor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane District",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Mayor",
+            state: "DC",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "JANE DISTRICT FOR MAYOR",
+            election_year: 2026,
+            total_receipts: "250000.00",
+            direct_contribution_total: "250000.00",
+            total_disbursements: "90000.00",
+            cash_on_hand: "160000.00",
+            outside_support_total: "40000.00",
+            outside_oppose_total: "5000.00",
+            source_url: "https://efiling.ocf.dc.gov/DataDownload",
+            last_synced_at: "2026-06-22 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Attorney",
+            amount: "75000.00",
+            contributor_count: "42",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$1,000-$4,999",
+            amount: "100000.00",
+            contributor_count: "50",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "DC FUTURE IEC",
+            committee_name: "DC Future IEC",
+            support_oppose: "support",
+            amount: "40000.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "DC TAXPAYERS IEC",
+            committee_name: "DC Taxpayers IEC",
+            support_oppose: "oppose",
+            amount: "5000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "labor_unions",
+            amount: "35000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "5000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "labor_unions",
+            committee_id: "DC FUTURE IEC",
+            committee_name: "DC Future IEC",
+            support_oppose: "support",
+            organization_name: "District Workers Union PAC",
+            amount: "25000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "DISTRICT_OF_COLUMBIA_OCF",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "JANE DISTRICT FOR MAYOR",
+      last_synced_at: "2026-06-22 04:05:00+00",
+      direct_campaign: {
+        total_raised: 250000,
+        total_spent: 90000,
+        cash_on_hand: 160000,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 75000,
+            contributor_count: 42,
+            source_url: "https://efiling.ocf.dc.gov/DataDownload",
+          },
+        ],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$1,000-$4,999",
+            amount: 100000,
+            contributor_count: 50,
+            source_url: "https://efiling.ocf.dc.gov/DataDownload",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 40000,
+        oppose_total: 5000,
+        top_supporting_groups: [
+          {
+            committee_id: "DC FUTURE IEC",
+            committee_name: "DC Future IEC",
+            support_oppose: "support",
+            amount: 40000,
+            source_url: "https://efiling.ocf.dc.gov/DataDownload",
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "DC TAXPAYERS IEC",
+            committee_name: "DC Taxpayers IEC",
+            support_oppose: "oppose",
+            amount: 5000,
+            source_url: "https://efiling.ocf.dc.gov/DataDownload",
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "labor_unions",
+            amount: 35000,
+            contributor_count: 2,
+            source_url: "https://efiling.ocf.dc.gov/DataDownload",
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 5000,
+            contributor_count: 1,
+            source_url: "https://efiling.ocf.dc.gov/DataDownload",
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 75000,
+            contributor_count: 42,
+            source_url: "https://efiling.ocf.dc.gov/DataDownload",
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "labor_unions",
+            amount: 35000,
+            contributor_count: 2,
+            source_url: "https://efiling.ocf.dc.gov/DataDownload",
+            explanation:
+              "The Labor unions category is a top outside-spending support industry because District Workers Union PAC contributed to DC Future IEC, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "District Workers Union PAC",
+                organization_type: "donor",
+                amount: 25000,
+                contributor_count: 1,
+                committee_id: "DC FUTURE IEC",
+                committee_name: "DC Future IEC",
+                source_url: "https://efiling.ocf.dc.gov/DataDownload",
+              },
+            ],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(12);
+    expect(query.mock.calls[7]?.[0]).toContain("public.dc_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.dc_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
+    expect(query.mock.calls[9]?.[0]).toContain("public.dc_candidate_finance_outside_groups");
+    expect(query.mock.calls[10]?.[0]).toContain("public.dc_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("public.dc_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("top_industries_per_group");
+    expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
+    expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
+    expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
+  });
+
   it("does not query Texas finance tables when Texas campaign finance is disabled", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("TEXAS_CAMPAIGN_FINANCE_ENABLED", "false");
