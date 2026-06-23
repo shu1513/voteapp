@@ -156,3 +156,14 @@ export function isTexasTecRawDataRefreshEnabled(force = false): boolean {
     (force || readBooleanEnv("TEXAS_TEC_RAW_DATA_REFRESH_ENABLED", false))
   );
 }
+
+export function isWashingtonCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("WASHINGTON_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isWashingtonCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isWashingtonCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}

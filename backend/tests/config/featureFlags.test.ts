@@ -21,6 +21,8 @@ import {
   isTexasCampaignFinanceEnabled,
   isTexasCampaignFinanceSyncEnabled,
   isTexasTecRawDataRefreshEnabled,
+  isWashingtonCampaignFinanceEnabled,
+  isWashingtonCampaignFinanceSyncEnabled,
 } from "../../src/config/featureFlags.js";
 
 const ORIGINAL_VALUE = process.env.PRESIDENTIAL_ELECTIONS_ENABLED;
@@ -43,6 +45,8 @@ const ORIGINAL_OKLAHOMA_RAW_REFRESH_VALUE = process.env.OKLAHOMA_GUARDIAN_RAW_DA
 const ORIGINAL_TEXAS_FINANCE_VALUE = process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_TEXAS_FINANCE_SYNC_VALUE = process.env.TEXAS_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_TEXAS_RAW_REFRESH_VALUE = process.env.TEXAS_TEC_RAW_DATA_REFRESH_ENABLED;
+const ORIGINAL_WASHINGTON_FINANCE_VALUE = process.env.WASHINGTON_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_WASHINGTON_FINANCE_SYNC_VALUE = process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED;
 
 describe("featureFlags", () => {
   afterEach(() => {
@@ -145,6 +149,16 @@ describe("featureFlags", () => {
       delete process.env.TEXAS_TEC_RAW_DATA_REFRESH_ENABLED;
     } else {
       process.env.TEXAS_TEC_RAW_DATA_REFRESH_ENABLED = ORIGINAL_TEXAS_RAW_REFRESH_VALUE;
+    }
+    if (ORIGINAL_WASHINGTON_FINANCE_VALUE === undefined) {
+      delete process.env.WASHINGTON_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.WASHINGTON_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_WASHINGTON_FINANCE_VALUE;
+    }
+    if (ORIGINAL_WASHINGTON_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_WASHINGTON_FINANCE_SYNC_VALUE;
     }
   });
 
@@ -500,5 +514,39 @@ describe("featureFlags", () => {
 
     expect(isTexasTecRawDataRefreshEnabled()).toBe(false);
     expect(isTexasTecRawDataRefreshEnabled(true)).toBe(true);
+  });
+
+  it("disables Washington campaign finance by default", () => {
+    delete process.env.WASHINGTON_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED;
+
+    expect(isWashingtonCampaignFinanceEnabled()).toBe(false);
+    expect(isWashingtonCampaignFinanceSyncEnabled()).toBe(false);
+  });
+
+  it("requires the Washington campaign finance master flag before sync can run", () => {
+    process.env.WASHINGTON_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isWashingtonCampaignFinanceEnabled()).toBe(false);
+    expect(isWashingtonCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isWashingtonCampaignFinanceSyncEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Washington campaign finance sync flag", () => {
+    process.env.WASHINGTON_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    expect(isWashingtonCampaignFinanceEnabled()).toBe(true);
+    expect(isWashingtonCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isWashingtonCampaignFinanceSyncEnabled(true)).toBe(true);
+  });
+
+  it("enables Washington campaign finance sync when both flags are enabled", () => {
+    process.env.WASHINGTON_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isWashingtonCampaignFinanceEnabled()).toBe(true);
+    expect(isWashingtonCampaignFinanceSyncEnabled()).toBe(true);
   });
 });
