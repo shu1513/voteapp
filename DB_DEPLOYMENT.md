@@ -105,6 +105,14 @@ npm run competitiveness:import -- \
 Do not add MEDSL per-state ZIP URLs directly to verified sources yet. The importer supports precinct CSV aggregation, but it
 does not unzip remote files or depend on a ZIP library.
 
+## State Campaign Finance Data
+
+State campaign-finance modules are isolated behind state-specific feature flags. For raw-data states, run the raw-data refresh
+job before the candidate sync job so due-sync workers have a local cached artifact to read from.
+
+Texas TEC campaign finance uses an official cached bulk ZIP and is documented in `backend/docs/texas-campaign-finance.md`.
+The default Texas scheduler order is raw refresh first, then candidate finance sync.
+
 ## Presidential Feature Flag
 
 `PRESIDENTIAL_ELECTIONS_ENABLED` is the master runtime flag for presidential-only research and enrichment. It defaults to
