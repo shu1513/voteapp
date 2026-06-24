@@ -34,6 +34,8 @@ const enqueueManualHawaiiCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn())
 const buildHawaiiCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualVirginiaCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 const buildVirginiaCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
+const enqueueManualWisconsinCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
+const buildWisconsinCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 
 vi.mock("pg", () => ({
   Pool: vi.fn(() => ({
@@ -133,6 +135,12 @@ vi.mock("../../src/scheduler/virginiaCandidateFinanceSyncScheduler.js", () => ({
   enqueueManualVirginiaCandidateFinanceSyncJob: enqueueManualVirginiaCandidateFinanceSyncJobMock,
 }));
 
+vi.mock("../../src/scheduler/wisconsinCandidateFinanceSyncScheduler.js", () => ({
+  buildWisconsinCandidateFinanceLinkedElectionSyncJobId:
+    buildWisconsinCandidateFinanceLinkedElectionSyncJobIdMock,
+  enqueueManualWisconsinCandidateFinanceSyncJob: enqueueManualWisconsinCandidateFinanceSyncJobMock,
+}));
+
 import { runCandidateProfileEnricher } from "../../src/pipeline/enrichers/candidateProfileEnricher.js";
 import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
@@ -159,6 +167,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     enqueueManualWashingtonCandidateFinanceSyncJobMock.mockResolvedValue("washington-finance-job-1");
     enqueueManualHawaiiCandidateFinanceSyncJobMock.mockResolvedValue("hawaii-finance-job-1");
     enqueueManualVirginiaCandidateFinanceSyncJobMock.mockResolvedValue("virginia-finance-job-1");
+    enqueueManualWisconsinCandidateFinanceSyncJobMock.mockResolvedValue("wisconsin-finance-job-1");
     buildCaliforniaCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "california-candidate-finance-linked-election-sync-2026-06-01"
     );
@@ -185,6 +194,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     );
     buildVirginiaCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "virginia-candidate-finance-linked-election-sync-2026-06-01"
+    );
+    buildWisconsinCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
+      "wisconsin-candidate-finance-linked-election-sync-2026-06-01"
     );
     redisXReadGroupMock.mockResolvedValue([
       {
@@ -1569,6 +1581,106 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
       "1-12"
+    );
+  });
+
+  it("dedupes automatic Wisconsin finance batch syncs for eligible Wisconsin elections", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-13",
+            message: {
+              election_id: "election-wi-governor",
+              item_type: "candidate_profile",
+              candidate_display_name: "Jane Badger",
+              roster_party: "Democratic",
+              roster_is_incumbent: "false",
+              seed_urls: JSON.stringify(["https://example.gov/wisconsin-governor"]),
+              run_id: "run-wi-governor",
+            },
+          },
+        ],
+      },
+    ]);
+    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      const text = String(sql);
+      if (text.includes("FROM public.candidate_elections AS ce")) {
+        expect(params).toEqual(["election-wi-governor"]);
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("FROM public.elections AS e")) {
+        expect(params).toEqual(["election-wi-governor"]);
+        return {
+          rows: [
+            {
+              id: "election-wi-governor",
+              state: "WI",
+              district_name: "Wisconsin",
+              district_type: "statewide",
+              election_date: "2026-11-03",
+              official_ballot_title: "Governor",
+              election_stage: "general",
+              senate_class: null,
+              term_end_year: null,
+              is_partisan: true,
+              sources: ["https://example.gov/election"],
+              office_scope: "statewide",
+              office_canonical_name: "Governor",
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected pool query: ${sql}`);
+    });
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Jane Badger",
+        first_name: "Jane",
+        last_name: "Badger",
+        party: "Democratic",
+        fec_ids: [],
+        sources: ["https://example.gov/wisconsin-governor"],
+      },
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualCaliforniaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualColoradoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualConnecticutCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualNewMexicoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualTexasCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualWashingtonCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualHawaiiCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualVirginiaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(buildWisconsinCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
+    expect(enqueueManualWisconsinCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
+      {
+        aiClassifyIndustries: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: "wisconsin-candidate-finance-linked-election-sync-2026-06-01",
+      }
+    );
+    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
+      {
+        candidateId: "candidate-1",
+        electionId: "election-wi-governor",
+        runId: "run-wi-governor",
+      },
+    ]);
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-13"
     );
   });
 

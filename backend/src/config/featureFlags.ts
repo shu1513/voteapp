@@ -200,3 +200,14 @@ export function isVirginiaCampaignFinanceSyncEnabled(force = false): boolean {
     (force || readBooleanEnv("VIRGINIA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
   );
 }
+
+export function isWisconsinCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("WISCONSIN_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isWisconsinCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isWisconsinCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("WISCONSIN_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}

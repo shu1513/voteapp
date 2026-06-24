@@ -1265,7 +1265,8 @@ describe("lookupElectionDetailById", () => {
             source_url: null,
           },
         ],
-      });
+      })
+      .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
@@ -1736,7 +1737,8 @@ describe("lookupElectionDetailById", () => {
             source_url: null,
           },
         ],
-      });
+      })
+      .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
@@ -2408,7 +2410,8 @@ describe("lookupElectionDetailById", () => {
             source_url: null,
           },
         ],
-      });
+      })
+      .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
@@ -3038,6 +3041,275 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[9]?.[0]).toContain("public.wa_candidate_finance_outside_groups");
     expect(query.mock.calls[10]?.[0]).toContain("public.wa_candidate_finance_outside_group_breakdowns");
     expect(query.mock.calls[11]?.[0]).toContain("public.wa_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("top_industries_per_group");
+    expect(query.mock.calls[11]?.[0]).toContain("max(industry.amount) AS amount");
+    expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
+    expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
+    expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
+  });
+
+  it("includes locally synced Wisconsin finance summaries for Wisconsin candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("WISCONSIN_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "55",
+            district_name: "Wisconsin",
+            state: "WI",
+            state_fips: "55",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Badger",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "WI",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "WI100",
+            election_year: 2026,
+            total_receipts: "130000.00",
+            direct_contribution_total: "100000.00",
+            total_disbursements: "45000.00",
+            cash_on_hand: "55000.00",
+            outside_support_total: "70000.00",
+            outside_oppose_total: "3000.00",
+            source_url: "https://campaignfinance.wi.gov/",
+            last_synced_at: "2026-06-21 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "ATTORNEY - LAWYER",
+            amount: "25000.00",
+            contributor_count: "10",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$1,000-$4,999",
+            amount: "40000.00",
+            contributor_count: "8",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "WICVIEC",
+            committee_name: "Wisconsin Conservation Voters IEC",
+            support_oppose: "support",
+            amount: "70000.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "WIS24",
+            committee_name: "Wisconsin 24",
+            support_oppose: "oppose",
+            amount: "3000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "environmental_group",
+            amount: "60000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "3000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "environmental_group",
+            committee_id: "WICVIEC",
+            committee_name: "Wisconsin Conservation Voters IEC",
+            support_oppose: "support",
+            organization_name: "Wisconsin Conservation Action Votes",
+            amount: "50000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "WISCONSIN_SUNSHINE",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "WI100",
+      last_synced_at: "2026-06-21 04:05:00+00",
+      direct_campaign: {
+        total_raised: 100000,
+        total_spent: 45000,
+        cash_on_hand: 55000,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "ATTORNEY - LAWYER",
+            amount: 25000,
+            contributor_count: 10,
+            source_url: "https://campaignfinance.wi.gov/",
+          },
+        ],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$1,000-$4,999",
+            amount: 40000,
+            contributor_count: 8,
+            source_url: "https://campaignfinance.wi.gov/",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 70000,
+        oppose_total: 3000,
+        top_supporting_groups: [
+          {
+            committee_id: "WICVIEC",
+            committee_name: "Wisconsin Conservation Voters IEC",
+            support_oppose: "support",
+            amount: 70000,
+            source_url: "https://campaignfinance.wi.gov/",
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "WIS24",
+            committee_name: "Wisconsin 24",
+            support_oppose: "oppose",
+            amount: 3000,
+            source_url: "https://campaignfinance.wi.gov/",
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "environmental_group",
+            amount: 60000,
+            contributor_count: 2,
+            source_url: "https://campaignfinance.wi.gov/",
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 3000,
+            contributor_count: 1,
+            source_url: "https://campaignfinance.wi.gov/",
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "ATTORNEY - LAWYER",
+            amount: 25000,
+            contributor_count: 10,
+            source_url: "https://campaignfinance.wi.gov/",
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "environmental_group",
+            amount: 60000,
+            contributor_count: 2,
+            source_url: "https://campaignfinance.wi.gov/",
+            explanation:
+              "The Environmental groups category is a top outside-spending support industry because Wisconsin Conservation Action Votes contributed to Wisconsin Conservation Voters IEC, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "Wisconsin Conservation Action Votes",
+                organization_type: "donor",
+                amount: 50000,
+                contributor_count: 1,
+                committee_id: "WICVIEC",
+                committee_name: "Wisconsin Conservation Voters IEC",
+                source_url: "https://campaignfinance.wi.gov/",
+              },
+            ],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(13);
+    expect(query.mock.calls[7]?.[0]).toContain("public.wi_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.wi_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
+    expect(query.mock.calls[9]?.[0]).toContain("public.wi_candidate_finance_outside_groups");
+    expect(query.mock.calls[10]?.[0]).toContain("public.wi_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("public.wi_candidate_finance_outside_group_breakdowns");
     expect(query.mock.calls[11]?.[0]).toContain("top_industries_per_group");
     expect(query.mock.calls[11]?.[0]).toContain("max(industry.amount) AS amount");
     expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
@@ -4004,5 +4276,64 @@ describe("lookupElectionDetailById", () => {
 
     expect(result?.candidates[0]?.finance_summary).toBeNull();
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("va_candidate_finance");
+  });
+
+  it("does not load Wisconsin finance summaries for unsupported Wisconsin offices", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("WISCONSIN_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "county",
+            geoid_compact: "55025",
+            district_name: "Dane County",
+            state: "WI",
+            state_fips: "55",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Sheriff",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "county",
+            office_canonical_name: "Sheriff",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Badger",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Sheriff",
+            state: "WI",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toBeNull();
+    expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("wi_candidate_finance");
   });
 });
