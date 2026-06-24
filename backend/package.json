@@ -160,6 +160,15 @@
     "massachusetts-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertMassachusettsCandidateFinanceSyncScheduler.ts",
     "massachusetts-candidates:finance:scheduler:worker": "tsx src/scripts/runMassachusettsCandidateFinanceSyncSchedulerWorker.ts",
     "massachusetts-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerMassachusettsCandidateFinanceSync.ts",
+    "michigan-candidates:finance:sync-due": "tsx src/scripts/syncDueMichiganCandidateFinance.ts",
+    "michigan-candidates:finance:raw:refresh": "tsx src/scripts/refreshMichiganMitnRawData.ts",
+    "michigan-candidates:finance:raw:scheduler:upsert": "tsx src/scripts/upsertMichiganMitnRawDataRefreshScheduler.ts",
+    "michigan-candidates:finance:raw:scheduler:worker": "tsx src/scripts/runMichiganMitnRawDataRefreshSchedulerWorker.ts",
+    "michigan-candidates:finance:raw:scheduler:trigger": "tsx src/scripts/triggerMichiganMitnRawDataRefresh.ts",
+    "michigan-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertMichiganCandidateFinanceSyncScheduler.ts",
+    "michigan-candidates:finance:scheduler:worker": "tsx src/scripts/runMichiganCandidateFinanceSyncSchedulerWorker.ts",
+    "michigan-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerMichiganCandidateFinanceSync.ts",
+    "michigan-candidates:finance:live-probe": "tsx src/scripts/probeMichiganCandidateFinance.ts",
     "massachusetts-candidates:finance:live-probe": "tsx src/scripts/probeMassachusettsCandidateFinance.ts"
   },
   "dependencies": {
