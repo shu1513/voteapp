@@ -1,14 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-describe("wisconsinCandidateFinanceSyncScheduler", () => {
+describe("massachusettsCandidateFinanceSyncScheduler", () => {
   const originalEnv = { ...process.env };
 
   beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
     process.env = { ...originalEnv };
-    delete process.env.WISCONSIN_CAMPAIGN_FINANCE_ENABLED;
-    delete process.env.WISCONSIN_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    delete process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_ENABLED;
   });
 
   afterEach(() => {
@@ -35,16 +35,16 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
   it("returns a disabled no-op result when the sync flag is off and not forced", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
     const Pool = vi.fn();
     vi.doMock("pg", () => ({ Pool }));
 
-    const { runWisconsinCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/wisconsinCandidateFinanceSyncScheduler.js"
+    const { runMassachusettsCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/massachusettsCandidateFinanceSyncScheduler.js"
     );
 
-    const result = await runWisconsinCandidateFinanceSyncJob({
+    const result = await runMassachusettsCandidateFinanceSyncJob({
       triggeredBy: "daily",
       maxCandidates: 10,
       staleAfterDays: 7,
@@ -69,19 +69,19 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
     expect(Pool).not.toHaveBeenCalled();
   });
 
-  it("does not let force bypass the master Wisconsin finance flag", async () => {
+  it("does not let force bypass the master Massachusetts finance flag", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_ENABLED = "false";
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
     const Pool = vi.fn();
     vi.doMock("pg", () => ({ Pool }));
 
-    const { runWisconsinCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/wisconsinCandidateFinanceSyncScheduler.js"
+    const { runMassachusettsCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/massachusettsCandidateFinanceSyncScheduler.js"
     );
 
-    const result = await runWisconsinCandidateFinanceSyncJob({
+    const result = await runMassachusettsCandidateFinanceSyncJob({
       triggeredBy: "manual",
       force: true,
       maxCandidates: 10,
@@ -98,15 +98,15 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
     expect(Pool).not.toHaveBeenCalled();
   });
 
-  it("runs the due Wisconsin finance sync when enabled", async () => {
+  it("runs the due Massachusetts finance sync when enabled", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
 
     const end = vi.fn().mockResolvedValue(undefined);
     const pool = { query: vi.fn(), end };
-    const syncDueWisconsinCandidateFinance = vi.fn().mockResolvedValue({
+    const syncDueMassachusettsCandidateFinance = vi.fn().mockResolvedValue({
       dryRun: true,
       now: "2026-06-01T00:00:00.000Z",
       staleAfterDays: 3,
@@ -122,18 +122,18 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
 
     vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
     mockEnv();
-    vi.doMock("../../src/pipeline/wisconsinFinance/wisconsinCandidateFinanceBatchSync.js", () => ({
-      syncDueWisconsinCandidateFinance,
+    vi.doMock("../../src/pipeline/massachusettsFinance/massachusettsCandidateFinanceBatchSync.js", () => ({
+      syncDueMassachusettsCandidateFinance,
     }));
     vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
       createFinanceIndustryClassifierFromEnv: vi.fn(() => vi.fn()),
     }));
 
-    const { runWisconsinCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/wisconsinCandidateFinanceSyncScheduler.js"
+    const { runMassachusettsCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/massachusettsCandidateFinanceSyncScheduler.js"
     );
 
-    const result = await runWisconsinCandidateFinanceSyncJob({
+    const result = await runMassachusettsCandidateFinanceSyncJob({
       dryRun: true,
       maxCandidates: 2,
       staleAfterDays: 3,
@@ -150,7 +150,7 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
       dryRun: true,
       selectedCandidateCount: 2,
     });
-    expect(syncDueWisconsinCandidateFinance).toHaveBeenCalledWith(
+    expect(syncDueMassachusettsCandidateFinance).toHaveBeenCalledWith(
       expect.objectContaining({
         db: pool,
         dryRun: true,
@@ -167,12 +167,12 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
   it("passes the shared finance industry classifier when AI classification is enabled outside dry-run", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
 
     const end = vi.fn().mockResolvedValue(undefined);
     const pool = { query: vi.fn(), end };
-    const syncDueWisconsinCandidateFinance = vi.fn().mockResolvedValue({
+    const syncDueMassachusettsCandidateFinance = vi.fn().mockResolvedValue({
       dryRun: false,
       now: "2026-06-01T00:00:00.000Z",
       staleAfterDays: 7,
@@ -190,18 +190,18 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
 
     vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
     mockEnv();
-    vi.doMock("../../src/pipeline/wisconsinFinance/wisconsinCandidateFinanceBatchSync.js", () => ({
-      syncDueWisconsinCandidateFinance,
+    vi.doMock("../../src/pipeline/massachusettsFinance/massachusettsCandidateFinanceBatchSync.js", () => ({
+      syncDueMassachusettsCandidateFinance,
     }));
     vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
       createFinanceIndustryClassifierFromEnv,
     }));
 
-    const { runWisconsinCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/wisconsinCandidateFinanceSyncScheduler.js"
+    const { runMassachusettsCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/massachusettsCandidateFinanceSyncScheduler.js"
     );
 
-    const result = await runWisconsinCandidateFinanceSyncJob({
+    const result = await runMassachusettsCandidateFinanceSyncJob({
       maxCandidates: 1,
       aiClassifyIndustries: true,
       aiClassificationMinAmount: 25000,
@@ -214,7 +214,7 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
       selectedCandidateCount: 1,
     });
     expect(createFinanceIndustryClassifierFromEnv).toHaveBeenCalledTimes(1);
-    expect(syncDueWisconsinCandidateFinance).toHaveBeenCalledWith(
+    expect(syncDueMassachusettsCandidateFinance).toHaveBeenCalledWith(
       expect.objectContaining({
         db: pool,
         dryRun: false,
@@ -227,9 +227,9 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
   });
 
   it("upserts recurring jobs with configured queue payload", async () => {
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_SYNC_DAILY_CRON = "15 9 * * *";
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_SYNC_DAILY_TZ = "America/Los_Angeles";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_DAILY_CRON = "15 9 * * *";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_DAILY_TZ = "America/Los_Angeles";
     mockEnv();
 
     const queueInstance = {
@@ -239,24 +239,24 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
     const Queue = vi.fn(() => queueInstance);
     vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
 
-    const { upsertRecurringWisconsinCandidateFinanceSyncJobs } = await import(
-      "../../src/scheduler/wisconsinCandidateFinanceSyncScheduler.js"
+    const { upsertRecurringMassachusettsCandidateFinanceSyncJobs } = await import(
+      "../../src/scheduler/massachusettsCandidateFinanceSyncScheduler.js"
     );
 
-    await upsertRecurringWisconsinCandidateFinanceSyncJobs({
+    await upsertRecurringMassachusettsCandidateFinanceSyncJobs({
       maxCandidates: 5,
       aiClassifyIndustries: true,
       aiClassificationMinAmount: 25000,
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
-      "wisconsin_candidate_finance_sync_daily",
+      "massachusetts_candidate_finance_sync_daily",
       {
         pattern: "15 9 * * *",
         tz: "America/Los_Angeles",
       },
       expect.objectContaining({
-        name: "wisconsin_candidate_finance_sync_due",
+        name: "massachusetts_candidate_finance_sync_due",
         data: expect.objectContaining({
           maxCandidates: 5,
           aiClassifyIndustries: true,
@@ -268,8 +268,8 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
     expect(queueInstance.close).toHaveBeenCalledTimes(1);
   });
 
-  it("removes the recurring scheduler when the master Wisconsin finance flag is disabled", async () => {
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_ENABLED = "false";
+  it("removes the recurring scheduler when the master Massachusetts finance flag is disabled", async () => {
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED = "false";
     mockEnv();
 
     const queueInstance = {
@@ -280,46 +280,46 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
     const Queue = vi.fn(() => queueInstance);
     vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
 
-    const { upsertRecurringWisconsinCandidateFinanceSyncJobs } = await import(
-      "../../src/scheduler/wisconsinCandidateFinanceSyncScheduler.js"
+    const { upsertRecurringMassachusettsCandidateFinanceSyncJobs } = await import(
+      "../../src/scheduler/massachusettsCandidateFinanceSyncScheduler.js"
     );
 
-    await upsertRecurringWisconsinCandidateFinanceSyncJobs();
+    await upsertRecurringMassachusettsCandidateFinanceSyncJobs();
 
-    expect(queueInstance.removeJobScheduler).toHaveBeenCalledWith("wisconsin_candidate_finance_sync_daily");
+    expect(queueInstance.removeJobScheduler).toHaveBeenCalledWith("massachusetts_candidate_finance_sync_daily");
     expect(queueInstance.upsertJobScheduler).not.toHaveBeenCalled();
   });
 
   it("enqueues manual jobs with a deterministic linked-election job id", async () => {
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
     mockEnv();
 
     const queueInstance = {
-      add: vi.fn().mockResolvedValue({ id: "wisconsin-finance-job-1" }),
+      add: vi.fn().mockResolvedValue({ id: "massachusetts-finance-job-1" }),
       close: vi.fn().mockResolvedValue(undefined),
     };
     const Queue = vi.fn(() => queueInstance);
     vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
 
     const {
-      buildWisconsinCandidateFinanceLinkedElectionSyncJobId,
-      enqueueManualWisconsinCandidateFinanceSyncJob,
-    } = await import("../../src/scheduler/wisconsinCandidateFinanceSyncScheduler.js");
+      buildMassachusettsCandidateFinanceLinkedElectionSyncJobId,
+      enqueueManualMassachusettsCandidateFinanceSyncJob,
+    } = await import("../../src/scheduler/massachusettsCandidateFinanceSyncScheduler.js");
 
-    const jobId = buildWisconsinCandidateFinanceLinkedElectionSyncJobId(
+    const jobId = buildMassachusettsCandidateFinanceLinkedElectionSyncJobId(
       new Date("2026-11-03T23:00:00.000Z")
     );
     await expect(
-      enqueueManualWisconsinCandidateFinanceSyncJob(
+      enqueueManualMassachusettsCandidateFinanceSyncJob(
         { aiClassifyIndustries: true, aiClassificationMinAmount: 25000 },
         { jobId }
       )
-    ).resolves.toBe("wisconsin-finance-job-1");
+    ).resolves.toBe("massachusetts-finance-job-1");
 
-    expect(jobId).toBe("wisconsin-candidate-finance-linked-election-sync-2026-11-03");
+    expect(jobId).toBe("massachusetts-candidate-finance-linked-election-sync-2026-11-03");
     expect(queueInstance.add).toHaveBeenCalledWith(
-      "wisconsin_candidate_finance_sync_due",
+      "massachusetts_candidate_finance_sync_due",
       expect.objectContaining({
         aiClassifyIndustries: true,
         aiClassificationMinAmount: 25000,
