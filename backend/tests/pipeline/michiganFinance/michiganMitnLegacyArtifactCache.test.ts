@@ -145,6 +145,55 @@ describe("Michigan MiTN legacy archive artifact cache", () => {
     });
   });
 
+  it("serializes concurrent refreshes for the same year and cache directory", async () => {
+    const cacheDir = await makeTempDir();
+    let headCalls = 0;
+    let getCalls = 0;
+    const extractArchive = vi.fn(fakeExtractor());
+    const fetchImpl = vi.fn<typeof fetch>(async (_url, init) => {
+      if (init?.method === "HEAD") {
+        headCalls += 1;
+        return response(null, {
+          "content-length": "8",
+          "content-type": "application/x-7z-compressed",
+          etag: "\"mi-2022-concurrent\"",
+          "last-modified": "Fri, 19 Jun 2026 09:00:49 GMT",
+        });
+      }
+      getCalls += 1;
+      return response("7z-bytes", {
+        "content-length": "8",
+        "content-type": "application/x-7z-compressed",
+        etag: "\"mi-2022-concurrent\"",
+        "last-modified": "Fri, 19 Jun 2026 09:00:49 GMT",
+      });
+    });
+
+    const [first, second] = await Promise.all([
+      refreshMichiganMitnLegacyArchiveCache({
+        year: 2022,
+        cacheDir,
+        fetchImpl,
+        extractArchive,
+        now: new Date("2026-06-19T12:00:00.000Z"),
+      }),
+      refreshMichiganMitnLegacyArchiveCache({
+        year: 2022,
+        cacheDir,
+        fetchImpl,
+        extractArchive,
+        now: new Date("2026-06-19T12:00:00.000Z"),
+      }),
+    ]);
+
+    expect(first.status).toBe("downloaded");
+    expect(second.status).toBe("unchanged");
+    expect(headCalls).toBe(2);
+    expect(getCalls).toBe(1);
+    expect(extractArchive).toHaveBeenCalledTimes(1);
+    await expect(readFile(join(first.extractedDir, "extracted.txt"), "utf8")).resolves.toBe("ok");
+  });
+
   it("discovers the current archive URL from the public page when the bare archive URL is rejected", async () => {
     const discoveredUrl =
       "https://www.michigan.gov/sos/-/media/Project/Websites/sos/Elections/Disclosure/MiTN/Legacy-Data/2022_mi_cfr.7z?rev=abc&amp;hash=def";

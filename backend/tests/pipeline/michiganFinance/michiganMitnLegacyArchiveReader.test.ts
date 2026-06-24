@@ -72,12 +72,14 @@ describe("Michigan MiTN legacy archive reader", () => {
     await writeFile(join(dir, "2022_mi_cfr_contributions 10 of 12.csv"), "a\n", "utf8");
     await writeFile(join(dir, "2022_mi_cfr_contributions 2 of 2.csv"), "a\n", "utf8");
     await writeFile(join(dir, "2022_mi_cfr_contributions 1 of 2.csv"), "a\n", "utf8");
+    await writeFile(join(dir, "2021_mi_cfr_contributions 2 of 2.csv"), "a\n", "utf8");
     await writeFile(join(dir, "2021_mi_cfr_contributions 1 of 1.csv"), "a\n", "utf8");
     await writeFile(join(dir, "2022_mi_cfr_expenditures.csv"), "a\n", "utf8");
     await mkdir(join(dir, "ignored-directory"));
 
     await expect(listMichiganMitnLegacyExtractedFileNames(dir)).resolves.toEqual([
       "2021_mi_cfr_contributions 1 of 1.csv",
+      "2021_mi_cfr_contributions 2 of 2.csv",
       "2022_mi_cfr_contributions 1 of 2.csv",
       "2022_mi_cfr_contributions 2 of 2.csv",
       "2022_mi_cfr_contributions 10 of 12.csv",

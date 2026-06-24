@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  deactivateMichiganFinanceLinksForCandidateElection,
   replaceMichiganCandidateFinanceSnapshot,
   upsertMichiganFinanceLink,
 } from "../../../src/pipeline/michiganFinance/michiganFinanceWriter.js";
@@ -53,6 +54,29 @@ describe("michiganFinanceWriter", () => {
       "active",
       "mitn_legacy",
       SOURCE_URL,
+      "2022-01-01T00:00:00.000Z",
+    ]);
+  });
+
+  it("does not deactivate manually curated Michigan finance links", async () => {
+    const db = createMockDb();
+
+    await expect(
+      deactivateMichiganFinanceLinksForCandidateElection({
+        db,
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        electionYear: 2022,
+        verifiedAt: new Date("2022-01-01T00:00:00.000Z"),
+      })
+    ).resolves.toBe(1);
+
+    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("link_source IS DISTINCT FROM 'manual'");
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      CANDIDATE_ID,
+      ELECTION_ID,
+      2022,
       "2022-01-01T00:00:00.000Z",
     ]);
   });

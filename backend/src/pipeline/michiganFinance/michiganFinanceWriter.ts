@@ -308,6 +308,7 @@ export async function deactivateMichiganFinanceLinksForCandidateElection(input: 
         AND election_id = $2::uuid
         AND election_year = $3
         AND link_status = 'active'
+        AND link_source IS DISTINCT FROM 'manual'
     `,
     [
       requireNonEmpty(input.candidateId, "candidate id"),

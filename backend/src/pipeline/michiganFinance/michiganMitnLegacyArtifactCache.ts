@@ -1,4 +1,5 @@
 import { execFile } from "node:child_process";
+import { randomUUID } from "node:crypto";
 import { createWriteStream } from "node:fs";
 import { access, mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { delimiter, resolve } from "node:path";
@@ -67,6 +68,27 @@ type FetchOptions = {
 };
 
 const execFileAsync = promisify(execFile);
+const michiganMitnLegacyArchiveRefreshLocks = new Map<string, Promise<void>>();
+
+async function withMichiganMitnLegacyArchiveRefreshLock<T>(key: string, task: () => Promise<T>): Promise<T> {
+  const previous = michiganMitnLegacyArchiveRefreshLocks.get(key) ?? Promise.resolve();
+  let releaseCurrentLock!: () => void;
+  const current = new Promise<void>((resolveLock) => {
+    releaseCurrentLock = resolveLock;
+  });
+  const chained = previous.catch(() => {}).then(() => current);
+  michiganMitnLegacyArchiveRefreshLocks.set(key, chained);
+
+  await previous.catch(() => {});
+  try {
+    return await task();
+  } finally {
+    releaseCurrentLock();
+    if (michiganMitnLegacyArchiveRefreshLocks.get(key) === chained) {
+      michiganMitnLegacyArchiveRefreshLocks.delete(key);
+    }
+  }
+}
 
 export function normalizeMichiganMitnLegacyArchiveYear(year: number): number {
   if (!Number.isInteger(year) || year < 2020 || year > 2100) {
@@ -473,6 +495,27 @@ export async function refreshMichiganMitnLegacyArchiveCache(input: {
   now?: Date;
 }): Promise<MichiganMitnLegacyArchiveRefreshResult> {
   const year = normalizeMichiganMitnLegacyArchiveYear(input.year);
+  const cacheDir = resolve(input.cacheDir);
+  return withMichiganMitnLegacyArchiveRefreshLock(`${cacheDir}:${year}`, () =>
+    refreshMichiganMitnLegacyArchiveCacheUnlocked({
+      ...input,
+      year,
+      cacheDir,
+    })
+  );
+}
+
+async function refreshMichiganMitnLegacyArchiveCacheUnlocked(input: {
+  year: number;
+  cacheDir: string;
+  url?: string;
+  force?: boolean;
+  fetchImpl?: typeof fetch;
+  extractArchive?: MichiganMitnLegacyArchiveExtractor;
+  timeoutMs?: number;
+  now?: Date;
+}): Promise<MichiganMitnLegacyArchiveRefreshResult> {
+  const year = normalizeMichiganMitnLegacyArchiveYear(input.year);
   const downloadedAt = normalizeRefreshTimestamp(input.now);
   const paths = getMichiganMitnLegacyArchiveCachePaths({ cacheDir: input.cacheDir, year });
   const remote = await fetchMichiganMitnLegacyArchiveMetadata({
@@ -512,7 +555,7 @@ export async function refreshMichiganMitnLegacyArchiveCache(input: {
   }
 
   await mkdir(paths.cacheDir, { recursive: true });
-  const suffix = `${process.pid}-${Date.now()}`;
+  const suffix = `${process.pid}-${Date.now()}-${randomUUID()}`;
   const tmpPath = `${paths.archivePath}.tmp-${suffix}`;
   const tmpExtractedDir = `${paths.extractedDir}.tmp-${suffix}`;
   const tmpMetadataPath = `${paths.metadataPath}.tmp-${suffix}`;

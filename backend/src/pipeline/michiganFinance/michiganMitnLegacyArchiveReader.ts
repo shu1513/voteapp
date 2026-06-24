@@ -361,20 +361,23 @@ export async function listMichiganMitnLegacyExtractedFileNames(extractedDir: str
     .sort(compareMichiganMitnLegacyFileNames);
 }
 
-function contributionShardNumber(fileName: string): number {
-  const match = /\b(\d+)\s+of\s+\d+\.csv$/i.exec(fileName);
-  return match?.[1] ? Number.parseInt(match[1], 10) : 0;
+function contributionShardSortKey(fileName: string): { prefix: string; shard: number } | undefined {
+  const match = /^(.*?\bcontributions)\s+(\d+)\s+of\s+\d+\.csv$/i.exec(fileName);
+  return match?.[1] && match[2] ? { prefix: match[1], shard: Number.parseInt(match[2], 10) } : undefined;
 }
 
 function compareMichiganMitnLegacyFileNames(left: string, right: string): number {
   const lexical = left.localeCompare(right, undefined, { numeric: true });
-  if (!MICHIGAN_MITN_LEGACY_CONTRIBUTIONS_CSV_FILE_NAME_PATTERN.test(left)) {
+  const leftShard = contributionShardSortKey(left);
+  const rightShard = contributionShardSortKey(right);
+  if (!leftShard || !rightShard) {
     return lexical;
   }
-  if (!MICHIGAN_MITN_LEGACY_CONTRIBUTIONS_CSV_FILE_NAME_PATTERN.test(right)) {
-    return lexical;
+  const prefixCompare = leftShard.prefix.localeCompare(rightShard.prefix, undefined, { numeric: true });
+  if (prefixCompare !== 0) {
+    return prefixCompare;
   }
-  return contributionShardNumber(left) - contributionShardNumber(right) || lexical;
+  return leftShard.shard - rightShard.shard || lexical;
 }
 
 export function michiganMitnLegacyReceiptsCsvFileName(year: number): string {
