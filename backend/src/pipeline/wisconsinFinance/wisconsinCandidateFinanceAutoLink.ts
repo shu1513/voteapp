@@ -1,7 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 
 import {
-  normalizeWisconsinCandidateNameKeys,
+  normalizeWisconsinCandidateNameForStorage,
   searchAndResolveWisconsinCandidateCommittee,
   type WisconsinCandidateCommitteeResolution,
 } from "./wisconsinCandidateCommitteeResolver.js";
@@ -61,11 +61,6 @@ export type WisconsinCandidateCommitteeResolver = (
   },
   options?: WisconsinSunshineClientOptions
 ) => Promise<WisconsinCandidateCommitteeResolution>;
-
-function normalizeCandidateNameForStorage(value: string): string {
-  const keys = normalizeWisconsinCandidateNameKeys(value);
-  return [...keys][0] ?? value.trim().replace(/\s+/g, " ").toUpperCase();
-}
 
 function mapCandidateElectionRow(row: CandidateElectionQueryRow): WisconsinFinanceAutoLinkCandidateElection {
   return {
@@ -185,7 +180,7 @@ export async function autoLinkWisconsinCandidateFinanceForCandidateElection(inpu
       candidateId: input.candidateElection.candidateId,
       electionId: input.candidateElection.electionId,
       electionYear: input.candidateElection.electionYear,
-      candidateNameNormalized: normalizeCandidateNameForStorage(input.candidateElection.candidateName),
+      candidateNameNormalized: normalizeWisconsinCandidateNameForStorage(input.candidateElection.candidateName),
       officeName: input.candidateElection.officeName,
       district: input.candidateElection.district,
       entityId: resolution.entityId,

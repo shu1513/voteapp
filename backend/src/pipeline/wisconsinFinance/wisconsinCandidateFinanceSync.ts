@@ -2,7 +2,7 @@ import type { Pool, PoolClient } from "pg";
 
 import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
 import {
-  normalizeWisconsinCandidateNameKeys,
+  normalizeWisconsinCandidateNameForStorage,
   searchAndResolveWisconsinCandidateCommittee,
   type WisconsinCandidateCommitteeMatch,
   type WisconsinCandidateCommitteeResolution,
@@ -162,10 +162,6 @@ function normalizeAiClassificationMinAmount(value: number | undefined): number {
   return normalized;
 }
 
-function normalizeCandidateNameForStorage(value: string): string {
-  return [...normalizeWisconsinCandidateNameKeys(value)][0] ?? requireNonEmpty(value, "candidate name").replace(/\s+/g, " ").toUpperCase();
-}
-
 function mergeSunshineClient(client: Partial<WisconsinSunshineDataClient> | undefined): WisconsinSunshineDataClient {
   return { ...DEFAULT_SUNSHINE_CLIENT, ...(client ?? {}) };
 }
@@ -199,7 +195,7 @@ function toFinanceLink(input: {
     candidateId: requireNonEmpty(input.candidateId, "candidate id"),
     electionId: requireNonEmpty(input.electionId, "election id"),
     electionYear: input.electionYear,
-    candidateNameNormalized: normalizeCandidateNameForStorage(input.candidateName),
+    candidateNameNormalized: normalizeWisconsinCandidateNameForStorage(requireNonEmpty(input.candidateName, "candidate name")),
     officeName: requireNonEmpty(input.officeName, "office name"),
     district: input.district ?? null,
     entityId: requireNonEmpty(input.resolution.entityId, "Wisconsin entity id"),

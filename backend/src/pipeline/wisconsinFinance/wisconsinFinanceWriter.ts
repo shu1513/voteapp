@@ -294,8 +294,8 @@ async function upsertSummary(input: {
         direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, wi_candidate_finance_summaries.direct_contribution_total),
         total_disbursements = COALESCE(EXCLUDED.total_disbursements, wi_candidate_finance_summaries.total_disbursements),
         cash_on_hand = COALESCE(EXCLUDED.cash_on_hand, wi_candidate_finance_summaries.cash_on_hand),
-        outside_support_total = EXCLUDED.outside_support_total,
-        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        outside_support_total = COALESCE(EXCLUDED.outside_support_total, wi_candidate_finance_summaries.outside_support_total),
+        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, wi_candidate_finance_summaries.outside_oppose_total),
         source_url = COALESCE(EXCLUDED.source_url, wi_candidate_finance_summaries.source_url),
         last_synced_at = EXCLUDED.last_synced_at
     `,

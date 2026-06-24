@@ -4293,6 +4293,7 @@ async function loadWisconsinCandidateFinanceSummariesByCandidateElection(
         END AS direct_contribution_total,
         CASE WHEN count(summary.total_disbursements) = 0 THEN NULL ELSE sum(summary.total_disbursements) END AS total_disbursements,
         CASE WHEN count(summary.cash_on_hand) = 0 THEN NULL ELSE sum(summary.cash_on_hand) END AS cash_on_hand,
+        -- Outside totals are already candidate/election snapshot totals; max avoids double-counting multi-link joins.
         max(summary.outside_support_total) AS outside_support_total,
         max(summary.outside_oppose_total) AS outside_oppose_total,
         min(summary.source_url) FILTER (WHERE summary.source_url IS NOT NULL) AS source_url,

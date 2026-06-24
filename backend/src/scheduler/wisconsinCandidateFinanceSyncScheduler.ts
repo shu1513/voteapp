@@ -3,7 +3,7 @@ import type { ConnectionOptions } from "bullmq";
 import { Pool } from "pg";
 
 import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
-import { getPipelineEnv } from "../config/env.js";
+import { getPipelineEnv, loadProjectEnv } from "../config/env.js";
 import {
   isWisconsinCampaignFinanceEnabled,
   isWisconsinCampaignFinanceSyncEnabled,
@@ -50,6 +50,7 @@ const DISABLED_RESULT_DEFAULT_MAX_CANDIDATES = 0;
 const DISABLED_RESULT_DEFAULT_STALE_AFTER_DAYS = 0;
 
 function readSchedulerRuntimeConfig(): WisconsinCandidateFinanceSyncSchedulerRuntimeConfig {
+  loadProjectEnv();
   return {
     queueName:
       process.env.WISCONSIN_CAMPAIGN_FINANCE_SYNC_SCHEDULER_QUEUE?.trim() ||

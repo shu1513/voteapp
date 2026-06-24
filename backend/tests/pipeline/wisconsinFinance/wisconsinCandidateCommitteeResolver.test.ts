@@ -97,6 +97,31 @@ describe("wisconsinCandidateCommitteeResolver", () => {
     });
   });
 
+  it("still matches committee name when candidate connection names do not match", () => {
+    expect(
+      resolveWisconsinCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "statewide",
+        officeName: "Attorney General",
+        electionYear: 2026,
+        committees: [
+          committee({
+            entityId: "200",
+            committeeId: "300",
+            assignedCommitteeId: "0100300",
+            committeeName: "Jane Doe",
+            candidateNames: ["County Party", "Noisy Connection"],
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      entityId: "200",
+      committeeId: "300",
+      committeeName: "Jane Doe",
+    });
+  });
+
   it("requires districts for legislative offices", () => {
     expect(
       resolveWisconsinCandidateCommittee({

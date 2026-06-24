@@ -109,6 +109,12 @@ describe("wisconsinFinanceWriter", () => {
       "DELETE FROM public.wi_candidate_finance_direct_breakdowns",
       "COMMIT",
     ]);
+    expect(String(client.query.mock.calls[2]?.[0])).toContain(
+      "outside_support_total = COALESCE(EXCLUDED.outside_support_total"
+    );
+    expect(String(client.query.mock.calls[2]?.[0])).toContain(
+      "outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total"
+    );
     expect(client.query.mock.calls.at(-2)?.[1]).toEqual([
       "link-1",
       2026,

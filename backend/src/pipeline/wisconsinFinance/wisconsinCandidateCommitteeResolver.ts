@@ -133,13 +133,15 @@ function candidateNameNormalized(value: string): string {
   return [...normalizeWisconsinCandidateNameKeys(value)][0] ?? normalizePersonName(value);
 }
 
+export function normalizeWisconsinCandidateNameForStorage(value: string): string {
+  return candidateNameNormalized(value);
+}
+
 function committeeMatchesCandidateName(input: {
   committee: WisconsinSunshineCommittee;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
-  const names = input.committee.candidateNames.length > 0
-    ? input.committee.candidateNames
-    : [input.committee.committeeName];
+  const names = [input.committee.committeeName, ...input.committee.candidateNames];
   for (const name of names) {
     for (const key of normalizeWisconsinCandidateNameKeys(name)) {
       if (input.candidateNameKeys.has(key)) {

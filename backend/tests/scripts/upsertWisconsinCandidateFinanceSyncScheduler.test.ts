@@ -28,6 +28,19 @@ describe("upsertWisconsinCandidateFinanceSyncScheduler script", () => {
     });
   });
 
+  it("parses AI classification opt-out", () => {
+    expect(parseUpsertWisconsinCandidateFinanceSyncSchedulerArgs(["--no-ai-classify-industries"])).toEqual({
+      dryRun: false,
+      force: false,
+      maxCandidates: undefined,
+      staleAfterDays: undefined,
+      electionLookbackDays: undefined,
+      electionLookaheadDays: undefined,
+      aiClassifyIndustries: false,
+      aiClassificationMinAmount: undefined,
+    });
+  });
+
   it("rejects malformed integer and missing flags", () => {
     expect(() => parseUpsertWisconsinCandidateFinanceSyncSchedulerArgs(["--max-candidates=5x"])).toThrow(
       "Invalid --max-candidates value"
