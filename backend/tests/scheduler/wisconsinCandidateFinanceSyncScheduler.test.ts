@@ -19,6 +19,7 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
 
   function mockEnv(redisUrl = "redis://localhost:6379/0") {
     vi.doMock("../../src/config/env.js", () => ({
+      loadProjectEnv: vi.fn(),
       getPipelineEnv: () => ({
         DATABASE_URL: "postgresql://localhost:5432/test",
         REDIS_URL: redisUrl,
