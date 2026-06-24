@@ -2,6 +2,7 @@ import { Pool } from "pg";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 import { initializeUserDistricts } from "../../../src/pipeline/users/userDistrictInitializer.js";
+import { listUserDistrictIds } from "../../../src/pipeline/users/userDistrictReader.js";
 
 const integrationEnabled = process.env.USER_DISTRICTS_INTEGRATION === "true";
 const integrationDatabaseUrl = process.env.USER_DISTRICTS_INTEGRATION_DATABASE_URL;
@@ -96,5 +97,14 @@ describeIntegration("initializeUserDistricts integration", () => {
     ]).toContainEqual(savedIds);
     expect(saved.rows).toHaveLength(2);
     expect(new Set(saved.rows.map((row) => row.district_type)).size).toBe(2);
+  });
+
+  it("returns initialized saved districts through the user district reader", async () => {
+    await initializeUserDistricts(pool, userId, [districtIdA, districtIdB, districtIdA.toUpperCase()]);
+
+    const savedDistrictIds = await listUserDistrictIds(pool, userId);
+
+    expect(savedDistrictIds).toHaveLength(2);
+    expect([...savedDistrictIds].sort()).toEqual([districtIdA, districtIdB].sort());
   });
 });

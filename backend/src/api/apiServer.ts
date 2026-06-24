@@ -8,6 +8,7 @@ import {
   ELECTION_DETAIL_PATH_PREFIX,
   isElectionDetailPath,
   MAX_ADDRESS_REQUEST_BODY_BYTES,
+  ME_BALLOT_PATH,
   ME_DISTRICTS_INITIALIZE_PATH,
   parseAddressBodyValue,
   parseDistrictIds,
@@ -32,6 +33,7 @@ function isKnownApiPath(pathname: string): boolean {
   return (
     pathname === ADDRESS_RESOLVE_PATH ||
     pathname === BALLOT_LOOKUP_PATH ||
+    pathname === ME_BALLOT_PATH ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
     isElectionDetailPath(pathname)
   );
@@ -175,6 +177,40 @@ async function dispatchApiRequest(
 
     const districtIds = parseDistrictIds(url);
     const result = await options.lookupBallotSummaries(districtIds);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_BALLOT_PATH) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /api/me/ballot", {
+          ...corsHeaders,
+          allow: "GET",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+    if (!options.lookupAuthenticatedBallotSummaries) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Authenticated ballot lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const userId = options.resolveAuthenticatedUserId({ headers: request.headers })?.trim();
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    const result = await options.lookupAuthenticatedBallotSummaries(userId);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }

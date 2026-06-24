@@ -8,6 +8,7 @@ import { MAX_INITIALIZE_DISTRICT_IDS } from "../../src/api/apiValidation.js";
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
 import { InitializeUserDistrictsError } from "../../src/pipeline/users/userDistrictInitializer.js";
+import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
 
 const resolvedAddress: AddressResolutionResult = {
   matched_address: "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
@@ -544,9 +545,16 @@ describe("createApiApp", () => {
   it("keeps known-path wrong methods as 405 responses", async () => {
     const resolveAddress = vi.fn();
     const lookupBallotSummaries = vi.fn();
+    const lookupAuthenticatedBallotSummaries = vi.fn();
     const lookupElectionDetail = vi.fn();
     const initializeUserDistricts = vi.fn();
-    const app = createApiApp({ resolveAddress, lookupBallotSummaries, lookupElectionDetail, initializeUserDistricts });
+    const app = createApiApp({
+      resolveAddress,
+      lookupBallotSummaries,
+      lookupAuthenticatedBallotSummaries,
+      lookupElectionDetail,
+      initializeUserDistricts,
+    });
 
     const ballotResponse = await invokeExpressApp(app, {
       method: "POST",
@@ -571,6 +579,19 @@ describe("createApiApp", () => {
       error: {
         code: "method_not_allowed",
         message: "Use GET /api/elections/:election_id",
+      },
+    });
+
+    const authenticatedBallotResponse = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/me/ballot",
+    });
+    expect(authenticatedBallotResponse.statusCode).toBe(405);
+    expect(authenticatedBallotResponse.headers).toMatchObject({ allow: "GET" });
+    expect(authenticatedBallotResponse.body).toEqual({
+      error: {
+        code: "method_not_allowed",
+        message: "Use GET /api/me/ballot",
       },
     });
 
@@ -602,6 +623,7 @@ describe("createApiApp", () => {
 
     expect(resolveAddress).not.toHaveBeenCalled();
     expect(lookupBallotSummaries).not.toHaveBeenCalled();
+    expect(lookupAuthenticatedBallotSummaries).not.toHaveBeenCalled();
     expect(lookupElectionDetail).not.toHaveBeenCalled();
     expect(initializeUserDistricts).not.toHaveBeenCalled();
   });
@@ -712,6 +734,154 @@ describe("createApiApp", () => {
 
     expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId]);
     expect(lookupElectionDetail).toHaveBeenCalledWith(electionId);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("serves authenticated ballot summaries for the current user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupAuthenticatedBallotSummaries = vi.fn().mockResolvedValue({
+      district_ids: [districtId],
+      districts: [],
+      elections: [],
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, lookupAuthenticatedBallotSummaries }),
+      {
+        method: "GET",
+        path: "/api/me/ballot",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      district_ids: [districtId],
+      districts: [],
+      elections: [],
+    });
+    expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
+      headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
+    });
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("serves empty authenticated ballot summaries when the user has no saved districts", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupAuthenticatedBallotSummaries = vi.fn().mockResolvedValue({
+      district_ids: [],
+      districts: [],
+      elections: [],
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, lookupAuthenticatedBallotSummaries }),
+      {
+        method: "GET",
+        path: "/api/me/ballot",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      district_ids: [],
+      districts: [],
+      elections: [],
+    });
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated ballot lookup when authentication is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const lookupAuthenticatedBallotSummaries = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupAuthenticatedBallotSummaries }), {
+      method: "GET",
+      path: "/api/me/ballot",
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(lookupAuthenticatedBallotSummaries).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when authenticated ballot lookup is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, resolveAuthenticatedUserId }), {
+      method: "GET",
+      path: "/api/me/ballot",
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "Authenticated ballot lookup is not configured",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated ballot lookup without an authenticated user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(null);
+    const lookupAuthenticatedBallotSummaries = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, lookupAuthenticatedBallotSummaries }),
+      {
+        method: "GET",
+        path: "/api/me/ballot",
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(lookupAuthenticatedBallotSummaries).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("maps authenticated ballot user-district reader errors to unauthorized", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupAuthenticatedBallotSummaries = vi
+      .fn()
+      .mockRejectedValue(new UserDistrictReaderError("user_not_found", "User not found"));
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, lookupAuthenticatedBallotSummaries }),
+      {
+        method: "GET",
+        path: "/api/me/ballot",
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 

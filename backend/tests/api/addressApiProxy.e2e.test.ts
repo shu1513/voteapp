@@ -165,9 +165,22 @@ async function postJson(baseUrl: string, path: string, body: unknown, headers: R
   };
 }
 
+async function getJson(baseUrl: string, path: string, headers: Record<string, string> = {}): Promise<JsonResponse> {
+  const response = await fetch(`${baseUrl}${path}`, {
+    method: "GET",
+    headers,
+  });
+
+  return {
+    status: response.status,
+    body: await response.json(),
+  };
+}
+
 describeE2e("address API auth proxy E2E", () => {
   const resolveAddress = vi.fn();
   const initializeUserDistricts = vi.fn();
+  const lookupAuthenticatedBallotSummaries = vi.fn();
   let apiServer: Server | undefined;
   let proxyServer: Server | undefined;
   let proxyBaseUrl: string;
@@ -177,6 +190,7 @@ describeE2e("address API auth proxy E2E", () => {
       resolveAddress,
       resolveAuthenticatedUserId: createTrustedUserIdResolver("X-User-Id"),
       initializeUserDistricts,
+      lookupAuthenticatedBallotSummaries,
     });
     apiServer = createServer(app);
     const apiBaseUrl = await listen(apiServer);
@@ -189,6 +203,12 @@ describeE2e("address API auth proxy E2E", () => {
     resolveAddress.mockResolvedValue(resolvedAddress);
     initializeUserDistricts.mockReset();
     initializeUserDistricts.mockResolvedValue({ status: "initialized", districtCount: 1 });
+    lookupAuthenticatedBallotSummaries.mockReset();
+    lookupAuthenticatedBallotSummaries.mockResolvedValue({
+      district_ids: [districtId],
+      districts: resolvedAddress.districts,
+      elections: [],
+    });
   });
 
   afterAll(async () => {
@@ -233,6 +253,23 @@ describeE2e("address API auth proxy E2E", () => {
     expect(initializeUserDistricts).not.toHaveBeenCalledWith(
       expect.objectContaining({ userId: spoofedUserId })
     );
+  });
+
+  it("strips client-supplied user IDs and loads the logged-in user's saved ballot", async () => {
+    const response = await getJson(proxyBaseUrl, "/api/me/ballot", {
+      "x-test-session": "signed-in",
+      "x-user-id": spoofedUserId,
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      district_ids: [districtId],
+      districts: resolvedAddress.districts,
+      elections: [],
+    });
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith(authenticatedUserId);
+    expect(lookupAuthenticatedBallotSummaries).not.toHaveBeenCalledWith(spoofedUserId);
+    expect(resolveAddress).not.toHaveBeenCalled();
   });
 
   it("fails closed when the proxy does not inject an authenticated user ID", async () => {

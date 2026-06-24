@@ -23,6 +23,7 @@ import {
   DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE,
 } from "../pipeline/address/censusAddressGeocoder.js";
 import { initializeUserDistricts } from "../pipeline/users/userDistrictInitializer.js";
+import { listUserDistrictIds } from "../pipeline/users/userDistrictReader.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -163,6 +164,10 @@ async function main(): Promise<void> {
     resolveAuthenticatedUserId: createTrustedUserIdResolver(trustedUserIdHeader),
     logDiagnostics: logAddressResolutionDiagnostics,
     lookupBallotSummaries: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
+    lookupAuthenticatedBallotSummaries: async (userId) => {
+      const districtIds = await listUserDistrictIds(pool, userId);
+      return lookupBallotSummariesByDistrictIds(pool, districtIds);
+    },
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
     initializeUserDistricts: ({ userId, districtIds }) => initializeUserDistricts(pool, userId, districtIds),
     resolveAddress: (address) =>
