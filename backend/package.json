@@ -151,7 +151,11 @@
     "virginia-candidates:finance:sync-due": "tsx src/scripts/syncDueVirginiaCandidateFinance.ts",
     "virginia-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertVirginiaCandidateFinanceSyncScheduler.ts",
     "virginia-candidates:finance:scheduler:worker": "tsx src/scripts/runVirginiaCandidateFinanceSyncSchedulerWorker.ts",
-    "virginia-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerVirginiaCandidateFinanceSync.ts"
+    "virginia-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerVirginiaCandidateFinanceSync.ts",
+    "wisconsin-candidates:finance:sync-due": "tsx src/scripts/syncDueWisconsinCandidateFinance.ts",
+    "wisconsin-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertWisconsinCandidateFinanceSyncScheduler.ts",
+    "wisconsin-candidates:finance:scheduler:worker": "tsx src/scripts/runWisconsinCandidateFinanceSyncSchedulerWorker.ts",
+    "wisconsin-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerWisconsinCandidateFinanceSync.ts"
   },
   "dependencies": {
     "bullmq": "^5.71.1",
