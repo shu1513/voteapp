@@ -173,6 +173,20 @@ function validateMichiganFinanceSnapshotInput(input: MichiganFinanceSnapshotInpu
   if (outsideBreakdownCount > 0 && outsideGroupCount === 0) {
     throw new Error("Michigan outside group breakdowns require outside groups in the same snapshot");
   }
+  if (outsideBreakdownCount > 0) {
+    const groupKeys = new Set(
+      (input.outsideGroups ?? []).map(
+        (group) =>
+          `${requireNonEmpty(group.committeeId, "Michigan outside group committee id")}\u0000${group.supportOppose}`
+      )
+    );
+    for (const breakdown of input.outsideGroupBreakdowns ?? []) {
+      const key = `${requireNonEmpty(breakdown.committeeId, "Michigan outside breakdown committee id")}\u0000${breakdown.supportOppose}`;
+      if (!groupKeys.has(key)) {
+        throw new Error("Michigan outside group breakdowns must reference outside groups in the same snapshot");
+      }
+    }
+  }
 }
 
 async function withMichiganFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
@@ -243,8 +257,14 @@ export async function upsertMichiganFinanceLink(input: {
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
         committee_name = EXCLUDED.committee_name,
-        link_status = EXCLUDED.link_status,
-        link_source = EXCLUDED.link_source,
+        link_status = CASE
+          WHEN mi_candidate_finance_links.link_source = 'manual' THEN mi_candidate_finance_links.link_status
+          ELSE EXCLUDED.link_status
+        END,
+        link_source = CASE
+          WHEN mi_candidate_finance_links.link_source = 'manual' THEN mi_candidate_finance_links.link_source
+          ELSE EXCLUDED.link_source
+        END,
         source_url = EXCLUDED.source_url,
         last_verified_at = EXCLUDED.last_verified_at
       RETURNING id
@@ -272,6 +292,33 @@ export async function upsertMichiganFinanceLink(input: {
   return { linkId };
 }
 
+export async function deactivateMichiganFinanceLinksForCandidateElection(input: {
+  db: Queryable;
+  candidateId: string;
+  electionId: string;
+  electionYear: number;
+  verifiedAt?: Date | null;
+}): Promise<number> {
+  const result = await input.db.query(
+    `
+      UPDATE public.mi_candidate_finance_links
+      SET link_status = 'inactive',
+          last_verified_at = $4::timestamptz
+      WHERE candidate_id = $1::uuid
+        AND election_id = $2::uuid
+        AND election_year = $3
+        AND link_status = 'active'
+    `,
+    [
+      requireNonEmpty(input.candidateId, "candidate id"),
+      requireNonEmpty(input.electionId, "election id"),
+      normalizeElectionYear(input.electionYear),
+      normalizeNullableDate(input.verifiedAt),
+    ]
+  );
+  return typeof result.rowCount === "number" ? result.rowCount : 0;
+}
+
 async function upsertSummary(input: {
   db: Queryable;
   linkId: string;
@@ -296,13 +343,13 @@ async function upsertSummary(input: {
       VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
-        total_receipts = COALESCE(EXCLUDED.total_receipts, mi_candidate_finance_summaries.total_receipts),
-        direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, mi_candidate_finance_summaries.direct_contribution_total),
-        total_disbursements = COALESCE(EXCLUDED.total_disbursements, mi_candidate_finance_summaries.total_disbursements),
-        cash_on_hand = COALESCE(EXCLUDED.cash_on_hand, mi_candidate_finance_summaries.cash_on_hand),
-        outside_support_total = COALESCE(EXCLUDED.outside_support_total, mi_candidate_finance_summaries.outside_support_total),
-        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, mi_candidate_finance_summaries.outside_oppose_total),
-        source_url = COALESCE(EXCLUDED.source_url, mi_candidate_finance_summaries.source_url),
+        total_receipts = EXCLUDED.total_receipts,
+        direct_contribution_total = EXCLUDED.direct_contribution_total,
+        total_disbursements = EXCLUDED.total_disbursements,
+        cash_on_hand = EXCLUDED.cash_on_hand,
+        outside_support_total = EXCLUDED.outside_support_total,
+        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        source_url = EXCLUDED.source_url,
         last_synced_at = EXCLUDED.last_synced_at
     `,
     [

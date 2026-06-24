@@ -54,6 +54,7 @@ function expenditure(overrides: Partial<MichiganMitnLegacyExpenditureRow> = {}):
     schedule_desc: "Independent Expenditure",
     supp_opp: "2",
     can_or_ballot: "GRETCHEN WHITMER",
+    _column_29: "GOVERNOR",
     amount: "863076.75",
     ...overrides,
   };

@@ -30,6 +30,7 @@ import {
   type MichiganOutsideSpendingGroup,
 } from "./michiganOutsideSpendingAggregator.js";
 import {
+  deactivateMichiganFinanceLinksForCandidateElection,
   replaceMichiganCandidateFinanceSnapshot,
   type MichiganFinanceLinkInput,
   type MichiganFinanceOutsideGroupBreakdownInput,
@@ -438,6 +439,15 @@ export async function syncMichiganCandidateFinance(
       });
 
   if (resolution.status !== "matched") {
+    if (!input.dryRun) {
+      await deactivateMichiganFinanceLinksForCandidateElection({
+        db: input.db,
+        candidateId,
+        electionId,
+        electionYear,
+        verifiedAt: syncedAt,
+      });
+    }
     return {
       candidateId,
       electionId,

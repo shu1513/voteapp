@@ -51,7 +51,7 @@ function requireNonEmpty(value: string, fieldName: string): string {
 function normalizePositiveInteger(value: number | undefined, fallback: number, fieldName: string): number {
   const normalized = value ?? fallback;
   if (!Number.isInteger(normalized) || normalized <= 0) {
-    throw new Error(`Invalid Michigan direct contribution aggregation ${fieldName}: ${value}`);
+    throw new Error(`Invalid Michigan direct contribution aggregation ${fieldName}: ${normalized}`);
   }
   return normalized;
 }
@@ -155,8 +155,6 @@ function contributorIdentityKey(row: MichiganMitnLegacyContributionRow): string 
     row.city,
     row.state,
     row.zip,
-    row.occupation,
-    row.employer,
   ]
     .map(normalizeTextKey)
     .filter(Boolean);

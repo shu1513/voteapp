@@ -1,12 +1,12 @@
 import { loadProjectEnv } from "../config/env.js";
-import { isMichiganCampaignFinanceEnabled } from "../config/featureFlags.js";
+import { isMichiganCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import { createMichiganCandidateFinanceSyncSchedulerWorker } from "../scheduler/michiganCandidateFinanceSyncScheduler.js";
 
 const SHUTDOWN_TIMEOUT_MS = 30_000;
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  if (!isMichiganCampaignFinanceEnabled()) {
+  if (!isMichiganCampaignFinanceSyncEnabled(false)) {
     console.log("Michigan campaign finance sync scheduler worker disabled; exiting");
     return;
   }

@@ -62,6 +62,7 @@ function expenditure(overrides: Partial<MichiganMitnLegacyExpenditureRow> = {}):
     schedule_desc: "Independent Expenditure",
     supp_opp: "2",
     can_or_ballot: "GRETCHEN WHITMER",
+    _column_29: "GOVERNOR",
     amount: "863076.75",
     ...overrides,
   };
@@ -183,12 +184,34 @@ describe("michiganCandidateFinanceSync", () => {
     expect(result.totalReceipts).toBe(100);
   });
 
-  it("returns unmatched without writing when committee resolution is unsafe", async () => {
+  it("deactivates stale active links when committee resolution is unsafe", async () => {
     const db = createMockDb();
 
     const result = await syncMichiganCandidateFinance({
       db,
       ...baseInput(),
+      candidateName: "Other Person",
+      contributionRows: [contribution()],
+    });
+
+    expect(result.resolution).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(result.linkWritten).toBe(false);
+    expect(result.summaryWritten).toBe(false);
+    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("UPDATE public.mi_candidate_finance_links");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("link_status = 'inactive'");
+  });
+
+  it("does not deactivate stale active links during dry-run resolution failure", async () => {
+    const db = createMockDb();
+
+    const result = await syncMichiganCandidateFinance({
+      db,
+      ...baseInput(),
+      dryRun: true,
       candidateName: "Other Person",
       contributionRows: [contribution()],
     });

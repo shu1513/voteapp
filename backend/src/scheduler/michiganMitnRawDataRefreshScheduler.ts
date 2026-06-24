@@ -19,7 +19,10 @@ import {
 export const MICHIGAN_MITN_RAW_DATA_REFRESH_JOB_NAME = "michigan_mitn_raw_data_refresh";
 export const MICHIGAN_MITN_RAW_DATA_REFRESH_DAILY_SCHEDULER_ID =
   "michigan_mitn_raw_data_refresh_daily";
-export const DEFAULT_MICHIGAN_MITN_RAW_DATA_REFRESH_YEAR = 2025;
+
+export function defaultMichiganMitnRawDataRefreshYear(now = new Date()): number {
+  return now.getUTCFullYear();
+}
 
 export type MichiganMitnRawDataRefreshJobData = {
   year?: number;
@@ -67,7 +70,7 @@ function assertPositiveInteger(value: number | undefined, label: string): void {
 
 function normalizeRefreshJobData(data: MichiganMitnRawDataRefreshJobData): NormalizedRefreshJobData {
   const year = normalizeMichiganMitnLegacyArchiveYear(
-    data.year ?? DEFAULT_MICHIGAN_MITN_RAW_DATA_REFRESH_YEAR
+    data.year ?? defaultMichiganMitnRawDataRefreshYear()
   );
   return {
     year,

@@ -1,5 +1,5 @@
 import { normalizeMichiganCandidateNameKeys } from "./michiganCandidateCommitteeResolver.js";
-import { toMichiganMitnOfficeSearchInput } from "./michiganFinanceEligibleOffices.js";
+import { type MichiganMitnOfficeSearchInput, toMichiganMitnOfficeSearchInput } from "./michiganFinanceEligibleOffices.js";
 import { normalizeMichiganMitnLegacyArchiveYear } from "./michiganMitnLegacyArtifactCache.js";
 import type { MichiganMitnLegacyExpenditureRow } from "./michiganMitnLegacyArchiveReader.js";
 
@@ -50,7 +50,7 @@ const DEFAULT_MAX_GROUPS = 50;
 function normalizePositiveInteger(value: number | undefined, fallback: number, fieldName: string): number {
   const normalized = value ?? fallback;
   if (!Number.isInteger(normalized) || normalized <= 0) {
-    throw new Error(`Invalid Michigan outside spending aggregation ${fieldName}: ${value}`);
+    throw new Error(`Invalid Michigan outside spending aggregation ${fieldName}: ${normalized}`);
   }
   return normalized;
 }
@@ -137,6 +137,61 @@ function targetMatchesCandidate(input: {
   return false;
 }
 
+function targetOfficeText(row: MichiganMitnLegacyExpenditureRow): string {
+  const record = row as Record<string, string>;
+  return normalizeTextKey(
+    [
+      record._column_29,
+      record.office,
+      record.office_name,
+      record.office_desc,
+      record.office_sought,
+      record.county,
+      record.extra_desc,
+      record.purpose,
+    ]
+      .filter(Boolean)
+      .join(" ")
+  );
+}
+
+function officeAliasesForSearchInput(officeSearchInput: MichiganMitnOfficeSearchInput): string[] {
+  switch (officeSearchInput.mitnOffice) {
+    case "State Senate":
+      return ["STATE SENATE", "SENATE", "SENATOR"];
+    case "State House":
+      return ["STATE HOUSE", "HOUSE", "REPRESENTATIVE"];
+    default:
+      return [officeSearchInput.mitnOffice.toUpperCase()];
+  }
+}
+
+function districtAliasesForSearchInput(officeSearchInput: MichiganMitnOfficeSearchInput): string[] {
+  if (!officeSearchInput.district) {
+    return [];
+  }
+  const district = officeSearchInput.district.replace(/^0+/, "");
+  if (officeSearchInput.mitnOffice === "State Senate") {
+    return [`STATE SENATE ${district}`, `SENATE DISTRICT ${district}`, `SENATE ${district}`, `SD ${district}`];
+  }
+  return [`STATE HOUSE ${district}`, `HOUSE DISTRICT ${district}`, `HOUSE ${district}`, `HD ${district}`];
+}
+
+function rowMatchesOfficeContext(input: {
+  row: MichiganMitnLegacyExpenditureRow;
+  officeSearchInput: MichiganMitnOfficeSearchInput;
+}): boolean {
+  const text = targetOfficeText(input.row);
+  if (!text) {
+    return false;
+  }
+  if (!officeAliasesForSearchInput(input.officeSearchInput).some((alias) => text.includes(normalizeTextKey(alias)))) {
+    return false;
+  }
+  const districtAliases = districtAliasesForSearchInput(input.officeSearchInput);
+  return districtAliases.length === 0 || districtAliases.some((alias) => text.includes(normalizeTextKey(alias)));
+}
+
 function groupKey(input: { committeeId: string; supportOppose: MichiganSupportOppose }): string {
   return `${input.committeeId}\u0000${input.supportOppose}`;
 }
@@ -195,6 +250,10 @@ export function aggregateMichiganOutsideSpending(
       continue;
     }
     matchedExpenditureRowCount += 1;
+    if (!rowMatchesOfficeContext({ row, officeSearchInput })) {
+      skippedExpenditureRowCount += 1;
+      continue;
+    }
 
     const committeeId = normalizeId(row.cfr_com_id);
     const committeeName = row.com_legal_name.trim() || row.common_name.trim();

@@ -219,10 +219,21 @@ describe("michiganOutsideGroupContributionAggregator", () => {
     });
   });
 
-  it("validates supported legacy years, max breakdowns, and min industry amount", () => {
-    expect(() =>
+  it("allows future election years and validates max breakdowns and min industry amount", () => {
+    expect(
       aggregateMichiganOutsideGroupContributions({
         electionYear: 2026,
+        outsideGroups: [outsideGroup()],
+        contributionRows: [],
+      })
+    ).toMatchObject({
+      outsideGroupBreakdowns: [],
+      matchedContributionRowCount: 0,
+    });
+
+    expect(() =>
+      aggregateMichiganOutsideGroupContributions({
+        electionYear: 2019,
         outsideGroups: [outsideGroup()],
         contributionRows: [],
       })

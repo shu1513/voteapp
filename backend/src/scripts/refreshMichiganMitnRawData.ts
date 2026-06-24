@@ -12,7 +12,7 @@ import {
   parseMichiganMitnHttpsUrl,
   refreshMichiganMitnLegacyArchiveCache,
 } from "../pipeline/michiganFinance/michiganMitnLegacyArtifactCache.js";
-import { DEFAULT_MICHIGAN_MITN_RAW_DATA_REFRESH_YEAR } from "../scheduler/michiganMitnRawDataRefreshScheduler.js";
+import { defaultMichiganMitnRawDataRefreshYear } from "../scheduler/michiganMitnRawDataRefreshScheduler.js";
 
 export { DEFAULT_MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR };
 
@@ -81,7 +81,7 @@ export function parseRefreshMichiganMitnRawDataScriptArgs(
   args: readonly string[]
 ): RefreshMichiganMitnRawDataScriptOptions {
   const year = normalizeMichiganMitnLegacyArchiveYear(
-    parsePositiveInteger(readValueFlag(args, "--year"), DEFAULT_MICHIGAN_MITN_RAW_DATA_REFRESH_YEAR, "--year")
+    parsePositiveInteger(readValueFlag(args, "--year"), defaultMichiganMitnRawDataRefreshYear(), "--year")
   );
   return {
     year,

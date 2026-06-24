@@ -123,7 +123,7 @@ function assertValidDate(date: Date, label: string): void {
 function normalizePositiveInteger(value: number | undefined, fallback: number, label: string): number {
   const normalized = value ?? fallback;
   if (!Number.isInteger(normalized) || normalized <= 0) {
-    throw new Error(`Invalid Michigan finance batch sync ${label}: ${value}`);
+    throw new Error(`Invalid Michigan finance batch sync ${label}: ${normalized}`);
   }
   return normalized;
 }
@@ -511,7 +511,7 @@ export async function syncDueMichiganCandidateFinance(
   const dryRun = input.dryRun === true;
   const syncFn = input.syncMichiganCandidateFinanceFn ?? syncMichiganCandidateFinance;
 
-  if (input.autoLinkMissingLinks !== false) {
+  if (!dryRun && input.autoLinkMissingLinks !== false) {
     try {
       const missingLinkCandidates = await listMichiganCandidateElectionsMissingFinanceLinks(input.db, {
         now,
@@ -565,22 +565,39 @@ export async function syncDueMichiganCandidateFinance(
   const mitnDataByYear = new Map<number, MichiganMitnLegacyDataForYear>(
     input.mitnDataByYear ? [...input.mitnDataByYear.entries()] : []
   );
+  const mitnLoadErrorsByYear = new Map<number, string>();
   for (const [year, rows] of groupDueRowsByYear(due.rows).entries()) {
     if (!mitnDataByYear.has(year)) {
-      mitnDataByYear.set(
-        year,
-        await loadMichiganMitnDataForYear({
+      try {
+        mitnDataByYear.set(
           year,
-          dueRows: rows,
-          rawDataExtractedDir: input.rawDataExtractedDir,
-          rawDataCacheDir: input.rawDataCacheDir,
-        })
-      );
+          await loadMichiganMitnDataForYear({
+            year,
+            dueRows: rows,
+            rawDataExtractedDir: input.rawDataExtractedDir,
+            rawDataCacheDir: input.rawDataCacheDir,
+          })
+        );
+      } catch (error) {
+        mitnLoadErrorsByYear.set(year, error instanceof Error ? error.message : String(error));
+      }
     }
   }
 
   const results: MichiganCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
+    const mitnLoadError = mitnLoadErrorsByYear.get(row.electionYear);
+    if (mitnLoadError) {
+      results.push({
+        candidateId: row.candidateId,
+        electionId: row.electionId,
+        electionYear: row.electionYear,
+        committeeId: row.committeeId,
+        ok: false,
+        error: `Michigan MiTN data load failed for ${row.electionYear}: ${mitnLoadError}`,
+      });
+      continue;
+    }
     const mitnData = mitnDataByYear.get(row.electionYear);
     try {
       const result = await syncFn({

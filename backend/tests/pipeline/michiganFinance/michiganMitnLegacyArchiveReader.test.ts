@@ -69,6 +69,7 @@ describe("Michigan MiTN legacy archive reader", () => {
 
   it("lists extracted files and contribution split files for the selected year", async () => {
     const dir = await makeTempDir();
+    await writeFile(join(dir, "2022_mi_cfr_contributions 10 of 12.csv"), "a\n", "utf8");
     await writeFile(join(dir, "2022_mi_cfr_contributions 2 of 2.csv"), "a\n", "utf8");
     await writeFile(join(dir, "2022_mi_cfr_contributions 1 of 2.csv"), "a\n", "utf8");
     await writeFile(join(dir, "2021_mi_cfr_contributions 1 of 1.csv"), "a\n", "utf8");
@@ -79,11 +80,13 @@ describe("Michigan MiTN legacy archive reader", () => {
       "2021_mi_cfr_contributions 1 of 1.csv",
       "2022_mi_cfr_contributions 1 of 2.csv",
       "2022_mi_cfr_contributions 2 of 2.csv",
+      "2022_mi_cfr_contributions 10 of 12.csv",
       "2022_mi_cfr_expenditures.csv",
     ]);
     await expect(listMichiganMitnLegacyContributionCsvFileNames({ extractedDir: dir, year: 2022 })).resolves.toEqual([
       "2022_mi_cfr_contributions 1 of 2.csv",
       "2022_mi_cfr_contributions 2 of 2.csv",
+      "2022_mi_cfr_contributions 10 of 12.csv",
     ]);
   });
 

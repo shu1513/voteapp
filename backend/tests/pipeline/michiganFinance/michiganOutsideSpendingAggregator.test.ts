@@ -19,6 +19,7 @@ function expenditure(overrides: Partial<MichiganMitnLegacyExpenditureRow> = {}):
     schedule_desc: "Independent Expenditure",
     supp_opp: "2",
     can_or_ballot: "GRETCHEN WHITMER",
+    _column_29: "GOVERNOR",
     amount: "863076.75",
     ...overrides,
   };
@@ -178,6 +179,38 @@ describe("michiganOutsideSpendingAggregator", () => {
     expect(result.includedExpenditureRowCount).toBe(1);
   });
 
+  it("skips same-name outside spending for a different office", () => {
+    const result = aggregateMichiganOutsideSpending({
+      candidateName: "Gretchen Whitmer",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2022,
+      expenditureRows: [expenditure({ _column_29: "STATE SENATE DISTRICT 7" })],
+    });
+
+    expect(result).toMatchObject({
+      summary: null,
+      matchedExpenditureRowCount: 1,
+      includedExpenditureRowCount: 0,
+      skippedExpenditureRowCount: 1,
+    });
+  });
+
+  it("requires matching legislative districts for outside spending", () => {
+    const result = aggregateMichiganOutsideSpending({
+      candidateName: "Jane Doe",
+      officeScope: "state_upper",
+      officeName: "State Senator",
+      district: "7",
+      electionYear: 2022,
+      expenditureRows: [expenditure({ can_or_ballot: "JANE DOE", _column_29: "STATE SENATE DISTRICT 8" })],
+    });
+
+    expect(result.summary).toBeNull();
+    expect(result.matchedExpenditureRowCount).toBe(1);
+    expect(result.includedExpenditureRowCount).toBe(0);
+  });
+
   it("limits groups without changing summary totals", () => {
     const result = aggregateMichiganOutsideSpending({
       candidateName: "Gretchen Whitmer",
@@ -198,8 +231,8 @@ describe("michiganOutsideSpendingAggregator", () => {
     ]);
   });
 
-  it("validates supported legacy years and maxGroups", () => {
-    expect(() =>
+  it("allows future election years and validates maxGroups", () => {
+    expect(
       aggregateMichiganOutsideSpending({
         candidateName: "Gretchen Whitmer",
         officeScope: "statewide",
@@ -207,7 +240,10 @@ describe("michiganOutsideSpendingAggregator", () => {
         electionYear: 2026,
         expenditureRows: [],
       })
-    ).toThrow("Invalid Michigan MiTN legacy archive year");
+    ).toMatchObject({
+      summary: null,
+      matchedExpenditureRowCount: 0,
+    });
 
     expect(() =>
       aggregateMichiganOutsideSpending({

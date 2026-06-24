@@ -98,7 +98,7 @@ describe("michiganCandidateCommitteeResolver", () => {
         contributionRows: [
           contributionRow({
             cfr_com_id: "3001",
-            com_legal_name: "JANE DOE FOR SENATE",
+            com_legal_name: "JANE DOE FOR SENATE DISTRICT 7",
             can_first_name: "JANE",
             can_last_name: "DOE",
           }),
@@ -121,7 +121,7 @@ describe("michiganCandidateCommitteeResolver", () => {
         contributionRows: [
           contributionRow({
             cfr_com_id: "3001",
-            com_legal_name: "JANE DOE FOR SENATE",
+            com_legal_name: "JANE DOE FOR SENATE DISTRICT 7",
             can_first_name: "JANE",
             can_last_name: "DOE",
           }),
@@ -130,6 +130,29 @@ describe("michiganCandidateCommitteeResolver", () => {
     ).toMatchObject({
       status: "matched",
       committeeId: "3001",
+    });
+  });
+
+  it("skips same-name legislative committees from other districts", () => {
+    expect(
+      resolveMichiganCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "SD 7",
+        electionYear: 2022,
+        contributionRows: [
+          contributionRow({
+            cfr_com_id: "3001",
+            com_legal_name: "JANE DOE FOR SENATE DISTRICT 8",
+            can_first_name: "JANE",
+            can_last_name: "DOE",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
     });
   });
 
@@ -191,7 +214,7 @@ describe("michiganCandidateCommitteeResolver", () => {
           contributionRow(),
           contributionRow({
             cfr_com_id: "514457",
-            com_legal_name: "GRETCHEN WHITMER TRANSITION",
+            com_legal_name: "GRETCHEN WHITMER FOR GOVERNOR TRANSITION",
             common_name: "Whitmer Transition",
           }),
         ],
@@ -213,7 +236,7 @@ describe("michiganCandidateCommitteeResolver", () => {
         },
         {
           committeeId: "514457",
-          committeeName: "GRETCHEN WHITMER TRANSITION",
+          committeeName: "GRETCHEN WHITMER FOR GOVERNOR TRANSITION",
           commonName: "Whitmer Transition",
           confidence: "exact",
           source: "mitn_legacy",
@@ -224,8 +247,8 @@ describe("michiganCandidateCommitteeResolver", () => {
     });
   });
 
-  it("validates the supported legacy election year range", () => {
-    expect(() =>
+  it("allows future election years without blocking sync before rows are processed", () => {
+    expect(
       resolveMichiganCandidateCommittee({
         candidateName: "Gretchen Whitmer",
         officeScope: "statewide",
@@ -233,6 +256,9 @@ describe("michiganCandidateCommitteeResolver", () => {
         electionYear: 2026,
         contributionRows: [],
       })
-    ).toThrow("Invalid Michigan MiTN legacy archive year");
+    ).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
   });
 });

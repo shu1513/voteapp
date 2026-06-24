@@ -123,8 +123,8 @@ describe("Michigan MiTN legacy archive artifact cache", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(2);
     expect(extractArchive).toHaveBeenCalledWith(
       expect.objectContaining({
-        archivePath: result.archivePath,
-        extractedDir: result.extractedDir,
+        archivePath: expect.stringContaining(`${result.archivePath}.tmp-`),
+        extractedDir: expect.stringContaining(`${result.extractedDir}.tmp-`),
         year: 2022,
       })
     );

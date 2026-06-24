@@ -1,4 +1,5 @@
 import {
+  type MichiganMitnOfficeSearchInput,
   normalizeMichiganMitnLegislativeDistrict,
   toMichiganMitnOfficeSearchInput,
 } from "./michiganFinanceEligibleOffices.js";
@@ -158,6 +159,60 @@ function isLikelyCandidateCommitteeRow(row: MichiganMitnLegacyContributionRow): 
   return true;
 }
 
+function officeAliasesForSearchInput(officeSearchInput: MichiganMitnOfficeSearchInput): string[] {
+  switch (officeSearchInput.mitnOffice) {
+    case "State Senate":
+      return ["STATE SENATE", "SENATE", "SENATOR"];
+    case "State House":
+      return ["STATE HOUSE", "HOUSE", "REPRESENTATIVE"];
+    default:
+      return [officeSearchInput.mitnOffice.toUpperCase()];
+  }
+}
+
+function districtAliasesForSearchInput(officeSearchInput: MichiganMitnOfficeSearchInput): string[] {
+  if (!officeSearchInput.district) {
+    return [];
+  }
+  const district = officeSearchInput.district.replace(/^0+/, "");
+  if (officeSearchInput.mitnOffice === "State Senate") {
+    return [
+      `STATE SENATE ${district}`,
+      `SENATE DISTRICT ${district}`,
+      `SENATE DIST ${district}`,
+      `SENATE ${district}`,
+      `SD ${district}`,
+      `DISTRICT ${district}`,
+      `DIST ${district}`,
+    ];
+  }
+  return [
+    `STATE HOUSE ${district}`,
+    `HOUSE DISTRICT ${district}`,
+    `HOUSE DIST ${district}`,
+    `HOUSE ${district}`,
+    `HD ${district}`,
+    `DISTRICT ${district}`,
+    `DIST ${district}`,
+  ];
+}
+
+function rowOfficeCompatibilityText(row: MichiganMitnLegacyContributionRow): string {
+  return normalizeTextKey([committeeNameFromRow(row), row.common_name, row.com_type, row.extra_desc].join(" "));
+}
+
+function rowMatchesOfficeContext(input: {
+  row: MichiganMitnLegacyContributionRow;
+  officeSearchInput: MichiganMitnOfficeSearchInput;
+}): boolean {
+  const text = rowOfficeCompatibilityText(input.row);
+  if (!officeAliasesForSearchInput(input.officeSearchInput).some((alias) => text.includes(normalizeTextKey(alias)))) {
+    return false;
+  }
+  const districtAliases = districtAliasesForSearchInput(input.officeSearchInput);
+  return districtAliases.length === 0 || districtAliases.some((alias) => text.includes(normalizeTextKey(alias)));
+}
+
 function isLegislativeInput(input: { officeScope: string; officeName: string }): boolean {
   return (
     (input.officeScope === "state_upper" && input.officeName.trim() === "State Senator") ||
@@ -234,6 +289,9 @@ export function resolveMichiganCandidateCommittee(
       continue;
     }
     if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+      continue;
+    }
+    if (!rowMatchesOfficeContext({ row, officeSearchInput })) {
       continue;
     }
 

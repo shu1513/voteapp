@@ -54,7 +54,7 @@ const DEFAULT_MIN_INDUSTRY_AMOUNT_CENTS = 25_000 * 100;
 function normalizePositiveInteger(value: number | undefined, fallback: number, fieldName: string): number {
   const normalized = value ?? fallback;
   if (!Number.isInteger(normalized) || normalized <= 0) {
-    throw new Error(`Invalid Michigan outside group contribution ${fieldName}: ${value}`);
+    throw new Error(`Invalid Michigan outside group contribution ${fieldName}: ${normalized}`);
   }
   return normalized;
 }

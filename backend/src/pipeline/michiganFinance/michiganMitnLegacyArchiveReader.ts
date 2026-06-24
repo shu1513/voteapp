@@ -49,6 +49,7 @@ export const MICHIGAN_MITN_LEGACY_EXPENDITURE_COLUMNS = [
   "schedule_desc",
   "supp_opp",
   "can_or_ballot",
+  "_column_29",
   "amount",
 ] as const;
 
@@ -78,19 +79,17 @@ export function normalizeMichiganMitnLegacyCsvHeader(value: string): string {
 }
 
 function buildHeader(cells: readonly string[]): string[] {
-  const header = cells.map(normalizeMichiganMitnLegacyCsvHeader);
+  const normalizedCells = cells.map(normalizeMichiganMitnLegacyCsvHeader);
+  if (!normalizedCells.some(Boolean)) {
+    throw new Error("Michigan MiTN legacy CSV header row is empty");
+  }
+  const header = normalizedCells.map((name, index) => name || `_column_${index + 1}`);
   const seen = new Set<string>();
   for (const name of header) {
-    if (!name) {
-      continue;
-    }
     if (seen.has(name)) {
       throw new Error(`Duplicate Michigan MiTN legacy CSV header: ${name}`);
     }
     seen.add(name);
-  }
-  if (seen.size === 0) {
-    throw new Error("Michigan MiTN legacy CSV header row is empty");
   }
   return header;
 }
@@ -110,9 +109,6 @@ function rowObjectFromCells(headers: readonly string[], cells: readonly string[]
   const row: MichiganMitnLegacyCsvRow = {};
   for (let index = 0; index < headers.length; index += 1) {
     const name = headers[index];
-    if (!name) {
-      continue;
-    }
     row[name] = cells[index]?.trim() ?? "";
   }
   return row;
@@ -362,7 +358,23 @@ export async function listMichiganMitnLegacyExtractedFileNames(extractedDir: str
   return entries
     .filter((entry) => entry.isFile())
     .map((entry) => entry.name)
-    .sort((left, right) => left.localeCompare(right));
+    .sort(compareMichiganMitnLegacyFileNames);
+}
+
+function contributionShardNumber(fileName: string): number {
+  const match = /\b(\d+)\s+of\s+\d+\.csv$/i.exec(fileName);
+  return match?.[1] ? Number.parseInt(match[1], 10) : 0;
+}
+
+function compareMichiganMitnLegacyFileNames(left: string, right: string): number {
+  const lexical = left.localeCompare(right, undefined, { numeric: true });
+  if (!MICHIGAN_MITN_LEGACY_CONTRIBUTIONS_CSV_FILE_NAME_PATTERN.test(left)) {
+    return lexical;
+  }
+  if (!MICHIGAN_MITN_LEGACY_CONTRIBUTIONS_CSV_FILE_NAME_PATTERN.test(right)) {
+    return lexical;
+  }
+  return contributionShardNumber(left) - contributionShardNumber(right) || lexical;
 }
 
 export function michiganMitnLegacyReceiptsCsvFileName(year: number): string {

@@ -83,6 +83,7 @@ function expenditure(overrides: Partial<MichiganMitnLegacyExpenditureRow> = {}):
     schedule_desc: "Independent Expenditure",
     supp_opp: "2",
     can_or_ballot: "GRETCHEN WHITMER",
+    _column_29: "GOVERNOR",
     amount: "863076.75",
     ...overrides,
   };
@@ -324,6 +325,102 @@ describe("michiganCandidateFinanceBatchSync", () => {
     expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.candidate_elections AS candidate_election");
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.mi_candidate_finance_links");
     expect(String(db.query.mock.calls[2]?.[0])).toContain("FROM public.mi_candidate_finance_links AS link");
+  });
+
+  it("does not auto-link missing finance links during dry-run", async () => {
+    const db = createMockDb([dueRow()]);
+    const syncMichiganCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2022,
+      dryRun: true,
+      resolution: { status: "matched", committeeId: "514456" },
+      linkWritten: false,
+      summaryWritten: false,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      totalReceipts: 100,
+      directContributionTotal: 100,
+      outsideSupportTotal: 0,
+      outsideOpposeTotal: 863076.75,
+      matchedContributionRowCount: 1,
+      includedContributionRowCount: 1,
+      skippedContributionRowCount: 0,
+      matchedOutsideExpenditureRowCount: 1,
+      includedOutsideExpenditureRowCount: 1,
+      skippedOutsideExpenditureRowCount: 0,
+      matchedOutsideContributionRowCount: 0,
+      includedOutsideContributionRowCount: 0,
+      skippedOutsideContributionRowCount: 0,
+    });
+
+    await syncDueMichiganCandidateFinance({
+      db,
+      dryRun: true,
+      syncMichiganCandidateFinanceFn,
+      now: new Date("2022-06-01T00:00:00.000Z"),
+      mitnDataByYear: new Map([[2022, mitnData()]]),
+    });
+
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.mi_candidate_finance_links AS link");
+    expect(db.query.mock.calls.map((call) => String(call[0])).some((sql) => sql.includes("INSERT INTO public.mi_candidate_finance_links"))).toBe(false);
+  });
+
+  it("marks only rows from a failed MiTN data year as failed", async () => {
+    const db = createMockDb([
+      dueRow({ total_due_rows: "2" }),
+      dueRow({ election_year: 2024, committee_id: "888888", total_due_rows: "2" }),
+    ]);
+    const syncMichiganCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2022,
+      dryRun: false,
+      resolution: { status: "matched", committeeId: "514456" },
+      linkWritten: true,
+      summaryWritten: true,
+      directBreakdownsWritten: 1,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      totalReceipts: 100,
+      directContributionTotal: 100,
+      outsideSupportTotal: 0,
+      outsideOpposeTotal: 0,
+      matchedContributionRowCount: 1,
+      includedContributionRowCount: 1,
+      skippedContributionRowCount: 0,
+      matchedOutsideExpenditureRowCount: 0,
+      includedOutsideExpenditureRowCount: 0,
+      skippedOutsideExpenditureRowCount: 0,
+      matchedOutsideContributionRowCount: 0,
+      includedOutsideContributionRowCount: 0,
+      skippedOutsideContributionRowCount: 0,
+    });
+
+    const result = await syncDueMichiganCandidateFinance({
+      db,
+      syncMichiganCandidateFinanceFn,
+      now: new Date("2022-06-01T00:00:00.000Z"),
+      mitnDataByYear: new Map([[2022, mitnData()]]),
+      autoLinkMissingLinks: false,
+    });
+
+    expect(result).toMatchObject({
+      dueCandidateCount: 2,
+      selectedCandidateCount: 2,
+      syncedCandidateCount: 1,
+      failedCandidateCount: 1,
+    });
+    expect(syncMichiganCandidateFinanceFn).toHaveBeenCalledTimes(1);
+    expect(result.results).toEqual([
+      expect.objectContaining({ electionYear: 2022, ok: true }),
+      expect.objectContaining({
+        electionYear: 2024,
+        ok: false,
+        error: expect.stringContaining("Michigan MiTN data load failed for 2024"),
+      }),
+    ]);
   });
 
   it("validates positive integer options", async () => {

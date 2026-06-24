@@ -40,10 +40,11 @@ describe("refreshMichiganMitnRawData script", () => {
     });
   });
 
-  it("defaults to the latest supported MiTN legacy archive", () => {
+  it("defaults to the current-year MiTN legacy archive", () => {
+    const year = new Date().getUTCFullYear();
     expect(parseArgs([])).toMatchObject({
-      year: 2025,
-      url: "https://www.michigan.gov/sos/-/media/Project/Websites/sos/Elections/Disclosure/MiTN/Legacy-Data/2025_mi_cfr.7z",
+      year,
+      url: `https://www.michigan.gov/sos/-/media/Project/Websites/sos/Elections/Disclosure/MiTN/Legacy-Data/${year}_mi_cfr.7z`,
       force: false,
       timeoutMs: 900_000,
     });

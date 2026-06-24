@@ -69,7 +69,7 @@ type FetchOptions = {
 const execFileAsync = promisify(execFile);
 
 export function normalizeMichiganMitnLegacyArchiveYear(year: number): number {
-  if (!Number.isInteger(year) || year < 2020 || year > 2025) {
+  if (!Number.isInteger(year) || year < 2020 || year > 2100) {
     throw new Error(`Invalid Michigan MiTN legacy archive year: ${year}`);
   }
   return year;
@@ -161,6 +161,16 @@ function metadataFromResponse(
   };
 }
 
+function validatedFinalResponseUrl(input: { requestedUrl: string; response: Response; fieldName: string }): string {
+  const requested = new URL(parseMichiganMitnHttpsUrl(input.requestedUrl, input.fieldName));
+  const finalUrl = parseMichiganMitnHttpsUrl(input.response.url || input.requestedUrl, input.fieldName);
+  const final = new URL(finalUrl);
+  if (final.host !== requested.host) {
+    throw new Error(`Invalid ${input.fieldName} host: ${final.host}. Expected ${requested.host}.`);
+  }
+  return finalUrl;
+}
+
 async function discoverMichiganMitnLegacyArchiveUrl(input: {
   year: number;
   fetchImpl?: typeof fetch;
@@ -219,6 +229,11 @@ export async function fetchMichiganMitnLegacyArchiveMetadata(input: {
   if (!response.ok) {
     throw new Error(`Failed to fetch Michigan MiTN legacy archive metadata: ${response.status} ${response.statusText}`);
   }
+  metadataUrl = validatedFinalResponseUrl({
+    requestedUrl: metadataUrl,
+    response,
+    fieldName: "Michigan MiTN legacy archive metadata response URL",
+  });
   return metadataFromResponse(year, metadataUrl, response);
 }
 
@@ -239,6 +254,11 @@ export async function downloadMichiganMitnLegacyArchive(input: {
   if (!response.ok) {
     throw new Error(`Failed to download Michigan MiTN legacy archive: ${response.status} ${response.statusText}`);
   }
+  const finalUrl = validatedFinalResponseUrl({
+    requestedUrl: normalizedUrl,
+    response,
+    fieldName: "Michigan MiTN legacy archive download response URL",
+  });
   if (!response.body) {
     throw new Error("Michigan MiTN legacy archive response did not include a body");
   }
@@ -262,7 +282,7 @@ export async function downloadMichiganMitnLegacyArchive(input: {
     }
   }
 
-  const metadata = metadataFromResponse(year, normalizedUrl, response);
+  const metadata = metadataFromResponse(year, finalUrl, response);
   if (metadata.contentLength !== null && outputStat.size !== metadata.contentLength) {
     await rm(outputPath, { force: true }).catch(() => {});
     throw new Error(
@@ -375,14 +395,15 @@ export async function extractMichiganMitnLegacyArchive(
 }
 
 async function ensureMichiganMitnLegacyArchiveExtracted(input: {
-  paths: ReturnType<typeof getMichiganMitnLegacyArchiveCachePaths>;
+  archivePath: string;
+  extractedDir: string;
   year: number;
   extractArchive?: MichiganMitnLegacyArchiveExtractor;
 }): Promise<void> {
   const extractor = input.extractArchive ?? extractMichiganMitnLegacyArchive;
   await extractor({
-    archivePath: input.paths.archivePath,
-    extractedDir: input.paths.extractedDir,
+    archivePath: input.archivePath,
+    extractedDir: input.extractedDir,
     year: input.year,
   });
 }
@@ -476,7 +497,8 @@ export async function refreshMichiganMitnLegacyArchiveCache(input: {
 
   if (!input.force && archiveExists && !extractedExists && remoteMetadataMatches(previous, remote)) {
     await ensureMichiganMitnLegacyArchiveExtracted({
-      paths,
+      archivePath: paths.archivePath,
+      extractedDir: paths.extractedDir,
       year,
       extractArchive: input.extractArchive,
     });
@@ -490,7 +512,14 @@ export async function refreshMichiganMitnLegacyArchiveCache(input: {
   }
 
   await mkdir(paths.cacheDir, { recursive: true });
-  const tmpPath = `${paths.archivePath}.tmp-${process.pid}-${Date.now()}`;
+  const suffix = `${process.pid}-${Date.now()}`;
+  const tmpPath = `${paths.archivePath}.tmp-${suffix}`;
+  const tmpExtractedDir = `${paths.extractedDir}.tmp-${suffix}`;
+  const tmpMetadataPath = `${paths.metadataPath}.tmp-${suffix}`;
+  const archiveBackupPath = `${paths.archivePath}.bak-${suffix}`;
+  const extractedBackupDir = `${paths.extractedDir}.bak-${suffix}`;
+  let archiveBackedUp = false;
+  let extractedBackedUp = false;
   const downloaded = await downloadMichiganMitnLegacyArchive({
     year,
     url: remote.url,
@@ -498,14 +527,9 @@ export async function refreshMichiganMitnLegacyArchiveCache(input: {
     fetchImpl: input.fetchImpl,
     timeoutMs: input.timeoutMs,
   });
-  try {
-    await rename(tmpPath, paths.archivePath);
-  } catch (error) {
-    await rm(tmpPath, { force: true }).catch(() => {});
-    throw error;
-  }
   await ensureMichiganMitnLegacyArchiveExtracted({
-    paths,
+    archivePath: tmpPath,
+    extractedDir: tmpExtractedDir,
     year,
     extractArchive: input.extractArchive,
   });
@@ -527,7 +551,37 @@ export async function refreshMichiganMitnLegacyArchiveCache(input: {
     },
     bytesWritten: downloaded.bytesWritten,
   };
-  await writeFile(paths.metadataPath, `${JSON.stringify(current, null, 2)}\n`, "utf8");
+  await writeFile(tmpMetadataPath, `${JSON.stringify(current, null, 2)}\n`, "utf8");
+
+  try {
+    if (archiveExists && (await pathExists(paths.archivePath))) {
+      await rename(paths.archivePath, archiveBackupPath);
+      archiveBackedUp = true;
+    }
+    if (extractedExists && (await pathExists(paths.extractedDir))) {
+      await rename(paths.extractedDir, extractedBackupDir);
+      extractedBackedUp = true;
+    }
+    await rename(tmpPath, paths.archivePath);
+    await rename(tmpExtractedDir, paths.extractedDir);
+    await rename(tmpMetadataPath, paths.metadataPath);
+  } catch (error) {
+    await rm(paths.archivePath, { force: true }).catch(() => {});
+    await rm(paths.extractedDir, { recursive: true, force: true }).catch(() => {});
+    if (archiveBackedUp) {
+      await rename(archiveBackupPath, paths.archivePath).catch(() => {});
+    }
+    if (extractedBackedUp) {
+      await rename(extractedBackupDir, paths.extractedDir).catch(() => {});
+    }
+    throw error;
+  } finally {
+    await rm(tmpPath, { force: true }).catch(() => {});
+    await rm(tmpExtractedDir, { recursive: true, force: true }).catch(() => {});
+    await rm(tmpMetadataPath, { force: true }).catch(() => {});
+    await rm(archiveBackupPath, { force: true }).catch(() => {});
+    await rm(extractedBackupDir, { recursive: true, force: true }).catch(() => {});
+  }
 
   return {
     status: "downloaded",

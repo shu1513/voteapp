@@ -9,6 +9,7 @@ export type MichiganMitnOfficeMapping = {
   mitnOffice: string;
   requiresDistrict: boolean;
   district: string | null;
+  maxDistrict: number | null;
 };
 
 export type MichiganMitnOfficeSearchInput = {

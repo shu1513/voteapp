@@ -40,6 +40,7 @@ describe("michiganFinanceWriter", () => {
     expect(db.query).toHaveBeenCalledTimes(1);
     expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.mi_candidate_finance_links");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("ON CONFLICT (candidate_id, election_id, committee_id)");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("WHEN mi_candidate_finance_links.link_source = 'manual'");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       CANDIDATE_ID,
       ELECTION_ID,
@@ -139,7 +140,8 @@ describe("michiganFinanceWriter", () => {
 
     const sql = client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("INSERT INTO public.mi_candidate_finance_summaries"))).toBe(true);
-    expect(sql.some((statement) => statement.includes("COALESCE(EXCLUDED.total_receipts"))).toBe(true);
+    expect(sql.some((statement) => statement.includes("total_receipts = EXCLUDED.total_receipts"))).toBe(true);
+    expect(sql.some((statement) => statement.includes("COALESCE(EXCLUDED.total_receipts"))).toBe(false);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.mi_candidate_finance_direct_breakdowns"))).toHaveLength(2);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.mi_candidate_finance_outside_groups"))).toHaveLength(1);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.mi_candidate_finance_outside_group_breakdowns"))).toHaveLength(2);
@@ -198,6 +200,35 @@ describe("michiganFinanceWriter", () => {
         ],
       })
     ).rejects.toThrow("outside group breakdowns require outside groups");
+    expect(db.query).not.toHaveBeenCalled();
+  });
+
+  it("rejects outside breakdown snapshots with mismatched outside groups", async () => {
+    const db = createMockDb();
+
+    await expect(
+      replaceMichiganCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        outsideGroups: [
+          {
+            committeeId: "520012",
+            committeeName: "GET MICHIGAN WORKING AGAIN",
+            supportOppose: "support",
+            amount: 100,
+          },
+        ],
+        outsideGroupBreakdowns: [
+          {
+            committeeId: "520012",
+            supportOppose: "oppose",
+            categoryType: "industry",
+            categoryName: "oil_gas_energy",
+            amount: 35000,
+          },
+        ],
+      })
+    ).rejects.toThrow("outside group breakdowns must reference outside groups");
     expect(db.query).not.toHaveBeenCalled();
   });
 });
