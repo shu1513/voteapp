@@ -55,7 +55,6 @@ import {
   enqueueManualWisconsinCandidateFinanceSyncJob,
 } from "../../scheduler/wisconsinCandidateFinanceSyncScheduler.js";
 import {
-  buildMassachusettsCandidateFinanceLinkedElectionSyncJobId,
   enqueueManualMassachusettsCandidateFinanceSyncJob,
 } from "../../scheduler/massachusettsCandidateFinanceSyncScheduler.js";
 import {
@@ -711,7 +710,7 @@ async function enqueueMassachusettsFinanceSyncForLinkedElection(input: {
         triggeredBy: "manual",
       },
       {
-        jobId: buildMassachusettsCandidateFinanceLinkedElectionSyncJobId(),
+        jobId: `massachusetts-candidate-finance-linked-election-sync-${input.context.contextId}-${input.candidateId}`,
       }
     );
   } catch (error) {

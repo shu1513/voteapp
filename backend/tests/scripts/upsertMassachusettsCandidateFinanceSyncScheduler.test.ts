@@ -42,4 +42,13 @@ describe("upsertMassachusettsCandidateFinanceSyncScheduler script", () => {
       parseUpsertMassachusettsCandidateFinanceSyncSchedulerArgs(["--max-candidates=5", "--max-candidates", "10"])
     ).toThrow("Provide --max-candidates at most once");
   });
+
+  it("rejects conflicting AI industry classification flags", () => {
+    expect(() =>
+      parseUpsertMassachusettsCandidateFinanceSyncSchedulerArgs([
+        "--ai-classify-industries",
+        "--no-ai-classify-industries",
+      ])
+    ).toThrow("Provide either --ai-classify-industries or --no-ai-classify-industries, not both");
+  });
 });

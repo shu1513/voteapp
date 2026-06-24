@@ -48,4 +48,10 @@ describe("triggerMassachusettsCandidateFinanceSync script", () => {
       aiClassifyIndustries: false,
     });
   });
+
+  it("rejects conflicting AI industry classification flags", () => {
+    expect(() =>
+      parseMassachusettsCandidateFinanceSyncTriggerArgs(["--ai-classify-industries", "--no-ai-classify-industries"])
+    ).toThrow("Provide either --ai-classify-industries or --no-ai-classify-industries, not both");
+  });
 });

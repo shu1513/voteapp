@@ -54,7 +54,7 @@ describe("massachusettsCandidateFinanceAutoLink", () => {
         election_year: 2026,
         office_scope: "state_lower",
         office_name: "State Lower Chamber Legislator",
-        district: "09",
+        district: "9",
       },
     ]);
 
@@ -82,7 +82,7 @@ describe("massachusettsCandidateFinanceAutoLink", () => {
         electionYear: 2026,
         officeScope: "state_lower",
         officeName: "State Lower Chamber Legislator",
-        district: "09",
+        district: "9",
       },
     ]);
 

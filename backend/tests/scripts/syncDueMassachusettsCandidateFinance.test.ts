@@ -45,6 +45,15 @@ describe("syncDueMassachusettsCandidateFinance script", () => {
     });
   });
 
+  it("rejects conflicting AI industry classification flags", () => {
+    expect(() =>
+      parseSyncDueMassachusettsCandidateFinanceScriptArgs([
+        "--ai-classify-industries",
+        "--no-ai-classify-industries",
+      ])
+    ).toThrow("Provide either --ai-classify-industries or --no-ai-classify-industries, not both");
+  });
+
   it("rejects malformed numeric flags strictly", () => {
     expect(() => parseSyncDueMassachusettsCandidateFinanceScriptArgs(["--max-candidates=10abc"])).toThrow(
       "Invalid --max-candidates value"

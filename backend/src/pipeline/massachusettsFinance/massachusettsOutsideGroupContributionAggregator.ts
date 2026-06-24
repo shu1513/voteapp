@@ -184,39 +184,69 @@ function industryKey(input: {
   return `${normalizeCpfId(input.iepacCpfId)}\u0000${input.supportOppose}\u0000${input.industrySlug}`;
 }
 
+function breakdownBucketKey(input: { iepacCpfId: string; supportOppose: MassachusettsSupportOppose }): string {
+  return `${normalizeCpfId(input.iepacCpfId)}\u0000${input.supportOppose}`;
+}
+
 function toBreakdowns(input: {
   donors: Iterable<DonorAggregate>;
   industries: Iterable<IndustryAggregate>;
   maxBreakdownsPerCategory: number;
 }): MassachusettsFinanceOutsideGroupBreakdown[] {
   const result: MassachusettsFinanceOutsideGroupBreakdown[] = [];
+  const donorsByBucket = new Map<string, DonorAggregate[]>();
+  const industriesByBucket = new Map<string, IndustryAggregate[]>();
 
-  for (const donor of [...input.donors]
-    .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))
-    .slice(0, input.maxBreakdownsPerCategory)) {
-    result.push({
-      iepacCpfId: donor.iepacCpfId,
-      supportOppose: donor.supportOppose,
-      categoryType: "donor",
-      categoryName: donor.displayName,
-      amount: centsToDollars(donor.amountCents),
-      contributorCount: 1,
-      sourceUrl: donor.sourceUrl,
-    });
+  for (const donor of input.donors) {
+    const key = breakdownBucketKey(donor);
+    const bucket = donorsByBucket.get(key) ?? [];
+    bucket.push(donor);
+    donorsByBucket.set(key, bucket);
+  }
+  for (const industry of input.industries) {
+    const key = breakdownBucketKey(industry);
+    const bucket = industriesByBucket.get(key) ?? [];
+    bucket.push(industry);
+    industriesByBucket.set(key, bucket);
   }
 
-  for (const industry of [...input.industries]
-    .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
-    .slice(0, input.maxBreakdownsPerCategory)) {
-    result.push({
-      iepacCpfId: industry.iepacCpfId,
-      supportOppose: industry.supportOppose,
-      categoryType: "industry",
-      categoryName: industry.industrySlug,
-      amount: centsToDollars(industry.amountCents),
-      contributorCount: industry.donorKeys.size,
-      sourceUrl: industry.sourceUrl,
-    });
+  const bucketSortKey = (bucket: Array<{ iepacCpfId: string; supportOppose: MassachusettsSupportOppose }>): string =>
+    bucket[0] ? breakdownBucketKey(bucket[0]) : "";
+
+  for (const bucket of [...donorsByBucket.values()].sort((left, right) =>
+    bucketSortKey(left).localeCompare(bucketSortKey(right))
+  )) {
+    for (const donor of bucket
+      .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))
+      .slice(0, input.maxBreakdownsPerCategory)) {
+      result.push({
+        iepacCpfId: donor.iepacCpfId,
+        supportOppose: donor.supportOppose,
+        categoryType: "donor",
+        categoryName: donor.displayName,
+        amount: centsToDollars(donor.amountCents),
+        contributorCount: 1,
+        sourceUrl: donor.sourceUrl,
+      });
+    }
+  }
+
+  for (const bucket of [...industriesByBucket.values()].sort((left, right) =>
+    bucketSortKey(left).localeCompare(bucketSortKey(right))
+  )) {
+    for (const industry of bucket
+      .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
+      .slice(0, input.maxBreakdownsPerCategory)) {
+      result.push({
+        iepacCpfId: industry.iepacCpfId,
+        supportOppose: industry.supportOppose,
+        categoryType: "industry",
+        categoryName: industry.industrySlug,
+        amount: centsToDollars(industry.amountCents),
+        contributorCount: industry.donorKeys.size,
+        sourceUrl: industry.sourceUrl,
+      });
+    }
   }
 
   return result;
@@ -265,34 +295,46 @@ export function aggregateMassachusettsOutsideGroupContributions(
     if (matchingGroups.length === 0) {
       continue;
     }
+    const supportOpposeValues = [...new Set(matchingGroups.map((group) => group.supportOppose))];
+    const supportOppose = supportOpposeValues.length === 1 ? supportOpposeValues[0] ?? null : null;
 
     for (const item of report.receipts) {
       matchedReceiptRowCount += 1;
       const amountCents = amountToCents(item.amount);
       const displayName = item.contributorName?.trim().replace(/\s+/g, " ") ?? "";
       const normalizedName = normalizeFinanceLabel(displayName, "donor");
-      if (!displayName || !normalizedName || amountCents === null || !isOutsideDonorReceipt({ item, electionYear })) {
+      if (
+        !supportOppose ||
+        !displayName ||
+        !normalizedName ||
+        amountCents === null ||
+        !isOutsideDonorReceipt({ item, electionYear })
+      ) {
         skippedReceiptRowCount += 1;
         continue;
       }
 
       includedReceiptRowCount += 1;
-      for (const group of matchingGroups) {
-        const key = donorKey({ iepacCpfId, supportOppose: group.supportOppose, normalizedName });
-        const existing = donors.get(key);
-        if (existing) {
-          existing.amountCents += amountCents;
-          continue;
-        }
-        donors.set(key, {
-          iepacCpfId: group.iepacCpfId,
-          supportOppose: group.supportOppose,
-          displayName,
-          normalizedName,
-          amountCents,
-          sourceUrl: item.sourceUrl ?? report.sourceUrl ?? group.sourceUrl ?? sourceUrl,
-        });
+      const group = matchingGroups.find((candidateGroup) => candidateGroup.supportOppose === supportOppose);
+      if (!group) {
+        skippedReceiptRowCount += 1;
+        includedReceiptRowCount -= 1;
+        continue;
       }
+      const key = donorKey({ iepacCpfId, supportOppose, normalizedName });
+      const existing = donors.get(key);
+      if (existing) {
+        existing.amountCents += amountCents;
+        continue;
+      }
+      donors.set(key, {
+        iepacCpfId: group.iepacCpfId,
+        supportOppose,
+        displayName,
+        normalizedName,
+        amountCents,
+        sourceUrl: item.sourceUrl ?? report.sourceUrl ?? group.sourceUrl ?? sourceUrl,
+      });
     }
   }
 

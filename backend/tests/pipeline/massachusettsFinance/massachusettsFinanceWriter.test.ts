@@ -198,9 +198,9 @@ describe("massachusettsFinanceWriter", () => {
     const summaryCall = db.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.ma_candidate_finance_summaries")
     );
-    expect(String(summaryCall?.[0])).toContain(
-      "total_receipts = COALESCE(EXCLUDED.total_receipts, ma_candidate_finance_summaries.total_receipts)"
-    );
+    expect(String(summaryCall?.[0])).toContain("total_receipts = EXCLUDED.total_receipts");
+    expect(String(summaryCall?.[0])).toContain("direct_contribution_total = EXCLUDED.direct_contribution_total");
+    expect(String(summaryCall?.[0])).toContain("source_url = EXCLUDED.source_url");
     expect(String(summaryCall?.[0])).toContain("outside_support_total = EXCLUDED.outside_support_total");
     expect(summaryCall?.[1]).toEqual([
       LINK_ID,

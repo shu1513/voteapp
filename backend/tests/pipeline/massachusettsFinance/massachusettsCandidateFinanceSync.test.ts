@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { normalizeFinanceLabel, type FinanceLabelClassification } from "../../../src/pipeline/finance/financeLabelClassifier.js";
 import { syncMassachusettsCandidateFinance } from "../../../src/pipeline/massachusettsFinance/massachusettsCandidateFinanceSync.js";
@@ -13,6 +13,10 @@ const CANDIDATE_ID = "11111111-1111-1111-1111-111111111111";
 const ELECTION_ID = "22222222-2222-2222-2222-222222222222";
 const LINK_ID = "33333333-3333-3333-3333-333333333333";
 const SOURCE_URL = "https://api.ocpf.us/filers/listings/A?searchPhrase=Maura%20Healey";
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 function createMockDb() {
   const query = vi.fn(async (sql: string) => {
@@ -273,6 +277,37 @@ describe("massachusettsCandidateFinanceSync", () => {
     expect(
       db.query.mock.calls.filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
     ).toHaveLength(2);
+  });
+
+  it("continues syncing when one OCPF IE PAC report detail fails", async () => {
+    const db = createMockDb();
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const ocpfClient = createOcpfClient({
+      reports: [reportSummary({ reportId: 858575 }), reportSummary({ reportId: 858576, cpfId: "81069" })],
+    });
+    ocpfClient.getReportDetail.mockImplementation(async ({ reportId }: { reportId: number }) => {
+      if (reportId === 858576) {
+        throw new Error("temporary OCPF report failure");
+      }
+      return reportDetail({ reportId, cpfId: "81068" });
+    });
+
+    const result = await syncMassachusettsCandidateFinance({
+      db,
+      ...baseInput(),
+      ocpfClient,
+    });
+
+    expect(result).toMatchObject({
+      iepacReportCount: 2,
+      iepacReportDetailCount: 1,
+      outsideGroupsWritten: 1,
+      outsideSupportTotal: 32420,
+    });
+    expect(ocpfClient.getReportDetail).toHaveBeenCalledTimes(2);
+    expect(warn).toHaveBeenCalledWith(
+      "Massachusetts finance sync skipped OCPF report detail reportId=858576: temporary OCPF report failure"
+    );
   });
 
   it("does not write in dry-run mode but returns aggregation counts", async () => {

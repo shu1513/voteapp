@@ -291,17 +291,35 @@ async function fetchMassachusettsOcpfJson(url: string, options: MassachusettsOcp
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
-  let response: Response;
+  let response: Response | null = null;
   try {
     response = await (options.fetchImpl ?? fetch)(url, {
       headers: { accept: "application/json,text/plain;q=0.9,*/*;q=0.1" },
       signal: controller.signal,
     });
+    if (!response.ok) {
+      throw new MassachusettsOcpfClientError(
+        "http_error",
+        `Massachusetts OCPF request failed: ${response.status} ${response.statusText}`,
+        response.status
+      );
+    }
+
+    return await response.json();
   } catch (error) {
+    if (error instanceof MassachusettsOcpfClientError) {
+      throw error;
+    }
     if (isAbortError(error)) {
       throw new MassachusettsOcpfClientError(
         "network_error",
         `Massachusetts OCPF request timed out after ${timeoutMs}ms for ${url}`
+      );
+    }
+    if (response) {
+      throw new MassachusettsOcpfClientError(
+        "bad_response",
+        `Massachusetts OCPF response was not valid JSON for ${url}: ${error instanceof Error ? error.message : String(error)}`
       );
     }
     throw new MassachusettsOcpfClientError(
@@ -310,23 +328,6 @@ async function fetchMassachusettsOcpfJson(url: string, options: MassachusettsOcp
     );
   } finally {
     clearTimeout(timeout);
-  }
-
-  if (!response.ok) {
-    throw new MassachusettsOcpfClientError(
-      "http_error",
-      `Massachusetts OCPF request failed: ${response.status} ${response.statusText}`,
-      response.status
-    );
-  }
-
-  try {
-    return await response.json();
-  } catch (error) {
-    throw new MassachusettsOcpfClientError(
-      "bad_response",
-      `Massachusetts OCPF response was not valid JSON for ${url}: ${error instanceof Error ? error.message : String(error)}`
-    );
   }
 }
 

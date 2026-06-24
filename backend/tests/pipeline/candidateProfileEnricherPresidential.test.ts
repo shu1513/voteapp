@@ -1697,7 +1697,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     );
   });
 
-  it("dedupes automatic Massachusetts finance batch syncs for eligible Massachusetts elections", async () => {
+  it("enqueues automatic Massachusetts finance batch syncs for eligible Massachusetts elections", async () => {
     redisXReadGroupMock.mockResolvedValue([
       {
         name: "staging:candidates:profile:draft",
@@ -1774,14 +1774,14 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(enqueueManualHawaiiCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(enqueueManualVirginiaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(enqueueManualWisconsinCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
-    expect(buildMassachusettsCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
+    expect(buildMassachusettsCandidateFinanceLinkedElectionSyncJobIdMock).not.toHaveBeenCalled();
     expect(enqueueManualMassachusettsCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
         aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
-        jobId: "massachusetts-candidate-finance-linked-election-sync-2026-06-01",
+        jobId: "massachusetts-candidate-finance-linked-election-sync-election-ma-governor-candidate-1",
       }
     );
     expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [

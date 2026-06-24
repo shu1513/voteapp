@@ -277,4 +277,106 @@ describe("probeMassachusettsCandidateFinance script", () => {
     expect(client.getReportDetail).toHaveBeenCalledTimes(1);
     expect(client.getReportDetail).toHaveBeenCalledWith({ reportId: 858575 }, { timeoutMs: 30000 });
   });
+
+  it("continues probing when one OCPF IE PAC report detail fails", async () => {
+    const args = parseProbeMassachusettsCandidateFinanceArgs([
+      "--candidate-name=Maura Healey",
+      "--year=2022",
+      "--office=Governor",
+      "--iepac-report-limit=2",
+    ]);
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const client = {
+      resolveCandidateCommittee: vi.fn(async () => ({
+        status: "matched" as const,
+        candidateCpfId: "15710",
+        filerName: "Healey, Maura T.",
+        committeeName: "Healey Committee",
+        officeSought: "Statewide, Governor",
+        confidence: "exact" as const,
+        source: "ocpf_api" as const,
+        sourceUrl: "https://api.ocpf.us/filers/listings/A?searchPhrase=Maura%20Healey",
+        matchedFilerRowCount: 1,
+      })),
+      getContributionItems: vi.fn(async () => []),
+      getIepacReportSummaries: vi.fn(async () => [
+        {
+          reportId: 858575,
+          cpfId: "81068",
+          committeeName: "Local 103 International Brotherhood of Electrical Workers Independent Expenditure PAC",
+          reportYear: 2022,
+          reportType: "IEPAC Report",
+          reportingPeriod: "2022 Pre-election",
+          candidateListing: "Maura T. Healey",
+          candidateSpendingBreakdown: "Maura T. Healey (Supported) $32,420.00<br>",
+          receiptsTotal: 32_420,
+          expendituresTotal: 32_420,
+          sourceUrl: "https://www.ocpf.us/Reports/DisplayReport?menuHidden=true&id=858575",
+        },
+        {
+          reportId: 858576,
+          cpfId: "81069",
+          committeeName: "Other Maura IEPAC",
+          reportYear: 2022,
+          reportType: "IEPAC Report",
+          reportingPeriod: "2022 Pre-election",
+          candidateListing: "Maura T. Healey",
+          candidateSpendingBreakdown: "Maura T. Healey (Opposed) $12,000.00<br>",
+          receiptsTotal: 12_000,
+          expendituresTotal: 12_000,
+          sourceUrl: "https://www.ocpf.us/Reports/DisplayReport?menuHidden=true&id=858576",
+        },
+      ]),
+      getReportDetail: vi.fn(async ({ reportId }: { reportId: number }) => {
+        if (reportId === 858576) {
+          throw new Error("temporary OCPF report failure");
+        }
+        return {
+          reportId: 858575,
+          cpfId: "81068",
+          committeeName: "Local 103 International Brotherhood of Electrical Workers Independent Expenditure PAC",
+          reportYear: 2022,
+          reportType: "IEPAC Report",
+          reportingPeriod: "2022 Pre-election",
+          candidateListing: "Maura T. Healey",
+          candidateSpendingBreakdown: "Maura T. Healey (Supported) $32,420.00<br>",
+          receiptsTotal: 32_420,
+          expendituresTotal: 32_420,
+          sourceUrl: "https://www.ocpf.us/Reports/DisplayReport?menuHidden=true&id=858575",
+          receipts: [],
+          expenditures: [
+            {
+              affectedCandidateName: "Maura T. Healey",
+              relatedCpfId: "15710",
+              isSupported: true,
+              recordTypeDescription: "Independent Expenditure",
+              ieInfo: "support Maura T. Healey",
+              amount: 32_420,
+              date: "11/08/2022",
+              sourceUrl: "https://www.ocpf.us/Reports/DisplayReport?menuHidden=true&id=858575",
+            },
+          ],
+        };
+      }),
+    };
+
+    const output = await runProbeMassachusettsCandidateFinance({
+      args,
+      client,
+      now: new Date("2026-06-21T12:00:00.000Z"),
+    });
+
+    expect(output).toMatchObject({
+      ok: true,
+      outside_spending: {
+        iepac_report_count: 2,
+        iepac_report_detail_count: 1,
+        top_supporting_groups: [expect.objectContaining({ amount: 32420 })],
+      },
+    });
+    expect(client.getReportDetail).toHaveBeenCalledTimes(2);
+    expect(warn).toHaveBeenCalledWith(
+      "Massachusetts finance live probe skipped OCPF report detail reportId=858576: temporary OCPF report failure"
+    );
+  });
 });

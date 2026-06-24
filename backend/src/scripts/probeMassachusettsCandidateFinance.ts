@@ -123,6 +123,7 @@ const DEFAULT_LIMIT = 5;
 const DEFAULT_IEPAC_REPORT_LIMIT = 50;
 const DEFAULT_MIN_INDUSTRY_AMOUNT = 25_000;
 const DEFAULT_TIMEOUT_MS = 30_000;
+const DEFAULT_REPORT_DETAIL_CONCURRENCY = 8;
 const INDUSTRY_SLUGS = new Set<string>(FINANCE_INDUSTRY_SLUGS);
 
 const DEFAULT_CLIENT: MassachusettsFinanceProbeClient = {
@@ -131,6 +132,44 @@ const DEFAULT_CLIENT: MassachusettsFinanceProbeClient = {
   getIepacReportSummaries: getMassachusettsOcpfIepacReportSummaries,
   getReportDetail: getMassachusettsOcpfReportDetail,
 };
+
+function toFailureReason(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+async function fetchReportDetailsBounded(input: {
+  reports: readonly MassachusettsOcpfIepacReportSummary[];
+  client: MassachusettsFinanceProbeClient;
+  clientOptions: MassachusettsOcpfClientOptions;
+  concurrency?: number;
+}): Promise<MassachusettsOcpfReportDetail[]> {
+  const workerCount = Math.max(
+    1,
+    Math.min(input.concurrency ?? DEFAULT_REPORT_DETAIL_CONCURRENCY, input.reports.length)
+  );
+  const details: MassachusettsOcpfReportDetail[] = [];
+  let nextIndex = 0;
+
+  async function worker(): Promise<void> {
+    while (nextIndex < input.reports.length) {
+      const report = input.reports[nextIndex];
+      nextIndex += 1;
+      if (!report) {
+        continue;
+      }
+      try {
+        details.push(await input.client.getReportDetail({ reportId: report.reportId }, input.clientOptions));
+      } catch (error) {
+        console.warn(
+          `Massachusetts finance live probe skipped OCPF report detail reportId=${report.reportId}: ${toFailureReason(error)}`
+        );
+      }
+    }
+  }
+
+  await Promise.all(Array.from({ length: workerCount }, () => worker()));
+  return details;
+}
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -426,9 +465,11 @@ export async function runProbeMassachusettsCandidateFinance(input: {
   const candidateIepacReports = (
     candidateIepacReportMatches.length > 0 ? candidateIepacReportMatches : iepacReportSummaries
   ).slice(0, input.args.iepacReportLimit);
-  const reportDetails = await Promise.all(
-    candidateIepacReports.map((report) => client.getReportDetail({ reportId: report.reportId }, clientOptions))
-  );
+  const reportDetails = await fetchReportDetailsBounded({
+    reports: candidateIepacReports,
+    client,
+    clientOptions,
+  });
 
   const direct = aggregateMassachusettsDirectContributions({
     candidateCpfId: resolution.candidateCpfId,

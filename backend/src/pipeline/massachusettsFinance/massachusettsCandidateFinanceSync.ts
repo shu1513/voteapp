@@ -132,6 +132,7 @@ export type MassachusettsCandidateFinanceSyncResult = {
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
 const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 20;
 const DEFAULT_IEPAC_REPORT_LIMIT = 1_000;
+const DEFAULT_REPORT_DETAIL_CONCURRENCY = 8;
 
 const DEFAULT_OCPF_CLIENT: MassachusettsOcpfDataClient = {
   searchAndResolveCandidateCommittee: searchAndResolveMassachusettsCandidateCommittee,
@@ -187,6 +188,44 @@ function normalizeCandidateNameForStorage(value: string): string {
 
 function mergeOcpfClient(client: Partial<MassachusettsOcpfDataClient> | undefined): MassachusettsOcpfDataClient {
   return { ...DEFAULT_OCPF_CLIENT, ...(client ?? {}) };
+}
+
+function toFailureReason(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+async function fetchReportDetailsBounded(input: {
+  reports: readonly MassachusettsOcpfIepacReportSummary[];
+  ocpfClient: MassachusettsOcpfDataClient;
+  ocpfClientOptions?: MassachusettsOcpfClientOptions;
+  concurrency?: number;
+}): Promise<MassachusettsOcpfReportDetail[]> {
+  const workerCount = Math.max(
+    1,
+    Math.min(input.concurrency ?? DEFAULT_REPORT_DETAIL_CONCURRENCY, input.reports.length)
+  );
+  const details: MassachusettsOcpfReportDetail[] = [];
+  let nextIndex = 0;
+
+  async function worker(): Promise<void> {
+    while (nextIndex < input.reports.length) {
+      const report = input.reports[nextIndex];
+      nextIndex += 1;
+      if (!report) {
+        continue;
+      }
+      try {
+        details.push(await input.ocpfClient.getReportDetail({ reportId: report.reportId }, input.ocpfClientOptions));
+      } catch (error) {
+        console.warn(
+          `Massachusetts finance sync skipped OCPF report detail reportId=${report.reportId}: ${toFailureReason(error)}`
+        );
+      }
+    }
+  }
+
+  await Promise.all(Array.from({ length: workerCount }, () => worker()));
+  return details;
 }
 
 function toMatchedTrustedCommittee(
@@ -468,9 +507,11 @@ export async function syncMassachusettsCandidateFinance(
   ]);
 
   const boundedIepacReports = iepacReports.slice(0, iepacReportLimit);
-  const reportDetails = await Promise.all(
-    boundedIepacReports.map((report) => ocpfClient.getReportDetail({ reportId: report.reportId }, input.ocpfClientOptions))
-  );
+  const reportDetails = await fetchReportDetailsBounded({
+    reports: boundedIepacReports,
+    ocpfClient,
+    ocpfClientOptions: input.ocpfClientOptions,
+  });
 
   const directFinance = aggregateMassachusettsDirectContributions({
     candidateCpfId: resolution.candidateCpfId,

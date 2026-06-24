@@ -251,6 +251,7 @@ export function normalizeMassachusettsOcpfOfficeLabel(value: string | null | und
     ?.trim()
     .replace(/[.,]/g, " ")
     .replace(/\s+/g, " ")
+    .trim()
     .toUpperCase();
   return normalized ? normalized : null;
 }

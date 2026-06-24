@@ -69,6 +69,7 @@ describe("massachusettsFinanceEligibleOffices", () => {
 
   it("normalizes OCPF office labels and districts conservatively", () => {
     expect(normalizeMassachusettsOcpfOfficeLabel(" Statewide,   Governor ")).toBe("STATEWIDE GOVERNOR");
+    expect(normalizeMassachusettsOcpfOfficeLabel("Statewide, Lt. Governor.")).toBe("STATEWIDE LT GOVERNOR");
     expect(normalizeMassachusettsOcpfOfficeLabel("   ")).toBeNull();
     expect(normalizeMassachusettsOcpfDistrict(" 3rd   Suffolk District ")).toBe("3RD SUFFOLK");
     expect(normalizeMassachusettsOcpfDistrict("2nd Bristol & Plymouth")).toBe("2ND BRISTOL & PLYMOUTH");

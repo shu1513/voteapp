@@ -48,6 +48,15 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+function parseAiClassifyIndustriesFlag(args: readonly string[]): boolean {
+  const enabled = args.includes("--ai-classify-industries");
+  const disabled = args.includes("--no-ai-classify-industries");
+  if (enabled && disabled) {
+    throw new Error("Provide either --ai-classify-industries or --no-ai-classify-industries, not both");
+  }
+  return !disabled;
+}
+
 export function parseUpsertMassachusettsCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): MassachusettsCandidateFinanceSyncJobData {
@@ -58,7 +67,7 @@ export function parseUpsertMassachusettsCandidateFinanceSyncSchedulerArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
+    aiClassifyIndustries: parseAiClassifyIndustriesFlag(args),
     aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }

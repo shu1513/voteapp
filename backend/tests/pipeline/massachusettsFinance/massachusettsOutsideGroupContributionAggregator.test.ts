@@ -110,7 +110,7 @@ describe("massachusettsOutsideGroupContributionAggregator", () => {
     });
   });
 
-  it("keeps support and opposition groups separate for the same IE PAC", () => {
+  it("skips side-specific donor backtrace when the same IE PAC has support and oppose spending", () => {
     const result = aggregateMassachusettsOutsideGroupContributions({
       electionYear: 2022,
       outsideGroups: [outsideGroup({ supportOppose: "support" }), outsideGroup({ supportOppose: "oppose" })],
@@ -118,15 +118,9 @@ describe("massachusettsOutsideGroupContributionAggregator", () => {
     });
 
     expect(result.matchedReceiptRowCount).toBe(1);
-    expect(result.includedReceiptRowCount).toBe(1);
-    expect(result.outsideGroupBreakdowns).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ iepacCpfId: "81068", supportOppose: "support", categoryType: "donor", amount: 50_000 }),
-        expect.objectContaining({ iepacCpfId: "81068", supportOppose: "oppose", categoryType: "donor", amount: 50_000 }),
-        expect.objectContaining({ iepacCpfId: "81068", supportOppose: "support", categoryType: "industry", amount: 50_000 }),
-        expect.objectContaining({ iepacCpfId: "81068", supportOppose: "oppose", categoryType: "industry", amount: 50_000 }),
-      ])
-    );
+    expect(result.includedReceiptRowCount).toBe(0);
+    expect(result.skippedReceiptRowCount).toBe(1);
+    expect(result.outsideGroupBreakdowns).toEqual([]);
   });
 
   it("only emits deterministic industry rows above the state threshold", () => {
@@ -219,6 +213,43 @@ describe("massachusettsOutsideGroupContributionAggregator", () => {
       expect.objectContaining({ categoryType: "donor", categoryName: "Sierra Club", amount: 50_000 }),
       expect.objectContaining({ categoryType: "industry", categoryName: "environmental_group", amount: 50_000 }),
     ]);
+  });
+
+  it("applies donor and industry caps independently within each IE PAC support bucket", () => {
+    const result = aggregateMassachusettsOutsideGroupContributions({
+      electionYear: 2022,
+      maxBreakdownsPerCategory: 1,
+      outsideGroups: [
+        outsideGroup({ iepacCpfId: "81068", supportOppose: "support" }),
+        outsideGroup({ iepacCpfId: "81069", supportOppose: "support" }),
+      ],
+      reportDetails: [
+        report({
+          cpfId: "81068",
+          receipts: [
+            receipt({ contributorName: "IBEW Local 103", amount: 25_000 }),
+            receipt({ contributorName: "Sierra Club", contributorType: "Association", amount: 50_000 }),
+          ],
+        }),
+        report({
+          cpfId: "81069",
+          receipts: [
+            receipt({ contributorName: "IBEW Local 222", amount: 75_000 }),
+            receipt({ contributorName: "Sierra Club", contributorType: "Association", amount: 30_000 }),
+          ],
+        }),
+      ],
+    });
+
+    expect(result.outsideGroupBreakdowns).toHaveLength(4);
+    expect(result.outsideGroupBreakdowns).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ iepacCpfId: "81068", categoryType: "donor", categoryName: "Sierra Club", amount: 50_000 }),
+        expect.objectContaining({ iepacCpfId: "81068", categoryType: "industry", categoryName: "environmental_group", amount: 50_000 }),
+        expect.objectContaining({ iepacCpfId: "81069", categoryType: "donor", categoryName: "IBEW Local 222", amount: 75_000 }),
+        expect.objectContaining({ iepacCpfId: "81069", categoryType: "industry", categoryName: "labor_unions", amount: 75_000 }),
+      ])
+    );
   });
 
   it("validates inputs", () => {
