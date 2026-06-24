@@ -222,3 +222,21 @@ export function isMassachusettsCampaignFinanceSyncEnabled(force = false): boolea
     (force || readBooleanEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
   );
 }
+
+export function isMichiganCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("MICHIGAN_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isMichiganCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isMichiganCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MICHIGAN_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isMichiganMitnRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isMichiganCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MICHIGAN_MITN_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
