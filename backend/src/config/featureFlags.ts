@@ -211,3 +211,14 @@ export function isWisconsinCampaignFinanceSyncEnabled(force = false): boolean {
     (force || readBooleanEnv("WISCONSIN_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
   );
 }
+
+export function isMassachusettsCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isMassachusettsCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isMassachusettsCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
