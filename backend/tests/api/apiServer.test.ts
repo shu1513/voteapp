@@ -9,6 +9,7 @@ import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAdd
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
 import { InitializeUserDistrictsError } from "../../src/pipeline/users/userDistrictInitializer.js";
 import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
+import { ReplaceUserDistrictsError } from "../../src/pipeline/users/userDistrictReplacer.js";
 import { UserResearchAreaPreferencesError } from "../../src/pipeline/users/userResearchAreaPreferences.js";
 
 const resolvedAddress: AddressResolutionResult = {
@@ -548,6 +549,7 @@ describe("createApiApp", () => {
     const lookupBallotSummaries = vi.fn();
     const lookupAuthenticatedBallotSummaries = vi.fn();
     const lookupElectionDetail = vi.fn();
+    const updateAuthenticatedAddressDistricts = vi.fn();
     const initializeUserDistricts = vi.fn();
     const listResearchAreas = vi.fn();
     const listAuthenticatedResearchAreaPreferences = vi.fn();
@@ -557,6 +559,7 @@ describe("createApiApp", () => {
       lookupBallotSummaries,
       lookupAuthenticatedBallotSummaries,
       lookupElectionDetail,
+      updateAuthenticatedAddressDistricts,
       initializeUserDistricts,
       listResearchAreas,
       listAuthenticatedResearchAreaPreferences,
@@ -599,6 +602,19 @@ describe("createApiApp", () => {
       error: {
         code: "method_not_allowed",
         message: "Use GET /api/me/ballot",
+      },
+    });
+
+    const authenticatedAddressResponse = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/me/address",
+    });
+    expect(authenticatedAddressResponse.statusCode).toBe(405);
+    expect(authenticatedAddressResponse.headers).toMatchObject({ allow: "PUT" });
+    expect(authenticatedAddressResponse.body).toEqual({
+      error: {
+        code: "method_not_allowed",
+        message: "Use PUT /api/me/address",
       },
     });
 
@@ -658,6 +674,7 @@ describe("createApiApp", () => {
     expect(lookupBallotSummaries).not.toHaveBeenCalled();
     expect(lookupAuthenticatedBallotSummaries).not.toHaveBeenCalled();
     expect(lookupElectionDetail).not.toHaveBeenCalled();
+    expect(updateAuthenticatedAddressDistricts).not.toHaveBeenCalled();
     expect(initializeUserDistricts).not.toHaveBeenCalled();
     expect(listResearchAreas).not.toHaveBeenCalled();
     expect(listAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
@@ -969,6 +986,196 @@ describe("createApiApp", () => {
       },
     });
     expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("updates authenticated address districts for the current user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const updateAuthenticatedAddressDistricts = vi.fn().mockResolvedValue({
+      matched_address: "123 MAIN ST, DENVER, CO, 80203",
+      district_ids: [districtId],
+      districts: resolvedAddress.districts,
+      elections: [],
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, updateAuthenticatedAddressDistricts }),
+      {
+        method: "PUT",
+        path: "/api/me/address",
+        body: JSON.stringify({ address: "  123 Main St Denver CO 80203  " }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      matched_address: "123 MAIN ST, DENVER, CO, 80203",
+      district_ids: [districtId],
+      districts: resolvedAddress.districts,
+      elections: [],
+    });
+    expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
+      headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
+    });
+    expect(updateAuthenticatedAddressDistricts).toHaveBeenCalledWith(
+      "99999999-9999-4999-8999-999999999999",
+      "123 Main St Denver CO 80203"
+    );
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated address updates when authentication is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const updateAuthenticatedAddressDistricts = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, updateAuthenticatedAddressDistricts }), {
+      method: "PUT",
+      path: "/api/me/address",
+      body: JSON.stringify({ address: "123 Main St Denver CO 80203" }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(updateAuthenticatedAddressDistricts).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when authenticated address update storage is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, resolveAuthenticatedUserId }), {
+      method: "PUT",
+      path: "/api/me/address",
+      body: JSON.stringify({ address: "123 Main St Denver CO 80203" }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "Authenticated address update is not configured",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated address updates without an authenticated user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(null);
+    const updateAuthenticatedAddressDistricts = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, updateAuthenticatedAddressDistricts }),
+      {
+        method: "PUT",
+        path: "/api/me/address",
+        body: JSON.stringify({ address: "123 Main St Denver CO 80203" }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(updateAuthenticatedAddressDistricts).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects invalid authenticated address update payloads before calling the handler", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const updateAuthenticatedAddressDistricts = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, updateAuthenticatedAddressDistricts }),
+      {
+        method: "PUT",
+        path: "/api/me/address",
+        body: JSON.stringify({ address: "   " }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Request body must include non-empty string field: address",
+      },
+    });
+    expect(updateAuthenticatedAddressDistricts).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-JSON content types before parsing authenticated address update bodies", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const updateAuthenticatedAddressDistricts = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, updateAuthenticatedAddressDistricts }),
+      {
+        method: "PUT",
+        path: "/api/me/address",
+        body: JSON.stringify({ address: "123 Main St Denver CO 80203" }),
+        headers: { "content-type": "text/plain" },
+      }
+    );
+
+    expect(response.statusCode).toBe(415);
+    expect(response.body).toEqual({
+      error: {
+        code: "unsupported_media_type",
+        message: "Content-Type must be application/json",
+      },
+    });
+    expect(resolveAuthenticatedUserId).not.toHaveBeenCalled();
+    expect(updateAuthenticatedAddressDistricts).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("maps authenticated address replacement errors to API errors", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const updateAuthenticatedAddressDistricts = vi
+      .fn()
+      .mockRejectedValue(new ReplaceUserDistrictsError("unknown_district_ids", `Unknown district IDs: ${districtId}`));
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, updateAuthenticatedAddressDistricts }),
+      {
+        method: "PUT",
+        path: "/api/me/address",
+        body: JSON.stringify({ address: "123 Main St Denver CO 80203" }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Address could not be matched to saved districts",
+      },
+    });
+    expect(updateAuthenticatedAddressDistricts).toHaveBeenCalledWith(
+      "99999999-9999-4999-8999-999999999999",
+      "123 Main St Denver CO 80203"
+    );
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 

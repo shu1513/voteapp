@@ -10,6 +10,7 @@ export { UUID_PATTERN } from "../utils/uuid.js";
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
+export const ME_ADDRESS_PATH = "/api/me/address";
 export const ME_BALLOT_PATH = "/api/me/ballot";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferences";
@@ -20,6 +21,8 @@ export const MAX_BALLOT_DISTRICT_IDS = 50;
 export type AddressResolvePayload = {
   address: string;
 };
+
+export type AuthenticatedAddressPayload = AddressResolvePayload;
 
 export type InitializeUserDistrictsPayload = {
   district_ids: string[];
@@ -57,6 +60,10 @@ export function parseAddressPayload(rawBody: string): AddressResolvePayload {
     throw new SyntaxError("Request body must be valid JSON");
   }
 
+  return parseAddressBodyValue(parsed);
+}
+
+export function parseAuthenticatedAddressBodyValue(parsed: unknown): AuthenticatedAddressPayload {
   return parseAddressBodyValue(parsed);
 }
 

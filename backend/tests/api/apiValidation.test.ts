@@ -2,10 +2,33 @@ import { describe, expect, it } from "vitest";
 
 import {
   MAX_USER_RESEARCH_AREA_PREFERENCES,
+  ME_ADDRESS_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
+  parseAuthenticatedAddressBodyValue,
   parseResearchAreaPreferencesBodyValue,
   RESEARCH_AREAS_PATH,
 } from "../../src/api/apiValidation.js";
+
+describe("authenticated address API contract constants", () => {
+  it("defines the authenticated address replacement path", () => {
+    expect(ME_ADDRESS_PATH).toBe("/api/me/address");
+  });
+
+  it("parses authenticated address payloads like normal address lookups", () => {
+    expect(parseAuthenticatedAddressBodyValue({ address: "  123 Main St Denver CO 80203  " })).toEqual({
+      address: "123 Main St Denver CO 80203",
+    });
+  });
+
+  it.each([
+    [null, "Request body must be a JSON object"],
+    [{}, "Request body must include non-empty string field: address"],
+    [{ address: "   " }, "Request body must include non-empty string field: address"],
+    [{ address: 123 }, "Request body must include non-empty string field: address"],
+  ])("rejects invalid authenticated address payload %#", (payload, message) => {
+    expect(() => parseAuthenticatedAddressBodyValue(payload)).toThrow(message);
+  });
+});
 
 describe("research area API contract constants", () => {
   it("defines the public research-area catalog and authenticated preference paths", () => {
