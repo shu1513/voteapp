@@ -22,6 +22,28 @@ export type SyncDueMarylandCandidateFinanceScriptOptions = {
   aiClassificationMinAmount?: number;
 };
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--no-ai-classify-industries"]);
+const KNOWN_VALUE_FLAGS = new Set([
+  "--max-candidates",
+  "--stale-after-days",
+  "--lookback-days",
+  "--lookahead-days",
+  "--raw-cache-dir",
+  "--ai-min-amount",
+]);
+
+function validateKnownFlags(args: readonly string[]): void {
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+    const name = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
+    if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
+      throw new Error(`Unknown Maryland candidate finance due sync flag: ${name}`);
+    }
+  }
+}
+
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
   const values: string[] = [];
@@ -66,6 +88,7 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
 export function parseSyncDueMarylandCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueMarylandCandidateFinanceScriptOptions {
+  validateKnownFlags(args);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

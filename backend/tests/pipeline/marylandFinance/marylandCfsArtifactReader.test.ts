@@ -109,6 +109,12 @@ describe("Maryland CFS artifact reader", () => {
     ]);
   });
 
+  it("rejects in-memory CSVs that only contain the Maryland metadata row", () => {
+    expect(() =>
+      parseMarylandCfsContributionCsvRows("Contributions and Loan Download as of 06/23/2026 01:01 AM,\n")
+    ).toThrow("Missing Maryland CFS contribution CSV header row");
+  });
+
   it("parses expenditure rows with outside-spending target fields", () => {
     const rows = parseMarylandCfsExpenditureCsvRows(
       expenditureCsv([
@@ -212,6 +218,16 @@ describe("Maryland CFS artifact reader", () => {
         "Transaction Amount": "$100.00",
       }),
     ]);
+  });
+
+  it("rejects streamed CSVs that never provide a header row", async () => {
+    const dir = await makeTempDir();
+    const filePath = join(dir, "TCON_2026.csv");
+    await writeFile(filePath, "Contributions and Loan Download as of 06/23/2026 01:01 AM,\n", "utf8");
+
+    await expect(readMarylandCfsContributionRows({ filePath })).rejects.toThrow(
+      "Missing Maryland CFS contribution CSV header row"
+    );
   });
 
   it("streams quoted multiline expenditure fields without splitting rows", async () => {

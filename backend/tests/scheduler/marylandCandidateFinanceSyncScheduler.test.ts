@@ -333,4 +333,31 @@ describe("marylandCandidateFinanceSyncScheduler", () => {
     );
     expect(queueInstance.close).toHaveBeenCalledTimes(1);
   });
+
+  it("rejects manual job IDs that collide with scheduler sentinel return values", async () => {
+    process.env.MARYLAND_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MARYLAND_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+    mockEnv();
+
+    const queueInstance = {
+      add: vi.fn().mockResolvedValue({ id: "disabled" }),
+      close: vi.fn().mockResolvedValue(undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+
+    const { enqueueManualMarylandCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/marylandCandidateFinanceSyncScheduler.js"
+    );
+
+    await expect(
+      enqueueManualMarylandCandidateFinanceSyncJob({ force: true }, { jobId: "disabled" })
+    ).rejects.toThrow("Maryland finance sync scheduler jobId uses a reserved value");
+    await expect(
+      enqueueManualMarylandCandidateFinanceSyncJob({ force: true }, { jobId: "unknown" })
+    ).rejects.toThrow("Maryland finance sync scheduler jobId uses a reserved value");
+
+    expect(queueInstance.add).not.toHaveBeenCalled();
+    expect(queueInstance.close).toHaveBeenCalledTimes(2);
+  });
 });

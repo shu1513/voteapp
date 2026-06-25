@@ -252,7 +252,7 @@ function addOutsideBreakdown(
       existing.contributorCount === undefined ||
       breakdown.contributorCount === null ||
       breakdown.contributorCount === undefined
-        ? existing.contributorCount ?? breakdown.contributorCount ?? null
+        ? null
         : existing.contributorCount + breakdown.contributorCount,
     sourceUrl: existing.sourceUrl ?? breakdown.sourceUrl,
   });

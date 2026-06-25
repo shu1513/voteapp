@@ -76,6 +76,15 @@ describe("syncDueMarylandCandidateFinance script", () => {
     ).toThrow("Provide --raw-cache-dir at most once");
   });
 
+  it("rejects unknown flags before starting a sync", () => {
+    expect(() => parseSyncDueMarylandCandidateFinanceScriptArgs(["--max-canddates=1"])).toThrow(
+      "Unknown Maryland candidate finance due sync flag: --max-canddates"
+    );
+    expect(() => parseSyncDueMarylandCandidateFinanceScriptArgs(["--unknown", "value"])).toThrow(
+      "Unknown Maryland candidate finance due sync flag: --unknown"
+    );
+  });
+
   it("formats script output", () => {
     const output = toSyncDueMarylandCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),

@@ -180,11 +180,10 @@ describe("marylandCandidateFinanceSync", () => {
       electionId: ELECTION_ID,
       candidateName: "Justin Gallucci",
       electionYear: 2026,
-      officeScope: "state_upper",
-      officeName: "State Senator",
-      district: "1",
+      officeScope: "statewide",
+      officeName: "Governor",
       sourceUrl: SOURCE_URL,
-      committeeRows: [committee()],
+      committeeRows: [committee({ "Office Sought": "Governor/Lieutenant Governor" })],
       contributionRows: [
         contribution({ "Transaction Amount": "$250.00" }),
         contribution({
@@ -198,7 +197,7 @@ describe("marylandCandidateFinanceSync", () => {
           "Transaction Amount": "$30,000.00",
         }),
       ],
-      expenditureRows: [expenditure()],
+      expenditureRows: [expenditure({ "Office Sought": "Governor/Lieutenant Governor" })],
       now: new Date("2026-07-08T09:10:11.000Z"),
     });
 
@@ -270,10 +269,9 @@ describe("marylandCandidateFinanceSync", () => {
       electionId: ELECTION_ID,
       candidateName: "Missing Candidate",
       electionYear: 2026,
-      officeScope: "state_upper",
-      officeName: "State Senator",
-      district: "1",
-      committeeRows: [committee()],
+      officeScope: "statewide",
+      officeName: "Governor",
+      committeeRows: [committee({ "Office Sought": "Governor/Lieutenant Governor" })],
       contributionRows: [contribution()],
     });
 
@@ -288,10 +286,9 @@ describe("marylandCandidateFinanceSync", () => {
       electionId: ELECTION_ID,
       candidateName: "Justin Gallucci",
       electionYear: 2026,
-      officeScope: "state_upper",
-      officeName: "State Senator",
-      district: "1",
-      committeeRows: [committee()],
+      officeScope: "statewide",
+      officeName: "Governor",
+      committeeRows: [committee({ "Office Sought": "Governor/Lieutenant Governor" })],
       contributionRows: [contribution()],
       dryRun: true,
     });
