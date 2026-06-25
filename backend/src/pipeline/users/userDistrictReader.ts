@@ -23,32 +23,23 @@ function normalizeUserId(userId: string): string {
 
 export async function listUserDistrictIds(db: Queryable, userId: string): Promise<string[]> {
   const normalizedUserId = normalizeUserId(userId);
-  const user = await db.query<{ id: string }>(
+  const districts = await db.query<{ user_id: string; district_id: string | null }>(
     `
-      SELECT id
-      FROM public.users
-      WHERE id = $1::uuid
-        AND deleted_at IS NULL
-      LIMIT 1
+      SELECT
+        u.id::text AS user_id,
+        ud.district_id::text AS district_id
+      FROM public.users AS u
+      LEFT JOIN public.user_districts AS ud
+        ON ud.user_id = u.id
+      WHERE u.id = $1::uuid
+        AND u.deleted_at IS NULL
+      ORDER BY ud.created_at ASC NULLS LAST, ud.id ASC NULLS LAST
     `,
     [normalizedUserId]
   );
-  if (user.rows.length === 0) {
+  if (districts.rows.length === 0) {
     throw new UserDistrictReaderError("user_not_found", "User not found");
   }
 
-  const districts = await db.query<{ district_id: string }>(
-    `
-      SELECT ud.district_id::text AS district_id
-      FROM public.user_districts AS ud
-      JOIN public.districts AS d
-        ON d.id = ud.district_id
-       AND d.district_type = ud.district_type
-      WHERE ud.user_id = $1::uuid
-      ORDER BY ud.created_at ASC, ud.id ASC
-    `,
-    [normalizedUserId]
-  );
-
-  return districts.rows.map((row) => row.district_id);
+  return districts.rows.flatMap((row) => (row.district_id ? [row.district_id] : []));
 }

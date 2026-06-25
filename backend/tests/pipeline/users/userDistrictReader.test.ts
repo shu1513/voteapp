@@ -47,24 +47,28 @@ describe("listUserDistrictIds", () => {
 
   it("returns an empty list when the user has no saved districts", async () => {
     const db = createMockDb();
-    db.query.mockResolvedValueOnce({ rows: [{ id: userId }] }).mockResolvedValueOnce({ rows: [] });
+    db.query.mockResolvedValueOnce({ rows: [{ user_id: userId, district_id: null }] });
 
     await expect(listUserDistrictIds(db, userId)).resolves.toEqual([]);
 
-    expect(db.query).toHaveBeenCalledTimes(2);
-    expect(String(db.query.mock.calls[1]?.[0])).toContain("FROM public.user_districts AS ud");
-    expect(String(db.query.mock.calls[1]?.[0])).toContain("JOIN public.districts AS d");
-    expect(db.query.mock.calls[1]?.[1]).toEqual([userId]);
+    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("LEFT JOIN public.user_districts AS ud");
+    expect(String(db.query.mock.calls[0]?.[0])).not.toContain("d.district_type = ud.district_type");
+    expect(db.query.mock.calls[0]?.[1]).toEqual([userId]);
   });
 
   it("returns saved district IDs in stable saved order", async () => {
     const db = createMockDb();
-    db.query.mockResolvedValueOnce({ rows: [{ id: userId }] }).mockResolvedValueOnce({
-      rows: [{ district_id: districtIdA }, { district_id: districtIdB }],
+    db.query.mockResolvedValueOnce({
+      rows: [
+        { user_id: userId, district_id: districtIdA },
+        { user_id: userId, district_id: districtIdB },
+      ],
     });
 
     await expect(listUserDistrictIds(db, userId)).resolves.toEqual([districtIdA, districtIdB]);
 
-    expect(String(db.query.mock.calls[1]?.[0])).toContain("ORDER BY ud.created_at ASC, ud.id ASC");
+    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("ORDER BY ud.created_at ASC NULLS LAST, ud.id ASC NULLS LAST");
   });
 });
