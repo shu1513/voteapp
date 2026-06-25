@@ -9,6 +9,7 @@ import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAdd
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
 import { InitializeUserDistrictsError } from "../../src/pipeline/users/userDistrictInitializer.js";
 import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
+import { UserResearchAreaPreferencesError } from "../../src/pipeline/users/userResearchAreaPreferences.js";
 
 const resolvedAddress: AddressResolutionResult = {
   matched_address: "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
@@ -192,7 +193,7 @@ describe("createApiApp", () => {
     expect(response.statusCode).toBe(204);
     expect(response.headers).toMatchObject({
       "access-control-allow-origin": "http://localhost:3000",
-      "access-control-allow-methods": "GET, POST, OPTIONS",
+      "access-control-allow-methods": "GET, POST, PUT, OPTIONS",
       "access-control-allow-headers": "content-type",
       "access-control-max-age": "600",
       vary: "Origin",
@@ -548,12 +549,18 @@ describe("createApiApp", () => {
     const lookupAuthenticatedBallotSummaries = vi.fn();
     const lookupElectionDetail = vi.fn();
     const initializeUserDistricts = vi.fn();
+    const listResearchAreas = vi.fn();
+    const listAuthenticatedResearchAreaPreferences = vi.fn();
+    const replaceAuthenticatedResearchAreaPreferences = vi.fn();
     const app = createApiApp({
       resolveAddress,
       lookupBallotSummaries,
       lookupAuthenticatedBallotSummaries,
       lookupElectionDetail,
       initializeUserDistricts,
+      listResearchAreas,
+      listAuthenticatedResearchAreaPreferences,
+      replaceAuthenticatedResearchAreaPreferences,
     });
 
     const ballotResponse = await invokeExpressApp(app, {
@@ -595,6 +602,32 @@ describe("createApiApp", () => {
       },
     });
 
+    const researchAreasResponse = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/research-areas",
+    });
+    expect(researchAreasResponse.statusCode).toBe(405);
+    expect(researchAreasResponse.headers).toMatchObject({ allow: "GET" });
+    expect(researchAreasResponse.body).toEqual({
+      error: {
+        code: "method_not_allowed",
+        message: "Use GET /api/research-areas",
+      },
+    });
+
+    const researchAreaPreferencesResponse = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/me/research-area-preferences",
+    });
+    expect(researchAreaPreferencesResponse.statusCode).toBe(405);
+    expect(researchAreaPreferencesResponse.headers).toMatchObject({ allow: "GET, PUT" });
+    expect(researchAreaPreferencesResponse.body).toEqual({
+      error: {
+        code: "method_not_allowed",
+        message: "Use GET or PUT /api/me/research-area-preferences",
+      },
+    });
+
     const addressResponse = await invokeExpressApp(app, {
       method: "GET",
       path: "/api/address/resolve",
@@ -626,6 +659,9 @@ describe("createApiApp", () => {
     expect(lookupAuthenticatedBallotSummaries).not.toHaveBeenCalled();
     expect(lookupElectionDetail).not.toHaveBeenCalled();
     expect(initializeUserDistricts).not.toHaveBeenCalled();
+    expect(listResearchAreas).not.toHaveBeenCalled();
+    expect(listAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+    expect(replaceAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
   });
 
   it("rate limits known-path wrong methods before returning 405", async () => {
@@ -734,6 +770,57 @@ describe("createApiApp", () => {
 
     expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId]);
     expect(lookupElectionDetail).toHaveBeenCalledWith(electionId);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("serves the selectable research area catalog", async () => {
+    const resolveAddress = vi.fn();
+    const listResearchAreas = vi.fn().mockResolvedValue({
+      research_areas: [
+        {
+          id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: "Housing policy",
+        },
+      ],
+    });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, listResearchAreas }), {
+      method: "GET",
+      path: "/api/research-areas",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      research_areas: [
+        {
+          id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: "Housing policy",
+        },
+      ],
+    });
+    expect(listResearchAreas).toHaveBeenCalledOnce();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when the research area catalog lookup is not configured", async () => {
+    const resolveAddress = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "GET",
+      path: "/api/research-areas",
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "Research area catalog lookup is not configured",
+      },
+    });
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
@@ -882,6 +969,387 @@ describe("createApiApp", () => {
       },
     });
     expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("serves authenticated research area preferences for the current user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const listAuthenticatedResearchAreaPreferences = vi.fn().mockResolvedValue({
+      preferences: [
+        {
+          research_area_id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: null,
+          rank: 1,
+        },
+      ],
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedResearchAreaPreferences }),
+      {
+        method: "GET",
+        path: "/api/me/research-area-preferences",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      preferences: [
+        {
+          research_area_id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: null,
+          rank: 1,
+        },
+      ],
+    });
+    expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
+      headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
+    });
+    expect(listAuthenticatedResearchAreaPreferences).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated research area preferences lookup when authentication is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const listAuthenticatedResearchAreaPreferences = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, listAuthenticatedResearchAreaPreferences }),
+      {
+        method: "GET",
+        path: "/api/me/research-area-preferences",
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when authenticated research area preferences lookup is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, resolveAuthenticatedUserId }), {
+      method: "GET",
+      path: "/api/me/research-area-preferences",
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "Authenticated research area preferences lookup is not configured",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated research area preferences lookup without an authenticated user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(null);
+    const listAuthenticatedResearchAreaPreferences = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedResearchAreaPreferences }),
+      {
+        method: "GET",
+        path: "/api/me/research-area-preferences",
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("maps authenticated research area preference reader errors to unauthorized", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const listAuthenticatedResearchAreaPreferences = vi
+      .fn()
+      .mockRejectedValue(new UserResearchAreaPreferencesError("user_not_found", "User not found"));
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedResearchAreaPreferences }),
+      {
+        method: "GET",
+        path: "/api/me/research-area-preferences",
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedResearchAreaPreferences).toHaveBeenCalledWith(
+      "99999999-9999-4999-8999-999999999999"
+    );
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("replaces authenticated research area preferences for the current user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const replaceAuthenticatedResearchAreaPreferences = vi.fn().mockResolvedValue({
+      preferences: [
+        {
+          research_area_id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: null,
+          rank: 1,
+        },
+        {
+          research_area_id: "33333333-3333-4333-8333-333333333333",
+          slug: "healthcare_affordability",
+          name: "Healthcare Affordability",
+          description: null,
+          rank: null,
+        },
+      ],
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, replaceAuthenticatedResearchAreaPreferences }),
+      {
+        method: "PUT",
+        path: "/api/me/research-area-preferences",
+        body: JSON.stringify({
+          preferences: [
+            { research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1 },
+            { research_area_id: "33333333-3333-4333-8333-333333333333", rank: null },
+          ],
+        }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      preferences: [
+        {
+          research_area_id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: null,
+          rank: 1,
+        },
+        {
+          research_area_id: "33333333-3333-4333-8333-333333333333",
+          slug: "healthcare_affordability",
+          name: "Healthcare Affordability",
+          description: null,
+          rank: null,
+        },
+      ],
+    });
+    expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
+      headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
+    });
+    expect(replaceAuthenticatedResearchAreaPreferences).toHaveBeenCalledWith(
+      "99999999-9999-4999-8999-999999999999",
+      [
+        { researchAreaId: "22222222-2222-4222-8222-222222222222", rank: 1 },
+        { researchAreaId: "33333333-3333-4333-8333-333333333333", rank: null },
+      ]
+    );
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("clears authenticated research area preferences", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const replaceAuthenticatedResearchAreaPreferences = vi.fn().mockResolvedValue({ preferences: [] });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, replaceAuthenticatedResearchAreaPreferences }),
+      {
+        method: "PUT",
+        path: "/api/me/research-area-preferences",
+        body: JSON.stringify({ preferences: [] }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ preferences: [] });
+    expect(replaceAuthenticatedResearchAreaPreferences).toHaveBeenCalledWith(
+      "99999999-9999-4999-8999-999999999999",
+      []
+    );
+  });
+
+  it("rejects authenticated research area preference replacement when authentication is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const replaceAuthenticatedResearchAreaPreferences = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, replaceAuthenticatedResearchAreaPreferences }),
+      {
+        method: "PUT",
+        path: "/api/me/research-area-preferences",
+        body: JSON.stringify({ preferences: [] }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(replaceAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when authenticated research area preference storage is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, resolveAuthenticatedUserId }), {
+      method: "PUT",
+      path: "/api/me/research-area-preferences",
+      body: JSON.stringify({ preferences: [] }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "Authenticated research area preference storage is not configured",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated research area preference replacement without an authenticated user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(null);
+    const replaceAuthenticatedResearchAreaPreferences = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, replaceAuthenticatedResearchAreaPreferences }),
+      {
+        method: "PUT",
+        path: "/api/me/research-area-preferences",
+        body: JSON.stringify({ preferences: [] }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(replaceAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+  });
+
+  it("rejects invalid research area preference payloads before calling storage", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const replaceAuthenticatedResearchAreaPreferences = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, replaceAuthenticatedResearchAreaPreferences }),
+      {
+        method: "PUT",
+        path: "/api/me/research-area-preferences",
+        body: JSON.stringify({ preferences: [{ research_area_id: "not-a-uuid" }] }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "preferences contains invalid research_area_id: not-a-uuid",
+      },
+    });
+    expect(replaceAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-JSON content types before parsing research area preference replacement bodies", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const replaceAuthenticatedResearchAreaPreferences = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, replaceAuthenticatedResearchAreaPreferences }),
+      {
+        method: "PUT",
+        path: "/api/me/research-area-preferences",
+        body: JSON.stringify({ preferences: [] }),
+        headers: { "content-type": "text/plain" },
+      }
+    );
+
+    expect(response.statusCode).toBe(415);
+    expect(response.body).toEqual({
+      error: {
+        code: "unsupported_media_type",
+        message: "Content-Type must be application/json",
+      },
+    });
+    expect(resolveAuthenticatedUserId).not.toHaveBeenCalled();
+    expect(replaceAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+  });
+
+  it("maps authenticated research area preference replacement errors to API errors", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const replaceAuthenticatedResearchAreaPreferences = vi
+      .fn()
+      .mockRejectedValue(
+        new UserResearchAreaPreferencesError("unselectable_research_area_ids", "Research area cannot be selected")
+      );
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, replaceAuthenticatedResearchAreaPreferences }),
+      {
+        method: "PUT",
+        path: "/api/me/research-area-preferences",
+        body: JSON.stringify({ preferences: [{ research_area_id: "22222222-2222-4222-8222-222222222222" }] }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Research area cannot be selected",
+      },
+    });
+    expect(replaceAuthenticatedResearchAreaPreferences).toHaveBeenCalledOnce();
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 

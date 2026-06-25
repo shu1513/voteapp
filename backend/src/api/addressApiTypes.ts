@@ -1,8 +1,17 @@
 import type { BallotLookupElection, BallotSummaryResult } from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { InitializeUserDistrictsResult } from "../pipeline/users/userDistrictInitializer.js";
+import type {
+  ResearchAreaCatalogResult,
+  UserResearchAreaPreferenceInput,
+  UserResearchAreaPreferencesResult,
+} from "../pipeline/users/userResearchAreaPreferences.js";
 import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 import type { AddressResolutionDiagnostics } from "./addressApiResponses.js";
+
+export type { ResearchAreaCatalogItem, ResearchAreaCatalogResult } from "../pipeline/users/userResearchAreaPreferences.js";
+
+export type AuthenticatedResearchAreaPreferencesResult = UserResearchAreaPreferencesResult;
 
 export type AddressApiRateLimitInput = {
   clientIp: string;
@@ -20,6 +29,12 @@ export type AddressApiServerOptions = {
   lookupBallotSummaries?: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
   lookupAuthenticatedBallotSummaries?: (userId: string) => Promise<BallotSummaryResult>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
+  listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
+  listAuthenticatedResearchAreaPreferences?: (userId: string) => Promise<AuthenticatedResearchAreaPreferencesResult>;
+  replaceAuthenticatedResearchAreaPreferences?: (
+    userId: string,
+    preferences: readonly UserResearchAreaPreferenceInput[]
+  ) => Promise<AuthenticatedResearchAreaPreferencesResult>;
   initializeUserDistricts?: (
     input: {
       userId: string;

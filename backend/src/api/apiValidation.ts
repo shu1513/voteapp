@@ -1,7 +1,10 @@
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
+import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
+import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
 import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
 
 export { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
+export { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 export { UUID_PATTERN } from "../utils/uuid.js";
 
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
@@ -9,6 +12,8 @@ export const BALLOT_LOOKUP_PATH = "/api/ballot";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
 export const ME_BALLOT_PATH = "/api/me/ballot";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
+export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferences";
+export const RESEARCH_AREAS_PATH = "/api/research-areas";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 export const MAX_BALLOT_DISTRICT_IDS = 50;
 
@@ -18,6 +23,15 @@ export type AddressResolvePayload = {
 
 export type InitializeUserDistrictsPayload = {
   district_ids: string[];
+};
+
+export type ResearchAreaPreferencePayloadItem = {
+  research_area_id: string;
+  rank?: number | null;
+};
+
+export type ResearchAreaPreferencesPayload = {
+  preferences: UserResearchAreaPreferenceInput[];
 };
 
 export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
@@ -87,6 +101,60 @@ export function parseInitializeUserDistrictsBodyValue(parsed: unknown): Initiali
   return {
     district_ids: normalizedDistrictIds,
   };
+}
+
+export function parseResearchAreaPreferencesBodyValue(parsed: unknown): ResearchAreaPreferencesPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const preferences = (parsed as { preferences?: unknown }).preferences;
+  if (!Array.isArray(preferences)) {
+    throw new TypeError("Request body must include array field: preferences");
+  }
+  if (preferences.length > MAX_USER_RESEARCH_AREA_PREFERENCES) {
+    throw new TypeError(`preferences supports at most ${MAX_USER_RESEARCH_AREA_PREFERENCES} research areas`);
+  }
+
+  const normalizedPreferences: UserResearchAreaPreferenceInput[] = [];
+  const seenResearchAreaIds = new Set<string>();
+  const seenRanks = new Set<number>();
+
+  for (const rawPreference of preferences) {
+    if (typeof rawPreference !== "object" || rawPreference === null || Array.isArray(rawPreference)) {
+      throw new TypeError("preferences must contain only JSON objects");
+    }
+
+    const preference = rawPreference as ResearchAreaPreferencePayloadItem;
+    if (typeof preference.research_area_id !== "string") {
+      throw new TypeError("preferences[].research_area_id must be a UUID string");
+    }
+
+    const researchAreaId = preference.research_area_id.trim();
+    if (!isUuid(researchAreaId)) {
+      throw new TypeError(`preferences contains invalid research_area_id: ${researchAreaId}`);
+    }
+    const researchAreaDedupeKey = researchAreaId.toLowerCase();
+    if (seenResearchAreaIds.has(researchAreaDedupeKey)) {
+      throw new TypeError(`preferences contains duplicate research_area_id: ${researchAreaId}`);
+    }
+    seenResearchAreaIds.add(researchAreaDedupeKey);
+
+    const rank = preference.rank ?? null;
+    if (rank !== null && (!Number.isInteger(rank) || rank < 1 || rank > MAX_USER_RESEARCH_AREA_PREFERENCES)) {
+      throw new TypeError(`preferences[].rank must be an integer from 1 to ${MAX_USER_RESEARCH_AREA_PREFERENCES}`);
+    }
+    if (rank !== null) {
+      if (seenRanks.has(rank)) {
+        throw new TypeError(`preferences contains duplicate rank: ${rank}`);
+      }
+      seenRanks.add(rank);
+    }
+
+    normalizedPreferences.push({ researchAreaId, rank });
+  }
+
+  return { preferences: normalizedPreferences };
 }
 
 export function parseDistrictIds(url: URL): string[] {

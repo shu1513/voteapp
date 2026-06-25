@@ -165,6 +165,22 @@ async function postJson(baseUrl: string, path: string, body: unknown, headers: R
   };
 }
 
+async function putJson(baseUrl: string, path: string, body: unknown, headers: Record<string, string> = {}): Promise<JsonResponse> {
+  const response = await fetch(`${baseUrl}${path}`, {
+    method: "PUT",
+    headers: {
+      "content-type": "application/json",
+      ...headers,
+    },
+    body: JSON.stringify(body),
+  });
+
+  return {
+    status: response.status,
+    body: await response.json(),
+  };
+}
+
 async function getJson(baseUrl: string, path: string, headers: Record<string, string> = {}): Promise<JsonResponse> {
   const response = await fetch(`${baseUrl}${path}`, {
     method: "GET",
@@ -181,6 +197,9 @@ describeE2e("address API auth proxy E2E", () => {
   const resolveAddress = vi.fn();
   const initializeUserDistricts = vi.fn();
   const lookupAuthenticatedBallotSummaries = vi.fn();
+  const listResearchAreas = vi.fn();
+  const listAuthenticatedResearchAreaPreferences = vi.fn();
+  const replaceAuthenticatedResearchAreaPreferences = vi.fn();
   let apiServer: Server | undefined;
   let proxyServer: Server | undefined;
   let proxyBaseUrl: string;
@@ -191,6 +210,9 @@ describeE2e("address API auth proxy E2E", () => {
       resolveAuthenticatedUserId: createTrustedUserIdResolver("X-User-Id"),
       initializeUserDistricts,
       lookupAuthenticatedBallotSummaries,
+      listResearchAreas,
+      listAuthenticatedResearchAreaPreferences,
+      replaceAuthenticatedResearchAreaPreferences,
     });
     apiServer = createServer(app);
     const apiBaseUrl = await listen(apiServer);
@@ -208,6 +230,41 @@ describeE2e("address API auth proxy E2E", () => {
       district_ids: [districtId],
       districts: resolvedAddress.districts,
       elections: [],
+    });
+    listResearchAreas.mockReset();
+    listResearchAreas.mockResolvedValue({
+      research_areas: [
+        {
+          id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: null,
+        },
+      ],
+    });
+    listAuthenticatedResearchAreaPreferences.mockReset();
+    listAuthenticatedResearchAreaPreferences.mockResolvedValue({
+      preferences: [
+        {
+          research_area_id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: null,
+          rank: 1,
+        },
+      ],
+    });
+    replaceAuthenticatedResearchAreaPreferences.mockReset();
+    replaceAuthenticatedResearchAreaPreferences.mockResolvedValue({
+      preferences: [
+        {
+          research_area_id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: null,
+          rank: 1,
+        },
+      ],
     });
   });
 
@@ -270,6 +327,115 @@ describeE2e("address API auth proxy E2E", () => {
     expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith(authenticatedUserId);
     expect(lookupAuthenticatedBallotSummaries).not.toHaveBeenCalledWith(spoofedUserId);
     expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("serves the public research area catalog without requiring an authenticated user", async () => {
+    const response = await getJson(proxyBaseUrl, "/api/research-areas", {
+      "x-user-id": spoofedUserId,
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      research_areas: [
+        {
+          id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: null,
+        },
+      ],
+    });
+    expect(listResearchAreas).toHaveBeenCalledOnce();
+    expect(listAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+    expect(replaceAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+  });
+
+  it("strips client-supplied user IDs and loads the logged-in user's research area preferences", async () => {
+    const response = await getJson(proxyBaseUrl, "/api/me/research-area-preferences", {
+      "x-test-session": "signed-in",
+      "x-user-id": spoofedUserId,
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      preferences: [
+        {
+          research_area_id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: null,
+          rank: 1,
+        },
+      ],
+    });
+    expect(listAuthenticatedResearchAreaPreferences).toHaveBeenCalledWith(authenticatedUserId);
+    expect(listAuthenticatedResearchAreaPreferences).not.toHaveBeenCalledWith(spoofedUserId);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("strips client-supplied user IDs and replaces the logged-in user's research area preferences", async () => {
+    const response = await putJson(
+      proxyBaseUrl,
+      "/api/me/research-area-preferences",
+      {
+        preferences: [{ research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1 }],
+      },
+      {
+        "x-test-session": "signed-in",
+        "x-user-id": spoofedUserId,
+      }
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      preferences: [
+        {
+          research_area_id: "22222222-2222-4222-8222-222222222222",
+          slug: "housing_affordability",
+          name: "Housing Affordability",
+          description: null,
+          rank: 1,
+        },
+      ],
+    });
+    expect(replaceAuthenticatedResearchAreaPreferences).toHaveBeenCalledWith(authenticatedUserId, [
+      { researchAreaId: "22222222-2222-4222-8222-222222222222", rank: 1 },
+    ]);
+    expect(replaceAuthenticatedResearchAreaPreferences).not.toHaveBeenCalledWith(spoofedUserId, expect.anything());
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("fails closed when loading preferences and the proxy does not inject an authenticated user ID", async () => {
+    const response = await getJson(proxyBaseUrl, "/api/me/research-area-preferences", {
+      "x-user-id": spoofedUserId,
+    });
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+  });
+
+  it("fails closed when saving preferences and the proxy does not inject an authenticated user ID", async () => {
+    const response = await putJson(
+      proxyBaseUrl,
+      "/api/me/research-area-preferences",
+      { preferences: [] },
+      { "x-user-id": spoofedUserId }
+    );
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(replaceAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
   });
 
   it("fails closed when the proxy does not inject an authenticated user ID", async () => {

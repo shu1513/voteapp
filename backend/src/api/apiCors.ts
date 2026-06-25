@@ -1,4 +1,4 @@
-export const CORS_ALLOW_METHODS = "GET, POST, OPTIONS";
+export const CORS_ALLOW_METHODS = "GET, POST, PUT, OPTIONS";
 export const CORS_ALLOW_HEADERS = "content-type";
 export const CORS_MAX_AGE_SECONDS = "600";
 
