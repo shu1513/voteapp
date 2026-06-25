@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { mapErrorToResponse } from "../../src/api/apiErrors.js";
 import { AuthenticatedAddressDistrictUpdateError } from "../../src/pipeline/users/userAddressDistrictUpdater.js";
+import { UserCandidateFollowsError } from "../../src/pipeline/users/userCandidateFollows.js";
 import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
 import { ReplaceUserDistrictsError } from "../../src/pipeline/users/userDistrictReplacer.js";
 import { UserResearchAreaPreferencesError } from "../../src/pipeline/users/userResearchAreaPreferences.js";
@@ -72,6 +73,36 @@ describe("mapErrorToResponse", () => {
       statusCode: 422,
       code: "address_not_found",
       message: "Resolved address did not match any supported districts",
+    });
+  });
+
+  it.each([
+    ["invalid_user_id", "User ID must be a valid UUID"],
+    ["user_not_found", "User not found"],
+  ] as const)("maps user candidate follow %s errors to unauthorized", (code, message) => {
+    expect(mapErrorToResponse(new UserCandidateFollowsError(code, message))).toEqual({
+      statusCode: 401,
+      code: "unauthorized",
+      message: "Authentication is required",
+    });
+  });
+
+  it.each([
+    ["invalid_candidate_id", "Candidate ID must be a valid UUID"],
+    ["invalid_follow_input", "following must be a boolean"],
+  ] as const)("maps user candidate follow %s errors to invalid_request", (code, message) => {
+    expect(mapErrorToResponse(new UserCandidateFollowsError(code, message))).toEqual({
+      statusCode: 400,
+      code: "invalid_request",
+      message,
+    });
+  });
+
+  it("maps missing/deleted/merged followed candidates to not_found", () => {
+    expect(mapErrorToResponse(new UserCandidateFollowsError("candidate_not_found", "Candidate not found"))).toEqual({
+      statusCode: 404,
+      code: "not_found",
+      message: "Candidate not found",
     });
   });
 });

@@ -3,6 +3,11 @@ import type { AddressResolutionResult } from "../pipeline/address/addressResolve
 import type { AuthenticatedAddressDistrictUpdateResult } from "../pipeline/users/userAddressDistrictUpdater.js";
 import type { InitializeUserDistrictsResult } from "../pipeline/users/userDistrictInitializer.js";
 import type {
+  UserCandidateFollowInput,
+  UserCandidateFollowsResult,
+  UserCandidateFollowUpdateResult,
+} from "../pipeline/users/userCandidateFollows.js";
+import type {
   ResearchAreaCatalogResult,
   UserResearchAreaPreferenceInput,
   UserResearchAreaPreferencesResult,
@@ -15,6 +20,10 @@ export type { ResearchAreaCatalogItem, ResearchAreaCatalogResult } from "../pipe
 export type AuthenticatedAddressUpdateResult = AuthenticatedAddressDistrictUpdateResult;
 
 export type AuthenticatedResearchAreaPreferencesResult = UserResearchAreaPreferencesResult;
+
+export type AuthenticatedCandidateFollowsResult = UserCandidateFollowsResult;
+
+export type AuthenticatedCandidateFollowUpdateResult = UserCandidateFollowUpdateResult;
 
 export type AddressApiRateLimitInput = {
   clientIp: string;
@@ -33,6 +42,11 @@ export type AddressApiServerOptions = {
   lookupAuthenticatedBallotSummaries?: (userId: string) => Promise<BallotSummaryResult>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
   listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
+  listAuthenticatedCandidateFollows?: (userId: string) => Promise<AuthenticatedCandidateFollowsResult>;
+  setAuthenticatedCandidateFollow?: (
+    userId: string,
+    input: UserCandidateFollowInput
+  ) => Promise<AuthenticatedCandidateFollowUpdateResult>;
   listAuthenticatedResearchAreaPreferences?: (userId: string) => Promise<AuthenticatedResearchAreaPreferencesResult>;
   replaceAuthenticatedResearchAreaPreferences?: (
     userId: string,

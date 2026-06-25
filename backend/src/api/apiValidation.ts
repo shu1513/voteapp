@@ -1,5 +1,6 @@
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
 import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
+import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
 import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
 
@@ -12,6 +13,7 @@ export const BALLOT_LOOKUP_PATH = "/api/ballot";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
 export const ME_ADDRESS_PATH = "/api/me/address";
 export const ME_BALLOT_PATH = "/api/me/ballot";
+export const ME_CANDIDATE_FOLLOWS_PATH = "/api/me/candidate-follows";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferences";
 export const RESEARCH_AREAS_PATH = "/api/research-areas";
@@ -36,6 +38,8 @@ export type ResearchAreaPreferencePayloadItem = {
 export type ResearchAreaPreferencesPayload = {
   preferences: UserResearchAreaPreferenceInput[];
 };
+
+export type CandidateFollowPayload = UserCandidateFollowInput;
 
 export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
@@ -162,6 +166,42 @@ export function parseResearchAreaPreferencesBodyValue(parsed: unknown): Research
   }
 
   return { preferences: normalizedPreferences };
+}
+
+export function parseCandidateFollowBodyValue(parsed: unknown): CandidateFollowPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const payload = parsed as {
+    candidate_id?: unknown;
+    following?: unknown;
+    notify_elections?: unknown;
+    notify_updates?: unknown;
+  };
+  if (typeof payload.candidate_id !== "string") {
+    throw new TypeError("Request body must include UUID string field: candidate_id");
+  }
+  const candidateId = payload.candidate_id.trim();
+  if (!isUuid(candidateId)) {
+    throw new TypeError(`candidate_id must be a valid UUID: ${candidateId}`);
+  }
+  if (typeof payload.following !== "boolean") {
+    throw new TypeError("Request body must include boolean field: following");
+  }
+  if (payload.notify_elections !== undefined && typeof payload.notify_elections !== "boolean") {
+    throw new TypeError("notify_elections must be a boolean");
+  }
+  if (payload.notify_updates !== undefined && typeof payload.notify_updates !== "boolean") {
+    throw new TypeError("notify_updates must be a boolean");
+  }
+
+  return {
+    candidateId,
+    following: payload.following,
+    ...(payload.notify_elections === undefined ? {} : { notifyElections: payload.notify_elections }),
+    ...(payload.notify_updates === undefined ? {} : { notifyUpdates: payload.notify_updates }),
+  };
 }
 
 export function parseDistrictIds(url: URL): string[] {

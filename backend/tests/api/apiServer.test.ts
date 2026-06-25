@@ -7,6 +7,7 @@ import { createApiApp } from "../../src/api/apiServer.js";
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../../src/api/apiValidation.js";
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
+import { UserCandidateFollowsError } from "../../src/pipeline/users/userCandidateFollows.js";
 import { InitializeUserDistrictsError } from "../../src/pipeline/users/userDistrictInitializer.js";
 import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
 import { ReplaceUserDistrictsError } from "../../src/pipeline/users/userDistrictReplacer.js";
@@ -734,6 +735,8 @@ describe("createApiApp", () => {
 
   it("serves ballot summaries and election detail routes", async () => {
     const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const listAuthenticatedCandidateFollows = vi.fn();
     const lookupBallotSummaries = vi.fn().mockResolvedValue({
       district_ids: [districtId],
       districts: [],
@@ -761,7 +764,13 @@ describe("createApiApp", () => {
       ballot_measure: null,
       results: [],
     });
-    const app = createApiApp({ resolveAddress, lookupBallotSummaries, lookupElectionDetail });
+    const app = createApiApp({
+      resolveAddress,
+      resolveAuthenticatedUserId,
+      listAuthenticatedCandidateFollows,
+      lookupBallotSummaries,
+      lookupElectionDetail,
+    });
 
     const ballotResponse = await invokeExpressApp(app, {
       method: "GET",
@@ -777,6 +786,7 @@ describe("createApiApp", () => {
     const electionResponse = await invokeExpressApp(app, {
       method: "GET",
       path: `/api/elections/${electionId}`,
+      headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
     });
     expect(electionResponse.statusCode).toBe(200);
     expect(electionResponse.body).toMatchObject({
@@ -787,6 +797,8 @@ describe("createApiApp", () => {
 
     expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId]);
     expect(lookupElectionDetail).toHaveBeenCalledWith(electionId);
+    expect(resolveAuthenticatedUserId).not.toHaveBeenCalled();
+    expect(listAuthenticatedCandidateFollows).not.toHaveBeenCalled();
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
@@ -1176,6 +1188,395 @@ describe("createApiApp", () => {
       "99999999-9999-4999-8999-999999999999",
       "123 Main St Denver CO 80203"
     );
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("serves authenticated candidate follows for the current user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const listAuthenticatedCandidateFollows = vi.fn().mockResolvedValue({
+      follows: [
+        {
+          candidate_id: "22222222-2222-4222-8222-222222222222",
+          display_name: "Jane Smith",
+          party: "Democratic",
+          state: "CA",
+          current_office: null,
+          notify_elections: true,
+          notify_updates: false,
+          created_at: "2026-01-02T03:04:05.000Z",
+        },
+      ],
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedCandidateFollows }),
+      {
+        method: "GET",
+        path: "/api/me/candidate-follows",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      follows: [
+        {
+          candidate_id: "22222222-2222-4222-8222-222222222222",
+          display_name: "Jane Smith",
+          party: "Democratic",
+          state: "CA",
+          current_office: null,
+          notify_elections: true,
+          notify_updates: false,
+          created_at: "2026-01-02T03:04:05.000Z",
+        },
+      ],
+    });
+    expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
+      headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
+    });
+    expect(listAuthenticatedCandidateFollows).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("updates authenticated candidate follows for the current user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const setAuthenticatedCandidateFollow = vi.fn().mockResolvedValue({
+      follow: {
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        following: true,
+        notify_elections: false,
+        notify_updates: true,
+        created_at: "2026-01-02T03:04:05.000Z",
+      },
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, setAuthenticatedCandidateFollow }),
+      {
+        method: "PUT",
+        path: "/api/me/candidate-follows",
+        body: JSON.stringify({
+          candidate_id: "22222222-2222-4222-8222-222222222222",
+          following: true,
+          notify_elections: false,
+          notify_updates: true,
+        }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      follow: {
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        following: true,
+        notify_elections: false,
+        notify_updates: true,
+        created_at: "2026-01-02T03:04:05.000Z",
+      },
+    });
+    expect(setAuthenticatedCandidateFollow).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {
+      candidateId: "22222222-2222-4222-8222-222222222222",
+      following: true,
+      notifyElections: false,
+      notifyUpdates: true,
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated candidate follows when authentication is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const listAuthenticatedCandidateFollows = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, listAuthenticatedCandidateFollows }), {
+      method: "GET",
+      path: "/api/me/candidate-follows",
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedCandidateFollows).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated candidate follow updates when authentication is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const setAuthenticatedCandidateFollow = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, setAuthenticatedCandidateFollow }), {
+      method: "PUT",
+      path: "/api/me/candidate-follows",
+      body: JSON.stringify({
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        following: true,
+      }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(setAuthenticatedCandidateFollow).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when authenticated candidate follow lookup is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, resolveAuthenticatedUserId }), {
+      method: "GET",
+      path: "/api/me/candidate-follows",
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "Authenticated candidate follow lookup is not configured",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when authenticated candidate follow storage is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, resolveAuthenticatedUserId }), {
+      method: "PUT",
+      path: "/api/me/candidate-follows",
+      body: JSON.stringify({
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        following: true,
+      }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "Authenticated candidate follow storage is not configured",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated candidate follows without an authenticated user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(null);
+    const listAuthenticatedCandidateFollows = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedCandidateFollows }),
+      {
+        method: "GET",
+        path: "/api/me/candidate-follows",
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedCandidateFollows).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated candidate follow updates without an authenticated user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(null);
+    const setAuthenticatedCandidateFollow = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, setAuthenticatedCandidateFollow }),
+      {
+        method: "PUT",
+        path: "/api/me/candidate-follows",
+        body: JSON.stringify({
+          candidate_id: "22222222-2222-4222-8222-222222222222",
+          following: true,
+        }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(setAuthenticatedCandidateFollow).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects invalid authenticated candidate follow payloads before calling the handler", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const setAuthenticatedCandidateFollow = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, setAuthenticatedCandidateFollow }),
+      {
+        method: "PUT",
+        path: "/api/me/candidate-follows",
+        body: JSON.stringify({ candidate_id: "not-a-uuid", following: true }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "candidate_id must be a valid UUID: not-a-uuid",
+      },
+    });
+    expect(setAuthenticatedCandidateFollow).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-JSON content types before parsing authenticated candidate follow bodies", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const setAuthenticatedCandidateFollow = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, setAuthenticatedCandidateFollow }),
+      {
+        method: "PUT",
+        path: "/api/me/candidate-follows",
+        body: JSON.stringify({
+          candidate_id: "22222222-2222-4222-8222-222222222222",
+          following: true,
+        }),
+        headers: { "content-type": "text/plain" },
+      }
+    );
+
+    expect(response.statusCode).toBe(415);
+    expect(response.body).toEqual({
+      error: {
+        code: "unsupported_media_type",
+        message: "Content-Type must be application/json",
+      },
+    });
+    expect(resolveAuthenticatedUserId).not.toHaveBeenCalled();
+    expect(setAuthenticatedCandidateFollow).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects unsupported authenticated candidate follow methods", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const listAuthenticatedCandidateFollows = vi.fn();
+    const setAuthenticatedCandidateFollow = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({
+        resolveAddress,
+        resolveAuthenticatedUserId,
+        listAuthenticatedCandidateFollows,
+        setAuthenticatedCandidateFollow,
+      }),
+      {
+        method: "POST",
+        path: "/api/me/candidate-follows",
+        body: JSON.stringify({}),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("GET, PUT");
+    expect(response.body).toEqual({
+      error: {
+        code: "method_not_allowed",
+        message: "Use GET or PUT /api/me/candidate-follows",
+      },
+    });
+    expect(resolveAuthenticatedUserId).not.toHaveBeenCalled();
+    expect(listAuthenticatedCandidateFollows).not.toHaveBeenCalled();
+    expect(setAuthenticatedCandidateFollow).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("maps authenticated candidate follow user errors to unauthorized", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const listAuthenticatedCandidateFollows = vi
+      .fn()
+      .mockRejectedValue(new UserCandidateFollowsError("user_not_found", "User not found"));
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedCandidateFollows }),
+      {
+        method: "GET",
+        path: "/api/me/candidate-follows",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedCandidateFollows).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("maps missing/deleted/merged candidate follow targets to not_found", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const setAuthenticatedCandidateFollow = vi
+      .fn()
+      .mockRejectedValue(new UserCandidateFollowsError("candidate_not_found", "Candidate not found"));
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, setAuthenticatedCandidateFollow }),
+      {
+        method: "PUT",
+        path: "/api/me/candidate-follows",
+        body: JSON.stringify({
+          candidate_id: "22222222-2222-4222-8222-222222222222",
+          following: true,
+        }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({
+      error: {
+        code: "not_found",
+        message: "Candidate not found",
+      },
+    });
+    expect(setAuthenticatedCandidateFollow).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {
+      candidateId: "22222222-2222-4222-8222-222222222222",
+      following: true,
+    });
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 

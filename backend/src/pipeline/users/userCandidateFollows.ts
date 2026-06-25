@@ -1,0 +1,285 @@
+import type { Pool, PoolClient } from "pg";
+
+import { isUuid } from "../../utils/uuid.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type TransactionalDb = Pick<Pool, "connect">;
+type TransactionClient = Pick<PoolClient, "query" | "release">;
+
+export type UserCandidateFollow = {
+  candidate_id: string;
+  display_name: string;
+  party: string;
+  state: string;
+  current_office: string | null;
+  notify_elections: boolean;
+  notify_updates: boolean;
+  created_at: string;
+};
+
+export type UserCandidateFollowsResult = {
+  follows: UserCandidateFollow[];
+};
+
+export type UserCandidateFollowInput = {
+  candidateId: string;
+  following: boolean;
+  notifyElections?: boolean;
+  notifyUpdates?: boolean;
+};
+
+export type UserCandidateFollowState = {
+  candidate_id: string;
+  following: boolean;
+  notify_elections: boolean;
+  notify_updates: boolean;
+  created_at: string | null;
+};
+
+export type UserCandidateFollowUpdateResult = {
+  follow: UserCandidateFollowState;
+};
+
+export type UserCandidateFollowsErrorCode =
+  | "invalid_user_id"
+  | "invalid_candidate_id"
+  | "invalid_follow_input"
+  | "user_not_found"
+  | "candidate_not_found";
+
+export class UserCandidateFollowsError extends Error {
+  constructor(
+    readonly code: UserCandidateFollowsErrorCode,
+    message: string
+  ) {
+    super(message);
+    this.name = "UserCandidateFollowsError";
+  }
+}
+
+type CandidateFollowRow = {
+  candidate_id: string | null;
+  display_name: string | null;
+  party: string | null;
+  state: string | null;
+  current_office: string | null;
+  notify_elections: boolean | null;
+  notify_updates: boolean | null;
+  created_at: string | Date | null;
+};
+
+type CandidateFollowStateRow = {
+  candidate_id: string;
+  notify_elections: boolean;
+  notify_updates: boolean;
+  created_at: string | Date;
+};
+
+function normalizeUserId(userId: string): string {
+  const normalized = userId.trim();
+  if (!isUuid(normalized)) {
+    throw new UserCandidateFollowsError("invalid_user_id", "User ID must be a valid UUID");
+  }
+  return normalized;
+}
+
+function normalizeCandidateId(candidateId: string): string {
+  const normalized = candidateId.trim();
+  if (!isUuid(normalized)) {
+    throw new UserCandidateFollowsError("invalid_candidate_id", "Candidate ID must be a valid UUID");
+  }
+  return normalized;
+}
+
+function normalizeFollowInput(input: UserCandidateFollowInput): Required<UserCandidateFollowInput> {
+  if (typeof input.following !== "boolean") {
+    throw new UserCandidateFollowsError("invalid_follow_input", "following must be a boolean");
+  }
+  if (input.notifyElections !== undefined && typeof input.notifyElections !== "boolean") {
+    throw new UserCandidateFollowsError("invalid_follow_input", "notifyElections must be a boolean");
+  }
+  if (input.notifyUpdates !== undefined && typeof input.notifyUpdates !== "boolean") {
+    throw new UserCandidateFollowsError("invalid_follow_input", "notifyUpdates must be a boolean");
+  }
+
+  return {
+    candidateId: normalizeCandidateId(input.candidateId),
+    following: input.following,
+    notifyElections: input.notifyElections ?? true,
+    notifyUpdates: input.notifyUpdates ?? true,
+  };
+}
+
+function formatTimestamp(value: string | Date): string {
+  return value instanceof Date ? value.toISOString() : value;
+}
+
+function rowToFollow(row: CandidateFollowRow): UserCandidateFollow | null {
+  if (!row.candidate_id || !row.display_name || !row.party || !row.state || !row.created_at) {
+    return null;
+  }
+  return {
+    candidate_id: row.candidate_id,
+    display_name: row.display_name,
+    party: row.party,
+    state: row.state,
+    current_office: row.current_office,
+    notify_elections: row.notify_elections ?? true,
+    notify_updates: row.notify_updates ?? true,
+    created_at: formatTimestamp(row.created_at),
+  };
+}
+
+async function rollbackQuietly(client: TransactionClient): Promise<void> {
+  try {
+    await client.query("ROLLBACK");
+  } catch {
+    // Preserve the original failure.
+  }
+}
+
+async function assertActiveUser(db: Queryable, normalizedUserId: string, lock: boolean): Promise<void> {
+  const user = await db.query<{ id: string }>(
+    `
+      SELECT id
+      FROM public.users
+      WHERE id = $1::uuid
+        AND deleted_at IS NULL
+      ${lock ? "FOR UPDATE" : ""}
+    `,
+    [normalizedUserId]
+  );
+  if (user.rows.length === 0) {
+    throw new UserCandidateFollowsError("user_not_found", "User not found");
+  }
+}
+
+async function assertFollowableCandidate(db: Queryable, normalizedCandidateId: string): Promise<void> {
+  const candidate = await db.query<{ id: string }>(
+    `
+      SELECT id
+      FROM public.candidates
+      WHERE id = $1::uuid
+        AND deleted_at IS NULL
+        AND merged_into_candidate_id IS NULL
+    `,
+    [normalizedCandidateId]
+  );
+  if (candidate.rows.length === 0) {
+    throw new UserCandidateFollowsError("candidate_not_found", "Candidate not found");
+  }
+}
+
+export async function listUserCandidateFollows(db: Queryable, userId: string): Promise<UserCandidateFollowsResult> {
+  const normalizedUserId = normalizeUserId(userId);
+  const result = await db.query<CandidateFollowRow>(
+    `
+      SELECT
+        follow.candidate_id::text AS candidate_id,
+        concat_ws(' ', candidate.first_name, candidate.last_name) AS display_name,
+        candidate.party,
+        candidate.state,
+        candidate.current_office,
+        follow.notify_elections,
+        follow.notify_updates,
+        follow.created_at
+      FROM public.users AS user_row
+      LEFT JOIN public.user_candidate_follows AS follow
+        ON follow.user_id = user_row.id
+      LEFT JOIN public.candidates AS candidate
+        ON candidate.id = follow.candidate_id
+       AND candidate.deleted_at IS NULL
+       AND candidate.merged_into_candidate_id IS NULL
+      WHERE user_row.id = $1::uuid
+        AND user_row.deleted_at IS NULL
+      ORDER BY follow.created_at ASC NULLS LAST, follow.id ASC NULLS LAST
+    `,
+    [normalizedUserId]
+  );
+  if (result.rows.length === 0) {
+    throw new UserCandidateFollowsError("user_not_found", "User not found");
+  }
+
+  return {
+    follows: result.rows.flatMap((row) => {
+      const follow = rowToFollow(row);
+      return follow ? [follow] : [];
+    }),
+  };
+}
+
+export async function setUserCandidateFollow(
+  db: TransactionalDb,
+  userId: string,
+  input: UserCandidateFollowInput
+): Promise<UserCandidateFollowUpdateResult> {
+  const normalizedUserId = normalizeUserId(userId);
+  const normalizedInput = normalizeFollowInput(input);
+  const client = await db.connect();
+
+  try {
+    await client.query("BEGIN");
+    await assertActiveUser(client, normalizedUserId, true);
+
+    if (!normalizedInput.following) {
+      await client.query(
+        `
+          DELETE FROM public.user_candidate_follows
+          WHERE user_id = $1::uuid
+            AND candidate_id = $2::uuid
+        `,
+        [normalizedUserId, normalizedInput.candidateId]
+      );
+      await client.query("COMMIT");
+      return {
+        follow: {
+          candidate_id: normalizedInput.candidateId,
+          following: false,
+          notify_elections: false,
+          notify_updates: false,
+          created_at: null,
+        },
+      };
+    }
+
+    await assertFollowableCandidate(client, normalizedInput.candidateId);
+
+    const saved = await client.query<CandidateFollowStateRow>(
+      `
+        INSERT INTO public.user_candidate_follows (
+          user_id,
+          candidate_id,
+          notify_elections,
+          notify_updates
+        )
+        VALUES ($1::uuid, $2::uuid, $3, $4)
+        ON CONFLICT (user_id, candidate_id)
+        DO UPDATE SET
+          notify_elections = EXCLUDED.notify_elections,
+          notify_updates = EXCLUDED.notify_updates
+        RETURNING candidate_id::text, notify_elections, notify_updates, created_at
+      `,
+      [normalizedUserId, normalizedInput.candidateId, normalizedInput.notifyElections, normalizedInput.notifyUpdates]
+    );
+    const row = saved.rows[0];
+    if (!row) {
+      throw new Error("candidate follow upsert returned no row");
+    }
+
+    await client.query("COMMIT");
+    return {
+      follow: {
+        candidate_id: row.candidate_id,
+        following: true,
+        notify_elections: row.notify_elections,
+        notify_updates: row.notify_updates,
+        created_at: formatTimestamp(row.created_at),
+      },
+    };
+  } catch (error) {
+    await rollbackQuietly(client);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
