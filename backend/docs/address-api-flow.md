@@ -261,6 +261,101 @@ Frontend behavior:
 4. To clear preferences, send `{ "preferences": [] }`.
 5. Do not let browsers set the trusted user header directly; authenticated preference routes use the same gateway boundary as `GET /api/me/ballot`.
 
+## Candidate Follows
+
+Candidate follows are signed-in user preferences. Anonymous users cannot follow candidates.
+
+Signed-in users can list followed candidates:
+
+```http
+GET /api/me/candidate-follows
+```
+
+Response:
+
+```json
+{
+  "follows": [
+    {
+      "candidate_id": "...",
+      "display_name": "Jane Smith",
+      "party": "Democratic",
+      "state": "CA",
+      "current_office": "Mayor",
+      "notify_elections": true,
+      "notify_updates": true,
+      "created_at": "2026-01-02T03:04:05.000Z"
+    }
+  ]
+}
+```
+
+Signed-in users can follow a candidate or update notification settings with one idempotent request:
+
+```http
+PUT /api/me/candidate-follows
+content-type: application/json
+
+{
+  "candidate_id": "...",
+  "following": true,
+  "notify_elections": true,
+  "notify_updates": true
+}
+```
+
+`notify_elections` and `notify_updates` are optional. On a new follow, omitted notification flags default to `true`. On an existing follow, omitted notification flags leave the previously saved values unchanged. Send explicit boolean values when the user changes notification settings.
+
+Response:
+
+```json
+{
+  "follow": {
+    "candidate_id": "...",
+    "following": true,
+    "notify_elections": true,
+    "notify_updates": true,
+    "created_at": "2026-01-02T03:04:05.000Z"
+  }
+}
+```
+
+To unfollow, send the same route with `following: false`:
+
+```http
+PUT /api/me/candidate-follows
+content-type: application/json
+
+{
+  "candidate_id": "...",
+  "following": false
+}
+```
+
+Unfollow is safe to retry. If the user was not following that candidate, the route still returns the unfollowed state:
+
+```json
+{
+  "follow": {
+    "candidate_id": "...",
+    "following": false,
+    "notify_elections": false,
+    "notify_updates": false,
+    "created_at": null
+  }
+}
+```
+
+Frontend behavior:
+
+1. On signed-in app open, call `GET /api/me/candidate-follows`.
+2. When rendering election detail, compare candidate IDs from the election-detail response against the followed candidate IDs from `GET /api/me/candidate-follows`.
+3. When a signed-in user clicks follow, call `PUT /api/me/candidate-follows` with `following: true`.
+4. When a signed-in user clicks unfollow, call `PUT /api/me/candidate-follows` with `following: false`.
+5. When notification toggles change, call the same `PUT` route with `following: true` and the desired `notify_elections` / `notify_updates` values.
+6. Do not expose follow controls as a working action for anonymous users; ask them to sign in first.
+7. Do not use `DELETE`. The `PUT` route intentionally handles follow, unfollow, and notification-setting changes.
+
 ## Security Boundary
 
 `API_TRUSTED_USER_ID_HEADER` is trusted only when a gateway authenticates the user, injects the header, and strips any client-supplied copy.

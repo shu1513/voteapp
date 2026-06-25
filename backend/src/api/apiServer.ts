@@ -10,10 +10,12 @@ import {
   MAX_ADDRESS_REQUEST_BODY_BYTES,
   ME_ADDRESS_PATH,
   ME_BALLOT_PATH,
+  ME_CANDIDATE_FOLLOWS_PATH,
   ME_DISTRICTS_INITIALIZE_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
   parseAuthenticatedAddressBodyValue,
   parseAddressBodyValue,
+  parseCandidateFollowBodyValue,
   parseDistrictIds,
   parseElectionId,
   parseInitializeUserDistrictsBodyValue,
@@ -40,6 +42,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === BALLOT_LOOKUP_PATH ||
     pathname === ME_ADDRESS_PATH ||
     pathname === ME_BALLOT_PATH ||
+    pathname === ME_CANDIDATE_FOLLOWS_PATH ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
     pathname === RESEARCH_AREAS_PATH ||
@@ -140,7 +143,9 @@ function createJsonBodyParser() {
       (request.method === "POST" &&
         (request.path === ADDRESS_RESOLVE_PATH || request.path === ME_DISTRICTS_INITIALIZE_PATH)) ||
       (request.method === "PUT" &&
-        (request.path === ME_ADDRESS_PATH || request.path === ME_RESEARCH_AREA_PREFERENCES_PATH));
+        (request.path === ME_ADDRESS_PATH ||
+          request.path === ME_CANDIDATE_FOLLOWS_PATH ||
+          request.path === ME_RESEARCH_AREA_PREFERENCES_PATH));
     if (!shouldParseJson) {
       next();
       return;
@@ -280,6 +285,56 @@ async function dispatchApiRequest(
 
     const payload = parseAuthenticatedAddressBodyValue(request.body);
     const result = await options.updateAuthenticatedAddressDistricts(userId, payload.address);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_CANDIDATE_FOLLOWS_PATH) {
+    if (request.method !== "GET" && request.method !== "PUT") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET or PUT /api/me/candidate-follows", {
+          ...corsHeaders,
+          allow: "GET, PUT",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    const userId = options.resolveAuthenticatedUserId({ headers: request.headers })?.trim();
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    if (request.method === "GET") {
+      if (!options.listAuthenticatedCandidateFollows) {
+        sendApiResponse(
+          response,
+          toErrorResponse(500, "internal_error", "Authenticated candidate follow lookup is not configured", corsHeaders)
+        );
+        return;
+      }
+
+      const result = await options.listAuthenticatedCandidateFollows(userId);
+      sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+      return;
+    }
+
+    if (!options.setAuthenticatedCandidateFollow) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Authenticated candidate follow storage is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const payload = parseCandidateFollowBodyValue(request.body);
+    const result = await options.setAuthenticatedCandidateFollow(userId, payload);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }

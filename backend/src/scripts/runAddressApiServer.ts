@@ -23,6 +23,7 @@ import {
   DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE,
 } from "../pipeline/address/censusAddressGeocoder.js";
 import { updateAuthenticatedAddressDistricts } from "../pipeline/users/userAddressDistrictUpdater.js";
+import { listUserCandidateFollows, setUserCandidateFollow } from "../pipeline/users/userCandidateFollows.js";
 import { initializeUserDistricts } from "../pipeline/users/userDistrictInitializer.js";
 import { listUserDistrictIds } from "../pipeline/users/userDistrictReader.js";
 import { replaceUserDistricts } from "../pipeline/users/userDistrictReplacer.js";
@@ -187,6 +188,8 @@ async function main(): Promise<void> {
     },
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
     listResearchAreas: () => listSelectableResearchAreas(pool),
+    listAuthenticatedCandidateFollows: (userId) => listUserCandidateFollows(pool, userId),
+    setAuthenticatedCandidateFollow: (userId, input) => setUserCandidateFollow(pool, userId, input),
     listAuthenticatedResearchAreaPreferences: (userId) => listUserResearchAreaPreferences(pool, userId),
     replaceAuthenticatedResearchAreaPreferences: (userId, preferences) =>
       replaceUserResearchAreaPreferences(pool, userId, preferences),
