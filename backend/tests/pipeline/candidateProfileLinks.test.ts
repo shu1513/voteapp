@@ -13,33 +13,45 @@ import {
 
 describe("upsertCandidateElection", () => {
   it("upserts a declared candidate election link", async () => {
-    const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [] });
+    const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [{ created: true }] });
 
-    await upsertCandidateElection({
+    await expect(upsertCandidateElection({
       client: { query } as never,
       candidateId: "candidate-1",
       electionId: "election-1",
       isIncumbent: true,
-    });
+    })).resolves.toEqual({ created: true });
 
     expect(query).toHaveBeenCalledTimes(1);
     expect(String(query.mock.calls[0]?.[0])).toContain("INSERT INTO public.candidate_elections");
     expect(String(query.mock.calls[0]?.[0])).toContain("status");
     expect(String(query.mock.calls[0]?.[0])).toContain("'declared'");
+    expect(String(query.mock.calls[0]?.[0])).toContain("RETURNING (xmax = 0) AS created");
     expect(query.mock.calls[0]?.[1]).toEqual(["candidate-1", "election-1", true]);
   });
 
   it("defaults unknown incumbent status to false", async () => {
-    const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [] });
+    const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [{ created: false }] });
 
-    await upsertCandidateElection({
+    await expect(upsertCandidateElection({
       client: { query } as never,
       candidateId: "candidate-1",
       electionId: "election-1",
       isIncumbent: undefined,
-    });
+    })).resolves.toEqual({ created: false });
 
     expect(query.mock.calls[0]?.[1]).toEqual(["candidate-1", "election-1", false]);
+  });
+
+  it("does not treat an upsert without a returning row as a new candidate-election link", async () => {
+    const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await expect(upsertCandidateElection({
+      client: { query } as never,
+      candidateId: "candidate-1",
+      electionId: "election-1",
+      isIncumbent: false,
+    })).resolves.toEqual({ created: false });
   });
 });
 
