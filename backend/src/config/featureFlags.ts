@@ -121,6 +121,24 @@ export function isNewMexicoCfisRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+export function isMarylandCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("MARYLAND_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isMarylandCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isMarylandCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MARYLAND_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isMarylandCfsRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isMarylandCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MARYLAND_CFS_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isOklahomaCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("OKLAHOMA_CAMPAIGN_FINANCE_ENABLED", false);
 }
