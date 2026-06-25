@@ -240,6 +240,7 @@ export async function listUserCandidateFollows(db: Queryable, userId: string): P
         JOIN public.elections AS election
           ON election.id = candidate_election.election_id
         WHERE candidate_election.candidate_id = candidate.id
+          AND candidate_election.status NOT IN ('withdrawn', 'lost')
           AND election.election_date >= CURRENT_DATE
         ORDER BY election.election_date ASC, election.official_ballot_title ASC, candidate_election.id ASC
         LIMIT 1

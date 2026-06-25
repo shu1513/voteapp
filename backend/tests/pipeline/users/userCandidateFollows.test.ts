@@ -198,6 +198,7 @@ describe("listUserCandidateFollows", () => {
     const sql = String(db.query.mock.calls[0]?.[0]);
     expect(sql).toContain("LEFT JOIN LATERAL");
     expect(sql).toContain("FROM public.candidate_records AS record");
+    expect(sql).toContain("candidate_election.status NOT IN ('withdrawn', 'lost')");
     expect(sql).toContain("election.election_date >= CURRENT_DATE");
   });
 
