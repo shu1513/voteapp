@@ -88,6 +88,11 @@ describe("listUserCandidateFollows", () => {
           party: "Democratic",
           state: "CA",
           current_office: "Mayor",
+          latest_record_description: null,
+          latest_record_event_date: null,
+          active_election_id: null,
+          active_election_title: null,
+          active_election_date: null,
           notify_elections: true,
           notify_updates: false,
           created_at: "2026-01-02T03:04:05.000Z",
@@ -98,6 +103,11 @@ describe("listUserCandidateFollows", () => {
           party: "Republican",
           state: "TX",
           current_office: null,
+          latest_record_description: null,
+          latest_record_event_date: null,
+          active_election_id: null,
+          active_election_title: null,
+          active_election_date: null,
           notify_elections: false,
           notify_updates: true,
           created_at: new Date("2026-02-03T04:05:06.000Z"),
@@ -113,6 +123,8 @@ describe("listUserCandidateFollows", () => {
           party: "Democratic",
           state: "CA",
           current_office: "Mayor",
+          latest_record: null,
+          active_election: null,
           notify_elections: true,
           notify_updates: false,
           created_at: "2026-01-02T03:04:05.000Z",
@@ -123,6 +135,8 @@ describe("listUserCandidateFollows", () => {
           party: "Republican",
           state: "TX",
           current_office: null,
+          latest_record: null,
+          active_election: null,
           notify_elections: false,
           notify_updates: true,
           created_at: "2026-02-03T04:05:06.000Z",
@@ -130,6 +144,61 @@ describe("listUserCandidateFollows", () => {
       ],
     });
     expect(String(db.query.mock.calls[0]?.[0])).toContain("ORDER BY follow.created_at ASC NULLS LAST");
+  });
+
+  it("includes lightweight latest-record and active-election previews", async () => {
+    const db = createMockQueryable();
+    const electionId = "44444444-4444-4444-8444-444444444444";
+    db.query.mockResolvedValueOnce({
+      rows: [
+        {
+          candidate_id: candidateIdA,
+          display_name: "Jane Smith",
+          party: "Democratic",
+          state: "CA",
+          current_office: "Mayor",
+          latest_record_description: "Sponsored a housing affordability bill.",
+          latest_record_event_date: "2026-01-15",
+          active_election_id: electionId,
+          active_election_title: "Mayor",
+          active_election_date: "2026-11-03",
+          notify_elections: true,
+          notify_updates: true,
+          created_at: "2026-01-02T03:04:05.000Z",
+        },
+      ],
+    });
+
+    const result = await listUserCandidateFollows(db, userId);
+
+    expect(result).toEqual({
+      follows: [
+        {
+          candidate_id: candidateIdA,
+          display_name: "Jane Smith",
+          party: "Democratic",
+          state: "CA",
+          current_office: "Mayor",
+          latest_record: {
+            description: "Sponsored a housing affordability bill.",
+            event_date: "2026-01-15",
+          },
+          active_election: {
+            election_id: electionId,
+            official_ballot_title: "Mayor",
+            election_date: "2026-11-03",
+          },
+          notify_elections: true,
+          notify_updates: true,
+          created_at: "2026-01-02T03:04:05.000Z",
+        },
+      ],
+    });
+    expect(result.follows[0]).not.toHaveProperty("records");
+    const sql = String(db.query.mock.calls[0]?.[0]);
+    expect(sql).toContain("LEFT JOIN LATERAL");
+    expect(sql).toContain("FROM public.candidate_records AS record");
+    expect(sql).toContain("election.election_date >= CURRENT_DATE");
   });
 
   it("skips stale follows whose candidate is deleted or merged", async () => {

@@ -1,15 +1,37 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  CANDIDATE_DETAIL_PATH_PREFIX,
   ME_CANDIDATE_FOLLOWS_PATH,
   MAX_USER_RESEARCH_AREA_PREFERENCES,
   ME_ADDRESS_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
   parseAuthenticatedAddressBodyValue,
   parseCandidateFollowBodyValue,
+  parseCandidateId,
   parseResearchAreaPreferencesBodyValue,
   RESEARCH_AREAS_PATH,
 } from "../../src/api/apiValidation.js";
+
+describe("candidate detail API contract constants", () => {
+  it("defines and parses the public candidate detail path", () => {
+    expect(CANDIDATE_DETAIL_PATH_PREFIX).toBe("/api/candidates/");
+    expect(parseCandidateId(new URL("http://localhost/api/candidates/22222222-2222-4222-8222-222222222222"))).toBe(
+      "22222222-2222-4222-8222-222222222222"
+    );
+  });
+
+  it.each([
+    ["http://localhost/api/candidates/", "Candidate detail path must be /api/candidates/:candidate_id"],
+    [
+      "http://localhost/api/candidates/22222222-2222-4222-8222-222222222222/extra",
+      "Candidate detail path must be /api/candidates/:candidate_id",
+    ],
+    ["http://localhost/api/candidates/not-a-uuid", "Candidate detail path contains invalid UUID: not-a-uuid"],
+  ])("rejects invalid candidate detail path %#", (url, message) => {
+    expect(() => parseCandidateId(new URL(url))).toThrow(message);
+  });
+});
 
 describe("authenticated address API contract constants", () => {
   it("defines the authenticated address replacement path", () => {

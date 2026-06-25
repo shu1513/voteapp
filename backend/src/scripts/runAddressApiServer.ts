@@ -15,6 +15,7 @@ import {
 } from "../api/addressApiRateLimiter.js";
 import { lookupBallotSummariesByDistrictIds, lookupElectionDetailById } from "../pipeline/address/ballotLookup.js";
 import { resolveAddressToDistricts } from "../pipeline/address/addressResolverService.js";
+import { lookupCandidateDetailById } from "../pipeline/candidates/candidateDetailReader.js";
 import { DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS } from "../pipeline/address/addressResolutionCache.js";
 import {
   DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK,
@@ -186,6 +187,7 @@ async function main(): Promise<void> {
       const districtIds = await listUserDistrictIds(pool, userId);
       return lookupBallotSummariesByDistrictIds(pool, districtIds);
     },
+    lookupCandidateDetail: (candidateId, userId) => lookupCandidateDetailById(pool, { candidateId, userId }),
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
     listResearchAreas: () => listSelectableResearchAreas(pool),
     listAuthenticatedCandidateFollows: (userId) => listUserCandidateFollows(pool, userId),

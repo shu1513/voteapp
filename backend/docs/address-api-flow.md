@@ -282,6 +282,15 @@ Response:
       "party": "Democratic",
       "state": "CA",
       "current_office": "Mayor",
+      "latest_record": {
+        "description": "Sponsored a housing affordability bill.",
+        "event_date": "2026-01-15"
+      },
+      "active_election": {
+        "election_id": "...",
+        "official_ballot_title": "Mayor",
+        "election_date": "2026-11-03"
+      },
       "notify_elections": true,
       "notify_updates": true,
       "created_at": "2026-01-02T03:04:05.000Z"
@@ -289,6 +298,8 @@ Response:
   ]
 }
 ```
+
+`latest_record` and `active_election` are lightweight previews for list rendering. They can be `null`, and this route intentionally does not return the candidate's full record list. Use `GET /api/candidates/:candidate_id` when the user clicks through to a candidate profile.
 
 Signed-in users can follow a candidate or update notification settings with one idempotent request:
 
@@ -349,12 +360,101 @@ Unfollow is safe to retry. If the user was not following that candidate, the rou
 Frontend behavior:
 
 1. On signed-in app open, call `GET /api/me/candidate-follows`.
-2. When rendering election detail, compare candidate IDs from the election-detail response against the followed candidate IDs from `GET /api/me/candidate-follows`.
-3. When a signed-in user clicks follow, call `PUT /api/me/candidate-follows` with `following: true`.
-4. When a signed-in user clicks unfollow, call `PUT /api/me/candidate-follows` with `following: false`.
-5. When notification toggles change, call the same `PUT` route with `following: true` and the desired `notify_elections` / `notify_updates` values.
-6. Do not expose follow controls as a working action for anonymous users; ask them to sign in first.
-7. Do not use `DELETE`. The `PUT` route intentionally handles follow, unfollow, and notification-setting changes.
+2. Use `latest_record` and `active_election` only as previews in the followed-candidates list.
+3. When the user clicks a followed candidate, load the full profile with `GET /api/candidates/:candidate_id`.
+4. When rendering election detail, compare candidate IDs from the election-detail response against the followed candidate IDs from `GET /api/me/candidate-follows`.
+5. When a signed-in user clicks follow, call `PUT /api/me/candidate-follows` with `following: true`.
+6. When a signed-in user clicks unfollow, call `PUT /api/me/candidate-follows` with `following: false`.
+7. When notification toggles change, call the same `PUT` route with `following: true` and the desired `notify_elections` / `notify_updates` values.
+8. Do not expose follow controls as a working action for anonymous users; ask them to sign in first.
+9. Do not use `DELETE`. The `PUT` route intentionally handles follow, unfollow, and notification-setting changes.
+
+## Candidate Profiles
+
+When a user clicks a candidate from an election detail page or from the followed-candidates list, load the candidate profile directly:
+
+```http
+GET /api/candidates/:candidate_id
+```
+
+This route can be called anonymously. If the authenticated gateway provides a trusted user ID, the response also includes that user's follow state for the candidate. Invalid candidate IDs return `400`; missing, deleted, or merged candidates return `404`.
+
+Response:
+
+```json
+{
+  "candidate": {
+    "candidate_id": "...",
+    "display_name": "Jane Smith",
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "party": "Democratic",
+    "state": "CA",
+    "current_office": "Mayor",
+    "summary": "Incumbent mayor.",
+    "fec_ids": ["H4CA00001"],
+    "state_filing_ids": ["CA-123"],
+    "records": [
+      {
+        "id": "...",
+        "description": "Sponsored a housing affordability bill.",
+        "source_url": "https://example.test/record",
+        "event_date": "2026-01-15",
+        "created_at": "2026-01-16T00:00:00.000Z",
+        "research_area_tags": [
+          {
+            "research_area_id": "...",
+            "slug": "housing_affordability",
+            "name": "Housing Affordability",
+            "stance": "for"
+          }
+        ]
+      }
+    ],
+    "elections": [
+      {
+        "candidate_election_id": "...",
+        "election_id": "...",
+        "district": {
+          "id": "...",
+          "name": "Example City",
+          "district_type": "place",
+          "state": "CA"
+        },
+        "race_type": "office",
+        "official_ballot_title": "Mayor",
+        "election_date": "2026-11-03",
+        "election_stage": "general",
+        "is_partisan": false,
+        "is_incumbent": true,
+        "status": "declared",
+        "office_scope": "place",
+        "office_canonical_name": "Mayor"
+      }
+    ],
+    "is_following": true,
+    "follow": {
+      "notify_elections": true,
+      "notify_updates": false,
+      "created_at": "2026-01-02T03:04:05.000Z"
+    }
+  }
+}
+```
+
+Candidate profile notes:
+
+1. `records` are full candidate record entries, ordered newest first, with research-area tags attached.
+2. `elections` are compact links to election detail pages. Upcoming/current elections are ordered first; past elections follow with most recent first.
+3. `elections` intentionally do not include `finance_summary`. Keep finance details on `GET /api/elections/:election_id`, where the ballot/election detail response already owns finance summary logic.
+4. `is_following` is `false` and `follow` is `null` for anonymous users and signed-in users who do not follow the candidate.
+
+Frontend behavior:
+
+1. From `GET /api/me/candidate-follows`, use the preview fields for the list card and call `GET /api/candidates/:candidate_id` on click.
+2. From election detail, call `GET /api/candidates/:candidate_id` when the user opens a candidate profile.
+3. Use each `elections[].election_id` to navigate back to election detail when needed.
+4. If a signed-in user changes follow state from this page, call `PUT /api/me/candidate-follows`, then either update local follow state or refetch the candidate profile.
 
 ## Security Boundary
 
