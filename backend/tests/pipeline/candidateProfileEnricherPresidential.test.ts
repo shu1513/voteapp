@@ -38,6 +38,7 @@ const enqueueManualWisconsinCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn
 const buildWisconsinCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualMassachusettsCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 const buildMassachusettsCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
+const createCandidateFutureElectionNotificationEventsMock = vi.hoisted(() => vi.fn());
 
 vi.mock("pg", () => ({
   Pool: vi.fn(() => ({
@@ -76,6 +77,10 @@ vi.mock("../../src/ai/enrichCandidateProfile.js", () => ({
 
 vi.mock("../../src/pipeline/candidates/candidateRecordDraftEmitter.js", () => ({
   enqueueCandidateRecordDrafts: enqueueCandidateRecordDraftsMock,
+}));
+
+vi.mock("../../src/pipeline/users/candidateFollowNotificationEvents.js", () => ({
+  createCandidateFutureElectionNotificationEvents: createCandidateFutureElectionNotificationEventsMock,
 }));
 
 vi.mock("../../src/scheduler/candidateFinanceSyncScheduler.js", () => ({
@@ -163,6 +168,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     redisSendCommandMock.mockResolvedValue([]);
     redisXAckMock.mockResolvedValue(1);
     redisXAddMock.mockResolvedValue("2-0");
+    createCandidateFutureElectionNotificationEventsMock.mockResolvedValue({ createdCount: 0 });
     enqueueCandidateLinkCandidateFinanceSyncJobMock.mockResolvedValue("finance-job-1");
     enqueueManualCaliforniaCandidateFinanceSyncJobMock.mockResolvedValue("california-finance-job-1");
     enqueueManualColoradoCandidateFinanceSyncJobMock.mockResolvedValue("colorado-finance-job-1");
@@ -731,10 +737,216 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(enqueueManualColoradoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(enqueueManualConnecticutCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(enqueueManualNewMexicoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(createCandidateFutureElectionNotificationEventsMock).not.toHaveBeenCalled();
     expect(redisXAckMock).toHaveBeenCalledWith(
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
       "1-1"
+    );
+  });
+
+  it("creates future-election notification events for newly linked election candidates", async () => {
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-10",
+            message: {
+              election_id: "election-1",
+              item_type: "candidate_profile",
+              candidate_display_name: "Jane Candidate",
+              roster_party: "Democratic",
+              roster_is_incumbent: "false",
+              seed_urls: JSON.stringify(["https://example.gov/candidate"]),
+              run_id: "run-election-new-link",
+            },
+          },
+        ],
+      },
+    ]);
+    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      const text = String(sql);
+      if (text.includes("FROM public.candidate_elections AS ce")) {
+        expect(params).toEqual(["election-1"]);
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("FROM public.elections AS e")) {
+        expect(params).toEqual(["election-1"]);
+        return {
+          rows: [
+            {
+              id: "election-1",
+              state: "CA",
+              district_name: "California",
+              district_type: "statewide",
+              election_date: "2028-11-07",
+              official_ballot_title: "Governor",
+              election_stage: "general",
+              senate_class: null,
+              term_end_year: null,
+              is_partisan: true,
+              sources: ["https://example.gov/election"],
+              office_scope: "statewide",
+              office_canonical_name: "Governor",
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected pool query: ${sql}`);
+    });
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      const text = String(sql);
+      if (text === "BEGIN" || text === "COMMIT" || text === "ROLLBACK") {
+        return { rows: [], rowCount: null };
+      }
+      if (text.includes("FROM public.candidates")) {
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("INSERT INTO public.candidates")) {
+        return { rows: [{ id: "candidate-1" }], rowCount: 1 };
+      }
+      if (text.includes("INSERT INTO public.candidate_elections")) {
+        return { rows: [{ created: true }], rowCount: 1 };
+      }
+      throw new Error(`Unexpected client query: ${text}`);
+    });
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        party: "Democratic",
+        fec_ids: [],
+        sources: ["https://example.gov/candidate"],
+      },
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(createCandidateFutureElectionNotificationEventsMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: clientQueryMock,
+      }),
+      {
+        candidateId: "candidate-1",
+        electionId: "election-1",
+      }
+    );
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-10"
+    );
+  });
+
+  it("rolls back candidate profile enrichment when future-election notification event creation fails", async () => {
+    createCandidateFutureElectionNotificationEventsMock.mockRejectedValueOnce(
+      new Error("notification insert failed")
+    );
+    process.env.PRESIDENTIAL_ELECTIONS_ENABLED = "false";
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-11",
+            message: {
+              election_id: "election-1",
+              item_type: "candidate_profile",
+              candidate_display_name: "Jane Candidate",
+              roster_party: "Democratic",
+              roster_is_incumbent: "false",
+              seed_urls: JSON.stringify(["https://example.gov/candidate"]),
+              run_id: "run-election-new-link-notification-failure",
+            },
+          },
+        ],
+      },
+    ]);
+    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      const text = String(sql);
+      if (text.includes("FROM public.candidate_elections AS ce")) {
+        expect(params).toEqual(["election-1"]);
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("FROM public.elections AS e")) {
+        expect(params).toEqual(["election-1"]);
+        return {
+          rows: [
+            {
+              id: "election-1",
+              state: "CA",
+              district_name: "California",
+              district_type: "statewide",
+              election_date: "2028-11-07",
+              official_ballot_title: "Governor",
+              election_stage: "general",
+              senate_class: null,
+              term_end_year: null,
+              is_partisan: true,
+              sources: ["https://example.gov/election"],
+              office_scope: "statewide",
+              office_canonical_name: "Governor",
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected pool query: ${sql}`);
+    });
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      const text = String(sql);
+      if (text === "BEGIN" || text === "COMMIT" || text === "ROLLBACK") {
+        return { rows: [], rowCount: null };
+      }
+      if (text.includes("FROM public.candidates")) {
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("INSERT INTO public.candidates")) {
+        return { rows: [{ id: "candidate-1" }], rowCount: 1 };
+      }
+      if (text.includes("INSERT INTO public.candidate_elections")) {
+        return { rows: [{ created: true }], rowCount: 1 };
+      }
+      throw new Error(`Unexpected client query: ${text}`);
+    });
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        party: "Democratic",
+        fec_ids: [],
+        sources: ["https://example.gov/candidate"],
+      },
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(createCandidateFutureElectionNotificationEventsMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: clientQueryMock,
+      }),
+      {
+        candidateId: "candidate-1",
+        electionId: "election-1",
+      }
+    );
+    expect(clientQueryMock).toHaveBeenCalledWith("ROLLBACK");
+    expect(clientQueryMock).not.toHaveBeenCalledWith("COMMIT");
+    expect(redisXAckMock).not.toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-11"
     );
   });
 

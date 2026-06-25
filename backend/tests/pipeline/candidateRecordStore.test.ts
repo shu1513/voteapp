@@ -89,6 +89,7 @@ describe("upsertCandidateRecords", () => {
     expect(result.updated).toBe(1);
     expect(result.processed).toBe(2);
     expect(result.recordIdsByIdentityKey.size).toBe(2);
+    expect(result.insertedRecordIds).toEqual(["record-1"]);
     expect(query).toHaveBeenCalledTimes(4);
     expect(query.mock.calls[1]?.[0]).toContain("ON CONFLICT (candidate_id, record_identity_key)");
   });
@@ -120,6 +121,7 @@ describe("upsertCandidateRecords", () => {
     expect(result.inserted).toBe(0);
     expect(result.updated).toBe(1);
     expect(result.recordIdsByIdentityKey.size).toBe(1);
+    expect(result.insertedRecordIds).toEqual([]);
     expect(query).toHaveBeenCalledTimes(2);
     expect(query.mock.calls[1]?.[0]).toContain("UPDATE public.candidate_records");
   });

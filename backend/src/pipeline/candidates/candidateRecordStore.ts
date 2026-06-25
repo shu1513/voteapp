@@ -9,11 +9,12 @@ export type CandidateRecordUpsertInput = {
   eventDate: string | Date;
 };
 
-type UpsertResult = {
+export type CandidateRecordUpsertResult = {
   inserted: number;
   updated: number;
   processed: number;
   recordIdsByIdentityKey: Map<string, string>;
+  insertedRecordIds: string[];
 };
 
 type ExistingRecordCandidate = {
@@ -171,10 +172,11 @@ async function findSimilarExistingRecord(
 export async function upsertCandidateRecords(
   client: Pick<PoolClient, "query">,
   records: readonly CandidateRecordUpsertInput[]
-): Promise<UpsertResult> {
+): Promise<CandidateRecordUpsertResult> {
   let inserted = 0;
   let updated = 0;
   const recordIdsByIdentityKey = new Map<string, string>();
+  const insertedRecordIds: string[] = [];
 
   for (const record of records) {
     const identityKey = buildCandidateRecordIdentityKey({
@@ -242,10 +244,13 @@ export async function upsertCandidateRecords(
     }
     if (row?.inserted) {
       inserted += 1;
+      if (row.id) {
+        insertedRecordIds.push(row.id);
+      }
     } else {
       updated += 1;
     }
   }
 
-  return { inserted, updated, processed: records.length, recordIdsByIdentityKey };
+  return { inserted, updated, processed: records.length, recordIdsByIdentityKey, insertedRecordIds };
 }

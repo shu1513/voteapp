@@ -4,6 +4,10 @@ type Queryable = Pick<PoolClient, "query">;
 
 export type PresidentialCycleCandidateStatus = "active" | "withdrawn";
 
+export type CandidateElectionUpsertResult = {
+  created: boolean;
+};
+
 function requireNonEmpty(value: string, fieldName: string): string {
   const trimmed = value.trim();
   if (trimmed.length === 0) {
@@ -31,8 +35,8 @@ export async function upsertCandidateElection(input: {
   candidateId: string;
   electionId: string;
   isIncumbent: boolean | undefined;
-}): Promise<void> {
-  await input.client.query(
+}): Promise<CandidateElectionUpsertResult> {
+  const result = await input.client.query<{ created: boolean }>(
     `
       INSERT INTO public.candidate_elections (
         candidate_id,
@@ -45,9 +49,12 @@ export async function upsertCandidateElection(input: {
       SET is_incumbent = EXCLUDED.is_incumbent,
           status = EXCLUDED.status,
           updated_at = now()
+      RETURNING (xmax = 0) AS created
     `,
     [input.candidateId, input.electionId, input.isIncumbent ?? false]
   );
+
+  return { created: Boolean(result.rows[0]?.created) };
 }
 
 export async function upsertPresidentialCycleCandidate(input: {

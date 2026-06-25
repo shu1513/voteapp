@@ -29,10 +29,12 @@ import {
 } from "../../config/electionsPipeline.js";
 import {
   buildCandidateRecordIdentityKey,
+  type CandidateRecordUpsertResult,
   deleteCandidateRecordsForReplacementRefresh,
   type CandidateRecordUpsertInput,
   upsertCandidateRecords,
 } from "../candidates/candidateRecordStore.js";
+import { createCandidateRecordUpdateNotificationEvents } from "../users/candidateFollowNotificationEvents.js";
 import {
   type AllowedResearchArea,
   type CandidateRecordAreaLabelInput,
@@ -156,6 +158,27 @@ async function rollbackQuietly(client: PoolClient): Promise<void> {
     await client.query("ROLLBACK");
   } catch (error) {
     console.error("candidate-record enricher cleanup warning (ROLLBACK):", toReason(error));
+  }
+}
+
+async function upsertCandidateRecordsWithNotificationEvents(input: {
+  pool: Pool;
+  records: readonly CandidateRecordUpsertInput[];
+}): Promise<CandidateRecordUpsertResult> {
+  const client = await input.pool.connect();
+  try {
+    await client.query("BEGIN");
+    const upsert = await upsertCandidateRecords(client, input.records);
+    for (const candidateRecordId of upsert.insertedRecordIds) {
+      await createCandidateRecordUpdateNotificationEvents(client, candidateRecordId);
+    }
+    await client.query("COMMIT");
+    return upsert;
+  } catch (error) {
+    await rollbackQuietly(client);
+    throw error;
+  } finally {
+    client.release();
   }
 }
 
@@ -521,10 +544,10 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               const persistedByIdentity = new Map<string, string>();
 
               if (discovered.records.length > 0 && contextType !== "presidential_cycle") {
-                const firstPassUpsert = await upsertCandidateRecords(
+                const firstPassUpsert = await upsertCandidateRecordsWithNotificationEvents({
                   pool,
-                  toCandidateRecordUpsertInput(claimedCandidateId, discovered.records)
-                );
+                  records: toCandidateRecordUpsertInput(claimedCandidateId, discovered.records),
+                });
                 insertedCount += firstPassUpsert.inserted;
                 dedupedCount += firstPassUpsert.updated;
                 for (const [key, id] of firstPassUpsert.recordIdsByIdentityKey) {
@@ -642,10 +665,10 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
 
                   if (repairedVerifiedRecords.length > 0) {
                     if (contextType !== "presidential_cycle") {
-                      const secondPassUpsert = await upsertCandidateRecords(
+                      const secondPassUpsert = await upsertCandidateRecordsWithNotificationEvents({
                         pool,
-                        toCandidateRecordUpsertInput(claimedCandidateId, repairedVerifiedRecords)
-                      );
+                        records: toCandidateRecordUpsertInput(claimedCandidateId, repairedVerifiedRecords),
+                      });
                       insertedCount += secondPassUpsert.inserted;
                       dedupedCount += secondPassUpsert.updated;
                       for (const [key, id] of secondPassUpsert.recordIdsByIdentityKey) {

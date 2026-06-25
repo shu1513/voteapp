@@ -84,6 +84,7 @@ import {
   upsertCandidateElection,
   upsertPresidentialCycleCandidate,
 } from "../candidates/candidateProfileLinks.js";
+import { createCandidateFutureElectionNotificationEvents } from "../users/candidateFollowNotificationEvents.js";
 import { getPresidentialGeneralElectionDate } from "../presidential/presidentialCycles.js";
 import {
   loadPresidentialCycleProfileContext,
@@ -1348,12 +1349,18 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
                 });
               }
             } else {
-              await upsertCandidateElection({
+              const linkResult = await upsertCandidateElection({
                 client,
                 candidateId,
                 electionId: draftContext.contextId,
                 isIncumbent: draftContext.rosterIncumbent,
               });
+              if (linkResult.created) {
+                await createCandidateFutureElectionNotificationEvents(client, {
+                  candidateId,
+                  electionId: draftContext.contextId,
+                });
+              }
             }
             await client.query("COMMIT");
           } catch (error) {
