@@ -12,6 +12,18 @@ export type AuthenticatedAddressDistrictUpdaterDependencies = {
   lookupBallotSummariesByDistrictIds: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
 };
 
+export type AuthenticatedAddressDistrictUpdateErrorCode = "no_supported_districts";
+
+export class AuthenticatedAddressDistrictUpdateError extends Error {
+  constructor(
+    readonly code: AuthenticatedAddressDistrictUpdateErrorCode,
+    message: string
+  ) {
+    super(message);
+    this.name = "AuthenticatedAddressDistrictUpdateError";
+  }
+}
+
 export async function updateAuthenticatedAddressDistricts(
   dependencies: AuthenticatedAddressDistrictUpdaterDependencies,
   userId: string,
@@ -20,7 +32,10 @@ export async function updateAuthenticatedAddressDistricts(
   const resolved = await dependencies.resolveAddressToDistricts(address);
   const districtIds = resolved.districts.map((district) => district.id);
   if (districtIds.length === 0) {
-    throw new TypeError("Resolved address did not match any supported districts");
+    throw new AuthenticatedAddressDistrictUpdateError(
+      "no_supported_districts",
+      "Resolved address did not match any supported districts"
+    );
   }
 
   await dependencies.replaceUserDistricts(userId, districtIds);

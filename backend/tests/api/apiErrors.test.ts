@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { mapErrorToResponse } from "../../src/api/apiErrors.js";
+import { AuthenticatedAddressDistrictUpdateError } from "../../src/pipeline/users/userAddressDistrictUpdater.js";
 import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
 import { ReplaceUserDistrictsError } from "../../src/pipeline/users/userDistrictReplacer.js";
 import { UserResearchAreaPreferencesError } from "../../src/pipeline/users/userResearchAreaPreferences.js";
@@ -55,7 +56,22 @@ describe("mapErrorToResponse", () => {
     expect(mapErrorToResponse(new ReplaceUserDistrictsError("unknown_district_ids", "Unknown district IDs: abc"))).toEqual({
       statusCode: 400,
       code: "invalid_request",
-      message: "Unknown district IDs: abc",
+      message: "Address could not be matched to saved districts",
+    });
+  });
+
+  it("maps authenticated address updates with no supported districts to address_not_found", () => {
+    expect(
+      mapErrorToResponse(
+        new AuthenticatedAddressDistrictUpdateError(
+          "no_supported_districts",
+          "Resolved address did not match any supported districts"
+        )
+      )
+    ).toEqual({
+      statusCode: 422,
+      code: "address_not_found",
+      message: "Resolved address did not match any supported districts",
     });
   });
 });

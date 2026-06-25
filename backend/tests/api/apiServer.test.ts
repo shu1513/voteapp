@@ -1169,7 +1169,7 @@ describe("createApiApp", () => {
     expect(response.body).toEqual({
       error: {
         code: "invalid_request",
-        message: `Unknown district IDs: ${districtId}`,
+        message: "Address could not be matched to saved districts",
       },
     });
     expect(updateAuthenticatedAddressDistricts).toHaveBeenCalledWith(

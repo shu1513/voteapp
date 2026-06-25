@@ -172,6 +172,7 @@ Safety behavior:
 2. The backend validates the replacement district IDs before deleting old rows.
 3. If address resolution returns no supported districts, the request fails and existing saved districts are not changed.
 4. This route is a whole-address replacement, not a patch or merge.
+5. The saved-district replacement is committed before the convenience ballot summary is loaded. If the summary lookup fails after replacement, retrying this `PUT` is safe, and `GET /api/me/ballot` will reflect the newly saved districts.
 
 Frontend behavior:
 

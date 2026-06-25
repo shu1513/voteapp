@@ -153,6 +153,16 @@ async function main(): Promise<void> {
     DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS
   );
   const redis = addressCacheEnabled ? createClient({ url: readEnv("REDIS_URL", "redis://localhost:6379") }) : null;
+  const buildAddressResolverOptions = () => ({
+    cache: redis?.isOpen ? redis : undefined,
+    cacheTtlSeconds: addressCacheTtlSeconds,
+    geocoderOptions: {
+      benchmark: readEnv("CENSUS_ADDRESS_GEOCODER_BENCHMARK", DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK),
+      vintage: readEnv("CENSUS_ADDRESS_GEOCODER_VINTAGE", DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE),
+      layers: readEnv("CENSUS_ADDRESS_GEOCODER_LAYERS", DEFAULT_CENSUS_ADDRESS_GEOCODER_LAYERS),
+      timeoutMs: readPositiveIntegerEnv("CENSUS_ADDRESS_GEOCODER_TIMEOUT_MS", DEFAULT_CENSUS_ADDRESS_GEOCODER_TIMEOUT_MS),
+    },
+  });
   if (redis) {
     redis.on("error", (error) => {
       console.warn("address lookup cache Redis error; continuing without failing requests", error);
@@ -184,19 +194,7 @@ async function main(): Promise<void> {
       updateAuthenticatedAddressDistricts(
         {
           resolveAddressToDistricts: (inputAddress) =>
-            resolveAddressToDistricts(pool, inputAddress, {
-              cache: redis?.isOpen ? redis : undefined,
-              cacheTtlSeconds: addressCacheTtlSeconds,
-              geocoderOptions: {
-                benchmark: readEnv("CENSUS_ADDRESS_GEOCODER_BENCHMARK", DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK),
-                vintage: readEnv("CENSUS_ADDRESS_GEOCODER_VINTAGE", DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE),
-                layers: readEnv("CENSUS_ADDRESS_GEOCODER_LAYERS", DEFAULT_CENSUS_ADDRESS_GEOCODER_LAYERS),
-                timeoutMs: readPositiveIntegerEnv(
-                  "CENSUS_ADDRESS_GEOCODER_TIMEOUT_MS",
-                  DEFAULT_CENSUS_ADDRESS_GEOCODER_TIMEOUT_MS
-                ),
-              },
-            }),
+            resolveAddressToDistricts(pool, inputAddress, buildAddressResolverOptions()),
           replaceUserDistricts: (inputUserId, districtIds) => replaceUserDistricts(pool, inputUserId, districtIds),
           lookupBallotSummariesByDistrictIds: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
         },
@@ -205,19 +203,7 @@ async function main(): Promise<void> {
       ),
     initializeUserDistricts: ({ userId, districtIds }) => initializeUserDistricts(pool, userId, districtIds),
     resolveAddress: (address) =>
-      resolveAddressToDistricts(pool, address, {
-        cache: redis?.isOpen ? redis : undefined,
-        cacheTtlSeconds: addressCacheTtlSeconds,
-        geocoderOptions: {
-          benchmark: readEnv("CENSUS_ADDRESS_GEOCODER_BENCHMARK", DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK),
-          vintage: readEnv("CENSUS_ADDRESS_GEOCODER_VINTAGE", DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE),
-          layers: readEnv("CENSUS_ADDRESS_GEOCODER_LAYERS", DEFAULT_CENSUS_ADDRESS_GEOCODER_LAYERS),
-          timeoutMs: readPositiveIntegerEnv(
-            "CENSUS_ADDRESS_GEOCODER_TIMEOUT_MS",
-            DEFAULT_CENSUS_ADDRESS_GEOCODER_TIMEOUT_MS
-          ),
-        },
-      }),
+      resolveAddressToDistricts(pool, address, buildAddressResolverOptions()),
   });
 
   let server: Server | null = null;

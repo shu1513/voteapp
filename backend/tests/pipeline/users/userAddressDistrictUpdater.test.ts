@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { updateAuthenticatedAddressDistricts } from "../../../src/pipeline/users/userAddressDistrictUpdater.js";
+import {
+  AuthenticatedAddressDistrictUpdateError,
+  updateAuthenticatedAddressDistricts,
+} from "../../../src/pipeline/users/userAddressDistrictUpdater.js";
 import type { AddressResolutionResult } from "../../../src/pipeline/address/addressResolverService.js";
 
 const userId = "11111111-1111-4111-8111-111111111111";
@@ -65,7 +68,12 @@ describe("updateAuthenticatedAddressDistricts", () => {
         userId,
         "123 Main St Denver CO 80203"
       )
-    ).rejects.toThrow("Resolved address did not match any supported districts");
+    ).rejects.toSatisfy((error) => {
+      expect(error).toBeInstanceOf(AuthenticatedAddressDistrictUpdateError);
+      expect((error as AuthenticatedAddressDistrictUpdateError).code).toBe("no_supported_districts");
+      expect((error as Error).message).toBe("Resolved address did not match any supported districts");
+      return true;
+    });
 
     expect(replaceUserDistricts).not.toHaveBeenCalled();
     expect(lookupBallotSummariesByDistrictIds).not.toHaveBeenCalled();
