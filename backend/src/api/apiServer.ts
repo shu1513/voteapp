@@ -8,9 +8,11 @@ import {
   ELECTION_DETAIL_PATH_PREFIX,
   isElectionDetailPath,
   MAX_ADDRESS_REQUEST_BODY_BYTES,
+  ME_ADDRESS_PATH,
   ME_BALLOT_PATH,
   ME_DISTRICTS_INITIALIZE_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
+  parseAuthenticatedAddressBodyValue,
   parseAddressBodyValue,
   parseDistrictIds,
   parseElectionId,
@@ -36,6 +38,7 @@ function isKnownApiPath(pathname: string): boolean {
   return (
     pathname === ADDRESS_RESOLVE_PATH ||
     pathname === BALLOT_LOOKUP_PATH ||
+    pathname === ME_ADDRESS_PATH ||
     pathname === ME_BALLOT_PATH ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
@@ -136,7 +139,8 @@ function createJsonBodyParser() {
     const shouldParseJson =
       (request.method === "POST" &&
         (request.path === ADDRESS_RESOLVE_PATH || request.path === ME_DISTRICTS_INITIALIZE_PATH)) ||
-      (request.method === "PUT" && request.path === ME_RESEARCH_AREA_PREFERENCES_PATH);
+      (request.method === "PUT" &&
+        (request.path === ME_ADDRESS_PATH || request.path === ME_RESEARCH_AREA_PREFERENCES_PATH));
     if (!shouldParseJson) {
       next();
       return;
@@ -241,6 +245,41 @@ async function dispatchApiRequest(
     }
 
     const result = await options.lookupAuthenticatedBallotSummaries(userId);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_ADDRESS_PATH) {
+    if (request.method !== "PUT") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use PUT /api/me/address", {
+          ...corsHeaders,
+          allow: "PUT",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+    if (!options.updateAuthenticatedAddressDistricts) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Authenticated address update is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const userId = options.resolveAuthenticatedUserId({ headers: request.headers })?.trim();
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    const payload = parseAuthenticatedAddressBodyValue(request.body);
+    const result = await options.updateAuthenticatedAddressDistricts(userId, payload.address);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }

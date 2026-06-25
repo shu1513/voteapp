@@ -1,5 +1,6 @@
 import type { BallotLookupElection, BallotSummaryResult } from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
+import type { AuthenticatedAddressDistrictUpdateResult } from "../pipeline/users/userAddressDistrictUpdater.js";
 import type { InitializeUserDistrictsResult } from "../pipeline/users/userDistrictInitializer.js";
 import type {
   ResearchAreaCatalogResult,
@@ -10,6 +11,8 @@ import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 import type { AddressResolutionDiagnostics } from "./addressApiResponses.js";
 
 export type { ResearchAreaCatalogItem, ResearchAreaCatalogResult } from "../pipeline/users/userResearchAreaPreferences.js";
+
+export type AuthenticatedAddressUpdateResult = AuthenticatedAddressDistrictUpdateResult;
 
 export type AuthenticatedResearchAreaPreferencesResult = UserResearchAreaPreferencesResult;
 
@@ -35,6 +38,7 @@ export type AddressApiServerOptions = {
     userId: string,
     preferences: readonly UserResearchAreaPreferenceInput[]
   ) => Promise<AuthenticatedResearchAreaPreferencesResult>;
+  updateAuthenticatedAddressDistricts?: (userId: string, address: string) => Promise<AuthenticatedAddressUpdateResult>;
   initializeUserDistricts?: (
     input: {
       userId: string;

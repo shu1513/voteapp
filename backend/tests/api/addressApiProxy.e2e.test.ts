@@ -197,6 +197,7 @@ describeE2e("address API auth proxy E2E", () => {
   const resolveAddress = vi.fn();
   const initializeUserDistricts = vi.fn();
   const lookupAuthenticatedBallotSummaries = vi.fn();
+  const updateAuthenticatedAddressDistricts = vi.fn();
   const listResearchAreas = vi.fn();
   const listAuthenticatedResearchAreaPreferences = vi.fn();
   const replaceAuthenticatedResearchAreaPreferences = vi.fn();
@@ -210,6 +211,7 @@ describeE2e("address API auth proxy E2E", () => {
       resolveAuthenticatedUserId: createTrustedUserIdResolver("X-User-Id"),
       initializeUserDistricts,
       lookupAuthenticatedBallotSummaries,
+      updateAuthenticatedAddressDistricts,
       listResearchAreas,
       listAuthenticatedResearchAreaPreferences,
       replaceAuthenticatedResearchAreaPreferences,
@@ -227,6 +229,13 @@ describeE2e("address API auth proxy E2E", () => {
     initializeUserDistricts.mockResolvedValue({ status: "initialized", districtCount: 1 });
     lookupAuthenticatedBallotSummaries.mockReset();
     lookupAuthenticatedBallotSummaries.mockResolvedValue({
+      district_ids: [districtId],
+      districts: resolvedAddress.districts,
+      elections: [],
+    });
+    updateAuthenticatedAddressDistricts.mockReset();
+    updateAuthenticatedAddressDistricts.mockResolvedValue({
+      matched_address: resolvedAddress.matched_address,
       district_ids: [districtId],
       districts: resolvedAddress.districts,
       elections: [],
@@ -326,6 +335,32 @@ describeE2e("address API auth proxy E2E", () => {
     });
     expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith(authenticatedUserId);
     expect(lookupAuthenticatedBallotSummaries).not.toHaveBeenCalledWith(spoofedUserId);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("strips client-supplied user IDs and updates the logged-in user's saved address districts", async () => {
+    const response = await putJson(
+      proxyBaseUrl,
+      "/api/me/address",
+      { address: "3921 Harlan Ave Baldwin Park CA 91706" },
+      {
+        "x-test-session": "signed-in",
+        "x-user-id": spoofedUserId,
+      }
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      matched_address: resolvedAddress.matched_address,
+      district_ids: [districtId],
+      districts: resolvedAddress.districts,
+      elections: [],
+    });
+    expect(updateAuthenticatedAddressDistricts).toHaveBeenCalledWith(
+      authenticatedUserId,
+      "3921 Harlan Ave Baldwin Park CA 91706"
+    );
+    expect(updateAuthenticatedAddressDistricts).not.toHaveBeenCalledWith(spoofedUserId, expect.anything());
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
@@ -436,6 +471,24 @@ describeE2e("address API auth proxy E2E", () => {
       },
     });
     expect(replaceAuthenticatedResearchAreaPreferences).not.toHaveBeenCalled();
+  });
+
+  it("fails closed when updating address districts and the proxy does not inject an authenticated user ID", async () => {
+    const response = await putJson(
+      proxyBaseUrl,
+      "/api/me/address",
+      { address: "3921 Harlan Ave Baldwin Park CA 91706" },
+      { "x-user-id": spoofedUserId }
+    );
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(updateAuthenticatedAddressDistricts).not.toHaveBeenCalled();
   });
 
   it("fails closed when the proxy does not inject an authenticated user ID", async () => {

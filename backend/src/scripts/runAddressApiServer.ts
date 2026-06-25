@@ -22,8 +22,10 @@ import {
   DEFAULT_CENSUS_ADDRESS_GEOCODER_TIMEOUT_MS,
   DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE,
 } from "../pipeline/address/censusAddressGeocoder.js";
+import { updateAuthenticatedAddressDistricts } from "../pipeline/users/userAddressDistrictUpdater.js";
 import { initializeUserDistricts } from "../pipeline/users/userDistrictInitializer.js";
 import { listUserDistrictIds } from "../pipeline/users/userDistrictReader.js";
+import { replaceUserDistricts } from "../pipeline/users/userDistrictReplacer.js";
 import {
   listSelectableResearchAreas,
   listUserResearchAreaPreferences,
@@ -178,6 +180,29 @@ async function main(): Promise<void> {
     listAuthenticatedResearchAreaPreferences: (userId) => listUserResearchAreaPreferences(pool, userId),
     replaceAuthenticatedResearchAreaPreferences: (userId, preferences) =>
       replaceUserResearchAreaPreferences(pool, userId, preferences),
+    updateAuthenticatedAddressDistricts: (userId, address) =>
+      updateAuthenticatedAddressDistricts(
+        {
+          resolveAddressToDistricts: (inputAddress) =>
+            resolveAddressToDistricts(pool, inputAddress, {
+              cache: redis?.isOpen ? redis : undefined,
+              cacheTtlSeconds: addressCacheTtlSeconds,
+              geocoderOptions: {
+                benchmark: readEnv("CENSUS_ADDRESS_GEOCODER_BENCHMARK", DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK),
+                vintage: readEnv("CENSUS_ADDRESS_GEOCODER_VINTAGE", DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE),
+                layers: readEnv("CENSUS_ADDRESS_GEOCODER_LAYERS", DEFAULT_CENSUS_ADDRESS_GEOCODER_LAYERS),
+                timeoutMs: readPositiveIntegerEnv(
+                  "CENSUS_ADDRESS_GEOCODER_TIMEOUT_MS",
+                  DEFAULT_CENSUS_ADDRESS_GEOCODER_TIMEOUT_MS
+                ),
+              },
+            }),
+          replaceUserDistricts: (inputUserId, districtIds) => replaceUserDistricts(pool, inputUserId, districtIds),
+          lookupBallotSummariesByDistrictIds: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
+        },
+        userId,
+        address
+      ),
     initializeUserDistricts: ({ userId, districtIds }) => initializeUserDistricts(pool, userId, districtIds),
     resolveAddress: (address) =>
       resolveAddressToDistricts(pool, address, {

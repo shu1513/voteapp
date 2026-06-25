@@ -1,6 +1,6 @@
 # Address API Flow
 
-This API supports an anonymous address lookup first, an initialize-only saved-district write after signup, and a saved ballot lookup for returning signed-in users.
+This API supports an anonymous address lookup first, an initialize-only saved-district write after signup, a saved ballot lookup for returning signed-in users, and an explicit address-change flow for existing users.
 
 ## Anonymous Address Lookup
 
@@ -129,6 +129,57 @@ Frontend behavior:
 3. Anonymous user: keep using `POST /api/address/resolve`, then `GET /api/ballot?district_ids=...`.
 4. When a user clicks an election from either flow, keep using the election-detail endpoint.
 
+## Existing User Address Change
+
+When a registered user changes address, call:
+
+```http
+PUT /api/me/address
+content-type: application/json
+
+{
+  "address": "123 Main St Denver CO 80203"
+}
+```
+
+This route requires the same authenticated gateway boundary as `GET /api/me/ballot`. The backend resolves the submitted address, replaces the user's saved `public.user_districts` with the newly resolved district IDs, and returns the updated ballot summary.
+
+Response:
+
+```json
+{
+  "matched_address": "123 MAIN ST, DENVER, CO, 80203",
+  "district_ids": ["..."],
+  "districts": [
+    {
+      "id": "...",
+      "district_type": "county",
+      "geoid_compact": "08031",
+      "name": "Denver County",
+      "state": "CO",
+      "state_fips": "08",
+      "population": 715522,
+      "representation_power_score": 50.4
+    }
+  ],
+  "elections": []
+}
+```
+
+Safety behavior:
+
+1. The route validates the authenticated user and locks that user before replacing saved districts.
+2. The backend validates the replacement district IDs before deleting old rows.
+3. If address resolution returns no supported districts, the request fails and existing saved districts are not changed.
+4. This route is a whole-address replacement, not a patch or merge.
+
+Frontend behavior:
+
+1. Existing user changes address: call `PUT /api/me/address`.
+2. After success, use the returned `districts` and `elections` immediately.
+3. On future app opens, keep using `GET /api/me/ballot`; it will now be backed by the new saved districts.
+4. Do not call `POST /api/me/districts/initialize` for address changes. That endpoint remains signup-only and returns `already_initialized` when saved districts already exist.
+
 ## Research Area Preferences
 
 Research areas are optional user preferences. A user can select zero to seven user-selectable research areas. Ranks are optional; unranked selections are allowed.
@@ -225,7 +276,7 @@ USER_DISTRICTS_INTEGRATION_DATABASE_URL=postgresql://localhost:5432/voteapp_user
 npm run test -- tests/pipeline/users/userDistrictInitializer.integration.test.ts
 ```
 
-The authenticated proxy boundary is covered by an opt-in real HTTP E2E test. It starts a local API server plus a mock auth proxy, verifies the proxy strips client-supplied user IDs, and verifies only the proxy-injected user ID reaches authenticated routes including `POST /api/me/districts/initialize`, `GET /api/me/ballot`, and `GET`/`PUT /api/me/research-area-preferences`:
+The authenticated proxy boundary is covered by an opt-in real HTTP E2E test. It starts a local API server plus a mock auth proxy, verifies the proxy strips client-supplied user IDs, and verifies only the proxy-injected user ID reaches authenticated routes including `POST /api/me/districts/initialize`, `GET /api/me/ballot`, `PUT /api/me/address`, and `GET`/`PUT /api/me/research-area-preferences`:
 
 ```bash
 npm run test:e2e:proxy
