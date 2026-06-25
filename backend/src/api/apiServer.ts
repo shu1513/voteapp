@@ -10,10 +10,13 @@ import {
   MAX_ADDRESS_REQUEST_BODY_BYTES,
   ME_BALLOT_PATH,
   ME_DISTRICTS_INITIALIZE_PATH,
+  ME_RESEARCH_AREA_PREFERENCES_PATH,
   parseAddressBodyValue,
   parseDistrictIds,
   parseElectionId,
   parseInitializeUserDistrictsBodyValue,
+  parseResearchAreaPreferencesBodyValue,
+  RESEARCH_AREAS_PATH,
 } from "./apiValidation.js";
 import { toAddressResolutionDiagnostics, toPublicAddressResolution } from "./addressApiResponses.js";
 import { toEmptyResponse, toErrorResponse, toJsonResponse, type ApiResponse } from "./apiResponses.js";
@@ -35,6 +38,8 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === BALLOT_LOOKUP_PATH ||
     pathname === ME_BALLOT_PATH ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
+    pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
+    pathname === RESEARCH_AREAS_PATH ||
     isElectionDetailPath(pathname)
   );
 }
@@ -128,10 +133,11 @@ function createJsonBodyParser() {
   }
 
   return (request: Request, response: Response, next: NextFunction): void => {
-    if (
-      request.method !== "POST" ||
-      (request.path !== ADDRESS_RESOLVE_PATH && request.path !== ME_DISTRICTS_INITIALIZE_PATH)
-    ) {
+    const shouldParseJson =
+      (request.method === "POST" &&
+        (request.path === ADDRESS_RESOLVE_PATH || request.path === ME_DISTRICTS_INITIALIZE_PATH)) ||
+      (request.method === "PUT" && request.path === ME_RESEARCH_AREA_PREFERENCES_PATH);
+    if (!shouldParseJson) {
       next();
       return;
     }
@@ -158,6 +164,30 @@ async function dispatchApiRequest(
 ): Promise<void> {
   const url = new URL(request.url, "http://localhost");
   const corsHeaders = getCorsHeaders(response);
+
+  if (url.pathname === RESEARCH_AREAS_PATH) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /api/research-areas", {
+          ...corsHeaders,
+          allow: "GET",
+        })
+      );
+      return;
+    }
+    if (!options.listResearchAreas) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Research area catalog lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const result = await options.listResearchAreas();
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
 
   if (url.pathname === BALLOT_LOOKUP_PATH) {
     if (request.method !== "GET") {
@@ -211,6 +241,66 @@ async function dispatchApiRequest(
     }
 
     const result = await options.lookupAuthenticatedBallotSummaries(userId);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_RESEARCH_AREA_PREFERENCES_PATH) {
+    if (request.method !== "GET" && request.method !== "PUT") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET or PUT /api/me/research-area-preferences", {
+          ...corsHeaders,
+          allow: "GET, PUT",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    const userId = options.resolveAuthenticatedUserId({ headers: request.headers })?.trim();
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    if (request.method === "GET") {
+      if (!options.listAuthenticatedResearchAreaPreferences) {
+        sendApiResponse(
+          response,
+          toErrorResponse(
+            500,
+            "internal_error",
+            "Authenticated research area preferences lookup is not configured",
+            corsHeaders
+          )
+        );
+        return;
+      }
+
+      const result = await options.listAuthenticatedResearchAreaPreferences(userId);
+      sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+      return;
+    }
+
+    if (!options.replaceAuthenticatedResearchAreaPreferences) {
+      sendApiResponse(
+        response,
+        toErrorResponse(
+          500,
+          "internal_error",
+          "Authenticated research area preference storage is not configured",
+          corsHeaders
+        )
+      );
+      return;
+    }
+
+    const payload = parseResearchAreaPreferencesBodyValue(request.body);
+    const result = await options.replaceAuthenticatedResearchAreaPreferences(userId, payload.preferences);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }

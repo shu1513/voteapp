@@ -24,6 +24,11 @@ import {
 } from "../pipeline/address/censusAddressGeocoder.js";
 import { initializeUserDistricts } from "../pipeline/users/userDistrictInitializer.js";
 import { listUserDistrictIds } from "../pipeline/users/userDistrictReader.js";
+import {
+  listSelectableResearchAreas,
+  listUserResearchAreaPreferences,
+  replaceUserResearchAreaPreferences,
+} from "../pipeline/users/userResearchAreaPreferences.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -169,6 +174,10 @@ async function main(): Promise<void> {
       return lookupBallotSummariesByDistrictIds(pool, districtIds);
     },
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
+    listResearchAreas: () => listSelectableResearchAreas(pool),
+    listAuthenticatedResearchAreaPreferences: (userId) => listUserResearchAreaPreferences(pool, userId),
+    replaceAuthenticatedResearchAreaPreferences: (userId, preferences) =>
+      replaceUserResearchAreaPreferences(pool, userId, preferences),
     initializeUserDistricts: ({ userId, districtIds }) => initializeUserDistricts(pool, userId, districtIds),
     resolveAddress: (address) =>
       resolveAddressToDistricts(pool, address, {

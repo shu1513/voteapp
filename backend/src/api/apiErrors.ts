@@ -1,6 +1,7 @@
 import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeocoder.js";
 import { InitializeUserDistrictsError } from "../pipeline/users/userDistrictInitializer.js";
 import { UserDistrictReaderError } from "../pipeline/users/userDistrictReader.js";
+import { UserResearchAreaPreferencesError } from "../pipeline/users/userResearchAreaPreferences.js";
 import type { ApiErrorCode } from "./apiResponses.js";
 
 export type MappedApiError = {
@@ -38,6 +39,12 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
   }
   if (error instanceof UserDistrictReaderError) {
     return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
+  }
+  if (error instanceof UserResearchAreaPreferencesError) {
+    if (error.code === "invalid_user_id" || error.code === "user_not_found") {
+      return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
+    }
+    return { statusCode: 400, code: "invalid_request", message: error.message };
   }
   if (error instanceof Error && error.message.startsWith("request body exceeds")) {
     return { statusCode: 413, code: "invalid_request", message: error.message };
