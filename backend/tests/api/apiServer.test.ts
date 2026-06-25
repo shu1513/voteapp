@@ -802,6 +802,174 @@ describe("createApiApp", () => {
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
+  it("serves public candidate detail anonymously", async () => {
+    const resolveAddress = vi.fn();
+    const lookupCandidateDetail = vi.fn().mockResolvedValue({
+      candidate: {
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        display_name: "Jane Smith",
+        first_name: "Jane",
+        last_name: "Smith",
+        party: "Democratic",
+        state: "CA",
+        current_office: "Mayor",
+        summary: "Incumbent mayor.",
+        fec_ids: [],
+        state_filing_ids: [],
+        records: [],
+        elections: [],
+        is_following: false,
+        follow: null,
+      },
+    });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupCandidateDetail }), {
+      method: "GET",
+      path: "/api/candidates/22222222-2222-4222-8222-222222222222",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toMatchObject({
+      candidate: {
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        display_name: "Jane Smith",
+        is_following: false,
+      },
+    });
+    expect(lookupCandidateDetail).toHaveBeenCalledWith("22222222-2222-4222-8222-222222222222", null);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("passes the trusted user ID to candidate detail when authentication is present", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupCandidateDetail = vi.fn().mockResolvedValue({
+      candidate: {
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        display_name: "Jane Smith",
+        first_name: "Jane",
+        last_name: "Smith",
+        party: "Democratic",
+        state: "CA",
+        current_office: "Mayor",
+        summary: null,
+        fec_ids: [],
+        state_filing_ids: [],
+        records: [],
+        elections: [],
+        is_following: true,
+        follow: {
+          notify_elections: true,
+          notify_updates: false,
+          created_at: "2026-01-02T03:04:05.000Z",
+        },
+      },
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, lookupCandidateDetail }),
+      {
+        method: "GET",
+        path: "/api/candidates/22222222-2222-4222-8222-222222222222",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toMatchObject({
+      candidate: {
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        is_following: true,
+      },
+    });
+    expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
+      headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
+    });
+    expect(lookupCandidateDetail).toHaveBeenCalledWith(
+      "22222222-2222-4222-8222-222222222222",
+      "99999999-9999-4999-8999-999999999999"
+    );
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 404 when candidate detail is missing", async () => {
+    const resolveAddress = vi.fn();
+    const lookupCandidateDetail = vi.fn().mockResolvedValue(null);
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupCandidateDetail }), {
+      method: "GET",
+      path: "/api/candidates/22222222-2222-4222-8222-222222222222",
+    });
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({
+      error: {
+        code: "not_found",
+        message: "Candidate not found",
+      },
+    });
+    expect(lookupCandidateDetail).toHaveBeenCalledWith("22222222-2222-4222-8222-222222222222", null);
+  });
+
+  it("rejects invalid candidate detail IDs before lookup", async () => {
+    const resolveAddress = vi.fn();
+    const lookupCandidateDetail = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupCandidateDetail }), {
+      method: "GET",
+      path: "/api/candidates/not-a-uuid",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Candidate detail path contains invalid UUID: not-a-uuid",
+      },
+    });
+    expect(lookupCandidateDetail).not.toHaveBeenCalled();
+  });
+
+  it("rejects unsupported candidate detail methods", async () => {
+    const resolveAddress = vi.fn();
+    const lookupCandidateDetail = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupCandidateDetail }), {
+      method: "POST",
+      path: "/api/candidates/22222222-2222-4222-8222-222222222222",
+      body: JSON.stringify({}),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("GET");
+    expect(response.body).toEqual({
+      error: {
+        code: "method_not_allowed",
+        message: "Use GET /api/candidates/:candidate_id",
+      },
+    });
+    expect(lookupCandidateDetail).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when candidate detail lookup is not configured", async () => {
+    const resolveAddress = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "GET",
+      path: "/api/candidates/22222222-2222-4222-8222-222222222222",
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "Candidate detail lookup is not configured",
+      },
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
   it("serves the selectable research area catalog", async () => {
     const resolveAddress = vi.fn();
     const listResearchAreas = vi.fn().mockResolvedValue({
@@ -1202,6 +1370,15 @@ describe("createApiApp", () => {
           party: "Democratic",
           state: "CA",
           current_office: null,
+          latest_record: {
+            description: "Sponsored a housing affordability bill.",
+            event_date: "2026-01-15",
+          },
+          active_election: {
+            election_id: "33333333-3333-4333-8333-333333333333",
+            official_ballot_title: "Mayor",
+            election_date: "2026-11-03",
+          },
           notify_elections: true,
           notify_updates: false,
           created_at: "2026-01-02T03:04:05.000Z",
@@ -1227,6 +1404,15 @@ describe("createApiApp", () => {
           party: "Democratic",
           state: "CA",
           current_office: null,
+          latest_record: {
+            description: "Sponsored a housing affordability bill.",
+            event_date: "2026-01-15",
+          },
+          active_election: {
+            election_id: "33333333-3333-4333-8333-333333333333",
+            official_ballot_title: "Mayor",
+            election_date: "2026-11-03",
+          },
           notify_elections: true,
           notify_updates: false,
           created_at: "2026-01-02T03:04:05.000Z",
@@ -1236,6 +1422,7 @@ describe("createApiApp", () => {
     expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
       headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
     });
+    expect(response.body.follows[0]).not.toHaveProperty("records");
     expect(listAuthenticatedCandidateFollows).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
     expect(resolveAddress).not.toHaveBeenCalled();
   });

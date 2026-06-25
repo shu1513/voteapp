@@ -1,5 +1,6 @@
 import type { BallotLookupElection, BallotSummaryResult } from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
+import type { CandidateDetailResult } from "../pipeline/candidates/candidateDetailReader.js";
 import type { AuthenticatedAddressDistrictUpdateResult } from "../pipeline/users/userAddressDistrictUpdater.js";
 import type { InitializeUserDistrictsResult } from "../pipeline/users/userDistrictInitializer.js";
 import type {
@@ -40,6 +41,7 @@ export type AddressApiServerOptions = {
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
   lookupBallotSummaries?: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
   lookupAuthenticatedBallotSummaries?: (userId: string) => Promise<BallotSummaryResult>;
+  lookupCandidateDetail?: (candidateId: string, userId?: string | null) => Promise<CandidateDetailResult | null>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
   listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
   listAuthenticatedCandidateFollows?: (userId: string) => Promise<AuthenticatedCandidateFollowsResult>;

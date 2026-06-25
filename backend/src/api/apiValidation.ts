@@ -10,6 +10,7 @@ export { UUID_PATTERN } from "../utils/uuid.js";
 
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
+export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
 export const ME_ADDRESS_PATH = "/api/me/address";
 export const ME_BALLOT_PATH = "/api/me/ballot";
@@ -223,6 +224,21 @@ export function parseDistrictIds(url: URL): string[] {
     throw new TypeError(`Query parameter district_ids contains invalid UUID: ${invalidId}`);
   }
   return districtIds;
+}
+
+export function isCandidateDetailPath(pathname: string): boolean {
+  return pathname.startsWith(CANDIDATE_DETAIL_PATH_PREFIX);
+}
+
+export function parseCandidateId(url: URL): string {
+  const candidateId = url.pathname.slice(CANDIDATE_DETAIL_PATH_PREFIX.length).trim();
+  if (candidateId.length === 0 || candidateId.includes("/")) {
+    throw new TypeError("Candidate detail path must be /api/candidates/:candidate_id");
+  }
+  if (!isUuid(candidateId)) {
+    throw new TypeError(`Candidate detail path contains invalid UUID: ${candidateId}`);
+  }
+  return candidateId;
 }
 
 export function isElectionDetailPath(pathname: string): boolean {

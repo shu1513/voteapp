@@ -1,4 +1,5 @@
 import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeocoder.js";
+import { CandidateDetailReaderError } from "../pipeline/candidates/candidateDetailReader.js";
 import { AuthenticatedAddressDistrictUpdateError } from "../pipeline/users/userAddressDistrictUpdater.js";
 import { UserCandidateFollowsError } from "../pipeline/users/userCandidateFollows.js";
 import { InitializeUserDistrictsError } from "../pipeline/users/userDistrictInitializer.js";
@@ -56,6 +57,12 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
         code: "invalid_request",
         message: "Address could not be matched to saved districts",
       };
+    }
+    return { statusCode: 400, code: "invalid_request", message: error.message };
+  }
+  if (error instanceof CandidateDetailReaderError) {
+    if (error.code === "invalid_user_id") {
+      return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
     }
     return { statusCode: 400, code: "invalid_request", message: error.message };
   }

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { mapErrorToResponse } from "../../src/api/apiErrors.js";
+import { CandidateDetailReaderError } from "../../src/pipeline/candidates/candidateDetailReader.js";
 import { AuthenticatedAddressDistrictUpdateError } from "../../src/pipeline/users/userAddressDistrictUpdater.js";
 import { UserCandidateFollowsError } from "../../src/pipeline/users/userCandidateFollows.js";
 import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
@@ -8,6 +9,22 @@ import { ReplaceUserDistrictsError } from "../../src/pipeline/users/userDistrict
 import { UserResearchAreaPreferencesError } from "../../src/pipeline/users/userResearchAreaPreferences.js";
 
 describe("mapErrorToResponse", () => {
+  it("maps invalid candidate detail IDs to invalid_request", () => {
+    expect(mapErrorToResponse(new CandidateDetailReaderError("invalid_candidate_id", "Candidate ID must be a valid UUID"))).toEqual({
+      statusCode: 400,
+      code: "invalid_request",
+      message: "Candidate ID must be a valid UUID",
+    });
+  });
+
+  it("maps invalid candidate detail user IDs to unauthorized", () => {
+    expect(mapErrorToResponse(new CandidateDetailReaderError("invalid_user_id", "User ID must be a valid UUID"))).toEqual({
+      statusCode: 401,
+      code: "unauthorized",
+      message: "Authentication is required",
+    });
+  });
+
   it.each([
     ["invalid_user_id", "User ID must be a valid UUID"],
     ["user_not_found", "User not found"],

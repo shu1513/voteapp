@@ -5,7 +5,9 @@ import { resolveCorsHeaders } from "./apiCors.js";
 import {
   ADDRESS_RESOLVE_PATH,
   BALLOT_LOOKUP_PATH,
+  CANDIDATE_DETAIL_PATH_PREFIX,
   ELECTION_DETAIL_PATH_PREFIX,
+  isCandidateDetailPath,
   isElectionDetailPath,
   MAX_ADDRESS_REQUEST_BODY_BYTES,
   ME_ADDRESS_PATH,
@@ -16,6 +18,7 @@ import {
   parseAuthenticatedAddressBodyValue,
   parseAddressBodyValue,
   parseCandidateFollowBodyValue,
+  parseCandidateId,
   parseDistrictIds,
   parseElectionId,
   parseInitializeUserDistrictsBodyValue,
@@ -46,6 +49,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
     pathname === RESEARCH_AREAS_PATH ||
+    isCandidateDetailPath(pathname) ||
     isElectionDetailPath(pathname)
   );
 }
@@ -395,6 +399,36 @@ async function dispatchApiRequest(
 
     const payload = parseResearchAreaPreferencesBodyValue(request.body);
     const result = await options.replaceAuthenticatedResearchAreaPreferences(userId, payload.preferences);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (isCandidateDetailPath(url.pathname)) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /api/candidates/:candidate_id", {
+          ...corsHeaders,
+          allow: "GET",
+        })
+      );
+      return;
+    }
+    if (!options.lookupCandidateDetail) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Candidate detail lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const candidateId = parseCandidateId(url);
+    const userId = options.resolveAuthenticatedUserId?.({ headers: request.headers })?.trim() || null;
+    const result = await options.lookupCandidateDetail(candidateId, userId);
+    if (!result) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Candidate not found", corsHeaders));
+      return;
+    }
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }
