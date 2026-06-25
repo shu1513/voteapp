@@ -7,6 +7,7 @@ export { UUID_PATTERN } from "../utils/uuid.js";
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
+export const ME_BALLOT_PATH = "/api/me/ballot";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 export const MAX_BALLOT_DISTRICT_IDS = 50;

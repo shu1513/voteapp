@@ -18,6 +18,7 @@ export type AddressApiRateLimitResult = {
 export type AddressApiServerOptions = {
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
   lookupBallotSummaries?: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
+  lookupAuthenticatedBallotSummaries?: (userId: string) => Promise<BallotSummaryResult>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
   initializeUserDistricts?: (
     input: {
