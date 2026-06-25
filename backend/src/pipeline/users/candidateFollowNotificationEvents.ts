@@ -79,13 +79,13 @@ export async function createCandidateRecordUpdateNotificationEvents(
       SELECT
         eligible_follows.user_id,
         eligible_follows.candidate_id,
-        '${CANDIDATE_RECORD_UPDATE_EVENT_TYPE}',
+        $2,
         eligible_follows.candidate_record_id
       FROM eligible_follows
       ON CONFLICT DO NOTHING
       RETURNING id
     `,
-    [normalizedCandidateRecordId]
+    [normalizedCandidateRecordId, CANDIDATE_RECORD_UPDATE_EVENT_TYPE]
   );
 
   return { createdCount: result.rowCount ?? result.rows.length };
@@ -137,13 +137,13 @@ export async function createCandidateFutureElectionNotificationEvents(
       SELECT
         eligible_follows.user_id,
         eligible_follows.candidate_id,
-        '${CANDIDATE_FUTURE_ELECTION_EVENT_TYPE}',
+        $3,
         eligible_follows.election_id
       FROM eligible_follows
       ON CONFLICT DO NOTHING
       RETURNING id
     `,
-    [normalizedCandidateId, normalizedElectionId]
+    [normalizedCandidateId, normalizedElectionId, CANDIDATE_FUTURE_ELECTION_EVENT_TYPE]
   );
 
   return { createdCount: result.rowCount ?? result.rows.length };

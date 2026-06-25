@@ -42,11 +42,11 @@ CREATE TABLE IF NOT EXISTS public.user_candidate_follow_notification_events (
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_ucf_notification_events_record
-  ON public.user_candidate_follow_notification_events (user_id, candidate_record_id, event_type)
+  ON public.user_candidate_follow_notification_events (user_id, candidate_record_id)
   WHERE event_type = 'candidate_record_update';
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_ucf_notification_events_election
-  ON public.user_candidate_follow_notification_events (user_id, candidate_id, election_id, event_type)
+  ON public.user_candidate_follow_notification_events (user_id, candidate_id, election_id)
   WHERE event_type = 'candidate_future_election';
 
 CREATE INDEX IF NOT EXISTS idx_ucf_notification_events_user_created

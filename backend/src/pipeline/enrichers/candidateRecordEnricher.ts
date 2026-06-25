@@ -161,43 +161,25 @@ async function rollbackQuietly(client: PoolClient): Promise<void> {
   }
 }
 
-async function createCandidateRecordUpdateNotificationEventsBestEffort(input: {
-  db: Pick<Pool, "query">;
-  candidateRecordIds: readonly string[];
-}): Promise<void> {
-  for (const candidateRecordId of input.candidateRecordIds) {
-    try {
-      await createCandidateRecordUpdateNotificationEvents(input.db, candidateRecordId);
-    } catch (error) {
-      console.error(
-        `candidate-record notification event creation failed candidate_record_id=${candidateRecordId}: ${toReason(error)}`
-      );
-    }
-  }
-}
-
-async function upsertCandidateRecordsWithBestEffortNotificationEvents(input: {
+async function upsertCandidateRecordsWithNotificationEvents(input: {
   pool: Pool;
   records: readonly CandidateRecordUpsertInput[];
 }): Promise<CandidateRecordUpsertResult> {
   const client = await input.pool.connect();
-  let upsert: CandidateRecordUpsertResult;
   try {
     await client.query("BEGIN");
-    upsert = await upsertCandidateRecords(client, input.records);
+    const upsert = await upsertCandidateRecords(client, input.records);
+    for (const candidateRecordId of upsert.insertedRecordIds) {
+      await createCandidateRecordUpdateNotificationEvents(client, candidateRecordId);
+    }
     await client.query("COMMIT");
+    return upsert;
   } catch (error) {
     await rollbackQuietly(client);
     throw error;
   } finally {
     client.release();
   }
-
-  await createCandidateRecordUpdateNotificationEventsBestEffort({
-    db: input.pool,
-    candidateRecordIds: upsert.insertedRecordIds,
-  });
-  return upsert;
 }
 
 async function replacePresidentialCandidateRecordsAtomically(input: {
@@ -562,7 +544,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               const persistedByIdentity = new Map<string, string>();
 
               if (discovered.records.length > 0 && contextType !== "presidential_cycle") {
-                const firstPassUpsert = await upsertCandidateRecordsWithBestEffortNotificationEvents({
+                const firstPassUpsert = await upsertCandidateRecordsWithNotificationEvents({
                   pool,
                   records: toCandidateRecordUpsertInput(claimedCandidateId, discovered.records),
                 });
@@ -683,7 +665,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
 
                   if (repairedVerifiedRecords.length > 0) {
                     if (contextType !== "presidential_cycle") {
-                      const secondPassUpsert = await upsertCandidateRecordsWithBestEffortNotificationEvents({
+                      const secondPassUpsert = await upsertCandidateRecordsWithNotificationEvents({
                         pool,
                         records: toCandidateRecordUpsertInput(claimedCandidateId, repairedVerifiedRecords),
                       });

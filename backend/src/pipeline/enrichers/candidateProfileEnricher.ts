@@ -189,22 +189,6 @@ function toReason(error: unknown): string {
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
 }
 
-async function createCandidateFutureElectionNotificationEventsBestEffort(
-  db: Pick<Pool, "query">,
-  input: {
-    candidateId: string;
-    electionId: string;
-  }
-): Promise<void> {
-  try {
-    await createCandidateFutureElectionNotificationEvents(db, input);
-  } catch (error) {
-    console.error(
-      `candidate-profile notification event creation failed candidate_id=${input.candidateId} election_id=${input.electionId}: ${toReason(error)}`
-    );
-  }
-}
-
 function parseSeedUrls(raw: unknown): string[] {
   if (typeof raw === "string") {
     try {
@@ -1308,7 +1292,6 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
 
           const client = await pool.connect();
           let candidateId: string;
-          let linkedElectionCreated = false;
           try {
             await client.query("BEGIN");
 
@@ -1372,7 +1355,12 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
                 electionId: draftContext.contextId,
                 isIncumbent: draftContext.rosterIncumbent,
               });
-              linkedElectionCreated = linkResult.created;
+              if (linkResult.created) {
+                await createCandidateFutureElectionNotificationEvents(client, {
+                  candidateId,
+                  electionId: draftContext.contextId,
+                });
+              }
             }
             await client.query("COMMIT");
           } catch (error) {
@@ -1380,13 +1368,6 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             throw error;
           } finally {
             client.release();
-          }
-
-          if (draftContext.type === "election" && linkedElectionCreated) {
-            await createCandidateFutureElectionNotificationEventsBestEffort(pool, {
-              candidateId,
-              electionId: draftContext.contextId,
-            });
           }
 
           if (draftContext.type === "election") {

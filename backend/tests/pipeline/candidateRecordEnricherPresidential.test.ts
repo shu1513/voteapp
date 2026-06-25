@@ -766,8 +766,7 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
     );
   });
 
-  it("does not fail normal election candidate record enrichment when notification event creation fails", async () => {
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+  it("rolls back normal election candidate record enrichment when notification event creation fails", async () => {
     createCandidateRecordUpdateNotificationEventsMock.mockRejectedValueOnce(new Error("notification insert failed"));
     redisXReadGroupMock.mockResolvedValue([
       {
@@ -843,27 +842,20 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
       return { rows: [], rowCount: 0 };
     });
 
-    try {
-      await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
+    await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
 
-      expect(createCandidateRecordUpdateNotificationEventsMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          query: poolQueryMock,
-        }),
-        "record-1"
-      );
-      expect(poolQueryMock).toHaveBeenCalledWith("COMMIT");
-      expect(poolQueryMock).not.toHaveBeenCalledWith("ROLLBACK");
-      expect(redisXAckMock).toHaveBeenCalledWith(
-        "staging:candidates:record:draft",
-        "candidate_record_enricher",
-        "1-5"
-      );
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("candidate-record notification event creation failed candidate_record_id=record-1")
-      );
-    } finally {
-      consoleErrorSpy.mockRestore();
-    }
+    expect(createCandidateRecordUpdateNotificationEventsMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: poolQueryMock,
+      }),
+      "record-1"
+    );
+    expect(poolQueryMock).toHaveBeenCalledWith("ROLLBACK");
+    expect(poolQueryMock).not.toHaveBeenCalledWith("COMMIT");
+    expect(redisXAckMock).not.toHaveBeenCalledWith(
+      "staging:candidates:record:draft",
+      "candidate_record_enricher",
+      "1-5"
+    );
   });
 });

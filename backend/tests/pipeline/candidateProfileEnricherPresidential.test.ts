@@ -831,7 +831,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
 
     expect(createCandidateFutureElectionNotificationEventsMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        query: poolQueryMock,
+        query: clientQueryMock,
       }),
       {
         candidateId: "candidate-1",
@@ -845,8 +845,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     );
   });
 
-  it("does not fail candidate profile enrichment when future-election notification event creation fails", async () => {
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+  it("rolls back candidate profile enrichment when future-election notification event creation fails", async () => {
     createCandidateFutureElectionNotificationEventsMock.mockRejectedValueOnce(
       new Error("notification insert failed")
     );
@@ -931,33 +930,24 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       },
     });
 
-    try {
-      await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
 
-      expect(createCandidateFutureElectionNotificationEventsMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          query: poolQueryMock,
-        }),
-        {
-          candidateId: "candidate-1",
-          electionId: "election-1",
-        }
-      );
-      expect(clientQueryMock).toHaveBeenCalledWith("COMMIT");
-      expect(clientQueryMock).not.toHaveBeenCalledWith("ROLLBACK");
-      expect(redisXAckMock).toHaveBeenCalledWith(
-        "staging:candidates:profile:draft",
-        "candidate_profile_enricher",
-        "1-11"
-      );
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          "candidate-profile notification event creation failed candidate_id=candidate-1 election_id=election-1"
-        )
-      );
-    } finally {
-      consoleErrorSpy.mockRestore();
-    }
+    expect(createCandidateFutureElectionNotificationEventsMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: clientQueryMock,
+      }),
+      {
+        candidateId: "candidate-1",
+        electionId: "election-1",
+      }
+    );
+    expect(clientQueryMock).toHaveBeenCalledWith("ROLLBACK");
+    expect(clientQueryMock).not.toHaveBeenCalledWith("COMMIT");
+    expect(redisXAckMock).not.toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-11"
+    );
   });
 
   it("dedupes automatic California finance batch syncs for eligible California elections", async () => {

@@ -54,9 +54,9 @@ describe("createCandidateRecordUpdateNotificationEvents", () => {
     expect(sql).toContain("JOIN public.users AS user_row");
     expect(sql).toContain("user_row.deleted_at IS NULL");
     expect(sql).toContain("INSERT INTO public.user_candidate_follow_notification_events");
-    expect(sql).toContain(CANDIDATE_RECORD_UPDATE_EVENT_TYPE);
+    expect(sql).toContain("$2");
     expect(sql).toContain("ON CONFLICT DO NOTHING");
-    expect(db.query.mock.calls[0]?.[1]).toEqual([candidateRecordId]);
+    expect(db.query.mock.calls[0]?.[1]).toEqual([candidateRecordId, CANDIDATE_RECORD_UPDATE_EVENT_TYPE]);
   });
 
   it("falls back to returned row length when rowCount is unavailable", async () => {
@@ -137,9 +137,13 @@ describe("createCandidateFutureElectionNotificationEvents", () => {
     expect(sql).toContain("JOIN public.users AS user_row");
     expect(sql).toContain("user_row.deleted_at IS NULL");
     expect(sql).toContain("INSERT INTO public.user_candidate_follow_notification_events");
-    expect(sql).toContain(CANDIDATE_FUTURE_ELECTION_EVENT_TYPE);
+    expect(sql).toContain("$3");
     expect(sql).toContain("ON CONFLICT DO NOTHING");
-    expect(db.query.mock.calls[0]?.[1]).toEqual([candidateId, electionId]);
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      candidateId,
+      electionId,
+      CANDIDATE_FUTURE_ELECTION_EVENT_TYPE,
+    ]);
   });
 
   it("returns zero when duplicate or ineligible future-election events are not inserted", async () => {
