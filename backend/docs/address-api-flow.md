@@ -304,6 +304,8 @@ content-type: application/json
 }
 ```
 
+`notify_elections` and `notify_updates` are optional. On a new follow, omitted notification flags default to `true`. On an existing follow, omitted notification flags leave the previously saved values unchanged. Send explicit boolean values when the user changes notification settings.
+
 Response:
 
 ```json
