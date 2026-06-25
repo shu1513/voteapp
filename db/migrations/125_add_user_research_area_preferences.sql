@@ -27,6 +27,9 @@ CREATE TABLE IF NOT EXISTS public.user_research_area_preferences (
     ON DELETE CASCADE,
   CONSTRAINT uq_user_research_area_preferences_user_area
     UNIQUE (user_id, research_area_id),
+  -- Keep this rank range in sync with MAX_USER_RESEARCH_AREA_PREFERENCES in
+  -- backend/src/constants/userResearchAreaPreferences.ts. Changing that
+  -- constant requires a new migration to update this database constraint.
   CONSTRAINT chk_user_research_area_preferences_rank
     CHECK (rank IS NULL OR rank BETWEEN 1 AND 7)
 );

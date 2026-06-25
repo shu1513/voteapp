@@ -59,6 +59,14 @@ describe("research area API contract constants", () => {
     ],
     [
       {
+        preferences: Array.from({ length: MAX_USER_RESEARCH_AREA_PREFERENCES + 1 }, (_value, index) => ({
+          research_area_id: `22222222-2222-4222-8222-${(index + 1).toString().padStart(12, "0")}`,
+        })),
+      },
+      "preferences supports at most 7 research areas",
+    ],
+    [
+      {
         preferences: [
           { research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1 },
           { research_area_id: "33333333-3333-4333-8333-333333333333", rank: 1 },
