@@ -1,0 +1,343 @@
+import type { Pool, PoolClient } from "pg";
+
+import {
+  classifyFinanceLabel,
+  type FinanceLabelClassification,
+} from "../finance/financeLabelClassifier.js";
+import { mergeFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+import {
+  aggregateOregonDirectContributions,
+  aggregateOregonOutsideGroupContributions,
+  aggregateOregonOutsideSpending,
+  type OregonFinanceOutsideGroupBreakdown,
+} from "./oregonFinanceAggregator.js";
+import {
+  replaceOregonCandidateFinanceSnapshot,
+  type OregonFinanceDirectBreakdownInput,
+  type OregonFinanceLinkInput,
+  type OregonFinanceOutsideGroupBreakdownInput,
+  type OregonFinanceOutsideGroupInput,
+  type OregonFinanceSummaryInput,
+} from "./oregonFinanceWriter.js";
+import {
+  OREGON_ORESTAR_TRANSACTION_SEARCH_URL,
+  type OregonOrestarTransactionDetail,
+} from "./oregonOrestarParser.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & Pick<Pool, "connect">;
+
+export type OregonCandidateFinanceSyncInput = {
+  db: ConnectableQueryable;
+  candidateId: string;
+  electionId: string;
+  candidateName: string;
+  electionYear: number;
+  officeName: string;
+  district?: string | null;
+  committeeId: string;
+  committeeName: string;
+  sourceUrl?: string | null;
+  now?: Date;
+  dryRun?: boolean;
+  transactionDetails: readonly OregonOrestarTransactionDetail[];
+  directMaxBreakdownsPerCategory?: number;
+  outsideMaxGroups?: number;
+  outsideMaxBreakdownsPerCategory?: number;
+  minIndustryAmount?: number;
+};
+
+export type OregonCandidateFinanceSyncResult = {
+  candidateId: string;
+  electionId: string;
+  electionYear: number;
+  dryRun: boolean;
+  linkWritten: boolean;
+  summaryWritten: boolean;
+  directBreakdownsWritten: number;
+  outsideGroupsWritten: number;
+  outsideGroupBreakdownsWritten: number;
+  directContributionTotal: number | null;
+  outsideSupportTotal: number | null;
+  outsideOpposeTotal: number | null;
+  transactionDetailCount: number;
+  matchedDirectContributionRowCount: number;
+  includedDirectContributionRowCount: number;
+  skippedDirectContributionRowCount: number;
+  matchedExpenditureRowCount: number;
+  includedOutsideAssociationCount: number;
+  skippedOutsideAssociationCount: number;
+  matchedOutsideGroupContributionRowCount: number;
+  includedOutsideGroupContributionRowCount: number;
+  skippedOutsideGroupContributionRowCount: number;
+};
+
+const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 20;
+const DEFAULT_OUTSIDE_MAX_GROUPS = 20;
+const DEFAULT_MIN_INDUSTRY_AMOUNT = 25_000;
+
+function requireNonEmpty(value: string, fieldName: string): string {
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
+    throw new Error(`${fieldName} is required`);
+  }
+  return trimmed;
+}
+
+function normalizeElectionYear(value: number): number {
+  if (!Number.isInteger(value) || value < 2000 || value > 2100) {
+    throw new Error(`Invalid Oregon finance election year: ${value}`);
+  }
+  return value;
+}
+
+function normalizeTimestamp(value: Date | undefined): Date {
+  const normalized = value ?? new Date();
+  if (Number.isNaN(normalized.getTime())) {
+    throw new Error("Invalid Oregon finance sync timestamp");
+  }
+  return normalized;
+}
+
+function normalizePositiveInteger(value: number | undefined, fallback: number, fieldName: string): number {
+  const normalized = value ?? fallback;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Oregon finance ${fieldName}: ${value}`);
+  }
+  return normalized;
+}
+
+function normalizeMinIndustryAmount(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_MIN_INDUSTRY_AMOUNT;
+  if (!Number.isFinite(normalized) || normalized < 0) {
+    throw new Error(`Invalid Oregon finance minIndustryAmount: ${value}`);
+  }
+  return normalized;
+}
+
+function normalizeCandidateNameForStorage(value: string): string {
+  return requireNonEmpty(value, "candidate name")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function toFinanceLink(input: {
+  candidateId: string;
+  electionId: string;
+  candidateName: string;
+  electionYear: number;
+  officeName: string;
+  district?: string | null;
+  committeeId: string;
+  committeeName: string;
+  sourceUrl?: string | null;
+  verifiedAt: Date;
+}): OregonFinanceLinkInput {
+  return {
+    candidateId: requireNonEmpty(input.candidateId, "candidate id"),
+    electionId: requireNonEmpty(input.electionId, "election id"),
+    electionYear: input.electionYear,
+    candidateNameNormalized: normalizeCandidateNameForStorage(input.candidateName),
+    officeName: requireNonEmpty(input.officeName, "office name"),
+    district: input.district ?? null,
+    committeeId: requireNonEmpty(input.committeeId, "Oregon ORESTAR committee ID"),
+    committeeName: requireNonEmpty(input.committeeName, "Oregon committee name"),
+    linkStatus: "active",
+    linkSource: "orestar",
+    sourceUrl: input.sourceUrl ?? OREGON_ORESTAR_TRANSACTION_SEARCH_URL,
+    lastVerifiedAt: input.verifiedAt,
+  };
+}
+
+function toSummary(input: {
+  directContributionTotal: number;
+  outsideSupportTotal: number;
+  outsideOpposeTotal: number;
+  sourceUrl?: string | null;
+}): OregonFinanceSummaryInput {
+  return {
+    directContributionTotal: input.directContributionTotal,
+    outsideSupportTotal: input.outsideSupportTotal,
+    outsideOpposeTotal: input.outsideOpposeTotal,
+    sourceUrl: input.sourceUrl ?? OREGON_ORESTAR_TRANSACTION_SEARCH_URL,
+  };
+}
+
+function toDirectBreakdowns(
+  breakdowns: readonly OregonFinanceDirectBreakdownInput[]
+): OregonFinanceDirectBreakdownInput[] {
+  return breakdowns.map((breakdown) => ({
+    categoryType: breakdown.categoryType,
+    categoryName: breakdown.categoryName,
+    amount: breakdown.amount,
+    contributorCount: breakdown.contributorCount ?? null,
+    sourceUrl: breakdown.sourceUrl ?? null,
+  }));
+}
+
+function toOutsideGroups(groups: readonly OregonFinanceOutsideGroupInput[]): OregonFinanceOutsideGroupInput[] {
+  return groups.map((group) => ({
+    sponsorId: group.sponsorId,
+    sponsorName: group.sponsorName,
+    supportOppose: group.supportOppose,
+    amount: group.amount,
+    sourceUrl: group.sourceUrl ?? null,
+  }));
+}
+
+function toOutsideGroupBreakdowns(
+  breakdowns: readonly OregonFinanceOutsideGroupBreakdown[]
+): OregonFinanceOutsideGroupBreakdownInput[] {
+  return breakdowns.map((breakdown) => ({
+    sponsorId: breakdown.sponsorId,
+    supportOppose: breakdown.supportOppose,
+    categoryType: breakdown.categoryType,
+    categoryName: breakdown.categoryName,
+    amount: breakdown.amount,
+    contributorCount: breakdown.contributorCount ?? null,
+    sourceUrl: breakdown.sourceUrl ?? null,
+  }));
+}
+
+function isOregonContributionTransaction(detail: OregonOrestarTransactionDetail): boolean {
+  return /\bCONTRIBUTION\b/i.test(detail.transactionType ?? "");
+}
+
+function collectOutsideClassifications(input: {
+  breakdowns: Iterable<OregonFinanceOutsideGroupBreakdownInput>;
+  minIndustryAmount: number;
+}): FinanceLabelClassification[] {
+  const classifications = new Map<string, FinanceLabelClassification>();
+  for (const breakdown of input.breakdowns) {
+    if (breakdown.categoryType !== "donor" || breakdown.amount < input.minIndustryAmount) {
+      continue;
+    }
+    mergeFinanceLabelClassification(
+      classifications,
+      classifyFinanceLabel({ rawLabel: breakdown.categoryName, labelType: "donor" })
+    );
+  }
+  return [...classifications.values()];
+}
+
+export async function syncOregonCandidateFinance(
+  input: OregonCandidateFinanceSyncInput
+): Promise<OregonCandidateFinanceSyncResult> {
+  const candidateId = requireNonEmpty(input.candidateId, "candidate id");
+  const electionId = requireNonEmpty(input.electionId, "election id");
+  const candidateName = requireNonEmpty(input.candidateName, "candidate name");
+  const officeName = requireNonEmpty(input.officeName, "office name");
+  const committeeId = requireNonEmpty(input.committeeId, "Oregon ORESTAR committee ID");
+  const committeeName = requireNonEmpty(input.committeeName, "Oregon committee name");
+  const electionYear = normalizeElectionYear(input.electionYear);
+  const syncedAt = normalizeTimestamp(input.now);
+  const dryRun = input.dryRun === true;
+  const directMaxBreakdownsPerCategory = normalizePositiveInteger(
+    input.directMaxBreakdownsPerCategory,
+    DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
+    "directMaxBreakdownsPerCategory"
+  );
+  const outsideMaxGroups = normalizePositiveInteger(
+    input.outsideMaxGroups,
+    DEFAULT_OUTSIDE_MAX_GROUPS,
+    "outsideMaxGroups"
+  );
+  const outsideMaxBreakdownsPerCategory = normalizePositiveInteger(
+    input.outsideMaxBreakdownsPerCategory,
+    DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
+    "outsideMaxBreakdownsPerCategory"
+  );
+  const minIndustryAmount = normalizeMinIndustryAmount(input.minIndustryAmount);
+  const sourceUrl = input.sourceUrl ?? OREGON_ORESTAR_TRANSACTION_SEARCH_URL;
+
+  const directFinance = aggregateOregonDirectContributions({
+    committeeId,
+    electionYear,
+    transactionDetails: input.transactionDetails,
+    sourceUrl,
+    maxBreakdownsPerCategory: directMaxBreakdownsPerCategory,
+  });
+  const outsideFinance = aggregateOregonOutsideSpending({
+    candidateCommitteeId: committeeId,
+    electionYear,
+    transactionDetails: input.transactionDetails,
+    sourceUrl,
+    maxGroups: outsideMaxGroups,
+  });
+  const outsideGroupFinance = aggregateOregonOutsideGroupContributions({
+    electionYear,
+    outsideGroups: outsideFinance.outsideGroups,
+    transactionDetails: input.transactionDetails.filter(isOregonContributionTransaction),
+    sourceUrl,
+    maxBreakdownsPerCategory: outsideMaxBreakdownsPerCategory,
+    minIndustryAmount,
+  });
+
+  const summary = toSummary({
+    directContributionTotal: directFinance.summary.directContributionTotal,
+    outsideSupportTotal: outsideFinance.summary.outsideSupportTotal,
+    outsideOpposeTotal: outsideFinance.summary.outsideOpposeTotal,
+    sourceUrl,
+  });
+  const directBreakdowns = toDirectBreakdowns(directFinance.directBreakdowns);
+  const outsideGroups = toOutsideGroups(outsideFinance.outsideGroups);
+  const outsideGroupBreakdowns = toOutsideGroupBreakdowns(outsideGroupFinance.outsideGroupBreakdowns);
+  const classifications = collectOutsideClassifications({
+    breakdowns: outsideGroupBreakdowns,
+    minIndustryAmount,
+  });
+  const link = toFinanceLink({
+    candidateId,
+    electionId,
+    candidateName,
+    electionYear,
+    officeName,
+    district: input.district,
+    committeeId,
+    committeeName,
+    sourceUrl,
+    verifiedAt: syncedAt,
+  });
+
+  if (!dryRun) {
+    await replaceOregonCandidateFinanceSnapshot({
+      db: input.db,
+      link,
+      syncedAt,
+      summary,
+      directBreakdowns,
+      outsideGroups,
+      outsideGroupBreakdowns,
+      classifications,
+    });
+  }
+
+  return {
+    candidateId,
+    electionId,
+    electionYear,
+    dryRun,
+    linkWritten: !dryRun,
+    summaryWritten: !dryRun,
+    directBreakdownsWritten: dryRun ? 0 : directBreakdowns.length,
+    outsideGroupsWritten: dryRun ? 0 : outsideGroups.length,
+    outsideGroupBreakdownsWritten: dryRun ? 0 : outsideGroupBreakdowns.length,
+    directContributionTotal: summary.directContributionTotal ?? null,
+    outsideSupportTotal: summary.outsideSupportTotal ?? null,
+    outsideOpposeTotal: summary.outsideOpposeTotal ?? null,
+    transactionDetailCount: input.transactionDetails.length,
+    matchedDirectContributionRowCount: directFinance.matchedContributionRowCount,
+    includedDirectContributionRowCount: directFinance.includedContributionRowCount,
+    skippedDirectContributionRowCount: directFinance.skippedContributionRowCount,
+    matchedExpenditureRowCount: outsideFinance.matchedExpenditureRowCount,
+    includedOutsideAssociationCount: outsideFinance.includedAssociationCount,
+    skippedOutsideAssociationCount: outsideFinance.skippedAssociationCount,
+    matchedOutsideGroupContributionRowCount: outsideGroupFinance.matchedContributionRowCount,
+    includedOutsideGroupContributionRowCount: outsideGroupFinance.includedContributionRowCount,
+    skippedOutsideGroupContributionRowCount: outsideGroupFinance.skippedContributionRowCount,
+  };
+}
