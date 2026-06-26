@@ -25,6 +25,7 @@ import {
   isColoradoCampaignFinanceEnabled,
   isConnecticutCampaignFinanceEnabled,
   isDistrictOfColumbiaCampaignFinanceEnabled,
+  isFloridaCampaignFinanceEnabled,
   isNebraskaCampaignFinanceEnabled,
   isNewMexicoCampaignFinanceEnabled,
   isOklahomaCampaignFinanceEnabled,
@@ -163,6 +164,7 @@ export type BallotLookupFinanceSummary = {
     | "NEW_MEXICO_CFIS"
     | "OKLAHOMA_GUARDIAN"
     | "TEXAS_TEC"
+    | "FLORIDA_DOS"
     | "UTAH_DISCLOSURES"
     | "HAWAII_CSC"
     | "VIRGINIA_CFREPORTS"
@@ -993,7 +995,17 @@ const GENERIC_MASSACHUSETTS_OCPF_SOURCE_URL = "https://www.ocpf.us/";
 const GENERIC_MARYLAND_CFS_SOURCE_URL = "https://campaignfinance.maryland.gov/public/cf/downloads";
 const GENERIC_MICHIGAN_MITN_SOURCE_URL =
   "https://www.michigan.gov/sos/elections/disclosure/cfr/committee-search/intro/welcome-to-the-michigan-campaign-finance-searchable-database";
+const OPTIONAL_FLORIDA_BALLOT_SUMMARY_MODULE_PATH = "../floridaFinance/floridaFinanceBallotSummary.js";
 const GENERIC_OREGON_ORESTAR_SOURCE_URL = "https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearch.do";
+
+type OptionalFloridaBallotSummaryModule = {
+  loadFloridaCandidateFinanceSummariesByCandidateElection: (
+    db: Queryable,
+    candidateRows: readonly CandidateRow[],
+    electionRows: readonly ElectionRow[]
+  ) => Promise<Map<string, BallotLookupFinanceSummary>>;
+};
+
 const MARYLAND_BALLOT_LOOKUP_FINANCE_ELIGIBLE_OFFICE_KEYS = new Set([
   "statewide::Governor",
   "statewide::Lieutenant Governor",
@@ -1014,7 +1026,6 @@ function isMarylandFinanceEligibleOffice(input: {
   }
   return MARYLAND_BALLOT_LOOKUP_FINANCE_ELIGIBLE_OFFICE_KEYS.has(`${officeScope}::${officeCanonicalName}`);
 }
-
 
 function firstNonEmptySourceUrl(...urls: Array<string | null | undefined>): string | null {
   for (const url of urls) {
@@ -8171,6 +8182,36 @@ async function loadVirginiaCandidateFinanceSummariesByCandidateElection(
   );
 }
 
+function isMissingOptionalFloridaModuleError(error: unknown): boolean {
+  const code = typeof error === "object" && error !== null && "code" in error ? String(error.code) : "";
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    (code === "ERR_MODULE_NOT_FOUND" || code === "MODULE_NOT_FOUND") &&
+    message.includes("floridaFinanceBallotSummary.js")
+  );
+}
+
+async function loadOptionalFloridaCandidateFinanceSummariesByCandidateElection(
+  db: Queryable,
+  candidateRows: readonly CandidateRow[],
+  electionRows: readonly ElectionRow[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
+  if (!isFloridaCampaignFinanceEnabled()) {
+    return new Map();
+  }
+
+  try {
+    const module = (await import(OPTIONAL_FLORIDA_BALLOT_SUMMARY_MODULE_PATH)) as OptionalFloridaBallotSummaryModule;
+    return module.loadFloridaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
+  } catch (error) {
+    if (isMissingOptionalFloridaModuleError(error)) {
+      console.warn("Florida campaign finance module is enabled but unavailable; skipping Florida finance summaries");
+      return new Map();
+    }
+    throw error;
+  }
+}
+
 async function loadCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly CandidateRow[],
@@ -8197,6 +8238,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     candidateRows,
     electionRows
   );
+  const floridaSummaries = await loadOptionalFloridaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const virginiaSummaries = await loadVirginiaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const texasSummaries = await loadTexasCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const arizonaSummaries = await loadArizonaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
@@ -8232,6 +8274,9 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     merged.set(key, summary);
   }
   for (const [key, summary] of districtOfColumbiaSummaries) {
+    merged.set(key, summary);
+  }
+  for (const [key, summary] of floridaSummaries) {
     merged.set(key, summary);
   }
   for (const [key, summary] of virginiaSummaries) {
