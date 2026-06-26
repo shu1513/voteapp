@@ -95,7 +95,7 @@ type AlaskaFinanceProbeIndustry = AlaskaFinanceProbeBreakdown & {
 };
 
 type AlaskaFinanceProbeOutput = {
-  type: "alaska_candidate_finance_csv_probe";
+  type: "alaska_candidate_finance_probe";
   ts: string;
   args: AlaskaFinanceProbeArgs;
   ok: boolean;
@@ -502,7 +502,7 @@ export async function runProbeAlaskaCandidateFinance(input: {
   });
 
   return {
-    type: "alaska_candidate_finance_csv_probe",
+    type: "alaska_candidate_finance_probe",
     ts: (input.now ?? new Date()).toISOString(),
     args: input.args,
     ok: direct.matchedContributionRowCount > 0 || outside.matchedExpenditureRowCount > 0,

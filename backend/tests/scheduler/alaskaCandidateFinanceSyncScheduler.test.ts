@@ -189,7 +189,25 @@ describe("alaskaCandidateFinanceSyncScheduler", () => {
     await expect(runAlaskaCandidateFinanceSyncJob({ triggeredBy: "manual" })).rejects.toThrow(
       "Invalid ALASKA_APOC_DATA_SOURCE value: spreadsheet"
     );
-    expect(end).toHaveBeenCalledTimes(1);
+    expect(end).not.toHaveBeenCalled();
+  });
+
+  it("rejects default CSV scheduler runs without an income CSV path", async () => {
+    process.env.ALASKA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.ALASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    const Pool = vi.fn();
+
+    vi.doMock("pg", () => ({ Pool }));
+    mockEnv();
+
+    const { runAlaskaCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/alaskaCandidateFinanceSyncScheduler.js"
+    );
+
+    await expect(runAlaskaCandidateFinanceSyncJob({ triggeredBy: "manual" })).rejects.toThrow(
+      "Alaska finance sync scheduler CSV data source requires incomeCsvPath or ALASKA_APOC_INCOME_CSV_PATH"
+    );
+    expect(Pool).not.toHaveBeenCalled();
   });
 
   it("upserts recurring jobs as dry-run by default with scheduler backoff", async () => {

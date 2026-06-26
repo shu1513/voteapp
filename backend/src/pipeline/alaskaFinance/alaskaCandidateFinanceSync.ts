@@ -8,6 +8,7 @@ import {
   type AlaskaApocIndependentContributionRow,
   type AlaskaApocIndependentExpenditureRow,
 } from "./alaskaApocClient.js";
+import { normalizeAlaskaCandidateNameForStorage } from "./alaskaCandidateCommitteeResolver.js";
 import { aggregateAlaskaDirectContributions } from "./alaskaDirectContributionAggregator.js";
 import { aggregateAlaskaOutsideGroupContributions } from "./alaskaOutsideGroupContributionAggregator.js";
 import { aggregateAlaskaOutsideSpending } from "./alaskaOutsideSpendingAggregator.js";
@@ -52,6 +53,7 @@ export type AlaskaCandidateFinanceSyncInput = {
   trustedCommittee: {
     candidateFilerId: string;
     candidateFilerName: string;
+    source?: AlaskaCandidateFinanceResolution["source"];
     sourceUrl?: string | null;
   };
 };
@@ -115,23 +117,12 @@ function normalizeNonnegativeAmount(value: number | undefined, fallback: number,
   return normalized;
 }
 
-function normalizeCandidateNameForStorage(value: string): string {
-  return requireNonEmpty(value, "candidate name")
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toUpperCase()
-    .replace(/&/g, " AND ")
-    .replace(/[^A-Z0-9]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
 function toResolution(input: AlaskaCandidateFinanceSyncInput["trustedCommittee"]): AlaskaCandidateFinanceResolution {
   return {
     status: "matched",
     candidateFilerId: requireNonEmpty(input.candidateFilerId, "trusted Alaska candidate filer id"),
     candidateFilerName: requireNonEmpty(input.candidateFilerName, "trusted Alaska candidate filer name"),
-    source: "apoc_csv",
+    source: input.source ?? "apoc_csv",
     sourceUrl: input.sourceUrl ?? null,
   };
 }
@@ -151,7 +142,7 @@ function toFinanceLink(input: {
     candidateId: requireNonEmpty(input.candidateId, "candidate id"),
     electionId: requireNonEmpty(input.electionId, "election id"),
     electionYear: input.electionYear,
-    candidateNameNormalized: normalizeCandidateNameForStorage(input.candidateName),
+    candidateNameNormalized: normalizeAlaskaCandidateNameForStorage(input.candidateName),
     officeName: requireNonEmpty(input.officeName, "office name"),
     district: input.district ?? null,
     candidateFilerId: input.resolution.candidateFilerId,

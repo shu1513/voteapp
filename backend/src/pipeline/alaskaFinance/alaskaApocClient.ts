@@ -190,7 +190,7 @@ function parseCsvRecords(csv: string): CsvRecord[] {
   const rows = parseCsvRows(csv);
   const header = rows[0];
   if (!header) {
-    return [];
+    throw new Error("Alaska APOC CSV export is missing a header row");
   }
 
   const normalizedHeaders = header.map(normalizeHeader);
@@ -318,13 +318,8 @@ function isAbortError(error: unknown): boolean {
 }
 
 function looksLikeHtmlDocument(body: string): boolean {
-  const sample = body.slice(0, 2_000).trimStart().toLowerCase();
-  return (
-    sample.startsWith("<!doctype html") ||
-    sample.startsWith("<html") ||
-    sample.includes("<form") ||
-    sample.includes("<table")
-  );
+  const sample = body.slice(0, 2_000).replace(/^\uFEFF/, "").trimStart().toLowerCase();
+  return /^<(?:!doctype\s+html|html)(?:\s|>)/.test(sample);
 }
 
 function assertCsvResponse(input: { url: string; body: string; contentType: string | null }): void {
@@ -419,14 +414,14 @@ export async function fetchAlaskaApocFinanceCsvBundle(
   options: AlaskaApocFinanceCsvBundleFetchOptions = {}
 ): Promise<AlaskaApocFinanceCsvBundle> {
   const incomeSourceUrl = normalizeApocUrl(options.incomeUrl ?? ALASKA_APOC_CAMPAIGN_INCOME_URL, "campaign income URL");
-  const independentExpenditureSourceUrl = normalizeApocUrl(
-    options.independentExpenditureUrl ?? ALASKA_APOC_IE_EXPENDITURES_URL,
-    "independent expenditure URL"
-  );
-  const independentContributionSourceUrl = normalizeApocUrl(
-    options.independentContributionUrl ?? ALASKA_APOC_IE_CONTRIBUTIONS_URL,
-    "independent contribution URL"
-  );
+  const includeIndependentExpenditures = options.includeIndependentExpenditures !== false;
+  const includeIndependentContributions = options.includeIndependentContributions !== false;
+  const independentExpenditureSourceUrl = includeIndependentExpenditures
+    ? normalizeApocUrl(options.independentExpenditureUrl ?? ALASKA_APOC_IE_EXPENDITURES_URL, "independent expenditure URL")
+    : null;
+  const independentContributionSourceUrl = includeIndependentContributions
+    ? normalizeApocUrl(options.independentContributionUrl ?? ALASKA_APOC_IE_CONTRIBUTIONS_URL, "independent contribution URL")
+    : null;
   const requestSpacingMs = options.requestSpacingMs ?? ALASKA_APOC_DEFAULT_REQUEST_SPACING_MS;
   assertNonNegativeInteger(requestSpacingMs, "requestSpacingMs");
 
@@ -441,11 +436,11 @@ export async function fetchAlaskaApocFinanceCsvBundle(
   let independentExpenditureCsv: string | null = null;
   let independentContributionCsv: string | null = null;
 
-  if (options.includeIndependentExpenditures !== false) {
+  if (independentExpenditureSourceUrl) {
     await sleep(requestSpacingMs);
     independentExpenditureCsv = await fetchAlaskaApocCsv(independentExpenditureSourceUrl, fetchOptions);
   }
-  if (options.includeIndependentContributions !== false) {
+  if (independentContributionSourceUrl) {
     await sleep(requestSpacingMs);
     independentContributionCsv = await fetchAlaskaApocCsv(independentContributionSourceUrl, fetchOptions);
   }

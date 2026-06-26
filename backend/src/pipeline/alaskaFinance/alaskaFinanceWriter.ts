@@ -318,6 +318,17 @@ async function upsertSummary(input: {
   );
 }
 
+async function deleteSummary(input: { db: Queryable; linkId: string; electionYear: number }): Promise<void> {
+  await input.db.query(
+    `
+      DELETE FROM public.ak_candidate_finance_summaries
+      WHERE link_id = $1::uuid
+        AND election_year = $2
+    `,
+    [requireNonEmpty(input.linkId, "Alaska finance link id"), normalizeElectionYear(input.electionYear)]
+  );
+}
+
 async function upsertDirectBreakdown(input: {
   db: Queryable;
   linkId: string;
@@ -547,39 +558,38 @@ export async function replaceAlaskaCandidateFinanceSnapshot(
   }
   validateAlaskaFinanceSnapshotInput(input);
   const electionYear = normalizeElectionYear(input.link.electionYear);
+  const directBreakdowns = input.directBreakdowns ?? [];
+  const outsideGroups = input.outsideGroups ?? [];
+  const outsideGroupBreakdowns = input.outsideGroupBreakdowns ?? [];
 
   return await withAlaskaFinanceTransaction(input.db, async (db) => {
     const { linkId } = await upsertAlaskaFinanceLink({ db, link: input.link });
     if (input.summary) {
       await upsertSummary({ db, linkId, electionYear, summary: input.summary, syncedAt });
+    } else {
+      await deleteSummary({ db, linkId, electionYear });
     }
 
-    for (const breakdown of input.directBreakdowns ?? []) {
+    for (const breakdown of directBreakdowns) {
       await upsertDirectBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
     }
-    if (input.directBreakdowns) {
-      await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: input.directBreakdowns });
-    }
+    await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: directBreakdowns });
 
-    for (const group of input.outsideGroups ?? []) {
+    for (const group of outsideGroups) {
       await upsertOutsideGroup({ db, linkId, electionYear, group, syncedAt });
     }
-    for (const breakdown of input.outsideGroupBreakdowns ?? []) {
+    for (const breakdown of outsideGroupBreakdowns) {
       await upsertOutsideGroupBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
     }
-    if (input.outsideGroupBreakdowns) {
-      await deleteStaleOutsideGroupBreakdowns({ db, linkId, electionYear, breakdowns: input.outsideGroupBreakdowns });
-    }
-    if (input.outsideGroups) {
-      await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups });
-    }
+    await deleteStaleOutsideGroupBreakdowns({ db, linkId, electionYear, breakdowns: outsideGroupBreakdowns });
+    await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: outsideGroups });
 
     return {
       linkId,
       summaryWritten: Boolean(input.summary),
-      directBreakdownsWritten: input.directBreakdowns?.length ?? 0,
-      outsideGroupsWritten: input.outsideGroups?.length ?? 0,
-      outsideGroupBreakdownsWritten: input.outsideGroupBreakdowns?.length ?? 0,
+      directBreakdownsWritten: directBreakdowns.length,
+      outsideGroupsWritten: outsideGroups.length,
+      outsideGroupBreakdownsWritten: outsideGroupBreakdowns.length,
     };
   });
 }

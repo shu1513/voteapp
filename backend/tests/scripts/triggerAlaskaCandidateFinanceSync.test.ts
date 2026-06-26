@@ -52,5 +52,8 @@ describe("triggerAlaskaCandidateFinanceSync script", () => {
     expect(() => parseAlaskaCandidateFinanceSyncTriggerArgs(["--income-csv=/tmp/a.csv", "--income-csv=/tmp/b.csv"])).toThrow(
       "Provide --income-csv at most once"
     );
+    expect(() => parseAlaskaCandidateFinanceSyncTriggerArgs(["--live", "--income-csv=/tmp/income.csv"])).toThrow(
+      "Do not provide --income-csv, --ie-expenditures-csv, or --ie-contributions-csv when using live mode"
+    );
   });
 });

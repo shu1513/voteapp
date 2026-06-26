@@ -100,6 +100,17 @@ function parseAutoLink(args: readonly string[]): boolean {
 export function parseUpsertAlaskaCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): AlaskaCandidateFinanceSyncJobData {
+  const dataSourceMode = parseDataSourceMode(args);
+  const incomeCsvPath = parseFlagValue(args, "--income-csv") || undefined;
+  const independentExpendituresCsvPath = parseFlagValue(args, "--ie-expenditures-csv") || undefined;
+  const independentContributionsCsvPath = parseFlagValue(args, "--ie-contributions-csv") || undefined;
+  if (
+    dataSourceMode === "live" &&
+    (incomeCsvPath || independentExpendituresCsvPath || independentContributionsCsvPath)
+  ) {
+    throw new Error("Do not provide --income-csv, --ie-expenditures-csv, or --ie-contributions-csv when using live mode");
+  }
+
   return {
     dryRun: parseDryRun(args),
     force: args.includes("--force"),
@@ -108,10 +119,10 @@ export function parseUpsertAlaskaCandidateFinanceSyncSchedulerArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    dataSourceMode: parseDataSourceMode(args),
-    incomeCsvPath: parseFlagValue(args, "--income-csv") || undefined,
-    independentExpendituresCsvPath: parseFlagValue(args, "--ie-expenditures-csv") || undefined,
-    independentContributionsCsvPath: parseFlagValue(args, "--ie-contributions-csv") || undefined,
+    dataSourceMode,
+    incomeCsvPath,
+    independentExpendituresCsvPath,
+    independentContributionsCsvPath,
     incomeUrl: parseFlagValue(args, "--income-url") || undefined,
     independentExpendituresUrl: parseFlagValue(args, "--ie-expenditures-url") || undefined,
     independentContributionsUrl: parseFlagValue(args, "--ie-contributions-url") || undefined,

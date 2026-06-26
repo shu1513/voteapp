@@ -90,6 +90,12 @@ describe("alaskaApocClient", () => {
     expect(parseAlaskaApocDateYear("")).toBeNull();
   });
 
+  it("rejects blank APOC CSV exports instead of treating them as valid empty data", () => {
+    expect(() => parseAlaskaApocCampaignIncomeCsv(" \n \n")).toThrow(
+      "Alaska APOC CSV export is missing a header row"
+    );
+  });
+
   it("fetches APOC CSV exports with retry and timeout options", async () => {
     const fetchFn = vi
       .fn()
@@ -124,6 +130,23 @@ describe("alaskaApocClient", () => {
     ).rejects.toThrow("returned an HTML report page instead of a CSV export");
   });
 
+  it("does not reject CSV fields that contain HTML-like text", async () => {
+    const fetchFn = vi.fn().mockResolvedValue(
+      new Response("Name,Amount\n\"<form value>\",$1.00\n", {
+        status: 200,
+        headers: { "content-type": "text/csv" },
+      })
+    );
+
+    await expect(
+      fetchAlaskaApocCsv(ALASKA_APOC_CAMPAIGN_INCOME_URL, {
+        fetchFn,
+        timeoutMs: 1000,
+        retryCount: 0,
+      })
+    ).resolves.toBe("Name,Amount\n\"<form value>\",$1.00\n");
+  });
+
   it("fetches an APOC CSV bundle with source URL provenance", async () => {
     const fetchFn = vi
       .fn()
@@ -143,5 +166,25 @@ describe("alaskaApocClient", () => {
       independentContributionSourceUrl: null,
     });
     expect(fetchFn).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not validate disabled independent expenditure or contribution URLs", async () => {
+    const fetchFn = vi.fn().mockResolvedValue(new Response("Name,Amount\nJane,$1.00\n", { status: 200 }));
+
+    const bundle = await fetchAlaskaApocFinanceCsvBundle({
+      fetchFn,
+      retryDelayMs: 0,
+      requestSpacingMs: 0,
+      includeIndependentExpenditures: false,
+      includeIndependentContributions: false,
+      independentExpenditureUrl: "not a url",
+      independentContributionUrl: "also not a url",
+    });
+
+    expect(bundle).toMatchObject({
+      independentExpenditureSourceUrl: null,
+      independentContributionSourceUrl: null,
+    });
+    expect(fetchFn).toHaveBeenCalledTimes(1);
   });
 });

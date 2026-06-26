@@ -61,5 +61,8 @@ describe("upsertAlaskaCandidateFinanceSyncScheduler script", () => {
     expect(() => parseUpsertAlaskaCandidateFinanceSyncSchedulerArgs(["--income-csv"])).toThrow(
       "Missing --income-csv value"
     );
+    expect(() =>
+      parseUpsertAlaskaCandidateFinanceSyncSchedulerArgs(["--live", "--income-csv=/tmp/income.csv"])
+    ).toThrow("Do not provide --income-csv, --ie-expenditures-csv, or --ie-contributions-csv when using live mode");
   });
 });

@@ -222,6 +222,29 @@ describe("alaskaFinanceWriter", () => {
     expect(clientLikeDb.query).not.toHaveBeenCalled();
   });
 
+  it("clears omitted snapshot sections instead of leaving stale rows", async () => {
+    const db = createTransactionalMockDb();
+
+    const result = await replaceAlaskaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-06-25T12:30:00.000Z"),
+    });
+
+    expect(result).toEqual({
+      linkId: LINK_ID,
+      summaryWritten: false,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+    });
+    const sql = db.query.mock.calls.map((call) => String(call[0]));
+    expect(sql.some((statement) => statement.includes("DELETE FROM public.ak_candidate_finance_summaries"))).toBe(true);
+    expect(sql.some((statement) => statement.includes("DELETE FROM public.ak_candidate_finance_direct_breakdowns"))).toBe(true);
+    expect(sql.some((statement) => statement.includes("DELETE FROM public.ak_candidate_finance_outside_group_breakdowns"))).toBe(true);
+    expect(sql.some((statement) => statement.includes("DELETE FROM public.ak_candidate_finance_outside_groups"))).toBe(true);
+  });
+
   it("rejects outside group breakdowns that do not reference same-snapshot outside groups", async () => {
     const db = createTransactionalMockDb();
 

@@ -111,6 +111,26 @@ describe("alaskaOutsideSpendingAggregator", () => {
     });
   });
 
+  it("limits top outside groups separately for support and opposition", () => {
+    const result = aggregateAlaskaOutsideSpending({
+      candidateName: "Jane Doe",
+      electionYear: 2026,
+      maxGroups: 1,
+      expenditureRows: [
+        expenditure({ filerId: "8001", filerName: "Top Support PAC", position: "Support", amount: 100_000 }),
+        expenditure({ filerId: "8002", filerName: "Second Support PAC", position: "Support", amount: 90_000 }),
+        expenditure({ filerId: "9001", filerName: "Top Oppose PAC", position: "Oppose", amount: 5_000 }),
+      ],
+    });
+
+    expect(result.summary?.supportTotal).toBe(190000);
+    expect(result.summary?.opposeTotal).toBe(5000);
+    expect(result.summary?.groups).toEqual([
+      expect.objectContaining({ committeeId: "8001", supportOppose: "support", amount: 100000 }),
+      expect.objectContaining({ committeeId: "9001", supportOppose: "oppose", amount: 5000 }),
+    ]);
+  });
+
   it("maps APOC position text to support or oppose", () => {
     expect(supportOpposeFromAlaskaApocPosition("Support")).toBe("support");
     expect(supportOpposeFromAlaskaApocPosition("Supports")).toBe("support");

@@ -55,6 +55,18 @@ describe("smokeAlaskaCandidateFinance", () => {
       );
 
     const output = await runAlaskaCandidateFinanceLiveSmoke({
+      args: [
+        "--candidate-name=Mike Dunleavy",
+        "--year=2022",
+        "--candidate-filer-name=DUNLEAVY FOR GOVERNOR",
+        "--income-url=https://example.test/income.csv",
+        "--ie-expenditures-url=https://example.test/ie-exp.csv",
+        "--ie-contributions-url=https://example.test/ie-con.csv",
+        "--timeout-ms=1234",
+        "--retry-count=0",
+        "--retry-delay-ms=0",
+        "--request-spacing-ms=0",
+      ],
       fetchFn,
       allowInCi: true,
       now: new Date("2026-01-02T03:04:05.000Z"),
@@ -67,5 +79,11 @@ describe("smokeAlaskaCandidateFinance", () => {
     });
     expect(output.probe?.direct_campaign.matched_row_count).toBe(1);
     expect(fetchFn).toHaveBeenCalledTimes(3);
+    expect(fetchFn.mock.calls.map((call) => call[0])).toEqual([
+      "https://example.test/income.csv",
+      "https://example.test/ie-exp.csv",
+      "https://example.test/ie-con.csv",
+    ]);
+    expect(fetchFn.mock.calls[0]?.[1]).toEqual(expect.objectContaining({ signal: expect.any(AbortSignal) }));
   });
 });

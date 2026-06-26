@@ -136,19 +136,19 @@ function contributorIdentityKey(row: AlaskaApocCampaignIncomeRow): string {
 
 function contributionSizeBucket(amount: number): string {
   if (amount < 100) {
-    return "$1-$99";
+    return "$0.01-$99.99";
   }
   if (amount < 250) {
-    return "$100-$249";
+    return "$100-$249.99";
   }
   if (amount < 500) {
-    return "$250-$499";
+    return "$250-$499.99";
   }
   if (amount < 1_000) {
-    return "$500-$999";
+    return "$500-$999.99";
   }
   if (amount < 5_000) {
-    return "$1,000-$4,999";
+    return "$1,000-$4,999.99";
   }
   return "$5,000+";
 }

@@ -39,6 +39,7 @@ type DonorAggregate = {
   displayName: string;
   normalizedName: string;
   amountCents: number;
+  classifications: FinanceLabelClassification[];
 };
 
 type IndustryAggregate = {
@@ -263,6 +264,7 @@ export function aggregateAlaskaOutsideGroupContributions(
     }
 
     includedContributionRowCount += 1;
+    const classification = classifyAlaskaOutsideGroupContributionRow(row);
     for (const group of matchingGroups) {
       const key = donorKey({
         committeeId: group.committeeId,
@@ -272,6 +274,7 @@ export function aggregateAlaskaOutsideGroupContributions(
       const existing = donors.get(key);
       if (existing) {
         existing.amountCents += amountCents;
+        existing.classifications.push(classification);
         continue;
       }
       donors.set(key, {
@@ -280,6 +283,7 @@ export function aggregateAlaskaOutsideGroupContributions(
         displayName,
         normalizedName,
         amountCents,
+        classifications: [classification],
       });
     }
   }
@@ -289,14 +293,7 @@ export function aggregateAlaskaOutsideGroupContributions(
     if (donor.amountCents < minIndustryAmountCents) {
       continue;
     }
-    const matchingRows = input.contributionRows.filter(
-      (row) =>
-        normalizeTextKey(committeeId(row)) === normalizeTextKey(donor.committeeId) &&
-        normalizeFinanceLabel(row.contributor, "donor") === donor.normalizedName
-    );
-    const classification = matchingRows
-      .map(classifyAlaskaOutsideGroupContributionRow)
-      .find((rowClassification) => rowClassification.industrySlug);
+    const classification = donor.classifications.find((rowClassification) => rowClassification.industrySlug);
     if (!classification?.industrySlug) {
       continue;
     }

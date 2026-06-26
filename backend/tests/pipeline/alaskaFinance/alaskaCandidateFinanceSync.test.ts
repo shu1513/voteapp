@@ -248,6 +248,40 @@ describe("alaskaCandidateFinanceSync", () => {
     expect(db.connect).not.toHaveBeenCalled();
   });
 
+  it("preserves trusted manual link source when writing the finance link", async () => {
+    const db = createMockDb();
+
+    await syncAlaskaCandidateFinance({
+      db,
+      ...baseInput(),
+      trustedCommittee: {
+        candidateFilerId: "1001",
+        candidateFilerName: "Jane Doe",
+        source: "manual",
+        sourceUrl: "https://example.test/manual-link",
+      },
+      incomeRows: [income({ amount: 250 })],
+    });
+
+    const linkCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ak_candidate_finance_links")
+    );
+    expect(linkCall?.[1]).toEqual([
+      CANDIDATE_ID,
+      ELECTION_ID,
+      2026,
+      "JANE DOE",
+      "Governor",
+      null,
+      "1001",
+      "Jane Doe",
+      "active",
+      "manual",
+      "https://example.test/manual-link",
+      "2026-06-25T12:00:00.000Z",
+    ]);
+  });
+
   it("requires trusted APOC candidate filer metadata", async () => {
     const db = createMockDb();
 

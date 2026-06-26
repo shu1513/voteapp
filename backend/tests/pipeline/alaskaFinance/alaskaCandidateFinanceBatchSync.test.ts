@@ -36,6 +36,7 @@ function dueRow(overrides: Record<string, unknown> = {}) {
     district: null,
     candidate_filer_id: "1001",
     candidate_filer_name: "Doe, Jane",
+    link_source: "apoc_csv",
     source_url: SOURCE_URL,
     last_synced_at: null,
     total_due_rows: "1",
@@ -166,6 +167,7 @@ describe("alaskaCandidateFinanceBatchSync", () => {
           district: null,
           candidateFilerId: "1001",
           candidateFilerName: "Doe, Jane",
+          linkSource: "apoc_csv",
           sourceUrl: SOURCE_URL,
           lastSyncedAt: null,
         },
@@ -265,8 +267,53 @@ describe("alaskaCandidateFinanceBatchSync", () => {
         trustedCommittee: {
           candidateFilerId: "1001",
           candidateFilerName: "Doe, Jane",
+          source: "apoc_csv",
           sourceUrl: SOURCE_URL,
         },
+      })
+    );
+  });
+
+  it("preserves manual link source when syncing due links", async () => {
+    const db = createMockDb([dueRow({ link_source: "manual" })]);
+    const syncAlaskaCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      dryRun: false,
+      resolution: { status: "matched", candidateFilerId: "1001", source: "manual" },
+      linkWritten: true,
+      summaryWritten: true,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      totalReceipts: 0,
+      directContributionTotal: 0,
+      outsideSupportTotal: 0,
+      outsideOpposeTotal: 0,
+      matchedContributionRowCount: 0,
+      includedContributionRowCount: 0,
+      skippedContributionRowCount: 0,
+      matchedExpenditureRowCount: 0,
+      includedExpenditureRowCount: 0,
+      skippedExpenditureRowCount: 0,
+      matchedOutsideContributionRowCount: 0,
+      includedOutsideContributionRowCount: 0,
+      skippedOutsideContributionRowCount: 0,
+    });
+
+    await syncDueAlaskaCandidateFinance({
+      db,
+      syncAlaskaCandidateFinanceFn,
+      now: new Date("2026-06-25T12:00:00.000Z"),
+      apocData: apocData(),
+    });
+
+    expect(syncAlaskaCandidateFinanceFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        trustedCommittee: expect.objectContaining({
+          source: "manual",
+        }),
       })
     );
   });

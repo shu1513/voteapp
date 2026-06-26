@@ -66,6 +66,13 @@ export async function runAlaskaCandidateFinanceLiveSmoke(input: {
   const loadedData = await loadAlaskaApocFinanceData(
     {
       mode: "live",
+      incomeUrl: args.incomeUrl ?? undefined,
+      independentExpendituresUrl: args.independentExpendituresUrl ?? undefined,
+      independentContributionsUrl: args.independentContributionsUrl ?? undefined,
+      timeoutMs: args.timeoutMs,
+      retryCount: args.retryCount,
+      retryDelayMs: args.retryDelayMs,
+      requestSpacingMs: args.requestSpacingMs,
     },
     { fetchFn: input.fetchFn, logger: console }
   );

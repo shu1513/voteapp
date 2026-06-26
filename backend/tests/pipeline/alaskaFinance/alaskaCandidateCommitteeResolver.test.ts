@@ -97,4 +97,25 @@ describe("alaskaCandidateCommitteeResolver", () => {
       candidateNameNormalized: "JANE DOE",
     });
   });
+
+  it("ignores matching non-candidate filer rows", () => {
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        incomeRows: [
+          income({
+            filerId: "8001",
+            filerName: "Jane Doe Support PAC",
+            filerType: "Group",
+            name: "Jane Doe",
+          }),
+        ],
+      })
+    ).toEqual({
+      status: "unmatched",
+      reason: "no_candidate_filer_match",
+      candidateNameNormalized: "JANE DOE",
+    });
+  });
 });

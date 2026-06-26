@@ -76,14 +76,14 @@ describe("alaskaDirectContributionAggregator", () => {
         },
         {
           categoryType: "contribution_size",
-          categoryName: "$250-$499",
+          categoryName: "$250-$499.99",
           amount: 250,
           contributorCount: 1,
           sourceUrl,
         },
         {
           categoryType: "contribution_size",
-          categoryName: "$100-$249",
+          categoryName: "$100-$249.99",
           amount: 100,
           contributorCount: 1,
           sourceUrl,

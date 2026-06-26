@@ -162,6 +162,10 @@ function toGroups(input: {
   groups: Iterable<GroupAccumulator>;
   maxGroups: number;
 }): AlaskaOutsideSpendingGroup[] {
+  const includedBySide: Record<AlaskaSupportOppose, number> = {
+    support: 0,
+    oppose: 0,
+  };
   return [...input.groups]
     .sort(
       (left, right) =>
@@ -169,7 +173,13 @@ function toGroups(input: {
         left.supportOppose.localeCompare(right.supportOppose) ||
         left.committeeName.localeCompare(right.committeeName)
     )
-    .slice(0, input.maxGroups)
+    .filter((group) => {
+      if (includedBySide[group.supportOppose] >= input.maxGroups) {
+        return false;
+      }
+      includedBySide[group.supportOppose] += 1;
+      return true;
+    })
     .map((group) => ({
       committeeId: group.committeeId,
       committeeName: group.committeeName,

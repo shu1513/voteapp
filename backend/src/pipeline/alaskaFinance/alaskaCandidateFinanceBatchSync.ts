@@ -16,6 +16,7 @@ import {
 } from "./alaskaCandidateFinanceAutoLink.js";
 import {
   syncAlaskaCandidateFinance,
+  type AlaskaCandidateFinanceResolution,
   type AlaskaCandidateFinanceSyncResult,
 } from "./alaskaCandidateFinanceSync.js";
 import { ALASKA_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./alaskaFinanceEligibleOffices.js";
@@ -33,6 +34,7 @@ export type AlaskaCandidateFinanceDueRow = {
   district: string | null;
   candidateFilerId: string;
   candidateFilerName: string;
+  linkSource: AlaskaCandidateFinanceResolution["source"];
   sourceUrl: string | null;
   lastSyncedAt: string | null;
 };
@@ -94,6 +96,7 @@ type AlaskaCandidateFinanceDueQueryRow = {
   district: string | null;
   candidate_filer_id: string;
   candidate_filer_name: string;
+  link_source: AlaskaCandidateFinanceResolution["source"];
   source_url: string | null;
   last_synced_at: string | null;
   total_due_rows: string | number;
@@ -134,6 +137,7 @@ function mapDueRow(row: AlaskaCandidateFinanceDueQueryRow): AlaskaCandidateFinan
     district: row.district,
     candidateFilerId: row.candidate_filer_id,
     candidateFilerName: row.candidate_filer_name,
+    linkSource: row.link_source,
     sourceUrl: row.source_url,
     lastSyncedAt: row.last_synced_at,
   };
@@ -166,6 +170,7 @@ export async function listDueAlaskaCandidateFinanceSyncRows(
           link.district,
           link.candidate_filer_id,
           link.candidate_filer_name,
+          link.link_source,
           link.source_url,
           summary.last_synced_at::text AS last_synced_at,
           COUNT(*) OVER () AS total_due_rows
@@ -212,6 +217,7 @@ export async function listDueAlaskaCandidateFinanceSyncRows(
         district,
         candidate_filer_id,
         candidate_filer_name,
+        link_source,
         source_url,
         last_synced_at,
         total_due_rows
@@ -308,6 +314,7 @@ export async function syncDueAlaskaCandidateFinance(
         trustedCommittee: {
           candidateFilerId: row.candidateFilerId,
           candidateFilerName: row.candidateFilerName,
+          source: row.linkSource,
           sourceUrl: row.sourceUrl ?? input.apocData.incomeSourceUrl ?? ALASKA_APOC_CAMPAIGN_INCOME_URL,
         },
         dryRun,

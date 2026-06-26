@@ -224,6 +224,14 @@ function readDataSourceConfig(data: AlaskaCandidateFinanceSyncJobData) {
   };
 }
 
+function assertUsableDataSourceConfig(config: ReturnType<typeof readDataSourceConfig>): void {
+  if (config.mode === "csv" && !config.incomeCsvPath) {
+    throw new Error(
+      "Alaska finance sync scheduler CSV data source requires incomeCsvPath or ALASKA_APOC_INCOME_CSV_PATH"
+    );
+  }
+}
+
 export async function upsertRecurringAlaskaCandidateFinanceSyncJobs(
   jobData: AlaskaCandidateFinanceSyncJobData = {}
 ): Promise<void> {
@@ -239,6 +247,7 @@ export async function upsertRecurringAlaskaCandidateFinanceSyncJobs(
   }
 
   const config = readSchedulerRuntimeConfig();
+  assertUsableDataSourceConfig(readDataSourceConfig(jobData));
   const queue = createAlaskaCandidateFinanceSyncSchedulerQueue();
   const dryRun = jobData.dryRun !== false;
 
@@ -274,6 +283,7 @@ export async function enqueueManualAlaskaCandidateFinanceSyncJob(
   if (!isAlaskaCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
     return "disabled";
   }
+  assertUsableDataSourceConfig(readDataSourceConfig(jobData));
 
   const queue = createAlaskaCandidateFinanceSyncSchedulerQueue();
   const dryRun = jobData.dryRun !== false;
@@ -333,9 +343,11 @@ export async function runAlaskaCandidateFinanceSyncJob(
   }
 
   const env = getPipelineEnv();
+  const dataSourceConfig = readDataSourceConfig(data);
+  assertUsableDataSourceConfig(dataSourceConfig);
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   try {
-    const loadedData = await loadAlaskaApocFinanceData(readDataSourceConfig(data), { logger: console });
+    const loadedData = await loadAlaskaApocFinanceData(dataSourceConfig, { logger: console });
     const result = await syncDueAlaskaCandidateFinance({
       db: pool,
       now,

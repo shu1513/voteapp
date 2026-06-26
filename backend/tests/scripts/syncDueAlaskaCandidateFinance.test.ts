@@ -17,7 +17,7 @@ describe("syncDueAlaskaCandidateFinance script", () => {
         "3",
         "--lookback-days=10",
         "--lookahead-days=365",
-        "--live",
+        "--csv",
         "--income-csv=/tmp/alaska-income.csv",
         "--ie-expenditures-csv=/tmp/alaska-ie-exp.csv",
         "--ie-contributions-csv=/tmp/alaska-ie-con.csv",
@@ -35,7 +35,7 @@ describe("syncDueAlaskaCandidateFinance script", () => {
       staleAfterDays: 3,
       electionLookbackDays: 10,
       electionLookaheadDays: 365,
-      dataSourceMode: "live",
+      dataSourceMode: "csv",
       incomeCsvPath: "/tmp/alaska-income.csv",
       independentExpendituresCsvPath: "/tmp/alaska-ie-exp.csv",
       independentContributionsCsvPath: "/tmp/alaska-ie-con.csv",
@@ -71,6 +71,9 @@ describe("syncDueAlaskaCandidateFinance script", () => {
     expect(() => parseSyncDueAlaskaCandidateFinanceScriptArgs(["--live", "--data-source=csv"])).toThrow(
       "Provide --data-source or --live/--csv, not both"
     );
+    expect(() =>
+      parseSyncDueAlaskaCandidateFinanceScriptArgs(["--live", "--income-csv=/tmp/alaska-income.csv"])
+    ).toThrow("Do not provide --income-csv, --ie-expenditures-csv, or --ie-contributions-csv when using live mode");
   });
 
   it("rejects malformed numeric flags strictly", () => {

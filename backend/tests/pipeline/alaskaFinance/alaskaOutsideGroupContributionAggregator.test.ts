@@ -161,4 +161,42 @@ describe("alaskaOutsideGroupContributionAggregator", () => {
     ]);
     expect(result.outsideGroupBreakdowns.some((row) => row.categoryType === "industry")).toBe(false);
   });
+
+  it("classifies industries from included contribution rows only", () => {
+    const result = aggregateAlaskaOutsideGroupContributions({
+      electionYear: 2026,
+      outsideGroups: [outsideGroup()],
+      contributionRows: [
+        contribution({
+          contributor: "Pat Smith",
+          employer: "North Slope Energy",
+          occupation: "Executive",
+          amount: 50_000,
+          date: "01/01/2024",
+          reportYear: 2024,
+        }),
+        contribution({
+          contributor: "Pat Smith",
+          employer: "",
+          occupation: "Attorney",
+          amount: 30_000,
+        }),
+      ],
+    });
+
+    expect(result.outsideGroupBreakdowns).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          categoryType: "industry",
+          categoryName: "lawyers_and_legal_services",
+          amount: 30000,
+        }),
+      ])
+    );
+    expect(
+      result.outsideGroupBreakdowns.some(
+        (row) => row.categoryType === "industry" && row.categoryName === "oil_gas_energy"
+      )
+    ).toBe(false);
+  });
 });

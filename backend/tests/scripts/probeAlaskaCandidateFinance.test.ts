@@ -164,7 +164,7 @@ describe("probeAlaskaCandidateFinance script", () => {
     });
 
     expect(output).toMatchObject({
-      type: "alaska_candidate_finance_csv_probe",
+      type: "alaska_candidate_finance_probe",
       ts: "2026-06-25T12:00:00.000Z",
       ok: true,
       candidate_match: {

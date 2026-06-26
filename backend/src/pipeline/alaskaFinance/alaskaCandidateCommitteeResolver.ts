@@ -93,6 +93,10 @@ function rowMatchesCandidate(input: {
   return [...input.candidateNameKeys].some((key) => key.length > 0 && haystack.includes(key));
 }
 
+function isCandidateFilerType(value: string): boolean {
+  return normalizeTextKey(value).includes("CANDIDATE");
+}
+
 export function resolveAlaskaCandidateCommittee(input: {
   candidateName: string;
   electionYear: number;
@@ -104,7 +108,11 @@ export function resolveAlaskaCandidateCommittee(input: {
   const filers = new Map<string, FilerAggregate>();
 
   for (const row of input.incomeRows) {
-    if (!isCycleYear({ row, electionYear: input.electionYear }) || !rowMatchesCandidate({ row, candidateNameKeys })) {
+    if (
+      !isCandidateFilerType(row.filerType) ||
+      !isCycleYear({ row, electionYear: input.electionYear }) ||
+      !rowMatchesCandidate({ row, candidateNameKeys })
+    ) {
       continue;
     }
     const candidateFilerId = filerId(row);
