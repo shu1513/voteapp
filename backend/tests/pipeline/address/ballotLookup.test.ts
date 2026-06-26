@@ -4689,6 +4689,256 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced Maryland finance summaries for Maryland candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("MARYLAND_CAMPAIGN_FINANCE_ENABLED", "true");
+    const sourceUrl = "https://campaignfinance.maryland.gov/public/cf/downloads";
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "state_upper",
+            geoid_compact: "24001",
+            district_name: "Maryland Senate District 1",
+            state: "MD",
+            state_fips: "24",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "State Senator",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "state_upper",
+            office_canonical_name: "State Senator",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Justin Gallucci",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: null,
+            state: "MD",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "16018290",
+            election_year: 2026,
+            total_receipts: "100000.00",
+            direct_contribution_total: "75000.00",
+            total_disbursements: "25000.00",
+            cash_on_hand: "50000.00",
+            outside_support_total: "40000.00",
+            outside_oppose_total: "5000.00",
+            source_url: sourceUrl,
+            last_synced_at: "2026-06-23 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$250-$499",
+            amount: "30000.00",
+            contributor_count: "100",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "16020184",
+            committee_name: "Momentum Maryland PAC",
+            support_oppose: "support",
+            amount: "40000.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "16030001",
+            committee_name: "Maryland Taxpayers PAC",
+            support_oppose: "oppose",
+            amount: "5000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "construction",
+            amount: "35000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "5000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "construction",
+            committee_id: "16020184",
+            committee_name: "Momentum Maryland PAC",
+            support_oppose: "support",
+            organization_name: "Old Construction Company LLC",
+            amount: "30000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "MARYLAND_CFS",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "16018290",
+      last_synced_at: "2026-06-23 04:05:00+00",
+      direct_campaign: {
+        total_raised: 75000,
+        total_spent: 25000,
+        cash_on_hand: 50000,
+        debts_owed: null,
+        top_occupations: [],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$250-$499",
+            amount: 30000,
+            contributor_count: 100,
+            source_url: sourceUrl,
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 40000,
+        oppose_total: 5000,
+        top_supporting_groups: [
+          {
+            committee_id: "16020184",
+            committee_name: "Momentum Maryland PAC",
+            support_oppose: "support",
+            amount: 40000,
+            source_url: sourceUrl,
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "16030001",
+            committee_name: "Maryland Taxpayers PAC",
+            support_oppose: "oppose",
+            amount: 5000,
+            source_url: sourceUrl,
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "construction",
+            amount: 35000,
+            contributor_count: 2,
+            source_url: sourceUrl,
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 5000,
+            contributor_count: 1,
+            source_url: sourceUrl,
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [],
+        top_outside_supporting_industries: [
+          {
+            category_name: "construction",
+            amount: 35000,
+            contributor_count: 2,
+            source_url: sourceUrl,
+            explanation:
+              "The Construction category is a top outside-spending support industry because Old Construction Company LLC contributed to Momentum Maryland PAC, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "Old Construction Company LLC",
+                organization_type: "donor",
+                amount: 30000,
+                contributor_count: 1,
+                committee_id: "16020184",
+                committee_name: "Momentum Maryland PAC",
+                source_url: sourceUrl,
+              },
+            ],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(13);
+    const marylandQueries = query.mock.calls.map(([sql]) => String(sql)).filter((sql) => sql.includes("public.md_candidate_finance_"));
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_summaries"))).toBe(true);
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_direct_breakdowns"))).toBe(true);
+    expect(
+      marylandQueries.some((sql) => sql.includes("breakdown.category_type IN ('occupation', 'contribution_size')"))
+    ).toBe(true);
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_outside_groups"))).toBe(true);
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_outside_group_breakdowns"))).toBe(
+      true
+    );
+    const supportingEvidenceQuery = marylandQueries.find((sql) => sql.includes("top_industries_per_group"));
+    expect(supportingEvidenceQuery).toContain("public.finance_label_classifications");
+    expect(supportingEvidenceQuery).toContain("classification.normalized_label");
+    expect(supportingEvidenceQuery).not.toContain("classification.raw_label = breakdown.category_name");
+  });
+
   it("includes locally synced Virginia finance summaries for Virginia candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "true");
