@@ -75,6 +75,7 @@ export type NewJerseyElecContributionRowsInput = {
   electionTypeCode?: string | null;
   nonPacOnly?: boolean;
   rowLimit?: number;
+  start?: number;
 };
 
 export type NewJerseyElecContributionRow = {
@@ -265,6 +266,14 @@ function normalizeContributionRowLimit(value: number | undefined): number {
   return normalized;
 }
 
+function normalizeContributionPageStart(value: number | undefined): number {
+  const normalized = value ?? 0;
+  if (!Number.isInteger(normalized) || normalized < 0) {
+    throw new NewJerseyElecClientError("invalid_request", `NJ ELEC contribution start must be a nonnegative integer`);
+  }
+  return normalized;
+}
+
 function getString(row: Record<string, unknown>, key: string): string | null {
   const value = row[key];
   if (typeof value === "string") {
@@ -407,6 +416,7 @@ export function buildNewJerseyElecContributionRowsForm(input: NewJerseyElecContr
   const entityS = normalizeEntityS(input.entityS);
   const electionYear = normalizeElectionYear(input.electionYear);
   const rowLimit = normalizeContributionRowLimit(input.rowLimit);
+  const start = normalizeContributionPageStart(input.start);
   const body = new URLSearchParams();
 
   body.set("ENTITY_S", String(entityS));
@@ -432,7 +442,7 @@ export function buildNewJerseyElecContributionRowsForm(input: NewJerseyElecContr
   body.set("AmountFrom", "");
   body.set("AmountTo", "");
   body.set("draw", "1");
-  body.set("start", "0");
+  body.set("start", String(start));
   body.set("length", String(rowLimit));
   body.set("order[0][column]", "0");
   body.set("order[0][dir]", "asc");
@@ -592,30 +602,53 @@ export async function getNewJerseyElecContributionRows(
   options: NewJerseyElecClientOptions = {}
 ): Promise<NewJerseyElecContributionRowsResult> {
   const sourceUrl = buildNewJerseyElecContributionRowsSourceUrl(input.entityS);
-  const payload = await fetchNewJerseyElecJson<NewJerseyElecContributionApiResponse>(
-    absoluteNewJerseyElecUrl(NEW_JERSEY_ELEC_CONTRIBUTION_DETAIL_PATH),
-    {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-      },
-      body: buildNewJerseyElecContributionRowsForm(input),
-    },
-    options
-  );
+  const rowLimit = normalizeContributionRowLimit(input.rowLimit);
+  const endpoint = absoluteNewJerseyElecUrl(NEW_JERSEY_ELEC_CONTRIBUTION_DETAIL_PATH);
+  const rows: NewJerseyElecContributionRow[] = [];
+  let recordsTotal = 0;
+  let recordsFiltered = 0;
+  let start = normalizeContributionPageStart(input.start);
 
-  if (!Array.isArray(payload.data)) {
-    throw new NewJerseyElecClientError("bad_response", "NJ ELEC contribution response is missing data rows");
+  while (rows.length < rowLimit) {
+    const pageLength = Math.min(rowLimit - rows.length, NEW_JERSEY_ELEC_MAX_CONTRIBUTION_ROW_LIMIT);
+    const payload = await fetchNewJerseyElecJson<NewJerseyElecContributionApiResponse>(
+      endpoint,
+      {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+        body: buildNewJerseyElecContributionRowsForm({ ...input, rowLimit: pageLength, start }),
+      },
+      options
+    );
+
+    if (!Array.isArray(payload.data)) {
+      throw new NewJerseyElecClientError("bad_response", "NJ ELEC contribution response is missing data rows");
+    }
+
+    recordsTotal = getNumber({ recordsTotal: payload.recordsTotal }, "recordsTotal") ?? recordsTotal;
+    recordsFiltered = getNumber({ recordsFiltered: payload.recordsFiltered }, "recordsFiltered") ?? recordsFiltered;
+
+    const rawRows = payload.data;
+    rows.push(
+      ...rawRows.flatMap((row) => {
+        const mapped = mapNewJerseyElecContributionRow(row as NewJerseyElecContributionApiRow, sourceUrl);
+        return mapped ? [mapped] : [];
+      })
+    );
+
+    if (rawRows.length === 0 || rows.length >= recordsFiltered) {
+      break;
+    }
+    start += rawRows.length;
   }
 
   return {
-    recordsTotal: getNumber({ recordsTotal: payload.recordsTotal }, "recordsTotal") ?? 0,
-    recordsFiltered: getNumber({ recordsFiltered: payload.recordsFiltered }, "recordsFiltered") ?? 0,
-    rows: payload.data.flatMap((row) => {
-      const mapped = mapNewJerseyElecContributionRow(row as NewJerseyElecContributionApiRow, sourceUrl);
-      return mapped ? [mapped] : [];
-    }),
+    recordsTotal,
+    recordsFiltered,
+    rows,
     sourceUrl,
   };
 }

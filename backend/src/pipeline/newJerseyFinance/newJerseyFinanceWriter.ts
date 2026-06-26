@@ -172,10 +172,22 @@ function validateNewJerseyFinanceLinkInput(link: NewJerseyFinanceLinkInput): voi
 
 function validateNewJerseyFinanceSnapshotInput(input: NewJerseyFinanceSnapshotInput): void {
   validateNewJerseyFinanceLinkInput(input.link);
-  const outsideBreakdownCount = input.outsideGroupBreakdowns?.length ?? 0;
-  const outsideGroupCount = input.outsideGroups?.length ?? 0;
-  if (outsideBreakdownCount > 0 && outsideGroupCount === 0) {
+  const outsideGroupBreakdowns = input.outsideGroupBreakdowns ?? [];
+  const outsideGroups = input.outsideGroups ?? [];
+  if (outsideGroupBreakdowns.length > 0 && outsideGroups.length === 0) {
     throw new Error("New Jersey outside group breakdowns require outside groups in the same snapshot");
+  }
+  const outsideGroupKeys = new Set(
+    outsideGroups.map((group) => `${normalizeEntityS(group.outsideEntityS, "New Jersey outside group ENTITY_S")}\u0000${group.supportOppose}`)
+  );
+  for (const breakdown of outsideGroupBreakdowns) {
+    const key = `${normalizeEntityS(
+      breakdown.outsideEntityS,
+      "New Jersey outside group breakdown ENTITY_S"
+    )}\u0000${breakdown.supportOppose}`;
+    if (!outsideGroupKeys.has(key)) {
+      throw new Error("New Jersey outside group breakdowns require matching outside groups in the same snapshot");
+    }
   }
 }
 

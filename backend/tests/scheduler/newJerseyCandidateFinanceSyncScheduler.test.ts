@@ -11,6 +11,8 @@ describe("newJerseyCandidateFinanceSyncScheduler", () => {
     delete process.env.NEW_JERSEY_CAMPAIGN_FINANCE_SYNC_ENABLED;
     delete process.env.NEW_JERSEY_CAMPAIGN_FINANCE_SYNC_DAILY_CRON;
     delete process.env.NEW_JERSEY_CAMPAIGN_FINANCE_SYNC_DAILY_TZ;
+    delete process.env.DATABASE_URL;
+    delete process.env.REDIS_URL;
   });
 
   afterEach(() => {
@@ -20,18 +22,8 @@ describe("newJerseyCandidateFinanceSyncScheduler", () => {
   });
 
   function mockEnv(redisUrl = "redis://localhost:6379/0") {
-    vi.doMock("../../src/config/env.js", () => ({
-      getPipelineEnv: () => ({
-        DATABASE_URL: "postgresql://localhost:5432/test",
-        REDIS_URL: redisUrl,
-        AI_PROVIDER: "openai",
-        AI_MODEL: "gpt-5.4-mini",
-        AI_TIMEOUT_MS: 90000,
-        ANTHROPIC_WEB_SEARCH_MAX_USES: 3,
-        STATE_RESOURCES_PROMPT_VERSION: "state_resources_v2",
-        CENSUS_API_KEYS: [],
-      }),
-    }));
+    process.env.DATABASE_URL = "postgresql://localhost:5432/test";
+    process.env.REDIS_URL = redisUrl;
   }
 
   it("returns a disabled no-op result when the sync flag is off and not forced", async () => {
@@ -104,6 +96,7 @@ describe("newJerseyCandidateFinanceSyncScheduler", () => {
     vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
     process.env.NEW_JERSEY_CAMPAIGN_FINANCE_ENABLED = "true";
     process.env.NEW_JERSEY_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    mockEnv();
 
     const end = vi.fn().mockResolvedValue(undefined);
     const pool = { query: vi.fn(), connect: vi.fn(), end };
@@ -121,7 +114,6 @@ describe("newJerseyCandidateFinanceSyncScheduler", () => {
     });
 
     vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
-    mockEnv();
     vi.doMock("../../src/pipeline/newJerseyFinance/newJerseyCandidateFinanceBatchSync.js", () => ({
       syncDueNewJerseyCandidateFinance,
     }));
@@ -282,5 +274,38 @@ describe("newJerseyCandidateFinanceSyncScheduler", () => {
       "Invalid New Jersey finance sync scheduler maxCandidates"
     );
     expect(Queue).not.toHaveBeenCalled();
+  });
+
+  it("requires explicit Redis and database URLs for enabled background work", async () => {
+    process.env.NEW_JERSEY_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.NEW_JERSEY_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    process.env.DATABASE_URL = "postgresql://localhost:5432/test";
+    delete process.env.REDIS_URL;
+    const Queue = vi.fn();
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+
+    const { enqueueManualNewJerseyCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/newJerseyCandidateFinanceSyncScheduler.js"
+    );
+
+    await expect(enqueueManualNewJerseyCandidateFinanceSyncJob({ maxCandidates: 1 })).rejects.toThrow(
+      "REDIS_URL is required for New Jersey candidate finance sync scheduler"
+    );
+    expect(Queue).not.toHaveBeenCalled();
+
+    vi.resetModules();
+    process.env.REDIS_URL = "redis://localhost:6379/0";
+    delete process.env.DATABASE_URL;
+    const Pool = vi.fn();
+    vi.doMock("pg", () => ({ Pool }));
+
+    const { runNewJerseyCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/newJerseyCandidateFinanceSyncScheduler.js"
+    );
+
+    await expect(runNewJerseyCandidateFinanceSyncJob({ triggeredBy: "manual" })).rejects.toThrow(
+      "DATABASE_URL is required for New Jersey candidate finance sync scheduler"
+    );
+    expect(Pool).not.toHaveBeenCalled();
   });
 });

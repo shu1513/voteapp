@@ -177,4 +177,36 @@ describe("newJerseyCandidateCommitteeResolver", () => {
 
     expect(String(vi.mocked(fetchImpl).mock.calls[0]?.[0])).toContain("LastName=SHERRILL");
   });
+
+  it("searches comma-form candidate names by surname instead of first name", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(
+      jsonResponse([
+        {
+          ENTITY_S: 473742,
+          ENTITYNAME: "SHERRILL, MIKIE",
+          FIRST_NAME: "Mikie",
+          LAST_NAME: "Sherrill",
+          ELECTIONYEAR: 2025,
+          OFFICE: "Governor",
+          ELECTIONTYPECODE: "G",
+        },
+      ])
+    ) as unknown as typeof fetch;
+
+    await expect(
+      searchAndResolveNewJerseyCandidateCommittee(
+        {
+          candidateName: "Sherrill, Mikie",
+          officeScope: "statewide",
+          officeName: "Governor",
+          electionYear: 2025,
+          electionTypeCode: "G",
+        },
+        { fetchImpl, timeoutMs: 1000 }
+      )
+    ).resolves.toMatchObject({ status: "matched", entityS: 473742 });
+
+    expect(String(vi.mocked(fetchImpl).mock.calls[0]?.[0])).toContain("LastName=SHERRILL");
+    expect(String(vi.mocked(fetchImpl).mock.calls[0]?.[0])).not.toContain("LastName=MIKIE");
+  });
 });

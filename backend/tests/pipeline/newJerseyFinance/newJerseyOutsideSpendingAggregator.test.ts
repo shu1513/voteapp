@@ -381,7 +381,7 @@ describe("newJerseyOutsideSpendingAggregator", () => {
       electionYear: 2025,
       outsideGroupEntityS: 477267,
       outsideGroupName: "ONE GIANT LEAP PAC - OGL PAC",
-      filings: [filing(), filing({ docId: 3909739 })],
+      filings: [filing(), filing({ docId: 3909739, period: 4 })],
       elecClient: {
         getReportDownload: async (docId) => ({
           docId,
@@ -416,5 +416,39 @@ describe("newJerseyOutsideSpendingAggregator", () => {
       extractedReportTextCount: 2,
       skippedFilingRowCount: 1,
     });
+  });
+
+  it("uses only the latest public amendment for the same ELEC report identity", async () => {
+    const result = await aggregateNewJerseyOutsideSpendingFromElecFilings({
+      candidateName: "Mikie Sherrill",
+      electionYear: 2025,
+      outsideGroupEntityS: 477267,
+      outsideGroupName: "ONE GIANT LEAP PAC - OGL PAC",
+      filings: [
+        filing({
+          docId: 3909737,
+          amendmentNumber: 0,
+          dateReceived: "2025-12-01T00:00:00",
+        }),
+        filing({
+          docId: 3909738,
+          amendmentNumber: 1,
+          dateReceived: "2025-12-29T00:00:00",
+        }),
+      ],
+      elecClient: {
+        getReportDownload: async (docId) => ({
+          docId,
+          fileNameWithSas: `https://storage.example/${docId}.pdf?sv=short-lived`,
+          sourceUrl: `https://www.njelecefilesearch.com/SearchIndExpReports/?handler=DownloadReport&DocId=${docId}`,
+        }),
+      },
+      textExtractor: async ({ docId }) => (docId === 3909738 ? REPORT_TEXT : "MIKIE SHERRILL FOR GOVERNOR unreadable amount"),
+    });
+
+    expect(result.filingRowCount).toBe(1);
+    expect(result.downloadedReportCount).toBe(1);
+    expect(result.summary?.groups[0]?.docIds).toEqual([3909738]);
+    expect(result.summary?.supportTotal).toBe(100082.02);
   });
 });

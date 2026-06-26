@@ -166,6 +166,35 @@ describe("newJerseyDirectContributionAggregator", () => {
     ]);
   });
 
+  it("normalizes aggregate keys without replacing the display label", () => {
+    const result = aggregateNewJerseyDirectContributions({
+      entityS: 473742,
+      electionYear: 2025,
+      contributions: [
+        contribution({
+          contributorName: "Jane Doe",
+          amount: 100,
+          occupationName: "Attorney",
+          employerName: "Acme & Co.",
+        }),
+        contribution({
+          contribS: 1002,
+          contributorName: "John Roe",
+          amount: 200,
+          occupationName: "ATTORNEY",
+          employerName: "ACME AND CO",
+        }),
+      ],
+    });
+
+    expect(result.directBreakdowns.filter((row) => row.categoryType === "occupation")).toEqual([
+      expect.objectContaining({ categoryName: "Attorney", amount: 300, contributorCount: 2 }),
+    ]);
+    expect(result.directBreakdowns.filter((row) => row.categoryType === "employer")).toEqual([
+      expect.objectContaining({ categoryName: "Acme & Co.", amount: 300, contributorCount: 2 }),
+    ]);
+  });
+
   it("sums cents without floating-point drift", () => {
     const result = aggregateNewJerseyDirectContributions({
       entityS: 473742,
@@ -238,4 +267,3 @@ describe("newJerseyDirectContributionAggregator", () => {
     expect(result.directBreakdowns.filter((row) => row.categoryType === "contribution_size")).toHaveLength(3);
   });
 });
-

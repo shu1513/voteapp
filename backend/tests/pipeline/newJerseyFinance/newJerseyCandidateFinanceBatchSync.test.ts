@@ -66,6 +66,7 @@ describe("newJerseyCandidateFinanceBatchSync", () => {
         "state_lower::state lower chamber legislator",
       ],
     ]);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("lower(regexp_replace(trim(office.scope)");
   });
 
   it("syncs due rows through the ELEC-backed one-candidate sync", async () => {

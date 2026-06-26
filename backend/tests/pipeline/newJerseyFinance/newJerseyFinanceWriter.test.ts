@@ -246,4 +246,33 @@ describe("newJerseyFinanceWriter", () => {
     ).rejects.toThrow("New Jersey outside group breakdowns require outside groups in the same snapshot");
     expect(db.connect).not.toHaveBeenCalled();
   });
+
+  it("rejects outside group breakdowns that do not match a same-snapshot group side", async () => {
+    const db = createTransactionalMockDb();
+
+    await expect(
+      replaceNewJerseyCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        outsideGroups: [
+          {
+            outsideEntityS: 477267,
+            outsideEntityName: "ONE GIANT LEAP PAC - OGL PAC",
+            supportOppose: "support",
+            amount: 100_000,
+          },
+        ],
+        outsideGroupBreakdowns: [
+          {
+            outsideEntityS: 477267,
+            supportOppose: "oppose",
+            categoryType: "industry",
+            categoryName: "finance_investment",
+            amount: 100_000,
+          },
+        ],
+      })
+    ).rejects.toThrow("New Jersey outside group breakdowns require matching outside groups in the same snapshot");
+    expect(db.connect).not.toHaveBeenCalled();
+  });
 });

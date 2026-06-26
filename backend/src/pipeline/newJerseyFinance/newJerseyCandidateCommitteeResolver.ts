@@ -216,12 +216,21 @@ function toCommitteeMatch(accumulator: EntityAccumulator): NewJerseyCandidateCom
 }
 
 function lastNameSearchTerm(candidateName: string): string | null {
-  const keys = [...normalizeNewJerseyCandidateNameKeys(candidateName)];
-  const firstKey = keys[0];
-  if (!firstKey) {
+  const trimmed = candidateName.trim();
+  if (!trimmed) {
     return null;
   }
-  const parts = firstKey.split(" ").filter(Boolean);
+
+  const commaIndex = trimmed.indexOf(",");
+  if (commaIndex > 0) {
+    const commaLastName = normalizePersonName(trimmed.slice(0, commaIndex));
+    if (commaLastName) {
+      return commaLastName;
+    }
+  }
+
+  const normalized = normalizePersonName(trimmed.replace(/\([^()]+\)/g, " "));
+  const parts = normalized.split(" ").filter(Boolean);
   return parts.at(-1) ?? null;
 }
 

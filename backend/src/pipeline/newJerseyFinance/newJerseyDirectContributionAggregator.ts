@@ -133,7 +133,7 @@ function contributionSizeBucket(amount: number): string {
 }
 
 function aggregateKey(categoryType: Aggregate["categoryType"], categoryName: string): string {
-  return `${categoryType}\u0000${categoryName.trim().toUpperCase()}`;
+  return `${categoryType}\u0000${normalizeTextKey(categoryName)}`;
 }
 
 function addAggregate(
@@ -146,7 +146,7 @@ function addAggregate(
   }
 ): void {
   const categoryName = input.categoryName?.trim().replace(/\s+/g, " ") ?? "";
-  if (!categoryName) {
+  if (!categoryName || !normalizeTextKey(categoryName)) {
     return;
   }
 
@@ -271,4 +271,3 @@ export function aggregateNewJerseyDirectContributions(
     skippedContributionRowCount,
   };
 }
-

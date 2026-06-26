@@ -163,7 +163,11 @@ export async function listDueNewJerseyCandidateFinanceSyncRows(
           AND election.election_date >= ($1::date - make_interval(days => $4::int))
           AND election.election_date <= ($1::date + make_interval(days => $5::int))
           AND candidate_election.status NOT IN ('withdrawn', 'lost')
-          AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
+          AND (
+            lower(regexp_replace(trim(office.scope), '\\s+', ' ', 'g')) ||
+            '::' ||
+            lower(regexp_replace(trim(office.canonical_name), '\\s+', ' ', 'g'))
+          ) = ANY($6::text[])
           AND COALESCE(
             NULLIF(trim(candidate.display_name), ''),
             NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')

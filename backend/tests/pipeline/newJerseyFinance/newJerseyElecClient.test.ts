@@ -71,6 +71,7 @@ describe("newJerseyElecClient", () => {
     expect(body.get("ENTITY_S")).toBe("473742");
     expect(body.get("ElectionYears")).toBe("2025");
     expect(body.get("ElectionTypeCodes")).toBe("G");
+    expect(body.get("start")).toBe("0");
     expect(body.get("length")).toBe("500");
     expect(body.get("columns[0][data]")).toBe("CONTRIBUTOR");
     expect(body.get("columns[10][data]")).toBe("CONTRIB_S");
@@ -295,7 +296,7 @@ describe("newJerseyElecClient", () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       jsonResponse({
         recordsTotal: "2",
-        recordsFiltered: "2",
+        recordsFiltered: "1",
         data: [
           {
             CONTRIB_S: 1001,
@@ -316,11 +317,74 @@ describe("newJerseyElecClient", () => {
     );
 
     expect(result.recordsTotal).toBe(2);
+    expect(result.recordsFiltered).toBe(1);
     expect(result.rows).toEqual([expect.objectContaining({ contribS: 1001, amount: 250 })]);
     expect(String(vi.mocked(fetchImpl).mock.calls[0]?.[0])).toBe(
       "https://www.njelecefilesearch.com/api/VWContributionDetail/GetContBitsDataByObject"
     );
     expect(vi.mocked(fetchImpl).mock.calls[0]?.[1]).toMatchObject({ method: "POST" });
+  });
+
+  it("paginates contribution rows until recordsFiltered is satisfied", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({
+          recordsTotal: "3",
+          recordsFiltered: "3",
+          data: [
+            {
+              CONTRIB_S: 1001,
+              ENTITY_S: 473742,
+              ELECTIONYEAR: 2025,
+              CONTRIBUTOR: "Jane Doe",
+              IsIndividual: "Y",
+              CONT_AMT: "250",
+            },
+            {
+              CONTRIB_S: 1002,
+              ENTITY_S: 473742,
+              ELECTIONYEAR: 2025,
+              CONTRIBUTOR: "John Roe",
+              IsIndividual: "Y",
+              CONT_AMT: "500",
+            },
+          ],
+        })
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          recordsTotal: "3",
+          recordsFiltered: "3",
+          data: [
+            {
+              CONTRIB_S: 1003,
+              ENTITY_S: 473742,
+              ELECTIONYEAR: 2025,
+              CONTRIBUTOR: "Pat Smith",
+              IsIndividual: "Y",
+              CONT_AMT: "750",
+            },
+          ],
+        })
+      ) as unknown as typeof fetch;
+
+    const result = await getNewJerseyElecContributionRows(
+      { entityS: 473742, electionYear: 2025, rowLimit: 3 },
+      { fetchImpl, timeoutMs: 1000 }
+    );
+
+    expect(result.recordsTotal).toBe(3);
+    expect(result.recordsFiltered).toBe(3);
+    expect(result.rows.map((row) => row.contribS)).toEqual([1001, 1002, 1003]);
+    expect(vi.mocked(fetchImpl)).toHaveBeenCalledTimes(2);
+
+    const firstBody = vi.mocked(fetchImpl).mock.calls[0]?.[1]?.body as URLSearchParams;
+    const secondBody = vi.mocked(fetchImpl).mock.calls[1]?.[1]?.body as URLSearchParams;
+    expect(firstBody.get("start")).toBe("0");
+    expect(firstBody.get("length")).toBe("3");
+    expect(secondBody.get("start")).toBe("2");
+    expect(secondBody.get("length")).toBe("1");
   });
 
   it("fetches entity filings and report download JSON", async () => {

@@ -2,7 +2,6 @@ import { Queue, Worker, type JobsOptions, type Processor } from "bullmq";
 import type { ConnectionOptions } from "bullmq";
 import { Pool } from "pg";
 
-import { getPipelineEnv } from "../config/env.js";
 import {
   isNewJerseyCampaignFinanceEnabled,
   isNewJerseyCampaignFinanceSyncEnabled,
@@ -99,9 +98,16 @@ function toConnectionOptions(redisUrl: string): ConnectionOptions {
   return opts;
 }
 
+function requireRuntimeEnv(name: "DATABASE_URL" | "REDIS_URL"): string {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    throw new Error(`${name} is required for New Jersey candidate finance sync scheduler`);
+  }
+  return value;
+}
+
 function getQueueConnection(): ConnectionOptions {
-  const env = getPipelineEnv();
-  return toConnectionOptions(env.REDIS_URL);
+  return toConnectionOptions(requireRuntimeEnv("REDIS_URL"));
 }
 
 function getQueueName(): string {
@@ -259,8 +265,7 @@ export async function runNewJerseyCandidateFinanceSyncJob(
     };
   }
 
-  const env = getPipelineEnv();
-  const pool = new Pool({ connectionString: env.DATABASE_URL });
+  const pool = new Pool({ connectionString: requireRuntimeEnv("DATABASE_URL") });
   try {
     const result = await syncDueNewJerseyCandidateFinance({
       db: pool,

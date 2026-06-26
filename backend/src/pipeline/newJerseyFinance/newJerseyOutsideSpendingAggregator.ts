@@ -438,6 +438,42 @@ function reportTextMentionsCandidate(input: { text: string; candidateName: strin
   return false;
 }
 
+function filingRevisionKey(filing: NewJerseyElecFiling): string {
+  const formKey = normalizeTextKey(filing.linkTabFormType ?? filing.filingStatusFormCode ?? filing.formName);
+  if (filing.period === null && !formKey) {
+    return `doc\u0000${filing.docId}`;
+  }
+  return `${filing.entityS}\u0000${filing.period ?? "unknown-period"}\u0000${formKey || "unknown-form"}`;
+}
+
+function filingReceivedTime(filing: NewJerseyElecFiling): number {
+  const parsed = filing.dateReceived ? Date.parse(filing.dateReceived) : Number.NaN;
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function compareFilingRevision(left: NewJerseyElecFiling, right: NewJerseyElecFiling): number {
+  return (
+    (left.amendmentNumber ?? 0) - (right.amendmentNumber ?? 0) ||
+    filingReceivedTime(left) - filingReceivedTime(right) ||
+    left.docId - right.docId
+  );
+}
+
+function latestPublicFilingRevisions(filings: readonly NewJerseyElecFiling[]): NewJerseyElecFiling[] {
+  const latestByRevisionKey = new Map<string, NewJerseyElecFiling>();
+  for (const filing of filings) {
+    if (!filing.publicAccess) {
+      continue;
+    }
+    const key = filingRevisionKey(filing);
+    const existing = latestByRevisionKey.get(key);
+    if (!existing || compareFilingRevision(filing, existing) > 0) {
+      latestByRevisionKey.set(key, filing);
+    }
+  }
+  return [...latestByRevisionKey.values()];
+}
+
 function combineOutsideSpendingResults(input: {
   candidateName: string;
   sourceUrl: string | null;
@@ -506,9 +542,9 @@ export async function aggregateNewJerseyOutsideSpendingFromElecFilings(
     : normalizePositiveInteger(input.maxFilings, DEFAULT_MAX_GROUPS, "maxFilings");
   const getEntityFilings = input.elecClient?.getEntityFilings ?? getNewJerseyElecEntityFilings;
   const getReportDownload = input.elecClient?.getReportDownload ?? getNewJerseyElecReportDownload;
-  const filings = (input.filings ?? (await getEntityFilings({ entityS: outsideGroupEntityS }, input.clientOptions)))
-    .filter((filing) => filing.publicAccess)
-    .slice(0, maxFilings);
+  const filings = latestPublicFilingRevisions(
+    input.filings ?? (await getEntityFilings({ entityS: outsideGroupEntityS }, input.clientOptions))
+  ).slice(0, maxFilings);
 
   const results: NewJerseyOutsideSpendingAggregationResult[] = [];
   let downloadedReportCount = 0;
