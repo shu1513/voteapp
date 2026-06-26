@@ -79,6 +79,7 @@
     "candidates:record:scheduler:trigger": "tsx src/scripts/triggerCandidateRecordRollover.ts",
     "db:migrate": "tsx src/scripts/dbMigrate.ts",
     "db:migrate:status": "tsx src/scripts/dbMigrate.ts --status",
+    "db:migrate:check-files": "tsx src/scripts/dbMigrate.ts --check-files",
     "db:migrate:baseline": "tsx src/scripts/dbMigrate.ts --baseline",
     "db:seed:research-areas": "tsx src/scripts/seedResearchAreas.ts",
     "db:seed:office-research-areas": "tsx src/scripts/seedOfficeResearchAreas.ts",
