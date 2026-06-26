@@ -761,7 +761,15 @@ export async function replaceFloridaCandidateFinanceSnapshot(
   return await withFloridaFinanceTransaction(input.db, async (db) => {
     const { linkId } = await upsertFloridaFinanceLink({ db, link: input.link });
     if (input.summary) {
-      await upsertSummary({ db, linkId, electionYear, summary: input.summary, syncedAt });
+      const summary =
+        input.outsideGroups === undefined
+          ? input.summary
+          : {
+              ...input.summary,
+              outsideSupportTotal: input.summary.outsideSupportTotal ?? 0,
+              outsideOpposeTotal: input.summary.outsideOpposeTotal ?? 0,
+            };
+      await upsertSummary({ db, linkId, electionYear, summary, syncedAt });
     }
 
     for (const breakdown of input.directBreakdowns ?? []) {

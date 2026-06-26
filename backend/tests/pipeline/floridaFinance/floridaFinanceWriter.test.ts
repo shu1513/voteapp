@@ -358,6 +358,44 @@ describe("floridaFinanceWriter", () => {
     ).toBe(false);
   });
 
+  it("clears outside totals when an explicit empty outside group snapshot is written", async () => {
+    const db = createMockDb();
+
+    await replaceFloridaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+      summary: {
+        totalReceipts: 1000,
+        directContributionTotal: 1000,
+        outsideSupportTotal: null,
+        outsideOpposeTotal: null,
+      },
+      outsideGroups: [],
+    });
+
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.fl_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      1000,
+      1000,
+      null,
+      null,
+      0,
+      0,
+      null,
+      "2026-02-03T04:05:06.000Z",
+    ]);
+
+    const groupDeleteCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("DELETE FROM public.fl_candidate_finance_outside_groups")
+    );
+    expect(groupDeleteCall?.[1]).toEqual([LINK_ID, 2026, JSON.stringify([])]);
+  });
+
   it("rejects a supplied PoolClient so it cannot commit an outer transaction", async () => {
     const client = {
       query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
