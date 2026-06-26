@@ -228,6 +228,7 @@ describe("tennesseeCandidateFinanceSyncScheduler", () => {
 
   it("upserts recurring jobs with configured queue payload", async () => {
     process.env.TENNESSEE_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.TENNESSEE_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
     process.env.TENNESSEE_CAMPAIGN_FINANCE_SYNC_DAILY_CRON = "15 9 * * *";
     process.env.TENNESSEE_CAMPAIGN_FINANCE_SYNC_DAILY_TZ = "America/Chicago";
     mockEnv();
@@ -270,6 +271,30 @@ describe("tennesseeCandidateFinanceSyncScheduler", () => {
 
   it("removes the recurring scheduler when the master Tennessee finance flag is disabled", async () => {
     process.env.TENNESSEE_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.TENNESSEE_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    mockEnv();
+
+    const queueInstance = {
+      removeJobScheduler: vi.fn().mockResolvedValue(true),
+      upsertJobScheduler: vi.fn().mockResolvedValue(undefined),
+      close: vi.fn().mockResolvedValue(undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+
+    const { upsertRecurringTennesseeCandidateFinanceSyncJobs } = await import(
+      "../../src/scheduler/tennesseeCandidateFinanceSyncScheduler.js"
+    );
+
+    await upsertRecurringTennesseeCandidateFinanceSyncJobs();
+
+    expect(queueInstance.removeJobScheduler).toHaveBeenCalledWith("tennessee_candidate_finance_sync_daily");
+    expect(queueInstance.upsertJobScheduler).not.toHaveBeenCalled();
+  });
+
+  it("removes the recurring scheduler when the Tennessee finance sync flag is disabled", async () => {
+    process.env.TENNESSEE_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.TENNESSEE_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
     mockEnv();
 
     const queueInstance = {

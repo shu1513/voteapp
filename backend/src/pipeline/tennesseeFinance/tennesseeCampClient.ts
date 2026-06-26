@@ -143,7 +143,11 @@ function stripHtml(value: string): string {
 }
 
 function absoluteTennesseeCampUrl(value: string): string {
-  return new URL(decodeHtmlEntities(value), TENNESSEE_CAMP_BASE_URL).toString();
+  const url = new URL(decodeHtmlEntities(value), TENNESSEE_CAMP_BASE_URL);
+  if (url.origin !== TENNESSEE_CAMP_BASE_URL || !url.pathname.startsWith(`${TENNESSEE_CAMP_PUBLIC_BASE_PATH}/`)) {
+    throw new TennesseeCampClientError("bad_response", "Tennessee CAMP response linked outside the expected CAMP origin");
+  }
+  return url.toString();
 }
 
 function buildTennesseeCampPublicUrl(path: string): string {
@@ -158,14 +162,18 @@ export function buildTennesseeCampContributionSearchUrl(): string {
   return buildTennesseeCampPublicUrl("cesearch.htm");
 }
 
+function splitSetCookieHeader(value: string): string[] {
+  return value.split(/,(?=\s*[^;,=\s]+=)/).map((cookie) => cookie.trim());
+}
+
 function getResponseSetCookies(headers: Headers): string[] {
   const maybeGetSetCookie = headers as Headers & { getSetCookie?: () => string[] };
   const direct = maybeGetSetCookie.getSetCookie?.() ?? [];
   if (direct.length > 0) {
-    return direct;
+    return direct.flatMap(splitSetCookieHeader);
   }
   const combined = headers.get("set-cookie");
-  return combined ? [combined] : [];
+  return combined ? splitSetCookieHeader(combined) : [];
 }
 
 function mergeCookies(existingCookieHeader: string | undefined, setCookies: string[]): string | undefined {
@@ -474,7 +482,8 @@ export function parseTennesseeCampCandidateRecords(
 }
 
 function extractCsvExportUrl(html: string): string | null {
-  const match = /href=["']([^"']*d-1341904-e=1[^"']*6578706f7274=1[^"']*)["']/i.exec(html);
+  // CAMP's DisplayTag export link encodes "export" as its hex field name: 6578706f7274=1.
+  const match = /href=["']([^"']*(?:[?&]|&amp;)6578706f7274=1[^"']*)["']/i.exec(html);
   return match?.[1] ? absoluteTennesseeCampUrl(match[1]) : null;
 }
 

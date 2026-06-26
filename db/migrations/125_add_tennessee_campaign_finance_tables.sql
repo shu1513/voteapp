@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS public.tn_candidate_finance_links (
   CONSTRAINT tn_candidate_finance_links_committee_name_check
     CHECK (committee_name IS NULL OR btrim(committee_name) <> ''),
   CONSTRAINT tn_candidate_finance_links_status_check
-    CHECK (link_status IN ('active', 'inactive')),
+    CHECK (link_status IN ('active', 'inactive', 'ambiguous')),
   CONSTRAINT tn_candidate_finance_links_source_check
     CHECK (link_source IN ('manual', 'tncamp_search')),
   CONSTRAINT tn_candidate_finance_links_source_url_check
@@ -89,9 +89,6 @@ CREATE TABLE IF NOT EXISTS public.tn_candidate_finance_summaries (
   CONSTRAINT tn_candidate_finance_summaries_unique
     UNIQUE (link_id, election_year)
 );
-
-CREATE INDEX IF NOT EXISTS tn_candidate_finance_summaries_lookup_idx
-  ON public.tn_candidate_finance_summaries (link_id, election_year DESC);
 
 DROP TRIGGER IF EXISTS tn_candidate_finance_summaries_set_updated_at
   ON public.tn_candidate_finance_summaries;

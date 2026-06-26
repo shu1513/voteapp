@@ -190,6 +190,70 @@ describe("tennesseeCampClient", () => {
     expect(String(vi.mocked(fetchImpl).mock.calls[1]?.[1]?.body)).toContain("electionYearSelection=225");
   });
 
+  it("preserves multiple Set-Cookie values when the fallback header is combined", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        responseWithText(landingHtml, {
+          headers: { "set-cookie": "JSESSIONID=abc; Path=/, AWSALB=xyz; Path=/" },
+        })
+      )
+      .mockResolvedValueOnce(responseWithText(candidateResultsHtml)) as unknown as typeof fetch;
+
+    await searchTennesseeCampCandidates(
+      { candidateName: "Lee", electionYear: 2022, officeSelection: "2" },
+      { fetchImpl, timeoutMs: 1000 }
+    );
+
+    expect((vi.mocked(fetchImpl).mock.calls[1]?.[1]?.headers as Headers).get("cookie")).toBe(
+      "JSESSIONID=abc; AWSALB=xyz"
+    );
+  });
+
+  it("finds CSV export links without depending on the page-specific displaytag id", async () => {
+    const csv =
+      "Type,Adj,Amount,Date,Election Year,Report Name,Recipient Name,Contributor Name,Contributor Occupation,Contributor Employer\n" +
+      'Monetary,N,$250.00,02/18/2022,2022,1st Quarter,"LEE, BILL","DOE, JANE",ATTORNEY,ACME\n';
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(responseWithText(landingHtml))
+      .mockResolvedValueOnce(
+        responseWithText(
+          '<div class="exportlinks"><a href="/tncamp/public/ceresults.htm?d-999999-e=1&amp;6578706f7274=1">CSV</a></div>'
+        )
+      )
+      .mockResolvedValueOnce(responseWithText(csv)) as unknown as typeof fetch;
+
+    await expect(
+      fetchTennesseeCampContributionRecords(
+        { recipientName: "Lee", electionYear: 2022, reportYear: 2022 },
+        { fetchImpl, timeoutMs: 1000 }
+      )
+    ).resolves.toMatchObject({
+      sourceUrl: "https://apps.tn.gov/tncamp/public/ceresults.htm?d-999999-e=1&6578706f7274=1",
+    });
+  });
+
+  it("rejects off-host CSV export links before sending session cookies", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(responseWithText(landingHtml, { headers: { "set-cookie": "JSESSIONID=abc; Path=/" } }))
+      .mockResolvedValueOnce(
+        responseWithText('<div class="exportlinks"><a href="https://example.test/export?6578706f7274=1">CSV</a></div>')
+      ) as unknown as typeof fetch;
+
+    await expect(
+      fetchTennesseeCampContributionRecords(
+        { recipientName: "Lee", electionYear: 2022, reportYear: 2022 },
+        { fetchImpl, timeoutMs: 1000 }
+      )
+    ).rejects.toMatchObject({
+      code: "bad_response",
+      message: "Tennessee CAMP response linked outside the expected CAMP origin",
+    });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
   it("fetches contribution records through result export links", async () => {
     const csv =
       "Type,Adj,Amount,Date,Election Year,Report Name,Recipient Name,Contributor Name,Contributor Occupation,Contributor Employer\n" +

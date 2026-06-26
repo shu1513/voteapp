@@ -160,7 +160,7 @@ export async function upsertRecurringTennesseeCandidateFinanceSyncJobs(
   jobData: TennesseeCandidateFinanceSyncJobData = {}
 ): Promise<void> {
   assertValidJobOptions(jobData);
-  if (!isTennesseeCampaignFinanceEnabled()) {
+  if (!isTennesseeCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
     const queue = createTennesseeCandidateFinanceSyncSchedulerQueue();
     try {
       await queue.removeJobScheduler(TENNESSEE_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID);

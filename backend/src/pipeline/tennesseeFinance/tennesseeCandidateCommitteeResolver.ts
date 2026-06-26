@@ -139,14 +139,15 @@ function candidateNameNormalized(value: string): string {
 }
 
 function lastNameSearchToken(candidateName: string): string {
-  const trimmed = candidateName.trim();
+  const trimmed = candidateName.replace(/\([^()]+\)/g, " ").trim();
   if (trimmed.includes(",")) {
-    const commaFirst = trimmed.split(",", 1)[0]?.trim();
+    const commaFirst = normalizePersonName(trimmed.split(",", 1)[0]);
     if (commaFirst) {
       return commaFirst;
     }
   }
-  return trimmed.split(/\s+/).filter(Boolean).at(-1) ?? trimmed;
+  const normalized = normalizePersonName(trimmed);
+  return normalized.split(/\s+/).filter(Boolean).at(-1) ?? trimmed;
 }
 
 function recordMatchesCandidateName(input: {

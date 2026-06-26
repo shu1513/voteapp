@@ -388,8 +388,8 @@ export async function syncTennesseeCandidateFinance(
       syncedAt,
       summary: {
         ...directFinance.summary,
-        outsideSupportTotal: outsideFinance.summary?.supportTotal ?? 0,
-        outsideOpposeTotal: outsideFinance.summary?.opposeTotal ?? 0,
+        outsideSupportTotal: outsideFinance.summary?.supportTotal ?? null,
+        outsideOpposeTotal: outsideFinance.summary?.opposeTotal ?? null,
         sourceUrl: directFinance.summary.sourceUrl ?? outsideFinance.summary?.sourceUrl ?? null,
       },
       directBreakdowns: directFinance.directBreakdowns,

@@ -68,6 +68,13 @@ describe("syncDueTennesseeCandidateFinance script", () => {
     ).toThrow("Provide --max-candidates at most once");
   });
 
+  it("rejects unknown flags and positional arguments", () => {
+    expect(() => parseSyncDueTennesseeCandidateFinanceScriptArgs(["--dryrun"])).toThrow("Unknown option: --dryrun");
+    expect(() => parseSyncDueTennesseeCandidateFinanceScriptArgs(["candidate-1"])).toThrow(
+      "Unexpected positional argument: candidate-1"
+    );
+  });
+
   it("formats script output", () => {
     const output = toSyncDueTennesseeCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),

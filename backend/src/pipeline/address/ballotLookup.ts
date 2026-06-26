@@ -667,6 +667,7 @@ type CaliforniaFinanceOutsideGroupRow = {
   committee_name: string;
   support_oppose: "support" | "oppose";
   amount: string | number;
+  expenditure_count?: string | number | null;
   source_url: string | null;
 };
 
@@ -711,6 +712,7 @@ type NewMexicoFinanceOutsideGroupRow = {
   committee_name: string;
   support_oppose: "support" | "oppose";
   amount: string | number;
+  expenditure_count?: string | number | null;
   source_url: string | null;
 };
 
@@ -2376,6 +2378,7 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
       committee_name: row.committee_name,
       support_oppose: row.support_oppose,
       amount: parseFinanceAmount(row.amount) ?? 0,
+      expenditure_count: parseFinanceCount(row.expenditure_count ?? null),
       source_url: firstNonEmptySourceUrl(row.source_url, GENERIC_CA_POWER_SEARCH_IE_SOURCE_URL),
     });
     map.set(key, list);
@@ -3368,6 +3371,7 @@ async function loadNewMexicoCandidateFinanceSummariesByCandidateElection(
       committee_name: row.committee_name,
       support_oppose: row.support_oppose,
       amount: parseFinanceAmount(row.amount) ?? 0,
+      expenditure_count: parseFinanceCount(row.expenditure_count ?? null),
       source_url: firstNonEmptySourceUrl(row.source_url, GENERIC_NEW_MEXICO_CFIS_SOURCE_URL),
     });
     map.set(key, list);
@@ -3831,6 +3835,7 @@ async function loadTexasCandidateFinanceSummariesByCandidateElection(
       committee_name: row.committee_name,
       support_oppose: row.support_oppose,
       amount: parseFinanceAmount(row.amount) ?? 0,
+      expenditure_count: parseFinanceCount(row.expenditure_count ?? null),
       source_url: firstNonEmptySourceUrl(row.source_url, GENERIC_TEXAS_TEC_SOURCE_URL),
     });
     map.set(key, list);
@@ -3860,7 +3865,7 @@ async function loadTexasCandidateFinanceSummariesByCandidateElection(
     const list = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(evidenceKey) ?? [];
     list.push({
       organization_name: row.organization_name,
-      organization_type: "donor",
+      organization_type: row.organization_type ?? "donor",
       amount: parseFinanceAmount(row.amount) ?? 0,
       contributor_count: parseFinanceCount(row.contributor_count),
       committee_id: row.committee_id,
@@ -4224,6 +4229,7 @@ async function loadWashingtonCandidateFinanceSummariesByCandidateElection(
           COALESCE(outside_group.sponsor_name, breakdown.sponsor_id) AS committee_name,
           breakdown.support_oppose,
           breakdown.category_name AS organization_name,
+          breakdown.category_type AS organization_type,
           breakdown.amount,
           breakdown.contributor_count,
           COALESCE(breakdown.source_url, outside_group.source_url) AS source_url,
@@ -4350,7 +4356,7 @@ async function loadWashingtonCandidateFinanceSummariesByCandidateElection(
     const list = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(evidenceKey) ?? [];
     list.push({
       organization_name: row.organization_name,
-      organization_type: "donor",
+      organization_type: row.organization_type ?? "donor",
       amount: parseFinanceAmount(row.amount) ?? 0,
       contributor_count: parseFinanceCount(row.contributor_count),
       committee_id: row.committee_id,
@@ -4842,7 +4848,7 @@ async function loadWisconsinCandidateFinanceSummariesByCandidateElection(
     const list = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(evidenceKey) ?? [];
     list.push({
       organization_name: row.organization_name,
-      organization_type: "donor",
+      organization_type: row.organization_type ?? "donor",
       amount: parseFinanceAmount(row.amount) ?? 0,
       contributor_count: parseFinanceCount(row.contributor_count),
       committee_id: row.committee_id,
@@ -5334,7 +5340,7 @@ async function loadMichiganCandidateFinanceSummariesByCandidateElection(
     const list = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(evidenceKey) ?? [];
     list.push({
       organization_name: row.organization_name,
-      organization_type: "donor",
+      organization_type: row.organization_type ?? "donor",
       amount: parseFinanceAmount(row.amount) ?? 0,
       contributor_count: parseFinanceCount(row.contributor_count),
       committee_id: row.committee_id,

@@ -8,7 +8,7 @@ type ConnectableQueryable = Queryable & {
   connect?: () => Promise<PoolClient>;
 };
 
-export type TennesseeFinanceLinkStatus = "active" | "inactive";
+export type TennesseeFinanceLinkStatus = "active" | "inactive" | "ambiguous";
 export type TennesseeFinanceLinkSource = "manual" | "tncamp_search";
 export type TennesseeFinanceDirectCategoryType = "occupation" | "contribution_size";
 export type TennesseeFinanceOutsideCategoryType = "donor" | "employer" | "occupation" | "industry";
@@ -276,11 +276,11 @@ async function upsertSummary(input: {
       VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
-        total_receipts = COALESCE(EXCLUDED.total_receipts, tn_candidate_finance_summaries.total_receipts),
-        direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, tn_candidate_finance_summaries.direct_contribution_total),
-        outside_support_total = COALESCE(EXCLUDED.outside_support_total, tn_candidate_finance_summaries.outside_support_total),
-        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, tn_candidate_finance_summaries.outside_oppose_total),
-        source_url = COALESCE(EXCLUDED.source_url, tn_candidate_finance_summaries.source_url),
+        total_receipts = EXCLUDED.total_receipts,
+        direct_contribution_total = EXCLUDED.direct_contribution_total,
+        outside_support_total = EXCLUDED.outside_support_total,
+        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        source_url = EXCLUDED.source_url,
         last_synced_at = EXCLUDED.last_synced_at
     `,
     [
@@ -543,8 +543,13 @@ export async function replaceTennesseeCandidateFinanceSnapshot(
     for (const breakdown of input.outsideGroupBreakdowns ?? []) {
       await upsertOutsideGroupBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
     }
-    if (input.outsideGroupBreakdowns) {
-      await deleteStaleOutsideGroupBreakdowns({ db, linkId, electionYear, breakdowns: input.outsideGroupBreakdowns });
+    if (input.outsideGroupBreakdowns || input.outsideGroups) {
+      await deleteStaleOutsideGroupBreakdowns({
+        db,
+        linkId,
+        electionYear,
+        breakdowns: input.outsideGroupBreakdowns ?? [],
+      });
     }
     if (input.outsideGroups) {
       await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups });

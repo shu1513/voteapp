@@ -129,6 +129,8 @@ describe("tennesseeFinanceWriter", () => {
     const summaryCall = db.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.tn_candidate_finance_summaries")
     );
+    expect(String(summaryCall?.[0])).toContain("outside_support_total = EXCLUDED.outside_support_total");
+    expect(String(summaryCall?.[0])).not.toContain("outside_support_total = COALESCE");
     expect(summaryCall?.[1]).toEqual([
       LINK_ID,
       2026,
@@ -165,5 +167,22 @@ describe("tennesseeFinanceWriter", () => {
     expect(db.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.tn_candidate_finance_outside_groups"))).toBe(
       true
     );
+  });
+
+  it("deletes stale outside group breakdowns when outside groups are replaced without PAC breakdown data", async () => {
+    const db = createMockDb();
+
+    await replaceTennesseeCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-07-08T09:10:11.000Z"),
+      outsideGroups: [],
+    });
+
+    const staleBreakdownDelete = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("DELETE FROM public.tn_candidate_finance_outside_group_breakdowns")
+    );
+    expect(staleBreakdownDelete).toBeDefined();
+    expect(staleBreakdownDelete?.[1]).toEqual([LINK_ID, 2026, "[]"]);
   });
 });

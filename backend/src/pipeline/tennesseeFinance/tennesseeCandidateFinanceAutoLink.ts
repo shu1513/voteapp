@@ -135,7 +135,7 @@ export async function listTennesseeCandidateElectionsMissingFinanceLinks(
           FROM public.tn_candidate_finance_links AS link
           WHERE link.candidate_id = candidate.id
             AND link.election_id = election.id
-            AND link.link_status = 'active'
+            AND link.link_status IN ('active', 'ambiguous')
         )
       ORDER BY election.election_date ASC, candidate.display_name ASC NULLS LAST, candidate.id ASC
       LIMIT $2::int
@@ -170,6 +170,46 @@ export async function autoLinkTennesseeCandidateFinanceForCandidateElection(inpu
     },
     input.clientOptions
   );
+
+  if (resolution.status === "ambiguous") {
+    console.warn("Tennessee finance auto-link found ambiguous CAMP candidate matches:", {
+      candidateId: input.candidateElection.candidateId,
+      electionId: input.candidateElection.electionId,
+      candidateName: input.candidateElection.candidateName,
+      matches: resolution.matches.map((match) => ({
+        campCandidateId: match.campCandidateId,
+        ownerName: match.ownerName,
+        candidateName: match.candidateName,
+        officeSought: match.officeSought,
+        district: match.district,
+      })),
+    });
+    await upsertTennesseeFinanceLink({
+      db: input.db,
+      link: {
+        candidateId: input.candidateElection.candidateId,
+        electionId: input.candidateElection.electionId,
+        electionYear: input.candidateElection.electionYear,
+        candidateNameNormalized: normalizeCandidateNameForStorage(input.candidateElection.candidateName),
+        officeName: input.candidateElection.officeName,
+        district: input.candidateElection.district,
+        campCandidateId: "AMBIGUOUS",
+        ownerName: input.candidateElection.candidateName,
+        committeeName: "Ambiguous Tennessee CAMP match",
+        linkStatus: "ambiguous",
+        linkSource: "tncamp_search",
+        sourceUrl: resolution.matches[0]?.sourceUrl ?? null,
+        reportListUrl: null,
+        lastVerifiedAt: input.now,
+      },
+    });
+    return {
+      candidateId: input.candidateElection.candidateId,
+      electionId: input.candidateElection.electionId,
+      status: resolution.status,
+      reason: resolution.reason,
+    };
+  }
 
   if (resolution.status !== "matched") {
     return {

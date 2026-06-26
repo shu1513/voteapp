@@ -45,7 +45,7 @@ type IndustryAggregate = {
   supportOppose: TennesseeSupportOppose;
   industrySlug: string;
   amountCents: number;
-  labelKeys: Set<string>;
+  contributorKeys: Set<string>;
 };
 
 const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 50;
@@ -315,7 +315,7 @@ function toBreakdowns(input: {
         categoryType: "industry",
         categoryName: industry.industrySlug,
         amount: centsToDollars(industry.amountCents),
-        contributorCount: industry.labelKeys.size,
+        contributorCount: industry.contributorKeys.size,
         sourceUrl: input.sourceUrl,
       });
     }
@@ -447,11 +447,12 @@ export function aggregateTennesseeOutsideGroupContributions(
       supportOppose: label.supportOppose,
       industrySlug: classification.industrySlug,
     });
-    const classificationKey = `${label.categoryType}\u0000${label.normalizedName}`;
     const existing = industries.get(key);
     if (existing) {
       existing.amountCents += label.amountCents;
-      existing.labelKeys.add(classificationKey);
+      for (const contributorKey of label.contributorKeys) {
+        existing.contributorKeys.add(contributorKey);
+      }
       continue;
     }
     industries.set(key, {
@@ -459,7 +460,7 @@ export function aggregateTennesseeOutsideGroupContributions(
       supportOppose: label.supportOppose,
       industrySlug: classification.industrySlug,
       amountCents: label.amountCents,
-      labelKeys: new Set([classificationKey]),
+      contributorKeys: new Set(label.contributorKeys),
     });
   }
 

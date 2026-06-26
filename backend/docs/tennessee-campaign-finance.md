@@ -29,6 +29,7 @@ Scripts:
 - `npm run tennessee-candidates:finance:scheduler:worker`
 - `npm run tennessee-candidates:finance:scheduler:trigger`
 - `npm run tennessee-candidates:finance:sync-due`
+- `npm run tennessee-candidates:finance:probe`
 
 When `TENNESSEE_CAMPAIGN_FINANCE_ENABLED=false`, the recurring scheduler upsert removes the Tennessee job scheduler and the worker exits without processing. When `TENNESSEE_CAMPAIGN_FINANCE_SYNC_ENABLED=false`, manual enqueue and job execution are no-ops unless explicitly forced, and force still cannot bypass the master Tennessee flag.
 

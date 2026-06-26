@@ -42,6 +42,12 @@ describe("tennesseeOutsideGroupContributionAggregator", () => {
           contributorEmployer: "HCA Hospital",
           contributorOccupation: "Physician",
         }),
+        contribution({
+          amount: 20000,
+          contributorName: "SMITH, JOHN",
+          contributorEmployer: "HCA Hospital",
+          contributorOccupation: "Physician",
+        }),
         contribution({ recipientName: "OTHER PAC", contributorName: "ENERGY TRANSFER" }),
       ],
       sourceUrl: "https://apps.tn.gov/tncamp/public/ceresults.htm?export=1",
@@ -50,8 +56,8 @@ describe("tennesseeOutsideGroupContributionAggregator", () => {
     });
 
     expect(result).toMatchObject({
-      matchedContributionRowCount: 3,
-      includedContributionRowCount: 3,
+      matchedContributionRowCount: 4,
+      includedContributionRowCount: 4,
       skippedContributionRowCount: 0,
     });
     expect(result.outsideGroupBreakdowns).toEqual([
@@ -78,8 +84,8 @@ describe("tennesseeOutsideGroupContributionAggregator", () => {
         supportOppose: "support",
         categoryType: "employer",
         categoryName: "HCA Hospital",
-        amount: 30000,
-        contributorCount: 1,
+        amount: 50000,
+        contributorCount: 2,
         sourceUrl: "https://apps.tn.gov/tncamp/public/ceresults.htm?export=1",
       },
       {
@@ -87,8 +93,8 @@ describe("tennesseeOutsideGroupContributionAggregator", () => {
         supportOppose: "support",
         categoryType: "occupation",
         categoryName: "Physician",
-        amount: 30000,
-        contributorCount: 1,
+        amount: 50000,
+        contributorCount: 2,
         sourceUrl: "https://apps.tn.gov/tncamp/public/ceresults.htm?export=1",
       },
       {
@@ -105,8 +111,8 @@ describe("tennesseeOutsideGroupContributionAggregator", () => {
         supportOppose: "support",
         categoryType: "industry",
         categoryName: "healthcare",
-        amount: 30000,
-        contributorCount: 1,
+        amount: 50000,
+        contributorCount: 2,
         sourceUrl: "https://apps.tn.gov/tncamp/public/ceresults.htm?export=1",
       },
       {

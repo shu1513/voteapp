@@ -2,6 +2,7 @@ import type { Pool, PoolClient } from "pg";
 
 import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
 import {
+  buildTennesseeCampContributionSearchUrl,
   fetchTennesseeCampContributionRecords,
   fetchTennesseeCampExpenditureRecords,
   fetchTennesseeCampPacContributionRecords,
@@ -24,6 +25,19 @@ import { TENNESSEE_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./tennesseeFinanceEligib
 import type { TennesseeFinanceLinkSource } from "./tennesseeFinanceWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
+type TennesseeCampContributionFetchResult = {
+  sourceUrl: string | null;
+  records: TennesseeCampContributionRecord[];
+};
+type TennesseeCampExpenditureFetchResult = {
+  sourceUrl: string | null;
+  records: TennesseeCampExpenditureRecord[];
+};
+
+type TennesseeCandidateFinanceExportCache = {
+  independentExpendituresByReportYear: Map<string, Promise<TennesseeCampExpenditureFetchResult>>;
+  pacContributionsByRecipientReportYear: Map<string, Promise<TennesseeCampContributionFetchResult>>;
+};
 
 export type TennesseeCandidateFinanceDueRow = {
   candidateId: string;
@@ -139,19 +153,31 @@ function normalizeDistrict(value: string | null): string | null {
   return trimmed ? trimmed : null;
 }
 
+function normalizeSearchToken(value: string): string {
+  return value
+    .replace(/\([^()]+\)/g, " ")
+    .replace(/\b(JR|SR|II|III|IV|V)\.?\b/gi, " ")
+    .replace(/[.,]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function lastNameSearchToken(candidateName: string): string {
-  const trimmed = candidateName.trim();
+  const trimmed = candidateName.replace(/\([^()]+\)/g, " ").trim();
   if (trimmed.includes(",")) {
-    const commaFirst = trimmed.split(",", 1)[0]?.trim();
+    const commaFirst = normalizeSearchToken(trimmed.split(",", 1)[0] ?? "");
     if (commaFirst) {
       return commaFirst;
     }
   }
-  return trimmed.split(/\s+/).filter(Boolean).at(-1) ?? trimmed;
+  const normalized = normalizeSearchToken(trimmed);
+  return normalized.split(/\s+/).filter(Boolean).at(-1) ?? trimmed;
 }
 
 function contributionRecordKey(contribution: TennesseeCampContributionRecord): string {
   return [
+    contribution.electionYear,
+    contribution.reportName,
     contribution.type,
     contribution.adjustment,
     contribution.amount,
@@ -165,6 +191,8 @@ function contributionRecordKey(contribution: TennesseeCampContributionRecord): s
 
 function expenditureRecordKey(expenditure: TennesseeCampExpenditureRecord): string {
   return [
+    expenditure.electionYear,
+    expenditure.reportName,
     expenditure.type,
     expenditure.adjustment,
     expenditure.amount,
@@ -175,6 +203,75 @@ function expenditureRecordKey(expenditure: TennesseeCampExpenditureRecord): stri
     expenditure.candidateFor,
     expenditure.supportOpposeCode,
   ].join("\u0000");
+}
+
+function createTennesseeCandidateFinanceExportCache(): TennesseeCandidateFinanceExportCache {
+  return {
+    independentExpendituresByReportYear: new Map(),
+    pacContributionsByRecipientReportYear: new Map(),
+  };
+}
+
+function exportCacheKey(...parts: readonly (string | number | null | undefined)[]): string {
+  return parts.map((part) => String(part ?? "")).join("\u0000");
+}
+
+function mergeTennesseeCampSourceUrl(existing: string | null, next: string | null): string | null {
+  if (!existing) {
+    return next;
+  }
+  if (!next || existing === next) {
+    return existing;
+  }
+  return buildTennesseeCampContributionSearchUrl();
+}
+
+function fetchCachedIndependentExpenditures(
+  input: { electionYear: number; reportYear: number },
+  clientOptions: TennesseeCampClientOptions | undefined,
+  exportCache: TennesseeCandidateFinanceExportCache | undefined
+): Promise<TennesseeCampExpenditureFetchResult> {
+  if (!exportCache) {
+    return fetchTennesseeCampExpenditureRecords(
+      {
+        electionYear: input.electionYear,
+        reportYear: input.reportYear,
+        expenditureType: "independent",
+      },
+      clientOptions
+    );
+  }
+
+  const key = exportCacheKey(input.electionYear, input.reportYear, "independent");
+  const cached =
+    exportCache.independentExpendituresByReportYear.get(key) ??
+    fetchTennesseeCampExpenditureRecords(
+      {
+        electionYear: input.electionYear,
+        reportYear: input.reportYear,
+        expenditureType: "independent",
+      },
+      clientOptions
+    );
+  exportCache.independentExpendituresByReportYear.set(key, cached);
+  return cached;
+}
+
+function fetchCachedPacContributions(
+  input: { recipientName: string; electionYear: number; reportYear: number },
+  clientOptions: TennesseeCampClientOptions | undefined,
+  exportCache: TennesseeCandidateFinanceExportCache | undefined
+): Promise<TennesseeCampContributionFetchResult> {
+  if (!exportCache) {
+    return fetchTennesseeCampPacContributionRecords(input, clientOptions);
+  }
+
+  const key = exportCacheKey(input.recipientName.trim().toUpperCase(), input.electionYear, input.reportYear);
+  const cached =
+    exportCache.pacContributionsByRecipientReportYear.get(key) ??
+    fetchTennesseeCampPacContributionRecords(input, clientOptions);
+  exportCache.pacContributionsByRecipientReportYear.set(key, cached);
+  return cached;
 }
 
 function mapDueRow(row: TennesseeCandidateFinanceDueQueryRow): TennesseeCandidateFinanceDueRow {
@@ -201,6 +298,7 @@ export async function loadTennesseeContributionDataForCandidate(input: {
   ownerName: string;
   electionYear: number;
   clientOptions?: TennesseeCampClientOptions;
+  exportCache?: TennesseeCandidateFinanceExportCache;
 }): Promise<TennesseeCandidateFinanceContributionData> {
   const recordsByKey = new Map<string, TennesseeCampContributionRecord>();
   const expendituresByKey = new Map<string, TennesseeCampExpenditureRecord>();
@@ -217,19 +315,19 @@ export async function loadTennesseeContributionDataForCandidate(input: {
       },
       input.clientOptions
     );
-    sourceUrl ??= result.sourceUrl;
+    sourceUrl = mergeTennesseeCampSourceUrl(sourceUrl, result.sourceUrl);
     for (const contribution of result.records) {
       recordsByKey.set(contributionRecordKey(contribution), contribution);
     }
-    const expenditureResult = await fetchTennesseeCampExpenditureRecords(
+    const expenditureResult = await fetchCachedIndependentExpenditures(
       {
         electionYear: input.electionYear,
         reportYear,
-        expenditureType: "independent",
       },
-      input.clientOptions
+      input.clientOptions,
+      input.exportCache
     );
-    expenditureSourceUrl ??= expenditureResult.sourceUrl;
+    expenditureSourceUrl = mergeTennesseeCampSourceUrl(expenditureSourceUrl, expenditureResult.sourceUrl);
     for (const expenditure of expenditureResult.records) {
       expendituresByKey.set(expenditureRecordKey(expenditure), expenditure);
     }
@@ -247,15 +345,16 @@ export async function loadTennesseeContributionDataForCandidate(input: {
   ];
   for (const committeeName of outsideCommitteeNames) {
     for (const reportYear of [input.electionYear - 1, input.electionYear].filter((year) => year >= 2000)) {
-      const result = await fetchTennesseeCampPacContributionRecords(
+      const result = await fetchCachedPacContributions(
         {
           recipientName: committeeName,
           electionYear: input.electionYear,
           reportYear,
         },
-        input.clientOptions
+        input.clientOptions,
+        input.exportCache
       );
-      outsideContributionSourceUrl ??= result.sourceUrl;
+      outsideContributionSourceUrl = mergeTennesseeCampSourceUrl(outsideContributionSourceUrl, result.sourceUrl);
       for (const contribution of result.records) {
         outsideContributionRecordsByKey.set(contributionRecordKey(contribution), contribution);
       }
@@ -392,7 +491,15 @@ export async function syncDueTennesseeCandidateFinance(
   const dryRun = input.dryRun === true;
   const shouldAutoLinkMissingLinks = !dryRun && input.autoLinkMissingLinks !== false;
   const syncFn = input.syncTennesseeCandidateFinanceFn ?? syncTennesseeCandidateFinance;
-  const loadContributionData = input.loadContributionDataForCandidate ?? loadTennesseeContributionDataForCandidate;
+  const exportCache = input.loadContributionDataForCandidate ? undefined : createTennesseeCandidateFinanceExportCache();
+  const loadContributionData =
+    input.loadContributionDataForCandidate ??
+    ((loaderInput: {
+      candidateName: string;
+      ownerName: string;
+      electionYear: number;
+      clientOptions?: TennesseeCampClientOptions;
+    }) => loadTennesseeContributionDataForCandidate({ ...loaderInput, exportCache }));
   let autoLinkAttemptedCount = 0;
   let autoLinkLinkedCount = 0;
 
