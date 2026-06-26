@@ -113,6 +113,19 @@ describe("alaskaApocClient", () => {
     expect(fetchFn).toHaveBeenCalledTimes(2);
   });
 
+  it("rejects non-HTTPS APOC CSV URLs", async () => {
+    const fetchFn = vi.fn();
+
+    await expect(
+      fetchAlaskaApocCsv("http://aws.state.ak.us/ApocReports/CampaignDisclosure/CDIncome.aspx", {
+        fetchFn,
+        timeoutMs: 1000,
+        retryCount: 0,
+      })
+    ).rejects.toThrow("Only https is allowed");
+    expect(fetchFn).not.toHaveBeenCalled();
+  });
+
   it("rejects APOC HTML report pages instead of treating them as empty CSV exports", async () => {
     const fetchFn = vi.fn().mockResolvedValue(
       new Response("<!doctype html><html><body><form><table><tr><td>No CSV here</td></tr></table></form></body></html>", {

@@ -294,8 +294,8 @@ function normalizeApocUrl(value: string, label: string): string {
     throw new Error(`Missing Alaska APOC ${label}`);
   }
   const parsed = new URL(trimmed);
-  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
-    throw new Error(`Unsupported Alaska APOC ${label} protocol: ${parsed.protocol}`);
+  if (parsed.protocol !== "https:") {
+    throw new Error(`Unsupported Alaska APOC ${label} protocol: ${parsed.protocol}. Only https is allowed.`);
   }
   return parsed.toString();
 }
