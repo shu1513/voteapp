@@ -16,6 +16,9 @@ import {
   isConnecticutEcrisRawDataRefreshEnabled,
   isDistrictOfColumbiaCampaignFinanceEnabled,
   isDistrictOfColumbiaCampaignFinanceSyncEnabled,
+  isFloridaCampaignFinanceBrowserExportEnabled,
+  isFloridaCampaignFinanceEnabled,
+  isFloridaCampaignFinanceSyncEnabled,
   isNewMexicoCampaignFinanceEnabled,
   isNewMexicoCampaignFinanceSyncEnabled,
   isNewMexicoCfisRawDataRefreshEnabled,
@@ -59,6 +62,9 @@ const ORIGINAL_WASHINGTON_FINANCE_VALUE = process.env.WASHINGTON_CAMPAIGN_FINANC
 const ORIGINAL_WASHINGTON_FINANCE_SYNC_VALUE = process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_DC_FINANCE_VALUE = process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_DC_FINANCE_SYNC_VALUE = process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_FLORIDA_FINANCE_VALUE = process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_FLORIDA_FINANCE_SYNC_VALUE = process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_FLORIDA_BROWSER_EXPORT_VALUE = process.env.FLORIDA_CAMPAIGN_FINANCE_BROWSER_EXPORT_ENABLED;
 
 describe("featureFlags", () => {
   afterEach(() => {
@@ -201,6 +207,21 @@ describe("featureFlags", () => {
       delete process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED;
     } else {
       process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_DC_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_FLORIDA_FINANCE_VALUE === undefined) {
+      delete process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_FLORIDA_FINANCE_VALUE;
+    }
+    if (ORIGINAL_FLORIDA_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_FLORIDA_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_FLORIDA_BROWSER_EXPORT_VALUE === undefined) {
+      delete process.env.FLORIDA_CAMPAIGN_FINANCE_BROWSER_EXPORT_ENABLED;
+    } else {
+      process.env.FLORIDA_CAMPAIGN_FINANCE_BROWSER_EXPORT_ENABLED = ORIGINAL_FLORIDA_BROWSER_EXPORT_VALUE;
     }
   });
 
@@ -611,6 +632,46 @@ describe("featureFlags", () => {
 
     expect(isTexasTecRawDataRefreshEnabled()).toBe(false);
     expect(isTexasTecRawDataRefreshEnabled(true)).toBe(true);
+  });
+
+  it("disables Florida campaign finance by default", () => {
+    delete process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    delete process.env.FLORIDA_CAMPAIGN_FINANCE_BROWSER_EXPORT_ENABLED;
+
+    expect(isFloridaCampaignFinanceEnabled()).toBe(false);
+    expect(isFloridaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isFloridaCampaignFinanceBrowserExportEnabled()).toBe(false);
+  });
+
+  it("requires the Florida campaign finance master flag before sync or browser export can run", () => {
+    process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    process.env.FLORIDA_CAMPAIGN_FINANCE_BROWSER_EXPORT_ENABLED = "true";
+
+    expect(isFloridaCampaignFinanceEnabled()).toBe(false);
+    expect(isFloridaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isFloridaCampaignFinanceSyncEnabled(true)).toBe(false);
+    expect(isFloridaCampaignFinanceBrowserExportEnabled()).toBe(false);
+    expect(isFloridaCampaignFinanceBrowserExportEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Florida browser export flag", () => {
+    process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.FLORIDA_CAMPAIGN_FINANCE_BROWSER_EXPORT_ENABLED = "false";
+
+    expect(isFloridaCampaignFinanceBrowserExportEnabled()).toBe(false);
+    expect(isFloridaCampaignFinanceBrowserExportEnabled(true)).toBe(true);
+  });
+
+  it("enables Florida campaign finance sync and browser export when their flags are enabled", () => {
+    process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    process.env.FLORIDA_CAMPAIGN_FINANCE_BROWSER_EXPORT_ENABLED = "true";
+
+    expect(isFloridaCampaignFinanceEnabled()).toBe(true);
+    expect(isFloridaCampaignFinanceSyncEnabled()).toBe(true);
+    expect(isFloridaCampaignFinanceBrowserExportEnabled()).toBe(true);
   });
 
   it("disables Washington campaign finance by default", () => {

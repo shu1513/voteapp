@@ -197,6 +197,24 @@ export function isTexasTecRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+export function isFloridaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("FLORIDA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isFloridaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isFloridaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isFloridaCampaignFinanceBrowserExportEnabled(force = false): boolean {
+  return (
+    isFloridaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("FLORIDA_CAMPAIGN_FINANCE_BROWSER_EXPORT_ENABLED", false))
+  );
+}
+
 export function isWashingtonCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("WASHINGTON_CAMPAIGN_FINANCE_ENABLED", false);
 }
