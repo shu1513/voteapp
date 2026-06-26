@@ -1,0 +1,427 @@
+import type { Pool, PoolClient } from "pg";
+
+import {
+  classifyFinanceLabel,
+  normalizeFinanceLabel,
+  type FinanceLabelClassification,
+} from "../finance/financeLabelClassifier.js";
+import {
+  buildFinanceIndustryBreakdownsFromClassifications,
+  mergeFinanceLabelClassification,
+  resolveFinanceIndustryClassifications,
+  type FinanceIndustryClassifier,
+} from "../finance/financeIndustryClassificationService.js";
+import {
+  aggregateTennesseeDirectContributions,
+  type TennesseeDirectContributionAggregationResult,
+} from "./tennesseeDirectContributionAggregator.js";
+import {
+  aggregateTennesseeOutsideGroupContributions,
+  type TennesseeFinanceOutsideGroupBreakdown,
+} from "./tennesseeOutsideGroupContributionAggregator.js";
+import {
+  aggregateTennesseeOutsideSpending,
+  type TennesseeOutsideSpendingAggregationResult,
+} from "./tennesseeOutsideSpendingAggregator.js";
+import type { TennesseeCampContributionRecord, TennesseeCampExpenditureRecord } from "./tennesseeCampClient.js";
+import {
+  replaceTennesseeCandidateFinanceSnapshot,
+  type TennesseeFinanceLinkInput,
+  type TennesseeFinanceLinkSource,
+  type TennesseeFinanceOutsideGroupBreakdownInput,
+  type TennesseeFinanceOutsideGroupInput,
+} from "./tennesseeFinanceWriter.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+
+export type TennesseeCandidateFinanceSyncInput = {
+  db: Queryable;
+  candidateId: string;
+  electionId: string;
+  candidateName: string;
+  electionYear: number;
+  officeName: string;
+  district?: string | null;
+  campCandidateId: string;
+  ownerName: string;
+  committeeName?: string | null;
+  linkSource?: TennesseeFinanceLinkSource;
+  sourceUrl?: string | null;
+  reportListUrl?: string | null;
+  contributions: readonly TennesseeCampContributionRecord[];
+  contributionSourceUrl?: string | null;
+  expenditures?: readonly TennesseeCampExpenditureRecord[];
+  expenditureSourceUrl?: string | null;
+  outsideGroupContributionRecords?: readonly TennesseeCampContributionRecord[];
+  outsideContributionSourceUrl?: string | null;
+  now?: Date;
+  dryRun?: boolean;
+  directMaxBreakdownsPerCategory?: number;
+  outsideMaxGroups?: number;
+  outsideMaxBreakdownsPerCategory?: number;
+  financeIndustryClassifier?: FinanceIndustryClassifier;
+  aiClassificationMinAmount?: number;
+};
+
+export type TennesseeCandidateFinanceSyncResult = {
+  candidateId: string;
+  electionId: string;
+  electionYear: number;
+  dryRun: boolean;
+  linkWritten: boolean;
+  summaryWritten: boolean;
+  directBreakdownsWritten: number;
+  outsideGroupsWritten: number;
+  outsideGroupBreakdownsWritten: number;
+  totalReceipts: number;
+  directContributionTotal: number;
+  outsideSupportTotal: number | null;
+  outsideOpposeTotal: number | null;
+  matchedContributionRowCount: number;
+  includedContributionRowCount: number;
+  skippedContributionRowCount: number;
+  matchedExpenditureRowCount: number;
+  includedExpenditureRowCount: number;
+  skippedExpenditureRowCount: number;
+  matchedOutsideContributionRowCount: number;
+  includedOutsideContributionRowCount: number;
+  skippedOutsideContributionRowCount: number;
+  outsideGroupCount: number;
+};
+
+const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
+const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 20;
+const DEFAULT_OUTSIDE_MAX_GROUPS = 20;
+
+function requireNonEmpty(value: string, fieldName: string): string {
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
+    throw new Error(`${fieldName} is required`);
+  }
+  return trimmed;
+}
+
+function normalizeElectionYear(value: number): number {
+  if (!Number.isInteger(value) || value < 2000 || value > 2100) {
+    throw new Error(`Invalid Tennessee finance election year: ${value}`);
+  }
+  return value;
+}
+
+function normalizeCandidateNameForStorage(value: string): string {
+  return requireNonEmpty(value, "candidate name").replace(/\s+/g, " ").toUpperCase();
+}
+
+function normalizeTimestamp(value: Date | undefined): Date {
+  const normalized = value ?? new Date();
+  if (Number.isNaN(normalized.getTime())) {
+    throw new Error("Invalid Tennessee finance sync timestamp");
+  }
+  return normalized;
+}
+
+function normalizeAiClassificationMinAmount(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT;
+  if (!Number.isFinite(normalized) || normalized < 0) {
+    throw new Error(`Invalid Tennessee finance AI classification minimum amount: ${value}`);
+  }
+  return normalized;
+}
+
+function toFinanceLink(input: TennesseeCandidateFinanceSyncInput & {
+  electionYear: number;
+  now: Date;
+}): TennesseeFinanceLinkInput {
+  return {
+    candidateId: requireNonEmpty(input.candidateId, "candidate id"),
+    electionId: requireNonEmpty(input.electionId, "election id"),
+    electionYear: input.electionYear,
+    candidateNameNormalized: normalizeCandidateNameForStorage(input.candidateName),
+    officeName: requireNonEmpty(input.officeName, "office name"),
+    district: input.district ?? null,
+    campCandidateId: requireNonEmpty(input.campCandidateId, "Tennessee CAMP candidate id"),
+    ownerName: requireNonEmpty(input.ownerName, "Tennessee CAMP owner name"),
+    committeeName: input.committeeName ?? null,
+    linkSource: input.linkSource ?? "manual",
+    sourceUrl: input.sourceUrl ?? null,
+    reportListUrl: input.reportListUrl ?? null,
+    lastVerifiedAt: input.now,
+  };
+}
+
+function aggregateDirect(input: {
+  ownerName: string;
+  candidateName: string;
+  electionYear: number;
+  contributions: readonly TennesseeCampContributionRecord[];
+  contributionSourceUrl: string | null | undefined;
+  linkSourceUrl: string | null | undefined;
+  maxBreakdownsPerCategory: number | undefined;
+}): TennesseeDirectContributionAggregationResult {
+  return aggregateTennesseeDirectContributions({
+    candidate: {
+      ownerName: input.ownerName,
+      candidateName: input.candidateName,
+    },
+    electionYear: input.electionYear,
+    contributions: input.contributions,
+    sourceUrl: input.contributionSourceUrl ?? input.linkSourceUrl ?? null,
+    maxBreakdownsPerCategory: input.maxBreakdownsPerCategory,
+  });
+}
+
+function aggregateOutside(input: {
+  ownerName: string;
+  candidateName: string;
+  electionYear: number;
+  expenditures: readonly TennesseeCampExpenditureRecord[];
+  expenditureSourceUrl: string | null | undefined;
+  linkSourceUrl: string | null | undefined;
+  maxGroups: number | undefined;
+}): TennesseeOutsideSpendingAggregationResult {
+  return aggregateTennesseeOutsideSpending({
+    candidateName: input.candidateName,
+    ownerName: input.ownerName,
+    electionYear: input.electionYear,
+    expenditureRecords: input.expenditures,
+    sourceUrl: input.expenditureSourceUrl ?? input.linkSourceUrl ?? null,
+    maxGroups: input.maxGroups,
+  });
+}
+
+function toOutsideGroups(
+  groups: NonNullable<TennesseeOutsideSpendingAggregationResult["summary"]>["groups"]
+): TennesseeFinanceOutsideGroupInput[] {
+  return groups.map((group) => ({
+    committeeKey: group.committeeKey,
+    committeeName: group.committeeName,
+    supportOppose: group.supportOppose,
+    amount: group.amount,
+    expenditureCount: group.expenditureCount,
+    sourceUrl: group.sourceUrl,
+  }));
+}
+
+function outsideBreakdownKey(input: TennesseeFinanceOutsideGroupBreakdownInput): string {
+  const categoryKey =
+    input.categoryType === "donor" || input.categoryType === "employer"
+      ? normalizeFinanceLabel(input.categoryName, input.categoryType)
+      : input.categoryName.trim().toUpperCase();
+  return `${input.committeeKey.trim().toUpperCase()}\u0000${input.supportOppose}\u0000${input.categoryType}\u0000${categoryKey}`;
+}
+
+function addOutsideBreakdown(
+  breakdowns: Map<string, TennesseeFinanceOutsideGroupBreakdownInput>,
+  breakdown: TennesseeFinanceOutsideGroupBreakdownInput
+): void {
+  const key = outsideBreakdownKey(breakdown);
+  const existing = breakdowns.get(key);
+  if (!existing) {
+    breakdowns.set(key, breakdown);
+    return;
+  }
+  breakdowns.set(key, {
+    ...existing,
+    amount: Math.round((existing.amount + breakdown.amount) * 100) / 100,
+    contributorCount:
+      existing.contributorCount === null ||
+      existing.contributorCount === undefined ||
+      breakdown.contributorCount === null ||
+      breakdown.contributorCount === undefined
+        ? existing.contributorCount ?? breakdown.contributorCount ?? null
+        : existing.contributorCount + breakdown.contributorCount,
+    sourceUrl: existing.sourceUrl ?? breakdown.sourceUrl,
+  });
+}
+
+function toWriterOutsideBreakdown(
+  breakdown: TennesseeFinanceOutsideGroupBreakdown
+): TennesseeFinanceOutsideGroupBreakdownInput {
+  return {
+    committeeKey: breakdown.committeeKey,
+    supportOppose: breakdown.supportOppose,
+    categoryType: breakdown.categoryType,
+    categoryName: breakdown.categoryName,
+    amount: breakdown.amount,
+    contributorCount: breakdown.contributorCount,
+    sourceUrl: breakdown.sourceUrl,
+  };
+}
+
+function collectOutsideClassifications(
+  breakdowns: Iterable<TennesseeFinanceOutsideGroupBreakdownInput>,
+  minAmount: number
+): Map<string, FinanceLabelClassification> {
+  const classifications = new Map<string, FinanceLabelClassification>();
+  for (const breakdown of breakdowns) {
+    if ((breakdown.categoryType !== "donor" && breakdown.categoryType !== "employer") || breakdown.amount < minAmount) {
+      continue;
+    }
+    mergeFinanceLabelClassification(
+      classifications,
+      classifyFinanceLabel({ rawLabel: breakdown.categoryName, labelType: breakdown.categoryType })
+    );
+  }
+  return classifications;
+}
+
+function asClassifiableOutsideBreakdowns(breakdowns: Iterable<TennesseeFinanceOutsideGroupBreakdownInput>) {
+  return [...breakdowns].map((breakdown) => ({
+    committeeId: breakdown.committeeKey,
+    supportOppose: breakdown.supportOppose,
+    categoryType: breakdown.categoryType,
+    categoryName: breakdown.categoryName,
+    amount: breakdown.amount,
+    contributorCount: breakdown.contributorCount,
+    sourceUrl: breakdown.sourceUrl,
+  }));
+}
+
+async function enrichOutsideGroupIndustryBreakdowns(input: {
+  db: Queryable;
+  outsideGroupBreakdowns: readonly TennesseeFinanceOutsideGroupBreakdownInput[] | undefined;
+  classifier: FinanceIndustryClassifier | undefined;
+  aiClassificationMinAmount: number;
+  dryRun: boolean;
+}): Promise<{
+  outsideGroupBreakdowns: TennesseeFinanceOutsideGroupBreakdownInput[] | undefined;
+  classifications: FinanceLabelClassification[];
+}> {
+  if (!input.outsideGroupBreakdowns) {
+    return { outsideGroupBreakdowns: undefined, classifications: [] };
+  }
+
+  const breakdowns = new Map<string, TennesseeFinanceOutsideGroupBreakdownInput>();
+  for (const breakdown of input.outsideGroupBreakdowns) {
+    if (breakdown.categoryType !== "industry") {
+      addOutsideBreakdown(breakdowns, breakdown);
+    }
+  }
+
+  const classifiableOutsideBreakdowns = asClassifiableOutsideBreakdowns(breakdowns.values());
+  const classifications = collectOutsideClassifications(breakdowns.values(), input.aiClassificationMinAmount);
+  await resolveFinanceIndustryClassifications({
+    db: input.db,
+    directBreakdowns: [],
+    outsideBreakdowns: classifiableOutsideBreakdowns,
+    classifications,
+    classifier: input.classifier,
+    minAmount: input.aiClassificationMinAmount,
+    dryRun: input.dryRun,
+  });
+
+  const industryBreakdowns = buildFinanceIndustryBreakdownsFromClassifications({
+    directBreakdowns: [],
+    outsideBreakdowns: classifiableOutsideBreakdowns,
+    classifications,
+  });
+  for (const breakdown of industryBreakdowns.outsideIndustryBreakdowns) {
+    addOutsideBreakdown(breakdowns, {
+      committeeKey: breakdown.committeeId,
+      supportOppose: breakdown.supportOppose,
+      categoryType: "industry",
+      categoryName: breakdown.categoryName,
+      amount: breakdown.amount,
+      contributorCount: breakdown.contributorCount,
+      sourceUrl: breakdown.sourceUrl,
+    });
+  }
+
+  return {
+    outsideGroupBreakdowns: [...breakdowns.values()],
+    classifications: [...classifications.values()],
+  };
+}
+
+export async function syncTennesseeCandidateFinance(
+  input: TennesseeCandidateFinanceSyncInput
+): Promise<TennesseeCandidateFinanceSyncResult> {
+  const electionYear = normalizeElectionYear(input.electionYear);
+  const syncedAt = normalizeTimestamp(input.now);
+  const dryRun = input.dryRun === true;
+  const aiClassificationMinAmount = normalizeAiClassificationMinAmount(input.aiClassificationMinAmount);
+  const link = toFinanceLink({ ...input, electionYear, now: syncedAt });
+  const directFinance = aggregateDirect({
+    ownerName: link.ownerName,
+    candidateName: input.candidateName,
+    electionYear,
+    contributions: input.contributions,
+    contributionSourceUrl: input.contributionSourceUrl,
+    linkSourceUrl: link.sourceUrl,
+    maxBreakdownsPerCategory: input.directMaxBreakdownsPerCategory,
+  });
+  const outsideFinance = aggregateOutside({
+    ownerName: link.ownerName,
+    candidateName: input.candidateName,
+    electionYear,
+    expenditures: input.expenditures ?? [],
+    expenditureSourceUrl: input.expenditureSourceUrl,
+    linkSourceUrl: link.sourceUrl,
+    maxGroups: input.outsideMaxGroups ?? DEFAULT_OUTSIDE_MAX_GROUPS,
+  });
+  const outsideGroups = outsideFinance.summary ? toOutsideGroups(outsideFinance.summary.groups) : [];
+  const rawOutsideGroupBreakdowns = input.outsideGroupContributionRecords
+    ? aggregateTennesseeOutsideGroupContributions({
+        electionYear,
+        outsideGroups: outsideFinance.summary?.groups ?? [],
+        contributionRecords: input.outsideGroupContributionRecords,
+        sourceUrl: input.outsideContributionSourceUrl ?? input.contributionSourceUrl ?? link.sourceUrl ?? null,
+        maxBreakdownsPerCategory: input.outsideMaxBreakdownsPerCategory ?? DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
+        minIndustryAmount: aiClassificationMinAmount,
+      })
+    : null;
+  const outsideGroupBreakdowns = rawOutsideGroupBreakdowns
+    ? rawOutsideGroupBreakdowns.outsideGroupBreakdowns.map(toWriterOutsideBreakdown)
+    : undefined;
+  const outsideIndustryFinance = await enrichOutsideGroupIndustryBreakdowns({
+    db: input.db,
+    outsideGroupBreakdowns,
+    classifier: input.financeIndustryClassifier,
+    aiClassificationMinAmount,
+    dryRun,
+  });
+
+  if (!dryRun) {
+    await replaceTennesseeCandidateFinanceSnapshot({
+      db: input.db,
+      link,
+      syncedAt,
+      summary: {
+        ...directFinance.summary,
+        outsideSupportTotal: outsideFinance.summary?.supportTotal ?? 0,
+        outsideOpposeTotal: outsideFinance.summary?.opposeTotal ?? 0,
+        sourceUrl: directFinance.summary.sourceUrl ?? outsideFinance.summary?.sourceUrl ?? null,
+      },
+      directBreakdowns: directFinance.directBreakdowns,
+      outsideGroups,
+      outsideGroupBreakdowns: outsideIndustryFinance.outsideGroupBreakdowns,
+      classifications: outsideIndustryFinance.classifications,
+    });
+  }
+
+  return {
+    candidateId: link.candidateId,
+    electionId: link.electionId,
+    electionYear,
+    dryRun,
+    linkWritten: !dryRun,
+    summaryWritten: !dryRun,
+    directBreakdownsWritten: dryRun ? 0 : directFinance.directBreakdowns.length,
+    outsideGroupsWritten: dryRun ? 0 : outsideGroups.length,
+    outsideGroupBreakdownsWritten: dryRun ? 0 : (outsideIndustryFinance.outsideGroupBreakdowns?.length ?? 0),
+    totalReceipts: directFinance.summary.totalReceipts,
+    directContributionTotal: directFinance.summary.directContributionTotal,
+    outsideSupportTotal: outsideFinance.summary?.supportTotal ?? null,
+    outsideOpposeTotal: outsideFinance.summary?.opposeTotal ?? null,
+    matchedContributionRowCount: directFinance.matchedContributionRowCount,
+    includedContributionRowCount: directFinance.includedContributionRowCount,
+    skippedContributionRowCount: directFinance.skippedContributionRowCount,
+    matchedExpenditureRowCount: outsideFinance.matchedExpenditureRowCount,
+    includedExpenditureRowCount: outsideFinance.includedExpenditureRowCount,
+    skippedExpenditureRowCount: outsideFinance.skippedExpenditureRowCount,
+    matchedOutsideContributionRowCount: rawOutsideGroupBreakdowns?.matchedContributionRowCount ?? 0,
+    includedOutsideContributionRowCount: rawOutsideGroupBreakdowns?.includedContributionRowCount ?? 0,
+    skippedOutsideContributionRowCount: rawOutsideGroupBreakdowns?.skippedContributionRowCount ?? 0,
+    outsideGroupCount: outsideGroups.length,
+  };
+}

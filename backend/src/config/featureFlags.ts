@@ -150,6 +150,17 @@ export function isTexasCampaignFinanceSyncEnabled(force = false): boolean {
   );
 }
 
+export function isTennesseeCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("TENNESSEE_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isTennesseeCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isTennesseeCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("TENNESSEE_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isTexasTecRawDataRefreshEnabled(force = false): boolean {
   return (
     isTexasCampaignFinanceEnabled() &&
