@@ -28,10 +28,26 @@ CREATE TABLE IF NOT EXISTS public.fl_candidate_finance_outside_group_links (
   CONSTRAINT fl_cff_outside_group_links_evidence_note_check
     CHECK (evidence_note IS NULL OR btrim(evidence_note) <> ''),
   CONSTRAINT fl_cff_outside_group_links_source_check
-    CHECK (link_source IN ('manual', 'name_heuristic', 'independent_expenditure')),
-  CONSTRAINT fl_cff_outside_group_links_unique
-    UNIQUE (candidate_election_id, committee_name, support_oppose, link_source)
+    CHECK (link_source IN ('manual', 'name_heuristic', 'independent_expenditure'))
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS fl_cff_outside_group_links_committee_id_unique
+  ON public.fl_candidate_finance_outside_group_links (
+    candidate_election_id,
+    committee_id,
+    support_oppose,
+    link_source
+  )
+  WHERE committee_id IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS fl_cff_outside_group_links_name_unique
+  ON public.fl_candidate_finance_outside_group_links (
+    candidate_election_id,
+    committee_name,
+    support_oppose,
+    link_source
+  )
+  WHERE committee_id IS NULL;
 
 CREATE INDEX IF NOT EXISTS fl_cff_outside_group_links_candidate_election_idx
   ON public.fl_candidate_finance_outside_group_links (

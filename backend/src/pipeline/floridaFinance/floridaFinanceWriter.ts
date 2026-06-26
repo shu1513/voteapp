@@ -230,19 +230,7 @@ async function withFloridaFinanceTransaction<T>(db: Queryable, work: (tx: Querya
     if (isClientLikeQueryable(db)) {
       throw new Error("Florida finance snapshot writes must receive a Pool, not a PoolClient");
     }
-    try {
-      await db.query("BEGIN");
-      const result = await work(db);
-      await db.query("COMMIT");
-      return result;
-    } catch (error) {
-      try {
-        await db.query("ROLLBACK");
-      } catch {
-        // Preserve the original write failure.
-      }
-      throw error;
-    }
+    throw new Error("Florida finance snapshot writes must receive a transaction-capable Pool");
   }
 
   const client = await db.connect();
@@ -327,6 +315,10 @@ export async function upsertFloridaOutsideGroupSupportLink(input: {
   link: FloridaOutsideGroupSupportLinkInput;
 }): Promise<{ id: string }> {
   validateOutsideGroupSupportLinkInput(input.link);
+  const committeeId = normalizeOptionalText(input.link.committeeId);
+  const conflictTarget = committeeId
+    ? "(candidate_election_id, committee_id, support_oppose, link_source) WHERE committee_id IS NOT NULL"
+    : "(candidate_election_id, committee_name, support_oppose, link_source) WHERE committee_id IS NULL";
 
   const result = await input.db.query<{ id: string }>(
     `
@@ -342,9 +334,10 @@ export async function upsertFloridaOutsideGroupSupportLink(input: {
         link_source
       )
       VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9)
-      ON CONFLICT (candidate_election_id, committee_name, support_oppose, link_source)
+      ON CONFLICT ${conflictTarget}
       DO UPDATE SET
-        committee_id = COALESCE(EXCLUDED.committee_id, fl_candidate_finance_outside_group_links.committee_id),
+        committee_id = EXCLUDED.committee_id,
+        committee_name = EXCLUDED.committee_name,
         confidence = EXCLUDED.confidence,
         amount = COALESCE(EXCLUDED.amount, fl_candidate_finance_outside_group_links.amount),
         evidence_url = COALESCE(EXCLUDED.evidence_url, fl_candidate_finance_outside_group_links.evidence_url),
@@ -353,7 +346,7 @@ export async function upsertFloridaOutsideGroupSupportLink(input: {
     `,
     [
       requireNonEmpty(input.link.candidateElectionId, "candidate election id"),
-      normalizeOptionalText(input.link.committeeId),
+      committeeId,
       requireNonEmpty(input.link.committeeName, "Florida outside group support committee name"),
       input.link.supportOppose,
       normalizeSupportConfidence(input.link.confidence),
@@ -451,13 +444,13 @@ async function upsertSummary(input: {
       VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
-        total_receipts = COALESCE(EXCLUDED.total_receipts, fl_candidate_finance_summaries.total_receipts),
-        direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, fl_candidate_finance_summaries.direct_contribution_total),
-        total_disbursements = COALESCE(EXCLUDED.total_disbursements, fl_candidate_finance_summaries.total_disbursements),
-        cash_on_hand = COALESCE(EXCLUDED.cash_on_hand, fl_candidate_finance_summaries.cash_on_hand),
-        outside_support_total = COALESCE(EXCLUDED.outside_support_total, fl_candidate_finance_summaries.outside_support_total),
-        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, fl_candidate_finance_summaries.outside_oppose_total),
-        source_url = COALESCE(EXCLUDED.source_url, fl_candidate_finance_summaries.source_url),
+        total_receipts = EXCLUDED.total_receipts,
+        direct_contribution_total = EXCLUDED.direct_contribution_total,
+        total_disbursements = EXCLUDED.total_disbursements,
+        cash_on_hand = EXCLUDED.cash_on_hand,
+        outside_support_total = EXCLUDED.outside_support_total,
+        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        source_url = EXCLUDED.source_url,
         last_synced_at = EXCLUDED.last_synced_at
     `,
     [
@@ -695,6 +688,66 @@ async function deleteStaleOutsideGroups(input: {
   );
 }
 
+async function deleteStaleOutsideGroupSupportLinks(input: {
+  db: Queryable;
+  links: readonly FloridaOutsideGroupSupportLinkInput[];
+}): Promise<void> {
+  const keys = input.links.map((link) => {
+    validateOutsideGroupSupportLinkInput(link);
+    return {
+      candidate_election_id: requireNonEmpty(link.candidateElectionId, "candidate election id"),
+      committee_id: normalizeOptionalText(link.committeeId),
+      committee_name: requireNonEmpty(link.committeeName, "Florida outside group support committee name"),
+      support_oppose: link.supportOppose,
+      link_source: normalizeSupportLinkSource(link.linkSource),
+    };
+  });
+
+  await input.db.query(
+    `
+      WITH keep AS (
+        SELECT
+          candidate_election_id,
+          committee_id,
+          committee_name,
+          support_oppose,
+          link_source
+        FROM jsonb_to_recordset($1::jsonb) AS x(
+          candidate_election_id text,
+          committee_id text,
+          committee_name text,
+          support_oppose text,
+          link_source text
+        )
+      ),
+      scope AS (
+        SELECT DISTINCT candidate_election_id, link_source
+        FROM keep
+      )
+      DELETE FROM public.fl_candidate_finance_outside_group_links AS existing
+      USING scope
+      WHERE existing.candidate_election_id = scope.candidate_election_id::uuid
+        AND existing.link_source = scope.link_source
+        AND NOT EXISTS (
+          SELECT 1
+          FROM keep
+          WHERE existing.candidate_election_id = keep.candidate_election_id::uuid
+            AND existing.support_oppose = keep.support_oppose
+            AND existing.link_source = keep.link_source
+            AND (
+              (keep.committee_id IS NOT NULL AND existing.committee_id = keep.committee_id)
+              OR (
+                keep.committee_id IS NULL
+                AND existing.committee_id IS NULL
+                AND existing.committee_name = keep.committee_name
+              )
+            )
+        )
+    `,
+    [JSON.stringify(keys)]
+  );
+}
+
 export async function replaceFloridaCandidateFinanceSnapshot(
   input: FloridaFinanceSnapshotInput
 ): Promise<FloridaFinanceSnapshotWriteResult> {
@@ -738,6 +791,9 @@ export async function replaceFloridaCandidateFinanceSnapshot(
 
     for (const supportLink of input.outsideGroupSupportLinks ?? []) {
       await upsertFloridaOutsideGroupSupportLink({ db, link: supportLink });
+    }
+    if (input.outsideGroupSupportLinks) {
+      await deleteStaleOutsideGroupSupportLinks({ db, links: input.outsideGroupSupportLinks });
     }
 
     for (const classification of input.classifications ?? []) {

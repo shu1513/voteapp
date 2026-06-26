@@ -599,7 +599,8 @@ function isMissingOptionalFloridaModuleError(error: unknown): boolean {
   const message = error instanceof Error ? error.message : String(error);
   return (
     (code === "ERR_MODULE_NOT_FOUND" || code === "MODULE_NOT_FOUND") &&
-    (message.includes("floridaFinance") || message.includes("floridaCandidateFinanceSyncScheduler"))
+    (message.includes("floridaFinanceEligibleOffices.js") ||
+      message.includes("floridaCandidateFinanceSyncScheduler.js"))
   );
 }
 

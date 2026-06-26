@@ -143,6 +143,21 @@ function industryKey(input: { committeeId: string; supportOppose: FloridaSupport
   return `${normalizeCommitteeId(input.committeeId)}\u0000${input.supportOppose}\u0000${input.industrySlug}`;
 }
 
+function groupBreakdownAggregates<T extends { committeeId: string; supportOppose: FloridaSupportOppose }>(
+  values: Iterable<T>
+): T[][] {
+  const grouped = new Map<string, T[]>();
+  for (const value of values) {
+    const key = groupKey(value);
+    const list = grouped.get(key) ?? [];
+    list.push(value);
+    grouped.set(key, list);
+  }
+  return [...grouped.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([, list]) => list);
+}
+
 function toBreakdowns(input: {
   donors: Iterable<DonorAggregate>;
   industries: Iterable<IndustryAggregate>;
@@ -151,32 +166,36 @@ function toBreakdowns(input: {
 }): FloridaFinanceOutsideGroupBreakdown[] {
   const result: FloridaFinanceOutsideGroupBreakdown[] = [];
 
-  for (const donor of [...input.donors]
-    .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))
-    .slice(0, input.maxBreakdownsPerCategory)) {
-    result.push({
-      committeeId: donor.committeeId,
-      supportOppose: donor.supportOppose,
-      categoryType: "donor",
-      categoryName: donor.displayName,
-      amount: centsToFloridaDollars(donor.amountCents),
-      contributorCount: 1,
-      sourceUrl: input.sourceUrl,
-    });
+  for (const donors of groupBreakdownAggregates(input.donors)) {
+    for (const donor of donors
+      .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))
+      .slice(0, input.maxBreakdownsPerCategory)) {
+      result.push({
+        committeeId: donor.committeeId,
+        supportOppose: donor.supportOppose,
+        categoryType: "donor",
+        categoryName: donor.displayName,
+        amount: centsToFloridaDollars(donor.amountCents),
+        contributorCount: 1,
+        sourceUrl: input.sourceUrl,
+      });
+    }
   }
 
-  for (const industry of [...input.industries]
-    .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
-    .slice(0, input.maxBreakdownsPerCategory)) {
-    result.push({
-      committeeId: industry.committeeId,
-      supportOppose: industry.supportOppose,
-      categoryType: "industry",
-      categoryName: industry.industrySlug,
-      amount: centsToFloridaDollars(industry.amountCents),
-      contributorCount: industry.donorKeys.size,
-      sourceUrl: input.sourceUrl,
-    });
+  for (const industries of groupBreakdownAggregates(input.industries)) {
+    for (const industry of industries
+      .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
+      .slice(0, input.maxBreakdownsPerCategory)) {
+      result.push({
+        committeeId: industry.committeeId,
+        supportOppose: industry.supportOppose,
+        categoryType: "industry",
+        categoryName: industry.industrySlug,
+        amount: centsToFloridaDollars(industry.amountCents),
+        contributorCount: industry.donorKeys.size,
+        sourceUrl: input.sourceUrl,
+      });
+    }
   }
 
   return result;

@@ -98,6 +98,7 @@ export async function readFloridaContributionExportArtifactMetadata(
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {
       return null;
     }
+    console.warn(`Failed to read Florida contribution export metadata at ${metadataPath}`, error);
     return null;
   }
 }

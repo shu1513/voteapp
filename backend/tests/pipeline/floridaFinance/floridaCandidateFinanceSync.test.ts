@@ -11,22 +11,29 @@ const SUPPORT_LINK_ID = "55555555-5555-5555-5555-555555555555";
 const SOURCE_URL = "https://dos.elections.myflorida.com/cgi-bin/contrib.exe";
 
 function createMockDb() {
+  const query = vi.fn(async (sql: string) => {
+    if (String(sql).includes("FROM public.finance_label_classifications AS classification")) {
+      return { rows: [], rowCount: 0 };
+    }
+    if (
+      String(sql).includes("FROM public.fl_candidate_finance_outside_group_links") &&
+      String(sql).includes("SELECT")
+    ) {
+      return { rows: [], rowCount: 0 };
+    }
+    if (String(sql).includes("INSERT INTO public.fl_candidate_finance_outside_group_links")) {
+      return { rows: [{ id: SUPPORT_LINK_ID }], rowCount: 1 };
+    }
+    return { rows: [{ id: LINK_ID }], rowCount: 1 };
+  });
+  const client = {
+    query,
+    release: vi.fn(),
+  };
   return {
-    query: vi.fn(async (sql: string) => {
-      if (String(sql).includes("FROM public.finance_label_classifications AS classification")) {
-        return { rows: [], rowCount: 0 };
-      }
-      if (
-        String(sql).includes("FROM public.fl_candidate_finance_outside_group_links") &&
-        String(sql).includes("SELECT")
-      ) {
-        return { rows: [], rowCount: 0 };
-      }
-      if (String(sql).includes("INSERT INTO public.fl_candidate_finance_outside_group_links")) {
-        return { rows: [{ id: SUPPORT_LINK_ID }], rowCount: 1 };
-      }
-      return { rows: [{ id: LINK_ID }], rowCount: 1 };
-    }),
+    query,
+    connect: vi.fn().mockResolvedValue(client),
+    client,
   };
 }
 
@@ -292,6 +299,7 @@ describe("floridaCandidateFinanceSync", () => {
     const result = await syncFloridaCandidateFinance({
       db,
       ...baseInput(),
+      candidateElectionId: CANDIDATE_ELECTION_ID,
       dryRun: true,
       contributionRows: [contribution({ amount: "1000.00" })],
       trustedOutsideGroups: [

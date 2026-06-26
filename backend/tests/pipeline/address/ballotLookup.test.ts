@@ -4122,6 +4122,305 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced Oregon finance summaries for Oregon candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("OREGON_CAMPAIGN_FINANCE_ENABLED", "true");
+    const genericOregonSourceUrl = "https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearch.do";
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "41",
+            district_name: "Oregon",
+            state: "OR",
+            state_fips: "41",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Cascadia",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "OR",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "4792",
+            election_year: 2026,
+            total_receipts: "180000.00",
+            direct_contribution_total: "150000.00",
+            total_disbursements: "70000.00",
+            cash_on_hand: "80000.00",
+            outside_support_total: "67766.61",
+            outside_oppose_total: "0.00",
+            source_url: null,
+            last_synced_at: "2026-06-21 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "TEACHER",
+            amount: "32000.00",
+            contributor_count: "18",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$101-$500",
+            amount: "45000.00",
+            contributor_count: "125",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "ORPAC-22333",
+            committee_name: "2022 Our Oregon Voter Guide",
+            support_oppose: "support",
+            amount: "67766.61",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "labor_unions",
+            amount: "60000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "labor_unions",
+            committee_id: "ORPAC-22333",
+            committee_name: "2022 Our Oregon Voter Guide",
+            support_oppose: "support",
+            organization_name: "SEIU Local 503",
+            amount: "50000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "ORESTAR",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "4792",
+      last_synced_at: "2026-06-21 04:05:00+00",
+      direct_campaign: {
+        total_raised: 150000,
+        total_spent: 70000,
+        cash_on_hand: 80000,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "TEACHER",
+            amount: 32000,
+            contributor_count: 18,
+            source_url: genericOregonSourceUrl,
+          },
+        ],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$101-$500",
+            amount: 45000,
+            contributor_count: 125,
+            source_url: genericOregonSourceUrl,
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 67766.61,
+        oppose_total: 0,
+        top_supporting_groups: [
+          {
+            committee_id: "ORPAC-22333",
+            committee_name: "2022 Our Oregon Voter Guide",
+            support_oppose: "support",
+            amount: 67766.61,
+            source_url: genericOregonSourceUrl,
+          },
+        ],
+        top_opposing_groups: [],
+        top_supporting_industries: [
+          {
+            category_name: "labor_unions",
+            amount: 60000,
+            contributor_count: 2,
+            source_url: genericOregonSourceUrl,
+          },
+        ],
+        top_opposing_industries: [],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "TEACHER",
+            amount: 32000,
+            contributor_count: 18,
+            source_url: genericOregonSourceUrl,
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "labor_unions",
+            amount: 60000,
+            contributor_count: 2,
+            source_url: genericOregonSourceUrl,
+            explanation:
+              "The Labor unions category is a top outside-spending support industry because SEIU Local 503 contributed to 2022 Our Oregon Voter Guide, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "SEIU Local 503",
+                organization_type: "donor",
+                amount: 50000,
+                contributor_count: 1,
+                committee_id: "ORPAC-22333",
+                committee_name: "2022 Our Oregon Voter Guide",
+                source_url: genericOregonSourceUrl,
+              },
+            ],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(13);
+    expect(query.mock.calls[7]?.[0]).toContain("public.or_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.or_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
+    expect(query.mock.calls[9]?.[0]).toContain("public.or_candidate_finance_outside_groups");
+    expect(query.mock.calls[9]?.[0]).toContain("outside_group.sponsor_id AS committee_id");
+    expect(query.mock.calls[10]?.[0]).toContain("public.or_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[10]?.[0]).toContain("breakdown.sponsor_id AS committee_id");
+    expect(query.mock.calls[11]?.[0]).toContain("public.or_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("top_industries_per_group");
+    expect(query.mock.calls[11]?.[0]).toContain("max(industry.amount) AS amount");
+    expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
+    expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
+    expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
+  });
+
+  it("does not query Oregon finance tables when Oregon campaign finance is disabled", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("OREGON_CAMPAIGN_FINANCE_ENABLED", "false");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "41",
+            district_name: "Oregon",
+            state: "OR",
+            state_fips: "41",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Cascadia",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "OR",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toBeNull();
+    expect(query).toHaveBeenCalledTimes(8);
+    expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("or_candidate_finance");
+  });
+
   it("includes locally synced Hawaii finance summaries for Hawaii candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("HAWAII_CAMPAIGN_FINANCE_ENABLED", "true");
@@ -4655,6 +4954,256 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced Maryland finance summaries for Maryland candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("MARYLAND_CAMPAIGN_FINANCE_ENABLED", "true");
+    const sourceUrl = "https://campaignfinance.maryland.gov/public/cf/downloads";
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "state_upper",
+            geoid_compact: "24001",
+            district_name: "Maryland Senate District 1",
+            state: "MD",
+            state_fips: "24",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "State Senator",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "state_upper",
+            office_canonical_name: "State Senator",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Justin Gallucci",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: null,
+            state: "MD",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "16018290",
+            election_year: 2026,
+            total_receipts: "100000.00",
+            direct_contribution_total: "75000.00",
+            total_disbursements: "25000.00",
+            cash_on_hand: "50000.00",
+            outside_support_total: "40000.00",
+            outside_oppose_total: "5000.00",
+            source_url: sourceUrl,
+            last_synced_at: "2026-06-23 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$250-$499",
+            amount: "30000.00",
+            contributor_count: "100",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "16020184",
+            committee_name: "Momentum Maryland PAC",
+            support_oppose: "support",
+            amount: "40000.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "16030001",
+            committee_name: "Maryland Taxpayers PAC",
+            support_oppose: "oppose",
+            amount: "5000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "construction",
+            amount: "35000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "5000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "construction",
+            committee_id: "16020184",
+            committee_name: "Momentum Maryland PAC",
+            support_oppose: "support",
+            organization_name: "Old Construction Company LLC",
+            amount: "30000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "MARYLAND_CFS",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "16018290",
+      last_synced_at: "2026-06-23 04:05:00+00",
+      direct_campaign: {
+        total_raised: 75000,
+        total_spent: 25000,
+        cash_on_hand: 50000,
+        debts_owed: null,
+        top_occupations: [],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$250-$499",
+            amount: 30000,
+            contributor_count: 100,
+            source_url: sourceUrl,
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 40000,
+        oppose_total: 5000,
+        top_supporting_groups: [
+          {
+            committee_id: "16020184",
+            committee_name: "Momentum Maryland PAC",
+            support_oppose: "support",
+            amount: 40000,
+            source_url: sourceUrl,
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "16030001",
+            committee_name: "Maryland Taxpayers PAC",
+            support_oppose: "oppose",
+            amount: 5000,
+            source_url: sourceUrl,
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "construction",
+            amount: 35000,
+            contributor_count: 2,
+            source_url: sourceUrl,
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 5000,
+            contributor_count: 1,
+            source_url: sourceUrl,
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [],
+        top_outside_supporting_industries: [
+          {
+            category_name: "construction",
+            amount: 35000,
+            contributor_count: 2,
+            source_url: sourceUrl,
+            explanation:
+              "The Construction category is a top outside-spending support industry because Old Construction Company LLC contributed to Momentum Maryland PAC, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "Old Construction Company LLC",
+                organization_type: "donor",
+                amount: 30000,
+                contributor_count: 1,
+                committee_id: "16020184",
+                committee_name: "Momentum Maryland PAC",
+                source_url: sourceUrl,
+              },
+            ],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(13);
+    const marylandQueries = query.mock.calls.map(([sql]) => String(sql)).filter((sql) => sql.includes("public.md_candidate_finance_"));
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_summaries"))).toBe(true);
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_direct_breakdowns"))).toBe(true);
+    expect(
+      marylandQueries.some((sql) => sql.includes("breakdown.category_type IN ('occupation', 'contribution_size')"))
+    ).toBe(true);
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_outside_groups"))).toBe(true);
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_outside_group_breakdowns"))).toBe(
+      true
+    );
+    const supportingEvidenceQuery = marylandQueries.find((sql) => sql.includes("top_industries_per_group"));
+    expect(supportingEvidenceQuery).toContain("public.finance_label_classifications");
+    expect(supportingEvidenceQuery).toContain("classification.normalized_label");
+    expect(supportingEvidenceQuery).not.toContain("classification.raw_label = breakdown.category_name");
+  });
+
   it("includes locally synced Virginia finance summaries for Virginia candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "true");
@@ -4802,6 +5351,214 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[8]?.[0]).toContain("public.va_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
     expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");
+  });
+
+  it("includes locally synced Utah finance summaries for Utah candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("UTAH_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "49",
+            district_name: "Utah",
+            state: "UT",
+            state_fips: "49",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Utahn",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "UT",
+            fec_ids: [],
+            state_filing_ids: ["ut-folder:98765"],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            folder_id: "98765",
+            election_year: 2026,
+            total_receipts: "15000.00",
+            direct_contribution_total: "12500.00",
+            total_disbursements: "4200.00",
+            source_url: "https://disclosures.utah.gov/Search/AdvancedSearch/GenerateReport/98765?ReportYear=2026",
+            last_synced_at: "2026-06-22 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$1,000-$4,999",
+            amount: "8000.00",
+            contributor_count: "3",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            supporting_committee_name: "Utah Builders PAC",
+            category_name: "construction",
+            amount: "25000.00",
+            contributor_count: "2",
+            source_url: "https://disclosures.utah.gov/Search/AdvancedSearch/GenerateReport?ReportYear=2026&EntityType=PAC",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "UTAH_DISCLOSURES",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "98765",
+      last_synced_at: "2026-06-22 04:05:00+00",
+      direct_campaign: {
+        total_raised: 12500,
+        total_spent: 4200,
+        cash_on_hand: null,
+        debts_owed: null,
+        top_occupations: [],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$1,000-$4,999",
+            amount: 8000,
+            contributor_count: 3,
+            source_url: "https://disclosures.utah.gov/Search/AdvancedSearch/GenerateReport/98765?ReportYear=2026",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: null,
+        oppose_total: null,
+        top_supporting_groups: [],
+        top_opposing_groups: [],
+        top_supporting_industries: [],
+        top_opposing_industries: [],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [],
+        top_outside_supporting_industries: [],
+        top_supporting_committee_industries: [
+          {
+            supporting_committee_name: "Utah Builders PAC",
+            category_name: "construction",
+            amount: 25000,
+            contributor_count: 2,
+            source_url: "https://disclosures.utah.gov/Search/AdvancedSearch/GenerateReport?ReportYear=2026&EntityType=PAC",
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(11);
+    expect(query.mock.calls[7]?.[0]).toContain("public.ut_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.ut_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type = 'contribution_size'");
+    expect(query.mock.calls[9]?.[0]).toContain("public.ut_candidate_finance_supporting_committee_industries");
+    expect(query.mock.calls.map((call) => String(call[0])).join("\\n")).not.toContain("public.candidate_finance_summaries");
+  });
+
+  it("does not query Utah finance tables when Utah campaign finance is disabled", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("UTAH_CAMPAIGN_FINANCE_ENABLED", "false");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "49",
+            district_name: "Utah",
+            state: "UT",
+            state_fips: "49",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Utahn",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "UT",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toBeNull();
+    expect(query).toHaveBeenCalledTimes(7);
+    expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("ut_candidate_finance");
   });
 
   it("does not query Texas finance tables when Texas campaign finance is disabled", async () => {

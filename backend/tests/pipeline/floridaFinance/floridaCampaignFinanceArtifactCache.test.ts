@@ -1,7 +1,7 @@
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   getFloridaContributionExportArtifactPaths,
@@ -98,6 +98,21 @@ describe("floridaCampaignFinanceArtifactCache", () => {
         cacheKey: "fl-contrib-candidate-20261103-gen-doe-jane-abcdef123456",
       })
     ).resolves.toBeNull();
+  });
+
+  it("warns and returns null when metadata cannot be parsed", async () => {
+    const cacheDir = await makeTempDir();
+    const metadataPath = join(cacheDir, "bad.metadata.json");
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    await writeFile(metadataPath, "{", "utf8");
+
+    await expect(readFloridaContributionExportArtifactMetadata(metadataPath)).resolves.toBeNull();
+    expect(warn).toHaveBeenCalledWith(
+      `Failed to read Florida contribution export metadata at ${metadataPath}`,
+      expect.any(SyntaxError)
+    );
+    warn.mockRestore();
   });
 
   it("rejects unsafe cache keys", () => {

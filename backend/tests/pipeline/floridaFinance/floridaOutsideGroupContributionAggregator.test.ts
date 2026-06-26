@@ -143,6 +143,76 @@ describe("floridaOutsideGroupContributionAggregator", () => {
     );
   });
 
+  it("applies breakdown caps per outside group and support side", () => {
+    const result = aggregateFloridaOutsideGroupContributions({
+      electionYear: 2026,
+      maxBreakdownsPerCategory: 1,
+      outsideGroups: [
+        outsideGroup({
+          committeeId: "FLORIDIANS_FOR_JANE_DOE",
+          committeeName: "Floridians for Jane Doe",
+          supportOppose: "support",
+        }),
+        outsideGroup({
+          committeeId: "SUNSHINE_ACCOUNTABILITY_PAC",
+          committeeName: "Sunshine Accountability PAC",
+          supportOppose: "oppose",
+        }),
+      ],
+      contributionRows: [
+        contribution({
+          recipientName: "Floridians for Jane Doe",
+          amount: "60000.00",
+          contributorName: "Energy Transfer LLC",
+        }),
+        contribution({
+          recipientName: "Floridians for Jane Doe",
+          amount: "50000.00",
+          contributorName: "IBEW Voluntary PAC",
+        }),
+        contribution({
+          recipientName: "Sunshine Accountability PAC",
+          amount: "40000.00",
+          contributorName: "Sunshine Realty LLC",
+        }),
+        contribution({
+          recipientName: "Sunshine Accountability PAC",
+          amount: "30000.00",
+          contributorName: "Midland Energy LLC",
+        }),
+      ],
+    });
+
+    expect(result.outsideGroupBreakdowns.filter((row) => row.categoryType === "donor")).toEqual([
+      expect.objectContaining({
+        committeeId: "FLORIDIANS_FOR_JANE_DOE",
+        supportOppose: "support",
+        categoryName: "Energy Transfer LLC",
+        amount: 60000,
+      }),
+      expect.objectContaining({
+        committeeId: "SUNSHINE_ACCOUNTABILITY_PAC",
+        supportOppose: "oppose",
+        categoryName: "Sunshine Realty LLC",
+        amount: 40000,
+      }),
+    ]);
+    expect(result.outsideGroupBreakdowns.filter((row) => row.categoryType === "industry")).toEqual([
+      expect.objectContaining({
+        committeeId: "FLORIDIANS_FOR_JANE_DOE",
+        supportOppose: "support",
+        categoryName: "oil_gas_energy",
+        amount: 60000,
+      }),
+      expect.objectContaining({
+        committeeId: "SUNSHINE_ACCOUNTABILITY_PAC",
+        supportOppose: "oppose",
+        categoryName: "real_estate",
+        amount: 40000,
+      }),
+    ]);
+  });
+
   it("matches alternate committee names and skips invalid donor receipts", () => {
     const result = aggregateFloridaOutsideGroupContributions({
       electionYear: 2026,

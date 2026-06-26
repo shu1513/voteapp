@@ -511,7 +511,7 @@ export async function syncFloridaCandidateFinance(
   const aiClassificationMinAmount = normalizeAiClassificationMinAmount(input.aiClassificationMinAmount);
   const resolution = resolveTrustedCommittee({ trustedCommittee: input.trustedCommittee, linkSource });
   const storedSupportEvidence =
-    candidateElectionId && input.includeStoredOutsideGroupSupportEvidence !== false
+    !input.dryRun && candidateElectionId && input.includeStoredOutsideGroupSupportEvidence !== false
       ? (await listFloridaOutsideGroupSupportLinks({ db: input.db, candidateElectionId })).map(
           supportEvidenceFromStoredLink
         )

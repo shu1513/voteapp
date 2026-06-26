@@ -14,6 +14,19 @@ const LINK_ID = "33333333-3333-3333-3333-333333333333";
 const SUPPORT_LINK_ID = "55555555-5555-5555-5555-555555555555";
 
 function createMockDb() {
+  const query = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
+  const client = {
+    query,
+    release: vi.fn(),
+  };
+  return {
+    query,
+    connect: vi.fn().mockResolvedValue(client),
+    client,
+  };
+}
+
+function createQueryOnlyMockDb() {
   return {
     query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
   };
@@ -86,7 +99,7 @@ describe("floridaFinanceWriter", () => {
       "INSERT INTO public.fl_candidate_finance_outside_group_links"
     );
     expect(String(db.query.mock.calls[0]?.[0])).toContain(
-      "ON CONFLICT (candidate_election_id, committee_name, support_oppose, link_source)"
+      "ON CONFLICT (candidate_election_id, committee_id, support_oppose, link_source) WHERE committee_id IS NOT NULL"
     );
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       CANDIDATE_ELECTION_ID,
@@ -97,6 +110,36 @@ describe("floridaFinanceWriter", () => {
       1200,
       "https://example.test/evidence",
       "Trusted report says the PAC supports Jane Doe.",
+      "manual",
+    ]);
+  });
+
+  it("uses name fallback conflict handling for support links without committee ids", async () => {
+    const db = {
+      query: vi.fn().mockResolvedValue({ rows: [{ id: SUPPORT_LINK_ID }], rowCount: 1 }),
+    };
+
+    await upsertFloridaOutsideGroupSupportLink({
+      db,
+      link: {
+        candidateElectionId: CANDIDATE_ELECTION_ID,
+        committeeName: "Floridians for Jane Doe",
+        supportOppose: "support",
+      },
+    });
+
+    expect(String(db.query.mock.calls[0]?.[0])).toContain(
+      "ON CONFLICT (candidate_election_id, committee_name, support_oppose, link_source) WHERE committee_id IS NULL"
+    );
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      CANDIDATE_ELECTION_ID,
+      null,
+      "Floridians for Jane Doe",
+      "support",
+      "high",
+      null,
+      null,
+      null,
       "manual",
     ]);
   });
@@ -233,6 +276,9 @@ describe("floridaFinanceWriter", () => {
 
     const sql = client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("INSERT INTO public.fl_candidate_finance_summaries"))).toBe(true);
+    expect(
+      sql.some((statement) => statement.includes("total_receipts = EXCLUDED.total_receipts"))
+    ).toBe(true);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.fl_candidate_finance_direct_breakdowns"))).toHaveLength(2);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.fl_candidate_finance_outside_groups"))).toHaveLength(2);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.fl_candidate_finance_outside_group_breakdowns"))).toHaveLength(2);
@@ -241,21 +287,18 @@ describe("floridaFinanceWriter", () => {
     expect(sql.some((statement) => statement.includes("DELETE FROM public.fl_candidate_finance_outside_group_breakdowns"))).toBe(true);
   });
 
-  it("wraps a supplied queryable in a transaction", async () => {
-    const db = createMockDb();
+  it("rejects a query-only object for snapshot replacement", async () => {
+    const db = createQueryOnlyMockDb();
 
-    const result = await replaceFloridaCandidateFinanceSnapshot({
+    await expect(replaceFloridaCandidateFinanceSnapshot({
       db,
       link: baseLink(),
       syncedAt: new Date("2026-02-03T04:05:06.000Z"),
       summary: {
         totalReceipts: 1000,
       },
-    });
-
-    expect(result.summaryWritten).toBe(true);
-    expect(db.query.mock.calls[0]?.[0]).toBe("BEGIN");
-    expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+    })).rejects.toThrow("Florida finance snapshot writes must receive a transaction-capable Pool");
+    expect(db.query).not.toHaveBeenCalled();
   });
 
   it("rejects a supplied PoolClient so it cannot commit an outer transaction", async () => {
@@ -371,6 +414,41 @@ describe("floridaFinanceWriter", () => {
           support_oppose: "oppose",
           category_type: "industry",
           category_name: "oil_gas_energy",
+        },
+      ]),
+    ]);
+  });
+
+  it("deletes stale support links only within incoming candidate-election and source scopes", async () => {
+    const db = createMockDb();
+
+    await replaceFloridaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+      outsideGroupSupportLinks: [
+        {
+          candidateElectionId: CANDIDATE_ELECTION_ID,
+          committeeId: "FLORIDIANS_FOR_JANE_DOE",
+          committeeName: "Floridians for Jane Doe",
+          supportOppose: "support",
+          linkSource: "name_heuristic",
+        },
+      ],
+    });
+
+    const supportLinkDeleteCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("DELETE FROM public.fl_candidate_finance_outside_group_links")
+    );
+    expect(String(supportLinkDeleteCall?.[0])).toContain("existing.link_source = scope.link_source");
+    expect(supportLinkDeleteCall?.[1]).toEqual([
+      JSON.stringify([
+        {
+          candidate_election_id: CANDIDATE_ELECTION_ID,
+          committee_id: "FLORIDIANS_FOR_JANE_DOE",
+          committee_name: "Floridians for Jane Doe",
+          support_oppose: "support",
+          link_source: "name_heuristic",
         },
       ]),
     ]);
