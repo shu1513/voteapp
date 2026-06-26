@@ -31,6 +31,17 @@ export function isCandidateFinanceSyncEnabled(force = false): boolean {
   return isCandidateFinanceEnabled() && (force || readBooleanEnv("CANDIDATE_FINANCE_SYNC_ENABLED", false));
 }
 
+export function isArizonaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("ARIZONA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isArizonaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isArizonaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("ARIZONA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isCaliforniaCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("CALIFORNIA_CAMPAIGN_FINANCE_ENABLED", false);
 }
@@ -46,6 +57,17 @@ export function isCaliforniaCampaignFinanceRawDataRefreshEnabled(force = false):
   return (
     isCaliforniaCampaignFinanceEnabled() &&
     (force || readBooleanEnv("CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
+export function isAlaskaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("ALASKA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isAlaskaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isAlaskaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("ALASKA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
   );
 }
 
@@ -121,6 +143,24 @@ export function isNewMexicoCfisRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+export function isMarylandCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("MARYLAND_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isMarylandCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isMarylandCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MARYLAND_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isMarylandCfsRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isMarylandCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MARYLAND_CFS_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isOklahomaCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("OKLAHOMA_CAMPAIGN_FINANCE_ENABLED", false);
 }
@@ -165,6 +205,24 @@ export function isTexasTecRawDataRefreshEnabled(force = false): boolean {
   return (
     isTexasCampaignFinanceEnabled() &&
     (force || readBooleanEnv("TEXAS_TEC_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
+export function isFloridaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("FLORIDA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isFloridaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isFloridaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isFloridaCampaignFinanceBrowserExportEnabled(force = false): boolean {
+  return (
+    isFloridaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("FLORIDA_CAMPAIGN_FINANCE_BROWSER_EXPORT_ENABLED", false))
   );
 }
 
@@ -223,6 +281,14 @@ export function isWisconsinCampaignFinanceSyncEnabled(force = false): boolean {
   );
 }
 
+export function isUtahCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("UTAH_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isUtahCampaignFinanceSyncEnabled(force = false): boolean {
+  return isUtahCampaignFinanceEnabled() && (force || readBooleanEnv("UTAH_CAMPAIGN_FINANCE_SYNC_ENABLED", false));
+}
+
 export function isMassachusettsCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED", false);
 }
@@ -249,5 +315,34 @@ export function isMichiganMitnRawDataRefreshEnabled(force = false): boolean {
   return (
     isMichiganCampaignFinanceEnabled() &&
     (force || readBooleanEnv("MICHIGAN_MITN_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
+export function isPennsylvaniaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("PENNSYLVANIA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isPennsylvaniaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isPennsylvaniaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("PENNSYLVANIA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isPennsylvaniaCampaignFinanceRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isPennsylvaniaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("PENNSYLVANIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
+export function isOregonCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("OREGON_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isOregonCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isOregonCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("OREGON_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
   );
 }
