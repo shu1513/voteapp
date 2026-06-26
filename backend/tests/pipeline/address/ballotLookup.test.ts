@@ -3857,6 +3857,232 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced Minnesota finance summaries for Minnesota candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("MINNESOTA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const genericMinnesotaSourceUrl =
+      "https://register.cfb.mn.gov/reports-and-data/self-help/data-downloads/campaign-finance/";
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "27",
+            district_name: "Minnesota",
+            state: "MN",
+            state_fips: "27",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_id: officeId,
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
+            office_summary: "Governor of Minnesota.",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Northstar",
+            party: "Democratic-Farmer-Labor",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "MN",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "31001",
+            election_year: 2026,
+            total_receipts: "120000.00",
+            direct_contribution_total: "120000.00",
+            total_disbursements: "45000.00",
+            cash_on_hand: "75000.00",
+            outside_support_total: "60000.00",
+            outside_oppose_total: "10000.00",
+            source_url: null,
+            last_synced_at: "2026-06-21 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "32001",
+            committee_name: "Northstar Alliance",
+            support_oppose: "support",
+            amount: "60000.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "32099",
+            committee_name: "Minnesota 24",
+            support_oppose: "oppose",
+            amount: "10000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "environmental_group",
+            amount: "50000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "10000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "environmental_group",
+            committee_id: "32001",
+            committee_name: "Northstar Alliance",
+            support_oppose: "support",
+            organization_name: "Minnesota Conservation League",
+            amount: "50000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "MINNESOTA_CFB",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "31001",
+      last_synced_at: "2026-06-21 04:05:00+00",
+      direct_campaign: {
+        total_raised: 120000,
+        total_spent: 45000,
+        cash_on_hand: 75000,
+        debts_owed: null,
+        top_occupations: [],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [],
+      },
+      outside_spending: {
+        support_total: 60000,
+        oppose_total: 10000,
+        top_supporting_groups: [
+          {
+            committee_id: "32001",
+            committee_name: "Northstar Alliance",
+            support_oppose: "support",
+            amount: 60000,
+            source_url: genericMinnesotaSourceUrl,
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "32099",
+            committee_name: "Minnesota 24",
+            support_oppose: "oppose",
+            amount: 10000,
+            source_url: genericMinnesotaSourceUrl,
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "environmental_group",
+            amount: 50000,
+            contributor_count: 2,
+            source_url: genericMinnesotaSourceUrl,
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 10000,
+            contributor_count: 1,
+            source_url: genericMinnesotaSourceUrl,
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [],
+        top_outside_supporting_industries: [
+          {
+            category_name: "environmental_group",
+            amount: 50000,
+            contributor_count: 2,
+            source_url: genericMinnesotaSourceUrl,
+            explanation:
+              "The Environmental groups category is a top outside-spending support industry because Minnesota Conservation League contributed to Northstar Alliance, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "Minnesota Conservation League",
+                organization_type: "donor",
+                amount: 50000,
+                contributor_count: 1,
+                committee_id: "32001",
+                committee_name: "Northstar Alliance",
+                source_url: genericMinnesotaSourceUrl,
+              },
+            ],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(12);
+    expect(query.mock.calls[7]?.[0]).toContain("public.mn_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.mn_candidate_finance_outside_groups");
+    expect(query.mock.calls[9]?.[0]).toContain("public.mn_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[10]?.[0]).toContain("public.mn_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[10]?.[0]).toContain("top_industries_per_group");
+    expect(query.mock.calls[10]?.[0]).toContain("public.finance_label_classifications");
+    expect(query.mock.calls[10]?.[0]).toContain("classification.normalized_label");
+  });
+
   it("includes locally synced Hawaii finance summaries for Hawaii candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("HAWAII_CAMPAIGN_FINANCE_ENABLED", "true");
