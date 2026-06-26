@@ -169,7 +169,14 @@
     "michigan-candidates:finance:scheduler:worker": "tsx src/scripts/runMichiganCandidateFinanceSyncSchedulerWorker.ts",
     "michigan-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerMichiganCandidateFinanceSync.ts",
     "michigan-candidates:finance:live-probe": "tsx src/scripts/probeMichiganCandidateFinance.ts",
-    "massachusetts-candidates:finance:live-probe": "tsx src/scripts/probeMassachusettsCandidateFinance.ts"
+    "massachusetts-candidates:finance:live-probe": "tsx src/scripts/probeMassachusettsCandidateFinance.ts",
+    "alaska-candidates:finance:csv-probe": "tsx src/scripts/probeAlaskaCandidateFinance.ts",
+    "alaska-candidates:finance:sync": "tsx src/scripts/syncAlaskaCandidateFinance.ts",
+    "alaska-candidates:finance:sync-due": "tsx src/scripts/syncDueAlaskaCandidateFinance.ts",
+    "alaska-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertAlaskaCandidateFinanceSyncScheduler.ts",
+    "alaska-candidates:finance:scheduler:worker": "tsx src/scripts/runAlaskaCandidateFinanceSyncSchedulerWorker.ts",
+    "alaska-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerAlaskaCandidateFinanceSync.ts",
+    "alaska-candidates:finance:live-smoke": "tsx src/scripts/smokeAlaskaCandidateFinance.ts"
   },
   "dependencies": {
     "bullmq": "^5.71.1",

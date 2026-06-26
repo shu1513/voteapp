@@ -20,6 +20,7 @@ import { isWisconsinFinanceEligibleOffice } from "../wisconsinFinance/wisconsinF
 import { isMassachusettsFinanceEligibleOffice } from "../massachusettsFinance/massachusettsFinanceEligibleOffices.js";
 import { isMichiganFinanceEligibleOffice } from "../michiganFinance/michiganFinanceEligibleOffices.js";
 import {
+  isAlaskaCampaignFinanceEnabled,
   isCaliforniaCampaignFinanceEnabled,
   isCandidateFinanceEnabled,
   isColoradoCampaignFinanceEnabled,
@@ -161,6 +162,7 @@ export type BallotLookupFinanceSummary = {
     | "WISCONSIN_SUNSHINE"
     | "MASSACHUSETTS_OCPF"
     | "MICHIGAN_MITN"
+    | "ALASKA_APOC"
     | "DISTRICT_OF_COLUMBIA_OCF";
   cycle: number;
   fec_candidate_id: string | null;
@@ -6968,6 +6970,46 @@ async function loadVirginiaCandidateFinanceSummariesByCandidateElection(
   );
 }
 
+type AlaskaCandidateFinanceBallotLookupModule = {
+  loadAlaskaCandidateFinanceSummariesByCandidateElection: (
+    db: Queryable,
+    candidateRows: readonly CandidateRow[],
+    electionRows: readonly ElectionRow[]
+  ) => Promise<Map<string, BallotLookupFinanceSummary>>;
+};
+
+const ALASKA_CANDIDATE_FINANCE_BALLOT_LOOKUP_MODULE = "../alaskaFinance/alaskaCandidateFinanceBallotLookup.js";
+
+function isMissingOptionalAlaskaFinanceModuleError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    "code" in error &&
+    error.code === "ERR_MODULE_NOT_FOUND" &&
+    error.message.includes("alaskaCandidateFinanceBallotLookup")
+  );
+}
+
+async function loadOptionalAlaskaCandidateFinanceSummariesByCandidateElection(
+  db: Queryable,
+  candidateRows: readonly CandidateRow[],
+  electionRows: readonly ElectionRow[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
+  if (!isAlaskaCampaignFinanceEnabled()) {
+    return new Map();
+  }
+
+  try {
+    const module = (await import(ALASKA_CANDIDATE_FINANCE_BALLOT_LOOKUP_MODULE)) as AlaskaCandidateFinanceBallotLookupModule;
+    return module.loadAlaskaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
+  } catch (error) {
+    if (isMissingOptionalAlaskaFinanceModuleError(error)) {
+      console.warn("Alaska campaign finance adapter is unavailable; skipping Alaska finance summaries");
+      return new Map();
+    }
+    throw error;
+  }
+}
+
 async function loadCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly CandidateRow[],
@@ -6979,6 +7021,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     candidateRows,
     electionRows
   );
+  const alaskaSummaries = await loadOptionalAlaskaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const michiganSummaries = await loadMichiganCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const washingtonSummaries = await loadWashingtonCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const hawaiiSummaries = await loadHawaiiCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
@@ -6999,6 +7042,9 @@ async function loadCandidateFinanceSummariesByCandidateElection(
 
   const merged = new Map(wisconsinSummaries);
   for (const [key, summary] of massachusettsSummaries) {
+    merged.set(key, summary);
+  }
+  for (const [key, summary] of alaskaSummaries) {
     merged.set(key, summary);
   }
   for (const [key, summary] of michiganSummaries) {
