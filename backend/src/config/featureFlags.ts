@@ -60,6 +60,17 @@ export function isCaliforniaCampaignFinanceRawDataRefreshEnabled(force = false):
   );
 }
 
+export function isAlaskaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("ALASKA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isAlaskaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isAlaskaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("ALASKA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isColoradoCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("COLORADO_CAMPAIGN_FINANCE_ENABLED", false);
 }

@@ -4118,6 +4118,331 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced Alaska finance summaries for Alaska candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("ALASKA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "02",
+            district_name: "Alaska",
+            state: "AK",
+            state_fips: "02",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane North",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "AK",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "AK100",
+            election_year: 2026,
+            total_receipts: "90000.00",
+            direct_contribution_total: "75000.00",
+            total_disbursements: "20000.00",
+            cash_on_hand: "55000.00",
+            outside_support_total: "40000.00",
+            outside_oppose_total: "5000.00",
+            source_url: null,
+            last_synced_at: "2026-06-22 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Engineer",
+            amount: "15000.00",
+            contributor_count: "6",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$500-$999",
+            amount: "22000.00",
+            contributor_count: "12",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "AKPAC1",
+            committee_name: "Alaska Future PAC",
+            support_oppose: "support",
+            amount: "40000.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "AKPAC2",
+            committee_name: "No North PAC",
+            support_oppose: "oppose",
+            amount: "5000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "oil_gas_energy",
+            amount: "30000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "5000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "oil_gas_energy",
+            committee_id: "AKPAC1",
+            committee_name: "Alaska Future PAC",
+            support_oppose: "support",
+            organization_name: "Northern Energy LLC",
+            amount: "25000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "ALASKA_APOC",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "AK100",
+      last_synced_at: "2026-06-22 04:05:00+00",
+      direct_campaign: {
+        total_raised: 75000,
+        total_spent: 20000,
+        cash_on_hand: 55000,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "Engineer",
+            amount: 15000,
+            contributor_count: 6,
+            source_url: "https://aws.state.ak.us/ApocReports/Campaign/",
+          },
+        ],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$500-$999",
+            amount: 22000,
+            contributor_count: 12,
+            source_url: "https://aws.state.ak.us/ApocReports/Campaign/",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 40000,
+        oppose_total: 5000,
+        top_supporting_groups: [
+          {
+            committee_id: "AKPAC1",
+            committee_name: "Alaska Future PAC",
+            support_oppose: "support",
+            amount: 40000,
+            source_url: "https://aws.state.ak.us/ApocReports/Campaign/",
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "AKPAC2",
+            committee_name: "No North PAC",
+            support_oppose: "oppose",
+            amount: 5000,
+            source_url: "https://aws.state.ak.us/ApocReports/Campaign/",
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "oil_gas_energy",
+            amount: 30000,
+            contributor_count: 2,
+            source_url: "https://aws.state.ak.us/ApocReports/Campaign/",
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 5000,
+            contributor_count: 1,
+            source_url: "https://aws.state.ak.us/ApocReports/Campaign/",
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Engineer",
+            amount: 15000,
+            contributor_count: 6,
+            source_url: "https://aws.state.ak.us/ApocReports/Campaign/",
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "oil_gas_energy",
+            amount: 30000,
+            contributor_count: 2,
+            source_url: "https://aws.state.ak.us/ApocReports/Campaign/",
+            explanation:
+              "The Oil, gas, and energy category is a top outside-spending support industry because Northern Energy LLC contributed to Alaska Future PAC, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "Northern Energy LLC",
+                organization_type: "donor",
+                amount: 25000,
+                contributor_count: 1,
+                committee_id: "AKPAC1",
+                committee_name: "Alaska Future PAC",
+                source_url: "https://aws.state.ak.us/ApocReports/Campaign/",
+              },
+            ],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(13);
+    expect(query.mock.calls[7]?.[0]).toContain("public.ak_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.ak_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
+    expect(query.mock.calls[9]?.[0]).toContain("public.ak_candidate_finance_outside_groups");
+    expect(query.mock.calls[10]?.[0]).toContain("public.ak_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("public.ak_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
+    expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
+  });
+
+  it("does not load Alaska finance summaries for unsupported Alaska offices", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("ALASKA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "place",
+            geoid_compact: "0203000",
+            district_name: "Anchorage",
+            state: "AK",
+            state_fips: "02",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Mayor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: false,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "local",
+            office_canonical_name: "Mayor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane North",
+            party: "Nonpartisan",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Mayor",
+            state: "AK",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toBeNull();
+    expect(query).toHaveBeenCalledTimes(7);
+    expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("ak_candidate_finance");
+  });
+
   it("includes locally synced Michigan finance summaries for Michigan candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("MICHIGAN_CAMPAIGN_FINANCE_ENABLED", "true");

@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it } from "vitest";
 
 import {
+  isAlaskaCampaignFinanceEnabled,
+  isAlaskaCampaignFinanceSyncEnabled,
   isArizonaCampaignFinanceEnabled,
   isArizonaCampaignFinanceSyncEnabled,
   isCaliforniaCampaignFinanceEnabled,
@@ -39,6 +41,8 @@ const ORIGINAL_ARIZONA_FINANCE_SYNC_VALUE = process.env.ARIZONA_CAMPAIGN_FINANCE
 const ORIGINAL_CALIFORNIA_FINANCE_VALUE = process.env.CALIFORNIA_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_CALIFORNIA_FINANCE_SYNC_VALUE = process.env.CALIFORNIA_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_CALIFORNIA_RAW_REFRESH_VALUE = process.env.CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED;
+const ORIGINAL_ALASKA_FINANCE_VALUE = process.env.ALASKA_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_ALASKA_FINANCE_SYNC_VALUE = process.env.ALASKA_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_COLORADO_FINANCE_VALUE = process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_COLORADO_FINANCE_SYNC_VALUE = process.env.COLORADO_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_COLORADO_RAW_REFRESH_VALUE = process.env.COLORADO_TRACER_RAW_DATA_REFRESH_ENABLED;
@@ -98,6 +102,16 @@ describe("featureFlags", () => {
       delete process.env.CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED;
     } else {
       process.env.CALIFORNIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED = ORIGINAL_CALIFORNIA_RAW_REFRESH_VALUE;
+    }
+    if (ORIGINAL_ALASKA_FINANCE_VALUE === undefined) {
+      delete process.env.ALASKA_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.ALASKA_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_ALASKA_FINANCE_VALUE;
+    }
+    if (ORIGINAL_ALASKA_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.ALASKA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.ALASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_ALASKA_FINANCE_SYNC_VALUE;
     }
     if (ORIGINAL_COLORADO_FINANCE_VALUE === undefined) {
       delete process.env.COLORADO_CAMPAIGN_FINANCE_ENABLED;
@@ -337,6 +351,27 @@ describe("featureFlags", () => {
 
     expect(isCaliforniaCampaignFinanceRawDataRefreshEnabled()).toBe(false);
     expect(isCaliforniaCampaignFinanceRawDataRefreshEnabled(true)).toBe(false);
+  });
+
+  it("gates Alaska campaign finance sync behind the Alaska master flag", () => {
+    delete process.env.ALASKA_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.ALASKA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+
+    expect(isAlaskaCampaignFinanceEnabled()).toBe(false);
+    expect(isAlaskaCampaignFinanceSyncEnabled()).toBe(false);
+
+    process.env.ALASKA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.ALASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    expect(isAlaskaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isAlaskaCampaignFinanceSyncEnabled(true)).toBe(false);
+
+    process.env.ALASKA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.ALASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+    expect(isAlaskaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isAlaskaCampaignFinanceSyncEnabled(true)).toBe(true);
+
+    process.env.ALASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    expect(isAlaskaCampaignFinanceSyncEnabled()).toBe(true);
   });
 
   it("disables Colorado campaign finance by default", () => {
