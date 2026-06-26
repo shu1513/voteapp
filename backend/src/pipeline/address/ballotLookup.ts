@@ -156,6 +156,7 @@ export type BallotLookupFinanceBackingSummary = {
 export type BallotLookupFinanceSummary = {
   source:
     | "FEC"
+    | "ARIZONA_SOS"
     | "CALIFORNIA_SOS"
     | "COLORADO_TRACER"
     | "CONNECTICUT_ECRIS"
@@ -4002,6 +4003,45 @@ async function loadTexasCandidateFinanceSummariesByCandidateElection(
       ];
     })
   );
+}
+
+type OptionalArizonaFinanceBallotLookupModule = {
+  loadArizonaCandidateFinanceSummariesByCandidateElection: (
+    db: Queryable,
+    candidateRows: readonly CandidateRow[],
+    electionRows: readonly ElectionRow[]
+  ) => Promise<Map<string, BallotLookupFinanceSummary>>;
+};
+
+function readOptionalBooleanEnv(name: string, fallback: boolean): boolean {
+  const raw = process.env[name];
+  if (!raw || raw.trim().length === 0) {
+    return fallback;
+  }
+
+  const normalized = raw.trim().toLowerCase();
+  if (["1", "true", "yes", "y", "on"].includes(normalized)) {
+    return true;
+  }
+  if (["0", "false", "no", "n", "off"].includes(normalized)) {
+    return false;
+  }
+
+  throw new Error(`Invalid boolean env ${name}: ${raw}`);
+}
+
+async function loadArizonaCandidateFinanceSummariesByCandidateElection(
+  db: Queryable,
+  candidateRows: readonly CandidateRow[],
+  electionRows: readonly ElectionRow[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
+  if (!readOptionalBooleanEnv("ARIZONA_CAMPAIGN_FINANCE_ENABLED", false)) {
+    return new Map();
+  }
+
+  const modulePath = "../arizonaFinance/arizonaFinanceBallotLookup.js";
+  const module = (await import(modulePath)) as OptionalArizonaFinanceBallotLookupModule;
+  return module.loadArizonaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
 }
 
 async function loadWashingtonCandidateFinanceSummariesByCandidateElection(
@@ -8201,6 +8241,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
   const floridaSummaries = await loadOptionalFloridaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const virginiaSummaries = await loadVirginiaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const texasSummaries = await loadTexasCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
+  const arizonaSummaries = await loadArizonaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const utahSummaries = await loadUtahCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const nebraskaSummaries = await loadNebraskaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const oklahomaSummaries = await loadOklahomaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
@@ -8242,6 +8283,9 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     merged.set(key, summary);
   }
   for (const [key, summary] of texasSummaries) {
+    merged.set(key, summary);
+  }
+  for (const [key, summary] of arizonaSummaries) {
     merged.set(key, summary);
   }
   for (const [key, summary] of utahSummaries) {
