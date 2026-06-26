@@ -212,6 +212,14 @@ export function isWisconsinCampaignFinanceSyncEnabled(force = false): boolean {
   );
 }
 
+export function isUtahCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("UTAH_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isUtahCampaignFinanceSyncEnabled(force = false): boolean {
+  return isUtahCampaignFinanceEnabled() && (force || readBooleanEnv("UTAH_CAMPAIGN_FINANCE_SYNC_ENABLED", false));
+}
+
 export function isMassachusettsCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED", false);
 }

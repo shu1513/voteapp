@@ -1,0 +1,273 @@
+import { describe, expect, it, vi } from "vitest";
+
+import {
+  listDueUtahCandidateFinanceSyncRows,
+  syncDueUtahCandidateFinance,
+} from "../../../src/pipeline/utahFinance/utahCandidateFinanceBatchSync.js";
+import type { UtahCandidateFinanceSyncResult } from "../../../src/pipeline/utahFinance/utahCandidateFinanceSync.js";
+import type { UtahDisclosuresTransactionRow } from "../../../src/pipeline/utahFinance/utahDisclosuresClient.js";
+
+const NOW = new Date("2026-06-01T00:00:00.000Z");
+const SOURCE_URL = "https://disclosures.utah.gov/Search/AdvancedSearch/FolderDetails/98765";
+const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
+const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
+
+function dueRow(overrides: Record<string, unknown> = {}) {
+  return {
+    candidate_id: CANDIDATE_ID,
+    election_id: ELECTION_ID,
+    candidate_name: "Jane Doe",
+    election_year: 2026,
+    office_scope: "statewide",
+    office_name: "Governor",
+    district: null,
+    folder_id: "98765",
+    committee_name: "Friends of Jane Doe",
+    source_url: SOURCE_URL,
+    last_synced_at: null,
+    total_due_rows: "1",
+    ...overrides,
+  };
+}
+
+function transaction(overrides: Partial<UtahDisclosuresTransactionRow> = {}): UtahDisclosuresTransactionRow {
+  return {
+    entityType: "PCC",
+    entityName: "Friends of Jane Doe",
+    transactionId: "T1",
+    transactionType: "Contribution",
+    transactionDate: "01/02/2026",
+    amount: 100,
+    name: "John Smith",
+    inKind: false,
+    loan: false,
+    ...overrides,
+  };
+}
+
+function syncResult(overrides: Partial<UtahCandidateFinanceSyncResult> = {}): UtahCandidateFinanceSyncResult {
+  return {
+    candidateId: CANDIDATE_ID,
+    electionId: ELECTION_ID,
+    electionYear: 2026,
+    dryRun: false,
+    resolution: {
+      status: "matched",
+      folderId: "98765",
+      committeeName: "Friends of Jane Doe",
+      confidence: "exact",
+      source: "folder_title",
+      sourceUrl: SOURCE_URL,
+      matchedEntityRowCount: 1,
+    },
+    linkWritten: true,
+    summaryWritten: true,
+    directBreakdownsWritten: 1,
+    totalReceipts: 100,
+    directContributionTotal: 100,
+    totalDisbursements: 0,
+    matchedTransactionRowCount: 1,
+    includedContributionRowCount: 1,
+    skippedTransactionRowCount: 0,
+    supportingCommitteeCount: 0,
+    supportingCommitteeIndustryCount: 0,
+    supportingCommitteeMatchedTransactionRowCount: 0,
+    supportingCommitteeIncludedOrganizationDonorRowCount: 0,
+    supportingCommitteeSkippedTransactionRowCount: 0,
+    ...overrides,
+  };
+}
+
+describe("utahCandidateFinanceBatchSync", () => {
+  it("lists active Utah finance links that are due for sync", async () => {
+    const db = {
+      query: vi.fn(async () => ({
+        rows: [
+          dueRow({ total_due_rows: "2" }),
+          dueRow({
+            candidate_id: "33333333-3333-4333-8333-333333333333",
+            election_id: "44444444-4444-4444-8444-444444444444",
+            candidate_name: "John Public",
+            office_scope: "state_lower",
+            office_name: "State Lower Chamber Legislator",
+            district: "57",
+            folder_id: "12345",
+            committee_name: "John Public for House",
+            source_url: null,
+            last_synced_at: "2026-01-01 00:00:00+00",
+            total_due_rows: "2",
+          }),
+        ],
+        rowCount: 2,
+      })),
+    };
+
+    await expect(
+      listDueUtahCandidateFinanceSyncRows(db, {
+        now: NOW,
+        staleAfterDays: 7,
+        maxCandidates: 25,
+        electionLookbackDays: 1,
+        electionLookaheadDays: 730,
+      })
+    ).resolves.toEqual({
+      totalDueRows: 2,
+      rows: [
+        {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          candidateName: "Jane Doe",
+          electionYear: 2026,
+          officeScope: "statewide",
+          officeName: "Governor",
+          district: null,
+          folderId: "98765",
+          committeeName: "Friends of Jane Doe",
+          sourceUrl: SOURCE_URL,
+          lastSyncedAt: null,
+        },
+        {
+          candidateId: "33333333-3333-4333-8333-333333333333",
+          electionId: "44444444-4444-4444-8444-444444444444",
+          candidateName: "John Public",
+          electionYear: 2026,
+          officeScope: "state_lower",
+          officeName: "State Lower Chamber Legislator",
+          district: "57",
+          folderId: "12345",
+          committeeName: "John Public for House",
+          sourceUrl: null,
+          lastSyncedAt: "2026-01-01 00:00:00+00",
+        },
+      ],
+    });
+
+    const sql = String(db.query.mock.calls[0]?.[0]);
+    expect(sql).toContain("FROM public.ut_candidate_finance_links AS link");
+    expect(sql).toContain("link.link_status = 'active'");
+    expect(sql).toContain("district.state = 'UT'");
+    expect(sql).toContain("election.race_type = 'office'");
+    expect(sql).toContain("candidate_election.status NOT IN ('withdrawn', 'lost')");
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      "2026-06-01T00:00:00.000Z",
+      7,
+      25,
+      1,
+      730,
+      expect.arrayContaining([
+        "statewide::Governor",
+        "state_upper::State Senator",
+        "state_lower::State Lower Chamber Legislator",
+      ]),
+    ]);
+  });
+
+  it("downloads candidate folder CSVs and one PAC CSV per year before syncing linked candidates", async () => {
+    const db = {
+      query: vi.fn(async () => ({ rows: [dueRow({ total_due_rows: "2" }), dueRow({ folder_id: "22222" })] })),
+    };
+    const candidateRows = [transaction()];
+    const pacRows = [transaction({ entityType: "PAC", entityName: "Utah Builders PAC", name: "Wasatch Builders LLC" })];
+    const loadGeneratedReportRowsFn = vi.fn(async (input) => {
+      if (input.folderId) {
+        return {
+          rows: candidateRows,
+          cachePath: `/tmp/folder-${input.folderId}.csv`,
+          sourceUrl: `https://example.test/folder/${input.folderId}`,
+          cacheHit: false,
+        };
+      }
+      return {
+        rows: pacRows,
+        cachePath: "/tmp/pac.csv",
+        sourceUrl: "https://example.test/pac",
+        cacheHit: false,
+      };
+    });
+    const syncUtahCandidateFinanceFn = vi.fn().mockResolvedValue(syncResult());
+
+    const result = await syncDueUtahCandidateFinance({
+      db,
+      now: NOW,
+      maxCandidates: 2,
+      staleAfterDays: 3,
+      electionLookbackDays: 30,
+      loadGeneratedReportRowsFn,
+      syncUtahCandidateFinanceFn,
+      classifySupportingCommitteeIndustriesWithAi: false,
+      supportingCommitteeIndustryMinAmount: 5_000,
+    });
+
+    expect(result).toMatchObject({
+      dryRun: false,
+      dueCandidateCount: 2,
+      selectedCandidateCount: 2,
+      syncedCandidateCount: 2,
+      failedCandidateCount: 0,
+    });
+    expect(loadGeneratedReportRowsFn).toHaveBeenCalledWith({ reportYear: 2026, folderId: "98765" });
+    expect(loadGeneratedReportRowsFn).toHaveBeenCalledWith({ reportYear: 2026, folderId: "22222" });
+    expect(loadGeneratedReportRowsFn).toHaveBeenCalledWith({ reportYear: 2026, entityType: "PAC" });
+    expect(loadGeneratedReportRowsFn.mock.calls.filter((call) => call[0].entityType === "PAC")).toHaveLength(1);
+    expect(syncUtahCandidateFinanceFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeScope: "statewide",
+        officeName: "Governor",
+        sourceUrl: SOURCE_URL,
+        transactionSourceUrl: "https://example.test/folder/98765",
+        supportingCommitteeSourceUrl: "https://example.test/pac",
+        trustedCommittee: {
+          folderId: "98765",
+          committeeName: "Friends of Jane Doe",
+          reportYears: [2026],
+          sourceUrl: SOURCE_URL,
+        },
+        transactions: candidateRows,
+        supportingCommitteeTransactions: pacRows,
+        classifySupportingCommitteeIndustriesWithAi: false,
+        supportingCommitteeIndustryMinAmount: 5_000,
+        dryRun: false,
+        now: NOW,
+      })
+    );
+  });
+
+  it("continues with direct finance when PAC enrichment CSV loading fails", async () => {
+    const db = { query: vi.fn(async () => ({ rows: [dueRow()] })) };
+    const loadGeneratedReportRowsFn = vi.fn(async (input) => {
+      if (input.entityType === "PAC") {
+        throw new Error("PAC bulk CSV unavailable");
+      }
+      return {
+        rows: [transaction()],
+        cachePath: "/tmp/folder.csv",
+        sourceUrl: "https://example.test/folder",
+        cacheHit: false,
+      };
+    });
+    const syncUtahCandidateFinanceFn = vi.fn().mockResolvedValue(syncResult());
+
+    const result = await syncDueUtahCandidateFinance({
+      db,
+      now: NOW,
+      loadGeneratedReportRowsFn,
+      syncUtahCandidateFinanceFn,
+    });
+
+    expect(result).toMatchObject({
+      syncedCandidateCount: 1,
+      failedCandidateCount: 0,
+      results: [{ ok: true, supportingCommitteeLoadError: "PAC bulk CSV unavailable" }],
+    });
+    expect(syncUtahCandidateFinanceFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        supportingCommitteeTransactions: undefined,
+        supportingCommitteeSourceUrl: undefined,
+      })
+    );
+  });
+});

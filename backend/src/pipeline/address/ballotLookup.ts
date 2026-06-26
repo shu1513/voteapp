@@ -140,9 +140,14 @@ export type BallotLookupFinanceOutsideIndustrySupportSummary = BallotLookupFinan
   supporting_organizations: BallotLookupFinanceOutsideIndustrySupportEvidence[];
 };
 
+export type BallotLookupFinanceSupportingCommitteeIndustrySummary = BallotLookupFinanceBreakdown & {
+  supporting_committee_name: string;
+};
+
 export type BallotLookupFinanceBackingSummary = {
   top_direct_donor_occupations: BallotLookupFinanceBreakdown[];
   top_outside_supporting_industries: BallotLookupFinanceOutsideIndustrySupportSummary[];
+  top_supporting_committee_industries?: BallotLookupFinanceSupportingCommitteeIndustrySummary[];
 };
 
 export type BallotLookupFinanceSummary = {
@@ -155,6 +160,7 @@ export type BallotLookupFinanceSummary = {
     | "NEW_MEXICO_CFIS"
     | "OKLAHOMA_GUARDIAN"
     | "TEXAS_TEC"
+    | "UTAH_DISCLOSURES"
     | "HAWAII_CSC"
     | "VIRGINIA_CFREPORTS"
     | "WASHINGTON_PDC"
@@ -3034,6 +3040,41 @@ async function loadOklahomaCandidateFinanceSummariesByCandidateElection(
       ];
     })
   );
+}
+
+async function loadUtahCandidateFinanceSummariesByCandidateElection(
+  db: Queryable,
+  candidateRows: readonly CandidateRow[],
+  electionRows: readonly ElectionRow[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
+  if (!electionRows.some((row) => row.state.trim().toUpperCase() === "UT")) {
+    return new Map();
+  }
+
+  const modulePath = "../utahFinance/utahBallotLookupFinanceLoader.js";
+  try {
+    const module = (await import(modulePath)) as {
+      loadUtahCandidateFinanceSummariesByCandidateElection(input: {
+        db: Queryable;
+        candidateRows: readonly CandidateRow[];
+        electionRows: readonly ElectionRow[];
+      }): Promise<Map<string, BallotLookupFinanceSummary>>;
+    };
+    return await module.loadUtahCandidateFinanceSummariesByCandidateElection({ db, candidateRows, electionRows });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      ((error as { code?: unknown }).code === "ERR_MODULE_NOT_FOUND" ||
+        (error as { code?: unknown }).code === "MODULE_NOT_FOUND") &&
+      message.includes("utahBallotLookupFinanceLoader")
+    ) {
+      return new Map();
+    }
+    throw error;
+  }
 }
 
 async function loadNewMexicoCandidateFinanceSummariesByCandidateElection(
@@ -6989,6 +7030,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
   );
   const virginiaSummaries = await loadVirginiaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const texasSummaries = await loadTexasCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
+  const utahSummaries = await loadUtahCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const nebraskaSummaries = await loadNebraskaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const oklahomaSummaries = await loadOklahomaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const newMexicoSummaries = await loadNewMexicoCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
@@ -7017,6 +7059,9 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     merged.set(key, summary);
   }
   for (const [key, summary] of texasSummaries) {
+    merged.set(key, summary);
+  }
+  for (const [key, summary] of utahSummaries) {
     merged.set(key, summary);
   }
   for (const [key, summary] of nebraskaSummaries) {
