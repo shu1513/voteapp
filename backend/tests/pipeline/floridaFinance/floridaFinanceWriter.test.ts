@@ -279,6 +279,20 @@ describe("floridaFinanceWriter", () => {
     expect(
       sql.some((statement) => statement.includes("total_receipts = EXCLUDED.total_receipts"))
     ).toBe(true);
+    expect(
+      sql.some((statement) =>
+        statement.includes(
+          "outside_support_total = COALESCE(EXCLUDED.outside_support_total, fl_candidate_finance_summaries.outside_support_total)"
+        )
+      )
+    ).toBe(true);
+    expect(
+      sql.some((statement) =>
+        statement.includes(
+          "outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, fl_candidate_finance_summaries.outside_oppose_total)"
+        )
+      )
+    ).toBe(true);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.fl_candidate_finance_direct_breakdowns"))).toHaveLength(2);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.fl_candidate_finance_outside_groups"))).toHaveLength(2);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.fl_candidate_finance_outside_group_breakdowns"))).toHaveLength(2);
@@ -299,6 +313,49 @@ describe("floridaFinanceWriter", () => {
       },
     })).rejects.toThrow("Florida finance snapshot writes must receive a transaction-capable Pool");
     expect(db.query).not.toHaveBeenCalled();
+  });
+
+  it("preserves outside totals when the current snapshot has no outside group refresh", async () => {
+    const db = createMockDb();
+
+    await replaceFloridaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+      summary: {
+        totalReceipts: 1000,
+        directContributionTotal: 1000,
+        outsideSupportTotal: null,
+        outsideOpposeTotal: null,
+      },
+    });
+
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.fl_candidate_finance_summaries")
+    );
+    const summarySql = String(summaryCall?.[0]);
+    expect(summarySql).toContain("total_receipts = EXCLUDED.total_receipts");
+    expect(summarySql).toContain(
+      "outside_support_total = COALESCE(EXCLUDED.outside_support_total, fl_candidate_finance_summaries.outside_support_total)"
+    );
+    expect(summarySql).toContain(
+      "outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, fl_candidate_finance_summaries.outside_oppose_total)"
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2026,
+      1000,
+      1000,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "2026-02-03T04:05:06.000Z",
+    ]);
+    expect(
+      db.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.fl_candidate_finance_outside_groups"))
+    ).toBe(false);
   });
 
   it("rejects a supplied PoolClient so it cannot commit an outer transaction", async () => {
