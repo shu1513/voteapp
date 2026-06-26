@@ -13,8 +13,17 @@ type AppliedMigrationRow = {
   applied_at: Date;
 };
 
+type MigrationPrefixDuplicate = {
+  prefix: string;
+  filenames: string[];
+  legacy_allowed: boolean;
+};
+
 const MIGRATION_FILE_RE = /^\d+_.+\.sql$/;
 const LOCK_KEY = 780_001_001;
+// These prefixes were already merged before duplicate-prefix enforcement existed.
+// Keep the filenames stable so applied databases do not replay renamed migrations.
+const LEGACY_DUPLICATE_MIGRATION_PREFIXES = new Set(["075", "125", "127", "128"]);
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
@@ -83,6 +92,43 @@ async function listMigrationFiles(): Promise<string[]> {
     });
 }
 
+function getMigrationPrefix(filename: string): string {
+  return filename.split("_", 1)[0] ?? "";
+}
+
+function findMigrationPrefixDuplicates(filenames: string[]): MigrationPrefixDuplicate[] {
+  const filesByPrefix = new Map<string, string[]>();
+
+  for (const filename of filenames) {
+    const prefix = getMigrationPrefix(filename);
+    const files = filesByPrefix.get(prefix) ?? [];
+    files.push(filename);
+    filesByPrefix.set(prefix, files);
+  }
+
+  return [...filesByPrefix.entries()]
+    .filter(([, files]) => files.length > 1)
+    .map(([prefix, files]) => ({
+      prefix,
+      filenames: files.sort((a, b) => a.localeCompare(b)),
+      legacy_allowed: LEGACY_DUPLICATE_MIGRATION_PREFIXES.has(prefix),
+    }))
+    .sort((a, b) => Number.parseInt(a.prefix, 10) - Number.parseInt(b.prefix, 10) || a.prefix.localeCompare(b.prefix));
+}
+
+function getUnallowedMigrationPrefixDuplicates(filenames: string[]): MigrationPrefixDuplicate[] {
+  return findMigrationPrefixDuplicates(filenames).filter((duplicate) => !duplicate.legacy_allowed);
+}
+
+function throwIfUnallowedMigrationPrefixDuplicates(filenames: string[]): void {
+  const unallowedDuplicates = getUnallowedMigrationPrefixDuplicates(filenames);
+  if (unallowedDuplicates.length === 0) {
+    return;
+  }
+
+  throw new Error(`Duplicate migration number prefix(es): ${JSON.stringify(unallowedDuplicates)}`);
+}
+
 async function readMigrationFile(filename: string): Promise<{ filename: string; sql: string; checksum: string }> {
   const fullPath = resolve(getMigrationsDir(), filename);
   const sql = await readFile(fullPath, "utf8");
@@ -105,7 +151,10 @@ async function getAppliedMap(db: Queryable): Promise<Map<string, AppliedMigratio
   return map;
 }
 
-function parseMode(): "status" | "apply" | "baseline" {
+function parseMode(): "status" | "apply" | "baseline" | "check-files" {
+  if (process.argv.includes("--check-files")) {
+    return "check-files";
+  }
   if (process.argv.includes("--status")) {
     return "status";
   }
@@ -116,8 +165,29 @@ function parseMode(): "status" | "apply" | "baseline" {
 }
 
 async function main(): Promise<void> {
-  const env = getPipelineEnv();
   const mode = parseMode();
+  const filenames = await listMigrationFiles();
+  const duplicatePrefixReport = findMigrationPrefixDuplicates(filenames);
+
+  if (mode === "check-files") {
+    throwIfUnallowedMigrationPrefixDuplicates(filenames);
+    console.log(
+      JSON.stringify(
+        {
+          mode,
+          migrations_dir: getMigrationsDir(),
+          total_files: filenames.length,
+          duplicate_prefixes: duplicatePrefixReport,
+          duplicate_prefixes_ok: true,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const client = await pool.connect();
 
@@ -126,7 +196,8 @@ async function main(): Promise<void> {
 
     await ensureSchemaMigrationsTable(client);
 
-    const filenames = await listMigrationFiles();
+    throwIfUnallowedMigrationPrefixDuplicates(filenames);
+
     const migrations = await Promise.all(filenames.map((filename) => readMigrationFile(filename)));
     const applied = await getAppliedMap(client);
 
@@ -160,6 +231,8 @@ async function main(): Promise<void> {
             applied_count: applied.size,
             pending_count: pending.length,
             pending_files: pending.map((migration) => migration.filename),
+            duplicate_prefixes: duplicatePrefixReport,
+            duplicate_prefixes_ok: true,
           },
           null,
           2
