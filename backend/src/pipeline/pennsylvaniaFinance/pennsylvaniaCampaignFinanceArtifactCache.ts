@@ -1,7 +1,7 @@
 import { execFile } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { createWriteStream } from "node:fs";
-import { access, mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import { access, mkdir, open, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { delimiter, resolve } from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
@@ -13,6 +13,10 @@ export const PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_BASE_URL =
 export const PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_FETCH_TIMEOUT_MS = 900_000;
 export const DEFAULT_PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR =
   "scratch/pennsylvania-campaign-finance/exports";
+const PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_ALLOWED_HOSTS = new Set(["pa.gov", "www.pa.gov"]);
+const PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_LOCK_WAIT_MS = 60_000;
+const PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_LOCK_STALE_MS =
+  PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_FETCH_TIMEOUT_MS * 2;
 
 export type PennsylvaniaCampaignFinanceExportRemoteMetadata = {
   year: number;
@@ -89,6 +93,51 @@ async function withRefreshLock<T>(key: string, task: () => Promise<T>): Promise<
   }
 }
 
+function delay(ms: number): Promise<void> {
+  return new Promise((resolveDelay) => {
+    setTimeout(resolveDelay, ms);
+  });
+}
+
+async function withRefreshFileLock<T>(input: {
+  cacheDir: string;
+  lockPath: string;
+  task: () => Promise<T>;
+}): Promise<T> {
+  await mkdir(input.cacheDir, { recursive: true });
+  const startedAt = Date.now();
+  while (true) {
+    let lockHandle: Awaited<ReturnType<typeof open>> | undefined;
+    try {
+      lockHandle = await open(input.lockPath, "wx");
+      await lockHandle.writeFile(`${process.pid}\n${new Date().toISOString()}\n`, "utf8");
+      try {
+        return await input.task();
+      } finally {
+        await lockHandle.close();
+        await rm(input.lockPath, { force: true }).catch(() => {});
+      }
+    } catch (error) {
+      if (lockHandle) {
+        await lockHandle.close().catch(() => {});
+      }
+      if ((error as NodeJS.ErrnoException).code !== "EEXIST") {
+        throw error;
+      }
+
+      const lockStat = await stat(input.lockPath).catch(() => null);
+      if (lockStat && Date.now() - lockStat.mtimeMs > PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_LOCK_STALE_MS) {
+        await rm(input.lockPath, { force: true }).catch(() => {});
+        continue;
+      }
+      if (Date.now() - startedAt > PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_LOCK_WAIT_MS) {
+        throw new Error(`Pennsylvania campaign finance export refresh lock is busy: ${input.lockPath}`);
+      }
+      await delay(250);
+    }
+  }
+}
+
 export function normalizePennsylvaniaCampaignFinanceExportYear(year: number): number {
   if (!Number.isInteger(year) || year < 2000 || year > 2100) {
     throw new Error(`Invalid Pennsylvania campaign finance export year: ${year}`);
@@ -108,6 +157,10 @@ export function parsePennsylvaniaCampaignFinanceHttpsUrl(
   }
   if (parsed.protocol !== "https:") {
     throw new Error(`Invalid ${fieldName} protocol: ${parsed.protocol}. Only https is allowed.`);
+  }
+  const hostname = parsed.hostname.toLowerCase().replace(/\.$/, "");
+  if (!PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_ALLOWED_HOSTS.has(hostname)) {
+    throw new Error(`Invalid ${fieldName} host: ${parsed.hostname}. Only official Pennsylvania hosts are allowed.`);
   }
   return parsed.toString();
 }
@@ -515,6 +568,10 @@ export async function refreshPennsylvaniaCampaignFinanceExportCache(input: {
   const year = normalizePennsylvaniaCampaignFinanceExportYear(input.year);
   const paths = getPennsylvaniaCampaignFinanceExportCachePaths({ cacheDir: input.cacheDir, year });
   return await withRefreshLock(`${paths.cacheDir}\u0000${year}`, () =>
-    refreshPennsylvaniaCampaignFinanceExportCacheUnlocked(input)
+    withRefreshFileLock({
+      cacheDir: paths.cacheDir,
+      lockPath: `${paths.metadataPath}.lock`,
+      task: () => refreshPennsylvaniaCampaignFinanceExportCacheUnlocked(input),
+    })
   );
 }

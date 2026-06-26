@@ -216,13 +216,6 @@ export function aggregatePennsylvaniaOutsideSpending(
       continue;
     }
 
-    includedExpenditureRowCount += 1;
-    if (supportOppose === "support") {
-      supportTotalCents += amountCents;
-    } else {
-      opposeTotalCents += amountCents;
-    }
-
     const groupId = groupIdForOrganization({
       organization,
       filerRows,
@@ -232,6 +225,14 @@ export function aggregatePennsylvaniaOutsideSpending(
       skippedExpenditureRowCount += 1;
       continue;
     }
+
+    includedExpenditureRowCount += 1;
+    if (supportOppose === "support") {
+      supportTotalCents += amountCents;
+    } else {
+      opposeTotalCents += amountCents;
+    }
+
     const key = groupKey({ groupId, supportOppose });
     const existing = groups.get(key);
     if (existing) {

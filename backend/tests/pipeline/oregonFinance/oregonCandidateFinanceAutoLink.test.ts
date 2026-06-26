@@ -72,12 +72,28 @@ describe("oregonCandidateFinanceAutoLink", () => {
       sourceUrl: "https://secure.sos.state.or.us/orestar/sooDetail.do?cneCommitteeId=4792",
       matchedCommitteeRowCount: 2,
     }));
+    const searchRows = [
+      {
+        transactionId: "4458653",
+        date: "10/12/2022",
+        status: "Original",
+        filerCommitteeName: "Friends of Tina Kotek",
+        filerCommitteeId: "4792",
+        committeeUrl: "https://secure.sos.state.or.us/orestar/sooDetail.do?cneCommitteeId=4792",
+        contributorPayee: "Jane Donor",
+        transactionSubtype: "Cash Contribution",
+        amount: 100,
+        detailUrl: "https://secure.sos.state.or.us/orestar/gotoPublicTransactionDetail.do?tranRsn=4458653",
+      },
+    ];
+    const loadCandidateSearchRows = vi.fn(async () => searchRows);
 
     await expect(
       autoLinkMissingOregonCandidateFinanceLinks({
         db,
         now: NOW,
         resolveCandidateCommittee,
+        loadCandidateSearchRows,
         candidateElections: [
           {
             candidateId: CANDIDATE_ID,
@@ -101,6 +117,17 @@ describe("oregonCandidateFinanceAutoLink", () => {
       },
     ]);
 
+    expect(loadCandidateSearchRows).toHaveBeenCalledWith(
+      expect.objectContaining({
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        candidateName: "Tina Kotek",
+      })
+    );
+    expect(resolveCandidateCommittee).toHaveBeenCalledWith({
+      candidateName: "Tina Kotek",
+      searchRows,
+    });
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       CANDIDATE_ID,
       ELECTION_ID,
@@ -115,5 +142,37 @@ describe("oregonCandidateFinanceAutoLink", () => {
       "https://secure.sos.state.or.us/orestar/sooDetail.do?cneCommitteeId=4792",
       "2026-06-25T19:00:00.000Z",
     ]);
+  });
+
+  it("skips built-in resolver auto-linking when search rows are not provided", async () => {
+    const db = {
+      query: vi.fn(),
+    };
+
+    await expect(
+      autoLinkMissingOregonCandidateFinanceLinks({
+        db,
+        now: NOW,
+        candidateElections: [
+          {
+            candidateId: CANDIDATE_ID,
+            electionId: ELECTION_ID,
+            candidateName: "Tina Kotek",
+            electionYear: 2026,
+            officeScope: "statewide",
+            officeName: "Governor",
+            district: null,
+          },
+        ],
+      })
+    ).resolves.toEqual([
+      {
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        status: "skipped",
+        reason: "Oregon auto-link search rows were not provided",
+      },
+    ]);
+    expect(db.query).not.toHaveBeenCalled();
   });
 });

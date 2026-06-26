@@ -286,7 +286,7 @@ export function parsePennsylvaniaIndependentExpenditureDataJson(html: string): P
   if (arrayStart < 0) {
     throw new Error("Pennsylvania independent expenditure dataJson array was not found");
   }
-  return asRows(JSON.parse(htmlDecode(scanJsonArray(rest, arrayStart))));
+  return asRows(JSON.parse(scanJsonArray(rest, arrayStart)));
 }
 
 export function buildPennsylvaniaIndependentExpenditureElectionPostbackBody(input: {

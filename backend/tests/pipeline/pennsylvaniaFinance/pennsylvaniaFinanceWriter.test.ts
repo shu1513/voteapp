@@ -170,4 +170,22 @@ describe("pennsylvaniaFinanceWriter", () => {
     ).rejects.toThrow("outside group breakdowns must reference outside groups");
     expect(db.query).not.toHaveBeenCalled();
   });
+
+  it("rejects snapshot writes with query-only handles", async () => {
+    const db = createMockDb();
+
+    await expect(
+      replacePennsylvaniaCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+        summary: {
+          totalReceipts: 350,
+          directContributionTotal: 350,
+          sourceUrl: SOURCE_URL,
+        },
+      })
+    ).rejects.toThrow("connect-capable Pool");
+    expect(db.query).not.toHaveBeenCalled();
+  });
 });

@@ -5,6 +5,7 @@ import {
   type FinanceLabelClassification,
 } from "../finance/financeLabelClassifier.js";
 import { mergeFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+import { normalizeOregonCandidateNameForStorage } from "./oregonCandidateCommitteeResolver.js";
 import {
   aggregateOregonDirectContributions,
   aggregateOregonOutsideGroupContributions,
@@ -115,16 +116,6 @@ function normalizeMinIndustryAmount(value: number | undefined): number {
   return normalized;
 }
 
-function normalizeCandidateNameForStorage(value: string): string {
-  return requireNonEmpty(value, "candidate name")
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toUpperCase()
-    .replace(/[^A-Z0-9]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
 function toFinanceLink(input: {
   candidateId: string;
   electionId: string;
@@ -141,7 +132,7 @@ function toFinanceLink(input: {
     candidateId: requireNonEmpty(input.candidateId, "candidate id"),
     electionId: requireNonEmpty(input.electionId, "election id"),
     electionYear: input.electionYear,
-    candidateNameNormalized: normalizeCandidateNameForStorage(input.candidateName),
+    candidateNameNormalized: normalizeOregonCandidateNameForStorage(requireNonEmpty(input.candidateName, "candidate name")),
     officeName: requireNonEmpty(input.officeName, "office name"),
     district: input.district ?? null,
     committeeId: requireNonEmpty(input.committeeId, "Oregon ORESTAR committee ID"),

@@ -12,8 +12,14 @@ const LINK_ID = "33333333-3333-3333-3333-333333333333";
 const SOURCE_URL = "https://www.pa.gov/content/dam/copapwp-pagov/en/dos/resources/voting-and-elections/campaign-finance/campaign-finance-data/2026.zip";
 
 function createMockDb() {
+  const client = {
+    query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
+    release: vi.fn(),
+  };
   return {
     query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
+    connect: vi.fn().mockResolvedValue(client),
+    client,
   };
 }
 
@@ -139,7 +145,7 @@ describe("pennsylvaniaCandidateFinanceSync", () => {
       filerName: "JANE DOE FOR GOVERNOR",
     });
 
-    const sql = db.query.mock.calls.map((call) => String(call[0]));
+    const sql = db.client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("INSERT INTO public.pa_candidate_finance_links"))).toBe(true);
     expect(sql.some((statement) => statement.includes("INSERT INTO public.pa_candidate_finance_summaries"))).toBe(true);
     expect(sql.some((statement) => statement.includes("INSERT INTO public.pa_candidate_finance_direct_breakdowns"))).toBe(true);
@@ -201,7 +207,7 @@ describe("pennsylvaniaCandidateFinanceSync", () => {
       skippedOutsideContributionEventCount: 0,
     });
 
-    const sql = db.query.mock.calls.map((call) => String(call[0]));
+    const sql = db.client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("INSERT INTO public.pa_candidate_finance_outside_groups"))).toBe(true);
     expect(sql.some((statement) => statement.includes("INSERT INTO public.pa_candidate_finance_outside_group_breakdowns"))).toBe(true);
     expect(sql.some((statement) => statement.includes("INSERT INTO public.finance_label_classifications"))).toBe(true);
@@ -245,7 +251,7 @@ describe("pennsylvaniaCandidateFinanceSync", () => {
       skippedOutsideContributionEventCount: 0,
     });
 
-    const sql = db.query.mock.calls.map((call) => String(call[0]));
+    const sql = db.client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("INSERT INTO public.pa_candidate_finance_outside_groups"))).toBe(true);
     expect(sql.some((statement) => statement.includes("INSERT INTO public.pa_candidate_finance_outside_group_breakdowns"))).toBe(false);
   });

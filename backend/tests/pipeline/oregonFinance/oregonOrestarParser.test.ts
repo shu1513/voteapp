@@ -27,6 +27,22 @@ describe("oregonOrestarParser", () => {
     });
   });
 
+  it("rejects transaction search form actions outside the ORESTAR origin", () => {
+    const html = `
+      <html>
+        <body>
+          <form name="cneSearchForm" method="post" action="https://example.test/orestar/cneSearch.do">
+            <input type="hidden" name="OWASP_CSRFTOKEN" value="csrf-token-1">
+          </form>
+        </body>
+      </html>
+    `;
+
+    expect(() => parseOregonOrestarSearchForm(html)).toThrow(
+      "ORESTAR transaction search form action URL is not allowed"
+    );
+  });
+
   it("parses transaction search result rows, limits, and export links", () => {
     const html = `
       <html>
@@ -100,6 +116,41 @@ describe("oregonOrestarParser", () => {
           committeeUrl: "https://secure.sos.state.or.us/orestar/sooDetail.do?cneCommitteeId=22333",
         },
       ],
+    });
+  });
+
+  it("drops transaction search result links outside the ORESTAR origin", () => {
+    const html = `
+      <html>
+        <body>
+          <div>Results : 1 record found</div>
+          <a href="https://example.test/orestar/cneSearch.do?page=2">Next</a>
+          <table>
+            <tr>
+              <th>Tran ID</th><th>Date</th><th>Status</th><th>Filer/Committee</th><th>Contributor/Payee</th><th>Sub Type</th><th>Amount</th>
+            </tr>
+            <tr>
+              <td><a href="https://example.test/orestar/gotoPublicTransactionDetail.do?tranRsn=4458653">4458653</a></td>
+              <td>10/12/2022</td>
+              <td>Original</td>
+              <td><a href="https://example.test/orestar/sooDetail.do?cneCommitteeId=4792">Friends of Tina Kotek</a></td>
+              <td>John Ramsbacher</td>
+              <td>Cash Contribution</td>
+              <td>$10,000.00</td>
+            </tr>
+          </table>
+          <input type="submit" value="Next">
+        </body>
+      </html>
+    `;
+
+    const parsed = parseOregonOrestarTransactionSearchResults(html);
+
+    expect(parsed.nextPageUrl).toBeNull();
+    expect(parsed.rows[0]).toMatchObject({
+      transactionId: "4458653",
+      detailUrl: null,
+      committeeUrl: null,
     });
   });
 

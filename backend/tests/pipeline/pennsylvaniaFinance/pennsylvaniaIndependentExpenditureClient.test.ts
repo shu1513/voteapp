@@ -66,6 +66,22 @@ describe("pennsylvaniaIndependentExpenditureClient", () => {
     ]);
   });
 
+  it("parses raw dataJson arrays without HTML-decoding the JSON source", () => {
+    const rawArrayHtml = `
+      <script>
+        var dataJson = [{"CandidateQuestion":"Jane Doe","Organization":"PA &quot;Action&quot;","Amount":"250"}];
+      </script>
+    `;
+
+    expect(parsePennsylvaniaIndependentExpenditureDataJson(rawArrayHtml)).toEqual([
+      {
+        CandidateQuestion: "Jane Doe",
+        Organization: "PA &quot;Action&quot;",
+        Amount: "250",
+      },
+    ]);
+  });
+
   it("parses hidden fields and election options", () => {
     expect(parsePennsylvaniaIndependentExpenditureHiddenFields(LANDING_HTML)).toEqual(
       new Map([

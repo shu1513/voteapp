@@ -155,13 +155,23 @@ describe("pennsylvaniaCandidateFinanceBatchSync", () => {
       now: new Date("2026-01-01T00:00:00.000Z"),
       paDataByYear: new Map([
         [
+          2025,
+          {
+            year: 2025,
+            extractedDir: "/tmp/pa-2025",
+            sourceUrl: SOURCE_URL.replace("2026.zip", "2025.zip"),
+            filerRows: [{ FILERID: "12345", FILERNAME: "JANE DOE FOR GOVERNOR" }] as never,
+            contributionRows: [{ FilerID: "12345", CONTDATE1: "20250101" }] as never,
+          },
+        ],
+        [
           2026,
           {
             year: 2026,
             extractedDir: "/tmp/pa-2026",
             sourceUrl: SOURCE_URL,
-            filerRows: [],
-            contributionRows: [],
+            filerRows: [{ FILERID: "12345", FILERNAME: "JANE DOE FOR GOVERNOR" }] as never,
+            contributionRows: [{ FilerID: "12345", CONTDATE1: "20260101" }] as never,
           },
         ],
       ]),
@@ -197,11 +207,17 @@ describe("pennsylvaniaCandidateFinanceBatchSync", () => {
             sourceUrl: SOURCE_URL,
           },
         ],
-        contributionRows: [],
-        filerRows: [],
+        contributionRows: expect.any(Array),
+        filerRows: expect.any(Array),
         financeIndustryClassifier,
         aiClassificationMinAmount: 50000,
       })
     );
+    expect(syncFn.mock.calls[0]?.[0]).toMatchObject({
+      sourceUrl: SOURCE_URL,
+      contributionSourceUrl: SOURCE_URL,
+    });
+    expect(syncFn.mock.calls[0]?.[0].contributionRows).toHaveLength(2);
+    expect(syncFn.mock.calls[0]?.[0].filerRows).toHaveLength(2);
   });
 });

@@ -9,6 +9,7 @@ import {
 } from "../../src/scripts/refreshPennsylvaniaCampaignFinanceRawData.js";
 
 const tempDirs: string[] = [];
+const MOCK_PA_EXPORT_URL = "https://www.pa.gov/example/2022.zip";
 
 async function makeTempDir(): Promise<string> {
   const dir = await mkdtemp(join(tmpdir(), "voteapp-pa-cf-script-"));
@@ -25,14 +26,14 @@ describe("refreshPennsylvaniaCampaignFinanceRawData script", () => {
     expect(
       parseArgs([
         "--year=2022",
-        "--url=https://example.test/2022.zip",
+        `--url=${MOCK_PA_EXPORT_URL}`,
         "--cache-dir=/cache",
         "--timeout-ms=5000",
         "--force",
       ])
     ).toEqual({
       year: 2022,
-      url: "https://example.test/2022.zip",
+      url: MOCK_PA_EXPORT_URL,
       cacheDir: "/cache",
       timeoutMs: 5000,
       force: true,
@@ -97,7 +98,7 @@ describe("refreshPennsylvaniaCampaignFinanceRawData script", () => {
     const output = await runRefreshPennsylvaniaCampaignFinanceRawDataScript({
       options: parseArgs([
         "--year=2022",
-        "--url=https://example.test/2022.zip",
+        `--url=${MOCK_PA_EXPORT_URL}`,
         `--cache-dir=${cacheDir}`,
         "--force",
       ]),
@@ -113,7 +114,7 @@ describe("refreshPennsylvaniaCampaignFinanceRawData script", () => {
       status: "downloaded",
       remote: {
         year: 2022,
-        url: "https://example.test/2022.zip",
+        url: MOCK_PA_EXPORT_URL,
         etag: '"pa-a"',
       },
       current: {

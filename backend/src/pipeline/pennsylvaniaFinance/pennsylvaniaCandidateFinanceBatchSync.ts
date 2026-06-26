@@ -492,23 +492,39 @@ export async function syncDuePennsylvaniaCandidateFinance(
   const paDataByYear = new Map<number, PennsylvaniaCampaignFinanceDataForYear>(
     input.paDataByYear ? [...input.paDataByYear.entries()] : []
   );
+  const paDataByElectionYear = new Map<number, PennsylvaniaCampaignFinanceDataForYear>();
   const paLoadErrorsByYear = new Map<number, string>();
-  for (const [year, rows] of groupDueRowsByYear(due.rows).entries()) {
-    if (!paDataByYear.has(year)) {
-      try {
-        paDataByYear.set(
-          year,
-          await loadPennsylvaniaCampaignFinanceDataForYear({
-            year,
+  for (const [electionYear, rows] of groupDueRowsByYear(due.rows).entries()) {
+    try {
+      const cycleArchiveYears = [...buildElectionCycleYearSet(rows)].sort((left, right) => left - right);
+      const cycleData: PennsylvaniaCampaignFinanceDataForYear[] = [];
+      for (const archiveYear of cycleArchiveYears) {
+        let archiveData = paDataByYear.get(archiveYear);
+        if (!archiveData) {
+          archiveData = await loadPennsylvaniaCampaignFinanceDataForYear({
+            year: archiveYear,
             dueRows: rows,
             outsideGroupsByLinkId,
             rawDataExtractedDir: input.rawDataExtractedDir,
             rawDataCacheDir: input.rawDataCacheDir,
-          })
-        );
-      } catch (error) {
-        paLoadErrorsByYear.set(year, error instanceof Error ? error.message : String(error));
+          });
+          paDataByYear.set(archiveYear, archiveData);
+        }
+        cycleData.push(archiveData);
       }
+      const primaryData = paDataByYear.get(electionYear) ?? cycleData.at(-1);
+      if (!primaryData) {
+        throw new Error(`No Pennsylvania campaign finance data loaded for ${electionYear}`);
+      }
+      paDataByElectionYear.set(electionYear, {
+        year: electionYear,
+        extractedDir: primaryData.extractedDir,
+        sourceUrl: primaryData.sourceUrl,
+        filerRows: cycleData.flatMap((data) => data.filerRows),
+        contributionRows: cycleData.flatMap((data) => data.contributionRows),
+      });
+    } catch (error) {
+      paLoadErrorsByYear.set(electionYear, error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -526,7 +542,7 @@ export async function syncDuePennsylvaniaCandidateFinance(
       });
       continue;
     }
-    const paData = paDataByYear.get(row.electionYear);
+    const paData = paDataByElectionYear.get(row.electionYear);
     try {
       const result = await syncFn({
         db: input.db,

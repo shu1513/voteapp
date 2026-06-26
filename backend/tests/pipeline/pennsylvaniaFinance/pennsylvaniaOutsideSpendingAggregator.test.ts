@@ -136,6 +136,33 @@ describe("pennsylvaniaOutsideSpendingAggregator", () => {
     ]);
   });
 
+  it("does not include rows with empty normalized group ids in totals", () => {
+    const result = aggregatePennsylvaniaOutsideSpending({
+      candidateName: "Jane Doe",
+      electionYear: 2026,
+      expenditureRows: [
+        ieRow({ Organization: "!!!", Amount: "10000.00" }),
+        ieRow({ Organization: "Pennsylvanians for Action", Amount: "2500.00" }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      summary: {
+        supportTotal: 2500,
+        opposeTotal: 0,
+        groups: [
+          {
+            groupId: "PENNSYLVANIANS FOR ACTION",
+            amount: 2500,
+          },
+        ],
+      },
+      matchedExpenditureRowCount: 2,
+      includedExpenditureRowCount: 1,
+      skippedExpenditureRowCount: 1,
+    });
+  });
+
   it("returns no summary when no candidate targets match", () => {
     const result = aggregatePennsylvaniaOutsideSpending({
       candidateName: "Jane Doe",

@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { access, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -49,6 +49,9 @@ describe("Pennsylvania campaign finance export artifact cache", () => {
     );
     expect(() => parsePennsylvaniaCampaignFinanceHttpsUrl("http://www.pa.gov/example.zip", "--url")).toThrow(
       "Only https is allowed"
+    );
+    expect(() => parsePennsylvaniaCampaignFinanceHttpsUrl("https://example.com/example.zip", "--url")).toThrow(
+      "Only official Pennsylvania hosts are allowed"
     );
     expect(() => buildPennsylvaniaCampaignFinanceExportUrl({ year: 1999 })).toThrow(
       "Invalid Pennsylvania campaign finance export year"
@@ -116,6 +119,7 @@ describe("Pennsylvania campaign finance export artifact cache", () => {
         etag: "\"pa-2026-a\"",
       },
     });
+    await expect(access(`${result.metadataPath}.lock`)).rejects.toMatchObject({ code: "ENOENT" });
   });
 
   it("extracts a matching cached export when extracted files are missing", async () => {

@@ -134,8 +134,14 @@ function stripHtmlPreservingLines(value: string): string {
     .join("\n");
 }
 
-function absoluteOrestarUrl(value: string, sourceUrl?: string | null): string {
-  return new URL(value, sourceUrl ?? OREGON_ORESTAR_TRANSACTION_SEARCH_URL).toString();
+function absoluteOrestarUrl(value: string, sourceUrl?: string | null): string | null {
+  let parsed: URL;
+  try {
+    parsed = new URL(decodeHtmlEntities(value).trim(), sourceUrl ?? OREGON_ORESTAR_TRANSACTION_SEARCH_URL);
+  } catch {
+    return null;
+  }
+  return parsed.origin === OREGON_ORESTAR_BASE_URL ? parsed.toString() : null;
 }
 
 function firstHref(html: string, pattern?: RegExp): string | null {
@@ -351,6 +357,9 @@ export function parseOregonOrestarSearchForm(
     throw new Error("ORESTAR transaction search CSRF token not found");
   }
   const actionUrl = absoluteOrestarUrl(action, sourceUrl);
+  if (!actionUrl) {
+    throw new Error("ORESTAR transaction search form action URL is not allowed");
+  }
   return {
     actionUrl,
     csrfToken,

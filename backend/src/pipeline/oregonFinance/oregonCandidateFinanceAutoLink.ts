@@ -2,10 +2,12 @@ import type { Pool, PoolClient } from "pg";
 
 import {
   normalizeOregonCandidateNameForStorage,
+  resolveOregonCandidateCommitteeFromSearchRows,
   type OregonCandidateCommitteeResolver,
 } from "./oregonCandidateCommitteeResolver.js";
 import { OREGON_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./oregonFinanceEligibleOffices.js";
 import { upsertOregonFinanceLink } from "./oregonFinanceWriter.js";
+import type { OregonOrestarTransactionSearchResultRow } from "./oregonOrestarParser.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -18,6 +20,10 @@ export type OregonFinanceAutoLinkCandidateElection = {
   officeScope: string;
   district: string | null;
 };
+
+export type OregonCandidateSearchRowsLoader = (
+  candidateElection: OregonFinanceAutoLinkCandidateElection
+) => Promise<readonly OregonOrestarTransactionSearchResultRow[]> | readonly OregonOrestarTransactionSearchResultRow[];
 
 export type OregonFinanceAutoLinkResult =
   | {
@@ -118,13 +124,28 @@ export async function autoLinkMissingOregonCandidateFinanceLinks(input: {
   db: Queryable;
   now: Date;
   candidateElections: readonly OregonFinanceAutoLinkCandidateElection[];
-  resolveCandidateCommittee: OregonCandidateCommitteeResolver;
+  resolveCandidateCommittee?: OregonCandidateCommitteeResolver;
+  loadCandidateSearchRows?: OregonCandidateSearchRowsLoader;
 }): Promise<OregonFinanceAutoLinkResult[]> {
+  const resolveCandidateCommittee =
+    input.resolveCandidateCommittee ?? resolveOregonCandidateCommitteeFromSearchRows;
   const results: OregonFinanceAutoLinkResult[] = [];
   for (const candidateElection of input.candidateElections) {
-    const resolution = await input.resolveCandidateCommittee({
+    if (!input.loadCandidateSearchRows && !input.resolveCandidateCommittee) {
+      results.push({
+        candidateId: candidateElection.candidateId,
+        electionId: candidateElection.electionId,
+        status: "skipped",
+        reason: "Oregon auto-link search rows were not provided",
+      });
+      continue;
+    }
+    const searchRows = input.loadCandidateSearchRows
+      ? await input.loadCandidateSearchRows(candidateElection)
+      : [];
+    const resolution = await resolveCandidateCommittee({
       candidateName: candidateElection.candidateName,
-      searchRows: [],
+      searchRows,
     });
     if (resolution.status !== "matched") {
       results.push({

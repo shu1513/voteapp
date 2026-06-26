@@ -1,6 +1,12 @@
 import type { Pool, PoolClient } from "pg";
 
 import {
+  autoLinkMissingOregonCandidateFinanceLinks,
+  listOregonCandidateElectionsMissingFinanceLinks,
+  type OregonCandidateSearchRowsLoader,
+} from "./oregonCandidateFinanceAutoLink.js";
+import type { OregonCandidateCommitteeResolver } from "./oregonCandidateCommitteeResolver.js";
+import {
   syncOregonCandidateFinance,
   type OregonCandidateFinanceSyncResult,
 } from "./oregonCandidateFinanceSync.js";
@@ -41,6 +47,9 @@ export type OregonCandidateFinanceBatchSyncInput = {
   outsideMaxGroups?: number;
   outsideMaxBreakdownsPerCategory?: number;
   minIndustryAmount?: number;
+  autoLinkMissingLinks?: boolean;
+  loadCandidateSearchRows?: OregonCandidateSearchRowsLoader;
+  resolveCandidateCommittee?: OregonCandidateCommitteeResolver;
   loadTransactionDetails?: OregonTransactionDetailsLoader;
   syncOregonCandidateFinanceFn?: typeof syncOregonCandidateFinance;
 };
@@ -181,6 +190,7 @@ export async function listDueOregonCandidateFinanceSyncRows(
           AND election.election_date <= ($1::date + make_interval(days => $5::int))
           AND candidate_election.status NOT IN ('withdrawn', 'lost')
           AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
+          AND nullif(trim(link.source_url), '') IS NOT NULL
           AND (
             summary.last_synced_at IS NULL
             OR summary.last_synced_at < ($1::timestamptz - make_interval(days => $2::int))
@@ -243,6 +253,42 @@ export async function syncDueOregonCandidateFinance(
   const dryRun = input.dryRun === true;
   const syncFn = input.syncOregonCandidateFinanceFn ?? syncOregonCandidateFinance;
   const loadTransactionDetails = input.loadTransactionDetails ?? defaultLoadTransactionDetails;
+  let autoLinkAttemptedCount = 0;
+  let autoLinkLinkedCount = 0;
+
+  if (
+    !dryRun &&
+    input.autoLinkMissingLinks !== false &&
+    (input.loadCandidateSearchRows || input.resolveCandidateCommittee)
+  ) {
+    try {
+      const missingLinkCandidates = await listOregonCandidateElectionsMissingFinanceLinks(input.db, {
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+      });
+      autoLinkAttemptedCount = missingLinkCandidates.length;
+      const autoLinkResults = await autoLinkMissingOregonCandidateFinanceLinks({
+        db: input.db,
+        now,
+        candidateElections: missingLinkCandidates,
+        loadCandidateSearchRows: input.loadCandidateSearchRows,
+        resolveCandidateCommittee: input.resolveCandidateCommittee,
+      });
+      autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;
+      for (const result of autoLinkResults) {
+        if (result.status !== "linked") {
+          console.warn("Oregon finance auto-link did not link candidate election:", result);
+        }
+      }
+    } catch (error) {
+      console.warn(
+        "Oregon finance auto-link skipped; continuing with already-linked candidate sync:",
+        error instanceof Error ? error.message : error
+      );
+    }
+  }
 
   const due = await listDueOregonCandidateFinanceSyncRows(input.db, {
     now,
@@ -305,8 +351,8 @@ export async function syncDueOregonCandidateFinance(
     selectedCandidateCount: due.rows.length,
     syncedCandidateCount,
     failedCandidateCount: results.length - syncedCandidateCount,
-    autoLinkAttemptedCount: 0,
-    autoLinkLinkedCount: 0,
+    autoLinkAttemptedCount,
+    autoLinkLinkedCount,
     results,
   };
 }

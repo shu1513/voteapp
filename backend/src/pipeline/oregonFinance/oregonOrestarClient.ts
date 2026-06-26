@@ -1,5 +1,6 @@
 import {
   isOregonOrestarBlockedPage,
+  OREGON_ORESTAR_BASE_URL,
   OREGON_ORESTAR_TRANSACTION_SEARCH_URL,
   parseOregonOrestarSearchForm,
   parseOregonOrestarTransactionDetail,
@@ -24,10 +25,30 @@ export type OregonOrestarFetch = (
 export type OregonOrestarClientOptions = {
   fetchFn?: OregonOrestarFetch;
   userAgent?: string;
+  timeoutMs?: number;
 };
 
+const DEFAULT_TIMEOUT_MS = 60_000;
 const DEFAULT_USER_AGENT = "voteApp Oregon campaign finance sync";
 const GENERIC_SEARCH_URL = new URL(OREGON_ORESTAR_TRANSACTION_SEARCH_URL).toString();
+
+function parseAllowedOrestarUrl(url: string): URL | null {
+  let parsed: URL;
+  try {
+    parsed = new URL(url, OREGON_ORESTAR_TRANSACTION_SEARCH_URL);
+  } catch {
+    return null;
+  }
+  return parsed.origin === OREGON_ORESTAR_BASE_URL ? parsed : null;
+}
+
+function normalizeAllowedOrestarUrl(url: string): string {
+  const parsed = parseAllowedOrestarUrl(url);
+  if (!parsed) {
+    throw new Error(`Oregon ORESTAR URL must use ${OREGON_ORESTAR_BASE_URL}`);
+  }
+  return parsed.toString();
+}
 
 function getFetch(fetchFn: OregonOrestarFetch | undefined): OregonOrestarFetch {
   if (fetchFn) {
@@ -47,26 +68,42 @@ function requestHeaders(userAgent: string | undefined): HeadersInit {
 }
 
 async function fetchOrestarHtml(url: string, options: OregonOrestarClientOptions = {}): Promise<string> {
-  const response = await getFetch(options.fetchFn)(url, {
-    headers: requestHeaders(options.userAgent),
-  });
-  const html = await response.text();
-  if (!response.ok) {
-    throw new Error(`ORESTAR request failed ${response.status} ${response.statusText ?? ""}`.trim());
+  const requestUrl = normalizeAllowedOrestarUrl(url);
+  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  if (!Number.isInteger(timeoutMs) || timeoutMs <= 0) {
+    throw new Error(`Invalid Oregon ORESTAR timeoutMs: ${options.timeoutMs}`);
   }
-  if (isOregonOrestarBlockedPage(html)) {
-    throw new Error("ORESTAR request blocked by cyber-security page");
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await getFetch(options.fetchFn)(requestUrl, {
+      headers: requestHeaders(options.userAgent),
+      signal: controller.signal,
+    });
+    const html = await response.text();
+    if (!response.ok) {
+      throw new Error(`ORESTAR request failed ${response.status} ${response.statusText ?? ""}`.trim());
+    }
+    if (isOregonOrestarBlockedPage(html)) {
+      throw new Error("ORESTAR request blocked by cyber-security page");
+    }
+    return html;
+  } catch (error) {
+    if (controller.signal.aborted) {
+      throw new Error(`ORESTAR request timed out after ${timeoutMs}ms for ${requestUrl}`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
   }
-  return html;
 }
 
 function isTransactionDetailUrl(url: string): boolean {
-  return /\/orestar\/gotoPublicTransactionDetail\.do\b/i.test(url);
+  return parseAllowedOrestarUrl(url)?.pathname === "/orestar/gotoPublicTransactionDetail.do";
 }
 
 function isGenericSearchUrl(url: string): boolean {
-  const parsed = new URL(url, OREGON_ORESTAR_TRANSACTION_SEARCH_URL);
-  return parsed.toString() === GENERIC_SEARCH_URL;
+  return parseAllowedOrestarUrl(url)?.toString() === GENERIC_SEARCH_URL;
 }
 
 export async function getOregonOrestarSearchForm(
@@ -110,16 +147,25 @@ export async function getOregonOrestarTransactionDetailsFromSourceUrl(input: {
     throw new Error(`Invalid Oregon ORESTAR maxDetails: ${input.maxDetails}`);
   }
 
-  const searchResults = await getOregonOrestarTransactionSearchResults({
-    url: sourceUrl,
-    options: input.options,
-  });
   const details: OregonOrestarTransactionDetail[] = [];
-  for (const row of searchResults.rows) {
-    if (!row.detailUrl || details.length >= maxDetails) {
-      continue;
+  const visitedPageUrls = new Set<string>();
+  let pageUrl: string | null = sourceUrl;
+  while (pageUrl && details.length < maxDetails) {
+    if (visitedPageUrls.has(pageUrl)) {
+      break;
     }
-    details.push(await getOregonOrestarTransactionDetail({ url: row.detailUrl, options: input.options }));
+    visitedPageUrls.add(pageUrl);
+    const searchResults = await getOregonOrestarTransactionSearchResults({
+      url: pageUrl,
+      options: input.options,
+    });
+    for (const row of searchResults.rows) {
+      if (!row.detailUrl || details.length >= maxDetails) {
+        continue;
+      }
+      details.push(await getOregonOrestarTransactionDetail({ url: row.detailUrl, options: input.options }));
+    }
+    pageUrl = searchResults.nextPageUrl;
   }
   return details;
 }
