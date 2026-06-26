@@ -133,6 +133,38 @@ describe("marylandDirectContributionAggregator", () => {
     );
   });
 
+  it("does not collapse blank-identity contribution rows into one contributor", () => {
+    const blankContributor = {
+      "Contributor Type": "",
+      "Contributor Company Name": "",
+      "Contributor Last Name": "",
+      "Contributor First Name": "",
+      "Contributor Middle Name": "",
+      "Contributor Mailing Address1": "",
+      "Contributor City": "",
+      "Contributor State": "",
+      "Contributor ZipCode": "",
+      Description: "",
+    };
+    const result = aggregateMarylandDirectContributions({
+      committeeId: "16018290",
+      electionYear: 2026,
+      contributionRows: [
+        contribution({ ...blankContributor, "Transaction Amount": "$100.00" }),
+        contribution({ ...blankContributor, "Transaction Amount": "$150.00" }),
+      ],
+    });
+
+    expect(result.directBreakdowns).toEqual([
+      expect.objectContaining({
+        categoryType: "contribution_size",
+        categoryName: "$100-$249",
+        amount: 250,
+        contributorCount: 2,
+      }),
+    ]);
+  });
+
   it("matches committee IDs case-insensitively and accepts public financing candidate committees", () => {
     const result = aggregateMarylandDirectContributions({
       committeeId: " md-committee-1 ",

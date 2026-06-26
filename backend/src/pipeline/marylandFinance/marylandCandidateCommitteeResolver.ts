@@ -28,6 +28,7 @@ export type MarylandCandidateCommitteeResolution =
         | "missing_candidate_name"
         | "unsupported_office"
         | "missing_legislative_district"
+        | "unverified_legislative_district"
         | "no_candidate_committee_match";
       candidateNameNormalized: string;
       officeNameNormalized: string;
@@ -330,6 +331,14 @@ export function resolveMarylandCandidateCommittee(
     return {
       status: "unmatched",
       reason: "missing_legislative_district",
+      candidateNameNormalized,
+      officeNameNormalized,
+    };
+  }
+  if (isExpectedLegislativeOffice(officeScope, officeCanonicalName)) {
+    return {
+      status: "unmatched",
+      reason: "unverified_legislative_district",
       candidateNameNormalized,
       officeNameNormalized,
     };

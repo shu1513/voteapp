@@ -122,6 +122,9 @@ function normalizeOptionalJobId(value: string | undefined): string | undefined {
   if (trimmed.includes(":")) {
     throw new Error("Maryland finance sync scheduler jobId must not contain ':'");
   }
+  if (trimmed === "disabled" || trimmed === "unknown") {
+    throw new Error("Maryland finance sync scheduler jobId uses a reserved value");
+  }
   return trimmed;
 }
 

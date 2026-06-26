@@ -169,7 +169,7 @@ export function isMarylandDirectDonorSupportReceipt(input: {
   return DIRECT_DONOR_SUPPORT_TRANSACTION_TYPES.has(normalizeTextKey(input.row["Transaction Type"]));
 }
 
-function contributorIdentityKey(row: MarylandCfsContributionRow): string {
+function contributorIdentityKey(row: MarylandCfsContributionRow, rowIndex: number): string {
   const parts = [
     row["Contributor Type"],
     row["Contributor Company Name"],
@@ -186,7 +186,8 @@ function contributorIdentityKey(row: MarylandCfsContributionRow): string {
   if (parts.length > 0) {
     return parts.join("\u0000");
   }
-  return normalizeTextKey(row.Description) || "unknown";
+  const descriptionKey = normalizeTextKey(row.Description);
+  return descriptionKey || `unknown-row-${rowIndex}`;
 }
 
 function contributionSizeBucket(amount: number): string {
@@ -284,7 +285,7 @@ export function aggregateMarylandDirectContributions(
   let totalReceiptsCents = 0;
   let directContributionTotalCents = 0;
 
-  for (const row of input.contributionRows) {
+  for (const [rowIndex, row] of input.contributionRows.entries()) {
     if (normalizeId(row["Filing Entity Id"]) !== committeeId) {
       continue;
     }
@@ -313,7 +314,7 @@ export function aggregateMarylandDirectContributions(
       categoryType: "contribution_size",
       categoryName: contributionSizeBucket(centsToDollars(amountCents)),
       amountCents,
-      contributorKey: contributorIdentityKey(row),
+      contributorKey: contributorIdentityKey(row, rowIndex),
     });
   }
 

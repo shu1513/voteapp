@@ -73,6 +73,24 @@ async function pathExists(path: string): Promise<boolean> {
   }
 }
 
+async function cachedFileMatchesMetadata(input: {
+  filePath: string;
+  metadata: MarylandCfsArtifactCacheMetadata | null;
+}): Promise<boolean> {
+  if (!input.metadata) {
+    return false;
+  }
+  try {
+    const fileStat = await stat(input.filePath);
+    return fileStat.isFile() && fileStat.size === input.metadata.bytesWritten;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      return false;
+    }
+    throw error;
+  }
+}
+
 export async function readMarylandCfsArtifactCacheMetadata(
   metadataPath: string
 ): Promise<MarylandCfsArtifactCacheMetadata | null> {
@@ -182,8 +200,9 @@ export async function refreshMarylandCfsArtifactCache(input: {
   });
   const previous = await readMarylandCfsArtifactCacheMetadata(paths.metadataPath);
   const fileExists = await pathExists(paths.filePath);
+  const cachedFileValid = await cachedFileMatchesMetadata({ filePath: paths.filePath, metadata: previous });
 
-  if (!input.force && fileExists && remoteMetadataMatches(previous, remote)) {
+  if (!input.force && fileExists && cachedFileValid && remoteMetadataMatches(previous, remote)) {
     return {
       status: "unchanged",
       ...paths,
@@ -220,7 +239,7 @@ export async function refreshMarylandCfsArtifactCache(input: {
   return {
     status: "downloaded",
     ...paths,
-    remote,
+    remote: current.remote,
     previous,
     current,
   };

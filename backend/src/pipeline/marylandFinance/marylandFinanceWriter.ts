@@ -302,8 +302,14 @@ async function upsertSummary(input: {
         direct_contribution_total = EXCLUDED.direct_contribution_total,
         total_disbursements = EXCLUDED.total_disbursements,
         cash_on_hand = EXCLUDED.cash_on_hand,
-        outside_support_total = EXCLUDED.outside_support_total,
-        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        outside_support_total = COALESCE(
+          EXCLUDED.outside_support_total,
+          md_candidate_finance_summaries.outside_support_total
+        ),
+        outside_oppose_total = COALESCE(
+          EXCLUDED.outside_oppose_total,
+          md_candidate_finance_summaries.outside_oppose_total
+        ),
         source_url = EXCLUDED.source_url,
         last_synced_at = EXCLUDED.last_synced_at
     `,
@@ -318,6 +324,33 @@ async function upsertSummary(input: {
       normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
       normalizeOptionalText(input.summary.sourceUrl),
       input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function deactivateSupersededMarylandCfsLinks(input: {
+  db: Queryable;
+  link: MarylandFinanceLinkInput;
+  activeLinkId: string;
+}): Promise<void> {
+  if ((input.link.linkStatus ?? "active") !== "active" || (input.link.linkSource ?? "manual") !== "cfs_public_export") {
+    return;
+  }
+
+  await input.db.query(
+    `
+      UPDATE public.md_candidate_finance_links
+      SET link_status = 'inactive'
+      WHERE candidate_id = $1::uuid
+        AND election_id = $2::uuid
+        AND id <> $3::uuid
+        AND link_status = 'active'
+        AND link_source = 'cfs_public_export'
+    `,
+    [
+      requireNonEmpty(input.link.candidateId, "candidate id"),
+      requireNonEmpty(input.link.electionId, "election id"),
+      requireNonEmpty(input.activeLinkId, "Maryland finance link id"),
     ]
   );
 }
@@ -554,6 +587,7 @@ export async function replaceMarylandCandidateFinanceSnapshot(
 
   return await withMarylandFinanceTransaction(input.db, async (db) => {
     const { linkId } = await upsertMarylandFinanceLink({ db, link: input.link });
+    await deactivateSupersededMarylandCfsLinks({ db, link: input.link, activeLinkId: linkId });
     if (input.summary) {
       await upsertSummary({ db, linkId, electionYear, summary: input.summary, syncedAt });
     }

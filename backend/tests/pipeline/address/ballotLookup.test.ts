@@ -4624,16 +4624,20 @@ describe("lookupElectionDetailById", () => {
       },
     });
     expect(query).toHaveBeenCalledTimes(13);
-    expect(query.mock.calls[7]?.[0]).toContain("public.md_candidate_finance_summaries");
-    expect(query.mock.calls[8]?.[0]).toContain("public.md_candidate_finance_direct_breakdowns");
-    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
-    expect(query.mock.calls[9]?.[0]).toContain("public.md_candidate_finance_outside_groups");
-    expect(query.mock.calls[10]?.[0]).toContain("public.md_candidate_finance_outside_group_breakdowns");
-    expect(query.mock.calls[11]?.[0]).toContain("public.md_candidate_finance_outside_group_breakdowns");
-    expect(query.mock.calls[11]?.[0]).toContain("top_industries_per_group");
-    expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
-    expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
-    expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
+    const marylandQueries = query.mock.calls.map(([sql]) => String(sql)).filter((sql) => sql.includes("public.md_candidate_finance_"));
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_summaries"))).toBe(true);
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_direct_breakdowns"))).toBe(true);
+    expect(
+      marylandQueries.some((sql) => sql.includes("breakdown.category_type IN ('occupation', 'contribution_size')"))
+    ).toBe(true);
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_outside_groups"))).toBe(true);
+    expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_outside_group_breakdowns"))).toBe(
+      true
+    );
+    const supportingEvidenceQuery = marylandQueries.find((sql) => sql.includes("top_industries_per_group"));
+    expect(supportingEvidenceQuery).toContain("public.finance_label_classifications");
+    expect(supportingEvidenceQuery).toContain("classification.normalized_label");
+    expect(supportingEvidenceQuery).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
   it("includes locally synced Virginia finance summaries for Virginia candidate detail", async () => {

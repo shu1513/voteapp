@@ -325,7 +325,7 @@ function parseRowsForColumns<TColumns extends readonly string[]>(input: {
   const rows = parseCsvRows(input.csv).filter((cells) => !isMarylandCfsDownloadMetadataRow(cells));
   const headerCells = rows[0];
   if (!headerCells) {
-    return [];
+    throw new Error(`Missing Maryland CFS ${input.label} CSV header row`);
   }
   const indexes = indexesForColumns(buildHeader(headerCells), input.columns, input.label);
   return rows.slice(1).map((cells) => rowObjectFromCells(cells, input.columns, indexes));
@@ -499,6 +499,10 @@ async function readMarylandCfsRows<TColumns extends readonly string[]>(input: {
         }
         if (field.length > 0 || row.length > 0) {
           finishCurrentRow();
+        }
+        if (!indexes) {
+          rejectOnce(new Error(`Missing Maryland CFS ${input.label} CSV header row`));
+          return;
         }
         resolveOnce();
       } catch (error) {

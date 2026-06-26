@@ -27,13 +27,14 @@ function baseLink() {
 }
 
 function createMockDb() {
-  const query = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
+  const poolQuery = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
+  const clientQuery = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
   const client = {
-    query,
+    query: clientQuery,
     release: vi.fn(),
   };
   return {
-    query,
+    query: poolQuery,
     connect: vi.fn().mockResolvedValue(client),
     client,
   };
@@ -160,25 +161,34 @@ describe("marylandFinanceWriter", () => {
       outsideGroupBreakdownsWritten: 1,
     });
     expect(db.connect).toHaveBeenCalledTimes(1);
-    expect(db.query.mock.calls[0]?.[0]).toBe("BEGIN");
-    expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+    expect(db.query).not.toHaveBeenCalled();
+    expect(db.client.query.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(db.client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
     expect(db.client.release).toHaveBeenCalledTimes(1);
 
-    const sql = db.query.mock.calls.map((call) => String(call[0]));
+    const sql = db.client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.md_candidate_finance_summaries"))).toHaveLength(1);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.md_candidate_finance_direct_breakdowns"))).toHaveLength(1);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.md_candidate_finance_outside_groups"))).toHaveLength(1);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.md_candidate_finance_outside_group_breakdowns"))).toHaveLength(1);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.finance_label_classifications"))).toHaveLength(1);
+    expect(sql.filter((statement) => statement.includes("UPDATE public.md_candidate_finance_links"))).toHaveLength(1);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.md_candidate_finance_direct_breakdowns"))).toBe(true);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.md_candidate_finance_outside_groups"))).toBe(true);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.md_candidate_finance_outside_group_breakdowns"))).toBe(true);
 
-    const summaryCall = db.query.mock.calls.find((call) =>
+    const deactivationCall = db.client.query.mock.calls.find((call) =>
+      String(call[0]).includes("UPDATE public.md_candidate_finance_links")
+    );
+    expect(deactivationCall?.[1]).toEqual([CANDIDATE_ID, ELECTION_ID, LINK_ID]);
+
+    const summaryCall = db.client.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.md_candidate_finance_summaries")
     );
     expect(String(summaryCall?.[0])).toContain("total_receipts = EXCLUDED.total_receipts");
-    expect(String(summaryCall?.[0])).toContain("outside_support_total = EXCLUDED.outside_support_total");
+    expect(String(summaryCall?.[0])).toContain("outside_support_total = COALESCE");
+    expect(String(summaryCall?.[0])).toContain("EXCLUDED.outside_support_total");
+    expect(String(summaryCall?.[0])).toContain("md_candidate_finance_summaries.outside_support_total");
     expect(summaryCall?.[1]).toEqual([
       LINK_ID,
       2026,
@@ -191,6 +201,34 @@ describe("marylandFinanceWriter", () => {
       "https://campaignfinance.maryland.gov/public/cf/downloads",
       "2026-07-08T09:10:11.000Z",
     ]);
+  });
+
+  it("preserves prior outside totals when a partial refresh does not have expenditure data", async () => {
+    const db = createMockDb();
+
+    await replaceMarylandCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-07-08T09:10:11.000Z"),
+      summary: {
+        totalReceipts: 125000,
+        directContributionTotal: 110000,
+        outsideSupportTotal: null,
+        outsideOpposeTotal: null,
+      },
+    });
+
+    const summaryCall = db.client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.md_candidate_finance_summaries")
+    );
+    expect(String(summaryCall?.[0])).toContain(
+      "outside_support_total = COALESCE(\n          EXCLUDED.outside_support_total,\n          md_candidate_finance_summaries.outside_support_total\n        )"
+    );
+    expect(String(summaryCall?.[0])).toContain(
+      "outside_oppose_total = COALESCE(\n          EXCLUDED.outside_oppose_total,\n          md_candidate_finance_summaries.outside_oppose_total\n        )"
+    );
+    expect(summaryCall?.[1]?.[6]).toBeNull();
+    expect(summaryCall?.[1]?.[7]).toBeNull();
   });
 
   it("normalizes outside committee ids consistently for groups, breakdowns, and stale deletes", async () => {
@@ -219,16 +257,16 @@ describe("marylandFinanceWriter", () => {
       ],
     });
 
-    const outsideGroupCall = db.query.mock.calls.find((call) =>
+    const outsideGroupCall = db.client.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.md_candidate_finance_outside_groups")
     );
-    const outsideBreakdownCall = db.query.mock.calls.find((call) =>
+    const outsideBreakdownCall = db.client.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.md_candidate_finance_outside_group_breakdowns")
     );
-    const deleteOutsideBreakdownsCall = db.query.mock.calls.find((call) =>
+    const deleteOutsideBreakdownsCall = db.client.query.mock.calls.find((call) =>
       String(call[0]).includes("DELETE FROM public.md_candidate_finance_outside_group_breakdowns")
     );
-    const deleteOutsideGroupsCall = db.query.mock.calls.find((call) =>
+    const deleteOutsideGroupsCall = db.client.query.mock.calls.find((call) =>
       String(call[0]).includes("DELETE FROM public.md_candidate_finance_outside_groups")
     );
 
@@ -269,7 +307,7 @@ describe("marylandFinanceWriter", () => {
       outsideGroupsWritten: 0,
       outsideGroupBreakdownsWritten: 0,
     });
-    const sql = db.query.mock.calls.map((call) => String(call[0]));
+    const sql = db.client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("DELETE FROM public.md_candidate_finance_direct_breakdowns"))).toBe(false);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.md_candidate_finance_outside_groups"))).toBe(false);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.md_candidate_finance_outside_group_breakdowns"))).toBe(false);

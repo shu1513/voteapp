@@ -42,13 +42,12 @@ describe("marylandCandidateCommitteeResolver", () => {
     expect(
       resolveMarylandCandidateCommittee({
         candidateName: "Justin Gallucci",
-        officeScope: "state_upper",
-        officeName: "State Senator",
-        district: "33",
+        officeScope: "statewide",
+        officeName: "Governor",
         electionYear: 2026,
         sourceUrl: "https://campaignfinance.maryland.gov/public/cf/downloads",
         committeeRows: [
-          committee(),
+          committee({ "Office Sought": "Governor/Lieutenant Governor" }),
           committee({
             "Filing Entity Id": "999",
             "Committee Name": "Other Candidate",
@@ -137,8 +136,8 @@ describe("marylandCandidateCommitteeResolver", () => {
         ],
       })
     ).toMatchObject({
-      status: "matched",
-      committeeId: "16017233",
+      status: "unmatched",
+      reason: "unverified_legislative_district",
     });
   });
 
@@ -181,9 +180,7 @@ describe("marylandCandidateCommitteeResolver", () => {
       candidateNameNormalized: "JUSTIN GALLUCCI",
       officeNameNormalized: "State Senator",
     });
-  });
 
-  it("does not guess when multiple Maryland candidate committees match", () => {
     expect(
       resolveMarylandCandidateCommittee({
         candidateName: "Justin Gallucci",
@@ -191,11 +188,29 @@ describe("marylandCandidateCommitteeResolver", () => {
         officeName: "State Senator",
         district: "33",
         electionYear: 2026,
+        committeeRows: [committee()],
+      })
+    ).toEqual({
+      status: "unmatched",
+      reason: "unverified_legislative_district",
+      candidateNameNormalized: "JUSTIN GALLUCCI",
+      officeNameNormalized: "State Senator",
+    });
+  });
+
+  it("does not guess when multiple Maryland candidate committees match", () => {
+    expect(
+      resolveMarylandCandidateCommittee({
+        candidateName: "Justin Gallucci",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
         committeeRows: [
-          committee(),
+          committee({ "Office Sought": "Governor/Lieutenant Governor" }),
           committee({
             "Filing Entity Id": "16018291",
             "Committee Name": "Friends of Justin Gallucci",
+            "Office Sought": "Governor/Lieutenant Governor",
           }),
         ],
       })
@@ -203,7 +218,7 @@ describe("marylandCandidateCommitteeResolver", () => {
       status: "ambiguous",
       reason: "multiple_matching_committees",
       candidateNameNormalized: "JUSTIN GALLUCCI",
-      officeNameNormalized: "State Senator",
+      officeNameNormalized: "Governor",
       matches: [
         {
           committeeId: "16018290",
@@ -261,14 +276,14 @@ describe("marylandCandidateCommitteeResolver", () => {
     expect(
       resolveMarylandCandidateCommittee({
         candidateName: "Justin Gallucci",
-        officeScope: "state_upper",
-        officeName: "State Senator",
-        district: "33",
+        officeScope: "statewide",
+        officeName: "Governor",
         electionYear: 2026,
         committeeRows: [
           committee({
             "Committee Name": "Friends of Janet Gallucci",
             "Candidate First Name": "Janet",
+            "Office Sought": "Governor/Lieutenant Governor",
           }),
         ],
       })
@@ -277,20 +292,23 @@ describe("marylandCandidateCommitteeResolver", () => {
     expect(
       resolveMarylandCandidateCommittee({
         candidateName: "Justin Gallucci",
-        officeScope: "state_upper",
-        officeName: "State Senator",
-        district: "33",
+        officeScope: "statewide",
+        officeName: "Governor",
         electionYear: 2026,
-        committeeRows: [committee({ "Committee Type": "Super Political Action Committee (Super PAC)" })],
+        committeeRows: [
+          committee({
+            "Committee Type": "Super Political Action Committee (Super PAC)",
+            "Office Sought": "Governor/Lieutenant Governor",
+          }),
+        ],
       })
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
 
     expect(
       resolveMarylandCandidateCommittee({
         candidateName: "Justin Gallucci",
-        officeScope: "state_upper",
-        officeName: "State Senator",
-        district: "33",
+        officeScope: "statewide",
+        officeName: "Governor",
         electionYear: 2026,
         committeeRows: [committee({ "Office Sought": "House of Delegates" })],
       })
@@ -299,22 +317,26 @@ describe("marylandCandidateCommitteeResolver", () => {
     expect(
       resolveMarylandCandidateCommittee({
         candidateName: "Justin Gallucci",
-        officeScope: "state_upper",
-        officeName: "State Senator",
-        district: "33",
+        officeScope: "statewide",
+        officeName: "Governor",
         electionYear: 2026,
-        committeeRows: [committee({ Jurisdiction: "Frederick" })],
+        committeeRows: [committee({ Jurisdiction: "Frederick", "Office Sought": "Governor/Lieutenant Governor" })],
       })
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
 
     expect(
       resolveMarylandCandidateCommittee({
         candidateName: "Justin Gallucci",
-        officeScope: "state_upper",
-        officeName: "State Senator",
-        district: "33",
+        officeScope: "statewide",
+        officeName: "Governor",
         electionYear: 2026,
-        committeeRows: [committee({ Election: "Gubernatorial - 11/08/2022", "Election Year": "2022" })],
+        committeeRows: [
+          committee({
+            Election: "Gubernatorial - 11/08/2022",
+            "Election Year": "2022",
+            "Office Sought": "Governor/Lieutenant Governor",
+          }),
+        ],
       })
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
@@ -323,17 +345,16 @@ describe("marylandCandidateCommitteeResolver", () => {
     expect(
       resolveMarylandCandidateCommittee({
         candidateName: "Justin Galluccii",
-        officeScope: "state_upper",
-        officeName: "State Senator",
-        district: "33",
+        officeScope: "statewide",
+        officeName: "Governor",
         electionYear: 2026,
-        committeeRows: [committee()],
+        committeeRows: [committee({ "Office Sought": "Governor/Lieutenant Governor" })],
       })
     ).toEqual({
       status: "unmatched",
       reason: "no_candidate_committee_match",
       candidateNameNormalized: "JUSTIN GALLUCCII",
-      officeNameNormalized: "State Senator",
+      officeNameNormalized: "Governor",
     });
   });
 

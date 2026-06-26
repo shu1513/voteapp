@@ -122,6 +122,7 @@ describe("Maryland CFS artifact cache", () => {
     });
 
     expect(result.status).toBe("downloaded");
+    expect(result.remote.contentLength).toBe(25);
     expect(fetchImpl).toHaveBeenCalledTimes(2);
     expect(await readFile(result.filePath, "utf8")).toBe("Filing Entity Id\n5007501\n");
     const metadata = await readMarylandCfsArtifactCacheMetadata(result.metadataPath);
@@ -228,6 +229,73 @@ describe("Maryland CFS artifact cache", () => {
     expect(result.status).toBe("unchanged");
     expect(fetchImpl).toHaveBeenCalledTimes(1);
     expect(await readFile(paths.filePath, "utf8")).toBe("cached-csv");
+  });
+
+  it("refreshes when cached metadata matches the remote but the local file size is wrong", async () => {
+    const cacheDir = await makeTempDir();
+    const paths = getMarylandCfsArtifactCachePaths({ cacheDir, filingYear: 2026, artifactKind: "expenditures" });
+    await writeFile(paths.filePath, "short", "utf8");
+    await writeFile(
+      paths.metadataPath,
+      `${JSON.stringify(
+        {
+          version: 1,
+          artifact: {
+            filingYear: 2026,
+            artifactKind: "expenditures",
+          },
+          filePath: paths.filePath,
+          metadataPath: paths.metadataPath,
+          downloadedAt: "2026-06-24T12:00:00.000Z",
+          bytesWritten: 10,
+          remote: {
+            filingYear: 2026,
+            artifactKind: "expenditures",
+            url: MARYLAND_CFS_PUBLIC_EXPORT_API_URL,
+            requestBody: {
+              Type: "CSV",
+              TransactionTypeCode: "TEXP",
+              FilingYear: 2026,
+            },
+            contentLength: 10,
+            contentType: "text/csv",
+            etag: '"same"',
+            lastModified: "Thu, 25 Jun 2026 08:03:00 GMT",
+          },
+        },
+        null,
+        2
+      )}\n`,
+      "utf8"
+    );
+
+    const fetchImpl = vi.fn<typeof fetch>(async () => {
+      if (fetchImpl.mock.calls.length === 1) {
+        return response("metadata-probe", {
+          "content-length": "10",
+          "content-type": "text/csv",
+          etag: '"same"',
+          "last-modified": "Thu, 25 Jun 2026 08:03:00 GMT",
+        });
+      }
+      return response("fresh-data", {
+        "content-length": "10",
+        "content-type": "text/csv",
+        etag: '"same"',
+        "last-modified": "Thu, 25 Jun 2026 08:03:00 GMT",
+      });
+    });
+
+    const result = await refreshMarylandCfsArtifactCache({
+      filingYear: 2026,
+      artifactKind: "expenditures",
+      cacheDir,
+      fetchImpl,
+    });
+
+    expect(result.status).toBe("downloaded");
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    expect(await readFile(paths.filePath, "utf8")).toBe("fresh-data");
   });
 
   it("warns and returns null when cache metadata cannot be parsed", async () => {
