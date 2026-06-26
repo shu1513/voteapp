@@ -2781,6 +2781,273 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced Arizona finance summaries for Arizona candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("ARIZONA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "04",
+            district_name: "Arizona",
+            state: "AZ",
+            state_fips: "04",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Arizonan",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "AZ",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "AZ100",
+            election_year: 2026,
+            total_receipts: "120000.00",
+            direct_contribution_total: "95000.00",
+            total_disbursements: "30000.00",
+            cash_on_hand: "65000.00",
+            outside_support_total: "80000.00",
+            outside_oppose_total: "2000.00",
+            source_url: "https://seethemoney.az.gov/Reporting/Explore",
+            last_synced_at: "2026-06-21 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "ATTORNEY",
+            amount: "25000.00",
+            contributor_count: "10",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$1,000-$4,999",
+            amount: "40000.00",
+            contributor_count: "8",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "AZPAC1",
+            committee_name: "Arizona Progress PAC",
+            support_oppose: "support",
+            amount: "80000.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "AZPAC2",
+            committee_name: "Oppose Jane PAC",
+            support_oppose: "oppose",
+            amount: "2000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "technology",
+            amount: "70000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "2000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "technology",
+            committee_id: "AZPAC1",
+            committee_name: "Arizona Progress PAC",
+            support_oppose: "support",
+            organization_name: "DESERT AI LABS LLC",
+            amount: "50000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "ARIZONA_SOS",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "AZ100",
+      last_synced_at: "2026-06-21 04:05:00+00",
+      direct_campaign: {
+        total_raised: 95000,
+        total_spent: 30000,
+        cash_on_hand: 65000,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "ATTORNEY",
+            amount: 25000,
+            contributor_count: 10,
+            source_url: "https://seethemoney.az.gov/Reporting/Explore",
+          },
+        ],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$1,000-$4,999",
+            amount: 40000,
+            contributor_count: 8,
+            source_url: "https://seethemoney.az.gov/Reporting/Explore",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 80000,
+        oppose_total: 2000,
+        top_supporting_groups: [
+          {
+            committee_id: "AZPAC1",
+            committee_name: "Arizona Progress PAC",
+            support_oppose: "support",
+            amount: 80000,
+            source_url: "https://seethemoney.az.gov/Reporting/Explore",
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "AZPAC2",
+            committee_name: "Oppose Jane PAC",
+            support_oppose: "oppose",
+            amount: 2000,
+            source_url: "https://seethemoney.az.gov/Reporting/Explore",
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "technology",
+            amount: 70000,
+            contributor_count: 2,
+            source_url: "https://seethemoney.az.gov/Reporting/Explore",
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 2000,
+            contributor_count: 1,
+            source_url: "https://seethemoney.az.gov/Reporting/Explore",
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "ATTORNEY",
+            amount: 25000,
+            contributor_count: 10,
+            source_url: "https://seethemoney.az.gov/Reporting/Explore",
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "technology",
+            amount: 70000,
+            contributor_count: 2,
+            source_url: "https://seethemoney.az.gov/Reporting/Explore",
+            explanation:
+              "The Technology category is a top outside-spending support industry because DESERT AI LABS LLC contributed to Arizona Progress PAC, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "DESERT AI LABS LLC",
+                organization_type: "donor",
+                amount: 50000,
+                contributor_count: 1,
+                committee_id: "AZPAC1",
+                committee_name: "Arizona Progress PAC",
+                source_url: "https://seethemoney.az.gov/Reporting/Explore",
+              },
+            ],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(12);
+    expect(query.mock.calls[7]?.[0]).toContain("public.az_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.az_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
+    expect(query.mock.calls[9]?.[0]).toContain("public.az_candidate_finance_outside_groups");
+    expect(query.mock.calls[10]?.[0]).toContain("public.az_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("public.az_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("top_industries_per_group");
+    expect(query.mock.calls[11]?.[0]).toContain("max(industry.amount) AS amount");
+    expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
+    expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
+    expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
+  });
+
   it("includes locally synced Washington finance summaries for Washington candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("WASHINGTON_CAMPAIGN_FINANCE_ENABLED", "true");

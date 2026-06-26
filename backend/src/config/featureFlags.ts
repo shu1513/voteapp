@@ -31,6 +31,17 @@ export function isCandidateFinanceSyncEnabled(force = false): boolean {
   return isCandidateFinanceEnabled() && (force || readBooleanEnv("CANDIDATE_FINANCE_SYNC_ENABLED", false));
 }
 
+export function isArizonaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("ARIZONA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isArizonaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isArizonaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("ARIZONA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isCaliforniaCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("CALIFORNIA_CAMPAIGN_FINANCE_ENABLED", false);
 }
