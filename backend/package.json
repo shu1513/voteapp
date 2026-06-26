@@ -174,6 +174,18 @@
     "michigan-candidates:finance:scheduler:worker": "tsx src/scripts/runMichiganCandidateFinanceSyncSchedulerWorker.ts",
     "michigan-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerMichiganCandidateFinanceSync.ts",
     "michigan-candidates:finance:live-probe": "tsx src/scripts/probeMichiganCandidateFinance.ts",
+    "oregon-candidates:finance:sync-due": "tsx src/scripts/syncDueOregonCandidateFinance.ts",
+    "oregon-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertOregonCandidateFinanceSyncScheduler.ts",
+    "oregon-candidates:finance:scheduler:worker": "tsx src/scripts/runOregonCandidateFinanceSyncSchedulerWorker.ts",
+    "oregon-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerOregonCandidateFinanceSync.ts",
+    "pennsylvania-candidates:finance:sync-due": "tsx src/scripts/syncDuePennsylvaniaCandidateFinance.ts",
+    "pennsylvania-candidates:finance:raw:refresh": "tsx src/scripts/refreshPennsylvaniaCampaignFinanceRawData.ts",
+    "pennsylvania-candidates:finance:raw:scheduler:upsert": "tsx src/scripts/upsertPennsylvaniaCampaignFinanceRawDataRefreshScheduler.ts",
+    "pennsylvania-candidates:finance:raw:scheduler:worker": "tsx src/scripts/runPennsylvaniaCampaignFinanceRawDataRefreshSchedulerWorker.ts",
+    "pennsylvania-candidates:finance:raw:scheduler:trigger": "tsx src/scripts/triggerPennsylvaniaCampaignFinanceRawDataRefresh.ts",
+    "pennsylvania-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertPennsylvaniaCandidateFinanceSyncScheduler.ts",
+    "pennsylvania-candidates:finance:scheduler:worker": "tsx src/scripts/runPennsylvaniaCandidateFinanceSyncSchedulerWorker.ts",
+    "pennsylvania-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerPennsylvaniaCandidateFinanceSync.ts",
     "massachusetts-candidates:finance:live-probe": "tsx src/scripts/probeMassachusettsCandidateFinance.ts"
   },
   "dependencies": {

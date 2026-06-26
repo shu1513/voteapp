@@ -258,3 +258,32 @@ export function isMichiganMitnRawDataRefreshEnabled(force = false): boolean {
     (force || readBooleanEnv("MICHIGAN_MITN_RAW_DATA_REFRESH_ENABLED", false))
   );
 }
+
+export function isPennsylvaniaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("PENNSYLVANIA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isPennsylvaniaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isPennsylvaniaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("PENNSYLVANIA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isPennsylvaniaCampaignFinanceRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isPennsylvaniaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("PENNSYLVANIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
+export function isOregonCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("OREGON_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isOregonCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isOregonCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("OREGON_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
