@@ -17,7 +17,7 @@ describe("syncArizonaCandidateFinance script", () => {
         "--year=2024",
         "--force",
         "--timeout-ms=5000",
-        "--direct-limit=100",
+        "--income-limit=100",
         "--ie-limit=50",
         "--outside-income-limit=75",
         "--outside-max-groups=5",
@@ -62,6 +62,19 @@ describe("syncArizonaCandidateFinance script", () => {
     });
   });
 
+  it("accepts the legacy direct income limit alias", () => {
+    expect(
+      parseSyncArizonaCandidateFinanceScriptArgs([
+        "--candidate-name=Katie Hobbs",
+        "--committee-id=201600105",
+        "--year=2024",
+        "--direct-limit=100",
+      ])
+    ).toMatchObject({
+      directIncomeLimit: 100,
+    });
+  });
+
   it("rejects malformed flags strictly", () => {
     expect(() => parseSyncArizonaCandidateFinanceScriptArgs(["--year=2024"])).toThrow(
       "Missing required --candidate-name flag"
@@ -78,9 +91,18 @@ describe("syncArizonaCandidateFinance script", () => {
         "--candidate-name=Katie Hobbs",
         "--committee-id=201600105",
         "--year=2024",
-        "--direct-limit=0",
+        "--income-limit=0",
       ])
-    ).toThrow("Invalid --direct-limit value");
+    ).toThrow("Invalid --income-limit value");
+    expect(() =>
+      parseSyncArizonaCandidateFinanceScriptArgs([
+        "--candidate-name=Katie Hobbs",
+        "--committee-id=201600105",
+        "--year=2024",
+        "--income-limit=100",
+        "--direct-limit=100",
+      ])
+    ).toThrow("Provide --income-limit or --direct-limit, not both");
     expect(() =>
       parseSyncArizonaCandidateFinanceScriptArgs([
         "--candidate-name=Katie Hobbs",

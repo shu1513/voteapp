@@ -150,19 +150,7 @@ async function withArizonaFinanceTransaction<T>(db: Queryable, work: (tx: Querya
     if (isClientLikeQueryable(db)) {
       throw new Error("Arizona finance snapshot writes must receive a Pool, not a PoolClient");
     }
-    try {
-      await db.query("BEGIN");
-      const result = await work(db);
-      await db.query("COMMIT");
-      return result;
-    } catch (error) {
-      try {
-        await db.query("ROLLBACK");
-      } catch {
-        // Preserve original write failure.
-      }
-      throw error;
-    }
+    throw new Error("Arizona finance snapshot writes must receive a Pool with connect()");
   }
 
   const client = await db.connect();

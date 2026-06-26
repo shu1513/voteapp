@@ -5,6 +5,18 @@ import { syncArizonaCandidateFinance } from "../../../src/pipeline/arizonaFinanc
 const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
 
+function poolWithClientQuery(query = vi.fn()) {
+  const release = vi.fn();
+  return {
+    query,
+    release,
+    pool: {
+      connect: vi.fn(async () => ({ query, release })),
+      query: vi.fn(),
+    },
+  };
+}
+
 describe("arizonaCandidateFinanceSync", () => {
   it("dry-runs a trusted committee snapshot without database writes", async () => {
     const db = { query: vi.fn() };
@@ -60,6 +72,7 @@ describe("arizonaCandidateFinanceSync", () => {
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: "link-1" }] })
       .mockResolvedValue({ rows: [] });
+    const { pool } = poolWithClientQuery(query);
     const spotlightClient = {
       searchIncomeTransactions: vi.fn(async (input: { filerName?: string | null; filerId?: string | null }) => {
         if (input.filerName) {
@@ -93,7 +106,7 @@ describe("arizonaCandidateFinanceSync", () => {
     };
 
     const result = await syncArizonaCandidateFinance({
-      db: { query },
+      db: pool,
       candidateId: CANDIDATE_ID,
       electionId: ELECTION_ID,
       candidateName: "Jane Arizonan",
@@ -118,5 +131,39 @@ describe("arizonaCandidateFinanceSync", () => {
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).toContain(
       "INSERT INTO public.az_candidate_finance_links"
     );
+  });
+
+  it("preserves manual link source for trusted committees", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ id: "link-1" }] })
+      .mockResolvedValue({ rows: [] });
+    const { pool } = poolWithClientQuery(query);
+
+    await syncArizonaCandidateFinance({
+      db: pool,
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      candidateName: "Jane Arizonan",
+      electionYear: 2026,
+      officeScope: "statewide",
+      officeName: "Governor",
+      now: new Date("2026-06-25T12:00:00.000Z"),
+      trustedCommittee: {
+        committeeId: "AZ100",
+        committeeName: "Jane Arizonan for Governor",
+        linkSource: "manual",
+      },
+      spotlightClient: {
+        searchIncomeTransactions: vi.fn(async () => []),
+        searchIndependentExpenditures: vi.fn(async () => []),
+      },
+    });
+
+    const linkInsertCall = query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.az_candidate_finance_links")
+    );
+    expect(linkInsertCall?.[1]).toEqual(expect.arrayContaining(["manual"]));
   });
 });

@@ -204,6 +204,29 @@ describe("arizonaOutsideGroupContributionAggregator", () => {
     expect(result.outsideGroupBreakdowns.some((row) => row.categoryType === "industry")).toBe(false);
   });
 
+  it("applies the minimum industry amount after industry totals are aggregated", () => {
+    const result = aggregateArizonaOutsideGroupContributions({
+      electionYear: 2024,
+      outsideGroups: [outsideGroup()],
+      minIndustryAmount: 250,
+      incomeTransactions: [
+        income({ amount: 125, employer: "Phoenix High School District", transactionName: "Teacher One" }),
+        income({ amount: 125, employer: "Phoenix High School District", transactionName: "Teacher Two", zipCode: "85282" }),
+      ],
+    });
+
+    expect(result.outsideGroupBreakdowns).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          categoryType: "industry",
+          categoryName: "education",
+          amount: 250,
+          contributorCount: 2,
+        }),
+      ])
+    );
+  });
+
   it("validates inputs", () => {
     expect(() =>
       aggregateArizonaOutsideGroupContributions({

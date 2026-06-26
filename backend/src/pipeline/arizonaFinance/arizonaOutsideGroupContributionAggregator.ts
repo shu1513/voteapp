@@ -137,14 +137,7 @@ function industryKey(input: { committeeId: string; supportOppose: ArizonaSupport
 }
 
 function contributorIdentityKey(transaction: ArizonaSpotlightIncomeTransaction): string {
-  const parts = [
-    transaction.transactionName,
-    transaction.city,
-    transaction.state,
-    transaction.zipCode,
-    transaction.employer,
-    transaction.occupation,
-  ]
+  const parts = [transaction.transactionName, transaction.city, transaction.state, transaction.zipCode]
     .map(normalizeTextKey)
     .filter(Boolean);
   return parts.length > 0 ? parts.join("\u0000") : "unknown";
@@ -237,6 +230,7 @@ function toBreakdowns(input: {
   donors: Iterable<DonorAggregate>;
   industries: Iterable<IndustryAggregate>;
   maxBreakdownsPerCategory: number;
+  minIndustryAmountCents: number;
 }): ArizonaFinanceOutsideGroupBreakdown[] {
   const result: ArizonaFinanceOutsideGroupBreakdown[] = [];
   const donorsByBucket = new Map<string, DonorAggregate[]>();
@@ -277,6 +271,7 @@ function toBreakdowns(input: {
     groupKey(left[0]!).localeCompare(groupKey(right[0]!))
   )) {
     for (const industry of bucket
+      .filter((industry) => industry.amountCents >= input.minIndustryAmountCents)
       .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
       .slice(0, input.maxBreakdownsPerCategory)) {
       result.push({
@@ -349,7 +344,7 @@ export function aggregateArizonaOutsideGroupContributions(
     includedIncomeTransactionCount += 1;
     const contributorKey = contributorIdentityKey(transaction);
     const sourceUrl = transaction.sourceUrl ?? input.sourceUrl ?? null;
-    const industrySlug = amountCents >= minIndustryAmountCents ? industrySlugForTransaction(transaction) : null;
+    const industrySlug = industrySlugForTransaction(transaction);
 
     for (const group of matchingGroups) {
       addDonorAggregate(donors, {
@@ -377,6 +372,7 @@ export function aggregateArizonaOutsideGroupContributions(
       donors: donors.values(),
       industries: industries.values(),
       maxBreakdownsPerCategory,
+      minIndustryAmountCents,
     }),
     matchedIncomeTransactionCount,
     includedIncomeTransactionCount,

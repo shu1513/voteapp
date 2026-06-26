@@ -77,6 +77,19 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+function parsePositiveIntegerAliasFlag(
+  args: readonly string[],
+  preferredName: string,
+  legacyName: string
+): number | undefined {
+  const preferred = parsePositiveIntegerFlag(args, preferredName);
+  const legacy = parsePositiveIntegerFlag(args, legacyName);
+  if (preferred !== undefined && legacy !== undefined) {
+    throw new Error(`Provide ${preferredName} or ${legacyName}, not both`);
+  }
+  return preferred ?? legacy;
+}
+
 function parseNonNegativeNumberFlag(args: readonly string[], name: string): number | undefined {
   const raw = parseFlagValue(args, name);
   if (raw === null) {
@@ -111,7 +124,7 @@ export function parseSyncArizonaCandidateFinanceScriptArgs(
     includeOutside: !args.includes("--skip-outside") && !args.includes("--no-outside"),
     force: args.includes("--force"),
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
-    directIncomeLimit: parsePositiveIntegerFlag(args, "--direct-limit"),
+    directIncomeLimit: parsePositiveIntegerAliasFlag(args, "--income-limit", "--direct-limit"),
     independentExpenditureLimitPerPosition: parsePositiveIntegerFlag(args, "--ie-limit"),
     outsideGroupIncomeLimitPerGroup: parsePositiveIntegerFlag(args, "--outside-income-limit"),
     outsideMaxGroups: parsePositiveIntegerFlag(args, "--outside-max-groups"),

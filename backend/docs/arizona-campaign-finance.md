@@ -20,7 +20,6 @@ Not supported in this module yet:
 - Raw bulk export refresh scheduling.
 - Guessing ambiguous candidate committee matches.
 - Treating every outside group as a super PAC. The app stores these as outside groups/PACs.
-- Recurring scheduler upsert/worker scripts. Manual trigger parsing exists, but recurring jobs should wait until live reliability is proven.
 
 If Spotlight returns multiple plausible candidate committees, the live probe reports an ambiguous resolution instead of choosing one.
 
@@ -95,6 +94,18 @@ Trigger a manual Arizona finance sync job:
 
 ```bash
 npm run arizona-candidates:finance:scheduler:trigger -- --dry-run --force
+```
+
+Upsert the recurring Arizona finance sync job:
+
+```bash
+npm run arizona-candidates:finance:scheduler:upsert -- --dry-run --force
+```
+
+Run the Arizona finance sync scheduler worker:
+
+```bash
+npm run arizona-candidates:finance:scheduler:worker
 ```
 
 Run the live probe with conservative committee resolution:

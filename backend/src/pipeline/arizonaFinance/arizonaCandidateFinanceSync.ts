@@ -15,6 +15,7 @@ import {
   replaceArizonaCandidateFinanceSnapshot,
   type ArizonaFinanceDirectBreakdownInput,
   type ArizonaFinanceLinkInput,
+  type ArizonaFinanceLinkSource,
   type ArizonaFinanceOutsideGroupBreakdownInput,
   type ArizonaFinanceOutsideGroupInput,
   type ArizonaFinanceSummaryInput,
@@ -47,6 +48,7 @@ export type ArizonaCandidateFinanceSyncInput = {
     committeeId: string;
     committeeName: string;
     candidateFilerId?: string | null;
+    linkSource?: ArizonaFinanceLinkSource;
     sourceUrl?: string | null;
   };
 };
@@ -129,6 +131,7 @@ function toFinanceLink(input: {
   officeName: string;
   district?: string | null;
   resolution: MatchedArizonaCommitteeResolution;
+  linkSource?: ArizonaFinanceLinkSource;
   sourceUrl?: string | null;
   verifiedAt: Date;
 }): ArizonaFinanceLinkInput {
@@ -142,7 +145,7 @@ function toFinanceLink(input: {
     committeeId: requireNonEmpty(input.resolution.committeeId, "Arizona committee id"),
     committeeName: requireNonEmpty(input.resolution.committeeName, "Arizona committee name"),
     linkStatus: "active",
-    linkSource: "spotlight",
+    linkSource: input.linkSource ?? "spotlight",
     sourceUrl: input.resolution.sourceUrl ?? input.sourceUrl ?? null,
     lastVerifiedAt: input.verifiedAt,
   };
@@ -324,6 +327,7 @@ export async function syncArizonaCandidateFinance(
         officeName: input.officeName,
         district: input.district,
         resolution,
+        linkSource: input.trustedCommittee?.linkSource,
         sourceUrl: input.sourceUrl,
         verifiedAt: now,
       }),

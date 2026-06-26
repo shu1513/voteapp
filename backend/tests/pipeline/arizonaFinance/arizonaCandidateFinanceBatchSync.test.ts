@@ -22,6 +22,7 @@ describe("arizonaCandidateFinanceBatchSync", () => {
           district: null,
           committee_id: "AZ100",
           committee_name: "Jane Arizonan for Governor",
+          link_source: "manual",
           source_url: "https://seethemoney.az.gov/Reporting/Explore",
           last_synced_at: null,
           total_due_rows: "1",
@@ -52,6 +53,7 @@ describe("arizonaCandidateFinanceBatchSync", () => {
           district: null,
           committeeId: "AZ100",
           committeeName: "Jane Arizonan for Governor",
+          linkSource: "manual",
           sourceUrl: "https://seethemoney.az.gov/Reporting/Explore",
           lastSyncedAt: null,
         },
@@ -77,6 +79,7 @@ describe("arizonaCandidateFinanceBatchSync", () => {
             district: null,
             committee_id: "AZ100",
             committee_name: "Jane Arizonan for Governor",
+            link_source: "spotlight",
             source_url: null,
             last_synced_at: null,
             total_due_rows: "1",
@@ -128,9 +131,72 @@ describe("arizonaCandidateFinanceBatchSync", () => {
         trustedCommittee: expect.objectContaining({
           committeeId: "AZ100",
           committeeName: "Jane Arizonan for Governor",
+          linkSource: "spotlight",
         }),
         dryRun: true,
       })
     );
+  });
+
+  it("counts auto-link sync work in batch results and candidate budget", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: CANDIDATE_ID,
+            election_id: ELECTION_ID,
+            candidate_name: "Jane Arizonan",
+            election_year: 2026,
+            office_scope: "statewide",
+            office_name: "Governor",
+            district: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+    const syncArizonaCandidateFinanceFn = vi.fn(async () => ({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      dryRun: false,
+      resolution: { status: "matched" as const, committeeId: "AZ100", committeeName: "Jane Arizonan for Governor" },
+      linkWritten: true,
+      summaryWritten: true,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      totalReceipts: 100,
+      directContributionTotal: 100,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      matchedIncomeTransactionCount: 1,
+      includedIncomeTransactionCount: 1,
+      skippedIncomeTransactionCount: 0,
+      matchedIndependentExpenditureCount: 0,
+      includedIndependentExpenditureCount: 0,
+      skippedIndependentExpenditureCount: 0,
+      matchedOutsideIncomeTransactionCount: 0,
+      includedOutsideIncomeTransactionCount: 0,
+      skippedOutsideIncomeTransactionCount: 0,
+    }));
+
+    const result = await syncDueArizonaCandidateFinance({
+      db: { query },
+      dryRun: false,
+      now: new Date("2026-06-25T12:00:00.000Z"),
+      maxCandidates: 1,
+      syncArizonaCandidateFinanceFn,
+    });
+
+    expect(result).toMatchObject({
+      selectedCandidateCount: 1,
+      syncedCandidateCount: 1,
+      failedCandidateCount: 0,
+      autoLinkAttemptedCount: 1,
+      autoLinkLinkedCount: 1,
+      results: [expect.objectContaining({ committeeId: "AZ100", ok: true })],
+    });
+    expect(query.mock.calls[1]?.[1]?.[2]).toBe(0);
   });
 });

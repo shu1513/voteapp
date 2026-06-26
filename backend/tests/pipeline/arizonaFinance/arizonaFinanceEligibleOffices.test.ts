@@ -26,6 +26,7 @@ describe("arizonaFinanceEligibleOffices", () => {
 
   it("normalizes common office labels", () => {
     expect(normalizeArizonaFinanceOffice({ officeScope: "statewide", officeName: "AG" })).toBeNull();
+    expect(normalizeArizonaFinanceOffice({ officeScope: "state_upper", officeName: "Governor" })).toBeNull();
     expect(normalizeArizonaFinanceOffice({ officeScope: "statewide", officeName: "Attorney General" })).toEqual({
       officeScope: "statewide",
       officeCanonicalName: "Attorney General",

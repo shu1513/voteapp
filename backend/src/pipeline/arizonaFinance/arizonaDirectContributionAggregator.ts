@@ -123,17 +123,21 @@ function normalizeCommitteeIds(input: { committeeId: string; committeeIds?: read
 }
 
 function contributorIdentityKey(transaction: ArizonaSpotlightIncomeTransaction): string {
-  const parts = [
-    transaction.transactionName,
-    transaction.city,
-    transaction.state,
-    transaction.zipCode,
-    transaction.employer,
-    transaction.occupation,
-  ]
+  const parts = [transaction.transactionName, transaction.city, transaction.state, transaction.zipCode]
     .map(normalizeTextKey)
     .filter(Boolean);
   return parts.length > 0 ? parts.join("\u0000") : "unknown";
+}
+
+function isContributionIncomeTransaction(transaction: ArizonaSpotlightIncomeTransaction): boolean {
+  const transactionType = normalizeTextKey(transaction.transactionType);
+  if (!transactionType) {
+    return false;
+  }
+  if (/\b(LOAN|TRANSFER|REFUND|REBATE|INTEREST|OFFSET|IN KIND EXPENSE|EXPENDITURE)\b/.test(transactionType)) {
+    return false;
+  }
+  return /\bCONTRIBUTION(S)?\b/.test(transactionType);
 }
 
 function contributionSizeBucket(amount: number): string {
@@ -247,8 +251,13 @@ export function aggregateArizonaDirectContributions(
       continue;
     }
 
-    includedIncomeTransactionCount += 1;
     totalReceiptsCents += amountCents;
+    if (!isContributionIncomeTransaction(transaction)) {
+      skippedIncomeTransactionCount += 1;
+      continue;
+    }
+
+    includedIncomeTransactionCount += 1;
     const contributorKey = contributorIdentityKey(transaction);
     addAggregate(aggregates, {
       categoryType: "occupation",
@@ -268,7 +277,9 @@ export function aggregateArizonaDirectContributions(
   return {
     summary: {
       totalReceipts: centsToDollars(totalReceiptsCents),
-      directContributionTotal: centsToDollars(totalReceiptsCents),
+      directContributionTotal: centsToDollars([...aggregates.values()]
+        .filter((aggregate) => aggregate.categoryType === "contribution_size")
+        .reduce((total, aggregate) => total + aggregate.amountCents, 0)),
       sourceUrl,
     },
     directBreakdowns: toDirectBreakdowns({

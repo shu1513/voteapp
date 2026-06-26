@@ -75,5 +75,8 @@ export function normalizeArizonaFinanceOffice(input: {
   if (!officeCanonicalName) {
     return null;
   }
+  if (!ARIZONA_FINANCE_ELIGIBLE_OFFICE_KEY_SET.has(`${scope}::${officeCanonicalName}`)) {
+    return null;
+  }
   return { officeScope: scope, officeCanonicalName };
 }

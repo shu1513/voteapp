@@ -63,6 +63,7 @@ const DEFAULT_INDEPENDENT_EXPENDITURE_LIMIT_PER_POSITION = 5_000;
 const DEFAULT_OUTSIDE_GROUP_INCOME_LIMIT_PER_GROUP = 5_000;
 const DEFAULT_OUTSIDE_MAX_GROUPS = 20;
 const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 20;
+const OUTSIDE_GROUP_INCOME_FETCH_CONCURRENCY = 5;
 
 const DEFAULT_SPOTLIGHT_CLIENT: ArizonaCandidateFinanceSnapshotClient = {
   searchIncomeTransactions: searchArizonaSpotlightIncomeTransactions,
@@ -109,6 +110,34 @@ function uniqueOutsideGroups(groups: readonly ArizonaOutsideSpendingGroup[]): Ar
     }
   }
   return [...byCommitteeId.values()];
+}
+
+async function fetchOutsideGroupIncomeTransactions(input: {
+  spotlightClient: ArizonaCandidateFinanceSnapshotClient;
+  spotlightClientOptions?: ArizonaSpotlightClientOptions;
+  electionYear: number;
+  outsideGroups: readonly ArizonaOutsideSpendingGroup[];
+  outsideGroupIncomeLimitPerGroup: number;
+}): Promise<ArizonaSpotlightIncomeTransaction[]> {
+  const batches: ArizonaSpotlightIncomeTransaction[][] = [];
+  for (let index = 0; index < input.outsideGroups.length; index += OUTSIDE_GROUP_INCOME_FETCH_CONCURRENCY) {
+    const groupBatch = input.outsideGroups.slice(index, index + OUTSIDE_GROUP_INCOME_FETCH_CONCURRENCY);
+    batches.push(
+      ...(await Promise.all(
+        groupBatch.map((group) =>
+          input.spotlightClient.searchIncomeTransactions(
+            {
+              electionYear: input.electionYear,
+              filerId: group.committeeId,
+              limit: input.outsideGroupIncomeLimitPerGroup,
+            },
+            input.spotlightClientOptions
+          )
+        )
+      ))
+    );
+  }
+  return batches.flat();
 }
 
 export async function buildArizonaCandidateFinanceSnapshot(
@@ -201,19 +230,13 @@ export async function buildArizonaCandidateFinanceSnapshot(
       sourceUrl: supportIndependentExpenditures[0]?.sourceUrl ?? opposeIndependentExpenditures[0]?.sourceUrl ?? null,
     });
 
-    const outsideGroups = uniqueOutsideGroups(outsideSpending.summary?.groups ?? []);
-    for (const group of outsideGroups) {
-      outsideGroupIncomeTransactions.push(
-        ...(await spotlightClient.searchIncomeTransactions(
-          {
-            electionYear,
-            filerId: group.committeeId,
-            limit: outsideGroupIncomeLimitPerGroup,
-          },
-          input.spotlightClientOptions
-        ))
-      );
-    }
+    outsideGroupIncomeTransactions = await fetchOutsideGroupIncomeTransactions({
+      spotlightClient,
+      spotlightClientOptions: input.spotlightClientOptions,
+      electionYear,
+      outsideGroups: uniqueOutsideGroups(outsideSpending.summary?.groups ?? []),
+      outsideGroupIncomeLimitPerGroup,
+    });
   }
 
   const outsideGroupContributions = aggregateArizonaOutsideGroupContributions({

@@ -115,6 +115,44 @@ describe("arizonaDirectContributionAggregator", () => {
     ]);
   });
 
+  it("does not split the same contributor when employer details change", () => {
+    const result = aggregateArizonaDirectContributions({
+      committeeId: "201800057",
+      electionYear: 2024,
+      incomeTransactions: [
+        income({ amount: 100, occupation: "Teacher", employer: "Phoenix High School District" }),
+        income({ amount: 200, occupation: "Teacher", employer: "Retired" }),
+      ],
+    });
+
+    expect(result.directBreakdowns.filter((row) => row.categoryType === "occupation")).toEqual([
+      expect.objectContaining({ categoryName: "Teacher", amount: 300, contributorCount: 1 }),
+    ]);
+  });
+
+  it("keeps broad receipts separate from contribution-only direct support", () => {
+    const result = aggregateArizonaDirectContributions({
+      committeeId: "201800057",
+      electionYear: 2024,
+      incomeTransactions: [
+        income({ amount: 100, transactionType: "Contribution from Individuals", occupation: "Teacher" }),
+        income({ amount: 500, transactionType: "Loan Proceeds", occupation: "Attorney" }),
+        income({ amount: 25, transactionType: "Interest Income", occupation: "Banker" }),
+      ],
+    });
+
+    expect(result.summary).toMatchObject({
+      totalReceipts: 625,
+      directContributionTotal: 100,
+    });
+    expect(result.includedIncomeTransactionCount).toBe(1);
+    expect(result.skippedIncomeTransactionCount).toBe(2);
+    expect(result.directBreakdowns).toEqual(
+      expect.arrayContaining([expect.objectContaining({ categoryType: "occupation", categoryName: "Teacher", amount: 100 })])
+    );
+    expect(result.directBreakdowns.some((row) => row.categoryName === "Attorney")).toBe(false);
+  });
+
   it("matches committee IDs case-insensitively and skips invalid or non-cycle rows", () => {
     const result = aggregateArizonaDirectContributions({
       committeeId: " abc123 ",

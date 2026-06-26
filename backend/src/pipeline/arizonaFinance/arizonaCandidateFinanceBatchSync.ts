@@ -5,6 +5,7 @@ import {
   type ArizonaCandidateFinanceSyncResult,
 } from "./arizonaCandidateFinanceSync.js";
 import { ARIZONA_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./arizonaFinanceEligibleOffices.js";
+import type { ArizonaFinanceLinkSource } from "./arizonaFinanceWriter.js";
 import type { ArizonaSpotlightClientOptions } from "./arizonaSpotlightClient.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -19,6 +20,7 @@ export type ArizonaCandidateFinanceDueRow = {
   district: string | null;
   committeeId: string;
   committeeName: string;
+  linkSource: ArizonaFinanceLinkSource;
   sourceUrl: string | null;
   lastSyncedAt: string | null;
 };
@@ -87,6 +89,7 @@ type ArizonaCandidateFinanceDueQueryRow = {
   district: string | null;
   committee_id: string;
   committee_name: string;
+  link_source: ArizonaFinanceLinkSource;
   source_url: string | null;
   last_synced_at: string | null;
   total_due_rows: string | number;
@@ -137,6 +140,7 @@ function mapDueRow(row: ArizonaCandidateFinanceDueQueryRow): ArizonaCandidateFin
     district: row.district,
     committeeId: row.committee_id,
     committeeName: row.committee_name,
+    linkSource: row.link_source,
     sourceUrl: row.source_url,
     lastSyncedAt: row.last_synced_at,
   };
@@ -146,7 +150,7 @@ function mapMissingRow(row: ArizonaMissingFinanceLinkQueryRow): ArizonaFinanceAu
   return {
     candidateId: row.candidate_id,
     electionId: row.election_id,
-    candidateName: row.candidate_name,
+    candidateName: row.candidate_name ?? "",
     electionYear: row.election_year,
     officeScope: row.office_scope,
     officeName: row.office_name,
@@ -170,7 +174,8 @@ export async function listArizonaCandidateElectionsMissingFinanceLinks(
         election.id::text AS election_id,
         COALESCE(
           NULLIF(trim(candidate.display_name), ''),
-          NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')
+          NULLIF(trim(concat_ws(' ', candidate.first_name, candidate.last_name)), ''),
+          ''
         ) AS candidate_name,
         extract(year from election.election_date)::int AS election_year,
         office.scope AS office_scope,
@@ -229,7 +234,7 @@ export async function listDueArizonaCandidateFinanceSyncRows(
           link.election_id::text AS election_id,
           COALESCE(
             NULLIF(trim(candidate.display_name), ''),
-            NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), ''),
+            NULLIF(trim(concat_ws(' ', candidate.first_name, candidate.last_name)), ''),
             link.candidate_name_normalized
           ) AS candidate_name,
           link.election_year,
@@ -238,6 +243,7 @@ export async function listDueArizonaCandidateFinanceSyncRows(
           link.district,
           link.committee_id,
           link.committee_name,
+          link.link_source,
           link.source_url,
           summary.last_synced_at::text AS last_synced_at,
           COUNT(*) OVER () AS total_due_rows
@@ -251,7 +257,7 @@ export async function listDueArizonaCandidateFinanceSyncRows(
           ON election.id = link.election_id
         JOIN public.districts AS district
           ON district.id = election.district_id
-        LEFT JOIN public.offices AS office
+        JOIN public.offices AS office
           ON office.id = election.office_id
         LEFT JOIN public.az_candidate_finance_summaries AS summary
           ON summary.link_id = link.id
@@ -284,6 +290,7 @@ export async function listDueArizonaCandidateFinanceSyncRows(
         district,
         committee_id,
         committee_name,
+        link_source,
         source_url,
         last_synced_at,
         total_due_rows
@@ -360,19 +367,36 @@ export async function syncDueArizonaCandidateFinance(
         if (result.linkWritten) {
           autoLinkLinkedCount += 1;
         }
+        results.push({
+          candidateId: row.candidateId,
+          electionId: row.electionId,
+          electionYear: row.electionYear,
+          committeeId: result.resolution.status === "matched" ? result.resolution.committeeId : null,
+          ok: true,
+          result,
+        });
       } catch (error) {
-        console.warn(
-          "Arizona finance auto-link skipped candidate election:",
-          error instanceof Error ? error.message : error
-        );
+        results.push({
+          candidateId: row.candidateId,
+          electionId: row.electionId,
+          electionYear: row.electionYear,
+          committeeId: null,
+          ok: false,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+      if (results.length >= maxCandidates) {
+        break;
       }
     }
   }
 
+  const remainingCandidateBudget = Math.max(0, maxCandidates - results.length);
+
   const due = await listDueArizonaCandidateFinanceSyncRows(input.db, {
     now,
     staleAfterDays,
-    maxCandidates,
+    maxCandidates: remainingCandidateBudget,
     electionLookbackDays,
     electionLookaheadDays,
   });
@@ -401,6 +425,7 @@ export async function syncDueArizonaCandidateFinance(
           committeeId: row.committeeId,
           committeeName: row.committeeName,
           candidateFilerId: row.committeeId,
+          linkSource: row.linkSource,
           sourceUrl: row.sourceUrl,
         },
         dryRun,
@@ -433,7 +458,7 @@ export async function syncDueArizonaCandidateFinance(
     staleAfterDays,
     maxCandidates,
     dueCandidateCount: due.totalDueRows,
-    selectedCandidateCount: due.rows.length,
+    selectedCandidateCount: results.length,
     syncedCandidateCount,
     failedCandidateCount: results.length - syncedCandidateCount,
     autoLinkAttemptedCount,
