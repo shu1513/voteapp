@@ -114,6 +114,17 @@ export function isNewMexicoCampaignFinanceSyncEnabled(force = false): boolean {
   );
 }
 
+export function isNewJerseyCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("NEW_JERSEY_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isNewJerseyCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isNewJerseyCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("NEW_JERSEY_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isNewMexicoCfisRawDataRefreshEnabled(force = false): boolean {
   return (
     isNewMexicoCampaignFinanceEnabled() &&

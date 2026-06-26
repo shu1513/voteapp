@@ -4818,6 +4818,220 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("va_candidate_finance");
   });
 
+  it("loads New Jersey ELEC finance summaries for eligible New Jersey offices", async () => {
+    vi.stubEnv("NEW_JERSEY_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "34",
+            district_name: "New Jersey",
+            state: "NJ",
+            state_fips: "34",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2025-11-04",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Mikie Sherrill",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "NJ",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "473742",
+            election_year: 2025,
+            total_receipts: "350.00",
+            direct_contribution_total: "350.00",
+            total_disbursements: null,
+            cash_on_hand: null,
+            outside_support_total: "100082.02",
+            outside_oppose_total: "0.00",
+            source_url: null,
+            last_synced_at: "2026-06-25 13:30:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Attorney",
+            amount: "350.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "employer",
+            category_name: "Acme Law",
+            amount: "350.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$250-$499",
+            amount: "250.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "477267",
+            committee_name: "ONE GIANT LEAP PAC - OGL PAC",
+            support_oppose: "support",
+            amount: "100082.02",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "finance_investment",
+            amount: "100000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "NEW_JERSEY_ELEC",
+      cycle: 2025,
+      fec_candidate_id: null,
+      controlled_committee_id: "473742",
+      last_synced_at: "2026-06-25 13:30:00+00",
+      direct_campaign: {
+        total_raised: 350,
+        total_spent: null,
+        cash_on_hand: null,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 350,
+            contributor_count: 2,
+            source_url: "https://www.njelecefilesearch.com/",
+          },
+        ],
+        top_employers: [
+          {
+            category_name: "Acme Law",
+            amount: 350,
+            contributor_count: 2,
+            source_url: "https://www.njelecefilesearch.com/",
+          },
+        ],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$250-$499",
+            amount: 250,
+            contributor_count: 1,
+            source_url: "https://www.njelecefilesearch.com/",
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 100082.02,
+        oppose_total: 0,
+        top_supporting_groups: [
+          {
+            committee_id: "477267",
+            committee_name: "ONE GIANT LEAP PAC - OGL PAC",
+            support_oppose: "support",
+            amount: 100082.02,
+            source_url: "https://www.njelecefilesearch.com/",
+          },
+        ],
+        top_opposing_groups: [],
+        top_supporting_industries: [
+          {
+            category_name: "finance_investment",
+            amount: 100000,
+            contributor_count: 1,
+            source_url: "https://www.njelecefilesearch.com/",
+          },
+        ],
+        top_opposing_industries: [],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 350,
+            contributor_count: 2,
+            source_url: "https://www.njelecefilesearch.com/",
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "finance_investment",
+            amount: 100000,
+            contributor_count: 1,
+            source_url: "https://www.njelecefilesearch.com/",
+            explanation:
+              "The Finance and investment category is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported independent spending supporting this candidate.",
+            supporting_organizations: [],
+          },
+        ],
+      },
+    });
+    expect(query.mock.calls.map((call) => String(call[0])).join("\n")).toContain("public.nj_candidate_finance_summaries");
+  });
+
   it("does not load Massachusetts finance summaries for unsupported Massachusetts offices", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED", "true");
