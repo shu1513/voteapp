@@ -448,8 +448,8 @@ async function upsertSummary(input: {
         direct_contribution_total = EXCLUDED.direct_contribution_total,
         total_disbursements = EXCLUDED.total_disbursements,
         cash_on_hand = EXCLUDED.cash_on_hand,
-        outside_support_total = EXCLUDED.outside_support_total,
-        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        outside_support_total = COALESCE(EXCLUDED.outside_support_total, fl_candidate_finance_summaries.outside_support_total),
+        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, fl_candidate_finance_summaries.outside_oppose_total),
         source_url = EXCLUDED.source_url,
         last_synced_at = EXCLUDED.last_synced_at
     `,
@@ -761,7 +761,15 @@ export async function replaceFloridaCandidateFinanceSnapshot(
   return await withFloridaFinanceTransaction(input.db, async (db) => {
     const { linkId } = await upsertFloridaFinanceLink({ db, link: input.link });
     if (input.summary) {
-      await upsertSummary({ db, linkId, electionYear, summary: input.summary, syncedAt });
+      const summary =
+        input.outsideGroups === undefined
+          ? input.summary
+          : {
+              ...input.summary,
+              outsideSupportTotal: input.summary.outsideSupportTotal ?? 0,
+              outsideOpposeTotal: input.summary.outsideOpposeTotal ?? 0,
+            };
+      await upsertSummary({ db, linkId, electionYear, summary, syncedAt });
     }
 
     for (const breakdown of input.directBreakdowns ?? []) {
