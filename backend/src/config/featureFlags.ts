@@ -139,6 +139,24 @@ export function isMarylandCfsRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+export function isMaineCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("MAINE_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isMaineCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isMaineCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MAINE_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isMaineCfisRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isMaineCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MAINE_CFIS_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isOklahomaCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("OKLAHOMA_CAMPAIGN_FINANCE_ENABLED", false);
 }
