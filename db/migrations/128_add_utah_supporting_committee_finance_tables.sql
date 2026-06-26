@@ -67,6 +67,15 @@ CREATE TABLE IF NOT EXISTS public.ut_candidate_finance_supporting_committee_indu
     CHECK (contributor_count IS NULL OR contributor_count >= 0),
   CONSTRAINT ut_candidate_finance_supporting_committee_industries_source_url_check
     CHECK (source_url IS NULL OR btrim(source_url) <> ''),
+  CONSTRAINT ut_candidate_finance_sci_committee_fk
+    FOREIGN KEY (link_id, election_year, supporting_committee_name)
+    REFERENCES public.ut_candidate_finance_supporting_committees (
+      link_id,
+      election_year,
+      committee_name
+    )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT ut_candidate_finance_supporting_committee_industries_link_year_fk
     FOREIGN KEY (link_id, election_year)
     REFERENCES public.ut_candidate_finance_links(id, election_year)

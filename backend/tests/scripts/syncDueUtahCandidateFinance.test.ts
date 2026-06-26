@@ -18,6 +18,7 @@ describe("syncDueUtahCandidateFinance script", () => {
         "--lookahead-days=365",
         "--raw-cache-dir=/tmp/utah-disclosures",
         "--refresh-cache",
+        "--ai-classify-industries",
         "--ai-min-amount=25000",
       ])
     ).toEqual({
@@ -34,16 +35,19 @@ describe("syncDueUtahCandidateFinance script", () => {
     });
   });
 
-  it("defaults to a disabled-by-flag safe option set with AI classification enabled", () => {
+  it("defaults to a disabled-by-flag safe option set with AI classification disabled", () => {
     expect(parseSyncDueUtahCandidateFinanceScriptArgs([])).toMatchObject({
       dryRun: false,
       force: false,
       refreshCache: false,
-      aiClassifyIndustries: true,
+      aiClassifyIndustries: false,
     });
   });
 
-  it("can opt out of AI industry classification", () => {
+  it("can opt into and out of AI industry classification", () => {
+    expect(parseSyncDueUtahCandidateFinanceScriptArgs(["--ai-classify-industries"])).toMatchObject({
+      aiClassifyIndustries: true,
+    });
     expect(parseSyncDueUtahCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
       aiClassifyIndustries: false,
     });

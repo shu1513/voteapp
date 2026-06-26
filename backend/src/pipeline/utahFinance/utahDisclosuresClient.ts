@@ -91,6 +91,7 @@ export type UtahDisclosuresTransactionRow = {
 };
 
 const ENTITY_TYPE_SET = new Set<string>(UTAH_DISCLOSURES_ENTITY_TYPES);
+const REQUIRED_TRANSACTION_HEADERS = ["TRAN_ID", "TRAN_AMT"] as const;
 
 function isAbortError(error: unknown): boolean {
   return (
@@ -176,27 +177,47 @@ export function buildUtahEntityReportListFormBody(input: UtahDisclosuresEntitySe
 async function fetchUtahDisclosures(
   url: string,
   init: RequestInit,
-  options: UtahDisclosuresClientOptions
-): Promise<Response> {
+  options: UtahDisclosuresClientOptions,
+  context: string
+): Promise<string> {
   const timeoutMs = options.timeoutMs ?? UTAH_DISCLOSURES_DEFAULT_TIMEOUT_MS;
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+  const timeoutMessage = `Utah disclosures request timed out after ${timeoutMs}ms for ${url}`;
+  const request = (async () => {
+    const response = await (options.fetchImpl ?? fetch)(url, { ...init, signal: controller.signal });
+    return response;
+  })();
+  const timeoutReached = new Promise<never>((_, reject) => {
+    timeout = setTimeout(() => {
+      controller.abort();
+      reject(new UtahDisclosuresClientError("network_error", timeoutMessage));
+    }, timeoutMs);
+  });
+  let bodyRequest: Promise<string> | undefined;
 
   try {
-    return await (options.fetchImpl ?? fetch)(url, { ...init, signal: controller.signal });
+    const response = await Promise.race([request, timeoutReached]);
+    await assertOk(response, context);
+    bodyRequest = response.text();
+    return await Promise.race([bodyRequest, timeoutReached]);
   } catch (error) {
+    if (error instanceof UtahDisclosuresClientError) {
+      throw error;
+    }
     if (isAbortError(error)) {
-      throw new UtahDisclosuresClientError(
-        "network_error",
-        `Utah disclosures request timed out after ${timeoutMs}ms for ${url}`
-      );
+      throw new UtahDisclosuresClientError("network_error", timeoutMessage);
     }
     throw new UtahDisclosuresClientError(
       "network_error",
       `Utah disclosures request failed for ${url}: ${error instanceof Error ? error.message : String(error)}`
     );
   } finally {
-    clearTimeout(timeout);
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    request.catch(() => undefined);
+    bodyRequest?.catch(() => undefined);
   }
 }
 
@@ -227,10 +248,10 @@ export async function fetchUtahEntityReportListHtml(
       }),
       body: formBody,
     },
-    options
+    options,
+    "entity report list request"
   );
-  await assertOk(response, "entity report list request");
-  return response.text();
+  return response;
 }
 
 export async function fetchUtahGeneratedReportCsv(
@@ -240,10 +261,10 @@ export async function fetchUtahGeneratedReportCsv(
   const response = await fetchUtahDisclosures(
     buildUtahGenerateReportUrl(input, options.baseUrl),
     { headers: { accept: "text/csv,text/plain;q=0.9,*/*;q=0.1" } },
-    options
+    options,
+    "generated report request"
   );
-  await assertOk(response, "generated report request");
-  return response.text();
+  return response;
 }
 
 function decodeHtmlEntities(value: string): string {
@@ -404,13 +425,13 @@ function rowObjectFromCells(cells: readonly string[], headers: readonly string[]
   return row;
 }
 
-export function parseUtahDisclosuresCsvRows(csv: string): UtahDisclosuresCsvRow[] {
+function parseUtahDisclosuresCsvPayload(csv: string): { headers: string[]; rows: UtahDisclosuresCsvRow[] } {
   const rows = parseCsvRows(csv);
   if (rows.length === 0) {
-    return [];
+    return { headers: [], rows: [] };
   }
   if (rows[0].length === 1 && rows[0][0].trim().toLowerCase().startsWith("there are no recorded transactions")) {
-    return [];
+    return { headers: [], rows: [] };
   }
 
   const headers = rows[0].map(normalizeHeader);
@@ -428,7 +449,11 @@ export function parseUtahDisclosuresCsvRows(csv: string): UtahDisclosuresCsvRow[
     throw new UtahDisclosuresClientError("bad_response", "Utah disclosures CSV header row is empty");
   }
 
-  return rows.slice(1).map((row) => rowObjectFromCells(row, headers));
+  return { headers, rows: rows.slice(1).map((row) => rowObjectFromCells(row, headers)) };
+}
+
+export function parseUtahDisclosuresCsvRows(csv: string): UtahDisclosuresCsvRow[] {
+  return parseUtahDisclosuresCsvPayload(csv).rows;
 }
 
 function getString(row: UtahDisclosuresCsvRow, ...keys: string[]): string | undefined {
@@ -489,7 +514,20 @@ export function utahDisclosuresTransactionRowFromCsvRow(
 }
 
 export function parseUtahDisclosuresTransactionRows(csv: string): UtahDisclosuresTransactionRow[] {
-  return parseUtahDisclosuresCsvRows(csv)
+  const parsed = parseUtahDisclosuresCsvPayload(csv);
+  if (parsed.headers.length === 0 && parsed.rows.length === 0) {
+    return [];
+  }
+  const headers = new Set(parsed.headers);
+  for (const requiredHeader of REQUIRED_TRANSACTION_HEADERS) {
+    if (!headers.has(requiredHeader)) {
+      throw new UtahDisclosuresClientError(
+        "bad_response",
+        `Utah disclosures CSV is missing required transaction header: ${requiredHeader}`
+      );
+    }
+  }
+  return parsed.rows
     .map(utahDisclosuresTransactionRowFromCsvRow)
     .filter((row): row is UtahDisclosuresTransactionRow => row !== null);
 }

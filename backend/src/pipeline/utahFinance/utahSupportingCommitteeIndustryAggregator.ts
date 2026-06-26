@@ -395,6 +395,15 @@ function toSupportingCommittees(input: {
     }));
 }
 
+function selectSupportingCommittees(input: {
+  committees: Iterable<SupportingCommitteeAggregate>;
+  maxSupportingCommittees: number;
+}): SupportingCommitteeAggregate[] {
+  return [...input.committees]
+    .sort((left, right) => right.amountCents - left.amountCents || left.committeeName.localeCompare(right.committeeName))
+    .slice(0, input.maxSupportingCommittees);
+}
+
 function toIndustryBreakdowns(input: {
   industries: Iterable<IndustryAggregate>;
   sourceUrl: string | null;
@@ -457,10 +466,18 @@ export async function aggregateUtahSupportingCommitteeIndustries(
     };
   }
 
+  const selectedSupportingCommittees = selectSupportingCommittees({
+    committees: supportingCommitteesByKey.values(),
+    maxSupportingCommittees,
+  });
+  const selectedSupportingCommitteesByKey = new Map(
+    selectedSupportingCommittees.map((committee) => [committee.normalizedName, committee])
+  );
+
   const incoming = collectIncomingOrganizationDonors({
     committeeTransactions: input.committeeTransactions,
     electionYear,
-    supportingCommitteesByKey,
+    supportingCommitteesByKey: selectedSupportingCommitteesByKey,
   });
   const classifications = await classifyDonors({
     donors: incoming.donors.values(),
@@ -483,7 +500,7 @@ export async function aggregateUtahSupportingCommitteeIndustries(
 
   return {
     supportingCommittees: toSupportingCommittees({
-      committees: supportingCommitteesByKey.values(),
+      committees: selectedSupportingCommittees,
       sourceUrl: input.candidateSourceUrl ?? null,
       maxSupportingCommittees,
     }),

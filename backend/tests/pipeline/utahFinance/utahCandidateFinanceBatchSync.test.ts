@@ -56,7 +56,7 @@ function syncResult(overrides: Partial<UtahCandidateFinanceSyncResult> = {}): Ut
       folderId: "98765",
       committeeName: "Friends of Jane Doe",
       confidence: "exact",
-      source: "folder_title",
+      source: "disclosures_advanced_search",
       sourceUrl: SOURCE_URL,
       matchedEntityRowCount: 1,
     },

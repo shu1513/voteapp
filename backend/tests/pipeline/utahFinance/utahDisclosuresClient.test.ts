@@ -175,6 +175,15 @@ describe("utahDisclosuresClient", () => {
     expect(parseUtahDisclosuresTransactionRows("There are no recorded transactions for the selected filters.\n")).toEqual([]);
   });
 
+  it("rejects unexpected 200 responses that are not transaction CSVs", () => {
+    expect(() => parseUtahDisclosuresTransactionRows("<html><body>temporarily unavailable</body></html>")).toThrow(
+      "TRAN_ID"
+    );
+    expect(() => parseUtahDisclosuresTransactionRows("FILED,PCC,NAME\n01/01/2024,Jane for Utah,John Smith")).toThrow(
+      "TRAN_ID"
+    );
+  });
+
   it("rejects malformed CSV", () => {
     expect(() => parseUtahDisclosuresCsvRows('FILED,PCC\n"unterminated')).toThrow("unterminated");
   });
@@ -239,5 +248,22 @@ describe("utahDisclosuresClient", () => {
         { fetchImpl, timeoutMs: 1000 }
       )
     ).rejects.toMatchObject({ code: "http_error", status: 500 });
+  });
+
+  it("keeps the request timeout active while reading the response body", async () => {
+    vi.useFakeTimers();
+    const fetchImpl = vi.fn().mockResolvedValue({
+      ok: true,
+      text: () => new Promise<string>(() => undefined),
+    } as Response) as unknown as typeof fetch;
+
+    const request = fetchUtahEntityReportListHtml(
+      { entityType: "PCC", reportYear: 2024 },
+      { fetchImpl, timeoutMs: 100 }
+    );
+    const expectation = expect(request).rejects.toMatchObject({ code: "network_error" });
+    await vi.advanceTimersByTimeAsync(100);
+
+    await expectation;
   });
 });

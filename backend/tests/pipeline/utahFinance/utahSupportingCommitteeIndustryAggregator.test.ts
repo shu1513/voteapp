@@ -205,6 +205,45 @@ describe("utahSupportingCommitteeIndustryAggregator", () => {
     expect(result.supportingCommitteeIndustryBreakdowns).toEqual([]);
   });
 
+  it("does not emit industry breakdowns for committees excluded by the max committee limit", async () => {
+    const result = await aggregateUtahSupportingCommitteeIndustries({
+      electionYear: 2024,
+      maxSupportingCommittees: 1,
+      minIndustryAmount: 5_000,
+      candidateTransactions: [
+        transaction({ transactionId: "candidate-energy", amount: 2_000, name: "Utah Energy PAC" }),
+        transaction({ transactionId: "candidate-builders", amount: 1_000, name: "Utah Builders PAC" }),
+      ],
+      committeeTransactions: [
+        transaction({
+          entityType: "PAC",
+          entityName: "Utah Builders PAC",
+          transactionId: "builders-donor",
+          amount: 25_000,
+          name: "Wasatch Construction LLC",
+        }),
+        transaction({
+          entityType: "PAC",
+          entityName: "Utah Energy PAC",
+          transactionId: "energy-donor",
+          amount: 8_000,
+          name: "Midland Energy",
+        }),
+      ],
+    });
+
+    expect(result.supportingCommittees).toEqual([expect.objectContaining({ committeeName: "Utah Energy PAC" })]);
+    expect(result.supportingCommitteeIndustryBreakdowns).toEqual([
+      expect.objectContaining({
+        supportingCommitteeName: "Utah Energy PAC",
+        industrySlug: "oil_gas_energy",
+        amount: 8000,
+      }),
+    ]);
+    expect(result.matchedCommitteeTransactionRowCount).toBe(1);
+    expect(result.includedOrganizationDonorRowCount).toBe(1);
+  });
+
   it("validates limits and election years", async () => {
     await expect(
       aggregateUtahSupportingCommitteeIndustries({

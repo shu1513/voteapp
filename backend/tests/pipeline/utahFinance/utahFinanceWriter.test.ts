@@ -138,7 +138,7 @@ describe("utahFinanceWriter", () => {
     expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
   });
 
-  it("does not delete omitted direct breakdowns", async () => {
+  it("replaces provided summary fields and does not delete omitted direct breakdowns", async () => {
     const db = createMockDb();
 
     const result = await replaceUtahCandidateFinanceSnapshot({
@@ -159,12 +159,22 @@ describe("utahFinanceWriter", () => {
     });
     const sql = db.query.mock.calls.map((call) => String(call[0]));
     const summarySql = sql.find((statement) => statement.includes("INSERT INTO public.ut_candidate_finance_summaries"));
-    expect(summarySql).toContain(
-      "total_receipts = COALESCE(EXCLUDED.total_receipts, ut_candidate_finance_summaries.total_receipts)"
+    expect(summarySql).toContain("total_receipts = EXCLUDED.total_receipts");
+    expect(summarySql).toContain("cash_on_hand = EXCLUDED.cash_on_hand");
+    expect(summarySql).not.toContain("COALESCE(EXCLUDED.cash_on_hand");
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ut_candidate_finance_summaries")
     );
-    expect(summarySql).toContain(
-      "cash_on_hand = COALESCE(EXCLUDED.cash_on_hand, ut_candidate_finance_summaries.cash_on_hand)"
-    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2024,
+      1000,
+      null,
+      null,
+      null,
+      null,
+      "2026-02-03T04:05:06.000Z",
+    ]);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.ut_candidate_finance_direct_breakdowns"))).toBe(false);
   });
 
