@@ -48,6 +48,7 @@ describe("Maine CFIS client and artifact cache", () => {
 
   it("rejects invalid URLs, years, and artifact kinds", () => {
     expect(() => parseMaineCfisHttpsUrl("http://example.com/file.csv", "--url")).toThrow("Only https is allowed");
+    expect(() => parseMaineCfisHttpsUrl("https://example.com/file.csv", "--url")).toThrow("Invalid --url host");
     expect(() => buildMaineCfisCsvDownloadRequestBody({ filingYear: 1999, artifactKind: "contributions" })).toThrow(
       "Invalid Maine CFIS filing year"
     );

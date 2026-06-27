@@ -357,7 +357,8 @@ describe("maineCandidateFinanceSyncScheduler", () => {
       "Maine finance sync scheduler jobId uses a reserved value"
     );
 
+    expect(Queue).not.toHaveBeenCalled();
     expect(queueInstance.add).not.toHaveBeenCalled();
-    expect(queueInstance.close).toHaveBeenCalledTimes(2);
+    expect(queueInstance.close).not.toHaveBeenCalled();
   });
 });

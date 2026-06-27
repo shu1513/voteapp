@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  normalizeMaineCandidateNameForStorage,
   normalizeMaineCandidateNameKeys,
   resolveMaineCandidateCommittee,
 } from "../../../src/pipeline/maineFinance/maineCandidateCommitteeResolver.js";
@@ -48,9 +49,10 @@ describe("maineCandidateCommitteeResolver", () => {
     expect([...normalizeMaineCandidateNameKeys("Paul, Reagan LeeAnn")]).toEqual([
       "PAUL REAGAN LEEANN",
       "REAGAN LEEANN PAUL",
-      "REAGAN PAUL",
     ]);
-    expect([...normalizeMaineCandidateNameKeys("Reagan LeeAnn Paul")]).toContain("REAGAN PAUL");
+    expect([...normalizeMaineCandidateNameKeys("Reagan LeeAnn Paul")]).toEqual(["REAGAN LEEANN PAUL"]);
+    expect(normalizeMaineCandidateNameForStorage("Paul, Reagan LeeAnn")).toBe("REAGAN LEEANN PAUL");
+    expect(normalizeMaineCandidateNameForStorage("Reagan LeeAnn Paul")).toBe("REAGAN LEEANN PAUL");
   });
 
   it("matches exactly one Maine candidate committee by candidate, office, district, and cycle", () => {
@@ -120,6 +122,24 @@ describe("maineCandidateCommitteeResolver", () => {
           matchedContributionRowCount: 1,
         },
       ],
+    });
+  });
+
+  it("does not treat first-and-last-only collisions as exact committee matches", () => {
+    expect(
+      resolveMaineCandidateCommittee({
+        candidateName: "Reagan Paul",
+        officeScope: "state_lower",
+        officeName: "Representative",
+        district: "37",
+        electionYear: 2024,
+        contributionRows: [contribution({ "Candidate Name": "Reagan LeeAnn Paul" })],
+      })
+    ).toEqual({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+      candidateNameNormalized: "REAGAN PAUL",
+      officeNameNormalized: "State Lower Chamber Legislator",
     });
   });
 

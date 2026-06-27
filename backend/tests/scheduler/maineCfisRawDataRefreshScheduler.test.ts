@@ -79,6 +79,36 @@ describe("maineCfisRawDataRefreshScheduler", () => {
     expect(queueInstance.close).toHaveBeenCalledTimes(1);
   });
 
+  it("removes the unselected recurring job when upserting one artifact kind", async () => {
+    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "true";
+    mockEnv();
+
+    const queueInstance = {
+      upsertJobScheduler: vi.fn().mockResolvedValue(undefined),
+      removeJobScheduler: vi.fn().mockResolvedValue(true),
+      close: vi.fn().mockResolvedValue(undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+
+    const { upsertRecurringMaineCfisRawDataRefreshJobs } = await import(
+      "../../src/scheduler/maineCfisRawDataRefreshScheduler.js"
+    );
+
+    await upsertRecurringMaineCfisRawDataRefreshJobs({ filingYear: 2026, artifactKind: "expenditures" });
+
+    expect(queueInstance.removeJobScheduler).toHaveBeenCalledWith("maine_cfis_raw_data_refresh_contributions_daily");
+    expect(queueInstance.removeJobScheduler).not.toHaveBeenCalledWith("maine_cfis_raw_data_refresh_expenditures_daily");
+    expect(queueInstance.upsertJobScheduler).toHaveBeenCalledTimes(1);
+    expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
+      "maine_cfis_raw_data_refresh_expenditures_daily",
+      expect.any(Object),
+      expect.objectContaining({
+        data: expect.objectContaining({ artifactKind: "expenditures", filingYear: 2026 }),
+      })
+    );
+  });
+
   it("removes both recurring jobs when disabled", async () => {
     process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "false";
     mockEnv();

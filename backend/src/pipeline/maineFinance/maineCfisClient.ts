@@ -61,6 +61,7 @@ export function normalizeMaineCfisFilingYear(filingYear: number): number {
 
 export function normalizeMaineCfisArtifactKind(kind: string): MaineCfisArtifactKind {
   const normalized = kind.trim().toLowerCase();
+  // CFIS bundles loan receipts in the same CSV as regular contributions.
   if (normalized === "contributions" || normalized === "contribution" || normalized === "con" || normalized === "loans") {
     return "contributions";
   }
@@ -109,6 +110,9 @@ export function parseMaineCfisHttpsUrl(value: string, fieldName = "Maine CFIS UR
   }
   if (parsed.protocol !== "https:") {
     throw new Error(`Invalid ${fieldName} protocol: ${parsed.protocol}. Only https is allowed.`);
+  }
+  if (parsed.hostname !== "mainecampaignfinance.com") {
+    throw new Error(`Invalid ${fieldName} host: ${parsed.hostname}`);
   }
   return parsed.toString();
 }
@@ -238,6 +242,7 @@ export async function downloadMaineCfisArtifact(input: {
   fetchImpl?: typeof fetch;
   timeoutMs?: number;
 }): Promise<MaineCfisArtifactDownloadResult> {
+  const startedAt = Date.now();
   const artifact = normalizeMaineCfisArtifactIdentity(input);
   const normalizedUrl = parseMaineCfisHttpsUrl(input.url ?? MAINE_CFIS_CSV_DOWNLOAD_API_URL, "--url");
   const requestBody = buildMaineCfisCsvDownloadRequestBody(artifact);
@@ -258,13 +263,14 @@ export async function downloadMaineCfisArtifact(input: {
   }
 
   const timeoutMs = input.timeoutMs ?? MAINE_CFIS_FETCH_TIMEOUT_MS;
+  const remainingTimeoutMs = Math.max(1, timeoutMs - (Date.now() - startedAt));
   let timeout: NodeJS.Timeout | undefined;
   let outputStat;
   try {
     const source = Readable.fromWeb(response.body as NodeReadableStream<Uint8Array>);
     timeout = setTimeout(() => {
       source.destroy(new Error(`Maine CFIS artifact download timed out after ${timeoutMs}ms for ${normalizedUrl}`));
-    }, timeoutMs);
+    }, remainingTimeoutMs);
     await pipeline(source, createWriteStream(outputPath));
     outputStat = await stat(outputPath);
   } catch (error) {

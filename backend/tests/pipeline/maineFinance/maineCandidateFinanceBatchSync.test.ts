@@ -1,4 +1,7 @@
-import { describe, expect, it, vi } from "vitest";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   listDueMaineCandidateFinanceSyncRows,
@@ -6,6 +9,7 @@ import {
   type MaineContributionDataForYear,
   type MaineExpenditureDataForYear,
 } from "../../../src/pipeline/maineFinance/maineCandidateFinanceBatchSync.js";
+import { getMaineCfisArtifactCachePaths } from "../../../src/pipeline/maineFinance/maineCfisArtifactCache.js";
 import type {
   MaineCfisContributionRow,
   MaineCfisExpenditureRow,
@@ -13,6 +17,18 @@ import type {
 
 const CANDIDATE_ID = "11111111-1111-1111-1111-111111111111";
 const ELECTION_ID = "22222222-2222-2222-2222-222222222222";
+const tempDirs: string[] = [];
+
+async function makeTempDir(): Promise<string> {
+  const dir = await mkdtemp(join(tmpdir(), "voteapp-me-batch-sync-"));
+  tempDirs.push(dir);
+  return dir;
+}
+
+afterEach(async () => {
+  vi.restoreAllMocks();
+  await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
+});
 
 function contribution(overrides: Partial<MaineCfisContributionRow> = {}): MaineCfisContributionRow {
   return {
@@ -263,6 +279,45 @@ describe("maineCandidateFinanceBatchSync", () => {
           sourceUrl: "https://mainecampaignfinance.com/",
         },
       })
+    );
+  });
+
+  it("does not ingest cached raw artifacts without matching metadata", async () => {
+    const rawDataCacheDir = await makeTempDir();
+    const paths = getMaineCfisArtifactCachePaths({
+      cacheDir: rawDataCacheDir,
+      filingYear: 2024,
+      artifactKind: "contributions",
+    });
+    await writeFile(paths.filePath, "OrgID,Committee Name\n1001,Paul for Maine\n", "utf8");
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const db = {
+      query: vi.fn().mockResolvedValue({ rows: [dueDbRow()] }),
+      connect: vi.fn(),
+    };
+    const syncFn = vi.fn();
+
+    const result = await syncDueMaineCandidateFinance({
+      db,
+      now: new Date("2026-06-25T12:00:00.000Z"),
+      maxCandidates: 10,
+      staleAfterDays: 7,
+      autoLinkMissingLinks: false,
+      rawDataCacheDir,
+      syncMaineCandidateFinanceFn: syncFn,
+    });
+
+    expect(result.failedCandidateCount).toBe(1);
+    expect(result.results[0]).toMatchObject({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      ok: false,
+      error: expect.stringContaining("artifact metadata missing or invalid"),
+    });
+    expect(syncFn).not.toHaveBeenCalled();
+    expect(warn).toHaveBeenCalledWith(
+      "Maine CFIS expenditure artifact unavailable; syncing direct finance without outside spending:",
+      expect.stringContaining("Maine CFIS expenditure artifact not found")
     );
   });
 });

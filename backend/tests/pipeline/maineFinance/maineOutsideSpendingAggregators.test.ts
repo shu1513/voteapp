@@ -129,6 +129,7 @@ describe("maineOutsideSpendingAggregator", () => {
         expenditure({
           "Expenditure ID": "E-2",
           "Expenditure Amount": "17.5000",
+          "Support/Oppose Candidate": "For",
           Candidate: "Reagan LeeAnn Paul",
         }),
         expenditure({

@@ -617,6 +617,13 @@ describe("featureFlags", () => {
     expect(isMaineCfisRawDataRefreshEnabled(true)).toBe(true);
   });
 
+  it("enables Maine CFIS raw data refresh when both flags are enabled", () => {
+    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MAINE_CFIS_RAW_DATA_REFRESH_ENABLED = "true";
+
+    expect(isMaineCfisRawDataRefreshEnabled()).toBe(true);
+  });
+
   it("disables Oklahoma campaign finance by default", () => {
     delete process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED;
     delete process.env.OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED;

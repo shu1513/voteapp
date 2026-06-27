@@ -188,6 +188,16 @@ export async function upsertRecurringMaineCfisRawDataRefreshJobs(
           },
         ];
 
+    const configuredIds = new Set(entries.map((entry) => entry.schedulerId));
+    for (const schedulerId of [
+      MAINE_CFIS_RAW_DATA_REFRESH_CONTRIBUTIONS_SCHEDULER_ID,
+      MAINE_CFIS_RAW_DATA_REFRESH_EXPENDITURES_SCHEDULER_ID,
+    ]) {
+      if (!configuredIds.has(schedulerId)) {
+        await queue.removeJobScheduler(schedulerId);
+      }
+    }
+
     for (const entry of entries) {
       await queue.upsertJobScheduler(
         entry.schedulerId,

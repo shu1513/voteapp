@@ -26,6 +26,21 @@ export type RefreshMaineCampaignFinanceRawDataScriptOptions = {
   timeoutMs: number;
 };
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--filing-year", "--year", "--artifact-kind", "--url", "--cache-dir", "--timeout-ms"]);
+
+function validateKnownFlags(args: readonly string[]): void {
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+    const name = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
+    if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
+      throw new Error(`Unknown Maine CFIS raw data refresh flag: ${name}`);
+    }
+  }
+}
+
 function readValueFlags(args: readonly string[], name: string): string[] {
   const values: string[] = [];
   const inlinePrefix = `${name}=`;
@@ -98,6 +113,7 @@ function parseArtifactKind(value: string | undefined): MaineCfisArtifactKind {
 export function parseRefreshMaineCampaignFinanceRawDataScriptArgs(
   args: readonly string[]
 ): RefreshMaineCampaignFinanceRawDataScriptOptions {
+  validateKnownFlags(args);
   const filingYear = parseFilingYear(readFilingYearFlag(args));
   return {
     filingYear,

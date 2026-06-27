@@ -46,6 +46,10 @@ CREATE INDEX IF NOT EXISTS me_candidate_finance_links_election_candidate_idx
 CREATE INDEX IF NOT EXISTS me_candidate_finance_links_committee_year_idx
   ON public.me_candidate_finance_links (committee_id, election_year);
 
+CREATE INDEX IF NOT EXISTS me_candidate_finance_links_active_due_idx
+  ON public.me_candidate_finance_links (election_id, candidate_id, election_year, id)
+  WHERE link_status = 'active';
+
 DROP TRIGGER IF EXISTS me_candidate_finance_links_set_updated_at
   ON public.me_candidate_finance_links;
 CREATE TRIGGER me_candidate_finance_links_set_updated_at

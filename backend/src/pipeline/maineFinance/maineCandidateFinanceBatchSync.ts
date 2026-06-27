@@ -253,6 +253,31 @@ function sourceUrlFromMetadata(input: { metadataUrl?: string | null }): string {
   return input.metadataUrl ?? MAINE_CFIS_CSV_DOWNLOAD_API_URL;
 }
 
+async function readValidCacheMetadata(input: {
+  year: number;
+  artifactKind: "contributions" | "expenditures";
+  filePath: string;
+  metadataPath: string;
+}) {
+  const metadata = await readMaineCfisArtifactCacheMetadata(input.metadataPath);
+  if (
+    !metadata ||
+    metadata.artifact.filingYear !== input.year ||
+    metadata.artifact.artifactKind !== input.artifactKind ||
+    metadata.filePath !== input.filePath ||
+    metadata.metadataPath !== input.metadataPath
+  ) {
+    throw new Error(
+      `Maine CFIS ${input.artifactKind} artifact metadata missing or invalid for ${input.year}: ${input.metadataPath}`
+    );
+  }
+  const fileStat = await stat(input.filePath);
+  if (!fileStat.isFile() || fileStat.size !== metadata.bytesWritten) {
+    throw new Error(`Maine CFIS ${input.artifactKind} artifact does not match metadata for ${input.year}: ${input.filePath}`);
+  }
+  return metadata;
+}
+
 async function loadContributionDataForYear(input: {
   year: number;
   committeeIds: readonly string[];
@@ -268,7 +293,7 @@ async function loadContributionDataForYear(input: {
     throw new Error(`Maine CFIS contribution artifact not found for ${input.year}: ${paths.filePath}`);
   }
 
-  const metadata = await readMaineCfisArtifactCacheMetadata(paths.metadataPath);
+  const metadata = await readValidCacheMetadata({ year: input.year, artifactKind: "contributions", ...paths });
   const rows = await readMaineCfisContributionRows({
     filePath: paths.filePath,
     predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row.OrgID)),
@@ -305,7 +330,7 @@ async function loadAutoLinkContributionRowsForYear(input: {
     throw new Error(`Maine CFIS contribution artifact not found for ${input.year}: ${paths.filePath}`);
   }
 
-  const metadata = await readMaineCfisArtifactCacheMetadata(paths.metadataPath);
+  const metadata = await readValidCacheMetadata({ year: input.year, artifactKind: "contributions", ...paths });
   return {
     rows: await readMaineCfisContributionRows({
       filePath: paths.filePath,
@@ -329,7 +354,7 @@ async function loadExpenditureDataForYear(input: {
     throw new Error(`Maine CFIS expenditure artifact not found for ${input.year}: ${paths.filePath}`);
   }
 
-  const metadata = await readMaineCfisArtifactCacheMetadata(paths.metadataPath);
+  const metadata = await readValidCacheMetadata({ year: input.year, artifactKind: "expenditures", ...paths });
   return {
     year: input.year,
     filePath: paths.filePath,

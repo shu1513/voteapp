@@ -57,6 +57,14 @@ describe("maineFinanceWriter", () => {
     ]);
   });
 
+  it("normalizes committee ids at the writer boundary", async () => {
+    const db = createMockDb();
+
+    await upsertMaineFinanceLink({ db, link: { ...baseLink(), committeeId: " org abc 123 " } });
+
+    expect(db.query.mock.calls[0]?.[1]?.[6]).toBe("ORG ABC 123");
+  });
+
   it("replaces a full Maine finance snapshot inside a transaction", async () => {
     const client = {
       query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),

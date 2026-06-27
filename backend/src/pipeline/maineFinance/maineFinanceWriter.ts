@@ -111,7 +111,7 @@ function normalizeOptionalText(value: string | null | undefined): string | null 
 }
 
 function normalizeCommitteeId(value: string): string {
-  return requireNonEmpty(value, "Maine committee id").replace(/\s+/g, " ");
+  return requireNonEmpty(value, "Maine committee id").replace(/\s+/g, " ").toUpperCase();
 }
 
 function normalizeNullableDate(value: Date | null | undefined): string | null {

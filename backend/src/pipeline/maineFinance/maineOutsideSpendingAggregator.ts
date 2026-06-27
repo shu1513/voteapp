@@ -80,6 +80,16 @@ function normalizeTextKey(value: string | null | undefined): string {
     .trim();
 }
 
+function normalizeSupportOpposeKey(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function parseAmountCents(raw: string): number | null {
   const amount = parseMaineCfisMoney(raw);
   if (amount === null || !Number.isFinite(amount)) {
@@ -128,7 +138,7 @@ function candidateNameMatches(input: { candidateName: string; candidateNameKeys:
 }
 
 function supportOpposeFromValue(value: string): MaineSupportOppose | null {
-  const normalized = normalizeTextKey(value);
+  const normalized = normalizeSupportOpposeKey(value);
   if (normalized === "SUPPORT" || normalized === "SUPPORTED" || normalized === "FOR" || normalized === "IN SUPPORT") {
     return "support";
   }

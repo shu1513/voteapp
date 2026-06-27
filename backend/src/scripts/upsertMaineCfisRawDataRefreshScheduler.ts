@@ -8,27 +8,49 @@ import {
   type MaineCfisRawDataRefreshJobData,
 } from "../scheduler/maineCfisRawDataRefreshScheduler.js";
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--filing-year", "--year", "--artifact-kind", "--url", "--cache-dir", "--timeout-ms"]);
+
+function validateKnownFlags(args: readonly string[]): void {
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+    const name = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
+    if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
+      throw new Error(`Unknown Maine CFIS raw data refresh scheduler upsert flag: ${name}`);
+    }
+  }
+}
+
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
-  const inline = args.find((arg) => arg.startsWith(inlinePrefix));
-  if (inline) {
-    const value = inline.slice(inlinePrefix.length).trim();
-    if (value.length === 0) {
-      throw new Error(`Missing ${name} value`);
+  const values: string[] = [];
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (arg.startsWith(inlinePrefix)) {
+      const value = arg.slice(inlinePrefix.length).trim();
+      if (value.length === 0) {
+        throw new Error(`Missing ${name} value`);
+      }
+      values.push(value);
+      continue;
     }
-    return value;
+    if (arg === name) {
+      const next = args[index + 1];
+      if (!next || next.startsWith("--") || next.trim().length === 0) {
+        throw new Error(`Missing ${name} value`);
+      }
+      values.push(next.trim());
+      index += 1;
+    }
   }
 
-  const index = args.indexOf(name);
-  if (index >= 0) {
-    const next = args[index + 1];
-    if (!next || next.startsWith("--") || next.trim().length === 0) {
-      throw new Error(`Missing ${name} value`);
-    }
-    return next.trim();
+  if (values.length > 1) {
+    throw new Error(`Provide ${name} at most once`);
   }
-
-  return null;
+  return values[0] ?? null;
 }
 
 function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
@@ -65,6 +87,7 @@ function parseArtifactKindFlag(args: readonly string[]): MaineCfisArtifactKind |
 export function parseUpsertMaineCfisRawDataRefreshSchedulerArgs(
   args: readonly string[]
 ): MaineCfisRawDataRefreshJobData {
+  validateKnownFlags(args);
   return {
     force: args.includes("--force"),
     filingYear: parseFilingYearFlag(args),

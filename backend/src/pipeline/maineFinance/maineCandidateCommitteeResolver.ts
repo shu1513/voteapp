@@ -90,23 +90,25 @@ export function normalizeMaineCandidateNameKeys(value: string): Set<string> {
     const flipped = normalizePersonName(`${firstNames} ${lastName}`);
     if (flipped) {
       keys.add(flipped);
-      const flippedParts = flipped.split(" ").filter(Boolean);
-      if (flippedParts.length >= 2) {
-        keys.add(`${flippedParts[0]} ${flippedParts[flippedParts.length - 1]}`);
-      }
     }
     return keys;
   }
 
-  const parts = normalized.split(" ").filter(Boolean);
-  if (parts.length >= 2) {
-    keys.add(`${parts[0]} ${parts[parts.length - 1]}`);
-  }
   return keys;
 }
 
 export function normalizeMaineCandidateNameForStorage(value: string): string {
-  return [...normalizeMaineCandidateNameKeys(value)][0] ?? normalizePersonName(value);
+  const trimmed = value.trim();
+  const commaParts = trimmed
+    .split(",")
+    .map((part) => normalizePersonName(part))
+    .filter(Boolean);
+  if (commaParts.length >= 2) {
+    const lastName = commaParts[0] ?? "";
+    const firstNames = commaParts.slice(1).join(" ").trim();
+    return normalizePersonName(`${firstNames} ${lastName}`);
+  }
+  return normalizePersonName(trimmed);
 }
 
 function normalizeOfficeScope(value: string): "statewide" | "state_upper" | "state_lower" | null {
@@ -249,7 +251,7 @@ export function resolveMaineCandidateCommittee(
   const officeCanonicalName = canonicalOfficeNameForInput(input.officeName);
   const officeNameNormalized = officeCanonicalName ?? normalizeTextKey(input.officeName);
   const candidateNameKeys = normalizeMaineCandidateNameKeys(input.candidateName);
-  const candidateNameNormalized = [...candidateNameKeys][0] ?? normalizePersonName(input.candidateName);
+  const candidateNameNormalized = normalizeMaineCandidateNameForStorage(input.candidateName);
   const expectedDistrict = normalizeDistrict(input.district);
 
   if (candidateNameKeys.size === 0) {

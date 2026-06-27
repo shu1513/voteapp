@@ -203,6 +203,7 @@ export async function enqueueManualMaineCandidateFinanceSyncJob(
     return "disabled";
   }
 
+  const opts = jobOptionsWithId(options.jobId);
   const queue = createMaineCandidateFinanceSyncSchedulerQueue();
 
   try {
@@ -221,7 +222,7 @@ export async function enqueueManualMaineCandidateFinanceSyncJob(
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
-      jobOptionsWithId(options.jobId)
+      opts
     );
     return job.id ?? "unknown";
   } finally {

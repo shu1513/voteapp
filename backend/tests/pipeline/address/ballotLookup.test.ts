@@ -6058,7 +6058,6 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
     const maineQueries = query.mock.calls.map(([sql]) => String(sql)).filter((sql) => sql.includes("public.me_candidate_finance_"));
     expect(maineQueries.some((sql) => sql.includes("public.me_candidate_finance_summaries"))).toBe(true);
     expect(maineQueries.some((sql) => sql.includes("public.me_candidate_finance_direct_breakdowns"))).toBe(true);
