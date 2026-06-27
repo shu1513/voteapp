@@ -551,6 +551,11 @@ type MichiganFinanceSummaryRequest = {
   election_id: string;
 };
 
+type MinnesotaFinanceSummaryRequest = {
+  candidate_id: string;
+  election_id: string;
+};
+
 type OregonFinanceSummaryRequest = {
   candidate_id: string;
   election_id: string;
@@ -3491,8 +3496,8 @@ async function loadNewMexicoCandidateFinanceSummariesByCandidateElection(
           ELSE sum(summary.direct_contribution_total)
         END AS direct_contribution_total,
         CASE WHEN count(summary.total_disbursements) = 0 THEN NULL ELSE sum(summary.total_disbursements) END AS total_disbursements,
-        max(summary.outside_support_total) AS outside_support_total,
-        max(summary.outside_oppose_total) AS outside_oppose_total,
+        CASE WHEN count(summary.outside_support_total) = 0 THEN NULL ELSE sum(summary.outside_support_total) END AS outside_support_total,
+        CASE WHEN count(summary.outside_oppose_total) = 0 THEN NULL ELSE sum(summary.outside_oppose_total) END AS outside_oppose_total,
         min(summary.source_url) FILTER (WHERE summary.source_url IS NOT NULL) AS source_url,
         max(summary.last_synced_at)::text AS last_synced_at
       FROM requested
@@ -10290,6 +10295,10 @@ async function loadCandidateFinanceSummariesByCandidateElection(
   const alaskaSummaries = await loadOptionalAlaskaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const michiganSummaries = await loadMichiganCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const minnesotaSummaries = await loadMinnesotaCandidateFinanceSummariesByCandidateElection(
+    db,
+    candidateRows,
+    electionRows
+  );
   const oregonSummaries = await loadOregonCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const pennsylvaniaSummaries = await loadOptionalPennsylvaniaCandidateFinanceSummariesByCandidateElection(
     db,
@@ -10335,6 +10344,8 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     merged.set(key, summary);
   }
   for (const [key, summary] of minnesotaSummaries) {
+    merged.set(key, summary);
+  }
   for (const [key, summary] of oregonSummaries) {
     merged.set(key, summary);
   }

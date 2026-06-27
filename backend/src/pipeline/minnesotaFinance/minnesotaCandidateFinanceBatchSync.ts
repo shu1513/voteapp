@@ -215,7 +215,8 @@ async function loadMinnesotaContributionRowsForCandidates(input: {
   rawDataCacheDir?: string;
 }): Promise<{ rows: readonly MinnesotaCampaignFinanceCsvRow[]; sourceUrl: string }> {
   const paths = getMinnesotaCampaignFinanceArtifactCachePaths(
-    input.rawDataCacheDir ?? process.env.MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() ?? DEFAULT_MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR
+    input.rawDataCacheDir ??
+      (process.env.MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() || DEFAULT_MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR)
   );
   if (!(await fileExists(paths.downloads.contributions_received))) {
     throw new Error(`Minnesota campaign finance contribution artifact not found: ${paths.downloads.contributions_received}`);
@@ -236,7 +237,8 @@ async function loadMinnesotaExpenditureRowsForCommittees(input: {
 }): Promise<{ rows: readonly MinnesotaCampaignFinanceCsvRow[]; sourceUrl: string }> {
   const normalizedCommitteeIds = new Set(input.committeeIds.map(normalizeCommitteeId).filter(Boolean));
   const paths = getMinnesotaCampaignFinanceArtifactCachePaths(
-    input.rawDataCacheDir ?? process.env.MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() ?? DEFAULT_MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR
+    input.rawDataCacheDir ??
+      (process.env.MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() || DEFAULT_MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR)
   );
   if (!(await fileExists(paths.downloads.independent_expenditures))) {
     throw new Error(`Minnesota campaign finance independent expenditure artifact not found: ${paths.downloads.independent_expenditures}`);
@@ -262,7 +264,8 @@ async function loadMinnesotaOutsideContributionRowsForCommittees(input: {
 }): Promise<{ rows: readonly MinnesotaCampaignFinanceCsvRow[]; sourceUrl: string }> {
   const normalizedCommitteeIds = new Set(input.committeeIds.map(normalizeCommitteeId).filter(Boolean));
   const paths = getMinnesotaCampaignFinanceArtifactCachePaths(
-    input.rawDataCacheDir ?? process.env.MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() ?? DEFAULT_MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR
+    input.rawDataCacheDir ??
+      (process.env.MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() || DEFAULT_MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR)
   );
   if (!(await fileExists(paths.downloads.independent_expenditure_contributions))) {
     throw new Error(
@@ -519,6 +522,7 @@ export async function syncDueMinnesotaCandidateFinance(
         contributionRows: contributionRowsForAutoLink ?? [],
         contributionSourceUrl,
         expenditureRows: expenditureRowsForBatch,
+        expenditureSourceUrl,
         outsideContributionRows: outsideContributionRowsForBatch,
         outsideSourceUrl: outsideContributionSourceUrl,
         trustedCommittee: {

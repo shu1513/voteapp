@@ -212,7 +212,7 @@ export function resolveMinnesotaCandidateCommittee(
   const candidateNameKey = candidateNameNormalized(input.candidateName);
   const officeMatch = mapMinnesotaFinanceOffice({
     officeScope: input.officeScope,
-    officeName: input.officeName,
+    officeCanonicalName: input.officeName,
     district: input.district,
   });
   const officeNameNormalized = officeMatch?.officeName ?? normalizeTextKey(input.officeName);

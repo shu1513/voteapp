@@ -25,8 +25,8 @@ export const MINNESOTA_FINANCE_ELIGIBLE_OFFICE_KEYS = [
 ] as const;
 
 export type MinnesotaFinanceOfficeInput = {
-  officeScope: string;
-  officeName: string;
+  officeScope: string | null;
+  officeCanonicalName: string | null;
   district?: string | null;
 };
 
@@ -34,8 +34,8 @@ export type MinnesotaFinanceOfficeMatch = MinnesotaFinanceEligibleOffice & {
   district: string | null;
 };
 
-function normalizeTextKey(value: string): string {
-  return value
+function normalizeTextKey(value: string | null | undefined): string {
+  return (value ?? "")
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
     .toUpperCase()
@@ -63,14 +63,14 @@ export function normalizeMinnesotaFinanceDistrict(value: string | null | undefin
   return normalizeTextKey(trimmed);
 }
 
-function normalizeOfficeScope(value: string): MinnesotaFinanceEligibleOfficeScope | null {
-  const trimmed = value.trim();
+function normalizeOfficeScope(value: string | null | undefined): MinnesotaFinanceEligibleOfficeScope | null {
+  const trimmed = value?.trim() ?? "";
   return trimmed === "statewide" || trimmed === "state_upper" || trimmed === "state_lower"
     ? trimmed
     : null;
 }
 
-export function normalizeMinnesotaFinanceOfficeName(value: string): MinnesotaFinanceEligibleOfficeName | null {
+export function normalizeMinnesotaFinanceOfficeName(value: string | null | undefined): MinnesotaFinanceEligibleOfficeName | null {
   switch (normalizeTextKey(value)) {
     case "GOVERNOR":
       return "Governor";
@@ -96,7 +96,7 @@ export function isMinnesotaFinanceEligibleOffice(input: MinnesotaFinanceOfficeIn
 
 export function mapMinnesotaFinanceOffice(input: MinnesotaFinanceOfficeInput): MinnesotaFinanceOfficeMatch | null {
   const officeScope = normalizeOfficeScope(input.officeScope);
-  const officeName = normalizeMinnesotaFinanceOfficeName(input.officeName);
+  const officeName = normalizeMinnesotaFinanceOfficeName(input.officeCanonicalName);
   if (!officeScope || !officeName) {
     return null;
   }

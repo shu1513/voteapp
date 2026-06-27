@@ -28,6 +28,7 @@ export type MinnesotaCandidateFinanceSyncInput = {
   outsideContributionRows?: readonly MinnesotaCampaignFinanceCsvRow[];
   sourceUrl?: string | null;
   contributionSourceUrl?: string | null;
+  expenditureSourceUrl?: string | null;
   outsideSourceUrl?: string | null;
   now?: Date;
   dryRun?: boolean;
@@ -356,7 +357,7 @@ export async function syncMinnesotaCandidateFinance(
           expenditureRows: input.expenditureRows,
           committeeId: resolution.committeeId,
           electionYear,
-          sourceUrl: input.outsideSourceUrl ?? input.sourceUrl ?? resolution.sourceUrl ?? null,
+          sourceUrl: input.expenditureSourceUrl ?? input.sourceUrl ?? resolution.sourceUrl ?? null,
         })
       : {
           outsideGroups: [] as MinnesotaFinanceOutsideGroupInput[],
@@ -408,7 +409,7 @@ export async function syncMinnesotaCandidateFinance(
     directContributionTotal: null,
     outsideSupportTotal,
     outsideOpposeTotal,
-    sourceUrl: input.outsideSourceUrl ?? input.sourceUrl ?? resolution.sourceUrl ?? null,
+    sourceUrl: input.expenditureSourceUrl ?? input.sourceUrl ?? resolution.sourceUrl ?? null,
   };
 
   if (!input.dryRun) {

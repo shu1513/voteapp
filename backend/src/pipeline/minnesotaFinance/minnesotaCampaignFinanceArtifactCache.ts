@@ -500,9 +500,24 @@ export async function refreshMinnesotaCampaignFinanceArtifactCache(input: {
     downloadedAt: downloadedAt.toISOString(),
     sourcePageUrl: discovered.pageUrl,
     downloads: {
-      contributions_received: downloaded.contributions_received!,
-      independent_expenditures: downloaded.independent_expenditures!,
-      independent_expenditure_contributions: downloaded.independent_expenditure_contributions!,
+      contributions_received: (({ outputPath, bytesWritten, sha256, ...remote }) => ({
+        outputPath,
+        bytesWritten,
+        sha256,
+        remote,
+      }))(downloaded.contributions_received!),
+      independent_expenditures: (({ outputPath, bytesWritten, sha256, ...remote }) => ({
+        outputPath,
+        bytesWritten,
+        sha256,
+        remote,
+      }))(downloaded.independent_expenditures!),
+      independent_expenditure_contributions: (({ outputPath, bytesWritten, sha256, ...remote }) => ({
+        outputPath,
+        bytesWritten,
+        sha256,
+        remote,
+      }))(downloaded.independent_expenditure_contributions!),
     },
   };
 

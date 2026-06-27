@@ -61,6 +61,10 @@ import {
   buildMichiganCandidateFinanceLinkedElectionSyncJobId,
   enqueueManualMichiganCandidateFinanceSyncJob,
 } from "../../scheduler/michiganCandidateFinanceSyncScheduler.js";
+import type {
+  MinnesotaCandidateFinanceSyncEnqueueOptions,
+  MinnesotaCandidateFinanceSyncJobData,
+} from "../../scheduler/minnesotaCandidateFinanceSyncScheduler.js";
 import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
   STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
@@ -842,13 +846,13 @@ async function enqueueMichiganFinanceSyncForLinkedElection(input: {
 
 type MinnesotaFinanceEnqueueModule = {
   isMinnesotaFinanceEligibleOffice: (input: {
-    officeScope: string;
+    officeScope: string | null;
     officeCanonicalName: string | null;
   }) => boolean;
   buildMinnesotaCandidateFinanceLinkedElectionSyncJobId: () => string;
   enqueueManualMinnesotaCandidateFinanceSyncJob: (
-    jobData?: { aiClassifyIndustries?: boolean; triggeredBy?: string },
-    options?: { jobId?: string }
+    jobData?: MinnesotaCandidateFinanceSyncJobData,
+    options?: MinnesotaCandidateFinanceSyncEnqueueOptions
   ) => Promise<string>;
 };
 
@@ -894,7 +898,6 @@ async function enqueueMinnesotaFinanceSyncForLinkedElection(input: {
   try {
     await minnesotaFinance.enqueueManualMinnesotaCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
