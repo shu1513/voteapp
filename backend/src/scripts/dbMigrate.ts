@@ -128,8 +128,8 @@ function isLegacyDuplicateMigrationSet(prefix: string, filenames: string[]): boo
     return false;
   }
 
-  const sortedLegacyFilenames = [...legacyFilenames].sort((a, b) => a.localeCompare(b));
-  return filenames.every((filename, index) => filename === sortedLegacyFilenames[index]);
+  const legacyFilenameSet = new Set(legacyFilenames);
+  return filenames.every((filename) => legacyFilenameSet.has(filename));
 }
 
 function findMigrationPrefixDuplicates(filenames: string[]): MigrationPrefixDuplicate[] {
