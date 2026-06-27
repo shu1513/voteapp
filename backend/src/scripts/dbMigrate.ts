@@ -21,9 +21,35 @@ type MigrationPrefixDuplicate = {
 
 const MIGRATION_FILE_RE = /^\d+_.+\.sql$/;
 const LOCK_KEY = 780_001_001;
-// These prefixes were already merged before duplicate-prefix enforcement existed.
+// These exact duplicate sets were merged before duplicate-prefix enforcement existed.
 // Keep the filenames stable so applied databases do not replay renamed migrations.
-const LEGACY_DUPLICATE_MIGRATION_PREFIXES = new Set(["075", "125", "127", "128"]);
+const LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX = new Map<string, string[]>([
+  [
+    "075",
+    ["075_add_judge_mapping_research_areas.sql", "075_consolidate_judicial_offices_by_scope.sql"],
+  ],
+  [
+    "125",
+    ["125_add_tennessee_campaign_finance_tables.sql", "125_add_user_research_area_preferences.sql"],
+  ],
+  [
+    "127",
+    [
+      "127_add_florida_campaign_finance_tables.sql",
+      "127_add_maryland_campaign_finance_tables.sql",
+      "127_add_pennsylvania_campaign_finance_tables.sql",
+      "127_add_utah_campaign_finance_tables.sql",
+    ],
+  ],
+  [
+    "128",
+    [
+      "128_add_florida_outside_group_support_links.sql",
+      "128_add_oregon_campaign_finance_tables.sql",
+      "128_add_utah_supporting_committee_finance_tables.sql",
+    ],
+  ],
+]);
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
@@ -96,6 +122,16 @@ function getMigrationPrefix(filename: string): string {
   return filename.split("_", 1)[0] ?? "";
 }
 
+function isLegacyDuplicateMigrationSet(prefix: string, filenames: string[]): boolean {
+  const legacyFilenames = LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX.get(prefix);
+  if (!legacyFilenames || legacyFilenames.length !== filenames.length) {
+    return false;
+  }
+
+  const legacyFilenameSet = new Set(legacyFilenames);
+  return filenames.every((filename) => legacyFilenameSet.has(filename));
+}
+
 function findMigrationPrefixDuplicates(filenames: string[]): MigrationPrefixDuplicate[] {
   const filesByPrefix = new Map<string, string[]>();
 
@@ -108,11 +144,14 @@ function findMigrationPrefixDuplicates(filenames: string[]): MigrationPrefixDupl
 
   return [...filesByPrefix.entries()]
     .filter(([, files]) => files.length > 1)
-    .map(([prefix, files]) => ({
-      prefix,
-      filenames: files.sort((a, b) => a.localeCompare(b)),
-      legacy_allowed: LEGACY_DUPLICATE_MIGRATION_PREFIXES.has(prefix),
-    }))
+    .map(([prefix, files]) => {
+      const sortedFiles = files.sort((a, b) => a.localeCompare(b));
+      return {
+        prefix,
+        filenames: sortedFiles,
+        legacy_allowed: isLegacyDuplicateMigrationSet(prefix, sortedFiles),
+      };
+    })
     .sort((a, b) => Number.parseInt(a.prefix, 10) - Number.parseInt(b.prefix, 10) || a.prefix.localeCompare(b.prefix));
 }
 
