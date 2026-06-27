@@ -4081,7 +4081,6 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[10]?.[0]).toContain("classification.normalized_label");
   });
 
-  it("includes locally synced Hawaii finance summaries for Hawaii candidate detail", async () => {
   it("includes locally synced Massachusetts finance summaries for Massachusetts candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED", "true");
