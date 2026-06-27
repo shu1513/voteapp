@@ -35,6 +35,7 @@ import {
   isWisconsinCampaignFinanceEnabled,
   isMassachusettsCampaignFinanceEnabled,
   isMichiganCampaignFinanceEnabled,
+  isVermontCampaignFinanceEnabled,
 } from "../../config/featureFlags.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -160,6 +161,7 @@ export type BallotLookupFinanceSummary = {
     | "WASHINGTON_PDC"
     | "WISCONSIN_SUNSHINE"
     | "MASSACHUSETTS_OCPF"
+    | "VERMONT_CFD"
     | "MICHIGAN_MITN"
     | "DISTRICT_OF_COLUMBIA_OCF";
   cycle: number;
@@ -1426,18 +1428,19 @@ function financeIndustryDisplayName(industryName: string): string {
 
 function buildOutsideIndustrySupportExplanation(
   industryName: string,
-  evidence: readonly BallotLookupFinanceOutsideIndustrySupportEvidence[]
+  evidence: readonly BallotLookupFinanceOutsideIndustrySupportEvidence[],
+  supportAction = "independent spending supporting this candidate"
 ): string {
   const displayName = financeIndustryDisplayName(industryName);
   if (evidence.length === 0) {
-    return `The ${displayName} category is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported independent spending supporting this candidate.`;
+    return `The ${displayName} category is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported ${supportAction}.`;
   }
 
   return `The ${displayName} category is a top outside-spending support industry because ${formatShortList(
     evidence.map((item) => item.organization_name)
   )} contributed to ${formatShortList(
     evidence.map((item) => item.committee_name)
-  )}, which reported independent spending supporting this candidate.`;
+  )}, which reported ${supportAction}.`;
 }
 
 function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): BallotLookupDistrict {
@@ -6968,6 +6971,45 @@ async function loadVirginiaCandidateFinanceSummariesByCandidateElection(
   );
 }
 
+const VERMONT_BALLOT_LOOKUP_FINANCE_LOADER_PATH = "../vermontFinance/vermontBallotLookupFinanceLoader.js";
+
+type VermontBallotLookupFinanceLoaderModule = {
+  loadVermontCandidateFinanceSummariesByCandidateElection: (
+    db: Queryable,
+    candidateRows: readonly CandidateRow[],
+    electionRows: readonly ElectionRow[]
+  ) => Promise<Map<string, BallotLookupFinanceSummary>>;
+};
+
+function isOptionalModuleMissing(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+  const code = "code" in error ? String(error.code) : "";
+  return code === "ERR_MODULE_NOT_FOUND" || code === "MODULE_NOT_FOUND";
+}
+
+async function loadVermontCandidateFinanceSummariesByCandidateElection(
+  db: Queryable,
+  candidateRows: readonly CandidateRow[],
+  electionRows: readonly ElectionRow[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
+  if (!isVermontCampaignFinanceEnabled()) {
+    return new Map();
+  }
+
+  try {
+    const loader = (await import(VERMONT_BALLOT_LOOKUP_FINANCE_LOADER_PATH)) as VermontBallotLookupFinanceLoaderModule;
+    return await loader.loadVermontCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
+  } catch (error) {
+    if (isOptionalModuleMissing(error)) {
+      console.warn("Vermont campaign finance ballot lookup loader is unavailable; skipping Vermont finance summaries");
+      return new Map();
+    }
+    throw error;
+  }
+}
+
 async function loadCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly CandidateRow[],
@@ -6979,6 +7021,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     candidateRows,
     electionRows
   );
+  const vermontSummaries = await loadVermontCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const michiganSummaries = await loadMichiganCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const washingtonSummaries = await loadWashingtonCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const hawaiiSummaries = await loadHawaiiCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
@@ -6999,6 +7042,9 @@ async function loadCandidateFinanceSummariesByCandidateElection(
 
   const merged = new Map(wisconsinSummaries);
   for (const [key, summary] of massachusettsSummaries) {
+    merged.set(key, summary);
+  }
+  for (const [key, summary] of vermontSummaries) {
     merged.set(key, summary);
   }
   for (const [key, summary] of michiganSummaries) {

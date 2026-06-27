@@ -223,6 +223,17 @@ export function isMassachusettsCampaignFinanceSyncEnabled(force = false): boolea
   );
 }
 
+export function isVermontCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("VERMONT_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isVermontCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isVermontCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("VERMONT_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isMichiganCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("MICHIGAN_CAMPAIGN_FINANCE_ENABLED", false);
 }
