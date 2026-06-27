@@ -128,6 +128,15 @@ describe("illinoisFinanceWriter", () => {
     const sql = db.client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("INSERT INTO public.il_candidate_finance_summaries"))).toBe(true);
     expect(sql.some((statement) => statement.includes("total_receipts = EXCLUDED.total_receipts"))).toBe(true);
+    expect(
+      sql.some(
+        (statement) =>
+          statement.includes("outside_support_total = COALESCE(") &&
+          statement.includes("il_candidate_finance_summaries.outside_support_total") &&
+          statement.includes("outside_oppose_total = COALESCE(") &&
+          statement.includes("il_candidate_finance_summaries.outside_oppose_total")
+      )
+    ).toBe(true);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.il_candidate_finance_direct_breakdowns"))).toHaveLength(1);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.il_candidate_finance_outside_groups"))).toHaveLength(1);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.il_candidate_finance_outside_group_breakdowns"))).toHaveLength(1);
