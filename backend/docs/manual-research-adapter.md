@@ -318,5 +318,7 @@ Safety properties:
 - Election JSON may include optional top-level `family_source_urls`; the script stores it in `ai_raw_debug` so the existing
   election writer can populate `election_seed_urls`.
 - Election injection still requires the existing `elections:validate` and `elections:write` steps.
+- Candidate roster injection checks that the target `election_id` exists in `public.elections` and is an office race before
+  staging the roster.
 - Candidate roster injection only pre-seeds a validated roster row; the existing roster worker can then fan out profile drafts
   without making an AI roster call.

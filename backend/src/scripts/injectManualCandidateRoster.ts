@@ -9,6 +9,12 @@ import {
 } from "../config/electionsPipeline.js";
 import { parseCandidateRosterPayload } from "../contracts/candidateRosterPayloadContract.js";
 
+type ElectionPreflightRow = {
+  id: string;
+  official_ballot_title: string;
+  race_type: string;
+};
+
 function readFlag(name: string): string | null {
   const index = process.argv.indexOf(name);
   if (index >= 0) {
@@ -48,6 +54,21 @@ function payloadElectionId(payload: unknown): string | null {
   }
   const value = (payload as Record<string, unknown>).election_id;
   return typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
+}
+
+async function loadElectionPreflight(pool: Pool, electionId: string): Promise<ElectionPreflightRow | null> {
+  const result = await pool.query<ElectionPreflightRow>(
+    `
+      SELECT id::text AS id,
+             official_ballot_title,
+             race_type
+      FROM public.elections
+      WHERE id::text = $1
+      LIMIT 1
+    `,
+    [electionId]
+  );
+  return result.rows[0] ?? null;
 }
 
 async function main(): Promise<void> {
@@ -100,6 +121,16 @@ async function main(): Promise<void> {
   const redis = createClient({ url: process.env.REDIS_URL ?? "redis://localhost:6379" });
 
   try {
+    const election = await loadElectionPreflight(pool, electionId);
+    if (!election) {
+      throw new Error(`Election not found for election_id=${electionId}`);
+    }
+    if (election.race_type !== "office") {
+      throw new Error(
+        `Candidate roster injection requires an office election; election_id=${electionId} has race_type=${election.race_type}`
+      );
+    }
+
     await redis.connect();
 
     await pool.query(
@@ -178,6 +209,7 @@ async function main(): Promise<void> {
           runId,
           redisMessageId,
           electionId,
+          officialBallotTitle: election.official_ballot_title,
           candidateCount: parsed.payload.candidates.length,
           next: ["npm run candidates:roster:enrich -- --once"],
         },
