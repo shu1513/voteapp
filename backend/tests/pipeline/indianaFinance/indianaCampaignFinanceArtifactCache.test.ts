@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   buildIndianaCampaignFinanceArtifactUrl,
+  downloadIndianaCampaignFinanceArtifact,
   getIndianaCampaignFinanceArtifactCachePaths,
   readIndianaCampaignFinanceArtifactCacheMetadata,
   refreshIndianaCampaignFinanceArtifactCache,
@@ -94,6 +95,72 @@ describe("indianaCampaignFinanceArtifactCache", () => {
     const requestHeaders = fetchImpl.mock.calls[0]?.[1]?.headers as Headers;
     expect(requestHeaders.get("accept")).toContain("application/zip");
     expect(requestHeaders.get("user-agent")).toContain("Mozilla/5.0");
+  });
+
+  it("downloads instead of reusing cache metadata with no comparable remote validator", async () => {
+    const cacheDir = await tempDir();
+    const paths = getIndianaCampaignFinanceArtifactCachePaths({ cacheDir, year: 2026, artifactKind: "contribution" });
+    await writeFile(paths.zipPath, "old-bytes", "utf8");
+    await writeFile(
+      paths.metadataPath,
+      `${JSON.stringify({
+        version: 1,
+        artifact: { year: 2026, artifactKind: "contribution" },
+        zipPath: paths.zipPath,
+        metadataPath: paths.metadataPath,
+        downloadedAt: "2026-01-01T00:00:00.000Z",
+        remote: {
+          year: 2026,
+          artifactKind: "contribution",
+          url: "https://example.test/2026_ContributionData.csv.zip",
+          contentLength: null,
+          contentType: null,
+          etag: null,
+          lastModified: null,
+        },
+        bytesWritten: 9,
+      })}\n`,
+      "utf8"
+    );
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(new Response(null, { status: 200 }))
+      .mockResolvedValueOnce(new Response("new-zip", { status: 200 })) as unknown as typeof fetch;
+
+    await expect(
+      refreshIndianaCampaignFinanceArtifactCache({
+        cacheDir,
+        year: 2026,
+        artifactKind: "contribution",
+        url: "https://example.test/2026_ContributionData.csv.zip",
+        fetchImpl,
+      })
+    ).resolves.toMatchObject({ status: "downloaded", zipPath: paths.zipPath });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
+  it("times out stalled download bodies", async () => {
+    const cacheDir = await tempDir();
+    const paths = getIndianaCampaignFinanceArtifactCachePaths({ cacheDir, year: 2026, artifactKind: "contribution" });
+    const fetchImpl = vi.fn().mockResolvedValue(
+      new Response(
+        new ReadableStream<Uint8Array>({
+          start() {},
+        }),
+        { status: 200 }
+      )
+    ) as unknown as typeof fetch;
+
+    await expect(
+      downloadIndianaCampaignFinanceArtifact({
+        year: 2026,
+        artifactKind: "contribution",
+        outputPath: paths.zipPath,
+        url: "https://example.test/2026_ContributionData.csv.zip",
+        fetchImpl,
+        timeoutMs: 1,
+      })
+    ).rejects.toThrow("timed out after 1ms");
   });
 
   it("returns null for missing or invalid cache metadata", async () => {

@@ -42,6 +42,9 @@ describe("indianaFinanceWriter", () => {
     expect(db.query).toHaveBeenCalledTimes(1);
     expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.in_candidate_finance_links");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("ON CONFLICT (candidate_id, election_id, committee_id)");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain(
+      "WHEN in_candidate_finance_links.link_source = 'manual' THEN in_candidate_finance_links.link_source"
+    );
     expect(String(db.query.mock.calls[0]?.[0])).toContain("RETURNING id");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       CANDIDATE_ID,
@@ -113,7 +116,7 @@ describe("indianaFinanceWriter", () => {
     expect(sql.some((statement) => statement.includes("DELETE FROM public.in_candidate_finance_direct_breakdowns"))).toBe(true);
   });
 
-  it("does not delete omitted direct breakdowns", async () => {
+  it("replaces nullable summary values and does not delete omitted direct breakdowns", async () => {
     const db = createMockDb();
 
     const result = await replaceIndianaCandidateFinanceSnapshot({
@@ -130,12 +133,9 @@ describe("indianaFinanceWriter", () => {
     });
     const sql = db.query.mock.calls.map((call) => String(call[0]));
     const summarySql = sql.find((statement) => statement.includes("INSERT INTO public.in_candidate_finance_summaries"));
-    expect(summarySql).toContain(
-      "total_receipts = COALESCE(EXCLUDED.total_receipts, in_candidate_finance_summaries.total_receipts)"
-    );
-    expect(summarySql).toContain(
-      "direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, in_candidate_finance_summaries.direct_contribution_total)"
-    );
+    expect(summarySql).toContain("total_receipts = EXCLUDED.total_receipts");
+    expect(summarySql).toContain("direct_contribution_total = EXCLUDED.direct_contribution_total");
+    expect(summarySql).toContain("source_url = EXCLUDED.source_url");
     expect(sql.some((statement) => statement.includes("DELETE FROM public.in_candidate_finance_direct_breakdowns"))).toBe(false);
   });
 

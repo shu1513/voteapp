@@ -8,6 +8,7 @@ import {
   syncDueIndianaCandidateFinance,
   type IndianaCandidateFinanceBatchSyncResult,
 } from "../pipeline/indianaFinance/indianaCandidateFinanceBatchSync.js";
+import { assertKnownIndianaCampaignFinanceCliArgs } from "./indianaCampaignFinanceCliArgs.js";
 
 export type SyncDueIndianaCandidateFinanceScriptOptions = {
   dryRun: boolean;
@@ -64,6 +65,16 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
 export function parseSyncDueIndianaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueIndianaCandidateFinanceScriptOptions {
+  assertKnownIndianaCampaignFinanceCliArgs(args, [
+    { name: "--dry-run", takesValue: false },
+    { name: "--force", takesValue: false },
+    { name: "--max-candidates", takesValue: true },
+    { name: "--stale-after-days", takesValue: true },
+    { name: "--lookback-days", takesValue: true },
+    { name: "--lookahead-days", takesValue: true },
+    { name: "--raw-cache-dir", takesValue: true },
+    { name: "--raw-zip", takesValue: true },
+  ]);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

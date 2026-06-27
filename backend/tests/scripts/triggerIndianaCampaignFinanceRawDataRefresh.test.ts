@@ -43,5 +43,8 @@ describe("triggerIndianaCampaignFinanceRawDataRefresh script", () => {
     expect(() => parseIndianaCampaignFinanceRawDataRefreshTriggerArgs(["--cache-dir", "   "])).toThrow(
       "Missing --cache-dir value"
     );
+    expect(() => parseIndianaCampaignFinanceRawDataRefreshTriggerArgs(["--bogus"])).toThrow(
+      "Unknown Indiana campaign finance flag: --bogus"
+    );
   });
 });

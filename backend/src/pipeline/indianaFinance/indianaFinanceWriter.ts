@@ -190,7 +190,10 @@ export async function upsertIndianaFinanceLink(input: {
         district = EXCLUDED.district,
         committee_name = EXCLUDED.committee_name,
         link_status = EXCLUDED.link_status,
-        link_source = EXCLUDED.link_source,
+        link_source = CASE
+          WHEN in_candidate_finance_links.link_source = 'manual' THEN in_candidate_finance_links.link_source
+          ELSE EXCLUDED.link_source
+        END,
         source_url = EXCLUDED.source_url,
         last_verified_at = EXCLUDED.last_verified_at
       RETURNING id
@@ -238,9 +241,9 @@ async function upsertSummary(input: {
       VALUES ($1::uuid, $2, $3, $4, $5, $6::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
-        total_receipts = COALESCE(EXCLUDED.total_receipts, in_candidate_finance_summaries.total_receipts),
-        direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, in_candidate_finance_summaries.direct_contribution_total),
-        source_url = COALESCE(EXCLUDED.source_url, in_candidate_finance_summaries.source_url),
+        total_receipts = EXCLUDED.total_receipts,
+        direct_contribution_total = EXCLUDED.direct_contribution_total,
+        source_url = EXCLUDED.source_url,
         last_synced_at = EXCLUDED.last_synced_at
     `,
     [

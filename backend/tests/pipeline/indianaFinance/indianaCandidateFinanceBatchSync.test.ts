@@ -42,14 +42,17 @@ function contribution(overrides: Partial<IndianaCampaignFinanceContributionRow> 
 function contributionDataForYear(input: {
   year: number;
   sourceUrl?: string;
+  rows?: IndianaCampaignFinanceContributionRow[];
   rowsByCommitteeId: Map<string, IndianaCampaignFinanceContributionRow[]>;
 }): IndianaContributionDataForYear {
+  const rows = input.rows ?? [...input.rowsByCommitteeId.values()].flat();
   return {
     year: input.year,
     zipPath: `/tmp/${input.year}_ContributionData.csv.zip`,
     sourceUrl:
       input.sourceUrl ??
       `https://campaignfinance.in.gov/PublicSite/Docs/BulkDataDownloads/${input.year}_ContributionData.csv.zip`,
+    rows,
     rowsByCommitteeId: input.rowsByCommitteeId,
   };
 }
@@ -167,6 +170,15 @@ describe("indianaCandidateFinanceBatchSync", () => {
       })
       .mockRejectedValueOnce(new Error("Indiana row parse failed"));
     const row = contribution({ FileNumber: "422", Amount: "100.0000" });
+    const pacRow = contribution({
+      FileNumber: "777",
+      CommitteeType: "Political Action Committee",
+      Committee: "HOOSIERS PAC",
+      CandidateName: "",
+      ContributorType: "Organization",
+      Name: "Acme Health",
+      Amount: "500.0000",
+    });
 
     const result = await syncDueIndianaCandidateFinance({
       db,
@@ -181,6 +193,7 @@ describe("indianaCandidateFinanceBatchSync", () => {
           2026,
           contributionDataForYear({
             year: 2026,
+            rows: [row, pacRow],
             rowsByCommitteeId: new Map([["422", [row]]]),
           }),
         ],
@@ -219,8 +232,12 @@ describe("indianaCandidateFinanceBatchSync", () => {
         officeScope: "state_upper",
         officeName: "State Senator",
         district: "30",
+        linkedCommittee: {
+          committeeId: "422",
+          committeeName: "Diego for Indiana",
+        },
         sourceUrl: "https://campaignfinance.in.gov/PublicSite/Reporting/DataDownload.aspx",
-        contributionRows: [row],
+        contributionRows: [row, pacRow],
         contributionSourceUrl:
           "https://campaignfinance.in.gov/PublicSite/Docs/BulkDataDownloads/2026_ContributionData.csv.zip",
       })
@@ -288,6 +305,7 @@ describe("indianaCandidateFinanceBatchSync", () => {
           2026,
           contributionDataForYear({
             year: 2026,
+            rows: [row],
             rowsByCommitteeId: new Map([["9001", [row]]]),
           }),
         ],
@@ -381,6 +399,7 @@ describe("indianaCandidateFinanceBatchSync", () => {
           contributionDataForYear({
             year: 2026,
             sourceUrl: "https://campaignfinance.in.gov/PublicSite/Reporting/DataDownload.aspx",
+            rows: [row],
             rowsByCommitteeId: new Map([["422", [row]]]),
           }),
         ],
@@ -402,6 +421,10 @@ describe("indianaCandidateFinanceBatchSync", () => {
         candidateId: CANDIDATE_ID,
         electionId: ELECTION_ID,
         electionYear: 2026,
+        linkedCommittee: {
+          committeeId: "422",
+          committeeName: "Diego for Indiana",
+        },
         contributionRows: [row],
       })
     );

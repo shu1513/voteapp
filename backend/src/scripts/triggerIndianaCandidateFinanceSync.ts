@@ -5,6 +5,7 @@ import {
   enqueueManualIndianaCandidateFinanceSyncJob,
   type IndianaCandidateFinanceSyncJobData,
 } from "../scheduler/indianaCandidateFinanceSyncScheduler.js";
+import { assertKnownIndianaCampaignFinanceCliArgs } from "./indianaCampaignFinanceCliArgs.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -50,6 +51,15 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
 export function parseIndianaCandidateFinanceSyncTriggerArgs(
   args: readonly string[]
 ): IndianaCandidateFinanceSyncJobData {
+  assertKnownIndianaCampaignFinanceCliArgs(args, [
+    { name: "--dry-run", takesValue: false },
+    { name: "--force", takesValue: false },
+    { name: "--max-candidates", takesValue: true },
+    { name: "--stale-after-days", takesValue: true },
+    { name: "--lookback-days", takesValue: true },
+    { name: "--lookahead-days", takesValue: true },
+    { name: "--raw-cache-dir", takesValue: true },
+  ]);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

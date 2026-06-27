@@ -42,5 +42,8 @@ describe("upsertIndianaCampaignFinanceRawDataRefreshScheduler script", () => {
     expect(() => parseUpsertIndianaCampaignFinanceRawDataRefreshSchedulerArgs(["--url", "   "])).toThrow(
       "Missing --url value"
     );
+    expect(() => parseUpsertIndianaCampaignFinanceRawDataRefreshSchedulerArgs(["--bogus"])).toThrow(
+      "Unknown Indiana campaign finance flag: --bogus"
+    );
   });
 });

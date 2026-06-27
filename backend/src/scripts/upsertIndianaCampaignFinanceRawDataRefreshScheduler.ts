@@ -7,6 +7,7 @@ import {
   type IndianaCampaignFinanceRawDataRefreshJobData,
 } from "../scheduler/indianaCampaignFinanceRawDataRefreshScheduler.js";
 import { normalizeIndianaCampaignFinanceArtifactKind } from "../pipeline/indianaFinance/indianaCampaignFinanceArtifactCache.js";
+import { assertKnownIndianaCampaignFinanceCliArgs } from "./indianaCampaignFinanceCliArgs.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -52,6 +53,14 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
 export function parseUpsertIndianaCampaignFinanceRawDataRefreshSchedulerArgs(
   args: readonly string[]
 ): IndianaCampaignFinanceRawDataRefreshJobData {
+  assertKnownIndianaCampaignFinanceCliArgs(args, [
+    { name: "--force", takesValue: false },
+    { name: "--year", takesValue: true },
+    { name: "--artifact-kind", takesValue: true },
+    { name: "--url", takesValue: true },
+    { name: "--cache-dir", takesValue: true },
+    { name: "--timeout-ms", takesValue: true },
+  ]);
   const artifactKind = parseFlagValue(args, "--artifact-kind");
   return {
     force: args.includes("--force"),

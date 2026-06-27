@@ -153,6 +153,33 @@ describe("indianaCandidateFinanceSync", () => {
     expect(db.query).not.toHaveBeenCalled();
   });
 
+  it("uses an already-linked committee without re-resolving from contribution-row candidate names", async () => {
+    const db = createMockDb();
+
+    const result = await syncIndianaCandidateFinance({
+      db,
+      ...baseInput(),
+      candidateName: "Different Display Name",
+      linkedCommittee: {
+        committeeId: "422",
+        committeeName: "Diego for Indiana",
+      },
+      contributionRows: [contribution({ Amount: "250.0000" })],
+    });
+
+    expect(result).toMatchObject({
+      resolution: {
+        status: "matched",
+        committeeId: "422",
+        committeeName: "Diego for Indiana",
+      },
+      totalReceipts: 250,
+      directContributionTotal: 250,
+      linkWritten: true,
+    });
+    expect(db.query).toHaveBeenCalled();
+  });
+
   it("does not write when committee resolution is unmatched", async () => {
     const db = createMockDb();
 

@@ -43,6 +43,7 @@ export type IndianaContributionDataForYear = {
   year: number;
   zipPath: string;
   sourceUrl: string;
+  rows: IndianaCampaignFinanceContributionRow[];
   rowsByCommitteeId: Map<string, IndianaCampaignFinanceContributionRow[]>;
 };
 
@@ -194,11 +195,9 @@ function groupContributionRowsByCommittee(
 
 async function loadContributionDataForYear(input: {
   year: number;
-  committeeIds: readonly string[];
   rawDataZipPath?: string;
   rawDataCacheDir?: string;
 }): Promise<IndianaContributionDataForYear> {
-  const normalizedCommitteeIds = new Set(input.committeeIds.map(normalizeCommitteeId).filter(Boolean));
   const paths = getIndianaCampaignFinanceArtifactCachePaths({
     cacheDir:
       input.rawDataCacheDir ??
@@ -215,11 +214,7 @@ async function loadContributionDataForYear(input: {
   const metadata = input.rawDataZipPath
     ? null
     : await readIndianaCampaignFinanceArtifactCacheMetadata(paths.metadataPath);
-  const rows = await readIndianaCampaignFinanceContributionRows({
-    zipPath,
-    year: input.year,
-    predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row.FileNumber)),
-  });
+  const rows = await readIndianaCampaignFinanceContributionRows({ zipPath, year: input.year });
 
   return {
     year: input.year,
@@ -227,6 +222,7 @@ async function loadContributionDataForYear(input: {
     sourceUrl:
       metadata?.remote.url ??
       buildIndianaCampaignFinanceArtifactUrl({ year: input.year, artifactKind: "contribution" }),
+    rows,
     rowsByCommitteeId: groupContributionRowsByCommittee(rows),
   };
 }
@@ -241,7 +237,7 @@ async function loadAutoLinkContributionRowsForYear(input: {
   const injected = input.contributionDataByYear?.get(input.year);
   if (injected) {
     return {
-      rows: [...injected.rowsByCommitteeId.values()].flat(),
+      rows: injected.rows,
       sourceUrl: injected.sourceUrl,
     };
   }
@@ -439,14 +435,13 @@ export async function syncDueIndianaCandidateFinance(
     input.contributionDataByYear ? [...input.contributionDataByYear.entries()] : []
   );
   const contributionDataLoadErrorsByYear = new Map<number, string>();
-  for (const [year, rows] of groupDueRowsByYear(due.rows).entries()) {
+  for (const year of groupDueRowsByYear(due.rows).keys()) {
     if (!contributionDataByYear.has(year)) {
       try {
         contributionDataByYear.set(
           year,
           await loadContributionDataForYear({
             year,
-            committeeIds: rows.map((row) => row.committeeId),
             rawDataZipPath: input.rawDataZipPath,
             rawDataCacheDir: input.rawDataCacheDir,
           })
@@ -473,7 +468,6 @@ export async function syncDueIndianaCandidateFinance(
     }
 
     const contributionData = contributionDataByYear.get(row.electionYear);
-    const committeeKey = normalizeCommitteeId(row.committeeId);
     try {
       const result = await syncFn({
         db: input.db,
@@ -484,8 +478,12 @@ export async function syncDueIndianaCandidateFinance(
         officeScope: row.officeScope,
         officeName: row.officeName,
         district: row.district,
+        linkedCommittee: {
+          committeeId: row.committeeId,
+          committeeName: row.committeeName,
+        },
         sourceUrl: row.sourceUrl,
-        contributionRows: contributionData?.rowsByCommitteeId.get(committeeKey) ?? [],
+        contributionRows: contributionData?.rows ?? [],
         contributionSourceUrl: contributionData?.sourceUrl,
         dryRun,
         now,

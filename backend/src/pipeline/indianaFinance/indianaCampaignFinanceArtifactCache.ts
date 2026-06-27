@@ -7,7 +7,9 @@ import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 
 export const INDIANA_CAMPAIGN_FINANCE_BULK_DATA_BASE_URL =
   "https://campaignfinance.in.gov/PublicSite/Docs/BulkDataDownloads";
-export const INDIANA_CAMPAIGN_FINANCE_FETCH_TIMEOUT_MS = 30_000;
+export const INDIANA_CAMPAIGN_FINANCE_METADATA_FETCH_TIMEOUT_MS = 30_000;
+export const INDIANA_CAMPAIGN_FINANCE_FETCH_TIMEOUT_MS = INDIANA_CAMPAIGN_FINANCE_METADATA_FETCH_TIMEOUT_MS;
+export const INDIANA_CAMPAIGN_FINANCE_DOWNLOAD_TIMEOUT_MS = 300_000;
 export const DEFAULT_INDIANA_CAMPAIGN_FINANCE_CACHE_DIR = "scratch/indiana-campaign-finance/public-bulk";
 
 export type IndianaCampaignFinanceArtifactKind = "contribution" | "expenditure";
@@ -53,6 +55,13 @@ export type IndianaCampaignFinanceArtifactRefreshResult = {
 type FetchOptions = {
   fetchImpl?: typeof fetch;
   timeoutMs?: number;
+};
+
+type FetchWithTimeoutResult = {
+  response: Response;
+  signal: AbortSignal;
+  timeoutMs: number;
+  clearRequestTimeout: () => void;
 };
 
 export function normalizeIndianaCampaignFinanceYear(year: number): number {
@@ -139,26 +148,43 @@ function applyIndianaBrowserHeaders(headers: Headers): void {
   }
 }
 
-async function fetchWithTimeout(url: string, init: RequestInit, options: FetchOptions): Promise<Response> {
-  const timeoutMs = options.timeoutMs ?? INDIANA_CAMPAIGN_FINANCE_FETCH_TIMEOUT_MS;
+async function fetchWithTimeout(input: {
+  url: string;
+  init: RequestInit;
+  options: FetchOptions;
+  defaultTimeoutMs: number;
+}): Promise<FetchWithTimeoutResult> {
+  const timeoutMs = input.options.timeoutMs ?? input.defaultTimeoutMs;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
-  const headers = new Headers(init.headers);
+  const headers = new Headers(input.init.headers);
   applyIndianaBrowserHeaders(headers);
+  let cleared = false;
+  const clearRequestTimeout = () => {
+    if (!cleared) {
+      clearTimeout(timeout);
+      cleared = true;
+    }
+  };
 
   try {
-    return await (options.fetchImpl ?? fetch)(url, {
-      ...init,
+    const response = await (input.options.fetchImpl ?? fetch)(input.url, {
+      ...input.init,
       headers,
       signal: controller.signal,
     });
+    return {
+      response,
+      signal: controller.signal,
+      timeoutMs,
+      clearRequestTimeout,
+    };
   } catch (error) {
+    clearRequestTimeout();
     if (isAbortError(error)) {
-      throw new Error(`Indiana campaign finance artifact request timed out after ${timeoutMs}ms for ${url}`);
+      throw new Error(`Indiana campaign finance artifact request timed out after ${timeoutMs}ms for ${input.url}`);
     }
     throw error;
-  } finally {
-    clearTimeout(timeout);
   }
 }
 
@@ -191,11 +217,22 @@ export async function fetchIndianaCampaignFinanceArtifactMetadata(input: {
     input.url ?? buildIndianaCampaignFinanceArtifactUrl(artifact),
     "--url"
   );
-  const response = await fetchWithTimeout(normalizedUrl, { method: "HEAD" }, input);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch Indiana campaign finance artifact metadata: ${response.status} ${response.statusText}`);
+  const request = await fetchWithTimeout({
+    url: normalizedUrl,
+    init: { method: "HEAD" },
+    options: input,
+    defaultTimeoutMs: INDIANA_CAMPAIGN_FINANCE_METADATA_FETCH_TIMEOUT_MS,
+  });
+  try {
+    if (!request.response.ok) {
+      throw new Error(
+        `Failed to fetch Indiana campaign finance artifact metadata: ${request.response.status} ${request.response.statusText}`
+      );
+    }
+    return metadataFromResponse(artifact, normalizedUrl, request.response);
+  } finally {
+    request.clearRequestTimeout();
   }
-  return metadataFromResponse(artifact, normalizedUrl, response);
 }
 
 export async function downloadIndianaCampaignFinanceArtifact(input: {
@@ -212,21 +249,37 @@ export async function downloadIndianaCampaignFinanceArtifact(input: {
     "--url"
   );
   const outputPath = resolve(input.outputPath);
-  const response = await fetchWithTimeout(normalizedUrl, { method: "GET" }, input);
+  const request = await fetchWithTimeout({
+    url: normalizedUrl,
+    init: { method: "GET" },
+    options: input,
+    defaultTimeoutMs: INDIANA_CAMPAIGN_FINANCE_DOWNLOAD_TIMEOUT_MS,
+  });
+  const response = request.response;
   if (!response.ok) {
+    request.clearRequestTimeout();
     throw new Error(`Failed to download Indiana campaign finance artifact: ${response.status} ${response.statusText}`);
   }
   if (!response.body) {
+    request.clearRequestTimeout();
     throw new Error("Indiana campaign finance artifact response did not include a body");
   }
 
   let outputStat;
   try {
-    await pipeline(Readable.fromWeb(response.body as NodeReadableStream<Uint8Array>), createWriteStream(outputPath));
+    await pipeline(
+      Readable.fromWeb(response.body as NodeReadableStream<Uint8Array>, { signal: request.signal }),
+      createWriteStream(outputPath)
+    );
     outputStat = await stat(outputPath);
   } catch (error) {
     await rm(outputPath, { force: true }).catch(() => {});
+    if (isAbortError(error)) {
+      throw new Error(`Indiana campaign finance artifact request timed out after ${request.timeoutMs}ms for ${normalizedUrl}`);
+    }
     throw error;
+  } finally {
+    request.clearRequestTimeout();
   }
   return {
     ...metadataFromResponse(artifact, normalizedUrl, response),
@@ -304,13 +357,17 @@ function remoteMetadataMatches(
   if (previous.remote.url !== remote.url) {
     return false;
   }
-  if (remote.etag && previous.remote.etag && remote.etag !== previous.remote.etag) {
-    return false;
+  const checks: boolean[] = [];
+  if (remote.etag && previous.remote.etag) {
+    checks.push(remote.etag === previous.remote.etag);
   }
-  if (remote.lastModified && previous.remote.lastModified && remote.lastModified !== previous.remote.lastModified) {
-    return false;
+  if (remote.lastModified && previous.remote.lastModified) {
+    checks.push(remote.lastModified === previous.remote.lastModified);
   }
-  return remote.contentLength === null || previous.bytesWritten === remote.contentLength;
+  if (remote.contentLength !== null) {
+    checks.push(previous.bytesWritten === remote.contentLength);
+  }
+  return checks.length > 0 && checks.every(Boolean);
 }
 
 export async function refreshIndianaCampaignFinanceArtifactCache(input: {

@@ -36,5 +36,8 @@ describe("upsertIndianaCandidateFinanceSyncScheduler script", () => {
     expect(() =>
       parseUpsertIndianaCandidateFinanceSyncSchedulerArgs(["--raw-cache-dir=/tmp/a", "--raw-cache-dir=/tmp/b"])
     ).toThrow("Provide --raw-cache-dir at most once");
+    expect(() => parseUpsertIndianaCandidateFinanceSyncSchedulerArgs(["--bogus"])).toThrow(
+      "Unknown Indiana campaign finance flag: --bogus"
+    );
   });
 });

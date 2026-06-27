@@ -27,6 +27,10 @@ export type IndianaCandidateFinanceSyncInput = {
   officeName: string;
   district?: string | null;
   contributionRows: readonly IndianaCampaignFinanceContributionRow[];
+  linkedCommittee?: {
+    committeeId: string;
+    committeeName: string;
+  };
   sourceUrl?: string | null;
   contributionSourceUrl?: string | null;
   now?: Date;
@@ -132,15 +136,25 @@ export async function syncIndianaCandidateFinance(
   const officeName = requireNonEmpty(input.officeName, "office name");
   const electionYear = normalizeElectionYear(input.electionYear);
   const syncedAt = normalizeTimestamp(input.now);
-  const resolution = resolveIndianaCandidateCommittee({
-    candidateName,
-    officeScope,
-    officeName,
-    electionYear,
-    district: input.district,
-    contributionRows: input.contributionRows,
-    sourceUrl: input.sourceUrl ?? input.contributionSourceUrl ?? null,
-  });
+  const resolution: IndianaCandidateCommitteeResolution = input.linkedCommittee
+    ? {
+        status: "matched",
+        committeeId: requireNonEmpty(input.linkedCommittee.committeeId, "Indiana committee id"),
+        committeeName: requireNonEmpty(input.linkedCommittee.committeeName, "Indiana committee name"),
+        confidence: "exact",
+        source: "public_bulk",
+        sourceUrl: input.sourceUrl ?? input.contributionSourceUrl ?? null,
+        matchedContributionRowCount: 0,
+      }
+    : resolveIndianaCandidateCommittee({
+        candidateName,
+        officeScope,
+        officeName,
+        electionYear,
+        district: input.district,
+        contributionRows: input.contributionRows,
+        sourceUrl: input.sourceUrl ?? input.contributionSourceUrl ?? null,
+      });
 
   if (resolution.status !== "matched") {
     return {

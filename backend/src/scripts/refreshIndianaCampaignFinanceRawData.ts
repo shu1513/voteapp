@@ -3,9 +3,10 @@ import { pathToFileURL } from "node:url";
 
 import { loadProjectEnv } from "../config/env.js";
 import { isIndianaCampaignFinanceRawDataRefreshEnabled } from "../config/featureFlags.js";
+import { assertKnownIndianaCampaignFinanceCliArgs } from "./indianaCampaignFinanceCliArgs.js";
 import {
   DEFAULT_INDIANA_CAMPAIGN_FINANCE_CACHE_DIR,
-  INDIANA_CAMPAIGN_FINANCE_FETCH_TIMEOUT_MS,
+  INDIANA_CAMPAIGN_FINANCE_DOWNLOAD_TIMEOUT_MS,
   buildIndianaCampaignFinanceArtifactUrl,
   normalizeIndianaCampaignFinanceArtifactKind,
   parseIndianaCampaignFinanceHttpsUrl,
@@ -88,6 +89,14 @@ function parseArtifactKind(value: string | undefined): IndianaCampaignFinanceArt
 export function parseRefreshIndianaCampaignFinanceRawDataScriptArgs(
   args: readonly string[]
 ): RefreshIndianaCampaignFinanceRawDataScriptOptions {
+  assertKnownIndianaCampaignFinanceCliArgs(args, [
+    { name: "--year", takesValue: true },
+    { name: "--artifact-kind", takesValue: true },
+    { name: "--url", takesValue: true },
+    { name: "--cache-dir", takesValue: true },
+    { name: "--timeout-ms", takesValue: true },
+    { name: "--force", takesValue: false },
+  ]);
   const year = parseYear(readValueFlag(args, "--year"));
   const artifactKind = parseArtifactKind(readValueFlag(args, "--artifact-kind"));
   return {
@@ -105,7 +114,7 @@ export function parseRefreshIndianaCampaignFinanceRawDataScriptArgs(
     force: args.includes("--force"),
     timeoutMs: parsePositiveInteger(
       readValueFlag(args, "--timeout-ms"),
-      INDIANA_CAMPAIGN_FINANCE_FETCH_TIMEOUT_MS,
+      INDIANA_CAMPAIGN_FINANCE_DOWNLOAD_TIMEOUT_MS,
       "--timeout-ms"
     ),
   };

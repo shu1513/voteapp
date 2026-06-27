@@ -36,5 +36,8 @@ describe("triggerIndianaCandidateFinanceSync script", () => {
     expect(() =>
       parseIndianaCandidateFinanceSyncTriggerArgs(["--max-candidates=5", "--max-candidates", "6"])
     ).toThrow("Provide --max-candidates at most once");
+    expect(() => parseIndianaCandidateFinanceSyncTriggerArgs(["--bogus"])).toThrow(
+      "Unknown Indiana campaign finance flag: --bogus"
+    );
   });
 });

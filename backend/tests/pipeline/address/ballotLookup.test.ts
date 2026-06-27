@@ -2281,13 +2281,32 @@ describe("lookupElectionDetailById", () => {
 
   it("includes locally synced Indiana finance summaries with top direct donor occupations", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("ALASKA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("ARIZONA_CAMPAIGN_FINANCE_ENABLED", "false");
     vi.stubEnv("CALIFORNIA_CAMPAIGN_FINANCE_ENABLED", "false");
     vi.stubEnv("COLORADO_CAMPAIGN_FINANCE_ENABLED", "false");
     vi.stubEnv("CONNECTICUT_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("FLORIDA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("HAWAII_CAMPAIGN_FINANCE_ENABLED", "false");
     vi.stubEnv("INDIANA_CAMPAIGN_FINANCE_ENABLED", "true");
+    vi.stubEnv("MAINE_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("MARYLAND_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("MICHIGAN_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("MINNESOTA_CAMPAIGN_FINANCE_ENABLED", "false");
     vi.stubEnv("NEBRASKA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("NEW_JERSEY_CAMPAIGN_FINANCE_ENABLED", "false");
     vi.stubEnv("NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED", "false");
     vi.stubEnv("OKLAHOMA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("OREGON_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("PENNSYLVANIA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("TENNESSEE_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("TEXAS_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("UTAH_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("WASHINGTON_CAMPAIGN_FINANCE_ENABLED", "false");
+    vi.stubEnv("WISCONSIN_CAMPAIGN_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
       .mockResolvedValueOnce({

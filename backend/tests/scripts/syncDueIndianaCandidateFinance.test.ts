@@ -62,6 +62,15 @@ describe("syncDueIndianaCandidateFinance script", () => {
     expect(() =>
       parseSyncDueIndianaCandidateFinanceScriptArgs(["--max-candidates=10", "--max-candidates", "20"])
     ).toThrow("Provide --max-candidates at most once");
+    expect(() => parseSyncDueIndianaCandidateFinanceScriptArgs(["--unknown"])).toThrow(
+      "Unknown Indiana campaign finance flag: --unknown"
+    );
+    expect(() => parseSyncDueIndianaCandidateFinanceScriptArgs(["--dry-run=true"])).toThrow(
+      "Flag --dry-run does not accept a value"
+    );
+    expect(() => parseSyncDueIndianaCandidateFinanceScriptArgs(["extra"])).toThrow(
+      "Unexpected Indiana campaign finance argument: extra"
+    );
   });
 
   it("formats JSON output", () => {

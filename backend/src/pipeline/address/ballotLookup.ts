@@ -801,8 +801,26 @@ type OklahomaFinanceDirectBreakdownRow = {
   source_url: string | null;
 };
 
-type IndianaFinanceSummaryRow = OklahomaFinanceSummaryRow;
-type IndianaFinanceDirectBreakdownRow = OklahomaFinanceDirectBreakdownRow;
+type IndianaFinanceSummaryRow = {
+  candidate_id: string;
+  election_id: string;
+  committee_id: string | null;
+  election_year: number;
+  total_receipts: string | number | null;
+  direct_contribution_total: string | number | null;
+  source_url: string | null;
+  last_synced_at: string;
+};
+
+type IndianaFinanceDirectBreakdownRow = {
+  candidate_id: string;
+  election_id: string;
+  category_type: "occupation" | "contribution_size" | "pac_backed_industry";
+  category_name: string;
+  amount: string | number;
+  contributor_count: string | number | null;
+  source_url: string | null;
+};
 
 type TexasFinanceSummaryRow = {
   candidate_id: string;

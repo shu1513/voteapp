@@ -8,7 +8,7 @@ import {
 } from "../config/featureFlags.js";
 import {
   DEFAULT_INDIANA_CAMPAIGN_FINANCE_CACHE_DIR,
-  INDIANA_CAMPAIGN_FINANCE_FETCH_TIMEOUT_MS,
+  INDIANA_CAMPAIGN_FINANCE_DOWNLOAD_TIMEOUT_MS,
   buildIndianaCampaignFinanceArtifactUrl,
   normalizeIndianaCampaignFinanceArtifactKind,
   normalizeIndianaCampaignFinanceYear,
@@ -82,7 +82,7 @@ function normalizeRefreshJobData(data: IndianaCampaignFinanceRawDataRefreshJobDa
       "url"
     ),
     cacheDir: data.cacheDir?.trim() || DEFAULT_INDIANA_CAMPAIGN_FINANCE_CACHE_DIR,
-    timeoutMs: data.timeoutMs ?? INDIANA_CAMPAIGN_FINANCE_FETCH_TIMEOUT_MS,
+    timeoutMs: data.timeoutMs ?? INDIANA_CAMPAIGN_FINANCE_DOWNLOAD_TIMEOUT_MS,
   };
 }
 
