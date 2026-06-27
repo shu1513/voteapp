@@ -347,6 +347,17 @@ export function isMichiganMitnRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+export function isMinnesotaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("MINNESOTA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isMinnesotaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isMinnesotaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MINNESOTA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isPennsylvaniaCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("PENNSYLVANIA_CAMPAIGN_FINANCE_ENABLED", false);
 }

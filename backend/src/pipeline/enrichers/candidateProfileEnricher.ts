@@ -61,6 +61,10 @@ import {
   buildMichiganCandidateFinanceLinkedElectionSyncJobId,
   enqueueManualMichiganCandidateFinanceSyncJob,
 } from "../../scheduler/michiganCandidateFinanceSyncScheduler.js";
+import type {
+  MinnesotaCandidateFinanceSyncEnqueueOptions,
+  MinnesotaCandidateFinanceSyncJobData,
+} from "../../scheduler/minnesotaCandidateFinanceSyncScheduler.js";
 import {
   STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
   STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
@@ -840,6 +844,74 @@ async function enqueueMichiganFinanceSyncForLinkedElection(input: {
   }
 }
 
+type MinnesotaFinanceEnqueueModule = {
+  isMinnesotaFinanceEligibleOffice: (input: {
+    officeScope: string | null;
+    officeCanonicalName: string | null;
+  }) => boolean;
+  buildMinnesotaCandidateFinanceLinkedElectionSyncJobId: () => string;
+  enqueueManualMinnesotaCandidateFinanceSyncJob: (
+    jobData?: MinnesotaCandidateFinanceSyncJobData,
+    options?: MinnesotaCandidateFinanceSyncEnqueueOptions
+  ) => Promise<string>;
+};
+
+async function loadMinnesotaFinanceEnqueueModule(): Promise<MinnesotaFinanceEnqueueModule | null> {
+  try {
+    const [eligibleOfficesModule, schedulerModule] = await Promise.all([
+      import("../minnesotaFinance/minnesotaFinanceEligibleOffices.js"),
+      import("../../scheduler/minnesotaCandidateFinanceSyncScheduler.js"),
+    ]);
+    return {
+      isMinnesotaFinanceEligibleOffice: eligibleOfficesModule.isMinnesotaFinanceEligibleOffice,
+      buildMinnesotaCandidateFinanceLinkedElectionSyncJobId:
+        schedulerModule.buildMinnesotaCandidateFinanceLinkedElectionSyncJobId,
+      enqueueManualMinnesotaCandidateFinanceSyncJob: schedulerModule.enqueueManualMinnesotaCandidateFinanceSyncJob,
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function enqueueMinnesotaFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (input.context.state !== "MN") {
+    return;
+  }
+
+  const minnesotaFinance = await loadMinnesotaFinanceEnqueueModule();
+  if (!minnesotaFinance) {
+    return;
+  }
+
+  if (
+    !minnesotaFinance.isMinnesotaFinanceEligibleOffice({
+      officeScope: input.context.officeScope,
+      officeCanonicalName: input.context.officeCanonicalName,
+    })
+  ) {
+    return;
+  }
+
+  try {
+    await minnesotaFinance.enqueueManualMinnesotaCandidateFinanceSyncJob(
+      {
+        triggeredBy: "manual",
+      },
+      {
+        jobId: minnesotaFinance.buildMinnesotaCandidateFinanceLinkedElectionSyncJobId(),
+      }
+    );
+  } catch (error) {
+    const reason = toReason(error);
+    console.warn(
+      `candidate-profile enricher could not enqueue Minnesota finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
 async function enqueueCandidateFinanceSyncForPresidentialCycle(input: {
   context: Extract<CandidateProfileResolvedContext, { type: "presidential_cycle" }>;
   presidentialRole: PresidentialProfileDraftRole;
@@ -1510,6 +1582,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               candidateId,
             });
             await enqueueMichiganFinanceSyncForLinkedElection({
+              context: draftContext,
+              candidateId,
+            });
+            await enqueueMinnesotaFinanceSyncForLinkedElection({
               context: draftContext,
               candidateId,
             });
