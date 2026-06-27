@@ -190,6 +190,17 @@ export function isDistrictOfColumbiaCampaignFinanceSyncEnabled(force = false): b
   );
 }
 
+export function isKentuckyCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("KENTUCKY_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isKentuckyCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isKentuckyCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("KENTUCKY_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isVirginiaCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", false);
 }

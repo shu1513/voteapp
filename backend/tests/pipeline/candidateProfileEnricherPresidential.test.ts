@@ -24,6 +24,8 @@ const enqueueManualConnecticutCandidateFinanceSyncJobMock = vi.hoisted(() => vi.
 const buildConnecticutCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualDistrictOfColumbiaCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 const buildDistrictOfColumbiaCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
+const enqueueManualKentuckyCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
+const buildKentuckyCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualNewMexicoCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 const buildNewMexicoCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualTexasCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
@@ -112,6 +114,12 @@ vi.mock("../../src/scheduler/districtOfColumbiaCandidateFinanceSyncScheduler.js"
     enqueueManualDistrictOfColumbiaCandidateFinanceSyncJobMock,
 }));
 
+vi.mock("../../src/scheduler/kentuckyCandidateFinanceSyncScheduler.js", () => ({
+  buildKentuckyCandidateFinanceLinkedElectionSyncJobId:
+    buildKentuckyCandidateFinanceLinkedElectionSyncJobIdMock,
+  enqueueManualKentuckyCandidateFinanceSyncJob: enqueueManualKentuckyCandidateFinanceSyncJobMock,
+}));
+
 vi.mock("../../src/scheduler/newMexicoCandidateFinanceSyncScheduler.js", () => ({
   buildNewMexicoCandidateFinanceLinkedElectionSyncJobId:
     buildNewMexicoCandidateFinanceLinkedElectionSyncJobIdMock,
@@ -176,6 +184,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     enqueueManualDistrictOfColumbiaCandidateFinanceSyncJobMock.mockResolvedValue(
       "district-of-columbia-finance-job-1"
     );
+    enqueueManualKentuckyCandidateFinanceSyncJobMock.mockResolvedValue("kentucky-finance-job-1");
     enqueueManualNewMexicoCandidateFinanceSyncJobMock.mockResolvedValue("new-mexico-finance-job-1");
     enqueueManualTexasCandidateFinanceSyncJobMock.mockResolvedValue("texas-finance-job-1");
     enqueueManualWashingtonCandidateFinanceSyncJobMock.mockResolvedValue("washington-finance-job-1");
@@ -194,6 +203,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     );
     buildDistrictOfColumbiaCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "district-of-columbia-candidate-finance-linked-election-sync-2026-06-01"
+    );
+    buildKentuckyCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
+      "kentucky-candidate-finance-linked-election-sync-2026-06-01"
     );
     buildNewMexicoCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "new-mexico-candidate-finance-linked-election-sync-2026-06-01"
@@ -736,6 +748,7 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(enqueueManualCaliforniaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(enqueueManualColoradoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(enqueueManualConnecticutCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualKentuckyCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(enqueueManualNewMexicoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(createCandidateFutureElectionNotificationEventsMock).not.toHaveBeenCalled();
     expect(redisXAckMock).toHaveBeenCalledWith(
@@ -1320,6 +1333,102 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
       "1-8"
+    );
+  });
+
+  it("dedupes automatic Kentucky finance batch syncs for eligible Kentucky elections", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-12",
+            message: {
+              election_id: "election-ky-senate",
+              item_type: "candidate_profile",
+              candidate_display_name: "Jane Senator",
+              roster_party: "Democratic",
+              roster_is_incumbent: "false",
+              seed_urls: JSON.stringify(["https://example.gov/senator"]),
+              run_id: "run-ky-senate",
+            },
+          },
+        ],
+      },
+    ]);
+    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      const text = String(sql);
+      if (text.includes("FROM public.candidate_elections AS ce")) {
+        expect(params).toEqual(["election-ky-senate"]);
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("FROM public.elections AS e")) {
+        expect(params).toEqual(["election-ky-senate"]);
+        return {
+          rows: [
+            {
+              id: "election-ky-senate",
+              state: "KY",
+              district_name: "Kentucky State Senate District 1",
+              district_type: "state_legislative",
+              election_date: "2026-11-03",
+              official_ballot_title: "State Senator",
+              election_stage: "general",
+              senate_class: null,
+              term_end_year: null,
+              is_partisan: true,
+              sources: ["https://example.gov/election"],
+              office_scope: "state_upper",
+              office_canonical_name: "State Senator",
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected pool query: ${sql}`);
+    });
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Jane Senator",
+        first_name: "Jane",
+        last_name: "Senator",
+        party: "Democratic",
+        fec_ids: [],
+        sources: ["https://example.gov/senator"],
+      },
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualCaliforniaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualColoradoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualConnecticutCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualDistrictOfColumbiaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(buildKentuckyCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
+    expect(enqueueManualKentuckyCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
+      {
+        autoLinkMissingLinks: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: "kentucky-candidate-finance-linked-election-sync-2026-06-01",
+      }
+    );
+    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
+      {
+        candidateId: "candidate-1",
+        electionId: "election-ky-senate",
+        runId: "run-ky-senate",
+      },
+    ]);
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-12"
     );
   });
 

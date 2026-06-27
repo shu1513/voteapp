@@ -27,6 +27,10 @@ import {
   enqueueManualDistrictOfColumbiaCandidateFinanceSyncJob,
 } from "../../scheduler/districtOfColumbiaCandidateFinanceSyncScheduler.js";
 import {
+  buildKentuckyCandidateFinanceLinkedElectionSyncJobId,
+  enqueueManualKentuckyCandidateFinanceSyncJob,
+} from "../../scheduler/kentuckyCandidateFinanceSyncScheduler.js";
+import {
   buildNewMexicoCandidateFinanceLinkedElectionSyncJobId,
   enqueueManualNewMexicoCandidateFinanceSyncJob,
 } from "../../scheduler/newMexicoCandidateFinanceSyncScheduler.js";
@@ -99,6 +103,7 @@ import { isOklahomaFinanceEligibleOffice } from "../oklahomaFinance/oklahomaFina
 import { isTexasFinanceEligibleOffice } from "../texasFinance/texasFinanceEligibleOffices.js";
 import { isHawaiiFinanceEligibleOffice } from "../hawaiiFinance/hawaiiFinanceEligibleOffices.js";
 import { isWashingtonFinanceEligibleOffice } from "../washingtonFinance/washingtonFinanceEligibleOffices.js";
+import { isKentuckyFinanceEligibleOffice } from "../kentuckyFinance/kentuckyFinanceEligibleOffices.js";
 import { isVirginiaFinanceEligibleOffice } from "../virginiaFinance/virginiaFinanceEligibleOffices.js";
 import { isWisconsinFinanceEligibleOffice } from "../wisconsinFinance/wisconsinFinanceEligibleOffices.js";
 import { isMassachusettsFinanceEligibleOffice } from "../massachusettsFinance/massachusettsFinanceEligibleOffices.js";
@@ -469,6 +474,38 @@ async function enqueueDistrictOfColumbiaFinanceSyncForLinkedElection(input: {
     const reason = toReason(error);
     console.warn(
       `candidate-profile enricher could not enqueue D.C. finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
+async function enqueueKentuckyFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (
+    input.context.state !== "KY" ||
+    !isKentuckyFinanceEligibleOffice({
+      officeScope: input.context.officeScope,
+      officeCanonicalName: input.context.officeCanonicalName,
+    })
+  ) {
+    return;
+  }
+
+  try {
+    await enqueueManualKentuckyCandidateFinanceSyncJob(
+      {
+        autoLinkMissingLinks: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: buildKentuckyCandidateFinanceLinkedElectionSyncJobId(),
+      }
+    );
+  } catch (error) {
+    const reason = toReason(error);
+    console.warn(
+      `candidate-profile enricher could not enqueue Kentucky finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
     );
   }
 }
@@ -1389,6 +1426,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               candidateId,
             });
             await enqueueDistrictOfColumbiaFinanceSyncForLinkedElection({
+              context: draftContext,
+              candidateId,
+            });
+            await enqueueKentuckyFinanceSyncForLinkedElection({
               context: draftContext,
               candidateId,
             });
