@@ -18,11 +18,22 @@ type ElectionPreflightRow = {
 function readFlag(name: string): string | null {
   const index = process.argv.indexOf(name);
   if (index >= 0) {
-    return process.argv[index + 1] ?? null;
+    const value = process.argv[index + 1];
+    if (!value || value.startsWith("--") || value.trim().length === 0) {
+      throw new Error(`Missing value for ${name}.\n${usage()}`);
+    }
+    return value;
   }
   const prefix = `${name}=`;
   const match = process.argv.find((token) => token.startsWith(prefix));
-  return match ? match.slice(prefix.length) : null;
+  if (!match) {
+    return null;
+  }
+  const value = match.slice(prefix.length);
+  if (value.trim().length === 0) {
+    throw new Error(`Missing value for ${name}.\n${usage()}`);
+  }
+  return value;
 }
 
 function hasFlag(name: string): boolean {
@@ -80,7 +91,14 @@ async function main(): Promise<void> {
   }
 
   const rawPayload = await readJsonFile(file);
-  const electionId = readFlag("--election-id") ?? payloadElectionId(rawPayload);
+  const cliElectionId = readFlag("--election-id");
+  const payloadId = payloadElectionId(rawPayload);
+  if (cliElectionId && payloadId && cliElectionId !== payloadId) {
+    throw new Error(
+      `--election-id (${cliElectionId}) does not match payload.election_id (${payloadId}).`
+    );
+  }
+  const electionId = cliElectionId ?? payloadId;
   if (!electionId) {
     throw new Error(`Missing --election-id and payload.election_id.\n${usage()}`);
   }

@@ -52,7 +52,7 @@ Manual injection shape:
    - `status = 'pending'`
    - `schema_version = ELECTION_ENRICHMENT_SCHEMA_VERSION`
    - `payload = <ElectionEnrichedPayload>`
-   - `model = 'codex-manual-research:<version>'`
+   - `model = 'manual-research:codex'`
 3. Add the ingest key to `staging:elections:pending`.
 4. Run `npm run elections:validate -- --once`.
 5. Run `npm run elections:write -- --once`.
@@ -80,7 +80,8 @@ Important behavior:
 Manual injection shape:
 
 1. Build `{ election_id, candidates }`, where each candidate row satisfies `CandidateRosterEntry`.
-2. Mark or insert the `candidate_roster:<election_id>` staging row as `validated`.
+2. Mark or insert the `candidate_roster:<election_id>` staging row as `validated`, with `run_id`, `model =
+   'manual-research:codex'`, `schema_version = NULL`, and `ai_raw_debug.manual_research = true`.
 3. Emit `staging:candidates:roster:draft` for that election.
 4. Run `npm run candidates:roster:enrich -- --once`.
 
@@ -146,8 +147,8 @@ Important behavior to preserve:
 Gap:
 
 - Discovery, source repair, and area labeling are embedded inside `runCandidateRecordEnricher`.
-- A manual adapter should validate the discovered record payload, verify URLs, upsert records, map returned record IDs back
-  to labels, validate labels, then upsert tags.
+- A manual adapter should validate the discovered record payload, verify URLs, upsert records, map returned record IDs to
+  labels, validate labels, then upsert tags.
 
 ### Ballot Measures
 
@@ -300,6 +301,12 @@ Created an isolated branch for local/operator wrapper work:
 
 - `codex/manual-research-import`
 
+Operational prerequisites:
+
+- Back up the target database or use a staging/local database before running these scripts against important data.
+- The operator environment must have write access to Postgres and publish access to Redis.
+- Run one district or election at a time and verify canonical rows after each stage before continuing.
+
 Added two manually invoked scripts:
 
 - `npm run manual:elections:inject -- --file payload.json [--ingest-key key] [--run-id id] [--dry-run]`
@@ -320,5 +327,6 @@ Safety properties:
 - Election injection still requires the existing `elections:validate` and `elections:write` steps.
 - Candidate roster injection checks that the target `election_id` exists in `public.elections` and is an office race before
   staging the roster.
+- If roster JSON includes `election_id`, it must match the `--election-id` CLI value.
 - Candidate roster injection only pre-seeds a validated roster row; the existing roster worker can then fan out profile drafts
   without making an AI roster call.

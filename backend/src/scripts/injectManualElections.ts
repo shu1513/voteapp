@@ -16,11 +16,22 @@ import { parseCanonicalElectionPayload } from "../contracts/electionPayloadContr
 function readFlag(name: string): string | null {
   const index = process.argv.indexOf(name);
   if (index >= 0) {
-    return process.argv[index + 1] ?? null;
+    const value = process.argv[index + 1];
+    if (!value || value.startsWith("--") || value.trim().length === 0) {
+      throw new Error(`Missing value for ${name}.\n${usage()}`);
+    }
+    return value;
   }
   const prefix = `${name}=`;
   const match = process.argv.find((token) => token.startsWith(prefix));
-  return match ? match.slice(prefix.length) : null;
+  if (!match) {
+    return null;
+  }
+  const value = match.slice(prefix.length);
+  if (value.trim().length === 0) {
+    throw new Error(`Missing value for ${name}.\n${usage()}`);
+  }
+  return value;
 }
 
 function hasFlag(name: string): boolean {
