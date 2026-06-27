@@ -60,9 +60,25 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+const MINNESOTA_FINANCE_KNOWN_FLAGS = new Set(['--dry-run', '--force', '--max-candidates', '--stale-after-days', '--lookback-days', '--lookahead-days', '--raw-cache-dir']);
+
+function assertNoUnknownMinnesotaFinanceArgs(args: readonly string[]): void {
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+    const isKnown = [...MINNESOTA_FINANCE_KNOWN_FLAGS].some((flag) => arg === flag || arg.startsWith(`${flag}=`));
+    if (!isKnown) {
+      throw new Error(`Unknown argument: ${arg}`);
+    }
+  }
+}
+
 export function parseSyncDueMinnesotaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueMinnesotaCandidateFinanceScriptOptions {
+  assertNoUnknownMinnesotaFinanceArgs(args);
+
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

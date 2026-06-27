@@ -273,6 +273,10 @@ export function aggregateMinnesotaOutsideGroupContributions(
     if (matchingGroups.length === 0) {
       continue;
     }
+    if (matchingGroups.length > 1) {
+      skippedContributionRowCount += 1;
+      continue;
+    }
     matchedContributionRowCount += 1;
 
     const displayName = contributorDisplayName(row);

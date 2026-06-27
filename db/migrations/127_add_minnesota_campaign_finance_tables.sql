@@ -160,9 +160,9 @@ CREATE TABLE IF NOT EXISTS public.mn_candidate_finance_outside_group_breakdowns 
   updated_at timestamptz NOT NULL DEFAULT now(),
   CONSTRAINT mn_candidate_finance_outside_group_breakdowns_year_check
     CHECK (election_year BETWEEN 2000 AND 2100),
-  CONSTRAINT mn_candidate_finance_outside_group_breakdowns_committee_id_check
+  CONSTRAINT mn_cff_outside_group_breakdowns_committee_id_check
     CHECK (btrim(committee_id) <> ''),
-  CONSTRAINT mn_candidate_finance_outside_group_breakdowns_support_oppose_check
+  CONSTRAINT mn_cff_outside_group_breakdowns_support_oppose_check
     CHECK (support_oppose IN ('support', 'oppose')),
   CONSTRAINT mn_candidate_finance_outside_group_breakdowns_type_check
     CHECK (category_type IN ('donor', 'industry')),

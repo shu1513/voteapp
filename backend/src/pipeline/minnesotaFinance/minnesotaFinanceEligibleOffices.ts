@@ -21,6 +21,7 @@ export const MINNESOTA_FINANCE_ELIGIBLE_OFFICE_KEYS = [
   "statewide::Attorney General",
   "state_upper::State Senator",
   "state_lower::State Lower Chamber Legislator",
+  "state_lower::State Representative",
 ] as const;
 
 export type MinnesotaFinanceOfficeInput = {
@@ -51,11 +52,11 @@ export function normalizeMinnesotaFinanceDistrict(value: string | null | undefin
     return "";
   }
 
-  const numericMatch = /(\d+)/.exec(trimmed);
-  if (numericMatch) {
-    const parsed = Number(numericMatch[1]);
+  const districtMatch = /(\d+)\s*([A-Z])?/i.exec(trimmed);
+  if (districtMatch) {
+    const parsed = Number(districtMatch[1]);
     if (Number.isInteger(parsed)) {
-      return String(parsed);
+      return `${parsed}${districtMatch[2]?.toUpperCase() ?? ""}`;
     }
   }
 

@@ -157,7 +157,7 @@ export async function upsertRecurringMinnesotaCandidateFinanceSyncJobs(
   jobData: MinnesotaCandidateFinanceSyncJobData = {}
 ): Promise<void> {
   assertValidJobOptions(jobData);
-  if (!isMinnesotaCampaignFinanceEnabled()) {
+  if (!isMinnesotaCampaignFinanceSyncEnabled()) {
     const queue = createMinnesotaCandidateFinanceSyncSchedulerQueue();
     try {
       await queue.removeJobScheduler(MINNESOTA_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID);
@@ -181,7 +181,7 @@ export async function upsertRecurringMinnesotaCandidateFinanceSyncJobs(
         name: MINNESOTA_CANDIDATE_FINANCE_SYNC_JOB_NAME,
         data: {
           dryRun: Boolean(jobData.dryRun),
-          force: Boolean(jobData.force),
+          force: false,
           maxCandidates: jobData.maxCandidates,
           staleAfterDays: jobData.staleAfterDays,
           electionLookbackDays: jobData.electionLookbackDays,

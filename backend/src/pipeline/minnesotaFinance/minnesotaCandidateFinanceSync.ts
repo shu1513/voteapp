@@ -155,7 +155,12 @@ function isCycleYear(input: { row: MinnesotaCampaignFinanceCsvRow; electionYear:
   const parsedYear = rawYear
     ? Number(rawYear)
     : parseYearFromText(firstNonEmpty(input.row, ["Receipt date", "Date", "Received date"]));
-  return Number.isInteger(parsedYear) && parsedYear >= input.electionYear - 1 && parsedYear <= input.electionYear;
+  return (
+    parsedYear !== null &&
+    Number.isInteger(parsedYear) &&
+    parsedYear >= input.electionYear - 1 &&
+    parsedYear <= input.electionYear
+  );
 }
 
 function resolveTrustedCommittee(input: {
@@ -382,19 +387,19 @@ export async function syncMinnesotaCandidateFinance(
         };
 
   const outsideGroups =
-    selectedOutsideGroups.length > 0 ? selectedOutsideGroups : undefined;
+    input.expenditureRows !== undefined ? selectedOutsideGroups : undefined;
   const outsideGroupBreakdowns =
-    outsideFinance.outsideGroupBreakdowns.length > 0 ? outsideFinance.outsideGroupBreakdowns : undefined;
+    input.outsideContributionRows !== undefined ? outsideFinance.outsideGroupBreakdowns : undefined;
 
   const outsideSupportTotal =
     input.expenditureRows !== undefined
-      ? selectedOutsideGroups
+      ? outsideGroupCandidateData.outsideGroups
           .filter((group) => group.supportOppose === "support")
           .reduce((sum, group) => sum + group.amount, 0)
       : null;
   const outsideOpposeTotal =
     input.expenditureRows !== undefined
-      ? selectedOutsideGroups
+      ? outsideGroupCandidateData.outsideGroups
           .filter((group) => group.supportOppose === "oppose")
           .reduce((sum, group) => sum + group.amount, 0)
       : null;

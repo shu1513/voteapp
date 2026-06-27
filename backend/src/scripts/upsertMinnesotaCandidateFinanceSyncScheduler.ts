@@ -1,7 +1,7 @@
 import { pathToFileURL } from "node:url";
 
 import { loadProjectEnv } from "../config/env.js";
-import { isMinnesotaCampaignFinanceEnabled } from "../config/featureFlags.js";
+import { isMinnesotaCampaignFinanceEnabled, isMinnesotaCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
   upsertRecurringMinnesotaCandidateFinanceSyncJobs,
   type MinnesotaCandidateFinanceSyncJobData,
@@ -48,9 +48,25 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+const MINNESOTA_FINANCE_KNOWN_FLAGS = new Set(['--dry-run', '--force', '--max-candidates', '--stale-after-days', '--lookback-days', '--lookahead-days', '--raw-cache-dir']);
+
+function assertNoUnknownMinnesotaFinanceArgs(args: readonly string[]): void {
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+    const isKnown = [...MINNESOTA_FINANCE_KNOWN_FLAGS].some((flag) => arg === flag || arg.startsWith(`${flag}=`));
+    if (!isKnown) {
+      throw new Error(`Unknown argument: ${arg}`);
+    }
+  }
+}
+
 export function parseUpsertMinnesotaCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): MinnesotaCandidateFinanceSyncJobData {
+  assertNoUnknownMinnesotaFinanceArgs(args);
+
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),
@@ -65,7 +81,7 @@ export function parseUpsertMinnesotaCandidateFinanceSyncSchedulerArgs(
 async function main(): Promise<void> {
   loadProjectEnv();
   const jobData = parseUpsertMinnesotaCandidateFinanceSyncSchedulerArgs(process.argv.slice(2));
-  const enabled = isMinnesotaCampaignFinanceEnabled();
+  const enabled = isMinnesotaCampaignFinanceSyncEnabled();
   await upsertRecurringMinnesotaCandidateFinanceSyncJobs(jobData);
   console.log(
     enabled

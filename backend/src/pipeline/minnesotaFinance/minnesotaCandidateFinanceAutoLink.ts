@@ -73,16 +73,20 @@ function mapCandidateElectionRow(row: CandidateElectionQueryRow): MinnesotaFinan
 }
 
 function candidateNameFromContributionRow(row: MinnesotaCampaignFinanceCsvRow): string {
-  return [
+  const candidates = [
     row["Candidate"],
     row["Candidate Name"],
     row["candidate"],
     row["candidate_name"],
     row["Recipient"],
-  ]
-    .map((value) => value?.trim() ?? "")
-    .filter(Boolean)
-    .join(" ");
+  ];
+  for (const value of candidates) {
+    const trimmed = value?.trim() ?? "";
+    if (trimmed.length > 0) {
+      return trimmed;
+    }
+  }
+  return "";
 }
 
 export function buildMinnesotaCandidateNamePredicate(
@@ -156,8 +160,8 @@ export async function listMinnesotaCandidateElectionsMissingFinanceLinks(
         AND election.race_type = 'office'
         AND election.election_date >= ($1::date - make_interval(days => $3::int))
         AND election.election_date <= ($1::date + make_interval(days => $4::int))
-        AND candidate_election.status NOT IN ('withdrawn', 'lost')
-        AND (office.scope || '::' || office.canonical_name) = ANY($5::text[])
+      AND candidate_election.status NOT IN ('withdrawn', 'lost')
+      AND (office.scope || '::' || office.canonical_name) = ANY($5::text[])
         AND COALESCE(NULLIF(trim(candidate.display_name), ''), NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')) IS NOT NULL
         AND NOT EXISTS (
           SELECT 1
