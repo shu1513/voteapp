@@ -16,12 +16,15 @@ import {
   isConnecticutEcrisRawDataRefreshEnabled,
   isDistrictOfColumbiaCampaignFinanceEnabled,
   isDistrictOfColumbiaCampaignFinanceSyncEnabled,
-  isMaineCampaignFinanceEnabled,
-  isMaineCampaignFinanceSyncEnabled,
-  isMaineCfisRawDataRefreshEnabled,
   isFloridaCampaignFinanceBrowserExportEnabled,
   isFloridaCampaignFinanceEnabled,
   isFloridaCampaignFinanceSyncEnabled,
+  isIndianaCampaignFinanceEnabled,
+  isIndianaCampaignFinanceRawDataRefreshEnabled,
+  isIndianaCampaignFinanceSyncEnabled,
+  isMaineCampaignFinanceEnabled,
+  isMaineCampaignFinanceSyncEnabled,
+  isMaineCfisRawDataRefreshEnabled,
   isNewMexicoCampaignFinanceEnabled,
   isNewMexicoCampaignFinanceSyncEnabled,
   isNewMexicoCfisRawDataRefreshEnabled,
@@ -54,6 +57,9 @@ const ORIGINAL_COLORADO_RAW_REFRESH_VALUE = process.env.COLORADO_TRACER_RAW_DATA
 const ORIGINAL_CONNECTICUT_FINANCE_VALUE = process.env.CONNECTICUT_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_CONNECTICUT_FINANCE_SYNC_VALUE = process.env.CONNECTICUT_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_CONNECTICUT_RAW_REFRESH_VALUE = process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED;
+const ORIGINAL_INDIANA_FINANCE_VALUE = process.env.INDIANA_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_INDIANA_FINANCE_SYNC_VALUE = process.env.INDIANA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_INDIANA_RAW_REFRESH_VALUE = process.env.INDIANA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED;
 const ORIGINAL_NEW_MEXICO_FINANCE_VALUE = process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_NEW_MEXICO_FINANCE_SYNC_VALUE = process.env.NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_NEW_MEXICO_RAW_REFRESH_VALUE = process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED;
@@ -152,6 +158,21 @@ describe("featureFlags", () => {
       delete process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED;
     } else {
       process.env.CONNECTICUT_ECRIS_RAW_DATA_REFRESH_ENABLED = ORIGINAL_CONNECTICUT_RAW_REFRESH_VALUE;
+    }
+    if (ORIGINAL_INDIANA_FINANCE_VALUE === undefined) {
+      delete process.env.INDIANA_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.INDIANA_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_INDIANA_FINANCE_VALUE;
+    }
+    if (ORIGINAL_INDIANA_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.INDIANA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.INDIANA_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_INDIANA_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_INDIANA_RAW_REFRESH_VALUE === undefined) {
+      delete process.env.INDIANA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED;
+    } else {
+      process.env.INDIANA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED = ORIGINAL_INDIANA_RAW_REFRESH_VALUE;
     }
     if (ORIGINAL_NEW_MEXICO_FINANCE_VALUE === undefined) {
       delete process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED;
@@ -563,6 +584,58 @@ describe("featureFlags", () => {
 
     expect(isNewMexicoCfisRawDataRefreshEnabled()).toBe(false);
     expect(isNewMexicoCfisRawDataRefreshEnabled(true)).toBe(true);
+  });
+
+  it("disables Indiana campaign finance by default", () => {
+    delete process.env.INDIANA_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.INDIANA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    delete process.env.INDIANA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED;
+
+    expect(isIndianaCampaignFinanceEnabled()).toBe(false);
+    expect(isIndianaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isIndianaCampaignFinanceRawDataRefreshEnabled()).toBe(false);
+  });
+
+  it("requires the Indiana campaign finance master flag before sync can run", () => {
+    process.env.INDIANA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.INDIANA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isIndianaCampaignFinanceEnabled()).toBe(false);
+    expect(isIndianaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isIndianaCampaignFinanceSyncEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Indiana campaign finance sync flag", () => {
+    process.env.INDIANA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.INDIANA_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    expect(isIndianaCampaignFinanceEnabled()).toBe(true);
+    expect(isIndianaCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isIndianaCampaignFinanceSyncEnabled(true)).toBe(true);
+  });
+
+  it("enables Indiana campaign finance sync when both flags are enabled", () => {
+    process.env.INDIANA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.INDIANA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isIndianaCampaignFinanceEnabled()).toBe(true);
+    expect(isIndianaCampaignFinanceSyncEnabled()).toBe(true);
+  });
+
+  it("requires the Indiana campaign finance master flag before raw data refresh can run", () => {
+    process.env.INDIANA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.INDIANA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED = "true";
+
+    expect(isIndianaCampaignFinanceRawDataRefreshEnabled()).toBe(false);
+    expect(isIndianaCampaignFinanceRawDataRefreshEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Indiana campaign finance raw data refresh flag", () => {
+    process.env.INDIANA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.INDIANA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED = "false";
+
+    expect(isIndianaCampaignFinanceRawDataRefreshEnabled()).toBe(false);
+    expect(isIndianaCampaignFinanceRawDataRefreshEnabled(true)).toBe(true);
   });
 
   it("disables Maine campaign finance by default", () => {

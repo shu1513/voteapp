@@ -125,6 +125,24 @@ export function isNebraskaNadcRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+export function isIndianaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("INDIANA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isIndianaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isIndianaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("INDIANA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isIndianaCampaignFinanceRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isIndianaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("INDIANA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isNewMexicoCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED", false);
 }
