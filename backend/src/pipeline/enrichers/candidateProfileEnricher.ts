@@ -8,7 +8,7 @@ import {
 import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { resolveIncludePartyForCandidateContest } from "../../ai/candidatePartisanship.js";
 import { getPipelineEnv } from "../../config/env.js";
-import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
+import { isFloridaCampaignFinanceSyncEnabled, isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
 import {
   buildCaliforniaCandidateFinanceLinkedElectionSyncJobId,
   enqueueManualCaliforniaCandidateFinanceSyncJob,
@@ -108,6 +108,32 @@ type EnricherOptions = {
   once?: boolean;
   batchSize?: number;
   blockMs?: number;
+};
+
+const OPTIONAL_FLORIDA_FINANCE_ELIGIBLE_MODULE_PATH = "../floridaFinance/floridaFinanceEligibleOffices.js";
+const OPTIONAL_FLORIDA_FINANCE_SYNC_SCHEDULER_MODULE_PATH =
+  "../../scheduler/floridaCandidateFinanceSyncScheduler.js";
+
+type OptionalFloridaFinanceEligibleModule = {
+  isFloridaFinanceEligibleOffice: (input: {
+    officeScope: string | null | undefined;
+    officeCanonicalName: string | null | undefined;
+  }) => boolean;
+};
+
+type OptionalFloridaFinanceSyncSchedulerModule = {
+  buildFloridaCandidateFinanceLinkedElectionSyncJobId: (now?: Date) => string;
+  enqueueManualFloridaCandidateFinanceSyncJob: (
+    jobData?: {
+      dryRun?: boolean;
+      force?: boolean;
+      aiClassifyIndustries?: boolean;
+      aiClassificationMinAmount?: number;
+      triggeredBy?: "manual" | "unknown";
+      requestedAt?: string;
+    },
+    options?: { jobId?: string }
+  ) => Promise<string>;
 };
 
 type ElectionRow = {
@@ -564,6 +590,61 @@ async function enqueueTexasFinanceSyncForLinkedElection(input: {
     const reason = toReason(error);
     console.warn(
       `candidate-profile enricher could not enqueue Texas finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
+function isMissingOptionalFloridaModuleError(error: unknown): boolean {
+  const code = typeof error === "object" && error !== null && "code" in error ? String(error.code) : "";
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    (code === "ERR_MODULE_NOT_FOUND" || code === "MODULE_NOT_FOUND") &&
+    (message.includes("floridaFinanceEligibleOffices.js") ||
+      message.includes("floridaCandidateFinanceSyncScheduler.js"))
+  );
+}
+
+async function enqueueFloridaFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (input.context.state !== "FL" || !isFloridaCampaignFinanceSyncEnabled()) {
+    return;
+  }
+
+  try {
+    const eligibleModule = (await import(OPTIONAL_FLORIDA_FINANCE_ELIGIBLE_MODULE_PATH)) as OptionalFloridaFinanceEligibleModule;
+    if (
+      !eligibleModule.isFloridaFinanceEligibleOffice({
+        officeScope: input.context.officeScope,
+        officeCanonicalName: input.context.officeCanonicalName,
+      })
+    ) {
+      return;
+    }
+
+    const schedulerModule = (await import(
+      OPTIONAL_FLORIDA_FINANCE_SYNC_SCHEDULER_MODULE_PATH
+    )) as OptionalFloridaFinanceSyncSchedulerModule;
+    await schedulerModule.enqueueManualFloridaCandidateFinanceSyncJob(
+      {
+        aiClassifyIndustries: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: schedulerModule.buildFloridaCandidateFinanceLinkedElectionSyncJobId(),
+      }
+    );
+  } catch (error) {
+    if (isMissingOptionalFloridaModuleError(error)) {
+      console.warn(
+        `candidate-profile enricher skipped Florida finance sync for candidate=${input.candidateId} election=${input.context.contextId}: optional Florida finance module is unavailable`
+      );
+      return;
+    }
+    const reason = toReason(error);
+    console.warn(
+      `candidate-profile enricher could not enqueue Florida finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
     );
   }
 }
@@ -1470,6 +1551,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               candidateId,
             });
             await enqueueTexasFinanceSyncForLinkedElection({
+              context: draftContext,
+              candidateId,
+            });
+            await enqueueFloridaFinanceSyncForLinkedElection({
               context: draftContext,
               candidateId,
             });
