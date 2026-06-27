@@ -284,6 +284,7 @@ function buildProbeIndustries(input: {
   groups: readonly IllinoisOutsideSpendingGroup[];
   breakdowns: readonly IllinoisFinanceOutsideGroupBreakdown[];
   limit: number;
+  evidenceLimit: number;
 }): IllinoisFinanceProbeIndustry[] {
   const donors = input.breakdowns.filter((breakdown) => breakdown.categoryType === "donor");
   return input.breakdowns
@@ -301,7 +302,7 @@ function buildProbeIndustries(input: {
           source_url: donor.sourceUrl ?? sourceUrlForCommittee(input.groups, donor.committeeKey, donor.supportOppose),
         }))
         .sort((left, right) => right.amount - left.amount || left.organization_name.localeCompare(right.organization_name))
-        .slice(0, 5);
+        .slice(0, input.evidenceLimit);
 
       return {
         category_name: industry.categoryName,
@@ -321,23 +322,24 @@ async function buildOutsideIndustryBreakdowns(input: {
   client: IllinoisFinanceProbeClient;
   groups: readonly IllinoisOutsideSpendingGroup[];
   electionYear: number;
-  fromDate: string;
-  toDate: string;
   funderLimit: number;
   minIndustryAmount: number;
   clientOptions: IllinoisSbeClientOptions;
 }): Promise<{ breakdowns: IllinoisFinanceOutsideGroupBreakdown[]; skippedOutsideFunderLookupCount: number }> {
   const contributionRecords: IllinoisSbeContributionRecord[] = [];
   let skippedOutsideFunderLookupCount = 0;
+  const fetchedCommitteeKeys = new Set<string>();
 
   for (const group of input.groups) {
+    if (fetchedCommitteeKeys.has(group.committeeKey)) {
+      continue;
+    }
+    fetchedCommitteeKeys.add(group.committeeKey);
     try {
       const records = await input.client.getCommitteeContributions(
         {
           committeeName: group.committeeName,
           contributionType: "All Types",
-          fromDate: input.fromDate,
-          toDate: input.toDate,
         },
         input.clientOptions
       );
@@ -378,8 +380,6 @@ export async function runProbeIllinoisCandidateFinance(input: {
         candidateFirstName: candidate.firstName,
         electionYear: input.args.electionYear,
         contributionType: "Individual Contributions",
-        fromDate: input.args.fromDate,
-        toDate: input.args.toDate,
       },
       clientOptions
     ),
@@ -422,8 +422,6 @@ export async function runProbeIllinoisCandidateFinance(input: {
     client,
     groups: outsideGroups,
     electionYear: input.args.electionYear,
-    fromDate: input.args.fromDate,
-    toDate: input.args.toDate,
     funderLimit: input.args.funderLimit,
     minIndustryAmount: input.args.minIndustryAmount,
     clientOptions,
@@ -432,6 +430,7 @@ export async function runProbeIllinoisCandidateFinance(input: {
     groups: outsideGroups,
     breakdowns: industryBreakdowns.breakdowns,
     limit: input.args.limit,
+    evidenceLimit: input.args.funderLimit,
   });
 
   return {

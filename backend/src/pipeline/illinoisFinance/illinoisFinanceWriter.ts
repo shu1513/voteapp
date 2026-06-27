@@ -269,8 +269,14 @@ export async function upsertIllinoisFinanceLink(input: {
           WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.link_source
           ELSE EXCLUDED.link_source
         END,
-        source_url = EXCLUDED.source_url,
-        last_verified_at = EXCLUDED.last_verified_at
+        source_url = CASE
+          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.source_url
+          ELSE EXCLUDED.source_url
+        END,
+        last_verified_at = CASE
+          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.last_verified_at
+          ELSE EXCLUDED.last_verified_at
+        END
       RETURNING id
     `,
     [

@@ -18,6 +18,7 @@ import {
 import {
   fetchIllinoisSbeCommitteeContributionRecords,
   fetchIllinoisSbeIndependentExpenditureRecords,
+  getIllinoisSbeExportCapStatus,
   ILLINOIS_SBE_CONTRIBUTION_COMMITTEE_SEARCH_URL,
   ILLINOIS_SBE_EXPENDITURE_ALL_SEARCH_URL,
   type IllinoisSbeClientOptions,
@@ -178,31 +179,58 @@ function uniqueOutsideGroupNames(records: readonly IllinoisSbeExpenditureRecord[
   return [...names.values()];
 }
 
+function officeSearchText(input: { sbeOffice: string; district: string | null } | null, fallback: string): string {
+  if (!input) {
+    return fallback;
+  }
+  return input.district ? `${input.sbeOffice} ${input.district}` : input.sbeOffice;
+}
+
+function warnIfIllinoisSbeExportLooksCapped(input: {
+  context: string;
+  row: IllinoisCandidateFinanceDueRow;
+  records: readonly unknown[];
+}): void {
+  const status = getIllinoisSbeExportCapStatus({ csvRowCount: input.records.length });
+  if (!status.capped) {
+    return;
+  }
+  console.warn(
+    `Illinois SBE export may be capped for ${input.context} ` +
+      `(candidateId=${input.row.candidateId} electionId=${input.row.electionId} ` +
+      `committeeKey=${input.row.committeeKey} rows=${status.rowCount} cap=${status.cap} reason=${status.reason})`
+  );
+}
+
 export async function loadIllinoisFinanceDataForDueRow(
   row: IllinoisCandidateFinanceDueRow,
   options?: IllinoisSbeClientOptions
 ): Promise<IllinoisCandidateFinanceData> {
   const fromDate = cycleStartDate(row.electionYear);
   const toDate = cycleEndDate(row.electionYear);
-  const sbeOffice = toIllinoisSbeOfficeSearchInput({
+  const officeSearch = toIllinoisSbeOfficeSearchInput({
     officeScope: row.officeScope,
     officeCanonicalName: row.officeName,
     district: row.district,
-  })?.sbeOffice;
+  });
+  const office = officeSearchText(officeSearch, row.officeName);
   const directContributionRecords = await fetchIllinoisSbeCommitteeContributionRecords(
     {
       committeeName: row.committeeName,
       contributionType: "All Types",
-      fromDate,
-      toDate,
     },
     options
   );
+  warnIfIllinoisSbeExportLooksCapped({
+    context: "direct committee contributions",
+    row,
+    records: directContributionRecords,
+  });
   const [supportExpenditureRecords, opposeExpenditureRecords] = await Promise.all([
     fetchIllinoisSbeIndependentExpenditureRecords(
       {
         candidateName: row.candidateName,
-        office: sbeOffice ?? row.officeName,
+        office,
         supportOppose: "support",
         fromDate,
         toDate,
@@ -212,7 +240,7 @@ export async function loadIllinoisFinanceDataForDueRow(
     fetchIllinoisSbeIndependentExpenditureRecords(
       {
         candidateName: row.candidateName,
-        office: sbeOffice ?? row.officeName,
+        office,
         supportOppose: "oppose",
         fromDate,
         toDate,
@@ -224,17 +252,19 @@ export async function loadIllinoisFinanceDataForDueRow(
   const outsideGroupContributionRecords: IllinoisSbeContributionRecord[] = [];
 
   for (const committeeName of uniqueOutsideGroupNames(outsideExpenditureRecords, row.electionYear)) {
-    outsideGroupContributionRecords.push(
-      ...(await fetchIllinoisSbeCommitteeContributionRecords(
-        {
-          committeeName,
-          contributionType: "All Types",
-          fromDate,
-          toDate,
-        },
-        options
-      ))
+    const records = await fetchIllinoisSbeCommitteeContributionRecords(
+      {
+        committeeName,
+        contributionType: "All Types",
+      },
+      options
     );
+    warnIfIllinoisSbeExportLooksCapped({
+      context: `outside group contributions for ${committeeName}`,
+      row,
+      records,
+    });
+    outsideGroupContributionRecords.push(...records);
   }
 
   return {

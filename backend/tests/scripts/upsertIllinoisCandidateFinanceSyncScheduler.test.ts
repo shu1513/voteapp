@@ -3,6 +3,19 @@ import { describe, expect, it } from "vitest";
 import { parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs } from "../../src/scripts/upsertIllinoisCandidateFinanceSyncScheduler.js";
 
 describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
+  it("keeps recurring AI industry classification opt-in", () => {
+    expect(parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs([])).toEqual({
+      dryRun: false,
+      force: false,
+      maxCandidates: undefined,
+      staleAfterDays: undefined,
+      electionLookbackDays: undefined,
+      electionLookaheadDays: undefined,
+      aiClassifyIndustries: false,
+      aiClassificationMinAmount: undefined,
+    });
+  });
+
   it("parses recurring scheduler options", () => {
     expect(
       parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs([

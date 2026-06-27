@@ -28,6 +28,8 @@ const enqueueManualNewMexicoCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn
 const buildNewMexicoCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualTexasCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 const buildTexasCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
+const enqueueManualFloridaCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
+const buildFloridaCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualWashingtonCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 const buildWashingtonCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualHawaiiCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
@@ -38,6 +40,8 @@ const enqueueManualWisconsinCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn
 const buildWisconsinCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const enqueueManualMassachusettsCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
 const buildMassachusettsCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
+const enqueueManualMinnesotaCandidateFinanceSyncJobMock = vi.hoisted(() => vi.fn());
+const buildMinnesotaCandidateFinanceLinkedElectionSyncJobIdMock = vi.hoisted(() => vi.fn());
 const createCandidateFutureElectionNotificationEventsMock = vi.hoisted(() => vi.fn());
 
 vi.mock("pg", () => ({
@@ -124,6 +128,12 @@ vi.mock("../../src/scheduler/texasCandidateFinanceSyncScheduler.js", () => ({
   enqueueManualTexasCandidateFinanceSyncJob: enqueueManualTexasCandidateFinanceSyncJobMock,
 }));
 
+vi.mock("../../src/scheduler/floridaCandidateFinanceSyncScheduler.js", () => ({
+  buildFloridaCandidateFinanceLinkedElectionSyncJobId:
+    buildFloridaCandidateFinanceLinkedElectionSyncJobIdMock,
+  enqueueManualFloridaCandidateFinanceSyncJob: enqueueManualFloridaCandidateFinanceSyncJobMock,
+}));
+
 vi.mock("../../src/scheduler/hawaiiCandidateFinanceSyncScheduler.js", () => ({
   buildHawaiiCandidateFinanceLinkedElectionSyncJobId:
     buildHawaiiCandidateFinanceLinkedElectionSyncJobIdMock,
@@ -154,6 +164,12 @@ vi.mock("../../src/scheduler/massachusettsCandidateFinanceSyncScheduler.js", () 
   enqueueManualMassachusettsCandidateFinanceSyncJob: enqueueManualMassachusettsCandidateFinanceSyncJobMock,
 }));
 
+vi.mock("../../src/scheduler/minnesotaCandidateFinanceSyncScheduler.js", () => ({
+  buildMinnesotaCandidateFinanceLinkedElectionSyncJobId:
+    buildMinnesotaCandidateFinanceLinkedElectionSyncJobIdMock,
+  enqueueManualMinnesotaCandidateFinanceSyncJob: enqueueManualMinnesotaCandidateFinanceSyncJobMock,
+}));
+
 import { runCandidateProfileEnricher } from "../../src/pipeline/enrichers/candidateProfileEnricher.js";
 import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
@@ -161,6 +177,8 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     delete process.env.PRESIDENTIAL_ELECTIONS_ENABLED;
+    delete process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED;
     redisConnectMock.mockResolvedValue(undefined);
     redisQuitMock.mockResolvedValue(undefined);
     redisXGroupCreateMock.mockResolvedValue(undefined);
@@ -178,11 +196,13 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     );
     enqueueManualNewMexicoCandidateFinanceSyncJobMock.mockResolvedValue("new-mexico-finance-job-1");
     enqueueManualTexasCandidateFinanceSyncJobMock.mockResolvedValue("texas-finance-job-1");
+    enqueueManualFloridaCandidateFinanceSyncJobMock.mockResolvedValue("florida-finance-job-1");
     enqueueManualWashingtonCandidateFinanceSyncJobMock.mockResolvedValue("washington-finance-job-1");
     enqueueManualHawaiiCandidateFinanceSyncJobMock.mockResolvedValue("hawaii-finance-job-1");
     enqueueManualVirginiaCandidateFinanceSyncJobMock.mockResolvedValue("virginia-finance-job-1");
     enqueueManualWisconsinCandidateFinanceSyncJobMock.mockResolvedValue("wisconsin-finance-job-1");
     enqueueManualMassachusettsCandidateFinanceSyncJobMock.mockResolvedValue("massachusetts-finance-job-1");
+    enqueueManualMinnesotaCandidateFinanceSyncJobMock.mockResolvedValue("minnesota-finance-job-1");
     buildCaliforniaCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "california-candidate-finance-linked-election-sync-2026-06-01"
     );
@@ -201,6 +221,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     buildTexasCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "texas-candidate-finance-linked-election-sync-2026-06-01"
     );
+    buildFloridaCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
+      "florida-candidate-finance-linked-election-sync-2026-06-01"
+    );
     buildWashingtonCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "washington-candidate-finance-linked-election-sync-2026-06-01"
     );
@@ -215,6 +238,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     );
     buildMassachusettsCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
       "massachusetts-candidate-finance-linked-election-sync-2026-06-01"
+    );
+    buildMinnesotaCandidateFinanceLinkedElectionSyncJobIdMock.mockReturnValue(
+      "minnesota-candidate-finance-linked-election-sync-2026-06-01"
     );
     redisXReadGroupMock.mockResolvedValue([
       {
@@ -303,6 +329,8 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    delete process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED;
   });
 
   it("acks and skips presidential profile drafts when presidential elections are disabled", async () => {
@@ -1515,6 +1543,103 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     );
   });
 
+  it("dedupes automatic Florida finance batch syncs for eligible Florida elections", async () => {
+    process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-9-fl",
+            message: {
+              election_id: "election-fl-governor",
+              item_type: "candidate_profile",
+              candidate_display_name: "Jane Governor",
+              roster_party: "Democratic",
+              roster_is_incumbent: "false",
+              seed_urls: JSON.stringify(["https://example.gov/florida-governor"]),
+              run_id: "run-fl-governor",
+            },
+          },
+        ],
+      },
+    ]);
+    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      const text = String(sql);
+      if (text.includes("FROM public.candidate_elections AS ce")) {
+        expect(params).toEqual(["election-fl-governor"]);
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("FROM public.elections AS e")) {
+        expect(params).toEqual(["election-fl-governor"]);
+        return {
+          rows: [
+            {
+              id: "election-fl-governor",
+              state: "FL",
+              district_name: "Florida",
+              district_type: "statewide",
+              election_date: "2026-11-03",
+              official_ballot_title: "Governor",
+              election_stage: "general",
+              senate_class: null,
+              term_end_year: null,
+              is_partisan: true,
+              sources: ["https://example.gov/election"],
+              office_scope: "statewide",
+              office_canonical_name: "Governor",
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected pool query: ${sql}`);
+    });
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Jane Governor",
+        first_name: "Jane",
+        last_name: "Governor",
+        party: "Democratic",
+        fec_ids: [],
+        sources: ["https://example.gov/florida-governor"],
+      },
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualCaliforniaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualTexasCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueManualWashingtonCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(buildFloridaCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
+    expect(enqueueManualFloridaCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
+      {
+        aiClassifyIndustries: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: "florida-candidate-finance-linked-election-sync-2026-06-01",
+      }
+    );
+    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
+      {
+        candidateId: "candidate-1",
+        electionId: "election-fl-governor",
+        runId: "run-fl-governor",
+      },
+    ]);
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-9-fl"
+    );
+  });
+
   it("dedupes automatic Washington finance batch syncs for eligible Washington elections", async () => {
     redisXReadGroupMock.mockResolvedValue([
       {
@@ -2091,6 +2216,115 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       "staging:candidates:profile:draft",
       "candidate_profile_enricher",
       "1-5"
+    );
+  });
+
+  it("enqueues Minnesota finance sync for eligible Minnesota election drafts", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:profile:draft",
+        messages: [
+          {
+            id: "1-6",
+            message: {
+              election_id: "election-mn-governor",
+              item_type: "candidate_profile",
+              candidate_display_name: "Jane Gopher",
+              roster_party: "Democratic",
+              roster_is_incumbent: "false",
+              seed_urls: JSON.stringify(["https://example.gov/mn-governor"]),
+              run_id: "run-mn-governor",
+            },
+          },
+        ],
+      },
+    ]);
+
+    poolQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      const text = String(sql);
+      if (text.includes("FROM public.candidate_elections AS ce")) {
+        expect(params).toEqual(["election-mn-governor"]);
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("FROM public.elections AS e")) {
+        expect(params).toEqual(["election-mn-governor"]);
+        expect(text).toContain("LEFT JOIN public.offices AS office");
+        return {
+          rows: [
+            {
+              id: "election-mn-governor",
+              state: "MN",
+              district_name: "Minnesota",
+              district_type: "statewide",
+              election_date: "2026-11-03",
+              official_ballot_title: "Governor",
+              election_stage: "general",
+              senate_class: null,
+              term_end_year: null,
+              is_partisan: true,
+              sources: ["https://example.gov/election"],
+              office_scope: "statewide",
+              office_canonical_name: "Governor",
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected pool query: ${text}`);
+    });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      const text = String(sql);
+      if (text === "BEGIN" || text === "COMMIT" || text === "ROLLBACK") {
+        return { rows: [], rowCount: null };
+      }
+      if (text.includes("FROM public.candidates")) {
+        return { rows: [], rowCount: 0 };
+      }
+      if (text.includes("INSERT INTO public.candidates")) {
+        return { rows: [{ id: "candidate-mn-1" }], rowCount: 1 };
+      }
+      if (text.includes("INSERT INTO public.candidate_elections")) {
+        return { rows: [], rowCount: 1 };
+      }
+      throw new Error(`Unexpected client query: ${text}`);
+    });
+
+    enrichCandidateProfileMock.mockResolvedValue({
+      ok: true,
+      provider: "openai",
+      model: "test-model",
+      aiRawDebug: null,
+      profile: {
+        display_name: "Jane Gopher",
+        first_name: "Jane",
+        last_name: "Gopher",
+        party: "Democratic",
+        sources: ["https://example.gov/mn-governor"],
+      },
+    });
+
+    await runCandidateProfileEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    expect(enqueueManualMinnesotaCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
+      {
+        triggeredBy: "manual",
+      },
+      {
+        jobId: "minnesota-candidate-finance-linked-election-sync-2026-06-01",
+      }
+    );
+    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueCandidateRecordDraftsMock).toHaveBeenCalledWith(expect.anything(), [
+      {
+        candidateId: "candidate-mn-1",
+        electionId: "election-mn-governor",
+        runId: "run-mn-governor",
+      },
+    ]);
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:draft",
+      "candidate_profile_enricher",
+      "1-6"
     );
   });
 });

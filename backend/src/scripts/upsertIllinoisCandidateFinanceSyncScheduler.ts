@@ -82,7 +82,7 @@ export function parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
+    aiClassifyIndustries: args.includes("--ai-classify-industries"),
     aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
@@ -103,6 +103,6 @@ const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
 if (entrypoint === import.meta.url) {
   main().catch((error) => {
     console.error("Illinois campaign finance recurring scheduler upsert failed:", error);
-    process.exit(1);
+    process.exitCode = 1;
   });
 }

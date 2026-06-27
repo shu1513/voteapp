@@ -89,7 +89,22 @@ describe("probeIllinoisCandidateFinance script", () => {
                 sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/ExpenditureSearchByAllExpenditures.aspx",
               },
             ]
-          : []
+          : [
+              {
+                payeeName: "Vendor",
+                payeeAddress: null,
+                amount: 2500,
+                expendedDate: "10/2/2022",
+                reportReceivedDate: null,
+                expenditureType: "Independent Expenditures",
+                expendingCommitteeName: "Illinois Conservation Action",
+                purpose: "Mail",
+                candidateName: "Jane Doe",
+                officeDistrict: "Governor",
+                supportOppose: "oppose" as const,
+                sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/ExpenditureSearchByAllExpenditures.aspx",
+              },
+            ]
       ),
       getCommitteeContributions: vi.fn(async () => [
         {
@@ -174,6 +189,7 @@ describe("probeIllinoisCandidateFinance script", () => {
       expect.objectContaining({ committeeName: "Illinois Conservation Action", contributionType: "All Types" }),
       expect.objectContaining({ timeoutMs: 30000 })
     );
+    expect(client.getCommitteeContributions).toHaveBeenCalledTimes(1);
   });
 
   it("rejects malformed required options", () => {

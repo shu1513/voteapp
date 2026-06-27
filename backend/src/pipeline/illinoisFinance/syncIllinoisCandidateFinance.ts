@@ -242,7 +242,7 @@ function outsideBreakdownKey(input: IllinoisFinanceOutsideGroupBreakdownInput): 
     input.categoryType === "donor"
       ? normalizeFinanceLabel(input.categoryName, "donor")
       : input.categoryName.trim().toUpperCase();
-  return `${input.committeeKey.trim().toUpperCase()}\u0000${input.supportOppose}\u0000${input.categoryType}\u0000${categoryKey}`;
+  return `${normalizeIllinoisCommitteeKey(input.committeeKey)}\u0000${input.supportOppose}\u0000${input.categoryType}\u0000${categoryKey}`;
 }
 
 function addOutsideBreakdown(
@@ -263,7 +263,7 @@ function addOutsideBreakdown(
       existing.contributorCount === undefined ||
       breakdown.contributorCount === null ||
       breakdown.contributorCount === undefined
-        ? existing.contributorCount ?? breakdown.contributorCount ?? null
+        ? null
         : existing.contributorCount + breakdown.contributorCount,
     sourceUrl: existing.sourceUrl ?? breakdown.sourceUrl,
   });
@@ -409,6 +409,7 @@ export async function syncIllinoisCandidateFinance(
   const directFinance = aggregateIllinoisDirectContributions({
     electionYear,
     contributionRecords: input.directContributionRecords,
+    committeeKey: input.committeeKey,
     sourceUrl: directSourceUrl,
     maxBreakdownsPerCategory: input.directMaxBreakdownsPerCategory,
   });

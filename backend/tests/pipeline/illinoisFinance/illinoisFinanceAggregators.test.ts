@@ -104,6 +104,53 @@ describe("illinoisFinanceAggregators", () => {
     ]);
   });
 
+  it("skips direct contribution rows outside the resolved target committee", () => {
+    const result = aggregateIllinoisDirectContributions({
+      electionYear: 2022,
+      committeeKey: "Friends of Jane",
+      contributionRecords: [
+        contribution({
+          contributorName: "Alice",
+          occupation: "Attorney",
+          amount: 1000,
+          recipientCommitteeName: "Friends of Jane",
+        }),
+        contribution({
+          contributorName: "Wrong Committee Donor",
+          occupation: "Developer",
+          amount: 5000,
+          recipientCommitteeName: "Friends of Janet",
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      matchedContributionRowCount: 2,
+      includedContributionRowCount: 1,
+      skippedContributionRowCount: 1,
+      summary: {
+        totalReceipts: 1000,
+        directContributionTotal: 1000,
+      },
+    });
+    expect(result.directBreakdowns).toEqual([
+      {
+        categoryType: "occupation",
+        categoryName: "Attorney",
+        amount: 1000,
+        contributorCount: 1,
+        sourceUrl: null,
+      },
+      {
+        categoryType: "contribution_size",
+        categoryName: "$1,000-$4,999",
+        amount: 1000,
+        contributorCount: 1,
+        sourceUrl: null,
+      },
+    ]);
+  });
+
   it("aggregates supporting and opposing outside groups from included expenditures", () => {
     const result = aggregateIllinoisOutsideSpending({
       electionYear: 2022,

@@ -26,6 +26,7 @@ export type IllinoisDirectFinanceSummary = {
 export type IllinoisDirectContributionAggregationInput = {
   electionYear: number;
   contributionRecords: readonly IllinoisSbeContributionRecord[];
+  committeeKey?: string | null;
   sourceUrl?: string | null;
   maxBreakdownsPerCategory?: number;
 };
@@ -318,6 +319,7 @@ export function aggregateIllinoisDirectContributions(
     "maxBreakdownsPerCategory"
   );
   const sourceUrl = input.sourceUrl ?? null;
+  const targetCommitteeKey = normalizeIllinoisCommitteeKey(input.committeeKey);
   const aggregates = new Map<string, DirectAggregate>();
   let matchedContributionRowCount = 0;
   let includedContributionRowCount = 0;
@@ -327,6 +329,10 @@ export function aggregateIllinoisDirectContributions(
 
   for (const record of input.contributionRecords) {
     matchedContributionRowCount += 1;
+    if (targetCommitteeKey && recordCommitteeKey(record) !== targetCommitteeKey) {
+      skippedContributionRowCount += 1;
+      continue;
+    }
     const amountCents = amountToCents(record.amount);
     if (amountCents === null || amountCents <= 0 || !contributionIsCycleRecord({ record, electionYear })) {
       skippedContributionRowCount += 1;

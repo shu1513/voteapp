@@ -191,14 +191,6 @@ function isLegislativeInput(input: { officeScope: string; officeName: string }):
   );
 }
 
-function cycleStartDate(electionYear: number): string {
-  return `1/1/${electionYear - 1}`;
-}
-
-function cycleEndDate(electionYear: number): string {
-  return `12/31/${electionYear}`;
-}
-
 function splitCandidateNameForSearch(value: string): { firstName: string | null; lastName: string } | null {
   const normalized = value
     .replace(/\([^()]+\)/g, " ")
@@ -330,8 +322,6 @@ export async function searchAndResolveIllinoisCandidateCommittee(
       candidateFirstName: searchName.firstName,
       electionYear,
       contributionType: "All Types",
-      fromDate: cycleStartDate(electionYear),
-      toDate: cycleEndDate(electionYear),
     },
     options
   );

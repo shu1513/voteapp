@@ -75,7 +75,7 @@ export type IllinoisSbeDateWindow = {
   toDate?: string | null;
 };
 
-export type IllinoisSbeCandidateContributionSearchInput = IllinoisSbeDateWindow & {
+export type IllinoisSbeCandidateContributionSearchInput = {
   candidateLastName: string;
   candidateFirstName?: string | null;
   electionYear?: number | null;
@@ -83,7 +83,7 @@ export type IllinoisSbeCandidateContributionSearchInput = IllinoisSbeDateWindow 
   contributionType?: IllinoisSbeContributionType | null;
 };
 
-export type IllinoisSbeCommitteeContributionSearchInput = IllinoisSbeDateWindow & {
+export type IllinoisSbeCommitteeContributionSearchInput = {
   committeeName?: string | null;
   committeeId?: string | null;
   contributionType?: IllinoisSbeContributionType | null;
