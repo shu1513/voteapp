@@ -23,6 +23,11 @@ function hasFlag(name: string): boolean {
   return process.argv.includes(name);
 }
 
+function toReason(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
+}
+
 function usage(): string {
   return [
     "Usage:",
@@ -95,6 +100,8 @@ async function main(): Promise<void> {
   const redis = createClient({ url: process.env.REDIS_URL ?? "redis://localhost:6379" });
 
   try {
+    await redis.connect();
+
     await pool.query(
       `
         INSERT INTO staging_items (
@@ -138,12 +145,31 @@ async function main(): Promise<void> {
       ]
     );
 
-    await redis.connect();
-    const redisMessageId = await redis.xAdd(STAGING_CANDIDATE_ROSTER_DRAFT_STREAM, "*", {
-      election_id: electionId,
-      item_type: STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
-      run_id: runId,
-    });
+    let redisMessageId: string;
+    try {
+      redisMessageId = await redis.xAdd(STAGING_CANDIDATE_ROSTER_DRAFT_STREAM, "*", {
+        election_id: electionId,
+        item_type: STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
+        run_id: runId,
+      });
+    } catch (error) {
+      await pool.query(
+        `
+          UPDATE staging_items
+          SET status = 'failed',
+              reason = $2,
+              updated_at = now()
+          WHERE ingest_key = $1
+            AND item_type = $3
+        `,
+        [
+          ingestKey,
+          `manual candidate roster redis publish failed: ${toReason(error)}`,
+          STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
+        ]
+      );
+      throw error;
+    }
 
     console.log(
       JSON.stringify(

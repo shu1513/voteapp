@@ -279,9 +279,9 @@ Reason:
 
 Created a local Codex skill for repeat manual research runs:
 
-- Skill path: `/Users/shu/.codex/skills/voteapp-manual-research`
-- Main instructions: `/Users/shu/.codex/skills/voteapp-manual-research/SKILL.md`
-- Pipeline reference: `/Users/shu/.codex/skills/voteapp-manual-research/references/pipeline-map.md`
+- Skill path: `~/.codex/skills/voteapp-manual-research`
+- Main instructions: `~/.codex/skills/voteapp-manual-research/SKILL.md`
+- Pipeline reference: `~/.codex/skills/voteapp-manual-research/references/pipeline-map.md`
 
 Use it by asking Codex to use `$voteapp-manual-research`.
 
@@ -311,6 +311,10 @@ Safety properties:
 - Scripts run only when manually invoked.
 - Both scripts validate payloads before writing.
 - `--dry-run` validates and prints the planned staging keys without connecting to Postgres or Redis.
+- Election injection defaults to a stable `manual:elections:<district_id>:<currentYear>` ingest key so reruns repair the same
+  staging row unless `--ingest-key` is explicitly provided.
+- Both scripts connect to Redis before writing Postgres and mark the staging row `failed` if Redis publishing fails after the
+  DB write.
 - Election JSON may include optional top-level `family_source_urls`; the script stores it in `ai_raw_debug` so the existing
   election writer can populate `election_seed_urls`.
 - Election injection still requires the existing `elections:validate` and `elections:write` steps.

@@ -27,6 +27,11 @@ function hasFlag(name: string): boolean {
   return process.argv.includes(name);
 }
 
+function toReason(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
+}
+
 function usage(): string {
   return [
     "Usage:",
@@ -78,6 +83,11 @@ function extractFamilySourceUrls(payload: unknown): Record<string, string[]> | n
   return Object.keys(normalized).length > 0 ? normalized : null;
 }
 
+function defaultIngestKey(districtId: string): string {
+  const runYear = new Date().getUTCFullYear();
+  return `manual:elections:${districtId}:${runYear}`;
+}
+
 async function main(): Promise<void> {
   loadProjectEnv();
 
@@ -95,7 +105,7 @@ async function main(): Promise<void> {
   const dryRun = hasFlag("--dry-run");
   const ingestKey =
     readFlag("--ingest-key") ??
-    `manual:elections:${parsed.payload.district_id}:${new Date().toISOString()}`;
+    defaultIngestKey(parsed.payload.district_id);
   const runId = readFlag("--run-id") ?? `manual_elections_${new Date().toISOString()}`;
   const payloadJson = JSON.stringify(parsed.payload);
   const familySourceUrls = extractFamilySourceUrls(rawPayload);
@@ -128,6 +138,8 @@ async function main(): Promise<void> {
   const redis = createClient({ url: process.env.REDIS_URL ?? "redis://localhost:6379" });
 
   try {
+    await redis.connect();
+
     await pool.query(
       `
         INSERT INTO staging_items (
@@ -173,13 +185,31 @@ async function main(): Promise<void> {
       ]
     );
 
-    await redis.connect();
-    const redisMessageId = await redis.xAdd(STAGING_PENDING_STREAM, "*", {
-      ingest_key: ingestKey,
-      item_type: STAGING_ITEM_TYPE_ELECTION,
-      run_id: runId,
-      payload: payloadJson,
-    });
+    let redisMessageId: string;
+    try {
+      redisMessageId = await redis.xAdd(STAGING_PENDING_STREAM, "*", {
+        ingest_key: ingestKey,
+        item_type: STAGING_ITEM_TYPE_ELECTION,
+        run_id: runId,
+      });
+    } catch (error) {
+      await pool.query(
+        `
+          UPDATE staging_items
+          SET status = 'failed',
+              reason = $2,
+              updated_at = now()
+          WHERE ingest_key = $1
+            AND item_type = $3
+        `,
+        [
+          ingestKey,
+          `manual inject redis publish failed: ${toReason(error)}`,
+          STAGING_ITEM_TYPE_ELECTION,
+        ]
+      );
+      throw error;
+    }
 
     console.log(
       JSON.stringify(
