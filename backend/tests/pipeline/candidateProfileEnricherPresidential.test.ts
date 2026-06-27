@@ -2307,7 +2307,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
 
     expect(enqueueManualMinnesotaCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {

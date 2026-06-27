@@ -29,7 +29,7 @@ describe("Minnesota finance eligible offices", () => {
   it("normalizes office names and districts conservatively", () => {
     expect(normalizeMinnesotaFinanceOfficeName("State Representative")).toBe("State Lower Chamber Legislator");
     expect(normalizeMinnesotaFinanceDistrict(" 07 ")).toBe("7");
-    expect(mapMinnesotaFinanceOffice({ officeScope: "statewide", officeName: "Governor" })).toEqual(
+    expect(mapMinnesotaFinanceOffice({ officeScope: "statewide", officeCanonicalName: "Governor" })).toEqual(
       expect.objectContaining({
         officeScope: "statewide",
         officeName: "Governor",
@@ -37,7 +37,13 @@ describe("Minnesota finance eligible offices", () => {
         district: null,
       })
     );
-    expect(isMinnesotaFinanceEligibleOffice({ officeScope: "state_lower", officeName: "State Representative", district: "7" })).toBe(
+    expect(
+      isMinnesotaFinanceEligibleOffice({
+        officeScope: "state_lower",
+        officeCanonicalName: "State Representative",
+        district: "7",
+      })
+    ).toBe(
       true
     );
   });

@@ -155,6 +155,7 @@ describe("minnesotaCandidateFinanceSyncScheduler", () => {
 
   it("upserts the recurring scheduler when the master Minnesota finance flag is enabled", async () => {
     process.env.MINNESOTA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MINNESOTA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
     mockEnv();
 
     const queueInstance = {

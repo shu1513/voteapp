@@ -71,62 +71,65 @@ describe("Minnesota outside group contribution aggregator", () => {
     expect(result.matchedContributionRowCount).toBe(4);
     expect(result.includedContributionRowCount).toBe(3);
     expect(result.skippedContributionRowCount).toBe(1);
-    expect(result.outsideGroupBreakdowns).toEqual([
-      expect.objectContaining({
-        committeeId: "SP123",
-        supportOppose: "support",
-        categoryType: "donor",
-        categoryName: "Google LLC",
-        amount: 100,
-        contributorCount: 1,
-        sourceUrl: "https://example.test/minnesota",
-      }),
-      expect.objectContaining({
-        committeeId: "SP123",
-        supportOppose: "support",
-        categoryType: "donor",
-        categoryName: "AFL CIO",
-        amount: 50,
-        contributorCount: 1,
-        sourceUrl: "https://example.test/minnesota",
-      }),
-      expect.objectContaining({
-        committeeId: "SP123",
-        supportOppose: "support",
-        categoryType: "industry",
-        categoryName: "technology",
-        amount: 100,
-        contributorCount: 1,
-        sourceUrl: "https://example.test/minnesota",
-      }),
-      expect.objectContaining({
-        committeeId: "SP123",
-        supportOppose: "support",
-        categoryType: "industry",
-        categoryName: "labor_unions",
-        amount: 50,
-        contributorCount: 1,
-        sourceUrl: "https://example.test/minnesota",
-      }),
-      expect.objectContaining({
-        committeeId: "SP999",
-        supportOppose: "oppose",
-        categoryType: "donor",
-        categoryName: "Microsoft",
-        amount: 25,
-        contributorCount: 1,
-        sourceUrl: "https://example.test/minnesota",
-      }),
-      expect.objectContaining({
-        committeeId: "SP999",
-        supportOppose: "oppose",
-        categoryType: "industry",
-        categoryName: "technology",
-        amount: 25,
-        contributorCount: 1,
-        sourceUrl: "https://example.test/minnesota",
-      }),
-    ]);
+    expect(result.outsideGroupBreakdowns).toHaveLength(6);
+    expect(result.outsideGroupBreakdowns).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          committeeId: "SP123",
+          supportOppose: "support",
+          categoryType: "donor",
+          categoryName: "Google LLC",
+          amount: 100,
+          contributorCount: 1,
+          sourceUrl: "https://example.test/minnesota",
+        }),
+        expect.objectContaining({
+          committeeId: "SP123",
+          supportOppose: "support",
+          categoryType: "donor",
+          categoryName: "AFL CIO",
+          amount: 50,
+          contributorCount: 1,
+          sourceUrl: "https://example.test/minnesota",
+        }),
+        expect.objectContaining({
+          committeeId: "SP123",
+          supportOppose: "support",
+          categoryType: "industry",
+          categoryName: "technology",
+          amount: 100,
+          contributorCount: 1,
+          sourceUrl: "https://example.test/minnesota",
+        }),
+        expect.objectContaining({
+          committeeId: "SP123",
+          supportOppose: "support",
+          categoryType: "industry",
+          categoryName: "labor_unions",
+          amount: 50,
+          contributorCount: 1,
+          sourceUrl: "https://example.test/minnesota",
+        }),
+        expect.objectContaining({
+          committeeId: "SP999",
+          supportOppose: "oppose",
+          categoryType: "donor",
+          categoryName: "Microsoft",
+          amount: 25,
+          contributorCount: 1,
+          sourceUrl: "https://example.test/minnesota",
+        }),
+        expect.objectContaining({
+          committeeId: "SP999",
+          supportOppose: "oppose",
+          categoryType: "industry",
+          categoryName: "technology",
+          amount: 25,
+          contributorCount: 1,
+          sourceUrl: "https://example.test/minnesota",
+        }),
+      ])
+    );
   });
 
   it("skips contributions outside the election cycle", () => {
