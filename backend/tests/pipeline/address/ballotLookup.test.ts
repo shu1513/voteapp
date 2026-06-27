@@ -5802,6 +5802,276 @@ describe("lookupElectionDetailById", () => {
     expect(supportingEvidenceQuery).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced Maine finance summaries for Maine candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("MAINE_CAMPAIGN_FINANCE_ENABLED", "true");
+    const sourceUrl = "https://mainecampaignfinance.com/";
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "state_upper",
+            geoid_compact: "23001",
+            district_name: "Maine Senate District 1",
+            state: "ME",
+            state_fips: "23",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "State Senator",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "state_upper",
+            office_canonical_name: "State Senator",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Casey Pine",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: null,
+            state: "ME",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "100123",
+            election_year: 2026,
+            total_receipts: "90000.00",
+            direct_contribution_total: "64000.00",
+            total_disbursements: "20000.00",
+            cash_on_hand: "44000.00",
+            outside_support_total: "35000.00",
+            outside_oppose_total: "7000.00",
+            source_url: sourceUrl,
+            last_synced_at: "2026-06-24 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Teacher",
+            amount: "18000.00",
+            contributor_count: "36",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$100-$249",
+            amount: "22000.00",
+            contributor_count: "120",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "200456",
+            committee_name: "Maine Forward PAC",
+            support_oppose: "support",
+            amount: "35000.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "200789",
+            committee_name: "Maine Accountability PAC",
+            support_oppose: "oppose",
+            amount: "7000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "education",
+            amount: "30000.00",
+            contributor_count: "2",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "7000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "education",
+            committee_id: "200456",
+            committee_name: "Maine Forward PAC",
+            support_oppose: "support",
+            organization_name: "Maine Teachers Association",
+            amount: "25000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "MAINE_CFIS",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "100123",
+      last_synced_at: "2026-06-24 04:05:00+00",
+      direct_campaign: {
+        total_raised: 64000,
+        total_spent: 20000,
+        cash_on_hand: 44000,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "Teacher",
+            amount: 18000,
+            contributor_count: 36,
+            source_url: sourceUrl,
+          },
+        ],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$100-$249",
+            amount: 22000,
+            contributor_count: 120,
+            source_url: sourceUrl,
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 35000,
+        oppose_total: 7000,
+        top_supporting_groups: [
+          {
+            committee_id: "200456",
+            committee_name: "Maine Forward PAC",
+            support_oppose: "support",
+            amount: 35000,
+            source_url: sourceUrl,
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "200789",
+            committee_name: "Maine Accountability PAC",
+            support_oppose: "oppose",
+            amount: 7000,
+            source_url: sourceUrl,
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "education",
+            amount: 30000,
+            contributor_count: 2,
+            source_url: sourceUrl,
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 7000,
+            contributor_count: 1,
+            source_url: sourceUrl,
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Teacher",
+            amount: 18000,
+            contributor_count: 36,
+            source_url: sourceUrl,
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "education",
+            amount: 30000,
+            contributor_count: 2,
+            source_url: sourceUrl,
+            explanation:
+              "The Education category is a top outside-spending support industry because Maine Teachers Association contributed to Maine Forward PAC, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "Maine Teachers Association",
+                organization_type: "donor",
+                amount: 25000,
+                contributor_count: 1,
+                committee_id: "200456",
+                committee_name: "Maine Forward PAC",
+                source_url: sourceUrl,
+              },
+            ],
+          },
+        ],
+      },
+    });
+    const maineQueries = query.mock.calls.map(([sql]) => String(sql)).filter((sql) => sql.includes("public.me_candidate_finance_"));
+    expect(maineQueries.some((sql) => sql.includes("public.me_candidate_finance_summaries"))).toBe(true);
+    expect(maineQueries.some((sql) => sql.includes("public.me_candidate_finance_direct_breakdowns"))).toBe(true);
+    expect(maineQueries.some((sql) => sql.includes("breakdown.category_type IN ('occupation', 'contribution_size')"))).toBe(
+      true
+    );
+    expect(maineQueries.some((sql) => sql.includes("public.me_candidate_finance_outside_groups"))).toBe(true);
+    expect(maineQueries.some((sql) => sql.includes("public.me_candidate_finance_outside_group_breakdowns"))).toBe(true);
+    const supportingEvidenceQuery = maineQueries.find((sql) => sql.includes("top_industries_per_group"));
+    expect(supportingEvidenceQuery).toContain("public.finance_label_classifications");
+    expect(supportingEvidenceQuery).toContain("classification.normalized_label");
+    expect(supportingEvidenceQuery).not.toContain("classification.raw_label = breakdown.category_name");
+  });
+
   it("includes locally synced Virginia finance summaries for Virginia candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "true");

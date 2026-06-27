@@ -16,6 +16,9 @@ import {
   isConnecticutEcrisRawDataRefreshEnabled,
   isDistrictOfColumbiaCampaignFinanceEnabled,
   isDistrictOfColumbiaCampaignFinanceSyncEnabled,
+  isMaineCampaignFinanceEnabled,
+  isMaineCampaignFinanceSyncEnabled,
+  isMaineCfisRawDataRefreshEnabled,
   isFloridaCampaignFinanceBrowserExportEnabled,
   isFloridaCampaignFinanceEnabled,
   isFloridaCampaignFinanceSyncEnabled,
@@ -54,6 +57,9 @@ const ORIGINAL_CONNECTICUT_RAW_REFRESH_VALUE = process.env.CONNECTICUT_ECRIS_RAW
 const ORIGINAL_NEW_MEXICO_FINANCE_VALUE = process.env.NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_NEW_MEXICO_FINANCE_SYNC_VALUE = process.env.NEW_MEXICO_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_NEW_MEXICO_RAW_REFRESH_VALUE = process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED;
+const ORIGINAL_MAINE_FINANCE_VALUE = process.env.MAINE_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_MAINE_FINANCE_SYNC_VALUE = process.env.MAINE_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_MAINE_RAW_REFRESH_VALUE = process.env.MAINE_CFIS_RAW_DATA_REFRESH_ENABLED;
 const ORIGINAL_OKLAHOMA_FINANCE_VALUE = process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_OKLAHOMA_FINANCE_SYNC_VALUE = process.env.OKLAHOMA_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_OKLAHOMA_RAW_REFRESH_VALUE = process.env.OKLAHOMA_GUARDIAN_RAW_DATA_REFRESH_ENABLED;
@@ -161,6 +167,21 @@ describe("featureFlags", () => {
       delete process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED;
     } else {
       process.env.NEW_MEXICO_CFIS_RAW_DATA_REFRESH_ENABLED = ORIGINAL_NEW_MEXICO_RAW_REFRESH_VALUE;
+    }
+    if (ORIGINAL_MAINE_FINANCE_VALUE === undefined) {
+      delete process.env.MAINE_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_MAINE_FINANCE_VALUE;
+    }
+    if (ORIGINAL_MAINE_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.MAINE_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.MAINE_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_MAINE_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_MAINE_RAW_REFRESH_VALUE === undefined) {
+      delete process.env.MAINE_CFIS_RAW_DATA_REFRESH_ENABLED;
+    } else {
+      process.env.MAINE_CFIS_RAW_DATA_REFRESH_ENABLED = ORIGINAL_MAINE_RAW_REFRESH_VALUE;
     }
     if (ORIGINAL_OKLAHOMA_FINANCE_VALUE === undefined) {
       delete process.env.OKLAHOMA_CAMPAIGN_FINANCE_ENABLED;
@@ -542,6 +563,65 @@ describe("featureFlags", () => {
 
     expect(isNewMexicoCfisRawDataRefreshEnabled()).toBe(false);
     expect(isNewMexicoCfisRawDataRefreshEnabled(true)).toBe(true);
+  });
+
+  it("disables Maine campaign finance by default", () => {
+    delete process.env.MAINE_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.MAINE_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    delete process.env.MAINE_CFIS_RAW_DATA_REFRESH_ENABLED;
+
+    expect(isMaineCampaignFinanceEnabled()).toBe(false);
+    expect(isMaineCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isMaineCfisRawDataRefreshEnabled()).toBe(false);
+  });
+
+  it("requires the Maine campaign finance master flag before sync can run", () => {
+    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.MAINE_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isMaineCampaignFinanceEnabled()).toBe(false);
+    expect(isMaineCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isMaineCampaignFinanceSyncEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Maine campaign finance sync flag", () => {
+    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MAINE_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    expect(isMaineCampaignFinanceEnabled()).toBe(true);
+    expect(isMaineCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isMaineCampaignFinanceSyncEnabled(true)).toBe(true);
+  });
+
+  it("enables Maine campaign finance sync when both flags are enabled", () => {
+    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MAINE_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isMaineCampaignFinanceEnabled()).toBe(true);
+    expect(isMaineCampaignFinanceSyncEnabled()).toBe(true);
+  });
+
+  it("requires the Maine campaign finance master flag before CFIS raw data refresh can run", () => {
+    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.MAINE_CFIS_RAW_DATA_REFRESH_ENABLED = "true";
+
+    expect(isMaineCfisRawDataRefreshEnabled()).toBe(false);
+    expect(isMaineCfisRawDataRefreshEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Maine CFIS raw data refresh flag", () => {
+    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MAINE_CFIS_RAW_DATA_REFRESH_ENABLED = "false";
+
+    expect(isMaineCfisRawDataRefreshEnabled()).toBe(false);
+    expect(isMaineCfisRawDataRefreshEnabled(true)).toBe(true);
+  });
+
+  it("enables Maine CFIS raw data refresh when both flags are enabled", () => {
+    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MAINE_CFIS_RAW_DATA_REFRESH_ENABLED = "true";
+
+    expect(isMaineCfisRawDataRefreshEnabled()).toBe(true);
   });
 
   it("disables Oklahoma campaign finance by default", () => {
