@@ -1,0 +1,515 @@
+import type { Pool, PoolClient } from "pg";
+
+import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
+import { aggregateIllinoisOutsideSpending } from "./illinoisFinanceAggregators.js";
+import {
+  autoLinkMissingIllinoisCandidateFinanceLinks,
+  listIllinoisCandidateElectionsMissingFinanceLinks,
+  type IllinoisCandidateCommitteeResolver,
+} from "./illinoisCandidateFinanceAutoLink.js";
+import {
+  syncIllinoisCandidateFinance,
+  type IllinoisCandidateFinanceSyncResult,
+} from "./syncIllinoisCandidateFinance.js";
+import {
+  ILLINOIS_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  toIllinoisSbeOfficeSearchInput,
+} from "./illinoisFinanceEligibleOffices.js";
+import {
+  fetchIllinoisSbeCommitteeContributionRecords,
+  fetchIllinoisSbeIndependentExpenditureRecords,
+  getIllinoisSbeExportCapStatus,
+  ILLINOIS_SBE_CONTRIBUTION_COMMITTEE_SEARCH_URL,
+  ILLINOIS_SBE_EXPENDITURE_ALL_SEARCH_URL,
+  type IllinoisSbeClientOptions,
+  type IllinoisSbeContributionRecord,
+  type IllinoisSbeExpenditureRecord,
+} from "./illinoisSbeClient.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & Pick<Pool, "connect">;
+
+export type IllinoisCandidateFinanceDueRow = {
+  candidateId: string;
+  electionId: string;
+  candidateName: string;
+  electionYear: number;
+  officeScope: string;
+  officeName: string;
+  district: string | null;
+  committeeKey: string;
+  committeeName: string;
+  sourceUrl: string | null;
+  lastSyncedAt: string | null;
+};
+
+export type IllinoisCandidateFinanceData = {
+  directContributionRecords: readonly IllinoisSbeContributionRecord[];
+  outsideExpenditureRecords: readonly IllinoisSbeExpenditureRecord[];
+  outsideGroupContributionRecords: readonly IllinoisSbeContributionRecord[];
+  directContributionSourceUrl?: string | null;
+  outsideExpenditureSourceUrl?: string | null;
+  outsideGroupContributionSourceUrl?: string | null;
+};
+
+export type IllinoisCandidateFinanceBatchSyncInput = {
+  db: ConnectableQueryable;
+  now?: Date;
+  dryRun?: boolean;
+  maxCandidates?: number;
+  staleAfterDays?: number;
+  electionLookbackDays?: number;
+  electionLookaheadDays?: number;
+  sbeClientOptions?: IllinoisSbeClientOptions;
+  autoLinkMissingLinks?: boolean;
+  financeIndustryClassifier?: FinanceIndustryClassifier;
+  aiClassificationMinAmount?: number;
+  syncIllinoisCandidateFinanceFn?: typeof syncIllinoisCandidateFinance;
+  loadIllinoisFinanceDataFn?: (
+    row: IllinoisCandidateFinanceDueRow,
+    options?: IllinoisSbeClientOptions
+  ) => Promise<IllinoisCandidateFinanceData>;
+  resolveCandidateCommittee?: IllinoisCandidateCommitteeResolver;
+};
+
+export type IllinoisCandidateFinanceBatchSyncItemResult = {
+  candidateId: string;
+  electionId: string;
+  electionYear: number;
+  committeeKey: string;
+  ok: boolean;
+  result?: IllinoisCandidateFinanceSyncResult;
+  error?: string;
+};
+
+export type IllinoisCandidateFinanceBatchSyncResult = {
+  dryRun: boolean;
+  now: string;
+  staleAfterDays: number;
+  maxCandidates: number;
+  dueCandidateCount: number;
+  selectedCandidateCount: number;
+  syncedCandidateCount: number;
+  failedCandidateCount: number;
+  autoLinkAttemptedCount: number;
+  autoLinkLinkedCount: number;
+  results: IllinoisCandidateFinanceBatchSyncItemResult[];
+};
+
+type IllinoisCandidateFinanceDueQueryRow = {
+  candidate_id: string;
+  election_id: string;
+  candidate_name: string;
+  election_year: number;
+  office_scope: string;
+  office_name: string;
+  district: string | null;
+  committee_key: string;
+  committee_name: string;
+  source_url: string | null;
+  last_synced_at: string | null;
+  total_due_rows: string | number;
+};
+
+const DEFAULT_MAX_CANDIDATES = 25;
+const DEFAULT_STALE_AFTER_DAYS = 7;
+const DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS = 1;
+const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
+const DEFAULT_OUTSIDE_GROUP_FETCH_LIMIT = 50;
+
+function assertValidDate(date: Date, label: string): void {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+    throw new Error(`Invalid Illinois finance batch sync ${label}`);
+  }
+}
+
+function normalizePositiveInteger(value: number | undefined, fallback: number, label: string): number {
+  const normalized = value ?? fallback;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Illinois finance batch sync ${label}: ${value}`);
+  }
+  return normalized;
+}
+
+function parseTotalDueRows(value: string | number | undefined): number {
+  const parsed = typeof value === "number" ? value : Number(value);
+  return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : 0;
+}
+
+function mapDueRow(row: IllinoisCandidateFinanceDueQueryRow): IllinoisCandidateFinanceDueRow {
+  return {
+    candidateId: row.candidate_id,
+    electionId: row.election_id,
+    candidateName: row.candidate_name,
+    electionYear: row.election_year,
+    officeScope: row.office_scope,
+    officeName: row.office_name,
+    district: row.district,
+    committeeKey: row.committee_key,
+    committeeName: row.committee_name,
+    sourceUrl: row.source_url,
+    lastSyncedAt: row.last_synced_at,
+  };
+}
+
+function cycleStartDate(electionYear: number): string {
+  return `1/1/${electionYear - 1}`;
+}
+
+function cycleEndDate(electionYear: number): string {
+  return `12/31/${electionYear}`;
+}
+
+function uniqueOutsideGroupNames(records: readonly IllinoisSbeExpenditureRecord[], electionYear: number): string[] {
+  const outsideGroups = aggregateIllinoisOutsideSpending({
+    electionYear,
+    expenditureRecords: records,
+    sourceUrl: ILLINOIS_SBE_EXPENDITURE_ALL_SEARCH_URL,
+    maxGroups: DEFAULT_OUTSIDE_GROUP_FETCH_LIMIT,
+  }).summary?.groups;
+
+  const names = new Map<string, string>();
+  for (const group of outsideGroups ?? []) {
+    const name = group.committeeName.trim().replace(/\s+/g, " ");
+    const key = group.committeeKey.trim().replace(/\s+/g, " ").toUpperCase();
+    if (name && key && !names.has(key)) {
+      names.set(key, name);
+    }
+  }
+  return [...names.values()];
+}
+
+function officeSearchText(input: { sbeOffice: string; district: string | null } | null, fallback: string): string {
+  if (!input) {
+    return fallback;
+  }
+  return input.district ? `${input.sbeOffice} ${input.district}` : input.sbeOffice;
+}
+
+function warnIfIllinoisSbeExportLooksCapped(input: {
+  context: string;
+  row: IllinoisCandidateFinanceDueRow;
+  records: readonly unknown[];
+}): void {
+  const status = getIllinoisSbeExportCapStatus({ csvRowCount: input.records.length });
+  if (!status.capped) {
+    return;
+  }
+  console.warn(
+    `Illinois SBE export may be capped for ${input.context} ` +
+      `(candidateId=${input.row.candidateId} electionId=${input.row.electionId} ` +
+      `committeeKey=${input.row.committeeKey} rows=${status.rowCount} cap=${status.cap} reason=${status.reason})`
+  );
+}
+
+export async function loadIllinoisFinanceDataForDueRow(
+  row: IllinoisCandidateFinanceDueRow,
+  options?: IllinoisSbeClientOptions
+): Promise<IllinoisCandidateFinanceData> {
+  const fromDate = cycleStartDate(row.electionYear);
+  const toDate = cycleEndDate(row.electionYear);
+  const officeSearch = toIllinoisSbeOfficeSearchInput({
+    officeScope: row.officeScope,
+    officeCanonicalName: row.officeName,
+    district: row.district,
+  });
+  if (!officeSearch) {
+    throw new Error(
+      `Illinois finance due row cannot be mapped to an SBE office search ` +
+        `(candidateId=${row.candidateId} electionId=${row.electionId})`
+    );
+  }
+  const office = officeSearchText(officeSearch, row.officeName);
+  const directContributionRecords = await fetchIllinoisSbeCommitteeContributionRecords(
+    {
+      committeeName: row.committeeName,
+      contributionType: "All Types",
+    },
+    options
+  );
+  warnIfIllinoisSbeExportLooksCapped({
+    context: "direct committee contributions",
+    row,
+    records: directContributionRecords,
+  });
+  const [supportExpenditureRecords, opposeExpenditureRecords] = await Promise.all([
+    fetchIllinoisSbeIndependentExpenditureRecords(
+      {
+        candidateName: row.candidateName,
+        office,
+        supportOppose: "support",
+        fromDate,
+        toDate,
+      },
+      options
+    ),
+    fetchIllinoisSbeIndependentExpenditureRecords(
+      {
+        candidateName: row.candidateName,
+        office,
+        supportOppose: "oppose",
+        fromDate,
+        toDate,
+      },
+      options
+    ),
+  ]);
+  warnIfIllinoisSbeExportLooksCapped({
+    context: "independent expenditures (support)",
+    row,
+    records: supportExpenditureRecords,
+  });
+  warnIfIllinoisSbeExportLooksCapped({
+    context: "independent expenditures (oppose)",
+    row,
+    records: opposeExpenditureRecords,
+  });
+  const outsideExpenditureRecords = [...supportExpenditureRecords, ...opposeExpenditureRecords];
+  const outsideGroupContributionRecords: IllinoisSbeContributionRecord[] = [];
+
+  for (const committeeName of uniqueOutsideGroupNames(outsideExpenditureRecords, row.electionYear)) {
+    const records = await fetchIllinoisSbeCommitteeContributionRecords(
+      {
+        committeeName,
+        contributionType: "All Types",
+      },
+      options
+    );
+    warnIfIllinoisSbeExportLooksCapped({
+      context: `outside group contributions for ${committeeName}`,
+      row,
+      records,
+    });
+    outsideGroupContributionRecords.push(...records);
+  }
+
+  return {
+    directContributionRecords,
+    outsideExpenditureRecords,
+    outsideGroupContributionRecords,
+    directContributionSourceUrl: ILLINOIS_SBE_CONTRIBUTION_COMMITTEE_SEARCH_URL,
+    outsideExpenditureSourceUrl: ILLINOIS_SBE_EXPENDITURE_ALL_SEARCH_URL,
+    outsideGroupContributionSourceUrl: ILLINOIS_SBE_CONTRIBUTION_COMMITTEE_SEARCH_URL,
+  };
+}
+
+export async function listDueIllinoisCandidateFinanceSyncRows(
+  db: Queryable,
+  input: {
+    now: Date;
+    staleAfterDays: number;
+    maxCandidates: number;
+    electionLookbackDays: number;
+    electionLookaheadDays: number;
+  }
+): Promise<{ rows: IllinoisCandidateFinanceDueRow[]; totalDueRows: number }> {
+  const result = await db.query<IllinoisCandidateFinanceDueQueryRow>(
+    `
+      WITH due AS (
+        SELECT
+          link.candidate_id::text AS candidate_id,
+          link.election_id::text AS election_id,
+          COALESCE(
+            NULLIF(trim(candidate.display_name), ''),
+            NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), ''),
+            link.candidate_name_normalized
+          ) AS candidate_name,
+          link.election_year,
+          office.scope AS office_scope,
+          link.office_name,
+          link.district,
+          link.committee_key,
+          link.committee_name,
+          link.source_url,
+          summary.last_synced_at::text AS last_synced_at,
+          COUNT(*) OVER () AS total_due_rows
+        FROM public.il_candidate_finance_links AS link
+        JOIN public.candidates AS candidate
+          ON candidate.id = link.candidate_id
+        JOIN public.candidate_elections AS candidate_election
+          ON candidate_election.candidate_id = link.candidate_id
+         AND candidate_election.election_id = link.election_id
+        JOIN public.elections AS election
+          ON election.id = link.election_id
+        JOIN public.districts AS district
+          ON district.id = election.district_id
+        LEFT JOIN public.offices AS office
+          ON office.id = election.office_id
+        LEFT JOIN public.il_candidate_finance_summaries AS summary
+          ON summary.link_id = link.id
+         AND summary.election_year = link.election_year
+        WHERE link.link_status = 'active'
+          AND candidate.deleted_at IS NULL
+          AND district.state = 'IL'
+          AND election.race_type = 'office'
+          AND election.election_date >= ($1::date - make_interval(days => $4::int))
+          AND election.election_date <= ($1::date + make_interval(days => $5::int))
+          AND candidate_election.status NOT IN ('withdrawn', 'lost')
+          AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
+          AND (
+            summary.last_synced_at IS NULL
+            OR summary.last_synced_at < ($1::timestamptz - make_interval(days => $2::int))
+          )
+        ORDER BY summary.last_synced_at ASC NULLS FIRST,
+                 election.election_date ASC,
+                 link.candidate_name_normalized ASC,
+                 link.id ASC
+        LIMIT $3::int
+      )
+      SELECT
+        candidate_id,
+        election_id,
+        candidate_name,
+        election_year,
+        office_scope,
+        office_name,
+        district,
+        committee_key,
+        committee_name,
+        source_url,
+        last_synced_at,
+        total_due_rows
+      FROM due
+    `,
+    [
+      input.now.toISOString(),
+      input.staleAfterDays,
+      input.maxCandidates,
+      input.electionLookbackDays,
+      input.electionLookaheadDays,
+      [...ILLINOIS_FINANCE_ELIGIBLE_OFFICE_KEYS],
+    ]
+  );
+
+  return {
+    rows: result.rows.map(mapDueRow),
+    totalDueRows: result.rows.length > 0 ? parseTotalDueRows(result.rows[0]?.total_due_rows) : 0,
+  };
+}
+
+export async function syncDueIllinoisCandidateFinance(
+  input: IllinoisCandidateFinanceBatchSyncInput
+): Promise<IllinoisCandidateFinanceBatchSyncResult> {
+  const now = input.now ?? new Date();
+  assertValidDate(now, "now");
+
+  const maxCandidates = normalizePositiveInteger(input.maxCandidates, DEFAULT_MAX_CANDIDATES, "maxCandidates");
+  const staleAfterDays = normalizePositiveInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "staleAfterDays");
+  const electionLookbackDays = normalizePositiveInteger(
+    input.electionLookbackDays,
+    DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS,
+    "electionLookbackDays"
+  );
+  const electionLookaheadDays = normalizePositiveInteger(
+    input.electionLookaheadDays,
+    DEFAULT_ELECTION_LOOKAHEAD_DAYS,
+    "electionLookaheadDays"
+  );
+  const dryRun = input.dryRun === true;
+  const syncFn = input.syncIllinoisCandidateFinanceFn ?? syncIllinoisCandidateFinance;
+  const loadDataFn = input.loadIllinoisFinanceDataFn ?? loadIllinoisFinanceDataForDueRow;
+  let autoLinkAttemptedCount = 0;
+  let autoLinkLinkedCount = 0;
+
+  if (!dryRun && input.autoLinkMissingLinks !== false) {
+    try {
+      const missingLinkCandidates = await listIllinoisCandidateElectionsMissingFinanceLinks(input.db, {
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+      });
+      autoLinkAttemptedCount = missingLinkCandidates.length;
+      const autoLinkResults = await autoLinkMissingIllinoisCandidateFinanceLinks({
+        db: input.db,
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+        candidateElections: missingLinkCandidates,
+        resolveCandidateCommittee: input.resolveCandidateCommittee,
+        sbeClientOptions: input.sbeClientOptions,
+      });
+      autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;
+      for (const result of autoLinkResults) {
+        if (result.status === "error") {
+          console.warn("Illinois finance auto-link did not link candidate election:", result);
+        }
+      }
+    } catch (error) {
+      console.warn(
+        "Illinois finance auto-link skipped; continuing with already-linked candidate sync:",
+        error instanceof Error ? error.message : error
+      );
+    }
+  }
+
+  const due = await listDueIllinoisCandidateFinanceSyncRows(input.db, {
+    now,
+    staleAfterDays,
+    maxCandidates,
+    electionLookbackDays,
+    electionLookaheadDays,
+  });
+
+  const results: IllinoisCandidateFinanceBatchSyncItemResult[] = [];
+  for (const row of due.rows) {
+    try {
+      const data = await loadDataFn(row, input.sbeClientOptions);
+      const result = await syncFn({
+        db: input.db,
+        candidateId: row.candidateId,
+        electionId: row.electionId,
+        candidateName: row.candidateName,
+        electionYear: row.electionYear,
+        officeName: row.officeName,
+        district: row.district,
+        committeeKey: row.committeeKey,
+        committeeName: row.committeeName,
+        directContributionRecords: data.directContributionRecords,
+        outsideExpenditureRecords: data.outsideExpenditureRecords,
+        outsideGroupContributionRecords: data.outsideGroupContributionRecords,
+        sourceUrl: row.sourceUrl ?? data.directContributionSourceUrl,
+        directContributionSourceUrl: data.directContributionSourceUrl,
+        outsideExpenditureSourceUrl: data.outsideExpenditureSourceUrl,
+        outsideGroupContributionSourceUrl: data.outsideGroupContributionSourceUrl,
+        financeIndustryClassifier: input.financeIndustryClassifier,
+        aiClassificationMinAmount: input.aiClassificationMinAmount,
+        dryRun,
+        now,
+      });
+      results.push({
+        candidateId: row.candidateId,
+        electionId: row.electionId,
+        electionYear: row.electionYear,
+        committeeKey: row.committeeKey,
+        ok: true,
+        result,
+      });
+    } catch (error) {
+      results.push({
+        candidateId: row.candidateId,
+        electionId: row.electionId,
+        electionYear: row.electionYear,
+        committeeKey: row.committeeKey,
+        ok: false,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+
+  const syncedCandidateCount = results.filter((result) => result.ok).length;
+  return {
+    dryRun,
+    now: now.toISOString(),
+    staleAfterDays,
+    maxCandidates,
+    dueCandidateCount: due.totalDueRows,
+    selectedCandidateCount: due.rows.length,
+    syncedCandidateCount,
+    failedCandidateCount: results.length - syncedCandidateCount,
+    autoLinkAttemptedCount,
+    autoLinkLinkedCount,
+    results,
+  };
+}

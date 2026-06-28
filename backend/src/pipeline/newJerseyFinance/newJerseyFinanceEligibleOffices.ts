@@ -19,4 +19,3 @@ export function isNewJerseyFinanceEligibleOffice(input: {
   const key = `${normalizeOfficeName(input.officeScope)}::${normalizeOfficeName(input.officeCanonicalName)}`;
   return NEW_JERSEY_FINANCE_ELIGIBLE_OFFICE_KEYS.has(key);
 }
-

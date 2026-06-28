@@ -5421,6 +5421,276 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  it("includes locally synced Illinois SBE finance summaries for Illinois candidate detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("ILLINOIS_CAMPAIGN_FINANCE_ENABLED", "true");
+    const genericIllinoisSourceUrl = "https://www.elections.il.gov/CampaignDisclosure/";
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "17",
+            district_name: "Illinois",
+            state: "IL",
+            state_fips: "17",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Prairie",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "IL",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "JANE DOE",
+            election_year: 2026,
+            total_receipts: "275000.00",
+            direct_contribution_total: "225000.00",
+            total_disbursements: null,
+            cash_on_hand: null,
+            outside_support_total: "60000.00",
+            outside_oppose_total: "9000.00",
+            source_url: null,
+            last_synced_at: "2026-06-23 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "occupation",
+            category_name: "Attorney",
+            amount: "50000.00",
+            contributor_count: "10",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            category_type: "contribution_size",
+            category_name: "$1,000-$4,999",
+            amount: "80000.00",
+            contributor_count: "18",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "ILLINOIS FUTURE IEC",
+            committee_name: "Illinois Future IEC",
+            support_oppose: "support",
+            amount: "60000.00",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "PRAIRIE ACCOUNTABILITY PAC",
+            committee_name: "Prairie Accountability PAC",
+            support_oppose: "oppose",
+            amount: "9000.00",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "support",
+            category_name: "labor_unions",
+            amount: "55000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            support_oppose: "oppose",
+            category_name: "real_estate",
+            amount: "9000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            industry_name: "labor_unions",
+            committee_id: "ILLINOIS FUTURE IEC",
+            committee_name: "Illinois Future IEC",
+            support_oppose: "support",
+            organization_name: "Illinois Workers Union PAC",
+            amount: "55000.00",
+            contributor_count: "1",
+            source_url: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toEqual({
+      source: "ILLINOIS_SBE",
+      cycle: 2026,
+      fec_candidate_id: null,
+      controlled_committee_id: "JANE DOE",
+      last_synced_at: "2026-06-23 04:05:00+00",
+      direct_campaign: {
+        total_raised: 225000,
+        total_spent: null,
+        cash_on_hand: null,
+        debts_owed: null,
+        top_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 50000,
+            contributor_count: 10,
+            source_url: genericIllinoisSourceUrl,
+          },
+        ],
+        top_employers: [],
+        top_industries: [],
+        contribution_size_buckets: [
+          {
+            category_name: "$1,000-$4,999",
+            amount: 80000,
+            contributor_count: 18,
+            source_url: genericIllinoisSourceUrl,
+          },
+        ],
+      },
+      outside_spending: {
+        support_total: 60000,
+        oppose_total: 9000,
+        top_supporting_groups: [
+          {
+            committee_id: "ILLINOIS FUTURE IEC",
+            committee_name: "Illinois Future IEC",
+            support_oppose: "support",
+            amount: 60000,
+            source_url: genericIllinoisSourceUrl,
+          },
+        ],
+        top_opposing_groups: [
+          {
+            committee_id: "PRAIRIE ACCOUNTABILITY PAC",
+            committee_name: "Prairie Accountability PAC",
+            support_oppose: "oppose",
+            amount: 9000,
+            source_url: genericIllinoisSourceUrl,
+          },
+        ],
+        top_supporting_industries: [
+          {
+            category_name: "labor_unions",
+            amount: 55000,
+            contributor_count: 1,
+            source_url: genericIllinoisSourceUrl,
+          },
+        ],
+        top_opposing_industries: [
+          {
+            category_name: "real_estate",
+            amount: 9000,
+            contributor_count: 1,
+            source_url: genericIllinoisSourceUrl,
+          },
+        ],
+      },
+      backing_summary: {
+        top_direct_donor_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 50000,
+            contributor_count: 10,
+            source_url: genericIllinoisSourceUrl,
+          },
+        ],
+        top_outside_supporting_industries: [
+          {
+            category_name: "labor_unions",
+            amount: 55000,
+            contributor_count: 1,
+            source_url: genericIllinoisSourceUrl,
+            explanation:
+              "The Labor unions category is a top outside-spending support industry because Illinois Workers Union PAC contributed to Illinois Future IEC, which reported independent spending supporting this candidate.",
+            supporting_organizations: [
+              {
+                organization_name: "Illinois Workers Union PAC",
+                organization_type: "donor",
+                amount: 55000,
+                contributor_count: 1,
+                committee_id: "ILLINOIS FUTURE IEC",
+                committee_name: "Illinois Future IEC",
+                source_url: genericIllinoisSourceUrl,
+              },
+            ],
+          },
+        ],
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(13);
+    expect(query.mock.calls[7]?.[0]).toContain("public.il_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.il_candidate_finance_direct_breakdowns");
+    expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
+    expect(query.mock.calls[9]?.[0]).toContain("public.il_candidate_finance_outside_groups");
+    expect(query.mock.calls[10]?.[0]).toContain("public.il_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("public.il_candidate_finance_outside_group_breakdowns");
+    expect(query.mock.calls[11]?.[0]).toContain("top_industries_per_group");
+    expect(query.mock.calls[11]?.[0]).toContain("breakdown.committee_key AS committee_id");
+    expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
+    expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
+    expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
+  });
+
   it("includes locally synced Oregon finance summaries for Oregon candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("OREGON_CAMPAIGN_FINANCE_ENABLED", "true");
@@ -5718,6 +5988,66 @@ describe("lookupElectionDetailById", () => {
     expect(result?.candidates[0]?.finance_summary).toBeNull();
     expect(query).toHaveBeenCalledTimes(8);
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("or_candidate_finance");
+  });
+
+  it("does not query Illinois finance tables when Illinois campaign finance is disabled", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("ILLINOIS_CAMPAIGN_FINANCE_ENABLED", "false");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "statewide",
+            geoid_compact: "17",
+            district_name: "Illinois",
+            state: "IL",
+            state_fips: "17",
+            representation_power_score: "80",
+            race_type: "office",
+            official_ballot_title: "Governor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_scope: "statewide",
+            office_canonical_name: "Governor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Prairie",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "Governor",
+            state: "IL",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toBeNull();
+    expect(query).toHaveBeenCalledTimes(8);
+    expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("il_candidate_finance");
   });
 
   it("includes locally synced Hawaii finance summaries for Hawaii candidate detail", async () => {

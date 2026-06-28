@@ -19,6 +19,8 @@ import {
   isFloridaCampaignFinanceBrowserExportEnabled,
   isFloridaCampaignFinanceEnabled,
   isFloridaCampaignFinanceSyncEnabled,
+  isIllinoisCampaignFinanceEnabled,
+  isIllinoisCampaignFinanceSyncEnabled,
   isIndianaCampaignFinanceEnabled,
   isIndianaCampaignFinanceRawDataRefreshEnabled,
   isIndianaCampaignFinanceSyncEnabled,
@@ -80,6 +82,8 @@ const ORIGINAL_WASHINGTON_FINANCE_VALUE = process.env.WASHINGTON_CAMPAIGN_FINANC
 const ORIGINAL_WASHINGTON_FINANCE_SYNC_VALUE = process.env.WASHINGTON_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_DC_FINANCE_VALUE = process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_DC_FINANCE_SYNC_VALUE = process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED;
+const ORIGINAL_ILLINOIS_FINANCE_VALUE = process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED;
+const ORIGINAL_ILLINOIS_FINANCE_SYNC_VALUE = process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_KENTUCKY_FINANCE_VALUE = process.env.KENTUCKY_CAMPAIGN_FINANCE_ENABLED;
 const ORIGINAL_KENTUCKY_FINANCE_SYNC_VALUE = process.env.KENTUCKY_CAMPAIGN_FINANCE_SYNC_ENABLED;
 const ORIGINAL_FLORIDA_FINANCE_VALUE = process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED;
@@ -267,6 +271,16 @@ describe("featureFlags", () => {
       delete process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED;
     } else {
       process.env.DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_DC_FINANCE_SYNC_VALUE;
+    }
+    if (ORIGINAL_ILLINOIS_FINANCE_VALUE === undefined) {
+      delete process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED;
+    } else {
+      process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED = ORIGINAL_ILLINOIS_FINANCE_VALUE;
+    }
+    if (ORIGINAL_ILLINOIS_FINANCE_SYNC_VALUE === undefined) {
+      delete process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED;
+    } else {
+      process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED = ORIGINAL_ILLINOIS_FINANCE_SYNC_VALUE;
     }
     if (ORIGINAL_KENTUCKY_FINANCE_VALUE === undefined) {
       delete process.env.KENTUCKY_CAMPAIGN_FINANCE_ENABLED;
@@ -955,6 +969,40 @@ describe("featureFlags", () => {
 
     expect(isDistrictOfColumbiaCampaignFinanceEnabled()).toBe(true);
     expect(isDistrictOfColumbiaCampaignFinanceSyncEnabled()).toBe(true);
+  });
+
+  it("disables Illinois campaign finance by default", () => {
+    delete process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED;
+    delete process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED;
+
+    expect(isIllinoisCampaignFinanceEnabled()).toBe(false);
+    expect(isIllinoisCampaignFinanceSyncEnabled()).toBe(false);
+  });
+
+  it("requires the Illinois campaign finance master flag before sync can run", () => {
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isIllinoisCampaignFinanceEnabled()).toBe(false);
+    expect(isIllinoisCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isIllinoisCampaignFinanceSyncEnabled(true)).toBe(false);
+  });
+
+  it("allows force to bypass only the Illinois campaign finance sync flag", () => {
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+
+    expect(isIllinoisCampaignFinanceEnabled()).toBe(true);
+    expect(isIllinoisCampaignFinanceSyncEnabled()).toBe(false);
+    expect(isIllinoisCampaignFinanceSyncEnabled(true)).toBe(true);
+  });
+
+  it("enables Illinois campaign finance sync when both flags are enabled", () => {
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    expect(isIllinoisCampaignFinanceEnabled()).toBe(true);
+    expect(isIllinoisCampaignFinanceSyncEnabled()).toBe(true);
   });
 
   it("disables Kentucky campaign finance by default", () => {
