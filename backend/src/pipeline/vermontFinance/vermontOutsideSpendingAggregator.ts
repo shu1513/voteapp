@@ -143,11 +143,9 @@ function groupKey(input: { filerRegistrationGuid: string; supportOppose: Vermont
 function toGroups(input: {
   groups: Iterable<GroupAccumulator>;
   sourceUrl: string | null;
-  maxGroups: number;
 }): VermontOutsideSpendingGroup[] {
   return [...input.groups]
     .sort((left, right) => right.amountCents - left.amountCents || left.filerName.localeCompare(right.filerName))
-    .slice(0, input.maxGroups)
     .map((group) => ({
       filerRegistrationGuid: group.filerRegistrationGuid,
       filerName: group.filerName,
@@ -221,11 +219,12 @@ export function aggregateVermontOutsideSpending(
     });
   }
 
-  const outsideGroups = toGroups({ groups: groups.values(), sourceUrl, maxGroups });
-  const outsideSupportTotal = outsideGroups
+  const allOutsideGroups = toGroups({ groups: groups.values(), sourceUrl });
+  const outsideGroups = allOutsideGroups.slice(0, maxGroups);
+  const outsideSupportTotal = allOutsideGroups
     .filter((group) => group.supportOppose === "support")
     .reduce((sum, group) => sum + group.amount, 0);
-  const outsideOpposeTotal = outsideGroups
+  const outsideOpposeTotal = allOutsideGroups
     .filter((group) => group.supportOppose === "oppose")
     .reduce((sum, group) => sum + group.amount, 0);
 

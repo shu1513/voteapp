@@ -577,6 +577,7 @@ export async function runProbeVermontCandidateFinance(input: {
       candidateName: input.args.candidateName,
       officeScope: input.args.officeScope,
       officeName: input.args.officeName,
+      district: input.args.district,
       electionYear: input.args.electionYear,
     },
     clientOptions

@@ -43,6 +43,7 @@ type VermontCampaignFinanceDataClient = {
       candidateName: string;
       officeScope: string;
       officeName: string;
+      district?: string | null;
       electionYear: number;
     },
     options?: VermontCampaignFinanceClientOptions
@@ -194,6 +195,11 @@ async function fetchAllTransactionRows<T>(input: {
     if (page.items.length < input.pageSize || pageNumber * input.pageSize >= page.totalItems) {
       break;
     }
+    if (pageNumber === input.maxPages) {
+      throw new Error(
+        `Vermont finance transaction fetch reached maxPages=${input.maxPages} before all ${page.totalItems} rows were loaded`
+      );
+    }
   }
   return rows;
 }
@@ -209,6 +215,7 @@ function toMatchedTrustedCommittee(
     candidateName: null,
     officeId: 0,
     officeName: "",
+    officeDisplayName: "",
     electionYear,
     electionId: null,
     entityId: input.entityId ?? null,
@@ -279,6 +286,8 @@ function toSummary(input: {
   return {
     totalReceipts: input.directSummary.totalReceipts,
     directContributionTotal: input.directSummary.directContributionTotal,
+    // The public transaction-detail endpoints do not expose reliable aggregate disbursement
+    // or cash-on-hand values, so those summary columns intentionally remain null.
     outsideSupportTotal: input.outsideSummary.outsideSupportTotal,
     outsideOpposeTotal: input.outsideSummary.outsideOpposeTotal,
     sourceUrl: input.directSummary.sourceUrl ?? input.outsideSummary.sourceUrl ?? input.fallbackSourceUrl ?? null,
@@ -366,6 +375,7 @@ export async function syncVermontCandidateFinance(
           candidateName,
           officeScope,
           officeName,
+          district: input.district,
           electionYear,
         },
         input.vermontClientOptions

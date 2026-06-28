@@ -84,7 +84,6 @@ function toConnectionOptions(redisUrl: string): ConnectionOptions {
     host: parsed.hostname,
     port: parsedPort,
     db: parsedDb,
-    maxRetriesPerRequest: null,
   };
   if (parsed.username) {
     opts.username = decodeURIComponent(parsed.username);
@@ -101,6 +100,13 @@ function toConnectionOptions(redisUrl: string): ConnectionOptions {
 function getQueueConnection(): ConnectionOptions {
   const env = getPipelineEnv();
   return toConnectionOptions(env.REDIS_URL);
+}
+
+function getWorkerConnection(): ConnectionOptions {
+  return {
+    ...(getQueueConnection() as Record<string, unknown>),
+    maxRetriesPerRequest: null,
+  } as ConnectionOptions;
 }
 
 function getQueueName(): string {
@@ -287,7 +293,7 @@ export function createVermontCandidateFinanceSyncSchedulerWorker(): Worker<
   VermontCandidateFinanceSyncJobData,
   VermontCandidateFinanceSyncJobResult
 > {
-  const connection = getQueueConnection();
+  const connection = getWorkerConnection();
   const queueName = getQueueName();
 
   const processor: Processor<VermontCandidateFinanceSyncJobData, VermontCandidateFinanceSyncJobResult> = async (job) => {

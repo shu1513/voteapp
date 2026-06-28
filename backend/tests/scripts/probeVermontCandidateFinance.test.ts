@@ -192,7 +192,12 @@ describe("probeVermontCandidateFinance script", () => {
       },
     });
     expect(client.resolveCandidateCommittee).toHaveBeenCalledWith(
-      expect.objectContaining({ candidateName: "Jane Candidate", officeName: "Governor", electionYear: 2026 }),
+      expect.objectContaining({
+        candidateName: "Jane Candidate",
+        officeName: "Governor",
+        district: null,
+        electionYear: 2026,
+      }),
       { timeoutMs: 5000 }
     );
   });
@@ -217,6 +222,7 @@ describe("probeVermontCandidateFinance script", () => {
         candidateName: "Jane Candidate",
         officeId: 1,
         officeName: "Governor",
+        officeDisplayName: "Governor",
         electionYear: 2026,
         electionId: 2026,
         entityId: 444,

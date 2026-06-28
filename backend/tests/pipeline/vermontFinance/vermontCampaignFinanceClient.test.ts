@@ -179,6 +179,18 @@ describe("vermontCampaignFinanceClient", () => {
     });
   });
 
+  it("rejects mismatched contribution endpoint transaction types before posting", async () => {
+    const fetchImpl = vi.fn() as unknown as typeof fetch;
+
+    await expect(
+      getVermontContributionDetails({ transactionTypeCode: "TEXP" }, { fetchImpl, timeoutMs: 1000 })
+    ).rejects.toMatchObject({
+      code: "invalid_request",
+      message: "Vermont contribution details requires transactionTypeCode TCON",
+    });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
   it("posts expenditure searches and parses expenditure rows with Vermont's entityID casing", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       jsonResponse({
@@ -270,6 +282,18 @@ describe("vermontCampaignFinanceClient", () => {
       "https://api.campaignfinance.vermont.gov/api/PublicTransactionDetails/GetExpenditureDetails"
     );
     expect(requestBody(fetchImpl)).toMatchObject({ transactionTypeCode: "TEXP" });
+  });
+
+  it("rejects mismatched expenditure endpoint transaction types before posting", async () => {
+    const fetchImpl = vi.fn() as unknown as typeof fetch;
+
+    await expect(
+      getVermontExpenditureDetails({ transactionTypeCode: "TCON" }, { fetchImpl, timeoutMs: 1000 })
+    ).rejects.toMatchObject({
+      code: "invalid_request",
+      message: "Vermont expenditure details requires transactionTypeCode TEXP",
+    });
+    expect(fetchImpl).not.toHaveBeenCalled();
   });
 
   it("gets transaction details by guid", async () => {
@@ -402,5 +426,23 @@ describe("vermontCampaignFinanceClient", () => {
         timeoutMs: 1000,
       })
     ).rejects.toMatchObject({ code: "bad_response" });
+  });
+
+  it("maps aborted requests to timeout network errors", async () => {
+    const abortError = new Error("aborted");
+    abortError.name = "AbortError";
+
+    await expect(
+      getVermontContributionDetails(
+        {},
+        {
+          fetchImpl: vi.fn().mockRejectedValue(abortError) as unknown as typeof fetch,
+          timeoutMs: 25,
+        }
+      )
+    ).rejects.toMatchObject({
+      code: "network_error",
+      message: expect.stringContaining("timed out after 25ms"),
+    });
   });
 });

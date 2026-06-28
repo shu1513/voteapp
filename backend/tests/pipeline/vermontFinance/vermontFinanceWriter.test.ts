@@ -17,10 +17,11 @@ function createMockDb() {
 }
 
 function createTransactionalMockDb() {
-  const query = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
-  const client = { query, release: vi.fn() };
+  const poolQuery = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
+  const clientQuery = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
+  const client = { query: clientQuery, release: vi.fn() };
   return {
-    query,
+    query: poolQuery,
     connect: vi.fn().mockResolvedValue(client),
     client,
   };
@@ -186,11 +187,12 @@ describe("vermontFinanceWriter", () => {
       outsideGroupBreakdownsWritten: 2,
     });
     expect(db.connect).toHaveBeenCalledTimes(1);
-    expect(db.query.mock.calls[0]?.[0]).toBe("BEGIN");
-    expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+    expect(db.query).not.toHaveBeenCalled();
+    expect(db.client.query.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(db.client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
     expect(db.client.release).toHaveBeenCalledTimes(1);
 
-    const sql = db.query.mock.calls.map((call) => String(call[0]));
+    const sql = db.client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("INSERT INTO public.vt_candidate_finance_summaries"))).toBe(true);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.vt_candidate_finance_direct_breakdowns"))).toHaveLength(2);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.vt_candidate_finance_outside_groups"))).toHaveLength(1);
@@ -200,7 +202,7 @@ describe("vermontFinanceWriter", () => {
     expect(sql.some((statement) => statement.includes("DELETE FROM public.vt_candidate_finance_outside_groups"))).toBe(true);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.vt_candidate_finance_outside_group_breakdowns"))).toBe(true);
 
-    const outsideGroupCall = db.query.mock.calls.find((call) =>
+    const outsideGroupCall = db.client.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.vt_candidate_finance_outside_groups")
     );
     expect(outsideGroupCall?.[1]).toEqual([

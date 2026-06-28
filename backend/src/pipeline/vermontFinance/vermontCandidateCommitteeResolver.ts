@@ -4,6 +4,7 @@ import {
   type VermontCampaignFinanceClientOptions,
   type VermontContributionRow,
   type VermontExpenditureRow,
+  type VermontPagedResult,
 } from "./vermontCampaignFinanceClient.js";
 import { mapVermontOfficeSought, toVermontOfficeSearchInput } from "./vermontFinanceEligibleOffices.js";
 
@@ -29,6 +30,7 @@ export type VermontCandidateCommitteeResolverInput = {
   candidateName: string;
   officeScope: string;
   officeName: string;
+  district?: string | null;
   electionYear: number;
   transactionRows: readonly VermontCandidateCommitteeTransactionRow[];
 };
@@ -44,6 +46,7 @@ export type VermontCandidateCommitteeMatch = {
   candidateName: string | null;
   officeId: number;
   officeName: string;
+  officeDisplayName: string;
   electionYear: number;
   electionId: number | null;
   entityId: number | null;
@@ -76,6 +79,7 @@ type CandidateCommitteeAccumulator = {
   candidateName: string | null;
   officeId: number;
   officeName: string;
+  officeDisplayName: string;
   electionYear: number;
   electionId: number | null;
   entityId: number | null;
@@ -84,6 +88,7 @@ type CandidateCommitteeAccumulator = {
 };
 
 const VERMONT_CAMPAIGN_FINANCE_SOURCE_URL = "https://campaignfinance.vermont.gov/";
+const VERMONT_CANDIDATE_COMMITTEE_SEARCH_PAGE_SIZE = 100;
 
 function normalizeElectionYear(value: number): number {
   if (!Number.isInteger(value) || value < 2000 || value > 2100) {
@@ -219,6 +224,7 @@ function toCommitteeMatch(accumulator: CandidateCommitteeAccumulator): VermontCa
     candidateName: accumulator.candidateName,
     officeId: accumulator.officeId,
     officeName: accumulator.officeName,
+    officeDisplayName: accumulator.officeDisplayName,
     electionYear: accumulator.electionYear,
     electionId: accumulator.electionId,
     entityId: accumulator.entityId,
@@ -286,7 +292,8 @@ export function resolveVermontCandidateCommittee(
       filerName,
       candidateName: candidateFullName(row),
       officeId: mappedOffice.officeId,
-      officeName: mappedOffice.officeName,
+      officeName: mappedOffice.officeCanonicalName,
+      officeDisplayName: mappedOffice.officeName,
       electionYear,
       electionId: row.electionId,
       entityId: row.entityId,
@@ -338,6 +345,21 @@ function appendUniqueRows(
   }
 }
 
+async function fetchAllCandidateSearchRows<T>(input: {
+  fetchPage: (pageNumber: number) => Promise<VermontPagedResult<T>>;
+  pageSize: number;
+}): Promise<T[]> {
+  const rows: T[] = [];
+  for (let pageNumber = 1; ; pageNumber += 1) {
+    const page = await input.fetchPage(pageNumber);
+    rows.push(...page.items);
+    if (page.items.length < input.pageSize || pageNumber * input.pageSize >= page.totalItems) {
+      break;
+    }
+  }
+  return rows;
+}
+
 export async function searchAndResolveVermontCandidateCommittee(
   input: VermontCandidateCommitteeSearchInput,
   options: VermontCampaignFinanceClientOptions = {}
@@ -358,29 +380,37 @@ export async function searchAndResolveVermontCandidateCommittee(
   const rowsByGuid = new Map<string, VermontCandidateCommitteeTransactionRow>();
   for (const filerName of candidateSearchPhrases) {
     const [contributions, expenditures] = await Promise.all([
-      getVermontContributionDetails(
-        {
-          pageNumber: 1,
-          pageSize: 100,
-          filerName,
-          electionYear: input.electionYear,
-          transactionTypeCode: "TCON",
-        },
-        options
-      ),
-      getVermontExpenditureDetails(
-        {
-          pageNumber: 1,
-          pageSize: 100,
-          filerName,
-          electionYear: input.electionYear,
-          transactionTypeCode: "TEXP",
-        },
-        options
-      ),
+      fetchAllCandidateSearchRows({
+        pageSize: VERMONT_CANDIDATE_COMMITTEE_SEARCH_PAGE_SIZE,
+        fetchPage: (pageNumber) =>
+          getVermontContributionDetails(
+            {
+              pageNumber,
+              pageSize: VERMONT_CANDIDATE_COMMITTEE_SEARCH_PAGE_SIZE,
+              filerName,
+              electionYear: input.electionYear,
+              transactionTypeCode: "TCON",
+            },
+            options
+          ),
+      }),
+      fetchAllCandidateSearchRows({
+        pageSize: VERMONT_CANDIDATE_COMMITTEE_SEARCH_PAGE_SIZE,
+        fetchPage: (pageNumber) =>
+          getVermontExpenditureDetails(
+            {
+              pageNumber,
+              pageSize: VERMONT_CANDIDATE_COMMITTEE_SEARCH_PAGE_SIZE,
+              filerName,
+              electionYear: input.electionYear,
+              transactionTypeCode: "TEXP",
+            },
+            options
+          ),
+      }),
     ]);
-    appendUniqueRows(rowsByGuid, contributions.items);
-    appendUniqueRows(rowsByGuid, expenditures.items);
+    appendUniqueRows(rowsByGuid, contributions);
+    appendUniqueRows(rowsByGuid, expenditures);
   }
 
   return resolveVermontCandidateCommittee({ ...input, transactionRows: [...rowsByGuid.values()] });

@@ -43,6 +43,7 @@ function successfulSync(): VermontCandidateFinanceSyncResult {
       candidateName: null,
       officeId: 19,
       officeName: "Governor",
+      officeDisplayName: "Governor",
       electionYear: 2024,
       electionId: 35,
       entityId: 33545,

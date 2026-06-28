@@ -222,6 +222,21 @@ function normalizeSortType(value: VermontTransactionSortType | undefined): Vermo
   return value ?? "DESC";
 }
 
+function assertEndpointTransactionType(input: {
+  transactionTypeCode: string | undefined;
+  expectedTransactionTypeCode: "TCON" | "TEXP";
+  endpointName: string;
+}): void {
+  const transactionTypeCode = normalizeOptionalText(input.transactionTypeCode);
+  if (!transactionTypeCode || transactionTypeCode === input.expectedTransactionTypeCode) {
+    return;
+  }
+  throw new VermontCampaignFinanceClientError(
+    "invalid_request",
+    `${input.endpointName} requires transactionTypeCode ${input.expectedTransactionTypeCode}`
+  );
+}
+
 export function buildVermontTransactionSearchPayload(input: VermontTransactionSearchInput): Record<string, unknown> {
   const payload: Record<string, unknown> = {
     pageNumber: normalizePositiveInteger(input.pageNumber, 1, "Vermont campaign finance pageNumber", 100_000),
@@ -628,7 +643,12 @@ export async function getVermontContributionDetails(
   input: VermontTransactionSearchInput = {},
   options?: VermontCampaignFinanceClientOptions
 ): Promise<VermontPagedResult<VermontContributionRow>> {
-  const payload = buildVermontTransactionSearchPayload({ ...input, transactionTypeCode: input.transactionTypeCode ?? "TCON" });
+  assertEndpointTransactionType({
+    transactionTypeCode: input.transactionTypeCode,
+    expectedTransactionTypeCode: "TCON",
+    endpointName: "Vermont contribution details",
+  });
+  const payload = buildVermontTransactionSearchPayload({ ...input, transactionTypeCode: "TCON" });
   const response = await postVermontCampaignFinanceJson(
     "PublicTransactionDetails/GetContributionsDetails",
     payload,
@@ -641,7 +661,12 @@ export async function getVermontExpenditureDetails(
   input: VermontTransactionSearchInput = {},
   options?: VermontCampaignFinanceClientOptions
 ): Promise<VermontPagedResult<VermontExpenditureRow>> {
-  const payload = buildVermontTransactionSearchPayload({ ...input, transactionTypeCode: input.transactionTypeCode ?? "TEXP" });
+  assertEndpointTransactionType({
+    transactionTypeCode: input.transactionTypeCode,
+    expectedTransactionTypeCode: "TEXP",
+    endpointName: "Vermont expenditure details",
+  });
+  const payload = buildVermontTransactionSearchPayload({ ...input, transactionTypeCode: "TEXP" });
   const response = await postVermontCampaignFinanceJson(
     "PublicTransactionDetails/GetExpenditureDetails",
     payload,

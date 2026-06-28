@@ -101,6 +101,7 @@ describe("vermontCandidateCommitteeResolver", () => {
       candidateName: "PHIL SCOTT",
       officeId: 19,
       officeName: "Governor",
+      officeDisplayName: "Governor",
       electionYear: 2024,
       electionId: 35,
       entityId: 33545,
@@ -110,6 +111,50 @@ describe("vermontCandidateCommitteeResolver", () => {
       sourceUrl: "https://campaignfinance.vermont.gov/",
       matchedTransactionRowCount: 1,
     });
+  });
+
+  it("returns canonical office names so matched resolutions can round-trip through the resolver", () => {
+    const resolution = resolveVermontCandidateCommittee({
+      candidateName: "Jane Auditor",
+      officeScope: "statewide",
+      officeName: "State Auditor",
+      electionYear: 2026,
+      transactionRows: [
+        transactionRow({
+          filerRegistrationGuid: "auditor-guid",
+          filerName: "AUDITOR, JANE",
+          candidateFirstName: "JANE",
+          candidateLastName: "AUDITOR",
+          officeId: 23,
+          electionYear: 2026,
+        }),
+      ],
+    });
+
+    expect(resolution).toMatchObject({
+      status: "matched",
+      officeId: 23,
+      officeName: "State Auditor",
+      officeDisplayName: "Auditor of Accounts",
+    });
+    expect(
+      resolveVermontCandidateCommittee({
+        candidateName: "Jane Auditor",
+        officeScope: "statewide",
+        officeName: resolution.status === "matched" ? resolution.officeName : "",
+        electionYear: 2026,
+        transactionRows: [
+          transactionRow({
+            filerRegistrationGuid: "auditor-guid",
+            filerName: "AUDITOR, JANE",
+            candidateFirstName: "JANE",
+            candidateLastName: "AUDITOR",
+            officeId: 23,
+            electionYear: 2026,
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", officeName: "State Auditor" });
   });
 
   it("matches using Vermont comma-form filer names when candidate name fields are missing", () => {
@@ -284,7 +329,39 @@ describe("vermontCandidateCommitteeResolver", () => {
 
   it("can search Vermont transactions and resolve through the async wrapper", async () => {
     const fetchImpl = vi.fn().mockImplementation((_url: URL | RequestInfo, init?: RequestInit) => {
-      const body = JSON.parse(String(init?.body ?? "{}")) as { filerName?: string; transactionTypeCode?: string };
+      const body = JSON.parse(String(init?.body ?? "{}")) as {
+        filerName?: string;
+        transactionTypeCode?: string;
+        pageNumber?: number;
+      };
+      if (body.filerName === "SCOTT" && body.transactionTypeCode === "TCON" && body.pageNumber === 1) {
+        return Promise.resolve(
+          jsonResponse({
+            data: {
+              items: [
+                {
+                  transactionID: 90012,
+                  guid: "non-match-page-1",
+                  filerRegistrationGuid: "other-guid",
+                  filerName: "SCOTT, OTHER",
+                  transactionAmount: 1000,
+                  filerTypeCode: "CAN",
+                  filerTypeDescription: "Candidate",
+                  electionYear: 2024,
+                  electionId: 35,
+                  officeID: 19,
+                  entityId: 22222,
+                  candidateFirstName: "OTHER",
+                  candidateLastName: "SCOTT",
+                },
+              ],
+              totalItems: 101,
+            },
+            succeeded: true,
+            error: null,
+          })
+        );
+      }
       if (body.filerName === "SCOTT" && body.transactionTypeCode === "TCON") {
         return Promise.resolve(
           jsonResponse({
@@ -308,7 +385,7 @@ describe("vermontCandidateCommitteeResolver", () => {
                   candidateLastName: "SCOTT",
                 },
               ],
-              totalItems: 1,
+              totalItems: 101,
             },
             succeeded: true,
             error: null,
@@ -341,7 +418,8 @@ describe("vermontCandidateCommitteeResolver", () => {
     expect(requestBodies).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ filerName: "Phil Scott", transactionTypeCode: "TCON", electionYear: 2024 }),
-        expect.objectContaining({ filerName: "SCOTT", transactionTypeCode: "TCON", electionYear: 2024 }),
+        expect.objectContaining({ filerName: "SCOTT", transactionTypeCode: "TCON", electionYear: 2024, pageNumber: 1 }),
+        expect.objectContaining({ filerName: "SCOTT", transactionTypeCode: "TCON", electionYear: 2024, pageNumber: 2 }),
         expect.objectContaining({ filerName: "SCOTT, PHIL", transactionTypeCode: "TEXP", electionYear: 2024 }),
       ])
     );

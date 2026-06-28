@@ -164,7 +164,33 @@ describe("vermontOutsideGroupContributionAggregator", () => {
                   electionYear: 2024,
                 },
               ],
-              totalItems: 1,
+              totalItems: 2,
+            },
+            succeeded: true,
+            error: null,
+          })
+        );
+      }
+      if (body.filerRegistrationGuid === "pac-guid" && body.pageNumber === 2) {
+        return Promise.resolve(
+          jsonResponse({
+            data: {
+              items: [
+                {
+                  transactionID: 2,
+                  guid: "contribution-guid-2",
+                  filerRegistrationGuid: "pac-guid",
+                  filerName: "VERMONT FUTURE PAC",
+                  transactionAmount: 5000,
+                  sourceName: "Sierra Club",
+                  transactionSource: "Business/Group/Organization",
+                  transactionSourceTypeCode: "TBSN",
+                  filerTypeCode: "PAC",
+                  filerTypeDescription: "Political Action Committee",
+                  electionYear: 2024,
+                },
+              ],
+              totalItems: 2,
             },
             succeeded: true,
             error: null,
@@ -179,26 +205,33 @@ describe("vermontOutsideGroupContributionAggregator", () => {
         {
           electionYear: 2024,
           minIndustryAmount: 1000,
+          pageSize: 1,
           outsideGroups: [outsideGroup()],
         },
         { fetchImpl, timeoutMs: 1000 }
       )
     ).resolves.toMatchObject({
-      fetchedContributionRowCount: 1,
-      matchedContributionRowCount: 1,
-      includedContributionRowCount: 1,
+      fetchedContributionRowCount: 2,
+      matchedContributionRowCount: 2,
+      includedContributionRowCount: 2,
       outsideGroupBreakdowns: expect.arrayContaining([
-        expect.objectContaining({ categoryType: "donor", categoryName: "Sierra Club", amount: 25000 }),
-        expect.objectContaining({ categoryType: "industry", categoryName: "environmental_group", amount: 25000 }),
+        expect.objectContaining({ categoryType: "donor", categoryName: "Sierra Club", amount: 30000 }),
+        expect.objectContaining({ categoryType: "industry", categoryName: "environmental_group", amount: 30000 }),
       ]),
     });
 
-    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
     expect(JSON.parse(String(vi.mocked(fetchImpl).mock.calls[0]?.[1]?.body))).toMatchObject({
       filerRegistrationGuid: "pac-guid",
       electionYear: 2024,
       transactionTypeCode: "TCON",
       pageNumber: 1,
+    });
+    expect(JSON.parse(String(vi.mocked(fetchImpl).mock.calls[1]?.[1]?.body))).toMatchObject({
+      filerRegistrationGuid: "pac-guid",
+      electionYear: 2024,
+      transactionTypeCode: "TCON",
+      pageNumber: 2,
     });
   });
 

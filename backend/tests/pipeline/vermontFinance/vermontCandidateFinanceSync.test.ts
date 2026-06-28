@@ -17,10 +17,11 @@ afterEach(() => {
 });
 
 function createMockDb() {
-  const query = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
-  const client = { query, release: vi.fn() };
+  const poolQuery = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
+  const clientQuery = vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 });
+  const client = { query: clientQuery, release: vi.fn() };
   return {
-    query,
+    query: poolQuery,
     connect: vi.fn().mockResolvedValue(client),
     client,
   };
@@ -36,6 +37,7 @@ function matchedResolution(
     candidateName: "PHIL SCOTT",
     officeId: 19,
     officeName: "Governor",
+    officeDisplayName: "Governor",
     electionYear: 2024,
     electionId: 35,
     entityId: 33545,
@@ -258,10 +260,10 @@ describe("vermontCandidateFinanceSync", () => {
       undefined
     );
 
-    expect(db.query.mock.calls.some((call) => call[0] === "BEGIN")).toBe(true);
-    expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+    expect(db.client.query.mock.calls.some((call) => call[0] === "BEGIN")).toBe(true);
+    expect(db.client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
 
-    const linkCall = db.query.mock.calls.find((call) =>
+    const linkCall = db.client.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.vt_candidate_finance_links")
     );
     expect(linkCall?.[1]).toEqual([
@@ -280,7 +282,7 @@ describe("vermontCandidateFinanceSync", () => {
       "2026-06-02T03:04:05.000Z",
     ]);
 
-    const outsideGroupCall = db.query.mock.calls.find((call) =>
+    const outsideGroupCall = db.client.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.vt_candidate_finance_outside_groups")
     );
     expect(outsideGroupCall?.[1]).toEqual([
@@ -320,6 +322,7 @@ describe("vermontCandidateFinanceSync", () => {
       outsideSupportTotal: 1000,
     });
     expect(db.query).not.toHaveBeenCalled();
+    expect(db.client.query).not.toHaveBeenCalled();
   });
 
   it("returns an empty result when committee resolution is not matched", async () => {
@@ -349,6 +352,7 @@ describe("vermontCandidateFinanceSync", () => {
     });
     expect(vermontClient.getContributionDetails).not.toHaveBeenCalled();
     expect(db.query).not.toHaveBeenCalled();
+    expect(db.client.query).not.toHaveBeenCalled();
   });
 
   it("treats ambiguous Vermont committee resolution as not linked", async () => {
@@ -384,6 +388,29 @@ describe("vermontCandidateFinanceSync", () => {
     expect(vermontClient.getContributionDetails).not.toHaveBeenCalled();
     expect(vermontClient.getExpenditureDetails).not.toHaveBeenCalled();
     expect(db.query).not.toHaveBeenCalled();
+    expect(db.client.query).not.toHaveBeenCalled();
+  });
+
+  it("fails before writing when transaction pagination hits the maxPages cap", async () => {
+    const db = createMockDb();
+    const vermontClient = createVermontClient();
+    vermontClient.getContributionDetails.mockResolvedValue({
+      totalItems: 2,
+      items: [contribution({ transactionAmount: 100 })],
+    });
+
+    await expect(
+      syncVermontCandidateFinance({
+        db,
+        ...baseInput(),
+        pageSize: 1,
+        maxPages: 1,
+        vermontClient,
+      })
+    ).rejects.toThrow("maxPages=1");
+    expect(db.connect).not.toHaveBeenCalled();
+    expect(db.query).not.toHaveBeenCalled();
+    expect(db.client.query).not.toHaveBeenCalled();
   });
 
   it("trusts an existing Vermont filer link instead of re-resolving by name", async () => {

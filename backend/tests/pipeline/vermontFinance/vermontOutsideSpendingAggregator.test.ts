@@ -136,6 +136,7 @@ describe("vermontOutsideSpendingAggregator", () => {
     });
 
     expect(result.summary.groups).toEqual([expect.objectContaining({ filerRegistrationGuid: "big-pac", amount: 1000 })]);
+    expect(result.summary.outsideSupportTotal).toBe(1100);
     expect(() =>
       aggregateVermontOutsideSpending({ candidateName: "Phil Scott", electionYear: 1999, expenditureRows: [] })
     ).toThrow("Invalid Vermont outside spending aggregation election year");

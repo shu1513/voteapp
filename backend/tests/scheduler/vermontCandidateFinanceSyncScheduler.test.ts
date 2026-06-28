@@ -284,4 +284,38 @@ describe("vermontCandidateFinanceSyncScheduler", () => {
     await expect(enqueueManualVermontCandidateFinanceSyncJob()).resolves.toBe("disabled");
     expect(Queue).not.toHaveBeenCalled();
   });
+
+  it("uses Worker-only maxRetriesPerRequest while leaving queue connections standard", async () => {
+    process.env.VERMONT_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.VERMONT_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    mockEnv("redis://:secret@localhost:6380/7");
+
+    const workerInstance = { close: vi.fn().mockResolvedValue(undefined) };
+    const queueInstance = { add: vi.fn().mockResolvedValue({ id: "job-1" }), close: vi.fn().mockResolvedValue(undefined) };
+    const Queue = vi.fn(() => queueInstance);
+    const Worker = vi.fn(() => workerInstance);
+    vi.doMock("bullmq", () => ({ Queue, Worker }));
+
+    const { createVermontCandidateFinanceSyncSchedulerWorker, enqueueManualVermontCandidateFinanceSyncJob } =
+      await import("../../src/scheduler/vermontCandidateFinanceSyncScheduler.js");
+
+    await enqueueManualVermontCandidateFinanceSyncJob({ force: true });
+    const worker = createVermontCandidateFinanceSyncSchedulerWorker();
+
+    expect(Queue.mock.calls[0]?.[1]?.connection).toMatchObject({
+      host: "localhost",
+      port: 6380,
+      db: 7,
+      password: "secret",
+    });
+    expect(Queue.mock.calls[0]?.[1]?.connection).not.toHaveProperty("maxRetriesPerRequest");
+    expect(Worker.mock.calls[0]?.[2]?.connection).toMatchObject({
+      host: "localhost",
+      port: 6380,
+      db: 7,
+      password: "secret",
+      maxRetriesPerRequest: null,
+    });
+    await worker.close();
+  });
 });

@@ -1,0 +1,46 @@
+BEGIN;
+
+ALTER TABLE public.ut_candidate_finance_supporting_committee_industries
+  RENAME CONSTRAINT ut_candidate_finance_supporting_committee_industries_year_check
+  TO ut_cf_sci_year_check;
+
+ALTER TABLE public.ut_candidate_finance_supporting_committee_industries
+  RENAME CONSTRAINT ut_candidate_finance_supporting_committee_industries_committee_
+  TO ut_cf_sci_committee_check;
+
+ALTER TABLE public.ut_candidate_finance_supporting_committee_industries
+  RENAME CONSTRAINT ut_candidate_finance_supporting_committee_industries_slug_check
+  TO ut_cf_sci_slug_check;
+
+ALTER TABLE public.ut_candidate_finance_supporting_committee_industries
+  RENAME CONSTRAINT ut_candidate_finance_supporting_committee_industries_amount_che
+  TO ut_cf_sci_amount_check;
+
+ALTER TABLE public.ut_candidate_finance_supporting_committee_industries
+  RENAME CONSTRAINT ut_candidate_finance_supporting_committee_industries_count_chec
+  TO ut_cf_sci_count_check;
+
+ALTER TABLE public.ut_candidate_finance_supporting_committee_industries
+  RENAME CONSTRAINT ut_candidate_finance_supporting_committee_industries_source_url
+  TO ut_cf_sci_source_url_check;
+
+ALTER TABLE public.ut_candidate_finance_supporting_committee_industries
+  RENAME CONSTRAINT ut_candidate_finance_sci_committee_fk
+  TO ut_cf_sci_committee_fk;
+
+ALTER TABLE public.ut_candidate_finance_supporting_committee_industries
+  RENAME CONSTRAINT ut_candidate_finance_supporting_committee_industries_link_year_
+  TO ut_cf_sci_link_year_fk;
+
+ALTER TABLE public.ut_candidate_finance_supporting_committee_industries
+  RENAME CONSTRAINT ut_candidate_finance_supporting_committee_industries_unique
+  TO ut_cf_sci_unique;
+
+ALTER INDEX public.ut_candidate_finance_supporting_committee_industries_lookup_idx
+  RENAME TO ut_cf_sci_lookup_idx;
+
+ALTER TRIGGER ut_candidate_finance_supporting_committee_industries_set_update
+  ON public.ut_candidate_finance_supporting_committee_industries
+  RENAME TO ut_cf_sci_set_updated_at;
+
+COMMIT;
