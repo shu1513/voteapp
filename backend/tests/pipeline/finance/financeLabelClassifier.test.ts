@@ -199,6 +199,29 @@ describe("financeLabelClassifier", () => {
     });
   });
 
+  it("classifies chamber-style business associations without treating generic PACs as industries", () => {
+    expect(classifyFinanceLabel({ rawLabel: "KY Chamber Advocacy Committee", labelType: "donor" })).toMatchObject({
+      normalizedLabel: "KY CHAMBER ADVOCACY COMMITTEE",
+      industrySlug: "business_associations",
+      confidence: "high",
+      matchedRule: "organization_exact_ky_chamber_advocacy",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Local Chamber of Commerce PAC", labelType: "donor" })).toMatchObject({
+      normalizedLabel: "LOCAL CHAMBER OF COMMERCE PAC",
+      industrySlug: "business_associations",
+      confidence: "medium",
+      matchedRule: "organization_pattern_business_associations",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "American Conservative Fund", labelType: "donor" })).toMatchObject({
+      normalizedLabel: "AMERICAN CONSERVATIVE FUND",
+      industrySlug: null,
+      confidence: "unknown",
+      classificationSource: "unknown",
+    });
+  });
+
   it("classifies waste management organizations separately from environmental advocacy groups", () => {
     expect(classifyFinanceLabel({ rawLabel: "Southern Waste Systems", labelType: "employer" })).toMatchObject({
       normalizedLabel: "SOUTHERN WASTE SYSTEMS",
