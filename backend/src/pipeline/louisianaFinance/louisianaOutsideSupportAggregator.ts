@@ -16,7 +16,7 @@ export type LouisianaOutsideSupportGroup = {
 
 export type LouisianaOutsideSupportSummary = {
   outsideSupportTotal: number;
-  outsideOpposeTotal: number;
+  outsideOpposeTotal: number | null;
   sourceUrl: string | null;
   groups: LouisianaOutsideSupportGroup[];
 };
@@ -279,14 +279,10 @@ export function aggregateLouisianaOutsideSupport(
   const outsideSupportTotal = allOutsideGroups
     .filter((group) => group.supportOppose === "support")
     .reduce((sum, group) => sum + group.amount, 0);
-  const outsideOpposeTotal = allOutsideGroups
-    .filter((group) => group.supportOppose === "oppose")
-    .reduce((sum, group) => sum + group.amount, 0);
-
   return {
     summary: {
       outsideSupportTotal: Math.round(outsideSupportTotal * 100) / 100,
-      outsideOpposeTotal: Math.round(outsideOpposeTotal * 100) / 100,
+      outsideOpposeTotal: null,
       sourceUrl,
       groups: outsideGroups,
     },

@@ -183,7 +183,7 @@ function parseRowsForCsv(
   const rows = parseCsvRows(csv);
   const headerCells = rows[0];
   if (!headerCells) {
-    return [];
+    throw new Error(`Louisiana campaign finance ${label} CSV missing header row`);
   }
   const headers = buildHeader(headerCells);
   assertRequiredHeaders(headers, requiredHeaders, label);
@@ -333,6 +333,10 @@ async function readLouisianaCampaignFinanceCsvRowsFromFile(input: {
         }
         if (field.length > 0 || row.length > 0) {
           finishRow();
+        }
+        if (!headers) {
+          rejectOnce(new Error(`Louisiana campaign finance ${input.label} CSV missing header row`));
+          return;
         }
         resolveOnce();
       } catch (error) {

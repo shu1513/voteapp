@@ -130,7 +130,7 @@ type LouisianaFinanceProbeOutput = {
   };
   outside_spending: {
     support_total: number;
-    oppose_total: number;
+    oppose_total: number | null;
     top_supporting_groups: LouisianaFinanceProbeOutsideGroup[];
     top_opposing_groups: LouisianaFinanceProbeOutsideGroup[];
     top_supporting_industries: LouisianaFinanceProbeIndustry[];
@@ -446,15 +446,18 @@ function buildOutsideIndustries(input: {
     existing.evidence.push(...evidence);
   }
 
-  return [...industries.values()]
+  const sortedIndustries = [...industries.values()]
     .map((industry) => ({
       ...industry,
       evidence: industry.evidence
         .sort((left, right) => right.amount - left.amount || left.organization_name.localeCompare(right.organization_name))
         .slice(0, 5),
     }))
-    .sort((left, right) => right.amount - left.amount || left.category_name.localeCompare(right.category_name))
-    .slice(0, input.limit);
+    .sort((left, right) => right.amount - left.amount || left.category_name.localeCompare(right.category_name));
+
+  return (["support", "oppose"] as const).flatMap((supportOppose) =>
+    sortedIndustries.filter((industry) => industry.support_oppose === supportOppose).slice(0, input.limit)
+  );
 }
 
 function sumPositiveCycleContributionsForFiler(input: {
@@ -565,12 +568,16 @@ async function loadProbeRows(args: LouisianaFinanceProbeArgs): Promise<Louisiana
   const metadata = await readLouisianaCampaignFinanceArtifactCacheMetadata(paths.metadataPath);
   const contributionPath = args.contributionCsvPath ?? paths.downloads.contributions;
   const expenditurePath = args.expenditureCsvPath ?? paths.downloads.expenditures;
+  const contributionSourceUrl =
+    args.contributionCsvPath === null ? metadata?.downloads.contributions.remote.url ?? contributionPath : contributionPath;
+  const expenditureSourceUrl =
+    args.expenditureCsvPath === null ? metadata?.downloads.expenditures.remote.url ?? expenditurePath : expenditurePath;
 
   return {
     contributionRows: await readLouisianaCampaignFinanceContributionRows({ filePath: contributionPath }),
     expenditureRows: await readLouisianaCampaignFinanceExpenditureRows({ filePath: expenditurePath }),
-    contributionSourceUrl: metadata?.downloads.contributions.remote.url ?? contributionPath,
-    expenditureSourceUrl: metadata?.downloads.expenditures.remote.url ?? expenditurePath,
+    contributionSourceUrl,
+    expenditureSourceUrl,
     cacheRefresh,
   };
 }
@@ -613,7 +620,7 @@ function emptyOutput(input: {
     },
     outside_spending: {
       support_total: 0,
-      oppose_total: 0,
+      oppose_total: null,
       top_supporting_groups: [],
       top_opposing_groups: [],
       top_supporting_industries: [],

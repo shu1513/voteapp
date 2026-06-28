@@ -192,6 +192,20 @@ describe("Louisiana campaign finance artifact reader", () => {
     );
   });
 
+  it("rejects empty CSV artifacts instead of treating them as zero rows", async () => {
+    expect(() => parseLouisianaCampaignFinanceContributionCsvRows("")).toThrow(
+      "Louisiana campaign finance contribution CSV missing header row"
+    );
+
+    const dir = await makeTempDir();
+    const filePath = join(dir, LOUISIANA_CAMPAIGN_FINANCE_EXPENDITURES_CSV_FILE_NAME);
+    await writeFile(filePath, "", "utf8");
+
+    await expect(readLouisianaCampaignFinanceExpenditureRows({ filePath })).rejects.toThrow(
+      "Louisiana campaign finance expenditure CSV missing header row"
+    );
+  });
+
   it("rejects duplicate headers and malformed quoted csv", () => {
     expect(() => parseLouisianaCampaignFinanceContributionCsvRows("FilerNumber,FilerNumber\n1,2\n")).toThrow(
       "Duplicate Louisiana campaign finance CSV header"

@@ -175,7 +175,7 @@ describe("probeLouisianaCandidateFinance script", () => {
       },
       outside_spending: {
         support_total: 5000,
-        oppose_total: 0,
+        oppose_total: null,
         top_supporting_groups: [
           {
             filer_number: "PAC1",

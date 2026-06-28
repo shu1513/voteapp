@@ -84,11 +84,12 @@ export function mapLouisianaFinanceOffice(input: {
   officeCanonicalName: string;
   district?: string | null;
 }): LouisianaFinanceOfficeSearchInput | null {
+  const officeScope = input.officeScope.trim().toLowerCase();
   const officeName = normalizeLouisianaFinanceOfficeName(input.officeCanonicalName);
   const district = normalizeLouisianaFinanceDistrict(input.district);
 
   if (
-    input.officeScope === "statewide" &&
+    officeScope === "statewide" &&
     officeName !== null &&
     officeName !== "State Senator" &&
     officeName !== "State Lower Chamber Legislator"
@@ -101,7 +102,7 @@ export function mapLouisianaFinanceOffice(input: {
     };
   }
 
-  if (input.officeScope === "state_upper" && officeName === "State Senator") {
+  if (officeScope === "state_upper" && officeName === "State Senator") {
     if (!district) {
       return null;
     }
@@ -113,7 +114,7 @@ export function mapLouisianaFinanceOffice(input: {
     };
   }
 
-  if (input.officeScope === "state_lower" && officeName === "State Lower Chamber Legislator") {
+  if (officeScope === "state_lower" && officeName === "State Lower Chamber Legislator") {
     if (!district) {
       return null;
     }

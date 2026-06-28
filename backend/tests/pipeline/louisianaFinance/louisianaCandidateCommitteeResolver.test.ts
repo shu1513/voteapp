@@ -108,7 +108,7 @@ describe("Louisiana candidate committee resolver", () => {
     });
   });
 
-  it("uses legislative district only as an app-side eligibility gate", () => {
+  it("matches legislative rows when proven source office and district agree", () => {
     expect(
       resolveLouisianaCandidateCommittee({
         candidateName: "Jane Doe",
@@ -133,6 +133,41 @@ describe("Louisiana candidate committee resolver", () => {
       filerNumber: "2001",
       officeName: "State Lower Chamber Legislator",
       district: "7",
+    });
+  });
+
+  it("uses proven source office and district fields to avoid false-positive filer matches", () => {
+    expect(
+      resolveLouisianaCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "state_lower",
+        officeName: "State Representative",
+        district: "7",
+        electionYear: 2027,
+        candidateRows: [
+          candidateRow({
+            FilerNumber: "2001",
+            FilerLastName: "Doe",
+            FilerFirstName: "Jane",
+            CandidateName: "Jane Doe",
+            FilerName: "Doe, Jane",
+            OfficeSought: "State Senate",
+            District: "7",
+          }),
+          candidateRow({
+            FilerNumber: "2002",
+            FilerLastName: "Doe",
+            FilerFirstName: "Jane",
+            CandidateName: "Jane Doe",
+            FilerName: "Jane Doe",
+            OfficeSought: "State Representative",
+            District: "8",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
     });
   });
 

@@ -164,7 +164,7 @@ function toFinanceLink(input: {
 function mergeSummary(input: {
   directTotal: number;
   outsideSupportTotal: number;
-  outsideOpposeTotal: number;
+  outsideOpposeTotal: number | null;
   sourceUrl: string | null;
 }): LouisianaFinanceSummaryInput {
   return {
@@ -264,7 +264,7 @@ export async function syncLouisianaCandidateFinance(
       : {
           summary: {
             outsideSupportTotal: 0,
-            outsideOpposeTotal: 0,
+            outsideOpposeTotal: null,
             sourceUrl: null,
             groups: [],
           },
@@ -299,7 +299,7 @@ export async function syncLouisianaCandidateFinance(
         officeName,
         district: input.district,
         resolution,
-        sourceUrl: summary.sourceUrl,
+        sourceUrl: input.sourceUrl ?? resolution.sourceUrl ?? null,
         verifiedAt: syncedAt,
       }),
       syncedAt,

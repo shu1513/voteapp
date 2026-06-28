@@ -102,7 +102,7 @@ describe("Louisiana candidate finance sync", () => {
     expect(result.totalReceipts).toBe(1000);
     expect(result.directContributionTotal).toBe(1000);
     expect(result.outsideSupportTotal).toBe(5000);
-    expect(result.outsideOpposeTotal).toBe(0);
+    expect(result.outsideOpposeTotal).toBeNull();
     expect(result.directBreakdownsWritten).toBeGreaterThan(0);
     expect(result.outsideGroupsWritten).toBe(1);
     expect(result.outsideGroupBreakdownsWritten).toBeGreaterThan(0);

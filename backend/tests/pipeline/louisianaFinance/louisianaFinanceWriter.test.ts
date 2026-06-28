@@ -49,10 +49,13 @@ describe("louisianaFinanceWriter", () => {
 
     await expect(upsertLouisianaFinanceLink({ db, link: baseLink() })).resolves.toEqual({ linkId: LINK_ID });
 
-    expect(db.query).toHaveBeenCalledTimes(1);
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.la_candidate_finance_links");
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("ON CONFLICT (candidate_id, election_id, filer_number)");
-    expect(db.query.mock.calls[0]?.[1]).toEqual([
+    expect(db.query).toHaveBeenCalledTimes(2);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("UPDATE public.la_candidate_finance_links");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("link_status = 'inactive'");
+    expect(db.query.mock.calls[0]?.[1]).toEqual([CANDIDATE_ID, ELECTION_ID, "12345"]);
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.la_candidate_finance_links");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("ON CONFLICT (candidate_id, election_id, filer_number)");
+    expect(db.query.mock.calls[1]?.[1]).toEqual([
       CANDIDATE_ID,
       ELECTION_ID,
       2027,
@@ -84,7 +87,7 @@ describe("louisianaFinanceWriter", () => {
       })
     ).resolves.toEqual({ linkId: LINK_ID });
 
-    expect(db.query.mock.calls[0]?.[1]).toEqual([
+    expect(db.query.mock.calls[1]?.[1]).toEqual([
       CANDIDATE_ID,
       ELECTION_ID,
       2027,
@@ -110,8 +113,9 @@ describe("louisianaFinanceWriter", () => {
       summary: {
         totalReceipts: 5000,
         directContributionTotal: 4500,
+        cashOnHand: -250,
         outsideSupportTotal: 1000,
-        outsideOpposeTotal: 0,
+        outsideOpposeTotal: null,
         sourceUrl: "https://www.ethics.la.gov/Pub/CampFinan/DataDownload/ContributionReports/Contributions_2024_to_2027.csv",
       },
       directBreakdowns: [
@@ -187,6 +191,7 @@ describe("louisianaFinanceWriter", () => {
     expect(db.client.release).toHaveBeenCalledTimes(1);
 
     const sql = db.client.query.mock.calls.map((call) => String(call[0]));
+    expect(sql.some((statement) => statement.includes("UPDATE public.la_candidate_finance_links"))).toBe(true);
     expect(sql.some((statement) => statement.includes("INSERT INTO public.la_candidate_finance_summaries"))).toBe(true);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.la_candidate_finance_direct_breakdowns"))).toHaveLength(2);
     expect(sql.filter((statement) => statement.includes("INSERT INTO public.la_candidate_finance_outside_groups"))).toHaveLength(1);
@@ -195,6 +200,22 @@ describe("louisianaFinanceWriter", () => {
     expect(sql.some((statement) => statement.includes("DELETE FROM public.la_candidate_finance_direct_breakdowns"))).toBe(true);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.la_candidate_finance_outside_groups"))).toBe(true);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.la_candidate_finance_outside_group_breakdowns"))).toBe(true);
+
+    const summaryCall = db.client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.la_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2027,
+      5000,
+      4500,
+      null,
+      -250,
+      1000,
+      null,
+      "https://www.ethics.la.gov/Pub/CampFinan/DataDownload/ContributionReports/Contributions_2024_to_2027.csv",
+      "2026-06-02T03:04:05.000Z",
+    ]);
 
     const outsideGroupCall = db.client.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.la_candidate_finance_outside_groups")

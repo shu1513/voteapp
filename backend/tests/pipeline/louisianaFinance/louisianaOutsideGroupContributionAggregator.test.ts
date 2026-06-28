@@ -192,6 +192,53 @@ describe("louisianaOutsideGroupContributionAggregator", () => {
     ]);
   });
 
+  it("applies donor and industry limits per outside group", () => {
+    const result = aggregateLouisianaOutsideGroupContributions({
+      electionYear: 2027,
+      maxBreakdownsPerCategory: 1,
+      outsideGroups: [
+        outsideGroup({ filerNumber: "PAC123", filerName: "Better Louisiana PAC" }),
+        outsideGroup({ filerNumber: "PAC999", filerName: "Second Louisiana PAC" }),
+      ],
+      contributionRows: [
+        contribution({
+          FilerNumber: "PAC123",
+          ContributorName: "Google LLC",
+          ContributionAmt: "50,000.00",
+        }),
+        contribution({
+          FilerNumber: "PAC999",
+          ContributorName: "IBEW Local 300",
+          ContributionAmt: "25,000.00",
+          ContributorTypeCode: "PAC",
+        }),
+      ],
+    });
+
+    expect(result.outsideGroupBreakdowns).toEqual([
+      expect.objectContaining({
+        filerNumber: "PAC123",
+        categoryType: "donor",
+        categoryName: "Google LLC",
+      }),
+      expect.objectContaining({
+        filerNumber: "PAC123",
+        categoryType: "industry",
+        categoryName: "technology",
+      }),
+      expect.objectContaining({
+        filerNumber: "PAC999",
+        categoryType: "donor",
+        categoryName: "IBEW Local 300",
+      }),
+      expect.objectContaining({
+        filerNumber: "PAC999",
+        categoryType: "industry",
+        categoryName: "labor_unions",
+      }),
+    ]);
+  });
+
   it("validates inputs", () => {
     expect(() =>
       aggregateLouisianaOutsideGroupContributions({ electionYear: 1999, outsideGroups: [], contributionRows: [] })

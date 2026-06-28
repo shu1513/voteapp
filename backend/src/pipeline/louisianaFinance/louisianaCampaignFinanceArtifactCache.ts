@@ -14,9 +14,6 @@ export const DEFAULT_LOUISIANA_CAMPAIGN_FINANCE_CACHE_DIR = "scratch/louisiana-c
 export const DEFAULT_LOUISIANA_CAMPAIGN_FINANCE_START_YEAR = 2024;
 export const DEFAULT_LOUISIANA_CAMPAIGN_FINANCE_END_YEAR = 2027;
 
-export const LOUISIANA_CAMPAIGN_FINANCE_CONTRIBUTIONS_CSV_FILE_NAME = "Contributions_2024_to_2027.csv";
-export const LOUISIANA_CAMPAIGN_FINANCE_EXPENDITURES_CSV_FILE_NAME = "Expenditures_2024_to_2027.csv";
-
 export type LouisianaCampaignFinanceDownloadKey = "contributions" | "expenditures";
 
 export type LouisianaCampaignFinanceYearRange = {
@@ -148,6 +145,11 @@ export function buildLouisianaCampaignFinanceDownloadFileName(
   return `${prefix}_${normalized.startYear}_to_${normalized.endYear}.csv`;
 }
 
+export const LOUISIANA_CAMPAIGN_FINANCE_CONTRIBUTIONS_CSV_FILE_NAME =
+  buildLouisianaCampaignFinanceDownloadFileName("contributions");
+export const LOUISIANA_CAMPAIGN_FINANCE_EXPENDITURES_CSV_FILE_NAME =
+  buildLouisianaCampaignFinanceDownloadFileName("expenditures");
+
 export function buildLouisianaCampaignFinanceDownloadUrl(
   key: LouisianaCampaignFinanceDownloadKey,
   range: LouisianaCampaignFinanceYearRange = {}
@@ -193,6 +195,17 @@ function parseBytesCount(value: string | null): number | null {
   }
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
+}
+
+function parseContentRangeTotalBytes(value: string | null): number | null {
+  if (!value) {
+    return null;
+  }
+  const match = /bytes\s+\d+-\d+\/(\d+|\*)/i.exec(value);
+  if (!match?.[1] || match[1] === "*") {
+    return null;
+  }
+  return parseBytesCount(match[1]);
 }
 
 function parseContentDispositionFilename(value: string | null): string | null {
@@ -302,13 +315,18 @@ export async function fetchLouisianaCampaignFinanceDownloadMetadata(
   assertExpectedHost(responseUrl, requestedUrl, key);
 
   const contentDisposition = response.headers.get("content-disposition");
+  const contentLength =
+    response.status === 206
+      ? parseContentRangeTotalBytes(response.headers.get("content-range")) ??
+        parseBytesCount(response.headers.get("content-length"))
+      : parseBytesCount(response.headers.get("content-length"));
   return {
     key,
     label: descriptor.label,
     sourcePageUrl: LOUISIANA_CAMPAIGN_FINANCE_DOWNLOAD_PAGE_URL,
     url: responseUrl,
     filename: parseContentDispositionFilename(contentDisposition) ?? buildLouisianaCampaignFinanceDownloadFileName(key, range),
-    contentLength: parseBytesCount(response.headers.get("content-length")),
+    contentLength,
     contentType: response.headers.get("content-type"),
     contentDisposition,
     lastModified: response.headers.get("last-modified"),
@@ -362,7 +380,15 @@ async function downloadLouisianaCampaignFinanceAttachment(input: {
   let fileStat;
   try {
     const source = Readable.fromWeb(response.body as NodeReadableStream<Uint8Array>);
-    await pipeline(source, hashSink, createWriteStream(tmpPath));
+    const timeoutMs = input.timeoutMs ?? LOUISIANA_CAMPAIGN_FINANCE_FETCH_TIMEOUT_MS;
+    const streamTimeout = setTimeout(() => {
+      source.destroy(new Error(`Louisiana campaign finance ${input.metadata.key} download body timed out after ${timeoutMs}ms`));
+    }, timeoutMs);
+    try {
+      await pipeline(source, hashSink, createWriteStream(tmpPath));
+    } finally {
+      clearTimeout(streamTimeout);
+    }
     fileStat = await stat(tmpPath);
     await rename(tmpPath, outputPath);
   } catch (error) {
@@ -446,17 +472,35 @@ function remoteMetadataMatches(
   nextRemote: LouisianaCampaignFinanceRemoteDownloadMetadata
 ): boolean {
   const prior = previous?.downloads[key]?.remote;
+  if (!prior || prior.url !== nextRemote.url) {
+    return false;
+  }
+
+  const hasLengthValidator = nextRemote.contentLength !== null;
+  const hasModifiedValidator = nextRemote.lastModified !== null;
+  if (!hasLengthValidator && !hasModifiedValidator) {
+    return false;
+  }
+
   return (
-    !!prior &&
-    prior.url === nextRemote.url &&
-    prior.contentLength === nextRemote.contentLength &&
-    prior.lastModified === nextRemote.lastModified
+    (!hasLengthValidator || prior.contentLength === nextRemote.contentLength) &&
+    (!hasModifiedValidator || prior.lastModified === nextRemote.lastModified)
   );
 }
 
 async function metadataFilesExist(metadata: LouisianaCampaignFinanceArtifactCacheMetadata): Promise<boolean> {
   for (const key of Object.keys(metadata.downloads) as LouisianaCampaignFinanceDownloadKey[]) {
-    if (!(await pathExists(metadata.downloads[key].outputPath))) {
+    const download = metadata.downloads[key];
+    if (!(await pathExists(download.outputPath))) {
+      return false;
+    }
+    const fileStat = await stat(download.outputPath);
+    if (fileStat.size !== download.bytesWritten) {
+      return false;
+    }
+    const fileHash = createHash("sha256");
+    fileHash.update(await readFile(download.outputPath));
+    if (fileHash.digest("hex") !== download.sha256) {
       return false;
     }
   }

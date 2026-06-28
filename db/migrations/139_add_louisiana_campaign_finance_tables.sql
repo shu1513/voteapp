@@ -46,6 +46,10 @@ CREATE INDEX IF NOT EXISTS la_candidate_finance_links_election_candidate_idx
 CREATE INDEX IF NOT EXISTS la_candidate_finance_links_filer_year_idx
   ON public.la_candidate_finance_links (filer_number, election_year);
 
+CREATE UNIQUE INDEX IF NOT EXISTS la_candidate_finance_links_active_candidate_election_idx
+  ON public.la_candidate_finance_links (candidate_id, election_id)
+  WHERE link_status = 'active';
+
 DROP TRIGGER IF EXISTS la_candidate_finance_links_set_updated_at
   ON public.la_candidate_finance_links;
 CREATE TRIGGER la_candidate_finance_links_set_updated_at
@@ -73,7 +77,6 @@ CREATE TABLE IF NOT EXISTS public.la_candidate_finance_summaries (
       (total_receipts IS NULL OR total_receipts >= 0)
       AND (direct_contribution_total IS NULL OR direct_contribution_total >= 0)
       AND (total_disbursements IS NULL OR total_disbursements >= 0)
-      AND (cash_on_hand IS NULL OR cash_on_hand >= 0)
       AND (outside_support_total IS NULL OR outside_support_total >= 0)
       AND (outside_oppose_total IS NULL OR outside_oppose_total >= 0)
     ),

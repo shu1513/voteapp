@@ -146,6 +146,16 @@ function normalizeNullableAmount(value: number | null | undefined, fieldName: st
   return normalizeAmount(value, fieldName);
 }
 
+function normalizeNullableBalance(value: number | null | undefined, fieldName: string): number | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  if (!Number.isFinite(value)) {
+    throw new Error(`${fieldName} must be a finite number`);
+  }
+  return value;
+}
+
 function normalizeNullableCount(value: number | null | undefined): number | null {
   if (value === undefined || value === null) {
     return null;
@@ -262,6 +272,25 @@ export async function upsertLouisianaFinanceLink(input: {
   link: LouisianaFinanceLinkInput;
 }): Promise<{ linkId: string }> {
   validateLouisianaFinanceLinkInput(input.link);
+  const candidateId = requireNonEmpty(input.link.candidateId, "candidate id");
+  const electionId = requireNonEmpty(input.link.electionId, "election id");
+  const electionYear = normalizeElectionYear(input.link.electionYear);
+  const filerNumber = requireNonEmpty(input.link.filerNumber, "Louisiana filer number");
+  const linkStatus = input.link.linkStatus ?? "active";
+
+  if (linkStatus === "active") {
+    await input.db.query(
+      `
+        UPDATE public.la_candidate_finance_links
+        SET link_status = 'inactive'
+        WHERE candidate_id = $1::uuid
+          AND election_id = $2::uuid
+          AND filer_number <> $3
+          AND link_status = 'active'
+      `,
+      [candidateId, electionId, filerNumber]
+    );
+  }
 
   const result = await input.db.query<{ id: string }>(
     `
@@ -294,15 +323,15 @@ export async function upsertLouisianaFinanceLink(input: {
       RETURNING id
     `,
     [
-      requireNonEmpty(input.link.candidateId, "candidate id"),
-      requireNonEmpty(input.link.electionId, "election id"),
-      normalizeElectionYear(input.link.electionYear),
+      candidateId,
+      electionId,
+      electionYear,
       requireNonEmpty(input.link.candidateNameNormalized, "Louisiana finance candidate name"),
       requireNonEmpty(input.link.officeName, "Louisiana finance office name"),
       normalizeOptionalText(input.link.district),
-      requireNonEmpty(input.link.filerNumber, "Louisiana filer number"),
+      filerNumber,
       requireNonEmpty(input.link.filerName, "Louisiana filer name"),
-      input.link.linkStatus ?? "active",
+      linkStatus,
       input.link.linkSource ?? "manual",
       normalizeOptionalText(input.link.sourceUrl),
       normalizeNullableDate(input.link.lastVerifiedAt),
@@ -355,7 +384,7 @@ async function upsertSummary(input: {
       normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
       normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
       normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
-      normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
+      normalizeNullableBalance(input.summary.cashOnHand, "cash on hand"),
       normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
       normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
       normalizeOptionalText(input.summary.sourceUrl),

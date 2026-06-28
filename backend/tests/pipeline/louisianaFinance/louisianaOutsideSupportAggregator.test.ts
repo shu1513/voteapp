@@ -44,7 +44,7 @@ describe("louisianaOutsideSupportAggregator", () => {
       skippedExpenditureRowCount: 0,
       summary: {
         outsideSupportTotal: 1250,
-        outsideOpposeTotal: 0,
+        outsideOpposeTotal: null,
         sourceUrl: "https://www.ethics.la.gov/",
         groups: [
           {

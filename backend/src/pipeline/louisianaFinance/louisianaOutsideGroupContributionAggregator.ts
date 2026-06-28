@@ -180,69 +180,69 @@ function toBreakdowns(input: {
   maxBreakdownsPerCategory: number;
 }): LouisianaFinanceOutsideGroupBreakdown[] {
   const result: LouisianaFinanceOutsideGroupBreakdown[] = [];
-  const sortedDonors = [...input.donors].sort(
-    (left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName)
-  );
-  const selectedIndustries = [...input.industries]
-    .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
-    .slice(0, input.maxBreakdownsPerCategory);
-  const selectedDonorKeys = new Set<string>();
-  const selectedDonors: DonorAggregate[] = [];
+  const donors = [...input.donors];
+  const industries = [...input.industries];
+  const bucketKeys = [...new Set([...donors, ...industries].map((item) => outsideGroupKey(item)))].sort();
 
-  function selectDonor(donor: DonorAggregate): void {
-    const key = donorKey({
-      filerNumber: donor.filerNumber,
-      supportOppose: donor.supportOppose,
-      normalizedName: donor.normalizedName,
-    });
-    if (selectedDonorKeys.has(key)) {
-      return;
+  for (const bucketKey of bucketKeys) {
+    const sortedDonors = donors
+      .filter((item) => outsideGroupKey(item) === bucketKey)
+      .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName));
+    const selectedIndustries = industries
+      .filter((item) => outsideGroupKey(item) === bucketKey)
+      .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
+      .slice(0, input.maxBreakdownsPerCategory);
+    const selectedDonorKeys = new Set<string>();
+    const selectedDonors: DonorAggregate[] = [];
+
+    function selectDonor(donor: DonorAggregate): void {
+      const key = donorKey({
+        filerNumber: donor.filerNumber,
+        supportOppose: donor.supportOppose,
+        normalizedName: donor.normalizedName,
+      });
+      if (selectedDonorKeys.has(key)) {
+        return;
+      }
+      selectedDonorKeys.add(key);
+      selectedDonors.push(donor);
     }
-    selectedDonorKeys.add(key);
-    selectedDonors.push(donor);
-  }
 
-  for (const donor of sortedDonors.slice(0, input.maxBreakdownsPerCategory)) {
-    selectDonor(donor);
-  }
-
-  for (const industry of selectedIndustries) {
-    for (const donor of sortedDonors
-      .filter(
-        (item) =>
-          item.filerNumber === industry.filerNumber &&
-          item.supportOppose === industry.supportOppose &&
-          item.industrySlug === industry.industrySlug
-      )
-      .slice(0, 3)) {
+    for (const donor of sortedDonors.slice(0, input.maxBreakdownsPerCategory)) {
       selectDonor(donor);
     }
-  }
 
-  for (const donor of selectedDonors.sort(
-    (left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName)
-  )) {
-    result.push({
-      filerNumber: donor.filerNumber,
-      supportOppose: donor.supportOppose,
-      categoryType: "donor",
-      categoryName: donor.displayName,
-      amount: centsToDollars(donor.amountCents),
-      contributorCount: 1,
-      sourceUrl: input.sourceUrl,
-    });
-  }
+    for (const industry of selectedIndustries) {
+      for (const donor of sortedDonors.filter((item) => item.industrySlug === industry.industrySlug).slice(0, 3)) {
+        selectDonor(donor);
+      }
+    }
 
-  for (const industry of selectedIndustries) {
-    result.push({
-      filerNumber: industry.filerNumber,
-      supportOppose: industry.supportOppose,
-      categoryType: "industry",
-      categoryName: industry.industrySlug,
-      amount: centsToDollars(industry.amountCents),
-      contributorCount: industry.donorKeys.size,
-      sourceUrl: input.sourceUrl,
-    });
+    for (const donor of selectedDonors.sort(
+      (left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName)
+    )) {
+      result.push({
+        filerNumber: donor.filerNumber,
+        supportOppose: donor.supportOppose,
+        categoryType: "donor",
+        categoryName: donor.displayName,
+        amount: centsToDollars(donor.amountCents),
+        contributorCount: 1,
+        sourceUrl: input.sourceUrl,
+      });
+    }
+
+    for (const industry of selectedIndustries) {
+      result.push({
+        filerNumber: industry.filerNumber,
+        supportOppose: industry.supportOppose,
+        categoryType: "industry",
+        categoryName: industry.industrySlug,
+        amount: centsToDollars(industry.amountCents),
+        contributorCount: industry.donorKeys.size,
+        sourceUrl: input.sourceUrl,
+      });
+    }
   }
 
   return result;

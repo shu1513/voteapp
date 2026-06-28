@@ -218,6 +218,40 @@ function rowMatchesElectionYear(row: LouisianaCandidateCommitteeRow, electionYea
   return false;
 }
 
+function rowMatchesOfficeContext(input: {
+  row: LouisianaCandidateCommitteeRow;
+  officeName: string;
+  district: string | null;
+}): boolean {
+  const rawOffice = firstNonEmpty(input.row, [
+    "OfficeSought",
+    "Office Sought",
+    "OfficeName",
+    "Office Name",
+    "Office",
+    "CandidateOffice",
+    "Candidate Office",
+  ]);
+  const rowOffice = normalizeLouisianaFinanceOfficeName(rawOffice);
+  if (rawOffice && rowOffice !== null && rowOffice !== input.officeName) {
+    return false;
+  }
+
+  const rawDistrict = firstNonEmpty(input.row, [
+    "District",
+    "DistrictNumber",
+    "District Number",
+    "OfficeDistrict",
+    "Office District",
+  ]);
+  const rowDistrict = normalizeLouisianaFinanceDistrict(rawDistrict);
+  if (rowDistrict && input.district && rowDistrict !== input.district) {
+    return false;
+  }
+
+  return true;
+}
+
 function isLikelyCandidateFiler(row: LouisianaCandidateCommitteeRow): boolean {
   const candidateName = candidateNameFromRow(row);
   const filerName = displayFilerName(row);
@@ -308,6 +342,9 @@ export function resolveLouisianaCandidateCommittee(
       continue;
     }
     if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+      continue;
+    }
+    if (!rowMatchesOfficeContext({ row, officeName: officeSearchInput.officeName, district: officeSearchInput.district })) {
       continue;
     }
 

@@ -156,7 +156,20 @@ async function main(): Promise<void> {
   const options = parseSyncDueLouisianaCandidateFinanceScriptArgs(process.argv.slice(2));
 
   if (!isLouisianaCampaignFinanceSyncEnabled(options.force)) {
-    console.log("Louisiana campaign finance due sync disabled; no Louisiana data loaded");
+    console.log(
+      JSON.stringify(
+        {
+          type: "louisiana_candidate_finance_due_sync",
+          ts: new Date().toISOString(),
+          started_at: startedAt.toISOString(),
+          dry_run: options.dryRun,
+          enabled: false,
+          reason: "disabled",
+        },
+        null,
+        2
+      )
+    );
     return;
   }
 

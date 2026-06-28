@@ -21,7 +21,7 @@ describe("louisianaBallotLookupFinanceLoader", () => {
             total_disbursements: null,
             cash_on_hand: null,
             outside_support_total: "5000.00",
-            outside_oppose_total: "0.00",
+            outside_oppose_total: null,
             source_url: "https://example.invalid/summary",
             last_synced_at: "2026-06-01T00:00:00.000Z",
           },
@@ -131,7 +131,7 @@ describe("louisianaBallotLookupFinanceLoader", () => {
       },
       outside_spending: {
         support_total: 5000,
-        oppose_total: 0,
+        oppose_total: null,
         top_supporting_groups: [
           {
             committee_id: "PAC1",
@@ -189,5 +189,30 @@ describe("louisianaBallotLookupFinanceLoader", () => {
 
     expect(result.size).toBe(0);
     expect(query).not.toHaveBeenCalled();
+  });
+
+  it("uses one read transaction when called with a pool", async () => {
+    const client = {
+      query: vi.fn().mockResolvedValue({ rows: [] }),
+      release: vi.fn(),
+    };
+    const pool = {
+      query: vi.fn(),
+      connect: vi.fn().mockResolvedValue(client),
+    };
+
+    const result = await loadLouisianaCandidateFinanceSummariesByCandidateElection(
+      pool,
+      [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID }],
+      [{ election_id: ELECTION_ID, state: "LA", office_scope: "statewide", office_canonical_name: "Governor" }]
+    );
+
+    expect(result.size).toBe(0);
+    expect(pool.query).not.toHaveBeenCalled();
+    expect(pool.connect).toHaveBeenCalledTimes(1);
+    expect(client.query.mock.calls[0]?.[0]).toBe("BEGIN READ ONLY");
+    expect(String(client.query.mock.calls[1]?.[0])).toContain("public.la_candidate_finance_links");
+    expect(client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+    expect(client.release).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,3 +1,5 @@
+import { pathToFileURL } from "node:url";
+
 import { loadProjectEnv } from "../config/env.js";
 import { isLouisianaCampaignFinanceEnabled } from "../config/featureFlags.js";
 import { createLouisianaCandidateFinanceSyncSchedulerWorker } from "../scheduler/louisianaCandidateFinanceSyncScheduler.js";
@@ -77,7 +79,10 @@ async function main(): Promise<void> {
   });
 }
 
-main().catch((error) => {
-  console.error("Louisiana campaign finance sync scheduler worker crashed:", error);
-  process.exit(1);
-});
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    console.error("Louisiana campaign finance sync scheduler worker crashed:", error);
+    process.exit(1);
+  });
+}

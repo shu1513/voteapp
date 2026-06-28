@@ -10,6 +10,10 @@ import type {
 import { isLouisianaFinanceEligibleOffice } from "./louisianaFinanceEligibleOffices.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & Pick<Pool, "connect">;
+type ClientLikeQueryable = Queryable & {
+  release?: () => void;
+};
 
 export type LouisianaBallotLookupCandidateRow = {
   election_id: string;
@@ -240,16 +244,40 @@ function buildLouisianaFinanceSummaryRequests(
   return [...requests.values()];
 }
 
-export async function loadLouisianaCandidateFinanceSummariesByCandidateElection(
-  db: Queryable,
-  candidateRows: readonly LouisianaBallotLookupCandidateRow[],
-  electionRows: readonly LouisianaBallotLookupElectionRow[]
-): Promise<Map<string, BallotLookupFinanceSummary>> {
-  const requests = buildLouisianaFinanceSummaryRequests(candidateRows, electionRows);
-  if (requests.length === 0) {
-    return new Map();
+function canOpenReadTransaction(db: Queryable): db is ConnectableQueryable {
+  return (
+    typeof (db as ConnectableQueryable).connect === "function" &&
+    typeof (db as ClientLikeQueryable).release !== "function"
+  );
+}
+
+async function withConsistentLouisianaFinanceRead<T>(db: Queryable, work: (queryable: Queryable) => Promise<T>): Promise<T> {
+  if (!canOpenReadTransaction(db)) {
+    return await work(db);
   }
 
+  const client = await db.connect();
+  try {
+    await client.query("BEGIN READ ONLY");
+    const result = await work(client);
+    await client.query("COMMIT");
+    return result;
+  } catch (error) {
+    try {
+      await client.query("ROLLBACK");
+    } catch {
+      // Preserve the original read failure.
+    }
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+async function loadLouisianaCandidateFinanceSummariesByCandidateElectionFromQueryable(
+  db: Queryable,
+  requests: readonly LouisianaFinanceSummaryRequest[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
   const summaryResult = await db.query<LouisianaFinanceSummaryRow>(
     `
       WITH requested AS (
@@ -721,5 +749,20 @@ export async function loadLouisianaCandidateFinanceSummariesByCandidateElection(
         } satisfies BallotLookupFinanceSummary,
       ];
     })
+  );
+}
+
+export async function loadLouisianaCandidateFinanceSummariesByCandidateElection(
+  db: Queryable,
+  candidateRows: readonly LouisianaBallotLookupCandidateRow[],
+  electionRows: readonly LouisianaBallotLookupElectionRow[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
+  const requests = buildLouisianaFinanceSummaryRequests(candidateRows, electionRows);
+  if (requests.length === 0) {
+    return new Map();
+  }
+
+  return await withConsistentLouisianaFinanceRead(db, async (queryable) =>
+    loadLouisianaCandidateFinanceSummariesByCandidateElectionFromQueryable(queryable, requests)
   );
 }
