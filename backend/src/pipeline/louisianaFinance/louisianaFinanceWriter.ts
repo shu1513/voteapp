@@ -1,0 +1,640 @@
+import type { Pool, PoolClient } from "pg";
+
+import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & {
+  connect: () => Promise<PoolClient>;
+};
+type ClientLikeQueryable = Queryable & {
+  release?: () => void;
+};
+
+export type LouisianaFinanceLinkStatus = "active" | "inactive";
+export type LouisianaFinanceLinkSource = "manual" | "la_ethics_search";
+export type LouisianaFinanceDirectCategoryType = "contribution_size" | "contributor_type" | "donor";
+export type LouisianaFinanceOutsideCategoryType = "donor" | "industry";
+export type LouisianaFinanceSupportOppose = "support" | "oppose";
+export type LouisianaFinanceSupportMechanism = "la_pac_contribution_to_candidate";
+
+export type LouisianaFinanceLinkInput = {
+  candidateId: string;
+  electionId: string;
+  electionYear: number;
+  candidateNameNormalized: string;
+  officeName: string;
+  district?: string | null;
+  filerNumber: string;
+  filerName: string;
+  linkStatus?: LouisianaFinanceLinkStatus;
+  linkSource?: LouisianaFinanceLinkSource;
+  sourceUrl?: string | null;
+  lastVerifiedAt?: Date | null;
+};
+
+export type LouisianaFinanceSummaryInput = {
+  totalReceipts?: number | null;
+  directContributionTotal?: number | null;
+  totalDisbursements?: number | null;
+  cashOnHand?: number | null;
+  outsideSupportTotal?: number | null;
+  outsideOpposeTotal?: number | null;
+  sourceUrl?: string | null;
+};
+
+export type LouisianaFinanceDirectBreakdownInput = {
+  categoryType: LouisianaFinanceDirectCategoryType;
+  categoryName: string;
+  amount: number;
+  contributorCount?: number | null;
+  sourceUrl?: string | null;
+};
+
+export type LouisianaFinanceOutsideGroupInput = {
+  filerNumber: string;
+  filerName: string;
+  supportOppose: LouisianaFinanceSupportOppose;
+  supportMechanism?: LouisianaFinanceSupportMechanism;
+  amount: number;
+  sourceUrl?: string | null;
+};
+
+export type LouisianaFinanceOutsideGroupBreakdownInput = {
+  filerNumber: string;
+  supportOppose: LouisianaFinanceSupportOppose;
+  categoryType: LouisianaFinanceOutsideCategoryType;
+  categoryName: string;
+  amount: number;
+  contributorCount?: number | null;
+  sourceUrl?: string | null;
+};
+
+export type LouisianaFinanceSnapshotInput = {
+  db: ConnectableQueryable;
+  link: LouisianaFinanceLinkInput;
+  syncedAt?: Date;
+  summary?: LouisianaFinanceSummaryInput;
+  directBreakdowns?: readonly LouisianaFinanceDirectBreakdownInput[];
+  outsideGroups?: readonly LouisianaFinanceOutsideGroupInput[];
+  outsideGroupBreakdowns?: readonly LouisianaFinanceOutsideGroupBreakdownInput[];
+  classifications?: readonly FinanceLabelClassification[];
+};
+
+export type LouisianaFinanceSnapshotWriteResult = {
+  linkId: string;
+  summaryWritten: boolean;
+  directBreakdownsWritten: number;
+  outsideGroupsWritten: number;
+  outsideGroupBreakdownsWritten: number;
+};
+
+const LOUISIANA_DIRECT_CATEGORY_TYPES = new Set<LouisianaFinanceDirectCategoryType>([
+  "contribution_size",
+  "contributor_type",
+  "donor",
+]);
+const LOUISIANA_OUTSIDE_CATEGORY_TYPES = new Set<LouisianaFinanceOutsideCategoryType>(["donor", "industry"]);
+const LOUISIANA_SUPPORT_MECHANISMS = new Set<LouisianaFinanceSupportMechanism>([
+  "la_pac_contribution_to_candidate",
+]);
+
+function requireNonEmpty(value: string, fieldName: string): string {
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
+    throw new Error(`${fieldName} is required`);
+  }
+  return trimmed;
+}
+
+function normalizeElectionYear(value: number): number {
+  if (!Number.isInteger(value) || value < 2000 || value > 2100) {
+    throw new Error(`Invalid Louisiana finance election year: ${value}`);
+  }
+  return value;
+}
+
+function normalizeOptionalText(value: string | null | undefined): string | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function normalizeNullableDate(value: Date | null | undefined): string | null {
+  if (!value) {
+    return null;
+  }
+  if (Number.isNaN(value.getTime())) {
+    throw new Error("Invalid Louisiana finance timestamp");
+  }
+  return value.toISOString();
+}
+
+function normalizeAmount(value: number, fieldName: string): number {
+  if (!Number.isFinite(value) || value < 0) {
+    throw new Error(`${fieldName} must be a nonnegative number`);
+  }
+  return value;
+}
+
+function normalizeNullableAmount(value: number | null | undefined, fieldName: string): number | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  return normalizeAmount(value, fieldName);
+}
+
+function normalizeNullableCount(value: number | null | undefined): number | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  if (!Number.isInteger(value) || value < 0) {
+    throw new Error("Louisiana finance contributor count must be a nonnegative integer");
+  }
+  return value;
+}
+
+function canOpenTransaction(db: Queryable): db is ConnectableQueryable {
+  return (
+    typeof (db as ConnectableQueryable).connect === "function" &&
+    typeof (db as ClientLikeQueryable).release !== "function"
+  );
+}
+
+function isClientLikeQueryable(db: Queryable): db is ClientLikeQueryable {
+  return typeof (db as ClientLikeQueryable).release === "function";
+}
+
+function validateDirectCategory(categoryType: LouisianaFinanceDirectCategoryType): void {
+  if (!LOUISIANA_DIRECT_CATEGORY_TYPES.has(categoryType)) {
+    throw new Error(`Unsupported Louisiana direct breakdown category type: ${String(categoryType)}`);
+  }
+}
+
+function validateOutsideCategory(categoryType: LouisianaFinanceOutsideCategoryType): void {
+  if (!LOUISIANA_OUTSIDE_CATEGORY_TYPES.has(categoryType)) {
+    throw new Error(`Unsupported Louisiana outside breakdown category type: ${String(categoryType)}`);
+  }
+}
+
+function normalizeSupportMechanism(
+  value: LouisianaFinanceSupportMechanism | undefined
+): LouisianaFinanceSupportMechanism {
+  const mechanism = value ?? "la_pac_contribution_to_candidate";
+  if (!LOUISIANA_SUPPORT_MECHANISMS.has(mechanism)) {
+    throw new Error(`Unsupported Louisiana outside group support mechanism: ${String(value)}`);
+  }
+  return mechanism;
+}
+
+function validateLouisianaFinanceLinkInput(link: LouisianaFinanceLinkInput): void {
+  requireNonEmpty(link.candidateId, "candidate id");
+  requireNonEmpty(link.electionId, "election id");
+  normalizeElectionYear(link.electionYear);
+  requireNonEmpty(link.candidateNameNormalized, "Louisiana finance candidate name");
+  requireNonEmpty(link.officeName, "Louisiana finance office name");
+  requireNonEmpty(link.filerNumber, "Louisiana filer number");
+  requireNonEmpty(link.filerName, "Louisiana filer name");
+  normalizeNullableDate(link.lastVerifiedAt);
+}
+
+function validateLouisianaFinanceSnapshotInput(input: LouisianaFinanceSnapshotInput): void {
+  validateLouisianaFinanceLinkInput(input.link);
+  for (const breakdown of input.directBreakdowns ?? []) {
+    validateDirectCategory(breakdown.categoryType);
+  }
+  for (const breakdown of input.outsideGroupBreakdowns ?? []) {
+    validateOutsideCategory(breakdown.categoryType);
+  }
+  const outsideBreakdownCount = input.outsideGroupBreakdowns?.length ?? 0;
+  const outsideGroupCount = input.outsideGroups?.length ?? 0;
+  if (outsideBreakdownCount > 0 && outsideGroupCount === 0) {
+    throw new Error("Louisiana outside group breakdowns require outside groups in the same snapshot");
+  }
+  if (outsideBreakdownCount > 0) {
+    const groupKeys = new Set(
+      (input.outsideGroups ?? []).map(
+        (group) => `${requireNonEmpty(group.filerNumber, "Louisiana outside group filer number")}\u0000${group.supportOppose}`
+      )
+    );
+    for (const breakdown of input.outsideGroupBreakdowns ?? []) {
+      const key = `${requireNonEmpty(
+        breakdown.filerNumber,
+        "Louisiana outside breakdown filer number"
+      )}\u0000${breakdown.supportOppose}`;
+      if (!groupKeys.has(key)) {
+        throw new Error("Louisiana outside group breakdowns must reference outside groups in the same snapshot");
+      }
+    }
+  }
+}
+
+async function withLouisianaFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
+  if (!canOpenTransaction(db)) {
+    if (isClientLikeQueryable(db)) {
+      throw new Error("Louisiana finance snapshot writes must receive a Pool, not a PoolClient");
+    }
+    throw new Error("Louisiana finance snapshot writes must receive a Pool");
+  }
+
+  const client = await db.connect();
+  try {
+    await client.query("BEGIN");
+    const result = await work(client);
+    await client.query("COMMIT");
+    return result;
+  } catch (error) {
+    try {
+      await client.query("ROLLBACK");
+    } catch {
+      // Preserve the original write failure.
+    }
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+export async function upsertLouisianaFinanceLink(input: {
+  db: Queryable;
+  link: LouisianaFinanceLinkInput;
+}): Promise<{ linkId: string }> {
+  validateLouisianaFinanceLinkInput(input.link);
+
+  const result = await input.db.query<{ id: string }>(
+    `
+      INSERT INTO public.la_candidate_finance_links (
+        candidate_id,
+        election_id,
+        election_year,
+        candidate_name_normalized,
+        office_name,
+        district,
+        filer_number,
+        filer_name,
+        link_status,
+        link_source,
+        source_url,
+        last_verified_at
+      )
+      VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::timestamptz)
+      ON CONFLICT (candidate_id, election_id, filer_number)
+      DO UPDATE SET
+        election_year = EXCLUDED.election_year,
+        candidate_name_normalized = EXCLUDED.candidate_name_normalized,
+        office_name = EXCLUDED.office_name,
+        district = EXCLUDED.district,
+        filer_name = EXCLUDED.filer_name,
+        link_status = EXCLUDED.link_status,
+        link_source = EXCLUDED.link_source,
+        source_url = EXCLUDED.source_url,
+        last_verified_at = EXCLUDED.last_verified_at
+      RETURNING id
+    `,
+    [
+      requireNonEmpty(input.link.candidateId, "candidate id"),
+      requireNonEmpty(input.link.electionId, "election id"),
+      normalizeElectionYear(input.link.electionYear),
+      requireNonEmpty(input.link.candidateNameNormalized, "Louisiana finance candidate name"),
+      requireNonEmpty(input.link.officeName, "Louisiana finance office name"),
+      normalizeOptionalText(input.link.district),
+      requireNonEmpty(input.link.filerNumber, "Louisiana filer number"),
+      requireNonEmpty(input.link.filerName, "Louisiana filer name"),
+      input.link.linkStatus ?? "active",
+      input.link.linkSource ?? "manual",
+      normalizeOptionalText(input.link.sourceUrl),
+      normalizeNullableDate(input.link.lastVerifiedAt),
+    ]
+  );
+
+  const linkId = result.rows[0]?.id;
+  if (!linkId) {
+    throw new Error("Louisiana finance link upsert did not return an id");
+  }
+  return { linkId };
+}
+
+async function upsertSummary(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  summary: LouisianaFinanceSummaryInput;
+  syncedAt: Date;
+}): Promise<void> {
+  await input.db.query(
+    `
+      INSERT INTO public.la_candidate_finance_summaries (
+        link_id,
+        election_year,
+        total_receipts,
+        direct_contribution_total,
+        total_disbursements,
+        cash_on_hand,
+        outside_support_total,
+        outside_oppose_total,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
+      ON CONFLICT (link_id, election_year)
+      DO UPDATE SET
+        total_receipts = EXCLUDED.total_receipts,
+        direct_contribution_total = EXCLUDED.direct_contribution_total,
+        total_disbursements = EXCLUDED.total_disbursements,
+        cash_on_hand = EXCLUDED.cash_on_hand,
+        outside_support_total = EXCLUDED.outside_support_total,
+        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        source_url = EXCLUDED.source_url,
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Louisiana finance link id"),
+      normalizeElectionYear(input.electionYear),
+      normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
+      normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
+      normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
+      normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
+      normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
+      normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
+      normalizeOptionalText(input.summary.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function upsertDirectBreakdown(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  breakdown: LouisianaFinanceDirectBreakdownInput;
+  syncedAt: Date;
+}): Promise<void> {
+  validateDirectCategory(input.breakdown.categoryType);
+  await input.db.query(
+    `
+      INSERT INTO public.la_candidate_finance_direct_breakdowns (
+        link_id,
+        election_year,
+        category_type,
+        category_name,
+        amount,
+        contributor_count,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
+      ON CONFLICT (link_id, election_year, category_type, category_name)
+      DO UPDATE SET
+        amount = EXCLUDED.amount,
+        contributor_count = EXCLUDED.contributor_count,
+        source_url = EXCLUDED.source_url,
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Louisiana finance link id"),
+      normalizeElectionYear(input.electionYear),
+      input.breakdown.categoryType,
+      requireNonEmpty(input.breakdown.categoryName, "Louisiana finance direct breakdown category"),
+      normalizeAmount(input.breakdown.amount, "direct breakdown amount"),
+      normalizeNullableCount(input.breakdown.contributorCount),
+      normalizeOptionalText(input.breakdown.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function deleteStaleDirectBreakdowns(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  breakdowns: readonly LouisianaFinanceDirectBreakdownInput[];
+}): Promise<void> {
+  const keys = input.breakdowns.map((breakdown) => ({
+    category_type: breakdown.categoryType,
+    category_name: requireNonEmpty(breakdown.categoryName, "Louisiana finance direct breakdown category"),
+  }));
+
+  await input.db.query(
+    `
+      DELETE FROM public.la_candidate_finance_direct_breakdowns
+      WHERE link_id = $1::uuid
+        AND election_year = $2
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            category_type text,
+            category_name text
+          )
+          WHERE keep.category_type = la_candidate_finance_direct_breakdowns.category_type
+            AND keep.category_name = la_candidate_finance_direct_breakdowns.category_name
+        )
+    `,
+    [requireNonEmpty(input.linkId, "Louisiana finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
+  );
+}
+
+async function upsertOutsideGroup(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  group: LouisianaFinanceOutsideGroupInput;
+  syncedAt: Date;
+}): Promise<void> {
+  await input.db.query(
+    `
+      INSERT INTO public.la_candidate_finance_outside_groups (
+        link_id,
+        election_year,
+        filer_number,
+        filer_name,
+        support_oppose,
+        support_mechanism,
+        amount,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9::timestamptz)
+      ON CONFLICT (link_id, election_year, filer_number, support_oppose)
+      DO UPDATE SET
+        filer_name = EXCLUDED.filer_name,
+        support_mechanism = EXCLUDED.support_mechanism,
+        amount = EXCLUDED.amount,
+        source_url = EXCLUDED.source_url,
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Louisiana finance link id"),
+      normalizeElectionYear(input.electionYear),
+      requireNonEmpty(input.group.filerNumber, "Louisiana outside group filer number"),
+      requireNonEmpty(input.group.filerName, "Louisiana outside group filer name"),
+      input.group.supportOppose,
+      normalizeSupportMechanism(input.group.supportMechanism),
+      normalizeAmount(input.group.amount, "outside group amount"),
+      normalizeOptionalText(input.group.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function deleteStaleOutsideGroups(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  groups: readonly LouisianaFinanceOutsideGroupInput[];
+}): Promise<void> {
+  const keys = input.groups.map((group) => ({
+    filer_number: requireNonEmpty(group.filerNumber, "Louisiana outside group filer number"),
+    support_oppose: group.supportOppose,
+  }));
+
+  await input.db.query(
+    `
+      DELETE FROM public.la_candidate_finance_outside_groups
+      WHERE link_id = $1::uuid
+        AND election_year = $2
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            filer_number text,
+            support_oppose text
+          )
+          WHERE keep.filer_number = la_candidate_finance_outside_groups.filer_number
+            AND keep.support_oppose = la_candidate_finance_outside_groups.support_oppose
+        )
+    `,
+    [requireNonEmpty(input.linkId, "Louisiana finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
+  );
+}
+
+async function upsertOutsideGroupBreakdown(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  breakdown: LouisianaFinanceOutsideGroupBreakdownInput;
+  syncedAt: Date;
+}): Promise<void> {
+  validateOutsideCategory(input.breakdown.categoryType);
+  await input.db.query(
+    `
+      INSERT INTO public.la_candidate_finance_outside_group_breakdowns (
+        link_id,
+        election_year,
+        filer_number,
+        support_oppose,
+        category_type,
+        category_name,
+        amount,
+        contributor_count,
+        source_url,
+        last_synced_at
+      )
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
+      ON CONFLICT (link_id, election_year, filer_number, support_oppose, category_type, category_name)
+      DO UPDATE SET
+        amount = EXCLUDED.amount,
+        contributor_count = EXCLUDED.contributor_count,
+        source_url = EXCLUDED.source_url,
+        last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [
+      requireNonEmpty(input.linkId, "Louisiana finance link id"),
+      normalizeElectionYear(input.electionYear),
+      requireNonEmpty(input.breakdown.filerNumber, "Louisiana outside breakdown filer number"),
+      input.breakdown.supportOppose,
+      input.breakdown.categoryType,
+      requireNonEmpty(input.breakdown.categoryName, "Louisiana outside breakdown category"),
+      normalizeAmount(input.breakdown.amount, "outside group breakdown amount"),
+      normalizeNullableCount(input.breakdown.contributorCount),
+      normalizeOptionalText(input.breakdown.sourceUrl),
+      input.syncedAt.toISOString(),
+    ]
+  );
+}
+
+async function deleteStaleOutsideGroupBreakdowns(input: {
+  db: Queryable;
+  linkId: string;
+  electionYear: number;
+  breakdowns: readonly LouisianaFinanceOutsideGroupBreakdownInput[];
+}): Promise<void> {
+  const keys = input.breakdowns.map((breakdown) => ({
+    filer_number: requireNonEmpty(breakdown.filerNumber, "Louisiana outside breakdown filer number"),
+    support_oppose: breakdown.supportOppose,
+    category_type: breakdown.categoryType,
+    category_name: requireNonEmpty(breakdown.categoryName, "Louisiana outside breakdown category"),
+  }));
+
+  await input.db.query(
+    `
+      DELETE FROM public.la_candidate_finance_outside_group_breakdowns
+      WHERE link_id = $1::uuid
+        AND election_year = $2
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset($3::jsonb) AS keep(
+            filer_number text,
+            support_oppose text,
+            category_type text,
+            category_name text
+          )
+          WHERE keep.filer_number = la_candidate_finance_outside_group_breakdowns.filer_number
+            AND keep.support_oppose = la_candidate_finance_outside_group_breakdowns.support_oppose
+            AND keep.category_type = la_candidate_finance_outside_group_breakdowns.category_type
+            AND keep.category_name = la_candidate_finance_outside_group_breakdowns.category_name
+        )
+    `,
+    [requireNonEmpty(input.linkId, "Louisiana finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
+  );
+}
+
+export async function replaceLouisianaCandidateFinanceSnapshot(
+  input: LouisianaFinanceSnapshotInput
+): Promise<LouisianaFinanceSnapshotWriteResult> {
+  const syncedAt = input.syncedAt ?? new Date();
+  if (Number.isNaN(syncedAt.getTime())) {
+    throw new Error("Invalid Louisiana finance sync timestamp");
+  }
+  validateLouisianaFinanceSnapshotInput(input);
+  const electionYear = normalizeElectionYear(input.link.electionYear);
+
+  return await withLouisianaFinanceTransaction(input.db, async (db) => {
+    const { linkId } = await upsertLouisianaFinanceLink({ db, link: input.link });
+    if (input.summary) {
+      await upsertSummary({ db, linkId, electionYear, summary: input.summary, syncedAt });
+    }
+
+    for (const breakdown of input.directBreakdowns ?? []) {
+      await upsertDirectBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
+    }
+    if (input.directBreakdowns) {
+      await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: input.directBreakdowns });
+    }
+
+    for (const group of input.outsideGroups ?? []) {
+      await upsertOutsideGroup({ db, linkId, electionYear, group, syncedAt });
+    }
+    for (const breakdown of input.outsideGroupBreakdowns ?? []) {
+      await upsertOutsideGroupBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
+    }
+    if (input.outsideGroupBreakdowns) {
+      await deleteStaleOutsideGroupBreakdowns({ db, linkId, electionYear, breakdowns: input.outsideGroupBreakdowns });
+    }
+    if (input.outsideGroups) {
+      await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups });
+    }
+
+    for (const classification of input.classifications ?? []) {
+      await upsertFinanceLabelClassification({ db, classification });
+    }
+
+    return {
+      linkId,
+      summaryWritten: Boolean(input.summary),
+      directBreakdownsWritten: input.directBreakdowns?.length ?? 0,
+      outsideGroupsWritten: input.outsideGroups?.length ?? 0,
+      outsideGroupBreakdownsWritten: input.outsideGroupBreakdowns?.length ?? 0,
+    };
+  });
+}
