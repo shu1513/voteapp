@@ -44,6 +44,7 @@ import {
   isMarylandCampaignFinanceEnabled,
   isMichiganCampaignFinanceEnabled,
   isVermontCampaignFinanceEnabled,
+  isLouisianaCampaignFinanceEnabled,
   isIllinoisCampaignFinanceEnabled,
   isOregonCampaignFinanceEnabled,
 } from "../../config/featureFlags.js";
@@ -185,6 +186,7 @@ export type BallotLookupFinanceSummary = {
     | "WISCONSIN_SUNSHINE"
     | "MASSACHUSETTS_OCPF"
     | "VERMONT_CFD"
+    | "LOUISIANA_ETHICS"
     | "KENTUCKY_KREF"
     | "MARYLAND_CFS"
     | "MAINE_CFIS"
@@ -10157,9 +10159,18 @@ async function loadVirginiaCandidateFinanceSummariesByCandidateElection(
 }
 
 const VERMONT_BALLOT_LOOKUP_FINANCE_LOADER_PATH = "../vermontFinance/vermontBallotLookupFinanceLoader.js";
+const LOUISIANA_BALLOT_LOOKUP_FINANCE_LOADER_PATH = "../louisianaFinance/louisianaBallotLookupFinanceLoader.js";
 
 type VermontBallotLookupFinanceLoaderModule = {
   loadVermontCandidateFinanceSummariesByCandidateElection: (
+    db: Queryable,
+    candidateRows: readonly CandidateRow[],
+    electionRows: readonly ElectionRow[]
+  ) => Promise<Map<string, BallotLookupFinanceSummary>>;
+};
+
+type LouisianaBallotLookupFinanceLoaderModule = {
+  loadLouisianaCandidateFinanceSummariesByCandidateElection: (
     db: Queryable,
     candidateRows: readonly CandidateRow[],
     electionRows: readonly ElectionRow[]
@@ -10218,6 +10229,27 @@ async function loadVermontCandidateFinanceSummariesByCandidateElection(
   } catch (error) {
     if (isMissingOptionalCampaignFinanceModule(error, VERMONT_BALLOT_LOOKUP_FINANCE_LOADER_PATH)) {
       console.warn("Vermont campaign finance ballot lookup loader is unavailable; skipping Vermont finance summaries");
+      return new Map();
+    }
+    throw error;
+  }
+}
+
+async function loadLouisianaCandidateFinanceSummariesByCandidateElection(
+  db: Queryable,
+  candidateRows: readonly CandidateRow[],
+  electionRows: readonly ElectionRow[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
+  if (!isLouisianaCampaignFinanceEnabled()) {
+    return new Map();
+  }
+
+  try {
+    const loader = (await import(LOUISIANA_BALLOT_LOOKUP_FINANCE_LOADER_PATH)) as LouisianaBallotLookupFinanceLoaderModule;
+    return await loader.loadLouisianaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
+  } catch (error) {
+    if (isMissingOptionalCampaignFinanceModule(error, LOUISIANA_BALLOT_LOOKUP_FINANCE_LOADER_PATH)) {
+      console.warn("Louisiana campaign finance ballot lookup loader is unavailable; skipping Louisiana finance summaries");
       return new Map();
     }
     throw error;
@@ -11120,6 +11152,11 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     electionRows
   );
   const vermontSummaries = await loadVermontCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
+  const louisianaSummaries = await loadLouisianaCandidateFinanceSummariesByCandidateElection(
+    db,
+    candidateRows,
+    electionRows
+  );
   const marylandSummaries = await loadMarylandCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const maineSummaries = await loadMaineCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const alaskaSummaries = await loadOptionalAlaskaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
@@ -11165,6 +11202,9 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     merged.set(key, summary);
   }
   for (const [key, summary] of vermontSummaries) {
+    merged.set(key, summary);
+  }
+  for (const [key, summary] of louisianaSummaries) {
     merged.set(key, summary);
   }
   for (const [key, summary] of marylandSummaries) {
