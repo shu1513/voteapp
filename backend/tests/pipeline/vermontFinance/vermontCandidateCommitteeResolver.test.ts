@@ -338,11 +338,10 @@ describe("vermontCandidateCommitteeResolver", () => {
         return Promise.resolve(
           jsonResponse({
             data: {
-              items: [
-                {
+              items: Array.from({ length: 100 }, (_value, index) => ({
                   transactionID: 90012,
-                  guid: "non-match-page-1",
-                  filerRegistrationGuid: "other-guid",
+                  guid: `non-match-page-1-${index + 1}`,
+                  filerRegistrationGuid: `other-guid-${index + 1}`,
                   filerName: "SCOTT, OTHER",
                   transactionAmount: 1000,
                   filerTypeCode: "CAN",
@@ -353,8 +352,7 @@ describe("vermontCandidateCommitteeResolver", () => {
                   entityId: 22222,
                   candidateFirstName: "OTHER",
                   candidateLastName: "SCOTT",
-                },
-              ],
+                })),
               totalItems: 101,
             },
             succeeded: true,
