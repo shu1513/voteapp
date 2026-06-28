@@ -140,6 +140,16 @@ describe("kentuckyKrefClient", () => {
     ]);
   });
 
+  it("falls back to select id when dropdown name is absent", () => {
+    const html = `
+      <select id="ElectionDate">
+        <option value="11/7/2023">11/7/2023</option>
+      </select>
+    `;
+
+    expect(parseKentuckyKrefDropdownOptions(html, "ElectionDate")).toEqual([{ value: "11/7/2023", label: "11/7/2023" }]);
+  });
+
   it("maps candidate contribution exports to positive contribution records", () => {
     expect(
       kentuckyKrefContributionRecordFromRow({

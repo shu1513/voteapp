@@ -151,7 +151,7 @@ describe("kentuckyDirectContributionAggregator", () => {
     expect(result.directBreakdowns).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ categoryType: "occupation", categoryName: "Engineer", amount: 0.6, contributorCount: 2 }),
-        expect.objectContaining({ categoryType: "contribution_size", categoryName: "$1-$99", amount: 0.6 }),
+        expect.objectContaining({ categoryType: "contribution_size", categoryName: "$0.01-$0.99", amount: 0.6 }),
       ])
     );
   });

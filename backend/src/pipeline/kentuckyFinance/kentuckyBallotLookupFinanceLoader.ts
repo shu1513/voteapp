@@ -530,7 +530,7 @@ export async function loadKentuckyCandidateFinanceSummariesByCandidateElection(
         ) ranked_industries
         WHERE rn <= 5
       ),
-      evidence AS (
+      raw_evidence AS (
         SELECT
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
@@ -541,11 +541,7 @@ export async function loadKentuckyCandidateFinanceSummariesByCandidateElection(
           breakdown.category_name AS organization_name,
           breakdown.amount,
           breakdown.contributor_count,
-          COALESCE(breakdown.source_url, outside_group.source_url) AS source_url,
-          row_number() OVER (
-            PARTITION BY selected.candidate_id, selected.election_id, top_industries.industry_name
-            ORDER BY breakdown.amount DESC, breakdown.category_name ASC, breakdown.committee_key ASC
-          ) AS rn
+          COALESCE(breakdown.source_url, outside_group.source_url) AS source_url
         FROM selected
         JOIN top_industries
           ON top_industries.candidate_id = selected.candidate_id::text
@@ -596,6 +592,30 @@ export async function loadKentuckyCandidateFinanceSummariesByCandidateElection(
          AND outside_group.support_oppose = breakdown.support_oppose
         WHERE breakdown.category_type = 'donor'
           AND breakdown.support_oppose = 'support'
+      ),
+      deduped_evidence AS (
+        SELECT
+          candidate_id,
+          election_id,
+          industry_name,
+          committee_id,
+          max(committee_name) AS committee_name,
+          support_oppose,
+          organization_name,
+          max(amount) AS amount,
+          max(contributor_count) AS contributor_count,
+          max(source_url) AS source_url
+        FROM raw_evidence
+        GROUP BY candidate_id, election_id, industry_name, committee_id, support_oppose, organization_name
+      ),
+      evidence AS (
+        SELECT
+          *,
+          row_number() OVER (
+            PARTITION BY candidate_id, election_id, industry_name
+            ORDER BY amount DESC, organization_name ASC, committee_id ASC
+          ) AS rn
+        FROM deduped_evidence
       )
       SELECT candidate_id, election_id, industry_name, committee_id, committee_name, support_oppose, organization_name, amount, contributor_count, source_url
       FROM evidence

@@ -218,6 +218,22 @@ describe("kentuckyCandidateFinanceSync", () => {
     ).toHaveLength(2);
   });
 
+  it("uses district as the direct contribution location when location is omitted", async () => {
+    const db = createMockDb();
+    const krefClient = createKrefClient();
+
+    const result = await syncKentuckyCandidateFinance({
+      db,
+      ...baseInput(),
+      location: null,
+      district: "Statewide",
+      krefClient,
+    });
+
+    expect(result.directContributionTotal).toBe(750);
+    expect(result.includedContributionRowCount).toBe(2);
+  });
+
   it("does not write in dry-run mode but still returns aggregation counts", async () => {
     const db = createMockDb();
     const krefClient = createKrefClient();

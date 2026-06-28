@@ -79,7 +79,6 @@ CREATE TABLE IF NOT EXISTS public.ky_candidate_finance_summaries (
       (total_receipts IS NULL OR total_receipts >= 0)
       AND (direct_contribution_total IS NULL OR direct_contribution_total >= 0)
       AND (total_disbursements IS NULL OR total_disbursements >= 0)
-      AND (cash_on_hand IS NULL OR cash_on_hand >= 0)
       AND (outside_support_total IS NULL OR outside_support_total >= 0)
       AND (outside_oppose_total IS NULL OR outside_oppose_total >= 0)
     ),

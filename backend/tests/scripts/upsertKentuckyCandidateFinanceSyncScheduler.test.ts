@@ -52,4 +52,10 @@ describe("upsertKentuckyCandidateFinanceSyncScheduler script", () => {
       parseUpsertKentuckyCandidateFinanceSyncSchedulerArgs(["--auto-link", "--no-auto-link"])
     ).toThrow("Provide either --auto-link or --no-auto-link, not both");
   });
+
+  it("rejects unknown flags instead of silently ignoring typos", () => {
+    expect(() => parseUpsertKentuckyCandidateFinanceSyncSchedulerArgs(["--dryrun"])).toThrow(
+      "Unknown Kentucky candidate finance scheduler upsert flag: --dryrun"
+    );
+  });
 });

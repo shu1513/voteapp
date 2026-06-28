@@ -62,6 +62,12 @@ describe("syncDueKentuckyCandidateFinance script", () => {
     ).toThrow("Provide --max-candidates at most once");
   });
 
+  it("rejects unknown flags instead of silently ignoring typos", () => {
+    expect(() => parseSyncDueKentuckyCandidateFinanceScriptArgs(["--dryrun"])).toThrow(
+      "Unknown Kentucky candidate finance due sync flag: --dryrun"
+    );
+  });
+
   it("formats script output", () => {
     const output = toSyncDueKentuckyCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),

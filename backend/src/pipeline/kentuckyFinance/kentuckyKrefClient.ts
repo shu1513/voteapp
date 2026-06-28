@@ -375,6 +375,9 @@ function decodeHtmlText(value: string): string {
 function getHtmlAttribute(tag: string, attributeName: string): string | null {
   const pattern = new RegExp(`${attributeName}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, "i");
   const match = pattern.exec(tag);
+  if (!match) {
+    return null;
+  }
   return decodeHtmlText(match?.[1] ?? match?.[2] ?? match?.[3] ?? "");
 }
 

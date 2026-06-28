@@ -307,7 +307,7 @@ export async function syncKentuckyCandidateFinance(
     candidateName,
     electionDate,
     officeName,
-    location: input.location,
+    location: input.location ?? input.district ?? null,
     contributionRecords: candidateContributionRecords,
     sourceUrl: candidateContributionSourceUrl,
     maxBreakdownsPerCategory: input.directMaxBreakdownsPerCategory ?? DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,

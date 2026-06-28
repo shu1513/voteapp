@@ -139,6 +139,16 @@ function normalizeNullableAmount(value: number | null | undefined, fieldName: st
   return normalizeAmount(value, fieldName);
 }
 
+function normalizeNullableSignedAmount(value: number | null | undefined, fieldName: string): number | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  if (!Number.isFinite(value)) {
+    throw new Error(`${fieldName} must be a finite number`);
+  }
+  return value;
+}
+
 function normalizeNullableCount(value: number | null | undefined): number | null {
   if (value === undefined || value === null) {
     return null;
@@ -303,13 +313,13 @@ async function upsertSummary(input: {
       VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
-        total_receipts = COALESCE(EXCLUDED.total_receipts, ky_candidate_finance_summaries.total_receipts),
-        direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, ky_candidate_finance_summaries.direct_contribution_total),
-        total_disbursements = COALESCE(EXCLUDED.total_disbursements, ky_candidate_finance_summaries.total_disbursements),
-        cash_on_hand = COALESCE(EXCLUDED.cash_on_hand, ky_candidate_finance_summaries.cash_on_hand),
-        outside_support_total = COALESCE(EXCLUDED.outside_support_total, ky_candidate_finance_summaries.outside_support_total),
-        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, ky_candidate_finance_summaries.outside_oppose_total),
-        source_url = COALESCE(EXCLUDED.source_url, ky_candidate_finance_summaries.source_url),
+        total_receipts = EXCLUDED.total_receipts,
+        direct_contribution_total = EXCLUDED.direct_contribution_total,
+        total_disbursements = EXCLUDED.total_disbursements,
+        cash_on_hand = EXCLUDED.cash_on_hand,
+        outside_support_total = EXCLUDED.outside_support_total,
+        outside_oppose_total = EXCLUDED.outside_oppose_total,
+        source_url = EXCLUDED.source_url,
         last_synced_at = EXCLUDED.last_synced_at
     `,
     [
@@ -318,7 +328,7 @@ async function upsertSummary(input: {
       normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
       normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
       normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
-      normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
+      normalizeNullableSignedAmount(input.summary.cashOnHand, "cash on hand"),
       normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
       normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
       normalizeOptionalText(input.summary.sourceUrl),
@@ -566,9 +576,7 @@ export async function replaceKentuckyCandidateFinanceSnapshot(
     for (const breakdown of input.directBreakdowns ?? []) {
       await upsertDirectBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
     }
-    if (input.directBreakdowns) {
-      await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: input.directBreakdowns });
-    }
+    await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: input.directBreakdowns ?? [] });
 
     for (const group of input.outsideGroups ?? []) {
       await upsertOutsideGroup({ db, linkId, electionYear, group, syncedAt });
@@ -576,12 +584,8 @@ export async function replaceKentuckyCandidateFinanceSnapshot(
     for (const breakdown of input.outsideGroupBreakdowns ?? []) {
       await upsertOutsideGroupBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
     }
-    if (input.outsideGroupBreakdowns) {
-      await deleteStaleOutsideGroupBreakdowns({ db, linkId, electionYear, breakdowns: input.outsideGroupBreakdowns });
-    }
-    if (input.outsideGroups) {
-      await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups });
-    }
+    await deleteStaleOutsideGroupBreakdowns({ db, linkId, electionYear, breakdowns: input.outsideGroupBreakdowns ?? [] });
+    await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups ?? [] });
 
     for (const classification of input.classifications ?? []) {
       await upsertFinanceLabelClassification({ db, classification });

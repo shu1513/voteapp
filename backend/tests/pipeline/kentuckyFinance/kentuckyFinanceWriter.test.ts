@@ -77,6 +77,7 @@ describe("kentuckyFinanceWriter", () => {
       summary: {
         totalReceipts: 5_000_000,
         directContributionTotal: 4_750_000,
+        cashOnHand: -12_500,
         outsideSupportTotal: 900_000,
         outsideOpposeTotal: 125_000,
         sourceUrl: "https://secure.kentucky.gov/kref/publicsearch/ExportContributors",
@@ -139,19 +140,16 @@ describe("kentuckyFinanceWriter", () => {
     const summaryCall = db.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.ky_candidate_finance_summaries")
     );
-    expect(String(summaryCall?.[0])).toContain(
-      "total_receipts = COALESCE(EXCLUDED.total_receipts, ky_candidate_finance_summaries.total_receipts)"
-    );
-    expect(String(summaryCall?.[0])).toContain(
-      "outside_support_total = COALESCE(EXCLUDED.outside_support_total, ky_candidate_finance_summaries.outside_support_total)"
-    );
+    expect(String(summaryCall?.[0])).toContain("total_receipts = EXCLUDED.total_receipts");
+    expect(String(summaryCall?.[0])).toContain("cash_on_hand = EXCLUDED.cash_on_hand");
+    expect(String(summaryCall?.[0])).toContain("source_url = EXCLUDED.source_url");
     expect(summaryCall?.[1]).toEqual([
       LINK_ID,
       2023,
       5_000_000,
       4_750_000,
       null,
-      null,
+      -12_500,
       900_000,
       125_000,
       "https://secure.kentucky.gov/kref/publicsearch/ExportContributors",
@@ -223,7 +221,7 @@ describe("kentuckyFinanceWriter", () => {
     ]);
   });
 
-  it("does not delete omitted breakdown sections", async () => {
+  it("deletes omitted breakdown sections when replacing a snapshot", async () => {
     const db = createMockDb();
 
     const result = await replaceKentuckyCandidateFinanceSnapshot({
@@ -243,9 +241,9 @@ describe("kentuckyFinanceWriter", () => {
       outsideGroupBreakdownsWritten: 0,
     });
     const sql = db.query.mock.calls.map((call) => String(call[0]));
-    expect(sql.some((statement) => statement.includes("DELETE FROM public.ky_candidate_finance_direct_breakdowns"))).toBe(false);
-    expect(sql.some((statement) => statement.includes("DELETE FROM public.ky_candidate_finance_outside_groups"))).toBe(false);
-    expect(sql.some((statement) => statement.includes("DELETE FROM public.ky_candidate_finance_outside_group_breakdowns"))).toBe(false);
+    expect(sql.some((statement) => statement.includes("DELETE FROM public.ky_candidate_finance_direct_breakdowns"))).toBe(true);
+    expect(sql.some((statement) => statement.includes("DELETE FROM public.ky_candidate_finance_outside_groups"))).toBe(true);
+    expect(sql.some((statement) => statement.includes("DELETE FROM public.ky_candidate_finance_outside_group_breakdowns"))).toBe(true);
   });
 
   it("rejects outside group breakdowns without matching outside groups", async () => {

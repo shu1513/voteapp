@@ -106,4 +106,27 @@ describe("kentuckyCandidateFinanceAutoLink", () => {
       "2026-06-01T00:00:00.000Z",
     ]);
   });
+
+  it("normalizes comma-form candidate names consistently before writing links", async () => {
+    const db = { query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }) };
+    const resolveCandidateFinanceLink = vi.fn(async () => ({
+      status: "matched" as const,
+      candidateKey: "andy beshear|governor|statewide|2023-11-07",
+      committeeKey: "beshear campaign committee",
+      committeeName: "Beshear Campaign Committee",
+      sourceUrl: SOURCE_URL,
+    }));
+
+    await autoLinkKentuckyCandidateFinanceForCandidateElection({
+      db,
+      candidateElection: {
+        ...candidateElection,
+        candidateName: "Beshear, Andy",
+      },
+      now: NOW,
+      resolveCandidateFinanceLink,
+    });
+
+    expect(db.query.mock.calls[0]?.[1]?.[3]).toBe("ANDY BESHEAR");
+  });
 });

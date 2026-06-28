@@ -13,8 +13,43 @@ type AppliedMigrationRow = {
   applied_at: Date;
 };
 
+type MigrationPrefixDuplicate = {
+  prefix: string;
+  filenames: string[];
+  legacy_allowed: boolean;
+};
+
 const MIGRATION_FILE_RE = /^\d+_.+\.sql$/;
 const LOCK_KEY = 780_001_001;
+// These exact duplicate sets were merged before duplicate-prefix enforcement existed.
+// Keep the filenames stable so applied databases do not replay renamed migrations.
+const LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX = new Map<string, string[]>([
+  [
+    "075",
+    ["075_add_judge_mapping_research_areas.sql", "075_consolidate_judicial_offices_by_scope.sql"],
+  ],
+  [
+    "125",
+    ["125_add_tennessee_campaign_finance_tables.sql", "125_add_user_research_area_preferences.sql"],
+  ],
+  [
+    "127",
+    [
+      "127_add_florida_campaign_finance_tables.sql",
+      "127_add_maryland_campaign_finance_tables.sql",
+      "127_add_pennsylvania_campaign_finance_tables.sql",
+      "127_add_utah_campaign_finance_tables.sql",
+    ],
+  ],
+  [
+    "128",
+    [
+      "128_add_florida_outside_group_support_links.sql",
+      "128_add_oregon_campaign_finance_tables.sql",
+      "128_add_utah_supporting_committee_finance_tables.sql",
+    ],
+  ],
+]);
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
@@ -83,6 +118,56 @@ async function listMigrationFiles(): Promise<string[]> {
     });
 }
 
+function getMigrationPrefix(filename: string): string {
+  return filename.split("_", 1)[0] ?? "";
+}
+
+function isLegacyDuplicateMigrationSet(prefix: string, filenames: string[]): boolean {
+  const legacyFilenames = LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX.get(prefix);
+  if (!legacyFilenames || legacyFilenames.length !== filenames.length) {
+    return false;
+  }
+
+  const legacyFilenameSet = new Set(legacyFilenames);
+  return filenames.every((filename) => legacyFilenameSet.has(filename));
+}
+
+function findMigrationPrefixDuplicates(filenames: string[]): MigrationPrefixDuplicate[] {
+  const filesByPrefix = new Map<string, string[]>();
+
+  for (const filename of filenames) {
+    const prefix = getMigrationPrefix(filename);
+    const files = filesByPrefix.get(prefix) ?? [];
+    files.push(filename);
+    filesByPrefix.set(prefix, files);
+  }
+
+  return [...filesByPrefix.entries()]
+    .filter(([, files]) => files.length > 1)
+    .map(([prefix, files]) => {
+      const sortedFiles = files.sort((a, b) => a.localeCompare(b));
+      return {
+        prefix,
+        filenames: sortedFiles,
+        legacy_allowed: isLegacyDuplicateMigrationSet(prefix, sortedFiles),
+      };
+    })
+    .sort((a, b) => Number.parseInt(a.prefix, 10) - Number.parseInt(b.prefix, 10) || a.prefix.localeCompare(b.prefix));
+}
+
+function getUnallowedMigrationPrefixDuplicates(filenames: string[]): MigrationPrefixDuplicate[] {
+  return findMigrationPrefixDuplicates(filenames).filter((duplicate) => !duplicate.legacy_allowed);
+}
+
+function throwIfUnallowedMigrationPrefixDuplicates(filenames: string[]): void {
+  const unallowedDuplicates = getUnallowedMigrationPrefixDuplicates(filenames);
+  if (unallowedDuplicates.length === 0) {
+    return;
+  }
+
+  throw new Error(`Duplicate migration number prefix(es): ${JSON.stringify(unallowedDuplicates)}`);
+}
+
 async function readMigrationFile(filename: string): Promise<{ filename: string; sql: string; checksum: string }> {
   const fullPath = resolve(getMigrationsDir(), filename);
   const sql = await readFile(fullPath, "utf8");
@@ -105,7 +190,10 @@ async function getAppliedMap(db: Queryable): Promise<Map<string, AppliedMigratio
   return map;
 }
 
-function parseMode(): "status" | "apply" | "baseline" {
+function parseMode(): "status" | "apply" | "baseline" | "check-files" {
+  if (process.argv.includes("--check-files")) {
+    return "check-files";
+  }
   if (process.argv.includes("--status")) {
     return "status";
   }
@@ -116,8 +204,29 @@ function parseMode(): "status" | "apply" | "baseline" {
 }
 
 async function main(): Promise<void> {
-  const env = getPipelineEnv();
   const mode = parseMode();
+  const filenames = await listMigrationFiles();
+  const duplicatePrefixReport = findMigrationPrefixDuplicates(filenames);
+
+  if (mode === "check-files") {
+    throwIfUnallowedMigrationPrefixDuplicates(filenames);
+    console.log(
+      JSON.stringify(
+        {
+          mode,
+          migrations_dir: getMigrationsDir(),
+          total_files: filenames.length,
+          duplicate_prefixes: duplicatePrefixReport,
+          duplicate_prefixes_ok: true,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const client = await pool.connect();
 
@@ -126,7 +235,8 @@ async function main(): Promise<void> {
 
     await ensureSchemaMigrationsTable(client);
 
-    const filenames = await listMigrationFiles();
+    throwIfUnallowedMigrationPrefixDuplicates(filenames);
+
     const migrations = await Promise.all(filenames.map((filename) => readMigrationFile(filename)));
     const applied = await getAppliedMap(client);
 
@@ -160,6 +270,8 @@ async function main(): Promise<void> {
             applied_count: applied.size,
             pending_count: pending.length,
             pending_files: pending.map((migration) => migration.filename),
+            duplicate_prefixes: duplicatePrefixReport,
+            duplicate_prefixes_ok: true,
           },
           null,
           2

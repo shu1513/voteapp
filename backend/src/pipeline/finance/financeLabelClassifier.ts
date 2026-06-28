@@ -176,6 +176,7 @@ const ORGANIZATION_PATTERN_RULES: readonly PatternRule[] = [
   { pattern: /\b(OIL|GAS|PETROLEUM|ENERGY|PIPELINE|DRILLING)\b/, industrySlug: "oil_gas_energy", confidence: "medium", name: "organization_pattern_energy" },
   { pattern: /\b(PHARMA|PHARMACEUTICAL|BIOTECH|BIOPHARMA|PFIZER|MERCK|ELI LILLY|JOHNSON\s+AND\s+JOHNSON)\b/, industrySlug: "pharmaceuticals", confidence: "medium", name: "organization_pattern_pharmaceuticals" },
   { pattern: /\b(HOSPITAL|HEALTH|MEDICAL|CLINIC|KAISER)\b/, industrySlug: "healthcare", confidence: "medium", name: "organization_pattern_healthcare" },
+  { pattern: /\bCREDIT\s+UNIONS?\b/, industrySlug: "finance_investment", confidence: "medium", name: "organization_pattern_credit_union" },
   { pattern: /\b(CAPITAL|INVESTMENT|INVESTMENTS|BANK|FINANCIAL|SECURITIES|VENTURES|HEDGE FUND|PRIVATE EQUITY)\b/, industrySlug: "finance_investment", confidence: "medium", name: "organization_pattern_finance" },
   { pattern: /\b(REAL ESTATE|REALTY|PROPERTIES|PROPERTY|DEVELOPMENT|DEVELOPER)\b/, industrySlug: "real_estate", confidence: "medium", name: "organization_pattern_real_estate" },
   { pattern: /\b(CONSTRUCTION|BUILDERS|CONTRACTORS|ENGINEERING|CARPENTERS?)\b/, industrySlug: "construction", confidence: "medium", name: "organization_pattern_construction" },

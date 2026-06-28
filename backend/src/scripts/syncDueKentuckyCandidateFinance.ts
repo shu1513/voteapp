@@ -59,9 +59,25 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+function assertNoUnknownFlags(args: readonly string[], supportedFlags: ReadonlySet<string>): void {
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+    const name = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
+    if (!supportedFlags.has(name)) {
+      throw new Error(`Unknown Kentucky candidate finance due sync flag: ${name}`);
+    }
+  }
+}
+
 export function parseSyncDueKentuckyCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueKentuckyCandidateFinanceScriptOptions {
+  assertNoUnknownFlags(
+    args,
+    new Set(["--dry-run", "--force", "--max-candidates", "--stale-after-days", "--lookback-days", "--lookahead-days"])
+  );
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

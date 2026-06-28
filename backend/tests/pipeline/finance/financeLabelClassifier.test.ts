@@ -107,6 +107,13 @@ describe("financeLabelClassifier", () => {
       confidence: "high",
       matchedRule: "organization_exact_walton_enterprises",
     });
+
+    expect(classifyFinanceLabel({ rawLabel: "America First Credit Union", labelType: "donor" })).toMatchObject({
+      normalizedLabel: "AMERICA FIRST CREDIT UNION",
+      industrySlug: "finance_investment",
+      confidence: "medium",
+      matchedRule: "organization_pattern_credit_union",
+    });
   });
 
   it("classifies clear environmental organizations", () => {

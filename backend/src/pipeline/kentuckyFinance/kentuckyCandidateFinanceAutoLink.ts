@@ -70,6 +70,15 @@ type CandidateElectionQueryRow = {
 };
 
 function normalizeCandidateNameForStorage(value: string): string {
+  if (value.includes(",")) {
+    const commaParts = value
+      .split(",")
+      .map((part) => part.trim())
+      .filter(Boolean);
+    if (commaParts.length >= 2) {
+      return `${commaParts.slice(1).join(" ")} ${commaParts[0]}`.replace(/\s+/g, " ").toUpperCase();
+    }
+  }
   const keys = normalizeKentuckyCandidateNameKeys(value);
   return [...keys][0] ?? value.trim().replace(/\s+/g, " ").toUpperCase();
 }

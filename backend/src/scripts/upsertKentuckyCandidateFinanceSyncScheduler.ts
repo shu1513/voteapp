@@ -57,9 +57,34 @@ function parseAutoLinkMissingLinksFlag(args: readonly string[]): boolean {
   return !disabled;
 }
 
+function assertNoUnknownFlags(args: readonly string[], supportedFlags: ReadonlySet<string>): void {
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+    const name = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
+    if (!supportedFlags.has(name)) {
+      throw new Error(`Unknown Kentucky candidate finance scheduler upsert flag: ${name}`);
+    }
+  }
+}
+
 export function parseUpsertKentuckyCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): KentuckyCandidateFinanceSyncJobData {
+  assertNoUnknownFlags(
+    args,
+    new Set([
+      "--dry-run",
+      "--force",
+      "--max-candidates",
+      "--stale-after-days",
+      "--lookback-days",
+      "--lookahead-days",
+      "--auto-link",
+      "--no-auto-link",
+    ])
+  );
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

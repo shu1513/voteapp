@@ -211,6 +211,9 @@ function contributorIdentityKey(record: KentuckyKrefContributionRecord): string 
 }
 
 function contributionSizeBucket(amount: number): string {
+  if (amount < 1) {
+    return "$0.01-$0.99";
+  }
   if (amount < 100) {
     return "$1-$99";
   }

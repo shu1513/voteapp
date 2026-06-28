@@ -52,4 +52,10 @@ describe("triggerKentuckyCandidateFinanceSync script", () => {
       "Provide either --auto-link or --no-auto-link, not both"
     );
   });
+
+  it("rejects unknown flags instead of silently ignoring typos", () => {
+    expect(() => parseKentuckyCandidateFinanceSyncTriggerArgs(["--dryrun"])).toThrow(
+      "Unknown Kentucky candidate finance sync trigger flag: --dryrun"
+    );
+  });
 });
