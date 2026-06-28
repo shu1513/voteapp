@@ -88,6 +88,7 @@ describe("louisianaCandidateFinanceBatchSync", () => {
 
   it("syncs selected due candidates with trusted linked Louisiana filers", async () => {
     const db = createMockDb([dueRow()]);
+    const refreshArtifactCacheFn = vi.fn();
     const syncLouisianaCandidateFinanceFn = vi.fn().mockResolvedValue({
       candidateId: CANDIDATE_ID,
       electionId: ELECTION_ID,
@@ -132,6 +133,7 @@ describe("louisianaCandidateFinanceBatchSync", () => {
       autoLinkMissingLinks: false,
       contributionRows: [],
       expenditureRows: [],
+      refreshArtifactCacheFn: refreshArtifactCacheFn as never,
       syncLouisianaCandidateFinanceFn: syncLouisianaCandidateFinanceFn as never,
     });
 
@@ -172,5 +174,46 @@ describe("louisianaCandidateFinanceBatchSync", () => {
         now: NOW,
       })
     );
+    expect(refreshArtifactCacheFn).not.toHaveBeenCalled();
+  });
+
+  it("refreshes raw artifacts before loading disk-backed rows", async () => {
+    const events: string[] = [];
+    const db = {
+      query: vi.fn(async () => {
+        events.push("query");
+        return { rows: [], rowCount: 0 };
+      }),
+      connect: vi.fn(),
+    };
+    const refreshArtifactCacheFn = vi.fn(async () => {
+      events.push("refresh");
+      return {};
+    });
+
+    const result = await syncDueLouisianaCandidateFinance({
+      db,
+      now: NOW,
+      maxCandidates: 25,
+      staleAfterDays: 7,
+      electionLookbackDays: 1,
+      electionLookaheadDays: 730,
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: "/tmp/louisiana-campaign-finance-test",
+      refreshArtifactCacheFn: refreshArtifactCacheFn as never,
+      syncLouisianaCandidateFinanceFn: vi.fn() as never,
+    });
+
+    expect(events).toEqual(["refresh", "query"]);
+    expect(refreshArtifactCacheFn).toHaveBeenCalledWith({
+      cacheDir: "/tmp/louisiana-campaign-finance-test",
+      now: NOW,
+    });
+    expect(result).toMatchObject({
+      dueCandidateCount: 0,
+      selectedCandidateCount: 0,
+      syncedCandidateCount: 0,
+      failedCandidateCount: 0,
+    });
   });
 });

@@ -11,6 +11,7 @@ import {
   DEFAULT_LOUISIANA_CAMPAIGN_FINANCE_CACHE_DIR,
   getLouisianaCampaignFinanceArtifactCachePaths,
   readLouisianaCampaignFinanceArtifactCacheMetadata,
+  refreshLouisianaCampaignFinanceArtifactCache,
 } from "./louisianaCampaignFinanceArtifactCache.js";
 import {
   readLouisianaCampaignFinanceContributionRows,
@@ -55,6 +56,7 @@ export type LouisianaCandidateFinanceBatchSyncInput = {
   expenditureRows?: readonly LouisianaCampaignFinanceCsvRow[];
   contributionSourceUrl?: string | null;
   expenditureSourceUrl?: string | null;
+  refreshArtifactCacheFn?: typeof refreshLouisianaCampaignFinanceArtifactCache;
   syncLouisianaCandidateFinanceFn?: typeof syncLouisianaCandidateFinance;
 };
 
@@ -194,6 +196,24 @@ function getCachePaths(rawDataCacheDir?: string) {
     rawDataCacheDir ??
       (process.env.LOUISIANA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() || DEFAULT_LOUISIANA_CAMPAIGN_FINANCE_CACHE_DIR)
   );
+}
+
+async function refreshLouisianaRawDataIfNeeded(input: {
+  rawDataCacheDir?: string;
+  contributionRows?: readonly LouisianaCampaignFinanceCsvRow[];
+  expenditureRows?: readonly LouisianaCampaignFinanceCsvRow[];
+  refreshArtifactCacheFn?: typeof refreshLouisianaCampaignFinanceArtifactCache;
+  now: Date;
+}): Promise<void> {
+  if (input.contributionRows !== undefined && input.expenditureRows !== undefined) {
+    return;
+  }
+
+  const paths = getCachePaths(input.rawDataCacheDir);
+  await (input.refreshArtifactCacheFn ?? refreshLouisianaCampaignFinanceArtifactCache)({
+    cacheDir: paths.cacheDir,
+    now: input.now,
+  });
 }
 
 async function loadLouisianaContributionRowsForCandidates(input: {
@@ -418,6 +438,13 @@ export async function syncDueLouisianaCandidateFinance(
   let autoLinkLinkedCount = 0;
 
   let contributionSourceUrl = input.contributionSourceUrl ?? null;
+  await refreshLouisianaRawDataIfNeeded({
+    rawDataCacheDir: input.rawDataCacheDir,
+    contributionRows: input.contributionRows,
+    expenditureRows: input.expenditureRows,
+    refreshArtifactCacheFn: input.refreshArtifactCacheFn,
+    now,
+  });
 
   if (!dryRun && input.autoLinkMissingLinks !== false) {
     try {

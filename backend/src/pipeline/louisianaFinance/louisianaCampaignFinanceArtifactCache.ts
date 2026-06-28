@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { createWriteStream } from "node:fs";
+import { createReadStream, createWriteStream } from "node:fs";
 import { mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { Readable, Transform } from "node:stream";
@@ -498,13 +498,19 @@ async function metadataFilesExist(metadata: LouisianaCampaignFinanceArtifactCach
     if (fileStat.size !== download.bytesWritten) {
       return false;
     }
-    const fileHash = createHash("sha256");
-    fileHash.update(await readFile(download.outputPath));
-    if (fileHash.digest("hex") !== download.sha256) {
+    if ((await calculateFileSha256(download.outputPath)) !== download.sha256) {
       return false;
     }
   }
   return true;
+}
+
+async function calculateFileSha256(path: string): Promise<string> {
+  const hash = createHash("sha256");
+  for await (const chunk of createReadStream(path)) {
+    hash.update(chunk);
+  }
+  return hash.digest("hex");
 }
 
 function toDownloadMetadata(
