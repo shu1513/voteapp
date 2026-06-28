@@ -35,4 +35,3 @@ export function isIndianaFinanceEligibleOffice(input: {
   const key = toIndianaFinanceOfficeKey(input);
   return key !== null && INDIANA_FINANCE_ELIGIBLE_OFFICE_KEY_SET.has(key);
 }
-
