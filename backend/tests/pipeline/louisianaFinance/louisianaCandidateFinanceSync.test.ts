@@ -121,6 +121,50 @@ describe("Louisiana candidate finance sync", () => {
     expect(sql.some((statement) => statement.includes("INSERT INTO public.la_candidate_finance_outside_group_breakdowns"))).toBe(true);
   });
 
+  it("writes null outside totals when expenditure rows are unavailable", async () => {
+    const db = createTransactionalMockDb();
+
+    const result = await syncLouisianaCandidateFinance({
+      db,
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      candidateName: "John Bel Edwards",
+      electionYear: 2027,
+      officeScope: "statewide",
+      officeName: "Governor",
+      contributionRows: [contributionRow()],
+      trustedCommittee: {
+        filerNumber: "12345",
+        filerName: "Edwards, John Bel",
+        sourceUrl: "https://example.invalid/louisiana",
+      },
+      now: new Date("2026-06-01T00:00:00.000Z"),
+    });
+
+    expect(result.outsideSupportTotal).toBeNull();
+    expect(result.outsideOpposeTotal).toBeNull();
+    expect(result.matchedOutsideExpenditureRowCount).toBe(0);
+    expect(result.includedOutsideExpenditureRowCount).toBe(0);
+    expect(result.outsideGroupsWritten).toBe(0);
+    expect(result.outsideGroupBreakdownsWritten).toBe(0);
+
+    const summaryCall = db.client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.la_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2027,
+      1000,
+      1000,
+      null,
+      null,
+      null,
+      null,
+      "https://example.invalid/louisiana",
+      "2026-06-01T00:00:00.000Z",
+    ]);
+  });
+
   it("does not write when candidate committee resolution is ambiguous", async () => {
     const db = createTransactionalMockDb();
 
