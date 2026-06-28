@@ -49,6 +49,9 @@ describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
     expect(() => parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(["--dry-run=true"])).toThrow(
       "Boolean flag --dry-run does not take a value"
     );
+    expect(() => parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(["--dry-run", "false"])).toThrow(
+      "Boolean flag --dry-run does not take a value"
+    );
     expect(() =>
       parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs([
         "--ai-classify-industries",

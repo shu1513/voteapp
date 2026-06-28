@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   listDueIllinoisCandidateFinanceSyncRows,
+  loadIllinoisFinanceDataForDueRow,
   syncDueIllinoisCandidateFinance,
 } from "../../../src/pipeline/illinoisFinance/illinoisCandidateFinanceBatchSync.js";
 import type { IllinoisCandidateFinanceSyncResult } from "../../../src/pipeline/illinoisFinance/syncIllinoisCandidateFinance.js";
@@ -176,6 +177,24 @@ describe("illinoisCandidateFinanceBatchSync", () => {
       expect.any(Array),
     ]);
     expect(syncIllinoisCandidateFinanceFn).not.toHaveBeenCalled();
+  });
+
+  it("fails closed when a due row cannot be mapped to an SBE office search", async () => {
+    await expect(
+      loadIllinoisFinanceDataForDueRow({
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "HD 07",
+        committeeKey: "FRIENDS OF JANE DOE",
+        committeeName: "Friends of Jane Doe",
+        sourceUrl: SOURCE_URL,
+        lastSyncedAt: null,
+      })
+    ).rejects.toThrow("Illinois finance due row cannot be mapped to an SBE office search");
   });
 
   it("syncs selected due candidates and continues after a candidate failure", async () => {

@@ -546,6 +546,7 @@ export function aggregateIllinoisOutsideGroupContributions(
   );
   const minIndustryAmountCents = normalizeMinAmount(input.minIndustryAmount);
   const sourceUrl = input.sourceUrl ?? null;
+  const ambiguousCommitteeKeys = new Set<string>();
   const outsideGroupsByCommitteeKey = new Map<string, IllinoisOutsideSpendingGroup[]>();
 
   for (const group of input.outsideGroups) {
@@ -556,6 +557,9 @@ export function aggregateIllinoisOutsideGroupContributions(
     const normalizedGroup = { ...group, committeeKey };
     const existing = outsideGroupsByCommitteeKey.get(committeeKey);
     if (existing) {
+      if (existing.some((item) => item.supportOppose !== normalizedGroup.supportOppose)) {
+        ambiguousCommitteeKeys.add(committeeKey);
+      }
       existing.push(normalizedGroup);
     } else {
       outsideGroupsByCommitteeKey.set(committeeKey, [normalizedGroup]);
@@ -577,11 +581,16 @@ export function aggregateIllinoisOutsideGroupContributions(
   let skippedContributionRowCount = 0;
 
   for (const record of input.contributionRecords) {
-    const matchingGroups = outsideGroupsByCommitteeKey.get(recordCommitteeKey(record)) ?? [];
+    const committeeKey = recordCommitteeKey(record);
+    const matchingGroups = outsideGroupsByCommitteeKey.get(committeeKey) ?? [];
     if (matchingGroups.length === 0) {
       continue;
     }
     matchedContributionRowCount += 1;
+    if (ambiguousCommitteeKeys.has(committeeKey)) {
+      skippedContributionRowCount += 1;
+      continue;
+    }
 
     const amountCents = amountToCents(record.amount);
     const displayName = record.contributorName?.trim().replace(/\s+/g, " ") ?? "";

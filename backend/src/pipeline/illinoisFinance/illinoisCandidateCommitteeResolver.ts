@@ -213,6 +213,9 @@ function splitCandidateNameForSearch(value: string): { firstName: string | null;
   }
 
   const parts = normalized.split(" ").filter(Boolean);
+  while (parts.length > 1 && /^(?:JR|SR|II|III|IV|V)\.?$/i.test(parts[parts.length - 1]!)) {
+    parts.pop();
+  }
   if (parts.length === 1) {
     return { firstName: null, lastName: parts[0]! };
   }

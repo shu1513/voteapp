@@ -268,4 +268,46 @@ describe("illinoisFinanceAggregators", () => {
       },
     ]);
   });
+
+  it("skips outside group funders for committees that appear on both support and oppose sides", () => {
+    const result = aggregateIllinoisOutsideGroupContributions({
+      electionYear: 2022,
+      outsideGroups: [
+        {
+          committeeKey: "ILLINOIS CONSERVATION ACTION",
+          committeeName: "Illinois Conservation Action",
+          supportOppose: "support",
+          amount: 10000,
+          expenditureCount: 1,
+          sourceUrl: null,
+        },
+        {
+          committeeKey: "ILLINOIS CONSERVATION ACTION",
+          committeeName: "Illinois Conservation Action",
+          supportOppose: "oppose",
+          amount: 2500,
+          expenditureCount: 1,
+          sourceUrl: null,
+        },
+      ],
+      contributionRecords: [
+        contribution({
+          contributorName: "Sierra Club",
+          contributorAddress: null,
+          occupation: null,
+          amount: 30000,
+          recipientCommitteeName: "Illinois Conservation Action",
+          contributionType: "Transfers In",
+          receivedDate: "9/1/2022",
+        }),
+      ],
+    });
+
+    expect(result).toEqual({
+      outsideGroupBreakdowns: [],
+      matchedContributionRowCount: 1,
+      includedContributionRowCount: 0,
+      skippedContributionRowCount: 1,
+    });
+  });
 });

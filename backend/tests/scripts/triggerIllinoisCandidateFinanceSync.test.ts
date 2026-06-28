@@ -35,6 +35,9 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
     expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--dry-run=true"])).toThrow(
       "Boolean flag --dry-run does not take a value"
     );
+    expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--dry-run", "false"])).toThrow(
+      "Boolean flag --dry-run does not take a value"
+    );
     expect(() =>
       parseIllinoisCandidateFinanceSyncTriggerArgs(["--ai-classify-industries", "--no-ai-classify-industries"])
     ).toThrow("Provide --ai-classify-industries or --no-ai-classify-industries, not both");

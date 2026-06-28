@@ -97,7 +97,7 @@ describe("probeIllinoisCandidateFinance script", () => {
                 expendedDate: "10/2/2022",
                 reportReceivedDate: null,
                 expenditureType: "Independent Expenditures",
-                expendingCommitteeName: "Illinois Conservation Action",
+                expendingCommitteeName: "People Against Jane",
                 purpose: "Mail",
                 candidateName: "Jane Doe",
                 officeDistrict: "Governor",
@@ -106,23 +106,27 @@ describe("probeIllinoisCandidateFinance script", () => {
               },
             ]
       ),
-      getCommitteeContributions: vi.fn(async () => [
-        {
-          contributorName: "Sierra Club",
-          contributorAddress: null,
-          occupation: null,
-          employer: null,
-          amount: 30000,
-          receivedDate: "9/1/2022",
-          reportReceivedDate: null,
-          contributionType: "Transfers In",
-          recipientCommitteeName: "Illinois Conservation Action",
-          description: null,
-          vendorName: null,
-          vendorAddress: null,
-          sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/ContributionSearchByCommittees.aspx",
-        },
-      ]),
+      getCommitteeContributions: vi.fn(async (input: { committeeName?: string | null }) =>
+        input.committeeName === "Illinois Conservation Action"
+          ? [
+              {
+                contributorName: "Sierra Club",
+                contributorAddress: null,
+                occupation: null,
+                employer: null,
+                amount: 30000,
+                receivedDate: "9/1/2022",
+                reportReceivedDate: null,
+                contributionType: "Transfers In",
+                recipientCommitteeName: "Illinois Conservation Action",
+                description: null,
+                vendorName: null,
+                vendorAddress: null,
+                sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/ContributionSearchByCommittees.aspx",
+              },
+            ]
+          : []
+      ),
     };
 
     const output = await runProbeIllinoisCandidateFinance({
@@ -189,7 +193,7 @@ describe("probeIllinoisCandidateFinance script", () => {
       expect.objectContaining({ committeeName: "Illinois Conservation Action", contributionType: "All Types" }),
       expect.objectContaining({ timeoutMs: 30000 })
     );
-    expect(client.getCommitteeContributions).toHaveBeenCalledTimes(1);
+    expect(client.getCommitteeContributions).toHaveBeenCalledTimes(2);
   });
 
   it("limits probe industries independently for support and oppose", async () => {

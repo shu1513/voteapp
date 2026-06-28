@@ -222,6 +222,33 @@ describe("syncIllinoisCandidateFinance", () => {
     expect(db.connect).not.toHaveBeenCalled();
   });
 
+  it("preserves outside group breakdowns when outside funder rows were not fetched", async () => {
+    const db = createMockDb();
+
+    const result = await syncIllinoisCandidateFinance({
+      db,
+      ...baseInput(),
+      directContributionRecords: [contribution({ amount: 1000 })],
+      outsideExpenditureRecords: [expenditure()],
+    });
+
+    expect(result).toMatchObject({
+      outsideGroupsWritten: 1,
+      outsideGroupBreakdownsWritten: 0,
+      matchedOutsideContributionRowCount: 0,
+      includedOutsideContributionRowCount: 0,
+      skippedOutsideContributionRowCount: 0,
+    });
+    const statements = db.client.query.mock.calls.map((call) => String(call[0]));
+    expect(statements.some((statement) => statement.includes("INSERT INTO public.il_candidate_finance_outside_groups"))).toBe(true);
+    expect(
+      statements.some((statement) => statement.includes("INSERT INTO public.il_candidate_finance_outside_group_breakdowns"))
+    ).toBe(false);
+    expect(
+      statements.some((statement) => statement.includes("DELETE FROM public.il_candidate_finance_outside_group_breakdowns"))
+    ).toBe(false);
+  });
+
   it("uses shared AI classification for high-dollar unknown PAC funders", async () => {
     const db = createMockDb();
     const classifier = vi.fn().mockResolvedValue([

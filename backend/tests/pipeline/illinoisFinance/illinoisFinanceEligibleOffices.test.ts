@@ -35,6 +35,20 @@ describe("illinoisFinanceEligibleOffices", () => {
     ).toBeNull();
     expect(
       toIllinoisSbeOfficeSearchInput({
+        officeScope: "state_upper",
+        officeCanonicalName: "State Senator",
+        district: "HD 07",
+      })
+    ).toBeNull();
+    expect(
+      toIllinoisSbeOfficeSearchInput({
+        officeScope: "state_lower",
+        officeCanonicalName: "State Lower Chamber Legislator",
+        district: "Senate District 7",
+      })
+    ).toBeNull();
+    expect(
+      toIllinoisSbeOfficeSearchInput({
         officeScope: "statewide",
         officeCanonicalName: "Attorney General",
       })

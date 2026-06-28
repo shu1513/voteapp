@@ -201,7 +201,7 @@ function toWriterOutsideBreakdown(
 
 function toOutsideGroupBreakdowns(input: {
   outsideGroups: readonly IllinoisOutsideSpendingGroup[] | undefined;
-  contributionRecords: readonly IllinoisSbeContributionRecord[];
+  contributionRecords: readonly IllinoisSbeContributionRecord[] | undefined;
   sourceUrl?: string | null;
   electionYear: number;
   maxBreakdownsPerCategory?: number;
@@ -212,7 +212,7 @@ function toOutsideGroupBreakdowns(input: {
   includedContributionRowCount: number;
   skippedContributionRowCount: number;
 } {
-  if (!input.outsideGroups) {
+  if (!input.outsideGroups || input.contributionRecords === undefined) {
     return {
       breakdowns: undefined,
       matchedContributionRowCount: 0,
@@ -425,7 +425,7 @@ export async function syncIllinoisCandidateFinance(
   const outsideGroups = outsideDataAvailable ? toOutsideGroups(outsideFinance) ?? [] : undefined;
   const outsideGroupBreakdowns = toOutsideGroupBreakdowns({
     outsideGroups: outsideFinance.summary?.groups,
-    contributionRecords: input.outsideGroupContributionRecords ?? [],
+    contributionRecords: input.outsideGroupContributionRecords,
     sourceUrl: outsideGroupSourceUrl,
     electionYear,
     maxBreakdownsPerCategory: input.outsideMaxBreakdownsPerCategory,

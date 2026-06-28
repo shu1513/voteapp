@@ -114,13 +114,22 @@ export function normalizeIllinoisSbeOfficeLabel(value: string | null | undefined
 
 export function normalizeIllinoisSbeLegislativeDistrict(
   value: string | null | undefined,
-  maxDistrict: number
+  maxDistrict: number,
+  officeScope?: IllinoisFinanceOfficeScope | null
 ): string | null {
   if (!Number.isInteger(maxDistrict) || maxDistrict <= 0) {
     throw new Error(`Invalid Illinois SBE max district: ${maxDistrict}`);
   }
   const normalized = value?.trim().replace(/\s+/g, " ").toUpperCase();
   if (!normalized) {
+    return null;
+  }
+  const prefixMatch = normalized.match(/^([A-Z]+)(?:\s+DIST(?:RICT)?)?\s+/);
+  const prefix = prefixMatch?.[1] ?? null;
+  if (officeScope === "state_upper" && prefix && /^(?:HD|HOUSE|REP|REPRESENTATIVE)$/.test(prefix)) {
+    return null;
+  }
+  if (officeScope === "state_lower" && prefix && /^(?:SD|SEN|SENATE)$/.test(prefix)) {
     return null;
   }
   const match = normalized.match(
@@ -149,7 +158,7 @@ export function mapIllinoisSbeOffice(input: {
     return null;
   }
   const district = definition.requiresDistrict
-    ? normalizeIllinoisSbeLegislativeDistrict(input.district, definition.maxDistrict ?? 0)
+    ? normalizeIllinoisSbeLegislativeDistrict(input.district, definition.maxDistrict ?? 0, definition.officeScope)
     : null;
   if (definition.requiresDistrict && !district) {
     return null;
@@ -179,7 +188,7 @@ export function toIllinoisSbeOfficeSearchInput(input: {
     return null;
   }
   const district = definition.requiresDistrict
-    ? normalizeIllinoisSbeLegislativeDistrict(input.district, definition.maxDistrict ?? 0)
+    ? normalizeIllinoisSbeLegislativeDistrict(input.district, definition.maxDistrict ?? 0, definition.officeScope)
     : null;
   if (definition.requiresDistrict && !district) {
     return null;

@@ -213,6 +213,12 @@ export async function loadIllinoisFinanceDataForDueRow(
     officeCanonicalName: row.officeName,
     district: row.district,
   });
+  if (!officeSearch) {
+    throw new Error(
+      `Illinois finance due row cannot be mapped to an SBE office search ` +
+        `(candidateId=${row.candidateId} electionId=${row.electionId})`
+    );
+  }
   const office = officeSearchText(officeSearch, row.officeName);
   const directContributionRecords = await fetchIllinoisSbeCommitteeContributionRecords(
     {
@@ -248,6 +254,16 @@ export async function loadIllinoisFinanceDataForDueRow(
       options
     ),
   ]);
+  warnIfIllinoisSbeExportLooksCapped({
+    context: "independent expenditures (support)",
+    row,
+    records: supportExpenditureRecords,
+  });
+  warnIfIllinoisSbeExportLooksCapped({
+    context: "independent expenditures (oppose)",
+    row,
+    records: opposeExpenditureRecords,
+  });
   const outsideExpenditureRecords = [...supportExpenditureRecords, ...opposeExpenditureRecords];
   const outsideGroupContributionRecords: IllinoisSbeContributionRecord[] = [];
 

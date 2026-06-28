@@ -62,6 +62,16 @@ function assertNoUnknownFlags(args: readonly string[], allowedFlags: readonly st
 }
 
 function assertBareBooleanFlags(args: readonly string[], booleanFlags: readonly string[]): void {
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (!arg || !booleanFlags.includes(arg)) {
+      continue;
+    }
+    const next = args[index + 1];
+    if (next !== undefined && !next.startsWith("--")) {
+      throw new Error(`Boolean flag ${arg} does not take a value`);
+    }
+  }
   for (const flag of booleanFlags) {
     if (args.some((arg) => arg.startsWith(`${flag}=`))) {
       throw new Error(`Boolean flag ${flag} does not take a value`);
