@@ -23,7 +23,7 @@ function matchedResolution(
 ) {
   return {
     status: "matched" as const,
-    committeeKey: "JANE DOE",
+    committeeKey: "FRIENDS OF JANE DOE",
     committeeName: "Friends of Jane Doe",
     confidence: "exact" as const,
     source: "illinois_sbe" as const,
@@ -104,7 +104,7 @@ describe("illinoisCandidateFinanceAutoLink", () => {
       candidateId: CANDIDATE_ID,
       electionId: ELECTION_ID,
       status: "linked",
-      committeeKey: "JANE DOE",
+      committeeKey: "FRIENDS OF JANE DOE",
     });
 
     expect(resolveCandidateCommittee).toHaveBeenCalledWith(
@@ -125,7 +125,7 @@ describe("illinoisCandidateFinanceAutoLink", () => {
       "JANE DOE",
       "Governor",
       null,
-      "JANE DOE",
+      "FRIENDS OF JANE DOE",
       "Friends of Jane Doe",
       "active",
       "illinois_sbe",
@@ -196,7 +196,7 @@ describe("illinoisCandidateFinanceAutoLink", () => {
         candidateId: CANDIDATE_ID,
         electionId: ELECTION_ID,
         status: "linked",
-        committeeKey: "JANE DOE",
+        committeeKey: "FRIENDS OF JANE DOE",
       },
     ]);
     expect(resolveCandidateCommittee).toHaveBeenCalledTimes(1);

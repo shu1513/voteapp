@@ -227,6 +227,7 @@ describe("illinoisCandidateFinanceSyncScheduler", () => {
 
   it("upserts recurring jobs with configured queue payload", async () => {
     process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
     process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_DAILY_CRON = "5 9 * * *";
     process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_DAILY_TZ = "America/Chicago";
 
@@ -282,6 +283,30 @@ describe("illinoisCandidateFinanceSyncScheduler", () => {
 
   it("removes the recurring scheduler when the master Illinois finance flag is disabled", async () => {
     process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED = "false";
+
+    const queueInstance = {
+      removeJobScheduler: vi.fn().mockResolvedValue(true),
+      upsertJobScheduler: vi.fn().mockResolvedValue(undefined),
+      close: vi.fn().mockResolvedValue(undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+    mockEnv();
+
+    const { upsertRecurringIllinoisCandidateFinanceSyncJobs } = await import(
+      "../../src/scheduler/illinoisCandidateFinanceSyncScheduler.js"
+    );
+
+    await upsertRecurringIllinoisCandidateFinanceSyncJobs();
+
+    expect(queueInstance.removeJobScheduler).toHaveBeenCalledWith("illinois_candidate_finance_sync_daily");
+    expect(queueInstance.upsertJobScheduler).not.toHaveBeenCalled();
+    expect(queueInstance.close).toHaveBeenCalledTimes(1);
+  });
+
+  it("removes the recurring scheduler when Illinois finance sync is disabled", async () => {
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
 
     const queueInstance = {
       removeJobScheduler: vi.fn().mockResolvedValue(true),

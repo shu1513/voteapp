@@ -30,4 +30,13 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
   it("rejects unknown flags", () => {
     expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--unknown"])).toThrow("Unknown option: --unknown");
   });
+
+  it("rejects valued booleans and conflicting AI flags", () => {
+    expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--dry-run=true"])).toThrow(
+      "Boolean flag --dry-run does not take a value"
+    );
+    expect(() =>
+      parseIllinoisCandidateFinanceSyncTriggerArgs(["--ai-classify-industries", "--no-ai-classify-industries"])
+    ).toThrow("Provide --ai-classify-industries or --no-ai-classify-industries, not both");
+  });
 });

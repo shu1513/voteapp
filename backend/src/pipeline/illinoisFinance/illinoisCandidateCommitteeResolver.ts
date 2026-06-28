@@ -1,4 +1,5 @@
 import { toIllinoisSbeOfficeSearchInput } from "./illinoisFinanceEligibleOffices.js";
+import { normalizeIllinoisCommitteeKey } from "./illinoisFinanceAggregators.js";
 import {
   fetchIllinoisSbeCandidateContributionRecords,
   ILLINOIS_SBE_CONTRIBUTION_CANDIDATE_SEARCH_URL,
@@ -254,7 +255,7 @@ export function resolveIllinoisCandidateCommittee(
   const rowsByCommittee = new Map<string, CandidateCommitteeAccumulator>();
   for (const record of input.contributionRecords) {
     const committeeName = record.recipientCommitteeName?.trim().replace(/\s+/g, " ") ?? "";
-    const committeeKey = normalizeTextKey(committeeName);
+    const committeeKey = normalizeIllinoisCommitteeKey(committeeName);
     if (!committeeName || !committeeKey || !isLikelyCandidateCommitteeName(committeeName)) {
       continue;
     }

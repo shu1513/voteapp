@@ -44,4 +44,16 @@ describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
       "Invalid --lookahead-days value"
     );
   });
+
+  it("rejects valued booleans and conflicting AI flags", () => {
+    expect(() => parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(["--dry-run=true"])).toThrow(
+      "Boolean flag --dry-run does not take a value"
+    );
+    expect(() =>
+      parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs([
+        "--ai-classify-industries",
+        "--no-ai-classify-industries",
+      ])
+    ).toThrow("Provide --ai-classify-industries or --no-ai-classify-industries, not both");
+  });
 });

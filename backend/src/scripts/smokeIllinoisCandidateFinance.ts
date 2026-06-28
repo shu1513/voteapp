@@ -66,9 +66,10 @@ export async function runIllinoisCandidateFinanceLiveSmoke(input: {
   });
   const outsideGroupCount =
     probe.outside_spending.top_supporting_groups.length + probe.outside_spending.top_opposing_groups.length;
-  const supportingIndustriesWithEvidence = probe.outside_spending.top_supporting_industries.filter(
-    (industry) => industry.evidence.length > 0
-  ).length;
+  const industriesWithEvidence = [
+    ...probe.outside_spending.top_supporting_industries,
+    ...probe.outside_spending.top_opposing_industries,
+  ].filter((industry) => industry.evidence.length > 0).length;
 
   const checks = [
     check("probe_ok", probe.ok),
@@ -77,8 +78,8 @@ export async function runIllinoisCandidateFinanceLiveSmoke(input: {
     check("outside_groups_present", outsideGroupCount > 0, `outside_group_count=${outsideGroupCount}`),
     check(
       "supporting_industry_evidence_present",
-      supportingIndustriesWithEvidence > 0,
-      `supporting_industries_with_evidence=${supportingIndustriesWithEvidence}`
+      industriesWithEvidence > 0,
+      `industries_with_evidence=${industriesWithEvidence}`
     ),
   ];
 

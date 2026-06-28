@@ -4,7 +4,7 @@ import { Pool } from "pg";
 
 import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
-import { isIllinoisCampaignFinanceEnabled, isIllinoisCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
+import { isIllinoisCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
   syncDueIllinoisCandidateFinance,
   type IllinoisCandidateFinanceBatchSyncResult,
@@ -156,7 +156,7 @@ export async function upsertRecurringIllinoisCandidateFinanceSyncJobs(
   jobData: IllinoisCandidateFinanceSyncJobData = {}
 ): Promise<void> {
   assertValidJobOptions(jobData);
-  if (!isIllinoisCampaignFinanceEnabled()) {
+  if (!isIllinoisCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
     const queue = createIllinoisCandidateFinanceSyncSchedulerQueue();
     try {
       await queue.removeJobScheduler(ILLINOIS_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID);

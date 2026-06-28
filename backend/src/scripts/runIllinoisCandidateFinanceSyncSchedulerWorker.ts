@@ -1,12 +1,12 @@
 import { loadProjectEnv } from "../config/env.js";
-import { isIllinoisCampaignFinanceEnabled } from "../config/featureFlags.js";
+import { isIllinoisCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import { createIllinoisCandidateFinanceSyncSchedulerWorker } from "../scheduler/illinoisCandidateFinanceSyncScheduler.js";
 
 const SHUTDOWN_TIMEOUT_MS = 30_000;
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  if (!isIllinoisCampaignFinanceEnabled()) {
+  if (!isIllinoisCampaignFinanceSyncEnabled()) {
     console.log("Illinois campaign finance sync scheduler worker disabled; exiting");
     return;
   }

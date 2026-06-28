@@ -192,6 +192,81 @@ describe("probeIllinoisCandidateFinance script", () => {
     expect(client.getCommitteeContributions).toHaveBeenCalledTimes(1);
   });
 
+  it("limits probe industries independently for support and oppose", async () => {
+    const args = parseProbeIllinoisCandidateFinanceArgs([
+      "--candidate-name=Jane Doe",
+      "--year=2022",
+      "--office=Governor",
+      "--limit=1",
+      "--min-industry-amount=25000",
+    ]);
+    const client = {
+      getCandidateContributions: vi.fn(async () => [
+        {
+          contributorName: "Alice Attorney",
+          contributorAddress: "1 Main St",
+          occupation: "Attorney",
+          employer: "Law LLP",
+          amount: 1000,
+          receivedDate: "3/1/2022",
+          reportReceivedDate: null,
+          contributionType: "Individual Contributions",
+          recipientCommitteeName: "Friends of Jane",
+          description: null,
+          vendorName: null,
+          vendorAddress: null,
+          sourceUrl: null,
+        },
+      ]),
+      getIndependentExpenditures: vi.fn(async (input: { supportOppose?: "support" | "oppose" | null }) => [
+        {
+          payeeName: "Vendor",
+          payeeAddress: null,
+          amount: input.supportOppose === "support" ? 10000 : 9000,
+          expendedDate: input.supportOppose === "support" ? "10/1/2022" : "10/2/2022",
+          reportReceivedDate: null,
+          expenditureType: "Independent Expenditures",
+          expendingCommitteeName: input.supportOppose === "support" ? "Tech Future PAC" : "Conservation Opposition PAC",
+          purpose: "Mail",
+          candidateName: "Jane Doe",
+          officeDistrict: "Governor",
+          supportOppose: input.supportOppose ?? "support",
+          sourceUrl: null,
+        },
+      ]),
+      getCommitteeContributions: vi.fn(async (input: { committeeName?: string | null }) => [
+        {
+          contributorName: input.committeeName === "Tech Future PAC" ? "Microsoft" : "Sierra Club",
+          contributorAddress: null,
+          occupation: null,
+          employer: null,
+          amount: input.committeeName === "Tech Future PAC" ? 50000 : 30000,
+          receivedDate: "9/1/2022",
+          reportReceivedDate: null,
+          contributionType: "Transfers In",
+          recipientCommitteeName: input.committeeName ?? null,
+          description: null,
+          vendorName: null,
+          vendorAddress: null,
+          sourceUrl: null,
+        },
+      ]),
+    };
+
+    const output = await runProbeIllinoisCandidateFinance({ args, client });
+
+    expect(output.outside_spending.top_supporting_industries).toHaveLength(1);
+    expect(output.outside_spending.top_supporting_industries[0]).toMatchObject({
+      industry_slug: "technology",
+      amount: 50000,
+    });
+    expect(output.outside_spending.top_opposing_industries).toHaveLength(1);
+    expect(output.outside_spending.top_opposing_industries[0]).toMatchObject({
+      industry_slug: "environmental_group",
+      amount: 30000,
+    });
+  });
+
   it("rejects malformed required options", () => {
     expect(() => parseProbeIllinoisCandidateFinanceArgs(["--year=2022", "--office=Governor"])).toThrow(
       "Missing required --candidate-name"
@@ -207,5 +282,16 @@ describe("probeIllinoisCandidateFinance script", () => {
         "--from-date=2022-01-01",
       ])
     ).toThrow("use m/d/yyyy");
+    expect(() =>
+      parseProbeIllinoisCandidateFinanceArgs([
+        "--candidate-name=Jane Doe",
+        "--year=2022",
+        "--office=Governor",
+        "--funder-limt=7",
+      ])
+    ).toThrow("Unknown option: --funder-limt");
+    expect(() =>
+      parseProbeIllinoisCandidateFinanceArgs(["--candidate-name=Jane Doe", "--year=2022", "--office=Governor", "extra"])
+    ).toThrow("Unexpected positional argument: extra");
   });
 });

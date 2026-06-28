@@ -94,7 +94,7 @@ describe("syncDueIllinoisCandidateFinance script", () => {
             candidateId: "candidate-1",
             electionId: "election-1",
             electionYear: 2026,
-            committeeKey: "JANE DOE",
+            committeeKey: "FRIENDS OF JANE DOE",
             ok: true,
           },
         ],

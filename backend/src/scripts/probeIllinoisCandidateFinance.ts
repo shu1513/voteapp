@@ -150,6 +150,28 @@ function parseFlagValue(args: readonly string[], name: string): string | null {
   return values[0] ?? null;
 }
 
+function assertOnlyKnownValueFlags(args: readonly string[], knownFlags: readonly string[]): void {
+  const known = new Set(knownFlags);
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index] ?? "";
+    if (!arg.startsWith("--")) {
+      throw new Error(`Unexpected positional argument: ${arg}`);
+    }
+    const equalsIndex = arg.indexOf("=");
+    const flag = equalsIndex > -1 ? arg.slice(0, equalsIndex) : arg;
+    if (!known.has(flag)) {
+      throw new Error(`Unknown option: ${flag}`);
+    }
+    if (equalsIndex === -1) {
+      const next = args[index + 1];
+      if (!next || next.startsWith("--") || next.trim().length === 0) {
+        throw new Error(`Missing ${flag} value`);
+      }
+      index += 1;
+    }
+  }
+}
+
 function parseRequiredFlag(args: readonly string[], name: string): string {
   const value = parseFlagValue(args, name);
   if (!value) {
@@ -206,6 +228,17 @@ function parseDateFlag(args: readonly string[], name: string, fallback: string):
 }
 
 export function parseProbeIllinoisCandidateFinanceArgs(args: readonly string[]): IllinoisFinanceProbeArgs {
+  assertOnlyKnownValueFlags(args, [
+    "--candidate-name",
+    "--year",
+    "--office",
+    "--from-date",
+    "--to-date",
+    "--limit",
+    "--funder-limit",
+    "--min-industry-amount",
+    "--timeout-ms",
+  ]);
   const electionYear = parseRequiredPositiveIntegerFlag(args, "--year");
   return {
     candidateName: parseRequiredFlag(args, "--candidate-name"),
@@ -283,7 +316,6 @@ function committeeNameForKey(groups: readonly IllinoisOutsideSpendingGroup[], co
 function buildProbeIndustries(input: {
   groups: readonly IllinoisOutsideSpendingGroup[];
   breakdowns: readonly IllinoisFinanceOutsideGroupBreakdown[];
-  limit: number;
   evidenceLimit: number;
 }): IllinoisFinanceProbeIndustry[] {
   const donors = input.breakdowns.filter((breakdown) => breakdown.categoryType === "donor");
@@ -314,8 +346,7 @@ function buildProbeIndustries(input: {
         evidence,
       };
     })
-    .sort((left, right) => right.amount - left.amount || left.category_name.localeCompare(right.category_name))
-    .slice(0, input.limit);
+    .sort((left, right) => right.amount - left.amount || left.category_name.localeCompare(right.category_name));
 }
 
 async function buildOutsideIndustryBreakdowns(input: {
@@ -429,7 +460,6 @@ export async function runProbeIllinoisCandidateFinance(input: {
   const probeIndustries = buildProbeIndustries({
     groups: outsideGroups,
     breakdowns: industryBreakdowns.breakdowns,
-    limit: input.args.limit,
     evidenceLimit: input.args.funderLimit,
   });
 

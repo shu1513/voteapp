@@ -48,7 +48,7 @@ describe("illinoisCandidateCommitteeResolver", () => {
 
     expect(resolution).toEqual({
       status: "matched",
-      committeeKey: "JANE DOE",
+      committeeKey: "FRIENDS OF JANE DOE",
       committeeName: "Friends of Jane Doe",
       confidence: "exact",
       source: "illinois_sbe",
@@ -75,8 +75,8 @@ describe("illinoisCandidateCommitteeResolver", () => {
       candidateNameNormalized: "JANE DOE",
       officeNameNormalized: "Governor",
       matches: [
-        { committeeKey: "JANE DOE", matchedContributionRowCount: 1 },
-        { committeeKey: "JANE DOE GOVERNOR", matchedContributionRowCount: 1 },
+        { committeeKey: "FRIENDS OF JANE DOE", matchedContributionRowCount: 1 },
+        { committeeKey: "JANE DOE FOR GOVERNOR", matchedContributionRowCount: 1 },
       ],
     });
   });

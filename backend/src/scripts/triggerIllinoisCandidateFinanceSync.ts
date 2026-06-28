@@ -60,6 +60,20 @@ function assertNoUnknownFlags(args: readonly string[], allowedFlags: readonly st
   }
 }
 
+function assertBareBooleanFlags(args: readonly string[], booleanFlags: readonly string[]): void {
+  for (const flag of booleanFlags) {
+    if (args.some((arg) => arg.startsWith(`${flag}=`))) {
+      throw new Error(`Boolean flag ${flag} does not take a value`);
+    }
+  }
+}
+
+function assertMutuallyExclusiveFlags(args: readonly string[], left: string, right: string): void {
+  if (args.includes(left) && args.includes(right)) {
+    throw new Error(`Provide ${left} or ${right}, not both`);
+  }
+}
+
 export function parseIllinoisCandidateFinanceSyncTriggerArgs(
   args: readonly string[]
 ): IllinoisCandidateFinanceSyncJobData {
@@ -74,6 +88,8 @@ export function parseIllinoisCandidateFinanceSyncTriggerArgs(
     "--no-ai-classify-industries",
     "--ai-min-amount",
   ]);
+  assertBareBooleanFlags(args, ["--dry-run", "--force", "--ai-classify-industries", "--no-ai-classify-industries"]);
+  assertMutuallyExclusiveFlags(args, "--ai-classify-industries", "--no-ai-classify-industries");
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),
