@@ -15,6 +15,7 @@ import {
 } from "../competitiveness/historicalContestMarginLookup.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
 import { calculateVotePower, type VotePowerResult } from "./votePower.js";
+import { loadKentuckyCandidateFinanceSummariesByCandidateElection } from "../kentuckyFinance/kentuckyBallotLookupFinanceLoader.js";
 import { isVirginiaFinanceEligibleOffice } from "../virginiaFinance/virginiaFinanceEligibleOffices.js";
 import { isWisconsinFinanceEligibleOffice } from "../wisconsinFinance/wisconsinFinanceEligibleOffices.js";
 import { isMassachusettsFinanceEligibleOffice } from "../massachusettsFinance/massachusettsFinanceEligibleOffices.js";
@@ -181,6 +182,7 @@ export type BallotLookupFinanceSummary = {
     | "WASHINGTON_PDC"
     | "WISCONSIN_SUNSHINE"
     | "MASSACHUSETTS_OCPF"
+    | "KENTUCKY_KREF"
     | "MARYLAND_CFS"
     | "MAINE_CFIS"
     | "MICHIGAN_MITN"
@@ -1824,6 +1826,7 @@ function formatShortList(values: readonly string[]): string {
 
 const FINANCE_INDUSTRY_DISPLAY_NAMES: Record<string, string> = {
   agriculture_and_food: "Agriculture and food",
+  business_associations: "Business associations",
   construction: "Construction",
   defense_aerospace: "Defense and aerospace",
   education: "Education",
@@ -10544,6 +10547,7 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     candidateRows,
     electionRows
   );
+  const kentuckySummaries = await loadKentuckyCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const floridaSummaries = await loadOptionalFloridaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const virginiaSummaries = await loadVirginiaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const tennesseeSummaries = await loadTennesseeCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
@@ -10592,6 +10596,9 @@ async function loadCandidateFinanceSummariesByCandidateElection(
     merged.set(key, summary);
   }
   for (const [key, summary] of districtOfColumbiaSummaries) {
+    merged.set(key, summary);
+  }
+  for (const [key, summary] of kentuckySummaries) {
     merged.set(key, summary);
   }
   for (const [key, summary] of floridaSummaries) {
