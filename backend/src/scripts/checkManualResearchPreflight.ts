@@ -10,6 +10,10 @@ type RequiredColumn = {
   column: string;
 };
 
+type RequiredTable = {
+  table: string;
+};
+
 type RequiredUniqueObject = {
   table: string;
   name: string;
@@ -59,6 +63,10 @@ const REQUIRED_COLUMNS: RequiredColumn[] = [
   { table: "ballot_measure_research_area_tags", column: "updated_at" },
   { table: "office_research_areas", column: "office_id" },
   { table: "research_areas", column: "slug" },
+];
+
+const REQUIRED_TABLES: RequiredTable[] = [
+  { table: "user_candidate_follow_notification_events" },
 ];
 
 const REQUIRED_UNIQUE_OBJECTS: RequiredUniqueObject[] = [
@@ -166,6 +174,18 @@ async function loadExistingColumns(pool: Pool): Promise<Set<string>> {
   return new Set(result.rows.map((row) => `${row.table_name}.${row.column_name}`));
 }
 
+async function loadExistingTables(pool: Pool): Promise<Set<string>> {
+  const result = await pool.query<{ table_name: string }>(
+    `
+      SELECT table_name
+      FROM information_schema.tables
+      WHERE table_schema = 'public'
+        AND table_type = 'BASE TABLE'
+    `
+  );
+  return new Set(result.rows.map((row) => row.table_name));
+}
+
 async function loadUniqueObjectDefinitions(pool: Pool): Promise<Map<string, UniqueObjectDefinition>> {
   const result = await pool.query<{
     table_name: string;
@@ -267,11 +287,13 @@ async function main(): Promise<void> {
   const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
 
   try {
-    const [columns, uniqueObjectDefinitions] = await Promise.all([
+    const [columns, tables, uniqueObjectDefinitions] = await Promise.all([
       loadExistingColumns(pool),
+      loadExistingTables(pool),
       loadUniqueObjectDefinitions(pool),
     ]);
 
+    const missingTables = REQUIRED_TABLES.filter((entry) => !tables.has(entry.table));
     const missingColumns = REQUIRED_COLUMNS.filter(
       (entry) => !columns.has(`${entry.table}.${entry.column}`)
     );
@@ -296,12 +318,14 @@ async function main(): Promise<void> {
     });
 
     const ok =
+      missingTables.length === 0 &&
       missingColumns.length === 0 &&
       invalidUniqueObjects.length === 0 &&
       Object.keys(unallowedMigrationNumberDuplicates).length === 0;
 
     const report = {
       ok,
+      missingTables,
       missingColumns,
       invalidUniqueObjects,
       unallowedMigrationNumberDuplicates,
