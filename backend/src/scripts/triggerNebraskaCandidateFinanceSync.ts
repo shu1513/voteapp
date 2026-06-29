@@ -17,13 +17,20 @@ const KNOWN_VALUE_FLAGS = new Set([
 ]);
 
 function assertNoUnknownNebraskaFinanceTriggerArgs(args: readonly string[]): void {
-  for (const arg of args) {
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
     if (!arg.startsWith("--")) {
       continue;
     }
     const name = arg.split("=", 1)[0] ?? arg;
     if (arg.includes("=") && KNOWN_BOOLEAN_FLAGS.has(name)) {
       throw new Error(`Boolean flag must not include a value: ${name}`);
+    }
+    if (KNOWN_BOOLEAN_FLAGS.has(name)) {
+      const next = args[index + 1];
+      if (next !== undefined && !next.startsWith("--")) {
+        throw new Error(`Boolean flag must not include a value: ${name}`);
+      }
     }
     if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
       throw new Error(`Unknown Nebraska candidate finance sync trigger flag: ${name}`);

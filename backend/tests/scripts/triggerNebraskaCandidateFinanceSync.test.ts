@@ -38,7 +38,13 @@ describe("triggerNebraskaCandidateFinanceSync script", () => {
     expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--dry-run=true"])).toThrow(
       "Boolean flag must not include a value: --dry-run"
     );
+    expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--dry-run", "true"])).toThrow(
+      "Boolean flag must not include a value: --dry-run"
+    );
     expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--force=false"])).toThrow(
+      "Boolean flag must not include a value: --force"
+    );
+    expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--force", "false"])).toThrow(
       "Boolean flag must not include a value: --force"
     );
   });
