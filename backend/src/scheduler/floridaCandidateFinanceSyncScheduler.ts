@@ -149,9 +149,9 @@ function jobOptionsWithId(jobId: string | undefined): JobsOptions {
 
 function assertValidJobOptions(data: FloridaCandidateFinanceSyncJobData): void {
   assertPositiveInteger(data.maxCandidates, "maxCandidates");
-  assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
-  assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
-  assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
+  assertNonnegativeInteger(data.staleAfterDays, "staleAfterDays");
+  assertNonnegativeInteger(data.electionLookbackDays, "electionLookbackDays");
+  assertNonnegativeInteger(data.electionLookaheadDays, "electionLookaheadDays");
   assertPositiveInteger(data.exportRowLimit, "exportRowLimit");
   assertNonnegativeInteger(data.exportMinIntervalMs, "exportMinIntervalMs");
   assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
@@ -175,7 +175,7 @@ export async function upsertRecurringFloridaCandidateFinanceSyncJobs(
   jobData: FloridaCandidateFinanceSyncJobData = {}
 ): Promise<void> {
   assertValidJobOptions(jobData);
-  if (!isFloridaCampaignFinanceEnabled()) {
+  if (!isFloridaCampaignFinanceEnabled() || !isFloridaCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
     const queue = createFloridaCandidateFinanceSyncSchedulerQueue();
     try {
       await queue.removeJobScheduler(FLORIDA_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID);

@@ -20,7 +20,8 @@ export function parseUpsertFloridaCandidateFinanceSyncSchedulerArgs(
 async function main(): Promise<void> {
   loadProjectEnv();
   const jobData = parseUpsertFloridaCandidateFinanceSyncSchedulerArgs(process.argv.slice(2));
-  const enabled = isFloridaCampaignFinanceEnabled() && isFloridaCampaignFinanceSyncEnabled();
+  const enabled =
+    isFloridaCampaignFinanceEnabled() && isFloridaCampaignFinanceSyncEnabled(Boolean(jobData.force));
   await upsertRecurringFloridaCandidateFinanceSyncJobs(jobData);
   console.log(
     enabled

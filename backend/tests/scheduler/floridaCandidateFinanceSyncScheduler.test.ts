@@ -79,18 +79,23 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     );
     expect(add).toHaveBeenCalledWith(
       "florida_candidate_finance_sync_due",
-      {
+      expect.objectContaining({
         dryRun: false,
         force: false,
         maxCandidates: undefined,
+        staleAfterDays: undefined,
+        electionLookbackDays: undefined,
+        electionLookaheadDays: undefined,
         syncInputs: undefined,
         defaultArtifactCacheDir: undefined,
         refreshExportArtifacts: false,
+        exportMinIntervalMs: undefined,
+        exportRowLimit: undefined,
         aiClassifyIndustries: true,
         aiClassificationMinAmount: 25000,
         triggeredBy: "manual",
         requestedAt: "2026-06-01T12:00:00.000Z",
-      },
+      }),
       expect.objectContaining({
         jobId,
       })
@@ -123,6 +128,9 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     await expect(
       enqueueManualFloridaCandidateFinanceSyncJob({ maxCandidates: 0 })
     ).rejects.toThrow("Invalid Florida finance sync scheduler maxCandidates");
+    await expect(
+      enqueueManualFloridaCandidateFinanceSyncJob({ staleAfterDays: 0, electionLookbackDays: 0, electionLookaheadDays: 0 })
+    ).resolves.toBe("unused");
     await expect(
       enqueueManualFloridaCandidateFinanceSyncJob({}, { jobId: "bad:id" })
     ).rejects.toThrow("Florida finance sync scheduler jobId must not contain ':'");
@@ -181,7 +189,13 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = "false";
     await upsertRecurringFloridaCandidateFinanceSyncJobs();
     expect(removeJobScheduler).toHaveBeenCalledWith("florida_candidate_finance_sync_daily");
-    expect(close).toHaveBeenCalledTimes(2);
+    process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+    await upsertRecurringFloridaCandidateFinanceSyncJobs();
+    expect(removeJobScheduler).toHaveBeenCalledTimes(2);
+    await upsertRecurringFloridaCandidateFinanceSyncJobs({ force: true });
+    expect(upsertJobScheduler).toHaveBeenCalledTimes(2);
+    expect(close).toHaveBeenCalledTimes(4);
   });
 
   it("runs a disabled job without creating database or classifier resources", async () => {

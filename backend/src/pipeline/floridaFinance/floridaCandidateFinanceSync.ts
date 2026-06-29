@@ -515,7 +515,8 @@ export async function syncFloridaCandidateFinance(
   const hasExplicitOutsideGroupInputs =
     input.trustedOutsideGroups !== undefined ||
     input.outsideGroupSupportEvidence !== undefined ||
-    input.includeStoredOutsideGroupSupportEvidence === true;
+    input.includeStoredOutsideGroupSupportEvidence === true ||
+    input.includeOutsideGroupNameHeuristics === true;
   const includeOutsideGroupFinance =
     input.includeOutsideGroupFinance !== false &&
     (input.includeOutsideGroupFinance === true || hasExplicitOutsideGroupInputs);

@@ -74,9 +74,6 @@ export type FloridaCandidateFinanceDueContributionData = {
   contributionRows?: readonly FloridaContributionRow[];
   contributionArtifact?: FloridaContributionArtifactReference | null;
   contributionSourceUrl?: string | null;
-  outsideContributionRows?: readonly FloridaContributionRow[];
-  outsideContributionArtifact?: FloridaContributionArtifactReference | null;
-  outsideSourceUrl?: string | null;
 };
 
 export type FloridaCandidateFinanceDueSyncInput = Omit<
@@ -316,9 +313,6 @@ function buildDueSyncInput(input: {
     contributionArtifact: input.contributionData?.contributionArtifact,
     contributionSourceUrl: input.contributionData?.contributionSourceUrl ?? input.row.sourceUrl,
     includeOutsideGroupFinance: false,
-    outsideContributionRows: input.contributionData?.outsideContributionRows,
-    outsideContributionArtifact: input.contributionData?.outsideContributionArtifact,
-    outsideSourceUrl: input.contributionData?.outsideSourceUrl,
   };
 }
 
@@ -343,7 +337,7 @@ function splitCandidateNameForFloridaExport(
   }
 
   const parts = trimmed.split(" ").filter(Boolean);
-  while (parts.length > 2 && /^(?:JR|SR|II|III|IV|V)$/i.test(parts[parts.length - 1] ?? "")) {
+  while (parts.length >= 2 && /^(?:JR|SR|II|III|IV|V)$/i.test(parts[parts.length - 1] ?? "")) {
     parts.pop();
   }
   if (parts.length < 2) {
@@ -623,13 +617,13 @@ export async function syncDueFloridaCandidateFinance(
   assertValidDate(now, "now");
 
   const maxCandidates = normalizePositiveInteger(input.maxCandidates, DEFAULT_MAX_CANDIDATES, "maxCandidates");
-  const staleAfterDays = normalizePositiveInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "staleAfterDays");
-  const electionLookbackDays = normalizePositiveInteger(
+  const staleAfterDays = normalizeNonnegativeInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "staleAfterDays");
+  const electionLookbackDays = normalizeNonnegativeInteger(
     input.electionLookbackDays,
     DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS,
     "electionLookbackDays"
   );
-  const electionLookaheadDays = normalizePositiveInteger(
+  const electionLookaheadDays = normalizeNonnegativeInteger(
     input.electionLookaheadDays,
     DEFAULT_ELECTION_LOOKAHEAD_DAYS,
     "electionLookaheadDays"
@@ -755,7 +749,7 @@ export async function syncDueFloridaCandidateFinance(
     dryRun,
     maxCandidates,
     syncInputs,
-    defaultArtifactCacheDir: input.defaultArtifactCacheDir,
+    defaultArtifactCacheDir,
     financeIndustryClassifier: input.financeIndustryClassifier,
     aiClassificationMinAmount: input.aiClassificationMinAmount,
     syncFloridaCandidateFinanceFn: input.syncFloridaCandidateFinanceFn,

@@ -141,9 +141,10 @@ function committeeNameMentionsCandidate(input: {
   committeeName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
-  const committeeKey = normalizeFloridaTextKey(input.committeeName);
+  const committeeKey = ` ${normalizeFloridaTextKey(input.committeeName)} `;
   for (const candidateNameKey of input.candidateNameKeys) {
-    if (candidateNameKey && committeeKey.includes(candidateNameKey)) {
+    const boundedCandidateNameKey = candidateNameKey ? ` ${candidateNameKey} ` : "";
+    if (boundedCandidateNameKey && committeeKey.includes(boundedCandidateNameKey)) {
       return true;
     }
   }

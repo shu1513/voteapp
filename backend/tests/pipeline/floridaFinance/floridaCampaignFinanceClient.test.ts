@@ -20,6 +20,7 @@ const SAMPLE_TSV = [
 ].join("\n");
 
 afterEach(() => {
+  vi.useRealTimers();
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
   if (ORIGINAL_FLORIDA_FINANCE_VALUE === undefined) {
@@ -205,7 +206,7 @@ describe("floridaCampaignFinanceClient", () => {
     expect(result.rows[0]).toMatchObject({ contributorName: "Smith, Pat" });
   });
 
-  it("creates a fetch transport with timeout and HTTP error handling", async () => {
+  it("creates a fetch transport with HTTP error handling", async () => {
     const fetchFn = vi.fn(async () => new Response("bad request", { status: 400, statusText: "Bad Request" }));
     const transport = createFloridaContributionExportFetchTransport({
       fetchFn: fetchFn as typeof fetch,
@@ -217,6 +218,49 @@ describe("floridaCampaignFinanceClient", () => {
     });
 
     await expect(transport(request)).rejects.toThrow("HTTP 400 Bad Request");
+  });
+
+  it("rejects HTML error pages returned as successful Florida export responses", async () => {
+    const fetchFn = vi.fn(async () => new Response("<html><body>Temporarily unavailable</body></html>", {
+      status: 200,
+      statusText: "OK",
+    }));
+    const transport = createFloridaContributionExportFetchTransport({
+      fetchFn: fetchFn as typeof fetch,
+      timeoutMs: 1000,
+    });
+    const request = buildFloridaContributionExportTransportRequest({
+      searchType: "committee_detail",
+      committeeName: "Friends of Jane Doe",
+    });
+
+    await expect(transport(request)).rejects.toThrow("non-TSV content");
+  });
+
+  it("times out fetch transport requests", async () => {
+    vi.useFakeTimers();
+    const fetchFn = vi.fn(
+      (_url: string | URL | Request, init?: RequestInit) =>
+        new Promise<Response>((_resolve, reject) => {
+          init?.signal?.addEventListener("abort", () => {
+            const error = new Error("aborted");
+            error.name = "AbortError";
+            reject(error);
+          });
+        })
+    );
+    const transport = createFloridaContributionExportFetchTransport({
+      fetchFn: fetchFn as typeof fetch,
+      timeoutMs: 25,
+    });
+    const request = buildFloridaContributionExportTransportRequest({
+      searchType: "committee_detail",
+      committeeName: "Friends of Jane Doe",
+    });
+
+    const result = expect(transport(request)).rejects.toThrow("timed out after 25ms");
+    await vi.advanceTimersByTimeAsync(25);
+    await result;
   });
 
   it("runs an optional rate limiter before invoking the injected browser transport", async () => {

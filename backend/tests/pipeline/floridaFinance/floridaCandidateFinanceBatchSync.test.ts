@@ -337,6 +337,63 @@ describe("floridaCandidateFinanceBatchSync", () => {
     ]);
   });
 
+  it("accepts zero-day due sync windows", async () => {
+    const db = createMockDb([]);
+
+    const result = await syncDueFloridaCandidateFinance({
+      db,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      maxCandidates: 1,
+      staleAfterDays: 0,
+      electionLookbackDays: 0,
+      electionLookaheadDays: 0,
+      autoLinkMissingLinks: false,
+      fetchMissingContributionData: false,
+    });
+
+    expect(result).toMatchObject({
+      staleAfterDays: 0,
+      dueCandidateCount: 0,
+      selectedCandidateCount: 0,
+    });
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      "2026-06-01T00:00:00.000Z",
+      0,
+      1,
+      0,
+      0,
+      [...FLORIDA_FINANCE_ELIGIBLE_OFFICE_KEYS],
+    ]);
+  });
+
+  it("does not query Florida export with a suffix-only candidate last name", async () => {
+    const db = createMockDb([]);
+    const exportFloridaContributionRowsFn = vi.fn();
+
+    await syncDueFloridaCandidateFinance({
+      db,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      maxCandidates: 1,
+      autoLinkCandidateElections: [
+        {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          candidateName: "Michael Jr",
+          electionYear: 2026,
+          officeScope: "statewide",
+          officeName: "Governor",
+          district: null,
+        },
+      ],
+      exportFloridaContributionRowsFn,
+      autoLinkMissingLinks: true,
+      fetchMissingContributionData: false,
+    });
+
+    expect(exportFloridaContributionRowsFn).not.toHaveBeenCalled();
+    expect(db.query).toHaveBeenCalledTimes(1);
+  });
+
   it("fetches missing due contribution rows with the Florida export client and caches the artifact", async () => {
     const cacheDir = await makeTempDir();
     const db = createMockDb([

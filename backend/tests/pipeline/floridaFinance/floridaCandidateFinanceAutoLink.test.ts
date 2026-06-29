@@ -130,6 +130,19 @@ describe("floridaCandidateFinanceAutoLink", () => {
     });
   });
 
+  it("does not resolve embedded-token committee name matches", () => {
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Ann Lee",
+        electionYear: 2026,
+        contributionRows: [contribution({ recipientName: "Friends of Joann Lee" })],
+      })
+    ).toEqual({
+      status: "unmatched",
+      reason: "no_matching_committee",
+    });
+  });
+
   it("links a matched candidate election to the resolved DOS committee", async () => {
     const db = createMockDb([{ id: "link-1" }]);
 
@@ -288,6 +301,7 @@ describe("floridaCandidateFinanceAutoLink", () => {
 
     expect(predicate(contribution({ recipientName: "DOE, JANE Campaign Account" }))).toBe(false);
     expect(predicate(contribution({ recipientName: "Friends of Jane Doe" }))).toBe(true);
+    expect(predicate(contribution({ recipientName: "Friends of Janedoe" }))).toBe(false);
     expect(predicate(contribution({ contributionDate: "12/31/2024", recipientName: "Friends of Jane Doe" }))).toBe(false);
     expect(predicate(contribution({ recipientName: "Other Committee" }))).toBe(false);
   });

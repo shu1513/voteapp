@@ -591,6 +591,45 @@ describe("floridaCandidateFinanceSync", () => {
     );
   });
 
+  it("treats outside group name heuristics as an explicit outside-finance opt-in", async () => {
+    const db = createMockDb();
+
+    const result = await syncFloridaCandidateFinance({
+      db,
+      ...baseInput(),
+      candidateElectionId: CANDIDATE_ELECTION_ID,
+      contributionRows: [contribution({ amount: "100.00" })],
+      outsideContributionRows: [outsideContribution({ recipientName: "Floridians for Jane Doe" })],
+      includeOutsideGroupNameHeuristics: true,
+    });
+
+    expect(result).toMatchObject({
+      outsideGroupsWritten: 1,
+      heuristicOutsideGroupCount: 1,
+      resolvedOutsideGroupCount: 1,
+    });
+  });
+
+  it("does not use embedded-token matches for outside group name heuristics", async () => {
+    const db = createMockDb();
+
+    const result = await syncFloridaCandidateFinance({
+      db,
+      ...baseInput(),
+      candidateName: "Ann Lee",
+      candidateElectionId: CANDIDATE_ELECTION_ID,
+      contributionRows: [contribution({ amount: "100.00" })],
+      outsideContributionRows: [outsideContribution({ recipientName: "Friends of Joann Lee" })],
+      includeOutsideGroupNameHeuristics: true,
+    });
+
+    expect(result).toMatchObject({
+      outsideGroupsWritten: 0,
+      heuristicOutsideGroupCount: 0,
+      resolvedOutsideGroupCount: 0,
+    });
+  });
+
   it("validates trusted committee inputs", async () => {
     await expect(
       syncFloridaCandidateFinance({

@@ -142,6 +142,22 @@ function normalizeTimeoutMs(value: number | undefined): number {
   return normalized;
 }
 
+function assertFloridaContributionExportTsv(tsv: string): void {
+  const firstNonEmptyLine = tsv
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find((line) => line.length > 0);
+  const lower = firstNonEmptyLine?.toLowerCase() ?? "";
+  if (
+    !firstNonEmptyLine ||
+    lower.startsWith("<!doctype") ||
+    lower.startsWith("<html") ||
+    lower.includes("<body")
+  ) {
+    throw new Error("Florida contribution export returned non-TSV content");
+  }
+}
+
 export function createFloridaContributionExportFetchTransport(
   options: FloridaContributionExportFetchTransportOptions = {}
 ): FloridaContributionExportTransport {
@@ -170,12 +186,13 @@ export function createFloridaContributionExportFetchTransport(
         signal: controller.signal,
       });
 
-      const tsv = await response.text();
       if (!response.ok) {
         throw new Error(
           `Florida contribution export failed with HTTP ${response.status} ${response.statusText}`.trim()
         );
       }
+      const tsv = await response.text();
+      assertFloridaContributionExportTsv(tsv);
       return {
         tsv,
         finalUrl: response.url || request.exportUrl,
