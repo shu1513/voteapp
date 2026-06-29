@@ -150,9 +150,11 @@ function assertFloridaContributionExportTsv(tsv: string): void {
   const lower = firstNonEmptyLine?.toLowerCase() ?? "";
   if (
     !firstNonEmptyLine ||
+    /^<\??[a-z!/]/i.test(firstNonEmptyLine) ||
     lower.startsWith("<!doctype") ||
     lower.startsWith("<html") ||
-    lower.includes("<body")
+    lower.includes("<body") ||
+    lower.includes("</html>")
   ) {
     throw new Error("Florida contribution export returned non-TSV content");
   }

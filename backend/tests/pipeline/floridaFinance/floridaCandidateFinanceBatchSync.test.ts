@@ -44,6 +44,13 @@ const SAMPLE_TSV = [
   "Friends of Jane Doe\t9/15/2026\t100\tCHE\tSmith, Pat\t1 Main St\tTallahassee\tFL\t32301\tAttorney\t",
 ].join("\n");
 
+function contribution(overrides: Partial<FloridaContributionRow> = {}): FloridaContributionRow {
+  return {
+    ...CONTRIBUTION_ROW,
+    ...overrides,
+  };
+}
+
 async function makeTempDir(): Promise<string> {
   const dir = await mkdtemp(join(tmpdir(), "voteapp-fl-batch-sync-"));
   tempDirs.push(dir);
@@ -337,6 +344,61 @@ describe("floridaCandidateFinanceBatchSync", () => {
     ]);
   });
 
+  it("treats null contribution artifacts as missing due contribution data", async () => {
+    const db = createMockDb([
+      {
+        candidate_id: CANDIDATE_ID,
+        candidate_election_id: CANDIDATE_ELECTION_ID,
+        election_id: ELECTION_ID,
+        candidate_name: "Jane Doe",
+        election_year: 2026,
+        office_name: "Governor",
+        district: null,
+        committee_id: "FRIENDS_OF_JANE_DOE",
+        committee_name: "Friends of Jane Doe",
+        source_url: "https://dos.elections.myflorida.com/campaign-finance/contributions/",
+        last_synced_at: null,
+        total_due_rows: "1",
+      },
+    ]);
+    const syncFloridaCandidateFinanceFn = vi.fn();
+
+    const result = await syncDueFloridaCandidateFinance({
+      db,
+      syncFloridaCandidateFinanceFn,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      maxCandidates: 1,
+      contributionDataByCommitteeId: new Map([
+        [
+          "FRIENDS_OF_JANE_DOE",
+          {
+            contributionArtifact: null,
+          },
+        ],
+      ]),
+      autoLinkMissingLinks: false,
+      fetchMissingContributionData: false,
+    });
+
+    expect(syncFloridaCandidateFinanceFn).not.toHaveBeenCalled();
+    expect(result).toMatchObject({
+      dueCandidateCount: 1,
+      selectedCandidateCount: 1,
+      syncedCandidateCount: 0,
+      failedCandidateCount: 1,
+      results: [
+        {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          electionYear: 2026,
+          committeeId: "FRIENDS_OF_JANE_DOE",
+          ok: false,
+          error: "Florida contribution data not provided for committee: FRIENDS_OF_JANE_DOE",
+        },
+      ],
+    });
+  });
+
   it("accepts zero-day due sync windows", async () => {
     const db = createMockDb([]);
 
@@ -573,6 +635,109 @@ describe("floridaCandidateFinanceBatchSync", () => {
       "active",
       "dos_export",
       "https://dos.elections.myflorida.com/campaign-finance/contributions/",
+      "2026-06-01T00:00:00.000Z",
+    ]);
+  });
+
+  it("continues auto-link export discovery after one candidate export fails", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
+    };
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const exportFloridaContributionRowsFn = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("Florida export timeout"))
+      .mockResolvedValueOnce({
+        query: {
+          searchType: "candidate_detail" as const,
+          electionCode: null,
+          candidateFirstName: "Jane",
+          candidateLastName: "Doe",
+          committeeName: null,
+          committeeType: null,
+          dateFrom: null,
+          dateTo: null,
+          rowLimit: 10000,
+        },
+        searchPageUrl: "https://dos.elections.myflorida.com/campaign-finance/contributions/",
+        exportUrl: "https://dos.elections.myflorida.com/cgi-bin/contrib.exe",
+        sourceUrl: "https://dos.elections.myflorida.com/cgi-bin/contrib.exe?download=1",
+        cacheKey: "fl-contrib-candidate-all-doe-jane-live",
+        retrievedAt: new Date("2026-06-20T20:00:00.000Z"),
+        rowCount: 2,
+        formData: {},
+        tsv: SAMPLE_TSV,
+        rows: [
+          contribution({ contributionDate: "12/31/2024", recipientName: "Old Jane Doe Account" }),
+          CONTRIBUTION_ROW,
+        ],
+      } satisfies FloridaContributionExportRowsResult);
+
+    try {
+      const result = await syncDueFloridaCandidateFinance({
+        db,
+        now: new Date("2026-06-01T00:00:00.000Z"),
+        maxCandidates: 2,
+        autoLinkCandidateElections: [
+          {
+            candidateId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            electionId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            candidateName: "Alex Example",
+            electionYear: 2026,
+            officeScope: "statewide",
+            officeName: "Governor",
+            district: null,
+          },
+          {
+            candidateId: CANDIDATE_ID,
+            electionId: ELECTION_ID,
+            candidateName: "Jane Doe",
+            electionYear: 2026,
+            officeScope: "statewide",
+            officeName: "Governor",
+            district: null,
+          },
+        ],
+        exportFloridaContributionRowsFn,
+        exportMinIntervalMs: 0,
+        fetchMissingContributionData: false,
+      });
+
+      expect(result).toMatchObject({
+        dueCandidateCount: 0,
+        selectedCandidateCount: 0,
+        syncedCandidateCount: 0,
+        failedCandidateCount: 0,
+      });
+      expect(warnSpy).toHaveBeenCalledWith(
+        "Florida finance auto-link export failed for candidate election; continuing:",
+        expect.objectContaining({
+          candidateId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          error: "Florida export timeout",
+        })
+      );
+    } finally {
+      warnSpy.mockRestore();
+    }
+
+    expect(exportFloridaContributionRowsFn).toHaveBeenCalledTimes(2);
+    expect(db.query).toHaveBeenCalledTimes(2);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.fl_candidate_finance_links");
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      CANDIDATE_ID,
+      ELECTION_ID,
+      2026,
+      "JANE DOE",
+      "Governor",
+      null,
+      "FRIENDS_OF_JANE_DOE",
+      "Friends of Jane Doe",
+      "active",
+      "dos_export",
+      "https://dos.elections.myflorida.com/cgi-bin/contrib.exe?download=1",
       "2026-06-01T00:00:00.000Z",
     ]);
   });

@@ -167,8 +167,7 @@ async function main(): Promise<void> {
 const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
 if (entrypoint === import.meta.url) {
   main().catch((error) => {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error("Florida candidate finance due sync failed:", message);
+    console.error("Florida candidate finance due sync failed:", error);
     process.exitCode = 1;
   });
 }

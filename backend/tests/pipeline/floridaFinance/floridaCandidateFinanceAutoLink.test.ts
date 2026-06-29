@@ -143,6 +143,32 @@ describe("floridaCandidateFinanceAutoLink", () => {
     });
   });
 
+  it("builds short first-name and last-name keys from comma-form names", () => {
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Doe, Jane A.",
+        electionYear: 2026,
+        contributionRows: [contribution({ recipientName: "Friends of Jane Doe" })],
+      })
+    ).toEqual({
+      status: "matched",
+      committeeId: "FRIENDS_OF_JANE_DOE",
+      committeeName: "Friends of Jane Doe",
+      recipientNames: ["Friends of Jane Doe"],
+      sourceUrl: "https://dos.elections.myflorida.com/campaign-finance/contributions/",
+    });
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Doe, Jane Jr.",
+        electionYear: 2026,
+        contributionRows: [contribution({ recipientName: "Friends of Jane Doe" })],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeId: "FRIENDS_OF_JANE_DOE",
+    });
+  });
+
   it("links a matched candidate election to the resolved DOS committee", async () => {
     const db = createMockDb([{ id: "link-1" }]);
 

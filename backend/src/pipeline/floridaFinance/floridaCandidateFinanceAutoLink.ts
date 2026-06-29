@@ -117,20 +117,32 @@ export function normalizeFloridaCandidateNameKeys(candidateName: string): Set<st
     keys.add(normalized);
   }
 
-  const parts = normalized.split(" ").filter(Boolean);
-  if (parts.length >= 2) {
-    keys.add(`${parts[0]} ${parts[parts.length - 1]}`);
-  }
-
   const commaParts = candidateName
     .split(",")
     .map((part) => normalizeFloridaTextKey(part))
     .filter(Boolean);
   if (commaParts.length >= 2) {
     const [lastName, ...firstNames] = commaParts;
-    const flipped = [firstNames.join(" "), lastName].join(" ").trim().replace(/\s+/g, " ");
-    if (flipped) {
-      keys.add(flipped);
+    const normalizedLastName = (lastName ?? "")
+      .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    const normalizedGivenNames = firstNames
+      .join(" ")
+      .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (normalizedGivenNames && normalizedLastName) {
+      const [firstName] = normalizedGivenNames.split(" ");
+      keys.add(`${normalizedGivenNames} ${normalizedLastName}`.trim());
+      if (firstName) {
+        keys.add(`${firstName} ${normalizedLastName}`);
+      }
+    }
+  } else {
+    const parts = normalized.split(" ").filter(Boolean);
+    if (parts.length >= 2) {
+      keys.add(`${parts[0]} ${parts[parts.length - 1]}`);
     }
   }
 

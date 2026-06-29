@@ -6,7 +6,11 @@ import {
   readFloridaContributionExportArtifact,
   writeFloridaContributionExportArtifact,
 } from "./floridaCampaignFinanceArtifactCache.js";
-import type { FloridaContributionRow } from "./floridaCampaignFinanceRows.js";
+import {
+  floridaElectionCycleStartYear,
+  parseFloridaDateYear,
+  type FloridaContributionRow,
+} from "./floridaCampaignFinanceRows.js";
 import {
   buildFloridaContributionExportCacheKey,
   createFloridaContributionExportRateLimiter,
@@ -319,7 +323,7 @@ function buildDueSyncInput(input: {
 function hasDirectContributionData(
   data: FloridaCandidateFinanceDueContributionData | undefined
 ): data is FloridaCandidateFinanceDueContributionData {
-  return data !== undefined && (data.contributionRows !== undefined || data.contributionArtifact !== undefined);
+  return data !== undefined && (data.contributionRows !== undefined || data.contributionArtifact != null);
 }
 
 function splitCandidateNameForFloridaExport(
@@ -432,6 +436,14 @@ function appendRowsByYear(input: {
   input.rowsByYear.set(input.year, rows);
 }
 
+function isContributionInElectionCycle(row: FloridaContributionRow, electionYear: number): boolean {
+  const rowYear = parseFloridaDateYear(row.contributionDate);
+  if (rowYear === null) {
+    return false;
+  }
+  return rowYear >= floridaElectionCycleStartYear(electionYear) && rowYear <= electionYear;
+}
+
 async function buildAutoLinkExportData(input: {
   db: Queryable;
   now: Date;
@@ -480,23 +492,40 @@ async function buildAutoLinkExportData(input: {
     if (!query) {
       continue;
     }
-    const data = await loadContributionExportWithCache({
-      query,
-      cacheDir: input.cacheDir,
-      refresh: input.refresh,
-      dryRun: input.dryRun,
-      exportRows: input.exportRows,
-      transport: input.transport,
-      rateLimiter: input.rateLimiter,
-      force: input.force,
-    });
+    let data: FloridaCandidateFinanceDueContributionData | null;
+    try {
+      data = await loadContributionExportWithCache({
+        query,
+        cacheDir: input.cacheDir,
+        refresh: input.refresh,
+        dryRun: input.dryRun,
+        exportRows: input.exportRows,
+        transport: input.transport,
+        rateLimiter: input.rateLimiter,
+        force: input.force,
+      });
+    } catch (error) {
+      console.warn("Florida finance auto-link export failed for candidate election; continuing:", {
+        candidateId: candidateElection.candidateId,
+        electionId: candidateElection.electionId,
+        electionYear: candidateElection.electionYear,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      continue;
+    }
     if (!data?.contributionRows) {
+      continue;
+    }
+    const cycleRows = data.contributionRows.filter((row) =>
+      isContributionInElectionCycle(row, candidateElection.electionYear)
+    );
+    if (cycleRows.length === 0) {
       continue;
     }
     appendRowsByYear({
       rowsByYear: contributionRowsByYear,
       year: candidateElection.electionYear,
-      rows: data.contributionRows,
+      rows: cycleRows,
     });
     if (data.contributionSourceUrl) {
       sourceUrlByYear.set(candidateElection.electionYear, data.contributionSourceUrl);

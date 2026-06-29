@@ -221,10 +221,31 @@ describe("floridaCampaignFinanceClient", () => {
   });
 
   it("rejects HTML error pages returned as successful Florida export responses", async () => {
-    const fetchFn = vi.fn(async () => new Response("<html><body>Temporarily unavailable</body></html>", {
-      status: 200,
-      statusText: "OK",
-    }));
+    const fetchFn = vi.fn(async () =>
+      new Response("<html><body>Temporarily unavailable</body></html>", {
+        status: 200,
+        statusText: "OK",
+      })
+    );
+    const transport = createFloridaContributionExportFetchTransport({
+      fetchFn: fetchFn as typeof fetch,
+      timeoutMs: 1000,
+    });
+    const request = buildFloridaContributionExportTransportRequest({
+      searchType: "committee_detail",
+      committeeName: "Friends of Jane Doe",
+    });
+
+    await expect(transport(request)).rejects.toThrow("non-TSV content");
+  });
+
+  it("rejects partial HTML CGI error fragments returned as successful exports", async () => {
+    const fetchFn = vi.fn(async () =>
+      new Response("<p>Error processing request</p>", {
+        status: 200,
+        statusText: "OK",
+      })
+    );
     const transport = createFloridaContributionExportFetchTransport({
       fetchFn: fetchFn as typeof fetch,
       timeoutMs: 1000,
