@@ -92,8 +92,7 @@ export function parseUpsertNebraskaCandidateFinanceSyncSchedulerArgs(
 async function main(): Promise<void> {
   loadProjectEnv();
   const jobData = parseUpsertNebraskaCandidateFinanceSyncSchedulerArgs(process.argv.slice(2));
-  const enabled =
-    isNebraskaCampaignFinanceEnabled() && isNebraskaCampaignFinanceSyncEnabled(Boolean(jobData.force));
+  const enabled = isNebraskaCampaignFinanceEnabled() && isNebraskaCampaignFinanceSyncEnabled();
   await upsertRecurringNebraskaCandidateFinanceSyncJobs(jobData);
   console.log(
     enabled

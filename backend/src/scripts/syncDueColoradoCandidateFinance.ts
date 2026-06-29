@@ -20,6 +20,28 @@ export type SyncDueColoradoCandidateFinanceScriptOptions = {
   rawZipPath?: string;
 };
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set([
+  "--max-candidates",
+  "--stale-after-days",
+  "--lookback-days",
+  "--lookahead-days",
+  "--raw-cache-dir",
+  "--raw-zip",
+]);
+
+function assertNoUnknownColoradoCandidateFinanceArgs(args: readonly string[]): void {
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+    const name = arg.split("=", 1)[0] ?? arg;
+    if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
+      throw new Error(`Unknown Colorado candidate finance due sync flag: ${name}`);
+    }
+  }
+}
+
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
   const values: string[] = [];
@@ -64,6 +86,7 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
 export function parseSyncDueColoradoCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueColoradoCandidateFinanceScriptOptions {
+  assertNoUnknownColoradoCandidateFinanceArgs(args);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

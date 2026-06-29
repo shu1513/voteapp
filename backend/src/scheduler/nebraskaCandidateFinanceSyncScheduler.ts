@@ -158,7 +158,7 @@ export async function upsertRecurringNebraskaCandidateFinanceSyncJobs(
   jobData: NebraskaCandidateFinanceSyncJobData = {}
 ): Promise<void> {
   assertValidJobOptions(jobData);
-  if (!isNebraskaCampaignFinanceEnabled() || !isNebraskaCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
+  if (!isNebraskaCampaignFinanceEnabled() || !isNebraskaCampaignFinanceSyncEnabled()) {
     const queue = createNebraskaCandidateFinanceSyncSchedulerQueue();
     try {
       await queue.removeJobScheduler(NEBRASKA_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID);
@@ -182,7 +182,7 @@ export async function upsertRecurringNebraskaCandidateFinanceSyncJobs(
         name: NEBRASKA_CANDIDATE_FINANCE_SYNC_JOB_NAME,
         data: {
           dryRun: Boolean(jobData.dryRun),
-          force: Boolean(jobData.force),
+          force: false,
           maxCandidates: jobData.maxCandidates,
           staleAfterDays: jobData.staleAfterDays,
           electionLookbackDays: jobData.electionLookbackDays,

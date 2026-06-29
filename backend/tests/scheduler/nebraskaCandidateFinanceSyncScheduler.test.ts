@@ -181,6 +181,42 @@ describe("nebraskaCandidateFinanceSyncScheduler", () => {
     expect(close).toHaveBeenCalledTimes(3);
   });
 
+  it("does not let force persist a recurring scheduler bypass", async () => {
+    process.env.NEBRASKA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.NEBRASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+    mockEnv();
+
+    const upsertJobScheduler = vi.fn().mockResolvedValue(undefined);
+    const removeJobScheduler = vi.fn().mockResolvedValue(undefined);
+    const close = vi.fn().mockResolvedValue(undefined);
+    const Queue = vi.fn(() => ({ upsertJobScheduler, removeJobScheduler, close }));
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+
+    const { upsertRecurringNebraskaCandidateFinanceSyncJobs } = await import(
+      "../../src/scheduler/nebraskaCandidateFinanceSyncScheduler.js"
+    );
+
+    await upsertRecurringNebraskaCandidateFinanceSyncJobs({ force: true });
+
+    expect(removeJobScheduler).toHaveBeenCalledWith("nebraska_candidate_finance_sync_daily");
+    expect(upsertJobScheduler).not.toHaveBeenCalled();
+    expect(close).toHaveBeenCalledTimes(1);
+
+    process.env.NEBRASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    await upsertRecurringNebraskaCandidateFinanceSyncJobs({ force: true });
+
+    expect(upsertJobScheduler).toHaveBeenCalledWith(
+      "nebraska_candidate_finance_sync_daily",
+      expect.any(Object),
+      expect.objectContaining({
+        data: expect.objectContaining({
+          force: false,
+          triggeredBy: "daily",
+        }),
+      })
+    );
+  });
+
   it("enqueues manual jobs with a deterministic linked-election job id", async () => {
     process.env.NEBRASKA_CAMPAIGN_FINANCE_ENABLED = "true";
     process.env.NEBRASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";

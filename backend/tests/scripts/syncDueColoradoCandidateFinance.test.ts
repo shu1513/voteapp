@@ -1,8 +1,42 @@
 import { describe, expect, it } from "vitest";
 
-import { toSyncDueColoradoCandidateFinanceScriptOutput } from "../../src/scripts/syncDueColoradoCandidateFinance.js";
+import {
+  parseSyncDueColoradoCandidateFinanceScriptArgs,
+  toSyncDueColoradoCandidateFinanceScriptOutput,
+} from "../../src/scripts/syncDueColoradoCandidateFinance.js";
 
 describe("syncDueColoradoCandidateFinance script", () => {
+  it("parses due sync options", () => {
+    expect(
+      parseSyncDueColoradoCandidateFinanceScriptArgs([
+        "--dry-run",
+        "--force",
+        "--max-candidates=5",
+        "--stale-after-days",
+        "3",
+        "--lookback-days=2",
+        "--lookahead-days=365",
+        "--raw-cache-dir=/tmp/tracer",
+        "--raw-zip=/tmp/tracer.zip",
+      ])
+    ).toEqual({
+      dryRun: true,
+      force: true,
+      maxCandidates: 5,
+      staleAfterDays: 3,
+      electionLookbackDays: 2,
+      electionLookaheadDays: 365,
+      rawCacheDir: "/tmp/tracer",
+      rawZipPath: "/tmp/tracer.zip",
+    });
+  });
+
+  it("rejects unknown flags instead of silently ignoring typos", () => {
+    expect(() => parseSyncDueColoradoCandidateFinanceScriptArgs(["--dryrun"])).toThrow(
+      "Unknown Colorado candidate finance due sync flag: --dryrun"
+    );
+  });
+
   it("includes force in script output for audit logs", () => {
     const output = toSyncDueColoradoCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),
