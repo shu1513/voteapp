@@ -133,7 +133,7 @@ function parseResearchAreaTags(
   return { ok: true, tags };
 }
 
-function parseBallotMeasureAiPayload(payload: unknown, allowedResearchAreaSlugs: ReadonlySet<string>): {
+export function parseBallotMeasureAiPayload(payload: unknown, allowedResearchAreaSlugs: ReadonlySet<string>): {
   ok: true;
   officialMeasureUrl: string;
   summary: string;
