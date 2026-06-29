@@ -33,4 +33,13 @@ describe("triggerNebraskaCandidateFinanceSync script", () => {
       "Unknown Nebraska candidate finance sync trigger flag: --dryrun"
     );
   });
+
+  it("rejects boolean flags with explicit values", () => {
+    expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--dry-run=true"])).toThrow(
+      "Boolean flag must not include a value: --dry-run"
+    );
+    expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--force=false"])).toThrow(
+      "Boolean flag must not include a value: --force"
+    );
+  });
 });

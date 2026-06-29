@@ -36,6 +36,9 @@ function assertNoUnknownColoradoCandidateFinanceArgs(args: readonly string[]): v
       continue;
     }
     const name = arg.split("=", 1)[0] ?? arg;
+    if (arg.includes("=") && KNOWN_BOOLEAN_FLAGS.has(name)) {
+      throw new Error(`Boolean flag must not include a value: ${name}`);
+    }
     if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
       throw new Error(`Unknown Colorado candidate finance due sync flag: ${name}`);
     }

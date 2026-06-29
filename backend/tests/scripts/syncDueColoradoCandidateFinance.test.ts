@@ -37,6 +37,15 @@ describe("syncDueColoradoCandidateFinance script", () => {
     );
   });
 
+  it("rejects boolean flags with explicit values", () => {
+    expect(() => parseSyncDueColoradoCandidateFinanceScriptArgs(["--dry-run=true"])).toThrow(
+      "Boolean flag must not include a value: --dry-run"
+    );
+    expect(() => parseSyncDueColoradoCandidateFinanceScriptArgs(["--force=false"])).toThrow(
+      "Boolean flag must not include a value: --force"
+    );
+  });
+
   it("includes force in script output for audit logs", () => {
     const output = toSyncDueColoradoCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),

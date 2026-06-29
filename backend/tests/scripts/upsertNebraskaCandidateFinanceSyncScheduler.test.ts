@@ -33,4 +33,13 @@ describe("upsertNebraskaCandidateFinanceSyncScheduler script", () => {
       "Unknown Nebraska candidate finance scheduler upsert flag: --max-canddates"
     );
   });
+
+  it("rejects boolean flags with explicit values", () => {
+    expect(() => parseUpsertNebraskaCandidateFinanceSyncSchedulerArgs(["--dry-run=true"])).toThrow(
+      "Boolean flag must not include a value: --dry-run"
+    );
+    expect(() => parseUpsertNebraskaCandidateFinanceSyncSchedulerArgs(["--force=false"])).toThrow(
+      "Boolean flag must not include a value: --force"
+    );
+  });
 });
