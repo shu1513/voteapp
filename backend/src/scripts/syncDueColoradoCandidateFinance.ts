@@ -94,6 +94,7 @@ export function toSyncDueColoradoCandidateFinanceScriptOutput(input: {
     ts: new Date().toISOString(),
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
+    force: input.options.force,
     result: input.result,
   };
 }

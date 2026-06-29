@@ -170,10 +170,15 @@ describe("nebraskaCandidateFinanceSyncScheduler", () => {
       }
     );
 
-    process.env.NEBRASKA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.NEBRASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
     await upsertRecurringNebraskaCandidateFinanceSyncJobs();
     expect(removeJobScheduler).toHaveBeenCalledWith("nebraska_candidate_finance_sync_daily");
-    expect(close).toHaveBeenCalledTimes(2);
+
+    process.env.NEBRASKA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.NEBRASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    await upsertRecurringNebraskaCandidateFinanceSyncJobs();
+    expect(removeJobScheduler).toHaveBeenCalledTimes(2);
+    expect(close).toHaveBeenCalledTimes(3);
   });
 
   it("enqueues manual jobs with a deterministic linked-election job id", async () => {

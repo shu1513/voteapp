@@ -158,7 +158,7 @@ export async function upsertRecurringNebraskaCandidateFinanceSyncJobs(
   jobData: NebraskaCandidateFinanceSyncJobData = {}
 ): Promise<void> {
   assertValidJobOptions(jobData);
-  if (!isNebraskaCampaignFinanceEnabled()) {
+  if (!isNebraskaCampaignFinanceEnabled() || !isNebraskaCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
     const queue = createNebraskaCandidateFinanceSyncSchedulerQueue();
     try {
       await queue.removeJobScheduler(NEBRASKA_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID);

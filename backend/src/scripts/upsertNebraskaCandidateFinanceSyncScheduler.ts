@@ -1,11 +1,36 @@
 import { pathToFileURL } from "node:url";
 
 import { loadProjectEnv } from "../config/env.js";
-import { isNebraskaCampaignFinanceEnabled } from "../config/featureFlags.js";
+import {
+  isNebraskaCampaignFinanceEnabled,
+  isNebraskaCampaignFinanceSyncEnabled,
+} from "../config/featureFlags.js";
 import {
   upsertRecurringNebraskaCandidateFinanceSyncJobs,
   type NebraskaCandidateFinanceSyncJobData,
 } from "../scheduler/nebraskaCandidateFinanceSyncScheduler.js";
+
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set([
+  "--max-candidates",
+  "--stale-after-days",
+  "--lookback-days",
+  "--lookahead-days",
+  "--raw-cache-dir",
+  "--raw-zip",
+]);
+
+function assertNoUnknownNebraskaFinanceSchedulerArgs(args: readonly string[]): void {
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+    const name = arg.split("=", 1)[0] ?? arg;
+    if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
+      throw new Error(`Unknown Nebraska candidate finance scheduler upsert flag: ${name}`);
+    }
+  }
+}
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -51,6 +76,7 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
 export function parseUpsertNebraskaCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): NebraskaCandidateFinanceSyncJobData {
+  assertNoUnknownNebraskaFinanceSchedulerArgs(args);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),
@@ -66,7 +92,8 @@ export function parseUpsertNebraskaCandidateFinanceSyncSchedulerArgs(
 async function main(): Promise<void> {
   loadProjectEnv();
   const jobData = parseUpsertNebraskaCandidateFinanceSyncSchedulerArgs(process.argv.slice(2));
-  const enabled = isNebraskaCampaignFinanceEnabled();
+  const enabled =
+    isNebraskaCampaignFinanceEnabled() && isNebraskaCampaignFinanceSyncEnabled(Boolean(jobData.force));
   await upsertRecurringNebraskaCandidateFinanceSyncJobs(jobData);
   console.log(
     enabled
