@@ -103,18 +103,19 @@ function rosterIngestKeyForElection(electionId: string): string {
 }
 
 function extractRosterCandidates(payload: unknown): CandidateRosterFanoutEntry[] | null {
-  const parsed = parseCandidateRosterPayload(payload);
-  if (!parsed.ok) {
-    return null;
-  }
   const input = payload as Record<string, unknown>;
   const rawCandidates = input.candidates;
   if (!Array.isArray(rawCandidates)) {
     return null;
   }
 
-  return parsed.payload.candidates.map((candidate, index) => {
-    const raw = rawCandidates[index];
+  const candidates: CandidateRosterFanoutEntry[] = [];
+  for (const [index, raw] of rawCandidates.entries()) {
+    const parsed = parseCandidateRosterPayload({ candidates: [raw] });
+    if (!parsed.ok || parsed.payload.candidates.length !== 1) {
+      return null;
+    }
+    const candidate = parsed.payload.candidates[0]!;
     const rawObject = typeof raw === "object" && raw !== null && !Array.isArray(raw)
       ? (raw as Record<string, unknown>)
       : {};
@@ -132,13 +133,14 @@ function extractRosterCandidates(payload: unknown): CandidateRosterFanoutEntry[]
         : rawObject.skip_per_election_name_dedupe === false
           ? false
           : undefined;
-    return {
+    candidates.push({
       ...candidate,
       roster_index: rosterIndex,
       ...(disambiguationHint ? { disambiguation_hint: disambiguationHint } : {}),
       ...(skipPerElectionNameDedupe !== undefined ? { skip_per_election_name_dedupe: skipPerElectionNameDedupe } : {}),
-    };
-  });
+    });
+  }
+  return candidates;
 }
 
 async function loadElection(pool: Pool, electionId: string): Promise<ElectionRow | null> {
@@ -242,27 +244,22 @@ async function main(): Promise<void> {
     }
 
     await redis!.connect();
-    let emittedCount = 0;
-    let skippedCount = 0;
-    for (const candidate of candidates) {
-      const result = await enqueueCandidateProfileDrafts(redis!, [
-        {
-          electionId,
-          runId,
-          displayName: candidate.display_name,
-          rosterIndex: candidate.roster_index,
-          rosterParty: candidate.party,
-          rosterIsIncumbent: candidate.is_incumbent,
-          disambiguationHint: candidate.disambiguation_hint,
-          fecIds: candidate.fec_ids,
-          stateFilingIdsHint: candidate.state_filing_ids,
-          skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
-          seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
-        },
-      ]);
-      emittedCount += result.emittedCount;
-      skippedCount += result.skippedCount;
-    }
+    const fanout = await enqueueCandidateProfileDrafts(
+      redis!,
+      candidates.map((candidate) => ({
+        electionId,
+        runId,
+        displayName: candidate.display_name,
+        rosterIndex: candidate.roster_index,
+        rosterParty: candidate.party,
+        rosterIsIncumbent: candidate.is_incumbent,
+        disambiguationHint: candidate.disambiguation_hint,
+        fecIds: candidate.fec_ids,
+        stateFilingIdsHint: candidate.state_filing_ids,
+        skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
+        seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
+      }))
+    );
 
     await markStagingWritten(pool, ingestKey);
 
@@ -273,8 +270,8 @@ async function main(): Promise<void> {
           runId,
           electionId,
           candidateCount: candidates.length,
-          emittedCount,
-          skippedCount,
+          emittedCount: fanout.emittedCount,
+          skippedCount: fanout.skippedCount,
         },
         null,
         2

@@ -13,6 +13,16 @@ type RequiredColumn = {
 type RequiredUniqueObject = {
   table: string;
   name: string;
+  columns: string[];
+};
+
+type UniqueObjectDefinition = {
+  table: string;
+  name: string;
+  isUnique: boolean;
+  isValid: boolean;
+  isPartial: boolean;
+  columns: string[];
 };
 
 const REQUIRED_COLUMNS: RequiredColumn[] = [
@@ -52,9 +62,17 @@ const REQUIRED_COLUMNS: RequiredColumn[] = [
 ];
 
 const REQUIRED_UNIQUE_OBJECTS: RequiredUniqueObject[] = [
-  { table: "candidate_elections", name: "uq_candidate_elections_candidate_id_election_id" },
-  { table: "candidate_records", name: "uq_candidate_records_candidate_identity_key" },
-  { table: "ballot_measures", name: "uq_ballot_measures_election_id" },
+  {
+    table: "candidate_elections",
+    name: "uq_candidate_elections_candidate_id_election_id",
+    columns: ["candidate_id", "election_id"],
+  },
+  {
+    table: "candidate_records",
+    name: "uq_candidate_records_candidate_identity_key",
+    columns: ["candidate_id", "record_identity_key"],
+  },
+  { table: "ballot_measures", name: "uq_ballot_measures_election_id", columns: ["election_id"] },
 ];
 
 const LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX = new Map<string, string[]>([
@@ -148,26 +166,78 @@ async function loadExistingColumns(pool: Pool): Promise<Set<string>> {
   return new Set(result.rows.map((row) => `${row.table_name}.${row.column_name}`));
 }
 
-async function loadExistingConstraints(pool: Pool): Promise<Set<string>> {
-  const result = await pool.query<{ table_name: string; constraint_name: string }>(
+async function loadUniqueObjectDefinitions(pool: Pool): Promise<Map<string, UniqueObjectDefinition>> {
+  const result = await pool.query<{
+    table_name: string;
+    index_name: string;
+    is_unique: boolean;
+    is_valid: boolean;
+    is_partial: boolean;
+    columns: unknown;
+  }>(
     `
-      SELECT table_name, constraint_name
-      FROM information_schema.table_constraints
-      WHERE table_schema = 'public'
+      SELECT
+        table_class.relname AS table_name,
+        index_class.relname AS index_name,
+        index_row.indisunique AS is_unique,
+        index_row.indisvalid AS is_valid,
+        index_row.indpred IS NOT NULL AS is_partial,
+        COALESCE(
+          array_agg(attribute.attname ORDER BY key_columns.ordinality)
+            FILTER (WHERE attribute.attname IS NOT NULL),
+          ARRAY[]::text[]
+        ) AS columns
+      FROM pg_index AS index_row
+      JOIN pg_class AS index_class
+        ON index_class.oid = index_row.indexrelid
+      JOIN pg_class AS table_class
+        ON table_class.oid = index_row.indrelid
+      JOIN pg_namespace AS namespace
+        ON namespace.oid = table_class.relnamespace
+      LEFT JOIN LATERAL unnest(index_row.indkey) WITH ORDINALITY AS key_columns(attnum, ordinality)
+        ON key_columns.ordinality <= index_row.indnkeyatts
+      LEFT JOIN pg_attribute AS attribute
+        ON attribute.attrelid = table_class.oid
+       AND attribute.attnum = key_columns.attnum
+      WHERE namespace.nspname = 'public'
+      GROUP BY table_class.relname, index_class.relname, index_row.indisunique, index_row.indisvalid, index_row.indpred
     `
   );
-  return new Set(result.rows.map((row) => `${row.table_name}.${row.constraint_name}`));
+  return new Map(
+    result.rows.map((row) => [
+      `${row.table_name}.${row.index_name}`,
+      {
+        table: row.table_name,
+        name: row.index_name,
+        isUnique: row.is_unique,
+        isValid: row.is_valid,
+        isPartial: row.is_partial,
+        columns: normalizePgTextArray(row.columns),
+      },
+    ])
+  );
 }
 
-async function loadExistingIndexes(pool: Pool): Promise<Set<string>> {
-  const result = await pool.query<{ tablename: string; indexname: string }>(
-    `
-      SELECT tablename, indexname
-      FROM pg_indexes
-      WHERE schemaname = 'public'
-    `
-  );
-  return new Set(result.rows.map((row) => `${row.tablename}.${row.indexname}`));
+function normalizePgTextArray(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.filter((item): item is string => typeof item === "string");
+  }
+  if (typeof value !== "string") {
+    return [];
+  }
+  const trimmed = value.trim();
+  if (!trimmed.startsWith("{") || !trimmed.endsWith("}")) {
+    return [];
+  }
+  const inner = trimmed.slice(1, -1);
+  if (inner.length === 0) {
+    return [];
+  }
+  return inner.split(",").map((item) => item.trim().replace(/^"|"$/g, ""));
+}
+
+function hasExactColumns(actual: readonly string[], expected: readonly string[]): boolean {
+  return actual.length === expected.length && actual.every((column, index) => column === expected[index]);
 }
 
 async function main(): Promise<void> {
@@ -191,30 +261,43 @@ async function main(): Promise<void> {
   });
 
   try {
-    const [columns, constraints, indexes] = await Promise.all([
+    const [columns, uniqueObjectDefinitions] = await Promise.all([
       loadExistingColumns(pool),
-      loadExistingConstraints(pool),
-      loadExistingIndexes(pool),
+      loadUniqueObjectDefinitions(pool),
     ]);
 
     const missingColumns = REQUIRED_COLUMNS.filter(
       (entry) => !columns.has(`${entry.table}.${entry.column}`)
     );
-    const missingUniqueObjects = REQUIRED_UNIQUE_OBJECTS.filter(
-      (entry) =>
-        !constraints.has(`${entry.table}.${entry.name}`) &&
-        !indexes.has(`${entry.table}.${entry.name}`)
-    );
+    const invalidUniqueObjects = REQUIRED_UNIQUE_OBJECTS.flatMap((entry) => {
+      const definition = uniqueObjectDefinitions.get(`${entry.table}.${entry.name}`);
+      if (!definition) {
+        return [{ ...entry, reason: "missing" }];
+      }
+      if (!definition.isUnique) {
+        return [{ ...entry, reason: "not_unique", actualColumns: definition.columns }];
+      }
+      if (!definition.isValid) {
+        return [{ ...entry, reason: "invalid_index", actualColumns: definition.columns }];
+      }
+      if (definition.isPartial) {
+        return [{ ...entry, reason: "partial_index", actualColumns: definition.columns }];
+      }
+      if (!hasExactColumns(definition.columns, entry.columns)) {
+        return [{ ...entry, reason: "wrong_columns", actualColumns: definition.columns }];
+      }
+      return [];
+    });
 
     const ok =
       missingColumns.length === 0 &&
-      missingUniqueObjects.length === 0 &&
+      invalidUniqueObjects.length === 0 &&
       Object.keys(unallowedMigrationNumberDuplicates).length === 0;
 
     const report = {
       ok,
       missingColumns,
-      missingUniqueObjects,
+      invalidUniqueObjects,
       unallowedMigrationNumberDuplicates,
       migrationNumberDuplicates,
     };

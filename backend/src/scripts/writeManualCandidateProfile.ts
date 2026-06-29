@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { Pool } from "pg";
+import { Pool, type PoolClient } from "pg";
 import { createClient } from "redis";
 
 import { resolveIncludePartyForCandidateContest } from "../ai/candidatePartisanship.js";
@@ -21,6 +21,11 @@ type ElectionContextRow = {
   is_partisan: boolean | null;
   race_type: string;
 };
+
+function toReason(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
+}
 
 function usage(): string {
   return [
@@ -94,6 +99,23 @@ async function loadElectionContext(pool: Pool, electionId: string): Promise<Elec
     [electionId]
   );
   return result.rows[0] ?? null;
+}
+
+async function loadExistingCandidateElectionIncumbency(
+  client: Pick<PoolClient, "query">,
+  input: { candidateId: string; electionId: string }
+): Promise<boolean | null> {
+  const result = await client.query<{ is_incumbent: boolean }>(
+    `
+      SELECT is_incumbent
+      FROM public.candidate_elections
+      WHERE candidate_id = $1
+        AND election_id = $2
+      LIMIT 1
+    `,
+    [input.candidateId, input.electionId]
+  );
+  return result.rows[0]?.is_incumbent ?? null;
 }
 
 async function main(): Promise<void> {
@@ -179,12 +201,16 @@ async function main(): Promise<void> {
       });
       candidateId = candidateResult.candidateId;
       matchedExisting = candidateResult.matchedExisting;
+      const existingIncumbency = await loadExistingCandidateElectionIncumbency(client, {
+        candidateId,
+        electionId,
+      });
 
       const linkResult = await upsertCandidateElection({
         client,
         candidateId,
         electionId,
-        isIncumbent,
+        isIncumbent: isIncumbent ?? existingIncumbency ?? false,
       });
       candidateElectionCreated = linkResult.created;
       if (linkResult.created) {
@@ -203,8 +229,14 @@ async function main(): Promise<void> {
 
     let recordDraft: { emittedCount: number; skippedCount: number } | null = null;
     if (redis) {
-      await redis.connect();
-      recordDraft = await enqueueCandidateRecordDrafts(redis, [{ candidateId, electionId, runId }]);
+      try {
+        await redis.connect();
+        recordDraft = await enqueueCandidateRecordDrafts(redis, [{ candidateId, electionId, runId }]);
+      } catch (error) {
+        throw new Error(
+          `Candidate profile DB write committed for candidate_id=${candidateId} election_id=${electionId}, but record-draft Redis emit failed: ${toReason(error)}. Recovery: re-run this command with --emit-record-draft after Redis is available; candidate/election writes are idempotent.`
+        );
+      }
     }
 
     console.log(
