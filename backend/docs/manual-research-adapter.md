@@ -165,11 +165,11 @@ Reusable tag helpers:
 - `loadAllowedBallotMeasureResearchAreas` and `upsertBallotMeasureResearchAreaTags` in
   `src/pipeline/ballotMeasures/ballotMeasureResearchAreaTags.ts`
 
-Gap:
+Manual path:
 
-- Ballot-measure payload parsing and source verification are currently private inside `src/ai/enrichBallotMeasure.ts`.
-- The smallest future code change is to export or extract a manual-safe validator for a researched ballot-measure payload.
-  Until then, a pilot can either use the existing enricher path or add a narrow wrapper that mirrors the private parser.
+- `parseBallotMeasureAiPayload` is exported from `src/ai/enrichBallotMeasure.ts` for no-AI manual payload validation.
+- `manual:ballot-measure:write` validates the researched payload, verifies the target election is a ballot-measure race, upserts
+  `ballot_measures`, and upserts ballot-measure research-area tags.
 
 ## Pilot Sequence
 
@@ -186,22 +186,21 @@ Gap:
 7. Verify row counts and sample reads after each stage.
 8. Record unresolved ambiguity instead of guessing.
 
-## Expected Tiny Wrappers After Phase 1
+## Manual Wrapper Commands
 
-The first pilot proved the election payload shape. Initial wrappers now exist for the two lowest-risk stream injection steps:
+Committed local/operator wrappers now cover the no-AI district import path:
 
 1. `manual:elections:inject` - accepts researched election JSON, validates it, writes staging, and emits the validator stream
    message.
 2. `manual:candidate-roster:inject` - accepts an election ID and researched roster JSON, validates it, marks the roster
    staging row as validated, and emits the roster draft stream message.
-
-Remaining wrapper gaps:
-
-1. `manual:candidate-profile:write` - accepts an election ID and profile JSON, validates, finds/creates candidate, and links
+3. `manual:candidate-roster:fanout` - reads the validated `candidate_roster:<election_id>` staging row and emits profile
+   drafts for only that election, avoiding broad Redis worker consumption.
+4. `manual:candidate-profile:write` - accepts an election ID and profile JSON, validates, finds/creates candidate, and links
    candidate to election.
-2. `manual:candidate-records:write` - accepts candidate/election IDs plus record and label JSON, validates, upserts records,
+5. `manual:candidate-records:write` - accepts candidate/election IDs plus record and label JSON, validates, upserts records,
    and upserts area tags.
-3. `manual:ballot-measure:write` - accepts an election ID and researched ballot-measure JSON, validates, upserts measure, and
+6. `manual:ballot-measure:write` - accepts an election ID and researched ballot-measure JSON, validates, upserts measure, and
    upserts tags.
 
 These wrappers should be local/operator tooling. They should not change the production read path.
@@ -304,20 +303,31 @@ Created an isolated branch for local/operator wrapper work:
 Operational prerequisites:
 
 - Back up the target database or use a staging/local database before running these scripts against important data.
+- Set `DATABASE_URL` explicitly for the intended target database before any command that reads or writes DB context.
+- Set `REDIS_URL` explicitly before live commands that publish stream messages.
 - The operator environment must have write access to Postgres and publish access to Redis.
+- Run `npm run manual:research:preflight` before importing. It verifies required manual-import columns, idempotency indexes, and
+  unallowed migration-number collisions.
 - Run one district or election at a time and verify canonical rows after each stage before continuing.
 
-Added two manually invoked scripts:
+Manual commands:
 
+- `npm run manual:research:preflight`
 - `npm run manual:elections:inject -- --file payload.json [--ingest-key key] [--run-id id] [--dry-run]`
 - `npm run manual:candidate-roster:inject -- --election-id uuid --file roster.json [--run-id id] [--dry-run]`
+- `npm run manual:candidate-roster:fanout -- --election-id uuid [--run-id id] [--dry-run]`
+- `npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--allow-no-hard-identifier] [--dry-run]`
+- `npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--dry-run]`
+- `npm run manual:ballot-measure:write -- --election-id uuid --file payload.json [--dry-run]`
 
 Safety properties:
 
 - No API route, frontend, scheduler, or normal worker behavior is changed.
 - Scripts run only when manually invoked.
-- Both scripts validate payloads before writing.
-- `--dry-run` validates and prints the planned staging keys without connecting to Postgres or Redis.
+- Scripts validate payloads before writing.
+- Election and roster injection dry-runs validate payload shape without connecting to Postgres or Redis. Profile, roster fanout,
+  candidate-record, and ballot-measure dry-runs also check target DB context so bad IDs fail before live writes.
+- Live manual commands do not fall back to localhost Postgres or Redis when target env vars are missing.
 - Election injection defaults to a stable `manual:elections:<district_id>:<currentYear>` ingest key so reruns repair the same
   staging row unless `--ingest-key` is explicitly provided.
 - Both scripts connect to Redis before writing Postgres and mark the staging row `failed` if Redis publishing fails after the
@@ -328,5 +338,11 @@ Safety properties:
 - Candidate roster injection checks that the target `election_id` exists in `public.elections` and is an office race before
   staging the roster.
 - If roster JSON includes `election_id`, it must match the `--election-id` CLI value.
-- Candidate roster injection only pre-seeds a validated roster row; the existing roster worker can then fan out profile drafts
-  without making an AI roster call.
+- Candidate roster injection only pre-seeds a validated roster row; `manual:candidate-roster:fanout` is the preferred no-AI
+  follow-up so stale Redis stream entries cannot cause a broad worker to process the wrong roster.
+- Candidate profile writes require a hard identifier by default; use `--allow-no-hard-identifier` only after explicit operator
+  review.
+- Candidate record writes require an existing candidate/election link, an office-linked election, allowed research areas, and a
+  label for every record. Reruns replace stale area tags for the records touched by that payload before upserting the current
+  labels.
+- Ballot-measure writes require an existing ballot-measure election and allowed ballot-measure research areas.

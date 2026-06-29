@@ -82,6 +82,14 @@ async function loadElectionPreflight(pool: Pool, electionId: string): Promise<El
   return result.rows[0] ?? null;
 }
 
+function requireEnv(name: string): string {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    throw new Error(`${name} is required for manual candidate roster injection`);
+  }
+  return value;
+}
+
 async function main(): Promise<void> {
   loadProjectEnv();
 
@@ -133,10 +141,8 @@ async function main(): Promise<void> {
     return;
   }
 
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL ?? "postgresql://localhost:5432/voteapp",
-  });
-  const redis = createClient({ url: process.env.REDIS_URL ?? "redis://localhost:6379" });
+  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
+  const redis = createClient({ url: requireEnv("REDIS_URL") });
 
   try {
     const election = await loadElectionPreflight(pool, electionId);
