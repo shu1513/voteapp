@@ -2831,3 +2831,34 @@ BEGIN
   ON CONFLICT (office_id, research_area_id) DO NOTHING;
 END
 $$;
+
+WITH target_area AS (
+  SELECT id
+  FROM public.research_areas
+  WHERE slug = 'reduce_wealth_gap'
+),
+source_areas AS (
+  SELECT id
+  FROM public.research_areas
+  WHERE slug IN (
+    'cost_of_living_reduction',
+    'housing_affordability',
+    'personal_income_tax_reduction',
+    'social_programs_and_welfare'
+  )
+),
+target_offices AS (
+  SELECT DISTINCT link.office_id
+  FROM public.office_research_areas link
+  JOIN source_areas source_area
+    ON source_area.id = link.research_area_id
+  JOIN public.offices office
+    ON office.id = link.office_id
+  WHERE office.canonical_name NOT ILIKE '%judge%'
+    AND office.canonical_name NOT ILIKE '%justice%'
+)
+INSERT INTO public.office_research_areas (office_id, research_area_id)
+SELECT target_office.office_id, target_area.id
+FROM target_offices target_office
+CROSS JOIN target_area
+ON CONFLICT (office_id, research_area_id) DO NOTHING;
