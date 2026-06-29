@@ -62,6 +62,43 @@ describe("nebraskaCandidateFinanceSyncScheduler", () => {
     expect(Pool).not.toHaveBeenCalled();
   });
 
+  it("returns a disabled no-op result when the broader Nebraska finance flag is off", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
+    process.env.NEBRASKA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.NEBRASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    const Pool = vi.fn();
+    vi.doMock("pg", () => ({ Pool }));
+    mockEnv();
+
+    const { runNebraskaCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/nebraskaCandidateFinanceSyncScheduler.js"
+    );
+
+    await expect(
+      runNebraskaCandidateFinanceSyncJob({
+        force: true,
+        triggeredBy: "manual",
+        maxCandidates: 10,
+        staleAfterDays: 7,
+      })
+    ).resolves.toEqual({
+      enabled: false,
+      force: true,
+      triggeredBy: "manual",
+      dryRun: false,
+      now: "2026-06-01T00:00:00.000Z",
+      staleAfterDays: 7,
+      maxCandidates: 10,
+      dueCandidateCount: 0,
+      selectedCandidateCount: 0,
+      syncedCandidateCount: 0,
+      failedCandidateCount: 0,
+      results: [],
+    });
+    expect(Pool).not.toHaveBeenCalled();
+  });
+
   it("runs the due Nebraska finance sync when enabled", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
@@ -253,5 +290,23 @@ describe("nebraskaCandidateFinanceSyncScheduler", () => {
       }),
       expect.objectContaining({ jobId })
     );
+  });
+
+  it("does not enqueue manual jobs when the broader Nebraska finance flag is off", async () => {
+    process.env.NEBRASKA_CAMPAIGN_FINANCE_ENABLED = "false";
+    process.env.NEBRASKA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    mockEnv();
+
+    const Queue = vi.fn();
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+
+    const { enqueueManualNebraskaCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/nebraskaCandidateFinanceSyncScheduler.js"
+    );
+
+    await expect(
+      enqueueManualNebraskaCandidateFinanceSyncJob({ force: true })
+    ).resolves.toBe("disabled");
+    expect(Queue).not.toHaveBeenCalled();
   });
 });

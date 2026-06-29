@@ -204,7 +204,10 @@ export async function enqueueManualNebraskaCandidateFinanceSyncJob(
   options: NebraskaCandidateFinanceSyncEnqueueOptions = {}
 ): Promise<string> {
   assertValidJobOptions(jobData);
-  if (!isNebraskaCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
+  if (
+    !isNebraskaCampaignFinanceEnabled() ||
+    !isNebraskaCampaignFinanceSyncEnabled(Boolean(jobData.force))
+  ) {
     return "disabled";
   }
 
@@ -241,7 +244,7 @@ export async function runNebraskaCandidateFinanceSyncJob(
   const dryRun = Boolean(data.dryRun);
   const triggeredBy = data.triggeredBy ?? "unknown";
   const now = new Date();
-  const enabled = isNebraskaCampaignFinanceSyncEnabled(force);
+  const enabled = isNebraskaCampaignFinanceEnabled() && isNebraskaCampaignFinanceSyncEnabled(force);
 
   if (!data.triggeredBy) {
     console.warn("Nebraska finance sync job missing triggeredBy; recording as unknown");
