@@ -11,6 +11,11 @@ VALUES
     'Lower household costs by improving price stability, competition, reduce or eliminate tariffs, and increase foreign trade.'
   ),
   (
+    'reduce_wealth_gap',
+    'Reduce Wealth Gap',
+    'Narrow wealth disparities through policy that expands asset building, economic mobility, and equitable opportunity.'
+  ),
+  (
     'healthcare_affordability',
     'Healthcare Affordability',
     'Reduce out-of-pocket costs and improve access to affordable, quality care.'

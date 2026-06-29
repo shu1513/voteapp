@@ -3,6 +3,7 @@ import type { PoolClient } from "pg";
 export const BALLOT_MEASURE_RESEARCH_AREA_SLUGS = [
   "environment_and_public_health",
   "cost_of_living_reduction",
+  "reduce_wealth_gap",
   "healthcare_affordability",
   "public_safety_and_crime_control",
   "government_spending_reduction",
