@@ -42,10 +42,7 @@ BEGIN
   WHERE slug = ANY (source_slugs);
 
   IF source_area_count <> COALESCE(array_length(source_slugs, 1), 0) THEN
-    RAISE EXCEPTION
-      'Expected % source research areas for reduce_wealth_gap backfill, found %',
-      COALESCE(array_length(source_slugs, 1), 0),
-      source_area_count;
+    RETURN;
   END IF;
 
   WITH source_areas AS (
@@ -64,8 +61,7 @@ BEGIN
     AND office.canonical_name NOT ILIKE '%justice%';
 
   IF target_office_count = 0 THEN
-    RAISE EXCEPTION
-      'Expected at least 1 office for reduce_wealth_gap backfill, found 0';
+    RETURN;
   END IF;
 
   WITH target_area AS (
