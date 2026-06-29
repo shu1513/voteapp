@@ -82,6 +82,8 @@ export type FloridaCandidateFinanceSyncInput = {
   contributionRows: readonly FloridaContributionRow[];
   trustedOutsideGroups?: readonly FloridaCandidateFinanceTrustedOutsideGroup[];
   outsideGroupSupportEvidence?: readonly FloridaOutsideGroupSupportEvidenceInput[];
+  // Outside-group finance is opt-in until Florida support/IE discovery is reliable enough for scheduled syncs.
+  includeOutsideGroupFinance?: boolean;
   includeStoredOutsideGroupSupportEvidence?: boolean;
   includeOutsideGroupNameHeuristics?: boolean;
   outsideContributionRows?: readonly FloridaContributionRow[];
@@ -510,27 +512,48 @@ export async function syncFloridaCandidateFinance(
   const linkSource = input.linkSource ?? "dos_export";
   const aiClassificationMinAmount = normalizeAiClassificationMinAmount(input.aiClassificationMinAmount);
   const resolution = resolveTrustedCommittee({ trustedCommittee: input.trustedCommittee, linkSource });
+  const hasExplicitOutsideGroupInputs =
+    input.trustedOutsideGroups !== undefined ||
+    input.outsideGroupSupportEvidence !== undefined ||
+    input.includeStoredOutsideGroupSupportEvidence === true;
+  const includeOutsideGroupFinance =
+    input.includeOutsideGroupFinance !== false &&
+    (input.includeOutsideGroupFinance === true || hasExplicitOutsideGroupInputs);
   const storedSupportEvidence =
-    !input.dryRun && candidateElectionId && input.includeStoredOutsideGroupSupportEvidence !== false
+    includeOutsideGroupFinance &&
+    !input.dryRun &&
+    candidateElectionId &&
+    input.includeStoredOutsideGroupSupportEvidence !== false
       ? (await listFloridaOutsideGroupSupportLinks({ db: input.db, candidateElectionId })).map(
           supportEvidenceFromStoredLink
         )
       : [];
-  const supportEvidence = [...storedSupportEvidence, ...(input.outsideGroupSupportEvidence ?? [])];
-  const outsideGroupSupport = resolveFloridaOutsideGroupSupport({
-    candidateName,
-    trustedOutsideGroups: input.trustedOutsideGroups,
-    supportEvidence,
-    outsideContributionRows: input.outsideContributionRows,
-    includeNameHeuristics: input.includeOutsideGroupNameHeuristics === true,
-    heuristicSourceUrl: input.outsideSourceUrl ?? input.sourceUrl ?? null,
-  });
+  const supportEvidence = includeOutsideGroupFinance
+    ? [...storedSupportEvidence, ...(input.outsideGroupSupportEvidence ?? [])]
+    : [];
+  const outsideGroupSupport = includeOutsideGroupFinance
+    ? resolveFloridaOutsideGroupSupport({
+        candidateName,
+        trustedOutsideGroups: input.trustedOutsideGroups,
+        supportEvidence,
+        outsideContributionRows: input.outsideContributionRows,
+        includeNameHeuristics: input.includeOutsideGroupNameHeuristics === true,
+        heuristicSourceUrl: input.outsideSourceUrl ?? input.sourceUrl ?? null,
+      })
+    : {
+        outsideGroups: [],
+        trustedGroupCount: 0,
+        evidenceLinkCount: 0,
+        heuristicGroupCount: 0,
+      };
   const resolvedOutsideGroups = outsideGroupSupport.outsideGroups;
   const resolvedOutsideGroupsForFinance =
     resolvedOutsideGroups.length > 0 ? resolvedOutsideGroups : undefined;
-  const outsideGroupSupportLinks = input.outsideGroupSupportEvidence?.map((evidence) =>
-    supportLinkInputFromEvidence({ evidence, fallbackCandidateElectionId: candidateElectionId })
-  );
+  const outsideGroupSupportLinks = includeOutsideGroupFinance
+    ? input.outsideGroupSupportEvidence?.map((evidence) =>
+        supportLinkInputFromEvidence({ evidence, fallbackCandidateElectionId: candidateElectionId })
+      )
+    : undefined;
 
   const directFinance = aggregateFloridaDirectContributions({
     recipientName: resolution.committeeName,

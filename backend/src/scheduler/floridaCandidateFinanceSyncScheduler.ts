@@ -9,9 +9,11 @@ import {
   isFloridaCampaignFinanceSyncEnabled,
 } from "../config/featureFlags.js";
 import {
+  syncDueFloridaCandidateFinance,
   syncFloridaCandidateFinanceBatch,
   type FloridaCandidateFinanceBatchSyncItemInput,
   type FloridaCandidateFinanceBatchSyncResult,
+  type FloridaCandidateFinanceDueSyncResult,
 } from "../pipeline/floridaFinance/floridaCandidateFinanceBatchSync.js";
 
 export const FLORIDA_CANDIDATE_FINANCE_SYNC_JOB_NAME = "florida_candidate_finance_sync_due";
@@ -22,15 +24,21 @@ export type FloridaCandidateFinanceSyncJobData = {
   dryRun?: boolean;
   force?: boolean;
   maxCandidates?: number;
+  staleAfterDays?: number;
+  electionLookbackDays?: number;
+  electionLookaheadDays?: number;
   syncInputs?: readonly FloridaCandidateFinanceBatchSyncItemInput[];
   defaultArtifactCacheDir?: string | null;
+  refreshExportArtifacts?: boolean;
+  exportMinIntervalMs?: number;
+  exportRowLimit?: number;
   aiClassifyIndustries?: boolean;
   aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
 
-export type FloridaCandidateFinanceSyncJobResult = FloridaCandidateFinanceBatchSyncResult & {
+export type FloridaCandidateFinanceSyncJobResult = (FloridaCandidateFinanceBatchSyncResult | FloridaCandidateFinanceDueSyncResult) & {
   enabled: boolean;
   force: boolean;
   triggeredBy: NonNullable<FloridaCandidateFinanceSyncJobData["triggeredBy"]>;
@@ -60,6 +68,12 @@ function readSchedulerRuntimeConfig(): FloridaCandidateFinanceSyncSchedulerRunti
 
 function assertPositiveInteger(value: number | undefined, label: string): void {
   if (value !== undefined && (!Number.isInteger(value) || value <= 0)) {
+    throw new Error(`Invalid Florida finance sync scheduler ${label}: ${value}`);
+  }
+}
+
+function assertNonnegativeInteger(value: number | undefined, label: string): void {
+  if (value !== undefined && (!Number.isInteger(value) || value < 0)) {
     throw new Error(`Invalid Florida finance sync scheduler ${label}: ${value}`);
   }
 }
@@ -135,6 +149,11 @@ function jobOptionsWithId(jobId: string | undefined): JobsOptions {
 
 function assertValidJobOptions(data: FloridaCandidateFinanceSyncJobData): void {
   assertPositiveInteger(data.maxCandidates, "maxCandidates");
+  assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
+  assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
+  assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
+  assertPositiveInteger(data.exportRowLimit, "exportRowLimit");
+  assertNonnegativeInteger(data.exportMinIntervalMs, "exportMinIntervalMs");
   assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
 }
 
@@ -182,8 +201,14 @@ export async function upsertRecurringFloridaCandidateFinanceSyncJobs(
           dryRun: Boolean(jobData.dryRun),
           force: Boolean(jobData.force),
           maxCandidates: jobData.maxCandidates,
+          staleAfterDays: jobData.staleAfterDays,
+          electionLookbackDays: jobData.electionLookbackDays,
+          electionLookaheadDays: jobData.electionLookaheadDays,
           syncInputs: jobData.syncInputs,
           defaultArtifactCacheDir: jobData.defaultArtifactCacheDir,
+          refreshExportArtifacts: Boolean(jobData.refreshExportArtifacts),
+          exportMinIntervalMs: jobData.exportMinIntervalMs,
+          exportRowLimit: jobData.exportRowLimit,
           aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
           aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           triggeredBy: "daily",
@@ -214,8 +239,14 @@ export async function enqueueManualFloridaCandidateFinanceSyncJob(
         dryRun: Boolean(jobData.dryRun),
         force: Boolean(jobData.force),
         maxCandidates: jobData.maxCandidates,
+        staleAfterDays: jobData.staleAfterDays,
+        electionLookbackDays: jobData.electionLookbackDays,
+        electionLookaheadDays: jobData.electionLookaheadDays,
         syncInputs: jobData.syncInputs,
         defaultArtifactCacheDir: jobData.defaultArtifactCacheDir,
+        refreshExportArtifacts: Boolean(jobData.refreshExportArtifacts),
+        exportMinIntervalMs: jobData.exportMinIntervalMs,
+        exportRowLimit: jobData.exportRowLimit,
         aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
         aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         triggeredBy: "manual",
@@ -262,17 +293,36 @@ export async function runFloridaCandidateFinanceSyncJob(
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   try {
-    const result = await syncFloridaCandidateFinanceBatch({
-      db: pool,
-      now,
-      dryRun,
-      maxCandidates: data.maxCandidates,
-      syncInputs: data.syncInputs,
-      defaultArtifactCacheDir: data.defaultArtifactCacheDir,
-      financeIndustryClassifier:
-        data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: data.aiClassificationMinAmount,
-    });
+    const financeIndustryClassifier =
+      data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined;
+    const result =
+      data.syncInputs !== undefined
+        ? await syncFloridaCandidateFinanceBatch({
+            db: pool,
+            now,
+            dryRun,
+            maxCandidates: data.maxCandidates,
+            syncInputs: data.syncInputs,
+            defaultArtifactCacheDir: data.defaultArtifactCacheDir,
+            financeIndustryClassifier,
+            aiClassificationMinAmount: data.aiClassificationMinAmount,
+          })
+        : await syncDueFloridaCandidateFinance({
+            db: pool,
+            now,
+            dryRun,
+            maxCandidates: data.maxCandidates,
+            staleAfterDays: data.staleAfterDays,
+            electionLookbackDays: data.electionLookbackDays,
+            electionLookaheadDays: data.electionLookaheadDays,
+            defaultArtifactCacheDir: data.defaultArtifactCacheDir,
+            exportMinIntervalMs: data.exportMinIntervalMs,
+            exportRowLimit: data.exportRowLimit,
+            exportForce: force,
+            refreshExportArtifacts: data.refreshExportArtifacts === true,
+            financeIndustryClassifier,
+            aiClassificationMinAmount: data.aiClassificationMinAmount,
+          });
 
     return {
       enabled: true,

@@ -58,6 +58,12 @@ export type FloridaContributionExportTransport = (
   request: FloridaContributionExportTransportRequest
 ) => Promise<FloridaContributionExportTransportResult>;
 
+export type FloridaContributionExportFetchTransportOptions = {
+  fetchFn?: typeof fetch;
+  timeoutMs?: number;
+  userAgent?: string;
+};
+
 export type FloridaContributionExportRateLimiter = (
   request: FloridaContributionExportTransportRequest
 ) => Promise<void>;
@@ -69,7 +75,7 @@ export type FloridaContributionExportRateLimiterOptions = {
 };
 
 export type FloridaContributionExportRowsInput = FloridaContributionExportQuery & {
-  transport: FloridaContributionExportTransport;
+  transport?: FloridaContributionExportTransport;
   rateLimiter?: FloridaContributionExportRateLimiter;
   force?: boolean;
 };
@@ -126,6 +132,64 @@ function normalizeMinIntervalMs(value: number): number {
     throw new Error(`Florida contribution export minIntervalMs must be a nonnegative integer: ${value}`);
   }
   return value;
+}
+
+function normalizeTimeoutMs(value: number | undefined): number {
+  const normalized = value ?? 30_000;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Florida contribution export timeoutMs must be a positive integer: ${value}`);
+  }
+  return normalized;
+}
+
+export function createFloridaContributionExportFetchTransport(
+  options: FloridaContributionExportFetchTransportOptions = {}
+): FloridaContributionExportTransport {
+  const fetchFn = options.fetchFn ?? globalThis.fetch;
+  if (typeof fetchFn !== "function") {
+    throw new Error("Florida contribution export fetch transport requires global fetch or fetchFn");
+  }
+  const timeoutMs = normalizeTimeoutMs(options.timeoutMs);
+  const userAgent = options.userAgent?.trim() || "VoteApp Florida campaign finance export";
+
+  return async (request) => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    timeout.unref?.();
+
+    try {
+      const response = await fetchFn(request.exportUrl, {
+        method: "POST",
+        headers: {
+          accept: "text/tab-separated-values,text/plain,*/*",
+          "content-type": "application/x-www-form-urlencoded",
+          "user-agent": userAgent,
+          referer: request.searchPageUrl,
+        },
+        body: request.formData.toString(),
+        signal: controller.signal,
+      });
+
+      const tsv = await response.text();
+      if (!response.ok) {
+        throw new Error(
+          `Florida contribution export failed with HTTP ${response.status} ${response.statusText}`.trim()
+        );
+      }
+      return {
+        tsv,
+        finalUrl: response.url || request.exportUrl,
+        retrievedAt: new Date(),
+      };
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        throw new Error(`Florida contribution export timed out after ${timeoutMs}ms`);
+      }
+      throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
+  };
 }
 
 export function createFloridaContributionExportRateLimiter(
@@ -193,27 +257,28 @@ export function buildFloridaContributionExportFormData(
 ): URLSearchParams {
   const query = normalizeFloridaContributionExportQuery(input);
   const params = new URLSearchParams();
+  params.set("election", query.electionCode ?? "All");
   params.set("search_on", contributionSearchOnValue(query.searchType));
   params.set("queryformat", "2");
   params.set("rowlimit", String(query.rowLimit));
-  if (query.electionCode) {
-    params.set("Election", query.electionCode);
-  }
   if (query.dateFrom) {
-    params.set("date_from", query.dateFrom);
+    params.set("cdatefrom", query.dateFrom);
   }
   if (query.dateTo) {
-    params.set("date_to", query.dateTo);
+    params.set("cdateto", query.dateTo);
   }
   if (query.searchType === "candidate_detail") {
     params.set("CanFName", query.candidateFirstName!);
     params.set("CanLName", query.candidateLastName!);
+    params.set("CanNameSrch", "2");
+    params.set("office", "All");
   } else {
-    if (query.committeeType) {
-      params.set("committee", query.committeeType);
-    }
     params.set("ComName", query.committeeName!);
+    params.set("ComNameSrch", "2");
+    params.set("committee", query.committeeType ?? "All");
   }
+  params.set("csort1", "NAM");
+  params.set("csort2", "CAN");
   return params;
 }
 
@@ -272,7 +337,8 @@ export async function exportFloridaContributionRows(
 
   const request = buildFloridaContributionExportTransportRequest(input);
   await input.rateLimiter?.(request);
-  const exported = await input.transport({
+  const transport = input.transport ?? createFloridaContributionExportFetchTransport();
+  const exported = await transport({
     ...request,
     formData: new URLSearchParams(request.formData),
   });

@@ -10,7 +10,7 @@ const LINK_ID = "33333333-3333-3333-3333-333333333333";
 const SUPPORT_LINK_ID = "55555555-5555-5555-5555-555555555555";
 const SOURCE_URL = "https://dos.elections.myflorida.com/cgi-bin/contrib.exe";
 
-function createMockDb() {
+function createMockDb(input: { storedSupportLinks?: readonly Record<string, unknown>[] } = {}) {
   const query = vi.fn(async (sql: string) => {
     if (String(sql).includes("FROM public.finance_label_classifications AS classification")) {
       return { rows: [], rowCount: 0 };
@@ -19,7 +19,7 @@ function createMockDb() {
       String(sql).includes("FROM public.fl_candidate_finance_outside_group_links") &&
       String(sql).includes("SELECT")
     ) {
-      return { rows: [], rowCount: 0 };
+      return { rows: input.storedSupportLinks ?? [], rowCount: input.storedSupportLinks?.length ?? 0 };
     }
     if (String(sql).includes("INSERT INTO public.fl_candidate_finance_outside_group_links")) {
       return { rows: [{ id: SUPPORT_LINK_ID }], rowCount: 1 };
@@ -359,6 +359,128 @@ describe("floridaCandidateFinanceSync", () => {
       SOURCE_URL,
       "2026-02-03T04:05:06.000Z",
     ]);
+  });
+
+  it("does not load stored outside group support links during direct-only sync", async () => {
+    const db = createMockDb({
+      storedSupportLinks: [
+        {
+          id: SUPPORT_LINK_ID,
+          candidate_election_id: CANDIDATE_ELECTION_ID,
+          committee_id: "FLORIDIANS_FOR_JANE_DOE",
+          committee_name: "Floridians for Jane Doe",
+          support_oppose: "support",
+          confidence: "high",
+          amount: "1200",
+          evidence_url: "https://example.test/evidence",
+          evidence_note: "Curated outside support evidence.",
+          link_source: "manual",
+        },
+      ],
+    });
+
+    const result = await syncFloridaCandidateFinance({
+      db,
+      ...baseInput(),
+      candidateElectionId: CANDIDATE_ELECTION_ID,
+      contributionRows: [contribution({ amount: "250.00" })],
+      outsideContributionRows: [outsideContribution()],
+    });
+
+    expect(result).toMatchObject({
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      outsideGroupSupportLinksWritten: 0,
+      resolvedOutsideGroupCount: 0,
+      outsideGroupSupportEvidenceCount: 0,
+      heuristicOutsideGroupCount: 0,
+      matchedOutsideContributionRowCount: 0,
+    });
+    expect(
+      db.query.mock.calls.some(
+        (call) =>
+          String(call[0]).includes("FROM public.fl_candidate_finance_outside_group_links") &&
+          String(call[0]).includes("SELECT")
+      )
+    ).toBe(false);
+  });
+
+  it("honors an explicit outside group finance opt-out even when outside inputs are present", async () => {
+    const db = createMockDb();
+
+    const result = await syncFloridaCandidateFinance({
+      db,
+      ...baseInput(),
+      contributionRows: [contribution({ amount: "250.00" })],
+      trustedOutsideGroups: [
+        {
+          committeeId: "FLORIDIANS_FOR_JANE_DOE",
+          committeeName: "Floridians for Jane Doe",
+          supportOppose: "support",
+          amount: 1200,
+        },
+      ],
+      outsideContributionRows: [outsideContribution()],
+      includeOutsideGroupFinance: false,
+    });
+
+    expect(result).toMatchObject({
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      resolvedOutsideGroupCount: 0,
+      matchedOutsideContributionRowCount: 0,
+    });
+  });
+
+  it("loads stored outside group support links only when explicitly opted in", async () => {
+    const db = createMockDb({
+      storedSupportLinks: [
+        {
+          id: SUPPORT_LINK_ID,
+          candidate_election_id: CANDIDATE_ELECTION_ID,
+          committee_id: "FLORIDIANS_FOR_JANE_DOE",
+          committee_name: "Floridians for Jane Doe",
+          support_oppose: "support",
+          confidence: "high",
+          amount: "1200",
+          evidence_url: "https://example.test/evidence",
+          evidence_note: "Curated outside support evidence.",
+          link_source: "manual",
+        },
+      ],
+    });
+
+    const result = await syncFloridaCandidateFinance({
+      db,
+      ...baseInput(),
+      candidateElectionId: CANDIDATE_ELECTION_ID,
+      contributionRows: [contribution({ amount: "250.00" })],
+      outsideContributionRows: [outsideContribution()],
+      includeStoredOutsideGroupSupportEvidence: true,
+    });
+
+    expect(result).toMatchObject({
+      outsideSupportTotal: 1200,
+      outsideOpposeTotal: 0,
+      outsideGroupsWritten: 1,
+      outsideGroupBreakdownsWritten: 2,
+      outsideGroupSupportLinksWritten: 0,
+      resolvedOutsideGroupCount: 1,
+      outsideGroupSupportEvidenceCount: 1,
+      heuristicOutsideGroupCount: 0,
+      matchedOutsideContributionRowCount: 1,
+    });
+    expect(
+      db.query.mock.calls.some(
+        (call) =>
+          String(call[0]).includes("FROM public.fl_candidate_finance_outside_group_links") &&
+          String(call[0]).includes("SELECT")
+      )
+    ).toBe(true);
   });
 
   it("writes trusted outside groups without deleting outside breakdowns when PAC donor rows are omitted", async () => {
