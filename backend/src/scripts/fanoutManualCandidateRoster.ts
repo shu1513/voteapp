@@ -103,19 +103,24 @@ function rosterIngestKeyForElection(electionId: string): string {
 }
 
 function extractRosterCandidates(payload: unknown): CandidateRosterFanoutEntry[] | null {
-  const input = payload as Record<string, unknown>;
-  const rawCandidates = input.candidates;
+  const parsed = parseCandidateRosterPayload(payload);
+  if (!parsed.ok) {
+    return null;
+  }
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+    return null;
+  }
+  const rawCandidates = (payload as Record<string, unknown>).candidates;
   if (!Array.isArray(rawCandidates)) {
+    return null;
+  }
+  if (rawCandidates.length !== parsed.payload.candidates.length) {
     return null;
   }
 
   const candidates: CandidateRosterFanoutEntry[] = [];
   for (const [index, raw] of rawCandidates.entries()) {
-    const parsed = parseCandidateRosterPayload({ candidates: [raw] });
-    if (!parsed.ok || parsed.payload.candidates.length !== 1) {
-      return null;
-    }
-    const candidate = parsed.payload.candidates[0]!;
+    const candidate = parsed.payload.candidates[index]!;
     const rawObject = typeof raw === "object" && raw !== null && !Array.isArray(raw)
       ? (raw as Record<string, unknown>)
       : {};
@@ -141,6 +146,14 @@ function extractRosterCandidates(payload: unknown): CandidateRosterFanoutEntry[]
     });
   }
   return candidates;
+}
+
+function requireEnv(name: string): string {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    throw new Error(`${name} is required for manual candidate roster fanout`);
+  }
+  return value;
 }
 
 async function loadElection(pool: Pool, electionId: string): Promise<ElectionRow | null> {
@@ -194,11 +207,11 @@ async function main(): Promise<void> {
   }
   const dryRun = hasFlag("--dry-run");
   const ingestKey = rosterIngestKeyForElection(electionId);
+  const databaseUrl = requireEnv("DATABASE_URL");
+  const redisUrl = dryRun ? null : requireEnv("REDIS_URL");
 
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL ?? "postgresql://localhost:5432/voteapp",
-  });
-  const redis = dryRun ? null : createClient({ url: process.env.REDIS_URL ?? "redis://localhost:6379" });
+  const pool = new Pool({ connectionString: databaseUrl });
+  const redis = dryRun ? null : createClient({ url: redisUrl! });
 
   try {
     const [election, stagingRow] = await Promise.all([

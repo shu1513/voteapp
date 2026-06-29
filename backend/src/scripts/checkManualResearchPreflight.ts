@@ -240,6 +240,14 @@ function hasExactColumns(actual: readonly string[], expected: readonly string[])
   return actual.length === expected.length && actual.every((column, index) => column === expected[index]);
 }
 
+function requireEnv(name: string): string {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    throw new Error(`${name} is required for manual research preflight`);
+  }
+  return value;
+}
+
 async function main(): Promise<void> {
   loadProjectEnv();
 
@@ -256,9 +264,7 @@ async function main(): Promise<void> {
     )
   );
 
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL ?? "postgresql://localhost:5432/voteapp",
-  });
+  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
 
   try {
     const [columns, uniqueObjectDefinitions] = await Promise.all([

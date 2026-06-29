@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { Pool } from "pg";
+import { Pool, type PoolClient } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { parseCandidateRecordAreaLabelPayload } from "../contracts/candidateRecordAreaLabelPayloadContract.js";
@@ -56,6 +56,46 @@ async function readJsonFile(path: string): Promise<unknown> {
   return JSON.parse(raw) as unknown;
 }
 
+function requireEnv(name: string): string {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    throw new Error(`${name} is required for manual candidate records write`);
+  }
+  return value;
+}
+
+async function deleteStaleCandidateRecordAreaTags(
+  client: Pick<PoolClient, "query">,
+  labels: readonly CandidateRecordAreaLabelInput[],
+  researchAreaIdBySlug: ReadonlyMap<string, string>
+): Promise<{ deleted: number }> {
+  const researchAreaIdsByRecordId = new Map<string, Set<string>>();
+  for (const label of labels) {
+    const researchAreaId = researchAreaIdBySlug.get(label.researchAreaSlug);
+    if (!researchAreaId) {
+      throw new Error(`Cannot delete stale candidate_record_area_tags: missing research area id for slug '${label.researchAreaSlug}'`);
+    }
+    const ids = researchAreaIdsByRecordId.get(label.candidateRecordId) ?? new Set<string>();
+    ids.add(researchAreaId);
+    researchAreaIdsByRecordId.set(label.candidateRecordId, ids);
+  }
+
+  let deleted = 0;
+  for (const [candidateRecordId, researchAreaIds] of researchAreaIdsByRecordId.entries()) {
+    const result = await client.query(
+      `
+        DELETE FROM public.candidate_record_area_tags
+        WHERE candidate_record_id = $1
+          AND NOT (research_area_id = ANY($2::uuid[]))
+      `,
+      [candidateRecordId, [...researchAreaIds]]
+    );
+    deleted += result.rowCount ?? 0;
+  }
+
+  return { deleted };
+}
+
 async function main(): Promise<void> {
   loadProjectEnv();
 
@@ -76,9 +116,7 @@ async function main(): Promise<void> {
   const dryRun = hasFlag("--dry-run");
   const manualKey = `manual:candidate-records:${electionId}:${candidateId}`;
 
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL ?? "postgresql://localhost:5432/voteapp",
-  });
+  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
 
   try {
     const context = await loadCandidateElectionOfficeContext(pool, candidateId, electionId);
@@ -164,10 +202,16 @@ async function main(): Promise<void> {
         throw new Error(`Candidate record label validation failed: ${reason}`);
       }
 
+      const researchAreaIdBySlug = new Map(allowedAreas.map((area) => [area.slug, area.id]));
+      const staleTagDelete = await deleteStaleCandidateRecordAreaTags(
+        client,
+        validation.normalized,
+        researchAreaIdBySlug
+      );
       const tagResult = await upsertCandidateRecordAreaTags(
         client,
         validation.normalized,
-        new Map(allowedAreas.map((area) => [area.slug, area.id]))
+        researchAreaIdBySlug
       );
       for (const insertedRecordId of upsert.insertedRecordIds) {
         await createCandidateRecordUpdateNotificationEvents(client, insertedRecordId);
@@ -183,6 +227,7 @@ async function main(): Promise<void> {
             inserted: upsert.inserted,
             updated: upsert.updated,
             processed: upsert.processed,
+            tagsDeleted: staleTagDelete.deleted,
             tagsProcessed: tagResult.processed,
           },
           null,

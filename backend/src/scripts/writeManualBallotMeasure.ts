@@ -54,6 +54,14 @@ async function readJsonFile(path: string): Promise<unknown> {
   return JSON.parse(raw) as unknown;
 }
 
+function requireEnv(name: string): string {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    throw new Error(`${name} is required for manual ballot measure write`);
+  }
+  return value;
+}
+
 async function loadElection(pool: Pool, electionId: string): Promise<BallotMeasureElectionRow | null> {
   const result = await pool.query<BallotMeasureElectionRow>(
     `
@@ -84,9 +92,7 @@ async function main(): Promise<void> {
   const dryRun = hasFlag("--dry-run");
   const manualKey = `manual:ballot-measure:${electionId}`;
 
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL ?? "postgresql://localhost:5432/voteapp",
-  });
+  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
 
   try {
     const [election, allowedAreas] = await Promise.all([

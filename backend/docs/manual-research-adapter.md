@@ -303,6 +303,8 @@ Created an isolated branch for local/operator wrapper work:
 Operational prerequisites:
 
 - Back up the target database or use a staging/local database before running these scripts against important data.
+- Set `DATABASE_URL` explicitly for the intended target database before any command that reads or writes DB context.
+- Set `REDIS_URL` explicitly before live commands that publish stream messages.
 - The operator environment must have write access to Postgres and publish access to Redis.
 - Run `npm run manual:research:preflight` before importing. It verifies required manual-import columns, idempotency indexes, and
   unallowed migration-number collisions.
@@ -323,8 +325,9 @@ Safety properties:
 - No API route, frontend, scheduler, or normal worker behavior is changed.
 - Scripts run only when manually invoked.
 - Scripts validate payloads before writing.
-- Election/profile dry-runs validate payload shape without connecting to Postgres or Redis. Roster fanout, candidate-record, and
-  ballot-measure dry-runs also check target DB context so bad IDs fail before live writes.
+- Election and roster injection dry-runs validate payload shape without connecting to Postgres or Redis. Profile, roster fanout,
+  candidate-record, and ballot-measure dry-runs also check target DB context so bad IDs fail before live writes.
+- Live manual commands do not fall back to localhost Postgres or Redis when target env vars are missing.
 - Election injection defaults to a stable `manual:elections:<district_id>:<currentYear>` ingest key so reruns repair the same
   staging row unless `--ingest-key` is explicitly provided.
 - Both scripts connect to Redis before writing Postgres and mark the staging row `failed` if Redis publishing fails after the
@@ -340,5 +343,6 @@ Safety properties:
 - Candidate profile writes require a hard identifier by default; use `--allow-no-hard-identifier` only after explicit operator
   review.
 - Candidate record writes require an existing candidate/election link, an office-linked election, allowed research areas, and a
-  label for every record.
+  label for every record. Reruns replace stale area tags for the records touched by that payload before upserting the current
+  labels.
 - Ballot-measure writes require an existing ballot-measure election and allowed ballot-measure research areas.

@@ -118,6 +118,14 @@ async function loadExistingCandidateElectionIncumbency(
   return result.rows[0]?.is_incumbent ?? null;
 }
 
+function requireEnv(name: string): string {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    throw new Error(`${name} is required for manual candidate profile write`);
+  }
+  return value;
+}
+
 async function main(): Promise<void> {
   loadProjectEnv();
 
@@ -145,32 +153,11 @@ async function main(): Promise<void> {
   const runId = readFlag("--run-id") ?? `manual_candidate_profile_${new Date().toISOString()}`;
   const isIncumbent = readBooleanFlag("--is-incumbent");
   const manualKey = `manual:candidate-profile:${electionId}:${profile.display_name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+  const databaseUrl = requireEnv("DATABASE_URL");
+  const redisUrl = emitRecordDraft && !dryRun ? requireEnv("REDIS_URL") : null;
 
-  if (dryRun) {
-    console.log(
-      JSON.stringify(
-        {
-          dryRun: true,
-          manualKey,
-          runId,
-          electionId,
-          displayName: profile.display_name,
-          hasHardIdentifier: hasAtLeastOneHardIdentifier(profile),
-          emitRecordDraft,
-        },
-        null,
-        2
-      )
-    );
-    return;
-  }
-
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL ?? "postgresql://localhost:5432/voteapp",
-  });
-  const redis = emitRecordDraft
-    ? createClient({ url: process.env.REDIS_URL ?? "redis://localhost:6379" })
-    : null;
+  const pool = new Pool({ connectionString: databaseUrl });
+  const redis = redisUrl ? createClient({ url: redisUrl }) : null;
 
   try {
     const election = await loadElectionContext(pool, electionId);
@@ -179,6 +166,29 @@ async function main(): Promise<void> {
     }
     if (election.race_type !== "office") {
       throw new Error(`Candidate profile write requires an office election; election_id=${electionId} has race_type=${election.race_type}`);
+    }
+
+    if (dryRun) {
+      console.log(
+        JSON.stringify(
+          {
+            dryRun: true,
+            manualKey,
+            runId,
+            electionId: election.election_id,
+            displayName: profile.display_name,
+            hasHardIdentifier: hasAtLeastOneHardIdentifier(profile),
+            emitRecordDraft,
+            state: election.state,
+            raceType: election.race_type,
+            districtType: election.district_type,
+            officialBallotTitle: election.official_ballot_title,
+          },
+          null,
+          2
+        )
+      );
+      return;
     }
 
     const client = await pool.connect();
