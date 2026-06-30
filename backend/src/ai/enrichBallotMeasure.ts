@@ -213,7 +213,7 @@ export function parseBallotMeasureAiPayload(payload: unknown, allowedResearchAre
   };
 }
 
-async function validateBallotMeasurePayload(
+export async function validateBallotMeasureAiPayload(
   payload: unknown,
   timeoutMs: number,
   allowedResearchAreaSlugs: ReadonlySet<string>
@@ -409,7 +409,7 @@ export async function enrichBallotMeasure(
         break;
       }
 
-      const validation = await validateBallotMeasurePayload(
+      const validation = await validateBallotMeasureAiPayload(
         generated.parsed,
         config.timeoutMs,
         new Set(input.allowedResearchAreaSlugs.map((slug) => slug.trim().toLowerCase()))
