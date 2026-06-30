@@ -14,7 +14,59 @@ const redisSendCommandMock = vi.fn(async () => []);
 const enrichCandidateRosterMock = vi.fn();
 const eligibilityMock = vi.fn();
 
-describe("runCandidateRosterEnricher eligibility gate", () => {
+function installCandidateRosterEnricherMocks(): void {
+  vi.doMock("pg", () => ({
+    Pool: vi.fn(() => ({
+      query: poolQueryMock,
+      end: poolEndMock,
+    })),
+  }));
+
+  vi.doMock("redis", () => ({
+    createClient: vi.fn(() => ({
+      connect: redisConnectMock,
+      quit: redisQuitMock,
+      xGroupCreate: redisXGroupCreateMock,
+      xAutoClaim: redisXAutoClaimMock,
+      xReadGroup: redisXReadGroupMock,
+      xAck: redisXAckMock,
+      sendCommand: redisSendCommandMock,
+    })),
+  }));
+
+  vi.doMock("../../src/config/env.js", () => ({
+    getPipelineEnv: () => ({
+      DATABASE_URL: "postgresql://localhost:5432/test",
+      REDIS_URL: "redis://localhost:6379/0",
+      AI_PROVIDER: "openai",
+      AI_MODEL: "gpt-5.4-mini",
+      AI_TIMEOUT_MS: 90000,
+      ANTHROPIC_WEB_SEARCH_MAX_USES: 3,
+      STATE_RESOURCES_PROMPT_VERSION: "state_resources_v2",
+      CENSUS_API_KEYS: [],
+    }),
+  }));
+
+  vi.doMock("../../src/ai/enrichCandidateRoster.js", () => ({
+    buildCandidateRosterConfigFromEnv: () => ({}),
+    enrichCandidateRoster: enrichCandidateRosterMock,
+    disambiguateCandidateDuplicateGroup: vi.fn(),
+  }));
+
+  vi.doMock("../../src/pipeline/candidates/officeCandidateEligibility.js", () => ({
+    defaultOfficeCandidateEligibilityConfig: () => ({
+      asOfDate: "2026-05-23",
+      defaultBufferDays: 7,
+      shortStageGapDays: 60,
+      shortStageBufferDays: 3,
+      statewideUsHouseLookaheadDays: 90,
+      localOfficeLookaheadDays: 75,
+    }),
+    getOfficeCandidateEligibilityForElectionId: eligibilityMock,
+  }));
+}
+
+describe("runCandidateRosterEnricher", () => {
   beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
@@ -38,55 +90,7 @@ describe("runCandidateRosterEnricher eligibility gate", () => {
   });
 
   it("acks and skips AI call when election is not currently eligible", async () => {
-    vi.doMock("pg", () => ({
-      Pool: vi.fn(() => ({
-        query: poolQueryMock,
-        end: poolEndMock,
-      })),
-    }));
-
-    vi.doMock("redis", () => ({
-      createClient: vi.fn(() => ({
-        connect: redisConnectMock,
-        quit: redisQuitMock,
-        xGroupCreate: redisXGroupCreateMock,
-        xAutoClaim: redisXAutoClaimMock,
-        xReadGroup: redisXReadGroupMock,
-        xAck: redisXAckMock,
-        sendCommand: redisSendCommandMock,
-      })),
-    }));
-
-    vi.doMock("../../src/config/env.js", () => ({
-      getPipelineEnv: () => ({
-        DATABASE_URL: "postgresql://localhost:5432/test",
-        REDIS_URL: "redis://localhost:6379/0",
-        AI_PROVIDER: "openai",
-        AI_MODEL: "gpt-5.4-mini",
-        AI_TIMEOUT_MS: 90000,
-        ANTHROPIC_WEB_SEARCH_MAX_USES: 3,
-        STATE_RESOURCES_PROMPT_VERSION: "state_resources_v2",
-        CENSUS_API_KEYS: [],
-      }),
-    }));
-
-    vi.doMock("../../src/ai/enrichCandidateRoster.js", () => ({
-      buildCandidateRosterConfigFromEnv: () => ({}),
-      enrichCandidateRoster: enrichCandidateRosterMock,
-      disambiguateCandidateDuplicateGroup: vi.fn(),
-    }));
-
-    vi.doMock("../../src/pipeline/candidates/officeCandidateEligibility.js", () => ({
-      defaultOfficeCandidateEligibilityConfig: () => ({
-        asOfDate: "2026-05-23",
-        defaultBufferDays: 7,
-        shortStageGapDays: 60,
-        shortStageBufferDays: 3,
-        statewideUsHouseLookaheadDays: 90,
-        localOfficeLookaheadDays: 75,
-      }),
-      getOfficeCandidateEligibilityForElectionId: eligibilityMock,
-    }));
+    installCandidateRosterEnricherMocks();
 
     const { runCandidateRosterEnricher } = await import(
       "../../src/pipeline/enrichers/candidateRosterEnricher.js"
@@ -105,6 +109,86 @@ describe("runCandidateRosterEnricher eligibility gate", () => {
 
     expect(eligibilityMock).toHaveBeenCalledTimes(1);
     expect(enrichCandidateRosterMock).not.toHaveBeenCalled();
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:roster:draft",
+      "candidate_roster_enricher",
+      "1-0"
+    );
+  });
+
+  it("casts election_id parameters in roster staging JSONB writes", async () => {
+    process.env.CANDIDATE_ROSTER_ENABLE_ENRICHER_ELIGIBILITY_GATE = "false";
+    installCandidateRosterEnricherMocks();
+
+    poolQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("SELECT ingest_key, payload, status, run_id")) {
+        return {
+          rows: [
+            {
+              ingest_key: "candidate_roster:00000000-0000-0000-0000-000000000999",
+              payload: { election_id: "00000000-0000-0000-0000-000000000999" },
+              status: "pending",
+              run_id: "run_1",
+            },
+          ],
+        };
+      }
+
+      if (sql.includes("FROM public.elections AS e")) {
+        return {
+          rows: [
+            {
+              id: "00000000-0000-0000-0000-000000000999",
+              district_name: "Vermont",
+              district_type: "statewide",
+              state: "VT",
+              election_date: "2026-08-11",
+              official_ballot_title: "Governor",
+              election_stage: "primary",
+              senate_class: null,
+              term_end_year: null,
+              is_partisan: true,
+              sources: [],
+            },
+          ],
+        };
+      }
+
+      if (sql.includes("FROM public.candidate_elections AS ce")) {
+        return { rows: [] };
+      }
+
+      return { rows: [] };
+    });
+
+    enrichCandidateRosterMock.mockResolvedValue({
+      ok: true,
+      candidates: [
+        {
+          display_name: "Casey Example",
+          party: "Democratic",
+          sources: ["https://example.org/candidate"],
+        },
+      ],
+      aiRawDebug: { provider: "test" },
+    });
+
+    const { runCandidateRosterEnricher } = await import(
+      "../../src/pipeline/enrichers/candidateRosterEnricher.js"
+    );
+
+    await runCandidateRosterEnricher({ once: true, batchSize: 5, blockMs: 10 });
+
+    const sqlStatements = poolQueryMock.mock.calls.map(([sql]) => String(sql));
+    expect(
+      sqlStatements.some((sql) => sql.includes("jsonb_build_object('election_id', $3::text)"))
+    ).toBe(true);
+    expect(
+      sqlStatements.some((sql) =>
+        sql.includes("jsonb_build_object('election_id', $2::text, 'candidates', $3::jsonb)")
+      )
+    ).toBe(true);
+    expect(enrichCandidateRosterMock).toHaveBeenCalledTimes(1);
     expect(redisXAckMock).toHaveBeenCalledWith(
       "staging:candidates:roster:draft",
       "candidate_roster_enricher",
