@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { Pool, type PoolClient } from "pg";
 import { createClient } from "redis";
 
@@ -220,7 +221,7 @@ function buildLinkedElectionFinanceContext(input: {
   };
 }
 
-function applyConfirmedGaps(
+export function applyConfirmedGaps(
   gaps: readonly ManualResearchRepairGap[],
   confirmedGapIds: ReadonlySet<string>
 ): ManualResearchRepairGap[] {
@@ -268,7 +269,7 @@ function buildProfileValidationGaps(input: {
   }];
 }
 
-function buildCandidateProfileQualityGaps(input: {
+export function buildCandidateProfileQualityGaps(input: {
   profile: CandidateProfilePayload;
   includeParty: boolean;
 }): ManualResearchRepairGap[] {
@@ -312,17 +313,19 @@ function buildCandidateProfileQualityGaps(input: {
       focusedResearchPass: "Run a focused party-only profile pass using official roster/filing sources. Add party if source-backed, or mark candidate_profile.party confirmed_null if no reliable party exists.",
     });
   }
-  gaps.push({
-    id: "candidate_profile.current_office",
-    stage: "candidate_profile",
-    objectType: "candidate_profile",
-    outcome: "blocked_by_contract",
-    field: "current_office",
-    failureKind: "quality_gap",
-    reason: "candidates.current_office exists in the database/API, but CandidateProfilePayload and the manual profile writer do not currently support writing it.",
-    promptFile: "src/ai/providers/candidateProfilePrompt.ts",
-    focusedResearchPass: "Do not place occupation or professional role into current_office. Track this as blocked_by_contract until profile contract/writer support is added.",
-  });
+  if (!input.profile.current_office) {
+    gaps.push({
+      id: "candidate_profile.current_office",
+      stage: "candidate_profile",
+      objectType: "candidate_profile",
+      outcome: "needs_repair",
+      field: "current_office",
+      failureKind: "quality_gap",
+      reason: "Candidate current office is missing.",
+      promptFile: "src/ai/providers/candidateProfilePrompt.ts",
+      focusedResearchPass: "Run a focused current-office-only profile pass for this candidate. Use only source-backed current elected, appointed, or public office; mark candidate_profile.current_office confirmed_null if none exists.",
+    });
+  }
   return gaps;
 }
 
@@ -586,8 +589,11 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error("manual candidate profile write failed:", message);
-  process.exitCode = 1;
-});
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("manual candidate profile write failed:", message);
+    process.exitCode = 1;
+  });
+}

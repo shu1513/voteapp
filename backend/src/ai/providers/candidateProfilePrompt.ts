@@ -64,6 +64,7 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     '  "twitter_handle": "handle without URL (optional)",',
     '  "linkedin_url": "https://... (optional)",',
     '  "official_website_url": "https://... (optional)",',
+    '  "current_office": "current elected/appointed/public office, if any (optional)",',
     '  "summary": "short neutral bio summary (optional)",',
     '  "sources": ["https://..."]',
     "}",
@@ -78,10 +79,13 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
       : []),
     ...(includeFecIds
       ? ["- For this federal contest, do not include date_of_birth; backend stores it as null."]
-      : ["- date_of_birth, twitter_handle (without URL), linkedin_url, official_website_url are optional."]),
+      : ["- date_of_birth, twitter_handle (without URL), linkedin_url, official_website_url, current_office are optional."]),
     ...(includeFecIds
-      ? ["- twitter_handle (without URL), linkedin_url, official_website_url are optional."]
+      ? ["- twitter_handle (without URL), linkedin_url, official_website_url, current_office are optional."]
       : []),
+    "- Use current_office only for a current elected, appointed, or public office, such as Governor, State Treasurer, or Secretary of State.",
+    "- Do not put occupation, employer, campaign status, or past office in current_office.",
+    "- Use null/omission for current_office if no reliable source-backed current office is found.",
     "- Use null/omission for unknown optional fields; do not invent.",
     "- Include sources used for this profile and identity evidence.",
     "- return JSON only (no prose, no markdown).",

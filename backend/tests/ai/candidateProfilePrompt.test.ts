@@ -36,6 +36,19 @@ describe("buildCandidateProfilePrompt", () => {
     expect(prompt).not.toContain("- party:");
   });
 
+  it("asks for current office with public-office-only guardrails", () => {
+    const prompt = buildCandidateProfilePrompt(baseInput);
+
+    expect(prompt).toContain('"current_office": "current elected/appointed/public office, if any (optional)"');
+    expect(prompt).toContain(
+      "Use current_office only for a current elected, appointed, or public office, such as Governor, State Treasurer, or Secretary of State."
+    );
+    expect(prompt).toContain("Do not put occupation, employer, campaign status, or past office in current_office.");
+    expect(prompt).toContain(
+      "Use null/omission for current_office if no reliable source-backed current office is found."
+    );
+  });
+
   it("includes disambiguation hint only when provided", () => {
     const withHint = buildCandidateProfilePrompt({
       ...baseInput,

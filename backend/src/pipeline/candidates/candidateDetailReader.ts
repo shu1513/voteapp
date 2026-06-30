@@ -57,12 +57,18 @@ export type CandidateDetailCandidate = {
   display_name: string;
   first_name: string | null;
   last_name: string | null;
+  date_of_birth: string | null;
   party: string;
   state: string;
   current_office: string | null;
   summary: string | null;
+  twitter_handle: string | null;
+  linkedin_url: string | null;
+  official_website_url: string | null;
   fec_ids: string[];
   state_filing_ids: string[];
+  profile_sources: string[];
+  last_researched: string | null;
   records: CandidateDetailRecord[];
   elections: CandidateDetailElection[];
   is_following: boolean;
@@ -90,12 +96,17 @@ type CandidateDetailRow = {
   display_name: string | null;
   first_name: string | null;
   last_name: string | null;
+  date_of_birth: string | null;
   party: string | null;
   state: string | null;
   current_office: string | null;
   summary: string | null;
+  twitter_handle: string | null;
+  linkedin_url: string | null;
+  official_website_url: string | null;
   fec_ids: unknown;
   state_filing_ids: unknown;
+  last_researched: string | null;
 };
 
 type CandidateFollowRow = {
@@ -188,12 +199,18 @@ function rowToCandidate(
     display_name: row.display_name ?? "",
     first_name: row.first_name,
     last_name: row.last_name,
+    date_of_birth: row.date_of_birth,
     party: row.party ?? "",
     state: row.state ?? "",
     current_office: row.current_office,
     summary: row.summary,
+    twitter_handle: row.twitter_handle,
+    linkedin_url: row.linkedin_url,
+    official_website_url: row.official_website_url,
     fec_ids: parseStringArray(row.fec_ids),
     state_filing_ids: parseStringArray(row.state_filing_ids),
+    profile_sources: [],
+    last_researched: row.last_researched,
     records,
     elections,
     is_following: follow !== null,
@@ -375,12 +392,17 @@ export async function lookupCandidateDetailById(
         ) AS display_name,
         candidate.first_name,
         candidate.last_name,
+        candidate.date_of_birth::text AS date_of_birth,
         candidate.party,
         candidate.state,
         candidate.current_office,
         candidate.summary,
+        candidate.twitter_handle,
+        candidate.linkedin_url,
+        candidate.official_website_url,
         candidate.fec_ids,
-        candidate.state_filing_ids
+        candidate.state_filing_ids,
+        candidate.last_researched::text AS last_researched
       FROM public.candidates AS candidate
       WHERE candidate.id = $1::uuid
         AND candidate.deleted_at IS NULL
