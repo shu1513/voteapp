@@ -52,26 +52,26 @@ async function loadContributionRecords(input: {
   paths: readonly string[];
   sourceUrl: string;
 }): Promise<IllinoisSbeContributionRecord[]> {
-  const chunks = await Promise.all(
-    input.paths.map(async (path) => {
-      const csv = await readFile(path, "utf8");
-      return parseIllinoisSbeContributionRecordsCsv(csv, input.sourceUrl);
-    })
-  );
-  return chunks.flat();
+  const records: IllinoisSbeContributionRecord[] = [];
+  for (const path of input.paths) {
+    // The current Illinois parser materializes each CSV, so keep reads sequential to cap peak memory.
+    const csv = await readFile(path, "utf8");
+    records.push(...parseIllinoisSbeContributionRecordsCsv(csv, input.sourceUrl));
+  }
+  return records;
 }
 
 async function loadExpenditureRecords(input: {
   paths: readonly string[];
   sourceUrl: string;
 }): Promise<IllinoisSbeExpenditureRecord[]> {
-  const chunks = await Promise.all(
-    input.paths.map(async (path) => {
-      const csv = await readFile(path, "utf8");
-      return parseIllinoisSbeExpenditureRecordsCsv(csv, input.sourceUrl);
-    })
-  );
-  return chunks.flat();
+  const records: IllinoisSbeExpenditureRecord[] = [];
+  for (const path of input.paths) {
+    // The current Illinois parser materializes each CSV, so keep reads sequential to cap peak memory.
+    const csv = await readFile(path, "utf8");
+    records.push(...parseIllinoisSbeExpenditureRecordsCsv(csv, input.sourceUrl));
+  }
+  return records;
 }
 
 export async function loadIllinoisSbeArtifactDataSet(
