@@ -28,9 +28,41 @@ describe("oregonOrestarClient", () => {
     await expect(getOregonOrestarSearchForm({ fetchFn })).resolves.toEqual({
       actionUrl: "https://secure.sos.state.or.us/orestar/cneSearch.do;JSESSIONID_ORESTAR=abc123",
       csrfToken: "csrf-token-1",
+      cookieHeader: null,
       sessionId: "abc123",
     });
     expect(fetchFn.mock.calls[0]?.[0]).toBe("https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearch.do");
+  });
+
+  it("fetches the CSRFGuard token when the live search form omits the hidden token", async () => {
+    const fetchFn = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.endsWith("/orestar/JavaScriptServlet")) {
+        expect(init?.method).toBe("POST");
+        expect(init?.headers).toMatchObject({
+          "FETCH-CSRF-TOKEN": "1",
+          cookie: "JSESSIONID_ORESTAR=abc123",
+        });
+        return htmlResponse("OWASP_CSRFTOKEN:csrf:token:from-script");
+      }
+      return {
+        ...htmlResponse(`
+          <form name="cneSearchForm" action="/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123">
+            <input type="hidden" name="cneSearchButtonName" value="">
+          </form>
+        `),
+        headers: {
+          get: (name: string) => (name.toLowerCase() === "set-cookie" ? "JSESSIONID_ORESTAR=abc123; Path=/orestar" : null),
+        },
+      };
+    });
+
+    await expect(getOregonOrestarSearchForm({ fetchFn })).resolves.toEqual({
+      actionUrl: "https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123",
+      csrfToken: "csrf:token:from-script",
+      cookieHeader: "JSESSIONID_ORESTAR=abc123",
+      sessionId: "abc123",
+    });
+    expect(fetchFn).toHaveBeenCalledTimes(2);
   });
 
   it("fetches and parses a transaction detail URL", async () => {

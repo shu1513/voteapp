@@ -278,26 +278,39 @@ export function buildFloridaContributionExportFormData(
   const params = new URLSearchParams();
   params.set("election", query.electionCode ?? "All");
   params.set("search_on", contributionSearchOnValue(query.searchType));
-  params.set("queryformat", "2");
+  params.set("CanFName", "");
+  params.set("CanLName", "");
+  params.set("CanNameSrch", "2");
+  params.set("office", "All");
+  params.set("cdistrict", "");
+  params.set("cgroup", "");
+  params.set("party", "All");
+  params.set("ComName", "");
+  params.set("ComNameSrch", "2");
+  params.set("committee", "All");
+  params.set("cfname", "");
+  params.set("clname", "");
+  params.set("namesearch", "2");
+  params.set("ccity", "");
+  params.set("cstate", "");
+  params.set("czipcode", "");
+  params.set("coccupation", "");
+  params.set("cdollar_minimum", "");
+  params.set("cdollar_maximum", "");
   params.set("rowlimit", String(query.rowLimit));
-  if (query.dateFrom) {
-    params.set("cdatefrom", query.dateFrom);
-  }
-  if (query.dateTo) {
-    params.set("cdateto", query.dateTo);
-  }
+  params.set("csort1", "NAM");
+  params.set("csort2", "CAN");
+  params.set("cdatefrom", query.dateFrom ?? "");
+  params.set("cdateto", query.dateTo ?? "");
+  params.set("queryformat", "2");
   if (query.searchType === "candidate_detail") {
     params.set("CanFName", query.candidateFirstName!);
     params.set("CanLName", query.candidateLastName!);
-    params.set("CanNameSrch", "2");
-    params.set("office", "All");
   } else {
     params.set("ComName", query.committeeName!);
-    params.set("ComNameSrch", "2");
     params.set("committee", query.committeeType ?? "All");
   }
-  params.set("csort1", "NAM");
-  params.set("csort2", "CAN");
+  params.set("Submit", "Submit");
   return params;
 }
 
