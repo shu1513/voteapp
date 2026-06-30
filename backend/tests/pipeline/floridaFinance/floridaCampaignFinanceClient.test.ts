@@ -4,6 +4,7 @@ import {
   buildFloridaContributionExportCacheKey,
   buildFloridaContributionExportFormData,
   buildFloridaContributionExportTransportRequest,
+  createFloridaContributionExportFetchTransport,
   createFloridaContributionExportRateLimiter,
   exportFloridaContributionRows,
   floridaContributionExportFormDataObject,
@@ -19,7 +20,9 @@ const SAMPLE_TSV = [
 ].join("\n");
 
 afterEach(() => {
+  vi.useRealTimers();
   vi.restoreAllMocks();
+  vi.unstubAllGlobals();
   if (ORIGINAL_FLORIDA_FINANCE_VALUE === undefined) {
     delete process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED;
   } else {
@@ -44,12 +47,16 @@ describe("floridaCampaignFinanceClient", () => {
     const params = buildFloridaContributionExportFormData(input);
 
     expect(floridaContributionExportFormDataObject(params)).toEqual({
+      election: "20261103-GEN",
       search_on: "2",
       queryformat: "2",
       rowlimit: "2500",
-      Election: "20261103-GEN",
       CanFName: "Jane",
       CanLName: "Doe",
+      CanNameSrch: "2",
+      office: "All",
+      csort1: "NAM",
+      csort2: "CAN",
     });
     expect(buildFloridaContributionExportCacheKey(input)).toMatch(
       /^fl-contrib-candidate-20261103-gen-doe-jane-[a-f0-9]{12}$/
@@ -68,14 +75,17 @@ describe("floridaCampaignFinanceClient", () => {
     });
 
     expect(floridaContributionExportFormDataObject(params)).toEqual({
+      election: "20261103-GEN",
       search_on: "4",
       queryformat: "2",
       rowlimit: "10000",
-      Election: "20261103-GEN",
-      date_from: "01/01/2025",
-      date_to: "12/31/2026",
-      committee: "PAC",
+      cdatefrom: "01/01/2025",
+      cdateto: "12/31/2026",
       ComName: "Floridians for Jane",
+      ComNameSrch: "2",
+      committee: "PAC",
+      csort1: "NAM",
+      csort2: "CAN",
     });
   });
 
@@ -143,12 +153,16 @@ describe("floridaCampaignFinanceClient", () => {
       sourceUrl: "https://dos.elections.myflorida.com/cgi-bin/contrib.exe?download=1",
       rowCount: 1,
       formData: {
+        election: "20261103-GEN",
         search_on: "2",
         queryformat: "2",
         rowlimit: "10000",
-        Election: "20261103-GEN",
         CanFName: "Jane",
         CanLName: "Doe",
+        CanNameSrch: "2",
+        office: "All",
+        csort1: "NAM",
+        csort2: "CAN",
       },
     });
     expect(result.retrievedAt.toISOString()).toBe("2026-06-20T20:00:00.000Z");
@@ -158,6 +172,116 @@ describe("floridaCampaignFinanceClient", () => {
       electionCode: "20261103-GEN",
       sourceUrl: "https://dos.elections.myflorida.com/cgi-bin/contrib.exe?download=1",
     });
+  });
+
+  it("uses the default fetch transport when no transport is injected", async () => {
+    process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.FLORIDA_CAMPAIGN_FINANCE_BROWSER_EXPORT_ENABLED = "true";
+    const fetchFn = vi.fn(async (_url: string | URL | Request, init?: RequestInit) => {
+      expect(init?.method).toBe("POST");
+      expect(String(init?.body)).toContain("search_on=2");
+      expect(String(init?.body)).toContain("CanFName=Jane");
+      expect(String(init?.body)).toContain("CanLName=Doe");
+      expect(init?.headers).toMatchObject({
+        "content-type": "application/x-www-form-urlencoded",
+      });
+      return new Response(SAMPLE_TSV, {
+        status: 200,
+        statusText: "OK",
+      });
+    });
+    vi.stubGlobal("fetch", fetchFn);
+
+    const result = await exportFloridaContributionRows({
+      searchType: "candidate_detail",
+      candidateFirstName: "Jane",
+      candidateLastName: "Doe",
+    });
+
+    expect(fetchFn).toHaveBeenCalledWith(
+      "https://dos.elections.myflorida.com/cgi-bin/contrib.exe",
+      expect.objectContaining({ method: "POST" })
+    );
+    expect(result.rowCount).toBe(1);
+    expect(result.rows[0]).toMatchObject({ contributorName: "Smith, Pat" });
+  });
+
+  it("creates a fetch transport with HTTP error handling", async () => {
+    const fetchFn = vi.fn(async () => new Response("bad request", { status: 400, statusText: "Bad Request" }));
+    const transport = createFloridaContributionExportFetchTransport({
+      fetchFn: fetchFn as typeof fetch,
+      timeoutMs: 1000,
+    });
+    const request = buildFloridaContributionExportTransportRequest({
+      searchType: "committee_detail",
+      committeeName: "Friends of Jane Doe",
+    });
+
+    await expect(transport(request)).rejects.toThrow("HTTP 400 Bad Request");
+  });
+
+  it("rejects HTML error pages returned as successful Florida export responses", async () => {
+    const fetchFn = vi.fn(async () =>
+      new Response("<html><body>Temporarily unavailable</body></html>", {
+        status: 200,
+        statusText: "OK",
+      })
+    );
+    const transport = createFloridaContributionExportFetchTransport({
+      fetchFn: fetchFn as typeof fetch,
+      timeoutMs: 1000,
+    });
+    const request = buildFloridaContributionExportTransportRequest({
+      searchType: "committee_detail",
+      committeeName: "Friends of Jane Doe",
+    });
+
+    await expect(transport(request)).rejects.toThrow("non-TSV content");
+  });
+
+  it("rejects partial HTML CGI error fragments returned as successful exports", async () => {
+    const fetchFn = vi.fn(async () =>
+      new Response("<p>Error processing request</p>", {
+        status: 200,
+        statusText: "OK",
+      })
+    );
+    const transport = createFloridaContributionExportFetchTransport({
+      fetchFn: fetchFn as typeof fetch,
+      timeoutMs: 1000,
+    });
+    const request = buildFloridaContributionExportTransportRequest({
+      searchType: "committee_detail",
+      committeeName: "Friends of Jane Doe",
+    });
+
+    await expect(transport(request)).rejects.toThrow("non-TSV content");
+  });
+
+  it("times out fetch transport requests", async () => {
+    vi.useFakeTimers();
+    const fetchFn = vi.fn(
+      (_url: string | URL | Request, init?: RequestInit) =>
+        new Promise<Response>((_resolve, reject) => {
+          init?.signal?.addEventListener("abort", () => {
+            const error = new Error("aborted");
+            error.name = "AbortError";
+            reject(error);
+          });
+        })
+    );
+    const transport = createFloridaContributionExportFetchTransport({
+      fetchFn: fetchFn as typeof fetch,
+      timeoutMs: 25,
+    });
+    const request = buildFloridaContributionExportTransportRequest({
+      searchType: "committee_detail",
+      committeeName: "Friends of Jane Doe",
+    });
+
+    const result = expect(transport(request)).rejects.toThrow("timed out after 25ms");
+    await vi.advanceTimersByTimeAsync(25);
+    await result;
   });
 
   it("runs an optional rate limiter before invoking the injected browser transport", async () => {

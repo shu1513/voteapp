@@ -4,19 +4,52 @@ import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassi
 import {
   DEFAULT_FLORIDA_CAMPAIGN_FINANCE_CACHE_DIR,
   readFloridaContributionExportArtifact,
+  writeFloridaContributionExportArtifact,
 } from "./floridaCampaignFinanceArtifactCache.js";
-import type { FloridaContributionRow } from "./floridaCampaignFinanceRows.js";
+import {
+  floridaElectionCycleStartYear,
+  parseFloridaDateYear,
+  type FloridaContributionRow,
+} from "./floridaCampaignFinanceRows.js";
+import {
+  buildFloridaContributionExportCacheKey,
+  createFloridaContributionExportRateLimiter,
+  exportFloridaContributionRows,
+  type FloridaContributionExportQuery,
+  type FloridaContributionExportRateLimiter,
+  type FloridaContributionExportTransport,
+} from "./floridaCampaignFinanceClient.js";
 import {
   syncFloridaCandidateFinance,
   type FloridaCandidateFinanceSyncInput,
   type FloridaCandidateFinanceSyncResult,
 } from "./floridaCandidateFinanceSync.js";
+import {
+  autoLinkMissingFloridaCandidateFinanceLinks,
+  listFloridaCandidateElectionsMissingFinanceLinks,
+  type FloridaFinanceAutoLinkCandidateElection,
+} from "./floridaCandidateFinanceAutoLink.js";
+import { FLORIDA_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./floridaFinanceEligibleOffices.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 export type FloridaContributionArtifactReference = {
   cacheDir?: string | null;
   cacheKey: string;
+};
+
+export type FloridaCandidateFinanceDueRow = {
+  candidateId: string;
+  candidateElectionId: string;
+  electionId: string;
+  candidateName: string;
+  electionYear: number;
+  officeName: string;
+  district: string | null;
+  committeeId: string;
+  committeeName: string;
+  sourceUrl: string | null;
+  lastSyncedAt: string | null;
 };
 
 export type FloridaCandidateFinanceBatchSyncItemInput = Omit<
@@ -41,6 +74,34 @@ export type FloridaCandidateFinanceBatchSyncInput = {
   syncFloridaCandidateFinanceFn?: typeof syncFloridaCandidateFinance;
 };
 
+export type FloridaCandidateFinanceDueContributionData = {
+  contributionRows?: readonly FloridaContributionRow[];
+  contributionArtifact?: FloridaContributionArtifactReference | null;
+  contributionSourceUrl?: string | null;
+};
+
+export type FloridaCandidateFinanceDueSyncInput = Omit<
+  FloridaCandidateFinanceBatchSyncInput,
+  "syncInputs"
+> & {
+  staleAfterDays?: number;
+  electionLookbackDays?: number;
+  electionLookaheadDays?: number;
+  autoLinkMissingLinks?: boolean;
+  autoLinkContributionRowsByYear?: ReadonlyMap<number, readonly FloridaContributionRow[]>;
+  autoLinkSourceUrlByYear?: ReadonlyMap<number, string>;
+  autoLinkCandidateElections?: readonly FloridaFinanceAutoLinkCandidateElection[];
+  contributionDataByCommitteeId?: ReadonlyMap<string, FloridaCandidateFinanceDueContributionData>;
+  fetchMissingContributionData?: boolean;
+  exportFloridaContributionRowsFn?: typeof exportFloridaContributionRows;
+  exportTransport?: FloridaContributionExportTransport;
+  exportRateLimiter?: FloridaContributionExportRateLimiter;
+  exportMinIntervalMs?: number;
+  exportRowLimit?: number;
+  exportForce?: boolean;
+  refreshExportArtifacts?: boolean;
+};
+
 export type FloridaCandidateFinanceBatchSyncItemResult = {
   candidateId: string;
   electionId: string;
@@ -62,7 +123,31 @@ export type FloridaCandidateFinanceBatchSyncResult = {
   results: FloridaCandidateFinanceBatchSyncItemResult[];
 };
 
+export type FloridaCandidateFinanceDueSyncResult = FloridaCandidateFinanceBatchSyncResult & {
+  staleAfterDays: number;
+};
+
+type FloridaCandidateFinanceDueQueryRow = {
+  candidate_id: string;
+  candidate_election_id: string;
+  election_id: string;
+  candidate_name: string;
+  election_year: number;
+  office_name: string;
+  district: string | null;
+  committee_id: string;
+  committee_name: string;
+  source_url: string | null;
+  last_synced_at: string | null;
+  total_due_rows: string | number;
+};
+
 const DEFAULT_MAX_CANDIDATES = 25;
+const DEFAULT_STALE_AFTER_DAYS = 7;
+// Keep one extra calendar day so UTC scheduler timing cannot skip election-night finance syncs.
+const DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS = 1;
+const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
+const DEFAULT_FLORIDA_CONTRIBUTION_EXPORT_MIN_INTERVAL_MS = 1_000;
 
 function assertValidDate(date: Date, label: string): void {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
@@ -78,9 +163,376 @@ function normalizePositiveInteger(value: number | undefined, fallback: number, l
   return normalized;
 }
 
+function normalizeNonnegativeInteger(value: number | undefined, fallback: number, label: string): number {
+  const normalized = value ?? fallback;
+  if (!Number.isInteger(normalized) || normalized < 0) {
+    throw new Error(`Invalid Florida finance batch sync ${label}: ${value}`);
+  }
+  return normalized;
+}
+
+function normalizeCommitteeId(value: string): string {
+  return value.trim().toUpperCase();
+}
+
+function parseTotalDueRows(value: string | number | undefined): number {
+  const parsed = typeof value === "number" ? value : Number(value);
+  return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : 0;
+}
+
+function mapDueRow(row: FloridaCandidateFinanceDueQueryRow): FloridaCandidateFinanceDueRow {
+  return {
+    candidateId: row.candidate_id,
+    candidateElectionId: row.candidate_election_id,
+    electionId: row.election_id,
+    candidateName: row.candidate_name,
+    electionYear: row.election_year,
+    officeName: row.office_name,
+    district: row.district,
+    committeeId: row.committee_id,
+    committeeName: row.committee_name,
+    sourceUrl: row.source_url,
+    lastSyncedAt: row.last_synced_at,
+  };
+}
+
 function normalizeArtifactCacheDir(value: string | null | undefined, fallback: string): string {
   const normalized = value?.trim();
   return normalized && normalized.length > 0 ? normalized : fallback;
+}
+
+export async function listDueFloridaCandidateFinanceSyncRows(
+  db: Queryable,
+  input: {
+    now: Date;
+    staleAfterDays: number;
+    maxCandidates: number;
+    electionLookbackDays: number;
+    electionLookaheadDays: number;
+  }
+): Promise<{ rows: FloridaCandidateFinanceDueRow[]; totalDueRows: number }> {
+  const result = await db.query<FloridaCandidateFinanceDueQueryRow>(
+    `
+      WITH due AS (
+        SELECT
+          link.candidate_id::text AS candidate_id,
+          candidate_election.id::text AS candidate_election_id,
+          link.election_id::text AS election_id,
+          COALESCE(
+            NULLIF(trim(candidate.display_name), ''),
+            NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), ''),
+            link.candidate_name_normalized
+          ) AS candidate_name,
+          link.election_year,
+          link.office_name,
+          link.district,
+          link.committee_id,
+          link.committee_name,
+          link.source_url,
+          summary.last_synced_at::text AS last_synced_at,
+          COUNT(*) OVER () AS total_due_rows
+        FROM public.fl_candidate_finance_links AS link
+        JOIN public.candidates AS candidate
+          ON candidate.id = link.candidate_id
+        JOIN public.candidate_elections AS candidate_election
+          ON candidate_election.candidate_id = link.candidate_id
+         AND candidate_election.election_id = link.election_id
+        JOIN public.elections AS election
+          ON election.id = link.election_id
+        JOIN public.districts AS district
+          ON district.id = election.district_id
+        LEFT JOIN public.offices AS office
+          ON office.id = election.office_id
+        LEFT JOIN public.fl_candidate_finance_summaries AS summary
+          ON summary.link_id = link.id
+         AND summary.election_year = link.election_year
+        WHERE link.link_status = 'active'
+          AND candidate.deleted_at IS NULL
+          AND district.state = 'FL'
+          AND election.race_type = 'office'
+          AND election.election_date >= ($1::date - make_interval(days => $4::int))
+          AND election.election_date <= ($1::date + make_interval(days => $5::int))
+          AND candidate_election.status NOT IN ('withdrawn', 'lost')
+          AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
+          AND (
+            summary.last_synced_at IS NULL
+            OR summary.last_synced_at < ($1::timestamptz - make_interval(days => $2::int))
+          )
+        ORDER BY summary.last_synced_at ASC NULLS FIRST,
+                 election.election_date ASC,
+                 link.candidate_name_normalized ASC,
+                 link.id ASC
+        LIMIT $3::int
+      )
+      SELECT
+        candidate_id,
+        candidate_election_id,
+        election_id,
+        candidate_name,
+        election_year,
+        office_name,
+        district,
+        committee_id,
+        committee_name,
+        source_url,
+        last_synced_at,
+        total_due_rows
+      FROM due
+    `,
+    [
+      input.now.toISOString(),
+      input.staleAfterDays,
+      input.maxCandidates,
+      input.electionLookbackDays,
+      input.electionLookaheadDays,
+      [...FLORIDA_FINANCE_ELIGIBLE_OFFICE_KEYS],
+    ]
+  );
+
+  return {
+    rows: result.rows.map(mapDueRow),
+    totalDueRows: result.rows.length > 0 ? parseTotalDueRows(result.rows[0]?.total_due_rows) : 0,
+  };
+}
+
+function buildDueSyncInput(input: {
+  row: FloridaCandidateFinanceDueRow;
+  contributionData: FloridaCandidateFinanceDueContributionData;
+}): FloridaCandidateFinanceBatchSyncItemInput {
+  return {
+    candidateId: input.row.candidateId,
+    candidateElectionId: input.row.candidateElectionId,
+    electionId: input.row.electionId,
+    candidateName: input.row.candidateName,
+    electionYear: input.row.electionYear,
+    officeName: input.row.officeName,
+    district: input.row.district,
+    trustedCommittee: {
+      committeeId: input.row.committeeId,
+      committeeName: input.row.committeeName,
+      sourceUrl: input.row.sourceUrl,
+    },
+    sourceUrl: input.row.sourceUrl,
+    contributionRows: input.contributionData?.contributionRows,
+    contributionArtifact: input.contributionData?.contributionArtifact,
+    contributionSourceUrl: input.contributionData?.contributionSourceUrl ?? input.row.sourceUrl,
+    includeOutsideGroupFinance: false,
+  };
+}
+
+function hasDirectContributionData(
+  data: FloridaCandidateFinanceDueContributionData | undefined
+): data is FloridaCandidateFinanceDueContributionData {
+  return data !== undefined && (data.contributionRows !== undefined || data.contributionArtifact != null);
+}
+
+function splitCandidateNameForFloridaExport(
+  candidateName: string
+): { candidateFirstName: string; candidateLastName: string } | null {
+  const trimmed = candidateName.trim().replace(/\s+/g, " ");
+  if (!trimmed) {
+    return null;
+  }
+  const commaParts = trimmed.split(",").map((part) => part.trim()).filter(Boolean);
+  if (commaParts.length >= 2) {
+    const [lastName, ...firstNames] = commaParts;
+    const firstName = firstNames.join(" ").trim();
+    return firstName && lastName ? { candidateFirstName: firstName, candidateLastName: lastName } : null;
+  }
+
+  const parts = trimmed.split(" ").filter(Boolean);
+  while (parts.length >= 2 && /^(?:JR|SR|II|III|IV|V)$/i.test(parts[parts.length - 1] ?? "")) {
+    parts.pop();
+  }
+  if (parts.length < 2) {
+    return null;
+  }
+  return {
+    candidateFirstName: parts[0]!,
+    candidateLastName: parts[parts.length - 1]!,
+  };
+}
+
+function exportRateLimiterForDueSync(input: {
+  rateLimiter: FloridaContributionExportRateLimiter | undefined;
+  minIntervalMs: number;
+}): FloridaContributionExportRateLimiter | undefined {
+  return input.rateLimiter ?? createFloridaContributionExportRateLimiter({ minIntervalMs: input.minIntervalMs });
+}
+
+async function loadContributionExportWithCache(input: {
+  query: FloridaContributionExportQuery;
+  cacheDir: string;
+  refresh: boolean;
+  dryRun: boolean;
+  exportRows: typeof exportFloridaContributionRows;
+  transport: FloridaContributionExportTransport | undefined;
+  rateLimiter: FloridaContributionExportRateLimiter | undefined;
+  force: boolean;
+}): Promise<FloridaCandidateFinanceDueContributionData | null> {
+  const cacheKey = buildFloridaContributionExportCacheKey(input.query);
+  if (!input.refresh) {
+    const cached = await readFloridaContributionExportArtifact({ cacheDir: input.cacheDir, cacheKey });
+    if (cached) {
+      return {
+        contributionRows: cached.rows,
+        contributionArtifact: { cacheDir: input.cacheDir, cacheKey },
+        contributionSourceUrl: cached.metadata.sourceUrl,
+      };
+    }
+  }
+  if (input.dryRun) {
+    return null;
+  }
+
+  const result = await input.exportRows({
+    ...input.query,
+    transport: input.transport,
+    rateLimiter: input.rateLimiter,
+    force: input.force,
+  });
+  await writeFloridaContributionExportArtifact({ cacheDir: input.cacheDir, result });
+  return {
+    contributionRows: result.rows,
+    contributionArtifact: { cacheDir: input.cacheDir, cacheKey: result.cacheKey },
+    contributionSourceUrl: result.sourceUrl,
+  };
+}
+
+function buildCommitteeContributionExportQuery(input: {
+  row: FloridaCandidateFinanceDueRow;
+  rowLimit: number;
+}): FloridaContributionExportQuery {
+  return {
+    searchType: "committee_detail",
+    committeeName: input.row.committeeName,
+    rowLimit: input.rowLimit,
+  };
+}
+
+function buildCandidateContributionExportQuery(input: {
+  candidateElection: FloridaFinanceAutoLinkCandidateElection;
+  rowLimit: number;
+}): FloridaContributionExportQuery | null {
+  const name = splitCandidateNameForFloridaExport(input.candidateElection.candidateName);
+  if (!name) {
+    return null;
+  }
+  return {
+    searchType: "candidate_detail",
+    candidateFirstName: name.candidateFirstName,
+    candidateLastName: name.candidateLastName,
+    rowLimit: input.rowLimit,
+  };
+}
+
+function appendRowsByYear(input: {
+  rowsByYear: Map<number, FloridaContributionRow[]>;
+  year: number;
+  rows: readonly FloridaContributionRow[];
+}): void {
+  const rows = input.rowsByYear.get(input.year) ?? [];
+  rows.push(...input.rows);
+  input.rowsByYear.set(input.year, rows);
+}
+
+function isContributionInElectionCycle(row: FloridaContributionRow, electionYear: number): boolean {
+  const rowYear = parseFloridaDateYear(row.contributionDate);
+  if (rowYear === null) {
+    return false;
+  }
+  return rowYear >= floridaElectionCycleStartYear(electionYear) && rowYear <= electionYear;
+}
+
+async function buildAutoLinkExportData(input: {
+  db: Queryable;
+  now: Date;
+  maxCandidates: number;
+  electionLookbackDays: number;
+  electionLookaheadDays: number;
+  candidateElections?: readonly FloridaFinanceAutoLinkCandidateElection[];
+  contributionRowsByYear?: ReadonlyMap<number, readonly FloridaContributionRow[]>;
+  sourceUrlByYear?: ReadonlyMap<number, string>;
+  cacheDir: string;
+  refresh: boolean;
+  dryRun: boolean;
+  rowLimit: number;
+  exportRows: typeof exportFloridaContributionRows;
+  transport: FloridaContributionExportTransport | undefined;
+  rateLimiter: FloridaContributionExportRateLimiter | undefined;
+  force: boolean;
+}): Promise<{
+  candidateElections: readonly FloridaFinanceAutoLinkCandidateElection[];
+  contributionRowsByYear: ReadonlyMap<number, readonly FloridaContributionRow[]>;
+  sourceUrlByYear: ReadonlyMap<number, string>;
+}> {
+  const candidateElections =
+    input.candidateElections ??
+    (await listFloridaCandidateElectionsMissingFinanceLinks(input.db, {
+      now: input.now,
+      maxCandidates: input.maxCandidates,
+      electionLookbackDays: input.electionLookbackDays,
+      electionLookaheadDays: input.electionLookaheadDays,
+    }));
+  if (input.contributionRowsByYear) {
+    return {
+      candidateElections,
+      contributionRowsByYear: input.contributionRowsByYear,
+      sourceUrlByYear: input.sourceUrlByYear ?? new Map(),
+    };
+  }
+
+  const contributionRowsByYear = new Map<number, FloridaContributionRow[]>();
+  const sourceUrlByYear = new Map<number, string>();
+  for (const candidateElection of candidateElections) {
+    const query = buildCandidateContributionExportQuery({
+      candidateElection,
+      rowLimit: input.rowLimit,
+    });
+    if (!query) {
+      continue;
+    }
+    let data: FloridaCandidateFinanceDueContributionData | null;
+    try {
+      data = await loadContributionExportWithCache({
+        query,
+        cacheDir: input.cacheDir,
+        refresh: input.refresh,
+        dryRun: input.dryRun,
+        exportRows: input.exportRows,
+        transport: input.transport,
+        rateLimiter: input.rateLimiter,
+        force: input.force,
+      });
+    } catch (error) {
+      console.warn("Florida finance auto-link export failed for candidate election; continuing:", {
+        candidateId: candidateElection.candidateId,
+        electionId: candidateElection.electionId,
+        electionYear: candidateElection.electionYear,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      continue;
+    }
+    if (!data?.contributionRows) {
+      continue;
+    }
+    const cycleRows = data.contributionRows.filter((row) =>
+      isContributionInElectionCycle(row, candidateElection.electionYear)
+    );
+    if (cycleRows.length === 0) {
+      continue;
+    }
+    appendRowsByYear({
+      rowsByYear: contributionRowsByYear,
+      year: candidateElection.electionYear,
+      rows: cycleRows,
+    });
+    if (data.contributionSourceUrl) {
+      sourceUrlByYear.set(candidateElection.electionYear, data.contributionSourceUrl);
+    }
+  }
+
+  return { candidateElections, contributionRowsByYear, sourceUrlByYear };
 }
 
 async function loadRowsFromArtifact(input: {
@@ -184,5 +636,161 @@ export async function syncFloridaCandidateFinanceBatch(
     syncedCandidateCount,
     failedCandidateCount: results.length - syncedCandidateCount,
     results,
+  };
+}
+
+export async function syncDueFloridaCandidateFinance(
+  input: FloridaCandidateFinanceDueSyncInput
+): Promise<FloridaCandidateFinanceDueSyncResult> {
+  const now = input.now ?? new Date();
+  assertValidDate(now, "now");
+
+  const maxCandidates = normalizePositiveInteger(input.maxCandidates, DEFAULT_MAX_CANDIDATES, "maxCandidates");
+  const staleAfterDays = normalizeNonnegativeInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "staleAfterDays");
+  const electionLookbackDays = normalizeNonnegativeInteger(
+    input.electionLookbackDays,
+    DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS,
+    "electionLookbackDays"
+  );
+  const electionLookaheadDays = normalizeNonnegativeInteger(
+    input.electionLookaheadDays,
+    DEFAULT_ELECTION_LOOKAHEAD_DAYS,
+    "electionLookaheadDays"
+  );
+  const dryRun = input.dryRun === true;
+  const defaultArtifactCacheDir = normalizeArtifactCacheDir(
+    input.defaultArtifactCacheDir,
+    DEFAULT_FLORIDA_CAMPAIGN_FINANCE_CACHE_DIR
+  );
+  const exportRows = input.exportFloridaContributionRowsFn ?? exportFloridaContributionRows;
+  const exportMinIntervalMs = normalizeNonnegativeInteger(
+    input.exportMinIntervalMs,
+    DEFAULT_FLORIDA_CONTRIBUTION_EXPORT_MIN_INTERVAL_MS,
+    "exportMinIntervalMs"
+  );
+  const exportRateLimiter = exportRateLimiterForDueSync({
+    rateLimiter: input.exportRateLimiter,
+    minIntervalMs: exportMinIntervalMs,
+  });
+  const exportRowLimit = normalizePositiveInteger(
+    input.exportRowLimit,
+    10_000,
+    "exportRowLimit"
+  );
+
+  if (!dryRun && input.autoLinkMissingLinks !== false) {
+    try {
+      const autoLinkExportData = await buildAutoLinkExportData({
+        db: input.db,
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+        candidateElections: input.autoLinkCandidateElections,
+        contributionRowsByYear: input.autoLinkContributionRowsByYear,
+        sourceUrlByYear: input.autoLinkSourceUrlByYear,
+        cacheDir: defaultArtifactCacheDir,
+        refresh: input.refreshExportArtifacts === true,
+        dryRun,
+        rowLimit: exportRowLimit,
+        exportRows,
+        transport: input.exportTransport,
+        rateLimiter: exportRateLimiter,
+        force: input.exportForce === true,
+      });
+      await autoLinkMissingFloridaCandidateFinanceLinks({
+        db: input.db,
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+        contributionRowsByYear: autoLinkExportData.contributionRowsByYear,
+        sourceUrlByYear: autoLinkExportData.sourceUrlByYear,
+        candidateElections: autoLinkExportData.candidateElections,
+      });
+    } catch (error) {
+      console.warn(
+        "Florida finance auto-link skipped; continuing with already-linked candidate sync:",
+        error instanceof Error ? error.message : error
+      );
+    }
+  }
+
+  const due = await listDueFloridaCandidateFinanceSyncRows(input.db, {
+    now,
+    staleAfterDays,
+    maxCandidates,
+    electionLookbackDays,
+    electionLookaheadDays,
+  });
+  const contributionDataByCommitteeId = new Map(
+    input.contributionDataByCommitteeId
+      ? [...input.contributionDataByCommitteeId.entries()].map(([committeeId, data]) => [
+          normalizeCommitteeId(committeeId),
+          data,
+        ])
+      : []
+  );
+  const missingDataResults: FloridaCandidateFinanceBatchSyncItemResult[] = [];
+  const syncInputs: FloridaCandidateFinanceBatchSyncItemInput[] = [];
+  for (const row of due.rows) {
+    let contributionData = contributionDataByCommitteeId.get(normalizeCommitteeId(row.committeeId));
+    if (!hasDirectContributionData(contributionData) && !dryRun && input.fetchMissingContributionData !== false) {
+      try {
+        contributionData = (await loadContributionExportWithCache({
+          query: buildCommitteeContributionExportQuery({ row, rowLimit: exportRowLimit }),
+          cacheDir: defaultArtifactCacheDir,
+          refresh: input.refreshExportArtifacts === true,
+          dryRun,
+          exportRows,
+          transport: input.exportTransport,
+          rateLimiter: exportRateLimiter,
+          force: input.exportForce === true,
+        })) ?? undefined;
+      } catch (error) {
+        missingDataResults.push({
+          candidateId: row.candidateId,
+          electionId: row.electionId,
+          electionYear: row.electionYear,
+          committeeId: row.committeeId,
+          ok: false,
+          error: error instanceof Error ? error.message : String(error),
+        });
+        continue;
+      }
+    }
+    if (!hasDirectContributionData(contributionData)) {
+      missingDataResults.push({
+        candidateId: row.candidateId,
+        electionId: row.electionId,
+        electionYear: row.electionYear,
+        committeeId: row.committeeId,
+        ok: false,
+        error: `Florida contribution data not provided for committee: ${row.committeeId}`,
+      });
+      continue;
+    }
+    syncInputs.push(buildDueSyncInput({ row, contributionData }));
+  }
+  const result = await syncFloridaCandidateFinanceBatch({
+    db: input.db,
+    now,
+    dryRun,
+    maxCandidates,
+    syncInputs,
+    defaultArtifactCacheDir,
+    financeIndustryClassifier: input.financeIndustryClassifier,
+    aiClassificationMinAmount: input.aiClassificationMinAmount,
+    syncFloridaCandidateFinanceFn: input.syncFloridaCandidateFinanceFn,
+  });
+
+  return {
+    ...result,
+    staleAfterDays,
+    dueCandidateCount: due.totalDueRows,
+    selectedCandidateCount: due.rows.length,
+    syncedCandidateCount: result.syncedCandidateCount,
+    failedCandidateCount: result.failedCandidateCount + missingDataResults.length,
+    results: [...result.results, ...missingDataResults],
   };
 }

@@ -2,6 +2,7 @@ export * from "./floridaCampaignFinanceArtifactCache.js";
 export * from "./floridaCampaignFinanceClient.js";
 export * from "./floridaCampaignFinanceRows.js";
 export * from "./floridaCandidateFinanceBatchSync.js";
+export * from "./floridaCandidateFinanceAutoLink.js";
 export * from "./floridaCandidateFinanceSync.js";
 export * from "./floridaDirectContributionAggregator.js";
 export * from "./floridaFinanceBallotSummary.js";

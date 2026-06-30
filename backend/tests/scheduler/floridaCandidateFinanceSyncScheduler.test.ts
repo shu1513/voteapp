@@ -79,17 +79,23 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     );
     expect(add).toHaveBeenCalledWith(
       "florida_candidate_finance_sync_due",
-      {
+      expect.objectContaining({
         dryRun: false,
         force: false,
         maxCandidates: undefined,
+        staleAfterDays: undefined,
+        electionLookbackDays: undefined,
+        electionLookaheadDays: undefined,
         syncInputs: undefined,
         defaultArtifactCacheDir: undefined,
+        refreshExportArtifacts: false,
+        exportMinIntervalMs: undefined,
+        exportRowLimit: undefined,
         aiClassifyIndustries: true,
         aiClassificationMinAmount: 25000,
         triggeredBy: "manual",
         requestedAt: "2026-06-01T12:00:00.000Z",
-      },
+      }),
       expect.objectContaining({
         jobId,
       })
@@ -122,6 +128,9 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     await expect(
       enqueueManualFloridaCandidateFinanceSyncJob({ maxCandidates: 0 })
     ).rejects.toThrow("Invalid Florida finance sync scheduler maxCandidates");
+    await expect(
+      enqueueManualFloridaCandidateFinanceSyncJob({ staleAfterDays: 0, electionLookbackDays: 0, electionLookaheadDays: 0 })
+    ).resolves.toBe("unused");
     await expect(
       enqueueManualFloridaCandidateFinanceSyncJob({}, { jobId: "bad:id" })
     ).rejects.toThrow("Florida finance sync scheduler jobId must not contain ':'");
@@ -180,7 +189,13 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = "false";
     await upsertRecurringFloridaCandidateFinanceSyncJobs();
     expect(removeJobScheduler).toHaveBeenCalledWith("florida_candidate_finance_sync_daily");
-    expect(close).toHaveBeenCalledTimes(2);
+    process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED = "false";
+    await upsertRecurringFloridaCandidateFinanceSyncJobs();
+    expect(removeJobScheduler).toHaveBeenCalledTimes(2);
+    await upsertRecurringFloridaCandidateFinanceSyncJobs({ force: true });
+    expect(upsertJobScheduler).toHaveBeenCalledTimes(2);
+    expect(close).toHaveBeenCalledTimes(4);
   });
 
   it("runs a disabled job without creating database or classifier resources", async () => {
@@ -191,12 +206,14 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     const Worker = vi.fn();
     const Pool = vi.fn();
     const syncFloridaCandidateFinanceBatch = vi.fn();
+    const syncDueFloridaCandidateFinance = vi.fn();
     const createFinanceIndustryClassifierFromEnv = vi.fn();
     vi.doMock("bullmq", () => ({ Queue, Worker }));
     vi.doMock("pg", () => ({ Pool }));
     vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({ createFinanceIndustryClassifierFromEnv }));
     vi.doMock("../../src/pipeline/floridaFinance/floridaCandidateFinanceBatchSync.js", () => ({
       syncFloridaCandidateFinanceBatch,
+      syncDueFloridaCandidateFinance,
     }));
 
     const { runFloridaCandidateFinanceSyncJob } = await import(
@@ -213,6 +230,7 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     expect(Pool).not.toHaveBeenCalled();
     expect(createFinanceIndustryClassifierFromEnv).not.toHaveBeenCalled();
     expect(syncFloridaCandidateFinanceBatch).not.toHaveBeenCalled();
+    expect(syncDueFloridaCandidateFinance).not.toHaveBeenCalled();
   });
 
   it("runs an enabled job through the Florida batch sync", async () => {
@@ -233,6 +251,7 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
       failedCandidateCount: 0,
       results: [],
     });
+    const syncDueFloridaCandidateFinance = vi.fn();
     const Queue = vi.fn();
     const Worker = vi.fn();
     vi.doMock("bullmq", () => ({ Queue, Worker }));
@@ -246,6 +265,7 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({ createFinanceIndustryClassifierFromEnv }));
     vi.doMock("../../src/pipeline/floridaFinance/floridaCandidateFinanceBatchSync.js", () => ({
       syncFloridaCandidateFinanceBatch,
+      syncDueFloridaCandidateFinance,
     }));
 
     const { runFloridaCandidateFinanceSyncJob } = await import(
@@ -290,6 +310,83 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
         syncInputs,
         financeIndustryClassifier: classifier,
         aiClassificationMinAmount: 25000,
+      })
+    );
+    expect(pool.end).toHaveBeenCalledTimes(1);
+  });
+
+  it("runs an enabled job through Florida due sync when no explicit inputs are provided", async () => {
+    process.env.FLORIDA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.FLORIDA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    const pool = { end: vi.fn().mockResolvedValue(undefined) };
+    const Pool = vi.fn(() => pool);
+    const syncFloridaCandidateFinanceBatch = vi.fn();
+    const syncDueFloridaCandidateFinance = vi.fn().mockResolvedValue({
+      dryRun: false,
+      now: "2026-06-01T12:00:00.000Z",
+      staleAfterDays: 7,
+      maxCandidates: 1,
+      dueCandidateCount: 0,
+      selectedCandidateCount: 0,
+      syncedCandidateCount: 0,
+      failedCandidateCount: 0,
+      results: [],
+    });
+    const Queue = vi.fn();
+    const Worker = vi.fn();
+    vi.doMock("bullmq", () => ({ Queue, Worker }));
+    vi.doMock("pg", () => ({ Pool }));
+    vi.doMock("../../src/config/env.js", () => ({
+      getPipelineEnv: () => ({
+        DATABASE_URL: "postgres://test/florida",
+        REDIS_URL: "redis://localhost:6379/3",
+      }),
+    }));
+    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
+      createFinanceIndustryClassifierFromEnv: vi.fn(),
+    }));
+    vi.doMock("../../src/pipeline/floridaFinance/floridaCandidateFinanceBatchSync.js", () => ({
+      syncFloridaCandidateFinanceBatch,
+      syncDueFloridaCandidateFinance,
+    }));
+
+    const { runFloridaCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/floridaCandidateFinanceSyncScheduler.js"
+    );
+
+    await expect(
+      runFloridaCandidateFinanceSyncJob({
+        maxCandidates: 1,
+        staleAfterDays: 5,
+        electionLookbackDays: 2,
+        electionLookaheadDays: 90,
+        exportMinIntervalMs: 0,
+        exportRowLimit: 5000,
+        refreshExportArtifacts: true,
+        force: true,
+        triggeredBy: "daily",
+      })
+    ).resolves.toMatchObject({
+      enabled: true,
+      force: true,
+      triggeredBy: "daily",
+      dueCandidateCount: 0,
+    });
+
+    expect(syncFloridaCandidateFinanceBatch).not.toHaveBeenCalled();
+    expect(syncDueFloridaCandidateFinance).toHaveBeenCalledWith(
+      expect.objectContaining({
+        db: pool,
+        dryRun: false,
+        maxCandidates: 1,
+        staleAfterDays: 5,
+        electionLookbackDays: 2,
+        electionLookaheadDays: 90,
+        exportMinIntervalMs: 0,
+        exportRowLimit: 5000,
+        exportForce: true,
+        refreshExportArtifacts: true,
       })
     );
     expect(pool.end).toHaveBeenCalledTimes(1);
