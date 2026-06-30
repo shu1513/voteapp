@@ -60,6 +60,26 @@ describe("candidate record quality", () => {
     ).toBe(false);
   });
 
+  it("keeps mixed candidacy or future-tense descriptions when they contain completed actions", () => {
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Jane Doe, who is running for reelection, signed H.289 into law.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Phil Scott vetoed a bill that would raise taxes.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    expect(
+      isDisallowedThinCandidateRecord({
+        description: "Tom Jones ran for Senate in 2016 before serving as Secretary of State.",
+      })
+    ).toBe(false);
+  });
+
   it("keeps biography and occupation facts as neutral fallback context", () => {
     expect(
       classifyCandidateRecordQuality({
@@ -80,5 +100,13 @@ describe("candidate record quality", () => {
         description: "The source describes the candidate's community background.",
       })
     ).toEqual({ classification: "neutral_context", reason: "unclassified_context" });
+  });
+
+  it("rejects empty descriptions defensively", () => {
+    expect(
+      classifyCandidateRecordQuality({
+        description: "   ",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "unclassified_context" });
   });
 });

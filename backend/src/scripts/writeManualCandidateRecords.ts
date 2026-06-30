@@ -124,6 +124,13 @@ function normalizeConfirmedGaps(values: readonly string[]): Set<string> {
   return new Set(values.map((value) => value.trim()).filter((value) => value.length > 0));
 }
 
+const NO_RECORDS_FOUND_GAP_ID = "candidate_records.no_records_found";
+const ONLY_GENERAL_LABELS_GAP_ID = "candidate_records.only_general_labels";
+const BLOCKING_CANDIDATE_RECORD_QUALITY_GAP_IDS = new Set([
+  NO_RECORDS_FOUND_GAP_ID,
+  ONLY_GENERAL_LABELS_GAP_ID,
+]);
+
 export function applyConfirmedGaps(
   gaps: readonly ManualResearchRepairGap[],
   confirmedGapIds: ReadonlySet<string>
@@ -134,7 +141,7 @@ export function applyConfirmedGaps(
     }
     return {
       ...gap,
-      outcome: gap.id === "candidate_records.only_general_labels" ? "confirmed_neutral" : "confirmed_null",
+      outcome: gap.id === ONLY_GENERAL_LABELS_GAP_ID ? "confirmed_neutral" : "confirmed_null",
       reason: `${gap.reason} Operator marked this gap confirmed after focused repair research.`,
     };
   });
@@ -145,37 +152,39 @@ export function droppedRecordToGap(
   index: number
 ): ManualResearchRepairGap {
   const sourceUrl = dropped.record.source_url || undefined;
-  if (dropped.failureKind === "quality_gap") {
-    return {
-      id: `candidate_records.dropped.${index}`,
-      stage: "candidate_records",
-      objectType: "candidate_record",
-      outcome: "needs_repair",
-      sourceUrl,
-      eventDate: dropped.record.event_date || undefined,
-      description: dropped.record.description || undefined,
-      failureKind: dropped.failureKind,
-      failureType: dropped.failureType,
-      reason: dropped.reason,
-      promptFile: "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
-      focusedResearchPass:
-        "Do a deeper record-only research pass. Do not replace this with another candidacy, filing, ballot-listing, campaign promise, or campaign-launch row. Find an actual action, public service record, organizational leadership record, vote, official decision, litigation/enforcement record, endorsement, or other source-backed conduct; otherwise leave it dropped and rely on candidate_records.no_records_found or candidate_records.only_general_labels after focused repair.",
-    };
-  }
-  return {
+  const base = {
     id: `candidate_records.dropped.${index}`,
-    stage: "candidate_records",
-    objectType: "candidate_record",
-    outcome: "needs_repair",
+    stage: "candidate_records" as const,
+    objectType: "candidate_record" as const,
+    outcome: "needs_repair" as const,
     sourceUrl,
     eventDate: dropped.record.event_date || undefined,
     description: dropped.record.description || undefined,
     failureKind: dropped.failureKind,
     failureType: dropped.failureType,
     reason: dropped.reason,
+  };
+  if (dropped.failureKind === "quality_gap") {
+    return {
+      ...base,
+      promptFile: "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+      focusedResearchPass:
+        "Do a deeper record-only research pass. Do not replace this with another candidacy, filing, ballot-listing, campaign promise, or campaign-launch row. Find an actual action, public service record, organizational leadership record, vote, official decision, litigation/enforcement record, endorsement, or other source-backed conduct; otherwise leave it dropped and rely on candidate_records.no_records_found or candidate_records.only_general_labels after focused repair.",
+    };
+  }
+  return {
+    ...base,
     promptFile: "src/ai/providers/candidateRecordSourceRepairPrompt.ts",
     focusedResearchPass: "Run a focused candidate-record source/schema repair pass for this dropped row. Replace bad URLs, fix invalid dates/descriptions, or mark no reliable replacement.",
   };
+}
+
+export function qualityDroppedRecordsToGaps(
+  droppedRecords: readonly CandidateRecordDroppedRecord[]
+): ManualResearchRepairGap[] {
+  return droppedRecords.flatMap((record, index) =>
+    record.failureKind === "quality_gap" ? [droppedRecordToGap(record, index)] : []
+  );
 }
 
 function buildRecordLabelParseGap(reason: string): ManualResearchRepairGap {
@@ -212,7 +221,7 @@ export function buildCandidateRecordQualityGaps(input: {
   const gaps: ManualResearchRepairGap[] = [];
   if (input.recordCount === 0) {
     gaps.push({
-      id: "candidate_records.no_records_found",
+      id: NO_RECORDS_FOUND_GAP_ID,
       stage: "candidate_records",
       objectType: "candidate_record_set",
       outcome: "needs_repair",
@@ -228,7 +237,7 @@ export function buildCandidateRecordQualityGaps(input: {
     input.labels.every((label) => isNonStanceResearchAreaSlug(label.research_area_slug))
   ) {
     gaps.push({
-      id: "candidate_records.only_general_labels",
+      id: ONLY_GENERAL_LABELS_GAP_ID,
       stage: "candidate_record_labels",
       objectType: "candidate_record_set",
       outcome: "needs_repair",
@@ -244,8 +253,7 @@ export function buildCandidateRecordQualityGaps(input: {
 export function isBlockingCandidateRecordQualityGap(gap: ManualResearchRepairGap): boolean {
   return (
     gap.outcome === "needs_repair" &&
-    (gap.id === "candidate_records.no_records_found" ||
-      gap.id === "candidate_records.only_general_labels")
+    BLOCKING_CANDIDATE_RECORD_QUALITY_GAP_IDS.has(gap.id)
   );
 }
 
@@ -356,9 +364,7 @@ async function main(): Promise<void> {
   const blockingDroppedRecords = validatedRecords.droppedRecords.filter(
     (record) => record.failureKind !== "quality_gap"
   );
-  const qualityDroppedGaps = validatedRecords.droppedRecords
-    .filter((record) => record.failureKind === "quality_gap")
-    .map(droppedRecordToGap);
+  const qualityDroppedGaps = qualityDroppedRecordsToGaps(validatedRecords.droppedRecords);
 
   if (blockingDroppedRecords.length > 0) {
     const gaps = validatedRecords.droppedRecords.map(droppedRecordToGap);

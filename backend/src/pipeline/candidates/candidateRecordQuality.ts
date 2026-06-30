@@ -41,7 +41,7 @@ const FUTURE_PROMISE_PATTERNS = [
 const SUBSTANTIVE_ACTION_PATTERNS = [
   /\b(?:voted|signed|vetoed|sponsored|co-sponsored|introduced|authored|passed|enacted)\b/i,
   /\b(?:issued|ordered|appointed|oversaw|implemented|managed|directed|founded|led|chaired)\b/i,
-  /\b(?:served|serves)\s+as\b/i,
+  /\b(?:served|serves|serving)\s+as\b/i,
   /\b(?:held|holds)\s+(?:public\s+)?office\b/i,
   /\b(?:was|were|is|are)\s+elected\s+to\b/i,
   /\b(?:ruled|sentenced|prosecuted|defended|settled|sued)\b/i,
@@ -69,7 +69,11 @@ export function classifyCandidateRecordQuality(
 ): CandidateRecordQualityResult {
   const description = normalizeDescription(input.description);
   if (description.length === 0) {
-    return { classification: "neutral_context", reason: "unclassified_context" };
+    return { classification: "disallowed_thin", reason: "unclassified_context" };
+  }
+
+  if (matchesAny(description, SUBSTANTIVE_ACTION_PATTERNS)) {
+    return { classification: "substantive", reason: "actual_record_action" };
   }
 
   if (matchesAny(description, PURE_CANDIDACY_PATTERNS)) {
@@ -78,10 +82,6 @@ export function classifyCandidateRecordQuality(
 
   if (matchesAny(description, FUTURE_PROMISE_PATTERNS)) {
     return { classification: "disallowed_thin", reason: "future_promise" };
-  }
-
-  if (matchesAny(description, SUBSTANTIVE_ACTION_PATTERNS)) {
-    return { classification: "substantive", reason: "actual_record_action" };
   }
 
   if (matchesAny(description, FALLBACK_CONTEXT_PATTERNS)) {
