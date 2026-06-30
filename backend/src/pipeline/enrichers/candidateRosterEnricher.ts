@@ -322,7 +322,7 @@ async function markCandidateRosterStagingValidated(
   await pool.query(
     `
       UPDATE staging_items
-      SET payload = jsonb_build_object('election_id', $2, 'candidates', $3::jsonb),
+      SET payload = jsonb_build_object('election_id', $2::text, 'candidates', $3::jsonb),
           status = 'validated',
           reason = NULL,
           failure_debug = NULL,
