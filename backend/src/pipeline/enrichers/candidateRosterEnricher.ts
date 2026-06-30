@@ -304,7 +304,7 @@ async function ensureCandidateRosterStagingRow(
         schema_version,
         prompt_version
       )
-      VALUES ($1, $2, jsonb_build_object('election_id', $3), 'pending', NULL, $4, NULL, NULL, NULL)
+      VALUES ($1, $2, jsonb_build_object('election_id', $3::text), 'pending', NULL, $4, NULL, NULL, NULL)
       ON CONFLICT (ingest_key) DO NOTHING
     `,
     [ingestKey, STAGING_ITEM_TYPE_CANDIDATE_ROSTER, electionId, runId ?? ""]
