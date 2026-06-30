@@ -35,6 +35,185 @@ afterEach(() => {
 });
 
 describe("enrichBallotMeasure shared provider wiring", () => {
+  it("exposes full ballot-measure payload validation for manual writers", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => ({
+      ok: true,
+      finalUrl: url.replace("http://", "https://"),
+      status: 200,
+    }));
+
+    const { validateBallotMeasureAiPayload } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await validateBallotMeasureAiPayload(
+      {
+        official_measure_url: "https://example.org/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
+        what_yes_means: "Approves a county sales tax increase for health services.",
+        what_no_means: "Keeps current tax rates and funding levels.",
+        research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+        sources: ["https://example.org/measure-er.pdf", "http://example.org/county-voter-guide"],
+      },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+
+    expect(callResearchProviderMock).not.toHaveBeenCalled();
+    expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(3);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.officialMeasureUrl).toBe("https://example.org/measure-er.pdf");
+      expect(result.sources).toEqual([
+        "https://example.org/measure-er.pdf",
+        "https://example.org/county-voter-guide",
+      ]);
+      expect(result.officialMeasureUrlVerification).toEqual({ status: 200 });
+    }
+  });
+
+  it("rejects manual ballot-measure payloads with unreachable source URLs", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) =>
+      url.includes("missing-source")
+        ? { ok: false, reason: "citation fetch returned status 404" }
+        : { ok: true, finalUrl: url, status: 200 }
+    );
+
+    const { validateBallotMeasureAiPayload } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await validateBallotMeasureAiPayload(
+      {
+        official_measure_url: "https://example.org/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
+        what_yes_means: "Approves a county sales tax increase for health services.",
+        what_no_means: "Keeps current tax rates and funding levels.",
+        research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+        sources: ["https://example.org/measure-er.pdf", "https://example.org/missing-source"],
+      },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain("source URL is not reachable");
+      expect(result.failureDebug).toMatchObject({
+        bad_source_urls: [
+          {
+            url: "https://example.org/missing-source",
+            reason: "citation fetch returned status 404",
+          },
+        ],
+      });
+    }
+  });
+
+  it("rejects manual ballot-measure payloads with more sources than can be verified", async () => {
+    const sources = Array.from(
+      { length: 21 },
+      (_, index) => `https://example.org/measure-er-source-${index + 1}.pdf`
+    );
+
+    const { validateBallotMeasureAiPayload } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await validateBallotMeasureAiPayload(
+      {
+        official_measure_url: "https://example.org/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
+        what_yes_means: "Approves a county sales tax increase for health services.",
+        what_no_means: "Keeps current tax rates and funding levels.",
+        research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+        sources,
+      },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+
+    expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(1);
+    expect(result).toEqual({
+      ok: false,
+      reason: "sources contains 21 URLs; at most 20 can be verified",
+      blockedUrls: [],
+      failureDebug: {
+        source_url_count: 21,
+        max_source_urls_to_verify: 20,
+      },
+    });
+  });
+
+  it("rejects manual ballot-measure payloads with unreachable official_measure_url", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) =>
+      url.includes("measure-er.pdf")
+        ? { ok: false, reason: "citation URL fetch timed out" }
+        : { ok: true, finalUrl: url, status: 200 }
+    );
+
+    const { validateBallotMeasureAiPayload } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await validateBallotMeasureAiPayload(
+      {
+        official_measure_url: "https://example.org/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
+        what_yes_means: "Approves a county sales tax increase for health services.",
+        what_no_means: "Keeps current tax rates and funding levels.",
+        research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+        sources: ["https://example.org/county-voter-guide"],
+      },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe("official_measure_url is not reachable: citation URL fetch timed out");
+      expect(result.blockedUrls).toEqual(["https://example.org/measure-er.pdf"]);
+      expect(result.failureDebug).toMatchObject({
+        official_measure_url: "https://example.org/measure-er.pdf",
+        official_measure_url_verification_reason: "citation URL fetch timed out",
+      });
+    }
+  });
+
+  it("rejects manual ballot-measure payloads with malformed source URLs", async () => {
+    const { validateBallotMeasureAiPayload } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await validateBallotMeasureAiPayload(
+      {
+        official_measure_url: "https://example.org/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
+        what_yes_means: "Approves a county sales tax increase for health services.",
+        what_no_means: "Keeps current tax rates and funding levels.",
+        research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+        sources: ["not a url"],
+      },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+
+    expect(verifyHttpUrlReachabilityMock).not.toHaveBeenCalled();
+    expect(result).toEqual({
+      ok: false,
+      reason: "sources must contain valid http(s) URLs",
+      blockedUrls: [],
+    });
+  });
+
+  it("rejects manual ballot-measure payloads with unknown research-area slugs", async () => {
+    const { validateBallotMeasureAiPayload } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await validateBallotMeasureAiPayload(
+      {
+        official_measure_url: "https://example.org/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
+        what_yes_means: "Approves a county sales tax increase for health services.",
+        what_no_means: "Keeps current tax rates and funding levels.",
+        research_area_tags: [{ research_area_slug: "legal_competence", stance: "for" }],
+        sources: ["https://example.org/measure-er.pdf"],
+      },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+
+    expect(verifyHttpUrlReachabilityMock).not.toHaveBeenCalled();
+    expect(result).toEqual({
+      ok: false,
+      reason: "research_area_slug 'legal_competence' is not allowed for ballot measures",
+      blockedUrls: [],
+    });
+  });
+
   it("routes provider calls through researchProviderClient", async () => {
     callResearchProviderMock.mockResolvedValue({
       ok: true,

@@ -59,7 +59,7 @@ export function buildBallotMeasuresPrompt(input: BallotMeasurePromptInput): stri
     "- Do not use stance to describe which campaign side supports the measure.",
     "- research_area_tags must use only allowed research_area_slug values.",
     "- Return an empty research_area_tags array only if no allowed area clearly applies.",
-    "- sources must include all URLs you used for this research.",
+    "- sources must include the official/full-text URL and the best supporting URLs used for this research, up to 20 unique URLs.",
     "- return JSON only (no prose, no markdown).",
     "",
     "Allowed research_area_slug values:",

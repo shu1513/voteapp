@@ -167,9 +167,10 @@ Reusable tag helpers:
 
 Manual path:
 
-- `parseBallotMeasureAiPayload` is exported from `src/ai/enrichBallotMeasure.ts` for no-AI manual payload validation.
-- `manual:ballot-measure:write` validates the researched payload, verifies the target election is a ballot-measure race, upserts
-  `ballot_measures`, and upserts ballot-measure research-area tags.
+- `validateBallotMeasureAiPayload` is exported from `src/ai/enrichBallotMeasure.ts` for no-AI manual payload validation,
+  including `official_measure_url` and `sources` reachability checks.
+- `manual:ballot-measure:write` validates the researched payload with the same full validator, verifies the target election is
+  a ballot-measure race, upserts `ballot_measures`, and upserts ballot-measure research-area tags.
 
 ## Pilot Sequence
 
@@ -200,8 +201,8 @@ Committed local/operator wrappers now cover the no-AI district import path:
    candidate to election.
 5. `manual:candidate-records:write` - accepts candidate/election IDs plus record and label JSON, validates, upserts records,
    and upserts area tags.
-6. `manual:ballot-measure:write` - accepts an election ID and researched ballot-measure JSON, validates, upserts measure, and
-   upserts tags.
+6. `manual:ballot-measure:write` - accepts an election ID and researched ballot-measure JSON, validates payload shape and URL
+   reachability, upserts measure, and upserts tags.
 
 These wrappers should be local/operator tooling. They should not change the production read path.
 
@@ -324,7 +325,10 @@ Safety properties:
 
 - No API route, frontend, scheduler, or normal worker behavior is changed.
 - Scripts run only when manually invoked.
-- Scripts validate payloads before writing.
+- Scripts validate payloads before writing. Ballot-measure writes also verify `official_measure_url` and source URL
+  reachability in dry-run and live mode; ballot-measure payloads with more than 20 unique source URLs fail fast instead of
+  silently dropping citations. Dry-run prints the normalized URLs and explicit pass/fail fields for payload shape, official URL
+  reachability, source URL reachability, and allowed tag slugs.
 - Election and roster injection dry-runs validate payload shape without connecting to Postgres or Redis. Profile, roster fanout,
   candidate-record, and ballot-measure dry-runs also check target DB context so bad IDs fail before live writes.
 - Live manual commands do not fall back to localhost Postgres or Redis when target env vars are missing.

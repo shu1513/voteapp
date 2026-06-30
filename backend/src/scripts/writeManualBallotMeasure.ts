@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { Pool } from "pg";
 
-import { parseBallotMeasureAiPayload } from "../ai/enrichBallotMeasure.js";
+import { validateBallotMeasureAiPayload } from "../ai/enrichBallotMeasure.js";
 import { loadProjectEnv } from "../config/env.js";
 import {
   loadAllowedBallotMeasureResearchAreas,
@@ -62,6 +62,15 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function readPositiveIntegerEnv(name: string, fallback: number): number {
+  const raw = process.env[name]?.trim() || String(fallback);
+  if (!/^[1-9]\d*$/.test(raw)) {
+    throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
+  }
+  const parsed = Number(raw);
+  return parsed;
+}
+
 async function loadElection(pool: Pool, electionId: string): Promise<BallotMeasureElectionRow | null> {
   const result = await pool.query<BallotMeasureElectionRow>(
     `
@@ -106,12 +115,13 @@ async function main(): Promise<void> {
       throw new Error(`Ballot-measure write requires race_type=ballot_measure; election_id=${electionId} has race_type=${election.race_type}`);
     }
 
-    const parsed = parseBallotMeasureAiPayload(
+    const validated = await validateBallotMeasureAiPayload(
       rawPayload,
+      readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
       new Set(allowedAreas.map((area) => area.slug))
     );
-    if (!parsed.ok) {
-      throw new Error(`Ballot-measure payload failed validation: ${parsed.reason}`);
+    if (!validated.ok) {
+      throw new Error(`Ballot-measure payload failed validation: ${validated.reason}`);
     }
 
     if (dryRun) {
@@ -122,8 +132,18 @@ async function main(): Promise<void> {
             manualKey,
             electionId,
             officialBallotTitle: election.official_ballot_title,
-            sourceCount: parsed.sources.length,
-            researchAreaTagCount: parsed.researchAreaTags.length,
+            validation: {
+              payloadShape: "valid",
+              officialMeasureUrlReachable: true,
+              sourceUrlsReachable: true,
+              researchAreaTagsAllowed: true,
+            },
+            officialMeasureUrl: validated.officialMeasureUrl,
+            officialMeasureUrlVerification: validated.officialMeasureUrlVerification,
+            sourceCount: validated.sources.length,
+            sources: validated.sources,
+            researchAreaTagCount: validated.researchAreaTags.length,
+            researchAreaTags: validated.researchAreaTags,
           },
           null,
           2
@@ -168,11 +188,11 @@ async function main(): Promise<void> {
           election.district_id,
           election.id,
           election.official_ballot_title,
-          parsed.summary,
-          parsed.whatYesMeans,
-          parsed.whatNoMeans,
-          JSON.stringify(parsed.sources),
-          parsed.officialMeasureUrl,
+          validated.summary,
+          validated.whatYesMeans,
+          validated.whatNoMeans,
+          JSON.stringify(validated.sources),
+          validated.officialMeasureUrl,
         ]
       );
       const ballotMeasureId = measureResult.rows[0]?.id;
@@ -182,7 +202,7 @@ async function main(): Promise<void> {
       const tagResult = await upsertBallotMeasureResearchAreaTags(
         client,
         ballotMeasureId,
-        parsed.researchAreaTags,
+        validated.researchAreaTags,
         new Map(allowedAreas.map((area) => [area.slug, area.id]))
       );
       await client.query("COMMIT");
