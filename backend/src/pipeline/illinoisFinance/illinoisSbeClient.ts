@@ -153,7 +153,14 @@ function getResponseSetCookies(headers: Headers): string[] {
     return direct;
   }
   const combined = headers.get("set-cookie");
-  return combined ? [combined] : [];
+  return combined ? splitIllinoisSbeSetCookieHeader(combined) : [];
+}
+
+export function splitIllinoisSbeSetCookieHeader(value: string): string[] {
+  return value
+    .split(/,(?=\s*[^;,=\s]+=)/g)
+    .map((cookie) => cookie.trim())
+    .filter(Boolean);
 }
 
 function mergeCookies(existingCookieHeader: string | undefined, setCookies: readonly string[]): string | undefined {
@@ -396,7 +403,12 @@ async function openDownloadList(input: {
   resultHtml: string;
 }): Promise<{ text: string; url: string }> {
   if (!input.resultHtml.includes("ContentPlaceHolder1_lnkDownloadList")) {
-    throw new IllinoisSbeClientError("bad_response", "Illinois SBE search did not expose a download-list link");
+    throw new IllinoisSbeClientError(
+      "bad_response",
+      "Illinois SBE search did not expose a download-list link; " +
+        "the live backend export flow may be blocked or returning a non-export page. " +
+        "Use Illinois SBE CSV artifact mode for production syncs."
+    );
   }
   return input.session.postForm(input.resultUrl, input.resultHtml, {
     context: "download-list postback",

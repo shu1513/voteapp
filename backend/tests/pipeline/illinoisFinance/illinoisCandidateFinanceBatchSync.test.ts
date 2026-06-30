@@ -5,6 +5,10 @@ import {
   loadIllinoisFinanceDataForDueRow,
   syncDueIllinoisCandidateFinance,
 } from "../../../src/pipeline/illinoisFinance/illinoisCandidateFinanceBatchSync.js";
+import {
+  createIllinoisSbeArtifactCandidateCommitteeResolver,
+  loadIllinoisFinanceDataForDueRowFromArtifacts,
+} from "../../../src/pipeline/illinoisFinance/illinoisSbeArtifactDataSource.js";
 import type { IllinoisCandidateFinanceSyncResult } from "../../../src/pipeline/illinoisFinance/syncIllinoisCandidateFinance.js";
 import type { IllinoisSbeContributionRecord } from "../../../src/pipeline/illinoisFinance/illinoisSbeClient.js";
 
@@ -63,6 +67,8 @@ function successfulSync(overrides: Partial<IllinoisCandidateFinanceSyncResult> =
     outsideGroupBreakdownsWritten: 0,
     totalReceipts: 250,
     directContributionTotal: 250,
+    outsideExpenditureDataAvailable: true,
+    outsideGroupContributionDataAvailable: true,
     outsideSupportTotal: 0,
     outsideOpposeTotal: 0,
     matchedContributionRowCount: 1,
@@ -314,5 +320,67 @@ describe("illinoisCandidateFinanceBatchSync", () => {
     expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.candidate_elections AS candidate_election");
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
     expect(String(db.query.mock.calls[2]?.[0])).toContain("FROM public.il_candidate_finance_links AS link");
+  });
+
+  it("can auto-link and sync due candidates from artifact contribution records", async () => {
+    const artifactContribution = contribution({
+      contributorName: "Artifact Donor",
+      amount: 1000,
+      receivedDate: "3/1/2026",
+    });
+    const artifacts = {
+      contributionRecords: [artifactContribution],
+      contributionSourceUrl: SOURCE_URL,
+    };
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Jane Doe",
+              election_year: 2026,
+              office_scope: "statewide",
+              office_name: "Governor",
+              district: null,
+            },
+          ],
+          rowCount: 1,
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+        .mockResolvedValueOnce({ rows: [dueRow()], rowCount: 1 }),
+      connect: vi.fn(),
+    };
+    const syncIllinoisCandidateFinanceFn = vi.fn(async () => successfulSync({ totalReceipts: 1000 }));
+
+    const result = await syncDueIllinoisCandidateFinance({
+      db,
+      now: NOW,
+      maxCandidates: 1,
+      resolveCandidateCommittee: createIllinoisSbeArtifactCandidateCommitteeResolver(artifacts),
+      loadIllinoisFinanceDataFn: async (row) => loadIllinoisFinanceDataForDueRowFromArtifacts({ row, artifacts }),
+      syncIllinoisCandidateFinanceFn: syncIllinoisCandidateFinanceFn as never,
+    });
+
+    expect(result).toMatchObject({
+      dueCandidateCount: 1,
+      selectedCandidateCount: 1,
+      syncedCandidateCount: 1,
+      failedCandidateCount: 0,
+      autoLinkAttemptedCount: 1,
+      autoLinkLinkedCount: 1,
+    });
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
+    expect(syncIllinoisCandidateFinanceFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        committeeKey: "FRIENDS OF JANE DOE",
+        directContributionRecords: [artifactContribution],
+        directContributionSourceUrl: SOURCE_URL,
+      })
+    );
   });
 });

@@ -14,6 +14,12 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
         "--lookahead-days=365",
         "--no-ai-classify-industries",
         "--ai-min-amount=50000",
+        "--contributions-csv=/exports/il-contrib-a.csv",
+        "--contributions-csv",
+        "/exports/il-contrib-b.csv",
+        "--expenditures-csv=/exports/il-exp.csv",
+        "--contributions-url=https://example.test/contributions.csv",
+        "--expenditures-url=https://example.test/expenditures.csv",
       ])
     ).toEqual({
       dryRun: true,
@@ -24,6 +30,10 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
       electionLookaheadDays: 365,
       aiClassifyIndustries: false,
       aiClassificationMinAmount: 50000,
+      contributionCsvPaths: ["/exports/il-contrib-a.csv", "/exports/il-contrib-b.csv"],
+      expenditureCsvPaths: ["/exports/il-exp.csv"],
+      contributionSourceUrl: "https://example.test/contributions.csv",
+      expenditureSourceUrl: "https://example.test/expenditures.csv",
     });
   });
 
@@ -41,5 +51,13 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
     expect(() =>
       parseIllinoisCandidateFinanceSyncTriggerArgs(["--ai-classify-industries", "--no-ai-classify-industries"])
     ).toThrow("Provide --ai-classify-industries or --no-ai-classify-industries, not both");
+  });
+
+  it("requires contribution artifacts when artifact source flags are provided", () => {
+    expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--expenditures-csv=/exports/il-exp.csv"]))
+      .toThrow("Provide --contributions-csv when using Illinois SBE artifact flags");
+    expect(() =>
+      parseIllinoisCandidateFinanceSyncTriggerArgs(["--contributions-url=https://example.test/contributions.csv"])
+    ).toThrow("Provide --contributions-csv when using Illinois SBE artifact flags");
   });
 });

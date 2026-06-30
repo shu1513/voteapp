@@ -1,17 +1,81 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import {
+  fetchIllinoisSbeCandidateContributionsCsv,
   getIllinoisSbeExportCapStatus,
   hasIllinoisSbeExportCapWarning,
   illinoisSbeContributionRecordFromRow,
   illinoisSbeExpenditureRecordFromRow,
   parseIllinoisSbeCsvRows,
   planIllinoisSbeExportPartitions,
+  splitIllinoisSbeSetCookieHeader,
   splitIllinoisSbeAmountWindow,
   splitIllinoisSbeDateWindow,
 } from "../../../src/pipeline/illinoisFinance/illinoisSbeClient.js";
 
 describe("illinoisSbeClient", () => {
+  it("splits combined Set-Cookie headers without breaking Expires dates", () => {
+    expect(
+      splitIllinoisSbeSetCookieHeader(
+        "ASP.NET_SessionId=abc; path=/; secure; HttpOnly; SameSite=Lax, " +
+          "53739654b1671269f9d68b7188f1ee11418a3d0b97c07c45e41b2c2b092866e0=def;" +
+          "expires=Tue, 30-Jun-2026 05:27:26 GMT;path=/;secure;httponly, " +
+          "__cf_bm=ghi; HttpOnly; SameSite=None; Secure; Path=/; Domain=elections.il.gov; " +
+          "Expires=Tue, 30 Jun 2026 05:47:26 GMT"
+      )
+    ).toEqual([
+      "ASP.NET_SessionId=abc; path=/; secure; HttpOnly; SameSite=Lax",
+      "53739654b1671269f9d68b7188f1ee11418a3d0b97c07c45e41b2c2b092866e0=def;expires=Tue, 30-Jun-2026 05:27:26 GMT;path=/;secure;httponly",
+      "__cf_bm=ghi; HttpOnly; SameSite=None; Secure; Path=/; Domain=elections.il.gov; Expires=Tue, 30 Jun 2026 05:47:26 GMT",
+    ]);
+  });
+
+  it("fails clearly when the live SBE form POST returns an empty response", async () => {
+    const searchHtml = `
+      <html><body>
+        <form action="./ContributionSearchByCandidates.aspx">
+          <input type="hidden" name="__VIEWSTATE" value="state" />
+          <input type="hidden" name="__EVENTVALIDATION" value="event" />
+          <input name="ctl00$ContentPlaceHolder1$txtCanElectYear" value="" />
+          <input name="ctl00$ContentPlaceHolder1$txtCanLastName" value="" />
+          <input name="ctl00$ContentPlaceHolder1$txtCanFirstName" value="" />
+          <input type="submit" name="ctl00$ContentPlaceHolder1$btnCanSubmit" value="Search" />
+          <select name="ctl00$ContentPlaceHolder1$ddlCanElectType"><option selected value="All Types">All Types</option></select>
+          <select name="ctl00$ContentPlaceHolder1$ddlCanLastNameSearchType"><option selected value="Contains">Contains</option></select>
+          <select name="ctl00$ContentPlaceHolder1$ddlCanFirstNameSearchType"><option selected value="Contains">Contains</option></select>
+        </form>
+      </body></html>
+    `;
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(searchHtml, {
+          status: 200,
+          headers: {
+            "content-type": "text/html",
+            "set-cookie": "ASP.NET_SessionId=abc; path=/; HttpOnly",
+          },
+        })
+      )
+      .mockResolvedValueOnce(
+        new Response("", {
+          status: 200,
+          headers: { "content-type": "text/html" },
+        })
+      );
+
+    await expect(
+      fetchIllinoisSbeCandidateContributionsCsv(
+        {
+          candidateLastName: "Pritzker",
+          candidateFirstName: "JB",
+          electionYear: 2022,
+        },
+        { fetchImpl }
+      )
+    ).rejects.toThrow("Illinois SBE returned an empty response for search request");
+  });
+
   it("parses quoted Illinois SBE CSV rows and normalizes headers", () => {
     expect(
       parseIllinoisSbeCsvRows(

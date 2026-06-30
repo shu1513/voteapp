@@ -225,6 +225,85 @@ describe("illinoisCandidateFinanceSyncScheduler", () => {
     expect(end).toHaveBeenCalledTimes(1);
   });
 
+  it("loads artifact data and passes artifact-backed resolvers to due sync jobs", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+
+    const end = vi.fn().mockResolvedValue(undefined);
+    const pool = { query: vi.fn(), connect: vi.fn(), end };
+    const syncDueIllinoisCandidateFinance = vi.fn().mockResolvedValue({
+      dryRun: false,
+      now: "2026-06-01T00:00:00.000Z",
+      staleAfterDays: 7,
+      maxCandidates: 1,
+      dueCandidateCount: 1,
+      selectedCandidateCount: 1,
+      syncedCandidateCount: 1,
+      failedCandidateCount: 0,
+      autoLinkAttemptedCount: 1,
+      autoLinkLinkedCount: 1,
+      results: [],
+    });
+    const artifacts = {
+      contributionRecords: [],
+      contributionSourceUrl: "https://example.test/contributions.csv",
+    };
+    const resolveCandidateCommittee = vi.fn();
+    const loadIllinoisSbeArtifactDataSet = vi.fn().mockResolvedValue(artifacts);
+    const createIllinoisSbeArtifactCandidateCommitteeResolver = vi.fn(() => resolveCandidateCommittee);
+    const loadIllinoisFinanceDataForDueRowFromArtifacts = vi.fn();
+
+    vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
+    mockEnv();
+    vi.doMock("../../src/pipeline/illinoisFinance/illinoisCandidateFinanceBatchSync.js", () => ({
+      syncDueIllinoisCandidateFinance,
+    }));
+    vi.doMock("../../src/pipeline/illinoisFinance/illinoisSbeArtifactDataSource.js", () => ({
+      loadIllinoisSbeArtifactDataSet,
+      createIllinoisSbeArtifactCandidateCommitteeResolver,
+      loadIllinoisFinanceDataForDueRowFromArtifacts,
+    }));
+    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
+      createFinanceIndustryClassifierFromEnv: vi.fn(() => vi.fn()),
+    }));
+
+    const { runIllinoisCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/illinoisCandidateFinanceSyncScheduler.js"
+    );
+
+    const result = await runIllinoisCandidateFinanceSyncJob({
+      maxCandidates: 1,
+      contributionCsvPaths: ["/exports/il-contrib.csv"],
+      expenditureCsvPaths: ["/exports/il-exp.csv"],
+      contributionSourceUrl: "https://example.test/contributions.csv",
+      expenditureSourceUrl: "https://example.test/expenditures.csv",
+      triggeredBy: "manual",
+    });
+
+    expect(result).toMatchObject({
+      enabled: true,
+      selectedCandidateCount: 1,
+      autoLinkLinkedCount: 1,
+    });
+    expect(loadIllinoisSbeArtifactDataSet).toHaveBeenCalledWith({
+      contributionCsvPaths: ["/exports/il-contrib.csv"],
+      expenditureCsvPaths: ["/exports/il-exp.csv"],
+      contributionSourceUrl: "https://example.test/contributions.csv",
+      expenditureSourceUrl: "https://example.test/expenditures.csv",
+    });
+    expect(createIllinoisSbeArtifactCandidateCommitteeResolver).toHaveBeenCalledWith(artifacts);
+    expect(syncDueIllinoisCandidateFinance).toHaveBeenCalledWith(
+      expect.objectContaining({
+        db: pool,
+        resolveCandidateCommittee,
+        loadIllinoisFinanceDataFn: expect.any(Function),
+      })
+    );
+    expect(end).toHaveBeenCalledTimes(1);
+  });
+
   it("upserts recurring jobs with configured queue payload", async () => {
     process.env.ILLINOIS_CAMPAIGN_FINANCE_ENABLED = "true";
     process.env.ILLINOIS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
@@ -246,6 +325,10 @@ describe("illinoisCandidateFinanceSyncScheduler", () => {
     await upsertRecurringIllinoisCandidateFinanceSyncJobs({
       maxCandidates: 5,
       aiClassifyIndustries: true,
+      contributionCsvPaths: [" /exports/il-contrib.csv "],
+      expenditureCsvPaths: [" /exports/il-exp.csv "],
+      contributionSourceUrl: " https://example.test/contributions.csv ",
+      expenditureSourceUrl: " https://example.test/expenditures.csv ",
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -259,6 +342,10 @@ describe("illinoisCandidateFinanceSyncScheduler", () => {
         data: expect.objectContaining({
           maxCandidates: 5,
           aiClassifyIndustries: true,
+          contributionCsvPaths: ["/exports/il-contrib.csv"],
+          expenditureCsvPaths: ["/exports/il-exp.csv"],
+          contributionSourceUrl: "https://example.test/contributions.csv",
+          expenditureSourceUrl: "https://example.test/expenditures.csv",
           triggeredBy: "daily",
         }),
       })
@@ -391,6 +478,10 @@ describe("illinoisCandidateFinanceSyncScheduler", () => {
         maxCandidates: 3,
         electionLookbackDays: 21,
         aiClassifyIndustries: true,
+        contributionCsvPaths: [" /exports/il-contrib.csv "],
+        expenditureCsvPaths: [" /exports/il-exp.csv "],
+        contributionSourceUrl: " https://example.test/contributions.csv ",
+        expenditureSourceUrl: " https://example.test/expenditures.csv ",
       })
     ).resolves.toBe("illinois-finance-job-1");
 
@@ -402,6 +493,10 @@ describe("illinoisCandidateFinanceSyncScheduler", () => {
         maxCandidates: 3,
         electionLookbackDays: 21,
         aiClassifyIndustries: true,
+        contributionCsvPaths: ["/exports/il-contrib.csv"],
+        expenditureCsvPaths: ["/exports/il-exp.csv"],
+        contributionSourceUrl: "https://example.test/contributions.csv",
+        expenditureSourceUrl: "https://example.test/expenditures.csv",
         triggeredBy: "manual",
       }),
       expect.any(Object)

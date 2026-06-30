@@ -121,6 +121,8 @@ describe("syncIllinoisCandidateFinance", () => {
       outsideGroupBreakdownsWritten: 2,
       totalReceipts: 5350,
       directContributionTotal: 5350,
+      outsideExpenditureDataAvailable: true,
+      outsideGroupContributionDataAvailable: true,
       outsideSupportTotal: 2500,
       outsideOpposeTotal: 0,
       matchedContributionRowCount: 3,
@@ -216,6 +218,8 @@ describe("syncIllinoisCandidateFinance", () => {
       outsideGroupsWritten: 0,
       outsideGroupBreakdownsWritten: 0,
       totalReceipts: 1000,
+      outsideExpenditureDataAvailable: true,
+      outsideGroupContributionDataAvailable: true,
       outsideSupportTotal: 2500,
     });
     expect(db.query).not.toHaveBeenCalled();
@@ -233,6 +237,8 @@ describe("syncIllinoisCandidateFinance", () => {
     });
 
     expect(result).toMatchObject({
+      outsideExpenditureDataAvailable: true,
+      outsideGroupContributionDataAvailable: false,
       outsideGroupsWritten: 1,
       outsideGroupBreakdownsWritten: 0,
       matchedOutsideContributionRowCount: 0,
@@ -246,6 +252,48 @@ describe("syncIllinoisCandidateFinance", () => {
     ).toBe(false);
     expect(
       statements.some((statement) => statement.includes("DELETE FROM public.il_candidate_finance_outside_group_breakdowns"))
+    ).toBe(false);
+  });
+
+  it("marks outside data unavailable when outside expenditure rows were not supplied", async () => {
+    const db = createMockDb();
+
+    const result = await syncIllinoisCandidateFinance({
+      db,
+      ...baseInput(),
+      directContributionRecords: [contribution({ amount: 1000 })],
+    });
+
+    expect(result).toMatchObject({
+      outsideExpenditureDataAvailable: false,
+      outsideGroupContributionDataAvailable: false,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      matchedOutsideExpenditureRowCount: 0,
+      matchedOutsideContributionRowCount: 0,
+    });
+
+    const summaryCall = db.client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.il_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2022,
+      1000,
+      1000,
+      null,
+      null,
+      null,
+      null,
+      SOURCE_URL,
+      "2022-07-08T09:10:11.000Z",
+    ]);
+    const statements = db.client.query.mock.calls.map((call) => String(call[0]));
+    expect(statements.some((statement) => statement.includes("INSERT INTO public.il_candidate_finance_outside_groups"))).toBe(false);
+    expect(
+      statements.some((statement) => statement.includes("INSERT INTO public.il_candidate_finance_outside_group_breakdowns"))
     ).toBe(false);
   });
 
