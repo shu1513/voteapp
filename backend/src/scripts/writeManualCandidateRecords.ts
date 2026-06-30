@@ -1,9 +1,12 @@
 import { readFile } from "node:fs/promises";
 import { Pool, type PoolClient } from "pg";
 
+import {
+  validateCandidateRecordDiscoveryPayload,
+  type CandidateRecordDroppedRecord,
+} from "../ai/enrichCandidateRecords.js";
 import { loadProjectEnv } from "../config/env.js";
 import { parseCandidateRecordAreaLabelPayload } from "../contracts/candidateRecordAreaLabelPayloadContract.js";
-import { parseCandidateRecordDiscoveryPayload } from "../contracts/candidateRecordDiscoveryPayloadContract.js";
 import {
   loadAllowedResearchAreasForOfficeId,
   upsertCandidateRecordAreaTags,
@@ -11,16 +14,23 @@ import {
   type CandidateRecordAreaLabelInput,
 } from "../pipeline/candidates/candidateRecordAreaTagging.js";
 import { loadCandidateElectionOfficeContext } from "../pipeline/candidates/candidateRecordOfficeContext.js";
+import { isNonStanceResearchAreaSlug } from "../pipeline/candidates/candidateRecordResearchAreaPolicy.js";
 import {
   buildCandidateRecordIdentityKey,
   upsertCandidateRecords,
 } from "../pipeline/candidates/candidateRecordStore.js";
 import { createCandidateRecordUpdateNotificationEvents } from "../pipeline/users/candidateFollowNotificationEvents.js";
+import {
+  buildManualResearchRepairReport,
+  summarizeManualResearchGaps,
+  writeManualResearchRepairReport,
+  type ManualResearchRepairGap,
+} from "./manualResearchRepairReport.js";
 
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--dry-run]",
+    "  npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
   ].join("\n");
@@ -51,6 +61,31 @@ function hasFlag(name: string): boolean {
   return process.argv.includes(name);
 }
 
+function readRepeatedFlag(name: string): string[] {
+  const values: string[] = [];
+  const prefix = `${name}=`;
+  for (let index = 0; index < process.argv.length; index += 1) {
+    const token = process.argv[index];
+    if (token === name) {
+      const value = process.argv[index + 1];
+      if (!value || value.startsWith("--") || value.trim().length === 0) {
+        throw new Error(`Missing value for ${name}.\n${usage()}`);
+      }
+      values.push(value.trim());
+      index += 1;
+      continue;
+    }
+    if (token?.startsWith(prefix)) {
+      const value = token.slice(prefix.length).trim();
+      if (value.length === 0) {
+        throw new Error(`Missing value for ${name}.\n${usage()}`);
+      }
+      values.push(value);
+    }
+  }
+  return values;
+}
+
 async function readJsonFile(path: string): Promise<unknown> {
   const raw = await readFile(path, "utf8");
   return JSON.parse(raw) as unknown;
@@ -62,6 +97,157 @@ function requireEnv(name: string): string {
     throw new Error(`${name} is required for manual candidate records write`);
   }
   return value;
+}
+
+function readPositiveIntegerEnv(name: string, fallback: number): number {
+  const raw = process.env[name]?.trim() || String(fallback);
+  if (!/^[1-9]\d*$/.test(raw)) {
+    throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
+  }
+  return Number(raw);
+}
+
+function summarizeDroppedRecords(droppedRecords: readonly CandidateRecordDroppedRecord[]): string {
+  const preview = droppedRecords
+    .slice(0, 5)
+    .map((dropped, index) => {
+      const label = dropped.record.description || dropped.record.source_url || `row ${index + 1}`;
+      return `${dropped.failureKind}/${dropped.failureType}: ${label} (${dropped.reason})`;
+    })
+    .join("; ");
+  const extra = droppedRecords.length > 5 ? `; +${droppedRecords.length - 5} more` : "";
+  return `${preview}${extra}`;
+}
+
+function normalizeConfirmedGaps(values: readonly string[]): Set<string> {
+  return new Set(values.map((value) => value.trim()).filter((value) => value.length > 0));
+}
+
+function applyConfirmedGaps(
+  gaps: readonly ManualResearchRepairGap[],
+  confirmedGapIds: ReadonlySet<string>
+): ManualResearchRepairGap[] {
+  return gaps.map((gap) => {
+    if (gap.outcome !== "needs_repair" || !confirmedGapIds.has(gap.id)) {
+      return gap;
+    }
+    return {
+      ...gap,
+      outcome: gap.id === "candidate_records.only_general_labels" ? "confirmed_neutral" : "confirmed_null",
+      reason: `${gap.reason} Operator marked this gap confirmed after focused repair research.`,
+    };
+  });
+}
+
+function droppedRecordToGap(
+  dropped: CandidateRecordDroppedRecord,
+  index: number
+): ManualResearchRepairGap {
+  const sourceUrl = dropped.record.source_url || undefined;
+  return {
+    id: `candidate_records.dropped.${index}`,
+    stage: "candidate_records",
+    objectType: "candidate_record",
+    outcome: "needs_repair",
+    sourceUrl,
+    eventDate: dropped.record.event_date || undefined,
+    description: dropped.record.description || undefined,
+    failureKind: dropped.failureKind,
+    failureType: dropped.failureType,
+    reason: dropped.reason,
+    promptFile: "src/ai/providers/candidateRecordSourceRepairPrompt.ts",
+    focusedResearchPass: "Run a focused candidate-record source/schema repair pass for this dropped row. Replace bad URLs, fix invalid dates/descriptions, or mark no reliable replacement.",
+  };
+}
+
+function buildRecordLabelParseGap(reason: string): ManualResearchRepairGap {
+  return {
+    id: "candidate_record_labels.payload",
+    stage: "candidate_record_labels",
+    objectType: "candidate_record_label",
+    outcome: "needs_repair",
+    failureKind: "label_validation",
+    reason,
+    promptFile: "src/ai/providers/candidateRecordAreaLabelPrompt.ts",
+    focusedResearchPass: "Run a focused candidate-record area-label pass for the verified records. Ensure every record has at least one allowed label, non-stance areas omit stance, and stance-bearing areas include for/against.",
+  };
+}
+
+function buildRecordLabelValidationGaps(reasons: readonly string[]): ManualResearchRepairGap[] {
+  return reasons.map((reason, index) => ({
+    id: `candidate_record_labels.validation.${index}`,
+    stage: "candidate_record_labels",
+    objectType: "candidate_record_label",
+    outcome: "needs_repair",
+    labelIndex: index,
+    failureKind: "label_validation",
+    reason,
+    promptFile: "src/ai/providers/candidateRecordAreaLabelPrompt.ts",
+    focusedResearchPass: "Run a focused area/stance repair pass for this label. Use only allowed research areas and assign stance only when the evidence supports it.",
+  }));
+}
+
+function buildCandidateRecordQualityGaps(input: {
+  recordCount: number;
+  labels: readonly { research_area_slug: string }[];
+}): ManualResearchRepairGap[] {
+  const gaps: ManualResearchRepairGap[] = [];
+  if (input.recordCount === 0) {
+    gaps.push({
+      id: "candidate_records.no_records_found",
+      stage: "candidate_records",
+      objectType: "candidate_record_set",
+      outcome: "needs_repair",
+      failureKind: "quality_gap",
+      reason: "Candidate record discovery produced zero verified records.",
+      promptFile: "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+      focusedResearchPass: "Run a focused no-records verification pass for this candidate/election context. If no reliable action records exist, mark candidate_records.no_records_found confirmed_null.",
+    });
+  }
+  if (
+    input.recordCount > 0 &&
+    input.labels.length > 0 &&
+    input.labels.every((label) => isNonStanceResearchAreaSlug(label.research_area_slug))
+  ) {
+    gaps.push({
+      id: "candidate_records.only_general_labels",
+      stage: "candidate_record_labels",
+      objectType: "candidate_record_set",
+      outcome: "needs_repair",
+      failureKind: "quality_gap",
+      reason: "Every candidate record label is non-stance/general. This may be correct for neutral records, but it needs a focused issue-record check before production-grade import.",
+      promptFile: "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+      focusedResearchPass: "Run a focused substantive-record search for votes, official actions, endorsements, litigation/enforcement, public service, or other source-backed conduct. If records are genuinely neutral only, mark candidate_records.only_general_labels confirmed_neutral.",
+    });
+  }
+  return gaps;
+}
+
+async function writeRecordsRepairReport(input: {
+  reportFile: string | null;
+  manualKey: string;
+  candidateId: string;
+  electionId: string;
+  recordsFile: string;
+  labelsFile: string;
+  candidateDisplayName?: string | null;
+  gaps: ManualResearchRepairGap[];
+}): Promise<void> {
+  await writeManualResearchRepairReport(
+    input.reportFile,
+    buildManualResearchRepairReport({
+      command: "manual:candidate-records:write",
+      manualKey: input.manualKey,
+      target: {
+        candidateId: input.candidateId,
+        electionId: input.electionId,
+        recordsFile: input.recordsFile,
+        labelsFile: input.labelsFile,
+        candidateDisplayName: input.candidateDisplayName ?? null,
+      },
+      gaps: input.gaps,
+    })
+  );
 }
 
 async function deleteStaleCandidateRecordAreaTags(
@@ -103,18 +289,62 @@ async function main(): Promise<void> {
   const electionId = readFlag("--election-id");
   const recordsFile = readFlag("--records-file");
   const labelsFile = readFlag("--labels-file");
+  const repairReportFile = readFlag("--repair-report-file");
+  const strictQualityGate = hasFlag("--strict-quality-gate");
+  const confirmedGapIds = normalizeConfirmedGaps(readRepeatedFlag("--confirmed-gap"));
   if (!candidateId || !electionId || !recordsFile || !labelsFile) {
     throw new Error(`Missing required flag.\n${usage()}`);
   }
+  const manualKey = `manual:candidate-records:${electionId}:${candidateId}`;
 
   const rawRecords = await readJsonFile(recordsFile);
-  const parsedRecords = parseCandidateRecordDiscoveryPayload(rawRecords);
-  if (!parsedRecords.ok) {
-    throw new Error(`Candidate records payload failed validation: ${parsedRecords.reason}`);
+  const validatedRecords = await validateCandidateRecordDiscoveryPayload(
+    rawRecords,
+    readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000)
+  );
+  if (!validatedRecords.ok) {
+    const gaps: ManualResearchRepairGap[] = [
+      {
+        id: "candidate_records.payload",
+        stage: "candidate_records",
+        objectType: "candidate_record_set",
+        outcome: "needs_repair",
+        failureKind: "schema",
+        reason: validatedRecords.reason,
+        promptFile: "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+        focusedResearchPass: "Run a focused candidate-record payload repair pass. Fix only the schema issue, then rerun the manual records writer.",
+      },
+    ];
+    await writeRecordsRepairReport({
+      reportFile: repairReportFile,
+      manualKey,
+      candidateId,
+      electionId,
+      recordsFile,
+      labelsFile,
+      candidateDisplayName: null,
+      gaps,
+    });
+    throw new Error(`Candidate records payload failed validation: ${validatedRecords.reason}`);
+  }
+  if (validatedRecords.droppedRecords.length > 0) {
+    const gaps = validatedRecords.droppedRecords.map(droppedRecordToGap);
+    await writeRecordsRepairReport({
+      reportFile: repairReportFile,
+      manualKey,
+      candidateId,
+      electionId,
+      recordsFile,
+      labelsFile,
+      candidateDisplayName: null,
+      gaps,
+    });
+    throw new Error(
+      `Candidate records payload needs focused source/schema repair before import; dropped=${validatedRecords.droppedRecords.length}; ${summarizeDroppedRecords(validatedRecords.droppedRecords)}`
+    );
   }
 
   const dryRun = hasFlag("--dry-run");
-  const manualKey = `manual:candidate-records:${electionId}:${candidateId}`;
 
   const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
 
@@ -135,11 +365,47 @@ async function main(): Promise<void> {
     const rawLabels = await readJsonFile(labelsFile);
     const parsedLabels = parseCandidateRecordAreaLabelPayload(rawLabels, {
       allowedResearchAreaSlugs: allowedSlugs,
-      recordCount: parsedRecords.payload.records.length,
+      recordCount: validatedRecords.records.length,
       requireLabelForEveryRecord: true,
     });
     if (!parsedLabels.ok) {
+      const gaps = [buildRecordLabelParseGap(parsedLabels.reason)];
+      await writeRecordsRepairReport({
+        reportFile: repairReportFile,
+        manualKey,
+        candidateId,
+        electionId,
+        recordsFile,
+        labelsFile,
+        candidateDisplayName: context.candidateDisplayName,
+        gaps,
+      });
       throw new Error(`Candidate record labels payload failed validation: ${parsedLabels.reason}`);
+    }
+    const qualityGaps = applyConfirmedGaps(
+      buildCandidateRecordQualityGaps({
+        recordCount: validatedRecords.records.length,
+        labels: parsedLabels.payload.labels,
+      }),
+      confirmedGapIds
+    );
+    const blockingQualityGaps = qualityGaps.filter((gap) => gap.outcome === "needs_repair");
+    if (repairReportFile && qualityGaps.length > 0) {
+      await writeRecordsRepairReport({
+        reportFile: repairReportFile,
+        manualKey,
+        candidateId,
+        electionId,
+        recordsFile,
+        labelsFile,
+        candidateDisplayName: context.candidateDisplayName,
+        gaps: qualityGaps,
+      });
+    }
+    if (strictQualityGate && blockingQualityGaps.length > 0) {
+      throw new Error(
+        `Candidate records quality gate failed; run focused gap-repair pass before import. gaps=${blockingQualityGaps.length}; ${summarizeManualResearchGaps(blockingQualityGaps)}`
+      );
     }
 
     if (dryRun) {
@@ -151,8 +417,17 @@ async function main(): Promise<void> {
             candidateId,
             electionId,
             candidateDisplayName: context.candidateDisplayName,
-            recordCount: parsedRecords.payload.records.length,
+            recordCount: validatedRecords.records.length,
             labelCount: parsedLabels.payload.labels.length,
+            sourceValidation: {
+              sourceUrlsReachable: true,
+              droppedRecordCount: validatedRecords.droppedRecords.length,
+            },
+            qualityGate: {
+              strict: strictQualityGate,
+              confirmedGaps: [...confirmedGapIds].sort(),
+              gaps: qualityGaps,
+            },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },
           null,
@@ -167,7 +442,7 @@ async function main(): Promise<void> {
       await client.query("BEGIN");
       const upsert = await upsertCandidateRecords(
         client,
-        parsedRecords.payload.records.map((record) => ({
+        validatedRecords.records.map((record) => ({
           candidateId,
           description: record.description,
           sourceUrl: record.source_url,
@@ -176,7 +451,7 @@ async function main(): Promise<void> {
       );
 
       const labelsForValidation: CandidateRecordAreaLabelInput[] = parsedLabels.payload.labels.map((label) => {
-        const record = parsedRecords.payload.records[label.record_index];
+        const record = validatedRecords.records[label.record_index];
         if (!record) {
           throw new Error(`record_index out of range in labels: ${label.record_index}`);
         }
@@ -199,6 +474,17 @@ async function main(): Promise<void> {
       const validation = validateCandidateRecordAreaLabels(labelsForValidation, allowedSlugs);
       if (!validation.ok) {
         const reason = validation.failures.map((failure) => failure.reason).join("; ");
+        const gaps = buildRecordLabelValidationGaps(validation.failures.map((failure) => failure.reason));
+        await writeRecordsRepairReport({
+          reportFile: repairReportFile,
+          manualKey,
+          candidateId,
+          electionId,
+          recordsFile,
+          labelsFile,
+          candidateDisplayName: context.candidateDisplayName,
+          gaps,
+        });
         throw new Error(`Candidate record label validation failed: ${reason}`);
       }
 

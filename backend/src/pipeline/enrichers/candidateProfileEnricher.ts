@@ -203,6 +203,20 @@ type CandidateProfileResolvedContext =
       seedUrls: readonly string[];
     };
 
+export type CandidateProfileLinkedElectionContext = Extract<
+  CandidateProfileResolvedContext,
+  { type: "election" }
+>;
+
+export type CandidateProfileFinanceSyncFanoutResult = {
+  candidateId: string;
+  electionId: string;
+  state: string;
+  officeScope: string | null;
+  officeCanonicalName: string | null;
+  federalFecCandidateId: string | null;
+};
+
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
 const MAX_SEED_URLS = 8;
@@ -949,6 +963,94 @@ async function enqueueMinnesotaFinanceSyncForLinkedElection(input: {
   }
 }
 
+export async function enqueueCandidateProfileFinanceSyncFanoutForLinkedElection(input: {
+  context: CandidateProfileLinkedElectionContext;
+  candidateId: string;
+  fecIds: readonly string[] | undefined;
+}): Promise<CandidateProfileFinanceSyncFanoutResult> {
+  await enqueueCandidateFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+    fecIds: input.fecIds,
+  });
+  await enqueueCaliforniaFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueColoradoFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueConnecticutFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueDistrictOfColumbiaFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueKentuckyFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueNewMexicoFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueOklahomaFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueTexasFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueFloridaFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueHawaiiFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueWashingtonFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueVirginiaFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueWisconsinFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueMassachusettsFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueMichiganFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueMinnesotaFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+
+  return {
+    candidateId: input.candidateId,
+    electionId: input.context.contextId,
+    state: input.context.state,
+    officeScope: input.context.officeScope,
+    officeCanonicalName: input.context.officeCanonicalName,
+    federalFecCandidateId: selectElectionFinanceFecId({
+      context: input.context,
+      fecIds: input.fecIds,
+    }),
+  };
+}
+
 async function enqueueCandidateFinanceSyncForPresidentialCycle(input: {
   context: Extract<CandidateProfileResolvedContext, { type: "presidential_cycle" }>;
   presidentialRole: PresidentialProfileDraftRole;
@@ -1561,74 +1663,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           }
 
           if (draftContext.type === "election") {
-            await enqueueCandidateFinanceSyncForLinkedElection({
+            await enqueueCandidateProfileFinanceSyncFanoutForLinkedElection({
               context: draftContext,
               candidateId,
               fecIds: profile.fec_ids,
-            });
-            await enqueueCaliforniaFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueColoradoFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueConnecticutFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueDistrictOfColumbiaFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueKentuckyFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueNewMexicoFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueOklahomaFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueTexasFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueFloridaFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueHawaiiFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueWashingtonFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueVirginiaFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueWisconsinFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueMassachusettsFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueMichiganFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
-            });
-            await enqueueMinnesotaFinanceSyncForLinkedElection({
-              context: draftContext,
-              candidateId,
             });
             await enqueueCandidateRecordDrafts(redis, [
               {

@@ -16,7 +16,7 @@ export type CandidateProfilePayload = {
   sources: string[];
 };
 
-type CandidateProfilePayloadParseOptions = {
+export type CandidateProfilePayloadParseOptions = {
   requireFecIds?: boolean;
   allowFecIds?: boolean;
 };
