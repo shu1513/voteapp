@@ -326,8 +326,9 @@ Safety properties:
 - No API route, frontend, scheduler, or normal worker behavior is changed.
 - Scripts run only when manually invoked.
 - Scripts validate payloads before writing. Ballot-measure writes also verify `official_measure_url` and source URL
-  reachability in dry-run and live mode; dry-run prints the normalized URLs and explicit pass/fail fields for payload shape,
-  official URL reachability, source URL reachability, and allowed tag slugs.
+  reachability in dry-run and live mode; ballot-measure payloads with more than 20 unique source URLs fail fast instead of
+  silently dropping citations. Dry-run prints the normalized URLs and explicit pass/fail fields for payload shape, official URL
+  reachability, source URL reachability, and allowed tag slugs.
 - Election and roster injection dry-runs validate payload shape without connecting to Postgres or Redis. Profile, roster fanout,
   candidate-record, and ballot-measure dry-runs also check target DB context so bad IDs fail before live writes.
 - Live manual commands do not fall back to localhost Postgres or Redis when target env vars are missing.

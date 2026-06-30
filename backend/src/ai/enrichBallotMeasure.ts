@@ -260,7 +260,18 @@ export async function validateBallotMeasureAiPayload(
     };
   }
 
-  const uniqueSourceUrls = [...new Set(parsed.sources)].slice(0, MAX_SOURCE_URLS_TO_VERIFY);
+  const uniqueSourceUrls = [...new Set(parsed.sources)];
+  if (uniqueSourceUrls.length > MAX_SOURCE_URLS_TO_VERIFY) {
+    return {
+      ok: false,
+      reason: `sources contains ${uniqueSourceUrls.length} URLs; at most ${MAX_SOURCE_URLS_TO_VERIFY} can be verified`,
+      blockedUrls: [],
+      failureDebug: {
+        source_url_count: uniqueSourceUrls.length,
+        max_source_urls_to_verify: MAX_SOURCE_URLS_TO_VERIFY,
+      },
+    };
+  }
   type SourceCheck = {
     url: string;
     verification: Awaited<ReturnType<typeof verifyHttpUrlReachability>>;

@@ -104,6 +104,38 @@ describe("enrichBallotMeasure shared provider wiring", () => {
     }
   });
 
+  it("rejects manual ballot-measure payloads with more sources than can be verified", async () => {
+    const sources = Array.from(
+      { length: 21 },
+      (_, index) => `https://example.org/measure-er-source-${index + 1}.pdf`
+    );
+
+    const { validateBallotMeasureAiPayload } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await validateBallotMeasureAiPayload(
+      {
+        official_measure_url: "https://example.org/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
+        what_yes_means: "Approves a county sales tax increase for health services.",
+        what_no_means: "Keeps current tax rates and funding levels.",
+        research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+        sources,
+      },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+
+    expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(1);
+    expect(result).toEqual({
+      ok: false,
+      reason: "sources contains 21 URLs; at most 20 can be verified",
+      blockedUrls: [],
+      failureDebug: {
+        source_url_count: 21,
+        max_source_urls_to_verify: 20,
+      },
+    });
+  });
+
   it("rejects manual ballot-measure payloads with unreachable official_measure_url", async () => {
     verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) =>
       url.includes("measure-er.pdf")

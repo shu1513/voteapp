@@ -64,10 +64,10 @@ function requireEnv(name: string): string {
 
 function readPositiveIntegerEnv(name: string, fallback: number): number {
   const raw = process.env[name]?.trim() || String(fallback);
-  const parsed = Number.parseInt(raw, 10);
-  if (!Number.isFinite(parsed) || parsed <= 0) {
+  if (!/^[1-9]\d*$/.test(raw)) {
     throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
   }
+  const parsed = Number(raw);
   return parsed;
 }
 
