@@ -8,6 +8,11 @@ import { loadProjectEnv } from "../config/env.js";
 import type { CandidateProfilePayload } from "../contracts/candidateProfilePayloadContract.js";
 import { enqueueCandidateRecordDrafts } from "../pipeline/candidates/candidateRecordDraftEmitter.js";
 import {
+  enqueueCandidateProfileFinanceSyncFanoutForLinkedElection,
+  type CandidateProfileFinanceSyncFanoutResult,
+  type CandidateProfileLinkedElectionContext,
+} from "../pipeline/enrichers/candidateProfileEnricher.js";
+import {
   findOrCreateCandidateFromProfile,
   hasAtLeastOneHardIdentifier,
 } from "../pipeline/candidates/candidateProfileIdentity.js";
@@ -23,10 +28,17 @@ import {
 type ElectionContextRow = {
   election_id: string;
   state: string;
+  district_name: string;
   district_type: string;
+  election_date: string;
   official_ballot_title: string;
+  election_stage: string | null;
+  senate_class: string | null;
+  term_end_year: string | null;
   is_partisan: boolean | null;
   race_type: string;
+  office_scope: string | null;
+  office_canonical_name: string | null;
 };
 
 function toReason(error: unknown): string {
@@ -37,7 +49,7 @@ function toReason(error: unknown): string {
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
+    "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
     "",
     "Payload must match CandidateProfilePayload. Live runs find/create a candidate and link it to the election.",
   ].join("\n");
@@ -118,13 +130,24 @@ async function loadElectionContext(pool: Pool, electionId: string): Promise<Elec
       SELECT
         e.id::text AS election_id,
         d.state,
+        d.name AS district_name,
         d.district_type,
+        e.election_date::text AS election_date,
         e.official_ballot_title,
+        e.election_stage::text AS election_stage,
+        sm.senate_class,
+        sm.term_end_year,
         e.is_partisan,
-        e.race_type
+        e.race_type,
+        office.scope AS office_scope,
+        office.canonical_name AS office_canonical_name
       FROM public.elections AS e
       JOIN public.districts AS d
         ON d.id = e.district_id
+      LEFT JOIN public.offices AS office
+        ON office.id = e.office_id
+      LEFT JOIN public.election_senate_metadata AS sm
+        ON sm.election_id = e.id
       WHERE e.id::text = $1
       LIMIT 1
     `,
@@ -168,6 +191,33 @@ function readPositiveIntegerEnv(name: string, fallback: number): number {
 
 function normalizeConfirmedGaps(values: readonly string[]): Set<string> {
   return new Set(values.map((value) => value.trim()).filter((value) => value.length > 0));
+}
+
+function buildLinkedElectionFinanceContext(input: {
+  election: ElectionContextRow;
+  includeParty: boolean;
+  profileParty: string | null | undefined;
+  isIncumbent: boolean | undefined;
+}): CandidateProfileLinkedElectionContext {
+  return {
+    type: "election",
+    contextId: input.election.election_id,
+    state: input.election.state,
+    districtName: input.election.district_name,
+    districtType: input.election.district_type,
+    electionDate: input.election.election_date,
+    officialBallotTitle: input.election.official_ballot_title,
+    electionStage: input.election.election_stage,
+    senateClass: input.election.senate_class,
+    termEndYear: input.election.term_end_year,
+    electionIsPartisan: input.election.is_partisan,
+    officeScope: input.election.office_scope,
+    officeCanonicalName: input.election.office_canonical_name,
+    includeParty: input.includeParty,
+    rosterParty: input.includeParty ? input.profileParty ?? undefined : undefined,
+    rosterIncumbent: input.isIncumbent,
+    seedUrls: [],
+  };
 }
 
 function applyConfirmedGaps(
@@ -341,6 +391,7 @@ async function main(): Promise<void> {
 
   const dryRun = hasFlag("--dry-run");
   const emitRecordDraft = hasFlag("--emit-record-draft");
+  const emitFinanceSync = hasFlag("--emit-finance-sync");
   const runId = readFlag("--run-id") ?? `manual_candidate_profile_${new Date().toISOString()}`;
   const isIncumbent = readBooleanFlag("--is-incumbent");
   const manualKey = `manual:candidate-profile:${electionId}:${profile.display_name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
@@ -396,10 +447,17 @@ async function main(): Promise<void> {
             displayName: profile.display_name,
             hasHardIdentifier: hasAtLeastOneHardIdentifier(profile),
             emitRecordDraft,
+            emitFinanceSync,
             state: election.state,
             raceType: election.race_type,
             districtType: election.district_type,
             officialBallotTitle: election.official_ballot_title,
+            financeSync: {
+              wouldEmit: emitFinanceSync,
+              officeScope: election.office_scope,
+              officeCanonicalName: election.office_canonical_name,
+              fecIds: profile.fec_ids ?? [],
+            },
             sourceValidation: {
               sourceUrlsReachable: true,
               sourceCount: validatedProfile.sourceCount,
@@ -460,6 +518,19 @@ async function main(): Promise<void> {
     }
 
     let recordDraft: { emittedCount: number; skippedCount: number } | null = null;
+    let financeSync: CandidateProfileFinanceSyncFanoutResult | null = null;
+    if (emitFinanceSync) {
+      financeSync = await enqueueCandidateProfileFinanceSyncFanoutForLinkedElection({
+        context: buildLinkedElectionFinanceContext({
+          election,
+          includeParty,
+          profileParty: profile.party,
+          isIncumbent: isIncumbent ?? undefined,
+        }),
+        candidateId,
+        fecIds: profile.fec_ids,
+      });
+    }
     if (redis) {
       try {
         await redis.connect();
@@ -480,6 +551,7 @@ async function main(): Promise<void> {
           candidateId,
           matchedExisting,
           candidateElectionCreated,
+          financeSync,
           recordDraft,
         },
         null,

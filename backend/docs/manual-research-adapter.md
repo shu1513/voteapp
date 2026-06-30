@@ -123,6 +123,9 @@ Manual path:
   find gaps. Add `--strict-quality-gate` when the run should stop on missing profile fields such as summary, official website,
   or party in partisan contests. After a focused field-only repair pass finds no reliable value, rerun with
   `--confirmed-gap candidate_profile.<field>` to document the confirmed null instead of blocking import.
+- Add `--emit-finance-sync` only when the operator deliberately wants the optional production profile side effect. It reuses
+  the same linked-election campaign-finance sync fanout as the normal candidate-profile enricher after the candidate/election
+  link commits.
 
 ### Candidate Records
 
@@ -213,7 +216,8 @@ Committed local/operator wrappers now cover the no-AI district import path:
    drafts for only that election, avoiding broad Redis worker consumption.
 4. `manual:candidate-profile:write` - accepts an election ID and profile JSON, validates payload shape and profile source URL
    reachability, finds/creates candidate, links candidate to election, and can emit a focused repair report for validation or
-   quality gaps.
+   quality gaps. With `--emit-finance-sync`, it also requests the same optional linked-election campaign-finance sync fanout
+   used by the production profile worker.
 5. `manual:candidate-records:write` - accepts candidate/election IDs plus record and label JSON, validates payload shape and
    record source URL reachability, fails fast on rows needing source/schema repair, upserts records, upserts area tags, and can
    emit a focused repair report for source, schema, label, or quality gaps.
@@ -333,7 +337,7 @@ Manual commands:
 - `npm run manual:elections:inject -- --file payload.json [--ingest-key key] [--run-id id] [--dry-run]`
 - `npm run manual:candidate-roster:inject -- --election-id uuid --file roster.json [--run-id id] [--dry-run]`
 - `npm run manual:candidate-roster:fanout -- --election-id uuid [--run-id id] [--dry-run]`
-- `npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]`
+- `npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]`
 - `npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]`
 - `npm run manual:ballot-measure:write -- --election-id uuid --file payload.json [--dry-run]`
 
@@ -363,6 +367,8 @@ Safety properties:
   follow-up so stale Redis stream entries cannot cause a broad worker to process the wrong roster.
 - Candidate profile writes require a hard identifier by default; use `--allow-no-hard-identifier` only after explicit operator
   review.
+- Candidate profile writes do not emit campaign-finance sync jobs by default. `--emit-finance-sync` is an explicit, optional
+  production-side-effect flag and should be used only when finance sync worker configuration is available and desired.
 - Candidate profile and candidate-record writes can emit a `manual_research_repair_report.v1` JSON file with
   `--repair-report-file`. Use this for focused repair runs: validation/source/label failures stop the import and record the
   exact prompt file, target object, gap ID, source URL or field when available, and the narrow research pass to run next.
