@@ -119,6 +119,10 @@ Manual path:
 - `manual:candidate-profile:write` validates the researched profile payload with that shared validator, requires a hard
   identifier by default, calls `findOrCreateCandidateFromProfile`, and links the candidate to the target office election with
   `upsertCandidateElection` in one transaction.
+- Add `--repair-report-file file` to write a `manual_research_repair_report.v1` JSON report when validation or quality gates
+  find gaps. Add `--strict-quality-gate` when the run should stop on missing profile fields such as summary, official website,
+  or party in partisan contests. After a focused field-only repair pass finds no reliable value, rerun with
+  `--confirmed-gap candidate_profile.<field>` to document the confirmed null instead of blocking import.
 
 ### Candidate Records
 
@@ -154,6 +158,11 @@ Manual path:
 - `manual:candidate-records:write` validates the researched record payload with that shared validator, fails fast if any row
   is dropped for source/schema repair, validates the separate area-label payload, upserts records, maps persisted record IDs
   to labels, validates labels, prunes stale labels for touched records, and upserts tags.
+- Add `--repair-report-file file` to write a `manual_research_repair_report.v1` JSON report for dropped records, bad label
+  payloads, label-validation failures, or quality gaps. Add `--strict-quality-gate` when the run should stop on zero verified
+  records or all-neutral/general labels until a focused record or label repair pass is completed. After a focused pass confirms
+  no source-backed replacement or no stance-bearing records exist, rerun with `--confirmed-gap <gap-id>` to preserve that
+  outcome in dry-run output and avoid blocking live import.
 
 ### Ballot Measures
 
@@ -203,9 +212,11 @@ Committed local/operator wrappers now cover the no-AI district import path:
 3. `manual:candidate-roster:fanout` - reads the validated `candidate_roster:<election_id>` staging row and emits profile
    drafts for only that election, avoiding broad Redis worker consumption.
 4. `manual:candidate-profile:write` - accepts an election ID and profile JSON, validates payload shape and profile source URL
-   reachability, finds/creates candidate, and links candidate to election.
+   reachability, finds/creates candidate, links candidate to election, and can emit a focused repair report for validation or
+   quality gaps.
 5. `manual:candidate-records:write` - accepts candidate/election IDs plus record and label JSON, validates payload shape and
-   record source URL reachability, fails fast on rows needing source/schema repair, upserts records, and upserts area tags.
+   record source URL reachability, fails fast on rows needing source/schema repair, upserts records, upserts area tags, and can
+   emit a focused repair report for source, schema, label, or quality gaps.
 6. `manual:ballot-measure:write` - accepts an election ID and researched ballot-measure JSON, validates payload shape and URL
    reachability, upserts measure, and upserts tags.
 
@@ -322,8 +333,8 @@ Manual commands:
 - `npm run manual:elections:inject -- --file payload.json [--ingest-key key] [--run-id id] [--dry-run]`
 - `npm run manual:candidate-roster:inject -- --election-id uuid --file roster.json [--run-id id] [--dry-run]`
 - `npm run manual:candidate-roster:fanout -- --election-id uuid [--run-id id] [--dry-run]`
-- `npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--allow-no-hard-identifier] [--dry-run]`
-- `npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--dry-run]`
+- `npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]`
+- `npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]`
 - `npm run manual:ballot-measure:write -- --election-id uuid --file payload.json [--dry-run]`
 
 Safety properties:
@@ -352,6 +363,12 @@ Safety properties:
   follow-up so stale Redis stream entries cannot cause a broad worker to process the wrong roster.
 - Candidate profile writes require a hard identifier by default; use `--allow-no-hard-identifier` only after explicit operator
   review.
+- Candidate profile and candidate-record writes can emit a `manual_research_repair_report.v1` JSON file with
+  `--repair-report-file`. Use this for focused repair runs: validation/source/label failures stop the import and record the
+  exact prompt file, target object, gap ID, source URL or field when available, and the narrow research pass to run next.
+- `--strict-quality-gate` makes profile and record writers block on meaningful thin-data gaps instead of silently importing
+  pipeline-valid but production-weak rows. `--confirmed-gap <id>` is only for the rerun after a focused repair pass proves the
+  missing value or neutral-only label set is acceptable.
 - Candidate record writes require an existing candidate/election link, an office-linked election, allowed research areas, and a
   label for every record. Reruns replace stale area tags for the records touched by that payload before upserting the current
   labels.
