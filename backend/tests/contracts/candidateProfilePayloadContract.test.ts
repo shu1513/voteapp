@@ -14,6 +14,7 @@ describe("parseCandidateProfilePayload", () => {
       official_website_url: "https://janedoe.example.com/",
       fec_ids: ["H0XX00000"],
       state_filing_ids: ["SF-100"],
+      current_office: "  Governor  ",
       sources: ["https://example.org/profile"],
     });
 
@@ -25,6 +26,23 @@ describe("parseCandidateProfilePayload", () => {
     expect(parsed.payload.twitter_handle).toBe("janedoe");
     expect(parsed.payload.official_website_url).toBe("https://janedoe.example.com");
     expect(parsed.payload.fec_ids).toEqual(["H0XX00000"]);
+    expect(parsed.payload.current_office).toBe("Governor");
+  });
+
+  it("rejects blank current office", () => {
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      current_office: "   ",
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toBe("payload.current_office must be non-empty string when present");
   });
 
   it("accepts twitter profile URL and normalizes to handle", () => {

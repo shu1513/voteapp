@@ -17,6 +17,7 @@ export type ExistingCandidateRow = {
   official_website_url: string | null;
   fec_ids: unknown;
   state_filing_ids: unknown;
+  current_office: string | null;
   state: string;
 };
 
@@ -171,6 +172,7 @@ export async function loadSameNameCandidates(
         official_website_url,
         fec_ids,
         state_filing_ids,
+        current_office,
         state
       FROM public.candidates
       WHERE deleted_at IS NULL
@@ -200,6 +202,7 @@ export async function loadSameNameCandidatesAcrossStates(
         official_website_url,
         fec_ids,
         state_filing_ids,
+        current_office,
         state
       FROM public.candidates
       WHERE deleted_at IS NULL
@@ -236,6 +239,8 @@ async function insertCandidate(
         state_filing_ids,
         state,
         official_website_url,
+        profile_sources,
+        current_office,
         last_researched
       )
       VALUES (
@@ -251,6 +256,8 @@ async function insertCandidate(
         $10::jsonb,
         $11,
         $12,
+        $13::jsonb,
+        $14,
         now()
       )
       RETURNING id
@@ -268,6 +275,8 @@ async function insertCandidate(
       profile.state_filing_ids ? JSON.stringify(profile.state_filing_ids) : null,
       state,
       profile.official_website_url ?? null,
+      JSON.stringify(profile.sources),
+      profile.current_office ?? null,
     ]
   );
 
@@ -287,9 +296,10 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   const locked = await client.query<{
     fec_ids: unknown;
     state_filing_ids: unknown;
+    current_office: string | null;
   }>(
     `
-      SELECT fec_ids, state_filing_ids
+      SELECT fec_ids, state_filing_ids, current_office
       FROM public.candidates
       WHERE id = $1
         AND deleted_at IS NULL
@@ -308,17 +318,18 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   const mergedFecIds = mergeIdentifierLists(existingFecIds, profile.fec_ids);
   const mergedStateFilingIds = mergeIdentifierLists(existingStateFilingIds, profile.state_filing_ids);
 
-  const fecIdsChanged = !haveSameNormalizedIdentifierSet(existingFecIds, mergedFecIds);
-  const stateFilingChanged = !haveSameNormalizedIdentifierSet(existingStateFilingIds, mergedStateFilingIds);
-  if (!fecIdsChanged && !stateFilingChanged) {
-    return;
-  }
-
   await client.query(
     `
       UPDATE public.candidates
       SET fec_ids = $2::jsonb,
           state_filing_ids = $3::jsonb,
+          current_office = CASE
+            WHEN $4::text IS NOT NULL AND (current_office IS NULL OR length(trim(current_office)) = 0)
+              THEN $4::text
+            ELSE current_office
+          END,
+          profile_sources = $5::jsonb,
+          last_researched = now(),
           updated_at = now()
       WHERE id = $1
     `,
@@ -326,6 +337,8 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       candidateId,
       mergedFecIds ? JSON.stringify(mergedFecIds) : null,
       mergedStateFilingIds ? JSON.stringify(mergedStateFilingIds) : null,
+      profile.current_office ?? null,
+      JSON.stringify(profile.sources),
     ]
   );
 }

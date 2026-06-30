@@ -12,6 +12,7 @@ export type CandidateProfilePayload = {
   official_website_url?: string;
   fec_ids?: string[];
   state_filing_ids?: string[];
+  current_office?: string;
   summary?: string;
   sources: string[];
 };
@@ -184,6 +185,14 @@ export function parseCandidateProfilePayload(
     return { ok: false, reason: "payload.state_filing_ids must be string array when present" };
   }
 
+  let currentOffice: string | undefined;
+  if (input.current_office !== undefined && input.current_office !== null) {
+    if (!isNonEmptyString(input.current_office)) {
+      return { ok: false, reason: "payload.current_office must be non-empty string when present" };
+    }
+    currentOffice = input.current_office.trim();
+  }
+
   let summary: string | undefined;
   if (input.summary !== undefined && input.summary !== null) {
     if (!isNonEmptyString(input.summary)) {
@@ -205,6 +214,7 @@ export function parseCandidateProfilePayload(
       ...(officialWebsiteUrl ? { official_website_url: officialWebsiteUrl } : {}),
       ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),
       ...(stateFilingIds !== undefined ? { state_filing_ids: stateFilingIds } : {}),
+      ...(currentOffice ? { current_office: currentOffice } : {}),
       ...(summary ? { summary } : {}),
       sources,
     },

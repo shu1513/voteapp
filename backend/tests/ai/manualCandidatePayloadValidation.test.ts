@@ -29,6 +29,7 @@ describe("manual candidate payload validation helpers", () => {
         last_name: "Candidate",
         party: "Democratic",
         official_website_url: "https://jane.example",
+        current_office: "Governor",
         summary: "Former city council member.",
         sources: ["https://jane.example/about"],
       },
@@ -46,6 +47,7 @@ describe("manual candidate payload validation helpers", () => {
         display_name: "Jane Candidate",
         party: "Democratic",
         official_website_url: "https://jane.example",
+        current_office: "Governor",
       });
     }
   });

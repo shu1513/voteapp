@@ -64,6 +64,27 @@ describe("findOrCreateCandidateFromProfile", () => {
     expect(query.mock.calls[1]?.[1]).toContain("US");
   });
 
+  it("writes current office when inserting a new candidate", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ id: "candidate-new" }], rowCount: 1 });
+
+    await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ fec_ids: ["P80000001"], current_office: "Governor" }),
+      state: "US",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    const insertSql = String(query.mock.calls[1]?.[0]);
+    expect(insertSql).toContain("current_office");
+    expect(insertSql).toContain("profile_sources");
+    expect(query.mock.calls[1]?.[1]).toContain(JSON.stringify(["https://example.com/profile"]));
+    expect(query.mock.calls[1]?.[1]).toContain("Governor");
+  });
+
   it("reuses an existing same-name candidate when hard identifiers match", async () => {
     const query = vi
       .fn()
@@ -79,11 +100,13 @@ describe("findOrCreateCandidateFromProfile", () => {
             official_website_url: null,
             fec_ids: ["P80000001"],
             state_filing_ids: null,
+            current_office: null,
             state: "US",
           },
         ],
       })
-      .mockResolvedValueOnce({ rows: [{ fec_ids: ["P80000001"], state_filing_ids: null }] });
+      .mockResolvedValueOnce({ rows: [{ fec_ids: ["P80000001"], state_filing_ids: null, current_office: null }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
 
     const result = await findOrCreateCandidateFromProfile({
       client: { query } as never,
@@ -94,8 +117,98 @@ describe("findOrCreateCandidateFromProfile", () => {
     });
 
     expect(result).toEqual({ candidateId: "candidate-existing", matchedExisting: true });
-    expect(query).toHaveBeenCalledTimes(2);
+    expect(query).toHaveBeenCalledTimes(3);
     expect(query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.candidates"))).toBe(false);
+    expect(String(query.mock.calls[2]?.[0])).toContain("last_researched = now()");
+    expect(String(query.mock.calls[2]?.[0])).toContain("profile_sources = $5::jsonb");
+  });
+
+  it("fills a blank current office for an existing hard-identifier match", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: "candidate-existing",
+            first_name: "Jane",
+            last_name: "Candidate",
+            date_of_birth: null,
+            twitter_handle: null,
+            linkedin_url: null,
+            official_website_url: null,
+            fec_ids: ["P80000001"],
+            state_filing_ids: null,
+            current_office: null,
+            state: "US",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [{ fec_ids: ["P80000001"], state_filing_ids: null, current_office: "  " }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    const result = await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ fec_ids: ["P80000001"], current_office: "Governor" }),
+      state: "US",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    expect(result).toEqual({ candidateId: "candidate-existing", matchedExisting: true });
+    expect(query).toHaveBeenCalledTimes(3);
+    expect(String(query.mock.calls[2]?.[0])).toContain("current_office = CASE");
+    expect(query.mock.calls[2]?.[1]).toEqual([
+      "candidate-existing",
+      JSON.stringify(["P80000001"]),
+      null,
+      "Governor",
+      JSON.stringify(["https://example.com/profile"]),
+    ]);
+  });
+
+  it("does not overwrite a non-blank current office for an existing hard-identifier match", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: "candidate-existing",
+            first_name: "Jane",
+            last_name: "Candidate",
+            date_of_birth: null,
+            twitter_handle: null,
+            linkedin_url: null,
+            official_website_url: null,
+            fec_ids: ["P80000001"],
+            state_filing_ids: null,
+            current_office: "Mayor",
+            state: "US",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [{ fec_ids: ["P80000001"], state_filing_ids: null, current_office: "Mayor" }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    const result = await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ fec_ids: ["P80000001"], current_office: "Governor" }),
+      state: "US",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    expect(result).toEqual({ candidateId: "candidate-existing", matchedExisting: true });
+    expect(query).toHaveBeenCalledTimes(3);
+    expect(String(query.mock.calls[2]?.[0])).toContain("current_office = CASE");
+    expect(String(query.mock.calls[2]?.[0])).toContain("last_researched = now()");
+    expect(String(query.mock.calls[2]?.[0])).toContain("profile_sources = $5::jsonb");
+    expect(query.mock.calls[2]?.[1]).toEqual([
+      "candidate-existing",
+      JSON.stringify(["P80000001"]),
+      null,
+      "Governor",
+      JSON.stringify(["https://example.com/profile"]),
+    ]);
   });
 
   it("can reuse a same-name candidate from another state when explicitly allowed and hard identifiers match", async () => {
@@ -113,11 +226,13 @@ describe("findOrCreateCandidateFromProfile", () => {
             official_website_url: null,
             fec_ids: ["P80000001"],
             state_filing_ids: null,
+            current_office: null,
             state: "CA",
           },
         ],
       })
-      .mockResolvedValueOnce({ rows: [{ fec_ids: ["P80000001"], state_filing_ids: null }] });
+      .mockResolvedValueOnce({ rows: [{ fec_ids: ["P80000001"], state_filing_ids: null, current_office: null }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
 
     const result = await findOrCreateCandidateFromProfile({
       client: { query } as never,
