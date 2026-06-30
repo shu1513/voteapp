@@ -239,6 +239,7 @@ async function insertCandidate(
         state_filing_ids,
         state,
         official_website_url,
+        profile_sources,
         current_office,
         last_researched
       )
@@ -255,7 +256,8 @@ async function insertCandidate(
         $10::jsonb,
         $11,
         $12,
-        $13,
+        $13::jsonb,
+        $14,
         now()
       )
       RETURNING id
@@ -273,6 +275,7 @@ async function insertCandidate(
       profile.state_filing_ids ? JSON.stringify(profile.state_filing_ids) : null,
       state,
       profile.official_website_url ?? null,
+      JSON.stringify(profile.sources),
       profile.current_office ?? null,
     ]
   );
@@ -315,8 +318,6 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   const mergedFecIds = mergeIdentifierLists(existingFecIds, profile.fec_ids);
   const mergedStateFilingIds = mergeIdentifierLists(existingStateFilingIds, profile.state_filing_ids);
 
-  const fecIdsChanged = !haveSameNormalizedIdentifierSet(existingFecIds, mergedFecIds);
-  const stateFilingChanged = !haveSameNormalizedIdentifierSet(existingStateFilingIds, mergedStateFilingIds);
   await client.query(
     `
       UPDATE public.candidates
@@ -327,6 +328,7 @@ async function mergeCandidateIdentifiersForExistingCandidate(
               THEN $4::text
             ELSE current_office
           END,
+          profile_sources = $5::jsonb,
           last_researched = now(),
           updated_at = now()
       WHERE id = $1
@@ -336,6 +338,7 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       mergedFecIds ? JSON.stringify(mergedFecIds) : null,
       mergedStateFilingIds ? JSON.stringify(mergedStateFilingIds) : null,
       profile.current_office ?? null,
+      JSON.stringify(profile.sources),
     ]
   );
 }

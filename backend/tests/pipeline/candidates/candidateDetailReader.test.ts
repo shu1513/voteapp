@@ -72,6 +72,7 @@ describe("lookupCandidateDetailById", () => {
           official_website_url: "https://janesmith.example",
           fec_ids: ["H4CA00001"],
           state_filing_ids: ["CA-123"],
+          profile_sources: ["https://janesmith.example/about", "https://city.example/mayor"],
           last_researched: "2026-06-30 12:00:00+00",
         },
       ],
@@ -96,7 +97,7 @@ describe("lookupCandidateDetailById", () => {
         official_website_url: "https://janesmith.example",
         fec_ids: ["H4CA00001"],
         state_filing_ids: ["CA-123"],
-        profile_sources: [],
+        profile_sources: ["https://janesmith.example/about", "https://city.example/mayor"],
         last_researched: "2026-06-30 12:00:00+00",
         records: [],
         elections: [],
@@ -109,6 +110,7 @@ describe("lookupCandidateDetailById", () => {
     const sql = String(db.query.mock.calls[0]?.[0]);
     expect(sql).toContain("COALESCE(");
     expect(sql).toContain("NULLIF(trim(candidate.display_name), '')");
+    expect(sql).toContain("candidate.profile_sources");
   });
 
   it("returns candidate records with research-area tags in display order", async () => {
@@ -400,6 +402,7 @@ describe("lookupCandidateDetailById", () => {
           official_website_url: null,
           fec_ids: null,
           state_filing_ids: null,
+          profile_sources: null,
           last_researched: null,
         },
       ],

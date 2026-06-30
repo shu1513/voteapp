@@ -106,6 +106,7 @@ type CandidateDetailRow = {
   official_website_url: string | null;
   fec_ids: unknown;
   state_filing_ids: unknown;
+  profile_sources: unknown;
   last_researched: string | null;
 };
 
@@ -209,7 +210,7 @@ function rowToCandidate(
     official_website_url: row.official_website_url,
     fec_ids: parseStringArray(row.fec_ids),
     state_filing_ids: parseStringArray(row.state_filing_ids),
-    profile_sources: [],
+    profile_sources: parseStringArray(row.profile_sources),
     last_researched: row.last_researched,
     records,
     elections,
@@ -402,6 +403,7 @@ export async function lookupCandidateDetailById(
         candidate.official_website_url,
         candidate.fec_ids,
         candidate.state_filing_ids,
+        candidate.profile_sources,
         candidate.last_researched::text AS last_researched
       FROM public.candidates AS candidate
       WHERE candidate.id = $1::uuid
