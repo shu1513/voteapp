@@ -8,6 +8,7 @@ import {
 import { verifyHttpUrlReachability } from "./urlReachability.js";
 import {
   type CandidateProfilePayload,
+  type CandidateProfilePayloadParseOptions,
   parseCandidateProfilePayload,
 } from "../contracts/candidateProfilePayloadContract.js";
 import { buildCandidateProfilePrompt } from "./providers/candidateProfilePrompt.js";
@@ -39,6 +40,20 @@ type CitationVerificationFailure = {
   reason: string;
   failureType: "transient" | "permanent";
 };
+
+export type CandidateProfilePayloadValidationResult =
+  | {
+      ok: true;
+      profile: CandidateProfilePayload;
+      sourceCount: number;
+    }
+  | {
+      ok: false;
+      reason: string;
+      retryable: boolean;
+      failedCitationUrls: string[];
+      failureDebug?: Record<string, unknown>;
+    };
 
 export type EnrichCandidateProfileInput = {
   candidateDisplayName: string;
@@ -224,6 +239,46 @@ async function verifyCandidateProfileSources(
     failures,
     permanentFailures,
     transientFailures,
+  };
+}
+
+export async function validateCandidateProfileAiPayload(
+  payload: unknown,
+  timeoutMs: number,
+  parseOptions: CandidateProfilePayloadParseOptions = {}
+): Promise<CandidateProfilePayloadValidationResult> {
+  const parsed = parseCandidateProfilePayload(payload, parseOptions);
+  if (!parsed.ok) {
+    return {
+      ok: false,
+      reason: parsed.reason,
+      retryable: false,
+      failedCitationUrls: [],
+      failureDebug: {
+        parser_reason: parsed.reason,
+      },
+    };
+  }
+
+  const citationVerification = await verifyCandidateProfileSources(parsed.payload, timeoutMs);
+  if (!citationVerification.ok) {
+    return {
+      ok: false,
+      reason: citationVerification.reason,
+      retryable: citationVerification.retryable,
+      failedCitationUrls: citationVerification.failedCitationUrls,
+      failureDebug: {
+        citation_verification_failures: citationVerification.failures,
+        permanent_citation_verification_failures: citationVerification.permanentFailures,
+        transient_citation_verification_failures: citationVerification.transientFailures,
+      },
+    };
+  }
+
+  return {
+    ok: true,
+    profile: parsed.payload,
+    sourceCount: parsed.payload.sources.length,
   };
 }
 

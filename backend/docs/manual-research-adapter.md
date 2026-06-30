@@ -85,10 +85,10 @@ Manual injection shape:
 3. Emit `staging:candidates:roster:draft` for that election.
 4. Run `npm run candidates:roster:enrich -- --once`.
 
-Gap:
+Manual fanout:
 
-- The existing `--once` CLI consumes Redis stream entries, not a specific `election_id`. A tiny pilot wrapper may still be
-  useful after the first manual payload is proven if we want exact one-election targeting without stream setup.
+- Prefer `manual:candidate-roster:fanout` after roster injection. It reads the validated staging row for one election and
+  emits profile drafts without relying on a broad Redis stream worker to claim the intended message.
 
 ### Candidate Profile
 
@@ -112,11 +112,13 @@ Important behavior to preserve:
 - Duplicate-name rows without hard identifiers should not be force-linked.
 - Nonpartisan contests store `party = 'Nonpartisan'`.
 
-Gap:
+Manual path:
 
-- Candidate profile validation and write logic are embedded inside `runCandidateProfileEnricher` after the AI call.
-- A manual adapter should call `parseCandidateProfilePayload`, then call `findOrCreateCandidateFromProfile` and
-  `upsertCandidateElection` directly in one transaction.
+- `validateCandidateProfileAiPayload` is exported from `src/ai/enrichCandidateProfile.ts` for no-AI manual payload
+  validation, including candidate profile source URL reachability checks.
+- `manual:candidate-profile:write` validates the researched profile payload with that shared validator, requires a hard
+  identifier by default, calls `findOrCreateCandidateFromProfile`, and links the candidate to the target office election with
+  `upsertCandidateElection` in one transaction.
 
 ### Candidate Records
 
@@ -144,11 +146,14 @@ Important behavior to preserve:
 - Area labels must be limited to areas allowed for the matched `office_id`, with universal `general` and
   `integrity_and_ethics` included by policy.
 
-Gap:
+Manual path:
 
-- Discovery, source repair, and area labeling are embedded inside `runCandidateRecordEnricher`.
-- A manual adapter should validate the discovered record payload, verify URLs, upsert records, map returned record IDs to
-  labels, validate labels, then upsert tags.
+- `validateCandidateRecordDiscoveryPayload` is exported from `src/ai/enrichCandidateRecords.ts` for no-AI manual record
+  validation. It reuses the production partial parser and source URL verifier, returning verified records and rows that need
+  source/schema repair.
+- `manual:candidate-records:write` validates the researched record payload with that shared validator, fails fast if any row
+  is dropped for source/schema repair, validates the separate area-label payload, upserts records, maps persisted record IDs
+  to labels, validates labels, prunes stale labels for touched records, and upserts tags.
 
 ### Ballot Measures
 
@@ -197,10 +202,10 @@ Committed local/operator wrappers now cover the no-AI district import path:
    staging row as validated, and emits the roster draft stream message.
 3. `manual:candidate-roster:fanout` - reads the validated `candidate_roster:<election_id>` staging row and emits profile
    drafts for only that election, avoiding broad Redis worker consumption.
-4. `manual:candidate-profile:write` - accepts an election ID and profile JSON, validates, finds/creates candidate, and links
-   candidate to election.
-5. `manual:candidate-records:write` - accepts candidate/election IDs plus record and label JSON, validates, upserts records,
-   and upserts area tags.
+4. `manual:candidate-profile:write` - accepts an election ID and profile JSON, validates payload shape and profile source URL
+   reachability, finds/creates candidate, and links candidate to election.
+5. `manual:candidate-records:write` - accepts candidate/election IDs plus record and label JSON, validates payload shape and
+   record source URL reachability, fails fast on rows needing source/schema repair, upserts records, and upserts area tags.
 6. `manual:ballot-measure:write` - accepts an election ID and researched ballot-measure JSON, validates payload shape and URL
    reachability, upserts measure, and upserts tags.
 
@@ -325,10 +330,11 @@ Safety properties:
 
 - No API route, frontend, scheduler, or normal worker behavior is changed.
 - Scripts run only when manually invoked.
-- Scripts validate payloads before writing. Ballot-measure writes also verify `official_measure_url` and source URL
-  reachability in dry-run and live mode; ballot-measure payloads with more than 20 unique source URLs fail fast instead of
-  silently dropping citations. Dry-run prints the normalized URLs and explicit pass/fail fields for payload shape, official URL
-  reachability, source URL reachability, and allowed tag slugs.
+- Scripts validate payloads before writing. Candidate-profile writes verify profile source URL reachability. Candidate-record
+  writes verify record source URL reachability and fail fast when rows need focused source/schema repair. Ballot-measure writes
+  also verify `official_measure_url` and source URL reachability in dry-run and live mode; ballot-measure payloads with more
+  than 20 unique source URLs fail fast instead of silently dropping citations. Dry-run prints the normalized URLs and explicit
+  pass/fail fields for payload shape, official URL reachability, source URL reachability, and allowed tag slugs.
 - Election and roster injection dry-runs validate payload shape without connecting to Postgres or Redis. Profile, roster fanout,
   candidate-record, and ballot-measure dry-runs also check target DB context so bad IDs fail before live writes.
 - Live manual commands do not fall back to localhost Postgres or Redis when target env vars are missing.

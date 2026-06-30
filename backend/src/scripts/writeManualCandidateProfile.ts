@@ -3,8 +3,8 @@ import { Pool, type PoolClient } from "pg";
 import { createClient } from "redis";
 
 import { resolveIncludePartyForCandidateContest } from "../ai/candidatePartisanship.js";
+import { validateCandidateProfileAiPayload } from "../ai/enrichCandidateProfile.js";
 import { loadProjectEnv } from "../config/env.js";
-import { parseCandidateProfilePayload } from "../contracts/candidateProfilePayloadContract.js";
 import { enqueueCandidateRecordDrafts } from "../pipeline/candidates/candidateRecordDraftEmitter.js";
 import {
   findOrCreateCandidateFromProfile,
@@ -126,6 +126,14 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function readPositiveIntegerEnv(name: string, fallback: number): number {
+  const raw = process.env[name]?.trim() || String(fallback);
+  if (!/^[1-9]\d*$/.test(raw)) {
+    throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
+  }
+  return Number(raw);
+}
+
 async function main(): Promise<void> {
   loadProjectEnv();
 
@@ -136,12 +144,15 @@ async function main(): Promise<void> {
   }
 
   const rawPayload = await readJsonFile(file);
-  const parsed = parseCandidateProfilePayload(rawPayload);
-  if (!parsed.ok) {
-    throw new Error(`Candidate profile payload failed validation: ${parsed.reason}`);
+  const validatedProfile = await validateCandidateProfileAiPayload(
+    rawPayload,
+    readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000)
+  );
+  if (!validatedProfile.ok) {
+    throw new Error(`Candidate profile payload failed validation: ${validatedProfile.reason}`);
   }
 
-  const profile = parsed.payload;
+  const profile = validatedProfile.profile;
   if (!hasFlag("--allow-no-hard-identifier") && !hasAtLeastOneHardIdentifier(profile)) {
     throw new Error(
       "Candidate profile has no hard identifier. Add official_website_url, FEC/state filing ID, DOB, Twitter, LinkedIn, or pass --allow-no-hard-identifier deliberately."
@@ -183,6 +194,11 @@ async function main(): Promise<void> {
             raceType: election.race_type,
             districtType: election.district_type,
             officialBallotTitle: election.official_ballot_title,
+            sourceValidation: {
+              sourceUrlsReachable: true,
+              sourceCount: validatedProfile.sourceCount,
+              sources: profile.sources,
+            },
           },
           null,
           2

@@ -33,6 +33,30 @@ type ProviderFailureAttempt = {
   failureDebug?: Record<string, unknown>;
 };
 
+export type CandidateRecordDroppedRecord = {
+  record: {
+    description: string;
+    source_url: string;
+    event_date: string;
+  };
+  reason: string;
+  failureType: "transient" | "permanent";
+  failureKind: "schema" | "source_url";
+};
+
+export type CandidateRecordDiscoveryPayloadValidationResult =
+  | {
+      ok: true;
+      records: CandidateDiscoveredRecord[];
+      droppedRecords: CandidateRecordDroppedRecord[];
+      validationDebug: Record<string, unknown>;
+    }
+  | {
+      ok: false;
+      reason: string;
+      failureDebug?: Record<string, unknown>;
+    };
+
 export type EnrichCandidateRecordsInput = {
   candidateDisplayName: string;
   districtName: string;
@@ -61,16 +85,7 @@ export type EnrichCandidateRecordsResult =
       provider: AiProvider;
       model: string;
       records: CandidateDiscoveredRecord[];
-      droppedRecords: Array<{
-        record: {
-          description: string;
-          source_url: string;
-          event_date: string;
-        };
-        reason: string;
-        failureType: "transient" | "permanent";
-        failureKind: "schema" | "source_url";
-      }>;
+      droppedRecords: CandidateRecordDroppedRecord[];
       aiRawDebug: Record<string, unknown> | null;
     }
   | CandidateRecordDiscoveryFailure;
@@ -185,6 +200,55 @@ async function verifyCandidateRecordSources(
   return { verifiedRecords, droppedRecords };
 }
 
+export async function validateCandidateRecordDiscoveryPayload(
+  payload: unknown,
+  timeoutMs: number
+): Promise<CandidateRecordDiscoveryPayloadValidationResult> {
+  const parsed = parseCandidateRecordDiscoveryPayloadPartial(payload);
+  if (!parsed.ok) {
+    return {
+      ok: false,
+      reason: parsed.reason,
+      failureDebug: {
+        parser_reason: parsed.reason,
+      },
+    };
+  }
+
+  const sourceVerification = await verifyCandidateRecordSources(
+    parsed.payload.records,
+    timeoutMs
+  );
+  const schemaDroppedRecords: CandidateRecordDroppedRecord[] = parsed.invalid_rows.map((row) => ({
+    record: {
+      description: row.raw_record.description,
+      source_url: row.raw_record.source_url,
+      event_date: row.raw_record.event_date,
+    },
+    reason: `schema invalid row index=${row.index}: ${row.reason}`,
+    failureType: "permanent",
+    failureKind: "schema",
+  }));
+  const droppedRecords: CandidateRecordDroppedRecord[] = [
+    ...sourceVerification.droppedRecords,
+    ...schemaDroppedRecords,
+  ];
+
+  return {
+    ok: true,
+    records: sourceVerification.verifiedRecords,
+    droppedRecords,
+    validationDebug: {
+      dropped_records_count: droppedRecords.length,
+      dropped_records_source_url_count: sourceVerification.droppedRecords.length,
+      dropped_records_schema_count: schemaDroppedRecords.length,
+      verified_records_count: sourceVerification.verifiedRecords.length,
+      parsed_valid_row_count: parsed.payload.records.length,
+      parsed_invalid_row_count: parsed.invalid_rows.length,
+    },
+  };
+}
+
 async function callProvider(
   candidate: AiCandidate,
   prompt: string,
@@ -256,18 +320,21 @@ export async function enrichCandidateRecords(
         break;
       }
 
-      const parsed = parseCandidateRecordDiscoveryPayloadPartial(generated.parsed);
-      if (!parsed.ok) {
-        const feedbackLine = `Fix payload schema: ${parsed.reason}.`;
+      const validation = await validateCandidateRecordDiscoveryPayload(
+        generated.parsed,
+        config.timeoutMs
+      );
+      if (!validation.ok) {
+        const feedbackLine = `Fix payload schema: ${validation.reason}.`;
         reviewFeedbackLines.add(feedbackLine);
         failures.push({
           provider: candidate.provider,
           model: candidate.model,
-          reason: parsed.reason,
+          reason: validation.reason,
           errorCode: "SCHEMA_MISMATCH",
           retryable: false,
           failureDebug: {
-            parser_reason: parsed.reason,
+            ...(validation.failureDebug ?? {}),
             prompt_feedback_line: feedbackLine,
           },
         });
@@ -277,36 +344,15 @@ export async function enrichCandidateRecords(
         break;
       }
 
-      const sourceVerification = await verifyCandidateRecordSources(
-        parsed.payload.records,
-        config.timeoutMs
-      );
-      const schemaDroppedRecords = parsed.invalid_rows.map((row) => ({
-        record: {
-          description: row.raw_record.description,
-          source_url: row.raw_record.source_url,
-          event_date: row.raw_record.event_date,
-        },
-        reason: `schema invalid row index=${row.index}: ${row.reason}`,
-        failureType: "permanent" as const,
-        failureKind: "schema" as const,
-      }));
-      const droppedRecords = [...sourceVerification.droppedRecords, ...schemaDroppedRecords];
-
       return {
         ok: true,
         provider: candidate.provider,
         model: candidate.model,
-        records: sourceVerification.verifiedRecords,
-        droppedRecords,
+        records: validation.records,
+        droppedRecords: validation.droppedRecords,
         aiRawDebug: {
           raw_response_preview: trimDebugText(generated.rawText),
-          dropped_records_count: droppedRecords.length,
-          dropped_records_source_url_count: sourceVerification.droppedRecords.length,
-          dropped_records_schema_count: schemaDroppedRecords.length,
-          verified_records_count: sourceVerification.verifiedRecords.length,
-          parsed_valid_row_count: parsed.payload.records.length,
-          parsed_invalid_row_count: parsed.invalid_rows.length,
+          ...validation.validationDebug,
           debug_meta: generated.debugMeta ?? null,
         },
       };

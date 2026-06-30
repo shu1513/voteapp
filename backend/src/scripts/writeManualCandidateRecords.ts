@@ -1,9 +1,12 @@
 import { readFile } from "node:fs/promises";
 import { Pool, type PoolClient } from "pg";
 
+import {
+  validateCandidateRecordDiscoveryPayload,
+  type CandidateRecordDroppedRecord,
+} from "../ai/enrichCandidateRecords.js";
 import { loadProjectEnv } from "../config/env.js";
 import { parseCandidateRecordAreaLabelPayload } from "../contracts/candidateRecordAreaLabelPayloadContract.js";
-import { parseCandidateRecordDiscoveryPayload } from "../contracts/candidateRecordDiscoveryPayloadContract.js";
 import {
   loadAllowedResearchAreasForOfficeId,
   upsertCandidateRecordAreaTags,
@@ -64,6 +67,26 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function readPositiveIntegerEnv(name: string, fallback: number): number {
+  const raw = process.env[name]?.trim() || String(fallback);
+  if (!/^[1-9]\d*$/.test(raw)) {
+    throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
+  }
+  return Number(raw);
+}
+
+function summarizeDroppedRecords(droppedRecords: readonly CandidateRecordDroppedRecord[]): string {
+  const preview = droppedRecords
+    .slice(0, 5)
+    .map((dropped, index) => {
+      const label = dropped.record.description || dropped.record.source_url || `row ${index + 1}`;
+      return `${dropped.failureKind}/${dropped.failureType}: ${label} (${dropped.reason})`;
+    })
+    .join("; ");
+  const extra = droppedRecords.length > 5 ? `; +${droppedRecords.length - 5} more` : "";
+  return `${preview}${extra}`;
+}
+
 async function deleteStaleCandidateRecordAreaTags(
   client: Pick<PoolClient, "query">,
   labels: readonly CandidateRecordAreaLabelInput[],
@@ -108,9 +131,17 @@ async function main(): Promise<void> {
   }
 
   const rawRecords = await readJsonFile(recordsFile);
-  const parsedRecords = parseCandidateRecordDiscoveryPayload(rawRecords);
-  if (!parsedRecords.ok) {
-    throw new Error(`Candidate records payload failed validation: ${parsedRecords.reason}`);
+  const validatedRecords = await validateCandidateRecordDiscoveryPayload(
+    rawRecords,
+    readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000)
+  );
+  if (!validatedRecords.ok) {
+    throw new Error(`Candidate records payload failed validation: ${validatedRecords.reason}`);
+  }
+  if (validatedRecords.droppedRecords.length > 0) {
+    throw new Error(
+      `Candidate records payload needs focused source/schema repair before import; dropped=${validatedRecords.droppedRecords.length}; ${summarizeDroppedRecords(validatedRecords.droppedRecords)}`
+    );
   }
 
   const dryRun = hasFlag("--dry-run");
@@ -135,7 +166,7 @@ async function main(): Promise<void> {
     const rawLabels = await readJsonFile(labelsFile);
     const parsedLabels = parseCandidateRecordAreaLabelPayload(rawLabels, {
       allowedResearchAreaSlugs: allowedSlugs,
-      recordCount: parsedRecords.payload.records.length,
+      recordCount: validatedRecords.records.length,
       requireLabelForEveryRecord: true,
     });
     if (!parsedLabels.ok) {
@@ -151,8 +182,12 @@ async function main(): Promise<void> {
             candidateId,
             electionId,
             candidateDisplayName: context.candidateDisplayName,
-            recordCount: parsedRecords.payload.records.length,
+            recordCount: validatedRecords.records.length,
             labelCount: parsedLabels.payload.labels.length,
+            sourceValidation: {
+              sourceUrlsReachable: true,
+              droppedRecordCount: validatedRecords.droppedRecords.length,
+            },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },
           null,
@@ -167,7 +202,7 @@ async function main(): Promise<void> {
       await client.query("BEGIN");
       const upsert = await upsertCandidateRecords(
         client,
-        parsedRecords.payload.records.map((record) => ({
+        validatedRecords.records.map((record) => ({
           candidateId,
           description: record.description,
           sourceUrl: record.source_url,
@@ -176,7 +211,7 @@ async function main(): Promise<void> {
       );
 
       const labelsForValidation: CandidateRecordAreaLabelInput[] = parsedLabels.payload.labels.map((label) => {
-        const record = parsedRecords.payload.records[label.record_index];
+        const record = validatedRecords.records[label.record_index];
         if (!record) {
           throw new Error(`record_index out of range in labels: ${label.record_index}`);
         }
