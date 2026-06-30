@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "manual_research_repair_report.v1",
+  "generatedAt": "2026-06-30T19:19:52.626Z",
+  "command": "manual:candidate-records:write",
+  "manualKey": "manual:candidate-records:1e933c28-b568-41d1-970a-818697f5d3a0:32dc111a-94c5-4db5-846c-40cba21e8f8c",
+  "status": "confirmed_only",
+  "target": {
+    "candidateId": "32dc111a-94c5-4db5-846c-40cba21e8f8c",
+    "electionId": "1e933c28-b568-41d1-970a-818697f5d3a0",
+    "recordsFile": "manual-research/vermont-2026-08-thin-records/h-brooke-paige-records.json",
+    "labelsFile": "manual-research/vermont-2026-08-thin-records/h-brooke-paige-labels.json",
+    "candidateDisplayName": "H. Brooke Paige"
+  },
+  "gaps": [
+    {
+      "id": "candidate_records.only_general_labels",
+      "stage": "candidate_record_labels",
+      "objectType": "candidate_record_set",
+      "outcome": "confirmed_neutral",
+      "failureKind": "quality_gap",
+      "reason": "Every candidate record label is non-stance/general. This may be correct for neutral records, but it needs a focused issue-record check before production-grade import. Operator marked this gap confirmed after focused repair research.",
+      "promptFile": "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+      "focusedResearchPass": "Run a focused substantive-record search for votes, official actions, endorsements, litigation/enforcement, public service, or other source-backed conduct. If records are genuinely neutral only, mark candidate_records.only_general_labels confirmed_neutral."
+    }
+  ]
+}

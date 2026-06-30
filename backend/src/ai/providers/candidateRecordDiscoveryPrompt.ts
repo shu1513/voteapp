@@ -65,8 +65,10 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
         ]
       : []),
     ...(input.sinceDate ? ['- Include only records with event_date >= since_date.'] : []),
-    "- records may be an empty array if no reliable records are found.",
-    "- Do not include pure candidacy announcements.",
+    "- records may be an empty array if no reliable actual action/service/accountability records are found.",
+    "- Official ballot, Secretary of State, election-office, or qualified-candidate listings are roster evidence, not candidate record evidence.",
+    "- Do not include filing-to-run, candidacy announcements, ballot qualification, ballot listing, campaign launch, or campaign promise rows as records.",
+    "- If the only reliable sources prove the person is running but do not show an actual action, public service, leadership role, vote, official decision, litigation/enforcement record, endorsement, or other accountability record, return {\"records\": []}.",
     "- Each record must include source_url and event_date.",
     "- event_date must be YYYY-MM-DD; use the action/event date when known, otherwise use the source publication date.",
     "- If neither action/event date nor publication date is available, omit that record.",

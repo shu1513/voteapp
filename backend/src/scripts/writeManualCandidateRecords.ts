@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { Pool, type PoolClient } from "pg";
 
 import {
@@ -123,7 +124,14 @@ function normalizeConfirmedGaps(values: readonly string[]): Set<string> {
   return new Set(values.map((value) => value.trim()).filter((value) => value.length > 0));
 }
 
-function applyConfirmedGaps(
+const NO_RECORDS_FOUND_GAP_ID = "candidate_records.no_records_found";
+const ONLY_GENERAL_LABELS_GAP_ID = "candidate_records.only_general_labels";
+const BLOCKING_CANDIDATE_RECORD_QUALITY_GAP_IDS = new Set([
+  NO_RECORDS_FOUND_GAP_ID,
+  ONLY_GENERAL_LABELS_GAP_ID,
+]);
+
+export function applyConfirmedGaps(
   gaps: readonly ManualResearchRepairGap[],
   confirmedGapIds: ReadonlySet<string>
 ): ManualResearchRepairGap[] {
@@ -133,31 +141,50 @@ function applyConfirmedGaps(
     }
     return {
       ...gap,
-      outcome: gap.id === "candidate_records.only_general_labels" ? "confirmed_neutral" : "confirmed_null",
+      outcome: gap.id === ONLY_GENERAL_LABELS_GAP_ID ? "confirmed_neutral" : "confirmed_null",
       reason: `${gap.reason} Operator marked this gap confirmed after focused repair research.`,
     };
   });
 }
 
-function droppedRecordToGap(
+export function droppedRecordToGap(
   dropped: CandidateRecordDroppedRecord,
   index: number
 ): ManualResearchRepairGap {
   const sourceUrl = dropped.record.source_url || undefined;
-  return {
+  const base = {
     id: `candidate_records.dropped.${index}`,
-    stage: "candidate_records",
-    objectType: "candidate_record",
-    outcome: "needs_repair",
+    stage: "candidate_records" as const,
+    objectType: "candidate_record" as const,
+    outcome: "needs_repair" as const,
     sourceUrl,
     eventDate: dropped.record.event_date || undefined,
     description: dropped.record.description || undefined,
     failureKind: dropped.failureKind,
     failureType: dropped.failureType,
     reason: dropped.reason,
+  };
+  if (dropped.failureKind === "quality_gap") {
+    return {
+      ...base,
+      promptFile: "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+      focusedResearchPass:
+        "Do a deeper record-only research pass. Do not replace this with another candidacy, filing, ballot-listing, campaign promise, or campaign-launch row. Find an actual action, public service record, organizational leadership record, vote, official decision, litigation/enforcement record, endorsement, or other source-backed conduct; otherwise leave it dropped and rely on candidate_records.no_records_found or candidate_records.only_general_labels after focused repair.",
+    };
+  }
+  return {
+    ...base,
     promptFile: "src/ai/providers/candidateRecordSourceRepairPrompt.ts",
     focusedResearchPass: "Run a focused candidate-record source/schema repair pass for this dropped row. Replace bad URLs, fix invalid dates/descriptions, or mark no reliable replacement.",
   };
+}
+
+export function qualityDroppedRecordsToGaps(
+  droppedRecords: readonly CandidateRecordDroppedRecord[]
+): ManualResearchRepairGap[] {
+  return droppedRecords.flatMap((record, index) =>
+    record.failureKind === "quality_gap" ? [droppedRecordToGap(record, index)] : []
+  );
 }
 
 function buildRecordLabelParseGap(reason: string): ManualResearchRepairGap {
@@ -187,14 +214,14 @@ function buildRecordLabelValidationGaps(reasons: readonly string[]): ManualResea
   }));
 }
 
-function buildCandidateRecordQualityGaps(input: {
+export function buildCandidateRecordQualityGaps(input: {
   recordCount: number;
   labels: readonly { research_area_slug: string }[];
 }): ManualResearchRepairGap[] {
   const gaps: ManualResearchRepairGap[] = [];
   if (input.recordCount === 0) {
     gaps.push({
-      id: "candidate_records.no_records_found",
+      id: NO_RECORDS_FOUND_GAP_ID,
       stage: "candidate_records",
       objectType: "candidate_record_set",
       outcome: "needs_repair",
@@ -210,7 +237,7 @@ function buildCandidateRecordQualityGaps(input: {
     input.labels.every((label) => isNonStanceResearchAreaSlug(label.research_area_slug))
   ) {
     gaps.push({
-      id: "candidate_records.only_general_labels",
+      id: ONLY_GENERAL_LABELS_GAP_ID,
       stage: "candidate_record_labels",
       objectType: "candidate_record_set",
       outcome: "needs_repair",
@@ -221,6 +248,13 @@ function buildCandidateRecordQualityGaps(input: {
     });
   }
   return gaps;
+}
+
+export function isBlockingCandidateRecordQualityGap(gap: ManualResearchRepairGap): boolean {
+  return (
+    gap.outcome === "needs_repair" &&
+    BLOCKING_CANDIDATE_RECORD_QUALITY_GAP_IDS.has(gap.id)
+  );
 }
 
 async function writeRecordsRepairReport(input: {
@@ -327,7 +361,12 @@ async function main(): Promise<void> {
     });
     throw new Error(`Candidate records payload failed validation: ${validatedRecords.reason}`);
   }
-  if (validatedRecords.droppedRecords.length > 0) {
+  const blockingDroppedRecords = validatedRecords.droppedRecords.filter(
+    (record) => record.failureKind !== "quality_gap"
+  );
+  const qualityDroppedGaps = qualityDroppedRecordsToGaps(validatedRecords.droppedRecords);
+
+  if (blockingDroppedRecords.length > 0) {
     const gaps = validatedRecords.droppedRecords.map(droppedRecordToGap);
     await writeRecordsRepairReport({
       reportFile: repairReportFile,
@@ -340,7 +379,7 @@ async function main(): Promise<void> {
       gaps,
     });
     throw new Error(
-      `Candidate records payload needs focused source/schema repair before import; dropped=${validatedRecords.droppedRecords.length}; ${summarizeDroppedRecords(validatedRecords.droppedRecords)}`
+      `Candidate records payload needs focused source/schema repair before import; dropped=${blockingDroppedRecords.length}; ${summarizeDroppedRecords(blockingDroppedRecords)}`
     );
   }
 
@@ -383,13 +422,16 @@ async function main(): Promise<void> {
       throw new Error(`Candidate record labels payload failed validation: ${parsedLabels.reason}`);
     }
     const qualityGaps = applyConfirmedGaps(
-      buildCandidateRecordQualityGaps({
-        recordCount: validatedRecords.records.length,
-        labels: parsedLabels.payload.labels,
-      }),
+      [
+        ...qualityDroppedGaps,
+        ...buildCandidateRecordQualityGaps({
+          recordCount: validatedRecords.records.length,
+          labels: parsedLabels.payload.labels,
+        }),
+      ],
       confirmedGapIds
     );
-    const blockingQualityGaps = qualityGaps.filter((gap) => gap.outcome === "needs_repair");
+    const blockingQualityGaps = qualityGaps.filter(isBlockingCandidateRecordQualityGap);
     if (repairReportFile && qualityGaps.length > 0) {
       await writeRecordsRepairReport({
         reportFile: repairReportFile,
@@ -531,8 +573,11 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error("manual candidate records write failed:", message);
-  process.exitCode = 1;
-});
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("manual candidate records write failed:", message);
+    process.exitCode = 1;
+  });
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "manual_research_repair_report.v1",
+  "generatedAt": "2026-06-30T19:20:44.385Z",
+  "command": "manual:candidate-records:write",
+  "manualKey": "manual:candidate-records:a5a8095f-9117-4748-a04a-ddecfeff2932:43877512-97e7-4b8a-9a92-0ac2ed028646",
+  "status": "confirmed_only",
+  "target": {
+    "candidateId": "43877512-97e7-4b8a-9a92-0ac2ed028646",
+    "electionId": "a5a8095f-9117-4748-a04a-ddecfeff2932",
+    "recordsFile": "manual-research/vermont-2026-08-thin-records/empty-records.json",
+    "labelsFile": "manual-research/vermont-2026-08-thin-records/empty-labels.json",
+    "candidateDisplayName": "Nicholas Graeter"
+  },
+  "gaps": [
+    {
+      "id": "candidate_records.no_records_found",
+      "stage": "candidate_records",
+      "objectType": "candidate_record_set",
+      "outcome": "confirmed_null",
+      "failureKind": "quality_gap",
+      "reason": "Candidate record discovery produced zero verified records. Operator marked this gap confirmed after focused repair research.",
+      "promptFile": "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+      "focusedResearchPass": "Run a focused no-records verification pass for this candidate/election context. If no reliable action records exist, mark candidate_records.no_records_found confirmed_null."
+    }
+  ]
+}
