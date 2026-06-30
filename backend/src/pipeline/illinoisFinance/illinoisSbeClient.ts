@@ -157,10 +157,45 @@ function getResponseSetCookies(headers: Headers): string[] {
 }
 
 export function splitIllinoisSbeSetCookieHeader(value: string): string[] {
-  return value
-    .split(/,(?=\s*[^;,=\s]+=)/g)
-    .map((cookie) => cookie.trim())
-    .filter(Boolean);
+  const cookies: string[] = [];
+  let start = 0;
+  let inQuotedValue = false;
+
+  for (let index = 0; index < value.length; index += 1) {
+    const char = value[index];
+    if (char === "\"" && value[index - 1] !== "\\") {
+      inQuotedValue = !inQuotedValue;
+      continue;
+    }
+    if (char === "," && !inQuotedValue && isSetCookieDelimiter(value, index + 1)) {
+      const cookie = value.slice(start, index).trim();
+      if (cookie) {
+        cookies.push(cookie);
+      }
+      start = index + 1;
+    }
+  }
+
+  const lastCookie = value.slice(start).trim();
+  if (lastCookie) {
+    cookies.push(lastCookie);
+  }
+  return cookies;
+}
+
+function isSetCookieDelimiter(value: string, start: number): boolean {
+  let index = start;
+  while (index < value.length && /\s/.test(value[index] ?? "")) {
+    index += 1;
+  }
+  const nameStart = index;
+  while (index < value.length && !/[;,=\s]/.test(value[index] ?? "")) {
+    index += 1;
+  }
+  while (index < value.length && /\s/.test(value[index] ?? "")) {
+    index += 1;
+  }
+  return index > nameStart && value[index] === "=";
 }
 
 function mergeCookies(existingCookieHeader: string | undefined, setCookies: readonly string[]): string | undefined {

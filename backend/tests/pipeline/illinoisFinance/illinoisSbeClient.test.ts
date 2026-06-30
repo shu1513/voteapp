@@ -30,6 +30,17 @@ describe("illinoisSbeClient", () => {
     ]);
   });
 
+  it("does not split combined Set-Cookie headers inside quoted cookie values", () => {
+    expect(
+      splitIllinoisSbeSetCookieHeader(
+        'token="abc,key=val"; Path=/; HttpOnly, ASP.NET_SessionId=abc; path=/; secure; HttpOnly'
+      )
+    ).toEqual([
+      'token="abc,key=val"; Path=/; HttpOnly',
+      "ASP.NET_SessionId=abc; path=/; secure; HttpOnly",
+    ]);
+  });
+
   it("fails clearly when the live SBE form POST returns an empty response", async () => {
     const searchHtml = `
       <html><body>

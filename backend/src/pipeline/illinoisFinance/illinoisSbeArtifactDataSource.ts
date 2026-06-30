@@ -52,24 +52,26 @@ async function loadContributionRecords(input: {
   paths: readonly string[];
   sourceUrl: string;
 }): Promise<IllinoisSbeContributionRecord[]> {
-  const records: IllinoisSbeContributionRecord[] = [];
-  for (const path of input.paths) {
-    const csv = await readFile(path, "utf8");
-    records.push(...parseIllinoisSbeContributionRecordsCsv(csv, input.sourceUrl));
-  }
-  return records;
+  const chunks = await Promise.all(
+    input.paths.map(async (path) => {
+      const csv = await readFile(path, "utf8");
+      return parseIllinoisSbeContributionRecordsCsv(csv, input.sourceUrl);
+    })
+  );
+  return chunks.flat();
 }
 
 async function loadExpenditureRecords(input: {
   paths: readonly string[];
   sourceUrl: string;
 }): Promise<IllinoisSbeExpenditureRecord[]> {
-  const records: IllinoisSbeExpenditureRecord[] = [];
-  for (const path of input.paths) {
-    const csv = await readFile(path, "utf8");
-    records.push(...parseIllinoisSbeExpenditureRecordsCsv(csv, input.sourceUrl));
-  }
-  return records;
+  const chunks = await Promise.all(
+    input.paths.map(async (path) => {
+      const csv = await readFile(path, "utf8");
+      return parseIllinoisSbeExpenditureRecordsCsv(csv, input.sourceUrl);
+    })
+  );
+  return chunks.flat();
 }
 
 export async function loadIllinoisSbeArtifactDataSet(
