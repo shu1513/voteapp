@@ -28,6 +28,15 @@ function dueRow(overrides: Record<string, unknown> = {}) {
   };
 }
 
+function htmlResponse(html: string, overrides: Partial<{ ok: boolean; status: number; statusText: string }> = {}) {
+  return {
+    ok: overrides.ok ?? true,
+    status: overrides.status ?? 200,
+    statusText: overrides.statusText ?? "OK",
+    text: async () => html,
+  };
+}
+
 describe("oregonCandidateFinanceBatchSync", () => {
   it("lists active Oregon finance links that are due for sync", async () => {
     const db = {
@@ -168,6 +177,7 @@ describe("oregonCandidateFinanceBatchSync", () => {
       maxCandidates: 2,
       staleAfterDays: 3,
       electionLookbackDays: 30,
+      autoLinkMissingLinks: false,
       loadTransactionDetails,
       syncOregonCandidateFinanceFn: syncOregonCandidateFinanceFn as never,
     });
@@ -288,6 +298,78 @@ describe("oregonCandidateFinanceBatchSync", () => {
     expect(String(db.query.mock.calls[2]?.[0])).toContain("FROM public.or_candidate_finance_links AS link");
   });
 
+  it("uses the default ORESTAR candidate search loader when auto-linking missing finance links", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: "55555555-5555-4555-8555-555555555555",
+              election_id: "66666666-6666-4666-8666-666666666666",
+              candidate_name: "Tina Kotek",
+              election_year: 2026,
+              office_scope: "statewide",
+              office_name: "Governor",
+              district: "Oregon",
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "77777777-7777-4777-8777-777777777777" }], rowCount: 1 })
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
+      connect: vi.fn(),
+    };
+    const fetchFn = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.endsWith("/orestar/JavaScriptServlet")) {
+        return htmlResponse("OWASP_CSRFTOKEN:csrf-token-from-script");
+      }
+      if (url.includes("gotoPublicTransactionSearchResults.do")) {
+        expect(init?.method).toBe("POST");
+        expect(String(init?.body)).toContain("cneSearchFilerCommitteeTxt=Tina+Kotek");
+        expect(String(init?.body)).toContain("cneSearchTranStartDate=01%2F01%2F2026");
+        expect(String(init?.body)).toContain("OWASP_CSRFTOKEN=csrf-token-from-script");
+        expect(init?.headers).toMatchObject({ cookie: "JSESSIONID_ORESTAR=abc123" });
+        return htmlResponse(`
+          <div>Results : 1 record found</div>
+          <table>
+            <tr><th>Tran ID</th><th>Date</th><th>Status</th><th>Filer/Committee</th><th>Contributor/Payee</th><th>Sub Type</th><th>Amount</th></tr>
+            <tr>
+              <td><a href="/orestar/gotoPublicTransactionDetail.do?tranRsn=4458653">4458653</a></td>
+              <td>10/12/2026</td><td>Original</td>
+              <td><a href="/orestar/sooDetail.do?cneCommitteeId=4792">Friends of Tina Kotek</a></td>
+              <td>Jane Donor</td><td>Cash Contribution</td><td>$100.00</td>
+            </tr>
+          </table>
+        `);
+      }
+      return {
+        ...htmlResponse(`
+          <form name="cneSearchForm" action="/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123">
+            <input type="hidden" name="cneSearchButtonName" value="">
+          </form>
+        `),
+        headers: {
+          get: (name: string) => (name.toLowerCase() === "set-cookie" ? "JSESSIONID_ORESTAR=abc123; Path=/orestar" : null),
+        },
+      };
+    });
+
+    const result = await syncDueOregonCandidateFinance({
+      db,
+      now: NOW,
+      orestarClientOptions: { fetchFn },
+      loadTransactionDetails: vi.fn(async () => []),
+      syncOregonCandidateFinanceFn: vi.fn(),
+    });
+
+    expect(result).toMatchObject({
+      autoLinkAttemptedCount: 1,
+      autoLinkLinkedCount: 1,
+      selectedCandidateCount: 0,
+    });
+    expect(fetchFn).toHaveBeenCalledTimes(3);
+  });
+
   it("reports row failures without writing snapshots when no transaction detail loader is configured", async () => {
     const db = {
       query: vi.fn(async () => ({ rows: [dueRow()], rowCount: 1 })),
@@ -298,6 +380,7 @@ describe("oregonCandidateFinanceBatchSync", () => {
     const result = await syncDueOregonCandidateFinance({
       db,
       now: NOW,
+      autoLinkMissingLinks: false,
       syncOregonCandidateFinanceFn: syncOregonCandidateFinanceFn as never,
     });
 

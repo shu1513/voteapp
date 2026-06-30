@@ -11,7 +11,11 @@ import {
   type OregonCandidateFinanceSyncResult,
 } from "./oregonCandidateFinanceSync.js";
 import { OREGON_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./oregonFinanceEligibleOffices.js";
-import { getOregonOrestarTransactionDetailsFromSourceUrl } from "./oregonOrestarClient.js";
+import {
+  getOregonOrestarCandidateSearchRows,
+  getOregonOrestarTransactionDetailsFromSourceUrl,
+  type OregonOrestarClientOptions,
+} from "./oregonOrestarClient.js";
 import type { OregonOrestarTransactionDetail } from "./oregonOrestarParser.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -48,6 +52,7 @@ export type OregonCandidateFinanceBatchSyncInput = {
   outsideMaxBreakdownsPerCategory?: number;
   minIndustryAmount?: number;
   autoLinkMissingLinks?: boolean;
+  orestarClientOptions?: OregonOrestarClientOptions;
   loadCandidateSearchRows?: OregonCandidateSearchRowsLoader;
   resolveCandidateCommittee?: OregonCandidateCommitteeResolver;
   loadTransactionDetails?: OregonTransactionDetailsLoader;
@@ -135,6 +140,17 @@ function mapDueRow(row: OregonCandidateFinanceDueQueryRow): OregonCandidateFinan
 
 async function defaultLoadTransactionDetails(row: OregonCandidateFinanceDueRow): Promise<readonly OregonOrestarTransactionDetail[]> {
   return getOregonOrestarTransactionDetailsFromSourceUrl({ sourceUrl: row.sourceUrl });
+}
+
+async function defaultLoadCandidateSearchRows(
+  candidateElection: Parameters<OregonCandidateSearchRowsLoader>[0],
+  options?: OregonOrestarClientOptions
+) {
+  return getOregonOrestarCandidateSearchRows({
+    candidateName: candidateElection.candidateName,
+    electionYear: candidateElection.electionYear,
+    options,
+  });
 }
 
 export async function listDueOregonCandidateFinanceSyncRows(
@@ -253,14 +269,13 @@ export async function syncDueOregonCandidateFinance(
   const dryRun = input.dryRun === true;
   const syncFn = input.syncOregonCandidateFinanceFn ?? syncOregonCandidateFinance;
   const loadTransactionDetails = input.loadTransactionDetails ?? defaultLoadTransactionDetails;
+  const loadCandidateSearchRows =
+    input.loadCandidateSearchRows ??
+    ((candidateElection) => defaultLoadCandidateSearchRows(candidateElection, input.orestarClientOptions));
   let autoLinkAttemptedCount = 0;
   let autoLinkLinkedCount = 0;
 
-  if (
-    !dryRun &&
-    input.autoLinkMissingLinks !== false &&
-    (input.loadCandidateSearchRows || input.resolveCandidateCommittee)
-  ) {
+  if (!dryRun && input.autoLinkMissingLinks !== false) {
     try {
       const missingLinkCandidates = await listOregonCandidateElectionsMissingFinanceLinks(input.db, {
         now,
@@ -273,7 +288,7 @@ export async function syncDueOregonCandidateFinance(
         db: input.db,
         now,
         candidateElections: missingLinkCandidates,
-        loadCandidateSearchRows: input.loadCandidateSearchRows,
+        loadCandidateSearchRows,
         resolveCandidateCommittee: input.resolveCandidateCommittee,
       });
       autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;

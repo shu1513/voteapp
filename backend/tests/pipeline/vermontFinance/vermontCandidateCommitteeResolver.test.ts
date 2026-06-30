@@ -278,6 +278,51 @@ describe("vermontCandidateCommitteeResolver", () => {
     });
   });
 
+  it("selects a dominant Vermont filer registration when one match has almost all rows", () => {
+    const dominantRows = Array.from({ length: 30 }, (_value, index) =>
+      transactionRow({
+        transactionId: 2000 + index,
+        guid: `dominant-row-${index}`,
+        filerRegistrationGuid: "dominant-guid",
+        filerName: "SCOTT, PHIL",
+        candidateFirstName: "PHIL",
+        candidateLastName: "SCOTT",
+        officeId: 19,
+        electionYear: 2022,
+        electionId: 24,
+        reportName: "03/15/2022 - GENERAL",
+      })
+    );
+
+    expect(
+      resolveVermontCandidateCommittee({
+        candidateName: "Phil Scott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        transactionRows: [
+          ...dominantRows,
+          transactionRow({
+            transactionId: 3001,
+            guid: "later-tail-row",
+            filerRegistrationGuid: "tail-guid",
+            filerName: "SCOTT, PHIL",
+            candidateFirstName: "PHIL",
+            candidateLastName: "SCOTT",
+            officeId: 19,
+            electionYear: 2022,
+            electionId: 35,
+            reportName: "07/01/2023 - GENERAL",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerRegistrationGuid: "dominant-guid",
+      matchedTransactionRowCount: 30,
+    });
+  });
+
   it("groups duplicate transaction rows with the same filer registration guid", () => {
     expect(
       resolveVermontCandidateCommittee({

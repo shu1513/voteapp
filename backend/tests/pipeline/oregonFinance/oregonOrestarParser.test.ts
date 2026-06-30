@@ -23,6 +23,26 @@ describe("oregonOrestarParser", () => {
     expect(parseOregonOrestarSearchForm(html)).toEqual({
       actionUrl: "https://secure.sos.state.or.us/orestar/cneSearch.do;JSESSIONID_ORESTAR=abc123",
       csrfToken: "csrf-token-1",
+      cookieHeader: null,
+      sessionId: "abc123",
+    });
+  });
+
+  it("parses live-style transaction search forms whose CSRF token is injected by JavaScript", () => {
+    const html = `
+      <html>
+        <body>
+          <form name="cneSearchForm" method="post" action="/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123">
+            <input type="hidden" name="cneSearchButtonName" value="">
+          </form>
+        </body>
+      </html>
+    `;
+
+    expect(parseOregonOrestarSearchForm(html)).toEqual({
+      actionUrl: "https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123",
+      csrfToken: null,
+      cookieHeader: null,
       sessionId: "abc123",
     });
   });

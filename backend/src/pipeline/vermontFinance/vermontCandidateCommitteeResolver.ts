@@ -236,6 +236,24 @@ function toCommitteeMatch(accumulator: CandidateCommitteeAccumulator): VermontCa
   };
 }
 
+function dominantCommitteeMatch(
+  matches: readonly VermontCandidateCommitteeMatch[]
+): VermontCandidateCommitteeMatch | null {
+  const sorted = [...matches].sort(
+    (left, right) => right.matchedTransactionRowCount - left.matchedTransactionRowCount
+  );
+  const first = sorted[0];
+  const second = sorted[1];
+  if (!first || !second) {
+    return first ?? null;
+  }
+  const totalRows = sorted.reduce((sum, match) => sum + match.matchedTransactionRowCount, 0);
+  const hasEnoughEvidence = first.matchedTransactionRowCount >= 25;
+  const isDominantShare = first.matchedTransactionRowCount / totalRows >= 0.9;
+  const isDominantRatio = first.matchedTransactionRowCount >= second.matchedTransactionRowCount * 10;
+  return hasEnoughEvidence && isDominantShare && isDominantRatio ? first : null;
+}
+
 export function resolveVermontCandidateCommittee(
   input: VermontCandidateCommitteeResolverInput
 ): VermontCandidateCommitteeResolution {
@@ -321,6 +339,13 @@ export function resolveVermontCandidateCommittee(
     return {
       status: "matched",
       ...matches[0],
+    };
+  }
+  const dominantMatch = dominantCommitteeMatch(matches);
+  if (dominantMatch) {
+    return {
+      status: "matched",
+      ...dominantMatch,
     };
   }
 

@@ -7,7 +7,8 @@ export type OregonOrestarSupportOppose = "support" | "oppose";
 
 export type OregonOrestarSearchForm = {
   actionUrl: string;
-  csrfToken: string;
+  csrfToken: string | null;
+  cookieHeader: string | null;
   sessionId: string | null;
 };
 
@@ -352,10 +353,7 @@ export function parseOregonOrestarSearchForm(
   if (!action) {
     throw new Error("ORESTAR transaction search form action not found");
   }
-  const csrfToken = inputValueByName(html, "OWASP_CSRFTOKEN")?.trim();
-  if (!csrfToken) {
-    throw new Error("ORESTAR transaction search CSRF token not found");
-  }
+  const csrfToken = inputValueByName(html, "OWASP_CSRFTOKEN")?.trim() || null;
   const actionUrl = absoluteOrestarUrl(action, sourceUrl);
   if (!actionUrl) {
     throw new Error("ORESTAR transaction search form action URL is not allowed");
@@ -363,6 +361,7 @@ export function parseOregonOrestarSearchForm(
   return {
     actionUrl,
     csrfToken,
+    cookieHeader: null,
     sessionId: sessionIdFromUrl(actionUrl),
   };
 }
