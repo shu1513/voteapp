@@ -148,8 +148,11 @@ async function fetchOrestarCsrfToken(input: {
       },
     }
   );
-  const [tokenName, tokenValue] = html.trim().split(":");
-  if (tokenName !== "OWASP_CSRFTOKEN" || !tokenValue?.trim()) {
+  const rawToken = html.trim();
+  const separatorIndex = rawToken.indexOf(":");
+  const tokenName = separatorIndex >= 0 ? rawToken.slice(0, separatorIndex) : rawToken;
+  const tokenValue = separatorIndex >= 0 ? rawToken.slice(separatorIndex + 1) : "";
+  if (tokenName !== "OWASP_CSRFTOKEN" || !tokenValue.trim()) {
     throw new Error("ORESTAR transaction search CSRF token not found");
   }
   return tokenValue.trim();

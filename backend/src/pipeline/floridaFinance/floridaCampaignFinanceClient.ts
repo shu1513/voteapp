@@ -303,12 +303,6 @@ export function buildFloridaContributionExportFormData(
   params.set("cdatefrom", query.dateFrom ?? "");
   params.set("cdateto", query.dateTo ?? "");
   params.set("queryformat", "2");
-  if (query.dateFrom) {
-    params.set("cdatefrom", query.dateFrom);
-  }
-  if (query.dateTo) {
-    params.set("cdateto", query.dateTo);
-  }
   if (query.searchType === "candidate_detail") {
     params.set("CanFName", query.candidateFirstName!);
     params.set("CanLName", query.candidateLastName!);

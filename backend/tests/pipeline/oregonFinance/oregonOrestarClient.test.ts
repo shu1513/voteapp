@@ -42,7 +42,7 @@ describe("oregonOrestarClient", () => {
           "FETCH-CSRF-TOKEN": "1",
           cookie: "JSESSIONID_ORESTAR=abc123",
         });
-        return htmlResponse("OWASP_CSRFTOKEN:csrf-token-from-script");
+        return htmlResponse("OWASP_CSRFTOKEN:csrf:token:from-script");
       }
       return {
         ...htmlResponse(`
@@ -58,7 +58,7 @@ describe("oregonOrestarClient", () => {
 
     await expect(getOregonOrestarSearchForm({ fetchFn })).resolves.toEqual({
       actionUrl: "https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123",
-      csrfToken: "csrf-token-from-script",
+      csrfToken: "csrf:token:from-script",
       cookieHeader: "JSESSIONID_ORESTAR=abc123",
       sessionId: "abc123",
     });
