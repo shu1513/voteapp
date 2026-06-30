@@ -30,7 +30,7 @@ export type ManualResearchRepairReport = {
   generatedAt: string;
   command: string;
   manualKey: string;
-  status: "needs_repair" | "blocked_by_contract_only";
+  status: "needs_repair" | "blocked_by_contract_only" | "confirmed_only";
   target: Record<string, string | number | boolean | null>;
   gaps: ManualResearchRepairGap[];
 };
@@ -42,12 +42,17 @@ export function buildManualResearchRepairReport(input: {
   gaps: ManualResearchRepairGap[];
 }): ManualResearchRepairReport {
   const hasRepairableGap = input.gaps.some((gap) => gap.outcome === "needs_repair");
+  const hasContractBlockedGap = input.gaps.some((gap) => gap.outcome === "blocked_by_contract");
   return {
     schemaVersion: "manual_research_repair_report.v1",
     generatedAt: new Date().toISOString(),
     command: input.command,
     manualKey: input.manualKey,
-    status: hasRepairableGap ? "needs_repair" : "blocked_by_contract_only",
+    status: hasRepairableGap
+      ? "needs_repair"
+      : hasContractBlockedGap
+        ? "blocked_by_contract_only"
+        : "confirmed_only",
     target: input.target,
     gaps: input.gaps,
   };

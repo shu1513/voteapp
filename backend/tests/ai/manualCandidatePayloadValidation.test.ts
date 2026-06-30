@@ -75,6 +75,42 @@ describe("manual candidate payload validation helpers", () => {
     }
   });
 
+  it("passes candidate profile parse options through to the contract parser", async () => {
+    const federalResult = await validateCandidateProfileAiPayload(
+      {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        sources: ["https://jane.example/about"],
+      },
+      1000,
+      { requireFecIds: true }
+    );
+
+    expect(federalResult.ok).toBe(false);
+    if (!federalResult.ok) {
+      expect(federalResult.reason).toBe("payload.fec_ids must contain at least one FEC ID for federal contests");
+    }
+
+    const disallowedResult = await validateCandidateProfileAiPayload(
+      {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        fec_ids: ["H6VT00000"],
+        sources: ["https://jane.example/about"],
+      },
+      1000,
+      { allowFecIds: false }
+    );
+
+    expect(disallowedResult.ok).toBe(false);
+    if (!disallowedResult.ok) {
+      expect(disallowedResult.reason).toBe("payload.fec_ids is not allowed for this contest mode");
+    }
+    expect(verifyHttpUrlReachabilityMock).not.toHaveBeenCalled();
+  });
+
   it("validates candidate record discovery payloads and normalizes verified source URLs", async () => {
     verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => ({
       ok: true,
@@ -156,5 +192,18 @@ describe("manual candidate payload validation helpers", () => {
         failureType: "permanent",
       });
     }
+  });
+
+  it("reports top-level candidate record discovery parser failures", async () => {
+    const result = await validateCandidateRecordDiscoveryPayload({ records: "bad" }, 1000);
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe("payload.records must be array");
+      expect(result.failureDebug).toEqual({
+        parser_reason: "payload.records must be array",
+      });
+    }
+    expect(verifyHttpUrlReachabilityMock).not.toHaveBeenCalled();
   });
 });

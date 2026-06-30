@@ -235,25 +235,37 @@ function applyConfirmedGaps(
   );
 }
 
-function buildProfileValidationGap(input: {
+function buildProfileValidationGaps(input: {
   reason: string;
   failedCitationUrls?: readonly string[];
-}): ManualResearchRepairGap {
-  const sourceUrl = input.failedCitationUrls?.[0];
-  return {
-    id: sourceUrl ? "candidate_profile.sources" : "candidate_profile.payload",
+}): ManualResearchRepairGap[] {
+  const sourceUrls = [...new Set(input.failedCitationUrls ?? [])];
+  if (sourceUrls.length > 0) {
+    return sourceUrls.map((sourceUrl, index) => ({
+      id: `candidate_profile.sources.${index + 1}`,
+      stage: "candidate_profile",
+      objectType: "candidate_profile",
+      outcome: "needs_repair",
+      field: "sources",
+      sourceUrl,
+      failureKind: "source_url",
+      reason: input.reason,
+      promptFile: "src/ai/providers/candidateProfilePrompt.ts",
+      focusedResearchPass:
+        "Run a focused candidate-profile source repair pass. Replace unreachable or bad profile source URLs with reliable public URLs, then rerun the manual profile writer.",
+    }));
+  }
+  return [{
+    id: "candidate_profile.payload",
     stage: "candidate_profile",
     objectType: "candidate_profile",
     outcome: "needs_repair",
-    field: sourceUrl ? "sources" : undefined,
-    sourceUrl,
-    failureKind: sourceUrl ? "source_url" : "schema",
+    failureKind: "schema",
     reason: input.reason,
     promptFile: "src/ai/providers/candidateProfilePrompt.ts",
-    focusedResearchPass: sourceUrl
-      ? "Run a focused candidate-profile source repair pass. Replace unreachable or bad profile source URLs with reliable public URLs, then rerun the manual profile writer."
-      : "Run a focused candidate-profile payload repair pass. Fix only the schema issue, then rerun the manual profile writer.",
-  };
+    focusedResearchPass:
+      "Run a focused candidate-profile payload repair pass. Fix only the schema issue, then rerun the manual profile writer.",
+  }];
 }
 
 function buildCandidateProfileQualityGaps(input: {
@@ -356,10 +368,10 @@ async function main(): Promise<void> {
     readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000)
   );
   if (!validatedProfile.ok) {
-    const gaps = [buildProfileValidationGap({
+    const gaps = buildProfileValidationGaps({
       reason: validatedProfile.reason,
       failedCitationUrls: validatedProfile.failedCitationUrls,
-    })];
+    });
     await writeProfileRepairReport({
       reportFile: repairReportFile,
       manualKey: fallbackManualKey,
@@ -373,9 +385,9 @@ async function main(): Promise<void> {
 
   const profile = validatedProfile.profile;
   if (!hasFlag("--allow-no-hard-identifier") && !hasAtLeastOneHardIdentifier(profile)) {
-    const gaps = [buildProfileValidationGap({
+    const gaps = buildProfileValidationGaps({
       reason: "Candidate profile has no hard identifier.",
-    })];
+    });
     await writeProfileRepairReport({
       reportFile: repairReportFile,
       manualKey: fallbackManualKey,
@@ -480,6 +492,7 @@ async function main(): Promise<void> {
     let candidateId: string;
     let matchedExisting: boolean;
     let candidateElectionCreated = false;
+    let effectiveIncumbency = false;
     try {
       await client.query("BEGIN");
       const candidateResult = await findOrCreateCandidateFromProfile({
@@ -495,12 +508,13 @@ async function main(): Promise<void> {
         candidateId,
         electionId,
       });
+      effectiveIncumbency = isIncumbent ?? existingIncumbency ?? false;
 
       const linkResult = await upsertCandidateElection({
         client,
         candidateId,
         electionId,
-        isIncumbent: isIncumbent ?? existingIncumbency ?? false,
+        isIncumbent: effectiveIncumbency,
       });
       candidateElectionCreated = linkResult.created;
       if (linkResult.created) {
@@ -520,16 +534,22 @@ async function main(): Promise<void> {
     let recordDraft: { emittedCount: number; skippedCount: number } | null = null;
     let financeSync: CandidateProfileFinanceSyncFanoutResult | null = null;
     if (emitFinanceSync) {
-      financeSync = await enqueueCandidateProfileFinanceSyncFanoutForLinkedElection({
-        context: buildLinkedElectionFinanceContext({
-          election,
-          includeParty,
-          profileParty: profile.party,
-          isIncumbent: isIncumbent ?? undefined,
-        }),
-        candidateId,
-        fecIds: profile.fec_ids,
-      });
+      try {
+        financeSync = await enqueueCandidateProfileFinanceSyncFanoutForLinkedElection({
+          context: buildLinkedElectionFinanceContext({
+            election,
+            includeParty,
+            profileParty: profile.party,
+            isIncumbent: effectiveIncumbency,
+          }),
+          candidateId,
+          fecIds: profile.fec_ids,
+        });
+      } catch (error) {
+        throw new Error(
+          `Candidate profile DB write committed for candidate_id=${candidateId} election_id=${electionId}, but finance-sync fanout failed: ${toReason(error)}. Recovery: re-run this command with --emit-finance-sync after Redis/scheduler dependencies are available; candidate/election writes are idempotent.`
+        );
+      }
     }
     if (redis) {
       try {

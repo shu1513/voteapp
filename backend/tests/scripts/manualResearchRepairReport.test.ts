@@ -66,6 +66,27 @@ describe("manualResearchRepairReport", () => {
     expect(report.status).toBe("blocked_by_contract_only");
   });
 
+  it("marks reports as confirmed_only when all gaps are operator-confirmed", () => {
+    const report = buildManualResearchRepairReport({
+      command: "manual:candidate-records:write",
+      manualKey: "manual:candidate-records:election:jane",
+      target: { electionId: "election-1" },
+      gaps: [
+        {
+          ...repairGap,
+          outcome: "confirmed_null",
+        },
+        {
+          ...repairGap,
+          id: "candidate_records.only_general_labels",
+          outcome: "confirmed_neutral",
+        },
+      ],
+    });
+
+    expect(report.status).toBe("confirmed_only");
+  });
+
   it("writes reports to nested paths", async () => {
     const dir = await mkdtemp(join(tmpdir(), "manual-research-report-"));
     tempDirs.push(dir);

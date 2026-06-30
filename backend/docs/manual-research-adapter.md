@@ -122,7 +122,12 @@ Manual path:
 - Add `--repair-report-file file` to write a `manual_research_repair_report.v1` JSON report when validation or quality gates
   find gaps. Add `--strict-quality-gate` when the run should stop on missing profile fields such as summary, official website,
   or party in partisan contests. After a focused field-only repair pass finds no reliable value, rerun with
-  `--confirmed-gap candidate_profile.<field>` to document the confirmed null instead of blocking import.
+  `--confirmed-gap <gap-id>` using the exact repair-report gap id, such as `candidate_profile.summary` or
+  `candidate_profile.official_website_url`, to document the confirmed null instead of blocking import.
+- Add `--is-incumbent true|false` when the researched roster/profile pass has source-backed incumbency information. If omitted,
+  the writer preserves an existing candidate-election incumbency value when one exists.
+- Add `--emit-record-draft` only when the operator wants the profile write to enqueue the next candidate-record draft artifact
+  after the candidate/election link commits.
 - Add `--emit-finance-sync` only when the operator deliberately wants the optional production profile side effect. It reuses
   the same linked-election campaign-finance sync fanout as the normal candidate-profile enricher after the candidate/election
   link commits.
@@ -337,8 +342,8 @@ Manual commands:
 - `npm run manual:elections:inject -- --file payload.json [--ingest-key key] [--run-id id] [--dry-run]`
 - `npm run manual:candidate-roster:inject -- --election-id uuid --file roster.json [--run-id id] [--dry-run]`
 - `npm run manual:candidate-roster:fanout -- --election-id uuid [--run-id id] [--dry-run]`
-- `npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]`
-- `npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]`
+- `npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap <gap-id>] [--repair-report-file file] [--dry-run]`
+- `npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap <gap-id>] [--repair-report-file file] [--dry-run]`
 - `npm run manual:ballot-measure:write -- --election-id uuid --file payload.json [--dry-run]`
 
 Safety properties:
