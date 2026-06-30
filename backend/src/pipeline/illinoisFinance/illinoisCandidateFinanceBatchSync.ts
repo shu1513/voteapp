@@ -45,8 +45,8 @@ export type IllinoisCandidateFinanceDueRow = {
 
 export type IllinoisCandidateFinanceData = {
   directContributionRecords: readonly IllinoisSbeContributionRecord[];
-  outsideExpenditureRecords: readonly IllinoisSbeExpenditureRecord[];
-  outsideGroupContributionRecords: readonly IllinoisSbeContributionRecord[];
+  outsideExpenditureRecords?: readonly IllinoisSbeExpenditureRecord[];
+  outsideGroupContributionRecords?: readonly IllinoisSbeContributionRecord[];
   directContributionSourceUrl?: string | null;
   outsideExpenditureSourceUrl?: string | null;
   outsideGroupContributionSourceUrl?: string | null;

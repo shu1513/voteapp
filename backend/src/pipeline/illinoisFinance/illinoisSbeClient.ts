@@ -153,7 +153,49 @@ function getResponseSetCookies(headers: Headers): string[] {
     return direct;
   }
   const combined = headers.get("set-cookie");
-  return combined ? [combined] : [];
+  return combined ? splitIllinoisSbeSetCookieHeader(combined) : [];
+}
+
+export function splitIllinoisSbeSetCookieHeader(value: string): string[] {
+  const cookies: string[] = [];
+  let start = 0;
+  let inQuotedValue = false;
+
+  for (let index = 0; index < value.length; index += 1) {
+    const char = value[index];
+    if (char === "\"" && value[index - 1] !== "\\") {
+      inQuotedValue = !inQuotedValue;
+      continue;
+    }
+    if (char === "," && !inQuotedValue && isSetCookieDelimiter(value, index + 1)) {
+      const cookie = value.slice(start, index).trim();
+      if (cookie) {
+        cookies.push(cookie);
+      }
+      start = index + 1;
+    }
+  }
+
+  const lastCookie = value.slice(start).trim();
+  if (lastCookie) {
+    cookies.push(lastCookie);
+  }
+  return cookies;
+}
+
+function isSetCookieDelimiter(value: string, start: number): boolean {
+  let index = start;
+  while (index < value.length && /\s/.test(value[index] ?? "")) {
+    index += 1;
+  }
+  const nameStart = index;
+  while (index < value.length && !/[;,=\s]/.test(value[index] ?? "")) {
+    index += 1;
+  }
+  while (index < value.length && /\s/.test(value[index] ?? "")) {
+    index += 1;
+  }
+  return index > nameStart && value[index] === "=";
 }
 
 function mergeCookies(existingCookieHeader: string | undefined, setCookies: readonly string[]): string | undefined {
@@ -396,7 +438,12 @@ async function openDownloadList(input: {
   resultHtml: string;
 }): Promise<{ text: string; url: string }> {
   if (!input.resultHtml.includes("ContentPlaceHolder1_lnkDownloadList")) {
-    throw new IllinoisSbeClientError("bad_response", "Illinois SBE search did not expose a download-list link");
+    throw new IllinoisSbeClientError(
+      "bad_response",
+      "Illinois SBE search did not expose a download-list link; " +
+        "the live backend export flow may be blocked or returning a non-export page. " +
+        "Use Illinois SBE CSV artifact mode for production syncs."
+    );
   }
   return input.session.postForm(input.resultUrl, input.resultHtml, {
     context: "download-list postback",

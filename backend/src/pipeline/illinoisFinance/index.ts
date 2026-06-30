@@ -5,4 +5,5 @@ export * from "./illinoisFinanceEligibleOffices.js";
 export * from "./illinoisFinanceAggregators.js";
 export * from "./illinoisFinanceWriter.js";
 export * from "./illinoisSbeClient.js";
+export * from "./illinoisSbeArtifactDataSource.js";
 export * from "./syncIllinoisCandidateFinance.js";

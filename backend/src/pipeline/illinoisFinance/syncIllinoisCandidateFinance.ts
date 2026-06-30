@@ -81,6 +81,8 @@ export type IllinoisCandidateFinanceSyncResult = {
   outsideGroupBreakdownsWritten: number;
   totalReceipts: number | null;
   directContributionTotal: number | null;
+  outsideExpenditureDataAvailable: boolean;
+  outsideGroupContributionDataAvailable: boolean;
   outsideSupportTotal: number | null;
   outsideOpposeTotal: number | null;
   matchedContributionRowCount: number;
@@ -414,6 +416,7 @@ export async function syncIllinoisCandidateFinance(
     maxBreakdownsPerCategory: input.directMaxBreakdownsPerCategory,
   });
   const outsideDataAvailable = input.outsideExpenditureRecords !== undefined;
+  const outsideGroupContributionDataAvailable = input.outsideGroupContributionRecords !== undefined;
   const outsideFinance = input.outsideExpenditureRecords
     ? aggregateIllinoisOutsideSpending({
         electionYear,
@@ -483,6 +486,8 @@ export async function syncIllinoisCandidateFinance(
     outsideGroupBreakdownsWritten: input.dryRun ? 0 : outsideIndustryFinance.outsideGroupBreakdowns?.length ?? 0,
     totalReceipts: directFinance.summary.totalReceipts,
     directContributionTotal: directFinance.summary.directContributionTotal,
+    outsideExpenditureDataAvailable: outsideDataAvailable,
+    outsideGroupContributionDataAvailable,
     outsideSupportTotal: outsideDataAvailable ? outsideFinance.summary?.supportTotal ?? 0 : null,
     outsideOpposeTotal: outsideDataAvailable ? outsideFinance.summary?.opposeTotal ?? 0 : null,
     matchedContributionRowCount: directFinance.matchedContributionRowCount,

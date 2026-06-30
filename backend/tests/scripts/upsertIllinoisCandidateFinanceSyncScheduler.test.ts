@@ -13,6 +13,10 @@ describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
       electionLookaheadDays: undefined,
       aiClassifyIndustries: false,
       aiClassificationMinAmount: undefined,
+      contributionCsvPaths: undefined,
+      expenditureCsvPaths: undefined,
+      contributionSourceUrl: undefined,
+      expenditureSourceUrl: undefined,
     });
   });
 
@@ -26,6 +30,12 @@ describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
         "--lookahead-days=180",
         "--ai-classify-industries",
         "--ai-min-amount=25000",
+        "--contributions-csv=/exports/il-contrib-a.csv",
+        "--contributions-csv",
+        "/exports/il-contrib-b.csv",
+        "--expenditures-csv=/exports/il-exp.csv",
+        "--contributions-url=https://example.test/contributions.csv",
+        "--expenditures-url=https://example.test/expenditures.csv",
       ])
     ).toEqual({
       dryRun: false,
@@ -36,6 +46,10 @@ describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
       electionLookaheadDays: 180,
       aiClassifyIndustries: true,
       aiClassificationMinAmount: 25000,
+      contributionCsvPaths: ["/exports/il-contrib-a.csv", "/exports/il-contrib-b.csv"],
+      expenditureCsvPaths: ["/exports/il-exp.csv"],
+      contributionSourceUrl: "https://example.test/contributions.csv",
+      expenditureSourceUrl: "https://example.test/expenditures.csv",
     });
   });
 
@@ -58,5 +72,15 @@ describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
         "--no-ai-classify-industries",
       ])
     ).toThrow("Provide --ai-classify-industries or --no-ai-classify-industries, not both");
+  });
+
+  it("requires contribution artifacts when artifact source flags are provided", () => {
+    expect(() => parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(["--expenditures-csv=/exports/il-exp.csv"]))
+      .toThrow("Provide --contributions-csv when using Illinois SBE artifact flags");
+    expect(() =>
+      parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs([
+        "--contributions-url=https://example.test/contributions.csv",
+      ])
+    ).toThrow("Provide --contributions-csv when using Illinois SBE artifact flags");
   });
 });

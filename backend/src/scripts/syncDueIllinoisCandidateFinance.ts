@@ -9,6 +9,12 @@ import {
   syncDueIllinoisCandidateFinance,
   type IllinoisCandidateFinanceBatchSyncResult,
 } from "../pipeline/illinoisFinance/illinoisCandidateFinanceBatchSync.js";
+import {
+  createIllinoisSbeArtifactCandidateCommitteeResolver,
+  loadIllinoisFinanceDataForDueRowFromArtifacts,
+  loadIllinoisSbeArtifactDataSet,
+} from "../pipeline/illinoisFinance/illinoisSbeArtifactDataSource.js";
+import { parseFlagValue, parseFlagValues } from "./illinoisCandidateFinanceScriptArgs.js";
 
 export type SyncDueIllinoisCandidateFinanceScriptOptions = {
   dryRun: boolean;
@@ -20,37 +26,11 @@ export type SyncDueIllinoisCandidateFinanceScriptOptions = {
   timeoutMs?: number;
   aiClassifyIndustries: boolean;
   aiClassificationMinAmount?: number;
+  contributionCsvPaths: string[];
+  expenditureCsvPaths: string[];
+  contributionSourceUrl?: string;
+  expenditureSourceUrl?: string;
 };
-
-function parseFlagValue(args: readonly string[], name: string): string | null {
-  const inlinePrefix = `${name}=`;
-  const values: string[] = [];
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  if (values.length > 1) {
-    throw new Error(`Provide ${name} at most once`);
-  }
-  return values[0] ?? null;
-}
 
 function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
   const raw = parseFlagValue(args, name);
@@ -90,7 +70,21 @@ export function parseSyncDueIllinoisCandidateFinanceScriptArgs(
     "--ai-classify-industries",
     "--no-ai-classify-industries",
     "--ai-min-amount",
+    "--contributions-csv",
+    "--expenditures-csv",
+    "--contributions-url",
+    "--expenditures-url",
   ]);
+  const contributionCsvPaths = parseFlagValues(args, "--contributions-csv");
+  const expenditureCsvPaths = parseFlagValues(args, "--expenditures-csv");
+  const contributionSourceUrl = parseFlagValue(args, "--contributions-url") || undefined;
+  const expenditureSourceUrl = parseFlagValue(args, "--expenditures-url") || undefined;
+  if (
+    contributionCsvPaths.length === 0 &&
+    (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl)
+  ) {
+    throw new Error("Provide --contributions-csv when using Illinois SBE artifact flags");
+  }
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),
@@ -101,6 +95,10 @@ export function parseSyncDueIllinoisCandidateFinanceScriptArgs(
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
     aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
     aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
+    contributionCsvPaths,
+    expenditureCsvPaths,
+    contributionSourceUrl,
+    expenditureSourceUrl,
   };
 }
 
@@ -117,11 +115,21 @@ export function toSyncDueIllinoisCandidateFinanceScriptOutput(input: {
   options: SyncDueIllinoisCandidateFinanceScriptOptions;
   result: IllinoisCandidateFinanceBatchSyncResult;
 }) {
+  const successfulResults = input.result.results.flatMap((item) => (item.ok && item.result ? [item.result] : []));
   return {
     type: "illinois_candidate_finance_due_sync",
     ts: new Date().toISOString(),
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
+    data_source: input.options.contributionCsvPaths.length > 0 ? "artifact" : "live",
+    artifact_contribution_csv_count: input.options.contributionCsvPaths.length,
+    artifact_expenditure_csv_count: input.options.expenditureCsvPaths.length,
+    outside_expenditure_data_available_count: successfulResults.filter(
+      (result) => result.outsideExpenditureDataAvailable
+    ).length,
+    outside_group_contribution_data_available_count: successfulResults.filter(
+      (result) => result.outsideGroupContributionDataAvailable
+    ).length,
     ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
@@ -140,6 +148,18 @@ async function main(): Promise<void> {
   const pool = new Pool({ connectionString: getDatabaseUrl() });
 
   try {
+    const artifacts =
+      options.contributionCsvPaths.length > 0
+        ? await loadIllinoisSbeArtifactDataSet({
+            contributionCsvPaths: options.contributionCsvPaths,
+            expenditureCsvPaths: options.expenditureCsvPaths,
+            contributionSourceUrl: options.contributionSourceUrl,
+            expenditureSourceUrl: options.expenditureSourceUrl,
+          })
+        : null;
+    const artifactCandidateCommitteeResolver = artifacts
+      ? createIllinoisSbeArtifactCandidateCommitteeResolver(artifacts)
+      : undefined;
     const result = await syncDueIllinoisCandidateFinance({
       db: pool,
       now: startedAt,
@@ -149,6 +169,10 @@ async function main(): Promise<void> {
       electionLookbackDays: options.electionLookbackDays,
       electionLookaheadDays: options.electionLookaheadDays,
       sbeClientOptions: options.timeoutMs ? { timeoutMs: options.timeoutMs } : undefined,
+      resolveCandidateCommittee: artifactCandidateCommitteeResolver,
+      loadIllinoisFinanceDataFn: artifacts
+        ? async (row) => loadIllinoisFinanceDataForDueRowFromArtifacts({ row, artifacts })
+        : undefined,
       financeIndustryClassifier:
         options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
       aiClassificationMinAmount: options.aiClassificationMinAmount,

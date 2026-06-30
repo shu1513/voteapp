@@ -19,6 +19,12 @@ describe("syncDueIllinoisCandidateFinance script", () => {
         "--timeout-ms=45000",
         "--ai-classify-industries",
         "--ai-min-amount=25000",
+        "--contributions-csv=exports/il-contrib-a.csv",
+        "--contributions-csv",
+        "exports/il-contrib-b.csv",
+        "--expenditures-csv=exports/il-exp.csv",
+        "--contributions-url=https://example.test/contributions.csv",
+        "--expenditures-url=https://example.test/expenditures.csv",
       ])
     ).toEqual({
       dryRun: true,
@@ -30,6 +36,10 @@ describe("syncDueIllinoisCandidateFinance script", () => {
       timeoutMs: 45000,
       aiClassifyIndustries: true,
       aiClassificationMinAmount: 25000,
+      contributionCsvPaths: ["exports/il-contrib-a.csv", "exports/il-contrib-b.csv"],
+      expenditureCsvPaths: ["exports/il-exp.csv"],
+      contributionSourceUrl: "https://example.test/contributions.csv",
+      expenditureSourceUrl: "https://example.test/expenditures.csv",
     });
   });
 
@@ -38,6 +48,8 @@ describe("syncDueIllinoisCandidateFinance script", () => {
       dryRun: false,
       force: false,
       aiClassifyIndustries: true,
+      contributionCsvPaths: [],
+      expenditureCsvPaths: [],
     });
   });
 
@@ -63,10 +75,26 @@ describe("syncDueIllinoisCandidateFinance script", () => {
     expect(() =>
       parseSyncDueIllinoisCandidateFinanceScriptArgs(["--max-candidates=10", "--max-candidates", "20"])
     ).toThrow("Provide --max-candidates at most once");
+    expect(() =>
+      parseSyncDueIllinoisCandidateFinanceScriptArgs([
+        "--contributions-csv=exports/il.csv",
+        "--contributions-url=https://one.test/contributions.csv",
+        "--contributions-url=https://two.test/contributions.csv",
+      ])
+    ).toThrow("Provide --contributions-url at most once");
   });
 
   it("rejects unknown flags", () => {
     expect(() => parseSyncDueIllinoisCandidateFinanceScriptArgs(["--dryrun"])).toThrow("Unknown option: --dryrun");
+  });
+
+  it("requires a contribution artifact when artifact source flags are provided", () => {
+    expect(() => parseSyncDueIllinoisCandidateFinanceScriptArgs(["--expenditures-csv=exports/il-exp.csv"])).toThrow(
+      "Provide --contributions-csv when using Illinois SBE artifact flags"
+    );
+    expect(() =>
+      parseSyncDueIllinoisCandidateFinanceScriptArgs(["--contributions-url=https://example.test/contributions.csv"])
+    ).toThrow("Provide --contributions-csv when using Illinois SBE artifact flags");
   });
 
   it("formats script output", () => {
@@ -77,6 +105,8 @@ describe("syncDueIllinoisCandidateFinance script", () => {
         force: false,
         maxCandidates: 2,
         aiClassifyIndustries: false,
+        contributionCsvPaths: ["exports/il-contrib.csv"],
+        expenditureCsvPaths: [],
       },
       result: {
         dryRun: true,
@@ -96,6 +126,32 @@ describe("syncDueIllinoisCandidateFinance script", () => {
             electionYear: 2026,
             committeeKey: "FRIENDS OF JANE DOE",
             ok: true,
+            result: {
+              candidateId: "candidate-1",
+              electionId: "election-1",
+              electionYear: 2026,
+              dryRun: true,
+              linkWritten: false,
+              summaryWritten: false,
+              directBreakdownsWritten: 0,
+              outsideGroupsWritten: 0,
+              outsideGroupBreakdownsWritten: 0,
+              totalReceipts: 1000,
+              directContributionTotal: 1000,
+              outsideExpenditureDataAvailable: false,
+              outsideGroupContributionDataAvailable: false,
+              outsideSupportTotal: null,
+              outsideOpposeTotal: null,
+              matchedContributionRowCount: 1,
+              includedContributionRowCount: 1,
+              skippedContributionRowCount: 0,
+              matchedOutsideExpenditureRowCount: 0,
+              includedOutsideExpenditureRowCount: 0,
+              skippedOutsideExpenditureRowCount: 0,
+              matchedOutsideContributionRowCount: 0,
+              includedOutsideContributionRowCount: 0,
+              skippedOutsideContributionRowCount: 0,
+            },
           },
         ],
       },
@@ -105,6 +161,11 @@ describe("syncDueIllinoisCandidateFinance script", () => {
       type: "illinois_candidate_finance_due_sync",
       started_at: "2026-01-02T03:04:05.000Z",
       dry_run: true,
+      data_source: "artifact",
+      artifact_contribution_csv_count: 1,
+      artifact_expenditure_csv_count: 0,
+      outside_expenditure_data_available_count: 0,
+      outside_group_contribution_data_available_count: 0,
       ai_classify_industries: false,
       result: {
         dueCandidateCount: 3,

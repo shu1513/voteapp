@@ -9,6 +9,11 @@ import {
   syncDueIllinoisCandidateFinance,
   type IllinoisCandidateFinanceBatchSyncResult,
 } from "../pipeline/illinoisFinance/illinoisCandidateFinanceBatchSync.js";
+import {
+  createIllinoisSbeArtifactCandidateCommitteeResolver,
+  loadIllinoisFinanceDataForDueRowFromArtifacts,
+  loadIllinoisSbeArtifactDataSet,
+} from "../pipeline/illinoisFinance/illinoisSbeArtifactDataSource.js";
 
 export const ILLINOIS_CANDIDATE_FINANCE_SYNC_JOB_NAME = "illinois_candidate_finance_sync_due";
 export const ILLINOIS_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID = "illinois_candidate_finance_sync_daily";
@@ -22,6 +27,10 @@ export type IllinoisCandidateFinanceSyncJobData = {
   electionLookaheadDays?: number;
   aiClassifyIndustries?: boolean;
   aiClassificationMinAmount?: number;
+  contributionCsvPaths?: string[];
+  expenditureCsvPaths?: string[];
+  contributionSourceUrl?: string;
+  expenditureSourceUrl?: string;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -45,6 +54,13 @@ type IllinoisCandidateFinanceSyncSchedulerRuntimeConfig = {
 const DISABLED_RESULT_DEFAULT_MAX_CANDIDATES = 0;
 const DISABLED_RESULT_DEFAULT_STALE_AFTER_DAYS = 0;
 
+type NormalizedIllinoisCandidateFinanceArtifactJobData = {
+  contributionCsvPaths: string[];
+  expenditureCsvPaths?: string[];
+  contributionSourceUrl?: string;
+  expenditureSourceUrl?: string;
+};
+
 function readSchedulerRuntimeConfig(): IllinoisCandidateFinanceSyncSchedulerRuntimeConfig {
   return {
     queueName:
@@ -59,6 +75,54 @@ function assertPositiveInteger(value: number | undefined, label: string): void {
   if (value !== undefined && (!Number.isInteger(value) || value <= 0)) {
     throw new Error(`Invalid Illinois finance sync scheduler ${label}: ${value}`);
   }
+}
+
+function normalizeOptionalString(value: string | undefined, label: string): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  const trimmed = value.trim();
+  if (!trimmed) {
+    throw new Error(`Invalid Illinois finance sync scheduler ${label}`);
+  }
+  return trimmed;
+}
+
+function normalizeOptionalStringArray(value: string[] | undefined, label: string): string[] | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (!Array.isArray(value)) {
+    throw new Error(`Invalid Illinois finance sync scheduler ${label}`);
+  }
+  const normalized = value.map((item) => item.trim()).filter(Boolean);
+  if (normalized.length !== value.length) {
+    throw new Error(`Invalid Illinois finance sync scheduler ${label}`);
+  }
+  return normalized.length > 0 ? normalized : undefined;
+}
+
+function normalizeArtifactJobData(
+  data: IllinoisCandidateFinanceSyncJobData
+): NormalizedIllinoisCandidateFinanceArtifactJobData | undefined {
+  const contributionCsvPaths = normalizeOptionalStringArray(data.contributionCsvPaths, "contributionCsvPaths");
+  const expenditureCsvPaths = normalizeOptionalStringArray(data.expenditureCsvPaths, "expenditureCsvPaths");
+  const contributionSourceUrl = normalizeOptionalString(data.contributionSourceUrl, "contributionSourceUrl");
+  const expenditureSourceUrl = normalizeOptionalString(data.expenditureSourceUrl, "expenditureSourceUrl");
+
+  if (!contributionCsvPaths) {
+    if (expenditureCsvPaths || contributionSourceUrl || expenditureSourceUrl) {
+      throw new Error("Illinois finance sync scheduler artifact options require contributionCsvPaths");
+    }
+    return undefined;
+  }
+
+  return {
+    contributionCsvPaths,
+    expenditureCsvPaths,
+    contributionSourceUrl,
+    expenditureSourceUrl,
+  };
 }
 
 function toConnectionOptions(redisUrl: string): ConnectionOptions {
@@ -136,6 +200,7 @@ function assertValidJobOptions(data: IllinoisCandidateFinanceSyncJobData): void 
   assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
   assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
   assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
+  normalizeArtifactJobData(data);
 }
 
 export function createIllinoisCandidateFinanceSyncSchedulerQueue(): Queue<IllinoisCandidateFinanceSyncJobData> {
@@ -156,6 +221,7 @@ export async function upsertRecurringIllinoisCandidateFinanceSyncJobs(
   jobData: IllinoisCandidateFinanceSyncJobData = {}
 ): Promise<void> {
   assertValidJobOptions(jobData);
+  const artifacts = normalizeArtifactJobData(jobData);
   if (!isIllinoisCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
     const queue = createIllinoisCandidateFinanceSyncSchedulerQueue();
     try {
@@ -187,6 +253,10 @@ export async function upsertRecurringIllinoisCandidateFinanceSyncJobs(
           electionLookaheadDays: jobData.electionLookaheadDays,
           aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
           aiClassificationMinAmount: jobData.aiClassificationMinAmount,
+          contributionCsvPaths: artifacts?.contributionCsvPaths,
+          expenditureCsvPaths: artifacts?.expenditureCsvPaths,
+          contributionSourceUrl: artifacts?.contributionSourceUrl,
+          expenditureSourceUrl: artifacts?.expenditureSourceUrl,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -202,6 +272,7 @@ export async function enqueueManualIllinoisCandidateFinanceSyncJob(
   options: IllinoisCandidateFinanceSyncEnqueueOptions = {}
 ): Promise<string> {
   assertValidJobOptions(jobData);
+  const artifacts = normalizeArtifactJobData(jobData);
   if (!isIllinoisCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
     return "disabled";
   }
@@ -220,6 +291,10 @@ export async function enqueueManualIllinoisCandidateFinanceSyncJob(
         electionLookaheadDays: jobData.electionLookaheadDays,
         aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
         aiClassificationMinAmount: jobData.aiClassificationMinAmount,
+        contributionCsvPaths: artifacts?.contributionCsvPaths,
+        expenditureCsvPaths: artifacts?.expenditureCsvPaths,
+        contributionSourceUrl: artifacts?.contributionSourceUrl,
+        expenditureSourceUrl: artifacts?.expenditureSourceUrl,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -235,6 +310,7 @@ export async function runIllinoisCandidateFinanceSyncJob(
   data: IllinoisCandidateFinanceSyncJobData = {}
 ): Promise<IllinoisCandidateFinanceSyncJobResult> {
   assertValidJobOptions(data);
+  const artifactJobData = normalizeArtifactJobData(data);
   const force = Boolean(data.force);
   const dryRun = Boolean(data.dryRun);
   const triggeredBy = data.triggeredBy ?? "unknown";
@@ -267,6 +343,10 @@ export async function runIllinoisCandidateFinanceSyncJob(
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   try {
+    const artifacts = artifactJobData ? await loadIllinoisSbeArtifactDataSet(artifactJobData) : null;
+    const artifactCandidateCommitteeResolver = artifacts
+      ? createIllinoisSbeArtifactCandidateCommitteeResolver(artifacts)
+      : undefined;
     const result = await syncDueIllinoisCandidateFinance({
       db: pool,
       now,
@@ -275,6 +355,10 @@ export async function runIllinoisCandidateFinanceSyncJob(
       staleAfterDays: data.staleAfterDays,
       electionLookbackDays: data.electionLookbackDays,
       electionLookaheadDays: data.electionLookaheadDays,
+      resolveCandidateCommittee: artifactCandidateCommitteeResolver,
+      loadIllinoisFinanceDataFn: artifacts
+        ? async (row) => loadIllinoisFinanceDataForDueRowFromArtifacts({ row, artifacts })
+        : undefined,
       financeIndustryClassifier:
         data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
       aiClassificationMinAmount: data.aiClassificationMinAmount,

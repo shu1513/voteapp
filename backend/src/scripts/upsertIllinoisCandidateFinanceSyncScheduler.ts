@@ -6,36 +6,7 @@ import {
   upsertRecurringIllinoisCandidateFinanceSyncJobs,
   type IllinoisCandidateFinanceSyncJobData,
 } from "../scheduler/illinoisCandidateFinanceSyncScheduler.js";
-
-function parseFlagValue(args: readonly string[], name: string): string | null {
-  const inlinePrefix = `${name}=`;
-  const values: string[] = [];
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  if (values.length > 1) {
-    throw new Error(`Provide ${name} at most once`);
-  }
-  return values[0] ?? null;
-}
+import { parseFlagValue, parseFlagValues } from "./illinoisCandidateFinanceScriptArgs.js";
 
 function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
   const raw = parseFlagValue(args, name);
@@ -98,9 +69,23 @@ export function parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(
     "--ai-classify-industries",
     "--no-ai-classify-industries",
     "--ai-min-amount",
+    "--contributions-csv",
+    "--expenditures-csv",
+    "--contributions-url",
+    "--expenditures-url",
   ]);
   assertBareBooleanFlags(args, ["--dry-run", "--force", "--ai-classify-industries", "--no-ai-classify-industries"]);
   assertMutuallyExclusiveFlags(args, "--ai-classify-industries", "--no-ai-classify-industries");
+  const contributionCsvPaths = parseFlagValues(args, "--contributions-csv");
+  const expenditureCsvPaths = parseFlagValues(args, "--expenditures-csv");
+  const contributionSourceUrl = parseFlagValue(args, "--contributions-url") || undefined;
+  const expenditureSourceUrl = parseFlagValue(args, "--expenditures-url") || undefined;
+  if (
+    contributionCsvPaths.length === 0 &&
+    (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl)
+  ) {
+    throw new Error("Provide --contributions-csv when using Illinois SBE artifact flags");
+  }
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),
@@ -110,6 +95,10 @@ export function parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     aiClassifyIndustries: args.includes("--ai-classify-industries"),
     aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
+    contributionCsvPaths: contributionCsvPaths.length > 0 ? contributionCsvPaths : undefined,
+    expenditureCsvPaths: expenditureCsvPaths.length > 0 ? expenditureCsvPaths : undefined,
+    contributionSourceUrl,
+    expenditureSourceUrl,
   };
 }
 
