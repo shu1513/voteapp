@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "manual_research_repair_report.v1",
+  "generatedAt": "2026-06-30T19:20:10.958Z",
+  "command": "manual:candidate-records:write",
+  "manualKey": "manual:candidate-records:9128d00c-c5a9-41e4-accb-a83ada005f80:175ec939-fe6b-4ace-b79a-d357dfc312bf",
+  "status": "confirmed_only",
+  "target": {
+    "candidateId": "175ec939-fe6b-4ace-b79a-d357dfc312bf",
+    "electionId": "9128d00c-c5a9-41e4-accb-a83ada005f80",
+    "recordsFile": "manual-research/vermont-2026-08-thin-records/ryan-mclaren-records.json",
+    "labelsFile": "manual-research/vermont-2026-08-thin-records/ryan-mclaren-labels.json",
+    "candidateDisplayName": "Ryan McLaren"
+  },
+  "gaps": [
+    {
+      "id": "candidate_records.only_general_labels",
+      "stage": "candidate_record_labels",
+      "objectType": "candidate_record_set",
+      "outcome": "confirmed_neutral",
+      "failureKind": "quality_gap",
+      "reason": "Every candidate record label is non-stance/general. This may be correct for neutral records, but it needs a focused issue-record check before production-grade import. Operator marked this gap confirmed after focused repair research.",
+      "promptFile": "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+      "focusedResearchPass": "Run a focused substantive-record search for votes, official actions, endorsements, litigation/enforcement, public service, or other source-backed conduct. If records are genuinely neutral only, mark candidate_records.only_general_labels confirmed_neutral."
+    }
+  ]
+}

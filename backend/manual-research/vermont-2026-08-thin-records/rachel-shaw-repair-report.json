@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "manual_research_repair_report.v1",
+  "generatedAt": "2026-06-30T19:20:40.306Z",
+  "command": "manual:candidate-records:write",
+  "manualKey": "manual:candidate-records:4e2de2e6-6a7b-4956-af95-3ca240e16636:eb7fca9a-b5ab-4b2c-a2c2-9bc902fddeb7",
+  "status": "confirmed_only",
+  "target": {
+    "candidateId": "eb7fca9a-b5ab-4b2c-a2c2-9bc902fddeb7",
+    "electionId": "4e2de2e6-6a7b-4956-af95-3ca240e16636",
+    "recordsFile": "manual-research/vermont-2026-08-thin-records/empty-records.json",
+    "labelsFile": "manual-research/vermont-2026-08-thin-records/empty-labels.json",
+    "candidateDisplayName": "Rachel Shaw"
+  },
+  "gaps": [
+    {
+      "id": "candidate_records.no_records_found",
+      "stage": "candidate_records",
+      "objectType": "candidate_record_set",
+      "outcome": "confirmed_null",
+      "failureKind": "quality_gap",
+      "reason": "Candidate record discovery produced zero verified records. Operator marked this gap confirmed after focused repair research.",
+      "promptFile": "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+      "focusedResearchPass": "Run a focused no-records verification pass for this candidate/election context. If no reliable action records exist, mark candidate_records.no_records_found confirmed_null."
+    }
+  ]
+}

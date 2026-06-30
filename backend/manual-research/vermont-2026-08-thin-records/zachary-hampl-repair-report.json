@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "manual_research_repair_report.v1",
+  "generatedAt": "2026-06-30T19:21:05.005Z",
+  "command": "manual:candidate-records:write",
+  "manualKey": "manual:candidate-records:16342a2b-049a-4ee8-acf4-0f73b2a75aae:905250f0-38cf-4fe5-b4d5-729e534f88ad",
+  "status": "confirmed_only",
+  "target": {
+    "candidateId": "905250f0-38cf-4fe5-b4d5-729e534f88ad",
+    "electionId": "16342a2b-049a-4ee8-acf4-0f73b2a75aae",
+    "recordsFile": "manual-research/vermont-2026-08-thin-records/empty-records.json",
+    "labelsFile": "manual-research/vermont-2026-08-thin-records/empty-labels.json",
+    "candidateDisplayName": "Zachary Hampl"
+  },
+  "gaps": [
+    {
+      "id": "candidate_records.no_records_found",
+      "stage": "candidate_records",
+      "objectType": "candidate_record_set",
+      "outcome": "confirmed_null",
+      "failureKind": "quality_gap",
+      "reason": "Candidate record discovery produced zero verified records. Operator marked this gap confirmed after focused repair research.",
+      "promptFile": "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+      "focusedResearchPass": "Run a focused no-records verification pass for this candidate/election context. If no reliable action records exist, mark candidate_records.no_records_found confirmed_null."
+    }
+  ]
+}

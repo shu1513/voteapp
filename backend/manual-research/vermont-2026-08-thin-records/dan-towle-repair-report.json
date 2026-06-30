@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "manual_research_repair_report.v1",
+  "generatedAt": "2026-06-30T19:20:37.957Z",
+  "command": "manual:candidate-records:write",
+  "manualKey": "manual:candidate-records:a5a8095f-9117-4748-a04a-ddecfeff2932:98da2896-b428-4438-9651-c90a41ca3387",
+  "status": "confirmed_only",
+  "target": {
+    "candidateId": "98da2896-b428-4438-9651-c90a41ca3387",
+    "electionId": "a5a8095f-9117-4748-a04a-ddecfeff2932",
+    "recordsFile": "manual-research/vermont-2026-08-thin-records/empty-records.json",
+    "labelsFile": "manual-research/vermont-2026-08-thin-records/empty-labels.json",
+    "candidateDisplayName": "Dan Towle"
+  },
+  "gaps": [
+    {
+      "id": "candidate_records.no_records_found",
+      "stage": "candidate_records",
+      "objectType": "candidate_record_set",
+      "outcome": "confirmed_null",
+      "failureKind": "quality_gap",
+      "reason": "Candidate record discovery produced zero verified records. Operator marked this gap confirmed after focused repair research.",
+      "promptFile": "src/ai/providers/candidateRecordDiscoveryPrompt.ts",
+      "focusedResearchPass": "Run a focused no-records verification pass for this candidate/election context. If no reliable action records exist, mark candidate_records.no_records_found confirmed_null."
+    }
+  ]
+}

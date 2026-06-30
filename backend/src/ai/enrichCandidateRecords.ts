@@ -13,6 +13,7 @@ import { buildCandidateRecordDiscoveryPrompt } from "./providers/candidateRecord
 import type { AiProvider } from "./types.js";
 import { verifyHttpUrlReachability } from "./urlReachability.js";
 import type { ElectionContestFamily } from "../types/election.js";
+import { classifyCandidateRecordQuality } from "../pipeline/candidates/candidateRecordQuality.js";
 
 type CandidateRecordDiscoveryErrorCode = ResearchErrorCode | "SCHEMA_MISMATCH";
 
@@ -41,7 +42,7 @@ export type CandidateRecordDroppedRecord = {
   };
   reason: string;
   failureType: "transient" | "permanent";
-  failureKind: "schema" | "source_url";
+  failureKind: "schema" | "source_url" | "quality_gap";
 };
 
 export type CandidateRecordDiscoveryPayloadValidationResult =
@@ -215,10 +216,26 @@ export async function validateCandidateRecordDiscoveryPayload(
     };
   }
 
-  const sourceVerification = await verifyCandidateRecordSources(
-    parsed.payload.records,
-    timeoutMs
-  );
+  const qualityDroppedRecords: CandidateRecordDroppedRecord[] = [];
+  const qualityAcceptedRecords: CandidateDiscoveredRecord[] = [];
+  for (const record of parsed.payload.records) {
+    const quality = classifyCandidateRecordQuality({
+      description: record.description,
+      sourceUrl: record.source_url,
+    });
+    if (quality.classification === "disallowed_thin") {
+      qualityDroppedRecords.push({
+        record,
+        reason: `candidate record quality rejected row: ${quality.reason}`,
+        failureType: "permanent",
+        failureKind: "quality_gap",
+      });
+      continue;
+    }
+    qualityAcceptedRecords.push(record);
+  }
+
+  const sourceVerification = await verifyCandidateRecordSources(qualityAcceptedRecords, timeoutMs);
   const schemaDroppedRecords: CandidateRecordDroppedRecord[] = parsed.invalid_rows.map((row) => ({
     record: {
       description: row.raw_record.description,
@@ -232,6 +249,7 @@ export async function validateCandidateRecordDiscoveryPayload(
   const droppedRecords: CandidateRecordDroppedRecord[] = [
     ...sourceVerification.droppedRecords,
     ...schemaDroppedRecords,
+    ...qualityDroppedRecords,
   ];
 
   return {
@@ -242,9 +260,11 @@ export async function validateCandidateRecordDiscoveryPayload(
       dropped_records_count: droppedRecords.length,
       dropped_records_source_url_count: sourceVerification.droppedRecords.length,
       dropped_records_schema_count: schemaDroppedRecords.length,
+      dropped_records_quality_count: qualityDroppedRecords.length,
       verified_records_count: sourceVerification.verifiedRecords.length,
       parsed_valid_row_count: parsed.payload.records.length,
       parsed_invalid_row_count: parsed.invalid_rows.length,
+      quality_accepted_row_count: qualityAcceptedRecords.length,
     },
   };
 }

@@ -75,7 +75,18 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).toContain(
       "Research reliable public records about this exact candidate that show concrete actions or accountability such as votes, sponsored legislation, official decisions, committee work, legal/ethics scrutiny/documented criminal convictions, prior government service, professional achievements or failures, and documented positions on key issues."
     );
-    expect(prompt).toContain("Do not include pure candidacy announcements.");
+    expect(prompt).toContain(
+      "records may be an empty array if no reliable actual action/service/accountability records are found."
+    );
+    expect(prompt).toContain(
+      "Official ballot, Secretary of State, election-office, or qualified-candidate listings are roster evidence, not candidate record evidence."
+    );
+    expect(prompt).toContain(
+      "Do not include filing-to-run, candidacy announcements, ballot qualification, ballot listing, campaign launch, or campaign promise rows as records."
+    );
+    expect(prompt).toContain(
+      'If the only reliable sources prove the person is running but do not show an actual action, public service, leadership role, vote, official decision, litigation/enforcement record, endorsement, or other accountability record, return {"records": []}.'
+    );
     expect(prompt).toContain(
       "For damaging claims, require official/legal sources or reputable news and do not state allegations as proven facts."
     );
