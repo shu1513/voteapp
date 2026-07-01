@@ -37,6 +37,16 @@ function candidates(overrides: Partial<PresidentialNomineeCandidateForResolution
   ];
 }
 
+function loadCycle(overrides: Record<string, unknown> = {}) {
+  return vi.fn().mockResolvedValue({
+    id: CYCLE_ID,
+    election_year: 2028,
+    stage: "primary",
+    party: "Democratic",
+    ...overrides,
+  });
+}
+
 function payload() {
   return {
     nominee_found: true,
@@ -105,6 +115,7 @@ describe("runManualPresidentialNomineeWrite", () => {
       rawPayload: payload(),
       pool: {} as Pool,
       deps: {
+        loadCycle: loadCycle(),
         loadCandidates: vi.fn().mockResolvedValue(candidates()),
         promoteNominee,
       },
@@ -143,6 +154,7 @@ describe("runManualPresidentialNomineeWrite", () => {
       rawPayload: payload(),
       pool: {} as Pool,
       deps: {
+        loadCycle: loadCycle(),
         loadCandidates: vi.fn().mockResolvedValue(candidates()),
         promoteNominee,
       },
@@ -184,6 +196,7 @@ describe("runManualPresidentialNomineeWrite", () => {
       },
       pool: {} as Pool,
       deps: {
+        loadCycle: loadCycle(),
         loadCandidates: vi.fn().mockResolvedValue(candidates()),
         promoteNominee,
       },
@@ -208,6 +221,7 @@ describe("runManualPresidentialNomineeWrite", () => {
       },
       pool: {} as Pool,
       deps: {
+        loadCycle: loadCycle(),
         loadCandidates: vi.fn().mockResolvedValue([]),
         promoteNominee,
       },
@@ -237,9 +251,62 @@ describe("runManualPresidentialNomineeWrite", () => {
         rawPayload: payload(),
         pool: {} as Pool,
         deps: {
+          loadCycle: loadCycle(),
           loadCandidates: vi.fn().mockResolvedValue([]),
         },
       })
     ).rejects.toThrow("No active presidential primary candidates are available for nominee resolution");
+  });
+
+  it("rejects election year or party flags that do not match the cycle id", async () => {
+    await expect(
+      runManualPresidentialNomineeWrite({
+        options: options({ electionYear: 2032 }),
+        rawPayload: payload(),
+        pool: {} as Pool,
+        deps: {
+          loadCycle: loadCycle(),
+          loadCandidates: vi.fn().mockResolvedValue(candidates()),
+        },
+      })
+    ).rejects.toThrow("--election-year (2032) does not match presidential cycle election_year (2028)");
+
+    await expect(
+      runManualPresidentialNomineeWrite({
+        options: options({ party: "Republican" }),
+        rawPayload: payload(),
+        pool: {} as Pool,
+        deps: {
+          loadCycle: loadCycle(),
+          loadCandidates: vi.fn().mockResolvedValue(candidates()),
+        },
+      })
+    ).rejects.toThrow("--party (Republican) does not match presidential cycle party (Democratic)");
+  });
+
+  it("rejects cycle ids that do not point to a party primary cycle", async () => {
+    await expect(
+      runManualPresidentialNomineeWrite({
+        options: options(),
+        rawPayload: payload(),
+        pool: {} as Pool,
+        deps: {
+          loadCycle: loadCycle({ stage: "general", party: null }),
+          loadCandidates: vi.fn().mockResolvedValue(candidates()),
+        },
+      })
+    ).rejects.toThrow("manual presidential nominee write requires a primary cycle; cycle stage is general");
+
+    await expect(
+      runManualPresidentialNomineeWrite({
+        options: options(),
+        rawPayload: payload(),
+        pool: {} as Pool,
+        deps: {
+          loadCycle: loadCycle({ party: null }),
+          loadCandidates: vi.fn().mockResolvedValue(candidates()),
+        },
+      })
+    ).rejects.toThrow("manual presidential nominee write requires a primary cycle with a party");
   });
 });

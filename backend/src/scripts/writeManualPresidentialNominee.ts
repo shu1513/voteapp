@@ -20,6 +20,18 @@ import {
 
 type Queryable = Pick<Pool, "query">;
 
+type PresidentialNomineeCyclePreflightRow = {
+  id: string;
+  election_year: number;
+  stage: string;
+  party: string | null;
+};
+
+type VerifiedPresidentialNomineePrimaryCycleRow = PresidentialNomineeCyclePreflightRow & {
+  stage: "primary";
+  party: string;
+};
+
 export type ManualPresidentialNomineeScriptOptions = {
   cycleId: string;
   electionYear: number;
@@ -42,6 +54,7 @@ export type ManualPresidentialNomineeWriteResult = {
 };
 
 type ManualPresidentialNomineeWriteDeps = {
+  loadCycle?: (db: Queryable, cycleId: string) => Promise<PresidentialNomineeCyclePreflightRow | null>;
   loadCandidates?: (
     db: Queryable,
     cycleId: string
@@ -171,6 +184,49 @@ function requireActiveCandidates(
   }
 }
 
+async function loadPresidentialNomineeCyclePreflight(
+  db: Queryable,
+  cycleId: string
+): Promise<PresidentialNomineeCyclePreflightRow | null> {
+  const result = await db.query<PresidentialNomineeCyclePreflightRow>(
+    `
+      SELECT id::text AS id,
+             election_year,
+             stage,
+             party
+      FROM public.presidential_cycles
+      WHERE id::text = $1
+      LIMIT 1
+    `,
+    [cycleId]
+  );
+  return result.rows[0] ?? null;
+}
+
+function assertNomineeCycleMatchesOptions(
+  cycle: PresidentialNomineeCyclePreflightRow | null,
+  options: ManualPresidentialNomineeScriptOptions
+): asserts cycle is VerifiedPresidentialNomineePrimaryCycleRow {
+  if (!cycle) {
+    throw new Error(`Presidential primary cycle not found for cycle_id=${options.cycleId}`);
+  }
+  if (cycle.stage !== "primary") {
+    throw new Error(`manual presidential nominee write requires a primary cycle; cycle stage is ${cycle.stage}`);
+  }
+  if (cycle.election_year !== options.electionYear) {
+    throw new Error(
+      `--election-year (${options.electionYear}) does not match presidential cycle election_year (${cycle.election_year})`
+    );
+  }
+  const cycleParty = cycle.party?.trim();
+  if (!cycleParty) {
+    throw new Error(`manual presidential nominee write requires a primary cycle with a party; cycle party is null`);
+  }
+  if (cycleParty !== options.party.trim()) {
+    throw new Error(`--party (${options.party}) does not match presidential cycle party (${cycle.party ?? "null"})`);
+  }
+}
+
 export async function runManualPresidentialNomineeWrite(input: {
   options: ManualPresidentialNomineeScriptOptions;
   rawPayload: unknown;
@@ -182,8 +238,11 @@ export async function runManualPresidentialNomineeWrite(input: {
     throw new Error(`Presidential nominee payload failed validation: ${parsed.reason}`);
   }
 
+  const loadCycle = input.deps?.loadCycle ?? loadPresidentialNomineeCyclePreflight;
   const loadCandidates = input.deps?.loadCandidates ?? loadActivePresidentialCycleCandidatesForNomineeResolution;
   const promoteNominee = input.deps?.promoteNominee ?? promotePresidentialNomineeFromResolution;
+  const cycle = await loadCycle(input.pool, input.options.cycleId);
+  assertNomineeCycleMatchesOptions(cycle, input.options);
   const candidates = await loadCandidates(input.pool, input.options.cycleId);
   const resolution = resolvePresidentialNomineeCandidate({
     payload: parsed.payload,
@@ -198,9 +257,9 @@ export async function runManualPresidentialNomineeWrite(input: {
       ? null
       : await promoteNominee({
           db: input.pool,
-          primaryCycleId: input.options.cycleId,
-          electionYear: input.options.electionYear,
-          party: input.options.party,
+          primaryCycleId: cycle.id,
+          electionYear: cycle.election_year,
+          party: cycle.party,
           resolution,
           confirmedAt: input.options.confirmedAt,
         });
@@ -208,9 +267,9 @@ export async function runManualPresidentialNomineeWrite(input: {
   return {
     type: "manual_presidential_nominee_write",
     dryRun: input.options.dryRun,
-    cycleId: input.options.cycleId,
-    electionYear: input.options.electionYear,
-    party: input.options.party,
+    cycleId: cycle.id,
+    electionYear: cycle.election_year,
+    party: cycle.party,
     candidateCount: candidates.length,
     resolution,
     promotion,
