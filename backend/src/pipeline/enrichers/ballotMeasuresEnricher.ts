@@ -49,6 +49,16 @@ function toReason(error: unknown): string {
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
 }
 
+function formatAiFailureWarning(electionId: string, reason: string, failureDebug?: Record<string, unknown>): string {
+  if (
+    failureDebug?.failure_kind === "tls_certificate_verification" &&
+    typeof failureDebug.suggested_operator_action === "string"
+  ) {
+    return `ballot-measures enricher skipped election_id=${electionId} due to official URL TLS/certificate verification issue; ${failureDebug.suggested_operator_action}`;
+  }
+  return `ballot-measures enricher skipped election_id=${electionId} due to AI failure: ${reason}`;
+}
+
 function parseSeedUrls(sources: unknown): string[] {
   if (!Array.isArray(sources)) {
     return [];
@@ -264,9 +274,7 @@ export async function runBallotMeasuresEnricher(options: EnricherOptions = {}): 
           );
 
           if (!aiResult.ok) {
-            console.warn(
-              `ballot-measures enricher skipped election_id=${electionId} due to AI failure: ${aiResult.reason}`
-            );
+            console.warn(formatAiFailureWarning(electionId, aiResult.reason, aiResult.failureDebug));
             // Keep unacked so reclaim can retry later.
             continue;
           }

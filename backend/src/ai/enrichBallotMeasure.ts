@@ -8,7 +8,10 @@ import {
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 import type { AiProvider } from "./types.js";
 import { buildBallotMeasuresPrompt } from "./providers/ballotMeasuresPrompt.js";
-import { verifyHttpUrlReachability } from "./urlReachability.js";
+import {
+  isTlsCertificateReachabilityFailure,
+  verifyHttpUrlReachability,
+} from "./urlReachability.js";
 
 type BallotMeasureErrorCode = ResearchErrorCode | "SCHEMA_MISMATCH";
 
@@ -229,6 +232,20 @@ export async function validateBallotMeasureAiPayload(
     allowStatusCodes: [403],
   });
   if (!officialVerification.ok) {
+    if (isTlsCertificateReachabilityFailure(officialVerification.reason)) {
+      return {
+        ok: false,
+        reason: "official_measure_url could not be verified due to TLS/certificate issue",
+        blockedUrls: [],
+        failureDebug: {
+          failure_kind: "tls_certificate_verification",
+          official_measure_url: parsed.officialMeasureUrl,
+          official_measure_url_verification_reason: officialVerification.reason,
+          suggested_operator_action:
+            "Check whether the official site has a certificate problem. If this is a local trust-chain issue, configure NODE_EXTRA_CA_CERTS or repair the backend CA bundle, then retry.",
+        },
+      };
+    }
     return {
       ok: false,
       reason: `official_measure_url is not reachable: ${officialVerification.reason}`,

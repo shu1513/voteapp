@@ -1,6 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { callResearchProviderMock, trimDebugTextMock, verifyHttpUrlReachabilityMock } = vi.hoisted(() => ({
+const {
+  callResearchProviderMock,
+  trimDebugTextMock,
+  verifyHttpUrlReachabilityMock,
+} = vi.hoisted(() => ({
   callResearchProviderMock: vi.fn(),
   trimDebugTextMock: vi.fn((input: string) => input),
   verifyHttpUrlReachabilityMock: vi.fn(async (url: string) => ({
@@ -15,7 +19,8 @@ vi.mock("../../src/ai/researchProviderClient.ts", () => ({
   trimDebugText: trimDebugTextMock,
 }));
 
-vi.mock("../../src/ai/urlReachability.ts", () => ({
+vi.mock("../../src/ai/urlReachability.ts", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../../src/ai/urlReachability.ts")>()),
   verifyHttpUrlReachability: verifyHttpUrlReachabilityMock,
 }));
 
@@ -58,6 +63,15 @@ describe("enrichBallotMeasure shared provider wiring", () => {
 
     expect(callResearchProviderMock).not.toHaveBeenCalled();
     expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(3);
+    expect(verifyHttpUrlReachabilityMock.mock.calls[0]?.[0]).toBe(
+      "https://example.org/measure-er.pdf"
+    );
+    expect(verifyHttpUrlReachabilityMock.mock.calls[1]?.[0]).toBe(
+      "https://example.org/measure-er.pdf"
+    );
+    expect(verifyHttpUrlReachabilityMock.mock.calls[2]?.[0]).toBe(
+      "http://example.org/county-voter-guide"
+    );
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.officialMeasureUrl).toBe("https://example.org/measure-er.pdf");
@@ -164,6 +178,47 @@ describe("enrichBallotMeasure shared provider wiring", () => {
       expect(result.failureDebug).toMatchObject({
         official_measure_url: "https://example.org/measure-er.pdf",
         official_measure_url_verification_reason: "citation URL fetch timed out",
+      });
+    }
+  });
+
+  it("reports TLS certificate failures on official_measure_url as operator repair issues", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) =>
+      url.includes("measure-er.pdf")
+        ? {
+            ok: false,
+            reason: "citation URL fetch failed: fetch failed: UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+          }
+        : { ok: true, finalUrl: url, status: 200 }
+    );
+
+    const { validateBallotMeasureAiPayload } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await validateBallotMeasureAiPayload(
+      {
+        official_measure_url: "https://example.org/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
+        what_yes_means: "Approves a county sales tax increase for health services.",
+        what_no_means: "Keeps current tax rates and funding levels.",
+        research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+        sources: ["https://example.org/county-voter-guide"],
+      },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe(
+        "official_measure_url could not be verified due to TLS/certificate issue"
+      );
+      expect(result.blockedUrls).toEqual([]);
+      expect(result.failureDebug).toMatchObject({
+        failure_kind: "tls_certificate_verification",
+        official_measure_url: "https://example.org/measure-er.pdf",
+        official_measure_url_verification_reason:
+          "citation URL fetch failed: fetch failed: UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+        suggested_operator_action:
+          "Check whether the official site has a certificate problem. If this is a local trust-chain issue, configure NODE_EXTRA_CA_CERTS or repair the backend CA bundle, then retry.",
       });
     }
   });
@@ -470,6 +525,66 @@ describe("enrichBallotMeasure shared provider wiring", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.reason).toContain("official_measure_url returned HTTP 403");
+    }
+  });
+
+  it("returns operator repair guidance when mocked AI finds an official URL with TLS verification failure", async () => {
+    callResearchProviderMock.mockResolvedValue({
+      ok: true,
+      parsed: {
+        official_measure_url: "https://elections.example.gov/measure-er.pdf",
+        summary: "County measure to increase sales tax for public health services.",
+        what_yes_means: "Approves a county sales tax increase for health services.",
+        what_no_means: "Keeps current tax rates and funding levels.",
+        research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+        sources: ["https://elections.example.gov/measure-er.pdf"],
+      },
+      rawText: "{\"official_measure_url\":\"https://elections.example.gov/measure-er.pdf\"}",
+      debugMeta: {},
+    });
+    verifyHttpUrlReachabilityMock.mockResolvedValue({
+      ok: false,
+      reason: "citation URL fetch failed: fetch failed: UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+    });
+
+    const { enrichBallotMeasure } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await enrichBallotMeasure(
+      {
+        districtName: "Los Angeles County, California",
+        districtType: "county",
+        state: "CA",
+        electionDate: "2026-06-02",
+        officialBallotTitle: "Measure ER",
+        seedUrls: [],
+        allowedResearchAreaSlugs: ["healthcare_affordability"],
+      },
+      {
+        timeoutMs: 1000,
+        openAiApiKey: "test-openai-key",
+      },
+      [{ provider: "openai", model: "gpt-5.4-mini" }]
+    );
+
+    expect(callResearchProviderMock).toHaveBeenCalledTimes(2);
+    expect(callResearchProviderMock.mock.calls[1]?.[1]).toContain(
+      "Fix this validation issue: official_measure_url could not be verified due to TLS/certificate issue"
+    );
+    expect(callResearchProviderMock.mock.calls[1]?.[1]).not.toContain(
+      "Do not use or cite this URL: https://elections.example.gov/measure-er.pdf"
+    );
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe(
+        "official_measure_url could not be verified due to TLS/certificate issue"
+      );
+      expect(result.failureDebug).toMatchObject({
+        failure_kind: "tls_certificate_verification",
+        official_measure_url: "https://elections.example.gov/measure-er.pdf",
+        official_measure_url_verification_reason:
+          "citation URL fetch failed: fetch failed: UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+        suggested_operator_action:
+          "Check whether the official site has a certificate problem. If this is a local trust-chain issue, configure NODE_EXTRA_CA_CERTS or repair the backend CA bundle, then retry.",
+      });
     }
   });
 });
