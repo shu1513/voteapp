@@ -204,4 +204,29 @@ describe("runBallotMeasuresEnricher", () => {
       "1-0"
     );
   });
+
+  it("logs operator guidance when ballot-measure official URL fails TLS verification", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    mocks.enrichBallotMeasureMock.mockResolvedValue({
+      ok: false,
+      retryable: false,
+      errorCode: "SCHEMA_MISMATCH",
+      reason: "official_measure_url could not be verified due to TLS/certificate issue",
+      failureDebug: {
+        official_measure_url: "https://elections.example.gov/measure.pdf",
+        official_measure_url_verification_reason:
+          "citation URL fetch failed: fetch failed: UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+        suggested_operator_action:
+          "Configure NODE_EXTRA_CA_CERTS or repair backend CA bundle, then retry.",
+      },
+    });
+
+    await runBallotMeasuresEnricher({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      "ballot-measures enricher skipped election_id=election-1 due to official URL TLS/certificate verification issue; Configure NODE_EXTRA_CA_CERTS or repair backend CA bundle, then retry."
+    );
+    expect(mocks.clientQueryMock).not.toHaveBeenCalled();
+    expect(mocks.redisXAckMock).not.toHaveBeenCalled();
+  });
 });
