@@ -7,11 +7,13 @@ import {
   STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
   STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
 } from "../config/electionsPipeline.js";
+import { resolveCandidateResearchMode } from "../ai/candidateResearchMode.js";
 import { parseCandidateRosterPayload } from "../contracts/candidateRosterPayloadContract.js";
 
 type ElectionPreflightRow = {
   id: string;
   official_ballot_title: string;
+  district_type: string;
   race_type: string;
 };
 
@@ -70,11 +72,14 @@ function payloadElectionId(payload: unknown): string | null {
 async function loadElectionPreflight(pool: Pool, electionId: string): Promise<ElectionPreflightRow | null> {
   const result = await pool.query<ElectionPreflightRow>(
     `
-      SELECT id::text AS id,
-             official_ballot_title,
-             race_type
-      FROM public.elections
-      WHERE id::text = $1
+      SELECT e.id::text AS id,
+             e.official_ballot_title,
+             d.district_type,
+             e.race_type
+      FROM public.elections AS e
+      JOIN public.districts AS d
+        ON d.id = e.district_id
+      WHERE e.id::text = $1
       LIMIT 1
     `,
     [electionId]
@@ -111,12 +116,34 @@ async function main(): Promise<void> {
     throw new Error(`Missing --election-id and payload.election_id.\n${usage()}`);
   }
 
-  const parsed = parseCandidateRosterPayload(rawPayload);
+  const dryRun = hasFlag("--dry-run");
+  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
+  let redis: ReturnType<typeof createClient> | null = null;
+
+  try {
+    const election = await loadElectionPreflight(pool, electionId);
+    if (!election) {
+      throw new Error(`Election not found for election_id=${electionId}`);
+    }
+    if (election.race_type !== "office") {
+      throw new Error(
+        `Candidate roster injection requires an office election; election_id=${electionId} has race_type=${election.race_type}`
+      );
+    }
+
+    const researchMode = resolveCandidateResearchMode({
+      districtType: election.district_type,
+      officialBallotTitle: election.official_ballot_title,
+    });
+    const includeFecIds = researchMode !== "state_level";
+    const parsed = parseCandidateRosterPayload(rawPayload, {
+      allowFecIds: includeFecIds,
+      requireFecIds: includeFecIds,
+    });
   if (!parsed.ok) {
     throw new Error(`Candidate roster payload failed validation: ${parsed.reason}`);
   }
 
-  const dryRun = hasFlag("--dry-run");
   const ingestKey = `candidate_roster:${electionId}`;
   const runId = readFlag("--run-id") ?? `manual_candidate_roster_${new Date().toISOString()}`;
   const stagedPayload = {
@@ -132,6 +159,8 @@ async function main(): Promise<void> {
           ingestKey,
           runId,
           electionId,
+          researchMode,
+          requiresFecIds: includeFecIds,
           candidateCount: parsed.payload.candidates.length,
         },
         null,
@@ -141,19 +170,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
-  const redis = createClient({ url: requireEnv("REDIS_URL") });
-
-  try {
-    const election = await loadElectionPreflight(pool, electionId);
-    if (!election) {
-      throw new Error(`Election not found for election_id=${electionId}`);
-    }
-    if (election.race_type !== "office") {
-      throw new Error(
-        `Candidate roster injection requires an office election; election_id=${electionId} has race_type=${election.race_type}`
-      );
-    }
+    redis = createClient({ url: requireEnv("REDIS_URL") });
 
     await redis.connect();
 
@@ -234,6 +251,8 @@ async function main(): Promise<void> {
           redisMessageId,
           electionId,
           officialBallotTitle: election.official_ballot_title,
+          researchMode,
+          requiresFecIds: includeFecIds,
           candidateCount: parsed.payload.candidates.length,
           next: ["npm run candidates:roster:enrich -- --once"],
         },
@@ -242,7 +261,9 @@ async function main(): Promise<void> {
       )
     );
   } finally {
-    await redis.quit().catch(() => undefined);
+    if (redis) {
+      await redis.quit().catch(() => undefined);
+    }
     await pool.end();
   }
 }
