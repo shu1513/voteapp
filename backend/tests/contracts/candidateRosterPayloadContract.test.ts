@@ -38,6 +38,10 @@ describe("parseCandidateRosterPayload", () => {
     });
 
     expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toBe("payload.candidates[0]: row.sources must contain at least one valid URL");
   });
 
   it("preserves duplicate candidate display names within one payload", () => {
@@ -89,6 +93,10 @@ describe("parseCandidateRosterPayload", () => {
     );
 
     expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toBe("payload.candidates[0]: row.fec_ids is required for this election context");
   });
 
   it("accepts fec_ids for federal roster mode", () => {
@@ -127,6 +135,10 @@ describe("parseCandidateRosterPayload", () => {
     );
 
     expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toBe("payload.candidates[0]: row.fec_ids is not allowed for this election context");
   });
 
   it("accepts optional state_filing_ids when present", () => {

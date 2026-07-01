@@ -555,16 +555,17 @@ async function main(): Promise<void> {
       throw new Error(`Candidate profile payload failed validation: ${validatedProfile.reason}`);
     }
 
-    const rosterHints = await loadRosterIdentityHints({
-      pool,
-      electionId,
-      displayName: validatedProfile.profile.display_name,
-      rosterIndex,
-      allowFecIds: includeFecIds,
-      requireFecIds: includeFecIds,
-    });
+    let rosterHints: RosterIdentityHints | null;
     let profile: CandidateProfilePayload;
     try {
+      rosterHints = await loadRosterIdentityHints({
+        pool,
+        electionId,
+        displayName: validatedProfile.profile.display_name,
+        rosterIndex,
+        allowFecIds: includeFecIds,
+        requireFecIds: includeFecIds,
+      });
       profile = applyRegularElectionProfileContext({
         profile: validatedProfile.profile,
         researchMode,

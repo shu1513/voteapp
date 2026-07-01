@@ -108,20 +108,20 @@ function rosterIngestKeyForElection(electionId: string): string {
 function extractRosterCandidates(
   payload: unknown,
   options: { allowFecIds: boolean; requireFecIds: boolean }
-): CandidateRosterFanoutEntry[] | null {
+): { ok: true; candidates: CandidateRosterFanoutEntry[] } | { ok: false; reason: string } {
   const parsed = parseCandidateRosterPayload(payload, options);
   if (!parsed.ok) {
-    return null;
+    return { ok: false, reason: parsed.reason };
   }
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
-    return null;
+    return { ok: false, reason: "payload must be an object" };
   }
   const rawCandidates = (payload as Record<string, unknown>).candidates;
   if (!Array.isArray(rawCandidates)) {
-    return null;
+    return { ok: false, reason: "payload.candidates must be array" };
   }
   if (rawCandidates.length !== parsed.payload.candidates.length) {
-    return null;
+    return { ok: false, reason: "payload.candidates length changed during parsing" };
   }
 
   const candidates: CandidateRosterFanoutEntry[] = [];
@@ -151,7 +151,7 @@ function extractRosterCandidates(
       ...(skipPerElectionNameDedupe !== undefined ? { skip_per_election_name_dedupe: skipPerElectionNameDedupe } : {}),
     });
   }
-  return candidates;
+  return { ok: true, candidates };
 }
 
 function requireEnv(name: string): string {
@@ -248,13 +248,14 @@ async function main(): Promise<void> {
       officialBallotTitle: election.official_ballot_title,
     });
     const includeFecIds = researchMode !== "state_level";
-    const candidates = extractRosterCandidates(stagingRow.payload, {
+    const extracted = extractRosterCandidates(stagingRow.payload, {
       allowFecIds: includeFecIds,
       requireFecIds: includeFecIds,
     });
-    if (!candidates) {
-      throw new Error(`Invalid candidate roster staging payload for ingest_key=${ingestKey}`);
+    if (!extracted.ok) {
+      throw new Error(`Invalid candidate roster staging payload for ingest_key=${ingestKey}: ${extracted.reason}`);
     }
+    const candidates = extracted.candidates;
 
     const runId = readFlag("--run-id") ?? stagingRow.run_id ?? `manual_candidate_roster_fanout_${new Date().toISOString()}`;
     const electionSeedUrls = parseSeedUrls(election.sources);

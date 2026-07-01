@@ -140,35 +140,35 @@ async function main(): Promise<void> {
       allowFecIds: includeFecIds,
       requireFecIds: includeFecIds,
     });
-  if (!parsed.ok) {
-    throw new Error(`Candidate roster payload failed validation: ${parsed.reason}`);
-  }
+    if (!parsed.ok) {
+      throw new Error(`Candidate roster payload failed validation: ${parsed.reason}`);
+    }
 
-  const ingestKey = `candidate_roster:${electionId}`;
-  const runId = readFlag("--run-id") ?? `manual_candidate_roster_${new Date().toISOString()}`;
-  const stagedPayload = {
-    election_id: electionId,
-    candidates: parsed.payload.candidates,
-  };
+    const ingestKey = `candidate_roster:${electionId}`;
+    const runId = readFlag("--run-id") ?? `manual_candidate_roster_${new Date().toISOString()}`;
+    const stagedPayload = {
+      election_id: electionId,
+      candidates: parsed.payload.candidates,
+    };
 
-  if (dryRun) {
-    console.log(
-      JSON.stringify(
-        {
-          dryRun: true,
-          ingestKey,
-          runId,
-          electionId,
-          researchMode,
-          requiresFecIds: includeFecIds,
-          candidateCount: parsed.payload.candidates.length,
-        },
-        null,
-        2
-      )
-    );
-    return;
-  }
+    if (dryRun) {
+      console.log(
+        JSON.stringify(
+          {
+            dryRun: true,
+            ingestKey,
+            runId,
+            electionId,
+            researchMode,
+            requiresFecIds: includeFecIds,
+            candidateCount: parsed.payload.candidates.length,
+          },
+          null,
+          2
+        )
+      );
+      return;
+    }
 
     redis = createClient({ url: requireEnv("REDIS_URL") });
 

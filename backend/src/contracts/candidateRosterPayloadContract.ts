@@ -68,25 +68,28 @@ function normalizeOptionalStringArray(value: unknown): string[] | null | undefin
   return normalized;
 }
 
-function parseEntry(value: unknown, options: CandidateRosterParseOptions): CandidateRosterEntry | null {
+function parseEntry(
+  value: unknown,
+  options: CandidateRosterParseOptions
+): { ok: true; entry: CandidateRosterEntry } | { ok: false; reason: string } {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    return null;
+    return { ok: false, reason: "row must be an object" };
   }
 
   const input = value as Record<string, unknown>;
   if (!isNonEmptyString(input.display_name)) {
-    return null;
+    return { ok: false, reason: "row.display_name must be a non-empty string" };
   }
 
   const sources = normalizeSources(input.sources);
   if (!sources) {
-    return null;
+    return { ok: false, reason: "row.sources must contain at least one valid URL" };
   }
 
   let party: string | undefined;
   if (input.party !== undefined && input.party !== null) {
     if (!isNonEmptyString(input.party)) {
-      return null;
+      return { ok: false, reason: "row.party must be a non-empty string when provided" };
     }
     party = input.party.trim();
   }
@@ -94,7 +97,7 @@ function parseEntry(value: unknown, options: CandidateRosterParseOptions): Candi
   let isIncumbent: boolean | undefined;
   if (input.is_incumbent !== undefined && input.is_incumbent !== null) {
     if (typeof input.is_incumbent !== "boolean") {
-      return null;
+      return { ok: false, reason: "row.is_incumbent must be a boolean when provided" };
     }
     isIncumbent = input.is_incumbent;
   }
@@ -102,30 +105,33 @@ function parseEntry(value: unknown, options: CandidateRosterParseOptions): Candi
   const allowFecIds = options.allowFecIds !== false;
   const requireFecIds = options.requireFecIds === true;
   if (!allowFecIds && input.fec_ids !== undefined && input.fec_ids !== null) {
-    return null;
+    return { ok: false, reason: "row.fec_ids is not allowed for this election context" };
   }
   const fecIds = allowFecIds ? normalizeOptionalStringArray(input.fec_ids) : undefined;
   if (allowFecIds && fecIds === null) {
-    return null;
+    return { ok: false, reason: "row.fec_ids must be an array of non-empty strings when provided" };
   }
   const normalizedFecIds = fecIds ?? undefined;
   if (requireFecIds && (!normalizedFecIds || normalizedFecIds.length === 0)) {
-    return null;
+    return { ok: false, reason: "row.fec_ids is required for this election context" };
   }
 
   const stateFilingIds = normalizeOptionalStringArray(input.state_filing_ids);
   if (stateFilingIds === null) {
-    return null;
+    return { ok: false, reason: "row.state_filing_ids must be an array of non-empty strings when provided" };
   }
   const normalizedStateFilingIds = stateFilingIds ?? undefined;
 
   return {
-    display_name: input.display_name.trim(),
-    ...(party ? { party } : {}),
-    ...(isIncumbent !== undefined ? { is_incumbent: isIncumbent } : {}),
-    ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),
-    ...(normalizedStateFilingIds !== undefined ? { state_filing_ids: normalizedStateFilingIds } : {}),
-    sources,
+    ok: true,
+    entry: {
+      display_name: input.display_name.trim(),
+      ...(party ? { party } : {}),
+      ...(isIncumbent !== undefined ? { is_incumbent: isIncumbent } : {}),
+      ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),
+      ...(normalizedStateFilingIds !== undefined ? { state_filing_ids: normalizedStateFilingIds } : {}),
+      sources,
+    },
   };
 }
 
@@ -145,12 +151,12 @@ export function parseCandidateRosterPayload(
   }
 
   const candidates: CandidateRosterEntry[] = [];
-  for (const row of input.candidates) {
+  for (const [index, row] of input.candidates.entries()) {
     const parsed = parseEntry(row, options);
-    if (!parsed) {
-      return { ok: false, reason: "payload.candidates contains invalid row" };
+    if (!parsed.ok) {
+      return { ok: false, reason: `payload.candidates[${index}]: ${parsed.reason}` };
     }
-    candidates.push(parsed);
+    candidates.push(parsed.entry);
   }
 
   return { ok: true, payload: { candidates } };
