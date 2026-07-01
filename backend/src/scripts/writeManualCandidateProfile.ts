@@ -4,8 +4,11 @@ import { Pool, type PoolClient } from "pg";
 import { createClient } from "redis";
 
 import { resolveIncludePartyForCandidateContest } from "../ai/candidatePartisanship.js";
+import { resolveCandidateResearchMode } from "../ai/candidateResearchMode.js";
 import { validateCandidateProfileAiPayload } from "../ai/enrichCandidateProfile.js";
 import { loadProjectEnv } from "../config/env.js";
+import { STAGING_ITEM_TYPE_CANDIDATE_ROSTER } from "../config/electionsPipeline.js";
+import { parseCandidateRosterPayload } from "../contracts/candidateRosterPayloadContract.js";
 import type { CandidateProfilePayload } from "../contracts/candidateProfilePayloadContract.js";
 import { enqueueCandidateRecordDrafts } from "../pipeline/candidates/candidateRecordDraftEmitter.js";
 import {
@@ -42,6 +45,15 @@ type ElectionContextRow = {
   office_canonical_name: string | null;
 };
 
+type RosterIdentityHints = {
+  rosterIndex: number;
+  displayName: string;
+  party?: string;
+  isIncumbent?: boolean;
+  fecIds: string[];
+  stateFilingIds: string[];
+};
+
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
   return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
@@ -50,7 +62,7 @@ function toReason(error: unknown): string {
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
+    "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--roster-index n] [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
     "",
     "Payload must match CandidateProfilePayload. Live runs find/create a candidate and link it to the election.",
   ].join("\n");
@@ -93,6 +105,17 @@ function readBooleanFlag(name: string): boolean | undefined {
     return false;
   }
   throw new Error(`${name} must be true or false.\n${usage()}`);
+}
+
+function readNonNegativeIntegerFlag(name: string): number | null {
+  const value = readFlag(name);
+  if (value === null) {
+    return null;
+  }
+  if (!/^(0|[1-9]\d*)$/.test(value)) {
+    throw new Error(`${name} must be a non-negative integer.\n${usage()}`);
+  }
+  return Number(value);
 }
 
 function readRepeatedFlag(name: string): string[] {
@@ -172,6 +195,115 @@ async function loadExistingCandidateElectionIncumbency(
     [input.candidateId, input.electionId]
   );
   return result.rows[0]?.is_incumbent ?? null;
+}
+
+function normalizeStringArray(values: readonly string[] | undefined): string[] {
+  return [...new Set((values ?? []).map((value) => value.trim()).filter((value) => value.length > 0))];
+}
+
+async function loadRosterIdentityHints(input: {
+  pool: Pool;
+  electionId: string;
+  displayName: string;
+  rosterIndex: number | null;
+  allowFecIds: boolean;
+  requireFecIds: boolean;
+}): Promise<RosterIdentityHints | null> {
+  const result = await input.pool.query<{ payload: unknown }>(
+    `
+      SELECT payload
+      FROM public.staging_items
+      WHERE ingest_key = $1
+        AND item_type = $2
+        AND status IN ('validated', 'written')
+      LIMIT 1
+    `,
+    [`candidate_roster:${input.electionId}`, STAGING_ITEM_TYPE_CANDIDATE_ROSTER]
+  );
+  const row = result.rows[0];
+  if (!row) {
+    return null;
+  }
+
+  const parsed = parseCandidateRosterPayload(row.payload, {
+    allowFecIds: input.allowFecIds,
+    requireFecIds: input.requireFecIds,
+  });
+  if (!parsed.ok) {
+    throw new Error(`Candidate roster staging payload failed validation for this election context: ${parsed.reason}`);
+  }
+  const rawCandidates = (row.payload as { candidates: unknown[] }).candidates;
+
+  const candidates = parsed.payload.candidates.map((candidate, index) => {
+    const raw = rawCandidates[index];
+    const rawObject = typeof raw === "object" && raw !== null && !Array.isArray(raw)
+      ? (raw as Record<string, unknown>)
+      : {};
+    const rosterIndex =
+      Number.isInteger(rawObject.roster_index) && Number(rawObject.roster_index) >= 0
+        ? Number(rawObject.roster_index)
+        : index;
+    return {
+      rosterIndex,
+      displayName: candidate.display_name,
+      fecIds: normalizeStringArray(candidate.fec_ids),
+      stateFilingIds: normalizeStringArray(candidate.state_filing_ids),
+      ...(candidate.party ? { party: candidate.party } : {}),
+      ...(candidate.is_incumbent !== undefined ? { isIncumbent: candidate.is_incumbent } : {}),
+    } satisfies RosterIdentityHints;
+  });
+
+  if (input.rosterIndex !== null) {
+    const match = candidates.find((candidate) => candidate.rosterIndex === input.rosterIndex);
+    if (!match) {
+      throw new Error(`No candidate roster row found for roster_index=${input.rosterIndex}`);
+    }
+    if (match.displayName !== input.displayName) {
+      throw new Error(
+        `Profile display_name (${input.displayName}) does not match roster_index=${input.rosterIndex} display_name (${match.displayName}).`
+      );
+    }
+    return match;
+  }
+
+  const matches = candidates.filter((candidate) => candidate.displayName === input.displayName);
+  if (matches.length === 0) {
+    return null;
+  }
+  if (matches.length > 1) {
+    throw new Error(
+      `Multiple candidate roster rows match display_name=${input.displayName}; rerun with --roster-index to select the exact roster draft context.`
+    );
+  }
+  return matches[0]!;
+}
+
+export function applyRegularElectionProfileContext(input: {
+  profile: CandidateProfilePayload;
+  researchMode: ReturnType<typeof resolveCandidateResearchMode>;
+  rosterHints: RosterIdentityHints | null;
+}): CandidateProfilePayload {
+  const { party: _party, ...withoutParty } = input.profile;
+  if (input.researchMode !== "state_level") {
+    const fecIds = normalizeStringArray(input.rosterHints?.fecIds);
+    if (fecIds.length === 0) {
+      throw new Error("candidate_fec_ids is required in roster context for federal profile import");
+    }
+    const { date_of_birth: _dateOfBirth, state_filing_ids: _stateFilingIds, ...federalProfile } = withoutParty;
+    return {
+      ...federalProfile,
+      fec_ids: fecIds,
+    };
+  }
+
+  const stateFilingIds = normalizeStringArray(input.rosterHints?.stateFilingIds);
+  const { state_filing_ids: _stateFilingIds, ...stateProfile } = withoutParty;
+  return stateFilingIds.length > 0
+    ? {
+        ...stateProfile,
+        state_filing_ids: stateFilingIds,
+      }
+    : stateProfile;
 }
 
 function requireEnv(name: string): string {
@@ -366,50 +498,12 @@ async function main(): Promise<void> {
 
   const rawPayload = await readJsonFile(file);
   const fallbackManualKey = `manual:candidate-profile:${electionId}:payload`;
-  const validatedProfile = await validateCandidateProfileAiPayload(
-    rawPayload,
-    readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000)
-  );
-  if (!validatedProfile.ok) {
-    const gaps = buildProfileValidationGaps({
-      reason: validatedProfile.reason,
-      failedCitationUrls: validatedProfile.failedCitationUrls,
-    });
-    await writeProfileRepairReport({
-      reportFile: repairReportFile,
-      manualKey: fallbackManualKey,
-      electionId,
-      file,
-      displayName: null,
-      gaps,
-    });
-    throw new Error(`Candidate profile payload failed validation: ${validatedProfile.reason}`);
-  }
-
-  const profile = validatedProfile.profile;
-  if (!hasFlag("--allow-no-hard-identifier") && !hasAtLeastOneHardIdentifier(profile)) {
-    const gaps = buildProfileValidationGaps({
-      reason: "Candidate profile has no hard identifier.",
-    });
-    await writeProfileRepairReport({
-      reportFile: repairReportFile,
-      manualKey: fallbackManualKey,
-      electionId,
-      file,
-      displayName: profile.display_name,
-      gaps,
-    });
-    throw new Error(
-      "Candidate profile has no hard identifier. Add official_website_url, FEC/state filing ID, DOB, Twitter, LinkedIn, or pass --allow-no-hard-identifier deliberately."
-    );
-  }
-
   const dryRun = hasFlag("--dry-run");
   const emitRecordDraft = hasFlag("--emit-record-draft");
   const emitFinanceSync = hasFlag("--emit-finance-sync");
   const runId = readFlag("--run-id") ?? `manual_candidate_profile_${new Date().toISOString()}`;
   const isIncumbent = readBooleanFlag("--is-incumbent");
-  const manualKey = `manual:candidate-profile:${electionId}:${profile.display_name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+  const rosterIndex = readNonNegativeIntegerFlag("--roster-index");
   const databaseUrl = requireEnv("DATABASE_URL");
   const redisUrl = emitRecordDraft && !dryRun ? requireEnv("REDIS_URL") : null;
 
@@ -424,14 +518,102 @@ async function main(): Promise<void> {
     if (election.race_type !== "office") {
       throw new Error(`Candidate profile write requires an office election; election_id=${electionId} has race_type=${election.race_type}`);
     }
+    const researchMode = resolveCandidateResearchMode({
+      districtType: election.district_type,
+      officialBallotTitle: election.official_ballot_title,
+    });
+    const includeFecIds = researchMode !== "state_level";
     const includeParty = resolveIncludePartyForCandidateContest({
       districtType: election.district_type,
       state: election.state,
       officialBallotTitle: election.official_ballot_title,
       electionIsPartisan: election.is_partisan,
     });
+    const validatedProfile = await validateCandidateProfileAiPayload(
+      rawPayload,
+      readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
+      { allowFecIds: false, requireFecIds: false }
+    );
+    if (!validatedProfile.ok) {
+      const gaps = buildProfileValidationGaps({
+        reason: validatedProfile.reason,
+        failedCitationUrls: validatedProfile.failedCitationUrls,
+      });
+      await writeProfileRepairReport({
+        reportFile: repairReportFile,
+        manualKey: fallbackManualKey,
+        electionId,
+        file,
+        displayName: null,
+        gaps,
+      });
+      throw new Error(`Candidate profile payload failed validation: ${validatedProfile.reason}`);
+    }
+
+    let rosterHints: RosterIdentityHints | null;
+    let profile: CandidateProfilePayload;
+    try {
+      rosterHints = await loadRosterIdentityHints({
+        pool,
+        electionId,
+        displayName: validatedProfile.profile.display_name,
+        rosterIndex,
+        allowFecIds: includeFecIds,
+        requireFecIds: includeFecIds,
+      });
+      profile = applyRegularElectionProfileContext({
+        profile: validatedProfile.profile,
+        researchMode,
+        rosterHints,
+      });
+    } catch (error) {
+      const reason = toReason(error);
+      await writeProfileRepairReport({
+        reportFile: repairReportFile,
+        manualKey: fallbackManualKey,
+        electionId,
+        file,
+        displayName: validatedProfile.profile.display_name,
+        gaps: [{
+          id: "candidate_profile.roster_identity",
+          stage: "candidate_profile",
+          objectType: "candidate_profile",
+          outcome: "needs_repair",
+          failureKind: "schema",
+          reason,
+          promptFile: "src/ai/providers/candidateRosterPrompt.ts",
+          focusedResearchPass:
+            "Repair the candidate roster payload for this election so it carries the same hard identifier context the regular app profile flow requires, then rerun the manual profile writer.",
+        }],
+      });
+      throw error;
+    }
+
+    const manualKey = `manual:candidate-profile:${electionId}:${profile.display_name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+    if (!hasFlag("--allow-no-hard-identifier") && !hasAtLeastOneHardIdentifier(profile)) {
+      const gaps = buildProfileValidationGaps({
+        reason: "Candidate profile has no hard identifier.",
+      });
+      await writeProfileRepairReport({
+        reportFile: repairReportFile,
+        manualKey,
+        electionId,
+        file,
+        displayName: profile.display_name,
+        gaps,
+      });
+      throw new Error(
+        "Candidate profile has no hard identifier. Add official_website_url, roster FEC/state filing ID, DOB, Twitter, LinkedIn, or pass --allow-no-hard-identifier deliberately."
+      );
+    }
+
+    const rosterParty = includeParty ? rosterHints?.party ?? validatedProfile.profile.party : undefined;
+    const effectiveInputIncumbency = isIncumbent ?? rosterHints?.isIncumbent;
     const qualityGaps = applyConfirmedGaps(
-      buildCandidateProfileQualityGaps({ profile, includeParty }),
+      buildCandidateProfileQualityGaps({
+        profile: rosterParty ? { ...profile, party: rosterParty } : profile,
+        includeParty,
+      }),
       confirmedGapIds
     );
     const blockingQualityGaps = qualityGaps.filter((gap) => gap.outcome === "needs_repair");
@@ -467,6 +649,15 @@ async function main(): Promise<void> {
             raceType: election.race_type,
             districtType: election.district_type,
             officialBallotTitle: election.official_ballot_title,
+            researchMode,
+            rosterIdentity: {
+              matched: Boolean(rosterHints),
+              rosterIndex: rosterHints?.rosterIndex ?? null,
+              fecIds: rosterHints?.fecIds ?? [],
+              stateFilingIds: rosterHints?.stateFilingIds ?? [],
+              party: rosterHints?.party ?? null,
+              isIncumbent: rosterHints?.isIncumbent ?? null,
+            },
             financeSync: {
               wouldEmit: emitFinanceSync,
               officeScope: election.office_scope,
@@ -502,7 +693,7 @@ async function main(): Promise<void> {
         client,
         profile,
         state: election.state,
-        rosterParty: profile.party,
+        rosterParty,
         includeParty,
       });
       candidateId = candidateResult.candidateId;
@@ -511,7 +702,7 @@ async function main(): Promise<void> {
         candidateId,
         electionId,
       });
-      effectiveIncumbency = isIncumbent ?? existingIncumbency ?? false;
+      effectiveIncumbency = effectiveInputIncumbency ?? existingIncumbency ?? false;
 
       const linkResult = await upsertCandidateElection({
         client,
@@ -542,7 +733,7 @@ async function main(): Promise<void> {
           context: buildLinkedElectionFinanceContext({
             election,
             includeParty,
-            profileParty: profile.party,
+            profileParty: rosterParty,
             isIncumbent: effectiveIncumbency,
           }),
           candidateId,

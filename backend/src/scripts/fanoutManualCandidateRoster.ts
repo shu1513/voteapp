@@ -1,6 +1,7 @@
 import { Pool } from "pg";
 import { createClient } from "redis";
 
+import { resolveCandidateResearchMode } from "../ai/candidateResearchMode.js";
 import { loadProjectEnv } from "../config/env.js";
 import { STAGING_ITEM_TYPE_CANDIDATE_ROSTER } from "../config/electionsPipeline.js";
 import { parseCandidateRosterPayload, type CandidateRosterEntry } from "../contracts/candidateRosterPayloadContract.js";
@@ -10,6 +11,8 @@ type ElectionRow = {
   id: string;
   sources: unknown;
   race_type: string;
+  district_type: string;
+  official_ballot_title: string;
 };
 
 type CandidateRosterStagingRow = {
@@ -102,21 +105,15 @@ function rosterIngestKeyForElection(electionId: string): string {
   return `candidate_roster:${electionId}`;
 }
 
-function extractRosterCandidates(payload: unknown): CandidateRosterFanoutEntry[] | null {
-  const parsed = parseCandidateRosterPayload(payload);
+function extractRosterCandidates(
+  payload: unknown,
+  options: { allowFecIds: boolean; requireFecIds: boolean }
+): { ok: true; candidates: CandidateRosterFanoutEntry[] } | { ok: false; reason: string } {
+  const parsed = parseCandidateRosterPayload(payload, options);
   if (!parsed.ok) {
-    return null;
+    return { ok: false, reason: parsed.reason };
   }
-  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
-    return null;
-  }
-  const rawCandidates = (payload as Record<string, unknown>).candidates;
-  if (!Array.isArray(rawCandidates)) {
-    return null;
-  }
-  if (rawCandidates.length !== parsed.payload.candidates.length) {
-    return null;
-  }
+  const rawCandidates = (payload as { candidates: unknown[] }).candidates;
 
   const candidates: CandidateRosterFanoutEntry[] = [];
   for (const [index, raw] of rawCandidates.entries()) {
@@ -145,7 +142,7 @@ function extractRosterCandidates(payload: unknown): CandidateRosterFanoutEntry[]
       ...(skipPerElectionNameDedupe !== undefined ? { skip_per_election_name_dedupe: skipPerElectionNameDedupe } : {}),
     });
   }
-  return candidates;
+  return { ok: true, candidates };
 }
 
 function requireEnv(name: string): string {
@@ -159,9 +156,15 @@ function requireEnv(name: string): string {
 async function loadElection(pool: Pool, electionId: string): Promise<ElectionRow | null> {
   const result = await pool.query<ElectionRow>(
     `
-      SELECT id::text AS id, sources, race_type
-      FROM public.elections
-      WHERE id::text = $1
+      SELECT e.id::text AS id,
+             e.sources,
+             e.race_type,
+             d.district_type,
+             e.official_ballot_title
+      FROM public.elections AS e
+      JOIN public.districts AS d
+        ON d.id = e.district_id
+      WHERE e.id::text = $1
       LIMIT 1
     `,
     [electionId]
@@ -231,10 +234,19 @@ async function main(): Promise<void> {
       throw new Error(`Candidate roster staging row must be validated or written; ingest_key=${ingestKey} status=${stagingRow.status}`);
     }
 
-    const candidates = extractRosterCandidates(stagingRow.payload);
-    if (!candidates) {
-      throw new Error(`Invalid candidate roster staging payload for ingest_key=${ingestKey}`);
+    const researchMode = resolveCandidateResearchMode({
+      districtType: election.district_type,
+      officialBallotTitle: election.official_ballot_title,
+    });
+    const includeFecIds = researchMode !== "state_level";
+    const extracted = extractRosterCandidates(stagingRow.payload, {
+      allowFecIds: includeFecIds,
+      requireFecIds: includeFecIds,
+    });
+    if (!extracted.ok) {
+      throw new Error(`Invalid candidate roster staging payload for ingest_key=${ingestKey}: ${extracted.reason}`);
     }
+    const candidates = extracted.candidates;
 
     const runId = readFlag("--run-id") ?? stagingRow.run_id ?? `manual_candidate_roster_fanout_${new Date().toISOString()}`;
     const electionSeedUrls = parseSeedUrls(election.sources);
@@ -247,6 +259,8 @@ async function main(): Promise<void> {
             ingestKey,
             runId,
             electionId,
+            researchMode,
+            requiresFecIds: includeFecIds,
             candidateCount: candidates.length,
           },
           null,
@@ -282,6 +296,8 @@ async function main(): Promise<void> {
           ingestKey,
           runId,
           electionId,
+          researchMode,
+          requiresFecIds: includeFecIds,
           candidateCount: candidates.length,
           emittedCount: fanout.emittedCount,
           skippedCount: fanout.skippedCount,

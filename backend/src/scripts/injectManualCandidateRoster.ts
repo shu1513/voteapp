@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 import { createClient } from "redis";
 
@@ -7,12 +8,23 @@ import {
   STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
   STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
 } from "../config/electionsPipeline.js";
-import { parseCandidateRosterPayload } from "../contracts/candidateRosterPayloadContract.js";
+import { resolveCandidateResearchMode } from "../ai/candidateResearchMode.js";
+import {
+  parseCandidateRosterPayload,
+  type CandidateRosterEntry,
+} from "../contracts/candidateRosterPayloadContract.js";
 
 type ElectionPreflightRow = {
   id: string;
   official_ballot_title: string;
+  district_type: string;
   race_type: string;
+};
+
+type CandidateRosterRawHints = {
+  roster_index?: number;
+  disambiguation_hint?: string;
+  skip_per_election_name_dedupe?: boolean;
 };
 
 function readFlag(name: string): string | null {
@@ -70,11 +82,14 @@ function payloadElectionId(payload: unknown): string | null {
 async function loadElectionPreflight(pool: Pool, electionId: string): Promise<ElectionPreflightRow | null> {
   const result = await pool.query<ElectionPreflightRow>(
     `
-      SELECT id::text AS id,
-             official_ballot_title,
-             race_type
-      FROM public.elections
-      WHERE id::text = $1
+      SELECT e.id::text AS id,
+             e.official_ballot_title,
+             d.district_type,
+             e.race_type
+      FROM public.elections AS e
+      JOIN public.districts AS d
+        ON d.id = e.district_id
+      WHERE e.id::text = $1
       LIMIT 1
     `,
     [electionId]
@@ -88,6 +103,52 @@ function requireEnv(name: string): string {
     throw new Error(`${name} is required for manual candidate roster injection`);
   }
   return value;
+}
+
+function extractRawRosterHints(raw: unknown): CandidateRosterRawHints {
+  if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
+    return {};
+  }
+  const input = raw as Record<string, unknown>;
+  const rosterIndex =
+    Number.isInteger(input.roster_index) && Number(input.roster_index) >= 0
+      ? Number(input.roster_index)
+      : undefined;
+  const disambiguationHint =
+    typeof input.disambiguation_hint === "string" && input.disambiguation_hint.trim().length > 0
+      ? input.disambiguation_hint.trim()
+      : undefined;
+  const skipPerElectionNameDedupe =
+    input.skip_per_election_name_dedupe === true
+      ? true
+      : input.skip_per_election_name_dedupe === false
+        ? false
+        : undefined;
+
+  return {
+    ...(rosterIndex !== undefined ? { roster_index: rosterIndex } : {}),
+    ...(disambiguationHint ? { disambiguation_hint: disambiguationHint } : {}),
+    ...(skipPerElectionNameDedupe !== undefined ? { skip_per_election_name_dedupe: skipPerElectionNameDedupe } : {}),
+  };
+}
+
+export function buildInjectedCandidateRosterStagingPayload(input: {
+  electionId: string;
+  rawPayload: unknown;
+  candidates: readonly CandidateRosterEntry[];
+}): { election_id: string; candidates: Array<CandidateRosterEntry & CandidateRosterRawHints> } {
+  const rawCandidates =
+    typeof input.rawPayload === "object" && input.rawPayload !== null && !Array.isArray(input.rawPayload)
+      ? (input.rawPayload as Record<string, unknown>).candidates
+      : undefined;
+  const rawRows = Array.isArray(rawCandidates) ? rawCandidates : [];
+  return {
+    election_id: input.electionId,
+    candidates: input.candidates.map((candidate, index) => ({
+      ...candidate,
+      ...extractRawRosterHints(rawRows[index]),
+    })),
+  };
 }
 
 async function main(): Promise<void> {
@@ -111,38 +172,9 @@ async function main(): Promise<void> {
     throw new Error(`Missing --election-id and payload.election_id.\n${usage()}`);
   }
 
-  const parsed = parseCandidateRosterPayload(rawPayload);
-  if (!parsed.ok) {
-    throw new Error(`Candidate roster payload failed validation: ${parsed.reason}`);
-  }
-
   const dryRun = hasFlag("--dry-run");
-  const ingestKey = `candidate_roster:${electionId}`;
-  const runId = readFlag("--run-id") ?? `manual_candidate_roster_${new Date().toISOString()}`;
-  const stagedPayload = {
-    election_id: electionId,
-    candidates: parsed.payload.candidates,
-  };
-
-  if (dryRun) {
-    console.log(
-      JSON.stringify(
-        {
-          dryRun: true,
-          ingestKey,
-          runId,
-          electionId,
-          candidateCount: parsed.payload.candidates.length,
-        },
-        null,
-        2
-      )
-    );
-    return;
-  }
-
   const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
-  const redis = createClient({ url: requireEnv("REDIS_URL") });
+  let redis: ReturnType<typeof createClient> | null = null;
 
   try {
     const election = await loadElectionPreflight(pool, electionId);
@@ -154,6 +186,48 @@ async function main(): Promise<void> {
         `Candidate roster injection requires an office election; election_id=${electionId} has race_type=${election.race_type}`
       );
     }
+
+    const researchMode = resolveCandidateResearchMode({
+      districtType: election.district_type,
+      officialBallotTitle: election.official_ballot_title,
+    });
+    const includeFecIds = researchMode !== "state_level";
+    const parsed = parseCandidateRosterPayload(rawPayload, {
+      allowFecIds: includeFecIds,
+      requireFecIds: includeFecIds,
+    });
+    if (!parsed.ok) {
+      throw new Error(`Candidate roster payload failed validation: ${parsed.reason}`);
+    }
+
+    const ingestKey = `candidate_roster:${electionId}`;
+    const runId = readFlag("--run-id") ?? `manual_candidate_roster_${new Date().toISOString()}`;
+    const stagedPayload = buildInjectedCandidateRosterStagingPayload({
+      electionId,
+      rawPayload,
+      candidates: parsed.payload.candidates,
+    });
+
+    if (dryRun) {
+      console.log(
+        JSON.stringify(
+          {
+            dryRun: true,
+            ingestKey,
+            runId,
+            electionId,
+            researchMode,
+            requiresFecIds: includeFecIds,
+            candidateCount: parsed.payload.candidates.length,
+          },
+          null,
+          2
+        )
+      );
+      return;
+    }
+
+    redis = createClient({ url: requireEnv("REDIS_URL") });
 
     await redis.connect();
 
@@ -234,6 +308,8 @@ async function main(): Promise<void> {
           redisMessageId,
           electionId,
           officialBallotTitle: election.official_ballot_title,
+          researchMode,
+          requiresFecIds: includeFecIds,
           candidateCount: parsed.payload.candidates.length,
           next: ["npm run candidates:roster:enrich -- --once"],
         },
@@ -242,13 +318,18 @@ async function main(): Promise<void> {
       )
     );
   } finally {
-    await redis.quit().catch(() => undefined);
+    if (redis) {
+      await redis.quit().catch(() => undefined);
+    }
     await pool.end();
   }
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error("manual candidate roster inject failed:", message);
-  process.exitCode = 1;
-});
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("manual candidate roster inject failed:", message);
+    process.exitCode = 1;
+  });
+}
