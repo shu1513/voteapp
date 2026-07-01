@@ -232,13 +232,7 @@ async function loadRosterIdentityHints(input: {
   if (!parsed.ok) {
     throw new Error(`Candidate roster staging payload failed validation for this election context: ${parsed.reason}`);
   }
-  if (typeof row.payload !== "object" || row.payload === null || Array.isArray(row.payload)) {
-    throw new Error("Candidate roster staging payload must be an object");
-  }
-  const rawCandidates = (row.payload as Record<string, unknown>).candidates;
-  if (!Array.isArray(rawCandidates)) {
-    throw new Error("Candidate roster staging payload candidates must be an array");
-  }
+  const rawCandidates = (row.payload as { candidates: unknown[] }).candidates;
 
   const candidates = parsed.payload.candidates.map((candidate, index) => {
     const raw = rawCandidates[index];
@@ -303,12 +297,13 @@ export function applyRegularElectionProfileContext(input: {
   }
 
   const stateFilingIds = normalizeStringArray(input.rosterHints?.stateFilingIds);
+  const { state_filing_ids: _stateFilingIds, ...stateProfile } = withoutParty;
   return stateFilingIds.length > 0
     ? {
-        ...withoutParty,
+        ...stateProfile,
         state_filing_ids: stateFilingIds,
       }
-    : withoutParty;
+    : stateProfile;
 }
 
 function requireEnv(name: string): string {

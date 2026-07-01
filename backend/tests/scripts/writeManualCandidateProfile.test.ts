@@ -110,4 +110,18 @@ describe("applyRegularElectionProfileContext", () => {
     expect(result.state_filing_ids).toEqual(["AK-2026-1"]);
     expect(result.party).toBeUndefined();
   });
+
+  it("strips profile state filing IDs when roster state filing IDs are absent", () => {
+    const result = applyRegularElectionProfileContext({
+      profile: profile({
+        party: "Independent",
+        state_filing_ids: ["profile-only-id"],
+      }),
+      researchMode: "state_level",
+      rosterHints: null,
+    });
+
+    expect(result.state_filing_ids).toBeUndefined();
+    expect(result.party).toBeUndefined();
+  });
 });

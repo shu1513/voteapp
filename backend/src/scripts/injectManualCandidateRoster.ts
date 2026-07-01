@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 import { createClient } from "redis";
 
@@ -8,13 +9,22 @@ import {
   STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
 } from "../config/electionsPipeline.js";
 import { resolveCandidateResearchMode } from "../ai/candidateResearchMode.js";
-import { parseCandidateRosterPayload } from "../contracts/candidateRosterPayloadContract.js";
+import {
+  parseCandidateRosterPayload,
+  type CandidateRosterEntry,
+} from "../contracts/candidateRosterPayloadContract.js";
 
 type ElectionPreflightRow = {
   id: string;
   official_ballot_title: string;
   district_type: string;
   race_type: string;
+};
+
+type CandidateRosterRawHints = {
+  roster_index?: number;
+  disambiguation_hint?: string;
+  skip_per_election_name_dedupe?: boolean;
 };
 
 function readFlag(name: string): string | null {
@@ -95,6 +105,52 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function extractRawRosterHints(raw: unknown): CandidateRosterRawHints {
+  if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
+    return {};
+  }
+  const input = raw as Record<string, unknown>;
+  const rosterIndex =
+    Number.isInteger(input.roster_index) && Number(input.roster_index) >= 0
+      ? Number(input.roster_index)
+      : undefined;
+  const disambiguationHint =
+    typeof input.disambiguation_hint === "string" && input.disambiguation_hint.trim().length > 0
+      ? input.disambiguation_hint.trim()
+      : undefined;
+  const skipPerElectionNameDedupe =
+    input.skip_per_election_name_dedupe === true
+      ? true
+      : input.skip_per_election_name_dedupe === false
+        ? false
+        : undefined;
+
+  return {
+    ...(rosterIndex !== undefined ? { roster_index: rosterIndex } : {}),
+    ...(disambiguationHint ? { disambiguation_hint: disambiguationHint } : {}),
+    ...(skipPerElectionNameDedupe !== undefined ? { skip_per_election_name_dedupe: skipPerElectionNameDedupe } : {}),
+  };
+}
+
+export function buildInjectedCandidateRosterStagingPayload(input: {
+  electionId: string;
+  rawPayload: unknown;
+  candidates: readonly CandidateRosterEntry[];
+}): { election_id: string; candidates: Array<CandidateRosterEntry & CandidateRosterRawHints> } {
+  const rawCandidates =
+    typeof input.rawPayload === "object" && input.rawPayload !== null && !Array.isArray(input.rawPayload)
+      ? (input.rawPayload as Record<string, unknown>).candidates
+      : undefined;
+  const rawRows = Array.isArray(rawCandidates) ? rawCandidates : [];
+  return {
+    election_id: input.electionId,
+    candidates: input.candidates.map((candidate, index) => ({
+      ...candidate,
+      ...extractRawRosterHints(rawRows[index]),
+    })),
+  };
+}
+
 async function main(): Promise<void> {
   loadProjectEnv();
 
@@ -146,10 +202,11 @@ async function main(): Promise<void> {
 
     const ingestKey = `candidate_roster:${electionId}`;
     const runId = readFlag("--run-id") ?? `manual_candidate_roster_${new Date().toISOString()}`;
-    const stagedPayload = {
-      election_id: electionId,
+    const stagedPayload = buildInjectedCandidateRosterStagingPayload({
+      electionId,
+      rawPayload,
       candidates: parsed.payload.candidates,
-    };
+    });
 
     if (dryRun) {
       console.log(
@@ -268,8 +325,11 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error("manual candidate roster inject failed:", message);
-  process.exitCode = 1;
-});
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("manual candidate roster inject failed:", message);
+    process.exitCode = 1;
+  });
+}

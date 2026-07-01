@@ -113,16 +113,7 @@ function extractRosterCandidates(
   if (!parsed.ok) {
     return { ok: false, reason: parsed.reason };
   }
-  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
-    return { ok: false, reason: "payload must be an object" };
-  }
-  const rawCandidates = (payload as Record<string, unknown>).candidates;
-  if (!Array.isArray(rawCandidates)) {
-    return { ok: false, reason: "payload.candidates must be array" };
-  }
-  if (rawCandidates.length !== parsed.payload.candidates.length) {
-    return { ok: false, reason: "payload.candidates length changed during parsing" };
-  }
+  const rawCandidates = (payload as { candidates: unknown[] }).candidates;
 
   const candidates: CandidateRosterFanoutEntry[] = [];
   for (const [index, raw] of rawCandidates.entries()) {
