@@ -208,7 +208,7 @@ describe("runManualPresidentialNomineeWrite", () => {
       },
       pool: {} as Pool,
       deps: {
-        loadCandidates: vi.fn().mockResolvedValue(candidates()),
+        loadCandidates: vi.fn().mockResolvedValue([]),
         promoteNominee,
       },
     });
@@ -217,6 +217,7 @@ describe("runManualPresidentialNomineeWrite", () => {
       status: "no_nominee_found",
       sources: ["https://example.org/no-nominee"],
     });
+    expect(result.candidateCount).toBe(0);
     expect(result.promotion).toBeNull();
     expect(promoteNominee).not.toHaveBeenCalled();
   });

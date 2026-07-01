@@ -8,7 +8,10 @@ import type {
   PresidentialRosterAiInput,
   PresidentialRosterAiResult,
 } from "../ai/enrichPresidentialRoster.js";
-import type { PresidentialRosterStatusAiResult } from "../ai/enrichPresidentialRosterStatus.js";
+import type {
+  PresidentialRosterStatusAiInput,
+  PresidentialRosterStatusAiResult,
+} from "../ai/enrichPresidentialRosterStatus.js";
 import { loadProjectEnv } from "../config/env.js";
 import {
   parsePresidentialRosterPayload,
@@ -227,16 +230,23 @@ export function buildManualPresidentialRosterEnrichResult(input: {
   };
 }
 
-function noAiStatusVerifier(): PresidentialRosterStatusAiResult {
+function noAiStatusVerifier(input: PresidentialRosterStatusAiInput): PresidentialRosterStatusAiResult {
   return {
     ok: true,
     provider: "manual",
     model: "manual-research:codex",
-    candidates: [],
+    candidates: input.candidates.map((candidate) => ({
+      candidate_id: candidate.candidateId,
+      status: "active",
+      reason:
+        "Manual no-AI roster rerun did not include this existing active candidate; leaving active until a source-backed withdrawn payload is provided.",
+      sources: [...(candidate.sources ?? [])],
+    })),
     aiRawDebug: {
       manual_research: true,
       no_ai_provider_call: true,
       skipped_status_verification: true,
+      omitted_candidate_count: input.candidates.length,
     },
   };
 }
@@ -323,6 +333,7 @@ export async function runManualPresidentialRosterWrite(input: {
   return enrichRosterCycle({
     db: input.pool,
     redis: input.redis,
+    cycleId: input.options.cycleId,
     electionYear: input.options.electionYear,
     stage: "primary",
     party: input.options.party,
@@ -337,8 +348,7 @@ export async function runManualPresidentialRosterWrite(input: {
         payload: parsed.payload,
         file: input.options.file,
       }),
-    enrichRosterStatus: async () => noAiStatusVerifier(),
-    loadActiveCandidatesForReconciliation: async () => [],
+    enrichRosterStatus: async (statusInput) => noAiStatusVerifier(statusInput),
   });
 }
 

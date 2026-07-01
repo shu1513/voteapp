@@ -73,6 +73,7 @@ type ExistingPresidentialCycleCandidate = {
 export const PRESIDENTIAL_ROSTER_ADMISSION_POLICY = "fec_confirmed_only" as const;
 
 export type PresidentialRosterCycleLookup = {
+  cycleId?: string | null;
   electionYear: number;
   stage?: PresidentialCycleStage;
   party?: string | null;
@@ -237,6 +238,29 @@ async function loadPresidentialRosterCycle(
 ): Promise<PresidentialRosterCycleRow | null> {
   const stage = normalizeStage(input.stage);
   const party = normalizeParty(input.party, stage);
+  const cycleId = input.cycleId?.trim();
+  if (cycleId) {
+    const result = await db.query<PresidentialRosterCycleRow>(
+      `
+        SELECT id, election_year, stage, party
+        FROM public.presidential_cycles
+        WHERE id::text = $1
+        LIMIT 1
+      `,
+      [cycleId]
+    );
+    const row = result.rows[0] ?? null;
+    if (!row) {
+      return null;
+    }
+    if (row.election_year !== input.electionYear || row.stage !== stage || (row.party ?? null) !== party) {
+      throw new Error(
+        `presidential cycle ${cycleId} does not match requested year=${input.electionYear} stage=${stage} party=${party ?? "null"}`
+      );
+    }
+    return row;
+  }
+
   const result = await db.query<PresidentialRosterCycleRow>(
     `
       SELECT id, election_year, stage, party
@@ -522,6 +546,7 @@ export async function enrichPresidentialRosterCycle(
   const stage = normalizeStage(input.stage);
   const party = normalizeParty(input.party, stage);
   const cycle = await loadPresidentialRosterCycle(input.db, {
+    cycleId: input.cycleId,
     electionYear: input.electionYear,
     stage,
     party,

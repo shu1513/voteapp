@@ -39,9 +39,13 @@ export type PresidentialCandidateFecMatcherOptions = OpenFecClientOptions & {
   ) => Promise<OpenFecPresidentialCandidate[]>;
 };
 
+export type PresidentialCandidateForFecMatch = Omit<PresidentialRosterCandidate, "fec_candidate_id"> & {
+  fec_candidate_id?: string;
+};
+
 export type PresidentialCandidateFecMatchInput = {
   electionYear: number;
-  candidate: PresidentialRosterCandidate;
+  candidate: PresidentialCandidateForFecMatch;
   expectedParty?: string | null;
   options: PresidentialCandidateFecMatcherOptions;
 };

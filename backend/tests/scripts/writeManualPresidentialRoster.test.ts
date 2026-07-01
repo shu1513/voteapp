@@ -182,11 +182,18 @@ describe("runManualPresidentialRosterWrite", () => {
             electionYear: 2028,
             stage: "primary",
             party: "Democratic",
-            candidates: [],
+            candidates: [
+              {
+                candidateId: "candidate-existing",
+                displayName: "Existing Candidate",
+                party: "Democratic",
+                fecIds: ["P80000002"],
+                sources: ["https://example.org/existing"],
+              },
+            ],
           },
           { timeoutMs: 1 }
         );
-        const omitted = await input.loadActiveCandidatesForReconciliation!({ query: vi.fn() }, CYCLE_ID);
 
         expect(rosterResult).toMatchObject({
           ok: true,
@@ -198,9 +205,14 @@ describe("runManualPresidentialRosterWrite", () => {
           ok: true,
           provider: "manual",
           model: "manual-research:codex",
-          candidates: [],
+          candidates: [
+            {
+              candidate_id: "candidate-existing",
+              status: "active",
+            },
+          ],
         });
-        expect(omitted).toEqual([]);
+        expect(input.loadActiveCandidatesForReconciliation).toBeUndefined();
 
         return {
           ok: true,
@@ -249,6 +261,7 @@ describe("runManualPresidentialRosterWrite", () => {
     });
     expect(enrichRosterCycle).toHaveBeenCalledTimes(1);
     expect(capturedInput).toMatchObject({
+      cycleId: CYCLE_ID,
       electionYear: 2028,
       stage: "primary",
       party: "Democratic",

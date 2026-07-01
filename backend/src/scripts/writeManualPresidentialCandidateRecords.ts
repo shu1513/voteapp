@@ -184,6 +184,26 @@ function manualKey(options: ManualPresidentialCandidateRecordsOptions): string {
   return `manual:presidential-records:${options.presidentialCycleId}:${options.presidentialRole}:${options.candidateId}`;
 }
 
+function normalizeResearchAreaSlug(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+export function buildNormalizedResearchAreaLookup(
+  allowedAreas: readonly { id: string; slug: string }[]
+): {
+  allowedSlugs: Set<string>;
+  researchAreaIdBySlug: Map<string, string>;
+} {
+  const allowedSlugs = new Set<string>();
+  const researchAreaIdBySlug = new Map<string, string>();
+  for (const area of allowedAreas) {
+    const slug = normalizeResearchAreaSlug(area.slug);
+    allowedSlugs.add(slug);
+    researchAreaIdBySlug.set(slug, area.id);
+  }
+  return { allowedSlugs, researchAreaIdBySlug };
+}
+
 function summarizeDroppedRecords(droppedRecords: readonly CandidateRecordDroppedRecord[]): string {
   const preview = droppedRecords
     .slice(0, 5)
@@ -361,7 +381,7 @@ async function main(): Promise<void> {
     if (allowedAreas.length === 0) {
       throw new Error(`No allowed research areas for office_id=${context.officeId}`);
     }
-    const allowedSlugs = new Set(allowedAreas.map((area) => area.slug));
+    const { allowedSlugs, researchAreaIdBySlug } = buildNormalizedResearchAreaLookup(allowedAreas);
     const rawLabels = await readJsonFile(options.labelsFile);
     const parsedLabels = parseCandidateRecordAreaLabelPayload(rawLabels, {
       allowedResearchAreaSlugs: allowedSlugs,
@@ -485,7 +505,6 @@ async function main(): Promise<void> {
         throw new Error(`Presidential candidate record label validation failed: ${reason}`);
       }
 
-      const researchAreaIdBySlug = new Map(allowedAreas.map((area) => [area.slug, area.id]));
       const staleTagDelete = await deleteStaleCandidateRecordAreaTags(
         client,
         validation.normalized,

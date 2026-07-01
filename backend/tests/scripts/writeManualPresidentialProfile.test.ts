@@ -274,6 +274,78 @@ describe("runManualPresidentialProfileWrite", () => {
     ]);
   });
 
+  it("preflights vice president parent linkage in dry-run mode", async () => {
+    const { pool } = poolWithCycle();
+    const findParentCandidateByFecId = vi.fn().mockResolvedValue("candidate-president");
+    const incomingProfile = profile({
+      display_name: "Vice Candidate",
+      first_name: "Vice",
+      last_name: "Candidate",
+      fec_ids: undefined,
+    });
+
+    const result = await runManualPresidentialProfileWrite({
+      options: options({
+        presidentialRole: "vice_president",
+        parentPresidentialCandidateFecId: "P80000001",
+        dryRun: true,
+      }),
+      rawPayload: incomingProfile,
+      pool,
+      deps: {
+        validateProfile: vi.fn().mockResolvedValue({
+          ok: true,
+          profile: incomingProfile,
+          sourceCount: 1,
+        }),
+        findParentCandidateByFecId,
+      },
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      dryRun: true,
+      presidentialCycleCandidateLinked: false,
+      runningMateLinked: true,
+      parentCandidateId: "candidate-president",
+    });
+    expect(findParentCandidateByFecId).toHaveBeenCalledWith({
+      db: pool,
+      cycleId: CYCLE_ID,
+      fecCandidateId: "P80000001",
+    });
+  });
+
+  it("fails vice president dry-run when the parent presidential FEC ID is not linked", async () => {
+    const { pool } = poolWithCycle();
+    const incomingProfile = profile({
+      display_name: "Vice Candidate",
+      first_name: "Vice",
+      last_name: "Candidate",
+      fec_ids: undefined,
+    });
+
+    await expect(
+      runManualPresidentialProfileWrite({
+        options: options({
+          presidentialRole: "vice_president",
+          parentPresidentialCandidateFecId: "P80000001",
+          dryRun: true,
+        }),
+        rawPayload: incomingProfile,
+        pool,
+        deps: {
+          validateProfile: vi.fn().mockResolvedValue({
+            ok: true,
+            profile: incomingProfile,
+            sourceCount: 1,
+          }),
+          findParentCandidateByFecId: vi.fn().mockResolvedValue(null),
+        },
+      })
+    ).rejects.toThrow("Parent presidential cycle candidate not found for FEC ID P80000001");
+  });
+
   it("blocks strict quality-gate imports until focused gaps are repaired or confirmed", async () => {
     const { pool } = poolWithCycle();
     const result = await runManualPresidentialProfileWrite({

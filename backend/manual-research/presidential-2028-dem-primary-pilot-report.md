@@ -13,6 +13,10 @@ Run date: 2026-06-30
 
 Which candidates should be imported for the 2028 Democratic presidential primary under the tightened presidential roster policy?
 
+## Pilot Status
+
+This was a non-production wrapper pilot, not a production-grade empty-roster determination. It proved that the manual presidential roster wrapper can accept an empty contract-shaped payload, run without AI provider calls, and leave the local cycle empty. It did not perform candidate-by-candidate primary-source rejection for every possible FEC filer or speculative 2028 Democratic name.
+
 ## Policy Applied
 
 Import only candidates with both:
@@ -26,7 +30,7 @@ FEC filing alone is not enough.
 
 | claim | source_url | source_type | supports_claim | confidence | rejected_alternatives |
 |---|---|---|---|---|---|
-| No 2028 Democratic candidate was production-importable in this pass; public lists show Democratic names only as expressed-interest/speculative, not declared candidates with campaign-quality evidence. | https://en.wikipedia.org/wiki/2028_United_States_presidential_election | secondary election overview | yes | medium | Expressed-interest and speculated Democratic names were rejected because they do not satisfy roster quality. |
+| This pilot did not identify any candidate to import from the limited public overview pass; this is not sufficient evidence for a production empty roster. | https://en.wikipedia.org/wiki/2028_United_States_presidential_election | secondary election overview | partial | low | A production pass still needs candidate-by-candidate primary-source rejection for omitted names and FEC-only filers. |
 | The local VoteApp 2028 Democratic presidential primary cycle exists and has no linked candidates before or after this pilot. | local Postgres `public.presidential_cycles`, `public.presidential_cycle_candidates` | local database | yes | high | Existing local data did not contain candidates to preserve or reconcile. |
 
 ## Payload
@@ -95,4 +99,5 @@ API/read path:
 
 - Profile pass: skipped because roster imported zero candidates.
 - Record pass: skipped because roster imported zero candidates.
-- Low-signal FEC-only candidates: rejected by policy and not imported. This local environment does not have OpenFEC API keys, so this pilot did not enumerate every obscure FEC-only filer; it only imported candidates that could satisfy the stricter roster contract, and that set was empty.
+- Low-signal FEC-only candidates: not imported by the empty fixture. This local environment does not have OpenFEC API keys, so this pilot did not enumerate every obscure FEC-only filer or prove that none exist.
+- Production follow-up required: before treating this cycle as truly empty, run a roster-quality pass with primary sources/OpenFEC access and document candidate-by-candidate rejection reasons for every omitted filer or public candidate claim.

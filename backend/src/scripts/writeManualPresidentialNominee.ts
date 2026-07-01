@@ -185,11 +185,13 @@ export async function runManualPresidentialNomineeWrite(input: {
   const loadCandidates = input.deps?.loadCandidates ?? loadActivePresidentialCycleCandidatesForNomineeResolution;
   const promoteNominee = input.deps?.promoteNominee ?? promotePresidentialNomineeFromResolution;
   const candidates = await loadCandidates(input.pool, input.options.cycleId);
-  requireActiveCandidates(candidates, input.options.cycleId);
   const resolution = resolvePresidentialNomineeCandidate({
     payload: parsed.payload,
     candidates,
   });
+  if (resolution.status !== "no_nominee_found") {
+    requireActiveCandidates(candidates, input.options.cycleId);
+  }
 
   const promotion =
     input.options.dryRun || resolution.status !== "matched"

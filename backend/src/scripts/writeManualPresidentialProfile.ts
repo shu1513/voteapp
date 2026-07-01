@@ -301,6 +301,11 @@ function hasPresidentialFecId(profile: CandidateProfilePayload): boolean {
   return (profile.fec_ids ?? []).some((fecId) => /^P\d{8}$/.test(fecId.trim().toUpperCase()));
 }
 
+function profileHasFecId(profile: CandidateProfilePayload, fecCandidateId: string): boolean {
+  const normalized = fecCandidateId.trim().toUpperCase();
+  return (profile.fec_ids ?? []).some((fecId) => fecId.trim().toUpperCase() === normalized);
+}
+
 function effectiveParty(input: {
   profile: CandidateProfilePayload;
   context: PresidentialCycleProfileContext;
@@ -314,6 +319,50 @@ function effectiveParty(input: {
     return profileParty;
   }
   return cycleParty && cycleParty.length > 0 ? cycleParty : null;
+}
+
+async function preflightDryRunProfileLink(input: {
+  pool: Pool;
+  context: PresidentialCycleProfileContext;
+  profile: CandidateProfilePayload;
+  options: ManualPresidentialProfileScriptOptions;
+  deps: Required<Pick<ManualPresidentialProfileWriteDeps, "findParentCandidateByFecId">>;
+}): Promise<{
+  presidentialCycleCandidateLinked: boolean;
+  runningMateLinked: boolean;
+  parentCandidateId?: string;
+}> {
+  if (input.options.presidentialRole === "president") {
+    const party = effectiveParty({ profile: input.profile, context: input.context });
+    if (!party) {
+      throw new Error("Presidential candidate party is required to link candidate to cycle");
+    }
+    return {
+      presidentialCycleCandidateLinked: true,
+      runningMateLinked: false,
+    };
+  }
+
+  const parentFecId = input.options.parentPresidentialCandidateFecId;
+  if (!parentFecId) {
+    throw new Error("parent presidential candidate FEC ID is required for vice president profile write");
+  }
+  if (profileHasFecId(input.profile, parentFecId)) {
+    throw new Error(`Vice president profile carries the parent presidential candidate FEC ID ${parentFecId}`);
+  }
+  const parentCandidateId = await input.deps.findParentCandidateByFecId({
+    db: input.pool,
+    cycleId: input.context.cycleId,
+    fecCandidateId: parentFecId,
+  });
+  if (!parentCandidateId) {
+    throw new Error(`Parent presidential cycle candidate not found for FEC ID ${parentFecId}`);
+  }
+  return {
+    presidentialCycleCandidateLinked: false,
+    runningMateLinked: true,
+    parentCandidateId,
+  };
 }
 
 function buildProfileValidationGaps(input: {
@@ -586,6 +635,13 @@ export async function runManualPresidentialProfileWrite(input: {
   }
 
   if (input.options.dryRun) {
+    const linkPreflight = await preflightDryRunProfileLink({
+      pool: input.pool,
+      context,
+      profile,
+      options: input.options,
+      deps,
+    });
     return {
       ok: true,
       dryRun: true,
@@ -595,8 +651,9 @@ export async function runManualPresidentialProfileWrite(input: {
       presidentialRole: input.options.presidentialRole,
       displayName: profile.display_name,
       hasHardIdentifier: hasAtLeastOneHardIdentifier(profile),
-      presidentialCycleCandidateLinked: input.options.presidentialRole === "president",
-      runningMateLinked: input.options.presidentialRole === "vice_president",
+      presidentialCycleCandidateLinked: linkPreflight.presidentialCycleCandidateLinked,
+      runningMateLinked: linkPreflight.runningMateLinked,
+      parentCandidateId: linkPreflight.parentCandidateId,
       parentPresidentialCandidateFecId: input.options.parentPresidentialCandidateFecId ?? undefined,
       recordDraft: null,
       qualityGate: {

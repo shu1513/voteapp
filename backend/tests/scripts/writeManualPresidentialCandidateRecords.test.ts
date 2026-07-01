@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { parseManualPresidentialCandidateRecordsArgs } from "../../src/scripts/writeManualPresidentialCandidateRecords.js";
+import {
+  buildNormalizedResearchAreaLookup,
+  parseManualPresidentialCandidateRecordsArgs,
+} from "../../src/scripts/writeManualPresidentialCandidateRecords.js";
 
 describe("parseManualPresidentialCandidateRecordsArgs", () => {
   it("parses the required presidential records flags", () => {
@@ -106,5 +109,18 @@ describe("parseManualPresidentialCandidateRecordsArgs", () => {
         "labels.json",
       ])
     ).toThrow("Missing --presidential-cycle-id");
+  });
+});
+
+describe("buildNormalizedResearchAreaLookup", () => {
+  it("normalizes allowed research-area slugs for validation and tag lookup", () => {
+    const lookup = buildNormalizedResearchAreaLookup([
+      { id: "area-general", slug: " General " },
+      { id: "area-economy", slug: "ECONOMY" },
+    ]);
+
+    expect([...lookup.allowedSlugs].sort()).toEqual(["economy", "general"]);
+    expect(lookup.researchAreaIdBySlug.get("general")).toBe("area-general");
+    expect(lookup.researchAreaIdBySlug.get("economy")).toBe("area-economy");
   });
 });

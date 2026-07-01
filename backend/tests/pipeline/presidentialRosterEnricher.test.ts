@@ -138,6 +138,38 @@ function existingCycleCandidateRow(overrides: Record<string, unknown> = {}) {
 }
 
 describe("enrichPresidentialRosterCycle", () => {
+  it("loads the exact cycle id when one is supplied", async () => {
+    const db = makeDb();
+    const redis = { sendCommand: vi.fn().mockResolvedValue(1) };
+    const enrichRoster = vi.fn().mockResolvedValue({
+      ok: true,
+      provider: "manual",
+      model: "manual-research:codex",
+      candidates: [],
+      aiRawDebug: null,
+    } satisfies PresidentialRosterAiResult);
+
+    const result = await enrichPresidentialRosterCycle({
+      db,
+      redis,
+      cycleId: CYCLE_ID,
+      electionYear: 2028,
+      stage: "primary",
+      party: "Democratic",
+      dryRun: true,
+      aiConfig: { timeoutMs: 1000 },
+      enrichRoster,
+      loadActiveCandidatesForReconciliation: emptyReconciliationLoader(),
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      cycleId: CYCLE_ID,
+      dryRun: true,
+    });
+    expect(db.query).toHaveBeenNthCalledWith(1, expect.stringContaining("WHERE id::text = $1"), [CYCLE_ID]);
+  });
+
   it("loads a primary cycle, matches FEC candidates, and emits presidential profile drafts", async () => {
     const db = makeDb();
     db.query = vi
