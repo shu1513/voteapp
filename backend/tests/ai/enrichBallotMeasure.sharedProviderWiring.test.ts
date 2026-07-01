@@ -2,18 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const {
   callResearchProviderMock,
-  isTlsCertificateReachabilityFailureMock,
   trimDebugTextMock,
   verifyHttpUrlReachabilityMock,
 } = vi.hoisted(() => ({
   callResearchProviderMock: vi.fn(),
-  isTlsCertificateReachabilityFailureMock: vi.fn((reason: string) => {
-    const normalized = reason.toLowerCase();
-    return (
-      normalized.includes("unable_to_verify_leaf_signature") ||
-      normalized.includes("unable to get local issuer certificate")
-    );
-  }),
   trimDebugTextMock: vi.fn((input: string) => input),
   verifyHttpUrlReachabilityMock: vi.fn(async (url: string) => ({
     ok: true,
@@ -27,8 +19,8 @@ vi.mock("../../src/ai/researchProviderClient.ts", () => ({
   trimDebugText: trimDebugTextMock,
 }));
 
-vi.mock("../../src/ai/urlReachability.ts", () => ({
-  isTlsCertificateReachabilityFailure: isTlsCertificateReachabilityFailureMock,
+vi.mock("../../src/ai/urlReachability.ts", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../../src/ai/urlReachability.ts")>()),
   verifyHttpUrlReachability: verifyHttpUrlReachabilityMock,
 }));
 
@@ -221,11 +213,12 @@ describe("enrichBallotMeasure shared provider wiring", () => {
       );
       expect(result.blockedUrls).toEqual([]);
       expect(result.failureDebug).toMatchObject({
+        failure_kind: "tls_certificate_verification",
         official_measure_url: "https://example.org/measure-er.pdf",
         official_measure_url_verification_reason:
           "citation URL fetch failed: fetch failed: UNABLE_TO_VERIFY_LEAF_SIGNATURE",
         suggested_operator_action:
-          "Configure NODE_EXTRA_CA_CERTS or repair backend CA bundle, then retry.",
+          "Check whether the official site has a certificate problem. If this is a local trust-chain issue, configure NODE_EXTRA_CA_CERTS or repair the backend CA bundle, then retry.",
       });
     }
   });
@@ -585,11 +578,12 @@ describe("enrichBallotMeasure shared provider wiring", () => {
         "official_measure_url could not be verified due to TLS/certificate issue"
       );
       expect(result.failureDebug).toMatchObject({
+        failure_kind: "tls_certificate_verification",
         official_measure_url: "https://elections.example.gov/measure-er.pdf",
         official_measure_url_verification_reason:
           "citation URL fetch failed: fetch failed: UNABLE_TO_VERIFY_LEAF_SIGNATURE",
         suggested_operator_action:
-          "Configure NODE_EXTRA_CA_CERTS or repair backend CA bundle, then retry.",
+          "Check whether the official site has a certificate problem. If this is a local trust-chain issue, configure NODE_EXTRA_CA_CERTS or repair the backend CA bundle, then retry.",
       });
     }
   });

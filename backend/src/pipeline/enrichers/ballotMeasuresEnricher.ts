@@ -50,7 +50,10 @@ function toReason(error: unknown): string {
 }
 
 function formatAiFailureWarning(electionId: string, reason: string, failureDebug?: Record<string, unknown>): string {
-  if (typeof failureDebug?.suggested_operator_action === "string") {
+  if (
+    failureDebug?.failure_kind === "tls_certificate_verification" &&
+    typeof failureDebug.suggested_operator_action === "string"
+  ) {
     return `ballot-measures enricher skipped election_id=${electionId} due to official URL TLS/certificate verification issue; ${failureDebug.suggested_operator_action}`;
   }
   return `ballot-measures enricher skipped election_id=${electionId} due to AI failure: ${reason}`;

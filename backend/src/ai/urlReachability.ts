@@ -23,13 +23,15 @@ export type UrlReachabilityResult = UrlReachabilitySuccess | UrlReachabilityFail
 
 const TLS_CERTIFICATE_FAILURE_PATTERNS = [
   "unable_to_verify_leaf_signature",
-  "unable to verify",
+  "unable to verify the first certificate",
   "unable to get local issuer certificate",
   "self-signed certificate",
+  "self signed certificate",
+  "depth_zero_self_signed_cert",
+  "self_signed_cert_in_chain",
   "certificate has expired",
   "cert_has_expired",
   "unable_to_get_issuer_cert",
-  "unable_to_get_issuer_cert_locally",
 ];
 
 export function isTlsCertificateReachabilityFailure(reason: string): boolean {

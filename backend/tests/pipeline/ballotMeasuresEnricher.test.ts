@@ -213,18 +213,19 @@ describe("runBallotMeasuresEnricher", () => {
       errorCode: "SCHEMA_MISMATCH",
       reason: "official_measure_url could not be verified due to TLS/certificate issue",
       failureDebug: {
+        failure_kind: "tls_certificate_verification",
         official_measure_url: "https://elections.example.gov/measure.pdf",
         official_measure_url_verification_reason:
           "citation URL fetch failed: fetch failed: UNABLE_TO_VERIFY_LEAF_SIGNATURE",
         suggested_operator_action:
-          "Configure NODE_EXTRA_CA_CERTS or repair backend CA bundle, then retry.",
+          "Check whether the official site has a certificate problem. If this is a local trust-chain issue, configure NODE_EXTRA_CA_CERTS or repair the backend CA bundle, then retry.",
       },
     });
 
     await runBallotMeasuresEnricher({ once: true, batchSize: 5, blockMs: 10 });
 
     expect(warnSpy).toHaveBeenCalledWith(
-      "ballot-measures enricher skipped election_id=election-1 due to official URL TLS/certificate verification issue; Configure NODE_EXTRA_CA_CERTS or repair backend CA bundle, then retry."
+      "ballot-measures enricher skipped election_id=election-1 due to official URL TLS/certificate verification issue; Check whether the official site has a certificate problem. If this is a local trust-chain issue, configure NODE_EXTRA_CA_CERTS or repair the backend CA bundle, then retry."
     );
     expect(mocks.clientQueryMock).not.toHaveBeenCalled();
     expect(mocks.redisXAckMock).not.toHaveBeenCalled();

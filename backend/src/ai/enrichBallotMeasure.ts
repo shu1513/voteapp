@@ -238,10 +238,11 @@ export async function validateBallotMeasureAiPayload(
         reason: "official_measure_url could not be verified due to TLS/certificate issue",
         blockedUrls: [],
         failureDebug: {
+          failure_kind: "tls_certificate_verification",
           official_measure_url: parsed.officialMeasureUrl,
           official_measure_url_verification_reason: officialVerification.reason,
           suggested_operator_action:
-            "Configure NODE_EXTRA_CA_CERTS or repair backend CA bundle, then retry.",
+            "Check whether the official site has a certificate problem. If this is a local trust-chain issue, configure NODE_EXTRA_CA_CERTS or repair the backend CA bundle, then retry.",
         },
       };
     }

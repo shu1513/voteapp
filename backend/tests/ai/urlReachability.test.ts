@@ -17,6 +17,15 @@ describe("urlReachability", () => {
     expect(
       isTlsCertificateReachabilityFailure("citation URL fetch failed: self-signed certificate")
     ).toBe(true);
+    expect(
+      isTlsCertificateReachabilityFailure("citation URL fetch failed: self signed certificate")
+    ).toBe(true);
+    expect(
+      isTlsCertificateReachabilityFailure("citation URL fetch failed: DEPTH_ZERO_SELF_SIGNED_CERT")
+    ).toBe(true);
+    expect(
+      isTlsCertificateReachabilityFailure("citation URL fetch failed: SELF_SIGNED_CERT_IN_CHAIN")
+    ).toBe(true);
     expect(isTlsCertificateReachabilityFailure("citation URL fetch failed: CERT_HAS_EXPIRED")).toBe(
       true
     );
@@ -28,5 +37,6 @@ describe("urlReachability", () => {
     expect(isTlsCertificateReachabilityFailure("citation URL is not a valid http(s) URL")).toBe(
       false
     );
+    expect(isTlsCertificateReachabilityFailure("unable to verify hostname")).toBe(false);
   });
 });
