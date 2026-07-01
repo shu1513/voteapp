@@ -23,6 +23,12 @@ describe("enrichPresidentialRoster", () => {
             party: "Democratic",
             fec_candidate_id: "p80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -52,6 +58,12 @@ describe("enrichPresidentialRoster", () => {
         party: "Democratic",
         fec_candidate_id: "P80000001",
         sources: ["https://example.org/jane"],
+        qualification_evidence: [
+          {
+            kind: "official_campaign_website",
+            source_url: "https://jane.example.org",
+          },
+        ],
         status: "active",
       },
     ]);
@@ -67,7 +79,14 @@ describe("enrichPresidentialRoster", () => {
             {
               display_name: "Wrong Primary",
               party: "Republican",
+              fec_candidate_id: "P80000002",
               sources: ["https://example.org/wrong"],
+              qualification_evidence: [
+                {
+                  kind: "official_campaign_website",
+                  source_url: "https://wrong.example.org",
+                },
+              ],
               status: "active",
             },
           ],
@@ -81,7 +100,14 @@ describe("enrichPresidentialRoster", () => {
             {
               display_name: "Jane President",
               party: "Democratic",
+              fec_candidate_id: "P80000001",
               sources: ["https://example.org/jane"],
+              qualification_evidence: [
+                {
+                  kind: "official_campaign_website",
+                  source_url: "https://jane.example.org",
+                },
+              ],
               status: "active",
             },
           ],
@@ -116,7 +142,14 @@ describe("enrichPresidentialRoster", () => {
           {
             display_name: "Jane President",
             party: "Democratic",
+            fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -148,7 +181,14 @@ describe("enrichPresidentialRoster", () => {
           {
             display_name: "Jane President",
             party: "Democratic",
+            fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],

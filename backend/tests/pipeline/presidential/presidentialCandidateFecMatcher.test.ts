@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   matchPresidentialRosterCandidateToFec,
   presidentialPartyToOpenFecPartyCode,
+  type PresidentialCandidateForFecMatch,
 } from "../../../src/pipeline/presidential/presidentialCandidateFecMatcher.js";
 import type { PresidentialRosterCandidate } from "../../../src/contracts/presidentialRosterPayloadContract.js";
 import type {
@@ -14,8 +15,25 @@ function rosterCandidate(overrides: Partial<PresidentialRosterCandidate> = {}): 
   return {
     display_name: "Jane President",
     party: "Democratic",
+    fec_candidate_id: "P80000001",
     sources: ["https://example.org/jane"],
+    qualification_evidence: [
+      {
+        kind: "official_campaign_website",
+        source_url: "https://jane.example.org",
+      },
+    ],
     status: "active",
+    ...overrides,
+  };
+}
+
+function rosterCandidateWithoutFec(
+  overrides: Partial<PresidentialCandidateForFecMatch> = {}
+): PresidentialCandidateForFecMatch {
+  const { fec_candidate_id: _fecCandidateId, ...candidate } = rosterCandidate();
+  return {
+    ...candidate,
     ...overrides,
   };
 }
@@ -137,9 +155,10 @@ describe("matchPresidentialRosterCandidateToFec", () => {
     const match = await matchPresidentialRosterCandidateToFec({
       electionYear: 2028,
       expectedParty: "Democratic",
-      candidate: rosterCandidate({ display_name: "Jane President" }),
+      candidate: rosterCandidateWithoutFec({ display_name: "Jane President" }),
       options: {
         ...options(),
+        getByFecId: vi.fn().mockResolvedValue(null),
         searchByName,
       },
     });
@@ -165,9 +184,10 @@ describe("matchPresidentialRosterCandidateToFec", () => {
     const match = await matchPresidentialRosterCandidateToFec({
       electionYear: 2028,
       expectedParty: "Democratic",
-      candidate: rosterCandidate(),
+      candidate: rosterCandidateWithoutFec(),
       options: {
         ...options(),
+        getByFecId: vi.fn().mockResolvedValue(null),
         searchByName: vi.fn().mockResolvedValue([
           fecCandidate({ fecCandidateId: "P80000001" }),
           fecCandidate({ fecCandidateId: "P80000002" }),
@@ -190,12 +210,13 @@ describe("matchPresidentialRosterCandidateToFec", () => {
     const match = await matchPresidentialRosterCandidateToFec({
       electionYear: 2028,
       expectedParty: "Republican",
-      candidate: rosterCandidate({
+      candidate: rosterCandidateWithoutFec({
         display_name: "John President",
         party: "Republican",
       }),
       options: {
         ...options(),
+        getByFecId: vi.fn().mockResolvedValue(null),
         searchByName: vi.fn().mockResolvedValue([
           fecCandidate({
             fecCandidateId: "P80000010",
@@ -225,9 +246,10 @@ describe("matchPresidentialRosterCandidateToFec", () => {
     const match = await matchPresidentialRosterCandidateToFec({
       electionYear: 2028,
       expectedParty: "Democratic",
-      candidate: rosterCandidate({ display_name: "Jane President" }),
+      candidate: rosterCandidateWithoutFec({ display_name: "Jane President" }),
       options: {
         ...options(),
+        getByFecId: vi.fn().mockResolvedValue(null),
         searchByName: vi.fn().mockResolvedValue([
           fecCandidate({
             fecCandidateId: "P80000020",
@@ -251,9 +273,10 @@ describe("matchPresidentialRosterCandidateToFec", () => {
     const match = await matchPresidentialRosterCandidateToFec({
       electionYear: 2028,
       expectedParty: "Democratic",
-      candidate: rosterCandidate({ display_name: "Jane President" }),
+      candidate: rosterCandidateWithoutFec({ display_name: "Jane President" }),
       options: {
         ...options(),
+        getByFecId: vi.fn().mockResolvedValue(null),
         searchByName: vi.fn().mockResolvedValue([
           fecCandidate({
             fecCandidateId: "P80000030",

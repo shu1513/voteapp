@@ -12,6 +12,18 @@ describe("parsePresidentialRosterPayload", () => {
             party: "Democrat",
             fec_candidate_id: " p80000001 ",
             sources: ["https://example.org/a", "https://example.org/a"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+                description: "Official campaign website",
+              },
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+                description: "duplicate is ignored",
+              },
+            ],
             status: "ACTIVE",
             running_mate: {
               display_name: " Pat Running Mate ",
@@ -22,7 +34,14 @@ describe("parsePresidentialRosterPayload", () => {
           {
             display_name: "Pat Suspended",
             party: "Democratic",
+            fec_candidate_id: "P80000003",
             sources: ["https://example.org/b"],
+            qualification_evidence: [
+              {
+                kind: "public_campaign_launch",
+                source_url: "https://example.org/pat-launch",
+              },
+            ],
             status: "withdrawn",
           },
         ],
@@ -41,6 +60,13 @@ describe("parsePresidentialRosterPayload", () => {
         party: "Democrat",
         fec_candidate_id: "P80000001",
         sources: ["https://example.org/a"],
+        qualification_evidence: [
+          {
+            kind: "official_campaign_website",
+            source_url: "https://jane.example.org",
+            description: "Official campaign website",
+          },
+        ],
         status: "active",
         running_mate: {
           display_name: "Pat Running Mate",
@@ -51,7 +77,14 @@ describe("parsePresidentialRosterPayload", () => {
       {
         display_name: "Pat Suspended",
         party: "Democratic",
+        fec_candidate_id: "P80000003",
         sources: ["https://example.org/b"],
+        qualification_evidence: [
+          {
+            kind: "public_campaign_launch",
+            source_url: "https://example.org/pat-launch",
+          },
+        ],
         status: "withdrawn",
       },
     ]);
@@ -64,7 +97,14 @@ describe("parsePresidentialRosterPayload", () => {
           {
             display_name: "Wrong Primary",
             party: "Republican",
+            fec_candidate_id: "P80000001",
             sources: ["https://example.org/a"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://wrong.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -83,7 +123,14 @@ describe("parsePresidentialRosterPayload", () => {
           {
             display_name: "Jane GOP",
             party: "GOP",
+            fec_candidate_id: "P80000001",
             sources: ["https://example.org/a"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://gop.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -101,7 +148,14 @@ describe("parsePresidentialRosterPayload", () => {
           {
             display_name: "Jane President",
             party: "Democratic",
+            fec_candidate_id: "P80000001",
             sources: [],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -114,7 +168,14 @@ describe("parsePresidentialRosterPayload", () => {
           {
             display_name: "Jane President",
             party: "Democratic",
+            fec_candidate_id: "P80000001",
             sources: ["https://example.org/a"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "maybe",
           },
         ],
@@ -129,6 +190,12 @@ describe("parsePresidentialRosterPayload", () => {
             party: "Democratic",
             fec_candidate_id: "H0CA00001",
             sources: ["https://example.org/a"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -143,6 +210,12 @@ describe("parsePresidentialRosterPayload", () => {
             party: "Democratic",
             fec_candidate_id: "PABCDEFGH",
             sources: ["https://example.org/a"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -155,7 +228,14 @@ describe("parsePresidentialRosterPayload", () => {
           {
             display_name: "Jane President",
             party: "Democratic",
+            fec_candidate_id: "P80000001",
             sources: ["https://example.org/a"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
             running_mate: {
               display_name: "Pat Running Mate",
@@ -168,13 +248,62 @@ describe("parsePresidentialRosterPayload", () => {
     ).toBe(false);
   });
 
+  it("rejects candidates without FEC IDs or non-FEC qualification evidence", () => {
+    expect(
+      parsePresidentialRosterPayload({
+        candidates: [
+          {
+            display_name: "No FEC",
+            party: "Democratic",
+            sources: ["https://example.org/a"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://nofec.example.org",
+              },
+            ],
+            status: "active",
+          },
+        ],
+      }).ok
+    ).toBe(false);
+
+    const fecOnly = parsePresidentialRosterPayload({
+      candidates: [
+        {
+          display_name: "FEC Only",
+          party: "Democratic",
+          fec_candidate_id: "P80000001",
+          sources: ["https://www.fec.gov/data/candidate/P80000001"],
+          qualification_evidence: [
+            {
+              kind: "official_campaign_website",
+              source_url: "https://www.fec.gov/data/candidate/P80000001",
+            },
+          ],
+          status: "active",
+        },
+      ],
+    });
+
+    expect(fecOnly.ok).toBe(false);
+    expect(fecOnly.ok ? "" : fecOnly.reason).toContain("qualification_evidence");
+  });
+
   it("rejects running mates with invalid source URLs", () => {
     const parsed = parsePresidentialRosterPayload({
       candidates: [
         {
           display_name: "Jane President",
           party: "Democratic",
+          fec_candidate_id: "P80000001",
           sources: ["https://example.org/a"],
+          qualification_evidence: [
+            {
+              kind: "official_campaign_website",
+              source_url: "https://jane.example.org",
+            },
+          ],
           status: "active",
           running_mate: {
             display_name: "Pat Running Mate",

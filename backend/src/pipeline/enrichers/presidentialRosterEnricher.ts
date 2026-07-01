@@ -50,6 +50,13 @@ type PresidentialRosterCycleRow = {
   party: string | null;
 };
 
+class PresidentialRosterCycleMismatchError extends Error {
+  constructor(readonly reason: string) {
+    super(reason);
+    this.name = "PresidentialRosterCycleMismatchError";
+  }
+}
+
 type ExistingPresidentialCycleCandidateRow = {
   candidate_id: string;
   presidential_profile_researched: boolean;
@@ -73,6 +80,7 @@ type ExistingPresidentialCycleCandidate = {
 export const PRESIDENTIAL_ROSTER_ADMISSION_POLICY = "fec_confirmed_only" as const;
 
 export type PresidentialRosterCycleLookup = {
+  cycleId?: string | null;
   electionYear: number;
   stage?: PresidentialCycleStage;
   party?: string | null;
@@ -237,6 +245,29 @@ async function loadPresidentialRosterCycle(
 ): Promise<PresidentialRosterCycleRow | null> {
   const stage = normalizeStage(input.stage);
   const party = normalizeParty(input.party, stage);
+  const cycleId = input.cycleId?.trim();
+  if (cycleId) {
+    const result = await db.query<PresidentialRosterCycleRow>(
+      `
+        SELECT id, election_year, stage, party
+        FROM public.presidential_cycles
+        WHERE id::text = $1
+        LIMIT 1
+      `,
+      [cycleId]
+    );
+    const row = result.rows[0] ?? null;
+    if (!row) {
+      return null;
+    }
+    if (row.election_year !== input.electionYear || row.stage !== stage || (row.party ?? null) !== party) {
+      throw new PresidentialRosterCycleMismatchError(
+        `presidential cycle ${cycleId} does not match requested year=${input.electionYear} stage=${stage} party=${party ?? "null"}`
+      );
+    }
+    return row;
+  }
+
   const result = await db.query<PresidentialRosterCycleRow>(
     `
       SELECT id, election_year, stage, party
@@ -521,11 +552,28 @@ export async function enrichPresidentialRosterCycle(
 ): Promise<PresidentialRosterEnricherResult> {
   const stage = normalizeStage(input.stage);
   const party = normalizeParty(input.party, stage);
-  const cycle = await loadPresidentialRosterCycle(input.db, {
-    electionYear: input.electionYear,
-    stage,
-    party,
-  });
+  let cycle: PresidentialRosterCycleRow | null;
+  try {
+    cycle = await loadPresidentialRosterCycle(input.db, {
+      cycleId: input.cycleId,
+      electionYear: input.electionYear,
+      stage,
+      party,
+    });
+  } catch (error) {
+    if (error instanceof PresidentialRosterCycleMismatchError) {
+      return {
+        ok: false,
+        electionYear: input.electionYear,
+        stage,
+        party,
+        error: error.reason,
+        retryable: false,
+        errorCode: "CYCLE_CONTEXT_MISMATCH",
+      };
+    }
+    throw error;
+  }
   if (!cycle) {
     return {
       ok: false,

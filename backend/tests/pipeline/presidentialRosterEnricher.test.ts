@@ -37,18 +37,38 @@ function successfulAiResult(): PresidentialRosterAiResult {
         party: "Democratic",
         fec_candidate_id: "P80000001",
         sources: ["https://example.org/jane"],
+        qualification_evidence: [
+          {
+            kind: "official_campaign_website",
+            source_url: "https://jane.example.org",
+          },
+        ],
         status: "active",
       },
       {
         display_name: "Pat Maybe",
         party: "Democratic",
+        fec_candidate_id: "P80000002",
         sources: ["https://example.org/pat"],
+        qualification_evidence: [
+          {
+            kind: "public_campaign_launch",
+            source_url: "https://example.org/pat-launch",
+          },
+        ],
         status: "active",
       },
       {
         display_name: "Chris Suspended",
         party: "Democratic",
+        fec_candidate_id: "P80000003",
         sources: ["https://example.org/chris"],
+        qualification_evidence: [
+          {
+            kind: "public_campaign_launch",
+            source_url: "https://example.org/chris-suspends",
+          },
+        ],
         status: "withdrawn",
       },
     ],
@@ -118,6 +138,70 @@ function existingCycleCandidateRow(overrides: Record<string, unknown> = {}) {
 }
 
 describe("enrichPresidentialRosterCycle", () => {
+  it("loads the exact cycle id when one is supplied", async () => {
+    const db = makeDb();
+    const redis = { sendCommand: vi.fn().mockResolvedValue(1) };
+    const enrichRoster = vi.fn().mockResolvedValue({
+      ok: true,
+      provider: "manual",
+      model: "manual-research:codex",
+      candidates: [],
+      aiRawDebug: null,
+    } satisfies PresidentialRosterAiResult);
+
+    const result = await enrichPresidentialRosterCycle({
+      db,
+      redis,
+      cycleId: CYCLE_ID,
+      electionYear: 2028,
+      stage: "primary",
+      party: "Democratic",
+      dryRun: true,
+      aiConfig: { timeoutMs: 1000 },
+      enrichRoster,
+      loadActiveCandidatesForReconciliation: emptyReconciliationLoader(),
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      cycleId: CYCLE_ID,
+      dryRun: true,
+    });
+    expect(db.query).toHaveBeenNthCalledWith(1, expect.stringContaining("WHERE id::text = $1"), [CYCLE_ID]);
+  });
+
+  it("returns a structured failure when the supplied cycle id does not match the requested context", async () => {
+    const db = makeDb({
+      id: CYCLE_ID,
+      election_year: 2028,
+      stage: "primary",
+      party: "Republican",
+    });
+    const redis = { sendCommand: vi.fn().mockResolvedValue(1) };
+
+    const result = await enrichPresidentialRosterCycle({
+      db,
+      redis,
+      cycleId: CYCLE_ID,
+      electionYear: 2028,
+      stage: "primary",
+      party: "Democratic",
+      dryRun: true,
+      aiConfig: { timeoutMs: 1000 },
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      electionYear: 2028,
+      stage: "primary",
+      party: "Democratic",
+      error:
+        "presidential cycle 00000000-0000-4000-8000-000000000001 does not match requested year=2028 stage=primary party=Democratic",
+      retryable: false,
+      errorCode: "CYCLE_CONTEXT_MISMATCH",
+    });
+  });
+
   it("loads a primary cycle, matches FEC candidates, and emits presidential profile drafts", async () => {
     const db = makeDb();
     db.query = vi
@@ -298,6 +382,12 @@ describe("enrichPresidentialRosterCycle", () => {
             party: "Democratic",
             fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -352,6 +442,12 @@ describe("enrichPresidentialRosterCycle", () => {
             party: "Democratic",
             fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
             running_mate: {
               display_name: "Pat Running Mate",
@@ -432,6 +528,12 @@ describe("enrichPresidentialRosterCycle", () => {
             party: "Democratic",
             fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
             running_mate: {
               display_name: "Pat Running Mate",
@@ -478,7 +580,14 @@ describe("enrichPresidentialRosterCycle", () => {
           {
             display_name: "Jane President",
             party: "Democratic",
+            fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -522,7 +631,14 @@ describe("enrichPresidentialRosterCycle", () => {
           {
             display_name: "Jane Suspended",
             party: "Democratic",
+            fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "public_campaign_launch",
+                source_url: "https://example.org/jane-suspends",
+              },
+            ],
             status: "withdrawn",
           },
         ],
@@ -578,7 +694,14 @@ describe("enrichPresidentialRosterCycle", () => {
           {
             display_name: "Jane President",
             party: "Democratic",
+            fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -720,6 +843,12 @@ describe("enrichPresidentialRosterCycle", () => {
             party: "Democratic",
             fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -786,6 +915,12 @@ describe("enrichPresidentialRosterCycle", () => {
             party: "Democratic",
             fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],
@@ -892,6 +1027,12 @@ describe("enrichPresidentialRosterCycle", () => {
             party: "Democratic",
             fec_candidate_id: "P80000001",
             sources: ["https://example.org/jane"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://jane.example.org",
+              },
+            ],
             status: "active",
           },
         ],

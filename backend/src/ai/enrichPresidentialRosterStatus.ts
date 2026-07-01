@@ -16,6 +16,8 @@ import {
 } from "./researchProviderClient.js";
 import type { AiProvider } from "./types.js";
 
+export type PresidentialRosterStatusResearchProvider = AiProvider | "manual";
+
 type PresidentialRosterStatusErrorCode = ResearchErrorCode | "SCHEMA_MISMATCH";
 
 type PresidentialRosterStatusFailure = {
@@ -54,7 +56,7 @@ export type PresidentialRosterStatusAiConfig = {
 export type PresidentialRosterStatusAiResult =
   | {
       ok: true;
-      provider: AiProvider;
+      provider: PresidentialRosterStatusResearchProvider;
       model: string;
       candidates: PresidentialRosterStatusCandidate[];
       aiRawDebug: Record<string, unknown> | null;
