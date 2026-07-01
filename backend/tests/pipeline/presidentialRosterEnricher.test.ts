@@ -37,18 +37,38 @@ function successfulAiResult(): PresidentialRosterAiResult {
         party: "Democratic",
         fec_candidate_id: "P80000001",
         sources: ["https://example.org/jane"],
+        qualification_evidence: [
+          {
+            kind: "official_campaign_website",
+            source_url: "https://jane.example.org",
+          },
+        ],
         status: "active",
       },
       {
         display_name: "Pat Maybe",
         party: "Democratic",
+        fec_candidate_id: "P80000002",
         sources: ["https://example.org/pat"],
+        qualification_evidence: [
+          {
+            kind: "public_campaign_launch",
+            source_url: "https://example.org/pat-launch",
+          },
+        ],
         status: "active",
       },
       {
         display_name: "Chris Suspended",
         party: "Democratic",
+        fec_candidate_id: "P80000003",
         sources: ["https://example.org/chris"],
+        qualification_evidence: [
+          {
+            kind: "public_campaign_launch",
+            source_url: "https://example.org/chris-suspends",
+          },
+        ],
         status: "withdrawn",
       },
     ],

@@ -2,6 +2,19 @@ import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 export type PresidentialRosterCandidateStatus = "active" | "withdrawn";
 
+export type PresidentialRosterQualificationEvidenceKind =
+  | "official_campaign_website"
+  | "public_campaign_launch"
+  | "party_recognized_candidate_page"
+  | "ballot_access"
+  | "primary_ballot_listing";
+
+export type PresidentialRosterQualificationEvidence = {
+  kind: PresidentialRosterQualificationEvidenceKind;
+  source_url: string;
+  description?: string;
+};
+
 export type PresidentialRosterRunningMate = {
   display_name: string;
   fec_candidate_id?: string;
@@ -11,8 +24,9 @@ export type PresidentialRosterRunningMate = {
 export type PresidentialRosterCandidate = {
   display_name: string;
   party: string;
-  fec_candidate_id?: string;
+  fec_candidate_id: string;
   sources: string[];
+  qualification_evidence: PresidentialRosterQualificationEvidence[];
   status: PresidentialRosterCandidateStatus;
   running_mate?: PresidentialRosterRunningMate;
 };
@@ -26,6 +40,13 @@ export type PresidentialRosterPayloadParseOptions = {
 };
 
 const STATUS_SET = new Set<string>(["active", "withdrawn"]);
+const QUALIFICATION_EVIDENCE_KIND_SET = new Set<string>([
+  "official_campaign_website",
+  "public_campaign_launch",
+  "party_recognized_candidate_page",
+  "ballot_access",
+  "primary_ballot_listing",
+]);
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
@@ -67,6 +88,51 @@ function normalizeFecCandidateId(value: unknown): string | null | undefined {
   }
   const normalized = value.trim().toUpperCase();
   return /^P\d{8}$/.test(normalized) ? normalized : null;
+}
+
+function isFecUrl(value: string): boolean {
+  try {
+    const hostname = new URL(value).hostname.toLowerCase();
+    return hostname === "fec.gov" || hostname.endsWith(".fec.gov");
+  } catch {
+    return false;
+  }
+}
+
+function normalizeQualificationEvidence(value: unknown): PresidentialRosterQualificationEvidence[] | null {
+  if (!Array.isArray(value) || value.length === 0) {
+    return null;
+  }
+
+  const normalized: PresidentialRosterQualificationEvidence[] = [];
+  const seen = new Set<string>();
+  for (const item of value) {
+    if (typeof item !== "object" || item === null || Array.isArray(item)) {
+      return null;
+    }
+    const input = item as Record<string, unknown>;
+    const kind = isNonEmptyString(input.kind) ? input.kind.trim() : "";
+    if (!QUALIFICATION_EVIDENCE_KIND_SET.has(kind)) {
+      return null;
+    }
+    const sourceUrl = isNonEmptyString(input.source_url) ? normalizeHttpUrl(input.source_url) : null;
+    if (!sourceUrl || isFecUrl(sourceUrl)) {
+      return null;
+    }
+    const description = isNonEmptyString(input.description) ? input.description.trim() : undefined;
+    const key = `${kind}:${sourceUrl}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    normalized.push({
+      kind: kind as PresidentialRosterQualificationEvidenceKind,
+      source_url: sourceUrl,
+      ...(description ? { description } : {}),
+    });
+  }
+
+  return normalized.length > 0 ? normalized : null;
 }
 
 function normalizeSources(value: unknown): string[] | null {
@@ -167,8 +233,17 @@ function parseCandidate(
   }
 
   const fecCandidateId = normalizeFecCandidateId(input.fec_candidate_id);
-  if (fecCandidateId === null) {
-    return { ok: false, reason: "candidate.fec_candidate_id must be a presidential FEC ID when present" };
+  if (!fecCandidateId) {
+    return { ok: false, reason: "candidate.fec_candidate_id must be a presidential FEC ID" };
+  }
+
+  const qualificationEvidence = normalizeQualificationEvidence(input.qualification_evidence);
+  if (!qualificationEvidence) {
+    return {
+      ok: false,
+      reason:
+        "candidate.qualification_evidence must include at least one non-FEC source-backed campaign, party, launch, or ballot-access signal",
+    };
   }
 
   const runningMate = parseRunningMate(input.running_mate);
@@ -181,8 +256,9 @@ function parseCandidate(
     candidate: {
       display_name: input.display_name.trim(),
       party,
-      ...(fecCandidateId ? { fec_candidate_id: fecCandidateId } : {}),
+      fec_candidate_id: fecCandidateId,
       sources,
+      qualification_evidence: qualificationEvidence,
       status,
       ...(runningMate.runningMate ? { running_mate: runningMate.runningMate } : {}),
     },

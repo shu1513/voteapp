@@ -15,9 +15,15 @@ function rosterCandidate(overrides: Partial<PresidentialRosterCandidate> = {}): 
     display_name: "Jane President",
     party: "Democratic",
     sources: ["https://example.org/jane"],
+    qualification_evidence: [
+      {
+        kind: "official_campaign_website",
+        source_url: "https://jane.example.org",
+      },
+    ],
     status: "active",
     ...overrides,
-  };
+  } as PresidentialRosterCandidate;
 }
 
 function fecCandidate(overrides: Partial<OpenFecPresidentialCandidate> = {}): OpenFecPresidentialCandidate {

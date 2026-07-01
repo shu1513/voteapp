@@ -18,7 +18,11 @@ describe("buildPresidentialRosterPrompt", () => {
     expect(prompt).toContain('- stage: "primary"');
     expect(prompt).toContain('- party: "Democratic"');
     expect(prompt).toContain('"display_name": "candidate name; ballot-listed name if available"');
-    expect(prompt).toContain('"fec_candidate_id": "FEC presidential candidate ID if known, otherwise omit"');
+    expect(prompt).toContain('"fec_candidate_id": "required FEC presidential candidate ID"');
+    expect(prompt).toContain('"qualification_evidence": [');
+    expect(prompt).toContain(
+      '"kind": "official_campaign_website|public_campaign_launch|party_recognized_candidate_page|ballot_access|primary_ballot_listing"'
+    );
     expect(prompt).toContain('"status": "active|withdrawn"');
     expect(prompt).toContain('"running_mate": {');
     expect(prompt).toContain('"display_name": "officially announced running mate name"');
@@ -32,9 +36,9 @@ describe("buildPresidentialRosterPrompt", () => {
     );
     expect(prompt).not.toContain("Every candidate.party must be");
     expect(prompt).not.toContain("possible-contender names");
-    expect(prompt).toContain(
-      "Only return people who have formally declared, filed with the FEC, or launched an official campaign. If no candidates meet this standard, return candidates: []."
-    );
+    expect(prompt).toContain("FEC filing alone is not enough.");
+    expect(prompt).toContain("Only return people with both a matching presidential FEC candidate ID");
+    expect(prompt).toContain("qualification_evidence.source_url must support the qualification signal");
   });
 
   it("trims party and includes retry feedback", () => {
