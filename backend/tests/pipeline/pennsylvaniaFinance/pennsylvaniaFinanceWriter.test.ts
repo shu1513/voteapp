@@ -142,6 +142,41 @@ describe("pennsylvaniaFinanceWriter", () => {
     expect(sql.some((statement) => statement.includes("INSERT INTO public.pa_candidate_finance_outside_group_breakdowns"))).toBe(true);
   });
 
+  it("preserves prior outside totals when a partial refresh does not have expenditure data", async () => {
+    const client = {
+      query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
+      release: vi.fn(),
+    };
+    const db = {
+      query: vi.fn(),
+      connect: vi.fn().mockResolvedValue(client),
+    };
+
+    await replacePennsylvaniaCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+      summary: {
+        totalReceipts: 350,
+        directContributionTotal: 350,
+        outsideSupportTotal: null,
+        outsideOpposeTotal: null,
+      },
+    });
+
+    const summaryCall = client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.pa_candidate_finance_summaries")
+    );
+    expect(String(summaryCall?.[0])).toContain(
+      "outside_support_total = COALESCE(\n          EXCLUDED.outside_support_total,\n          pa_candidate_finance_summaries.outside_support_total\n        )"
+    );
+    expect(String(summaryCall?.[0])).toContain(
+      "outside_oppose_total = COALESCE(\n          EXCLUDED.outside_oppose_total,\n          pa_candidate_finance_summaries.outside_oppose_total\n        )"
+    );
+    expect(summaryCall?.[1]?.[6]).toBeNull();
+    expect(summaryCall?.[1]?.[7]).toBeNull();
+  });
+
   it("rejects outside breakdown snapshots without matching outside groups", async () => {
     const db = createMockDb();
 
