@@ -221,6 +221,8 @@ function isSoftScopeAmbiguous(districtType: ElectionDistrictType, entry: Electio
     !hasAny(text, [
       /\bu\.?s\.?\s+house\b/,
       /\bu\.?s\.?\s+house\s+of\s+representatives?\b/,
+      /\bu\.?s\.?\s+representative\b/,
+      /\bunited states representative\b/,
       /\brepresentative in congress\b/,
       /\bcongressional district\b/,
     ])
