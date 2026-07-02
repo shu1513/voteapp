@@ -101,7 +101,14 @@ export async function findTicketLeadCandidateIdByDisplayName(input: {
         ON c.id = ce.candidate_id
       WHERE ce.election_id = $1
         AND c.deleted_at IS NULL
-        AND lower(trim(coalesce(c.display_name, c.first_name || ' ' || c.last_name))) = lower(trim($2))
+        AND (
+          lower(trim(coalesce(NULLIF(c.display_name, ''), c.first_name || ' ' || c.last_name))) = lower(trim($2))
+          OR lower(trim(c.first_name || ' ' || c.last_name)) = lower(trim($2))
+          OR (
+            position(',' in $2) > 0
+            AND lower(trim(c.first_name || ' ' || c.last_name)) = lower(trim(split_part($2, ',', 2) || ' ' || split_part($2, ',', 1)))
+          )
+        )
     `,
     [electionId, leadDisplayName]
   );

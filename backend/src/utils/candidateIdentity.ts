@@ -56,8 +56,23 @@ export function normalizeOptionalUrl(value: string | null | undefined): string |
 }
 
 export function splitDisplayNameToFirstLast(displayName: string): { firstName: string; lastName: string } {
-  const tokens = displayName
-    .trim()
+  const trimmed = displayName.trim();
+  if (trimmed.includes(",")) {
+    const [lastNamePart, givenNamePart] = trimmed.split(",", 2);
+    const givenTokens = (givenNamePart ?? "")
+      .trim()
+      .split(/\s+/)
+      .filter((token) => token.length > 0);
+    const lastName = (lastNamePart ?? "").trim();
+    if (givenTokens.length > 0 && lastName.length > 0) {
+      return {
+        firstName: givenTokens[0]!,
+        lastName,
+      };
+    }
+  }
+
+  const tokens = trimmed
     .split(/\s+/)
     .filter((token) => token.length > 0);
 

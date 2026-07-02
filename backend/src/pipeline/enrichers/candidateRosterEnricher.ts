@@ -16,7 +16,7 @@ import {
   STAGING_CANDIDATE_ROSTER_ENRICHER_GROUP,
   STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
 } from "../../config/electionsPipeline.js";
-import { normalizeCandidateName } from "../../utils/candidateIdentity.js";
+import { normalizeCandidateName, splitDisplayNameToFirstLast } from "../../utils/candidateIdentity.js";
 import { parseCandidateRosterPayload, type CandidateRosterEntry } from "../../contracts/candidateRosterPayloadContract.js";
 import {
   defaultOfficeCandidateEligibilityConfig,
@@ -113,6 +113,11 @@ function mergeSeedUrls(...lists: Array<readonly string[] | undefined>): string[]
     }
   }
   return merged;
+}
+
+function normalizeDisplayNameFirstLast(displayName: string): string {
+  const name = splitDisplayNameToFirstLast(displayName);
+  return normalizeCandidateName(`${name.firstName} ${name.lastName}`);
 }
 
 function normalizeFecIds(values: readonly string[] | undefined): string[] {
@@ -383,7 +388,7 @@ async function recordCandidateRosterAiFailure(
   );
 }
 
-async function filterAlreadyLinkedCandidates(
+export async function filterAlreadyLinkedCandidates(
   pool: Pool,
   electionId: string,
   candidates: CandidateRosterIndexedEntry[]
@@ -412,7 +417,7 @@ async function filterAlreadyLinkedCandidates(
 
   const inputNameCounts = new Map<string, number>();
   for (const candidate of candidates) {
-    const normalizedName = normalizeCandidateName(candidate.display_name);
+    const normalizedName = normalizeDisplayNameFirstLast(candidate.display_name);
     if (normalizedName.length === 0) {
       continue;
     }
@@ -420,11 +425,14 @@ async function filterAlreadyLinkedCandidates(
   }
 
   return candidates.filter((candidate) => {
-    const normalizedName = normalizeCandidateName(candidate.display_name);
+    const normalizedName = normalizeDisplayNameFirstLast(candidate.display_name);
     if (normalizedName.length === 0) {
       return false;
     }
     if ((inputNameCounts.get(normalizedName) ?? 0) > 1) {
+      return true;
+    }
+    if (candidate.running_mate) {
       return true;
     }
     return !linkedNames.has(normalizedName);

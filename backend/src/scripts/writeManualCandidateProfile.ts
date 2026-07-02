@@ -32,6 +32,7 @@ import {
   writeManualResearchRepairReport,
   type ManualResearchRepairGap,
 } from "./manualResearchRepairReport.js";
+import { normalizeCandidateName, splitDisplayNameToFirstLast } from "../utils/candidateIdentity.js";
 
 type ElectionContextRow = {
   election_id: string;
@@ -206,6 +207,16 @@ function normalizeStringArray(values: readonly string[] | undefined): string[] {
   return [...new Set((values ?? []).map((value) => value.trim()).filter((value) => value.length > 0))];
 }
 
+function displayNamesReferToSameCandidate(left: string, right: string): boolean {
+  if (left.trim() === right.trim()) {
+    return true;
+  }
+  const leftName = splitDisplayNameToFirstLast(left);
+  const rightName = splitDisplayNameToFirstLast(right);
+  return normalizeCandidateName(`${leftName.firstName} ${leftName.lastName}`) ===
+    normalizeCandidateName(`${rightName.firstName} ${rightName.lastName}`);
+}
+
 async function loadRosterIdentityHints(input: {
   pool: Pool;
   electionId: string;
@@ -266,7 +277,7 @@ async function loadRosterIdentityHints(input: {
     if (!match) {
       throw new Error(`No candidate roster row found for roster_index=${input.rosterIndex}`);
     }
-    if (match.displayName !== input.displayName) {
+    if (!displayNamesReferToSameCandidate(match.displayName, input.displayName)) {
       throw new Error(
         `Profile display_name (${input.displayName}) does not match roster_index=${input.rosterIndex} display_name (${match.displayName}).`
       );
@@ -274,7 +285,7 @@ async function loadRosterIdentityHints(input: {
     return match;
   }
 
-  const matches = candidates.filter((candidate) => candidate.displayName === input.displayName);
+  const matches = candidates.filter((candidate) => displayNamesReferToSameCandidate(candidate.displayName, input.displayName));
   if (matches.length === 0) {
     return null;
   }

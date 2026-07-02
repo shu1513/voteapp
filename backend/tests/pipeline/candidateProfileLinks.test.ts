@@ -59,6 +59,8 @@ describe("findTicketLeadCandidateIdByDisplayName", () => {
         leadDisplayName: "Begich, Tom",
       })
     ).resolves.toEqual({ ok: true, candidateId: "lead-1" });
+    expect(String(query.mock.calls[0]?.[0])).toContain("split_part($2, ',', 2)");
+    expect(query.mock.calls[0]?.[1]).toEqual(["election-1", "Begich, Tom"]);
   });
 
   it("fails closed on not-found and ambiguous leads", async () => {
