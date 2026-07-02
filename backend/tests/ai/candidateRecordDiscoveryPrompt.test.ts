@@ -90,6 +90,8 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).toContain(
       "For damaging claims, require official/legal sources or reputable news and do not state allegations as proven facts."
     );
+    expect(prompt).toContain("There is no target number of records.");
+    expect(prompt).toContain("Include both favorable and unfavorable records when they exist");
     expect(prompt).not.toContain("Do not include rumors or unverified accusations.");
     expect(prompt).not.toContain("Starting reference URLs");
     expect(prompt).not.toContain("Return records only about this exact candidate in this election context");
