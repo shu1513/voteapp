@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 import { createClient } from "redis";
 
@@ -46,15 +47,51 @@ function toReason(error: unknown): string {
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:elections:inject -- --file payload.json [--ingest-key key] [--run-id id] [--dry-run]",
+    "  npm run manual:elections:inject -- --file payload.json [--ingest-key key] [--run-id id] [--review-approve] [--dry-run]",
     "",
     "Payload must match ElectionEnrichedPayload and will be staged for the existing elections validator.",
+    "",
+    "--review-approve is the manual equivalent of the AI review retry for validator soft-fails:",
+    "the payload must carry review_decision: \"approve\" and a review_reason, and the row is staged",
+    "with soft_retry_count already set so the validator's existing review-approve branch applies.",
+    "Use it only after a previous inject soft-failed and the reason was researched and found acceptable.",
+    "It applies only to scope-validation soft-fails. A payload whose entries were all filtered as",
+    "presidential is still rejected regardless of review_decision: presidential contests belong to",
+    "presidential_cycles, never district elections, and approval cannot override that.",
   ].join("\n");
 }
 
 async function readJsonFile(path: string): Promise<unknown> {
   const raw = await readFile(path, "utf8");
   return JSON.parse(raw) as unknown;
+}
+
+// The validator only honors payload review_decision on a retry pass
+// (soft_retry_count > 0), so a manual review approval must stage the row as if
+// the retry already happened. This is the manual equivalent of the AI review
+// pass for validator soft-fails.
+export function resolveReviewApproveFailureDebugJson(
+  payload: { review_decision?: "approve" | "reject"; review_reason?: string },
+  reviewApprove: boolean
+): string | null {
+  if (!reviewApprove) {
+    return null;
+  }
+  if (payload.review_decision !== "approve") {
+    throw new Error(
+      `--review-approve requires the payload to carry review_decision: "approve".\n${usage()}`
+    );
+  }
+  if (!payload.review_reason?.trim()) {
+    throw new Error(
+      `--review-approve requires a non-empty payload review_reason documenting why the soft-fail is acceptable.\n${usage()}`
+    );
+  }
+  return JSON.stringify({
+    soft_retry_count: 1,
+    manual_review_approved: true,
+    manual_approve_at: new Date().toISOString(),
+  });
 }
 
 function extractFamilySourceUrls(payload: unknown): Record<string, string[]> | null {
@@ -122,6 +159,8 @@ async function main(): Promise<void> {
   }
 
   const dryRun = hasFlag("--dry-run");
+  const reviewApprove = hasFlag("--review-approve");
+  const failureDebugJson = resolveReviewApproveFailureDebugJson(parsed.payload, reviewApprove);
   const ingestKey =
     readFlag("--ingest-key") ??
     defaultIngestKey(parsed.payload.district_id);
@@ -131,6 +170,7 @@ async function main(): Promise<void> {
   const aiRawDebug = {
     manual_research: true,
     ...(familySourceUrls ? { family_source_urls: familySourceUrls } : {}),
+    ...(reviewApprove ? { manual_review_approved: true } : {}),
   };
 
   if (dryRun) {
@@ -143,6 +183,7 @@ async function main(): Promise<void> {
           districtId: parsed.payload.district_id,
           entryCount: parsed.payload.entries.length,
           familySourceUrlFamilies: familySourceUrls ? Object.keys(familySourceUrls) : [],
+          reviewApprove,
         },
         null,
         2
@@ -174,7 +215,7 @@ async function main(): Promise<void> {
           failure_debug,
           ai_raw_debug
         )
-        VALUES ($1, $2, $3::jsonb, 'pending', NULL, $4, $5, $6, $7, NULL, NULL, NULL, $8::jsonb)
+        VALUES ($1, $2, $3::jsonb, 'pending', NULL, $4, $5, $6, $7, NULL, NULL, $8::jsonb, $9::jsonb)
         ON CONFLICT (ingest_key) DO UPDATE SET
           item_type = EXCLUDED.item_type,
           payload = EXCLUDED.payload,
@@ -186,7 +227,7 @@ async function main(): Promise<void> {
           prompt_version = EXCLUDED.prompt_version,
           validated_at = NULL,
           written_at = NULL,
-          failure_debug = NULL,
+          failure_debug = EXCLUDED.failure_debug,
           ai_raw_debug = EXCLUDED.ai_raw_debug,
           updated_at = now()
       `,
@@ -198,6 +239,7 @@ async function main(): Promise<void> {
         "manual-research:codex",
         ELECTION_ENRICHMENT_SCHEMA_VERSION,
         ELECTION_PROMPT_VERSION,
+        failureDebugJson,
         JSON.stringify(aiRawDebug),
       ]
     );
@@ -237,6 +279,7 @@ async function main(): Promise<void> {
           districtId: parsed.payload.district_id,
           entryCount: parsed.payload.entries.length,
           familySourceUrlFamilies: familySourceUrls ? Object.keys(familySourceUrls) : [],
+          reviewApprove,
           next: [
             "npm run elections:validate -- --once",
             "npm run elections:write -- --once",
@@ -252,8 +295,11 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error("manual elections inject failed:", message);
-  process.exitCode = 1;
-});
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("manual elections inject failed:", message);
+    process.exitCode = 1;
+  });
+}
