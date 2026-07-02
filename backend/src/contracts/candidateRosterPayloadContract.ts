@@ -173,11 +173,15 @@ export function parseCandidateRosterPayload(
   }
 
   if (requireFecIds && input.candidates.length > 0 && candidates.length === 0) {
+    // Cap the embedded name list: this reason is reused verbatim as AI retry
+    // feedback, so an all-skipped mega-roster must not inflate the prompt.
+    const skippedPreview = skippedCandidatesWithoutFecIds.slice(0, 10);
+    const overflow = skippedCandidatesWithoutFecIds.length - skippedPreview.length;
     return {
       ok: false,
-      reason: `payload.candidates: no candidate has a FEC ID for this federal contest (skipped: ${skippedCandidatesWithoutFecIds.join(
+      reason: `payload.candidates: no candidate has a FEC ID for this federal contest (skipped: ${skippedPreview.join(
         "; "
-      )})`,
+      )}${overflow > 0 ? `; +${overflow} more` : ""})`,
     };
   }
 
