@@ -57,6 +57,64 @@ export async function upsertCandidateElection(input: {
   return { created: Boolean(result.rows[0]?.created) };
 }
 
+export async function setCandidateElectionRunningMate(input: {
+  db: Queryable;
+  electionId: string;
+  candidateId: string;
+  runningMateCandidateId: string;
+}): Promise<{ updatedCount: number }> {
+  const electionId = requireNonEmpty(input.electionId, "election id");
+  const candidateId = requireNonEmpty(input.candidateId, "candidate id");
+  const runningMateCandidateId = requireNonEmpty(input.runningMateCandidateId, "running mate candidate id");
+  if (candidateId === runningMateCandidateId) {
+    throw new Error("running mate candidate id must differ from the ticket lead candidate id");
+  }
+
+  const result = await input.db.query(
+    `
+      UPDATE public.candidate_elections
+      SET running_mate_candidate_id = $3::uuid,
+          updated_at = now()
+      WHERE election_id = $1
+        AND candidate_id = $2
+        AND running_mate_candidate_id IS DISTINCT FROM $3::uuid
+    `,
+    [electionId, candidateId, runningMateCandidateId]
+  );
+
+  return { updatedCount: result.rowCount ?? 0 };
+}
+
+export async function findTicketLeadCandidateIdByDisplayName(input: {
+  db: Queryable;
+  electionId: string;
+  leadDisplayName: string;
+}): Promise<{ ok: true; candidateId: string } | { ok: false; reason: "not_found" | "ambiguous" }> {
+  const electionId = requireNonEmpty(input.electionId, "election id");
+  const leadDisplayName = requireNonEmpty(input.leadDisplayName, "ticket lead display name");
+
+  const result = await input.db.query<{ candidate_id: string }>(
+    `
+      SELECT ce.candidate_id
+      FROM public.candidate_elections AS ce
+      JOIN public.candidates AS c
+        ON c.id = ce.candidate_id
+      WHERE ce.election_id = $1
+        AND c.deleted_at IS NULL
+        AND lower(trim(coalesce(c.display_name, c.first_name || ' ' || c.last_name))) = lower(trim($2))
+    `,
+    [electionId, leadDisplayName]
+  );
+
+  if (result.rows.length === 0) {
+    return { ok: false, reason: "not_found" };
+  }
+  if (result.rows.length > 1) {
+    return { ok: false, reason: "ambiguous" };
+  }
+  return { ok: true, candidateId: result.rows[0]!.candidate_id };
+}
+
 export async function upsertPresidentialCycleCandidate(input: {
   client: PoolClient;
   cycleId: string;

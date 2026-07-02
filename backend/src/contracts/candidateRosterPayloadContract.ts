@@ -1,11 +1,18 @@
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
+export type CandidateRosterRunningMate = {
+  display_name: string;
+  party?: string;
+  sources: string[];
+};
+
 export type CandidateRosterEntry = {
   display_name: string;
   party?: string;
   is_incumbent?: boolean;
   fec_ids?: string[];
   state_filing_ids?: string[];
+  running_mate?: CandidateRosterRunningMate;
   sources: string[];
 };
 
@@ -118,6 +125,33 @@ function parseEntry(
   }
   const normalizedStateFilingIds = stateFilingIds ?? undefined;
 
+  let runningMate: CandidateRosterRunningMate | undefined;
+  if (input.running_mate !== undefined && input.running_mate !== null) {
+    if (typeof input.running_mate !== "object" || Array.isArray(input.running_mate)) {
+      return { ok: false, reason: "row.running_mate must be an object when provided" };
+    }
+    const mate = input.running_mate as Record<string, unknown>;
+    if (!isNonEmptyString(mate.display_name)) {
+      return { ok: false, reason: "row.running_mate.display_name must be a non-empty string" };
+    }
+    const mateSources = normalizeSources(mate.sources);
+    if (!mateSources) {
+      return { ok: false, reason: "row.running_mate.sources must contain at least one valid URL" };
+    }
+    let mateParty: string | undefined;
+    if (mate.party !== undefined && mate.party !== null) {
+      if (!isNonEmptyString(mate.party)) {
+        return { ok: false, reason: "row.running_mate.party must be a non-empty string when provided" };
+      }
+      mateParty = mate.party.trim();
+    }
+    runningMate = {
+      display_name: mate.display_name.trim(),
+      ...(mateParty ? { party: mateParty } : {}),
+      sources: mateSources,
+    };
+  }
+
   return {
     ok: true,
     entry: {
@@ -126,6 +160,7 @@ function parseEntry(
       ...(isIncumbent !== undefined ? { is_incumbent: isIncumbent } : {}),
       ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),
       ...(normalizedStateFilingIds !== undefined ? { state_filing_ids: normalizedStateFilingIds } : {}),
+      ...(runningMate ? { running_mate: runningMate } : {}),
       sources,
     },
   };
