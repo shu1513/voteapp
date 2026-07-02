@@ -59,7 +59,10 @@ export function buildCandidateRosterPrompt(input: CandidateRosterPromptInput): s
     "- display_name must match the ballot-listed candidate name exactly when available (do not substitute legal/full names).",
     "- Do not deduplicate by display_name; include each ballot-listed candidate row, even for same-name candidates.",
     ...(includeFecIds
-      ? ["- For this federal contest, fec_ids is required for each candidate and must include one or more FEC candidate IDs."]
+      ? [
+          "- For this federal contest, fec_ids is required for each candidate and must include one or more current-cycle FEC candidate IDs.",
+          "- Omit candidates who have no current-cycle FEC candidate ID: candidates who never registered with the FEC are not treated as serious contenders. Do not reuse FEC IDs from older election cycles.",
+        ]
       : []),
     "- Each candidate must include at least one supporting source URL.",
     "- return JSON only (no prose, no markdown).",

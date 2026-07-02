@@ -876,6 +876,9 @@ export async function enrichCandidateRoster(
           provider_response_text: trimDebugText(generated.rawText),
           roster_prompt_variant: includeParty ? "standard" : "nonpartisan",
           roster_research_mode: researchMode,
+          ...(parsed.skippedCandidatesWithoutFecIds.length > 0
+            ? { roster_skipped_no_fec_id: parsed.skippedCandidatesWithoutFecIds }
+            : {}),
           ...(generated.debugMeta ?? {}),
         },
       };

@@ -103,7 +103,6 @@ function parseEntry(
   }
 
   const allowFecIds = options.allowFecIds !== false;
-  const requireFecIds = options.requireFecIds === true;
   if (!allowFecIds && input.fec_ids !== undefined && input.fec_ids !== null) {
     return { ok: false, reason: "row.fec_ids is not allowed for this election context" };
   }
@@ -112,9 +111,6 @@ function parseEntry(
     return { ok: false, reason: "row.fec_ids must be an array of non-empty strings when provided" };
   }
   const normalizedFecIds = fecIds ?? undefined;
-  if (requireFecIds && (!normalizedFecIds || normalizedFecIds.length === 0)) {
-    return { ok: false, reason: "row.fec_ids is required for this election context" };
-  }
 
   const stateFilingIds = normalizeOptionalStringArray(input.state_filing_ids);
   if (stateFilingIds === null) {
@@ -139,7 +135,12 @@ export function parseCandidateRosterPayload(
   payload: unknown,
   options: CandidateRosterParseOptions = {}
 ):
-  | { ok: true; payload: CandidateRosterPayload }
+  | {
+      ok: true;
+      payload: CandidateRosterPayload;
+      skippedCandidatesWithoutFecIds: string[];
+      keptCandidateIndexes: number[];
+    }
   | { ok: false; reason: string } {
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
     return { ok: false, reason: "payload must be an object" };
@@ -150,14 +151,39 @@ export function parseCandidateRosterPayload(
     return { ok: false, reason: "payload.candidates must be array" };
   }
 
+  // Federal contests require FEC registration per candidate. Candidates without a
+  // current FEC candidate ID are excluded from the roster by policy rather than
+  // failing the whole payload, so official rosters that mix registered and
+  // unregistered filers can still import their serious contenders.
+  const requireFecIds = options.requireFecIds === true;
   const candidates: CandidateRosterEntry[] = [];
+  const skippedCandidatesWithoutFecIds: string[] = [];
+  const keptCandidateIndexes: number[] = [];
   for (const [index, row] of input.candidates.entries()) {
     const parsed = parseEntry(row, options);
     if (!parsed.ok) {
       return { ok: false, reason: `payload.candidates[${index}]: ${parsed.reason}` };
     }
+    if (requireFecIds && (!parsed.entry.fec_ids || parsed.entry.fec_ids.length === 0)) {
+      skippedCandidatesWithoutFecIds.push(parsed.entry.display_name);
+      continue;
+    }
     candidates.push(parsed.entry);
+    keptCandidateIndexes.push(index);
   }
 
-  return { ok: true, payload: { candidates } };
+  if (requireFecIds && input.candidates.length > 0 && candidates.length === 0) {
+    // Cap the embedded name list: this reason is reused verbatim as AI retry
+    // feedback, so an all-skipped mega-roster must not inflate the prompt.
+    const skippedPreview = skippedCandidatesWithoutFecIds.slice(0, 10);
+    const overflow = skippedCandidatesWithoutFecIds.length - skippedPreview.length;
+    return {
+      ok: false,
+      reason: `payload.candidates: no candidate has a FEC ID for this federal contest (skipped: ${skippedPreview.join(
+        "; "
+      )}${overflow > 0 ? `; +${overflow} more` : ""})`,
+    };
+  }
+
+  return { ok: true, payload: { candidates }, skippedCandidatesWithoutFecIds, keptCandidateIndexes };
 }

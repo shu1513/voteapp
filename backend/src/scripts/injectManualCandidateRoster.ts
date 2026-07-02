@@ -136,6 +136,7 @@ export function buildInjectedCandidateRosterStagingPayload(input: {
   electionId: string;
   rawPayload: unknown;
   candidates: readonly CandidateRosterEntry[];
+  keptCandidateIndexes?: readonly number[];
 }): { election_id: string; candidates: Array<CandidateRosterEntry & CandidateRosterRawHints> } {
   const rawCandidates =
     typeof input.rawPayload === "object" && input.rawPayload !== null && !Array.isArray(input.rawPayload)
@@ -146,7 +147,9 @@ export function buildInjectedCandidateRosterStagingPayload(input: {
     election_id: input.electionId,
     candidates: input.candidates.map((candidate, index) => ({
       ...candidate,
-      ...extractRawRosterHints(rawRows[index]),
+      // Parsed candidates may be a filtered subset of the raw rows (federal
+      // no-FEC-ID policy), so hints must come from the original row position.
+      ...extractRawRosterHints(rawRows[input.keptCandidateIndexes?.[index] ?? index]),
     })),
   };
 }
@@ -206,6 +209,7 @@ async function main(): Promise<void> {
       electionId,
       rawPayload,
       candidates: parsed.payload.candidates,
+      keptCandidateIndexes: parsed.keptCandidateIndexes,
     });
 
     if (dryRun) {
@@ -219,6 +223,7 @@ async function main(): Promise<void> {
             researchMode,
             requiresFecIds: includeFecIds,
             candidateCount: parsed.payload.candidates.length,
+            skippedCandidatesWithoutFecIds: parsed.skippedCandidatesWithoutFecIds,
           },
           null,
           2
@@ -270,7 +275,12 @@ async function main(): Promise<void> {
         JSON.stringify(stagedPayload),
         runId,
         "manual-research:codex",
-        JSON.stringify({ manual_research: true }),
+        JSON.stringify({
+          manual_research: true,
+          ...(parsed.skippedCandidatesWithoutFecIds.length > 0
+            ? { roster_skipped_no_fec_id: parsed.skippedCandidatesWithoutFecIds }
+            : {}),
+        }),
       ]
     );
 
@@ -311,6 +321,7 @@ async function main(): Promise<void> {
           researchMode,
           requiresFecIds: includeFecIds,
           candidateCount: parsed.payload.candidates.length,
+          skippedCandidatesWithoutFecIds: parsed.skippedCandidatesWithoutFecIds,
           next: ["npm run candidates:roster:enrich -- --once"],
         },
         null,

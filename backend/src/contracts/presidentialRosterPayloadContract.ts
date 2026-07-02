@@ -35,6 +35,11 @@ export type PresidentialRosterPayload = {
   candidates: PresidentialRosterCandidate[];
 };
 
+export type PresidentialRosterSkippedCandidate = {
+  display_name: string;
+  reason: "missing_fec_candidate_id" | "missing_qualification_evidence";
+};
+
 export type PresidentialRosterPayloadParseOptions = {
   expectedParty?: string | null;
 };
@@ -198,49 +203,70 @@ function parseRunningMate(
   };
 }
 
-function parseCandidate(
-  value: unknown,
-  options: PresidentialRosterPayloadParseOptions
-): { ok: true; candidate: PresidentialRosterCandidate } | { ok: false; reason: string } {
+type ParseCandidateResult =
+  | { kind: "ok"; candidate: PresidentialRosterCandidate }
+  | { kind: "invalid"; reason: string }
+  | { kind: "skipped"; skipped: PresidentialRosterSkippedCandidate };
+
+function parseCandidate(value: unknown, options: PresidentialRosterPayloadParseOptions): ParseCandidateResult {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    return { ok: false, reason: "payload.candidates contains invalid row" };
+    return { kind: "invalid", reason: "payload.candidates contains invalid row" };
   }
 
   const input = value as Record<string, unknown>;
   if (!isNonEmptyString(input.display_name)) {
-    return { ok: false, reason: "candidate.display_name must be non-empty string" };
+    return { kind: "invalid", reason: "candidate.display_name must be non-empty string" };
   }
   if (!isNonEmptyString(input.party)) {
-    return { ok: false, reason: "candidate.party must be non-empty string" };
+    return { kind: "invalid", reason: "candidate.party must be non-empty string" };
   }
 
+  const displayName = input.display_name.trim();
   const party = input.party.trim();
   if (!partyMatchesExpected(party, options.expectedParty)) {
     return {
-      ok: false,
+      kind: "invalid",
       reason: `candidate.party does not match expected party ${options.expectedParty}`,
     };
   }
 
   const status = normalizeStatus(input.status);
   if (!status) {
-    return { ok: false, reason: "candidate.status must be active or withdrawn" };
+    return { kind: "invalid", reason: "candidate.status must be active or withdrawn" };
   }
 
   const sources = normalizeSources(input.sources);
   if (!sources) {
-    return { ok: false, reason: "candidate.sources must contain valid URL strings" };
+    return { kind: "invalid", reason: "candidate.sources must contain valid URL strings" };
   }
 
+  // Candidates who never registered a presidential FEC candidacy are excluded by
+  // policy rather than failing the payload. A present-but-malformed ID stays a
+  // hard failure so a typo cannot silently drop a genuinely registered candidate.
   const fecCandidateId = normalizeFecCandidateId(input.fec_candidate_id);
-  if (!fecCandidateId) {
-    return { ok: false, reason: "candidate.fec_candidate_id must be a presidential FEC ID" };
+  if (fecCandidateId === null) {
+    return { kind: "invalid", reason: "candidate.fec_candidate_id must be a presidential FEC ID" };
+  }
+  if (fecCandidateId === undefined) {
+    return {
+      kind: "skipped",
+      skipped: { display_name: displayName, reason: "missing_fec_candidate_id" },
+    };
   }
 
-  const qualificationEvidence = normalizeQualificationEvidence(input.qualification_evidence);
+  // FEC-only filers (no non-FEC qualification signal offered at all) are excluded
+  // by policy. Evidence that is present but malformed stays a hard failure.
+  const rawEvidence = input.qualification_evidence;
+  if (rawEvidence === undefined || rawEvidence === null || (Array.isArray(rawEvidence) && rawEvidence.length === 0)) {
+    return {
+      kind: "skipped",
+      skipped: { display_name: displayName, reason: "missing_qualification_evidence" },
+    };
+  }
+  const qualificationEvidence = normalizeQualificationEvidence(rawEvidence);
   if (!qualificationEvidence) {
     return {
-      ok: false,
+      kind: "invalid",
       reason:
         "candidate.qualification_evidence must include at least one non-FEC source-backed campaign, party, launch, or ballot-access signal",
     };
@@ -248,13 +274,13 @@ function parseCandidate(
 
   const runningMate = parseRunningMate(input.running_mate);
   if (!runningMate.ok) {
-    return { ok: false, reason: runningMate.reason };
+    return { kind: "invalid", reason: runningMate.reason };
   }
 
   return {
-    ok: true,
+    kind: "ok",
     candidate: {
-      display_name: input.display_name.trim(),
+      display_name: displayName,
       party,
       fec_candidate_id: fecCandidateId,
       sources,
@@ -269,7 +295,11 @@ export function parsePresidentialRosterPayload(
   payload: unknown,
   options: PresidentialRosterPayloadParseOptions = {}
 ):
-  | { ok: true; payload: PresidentialRosterPayload }
+  | {
+      ok: true;
+      payload: PresidentialRosterPayload;
+      skippedIneligibleCandidates: PresidentialRosterSkippedCandidate[];
+    }
   | { ok: false; reason: string } {
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
     return { ok: false, reason: "payload must be an object" };
@@ -281,13 +311,31 @@ export function parsePresidentialRosterPayload(
   }
 
   const candidates: PresidentialRosterCandidate[] = [];
+  const skippedIneligibleCandidates: PresidentialRosterSkippedCandidate[] = [];
   for (const row of input.candidates) {
     const parsed = parseCandidate(row, options);
-    if (!parsed.ok) {
+    if (parsed.kind === "invalid") {
       return { ok: false, reason: parsed.reason };
+    }
+    if (parsed.kind === "skipped") {
+      skippedIneligibleCandidates.push(parsed.skipped);
+      continue;
     }
     candidates.push(parsed.candidate);
   }
 
-  return { ok: true, payload: { candidates } };
+  if (input.candidates.length > 0 && candidates.length === 0) {
+    // Cap the embedded name list: this reason is reused verbatim as AI retry
+    // feedback, so an all-skipped mega-roster must not inflate the prompt.
+    const skippedPreview = skippedIneligibleCandidates.slice(0, 10);
+    const overflow = skippedIneligibleCandidates.length - skippedPreview.length;
+    return {
+      ok: false,
+      reason: `payload.candidates: no candidate is FEC-registered with qualification evidence (skipped: ${skippedPreview
+        .map((candidate) => `${candidate.display_name} (${candidate.reason})`)
+        .join("; ")}${overflow > 0 ? `; +${overflow} more` : ""})`,
+    };
+  }
+
+  return { ok: true, payload: { candidates }, skippedIneligibleCandidates };
 }

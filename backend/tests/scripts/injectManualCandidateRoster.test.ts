@@ -52,4 +52,43 @@ describe("buildInjectedCandidateRosterStagingPayload", () => {
       ],
     });
   });
+
+  it("aligns raw hints by original row position when federal filtering drops rows", () => {
+    const payload = buildInjectedCandidateRosterStagingPayload({
+      electionId: "election-1",
+      rawPayload: {
+        candidates: [
+          {
+            display_name: "No Fec Filer",
+            disambiguation_hint: "belongs to the dropped row",
+          },
+          {
+            display_name: "Jane Candidate",
+            fec_ids: ["S0XX00001"],
+            disambiguation_hint: "state senator from Juneau",
+          },
+        ],
+      },
+      candidates: [
+        {
+          display_name: "Jane Candidate",
+          fec_ids: ["S0XX00001"],
+          sources: ["https://example.org/jane"],
+        },
+      ],
+      keptCandidateIndexes: [1],
+    });
+
+    expect(payload).toEqual({
+      election_id: "election-1",
+      candidates: [
+        {
+          display_name: "Jane Candidate",
+          fec_ids: ["S0XX00001"],
+          sources: ["https://example.org/jane"],
+          disambiguation_hint: "state senator from Juneau",
+        },
+      ],
+    });
+  });
 });

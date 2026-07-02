@@ -167,6 +167,9 @@ export async function enrichPresidentialRoster(
         candidates: parsed.payload.candidates,
         aiRawDebug: {
           provider_response_text: trimDebugText(generated.rawText),
+          ...(parsed.skippedIneligibleCandidates.length > 0
+            ? { roster_skipped_ineligible: parsed.skippedIneligibleCandidates }
+            : {}),
           ...(failures.length > 0 ? { prior_failed_attempts: failures } : {}),
           ...(generated.debugMeta ?? {}),
         },

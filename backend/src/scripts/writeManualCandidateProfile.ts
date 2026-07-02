@@ -235,14 +235,17 @@ async function loadRosterIdentityHints(input: {
   const rawCandidates = (row.payload as { candidates: unknown[] }).candidates;
 
   const candidates = parsed.payload.candidates.map((candidate, index) => {
-    const raw = rawCandidates[index];
+    // Parsed candidates may be a filtered subset of the raw rows (federal
+    // no-FEC-ID policy), so raw hints must come from the original row position.
+    const rawIndex = parsed.keptCandidateIndexes[index] ?? index;
+    const raw = rawCandidates[rawIndex];
     const rawObject = typeof raw === "object" && raw !== null && !Array.isArray(raw)
       ? (raw as Record<string, unknown>)
       : {};
     const rosterIndex =
       Number.isInteger(rawObject.roster_index) && Number(rawObject.roster_index) >= 0
         ? Number(rawObject.roster_index)
-        : index;
+        : rawIndex;
     return {
       rosterIndex,
       displayName: candidate.display_name,

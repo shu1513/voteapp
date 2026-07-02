@@ -141,12 +141,11 @@ describe("parseManualPresidentialRosterScriptArgs", () => {
 
 describe("buildManualPresidentialRosterEnrichResult", () => {
   it("returns a manual provider result without calling an AI provider", () => {
-    expect(
-      buildManualPresidentialRosterEnrichResult({
-        payload: payload(),
-        file: "roster.json",
-      })
-    ).toMatchObject({
+    const result = buildManualPresidentialRosterEnrichResult({
+      payload: payload(),
+      file: "roster.json",
+    });
+    expect(result).toMatchObject({
       ok: true,
       provider: "manual",
       model: "manual-research:codex",
@@ -156,6 +155,30 @@ describe("buildManualPresidentialRosterEnrichResult", () => {
         no_ai_provider_call: true,
         source_file: "roster.json",
         candidate_count: 1,
+      },
+    });
+    expect(result.ok ? result.aiRawDebug : {}).not.toHaveProperty("roster_skipped_ineligible");
+  });
+
+  it("surfaces skipped ineligible candidates in aiRawDebug", () => {
+    const result = buildManualPresidentialRosterEnrichResult({
+      payload: payload(),
+      file: "roster.json",
+      skippedIneligibleCandidates: [
+        { display_name: "Never Registered", reason: "missing_fec_candidate_id" },
+        { display_name: "Fec Only Filer", reason: "missing_qualification_evidence" },
+      ],
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      aiRawDebug: {
+        manual_research: true,
+        candidate_count: 1,
+        roster_skipped_ineligible: [
+          { display_name: "Never Registered", reason: "missing_fec_candidate_id" },
+          { display_name: "Fec Only Filer", reason: "missing_qualification_evidence" },
+        ],
       },
     });
   });
@@ -200,6 +223,11 @@ describe("runManualPresidentialRosterWrite", () => {
           provider: "manual",
           model: "manual-research:codex",
           candidates: payload().candidates,
+          aiRawDebug: {
+            roster_skipped_ineligible: [
+              { display_name: "Never Registered", reason: "missing_fec_candidate_id" },
+            ],
+          },
         });
         expect(statusResult).toMatchObject({
           ok: true,
@@ -248,7 +276,23 @@ describe("runManualPresidentialRosterWrite", () => {
 
     const result = await runManualPresidentialRosterWrite({
       options: options(),
-      rawPayload: payload(),
+      rawPayload: {
+        candidates: [
+          ...payload().candidates,
+          {
+            display_name: "Never Registered",
+            party: "Democratic",
+            sources: ["https://example.org/never"],
+            qualification_evidence: [
+              {
+                kind: "official_campaign_website",
+                source_url: "https://never.example.org",
+              },
+            ],
+            status: "active",
+          },
+        ],
+      },
       pool: poolWithCycle(),
       redis: { sendCommand: vi.fn() },
       enrichRosterCycle,
