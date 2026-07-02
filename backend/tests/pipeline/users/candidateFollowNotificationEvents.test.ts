@@ -131,7 +131,7 @@ describe("createCandidateFutureElectionNotificationEvents", () => {
     expect(sql).toContain("JOIN public.elections AS election");
     expect(sql).toContain("candidate.deleted_at IS NULL");
     expect(sql).toContain("candidate.merged_into_candidate_id IS NULL");
-    expect(sql).toContain("election.election_date >= CURRENT_DATE");
+    expect(sql).toContain("election.election_date >= (now() AT TIME ZONE 'Pacific/Honolulu')::date");
     expect(sql).toContain("JOIN public.user_candidate_follows AS follow");
     expect(sql).toContain("follow.notify_elections = true");
     expect(sql).toContain("JOIN public.users AS user_row");

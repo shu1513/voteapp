@@ -3,6 +3,7 @@ import type { Pool, PoolClient } from "pg";
 import type { ElectionDistrictType, ElectionRaceType, ElectionStage, OfficeScope } from "../../types/election.js";
 import type { CandidateElectionStatus } from "../../types/electionResults.js";
 import { isUuid } from "../../utils/uuid.js";
+import { US_LATEST_LOCAL_DATE_SQL } from "../../utils/usLocalDate.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -313,9 +314,9 @@ async function lookupCandidateElections(
         ON office.id = election.office_id
       WHERE candidate_election.candidate_id = $1::uuid
       ORDER BY
-        CASE WHEN election.election_date >= CURRENT_DATE THEN 0 ELSE 1 END ASC,
-        CASE WHEN election.election_date >= CURRENT_DATE THEN election.election_date END ASC,
-        CASE WHEN election.election_date < CURRENT_DATE THEN election.election_date END DESC,
+        CASE WHEN election.election_date >= ${US_LATEST_LOCAL_DATE_SQL} THEN 0 ELSE 1 END ASC,
+        CASE WHEN election.election_date >= ${US_LATEST_LOCAL_DATE_SQL} THEN election.election_date END ASC,
+        CASE WHEN election.election_date < ${US_LATEST_LOCAL_DATE_SQL} THEN election.election_date END DESC,
         election.official_ballot_title ASC,
         candidate_election.id ASC
     `,

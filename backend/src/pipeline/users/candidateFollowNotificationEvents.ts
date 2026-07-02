@@ -1,6 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 
 import { isUuid } from "../../utils/uuid.js";
+import { US_LATEST_LOCAL_DATE_SQL } from "../../utils/usLocalDate.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -113,7 +114,7 @@ export async function createCandidateFutureElectionNotificationEvents(
           AND election.id = $2::uuid
           AND candidate.deleted_at IS NULL
           AND candidate.merged_into_candidate_id IS NULL
-          AND election.election_date >= CURRENT_DATE
+          AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
       ),
       eligible_follows AS (
         SELECT

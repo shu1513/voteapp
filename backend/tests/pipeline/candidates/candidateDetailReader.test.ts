@@ -331,9 +331,9 @@ describe("lookupCandidateDetailById", () => {
     const sql = String(db.query.mock.calls[2]?.[0]);
     expect(sql).toContain("FROM public.candidate_elections AS candidate_election");
     expect(sql).toContain("LEFT JOIN public.offices AS office");
-    expect(sql).toContain("CASE WHEN election.election_date >= CURRENT_DATE THEN 0 ELSE 1 END ASC");
-    expect(sql).toContain("CASE WHEN election.election_date >= CURRENT_DATE THEN election.election_date END ASC");
-    expect(sql).toContain("CASE WHEN election.election_date < CURRENT_DATE THEN election.election_date END DESC");
+    expect(sql).toContain("CASE WHEN election.election_date >= (now() AT TIME ZONE 'Pacific/Honolulu')::date THEN 0 ELSE 1 END ASC");
+    expect(sql).toContain("CASE WHEN election.election_date >= (now() AT TIME ZONE 'Pacific/Honolulu')::date THEN election.election_date END ASC");
+    expect(sql).toContain("CASE WHEN election.election_date < (now() AT TIME ZONE 'Pacific/Honolulu')::date THEN election.election_date END DESC");
   });
 
   it("returns authenticated follow state when the user follows the candidate", async () => {
