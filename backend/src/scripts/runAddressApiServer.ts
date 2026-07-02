@@ -18,7 +18,11 @@ import {
   DEFAULT_AUTH_PASSWORD_RESET_TTL_SECONDS,
   DEFAULT_AUTH_SESSION_TTL_SECONDS,
 } from "../auth/authService.js";
-import { createSessionAwareTrustedUserIdResolver, createTrustedUserIdResolver } from "../api/addressApiAuth.js";
+import {
+  assertTrustedUserIdHeaderConfigIsSafe,
+  createSessionAwareTrustedUserIdResolver,
+  createTrustedUserIdResolver,
+} from "../api/addressApiAuth.js";
 import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
 import type { AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
 import { createApiApp } from "../api/apiServer.js";
@@ -202,6 +206,11 @@ async function main(): Promise<void> {
   // Auth needs Redis for sessions independently of the address cache toggle:
   // do not let ADDRESS_LOOKUP_CACHE_ENABLED=false silently disable auth.
   const authConfigured = Boolean(readOptionalEnv("AUTH_PUBLIC_BASE_URL"));
+  assertTrustedUserIdHeaderConfigIsSafe({
+    sessionAuthIntended: authConfigured,
+    trustedUserIdHeader,
+    allowTrustedHeaderWithSessions: readBooleanEnv("API_TRUSTED_USER_ID_HEADER_ALLOW_WITH_SESSIONS", false),
+  });
   const redis =
     addressCacheEnabled || authConfigured
       ? createClient({ url: readEnv("REDIS_URL", "redis://localhost:6379") })
