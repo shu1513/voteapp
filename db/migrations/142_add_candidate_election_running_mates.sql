@@ -19,3 +19,7 @@ ALTER TABLE public.candidate_elections
 CREATE INDEX idx_candidate_elections_running_mate_candidate_id
   ON public.candidate_elections (running_mate_candidate_id)
   WHERE running_mate_candidate_id IS NOT NULL;
+
+CREATE UNIQUE INDEX uq_candidate_elections_election_running_mate_candidate_id
+  ON public.candidate_elections (election_id, running_mate_candidate_id)
+  WHERE running_mate_candidate_id IS NOT NULL;
