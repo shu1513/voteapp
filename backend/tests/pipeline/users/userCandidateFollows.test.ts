@@ -199,7 +199,7 @@ describe("listUserCandidateFollows", () => {
     expect(sql).toContain("LEFT JOIN LATERAL");
     expect(sql).toContain("FROM public.candidate_records AS record");
     expect(sql).toContain("candidate_election.status NOT IN ('withdrawn', 'lost')");
-    expect(sql).toContain("election.election_date >= CURRENT_DATE");
+    expect(sql).toContain("election.election_date >= (now() AT TIME ZONE 'Pacific/Honolulu')::date");
   });
 
   it("skips stale follows whose candidate is deleted or merged", async () => {

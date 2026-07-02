@@ -31,6 +31,34 @@ export function createTrustedUserIdResolver(
   };
 }
 
+// Startup guard for the trusted-header fallback. The session-aware resolver
+// falls back to the trusted user-id header on every request, so combining
+// session auth with a trusted header means any client that can reach the API
+// directly (bypassing the gateway) can impersonate any user with one header.
+// Deployments that intentionally run both (an authenticated edge gateway in
+// front of session auth) must opt in explicitly.
+//
+// sessionAuthIntended must reflect configuration intent (AUTH_PUBLIC_BASE_URL
+// set), not whether the auth service successfully started: a Redis outage at
+// boot must not silently re-open the header path.
+export function assertTrustedUserIdHeaderConfigIsSafe(input: {
+  sessionAuthIntended: boolean;
+  trustedUserIdHeader: string | null | undefined;
+  allowTrustedHeaderWithSessions: boolean;
+}): void {
+  if (!input.sessionAuthIntended || !input.trustedUserIdHeader) {
+    return;
+  }
+  if (input.allowTrustedHeaderWithSessions) {
+    return;
+  }
+  throw new Error(
+    `API_TRUSTED_USER_ID_HEADER ("${input.trustedUserIdHeader}") is set while session authentication is configured (AUTH_PUBLIC_BASE_URL). ` +
+      "The trusted header lets any direct client impersonate any user, so this combination fails closed. " +
+      "Unset API_TRUSTED_USER_ID_HEADER, or set API_TRUSTED_USER_ID_HEADER_ALLOW_WITH_SESSIONS=true only when an authenticated edge gateway injects the header and strips client-supplied copies."
+  );
+}
+
 export function createSessionAwareTrustedUserIdResolver(options: {
   redis: Pick<AuthSessionRedisClient, "get"> | null;
   trustedUserIdResolver: (input: AddressApiAuthenticatedUserInput) => string | null;
