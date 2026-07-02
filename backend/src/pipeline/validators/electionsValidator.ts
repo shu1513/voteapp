@@ -238,7 +238,17 @@ function isSoftScopeAmbiguous(districtType: ElectionDistrictType, entry: Electio
     return "state_lower entry lacks clear state_lower markers";
   }
 
-  if (districtType === "county" && !hasAny(text, [/\bcounty\b/, /\bsheriff\b/, /\bcounty commissioner\b/, /\bcounty clerk\b/])) {
+  if (
+    districtType === "county" &&
+    !hasAny(text, [
+      /\bcounty\b/,
+      /\bsheriff\b/,
+      /\bcounty commissioner\b/,
+      /\bcounty clerk\b/,
+      /\bassessor\b/,
+      /\bsuperior court\b/,
+    ])
+  ) {
     return "county entry lacks clear county markers";
   }
 
