@@ -20,6 +20,30 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     });
     expect(prompt).toContain('- since_date: "2026-04-16"');
     expect(prompt).toContain("event_date >= since_date");
+    expect(prompt).toContain(
+      "Apply the comprehensiveness and balance rules only within that window; never add older records to balance career history."
+    );
+  });
+
+  it("includes known_current_office only when provided", () => {
+    const withOffice = buildCandidateRecordDiscoveryPrompt({
+      ...baseInput,
+      knownCurrentOffice: "Governor of California",
+    });
+    expect(withOffice).toContain('- known_current_office: "Governor of California"');
+
+    const withoutOffice = buildCandidateRecordDiscoveryPrompt({
+      ...baseInput,
+      knownCurrentOffice: null,
+    });
+    expect(withoutOffice).not.toContain("known_current_office");
+  });
+
+  it("scopes executive-power coverage to candidates who held an executive role", () => {
+    const prompt = buildCandidateRecordDiscoveryPrompt(baseInput);
+    expect(prompt).toContain(
+      "actions taken with executive power (appointments, vetoes, budgets, agency decisions) if they ever held an executive role"
+    );
   });
 
   it("omits since_date for full mode prompts", () => {

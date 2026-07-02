@@ -3,6 +3,7 @@ import type { ElectionContestFamily } from "../../types/election.js";
 
 export type CandidateRecordDiscoveryPromptInput = {
   candidateDisplayName: string;
+  knownCurrentOffice?: string | null;
   districtName: string;
   districtType: string;
   state: string;
@@ -26,7 +27,7 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
   const objectiveRule = useJudicialRecordObjective
     ? "- Research the web for publicly available reliable records about this exact judicial candidate, covering each of: notable cases or rulings they handled (as judge, or as prosecutor/defense/counsel before taking the bench); any discipline, ethics complaints, reversals, or conduct-commission proceedings; and endorsements they made or received. Focus on evidence for evaluating legal competence, integrity and ethics, impartiality, and professional record."
-    : "- Research reliable public records about this exact candidate. If the candidate holds or has EVER held public office, cover each of: major votes they cast and legislation they sponsored; actions taken with executive power (appointments, vetoes, budgets, agency decisions); any court, ethics, or disciplinary proceedings, campaign finance issues, or conflicts of interest; and committees, caucuses, or organizations they led. If the candidate never held public office, cover each of: their career record (companies founded or run, professional work with public impact); organizations, nonprofits, unions, boards, or commissions they led or served on and public advocacy they have done; and any court, legal, or regulatory records.";
+    : "- Research reliable public records about this exact candidate. If the candidate holds or has EVER held public office, cover each of: major votes they cast and legislation they sponsored; actions taken with executive power (appointments, vetoes, budgets, agency decisions) if they ever held an executive role; any court, ethics, or disciplinary proceedings, campaign finance issues, or conflicts of interest; and committees, caucuses, or organizations they led. If the candidate never held public office, cover each of: their career record (companies founded or run, professional work with public impact); organizations, nonprofits, unions, boards, or commissions they led or served on and public advocacy they have done; and any court, legal, or regulatory records.";
 
   return [
     "You are researching substantive public records about one election candidate.",
@@ -35,6 +36,9 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
     "",
     "Candidate + election context:",
     `- candidate_display_name: "${input.candidateDisplayName}"`,
+    ...(input.knownCurrentOffice?.trim()
+      ? [`- known_current_office: "${input.knownCurrentOffice.trim()}"`]
+      : []),
     `- district_name: "${input.districtName}"`,
     `- district_type: "${input.districtType}"`,
     ...(shouldIncludeState(input) ? [`- state: "${input.state}"`] : []),
@@ -64,7 +68,11 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
           "- Describe what the candidate actually did in the case and its effects/impacts.",
         ]
       : []),
-    ...(input.sinceDate ? ['- Include only records with event_date >= since_date.'] : []),
+    ...(input.sinceDate
+      ? [
+          "- Include only records with event_date >= since_date. Apply the comprehensiveness and balance rules only within that window; never add older records to balance career history.",
+        ]
+      : []),
     "- Return the comprehensive set of substantive records across those categories, proportionate to the candidate's actual public career — do not stop at one or two representative records for a documented public figure. There is no target number of records.",
     "- Include both favorable and unfavorable records when they exist; a long public career with only one direction represented is incomplete research.",
     "- records may be an empty array if no reliable actual action/service/accountability records are found.",

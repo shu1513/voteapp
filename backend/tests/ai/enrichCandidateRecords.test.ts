@@ -241,6 +241,51 @@ describe("enrichCandidateRecords", () => {
     expect(verifyHttpUrlReachabilityMock.mock.calls[0]?.[0]).toBe("https://city.example/budget-committee");
   });
 
+  it("validator filters records before since_date so incremental refreshes stay window-scoped", async () => {
+    verifyHttpUrlReachabilityMock.mockResolvedValue({
+      ok: true,
+      normalizedUrl: "https://city.example/recent-vote",
+      finalUrl: "https://city.example/recent-vote",
+      status: 200,
+    });
+
+    const result = await validateCandidateRecordDiscoveryPayload(
+      {
+        records: [
+          {
+            description: "Jane Doe voted for the 2026 city budget amendment.",
+            source_url: "https://city.example/recent-vote",
+            event_date: "2026-05-01",
+          },
+          {
+            description: "Jane Doe served as chair of the city budget committee.",
+            source_url: "https://city.example/old-service",
+            event_date: "2019-01-15",
+          },
+        ],
+      },
+      90000,
+      { sinceDate: "2026-04-16" }
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.records).toEqual([
+      {
+        description: "Jane Doe voted for the 2026 city budget amendment.",
+        source_url: "https://city.example/recent-vote",
+        event_date: "2026-05-01",
+      },
+    ]);
+    // Out-of-window rows are filtered, not treated as repairable drops, and
+    // never reach source verification.
+    expect(result.droppedRecords).toEqual([]);
+    expect(result.validationDebug.records_filtered_before_since_date_count).toBe(1);
+    expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(1);
+  });
+
   it("validator drops pure candidacy rows and keeps public-service records", async () => {
     verifyHttpUrlReachabilityMock.mockResolvedValue({
       ok: true,
