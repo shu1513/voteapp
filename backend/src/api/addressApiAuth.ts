@@ -1,3 +1,5 @@
+import { AUTH_SESSION_COOKIE_NAME, parseCookieHeaderValue } from "../auth/authCookies.js";
+import { resolveAuthSessionUserId, type AuthSessionRedisClient } from "../auth/authSessionStore.js";
 import type { HeaderRecord } from "./addressApiClientIp.js";
 
 export type AddressApiAuthenticatedUserInput = {
@@ -26,5 +28,29 @@ export function createTrustedUserIdResolver(
       return null;
     }
     return parseTrustedUserIdHeader(readHeader(input.headers, trustedUserIdHeader));
+  };
+}
+
+export function createSessionAwareTrustedUserIdResolver(options: {
+  redis: Pick<AuthSessionRedisClient, "get"> | null;
+  trustedUserIdResolver: (input: AddressApiAuthenticatedUserInput) => string | null;
+  cookieName?: string;
+}): (input: AddressApiAuthenticatedUserInput) => Promise<string | null> {
+  const cookieName = options.cookieName ?? AUTH_SESSION_COOKIE_NAME;
+
+  return async (input) => {
+    const cookieSessionId = parseCookieHeaderValue(readHeader(input.headers, "cookie"), cookieName);
+    if (cookieSessionId && options.redis) {
+      try {
+        const sessionUserId = await resolveAuthSessionUserId(options.redis, cookieSessionId);
+        if (sessionUserId) {
+          return sessionUserId;
+        }
+      } catch {
+        // Fall back to the trusted header path below.
+      }
+    }
+
+    return options.trustedUserIdResolver(input);
   };
 }

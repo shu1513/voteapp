@@ -1,58 +1,48 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { createTrustedUserIdResolver, parseTrustedUserIdHeader } from "../../src/api/addressApiAuth.js";
+import { AUTH_SESSION_COOKIE_NAME } from "../../src/auth/authCookies.js";
+import { createSessionAwareTrustedUserIdResolver, createTrustedUserIdResolver } from "../../src/api/addressApiAuth.js";
 
-describe("parseTrustedUserIdHeader", () => {
-  it("trims a trusted user ID header value", () => {
-    expect(parseTrustedUserIdHeader(" 11111111-1111-4111-8111-111111111111 ")).toBe(
-      "11111111-1111-4111-8111-111111111111"
-    );
+describe("session-aware authenticated user resolver", () => {
+  it("uses the Redis session cookie before the trusted header", async () => {
+    const redis = {
+      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999"),
+    };
+    const trustedUserIdResolver = vi.fn().mockReturnValue("88888888-8888-4888-8888-888888888888");
+    const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+      redis,
+      trustedUserIdResolver,
+    });
+
+    const userId = await resolveAuthenticatedUserId({
+      headers: {
+        cookie: `${AUTH_SESSION_COOKIE_NAME}=session-abc`,
+        "x-user-id": "88888888-8888-4888-8888-888888888888",
+      },
+    });
+
+    expect(userId).toBe("99999999-9999-4999-8999-999999999999");
+    expect(redis.get).toHaveBeenCalledOnce();
+    expect(trustedUserIdResolver).not.toHaveBeenCalled();
   });
 
-  it("returns null for missing or empty header values", () => {
-    expect(parseTrustedUserIdHeader(undefined)).toBeNull();
-    expect(parseTrustedUserIdHeader("   ")).toBeNull();
-  });
-});
+  it("falls back to the trusted header when there is no session cookie", async () => {
+    const redis = {
+      get: vi.fn(),
+    };
+    const trustedUserIdResolver = createTrustedUserIdResolver("x-user-id");
+    const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+      redis,
+      trustedUserIdResolver,
+    });
 
-describe("createTrustedUserIdResolver", () => {
-  it("fails closed when no trusted user header is configured", () => {
-    const resolveUserId = createTrustedUserIdResolver(null);
+    const userId = await resolveAuthenticatedUserId({
+      headers: {
+        "x-user-id": "88888888-8888-4888-8888-888888888888",
+      },
+    });
 
-    expect(
-      resolveUserId({
-        headers: { "x-user-id": "11111111-1111-4111-8111-111111111111" },
-      })
-    ).toBeNull();
-  });
-
-  it("uses the configured trusted header when present", () => {
-    const resolveUserId = createTrustedUserIdResolver("X-User-Id");
-
-    expect(
-      resolveUserId({
-        headers: { "x-user-id": "11111111-1111-4111-8111-111111111111" },
-      })
-    ).toBe("11111111-1111-4111-8111-111111111111");
-  });
-
-  it("uses the first value when Node exposes an array header", () => {
-    const resolveUserId = createTrustedUserIdResolver("X-User-Id");
-
-    expect(
-      resolveUserId({
-        headers: { "x-user-id": ["11111111-1111-4111-8111-111111111111", "22222222-2222-4222-8222-222222222222"] },
-      })
-    ).toBe("11111111-1111-4111-8111-111111111111");
-  });
-
-  it("returns null when the configured header is absent", () => {
-    const resolveUserId = createTrustedUserIdResolver("X-User-Id");
-
-    expect(
-      resolveUserId({
-        headers: { "x-other-user": "11111111-1111-4111-8111-111111111111" },
-      })
-    ).toBeNull();
+    expect(userId).toBe("88888888-8888-4888-8888-888888888888");
+    expect(redis.get).not.toHaveBeenCalled();
   });
 });

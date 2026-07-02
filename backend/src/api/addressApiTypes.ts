@@ -1,6 +1,8 @@
 import type { BallotLookupElection, BallotSummaryResult } from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { CandidateDetailResult } from "../pipeline/candidates/candidateDetailReader.js";
+import type { AuthSessionCookieOptions } from "../auth/authCookies.js";
+import type { AuthService } from "../auth/authService.js";
 import type { AuthenticatedAddressDistrictUpdateResult } from "../pipeline/users/userAddressDistrictUpdater.js";
 import type { InitializeUserDistrictsResult } from "../pipeline/users/userDistrictInitializer.js";
 import type {
@@ -37,10 +39,24 @@ export type AddressApiRateLimitResult = {
   retryAfterSeconds?: number;
 };
 
+export type AuthApiRateLimitInput = {
+  clientIp: string;
+  email: string;
+  method: string;
+  pathname: string;
+};
+
+export type AuthApiRateLimitResult = {
+  allowed: boolean;
+  retryAfterSeconds?: number;
+};
+
 export type AddressApiServerOptions = {
+  authService?: AuthService;
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
   lookupBallotSummaries?: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
   lookupAuthenticatedBallotSummaries?: (userId: string) => Promise<BallotSummaryResult>;
+  lookupAuthenticatedUserEmailVerified?: (userId: string) => Promise<boolean>;
   lookupCandidateDetail?: (candidateId: string, userId?: string | null) => Promise<CandidateDetailResult | null>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
   listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
@@ -62,10 +78,12 @@ export type AddressApiServerOptions = {
     }
   ) => Promise<InitializeUserDistrictsResult>;
   allowedOrigins?: readonly string[];
+  authSessionCookieOptions?: Omit<AuthSessionCookieOptions, "maxAgeSeconds">;
   logDiagnostics?: (diagnostics: AddressResolutionDiagnostics) => void;
   rateLimit?: (input: AddressApiRateLimitInput) => AddressApiRateLimitResult;
+  authRateLimit?: (input: AuthApiRateLimitInput) => AuthApiRateLimitResult;
   resolveClientIp?: (input: AddressApiClientIpInput) => string;
   resolveAuthenticatedUserId?: (input: {
     headers: AddressApiClientIpInput["headers"];
-  }) => string | null;
+  }) => string | null | Promise<string | null>;
 };

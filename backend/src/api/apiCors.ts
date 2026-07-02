@@ -44,6 +44,7 @@ export function resolveCorsHeaders(
     ok: true,
     headers: {
       "access-control-allow-origin": allowAnyOrigin ? "*" : origin,
+      ...(allowAnyOrigin ? {} : { "access-control-allow-credentials": "true" }),
       "access-control-allow-methods": CORS_ALLOW_METHODS,
       "access-control-allow-headers": CORS_ALLOW_HEADERS,
       "access-control-max-age": CORS_MAX_AGE_SECONDS,

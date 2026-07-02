@@ -1,11 +1,24 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  AUTH_FORGOT_PASSWORD_PATH,
+  AUTH_LOGIN_PATH,
+  AUTH_LOGOUT_PATH,
+  AUTH_REGISTER_PATH,
+  AUTH_RESET_PASSWORD_PATH,
+  AUTH_RESEND_VERIFICATION_PATH,
+  AUTH_VERIFY_EMAIL_PATH,
   CANDIDATE_DETAIL_PATH_PREFIX,
   ME_CANDIDATE_FOLLOWS_PATH,
   MAX_USER_RESEARCH_AREA_PREFERENCES,
   ME_ADDRESS_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
+  parseAuthForgotPasswordBodyValue,
+  parseAuthLoginBodyValue,
+  parseAuthRegisterBodyValue,
+  parseAuthResetPasswordBodyValue,
+  parseAuthResendVerificationBodyValue,
+  parseAuthVerifyEmailBodyValue,
   parseAuthenticatedAddressBodyValue,
   parseCandidateFollowBodyValue,
   parseCandidateId,
@@ -118,6 +131,47 @@ describe("candidate follow API contract constants", () => {
     ],
   ])("rejects invalid candidate follow payload %#", (payload, message) => {
     expect(() => parseCandidateFollowBodyValue(payload)).toThrow(message);
+  });
+});
+
+describe("public auth API contract constants", () => {
+  it("defines the public auth endpoints", () => {
+    expect(AUTH_REGISTER_PATH).toBe("/api/auth/register");
+    expect(AUTH_VERIFY_EMAIL_PATH).toBe("/api/auth/verify-email");
+    expect(AUTH_LOGIN_PATH).toBe("/api/auth/login");
+    expect(AUTH_LOGOUT_PATH).toBe("/api/auth/logout");
+    expect(AUTH_FORGOT_PASSWORD_PATH).toBe("/api/auth/forgot-password");
+    expect(AUTH_RESEND_VERIFICATION_PATH).toBe("/api/auth/resend-verification");
+    expect(AUTH_RESET_PASSWORD_PATH).toBe("/api/auth/reset-password");
+  });
+
+  it("parses public auth payloads", () => {
+    expect(
+      parseAuthRegisterBodyValue({
+        email: "  user@example.com ",
+        password: "correct horse battery staple",
+        first_name: "  Alice  ",
+      })
+    ).toEqual({
+      email: "user@example.com",
+      password: "correct horse battery staple",
+      first_name: "Alice",
+    });
+    expect(parseAuthLoginBodyValue({ email: " user@example.com ", password: " secret123 " })).toEqual({
+      email: "user@example.com",
+      password: "secret123",
+    });
+    expect(parseAuthForgotPasswordBodyValue({ email: " user@example.com " })).toEqual({
+      email: "user@example.com",
+    });
+    expect(parseAuthResendVerificationBodyValue({ email: " user@example.com " })).toEqual({
+      email: "user@example.com",
+    });
+    expect(parseAuthVerifyEmailBodyValue({ token: " abc " })).toEqual({ token: "abc" });
+    expect(parseAuthResetPasswordBodyValue({ token: " abc ", password: " password123 " })).toEqual({
+      token: "abc",
+      password: "password123",
+    });
   });
 });
 

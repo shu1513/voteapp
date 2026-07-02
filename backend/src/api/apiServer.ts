@@ -1,4 +1,19 @@
 import express, { type Express, type NextFunction, type Request, type Response } from "express";
+import {
+  AUTH_FORGOT_PASSWORD_PATH,
+  AUTH_LOGIN_PATH,
+  AUTH_LOGOUT_PATH,
+  AUTH_REGISTER_PATH,
+  AUTH_RESET_PASSWORD_PATH,
+  AUTH_RESEND_VERIFICATION_PATH,
+  AUTH_VERIFY_EMAIL_PATH,
+  parseAuthForgotPasswordBodyValue,
+  parseAuthLoginBodyValue,
+  parseAuthRegisterBodyValue,
+  parseAuthResetPasswordBodyValue,
+  parseAuthResendVerificationBodyValue,
+  parseAuthVerifyEmailBodyValue,
+} from "./apiValidation.js";
 import type { AddressApiServerOptions } from "./addressApiTypes.js";
 import { mapErrorToResponse } from "./apiErrors.js";
 import { resolveCorsHeaders } from "./apiCors.js";
@@ -25,6 +40,12 @@ import {
   parseResearchAreaPreferencesBodyValue,
   RESEARCH_AREAS_PATH,
 } from "./apiValidation.js";
+import {
+  AUTH_SESSION_COOKIE_NAME,
+  parseCookieHeaderValue,
+  serializeAuthSessionCookie,
+  serializeClearedAuthSessionCookie,
+} from "../auth/authCookies.js";
 import { toAddressResolutionDiagnostics, toPublicAddressResolution } from "./addressApiResponses.js";
 import { toEmptyResponse, toErrorResponse, toJsonResponse, type ApiResponse } from "./apiResponses.js";
 
@@ -43,6 +64,13 @@ function isKnownApiPath(pathname: string): boolean {
   return (
     pathname === ADDRESS_RESOLVE_PATH ||
     pathname === BALLOT_LOOKUP_PATH ||
+    pathname === AUTH_FORGOT_PASSWORD_PATH ||
+    pathname === AUTH_LOGIN_PATH ||
+    pathname === AUTH_LOGOUT_PATH ||
+    pathname === AUTH_REGISTER_PATH ||
+    pathname === AUTH_RESET_PASSWORD_PATH ||
+    pathname === AUTH_RESEND_VERIFICATION_PATH ||
+    pathname === AUTH_VERIFY_EMAIL_PATH ||
     pathname === ME_ADDRESS_PATH ||
     pathname === ME_BALLOT_PATH ||
     pathname === ME_CANDIDATE_FOLLOWS_PATH ||
@@ -56,6 +84,92 @@ function isKnownApiPath(pathname: string): boolean {
 
 function getCorsHeaders(response: Response<unknown, ApiResponseLocals>): Record<string, string> {
   return response.locals.corsHeaders ?? {};
+}
+
+async function enforceAuthRateLimit(
+  options: AddressApiServerOptions,
+  request: Request,
+  response: Response<unknown, ApiResponseLocals>,
+  email: string
+): Promise<boolean> {
+  if (!options.authRateLimit) {
+    return true;
+  }
+
+  const rateLimit = options.authRateLimit({
+    clientIp: response.locals.clientIp ?? "unknown",
+    email,
+    method: request.method,
+    pathname: request.path,
+  });
+  if (rateLimit.allowed) {
+    return true;
+  }
+
+  const retryAfterSeconds = Math.max(1, Math.ceil(rateLimit.retryAfterSeconds ?? 1));
+  sendApiResponse(
+    response,
+    toErrorResponse(429, "rate_limited", "Too many requests. Try again later.", {
+      ...getCorsHeaders(response),
+      "retry-after": String(retryAfterSeconds),
+    })
+  );
+  return false;
+}
+
+async function resolveAuthenticatedUserId(
+  options: AddressApiServerOptions,
+  request: Request
+): Promise<string | null> {
+  if (!options.resolveAuthenticatedUserId) {
+    return null;
+  }
+  const resolved = await Promise.resolve(options.resolveAuthenticatedUserId({ headers: request.headers }));
+  const trimmed = resolved?.trim();
+  return trimmed && trimmed.length > 0 ? trimmed : null;
+}
+
+async function requireVerifiedAuthenticatedUser(
+  options: AddressApiServerOptions,
+  request: Request,
+  response: Response<unknown, ApiResponseLocals>
+): Promise<string | null> {
+  const corsHeaders = getCorsHeaders(response);
+  const userId = await resolveAuthenticatedUserId(options, request);
+  if (!userId) {
+    sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+    return null;
+  }
+
+  // Fail closed: when session auth is live (authService configured), a
+  // missing verification lookup is a wiring bug, not permission to skip the
+  // gate. Trusted-header-only deployments (no authService) predate email
+  // verification and keep the legacy behavior.
+  if (!options.lookupAuthenticatedUserEmailVerified) {
+    if (options.authService) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Email verification lookup is not configured", corsHeaders)
+      );
+      return null;
+    }
+    return userId;
+  }
+
+  const emailVerified = await Promise.resolve(options.lookupAuthenticatedUserEmailVerified(userId));
+  if (!emailVerified) {
+    sendApiResponse(
+      response,
+      toErrorResponse(403, "forbidden", "Email verification is required", corsHeaders)
+    );
+    return null;
+  }
+
+  return userId;
+}
+
+function getAuthSessionId(request: Request): string | null {
+  return parseCookieHeaderValue(request.headers.cookie, AUTH_SESSION_COOKIE_NAME);
 }
 
 function sendApiResponse(response: Response, apiResponse: ApiResponse): void {
@@ -145,7 +259,19 @@ function createJsonBodyParser() {
   return (request: Request, response: Response, next: NextFunction): void => {
     const shouldParseJson =
       (request.method === "POST" &&
-        (request.path === ADDRESS_RESOLVE_PATH || request.path === ME_DISTRICTS_INITIALIZE_PATH)) ||
+        (request.path === ADDRESS_RESOLVE_PATH ||
+          request.path === ME_DISTRICTS_INITIALIZE_PATH ||
+          request.path === AUTH_FORGOT_PASSWORD_PATH ||
+          request.path === AUTH_LOGIN_PATH ||
+          // Logout has no meaningful body, but requiring the JSON content
+          // type blocks plain cross-site form POSTs from logging users out
+          // in SameSite=None deployments (forms cannot send application/json
+          // without a CORS preflight).
+          request.path === AUTH_LOGOUT_PATH ||
+          request.path === AUTH_REGISTER_PATH ||
+          request.path === AUTH_RESET_PASSWORD_PATH ||
+          request.path === AUTH_RESEND_VERIFICATION_PATH ||
+          request.path === AUTH_VERIFY_EMAIL_PATH)) ||
       (request.method === "PUT" &&
         (request.path === ME_ADDRESS_PATH ||
           request.path === ME_CANDIDATE_FOLLOWS_PATH ||
@@ -202,6 +328,214 @@ async function dispatchApiRequest(
     return;
   }
 
+  if (url.pathname === AUTH_REGISTER_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/auth/register", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.authService) {
+      sendApiResponse(response, toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders));
+      return;
+    }
+
+    const payload = parseAuthRegisterBodyValue(request.body);
+    if (!(await enforceAuthRateLimit(options, request, response, payload.email))) {
+      return;
+    }
+    await options.authService.register({
+      email: payload.email,
+      password: payload.password,
+      firstName: payload.first_name,
+    });
+    sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === AUTH_VERIFY_EMAIL_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/auth/verify-email", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.authService) {
+      sendApiResponse(response, toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders));
+      return;
+    }
+
+    const payload = parseAuthVerifyEmailBodyValue(request.body);
+    await options.authService.verifyEmail({
+      token: payload.token,
+    });
+    sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === AUTH_RESEND_VERIFICATION_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/auth/resend-verification", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.authService) {
+      sendApiResponse(response, toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders));
+      return;
+    }
+
+    const payload = parseAuthResendVerificationBodyValue(request.body);
+    if (!(await enforceAuthRateLimit(options, request, response, payload.email))) {
+      return;
+    }
+    await options.authService.resendVerification({
+      email: payload.email,
+    });
+    sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === AUTH_LOGIN_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/auth/login", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.authService) {
+      sendApiResponse(response, toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders));
+      return;
+    }
+
+    const payload = parseAuthLoginBodyValue(request.body);
+    if (!(await enforceAuthRateLimit(options, request, response, payload.email))) {
+      return;
+    }
+    const currentSessionId = getAuthSessionId(request);
+    const result = await options.authService.login({
+      email: payload.email,
+      password: payload.password,
+      currentSessionId,
+    });
+    sendApiResponse(response, {
+      ...toJsonResponse(200, { status: "ok" }, corsHeaders),
+      headers: {
+        ...corsHeaders,
+        "content-type": "application/json; charset=utf-8",
+        "set-cookie": serializeAuthSessionCookie(result.sessionId, {
+          ...options.authSessionCookieOptions,
+        }),
+      },
+      body: { status: "ok" },
+      statusCode: 200,
+    });
+    return;
+  }
+
+  if (url.pathname === AUTH_LOGOUT_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/auth/logout", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.authService) {
+      sendApiResponse(response, toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders));
+      return;
+    }
+
+    const currentSessionId = getAuthSessionId(request);
+    await options.authService.logout({
+      currentSessionId,
+    });
+    sendApiResponse(response, {
+      ...toJsonResponse(200, { status: "ok" }, corsHeaders),
+      headers: {
+        ...corsHeaders,
+        "content-type": "application/json; charset=utf-8",
+        "set-cookie": serializeClearedAuthSessionCookie({
+          ...options.authSessionCookieOptions,
+        }),
+      },
+      body: { status: "ok" },
+      statusCode: 200,
+    });
+    return;
+  }
+
+  if (url.pathname === AUTH_FORGOT_PASSWORD_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/auth/forgot-password", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.authService) {
+      sendApiResponse(response, toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders));
+      return;
+    }
+
+    const payload = parseAuthForgotPasswordBodyValue(request.body);
+    if (!(await enforceAuthRateLimit(options, request, response, payload.email))) {
+      return;
+    }
+    await options.authService.forgotPassword({
+      email: payload.email,
+    });
+    sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === AUTH_RESET_PASSWORD_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/auth/reset-password", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.authService) {
+      sendApiResponse(response, toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders));
+      return;
+    }
+
+    const payload = parseAuthResetPasswordBodyValue(request.body);
+    await options.authService.resetPassword({
+      token: payload.token,
+      password: payload.password,
+    });
+    sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
+    return;
+  }
+
   if (url.pathname === BALLOT_LOOKUP_PATH) {
     if (request.method !== "GET") {
       sendApiResponse(
@@ -247,9 +581,10 @@ async function dispatchApiRequest(
       return;
     }
 
-    const userId = options.resolveAuthenticatedUserId({ headers: request.headers })?.trim();
+    // Same verified-email gate as every other /api/me route: personalized
+    // ballot data must not be readable by unverified accounts.
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
     if (!userId) {
-      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
       return;
     }
 
@@ -281,9 +616,8 @@ async function dispatchApiRequest(
       return;
     }
 
-    const userId = options.resolveAuthenticatedUserId({ headers: request.headers })?.trim();
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
     if (!userId) {
-      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
       return;
     }
 
@@ -309,9 +643,8 @@ async function dispatchApiRequest(
       return;
     }
 
-    const userId = options.resolveAuthenticatedUserId({ headers: request.headers })?.trim();
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
     if (!userId) {
-      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
       return;
     }
 
@@ -359,9 +692,8 @@ async function dispatchApiRequest(
       return;
     }
 
-    const userId = options.resolveAuthenticatedUserId({ headers: request.headers })?.trim();
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
     if (!userId) {
-      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
       return;
     }
 
@@ -423,7 +755,7 @@ async function dispatchApiRequest(
     }
 
     const candidateId = parseCandidateId(url);
-    const userId = options.resolveAuthenticatedUserId?.({ headers: request.headers })?.trim() || null;
+    const userId = await resolveAuthenticatedUserId(options, request);
     const result = await options.lookupCandidateDetail(candidateId, userId);
     if (!result) {
       sendApiResponse(response, toErrorResponse(404, "not_found", "Candidate not found", corsHeaders));
@@ -482,9 +814,8 @@ async function dispatchApiRequest(
       return;
     }
 
-    const userId = options.resolveAuthenticatedUserId({ headers: request.headers })?.trim();
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
     if (!userId) {
-      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
       return;
     }
 
