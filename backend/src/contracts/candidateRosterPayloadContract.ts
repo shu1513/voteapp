@@ -145,6 +145,9 @@ function parseEntry(
       }
       mateParty = mate.party.trim();
     }
+    if (mate.display_name.trim().toLowerCase() === input.display_name.trim().toLowerCase()) {
+      return { ok: false, reason: "row.running_mate.display_name must differ from the ticket lead's display_name" };
+    }
     runningMate = {
       display_name: mate.display_name.trim(),
       ...(mateParty ? { party: mateParty } : {}),

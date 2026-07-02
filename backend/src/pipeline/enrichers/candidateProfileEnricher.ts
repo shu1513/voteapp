@@ -1282,8 +1282,10 @@ async function electionAlreadyHasRunningMateForLead(
       FROM public.candidate_elections AS ce
       JOIN public.candidates AS lead
         ON lead.id = ce.candidate_id
+      JOIN public.candidates AS rm
+        ON rm.id = ce.running_mate_candidate_id
+        AND rm.deleted_at IS NULL
       WHERE ce.election_id = $1
-        AND ce.running_mate_candidate_id IS NOT NULL
         AND lead.deleted_at IS NULL
         AND lower(trim(coalesce(lead.display_name, lead.first_name || ' ' || lead.last_name))) = lower(trim($2))
       LIMIT 1
@@ -1446,8 +1448,8 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
         const rosterStateFilingIds = parseSerializedStringArray(entry.message.roster_state_filing_ids);
         const parentPresidentialCandidateFecId =
           entry.message.parent_presidential_candidate_fec_id?.trim().toUpperCase() || undefined;
-        const electionTicketRole =
-          entry.message.election_ticket_role?.trim() === "running_mate" ? ("running_mate" as const) : undefined;
+        const rawElectionTicketRole = entry.message.election_ticket_role?.trim() || undefined;
+        const electionTicketRole = rawElectionTicketRole === "running_mate" ? ("running_mate" as const) : undefined;
         const ticketLeadDisplayName = entry.message.ticket_lead_display_name?.trim() || undefined;
         let deliveryCount: number | null = null;
         const presidentialDisabled =
@@ -1517,6 +1519,16 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
               redis,
               entry,
               "vice president profile draft requires parent_presidential_candidate_fec_id",
+              deliveryCount
+            );
+            continue;
+          }
+
+          if (contextType === "election" && rawElectionTicketRole && !electionTicketRole) {
+            await parkMessage(
+              redis,
+              entry,
+              `invalid election_ticket_role "${rawElectionTicketRole}" for election profile draft`,
               deliveryCount
             );
             continue;
@@ -1715,6 +1727,11 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
                   `running mate profile resolved to the ticket lead candidate for "${ticketLeadDisplayName ?? ""}"`
                 );
               }
+              // Last write wins by design: a re-imported roster with a
+              // replacement running mate must overwrite the previous link.
+              // Emit markers guarantee at most one mate draft per ticket per
+              // roster version, so concurrent different-mate writes for one
+              // lead cannot be produced by the pipeline.
               await setCandidateElectionRunningMate({
                 db: client,
                 electionId: draftContext.contextId,

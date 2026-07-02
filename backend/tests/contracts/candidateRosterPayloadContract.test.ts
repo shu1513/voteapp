@@ -242,6 +242,25 @@ describe("parseCandidateRosterPayload", () => {
         "payload.candidates[0]: row.running_mate.sources must contain at least one valid URL"
       );
     }
+
+    const sameName = parseCandidateRosterPayload({
+      candidates: [
+        {
+          display_name: "Begich, Tom",
+          running_mate: {
+            display_name: "  begich, tom ",
+            sources: ["https://example.org/a"],
+          },
+          sources: ["https://example.org/a"],
+        },
+      ],
+    });
+    expect(sameName.ok).toBe(false);
+    if (!sameName.ok) {
+      expect(sameName.reason).toBe(
+        "payload.candidates[0]: row.running_mate.display_name must differ from the ticket lead's display_name"
+      );
+    }
   });
 
   it("accepts optional state_filing_ids when present", () => {

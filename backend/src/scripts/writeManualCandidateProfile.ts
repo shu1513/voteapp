@@ -514,7 +514,9 @@ async function main(): Promise<void> {
   const isIncumbent = readBooleanFlag("--is-incumbent");
   const rosterIndex = readNonNegativeIntegerFlag("--roster-index");
   const databaseUrl = requireEnv("DATABASE_URL");
-  const redisUrl = emitRecordDraft && !dryRun ? requireEnv("REDIS_URL") : null;
+  // Running mates never emit record drafts for the ticket election, so do not
+  // demand REDIS_URL for them even when --emit-record-draft is set.
+  const redisUrl = emitRecordDraft && !dryRun && !runningMateOf ? requireEnv("REDIS_URL") : null;
 
   const pool = new Pool({ connectionString: databaseUrl });
   const redis = redisUrl ? createClient({ url: redisUrl }) : null;
