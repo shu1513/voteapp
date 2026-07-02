@@ -2,6 +2,7 @@ export type ApiErrorCode =
   | "not_found"
   | "method_not_allowed"
   | "unauthorized"
+  | "forbidden"
   | "invalid_json"
   | "invalid_request"
   | "unsupported_media_type"

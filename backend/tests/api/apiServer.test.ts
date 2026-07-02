@@ -195,6 +195,7 @@ describe("createApiApp", () => {
     expect(response.statusCode).toBe(204);
     expect(response.headers).toMatchObject({
       "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true",
       "access-control-allow-methods": "GET, POST, PUT, OPTIONS",
       "access-control-allow-headers": "content-type",
       "access-control-max-age": "600",
@@ -260,6 +261,7 @@ describe("createApiApp", () => {
       "access-control-allow-origin": "*",
       vary: "Origin",
     });
+    expect(response.headers).not.toHaveProperty("access-control-allow-credentials");
   });
 
   it("preserves CORS headers on route validation errors", async () => {
@@ -1172,6 +1174,7 @@ describe("createApiApp", () => {
   it("updates authenticated address districts for the current user", async () => {
     const resolveAddress = vi.fn();
     const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupAuthenticatedUserEmailVerified = vi.fn().mockResolvedValue(true);
     const updateAuthenticatedAddressDistricts = vi.fn().mockResolvedValue({
       matched_address: "123 MAIN ST, DENVER, CO, 80203",
       district_ids: [districtId],
@@ -1180,7 +1183,12 @@ describe("createApiApp", () => {
     });
 
     const response = await invokeExpressApp(
-      createApiApp({ resolveAddress, resolveAuthenticatedUserId, updateAuthenticatedAddressDistricts }),
+      createApiApp({
+        resolveAddress,
+        resolveAuthenticatedUserId,
+        lookupAuthenticatedUserEmailVerified,
+        updateAuthenticatedAddressDistricts,
+      }),
       {
         method: "PUT",
         path: "/api/me/address",
@@ -1199,6 +1207,7 @@ describe("createApiApp", () => {
     expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
       headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
     });
+    expect(lookupAuthenticatedUserEmailVerified).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
     expect(updateAuthenticatedAddressDistricts).toHaveBeenCalledWith(
       "99999999-9999-4999-8999-999999999999",
       "123 Main St Denver CO 80203"
@@ -1225,6 +1234,72 @@ describe("createApiApp", () => {
       },
     });
     expect(updateAuthenticatedAddressDistricts).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    {
+      name: "authenticated address updates",
+      method: "PUT",
+      path: "/api/me/address",
+      body: JSON.stringify({ address: "123 Main St Denver CO 80203" }),
+      handlerKey: "updateAuthenticatedAddressDistricts" as const,
+    },
+    {
+      name: "authenticated candidate follow updates",
+      method: "PUT",
+      path: "/api/me/candidate-follows",
+      body: JSON.stringify({
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        following: true,
+      }),
+      handlerKey: "setAuthenticatedCandidateFollow" as const,
+    },
+    {
+      name: "authenticated research area preference updates",
+      method: "PUT",
+      path: "/api/me/research-area-preferences",
+      body: JSON.stringify({ preferences: [] }),
+      handlerKey: "replaceAuthenticatedResearchAreaPreferences" as const,
+    },
+    {
+      name: "authenticated district initialization",
+      method: "POST",
+      path: "/api/me/districts/initialize",
+      body: JSON.stringify({ district_ids: [districtId] }),
+      handlerKey: "initializeUserDistricts" as const,
+    },
+  ])("rejects unverified users from $name", async ({ method, path, body, handlerKey }) => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupAuthenticatedUserEmailVerified = vi.fn().mockResolvedValue(false);
+    const handler = vi.fn();
+    const app = createApiApp({
+      resolveAddress,
+      resolveAuthenticatedUserId,
+      lookupAuthenticatedUserEmailVerified,
+      [handlerKey]: handler,
+    });
+
+    const response = await invokeExpressApp(app, {
+      method,
+      path,
+      body,
+      headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+    });
+
+    expect(response.statusCode).toBe(403);
+    expect(response.body).toEqual({
+      error: {
+        code: "forbidden",
+        message: "Email verification is required",
+      },
+    });
+    expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
+      headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
+    });
+    expect(lookupAuthenticatedUserEmailVerified).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(handler).not.toHaveBeenCalled();
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 

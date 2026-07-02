@@ -1,8 +1,24 @@
 import type { Server } from "node:http";
 import { Pool } from "pg";
 import { createClient } from "redis";
+import { SESv2Client } from "@aws-sdk/client-sesv2";
 
-import { createTrustedUserIdResolver } from "../api/addressApiAuth.js";
+import {
+  createInMemoryAuthApiRateLimiter,
+  DEFAULT_AUTH_API_RATE_LIMIT_MAX_BUCKETS,
+  DEFAULT_AUTH_API_RATE_LIMIT_MAX_REQUESTS_PER_EMAIL,
+  DEFAULT_AUTH_API_RATE_LIMIT_MAX_REQUESTS_PER_IP,
+  DEFAULT_AUTH_API_RATE_LIMIT_WINDOW_MS,
+} from "../api/authApiRateLimiter.js";
+import type { AuthSessionCookieOptions } from "../auth/authCookies.js";
+import { createConsoleAuthMailer, createSesAuthMailer } from "../auth/authMailer.js";
+import {
+  createAuthService,
+  DEFAULT_AUTH_EMAIL_VERIFICATION_TTL_SECONDS,
+  DEFAULT_AUTH_PASSWORD_RESET_TTL_SECONDS,
+  DEFAULT_AUTH_SESSION_TTL_SECONDS,
+} from "../auth/authService.js";
+import { createSessionAwareTrustedUserIdResolver, createTrustedUserIdResolver } from "../api/addressApiAuth.js";
 import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
 import type { AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
 import { createApiApp } from "../api/apiServer.js";
@@ -89,6 +105,17 @@ function readOptionalEnv(name: string): string | null {
   return value && value.length > 0 ? value : null;
 }
 
+function readAuthCookieSameSiteEnv(name: string, fallback: "lax" | "strict" | "none"): "lax" | "strict" | "none" {
+  const raw = process.env[name]?.trim().toLowerCase();
+  if (!raw) {
+    return fallback;
+  }
+  if (raw === "lax" || raw === "strict" || raw === "none") {
+    return raw;
+  }
+  throw new Error(`Invalid ${name}: ${process.env[name]}`);
+}
+
 function logAddressResolutionDiagnostics(diagnostics: AddressResolutionDiagnostics): void {
   if (diagnostics.missing_district_keys.length === 0 && diagnostics.warnings.length === 0) {
     return;
@@ -129,6 +156,7 @@ async function main(): Promise<void> {
       `API trusting authenticated user header "${trustedUserIdHeader}"; ensure the edge proxy authenticates requests and strips client-supplied copies`
     );
   }
+  const trustedUserIdResolver = createTrustedUserIdResolver(trustedUserIdHeader);
   const addressCacheEnabled = readBooleanEnv("ADDRESS_LOOKUP_CACHE_ENABLED", true);
   const rateLimitEnabled = readBooleanEnv("ADDRESS_API_RATE_LIMIT_ENABLED", true);
   const rateLimitWindowMs = readPositiveIntegerEnv(
@@ -142,6 +170,23 @@ async function main(): Promise<void> {
   const rateLimitMaxBuckets = readPositiveIntegerEnv(
     "ADDRESS_API_RATE_LIMIT_MAX_BUCKETS",
     DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_BUCKETS
+  );
+  const authRateLimitEnabled = readBooleanEnv("AUTH_API_RATE_LIMIT_ENABLED", true);
+  const authRateLimitWindowMs = readPositiveIntegerEnv(
+    "AUTH_API_RATE_LIMIT_WINDOW_MS",
+    DEFAULT_AUTH_API_RATE_LIMIT_WINDOW_MS
+  );
+  const authRateLimitMaxRequestsPerIp = readPositiveIntegerEnv(
+    "AUTH_API_RATE_LIMIT_MAX_REQUESTS_PER_IP",
+    DEFAULT_AUTH_API_RATE_LIMIT_MAX_REQUESTS_PER_IP
+  );
+  const authRateLimitMaxRequestsPerEmail = readPositiveIntegerEnv(
+    "AUTH_API_RATE_LIMIT_MAX_REQUESTS_PER_EMAIL",
+    DEFAULT_AUTH_API_RATE_LIMIT_MAX_REQUESTS_PER_EMAIL
+  );
+  const authRateLimitMaxBuckets = readPositiveIntegerEnv(
+    "AUTH_API_RATE_LIMIT_MAX_BUCKETS",
+    DEFAULT_AUTH_API_RATE_LIMIT_MAX_BUCKETS
   );
   const rateLimit = rateLimitEnabled
     ? createInMemoryAddressApiRateLimiter({
@@ -176,17 +221,92 @@ async function main(): Promise<void> {
     }
   }
 
+  const authPublicBaseUrl = readOptionalEnv("AUTH_PUBLIC_BASE_URL");
+  const authFromEmailAddress = readOptionalEnv("AUTH_FROM_EMAIL");
+  const authReplyToEmailAddress = readOptionalEnv("AUTH_REPLY_TO_EMAIL");
+  const authSesRegion = readOptionalEnv("AUTH_SES_REGION") ?? readOptionalEnv("AWS_REGION") ?? readOptionalEnv("AWS_DEFAULT_REGION");
+  const authSessionCookieOptions: Omit<AuthSessionCookieOptions, "maxAgeSeconds"> = {
+    sameSite: readAuthCookieSameSiteEnv("AUTH_SESSION_COOKIE_SAME_SITE", "lax"),
+    secure: readBooleanEnv("AUTH_SESSION_COOKIE_SECURE", false),
+    domain: readOptionalEnv("AUTH_SESSION_COOKIE_DOMAIN"),
+    path: readOptionalEnv("AUTH_SESSION_COOKIE_PATH") ?? "/",
+  };
+  // AUTH_MAILER=console prints verification/reset links to stdout for local
+  // development instead of sending email. Anything else (default "ses") uses
+  // SES and requires AUTH_FROM_EMAIL plus a region.
+  const authMailerKind = (readOptionalEnv("AUTH_MAILER") ?? "ses").toLowerCase();
+  const authMailer =
+    authMailerKind === "console"
+      ? createConsoleAuthMailer()
+      : authFromEmailAddress && authSesRegion
+        ? createSesAuthMailer({
+            sesClient: new SESv2Client({ region: authSesRegion }),
+            fromEmailAddress: authFromEmailAddress,
+            ...(authReplyToEmailAddress ? { replyToEmailAddress: authReplyToEmailAddress } : {}),
+          })
+        : null;
+  const authService =
+    authPublicBaseUrl && authMailer && redis?.isOpen
+      ? createAuthService({
+          db: pool,
+          redis,
+          mailer: authMailer,
+          publicBaseUrl: authPublicBaseUrl,
+          sessionTtlSeconds: DEFAULT_AUTH_SESSION_TTL_SECONDS,
+          emailVerificationTtlSeconds: DEFAULT_AUTH_EMAIL_VERIFICATION_TTL_SECONDS,
+          passwordResetTtlSeconds: DEFAULT_AUTH_PASSWORD_RESET_TTL_SECONDS,
+        })
+      : undefined;
+  if (!authService && (authPublicBaseUrl || authFromEmailAddress || authSesRegion || authMailerKind === "console")) {
+    console.warn(
+      "authentication is partially configured but missing required settings or Redis; auth endpoints will return 500 until AUTH_PUBLIC_BASE_URL, Redis, and either AUTH_MAILER=console or AUTH_FROM_EMAIL + AUTH_SES_REGION/AWS_REGION are set"
+    );
+  }
+  if (authService && authMailerKind === "console") {
+    console.warn("auth mailer is in console mode: verification/reset links are printed to stdout; never use in production");
+  }
+  const authRateLimit =
+    authService && authRateLimitEnabled
+      ? createInMemoryAuthApiRateLimiter({
+          windowMs: authRateLimitWindowMs,
+          maxRequestsPerIp: authRateLimitMaxRequestsPerIp,
+          maxRequestsPerEmail: authRateLimitMaxRequestsPerEmail,
+          maxBuckets: authRateLimitMaxBuckets,
+        })
+      : undefined;
+
+  const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+    redis: redis?.isOpen ? redis : null,
+    trustedUserIdResolver,
+  });
+  const lookupAuthenticatedUserEmailVerified = async (userId: string): Promise<boolean> => {
+    const result = await pool.query<{ email_verified: boolean }>(
+      `
+        SELECT email_verified
+        FROM public.users
+        WHERE id = $1::uuid
+          AND deleted_at IS NULL
+      `,
+      [userId]
+    );
+    return result.rows[0]?.email_verified ?? false;
+  };
+
   const app = createApiApp({
     allowedOrigins,
+    authService,
+    authRateLimit,
+    authSessionCookieOptions,
     rateLimit,
     resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader),
-    resolveAuthenticatedUserId: createTrustedUserIdResolver(trustedUserIdHeader),
+    resolveAuthenticatedUserId,
     logDiagnostics: logAddressResolutionDiagnostics,
     lookupBallotSummaries: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
     lookupAuthenticatedBallotSummaries: async (userId) => {
       const districtIds = await listUserDistrictIds(pool, userId);
       return lookupBallotSummariesByDistrictIds(pool, districtIds);
     },
+    lookupAuthenticatedUserEmailVerified,
     lookupCandidateDetail: (candidateId, userId) => lookupCandidateDetailById(pool, { candidateId, userId }),
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
     listResearchAreas: () => listSelectableResearchAreas(pool),

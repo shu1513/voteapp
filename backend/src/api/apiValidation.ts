@@ -9,6 +9,13 @@ export { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAre
 export { UUID_PATTERN } from "../utils/uuid.js";
 
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
+export const AUTH_FORGOT_PASSWORD_PATH = "/api/auth/forgot-password";
+export const AUTH_LOGIN_PATH = "/api/auth/login";
+export const AUTH_LOGOUT_PATH = "/api/auth/logout";
+export const AUTH_REGISTER_PATH = "/api/auth/register";
+export const AUTH_RESET_PASSWORD_PATH = "/api/auth/reset-password";
+export const AUTH_RESEND_VERIFICATION_PATH = "/api/auth/resend-verification";
+export const AUTH_VERIFY_EMAIL_PATH = "/api/auth/verify-email";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
 export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
@@ -27,6 +34,32 @@ export type AddressResolvePayload = {
 
 export type AuthenticatedAddressPayload = AddressResolvePayload;
 
+export type AuthRegisterPayload = {
+  email: string;
+  password: string;
+  first_name?: string;
+};
+
+export type AuthLoginPayload = {
+  email: string;
+  password: string;
+};
+
+export type AuthForgotPasswordPayload = {
+  email: string;
+};
+
+export type AuthResendVerificationPayload = AuthForgotPasswordPayload;
+
+export type AuthVerifyEmailPayload = {
+  token: string;
+};
+
+export type AuthResetPasswordPayload = {
+  token: string;
+  password: string;
+};
+
 export type InitializeUserDistrictsPayload = {
   district_ids: string[];
 };
@@ -41,6 +74,17 @@ export type ResearchAreaPreferencesPayload = {
 };
 
 export type CandidateFollowPayload = UserCandidateFollowInput;
+
+function parseStringField(parsed: unknown, fieldName: string): string {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  const value = (parsed as Record<string, unknown>)[fieldName];
+  if (typeof value !== "string" || value.trim().length === 0) {
+    throw new TypeError(`Request body must include non-empty string field: ${fieldName}`);
+  }
+  return value.trim();
+}
 
 export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
@@ -70,6 +114,59 @@ export function parseAddressPayload(rawBody: string): AddressResolvePayload {
 
 export function parseAuthenticatedAddressBodyValue(parsed: unknown): AuthenticatedAddressPayload {
   return parseAddressBodyValue(parsed);
+}
+
+export function parseAuthRegisterBodyValue(parsed: unknown): AuthRegisterPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const email = parseStringField(parsed, "email");
+  const password = parseStringField(parsed, "password");
+  const firstName = (parsed as { first_name?: unknown }).first_name;
+  if (firstName !== undefined && (typeof firstName !== "string" || firstName.trim().length === 0)) {
+    throw new TypeError("first_name must be a non-empty string when provided");
+  }
+
+  return {
+    email,
+    password,
+    ...(firstName === undefined ? {} : { first_name: firstName.trim() }),
+  };
+}
+
+export function parseAuthLoginBodyValue(parsed: unknown): AuthLoginPayload {
+  return {
+    email: parseStringField(parsed, "email"),
+    password: parseStringField(parsed, "password"),
+  };
+}
+
+export function parseAuthForgotPasswordBodyValue(parsed: unknown): AuthForgotPasswordPayload {
+  return {
+    email: parseStringField(parsed, "email"),
+  };
+}
+
+export function parseAuthResendVerificationBodyValue(parsed: unknown): AuthResendVerificationPayload {
+  return parseAuthForgotPasswordBodyValue(parsed);
+}
+
+export function parseAuthVerifyEmailBodyValue(parsed: unknown): AuthVerifyEmailPayload {
+  return {
+    token: parseStringField(parsed, "token"),
+  };
+}
+
+export function parseAuthResetPasswordBodyValue(parsed: unknown): AuthResetPasswordPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  return {
+    token: parseStringField(parsed, "token"),
+    password: parseStringField(parsed, "password"),
+  };
 }
 
 export function parseInitializeUserDistrictsBodyValue(parsed: unknown): InitializeUserDistrictsPayload {
