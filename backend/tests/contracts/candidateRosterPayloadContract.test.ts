@@ -201,6 +201,68 @@ describe("parseCandidateRosterPayload", () => {
     expect(parsed.reason).toBe("payload.candidates[0]: row.fec_ids is not allowed for this election context");
   });
 
+  it("parses joint-ticket running mates and rejects malformed ones", () => {
+    const parsed = parseCandidateRosterPayload({
+      candidates: [
+        {
+          display_name: "Begich, Tom",
+          party: "Democrat",
+          running_mate: {
+            display_name: "Hnilicka, Julia",
+            party: "Democrat",
+            sources: ["https://www.elections.alaska.gov/candidates/?election=26prim"],
+          },
+          sources: ["https://www.elections.alaska.gov/candidates/?election=26prim"],
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+    expect(parsed.payload.candidates[0]?.running_mate).toEqual({
+      display_name: "Hnilicka, Julia",
+      party: "Democrat",
+      sources: ["https://www.elections.alaska.gov/candidates/?election=26prim"],
+    });
+
+    const missingSources = parseCandidateRosterPayload({
+      candidates: [
+        {
+          display_name: "Begich, Tom",
+          running_mate: { display_name: "Hnilicka, Julia" },
+          sources: ["https://example.org/a"],
+        },
+      ],
+    });
+    expect(missingSources.ok).toBe(false);
+    if (!missingSources.ok) {
+      expect(missingSources.reason).toBe(
+        "payload.candidates[0]: row.running_mate.sources must contain at least one valid URL"
+      );
+    }
+
+    const sameName = parseCandidateRosterPayload({
+      candidates: [
+        {
+          display_name: "Begich, Tom",
+          running_mate: {
+            display_name: "  begich, tom ",
+            sources: ["https://example.org/a"],
+          },
+          sources: ["https://example.org/a"],
+        },
+      ],
+    });
+    expect(sameName.ok).toBe(false);
+    if (!sameName.ok) {
+      expect(sameName.reason).toBe(
+        "payload.candidates[0]: row.running_mate.display_name must differ from the ticket lead's display_name"
+      );
+    }
+  });
+
   it("accepts optional state_filing_ids when present", () => {
     const parsed = parseCandidateRosterPayload({
       candidates: [

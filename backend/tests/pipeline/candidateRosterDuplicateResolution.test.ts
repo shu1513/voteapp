@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  filterAlreadyLinkedCandidates,
   resolveCandidateRosterForProfileDrafts,
   type CandidateRosterResolvedEntry,
 } from "../../src/pipeline/enrichers/candidateRosterEnricher.js";
@@ -376,5 +377,37 @@ describe("resolveCandidateRosterForProfileDrafts", () => {
 
     expect(result.resolvedCandidates).toHaveLength(2);
     expect(result.resolvedCandidates.map((row) => row.roster_index)).toEqual([1, 2]);
+  });
+});
+
+describe("filterAlreadyLinkedCandidates", () => {
+  it("keeps joint-ticket rows so replacement running-mate drafts can fan out", async () => {
+    const pool = {
+      query: vi.fn().mockResolvedValue({
+        rows: [
+          { first_name: "Tom", last_name: "Begich" },
+          { first_name: "Jane", last_name: "Doe" },
+        ],
+      }),
+    };
+
+    const result = await filterAlreadyLinkedCandidates(pool as never, "election-1", [
+      {
+        roster_index: 0,
+        display_name: "Begich, Tom",
+        sources: ["https://example.org/lead"],
+        running_mate: {
+          display_name: "Hnilicka, Julia",
+          sources: ["https://example.org/mate"],
+        },
+      },
+      {
+        roster_index: 1,
+        display_name: "Jane Doe",
+        sources: ["https://example.org/solo"],
+      },
+    ]);
+
+    expect(result.map((candidate) => candidate.roster_index)).toEqual([0]);
   });
 });

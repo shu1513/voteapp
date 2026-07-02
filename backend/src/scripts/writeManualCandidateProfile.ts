@@ -20,7 +20,11 @@ import {
   findOrCreateCandidateFromProfile,
   hasAtLeastOneHardIdentifier,
 } from "../pipeline/candidates/candidateProfileIdentity.js";
-import { upsertCandidateElection } from "../pipeline/candidates/candidateProfileLinks.js";
+import {
+  findTicketLeadCandidateIdByDisplayName,
+  setCandidateElectionRunningMate,
+  upsertCandidateElection,
+} from "../pipeline/candidates/candidateProfileLinks.js";
 import { createCandidateFutureElectionNotificationEvents } from "../pipeline/users/candidateFollowNotificationEvents.js";
 import {
   buildManualResearchRepairReport,
@@ -28,6 +32,7 @@ import {
   writeManualResearchRepairReport,
   type ManualResearchRepairGap,
 } from "./manualResearchRepairReport.js";
+import { normalizeCandidateName, splitDisplayNameToFirstLast } from "../utils/candidateIdentity.js";
 
 type ElectionContextRow = {
   election_id: string;
@@ -62,9 +67,10 @@ function toReason(error: unknown): string {
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--roster-index n] [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
+    "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--roster-index n] [--running-mate-of \"Lead Ballot Name\"] [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
     "",
     "Payload must match CandidateProfilePayload. Live runs find/create a candidate and link it to the election.",
+    "With --running-mate-of, the profile is written as the joint-ticket running mate: the candidate is created/matched normally, then linked via candidate_elections.running_mate_candidate_id on the ticket lead's row instead of getting an own candidate_elections row. Write the ticket lead's profile first.",
   ].join("\n");
 }
 
@@ -201,6 +207,16 @@ function normalizeStringArray(values: readonly string[] | undefined): string[] {
   return [...new Set((values ?? []).map((value) => value.trim()).filter((value) => value.length > 0))];
 }
 
+function displayNamesReferToSameCandidate(left: string, right: string): boolean {
+  if (left.trim() === right.trim()) {
+    return true;
+  }
+  const leftName = splitDisplayNameToFirstLast(left);
+  const rightName = splitDisplayNameToFirstLast(right);
+  return normalizeCandidateName(`${leftName.firstName} ${leftName.lastName}`) ===
+    normalizeCandidateName(`${rightName.firstName} ${rightName.lastName}`);
+}
+
 async function loadRosterIdentityHints(input: {
   pool: Pool;
   electionId: string;
@@ -261,7 +277,7 @@ async function loadRosterIdentityHints(input: {
     if (!match) {
       throw new Error(`No candidate roster row found for roster_index=${input.rosterIndex}`);
     }
-    if (match.displayName !== input.displayName) {
+    if (!displayNamesReferToSameCandidate(match.displayName, input.displayName)) {
       throw new Error(
         `Profile display_name (${input.displayName}) does not match roster_index=${input.rosterIndex} display_name (${match.displayName}).`
       );
@@ -269,7 +285,7 @@ async function loadRosterIdentityHints(input: {
     return match;
   }
 
-  const matches = candidates.filter((candidate) => candidate.displayName === input.displayName);
+  const matches = candidates.filter((candidate) => displayNamesReferToSameCandidate(candidate.displayName, input.displayName));
   if (matches.length === 0) {
     return null;
   }
@@ -505,10 +521,13 @@ async function main(): Promise<void> {
   const emitRecordDraft = hasFlag("--emit-record-draft");
   const emitFinanceSync = hasFlag("--emit-finance-sync");
   const runId = readFlag("--run-id") ?? `manual_candidate_profile_${new Date().toISOString()}`;
+  const runningMateOf = readFlag("--running-mate-of");
   const isIncumbent = readBooleanFlag("--is-incumbent");
   const rosterIndex = readNonNegativeIntegerFlag("--roster-index");
   const databaseUrl = requireEnv("DATABASE_URL");
-  const redisUrl = emitRecordDraft && !dryRun ? requireEnv("REDIS_URL") : null;
+  // Running mates never emit record drafts for the ticket election, so do not
+  // demand REDIS_URL for them even when --emit-record-draft is set.
+  const redisUrl = emitRecordDraft && !dryRun && !runningMateOf ? requireEnv("REDIS_URL") : null;
 
   const pool = new Pool({ connectionString: databaseUrl });
   const redis = redisUrl ? createClient({ url: redisUrl }) : null;
@@ -690,6 +709,7 @@ async function main(): Promise<void> {
     let matchedExisting: boolean;
     let candidateElectionCreated = false;
     let effectiveIncumbency = false;
+    let runningMateLinkedToCandidateId: string | null = null;
     try {
       await client.query("BEGIN");
       const candidateResult = await findOrCreateCandidateFromProfile({
@@ -701,24 +721,54 @@ async function main(): Promise<void> {
       });
       candidateId = candidateResult.candidateId;
       matchedExisting = candidateResult.matchedExisting;
-      const existingIncumbency = await loadExistingCandidateElectionIncumbency(client, {
-        candidateId,
-        electionId,
-      });
-      effectiveIncumbency = effectiveInputIncumbency ?? existingIncumbency ?? false;
 
-      const linkResult = await upsertCandidateElection({
-        client,
-        candidateId,
-        electionId,
-        isIncumbent: effectiveIncumbency,
-      });
-      candidateElectionCreated = linkResult.created;
-      if (linkResult.created) {
-        await createCandidateFutureElectionNotificationEvents(client, {
+      if (runningMateOf) {
+        // Joint-ticket running mate: link to the ticket lead's
+        // candidate_elections row instead of creating an own row.
+        const lead = await findTicketLeadCandidateIdByDisplayName({
+          db: client,
+          electionId,
+          leadDisplayName: runningMateOf,
+        });
+        if (!lead.ok) {
+          throw new Error(
+            lead.reason === "ambiguous"
+              ? `Multiple ticket lead candidates match display_name "${runningMateOf}" for this election; resolve the lead identity first.`
+              : `Ticket lead candidate not found for display_name "${runningMateOf}" in this election. Write the ticket lead's profile first, then re-run.`
+          );
+        }
+        if (lead.candidateId === candidateId) {
+          throw new Error(
+            `Running mate profile resolved to the ticket lead candidate for "${runningMateOf}"; the two ticket members must be different people.`
+          );
+        }
+        await setCandidateElectionRunningMate({
+          db: client,
+          electionId,
+          candidateId: lead.candidateId,
+          runningMateCandidateId: candidateId,
+        });
+        runningMateLinkedToCandidateId = lead.candidateId;
+      } else {
+        const existingIncumbency = await loadExistingCandidateElectionIncumbency(client, {
           candidateId,
           electionId,
         });
+        effectiveIncumbency = effectiveInputIncumbency ?? existingIncumbency ?? false;
+
+        const linkResult = await upsertCandidateElection({
+          client,
+          candidateId,
+          electionId,
+          isIncumbent: effectiveIncumbency,
+        });
+        candidateElectionCreated = linkResult.created;
+        if (linkResult.created) {
+          await createCandidateFutureElectionNotificationEvents(client, {
+            candidateId,
+            electionId,
+          });
+        }
       }
       await client.query("COMMIT");
     } catch (error) {
@@ -730,7 +780,9 @@ async function main(): Promise<void> {
 
     let recordDraft: { emittedCount: number; skippedCount: number } | null = null;
     let financeSync: CandidateProfileFinanceSyncFanoutResult | null = null;
-    if (emitFinanceSync) {
+    // Running mates are not ballot candidates for this election: no finance
+    // fanout and no record drafts for the ticket election.
+    if (emitFinanceSync && !runningMateOf) {
       try {
         financeSync = await enqueueCandidateProfileFinanceSyncFanoutForLinkedElection({
           context: buildLinkedElectionFinanceContext({
@@ -748,7 +800,7 @@ async function main(): Promise<void> {
         );
       }
     }
-    if (redis) {
+    if (redis && !runningMateOf) {
       try {
         await redis.connect();
         recordDraft = await enqueueCandidateRecordDrafts(redis, [{ candidateId, electionId, runId }]);
@@ -768,6 +820,9 @@ async function main(): Promise<void> {
           candidateId,
           matchedExisting,
           candidateElectionCreated,
+          ...(runningMateLinkedToCandidateId
+            ? { runningMateOf: runningMateOf, ticketLeadCandidateId: runningMateLinkedToCandidateId }
+            : {}),
           financeSync,
           recordDraft,
         },

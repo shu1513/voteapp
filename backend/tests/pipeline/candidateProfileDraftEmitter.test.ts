@@ -45,6 +45,32 @@ describe("enqueueCandidateProfileDrafts", () => {
     expect(args[19]).toBe("");
   });
 
+  it("emits running-mate drafts with ticket role and lead name fields", async () => {
+    const sendCommand = vi.fn().mockResolvedValueOnce(1);
+
+    const result = await enqueueCandidateProfileDrafts(
+      { sendCommand },
+      [
+        {
+          electionId: "e-1",
+          runId: "run-1",
+          displayName: "Hnilicka, Julia",
+          rosterIndex: 0,
+          rosterParty: "Democrat",
+          seedUrls: ["https://www.elections.alaska.gov/candidates/?election=26prim"],
+          electionTicketRole: "running_mate",
+          ticketLeadDisplayName: "Begich, Tom",
+        },
+      ]
+    );
+
+    expect(result).toEqual({ emittedCount: 1, skippedCount: 0 });
+    const args = sendCommand.mock.calls[0]?.[0] as string[];
+    expect(args[8]).toBe("Hnilicka, Julia");
+    expect(args.at(-2)).toBe("running_mate");
+    expect(args.at(-1)).toBe("Begich, Tom");
+  });
+
   it("supports explicit dedupe keys for non-roster producers", async () => {
     const sendCommand = vi.fn().mockResolvedValueOnce(1);
 

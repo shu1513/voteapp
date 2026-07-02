@@ -222,6 +222,12 @@ export type BallotLookupFinanceSummary = {
   backing_summary: BallotLookupFinanceBackingSummary;
 };
 
+export type BallotLookupRunningMate = {
+  candidate_id: string;
+  display_name: string;
+  party: string;
+};
+
 export type BallotLookupCandidate = {
   candidate_election_id: string;
   candidate_id: string;
@@ -234,6 +240,7 @@ export type BallotLookupCandidate = {
   state: string;
   fec_ids: string[];
   state_filing_ids: string[];
+  running_mate?: BallotLookupRunningMate;
   records: BallotLookupCandidateRecord[];
   finance_summary: BallotLookupFinanceSummary | null;
 };
@@ -396,6 +403,9 @@ type CandidateRow = {
   state: string;
   fec_ids: unknown;
   state_filing_ids: unknown;
+  running_mate_candidate_id: string | null;
+  running_mate_display_name: string | null;
+  running_mate_party: string | null;
 };
 
 type CandidateRecordRow = {
@@ -11315,10 +11325,19 @@ async function loadFullElectionDetails(
           c.current_office,
           c.state,
           c.fec_ids,
-          c.state_filing_ids
+          c.state_filing_ids,
+          rm.id AS running_mate_candidate_id,
+          CASE
+            WHEN rm.id IS NULL THEN NULL
+            ELSE COALESCE(NULLIF(trim(rm.display_name), ''), trim(rm.first_name || ' ' || rm.last_name))
+          END AS running_mate_display_name,
+          rm.party AS running_mate_party
         FROM public.candidate_elections AS ce
         JOIN public.candidates AS c
           ON c.id = ce.candidate_id
+        LEFT JOIN public.candidates AS rm
+          ON rm.id = ce.running_mate_candidate_id
+          AND rm.deleted_at IS NULL
         WHERE ce.election_id = ANY($1::uuid[])
           AND c.deleted_at IS NULL
         ORDER BY
@@ -11482,6 +11501,15 @@ async function loadFullElectionDetails(
       state: row.state,
       fec_ids: parseStringArray(row.fec_ids),
       state_filing_ids: parseStringArray(row.state_filing_ids),
+      ...(row.running_mate_candidate_id && row.running_mate_display_name
+        ? {
+            running_mate: {
+              candidate_id: row.running_mate_candidate_id,
+              display_name: row.running_mate_display_name,
+              party: row.running_mate_party ?? "",
+            },
+          }
+        : {}),
       records: candidateRecordsByCandidate.get(row.candidate_id) ?? [],
       finance_summary:
         financeSummaryByCandidateElection.get(candidateElectionKey(row.candidate_id, row.election_id)) ?? null,

@@ -22,6 +22,11 @@ type CandidateProfileDraftBaseInput = {
   skipPerElectionNameDedupe?: boolean;
   seedUrls: readonly string[];
   dedupeKey?: string;
+  // Joint-ticket support: a running-mate draft is researched as a full person
+  // profile but linked to the ticket lead's candidate_elections row instead of
+  // getting an own row for the election.
+  electionTicketRole?: "running_mate";
+  ticketLeadDisplayName?: string;
 };
 
 export type ElectionCandidateProfileDraftEmitInput = CandidateProfileDraftBaseInput & {
@@ -87,7 +92,11 @@ redis.call(
   "presidential_role",
   ARGV[16],
   "parent_presidential_candidate_fec_id",
-  ARGV[17]
+  ARGV[17],
+  "election_ticket_role",
+  ARGV[18],
+  "ticket_lead_display_name",
+  ARGV[19]
 )
 redis.call("SET", KEYS[2], ARGV[13])
 return 1
@@ -192,6 +201,8 @@ export async function enqueueCandidateProfileDrafts(
       presidentialCycleIdForInput(input),
       presidentialRoleForInput(input),
       parentPresidentialCandidateFecIdForInput(input),
+      input.electionTicketRole ?? "",
+      input.ticketLeadDisplayName?.trim() ?? "",
     ]);
 
     const value = typeof raw === "number" ? raw : Number.parseInt(String(raw), 10);

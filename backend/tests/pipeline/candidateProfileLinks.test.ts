@@ -2,14 +2,89 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   findPresidentialCycleCandidateIdByFecId,
+  findTicketLeadCandidateIdByDisplayName,
   markPresidentialCycleCandidateProfileResearched,
   markPresidentialCycleCandidateRunningMateProfileResearched,
+  setCandidateElectionRunningMate,
   setPresidentialCycleCandidateRunningMate,
   upsertCandidateElection,
   upsertPresidentialCycleCandidate,
   withdrawPresidentialCycleCandidateByCandidateId,
   withdrawPresidentialCycleCandidateByFecId,
 } from "../../src/pipeline/candidates/candidateProfileLinks.js";
+
+describe("setCandidateElectionRunningMate", () => {
+  it("sets the running mate on the ticket lead's candidate_elections row", async () => {
+    const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await expect(
+      setCandidateElectionRunningMate({
+        db: { query } as never,
+        electionId: "election-1",
+        candidateId: "lead-1",
+        runningMateCandidateId: "mate-1",
+      })
+    ).resolves.toEqual({ updatedCount: 1 });
+
+    const sql = String(query.mock.calls[0]?.[0]);
+    expect(sql).toContain("UPDATE public.candidate_elections");
+    expect(sql).toContain("running_mate_candidate_id = $3::uuid");
+    expect(sql).toContain("running_mate_candidate_id IS DISTINCT FROM $3::uuid");
+    expect(query.mock.calls[0]?.[1]).toEqual(["election-1", "lead-1", "mate-1"]);
+  });
+
+  it("rejects a running mate equal to the ticket lead", async () => {
+    const query = vi.fn();
+
+    await expect(
+      setCandidateElectionRunningMate({
+        db: { query } as never,
+        electionId: "election-1",
+        candidateId: "same-1",
+        runningMateCandidateId: "same-1",
+      })
+    ).rejects.toThrow("running mate candidate id must differ from the ticket lead candidate id");
+    expect(query).not.toHaveBeenCalled();
+  });
+});
+
+describe("findTicketLeadCandidateIdByDisplayName", () => {
+  it("returns the single matching lead candidate id", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [{ candidate_id: "lead-1" }] });
+
+    await expect(
+      findTicketLeadCandidateIdByDisplayName({
+        db: { query } as never,
+        electionId: "election-1",
+        leadDisplayName: "Begich, Tom",
+      })
+    ).resolves.toEqual({ ok: true, candidateId: "lead-1" });
+    expect(String(query.mock.calls[0]?.[0])).toContain("split_part($2, ',', 2)");
+    expect(query.mock.calls[0]?.[1]).toEqual(["election-1", "Begich, Tom"]);
+  });
+
+  it("fails closed on not-found and ambiguous leads", async () => {
+    const emptyQuery = vi.fn().mockResolvedValue({ rows: [] });
+    await expect(
+      findTicketLeadCandidateIdByDisplayName({
+        db: { query: emptyQuery } as never,
+        electionId: "election-1",
+        leadDisplayName: "Begich, Tom",
+      })
+    ).resolves.toEqual({ ok: false, reason: "not_found" });
+
+    const ambiguousQuery = vi
+      .fn()
+      .mockResolvedValue({ rows: [{ candidate_id: "lead-1" }, { candidate_id: "lead-2" }] });
+    await expect(
+      findTicketLeadCandidateIdByDisplayName({
+        db: { query: ambiguousQuery } as never,
+        electionId: "election-1",
+        leadDisplayName: "Begich, Tom",
+      })
+    ).resolves.toEqual({ ok: false, reason: "ambiguous" });
+  });
+});
 
 describe("upsertCandidateElection", () => {
   it("upserts a declared candidate election link", async () => {

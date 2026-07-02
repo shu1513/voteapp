@@ -23,6 +23,13 @@ describe("candidateIdentity", () => {
     });
   });
 
+  it("splits comma-form ballot names into first/last order", () => {
+    expect(splitDisplayNameToFirstLast("Begich, Tom")).toEqual({
+      firstName: "Tom",
+      lastName: "Begich",
+    });
+  });
+
   it("finds normalized intersection", () => {
     expect(hasNormalizedIntersection(["a", "b"], ["x", "b"])).toBe(true);
     expect(hasNormalizedIntersection(["a"], ["x"])).toBe(false);

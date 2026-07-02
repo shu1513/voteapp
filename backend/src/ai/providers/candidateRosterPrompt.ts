@@ -47,6 +47,7 @@ export function buildCandidateRosterPrompt(input: CandidateRosterPromptInput): s
     '      "is_incumbent": true,',
     ...(includeFecIds ? ['      "fec_ids": ["required FEC candidate ID(s)"],'] : []),
     ...(!includeFecIds ? ['      "state_filing_ids": ["state filing ID(s) (optional)"],'] : []),
+    '      "running_mate": { "display_name": "running mate ballot name", "party": "optional", "sources": ["https://..."] },',
     '      "sources": ["https://..."]',
     "    }",
     "  ]",
@@ -58,6 +59,8 @@ export function buildCandidateRosterPrompt(input: CandidateRosterPromptInput): s
     "- candidates can be an empty array if no roster is found.",
     "- display_name must match the ballot-listed candidate name exactly when available (do not substitute legal/full names).",
     "- Do not deduplicate by display_name; include each ballot-listed candidate row, even for same-name candidates.",
+    "- When this office elects a joint ticket (for example Governor / Lieutenant Governor), return one candidate row per ticket: display_name is the ticket lead's ballot name only, and running_mate carries the second person's ballot name and sources. Never merge two people's names into one display_name.",
+    "- running_mate is only for offices where two people are elected together on one ballot line; omit it everywhere else.",
     ...(includeFecIds
       ? [
           "- For this federal contest, fec_ids is required for each candidate and must include one or more current-cycle FEC candidate IDs.",
