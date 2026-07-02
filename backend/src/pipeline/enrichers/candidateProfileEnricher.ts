@@ -1271,10 +1271,15 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
   return result.rows[0] ?? null;
 }
 
-async function electionAlreadyHasRunningMateForLead(
+// Idempotency check only: skip a redelivered draft when THIS mate is already
+// linked to THIS lead. A draft carrying a different mate name must pass through
+// so a re-imported roster with a replacement running mate overwrites the link
+// (last write wins by design).
+async function electionTicketAlreadyLinksRunningMate(
   pool: Pool,
   electionId: string,
-  leadDisplayName: string
+  leadDisplayName: string,
+  mateDisplayName: string
 ): Promise<boolean> {
   const result = await pool.query(
     `
@@ -1288,9 +1293,10 @@ async function electionAlreadyHasRunningMateForLead(
       WHERE ce.election_id = $1
         AND lead.deleted_at IS NULL
         AND lower(trim(coalesce(lead.display_name, lead.first_name || ' ' || lead.last_name))) = lower(trim($2))
+        AND lower(trim(coalesce(rm.display_name, rm.first_name || ' ' || rm.last_name))) = lower(trim($3))
       LIMIT 1
     `,
-    [electionId, leadDisplayName]
+    [electionId, leadDisplayName, mateDisplayName]
   );
   return (result.rowCount ?? 0) > 0;
 }
@@ -1548,7 +1554,7 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             contextType === "election" &&
             electionTicketRole === "running_mate" &&
             ticketLeadDisplayName &&
-            (await electionAlreadyHasRunningMateForLead(pool, contextId, ticketLeadDisplayName))
+            (await electionTicketAlreadyLinksRunningMate(pool, contextId, ticketLeadDisplayName, candidateDisplayName))
           ) {
             await redis.xAck(
               STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
