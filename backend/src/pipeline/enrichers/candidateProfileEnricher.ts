@@ -86,8 +86,10 @@ import {
 } from "../candidates/candidateProfileIdentity.js";
 import {
   findPresidentialCycleCandidateIdByFecId,
+  findTicketLeadCandidateIdByDisplayName,
   markPresidentialCycleCandidateProfileResearched,
   markPresidentialCycleCandidateRunningMateProfileResearched,
+  setCandidateElectionRunningMate,
   setPresidentialCycleCandidateRunningMate,
   upsertCandidateElection,
   upsertPresidentialCycleCandidate,
@@ -1269,6 +1271,28 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
   return result.rows[0] ?? null;
 }
 
+async function electionAlreadyHasRunningMateForLead(
+  pool: Pool,
+  electionId: string,
+  leadDisplayName: string
+): Promise<boolean> {
+  const result = await pool.query(
+    `
+      SELECT 1
+      FROM public.candidate_elections AS ce
+      JOIN public.candidates AS lead
+        ON lead.id = ce.candidate_id
+      WHERE ce.election_id = $1
+        AND ce.running_mate_candidate_id IS NOT NULL
+        AND lead.deleted_at IS NULL
+        AND lower(trim(coalesce(lead.display_name, lead.first_name || ' ' || lead.last_name))) = lower(trim($2))
+      LIMIT 1
+    `,
+    [electionId, leadDisplayName]
+  );
+  return (result.rowCount ?? 0) > 0;
+}
+
 async function electionAlreadyHasCandidateName(
   pool: Pool,
   electionId: string,
@@ -1422,6 +1446,9 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
         const rosterStateFilingIds = parseSerializedStringArray(entry.message.roster_state_filing_ids);
         const parentPresidentialCandidateFecId =
           entry.message.parent_presidential_candidate_fec_id?.trim().toUpperCase() || undefined;
+        const electionTicketRole =
+          entry.message.election_ticket_role?.trim() === "running_mate" ? ("running_mate" as const) : undefined;
+        const ticketLeadDisplayName = entry.message.ticket_lead_display_name?.trim() || undefined;
         let deliveryCount: number | null = null;
         const presidentialDisabled =
           contextType === "presidential_cycle" && !isPresidentialElectionsEnabled();
@@ -1495,8 +1522,33 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             continue;
           }
 
+          if (contextType === "election" && electionTicketRole === "running_mate" && !ticketLeadDisplayName) {
+            await parkMessage(
+              redis,
+              entry,
+              "running mate profile draft requires ticket_lead_display_name",
+              deliveryCount
+            );
+            continue;
+          }
+
           if (
             contextType === "election" &&
+            electionTicketRole === "running_mate" &&
+            ticketLeadDisplayName &&
+            (await electionAlreadyHasRunningMateForLead(pool, contextId, ticketLeadDisplayName))
+          ) {
+            await redis.xAck(
+              STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
+              STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
+              entry.id
+            );
+            continue;
+          }
+
+          if (
+            contextType === "election" &&
+            electionTicketRole !== "running_mate" &&
             !skipPerElectionNameDedupe &&
             (await electionAlreadyHasCandidateName(pool, contextId, candidateDisplayName))
           ) {
@@ -1640,6 +1692,35 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
                   candidateId,
                 });
               }
+            } else if (electionTicketRole === "running_mate") {
+              const lead = await findTicketLeadCandidateIdByDisplayName({
+                db: client,
+                electionId: draftContext.contextId,
+                leadDisplayName: ticketLeadDisplayName ?? "",
+              });
+              if (!lead.ok) {
+                if (lead.reason === "ambiguous") {
+                  throw new ParkCandidateProfileDraftError(
+                    `multiple ticket lead candidates match display_name "${ticketLeadDisplayName ?? ""}" for this election`
+                  );
+                }
+                // Lead profile not written yet; leave unacked so reclaim retries
+                // after the lead draft lands.
+                throw new Error(
+                  `ticket lead candidate not found for display_name "${ticketLeadDisplayName ?? ""}" in this election`
+                );
+              }
+              if (lead.candidateId === candidateId) {
+                throw new ParkCandidateProfileDraftError(
+                  `running mate profile resolved to the ticket lead candidate for "${ticketLeadDisplayName ?? ""}"`
+                );
+              }
+              await setCandidateElectionRunningMate({
+                db: client,
+                electionId: draftContext.contextId,
+                candidateId: lead.candidateId,
+                runningMateCandidateId: candidateId,
+              });
             } else {
               const linkResult = await upsertCandidateElection({
                 client,
@@ -1663,18 +1744,22 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           }
 
           if (draftContext.type === "election") {
-            await enqueueCandidateProfileFinanceSyncFanoutForLinkedElection({
-              context: draftContext,
-              candidateId,
-              fecIds: profile.fec_ids,
-            });
-            await enqueueCandidateRecordDrafts(redis, [
-              {
+            // Running mates are not ballot candidates for this election: no
+            // finance sync fanout and no record drafts for the ticket election.
+            if (electionTicketRole !== "running_mate") {
+              await enqueueCandidateProfileFinanceSyncFanoutForLinkedElection({
+                context: draftContext,
                 candidateId,
-                electionId: draftContext.contextId,
-                runId,
-              },
-            ]);
+                fecIds: profile.fec_ids,
+              });
+              await enqueueCandidateRecordDrafts(redis, [
+                {
+                  candidateId,
+                  electionId: draftContext.contextId,
+                  runId,
+                },
+              ]);
+            }
           } else {
             await enqueueCandidateFinanceSyncForPresidentialCycle({
               context: draftContext,

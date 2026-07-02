@@ -903,6 +903,20 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
                 skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
                 seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
               },
+              ...(candidate.running_mate
+                ? [
+                    {
+                      electionId,
+                      runId,
+                      displayName: candidate.running_mate.display_name,
+                      rosterIndex: candidate.roster_index,
+                      rosterParty: candidate.running_mate.party,
+                      seedUrls: mergeSeedUrls(candidate.running_mate.sources, electionSeedUrls),
+                      electionTicketRole: "running_mate" as const,
+                      ticketLeadDisplayName: candidate.display_name,
+                    },
+                  ]
+                : []),
             ]);
           }
 

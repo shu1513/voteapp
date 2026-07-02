@@ -276,19 +276,35 @@ async function main(): Promise<void> {
     await redis!.connect();
     const fanout = await enqueueCandidateProfileDrafts(
       redis!,
-      candidates.map((candidate) => ({
-        electionId,
-        runId,
-        displayName: candidate.display_name,
-        rosterIndex: candidate.roster_index,
-        rosterParty: candidate.party,
-        rosterIsIncumbent: candidate.is_incumbent,
-        disambiguationHint: candidate.disambiguation_hint,
-        fecIds: candidate.fec_ids,
-        stateFilingIdsHint: candidate.state_filing_ids,
-        skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
-        seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
-      }))
+      candidates.flatMap((candidate) => [
+        {
+          electionId,
+          runId,
+          displayName: candidate.display_name,
+          rosterIndex: candidate.roster_index,
+          rosterParty: candidate.party,
+          rosterIsIncumbent: candidate.is_incumbent,
+          disambiguationHint: candidate.disambiguation_hint,
+          fecIds: candidate.fec_ids,
+          stateFilingIdsHint: candidate.state_filing_ids,
+          skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
+          seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
+        },
+        ...(candidate.running_mate
+          ? [
+              {
+                electionId,
+                runId,
+                displayName: candidate.running_mate.display_name,
+                rosterIndex: candidate.roster_index,
+                rosterParty: candidate.running_mate.party,
+                seedUrls: mergeSeedUrls(candidate.running_mate.sources, electionSeedUrls),
+                electionTicketRole: "running_mate" as const,
+                ticketLeadDisplayName: candidate.display_name,
+              },
+            ]
+          : []),
+      ])
     );
 
     await markStagingWritten(pool, ingestKey);
