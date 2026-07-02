@@ -199,9 +199,15 @@ async function main(): Promise<void> {
     "ADDRESS_LOOKUP_CACHE_TTL_SECONDS",
     DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS
   );
-  const redis = addressCacheEnabled ? createClient({ url: readEnv("REDIS_URL", "redis://localhost:6379") }) : null;
+  // Auth needs Redis for sessions independently of the address cache toggle:
+  // do not let ADDRESS_LOOKUP_CACHE_ENABLED=false silently disable auth.
+  const authConfigured = Boolean(readOptionalEnv("AUTH_PUBLIC_BASE_URL"));
+  const redis =
+    addressCacheEnabled || authConfigured
+      ? createClient({ url: readEnv("REDIS_URL", "redis://localhost:6379") })
+      : null;
   const buildAddressResolverOptions = () => ({
-    cache: redis?.isOpen ? redis : undefined,
+    cache: addressCacheEnabled && redis?.isOpen ? redis : undefined,
     cacheTtlSeconds: addressCacheTtlSeconds,
     geocoderOptions: {
       benchmark: readEnv("CENSUS_ADDRESS_GEOCODER_BENCHMARK", DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK),
@@ -212,12 +218,12 @@ async function main(): Promise<void> {
   });
   if (redis) {
     redis.on("error", (error) => {
-      console.warn("address lookup cache Redis error; continuing without failing requests", error);
+      console.warn("Redis error (address cache/auth sessions); continuing without failing requests", error);
     });
     try {
       await redis.connect();
     } catch (error) {
-      console.warn("address lookup cache disabled: failed to connect to Redis", error);
+      console.warn("Redis unavailable: address cache and auth sessions disabled until it connects", error);
     }
   }
 
@@ -225,9 +231,19 @@ async function main(): Promise<void> {
   const authFromEmailAddress = readOptionalEnv("AUTH_FROM_EMAIL");
   const authReplyToEmailAddress = readOptionalEnv("AUTH_REPLY_TO_EMAIL");
   const authSesRegion = readOptionalEnv("AUTH_SES_REGION") ?? readOptionalEnv("AWS_REGION") ?? readOptionalEnv("AWS_DEFAULT_REGION");
+  const authSessionCookieSameSite = readAuthCookieSameSiteEnv("AUTH_SESSION_COOKIE_SAME_SITE", "lax");
+  // Default Secure from the public base URL scheme; browsers reject
+  // SameSite=None cookies without Secure, so fail fast on that combination.
+  const authSessionCookieSecure = readBooleanEnv(
+    "AUTH_SESSION_COOKIE_SECURE",
+    authPublicBaseUrl?.startsWith("https://") ?? false
+  );
+  if (authSessionCookieSameSite === "none" && !authSessionCookieSecure) {
+    throw new Error("AUTH_SESSION_COOKIE_SECURE=true is required when AUTH_SESSION_COOKIE_SAME_SITE=none");
+  }
   const authSessionCookieOptions: Omit<AuthSessionCookieOptions, "maxAgeSeconds"> = {
-    sameSite: readAuthCookieSameSiteEnv("AUTH_SESSION_COOKIE_SAME_SITE", "lax"),
-    secure: readBooleanEnv("AUTH_SESSION_COOKIE_SECURE", false),
+    sameSite: authSessionCookieSameSite,
+    secure: authSessionCookieSecure,
     domain: readOptionalEnv("AUTH_SESSION_COOKIE_DOMAIN"),
     path: readOptionalEnv("AUTH_SESSION_COOKIE_PATH") ?? "/",
   };

@@ -92,6 +92,11 @@ export async function issueUserAuthToken(
   // Only the newest link should work: void any outstanding unconsumed tokens
   // of the same purpose so a re-request (resend, repeat forgot-password)
   // leaves exactly one valid token per user/purpose.
+  //
+  // Concurrency invariant: every caller issues inside a transaction that
+  // holds a FOR UPDATE lock on the user row (register/resend/forgot flows in
+  // authService), which serializes the void+insert per user. Callers that do
+  // not hold that lock can race and leave multiple live tokens.
   await db.query(
     `
       UPDATE public.user_auth_tokens

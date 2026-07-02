@@ -5,9 +5,12 @@ export type AuthSessionRedisClient = {
   get(key: string): Promise<string | null>;
   setEx(key: string, seconds: number, value: string): Promise<unknown>;
   del(key: string): Promise<number>;
-  sAdd?(key: string, member: string): Promise<number>;
-  sRem?(key: string, member: string): Promise<number>;
-  sMembers?(key: string): Promise<string[]>;
+  // Set support is required: without the per-user session index, password
+  // reset cannot destroy all of a user's sessions.
+  sAdd(key: string, member: string): Promise<number>;
+  sRem(key: string, member: string): Promise<number>;
+  sMembers(key: string): Promise<string[]>;
+  expire(key: string, seconds: number): Promise<unknown>;
 };
 
 export const AUTH_SESSION_KEY_PREFIX = "auth:session:";
@@ -63,16 +66,18 @@ function buildUserSessionsKey(userId: string): string {
 }
 
 async function recordSessionMembership(
-  redis: Pick<AuthSessionRedisClient, "sAdd" | "del">,
+  redis: Pick<AuthSessionRedisClient, "sAdd" | "del" | "expire">,
   sessionId: string,
-  userId: string
+  userId: string,
+  ttlSeconds: number
 ): Promise<void> {
-  if (!redis.sAdd) {
-    return;
-  }
-
   try {
-    await redis.sAdd(buildUserSessionsKey(userId), hashSessionId(sessionId));
+    const userSessionsKey = buildUserSessionsKey(userId);
+    await redis.sAdd(userSessionsKey, hashSessionId(sessionId));
+    // Keep the index from outliving its sessions: refresh the set TTL to the
+    // newest session's TTL, so a set left holding only naturally-expired
+    // session hashes expires too instead of accumulating ghosts forever.
+    await redis.expire(userSessionsKey, ttlSeconds);
   } catch (error) {
     await redis.del(buildAuthSessionKey(sessionId));
     throw error;
@@ -91,7 +96,7 @@ export async function createAuthSession(
   const ttlSeconds = normalizeTtlSeconds(input.ttlSeconds);
   const sessionId = normalizeSessionId((input.generateSessionId ?? generateSessionId)());
   await redis.setEx(buildAuthSessionKey(sessionId), ttlSeconds, userId);
-  await recordSessionMembership(redis, sessionId, userId);
+  await recordSessionMembership(redis, sessionId, userId, ttlSeconds);
   return { sessionId, userId, ttlSeconds };
 }
 
@@ -112,7 +117,7 @@ export async function destroyAuthSession(
   const sessionKey = buildAuthSessionKey(normalizedSessionId);
   const existingUserId = await redis.get(sessionKey);
   const deleted = await redis.del(sessionKey);
-  if (deleted > 0 && existingUserId?.trim() && redis.sRem) {
+  if (deleted > 0 && existingUserId?.trim()) {
     try {
       await redis.sRem(buildUserSessionsKey(existingUserId), hashSessionId(normalizedSessionId));
     } catch {
@@ -127,10 +132,6 @@ export async function destroyAuthSessionsByUserId(
   input: DestroyAuthSessionsByUserIdInput
 ): Promise<number> {
   const userId = normalizeUserId(input.userId);
-  if (!redis.sMembers) {
-    throw new TypeError("Redis client does not support session invalidation by user");
-  }
-
   const sessionHashes = await redis.sMembers(buildUserSessionsKey(userId));
   let destroyedCount = 0;
   for (const sessionHash of sessionHashes) {

@@ -31,8 +31,11 @@ function normalizeEmail(email: string): string {
   return normalized;
 }
 
-function buildBucketKey(kind: "ip" | "email", value: string, pathname: string): string {
-  return `${kind}:${value}|${pathname}`;
+// Buckets are shared across ALL auth endpoints deliberately: keying by
+// pathname would let an attacker multiply their quota by spreading requests
+// over login, forgot-password, and resend-verification.
+function buildBucketKey(kind: "ip" | "email", value: string): string {
+  return `${kind}:${value}`;
 }
 
 function createBucket(now: number): RateLimitBucket {
@@ -79,8 +82,8 @@ export function createInMemoryAuthApiRateLimiter(
     sweepExpiredBuckets(now);
 
     const normalizedEmail = normalizeEmail(input.email);
-    const ipKey = buildBucketKey("ip", input.clientIp || "unknown", input.pathname);
-    const emailKey = buildBucketKey("email", normalizedEmail, input.pathname);
+    const ipKey = buildBucketKey("ip", input.clientIp || "unknown");
+    const emailKey = buildBucketKey("email", normalizedEmail);
     const existingIpBucket = buckets.get(ipKey);
     const existingEmailBucket = buckets.get(emailKey);
 
@@ -119,7 +122,13 @@ export function createInMemoryAuthApiRateLimiter(
     refreshedEmailBucket.count +=
       existingEmailBucket && now - existingEmailBucket.windowStartedAt < options.windowMs ? 1 : 0;
 
+    // Delete-then-set keeps Map iteration order LRU-ish: without it, a
+    // continuously refreshed (hottest) bucket stays at its original position
+    // and gets evicted first when the cap is hit, resetting exactly the
+    // counters an attacker is filling.
+    buckets.delete(ipKey);
     buckets.set(ipKey, refreshedIpBucket);
+    buckets.delete(emailKey);
     buckets.set(emailKey, refreshedEmailBucket);
 
     return { allowed: true };

@@ -16,8 +16,10 @@ const ttlSeconds = 3600;
 
 function createRedisMock() {
   const store = new Map<string, string>();
+  const sets = new Map<string, Set<string>>();
   return {
     store,
+    sets,
     redis: {
       get: vi.fn(async (key: string) => store.get(key) ?? null),
       setEx: vi.fn(async (key: string, seconds: number, value: string) => {
@@ -25,7 +27,20 @@ function createRedisMock() {
         store.set(key, value);
         return "OK";
       }),
-      del: vi.fn(async (key: string) => (store.delete(key) ? 1 : 0)),
+      del: vi.fn(async (key: string) => (store.delete(key) || sets.delete(key) ? 1 : 0)),
+      sAdd: vi.fn(async (key: string, member: string) => {
+        const set = sets.get(key) ?? new Set<string>();
+        const added = set.has(member) ? 0 : 1;
+        set.add(member);
+        sets.set(key, set);
+        return added;
+      }),
+      sRem: vi.fn(async (key: string, member: string) => (sets.get(key)?.delete(member) ? 1 : 0)),
+      sMembers: vi.fn(async (key: string) => [...(sets.get(key) ?? [])]),
+      expire: vi.fn(async (_key: string, seconds: number) => {
+        expect(seconds).toBe(ttlSeconds);
+        return true;
+      }),
     },
   };
 }

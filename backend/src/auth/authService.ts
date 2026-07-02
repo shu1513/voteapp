@@ -440,15 +440,20 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
 
     async forgotPassword(input) {
       const email = normalizeEmail(input.email);
-      const user = await findActiveUserByEmail(options.db, email);
-      if (!user) {
-        return;
-      }
-
-      const token = generateAuthToken();
       const client = await options.db.connect();
+      let token: ReturnType<typeof generateAuthToken> | null = null;
       try {
         await client.query("BEGIN");
+        // Lock the user row like the verification flow does: token issuance
+        // relies on this lock to serialize concurrent requests so the
+        // void-then-insert in issueUserAuthToken leaves exactly one live token.
+        const user = await findActiveUserByEmailForUpdate(client, email);
+        if (!user) {
+          await client.query("COMMIT");
+          return;
+        }
+
+        token = generateAuthToken();
         await issueUserAuthToken(client, {
           userId: user.id,
           tokenHash: token.tokenHash,
@@ -476,6 +481,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       validatePasswordPolicy(input.password);
       const passwordHash = await hashPassword(input.password);
       const client = await options.db.connect();
+      let userIdToInvalidate: string | null = null;
 
       try {
         await client.query("BEGIN");
@@ -487,8 +493,6 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         if (!consumed) {
           throw new TypeError("Password reset token is invalid or expired");
         }
-
-        await destroyAuthSessionsByUserId(options.redis, { userId: consumed.userId });
 
         const updated = await client.query(
           `
@@ -504,12 +508,21 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           throw new Error("Failed to update user password");
         }
 
+        userIdToInvalidate = consumed.userId;
         await client.query("COMMIT");
       } catch (error) {
         await rollbackQuietly(client);
         throw error;
       } finally {
         client.release();
+      }
+
+      // Invalidate sessions only after the password change is committed: a
+      // rollback must not log the user out of everything, and a concurrent
+      // old-password login can no longer create a session behind a
+      // pre-commit invalidation.
+      if (userIdToInvalidate) {
+        await destroyAuthSessionsByUserId(options.redis, { userId: userIdToInvalidate });
       }
     },
   };
