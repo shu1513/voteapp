@@ -55,6 +55,9 @@ function usage(): string {
     "the payload must carry review_decision: \"approve\" and a review_reason, and the row is staged",
     "with soft_retry_count already set so the validator's existing review-approve branch applies.",
     "Use it only after a previous inject soft-failed and the reason was researched and found acceptable.",
+    "It applies only to scope-validation soft-fails. A payload whose entries were all filtered as",
+    "presidential is still rejected regardless of review_decision: presidential contests belong to",
+    "presidential_cycles, never district elections, and approval cannot override that.",
   ].join("\n");
 }
 
@@ -87,7 +90,7 @@ export function resolveReviewApproveFailureDebugJson(
   return JSON.stringify({
     soft_retry_count: 1,
     manual_review_approved: true,
-    soft_retry_at: new Date().toISOString(),
+    manual_approve_at: new Date().toISOString(),
   });
 }
 

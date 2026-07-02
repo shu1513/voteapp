@@ -22,7 +22,8 @@ describe("resolveReviewApproveFailureDebugJson", () => {
     const parsed = JSON.parse(json!) as Record<string, unknown>;
     expect(parsed.soft_retry_count).toBe(1);
     expect(parsed.manual_review_approved).toBe(true);
-    expect(typeof parsed.soft_retry_at).toBe("string");
+    expect(typeof parsed.manual_approve_at).toBe("string");
+    expect(parsed.soft_retry_at).toBeUndefined();
   });
 
   it("rejects review approval without an approve decision or reason", () => {
