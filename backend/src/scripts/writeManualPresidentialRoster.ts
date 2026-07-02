@@ -16,6 +16,7 @@ import { loadProjectEnv } from "../config/env.js";
 import {
   parsePresidentialRosterPayload,
   type PresidentialRosterPayload,
+  type PresidentialRosterSkippedCandidate,
 } from "../contracts/presidentialRosterPayloadContract.js";
 import {
   enrichPresidentialRosterCycle,
@@ -215,7 +216,9 @@ function assertCycleMatchesOptions(
 export function buildManualPresidentialRosterEnrichResult(input: {
   payload: PresidentialRosterPayload;
   file: string;
+  skippedIneligibleCandidates?: readonly PresidentialRosterSkippedCandidate[];
 }): PresidentialRosterAiResult {
+  const skipped = input.skippedIneligibleCandidates ?? [];
   return {
     ok: true,
     provider: "manual",
@@ -226,6 +229,7 @@ export function buildManualPresidentialRosterEnrichResult(input: {
       no_ai_provider_call: true,
       source_file: input.file,
       candidate_count: input.payload.candidates.length,
+      ...(skipped.length > 0 ? { roster_skipped_ineligible: [...skipped] } : {}),
     },
   };
 }
@@ -347,6 +351,7 @@ export async function runManualPresidentialRosterWrite(input: {
       buildManualPresidentialRosterEnrichResult({
         payload: parsed.payload,
         file: input.options.file,
+        skippedIneligibleCandidates: parsed.skippedIneligibleCandidates,
       }),
     enrichRosterStatus: async (statusInput) => noAiStatusVerifier(statusInput),
   });

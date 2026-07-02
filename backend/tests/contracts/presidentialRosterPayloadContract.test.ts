@@ -248,25 +248,80 @@ describe("parsePresidentialRosterPayload", () => {
     ).toBe(false);
   });
 
-  it("rejects candidates without FEC IDs or non-FEC qualification evidence", () => {
-    expect(
-      parsePresidentialRosterPayload({
-        candidates: [
-          {
-            display_name: "No FEC",
-            party: "Democratic",
-            sources: ["https://example.org/a"],
-            qualification_evidence: [
-              {
-                kind: "official_campaign_website",
-                source_url: "https://nofec.example.org",
-              },
-            ],
-            status: "active",
-          },
-        ],
-      }).ok
-    ).toBe(false);
+  it("filters ineligible candidates and reports them when eligible candidates remain", () => {
+    const parsed = parsePresidentialRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane President",
+          party: "Democratic",
+          fec_candidate_id: "P80000001",
+          sources: ["https://example.org/a"],
+          qualification_evidence: [
+            {
+              kind: "official_campaign_website",
+              source_url: "https://jane.example.org",
+            },
+          ],
+          status: "active",
+        },
+        {
+          display_name: "Never Registered",
+          party: "Democratic",
+          sources: ["https://example.org/b"],
+          qualification_evidence: [
+            {
+              kind: "official_campaign_website",
+              source_url: "https://never.example.org",
+            },
+          ],
+          status: "active",
+        },
+        {
+          display_name: "Fec Only Filer",
+          party: "Democratic",
+          fec_candidate_id: "P80000002",
+          sources: ["https://example.org/c"],
+          status: "active",
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+    expect(parsed.payload.candidates.map((candidate) => candidate.display_name)).toEqual(["Jane President"]);
+    expect(parsed.skippedIneligibleCandidates).toEqual([
+      { display_name: "Never Registered", reason: "missing_fec_candidate_id" },
+      { display_name: "Fec Only Filer", reason: "missing_qualification_evidence" },
+    ]);
+  });
+
+  it("fails when no candidate is FEC-registered with qualification evidence", () => {
+    const parsed = parsePresidentialRosterPayload({
+      candidates: [
+        {
+          display_name: "No FEC",
+          party: "Democratic",
+          sources: ["https://example.org/a"],
+          qualification_evidence: [
+            {
+              kind: "official_campaign_website",
+              source_url: "https://nofec.example.org",
+            },
+          ],
+          status: "active",
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    expect(parsed.ok ? "" : parsed.reason).toBe(
+      "payload.candidates: no candidate is FEC-registered with qualification evidence (skipped: No FEC (missing_fec_candidate_id))"
+    );
+  });
+
+  it("keeps rejecting present-but-invalid FEC evidence as hard failures", () => {
 
     const fecOnly = parsePresidentialRosterPayload({
       candidates: [
