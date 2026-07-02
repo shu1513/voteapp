@@ -479,7 +479,6 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         throw new TypeError("token must be a non-empty string");
       }
       validatePasswordPolicy(input.password);
-      const passwordHash = await hashPassword(input.password);
       const client = await options.db.connect();
       let userIdToInvalidate: string | null = null;
 
@@ -493,6 +492,12 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         if (!consumed) {
           throw new TypeError("Password reset token is invalid or expired");
         }
+
+        // Hash only after the token is proven valid: bogus-token requests
+        // must not be able to burn Argon2 work. Hashing inside the
+        // transaction means a hashing failure rolls back the consumption,
+        // so the token is not wasted.
+        const passwordHash = await hashPassword(input.password);
 
         const updated = await client.query(
           `

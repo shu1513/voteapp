@@ -141,15 +141,28 @@ async function requireVerifiedAuthenticatedUser(
     return null;
   }
 
-  if (options.lookupAuthenticatedUserEmailVerified) {
-    const emailVerified = await Promise.resolve(options.lookupAuthenticatedUserEmailVerified(userId));
-    if (!emailVerified) {
+  // Fail closed: when session auth is live (authService configured), a
+  // missing verification lookup is a wiring bug, not permission to skip the
+  // gate. Trusted-header-only deployments (no authService) predate email
+  // verification and keep the legacy behavior.
+  if (!options.lookupAuthenticatedUserEmailVerified) {
+    if (options.authService) {
       sendApiResponse(
         response,
-        toErrorResponse(403, "forbidden", "Email verification is required", corsHeaders)
+        toErrorResponse(500, "internal_error", "Email verification lookup is not configured", corsHeaders)
       );
       return null;
     }
+    return userId;
+  }
+
+  const emailVerified = await Promise.resolve(options.lookupAuthenticatedUserEmailVerified(userId));
+  if (!emailVerified) {
+    sendApiResponse(
+      response,
+      toErrorResponse(403, "forbidden", "Email verification is required", corsHeaders)
+    );
+    return null;
   }
 
   return userId;
@@ -250,6 +263,11 @@ function createJsonBodyParser() {
           request.path === ME_DISTRICTS_INITIALIZE_PATH ||
           request.path === AUTH_FORGOT_PASSWORD_PATH ||
           request.path === AUTH_LOGIN_PATH ||
+          // Logout has no meaningful body, but requiring the JSON content
+          // type blocks plain cross-site form POSTs from logging users out
+          // in SameSite=None deployments (forms cannot send application/json
+          // without a CORS preflight).
+          request.path === AUTH_LOGOUT_PATH ||
           request.path === AUTH_REGISTER_PATH ||
           request.path === AUTH_RESET_PASSWORD_PATH ||
           request.path === AUTH_RESEND_VERIFICATION_PATH ||
@@ -563,9 +581,10 @@ async function dispatchApiRequest(
       return;
     }
 
-    const userId = await resolveAuthenticatedUserId(options, request);
+    // Same verified-email gate as every other /api/me route: personalized
+    // ballot data must not be readable by unverified accounts.
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
     if (!userId) {
-      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
       return;
     }
 

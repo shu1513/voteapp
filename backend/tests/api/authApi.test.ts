@@ -183,7 +183,11 @@ describe("public auth API endpoints", () => {
     const response = await invokeExpressApp(createApiApp({ resolveAddress, authService }), {
       method: "POST",
       path: "/api/auth/logout",
-      headers: { cookie: `${AUTH_SESSION_COOKIE_NAME}=old-session` },
+      headers: {
+        cookie: `${AUTH_SESSION_COOKIE_NAME}=old-session`,
+        "content-type": "application/json",
+      },
+      body: "{}",
     });
 
     expect(response.statusCode).toBe(200);
@@ -193,6 +197,23 @@ describe("public auth API endpoints", () => {
     });
     expect(response.headers["set-cookie"]).toContain(`${AUTH_SESSION_COOKIE_NAME}=;`);
     expect(response.headers["set-cookie"]).toContain("Max-Age=0");
+  });
+
+  it("rejects logout without a JSON content type so cross-site form POSTs cannot log users out", async () => {
+    const resolveAddress = vi.fn();
+    const authService = createAuthServiceMock();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, authService }), {
+      method: "POST",
+      path: "/api/auth/logout",
+      headers: {
+        cookie: `${AUTH_SESSION_COOKIE_NAME}=old-session`,
+        "content-type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    expect(response.statusCode).toBe(415);
+    expect(authService.logout).not.toHaveBeenCalled();
   });
 
   it("forgets passwords through the auth service", async () => {
