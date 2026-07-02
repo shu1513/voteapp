@@ -42,7 +42,7 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
   it("scopes executive-power coverage to candidates who held an executive role", () => {
     const prompt = buildCandidateRecordDiscoveryPrompt(baseInput);
     expect(prompt).toContain(
-      "actions taken with executive power (appointments, vetoes, budgets, agency decisions) if they ever held an executive role"
+      "executive actions (if they ever held an executive role)"
     );
   });
 
@@ -97,7 +97,7 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
       "Focus on records that evaluate fitness/competence for this office and the candidate's background relevant to office duties."
     );
     expect(prompt).toContain(
-      "If the candidate holds or has EVER held public office, cover each of: major votes they cast and legislation they sponsored"
+      "If the candidate holds or has EVER held public office, cover each of: major votes and sponsored legislation"
     );
     expect(prompt).toContain(
       "records may be an empty array if no reliable actual action/service/accountability records are found."
