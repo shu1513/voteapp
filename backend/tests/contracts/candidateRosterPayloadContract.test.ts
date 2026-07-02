@@ -79,7 +79,46 @@ describe("parseCandidateRosterPayload", () => {
     ]);
   });
 
-  it("requires fec_ids for federal roster mode when configured", () => {
+  it("filters federal roster candidates without fec_ids and reports them", () => {
+    const parsed = parseCandidateRosterPayload(
+      {
+        candidates: [
+          {
+            display_name: "No Fec Filer",
+            sources: ["https://example.org/a"],
+          },
+          {
+            display_name: "Jane Doe",
+            fec_ids: ["S0XX00001"],
+            sources: ["https://example.org/b"],
+          },
+          {
+            display_name: "Unregistered Runner",
+            sources: ["https://example.org/c"],
+          },
+          {
+            display_name: "John Roe",
+            fec_ids: ["S0XX00002"],
+            sources: ["https://example.org/d"],
+          },
+        ],
+      },
+      { requireFecIds: true, allowFecIds: true }
+    );
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+    expect(parsed.payload.candidates.map((candidate) => candidate.display_name)).toEqual([
+      "Jane Doe",
+      "John Roe",
+    ]);
+    expect(parsed.skippedCandidatesWithoutFecIds).toEqual(["No Fec Filer", "Unregistered Runner"]);
+    expect(parsed.keptCandidateIndexes).toEqual([1, 3]);
+  });
+
+  it("fails a federal roster when no candidate has a fec_id", () => {
     const parsed = parseCandidateRosterPayload(
       {
         candidates: [
@@ -96,7 +135,28 @@ describe("parseCandidateRosterPayload", () => {
     if (parsed.ok) {
       return;
     }
-    expect(parsed.reason).toBe("payload.candidates[0]: row.fec_ids is required for this election context");
+    expect(parsed.reason).toBe(
+      "payload.candidates: no candidate has a FEC ID for this federal contest (skipped: Jane Doe)"
+    );
+  });
+
+  it("does not filter and reports no skips when fec_ids are not required", () => {
+    const parsed = parseCandidateRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane Doe",
+          sources: ["https://example.org/a"],
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+    expect(parsed.payload.candidates).toHaveLength(1);
+    expect(parsed.skippedCandidatesWithoutFecIds).toEqual([]);
+    expect(parsed.keptCandidateIndexes).toEqual([0]);
   });
 
   it("accepts fec_ids for federal roster mode", () => {
