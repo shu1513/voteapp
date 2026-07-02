@@ -20,6 +20,30 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     });
     expect(prompt).toContain('- since_date: "2026-04-16"');
     expect(prompt).toContain("event_date >= since_date");
+    expect(prompt).toContain(
+      "Apply the comprehensiveness and balance rules only within that window; never add older records to balance career history."
+    );
+  });
+
+  it("includes known_current_office only when provided", () => {
+    const withOffice = buildCandidateRecordDiscoveryPrompt({
+      ...baseInput,
+      knownCurrentOffice: "Governor of California",
+    });
+    expect(withOffice).toContain('- known_current_office: "Governor of California"');
+
+    const withoutOffice = buildCandidateRecordDiscoveryPrompt({
+      ...baseInput,
+      knownCurrentOffice: null,
+    });
+    expect(withoutOffice).not.toContain("known_current_office");
+  });
+
+  it("scopes executive-power coverage to candidates who held an executive role", () => {
+    const prompt = buildCandidateRecordDiscoveryPrompt(baseInput);
+    expect(prompt).toContain(
+      "executive actions (if they ever held an executive role)"
+    );
   });
 
   it("omits since_date for full mode prompts", () => {
@@ -73,7 +97,7 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
       "Focus on records that evaluate fitness/competence for this office and the candidate's background relevant to office duties."
     );
     expect(prompt).toContain(
-      "Research reliable public records about this exact candidate that show concrete actions or accountability such as votes, sponsored legislation, official decisions, committee work, legal/ethics scrutiny/documented criminal convictions, prior government service, professional achievements or failures, and documented positions on key issues."
+      "If the candidate holds or has EVER held public office, cover each of: major votes and sponsored legislation"
     );
     expect(prompt).toContain(
       "records may be an empty array if no reliable actual action/service/accountability records are found."
@@ -90,6 +114,8 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).toContain(
       "For damaging claims, require official/legal sources or reputable news and do not state allegations as proven facts."
     );
+    expect(prompt).toContain("There is no target number of records.");
+    expect(prompt).toContain("Include both favorable and unfavorable records when they exist");
     expect(prompt).not.toContain("Do not include rumors or unverified accusations.");
     expect(prompt).not.toContain("Starting reference URLs");
     expect(prompt).not.toContain("Return records only about this exact candidate in this election context");
@@ -124,10 +150,10 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
 
     expect(prompt).toContain('- discovery_contest_family: "judicial_office"');
     expect(prompt).toContain(
-      "Research the web for publicly available reliable records about this exact judicial candidate, focusing on evidence for evaluating the candidate's legal competence, integrity and ethics, impartiality, and professional record."
+      "notable cases or rulings they handled (as judge, or as prosecutor/defense/counsel before taking the bench)"
     );
     expect(prompt).toContain(
-      "Relevant sources may include notable cases, rulings, prior prosecutorial, defense, or judicial service, published legal work, disciplinary records, ethics complaints, controversies, and other verified public records."
+      "any discipline, ethics complaints, reversals, or conduct-commission proceedings; and endorsements they made or received"
     );
     expect(prompt).toContain(
       "Describe what the candidate actually did in the case and its effects/impacts."
@@ -144,7 +170,7 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).not.toContain("- discovery_contest_family:");
     expect(prompt).not.toContain("this exact judicial candidate");
     expect(prompt).toContain(
-      "Research reliable public records about this exact candidate that show concrete actions or accountability"
+      "If the candidate holds or has EVER held public office"
     );
   });
 });

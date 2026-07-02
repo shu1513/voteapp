@@ -485,6 +485,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               const discovered = await enrichCandidateRecords(
                 {
                   candidateDisplayName: context.candidateDisplayName,
+                  knownCurrentOffice: context.currentOffice,
                   districtName: context.districtName,
                   districtType: context.districtType,
                   state: context.state,

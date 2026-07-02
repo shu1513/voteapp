@@ -60,6 +60,7 @@ export type CandidateRecordDiscoveryPayloadValidationResult =
 
 export type EnrichCandidateRecordsInput = {
   candidateDisplayName: string;
+  knownCurrentOffice?: string | null;
   districtName: string;
   districtType: string;
   state: string;
@@ -203,7 +204,8 @@ async function verifyCandidateRecordSources(
 
 export async function validateCandidateRecordDiscoveryPayload(
   payload: unknown,
-  timeoutMs: number
+  timeoutMs: number,
+  options: { sinceDate?: string | null } = {}
 ): Promise<CandidateRecordDiscoveryPayloadValidationResult> {
   const parsed = parseCandidateRecordDiscoveryPayloadPartial(payload);
   if (!parsed.ok) {
@@ -216,9 +218,25 @@ export async function validateCandidateRecordDiscoveryPayload(
     };
   }
 
+  // Incremental refreshes are window-scoped: the prompt asks for records with
+  // event_date >= since_date only, but the model may still return older
+  // career records (e.g. to "balance" coverage). Enforce the window here so
+  // out-of-window rows never reach source verification or the writer.
+  const sinceDate = options.sinceDate?.trim() || null;
+  const recordsBeforeSinceDate: CandidateDiscoveredRecord[] = [];
+  const windowedRecords = sinceDate
+    ? parsed.payload.records.filter((record) => {
+        if (record.event_date >= sinceDate) {
+          return true;
+        }
+        recordsBeforeSinceDate.push(record);
+        return false;
+      })
+    : parsed.payload.records;
+
   const qualityDroppedRecords: CandidateRecordDroppedRecord[] = [];
   const qualityAcceptedRecords: CandidateDiscoveredRecord[] = [];
-  for (const record of parsed.payload.records) {
+  for (const record of windowedRecords) {
     const quality = classifyCandidateRecordQuality({
       description: record.description,
       sourceUrl: record.source_url,
@@ -261,6 +279,9 @@ export async function validateCandidateRecordDiscoveryPayload(
       dropped_records_source_url_count: sourceVerification.droppedRecords.length,
       dropped_records_schema_count: schemaDroppedRecords.length,
       dropped_records_quality_count: qualityDroppedRecords.length,
+      ...(sinceDate
+        ? { records_filtered_before_since_date_count: recordsBeforeSinceDate.length }
+        : {}),
       verified_records_count: sourceVerification.verifiedRecords.length,
       parsed_valid_row_count: parsed.payload.records.length,
       parsed_invalid_row_count: parsed.invalid_rows.length,
@@ -342,7 +363,8 @@ export async function enrichCandidateRecords(
 
       const validation = await validateCandidateRecordDiscoveryPayload(
         generated.parsed,
-        config.timeoutMs
+        config.timeoutMs,
+        { sinceDate: input.sinceDate }
       );
       if (!validation.ok) {
         const feedbackLine = `Fix payload schema: ${validation.reason}.`;
