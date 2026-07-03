@@ -1066,6 +1066,27 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     expect(result.elections[1]?.followed_candidates).toEqual([]);
   });
 
+  it("filters followed candidates to live, unmerged, still-competing ballot links", async () => {
+    // The guards live in SQL (the query mock returns rows regardless), so pin
+    // the query text: withdrawn/lost links, merged candidates, and NULL-prone
+    // name concatenation must all be handled in the statement itself.
+    const query = makeBallotQueryMock({
+      elections: [{ election_id: electionA, representation_power_score: 10 }],
+      followed: [],
+    });
+
+    await lookupBallotSummariesByDistrictIds({ query }, [districtId], {
+      userId: "99999999-9999-4999-8999-999999999999",
+    });
+
+    const followsCall = query.mock.calls.find((call) => String(call[0]).includes("user_candidate_follows"));
+    expect(followsCall).toBeTruthy();
+    const sql = String(followsCall?.[0]);
+    expect(sql).toContain("ce.status NOT IN ('withdrawn', 'lost')");
+    expect(sql).toContain("c.merged_into_candidate_id IS NULL");
+    expect(sql).toContain("concat_ws(' ', c.first_name, c.last_name)");
+  });
+
   it("does not group followed elections first when followedFirst is off, but still annotates them", async () => {
     const query = makeBallotQueryMock({
       elections: [

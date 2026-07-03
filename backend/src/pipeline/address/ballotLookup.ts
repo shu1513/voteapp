@@ -11876,13 +11876,15 @@ async function loadFollowedCandidatesByElection(
       SELECT
         ce.election_id,
         c.id AS candidate_id,
-        COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name)) AS display_name
+        COALESCE(NULLIF(trim(c.display_name), ''), trim(concat_ws(' ', c.first_name, c.last_name))) AS display_name
       FROM public.user_candidate_follows AS f
       JOIN public.candidate_elections AS ce
         ON ce.candidate_id = f.candidate_id
+       AND ce.status NOT IN ('withdrawn', 'lost')
       JOIN public.candidates AS c
         ON c.id = f.candidate_id
        AND c.deleted_at IS NULL
+       AND c.merged_into_candidate_id IS NULL
       WHERE f.user_id = $1
         AND ce.election_id = ANY($2::uuid[])
       ORDER BY ce.election_id, display_name, c.id
