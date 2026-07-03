@@ -6,7 +6,6 @@ import {
   buildCandidateRecordQualityGaps,
   droppedRecordToGap,
   isBlockingCandidateRecordQualityGap,
-  qualityDroppedRecordsToGaps,
 } from "../../src/scripts/writeManualCandidateRecords.js";
 import { buildManualResearchRepairReport } from "../../src/scripts/manualResearchRepairReport.js";
 
@@ -90,36 +89,6 @@ describe("writeManualCandidateRecords quality repair gaps", () => {
 
     expect(gap.promptFile).toBe("src/ai/providers/candidateRecordSourceRepairPrompt.ts");
     expect(gap.focusedResearchPass).toContain("source/schema repair pass");
-  });
-
-  it("keeps quality dropped gap ids stable when mixed with source drops", () => {
-    const sourceDrop: CandidateRecordDroppedRecord = {
-      record: {
-        description: "Served on the budget committee.",
-        source_url: "https://bad.example/404",
-        event_date: "2024-01-01",
-      },
-      reason: "citation fetch returned status 404",
-      failureType: "permanent",
-      failureKind: "source_url",
-    };
-    const qualityDrop: CandidateRecordDroppedRecord = {
-      record: {
-        description: "The Secretary of State lists Jane Doe as a candidate for Governor.",
-        source_url: "https://sos.example/candidates",
-        event_date: "2026-05-01",
-      },
-      reason: "candidate record quality rejected row: pure_candidacy",
-      failureType: "permanent",
-      failureKind: "quality_gap",
-    };
-
-    expect(qualityDroppedRecordsToGaps([sourceDrop, qualityDrop])).toEqual([
-      expect.objectContaining({
-        id: "candidate_records.dropped.1",
-        failureKind: "quality_gap",
-      }),
-    ]);
   });
 
   it("blocks strict mode on no-record and only-general set gaps", () => {

@@ -183,6 +183,12 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "County Executive",
+    summary:
+      "The elected chief executive of a county government, such as a County Executive, or the presiding officer of a county commissioners court, such as a Texas County Judge or Kentucky County Judge/Executive. Responsible for county administration, budgets, and executive leadership; not a judicial office.",
+  },
+  {
+    scope: "county",
     canonicalName: "Sheriff",
     summary:
       "Leads county law enforcement operations, jail administration, and public safety duties assigned by law.",
@@ -738,6 +744,21 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Supervisor",
     aliasText: "County Supervisor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Executive",
+    aliasText: "County Executive",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Executive",
+    aliasText: "County Judge",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Executive",
+    aliasText: "County Judge/Executive",
   },
   {
     scope: "county",
