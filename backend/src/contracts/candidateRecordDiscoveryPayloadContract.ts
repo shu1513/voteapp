@@ -28,6 +28,17 @@ function normalizeRawString(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
+// Latest event_date accepted: UTC today plus one day. Records are completed
+// actions, so a future date is always wrong — but a same-day action reported
+// from a timezone ahead of UTC can carry a local date one day past the UTC
+// date, so exact "today" comparison would false-reject. YYYY-MM-DD strings
+// compare correctly with the lexicographic > operator.
+function maxAllowedEventDate(): string {
+  const now = new Date();
+  now.setUTCDate(now.getUTCDate() + 1);
+  return now.toISOString().slice(0, 10);
+}
+
 function normalizeEventDate(value: unknown): string | null {
   if (typeof value !== "string" || value.trim().length === 0) {
     return null;
@@ -69,6 +80,12 @@ function parseEntry(
   const eventDate = normalizeEventDate(input.event_date);
   if (!eventDate) {
     return { ok: false, reason: "event_date must be parseable date" };
+  }
+  if (eventDate > maxAllowedEventDate()) {
+    return {
+      ok: false,
+      reason: `event_date ${eventDate} is in the future; records are completed actions, use the action or publication date`,
+    };
   }
 
   return {
@@ -144,7 +161,12 @@ export function parseCandidateRecordDiscoveryPayload(
     return parsed;
   }
   if (parsed.invalid_rows.length > 0) {
-    return { ok: false, reason: "payload.records contains invalid row" };
+    // Keep the "payload.records contains invalid row" prefix stable for log
+    // searches; append the per-row detail the partial parser already computed.
+    const detail = parsed.invalid_rows
+      .map((row) => `records[${row.index}]: ${row.reason}`)
+      .join("; ");
+    return { ok: false, reason: `payload.records contains invalid row: ${detail}` };
   }
 
   return { ok: true, payload: parsed.payload };
