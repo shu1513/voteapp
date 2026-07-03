@@ -30,15 +30,51 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
     ]);
   });
 
-  it("rejects out-of-scope research area slug", () => {
+  it("rejects out-of-scope research area slug and names the slug in the reason", () => {
     const parsed = parseCandidateRecordAreaLabelPayload(
       {
-        labels: [{ record_index: 0, research_area_slug: "immigration", stance: "for" }],
+        labels: [
+          { record_index: 0, research_area_slug: "general" },
+          { record_index: 1, research_area_slug: "immigration", stance: "for" },
+        ],
       },
       { allowedResearchAreaSlugs: new Set(["general", "government_efficiency"]) }
     );
 
     expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("payload.labels contains invalid row");
+      expect(parsed.reason).toContain("labels[1]");
+      expect(parsed.reason).toContain("'immigration' is not in the allowed research areas");
+    }
+  });
+
+  it("names the cause when stance is missing on a stance-bearing area", () => {
+    const parsed = parseCandidateRecordAreaLabelPayload(
+      {
+        labels: [{ record_index: 0, research_area_slug: "government_efficiency" }],
+      },
+      { allowedResearchAreaSlugs: new Set(["government_efficiency"]) }
+    );
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("stance is required for research_area_slug 'government_efficiency'");
+    }
+  });
+
+  it("names the cause when record_index is out of range", () => {
+    const parsed = parseCandidateRecordAreaLabelPayload(
+      {
+        labels: [{ record_index: 5, research_area_slug: "general" }],
+      },
+      { allowedResearchAreaSlugs: new Set(["general"]), recordCount: 2 }
+    );
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("record_index 5 is out of range (record count 2)");
+    }
   });
 
   it("rejects neutral stance on specific research areas", () => {

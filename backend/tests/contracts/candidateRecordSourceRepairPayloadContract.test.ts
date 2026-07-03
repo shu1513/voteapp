@@ -71,4 +71,49 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
 
     expect(parsed.ok).toBe(false);
   });
+
+  it("rejects a future event_date so repairs cannot re-admit rows discovery rejected", () => {
+    const future = new Date();
+    future.setUTCDate(future.getUTCDate() + 10);
+    const parsed = parseCandidateRecordSourceRepairPayload(
+      {
+        repairs: [
+          {
+            bad_index: 0,
+            description: "Repaired with the same invented future date",
+            source_url: "https://example.org/a",
+            event_date: future.toISOString().slice(0, 10),
+          },
+        ],
+      },
+      { badRecordCount: 1 }
+    );
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("payload.repairs[].event_date");
+      expect(parsed.reason).toContain("is in the future");
+    }
+  });
+
+  it("rejects an impossible calendar date", () => {
+    const parsed = parseCandidateRecordSourceRepairPayload(
+      {
+        repairs: [
+          {
+            bad_index: 0,
+            description: "Description A",
+            source_url: "https://example.org/a",
+            event_date: "2026-02-31",
+          },
+        ],
+      },
+      { badRecordCount: 1 }
+    );
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("is not a real calendar date");
+    }
+  });
 });

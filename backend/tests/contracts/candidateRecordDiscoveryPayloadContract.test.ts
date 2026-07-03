@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { parseCandidateRecordDiscoveryPayload } from "../../src/contracts/candidateRecordDiscoveryPayloadContract.js";
+import {
+  parseCandidateRecordDiscoveryPayload,
+  parseCandidateRecordDiscoveryPayloadPartial,
+} from "../../src/contracts/candidateRecordDiscoveryPayloadContract.js";
 
 describe("parseCandidateRecordDiscoveryPayload", () => {
   it("parses valid payload rows with URL and date normalization", () => {
@@ -81,5 +84,108 @@ describe("parseCandidateRecordDiscoveryPayload", () => {
       return;
     }
     expect(parsed.payload.records).toHaveLength(1);
+  });
+
+  // Dates computed relative to now so these tests never age into failures.
+  function utcDatePlusDays(days: number): string {
+    const date = new Date();
+    date.setUTCDate(date.getUTCDate() + days);
+    return date.toISOString().slice(0, 10);
+  }
+
+  it("rejects a future event_date and says why in the reason", () => {
+    const parsed = parseCandidateRecordDiscoveryPayload({
+      records: [
+        {
+          description: "Will host a town hall next week.",
+          source_url: "https://example.org/upcoming",
+          event_date: utcDatePlusDays(10),
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("payload.records contains invalid row");
+      expect(parsed.reason).toContain("records[0]");
+      expect(parsed.reason).toContain("is in the future");
+    }
+  });
+
+  it("accepts event_date of today and the one-day timezone grace, rejects beyond it", () => {
+    const today = parseCandidateRecordDiscoveryPayload({
+      records: [
+        {
+          description: "Voted on final passage today.",
+          source_url: "https://example.org/vote",
+          event_date: utcDatePlusDays(0),
+        },
+      ],
+    });
+    expect(today.ok).toBe(true);
+
+    const grace = parseCandidateRecordDiscoveryPayload({
+      records: [
+        {
+          description: "Same-day action reported from a timezone ahead of UTC.",
+          source_url: "https://example.org/vote-tz",
+          event_date: utcDatePlusDays(1),
+        },
+      ],
+    });
+    expect(grace.ok).toBe(true);
+
+    const beyond = parseCandidateRecordDiscoveryPayload({
+      records: [
+        {
+          description: "Two days out is always a future event.",
+          source_url: "https://example.org/vote-future",
+          event_date: utcDatePlusDays(2),
+        },
+      ],
+    });
+    expect(beyond.ok).toBe(false);
+  });
+
+  it("rejects an impossible calendar date that matches the YYYY-MM-DD format", () => {
+    const parsed = parseCandidateRecordDiscoveryPayload({
+      records: [
+        {
+          description: "Signed the bill on a day that does not exist.",
+          source_url: "https://example.org/feb31",
+          event_date: "2026-02-31",
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("event_date 2026-02-31 is not a real calendar date");
+    }
+  });
+
+  it("reports future event_date as an invalid row in the partial parser", () => {
+    const parsed = parseCandidateRecordDiscoveryPayloadPartial({
+      records: [
+        {
+          description: "Valid past action.",
+          source_url: "https://example.org/past",
+          event_date: "2026-01-15",
+        },
+        {
+          description: "Invented future date.",
+          source_url: "https://example.org/future",
+          event_date: utcDatePlusDays(30),
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+    expect(parsed.payload.records).toHaveLength(1);
+    expect(parsed.invalid_rows).toHaveLength(1);
+    expect(parsed.invalid_rows[0]?.reason).toContain("is in the future");
   });
 });

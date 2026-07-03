@@ -1,4 +1,5 @@
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
+import { parseRecordEventDate } from "./recordEventDate.js";
 
 export type CandidateDiscoveredRecord = {
   description: string;
@@ -28,24 +29,6 @@ function normalizeRawString(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function normalizeEventDate(value: unknown): string | null {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    return null;
-  }
-  const trimmed = value.trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
-    return trimmed;
-  }
-  const parsed = new Date(trimmed);
-  if (Number.isNaN(parsed.getTime())) {
-    return null;
-  }
-  const year = String(parsed.getFullYear()).padStart(4, "0");
-  const month = String(parsed.getMonth() + 1).padStart(2, "0");
-  const day = String(parsed.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
 function parseEntry(
   value: unknown
 ): { ok: true; record: CandidateDiscoveredRecord } | { ok: false; reason: string } {
@@ -66,9 +49,9 @@ function parseEntry(
     return { ok: false, reason: "source_url must be valid http(s) URL" };
   }
 
-  const eventDate = normalizeEventDate(input.event_date);
-  if (!eventDate) {
-    return { ok: false, reason: "event_date must be parseable date" };
+  const eventDate = parseRecordEventDate(input.event_date);
+  if (!eventDate.ok) {
+    return { ok: false, reason: eventDate.reason };
   }
 
   return {
@@ -76,7 +59,7 @@ function parseEntry(
     record: {
       description: input.description.trim(),
       source_url: sourceUrl,
-      event_date: eventDate,
+      event_date: eventDate.eventDate,
     },
   };
 }
@@ -144,7 +127,12 @@ export function parseCandidateRecordDiscoveryPayload(
     return parsed;
   }
   if (parsed.invalid_rows.length > 0) {
-    return { ok: false, reason: "payload.records contains invalid row" };
+    // Keep the "payload.records contains invalid row" prefix stable for log
+    // searches; append the per-row detail the partial parser already computed.
+    const detail = parsed.invalid_rows
+      .map((row) => `records[${row.index}]: ${row.reason}`)
+      .join("; ");
+    return { ok: false, reason: `payload.records contains invalid row: ${detail}` };
   }
 
   return { ok: true, payload: parsed.payload };
