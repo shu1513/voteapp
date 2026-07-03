@@ -11,7 +11,8 @@ export type CensusAddressGeocoderErrorCode =
   | "not_found"
   | "http_error"
   | "bad_response"
-  | "timeout";
+  | "timeout"
+  | "network_error";
 
 export class CensusAddressGeocoderError extends Error {
   readonly code: CensusAddressGeocoderErrorCode;
@@ -195,7 +196,15 @@ export async function geocodeAddressWithCensus(
         `Census geocoder request timed out after ${timeoutMs}ms`
       );
     }
-    throw error;
+    if (error instanceof CensusAddressGeocoderError) {
+      throw error;
+    }
+    // Node fetch surfaces DNS/connection failures as plain TypeError; wrap them
+    // so the API layer maps them to 503 instead of the generic TypeError->400.
+    throw new CensusAddressGeocoderError(
+      "network_error",
+      `Census geocoder request failed: ${error instanceof Error ? error.message : String(error)}`
+    );
   } finally {
     clearTimeout(timeout);
   }

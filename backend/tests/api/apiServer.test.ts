@@ -509,6 +509,11 @@ describe("createApiApp", () => {
       statusCode: 503,
       code: "upstream_unavailable",
     },
+    {
+      upstreamError: new CensusAddressGeocoderError("network_error", "Census geocoder request failed: fetch failed"),
+      statusCode: 503,
+      code: "upstream_unavailable",
+    },
   ])("maps Census geocoder $code errors", async ({ upstreamError, statusCode, code }) => {
     const resolveAddress = vi.fn().mockRejectedValue(upstreamError);
 

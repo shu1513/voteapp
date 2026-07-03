@@ -157,4 +157,16 @@ describe("censusAddressGeocoder", () => {
       message: "Census geocoder request timed out after 1234ms",
     });
   });
+
+  it("wraps non-abort fetch failures in a typed network_error", async () => {
+    const fetchImpl = vi.fn().mockRejectedValue(new TypeError("fetch failed")) as unknown as typeof fetch;
+
+    await expect(
+      geocodeAddressWithCensus("3921 Harlan Ave Baldwin Park CA 91706", { fetchImpl })
+    ).rejects.toMatchObject({
+      name: "CensusAddressGeocoderError",
+      code: "network_error",
+      message: "Census geocoder request failed: fetch failed",
+    });
+  });
 });
