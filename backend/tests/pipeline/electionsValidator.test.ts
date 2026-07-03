@@ -299,6 +299,229 @@ describe("runElectionsValidator", () => {
     expect(updateValidatedCall).toBeUndefined();
   });
 
+  it("accepts 'US House of Representatives District 1' without hard-rejecting it as a state-house race", async () => {
+    const payload = {
+      district_id: "d-nc",
+      district_name: "Congressional District 1 (119th Congress), North Carolina",
+      district_type: "us_house",
+      state: "NC",
+      entries: [
+        {
+          official_ballot_title: "US House of Representatives District 1",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:nc",
+            payload,
+            status: "pending",
+            run_id: "run_nc",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const rejectedCall = redisXAddMock.mock.calls.find((call) => call[0] === STAGING_REJECTED_STREAM);
+    expect(rejectedCall).toBeUndefined();
+  });
+
+  it("accepts Ohio's 'For Representative to Congress' phrasing as a clear us_house title", async () => {
+    const payload = {
+      district_id: "d-oh",
+      district_name: "Congressional District 1 (119th Congress), Ohio",
+      district_type: "us_house",
+      state: "OH",
+      entries: [
+        {
+          official_ballot_title: "For Representative to Congress (1st District)",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:oh",
+            payload,
+            status: "pending",
+            run_id: "run_oh",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
+  it("accepts 'District Attorney' as a clear county title without a review pass", async () => {
+    const payload = {
+      district_id: "d-bexar",
+      district_name: "Bexar County, Texas",
+      district_type: "county",
+      state: "TX",
+      entries: [
+        {
+          official_ballot_title: "District Attorney",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:bexar",
+            payload,
+            status: "pending",
+            run_id: "run_bexar",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
+  it("accepts the spelled-out 'United States House of Representatives District 1' title in us_house scope", async () => {
+    const payload = {
+      district_id: "d-nc2",
+      district_name: "Congressional District 1 (119th Congress), North Carolina",
+      district_type: "us_house",
+      state: "NC",
+      entries: [
+        {
+          official_ballot_title: "United States House of Representatives District 1",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:nc2",
+            payload,
+            status: "pending",
+            run_id: "run_nc2",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const rejectedCall = redisXAddMock.mock.calls.find((call) => call[0] === STAGING_REJECTED_STREAM);
+    expect(rejectedCall).toBeUndefined();
+  });
+
+  it("hard-rejects 'District Attorney' in statewide scope as a county-like race", async () => {
+    const payload = {
+      district_id: "d-tx-sw",
+      district_name: "Texas",
+      district_type: "statewide",
+      state: "TX",
+      entries: [
+        {
+          official_ballot_title: "District Attorney",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:1",
+            payload,
+            status: "pending",
+            run_id: "run_txsw",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      STAGING_REJECTED_STREAM,
+      "*",
+      expect.objectContaining({
+        ingest_key: "elections:test:1",
+        item_type: STAGING_ITEM_TYPE_ELECTION,
+      })
+    );
+  });
+
   it("accepts soft-fail entries on review pass when review_decision=approve", async () => {
     const payload = {
       district_id: "d-1",

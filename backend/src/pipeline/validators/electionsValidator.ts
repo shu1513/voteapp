@@ -147,11 +147,13 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
   const usSenate = isUsSenateOfficeTitle(entry.official_ballot_title);
   const usHouse =
     /\bu\.?s\.?\s+house\b/.test(scopeText) ||
+    /\bunited states house\b/.test(scopeText) ||
     /\bu\.?s\.?\s+house\s+of\s+representatives?\b/.test(scopeText) ||
     /\brepresentative in congress\b/.test(scopeText) ||
+    /\brepresentative to congress\b/.test(scopeText) ||
     /\bcongressional district\b/.test(scopeText);
   const stateSenate = !usSenate && hasAny(scopeText, STATE_UPPER_STRICT_MARKERS);
-  const stateHouse = hasAny(scopeText, STATE_LOWER_STRICT_MARKERS);
+  const stateHouse = !usHouse && hasAny(scopeText, STATE_LOWER_STRICT_MARKERS);
   const hasFederalMarker =
     usSenate ||
     usHouse ||
@@ -168,7 +170,7 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
     /\bgovernor\b|\blieutenant governor\b|\battorney general\b|\bsecretary of state\b/.test(scopeText);
   const countyLike =
     entry.race_type === "office" &&
-    /\bcounty\b|\bsheriff\b|\bcounty commissioner\b|\bcounty clerk\b/.test(scopeText);
+    /\bcounty\b|\bsheriff\b|\bcounty commissioner\b|\bcounty clerk\b|\bdistrict attorney\b/.test(scopeText);
   const cityLike =
     entry.race_type === "office" &&
     /\bcity\b|\bmayor\b|\bcity council\b|\balderman\b/.test(scopeText);
@@ -227,7 +229,9 @@ function isSoftScopeAmbiguous(
       /\bu\.?s\.?\s+house\s+of\s+representatives?\b/,
       /\bu\.?s\.?\s+representative\b/,
       /\bunited states representative\b/,
+      /\bunited states house\b/,
       /\brepresentative in congress\b/,
+      /\brepresentative to congress\b/,
       /\bcongressional district\b/,
     ])
   ) {
@@ -243,7 +247,7 @@ function isSoftScopeAmbiguous(
   }
 
   if (districtType === "county") {
-    const countyMarkers = [/\bcounty\b/, /\bsheriff\b/, /\bcounty commissioner\b/, /\bcounty clerk\b/];
+    const countyMarkers = [/\bcounty\b/, /\bsheriff\b/, /\bcounty commissioner\b/, /\bcounty clerk\b/, /\bdistrict attorney\b/];
     // "Assessor" is a county office, but town/village/township assessors are municipal
     // contests that the city-oriented hard markers do not catch.
     if (!/\b(town|village|township|borough|municipal)\b/.test(text)) {
