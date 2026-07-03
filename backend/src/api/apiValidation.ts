@@ -1,4 +1,5 @@
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
+import { GOOGLE_PLACE_ID_PATTERN } from "../pipeline/address/googlePlacesAutocomplete.js";
 import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
@@ -8,6 +9,8 @@ export { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
 export { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 export { UUID_PATTERN } from "../utils/uuid.js";
 
+export const ADDRESS_AUTOCOMPLETE_PATH = "/api/address/autocomplete";
+export const ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH = "/api/address/autocomplete/retrieve";
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
 export const AUTH_FORGOT_PASSWORD_PATH = "/api/auth/forgot-password";
 export const AUTH_LOGIN_PATH = "/api/auth/login";
@@ -31,6 +34,25 @@ export const MAX_BALLOT_DISTRICT_IDS = 50;
 export type AddressResolvePayload = {
   address: string;
 };
+
+export type AddressAutocompleteSuggestPayload = {
+  input: string;
+  session_token: string;
+};
+
+export type AddressAutocompleteRetrievePayload = {
+  place_id: string;
+  session_token: string;
+};
+
+// Minimum keystrokes before the proxy forwards to Google: shorter inputs give
+// useless suggestions and every forwarded request has a billing cost.
+export const MIN_AUTOCOMPLETE_INPUT_LENGTH = 3;
+export const MAX_AUTOCOMPLETE_INPUT_LENGTH = 200;
+const MIN_AUTOCOMPLETE_SESSION_TOKEN_LENGTH = 8;
+const MAX_AUTOCOMPLETE_SESSION_TOKEN_LENGTH = 128;
+const MAX_AUTOCOMPLETE_PLACE_ID_LENGTH = 512;
+const AUTOCOMPLETE_TOKEN_PATTERN = /^[A-Za-z0-9_-]+$/;
 
 export type AuthenticatedAddressPayload = AddressResolvePayload;
 
@@ -84,6 +106,50 @@ function parseStringField(parsed: unknown, fieldName: string): string {
     throw new TypeError(`Request body must include non-empty string field: ${fieldName}`);
   }
   return value.trim();
+}
+
+function parseAutocompleteSessionToken(parsed: unknown): string {
+  const sessionToken = parseStringField(parsed, "session_token");
+  if (
+    sessionToken.length < MIN_AUTOCOMPLETE_SESSION_TOKEN_LENGTH ||
+    sessionToken.length > MAX_AUTOCOMPLETE_SESSION_TOKEN_LENGTH ||
+    !AUTOCOMPLETE_TOKEN_PATTERN.test(sessionToken)
+  ) {
+    throw new TypeError(
+      `session_token must be ${MIN_AUTOCOMPLETE_SESSION_TOKEN_LENGTH}-${MAX_AUTOCOMPLETE_SESSION_TOKEN_LENGTH} characters of letters, digits, hyphens, or underscores`
+    );
+  }
+  return sessionToken;
+}
+
+export function parseAutocompleteSuggestBodyValue(parsed: unknown): AddressAutocompleteSuggestPayload {
+  const input = parseStringField(parsed, "input");
+  if (input.length < MIN_AUTOCOMPLETE_INPUT_LENGTH) {
+    throw new TypeError(`input must be at least ${MIN_AUTOCOMPLETE_INPUT_LENGTH} characters`);
+  }
+  if (input.length > MAX_AUTOCOMPLETE_INPUT_LENGTH) {
+    throw new TypeError(`input supports at most ${MAX_AUTOCOMPLETE_INPUT_LENGTH} characters`);
+  }
+  return {
+    input,
+    session_token: parseAutocompleteSessionToken(parsed),
+  };
+}
+
+export function parseAutocompleteRetrieveBodyValue(parsed: unknown): AddressAutocompleteRetrievePayload {
+  const placeId = parseStringField(parsed, "place_id");
+  if (placeId.length > MAX_AUTOCOMPLETE_PLACE_ID_LENGTH) {
+    throw new TypeError(`place_id must be at most ${MAX_AUTOCOMPLETE_PLACE_ID_LENGTH} characters`);
+  }
+  // Same pattern the suggest step filters on, so any place_id we emitted is
+  // accepted here.
+  if (!GOOGLE_PLACE_ID_PATTERN.test(placeId)) {
+    throw new TypeError("place_id must contain only letters, digits, hyphens, or underscores");
+  }
+  return {
+    place_id: placeId,
+    session_token: parseAutocompleteSessionToken(parsed),
+  };
 }
 
 export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {

@@ -18,6 +18,8 @@ import type { AddressApiServerOptions } from "./addressApiTypes.js";
 import { mapErrorToResponse } from "./apiErrors.js";
 import { resolveCorsHeaders } from "./apiCors.js";
 import {
+  ADDRESS_AUTOCOMPLETE_PATH,
+  ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH,
   ADDRESS_RESOLVE_PATH,
   BALLOT_LOOKUP_PATH,
   CANDIDATE_DETAIL_PATH_PREFIX,
@@ -32,6 +34,8 @@ import {
   ME_RESEARCH_AREA_PREFERENCES_PATH,
   parseAuthenticatedAddressBodyValue,
   parseAddressBodyValue,
+  parseAutocompleteRetrieveBodyValue,
+  parseAutocompleteSuggestBodyValue,
   parseCandidateFollowBodyValue,
   parseCandidateId,
   parseDistrictIds,
@@ -62,6 +66,8 @@ type ExpressBodyParserError = Error & {
 
 function isKnownApiPath(pathname: string): boolean {
   return (
+    pathname === ADDRESS_AUTOCOMPLETE_PATH ||
+    pathname === ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH ||
     pathname === ADDRESS_RESOLVE_PATH ||
     pathname === BALLOT_LOOKUP_PATH ||
     pathname === AUTH_FORGOT_PASSWORD_PATH ||
@@ -259,7 +265,9 @@ function createJsonBodyParser() {
   return (request: Request, response: Response, next: NextFunction): void => {
     const shouldParseJson =
       (request.method === "POST" &&
-        (request.path === ADDRESS_RESOLVE_PATH ||
+        (request.path === ADDRESS_AUTOCOMPLETE_PATH ||
+          request.path === ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH ||
+          request.path === ADDRESS_RESOLVE_PATH ||
           request.path === ME_DISTRICTS_INITIALIZE_PATH ||
           request.path === AUTH_FORGOT_PASSWORD_PATH ||
           request.path === AUTH_LOGIN_PATH ||
@@ -835,6 +843,62 @@ async function dispatchApiRequest(
         corsHeaders
       )
     );
+    return;
+  }
+
+  if (url.pathname === ADDRESS_AUTOCOMPLETE_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/address/autocomplete", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.suggestAddresses) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Address autocomplete is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const payload = parseAutocompleteSuggestBodyValue(request.body);
+    const suggestions = await options.suggestAddresses({
+      input: payload.input,
+      sessionToken: payload.session_token,
+    });
+    sendApiResponse(response, toJsonResponse(200, { suggestions }, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/address/autocomplete/retrieve", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.retrieveSuggestedAddress) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Address autocomplete is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const payload = parseAutocompleteRetrieveBodyValue(request.body);
+    const result = await options.retrieveSuggestedAddress({
+      placeId: payload.place_id,
+      sessionToken: payload.session_token,
+    });
+    sendApiResponse(response, toJsonResponse(200, { address: result.address }, corsHeaders));
     return;
   }
 

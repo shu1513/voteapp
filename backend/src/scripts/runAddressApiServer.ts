@@ -35,6 +35,11 @@ import {
 } from "../api/addressApiRateLimiter.js";
 import { lookupBallotSummariesByDistrictIds, lookupElectionDetailById } from "../pipeline/address/ballotLookup.js";
 import { resolveAddressToDistricts } from "../pipeline/address/addressResolverService.js";
+import {
+  DEFAULT_GOOGLE_PLACES_TIMEOUT_MS,
+  retrieveSuggestedAddressWithGooglePlaces,
+  suggestAddressesWithGooglePlaces,
+} from "../pipeline/address/googlePlacesAutocomplete.js";
 import { lookupCandidateDetailById } from "../pipeline/candidates/candidateDetailReader.js";
 import { DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS } from "../pipeline/address/addressResolutionCache.js";
 import {
@@ -317,9 +322,28 @@ async function main(): Promise<void> {
     return result.rows[0]?.email_verified ?? false;
   };
 
+  // Google Places autocomplete proxy: enabled only when the API key is set.
+  // Endpoints return 500 not-configured otherwise; the rest of the API is
+  // unaffected.
+  const googlePlacesApiKey = readOptionalEnv("GOOGLE_PLACES_API_KEY");
+  const googlePlacesOptions = googlePlacesApiKey
+    ? {
+        apiKey: googlePlacesApiKey,
+        timeoutMs: readPositiveIntegerEnv("GOOGLE_PLACES_TIMEOUT_MS", DEFAULT_GOOGLE_PLACES_TIMEOUT_MS),
+      }
+    : null;
+
   const app = createApiApp({
     allowedOrigins,
     authService,
+    ...(googlePlacesOptions
+      ? {
+          suggestAddresses: (input: { input: string; sessionToken: string }) =>
+            suggestAddressesWithGooglePlaces(input, googlePlacesOptions),
+          retrieveSuggestedAddress: (input: { placeId: string; sessionToken: string }) =>
+            retrieveSuggestedAddressWithGooglePlaces(input, googlePlacesOptions),
+        }
+      : {}),
     authRateLimit,
     authSessionCookieOptions,
     rateLimit,

@@ -1,5 +1,6 @@
 import type { BallotLookupElection, BallotSummaryResult } from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
+import type { AddressSuggestion, RetrievedSuggestedAddress } from "../pipeline/address/googlePlacesAutocomplete.js";
 import type { CandidateDetailResult } from "../pipeline/candidates/candidateDetailReader.js";
 import type { AuthSessionCookieOptions } from "../auth/authCookies.js";
 import type { AuthService } from "../auth/authService.js";
@@ -54,6 +55,8 @@ export type AuthApiRateLimitResult = {
 export type AddressApiServerOptions = {
   authService?: AuthService;
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
+  suggestAddresses?: (input: { input: string; sessionToken: string }) => Promise<AddressSuggestion[]>;
+  retrieveSuggestedAddress?: (input: { placeId: string; sessionToken: string }) => Promise<RetrievedSuggestedAddress>;
   lookupBallotSummaries?: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
   lookupAuthenticatedBallotSummaries?: (userId: string) => Promise<BallotSummaryResult>;
   lookupAuthenticatedUserEmailVerified?: (userId: string) => Promise<boolean>;
