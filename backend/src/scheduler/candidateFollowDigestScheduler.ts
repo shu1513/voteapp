@@ -75,6 +75,11 @@ function defaultJobOptions(): JobsOptions {
   return {
     removeOnComplete: 1000,
     removeOnFail: 1000,
+    // Retry whole-job transients (DB down at cron time) instead of skipping a
+    // digest day. Safe to re-run: delivered events are already marked, so a
+    // retry only processes users whose events are still unsent.
+    attempts: 3,
+    backoff: { type: "exponential", delay: 30_000 },
   };
 }
 

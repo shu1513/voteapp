@@ -129,8 +129,23 @@ async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<Eli
         AND u.email_verified = true
         AND u.email_digest = true
         AND EXISTS (
+          -- Mirrors the deliverability joins in selectPendingEvents so a user
+          -- whose only unsent events are orphaned (unfollowed, notify flag
+          -- off, candidate gone) cannot consume a --max-users slot. Matters in
+          -- dry runs, where orphans are counted but not yet stamped.
           SELECT 1
           FROM public.user_candidate_follow_notification_events AS e
+          JOIN public.candidates AS c
+            ON c.id = e.candidate_id
+           AND c.deleted_at IS NULL
+           AND c.merged_into_candidate_id IS NULL
+          JOIN public.user_candidate_follows AS f
+            ON f.user_id = e.user_id
+           AND f.candidate_id = e.candidate_id
+           AND (
+             (e.event_type = 'candidate_record_update' AND f.notify_updates)
+             OR (e.event_type = 'candidate_future_election' AND f.notify_elections)
+           )
           WHERE e.user_id = u.id
             AND e.notified_at IS NULL
         )

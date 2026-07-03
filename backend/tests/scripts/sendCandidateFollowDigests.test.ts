@@ -130,6 +130,11 @@ describe("sendCandidateFollowDigests", () => {
     // Dry-run orphan handling must count, not update.
     const sqls = db.query.mock.calls.map((call) => String(call[0]));
     expect(sqls.some((sql) => sql.includes("count(*)"))).toBe(true);
+    // Eligibility must mirror deliverability so orphan-only users cannot
+    // consume --max-users slots in dry runs.
+    const usersSql = sqls.find((sql) => sql.includes("FROM public.users AS u"));
+    expect(usersSql).toContain("user_candidate_follows");
+    expect(usersSql).toContain("merged_into_candidate_id IS NULL");
   });
 
   it("live run sends one digest per user and marks exactly the sent events", async () => {
