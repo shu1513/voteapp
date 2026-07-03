@@ -1,8 +1,9 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { AddressResolvedDistrict } from "../../../src/pipeline/address/addressDistrictLookup.js";
 import {
   createAutoDistrictResearchTrigger,
+  readAutoDistrictResearchConfigFromEnv,
   type AutoDistrictResearchConfig,
   type AutoDistrictResearchRedis,
 } from "../../../src/pipeline/address/autoDistrictResearch.js";
@@ -223,6 +224,51 @@ describe("createAutoDistrictResearchTrigger", () => {
     expect(result).toEqual({ checked: 1, enqueued: [], skipped_fresh: 0, skipped_claimed: 0, failed: 1 });
   });
 
+  it("releases a claimed staging row back to 'failed' when the XADD fails, so later runs can reclaim it", async () => {
+    const district = makeDistrict();
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [{ id: district.id }] })
+      .mockResolvedValueOnce({ rowCount: 1, rows: [{ ingest_key: `elections:${district.id}:2026` }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
+    const redis = makeRedis({ xAdd: vi.fn().mockRejectedValue(new Error("stream down")) });
+    const trigger = createAutoDistrictResearchTrigger({
+      db: { query },
+      getRedis: () => redis,
+      config: makeConfig(),
+      now: () => FIXED_NOW,
+    });
+
+    await trigger([district]);
+
+    const releaseCall = query.mock.calls.find((call) => String(call[0]).includes("SET status = 'failed'"));
+    expect(releaseCall).toBeTruthy();
+    expect(String(releaseCall?.[0])).toContain("AND status = 'pending'");
+    expect(releaseCall?.[1]?.[0]).toBe(`elections:${district.id}:2026`);
+    expect(String(releaseCall?.[1]?.[1])).toContain("stream down");
+    expect(releaseCall?.[1]?.[2]).toBe(EXPECTED_RUN_ID);
+  });
+
+  it("does not release anything when the failure happened before the row was claimed", async () => {
+    const district = makeDistrict();
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [{ id: district.id }] })
+      .mockRejectedValueOnce(new Error("insert exploded"));
+    const redis = makeRedis();
+    const trigger = createAutoDistrictResearchTrigger({
+      db: { query },
+      getRedis: () => redis,
+      config: makeConfig(),
+      now: () => FIXED_NOW,
+    });
+
+    await trigger([district]);
+
+    const releaseCall = query.mock.calls.find((call) => String(call[0]).includes("SET status = 'failed'"));
+    expect(releaseCall).toBeUndefined();
+  });
+
   it("resolves with all districts failed when the staleness query throws", async () => {
     const query = vi.fn().mockRejectedValueOnce(new Error("db down"));
     const trigger = createAutoDistrictResearchTrigger({
@@ -268,5 +314,53 @@ describe("createAutoDistrictResearchTrigger", () => {
     });
     expect(query.mock.calls[0]?.[1]).toEqual([[stale.id, fresh.id], 180]);
     expect(redis.xAdd).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("readAutoDistrictResearchConfigFromEnv", () => {
+  const ENV_KEYS = [
+    "AUTO_DISTRICT_RESEARCH_ENABLED",
+    "ELECTIONS_SEARCH_COOLDOWN_DAYS",
+    "ELECTIONS_SEARCH_MAX_ENQUEUE_PER_RUN",
+  ] as const;
+  const saved: Record<string, string | undefined> = {};
+
+  beforeEach(() => {
+    for (const key of ENV_KEYS) {
+      saved[key] = process.env[key];
+      delete process.env[key];
+    }
+  });
+
+  afterEach(() => {
+    for (const key of ENV_KEYS) {
+      if (saved[key] === undefined) {
+        delete process.env[key];
+      } else {
+        process.env[key] = saved[key];
+      }
+    }
+  });
+
+  it("does not parse cooldown or rollover env when the feature is disabled", () => {
+    process.env.ELECTIONS_SEARCH_COOLDOWN_DAYS = "not-a-number";
+    process.env.ELECTIONS_SEARCH_MAX_ENQUEUE_PER_RUN = "also-bad";
+
+    expect(readAutoDistrictResearchConfigFromEnv()).toEqual({ enabled: false, ttlDays: 180 });
+  });
+
+  it("never parses rollover-only env, even when enabled", () => {
+    process.env.AUTO_DISTRICT_RESEARCH_ENABLED = "true";
+    process.env.ELECTIONS_SEARCH_COOLDOWN_DAYS = "90";
+    process.env.ELECTIONS_SEARCH_MAX_ENQUEUE_PER_RUN = "not-a-number";
+
+    expect(readAutoDistrictResearchConfigFromEnv()).toEqual({ enabled: true, ttlDays: 90 });
+  });
+
+  it("still fails fast on an invalid cooldown when the feature is enabled", () => {
+    process.env.AUTO_DISTRICT_RESEARCH_ENABLED = "true";
+    process.env.ELECTIONS_SEARCH_COOLDOWN_DAYS = "not-a-number";
+
+    expect(() => readAutoDistrictResearchConfigFromEnv()).toThrow(/ELECTIONS_SEARCH_COOLDOWN_DAYS/);
   });
 });

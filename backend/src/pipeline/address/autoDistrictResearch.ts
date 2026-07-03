@@ -8,7 +8,10 @@ import {
   ELECTION_PROMPT_VERSION,
 } from "../../contracts/electionEnrichmentContract.js";
 import type { ElectionDraftPayload } from "../../types/election.js";
-import { readElectionsSearchPolicyFromEnv } from "../elections/electionsSearchPolicy.js";
+import {
+  DEFAULT_ELECTIONS_SEARCH_COOLDOWN_DAYS,
+  readElectionsSearchCooldownDaysFromEnv,
+} from "../elections/electionsSearchPolicy.js";
 import type { AddressResolvedDistrict } from "./addressDistrictLookup.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -19,9 +22,13 @@ export type AutoDistrictResearchConfig = {
 };
 
 export function readAutoDistrictResearchConfigFromEnv(): AutoDistrictResearchConfig {
+  // Parse env only when the feature is on: a disabled feature must not be able
+  // to fail address API startup on a bad cooldown value, and the cooldown-only
+  // reader keeps rollover-only settings (e.g. max-enqueue) out of this path.
+  const enabled = isAutoDistrictResearchEnabled();
   return {
-    enabled: isAutoDistrictResearchEnabled(),
-    ttlDays: readElectionsSearchPolicyFromEnv().cooldownDays,
+    enabled,
+    ttlDays: enabled ? readElectionsSearchCooldownDaysFromEnv() : DEFAULT_ELECTIONS_SEARCH_COOLDOWN_DAYS,
   };
 }
 
@@ -141,6 +148,7 @@ export function createAutoDistrictResearchTrigger(deps: TriggerDeps): AutoDistri
         const draft = toDraftPayload(district);
         const ingestKey = buildIngestKey(draft.district_id, runYear);
         const serializedPayload = JSON.stringify(draft);
+        let claimed = false;
 
         try {
           const upsert = await db.query(
@@ -181,6 +189,7 @@ export function createAutoDistrictResearchTrigger(deps: TriggerDeps): AutoDistri
             result.skipped_claimed += 1;
             continue;
           }
+          claimed = true;
 
           await redis.xAdd(STAGING_DRAFT_STREAM, "*", {
             ingest_key: ingestKey,
@@ -196,6 +205,32 @@ export function createAutoDistrictResearchTrigger(deps: TriggerDeps): AutoDistri
             ingestKey,
             reason: toReason(error),
           });
+
+          // A row claimed as 'pending' with no stream message is unreachable:
+          // no worker will consume it and the reclaim predicate skips 'pending',
+          // so the district would stay blocked until the ingest key's year rolls
+          // over. Flip it to 'failed' so the next run can reclaim it.
+          if (claimed) {
+            try {
+              await db.query(
+                `
+                  UPDATE staging_items
+                  SET status = 'failed',
+                      reason = $2,
+                      updated_at = now()
+                  WHERE ingest_key = $1
+                    AND status = 'pending'
+                    AND run_id = $3
+                `,
+                [ingestKey, `auto district research redis publish failed: ${toReason(error)}`.slice(0, 500), runId]
+              );
+            } catch (releaseError) {
+              console.warn("auto district research failed to release claimed staging row:", {
+                ingestKey,
+                reason: toReason(releaseError),
+              });
+            }
+          }
         }
       }
 
