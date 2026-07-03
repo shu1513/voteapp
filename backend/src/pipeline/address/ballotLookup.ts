@@ -341,11 +341,17 @@ export type BallotFollowedCandidate = {
 // Ordering the caller wants for the elections list. `vote_power` (the default)
 // sorts by the computed vote-power score descending; `soonest` sorts by
 // election date ascending (the historical default); `district_size` sorts by
-// the election's district population descending (largest electorate first),
-// with unknown populations last.
-export type BallotSummarySort = "vote_power" | "soonest" | "district_size";
+// the election's district population descending (largest electorate first);
+// `district_size_smallest` is the same key ascending (smallest electorate
+// first). Unknown populations sort last in both directions.
+export type BallotSummarySort = "vote_power" | "soonest" | "district_size" | "district_size_smallest";
 
-export const BALLOT_SUMMARY_SORTS: readonly BallotSummarySort[] = ["vote_power", "soonest", "district_size"];
+export const BALLOT_SUMMARY_SORTS: readonly BallotSummarySort[] = [
+  "vote_power",
+  "soonest",
+  "district_size",
+  "district_size_smallest",
+];
 
 export function isBallotSummarySort(value: unknown): value is BallotSummarySort {
   return typeof value === "string" && (BALLOT_SUMMARY_SORTS as readonly string[]).includes(value);
@@ -11954,12 +11960,14 @@ function compareBySort(
       return bScore - aScore;
     }
   }
-  if (sort === "district_size") {
-    // Larger district population first; unknown populations (null) sort last.
-    const aPopulation = typeof a.district.population === "number" ? a.district.population : Number.NEGATIVE_INFINITY;
-    const bPopulation = typeof b.district.population === "number" ? b.district.population : Number.NEGATIVE_INFINITY;
+  if (sort === "district_size" || sort === "district_size_smallest") {
+    // district_size: larger population first; district_size_smallest: smaller
+    // first. Unknown populations (null) sort last in both directions.
+    const missing = sort === "district_size" ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+    const aPopulation = typeof a.district.population === "number" ? a.district.population : missing;
+    const bPopulation = typeof b.district.population === "number" ? b.district.population : missing;
     if (aPopulation !== bPopulation) {
-      return bPopulation - aPopulation;
+      return sort === "district_size" ? bPopulation - aPopulation : aPopulation - bPopulation;
     }
   }
   // `soonest`, and the tiebreak for equal vote-power scores: earliest date first.

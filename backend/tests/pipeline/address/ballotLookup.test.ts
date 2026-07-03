@@ -1067,6 +1067,23 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     expect(result.elections[2]?.district.population).toBeNull();
   });
 
+  it("orders elections by district population ascending when sort=district_size_smallest, unknown populations still last", async () => {
+    const electionC = "cccccccc-3333-4333-8333-cccccccccccc";
+    const query = makeBallotQueryMock({
+      elections: [
+        { election_id: electionA, election_date: "2026-06-02", population: 250_000 },
+        { election_id: electionB, election_date: "2026-11-03", population: 9_800_000 },
+        { election_id: electionC, election_date: "2026-01-01", population: null },
+      ],
+    });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId], {
+      sort: "district_size_smallest",
+    });
+
+    expect(result.elections.map((e) => e.id)).toEqual([electionA, electionB, electionC]);
+  });
+
   it("attaches followed candidates and, with followedFirst, groups their elections ahead of higher-vote-power ones", async () => {
     // B has higher vote power, but A holds a followed candidate and must lead
     // once followedFirst is set.

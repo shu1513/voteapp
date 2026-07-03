@@ -3,7 +3,7 @@ BEGIN;
 CREATE TABLE IF NOT EXISTS public.user_ballot_preferences (
   user_id uuid PRIMARY KEY,
   sort text NOT NULL DEFAULT 'vote_power'
-    CHECK (sort IN ('vote_power', 'soonest', 'district_size')),
+    CHECK (sort IN ('vote_power', 'soonest', 'district_size', 'district_size_smallest')),
   followed_first boolean NOT NULL DEFAULT true,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
