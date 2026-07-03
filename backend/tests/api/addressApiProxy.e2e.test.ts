@@ -333,8 +333,10 @@ describeE2e("address API auth proxy E2E", () => {
       districts: resolvedAddress.districts,
       elections: [],
     });
-    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith(authenticatedUserId);
-    expect(lookupAuthenticatedBallotSummaries).not.toHaveBeenCalledWith(spoofedUserId);
+    // [ballot-personalized-ordering]: the handler forwards parsed sort options
+    // ({} for a bare request) alongside the proxy-verified user id.
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith(authenticatedUserId, {});
+    expect(lookupAuthenticatedBallotSummaries.mock.calls.every((call) => call[0] === authenticatedUserId)).toBe(true);
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
