@@ -11,6 +11,7 @@ import { UserCandidateFollowsError } from "../../src/pipeline/users/userCandidat
 import { InitializeUserDistrictsError } from "../../src/pipeline/users/userDistrictInitializer.js";
 import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
 import { ReplaceUserDistrictsError } from "../../src/pipeline/users/userDistrictReplacer.js";
+import { UserIdentityError } from "../../src/pipeline/users/userIdentity.js";
 import { UserResearchAreaPreferencesError } from "../../src/pipeline/users/userResearchAreaPreferences.js";
 
 const resolvedAddress: AddressResolutionResult = {
@@ -2900,6 +2901,104 @@ describe("createApiApp", () => {
       error: {
         code: "internal_error",
         message: "Election detail lookup is not configured",
+      },
+    });
+  });
+});
+
+describe("GET /api/me", () => {
+  const userId = "99999999-9999-4999-8999-999999999999";
+  const identity = { email: "voter@example.com", first_name: "Val", email_verified: false };
+
+  it("returns the session holder's identity", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const getAuthenticatedUser = vi.fn().mockResolvedValue(identity);
+
+    const response = await invokeExpressApp(createApiApp({ resolveAuthenticatedUserId, getAuthenticatedUser }), {
+      method: "GET",
+      path: "/api/me",
+      headers: { "x-user-id": userId },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ user: identity });
+    expect(getAuthenticatedUser).toHaveBeenCalledWith(userId);
+  });
+
+  it("is not gated on email verification", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const getAuthenticatedUser = vi.fn().mockResolvedValue(identity);
+    // Other /api/me routes 403 on this; /api/me must not — the frontend
+    // reads email_verified from it to render the unverified state.
+    const lookupAuthenticatedUserEmailVerified = vi.fn().mockResolvedValue(false);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, getAuthenticatedUser, lookupAuthenticatedUserEmailVerified }),
+      {
+        method: "GET",
+        path: "/api/me",
+        headers: { "x-user-id": userId },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ user: identity });
+  });
+
+  it("returns 401 without a session", async () => {
+    const getAuthenticatedUser = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId: () => null, getAuthenticatedUser }),
+      {
+        method: "GET",
+        path: "/api/me",
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(getAuthenticatedUser).not.toHaveBeenCalled();
+  });
+
+  it("returns 401 when the session's user row is gone", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const getAuthenticatedUser = vi
+      .fn()
+      .mockRejectedValue(new UserIdentityError("user_not_found", "User not found"));
+
+    const response = await invokeExpressApp(createApiApp({ resolveAuthenticatedUserId, getAuthenticatedUser }), {
+      method: "GET",
+      path: "/api/me",
+      headers: { "x-user-id": userId },
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
+  it("rejects non-GET methods with 405", async () => {
+    const response = await invokeExpressApp(createApiApp({}), {
+      method: "POST",
+      path: "/api/me",
+    });
+
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("GET");
+  });
+
+  it("returns 500 when the user lookup is not configured", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+
+    const response = await invokeExpressApp(createApiApp({ resolveAuthenticatedUserId }), {
+      method: "GET",
+      path: "/api/me",
+      headers: { "x-user-id": userId },
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "Authenticated user lookup is not configured",
       },
     });
   });

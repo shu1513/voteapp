@@ -6,6 +6,7 @@ import type {
 } from "../pipeline/address/ballotElectionOrdering.js";
 import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import type { UserEmailPreferences } from "../pipeline/users/userEmailPreferences.js";
+import type { UserIdentity } from "../pipeline/users/userIdentity.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { AddressSuggestion, RetrievedSuggestedAddress } from "../pipeline/address/googlePlacesAutocomplete.js";
 import type { CandidateDetailResult } from "../pipeline/candidates/candidateDetailReader.js";
@@ -89,6 +90,12 @@ export type AddressApiServerOptions = {
     userId: string,
     preferences: UserBallotPreferences
   ) => Promise<UserBallotPreferences>;
+  /**
+   * GET /api/me: identity for the session holder. Unlike the other /api/me
+   * handlers this is not gated on email verification — an unverified user
+   * must be able to learn that they are unverified.
+   */
+  getAuthenticatedUser?: (userId: string) => Promise<UserIdentity>;
   getAuthenticatedEmailPreferences?: (userId: string) => Promise<UserEmailPreferences>;
   setAuthenticatedEmailPreferences?: (
     userId: string,

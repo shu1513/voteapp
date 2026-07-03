@@ -9,6 +9,7 @@ import { ReplaceUserDistrictsError } from "../pipeline/users/userDistrictReplace
 import { UserResearchAreaPreferencesError } from "../pipeline/users/userResearchAreaPreferences.js";
 import { UserBallotPreferencesError } from "../pipeline/users/userBallotPreferences.js";
 import { UserEmailPreferencesError } from "../pipeline/users/userEmailPreferences.js";
+import { UserIdentityError } from "../pipeline/users/userIdentity.js";
 import type { ApiErrorCode } from "./apiResponses.js";
 
 export type MappedApiError = {
@@ -97,6 +98,14 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     return { statusCode: 400, code: "invalid_request", message: error.message };
   }
   if (error instanceof UserEmailPreferencesError) {
+    if (error.code === "invalid_user_id" || error.code === "user_not_found") {
+      return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
+    }
+    return { statusCode: 400, code: "invalid_request", message: error.message };
+  }
+  // A valid session pointing at a missing or deleted user row is an
+  // authentication failure, not a server bug.
+  if (error instanceof UserIdentityError) {
     if (error.code === "invalid_user_id" || error.code === "user_not_found") {
       return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
     }
