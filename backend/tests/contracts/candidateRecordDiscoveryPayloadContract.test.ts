@@ -147,6 +147,23 @@ describe("parseCandidateRecordDiscoveryPayload", () => {
     expect(beyond.ok).toBe(false);
   });
 
+  it("rejects an impossible calendar date that matches the YYYY-MM-DD format", () => {
+    const parsed = parseCandidateRecordDiscoveryPayload({
+      records: [
+        {
+          description: "Signed the bill on a day that does not exist.",
+          source_url: "https://example.org/feb31",
+          event_date: "2026-02-31",
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("event_date 2026-02-31 is not a real calendar date");
+    }
+  });
+
   it("reports future event_date as an invalid row in the partial parser", () => {
     const parsed = parseCandidateRecordDiscoveryPayloadPartial({
       records: [

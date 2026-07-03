@@ -1,4 +1,5 @@
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
+import { parseRecordEventDate } from "./recordEventDate.js";
 
 export type CandidateRecordSourceRepair = {
   bad_index: number;
@@ -18,24 +19,6 @@ type ParseOptions = {
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
-}
-
-function normalizeEventDate(value: unknown): string | null {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    return null;
-  }
-  const trimmed = value.trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
-    return trimmed;
-  }
-  const parsed = new Date(trimmed);
-  if (Number.isNaN(parsed.getTime())) {
-    return null;
-  }
-  const year = String(parsed.getFullYear()).padStart(4, "0");
-  const month = String(parsed.getMonth() + 1).padStart(2, "0");
-  const day = String(parsed.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
 }
 
 function parseBadIndex(value: unknown): number | null {
@@ -102,16 +85,18 @@ export function parseCandidateRecordSourceRepairPayload(
     if (!sourceUrl) {
       return { ok: false, reason: "payload.repairs[].source_url must be valid http(s) URL" };
     }
-    const eventDate = normalizeEventDate(row.event_date);
-    if (!eventDate) {
-      return { ok: false, reason: "payload.repairs[].event_date must be parseable date" };
+    // Shares the discovery contract's date rules; without this, the repair
+    // path re-admits future-dated rows the discovery parser just rejected.
+    const eventDate = parseRecordEventDate(row.event_date);
+    if (!eventDate.ok) {
+      return { ok: false, reason: `payload.repairs[].${eventDate.reason}` };
     }
 
     repairs.push({
       bad_index: badIndex,
       description: row.description.trim(),
       source_url: sourceUrl,
-      event_date: eventDate,
+      event_date: eventDate.eventDate,
     });
   }
 

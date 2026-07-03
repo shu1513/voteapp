@@ -1,4 +1,5 @@
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
+import { parseRecordEventDate } from "./recordEventDate.js";
 
 export type CandidateDiscoveredRecord = {
   description: string;
@@ -28,35 +29,6 @@ function normalizeRawString(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
-// Latest event_date accepted: UTC today plus one day. Records are completed
-// actions, so a future date is always wrong — but a same-day action reported
-// from a timezone ahead of UTC can carry a local date one day past the UTC
-// date, so exact "today" comparison would false-reject. YYYY-MM-DD strings
-// compare correctly with the lexicographic > operator.
-function maxAllowedEventDate(): string {
-  const now = new Date();
-  now.setUTCDate(now.getUTCDate() + 1);
-  return now.toISOString().slice(0, 10);
-}
-
-function normalizeEventDate(value: unknown): string | null {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    return null;
-  }
-  const trimmed = value.trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
-    return trimmed;
-  }
-  const parsed = new Date(trimmed);
-  if (Number.isNaN(parsed.getTime())) {
-    return null;
-  }
-  const year = String(parsed.getFullYear()).padStart(4, "0");
-  const month = String(parsed.getMonth() + 1).padStart(2, "0");
-  const day = String(parsed.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
 function parseEntry(
   value: unknown
 ): { ok: true; record: CandidateDiscoveredRecord } | { ok: false; reason: string } {
@@ -77,15 +49,9 @@ function parseEntry(
     return { ok: false, reason: "source_url must be valid http(s) URL" };
   }
 
-  const eventDate = normalizeEventDate(input.event_date);
-  if (!eventDate) {
-    return { ok: false, reason: "event_date must be parseable date" };
-  }
-  if (eventDate > maxAllowedEventDate()) {
-    return {
-      ok: false,
-      reason: `event_date ${eventDate} is in the future; records are completed actions, use the action or publication date`,
-    };
+  const eventDate = parseRecordEventDate(input.event_date);
+  if (!eventDate.ok) {
+    return { ok: false, reason: eventDate.reason };
   }
 
   return {
@@ -93,7 +59,7 @@ function parseEntry(
     record: {
       description: input.description.trim(),
       source_url: sourceUrl,
-      event_date: eventDate,
+      event_date: eventDate.eventDate,
     },
   };
 }
