@@ -129,3 +129,35 @@ describe("createConsoleCandidateFollowDigestMailer", () => {
     expect(message).toContain("Marcus Cardenas");
   });
 });
+
+describe("unsubscribe link wiring", () => {
+  const inputWithUnsub: CandidateFollowDigestEmailInput = {
+    ...baseInput,
+    unsubscribeUrl: "https://api.example.com/api/email/unsubscribe?token=v1.abc.def",
+  };
+
+  it("renders the footer link in text and html bodies only when provided", () => {
+    const text = buildDigestTextBody(undefined, inputWithUnsub);
+    expect(text).toContain("Unsubscribe from these digests: https://api.example.com/api/email/unsubscribe?token=v1.abc.def");
+    expect(buildDigestTextBody(undefined, baseInput)).not.toContain("Unsubscribe");
+  });
+
+  it("emits List-Unsubscribe and one-click headers through SES only when provided", async () => {
+    const sesClient = { send: vi.fn().mockResolvedValue({}) };
+    const mailer = createSesCandidateFollowDigestMailer({
+      fromEmailAddress: "noreply@example.com",
+      sesClient,
+    });
+
+    await mailer.sendDigestEmail(inputWithUnsub);
+    const withHeaders = sesClient.send.mock.calls[0][0].input.Content?.Simple;
+    expect(withHeaders?.Headers).toEqual([
+      { Name: "List-Unsubscribe", Value: "<https://api.example.com/api/email/unsubscribe?token=v1.abc.def>" },
+      { Name: "List-Unsubscribe-Post", Value: "List-Unsubscribe=One-Click" },
+    ]);
+    expect(withHeaders?.Body?.Html?.Data).toContain(">Unsubscribe from these digests</a>");
+
+    await mailer.sendDigestEmail(baseInput);
+    expect(sesClient.send.mock.calls[1][0].input.Content?.Simple?.Headers).toBeUndefined();
+  });
+});

@@ -2904,3 +2904,116 @@ describe("createApiApp", () => {
     });
   });
 });
+
+describe("email preferences and unsubscribe endpoints", () => {
+  const userId = "99999999-9999-4999-8999-999999999999";
+  const prefs = { email_digest: true, email_election_reminders: true, email_new_election_alerts: false };
+
+  it("serves and stores email preferences via GET and PUT /api/me/email-preferences", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const getAuthenticatedEmailPreferences = vi.fn().mockResolvedValue(prefs);
+    const setAuthenticatedEmailPreferences = vi.fn().mockResolvedValue({ ...prefs, email_digest: false });
+    const app = createApiApp({
+      resolveAuthenticatedUserId,
+      getAuthenticatedEmailPreferences,
+      setAuthenticatedEmailPreferences,
+    });
+
+    const getResponse = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/me/email-preferences",
+      headers: { "x-user-id": userId },
+    });
+    expect(getResponse.statusCode).toBe(200);
+    expect(getResponse.body).toEqual(prefs);
+
+    const putResponse = await invokeExpressApp(app, {
+      method: "PUT",
+      path: "/api/me/email-preferences",
+      headers: { "x-user-id": userId, "content-type": "application/json" },
+      body: JSON.stringify({ ...prefs, email_digest: false }),
+    });
+    expect(putResponse.statusCode).toBe(200);
+    expect(putResponse.body).toEqual({ ...prefs, email_digest: false });
+    expect(setAuthenticatedEmailPreferences).toHaveBeenCalledWith(userId, { ...prefs, email_digest: false });
+  });
+
+  it("rejects a non-boolean email preference with 400", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const setAuthenticatedEmailPreferences = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, setAuthenticatedEmailPreferences }),
+      {
+        method: "PUT",
+        path: "/api/me/email-preferences",
+        headers: { "x-user-id": userId, "content-type": "application/json" },
+        body: JSON.stringify({ ...prefs, email_digest: "yes" }),
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(setAuthenticatedEmailPreferences).not.toHaveBeenCalled();
+  });
+
+  it("requires auth for email preferences", async () => {
+    const response = await invokeExpressApp(createApiApp({}), {
+      method: "GET",
+      path: "/api/me/email-preferences",
+    });
+    expect(response.statusCode).toBe(401);
+  });
+
+  it("unsubscribes via GET with a token and answers with an HTML page", async () => {
+    const unsubscribeFromEmailDigest = vi.fn().mockResolvedValue("ok");
+
+    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailDigest }), {
+      method: "GET",
+      path: "/api/email/unsubscribe?token=v1.abc.def",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(String(response.headers["content-type"])).toContain("text/html");
+    expect(String(response.rawBody)).toContain("unsubscribed");
+    expect(unsubscribeFromEmailDigest).toHaveBeenCalledWith("v1.abc.def");
+  });
+
+  it("accepts RFC 8058 one-click POST unsubscribes", async () => {
+    const unsubscribeFromEmailDigest = vi.fn().mockResolvedValue("ok");
+
+    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailDigest }), {
+      method: "POST",
+      path: "/api/email/unsubscribe?token=v1.abc.def",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(unsubscribeFromEmailDigest).toHaveBeenCalledWith("v1.abc.def");
+  });
+
+  it("returns a 400 HTML page for invalid or missing tokens", async () => {
+    const unsubscribeFromEmailDigest = vi.fn().mockResolvedValue("invalid_token");
+    const app = createApiApp({ unsubscribeFromEmailDigest });
+
+    const badToken = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/email/unsubscribe?token=garbage",
+    });
+    expect(badToken.statusCode).toBe(400);
+    expect(String(badToken.rawBody)).toContain("invalid");
+
+    const missingToken = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/email/unsubscribe",
+    });
+    expect(missingToken.statusCode).toBe(400);
+    expect(unsubscribeFromEmailDigest).toHaveBeenCalledTimes(1);
+  });
+
+  it("reports 500 when unsubscribe is not configured", async () => {
+    const response = await invokeExpressApp(createApiApp({}), {
+      method: "GET",
+      path: "/api/email/unsubscribe?token=v1.abc.def",
+    });
+    expect(response.statusCode).toBe(500);
+  });
+});

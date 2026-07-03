@@ -18,6 +18,12 @@ export type CandidateFollowDigestEmailInput = {
    */
   items: readonly CandidateFollowDigestItem[];
   totalEventCount: number;
+  /**
+   * Signed per-user unsubscribe link. When present it is rendered in the
+   * footer and emitted as List-Unsubscribe / List-Unsubscribe-Post headers
+   * (RFC 8058 one-click, expected by major mailbox providers at volume).
+   */
+  unsubscribeUrl?: string;
 };
 
 export type CandidateFollowDigestMailer = {
@@ -107,13 +113,17 @@ export function buildDigestTextBody(appName: string | undefined, input: Candidat
   );
   const remainder = input.totalEventCount - input.items.length;
   const remainderLine = remainder > 0 ? `\n…and ${remainder} more update${remainder === 1 ? "" : "s"}.\n` : "";
+  const unsubscribeLine = input.unsubscribeUrl
+    ? `\nUnsubscribe from these digests: ${input.unsubscribeUrl}`
+    : "";
   return (
     `Hi ${input.firstName.trim() || "there"},\n\n` +
     `Updates on candidates you follow on ${brand}:\n\n` +
     `${sections.join("\n\n")}\n` +
     remainderLine +
     `\nYou are receiving this because you follow these candidates on ${brand} ` +
-    `and have digest emails enabled. You can change this in your account settings.`
+    `and have digest emails enabled. You can change this in your account settings.` +
+    unsubscribeLine
   );
 }
 
@@ -140,7 +150,11 @@ export function buildDigestHtmlBody(appName: string | undefined, input: Candidat
     <p>Updates on candidates you follow on ${brand}:</p>
 ${sections}
 ${remainderHtml}    <p>You are receiving this because you follow these candidates on ${brand} and have digest emails enabled. You can change this in your account settings.</p>
-  </body>
+${
+    input.unsubscribeUrl
+      ? `    <p><a href="${escapeHtml(input.unsubscribeUrl)}">Unsubscribe from these digests</a></p>\n`
+      : ""
+  }  </body>
 </html>`;
 }
 
@@ -163,6 +177,14 @@ export function createSesCandidateFollowDigestMailer(
             : undefined,
           Content: {
             Simple: {
+              ...(input.unsubscribeUrl
+                ? {
+                    Headers: [
+                      { Name: "List-Unsubscribe", Value: `<${input.unsubscribeUrl}>` },
+                      { Name: "List-Unsubscribe-Post", Value: "List-Unsubscribe=One-Click" },
+                    ],
+                  }
+                : {}),
               Subject: {
                 Data: buildDigestSubject(options.appName, input.totalEventCount),
                 Charset: "UTF-8",

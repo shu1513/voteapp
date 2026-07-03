@@ -8,6 +8,8 @@ import {
   sendCandidateFollowDigests,
   withDigestRunLock,
 } from "../../src/scripts/sendCandidateFollowDigests.js";
+import { buildUnsubscribeUrlBuilderFromEnv } from "../../src/scripts/sendCandidateFollowDigests.js";
+import { verifyEmailUnsubscribeToken } from "../../src/pipeline/users/emailUnsubscribeToken.js";
 import type { CandidateFollowDigestEmailInput } from "../../src/pipeline/users/candidateFollowDigestMailer.js";
 
 const USER_ALPHA = "11111111-1111-4111-8111-111111111111";
@@ -310,5 +312,49 @@ describe("withDigestRunLock", () => {
 
     expect(String(query.mock.calls[1][0])).toContain("pg_advisory_unlock");
     expect(release).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("unsubscribe URL wiring", () => {
+  const SECRET = "test-secret-with-at-least-32-characters!";
+
+  it("passes the built per-user unsubscribe URL to the mailer", async () => {
+    const db = createDbMock({
+      users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+      pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Jane Doe")] },
+    });
+    const mailer = createMailerMock();
+
+    await sendCandidateFollowDigests(db as never, mailer, {
+      live: true,
+      maxUsers: 500,
+      maxItemsPerEmail: 20,
+      buildUnsubscribeUrl: (userId) => `https://api.example.com/api/email/unsubscribe?u=${userId}`,
+    });
+
+    expect(mailer.sent[0].unsubscribeUrl).toBe(
+      `https://api.example.com/api/email/unsubscribe?u=${USER_ALPHA}`
+    );
+  });
+
+  it("buildUnsubscribeUrlBuilderFromEnv returns null unless both envs are set, else signs verifiable tokens", () => {
+    const saved = { ...process.env };
+    try {
+      delete process.env.NOTIFICATIONS_UNSUBSCRIBE_URL;
+      delete process.env.NOTIFICATIONS_UNSUBSCRIBE_SECRET;
+      expect(buildUnsubscribeUrlBuilderFromEnv()).toBeNull();
+
+      process.env.NOTIFICATIONS_UNSUBSCRIBE_URL = "https://api.example.com/api/email/unsubscribe";
+      expect(buildUnsubscribeUrlBuilderFromEnv()).toBeNull();
+
+      process.env.NOTIFICATIONS_UNSUBSCRIBE_SECRET = SECRET;
+      const build = buildUnsubscribeUrlBuilderFromEnv();
+      expect(build).not.toBeNull();
+      const url = new URL(build!(USER_ALPHA));
+      expect(url.origin + url.pathname).toBe("https://api.example.com/api/email/unsubscribe");
+      expect(verifyEmailUnsubscribeToken(url.searchParams.get("token") ?? "", SECRET)).toBe(USER_ALPHA);
+    } finally {
+      process.env = saved;
+    }
   });
 });

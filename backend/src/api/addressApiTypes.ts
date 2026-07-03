@@ -5,6 +5,7 @@ import type {
   OrderedBallotSummaryResult,
 } from "../pipeline/address/ballotElectionOrdering.js";
 import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
+import type { UserEmailPreferences } from "../pipeline/users/userEmailPreferences.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { AddressSuggestion, RetrievedSuggestedAddress } from "../pipeline/address/googlePlacesAutocomplete.js";
 import type { CandidateDetailResult } from "../pipeline/candidates/candidateDetailReader.js";
@@ -88,6 +89,18 @@ export type AddressApiServerOptions = {
     userId: string,
     preferences: UserBallotPreferences
   ) => Promise<UserBallotPreferences>;
+  getAuthenticatedEmailPreferences?: (userId: string) => Promise<UserEmailPreferences>;
+  setAuthenticatedEmailPreferences?: (
+    userId: string,
+    preferences: UserEmailPreferences
+  ) => Promise<UserEmailPreferences>;
+  /**
+   * Signed-token digest unsubscribe (no session). Returns "ok" after turning
+   * the digest off, "invalid_token" for bad/forged tokens; a valid token for
+   * a since-deleted user also reports "ok" so the page does not leak account
+   * state.
+   */
+  unsubscribeFromEmailDigest?: (token: string) => Promise<"ok" | "invalid_token">;
   listAuthenticatedResearchAreaPreferences?: (userId: string) => Promise<AuthenticatedResearchAreaPreferencesResult>;
   replaceAuthenticatedResearchAreaPreferences?: (
     userId: string,
