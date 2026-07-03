@@ -299,6 +299,50 @@ describe("runElectionsValidator", () => {
     expect(updateValidatedCall).toBeUndefined();
   });
 
+  it("accepts 'US House of Representatives District 1' without hard-rejecting it as a state-house race", async () => {
+    const payload = {
+      district_id: "d-nc",
+      district_name: "Congressional District 1 (119th Congress), North Carolina",
+      district_type: "us_house",
+      state: "NC",
+      entries: [
+        {
+          official_ballot_title: "US House of Representatives District 1",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:nc",
+            payload,
+            status: "pending",
+            run_id: "run_nc",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const rejectedCall = redisXAddMock.mock.calls.find((call) => call[0] === STAGING_REJECTED_STREAM);
+    expect(rejectedCall).toBeUndefined();
+  });
+
   it("accepts soft-fail entries on review pass when review_decision=approve", async () => {
     const payload = {
       district_id: "d-1",
