@@ -19,6 +19,8 @@ import {
 import {
   findOrCreateCandidateFromProfile,
   hasAtLeastOneHardIdentifier,
+  OVERWRITABLE_PROFILE_FIELDS,
+  type OverwritableProfileField,
 } from "../pipeline/candidates/candidateProfileIdentity.js";
 import {
   findTicketLeadCandidateIdByDisplayName,
@@ -67,7 +69,7 @@ function toReason(error: unknown): string {
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--roster-index n] [--running-mate-of \"Lead Ballot Name\"] [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
+    "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--roster-index n] [--running-mate-of \"Lead Ballot Name\"] [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--replace-profile-fields f1,f2] [--repair-report-file file] [--dry-run]",
     "",
     "Payload must match CandidateProfilePayload. Live runs find/create a candidate and link it to the election.",
     "With --running-mate-of, the profile is written as the joint-ticket running mate: the candidate is created/matched normally, then linked via candidate_elections.running_mate_candidate_id on the ticket lead's row instead of getting an own candidate_elections row. Write the ticket lead's profile first.",
@@ -511,6 +513,22 @@ async function main(): Promise<void> {
   const repairReportFile = readFlag("--repair-report-file");
   const strictQualityGate = hasFlag("--strict-quality-gate");
   const confirmedGapIds = normalizeConfirmedGaps(readRepeatedFlag("--confirmed-gap"));
+  const replaceFieldsRaw = readFlag("--replace-profile-fields");
+  const overwriteProfileFields = new Set<OverwritableProfileField>();
+  if (replaceFieldsRaw) {
+    for (const raw of replaceFieldsRaw.split(",")) {
+      const field = raw.trim();
+      if (!field) {
+        continue;
+      }
+      if (!(OVERWRITABLE_PROFILE_FIELDS as readonly string[]).includes(field)) {
+        throw new Error(
+          `--replace-profile-fields: unknown field "${field}". Allowed: ${OVERWRITABLE_PROFILE_FIELDS.join(", ")}`
+        );
+      }
+      overwriteProfileFields.add(field as OverwritableProfileField);
+    }
+  }
   if (!file || !electionId) {
     throw new Error(`Missing --file or --election-id.\n${usage()}`);
   }
@@ -718,6 +736,8 @@ async function main(): Promise<void> {
         state: election.state,
         rosterParty,
         includeParty,
+        matchByLinkedElectionId: electionId,
+        overwriteProfileFields,
       });
       candidateId = candidateResult.candidateId;
       matchedExisting = candidateResult.matchedExisting;

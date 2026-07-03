@@ -361,12 +361,15 @@ async function main(): Promise<void> {
     });
     throw new Error(`Candidate records payload failed validation: ${validatedRecords.reason}`);
   }
-  const blockingDroppedRecords = validatedRecords.droppedRecords.filter(
-    (record) => record.failureKind !== "quality_gap"
-  );
+  // The labels file addresses records by index into the operator's records
+  // file. ANY dropped record (source, schema, or quality gate) shifts that
+  // indexing, so every drop blocks the manual import: previously a quality-gate
+  // drop slid later labels onto the wrong surviving records, or surfaced as a
+  // misleading "labels contains invalid row" error. The operator must repair or
+  // remove the dropped row so record and label indices describe the same list.
   const qualityDroppedGaps = qualityDroppedRecordsToGaps(validatedRecords.droppedRecords);
 
-  if (blockingDroppedRecords.length > 0) {
+  if (validatedRecords.droppedRecords.length > 0) {
     const gaps = validatedRecords.droppedRecords.map(droppedRecordToGap);
     await writeRecordsRepairReport({
       reportFile: repairReportFile,
@@ -378,8 +381,15 @@ async function main(): Promise<void> {
       candidateDisplayName: null,
       gaps,
     });
+    const qualityDropped = validatedRecords.droppedRecords.filter(
+      (record) => record.failureKind === "quality_gap"
+    );
+    const hint =
+      qualityDropped.length > 0
+        ? " Quality-gate drops must be repaired or removed from the records file so label record_index values stay aligned with the records actually imported."
+        : "";
     throw new Error(
-      `Candidate records payload needs focused source/schema repair before import; dropped=${blockingDroppedRecords.length}; ${summarizeDroppedRecords(blockingDroppedRecords)}`
+      `Candidate records payload needs focused repair before import; dropped=${validatedRecords.droppedRecords.length}; ${summarizeDroppedRecords(validatedRecords.droppedRecords)}.${hint}`
     );
   }
 

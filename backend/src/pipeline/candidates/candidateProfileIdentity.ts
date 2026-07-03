@@ -28,7 +28,28 @@ export type FindOrCreateCandidateFromProfileInput = {
   rosterParty: string | undefined;
   includeParty: boolean;
   allowCrossStateHardIdentifierMatch?: boolean;
+  // When set, a candidate already linked to this election (directly or as a
+  // running mate) with the same display_name is treated as the same person
+  // even when no hard identifier matches. Rosters enforce display_name
+  // uniqueness per election, so this cannot merge two different people; it
+  // prevents duplicate candidates when a re-written profile changes the row's
+  // only hard identifier (e.g. swapping a placeholder campaign URL).
+  matchByLinkedElectionId?: string;
+  // Field names whose non-empty stored values may be REPLACED by the incoming
+  // profile (deliberate correction). Everything else keeps fill-if-empty
+  // semantics: never overwrite a non-empty stored value.
+  overwriteProfileFields?: ReadonlySet<OverwritableProfileField>;
 };
+
+export const OVERWRITABLE_PROFILE_FIELDS = [
+  "date_of_birth",
+  "twitter_handle",
+  "linkedin_url",
+  "official_website_url",
+  "summary",
+  "current_office",
+] as const;
+export type OverwritableProfileField = (typeof OVERWRITABLE_PROFILE_FIELDS)[number];
 
 export type FindOrCreateCandidateFromProfileResult = {
   candidateId: string;
@@ -291,15 +312,15 @@ async function insertCandidate(
 async function mergeCandidateIdentifiersForExistingCandidate(
   client: PoolClient,
   candidateId: string,
-  profile: CandidateProfilePayload
+  profile: CandidateProfilePayload,
+  overwriteFields?: ReadonlySet<OverwritableProfileField>
 ): Promise<void> {
   const locked = await client.query<{
     fec_ids: unknown;
     state_filing_ids: unknown;
-    current_office: string | null;
   }>(
     `
-      SELECT fec_ids, state_filing_ids, current_office
+      SELECT fec_ids, state_filing_ids
       FROM public.candidates
       WHERE id = $1
         AND deleted_at IS NULL
@@ -318,17 +339,58 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   const mergedFecIds = mergeIdentifierLists(existingFecIds, profile.fec_ids);
   const mergedStateFilingIds = mergeIdentifierLists(existingStateFilingIds, profile.state_filing_ids);
 
+  // Scalar fields fill empty columns but never overwrite non-empty stored
+  // values, unless the caller explicitly listed the field for replacement.
+  // Identifier lists stay additive and profile_sources always refreshes.
+  const scalarValue = (field: OverwritableProfileField, value: string | undefined | null) => ({
+    value: value ?? null,
+    overwrite: overwriteFields?.has(field) ?? false,
+  });
+  const scalars = {
+    date_of_birth: scalarValue("date_of_birth", profile.date_of_birth),
+    twitter_handle: scalarValue("twitter_handle", profile.twitter_handle),
+    linkedin_url: scalarValue("linkedin_url", profile.linkedin_url),
+    official_website_url: scalarValue("official_website_url", profile.official_website_url),
+    summary: scalarValue("summary", profile.summary),
+    current_office: scalarValue("current_office", profile.current_office),
+  };
+
   await client.query(
     `
       UPDATE public.candidates
       SET fec_ids = $2::jsonb,
           state_filing_ids = $3::jsonb,
+          date_of_birth = CASE
+            WHEN $6::boolean AND $5::date IS NOT NULL THEN $5::date
+            WHEN date_of_birth IS NULL THEN $5::date
+            ELSE date_of_birth
+          END,
+          twitter_handle = CASE
+            WHEN $8::boolean AND $7::text IS NOT NULL THEN $7::text
+            WHEN twitter_handle IS NULL OR length(trim(twitter_handle)) = 0 THEN COALESCE($7::text, twitter_handle)
+            ELSE twitter_handle
+          END,
+          linkedin_url = CASE
+            WHEN $10::boolean AND $9::text IS NOT NULL THEN $9::text
+            WHEN linkedin_url IS NULL OR length(trim(linkedin_url)) = 0 THEN COALESCE($9::text, linkedin_url)
+            ELSE linkedin_url
+          END,
+          official_website_url = CASE
+            WHEN $12::boolean AND $11::text IS NOT NULL THEN $11::text
+            WHEN official_website_url IS NULL OR length(trim(official_website_url)) = 0 THEN COALESCE($11::text, official_website_url)
+            ELSE official_website_url
+          END,
+          summary = CASE
+            WHEN $14::boolean AND $13::text IS NOT NULL THEN $13::text
+            WHEN summary IS NULL OR length(trim(summary)) = 0 THEN COALESCE($13::text, summary)
+            ELSE summary
+          END,
           current_office = CASE
-            WHEN $4::text IS NOT NULL AND (current_office IS NULL OR length(trim(current_office)) = 0)
-              THEN $4::text
+            WHEN $16::boolean AND $15::text IS NOT NULL THEN $15::text
+            WHEN current_office IS NULL OR length(trim(current_office)) = 0 THEN COALESCE($15::text, current_office)
             ELSE current_office
           END,
-          profile_sources = $5::jsonb,
+          profile_sources = $4::jsonb,
           last_researched = now(),
           updated_at = now()
       WHERE id = $1
@@ -337,10 +399,46 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       candidateId,
       mergedFecIds ? JSON.stringify(mergedFecIds) : null,
       mergedStateFilingIds ? JSON.stringify(mergedStateFilingIds) : null,
-      profile.current_office ?? null,
       JSON.stringify(profile.sources),
+      scalars.date_of_birth.value,
+      scalars.date_of_birth.overwrite,
+      scalars.twitter_handle.value,
+      scalars.twitter_handle.overwrite,
+      scalars.linkedin_url.value,
+      scalars.linkedin_url.overwrite,
+      scalars.official_website_url.value,
+      scalars.official_website_url.overwrite,
+      scalars.summary.value,
+      scalars.summary.overwrite,
+      scalars.current_office.value,
+      scalars.current_office.overwrite,
     ]
   );
+}
+
+async function findCandidateLinkedToElectionByDisplayName(
+  client: PoolClient,
+  electionId: string,
+  displayName: string
+): Promise<string | null> {
+  const result = await client.query<{ id: string }>(
+    `
+      SELECT DISTINCT c.id
+      FROM public.candidates c
+      JOIN public.candidate_elections ce
+        ON (ce.candidate_id = c.id OR ce.running_mate_candidate_id = c.id)
+      WHERE ce.election_id = $1
+        AND c.deleted_at IS NULL
+        AND lower(trim(c.display_name)) = lower(trim($2))
+    `,
+    [electionId, displayName]
+  );
+  if (result.rows.length > 1) {
+    throw new Error(
+      `Multiple candidates named "${displayName}" are linked to election ${electionId}; resolve the duplicate rows before re-writing this profile.`
+    );
+  }
+  return result.rows[0]?.id ?? null;
 }
 
 export async function findOrCreateCandidateFromProfile(
@@ -354,8 +452,30 @@ export async function findOrCreateCandidateFromProfile(
     const matched = existingCandidates.filter((row) => matchesByHardIdentifier(input.profile, row));
     if (matched.length === 1) {
       const matchedCandidate = matched[0]!;
-      await mergeCandidateIdentifiersForExistingCandidate(input.client, matchedCandidate.id, input.profile);
+      await mergeCandidateIdentifiersForExistingCandidate(
+        input.client,
+        matchedCandidate.id,
+        input.profile,
+        input.overwriteProfileFields
+      );
       return { candidateId: matchedCandidate.id, matchedExisting: true };
+    }
+  }
+
+  if (input.matchByLinkedElectionId) {
+    const linkedCandidateId = await findCandidateLinkedToElectionByDisplayName(
+      input.client,
+      input.matchByLinkedElectionId,
+      input.profile.display_name
+    );
+    if (linkedCandidateId) {
+      await mergeCandidateIdentifiersForExistingCandidate(
+        input.client,
+        linkedCandidateId,
+        input.profile,
+        input.overwriteProfileFields
+      );
+      return { candidateId: linkedCandidateId, matchedExisting: true };
     }
   }
 
