@@ -1,4 +1,5 @@
 import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeocoder.js";
+import { GooglePlacesAutocompleteError } from "../pipeline/address/googlePlacesAutocomplete.js";
 import { CandidateDetailReaderError } from "../pipeline/candidates/candidateDetailReader.js";
 import { AuthenticatedAddressDistrictUpdateError } from "../pipeline/users/userAddressDistrictUpdater.js";
 import { UserCandidateFollowsError } from "../pipeline/users/userCandidateFollows.js";
@@ -34,6 +35,15 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     if (error.code === "timeout" || error.code === "http_error") {
       return { statusCode: 503, code: "upstream_unavailable", message: error.message };
     }
+  }
+  if (error instanceof GooglePlacesAutocompleteError) {
+    if (error.code === "invalid_input") {
+      return { statusCode: 400, code: "invalid_request", message: error.message };
+    }
+    if (error.code === "bad_response") {
+      return { statusCode: 502, code: "bad_upstream_response", message: error.message };
+    }
+    return { statusCode: 503, code: "upstream_unavailable", message: error.message };
   }
   if (error instanceof InitializeUserDistrictsError) {
     if (error.code === "invalid_user_id" || error.code === "user_not_found") {
