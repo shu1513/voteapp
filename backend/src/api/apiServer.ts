@@ -29,6 +29,7 @@ import {
   MAX_ADDRESS_REQUEST_BODY_BYTES,
   ME_ADDRESS_PATH,
   ME_BALLOT_PATH,
+  ME_BALLOT_PREFERENCES_PATH,
   ME_CANDIDATE_FOLLOWS_PATH,
   ME_DISTRICTS_INITIALIZE_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
@@ -37,6 +38,7 @@ import {
   parseAutocompleteRetrieveBodyValue,
   parseAutocompleteSuggestBodyValue,
   parseCandidateFollowBodyValue,
+  parseBallotPreferencesBodyValue,
   parseBallotSummaryOptions,
   parseCandidateId,
   parseDistrictIds,
@@ -80,6 +82,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === AUTH_VERIFY_EMAIL_PATH ||
     pathname === ME_ADDRESS_PATH ||
     pathname === ME_BALLOT_PATH ||
+    pathname === ME_BALLOT_PREFERENCES_PATH ||
     pathname === ME_CANDIDATE_FOLLOWS_PATH ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
@@ -283,6 +286,7 @@ function createJsonBodyParser() {
           request.path === AUTH_VERIFY_EMAIL_PATH)) ||
       (request.method === "PUT" &&
         (request.path === ME_ADDRESS_PATH ||
+          request.path === ME_BALLOT_PREFERENCES_PATH ||
           request.path === ME_CANDIDATE_FOLLOWS_PATH ||
           request.path === ME_RESEARCH_AREA_PREFERENCES_PATH));
     if (!shouldParseJson) {
@@ -598,7 +602,14 @@ async function dispatchApiRequest(
       return;
     }
 
+    // Explicit query params win; anything omitted falls back to the user's
+    // saved ballot preferences (and the reader defaults below those).
     const summaryOptions = parseBallotSummaryOptions(url);
+    if (options.getAuthenticatedBallotPreferences && (summaryOptions.sort === undefined || summaryOptions.followedFirst === undefined)) {
+      const saved = await options.getAuthenticatedBallotPreferences(userId);
+      summaryOptions.sort = summaryOptions.sort ?? saved.sort;
+      summaryOptions.followedFirst = summaryOptions.followedFirst ?? saved.followed_first;
+    }
     const result = await options.lookupAuthenticatedBallotSummaries(userId, summaryOptions);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
@@ -683,6 +694,55 @@ async function dispatchApiRequest(
 
     const payload = parseCandidateFollowBodyValue(request.body);
     const result = await options.setAuthenticatedCandidateFollow(userId, payload);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_BALLOT_PREFERENCES_PATH) {
+    if (request.method !== "GET" && request.method !== "PUT") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET or PUT /api/me/ballot-preferences", {
+          ...corsHeaders,
+          allow: "GET, PUT",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
+    if (!userId) {
+      return;
+    }
+
+    if (request.method === "GET") {
+      if (!options.getAuthenticatedBallotPreferences) {
+        sendApiResponse(
+          response,
+          toErrorResponse(500, "internal_error", "Authenticated ballot preferences lookup is not configured", corsHeaders)
+        );
+        return;
+      }
+
+      const result = await options.getAuthenticatedBallotPreferences(userId);
+      sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+      return;
+    }
+
+    if (!options.setAuthenticatedBallotPreferences) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Authenticated ballot preference storage is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const preferences = parseBallotPreferencesBodyValue(request.body);
+    const result = await options.setAuthenticatedBallotPreferences(userId, preferences);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }

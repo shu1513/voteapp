@@ -1111,7 +1111,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     expect(sql).toContain("concat_ws(' ', c.first_name, c.last_name)");
   });
 
-  it("does not group followed elections first when followedFirst is off, but still annotates them", async () => {
+  it("groups followed elections first by default for authenticated lookups", async () => {
     const query = makeBallotQueryMock({
       elections: [
         { election_id: electionA, representation_power_score: 10 },
@@ -1124,7 +1124,25 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       userId: "99999999-9999-4999-8999-999999999999",
     });
 
-    // Default vote_power order keeps B first; A is still annotated as followed.
+    // followedFirst defaults to true: A leads despite B's higher vote power.
+    expect(result.elections.map((e) => e.id)).toEqual([electionA, electionB]);
+  });
+
+  it("does not group followed elections first when followedFirst is explicitly off, but still annotates them", async () => {
+    const query = makeBallotQueryMock({
+      elections: [
+        { election_id: electionA, representation_power_score: 10 },
+        { election_id: electionB, representation_power_score: 95 },
+      ],
+      followed: [{ election_id: electionA, candidate_id: candidateId, display_name: "Jane Doe" }],
+    });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId], {
+      userId: "99999999-9999-4999-8999-999999999999",
+      followedFirst: false,
+    });
+
+    // vote_power order keeps B first; A is still annotated as followed.
     expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
     expect(result.elections.find((e) => e.id === electionA)?.followed_candidates).toEqual([
       { candidate_id: candidateId, display_name: "Jane Doe" },

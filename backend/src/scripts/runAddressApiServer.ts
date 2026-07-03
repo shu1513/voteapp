@@ -58,6 +58,7 @@ import {
   listUserResearchAreaPreferences,
   replaceUserResearchAreaPreferences,
 } from "../pipeline/users/userResearchAreaPreferences.js";
+import { getUserBallotPreferences, setUserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -362,6 +363,8 @@ async function main(): Promise<void> {
     listResearchAreas: () => listSelectableResearchAreas(pool),
     listAuthenticatedCandidateFollows: (userId) => listUserCandidateFollows(pool, userId),
     setAuthenticatedCandidateFollow: (userId, input) => setUserCandidateFollow(pool, userId, input),
+    getAuthenticatedBallotPreferences: (userId) => getUserBallotPreferences(pool, userId),
+    setAuthenticatedBallotPreferences: (userId, preferences) => setUserBallotPreferences(pool, userId, preferences),
     listAuthenticatedResearchAreaPreferences: (userId) => listUserResearchAreaPreferences(pool, userId),
     replaceAuthenticatedResearchAreaPreferences: (userId, preferences) =>
       replaceUserResearchAreaPreferences(pool, userId, preferences),

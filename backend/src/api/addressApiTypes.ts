@@ -3,6 +3,7 @@ import type {
   BallotSummaryOptions,
   BallotSummaryResult,
 } from "../pipeline/address/ballotLookup.js";
+import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { AddressSuggestion, RetrievedSuggestedAddress } from "../pipeline/address/googlePlacesAutocomplete.js";
 import type { CandidateDetailResult } from "../pipeline/candidates/candidateDetailReader.js";
@@ -78,6 +79,11 @@ export type AddressApiServerOptions = {
     userId: string,
     input: UserCandidateFollowInput
   ) => Promise<AuthenticatedCandidateFollowUpdateResult>;
+  getAuthenticatedBallotPreferences?: (userId: string) => Promise<UserBallotPreferences>;
+  setAuthenticatedBallotPreferences?: (
+    userId: string,
+    preferences: UserBallotPreferences
+  ) => Promise<UserBallotPreferences>;
   listAuthenticatedResearchAreaPreferences?: (userId: string) => Promise<AuthenticatedResearchAreaPreferencesResult>;
   replaceAuthenticatedResearchAreaPreferences?: (
     userId: string,

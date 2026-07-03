@@ -9,6 +9,7 @@ import { GOOGLE_PLACE_ID_PATTERN } from "../pipeline/address/googlePlacesAutocom
 import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
+import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
 
 export { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
@@ -33,6 +34,7 @@ export const ME_BALLOT_PATH = "/api/me/ballot";
 export const ME_CANDIDATE_FOLLOWS_PATH = "/api/me/candidate-follows";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferences";
+export const ME_BALLOT_PREFERENCES_PATH = "/api/me/ballot-preferences";
 export const RESEARCH_AREAS_PATH = "/api/research-areas";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 export const MAX_BALLOT_DISTRICT_IDS = 50;
@@ -282,6 +284,26 @@ export function parseInitializeUserDistrictsBodyValue(parsed: unknown): Initiali
   return {
     district_ids: normalizedDistrictIds,
   };
+}
+
+// Parses the PUT /api/me/ballot-preferences body: a full replace of both
+// fields, mirroring the research-area preferences contract.
+export function parseBallotPreferencesBodyValue(parsed: unknown): UserBallotPreferences {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const sort = (parsed as { sort?: unknown }).sort;
+  if (typeof sort !== "string" || !isBallotSummarySort(sort.trim())) {
+    throw new TypeError(`Body field sort must be one of: ${BALLOT_SUMMARY_SORTS.join(", ")}`);
+  }
+
+  const followedFirst = (parsed as { followed_first?: unknown }).followed_first;
+  if (typeof followedFirst !== "boolean") {
+    throw new TypeError("Body field followed_first must be a boolean");
+  }
+
+  return { sort: sort.trim() as BallotSummarySort, followed_first: followedFirst };
 }
 
 export function parseResearchAreaPreferencesBodyValue(parsed: unknown): ResearchAreaPreferencesPayload {

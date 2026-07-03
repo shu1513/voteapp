@@ -356,8 +356,9 @@ export type BallotSummaryOptions = {
   // each election. Anonymous lookups omit it and every election gets [].
   userId?: string | null;
   sort?: BallotSummarySort;
-  // When true, elections that contain at least one followed candidate are
-  // grouped ahead of the rest, each group still ordered by `sort`.
+  // When true (the default), elections that contain at least one followed
+  // candidate are grouped ahead of the rest, each group still ordered by
+  // `sort`. A no-op for anonymous lookups, which never have follows.
   followedFirst?: boolean;
 };
 
@@ -11858,7 +11859,7 @@ export async function lookupBallotSummariesByDistrictIds(
     };
   });
 
-  sortBallotElections(elections, options.sort ?? "vote_power", options.followedFirst ?? false);
+  sortBallotElections(elections, options.sort ?? "vote_power", options.followedFirst ?? true);
 
   return {
     district_ids: ids,
