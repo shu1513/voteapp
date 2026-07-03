@@ -802,7 +802,7 @@ describe("createApiApp", () => {
       official_ballot_title: "Sheriff",
     });
 
-    expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId]);
+    expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId], {});
     expect(lookupElectionDetail).toHaveBeenCalledWith(electionId);
     expect(resolveAuthenticatedUserId).not.toHaveBeenCalled();
     expect(listAuthenticatedCandidateFollows).not.toHaveBeenCalled();
@@ -1055,8 +1055,182 @@ describe("createApiApp", () => {
     expect(resolveAuthenticatedUserId).toHaveBeenCalledWith({
       headers: expect.objectContaining({ "x-user-id": "99999999-9999-4999-8999-999999999999" }),
     });
-    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {});
     expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("passes sort and followed_first query params through to authenticated ballot summaries", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupAuthenticatedBallotSummaries = vi.fn().mockResolvedValue({
+      district_ids: [],
+      districts: [],
+      elections: [],
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, lookupAuthenticatedBallotSummaries }),
+      {
+        method: "GET",
+        path: "/api/me/ballot?sort=soonest&followed_first=true",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {
+      sort: "soonest",
+      followedFirst: true,
+    });
+  });
+
+  it("falls back to saved ballot preferences for omitted params, letting explicit params win", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupAuthenticatedBallotSummaries = vi.fn().mockResolvedValue({
+      district_ids: [],
+      districts: [],
+      elections: [],
+    });
+    const getAuthenticatedBallotPreferences = vi
+      .fn()
+      .mockResolvedValue({ sort: "district_size", followed_first: false });
+
+    // No params: both come from the saved preferences.
+    await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, lookupAuthenticatedBallotSummaries, getAuthenticatedBallotPreferences }),
+      {
+        method: "GET",
+        path: "/api/me/ballot",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenLastCalledWith("99999999-9999-4999-8999-999999999999", {
+      sort: "district_size",
+      followedFirst: false,
+    });
+
+    // Explicit sort overrides the saved one; followed_first still comes from prefs.
+    await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, lookupAuthenticatedBallotSummaries, getAuthenticatedBallotPreferences }),
+      {
+        method: "GET",
+        path: "/api/me/ballot?sort=soonest",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenLastCalledWith("99999999-9999-4999-8999-999999999999", {
+      sort: "soonest",
+      followedFirst: false,
+    });
+  });
+
+  it("serves and stores ballot preferences via GET and PUT /api/me/ballot-preferences", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const getAuthenticatedBallotPreferences = vi.fn().mockResolvedValue({ sort: "vote_power", followed_first: true });
+    const setAuthenticatedBallotPreferences = vi.fn().mockResolvedValue({ sort: "soonest", followed_first: false });
+    const app = createApiApp({
+      resolveAuthenticatedUserId,
+      getAuthenticatedBallotPreferences,
+      setAuthenticatedBallotPreferences,
+    });
+
+    const getResponse = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/me/ballot-preferences",
+      headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+    });
+    expect(getResponse.statusCode).toBe(200);
+    expect(getResponse.body).toEqual({ sort: "vote_power", followed_first: true });
+
+    const putResponse = await invokeExpressApp(app, {
+      method: "PUT",
+      path: "/api/me/ballot-preferences",
+      headers: {
+        "x-user-id": "99999999-9999-4999-8999-999999999999",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ sort: "soonest", followed_first: false }),
+    });
+    expect(putResponse.statusCode).toBe(200);
+    expect(putResponse.body).toEqual({ sort: "soonest", followed_first: false });
+    expect(setAuthenticatedBallotPreferences).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {
+      sort: "soonest",
+      followed_first: false,
+    });
+  });
+
+  it("rejects an invalid ballot preferences body with 400", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const setAuthenticatedBallotPreferences = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, setAuthenticatedBallotPreferences }),
+      {
+        method: "PUT",
+        path: "/api/me/ballot-preferences",
+        headers: {
+          "x-user-id": "99999999-9999-4999-8999-999999999999",
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ sort: "alphabetical", followed_first: false }),
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(setAuthenticatedBallotPreferences).not.toHaveBeenCalled();
+  });
+
+  it("rejects an invalid sort query param with 400", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupAuthenticatedBallotSummaries = vi.fn().mockResolvedValue({
+      district_ids: [],
+      districts: [],
+      elections: [],
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, lookupAuthenticatedBallotSummaries }),
+      {
+        method: "GET",
+        path: "/api/me/ballot?sort=alphabetical",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toMatchObject({ error: { code: "invalid_request" } });
+    expect(lookupAuthenticatedBallotSummaries).not.toHaveBeenCalled();
+  });
+
+  it("passes the sort query param through to anonymous ballot summaries", async () => {
+    const lookupBallotSummaries = vi.fn().mockResolvedValue({
+      district_ids: [districtId],
+      districts: [],
+      elections: [],
+    });
+
+    const response = await invokeExpressApp(createApiApp({ lookupBallotSummaries }), {
+      method: "GET",
+      path: `/api/ballot?district_ids=${districtId}&sort=vote_power`,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId], { sort: "vote_power" });
+  });
+
+  it("accepts sort=district_size as a valid ballot sort", async () => {
+    const lookupBallotSummaries = vi.fn().mockResolvedValue({
+      district_ids: [districtId],
+      districts: [],
+      elections: [],
+    });
+
+    const response = await invokeExpressApp(createApiApp({ lookupBallotSummaries }), {
+      method: "GET",
+      path: `/api/ballot?district_ids=${districtId}&sort=district_size`,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId], { sort: "district_size" });
   });
 
   it("serves empty authenticated ballot summaries when the user has no saved districts", async () => {
@@ -1083,7 +1257,7 @@ describe("createApiApp", () => {
       districts: [],
       elections: [],
     });
-    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {});
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
@@ -1172,7 +1346,7 @@ describe("createApiApp", () => {
         message: "Authentication is required",
       },
     });
-    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {});
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
@@ -2574,7 +2748,7 @@ describe("createApiApp", () => {
       districts: [],
       elections: [],
     });
-    expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId]);
+    expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId], {});
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 

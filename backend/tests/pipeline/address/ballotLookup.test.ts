@@ -137,9 +137,12 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           state: "CA",
           state_fips: "06",
           representation_power_score: 72.5,
+          population: null,
         },
       ],
-      elections: [
+      // Order-independent: the reader now sorts by the default vote_power
+      // ordering; this test covers the summary shape, not the ordering.
+      elections: expect.arrayContaining([
         {
           id: officeElectionId,
           district_id: districtId,
@@ -151,6 +154,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             state: "CA",
             state_fips: "06",
             representation_power_score: 72.5,
+            population: null,
           },
           race_type: "office",
           official_ballot_title: "Sheriff",
@@ -198,6 +202,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             state: "CA",
             state_fips: "06",
             representation_power_score: 72.5,
+            population: null,
           },
           race_type: "ballot_measure",
           official_ballot_title: "Measure H",
@@ -222,15 +227,18 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             factors: ["high_representation", "direct_vote_on_policy"],
           },
         },
-      ],
+      ]),
     });
+    expect(result.elections).toHaveLength(2);
     expect(query).toHaveBeenCalledTimes(7);
     expect(query.mock.calls[0]?.[1]).toEqual([[districtId]]);
     expect(query.mock.calls[5]?.[0]).toContain("CASE pass_type");
     expect(query.mock.calls[5]?.[0]).toContain("WHEN 'certified' THEN 1");
     expect(query.mock.calls[5]?.[0]).toContain("WHEN 'election_night' THEN 2");
     expect(query.mock.calls[6]?.[0]).toContain("historical_contest_margins");
-    expect(JSON.stringify(result)).not.toContain("candidates");
+    // The lightweight summary must not embed the full candidate array (the
+    // detail endpoint's "candidates" key).
+    expect(JSON.stringify(result)).not.toContain('"candidates"');
     expect(JSON.stringify(result)).not.toContain("candidate_record");
     expect(JSON.stringify(result)).not.toContain("what_yes_means");
   });
@@ -929,6 +937,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       },
     ]);
   });
+
 });
 
 describe("lookupElectionDetailById", () => {

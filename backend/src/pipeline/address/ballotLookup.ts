@@ -59,6 +59,7 @@ export type BallotLookupDistrict = {
   state: string;
   state_fips: string;
   representation_power_score: number | null;
+  population: number | null;
 };
 
 export type BallotLookupResearchAreaTag = {
@@ -334,8 +335,9 @@ export type BallotSummaryResult = {
   elections: BallotLookupElectionSummary[];
 };
 
-type DistrictRow = Omit<BallotLookupDistrict, "representation_power_score"> & {
+type DistrictRow = Omit<BallotLookupDistrict, "representation_power_score" | "population"> & {
   representation_power_score: string | number | null;
+  population?: string | number | null;
 };
 
 type ElectionRow = {
@@ -347,6 +349,7 @@ type ElectionRow = {
   state: string;
   state_fips: string;
   representation_power_score: string | number | null;
+  population?: string | number | null;
   race_type: ElectionRaceType;
   official_ballot_title: string;
   election_date: string;
@@ -1955,7 +1958,16 @@ function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): Ballot
     state: row.state,
     state_fips: row.state_fips,
     representation_power_score: parseRepresentationPowerScore(row.representation_power_score),
+    population: parseDistrictPopulation(row.population),
   };
+}
+
+function parseDistrictPopulation(value: string | number | null | undefined): number | null {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  const parsed = typeof value === "number" ? value : Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 function mapResearchAreaTag(row: CandidateRecordTagRow | BallotMeasureTagRow): BallotLookupResearchAreaTag {
@@ -11589,7 +11601,8 @@ export async function lookupBallotSummariesByDistrictIds(
         name,
         state,
         state_fips,
-        representation_power_score
+        representation_power_score,
+        population
       FROM public.districts
       WHERE id = ANY($1::uuid[])
       ORDER BY array_position($1::uuid[], id), district_type, name
@@ -11608,6 +11621,7 @@ export async function lookupBallotSummariesByDistrictIds(
         d.state,
         d.state_fips,
         d.representation_power_score,
+        d.population,
         e.race_type,
         e.official_ballot_title,
         e.election_date::text AS election_date,
@@ -11811,6 +11825,7 @@ export async function lookupBallotSummariesByDistrictIds(
   };
 }
 
+
 export async function lookupElectionDetailById(db: Queryable, electionId: string): Promise<BallotLookupElection | null> {
   const trimmedElectionId = electionId.trim();
   if (trimmedElectionId.length === 0) {
@@ -11828,6 +11843,7 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
         d.state,
         d.state_fips,
         d.representation_power_score,
+        d.population,
         e.race_type,
         e.official_ballot_title,
         e.election_date::text AS election_date,

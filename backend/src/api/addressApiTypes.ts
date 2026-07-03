@@ -1,4 +1,10 @@
-import type { BallotLookupElection, BallotSummaryResult } from "../pipeline/address/ballotLookup.js";
+import type { BallotLookupElection } from "../pipeline/address/ballotLookup.js";
+// [ballot-personalized-ordering] see ballotElectionOrdering.ts for removal notes
+import type {
+  BallotSummaryOptions,
+  OrderedBallotSummaryResult,
+} from "../pipeline/address/ballotElectionOrdering.js";
+import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { AddressSuggestion, RetrievedSuggestedAddress } from "../pipeline/address/googlePlacesAutocomplete.js";
 import type { CandidateDetailResult } from "../pipeline/candidates/candidateDetailReader.js";
@@ -57,8 +63,16 @@ export type AddressApiServerOptions = {
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
   suggestAddresses?: (input: { input: string; sessionToken: string }) => Promise<AddressSuggestion[]>;
   retrieveSuggestedAddress?: (input: { placeId: string; sessionToken: string }) => Promise<RetrievedSuggestedAddress>;
-  lookupBallotSummaries?: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
-  lookupAuthenticatedBallotSummaries?: (userId: string) => Promise<BallotSummaryResult>;
+  // [ballot-personalized-ordering]: options + ordered result; on feature
+  // removal these become (districtIds) => Promise<BallotSummaryResult>.
+  lookupBallotSummaries?: (
+    districtIds: readonly string[],
+    options?: BallotSummaryOptions
+  ) => Promise<OrderedBallotSummaryResult>;
+  lookupAuthenticatedBallotSummaries?: (
+    userId: string,
+    options?: BallotSummaryOptions
+  ) => Promise<OrderedBallotSummaryResult>;
   lookupAuthenticatedUserEmailVerified?: (userId: string) => Promise<boolean>;
   lookupCandidateDetail?: (candidateId: string, userId?: string | null) => Promise<CandidateDetailResult | null>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
@@ -68,6 +82,12 @@ export type AddressApiServerOptions = {
     userId: string,
     input: UserCandidateFollowInput
   ) => Promise<AuthenticatedCandidateFollowUpdateResult>;
+  // [ballot-personalized-ordering]
+  getAuthenticatedBallotPreferences?: (userId: string) => Promise<UserBallotPreferences>;
+  setAuthenticatedBallotPreferences?: (
+    userId: string,
+    preferences: UserBallotPreferences
+  ) => Promise<UserBallotPreferences>;
   listAuthenticatedResearchAreaPreferences?: (userId: string) => Promise<AuthenticatedResearchAreaPreferencesResult>;
   replaceAuthenticatedResearchAreaPreferences?: (
     userId: string,

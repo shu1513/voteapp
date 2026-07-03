@@ -7,6 +7,7 @@ import { InitializeUserDistrictsError } from "../pipeline/users/userDistrictInit
 import { UserDistrictReaderError } from "../pipeline/users/userDistrictReader.js";
 import { ReplaceUserDistrictsError } from "../pipeline/users/userDistrictReplacer.js";
 import { UserResearchAreaPreferencesError } from "../pipeline/users/userResearchAreaPreferences.js";
+import { UserBallotPreferencesError } from "../pipeline/users/userBallotPreferences.js";
 import type { ApiErrorCode } from "./apiResponses.js";
 
 export type MappedApiError = {
@@ -84,6 +85,13 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     }
     if (error.code === "candidate_not_found") {
       return { statusCode: 404, code: "not_found", message: "Candidate not found" };
+    }
+    return { statusCode: 400, code: "invalid_request", message: error.message };
+  }
+  // [ballot-personalized-ordering]
+  if (error instanceof UserBallotPreferencesError) {
+    if (error.code === "invalid_user_id" || error.code === "user_not_found") {
+      return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
     }
     return { statusCode: 400, code: "invalid_request", message: error.message };
   }

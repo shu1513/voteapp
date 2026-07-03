@@ -34,6 +34,8 @@ import {
   DEFAULT_ADDRESS_API_RATE_LIMIT_WINDOW_MS,
 } from "../api/addressApiRateLimiter.js";
 import { lookupBallotSummariesByDistrictIds, lookupElectionDetailById } from "../pipeline/address/ballotLookup.js";
+// [ballot-personalized-ordering]
+import { applyBallotElectionOrdering } from "../pipeline/address/ballotElectionOrdering.js";
 import { resolveAddressToDistricts } from "../pipeline/address/addressResolverService.js";
 import {
   createAutoDistrictResearchTrigger,
@@ -62,6 +64,7 @@ import {
   listUserResearchAreaPreferences,
   replaceUserResearchAreaPreferences,
 } from "../pipeline/users/userResearchAreaPreferences.js";
+import { getUserBallotPreferences, setUserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -373,10 +376,16 @@ async function main(): Promise<void> {
     resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader),
     resolveAuthenticatedUserId,
     logDiagnostics: logAddressResolutionDiagnostics,
-    lookupBallotSummaries: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
-    lookupAuthenticatedBallotSummaries: async (userId) => {
+    // [ballot-personalized-ordering]: the plain reader is decorated with the
+    // sort/followed-first ordering; on feature removal call the reader alone.
+    lookupBallotSummaries: async (districtIds, summaryOptions) =>
+      applyBallotElectionOrdering(pool, await lookupBallotSummariesByDistrictIds(pool, districtIds), summaryOptions),
+    lookupAuthenticatedBallotSummaries: async (userId, summaryOptions) => {
       const districtIds = await listUserDistrictIds(pool, userId);
-      return lookupBallotSummariesByDistrictIds(pool, districtIds);
+      return applyBallotElectionOrdering(pool, await lookupBallotSummariesByDistrictIds(pool, districtIds), {
+        ...summaryOptions,
+        userId,
+      });
     },
     lookupAuthenticatedUserEmailVerified,
     lookupCandidateDetail: (candidateId, userId) => lookupCandidateDetailById(pool, { candidateId, userId }),
@@ -384,6 +393,9 @@ async function main(): Promise<void> {
     listResearchAreas: () => listSelectableResearchAreas(pool),
     listAuthenticatedCandidateFollows: (userId) => listUserCandidateFollows(pool, userId),
     setAuthenticatedCandidateFollow: (userId, input) => setUserCandidateFollow(pool, userId, input),
+    // [ballot-personalized-ordering]
+    getAuthenticatedBallotPreferences: (userId) => getUserBallotPreferences(pool, userId),
+    setAuthenticatedBallotPreferences: (userId, preferences) => setUserBallotPreferences(pool, userId, preferences),
     listAuthenticatedResearchAreaPreferences: (userId) => listUserResearchAreaPreferences(pool, userId),
     replaceAuthenticatedResearchAreaPreferences: (userId, preferences) =>
       replaceUserResearchAreaPreferences(pool, userId, preferences),
@@ -392,7 +404,8 @@ async function main(): Promise<void> {
         {
           resolveAddressToDistricts: (inputAddress) => resolveAddressWithAutoResearch(inputAddress),
           replaceUserDistricts: (inputUserId, districtIds) => replaceUserDistricts(pool, inputUserId, districtIds),
-          lookupBallotSummariesByDistrictIds: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
+          lookupBallotSummariesByDistrictIds: (districtIds) =>
+            lookupBallotSummariesByDistrictIds(pool, districtIds),
         },
         userId,
         address

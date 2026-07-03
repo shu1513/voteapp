@@ -1,8 +1,16 @@
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
+// [ballot-personalized-ordering] see ballotElectionOrdering.ts for removal notes
+import {
+  BALLOT_SUMMARY_SORTS,
+  isBallotSummarySort,
+  type BallotSummaryOptions,
+  type BallotSummarySort,
+} from "../pipeline/address/ballotElectionOrdering.js";
 import { GOOGLE_PLACE_ID_PATTERN } from "../pipeline/address/googlePlacesAutocomplete.js";
 import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
+import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
 
 export { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
@@ -27,6 +35,8 @@ export const ME_BALLOT_PATH = "/api/me/ballot";
 export const ME_CANDIDATE_FOLLOWS_PATH = "/api/me/candidate-follows";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferences";
+// [ballot-personalized-ordering]
+export const ME_BALLOT_PREFERENCES_PATH = "/api/me/ballot-preferences";
 export const RESEARCH_AREAS_PATH = "/api/research-areas";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 export const MAX_BALLOT_DISTRICT_IDS = 50;
@@ -278,6 +288,27 @@ export function parseInitializeUserDistrictsBodyValue(parsed: unknown): Initiali
   };
 }
 
+// [ballot-personalized-ordering]
+// Parses the PUT /api/me/ballot-preferences body: a full replace of both
+// fields, mirroring the research-area preferences contract.
+export function parseBallotPreferencesBodyValue(parsed: unknown): UserBallotPreferences {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const sort = (parsed as { sort?: unknown }).sort;
+  if (typeof sort !== "string" || !isBallotSummarySort(sort.trim())) {
+    throw new TypeError(`Body field sort must be one of: ${BALLOT_SUMMARY_SORTS.join(", ")}`);
+  }
+
+  const followedFirst = (parsed as { followed_first?: unknown }).followed_first;
+  if (typeof followedFirst !== "boolean") {
+    throw new TypeError("Body field followed_first must be a boolean");
+  }
+
+  return { sort: sort.trim() as BallotSummarySort, followed_first: followedFirst };
+}
+
 export function parseResearchAreaPreferencesBodyValue(parsed: unknown): ResearchAreaPreferencesPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
     throw new TypeError("Request body must be a JSON object");
@@ -366,6 +397,34 @@ export function parseCandidateFollowBodyValue(parsed: unknown): CandidateFollowP
     ...(payload.notify_elections === undefined ? {} : { notifyElections: payload.notify_elections }),
     ...(payload.notify_updates === undefined ? {} : { notifyUpdates: payload.notify_updates }),
   };
+}
+
+// [ballot-personalized-ordering]
+// Parses the optional `sort` and `followed_first` query parameters shared by
+// the ballot endpoints. Throws TypeError (mapped to HTTP 400) on invalid
+// values; omitted params leave the reader defaults in place.
+export function parseBallotSummaryOptions(url: URL): Pick<BallotSummaryOptions, "sort" | "followedFirst"> {
+  const options: Pick<BallotSummaryOptions, "sort" | "followedFirst"> = {};
+
+  const rawSort = url.searchParams.get("sort");
+  if (rawSort !== null) {
+    const sort = rawSort.trim();
+    if (!isBallotSummarySort(sort)) {
+      throw new TypeError(`Query parameter sort must be one of: ${BALLOT_SUMMARY_SORTS.join(", ")}`);
+    }
+    options.sort = sort satisfies BallotSummarySort;
+  }
+
+  const rawFollowedFirst = url.searchParams.get("followed_first");
+  if (rawFollowedFirst !== null) {
+    const value = rawFollowedFirst.trim().toLowerCase();
+    if (value !== "true" && value !== "false") {
+      throw new TypeError("Query parameter followed_first must be true or false");
+    }
+    options.followedFirst = value === "true";
+  }
+
+  return options;
 }
 
 export function parseDistrictIds(url: URL): string[] {
