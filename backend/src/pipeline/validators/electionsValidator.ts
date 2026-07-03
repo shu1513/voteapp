@@ -245,7 +245,7 @@ function isSoftScopeAmbiguous(
   }
 
   if (districtType === "county") {
-    const countyMarkers = [/\bcounty\b/, /\bsheriff\b/, /\bcounty commissioner\b/, /\bcounty clerk\b/];
+    const countyMarkers = [/\bcounty\b/, /\bsheriff\b/, /\bcounty commissioner\b/, /\bcounty clerk\b/, /\bdistrict attorney\b/];
     // "Assessor" is a county office, but town/village/township assessors are municipal
     // contests that the city-oriented hard markers do not catch.
     if (!/\b(town|village|township|borough|municipal)\b/.test(text)) {
