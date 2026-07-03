@@ -123,6 +123,182 @@ describe("runElectionsValidator", () => {
     expect(softFailCall).toBeUndefined();
   });
 
+  it("accepts 'Judge of the Superior Court, Office No. 64' as a clear county title without a review pass", async () => {
+    const payload = {
+      district_id: "d-la",
+      district_name: "Los Angeles County, California",
+      district_type: "county",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Judge of the Superior Court, Office No. 64",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "runoff",
+          is_partisan: false,
+          discovery_contest_family: "judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:la",
+            payload,
+            status: "pending",
+            run_id: "run_la",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
+  it("accepts 'Assessor' as a clear county title without a review pass", async () => {
+    const payload = {
+      district_id: "d-la",
+      district_name: "Los Angeles County, California",
+      district_type: "county",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Assessor",
+          election_date: "2099-06-02",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: false,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:la-assessor",
+            payload,
+            status: "pending",
+            run_id: "run_la",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
+  it("soft-fails 'Judge of the Superior Court' in a Pennsylvania county, where the Superior Court is statewide appellate", async () => {
+    const payload = {
+      district_id: "d-pa",
+      district_name: "Allegheny County, Pennsylvania",
+      district_type: "county",
+      state: "PA",
+      entries: [
+        {
+          official_ballot_title: "Judge of the Superior Court",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:pa",
+            payload,
+            status: "pending",
+            run_id: "run_pa",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeTruthy();
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeUndefined();
+  });
+
+  it("soft-fails municipal assessor titles like 'Town Assessor' in county scope", async () => {
+    const payload = {
+      district_id: "d-ny",
+      district_name: "Erie County, New York",
+      district_type: "county",
+      state: "NY",
+      entries: [
+        {
+          official_ballot_title: "Town Assessor",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:ny",
+            payload,
+            status: "pending",
+            run_id: "run_ny",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeTruthy();
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeUndefined();
+  });
+
   it("accepts soft-fail entries on review pass when review_decision=approve", async () => {
     const payload = {
       district_id: "d-1",
