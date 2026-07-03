@@ -23,6 +23,10 @@ export function isPresidentialFeatureEnabled(featureEnvName: string, force = fal
   return isPresidentialElectionsEnabled() && (force || readBooleanEnv(featureEnvName, false));
 }
 
+export function isAutoDistrictResearchEnabled(): boolean {
+  return readBooleanEnv("AUTO_DISTRICT_RESEARCH_ENABLED", false);
+}
+
 export function isCandidateFinanceEnabled(): boolean {
   return readBooleanEnv("CANDIDATE_FINANCE_ENABLED", false);
 }
