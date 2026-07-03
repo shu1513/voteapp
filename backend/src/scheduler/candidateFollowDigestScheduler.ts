@@ -5,6 +5,7 @@ import { Pool } from "pg";
 import { getPipelineEnv } from "../config/env.js";
 import {
   buildDigestMailerFromEnv,
+  buildUnsubscribeUrlBuilderFromEnv,
   sendCandidateFollowDigests,
   withDigestRunLock,
   DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL,
@@ -136,11 +137,13 @@ export async function runCandidateFollowDigestJob(
     // are already marked notified_at, so the next scheduled run touches only
     // events from failed sends (stage "send", retried) or failed marks
     // (stage "mark_after_send", re-sent — the at-least-once duplicate).
+    const buildUnsubscribeUrl = buildUnsubscribeUrlBuilderFromEnv();
     const result = await withDigestRunLock(pool, () =>
       sendCandidateFollowDigests(pool, mailer, {
         live: true,
         maxUsers: data.maxUsers ?? DEFAULT_DIGEST_MAX_USERS,
         maxItemsPerEmail: data.maxItemsPerEmail ?? DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL,
+        ...(buildUnsubscribeUrl ? { buildUnsubscribeUrl } : {}),
       })
     );
     if (result === null) {

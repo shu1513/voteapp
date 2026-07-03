@@ -4,6 +4,7 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
+import { createEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
 import {
   createConsoleCandidateFollowDigestMailer,
   createSesCandidateFollowDigestMailer,
@@ -25,6 +26,8 @@ export type SendCandidateFollowDigestsOptions = {
   live: boolean;
   maxUsers: number;
   maxItemsPerEmail: number;
+  /** Per-user signed unsubscribe link builder; omit to send without one. */
+  buildUnsubscribeUrl?: (userId: string) => string;
 };
 
 export type SendCandidateFollowDigestsResult = {
@@ -256,11 +259,13 @@ export async function sendCandidateFollowDigests(
     }
 
     try {
+      const unsubscribeUrl = options.buildUnsubscribeUrl?.(user.id);
       await mailer.sendDigestEmail({
         email: user.email,
         firstName: user.first_name,
         items: pendingEvents.slice(0, options.maxItemsPerEmail).map(toDigestItem),
         totalEventCount: pendingEvents.length,
+        ...(unsubscribeUrl ? { unsubscribeUrl } : {}),
       });
     } catch (error) {
       const reason = error instanceof Error ? error.message : String(error);
@@ -282,6 +287,34 @@ export async function sendCandidateFollowDigests(
   }
 
   return result;
+}
+
+/**
+ * Builds the per-user signed unsubscribe link when both envs are set:
+ * NOTIFICATIONS_UNSUBSCRIBE_URL (the public GET/POST /api/email/unsubscribe
+ * endpoint, e.g. https://api.example.com/api/email/unsubscribe) and
+ * NOTIFICATIONS_UNSUBSCRIBE_SECRET (shared with the API server, which
+ * verifies the token). Returns null when unconfigured so digests still send,
+ * just without the footer link and one-click headers.
+ */
+export function buildUnsubscribeUrlBuilderFromEnv(): ((userId: string) => string) | null {
+  const baseUrl = readOptionalEnv("NOTIFICATIONS_UNSUBSCRIBE_URL");
+  const secret = readOptionalEnv("NOTIFICATIONS_UNSUBSCRIBE_SECRET");
+  if (!baseUrl || !secret) {
+    return null;
+  }
+  // Fail fast at construction, mirroring the API server's startup guard: a
+  // weak secret must abort the run, not surface as a per-user send failure
+  // for every digest.
+  if (secret.length < 32) {
+    throw new Error("NOTIFICATIONS_UNSUBSCRIBE_SECRET must be at least 32 characters");
+  }
+  const parsed = new URL(baseUrl);
+  return (userId: string) => {
+    const url = new URL(parsed.toString());
+    url.searchParams.set("token", createEmailUnsubscribeToken(userId, secret));
+    return url.toString();
+  };
 }
 
 /** App-unique advisory lock key for the live digest run. */
@@ -351,7 +384,12 @@ export function buildDigestMailerFromEnv(): CandidateFollowDigestMailer {
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  const options = parseSendCandidateFollowDigestsArgs(process.argv.slice(2));
+  const parsedOptions = parseSendCandidateFollowDigestsArgs(process.argv.slice(2));
+  const buildUnsubscribeUrl = buildUnsubscribeUrlBuilderFromEnv();
+  const options: SendCandidateFollowDigestsOptions = {
+    ...parsedOptions,
+    ...(buildUnsubscribeUrl ? { buildUnsubscribeUrl } : {}),
+  };
   const connectionString = process.env.DATABASE_URL?.trim();
   if (!connectionString) {
     throw new Error("DATABASE_URL is required to send candidate follow digests");

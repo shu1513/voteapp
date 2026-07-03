@@ -7,6 +7,7 @@ import { UserCandidateFollowsError } from "../../src/pipeline/users/userCandidat
 import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
 import { ReplaceUserDistrictsError } from "../../src/pipeline/users/userDistrictReplacer.js";
 import { UserResearchAreaPreferencesError } from "../../src/pipeline/users/userResearchAreaPreferences.js";
+import { UserEmailPreferencesError } from "../../src/pipeline/users/userEmailPreferences.js";
 
 describe("mapErrorToResponse", () => {
   it("maps invalid candidate detail IDs to invalid_request", () => {
@@ -120,6 +121,19 @@ describe("mapErrorToResponse", () => {
       statusCode: 404,
       code: "not_found",
       message: "Candidate not found",
+    });
+  });
+
+  it("maps email preference identity errors to 401 and other codes to 400", () => {
+    expect(mapErrorToResponse(new UserEmailPreferencesError("user_not_found", "User not found"))).toEqual({
+      statusCode: 401,
+      code: "unauthorized",
+      message: "Authentication is required",
+    });
+    expect(mapErrorToResponse(new UserEmailPreferencesError("invalid_user_id", "userId must be a UUID"))).toEqual({
+      statusCode: 401,
+      code: "unauthorized",
+      message: "Authentication is required",
     });
   });
 });

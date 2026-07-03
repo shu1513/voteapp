@@ -27,11 +27,13 @@ import {
   isCandidateDetailPath,
   isElectionDetailPath,
   MAX_ADDRESS_REQUEST_BODY_BYTES,
+  EMAIL_UNSUBSCRIBE_PATH,
   ME_ADDRESS_PATH,
   ME_BALLOT_PATH,
   ME_BALLOT_PREFERENCES_PATH,
   ME_CANDIDATE_FOLLOWS_PATH,
   ME_DISTRICTS_INITIALIZE_PATH,
+  ME_EMAIL_PREFERENCES_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
   parseAuthenticatedAddressBodyValue,
   parseAddressBodyValue,
@@ -39,6 +41,7 @@ import {
   parseAutocompleteSuggestBodyValue,
   parseCandidateFollowBodyValue,
   parseBallotPreferencesBodyValue,
+  parseEmailPreferencesBodyValue,
   parseBallotSummaryOptions,
   parseCandidateId,
   parseDistrictIds,
@@ -80,11 +83,13 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === AUTH_RESET_PASSWORD_PATH ||
     pathname === AUTH_RESEND_VERIFICATION_PATH ||
     pathname === AUTH_VERIFY_EMAIL_PATH ||
+    pathname === EMAIL_UNSUBSCRIBE_PATH ||
     pathname === ME_ADDRESS_PATH ||
     pathname === ME_BALLOT_PATH ||
     pathname === ME_BALLOT_PREFERENCES_PATH ||
     pathname === ME_CANDIDATE_FOLLOWS_PATH ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
+    pathname === ME_EMAIL_PREFERENCES_PATH ||
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
     pathname === RESEARCH_AREAS_PATH ||
     isCandidateDetailPath(pathname) ||
@@ -288,6 +293,7 @@ function createJsonBodyParser() {
         (request.path === ME_ADDRESS_PATH ||
           request.path === ME_BALLOT_PREFERENCES_PATH ||
           request.path === ME_CANDIDATE_FOLLOWS_PATH ||
+          request.path === ME_EMAIL_PREFERENCES_PATH ||
           request.path === ME_RESEARCH_AREA_PREFERENCES_PATH));
     if (!shouldParseJson) {
       next();
@@ -746,6 +752,108 @@ async function dispatchApiRequest(
     const preferences = parseBallotPreferencesBodyValue(request.body);
     const result = await options.setAuthenticatedBallotPreferences(userId, preferences);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_EMAIL_PREFERENCES_PATH) {
+    if (request.method !== "GET" && request.method !== "PUT") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET or PUT /api/me/email-preferences", {
+          ...corsHeaders,
+          allow: "GET, PUT",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
+    if (!userId) {
+      return;
+    }
+
+    if (request.method === "GET") {
+      if (!options.getAuthenticatedEmailPreferences) {
+        sendApiResponse(
+          response,
+          toErrorResponse(500, "internal_error", "Authenticated email preferences lookup is not configured", corsHeaders)
+        );
+        return;
+      }
+
+      const result = await options.getAuthenticatedEmailPreferences(userId);
+      sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+      return;
+    }
+
+    if (!options.setAuthenticatedEmailPreferences) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Authenticated email preference storage is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const preferences = parseEmailPreferencesBodyValue(request.body);
+    const result = await options.setAuthenticatedEmailPreferences(userId, preferences);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === EMAIL_UNSUBSCRIBE_PATH) {
+    // GET serves the human click from the email footer; POST serves RFC 8058
+    // one-click unsubscribes from mailbox providers. Both are token-authorized
+    // and session-free, and answer with a tiny standalone HTML page.
+    if (request.method !== "GET" && request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET or POST /api/email/unsubscribe", {
+          ...corsHeaders,
+          allow: "GET, POST",
+        })
+      );
+      return;
+    }
+    if (!options.unsubscribeFromEmailDigest) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Email unsubscribe is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const token = url.searchParams.get("token")?.trim() ?? "";
+    // GET must not mutate: mail security gateways, previewers, and prefetchers
+    // GET every link in an email body, which would silently unsubscribe users.
+    // GET renders a confirmation form that POSTs back here; POST (the form and
+    // RFC 8058 one-click) performs the unsubscribe.
+    const mode = request.method === "GET" ? ("confirm" as const) : ("execute" as const);
+    const outcome = token ? await options.unsubscribeFromEmailDigest(token, mode) : "invalid_token";
+    const invalidPage =
+      "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Invalid link</title></head><body><p>This unsubscribe link is invalid or incomplete.</p><p>You can manage email settings in your account settings.</p></body></html>";
+    if (outcome !== "ok") {
+      response
+        .status(400)
+        .set({ ...corsHeaders, "content-type": "text/html; charset=utf-8" })
+        .send(invalidPage);
+      return;
+    }
+    const confirmPage =
+      "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Unsubscribe</title></head><body>" +
+      "<p>Unsubscribe from candidate update digest emails?</p>" +
+      `<form method="post" action="${EMAIL_UNSUBSCRIBE_PATH}?token=${encodeURIComponent(token)}">` +
+      "<button type=\"submit\">Unsubscribe</button></form>" +
+      "</body></html>";
+    const donePage =
+      "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Unsubscribed</title></head><body><p>You have been unsubscribed from candidate update digest emails.</p><p>You can turn them back on any time in your account settings.</p></body></html>";
+    response
+      .status(200)
+      .set({ ...corsHeaders, "content-type": "text/html; charset=utf-8" })
+      .send(mode === "confirm" ? confirmPage : donePage);
     return;
   }
 

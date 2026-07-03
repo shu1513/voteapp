@@ -11,6 +11,7 @@ import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAre
 import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
 import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
+import type { UserEmailPreferences } from "../pipeline/users/userEmailPreferences.js";
 import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
 
 export { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
@@ -37,6 +38,10 @@ export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferences";
 // [ballot-personalized-ordering]
 export const ME_BALLOT_PREFERENCES_PATH = "/api/me/ballot-preferences";
+export const ME_EMAIL_PREFERENCES_PATH = "/api/me/email-preferences";
+// Signed-token unsubscribe target linked from digest emails; GET for humans,
+// POST for RFC 8058 one-click mailbox buttons. No session auth.
+export const EMAIL_UNSUBSCRIBE_PATH = "/api/email/unsubscribe";
 export const RESEARCH_AREAS_PATH = "/api/research-areas";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 export const MAX_BALLOT_DISTRICT_IDS = 50;
@@ -307,6 +312,25 @@ export function parseBallotPreferencesBodyValue(parsed: unknown): UserBallotPref
   }
 
   return { sort: sort.trim() as BallotSummarySort, followed_first: followedFirst };
+}
+
+export function parseEmailPreferencesBodyValue(parsed: unknown): UserEmailPreferences {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const record = parsed as Record<string, unknown>;
+  for (const field of ["email_digest", "email_election_reminders", "email_new_election_alerts"] as const) {
+    if (typeof record[field] !== "boolean") {
+      throw new TypeError(`Body field ${field} must be a boolean`);
+    }
+  }
+
+  return {
+    email_digest: record.email_digest as boolean,
+    email_election_reminders: record.email_election_reminders as boolean,
+    email_new_election_alerts: record.email_new_election_alerts as boolean,
+  };
 }
 
 export function parseResearchAreaPreferencesBodyValue(parsed: unknown): ResearchAreaPreferencesPayload {

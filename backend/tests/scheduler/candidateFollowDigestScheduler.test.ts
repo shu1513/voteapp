@@ -15,6 +15,7 @@ function mockDigestModule(sendMock: ReturnType<typeof vi.fn>, opts: { lockBusy?:
     DEFAULT_DIGEST_MAX_USERS: 500,
     DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL: 20,
     buildDigestMailerFromEnv: vi.fn(() => ({ sendDigestEmail: vi.fn() })),
+    buildUnsubscribeUrlBuilderFromEnv: vi.fn(() => null),
     sendCandidateFollowDigests: sendMock,
     withDigestRunLock: vi.fn(async (_pool: unknown, fn: () => Promise<unknown>) =>
       opts.lockBusy ? null : fn()

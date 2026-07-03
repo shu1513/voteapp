@@ -65,6 +65,13 @@ import {
   replaceUserResearchAreaPreferences,
 } from "../pipeline/users/userResearchAreaPreferences.js";
 import { getUserBallotPreferences, setUserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
+import {
+  disableUserEmailDigest,
+  getUserEmailPreferences,
+  setUserEmailPreferences,
+  UserEmailPreferencesError,
+} from "../pipeline/users/userEmailPreferences.js";
+import { verifyEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -173,6 +180,13 @@ async function main(): Promise<void> {
     );
   }
   const trustedUserIdResolver = createTrustedUserIdResolver(trustedUserIdHeader);
+  // Enables GET/POST /api/email/unsubscribe. Must match the secret the digest
+  // sender signs footer links with. Fail fast on a weak secret rather than
+  // 500ing on every unsubscribe click.
+  const unsubscribeSecret = readOptionalEnv("NOTIFICATIONS_UNSUBSCRIBE_SECRET");
+  if (unsubscribeSecret && unsubscribeSecret.length < 32) {
+    throw new Error("NOTIFICATIONS_UNSUBSCRIBE_SECRET must be at least 32 characters");
+  }
   const addressCacheEnabled = readBooleanEnv("ADDRESS_LOOKUP_CACHE_ENABLED", true);
   const rateLimitEnabled = readBooleanEnv("ADDRESS_API_RATE_LIMIT_ENABLED", true);
   const rateLimitWindowMs = readPositiveIntegerEnv(
@@ -396,6 +410,31 @@ async function main(): Promise<void> {
     // [ballot-personalized-ordering]
     getAuthenticatedBallotPreferences: (userId) => getUserBallotPreferences(pool, userId),
     setAuthenticatedBallotPreferences: (userId, preferences) => setUserBallotPreferences(pool, userId, preferences),
+    getAuthenticatedEmailPreferences: (userId) => getUserEmailPreferences(pool, userId),
+    setAuthenticatedEmailPreferences: (userId, preferences) => setUserEmailPreferences(pool, userId, preferences),
+    ...(unsubscribeSecret
+      ? {
+          unsubscribeFromEmailDigest: async (token: string, mode: "confirm" | "execute") => {
+            const userId = verifyEmailUnsubscribeToken(token, unsubscribeSecret);
+            if (!userId) {
+              return "invalid_token" as const;
+            }
+            if (mode === "confirm") {
+              return "ok" as const;
+            }
+            try {
+              await disableUserEmailDigest(pool, userId);
+            } catch (error) {
+              // A valid token for a since-deleted account still reports
+              // success so the page does not leak account state.
+              if (!(error instanceof UserEmailPreferencesError && error.code === "user_not_found")) {
+                throw error;
+              }
+            }
+            return "ok" as const;
+          },
+        }
+      : {}),
     listAuthenticatedResearchAreaPreferences: (userId) => listUserResearchAreaPreferences(pool, userId),
     replaceAuthenticatedResearchAreaPreferences: (userId, preferences) =>
       replaceUserResearchAreaPreferences(pool, userId, preferences),
