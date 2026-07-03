@@ -18,7 +18,7 @@ BEGIN
     SELECT 1 FROM public.offices
     WHERE scope = 'county' AND canonical_name = 'County Supervisor'
   ) THEN
-    RAISE EXCEPTION 'migration 144: County Supervisor office not found; cannot seed County Executive research areas';
+    RAISE EXCEPTION 'migration 145: County Supervisor office not found; cannot seed County Executive research areas';
   END IF;
 END
 $$;

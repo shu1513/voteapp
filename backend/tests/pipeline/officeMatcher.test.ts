@@ -45,7 +45,7 @@ describe("OfficeMatcher", () => {
     });
 
     // "county judge" does not clear the scoring threshold against County
-    // Executive; the seeded alias (migration 144) resolves real traffic. The
+    // Executive; the seeded alias (migration 145) resolves real traffic. The
     // essential assertion is that the judge office is no longer reachable.
     expect(result.officeId).not.toBe("office-county-judge-judicial");
     expect(result.officeId).toBeNull();
