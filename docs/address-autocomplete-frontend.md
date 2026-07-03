@@ -1,8 +1,11 @@
 # Address Autocomplete — Frontend Contract
 
 The backend proxies Google Places (New) autocomplete behind two endpoints so
-the frontend never talks to Google directly (no API key in the browser, user
-IPs and keystrokes stay off Google's logs, provider is swappable server-side).
+the frontend never talks to Google directly: the API key stays server-side, the
+browser never calls Google (so the user's browser IP never reaches Google —
+only the backend's does), and the provider is swappable server-side. Note the
+typed address text **is** forwarded to Google to fetch suggestions; proxying
+hides the key and the user's IP, not the address input itself.
 This document is the complete contract for implementing the typeahead input in
 the frontend repo.
 
@@ -67,11 +70,21 @@ Response `200`:
 - `502 bad_upstream_response` / `503 upstream_unavailable` — Google hiccup;
   show no dropdown, let the user keep typing. Never block manual entry.
 
-## Session token lifecycle (billing-critical)
+## Session token lifecycle (billing-relevant)
 
-Google bills per *session*: all suggest calls plus the final retrieve under
-one token count as one billable unit. Broken token handling multiplies cost
-~8–10×.
+How Google bills a session that ends in a Place Details retrieve (the New
+pricing model): the first 12 autocomplete requests in the session are each
+billed (Autocomplete Requests SKU), any beyond 12 are free, and the terminating
+Place Details Essentials request is also billed. Each SKU has its own monthly
+free tier (~10k). A normal debounced address entry fires well under 12 requests,
+so in practice you pay for each suggest request plus one retrieve — the
+autocomplete free tier is the binding limit (~1–2k completed entries/month
+before charges), not Place Details.
+
+Still send a session token: without one, autocomplete requests bill the same way
+but you forfeit the 13+-free tier and the correct session accounting, and reused
+tokens are treated as no-session. It is a correctness/hygiene requirement, not a
+large cost saver at our volume.
 
 - Generate a fresh `crypto.randomUUID()` when the user **starts** an address
   entry (first keystroke that triggers a suggest call).
