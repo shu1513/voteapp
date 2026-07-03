@@ -239,12 +239,12 @@ async function main(): Promise<void> {
   });
   if (redis) {
     redis.on("error", (error) => {
-      console.warn("Redis error (address cache/auth sessions); continuing without failing requests", error);
+      console.warn("Redis error (address cache/auth sessions/auto district research); continuing without failing requests", error);
     });
     try {
       await redis.connect();
     } catch (error) {
-      console.warn("Redis unavailable: address cache and auth sessions disabled until it connects", error);
+      console.warn("Redis unavailable: address cache, auth sessions, and auto district research disabled until it connects", error);
     }
   }
 

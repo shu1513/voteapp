@@ -97,6 +97,11 @@ function toDraftPayload(district: AddressResolvedDistrict): ElectionDraftPayload
 export function createAutoDistrictResearchTrigger(deps: TriggerDeps): AutoDistrictResearchTrigger {
   const { db, getRedis, config } = deps;
   const now = deps.now ?? (() => new Date());
+  // Validate the pipeline env once, at startup, when the feature is on. A
+  // malformed AI_PROVIDER/AI_MODEL would otherwise throw lazily on every stale
+  // district, be swallowed by the per-request catch, and silently no-op the
+  // feature — the same fail-fast treatment ttlDays already gets.
+  const env = config.enabled ? getPipelineEnv() : null;
 
   return async (districts) => {
     if (!config.enabled || districts.length === 0) {
@@ -139,7 +144,9 @@ export function createAutoDistrictResearchTrigger(deps: TriggerDeps): AutoDistri
         return result;
       }
 
-      const env = getPipelineEnv();
+      // Non-null here: config.enabled was checked at the top of the trigger and
+      // env is computed at creation for the enabled case.
+      const pipelineEnv = env ?? getPipelineEnv();
       const currentTime = now();
       const runYear = currentTime.getUTCFullYear();
       const runId = `auto_district_research_${currentTime.toISOString()}`;
@@ -179,7 +186,7 @@ export function createAutoDistrictResearchTrigger(deps: TriggerDeps): AutoDistri
               STAGING_ITEM_TYPE_ELECTION,
               serializedPayload,
               runId,
-              `${env.AI_PROVIDER}:${env.AI_MODEL}`,
+              `${pipelineEnv.AI_PROVIDER}:${pipelineEnv.AI_MODEL}`,
               ELECTION_DRAFT_SCHEMA_VERSION,
               ELECTION_PROMPT_VERSION,
             ]
