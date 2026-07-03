@@ -3,7 +3,7 @@ import type { Pool, PoolClient } from "pg";
 import {
   isBallotSummarySort,
   type BallotSummarySort,
-} from "../address/ballotLookup.js";
+} from "../address/ballotElectionOrdering.js";
 import { isUuid } from "../../utils/uuid.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;

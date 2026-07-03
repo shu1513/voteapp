@@ -88,6 +88,7 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     }
     return { statusCode: 400, code: "invalid_request", message: error.message };
   }
+  // [ballot-personalized-ordering]
   if (error instanceof UserBallotPreferencesError) {
     if (error.code === "invalid_user_id" || error.code === "user_not_found") {
       return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };

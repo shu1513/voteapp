@@ -1,10 +1,11 @@
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
+// [ballot-personalized-ordering] see ballotElectionOrdering.ts for removal notes
 import {
   BALLOT_SUMMARY_SORTS,
   isBallotSummarySort,
   type BallotSummaryOptions,
   type BallotSummarySort,
-} from "../pipeline/address/ballotLookup.js";
+} from "../pipeline/address/ballotElectionOrdering.js";
 import { GOOGLE_PLACE_ID_PATTERN } from "../pipeline/address/googlePlacesAutocomplete.js";
 import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
@@ -34,6 +35,7 @@ export const ME_BALLOT_PATH = "/api/me/ballot";
 export const ME_CANDIDATE_FOLLOWS_PATH = "/api/me/candidate-follows";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferences";
+// [ballot-personalized-ordering]
 export const ME_BALLOT_PREFERENCES_PATH = "/api/me/ballot-preferences";
 export const RESEARCH_AREAS_PATH = "/api/research-areas";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
@@ -286,6 +288,7 @@ export function parseInitializeUserDistrictsBodyValue(parsed: unknown): Initiali
   };
 }
 
+// [ballot-personalized-ordering]
 // Parses the PUT /api/me/ballot-preferences body: a full replace of both
 // fields, mirroring the research-area preferences contract.
 export function parseBallotPreferencesBodyValue(parsed: unknown): UserBallotPreferences {
@@ -396,6 +399,7 @@ export function parseCandidateFollowBodyValue(parsed: unknown): CandidateFollowP
   };
 }
 
+// [ballot-personalized-ordering]
 // Parses the optional `sort` and `followed_first` query parameters shared by
 // the ballot endpoints. Throws TypeError (mapped to HTTP 400) on invalid
 // values; omitted params leave the reader defaults in place.

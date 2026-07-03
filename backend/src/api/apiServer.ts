@@ -602,6 +602,7 @@ async function dispatchApiRequest(
       return;
     }
 
+    // [ballot-personalized-ordering]
     // Explicit query params win; anything omitted falls back to the user's
     // saved ballot preferences (and the reader defaults below those).
     const summaryOptions = parseBallotSummaryOptions(url);
@@ -698,6 +699,7 @@ async function dispatchApiRequest(
     return;
   }
 
+  // [ballot-personalized-ordering]
   if (url.pathname === ME_BALLOT_PREFERENCES_PATH) {
     if (request.method !== "GET" && request.method !== "PUT") {
       sendApiResponse(
