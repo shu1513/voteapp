@@ -36,6 +36,10 @@ import {
 import { lookupBallotSummariesByDistrictIds, lookupElectionDetailById } from "../pipeline/address/ballotLookup.js";
 import { resolveAddressToDistricts } from "../pipeline/address/addressResolverService.js";
 import {
+  createAutoDistrictResearchTrigger,
+  readAutoDistrictResearchConfigFromEnv,
+} from "../pipeline/address/autoDistrictResearch.js";
+import {
   DEFAULT_GOOGLE_PLACES_TIMEOUT_MS,
   retrieveSuggestedAddressWithGooglePlaces,
   suggestAddressesWithGooglePlaces,
@@ -216,8 +220,11 @@ async function main(): Promise<void> {
     trustedUserIdHeader,
     allowTrustedHeaderWithSessions: readBooleanEnv("API_TRUSTED_USER_ID_HEADER_ALLOW_WITH_SESSIONS", false),
   });
+  // Auto district research needs Redis for the elections draft stream even when
+  // both the address cache and auth are disabled.
+  const autoDistrictResearchConfig = readAutoDistrictResearchConfigFromEnv();
   const redis =
-    addressCacheEnabled || authConfigured
+    addressCacheEnabled || authConfigured || autoDistrictResearchConfig.enabled
       ? createClient({ url: readEnv("REDIS_URL", "redis://localhost:6379") })
       : null;
   const buildAddressResolverOptions = () => ({
@@ -240,6 +247,22 @@ async function main(): Promise<void> {
       console.warn("Redis unavailable: address cache and auth sessions disabled until it connects", error);
     }
   }
+
+  const triggerAutoDistrictResearch = createAutoDistrictResearchTrigger({
+    db: pool,
+    getRedis: () => (redis?.isOpen ? redis : null),
+    config: autoDistrictResearchConfig,
+  });
+  // Fire-and-forget: enqueue research for unresearched/stale districts without
+  // delaying or failing the address response. No-op unless
+  // AUTO_DISTRICT_RESEARCH_ENABLED=true.
+  const resolveAddressWithAutoResearch = async (inputAddress: string) => {
+    const result = await resolveAddressToDistricts(pool, inputAddress, buildAddressResolverOptions());
+    void triggerAutoDistrictResearch(result.districts).catch((error) => {
+      console.warn("auto district research trigger failed; address response unaffected", error);
+    });
+    return result;
+  };
 
   const authPublicBaseUrl = readOptionalEnv("AUTH_PUBLIC_BASE_URL");
   const authFromEmailAddress = readOptionalEnv("AUTH_FROM_EMAIL");
@@ -367,8 +390,7 @@ async function main(): Promise<void> {
     updateAuthenticatedAddressDistricts: (userId, address) =>
       updateAuthenticatedAddressDistricts(
         {
-          resolveAddressToDistricts: (inputAddress) =>
-            resolveAddressToDistricts(pool, inputAddress, buildAddressResolverOptions()),
+          resolveAddressToDistricts: (inputAddress) => resolveAddressWithAutoResearch(inputAddress),
           replaceUserDistricts: (inputUserId, districtIds) => replaceUserDistricts(pool, inputUserId, districtIds),
           lookupBallotSummariesByDistrictIds: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
         },
@@ -376,8 +398,7 @@ async function main(): Promise<void> {
         address
       ),
     initializeUserDistricts: ({ userId, districtIds }) => initializeUserDistricts(pool, userId, districtIds),
-    resolveAddress: (address) =>
-      resolveAddressToDistricts(pool, address, buildAddressResolverOptions()),
+    resolveAddress: (address) => resolveAddressWithAutoResearch(address),
   });
 
   let server: Server | null = null;
