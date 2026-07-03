@@ -168,6 +168,51 @@ describe("runElectionsValidator", () => {
     expect(softFailCall).toBeUndefined();
   });
 
+  it("accepts 'Assessor' as a clear county title without a review pass", async () => {
+    const payload = {
+      district_id: "d-la",
+      district_name: "Los Angeles County, California",
+      district_type: "county",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Assessor",
+          election_date: "2099-06-02",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: false,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:la-assessor",
+            payload,
+            status: "pending",
+            run_id: "run_la",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
   it("accepts soft-fail entries on review pass when review_decision=approve", async () => {
     const payload = {
       district_id: "d-1",
