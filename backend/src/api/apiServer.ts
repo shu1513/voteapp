@@ -827,16 +827,33 @@ async function dispatchApiRequest(
     }
 
     const token = url.searchParams.get("token")?.trim() ?? "";
-    const outcome = token ? await options.unsubscribeFromEmailDigest(token) : "invalid_token";
-    const ok = outcome === "ok";
+    // GET must not mutate: mail security gateways, previewers, and prefetchers
+    // GET every link in an email body, which would silently unsubscribe users.
+    // GET renders a confirmation form that POSTs back here; POST (the form and
+    // RFC 8058 one-click) performs the unsubscribe.
+    const mode = request.method === "GET" ? ("confirm" as const) : ("execute" as const);
+    const outcome = token ? await options.unsubscribeFromEmailDigest(token, mode) : "invalid_token";
+    const invalidPage =
+      "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Invalid link</title></head><body><p>This unsubscribe link is invalid or incomplete.</p><p>You can manage email settings in your account settings.</p></body></html>";
+    if (outcome !== "ok") {
+      response
+        .status(400)
+        .set({ ...corsHeaders, "content-type": "text/html; charset=utf-8" })
+        .send(invalidPage);
+      return;
+    }
+    const confirmPage =
+      "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Unsubscribe</title></head><body>" +
+      "<p>Unsubscribe from candidate update digest emails?</p>" +
+      `<form method="post" action="${EMAIL_UNSUBSCRIBE_PATH}?token=${encodeURIComponent(token)}">` +
+      "<button type=\"submit\">Unsubscribe</button></form>" +
+      "</body></html>";
+    const donePage =
+      "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Unsubscribed</title></head><body><p>You have been unsubscribed from candidate update digest emails.</p><p>You can turn them back on any time in your account settings.</p></body></html>";
     response
-      .status(ok ? 200 : 400)
+      .status(200)
       .set({ ...corsHeaders, "content-type": "text/html; charset=utf-8" })
-      .send(
-        ok
-          ? "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Unsubscribed</title></head><body><p>You have been unsubscribed from candidate update digest emails.</p><p>You can turn them back on any time in your account settings.</p></body></html>"
-          : "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Invalid link</title></head><body><p>This unsubscribe link is invalid or incomplete.</p><p>You can manage email settings in your account settings.</p></body></html>"
-      );
+      .send(mode === "confirm" ? confirmPage : donePage);
     return;
   }
 

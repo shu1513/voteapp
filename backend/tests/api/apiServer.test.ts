@@ -2964,7 +2964,7 @@ describe("email preferences and unsubscribe endpoints", () => {
     expect(response.statusCode).toBe(401);
   });
 
-  it("unsubscribes via GET with a token and answers with an HTML page", async () => {
+  it("GET renders a confirmation form without mutating (mail scanners GET links)", async () => {
     const unsubscribeFromEmailDigest = vi.fn().mockResolvedValue("ok");
 
     const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailDigest }), {
@@ -2974,11 +2974,13 @@ describe("email preferences and unsubscribe endpoints", () => {
 
     expect(response.statusCode).toBe(200);
     expect(String(response.headers["content-type"])).toContain("text/html");
-    expect(String(response.rawBody)).toContain("unsubscribed");
-    expect(unsubscribeFromEmailDigest).toHaveBeenCalledWith("v1.abc.def");
+    // Confirmation form, not a completed unsubscribe.
+    expect(String(response.rawBody)).toContain("<form method=\"post\"");
+    expect(String(response.rawBody)).not.toContain("You have been unsubscribed");
+    expect(unsubscribeFromEmailDigest).toHaveBeenCalledWith("v1.abc.def", "confirm");
   });
 
-  it("accepts RFC 8058 one-click POST unsubscribes", async () => {
+  it("POST (RFC 8058 one-click and the confirmation form) performs the unsubscribe", async () => {
     const unsubscribeFromEmailDigest = vi.fn().mockResolvedValue("ok");
 
     const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailDigest }), {
@@ -2987,7 +2989,8 @@ describe("email preferences and unsubscribe endpoints", () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(unsubscribeFromEmailDigest).toHaveBeenCalledWith("v1.abc.def");
+    expect(String(response.rawBody)).toContain("You have been unsubscribed");
+    expect(unsubscribeFromEmailDigest).toHaveBeenCalledWith("v1.abc.def", "execute");
   });
 
   it("returns a 400 HTML page for invalid or missing tokens", async () => {

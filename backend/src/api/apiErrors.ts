@@ -8,6 +8,7 @@ import { UserDistrictReaderError } from "../pipeline/users/userDistrictReader.js
 import { ReplaceUserDistrictsError } from "../pipeline/users/userDistrictReplacer.js";
 import { UserResearchAreaPreferencesError } from "../pipeline/users/userResearchAreaPreferences.js";
 import { UserBallotPreferencesError } from "../pipeline/users/userBallotPreferences.js";
+import { UserEmailPreferencesError } from "../pipeline/users/userEmailPreferences.js";
 import type { ApiErrorCode } from "./apiResponses.js";
 
 export type MappedApiError = {
@@ -90,6 +91,12 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
   }
   // [ballot-personalized-ordering]
   if (error instanceof UserBallotPreferencesError) {
+    if (error.code === "invalid_user_id" || error.code === "user_not_found") {
+      return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
+    }
+    return { statusCode: 400, code: "invalid_request", message: error.message };
+  }
+  if (error instanceof UserEmailPreferencesError) {
     if (error.code === "invalid_user_id" || error.code === "user_not_found") {
       return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
     }

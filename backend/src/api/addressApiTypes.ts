@@ -95,12 +95,14 @@ export type AddressApiServerOptions = {
     preferences: UserEmailPreferences
   ) => Promise<UserEmailPreferences>;
   /**
-   * Signed-token digest unsubscribe (no session). Returns "ok" after turning
-   * the digest off, "invalid_token" for bad/forged tokens; a valid token for
-   * a since-deleted user also reports "ok" so the page does not leak account
-   * state.
+   * Signed-token digest unsubscribe (no session). mode "confirm" only
+   * verifies the token (GET renders a confirmation form and must not mutate:
+   * mail scanners and prefetchers GET every link in email bodies); mode
+   * "execute" turns the digest off. Returns "ok" or "invalid_token"; a valid
+   * token for a since-deleted user reports "ok" so the page does not leak
+   * account state.
    */
-  unsubscribeFromEmailDigest?: (token: string) => Promise<"ok" | "invalid_token">;
+  unsubscribeFromEmailDigest?: (token: string, mode: "confirm" | "execute") => Promise<"ok" | "invalid_token">;
   listAuthenticatedResearchAreaPreferences?: (userId: string) => Promise<AuthenticatedResearchAreaPreferencesResult>;
   replaceAuthenticatedResearchAreaPreferences?: (
     userId: string,
