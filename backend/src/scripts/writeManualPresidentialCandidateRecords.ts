@@ -27,7 +27,6 @@ import {
   buildCandidateRecordQualityGaps,
   droppedRecordToGap,
   isBlockingCandidateRecordQualityGap,
-  qualityDroppedRecordsToGaps,
 } from "./writeManualCandidateRecords.js";
 import {
   buildManualResearchRepairReport,
@@ -339,12 +338,10 @@ async function main(): Promise<void> {
     throw new Error(`Presidential candidate records payload failed validation: ${validatedRecords.reason}`);
   }
 
-  const blockingDroppedRecords = validatedRecords.droppedRecords.filter(
-    (record) => record.failureKind !== "quality_gap"
-  );
-  const qualityDroppedGaps = qualityDroppedRecordsToGaps(validatedRecords.droppedRecords);
-
-  if (blockingDroppedRecords.length > 0) {
+  // Same index-integrity rule as writeManualCandidateRecords: labels address
+  // records by index into the operator's records file, so ANY dropped record
+  // (source, schema, or quality gate) blocks the import.
+  if (validatedRecords.droppedRecords.length > 0) {
     const gaps = validatedRecords.droppedRecords.map(droppedRecordToGap);
     await writeRecordsRepairReport({
       reportFile: options.repairReportFile,
@@ -353,8 +350,15 @@ async function main(): Promise<void> {
       candidateDisplayName: null,
       gaps,
     });
+    const qualityDropped = validatedRecords.droppedRecords.filter(
+      (record) => record.failureKind === "quality_gap"
+    );
+    const hint =
+      qualityDropped.length > 0
+        ? " Quality-gate drops must be repaired or removed from the records file so label record_index values stay aligned with the records actually imported."
+        : "";
     throw new Error(
-      `Presidential candidate records payload needs focused source/schema repair before import; dropped=${blockingDroppedRecords.length}; ${summarizeDroppedRecords(blockingDroppedRecords)}`
+      `Presidential candidate records payload needs focused repair before import; dropped=${validatedRecords.droppedRecords.length}; ${summarizeDroppedRecords(validatedRecords.droppedRecords)}.${hint}`
     );
   }
 
@@ -402,7 +406,6 @@ async function main(): Promise<void> {
 
     const qualityGaps = applyConfirmedGaps(
       [
-        ...qualityDroppedGaps,
         ...buildCandidateRecordQualityGaps({
           recordCount: validatedRecords.records.length,
           labels: parsedLabels.payload.labels,

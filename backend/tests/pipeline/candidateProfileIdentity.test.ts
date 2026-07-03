@@ -391,6 +391,29 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     expect(params[websiteIndex + 1]).toBe(false);
   });
 
+  it("never overwrites a stored value with a blank string, even for overwrite-listed fields", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [{ ...existingRow, official_website_url: "https://old-site.example" }] })
+      .mockResolvedValueOnce({ rows: [{ fec_ids: null, state_filing_ids: null }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      // Contract-parsed profiles cannot carry blank strings, but the merge is
+      // exported and must stay safe for non-contract callers.
+      profile: { ...profile({ official_website_url: "https://old-site.example" }), summary: "  " },
+      state: "OH",
+      rosterParty: "Democratic",
+      includeParty: true,
+      overwriteProfileFields: new Set(["summary"]),
+    });
+
+    const updateSql = String(query.mock.calls[2]?.[0]);
+    // The overwrite branch requires a non-blank incoming value.
+    expect(updateSql).toContain("length(trim($13::text)) > 0");
+  });
+
   it("throws when two same-name candidates are linked to the election", async () => {
     const query = vi
       .fn()

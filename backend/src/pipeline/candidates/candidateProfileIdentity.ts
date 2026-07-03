@@ -366,27 +366,27 @@ async function mergeCandidateIdentifiersForExistingCandidate(
             ELSE date_of_birth
           END,
           twitter_handle = CASE
-            WHEN $8::boolean AND $7::text IS NOT NULL THEN $7::text
+            WHEN $8::boolean AND $7::text IS NOT NULL AND length(trim($7::text)) > 0 THEN $7::text
             WHEN twitter_handle IS NULL OR length(trim(twitter_handle)) = 0 THEN COALESCE($7::text, twitter_handle)
             ELSE twitter_handle
           END,
           linkedin_url = CASE
-            WHEN $10::boolean AND $9::text IS NOT NULL THEN $9::text
+            WHEN $10::boolean AND $9::text IS NOT NULL AND length(trim($9::text)) > 0 THEN $9::text
             WHEN linkedin_url IS NULL OR length(trim(linkedin_url)) = 0 THEN COALESCE($9::text, linkedin_url)
             ELSE linkedin_url
           END,
           official_website_url = CASE
-            WHEN $12::boolean AND $11::text IS NOT NULL THEN $11::text
+            WHEN $12::boolean AND $11::text IS NOT NULL AND length(trim($11::text)) > 0 THEN $11::text
             WHEN official_website_url IS NULL OR length(trim(official_website_url)) = 0 THEN COALESCE($11::text, official_website_url)
             ELSE official_website_url
           END,
           summary = CASE
-            WHEN $14::boolean AND $13::text IS NOT NULL THEN $13::text
+            WHEN $14::boolean AND $13::text IS NOT NULL AND length(trim($13::text)) > 0 THEN $13::text
             WHEN summary IS NULL OR length(trim(summary)) = 0 THEN COALESCE($13::text, summary)
             ELSE summary
           END,
           current_office = CASE
-            WHEN $16::boolean AND $15::text IS NOT NULL THEN $15::text
+            WHEN $16::boolean AND $15::text IS NOT NULL AND length(trim($15::text)) > 0 THEN $15::text
             WHEN current_office IS NULL OR length(trim(current_office)) = 0 THEN COALESCE($15::text, current_office)
             ELSE current_office
           END,

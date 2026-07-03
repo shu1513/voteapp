@@ -9,6 +9,20 @@
 
 BEGIN;
 
+-- The research-area seeding below copies County Supervisor's set; fail loudly
+-- rather than silently seeding an office with zero research areas (which would
+-- make every county-executive election unlabelable at the records stage).
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM public.offices
+    WHERE scope = 'county' AND canonical_name = 'County Supervisor'
+  ) THEN
+    RAISE EXCEPTION 'migration 144: County Supervisor office not found; cannot seed County Executive research areas';
+  END IF;
+END
+$$;
+
 INSERT INTO public.offices (scope, canonical_name, summary)
 VALUES (
   'county',

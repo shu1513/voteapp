@@ -179,14 +179,6 @@ export function droppedRecordToGap(
   };
 }
 
-export function qualityDroppedRecordsToGaps(
-  droppedRecords: readonly CandidateRecordDroppedRecord[]
-): ManualResearchRepairGap[] {
-  return droppedRecords.flatMap((record, index) =>
-    record.failureKind === "quality_gap" ? [droppedRecordToGap(record, index)] : []
-  );
-}
-
 function buildRecordLabelParseGap(reason: string): ManualResearchRepairGap {
   return {
     id: "candidate_record_labels.payload",
@@ -367,8 +359,6 @@ async function main(): Promise<void> {
   // drop slid later labels onto the wrong surviving records, or surfaced as a
   // misleading "labels contains invalid row" error. The operator must repair or
   // remove the dropped row so record and label indices describe the same list.
-  const qualityDroppedGaps = qualityDroppedRecordsToGaps(validatedRecords.droppedRecords);
-
   if (validatedRecords.droppedRecords.length > 0) {
     const gaps = validatedRecords.droppedRecords.map(droppedRecordToGap);
     await writeRecordsRepairReport({
@@ -433,7 +423,6 @@ async function main(): Promise<void> {
     }
     const qualityGaps = applyConfirmedGaps(
       [
-        ...qualityDroppedGaps,
         ...buildCandidateRecordQualityGaps({
           recordCount: validatedRecords.records.length,
           labels: parsedLabels.payload.labels,
