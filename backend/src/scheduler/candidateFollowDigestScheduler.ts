@@ -125,8 +125,9 @@ export async function runCandidateFollowDigestJob(
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   try {
     // Failures stay in the result instead of failing the job: delivered events
-    // are already marked notified_at, so the next scheduled run retries only
-    // the users whose sends failed.
+    // are already marked notified_at, so the next scheduled run touches only
+    // events from failed sends (stage "send", retried) or failed marks
+    // (stage "mark_after_send", re-sent — the at-least-once duplicate).
     const result = await sendCandidateFollowDigests(pool, mailer, {
       live: true,
       maxUsers: data.maxUsers ?? DEFAULT_DIGEST_MAX_USERS,

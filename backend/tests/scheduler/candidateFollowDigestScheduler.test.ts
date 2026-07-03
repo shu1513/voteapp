@@ -87,7 +87,7 @@ describe("runCandidateFollowDigestJob", () => {
     const sendMock = vi.fn(async () => ({
       ...baseSendResult,
       usersEmailedCount: 1,
-      failures: [{ userId: "u2", reason: "SES exploded" }],
+      failures: [{ userId: "u2", stage: "send", reason: "SES exploded" }],
     }));
     const endMock = vi.fn(async () => {});
     mockDigestModule(sendMock);
@@ -100,7 +100,7 @@ describe("runCandidateFollowDigestJob", () => {
 
     const result = await runCandidateFollowDigestJob({ triggeredBy: "daily" });
 
-    expect(result.failures).toEqual([{ userId: "u2", reason: "SES exploded" }]);
+    expect(result.failures).toEqual([{ userId: "u2", stage: "send", reason: "SES exploded" }]);
     expect(result.usersEmailedCount).toBe(1);
   });
 });
