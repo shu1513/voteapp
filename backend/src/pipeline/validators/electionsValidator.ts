@@ -213,7 +213,11 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
   return null;
 }
 
-function isSoftScopeAmbiguous(districtType: ElectionDistrictType, entry: ElectionEntryPayload): string | null {
+function isSoftScopeAmbiguous(
+  districtType: ElectionDistrictType,
+  entry: ElectionEntryPayload,
+  state: string
+): string | null {
   const text = normalize(entry.official_ballot_title);
 
   if (
@@ -238,18 +242,21 @@ function isSoftScopeAmbiguous(districtType: ElectionDistrictType, entry: Electio
     return "state_lower entry lacks clear state_lower markers";
   }
 
-  if (
-    districtType === "county" &&
-    !hasAny(text, [
-      /\bcounty\b/,
-      /\bsheriff\b/,
-      /\bcounty commissioner\b/,
-      /\bcounty clerk\b/,
-      /\bassessor\b/,
-      /\bsuperior court\b/,
-    ])
-  ) {
-    return "county entry lacks clear county markers";
+  if (districtType === "county") {
+    const countyMarkers = [/\bcounty\b/, /\bsheriff\b/, /\bcounty commissioner\b/, /\bcounty clerk\b/];
+    // "Assessor" is a county office, but town/village/township assessors are municipal
+    // contests that the city-oriented hard markers do not catch.
+    if (!/\b(town|village|township|borough|municipal)\b/.test(text)) {
+      countyMarkers.push(/\bassessor\b/);
+    }
+    // Superior courts are county trial courts in the states that elect their judges,
+    // except Pennsylvania, where the Superior Court is a statewide appellate court.
+    if (state.trim().toUpperCase() !== "PA") {
+      countyMarkers.push(/\bsuperior court\b/);
+    }
+    if (!hasAny(text, countyMarkers)) {
+      return "county entry lacks clear county markers";
+    }
   }
 
   if (districtType === "place" && !hasAny(text, [/\bcity\b/, /\bmayor\b/, /\bcity council\b/, /\btown\b/, /\bvillage\b/])) {
@@ -320,7 +327,7 @@ function validateScope(payload: ElectionEnrichedPayload): ValidationResult {
       };
     }
 
-    const softReason = isSoftScopeAmbiguous(payload.district_type, entry);
+    const softReason = isSoftScopeAmbiguous(payload.district_type, entry, payload.state);
     if (softReason) {
       severity = "soft_fail";
       reasons.push(`${softReason}: ${entry.official_ballot_title}`);
