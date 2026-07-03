@@ -31,6 +31,9 @@ export const AUTH_VERIFY_EMAIL_PATH = "/api/auth/verify-email";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
 export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
+// Session-holder identity (email, first_name, email_verified). Not gated on
+// email verification: the frontend needs it to render the unverified state.
+export const ME_PATH = "/api/me";
 export const ME_ADDRESS_PATH = "/api/me/address";
 export const ME_BALLOT_PATH = "/api/me/ballot";
 export const ME_CANDIDATE_FOLLOWS_PATH = "/api/me/candidate-follows";

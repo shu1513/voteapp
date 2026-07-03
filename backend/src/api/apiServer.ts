@@ -30,6 +30,7 @@ import {
   EMAIL_UNSUBSCRIBE_PATH,
   ME_ADDRESS_PATH,
   ME_BALLOT_PATH,
+  ME_PATH,
   ME_BALLOT_PREFERENCES_PATH,
   ME_CANDIDATE_FOLLOWS_PATH,
   ME_DISTRICTS_INITIALIZE_PATH,
@@ -84,6 +85,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === AUTH_RESEND_VERIFICATION_PATH ||
     pathname === AUTH_VERIFY_EMAIL_PATH ||
     pathname === EMAIL_UNSUBSCRIBE_PATH ||
+    pathname === ME_PATH ||
     pathname === ME_ADDRESS_PATH ||
     pathname === ME_BALLOT_PATH ||
     pathname === ME_BALLOT_PREFERENCES_PATH ||
@@ -619,6 +621,44 @@ async function dispatchApiRequest(
     }
     const result = await options.lookupAuthenticatedBallotSummaries(userId, summaryOptions);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_PATH) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /api/me", {
+          ...corsHeaders,
+          allow: "GET",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    // Deliberately not requireVerifiedAuthenticatedUser: the frontend calls
+    // this to find out whether the user is verified, so the unverified state
+    // must be readable, not a 403.
+    const userId = await resolveAuthenticatedUserId(options, request);
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    if (!options.getAuthenticatedUser) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Authenticated user lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const user = await options.getAuthenticatedUser(userId);
+    sendApiResponse(response, toJsonResponse(200, { user }, corsHeaders));
     return;
   }
 
