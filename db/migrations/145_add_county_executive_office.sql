@@ -9,9 +9,13 @@
 
 BEGIN;
 
--- The research-area seeding below copies County Supervisor's set; fail loudly
--- rather than silently seeding an office with zero research areas (which would
--- make every county-executive election unlabelable at the records stage).
+-- Research-area LINKS are owned by the seed layer (db/seeds/
+-- office_research_areas_v1.sql), which runs after migrations and carries its
+-- own County Executive block. The copy below only covers already-seeded
+-- databases so County Executive is usable immediately without re-running
+-- seeds; on a fresh migrations-only database it inserts zero rows by design
+-- and the seed layer fills the areas afterward. The guard still fails loudly
+-- if the County Supervisor office row itself is missing.
 DO $$
 BEGIN
   IF NOT EXISTS (
@@ -31,7 +35,7 @@ VALUES (
 )
 ON CONFLICT (scope, canonical_name) DO NOTHING;
 
--- Research areas: same executive-governance set as County Supervisor.
+-- Best-effort copy for already-seeded databases: same set as County Supervisor.
 INSERT INTO public.office_research_areas (office_id, research_area_id)
 SELECT ce.id, ora.research_area_id
 FROM public.offices ce

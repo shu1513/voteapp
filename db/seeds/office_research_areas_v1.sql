@@ -1936,6 +1936,65 @@ $$;
 DO $$
 DECLARE
   desired_slugs text[] := ARRAY[
+    'government_spending_reduction',
+    'government_efficiency',
+    'public_infrastructure',
+    'housing_affordability',
+    'environment_and_public_health',
+    'healthcare_affordability',
+    'social_programs_and_welfare',
+    'public_safety_and_crime_control',
+    'anti_corruption',
+    'corporate_accountability',
+    'civil_rights',
+    'data_privacy',
+    'election_integrity',
+    'reduce_wealth_gap'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'County Executive';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=County Executive, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for county executive mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'County Executive'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
+  desired_slugs text[] := ARRAY[
     'election_integrity',
     'government_efficiency',
     'data_privacy',
