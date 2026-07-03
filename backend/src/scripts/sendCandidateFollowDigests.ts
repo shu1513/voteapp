@@ -3,6 +3,7 @@ import { SESv2Client } from "@aws-sdk/client-sesv2";
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
+import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import {
   createConsoleCandidateFollowDigestMailer,
   createSesCandidateFollowDigestMailer,
@@ -28,35 +29,30 @@ export type SendCandidateFollowDigestsOptions = {
 
 export type SendCandidateFollowDigestsResult = {
   dryRun: boolean;
-  /** Events resolved (or countable as resolvable in dry run) without email. */
+  /**
+   * Events resolved (or countable as resolvable in dry run) without email.
+   * Always table-wide: orphan cleanup is global housekeeping, deliberately
+   * independent of --max-users, which caps only the email batch below.
+   */
   resolvedWithoutEmailCount: number;
-  /** Users with at least one valid pending event this run examined. */
+  /** Users with at least one valid pending event this run examined (capped by --max-users). */
   eligibleUserCount: number;
   /** Valid pending events found across eligible users. */
   eventsPendingCount: number;
+  /** Digest emails actually sent (includes sends whose mark step then failed). */
   usersEmailedCount: number;
+  /** Events both sent and marked notified. */
   eventsDeliveredCount: number;
-  failures: Array<{ userId: string; reason: string }>;
+  /**
+   * stage "send": the email did not go out; the next run retries it.
+   * stage "mark_after_send": the email DID go out but stamping notified_at
+   * failed, so the next run will re-send those events (at-least-once).
+   */
+  failures: Array<{ userId: string; stage: "send" | "mark_after_send"; reason: string }>;
 };
 
 type Queryable = Pick<Pool, "query">;
 
-function readPositiveIntegerFlag(argv: readonly string[], flagName: string, fallback: number): number {
-  const flagIndex = argv.indexOf(flagName);
-  const inlinePrefix = `${flagName}=`;
-  const inline = argv.find((token) => token.startsWith(inlinePrefix));
-  const rawValue = flagIndex >= 0 ? argv[flagIndex + 1] : inline ? inline.slice(inlinePrefix.length) : null;
-  if (flagIndex >= 0 && rawValue === undefined) {
-    throw new Error(`${flagName} requires a value`);
-  }
-  if (rawValue === null || rawValue === undefined) {
-    return fallback;
-  }
-  if (!/^[1-9]\d*$/.test(rawValue)) {
-    throw new Error(`${flagName} must be a positive integer, got: ${rawValue}`);
-  }
-  return Number(rawValue);
-}
 
 export function parseSendCandidateFollowDigestsArgs(
   argv: readonly string[]
@@ -251,15 +247,22 @@ export async function sendCandidateFollowDigests(
         items: pendingEvents.slice(0, options.maxItemsPerEmail).map(toDigestItem),
         totalEventCount: pendingEvents.length,
       });
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : String(error);
+      result.failures.push({ userId: user.id, stage: "send", reason });
+      continue;
+    }
+    result.usersEmailedCount += 1;
+
+    try {
       await markEventsNotified(
         db,
         pendingEvents.map((event) => event.id)
       );
-      result.usersEmailedCount += 1;
       result.eventsDeliveredCount += pendingEvents.length;
     } catch (error) {
       const reason = error instanceof Error ? error.message : String(error);
-      result.failures.push({ userId: user.id, reason });
+      result.failures.push({ userId: user.id, stage: "mark_after_send", reason });
     }
   }
 

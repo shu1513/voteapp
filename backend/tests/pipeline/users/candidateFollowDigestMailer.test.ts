@@ -95,6 +95,7 @@ describe("createSesCandidateFollowDigestMailer", () => {
     );
     expect(command.input.Content?.Simple?.Body?.Text?.Data).toContain("Roland Gutierrez");
     expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain("<h3>Roland Gutierrez</h3>");
+    expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain('<meta charset="UTF-8">');
     expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain(
       "Received Governor Greg Abbott&#39;s endorsement."
     );

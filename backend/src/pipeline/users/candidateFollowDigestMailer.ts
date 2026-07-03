@@ -132,6 +132,9 @@ export function buildDigestHtmlBody(appName: string | undefined, input: Candidat
     remainder > 0 ? `    <p>…and ${remainder} more update${remainder === 1 ? "" : "s"}.</p>\n` : "";
   return `<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+  </head>
   <body>
     <p>Hi ${escapeHtml(input.firstName.trim() || "there")},</p>
     <p>Updates on candidates you follow on ${brand}:</p>

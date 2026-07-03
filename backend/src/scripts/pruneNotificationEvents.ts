@@ -2,6 +2,7 @@ import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
+import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 
 // Retention for user_candidate_follow_notification_events. Events are
 // deduplicated per (user, record) / (user, candidate, election) by unique
@@ -21,22 +22,6 @@ export type PruneNotificationEventsOptions = {
   batchSize: number;
 };
 
-function readPositiveIntegerFlag(argv: readonly string[], flagName: string, fallback: number): number {
-  const flagIndex = argv.indexOf(flagName);
-  const inlinePrefix = `${flagName}=`;
-  const inline = argv.find((token) => token.startsWith(inlinePrefix));
-  const rawValue = flagIndex >= 0 ? argv[flagIndex + 1] : inline ? inline.slice(inlinePrefix.length) : null;
-  if (flagIndex >= 0 && rawValue === undefined) {
-    throw new Error(`${flagName} requires a value`);
-  }
-  if (rawValue === null || rawValue === undefined) {
-    return fallback;
-  }
-  if (!/^[1-9]\d*$/.test(rawValue)) {
-    throw new Error(`${flagName} must be a positive integer, got: ${rawValue}`);
-  }
-  return Number(rawValue);
-}
 
 export function parsePruneNotificationEventsArgs(argv: readonly string[]): PruneNotificationEventsOptions {
   return {

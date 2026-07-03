@@ -37,6 +37,7 @@ function createDbMock(fixtures: {
   orphanCount?: number;
   users: Array<{ id: string; email: string; first_name: string }>;
   pendingByUser: Record<string, PendingRow[]>;
+  failMark?: boolean;
 }) {
   const markedEventIds: string[][] = [];
   const query = vi.fn(async (sql: string, params?: unknown[]) => {
@@ -44,6 +45,9 @@ function createDbMock(fixtures: {
       return { rows: [{ matched: String(fixtures.orphanCount ?? 0) }], rowCount: 1 };
     }
     if (sql.includes("ANY($1::uuid[])")) {
+      if (fixtures.failMark) {
+        throw new Error("mark update failed");
+      }
       markedEventIds.push([...(params?.[0] as string[])]);
       return { rows: [], rowCount: (params?.[0] as string[]).length };
     }
@@ -188,11 +192,29 @@ describe("sendCandidateFollowDigests", () => {
 
     const result = await sendCandidateFollowDigests(db as never, mailer, options);
 
-    expect(result.failures).toEqual([{ userId: USER_ALPHA, reason: "SES exploded" }]);
+    expect(result.failures).toEqual([{ userId: USER_ALPHA, stage: "send", reason: "SES exploded" }]);
     expect(result.usersEmailedCount).toBe(1);
     expect(result.eventsDeliveredCount).toBe(1);
     // Only the successful user's events were marked.
     expect(db.markedEventIds).toEqual([["e2"]]);
+  });
+
+  it("records a mark_after_send failure when the email went out but stamping failed", async () => {
+    const db = createDbMock({
+      users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+      pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Jane Doe")] },
+      failMark: true,
+    });
+    const mailer = createMailerMock();
+
+    const result = await sendCandidateFollowDigests(db as never, mailer, options);
+
+    // The email was sent, so it counts as emailed but not delivered.
+    expect(result.usersEmailedCount).toBe(1);
+    expect(result.eventsDeliveredCount).toBe(0);
+    expect(result.failures).toEqual([
+      { userId: USER_ALPHA, stage: "mark_after_send", reason: "mark update failed" },
+    ]);
   });
 
   it("caps rendered items per email while marking and counting every event", async () => {
