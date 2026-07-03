@@ -59,6 +59,7 @@ export type BallotLookupDistrict = {
   state: string;
   state_fips: string;
   representation_power_score: number | null;
+  population: number | null;
 };
 
 export type BallotLookupResearchAreaTag = {
@@ -339,10 +340,12 @@ export type BallotFollowedCandidate = {
 
 // Ordering the caller wants for the elections list. `vote_power` (the default)
 // sorts by the computed vote-power score descending; `soonest` sorts by
-// election date ascending (the historical default).
-export type BallotSummarySort = "vote_power" | "soonest";
+// election date ascending (the historical default); `district_size` sorts by
+// the election's district population descending (largest electorate first),
+// with unknown populations last.
+export type BallotSummarySort = "vote_power" | "soonest" | "district_size";
 
-export const BALLOT_SUMMARY_SORTS: readonly BallotSummarySort[] = ["vote_power", "soonest"];
+export const BALLOT_SUMMARY_SORTS: readonly BallotSummarySort[] = ["vote_power", "soonest", "district_size"];
 
 export function isBallotSummarySort(value: unknown): value is BallotSummarySort {
   return typeof value === "string" && (BALLOT_SUMMARY_SORTS as readonly string[]).includes(value);
@@ -364,8 +367,9 @@ export type BallotSummaryResult = {
   elections: BallotLookupElectionSummary[];
 };
 
-type DistrictRow = Omit<BallotLookupDistrict, "representation_power_score"> & {
+type DistrictRow = Omit<BallotLookupDistrict, "representation_power_score" | "population"> & {
   representation_power_score: string | number | null;
+  population?: string | number | null;
 };
 
 type ElectionRow = {
@@ -377,6 +381,7 @@ type ElectionRow = {
   state: string;
   state_fips: string;
   representation_power_score: string | number | null;
+  population?: string | number | null;
   race_type: ElectionRaceType;
   official_ballot_title: string;
   election_date: string;
@@ -1985,7 +1990,16 @@ function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): Ballot
     state: row.state,
     state_fips: row.state_fips,
     representation_power_score: parseRepresentationPowerScore(row.representation_power_score),
+    population: parseDistrictPopulation(row.population),
   };
+}
+
+function parseDistrictPopulation(value: string | number | null | undefined): number | null {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  const parsed = typeof value === "number" ? value : Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 function mapResearchAreaTag(row: CandidateRecordTagRow | BallotMeasureTagRow): BallotLookupResearchAreaTag {
@@ -11620,7 +11634,8 @@ export async function lookupBallotSummariesByDistrictIds(
         name,
         state,
         state_fips,
-        representation_power_score
+        representation_power_score,
+        population
       FROM public.districts
       WHERE id = ANY($1::uuid[])
       ORDER BY array_position($1::uuid[], id), district_type, name
@@ -11639,6 +11654,7 @@ export async function lookupBallotSummariesByDistrictIds(
         d.state,
         d.state_fips,
         d.representation_power_score,
+        d.population,
         e.race_type,
         e.official_ballot_title,
         e.election_date::text AS election_date,
@@ -11937,6 +11953,14 @@ function compareBySort(
       return bScore - aScore;
     }
   }
+  if (sort === "district_size") {
+    // Larger district population first; unknown populations (null) sort last.
+    const aPopulation = typeof a.district.population === "number" ? a.district.population : Number.NEGATIVE_INFINITY;
+    const bPopulation = typeof b.district.population === "number" ? b.district.population : Number.NEGATIVE_INFINITY;
+    if (aPopulation !== bPopulation) {
+      return bPopulation - aPopulation;
+    }
+  }
   // `soonest`, and the tiebreak for equal vote-power scores: earliest date first.
   if (a.election_date !== b.election_date) {
     return a.election_date < b.election_date ? -1 : 1;
@@ -11967,6 +11991,7 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
         d.state,
         d.state_fips,
         d.representation_power_score,
+        d.population,
         e.race_type,
         e.official_ballot_title,
         e.election_date::text AS election_date,

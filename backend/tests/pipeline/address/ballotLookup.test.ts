@@ -137,6 +137,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           state: "CA",
           state_fips: "06",
           representation_power_score: 72.5,
+          population: null,
         },
       ],
       // Order-independent: the reader now sorts by the default vote_power
@@ -153,6 +154,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             state: "CA",
             state_fips: "06",
             representation_power_score: 72.5,
+            population: null,
           },
           race_type: "office",
           official_ballot_title: "Sheriff",
@@ -201,6 +203,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             state: "CA",
             state_fips: "06",
             representation_power_score: 72.5,
+            population: null,
           },
           race_type: "ballot_measure",
           official_ballot_title: "Measure H",
@@ -946,6 +949,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     official_ballot_title?: string;
     election_date?: string;
     representation_power_score?: number;
+    population?: number | null;
     candidate_count?: number;
   };
 
@@ -979,6 +983,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             state: "CA",
             state_fips: "06",
             representation_power_score: e.representation_power_score ?? 50,
+            population: e.population ?? null,
             race_type: e.race_type ?? "office",
             official_ballot_title: e.official_ballot_title ?? "Office",
             election_date: e.election_date ?? "2026-11-03",
@@ -1041,6 +1046,25 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId], { sort: "soonest" });
 
     expect(result.elections.map((e) => e.id)).toEqual([electionA, electionB]);
+  });
+
+  it("orders elections by district population descending when sort=district_size, unknown populations last", async () => {
+    // B has the bigger electorate and must lead despite A's earlier date and
+    // higher vote power; C has no population on record and sorts last.
+    const electionC = "cccccccc-3333-4333-8333-cccccccccccc";
+    const query = makeBallotQueryMock({
+      elections: [
+        { election_id: electionA, election_date: "2026-06-02", representation_power_score: 95, population: 250_000 },
+        { election_id: electionB, election_date: "2026-11-03", representation_power_score: 10, population: 9_800_000 },
+        { election_id: electionC, election_date: "2026-01-01", representation_power_score: 95, population: null },
+      ],
+    });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId], { sort: "district_size" });
+
+    expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA, electionC]);
+    expect(result.elections[0]?.district.population).toBe(9_800_000);
+    expect(result.elections[2]?.district.population).toBeNull();
   });
 
   it("attaches followed candidates and, with followedFirst, groups their elections ahead of higher-vote-power ones", async () => {

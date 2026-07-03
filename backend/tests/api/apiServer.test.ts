@@ -1121,6 +1121,22 @@ describe("createApiApp", () => {
     expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId], { sort: "vote_power" });
   });
 
+  it("accepts sort=district_size as a valid ballot sort", async () => {
+    const lookupBallotSummaries = vi.fn().mockResolvedValue({
+      district_ids: [districtId],
+      districts: [],
+      elections: [],
+    });
+
+    const response = await invokeExpressApp(createApiApp({ lookupBallotSummaries }), {
+      method: "GET",
+      path: `/api/ballot?district_ids=${districtId}&sort=district_size`,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(lookupBallotSummaries).toHaveBeenCalledWith([districtId], { sort: "district_size" });
+  });
+
   it("serves empty authenticated ballot summaries when the user has no saved districts", async () => {
     const resolveAddress = vi.fn();
     const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
