@@ -23,6 +23,87 @@ function createMatcherDataClient(input: {
 }
 
 describe("OfficeMatcher", () => {
+  it("does not score a non-judicial county contest into a judge office (TX County Judge)", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-judge-judicial", canonical_name: "County Level Judge" },
+          { id: "office-county-executive", canonical_name: "County Executive" },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Bexar County, Texas",
+      state: "TX",
+      officialBallotTitle: "County Judge",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    // "county judge" does not clear the scoring threshold against County
+    // Executive; the seeded alias (migration 145) resolves real traffic. The
+    // essential assertion is that the judge office is no longer reachable.
+    expect(result.officeId).not.toBe("office-county-judge-judicial");
+    expect(result.officeId).toBeNull();
+  });
+
+  it("ignores a learned judge-office alias when the entry family is non-judicial", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          { office_id: "office-county-judge-judicial", normalized_alias: normalizeElectionTitleKey("County Judge") },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-county-judge-judicial", canonical_name: "County Level Judge" },
+          { id: "office-county-executive", canonical_name: "County Executive" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Bexar County, Texas",
+      state: "TX",
+      officialBallotTitle: "County Judge",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).not.toBe("office-county-judge-judicial");
+  });
+
+  it("still honors a judge-office alias when the entry family is judicial", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          { office_id: "office-county-judge-judicial", normalized_alias: normalizeElectionTitleKey("Judge of the County Court") },
+        ],
+      },
+      officesByScope: {
+        county: [{ id: "office-county-judge-judicial", canonical_name: "County Level Judge" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Erie County, New York",
+      state: "NY",
+      officialBallotTitle: "Judge of the County Court",
+      discoveryContestFamily: "judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-judge-judicial");
+    expect(result.method).toBe("alias_exact");
+  });
+
+
   it("returns exact alias match when normalized alias exists", async () => {
     const title = "California State Governor";
     const client = createMatcherDataClient({

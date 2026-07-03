@@ -51,6 +51,11 @@ const SCHOOL_BOARD_CANONICAL_NAME = "School Board Member";
 const STATE_LEVEL_JUDGE_CANONICAL_NAME = "State Level Judge";
 const COUNTY_LEVEL_JUDGE_CANONICAL_NAME = "County Level Judge";
 const PLACE_LEVEL_JUDGE_CANONICAL_NAME = "Place Level Judge";
+const JUDGE_CANONICAL_NAMES = new Set([
+  STATE_LEVEL_JUDGE_CANONICAL_NAME,
+  COUNTY_LEVEL_JUDGE_CANONICAL_NAME,
+  PLACE_LEVEL_JUDGE_CANONICAL_NAME,
+]);
 const SCHOOL_DISTRICT_SCOPES = new Set<ElectionDistrictType>([
   "school_elementary",
   "school_secondary",
@@ -452,6 +457,15 @@ export class OfficeMatcher {
     if (!exactOfficeId && titleMatcherKey.length > 0 && titleMatcherKey !== normalizedAlias) {
       exactOfficeId = aliases.get(titleMatcherKey);
     }
+    if (exactOfficeId && input.discoveryContestFamily === "non_judicial_office") {
+      // A learned alias may point at a judge office (e.g. a Texas "County Judge",
+      // the county executive, once mis-scored into County Level Judge). The entry's
+      // own contest family is authoritative: ignore judge-office aliases here.
+      const aliasTarget = (await this.loadOffices(input.scope)).find((office) => office.id === exactOfficeId);
+      if (aliasTarget && JUDGE_CANONICAL_NAMES.has(aliasTarget.canonicalName)) {
+        exactOfficeId = undefined;
+      }
+    }
     if (exactOfficeId) {
       return {
         officeId: exactOfficeId,
@@ -552,7 +566,13 @@ export class OfficeMatcher {
     }
 
     const titleTokens = toMatcherTokens(titleMatcherKey);
-    const scored = offices
+    // The token scorer can pull judicial-sounding executive titles (Texas "County
+    // Judge") into a judge office; the entry's non-judicial contest family wins.
+    const scoreableOffices =
+      input.discoveryContestFamily === "non_judicial_office"
+        ? offices.filter((office) => !JUDGE_CANONICAL_NAMES.has(office.canonicalName))
+        : offices;
+    const scored = scoreableOffices
       .map((office) => ({
         officeId: office.id,
         score: scoreOfficeMatch(titleMatcherKey, titleTokens, office),
