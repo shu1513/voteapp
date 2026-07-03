@@ -37,6 +37,7 @@ import {
   parseAutocompleteRetrieveBodyValue,
   parseAutocompleteSuggestBodyValue,
   parseCandidateFollowBodyValue,
+  parseBallotSummaryOptions,
   parseCandidateId,
   parseDistrictIds,
   parseElectionId,
@@ -561,7 +562,8 @@ async function dispatchApiRequest(
     }
 
     const districtIds = parseDistrictIds(url);
-    const result = await options.lookupBallotSummaries(districtIds);
+    const summaryOptions = parseBallotSummaryOptions(url);
+    const result = await options.lookupBallotSummaries(districtIds, summaryOptions);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }
@@ -596,7 +598,8 @@ async function dispatchApiRequest(
       return;
     }
 
-    const result = await options.lookupAuthenticatedBallotSummaries(userId);
+    const summaryOptions = parseBallotSummaryOptions(url);
+    const result = await options.lookupAuthenticatedBallotSummaries(userId, summaryOptions);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }

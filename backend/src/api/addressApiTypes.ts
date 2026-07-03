@@ -1,4 +1,8 @@
-import type { BallotLookupElection, BallotSummaryResult } from "../pipeline/address/ballotLookup.js";
+import type {
+  BallotLookupElection,
+  BallotSummaryOptions,
+  BallotSummaryResult,
+} from "../pipeline/address/ballotLookup.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { AddressSuggestion, RetrievedSuggestedAddress } from "../pipeline/address/googlePlacesAutocomplete.js";
 import type { CandidateDetailResult } from "../pipeline/candidates/candidateDetailReader.js";
@@ -57,8 +61,14 @@ export type AddressApiServerOptions = {
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
   suggestAddresses?: (input: { input: string; sessionToken: string }) => Promise<AddressSuggestion[]>;
   retrieveSuggestedAddress?: (input: { placeId: string; sessionToken: string }) => Promise<RetrievedSuggestedAddress>;
-  lookupBallotSummaries?: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
-  lookupAuthenticatedBallotSummaries?: (userId: string) => Promise<BallotSummaryResult>;
+  lookupBallotSummaries?: (
+    districtIds: readonly string[],
+    options?: BallotSummaryOptions
+  ) => Promise<BallotSummaryResult>;
+  lookupAuthenticatedBallotSummaries?: (
+    userId: string,
+    options?: BallotSummaryOptions
+  ) => Promise<BallotSummaryResult>;
   lookupAuthenticatedUserEmailVerified?: (userId: string) => Promise<boolean>;
   lookupCandidateDetail?: (candidateId: string, userId?: string | null) => Promise<CandidateDetailResult | null>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;

@@ -1,4 +1,10 @@
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
+import {
+  BALLOT_SUMMARY_SORTS,
+  isBallotSummarySort,
+  type BallotSummaryOptions,
+  type BallotSummarySort,
+} from "../pipeline/address/ballotLookup.js";
 import { GOOGLE_PLACE_ID_PATTERN } from "../pipeline/address/googlePlacesAutocomplete.js";
 import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
@@ -366,6 +372,33 @@ export function parseCandidateFollowBodyValue(parsed: unknown): CandidateFollowP
     ...(payload.notify_elections === undefined ? {} : { notifyElections: payload.notify_elections }),
     ...(payload.notify_updates === undefined ? {} : { notifyUpdates: payload.notify_updates }),
   };
+}
+
+// Parses the optional `sort` and `followed_first` query parameters shared by
+// the ballot endpoints. Throws TypeError (mapped to HTTP 400) on invalid
+// values; omitted params leave the reader defaults in place.
+export function parseBallotSummaryOptions(url: URL): Pick<BallotSummaryOptions, "sort" | "followedFirst"> {
+  const options: Pick<BallotSummaryOptions, "sort" | "followedFirst"> = {};
+
+  const rawSort = url.searchParams.get("sort");
+  if (rawSort !== null) {
+    const sort = rawSort.trim();
+    if (!isBallotSummarySort(sort)) {
+      throw new TypeError(`Query parameter sort must be one of: ${BALLOT_SUMMARY_SORTS.join(", ")}`);
+    }
+    options.sort = sort satisfies BallotSummarySort;
+  }
+
+  const rawFollowedFirst = url.searchParams.get("followed_first");
+  if (rawFollowedFirst !== null) {
+    const value = rawFollowedFirst.trim().toLowerCase();
+    if (value !== "true" && value !== "false") {
+      throw new TypeError("Query parameter followed_first must be true or false");
+    }
+    options.followedFirst = value === "true";
+  }
+
+  return options;
 }
 
 export function parseDistrictIds(url: URL): string[] {

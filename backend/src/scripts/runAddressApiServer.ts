@@ -350,10 +350,11 @@ async function main(): Promise<void> {
     resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader),
     resolveAuthenticatedUserId,
     logDiagnostics: logAddressResolutionDiagnostics,
-    lookupBallotSummaries: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
-    lookupAuthenticatedBallotSummaries: async (userId) => {
+    lookupBallotSummaries: (districtIds, summaryOptions) =>
+      lookupBallotSummariesByDistrictIds(pool, districtIds, summaryOptions),
+    lookupAuthenticatedBallotSummaries: async (userId, summaryOptions) => {
       const districtIds = await listUserDistrictIds(pool, userId);
-      return lookupBallotSummariesByDistrictIds(pool, districtIds);
+      return lookupBallotSummariesByDistrictIds(pool, districtIds, { ...summaryOptions, userId });
     },
     lookupAuthenticatedUserEmailVerified,
     lookupCandidateDetail: (candidateId, userId) => lookupCandidateDetailById(pool, { candidateId, userId }),
@@ -370,7 +371,8 @@ async function main(): Promise<void> {
           resolveAddressToDistricts: (inputAddress) =>
             resolveAddressToDistricts(pool, inputAddress, buildAddressResolverOptions()),
           replaceUserDistricts: (inputUserId, districtIds) => replaceUserDistricts(pool, inputUserId, districtIds),
-          lookupBallotSummariesByDistrictIds: (districtIds) => lookupBallotSummariesByDistrictIds(pool, districtIds),
+          lookupBallotSummariesByDistrictIds: (districtIds) =>
+            lookupBallotSummariesByDistrictIds(pool, districtIds, { userId }),
         },
         userId,
         address

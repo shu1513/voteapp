@@ -326,6 +326,36 @@ export type BallotLookupElectionSummary = {
   research_areas: BallotLookupResearchAreaSummary[];
   historical_competitiveness: BallotLookupHistoricalCompetitiveness | null;
   vote_power: VotePowerResult;
+  // Candidates this user follows who are running in this election. Always
+  // present; empty for anonymous lookups or elections with no followed
+  // candidate. Drives the "followed first" ordering and the FE name chips.
+  followed_candidates: BallotFollowedCandidate[];
+};
+
+export type BallotFollowedCandidate = {
+  candidate_id: string;
+  display_name: string;
+};
+
+// Ordering the caller wants for the elections list. `vote_power` (the default)
+// sorts by the computed vote-power score descending; `soonest` sorts by
+// election date ascending (the historical default).
+export type BallotSummarySort = "vote_power" | "soonest";
+
+export const BALLOT_SUMMARY_SORTS: readonly BallotSummarySort[] = ["vote_power", "soonest"];
+
+export function isBallotSummarySort(value: unknown): value is BallotSummarySort {
+  return typeof value === "string" && (BALLOT_SUMMARY_SORTS as readonly string[]).includes(value);
+}
+
+export type BallotSummaryOptions = {
+  // When set, followed candidates are resolved for this user and attached to
+  // each election. Anonymous lookups omit it and every election gets [].
+  userId?: string | null;
+  sort?: BallotSummarySort;
+  // When true, elections that contain at least one followed candidate are
+  // grouped ahead of the rest, each group still ordered by `sort`.
+  followedFirst?: boolean;
 };
 
 export type BallotSummaryResult = {
@@ -11573,7 +11603,8 @@ async function loadFullElectionDetails(
 
 export async function lookupBallotSummariesByDistrictIds(
   db: Queryable,
-  districtIds: readonly string[]
+  districtIds: readonly string[],
+  options: BallotSummaryOptions = {}
 ): Promise<BallotSummaryResult> {
   const ids = normalizeIds(districtIds);
   if (ids.length === 0) {
@@ -11753,6 +11784,12 @@ export async function lookupBallotSummariesByDistrictIds(
   const resultOutcomeByElection = new Map(resultSummaryResult.rows.map((row) => [row.election_id, row.outcome]));
   const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionResult.rows);
 
+  const followedCandidatesByElection = await loadFollowedCandidatesByElection(
+    db,
+    options.userId ?? null,
+    electionIds
+  );
+
   const elections: BallotLookupElectionSummary[] = electionResult.rows.map((row) => {
     const currentResultOutcome = resultOutcomeByElection.get(row.election_id) ?? null;
     // Office columns are nullable only because this is a LEFT JOIN; resolved office rows have non-empty fields.
@@ -11801,14 +11838,114 @@ export async function lookupBallotSummariesByDistrictIds(
         representationPowerScore: district.representation_power_score,
         competitivenessLabel: historicalCompetitiveness?.competitiveness_label,
       }),
+      followed_candidates: followedCandidatesByElection.get(row.election_id) ?? [],
     };
   });
+
+  sortBallotElections(elections, options.sort ?? "vote_power", options.followedFirst ?? false);
 
   return {
     district_ids: ids,
     districts: districtResult.rows.map(toDistrict),
     elections,
   };
+}
+
+type FollowedCandidateRow = {
+  election_id: string;
+  candidate_id: string;
+  display_name: string;
+};
+
+// Resolves, per election, the candidates this user follows who are actually on
+// that ballot. Returns an empty map for anonymous callers so every election
+// gets [] without a database round-trip.
+async function loadFollowedCandidatesByElection(
+  db: Queryable,
+  userId: string | null,
+  electionIds: readonly string[]
+): Promise<Map<string, BallotFollowedCandidate[]>> {
+  const followed = new Map<string, BallotFollowedCandidate[]>();
+  const trimmedUserId = typeof userId === "string" ? userId.trim() : "";
+  if (trimmedUserId.length === 0 || electionIds.length === 0) {
+    return followed;
+  }
+
+  const result = await db.query<FollowedCandidateRow>(
+    `
+      SELECT
+        ce.election_id,
+        c.id AS candidate_id,
+        COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name)) AS display_name
+      FROM public.user_candidate_follows AS f
+      JOIN public.candidate_elections AS ce
+        ON ce.candidate_id = f.candidate_id
+      JOIN public.candidates AS c
+        ON c.id = f.candidate_id
+       AND c.deleted_at IS NULL
+      WHERE f.user_id = $1
+        AND ce.election_id = ANY($2::uuid[])
+      ORDER BY ce.election_id, display_name, c.id
+    `,
+    [trimmedUserId, electionIds]
+  );
+
+  for (const row of result.rows) {
+    const list = followed.get(row.election_id);
+    const entry = { candidate_id: row.candidate_id, display_name: row.display_name };
+    if (list) {
+      list.push(entry);
+    } else {
+      followed.set(row.election_id, [entry]);
+    }
+  }
+  return followed;
+}
+
+// Stable, in-place ordering of the elections list. `Array.prototype.sort` is
+// stable, so the SQL result order (election_date, race_type, title, id) is the
+// deterministic tiebreak whenever the chosen keys are equal.
+function sortBallotElections(
+  elections: BallotLookupElectionSummary[],
+  sort: BallotSummarySort,
+  followedFirst: boolean
+): void {
+  elections.sort((a, b) => {
+    if (followedFirst) {
+      const aFollowed = a.followed_candidates.length > 0 ? 0 : 1;
+      const bFollowed = b.followed_candidates.length > 0 ? 0 : 1;
+      if (aFollowed !== bFollowed) {
+        return aFollowed - bFollowed;
+      }
+    }
+    return compareBySort(a, b, sort);
+  });
+}
+
+function compareBySort(
+  a: BallotLookupElectionSummary,
+  b: BallotLookupElectionSummary,
+  sort: BallotSummarySort
+): number {
+  if (sort === "vote_power") {
+    // Higher vote-power score first; unknown scores (null) sort last.
+    const aScore = typeof a.vote_power.score === "number" ? a.vote_power.score : Number.NEGATIVE_INFINITY;
+    const bScore = typeof b.vote_power.score === "number" ? b.vote_power.score : Number.NEGATIVE_INFINITY;
+    if (aScore !== bScore) {
+      return bScore - aScore;
+    }
+  }
+  // `soonest`, and the tiebreak for equal vote-power scores: earliest date first.
+  if (a.election_date !== b.election_date) {
+    return a.election_date < b.election_date ? -1 : 1;
+  }
+  if (a.race_type !== b.race_type) {
+    return a.race_type < b.race_type ? -1 : 1;
+  }
+  if (a.official_ballot_title !== b.official_ballot_title) {
+    return a.official_ballot_title < b.official_ballot_title ? -1 : 1;
+  }
+  return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
 }
 
 export async function lookupElectionDetailById(db: Queryable, electionId: string): Promise<BallotLookupElection | null> {

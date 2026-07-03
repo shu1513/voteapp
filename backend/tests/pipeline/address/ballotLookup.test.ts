@@ -139,7 +139,9 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           representation_power_score: 72.5,
         },
       ],
-      elections: [
+      // Order-independent: the reader now sorts by the default vote_power
+      // ordering; this test covers the summary shape, not the ordering.
+      elections: expect.arrayContaining([
         {
           id: officeElectionId,
           district_id: districtId,
@@ -186,6 +188,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             decisiveness_level: "unknown",
             factors: ["high_representation", "missing_decisiveness_data"],
           },
+          followed_candidates: [],
         },
         {
           id: measureElectionId,
@@ -221,16 +224,21 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             decisiveness_level: "unknown",
             factors: ["high_representation", "direct_vote_on_policy"],
           },
+          followed_candidates: [],
         },
-      ],
+      ]),
     });
+    expect(result.elections).toHaveLength(2);
     expect(query).toHaveBeenCalledTimes(7);
     expect(query.mock.calls[0]?.[1]).toEqual([[districtId]]);
     expect(query.mock.calls[5]?.[0]).toContain("CASE pass_type");
     expect(query.mock.calls[5]?.[0]).toContain("WHEN 'certified' THEN 1");
     expect(query.mock.calls[5]?.[0]).toContain("WHEN 'election_night' THEN 2");
     expect(query.mock.calls[6]?.[0]).toContain("historical_contest_margins");
-    expect(JSON.stringify(result)).not.toContain("candidates");
+    // The lightweight summary must not embed the full candidate array (the
+    // detail endpoint's "candidates" key); the followed_candidates chip list
+    // is intentional and does not match the quoted key.
+    expect(JSON.stringify(result)).not.toContain('"candidates"');
     expect(JSON.stringify(result)).not.toContain("candidate_record");
     expect(JSON.stringify(result)).not.toContain("what_yes_means");
   });
@@ -928,6 +936,167 @@ describe("lookupBallotSummariesByDistrictIds", () => {
         mit_district: "STATEWIDE",
       },
     ]);
+  });
+
+  // --- sort modes + followed-candidate surfacing ---------------------------
+
+  type FakeElection = {
+    election_id: string;
+    race_type?: string;
+    official_ballot_title?: string;
+    election_date?: string;
+    representation_power_score?: number;
+    candidate_count?: number;
+  };
+
+  // Dispatches by SQL text instead of call order, so these tests stay stable
+  // regardless of how many internal queries the reader issues.
+  function makeBallotQueryMock(input: {
+    elections: FakeElection[];
+    followed?: { election_id: string; candidate_id: string; display_name: string }[];
+  }): ReturnType<typeof vi.fn> {
+    const districtRow = {
+      id: districtId,
+      district_type: "county",
+      geoid_compact: "06037",
+      name: "Los Angeles County",
+      state: "CA",
+      state_fips: "06",
+      representation_power_score: 50,
+    };
+    return vi.fn(async (sql: string) => {
+      if (sql.includes("FROM public.districts")) {
+        return { rows: [districtRow] };
+      }
+      if (sql.includes("FROM public.elections AS e")) {
+        return {
+          rows: input.elections.map((e) => ({
+            election_id: e.election_id,
+            district_id: districtId,
+            district_type: "county",
+            geoid_compact: "06037",
+            district_name: "Los Angeles County",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: e.representation_power_score ?? 50,
+            race_type: e.race_type ?? "office",
+            official_ballot_title: e.official_ballot_title ?? "Office",
+            election_date: e.election_date ?? "2026-11-03",
+            election_stage: "general",
+            is_partisan: false,
+            discovery_contest_family: "non_judicial_office",
+            sources: [],
+            office_id: null,
+            office_scope: null,
+            office_canonical_name: null,
+            office_summary: null,
+          })),
+        };
+      }
+      if (sql.includes("user_candidate_follows")) {
+        return { rows: input.followed ?? [] };
+      }
+      if (sql.includes("FROM public.candidate_elections AS ce")) {
+        // candidate-count query
+        return {
+          rows: input.elections
+            .filter((e) => (e.candidate_count ?? 0) > 0)
+            .map((e) => ({ election_id: e.election_id, candidate_count: e.candidate_count })),
+        };
+      }
+      // ballot_measures, office_research_areas, result summary, historical margins.
+      return { rows: [] };
+    });
+  }
+
+  const electionA = "aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa";
+  const electionB = "bbbbbbbb-2222-4222-8222-bbbbbbbbbbbb";
+
+  it("orders elections by vote_power score descending by default", async () => {
+    // B has a higher representation power score, so it outranks A by vote power
+    // even though A sorts first by date/title.
+    const query = makeBallotQueryMock({
+      elections: [
+        { election_id: electionA, official_ballot_title: "A office", representation_power_score: 20 },
+        { election_id: electionB, official_ballot_title: "B office", representation_power_score: 95 },
+      ],
+    });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId]);
+
+    expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
+    expect(result.elections[0]?.vote_power.score ?? 0).toBeGreaterThan(result.elections[1]?.vote_power.score ?? 0);
+    expect(result.elections.every((e) => e.followed_candidates.length === 0)).toBe(true);
+  });
+
+  it("orders elections by earliest date when sort=soonest, ignoring vote power", async () => {
+    // A is earlier but lower vote power; soonest must still place it first.
+    const query = makeBallotQueryMock({
+      elections: [
+        { election_id: electionA, election_date: "2026-06-02", representation_power_score: 10 },
+        { election_id: electionB, election_date: "2026-11-03", representation_power_score: 95 },
+      ],
+    });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId], { sort: "soonest" });
+
+    expect(result.elections.map((e) => e.id)).toEqual([electionA, electionB]);
+  });
+
+  it("attaches followed candidates and, with followedFirst, groups their elections ahead of higher-vote-power ones", async () => {
+    // B has higher vote power, but A holds a followed candidate and must lead
+    // once followedFirst is set.
+    const query = makeBallotQueryMock({
+      elections: [
+        { election_id: electionA, representation_power_score: 10 },
+        { election_id: electionB, representation_power_score: 95 },
+      ],
+      followed: [{ election_id: electionA, candidate_id: candidateId, display_name: "Jane Doe" }],
+    });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId], {
+      userId: "99999999-9999-4999-8999-999999999999",
+      followedFirst: true,
+    });
+
+    expect(result.elections.map((e) => e.id)).toEqual([electionA, electionB]);
+    expect(result.elections[0]?.followed_candidates).toEqual([
+      { candidate_id: candidateId, display_name: "Jane Doe" },
+    ]);
+    expect(result.elections[1]?.followed_candidates).toEqual([]);
+  });
+
+  it("does not group followed elections first when followedFirst is off, but still annotates them", async () => {
+    const query = makeBallotQueryMock({
+      elections: [
+        { election_id: electionA, representation_power_score: 10 },
+        { election_id: electionB, representation_power_score: 95 },
+      ],
+      followed: [{ election_id: electionA, candidate_id: candidateId, display_name: "Jane Doe" }],
+    });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId], {
+      userId: "99999999-9999-4999-8999-999999999999",
+    });
+
+    // Default vote_power order keeps B first; A is still annotated as followed.
+    expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
+    expect(result.elections.find((e) => e.id === electionA)?.followed_candidates).toEqual([
+      { candidate_id: candidateId, display_name: "Jane Doe" },
+    ]);
+  });
+
+  it("skips the follow query and returns empty followed_candidates for anonymous lookups", async () => {
+    const query = makeBallotQueryMock({
+      elections: [{ election_id: electionA }],
+      followed: [{ election_id: electionA, candidate_id: candidateId, display_name: "Jane Doe" }],
+    });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId]);
+
+    expect(result.elections[0]?.followed_candidates).toEqual([]);
+    const followQueryIssued = query.mock.calls.some((call) => String(call[0]).includes("user_candidate_follows"));
+    expect(followQueryIssued).toBe(false);
   });
 });
 
