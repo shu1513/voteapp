@@ -303,6 +303,12 @@ export function buildUnsubscribeUrlBuilderFromEnv(): ((userId: string) => string
   if (!baseUrl || !secret) {
     return null;
   }
+  // Fail fast at construction, mirroring the API server's startup guard: a
+  // weak secret must abort the run, not surface as a per-user send failure
+  // for every digest.
+  if (secret.length < 32) {
+    throw new Error("NOTIFICATIONS_UNSUBSCRIBE_SECRET must be at least 32 characters");
+  }
   const parsed = new URL(baseUrl);
   return (userId: string) => {
     const url = new URL(parsed.toString());

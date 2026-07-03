@@ -347,6 +347,9 @@ describe("unsubscribe URL wiring", () => {
       process.env.NOTIFICATIONS_UNSUBSCRIBE_URL = "https://api.example.com/api/email/unsubscribe";
       expect(buildUnsubscribeUrlBuilderFromEnv()).toBeNull();
 
+      process.env.NOTIFICATIONS_UNSUBSCRIBE_SECRET = "short";
+      expect(() => buildUnsubscribeUrlBuilderFromEnv()).toThrow("at least 32 characters");
+
       process.env.NOTIFICATIONS_UNSUBSCRIBE_SECRET = SECRET;
       const build = buildUnsubscribeUrlBuilderFromEnv();
       expect(build).not.toBeNull();
