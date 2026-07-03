@@ -6,6 +6,7 @@ import { getPipelineEnv } from "../config/env.js";
 import {
   buildDigestMailerFromEnv,
   sendCandidateFollowDigests,
+  withDigestRunLock,
   DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL,
   DEFAULT_DIGEST_MAX_USERS,
   type SendCandidateFollowDigestsResult,
@@ -23,6 +24,8 @@ export type CandidateFollowDigestJobData = {
 
 export type CandidateFollowDigestJobResult = SendCandidateFollowDigestsResult & {
   triggeredBy: NonNullable<CandidateFollowDigestJobData["triggeredBy"]>;
+  /** True when another live run held the advisory lock and this job did nothing. */
+  lockSkipped?: true;
 };
 
 type CandidateFollowDigestSchedulerRuntimeConfig = {
@@ -133,11 +136,27 @@ export async function runCandidateFollowDigestJob(
     // are already marked notified_at, so the next scheduled run touches only
     // events from failed sends (stage "send", retried) or failed marks
     // (stage "mark_after_send", re-sent — the at-least-once duplicate).
-    const result = await sendCandidateFollowDigests(pool, mailer, {
-      live: true,
-      maxUsers: data.maxUsers ?? DEFAULT_DIGEST_MAX_USERS,
-      maxItemsPerEmail: data.maxItemsPerEmail ?? DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL,
-    });
+    const result = await withDigestRunLock(pool, () =>
+      sendCandidateFollowDigests(pool, mailer, {
+        live: true,
+        maxUsers: data.maxUsers ?? DEFAULT_DIGEST_MAX_USERS,
+        maxItemsPerEmail: data.maxItemsPerEmail ?? DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL,
+      })
+    );
+    if (result === null) {
+      console.warn("candidate_follow_digest job skipped: another live digest run holds the lock");
+      return {
+        dryRun: false,
+        resolvedWithoutEmailCount: 0,
+        eligibleUserCount: 0,
+        eventsPendingCount: 0,
+        usersEmailedCount: 0,
+        eventsDeliveredCount: 0,
+        failures: [],
+        triggeredBy,
+        lockSkipped: true,
+      };
+    }
     return {
       ...result,
       triggeredBy,

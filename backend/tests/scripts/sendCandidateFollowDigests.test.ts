@@ -3,8 +3,10 @@ import { describe, expect, it, vi } from "vitest";
 import {
   DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL,
   DEFAULT_DIGEST_MAX_USERS,
+  DIGEST_RUN_LOCK_KEY,
   parseSendCandidateFollowDigestsArgs,
   sendCandidateFollowDigests,
+  withDigestRunLock,
 } from "../../src/scripts/sendCandidateFollowDigests.js";
 import type { CandidateFollowDigestEmailInput } from "../../src/pipeline/users/candidateFollowDigestMailer.js";
 
@@ -254,5 +256,59 @@ describe("sendCandidateFollowDigests", () => {
     expect(result.usersEmailedCount).toBe(0);
     expect(mailer.sendDigestEmail).not.toHaveBeenCalled();
     expect(db.markedEventIds).toEqual([]);
+  });
+});
+
+describe("withDigestRunLock", () => {
+  function createLockClientMock(locked: boolean) {
+    const query = vi.fn(async (sql: string) => {
+      if (sql.includes("pg_try_advisory_lock")) {
+        return { rows: [{ locked }], rowCount: 1 };
+      }
+      return { rows: [], rowCount: 1 };
+    });
+    const release = vi.fn();
+    return { client: { query, release }, query, release };
+  }
+
+  it("runs fn under the lock, unlocks, and releases the client", async () => {
+    const { client, query, release } = createLockClientMock(true);
+    const pool = { connect: vi.fn(async () => client) };
+    const fn = vi.fn(async () => "ran");
+
+    await expect(withDigestRunLock(pool as never, fn)).resolves.toBe("ran");
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(query.mock.calls[0][0]).toContain("pg_try_advisory_lock");
+    expect(query.mock.calls[0][1]).toEqual([DIGEST_RUN_LOCK_KEY]);
+    expect(String(query.mock.calls[1][0])).toContain("pg_advisory_unlock");
+    expect(release).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns null without running fn when the lock is held elsewhere", async () => {
+    const { client, query, release } = createLockClientMock(false);
+    const pool = { connect: vi.fn(async () => client) };
+    const fn = vi.fn();
+
+    await expect(withDigestRunLock(pool as never, fn as never)).resolves.toBeNull();
+
+    expect(fn).not.toHaveBeenCalled();
+    // No unlock call for a lock we never held.
+    expect(query.mock.calls.map((c) => String(c[0])).join(" ")).not.toContain("pg_advisory_unlock");
+    expect(release).toHaveBeenCalledTimes(1);
+  });
+
+  it("still unlocks and releases when fn throws", async () => {
+    const { client, query, release } = createLockClientMock(true);
+    const pool = { connect: vi.fn(async () => client) };
+
+    await expect(
+      withDigestRunLock(pool as never, async () => {
+        throw new Error("boom");
+      })
+    ).rejects.toThrow("boom");
+
+    expect(String(query.mock.calls[1][0])).toContain("pg_advisory_unlock");
+    expect(release).toHaveBeenCalledTimes(1);
   });
 });

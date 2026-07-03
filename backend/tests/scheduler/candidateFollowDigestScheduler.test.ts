@@ -10,12 +10,15 @@ const baseSendResult = {
   failures: [],
 };
 
-function mockDigestModule(sendMock: ReturnType<typeof vi.fn>) {
+function mockDigestModule(sendMock: ReturnType<typeof vi.fn>, opts: { lockBusy?: boolean } = {}) {
   vi.doMock("../../src/scripts/sendCandidateFollowDigests.js", () => ({
     DEFAULT_DIGEST_MAX_USERS: 500,
     DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL: 20,
     buildDigestMailerFromEnv: vi.fn(() => ({ sendDigestEmail: vi.fn() })),
     sendCandidateFollowDigests: sendMock,
+    withDigestRunLock: vi.fn(async (_pool: unknown, fn: () => Promise<unknown>) =>
+      opts.lockBusy ? null : fn()
+    ),
   }));
 }
 
@@ -102,5 +105,25 @@ describe("runCandidateFollowDigestJob", () => {
 
     expect(result.failures).toEqual([{ userId: "u2", stage: "send", reason: "SES exploded" }]);
     expect(result.usersEmailedCount).toBe(1);
+  });
+
+  it("returns a lockSkipped result when another live run holds the advisory lock", async () => {
+    vi.resetModules();
+    const sendMock = vi.fn(async () => ({ ...baseSendResult }));
+    const endMock = vi.fn(async () => {});
+    mockDigestModule(sendMock, { lockBusy: true });
+    mockPipelineEnv();
+    mockPg(endMock);
+
+    const { runCandidateFollowDigestJob } = await import(
+      "../../src/scheduler/candidateFollowDigestScheduler.js"
+    );
+
+    const result = await runCandidateFollowDigestJob({ triggeredBy: "daily" });
+
+    expect(result.lockSkipped).toBe(true);
+    expect(result.usersEmailedCount).toBe(0);
+    expect(sendMock).not.toHaveBeenCalled();
+    expect(endMock).toHaveBeenCalledTimes(1);
   });
 });

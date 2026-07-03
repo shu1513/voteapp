@@ -284,6 +284,40 @@ export async function sendCandidateFollowDigests(
   return result;
 }
 
+/** App-unique advisory lock key for the live digest run. */
+export const DIGEST_RUN_LOCK_KEY = 74_310_146;
+
+/**
+ * Serializes live digest runs across processes (scheduler worker, manual
+ * --live runs) with a Postgres session advisory lock. The lock must live on
+ * one dedicated connection for the whole run — pool.query() hops connections —
+ * so this checks out a client and holds it until fn settles. Returns null
+ * without calling fn when another run already holds the lock.
+ */
+export async function withDigestRunLock<T>(
+  pool: Pick<Pool, "connect">,
+  fn: () => Promise<T>
+): Promise<T | null> {
+  const client = await pool.connect();
+  let locked = false;
+  try {
+    const acquired = await client.query<{ locked: boolean }>(
+      "SELECT pg_try_advisory_lock($1) AS locked",
+      [DIGEST_RUN_LOCK_KEY]
+    );
+    locked = acquired.rows[0]?.locked === true;
+    if (!locked) {
+      return null;
+    }
+    return await fn();
+  } finally {
+    if (locked) {
+      await client.query("SELECT pg_advisory_unlock($1)", [DIGEST_RUN_LOCK_KEY]);
+    }
+    client.release();
+  }
+}
+
 function readOptionalEnv(name: string): string | undefined {
   const value = process.env[name]?.trim();
   return value && value.length > 0 ? value : undefined;
@@ -334,7 +368,14 @@ async function main(): Promise<void> {
 
   const pool = new Pool({ connectionString });
   try {
-    const result = await sendCandidateFollowDigests(pool, mailer, options);
+    // Dry runs read without marking, so they run unlocked.
+    const result = options.live
+      ? await withDigestRunLock(pool, () => sendCandidateFollowDigests(pool, mailer, options))
+      : await sendCandidateFollowDigests(pool, mailer, options);
+    if (result === null) {
+      console.log(JSON.stringify({ skipped: true, reason: "another digest run holds the lock" }, null, 2));
+      return;
+    }
     console.log(
       JSON.stringify(
         {
