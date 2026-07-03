@@ -147,6 +147,7 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
   const usSenate = isUsSenateOfficeTitle(entry.official_ballot_title);
   const usHouse =
     /\bu\.?s\.?\s+house\b/.test(scopeText) ||
+    /\bunited states house\b/.test(scopeText) ||
     /\bu\.?s\.?\s+house\s+of\s+representatives?\b/.test(scopeText) ||
     /\brepresentative in congress\b/.test(scopeText) ||
     /\brepresentative to congress\b/.test(scopeText) ||
@@ -169,7 +170,7 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
     /\bgovernor\b|\blieutenant governor\b|\battorney general\b|\bsecretary of state\b/.test(scopeText);
   const countyLike =
     entry.race_type === "office" &&
-    /\bcounty\b|\bsheriff\b|\bcounty commissioner\b|\bcounty clerk\b/.test(scopeText);
+    /\bcounty\b|\bsheriff\b|\bcounty commissioner\b|\bcounty clerk\b|\bdistrict attorney\b/.test(scopeText);
   const cityLike =
     entry.race_type === "office" &&
     /\bcity\b|\bmayor\b|\bcity council\b|\balderman\b/.test(scopeText);
@@ -228,6 +229,7 @@ function isSoftScopeAmbiguous(
       /\bu\.?s\.?\s+house\s+of\s+representatives?\b/,
       /\bu\.?s\.?\s+representative\b/,
       /\bunited states representative\b/,
+      /\bunited states house\b/,
       /\brepresentative in congress\b/,
       /\brepresentative to congress\b/,
       /\bcongressional district\b/,
