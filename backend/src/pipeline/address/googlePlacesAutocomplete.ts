@@ -13,11 +13,23 @@ export const GOOGLE_PLACES_DETAILS_URL_PREFIX = "https://places.googleapis.com/v
 // so a slow upstream should fail fast rather than stack up requests.
 export const DEFAULT_GOOGLE_PLACES_TIMEOUT_MS = 8_000;
 
+// Shared contract with the retrieve endpoint's validation: suggestions only
+// surface place IDs that the retrieve step will accept, so a rendered
+// suggestion can never dead-end with a 400 on selection. Google place IDs are
+// base64url-shaped in practice; if Google ever widens its charset, widen this
+// pattern (and the retrieve validation with it).
+export const GOOGLE_PLACE_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
+
 const SUGGEST_FIELD_MASK =
   "suggestions.placePrediction.placeId,suggestions.placePrediction.text,suggestions.placePrediction.structuredFormat";
 const RETRIEVE_FIELD_MASK = "formattedAddress";
 
-export type GooglePlacesAutocompleteErrorCode = "invalid_input" | "http_error" | "bad_response" | "timeout";
+export type GooglePlacesAutocompleteErrorCode =
+  | "invalid_input"
+  | "http_error"
+  | "bad_response"
+  | "network_error"
+  | "timeout";
 
 export class GooglePlacesAutocompleteError extends Error {
   readonly code: GooglePlacesAutocompleteErrorCode;
@@ -126,7 +138,15 @@ async function fetchGooglePlacesJson(
     if (isAbortError(error)) {
       throw new GooglePlacesAutocompleteError("timeout", `Google Places request timed out after ${timeoutMs}ms`);
     }
-    throw error;
+    if (error instanceof GooglePlacesAutocompleteError) {
+      throw error;
+    }
+    // Node fetch surfaces DNS/connection failures as plain TypeError; wrap them
+    // so the API layer maps them to 503 instead of the generic TypeError->400.
+    throw new GooglePlacesAutocompleteError(
+      "network_error",
+      `Google Places request failed: ${error instanceof Error ? error.message : String(error)}`
+    );
   } finally {
     clearTimeout(timeout);
   }
@@ -146,7 +166,7 @@ function parseSuggestion(value: unknown): AddressSuggestion | null {
   const prediction = value.placePrediction;
   const placeId = typeof prediction.placeId === "string" ? prediction.placeId.trim() : "";
   const description = parseLocalizedText(prediction.text);
-  if (placeId.length === 0 || description.length === 0) {
+  if (!GOOGLE_PLACE_ID_PATTERN.test(placeId) || description.length === 0) {
     return null;
   }
   const structuredFormat = isRecord(prediction.structuredFormat) ? prediction.structuredFormat : {};

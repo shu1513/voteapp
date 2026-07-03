@@ -43,7 +43,9 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     if (error.code === "bad_response") {
       return { statusCode: 502, code: "bad_upstream_response", message: error.message };
     }
-    return { statusCode: 503, code: "upstream_unavailable", message: error.message };
+    if (error.code === "timeout" || error.code === "http_error" || error.code === "network_error") {
+      return { statusCode: 503, code: "upstream_unavailable", message: error.message };
+    }
   }
   if (error instanceof InitializeUserDistrictsError) {
     if (error.code === "invalid_user_id" || error.code === "user_not_found") {

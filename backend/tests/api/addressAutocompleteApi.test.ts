@@ -214,7 +214,8 @@ describe("address autocomplete API endpoints", () => {
     const suggestAddresses = vi
       .fn()
       .mockRejectedValueOnce(new GooglePlacesAutocompleteError("timeout", "Google Places request timed out after 8000ms"))
-      .mockRejectedValueOnce(new GooglePlacesAutocompleteError("bad_response", "Google Places returned non-JSON response"));
+      .mockRejectedValueOnce(new GooglePlacesAutocompleteError("bad_response", "Google Places returned non-JSON response"))
+      .mockRejectedValueOnce(new GooglePlacesAutocompleteError("network_error", "Google Places request failed: fetch failed"));
 
     const app = createApiApp({ resolveAddress, suggestAddresses });
     const request = {
@@ -231,6 +232,10 @@ describe("address autocomplete API endpoints", () => {
     const badResponse = await invokeExpressApp(app, request);
     expect(badResponse.statusCode).toBe(502);
     expect((badResponse.body as { error: { code: string } }).error.code).toBe("bad_upstream_response");
+
+    const networkResponse = await invokeExpressApp(app, request);
+    expect(networkResponse.statusCode).toBe(503);
+    expect((networkResponse.body as { error: { code: string } }).error.code).toBe("upstream_unavailable");
   });
 
   it("applies the shared rate limiter to autocomplete requests", async () => {

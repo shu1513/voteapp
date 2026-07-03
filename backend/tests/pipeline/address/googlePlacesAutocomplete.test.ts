@@ -95,6 +95,9 @@ describe("googlePlacesAutocomplete suggest", () => {
       suggestions: [
         { unexpected: true },
         { placePrediction: { placeId: "  ", text: { text: "missing id" } } },
+        // place_id outside the shared charset would be rejected by the
+        // retrieve endpoint, so it must never be surfaced as a suggestion.
+        { placePrediction: { placeId: "bad/id+chars=", text: { text: "unusable id" } } },
         { placePrediction: { placeId: "place-2", text: { text: "123 Main St, Austin, TX, USA" } } },
       ],
     });
@@ -157,10 +160,25 @@ describe("googlePlacesAutocomplete suggest", () => {
     });
   });
 
+  it("wraps network failures as network_error instead of leaking TypeError", async () => {
+    // Node fetch rejects DNS/connection failures with a plain TypeError; if it
+    // leaked, the API layer would map it to 400 invalid_request.
+    const fetchImpl = vi.fn().mockRejectedValue(new TypeError("fetch failed")) as unknown as typeof fetch;
+
+    await expect(suggestAddressesWithGooglePlaces(SUGGEST_INPUT, { ...OPTIONS, fetchImpl })).rejects.toMatchObject({
+      name: "GooglePlacesAutocompleteError",
+      code: "network_error",
+      message: expect.stringContaining("fetch failed"),
+    });
+  });
+
   it("rejects invalid timeout configuration", async () => {
+    const fetchImpl = vi.fn() as unknown as typeof fetch;
+
     await expect(
-      suggestAddressesWithGooglePlaces(SUGGEST_INPUT, { ...OPTIONS, timeoutMs: 0 })
+      suggestAddressesWithGooglePlaces(SUGGEST_INPUT, { ...OPTIONS, fetchImpl, timeoutMs: 0 })
     ).rejects.toMatchObject({ code: "invalid_input" });
+    expect(fetchImpl).not.toHaveBeenCalled();
     expect(DEFAULT_GOOGLE_PLACES_TIMEOUT_MS).toBeGreaterThan(0);
   });
 });

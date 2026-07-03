@@ -1,4 +1,5 @@
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
+import { GOOGLE_PLACE_ID_PATTERN } from "../pipeline/address/googlePlacesAutocomplete.js";
 import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
@@ -137,10 +138,13 @@ export function parseAutocompleteSuggestBodyValue(parsed: unknown): AddressAutoc
 
 export function parseAutocompleteRetrieveBodyValue(parsed: unknown): AddressAutocompleteRetrievePayload {
   const placeId = parseStringField(parsed, "place_id");
-  if (placeId.length > MAX_AUTOCOMPLETE_PLACE_ID_LENGTH || !AUTOCOMPLETE_TOKEN_PATTERN.test(placeId)) {
-    throw new TypeError(
-      `place_id must be at most ${MAX_AUTOCOMPLETE_PLACE_ID_LENGTH} characters of letters, digits, hyphens, or underscores`
-    );
+  if (placeId.length > MAX_AUTOCOMPLETE_PLACE_ID_LENGTH) {
+    throw new TypeError(`place_id must be at most ${MAX_AUTOCOMPLETE_PLACE_ID_LENGTH} characters`);
+  }
+  // Same pattern the suggest step filters on, so any place_id we emitted is
+  // accepted here.
+  if (!GOOGLE_PLACE_ID_PATTERN.test(placeId)) {
+    throw new TypeError("place_id must contain only letters, digits, hyphens, or underscores");
   }
   return {
     place_id: placeId,
