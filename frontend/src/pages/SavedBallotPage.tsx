@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "../api/client";
 import {
   BALLOT_SORT_DESCRIPTIONS,
@@ -35,6 +35,7 @@ function BallotPreferenceControls() {
   });
 
   const update = useMutation({
+    mutationKey: ["put-ballot-preferences"],
     mutationFn: (next: BallotPreferences) =>
       apiRequest<BallotPreferences>("/api/me/ballot-preferences", { method: "PUT", body: next }),
     onSuccess: (saved) => {
@@ -45,6 +46,11 @@ function BallotPreferenceControls() {
       setPending(null);
     },
   });
+  // Cross-mount in-flight guard: component-local isPending resets on remount
+  // (navigate away and back mid-save), but the mutation cache does not — a
+  // remounted control must stay locked until the older full-object PUT
+  // settles, or two writes could commit out of order.
+  const saving = useIsMutating({ mutationKey: ["put-ballot-preferences"] }) > 0;
 
   if (prefs.isError) {
     return <ErrorNotice error={prefs.error} />;
@@ -70,7 +76,7 @@ function BallotPreferenceControls() {
             // Disabled while a save is in flight: the PUT replaces the FULL
             // object, so concurrent requests could commit out of order and
             // the earlier write would win.
-            disabled={update.isPending}
+            disabled={saving}
             onChange={(event) => change({ sort: event.target.value as BallotPreferences["sort"] })}
             className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none disabled:opacity-60"
           >
@@ -85,7 +91,7 @@ function BallotPreferenceControls() {
           <input
             type="checkbox"
             checked={current.followed_first}
-            disabled={update.isPending}
+            disabled={saving}
             onChange={(event) => change({ followed_first: event.target.checked })}
             className="h-4 w-4 accent-rausch"
           />

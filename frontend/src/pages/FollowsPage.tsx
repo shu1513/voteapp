@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMe } from "../lib/useMe";
-import { useFollows, useSetFollow } from "../lib/useFollows";
+import { useFollows, useFollowSaving, useSetFollow } from "../lib/useFollows";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { formatElectionDate } from "../lib/format";
@@ -34,6 +34,7 @@ function NotifyToggle({
 
 function FollowRow({ follow }: { follow: CandidateFollow }) {
   const setFollow = useSetFollow();
+  const saving = useFollowSaving();
   // Optimistic overlay: two quick toggles must not build the second payload
   // from the pre-refetch prop (the PUT saves BOTH booleans, so a stale spread
   // silently reverts the first change). null = no pending edits.
@@ -75,7 +76,7 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
         </div>
         <button
           type="button"
-          disabled={setFollow.isPending}
+          disabled={saving}
           onClick={() => setFollow.mutate({ candidate_id: follow.candidate_id, following: false })}
           className="rounded-lg border border-line bg-white px-3 py-1 text-xs font-semibold text-ink transition hover:border-rausch"
         >
@@ -98,13 +99,13 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
         <NotifyToggle
           label="Email me about their elections"
           checked={notify.notify_elections}
-          disabled={setFollow.isPending}
+          disabled={saving}
           onChange={(next) => update({ notify_elections: next })}
         />
         <NotifyToggle
           label="Email me about record updates"
           checked={notify.notify_updates}
-          disabled={setFollow.isPending}
+          disabled={saving}
           onChange={(next) => update({ notify_updates: next })}
         />
       </div>

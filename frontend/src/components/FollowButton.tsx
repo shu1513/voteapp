@@ -1,4 +1,4 @@
-import { useSetFollow } from "../lib/useFollows";
+import { useFollowSaving, useSetFollow } from "../lib/useFollows";
 
 // Follow/unfollow toggle. Rendered only for verified users (callers gate on
 // useFollows().canFollow); new follows default to both notification kinds on,
@@ -12,6 +12,7 @@ type FollowButtonProps = {
 
 export function FollowButton({ candidateId, isFollowing, size = "md" }: FollowButtonProps) {
   const setFollow = useSetFollow();
+  const saving = useFollowSaving();
   const base =
     size === "sm"
       ? "rounded-lg px-3 py-1 text-xs font-semibold transition"
@@ -20,7 +21,7 @@ export function FollowButton({ candidateId, isFollowing, size = "md" }: FollowBu
   return (
     <button
       type="button"
-      disabled={setFollow.isPending}
+      disabled={saving}
       onClick={() => setFollow.mutate({ candidate_id: candidateId, following: !isFollowing })}
       className={
         isFollowing

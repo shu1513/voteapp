@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import type { CandidateFollowsResult, CandidateFollowUpdate } from "../api/types";
 import { useMe } from "./useMe";
@@ -24,9 +24,19 @@ export function useFollows() {
   };
 }
 
+/**
+ * Cross-mount in-flight guard for follow writes: component-local isPending
+ * resets when a page unmounts mid-save, but the mutation cache does not.
+ * Controls disable on this so a remount cannot race the older PUT.
+ */
+export function useFollowSaving(): boolean {
+  return useIsMutating({ mutationKey: ["set-follow"] }) > 0;
+}
+
 export function useSetFollow() {
   const queryClient = useQueryClient();
   return useMutation({
+    mutationKey: ["set-follow"],
     mutationFn: (update: CandidateFollowUpdate) =>
       apiRequest<{ follow: unknown }>("/api/me/candidate-follows", { method: "PUT", body: update }),
     onSuccess: (_data, update) => {

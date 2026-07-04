@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import type { EmailPreferences, ResearchAreaCatalog, ResearchAreaPreferencesResult } from "../api/types";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
@@ -227,6 +227,7 @@ function EmailPreferencesSection() {
     staleTime: 60_000,
   });
   const update = useMutation({
+    mutationKey: ["put-email-preferences"],
     mutationFn: (next: EmailPreferences) =>
       apiRequest<EmailPreferences>("/api/me/email-preferences", { method: "PUT", body: next }),
     onSuccess: (saved) => {
@@ -236,6 +237,10 @@ function EmailPreferencesSection() {
       setPending(null);
     },
   });
+  // Cross-mount in-flight guard: local isPending resets if the user leaves
+  // and returns mid-save, but the mutation cache does not — the toggles stay
+  // locked until the older full-object PUT settles.
+  const saving = useIsMutating({ mutationKey: ["put-email-preferences"] }) > 0;
 
   const labels: Array<{ key: keyof EmailPreferences; label: string }> = [
     { key: "email_digest", label: "Daily digest about candidates you follow" },
@@ -260,10 +265,10 @@ function EmailPreferencesSection() {
                 <input
                   type="checkbox"
                   checked={current[key]}
-                  // Disabled while a save is in flight: the PUT replaces all
-                  // three flags, so concurrent requests could commit out of
-                  // order and the earlier write would win.
-                  disabled={update.isPending}
+                  // Disabled while a save is in flight (cross-mount): the PUT
+                  // replaces all three flags, so concurrent requests could
+                  // commit out of order and the earlier write would win.
+                  disabled={saving}
                   onChange={(event) => {
                     const next = { ...current, [key]: event.target.checked };
                     setPending(next);
