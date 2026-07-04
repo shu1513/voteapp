@@ -773,6 +773,13 @@ async function dispatchApiRequest(
       return;
     }
 
+    // Password-verifying endpoint: throttle per account (keyed by userId in
+    // the shared auth buckets) so a hijacked session cannot brute-force the
+    // re-entered password behind the per-IP cap alone.
+    if (!(await enforceAuthRateLimit(options, request, response, userId))) {
+      return;
+    }
+
     const payload = parseMeDeleteBodyValue(request.body);
     await options.authService.deleteAccount({
       userId,
@@ -817,6 +824,11 @@ async function dispatchApiRequest(
     const userId = await resolveAuthenticatedUserId(options, request);
     if (!userId) {
       sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    // Password-verifying endpoint: per-account throttle, see DELETE /api/me.
+    if (!(await enforceAuthRateLimit(options, request, response, userId))) {
       return;
     }
 
@@ -867,6 +879,11 @@ async function dispatchApiRequest(
     const userId = await resolveAuthenticatedUserId(options, request);
     if (!userId) {
       sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    // Password-verifying endpoint: per-account throttle, see DELETE /api/me.
+    if (!(await enforceAuthRateLimit(options, request, response, userId))) {
       return;
     }
 

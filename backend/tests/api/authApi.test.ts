@@ -485,6 +485,34 @@ describe("account management endpoints", () => {
     expect(response.headers["set-cookie"]).toContain(`${AUTH_SESSION_COOKIE_NAME}=;`);
   });
 
+  it("throttles password-verifying endpoints per account via the auth rate limiter", async () => {
+    const authService = createAuthServiceMock();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(SESSION_USER_ID);
+    const authRateLimit = vi.fn().mockReturnValue({ allowed: false, retryAfterSeconds: 42 });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService, resolveAuthenticatedUserId, authRateLimit }),
+      {
+        method: "POST",
+        path: "/api/me/password",
+        body: JSON.stringify({ current_password: "guess-1", new_password: "new-password-456" }),
+        headers: { "content-type": "application/json", "x-user-id": SESSION_USER_ID },
+      }
+    );
+
+    expect(response.statusCode).toBe(429);
+    expect(response.headers["retry-after"]).toBe("42");
+    // Keyed by the session holder's userId, not an email: a hijacked session
+    // burns the account's bucket no matter which IP it rotates through.
+    expect(authRateLimit).toHaveBeenCalledWith({
+      clientIp: expect.any(String),
+      email: SESSION_USER_ID,
+      method: "POST",
+      pathname: "/api/me/password",
+    });
+    expect(authService.changePassword).not.toHaveBeenCalled();
+  });
+
   it("requires a session for logout-all", async () => {
     const authService = createAuthServiceMock();
 
