@@ -26,6 +26,6 @@ export function ErrorNotice({ error }: { error: unknown }) {
     }
   }
   return (
-    <p className="rounded border border-rausch/40 bg-rausch/5 px-3 py-2 text-sm text-rausch-dark">{message}</p>
+    <p className="rounded-lg border border-rausch/40 bg-rausch/5 px-3 py-2 text-sm text-rausch-dark">{message}</p>
   );
 }

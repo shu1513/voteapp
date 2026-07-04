@@ -53,7 +53,7 @@ export function ElectionPage() {
       </div>
 
       {measure ? (
-        <section className="mt-6 rounded-lg border border-line bg-white p-4">
+        <section className="mt-6 rounded-xl border border-line bg-white p-4">
           <h2 className="text-lg font-semibold">Ballot measure</h2>
           {measure.summary ? <p className="mt-2 text-sm text-ink">{measure.summary}</p> : null}
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -87,7 +87,7 @@ export function ElectionPage() {
               <Link
                 key={candidate.candidate_id}
                 to={`/candidates/${candidate.candidate_id}`}
-                className="block rounded-lg border border-line bg-white p-4 shadow-sm transition hover:border-rausch"
+                className="block rounded-xl border border-line bg-white p-4 shadow-sm transition hover:shadow-md"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>

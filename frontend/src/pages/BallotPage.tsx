@@ -10,7 +10,7 @@ function ElectionCard({ election }: { election: ElectionSummary }) {
   return (
     <Link
       to={`/elections/${election.id}`}
-      className="block rounded-lg border border-line bg-white p-4 shadow-sm transition hover:border-rausch"
+      className="block rounded-xl border border-line bg-white p-4 shadow-sm transition hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-3">
         <h3 className="font-semibold text-ink">{election.official_ballot_title}</h3>

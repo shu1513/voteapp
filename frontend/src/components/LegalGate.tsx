@@ -16,7 +16,7 @@ type LegalGateProps = {
 
 export function LegalGate({ label, checked, onChange, inputId }: LegalGateProps) {
   return (
-    <div className="rounded-lg border border-line bg-surface p-4 text-sm text-ink">
+    <div className="rounded-xl border border-line bg-surface p-4 text-sm text-ink">
       <label htmlFor={inputId} className="flex cursor-pointer items-start gap-3">
         <input
           id={inputId}
