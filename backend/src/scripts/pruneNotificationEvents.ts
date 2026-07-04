@@ -6,15 +6,22 @@ import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 
 // Retention for the notification event tables (candidate-follow and
 // district new-election). Events are deduplicated by unique indexes, so the
-// tables grow with audience x content and nothing deletes rows. An
-// undelivered event older than the retention window is a stale notification
-// nobody should receive, so pruning is safe. Deleting a row re-arms the
-// ON CONFLICT DO NOTHING dedupe for that pair, which only re-notifies if the
-// same record or election fires a new event later; that is intended.
+// tables grow with audience x content and nothing deletes rows. Deleting a
+// row re-arms the ON CONFLICT DO NOTHING dedupe for that pair, which only
+// re-notifies if the same record or election fires a new event later; that
+// is intended.
+//
+// Candidate-follow events prune by age alone: an unsent record-update or
+// ballot digest item older than the window is stale news nobody should
+// receive. District new-election events additionally require notified_at —
+// a pending alert for a still-future election stays deliverable (e.g. a user
+// who verifies their email late), and every row is eventually stamped anyway
+// (delivered, or orphan-resolved when the user opts out, moves away, or the
+// election date passes), so the lifecycle stays bounded.
 
 export const NOTIFICATION_EVENT_TABLES = [
-  "user_candidate_follow_notification_events",
-  "user_district_notification_events",
+  { table: "user_candidate_follow_notification_events", requireNotified: false },
+  { table: "user_district_notification_events", requireNotified: true },
 ] as const;
 
 export const DEFAULT_NOTIFICATION_EVENT_RETENTION_DAYS = 90;
@@ -37,15 +44,18 @@ export function parsePruneNotificationEventsArgs(argv: readonly string[]): Prune
 
 async function pruneNotificationEventTable(
   db: Pick<Pool, "query">,
-  table: (typeof NOTIFICATION_EVENT_TABLES)[number],
+  { table, requireNotified }: (typeof NOTIFICATION_EVENT_TABLES)[number],
   options: PruneNotificationEventsOptions
 ): Promise<{ matchedCount: number; deletedCount: number }> {
+  const ageCondition = `created_at < now() - make_interval(days => $1::int)${
+    requireNotified ? " AND notified_at IS NOT NULL" : ""
+  }`;
   if (!options.live) {
     const counted = await db.query<{ matched: string }>(
       `
         SELECT count(*)::text AS matched
         FROM public.${table}
-        WHERE created_at < now() - make_interval(days => $1::int)
+        WHERE ${ageCondition}
       `,
       [options.olderThanDays]
     );
@@ -65,7 +75,7 @@ async function pruneNotificationEventTable(
         WHERE id IN (
           SELECT id
           FROM public.${table}
-          WHERE created_at < now() - make_interval(days => $1::int)
+          WHERE ${ageCondition}
           LIMIT $2::int
         )
       `,

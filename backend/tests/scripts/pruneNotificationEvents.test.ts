@@ -60,7 +60,12 @@ describe("pruneNotificationEvents", () => {
     const sqls = query.mock.calls.map((call) => String(call[0]));
     expect(sqls[0]).toContain("SELECT count(*)");
     expect(sqls[0]).toContain("user_candidate_follow_notification_events");
+    // Candidate-follow events prune by age alone; district alerts must also
+    // be delivered/resolved so a late-verifying user keeps a pending alert
+    // for a still-future election.
+    expect(sqls[0]).not.toContain("notified_at IS NOT NULL");
     expect(sqls[1]).toContain("user_district_notification_events");
+    expect(sqls[1]).toContain("notified_at IS NOT NULL");
     expect(sqls.join(" ")).not.toContain("DELETE");
     expect(query.mock.calls[0]?.[1]).toEqual([90]);
   });
@@ -83,9 +88,9 @@ describe("pruneNotificationEvents", () => {
     expect(sql).toContain("created_at < now() - make_interval(days => $1::int)");
     expect(sql).toContain("LIMIT $2::int");
     expect(query.mock.calls[0]?.[1]).toEqual([30, 2]);
-    expect(String(query.mock.calls[3]?.[0])).toContain(
-      "DELETE FROM public.user_district_notification_events"
-    );
+    const districtSql = String(query.mock.calls[3]?.[0]);
+    expect(districtSql).toContain("DELETE FROM public.user_district_notification_events");
+    expect(districtSql).toContain("notified_at IS NOT NULL");
   });
 
   it("stops after one batch per table when fewer rows than the batch size match", async () => {
