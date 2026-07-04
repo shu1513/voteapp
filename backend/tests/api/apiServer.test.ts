@@ -3064,9 +3064,9 @@ describe("email preferences and unsubscribe endpoints", () => {
   });
 
   it("GET renders a confirmation form without mutating (mail scanners GET links)", async () => {
-    const unsubscribeFromEmailDigest = vi.fn().mockResolvedValue("ok");
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
 
-    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailDigest }), {
+    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailNotifications }), {
       method: "GET",
       path: "/api/email/unsubscribe?token=v1.abc.def",
     });
@@ -3076,25 +3076,65 @@ describe("email preferences and unsubscribe endpoints", () => {
     // Confirmation form, not a completed unsubscribe.
     expect(String(response.rawBody)).toContain("<form method=\"post\"");
     expect(String(response.rawBody)).not.toContain("You have been unsubscribed");
-    expect(unsubscribeFromEmailDigest).toHaveBeenCalledWith("v1.abc.def", "confirm");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", "digest");
   });
 
   it("POST (RFC 8058 one-click and the confirmation form) performs the unsubscribe", async () => {
-    const unsubscribeFromEmailDigest = vi.fn().mockResolvedValue("ok");
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
 
-    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailDigest }), {
+    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailNotifications }), {
       method: "POST",
       path: "/api/email/unsubscribe?token=v1.abc.def",
     });
 
     expect(response.statusCode).toBe(200);
     expect(String(response.rawBody)).toContain("You have been unsubscribed");
-    expect(unsubscribeFromEmailDigest).toHaveBeenCalledWith("v1.abc.def", "execute");
+    expect(String(response.rawBody)).toContain("candidate update digest emails");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "execute", "digest");
+  });
+
+  it("scopes the unsubscribe to new-election alerts via the pref param", async () => {
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+    const app = createApiApp({ unsubscribeFromEmailNotifications });
+
+    const confirm = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=new_election_alerts",
+    });
+    expect(confirm.statusCode).toBe(200);
+    expect(String(confirm.rawBody)).toContain("new election alert emails");
+    // The confirmation form must POST back with the same scope.
+    expect(String(confirm.rawBody)).toContain("pref=new_election_alerts");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", "new_election_alerts");
+
+    const execute = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=new_election_alerts",
+    });
+    expect(execute.statusCode).toBe(200);
+    expect(String(execute.rawBody)).toContain("unsubscribed from new election alert emails");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith(
+      "v1.abc.def",
+      "execute",
+      "new_election_alerts"
+    );
+  });
+
+  it("rejects an unrecognized pref value instead of flipping a different opt-in", async () => {
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+
+    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailNotifications }), {
+      method: "POST",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=everything",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(unsubscribeFromEmailNotifications).not.toHaveBeenCalled();
   });
 
   it("returns a 400 HTML page for invalid or missing tokens", async () => {
-    const unsubscribeFromEmailDigest = vi.fn().mockResolvedValue("invalid_token");
-    const app = createApiApp({ unsubscribeFromEmailDigest });
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("invalid_token");
+    const app = createApiApp({ unsubscribeFromEmailNotifications });
 
     const badToken = await invokeExpressApp(app, {
       method: "GET",
@@ -3108,7 +3148,7 @@ describe("email preferences and unsubscribe endpoints", () => {
       path: "/api/email/unsubscribe",
     });
     expect(missingToken.statusCode).toBe(400);
-    expect(unsubscribeFromEmailDigest).toHaveBeenCalledTimes(1);
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledTimes(1);
   });
 
   it("reports 500 when unsubscribe is not configured", async () => {

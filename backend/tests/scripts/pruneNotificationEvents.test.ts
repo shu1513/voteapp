@@ -49,44 +49,51 @@ describe("parsePruneNotificationEventsArgs", () => {
 });
 
 describe("pruneNotificationEvents", () => {
-  it("counts without deleting on dry run", async () => {
+  it("counts both event tables without deleting on dry run", async () => {
     const query = vi.fn().mockResolvedValue({ rows: [{ matched: "12" }], rowCount: 1 });
 
     await expect(
       pruneNotificationEvents({ query } as never, { olderThanDays: 90, live: false, batchSize: 1000 })
-    ).resolves.toEqual({ matchedCount: 12, deletedCount: 0 });
+    ).resolves.toEqual({ matchedCount: 24, deletedCount: 0 });
 
-    const sql = String(query.mock.calls[0]?.[0]);
-    expect(sql).toContain("SELECT count(*)");
-    expect(sql).not.toContain("DELETE");
+    expect(query).toHaveBeenCalledTimes(2);
+    const sqls = query.mock.calls.map((call) => String(call[0]));
+    expect(sqls[0]).toContain("SELECT count(*)");
+    expect(sqls[0]).toContain("user_candidate_follow_notification_events");
+    expect(sqls[1]).toContain("user_district_notification_events");
+    expect(sqls.join(" ")).not.toContain("DELETE");
     expect(query.mock.calls[0]?.[1]).toEqual([90]);
   });
 
-  it("deletes in batches until a short batch on live runs", async () => {
+  it("deletes in batches until a short batch on live runs, then moves to the next table", async () => {
     const query = vi
       .fn()
       .mockResolvedValueOnce({ rows: [], rowCount: 2 })
       .mockResolvedValueOnce({ rows: [], rowCount: 2 })
-      .mockResolvedValueOnce({ rows: [], rowCount: 1 });
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 })
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }); // district table: single short batch
 
     await expect(
       pruneNotificationEvents({ query } as never, { olderThanDays: 30, live: true, batchSize: 2 })
-    ).resolves.toEqual({ matchedCount: 5, deletedCount: 5 });
+    ).resolves.toEqual({ matchedCount: 6, deletedCount: 6 });
 
-    expect(query).toHaveBeenCalledTimes(3);
+    expect(query).toHaveBeenCalledTimes(4);
     const sql = String(query.mock.calls[0]?.[0]);
     expect(sql).toContain("DELETE FROM public.user_candidate_follow_notification_events");
     expect(sql).toContain("created_at < now() - make_interval(days => $1::int)");
     expect(sql).toContain("LIMIT $2::int");
     expect(query.mock.calls[0]?.[1]).toEqual([30, 2]);
+    expect(String(query.mock.calls[3]?.[0])).toContain(
+      "DELETE FROM public.user_district_notification_events"
+    );
   });
 
-  it("stops after one batch when fewer rows than the batch size match", async () => {
+  it("stops after one batch per table when fewer rows than the batch size match", async () => {
     const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 0 });
 
     await expect(
       pruneNotificationEvents({ query } as never, { olderThanDays: 30, live: true, batchSize: 1000 })
     ).resolves.toEqual({ matchedCount: 0, deletedCount: 0 });
-    expect(query).toHaveBeenCalledTimes(1);
+    expect(query).toHaveBeenCalledTimes(2);
   });
 });

@@ -356,6 +356,13 @@ describe("unsubscribe URL wiring", () => {
       const url = new URL(build!(USER_ALPHA));
       expect(url.origin + url.pathname).toBe("https://api.example.com/api/email/unsubscribe");
       expect(verifyEmailUnsubscribeToken(url.searchParams.get("token") ?? "", SECRET)).toBe(USER_ALPHA);
+      // Digest links keep their pre-pref shape.
+      expect(url.searchParams.get("pref")).toBeNull();
+
+      const buildAlerts = buildUnsubscribeUrlBuilderFromEnv("new_election_alerts");
+      const alertUrl = new URL(buildAlerts!(USER_ALPHA));
+      expect(alertUrl.searchParams.get("pref")).toBe("new_election_alerts");
+      expect(verifyEmailUnsubscribeToken(alertUrl.searchParams.get("token") ?? "", SECRET)).toBe(USER_ALPHA);
     } finally {
       process.env = saved;
     }

@@ -52,6 +52,7 @@ import {
   parseCandidateFollowBodyValue,
   parseBallotPreferencesBodyValue,
   parseEmailPreferencesBodyValue,
+  parseEmailUnsubscribePreference,
   parseBallotSummaryOptions,
   parseCandidateId,
   parseDistrictIds,
@@ -1093,7 +1094,7 @@ async function dispatchApiRequest(
       );
       return;
     }
-    if (!options.unsubscribeFromEmailDigest) {
+    if (!options.unsubscribeFromEmailNotifications) {
       sendApiResponse(
         response,
         toErrorResponse(500, "internal_error", "Email unsubscribe is not configured", corsHeaders)
@@ -1102,29 +1103,38 @@ async function dispatchApiRequest(
     }
 
     const token = url.searchParams.get("token")?.trim() ?? "";
+    // Unknown pref values 400 rather than falling back: a mangled link must
+    // not silently flip a different opt-in than the email advertised.
+    const preference = parseEmailUnsubscribePreference(url.searchParams.get("pref"));
     // GET must not mutate: mail security gateways, previewers, and prefetchers
     // GET every link in an email body, which would silently unsubscribe users.
     // GET renders a confirmation form that POSTs back here; POST (the form and
     // RFC 8058 one-click) performs the unsubscribe.
     const mode = request.method === "GET" ? ("confirm" as const) : ("execute" as const);
-    const outcome = token ? await options.unsubscribeFromEmailDigest(token, mode) : "invalid_token";
+    const outcome =
+      token && preference
+        ? await options.unsubscribeFromEmailNotifications(token, mode, preference)
+        : "invalid_token";
     const invalidPage =
       "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Invalid link</title></head><body><p>This unsubscribe link is invalid or incomplete.</p><p>You can manage email settings in your account settings.</p></body></html>";
-    if (outcome !== "ok") {
+    if (outcome !== "ok" || !preference) {
       response
         .status(400)
         .set({ ...corsHeaders, "content-type": "text/html; charset=utf-8" })
         .send(invalidPage);
       return;
     }
+    const preferenceLabel =
+      preference === "new_election_alerts" ? "new election alert emails" : "candidate update digest emails";
+    const formAction = `${EMAIL_UNSUBSCRIBE_PATH}?token=${encodeURIComponent(token)}&pref=${encodeURIComponent(preference)}`;
     const confirmPage =
       "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Unsubscribe</title></head><body>" +
-      "<p>Unsubscribe from candidate update digest emails?</p>" +
-      `<form method="post" action="${EMAIL_UNSUBSCRIBE_PATH}?token=${encodeURIComponent(token)}">` +
+      `<p>Unsubscribe from ${preferenceLabel}?</p>` +
+      `<form method="post" action="${formAction}">` +
       "<button type=\"submit\">Unsubscribe</button></form>" +
       "</body></html>";
     const donePage =
-      "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Unsubscribed</title></head><body><p>You have been unsubscribed from candidate update digest emails.</p><p>You can turn them back on any time in your account settings.</p></body></html>";
+      `<!doctype html><html lang="en"><head><meta charset="UTF-8"><title>Unsubscribed</title></head><body><p>You have been unsubscribed from ${preferenceLabel}.</p><p>You can turn them back on any time in your account settings.</p></body></html>`;
     response
       .status(200)
       .set({ ...corsHeaders, "content-type": "text/html; charset=utf-8" })
