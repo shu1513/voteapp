@@ -1,5 +1,6 @@
 import { Queue, type JobsOptions } from "bullmq";
-import type { ConnectionOptions, Job } from "bullmq";
+import type { Job } from "bullmq";
+import { toConnectionOptions } from "../../utils/redisConnection.js";
 import { Pool } from "pg";
 
 import { getPipelineEnv } from "../../config/env.js";
@@ -111,38 +112,6 @@ function assertPositiveIntegerOption(name: string, value: number): void {
   if (!Number.isInteger(value) || value <= 0) {
     throw new Error(`Invalid positive integer option ${name}: ${value}`);
   }
-}
-
-function toConnectionOptions(redisUrl: string): ConnectionOptions {
-  const parsed = new URL(redisUrl);
-  const parsedPort = parsed.port ? Number.parseInt(parsed.port, 10) : 6379;
-  const parsedDb = parsed.pathname.length > 1 ? Number.parseInt(parsed.pathname.slice(1), 10) : 0;
-
-  if (!Number.isInteger(parsedPort) || parsedPort <= 0) {
-    throw new Error(`Invalid REDIS_URL port: ${parsed.port}`);
-  }
-  if (!Number.isInteger(parsedDb) || parsedDb < 0) {
-    throw new Error(`Invalid REDIS_URL db index: ${parsed.pathname}`);
-  }
-
-  const opts: ConnectionOptions = {
-    host: parsed.hostname,
-    port: parsedPort,
-    db: parsedDb,
-    maxRetriesPerRequest: null,
-  };
-
-  if (parsed.username) {
-    opts.username = decodeURIComponent(parsed.username);
-  }
-  if (parsed.password) {
-    opts.password = decodeURIComponent(parsed.password);
-  }
-  if (parsed.protocol === "rediss:") {
-    opts.tls = {};
-  }
-
-  return opts;
 }
 
 function readProducerPolicy(): ProducerPolicy {
