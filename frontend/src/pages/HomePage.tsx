@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import type { AddressResolution } from "../api/types";
@@ -7,6 +7,8 @@ import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { formatDistrictType } from "../lib/format";
+import { savePendingDistrictIds } from "../lib/pendingDistricts";
+import { useMe } from "../lib/useMe";
 import {
   PRE_SEARCH_ACCEPTANCE_STORAGE_KEY,
   PRE_SEARCH_CHECKBOX_LABEL,
@@ -23,12 +25,28 @@ function readStoredAcceptance(): boolean {
 
 export function HomePage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { me } = useMe();
   const [address, setAddress] = useState("");
   const [accepted, setAccepted] = useState(readStoredAcceptance);
+
+  // Returning verified users land on their saved ballot; ?new=1 is the
+  // escape hatch for a one-off anonymous search.
+  const oneOffSearch = searchParams.get("new") !== null;
+  useEffect(() => {
+    if (me?.email_verified && !oneOffSearch) {
+      navigate("/me/ballot", { replace: true });
+    }
+  }, [me, oneOffSearch, navigate]);
 
   const resolve = useMutation({
     mutationFn: (input: string) =>
       apiRequest<AddressResolution>("/api/address/resolve", { method: "POST", body: { address: input } }),
+    onSuccess: (resolution) => {
+      // Stash for the anonymous-to-account handoff: if this visitor signs up,
+      // these districts become their saved ballot once they verify.
+      savePendingDistrictIds(resolution.districts.map((district) => district.id));
+    },
   });
 
   const canSearch = accepted && address.trim().length > 0 && !resolve.isPending;
