@@ -5,6 +5,7 @@ import { generateAuthToken, hashPassword, validatePasswordPolicy, verifyPassword
 import { issueUserAuthToken, consumeUserAuthToken } from "./authTokenStore.js";
 import type { AuthMailer } from "./authMailer.js";
 import { isUuid } from "../utils/uuid.js";
+import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type TransactionalDb = Pick<Pool, "connect" | "query">;
@@ -360,8 +361,13 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       validatePasswordPolicy(input.password);
       const acceptedTermsVersion =
         typeof input.acceptedTermsVersion === "string" ? input.acceptedTermsVersion.trim() : "";
-      if (acceptedTermsVersion.length === 0) {
-        throw new TypeError("acceptedTermsVersion must be a non-empty string");
+      // Enforced here as well as at the API layer: no caller (script, admin
+      // tooling, future route) may persist acceptance of anything but the
+      // current terms version — the stored value is the evidentiary record.
+      if (acceptedTermsVersion !== CURRENT_TERMS_VERSION) {
+        throw new TypeError(
+          `acceptedTermsVersion must be the current terms version (${CURRENT_TERMS_VERSION})`
+        );
       }
       const passwordHash = await hashPassword(input.password);
       const client = await options.db.connect();
