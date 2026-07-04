@@ -7,12 +7,19 @@ import {
   AUTH_RESET_PASSWORD_PATH,
   AUTH_RESEND_VERIFICATION_PATH,
   AUTH_VERIFY_EMAIL_PATH,
+  AUTH_VERIFY_EMAIL_CHANGE_PATH,
+  AUTH_LOGOUT_ALL_PATH,
   parseAuthForgotPasswordBodyValue,
   parseAuthLoginBodyValue,
   parseAuthRegisterBodyValue,
   parseAuthResetPasswordBodyValue,
   parseAuthResendVerificationBodyValue,
   parseAuthVerifyEmailBodyValue,
+  parseAuthVerifyEmailChangeBodyValue,
+  parseMeDeleteBodyValue,
+  parseMeEmailBodyValue,
+  parseMePasswordBodyValue,
+  parseMeUpdateBodyValue,
 } from "./apiValidation.js";
 import type { AddressApiServerOptions } from "./addressApiTypes.js";
 import { mapErrorToResponse } from "./apiErrors.js";
@@ -30,6 +37,8 @@ import {
   EMAIL_UNSUBSCRIBE_PATH,
   ME_ADDRESS_PATH,
   ME_BALLOT_PATH,
+  ME_EMAIL_PATH,
+  ME_PASSWORD_PATH,
   ME_PATH,
   ME_BALLOT_PREFERENCES_PATH,
   ME_CANDIDATE_FOLLOWS_PATH,
@@ -84,8 +93,12 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === AUTH_RESET_PASSWORD_PATH ||
     pathname === AUTH_RESEND_VERIFICATION_PATH ||
     pathname === AUTH_VERIFY_EMAIL_PATH ||
+    pathname === AUTH_VERIFY_EMAIL_CHANGE_PATH ||
+    pathname === AUTH_LOGOUT_ALL_PATH ||
     pathname === EMAIL_UNSUBSCRIBE_PATH ||
     pathname === ME_PATH ||
+    pathname === ME_EMAIL_PATH ||
+    pathname === ME_PASSWORD_PATH ||
     pathname === ME_ADDRESS_PATH ||
     pathname === ME_BALLOT_PATH ||
     pathname === ME_BALLOT_PREFERENCES_PATH ||
@@ -290,9 +303,16 @@ function createJsonBodyParser() {
           request.path === AUTH_REGISTER_PATH ||
           request.path === AUTH_RESET_PASSWORD_PATH ||
           request.path === AUTH_RESEND_VERIFICATION_PATH ||
-          request.path === AUTH_VERIFY_EMAIL_PATH)) ||
+          request.path === AUTH_VERIFY_EMAIL_PATH ||
+          request.path === AUTH_VERIFY_EMAIL_CHANGE_PATH ||
+          // Like logout: requiring JSON blocks plain cross-site form POSTs.
+          request.path === AUTH_LOGOUT_ALL_PATH ||
+          request.path === ME_EMAIL_PATH ||
+          request.path === ME_PASSWORD_PATH)) ||
+      (request.method === "DELETE" && request.path === ME_PATH) ||
       (request.method === "PUT" &&
-        (request.path === ME_ADDRESS_PATH ||
+        (request.path === ME_PATH ||
+          request.path === ME_ADDRESS_PATH ||
           request.path === ME_BALLOT_PREFERENCES_PATH ||
           request.path === ME_CANDIDATE_FOLLOWS_PATH ||
           request.path === ME_EMAIL_PREFERENCES_PATH ||
@@ -399,6 +419,75 @@ async function dispatchApiRequest(
       token: payload.token,
     });
     sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === AUTH_VERIFY_EMAIL_CHANGE_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/auth/verify-email-change", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.authService) {
+      sendApiResponse(response, toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders));
+      return;
+    }
+
+    const payload = parseAuthVerifyEmailChangeBodyValue(request.body);
+    await options.authService.verifyEmailChange({
+      token: payload.token,
+    });
+    sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === AUTH_LOGOUT_ALL_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/auth/logout-all", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId || !options.authService) {
+      sendApiResponse(
+        response,
+        !options.resolveAuthenticatedUserId
+          ? toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders)
+          : toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    // Needs a live session to know whose sessions to destroy; a caller with
+    // a dead cookie is already logged out everywhere it matters.
+    const userId = await resolveAuthenticatedUserId(options, request);
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    await options.authService.logoutAll({ userId });
+    sendApiResponse(response, {
+      ...toJsonResponse(200, { status: "ok" }, corsHeaders),
+      headers: {
+        ...corsHeaders,
+        "content-type": "application/json; charset=utf-8",
+        "set-cookie": serializeClearedAuthSessionCookie({
+          ...options.authSessionCookieOptions,
+        }),
+      },
+      body: { status: "ok" },
+      statusCode: 200,
+    });
     return;
   }
 
@@ -625,12 +714,12 @@ async function dispatchApiRequest(
   }
 
   if (url.pathname === ME_PATH) {
-    if (request.method !== "GET") {
+    if (request.method !== "GET" && request.method !== "PUT" && request.method !== "DELETE") {
       sendApiResponse(
         response,
-        toErrorResponse(405, "method_not_allowed", "Use GET /api/me", {
+        toErrorResponse(405, "method_not_allowed", "Use GET, PUT, or DELETE /api/me", {
           ...corsHeaders,
-          allow: "GET",
+          allow: "GET, PUT, DELETE",
         })
       );
       return;
@@ -642,23 +731,152 @@ async function dispatchApiRequest(
 
     // Deliberately not requireVerifiedAuthenticatedUser: the frontend calls
     // this to find out whether the user is verified, so the unverified state
-    // must be readable, not a 403.
+    // must be readable, not a 403. Same logic for PUT (fix your name) and
+    // DELETE (leave) — neither should demand a verified inbox.
     const userId = await resolveAuthenticatedUserId(options, request);
     if (!userId) {
       sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
       return;
     }
 
-    if (!options.getAuthenticatedUser) {
+    if (request.method === "GET") {
+      if (!options.getAuthenticatedUser) {
+        sendApiResponse(
+          response,
+          toErrorResponse(500, "internal_error", "Authenticated user lookup is not configured", corsHeaders)
+        );
+        return;
+      }
+
+      const user = await options.getAuthenticatedUser(userId);
+      sendApiResponse(response, toJsonResponse(200, { user }, corsHeaders));
+      return;
+    }
+
+    if (request.method === "PUT") {
+      if (!options.updateAuthenticatedUserFirstName) {
+        sendApiResponse(
+          response,
+          toErrorResponse(500, "internal_error", "Authenticated user update is not configured", corsHeaders)
+        );
+        return;
+      }
+
+      const payload = parseMeUpdateBodyValue(request.body);
+      const user = await options.updateAuthenticatedUserFirstName(userId, payload.first_name);
+      sendApiResponse(response, toJsonResponse(200, { user }, corsHeaders));
+      return;
+    }
+
+    if (!options.authService) {
+      sendApiResponse(response, toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders));
+      return;
+    }
+
+    const payload = parseMeDeleteBodyValue(request.body);
+    await options.authService.deleteAccount({
+      userId,
+      password: payload.password,
+    });
+    sendApiResponse(response, {
+      ...toJsonResponse(200, { status: "ok" }, corsHeaders),
+      headers: {
+        ...corsHeaders,
+        "content-type": "application/json; charset=utf-8",
+        "set-cookie": serializeClearedAuthSessionCookie({
+          ...options.authSessionCookieOptions,
+        }),
+      },
+      body: { status: "ok" },
+      statusCode: 200,
+    });
+    return;
+  }
+
+  if (url.pathname === ME_PASSWORD_PATH) {
+    if (request.method !== "POST") {
       sendApiResponse(
         response,
-        toErrorResponse(500, "internal_error", "Authenticated user lookup is not configured", corsHeaders)
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/me/password", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId || !options.authService) {
+      sendApiResponse(
+        response,
+        !options.resolveAuthenticatedUserId
+          ? toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders)
+          : toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders)
       );
       return;
     }
 
-    const user = await options.getAuthenticatedUser(userId);
-    sendApiResponse(response, toJsonResponse(200, { user }, corsHeaders));
+    const userId = await resolveAuthenticatedUserId(options, request);
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    const payload = parseMePasswordBodyValue(request.body);
+    // changePassword rotates every session; hand the fresh one back so the
+    // caller stays logged in while any stolen session dies.
+    const result = await options.authService.changePassword({
+      userId,
+      currentPassword: payload.current_password,
+      newPassword: payload.new_password,
+    });
+    sendApiResponse(response, {
+      ...toJsonResponse(200, { status: "ok" }, corsHeaders),
+      headers: {
+        ...corsHeaders,
+        "content-type": "application/json; charset=utf-8",
+        "set-cookie": serializeAuthSessionCookie(result.sessionId, {
+          ...options.authSessionCookieOptions,
+        }),
+      },
+      body: { status: "ok" },
+      statusCode: 200,
+    });
+    return;
+  }
+
+  if (url.pathname === ME_EMAIL_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/me/email", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId || !options.authService) {
+      sendApiResponse(
+        response,
+        !options.resolveAuthenticatedUserId
+          ? toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders)
+          : toErrorResponse(500, "internal_error", "Authentication is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const userId = await resolveAuthenticatedUserId(options, request);
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    const payload = parseMeEmailBodyValue(request.body);
+    await options.authService.requestEmailChange({
+      userId,
+      newEmail: payload.new_email,
+      password: payload.password,
+    });
+    sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
     return;
   }
 

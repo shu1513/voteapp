@@ -71,6 +71,26 @@ describe("authMailer", () => {
     expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain(resetLinkUrl);
   });
 
+  it("sends email change confirmations through SES with a composed message", async () => {
+    const sesClient = createSesClientMock();
+    const mailer = createSesAuthMailer({
+      fromEmailAddress,
+      sesClient,
+    });
+    const changeLinkUrl = "https://example.com/verify-email-change?token=tok";
+
+    await mailer.sendEmailChangeEmail({
+      email: recipientEmail,
+      linkUrl: changeLinkUrl,
+    });
+
+    expect(sesClient.send).toHaveBeenCalledTimes(1);
+    const command = sesClient.send.mock.calls[0][0];
+    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[VoteApp] Confirm your new email address");
+    expect(command.input.Content?.Simple?.Body?.Text?.Data).toContain(changeLinkUrl);
+    expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain(changeLinkUrl);
+  });
+
   it("rejects malformed link URLs before sending", async () => {
     const sesClient = createSesClientMock();
     const mailer = createSesAuthMailer({

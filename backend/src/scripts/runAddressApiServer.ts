@@ -72,7 +72,7 @@ import {
   UserEmailPreferencesError,
 } from "../pipeline/users/userEmailPreferences.js";
 import { verifyEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
-import { getUserIdentity } from "../pipeline/users/userIdentity.js";
+import { getUserIdentity, setUserFirstName } from "../pipeline/users/userIdentity.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -412,6 +412,7 @@ async function main(): Promise<void> {
     getAuthenticatedBallotPreferences: (userId) => getUserBallotPreferences(pool, userId),
     setAuthenticatedBallotPreferences: (userId, preferences) => setUserBallotPreferences(pool, userId, preferences),
     getAuthenticatedUser: (userId) => getUserIdentity(pool, userId),
+    updateAuthenticatedUserFirstName: (userId, firstName) => setUserFirstName(pool, userId, firstName),
     getAuthenticatedEmailPreferences: (userId) => getUserEmailPreferences(pool, userId),
     setAuthenticatedEmailPreferences: (userId, preferences) => setUserEmailPreferences(pool, userId, preferences),
     ...(unsubscribeSecret

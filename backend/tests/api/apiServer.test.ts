@@ -2982,7 +2982,7 @@ describe("GET /api/me", () => {
     });
 
     expect(response.statusCode).toBe(405);
-    expect(response.headers.allow).toBe("GET");
+    expect(response.headers.allow).toBe("GET, PUT, DELETE");
   });
 
   it("returns 500 when the user lookup is not configured", async () => {
