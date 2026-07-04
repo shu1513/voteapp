@@ -23,6 +23,7 @@ import {
   summarizeOfficeCandidateEligibilityReasons,
 } from "../candidates/officeCandidateEligibility.js";
 import { OfficeMatcher } from "../elections/officeMatcher.js";
+import { createDistrictNewElectionNotificationEvents } from "../users/districtNotificationEvents.js";
 
 type WriterOptions = {
   once?: boolean;
@@ -340,6 +341,7 @@ async function writeElectionsForDistrict(
       senate_class: string | null;
       term_end_year: string | null;
     }> = [];
+    const insertedElectionIds: string[] = [];
     for (const entry of payload.entries) {
       let matchedOfficeId: string | null = null;
       if (entry.race_type === "office") {
@@ -379,7 +381,7 @@ async function writeElectionsForDistrict(
         }
       }
 
-      const upsertResult = await client.query<{ id: string; race_type: string }>(
+      const upsertResult = await client.query<{ id: string; race_type: string; inserted: boolean }>(
         `
           INSERT INTO public.elections (
             district_id,
@@ -414,7 +416,7 @@ async function writeElectionsForDistrict(
             END,
             sources = EXCLUDED.sources,
             updated_at = now()
-          RETURNING id, race_type
+          RETURNING id, race_type, (xmax = 0) AS inserted
         `,
         [
           payload.district_id,
@@ -430,6 +432,9 @@ async function writeElectionsForDistrict(
         ]
       );
       const row = upsertResult.rows?.[0];
+      if (row?.inserted) {
+        insertedElectionIds.push(row.id);
+      }
       if (row?.race_type === "ballot_measure") {
         ballotMeasureElectionIds.push(row.id);
       } else if (row?.race_type === "office") {
@@ -441,6 +446,19 @@ async function writeElectionsForDistrict(
             term_end_year: entry.term_end_year ?? null,
           });
         }
+      }
+    }
+
+    // Same transaction as the election inserts: events commit atomically with
+    // the rows they announce. Only fresh inserts fan out — upsert updates on
+    // re-runs never re-notify — and the creator re-checks future-datedness.
+    if (insertedElectionIds.length > 0) {
+      const notification = await createDistrictNewElectionNotificationEvents(client, insertedElectionIds);
+      if (notification.createdCount > 0) {
+        console.log(
+          `district-notification events ingest_key=${ingestKey} district_id=${payload.district_id} ` +
+            `new_elections=${insertedElectionIds.length} events_created=${notification.createdCount}`
+        );
       }
     }
 

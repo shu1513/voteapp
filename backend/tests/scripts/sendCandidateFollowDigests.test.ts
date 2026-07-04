@@ -313,6 +313,20 @@ describe("withDigestRunLock", () => {
     expect(String(query.mock.calls[1][0])).toContain("pg_advisory_unlock");
     expect(release).toHaveBeenCalledTimes(1);
   });
+
+  it("releases the client even when the unlock itself fails", async () => {
+    const query = vi.fn(async (sql: string) => {
+      if (sql.includes("pg_try_advisory_lock")) {
+        return { rows: [{ locked: true }], rowCount: 1 };
+      }
+      throw new Error("connection terminated");
+    });
+    const release = vi.fn();
+    const pool = { connect: vi.fn(async () => ({ query, release })) };
+
+    await expect(withDigestRunLock(pool as never, async () => "ran")).rejects.toThrow("connection terminated");
+    expect(release).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("unsubscribe URL wiring", () => {
@@ -356,6 +370,13 @@ describe("unsubscribe URL wiring", () => {
       const url = new URL(build!(USER_ALPHA));
       expect(url.origin + url.pathname).toBe("https://api.example.com/api/email/unsubscribe");
       expect(verifyEmailUnsubscribeToken(url.searchParams.get("token") ?? "", SECRET)).toBe(USER_ALPHA);
+      // Digest links keep their pre-pref shape.
+      expect(url.searchParams.get("pref")).toBeNull();
+
+      const buildAlerts = buildUnsubscribeUrlBuilderFromEnv("new_election_alerts");
+      const alertUrl = new URL(buildAlerts!(USER_ALPHA));
+      expect(alertUrl.searchParams.get("pref")).toBe("new_election_alerts");
+      expect(verifyEmailUnsubscribeToken(alertUrl.searchParams.get("token") ?? "", SECRET)).toBe(USER_ALPHA);
     } finally {
       process.env = saved;
     }

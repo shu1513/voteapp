@@ -4,25 +4,27 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
-import { createEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
+import { buildUnsubscribeUrlBuilderFromEnv } from "./sendCandidateFollowDigests.js";
+import { US_LATEST_LOCAL_DATE_SQL } from "../utils/usLocalDate.js";
 import {
-  createConsoleCandidateFollowDigestMailer,
-  createSesCandidateFollowDigestMailer,
-  type CandidateFollowDigestItem,
-  type CandidateFollowDigestMailer,
-} from "../pipeline/users/candidateFollowDigestMailer.js";
+  createConsoleNewElectionAlertMailer,
+  createSesNewElectionAlertMailer,
+  type NewElectionAlertItem,
+  type NewElectionAlertMailer,
+} from "../pipeline/users/newElectionAlertMailer.js";
 
-// Delivery consumer for user_candidate_follow_notification_events: sends one
-// digest email per user covering all their unsent events, then stamps
-// notified_at. Events whose follow no longer exists (unfollowed, notify flag
-// turned off, candidate deleted/merged) are resolved without email so they do
-// not linger as forever-pending. Marking happens only after a successful send,
-// so a crash between send and mark can duplicate an email but never lose one.
+// Delivery consumer for user_district_notification_events: sends one alert
+// email per user covering all their unsent new-election events, then stamps
+// notified_at. Events that are no longer deliverable (user moved out of the
+// district, turned alerts off, or the election date has passed) are resolved
+// without email so they do not linger as forever-pending. Marking happens
+// only after a successful send, so a crash between send and mark can
+// duplicate an email but never lose one.
 
-export const DEFAULT_DIGEST_MAX_USERS = 500;
-export const DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL = 20;
+export const DEFAULT_ALERT_MAX_USERS = 500;
+export const DEFAULT_ALERT_MAX_ITEMS_PER_EMAIL = 20;
 
-export type SendCandidateFollowDigestsOptions = {
+export type SendNewElectionAlertsOptions = {
   live: boolean;
   maxUsers: number;
   maxItemsPerEmail: number;
@@ -30,7 +32,7 @@ export type SendCandidateFollowDigestsOptions = {
   buildUnsubscribeUrl?: (userId: string) => string;
 };
 
-export type SendCandidateFollowDigestsResult = {
+export type SendNewElectionAlertsResult = {
   dryRun: boolean;
   /**
    * Events resolved (or countable as resolvable in dry run) without email.
@@ -42,7 +44,7 @@ export type SendCandidateFollowDigestsResult = {
   eligibleUserCount: number;
   /** Valid pending events found across eligible users. */
   eventsPendingCount: number;
-  /** Digest emails actually sent (includes sends whose mark step then failed). */
+  /** Alert emails actually sent (includes sends whose mark step then failed). */
   usersEmailedCount: number;
   /** Events both sent and marked notified. */
   eventsDeliveredCount: number;
@@ -56,42 +58,35 @@ export type SendCandidateFollowDigestsResult = {
 
 type Queryable = Pick<Pool, "query">;
 
-
-export function parseSendCandidateFollowDigestsArgs(
-  argv: readonly string[]
-): SendCandidateFollowDigestsOptions {
+export function parseSendNewElectionAlertsArgs(argv: readonly string[]): SendNewElectionAlertsOptions {
   return {
     live: argv.includes("--live"),
-    maxUsers: readPositiveIntegerFlag(argv, "--max-users", DEFAULT_DIGEST_MAX_USERS),
-    maxItemsPerEmail: readPositiveIntegerFlag(
-      argv,
-      "--max-items-per-email",
-      DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL
-    ),
+    maxUsers: readPositiveIntegerFlag(argv, "--max-users", DEFAULT_ALERT_MAX_USERS),
+    maxItemsPerEmail: readPositiveIntegerFlag(argv, "--max-items-per-email", DEFAULT_ALERT_MAX_ITEMS_PER_EMAIL),
   };
 }
 
-// An unsent event is orphaned when its follow no longer opts into this event
-// type, or the candidate has been deleted/merged since the event was created.
+// An unsent event is orphaned when the user has turned alerts off, no longer
+// lives in the election's district (moved), or the election date has passed.
+// A deleted election removes its events via ON DELETE CASCADE.
 const ORPHANED_EVENT_CONDITION = `
   e.notified_at IS NULL
   AND (
     NOT EXISTS (
       SELECT 1
-      FROM public.user_candidate_follows AS f
-      WHERE f.user_id = e.user_id
-        AND f.candidate_id = e.candidate_id
-        AND (
-          (e.event_type = 'candidate_record_update' AND f.notify_updates)
-          OR (e.event_type = 'candidate_future_election' AND f.notify_elections)
-        )
+      FROM public.users AS u
+      WHERE u.id = e.user_id
+        AND u.deleted_at IS NULL
+        AND u.email_new_election_alerts = true
     )
     OR NOT EXISTS (
       SELECT 1
-      FROM public.candidates AS c
-      WHERE c.id = e.candidate_id
-        AND c.deleted_at IS NULL
-        AND c.merged_into_candidate_id IS NULL
+      FROM public.elections AS el
+      JOIN public.user_districts AS ud
+        ON ud.district_id = el.district_id
+       AND ud.user_id = e.user_id
+      WHERE el.id = e.election_id
+        AND el.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
     )
   )
 `;
@@ -101,7 +96,7 @@ async function resolveOrphanedEvents(db: Queryable, live: boolean): Promise<numb
     const counted = await db.query<{ matched: string }>(
       `
         SELECT count(*)::text AS matched
-        FROM public.user_candidate_follow_notification_events AS e
+        FROM public.user_district_notification_events AS e
         WHERE ${ORPHANED_EVENT_CONDITION}
       `
     );
@@ -109,7 +104,7 @@ async function resolveOrphanedEvents(db: Queryable, live: boolean): Promise<numb
   }
   const resolved = await db.query(
     `
-      UPDATE public.user_candidate_follow_notification_events AS e
+      UPDATE public.user_district_notification_events AS e
       SET notified_at = now()
       WHERE ${ORPHANED_EVENT_CONDITION}
     `
@@ -130,25 +125,20 @@ async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<Eli
       FROM public.users AS u
       WHERE u.deleted_at IS NULL
         AND u.email_verified = true
-        AND u.email_digest = true
+        AND u.email_new_election_alerts = true
         AND EXISTS (
           -- Mirrors the deliverability joins in selectPendingEvents so a user
-          -- whose only unsent events are orphaned (unfollowed, notify flag
-          -- off, candidate gone) cannot consume a --max-users slot. Matters in
-          -- dry runs, where orphans are counted but not yet stamped.
+          -- whose only unsent events are orphaned (moved away, election past)
+          -- cannot consume a --max-users slot. Matters in dry runs, where
+          -- orphans are counted but not yet stamped.
           SELECT 1
-          FROM public.user_candidate_follow_notification_events AS e
-          JOIN public.candidates AS c
-            ON c.id = e.candidate_id
-           AND c.deleted_at IS NULL
-           AND c.merged_into_candidate_id IS NULL
-          JOIN public.user_candidate_follows AS f
-            ON f.user_id = e.user_id
-           AND f.candidate_id = e.candidate_id
-           AND (
-             (e.event_type = 'candidate_record_update' AND f.notify_updates)
-             OR (e.event_type = 'candidate_future_election' AND f.notify_elections)
-           )
+          FROM public.user_district_notification_events AS e
+          JOIN public.elections AS el
+            ON el.id = e.election_id
+           AND el.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
+          JOIN public.user_districts AS ud
+            ON ud.user_id = e.user_id
+           AND ud.district_id = el.district_id
           WHERE e.user_id = u.id
             AND e.notified_at IS NULL
         )
@@ -162,11 +152,9 @@ async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<Eli
 
 type PendingEventRow = {
   id: string;
-  event_type: "candidate_record_update" | "candidate_future_election";
-  candidate_display_name: string;
-  record_description: string | null;
-  election_title: string | null;
-  election_date: string | null;
+  election_title: string;
+  election_date: string;
+  district_name: string;
 };
 
 async function selectPendingEvents(db: Queryable, userId: string): Promise<PendingEventRow[]> {
@@ -174,50 +162,39 @@ async function selectPendingEvents(db: Queryable, userId: string): Promise<Pendi
     `
       SELECT
         e.id,
-        e.event_type,
-        COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name)) AS candidate_display_name,
-        r.description AS record_description,
         el.official_ballot_title AS election_title,
-        el.election_date::text AS election_date
-      FROM public.user_candidate_follow_notification_events AS e
-      JOIN public.candidates AS c
-        ON c.id = e.candidate_id
-       AND c.deleted_at IS NULL
-       AND c.merged_into_candidate_id IS NULL
-      JOIN public.user_candidate_follows AS f
-        ON f.user_id = e.user_id
-       AND f.candidate_id = e.candidate_id
-       AND (
-         (e.event_type = 'candidate_record_update' AND f.notify_updates)
-         OR (e.event_type = 'candidate_future_election' AND f.notify_elections)
-       )
-      LEFT JOIN public.candidate_records AS r
-        ON r.id = e.candidate_record_id
-      LEFT JOIN public.elections AS el
+        el.election_date::text AS election_date,
+        d.name AS district_name
+      FROM public.user_district_notification_events AS e
+      JOIN public.elections AS el
         ON el.id = e.election_id
+       AND el.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
+      JOIN public.user_districts AS ud
+        ON ud.user_id = e.user_id
+       AND ud.district_id = el.district_id
+      JOIN public.districts AS d
+        ON d.id = el.district_id
       WHERE e.user_id = $1::uuid
         AND e.notified_at IS NULL
-      ORDER BY candidate_display_name, e.created_at, e.id
+      ORDER BY d.name, el.election_date, e.id
     `,
     [userId]
   );
   return result.rows;
 }
 
-function toDigestItem(row: PendingEventRow): CandidateFollowDigestItem {
+function toAlertItem(row: PendingEventRow): NewElectionAlertItem {
   return {
-    candidateDisplayName: row.candidate_display_name,
-    eventType: row.event_type,
-    recordDescription: row.record_description,
     electionTitle: row.election_title,
     electionDate: row.election_date,
+    districtName: row.district_name,
   };
 }
 
 async function markEventsNotified(db: Queryable, eventIds: readonly string[]): Promise<void> {
   await db.query(
     `
-      UPDATE public.user_candidate_follow_notification_events
+      UPDATE public.user_district_notification_events
       SET notified_at = now()
       WHERE id = ANY($1::uuid[])
         AND notified_at IS NULL
@@ -226,12 +203,12 @@ async function markEventsNotified(db: Queryable, eventIds: readonly string[]): P
   );
 }
 
-export async function sendCandidateFollowDigests(
+export async function sendNewElectionAlerts(
   db: Queryable,
-  mailer: CandidateFollowDigestMailer,
-  options: SendCandidateFollowDigestsOptions
-): Promise<SendCandidateFollowDigestsResult> {
-  const result: SendCandidateFollowDigestsResult = {
+  mailer: NewElectionAlertMailer,
+  options: SendNewElectionAlertsOptions
+): Promise<SendNewElectionAlertsResult> {
+  const result: SendNewElectionAlertsResult = {
     dryRun: !options.live,
     resolvedWithoutEmailCount: 0,
     eligibleUserCount: 0,
@@ -260,10 +237,10 @@ export async function sendCandidateFollowDigests(
 
     try {
       const unsubscribeUrl = options.buildUnsubscribeUrl?.(user.id);
-      await mailer.sendDigestEmail({
+      await mailer.sendAlertEmail({
         email: user.email,
         firstName: user.first_name,
-        items: pendingEvents.slice(0, options.maxItemsPerEmail).map(toDigestItem),
+        items: pendingEvents.slice(0, options.maxItemsPerEmail).map(toAlertItem),
         totalEventCount: pendingEvents.length,
         ...(unsubscribeUrl ? { unsubscribeUrl } : {}),
       });
@@ -289,53 +266,17 @@ export async function sendCandidateFollowDigests(
   return result;
 }
 
-/**
- * Builds the per-user signed unsubscribe link when both envs are set:
- * NOTIFICATIONS_UNSUBSCRIBE_URL (the public GET/POST /api/email/unsubscribe
- * endpoint, e.g. https://api.example.com/api/email/unsubscribe) and
- * NOTIFICATIONS_UNSUBSCRIBE_SECRET (shared with the API server, which
- * verifies the token). Returns null when unconfigured so digests still send,
- * just without the footer link and one-click headers.
- *
- * preference picks which opt-in the link disables; "digest" is omitted from
- * the URL so existing digest links keep their exact shape.
- */
-export function buildUnsubscribeUrlBuilderFromEnv(
-  preference: "digest" | "new_election_alerts" = "digest"
-): ((userId: string) => string) | null {
-  const baseUrl = readOptionalEnv("NOTIFICATIONS_UNSUBSCRIBE_URL");
-  const secret = readOptionalEnv("NOTIFICATIONS_UNSUBSCRIBE_SECRET");
-  if (!baseUrl || !secret) {
-    return null;
-  }
-  // Fail fast at construction, mirroring the API server's startup guard: a
-  // weak secret must abort the run, not surface as a per-user send failure
-  // for every digest.
-  if (secret.length < 32) {
-    throw new Error("NOTIFICATIONS_UNSUBSCRIBE_SECRET must be at least 32 characters");
-  }
-  const parsed = new URL(baseUrl);
-  return (userId: string) => {
-    const url = new URL(parsed.toString());
-    url.searchParams.set("token", createEmailUnsubscribeToken(userId, secret));
-    if (preference !== "digest") {
-      url.searchParams.set("pref", preference);
-    }
-    return url.toString();
-  };
-}
-
-/** App-unique advisory lock key for the live digest run. */
-export const DIGEST_RUN_LOCK_KEY = 74_310_146;
+/** App-unique advisory lock key for the live alert run (digest uses 74_310_146). */
+export const NEW_ELECTION_ALERT_RUN_LOCK_KEY = 74_310_147;
 
 /**
- * Serializes live digest runs across processes (scheduler worker, manual
+ * Serializes live alert runs across processes (scheduler worker, manual
  * --live runs) with a Postgres session advisory lock. The lock must live on
  * one dedicated connection for the whole run — pool.query() hops connections —
  * so this checks out a client and holds it until fn settles. Returns null
  * without calling fn when another run already holds the lock.
  */
-export async function withDigestRunLock<T>(
+export async function withNewElectionAlertRunLock<T>(
   pool: Pick<Pool, "connect">,
   fn: () => Promise<T>
 ): Promise<T | null> {
@@ -344,7 +285,7 @@ export async function withDigestRunLock<T>(
   try {
     const acquired = await client.query<{ locked: boolean }>(
       "SELECT pg_try_advisory_lock($1) AS locked",
-      [DIGEST_RUN_LOCK_KEY]
+      [NEW_ELECTION_ALERT_RUN_LOCK_KEY]
     );
     locked = acquired.rows[0]?.locked === true;
     if (!locked) {
@@ -357,7 +298,7 @@ export async function withDigestRunLock<T>(
     // lifetime in the long-lived scheduler worker.
     try {
       if (locked) {
-        await client.query("SELECT pg_advisory_unlock($1)", [DIGEST_RUN_LOCK_KEY]);
+        await client.query("SELECT pg_advisory_unlock($1)", [NEW_ELECTION_ALERT_RUN_LOCK_KEY]);
       }
     } finally {
       client.release();
@@ -370,12 +311,12 @@ function readOptionalEnv(name: string): string | undefined {
   return value && value.length > 0 ? value : undefined;
 }
 
-export function buildDigestMailerFromEnv(): CandidateFollowDigestMailer {
-  // Reuses the auth mailer configuration: the digest goes out from the same
-  // sender identity. NOTIFICATIONS_MAILER=console overrides for local runs.
+export function buildAlertMailerFromEnv(): NewElectionAlertMailer {
+  // Reuses the auth mailer configuration: alerts go out from the same sender
+  // identity. NOTIFICATIONS_MAILER=console overrides for local runs.
   const mailerKind = (readOptionalEnv("NOTIFICATIONS_MAILER") ?? readOptionalEnv("AUTH_MAILER") ?? "ses").toLowerCase();
   if (mailerKind === "console") {
-    return createConsoleCandidateFollowDigestMailer();
+    return createConsoleNewElectionAlertMailer();
   }
   if (mailerKind !== "ses") {
     throw new Error(`Unsupported notifications mailer: ${mailerKind} (expected "ses" or "console")`);
@@ -385,11 +326,11 @@ export function buildDigestMailerFromEnv(): CandidateFollowDigestMailer {
     readOptionalEnv("AUTH_SES_REGION") ?? readOptionalEnv("AWS_REGION") ?? readOptionalEnv("AWS_DEFAULT_REGION");
   if (!fromEmailAddress || !sesRegion) {
     throw new Error(
-      "SES digest mailer requires AUTH_FROM_EMAIL and AUTH_SES_REGION/AWS_REGION (or set NOTIFICATIONS_MAILER=console)"
+      "SES alert mailer requires AUTH_FROM_EMAIL and AUTH_SES_REGION/AWS_REGION (or set NOTIFICATIONS_MAILER=console)"
     );
   }
   const replyToEmailAddress = readOptionalEnv("AUTH_REPLY_TO_EMAIL");
-  return createSesCandidateFollowDigestMailer({
+  return createSesNewElectionAlertMailer({
     sesClient: new SESv2Client({ region: sesRegion }),
     fromEmailAddress,
     ...(replyToEmailAddress ? { replyToEmailAddress } : {}),
@@ -398,22 +339,22 @@ export function buildDigestMailerFromEnv(): CandidateFollowDigestMailer {
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  const parsedOptions = parseSendCandidateFollowDigestsArgs(process.argv.slice(2));
-  const buildUnsubscribeUrl = buildUnsubscribeUrlBuilderFromEnv();
-  const options: SendCandidateFollowDigestsOptions = {
+  const parsedOptions = parseSendNewElectionAlertsArgs(process.argv.slice(2));
+  const buildUnsubscribeUrl = buildUnsubscribeUrlBuilderFromEnv("new_election_alerts");
+  const options: SendNewElectionAlertsOptions = {
     ...parsedOptions,
     ...(buildUnsubscribeUrl ? { buildUnsubscribeUrl } : {}),
   };
   const connectionString = process.env.DATABASE_URL?.trim();
   if (!connectionString) {
-    throw new Error("DATABASE_URL is required to send candidate follow digests");
+    throw new Error("DATABASE_URL is required to send new election alerts");
   }
 
   // The dry run never sends, so it must not require mailer configuration.
-  const mailer: CandidateFollowDigestMailer = options.live
-    ? buildDigestMailerFromEnv()
+  const mailer: NewElectionAlertMailer = options.live
+    ? buildAlertMailerFromEnv()
     : {
-        async sendDigestEmail() {
+        async sendAlertEmail() {
           throw new Error("Dry run must not send email");
         },
       };
@@ -422,10 +363,10 @@ async function main(): Promise<void> {
   try {
     // Dry runs read without marking, so they run unlocked.
     const result = options.live
-      ? await withDigestRunLock(pool, () => sendCandidateFollowDigests(pool, mailer, options))
-      : await sendCandidateFollowDigests(pool, mailer, options);
+      ? await withNewElectionAlertRunLock(pool, () => sendNewElectionAlerts(pool, mailer, options))
+      : await sendNewElectionAlerts(pool, mailer, options);
     if (result === null) {
-      console.log(JSON.stringify({ skipped: true, reason: "another digest run holds the lock" }, null, 2));
+      console.log(JSON.stringify({ skipped: true, reason: "another alert run holds the lock" }, null, 2));
       return;
     }
     console.log(
@@ -450,7 +391,7 @@ const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
 if (entrypoint === import.meta.url) {
   main().catch((error) => {
     const message = error instanceof Error ? error.message : String(error);
-    console.error("candidate follow digest send failed:", message);
+    console.error("new election alert send failed:", message);
     process.exitCode = 1;
   });
 }
