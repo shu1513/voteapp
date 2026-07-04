@@ -242,10 +242,14 @@ function EmailPreferencesSection() {
   // locked until the older full-object PUT settles.
   const saving = useIsMutating({ mutationKey: ["put-email-preferences"] }) > 0;
 
-  const labels: Array<{ key: keyof EmailPreferences; label: string }> = [
+  const labels: Array<{ key: keyof EmailPreferences; label: string; description?: string }> = [
     { key: "email_digest", label: "Daily digest about candidates you follow" },
     { key: "email_new_election_alerts", label: "New elections in your districts" },
-    { key: "email_election_reminders", label: "Election reminders (coming soon)" },
+    {
+      key: "email_election_reminders",
+      label: "Remind me the day before each election",
+      description: "One email covering everything on your ballot that day.",
+    },
   ];
 
   return (
@@ -258,10 +262,10 @@ function EmailPreferencesSection() {
       ) : null}
       {prefs.data ? (
         <div className="mt-3 space-y-2">
-          {labels.map(({ key, label }) => {
+          {labels.map(({ key, label, description }) => {
             const current = pending ?? prefs.data;
             return (
-              <label key={key} className="flex cursor-pointer items-center gap-2 text-sm text-ink">
+              <label key={key} className="flex cursor-pointer items-start gap-2 text-sm text-ink">
                 <input
                   type="checkbox"
                   checked={current[key]}
@@ -274,9 +278,12 @@ function EmailPreferencesSection() {
                     setPending(next);
                     update.mutate(next);
                   }}
-                  className="h-4 w-4 accent-rausch"
+                  className="mt-0.5 h-4 w-4 accent-rausch"
                 />
-                {label}
+                <span>
+                  {label}
+                  {description ? <span className="block text-xs text-ink-soft">{description}</span> : null}
+                </span>
               </label>
             );
           })}
