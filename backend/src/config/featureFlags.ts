@@ -40,8 +40,12 @@ export type AutoDistrictResearchMode = "off" | "ai" | "manual";
  *
  * AUTO_DISTRICT_RESEARCH_MODE is authoritative. When it is unset, the legacy
  * boolean AUTO_DISTRICT_RESEARCH_ENABLED=true maps to "ai" for backward
- * compatibility; setting both to conflicting values is an error so a stale
- * boolean cannot silently override an explicit mode.
+ * compatibility; otherwise the default is "manual" — enqueueing is
+ * Postgres-only, deduped, and fire-and-forget, so it is safe on by default
+ * (even against a database missing the queue table, the enqueue just warns).
+ * Turn the feature off with AUTO_DISTRICT_RESEARCH_MODE=off in backend/.env.
+ * Setting a mode that conflicts with the legacy boolean is an error so a
+ * stale boolean cannot silently override an explicit mode.
  */
 export function readAutoDistrictResearchMode(): AutoDistrictResearchMode {
   const raw = process.env.AUTO_DISTRICT_RESEARCH_MODE;
@@ -61,7 +65,7 @@ export function readAutoDistrictResearchMode(): AutoDistrictResearchMode {
     return normalized;
   }
 
-  return legacyEnabled ? "ai" : "off";
+  return legacyEnabled ? "ai" : "manual";
 }
 
 export function isCandidateFinanceEnabled(): boolean {

@@ -19,9 +19,16 @@ afterEach(() => {
 });
 
 describe("readAutoDistrictResearchMode", () => {
-  it("defaults to off when neither env is set", () => {
+  it("defaults to manual when neither env is set (feature on by default)", () => {
     delete process.env.AUTO_DISTRICT_RESEARCH_MODE;
     delete process.env.AUTO_DISTRICT_RESEARCH_ENABLED;
+
+    expect(readAutoDistrictResearchMode()).toBe("manual");
+  });
+
+  it("turns fully off with an explicit off mode", () => {
+    delete process.env.AUTO_DISTRICT_RESEARCH_ENABLED;
+    process.env.AUTO_DISTRICT_RESEARCH_MODE = "off";
 
     expect(readAutoDistrictResearchMode()).toBe("off");
   });
