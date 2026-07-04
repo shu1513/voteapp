@@ -97,7 +97,7 @@ describe("enqueueManualDistrictResearchRequestsForStaleDistricts", () => {
     ]);
   });
 
-  it("counts a repeat request for an open row as bumped, not enqueued", async () => {
+  it("counts a repeat request for an open row as bumped and refreshes the snapshots", async () => {
     const district = makeDistrict();
     const query = vi
       .fn()
@@ -112,6 +112,11 @@ describe("enqueueManualDistrictResearchRequestsForStaleDistricts", () => {
 
     expect(result.enqueued).toEqual([]);
     expect(result.bumped).toEqual([district.id]);
+    // The bump refreshes district snapshots (rename-safe) but preserves
+    // trigger_source and freshness-at-request as first-cause provenance.
+    const upsertSql = query.mock.calls[1]?.[0] as string;
+    expect(upsertSql).toContain("district_name_snapshot = EXCLUDED.district_name_snapshot");
+    expect(upsertSql).not.toContain("trigger_source = EXCLUDED.trigger_source");
   });
 
   it("skips fresh districts without inserting", async () => {
@@ -233,18 +238,33 @@ describe("claimNextManualDistrictResearchRequest", () => {
 });
 
 describe("status transitions", () => {
-  it("markRunning increments attempt_count and requires claimed status", async () => {
+  it("markRunning requires claimed status and does not count the attempt (the claim did)", async () => {
     const query = vi.fn().mockResolvedValueOnce({ rowCount: 1 });
 
     const ok = await markManualDistrictResearchRequestRunning({ query }, REQUEST_ID);
 
     expect(ok).toBe(true);
     const sql = query.mock.calls[0]?.[0] as string;
-    expect(sql).toContain("attempt_count = attempt_count + 1");
+    expect(sql).not.toContain("attempt_count");
     expect(sql).toContain("status = 'claimed'");
   });
 
-  it("markSucceeded stores the manifest path and reports false when the row is not open", async () => {
+  it("counts the attempt at claim time so a claim that dies before running still burns one", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rows: [makeClaimRow()] });
+
+    await claimNextManualDistrictResearchRequest(
+      { query },
+      { claimedBy: "claude-session", agentKind: "claude", cooldownDays: 180 }
+    );
+
+    const claimSql = query.mock.calls[1]?.[0] as string;
+    expect(claimSql).toContain("attempt_count = r.attempt_count + 1");
+  });
+
+  it("markSucceeded enforces the district stamp invariant in SQL and reports false when unmet", async () => {
     const query = vi.fn().mockResolvedValueOnce({ rowCount: 0 });
 
     const ok = await markManualDistrictResearchRequestSucceeded(
@@ -254,6 +274,8 @@ describe("status transitions", () => {
 
     expect(ok).toBe(false);
     expect(query.mock.calls[0]?.[1]).toEqual([REQUEST_ID, "~/runs/la-county/manifest.md", null]);
+    const sql = query.mock.calls[0]?.[0] as string;
+    expect(sql).toContain("last_elections_searched_at IS NOT NULL");
   });
 
   it("markFailed truncates the error and targets open statuses", async () => {

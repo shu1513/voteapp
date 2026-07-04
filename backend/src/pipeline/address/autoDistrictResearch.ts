@@ -2,7 +2,7 @@ import type { Pool, PoolClient } from "pg";
 
 import { getPipelineEnv } from "../../config/env.js";
 import { STAGING_DRAFT_STREAM, STAGING_ITEM_TYPE_ELECTION } from "../../config/electionsPipeline.js";
-import { isAutoDistrictResearchEnabled } from "../../config/featureFlags.js";
+import { readAutoDistrictResearchMode } from "../../config/featureFlags.js";
 import {
   ELECTION_DRAFT_SCHEMA_VERSION,
   ELECTION_PROMPT_VERSION,
@@ -25,7 +25,9 @@ export function readAutoDistrictResearchConfigFromEnv(): AutoDistrictResearchCon
   // Parse env only when the feature is on: a disabled feature must not be able
   // to fail address API startup on a bad cooldown value, and the cooldown-only
   // reader keeps rollover-only settings (e.g. max-enqueue) out of this path.
-  const enabled = isAutoDistrictResearchEnabled();
+  // Routed through the mode reader so this helper can never bypass the
+  // off/ai/manual semantics or the legacy-boolean conflict check.
+  const enabled = readAutoDistrictResearchMode() === "ai";
   return {
     enabled,
     ttlDays: enabled ? readElectionsSearchCooldownDaysFromEnv() : DEFAULT_ELECTIONS_SEARCH_COOLDOWN_DAYS,

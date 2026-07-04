@@ -117,6 +117,9 @@ export async function enqueueManualDistrictResearchRequestsForStaleDistricts(
             VALUES ($1, $2, $3, $4, $5, 'queued', $6)
             ON CONFLICT (district_id) WHERE status IN ('queued', 'claimed', 'running')
             DO UPDATE SET
+              district_name_snapshot = EXCLUDED.district_name_snapshot,
+              district_type_snapshot = EXCLUDED.district_type_snapshot,
+              state_snapshot = EXCLUDED.state_snapshot,
               request_count = public.manual_district_research_requests.request_count + 1,
               last_requested_at = now(),
               updated_at = now()
@@ -210,6 +213,7 @@ export async function claimNextManualDistrictResearchRequest(
           claimed_at = now(),
           claimed_by = $1,
           agent_kind = $2,
+          attempt_count = r.attempt_count + 1,
           updated_at = now()
       WHERE r.id = (
         SELECT r2.id
@@ -270,12 +274,15 @@ export async function markManualDistrictResearchRequestRunning(
   db: Queryable,
   requestId: string
 ): Promise<boolean> {
+  // attempt_count is incremented at claim time, not here: an agent that dies
+  // between claim and start must still burn an attempt, or a broken district
+  // could cycle claim -> sweep-requeue forever without ever reaching the
+  // MANUAL_RESEARCH_MAX_ATTEMPTS park.
   const updated = await db.query(
     `
       UPDATE public.manual_district_research_requests
       SET status = 'running',
           started_at = COALESCE(started_at, now()),
-          attempt_count = attempt_count + 1,
           last_error = NULL,
           updated_at = now()
       WHERE id = $1
@@ -290,6 +297,10 @@ export async function markManualDistrictResearchRequestSucceeded(
   db: Queryable,
   input: { requestId: string; manifestPath: string; summary?: string | null }
 ): Promise<boolean> {
+  // The stamp predicate enforces the completion invariant at the domain layer
+  // for every caller, not just the CLI: a request can only succeed once the
+  // elections write stage stamped the district (it stamps empty districts
+  // too), so success always means the flow actually finished.
   const updated = await db.query(
     `
       UPDATE public.manual_district_research_requests
@@ -301,6 +312,12 @@ export async function markManualDistrictResearchRequestSucceeded(
           updated_at = now()
       WHERE id = $1
         AND status IN ('claimed', 'running')
+        AND EXISTS (
+          SELECT 1
+          FROM public.districts d
+          WHERE d.id = manual_district_research_requests.district_id
+            AND d.last_elections_searched_at IS NOT NULL
+        )
     `,
     [input.requestId, input.manifestPath, input.summary ?? null]
   );
