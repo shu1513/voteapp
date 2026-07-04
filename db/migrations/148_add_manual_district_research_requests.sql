@@ -58,8 +58,13 @@ CREATE UNIQUE INDEX uq_manual_district_research_requests_open_district
     ON public.manual_district_research_requests (district_id)
     WHERE status IN ('queued', 'claimed', 'running');
 
--- Claim scan: filter by status, oldest first (the store additionally orders
--- by request_count for demand priority).
+-- Claim scan: serves the claim's exact ordering over queued rows
+-- (hottest districts first, then oldest).
+CREATE INDEX idx_manual_district_research_requests_claim_order
+    ON public.manual_district_research_requests (request_count DESC, requested_at ASC)
+    WHERE status = 'queued';
+
+-- Status scans (sweep, status counts).
 CREATE INDEX idx_manual_district_research_requests_status_requested_at
     ON public.manual_district_research_requests (status, requested_at);
 

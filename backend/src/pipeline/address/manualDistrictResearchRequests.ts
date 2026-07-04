@@ -166,26 +166,16 @@ export async function enqueueManualDistrictResearchRequestsForStaleDistricts(
   }
 }
 
-function isDistrictStale(lastSearchedAt: string | Date | null, cooldownDays: number): boolean {
-  if (lastSearchedAt === null) {
-    return true;
-  }
-  const lastSearched = new Date(lastSearchedAt).getTime();
-  if (Number.isNaN(lastSearched)) {
-    return true;
-  }
-  const cutoff = Date.now() - cooldownDays * 24 * 60 * 60 * 1000;
-  return lastSearched < cutoff;
-}
-
 /**
  * Claim the highest-priority queued request whose district is still stale.
  *
  * Freshness is re-checked at claim time so an agent never picks up a district
- * the AI pipeline or another agent already researched: such rows are marked
- * 'skipped' and the next candidate is tried. The claim itself is a single
- * atomic UPDATE selecting with FOR UPDATE SKIP LOCKED, so concurrent agents
- * never grab the same row. Returns null when nothing claimable remains.
+ * the AI pipeline or another agent already researched. Both steps use the same
+ * SQL staleness predicate the enqueue uses: first every queued request whose
+ * district is now fresh is retired as 'skipped' in one bulk UPDATE, then a
+ * single atomic UPDATE (FOR UPDATE SKIP LOCKED, so concurrent agents never
+ * grab the same row) claims the hottest remaining request. Returns null when
+ * nothing claimable remains.
  */
 export async function claimNextManualDistrictResearchRequest(
   db: Queryable,
@@ -193,98 +183,87 @@ export async function claimNextManualDistrictResearchRequest(
     claimedBy: string;
     agentKind: ManualResearchAgentKind;
     cooldownDays: number;
-    maxSkipScan?: number;
   }
 ): Promise<ClaimedManualDistrictResearchRequest | null> {
   const { claimedBy, agentKind, cooldownDays } = input;
-  // Bound the loop so a queue full of freshly-researched districts cannot spin
-  // unbounded; each iteration retires one fresh row as 'skipped'.
-  const maxSkipScan = input.maxSkipScan ?? 100;
 
-  for (let scan = 0; scan < maxSkipScan; scan += 1) {
-    const claimed = await db.query(
-      `
-        UPDATE public.manual_district_research_requests AS r
-        SET status = 'claimed',
-            claimed_at = now(),
-            claimed_by = $1,
-            agent_kind = $2,
-            updated_at = now()
-        WHERE r.id = (
-          SELECT r2.id
-          FROM public.manual_district_research_requests AS r2
-          WHERE r2.status = 'queued'
-          ORDER BY r2.request_count DESC, r2.requested_at ASC
-          FOR UPDATE SKIP LOCKED
-          LIMIT 1
-        )
-        RETURNING
-          r.id,
-          r.district_id,
-          r.district_name_snapshot,
-          r.district_type_snapshot,
-          r.state_snapshot,
-          r.request_count,
-          r.trigger_source,
-          r.last_elections_searched_at_at_request,
-          (
-            SELECT d.last_elections_searched_at
-            FROM public.districts AS d
-            WHERE d.id = r.district_id
-          ) AS district_last_searched_at
-      `,
-      [claimedBy, agentKind]
-    );
+  await db.query(
+    `
+      UPDATE public.manual_district_research_requests AS r
+      SET status = 'skipped',
+          finished_at = now(),
+          summary = 'district already fresh at claim time',
+          updated_at = now()
+      FROM public.districts AS d
+      WHERE d.id = r.district_id
+        AND r.status = 'queued'
+        AND d.last_elections_searched_at IS NOT NULL
+        AND d.last_elections_searched_at >= now() - make_interval(days => $1::int)
+    `,
+    [cooldownDays]
+  );
 
-    const row = claimed.rows[0] as
-      | {
-          id: string;
-          district_id: string;
-          district_name_snapshot: string;
-          district_type_snapshot: string;
-          state_snapshot: string;
-          request_count: number;
-          trigger_source: string;
-          last_elections_searched_at_at_request: string | null;
-          district_last_searched_at: string | Date | null;
-        }
-      | undefined;
+  const claimed = await db.query(
+    `
+      UPDATE public.manual_district_research_requests AS r
+      SET status = 'claimed',
+          claimed_at = now(),
+          claimed_by = $1,
+          agent_kind = $2,
+          updated_at = now()
+      WHERE r.id = (
+        SELECT r2.id
+        FROM public.manual_district_research_requests AS r2
+        JOIN public.districts AS d ON d.id = r2.district_id
+        WHERE r2.status = 'queued'
+          AND (
+            d.last_elections_searched_at IS NULL
+            OR d.last_elections_searched_at < now() - make_interval(days => $3::int)
+          )
+        ORDER BY r2.request_count DESC, r2.requested_at ASC
+        FOR UPDATE OF r2 SKIP LOCKED
+        LIMIT 1
+      )
+      RETURNING
+        r.id,
+        r.district_id,
+        r.district_name_snapshot,
+        r.district_type_snapshot,
+        r.state_snapshot,
+        r.request_count,
+        r.trigger_source,
+        r.last_elections_searched_at_at_request
+    `,
+    [claimedBy, agentKind, cooldownDays]
+  );
 
-    if (!row) {
-      // No queued rows remain (or all are locked by other agents).
-      return null;
-    }
+  const row = claimed.rows[0] as
+    | {
+        id: string;
+        district_id: string;
+        district_name_snapshot: string;
+        district_type_snapshot: string;
+        state_snapshot: string;
+        request_count: number;
+        trigger_source: string;
+        last_elections_searched_at_at_request: string | null;
+      }
+    | undefined;
 
-    if (!isDistrictStale(row.district_last_searched_at, cooldownDays)) {
-      // Already researched since it was requested; retire this row and keep
-      // scanning for genuinely stale work.
-      await db.query(
-        `
-          UPDATE public.manual_district_research_requests
-          SET status = 'skipped',
-              finished_at = now(),
-              summary = 'district already fresh at claim time',
-              updated_at = now()
-          WHERE id = $1
-        `,
-        [row.id]
-      );
-      continue;
-    }
-
-    return {
-      request_id: row.id,
-      district_id: row.district_id,
-      district_name: row.district_name_snapshot,
-      district_type: row.district_type_snapshot,
-      state: row.state_snapshot,
-      request_count: Number(row.request_count),
-      trigger_source: row.trigger_source,
-      last_elections_searched_at_at_request: row.last_elections_searched_at_at_request,
-    };
+  if (!row) {
+    return null;
   }
 
-  return null;
+  return {
+    request_id: row.id,
+    district_id: row.district_id,
+    district_name: row.district_name_snapshot,
+    district_type: row.district_type_snapshot,
+    state: row.state_snapshot,
+    request_count: Number(row.request_count),
+    trigger_source: row.trigger_source,
+    last_elections_searched_at_at_request: row.last_elections_searched_at_at_request,
+  };
 }
 
 export async function markManualDistrictResearchRequestRunning(
@@ -380,11 +359,15 @@ export type StaleClaimSweepResult = {
 
 /**
  * Recover requests whose claiming agent went away: a claimed/running row whose
- * last update is older than maxClaimHours goes back to the queue — unless it
- * has already burned MANUAL_RESEARCH_MAX_ATTEMPTS runs, in which case it parks
- * as 'failed' so a broken district cannot cycle forever. Manual research runs
- * for hours and sessions die; without the sweep a crashed agent would block
- * its district until someone touched the row by hand.
+ * claim is older than maxClaimHours goes back to the queue — unless it has
+ * already burned MANUAL_RESEARCH_MAX_ATTEMPTS runs, in which case it parks as
+ * 'failed' so a broken district cannot cycle forever. Manual research runs for
+ * hours and sessions die; without the sweep a crashed agent would block its
+ * district until someone touched the row by hand.
+ *
+ * The clock is claimed_at, never updated_at: the enqueue bump refreshes
+ * updated_at on open rows, so a hot district receiving user lookups would keep
+ * a dead session's claim alive forever if updated_at were the clock.
  */
 export async function releaseStaleManualDistrictResearchClaims(
   db: Queryable,
@@ -398,7 +381,7 @@ export async function releaseStaleManualDistrictResearchClaims(
           last_error = 'auto-parked: claim exceeded max hold time after max attempts',
           updated_at = now()
       WHERE status IN ('claimed', 'running')
-        AND updated_at < now() - make_interval(hours => $1::int)
+        AND claimed_at < now() - make_interval(hours => $1::int)
         AND attempt_count >= $2
     `,
     [input.maxClaimHours, MANUAL_RESEARCH_MAX_ATTEMPTS]
@@ -415,7 +398,7 @@ export async function releaseStaleManualDistrictResearchClaims(
           last_error = 'auto-released: claim exceeded max hold time',
           updated_at = now()
       WHERE status IN ('claimed', 'running')
-        AND updated_at < now() - make_interval(hours => $1::int)
+        AND claimed_at < now() - make_interval(hours => $1::int)
     `,
     [input.maxClaimHours]
   );

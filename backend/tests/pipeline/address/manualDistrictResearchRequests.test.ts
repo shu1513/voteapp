@@ -40,7 +40,6 @@ function makeClaimRow(overrides: Record<string, unknown> = {}) {
     request_count: 3,
     trigger_source: "address_resolve",
     last_elections_searched_at_at_request: null,
-    district_last_searched_at: null,
     ...overrides,
   };
 }
@@ -166,8 +165,11 @@ describe("enqueueManualDistrictResearchRequestsForStaleDistricts", () => {
 });
 
 describe("claimNextManualDistrictResearchRequest", () => {
-  it("returns null when no queued rows remain", async () => {
-    const query = vi.fn().mockResolvedValueOnce({ rows: [] });
+  it("retires fresh queued rows first, then returns null when nothing is claimable", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rowCount: 2, rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
 
     const claimed = await claimNextManualDistrictResearchRequest(
       { query },
@@ -175,12 +177,27 @@ describe("claimNextManualDistrictResearchRequest", () => {
     );
 
     expect(claimed).toBeNull();
-    expect(query).toHaveBeenCalledTimes(1);
-    expect(query.mock.calls[0]?.[1]).toEqual(["claude-session", "claude"]);
+    expect(query).toHaveBeenCalledTimes(2);
+
+    // First statement bulk-retires queued rows whose district is now fresh,
+    // using the cooldown.
+    const retireSql = query.mock.calls[0]?.[0] as string;
+    expect(retireSql).toContain("'skipped'");
+    expect(retireSql).toContain("last_elections_searched_at");
+    expect(query.mock.calls[0]?.[1]).toEqual([180]);
+
+    // Second statement is the claim; staleness is part of its WHERE.
+    const claimSql = query.mock.calls[1]?.[0] as string;
+    expect(claimSql).toContain("FOR UPDATE OF r2 SKIP LOCKED");
+    expect(claimSql).toContain("last_elections_searched_at IS NULL");
+    expect(query.mock.calls[1]?.[1]).toEqual(["claude-session", "claude", 180]);
   });
 
-  it("returns a claimable request for a still-stale district", async () => {
-    const query = vi.fn().mockResolvedValueOnce({ rows: [makeClaimRow()] });
+  it("returns the claimed request for a still-stale district", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rows: [makeClaimRow()] });
 
     const claimed = await claimNextManualDistrictResearchRequest(
       { query },
@@ -199,58 +216,19 @@ describe("claimNextManualDistrictResearchRequest", () => {
     });
   });
 
-  it("marks a now-fresh district's request skipped and claims the next stale one", async () => {
-    const freshRow = makeClaimRow({ district_last_searched_at: new Date().toISOString() });
-    const staleRow = makeClaimRow({
-      id: "44444444-4444-4444-8444-444444444444",
-      district_id: OTHER_DISTRICT_ID,
-      district_last_searched_at: null,
-    });
+  it("orders the claim by demand first, then age", async () => {
     const query = vi
       .fn()
-      .mockResolvedValueOnce({ rows: [freshRow] })
-      .mockResolvedValueOnce({ rowCount: 1, rows: [] })
-      .mockResolvedValueOnce({ rows: [staleRow] });
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rows: [makeClaimRow({ district_id: OTHER_DISTRICT_ID })] });
 
-    const claimed = await claimNextManualDistrictResearchRequest(
+    await claimNextManualDistrictResearchRequest(
       { query },
       { claimedBy: "codex-session", agentKind: "codex", cooldownDays: 180 }
     );
 
-    expect(claimed?.district_id).toBe(OTHER_DISTRICT_ID);
-    // Second call marks the fresh row skipped.
-    const skipSql = query.mock.calls[1]?.[0] as string;
-    expect(skipSql).toContain("'skipped'");
-    expect(query.mock.calls[1]?.[1]).toEqual([REQUEST_ID]);
-  });
-
-  it("treats a district researched longer ago than the cooldown as still stale", async () => {
-    const twoHundredDaysAgo = new Date(Date.now() - 200 * 24 * 60 * 60 * 1000).toISOString();
-    const query = vi
-      .fn()
-      .mockResolvedValueOnce({ rows: [makeClaimRow({ district_last_searched_at: twoHundredDaysAgo })] });
-
-    const claimed = await claimNextManualDistrictResearchRequest(
-      { query },
-      { claimedBy: "claude-session", agentKind: "claude", cooldownDays: 180 }
-    );
-
-    expect(claimed?.request_id).toBe(REQUEST_ID);
-  });
-
-  it("stops scanning at maxSkipScan even if fresh rows keep coming", async () => {
-    const query = vi
-      .fn()
-      .mockResolvedValue({ rows: [makeClaimRow({ district_last_searched_at: new Date().toISOString() })] });
-
-    const claimed = await claimNextManualDistrictResearchRequest(
-      { query },
-      { claimedBy: "claude-session", agentKind: "claude", cooldownDays: 180, maxSkipScan: 3 }
-    );
-
-    expect(claimed).toBeNull();
-    // 3 scans x (claim + skip) = 6 queries.
-    expect(query).toHaveBeenCalledTimes(6);
+    const claimSql = query.mock.calls[1]?.[0] as string;
+    expect(claimSql).toContain("ORDER BY r2.request_count DESC, r2.requested_at ASC");
   });
 });
 
@@ -317,5 +295,13 @@ describe("status transitions", () => {
     // Park pass runs first and binds the attempt ceiling.
     expect(query.mock.calls[0]?.[1]).toEqual([6, MANUAL_RESEARCH_MAX_ATTEMPTS]);
     expect(query.mock.calls[1]?.[1]).toEqual([6]);
+    // The clock must be claimed_at: the enqueue bump refreshes updated_at on
+    // open rows, so an updated_at clock would let a hot district keep a dead
+    // session's claim alive forever.
+    for (const call of query.mock.calls) {
+      const sql = call[0] as string;
+      expect(sql).toContain("claimed_at < now()");
+      expect(sql).not.toContain("updated_at < now()");
+    }
   });
 });
