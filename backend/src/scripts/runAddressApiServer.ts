@@ -73,6 +73,7 @@ import {
 import { getUserBallotPreferences, setUserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import {
   disableUserEmailDigest,
+  disableUserEmailElectionReminders,
   disableUserEmailNewElectionAlerts,
   getUserEmailPreferences,
   setUserEmailPreferences,
@@ -454,7 +455,7 @@ async function main(): Promise<void> {
           unsubscribeFromEmailNotifications: async (
             token: string,
             mode: "confirm" | "execute",
-            preference: "digest" | "new_election_alerts"
+            preference: "digest" | "new_election_alerts" | "election_reminders"
           ) => {
             const userId = verifyEmailUnsubscribeToken(token, unsubscribeSecret);
             if (!userId) {
@@ -466,6 +467,8 @@ async function main(): Promise<void> {
             try {
               if (preference === "new_election_alerts") {
                 await disableUserEmailNewElectionAlerts(pool, userId);
+              } else if (preference === "election_reminders") {
+                await disableUserEmailElectionReminders(pool, userId);
               } else {
                 await disableUserEmailDigest(pool, userId);
               }

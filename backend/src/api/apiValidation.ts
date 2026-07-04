@@ -50,7 +50,7 @@ export const ME_EMAIL_PREFERENCES_PATH = "/api/me/email-preferences";
 // humans, POST for RFC 8058 one-click mailbox buttons. No session auth. The
 // optional pref query param picks which opt-in the link disables.
 export const EMAIL_UNSUBSCRIBE_PATH = "/api/email/unsubscribe";
-export const EMAIL_UNSUBSCRIBE_PREFERENCES = ["digest", "new_election_alerts"] as const;
+export const EMAIL_UNSUBSCRIBE_PREFERENCES = ["digest", "new_election_alerts", "election_reminders"] as const;
 export type EmailUnsubscribePreference = (typeof EMAIL_UNSUBSCRIBE_PREFERENCES)[number];
 
 /** Missing param defaults to digest; an unrecognized value is null (400). */
