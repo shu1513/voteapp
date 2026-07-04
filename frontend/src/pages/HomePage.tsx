@@ -44,9 +44,11 @@ export function HomePage() {
       apiRequest<AddressResolution>("/api/address/resolve", { method: "POST", body: { address: input } }),
     onSuccess: (resolution) => {
       // Stash for the anonymous-to-account handoff: if this visitor signs up,
-      // these districts become their saved ballot once they verify. Verified
-      // users running a one-off search must not re-arm the handoff.
-      if (!me?.email_verified) {
+      // these districts become their saved ballot once they verify. Save only
+      // when identity is KNOWN to be logged out or unverified — while /api/me
+      // is still loading (me === undefined) a verified user's one-off search
+      // must not re-arm the handoff.
+      if (me === null || me?.email_verified === false) {
         savePendingDistrictIds(resolution.districts.map((district) => district.id));
       }
     },

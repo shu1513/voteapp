@@ -21,8 +21,11 @@ function AddressForm({ compact }: { compact: boolean }) {
   const update = useMutation({
     mutationFn: () =>
       apiRequest<SavedBallot>("/api/me/address", { method: "PUT", body: { address: address.trim() } }),
-    onSuccess: (ballot) => {
-      queryClient.setQueryData(["me", "ballot"], ballot);
+    onSuccess: () => {
+      // The PUT returns a plain district ballot, but GET /api/me/ballot
+      // applies saved sort preferences and followed-candidate ordering —
+      // refetch the canonical version instead of caching the PUT body.
+      void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
       setAddress("");
     },
   });
