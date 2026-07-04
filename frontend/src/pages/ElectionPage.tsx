@@ -41,19 +41,19 @@ export function ElectionPage() {
       </p>
       <div className="mt-2 flex flex-wrap gap-2 text-xs">
         {data.vote_power.label !== "unknown" ? (
-          <span className="rounded-full bg-rausch/10 px-2.5 py-0.5 font-medium text-rausch-dark">
+          <span className="rounded bg-rausch/10 px-2 py-0.5 text-rausch-dark">
             Vote power: {formatVotePowerLabel(data.vote_power.label)}
           </span>
         ) : null}
         {data.historical_competitiveness ? (
-          <span className="rounded-full border border-line bg-white px-2.5 py-0.5 text-ink-soft">
+          <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
             {data.historical_competitiveness.display_label}
           </span>
         ) : null}
       </div>
 
       {measure ? (
-        <section className="mt-6 rounded-xl border border-line bg-white p-4">
+        <section className="mt-6 rounded-lg border border-line bg-white p-4">
           <h2 className="text-lg font-semibold">Ballot measure</h2>
           {measure.summary ? <p className="mt-2 text-sm text-ink">{measure.summary}</p> : null}
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -87,7 +87,7 @@ export function ElectionPage() {
               <Link
                 key={candidate.candidate_id}
                 to={`/candidates/${candidate.candidate_id}`}
-                className="block rounded-xl border border-line bg-white p-4 shadow-sm transition hover:shadow-md"
+                className="block rounded-lg border border-line bg-white p-4 shadow-sm transition hover:border-rausch"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>

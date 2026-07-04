@@ -79,7 +79,7 @@ export function CandidatePage() {
               <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">{group.areaName}</h3>
               <ul className="mt-2 space-y-3">
                 {group.records.map((record) => (
-                  <li key={`${group.areaName}-${record.id}`} className="rounded-xl border border-line bg-white p-3">
+                  <li key={`${group.areaName}-${record.id}`} className="rounded-lg border border-line bg-white p-3">
                     <p className="text-sm text-ink">{record.description}</p>
                     <p className="mt-1 text-xs text-ink-soft">{formatElectionDate(record.event_date)}</p>
                     <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />
@@ -94,7 +94,7 @@ export function CandidatePage() {
       {candidate.elections.length > 0 ? (
         <section className="mt-6">
           <h2 className="text-lg font-semibold">Elections</h2>
-          <ul className="mt-2 divide-y divide-line rounded-xl border border-line bg-white">
+          <ul className="mt-2 divide-y divide-line rounded-md border border-line bg-white">
             {candidate.elections.map((election) => (
               <li key={election.candidate_election_id} className="px-3 py-2 text-sm">
                 <Link to={`/elections/${election.election_id}`} className="text-ink underline hover:text-rausch">

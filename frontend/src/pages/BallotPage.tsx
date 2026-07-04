@@ -10,7 +10,7 @@ function ElectionCard({ election }: { election: ElectionSummary }) {
   return (
     <Link
       to={`/elections/${election.id}`}
-      className="block rounded-xl border border-line bg-white p-4 shadow-sm transition hover:shadow-md"
+      className="block rounded-lg border border-line bg-white p-4 shadow-sm transition hover:border-rausch"
     >
       <div className="flex items-start justify-between gap-3">
         <h3 className="font-semibold text-ink">{election.official_ballot_title}</h3>
@@ -22,27 +22,27 @@ function ElectionCard({ election }: { election: ElectionSummary }) {
       </p>
       <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
         {election.race_type === "ballot_measure" ? (
-          <span className="rounded-full bg-ink px-2.5 py-0.5 font-medium text-white">Ballot measure</span>
+          <span className="rounded bg-ink/10 px-2 py-0.5 text-ink">Ballot measure</span>
         ) : (
-          <span className="rounded-full border border-line bg-white px-2.5 py-0.5 text-ink-soft">
+          <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
             {election.candidate_count} candidate{election.candidate_count === 1 ? "" : "s"}
           </span>
         )}
         {election.vote_power.label !== "unknown" ? (
-          <span className="rounded-full bg-rausch/10 px-2.5 py-0.5 font-medium text-rausch-dark">
+          <span className="rounded bg-rausch/10 px-2 py-0.5 text-rausch-dark">
             Vote power: {formatVotePowerLabel(election.vote_power.label)}
           </span>
         ) : null}
         {election.historical_competitiveness ? (
-          <span className="rounded-full border border-line bg-white px-2.5 py-0.5 text-ink-soft">
+          <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
             {election.historical_competitiveness.display_label}
           </span>
         ) : null}
         {election.has_results ? (
-          <span className="rounded-full border border-line bg-surface px-2.5 py-0.5 text-ink">Results available</span>
+          <span className="rounded bg-surface px-2 py-0.5 text-ink">Results available</span>
         ) : null}
         {election.research_areas.map((area) => (
-          <span key={area.id} className="rounded-full border border-line bg-white px-2.5 py-0.5 text-ink-soft">
+          <span key={area.id} className="rounded bg-surface px-2 py-0.5 text-ink-soft">
             {area.name}
           </span>
         ))}
