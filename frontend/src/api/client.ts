@@ -20,9 +20,39 @@ export class ApiError extends Error {
 type RequestOptions = {
   method?: "GET" | "POST" | "PUT" | "DELETE";
   body?: unknown;
+  /** Caller-side cancellation (e.g. superseded autocomplete requests). */
+  signal?: AbortSignal;
 };
 
 export const REQUEST_TIMEOUT_MS = 15_000;
+
+/**
+ * Combines the request timeout with an optional caller signal without
+ * requiring AbortSignal.any (Chrome 116+/Safari 17.4+): on older browsers a
+ * missing .any must degrade to a manual combine, not throw before fetch and
+ * silently kill features like autocomplete.
+ */
+function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal | undefined {
+  const timeout = typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(REQUEST_TIMEOUT_MS) : undefined;
+  if (!callerSignal) {
+    return timeout;
+  }
+  if (!timeout) {
+    return callerSignal;
+  }
+  if (typeof AbortSignal.any === "function") {
+    return AbortSignal.any([timeout, callerSignal]);
+  }
+  const controller = new AbortController();
+  for (const signal of [timeout, callerSignal]) {
+    if (signal.aborted) {
+      controller.abort(signal.reason);
+      break;
+    }
+    signal.addEventListener("abort", () => controller.abort(signal.reason), { once: true });
+  }
+  return controller.signal;
+}
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const method = options.method ?? "GET";
@@ -34,8 +64,8 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     headers: options.body !== undefined ? { "content-type": "application/json" } : undefined,
     body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
     // A stalled request must fail instead of pinning queries in pending
-    // forever.
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    // forever; callers can additionally cancel.
+    signal: combineWithTimeout(options.signal),
   });
 
   if (!response.ok) {

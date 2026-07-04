@@ -67,6 +67,29 @@ describe("apiRequest", () => {
     expect((error as ApiError).retryAfterSeconds).toBe(17);
   });
 
+  it("still sends requests when AbortSignal.any is unavailable (older browsers)", async () => {
+    const originalAny = AbortSignal.any;
+    // @ts-expect-error simulating a browser without AbortSignal.any
+    AbortSignal.any = undefined;
+    try {
+      const fetchMock = mockFetch({ jsonBody: { ok: true } });
+      const controller = new AbortController();
+
+      await apiRequest("/api/address/autocomplete", {
+        method: "POST",
+        body: { input: "200 N", session_token: "t" },
+        signal: controller.signal,
+      });
+
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      const passed = (fetchMock.mock.calls[0][1] as { signal: AbortSignal }).signal;
+      expect(passed).toBeInstanceOf(AbortSignal);
+      expect(passed.aborted).toBe(false);
+    } finally {
+      AbortSignal.any = originalAny;
+    }
+  });
+
   it("keeps a generic message when the error body is not JSON", async () => {
     const headers = new Headers();
     vi.stubGlobal(
