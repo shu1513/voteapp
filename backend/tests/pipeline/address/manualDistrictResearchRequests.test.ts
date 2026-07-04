@@ -185,15 +185,19 @@ describe("claimNextManualDistrictResearchRequest", () => {
     expect(query).toHaveBeenCalledTimes(2);
 
     // First statement bulk-retires queued rows whose district is now fresh,
-    // using the cooldown.
+    // using the cooldown — but never manual_seed rows, which are an operator
+    // override and bypass the freshness gates.
     const retireSql = query.mock.calls[0]?.[0] as string;
     expect(retireSql).toContain("'skipped'");
     expect(retireSql).toContain("last_elections_searched_at");
+    expect(retireSql).toContain("trigger_source <> 'manual_seed'");
     expect(query.mock.calls[0]?.[1]).toEqual([180]);
 
-    // Second statement is the claim; staleness is part of its WHERE.
+    // Second statement is the claim; staleness is part of its WHERE, with the
+    // manual_seed override making seeded requests claimable regardless.
     const claimSql = query.mock.calls[1]?.[0] as string;
     expect(claimSql).toContain("FOR UPDATE OF r2 SKIP LOCKED");
+    expect(claimSql).toContain("r2.trigger_source = 'manual_seed'");
     expect(claimSql).toContain("last_elections_searched_at IS NULL");
     expect(query.mock.calls[1]?.[1]).toEqual(["claude-session", "claude", 180]);
   });

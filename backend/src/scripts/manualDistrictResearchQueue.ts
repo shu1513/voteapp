@@ -223,6 +223,10 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
           DO UPDATE SET
             request_count = public.manual_district_research_requests.request_count + 1,
             last_requested_at = now(),
+            -- Seeding escalates an existing open request to the operator
+            -- override so it bypasses the freshness gates (unlike the address
+            -- trigger's bump, which preserves first-cause provenance).
+            trigger_source = 'manual_seed',
             updated_at = now()
           RETURNING id, request_count
         `,

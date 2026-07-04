@@ -190,6 +190,9 @@ export async function claimNextManualDistrictResearchRequest(
 ): Promise<ClaimedManualDistrictResearchRequest | null> {
   const { claimedBy, agentKind, cooldownDays } = input;
 
+  // manual_seed requests are an operator override ("re-check this district
+  // early") and bypass both freshness gates: they are never retired as fresh
+  // and are claimable regardless of the cooldown.
   await db.query(
     `
       UPDATE public.manual_district_research_requests AS r
@@ -200,6 +203,7 @@ export async function claimNextManualDistrictResearchRequest(
       FROM public.districts AS d
       WHERE d.id = r.district_id
         AND r.status = 'queued'
+        AND r.trigger_source <> 'manual_seed'
         AND d.last_elections_searched_at IS NOT NULL
         AND d.last_elections_searched_at >= now() - make_interval(days => $1::int)
     `,
@@ -221,7 +225,8 @@ export async function claimNextManualDistrictResearchRequest(
         JOIN public.districts AS d ON d.id = r2.district_id
         WHERE r2.status = 'queued'
           AND (
-            d.last_elections_searched_at IS NULL
+            r2.trigger_source = 'manual_seed'
+            OR d.last_elections_searched_at IS NULL
             OR d.last_elections_searched_at < now() - make_interval(days => $3::int)
           )
         ORDER BY r2.request_count DESC, r2.requested_at ASC
