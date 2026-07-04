@@ -27,6 +27,43 @@ export function isAutoDistrictResearchEnabled(): boolean {
   return readBooleanEnv("AUTO_DISTRICT_RESEARCH_ENABLED", false);
 }
 
+export type AutoDistrictResearchMode = "off" | "ai" | "manual";
+
+/**
+ * Which auto district research behavior fires when an address lookup resolves
+ * stale districts. Exactly one is active so the AI pipeline and the manual
+ * agent queue never both enqueue the same district.
+ *
+ *   - "ai": drop an election draft into the staging pipeline (PR #169).
+ *   - "manual": enqueue a manual research request for an agent to claim.
+ *   - "off": no auto research.
+ *
+ * AUTO_DISTRICT_RESEARCH_MODE is authoritative. When it is unset, the legacy
+ * boolean AUTO_DISTRICT_RESEARCH_ENABLED=true maps to "ai" for backward
+ * compatibility; setting both to conflicting values is an error so a stale
+ * boolean cannot silently override an explicit mode.
+ */
+export function readAutoDistrictResearchMode(): AutoDistrictResearchMode {
+  const raw = process.env.AUTO_DISTRICT_RESEARCH_MODE;
+  const legacyEnabled = isAutoDistrictResearchEnabled();
+
+  if (raw && raw.trim().length > 0) {
+    const normalized = raw.trim().toLowerCase();
+    if (normalized !== "off" && normalized !== "ai" && normalized !== "manual") {
+      throw new Error(`Invalid AUTO_DISTRICT_RESEARCH_MODE: ${raw}. Expected one of off, ai, manual.`);
+    }
+    if (legacyEnabled && normalized !== "ai") {
+      throw new Error(
+        `Conflicting config: AUTO_DISTRICT_RESEARCH_MODE=${normalized} with AUTO_DISTRICT_RESEARCH_ENABLED=true. ` +
+          "Set only AUTO_DISTRICT_RESEARCH_MODE."
+      );
+    }
+    return normalized;
+  }
+
+  return legacyEnabled ? "ai" : "off";
+}
+
 export function isCandidateFinanceEnabled(): boolean {
   return readBooleanEnv("CANDIDATE_FINANCE_ENABLED", false);
 }
