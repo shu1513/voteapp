@@ -660,6 +660,23 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           throw new TypeError("New email must be different from the current email");
         }
 
+        // Void outstanding change links up front, not only inside
+        // issueUserAuthToken: the newest request must kill older links even
+        // when it ends on the silent taken-address path below. Otherwise a
+        // user recovering from a typoed address (whose link sits in a
+        // stranger's inbox) would believe the retry disarmed it when the
+        // retry hit a taken address.
+        await client.query(
+          `
+            UPDATE public.user_auth_tokens
+            SET consumed_at = now()
+            WHERE user_id = $1::uuid
+              AND purpose = 'email_change'
+              AND consumed_at IS NULL
+          `,
+          [userId]
+        );
+
         const taken = await client.query(
           `
             SELECT 1

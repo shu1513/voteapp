@@ -210,8 +210,9 @@ describe("createAuthService requestEmailChange", () => {
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // up-front void of outstanding change tokens
       .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // taken check: free
-      .mockResolvedValueOnce({ rows: [] }) // void outstanding email_change tokens
+      .mockResolvedValueOnce({ rows: [] }) // issueUserAuthToken's own void
       .mockResolvedValueOnce({
         rows: [
           {
@@ -255,6 +256,7 @@ describe("createAuthService requestEmailChange", () => {
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // up-front void of outstanding change tokens
       .mockResolvedValueOnce({ rows: [{ "?column?": 1 }], rowCount: 1 }) // taken
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
     const mailer = createMailerMock();
@@ -276,6 +278,12 @@ describe("createAuthService requestEmailChange", () => {
 
     expect(mailer.sendEmailChangeEmail).not.toHaveBeenCalled();
     expect(client.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.user_auth_tokens"))).toBe(false);
+    // The taken path must still disarm older change links: a typo-recovery
+    // retry that lands on a taken address may not leave the typo link live.
+    const voidCall = client.query.mock.calls.find((call) =>
+      String(call[0]).includes("SET consumed_at = now()")
+    );
+    expect(voidCall?.[1]).toEqual([USER_ID]);
     expect(client.query).toHaveBeenCalledWith("COMMIT");
   });
 
