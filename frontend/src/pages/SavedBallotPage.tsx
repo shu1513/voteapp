@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "../api/client";
-import type { BallotSummary } from "../api/types";
+import { BALLOT_SORTS, type BallotPreferences, type BallotSummary } from "../api/types";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { AiBanner } from "../components/AiBanner";
 import { ElectionCard } from "../components/ElectionCard";
@@ -13,6 +13,62 @@ import { PRIVACY_NOTICE } from "../legal/copy";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
+
+// Persisted ordering controls: unlike the anonymous ballot's URL params,
+// these save to the account and apply to every future visit (and to the
+// digest-adjacent "followed first" ordering).
+function BallotPreferenceControls() {
+  const queryClient = useQueryClient();
+  const prefs = useQuery({
+    queryKey: ["me", "ballot-preferences"],
+    queryFn: () => apiRequest<BallotPreferences>("/api/me/ballot-preferences"),
+    staleTime: 60_000,
+  });
+
+  const update = useMutation({
+    mutationFn: (next: BallotPreferences) =>
+      apiRequest<BallotPreferences>("/api/me/ballot-preferences", { method: "PUT", body: next }),
+    onSuccess: (saved) => {
+      queryClient.setQueryData(["me", "ballot-preferences"], saved);
+      void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+    },
+  });
+
+  if (!prefs.data) {
+    return null;
+  }
+  const current = prefs.data;
+
+  return (
+    <div className="flex flex-wrap items-center gap-4 text-sm text-ink-soft">
+      <label className="flex items-center gap-2">
+        Sort by
+        <select
+          value={current.sort}
+          disabled={update.isPending}
+          onChange={(event) => update.mutate({ ...current, sort: event.target.value as BallotPreferences["sort"] })}
+          className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
+        >
+          {BALLOT_SORTS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="flex cursor-pointer items-center gap-2">
+        <input
+          type="checkbox"
+          checked={current.followed_first}
+          disabled={update.isPending}
+          onChange={(event) => update.mutate({ ...current, followed_first: event.target.checked })}
+          className="h-4 w-4 accent-rausch"
+        />
+        Followed candidates first
+      </label>
+    </div>
+  );
+}
 
 function AddressForm({ compact }: { compact: boolean }) {
   const [address, setAddress] = useState("");
@@ -209,7 +265,10 @@ export function SavedBallotPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <AiBanner />
-      <h1 className="text-2xl font-bold">Your saved ballot</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold">Your saved ballot</h1>
+        <BallotPreferenceControls />
+      </div>
       <p className="mt-1 text-sm text-ink-soft">
         {data.elections.length} election{data.elections.length === 1 ? "" : "s"} across{" "}
         {data.districts.length} district{data.districts.length === 1 ? "" : "s"}, ordered by where your vote

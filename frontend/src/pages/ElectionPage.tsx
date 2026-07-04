@@ -5,10 +5,16 @@ import type { ElectionDetail } from "../api/types";
 import { AiBanner } from "../components/AiBanner";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { SourceLine } from "../components/SourceLine";
+import { FollowButton } from "../components/FollowButton";
 import { formatDistrictType, formatElectionDate, formatMoney, formatOutcome, formatVotePowerLabel } from "../lib/format";
+import { useFollows } from "../lib/useFollows";
 
 export function ElectionPage() {
   const { electionId } = useParams();
+  // Election payload candidates carry no follow state; derive it from the
+  // follows list (only fetched for verified users).
+  const { follows, canFollow } = useFollows();
+  const followedIds = new Set((follows ?? []).map((follow) => follow.candidate_id));
 
   const election = useQuery({
     queryKey: ["election", electionId],
@@ -98,11 +104,28 @@ export function ElectionPage() {
                       {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
                     </p>
                   </div>
-                  {candidate.finance_summary?.direct_campaign.total_raised != null ? (
-                    <span className="shrink-0 text-sm text-ink-soft">
-                      Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
-                    </span>
-                  ) : null}
+                  <div className="flex shrink-0 items-center gap-3">
+                    {candidate.finance_summary?.direct_campaign.total_raised != null ? (
+                      <span className="text-sm text-ink-soft">
+                        Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
+                      </span>
+                    ) : null}
+                    {canFollow ? (
+                      <span
+                        onClick={(event) => {
+                          // The card is a Link; the follow toggle must not navigate.
+                          event.preventDefault();
+                          event.stopPropagation();
+                        }}
+                      >
+                        <FollowButton
+                          candidateId={candidate.candidate_id}
+                          isFollowing={followedIds.has(candidate.candidate_id)}
+                          size="sm"
+                        />
+                      </span>
+                    ) : null}
+                  </div>
                 </div>
                 {candidate.summary ? (
                   <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>

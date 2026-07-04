@@ -5,7 +5,9 @@ import type { CandidateDetail, CandidateRecord } from "../api/types";
 import { AiBanner } from "../components/AiBanner";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { SourceLine } from "../components/SourceLine";
+import { FollowButton } from "../components/FollowButton";
 import { formatElectionDate } from "../lib/format";
+import { useFollows } from "../lib/useFollows";
 
 // Records grouped by research area (a record with several tags appears under
 // each; untagged records fall into "Other records").
@@ -28,6 +30,7 @@ function groupRecords(records: CandidateRecord[]): Array<{ areaName: string; rec
 
 export function CandidatePage() {
   const { candidateId } = useParams();
+  const { canFollow } = useFollows();
 
   const detail = useQuery({
     queryKey: ["candidate", candidateId],
@@ -52,7 +55,10 @@ export function CandidatePage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <AiBanner />
-      <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
+        {canFollow ? <FollowButton candidateId={candidate.candidate_id} isFollowing={candidate.is_following} /> : null}
+      </div>
       <p className="mt-1 text-sm text-ink-soft">
         {candidate.party} · {candidate.state}
         {candidate.current_office ? <> · {candidate.current_office}</> : null}
