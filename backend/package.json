@@ -29,6 +29,8 @@
     "notifications:new-elections": "tsx src/scripts/sendNewElectionAlerts.ts",
     "notifications:new-elections:scheduler:upsert": "tsx src/scripts/upsertNewElectionAlertDailyScheduler.ts",
     "notifications:reminders": "tsx src/scripts/sendElectionReminders.ts",
+    "notifications:reminders:scheduler:upsert": "tsx src/scripts/upsertElectionReminderDailyScheduler.ts",
+    "notifications:reminders:scheduler:worker": "tsx src/scripts/runElectionReminderSchedulerWorker.ts",
     "notifications:new-elections:scheduler:worker": "tsx src/scripts/runNewElectionAlertSchedulerWorker.ts",
     "manual:elections:inject": "tsx src/scripts/injectManualElections.ts",
     "elections:search:scheduler:upsert": "tsx src/scripts/upsertElectionsSearchDailyScheduler.ts",

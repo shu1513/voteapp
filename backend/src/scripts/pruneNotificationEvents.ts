@@ -3,13 +3,14 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
+import { US_LATEST_LOCAL_DATE_SQL } from "../utils/usLocalDate.js";
 
-// Retention for the notification event tables (candidate-follow and
-// district new-election). Events are deduplicated by unique indexes, so the
-// tables grow with audience x content and nothing deletes rows. Deleting a
-// row re-arms the ON CONFLICT DO NOTHING dedupe for that pair, which only
-// re-notifies if the same record or election fires a new event later; that
-// is intended.
+// Retention for the notification event/log tables (candidate-follow,
+// district new-election, and election reminder sends). Rows are deduplicated
+// by unique indexes, so the tables grow with audience x content and nothing
+// deletes rows. Deleting a row re-arms the dedupe for that pair, which only
+// re-notifies if the same record, election, or election date fires again
+// later; that is intended.
 //
 // Candidate-follow events prune by age alone: an unsent record-update or
 // ballot digest item older than the window is stale news nobody should
@@ -18,10 +19,36 @@ import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 // who verifies their email late), and every row is eventually stamped anyway
 // (delivered, or orphan-resolved when the user opts out, moves away, or the
 // election date passes), so the lifecycle stays bounded.
+//
+// Election reminder sends prune by the election date itself: a dedupe row
+// only guards its own date, so once that date is far past, the row is pure
+// audit. The table has a composite (user_id, election_date) primary key and
+// no id column, so its delete batches key on ctid instead.
 
-export const NOTIFICATION_EVENT_TABLES = [
-  { table: "user_candidate_follow_notification_events", requireNotified: false },
-  { table: "user_district_notification_events", requireNotified: true },
+type NotificationEventTable = {
+  table: string;
+  /** WHERE fragment selecting prunable rows; $1 is --older-than-days. */
+  ageCondition: string;
+  /** Column the batched delete keys on (tables without an id use ctid). */
+  batchKey: "id" | "ctid";
+};
+
+export const NOTIFICATION_EVENT_TABLES: readonly NotificationEventTable[] = [
+  {
+    table: "user_candidate_follow_notification_events",
+    ageCondition: "created_at < now() - make_interval(days => $1::int)",
+    batchKey: "id",
+  },
+  {
+    table: "user_district_notification_events",
+    ageCondition: "created_at < now() - make_interval(days => $1::int) AND notified_at IS NOT NULL",
+    batchKey: "id",
+  },
+  {
+    table: "user_election_reminder_sends",
+    ageCondition: `election_date < ${US_LATEST_LOCAL_DATE_SQL} - $1::int`,
+    batchKey: "ctid",
+  },
 ] as const;
 
 export const DEFAULT_NOTIFICATION_EVENT_RETENTION_DAYS = 90;
@@ -44,12 +71,9 @@ export function parsePruneNotificationEventsArgs(argv: readonly string[]): Prune
 
 async function pruneNotificationEventTable(
   db: Pick<Pool, "query">,
-  { table, requireNotified }: (typeof NOTIFICATION_EVENT_TABLES)[number],
+  { table, ageCondition, batchKey }: NotificationEventTable,
   options: PruneNotificationEventsOptions
 ): Promise<{ matchedCount: number; deletedCount: number }> {
-  const ageCondition = `created_at < now() - make_interval(days => $1::int)${
-    requireNotified ? " AND notified_at IS NOT NULL" : ""
-  }`;
   if (!options.live) {
     const counted = await db.query<{ matched: string }>(
       `
@@ -63,17 +87,17 @@ async function pruneNotificationEventTable(
   }
 
   // Batched delete: one giant statement would hold a single long transaction
-  // over a seq scan (there is no plain created_at index), stalling vacuum and
-  // replication for the first prune of a long-neglected table. Chunks by
-  // primary key keep each transaction short; each batch re-evaluates the
-  // cutoff, which only moves forward.
+  // over a seq scan (there is no plain age-column index), stalling vacuum and
+  // replication for the first prune of a long-neglected table. Chunks by the
+  // table's batch key keep each transaction short; each batch re-evaluates
+  // the cutoff, which only moves forward.
   let deletedCount = 0;
   for (;;) {
     const deleted = await db.query(
       `
         DELETE FROM public.${table}
-        WHERE id IN (
-          SELECT id
+        WHERE ${batchKey} IN (
+          SELECT ${batchKey}
           FROM public.${table}
           WHERE ${ageCondition}
           LIMIT $2::int
