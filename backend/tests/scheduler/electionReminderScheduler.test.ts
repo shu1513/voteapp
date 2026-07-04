@@ -84,6 +84,32 @@ describe("runElectionReminderJob", () => {
     expect(endMock).toHaveBeenCalledTimes(1);
   });
 
+  it("fails the job on per-user failures so BullMQ retries the unmarked users same-day", async () => {
+    vi.resetModules();
+    const sendMock = vi.fn(async () => ({
+      ...baseSendResult,
+      usersEmailedCount: 1,
+      usersMarkedCount: 1,
+      failures: [{ userId: "u2", stage: "send", reason: "SES exploded" }],
+    }));
+    const endMock = vi.fn(async () => {});
+    mockReminderModule(sendMock);
+    mockPipelineEnv();
+    mockPg(endMock);
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const { runElectionReminderJob } = await import("../../src/scheduler/electionReminderScheduler.js");
+
+    await expect(runElectionReminderJob({ triggeredBy: "daily" })).rejects.toThrow(
+      "election reminder send for 2026-11-03 had 1 per-user failure(s) (1 emailed, 1 marked)"
+    );
+    // The full result is logged before the throw so counts and per-user
+    // stages survive; the job error message alone would lose them.
+    expect(String(errorSpy.mock.calls[0]?.[0])).toContain('"reason":"SES exploded"');
+    expect(endMock).toHaveBeenCalledTimes(1);
+    errorSpy.mockRestore();
+  });
+
   it("returns a lockSkipped result when another live run holds the advisory lock", async () => {
     vi.resetModules();
     const sendMock = vi.fn(async () => ({ ...baseSendResult }));

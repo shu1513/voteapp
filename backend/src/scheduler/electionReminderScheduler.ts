@@ -138,10 +138,6 @@ export async function runElectionReminderJob(
   const mailer = buildReminderMailerFromEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   try {
-    // Failures stay in the result instead of failing the job: reminded users
-    // already carry a dedupe row, so a retried job touches only users whose
-    // send failed (stage "send") or whose dedupe insert failed (stage
-    // "mark_after_send", re-sent — the at-least-once duplicate).
     const buildUnsubscribeUrl = buildUnsubscribeUrlBuilderFromEnv("election_reminders");
     const result = await withElectionReminderRunLock(pool, () =>
       sendElectionReminders(pool, mailer, {
@@ -165,6 +161,23 @@ export async function runElectionReminderJob(
         triggeredBy,
         lockSkipped: true,
       };
+    }
+    // Per-user failures FAIL the job, unlike the alert/digest siblings, where
+    // completed-with-failures is fine because their event backlog persists
+    // and the next daily run retries it. A reminder's window dies at the end
+    // of the send day — tomorrow's run targets a different election date —
+    // so BullMQ's attempts/backoff is the only same-day retry there is.
+    // Throwing is safe and cheap: users already reminded carry a dedupe row,
+    // so a retried job re-touches only the failed users (a mark_after_send
+    // failure is re-sent — the documented at-least-once duplicate).
+    if (result.failures.length > 0) {
+      console.error(
+        `election_reminder job completed with per-user failures; failing the job so BullMQ retries them: ${JSON.stringify({ ...result, triggeredBy })}`
+      );
+      throw new Error(
+        `election reminder send for ${result.targetElectionDate} had ${result.failures.length} per-user failure(s) ` +
+          `(${result.usersEmailedCount} emailed, ${result.usersMarkedCount} marked)`
+      );
     }
     return {
       ...result,
