@@ -313,6 +313,20 @@ describe("withDigestRunLock", () => {
     expect(String(query.mock.calls[1][0])).toContain("pg_advisory_unlock");
     expect(release).toHaveBeenCalledTimes(1);
   });
+
+  it("releases the client even when the unlock itself fails", async () => {
+    const query = vi.fn(async (sql: string) => {
+      if (sql.includes("pg_try_advisory_lock")) {
+        return { rows: [{ locked: true }], rowCount: 1 };
+      }
+      throw new Error("connection terminated");
+    });
+    const release = vi.fn();
+    const pool = { connect: vi.fn(async () => ({ query, release })) };
+
+    await expect(withDigestRunLock(pool as never, async () => "ran")).rejects.toThrow("connection terminated");
+    expect(release).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("unsubscribe URL wiring", () => {

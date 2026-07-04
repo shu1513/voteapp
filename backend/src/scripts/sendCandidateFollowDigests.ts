@@ -352,10 +352,16 @@ export async function withDigestRunLock<T>(
     }
     return await fn();
   } finally {
-    if (locked) {
-      await client.query("SELECT pg_advisory_unlock($1)", [DIGEST_RUN_LOCK_KEY]);
+    // release() must survive an unlock failure (e.g. the connection died
+    // mid-run): leaking the client would pin a pool slot for the process
+    // lifetime in the long-lived scheduler worker.
+    try {
+      if (locked) {
+        await client.query("SELECT pg_advisory_unlock($1)", [DIGEST_RUN_LOCK_KEY]);
+      }
+    } finally {
+      client.release();
     }
-    client.release();
   }
 }
 

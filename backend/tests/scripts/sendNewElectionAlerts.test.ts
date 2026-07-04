@@ -279,4 +279,20 @@ describe("withNewElectionAlertRunLock", () => {
     expect(fn).not.toHaveBeenCalled();
     expect(release).toHaveBeenCalledTimes(1);
   });
+
+  it("releases the client even when the unlock itself fails", async () => {
+    const query = vi.fn(async (sql: string) => {
+      if (sql.includes("pg_try_advisory_lock")) {
+        return { rows: [{ locked: true }], rowCount: 1 };
+      }
+      throw new Error("connection terminated");
+    });
+    const release = vi.fn();
+    const pool = { connect: vi.fn(async () => ({ query, release })) };
+
+    await expect(withNewElectionAlertRunLock(pool as never, async () => "ran")).rejects.toThrow(
+      "connection terminated"
+    );
+    expect(release).toHaveBeenCalledTimes(1);
+  });
 });
