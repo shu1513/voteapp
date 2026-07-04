@@ -30,6 +30,11 @@ export function VerifyTokenPage({ endpoint, title, successMessage }: VerifyToken
     retry: false,
     staleTime: Infinity,
     gcTime: Infinity,
+    // staleTime only shields the success case; an ERRORED query would
+    // re-POST the single-use token on remount, window focus, or reconnect.
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   useEffect(() => {

@@ -30,7 +30,7 @@ export function useMe() {
     retry: false,
     staleTime: 60_000,
   });
-  return { me: query.data, isLoading: query.isPending, refetch: query.refetch };
+  return { me: query.data, isLoading: query.isPending, isError: query.isError, refetch: query.refetch };
 }
 
 export function useLogout() {
@@ -41,7 +41,12 @@ export function useLogout() {
     mutationFn: () => apiRequest<{ status: string }>("/api/auth/logout", { method: "POST", body: {} }),
     onSuccess: () => {
       queryClient.setQueryData(["me"], null);
-      queryClient.removeQueries({ predicate: (query) => query.queryKey[0] !== "me" });
+      // Drop every cached query except the exact ["me"] entry just set:
+      // account-scoped data like ["me","ballot"] must not survive into the
+      // next login on a shared browser.
+      queryClient.removeQueries({
+        predicate: (query) => query.queryKey[0] !== "me" || query.queryKey.length > 1,
+      });
     },
   });
 }

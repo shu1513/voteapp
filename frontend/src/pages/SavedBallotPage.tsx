@@ -62,7 +62,7 @@ function AddressForm({ compact }: { compact: boolean }) {
 }
 
 export function SavedBallotPage() {
-  const { me, isLoading } = useMe();
+  const { me, isLoading, isError: meError, refetch: refetchMe } = useMe();
   const queryClient = useQueryClient();
   const [handoffDone, setHandoffDone] = useState(() => readPendingDistrictIds().length === 0);
   const handoffFiredRef = useRef(false);
@@ -85,11 +85,16 @@ export function SavedBallotPage() {
           method: "POST",
           body: { district_ids: districtIds },
         });
-      } catch {
-        // unknown_district_ids (stale local data) or transient failure —
-        // either way the saved ballot below is the source of truth.
-      } finally {
         clearPendingDistrictIds();
+      } catch (error) {
+        // Permanent rejections (4xx: stale/unknown district ids) clear the
+        // stash — the saved ballot is the source of truth. Transient
+        // failures (timeout, 5xx, network) keep the ids so the next visit
+        // retries instead of silently losing the anonymous search.
+        if (error instanceof ApiError && error.status < 500) {
+          clearPendingDistrictIds();
+        }
+      } finally {
         setHandoffDone(true);
         void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
       }
@@ -103,6 +108,22 @@ export function SavedBallotPage() {
     retry: false,
   });
 
+  if (meError) {
+    // /api/me failed for a non-auth reason (network, 5xx): without this the
+    // me === undefined guard below would spin forever.
+    return (
+      <div className="mx-auto max-w-md px-4 py-10 space-y-4 text-center">
+        <p className="text-ink-soft">We couldn't check your session. Please try again.</p>
+        <button
+          type="button"
+          onClick={() => void refetchMe()}
+          className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
   if (isLoading || me === undefined) {
     return <LoadingNotice text="Loading…" />;
   }

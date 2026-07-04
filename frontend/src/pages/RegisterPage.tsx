@@ -58,6 +58,11 @@ export function RegisterPage() {
             {resend.isSuccess ? "Sent again" : "Resend email"}
           </button>
         </div>
+        {resend.isError ? (
+          <div className="mt-4">
+            <ErrorNotice error={resend.error} />
+          </div>
+        ) : null}
       </div>
     );
   }

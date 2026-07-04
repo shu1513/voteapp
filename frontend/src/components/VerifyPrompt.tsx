@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
+import { ErrorNotice } from "./Status";
 
 // Interstitial for the unverified state: personalized features 403 until the
 // email is verified, and GET /api/me (which never 403s) tells us the address
@@ -29,6 +30,11 @@ export function VerifyPrompt({ email }: { email: string }) {
       >
         {resend.isSuccess ? "Email sent" : resend.isPending ? "Sending…" : "Resend verification email"}
       </button>
+      {resend.isError ? (
+        <div className="mt-4">
+          <ErrorNotice error={resend.error} />
+        </div>
+      ) : null}
     </div>
   );
 }
