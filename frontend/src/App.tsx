@@ -1,4 +1,51 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useLogout, useMe } from "./lib/useMe";
+
+function AccountNav() {
+  const { me, isLoading } = useMe();
+  const logout = useLogout();
+  const navigate = useNavigate();
+
+  if (isLoading) {
+    return null;
+  }
+  if (!me) {
+    return (
+      <span className="flex items-center gap-4">
+        <Link to="/login" className="text-ink-soft hover:text-ink">
+          Log in
+        </Link>
+        <Link
+          to="/register"
+          className="rounded-lg bg-rausch px-3 py-1.5 font-semibold text-white transition hover:bg-rausch-dark"
+        >
+          Sign up
+        </Link>
+      </span>
+    );
+  }
+  return (
+    <span className="flex items-center gap-4">
+      <span className="text-ink">Hi {me.first_name}</span>
+      <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
+        My ballot
+      </Link>
+      <button
+        type="button"
+        className="text-ink-soft hover:text-ink"
+        onClick={() =>
+          logout.mutate(undefined, {
+            onSuccess: () => {
+              navigate("/");
+            },
+          })
+        }
+      >
+        Log out
+      </button>
+    </span>
+  );
+}
 
 export function App() {
   return (
@@ -8,10 +55,8 @@ export function App() {
           <Link to="/" className="text-xl font-extrabold tracking-tight text-rausch">
             VoteApp
           </Link>
-          <nav className="text-sm">
-            <Link to="/disclaimer" className="text-ink-soft hover:text-ink">
-              Disclaimer
-            </Link>
+          <nav className="flex items-center gap-4 text-sm">
+            <AccountNav />
           </nav>
         </div>
       </header>
