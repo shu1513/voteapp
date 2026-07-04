@@ -25,6 +25,7 @@ import type {
   UserResearchAreaPreferencesResult,
 } from "../pipeline/users/userResearchAreaPreferences.js";
 import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
+import type { EmailUnsubscribePreference } from "./apiValidation.js";
 import type { AddressResolutionDiagnostics } from "./addressApiResponses.js";
 
 export type { ResearchAreaCatalogItem, ResearchAreaCatalogResult } from "../pipeline/users/userResearchAreaPreferences.js";
@@ -104,14 +105,22 @@ export type AddressApiServerOptions = {
     preferences: UserEmailPreferences
   ) => Promise<UserEmailPreferences>;
   /**
-   * Signed-token digest unsubscribe (no session). mode "confirm" only
+   * Signed-token email unsubscribe (no session). mode "confirm" only
    * verifies the token (GET renders a confirmation form and must not mutate:
    * mail scanners and prefetchers GET every link in email bodies); mode
-   * "execute" turns the digest off. Returns "ok" or "invalid_token"; a valid
+   * "execute" turns the given preference off. The preference names which
+   * opt-in the link disables ("digest" = candidate-follow digest,
+   * "new_election_alerts" = district new-election alerts); it rides the URL
+   * unsigned, which is safe because the link holder is the inbox owner and
+   * can only turn preferences OFF. Returns "ok" or "invalid_token"; a valid
    * token for a since-deleted user reports "ok" so the page does not leak
    * account state.
    */
-  unsubscribeFromEmailDigest?: (token: string, mode: "confirm" | "execute") => Promise<"ok" | "invalid_token">;
+  unsubscribeFromEmailNotifications?: (
+    token: string,
+    mode: "confirm" | "execute",
+    preference: EmailUnsubscribePreference
+  ) => Promise<"ok" | "invalid_token">;
   listAuthenticatedResearchAreaPreferences?: (userId: string) => Promise<AuthenticatedResearchAreaPreferencesResult>;
   replaceAuthenticatedResearchAreaPreferences?: (
     userId: string,

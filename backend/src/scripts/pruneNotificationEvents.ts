@@ -4,14 +4,25 @@ import { Pool } from "pg";
 import { loadProjectEnv } from "../config/env.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 
-// Retention for user_candidate_follow_notification_events. Events are
-// deduplicated per (user, record) / (user, candidate, election) by unique
-// partial indexes, so the table grows with followers x content and nothing
-// deletes rows. Until a delivery consumer exists — and after one does — an
-// undelivered event older than the retention window is a stale notification
-// nobody should receive, so pruning is safe. Deleting a row re-arms the
-// ON CONFLICT DO NOTHING dedupe for that pair, which only re-notifies if the
-// same record or election fires a new event later; that is intended.
+// Retention for the notification event tables (candidate-follow and
+// district new-election). Events are deduplicated by unique indexes, so the
+// tables grow with audience x content and nothing deletes rows. Deleting a
+// row re-arms the ON CONFLICT DO NOTHING dedupe for that pair, which only
+// re-notifies if the same record or election fires a new event later; that
+// is intended.
+//
+// Candidate-follow events prune by age alone: an unsent record-update or
+// ballot digest item older than the window is stale news nobody should
+// receive. District new-election events additionally require notified_at —
+// a pending alert for a still-future election stays deliverable (e.g. a user
+// who verifies their email late), and every row is eventually stamped anyway
+// (delivered, or orphan-resolved when the user opts out, moves away, or the
+// election date passes), so the lifecycle stays bounded.
+
+export const NOTIFICATION_EVENT_TABLES = [
+  { table: "user_candidate_follow_notification_events", requireNotified: false },
+  { table: "user_district_notification_events", requireNotified: true },
+] as const;
 
 export const DEFAULT_NOTIFICATION_EVENT_RETENTION_DAYS = 90;
 export const DEFAULT_NOTIFICATION_EVENT_PRUNE_BATCH_SIZE = 10_000;
@@ -31,16 +42,20 @@ export function parsePruneNotificationEventsArgs(argv: readonly string[]): Prune
   };
 }
 
-export async function pruneNotificationEvents(
+async function pruneNotificationEventTable(
   db: Pick<Pool, "query">,
+  { table, requireNotified }: (typeof NOTIFICATION_EVENT_TABLES)[number],
   options: PruneNotificationEventsOptions
 ): Promise<{ matchedCount: number; deletedCount: number }> {
+  const ageCondition = `created_at < now() - make_interval(days => $1::int)${
+    requireNotified ? " AND notified_at IS NOT NULL" : ""
+  }`;
   if (!options.live) {
     const counted = await db.query<{ matched: string }>(
       `
         SELECT count(*)::text AS matched
-        FROM public.user_candidate_follow_notification_events
-        WHERE created_at < now() - make_interval(days => $1::int)
+        FROM public.${table}
+        WHERE ${ageCondition}
       `,
       [options.olderThanDays]
     );
@@ -56,11 +71,11 @@ export async function pruneNotificationEvents(
   for (;;) {
     const deleted = await db.query(
       `
-        DELETE FROM public.user_candidate_follow_notification_events
+        DELETE FROM public.${table}
         WHERE id IN (
           SELECT id
-          FROM public.user_candidate_follow_notification_events
-          WHERE created_at < now() - make_interval(days => $1::int)
+          FROM public.${table}
+          WHERE ${ageCondition}
           LIMIT $2::int
         )
       `,
@@ -73,6 +88,20 @@ export async function pruneNotificationEvents(
     }
   }
   return { matchedCount: deletedCount, deletedCount };
+}
+
+export async function pruneNotificationEvents(
+  db: Pick<Pool, "query">,
+  options: PruneNotificationEventsOptions
+): Promise<{ matchedCount: number; deletedCount: number }> {
+  let matchedCount = 0;
+  let deletedCount = 0;
+  for (const table of NOTIFICATION_EVENT_TABLES) {
+    const result = await pruneNotificationEventTable(db, table, options);
+    matchedCount += result.matchedCount;
+    deletedCount += result.deletedCount;
+  }
+  return { matchedCount, deletedCount };
 }
 
 async function main(): Promise<void> {

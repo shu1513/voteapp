@@ -73,6 +73,7 @@ import {
 import { getUserBallotPreferences, setUserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import {
   disableUserEmailDigest,
+  disableUserEmailNewElectionAlerts,
   getUserEmailPreferences,
   setUserEmailPreferences,
   UserEmailPreferencesError,
@@ -450,7 +451,11 @@ async function main(): Promise<void> {
     setAuthenticatedEmailPreferences: (userId, preferences) => setUserEmailPreferences(pool, userId, preferences),
     ...(unsubscribeSecret
       ? {
-          unsubscribeFromEmailDigest: async (token: string, mode: "confirm" | "execute") => {
+          unsubscribeFromEmailNotifications: async (
+            token: string,
+            mode: "confirm" | "execute",
+            preference: "digest" | "new_election_alerts"
+          ) => {
             const userId = verifyEmailUnsubscribeToken(token, unsubscribeSecret);
             if (!userId) {
               return "invalid_token" as const;
@@ -459,7 +464,11 @@ async function main(): Promise<void> {
               return "ok" as const;
             }
             try {
-              await disableUserEmailDigest(pool, userId);
+              if (preference === "new_election_alerts") {
+                await disableUserEmailNewElectionAlerts(pool, userId);
+              } else {
+                await disableUserEmailDigest(pool, userId);
+              }
             } catch (error) {
               // A valid token for a since-deleted account still reports
               // success so the page does not leak account state.

@@ -46,9 +46,23 @@ export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferen
 // [ballot-personalized-ordering]
 export const ME_BALLOT_PREFERENCES_PATH = "/api/me/ballot-preferences";
 export const ME_EMAIL_PREFERENCES_PATH = "/api/me/email-preferences";
-// Signed-token unsubscribe target linked from digest emails; GET for humans,
-// POST for RFC 8058 one-click mailbox buttons. No session auth.
+// Signed-token unsubscribe target linked from notification emails; GET for
+// humans, POST for RFC 8058 one-click mailbox buttons. No session auth. The
+// optional pref query param picks which opt-in the link disables.
 export const EMAIL_UNSUBSCRIBE_PATH = "/api/email/unsubscribe";
+export const EMAIL_UNSUBSCRIBE_PREFERENCES = ["digest", "new_election_alerts"] as const;
+export type EmailUnsubscribePreference = (typeof EMAIL_UNSUBSCRIBE_PREFERENCES)[number];
+
+/** Missing param defaults to digest; an unrecognized value is null (400). */
+export function parseEmailUnsubscribePreference(raw: string | null): EmailUnsubscribePreference | null {
+  if (raw === null || raw.trim() === "") {
+    return "digest";
+  }
+  const normalized = raw.trim();
+  return (EMAIL_UNSUBSCRIBE_PREFERENCES as readonly string[]).includes(normalized)
+    ? (normalized as EmailUnsubscribePreference)
+    : null;
+}
 export const RESEARCH_AREAS_PATH = "/api/research-areas";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 export const MAX_BALLOT_DISTRICT_IDS = 50;
