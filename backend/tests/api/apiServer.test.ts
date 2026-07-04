@@ -197,7 +197,7 @@ describe("createApiApp", () => {
     expect(response.headers).toMatchObject({
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true",
-      "access-control-allow-methods": "GET, POST, PUT, OPTIONS",
+      "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
       "access-control-allow-headers": "content-type",
       "access-control-max-age": "600",
       vary: "Origin",
@@ -2982,7 +2982,7 @@ describe("GET /api/me", () => {
     });
 
     expect(response.statusCode).toBe(405);
-    expect(response.headers.allow).toBe("GET");
+    expect(response.headers.allow).toBe("GET, PUT, DELETE");
   });
 
   it("returns 500 when the user lookup is not configured", async () => {

@@ -28,6 +28,8 @@ export const AUTH_REGISTER_PATH = "/api/auth/register";
 export const AUTH_RESET_PASSWORD_PATH = "/api/auth/reset-password";
 export const AUTH_RESEND_VERIFICATION_PATH = "/api/auth/resend-verification";
 export const AUTH_VERIFY_EMAIL_PATH = "/api/auth/verify-email";
+export const AUTH_VERIFY_EMAIL_CHANGE_PATH = "/api/auth/verify-email-change";
+export const AUTH_LOGOUT_ALL_PATH = "/api/auth/logout-all";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
 export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
@@ -35,6 +37,8 @@ export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
 // email verification: the frontend needs it to render the unverified state.
 export const ME_PATH = "/api/me";
 export const ME_ADDRESS_PATH = "/api/me/address";
+export const ME_PASSWORD_PATH = "/api/me/password";
+export const ME_EMAIL_PATH = "/api/me/email";
 export const ME_BALLOT_PATH = "/api/me/ballot";
 export const ME_CANDIDATE_FOLLOWS_PATH = "/api/me/candidate-follows";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
@@ -98,6 +102,28 @@ export type AuthVerifyEmailPayload = {
 export type AuthResetPasswordPayload = {
   token: string;
   password: string;
+};
+
+export type AuthVerifyEmailChangePayload = {
+  token: string;
+};
+
+export type MePasswordPayload = {
+  current_password: string;
+  new_password: string;
+};
+
+export type MeEmailPayload = {
+  new_email: string;
+  password: string;
+};
+
+export type MeDeletePayload = {
+  password: string;
+};
+
+export type MeUpdatePayload = {
+  first_name: string;
 };
 
 export type InitializeUserDistrictsPayload = {
@@ -250,6 +276,38 @@ export function parseAuthResetPasswordBodyValue(parsed: unknown): AuthResetPassw
   return {
     token: parseStringField(parsed, "token"),
     password: parseStringField(parsed, "password"),
+  };
+}
+
+export function parseAuthVerifyEmailChangeBodyValue(parsed: unknown): AuthVerifyEmailChangePayload {
+  return {
+    token: parseStringField(parsed, "token"),
+  };
+}
+
+export function parseMePasswordBodyValue(parsed: unknown): MePasswordPayload {
+  return {
+    current_password: parseStringField(parsed, "current_password"),
+    new_password: parseStringField(parsed, "new_password"),
+  };
+}
+
+export function parseMeEmailBodyValue(parsed: unknown): MeEmailPayload {
+  return {
+    new_email: parseStringField(parsed, "new_email"),
+    password: parseStringField(parsed, "password"),
+  };
+}
+
+export function parseMeDeleteBodyValue(parsed: unknown): MeDeletePayload {
+  return {
+    password: parseStringField(parsed, "password"),
+  };
+}
+
+export function parseMeUpdateBodyValue(parsed: unknown): MeUpdatePayload {
+  return {
+    first_name: parseStringField(parsed, "first_name"),
   };
 }
 

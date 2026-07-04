@@ -43,8 +43,54 @@ describe("userAuthTokenStore", () => {
     });
     expect(db.query).toHaveBeenCalledWith(
       expect.stringContaining("INSERT INTO public.user_auth_tokens"),
-      [userId, "b".repeat(64), "email_verify", new Date("2026-07-01T00:00:00.000Z")]
+      [userId, "b".repeat(64), "email_verify", null, new Date("2026-07-01T00:00:00.000Z")]
     );
+  });
+
+  it("carries new_email on email_change tokens and only those", async () => {
+    const db = createDbMock([
+      {
+        id: "22222222-2222-4222-8222-222222222222",
+        user_id: userId,
+        token_hash: "d".repeat(64),
+        purpose: "email_change",
+        new_email: "new@example.com",
+        expires_at: now,
+        consumed_at: null,
+        created_at: now,
+      },
+    ]);
+
+    const result = await issueUserAuthToken(db, {
+      userId,
+      tokenHash: "d".repeat(64),
+      purpose: "email_change",
+      newEmail: "new@example.com",
+      expiresAt: new Date("2026-07-01T00:00:00.000Z"),
+    });
+    expect(result.newEmail).toBe("new@example.com");
+    expect(db.query).toHaveBeenCalledWith(
+      expect.stringContaining("INSERT INTO public.user_auth_tokens"),
+      [userId, "d".repeat(64), "email_change", "new@example.com", new Date("2026-07-01T00:00:00.000Z")]
+    );
+
+    await expect(
+      issueUserAuthToken(db, {
+        userId,
+        tokenHash: "d".repeat(64),
+        purpose: "email_change",
+        expiresAt: new Date("2026-07-01T00:00:00.000Z"),
+      })
+    ).rejects.toThrow("newEmail is required for email_change tokens");
+    await expect(
+      issueUserAuthToken(db, {
+        userId,
+        tokenHash: "d".repeat(64),
+        purpose: "email_verify",
+        newEmail: "new@example.com",
+        expiresAt: new Date("2026-07-01T00:00:00.000Z"),
+      })
+    ).rejects.toThrow("newEmail is not allowed for email_verify tokens");
   });
 
   it("voids outstanding same-purpose tokens before issuing a new one", async () => {

@@ -76,9 +76,16 @@ function createAuthServiceMock(overrides: Partial<AuthService> = {}): AuthServic
     forgotPassword: vi.fn().mockResolvedValue(undefined),
     resendVerification: vi.fn().mockResolvedValue(undefined),
     resetPassword: vi.fn().mockResolvedValue(undefined),
+    changePassword: vi.fn().mockResolvedValue({ sessionId: "session-rotated" }),
+    requestEmailChange: vi.fn().mockResolvedValue(undefined),
+    verifyEmailChange: vi.fn().mockResolvedValue(undefined),
+    deleteAccount: vi.fn().mockResolvedValue(undefined),
+    logoutAll: vi.fn().mockResolvedValue(undefined),
     ...overrides,
   };
 }
+
+const SESSION_USER_ID = "99999999-9999-4999-8999-999999999999";
 
 describe("public auth API endpoints", () => {
   it("registers users through the auth service", async () => {
@@ -316,5 +323,210 @@ describe("public auth API endpoints", () => {
       pathname: "/api/auth/register",
     });
     expect(authService.register).not.toHaveBeenCalled();
+  });
+});
+
+describe("account management endpoints", () => {
+  it("changes the password and sets the rotated session cookie", async () => {
+    const authService = createAuthServiceMock();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(SESSION_USER_ID);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService, resolveAuthenticatedUserId }),
+      {
+        method: "POST",
+        path: "/api/me/password",
+        body: JSON.stringify({ current_password: "old-password-123", new_password: "new-password-456" }),
+        headers: { "content-type": "application/json", "x-user-id": SESSION_USER_ID },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "ok" });
+    expect(authService.changePassword).toHaveBeenCalledWith({
+      userId: SESSION_USER_ID,
+      currentPassword: "old-password-123",
+      newPassword: "new-password-456",
+    });
+    expect(response.headers["set-cookie"]).toContain(`${AUTH_SESSION_COOKIE_NAME}=session-rotated`);
+  });
+
+  it("requires a session for password change", async () => {
+    const authService = createAuthServiceMock();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService, resolveAuthenticatedUserId: () => null }),
+      {
+        method: "POST",
+        path: "/api/me/password",
+        body: JSON.stringify({ current_password: "a", new_password: "b" }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(authService.changePassword).not.toHaveBeenCalled();
+  });
+
+  it("rejects password change without a JSON content type (CSRF guard)", async () => {
+    const authService = createAuthServiceMock();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(SESSION_USER_ID);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService, resolveAuthenticatedUserId }),
+      {
+        method: "POST",
+        path: "/api/me/password",
+        body: "current_password=a&new_password=b",
+        headers: { "content-type": "application/x-www-form-urlencoded", "x-user-id": SESSION_USER_ID },
+      }
+    );
+
+    expect(response.statusCode).toBe(415);
+    expect(authService.changePassword).not.toHaveBeenCalled();
+  });
+
+  it("requests an email change through the auth service", async () => {
+    const authService = createAuthServiceMock();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(SESSION_USER_ID);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService, resolveAuthenticatedUserId }),
+      {
+        method: "POST",
+        path: "/api/me/email",
+        body: JSON.stringify({ new_email: "new@example.com", password: "password-123" }),
+        headers: { "content-type": "application/json", "x-user-id": SESSION_USER_ID },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "ok" });
+    expect(authService.requestEmailChange).toHaveBeenCalledWith({
+      userId: SESSION_USER_ID,
+      newEmail: "new@example.com",
+      password: "password-123",
+    });
+  });
+
+  it("verifies an email change without a session", async () => {
+    const authService = createAuthServiceMock();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn(), authService }), {
+      method: "POST",
+      path: "/api/auth/verify-email-change",
+      body: JSON.stringify({ token: "change-token" }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(authService.verifyEmailChange).toHaveBeenCalledWith({ token: "change-token" });
+  });
+
+  it("updates first_name via PUT /api/me", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(SESSION_USER_ID);
+    const identity = { email: "user@example.com", first_name: "Nova", email_verified: true };
+    const updateAuthenticatedUserFirstName = vi.fn().mockResolvedValue(identity);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), resolveAuthenticatedUserId, updateAuthenticatedUserFirstName }),
+      {
+        method: "PUT",
+        path: "/api/me",
+        body: JSON.stringify({ first_name: "Nova" }),
+        headers: { "content-type": "application/json", "x-user-id": SESSION_USER_ID },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ user: identity });
+    expect(updateAuthenticatedUserFirstName).toHaveBeenCalledWith(SESSION_USER_ID, "Nova");
+  });
+
+  it("deletes the account and clears the session cookie", async () => {
+    const authService = createAuthServiceMock();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(SESSION_USER_ID);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService, resolveAuthenticatedUserId }),
+      {
+        method: "DELETE",
+        path: "/api/me",
+        body: JSON.stringify({ password: "password-123" }),
+        headers: { "content-type": "application/json", "x-user-id": SESSION_USER_ID },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "ok" });
+    expect(authService.deleteAccount).toHaveBeenCalledWith({
+      userId: SESSION_USER_ID,
+      password: "password-123",
+    });
+    expect(response.headers["set-cookie"]).toContain(`${AUTH_SESSION_COOKIE_NAME}=;`);
+  });
+
+  it("logs out everywhere and clears the session cookie", async () => {
+    const authService = createAuthServiceMock();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(SESSION_USER_ID);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService, resolveAuthenticatedUserId }),
+      {
+        method: "POST",
+        path: "/api/auth/logout-all",
+        body: JSON.stringify({}),
+        headers: { "content-type": "application/json", "x-user-id": SESSION_USER_ID },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(authService.logoutAll).toHaveBeenCalledWith({ userId: SESSION_USER_ID });
+    expect(response.headers["set-cookie"]).toContain(`${AUTH_SESSION_COOKIE_NAME}=;`);
+  });
+
+  it("throttles password-verifying endpoints per account via the auth rate limiter", async () => {
+    const authService = createAuthServiceMock();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(SESSION_USER_ID);
+    const authRateLimit = vi.fn().mockReturnValue({ allowed: false, retryAfterSeconds: 42 });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService, resolveAuthenticatedUserId, authRateLimit }),
+      {
+        method: "POST",
+        path: "/api/me/password",
+        body: JSON.stringify({ current_password: "guess-1", new_password: "new-password-456" }),
+        headers: { "content-type": "application/json", "x-user-id": SESSION_USER_ID },
+      }
+    );
+
+    expect(response.statusCode).toBe(429);
+    expect(response.headers["retry-after"]).toBe("42");
+    // Keyed by the session holder's userId, not an email: a hijacked session
+    // burns the account's bucket no matter which IP it rotates through.
+    expect(authRateLimit).toHaveBeenCalledWith({
+      clientIp: expect.any(String),
+      email: SESSION_USER_ID,
+      method: "POST",
+      pathname: "/api/me/password",
+    });
+    expect(authService.changePassword).not.toHaveBeenCalled();
+  });
+
+  it("requires a session for logout-all", async () => {
+    const authService = createAuthServiceMock();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService, resolveAuthenticatedUserId: () => null }),
+      {
+        method: "POST",
+        path: "/api/auth/logout-all",
+        body: JSON.stringify({}),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(authService.logoutAll).not.toHaveBeenCalled();
   });
 });

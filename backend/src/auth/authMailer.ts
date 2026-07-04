@@ -3,6 +3,8 @@ import { SendEmailCommand, type SESv2Client } from "@aws-sdk/client-sesv2";
 export type AuthMailer = {
   sendVerificationEmail(input: AuthMailerEmailInput): Promise<void>;
   sendPasswordResetEmail(input: AuthMailerEmailInput): Promise<void>;
+  /** Sent to the requested NEW address; the link proves control of it. */
+  sendEmailChangeEmail(input: AuthMailerEmailInput): Promise<void>;
 };
 
 export type AuthMailerEmailInput = {
@@ -17,7 +19,7 @@ export type SesAuthMailerOptions = {
   sesClient: Pick<SESv2Client, "send">;
 };
 
-type EmailMessageKind = "verification" | "password_reset";
+type EmailMessageKind = "verification" | "password_reset" | "email_change";
 
 function normalizeEmailAddress(email: string): string {
   if (typeof email !== "string") {
@@ -61,16 +63,22 @@ function resolveMailerBrandName(appName: string | undefined): string {
 }
 
 function buildSubject(kind: EmailMessageKind, appName: string): string {
-  return kind === "verification"
-    ? `[${appName}] Verify your email`
-    : `[${appName}] Reset your password`;
+  if (kind === "verification") {
+    return `[${appName}] Verify your email`;
+  }
+  if (kind === "email_change") {
+    return `[${appName}] Confirm your new email address`;
+  }
+  return `[${appName}] Reset your password`;
 }
 
 function buildTextBody(kind: EmailMessageKind, appName: string, linkUrl: string): string {
   const intro =
     kind === "verification"
       ? `Verify your email for ${appName}.`
-      : `Reset your password for ${appName}.`;
+      : kind === "email_change"
+        ? `Confirm your new email address for ${appName}.`
+        : `Reset your password for ${appName}.`;
   return `${intro}\n\nOpen this link to continue:\n${linkUrl}\n\nIf you did not request this email, you can ignore it.`;
 }
 
@@ -78,11 +86,15 @@ function buildHtmlBody(kind: EmailMessageKind, appName: string, linkUrl: string)
   const title =
     kind === "verification"
       ? "Verify your email"
-      : "Reset your password";
+      : kind === "email_change"
+        ? "Confirm your new email address"
+        : "Reset your password";
   const intro =
     kind === "verification"
       ? `Verify your email for ${escapeHtml(appName)}.`
-      : `Reset your password for ${escapeHtml(appName)}.`;
+      : kind === "email_change"
+        ? `Confirm your new email address for ${escapeHtml(appName)}.`
+        : `Reset your password for ${escapeHtml(appName)}.`;
   const escapedLink = escapeHtml(linkUrl);
   return `<!doctype html>
 <html lang="en">
@@ -149,6 +161,9 @@ export function createSesAuthMailer(options: SesAuthMailerOptions): AuthMailer {
     async sendPasswordResetEmail(input) {
       await sendAuthEmail(options, "password_reset", input);
     },
+    async sendEmailChangeEmail(input) {
+      await sendAuthEmail(options, "email_change", input);
+    },
   };
 }
 
@@ -169,6 +184,10 @@ export function createConsoleAuthMailer(options: ConsoleAuthMailerOptions = {}):
     async sendPasswordResetEmail(input) {
       const linkUrl = normalizeAbsoluteLinkUrl(input.linkUrl);
       log(`[auth-mailer:console] password reset email for ${normalizeEmailAddress(input.email)}: ${linkUrl}`);
+    },
+    async sendEmailChangeEmail(input) {
+      const linkUrl = normalizeAbsoluteLinkUrl(input.linkUrl);
+      log(`[auth-mailer:console] email change email for ${normalizeEmailAddress(input.email)}: ${linkUrl}`);
     },
   };
 }

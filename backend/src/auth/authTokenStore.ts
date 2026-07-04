@@ -10,6 +10,7 @@ export type UserAuthTokenRow = {
   user_id: string;
   token_hash: string;
   purpose: AuthTokenPurpose;
+  new_email: string | null;
   expires_at: string | Date;
   consumed_at: string | Date | null;
   created_at: string | Date;
@@ -19,6 +20,8 @@ export type IssueUserAuthTokenInput = {
   userId: string;
   tokenHash: string;
   purpose: AuthTokenPurpose;
+  /** Target address for email_change tokens; forbidden for other purposes. */
+  newEmail?: string;
   expiresAt: Date;
 };
 
@@ -68,12 +71,27 @@ function normalizeNow(now: Date): Date {
   return now;
 }
 
+function normalizeNewEmail(purpose: AuthTokenPurpose, newEmail: string | undefined): string | null {
+  if (purpose === "email_change") {
+    const normalized = newEmail?.trim();
+    if (!normalized) {
+      throw new TypeError("newEmail is required for email_change tokens");
+    }
+    return normalized;
+  }
+  if (newEmail !== undefined) {
+    throw new TypeError(`newEmail is not allowed for ${purpose} tokens`);
+  }
+  return null;
+}
+
 function rowToAuthToken(row: UserAuthTokenRow) {
   return {
     id: row.id,
     userId: row.user_id,
     tokenHash: row.token_hash,
     purpose: row.purpose,
+    newEmail: row.new_email,
     expiresAt: row.expires_at instanceof Date ? row.expires_at : new Date(row.expires_at),
     consumedAt: row.consumed_at === null ? null : row.consumed_at instanceof Date ? row.consumed_at : new Date(row.consumed_at),
     createdAt: row.created_at instanceof Date ? row.created_at : new Date(row.created_at),
@@ -87,6 +105,7 @@ export async function issueUserAuthToken(
   const userId = normalizeUserId(input.userId);
   const tokenHash = normalizeTokenHash(input.tokenHash);
   const purpose = normalizePurpose(input.purpose);
+  const newEmail = normalizeNewEmail(purpose, input.newEmail);
   const expiresAt = normalizeExpiresAt(input.expiresAt);
 
   // Only the newest link should work: void any outstanding unconsumed tokens
@@ -110,18 +129,19 @@ export async function issueUserAuthToken(
 
   const result = await db.query<UserAuthTokenRow>(
     `
-      INSERT INTO public.user_auth_tokens (user_id, token_hash, purpose, expires_at)
-      VALUES ($1::uuid, $2, $3, $4::timestamptz)
+      INSERT INTO public.user_auth_tokens (user_id, token_hash, purpose, new_email, expires_at)
+      VALUES ($1::uuid, $2, $3, $4::citext, $5::timestamptz)
       RETURNING
         id::text AS id,
         user_id::text AS user_id,
         token_hash,
         purpose,
+        new_email::text AS new_email,
         expires_at,
         consumed_at,
         created_at
     `,
-    [userId, tokenHash, purpose, expiresAt]
+    [userId, tokenHash, purpose, newEmail, expiresAt]
   );
 
   const row = result.rows[0];
@@ -152,6 +172,7 @@ export async function consumeUserAuthToken(
         user_id::text AS user_id,
         token_hash,
         purpose,
+        new_email::text AS new_email,
         expires_at,
         consumed_at,
         created_at

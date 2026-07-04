@@ -34,6 +34,42 @@ function normalizeUserId(userId: string): string {
   return normalized;
 }
 
+// Mirror registration's derived-name cap (deriveFirstName slices to 80).
+export const MAX_FIRST_NAME_LENGTH = 80;
+
+export async function setUserFirstName(db: Queryable, userId: string, firstName: string): Promise<UserIdentity> {
+  const normalizedUserId = normalizeUserId(userId);
+  const normalizedFirstName = typeof firstName === "string" ? firstName.trim() : "";
+  if (normalizedFirstName.length === 0) {
+    throw new TypeError("first_name must be a non-empty string");
+  }
+  if (normalizedFirstName.length > MAX_FIRST_NAME_LENGTH) {
+    throw new TypeError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
+  }
+
+  const result = await db.query<UserIdentity>(
+    `
+      UPDATE public.users
+      SET first_name = $2,
+          updated_at = now()
+      WHERE id = $1::uuid
+        AND deleted_at IS NULL
+      RETURNING email, first_name, email_verified
+    `,
+    [normalizedUserId, normalizedFirstName]
+  );
+
+  const row = result.rows[0];
+  if (!row) {
+    throw new UserIdentityError("user_not_found", "User not found");
+  }
+  return {
+    email: row.email,
+    first_name: row.first_name,
+    email_verified: row.email_verified,
+  };
+}
+
 export async function getUserIdentity(db: Queryable, userId: string): Promise<UserIdentity> {
   const normalizedUserId = normalizeUserId(userId);
 

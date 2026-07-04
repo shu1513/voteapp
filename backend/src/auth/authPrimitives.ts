@@ -7,7 +7,7 @@ export const AUTH_PASSWORD_MAX_LENGTH = 1024;
 export const AUTH_TOKEN_BYTE_LENGTH = 32;
 export const AUTH_SESSION_ID_BYTE_LENGTH = 32;
 
-export const AUTH_TOKEN_PURPOSES = ["email_verify", "password_reset"] as const;
+export const AUTH_TOKEN_PURPOSES = ["email_verify", "password_reset", "email_change"] as const;
 
 export type AuthTokenPurpose = (typeof AUTH_TOKEN_PURPOSES)[number];
 
