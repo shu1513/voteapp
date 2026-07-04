@@ -19,6 +19,10 @@ type SavedBallot = BallotSummary & { matched_address?: string };
 // digest-adjacent "followed first" ordering).
 function BallotPreferenceControls() {
   const queryClient = useQueryClient();
+  // Optimistic overlay: consecutive changes must merge from the latest view,
+  // not from a stale cache snapshot — the PUT saves the FULL object, so a
+  // stale spread would revert the previous change.
+  const [pending, setPending] = useState<BallotPreferences | null>(null);
   const prefs = useQuery({
     queryKey: ["me", "ballot-preferences"],
     queryFn: () => apiRequest<BallotPreferences>("/api/me/ballot-preferences"),
@@ -32,40 +36,53 @@ function BallotPreferenceControls() {
       queryClient.setQueryData(["me", "ballot-preferences"], saved);
       void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
     },
+    onSettled: () => {
+      setPending(null);
+    },
   });
 
+  if (prefs.isError) {
+    return <ErrorNotice error={prefs.error} />;
+  }
   if (!prefs.data) {
     return null;
   }
-  const current = prefs.data;
+  const current = pending ?? prefs.data;
+
+  function change(fields: Partial<BallotPreferences>) {
+    const next = { ...current, ...fields };
+    setPending(next);
+    update.mutate(next);
+  }
 
   return (
-    <div className="flex flex-wrap items-center gap-4 text-sm text-ink-soft">
-      <label className="flex items-center gap-2">
-        Sort by
-        <select
-          value={current.sort}
-          disabled={update.isPending}
-          onChange={(event) => update.mutate({ ...current, sort: event.target.value as BallotPreferences["sort"] })}
-          className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
-        >
-          {BALLOT_SORTS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className="flex cursor-pointer items-center gap-2">
-        <input
-          type="checkbox"
-          checked={current.followed_first}
-          disabled={update.isPending}
-          onChange={(event) => update.mutate({ ...current, followed_first: event.target.checked })}
-          className="h-4 w-4 accent-rausch"
-        />
-        Followed candidates first
-      </label>
+    <div className="flex flex-col items-end gap-1">
+      <div className="flex flex-wrap items-center gap-4 text-sm text-ink-soft">
+        <label className="flex items-center gap-2">
+          Sort by
+          <select
+            value={current.sort}
+            onChange={(event) => change({ sort: event.target.value as BallotPreferences["sort"] })}
+            className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
+          >
+            {BALLOT_SORTS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex cursor-pointer items-center gap-2">
+          <input
+            type="checkbox"
+            checked={current.followed_first}
+            onChange={(event) => change({ followed_first: event.target.checked })}
+            className="h-4 w-4 accent-rausch"
+          />
+          Followed candidates first
+        </label>
+      </div>
+      {update.isError ? <ErrorNotice error={update.error} /> : null}
     </div>
   );
 }

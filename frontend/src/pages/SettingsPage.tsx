@@ -218,6 +218,9 @@ function EmailSection({ me }: { me: Me }) {
 
 function EmailPreferencesSection() {
   const queryClient = useQueryClient();
+  // Optimistic overlay: the PUT saves all three flags, so consecutive quick
+  // toggles must merge from the latest view, not a stale cache snapshot.
+  const [pending, setPending] = useState<EmailPreferences | null>(null);
   const prefs = useQuery({
     queryKey: ["me", "email-preferences"],
     queryFn: () => apiRequest<EmailPreferences>("/api/me/email-preferences"),
@@ -228,6 +231,9 @@ function EmailPreferencesSection() {
       apiRequest<EmailPreferences>("/api/me/email-preferences", { method: "PUT", body: next }),
     onSuccess: (saved) => {
       queryClient.setQueryData(["me", "email-preferences"], saved);
+    },
+    onSettled: () => {
+      setPending(null);
     },
   });
 
@@ -247,18 +253,24 @@ function EmailPreferencesSection() {
       ) : null}
       {prefs.data ? (
         <div className="mt-3 space-y-2">
-          {labels.map(({ key, label }) => (
-            <label key={key} className="flex cursor-pointer items-center gap-2 text-sm text-ink">
-              <input
-                type="checkbox"
-                checked={prefs.data[key]}
-                disabled={update.isPending}
-                onChange={(event) => update.mutate({ ...prefs.data, [key]: event.target.checked })}
-                className="h-4 w-4 accent-rausch"
-              />
-              {label}
-            </label>
-          ))}
+          {labels.map(({ key, label }) => {
+            const current = pending ?? prefs.data;
+            return (
+              <label key={key} className="flex cursor-pointer items-center gap-2 text-sm text-ink">
+                <input
+                  type="checkbox"
+                  checked={current[key]}
+                  onChange={(event) => {
+                    const next = { ...current, [key]: event.target.checked };
+                    setPending(next);
+                    update.mutate(next);
+                  }}
+                  className="h-4 w-4 accent-rausch"
+                />
+                {label}
+              </label>
+            );
+          })}
         </div>
       ) : null}
       {update.isError ? (

@@ -88,6 +88,8 @@ export type ElectionSummary = {
   research_areas: ResearchAreaSummary[];
   historical_competitiveness: HistoricalCompetitiveness | null;
   vote_power: VotePower;
+  /** Present on ordered results; non-empty when the viewer follows a candidate in this election. */
+  followed_candidates?: { candidate_id: string; display_name: string }[];
 };
 
 export type BallotSummary = {

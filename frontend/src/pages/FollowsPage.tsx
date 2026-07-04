@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMe } from "../lib/useMe";
 import { useFollows, useSetFollow } from "../lib/useFollows";
@@ -33,14 +34,31 @@ function NotifyToggle({
 
 function FollowRow({ follow }: { follow: CandidateFollow }) {
   const setFollow = useSetFollow();
+  // Optimistic overlay: two quick toggles must not build the second payload
+  // from the pre-refetch prop (the PUT saves BOTH booleans, so a stale spread
+  // silently reverts the first change). null = no pending edits.
+  const [pendingNotify, setPendingNotify] = useState<{
+    notify_elections: boolean;
+    notify_updates: boolean;
+  } | null>(null);
+
+  const notify = pendingNotify ?? {
+    notify_elections: follow.notify_elections,
+    notify_updates: follow.notify_updates,
+  };
 
   function update(fields: Partial<{ notify_elections: boolean; notify_updates: boolean }>) {
-    setFollow.mutate({
-      candidate_id: follow.candidate_id,
-      following: true,
-      notify_elections: fields.notify_elections ?? follow.notify_elections,
-      notify_updates: fields.notify_updates ?? follow.notify_updates,
-    });
+    const next = { ...notify, ...fields };
+    setPendingNotify(next);
+    setFollow.mutate(
+      { candidate_id: follow.candidate_id, following: true, ...next },
+      {
+        onSettled: () => {
+          // Server truth (refetched by the mutation's invalidate) takes over.
+          setPendingNotify(null);
+        },
+      }
+    );
   }
 
   return (
@@ -79,13 +97,13 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
       <div className="mt-3 flex flex-wrap gap-4">
         <NotifyToggle
           label="Email me about their elections"
-          checked={follow.notify_elections}
+          checked={notify.notify_elections}
           disabled={setFollow.isPending}
           onChange={(next) => update({ notify_elections: next })}
         />
         <NotifyToggle
           label="Email me about record updates"
-          checked={follow.notify_updates}
+          checked={notify.notify_updates}
           disabled={setFollow.isPending}
           onChange={(next) => update({ notify_updates: next })}
         />
