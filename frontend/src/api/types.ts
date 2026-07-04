@@ -81,19 +81,22 @@ export type BallotSummary = {
   elections: ElectionSummary[];
 };
 
-export type FinanceBreakdown = {
-  total_amount: number | null;
-  [key: string]: unknown;
-};
-
-export type CandidateFinance = {
-  total_raised: number | null;
-  total_spent: number | null;
-  cash_on_hand: number | null;
-  source: string | null;
-  source_url: string | null;
-  last_synced: string | null;
-  [key: string]: unknown;
+// Mirrors BallotLookupFinanceSummary (backend ballotLookup.ts): the money
+// lives under direct_campaign, not at the top level.
+export type FinanceSummary = {
+  source: string;
+  cycle: number;
+  last_synced_at: string;
+  direct_campaign: {
+    total_raised: number | null;
+    total_spent: number | null;
+    cash_on_hand: number | null;
+    debts_owed: number | null;
+  };
+  outside_spending: {
+    support_total: number | null;
+    oppose_total: number | null;
+  };
 };
 
 export type ElectionCandidate = {
@@ -103,7 +106,7 @@ export type ElectionCandidate = {
   is_incumbent: boolean;
   status: string;
   summary: string | null;
-  finance: CandidateFinance | null;
+  finance_summary: FinanceSummary | null;
   [key: string]: unknown;
 };
 

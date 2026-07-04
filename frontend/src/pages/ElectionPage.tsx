@@ -98,9 +98,9 @@ export function ElectionPage() {
                       {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
                     </p>
                   </div>
-                  {candidate.finance?.total_raised != null ? (
+                  {candidate.finance_summary?.direct_campaign.total_raised != null ? (
                     <span className="shrink-0 text-sm text-ink-soft">
-                      Raised {formatMoney(candidate.finance.total_raised)}
+                      Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
                     </span>
                   ) : null}
                 </div>
