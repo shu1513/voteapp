@@ -121,6 +121,33 @@ describe("createSesElectionReminderMailer", () => {
     expect(send.mock.calls[0][0].input.Content?.Simple?.Headers).toBeUndefined();
   });
 
+  it("escapes HTML-special characters in user-controlled fields", async () => {
+    const send = vi.fn().mockResolvedValue({});
+    const mailer = createSesElectionReminderMailer({
+      fromEmailAddress: "reminders@example.com",
+      sesClient: { send },
+    });
+
+    await mailer.sendReminderEmail({
+      ...baseInput,
+      firstName: "<script>alert(1)</script>",
+      items: [
+        {
+          districtName: "Tom & Jerry's \"District\" <1>",
+          electionTitle: "Sheriff <img src=x onerror=alert(1)>",
+        },
+      ],
+      totalElectionCount: 1,
+    });
+
+    const html = send.mock.calls[0][0].input.Content?.Simple?.Body?.Html?.Data as string;
+    expect(html).not.toContain("<script>");
+    expect(html).not.toContain("<img");
+    expect(html).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");
+    expect(html).toContain("Tom &amp; Jerry&#39;s &quot;District&quot; &lt;1&gt;");
+    expect(html).toContain("Sheriff &lt;img src=x onerror=alert(1)&gt;");
+  });
+
   it("rejects an empty item list", async () => {
     const send = vi.fn();
     const mailer = createSesElectionReminderMailer({

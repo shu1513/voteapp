@@ -34,6 +34,11 @@ export const DEFAULT_REMINDER_MAX_ITEMS_PER_EMAIL = 20;
 
 export type SendElectionRemindersOptions = {
   live: boolean;
+  /**
+   * Selection batch size, not a total cap: the run loops until every
+   * eligible user is processed, because a reminder deferred to the next
+   * daily run would target a different election date and silently drop.
+   */
   maxUsers: number;
   maxItemsPerEmail: number;
   /** Per-user signed unsubscribe link builder; omit to send without one. */
@@ -44,7 +49,7 @@ export type SendElectionRemindersResult = {
   dryRun: boolean;
   /** The election date this run reminded about (tomorrow in US-latest local time). */
   targetElectionDate: string;
-  /** Users due a reminder this run examined (capped by --max-users). */
+  /** Users due a reminder this run examined (all of them; --max-users only sizes batches). */
   eligibleUserCount: number;
   /** Elections found across eligible users (a shared election counts once per user). */
   electionsPendingCount: number;
@@ -90,8 +95,12 @@ type EligibleUserRow = {
 async function selectEligibleUsers(
   db: Queryable,
   targetDate: string,
-  maxUsers: number
+  batchSize: number,
+  excludedUserIds: readonly string[]
 ): Promise<EligibleUserRow[]> {
+  // excludedUserIds carries the users this run already attempted. The dedupe
+  // NOT EXISTS alone cannot page past them: a failed send never gets a
+  // dedupe row, so without the exclusion it would be re-selected forever.
   const result = await db.query<EligibleUserRow>(
     `
       SELECT u.id, u.email, u.first_name
@@ -99,6 +108,7 @@ async function selectEligibleUsers(
       WHERE u.deleted_at IS NULL
         AND u.email_verified = true
         AND u.email_election_reminders = true
+        AND u.id <> ALL($3::uuid[])
         AND EXISTS (
           SELECT 1
           FROM public.user_districts AS ud
@@ -116,7 +126,7 @@ async function selectEligibleUsers(
       ORDER BY u.id
       LIMIT $2::int
     `,
-    [targetDate, maxUsers]
+    [targetDate, batchSize, excludedUserIds]
   );
   return result.rows;
 }
@@ -185,43 +195,57 @@ export async function sendElectionReminders(
   };
   const electionDateLabel = formatElectionDateLabel(targetDate);
 
-  const users = await selectEligibleUsers(db, targetDate, options.maxUsers);
-  for (const user of users) {
-    const elections = await selectReminderElections(db, user.id, targetDate);
-    if (elections.length === 0) {
-      // Eligibility guarantees at least one; defensive against a concurrent
-      // election deletion between the two queries.
-      continue;
+  // Reminders for a date that go out late are useless, so unlike the alert
+  // sender this loops through batches until every eligible user is processed
+  // in this run — an overflow past one batch must not silently wait for a
+  // "next run" that will already be targeting a different date. Every
+  // selected user joins attemptedUserIds no matter how their send went, and
+  // the selection excludes those ids, so each non-empty batch strictly
+  // shrinks the remaining set and the loop always terminates.
+  const attemptedUserIds: string[] = [];
+  for (;;) {
+    const users = await selectEligibleUsers(db, targetDate, options.maxUsers, attemptedUserIds);
+    if (users.length === 0) {
+      break;
     }
-    result.eligibleUserCount += 1;
-    result.electionsPendingCount += elections.length;
-    if (!options.live) {
-      continue;
-    }
+    for (const user of users) {
+      attemptedUserIds.push(user.id);
+      const elections = await selectReminderElections(db, user.id, targetDate);
+      if (elections.length === 0) {
+        // Eligibility guarantees at least one; defensive against a concurrent
+        // election deletion between the two queries.
+        continue;
+      }
+      result.eligibleUserCount += 1;
+      result.electionsPendingCount += elections.length;
+      if (!options.live) {
+        continue;
+      }
 
-    try {
-      const unsubscribeUrl = options.buildUnsubscribeUrl?.(user.id);
-      await mailer.sendReminderEmail({
-        email: user.email,
-        firstName: user.first_name,
-        electionDateLabel,
-        items: elections.slice(0, options.maxItemsPerEmail).map(toReminderItem),
-        totalElectionCount: elections.length,
-        ...(unsubscribeUrl ? { unsubscribeUrl } : {}),
-      });
-    } catch (error) {
-      const reason = error instanceof Error ? error.message : String(error);
-      result.failures.push({ userId: user.id, stage: "send", reason });
-      continue;
-    }
-    result.usersEmailedCount += 1;
+      try {
+        const unsubscribeUrl = options.buildUnsubscribeUrl?.(user.id);
+        await mailer.sendReminderEmail({
+          email: user.email,
+          firstName: user.first_name,
+          electionDateLabel,
+          items: elections.slice(0, options.maxItemsPerEmail).map(toReminderItem),
+          totalElectionCount: elections.length,
+          ...(unsubscribeUrl ? { unsubscribeUrl } : {}),
+        });
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        result.failures.push({ userId: user.id, stage: "send", reason });
+        continue;
+      }
+      result.usersEmailedCount += 1;
 
-    try {
-      await markReminderSent(db, user.id, targetDate);
-      result.usersMarkedCount += 1;
-    } catch (error) {
-      const reason = error instanceof Error ? error.message : String(error);
-      result.failures.push({ userId: user.id, stage: "mark_after_send", reason });
+      try {
+        await markReminderSent(db, user.id, targetDate);
+        result.usersMarkedCount += 1;
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        result.failures.push({ userId: user.id, stage: "mark_after_send", reason });
+      }
     }
   }
 

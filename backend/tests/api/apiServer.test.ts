@@ -3120,6 +3120,33 @@ describe("email preferences and unsubscribe endpoints", () => {
     );
   });
 
+  it("scopes the unsubscribe to election reminders via the pref param", async () => {
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+    const app = createApiApp({ unsubscribeFromEmailNotifications });
+
+    const confirm = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=election_reminders",
+    });
+    expect(confirm.statusCode).toBe(200);
+    expect(String(confirm.rawBody)).toContain("election reminder emails");
+    // The confirmation form must POST back with the same scope.
+    expect(String(confirm.rawBody)).toContain("pref=election_reminders");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", "election_reminders");
+
+    const execute = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=election_reminders",
+    });
+    expect(execute.statusCode).toBe(200);
+    expect(String(execute.rawBody)).toContain("unsubscribed from election reminder emails");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith(
+      "v1.abc.def",
+      "execute",
+      "election_reminders"
+    );
+  });
+
   it("rejects an unrecognized pref value instead of flipping a different opt-in", async () => {
     const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
 

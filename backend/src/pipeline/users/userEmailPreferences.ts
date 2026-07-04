@@ -119,6 +119,29 @@ export async function disableUserEmailDigest(db: Queryable, userId: string): Pro
 }
 
 /**
+ * One-click unsubscribe target for day-before election reminders: flips only
+ * email_election_reminders. Idempotent; unknown/deleted users report
+ * user_not_found.
+ */
+export async function disableUserEmailElectionReminders(db: Queryable, userId: string): Promise<void> {
+  const normalizedUserId = normalizeUserId(userId);
+
+  const result = await db.query(
+    `
+      UPDATE public.users
+      SET email_election_reminders = false, updated_at = now()
+      WHERE id = $1::uuid
+        AND deleted_at IS NULL
+    `,
+    [normalizedUserId]
+  );
+
+  if ((result.rowCount ?? 0) === 0) {
+    throw new UserEmailPreferencesError("user_not_found", "User not found");
+  }
+}
+
+/**
  * One-click unsubscribe target for new-election alerts: flips only
  * email_new_election_alerts. Idempotent; unknown/deleted users report
  * user_not_found.

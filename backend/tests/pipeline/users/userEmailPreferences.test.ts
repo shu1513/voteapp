@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   disableUserEmailDigest,
+  disableUserEmailElectionReminders,
   disableUserEmailNewElectionAlerts,
   getUserEmailPreferences,
   setUserEmailPreferences,
@@ -52,6 +53,24 @@ describe("userEmailPreferences", () => {
     const sql = String(query.mock.calls[0][0]);
     expect(sql).toContain("email_digest = false");
     expect(sql).not.toContain("email_election_reminders");
+  });
+
+  it("disableUserEmailElectionReminders flips only the reminders flag", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 1 });
+
+    await expect(disableUserEmailElectionReminders({ query } as never, USER_ID)).resolves.toBeUndefined();
+    const sql = String(query.mock.calls[0][0]);
+    expect(sql).toContain("email_election_reminders = false");
+    expect(sql).not.toContain("email_digest");
+    expect(sql).not.toContain("email_new_election_alerts");
+  });
+
+  it("disableUserEmailElectionReminders throws user_not_found when no row matched", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 0 });
+
+    await expect(disableUserEmailElectionReminders({ query } as never, USER_ID)).rejects.toMatchObject({
+      code: "user_not_found",
+    });
   });
 
   it("disableUserEmailNewElectionAlerts flips only the alerts flag", async () => {
