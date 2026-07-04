@@ -69,6 +69,7 @@ import {
 } from "../auth/authCookies.js";
 import { toAddressResolutionDiagnostics, toPublicAddressResolution } from "./addressApiResponses.js";
 import { toEmptyResponse, toErrorResponse, toJsonResponse, type ApiResponse } from "./apiResponses.js";
+import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
 
 type ApiResponseLocals = {
   clientIp?: string;
@@ -387,6 +388,20 @@ async function dispatchApiRequest(
     }
 
     const payload = parseAuthRegisterBodyValue(request.body);
+    // Reject stale terms versions outright: acceptance of superseded terms
+    // must never be recorded (a stale frontend re-fetches and re-prompts).
+    if (payload.accepted_terms_version !== CURRENT_TERMS_VERSION) {
+      sendApiResponse(
+        response,
+        toErrorResponse(
+          400,
+          "invalid_request",
+          `accepted_terms_version must be the current terms version (${CURRENT_TERMS_VERSION})`,
+          corsHeaders
+        )
+      );
+      return;
+    }
     if (!(await enforceAuthRateLimit(options, request, response, payload.email))) {
       return;
     }
@@ -394,6 +409,7 @@ async function dispatchApiRequest(
       email: payload.email,
       password: payload.password,
       firstName: payload.first_name,
+      acceptedTermsVersion: payload.accepted_terms_version,
     });
     sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
     return;

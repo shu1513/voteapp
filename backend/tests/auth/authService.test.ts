@@ -123,6 +123,58 @@ describe("createAuthService resendVerification", () => {
   });
 });
 
+describe("createAuthService register terms acceptance", () => {
+  it("stores the accepted terms version on the inserted user row", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [] }) // user lookup: none
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // INSERT user
+      .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
+      .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // INSERT token
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: {} as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.register({
+      email: "new@example.com",
+      password: "correct horse battery staple",
+      acceptedTermsVersion: "1.0",
+    });
+
+    const insertCall = client.query.mock.calls.find((call) => String(call[0]).includes("INSERT INTO public.users"));
+    expect(String(insertCall?.[0])).toContain("accepted_terms_version");
+    expect(String(insertCall?.[0])).toContain("accepted_terms_at");
+    expect(insertCall?.[1]?.[3]).toBe("1.0");
+  });
+
+  it("rejects registration without a terms version before touching the database", async () => {
+    const client = createDbClientMock();
+    const db = createDbMock(client);
+
+    const service = createAuthService({
+      db: db as never,
+      redis: {} as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await expect(
+      service.register({
+        email: "new@example.com",
+        password: "correct horse battery staple",
+        acceptedTermsVersion: "   ",
+      })
+    ).rejects.toThrow("acceptedTermsVersion must be a non-empty string");
+    expect(db.connect).not.toHaveBeenCalled();
+  });
+});
+
 describe("createAuthService changePassword", () => {
   it("updates the hash, rotates every session, and returns a fresh one", async () => {
     const client = createDbClientMock();

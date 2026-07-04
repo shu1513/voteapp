@@ -30,6 +30,8 @@ export type AuthRegisterInput = {
   email: string;
   password: string;
   firstName?: string;
+  /** Terms/disclaimer version the user accepted at signup (clickwrap record). */
+  acceptedTermsVersion: string;
 };
 
 export type AuthLoginInput = {
@@ -264,6 +266,7 @@ async function createOrRefreshAuthUser(
     email: string;
     firstName: string;
     passwordHash: string;
+    acceptedTermsVersion: string;
   }
 ): Promise<AuthUserRow> {
   const existing = await findActiveUserByEmailForUpdate(client, input.email);
@@ -278,6 +281,8 @@ async function createOrRefreshAuthUser(
         SET
           first_name = $2,
           password_hash = $3,
+          accepted_terms_version = $4,
+          accepted_terms_at = now(),
           updated_at = now()
         WHERE id = $1::uuid
           AND deleted_at IS NULL
@@ -288,7 +293,7 @@ async function createOrRefreshAuthUser(
           password_hash,
           email_verified
       `,
-      [existing.id, input.firstName, input.passwordHash]
+      [existing.id, input.firstName, input.passwordHash, input.acceptedTermsVersion]
     );
     const row = updated.rows[0];
     if (!row) {
@@ -303,9 +308,11 @@ async function createOrRefreshAuthUser(
         first_name,
         email,
         password_hash,
-        email_verified
+        email_verified,
+        accepted_terms_version,
+        accepted_terms_at
       )
-      VALUES ($1, $2::citext, $3, false)
+      VALUES ($1, $2::citext, $3, false, $4, now())
       RETURNING
         id::text AS id,
         email::text AS email,
@@ -313,7 +320,7 @@ async function createOrRefreshAuthUser(
         password_hash,
         email_verified
     `,
-    [input.firstName, input.email, input.passwordHash]
+    [input.firstName, input.email, input.passwordHash, input.acceptedTermsVersion]
   );
   const row = inserted.rows[0];
   if (!row) {
@@ -351,6 +358,11 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       const email = normalizeEmail(input.email);
       const firstName = deriveFirstName(email, normalizeOptionalFirstName(input.firstName));
       validatePasswordPolicy(input.password);
+      const acceptedTermsVersion =
+        typeof input.acceptedTermsVersion === "string" ? input.acceptedTermsVersion.trim() : "";
+      if (acceptedTermsVersion.length === 0) {
+        throw new TypeError("acceptedTermsVersion must be a non-empty string");
+      }
       const passwordHash = await hashPassword(input.password);
       const client = await options.db.connect();
 
@@ -360,6 +372,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           email,
           firstName,
           passwordHash,
+          acceptedTermsVersion,
         });
 
         if (user.email_verified) {
