@@ -7,3 +7,14 @@ import { afterEach } from "vitest";
 afterEach(() => {
   cleanup();
 });
+
+// jsdom has no ResizeObserver; Headless UI's Combobox observes elements on
+// mount, which otherwise surfaces as an unhandled ReferenceError and a
+// failing (exit 1) test run even when every assertion passes.
+class ResizeObserverStub {
+  observe(): void {}
+  unobserve(): void {}
+  disconnect(): void {}
+}
+
+globalThis.ResizeObserver ??= ResizeObserverStub as unknown as typeof ResizeObserver;
