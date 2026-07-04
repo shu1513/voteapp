@@ -260,6 +260,10 @@ function EmailPreferencesSection() {
                 <input
                   type="checkbox"
                   checked={current[key]}
+                  // Disabled while a save is in flight: the PUT replaces all
+                  // three flags, so concurrent requests could commit out of
+                  // order and the earlier write would win.
+                  disabled={update.isPending}
                   onChange={(event) => {
                     const next = { ...current, [key]: event.target.checked };
                     setPending(next);
