@@ -58,13 +58,13 @@ export function HomePage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <h1 className="text-3xl font-bold">Find what's on your ballot</h1>
-      <p className="mt-2 text-gray-600">
+      <p className="mt-2 text-ink-soft">
         Enter your home address to see your districts and the elections coming up in them.
       </p>
 
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
         <div>
-          <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="address" className="block text-sm font-medium text-ink">
             Home address
           </label>
           <input
@@ -74,9 +74,9 @@ export function HomePage() {
             onChange={(event) => setAddress(event.target.value)}
             placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
             autoComplete="street-address"
-            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
+            className="mt-1 w-full rounded-md border border-line px-3 py-3 shadow-sm focus:border-ink focus:outline-none"
           />
-          <p className="mt-1 text-xs text-gray-500">{PRIVACY_NOTICE}</p>
+          <p className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</p>
         </div>
 
         <LegalGate
@@ -89,7 +89,7 @@ export function HomePage() {
         <button
           type="submit"
           disabled={!canSearch}
-          className="w-full rounded-md bg-blue-700 px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:bg-gray-300"
+          className="w-full rounded-md bg-rausch px-4 py-3 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line"
         >
           {resolve.isPending ? "Searching…" : "Search"}
         </button>
@@ -104,19 +104,19 @@ export function HomePage() {
       {resolve.isSuccess ? (
         <section className="mt-8">
           <h2 className="text-lg font-semibold">Matched: {resolve.data.matched_address}</h2>
-          <p className="mt-1 text-sm text-gray-600">Your districts:</p>
-          <ul className="mt-2 divide-y rounded-md border border-gray-200">
+          <p className="mt-1 text-sm text-ink-soft">Your districts:</p>
+          <ul className="mt-2 divide-y divide-line rounded-xl border border-line">
             {districts.map((district) => (
               <li key={district.id} className="flex items-center justify-between px-3 py-2 text-sm">
                 <span>{district.name}</span>
-                <span className="text-gray-500">{formatDistrictType(district.district_type)}</span>
+                <span className="text-ink-soft">{formatDistrictType(district.district_type)}</span>
               </li>
             ))}
           </ul>
           <button
             type="button"
             onClick={() => navigate(`/ballot?d=${districts.map((district) => district.id).join(",")}`)}
-            className="mt-4 w-full rounded-md bg-blue-700 px-4 py-2 font-semibold text-white"
+            className="mt-4 w-full rounded-md bg-rausch px-4 py-3 font-semibold text-white transition hover:bg-rausch-dark"
           >
             See your ballot
           </button>

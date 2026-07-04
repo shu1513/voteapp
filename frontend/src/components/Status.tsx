@@ -1,11 +1,11 @@
 import { ApiError } from "../api/client";
 
 export function LoadingNotice({ text = "Loading…" }: { text?: string }) {
-  return <p className="py-8 text-center text-gray-500">{text}</p>;
+  return <p className="py-8 text-center text-ink-soft">{text}</p>;
 }
 
 export function EmptyNotice({ text }: { text: string }) {
-  return <p className="py-8 text-center text-gray-500">{text}</p>;
+  return <p className="py-8 text-center text-ink-soft">{text}</p>;
 }
 
 /** Human copy for the API error envelope; special-cases the statuses the
@@ -25,5 +25,7 @@ export function ErrorNotice({ error }: { error: unknown }) {
       message = error.message;
     }
   }
-  return <p className="rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800">{message}</p>;
+  return (
+    <p className="rounded-lg border border-rausch/40 bg-rausch/5 px-3 py-2 text-sm text-rausch-dark">{message}</p>
+  );
 }

@@ -17,7 +17,7 @@ type LegalDocumentPageProps = {
 
 export function LegalDocumentPage({ document }: LegalDocumentPageProps) {
   return (
-    <article className="prose prose-sm mx-auto max-w-3xl px-4 py-8 [&_h1]:text-2xl [&_h1]:font-bold [&_h2]:mt-6 [&_h2]:text-lg [&_h2]:font-semibold [&_p]:mt-2 [&_p]:leading-relaxed [&_li]:mt-1 [&_ul]:list-disc [&_ul]:pl-6 [&_a]:text-blue-700 [&_a]:underline">
+    <article className="prose prose-sm mx-auto max-w-3xl px-4 py-8 [&_h1]:text-2xl [&_h1]:font-bold [&_h2]:mt-6 [&_h2]:text-lg [&_h2]:font-semibold [&_p]:mt-2 [&_p]:leading-relaxed [&_li]:mt-1 [&_ul]:list-disc [&_ul]:pl-6 [&_a]:text-rausch-dark [&_a]:underline">
       <ReactMarkdown>{DOCUMENTS[document]}</ReactMarkdown>
     </article>
   );

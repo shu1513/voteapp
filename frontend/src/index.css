@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@theme {
+  /* Palette referenced from Airbnb: Rausch coral primary, near-black ink,
+     gray hierarchy, hairline borders, airy white surfaces. */
+  --color-rausch: #ff385c;
+  --color-rausch-dark: #e31c5f;
+  --color-ink: #222222;
+  --color-ink-soft: #717171;
+  --color-line: #dddddd;
+  --color-surface: #f7f7f7;
+}

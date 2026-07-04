@@ -16,25 +16,25 @@ type LegalGateProps = {
 
 export function LegalGate({ label, checked, onChange, inputId }: LegalGateProps) {
   return (
-    <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-gray-800">
+    <div className="rounded-xl border border-line bg-surface p-4 text-sm text-ink">
       <label htmlFor={inputId} className="flex cursor-pointer items-start gap-3">
         <input
           id={inputId}
           type="checkbox"
           checked={checked}
           onChange={(event) => onChange(event.target.checked)}
-          className="mt-1 h-4 w-4 shrink-0"
+          className="mt-1 h-4 w-4 shrink-0 accent-rausch"
         />
         <span>{label}</span>
       </label>
-      <p className="mt-2 flex flex-wrap gap-x-4 pl-7">
-        <Link to="/terms" className="font-medium text-blue-700 underline">
+      <p className="mt-3 flex flex-wrap gap-x-4 pl-7 font-medium">
+        <Link to="/terms" className="text-ink underline hover:text-rausch">
           Terms of Use
         </Link>
-        <Link to="/privacy" className="font-medium text-blue-700 underline">
+        <Link to="/privacy" className="text-ink underline hover:text-rausch">
           Privacy Policy
         </Link>
-        <Link to="/disclaimer" className="font-medium text-blue-700 underline">
+        <Link to="/disclaimer" className="text-ink underline hover:text-rausch">
           Disclaimer
         </Link>
       </p>
