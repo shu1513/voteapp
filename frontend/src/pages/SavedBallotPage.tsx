@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "../api/client";
-import { BALLOT_SORTS, type BallotPreferences, type BallotSummary } from "../api/types";
+import {
+  BALLOT_SORT_DESCRIPTIONS,
+  BALLOT_SORTS,
+  type BallotPreferences,
+  type BallotSummary,
+} from "../api/types";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { AiBanner } from "../components/AiBanner";
 import { ElectionCard } from "../components/ElectionCard";
@@ -62,8 +67,12 @@ function BallotPreferenceControls() {
           Sort by
           <select
             value={current.sort}
+            // Disabled while a save is in flight: the PUT replaces the FULL
+            // object, so concurrent requests could commit out of order and
+            // the earlier write would win.
+            disabled={update.isPending}
             onChange={(event) => change({ sort: event.target.value as BallotPreferences["sort"] })}
-            className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
+            className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none disabled:opacity-60"
           >
             {BALLOT_SORTS.map((option) => (
               <option key={option.value} value={option.value}>
@@ -76,6 +85,7 @@ function BallotPreferenceControls() {
           <input
             type="checkbox"
             checked={current.followed_first}
+            disabled={update.isPending}
             onChange={(event) => change({ followed_first: event.target.checked })}
             className="h-4 w-4 accent-rausch"
           />
@@ -140,6 +150,14 @@ function AddressForm({ compact }: { compact: boolean }) {
 export function SavedBallotPage() {
   const { me, isLoading, isError: meError, refetch: refetchMe } = useMe();
   const queryClient = useQueryClient();
+  // Same key as BallotPreferenceControls: shared cache entry, no extra fetch.
+  // Drives the subtitle so the copy matches the saved sort.
+  const savedPrefs = useQuery({
+    queryKey: ["me", "ballot-preferences"],
+    queryFn: () => apiRequest<BallotPreferences>("/api/me/ballot-preferences"),
+    staleTime: 60_000,
+    enabled: me?.email_verified === true,
+  });
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
   );
@@ -288,8 +306,8 @@ export function SavedBallotPage() {
       </div>
       <p className="mt-1 text-sm text-ink-soft">
         {data.elections.length} election{data.elections.length === 1 ? "" : "s"} across{" "}
-        {data.districts.length} district{data.districts.length === 1 ? "" : "s"}, ordered by where your vote
-        carries the most weight.
+        {data.districts.length} district{data.districts.length === 1 ? "" : "s"},{" "}
+        {BALLOT_SORT_DESCRIPTIONS[savedPrefs.data?.sort ?? "vote_power"]}
       </p>
 
       {data.elections.length === 0 ? (

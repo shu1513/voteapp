@@ -169,6 +169,13 @@ export const BALLOT_SORTS = [
 
 export type BallotSort = (typeof BALLOT_SORTS)[number]["value"];
 
+export const BALLOT_SORT_DESCRIPTIONS: Record<BallotSort, string> = {
+  vote_power: "ordered by where your vote carries the most weight.",
+  soonest: "ordered by election date, soonest first.",
+  district_size: "ordered by district population, biggest first.",
+  district_size_smallest: "ordered by district population, smallest first.",
+};
+
 export type ElectionDetail = {
   id: string;
   district_id: string;
