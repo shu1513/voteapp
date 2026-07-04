@@ -5,7 +5,7 @@ import type { ElectionDetail } from "../api/types";
 import { AiBanner } from "../components/AiBanner";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { SourceLine } from "../components/SourceLine";
-import { formatDistrictType, formatElectionDate, formatMoney, formatVotePowerLabel } from "../lib/format";
+import { formatDistrictType, formatElectionDate, formatMoney, formatOutcome, formatVotePowerLabel } from "../lib/format";
 
 export function ElectionPage() {
   const { electionId } = useParams();
@@ -123,9 +123,9 @@ export function ElectionPage() {
             {data.results.map((result) => (
               <li key={result.id} className="text-sm">
                 <p className="text-ink">
-                  <span className="font-medium capitalize">{result.outcome.replaceAll("_", " ")}</span>
+                  <span className="font-medium">{formatOutcome(result.outcome)}</span>
                   {result.result_status ? (
-                    <span className="text-ink-soft"> · {result.result_status.replaceAll("_", " ")}</span>
+                    <span className="text-ink-soft"> · {formatOutcome(result.result_status)}</span>
                   ) : null}
                 </p>
                 {result.winners.length > 0 ? (

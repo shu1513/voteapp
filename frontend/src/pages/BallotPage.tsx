@@ -4,7 +4,7 @@ import { apiRequest } from "../api/client";
 import { BALLOT_SORTS, type BallotSort, type BallotSummary, type ElectionSummary } from "../api/types";
 import { AiBanner } from "../components/AiBanner";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
-import { formatDistrictType, formatElectionDate, formatVotePowerLabel } from "../lib/format";
+import { formatDistrictType, formatElectionDate, formatOutcome, formatVotePowerLabel } from "../lib/format";
 
 const SORT_VALUES: readonly string[] = BALLOT_SORTS.map((option) => option.value);
 
@@ -50,7 +50,7 @@ function ElectionCard({ election }: { election: ElectionSummary }) {
         {election.has_results ? (
           <span className="rounded bg-surface px-2 py-0.5 text-ink">
             {election.current_result_outcome
-              ? `Result: ${election.current_result_outcome}`
+              ? `Result: ${formatOutcome(election.current_result_outcome)}`
               : "Results available"}
           </span>
         ) : null}

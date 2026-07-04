@@ -118,7 +118,10 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
       return response.address;
     } catch {
       // Retrieve failed; the user still has their typed text and can submit
-      // it manually. Keep the token: the session did not terminate.
+      // it manually. The attempt may or may not have reached Google, so the
+      // session state is indeterminate — kill the token (reused tokens are
+      // billed as no-session; a fresh session costs nothing).
+      sessionTokenRef.current = null;
       return null;
     }
   }, []);

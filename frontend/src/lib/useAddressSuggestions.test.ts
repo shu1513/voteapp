@@ -106,6 +106,39 @@ describe("useAddressSuggestions", () => {
     expect(nextToken).not.toBe(suggestToken);
   });
 
+  it("kills the session token when retrieve fails (indeterminate session state)", async () => {
+    apiRequestMock.mockResolvedValueOnce({ suggestions: [SUGGESTION] });
+    const { result } = renderHook(() => useAddressSuggestions());
+
+    act(() => {
+      result.current.onInputChanged("200 N Spring");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
+    });
+    const firstToken = (apiRequestMock.mock.calls[0][1] as { body: { session_token: string } }).body
+      .session_token;
+
+    apiRequestMock.mockRejectedValueOnce(new ApiError(503, "upstream_unavailable", "Google hiccup"));
+    let retrieved: string | null = "sentinel";
+    await act(async () => {
+      retrieved = await result.current.selectSuggestion(SUGGESTION);
+    });
+    expect(retrieved).toBeNull();
+
+    // Next entry must NOT reuse the token from the failed-retrieve session.
+    apiRequestMock.mockResolvedValueOnce({ suggestions: [] });
+    act(() => {
+      result.current.onInputChanged("500 Main St");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
+    });
+    const nextToken = (apiRequestMock.mock.calls[2][1] as { body: { session_token: string } }).body
+      .session_token;
+    expect(nextToken).not.toBe(firstToken);
+  });
+
   it("disables autocomplete for the session on the not-configured 500", async () => {
     apiRequestMock.mockRejectedValueOnce(
       new ApiError(500, "internal_error", "Address autocomplete is not configured")

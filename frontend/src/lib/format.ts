@@ -60,3 +60,9 @@ const VOTE_POWER_LABELS: Record<string, string> = {
 export function formatVotePowerLabel(label: string): string {
   return VOTE_POWER_LABELS[label] ?? label;
 }
+
+/** Election result outcomes arrive snake_case (e.g. "too_close"). */
+export function formatOutcome(outcome: string): string {
+  const spaced = outcome.replaceAll("_", " ").trim();
+  return spaced.length > 0 ? spaced[0].toUpperCase() + spaced.slice(1) : outcome;
+}

@@ -26,6 +26,34 @@ type RequestOptions = {
 
 export const REQUEST_TIMEOUT_MS = 15_000;
 
+/**
+ * Combines the request timeout with an optional caller signal without
+ * requiring AbortSignal.any (Chrome 116+/Safari 17.4+): on older browsers a
+ * missing .any must degrade to a manual combine, not throw before fetch and
+ * silently kill features like autocomplete.
+ */
+function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal | undefined {
+  const timeout = typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(REQUEST_TIMEOUT_MS) : undefined;
+  if (!callerSignal) {
+    return timeout;
+  }
+  if (!timeout) {
+    return callerSignal;
+  }
+  if (typeof AbortSignal.any === "function") {
+    return AbortSignal.any([timeout, callerSignal]);
+  }
+  const controller = new AbortController();
+  for (const signal of [timeout, callerSignal]) {
+    if (signal.aborted) {
+      controller.abort(signal.reason);
+      break;
+    }
+    signal.addEventListener("abort", () => controller.abort(signal.reason), { once: true });
+  }
+  return controller.signal;
+}
+
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const method = options.method ?? "GET";
   const response = await fetch(path, {
@@ -37,9 +65,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
     // A stalled request must fail instead of pinning queries in pending
     // forever; callers can additionally cancel.
-    signal: options.signal
-      ? AbortSignal.any([AbortSignal.timeout(REQUEST_TIMEOUT_MS), options.signal])
-      : AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    signal: combineWithTimeout(options.signal),
   });
 
   if (!response.ok) {
