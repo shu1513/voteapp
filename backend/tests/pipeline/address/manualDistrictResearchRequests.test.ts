@@ -264,7 +264,7 @@ describe("status transitions", () => {
     expect(claimSql).toContain("attempt_count = r.attempt_count + 1");
   });
 
-  it("markSucceeded enforces the district stamp invariant in SQL and reports false when unmet", async () => {
+  it("markSucceeded requires a stamp from THIS claim, not any old stamp", async () => {
     const query = vi.fn().mockResolvedValueOnce({ rowCount: 0 });
 
     const ok = await markManualDistrictResearchRequestSucceeded(
@@ -276,6 +276,10 @@ describe("status transitions", () => {
     expect(query.mock.calls[0]?.[1]).toEqual([REQUEST_ID, "~/runs/la-county/manifest.md", null]);
     const sql = query.mock.calls[0]?.[0] as string;
     expect(sql).toContain("last_elections_searched_at IS NOT NULL");
+    // Queued districts almost always carry an old stamp (that staleness is why
+    // they were enqueued); success must require a stamp produced during this
+    // claim or a claim-and-instant-complete would pass with no work done.
+    expect(sql).toContain("last_elections_searched_at >= manual_district_research_requests.claimed_at");
   });
 
   it("markFailed truncates the error and targets open statuses", async () => {

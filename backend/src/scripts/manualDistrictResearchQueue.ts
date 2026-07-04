@@ -114,13 +114,13 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
       const manifestPath = requireFlag(flags, "manifest-path");
       const summary = flags.get("summary") ?? null;
 
-      // Guardrail: the manual research flow's elections write stage stamps
-      // districts.last_elections_searched_at (including the no_results
-      // empty-district path). Still null means the flow never actually
-      // finished for this district — refuse to mark the request succeeded.
+      // Friendly pre-check only — the domain layer enforces the same invariant.
+      // The stamp must be from THIS claim: queued districts almost always carry
+      // an old stamp (that staleness is why they were enqueued), so a merely
+      // non-null stamp proves nothing about this run.
       const stampCheck = await pool.query(
         `
-          SELECT d.last_elections_searched_at
+          SELECT d.last_elections_searched_at, r.claimed_at
           FROM public.manual_district_research_requests r
           JOIN public.districts d ON d.id = r.district_id
           WHERE r.id = $1
@@ -130,10 +130,21 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
       if (stampCheck.rows.length === 0) {
         throw new Error(`Request ${requestId} not found.`);
       }
-      if (stampCheck.rows[0].last_elections_searched_at === null) {
+      const { last_elections_searched_at: stamp, claimed_at: claimedAt } = stampCheck.rows[0] as {
+        last_elections_searched_at: Date | null;
+        claimed_at: Date | null;
+      };
+      if (stamp === null) {
         throw new Error(
           `Refusing to complete request ${requestId}: districts.last_elections_searched_at is not set. ` +
             "Run the elections write stage (it stamps the district, including empty ones) before completing."
+        );
+      }
+      if (claimedAt !== null && stamp < claimedAt) {
+        throw new Error(
+          `Refusing to complete request ${requestId}: the district's stamp (${stamp.toISOString()}) predates ` +
+            `this claim (${claimedAt.toISOString()}) — it is leftover from earlier research. ` +
+            "Run the elections write stage for this run before completing."
         );
       }
 

@@ -299,8 +299,11 @@ export async function markManualDistrictResearchRequestSucceeded(
 ): Promise<boolean> {
   // The stamp predicate enforces the completion invariant at the domain layer
   // for every caller, not just the CLI: a request can only succeed once the
-  // elections write stage stamped the district (it stamps empty districts
-  // too), so success always means the flow actually finished.
+  // elections write stage stamped the district DURING THIS CLAIM (it stamps
+  // empty districts too). Comparing against claimed_at, not merely NOT NULL,
+  // matters because queued districts almost always carry an old stamp — that
+  // staleness is why they were enqueued — and an old stamp must not allow a
+  // claim-and-complete without the flow actually running.
   const updated = await db.query(
     `
       UPDATE public.manual_district_research_requests
@@ -317,6 +320,7 @@ export async function markManualDistrictResearchRequestSucceeded(
           FROM public.districts d
           WHERE d.id = manual_district_research_requests.district_id
             AND d.last_elections_searched_at IS NOT NULL
+            AND d.last_elections_searched_at >= manual_district_research_requests.claimed_at
         )
     `,
     [input.requestId, input.manifestPath, input.summary ?? null]
