@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { ErrorNotice } from "../components/Status";
+import { purgeAccountScopedQueries } from "../lib/useMe";
 
 export function LoginPage() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,9 @@ export function LoginPage() {
         body: { email: email.trim(), password },
       }),
     onSuccess: async () => {
+      // A previous session may have ended without a clean logout; cached
+      // account data (e.g. ["me","ballot"]) must not bleed into this one.
+      purgeAccountScopedQueries(queryClient);
       // Login returns only the session cookie; identity comes from /api/me.
       await queryClient.invalidateQueries({ queryKey: ["me"] });
       navigate("/me/ballot");

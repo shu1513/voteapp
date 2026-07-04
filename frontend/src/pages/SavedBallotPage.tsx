@@ -64,17 +64,21 @@ function AddressForm({ compact }: { compact: boolean }) {
 export function SavedBallotPage() {
   const { me, isLoading, isError: meError, refetch: refetchMe } = useMe();
   const queryClient = useQueryClient();
-  const [handoffDone, setHandoffDone] = useState(() => readPendingDistrictIds().length === 0);
+  const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
+    readPendingDistrictIds().length === 0 ? "done" : "pending"
+  );
   const handoffFiredRef = useRef(false);
 
   const verified = me?.email_verified === true;
 
   // Anonymous-to-account handoff: initialize saved districts from the last
   // anonymous search, but only once verified (the endpoint is
-  // verified-email-gated). already_initialized and stale-id errors both
-  // resolve to "proceed with whatever the account has".
+  // verified-email-gated). Permanent rejections (4xx: stale/unknown ids)
+  // resolve to "the account's ballot is the source of truth"; transient
+  // failures keep the ids and surface an explicit retry instead of dropping
+  // the user onto the empty set-address form with their search still queued.
   useEffect(() => {
-    if (!verified || handoffDone || handoffFiredRef.current) {
+    if (!verified || handoffState !== "pending" || handoffFiredRef.current) {
       return;
     }
     handoffFiredRef.current = true;
@@ -86,25 +90,29 @@ export function SavedBallotPage() {
           body: { district_ids: districtIds },
         });
         clearPendingDistrictIds();
+        setHandoffState("done");
+        void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
       } catch (error) {
-        // Permanent rejections (4xx: stale/unknown district ids) clear the
-        // stash — the saved ballot is the source of truth. Transient
-        // failures (timeout, 5xx, network) keep the ids so the next visit
-        // retries instead of silently losing the anonymous search.
         if (error instanceof ApiError && error.status < 500) {
           clearPendingDistrictIds();
+          setHandoffState("done");
+          void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+        } else {
+          setHandoffState("failed");
         }
-      } finally {
-        setHandoffDone(true);
-        void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
       }
     })();
-  }, [verified, handoffDone, queryClient]);
+  }, [verified, handoffState, queryClient]);
+
+  function retryHandoff() {
+    handoffFiredRef.current = false;
+    setHandoffState("pending");
+  }
 
   const ballot = useQuery<SavedBallot>({
     queryKey: ["me", "ballot"],
     queryFn: () => apiRequest<SavedBallot>("/api/me/ballot"),
-    enabled: verified && handoffDone,
+    enabled: verified && handoffState === "done",
     retry: false,
   });
 
@@ -146,7 +154,25 @@ export function SavedBallotPage() {
     return <VerifyPrompt email={me.email} />;
   }
 
-  if (!handoffDone || ballot.isPending) {
+  if (handoffState === "failed") {
+    return (
+      <div className="mx-auto max-w-md px-4 py-10 space-y-4 text-center">
+        <p className="text-ink-soft">
+          We couldn't save the districts from your recent address search to your account. Your search is
+          still remembered.
+        </p>
+        <button
+          type="button"
+          onClick={retryHandoff}
+          className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark"
+        >
+          Try again
+        </button>
+      </div>
+    );
+  }
+
+  if (handoffState !== "done" || ballot.isPending) {
     return <LoadingNotice text="Loading your ballot…" />;
   }
 

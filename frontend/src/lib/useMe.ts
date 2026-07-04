@@ -1,5 +1,18 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "../api/client";
+
+/**
+ * Drops every cached query except the exact ["me"] identity entry.
+ * Account-scoped data like ["me","ballot"] must never leak across sessions
+ * on a shared browser — called on logout AND on login, because a previous
+ * session may have ended without a clean logout (expiry, failed request,
+ * or another person walking straight to /login).
+ */
+export function purgeAccountScopedQueries(queryClient: QueryClient): void {
+  queryClient.removeQueries({
+    predicate: (query) => query.queryKey[0] !== "me" || query.queryKey.length > 1,
+  });
+}
 
 export type Me = {
   email: string;
@@ -41,12 +54,7 @@ export function useLogout() {
     mutationFn: () => apiRequest<{ status: string }>("/api/auth/logout", { method: "POST", body: {} }),
     onSuccess: () => {
       queryClient.setQueryData(["me"], null);
-      // Drop every cached query except the exact ["me"] entry just set:
-      // account-scoped data like ["me","ballot"] must not survive into the
-      // next login on a shared browser.
-      queryClient.removeQueries({
-        predicate: (query) => query.queryKey[0] !== "me" || query.queryKey.length > 1,
-      });
+      purgeAccountScopedQueries(queryClient);
     },
   });
 }
