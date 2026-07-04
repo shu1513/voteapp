@@ -37,10 +37,16 @@ import { lookupBallotSummariesByDistrictIds, lookupElectionDetailById } from "..
 // [ballot-personalized-ordering]
 import { applyBallotElectionOrdering } from "../pipeline/address/ballotElectionOrdering.js";
 import { resolveAddressToDistricts } from "../pipeline/address/addressResolverService.js";
+import { createAutoDistrictResearchTrigger } from "../pipeline/address/autoDistrictResearch.js";
 import {
-  createAutoDistrictResearchTrigger,
-  readAutoDistrictResearchConfigFromEnv,
-} from "../pipeline/address/autoDistrictResearch.js";
+  enqueueManualDistrictResearchRequestsForStaleDistricts,
+  type ManualResearchTriggerSource,
+} from "../pipeline/address/manualDistrictResearchRequests.js";
+import { readAutoDistrictResearchMode } from "../config/featureFlags.js";
+import {
+  DEFAULT_ELECTIONS_SEARCH_COOLDOWN_DAYS,
+  readElectionsSearchCooldownDaysFromEnv,
+} from "../pipeline/elections/electionsSearchPolicy.js";
 import {
   DEFAULT_GOOGLE_PLACES_TIMEOUT_MS,
   retrieveSuggestedAddressWithGooglePlaces,
@@ -239,11 +245,19 @@ async function main(): Promise<void> {
     trustedUserIdHeader,
     allowTrustedHeaderWithSessions: readBooleanEnv("API_TRUSTED_USER_ID_HEADER_ALLOW_WITH_SESSIONS", false),
   });
-  // Auto district research needs Redis for the elections draft stream even when
-  // both the address cache and auth are disabled.
-  const autoDistrictResearchConfig = readAutoDistrictResearchConfigFromEnv();
+  // Exactly one auto district research behavior fires per stale district: "ai"
+  // drops an election draft into the staging pipeline (needs Redis for the
+  // draft stream), "manual" enqueues an agent research request (Postgres only),
+  // "off" no-ops. Mode and cooldown are validated at startup so a malformed
+  // value fails fast instead of being swallowed per-request.
+  const autoDistrictResearchMode = readAutoDistrictResearchMode();
+  const autoDistrictResearchCooldownDays =
+    autoDistrictResearchMode === "off"
+      ? DEFAULT_ELECTIONS_SEARCH_COOLDOWN_DAYS
+      : readElectionsSearchCooldownDaysFromEnv();
+  const autoDistrictResearchNeedsRedis = autoDistrictResearchMode === "ai";
   const redis =
-    addressCacheEnabled || authConfigured || autoDistrictResearchConfig.enabled
+    addressCacheEnabled || authConfigured || autoDistrictResearchNeedsRedis
       ? createClient({ url: readEnv("REDIS_URL", "redis://localhost:6379") })
       : null;
   const buildAddressResolverOptions = () => ({
@@ -267,19 +281,38 @@ async function main(): Promise<void> {
     }
   }
 
-  const triggerAutoDistrictResearch = createAutoDistrictResearchTrigger({
+  const triggerAutoDistrictResearchAi = createAutoDistrictResearchTrigger({
     db: pool,
     getRedis: () => (redis?.isOpen ? redis : null),
-    config: autoDistrictResearchConfig,
+    config: { enabled: autoDistrictResearchMode === "ai", ttlDays: autoDistrictResearchCooldownDays },
   });
-  // Fire-and-forget: enqueue research for unresearched/stale districts without
-  // delaying or failing the address response. No-op unless
-  // AUTO_DISTRICT_RESEARCH_ENABLED=true.
-  const resolveAddressWithAutoResearch = async (inputAddress: string) => {
+  // Fire-and-forget dispatch: research stale districts without delaying or
+  // failing the address response. The two destinations are mutually exclusive
+  // by mode; both share the same staleness cooldown.
+  const dispatchAutoDistrictResearch = (
+    districts: Awaited<ReturnType<typeof resolveAddressToDistricts>>["districts"],
+    triggerSource: Exclude<ManualResearchTriggerSource, "manual_seed">
+  ) => {
+    if (autoDistrictResearchMode === "ai") {
+      void triggerAutoDistrictResearchAi(districts).catch((error) => {
+        console.warn("auto district research (ai) trigger failed; address response unaffected", error);
+      });
+    } else if (autoDistrictResearchMode === "manual") {
+      void enqueueManualDistrictResearchRequestsForStaleDistricts(pool, {
+        districts,
+        triggerSource,
+        cooldownDays: autoDistrictResearchCooldownDays,
+      }).catch((error) => {
+        console.warn("manual district research enqueue failed; address response unaffected", error);
+      });
+    }
+  };
+  const resolveAddressWithAutoResearch = async (
+    inputAddress: string,
+    triggerSource: Exclude<ManualResearchTriggerSource, "manual_seed"> = "address_resolve"
+  ) => {
     const result = await resolveAddressToDistricts(pool, inputAddress, buildAddressResolverOptions());
-    void triggerAutoDistrictResearch(result.districts).catch((error) => {
-      console.warn("auto district research trigger failed; address response unaffected", error);
-    });
+    dispatchAutoDistrictResearch(result.districts, triggerSource);
     return result;
   };
 
@@ -453,7 +486,8 @@ async function main(): Promise<void> {
     updateAuthenticatedAddressDistricts: (userId, address) =>
       updateAuthenticatedAddressDistricts(
         {
-          resolveAddressToDistricts: (inputAddress) => resolveAddressWithAutoResearch(inputAddress),
+          resolveAddressToDistricts: (inputAddress) =>
+            resolveAddressWithAutoResearch(inputAddress, "me_address_update"),
           replaceUserDistricts: (inputUserId, districtIds) => replaceUserDistricts(pool, inputUserId, districtIds),
           lookupBallotSummariesByDistrictIds: (districtIds) =>
             lookupBallotSummariesByDistrictIds(pool, districtIds),
