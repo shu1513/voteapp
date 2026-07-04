@@ -1,19 +1,12 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
-import { BALLOT_SORTS, type BallotSort, type BallotSummary } from "../api/types";
+import { BALLOT_SORT_DESCRIPTIONS, BALLOT_SORTS, type BallotSort, type BallotSummary } from "../api/types";
 import { AiBanner } from "../components/AiBanner";
 import { ElectionCard } from "../components/ElectionCard";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 
 const SORT_VALUES: readonly string[] = BALLOT_SORTS.map((option) => option.value);
-
-const SORT_DESCRIPTIONS: Record<BallotSort, string> = {
-  vote_power: "ordered by where your vote carries the most weight.",
-  soonest: "ordered by election date, soonest first.",
-  district_size: "ordered by district population, biggest first.",
-  district_size_smallest: "ordered by district population, smallest first.",
-};
 
 export function BallotPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -90,7 +83,7 @@ export function BallotPage() {
           <p className="mt-1 text-sm text-ink-soft">
             {ballot.data.elections.length} election{ballot.data.elections.length === 1 ? "" : "s"} across{" "}
             {ballot.data.districts.length} district{ballot.data.districts.length === 1 ? "" : "s"},{" "}
-            {SORT_DESCRIPTIONS[sort]}
+            {BALLOT_SORT_DESCRIPTIONS[sort]}
           </p>
           <details className="mt-2 text-xs text-ink-soft">
             <summary className="cursor-pointer select-none underline">What do these labels mean?</summary>

@@ -15,6 +15,8 @@ import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { VerifyTokenPage } from "./pages/VerifyTokenPage";
 import { SavedBallotPage } from "./pages/SavedBallotPage";
+import { FollowsPage } from "./pages/FollowsPage";
+import { SettingsPage } from "./pages/SettingsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,6 +63,8 @@ const router = createBrowserRouter([
         ),
       },
       { path: "/me/ballot", element: <SavedBallotPage /> },
+      { path: "/me/follows", element: <FollowsPage /> },
+      { path: "/me/settings", element: <SettingsPage /> },
     ],
   },
 ]);

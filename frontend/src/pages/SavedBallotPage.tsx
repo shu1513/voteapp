@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "../api/client";
-import type { BallotSummary } from "../api/types";
+import {
+  BALLOT_SORT_DESCRIPTIONS,
+  BALLOT_SORTS,
+  type BallotPreferences,
+  type BallotSummary,
+} from "../api/types";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { AiBanner } from "../components/AiBanner";
 import { ElectionCard } from "../components/ElectionCard";
@@ -13,6 +18,90 @@ import { PRIVACY_NOTICE } from "../legal/copy";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
+
+// Persisted ordering controls: unlike the anonymous ballot's URL params,
+// these save to the account and apply to every future visit (and to the
+// digest-adjacent "followed first" ordering).
+function BallotPreferenceControls() {
+  const queryClient = useQueryClient();
+  // Optimistic overlay: consecutive changes must merge from the latest view,
+  // not from a stale cache snapshot — the PUT saves the FULL object, so a
+  // stale spread would revert the previous change.
+  const [pending, setPending] = useState<BallotPreferences | null>(null);
+  const prefs = useQuery({
+    queryKey: ["me", "ballot-preferences"],
+    queryFn: () => apiRequest<BallotPreferences>("/api/me/ballot-preferences"),
+    staleTime: 60_000,
+  });
+
+  const update = useMutation({
+    mutationKey: ["put-ballot-preferences"],
+    mutationFn: (next: BallotPreferences) =>
+      apiRequest<BallotPreferences>("/api/me/ballot-preferences", { method: "PUT", body: next }),
+    onSuccess: (saved) => {
+      queryClient.setQueryData(["me", "ballot-preferences"], saved);
+      void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+    },
+    onSettled: () => {
+      setPending(null);
+    },
+  });
+  // Cross-mount in-flight guard: component-local isPending resets on remount
+  // (navigate away and back mid-save), but the mutation cache does not — a
+  // remounted control must stay locked until the older full-object PUT
+  // settles, or two writes could commit out of order.
+  const saving = useIsMutating({ mutationKey: ["put-ballot-preferences"] }) > 0;
+
+  if (prefs.isError) {
+    return <ErrorNotice error={prefs.error} />;
+  }
+  if (!prefs.data) {
+    return null;
+  }
+  const current = pending ?? prefs.data;
+
+  function change(fields: Partial<BallotPreferences>) {
+    const next = { ...current, ...fields };
+    setPending(next);
+    update.mutate(next);
+  }
+
+  return (
+    <div className="flex flex-col items-end gap-1">
+      <div className="flex flex-wrap items-center gap-4 text-sm text-ink-soft">
+        <label className="flex items-center gap-2">
+          Sort by
+          <select
+            value={current.sort}
+            // Disabled while a save is in flight: the PUT replaces the FULL
+            // object, so concurrent requests could commit out of order and
+            // the earlier write would win.
+            disabled={saving}
+            onChange={(event) => change({ sort: event.target.value as BallotPreferences["sort"] })}
+            className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none disabled:opacity-60"
+          >
+            {BALLOT_SORTS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex cursor-pointer items-center gap-2">
+          <input
+            type="checkbox"
+            checked={current.followed_first}
+            disabled={saving}
+            onChange={(event) => change({ followed_first: event.target.checked })}
+            className="h-4 w-4 accent-rausch"
+          />
+          Followed candidates first
+        </label>
+      </div>
+      {update.isError ? <ErrorNotice error={update.error} /> : null}
+    </div>
+  );
+}
 
 function AddressForm({ compact }: { compact: boolean }) {
   const [address, setAddress] = useState("");
@@ -67,6 +156,14 @@ function AddressForm({ compact }: { compact: boolean }) {
 export function SavedBallotPage() {
   const { me, isLoading, isError: meError, refetch: refetchMe } = useMe();
   const queryClient = useQueryClient();
+  // Same key as BallotPreferenceControls: shared cache entry, no extra fetch.
+  // Drives the subtitle so the copy matches the saved sort.
+  const savedPrefs = useQuery({
+    queryKey: ["me", "ballot-preferences"],
+    queryFn: () => apiRequest<BallotPreferences>("/api/me/ballot-preferences"),
+    staleTime: 60_000,
+    enabled: me?.email_verified === true,
+  });
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
   );
@@ -209,11 +306,14 @@ export function SavedBallotPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <AiBanner />
-      <h1 className="text-2xl font-bold">Your saved ballot</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold">Your saved ballot</h1>
+        <BallotPreferenceControls />
+      </div>
       <p className="mt-1 text-sm text-ink-soft">
         {data.elections.length} election{data.elections.length === 1 ? "" : "s"} across{" "}
-        {data.districts.length} district{data.districts.length === 1 ? "" : "s"}, ordered by where your vote
-        carries the most weight.
+        {data.districts.length} district{data.districts.length === 1 ? "" : "s"},{" "}
+        {BALLOT_SORT_DESCRIPTIONS[savedPrefs.data?.sort ?? "vote_power"]}
       </p>
 
       {data.elections.length === 0 ? (

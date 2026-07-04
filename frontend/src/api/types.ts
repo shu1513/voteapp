@@ -88,6 +88,8 @@ export type ElectionSummary = {
   research_areas: ResearchAreaSummary[];
   historical_competitiveness: HistoricalCompetitiveness | null;
   vote_power: VotePower;
+  /** Present on ordered results; non-empty when the viewer follows a candidate in this election. */
+  followed_candidates?: { candidate_id: string; display_name: string }[];
 };
 
 export type BallotSummary = {
@@ -167,6 +169,13 @@ export const BALLOT_SORTS = [
 
 export type BallotSort = (typeof BALLOT_SORTS)[number]["value"];
 
+export const BALLOT_SORT_DESCRIPTIONS: Record<BallotSort, string> = {
+  vote_power: "ordered by where your vote carries the most weight.",
+  soonest: "ordered by election date, soonest first.",
+  district_size: "ordered by district population, biggest first.",
+  district_size_smallest: "ordered by district population, smallest first.",
+};
+
 export type ElectionDetail = {
   id: string;
   district_id: string;
@@ -182,6 +191,57 @@ export type ElectionDetail = {
   results: ElectionResult[];
   historical_competitiveness: HistoricalCompetitiveness | null;
   vote_power: VotePower;
+};
+
+export type CandidateFollow = {
+  candidate_id: string;
+  display_name: string;
+  party: string;
+  state: string;
+  current_office: string | null;
+  latest_record: { description: string; event_date: string } | null;
+  active_election: { election_id: string; official_ballot_title: string; election_date: string } | null;
+  notify_elections: boolean;
+  notify_updates: boolean;
+  created_at: string;
+};
+
+export type CandidateFollowsResult = {
+  follows: CandidateFollow[];
+};
+
+export type CandidateFollowUpdate = {
+  candidate_id: string;
+  following: boolean;
+  notify_elections?: boolean;
+  notify_updates?: boolean;
+};
+
+export type BallotPreferences = {
+  sort: BallotSort;
+  followed_first: boolean;
+};
+
+export type EmailPreferences = {
+  email_digest: boolean;
+  email_election_reminders: boolean;
+  email_new_election_alerts: boolean;
+};
+
+export type ResearchAreaCatalog = {
+  research_areas: { id: string; slug: string; name: string; description: string | null }[];
+};
+
+export type ResearchAreaPreference = {
+  research_area_id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  rank: number | null;
+};
+
+export type ResearchAreaPreferencesResult = {
+  preferences: ResearchAreaPreference[];
 };
 
 export type CandidateRecordTag = {

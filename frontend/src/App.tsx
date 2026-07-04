@@ -30,6 +30,12 @@ function AccountNav() {
       <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
         My ballot
       </Link>
+      <Link to="/me/follows" className="text-ink-soft hover:text-ink">
+        Following
+      </Link>
+      <Link to="/me/settings" className="text-ink-soft hover:text-ink">
+        Settings
+      </Link>
       <button
         type="button"
         className="text-ink-soft hover:text-ink"

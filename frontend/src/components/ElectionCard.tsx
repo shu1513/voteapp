@@ -18,6 +18,11 @@ export function ElectionCard({ election }: { election: ElectionSummary }) {
         {election.office ? <> · {election.office.canonical_name}</> : null}
       </p>
       <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+        {election.followed_candidates && election.followed_candidates.length > 0 ? (
+          <span className="rounded bg-rausch px-2 py-0.5 font-medium text-white">
+            You follow {election.followed_candidates.map((candidate) => candidate.display_name).join(", ")}
+          </span>
+        ) : null}
         {election.race_type === "ballot_measure" ? (
           <span className="rounded bg-ink/10 px-2 py-0.5 text-ink">Ballot measure</span>
         ) : (
