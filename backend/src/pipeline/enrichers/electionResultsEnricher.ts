@@ -1,5 +1,5 @@
 import { Queue, Worker, type Processor } from "bullmq";
-import type { ConnectionOptions } from "bullmq";
+import { toConnectionOptions } from "../../utils/redisConnection.js";
 import { Pool } from "pg";
 import type { PoolClient } from "pg";
 import { createClient } from "redis";
@@ -61,36 +61,6 @@ type ChunkWriteResult = ElectionResultWriteResult & {
   candidateProfileDraftsEmitted: number;
   candidateProfileDraftsSkipped: number;
 };
-
-function toConnectionOptions(redisUrl: string): ConnectionOptions {
-  const parsed = new URL(redisUrl);
-
-  const parsedPort = parsed.port ? Number.parseInt(parsed.port, 10) : 6379;
-  const parsedDb = parsed.pathname.length > 1 ? Number.parseInt(parsed.pathname.slice(1), 10) : 0;
-  if (!Number.isInteger(parsedPort) || parsedPort <= 0) {
-    throw new Error(`Invalid REDIS_URL port: ${parsed.port}`);
-  }
-  if (!Number.isInteger(parsedDb) || parsedDb < 0) {
-    throw new Error(`Invalid REDIS_URL db index: ${parsed.pathname}`);
-  }
-
-  const opts: ConnectionOptions = {
-    host: parsed.hostname,
-    port: parsedPort,
-    db: parsedDb,
-    maxRetriesPerRequest: null,
-  };
-  if (parsed.username) {
-    opts.username = decodeURIComponent(parsed.username);
-  }
-  if (parsed.password) {
-    opts.password = decodeURIComponent(parsed.password);
-  }
-  if (parsed.protocol === "rediss:") {
-    opts.tls = {};
-  }
-  return opts;
-}
 
 function getSearchQueueName(): string {
   return process.env.ELECTION_RESULT_SEARCH_QUEUE?.trim() || "election_result_search";

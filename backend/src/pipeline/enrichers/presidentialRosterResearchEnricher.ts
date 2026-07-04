@@ -1,5 +1,5 @@
 import { Worker, type Processor } from "bullmq";
-import type { ConnectionOptions } from "bullmq";
+import { toConnectionOptions } from "../../utils/redisConnection.js";
 import { Pool } from "pg";
 import { createClient } from "redis";
 
@@ -50,39 +50,6 @@ type RedisSendCommandClient = {
 type RedisClient = ReturnType<typeof createClient>;
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-function toConnectionOptions(redisUrl: string): ConnectionOptions {
-  const parsed = new URL(redisUrl);
-  if (parsed.protocol !== "redis:" && parsed.protocol !== "rediss:") {
-    throw new Error(`Unsupported REDIS_URL protocol: ${parsed.protocol}`);
-  }
-  const parsedPort = parsed.port ? Number.parseInt(parsed.port, 10) : 6379;
-  const parsedDb = parsed.pathname.length > 1 ? Number.parseInt(parsed.pathname.slice(1), 10) : 0;
-
-  if (!Number.isInteger(parsedPort) || parsedPort <= 0) {
-    throw new Error(`Invalid REDIS_URL port: ${parsed.port}`);
-  }
-  if (!Number.isInteger(parsedDb) || parsedDb < 0) {
-    throw new Error(`Invalid REDIS_URL db index: ${parsed.pathname}`);
-  }
-
-  const opts: ConnectionOptions = {
-    host: parsed.hostname,
-    port: parsedPort,
-    db: parsedDb,
-    maxRetriesPerRequest: null,
-  };
-  if (parsed.username) {
-    opts.username = decodeURIComponent(parsed.username);
-  }
-  if (parsed.password) {
-    opts.password = decodeURIComponent(parsed.password);
-  }
-  if (parsed.protocol === "rediss:") {
-    opts.tls = {};
-  }
-  return opts;
-}
 
 function getQueueName(): string {
   return process.env.PRESIDENTIAL_ROSTER_RESEARCH_QUEUE?.trim() || "presidential_roster_research";
