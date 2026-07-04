@@ -30,9 +30,10 @@ describe("apiRequest", () => {
 
     expect(fetchMock).toHaveBeenCalledWith("/api/address/resolve", {
       method: "POST",
-      credentials: "same-origin",
+      credentials: "include",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ address: "123 Main St" }),
+      signal: expect.any(AbortSignal),
     });
   });
 

@@ -9,6 +9,7 @@ import { BallotPage } from "./pages/BallotPage";
 import { ElectionPage } from "./pages/ElectionPage";
 import { CandidatePage } from "./pages/CandidatePage";
 import { DisclaimerPage } from "./pages/DisclaimerPage";
+import { InterimLegalPage } from "./pages/InterimLegalPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,8 @@ const router = createBrowserRouter([
       { path: "/elections/:electionId", element: <ElectionPage /> },
       { path: "/candidates/:candidateId", element: <CandidatePage /> },
       { path: "/disclaimer", element: <DisclaimerPage /> },
+      { path: "/terms", element: <InterimLegalPage title="Terms of Use" /> },
+      { path: "/privacy", element: <InterimLegalPage title="Privacy Policy" /> },
     ],
   },
 ]);

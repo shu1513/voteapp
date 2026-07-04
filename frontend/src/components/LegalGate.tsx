@@ -27,9 +27,15 @@ export function LegalGate({ label, checked, onChange, inputId }: LegalGateProps)
         />
         <span>{label}</span>
       </label>
-      <p className="mt-2 pl-7">
+      <p className="mt-2 flex flex-wrap gap-x-4 pl-7">
+        <Link to="/terms" className="font-medium text-blue-700 underline">
+          Terms of Use
+        </Link>
+        <Link to="/privacy" className="font-medium text-blue-700 underline">
+          Privacy Policy
+        </Link>
         <Link to="/disclaimer" className="font-medium text-blue-700 underline">
-          Read the full Disclaimer
+          Disclaimer
         </Link>
       </p>
     </div>

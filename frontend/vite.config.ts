@@ -1,3 +1,4 @@
+import path from "node:path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -22,9 +23,11 @@ export default defineConfig({
       },
     },
     fs: {
-      // The disclaimer page raw-imports docs/legal/disclaimer.md from the
-      // repo root (single source of truth for legal text).
-      allow: ["..", "."],
+      // The disclaimer page raw-imports docs/legal/disclaimer.md. Allow ONLY
+      // that directory beyond the app root: widening to the repo root would
+      // let the dev server serve arbitrary repo files (backend/.env holds
+      // real credentials).
+      allow: [".", path.resolve(__dirname, "../docs/legal")],
     },
   },
 });

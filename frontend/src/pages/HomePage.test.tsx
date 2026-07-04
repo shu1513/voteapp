@@ -8,7 +8,12 @@ import { PRE_SEARCH_ACCEPTANCE_STORAGE_KEY } from "../legal/copy";
 
 function renderHome() {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  const router = createMemoryRouter([{ path: "/", element: <HomePage /> }, { path: "/disclaimer", element: <p /> }]);
+  const router = createMemoryRouter([
+    { path: "/", element: <HomePage /> },
+    { path: "/disclaimer", element: <p /> },
+    { path: "/terms", element: <p /> },
+    { path: "/privacy", element: <p /> },
+  ]);
   return render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
@@ -65,11 +70,12 @@ describe("HomePage legal gate (clickwrap)", () => {
     expect(screen.getByRole("checkbox")).toBeChecked();
   });
 
-  it("links to the full disclaimer next to the checkbox", () => {
+  it("links all three named agreements next to the checkbox", () => {
     renderHome();
-    expect(screen.getByRole("link", { name: "Read the full Disclaimer" })).toHaveAttribute(
-      "href",
-      "/disclaimer"
-    );
+    // Clickwrap adjacency: every document named in the checkbox copy must be
+    // reviewable right next to it.
+    expect(screen.getByRole("link", { name: "Terms of Use" })).toHaveAttribute("href", "/terms");
+    expect(screen.getByRole("link", { name: "Privacy Policy" })).toHaveAttribute("href", "/privacy");
+    expect(screen.getByRole("link", { name: "Disclaimer" })).toHaveAttribute("href", "/disclaimer");
   });
 });

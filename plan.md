@@ -175,6 +175,9 @@ carries the banner and source lines. Verified live against local backend.
 5. Production env checklist: `ADDRESS_API_ALLOWED_ORIGINS`, cookie
    `Secure`/`SameSite`/domain flags, `AUTH_PUBLIC_BASE_URL`,
    `NOTIFICATIONS_UNSUBSCRIBE_URL`, API base URL wiring.
+6. **Launch blocker:** publish attorney-reviewed Terms of Use and Privacy
+   Policy at `/terms` and `/privacy`, replacing the interim placeholder
+   pages the clickwrap links point to.
 
 ### Phase 6 — parked (do not build yet)
 
