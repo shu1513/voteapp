@@ -106,6 +106,49 @@ describe("useAddressSuggestions", () => {
     expect(nextToken).not.toBe(suggestToken);
   });
 
+  it("clears the token before the retrieve settles: typing mid-retrieve gets a fresh session", async () => {
+    apiRequestMock.mockResolvedValueOnce({ suggestions: [SUGGESTION] });
+    const { result } = renderHook(() => useAddressSuggestions());
+
+    act(() => {
+      result.current.onInputChanged("200 N Spring");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
+    });
+    const firstToken = (apiRequestMock.mock.calls[0][1] as { body: { session_token: string } }).body
+      .session_token;
+
+    // Retrieve hangs; user keeps typing while it is in flight.
+    let resolveRetrieve!: (value: unknown) => void;
+    apiRequestMock.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveRetrieve = resolve;
+        })
+    );
+    let selectPromise!: Promise<string | null>;
+    act(() => {
+      selectPromise = result.current.selectSuggestion(SUGGESTION);
+    });
+
+    apiRequestMock.mockResolvedValueOnce({ suggestions: [] });
+    act(() => {
+      result.current.onInputChanged("200 N Spring St Apt 4");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
+    });
+    const midRetrieveToken = (apiRequestMock.mock.calls[2][1] as { body: { session_token: string } }).body
+      .session_token;
+    expect(midRetrieveToken).not.toBe(firstToken);
+
+    await act(async () => {
+      resolveRetrieve({ address: "200 N Spring St, Los Angeles, CA 90012, USA" });
+      await selectPromise;
+    });
+  });
+
   it("kills the session token when retrieve fails (indeterminate session state)", async () => {
     apiRequestMock.mockResolvedValueOnce({ suggestions: [SUGGESTION] });
     const { result } = renderHook(() => useAddressSuggestions());

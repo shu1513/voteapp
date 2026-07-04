@@ -108,20 +108,21 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
     if (!sessionToken) {
       return null;
     }
+    // Billing-relevant: the session ends the moment the final retrieve is
+    // issued. Clear BEFORE awaiting so typing during the in-flight retrieve
+    // starts a fresh session instead of reusing the spent token (the local
+    // sessionToken copy still rides on the retrieve request).
+    sessionTokenRef.current = null;
     try {
       const response = await apiRequest<AddressRetrieveResponse>("/api/address/autocomplete/retrieve", {
         method: "POST",
         body: { place_id: suggestion.place_id, session_token: sessionToken },
       });
-      // Billing-relevant: the session ends with the retrieve. Never reuse.
-      sessionTokenRef.current = null;
       return response.address;
     } catch {
       // Retrieve failed; the user still has their typed text and can submit
-      // it manually. The attempt may or may not have reached Google, so the
-      // session state is indeterminate — kill the token (reused tokens are
-      // billed as no-session; a fresh session costs nothing).
-      sessionTokenRef.current = null;
+      // it manually. The token stays dead either way — the session state is
+      // indeterminate and a fresh session costs nothing.
       return null;
     }
   }, []);
