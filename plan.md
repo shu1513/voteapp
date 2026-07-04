@@ -175,9 +175,10 @@ carries the banner and source lines. Verified live against local backend.
 5. Production env checklist: `ADDRESS_API_ALLOWED_ORIGINS`, cookie
    `Secure`/`SameSite`/domain flags, `AUTH_PUBLIC_BASE_URL`,
    `NOTIFICATIONS_UNSUBSCRIBE_URL`, API base URL wiring.
-6. **Launch blocker:** publish attorney-reviewed Terms of Use and Privacy
-   Policy at `/terms` and `/privacy`, replacing the interim placeholder
-   pages the clickwrap links point to.
+6. **Launch blocker:** attorney review of all three legal documents in
+   docs/legal/ (Disclaimer, Terms of Use, Privacy Policy — all drafted and
+   rendered at /disclaimer, /terms, /privacy) before public launch; fill the
+   [legal entity name] / [contact email] / [state] placeholders.
 
 ### Phase 6 — parked (do not build yet)
 
