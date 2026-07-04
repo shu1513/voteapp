@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { createApiApp } from "../../src/api/apiServer.js";
 import { AUTH_SESSION_COOKIE_NAME } from "../../src/auth/authCookies.js";
+import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
 import type { AuthService } from "../../src/auth/authService.js";
 
 async function invokeExpressApp(
@@ -99,6 +100,7 @@ describe("public auth API endpoints", () => {
         email: "user@example.com",
         password: "correct horse battery staple",
         first_name: "Alice",
+        accepted_terms_version: CURRENT_TERMS_VERSION,
       }),
       headers: { "content-type": "application/json" },
     });
@@ -109,7 +111,38 @@ describe("public auth API endpoints", () => {
       email: "user@example.com",
       password: "correct horse battery staple",
       firstName: "Alice",
+      acceptedTermsVersion: CURRENT_TERMS_VERSION,
     });
+  });
+
+  it("rejects registration without terms acceptance or with a stale version", async () => {
+    const resolveAddress = vi.fn();
+    const authService = createAuthServiceMock();
+    const app = createApiApp({ resolveAddress, authService });
+
+    const missing = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/auth/register",
+      body: JSON.stringify({ email: "user@example.com", password: "correct horse battery staple" }),
+      headers: { "content-type": "application/json" },
+    });
+    expect(missing.statusCode).toBe(400);
+
+    const stale = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/auth/register",
+      body: JSON.stringify({
+        email: "user@example.com",
+        password: "correct horse battery staple",
+        accepted_terms_version: "0.9",
+      }),
+      headers: { "content-type": "application/json" },
+    });
+    expect(stale.statusCode).toBe(400);
+    expect(String((stale.body as { error: { message: string } }).error.message)).toContain(
+      CURRENT_TERMS_VERSION
+    );
+    expect(authService.register).not.toHaveBeenCalled();
   });
 
   it("verifies emails through the auth service", async () => {
@@ -304,6 +337,7 @@ describe("public auth API endpoints", () => {
       body: JSON.stringify({
         email: "user@example.com",
         password: "correct horse battery staple",
+        accepted_terms_version: CURRENT_TERMS_VERSION,
       }),
       headers: { "content-type": "application/json" },
     });

@@ -95,6 +95,7 @@ export type AuthenticatedAddressPayload = AddressResolvePayload;
 export type AuthRegisterPayload = {
   email: string;
   password: string;
+  accepted_terms_version: string;
   first_name?: string;
 };
 
@@ -247,6 +248,8 @@ export function parseAuthRegisterBodyValue(parsed: unknown): AuthRegisterPayload
 
   const email = parseStringField(parsed, "email");
   const password = parseStringField(parsed, "password");
+  // Clickwrap: registration must record which terms version was accepted.
+  const acceptedTermsVersion = parseStringField(parsed, "accepted_terms_version");
   const firstName = (parsed as { first_name?: unknown }).first_name;
   if (firstName !== undefined && (typeof firstName !== "string" || firstName.trim().length === 0)) {
     throw new TypeError("first_name must be a non-empty string when provided");
@@ -255,6 +258,7 @@ export function parseAuthRegisterBodyValue(parsed: unknown): AuthRegisterPayload
   return {
     email,
     password,
+    accepted_terms_version: acceptedTermsVersion,
     ...(firstName === undefined ? {} : { first_name: firstName.trim() }),
   };
 }

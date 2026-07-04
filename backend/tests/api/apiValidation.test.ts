@@ -151,12 +151,18 @@ describe("public auth API contract constants", () => {
         email: "  user@example.com ",
         password: "correct horse battery staple",
         first_name: "  Alice  ",
+        accepted_terms_version: " 1.0 ",
       })
     ).toEqual({
       email: "user@example.com",
       password: "correct horse battery staple",
       first_name: "Alice",
+      accepted_terms_version: "1.0",
     });
+    // Clickwrap: registration without terms acceptance must not parse.
+    expect(() =>
+      parseAuthRegisterBodyValue({ email: "user@example.com", password: "correct horse battery staple" })
+    ).toThrow("accepted_terms_version");
     expect(parseAuthLoginBodyValue({ email: " user@example.com ", password: " secret123 " })).toEqual({
       email: "user@example.com",
       password: "secret123",
