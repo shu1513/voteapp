@@ -113,6 +113,38 @@ export function ElectionPage() {
         </section>
       ) : null}
 
+      {data.results.length > 0 ? (
+        <section className="mt-6 rounded-xl border border-line bg-white p-4">
+          <h2 className="text-lg font-semibold">Results</h2>
+          <p className="mt-1 text-xs text-ink-soft">
+            Unofficial until certified by the relevant election authority.
+          </p>
+          <ul className="mt-2 space-y-3">
+            {data.results.map((result) => (
+              <li key={result.id} className="text-sm">
+                <p className="text-ink">
+                  <span className="font-medium capitalize">{result.outcome.replaceAll("_", " ")}</span>
+                  {result.result_status ? (
+                    <span className="text-ink-soft"> · {result.result_status.replaceAll("_", " ")}</span>
+                  ) : null}
+                </p>
+                {result.winners.length > 0 ? (
+                  <p className="text-ink-soft">
+                    Winner{result.winners.length === 1 ? "" : "s"}:{" "}
+                    {result.winners
+                      .map((winner) =>
+                        winner.party ? `${winner.candidate_name ?? "Unknown"} (${winner.party})` : winner.candidate_name ?? "Unknown"
+                      )
+                      .join(", ")}
+                  </p>
+                ) : null}
+                <SourceLine url={result.source_url} researchedDate={result.retrieved_at.slice(0, 10)} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       {data.sources.length > 0 ? (
         <section className="mt-6">
           <h2 className="text-sm font-semibold text-ink">Election sources</h2>

@@ -17,6 +17,21 @@ export type AddressResolution = {
   districts: ResolvedDistrict[];
 };
 
+export type AddressSuggestion = {
+  place_id: string;
+  description: string;
+  main_text: string;
+  secondary_text: string;
+};
+
+export type AddressAutocompleteResponse = {
+  suggestions: AddressSuggestion[];
+};
+
+export type AddressRetrieveResponse = {
+  address: string;
+};
+
 export type ResearchAreaSummary = {
   id: string;
   slug: string;
@@ -127,9 +142,30 @@ export type BallotMeasure = {
   research_area_tags: { research_area_id: string; slug: string; name: string; stance: string | null }[];
 };
 
-export type ElectionResult = {
-  [key: string]: unknown;
+export type ElectionResultWinner = {
+  candidate_id?: string;
+  candidate_name?: string;
+  party?: string;
 };
+
+export type ElectionResult = {
+  id: string;
+  pass_type: string;
+  result_status: string;
+  outcome: string;
+  winners: ElectionResultWinner[];
+  source_url: string;
+  retrieved_at: string;
+};
+
+export const BALLOT_SORTS = [
+  { value: "vote_power", label: "Vote power" },
+  { value: "soonest", label: "Soonest first" },
+  { value: "district_size", label: "Biggest districts" },
+  { value: "district_size_smallest", label: "Smallest districts" },
+] as const;
+
+export type BallotSort = (typeof BALLOT_SORTS)[number]["value"];
 
 export type ElectionDetail = {
   id: string;

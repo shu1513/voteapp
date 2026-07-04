@@ -20,6 +20,8 @@ export class ApiError extends Error {
 type RequestOptions = {
   method?: "GET" | "POST" | "PUT" | "DELETE";
   body?: unknown;
+  /** Caller-side cancellation (e.g. superseded autocomplete requests). */
+  signal?: AbortSignal;
 };
 
 export const REQUEST_TIMEOUT_MS = 15_000;
@@ -34,8 +36,10 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     headers: options.body !== undefined ? { "content-type": "application/json" } : undefined,
     body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
     // A stalled request must fail instead of pinning queries in pending
-    // forever.
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    // forever; callers can additionally cancel.
+    signal: options.signal
+      ? AbortSignal.any([AbortSignal.timeout(REQUEST_TIMEOUT_MS), options.signal])
+      : AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
 
   if (!response.ok) {

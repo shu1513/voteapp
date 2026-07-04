@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import type { AddressResolution } from "../api/types";
+import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { formatDistrictType } from "../lib/format";
@@ -67,14 +68,11 @@ export function HomePage() {
           <label htmlFor="address" className="block text-sm font-medium text-ink">
             Home address
           </label>
-          <input
-            id="address"
-            type="text"
+          <AddressAutocomplete
+            inputId="address"
             value={address}
-            onChange={(event) => setAddress(event.target.value)}
+            onChange={setAddress}
             placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
-            autoComplete="street-address"
-            className="mt-1 w-full rounded-md border border-line px-3 py-3 shadow-sm focus:border-ink focus:outline-none"
           />
           <p className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</p>
         </div>
