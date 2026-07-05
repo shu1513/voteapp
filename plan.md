@@ -201,9 +201,15 @@ shrank, while two gaps the original plan missed were found in code.*
 
 ### Phase 6 — parked (do not build yet)
 
-In-app notifications feed, error-report endpoint UI (backend endpoint is a
-planned follow-up), analytics events (needs privacy-policy treatment
+In-app notifications feed, analytics events (needs privacy-policy treatment
 first), and:
+
+- **Error monitoring** — pulled forward pre-launch; superseded the old
+  "error-report endpoint UI" idea (no custom receiver needed). Scoped in
+  [plan-error-monitoring.md](plan-error-monitoring.md): Sentry SDK
+  (GlitchTip-compatible, so the vendor stays swappable), errors only,
+  PII-scrubbed, three phases — backend logging floor, backend SDK,
+  frontend SDK + privacy-policy processor entry.
 
 - **SSR/prerender for SEO + AI crawlers** — the SPA serves near-empty HTML,
   so search engines and AI crawlers (the ones Phase 5's robots.txt/llms.txt
