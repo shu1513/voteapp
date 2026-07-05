@@ -5,7 +5,7 @@ import {
   closestCenter,
   DndContext,
   KeyboardSensor,
-  PointerSensor,
+  MouseSensor,
   TouchSensor,
   useSensor,
   useSensors,
@@ -353,8 +353,10 @@ function ResearchAreasSection() {
   // Mouse: drag starts after 4px of movement, so the remove button stays a
   // plain click. Touch: press-and-hold (200ms) then drag, so the list does
   // not hijack page scrolling. Keyboard sorting stays for accessibility.
+  // MouseSensor + TouchSensor deliberately, not PointerSensor: PointerSensor
+  // also claims touch input, which would bypass the press-and-hold delay.
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(MouseSensor, { activationConstraint: { distance: 4 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
@@ -383,6 +385,13 @@ function ResearchAreasSection() {
   const atCapacity = orderedIds.length >= MAX_RESEARCH_AREA_RANK;
 
   function save(nextIds: string[]) {
+    // Controls disable while a PUT is in flight, but a drag that was already
+    // in progress when the save started can still drop; committing it would
+    // race the full-list replace, so it is discarded like any other locked
+    // edit.
+    if (saving) {
+      return;
+    }
     setPending(nextIds);
     update.mutate(nextIds);
   }
@@ -480,7 +489,10 @@ function SortableAreaRow({
       {...listeners}
       style={{ transform: CSS.Transform.toString(transform), transition }}
       aria-label={`${name}, rank ${index + 1}. Drag to reorder.`}
-      className={`flex cursor-grab touch-none items-center gap-2 rounded-lg border border-line bg-white px-2 py-2 text-sm select-none ${
+      // touch-manipulation, not touch-none: the TouchSensor prevents
+      // scrolling itself once its press-and-hold delay activates, so plain
+      // touches on the list still scroll the page.
+      className={`flex cursor-grab touch-manipulation items-center gap-2 rounded-lg border border-line bg-white px-2 py-2 text-sm select-none ${
         isDragging ? "z-10 shadow-md" : ""
       }`}
     >
