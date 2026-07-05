@@ -68,7 +68,8 @@ import {
   serializeClearedAuthSessionCookie,
 } from "../auth/authCookies.js";
 import { toAddressResolutionDiagnostics, toPublicAddressResolution } from "./addressApiResponses.js";
-import { toEmptyResponse, toErrorResponse, toJsonResponse, type ApiResponse } from "./apiResponses.js";
+import { randomUUID } from "node:crypto";
+import { toEmptyResponse, toErrorResponse, toJsonResponse, type ApiErrorBody, type ApiResponse } from "./apiResponses.js";
 import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
 
 type ApiResponseLocals = {
@@ -1422,7 +1423,7 @@ function mapExpressErrorToResponse(error: unknown): ApiResponse {
 function createApiErrorMiddleware() {
   return (
     error: unknown,
-    _request: Request,
+    request: Request,
     response: Response<unknown, ApiResponseLocals>,
     next: NextFunction
   ): void => {
@@ -1431,7 +1432,29 @@ function createApiErrorMiddleware() {
       return;
     }
 
-    const mapped = mapExpressErrorToResponse(error);
+    let mapped = mapExpressErrorToResponse(error);
+    // 500 only: 502/503 are recognized upstream failures with meaningful
+    // bodies (and would flood the log during an outage), but a mapped 500
+    // means "we don't know what this is".
+    if (mapped.statusCode === 500) {
+      // Unexpected failure: without this line the error vanishes — the
+      // response body is a generic "Internal error" by design. The id ties
+      // a user report ("I saw an error") to this log entry. Method + path
+      // only; request bodies can carry addresses and credentials.
+      const requestId = randomUUID();
+      // Stack only (message + frames), not the whole object: wrapped errors
+      // can carry enumerable custom properties (payloads, upstream request
+      // context) that do not belong in logs.
+      console.error(
+        `[api] unexpected error request_id=${requestId} ${request.method} ${request.path}`,
+        error instanceof Error ? (error.stack ?? error.message) : String(error)
+      );
+      const body = mapped.body as ApiErrorBody;
+      mapped = {
+        ...mapped,
+        body: { error: { ...body.error, request_id: requestId } } satisfies ApiErrorBody,
+      };
+    }
     sendApiResponse(response, {
       ...mapped,
       headers: {

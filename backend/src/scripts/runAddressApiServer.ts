@@ -555,6 +555,24 @@ async function main(): Promise<void> {
 
   process.on("SIGINT", handleShutdown);
   process.on("SIGTERM", handleShutdown);
+
+  // Replace Node's default crash handlers with labeled equivalents so the
+  // process manager's log shows WHY the server died. Same exit-and-restart
+  // semantics as the defaults — state after an uncaught error is unknown,
+  // so limping on is worse than restarting.
+  // Stack string only, matching the API error middleware: raw objects can
+  // print enumerable custom properties (request context, payloads) into
+  // the process log.
+  const describeCrash = (cause: unknown): string =>
+    cause instanceof Error ? (cause.stack ?? cause.message) : String(cause);
+  process.on("unhandledRejection", (reason) => {
+    console.error("address API server unhandled rejection:", describeCrash(reason));
+    process.exit(1);
+  });
+  process.on("uncaughtException", (error) => {
+    console.error("address API server uncaught exception:", describeCrash(error));
+    process.exit(1);
+  });
 }
 
 main().catch((error) => {

@@ -16,6 +16,9 @@ export type ApiErrorBody = {
   error: {
     code: ApiErrorCode;
     message: string;
+    /** Present on unexpected (5xx) failures: correlates the response with
+     * the server-side error log line for that request. */
+    request_id?: string;
   };
 };
 

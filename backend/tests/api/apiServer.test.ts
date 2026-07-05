@@ -534,23 +534,58 @@ describe("createApiApp", () => {
     });
   });
 
-  it("maps unexpected route errors to internal_error", async () => {
-    const resolveAddress = vi.fn().mockRejectedValue(new Error("database went sideways"));
+  it("maps unexpected route errors to internal_error with a logged request id", async () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const resolveAddress = vi.fn().mockRejectedValue(new Error("database went sideways"));
 
-    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
-      method: "POST",
-      path: "/api/address/resolve",
-      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
-      headers: { "content-type": "application/json" },
-    });
+      const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+        method: "POST",
+        path: "/api/address/resolve",
+        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+        headers: { "content-type": "application/json" },
+      });
 
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toEqual({
-      error: {
-        code: "internal_error",
-        message: "Internal error",
-      },
-    });
+      expect(response.statusCode).toBe(500);
+      const body = response.body as { error: { code: string; message: string; request_id?: string } };
+      expect(body.error.code).toBe("internal_error");
+      expect(body.error.message).toBe("Internal error");
+      // The response id must match the server-side log line so a user
+      // report can be correlated with the captured error.
+      expect(body.error.request_id).toMatch(/^[0-9a-f-]{36}$/);
+      expect(consoleError).toHaveBeenCalledTimes(1);
+      const [logLine, loggedError] = consoleError.mock.calls[0]!;
+      expect(logLine).toContain(`request_id=${body.error.request_id}`);
+      expect(logLine).toContain("POST /api/address/resolve");
+      expect(logLine).not.toContain("Harlan Ave");
+      // Stack string, not the error object: custom enumerable properties on
+      // wrapped errors must not reach the log.
+      expect(loggedError).toEqual(expect.stringContaining("database went sideways"));
+    } finally {
+      consoleError.mockRestore();
+    }
+  });
+
+  it("does not log or tag expected mapped errors", async () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const resolveAddress = vi
+        .fn()
+        .mockRejectedValue(new CensusAddressGeocoderError("timeout", "Census geocoder timed out"));
+
+      const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+        method: "POST",
+        path: "/api/address/resolve",
+        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+        headers: { "content-type": "application/json" },
+      });
+
+      expect(response.statusCode).toBe(503);
+      expect((response.body as { error: { request_id?: string } }).error.request_id).toBeUndefined();
+      expect(consoleError).not.toHaveBeenCalled();
+    } finally {
+      consoleError.mockRestore();
+    }
   });
 
   it("keeps known-path wrong methods as 405 responses", async () => {
