@@ -335,10 +335,18 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
   }
 
   if (hasPhrase(titleMatcherKey, "lieutenant governor")) {
+    // A joint ticket ("Governor and Lieutenant Governor") is the governor's
+    // race — the lieutenant governor runs on the governor's ticket — so the
+    // bias flips there. Without the flip, the penalty below handed joint
+    // tickets to the Lieutenant Governor office.
+    const isJointGovernorTicket = hasPhrase(
+      titleMatcherKey.replace(/\blieutenant governor\b/g, " ").replace(/\s+/g, " ").trim(),
+      "governor"
+    );
     if (hasPhrase(office.canonicalMatcherKey, "lieutenant governor")) {
-      score += 0.2;
+      score += isJointGovernorTicket ? -0.35 : 0.2;
     } else if (hasPhrase(office.canonicalMatcherKey, "governor")) {
-      score -= 0.35;
+      score += isJointGovernorTicket ? 0.2 : -0.35;
     }
   }
 
