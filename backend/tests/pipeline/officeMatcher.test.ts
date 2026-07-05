@@ -135,6 +135,37 @@ describe("OfficeMatcher", () => {
     expect(result.shouldPersistAlias).toBe(true);
   });
 
+  it("routes a joint governor ticket to Governor when contest family is missing", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        statewide: [
+          {
+            office_id: "office-lt-governor",
+            normalized_alias: normalizeElectionTitleKey("Governor and Lieutenant Governor"),
+          },
+        ],
+      },
+      officesByScope: {
+        statewide: [
+          { id: "office-governor", canonical_name: "Governor" },
+          { id: "office-lt-governor", canonical_name: "Lieutenant Governor" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "statewide",
+      districtName: "Ohio",
+      state: "OH",
+      officialBallotTitle: "Governor and Lieutenant Governor",
+    });
+
+    expect(result.officeId).toBe("office-governor");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
   it("does not route a standalone lieutenant governor title through the joint-ticket fallback", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: {

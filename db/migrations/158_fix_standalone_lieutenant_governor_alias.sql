@@ -23,12 +23,16 @@ WITH lieutenant_governor_office AS (
     AND canonical_name = 'Lieutenant Governor'
   LIMIT 1
 )
-UPDATE public.elections
+UPDATE public.elections e
 SET office_id = (SELECT id FROM lieutenant_governor_office),
     updated_at = now()
-WHERE race_type = 'office'
-  AND official_ballot_title_key = 'lieutenant governor'
-  AND office_id IN (
+FROM public.districts d
+WHERE e.race_type = 'office'
+  AND d.id = e.district_id
+  AND d.district_type = 'statewide'
+  AND e.discovery_contest_family = 'non_judicial_office'
+  AND e.official_ballot_title_key = 'lieutenant governor'
+  AND e.office_id IN (
     SELECT id
     FROM public.offices
     WHERE scope = 'statewide'

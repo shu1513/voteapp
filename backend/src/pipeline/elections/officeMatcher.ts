@@ -468,7 +468,8 @@ export class OfficeMatcher {
     const titleMatcherKey = toMatcherKeyFromBallotTitle(input);
     if (
       input.scope === "statewide" &&
-      input.discoveryContestFamily === "non_judicial_office" &&
+      (input.discoveryContestFamily == null ||
+        input.discoveryContestFamily === "non_judicial_office") &&
       isJointGovernorTicketTitle(titleMatcherKey)
     ) {
       const match = toSingleScopeOfficeMatch(
