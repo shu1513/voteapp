@@ -8,8 +8,12 @@ test("saved research areas drive the ballot default sort and the rank editor", a
   const districtId = await findDistrictWithElections();
   test.skip(districtId === null, "local database has no upcoming elections");
 
-  await registerVerifiedUser(page.request);
+  // Inside the try: registerVerifiedUser can fail after creating the account
+  // (verify/login step), and cleanup should still be attempted. Best-effort —
+  // without a session deleteAccount cannot succeed and must not mask the
+  // original failure.
   try {
+    await registerVerifiedUser(page.request);
     const initialize = await page.request.post("/api/me/districts/initialize", {
       data: { district_ids: [districtId] },
     });
@@ -26,7 +30,6 @@ test("saved research areas drive the ballot default sort and the rank editor", a
     await page.getByRole("button", { name: secondArea.name, exact: true }).click();
     await expect(page.getByLabel(`${secondArea.name}, rank 2. Drag to reorder.`)).toBeVisible();
 
-    // Keyboard reorder (dnd-kit KeyboardSensor): pick up row 1, move down, drop.
     // Reorder by mouse drag (the primary drag surface). MouseSensor arms
     // after 4px of movement, so move in steps from row 1's center to below
     // row 2's center before releasing.
@@ -49,6 +52,8 @@ test("saved research areas drive the ballot default sort and the rank editor", a
       page.getByText("ordered by how much each race affects the issues you care about", { exact: false })
     ).toBeVisible();
   } finally {
-    await deleteAccount(page.request);
+    await deleteAccount(page.request).catch((error) => {
+      console.warn("account cleanup skipped:", error);
+    });
   }
 });

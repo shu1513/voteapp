@@ -1,9 +1,11 @@
 import { Link, useRouteError } from "react-router-dom";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // errorElement for the router root: a render error anywhere in the tree
 // otherwise unmounts the app into a blank page. Rendered outside <App/>, so
 // it carries its own minimal shell.
 export function RouteError() {
+  useDocumentTitle("Something went wrong");
   const error = useRouteError();
   if (import.meta.env.DEV) {
     console.error(error);
