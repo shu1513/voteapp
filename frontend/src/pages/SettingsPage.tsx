@@ -269,6 +269,11 @@ function EmailPreferencesSection() {
       label: "Remind me the day before each election",
       description: "One email covering everything on your ballot that day.",
     },
+    {
+      key: "email_issue_updates",
+      label: "Updates about the issues you saved",
+      description: "Occasional emails when there is something worth knowing about your issues.",
+    },
   ];
 
   return (

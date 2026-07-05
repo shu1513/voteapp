@@ -239,6 +239,7 @@ export type EmailPreferences = {
   email_digest: boolean;
   email_election_reminders: boolean;
   email_new_election_alerts: boolean;
+  email_issue_updates: boolean;
 };
 
 export type ResearchAreaCatalog = {

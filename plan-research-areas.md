@@ -94,21 +94,25 @@ Settings "Issues you care about" becomes a two-part control:
   accessible) with up/down buttons as the no-drag fallback. Order = rank
   1..N; saved through the existing PUT (already validates ranks).
 
-## Phase E — backend + frontend: issue email (design gate)
+## Phase E — backend: operator-sent issue broadcasts
 
-"Email users materials about their interested areas" needs a product
-decision before code. Options, cheapest first:
-1. Extend the existing candidate-follow digest with an "on your issues"
-   section: new stance-bearing records in the user's areas from candidates
-   on the user's ballot.
-2. A separate weekly "your issues" email (digest-pattern sibling: sender +
-   dedupe + scheduler + unsubscribe scope, like election reminders).
-3. Curated/editorial content per area — out of scope until such content
-   exists anywhere in the system.
+Product decision (2026-07-04): not an automated digest — the operator
+composes a message (e.g. an environmental nonprofit worth knowing) and sends
+it to users whose saved areas match. Built as:
 
-Recommendation: option 1 first (reuses delivery, dedupe, and unsubscribe
-infra; no new cadence), option 2 only if engagement warrants its own email.
-Decide at phase start; do not build ahead.
+- `email_issue_updates` opt-in on users + `issue_updates` unsubscribe scope
+  (one-click headers), fourth toggle in settings.
+- `issue_broadcast_sends (broadcast_id, user_id)` dedupe log: re-running the
+  same operator-chosen broadcast id resumes instead of double-sending;
+  deliberately never pruned (re-arming the dedupe re-emails).
+- `sendIssueBroadcast()` pipeline function (recipients = verified + opted-in
+  + saved-area intersection, batch loop, at-least-once send-then-mark,
+  advisory lock 74_310_149) with a thin CLI:
+  `npm run notifications:broadcast -- --broadcast-id <slug> --areas <slugs>
+  --subject <s> --body-file <f> [--live]`. Dry run by default.
+- Future: an admin page calls the same pipeline function through an API
+  route. Prerequisite parked with it: an admin role/auth story (users have
+  no role column today).
 
 ## Order and rationale
 

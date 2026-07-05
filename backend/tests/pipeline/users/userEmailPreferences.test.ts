@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   disableUserEmailDigest,
   disableUserEmailElectionReminders,
+  disableUserEmailIssueUpdates,
   disableUserEmailNewElectionAlerts,
   getUserEmailPreferences,
   setUserEmailPreferences,
@@ -10,7 +11,12 @@ import {
 } from "../../../src/pipeline/users/userEmailPreferences.js";
 
 const USER_ID = "11111111-1111-4111-8111-111111111111";
-const PREFS = { email_digest: true, email_election_reminders: false, email_new_election_alerts: true };
+const PREFS = {
+  email_digest: true,
+  email_election_reminders: false,
+  email_new_election_alerts: true,
+  email_issue_updates: true,
+};
 
 describe("userEmailPreferences", () => {
   it("getUserEmailPreferences returns the stored booleans", async () => {
@@ -38,12 +44,17 @@ describe("userEmailPreferences", () => {
     expect(query).not.toHaveBeenCalled();
   });
 
-  it("setUserEmailPreferences updates all three flags and returns the row", async () => {
-    const updated = { email_digest: false, email_election_reminders: true, email_new_election_alerts: false };
+  it("setUserEmailPreferences updates all four flags and returns the row", async () => {
+    const updated = {
+      email_digest: false,
+      email_election_reminders: true,
+      email_new_election_alerts: false,
+      email_issue_updates: false,
+    };
     const query = vi.fn().mockResolvedValue({ rows: [updated], rowCount: 1 });
 
     await expect(setUserEmailPreferences({ query } as never, USER_ID, updated)).resolves.toEqual(updated);
-    expect(query.mock.calls[0][1]).toEqual([USER_ID, false, true, false]);
+    expect(query.mock.calls[0][1]).toEqual([USER_ID, false, true, false, false]);
   });
 
   it("disableUserEmailDigest flips only the digest flag and is idempotent-friendly", async () => {
@@ -53,6 +64,25 @@ describe("userEmailPreferences", () => {
     const sql = String(query.mock.calls[0][0]);
     expect(sql).toContain("email_digest = false");
     expect(sql).not.toContain("email_election_reminders");
+  });
+
+  it("disableUserEmailIssueUpdates flips only the issue-updates flag", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 1 });
+
+    await expect(disableUserEmailIssueUpdates({ query } as never, USER_ID)).resolves.toBeUndefined();
+    const sql = String(query.mock.calls[0][0]);
+    expect(sql).toContain("email_issue_updates = false");
+    expect(sql).not.toContain("email_digest");
+    expect(sql).not.toContain("email_election_reminders");
+    expect(sql).not.toContain("email_new_election_alerts");
+  });
+
+  it("disableUserEmailIssueUpdates throws user_not_found when no row matched", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 0 });
+
+    await expect(disableUserEmailIssueUpdates({ query } as never, USER_ID)).rejects.toMatchObject({
+      code: "user_not_found",
+    });
   });
 
   it("disableUserEmailElectionReminders flips only the reminders flag", async () => {
