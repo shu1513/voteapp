@@ -4,6 +4,7 @@ import { apiRequest } from "../api/client";
 import { BALLOT_SORT_DESCRIPTIONS, PUBLIC_BALLOT_SORTS, type BallotSort, type BallotSummary } from "../api/types";
 import { AiBanner } from "../components/AiBanner";
 import { ElectionCard } from "../components/ElectionCard";
+import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 
 // Public page: only the sorts the anonymous endpoint can honor. A my_areas
@@ -12,6 +13,9 @@ import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 const SORT_VALUES: readonly string[] = PUBLIC_BALLOT_SORTS.map((option) => option.value);
 
 export function BallotPage() {
+  // Signed-in verified visitors get their saved areas highlighted even on
+  // the public ballot; anonymous visitors get an empty set (no highlights).
+  const { savedAreaIds } = useMyResearchAreas();
   const [searchParams, setSearchParams] = useSearchParams();
   const districtIds = (searchParams.get("d") ?? "")
     .split(",")
@@ -115,7 +119,7 @@ export function BallotPage() {
           ) : (
             <div className="mt-4 space-y-3">
               {ballot.data.elections.map((election) => (
-                <ElectionCard key={election.id} election={election} />
+                <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
               ))}
             </div>
           )}

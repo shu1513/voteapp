@@ -11,6 +11,7 @@ import {
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { AiBanner } from "../components/AiBanner";
 import { ElectionCard } from "../components/ElectionCard";
+import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "../lib/useMe";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingDistricts";
@@ -164,6 +165,7 @@ export function SavedBallotPage() {
     staleTime: 60_000,
     enabled: me?.email_verified === true,
   });
+  const { savedAreaIds } = useMyResearchAreas();
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
   );
@@ -321,7 +323,7 @@ export function SavedBallotPage() {
       ) : (
         <div className="mt-4 space-y-3">
           {data.elections.map((election) => (
-            <ElectionCard key={election.id} election={election} />
+            <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
           ))}
         </div>
       )}

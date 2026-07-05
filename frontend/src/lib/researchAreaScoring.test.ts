@@ -5,6 +5,7 @@ import {
   aggregateRecordAreaStances,
   buildResearchAreaWeights,
   researchAreaWeightForRank,
+  scoreStanceDirection,
   UNRANKED_RESEARCH_AREA_RANK,
 } from "./researchAreaScoring";
 
@@ -93,5 +94,31 @@ describe("aggregateRecordAreaStances", () => {
   it("returns an empty list for candidates with no stance-bearing tags", () => {
     expect(aggregateRecordAreaStances([])).toEqual([]);
     expect(aggregateRecordAreaStances([record("r1", [{ area: AREA_ETHICS, slug: "ethics", stance: null }])])).toEqual([]);
+  });
+});
+
+describe("scoreStanceDirection", () => {
+  const weights = buildResearchAreaWeights([
+    { research_area_id: AREA_HOUSING, slug: "housing", name: "Housing", description: null, rank: 1 }, // weight 7
+    { research_area_id: AREA_SAFETY, slug: "safety", name: "Safety", description: null, rank: 3 }, // weight 5
+  ]);
+
+  const stances = aggregateRecordAreaStances([
+    record("r1", [{ area: AREA_HOUSING, slug: "housing", stance: "for" }]),
+    record("r2", [{ area: AREA_HOUSING, slug: "housing", stance: "for" }]),
+    record("r3", [{ area: AREA_SAFETY, slug: "safety", stance: "against" }]),
+    record("r4", [{ area: AREA_ETHICS, slug: "ethics", stance: "for" }]), // not saved
+  ]);
+
+  it("sums saved-area weights per direction with record counts as volume", () => {
+    expect(scoreStanceDirection(stances, weights, "for")).toEqual({ score: 7, recordCount: 2 });
+    expect(scoreStanceDirection(stances, weights, "against")).toEqual({ score: 5, recordCount: 1 });
+  });
+
+  it("ignores unsaved areas and scores zero with no matches", () => {
+    const unsavedOnly = aggregateRecordAreaStances([
+      record("r1", [{ area: AREA_ETHICS, slug: "ethics", stance: "for" }]),
+    ]);
+    expect(scoreStanceDirection(unsavedOnly, weights, "for")).toEqual({ score: 0, recordCount: 0 });
   });
 });

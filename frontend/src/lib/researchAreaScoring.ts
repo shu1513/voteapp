@@ -79,3 +79,38 @@ export function aggregateRecordAreaStances(records: readonly CandidateRecord[]):
   }
   return [...byArea.values()].sort((a, b) => (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0));
 }
+
+export type StanceDirectionScore = {
+  /** Sum of saved-area weights where the candidate has records in the chosen direction. */
+  score: number;
+  /** Total matching records in that direction; tiebreak under equal weights. */
+  recordCount: number;
+};
+
+/**
+ * Scores a candidate for the "for/against my issues first" sorts: unique
+ * matched areas (weighted) dominate, record volume breaks ties. Candidates
+ * with no saved-area records in the chosen direction score 0 and keep their
+ * ballot order.
+ */
+export function scoreStanceDirection(
+  stances: readonly RecordAreaStance[],
+  weights: Map<string, ResearchAreaWeight>,
+  direction: "for" | "against"
+): StanceDirectionScore {
+  let score = 0;
+  let recordCount = 0;
+  for (const stance of stances) {
+    const weight = weights.get(stance.research_area_id);
+    if (!weight) {
+      continue;
+    }
+    const count = direction === "for" ? stance.for_count : stance.against_count;
+    if (count === 0) {
+      continue;
+    }
+    score += weight.weight;
+    recordCount += count;
+  }
+  return { score, recordCount };
+}
