@@ -16,9 +16,10 @@ how areas are researched or stored.
 | User prefs with rank | `user_research_area_preferences.rank` 1–7, unique per user | done end-to-end: PUT validates ranks; only the UI never sets them |
 | Sort machinery | `ballotElectionOrdering.ts` decorator (`vote_power`, `soonest`, `district_size[_smallest]`, `followed_first`) + per-user saved sort in `user_ballot_preferences` | done; designed for adding modes |
 
-Consequences: "highlight my areas on each race" and "sort records by my
-areas" are pure frontend; the rank editor is pure frontend; only the ballot
-sort mode, candidate stance aggregates, and email need backend work.
+Consequences: "highlight my areas on each race", "sort records by my areas",
+per-candidate stance chips, and the rank editor are all pure frontend — the
+election-detail payload already carries candidates' records with stance tags
+(see Phase B). Only the ballot sort mode and email need backend work.
 
 ## Phase A — backend: `my_areas` ballot sort + measure areas in summaries
 
@@ -49,23 +50,23 @@ sort mode, candidate stance aggregates, and email need backend work.
    `user_ballot_preferences`) always wins.
 5. Tests mirror the existing ordering decorator tests.
 
-## Phase B — backend: per-candidate stance aggregates in election detail
+## Phase B — frontend: declare the stance data + shared scoring lib
 
-Extend election-detail `candidates[]` with:
+Implementation discovery: the election-detail endpoint ALREADY ships every
+candidate's full `records[]`, each with `research_area_tags` (area + stance),
+so the planned backend aggregate would duplicate data already in the same
+payload. No backend work; the endpoint stays user-independent as designed.
 
-```text
-record_area_stances: [
-  { research_area_id, slug, name, for_count, against_count }
-]
-```
+What phase B actually is:
 
-- Aggregated from `candidate_record_area_tags` where `stance IS NOT NULL`
-  (stance-bearing only, per the product intent; general/NULL tags excluded).
-- One grouped query per election detail request, not per candidate.
-- Deliberately user-independent: the detail endpoint stays cacheable across
-  users and never needs a `userId`. Candidate sorting by "my areas" happens
-  client-side (candidate lists are small; the aggregates + the user's prefs
-  are both on the client), using the mirrored weight formula from Phase A.
+- Declare `records: CandidateRecord[]` on the frontend `ElectionCandidate`
+  type (it was hidden behind the `[key: string]: unknown` index signature).
+- `frontend/src/lib/researchAreaScoring.ts` — the client mirror of
+  `userResearchAreaScoring.ts` promised in Phase A: the weight formula plus
+  `aggregateRecordAreaStances(records)` producing
+  `{ research_area_id, slug, name, for_count, against_count }` per area from
+  stance-bearing tags only (general/NULL tags excluded, per product intent).
+- Unit tests for both; no UI yet — Phase C consumes this.
 
 ## Phase C — frontend: consume it all
 
@@ -111,7 +112,8 @@ Decide at phase start; do not build ahead.
 
 ## Order and rationale
 
-A → B are backend (independently mergeable, both prerequisite-free), C
-consumes both, D is standalone frontend (can land any time), E is gated on a
-product decision. Per-PR: one phase, one branch, live E2E before push, same
-as the reminder feature.
+A is the only backend phase (the `my_areas` ballot sort). B turned out to be
+frontend-only (the stance data already ships from the detail endpoint) and
+declares the types + client scoring lib that C consumes. D is standalone
+frontend (can land any time); E is gated on a product decision. Per-PR: one
+phase, one branch, live E2E before push, same as the reminder feature.

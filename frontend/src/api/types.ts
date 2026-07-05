@@ -124,6 +124,8 @@ export type ElectionCandidate = {
   status: string;
   summary: string | null;
   finance_summary: FinanceSummary | null;
+  /** Full record history with research-area stance tags; drives the stance chips. */
+  records: CandidateRecord[];
   [key: string]: unknown;
 };
 
