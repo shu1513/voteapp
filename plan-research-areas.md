@@ -53,7 +53,7 @@ sort mode, candidate stance aggregates, and email need backend work.
 
 Extend election-detail `candidates[]` with:
 
-```
+```text
 record_area_stances: [
   { research_area_id, slug, name, for_count, against_count }
 ]

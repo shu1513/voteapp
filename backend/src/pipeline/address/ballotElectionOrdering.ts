@@ -88,11 +88,18 @@ export async function applyBallotElectionOrdering(
   result: BallotSummaryResult,
   options: BallotSummaryOptions = {}
 ): Promise<OrderedBallotSummaryResult> {
-  const followedByElection = await loadFollowedCandidatesByElection(
-    db,
-    options.userId ?? null,
-    result.elections.map((election) => election.id)
-  );
+  // Independent queries keyed only on the user: load them in parallel so the
+  // my_areas sort does not add a sequential round trip to the ballot path.
+  const [followedByElection, weights] = await Promise.all([
+    loadFollowedCandidatesByElection(
+      db,
+      options.userId ?? null,
+      result.elections.map((election) => election.id)
+    ),
+    options.sort === "my_areas"
+      ? loadUserResearchAreaWeights(db, options.userId ?? null)
+      : Promise.resolve(null),
+  ]);
 
   const elections: OrderedBallotElectionSummary[] = result.elections.map((election) => ({
     ...election,
@@ -102,8 +109,7 @@ export async function applyBallotElectionOrdering(
   let sort = options.sort ?? "vote_power";
   let areaScoresByElection: Map<string, ResearchAreaMatchScore> | null = null;
   if (sort === "my_areas") {
-    const weights = await loadUserResearchAreaWeights(db, options.userId ?? null);
-    if (weights.size === 0) {
+    if (!weights || weights.size === 0) {
       // Anonymous caller or no saved areas: nothing to match against, so the
       // sort degrades to the default rather than erroring.
       sort = "vote_power";

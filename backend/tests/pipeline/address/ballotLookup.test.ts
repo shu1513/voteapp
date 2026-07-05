@@ -310,7 +310,6 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
-      .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -419,10 +418,10 @@ describe("lookupBallotSummariesByDistrictIds", () => {
         factors: ["missing_representation_data", "medium_decisiveness"],
       },
     });
-    expect(query).toHaveBeenCalledTimes(8);
+    expect(query).toHaveBeenCalledTimes(7);
     expect(fetch).not.toHaveBeenCalled();
-    expect(query.mock.calls[7]?.[0]).toContain("public.historical_contest_margins");
-    expect(JSON.parse(query.mock.calls[7]?.[1]?.[0] as string)).toEqual([
+    expect(query.mock.calls[6]?.[0]).toContain("public.historical_contest_margins");
+    expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual([
       {
         lookup_id: houseElectionId,
         min_election_year: 2022,
@@ -481,7 +480,6 @@ describe("lookupBallotSummariesByDistrictIds", () => {
         ],
       })
       .mockResolvedValueOnce({ rows: [{ election_id: sheriffElectionId, candidate_count: 2 }] })
-      .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
@@ -589,8 +587,8 @@ describe("lookupBallotSummariesByDistrictIds", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(8);
-    expect(JSON.parse(query.mock.calls[7]?.[1]?.[0] as string)).toEqual([
+    expect(query).toHaveBeenCalledTimes(7);
+    expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual([
       {
         lookup_id: sheriffElectionId,
         min_election_year: null,
@@ -682,7 +680,6 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
-      .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({
         rows: counties.map((county, index) => ({
           id: `77777777-7777-4777-8777-7777777778${index}1`,
@@ -738,7 +735,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
         ])
       );
     }
-    expect(JSON.parse(query.mock.calls[7]?.[1]?.[0] as string)).toEqual(
+    expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual(
       counties.map((county) => ({
         lookup_id: county.electionId,
         min_election_year: null,
@@ -799,7 +796,6 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       .mockResolvedValueOnce({ rows: [{ election_id: commissionerElectionId, candidate_count: 2 }] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
-      .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupBallotSummariesByDistrictIds({ query }, [countyDistrictId]);
@@ -812,7 +808,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       },
       historical_competitiveness: null,
     });
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(6);
     expect(query.mock.calls.map((call) => call[0]).join("\n")).not.toContain("historical_contest_margins");
   });
 
@@ -863,7 +859,6 @@ describe("lookupBallotSummariesByDistrictIds", () => {
         ],
       })
       .mockResolvedValueOnce({ rows: [{ election_id: attorneyGeneralElectionId, candidate_count: 1 }] })
-      .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
@@ -944,9 +939,9 @@ describe("lookupBallotSummariesByDistrictIds", () => {
         factors: ["high_representation", "uncontested_race"],
       },
     });
-    expect(query).toHaveBeenCalledTimes(8);
+    expect(query).toHaveBeenCalledTimes(7);
     expect(fetch).not.toHaveBeenCalled();
-    expect(JSON.parse(query.mock.calls[7]?.[1]?.[0] as string)).toEqual([
+    expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual([
       {
         lookup_id: attorneyGeneralElectionId,
         min_election_year: null,

@@ -11739,24 +11739,30 @@ export async function lookupBallotSummariesByDistrictIds(
   // Ballot-measure elections have no office, so without this their
   // research_areas would always be empty and area-based personalization
   // (the my_areas sort, saved-area highlighting) could never match them.
-  const measureResearchAreaResult = await db.query<MeasureResearchAreaSummaryRow>(
-    `
-      SELECT
-        bm.election_id,
-        area.id AS research_area_id,
-        area.slug,
-        area.name,
-        area.description
-      FROM public.ballot_measures AS bm
-      JOIN public.ballot_measure_research_area_tags AS tag
-        ON tag.ballot_measure_id = bm.id
-      JOIN public.research_areas AS area
-        ON area.id = tag.research_area_id
-      WHERE bm.election_id = ANY($1::uuid[])
-      ORDER BY bm.election_id, area.slug
-    `,
-    [electionIds]
-  );
+  // Skipped entirely when the ballot has no measures, mirroring the office
+  // research-area guard above.
+  const measureElectionIds = [...new Set(ballotMeasureResult.rows.map((row) => row.election_id))];
+  const measureResearchAreaResult =
+    measureElectionIds.length === 0
+      ? { rows: [] as MeasureResearchAreaSummaryRow[] }
+      : await db.query<MeasureResearchAreaSummaryRow>(
+          `
+            SELECT
+              bm.election_id,
+              area.id AS research_area_id,
+              area.slug,
+              area.name,
+              area.description
+            FROM public.ballot_measures AS bm
+            JOIN public.ballot_measure_research_area_tags AS tag
+              ON tag.ballot_measure_id = bm.id
+            JOIN public.research_areas AS area
+              ON area.id = tag.research_area_id
+            WHERE bm.election_id = ANY($1::uuid[])
+            ORDER BY bm.election_id, area.slug
+          `,
+          [measureElectionIds]
+        );
 
   const resultSummaryResult = await db.query<ElectionResultSummaryRow>(
     `
