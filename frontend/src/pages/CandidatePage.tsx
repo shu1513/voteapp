@@ -14,40 +14,48 @@ import { UNRANKED_RESEARCH_AREA_RANK } from "../lib/researchAreaScoring";
 
 type RecordView = "by_issue" | "my_issues" | "newest";
 
+type RecordGroup = {
+  /** null for the untagged "Other records" pseudo-group. */
+  areaId: string | null;
+  areaName: string;
+  records: CandidateRecord[];
+};
+
 // Records grouped by research area (a record with several tags appears under
-// each; untagged records fall into "Other records").
-function groupRecords(records: CandidateRecord[]): Array<{ areaName: string; records: CandidateRecord[] }> {
-  const groups = new Map<string, CandidateRecord[]>();
+// each; untagged records fall into "Other records"). Groups key on the
+// stable research_area_id — display names are presentation, not identity.
+function groupRecords(records: CandidateRecord[]): RecordGroup[] {
+  const groups = new Map<string | null, RecordGroup>();
   for (const record of records) {
-    const areaNames = record.research_area_tags.length
-      ? record.research_area_tags.map((tag) => tag.name)
-      : ["Other records"];
-    for (const areaName of areaNames) {
-      const bucket = groups.get(areaName) ?? [];
-      bucket.push(record);
-      groups.set(areaName, bucket);
+    const areas = record.research_area_tags.length
+      ? record.research_area_tags.map((tag) => ({ areaId: tag.research_area_id, areaName: tag.name }))
+      : [{ areaId: null, areaName: "Other records" }];
+    for (const area of areas) {
+      const group = groups.get(area.areaId) ?? { ...area, records: [] };
+      group.records.push(record);
+      groups.set(area.areaId, group);
     }
   }
-  return [...groups.entries()]
-    .sort(([a], [b]) => (a === "Other records" ? 1 : b === "Other records" ? -1 : a.localeCompare(b)))
-    .map(([areaName, grouped]) => ({ areaName, records: grouped }));
+  return [...groups.values()].sort((a, b) =>
+    a.areaId === null ? 1 : b.areaId === null ? -1 : a.areaName.localeCompare(b.areaName)
+  );
 }
 
 // "My issues first": saved-area groups move to the front ordered by the
 // user's rank (unranked saved areas after ranked ones), everything else
 // keeps the alphabetical order groupRecords produced.
 function orderGroupsByPreference(
-  groups: Array<{ areaName: string; records: CandidateRecord[] }>,
+  groups: RecordGroup[],
   preferences: readonly ResearchAreaPreference[]
-): Array<{ areaName: string; records: CandidateRecord[] }> {
-  const rankByName = new Map(
-    preferences.map((preference) => [preference.name, preference.rank ?? UNRANKED_RESEARCH_AREA_RANK])
+): RecordGroup[] {
+  const rankByAreaId = new Map(
+    preferences.map((preference) => [preference.research_area_id, preference.rank ?? UNRANKED_RESEARCH_AREA_RANK])
   );
   return groups
     .map((group, index) => ({
       group,
       index,
-      rank: rankByName.get(group.areaName) ?? Number.POSITIVE_INFINITY,
+      rank: (group.areaId !== null ? rankByAreaId.get(group.areaId) : undefined) ?? Number.POSITIVE_INFINITY,
     }))
     .sort((a, b) => a.rank - b.rank || a.index - b.index)
     .map(({ group }) => group);
@@ -141,11 +149,11 @@ export function CandidatePage() {
             </ul>
           ) : (
             recordGroups.map((group) => (
-              <div key={group.areaName} className="mt-4">
+              <div key={group.areaId ?? "other"} className="mt-4">
                 <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">{group.areaName}</h3>
                 <ul className="mt-2 space-y-3">
                   {group.records.map((record) => (
-                    <li key={`${group.areaName}-${record.id}`} className="rounded-xl border border-line bg-white p-3">
+                    <li key={`${group.areaId ?? "other"}-${record.id}`} className="rounded-xl border border-line bg-white p-3">
                       <p className="text-sm text-ink">{record.description}</p>
                       <p className="mt-1 text-xs text-ink-soft">{formatElectionDate(record.event_date)}</p>
                       <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />

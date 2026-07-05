@@ -68,6 +68,22 @@ export function ElectionPage() {
       {measure ? (
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
           <h2 className="text-lg font-semibold">Ballot measure</h2>
+          {measure.research_area_tags.length > 0 ? (
+            <div className="mt-2 flex flex-wrap gap-2 text-xs">
+              {measure.research_area_tags.map((tag) => (
+                <span
+                  key={tag.research_area_id}
+                  className={
+                    savedAreaIds.has(tag.research_area_id)
+                      ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+                      : "rounded bg-surface px-2 py-0.5 text-ink-soft"
+                  }
+                >
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          ) : null}
           {measure.summary ? <p className="mt-2 text-sm text-ink">{measure.summary}</p> : null}
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <div className="rounded border border-green-200 bg-green-50 p-3">
