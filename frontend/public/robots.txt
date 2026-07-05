@@ -1,0 +1,21 @@
+# VoteApp — independent, nonpartisan, AI-assisted election research.
+# All crawlers welcome, including AI assistants; content carries its own
+# sourcing and disclaimer lines.
+
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Update the host if the app ships on a subdomain (e.g. app.impactperdollar.com).
+Sitemap: https://impactperdollar.com/sitemap.xml
