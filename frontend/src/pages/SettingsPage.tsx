@@ -1,10 +1,28 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { apiRequest } from "../api/client";
 import type { EmailPreferences, ResearchAreaCatalog, ResearchAreaPreferencesResult } from "../api/types";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { purgeAccountScopedQueries, useMe, type Me } from "../lib/useMe";
+import { MAX_RESEARCH_AREA_RANK } from "../lib/researchAreaScoring";
 
 // Account settings. Sections mirror the backend's gating: profile, password,
 // email change, sessions, and delete work for unverified users too (fixing a
@@ -300,6 +318,9 @@ function EmailPreferencesSection() {
 
 function ResearchAreasSection() {
   const queryClient = useQueryClient();
+  // Optimistic overlay: the PUT replaces the whole ranked list, so quick
+  // consecutive edits (reorder, add, remove) must merge from the latest view.
+  const [pending, setPending] = useState<string[] | null>(null);
   const catalog = useQuery({
     queryKey: ["research-areas"],
     queryFn: () => apiRequest<ResearchAreaCatalog>("/api/research-areas"),
@@ -311,15 +332,27 @@ function ResearchAreasSection() {
     staleTime: 60_000,
   });
   const update = useMutation({
+    mutationKey: ["put-research-area-preferences"],
+    // List position is the rank: first = rank 1.
     mutationFn: (ids: string[]) =>
       apiRequest<ResearchAreaPreferencesResult>("/api/me/research-area-preferences", {
         method: "PUT",
-        body: { preferences: ids.map((research_area_id) => ({ research_area_id })) },
+        body: { preferences: ids.map((research_area_id, index) => ({ research_area_id, rank: index + 1 })) },
       }),
     onSuccess: (saved) => {
       queryClient.setQueryData(["me", "research-area-preferences"], saved);
     },
+    onSettled: () => {
+      setPending(null);
+    },
   });
+  // Cross-mount in-flight guard, same as the other full-replace preference
+  // writes: controls stay locked until the older PUT settles.
+  const saving = useIsMutating({ mutationKey: ["put-research-area-preferences"] }) > 0;
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
 
   if (catalog.isPending || prefs.isPending) {
     return (
@@ -338,43 +371,89 @@ function ResearchAreasSection() {
     );
   }
 
-  const selected = new Set(prefs.data.preferences.map((preference) => preference.research_area_id));
+  const areaById = new Map(catalog.data.research_areas.map((area) => [area.id, area]));
+  // Server order is rank ASC NULLS LAST, so it is the editor order directly.
+  const orderedIds = pending ?? prefs.data.preferences.map((preference) => preference.research_area_id);
+  const selectedSet = new Set(orderedIds);
+  const atCapacity = orderedIds.length >= MAX_RESEARCH_AREA_RANK;
 
-  function toggle(id: string) {
-    const next = new Set(selected);
-    if (next.has(id)) {
-      next.delete(id);
-    } else {
-      next.add(id);
+  function save(nextIds: string[]) {
+    setPending(nextIds);
+    update.mutate(nextIds);
+  }
+
+  function move(id: string, delta: -1 | 1) {
+    const from = orderedIds.indexOf(id);
+    const to = from + delta;
+    if (from < 0 || to < 0 || to >= orderedIds.length) {
+      return;
     }
-    update.mutate([...next]);
+    save(arrayMove(orderedIds, from, to));
+  }
+
+  function onDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) {
+      return;
+    }
+    const from = orderedIds.indexOf(String(active.id));
+    const to = orderedIds.indexOf(String(over.id));
+    if (from < 0 || to < 0) {
+      return;
+    }
+    save(arrayMove(orderedIds, from, to));
   }
 
   return (
     <Section title="Issues you care about">
       <p className="mt-1 text-sm text-ink-soft">
-        Used to highlight relevant elections and candidate records.
+        Drag (or use the arrows) to rank what matters most — #1 counts the most in your ballot ordering.
       </p>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {catalog.data.research_areas.map((area) => {
-          const isSelected = selected.has(area.id);
-          return (
+      {orderedIds.length > 0 ? (
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+          <SortableContext items={orderedIds} strategy={verticalListSortingStrategy}>
+            <ol className="mt-3 space-y-1.5">
+              {orderedIds.map((id, index) => (
+                <SortableAreaRow
+                  key={id}
+                  id={id}
+                  index={index}
+                  name={areaById.get(id)?.name ?? "Unknown area"}
+                  disabled={saving}
+                  isFirst={index === 0}
+                  isLast={index === orderedIds.length - 1}
+                  onMoveUp={() => move(id, -1)}
+                  onMoveDown={() => move(id, 1)}
+                  onRemove={() => save(orderedIds.filter((other) => other !== id))}
+                />
+              ))}
+            </ol>
+          </SortableContext>
+        </DndContext>
+      ) : (
+        <p className="mt-3 text-sm text-ink-soft">Nothing selected yet — pick up to {MAX_RESEARCH_AREA_RANK} below.</p>
+      )}
+      <p className="mt-4 text-sm font-medium text-ink">
+        Add issues{" "}
+        <span className="font-normal text-ink-soft">
+          ({orderedIds.length}/{MAX_RESEARCH_AREA_RANK})
+        </span>
+      </p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {catalog.data.research_areas
+          .filter((area) => !selectedSet.has(area.id))
+          .map((area) => (
             <button
               key={area.id}
               type="button"
-              disabled={update.isPending}
-              onClick={() => toggle(area.id)}
+              disabled={saving || atCapacity}
+              onClick={() => save([...orderedIds, area.id])}
               title={area.description ?? undefined}
-              className={
-                isSelected
-                  ? "rounded-lg bg-rausch px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-rausch-dark"
-                  : "rounded-lg border border-line bg-white px-3 py-1.5 text-xs text-ink transition hover:border-rausch"
-              }
+              className="rounded-lg border border-line bg-white px-3 py-1.5 text-xs text-ink transition hover:border-rausch disabled:cursor-not-allowed disabled:opacity-50"
             >
               {area.name}
             </button>
-          );
-        })}
+          ))}
       </div>
       {update.isError ? (
         <div className="mt-2">
@@ -382,6 +461,79 @@ function ResearchAreasSection() {
         </div>
       ) : null}
     </Section>
+  );
+}
+
+function SortableAreaRow({
+  id,
+  index,
+  name,
+  disabled,
+  isFirst,
+  isLast,
+  onMoveUp,
+  onMoveDown,
+  onRemove,
+}: {
+  id: string;
+  index: number;
+  name: string;
+  disabled: boolean;
+  isFirst: boolean;
+  isLast: boolean;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  onRemove: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id, disabled });
+  return (
+    <li
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+      className={`flex items-center gap-2 rounded-lg border border-line bg-white px-2 py-1.5 text-sm ${
+        isDragging ? "z-10 shadow-md" : ""
+      }`}
+    >
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        disabled={disabled}
+        aria-label={`Drag to reorder ${name}`}
+        className="cursor-grab touch-none px-1 text-ink-soft hover:text-ink disabled:cursor-not-allowed"
+      >
+        ⠿
+      </button>
+      <span className="w-6 shrink-0 text-center text-xs font-semibold text-rausch-dark">#{index + 1}</span>
+      <span className="flex-1 text-ink">{name}</span>
+      <button
+        type="button"
+        disabled={disabled || isFirst}
+        onClick={onMoveUp}
+        aria-label={`Move ${name} up`}
+        className="px-1 text-ink-soft hover:text-ink disabled:opacity-30"
+      >
+        ↑
+      </button>
+      <button
+        type="button"
+        disabled={disabled || isLast}
+        onClick={onMoveDown}
+        aria-label={`Move ${name} down`}
+        className="px-1 text-ink-soft hover:text-ink disabled:opacity-30"
+      >
+        ↓
+      </button>
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={onRemove}
+        aria-label={`Remove ${name}`}
+        className="px-1 text-ink-soft hover:text-rausch-dark disabled:opacity-30"
+      >
+        ×
+      </button>
+    </li>
   );
 }
 
