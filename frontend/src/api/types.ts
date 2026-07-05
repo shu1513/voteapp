@@ -160,7 +160,11 @@ export type ElectionResult = {
   retrieved_at: string;
 };
 
+// Mirrors BALLOT_SUMMARY_SORTS (backend ballotElectionOrdering.ts). my_areas
+// is also the backend's default for users who saved research areas but never
+// chose a sort, so this list must always be able to represent it.
 export const BALLOT_SORTS = [
+  { value: "my_areas", label: "My issues" },
   { value: "vote_power", label: "Vote power" },
   { value: "soonest", label: "Soonest first" },
   { value: "district_size", label: "Biggest districts" },
@@ -170,6 +174,7 @@ export const BALLOT_SORTS = [
 export type BallotSort = (typeof BALLOT_SORTS)[number]["value"];
 
 export const BALLOT_SORT_DESCRIPTIONS: Record<BallotSort, string> = {
+  my_areas: "ordered by how much each race affects the issues you care about.",
   vote_power: "ordered by where your vote carries the most weight.",
   soonest: "ordered by election date, soonest first.",
   district_size: "ordered by district population, biggest first.",
