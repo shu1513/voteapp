@@ -3,18 +3,18 @@ DRAFT — pending attorney review before public launch.
 Version history is tracked by git; the version string below must match
 CURRENT_TERMS_VERSION in backend/src/constants/legal.ts. Bump both together
 and require renewed acceptance for material changes.
-Placeholders to fill before launch: [legal entity name], [contact email],
-[reporting link].
+The contact mailbox (contact@impactperdollar.com) must exist and be
+monitored before launch.
 -->
 
 # VoteApp AI Research and Election Information Disclaimer
 
-**Last updated:** July 3, 2026
+**Last updated:** July 5, 2026
 **Version:** 1.0
 
 ## 1. Informational purposes only
 
-VoteApp, operated by [legal entity name] ("VoteApp," "we," "us," or "our"), provides information about elections, candidates, ballot measures, campaign finance, voting districts, and related civic data for general informational, educational, and civic-research purposes only.
+The VoteApp service and its operator, impactperdollar ("VoteApp," "we," "us," or "our"), provide information about elections, candidates, ballot measures, campaign finance, voting districts, and related civic data for general informational, educational, and civic-research purposes only.
 
 VoteApp is not a government agency, election office, political committee, campaign, law firm, financial adviser, tax adviser, or professional adviser. VoteApp does not provide legal, election-law, campaign-finance, political, financial, tax, voting-eligibility, ballot-casting, or professional advice. Use of VoteApp does not create an attorney-client, fiduciary, advisory, representative, agency, or professional relationship.
 
@@ -45,6 +45,8 @@ VoteApp does not register voters, cast ballots, submit ballot requests, verify r
 ## 4. Do not delay, skip, or change voting action based only on VoteApp
 
 Do not decide not to vote, delay voting, skip registration, miss a deadline, change your voting method, go to a different voting location, or disregard instructions from election officials based only on VoteApp.
+
+This applies equally to notification and reminder emails: they are provided on a best-effort basis, may be delayed, filtered, blocked, or not delivered, and may reflect data that has since changed. Do not rely on receiving any notification or reminder from VoteApp to meet a registration deadline, ballot deadline, election date, or any other obligation.
 
 If you are unsure about any voting issue, contact your state or local election office immediately.
 
@@ -84,7 +86,7 @@ No score, metric, ranking, label, ordering, or comparison on VoteApp is an endor
 
 VoteApp is intended to operate as an independent, nonpartisan civic-information service.
 
-Unless clearly marked as paid, sponsored, or advertising content, nothing on VoteApp constitutes an endorsement of, opposition to, or recommendation regarding any candidate, political party, committee, campaign, ballot measure, ideology, public official, donor, organization, or ballot position.
+Unless clearly marked as paid, sponsored, or advertising content, nothing on VoteApp — or in its emails or other communications — constitutes an endorsement of, opposition to, or recommendation regarding any candidate, political party, committee, campaign, ballot measure, ideology, public official, donor, organization, or ballot position.
 
 The inclusion, exclusion, ordering, labeling, summarization, scoring, or display of any candidate, election, office, party, ballot measure, committee, donor, or source does not imply endorsement, opposition, preference, approval, disapproval, or a conclusive factual determination.
 
@@ -128,7 +130,7 @@ Address and search information may reveal sensitive information about a person, 
 
 ## 15. Error reports and corrections
 
-If you believe any VoteApp content is inaccurate, outdated, misleading, or harmful, please report it to [contact email] or through [reporting link].
+If you believe any VoteApp content is inaccurate, outdated, misleading, or harmful, please report it to contact@impactperdollar.com.
 
 We may review reports, update content, remove content, add warnings, or decline to make changes in our discretion. We do not guarantee correction, response, or update on any particular timeline.
 
@@ -138,15 +140,15 @@ For urgent voting issues, contact your state or local election office directly. 
 
 THE SERVICE AND ALL CONTENT ARE PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE.
 
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, [LEGAL ENTITY NAME] DISCLAIMS ALL WARRANTIES, INCLUDING WARRANTIES OF ACCURACY, COMPLETENESS, TIMELINESS, RELIABILITY, AVAILABILITY, SECURITY, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, AND ERROR-FREE OR UNINTERRUPTED OPERATION.
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, VOTEAPP AND ITS OPERATOR DISCLAIM ALL WARRANTIES, INCLUDING WARRANTIES OF ACCURACY, COMPLETENESS, TIMELINESS, RELIABILITY, AVAILABILITY, SECURITY, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, AND ERROR-FREE OR UNINTERRUPTED OPERATION.
 
 ## 17. Limitation of liability
 
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, [LEGAL ENTITY NAME] AND ITS OFFICERS, DIRECTORS, EMPLOYEES, CONTRACTORS, SERVICE PROVIDERS, LICENSORS, AND AFFILIATES WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, PUNITIVE, OR ENHANCED DAMAGES, OR FOR LOST PROFITS, LOST REVENUE, LOST DATA, LOSS OF GOODWILL, BUSINESS INTERRUPTION, REPUTATIONAL HARM, OR ANY LOSS ARISING FROM OR RELATING TO YOUR USE OF OR RELIANCE ON VOTEAPP OR ITS CONTENT.
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, VOTEAPP, ITS OPERATOR, AND ITS OFFICERS, DIRECTORS, EMPLOYEES, CONTRACTORS, SERVICE PROVIDERS, LICENSORS, AND AFFILIATES WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, PUNITIVE, OR ENHANCED DAMAGES, OR FOR LOST PROFITS, LOST REVENUE, LOST DATA, LOSS OF GOODWILL, BUSINESS INTERRUPTION, REPUTATIONAL HARM, OR ANY LOSS ARISING FROM OR RELATING TO YOUR USE OF OR RELIANCE ON VOTEAPP OR ITS CONTENT.
 
 THIS LIMITATION APPLIES TO CLAIMS ARISING FROM OR RELATING TO ANY ELECTION-RELATED DECISION, VOTING-RELATED DECISION, REGISTRATION-RELATED DECISION, CAMPAIGN-RELATED DECISION, POLITICAL DECISION, OR OTHER ACTION TAKEN OR NOT TAKEN IN RELIANCE ON VOTEAPP.
 
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, [LEGAL ENTITY NAME]'S TOTAL LIABILITY FOR ANY CLAIM ARISING FROM OR RELATING TO VOTEAPP OR ITS CONTENT WILL NOT EXCEED THE GREATER OF: (A) THE AMOUNT YOU PAID TO [LEGAL ENTITY NAME] FOR THE SERVICE DURING THE TWELVE MONTHS BEFORE THE EVENT GIVING RISE TO THE CLAIM; OR (B) ONE HUNDRED U.S. DOLLARS ($100).
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, VOTEAPP'S TOTAL LIABILITY FOR ANY CLAIM ARISING FROM OR RELATING TO VOTEAPP OR ITS CONTENT WILL NOT EXCEED THE GREATER OF: (A) THE AMOUNT YOU PAID TO VOTEAPP FOR THE SERVICE DURING THE TWELVE MONTHS BEFORE THE EVENT GIVING RISE TO THE CLAIM; OR (B) ONE HUNDRED U.S. DOLLARS ($100).
 
 Some jurisdictions do not allow certain warranty disclaimers or liability limitations. In those jurisdictions, the disclaimers and limitations apply only to the maximum extent permitted by law.
 
