@@ -16,9 +16,10 @@ how areas are researched or stored.
 | User prefs with rank | `user_research_area_preferences.rank` 1–7, unique per user | done end-to-end: PUT validates ranks; only the UI never sets them |
 | Sort machinery | `ballotElectionOrdering.ts` decorator (`vote_power`, `soonest`, `district_size[_smallest]`, `followed_first`) + per-user saved sort in `user_ballot_preferences` | done; designed for adding modes |
 
-Consequences: "highlight my areas on each race" and "sort records by my
-areas" are pure frontend; the rank editor is pure frontend; only the ballot
-sort mode, candidate stance aggregates, and email need backend work.
+Consequences: "highlight my areas on each race", "sort records by my areas",
+per-candidate stance chips, and the rank editor are all pure frontend — the
+election-detail payload already carries candidates' records with stance tags
+(see Phase B). Only the ballot sort mode and email need backend work.
 
 ## Phase A — backend: `my_areas` ballot sort + measure areas in summaries
 
@@ -111,7 +112,8 @@ Decide at phase start; do not build ahead.
 
 ## Order and rationale
 
-A → B are backend (independently mergeable, both prerequisite-free), C
-consumes both, D is standalone frontend (can land any time), E is gated on a
-product decision. Per-PR: one phase, one branch, live E2E before push, same
-as the reminder feature.
+A is the only backend phase (the `my_areas` ballot sort). B turned out to be
+frontend-only (the stance data already ships from the detail endpoint) and
+declares the types + client scoring lib that C consumes. D is standalone
+frontend (can land any time); E is gated on a product decision. Per-PR: one
+phase, one branch, live E2E before push, same as the reminder feature.
