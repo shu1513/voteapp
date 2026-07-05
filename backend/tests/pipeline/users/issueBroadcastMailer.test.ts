@@ -79,6 +79,22 @@ describe("createSesIssueBroadcastMailer", () => {
     ]);
   });
 
+  it("rejects unsubscribe URLs that would break email headers", async () => {
+    const send = vi.fn();
+    const mailer = createSesIssueBroadcastMailer({
+      fromEmailAddress: "updates@example.com",
+      sesClient: { send },
+    });
+
+    await expect(
+      mailer.sendBroadcastEmail({ ...baseInput, unsubscribeUrl: "https://x.test/a\r\nBcc: evil@x.test" })
+    ).rejects.toThrow("invalid in email headers");
+    await expect(
+      mailer.sendBroadcastEmail({ ...baseInput, unsubscribeUrl: "javascript:alert(1)" })
+    ).rejects.toThrow("http(s)");
+    expect(send).not.toHaveBeenCalled();
+  });
+
   it("rejects an empty subject or body", async () => {
     const send = vi.fn();
     const mailer = createSesIssueBroadcastMailer({

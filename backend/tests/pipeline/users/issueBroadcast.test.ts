@@ -44,12 +44,16 @@ function createDbMock(fixtures: {
       markedSends.push({ broadcastId: params?.[0] as string, userId: params?.[1] as string });
       return { rows: [], rowCount: 1 };
     }
-    if (sql.includes("SELECT")&& sql.includes("u.email")) {
-      // Mirror the real query's paging contract: honor the batch size and
-      // the already-attempted exclusion list.
+    if (sql.includes("SELECT") && sql.includes("u.email")) {
+      // Mirror the real query's contract: honor the batch size, the
+      // unmarked-user exclusion list, and the dedupe NOT EXISTS (marked
+      // users disappear from the audience).
       const batchSize = params?.[2] as number;
       const excluded = new Set(params?.[3] as string[]);
-      const rows = fixtures.users.filter((user) => !excluded.has(user.id)).slice(0, batchSize);
+      const marked = new Set(markedSends.map((send) => send.userId));
+      const rows = fixtures.users
+        .filter((user) => !excluded.has(user.id) && !marked.has(user.id))
+        .slice(0, batchSize);
       return { rows, rowCount: rows.length };
     }
     throw new Error(`Unexpected SQL in test: ${sql.slice(0, 80)}`);
@@ -162,6 +166,34 @@ describe("sendIssueBroadcast", () => {
     ]);
   });
 
+  it("rejects a non-positive batch size before selecting anyone", async () => {
+    const db = createDbMock({ users: [] });
+    const mailer = createMailerMock();
+
+    await expect(
+      sendIssueBroadcast(db as never, mailer, { ...baseOptions, batchSize: 0 })
+    ).rejects.toMatchObject({ code: "invalid_broadcast" });
+    // Area resolution runs first; no recipient selection happened.
+    expect(db.query.mock.calls.filter((call) => String(call[0]).includes("u.email"))).toHaveLength(0);
+  });
+
+  it("keeps the exclusion list empty while sends succeed (marked users leave via the dedupe)", async () => {
+    const db = createDbMock({
+      users: [
+        { id: USER_ALPHA, email: "a@example.com", first_name: "A", matched_area_names: [] },
+        { id: USER_BETA, email: "b@example.com", first_name: "B", matched_area_names: [] },
+      ],
+    });
+    const mailer = createMailerMock();
+
+    await sendIssueBroadcast(db as never, mailer, { ...baseOptions, batchSize: 1 });
+
+    const selectionCalls = db.query.mock.calls.filter((call) => String(call[0]).includes("u.email"));
+    for (const call of selectionCalls) {
+      expect((call[1] as unknown[])[3]).toEqual([]);
+    }
+  });
+
   it("loops through batches until every recipient is processed in one run", async () => {
     const db = createDbMock({
       users: [
@@ -171,7 +203,7 @@ describe("sendIssueBroadcast", () => {
     });
     const mailer = createMailerMock();
 
-    const result = await sendIssueBroadcast(db as never, mailer, { ...baseOptions, maxUsers: 1 });
+    const result = await sendIssueBroadcast(db as never, mailer, { ...baseOptions, batchSize: 1 });
 
     expect(result.usersEmailedCount).toBe(2);
     const selectionCalls = db.query.mock.calls.filter((call) => String(call[0]).includes("u.email"));
@@ -188,7 +220,7 @@ describe("sendIssueBroadcast", () => {
     });
     const mailer = createMailerMock("fail@example.com");
 
-    const result = await sendIssueBroadcast(db as never, mailer, { ...baseOptions, maxUsers: 1 });
+    const result = await sendIssueBroadcast(db as never, mailer, { ...baseOptions, batchSize: 1 });
 
     expect(result.failures).toEqual([{ userId: USER_ALPHA, stage: "send", reason: "SES exploded" }]);
     expect(result.usersEmailedCount).toBe(1);

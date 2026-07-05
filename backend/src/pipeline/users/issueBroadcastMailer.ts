@@ -59,6 +59,18 @@ function assertBroadcastInput(input: IssueBroadcastEmailInput): void {
   if (input.body.trim().length === 0) {
     throw new Error("Broadcast email requires a body");
   }
+  if (input.unsubscribeUrl !== undefined) {
+    // The URL lands in raw List-Unsubscribe headers: header-breaking
+    // characters or a non-HTTP scheme from a misconfigured builder (or a
+    // future admin-page caller) must fail here, not reach SES.
+    if (/[\r\n<>]/.test(input.unsubscribeUrl)) {
+      throw new Error("Unsubscribe URL contains characters that are invalid in email headers");
+    }
+    const parsed = new URL(input.unsubscribeUrl);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      throw new Error("Unsubscribe URL must use http(s)");
+    }
+  }
 }
 
 function describeMatchedAreas(matchedAreaNames: readonly string[]): string {

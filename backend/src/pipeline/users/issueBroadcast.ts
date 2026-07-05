@@ -38,7 +38,7 @@ export type SendIssueBroadcastOptions = {
    * Selection batch size, not a total cap: the run loops until every
    * eligible recipient is processed.
    */
-  maxUsers?: number;
+  batchSize?: number;
   /** Per-user signed unsubscribe link builder; omit to send without one. */
   buildUnsubscribeUrl?: (userId: string) => string;
 };
@@ -187,22 +187,29 @@ export async function sendIssueBroadcast(
     failures: [],
   };
   const areaIds = targetAreas.map((area) => area.id);
-  const batchSize = options.maxUsers ?? DEFAULT_BROADCAST_MAX_USERS;
+  const batchSize = options.batchSize ?? DEFAULT_BROADCAST_MAX_USERS;
+  if (!Number.isInteger(batchSize) || batchSize <= 0) {
+    throw new IssueBroadcastError("invalid_broadcast", "batchSize must be a positive integer");
+  }
 
   // Loops through batches until every eligible recipient is processed —
-  // a broadcast is one audience, one run. Every selected user joins
-  // attemptedUserIds regardless of outcome, and the selection excludes those
-  // ids, so each non-empty batch strictly shrinks the remaining set.
-  const attemptedUserIds: string[] = [];
+  // a broadcast is one audience, one run. The exclusion list carries only
+  // users the run attempted but could NOT stamp with a dedupe row (dry-run
+  // recipients, failed sends, failed marks); successfully marked users are
+  // already excluded by the NOT EXISTS in the selection, so the parameter
+  // array stays bounded by failures, not audience size. Every selected user
+  // either gains a dedupe row or joins the list, so each non-empty batch
+  // strictly shrinks the remaining set.
+  const unmarkedUserIds: string[] = [];
   for (;;) {
-    const recipients = await selectRecipients(db, broadcastId, areaIds, batchSize, attemptedUserIds);
+    const recipients = await selectRecipients(db, broadcastId, areaIds, batchSize, unmarkedUserIds);
     if (recipients.length === 0) {
       break;
     }
     for (const recipient of recipients) {
-      attemptedUserIds.push(recipient.id);
       result.eligibleUserCount += 1;
       if (!options.live) {
+        unmarkedUserIds.push(recipient.id);
         continue;
       }
 
@@ -219,6 +226,7 @@ export async function sendIssueBroadcast(
       } catch (error) {
         const reason = error instanceof Error ? error.message : String(error);
         result.failures.push({ userId: recipient.id, stage: "send", reason });
+        unmarkedUserIds.push(recipient.id);
         continue;
       }
       result.usersEmailedCount += 1;
@@ -229,6 +237,7 @@ export async function sendIssueBroadcast(
       } catch (error) {
         const reason = error instanceof Error ? error.message : String(error);
         result.failures.push({ userId: recipient.id, stage: "mark_after_send", reason });
+        unmarkedUserIds.push(recipient.id);
       }
     }
   }

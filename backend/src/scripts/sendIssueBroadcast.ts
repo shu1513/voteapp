@@ -26,7 +26,7 @@ import {
 //     --areas environment_and_public_health \
 //     --subject "A nonprofit worth knowing" \
 //     --body-file ./broadcast.txt \
-//     [--live] [--max-users 500]
+//     [--live] [--batch-size 500] [--allow-console]
 
 function readStringFlag(argv: readonly string[], flagName: string): string | null {
   const flagIndex = argv.indexOf(flagName);
@@ -47,10 +47,39 @@ function requireStringFlag(argv: readonly string[], flagName: string): string {
   return value.trim();
 }
 
-export function parseSendIssueBroadcastArgs(argv: readonly string[]): SendIssueBroadcastOptions {
+const VALUE_FLAGS = ["--broadcast-id", "--areas", "--subject", "--body-file", "--batch-size"] as const;
+const BARE_FLAGS = ["--live", "--allow-console"] as const;
+
+/**
+ * Rejects tokens that are not a known flag or a known flag's value. This CLI
+ * sends real email, so a malformed invocation like `--live false` (which
+ * would otherwise still run live) must fail loudly instead of being ignored.
+ */
+function assertNoStrayArgs(argv: readonly string[]): void {
+  for (let index = 0; index < argv.length; index += 1) {
+    const token = argv[index]!;
+    if ((BARE_FLAGS as readonly string[]).includes(token)) {
+      continue;
+    }
+    if ((VALUE_FLAGS as readonly string[]).includes(token)) {
+      index += 1; // skip the flag's value
+      continue;
+    }
+    if (VALUE_FLAGS.some((flag) => token.startsWith(`${flag}=`))) {
+      continue;
+    }
+    throw new Error(`Unexpected argument: ${token}`);
+  }
+}
+
+export function parseSendIssueBroadcastArgs(
+  argv: readonly string[]
+): SendIssueBroadcastOptions & { allowConsole: boolean } {
+  assertNoStrayArgs(argv);
   const bodyFile = requireStringFlag(argv, "--body-file");
   return {
     live: argv.includes("--live"),
+    allowConsole: argv.includes("--allow-console"),
     broadcastId: requireStringFlag(argv, "--broadcast-id"),
     areaSlugs: requireStringFlag(argv, "--areas")
       .split(",")
@@ -58,7 +87,7 @@ export function parseSendIssueBroadcastArgs(argv: readonly string[]): SendIssueB
       .filter((slug) => slug.length > 0),
     subject: requireStringFlag(argv, "--subject"),
     body: readFileSync(bodyFile, "utf8"),
-    maxUsers: readPositiveIntegerFlag(argv, "--max-users", DEFAULT_BROADCAST_MAX_USERS),
+    batchSize: readPositiveIntegerFlag(argv, "--batch-size", DEFAULT_BROADCAST_MAX_USERS),
   };
 }
 
@@ -67,11 +96,19 @@ function readOptionalEnv(name: string): string | undefined {
   return value && value.length > 0 ? value : undefined;
 }
 
-export function buildBroadcastMailerFromEnv(): IssueBroadcastMailer {
+export function buildBroadcastMailerFromEnv(allowConsole: boolean): IssueBroadcastMailer {
   // Reuses the auth mailer configuration: broadcasts go out from the same
   // sender identity. NOTIFICATIONS_MAILER=console overrides for local runs.
   const mailerKind = (readOptionalEnv("NOTIFICATIONS_MAILER") ?? readOptionalEnv("AUTH_MAILER") ?? "ses").toLowerCase();
   if (mailerKind === "console") {
+    // A live console run still writes dedupe rows, so a later real send with
+    // the same broadcast id would skip users who never got an email. Make
+    // that footgun an explicit choice.
+    if (!allowConsole) {
+      throw new Error(
+        "NOTIFICATIONS_MAILER=console with --live writes dedupe rows without delivering email; pass --allow-console if that is intended (local testing)"
+      );
+    }
     return createConsoleIssueBroadcastMailer();
   }
   if (mailerKind !== "ses") {
@@ -95,7 +132,7 @@ export function buildBroadcastMailerFromEnv(): IssueBroadcastMailer {
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  const parsedOptions = parseSendIssueBroadcastArgs(process.argv.slice(2));
+  const { allowConsole, ...parsedOptions } = parseSendIssueBroadcastArgs(process.argv.slice(2));
   const buildUnsubscribeUrl = buildUnsubscribeUrlBuilderFromEnv("issue_updates");
   const options: SendIssueBroadcastOptions = {
     ...parsedOptions,
@@ -108,7 +145,7 @@ async function main(): Promise<void> {
 
   // The dry run never sends, so it must not require mailer configuration.
   const mailer: IssueBroadcastMailer = options.live
-    ? buildBroadcastMailerFromEnv()
+    ? buildBroadcastMailerFromEnv(allowConsole)
     : {
         async sendBroadcastEmail() {
           throw new Error("Dry run must not send email");
