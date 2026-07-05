@@ -6,6 +6,7 @@ import {
   DndContext,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   type DragEndEvent,
@@ -349,8 +350,12 @@ function ResearchAreasSection() {
   // Cross-mount in-flight guard, same as the other full-replace preference
   // writes: controls stay locked until the older PUT settles.
   const saving = useIsMutating({ mutationKey: ["put-research-area-preferences"] }) > 0;
+  // Mouse: drag starts after 4px of movement, so the remove button stays a
+  // plain click. Touch: press-and-hold (200ms) then drag, so the list does
+  // not hijack page scrolling. Keyboard sorting stays for accessibility.
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
@@ -382,15 +387,6 @@ function ResearchAreasSection() {
     update.mutate(nextIds);
   }
 
-  function move(id: string, delta: -1 | 1) {
-    const from = orderedIds.indexOf(id);
-    const to = from + delta;
-    if (from < 0 || to < 0 || to >= orderedIds.length) {
-      return;
-    }
-    save(arrayMove(orderedIds, from, to));
-  }
-
   function onDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over || active.id === over.id) {
@@ -407,7 +403,7 @@ function ResearchAreasSection() {
   return (
     <Section title="Issues you care about">
       <p className="mt-1 text-sm text-ink-soft">
-        Drag (or use the arrows) to rank what matters most — #1 counts the most in your ballot ordering.
+        Drag to put what matters most at the top — #1 counts the most in your ballot ordering.
       </p>
       {orderedIds.length > 0 ? (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
@@ -420,10 +416,6 @@ function ResearchAreasSection() {
                   index={index}
                   name={areaById.get(id)?.name ?? "Unknown area"}
                   disabled={saving}
-                  isFirst={index === 0}
-                  isLast={index === orderedIds.length - 1}
-                  onMoveUp={() => move(id, -1)}
-                  onMoveDown={() => move(id, 1)}
                   onRemove={() => save(orderedIds.filter((other) => other !== id))}
                 />
               ))}
@@ -469,67 +461,40 @@ function SortableAreaRow({
   index,
   name,
   disabled,
-  isFirst,
-  isLast,
-  onMoveUp,
-  onMoveDown,
   onRemove,
 }: {
   id: string;
   index: number;
   name: string;
   disabled: boolean;
-  isFirst: boolean;
-  isLast: boolean;
-  onMoveUp: () => void;
-  onMoveDown: () => void;
   onRemove: () => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id, disabled });
+  // The whole row is the drag surface — grab it anywhere with a mouse, or
+  // press and hold on touch. The remove button still clicks normally thanks
+  // to the sensors' activation constraints.
   return (
     <li
       ref={setNodeRef}
+      {...attributes}
+      {...listeners}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={`flex items-center gap-2 rounded-lg border border-line bg-white px-2 py-1.5 text-sm ${
+      aria-label={`${name}, rank ${index + 1}. Drag to reorder.`}
+      className={`flex cursor-grab touch-none items-center gap-2 rounded-lg border border-line bg-white px-2 py-2 text-sm select-none ${
         isDragging ? "z-10 shadow-md" : ""
       }`}
     >
-      <button
-        type="button"
-        {...attributes}
-        {...listeners}
-        disabled={disabled}
-        aria-label={`Drag to reorder ${name}`}
-        className="cursor-grab touch-none px-1 text-ink-soft hover:text-ink disabled:cursor-not-allowed"
-      >
+      <span aria-hidden className="px-1 text-ink-soft">
         ⠿
-      </button>
+      </span>
       <span className="w-6 shrink-0 text-center text-xs font-semibold text-rausch-dark">#{index + 1}</span>
       <span className="flex-1 text-ink">{name}</span>
-      <button
-        type="button"
-        disabled={disabled || isFirst}
-        onClick={onMoveUp}
-        aria-label={`Move ${name} up`}
-        className="px-1 text-ink-soft hover:text-ink disabled:opacity-30"
-      >
-        ↑
-      </button>
-      <button
-        type="button"
-        disabled={disabled || isLast}
-        onClick={onMoveDown}
-        aria-label={`Move ${name} down`}
-        className="px-1 text-ink-soft hover:text-ink disabled:opacity-30"
-      >
-        ↓
-      </button>
       <button
         type="button"
         disabled={disabled}
         onClick={onRemove}
         aria-label={`Remove ${name}`}
-        className="px-1 text-ink-soft hover:text-rausch-dark disabled:opacity-30"
+        className="px-2 text-ink-soft hover:text-rausch-dark disabled:opacity-30"
       >
         ×
       </button>
