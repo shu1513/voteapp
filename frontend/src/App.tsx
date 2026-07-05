@@ -1,4 +1,5 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router-dom";
 import { useLogout, useMe } from "./lib/useMe";
 
 function AccountNav() {
@@ -54,8 +55,31 @@ function AccountNav() {
 }
 
 export function App() {
+  const location = useLocation();
+  const mainRef = useRef<HTMLElement>(null);
+  const lastPathname = useRef(location.pathname);
+
+  // In-app navigation keeps focus wherever it was in the old page; move it
+  // to the new page's content so keyboard and screen-reader users land where
+  // sighted users look. Compared against the previous pathname (not a
+  // first-render flag) so the initial load keeps the browser's default focus
+  // even under StrictMode's double effect run.
+  useEffect(() => {
+    if (lastPathname.current === location.pathname) {
+      return;
+    }
+    lastPathname.current = location.pathname;
+    mainRef.current?.focus();
+  }, [location.pathname]);
+
   return (
     <div className="min-h-screen bg-white text-ink">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-20 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:shadow-md"
+      >
+        Skip to content
+      </a>
       <header className="border-b border-line bg-white">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
           <Link to="/" className="text-xl font-extrabold tracking-tight text-rausch">
@@ -66,9 +90,10 @@ export function App() {
           </nav>
         </div>
       </header>
-      <main>
+      <main id="main" ref={mainRef} tabIndex={-1} className="outline-none">
         <Outlet />
       </main>
+      <ScrollRestoration />
       <footer className="mt-16 border-t border-line py-8 text-center text-xs text-ink-soft">
         <p>
           Independent, nonpartisan, AI-assisted election research. Not an official election source —{" "}
