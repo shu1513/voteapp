@@ -14,6 +14,7 @@ const candidateElectionId = "55555555-5555-4555-8555-555555555555";
 const candidateRecordId = "66666666-6666-4666-8666-666666666666";
 const ballotMeasureId = "77777777-7777-4777-8777-777777777777";
 const researchAreaId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+const measureResearchAreaId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -109,6 +110,17 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             slug: "public_safety_and_crime_control",
             name: "Public Safety and Crime Control",
             description: "Crime, policing, and public safety.",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: measureElectionId,
+            research_area_id: measureResearchAreaId,
+            slug: "housing_affordability",
+            name: "Housing Affordability",
+            description: "Housing supply and cost.",
           },
         ],
       })
@@ -216,7 +228,14 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           has_results: false,
           current_result_outcome: null,
           office: null,
-          research_areas: [],
+          research_areas: [
+            {
+              id: measureResearchAreaId,
+              slug: "housing_affordability",
+              name: "Housing Affordability",
+              description: "Housing supply and cost.",
+            },
+          ],
           historical_competitiveness: null,
           vote_power: {
             score: 85,
@@ -230,12 +249,12 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       ]),
     });
     expect(result.elections).toHaveLength(2);
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     expect(query.mock.calls[0]?.[1]).toEqual([[districtId]]);
-    expect(query.mock.calls[5]?.[0]).toContain("CASE pass_type");
-    expect(query.mock.calls[5]?.[0]).toContain("WHEN 'certified' THEN 1");
-    expect(query.mock.calls[5]?.[0]).toContain("WHEN 'election_night' THEN 2");
-    expect(query.mock.calls[6]?.[0]).toContain("historical_contest_margins");
+    expect(query.mock.calls[6]?.[0]).toContain("CASE pass_type");
+    expect(query.mock.calls[6]?.[0]).toContain("WHEN 'certified' THEN 1");
+    expect(query.mock.calls[6]?.[0]).toContain("WHEN 'election_night' THEN 2");
+    expect(query.mock.calls[7]?.[0]).toContain("historical_contest_margins");
     // The lightweight summary must not embed the full candidate array (the
     // detail endpoint's "candidates" key).
     expect(JSON.stringify(result)).not.toContain('"candidates"');

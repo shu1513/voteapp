@@ -10,8 +10,10 @@ import {
 const userId = "99999999-9999-4999-8999-999999999999";
 
 describe("getUserBallotPreferences", () => {
-  it("returns application defaults when the user has no saved row", async () => {
-    const query = vi.fn().mockResolvedValue({ rows: [{ user_exists: true, sort: null, followed_first: null }] });
+  it("returns application defaults when the user has no saved row and no research areas", async () => {
+    const query = vi.fn().mockResolvedValue({
+      rows: [{ user_exists: true, sort: null, followed_first: null, has_research_areas: false }],
+    });
 
     const result = await getUserBallotPreferences({ query }, userId);
 
@@ -19,14 +21,36 @@ describe("getUserBallotPreferences", () => {
     expect(result).toEqual({ sort: "vote_power", followed_first: true });
   });
 
+  it("defaults the sort to my_areas when the user saved research areas but no ballot preferences", async () => {
+    const query = vi.fn().mockResolvedValue({
+      rows: [{ user_exists: true, sort: null, followed_first: null, has_research_areas: true }],
+    });
+
+    await expect(getUserBallotPreferences({ query }, userId)).resolves.toEqual({
+      sort: "my_areas",
+      followed_first: true,
+    });
+  });
+
   it("returns the saved preferences", async () => {
-    const query = vi
-      .fn()
-      .mockResolvedValue({ rows: [{ user_exists: true, sort: "district_size", followed_first: false }] });
+    const query = vi.fn().mockResolvedValue({
+      rows: [{ user_exists: true, sort: "district_size", followed_first: false, has_research_areas: false }],
+    });
 
     await expect(getUserBallotPreferences({ query }, userId)).resolves.toEqual({
       sort: "district_size",
       followed_first: false,
+    });
+  });
+
+  it("lets an explicitly saved sort beat the my_areas personalized default", async () => {
+    const query = vi.fn().mockResolvedValue({
+      rows: [{ user_exists: true, sort: "vote_power", followed_first: true, has_research_areas: true }],
+    });
+
+    await expect(getUserBallotPreferences({ query }, userId)).resolves.toEqual({
+      sort: "vote_power",
+      followed_first: true,
     });
   });
 

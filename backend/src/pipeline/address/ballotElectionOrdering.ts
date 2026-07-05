@@ -1,6 +1,11 @@
 import type { Pool, PoolClient } from "pg";
 
 import type { BallotLookupElectionSummary, BallotSummaryResult } from "./ballotLookup.js";
+import {
+  loadUserResearchAreaWeights,
+  scoreResearchAreaMatch,
+  type ResearchAreaMatchScore,
+} from "../users/userResearchAreaScoring.js";
 
 // ---------------------------------------------------------------------------
 // Personalized ballot election ordering (sort modes, followed-candidates
@@ -28,14 +33,20 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 // election date ascending (the reader's natural order); `district_size` sorts
 // by the election's district population descending (largest electorate first);
 // `district_size_smallest` is the same key ascending. Unknown populations sort
-// last in both directions.
-export type BallotSummarySort = "vote_power" | "soonest" | "district_size" | "district_size_smallest";
+// last in both directions. `my_areas` sorts by how strongly the election's
+// research areas match the user's saved research-area preferences (summed
+// weights, see userResearchAreaScoring.ts) and degrades to `vote_power` for
+// anonymous callers and users with no saved areas.
+// Keep this list in sync with the user_ballot_preferences sort CHECK
+// constraint (db/migrations/152) and the frontend BALLOT_SORTS mirror.
+export type BallotSummarySort = "vote_power" | "soonest" | "district_size" | "district_size_smallest" | "my_areas";
 
 export const BALLOT_SUMMARY_SORTS: readonly BallotSummarySort[] = [
   "vote_power",
   "soonest",
   "district_size",
   "district_size_smallest",
+  "my_areas",
 ];
 
 export function isBallotSummarySort(value: unknown): value is BallotSummarySort {
@@ -77,18 +88,45 @@ export async function applyBallotElectionOrdering(
   result: BallotSummaryResult,
   options: BallotSummaryOptions = {}
 ): Promise<OrderedBallotSummaryResult> {
-  const followedByElection = await loadFollowedCandidatesByElection(
-    db,
-    options.userId ?? null,
-    result.elections.map((election) => election.id)
-  );
+  // Independent queries keyed only on the user: load them in parallel so the
+  // my_areas sort does not add a sequential round trip to the ballot path.
+  const [followedByElection, weights] = await Promise.all([
+    loadFollowedCandidatesByElection(
+      db,
+      options.userId ?? null,
+      result.elections.map((election) => election.id)
+    ),
+    options.sort === "my_areas"
+      ? loadUserResearchAreaWeights(db, options.userId ?? null)
+      : Promise.resolve(null),
+  ]);
 
   const elections: OrderedBallotElectionSummary[] = result.elections.map((election) => ({
     ...election,
     followed_candidates: followedByElection.get(election.id) ?? [],
   }));
 
-  sortBallotElections(elections, options.sort ?? "vote_power", options.followedFirst ?? true);
+  let sort = options.sort ?? "vote_power";
+  let areaScoresByElection: Map<string, ResearchAreaMatchScore> | null = null;
+  if (sort === "my_areas") {
+    if (!weights || weights.size === 0) {
+      // Anonymous caller or no saved areas: nothing to match against, so the
+      // sort degrades to the default rather than erroring.
+      sort = "vote_power";
+    } else {
+      areaScoresByElection = new Map(
+        elections.map((election) => [
+          election.id,
+          scoreResearchAreaMatch(
+            election.research_areas.map((area) => area.id),
+            weights
+          ),
+        ])
+      );
+    }
+  }
+
+  sortBallotElections(elections, sort, options.followedFirst ?? true, areaScoresByElection);
 
   return { ...result, elections };
 }
@@ -152,7 +190,8 @@ async function loadFollowedCandidatesByElection(
 function sortBallotElections(
   elections: OrderedBallotElectionSummary[],
   sort: BallotSummarySort,
-  followedFirst: boolean
+  followedFirst: boolean,
+  areaScoresByElection: Map<string, ResearchAreaMatchScore> | null = null
 ): void {
   elections.sort((a, b) => {
     if (followedFirst) {
@@ -162,15 +201,32 @@ function sortBallotElections(
         return aFollowed - bFollowed;
       }
     }
-    return compareBySort(a, b, sort);
+    return compareBySort(a, b, sort, areaScoresByElection);
   });
 }
+
+const NO_AREA_MATCH: ResearchAreaMatchScore = { score: 0, bestRank: Number.POSITIVE_INFINITY };
 
 function compareBySort(
   a: OrderedBallotElectionSummary,
   b: OrderedBallotElectionSummary,
-  sort: BallotSummarySort
+  sort: BallotSummarySort,
+  areaScoresByElection: Map<string, ResearchAreaMatchScore> | null = null
 ): number {
+  if (sort === "my_areas") {
+    // Higher summed weight of matched saved areas first; among equal sums the
+    // election touching the user's best-ranked area wins; then the default
+    // vote-power ordering decides.
+    const aMatch = areaScoresByElection?.get(a.id) ?? NO_AREA_MATCH;
+    const bMatch = areaScoresByElection?.get(b.id) ?? NO_AREA_MATCH;
+    if (aMatch.score !== bMatch.score) {
+      return bMatch.score - aMatch.score;
+    }
+    if (aMatch.bestRank !== bMatch.bestRank) {
+      return aMatch.bestRank - bMatch.bestRank;
+    }
+    return compareBySort(a, b, "vote_power");
+  }
   if (sort === "vote_power") {
     // Higher vote-power score first; unknown scores (null) sort last.
     const aScore = typeof a.vote_power.score === "number" ? a.vote_power.score : Number.NEGATIVE_INFINITY;
