@@ -1,12 +1,15 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
-import { BALLOT_SORT_DESCRIPTIONS, BALLOT_SORTS, type BallotSort, type BallotSummary } from "../api/types";
+import { BALLOT_SORT_DESCRIPTIONS, PUBLIC_BALLOT_SORTS, type BallotSort, type BallotSummary } from "../api/types";
 import { AiBanner } from "../components/AiBanner";
 import { ElectionCard } from "../components/ElectionCard";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 
-const SORT_VALUES: readonly string[] = BALLOT_SORTS.map((option) => option.value);
+// Public page: only the sorts the anonymous endpoint can honor. A my_areas
+// value (typed into the URL or copied from a signed-in session) falls back to
+// vote_power so the subtitle never claims an ordering the backend cannot do.
+const SORT_VALUES: readonly string[] = PUBLIC_BALLOT_SORTS.map((option) => option.value);
 
 export function BallotPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -62,7 +65,7 @@ export function BallotPage() {
             onChange={(event) => onSortChange(event.target.value)}
             className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
           >
-            {BALLOT_SORTS.map((option) => (
+            {PUBLIC_BALLOT_SORTS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

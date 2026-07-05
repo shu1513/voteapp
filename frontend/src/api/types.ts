@@ -173,6 +173,12 @@ export const BALLOT_SORTS = [
 
 export type BallotSort = (typeof BALLOT_SORTS)[number]["value"];
 
+// Sorts the anonymous /api/ballot page may offer. my_areas needs a signed-in
+// user with saved research areas — the public endpoint has no user, so the
+// backend would silently degrade it to vote_power while the UI claimed an
+// issue-based order.
+export const PUBLIC_BALLOT_SORTS = BALLOT_SORTS.filter((option) => option.value !== "my_areas");
+
 export const BALLOT_SORT_DESCRIPTIONS: Record<BallotSort, string> = {
   my_areas: "ordered by how much each race affects the issues you care about.",
   vote_power: "ordered by where your vote carries the most weight.",
