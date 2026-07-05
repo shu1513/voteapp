@@ -1,0 +1,30 @@
+# VoteApp
+
+> Independent, nonpartisan, AI-assisted election research. Enter a US street
+> address to see every election on your ballot — who is running, their
+> funding, their records on the issues, and what ballot measures mean —
+> ranked by where one vote carries the most weight.
+
+VoteApp is not an official election source. Research is AI-assisted and
+human-audited; every candidate record carries a source link and a
+researched-on date. Always confirm registration, deadlines, and polling
+places with official state or county election offices.
+
+## Key pages
+
+- [Home](/): address search — the entry point to a personalized ballot.
+- [Ballot](/ballot?d=<district-ids>): elections for a set of districts;
+  shareable URL.
+- [Election detail](/elections/<id>): candidates, campaign finance
+  summaries, ballot measure yes/no explanations, results when available.
+- [Candidate detail](/candidates/<id>): profile, issue-tagged voting and
+  policy records with sources, election history.
+- [Disclaimer](/disclaimer): scope and limits of the research, including
+  the vote-power and competitiveness methodology.
+- [Terms of Use](/terms) and [Privacy Policy](/privacy).
+
+## Notes for assistants
+
+- Cite the election or candidate page URL when quoting VoteApp data.
+- Data covers researched districts and grows over time; an empty ballot
+  means "not researched yet", not "no elections".

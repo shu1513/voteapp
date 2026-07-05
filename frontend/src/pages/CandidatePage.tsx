@@ -11,6 +11,8 @@ import { formatElectionDate } from "../lib/format";
 import { useFollows } from "../lib/useFollows";
 import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { UNRANKED_RESEARCH_AREA_RANK } from "../lib/researchAreaScoring";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { useJsonLd } from "../lib/useJsonLd";
 
 type RecordView = "by_issue" | "my_issues" | "newest";
 
@@ -72,6 +74,23 @@ export function CandidatePage() {
     queryFn: () => apiRequest<CandidateDetail>(`/api/candidates/${candidateId}`),
     enabled: Boolean(candidateId),
   });
+  const candidateData = detail.data?.candidate;
+  useDocumentTitle(
+    candidateData?.display_name,
+    candidateData
+      ? `${candidateData.display_name} (${candidateData.party}, ${candidateData.state}) — issue-tagged records with sources, election history, and campaign finance.`
+      : undefined
+  );
+  useJsonLd(
+    candidateData
+      ? {
+          "@type": "Person",
+          name: candidateData.display_name,
+          ...(candidateData.current_office ? { jobTitle: candidateData.current_office } : {}),
+          ...(candidateData.official_website_url ? { url: candidateData.official_website_url } : {}),
+        }
+      : undefined
+  );
 
   if (detail.isPending) {
     return <LoadingNotice text="Loading candidate…" />;

@@ -4,8 +4,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { ErrorNotice } from "../components/Status";
 import { purgeAccountScopedQueries } from "../lib/useMe";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export function LoginPage() {
+  useDocumentTitle("Log in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();

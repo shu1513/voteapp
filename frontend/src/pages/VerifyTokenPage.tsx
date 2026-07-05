@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Shared page for the two email-link token flows. Email links land here
 // (AUTH_PUBLIC_BASE_URL + /verify-email or /verify-email-change) and the
@@ -19,6 +20,7 @@ type VerifyTokenPageProps = {
 };
 
 export function VerifyTokenPage({ endpoint, title, successMessage }: VerifyTokenPageProps) {
+  useDocumentTitle(title);
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token")?.trim() ?? "";
   const queryClient = useQueryClient();

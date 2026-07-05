@@ -1,0 +1,81 @@
+# Production Deploy Checklist
+
+Written 2026-07-04 (frontend Phase 5, item 5). Everything the first public
+deploy needs beyond `git pull`. Database migrations are covered separately in
+[DB_DEPLOYMENT.md](../DB_DEPLOYMENT.md).
+
+## Topology
+
+- **Frontend**: static build (`cd frontend && npm run build` → `dist/`)
+  behind any static host/CDN. All routes must fall back to `index.html`
+  (SPA history routing).
+- **API server**: `cd backend && npm run address:api` (long-running Node
+  process). Needs Postgres and Redis.
+- **Same-site requirement**: the session cookie is SameSite=Lax. Serve the
+  frontend and API same-origin via a reverse proxy (mirror the dev proxy:
+  `/api` → API server), or on same-site subdomains
+  (`app.impactperdollar.com` + `api.impactperdollar.com`).
+
+## API server environment
+
+| Variable | Value / note |
+|---|---|
+| `DATABASE_URL` | production Postgres |
+| `REDIS_URL` | required — sessions, rate limits, address cache |
+| `ADDRESS_API_HOST` / `ADDRESS_API_PORT` | bind address |
+| `ADDRESS_API_ALLOWED_ORIGINS` | only needed if NOT strictly same-origin; the frontend origin(s) |
+| `AUTH_SESSION_COOKIE_SECURE` | `true` in production (HTTPS) |
+| `AUTH_SESSION_COOKIE_DOMAIN` | only for the subdomain split (e.g. `.impactperdollar.com`) |
+| `AUTH_PUBLIC_BASE_URL` | the FRONTEND origin — email links land on `/verify-email`, `/reset-password`, `/verify-email-change` |
+| `AUTH_MAILER` | unset (defaults to `ses`); `console` is dev-only |
+| `AUTH_FROM_EMAIL` / `AUTH_SES_REGION` | verified SES identity + region (today: impactperdollar.com in us-east-2) |
+| `GOOGLE_PLACES_API_KEY` | address autocomplete + resolve |
+| `NOTIFICATIONS_UNSUBSCRIBE_SECRET` | ≥32 chars; shared by the API server and every mailer job below |
+
+## Email / SES
+
+- **SES is still sandboxed** — production sending requires the AWS
+  production-access request (unsandbox) first. Until then only verified
+  addresses receive mail.
+- The IAM key in use is send-only; keep it that way.
+- All senders emit RFC 8058 one-click List-Unsubscribe headers; the
+  unsubscribe endpoint is served by the API server
+  (`/api/email/unsubscribe`), so `NOTIFICATIONS_UNSUBSCRIBE_URL` for the
+  jobs below must be the PUBLIC API origin + that path.
+
+## Notification jobs (where workers run)
+
+All jobs are BullMQ schedulers over Redis: each needs its `*:scheduler:upsert`
+run once (registers the cron) and a long-running `*:scheduler:worker`
+process. Workers take advisory locks, so accidental duplicates are safe but
+wasteful. They need `DATABASE_URL`, `REDIS_URL`, SES config, and the
+unsubscribe pair.
+
+| Job | Scripts (backend) |
+|---|---|
+| Candidate-follow digest (daily) | `notifications:digest:scheduler:upsert` + `:worker` |
+| New-election alerts (daily) | `notifications:new-elections:scheduler:upsert` + `:worker` |
+| Election reminders (daily; default cron `0 15 * * *` UTC = morning US time, override via `ELECTION_REMINDER_DAILY_CRON`/`_TZ`) | `notifications:reminders:scheduler:upsert` + `:worker` |
+| Dedupe/event-log pruning | `notifications:prune` (cron/systemd timer, daily) |
+
+## Issue broadcasts (operator-run, not scheduled)
+
+`npm run notifications:broadcast -- --broadcast-id <slug> --areas <slugs>
+--subject <s> --body-file <f>` — dry run by default, add `--live` to send.
+Recipients: verified, non-deleted, `email_issue_updates` on, saved-area
+intersection. Re-running the same `--broadcast-id` resumes (dedupe table)
+instead of double-sending. Never point `NOTIFICATIONS_MAILER=console` at
+production with `--live` (it writes dedupe rows without delivering; the CLI
+refuses unless `--allow-console`). A future admin page replaces this CLI.
+
+## Frontend build
+
+- `npm run build` runs `tsc -b` + `vite build`; deploy `frontend/dist/`.
+- No frontend env vars: the API base is same-origin `/api`.
+
+## Pre-launch smoke
+
+- `cd frontend && npm test && npm run test:e2e` against a production-like
+  stack (e2e starts its own backend with the console mailer).
+- Manually: register → email link lands on the public frontend origin →
+  verify → saved ballot; one-click unsubscribe from a digest email.

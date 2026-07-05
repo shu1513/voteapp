@@ -163,29 +163,62 @@ carries the banner and source lines. Verified live against local backend.
 
 ### Phase 5 — launch hardening *(before any public deploy)*
 
-1. Playwright smoke tests for the full voter loop: address → ballot →
-   election → candidate; register → verify → saved ballot.
-2. Mock API fixtures: no-data, rich-data, unverified, unauthenticated, 429,
-   500 — every screen renders sanely against each.
-3. Error-copy pass: consistent human wording for 401, 403 (verify prompt),
-   422 (address not found), 429 (retry-after), 500.
-4. Accessibility pass: autocomplete combobox, keyboard navigation, focus
-   management on route changes, checkbox/label associations in the legal
-   gates.
-5. Production env checklist: `ADDRESS_API_ALLOWED_ORIGINS`, cookie
-   `Secure`/`SameSite`/domain flags, `AUTH_PUBLIC_BASE_URL`,
-   `NOTIFICATIONS_UNSUBSCRIBE_URL`, API base URL wiring.
-6. **Launch blocker:** attorney review of all three legal documents in
-   docs/legal/ (Disclaimer, Terms of Use, Privacy Policy — all drafted and
-   rendered at /disclaimer, /terms, /privacy) before public launch; fill the
-   [legal entity name] / [contact email] / [state] placeholders.
+*Re-audited 2026-07-04 after reminders + research-area phases A–E landed.
+Error copy is already centralized in `Status.tsx` (422/429/5xx, used by all
+pages) and `VerifyPrompt` covers 403s; the combobox is Headless UI and the
+rank editor ships a KeyboardSensor — so the old error-copy and a11y items
+shrank, while two gaps the original plan missed were found in code.*
+
+1. Quick wins (found by audit, trivial, launch-embarrassing): replace the
+   scaffold `<title>frontend</title>` with per-route titles; add a NotFound
+   catch-all route + router `errorElement` (today an unknown URL or render
+   error is a blank page); add 404 copy to `Status.tsx` (bad election/
+   candidate id currently reads "Something went wrong").
+2. Page-level tests with mocked API for the six untested pages — Ballot,
+   Election, Candidate, SavedBallot, Follows, Settings (686 lines, most
+   complex, zero tests) — covering empty/error/unverified states. (Replaces
+   the old "mock API fixtures" item; libs + Home/Register/VerifyToken are
+   already tested.)
+3. Playwright smoke tests, three loops: address → ballot → election →
+   candidate; register → verify → saved ballot; save areas → my_areas
+   default sort → drag-rank → ballot reorders.
+4. Accessibility pass, narrowed to real gaps: focus management on route
+   changes (currently none), keyboard pass over the rank editor and follows
+   toggles, checkbox/label audit in the legal gates.
+5. Production env checklist + deploy runbook — grew since the original
+   plan: `ADDRESS_API_ALLOWED_ORIGINS`, cookie `Secure`/`SameSite`/domain
+   flags, `AUTH_PUBLIC_BASE_URL`, `NOTIFICATIONS_UNSUBSCRIBE_URL`, API base
+   URL wiring, plus the notification stack that now exists — Redis + BullMQ
+   scheduler workers (digest, new-election alerts, election reminders) need
+   a where-do-workers-run runbook, SES needs unsandboxing (`AUTH_FROM_EMAIL`,
+   region config), and the issue-broadcast CLI needs an operator note.
+6. AI discoverability basics (cheap, ship with launch): `robots.txt` that
+   allows AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended),
+   `llms.txt` at the site root describing the app and key pages, sitemap,
+   descriptive titles/meta per route, schema.org JSON-LD on election and
+   candidate pages. (Full crawlability needs the SSR/prerender item parked
+   in Phase 6 — the SPA ships near-empty HTML until then.)
 
 ### Phase 6 — parked (do not build yet)
 
-In-app notifications feed, SSR/SEO, error-report endpoint UI (backend
-endpoint is a planned follow-up), analytics events (needs privacy-policy
-treatment first), candidate comparison view, frontend for future mobile
-push.
+In-app notifications feed, error-report endpoint UI (backend endpoint is a
+planned follow-up), analytics events (needs privacy-policy treatment
+first), and:
+
+- **SSR/prerender for SEO + AI crawlers** — the SPA serves near-empty HTML,
+  so search engines and AI crawlers (the ones Phase 5's robots.txt/llms.txt
+  welcome) can't read ballot/election/candidate content. Prerendering public
+  routes is likely enough; full SSR only if organic/AI-referral traffic
+  proves out.
+- **MCP server** — remote Model Context Protocol server wrapping the
+  existing anonymous API (`lookup_ballot(address)`, `get_election(id)`,
+  `get_candidate(id)`, `list_research_areas()`) so AI assistants (Claude,
+  and equivalents on other platforms) can answer "what's on my ballot?"
+  with VoteApp data and link back. Thin read-only wrapper — no new data
+  paths. Every tool response must carry the AI-research disclaimer +
+  source/date lines, same as the web UI. Requires the public API deploy;
+  directory listings (Anthropic connectors directory, ChatGPT apps) are a
+  separate application/review step after the server exists.
 
 ## 4. Backend gaps discovered by this audit
 

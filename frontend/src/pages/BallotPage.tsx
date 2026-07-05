@@ -6,6 +6,7 @@ import { AiBanner } from "../components/AiBanner";
 import { ElectionCard } from "../components/ElectionCard";
 import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Public page: only the sorts the anonymous endpoint can honor. A my_areas
 // value (typed into the URL or copied from a signed-in session) falls back to
@@ -13,6 +14,7 @@ import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 const SORT_VALUES: readonly string[] = PUBLIC_BALLOT_SORTS.map((option) => option.value);
 
 export function BallotPage() {
+  useDocumentTitle("Your ballot");
   // Signed-in verified visitors get their saved areas highlighted even on
   // the public ballot; anonymous visitors get an empty set (no highlights).
   const { savedAreaIds } = useMyResearchAreas();

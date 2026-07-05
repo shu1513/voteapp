@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { ErrorNotice } from "../components/Status";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export function ForgotPasswordPage() {
+  useDocumentTitle("Reset your password");
   const [email, setEmail] = useState("");
 
   const forgot = useMutation({
