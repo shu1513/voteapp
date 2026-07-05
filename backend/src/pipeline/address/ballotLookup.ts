@@ -388,6 +388,35 @@ type OfficeResearchAreaSummaryRow = {
   description: string | null;
 };
 
+type MeasureResearchAreaSummaryRow = {
+  election_id: string;
+  research_area_id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+};
+
+function mergeResearchAreaSummaries(
+  officeRows: readonly OfficeResearchAreaSummaryRow[],
+  measureRows: readonly MeasureResearchAreaSummaryRow[]
+): BallotLookupResearchAreaSummary[] {
+  const merged: BallotLookupResearchAreaSummary[] = [];
+  const seen = new Set<string>();
+  for (const row of [...officeRows, ...measureRows]) {
+    if (seen.has(row.research_area_id)) {
+      continue;
+    }
+    seen.add(row.research_area_id);
+    merged.push({
+      id: row.research_area_id,
+      slug: row.slug,
+      name: row.name,
+      description: row.description,
+    });
+  }
+  return merged;
+}
+
 type ElectionResultSummaryRow = {
   election_id: string;
   outcome: string;
@@ -11707,6 +11736,28 @@ export async function lookupBallotSummariesByDistrictIds(
           [officeIds]
         );
 
+  // Ballot-measure elections have no office, so without this their
+  // research_areas would always be empty and area-based personalization
+  // (the my_areas sort, saved-area highlighting) could never match them.
+  const measureResearchAreaResult = await db.query<MeasureResearchAreaSummaryRow>(
+    `
+      SELECT
+        bm.election_id,
+        area.id AS research_area_id,
+        area.slug,
+        area.name,
+        area.description
+      FROM public.ballot_measures AS bm
+      JOIN public.ballot_measure_research_area_tags AS tag
+        ON tag.ballot_measure_id = bm.id
+      JOIN public.research_areas AS area
+        ON area.id = tag.research_area_id
+      WHERE bm.election_id = ANY($1::uuid[])
+      ORDER BY bm.election_id, area.slug
+    `,
+    [electionIds]
+  );
+
   const resultSummaryResult = await db.query<ElectionResultSummaryRow>(
     `
       WITH all_results AS (
@@ -11764,6 +11815,7 @@ export async function lookupBallotSummariesByDistrictIds(
     }
   }
   const researchAreasByOffice = groupBy(officeResearchAreaResult.rows, (row) => row.office_id);
+  const measureResearchAreasByElection = groupBy(measureResearchAreaResult.rows, (row) => row.election_id);
   const resultOutcomeByElection = new Map(resultSummaryResult.rows.map((row) => [row.election_id, row.outcome]));
   const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionResult.rows);
 
@@ -11800,14 +11852,13 @@ export async function lookupBallotSummariesByDistrictIds(
       has_results: currentResultOutcome !== null,
       current_result_outcome: currentResultOutcome,
       office,
-      research_areas: row.office_id
-        ? (researchAreasByOffice.get(row.office_id) ?? []).map((area) => ({
-            id: area.research_area_id,
-            slug: area.slug,
-            name: area.name,
-            description: area.description,
-          }))
-        : [],
+      // Office links first, then ballot-measure tags not already present
+      // (deduped by area id); both sources arrive slug-ordered, so the
+      // combined list stays deterministic.
+      research_areas: mergeResearchAreaSummaries(
+        row.office_id ? (researchAreasByOffice.get(row.office_id) ?? []) : [],
+        measureResearchAreasByElection.get(row.election_id) ?? []
+      ),
       historical_competitiveness: historicalCompetitiveness,
       vote_power: calculateVotePower({
         raceType: row.race_type,
