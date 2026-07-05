@@ -2,17 +2,19 @@
 DRAFT — pending attorney review before public launch.
 Version must stay in lockstep with disclaimer.md and the backend's
 CURRENT_TERMS_VERSION; the three documents are accepted together by one
-checkbox. Placeholders: [legal entity name], [contact email], [state].
+checkbox. The contact mailbox (contact@impactperdollar.com) must exist and
+be monitored before launch. A governing-law state, venue, and any
+dispute-resolution provisions are to be added only on advice of counsel.
 -->
 
-# VoteApp Terms of Use
+# impactperdollar Terms of Use
 
-**Last updated:** July 3, 2026
+**Last updated:** July 5, 2026
 **Version:** 1.0
 
 ## 1. Acceptance of these Terms
 
-These Terms of Use ("Terms") are an agreement between you and [legal entity name] ("VoteApp," "we," "us," or "our") governing your use of the VoteApp website and services (the "Service"). By checking an agreement box, creating an account, submitting an address or search, or otherwise using the Service, you accept these Terms, the [Privacy Policy](/privacy), and the [AI Research and Election Information Disclaimer](/disclaimer) (the "Disclaimer"), which is incorporated into these Terms by reference. You consent to entering this agreement electronically.
+These Terms of Use ("Terms") are an agreement between you and the operator of the impactperdollar service ("impactperdollar," "we," "us," or "our") governing your use of the impactperdollar website and services (the "Service"). By checking an agreement box, creating an account, submitting an address or search, or otherwise using the Service, you accept these Terms, the [Privacy Policy](/privacy), and the [AI Research and Election Information Disclaimer](/disclaimer) (the "Disclaimer"), which is incorporated into these Terms by reference. You consent to entering this agreement electronically.
 
 If you do not agree, do not use the Service.
 
@@ -22,11 +24,11 @@ You must be at least 18 years old to use the Service. By using it, you represent
 
 ## 3. The Service
 
-VoteApp provides AI-assisted, nonpartisan informational research about elections, candidates, ballot measures, campaign finance, and voting districts. The nature, limitations, and proper use of that information — including that it is not official election information, not professional advice, and must be verified with official sources — are described in the Disclaimer, which controls on those subjects.
+impactperdollar provides AI-assisted, nonpartisan informational research about elections, candidates, ballot measures, campaign finance, and voting districts. The nature, limitations, and proper use of that information — including that it is not official election information, not professional advice, and must be verified with official sources — are described in the Disclaimer, which controls on those subjects.
 
 ## 4. Accounts
 
-You agree to provide accurate account information and to keep your password confidential. You are responsible for activity under your account. Notify us promptly at [contact email] if you believe your account has been compromised. You may delete your account at any time in account settings; we may suspend or terminate accounts that violate these Terms.
+You agree to provide accurate account information and to keep your password confidential. You are responsible for activity under your account. Notify us promptly at contact@impactperdollar.com if you believe your account has been compromised. You may delete your account at any time in account settings; we may suspend or terminate accounts that violate these Terms.
 
 ## 5. Acceptable use
 
@@ -35,12 +37,12 @@ You agree not to:
 - use the Service or its content for any purpose prohibited by Section 13 ("Prohibited misuse") of the Disclaimer, including voter suppression, voter deception, intimidation, harassment, impersonation of election officials, or unlawful discrimination;
 - use campaign finance information obtained through the Service for prohibited solicitation or commercial use of contributor information;
 - probe, disrupt, overload, or interfere with the Service, its security features, or its rate limits, or access it through automated means at volumes a person could not produce;
-- scrape, harvest, resell, or republish the Service's content at scale, or misrepresent VoteApp content as official election information;
+- scrape, harvest, resell, or republish the Service's content at scale, or misrepresent impactperdollar content as official election information;
 - attempt to access another person's account or data.
 
 ## 6. Intellectual property
 
-The Service, including its software, design, compiled content, and derived metrics, is owned by [legal entity name] or its licensors and is protected by law. We grant you a limited, revocable, non-exclusive, non-transferable license to use the Service for personal, non-commercial civic purposes. Public records and third-party sources referenced by the Service remain subject to their own terms.
+The Service, including its software, design, compiled content, and derived metrics, is owned by impactperdollar's operator or its licensors and is protected by law. We grant you a limited, revocable, non-exclusive, non-transferable license to use the Service for personal, non-commercial civic purposes. Public records and third-party sources referenced by the Service remain subject to their own terms.
 
 ## 7. Third-party services and links
 
@@ -52,7 +54,7 @@ The warranty disclaimers, limitation of liability, and acknowledgment and assump
 
 ## 9. Indemnification
 
-To the maximum extent permitted by law, you agree to indemnify and hold harmless [legal entity name] and its officers, employees, and contractors from losses, liabilities, and reasonable expenses (including attorneys' fees) arising from your violation of these Terms or your unlawful use of the Service.
+To the maximum extent permitted by law, you agree to indemnify and hold harmless impactperdollar's operator and its officers, employees, and contractors from losses, liabilities, and reasonable expenses (including attorneys' fees) arising from your violation of these Terms or your unlawful use of the Service.
 
 ## 10. Termination
 
@@ -64,12 +66,12 @@ We may modify or discontinue the Service at any time. We may update these Terms;
 
 ## 12. Governing law and disputes
 
-These Terms are governed by the laws of the State of [state], without regard to conflict-of-law rules. Courts located in [state] have exclusive jurisdiction over disputes arising from these Terms or the Service, and you consent to their jurisdiction. *(Dispute-resolution provisions such as arbitration or class-action waivers, if any, will be added only on advice of counsel.)*
+These Terms are governed by the laws of the United States and, where state law applies, applicable state law, without regard to conflict-of-law rules. *(A specific governing-law state and venue, and dispute-resolution provisions such as arbitration or class-action waivers, if any, will be added only on advice of counsel.)*
 
 ## 13. Miscellaneous
 
-If any provision of these Terms is held unenforceable, the remainder stays in effect. Our failure to enforce a provision is not a waiver. These Terms, the Privacy Policy, and the Disclaimer are the entire agreement between you and us about the Service. You may not assign these Terms; we may assign them in connection with a reorganization or transfer of the Service.
+If any provision of these Terms is held unenforceable, the remainder stays in effect. Our failure to enforce a provision is not a waiver. These Terms, the Privacy Policy, and the Disclaimer are the entire agreement between you and us about the Service. You may not assign these Terms; we may assign them in connection with a reorganization or transfer of the Service. If you send us feedback, suggestions, or ideas about the Service, we may use them without restriction or obligation to you.
 
 ## 14. Contact
 
-Questions about these Terms: [contact email].
+Questions about these Terms: contact@impactperdollar.com.
