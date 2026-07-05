@@ -51,6 +51,7 @@ const SCHOOL_BOARD_CANONICAL_NAME = "School Board Member";
 const STATE_LEVEL_JUDGE_CANONICAL_NAME = "State Level Judge";
 const COUNTY_LEVEL_JUDGE_CANONICAL_NAME = "County Level Judge";
 const PLACE_LEVEL_JUDGE_CANONICAL_NAME = "Place Level Judge";
+const GOVERNOR_CANONICAL_NAME = "Governor";
 const JUDGE_CANONICAL_NAMES = new Set([
   STATE_LEVEL_JUDGE_CANONICAL_NAME,
   COUNTY_LEVEL_JUDGE_CANONICAL_NAME,
@@ -278,6 +279,18 @@ function isJudicialCompatibleTitle(titleMatcherKey: string): boolean {
   return !NON_JUDICIAL_TITLE_MARKERS.some((pattern) => pattern.test(titleMatcherKey));
 }
 
+function isJointGovernorTicketTitle(titleMatcherKey: string): boolean {
+  const withoutLieutenantGovernor = titleMatcherKey
+    .replace(/\blieutenant governor\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return (
+    hasPhrase(withoutLieutenantGovernor, "governor") &&
+    hasPhrase(titleMatcherKey, "lieutenant governor") &&
+    !hasPhrase(titleMatcherKey, "lieutenant governor only")
+  );
+}
+
 function judgeCanonicalNameForScope(scope: ElectionDistrictType): string | null {
   if (scope === "statewide") {
     return STATE_LEVEL_JUDGE_CANONICAL_NAME;
@@ -453,6 +466,20 @@ export class OfficeMatcher {
 
     const aliases = await this.loadAliases(input.scope);
     const titleMatcherKey = toMatcherKeyFromBallotTitle(input);
+    if (
+      input.scope === "statewide" &&
+      input.discoveryContestFamily === "non_judicial_office" &&
+      isJointGovernorTicketTitle(titleMatcherKey)
+    ) {
+      const match = toSingleScopeOfficeMatch(
+        findSingleScopeOffice(await this.loadOffices(input.scope), GOVERNOR_CANONICAL_NAME),
+        normalizedAlias,
+        titleMatcherKey
+      );
+      if (match) {
+        return match;
+      }
+    }
     let exactOfficeId = aliases.get(normalizedAlias);
     if (!exactOfficeId && titleMatcherKey.length > 0 && titleMatcherKey !== normalizedAlias) {
       exactOfficeId = aliases.get(titleMatcherKey);

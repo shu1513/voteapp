@@ -103,6 +103,70 @@ describe("OfficeMatcher", () => {
     expect(result.method).toBe("alias_exact");
   });
 
+  it("routes a joint governor ticket to Governor even if a learned alias points at Lieutenant Governor", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        statewide: [
+          {
+            office_id: "office-lt-governor",
+            normalized_alias: normalizeElectionTitleKey("Governor and Lieutenant Governor"),
+          },
+        ],
+      },
+      officesByScope: {
+        statewide: [
+          { id: "office-governor", canonical_name: "Governor" },
+          { id: "office-lt-governor", canonical_name: "Lieutenant Governor" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "statewide",
+      districtName: "Ohio",
+      state: "OH",
+      officialBallotTitle: "Governor and Lieutenant Governor",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-governor");
+    expect(result.method).toBe("deterministic_fallback");
+    expect(result.shouldPersistAlias).toBe(true);
+  });
+
+  it("does not route a standalone lieutenant governor title through the joint-ticket fallback", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        statewide: [
+          {
+            office_id: "office-lt-governor",
+            normalized_alias: normalizeElectionTitleKey("Lieutenant Governor"),
+          },
+        ],
+      },
+      officesByScope: {
+        statewide: [
+          { id: "office-governor", canonical_name: "Governor" },
+          { id: "office-lt-governor", canonical_name: "Lieutenant Governor" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "statewide",
+      districtName: "Alabama",
+      state: "AL",
+      officialBallotTitle: "Lieutenant Governor",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-lt-governor");
+    expect(result.method).toBe("alias_exact");
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
 
   it("returns exact alias match when normalized alias exists", async () => {
     const title = "California State Governor";
