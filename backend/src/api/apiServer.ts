@@ -1420,7 +1420,7 @@ function mapExpressErrorToResponse(error: unknown): ApiResponse {
   return toErrorResponse(mapped.statusCode, mapped.code, mapped.message);
 }
 
-function createApiErrorMiddleware() {
+function createApiErrorMiddleware(options: AddressApiServerOptions) {
   return (
     error: unknown,
     request: Request,
@@ -1449,6 +1449,17 @@ function createApiErrorMiddleware() {
         `[api] unexpected error request_id=${requestId} ${request.method} ${request.path}`,
         error instanceof Error ? (error.stack ?? error.message) : String(error)
       );
+      // Error-monitoring hook (Sentry in production). Failure here must
+      // never break the response.
+      try {
+        options.captureUnexpectedError?.(error, {
+          requestId,
+          method: request.method,
+          path: request.path,
+        });
+      } catch {
+        // Monitoring is best-effort by definition.
+      }
       const body = mapped.body as ApiErrorBody;
       mapped = {
         ...mapped,
@@ -1480,7 +1491,7 @@ export function createApiApp(options: AddressApiServerOptions): Express {
   app.use((request, response, next) => {
     void dispatchApiRequest(request, response, options).catch(next);
   });
-  app.use(createApiErrorMiddleware());
+  app.use(createApiErrorMiddleware(options));
 
   return app;
 }

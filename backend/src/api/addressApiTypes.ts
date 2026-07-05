@@ -138,6 +138,9 @@ export type AddressApiServerOptions = {
   allowedOrigins?: readonly string[];
   authSessionCookieOptions?: Omit<AuthSessionCookieOptions, "maxAgeSeconds">;
   logDiagnostics?: (diagnostics: AddressResolutionDiagnostics) => void;
+  /** Called for unexpected (mapped-500) errors after the local log line;
+   * the error-monitoring hook. Must not throw. */
+  captureUnexpectedError?: (error: unknown, context: { requestId: string; method: string; path: string }) => void;
   rateLimit?: (input: AddressApiRateLimitInput) => AddressApiRateLimitResult;
   authRateLimit?: (input: AuthApiRateLimitInput) => AuthApiRateLimitResult;
   resolveClientIp?: (input: AddressApiClientIpInput) => string;

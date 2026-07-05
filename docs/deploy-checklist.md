@@ -31,6 +31,9 @@ deploy needs beyond `git pull`. Database migrations are covered separately in
 | `AUTH_FROM_EMAIL` / `AUTH_SES_REGION` | verified SES identity + region (today: impactperdollar.com in us-east-2) |
 | `GOOGLE_PLACES_API_KEY` | address autocomplete + resolve |
 | `NOTIFICATIONS_UNSUBSCRIBE_SECRET` | ≥32 chars; shared by the API server and every mailer job below |
+| `SENTRY_DSN` | error monitoring (API server + workers); unset = disabled. Prod DSN flips on only after the staging scrub test (plan-error-monitoring.md) |
+| `DEPLOY_ENV` | Sentry `environment` label (e.g. `production`, `staging`) |
+| `DEPLOY_RELEASE` | Sentry `release` — the deployed git SHA |
 
 ## Email / SES
 

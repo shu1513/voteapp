@@ -1,6 +1,8 @@
 import { createCandidateFollowDigestSchedulerWorker } from "../scheduler/candidateFollowDigestScheduler.js";
+import { captureError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
 
 async function main(): Promise<void> {
+  initSentryFromEnv("worker");
   const worker = createCandidateFollowDigestSchedulerWorker();
 
   worker.on("ready", () => {
@@ -19,10 +21,12 @@ async function main(): Promise<void> {
 
   worker.on("failed", (job, error) => {
     console.error(`candidate_follow_digest scheduler worker failed jobId=${job?.id ?? "unknown"}:`, error);
+    captureError(error, { worker: "candidate_follow_digest", event: "failed", job_id: job?.id ?? "unknown" });
   });
 
   worker.on("error", (error) => {
     console.error("candidate_follow_digest scheduler worker error:", error);
+    captureError(error, { worker: "candidate_follow_digest", event: "error" });
   });
 
   const shutdown = async (): Promise<void> => {
@@ -44,6 +48,12 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-  console.error("candidate_follow_digest scheduler worker crashed:", error);
-  process.exit(1);
+  console.error(
+    "candidate_follow_digest scheduler worker crashed:",
+    error instanceof Error ? (error.stack ?? error.message) : String(error)
+  );
+  captureError(error, { worker: "candidate_follow_digest", event: "crashed" });
+  void flushSentry().finally(() => {
+    process.exit(1);
+  });
 });

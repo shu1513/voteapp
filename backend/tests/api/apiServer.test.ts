@@ -538,8 +538,9 @@ describe("createApiApp", () => {
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     try {
       const resolveAddress = vi.fn().mockRejectedValue(new Error("database went sideways"));
+      const captureUnexpectedError = vi.fn();
 
-      const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      const response = await invokeExpressApp(createApiApp({ resolveAddress, captureUnexpectedError }), {
         method: "POST",
         path: "/api/address/resolve",
         body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
@@ -561,6 +562,13 @@ describe("createApiApp", () => {
       // Stack string, not the error object: custom enumerable properties on
       // wrapped errors must not reach the log.
       expect(loggedError).toEqual(expect.stringContaining("database went sideways"));
+      // The monitoring hook receives the same id the user can report.
+      expect(captureUnexpectedError).toHaveBeenCalledTimes(1);
+      expect(captureUnexpectedError).toHaveBeenCalledWith(expect.any(Error), {
+        requestId: body.error.request_id,
+        method: "POST",
+        path: "/api/address/resolve",
+      });
     } finally {
       consoleError.mockRestore();
     }
@@ -572,8 +580,9 @@ describe("createApiApp", () => {
       const resolveAddress = vi
         .fn()
         .mockRejectedValue(new CensusAddressGeocoderError("timeout", "Census geocoder timed out"));
+      const captureUnexpectedError = vi.fn();
 
-      const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      const response = await invokeExpressApp(createApiApp({ resolveAddress, captureUnexpectedError }), {
         method: "POST",
         path: "/api/address/resolve",
         body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
@@ -583,6 +592,7 @@ describe("createApiApp", () => {
       expect(response.statusCode).toBe(503);
       expect((response.body as { error: { request_id?: string } }).error.request_id).toBeUndefined();
       expect(consoleError).not.toHaveBeenCalled();
+      expect(captureUnexpectedError).not.toHaveBeenCalled();
     } finally {
       consoleError.mockRestore();
     }

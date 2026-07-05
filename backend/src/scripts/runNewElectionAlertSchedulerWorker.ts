@@ -1,6 +1,8 @@
 import { createNewElectionAlertSchedulerWorker } from "../scheduler/newElectionAlertScheduler.js";
+import { captureError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
 
 async function main(): Promise<void> {
+  initSentryFromEnv("worker");
   const worker = createNewElectionAlertSchedulerWorker();
 
   worker.on("ready", () => {
@@ -17,10 +19,12 @@ async function main(): Promise<void> {
 
   worker.on("failed", (job, error) => {
     console.error(`new_election_alert scheduler worker failed jobId=${job?.id ?? "unknown"}:`, error);
+    captureError(error, { worker: "new_election_alert", event: "failed", job_id: job?.id ?? "unknown" });
   });
 
   worker.on("error", (error) => {
     console.error("new_election_alert scheduler worker error:", error);
+    captureError(error, { worker: "new_election_alert", event: "error" });
   });
 
   const shutdown = async (): Promise<void> => {
@@ -42,6 +46,12 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-  console.error("new_election_alert scheduler worker crashed:", error);
-  process.exit(1);
+  console.error(
+    "new_election_alert scheduler worker crashed:",
+    error instanceof Error ? (error.stack ?? error.message) : String(error)
+  );
+  captureError(error, { worker: "new_election_alert", event: "crashed" });
+  void flushSentry().finally(() => {
+    process.exit(1);
+  });
 });

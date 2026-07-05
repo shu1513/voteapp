@@ -299,6 +299,7 @@
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1078.0",
     "@node-rs/argon2": "^2.0.2",
+    "@sentry/node": "^10.63.0",
     "bullmq": "^5.71.1",
     "express": "^5.2.1",
     "pg": "^8.13.1",
