@@ -560,12 +560,17 @@ async function main(): Promise<void> {
   // process manager's log shows WHY the server died. Same exit-and-restart
   // semantics as the defaults — state after an uncaught error is unknown,
   // so limping on is worse than restarting.
+  // Stack string only, matching the API error middleware: raw objects can
+  // print enumerable custom properties (request context, payloads) into
+  // the process log.
+  const describeCrash = (cause: unknown): string =>
+    cause instanceof Error ? (cause.stack ?? cause.message) : String(cause);
   process.on("unhandledRejection", (reason) => {
-    console.error("address API server unhandled rejection:", reason);
+    console.error("address API server unhandled rejection:", describeCrash(reason));
     process.exit(1);
   });
   process.on("uncaughtException", (error) => {
-    console.error("address API server uncaught exception:", error);
+    console.error("address API server uncaught exception:", describeCrash(error));
     process.exit(1);
   });
 }
