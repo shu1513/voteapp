@@ -558,7 +558,9 @@ describe("createApiApp", () => {
       expect(logLine).toContain(`request_id=${body.error.request_id}`);
       expect(logLine).toContain("POST /api/address/resolve");
       expect(logLine).not.toContain("Harlan Ave");
-      expect(loggedError).toBeInstanceOf(Error);
+      // Stack string, not the error object: custom enumerable properties on
+      // wrapped errors must not reach the log.
+      expect(loggedError).toEqual(expect.stringContaining("database went sideways"));
     } finally {
       consoleError.mockRestore();
     }

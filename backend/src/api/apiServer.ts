@@ -1442,9 +1442,12 @@ function createApiErrorMiddleware() {
       // a user report ("I saw an error") to this log entry. Method + path
       // only; request bodies can carry addresses and credentials.
       const requestId = randomUUID();
+      // Stack only (message + frames), not the whole object: wrapped errors
+      // can carry enumerable custom properties (payloads, upstream request
+      // context) that do not belong in logs.
       console.error(
         `[api] unexpected error request_id=${requestId} ${request.method} ${request.path}`,
-        error
+        error instanceof Error ? (error.stack ?? error.message) : String(error)
       );
       const body = mapped.body as ApiErrorBody;
       mapped = {
