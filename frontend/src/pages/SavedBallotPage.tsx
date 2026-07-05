@@ -17,6 +17,7 @@ import { useMe } from "../lib/useMe";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingDistricts";
 import { PRIVACY_NOTICE } from "../legal/copy";
 import { VerifyPrompt } from "../components/VerifyPrompt";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
 
@@ -155,6 +156,7 @@ function AddressForm({ compact }: { compact: boolean }) {
 }
 
 export function SavedBallotPage() {
+  useDocumentTitle("Your saved ballot");
   const { me, isLoading, isError: meError, refetch: refetchMe } = useMe();
   const queryClient = useQueryClient();
   // Same key as BallotPreferenceControls: shared cache entry, no extra fetch.

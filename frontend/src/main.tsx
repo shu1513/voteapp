@@ -17,6 +17,8 @@ import { VerifyTokenPage } from "./pages/VerifyTokenPage";
 import { SavedBallotPage } from "./pages/SavedBallotPage";
 import { FollowsPage } from "./pages/FollowsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import { RouteError } from "./components/RouteError";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +32,7 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     element: <App />,
+    errorElement: <RouteError />,
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/ballot", element: <BallotPage /> },
@@ -65,6 +68,7 @@ const router = createBrowserRouter([
       { path: "/me/ballot", element: <SavedBallotPage /> },
       { path: "/me/follows", element: <FollowsPage /> },
       { path: "/me/settings", element: <SettingsPage /> },
+      { path: "*", element: <NotFoundPage /> },
     ],
   },
 ]);

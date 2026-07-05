@@ -6,6 +6,7 @@ import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { formatElectionDate } from "../lib/format";
 import type { CandidateFollow } from "../api/types";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 function NotifyToggle({
   label,
@@ -119,6 +120,7 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
 }
 
 export function FollowsPage() {
+  useDocumentTitle("Candidates you follow");
   const { me, isLoading } = useMe();
   const { follows, isLoading: followsLoading, isError } = useFollows();
 

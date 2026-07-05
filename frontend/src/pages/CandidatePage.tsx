@@ -11,6 +11,7 @@ import { formatElectionDate } from "../lib/format";
 import { useFollows } from "../lib/useFollows";
 import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { UNRANKED_RESEARCH_AREA_RANK } from "../lib/researchAreaScoring";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 type RecordView = "by_issue" | "my_issues" | "newest";
 
@@ -72,6 +73,7 @@ export function CandidatePage() {
     queryFn: () => apiRequest<CandidateDetail>(`/api/candidates/${candidateId}`),
     enabled: Boolean(candidateId),
   });
+  useDocumentTitle(detail.data?.candidate.display_name);
 
   if (detail.isPending) {
     return <LoadingNotice text="Loading candidate…" />;

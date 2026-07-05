@@ -24,6 +24,7 @@ import type { EmailPreferences, ResearchAreaCatalog, ResearchAreaPreferencesResu
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { purgeAccountScopedQueries, useMe, type Me } from "../lib/useMe";
 import { MAX_RESEARCH_AREA_RANK } from "../lib/researchAreaScoring";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Account settings. Sections mirror the backend's gating: profile, password,
 // email change, sessions, and delete work for unverified users too (fixing a
@@ -642,6 +643,7 @@ function DangerSection() {
 }
 
 export function SettingsPage() {
+  useDocumentTitle("Settings");
   const { me, isLoading } = useMe();
 
   if (isLoading || me === undefined) {

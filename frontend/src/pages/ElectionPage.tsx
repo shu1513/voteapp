@@ -11,6 +11,7 @@ import { formatDistrictType, formatElectionDate, formatMoney, formatOutcome, for
 import { useFollows } from "../lib/useFollows";
 import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { aggregateRecordAreaStances, scoreStanceDirection } from "../lib/researchAreaScoring";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 type CandidateSort = "ballot" | "for_mine" | "against_mine";
 
@@ -28,6 +29,7 @@ export function ElectionPage() {
     queryFn: () => apiRequest<ElectionDetail>(`/api/elections/${electionId}`),
     enabled: Boolean(electionId),
   });
+  useDocumentTitle(election.data?.official_ballot_title);
 
   if (election.isPending) {
     return <LoadingNotice text="Loading election…" />;

@@ -14,6 +14,7 @@ import {
   PRE_SEARCH_CHECKBOX_LABEL,
   PRIVACY_NOTICE,
 } from "../legal/copy";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 function readStoredAcceptance(): boolean {
   try {
@@ -24,6 +25,7 @@ function readStoredAcceptance(): boolean {
 }
 
 export function HomePage() {
+  useDocumentTitle("Find what's on your ballot");
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { me } = useMe();
