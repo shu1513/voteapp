@@ -342,13 +342,20 @@ function ResearchAreasSection() {
       }),
     onSuccess: (saved) => {
       queryClient.setQueryData(["me", "research-area-preferences"], saved);
+      // The saved ballot is server-sorted by these preferences (my_areas),
+      // and the ballot-preferences default can flip to my_areas when the
+      // first area is saved — both must refetch, not wait out staleTime.
+      void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+      void queryClient.invalidateQueries({ queryKey: ["me", "ballot-preferences"] });
     },
     onSettled: () => {
       setPending(null);
     },
   });
   // Cross-mount in-flight guard, same as the other full-replace preference
-  // writes: controls stay locked until the older PUT settles.
+  // writes: controls stay locked until the older PUT settles. (Render value —
+  // save() re-checks the mutation cache imperatively to close the gap before
+  // this re-renders.)
   const saving = useIsMutating({ mutationKey: ["put-research-area-preferences"] }) > 0;
   // Mouse: drag starts after 4px of movement, so the remove button stays a
   // plain click. Touch: press-and-hold (200ms) then drag, so the list does
@@ -388,8 +395,10 @@ function ResearchAreasSection() {
     // Controls disable while a PUT is in flight, but a drag that was already
     // in progress when the save started can still drop; committing it would
     // race the full-list replace, so it is discarded like any other locked
-    // edit.
-    if (saving) {
+    // edit. Checked against the mutation cache, not the rendered `saving`
+    // value: a handler created before the disabling re-render could otherwise
+    // slip through in the same tick as another edit's mutate().
+    if (queryClient.isMutating({ mutationKey: ["put-research-area-preferences"] }) > 0) {
       return;
     }
     setPending(nextIds);
