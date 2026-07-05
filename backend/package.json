@@ -28,6 +28,7 @@
     "notifications:digest:scheduler:worker": "tsx src/scripts/runCandidateFollowDigestSchedulerWorker.ts",
     "notifications:new-elections": "tsx src/scripts/sendNewElectionAlerts.ts",
     "notifications:new-elections:scheduler:upsert": "tsx src/scripts/upsertNewElectionAlertDailyScheduler.ts",
+    "notifications:broadcast": "tsx src/scripts/sendIssueBroadcast.ts",
     "notifications:reminders": "tsx src/scripts/sendElectionReminders.ts",
     "notifications:reminders:scheduler:upsert": "tsx src/scripts/upsertElectionReminderDailyScheduler.ts",
     "notifications:reminders:scheduler:worker": "tsx src/scripts/runElectionReminderSchedulerWorker.ts",

@@ -111,7 +111,8 @@ export type AddressApiServerOptions = {
    * "execute" turns the given preference off. The preference names which
    * opt-in the link disables ("digest" = candidate-follow digest,
    * "new_election_alerts" = district new-election alerts,
-   * "election_reminders" = day-before election reminders); it rides the URL
+   * "election_reminders" = day-before election reminders,
+   * "issue_updates" = operator-sent issue broadcasts); it rides the URL
    * unsigned, which is safe because the link holder is the inbox owner and
    * can only turn preferences OFF. Returns "ok" or "invalid_token"; a valid
    * token for a since-deleted user reports "ok" so the page does not leak

@@ -4,14 +4,16 @@ import { isUuid } from "../../utils/uuid.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
-// The three email opt-ins stored directly on public.users (001_init).
-// email_digest gates the candidate-follow digest sender; the other two are
-// reserved for their features but exposed here so the UI can manage all
-// email settings in one place.
+// The email opt-ins stored directly on public.users (001_init, 154).
+// email_digest gates the candidate-follow digest sender,
+// email_election_reminders the day-before reminders,
+// email_new_election_alerts the district new-election alerts, and
+// email_issue_updates the operator-sent issue broadcasts.
 export type UserEmailPreferences = {
   email_digest: boolean;
   email_election_reminders: boolean;
   email_new_election_alerts: boolean;
+  email_issue_updates: boolean;
 };
 
 export type UserEmailPreferencesErrorCode = "invalid_user_id" | "user_not_found";
@@ -39,7 +41,7 @@ export async function getUserEmailPreferences(db: Queryable, userId: string): Pr
 
   const result = await db.query<UserEmailPreferences>(
     `
-      SELECT email_digest, email_election_reminders, email_new_election_alerts
+      SELECT email_digest, email_election_reminders, email_new_election_alerts, email_issue_updates
       FROM public.users
       WHERE id = $1::uuid
         AND deleted_at IS NULL
@@ -55,6 +57,7 @@ export async function getUserEmailPreferences(db: Queryable, userId: string): Pr
     email_digest: row.email_digest,
     email_election_reminders: row.email_election_reminders,
     email_new_election_alerts: row.email_new_election_alerts,
+    email_issue_updates: row.email_issue_updates,
   };
 }
 
@@ -72,16 +75,18 @@ export async function setUserEmailPreferences(
         email_digest = $2,
         email_election_reminders = $3,
         email_new_election_alerts = $4,
+        email_issue_updates = $5,
         updated_at = now()
       WHERE id = $1::uuid
         AND deleted_at IS NULL
-      RETURNING email_digest, email_election_reminders, email_new_election_alerts
+      RETURNING email_digest, email_election_reminders, email_new_election_alerts, email_issue_updates
     `,
     [
       normalizedUserId,
       preferences.email_digest,
       preferences.email_election_reminders,
       preferences.email_new_election_alerts,
+      preferences.email_issue_updates,
     ]
   );
 
@@ -93,6 +98,7 @@ export async function setUserEmailPreferences(
     email_digest: row.email_digest,
     email_election_reminders: row.email_election_reminders,
     email_new_election_alerts: row.email_new_election_alerts,
+    email_issue_updates: row.email_issue_updates,
   };
 }
 
@@ -107,6 +113,29 @@ export async function disableUserEmailDigest(db: Queryable, userId: string): Pro
     `
       UPDATE public.users
       SET email_digest = false, updated_at = now()
+      WHERE id = $1::uuid
+        AND deleted_at IS NULL
+    `,
+    [normalizedUserId]
+  );
+
+  if ((result.rowCount ?? 0) === 0) {
+    throw new UserEmailPreferencesError("user_not_found", "User not found");
+  }
+}
+
+/**
+ * One-click unsubscribe target for operator-sent issue broadcasts: flips only
+ * email_issue_updates. Idempotent; unknown/deleted users report
+ * user_not_found.
+ */
+export async function disableUserEmailIssueUpdates(db: Queryable, userId: string): Promise<void> {
+  const normalizedUserId = normalizeUserId(userId);
+
+  const result = await db.query(
+    `
+      UPDATE public.users
+      SET email_issue_updates = false, updated_at = now()
       WHERE id = $1::uuid
         AND deleted_at IS NULL
     `,

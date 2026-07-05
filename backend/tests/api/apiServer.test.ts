@@ -3006,7 +3006,12 @@ describe("GET /api/me", () => {
 
 describe("email preferences and unsubscribe endpoints", () => {
   const userId = "99999999-9999-4999-8999-999999999999";
-  const prefs = { email_digest: true, email_election_reminders: true, email_new_election_alerts: false };
+  const prefs = {
+    email_digest: true,
+    email_election_reminders: true,
+    email_new_election_alerts: false,
+    email_issue_updates: true,
+  };
 
   it("serves and stores email preferences via GET and PUT /api/me/email-preferences", async () => {
     const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
@@ -3145,6 +3150,29 @@ describe("email preferences and unsubscribe endpoints", () => {
       "execute",
       "election_reminders"
     );
+  });
+
+  it("scopes the unsubscribe to issue updates via the pref param", async () => {
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+    const app = createApiApp({ unsubscribeFromEmailNotifications });
+
+    const confirm = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=issue_updates",
+    });
+    expect(confirm.statusCode).toBe(200);
+    expect(String(confirm.rawBody)).toContain("emails about your saved issues");
+    // The confirmation form must POST back with the same scope.
+    expect(String(confirm.rawBody)).toContain("pref=issue_updates");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", "issue_updates");
+
+    const execute = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=issue_updates",
+    });
+    expect(execute.statusCode).toBe(200);
+    expect(String(execute.rawBody)).toContain("unsubscribed from emails about your saved issues");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith("v1.abc.def", "execute", "issue_updates");
   });
 
   it("rejects an unrecognized pref value instead of flipping a different opt-in", async () => {
