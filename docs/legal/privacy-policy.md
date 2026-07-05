@@ -9,12 +9,12 @@ adoption; once a specific analytics provider is chosen, name it in Section 3
 and confirm the "no advertising use" configuration claims hold for it.
 -->
 
-# impactperdollar Privacy Policy
+# VoteApp Privacy Policy
 
 **Last updated:** July 5, 2026
 **Version:** 1.0
 
-This Privacy Policy describes how the operator of the impactperdollar service ("impactperdollar," "we," "us") collects, uses, and shares information when you use the impactperdollar website and services (the "Service").
+This Privacy Policy describes how impactperdollar, the operator of the VoteApp service ("VoteApp," "we," "us"), collects, uses, and shares information when you use the VoteApp website and services (the "Service").
 
 ## 1. Information we collect
 
@@ -26,7 +26,7 @@ This Privacy Policy describes how the operator of the impactperdollar service ("
 
 **Technical information.** IP address, browser user agent, and request logs collected automatically for security, rate limiting, and abuse prevention. A session cookie (httpOnly) keeps you signed in. We do not use advertising or cross-site tracking cookies.
 
-**Usage analytics.** We collect information about how the Service is used — such as pages viewed, features used, referring site, device and browser type, and approximate location derived from IP address — to understand usage and improve the Service. Analytics may use cookies or similar identifiers. Analytics data is not used to build advertising profiles, is not combined with your account's civic or political preferences (follows, research-area interests) for any third party's purposes, and is not shared with advertisers.
+**Usage analytics.** We may collect information about how the Service is used — such as pages viewed, features used, referring site, device and browser type, and approximate location derived from IP address — to understand usage and improve the Service. Analytics may use cookies or similar identifiers. Analytics data is not used to build advertising profiles, is not combined with your account's civic or political preferences (follows, research-area interests) for any third party's purposes, and is not shared with advertisers.
 
 ## 2. How we use information
 
@@ -39,7 +39,7 @@ We share information only with the processors needed to run the Service:
 - **U.S. Census Bureau geocoder** — receives the address text you enter, to locate your districts.
 - **Google Places (autocomplete)** — receives the address text you type when address suggestions are enabled; requests are proxied through our servers so Google does not receive your IP address from your browser.
 - **Amazon Web Services (SES)** — receives your email address to deliver account and notification emails.
-- **Analytics provider** — receives usage information described in Section 1 ("Usage analytics") to help us understand and improve how the Service is used. We configure analytics so that this data is not used for the provider's own advertising purposes.
+- **Analytics provider** — when analytics is enabled, receives the usage information described in Section 1 ("Usage analytics") to help us understand and improve how the Service is used. We configure analytics so that this data is not used for the provider's own advertising purposes, and we will name the provider here before or when analytics is enabled.
 - **Infrastructure providers** — hosting, database, and cache providers that store Service data on our behalf.
 
 Each receives only what its function requires. We do not share personal information with data brokers, advertisers, campaigns, or political organizations.
@@ -68,4 +68,4 @@ We may update this Privacy Policy; the version and date above identify the curre
 
 ## 9. Contact
 
-impactperdollar — contact@impactperdollar.com
+VoteApp (operated by impactperdollar) — contact@impactperdollar.com

@@ -37,6 +37,12 @@ deploy needs beyond `git pull`. Database migrations are covered separately in
 - **SES is still sandboxed** — production sending requires the AWS
   production-access request (unsandbox) first. Until then only verified
   addresses receive mail.
+- **Provision contact@impactperdollar.com (receiving)** — the rendered
+  legal documents direct privacy requests, account-compromise reports, and
+  content-error reports there. SES here is send-only; receiving needs a
+  mailbox or a forward (e.g. Cloudflare Email Routing or SES inbound →
+  personal inbox), and it must be monitored. Launch-blocking: the docs
+  promise this address works.
 - The IAM key in use is send-only; keep it that way.
 - All senders emit RFC 8058 one-click List-Unsubscribe headers; the
   unsubscribe endpoint is served by the API server
