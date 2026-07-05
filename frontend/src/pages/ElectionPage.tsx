@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
@@ -8,6 +9,10 @@ import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { formatDistrictType, formatElectionDate, formatMoney, formatOutcome, formatVotePowerLabel } from "../lib/format";
 import { useFollows } from "../lib/useFollows";
+import { useMyResearchAreas } from "../lib/useMyResearchAreas";
+import { aggregateRecordAreaStances, scoreStanceDirection } from "../lib/researchAreaScoring";
+
+type CandidateSort = "ballot" | "for_mine" | "against_mine";
 
 export function ElectionPage() {
   const { electionId } = useParams();
@@ -15,6 +20,8 @@ export function ElectionPage() {
   // follows list (only fetched for verified users).
   const { follows, canFollow } = useFollows();
   const followedIds = new Set((follows ?? []).map((follow) => follow.candidate_id));
+  const { savedAreaIds, weights, hasSaved } = useMyResearchAreas();
+  const [candidateSort, setCandidateSort] = useState<CandidateSort>("ballot");
 
   const election = useQuery({
     queryKey: ["election", electionId],
@@ -61,6 +68,22 @@ export function ElectionPage() {
       {measure ? (
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
           <h2 className="text-lg font-semibold">Ballot measure</h2>
+          {measure.research_area_tags.length > 0 ? (
+            <div className="mt-2 flex flex-wrap gap-2 text-xs">
+              {measure.research_area_tags.map((tag) => (
+                <span
+                  key={tag.research_area_id}
+                  className={
+                    savedAreaIds.has(tag.research_area_id)
+                      ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+                      : "rounded bg-surface px-2 py-0.5 text-ink-soft"
+                  }
+                >
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          ) : null}
           {measure.summary ? <p className="mt-2 text-sm text-ink">{measure.summary}</p> : null}
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <div className="rounded border border-green-200 bg-green-50 p-3">
@@ -87,9 +110,25 @@ export function ElectionPage() {
 
       {data.candidates.length > 0 ? (
         <section className="mt-6">
-          <h2 className="text-lg font-semibold">Candidates</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-lg font-semibold">Candidates</h2>
+            {hasSaved && data.candidates.length > 1 ? (
+              <label className="flex items-center gap-2 text-sm text-ink-soft">
+                Sort by
+                <select
+                  value={candidateSort}
+                  onChange={(event) => setCandidateSort(event.target.value as CandidateSort)}
+                  className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
+                >
+                  <option value="ballot">Ballot order</option>
+                  <option value="for_mine">For my issues first</option>
+                  <option value="against_mine">Against my issues first</option>
+                </select>
+              </label>
+            ) : null}
+          </div>
           <div className="mt-3 space-y-3">
-            {data.candidates.map((candidate) => (
+            {sortCandidatesByStance(data.candidates, candidateSort, weights).map(({ candidate, stances }) => (
               <Link
                 key={candidate.candidate_id}
                 to={`/candidates/${candidate.candidate_id}`}
@@ -129,6 +168,28 @@ export function ElectionPage() {
                 </div>
                 {candidate.summary ? (
                   <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>
+                ) : null}
+                {stances.length > 0 ? (
+                  <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                    {stances.map((stance) => (
+                      <span
+                        key={stance.research_area_id}
+                        className={
+                          savedAreaIds.has(stance.research_area_id)
+                            ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+                            : "rounded bg-surface px-2 py-0.5 text-ink-soft"
+                        }
+                      >
+                        {stance.name} ·{" "}
+                        {[
+                          stance.for_count > 0 ? `${stance.for_count} for` : null,
+                          stance.against_count > 0 ? `${stance.against_count} against` : null,
+                        ]
+                          .filter(Boolean)
+                          .join(", ")}
+                      </span>
+                    ))}
+                  </div>
                 ) : null}
               </Link>
             ))}
@@ -178,4 +239,30 @@ export function ElectionPage() {
       ) : null}
     </div>
   );
+}
+
+// Client-side "for/against my issues" candidate ordering: weighted unique
+// matched areas dominate, matching record volume breaks ties, and candidates
+// that tie completely (including all zero-scores) keep their ballot order —
+// the sort is stable over the payload's original sequence.
+function sortCandidatesByStance(
+  candidates: ElectionDetail["candidates"],
+  sort: CandidateSort,
+  weights: ReturnType<typeof useMyResearchAreas>["weights"]
+): Array<{ candidate: ElectionDetail["candidates"][number]; stances: ReturnType<typeof aggregateRecordAreaStances> }> {
+  const entries = candidates.map((candidate) => ({
+    candidate,
+    stances: aggregateRecordAreaStances(candidate.records),
+  }));
+  if (sort === "ballot") {
+    return entries;
+  }
+  const direction = sort === "for_mine" ? ("for" as const) : ("against" as const);
+  return entries
+    .map((entry, index) => ({ entry, index, score: scoreStanceDirection(entry.stances, weights, direction) }))
+    .sort(
+      (a, b) =>
+        b.score.score - a.score.score || b.score.recordCount - a.score.recordCount || a.index - b.index
+    )
+    .map(({ entry }) => entry);
 }

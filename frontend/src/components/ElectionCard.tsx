@@ -2,8 +2,18 @@ import { Link } from "react-router-dom";
 import type { ElectionSummary } from "../api/types";
 import { formatDistrictType, formatElectionDate, formatOutcome, formatVotePowerLabel } from "../lib/format";
 
-/** Shared between the anonymous ballot and the saved (account) ballot. */
-export function ElectionCard({ election }: { election: ElectionSummary }) {
+/**
+ * Shared between the anonymous ballot and the saved (account) ballot.
+ * savedAreaIds (verified users with saved research areas) highlights the
+ * matching area chips so "affects what I care about" reads at a glance.
+ */
+export function ElectionCard({
+  election,
+  savedAreaIds,
+}: {
+  election: ElectionSummary;
+  savedAreaIds?: Set<string>;
+}) {
   return (
     <Link
       to={`/elections/${election.id}`}
@@ -47,11 +57,20 @@ export function ElectionCard({ election }: { election: ElectionSummary }) {
               : "Results available"}
           </span>
         ) : null}
-        {election.research_areas.map((area) => (
-          <span key={area.id} className="rounded bg-surface px-2 py-0.5 text-ink-soft">
-            {area.name}
-          </span>
-        ))}
+        {election.research_areas.map((area) =>
+          savedAreaIds?.has(area.id) ? (
+            <span
+              key={area.id}
+              className="rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+            >
+              {area.name}
+            </span>
+          ) : (
+            <span key={area.id} className="rounded bg-surface px-2 py-0.5 text-ink-soft">
+              {area.name}
+            </span>
+          )
+        )}
       </div>
     </Link>
   );
