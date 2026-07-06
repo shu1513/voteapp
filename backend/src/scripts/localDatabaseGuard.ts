@@ -1,4 +1,29 @@
-const LOOPBACK_HOSTS = new Set(["", "localhost", "127.0.0.1", "::1", "[::1]"]);
+const DEFAULT_LOCAL_DATABASE_HOSTS = new Set([
+  "",
+  "localhost",
+  "127.0.0.1",
+  "::1",
+  "[::1]",
+  "host.docker.internal",
+  "host.containers.internal",
+  "gateway.docker.internal",
+  "172.17.0.1",
+]);
+
+function normalizeHost(host: string): string {
+  return host.trim().toLowerCase();
+}
+
+function readAllowedLocalDatabaseHosts(): Set<string> {
+  const hosts = new Set(DEFAULT_LOCAL_DATABASE_HOSTS);
+  for (const host of (process.env.LOCAL_DATABASE_ALLOWED_HOSTS ?? "").split(",")) {
+    const normalized = normalizeHost(host);
+    if (normalized.length > 0) {
+      hosts.add(normalized);
+    }
+  }
+  return hosts;
+}
 
 export function requireLocalDatabaseTarget(databaseUrl = process.env.DATABASE_URL ?? ""): void {
   if (process.env.ALLOW_REMOTE_DB_WRITES?.trim() === "1") {
@@ -21,11 +46,11 @@ export function requireLocalDatabaseTarget(databaseUrl = process.env.DATABASE_UR
     throw new Error(`Refusing manual write: unsupported DATABASE_URL protocol ${parsed.protocol}`);
   }
 
-  const host = parsed.hostname.trim().toLowerCase();
-  if (!LOOPBACK_HOSTS.has(host)) {
+  const host = normalizeHost(parsed.hostname);
+  if (!readAllowedLocalDatabaseHosts().has(host)) {
     throw new Error(
       `Refusing manual write to non-local DATABASE_URL host "${parsed.hostname}". ` +
-        "Set ALLOW_REMOTE_DB_WRITES=1 only for an intentional, reviewed remote write."
+        "Use LOCAL_DATABASE_ALLOWED_HOSTS for reviewed local aliases, or set ALLOW_REMOTE_DB_WRITES=1 only for an intentional remote write."
     );
   }
 }

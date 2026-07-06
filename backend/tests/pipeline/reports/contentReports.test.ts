@@ -90,6 +90,49 @@ describe("createContentReport", () => {
       })
     ).rejects.toMatchObject(new ContentReportError("entity_not_found", "Reported content was not found"));
   });
+
+  it.each([
+    ["election", "FROM public.elections"],
+    ["ballot_measure", "FROM public.ballot_measures"],
+  ] as const)("loads labels for %s reports", async (entityType, expectedSqlFragment) => {
+    const { db, calls } = makeDb({ labelRows: [{ label: "Election Label" }] });
+
+    await expect(
+      createContentReport(db, {
+        entityType,
+        entityId: "22222222-2222-4222-8222-222222222222",
+        message: "This seems wrong",
+      })
+    ).resolves.toEqual({ id: "99999999-9999-4999-8999-999999999999" });
+
+    expect(calls.some((call) => call.sql.includes(expectedSqlFragment))).toBe(true);
+    const insert = calls.find((call) => call.sql.includes("INSERT INTO public.content_reports"));
+    expect(insert?.params?.[0]).toBe(entityType);
+    expect(insert?.params?.[2]).toBe("Election Label");
+  });
+
+  it("rejects malformed content and user ids before writing", async () => {
+    const { db, calls } = makeDb();
+
+    await expect(
+      createContentReport(db, {
+        entityType: "candidate",
+        entityId: "not-a-uuid",
+        message: "This seems wrong",
+      })
+    ).rejects.toMatchObject(new ContentReportError("invalid_entity_id", "entity_id must be a valid UUID"));
+
+    await expect(
+      createContentReport(db, {
+        entityType: "candidate",
+        entityId: "22222222-2222-4222-8222-222222222222",
+        message: "This seems wrong",
+        userId: "not-a-uuid",
+      })
+    ).rejects.toMatchObject(new ContentReportError("invalid_user_id", "user_id must be a valid UUID"));
+
+    expect(calls.some((call) => call.sql.includes("INSERT INTO public.content_reports"))).toBe(false);
+  });
 });
 
 describe("getContentReportStats", () => {

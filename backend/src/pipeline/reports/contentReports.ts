@@ -81,58 +81,67 @@ async function loadEntityLabel(
   const normalizedEntityId = assertUuid(entityId, "entity_id", "invalid_entity_id");
   let result: { rows: EntityLabelRow[] };
 
-  if (entityType === "candidate") {
-    result = await db.query<EntityLabelRow>(
-      `
-        SELECT COALESCE(NULLIF(trim(display_name), ''), trim(concat_ws(' ', first_name, last_name))) AS label
-        FROM public.candidates
-        WHERE id = $1::uuid
-          AND deleted_at IS NULL
-          AND merged_into_candidate_id IS NULL
-        LIMIT 1
-      `,
-      [normalizedEntityId]
-    );
-  } else if (entityType === "candidate_record") {
-    result = await db.query<EntityLabelRow>(
-      `
-        SELECT concat_ws(
-          ': ',
-          COALESCE(NULLIF(trim(candidate.display_name), ''), trim(concat_ws(' ', candidate.first_name, candidate.last_name))),
-          left(regexp_replace(candidate_record.description, '\\s+', ' ', 'g'), 220)
-        ) AS label
-        FROM public.candidate_records AS candidate_record
-        JOIN public.candidates AS candidate
-          ON candidate.id = candidate_record.candidate_id
-        WHERE candidate_record.id = $1::uuid
-          AND candidate.deleted_at IS NULL
-          AND candidate.merged_into_candidate_id IS NULL
-        LIMIT 1
-      `,
-      [normalizedEntityId]
-    );
-  } else if (entityType === "election") {
-    result = await db.query<EntityLabelRow>(
-      `
-        SELECT concat_ws(' • ', official_ballot_title, election_date::text) AS label
-        FROM public.elections
-        WHERE id = $1::uuid
-        LIMIT 1
-      `,
-      [normalizedEntityId]
-    );
-  } else {
-    result = await db.query<EntityLabelRow>(
-      `
-        SELECT concat_ws(' • ', ballot_measure.official_ballot_title, election.election_date::text) AS label
-        FROM public.ballot_measures AS ballot_measure
-        JOIN public.elections AS election
-          ON election.id = ballot_measure.election_id
-        WHERE ballot_measure.id = $1::uuid
-        LIMIT 1
-      `,
-      [normalizedEntityId]
-    );
+  switch (entityType) {
+    case "candidate":
+      result = await db.query<EntityLabelRow>(
+        `
+          SELECT COALESCE(NULLIF(trim(display_name), ''), trim(concat_ws(' ', first_name, last_name))) AS label
+          FROM public.candidates
+          WHERE id = $1::uuid
+            AND deleted_at IS NULL
+            AND merged_into_candidate_id IS NULL
+          LIMIT 1
+        `,
+        [normalizedEntityId]
+      );
+      break;
+    case "candidate_record":
+      result = await db.query<EntityLabelRow>(
+        `
+          SELECT concat_ws(
+            ': ',
+            COALESCE(NULLIF(trim(candidate.display_name), ''), trim(concat_ws(' ', candidate.first_name, candidate.last_name))),
+            left(regexp_replace(candidate_record.description, '\\s+', ' ', 'g'), 220)
+          ) AS label
+          FROM public.candidate_records AS candidate_record
+          JOIN public.candidates AS candidate
+            ON candidate.id = candidate_record.candidate_id
+          WHERE candidate_record.id = $1::uuid
+            AND candidate.deleted_at IS NULL
+            AND candidate.merged_into_candidate_id IS NULL
+          LIMIT 1
+        `,
+        [normalizedEntityId]
+      );
+      break;
+    case "election":
+      result = await db.query<EntityLabelRow>(
+        `
+          SELECT concat_ws(' • ', official_ballot_title, election_date::text) AS label
+          FROM public.elections
+          WHERE id = $1::uuid
+          LIMIT 1
+        `,
+        [normalizedEntityId]
+      );
+      break;
+    case "ballot_measure":
+      result = await db.query<EntityLabelRow>(
+        `
+          SELECT concat_ws(' • ', ballot_measure.official_ballot_title, election.election_date::text) AS label
+          FROM public.ballot_measures AS ballot_measure
+          JOIN public.elections AS election
+            ON election.id = ballot_measure.election_id
+          WHERE ballot_measure.id = $1::uuid
+          LIMIT 1
+        `,
+        [normalizedEntityId]
+      );
+      break;
+    default: {
+      const exhaustiveCheck: never = entityType;
+      throw new ContentReportError("invalid_entity_id", `Unsupported entity type: ${exhaustiveCheck}`);
+    }
   }
 
   const label = result.rows[0]?.label;

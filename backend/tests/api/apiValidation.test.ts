@@ -332,4 +332,36 @@ describe("content report API contract constants", () => {
     const { parseContentReportBodyValue } = await import("../../src/api/apiValidation.js");
     expect(() => parseContentReportBodyValue(payload)).toThrow(message);
   });
+
+  it.each([
+    [
+      {
+        entity_type: "candidate",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "a".repeat(2001),
+      },
+      "message must be at most 2000 characters",
+    ],
+    [
+      {
+        entity_type: "candidate",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "wrong",
+        suggested_source_url: `https://example.org/${"a".repeat(2040)}`,
+      },
+      "suggested_source_url must be at most 2048 characters",
+    ],
+    [
+      {
+        entity_type: "candidate",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "wrong",
+        reporter_email: `${"a".repeat(310)}@example.org`,
+      },
+      "reporter_email must be at most 320 characters",
+    ],
+  ])("rejects oversized content report payload %#", async (payload, message) => {
+    const { parseContentReportBodyValue } = await import("../../src/api/apiValidation.js");
+    expect(() => parseContentReportBodyValue(payload)).toThrow(message);
+  });
 });

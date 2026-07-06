@@ -3400,4 +3400,15 @@ describe("content report API", () => {
     });
     expect(createContentReport).not.toHaveBeenCalled();
   });
+
+  it("rejects non-POST methods", async () => {
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn().mockResolvedValue(resolvedAddress) }), {
+      method: "GET",
+      path: "/api/content-reports",
+    });
+
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("POST");
+    expect(response.body).toEqual({ error: { code: "method_not_allowed", message: "Use POST /api/content-reports" } });
+  });
 });
