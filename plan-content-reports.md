@@ -26,9 +26,10 @@ anyone can edit civic data by filing false corrections. So:
   proposed change before the writer runs. That is the human gate.
 - "Local only" is enforced, not aspirational: a shared `requireLocalDatabaseTarget()`
   guard (refuses a non-loopback `DATABASE_URL` host unless an explicit
-  `ALLOW_REMOTE_DB_WRITES=1` override is set) is wired into the content-report queue
-  CLI and the manual writer scripts, so an inherited production DSN fails loudly
-  instead of writing (Phase 2/3).
+  `ALLOW_REMOTE_DB_WRITES=1` override is set) is wired into the manual writer scripts
+  in Phase 1 — before the report queue starts prompting anyone to fix data — and into
+  the queue CLI in Phase 2, so an inherited production DSN fails loudly instead of
+  writing.
 
 ## What the audit found (what already exists)
 
@@ -97,6 +98,12 @@ Backend:
 - Migration `content_reports` as above — next free number at implementation time
   (`155_add_content_reports.sql` as of writing; re-check, duplicate prefixes have
   bitten before and the preflight flags them).
+- `requireLocalDatabaseTarget()` helper + wire it into the manual writer scripts
+  (`writeManualCandidateRecords`, `writeManualBallotMeasure`,
+  `writeManualCandidateProfile`, `injectManualElections`, presidential variants —
+  one import + call each). Ships in Phase 1, not later: once reports start
+  accumulating, an operator acting on them with a production DSN in the environment
+  must fail loudly, and the writers are unguarded today.
 - `backend/src/pipeline/reports/contentReports.ts`: `createContentReport` (validates
   entity existence per type — candidates not-deleted, elections, candidate_records,
   ballot_measures — captures the label snapshot, inserts) + `getContentReportStats`.
@@ -159,8 +166,8 @@ Domain logic in `backend/src/pipeline/reports/contentReportQueue.ts` with tests
 (claim atomicity, group semantics, ownership guard, sweep, resolution transitions) —
 same layering as `manualDistrictResearchRequests.ts` vs its CLI.
 
-Also in this phase: the shared `requireLocalDatabaseTarget()` guard (see the rule
-section) lands as a small helper and the queue CLI calls it before opening the pool.
+Also in this phase: the queue CLI calls the `requireLocalDatabaseTarget()` guard
+(landed in Phase 1) before opening the pool.
 
 ## Phase 3 — agent playbook + guardrails (mostly docs, tiny code)
 
@@ -179,13 +186,8 @@ Extend the `voteapp-manual-research` skill with a content-report reference
    - Data right → `resolve --resolution no_change_needed` with sources in the summary.
    - Can't verify either way → `resolve --resolution unverifiable`; no write.
 4. Hard rules restated in the skill: never write a value that appears only in the
-   report; never skip the human diff-approval; local `DATABASE_URL` only.
-
-Code in this phase: wire `requireLocalDatabaseTarget()` into the manual writer
-scripts (`writeManualCandidateRecords`, `writeManualBallotMeasure`,
-`writeManualCandidateProfile`, `injectManualElections`, presidential variants) — one
-import + call each — so the local-only rule holds even when a session inherits a
-production DSN.
+   report; never skip the human diff-approval; local `DATABASE_URL` only (enforced
+   by the Phase 1 `requireLocalDatabaseTarget()` guard in every writer).
 
 The human gate is structural, not aspirational: writers are human-invoked CLIs, and
 the playbook's completion step requires the diff approval — an agent following the
