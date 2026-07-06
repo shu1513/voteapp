@@ -177,6 +177,12 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
   const schoolLike =
     entry.race_type === "office" &&
     /\bschool board\b|\bschool district\b|\bboard of education\b/.test(scopeText);
+  // Most large US school districts are named "* County School District" or
+  // "* City Schools", so county/city tokens inside a clearly-school title are
+  // part of the district's name, not a sign of a mis-scoped county/city race.
+  const schoolTitleMarker =
+    entry.race_type === "office" &&
+    /\bschool\b|\bboard of education\b|\bboard of trustees\b|\bgoverning board\b/.test(scopeText);
 
   if (districtType === "place" && (usSenate || usHouse || stateSenate || stateHouse || governorLike || countyLike || schoolLike)) {
     return "place scope contains clearly non-place race";
@@ -198,7 +204,15 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
     return "state_lower scope contains clearly non-state_lower race";
   }
 
-  if (districtType.startsWith("school_") && (usSenate || usHouse || stateSenate || stateHouse || governorLike || countyLike || cityLike)) {
+  if (
+    districtType.startsWith("school_") &&
+    (usSenate ||
+      usHouse ||
+      stateSenate ||
+      stateHouse ||
+      governorLike ||
+      ((countyLike || cityLike) && !schoolTitleMarker))
+  ) {
     return "school scope contains clearly non-school race";
   }
 
@@ -267,7 +281,12 @@ function isSoftScopeAmbiguous(
     return "place entry lacks clear place markers";
   }
 
-  if (districtType.startsWith("school_") && !hasAny(text, [/\bschool\b/, /\bboard of education\b/, /\bschool board\b/])) {
+  if (
+    districtType.startsWith("school_") &&
+    // "Governing Board" (AZ) and "Board of Trustees" (NV and others) are the
+    // official school-board titles in several states.
+    !hasAny(text, [/\bschool\b/, /\bboard of education\b/, /\bschool board\b/, /\bgoverning board\b/, /\bboard of trustees\b/])
+  ) {
     return "school entry lacks clear school markers";
   }
 

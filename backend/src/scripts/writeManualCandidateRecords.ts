@@ -16,6 +16,7 @@ import {
   type CandidateRecordAreaLabelInput,
 } from "../pipeline/candidates/candidateRecordAreaTagging.js";
 import { loadCandidateElectionOfficeContext } from "../pipeline/candidates/candidateRecordOfficeContext.js";
+import { markCandidateRecordsSearchCompleted } from "../pipeline/candidates/candidateRecordsSearchClaim.js";
 import { isNonStanceResearchAreaSlug } from "../pipeline/candidates/candidateRecordResearchAreaPolicy.js";
 import {
   buildCandidateRecordIdentityKey,
@@ -546,6 +547,12 @@ async function main(): Promise<void> {
       for (const insertedRecordId of upsert.insertedRecordIds) {
         await createCandidateRecordUpdateNotificationEvents(client, insertedRecordId);
       }
+      // Stamp the same completion columns the AI lifecycle stamps so a manual
+      // record pass (including a confirmed zero-record pass) is
+      // distinguishable from a candidate whose records were never searched,
+      // and shares the rollover cooldown with the AI path.
+      const researchedThrough = new Date();
+      await markCandidateRecordsSearchCompleted(client, candidateId, researchedThrough);
       await client.query("COMMIT");
 
       console.log(
@@ -559,6 +566,7 @@ async function main(): Promise<void> {
             processed: upsert.processed,
             tagsDeleted: staleTagDelete.deleted,
             tagsProcessed: tagResult.processed,
+            recordsSearchCompletedThrough: researchedThrough.toISOString().slice(0, 10),
           },
           null,
           2

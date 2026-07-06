@@ -169,6 +169,26 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+const GENERIC_DISTRICT_SUFFIX_TOKENS = new Set([
+  "county",
+  "parish",
+  "borough",
+  "city",
+  "town",
+  "village",
+  "township",
+  "municipality",
+]);
+
+function districtNameCore(rawDistrictName: string): string {
+  const preComma = normalizeMatcherText(rawDistrictName.split(",")[0] ?? "");
+  const tokens = preComma.split(" ").filter((token) => token.length > 0);
+  while (tokens.length > 0 && GENERIC_DISTRICT_SUFFIX_TOKENS.has(tokens[tokens.length - 1] ?? "")) {
+    tokens.pop();
+  }
+  return tokens.join(" ");
+}
+
 function stripJurisdictionPrefixes(value: string, input: { districtName: string; state: string }): string {
   let next = value;
 
@@ -176,6 +196,17 @@ function stripJurisdictionPrefixes(value: string, input: { districtName: string;
   if (districtName.length > 0) {
     const districtPattern = new RegExp(`\\b${escapeRegExp(districtName)}\\b`, "g");
     next = next.replace(districtPattern, " ");
+  }
+
+  // District rows are stored as "Harris County, Texas" while ballot titles say
+  // "Harris County Judge", so the full-name strip above never fires. Strip the
+  // district's proper-noun core ("harris") first — deliberately keeping the
+  // generic civic word ("county") — so the remaining title ("county judge")
+  // still matches catalog names/aliases keyed on the bare office title.
+  const core = districtNameCore(input.districtName);
+  if (core.length >= 2) {
+    const corePattern = new RegExp(`\\b${escapeRegExp(core)}\\b`, "g");
+    next = next.replace(corePattern, " ");
   }
 
   const stateLower = input.state.trim().toLowerCase();
