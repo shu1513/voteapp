@@ -43,6 +43,21 @@ export function toJsonResponse(
   };
 }
 
+export function toXmlResponse(
+  statusCode: number,
+  body: string,
+  extraHeaders: Record<string, string> = {}
+): ApiResponse {
+  return {
+    statusCode,
+    headers: {
+      ...extraHeaders,
+      "content-type": "application/xml; charset=utf-8",
+    },
+    body,
+  };
+}
+
 export function toEmptyResponse(statusCode: number, extraHeaders: Record<string, string> = {}): ApiResponse {
   return {
     statusCode,

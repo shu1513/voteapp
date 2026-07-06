@@ -247,6 +247,66 @@ describe("createApiApp", () => {
     expect(resolveAddress).toHaveBeenCalledWith("3921 Harlan Ave Baldwin Park CA 91706");
   });
 
+  it("serves configured dynamic sitemap XML", async () => {
+    const resolveAddress = vi.fn();
+    const getSitemapXml = vi.fn().mockResolvedValue(
+      '<?xml version="1.0" encoding="UTF-8"?><urlset><url><loc>https://impactperdollar.com/</loc></url></urlset>'
+    );
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, getSitemapXml }), {
+      method: "GET",
+      path: "/sitemap.xml",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.headers["content-type"]).toContain("application/xml");
+    expect(response.headers["cache-control"]).toBe("public, max-age=3600");
+    expect(response.rawBody).toContain("<urlset>");
+    expect(response.rawBody).toContain("https://impactperdollar.com/");
+    expect(response.body).toBe(response.rawBody);
+    expect(getSitemapXml).toHaveBeenCalledOnce();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("keeps sitemap dark when it is not configured", async () => {
+    const resolveAddress = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "GET",
+      path: "/sitemap.xml",
+    });
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({
+      error: {
+        code: "not_found",
+        message: "Sitemap is not configured",
+      },
+    });
+  });
+
+  it("rejects unsupported sitemap methods", async () => {
+    const resolveAddress = vi.fn();
+    const getSitemapXml = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, getSitemapXml }), {
+      method: "POST",
+      path: "/sitemap.xml",
+      body: JSON.stringify({}),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("GET");
+    expect(response.body).toEqual({
+      error: {
+        code: "method_not_allowed",
+        message: "Use GET /sitemap.xml",
+      },
+    });
+    expect(getSitemapXml).not.toHaveBeenCalled();
+  });
+
   it("supports wildcard CORS origins", async () => {
     const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
 

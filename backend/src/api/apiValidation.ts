@@ -66,6 +66,7 @@ export function parseEmailUnsubscribePreference(raw: string | null): EmailUnsubs
     : null;
 }
 export const RESEARCH_AREAS_PATH = "/api/research-areas";
+export const SITE_SITEMAP_PATH = "/sitemap.xml";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 export const MAX_BALLOT_DISTRICT_IDS = 50;
 

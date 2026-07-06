@@ -62,6 +62,7 @@ import {
   parseInitializeUserDistrictsBodyValue,
   parseResearchAreaPreferencesBodyValue,
   RESEARCH_AREAS_PATH,
+  SITE_SITEMAP_PATH,
 } from "./apiValidation.js";
 import {
   AUTH_SESSION_COOKIE_NAME,
@@ -72,7 +73,14 @@ import {
 import { toAddressResolutionDiagnostics, toPublicAddressResolution } from "./addressApiResponses.js";
 import { randomUUID } from "node:crypto";
 import { describeError } from "../observability/scrubText.js";
-import { toEmptyResponse, toErrorResponse, toJsonResponse, type ApiErrorBody, type ApiResponse } from "./apiResponses.js";
+import {
+  toEmptyResponse,
+  toErrorResponse,
+  toJsonResponse,
+  toXmlResponse,
+  type ApiErrorBody,
+  type ApiResponse,
+} from "./apiResponses.js";
 import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
 
 type ApiResponseLocals = {
@@ -85,6 +93,8 @@ type ExpressBodyParserError = Error & {
   status?: number;
   statusCode?: number;
 };
+
+const SITE_SITEMAP_CACHE_CONTROL = "public, max-age=3600";
 
 function isKnownApiPath(pathname: string): boolean {
   return (
@@ -114,6 +124,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_EMAIL_PREFERENCES_PATH ||
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
     pathname === RESEARCH_AREAS_PATH ||
+    pathname === SITE_SITEMAP_PATH ||
     isCandidateDetailPath(pathname) ||
     isElectionDetailPath(pathname)
   );
@@ -213,6 +224,13 @@ function sendApiResponse(response: Response, apiResponse: ApiResponse): void {
   response.status(apiResponse.statusCode).set(apiResponse.headers);
   if (apiResponse.body === undefined) {
     response.end();
+    return;
+  }
+  if (
+    typeof apiResponse.body === "string" &&
+    !String(apiResponse.headers["content-type"] ?? "").includes("application/json")
+  ) {
+    response.send(apiResponse.body);
     return;
   }
   response.json(apiResponse.body);
@@ -380,6 +398,30 @@ async function dispatchApiRequest(
 ): Promise<void> {
   const url = new URL(request.url, "http://localhost");
   const corsHeaders = getCorsHeaders(response);
+
+  if (url.pathname === SITE_SITEMAP_PATH) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /sitemap.xml", {
+          ...corsHeaders,
+          allow: "GET",
+        })
+      );
+      return;
+    }
+    if (!options.getSitemapXml) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Sitemap is not configured", corsHeaders));
+      return;
+    }
+
+    const sitemapXml = await options.getSitemapXml();
+    sendApiResponse(
+      response,
+      toXmlResponse(200, sitemapXml, { ...corsHeaders, "cache-control": SITE_SITEMAP_CACHE_CONTROL })
+    );
+    return;
+  }
 
   if (url.pathname === RESEARCH_AREAS_PATH) {
     if (request.method !== "GET") {

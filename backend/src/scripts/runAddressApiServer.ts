@@ -90,6 +90,7 @@ import {
 } from "../pipeline/users/userEmailPreferences.js";
 import { verifyEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
 import { getUserIdentity, setUserFirstName } from "../pipeline/users/userIdentity.js";
+import { createCachedSiteSitemap } from "../pipeline/sitemap/siteSitemap.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -253,6 +254,11 @@ async function main(): Promise<void> {
     "CONTENT_REPORT_RATE_LIMIT_MAX_BUCKETS",
     DEFAULT_CONTENT_REPORT_RATE_LIMIT_MAX_BUCKETS
   );
+  const siteOrigin = readOptionalEnv("SITE_ORIGIN");
+  if (!siteOrigin) {
+    console.warn("SITE_ORIGIN is unset; /sitemap.xml will return 404");
+  }
+  const getSitemapXml = siteOrigin ? createCachedSiteSitemap({ db: pool, siteOrigin }) : undefined;
   const rateLimit = rateLimitEnabled
     ? createInMemoryAddressApiRateLimiter({
         windowMs: rateLimitWindowMs,
@@ -465,6 +471,7 @@ async function main(): Promise<void> {
     rateLimit,
     resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader),
     resolveAuthenticatedUserId,
+    getSitemapXml,
     createContentReport: (input) => createContentReport(pool, input),
     logDiagnostics: logAddressResolutionDiagnostics,
     // [ballot-personalized-ordering]: the plain reader is decorated with the
