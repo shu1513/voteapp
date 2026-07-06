@@ -7,8 +7,10 @@ import { AiBanner } from "../components/AiBanner";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
+import { ReportContentButton } from "../components/ReportContentButton";
 import { formatElectionDate } from "../lib/format";
 import { useFollows } from "../lib/useFollows";
+import { useMe } from "../lib/useMe";
 import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { UNRANKED_RESEARCH_AREA_RANK } from "../lib/researchAreaScoring";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
@@ -66,6 +68,7 @@ function orderGroupsByPreference(
 export function CandidatePage() {
   const { candidateId } = useParams();
   const { canFollow } = useFollows();
+  const { me } = useMe();
   const { hasSaved, preferences } = useMyResearchAreas();
   const [recordView, setRecordView] = useState<RecordView>("by_issue");
 
@@ -132,6 +135,14 @@ export function CandidatePage() {
         </p>
       ) : null}
       {candidate.summary ? <p className="mt-3 text-ink">{candidate.summary}</p> : null}
+      <div className="mt-3">
+        <ReportContentButton
+          entityType="candidate"
+          entityId={candidate.candidate_id}
+          contextLabel="candidate profile"
+          reporterEmail={me?.email}
+        />
+      </div>
 
       {recordGroups.length > 0 ? (
         <section className="mt-6">
@@ -163,6 +174,14 @@ export function CandidatePage() {
                       : ""}
                   </p>
                   <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />
+                  <div className="mt-2">
+                    <ReportContentButton
+                      entityType="candidate_record"
+                      entityId={record.id}
+                      contextLabel="candidate record"
+                      reporterEmail={me?.email}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>
@@ -176,6 +195,14 @@ export function CandidatePage() {
                       <p className="text-sm text-ink">{record.description}</p>
                       <p className="mt-1 text-xs text-ink-soft">{formatElectionDate(record.event_date)}</p>
                       <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />
+                      <div className="mt-2">
+                        <ReportContentButton
+                          entityType="candidate_record"
+                          entityId={record.id}
+                          contextLabel="candidate record"
+                          reporterEmail={me?.email}
+                        />
+                      </div>
                     </li>
                   ))}
                 </ul>

@@ -41,6 +41,7 @@ describe("ElectionPage", () => {
     expect(screen.getByText("Riley Runner")).toBeInTheDocument();
     // Anonymous visitors get no follow controls.
     expect(screen.queryByRole("button", { name: /follow/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Report an issue with election" })).toBeInTheDocument();
   });
 
   it("renders ballot measure yes/no explanations when present", async () => {
@@ -68,5 +69,6 @@ describe("ElectionPage", () => {
 
     expect(await screen.findByText("Yes approves the bond.")).toBeInTheDocument();
     expect(screen.getByText("No rejects the bond.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Report an issue with ballot measure" })).toBeInTheDocument();
   });
 });

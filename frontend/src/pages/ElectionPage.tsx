@@ -7,8 +7,10 @@ import { AiBanner } from "../components/AiBanner";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
+import { ReportContentButton } from "../components/ReportContentButton";
 import { formatDistrictType, formatElectionDate, formatMoney, formatOutcome, formatVotePowerLabel } from "../lib/format";
 import { useFollows } from "../lib/useFollows";
+import { useMe } from "../lib/useMe";
 import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { aggregateRecordAreaStances, scoreStanceDirection } from "../lib/researchAreaScoring";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
@@ -18,6 +20,7 @@ type CandidateSort = "ballot" | "for_mine" | "against_mine";
 
 export function ElectionPage() {
   const { electionId } = useParams();
+  const { me } = useMe();
   // Election payload candidates carry no follow state; derive it from the
   // follows list (only fetched for verified users).
   const { follows, canFollow } = useFollows();
@@ -70,6 +73,14 @@ export function ElectionPage() {
         {formatDistrictType(data.district.district_type)}
         {data.election_stage ? <> · {data.election_stage}</> : null}
       </p>
+      <div className="mt-2">
+        <ReportContentButton
+          entityType="election"
+          entityId={data.id}
+          contextLabel="election"
+          reporterEmail={me?.email}
+        />
+      </div>
       <div className="mt-2 flex flex-wrap gap-2 text-xs">
         {data.vote_power.label !== "unknown" ? (
           <span className="rounded bg-rausch/10 px-2 py-0.5 text-rausch-dark">
@@ -123,6 +134,14 @@ export function ElectionPage() {
               <SourceLine key={url} url={url} />
             )
           )}
+          <div className="mt-3">
+            <ReportContentButton
+              entityType="ballot_measure"
+              entityId={measure.id}
+              contextLabel="ballot measure"
+              reporterEmail={me?.email}
+            />
+          </div>
         </section>
       ) : null}
 
