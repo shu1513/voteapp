@@ -213,9 +213,13 @@ first), and:
 
 - **SSR/prerender for SEO + AI crawlers** — the SPA serves near-empty HTML,
   so search engines and AI crawlers (the ones Phase 5's robots.txt/llms.txt
-  welcome) can't read ballot/election/candidate content. Prerendering public
-  routes is likely enough; full SSR only if organic/AI-referral traffic
-  proves out.
+  welcome) can't read ballot/election/candidate content. Scoped in
+  [plan-ssr-prerender.md](plan-ssr-prerender.md): React Router framework
+  mode, hybrid — dynamic sitemap first, prerender the static routes,
+  server-render only election/candidate detail, CDN caching deferred until
+  load proves out. (Supersedes the earlier "prerendering public routes is
+  likely enough" guess — verified that no AI crawler executes JS, and the
+  detail pages are unenumerable at build time.)
 - **MCP server** — remote Model Context Protocol server wrapping the
   existing anonymous API (`lookup_ballot(address)`, `get_election(id)`,
   `get_candidate(id)`, `list_research_areas()`) so AI assistants (Claude,
