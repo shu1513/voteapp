@@ -24,6 +24,11 @@ anyone can edit civic data by filing false corrections. So:
   `writeManualCandidateProfile`, `injectManualElections`) against the local
   `DATABASE_URL` — never production directly. The human running the session reviews the
   proposed change before the writer runs. That is the human gate.
+- "Local only" is enforced, not aspirational: a shared `requireLocalDatabaseTarget()`
+  guard (refuses a non-loopback `DATABASE_URL` host unless an explicit
+  `ALLOW_REMOTE_DB_WRITES=1` override is set) is wired into the content-report queue
+  CLI and the manual writer scripts, so an inherited production DSN fails loudly
+  instead of writing (Phase 2/3).
 
 ## What the audit found (what already exists)
 
@@ -73,6 +78,10 @@ anyone can edit civic data by filing false corrections. So:
   `attempt_count`, `investigation_summary` (what the agent found),
   `resolution` CHECK IN (`fixed`, `no_change_needed`, `unverifiable`, `duplicate`,
   `spam`) nullable until terminal, `finished_at`, `created_at`, `updated_at`.
+- Terminal mapping is fixed (so implementation can't drift): resolution
+  `fixed` / `no_change_needed` / `duplicate` → status `resolved` (investigated, answer
+  known); `unverifiable` / `spam` → status `dismissed` (no determination made). A CHECK
+  constraint ties the pairs together.
 
 Dedup choice: unlike districts, two reports on the same entity carry *different*
 claims, so rows are never merged. Grouping happens at claim time — the agent claims an
@@ -85,7 +94,9 @@ Indexes: `(status, created_at)`; `(entity_type, entity_id) WHERE status IN
 ## Phase 1 — collection (ships alone, independently useful)
 
 Backend:
-- Migration `content_reports` as above.
+- Migration `content_reports` as above — next free number at implementation time
+  (`155_add_content_reports.sql` as of writing; re-check, duplicate prefixes have
+  bitten before and the preflight flags them).
 - `backend/src/pipeline/reports/contentReports.ts`: `createContentReport` (validates
   entity existence per type — candidates not-deleted, elections, candidate_records,
   ballot_measures — captures the label snapshot, inserts) + `getContentReportStats`.
@@ -104,7 +115,9 @@ Backend:
 
 Frontend:
 - One small `ReportContentButton` component (modal: "What's wrong?" textarea +
-  optional source URL + optional email prefilled when signed in). Placements:
+  optional source URL + optional email prefilled when signed in). Modal copy includes
+  "Don't include sensitive personal information" — the message is stored as-is.
+  Placements:
   - CandidatePage: page-level (candidate profile) + one per record row
     (`candidate_record` + record id — records are the likeliest error target and the
     id is already in the payload).
@@ -128,17 +141,26 @@ Ops/docs:
   `new` reports `investigating` with claim metadata (`FOR UPDATE SKIP LOCKED`),
   increment `attempt_count`. Prints the entity + every report's message/URL so the
   agent gets full context in one call.
-- `resolve --entity-type <t> --entity-id <id> --resolution fixed|no_change_needed|unverifiable|duplicate|spam --summary <text>` —
-  closes the claimed group (`investigating` → `resolved`, or `dismissed` for
-  `spam`/`unverifiable`), stamps `investigation_summary`.
-- `release` — return a claimed group to `new` (deliberate hand-back).
+- `resolve --agent <name> --entity-type <t> --entity-id <id> --resolution fixed|no_change_needed|unverifiable|duplicate|spam --summary <text>` —
+  closes the claimed group (`investigating` → `resolved`/`dismissed` per the terminal
+  mapping above), stamps `investigation_summary`.
+- `release --agent <name> --entity-type <t> --entity-id <id>` — return a claimed
+  group to `new` (deliberate hand-back).
+- Ownership guard: `resolve`/`release` only touch rows
+  `WHERE claimed_by = $agent AND status = 'investigating'` for that entity — one
+  session can't close another session's claim on the same entity. (The district queue
+  gets this for free from row-keyed request ids; group claims must enforce it
+  explicitly.) Reports that arrive after the claim stay `new` for the next claim.
 - `sweep [--max-claim-hours n]` — dead-session recovery, `claimed_at` clock,
   attempt-cap park (same reasoning as the district queue: sessions die mid-run).
 - `status` — counts by status + top open entities.
 
 Domain logic in `backend/src/pipeline/reports/contentReportQueue.ts` with tests
-(claim atomicity, group semantics, sweep, resolution transitions) — same layering as
-`manualDistrictResearchRequests.ts` vs its CLI.
+(claim atomicity, group semantics, ownership guard, sweep, resolution transitions) —
+same layering as `manualDistrictResearchRequests.ts` vs its CLI.
+
+Also in this phase: the shared `requireLocalDatabaseTarget()` guard (see the rule
+section) lands as a small helper and the queue CLI calls it before opening the pool.
 
 ## Phase 3 — agent playbook + guardrails (mostly docs, tiny code)
 
@@ -159,6 +181,12 @@ Extend the `voteapp-manual-research` skill with a content-report reference
 4. Hard rules restated in the skill: never write a value that appears only in the
    report; never skip the human diff-approval; local `DATABASE_URL` only.
 
+Code in this phase: wire `requireLocalDatabaseTarget()` into the manual writer
+scripts (`writeManualCandidateRecords`, `writeManualBallotMeasure`,
+`writeManualCandidateProfile`, `injectManualElections`, presidential variants) — one
+import + call each — so the local-only rule holds even when a session inherits a
+production DSN.
+
 The human gate is structural, not aspirational: writers are human-invoked CLIs, and
 the playbook's completion step requires the diff approval — an agent following the
 skill cannot silently push a reporter's claim into the DB.
@@ -172,6 +200,9 @@ skill cannot silently push a reporter's claim into the DB.
   abuse shows up.
 - "We fixed it" reply emails to reporters — the column exists, the send doesn't.
 - Per-entity open-report hard caps, report reactions/voting, screenshots/attachments.
+- Storing the reporting page path (`page_url`/`reported_from_path`): fully derivable
+  from `entity_type` + `entity_id` (candidate/record → `/candidates/:id`,
+  election/measure → `/elections/:id`), so it would be a redundant column.
 
 ## Order and rationale
 
