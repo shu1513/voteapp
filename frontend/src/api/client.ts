@@ -7,13 +7,23 @@ export class ApiError extends Error {
   readonly code: string;
   /** Seconds from the retry-after header on 429 responses. */
   readonly retryAfterSeconds: number | null;
+  /** Backend correlation id from unexpected-500 envelopes: matches the
+   * server's log line and Sentry event for the same failure. */
+  readonly requestId: string | null;
 
-  constructor(status: number, code: string, message: string, retryAfterSeconds: number | null = null) {
+  constructor(
+    status: number,
+    code: string,
+    message: string,
+    retryAfterSeconds: number | null = null,
+    requestId: string | null = null
+  ) {
     super(message);
     this.name = "ApiError";
     this.status = status;
     this.code = code;
     this.retryAfterSeconds = retryAfterSeconds;
+    this.requestId = requestId;
   }
 }
 
@@ -73,18 +83,24 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     const retryAfterSeconds = retryAfterHeader ? Number.parseInt(retryAfterHeader, 10) || null : null;
     let code = "unknown_error";
     let message = `Request failed with status ${response.status}`;
+    let requestId: string | null = null;
     try {
-      const parsed = (await response.json()) as { error?: { code?: string; message?: string } };
+      const parsed = (await response.json()) as {
+        error?: { code?: string; message?: string; request_id?: string };
+      };
       if (parsed.error?.code) {
         code = parsed.error.code;
       }
       if (parsed.error?.message) {
         message = parsed.error.message;
       }
+      if (parsed.error?.request_id) {
+        requestId = parsed.error.request_id;
+      }
     } catch {
       // Non-JSON error body; keep the generic message.
     }
-    throw new ApiError(response.status, code, message, retryAfterSeconds);
+    throw new ApiError(response.status, code, message, retryAfterSeconds, requestId);
   }
 
   return (await response.json()) as T;

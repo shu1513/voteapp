@@ -29,6 +29,7 @@ describe("scrubSentryEvent", () => {
   it("masks emails and query strings in messages, exception values, frames, tags, and contexts", () => {
     const event = {
       message: "boom for voter@example.com",
+      transaction: "/ballot?d=abc,def",
       exception: {
         values: [
           {
@@ -45,6 +46,7 @@ describe("scrubSentryEvent", () => {
     const scrubbed = scrubSentryEvent(event);
 
     expect(scrubbed.message).toBe("boom for [email]");
+    expect(scrubbed.transaction).toBe("/ballot?[scrubbed]");
     expect(scrubbed.exception?.values?.[0]?.value).toBe("failed at /elections/x?[scrubbed] for [email]");
     expect(scrubbed.exception?.values?.[0]?.stacktrace?.frames?.[0]?.filename).toBe(
       "https://voteapp.example/assets/app.js?[scrubbed]"

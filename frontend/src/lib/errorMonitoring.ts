@@ -37,6 +37,11 @@ export function scrubSentryEvent<TEvent extends Sentry.ErrorEvent>(event: TEvent
   if (event.message) {
     event.message = scrubText(event.message);
   }
+  // Nothing sets a route transaction today (no routing instrumentation),
+  // but a future integration change must not leak ?d=<district-ids>.
+  if (event.transaction) {
+    event.transaction = scrubText(event.transaction);
+  }
   for (const exception of event.exception?.values ?? []) {
     if (exception.value) {
       exception.value = scrubText(exception.value);

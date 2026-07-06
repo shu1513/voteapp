@@ -55,6 +55,27 @@ describe("apiRequest", () => {
     expect((error as ApiError).message).toBe("No match");
   });
 
+  it("carries the backend request_id from unexpected-500 envelopes", async () => {
+    mockFetch({
+      ok: false,
+      status: 500,
+      jsonBody: {
+        error: { code: "internal_error", message: "Internal error", request_id: "abc-123" },
+      },
+    });
+
+    const error = await apiRequest("/api/ballot").catch((caught: unknown) => caught);
+    expect((error as ApiError).requestId).toBe("abc-123");
+
+    mockFetch({
+      ok: false,
+      status: 422,
+      jsonBody: { error: { code: "address_not_found", message: "No match" } },
+    });
+    const plain = await apiRequest("/api/ballot").catch((caught: unknown) => caught);
+    expect((plain as ApiError).requestId).toBeNull();
+  });
+
   it("surfaces retry-after seconds on 429", async () => {
     mockFetch({
       ok: false,

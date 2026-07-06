@@ -28,7 +28,14 @@ initErrorMonitoring();
 // rate limits), and non-ApiError failures are usually the user's network.
 function reportServerError(error: unknown): void {
   if (error instanceof ApiError && error.status >= 500) {
-    captureMonitoredError(error, { source: "api", status: String(error.status), code: error.code });
+    captureMonitoredError(error, {
+      source: "api",
+      status: String(error.status),
+      code: error.code,
+      // Correlates this event with the backend's log line and Sentry event
+      // for the same failure (unexpected-500 envelopes carry the id).
+      ...(error.requestId ? { request_id: error.requestId } : {}),
+    });
   }
 }
 
