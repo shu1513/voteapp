@@ -27,6 +27,7 @@ import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
 import type { AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
 import { createApiApp } from "../api/apiServer.js";
 import { loadProjectEnv } from "../config/env.js";
+import { captureError, describeError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
 import {
   createInMemoryAddressApiRateLimiter,
   DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_BUCKETS,
@@ -167,6 +168,10 @@ function logAddressResolutionDiagnostics(diagnostics: AddressResolutionDiagnosti
 
 async function main(): Promise<void> {
   loadProjectEnv();
+  // Dark unless SENTRY_DSN is set (plan-error-monitoring.md Phase 2).
+  if (initSentryFromEnv("api")) {
+    console.log("error monitoring enabled (sentry)");
+  }
   const pool = new Pool({ connectionString: readEnv("DATABASE_URL", "postgresql://localhost:5432/voteapp") });
   const host = process.env.ADDRESS_API_HOST?.trim() || "127.0.0.1";
   const port = readPort();
@@ -413,6 +418,12 @@ async function main(): Promise<void> {
   const app = createApiApp({
     allowedOrigins,
     authService,
+    captureUnexpectedError: (error, context) =>
+      captureError(error, {
+        request_id: context.requestId,
+        method: context.method,
+        path: context.path,
+      }),
     ...(googlePlacesOptions
       ? {
           suggestAddresses: (input: { input: string; sessionToken: string }) =>
@@ -560,18 +571,20 @@ async function main(): Promise<void> {
   // process manager's log shows WHY the server died. Same exit-and-restart
   // semantics as the defaults — state after an uncaught error is unknown,
   // so limping on is worse than restarting.
-  // Stack string only, matching the API error middleware: raw objects can
-  // print enumerable custom properties (request context, payloads) into
-  // the process log.
-  const describeCrash = (cause: unknown): string =>
-    cause instanceof Error ? (cause.stack ?? cause.message) : String(cause);
+  // describeError: stack string only with emails/query strings masked —
+  // crash logs get the same scrubbing as the middleware and Sentry events.
+  const crash = (label: string, cause: unknown): void => {
+    console.error(`address API server ${label}:`, describeError(cause));
+    captureError(cause, { crash: label.replaceAll(" ", "_") });
+    void flushSentry().finally(() => {
+      process.exit(1);
+    });
+  };
   process.on("unhandledRejection", (reason) => {
-    console.error("address API server unhandled rejection:", describeCrash(reason));
-    process.exit(1);
+    crash("unhandled rejection", reason);
   });
   process.on("uncaughtException", (error) => {
-    console.error("address API server uncaught exception:", describeCrash(error));
-    process.exit(1);
+    crash("uncaught exception", error);
   });
 }
 

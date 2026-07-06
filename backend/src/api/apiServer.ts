@@ -69,6 +69,7 @@ import {
 } from "../auth/authCookies.js";
 import { toAddressResolutionDiagnostics, toPublicAddressResolution } from "./addressApiResponses.js";
 import { randomUUID } from "node:crypto";
+import { describeError } from "../observability/scrubText.js";
 import { toEmptyResponse, toErrorResponse, toJsonResponse, type ApiErrorBody, type ApiResponse } from "./apiResponses.js";
 import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
 
@@ -1420,7 +1421,7 @@ function mapExpressErrorToResponse(error: unknown): ApiResponse {
   return toErrorResponse(mapped.statusCode, mapped.code, mapped.message);
 }
 
-function createApiErrorMiddleware() {
+function createApiErrorMiddleware(options: AddressApiServerOptions) {
   return (
     error: unknown,
     request: Request,
@@ -1442,13 +1443,24 @@ function createApiErrorMiddleware() {
       // a user report ("I saw an error") to this log entry. Method + path
       // only; request bodies can carry addresses and credentials.
       const requestId = randomUUID();
-      // Stack only (message + frames), not the whole object: wrapped errors
-      // can carry enumerable custom properties (payloads, upstream request
-      // context) that do not belong in logs.
+      // describeError: stack string only (never the object, whose enumerable
+      // custom properties can carry payloads), with emails and query strings
+      // masked — local logs get the same scrubbing as Sentry events.
       console.error(
         `[api] unexpected error request_id=${requestId} ${request.method} ${request.path}`,
-        error instanceof Error ? (error.stack ?? error.message) : String(error)
+        describeError(error)
       );
+      // Error-monitoring hook (Sentry in production). Failure here must
+      // never break the response.
+      try {
+        options.captureUnexpectedError?.(error, {
+          requestId,
+          method: request.method,
+          path: request.path,
+        });
+      } catch {
+        // Monitoring is best-effort by definition.
+      }
       const body = mapped.body as ApiErrorBody;
       mapped = {
         ...mapped,
@@ -1480,7 +1492,7 @@ export function createApiApp(options: AddressApiServerOptions): Express {
   app.use((request, response, next) => {
     void dispatchApiRequest(request, response, options).catch(next);
   });
-  app.use(createApiErrorMiddleware());
+  app.use(createApiErrorMiddleware(options));
 
   return app;
 }
