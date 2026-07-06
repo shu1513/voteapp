@@ -72,15 +72,24 @@ The discovery gap is independent of rendering and pays off immediately:
 Googlebot *does* render JS, so a real sitemap makes election/candidate
 pages indexable by Google before any SSR lands.
 
-- `GET /sitemap.xml` on the API server: the six static routes plus
+- `GET /sitemap.xml` on the API server: the public static routes (`/`,
+  `/disclaimer`, `/terms`, `/privacy` — auth pages stay prerendered but
+  aren't useful crawler targets, so they drop out of the sitemap) plus
   `/elections/:id` (all rows) and `/candidates/:id` (excluding
   `deleted_at IS NOT NULL` / merged candidates), `<lastmod>` from
-  `updated_at`. Public origin from existing config (same source as
-  `NOTIFICATIONS_UNSUBSCRIBE_URL` / `AUTH_PUBLIC_BASE_URL`).
+  `updated_at`.
+- Canonical origin for the absolute URLs: `AUTH_PUBLIC_BASE_URL` (already
+  defined as the public frontend origin) — **not**
+  `NOTIFICATIONS_UNSUBSCRIBE_URL`, which points at the API origin and would
+  publish non-canonical URLs to crawlers.
+- Serving details: respond `Content-Type: application/xml`, and add
+  `/sitemap.xml` to the `isKnownApiPath` allowlist — the API server 404s
+  unknown paths before routing. If URL count ever approaches the
+  50k-per-file limit, split into a sitemap index; not needed now.
 - In-memory cache (~1 hour TTL) — one query per hour, crawler-storm-proof.
-  Well under the 50k-URL sitemap limit for the foreseeable future.
-- Delete `frontend/public/sitemap.xml`; dev proxy + prod reverse proxy route
-  `/sitemap.xml` to the API server. robots.txt already points at it.
+- Delete `frontend/public/sitemap.xml`; add a `/sitemap.xml` rule to the
+  Vite dev proxy (today it forwards only `/api`) and to the prod reverse
+  proxy, both → API server. robots.txt already points at it.
 
 ## Phase 1 — framework mode migration, `ssr: false` + static prerender
 
@@ -91,8 +100,12 @@ de-risks Phase 2.
 - Swap `@vitejs/plugin-react` for `@react-router/dev`'s `reactRouter()`
   plugin; add `@react-router/node`. Keep the Sentry vite plugin, dev proxy,
   and `fs.allow` scoping exactly as they are.
-- `react-router.config.ts`: `ssr: false`,
+- `react-router.config.ts`: `appDirectory: "src"` (the plugin defaults to
+  `app/`; the adoption guide shows this exact override for existing Vite
+  apps), `ssr: false`,
   `prerender: ["/", "/disclaimer", "/terms", "/privacy", "/register", "/login"]`.
+  Node floor is fine as-is: react-router 7.x requires `>=20.0.0` (the
+  22.22+ floor is v8's, deferred with that upgrade).
 - `src/root.tsx` replaces `index.html` (same head content via `Layout` +
   `Meta`/`Links`/`Scripts`); `src/routes.ts` replaces the
   `createBrowserRouter` array (config-based routes, not file-convention —
@@ -108,6 +121,16 @@ de-risks Phase 2.
 - Gate: vitest suite, Playwright suite, and a manual
   `curl` of the built output confirming `/disclaimer` HTML contains the
   disclaimer text with JS disabled.
+- Browser-globals gate: prerendering executes the listed routes in Node at
+  build time even with `ssr: false`, so the build itself is the smoke test —
+  it must complete with no `window is not defined` /
+  `document is not defined` / `localStorage` ReferenceErrors. Audited
+  today: the one render-path browser API is HomePage's
+  `readStoredAcceptance()` (localStorage in a `useState` initializer),
+  which is try/catch-wrapped and degrades to `false` in Node; everything
+  else (`useDocumentTitle`, `useJsonLd`, `pendingDistricts`, Sentry init)
+  lives in effects, event handlers, or the client entry. Keep new
+  render-path browser API usage behind the same guard pattern.
 - Known risk to watch: hydration mismatches from locale/timezone-sensitive
   formatting (`toLocaleDateString`) once HTML is pregenerated — pin
   formatting to an explicit locale/UTC if warnings appear.
@@ -127,6 +150,13 @@ status codes.
   layers (follows, research-area preferences, `useMe`) stay client-side
   TanStack Query untouched — crawlers don't need them and they require
   cookies anyway.
+- **Loader fetches are anonymous by construction: never forward the
+  browser's cookies or auth headers to the API.** Both endpoints return
+  session-dependent fields (`is_following` / `follow`) when a session
+  cookie rides along — forwarding would bake one user's personalized state
+  into server-rendered HTML that crawlers read and Phase 3 would cache for
+  everyone. The loader builds a bare `fetch(API_INTERNAL_URL + path)` with
+  no header passthrough, so the server HTML is identical for every visitor.
 - `meta` export (from loader data) replaces `useDocumentTitle` on these two
   routes; JSON-LD becomes a `<script type="application/ld+json">` rendered
   inline in the component (server-emitted), replacing `useJsonLd` there.
@@ -134,11 +164,17 @@ status codes.
 - Unknown id: loader throws a 404 response → route `ErrorBoundary` renders
   not-found UI and the crawler gets a real HTTP 404 (the SPA can only fake
   this today).
-- Serving: `react-router-serve ./build/server/index.js` — a second small
-  Node process next to the API server; it needs only `API_INTERNAL_URL`
+- Serving: add the `@react-router/serve` package (Phase 1 only installs
+  `@react-router/dev` + `@react-router/node`; the binary comes from this
+  one) and a `start` script running
+  `react-router-serve ./build/server/index.js` — a second small Node
+  process next to the API server; it needs only `API_INTERNAL_URL`
   (no DB, no Redis, no secrets). Reverse proxy: `/api/*` + `/sitemap.xml`
   → API server, everything else → SSR server. Update
-  docs/deploy-checklist.md topology + env tables.
+  docs/deploy-checklist.md in the same PR: topology section (static host →
+  Node SSR process + start command), env table (`API_INTERNAL_URL`), and
+  the reverse-proxy split — otherwise a deploy following the old checklist
+  serves static assets only and detail routes never reach the SSR server.
 - Ballot/auth/me routes get no loaders: SSR emits their shell instantly and
   the client fetches after hydration, exactly like today.
 - Error monitoring stays client-side for now (Sentry server-side SSR init
@@ -172,7 +208,8 @@ Only when metrics show crawl or traffic load hurting the SSR or API server:
   TanStack Query dehydration/hydration — the loader carries the subject;
   everything else stays a plain client fetch.
 - React Router v8 upgrade bundled into this work — do it separately later;
-  v8's breaking changes are all adoptable on v7 first.
+  v8's breaking changes are all adoptable on v7 first, and it raises the
+  Node floor to 22.22+ (engines/runtime bump belongs to that upgrade).
 
 ## Order and rationale
 
