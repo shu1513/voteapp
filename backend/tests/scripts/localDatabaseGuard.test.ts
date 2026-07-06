@@ -30,6 +30,11 @@ describe("requireLocalDatabaseTarget", () => {
     expect(() => requireLocalDatabaseTarget("postgresql://172.17.0.1:5432/voteapp")).not.toThrow();
   });
 
+  it("allows local effective hosts from query params and Unix sockets", () => {
+    expect(() => requireLocalDatabaseTarget("postgresql://db.example.com:5432/voteapp?host=localhost")).not.toThrow();
+    expect(() => requireLocalDatabaseTarget("postgresql:///voteapp?host=/var/run/postgresql")).not.toThrow();
+  });
+
   it("allows reviewed local host aliases from env", () => {
     process.env.LOCAL_DATABASE_ALLOWED_HOSTS = "dev-postgres.local";
 
@@ -43,6 +48,12 @@ describe("requireLocalDatabaseTarget", () => {
 
     process.env.ALLOW_REMOTE_DB_WRITES = "1";
     expect(() => requireLocalDatabaseTarget("postgresql://db.example.com:5432/voteapp")).not.toThrow();
+  });
+
+  it("rejects remote effective hosts from query params", () => {
+    expect(() => requireLocalDatabaseTarget("postgresql://localhost:5432/voteapp?host=db.example.com")).toThrow(
+      'Refusing manual write to non-local DATABASE_URL host "db.example.com"'
+    );
   });
 
   it("rejects malformed and non-postgres urls", () => {

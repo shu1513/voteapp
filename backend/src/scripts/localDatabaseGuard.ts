@@ -1,3 +1,5 @@
+import { parse as parsePostgresConnectionString } from "pg-connection-string";
+
 const DEFAULT_LOCAL_DATABASE_HOSTS = new Set([
   "",
   "localhost",
@@ -12,6 +14,11 @@ const DEFAULT_LOCAL_DATABASE_HOSTS = new Set([
 
 function normalizeHost(host: string): string {
   return host.trim().toLowerCase();
+}
+
+function isLocalDatabaseHost(host: string, allowedHosts: Set<string>): boolean {
+  const normalized = normalizeHost(host);
+  return normalized.startsWith("/") || allowedHosts.has(normalized);
 }
 
 function readAllowedLocalDatabaseHosts(): Set<string> {
@@ -46,10 +53,10 @@ export function requireLocalDatabaseTarget(databaseUrl = process.env.DATABASE_UR
     throw new Error(`Refusing manual write: unsupported DATABASE_URL protocol ${parsed.protocol}`);
   }
 
-  const host = normalizeHost(parsed.hostname);
-  if (!readAllowedLocalDatabaseHosts().has(host)) {
+  const effectiveHost = String(parsePostgresConnectionString(trimmed).host ?? "");
+  if (!isLocalDatabaseHost(effectiveHost, readAllowedLocalDatabaseHosts())) {
     throw new Error(
-      `Refusing manual write to non-local DATABASE_URL host "${parsed.hostname}". ` +
+      `Refusing manual write to non-local DATABASE_URL host "${effectiveHost}". ` +
         "Use LOCAL_DATABASE_ALLOWED_HOSTS for reviewed local aliases, or set ALLOW_REMOTE_DB_WRITES=1 only for an intentional remote write."
     );
   }
