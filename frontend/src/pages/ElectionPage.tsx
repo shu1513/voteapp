@@ -278,6 +278,8 @@ export function ElectionPage() {
   );
 }
 
+export default ElectionPage;
+
 // Client-side "for/against my issues" candidate ordering: weighted unique
 // matched areas dominate, matching record volume breaks ties, and candidates
 // that tie completely (including all zero-scores) keep their ballot order —

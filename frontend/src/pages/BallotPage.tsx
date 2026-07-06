@@ -130,3 +130,5 @@ export function BallotPage() {
     </div>
   );
 }
+
+export default BallotPage;

@@ -344,3 +344,5 @@ export function SavedBallotPage() {
     </div>
   );
 }
+
+export default SavedBallotPage;

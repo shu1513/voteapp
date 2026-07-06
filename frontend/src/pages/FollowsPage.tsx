@@ -171,3 +171,5 @@ export function FollowsPage() {
     </div>
   );
 }
+
+export default FollowsPage;
