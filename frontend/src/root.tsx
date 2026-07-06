@@ -57,7 +57,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <Providers>{children}</Providers>
         <Scripts />
       </body>
     </html>
@@ -65,17 +65,9 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function Root() {
-  return (
-    <Providers>
-      <Outlet />
-    </Providers>
-  );
+  return <Outlet />;
 }
 
 export function ErrorBoundary() {
-  return (
-    <Providers>
-      <RouteError />
-    </Providers>
-  );
+  return <RouteError />;
 }

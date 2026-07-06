@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
+import type { MetaFunction } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { ErrorNotice } from "../components/Status";
 import { purgeAccountScopedQueries } from "../lib/useMe";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+
+export const meta: MetaFunction = () => [{ title: "Log in · VoteApp" }];
 
 export function LoginPage() {
   useDocumentTitle("Log in");

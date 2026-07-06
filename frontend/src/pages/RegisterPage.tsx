@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
+import type { MetaFunction } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { SIGNUP_CHECKBOX_LABEL, TERMS_VERSION } from "../legal/copy";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+
+export const meta: MetaFunction = () => [{ title: "Create your account · VoteApp" }];
 
 export function RegisterPage() {
   useDocumentTitle("Create your account");

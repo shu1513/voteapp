@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { AI_BANNER } from "../legal/copy";
 
 /** Rendered at the top of every ballot, election, and candidate view. */

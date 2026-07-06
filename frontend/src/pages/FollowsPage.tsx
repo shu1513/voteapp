@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useMe } from "../lib/useMe";
 import { useFollows, useFollowSaving, useSetFollow } from "../lib/useFollows";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";

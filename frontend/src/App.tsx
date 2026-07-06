@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router";
 import { RouteError } from "./components/RouteError";
 import { useLogout, useMe } from "./lib/useMe";
 

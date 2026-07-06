@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 // Clickwrap checkbox (Meyer v. Uber / Nguyen / Berman requirements):
 // unchecked by default, sits directly above the action it gates, visible
