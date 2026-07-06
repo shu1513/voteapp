@@ -13,6 +13,7 @@ import type {
   PresidentialRosterStatusAiResult,
 } from "../ai/enrichPresidentialRosterStatus.js";
 import { loadProjectEnv } from "../config/env.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import {
   parsePresidentialRosterPayload,
   type PresidentialRosterPayload,
@@ -363,7 +364,9 @@ async function main(): Promise<void> {
   const options = parseManualPresidentialRosterScriptArgs(process.argv.slice(2), startedAt);
   const rawPayload = await readJsonFile(options.file);
 
-  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
+  const databaseUrl = requireEnv("DATABASE_URL");
+  requireLocalDatabaseTarget(databaseUrl);
+  const pool = new Pool({ connectionString: databaseUrl });
   let redis: RedisClient | null = null;
 
   try {

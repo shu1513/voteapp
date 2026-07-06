@@ -8,6 +8,7 @@ import {
   type CandidateProfilePayloadValidationResult,
 } from "../ai/enrichCandidateProfile.js";
 import { loadProjectEnv } from "../config/env.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import type { CandidateProfilePayload } from "../contracts/candidateProfilePayloadContract.js";
 import { enqueueCandidateRecordDrafts } from "../pipeline/candidates/candidateRecordDraftEmitter.js";
 import {
@@ -758,7 +759,9 @@ async function main(): Promise<void> {
   loadProjectEnv();
   const options = parseManualPresidentialProfileScriptArgs(process.argv.slice(2));
   const rawPayload = await readJsonFile(options.file);
-  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
+  const databaseUrl = requireEnv("DATABASE_URL");
+  requireLocalDatabaseTarget(databaseUrl);
+  const pool = new Pool({ connectionString: databaseUrl });
   let redis: RedisClient | null = null;
 
   try {

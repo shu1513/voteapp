@@ -4,6 +4,7 @@ import { Pool } from "pg";
 import { createClient } from "redis";
 
 import { loadProjectEnv } from "../config/env.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import {
   STAGING_ITEM_TYPE_ELECTION,
   STAGING_PENDING_STREAM,
@@ -192,7 +193,9 @@ async function main(): Promise<void> {
     return;
   }
 
-  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
+  const databaseUrl = requireEnv("DATABASE_URL");
+  requireLocalDatabaseTarget(databaseUrl);
+  const pool = new Pool({ connectionString: databaseUrl });
   const redis = createClient({ url: requireEnv("REDIS_URL") });
 
   try {

@@ -12,6 +12,7 @@ import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFo
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
 import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import type { UserEmailPreferences } from "../pipeline/users/userEmailPreferences.js";
+import { CONTENT_REPORT_ENTITY_TYPES, type ContentReportEntityType } from "../pipeline/reports/contentReports.js";
 import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
 
 export { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
@@ -31,6 +32,7 @@ export const AUTH_VERIFY_EMAIL_PATH = "/api/auth/verify-email";
 export const AUTH_VERIFY_EMAIL_CHANGE_PATH = "/api/auth/verify-email-change";
 export const AUTH_LOGOUT_ALL_PATH = "/api/auth/logout-all";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
+export const CONTENT_REPORTS_PATH = "/api/content-reports";
 export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
 // Session-holder identity (email, first_name, email_verified). Not gated on
@@ -145,6 +147,18 @@ export type InitializeUserDistrictsPayload = {
   district_ids: string[];
 };
 
+export type ContentReportPayload = {
+  entityType: ContentReportEntityType;
+  entityId: string;
+  message: string;
+  suggestedSourceUrl?: string | null;
+  reporterEmail?: string | null;
+};
+
+const MAX_CONTENT_REPORT_MESSAGE_LENGTH = 2000;
+const MAX_CONTENT_REPORT_SOURCE_URL_LENGTH = 2048;
+const MAX_CONTENT_REPORT_EMAIL_LENGTH = 320;
+
 export type ResearchAreaPreferencePayloadItem = {
   research_area_id: string;
   rank?: number | null;
@@ -239,6 +253,96 @@ export function parseAddressPayload(rawBody: string): AddressResolvePayload {
 
 export function parseAuthenticatedAddressBodyValue(parsed: unknown): AuthenticatedAddressPayload {
   return parseAddressBodyValue(parsed);
+}
+
+function assertNoUnknownFields(record: Record<string, unknown>, allowedFields: readonly string[]): void {
+  const allowed = new Set(allowedFields);
+  const unknown = Object.keys(record).filter((field) => !allowed.has(field));
+  if (unknown.length > 0) {
+    throw new TypeError(`Request body contains unknown field: ${unknown[0]}`);
+  }
+}
+
+function parseOptionalStringField(record: Record<string, unknown>, fieldName: string): string | null {
+  const value = record[fieldName];
+  if (value === undefined || value === null) {
+    return null;
+  }
+  if (typeof value !== "string") {
+    throw new TypeError(`${fieldName} must be a string when provided`);
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+export function parseContentReportBodyValue(parsed: unknown): ContentReportPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const record = parsed as Record<string, unknown>;
+  assertNoUnknownFields(record, ["entity_type", "entity_id", "message", "suggested_source_url", "reporter_email"]);
+
+  const rawEntityType = record.entity_type;
+  if (typeof rawEntityType !== "string") {
+    throw new TypeError("Request body must include string field: entity_type");
+  }
+  const entityType = rawEntityType.trim();
+  if (!(CONTENT_REPORT_ENTITY_TYPES as readonly string[]).includes(entityType)) {
+    throw new TypeError(`entity_type must be one of: ${CONTENT_REPORT_ENTITY_TYPES.join(", ")}`);
+  }
+
+  const rawEntityId = record.entity_id;
+  if (typeof rawEntityId !== "string") {
+    throw new TypeError("Request body must include UUID string field: entity_id");
+  }
+  const entityId = rawEntityId.trim();
+  if (!isUuid(entityId)) {
+    throw new TypeError(`entity_id must be a valid UUID: ${entityId}`);
+  }
+
+  const rawMessage = record.message;
+  if (typeof rawMessage !== "string" || rawMessage.trim().length === 0) {
+    throw new TypeError("Request body must include non-empty string field: message");
+  }
+  const message = rawMessage.trim();
+  if (message.length > MAX_CONTENT_REPORT_MESSAGE_LENGTH) {
+    throw new TypeError(`message must be at most ${MAX_CONTENT_REPORT_MESSAGE_LENGTH} characters`);
+  }
+
+  const suggestedSourceUrl = parseOptionalStringField(record, "suggested_source_url");
+  if (suggestedSourceUrl !== null) {
+    if (suggestedSourceUrl.length > MAX_CONTENT_REPORT_SOURCE_URL_LENGTH) {
+      throw new TypeError(`suggested_source_url must be at most ${MAX_CONTENT_REPORT_SOURCE_URL_LENGTH} characters`);
+    }
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(suggestedSourceUrl);
+    } catch {
+      throw new TypeError("suggested_source_url must be a valid http(s) URL");
+    }
+    if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+      throw new TypeError("suggested_source_url must be a valid http(s) URL");
+    }
+  }
+
+  const reporterEmail = parseOptionalStringField(record, "reporter_email");
+  if (reporterEmail !== null) {
+    if (reporterEmail.length > MAX_CONTENT_REPORT_EMAIL_LENGTH) {
+      throw new TypeError(`reporter_email must be at most ${MAX_CONTENT_REPORT_EMAIL_LENGTH} characters`);
+    }
+    if (!/^\S+@\S+\.\S+$/.test(reporterEmail)) {
+      throw new TypeError("reporter_email must be a valid email address when provided");
+    }
+  }
+
+  return {
+    entityType: entityType as ContentReportEntityType,
+    entityId,
+    message,
+    ...(suggestedSourceUrl === null ? {} : { suggestedSourceUrl }),
+    ...(reporterEmail === null ? {} : { reporterEmail }),
+  };
 }
 
 export function parseAuthRegisterBodyValue(parsed: unknown): AuthRegisterPayload {

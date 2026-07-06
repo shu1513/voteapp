@@ -3,6 +3,7 @@ import { createClient } from "redis";
 
 import { resolveCandidateResearchMode } from "../ai/candidateResearchMode.js";
 import { loadProjectEnv } from "../config/env.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { STAGING_ITEM_TYPE_CANDIDATE_ROSTER } from "../config/electionsPipeline.js";
 import { parseCandidateRosterPayload, type CandidateRosterEntry } from "../contracts/candidateRosterPayloadContract.js";
 import { enqueueCandidateProfileDrafts } from "../pipeline/candidates/candidateProfileDraftEmitter.js";
@@ -214,6 +215,7 @@ async function main(): Promise<void> {
   const dryRun = hasFlag("--dry-run");
   const ingestKey = rosterIngestKeyForElection(electionId);
   const databaseUrl = requireEnv("DATABASE_URL");
+  requireLocalDatabaseTarget(databaseUrl);
   const redisUrl = dryRun ? null : requireEnv("REDIS_URL");
 
   const pool = new Pool({ connectionString: databaseUrl });

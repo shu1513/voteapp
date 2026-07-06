@@ -26,6 +26,12 @@ import {
 import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
 import type { AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
 import { createApiApp } from "../api/apiServer.js";
+import {
+  createInMemoryContentReportRateLimiter,
+  DEFAULT_CONTENT_REPORT_RATE_LIMIT_MAX_BUCKETS,
+  DEFAULT_CONTENT_REPORT_RATE_LIMIT_MAX_REQUESTS,
+  DEFAULT_CONTENT_REPORT_RATE_LIMIT_WINDOW_MS,
+} from "../api/contentReportRateLimiter.js";
 import { loadProjectEnv } from "../config/env.js";
 import { captureError, describeError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
 import {
@@ -62,6 +68,7 @@ import {
   DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE,
 } from "../pipeline/address/censusAddressGeocoder.js";
 import { updateAuthenticatedAddressDistricts } from "../pipeline/users/userAddressDistrictUpdater.js";
+import { createContentReport } from "../pipeline/reports/contentReports.js";
 import { listUserCandidateFollows, setUserCandidateFollow } from "../pipeline/users/userCandidateFollows.js";
 import { initializeUserDistricts } from "../pipeline/users/userDistrictInitializer.js";
 import { listUserDistrictIds } from "../pipeline/users/userDistrictReader.js";
@@ -233,11 +240,31 @@ async function main(): Promise<void> {
     "AUTH_API_RATE_LIMIT_MAX_BUCKETS",
     DEFAULT_AUTH_API_RATE_LIMIT_MAX_BUCKETS
   );
+  const contentReportRateLimitEnabled = readBooleanEnv("CONTENT_REPORT_RATE_LIMIT_ENABLED", true);
+  const contentReportRateLimitWindowMs = readPositiveIntegerEnv(
+    "CONTENT_REPORT_RATE_LIMIT_WINDOW_MS",
+    DEFAULT_CONTENT_REPORT_RATE_LIMIT_WINDOW_MS
+  );
+  const contentReportRateLimitMaxRequests = readPositiveIntegerEnv(
+    "CONTENT_REPORT_RATE_LIMIT_MAX_REQUESTS",
+    DEFAULT_CONTENT_REPORT_RATE_LIMIT_MAX_REQUESTS
+  );
+  const contentReportRateLimitMaxBuckets = readPositiveIntegerEnv(
+    "CONTENT_REPORT_RATE_LIMIT_MAX_BUCKETS",
+    DEFAULT_CONTENT_REPORT_RATE_LIMIT_MAX_BUCKETS
+  );
   const rateLimit = rateLimitEnabled
     ? createInMemoryAddressApiRateLimiter({
         windowMs: rateLimitWindowMs,
         maxRequests: rateLimitMaxRequests,
         maxBuckets: rateLimitMaxBuckets,
+      })
+    : undefined;
+  const contentReportRateLimit = contentReportRateLimitEnabled
+    ? createInMemoryContentReportRateLimiter({
+        windowMs: contentReportRateLimitWindowMs,
+        maxRequests: contentReportRateLimitMaxRequests,
+        maxBuckets: contentReportRateLimitMaxBuckets,
       })
     : undefined;
   const addressCacheTtlSeconds = readPositiveIntegerEnv(
@@ -433,10 +460,12 @@ async function main(): Promise<void> {
         }
       : {}),
     authRateLimit,
+    contentReportRateLimit,
     authSessionCookieOptions,
     rateLimit,
     resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader),
     resolveAuthenticatedUserId,
+    createContentReport: (input) => createContentReport(pool, input),
     logDiagnostics: logAddressResolutionDiagnostics,
     // [ballot-personalized-ordering]: the plain reader is decorated with the
     // sort/followed-first ordering; on feature removal call the reader alone.

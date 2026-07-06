@@ -29,6 +29,7 @@ import {
   ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH,
   ADDRESS_RESOLVE_PATH,
   BALLOT_LOOKUP_PATH,
+  CONTENT_REPORTS_PATH,
   CANDIDATE_DETAIL_PATH_PREFIX,
   ELECTION_DETAIL_PATH_PREFIX,
   isCandidateDetailPath,
@@ -50,6 +51,7 @@ import {
   parseAutocompleteRetrieveBodyValue,
   parseAutocompleteSuggestBodyValue,
   parseCandidateFollowBodyValue,
+  parseContentReportBodyValue,
   parseBallotPreferencesBodyValue,
   parseEmailPreferencesBodyValue,
   parseEmailUnsubscribePreference,
@@ -90,6 +92,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH ||
     pathname === ADDRESS_RESOLVE_PATH ||
     pathname === BALLOT_LOOKUP_PATH ||
+    pathname === CONTENT_REPORTS_PATH ||
     pathname === AUTH_FORGOT_PASSWORD_PATH ||
     pathname === AUTH_LOGIN_PATH ||
     pathname === AUTH_LOGOUT_PATH ||
@@ -276,6 +279,34 @@ function createRateLimitMiddleware(options: AddressApiServerOptions) {
   };
 }
 
+function createContentReportRateLimitMiddleware(options: AddressApiServerOptions) {
+  return (request: Request, response: Response<unknown, ApiResponseLocals>, next: NextFunction): void => {
+    if (!options.contentReportRateLimit || request.method !== "POST" || request.path !== CONTENT_REPORTS_PATH) {
+      next();
+      return;
+    }
+
+    const rateLimit = options.contentReportRateLimit({
+      clientIp: response.locals.clientIp ?? "unknown",
+      method: request.method,
+      pathname: request.path,
+    });
+    if (rateLimit.allowed) {
+      next();
+      return;
+    }
+
+    const retryAfterSeconds = Math.max(1, Math.ceil(rateLimit.retryAfterSeconds ?? 1));
+    sendApiResponse(
+      response,
+      toErrorResponse(429, "rate_limited", "Too many requests. Try again later.", {
+        ...getCorsHeaders(response),
+        "retry-after": String(retryAfterSeconds),
+      })
+    );
+  };
+}
+
 function createJsonBodyParser() {
   const parseJson = express.json({
     limit: MAX_ADDRESS_REQUEST_BODY_BYTES,
@@ -296,6 +327,7 @@ function createJsonBodyParser() {
         (request.path === ADDRESS_AUTOCOMPLETE_PATH ||
           request.path === ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH ||
           request.path === ADDRESS_RESOLVE_PATH ||
+          request.path === CONTENT_REPORTS_PATH ||
           request.path === ME_DISTRICTS_INITIALIZE_PATH ||
           request.path === AUTH_FORGOT_PASSWORD_PATH ||
           request.path === AUTH_LOGIN_PATH ||
@@ -370,6 +402,29 @@ async function dispatchApiRequest(
 
     const result = await options.listResearchAreas();
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === CONTENT_REPORTS_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/content-reports", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.createContentReport) {
+      sendApiResponse(response, toErrorResponse(500, "internal_error", "Content report storage is not configured", corsHeaders));
+      return;
+    }
+
+    const payload = parseContentReportBodyValue(request.body);
+    const userId = await resolveAuthenticatedUserId(options, request);
+    const report = await options.createContentReport({ ...payload, userId });
+    sendApiResponse(response, toJsonResponse(201, { report }, corsHeaders));
     return;
   }
 
@@ -1488,6 +1543,7 @@ export function createApiApp(options: AddressApiServerOptions): Express {
   app.use(createClientIpMiddleware(options));
   app.use(createCorsAndPreflightMiddleware(options));
   app.use(createRateLimitMiddleware(options));
+  app.use(createContentReportRateLimitMiddleware(options));
   app.use(createJsonBodyParser());
   app.use((request, response, next) => {
     void dispatchApiRequest(request, response, options).catch(next);

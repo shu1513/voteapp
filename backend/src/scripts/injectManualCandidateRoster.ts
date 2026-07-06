@@ -4,6 +4,7 @@ import { Pool } from "pg";
 import { createClient } from "redis";
 
 import { loadProjectEnv } from "../config/env.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import {
   STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
   STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
@@ -176,7 +177,9 @@ async function main(): Promise<void> {
   }
 
   const dryRun = hasFlag("--dry-run");
-  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
+  const databaseUrl = requireEnv("DATABASE_URL");
+  requireLocalDatabaseTarget(databaseUrl);
+  const pool = new Pool({ connectionString: databaseUrl });
   let redis: ReturnType<typeof createClient> | null = null;
 
   try {

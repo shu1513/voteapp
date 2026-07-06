@@ -3263,3 +3263,152 @@ describe("email preferences and unsubscribe endpoints", () => {
     expect(response.statusCode).toBe(500);
   });
 });
+
+describe("content report API", () => {
+  it("serves anonymous POST /api/content-reports and echoes only the report id", async () => {
+    const createContentReport = vi.fn().mockResolvedValue({ id: "99999999-9999-4999-8999-999999999999" });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn().mockResolvedValue(resolvedAddress), createContentReport }), {
+      method: "POST",
+      path: "/api/content-reports",
+      body: JSON.stringify({
+        entity_type: "candidate_record",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "This record seems wrong",
+        suggested_source_url: "https://example.org/source",
+        reporter_email: "reader@example.com",
+      }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(201);
+    expect(response.body).toEqual({ report: { id: "99999999-9999-4999-8999-999999999999" } });
+    expect(createContentReport).toHaveBeenCalledWith({
+      entityType: "candidate_record",
+      entityId: "22222222-2222-4222-8222-222222222222",
+      message: "This record seems wrong",
+      suggestedSourceUrl: "https://example.org/source",
+      reporterEmail: "reader@example.com",
+      userId: null,
+    });
+  });
+
+  it("attaches the trusted user id when a session is present", async () => {
+    const createContentReport = vi.fn().mockResolvedValue({ id: "99999999-9999-4999-8999-999999999999" });
+    const resolveAuthenticatedUserId = vi.fn().mockResolvedValue("11111111-1111-4111-8111-111111111111");
+
+    const response = await invokeExpressApp(
+      createApiApp({
+        resolveAddress: vi.fn().mockResolvedValue(resolvedAddress),
+        createContentReport,
+        resolveAuthenticatedUserId,
+      }),
+      {
+        method: "POST",
+        path: "/api/content-reports",
+        body: JSON.stringify({
+          entity_type: "candidate",
+          entity_id: "22222222-2222-4222-8222-222222222222",
+          message: "Profile summary has a typo",
+        }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(201);
+    expect(createContentReport).toHaveBeenCalledWith(
+      expect.objectContaining({ userId: "11111111-1111-4111-8111-111111111111" })
+    );
+  });
+
+  it("requires JSON and configured storage", async () => {
+    const missingJson = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn().mockResolvedValue(resolvedAddress) }), {
+      method: "POST",
+      path: "/api/content-reports",
+      body: JSON.stringify({
+        entity_type: "candidate",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "wrong",
+      }),
+    });
+    expect(missingJson.statusCode).toBe(415);
+
+    const missingHandler = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn().mockResolvedValue(resolvedAddress) }), {
+      method: "POST",
+      path: "/api/content-reports",
+      body: JSON.stringify({
+        entity_type: "candidate",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "wrong",
+      }),
+      headers: { "content-type": "application/json" },
+    });
+    expect(missingHandler.statusCode).toBe(500);
+    expect(missingHandler.body).toEqual({
+      error: { code: "internal_error", message: "Content report storage is not configured" },
+    });
+  });
+
+  it("maps unknown report entities to 404", async () => {
+    const { ContentReportError } = await import("../../src/pipeline/reports/contentReports.js");
+    const createContentReport = vi.fn().mockRejectedValue(new ContentReportError("entity_not_found", "missing"));
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn().mockResolvedValue(resolvedAddress), createContentReport }), {
+      method: "POST",
+      path: "/api/content-reports",
+      body: JSON.stringify({
+        entity_type: "election",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "Date is wrong",
+      }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({ error: { code: "not_found", message: "Reported content not found" } });
+  });
+
+  it("applies the dedicated content report rate limit", async () => {
+    const createContentReport = vi.fn();
+    const contentReportRateLimit = vi.fn().mockReturnValue({ allowed: false, retryAfterSeconds: 30 });
+
+    const response = await invokeExpressApp(
+      createApiApp({
+        resolveAddress: vi.fn().mockResolvedValue(resolvedAddress),
+        createContentReport,
+        contentReportRateLimit,
+      }),
+      {
+        method: "POST",
+        path: "/api/content-reports",
+        body: JSON.stringify({
+          entity_type: "candidate",
+          entity_id: "22222222-2222-4222-8222-222222222222",
+          message: "wrong",
+        }),
+        headers: { "content-type": "application/json" },
+        remoteAddress: "203.0.113.10",
+      }
+    );
+
+    expect(response.statusCode).toBe(429);
+    expect(response.headers["retry-after"]).toBe("30");
+    expect(contentReportRateLimit).toHaveBeenCalledWith({
+      clientIp: "203.0.113.10",
+      method: "POST",
+      pathname: "/api/content-reports",
+    });
+    expect(createContentReport).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-POST methods", async () => {
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn().mockResolvedValue(resolvedAddress) }), {
+      method: "GET",
+      path: "/api/content-reports",
+    });
+
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("POST");
+    expect(response.body).toEqual({ error: { code: "method_not_allowed", message: "Use POST /api/content-reports" } });
+  });
+});

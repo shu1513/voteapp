@@ -2,6 +2,7 @@ import { CensusAddressGeocoderError } from "../pipeline/address/censusAddressGeo
 import { GooglePlacesAutocompleteError } from "../pipeline/address/googlePlacesAutocomplete.js";
 import { CandidateDetailReaderError } from "../pipeline/candidates/candidateDetailReader.js";
 import { AuthenticatedAddressDistrictUpdateError } from "../pipeline/users/userAddressDistrictUpdater.js";
+import { ContentReportError } from "../pipeline/reports/contentReports.js";
 import { UserCandidateFollowsError } from "../pipeline/users/userCandidateFollows.js";
 import { InitializeUserDistrictsError } from "../pipeline/users/userDistrictInitializer.js";
 import { UserDistrictReaderError } from "../pipeline/users/userDistrictReader.js";
@@ -113,6 +114,15 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
   }
   if (error instanceof UserResearchAreaPreferencesError) {
     if (error.code === "invalid_user_id" || error.code === "user_not_found") {
+      return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
+    }
+    return { statusCode: 400, code: "invalid_request", message: error.message };
+  }
+  if (error instanceof ContentReportError) {
+    if (error.code === "entity_not_found") {
+      return { statusCode: 404, code: "not_found", message: "Reported content not found" };
+    }
+    if (error.code === "invalid_user_id") {
       return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
     }
     return { statusCode: 400, code: "invalid_request", message: error.message };
