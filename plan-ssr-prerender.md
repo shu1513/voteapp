@@ -78,10 +78,16 @@ pages indexable by Google before any SSR lands.
   `/elections/:id` (all rows) and `/candidates/:id` (excluding
   `deleted_at IS NOT NULL` / merged candidates), `<lastmod>` from
   `updated_at`.
-- Canonical origin for the absolute URLs: `AUTH_PUBLIC_BASE_URL` (already
-  defined as the public frontend origin) — **not**
-  `NOTIFICATIONS_UNSUBSCRIBE_URL`, which points at the API origin and would
-  publish non-canonical URLs to crawlers.
+- Canonical origin for the absolute URLs: a dedicated `SITE_ORIGIN` env
+  var (the public frontend origin, e.g. `https://impactperdollar.com`) —
+  **not** reused link settings. `AUTH_PUBLIC_BASE_URL` is optional (auth
+  can be disabled entirely) and names an auth-link target, and
+  `NOTIFICATIONS_UNSUBSCRIBE_URL` points at the API origin; borrowing
+  either can publish missing or non-canonical URLs to crawlers. Follow the
+  codebase's existing optional-feature pattern: `SITE_ORIGIN` unset →
+  `/sitemap.xml` stays dark (404) with a startup warning, and the deploy
+  checklist lists `SITE_ORIGIN` as required for prod (robots.txt
+  advertises the sitemap, so a dark sitemap is a misconfiguration there).
 - Serving details: respond `Content-Type: application/xml`, and add
   `/sitemap.xml` to the `isKnownApiPath` allowlist — the API server 404s
   unknown paths before routing. If URL count ever approaches the
