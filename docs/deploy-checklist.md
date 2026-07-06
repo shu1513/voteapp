@@ -80,7 +80,15 @@ refuses unless `--allow-console`). A future admin page replaces this CLI.
 ## Frontend build
 
 - `npm run build` runs `tsc -b` + `vite build`; deploy `frontend/dist/`.
-- No frontend env vars: the API base is same-origin `/api`.
+- The API base is same-origin `/api`; the only frontend env vars are the
+  error-monitoring set below (all optional — unset keeps monitoring dark):
+
+| Build-time variable | Value / note |
+|---|---|
+| `VITE_SENTRY_DSN` | voteapp-frontend project DSN; unset = disabled. Same enablement gate as the backend (staging scrub test first) |
+| `VITE_DEPLOY_ENV` | Sentry `environment` label (e.g. `production`) |
+| `DEPLOY_RELEASE` | git SHA; baked into the bundle as the Sentry `release` (falls back to `git rev-parse` locally) |
+| `SENTRY_AUTH_TOKEN` | CI/deploy only — enables hidden source-map upload to Sentry (maps are deleted from `dist/` after upload, never served) |
 
 ## Pre-launch smoke
 

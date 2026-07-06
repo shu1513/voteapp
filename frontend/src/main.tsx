@@ -1,8 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
+import { ApiError } from "./api/client";
+import { captureMonitoredError, initErrorMonitoring } from "./lib/errorMonitoring";
 import { App } from "./App";
 import { HomePage } from "./pages/HomePage";
 import { BallotPage } from "./pages/BallotPage";
@@ -20,7 +22,19 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { RouteError } from "./components/RouteError";
 
+initErrorMonitoring();
+
+// 5xx only: 4xx are expected product states (bad address, unverified email,
+// rate limits), and non-ApiError failures are usually the user's network.
+function reportServerError(error: unknown): void {
+  if (error instanceof ApiError && error.status >= 500) {
+    captureMonitoredError(error, { source: "api", status: String(error.status), code: error.code });
+  }
+}
+
 const queryClient = new QueryClient({
+  queryCache: new QueryCache({ onError: reportServerError }),
+  mutationCache: new MutationCache({ onError: reportServerError }),
   defaultOptions: {
     queries: {
       retry: 1,

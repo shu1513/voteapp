@@ -40,6 +40,7 @@ We share information only with the processors needed to run the Service:
 - **Google Places (autocomplete)** — receives the address text you type when address suggestions are enabled; requests are proxied through our servers so Google does not receive your IP address from your browser.
 - **Amazon Web Services (SES)** — receives your email address to deliver account and notification emails.
 - **Analytics provider** — when analytics is enabled, receives the usage information described in Section 1 ("Usage analytics") to help us understand and improve how the Service is used. We configure analytics so that this data is not used for the provider's own advertising purposes, and we will name the provider here before or when analytics is enabled.
+- **Sentry (error monitoring)** — when error monitoring is enabled, receives reports about application errors (error type, stack trace, browser and device type, and the page path with its query string removed) so we can find and fix failures. We configure these reports to exclude your IP address, email address, address text, and the contents of your requests.
 - **Infrastructure providers** — hosting, database, and cache providers that store Service data on our behalf.
 
 Each receives only what its function requires. We do not share personal information with data brokers, advertisers, campaigns, or political organizations.
