@@ -88,6 +88,13 @@ pages indexable by Google before any SSR lands.
   `/sitemap.xml` stays dark (404) with a startup warning, and the deploy
   checklist lists `SITE_ORIGIN` as required for prod (robots.txt
   advertises the sitemap, so a dark sitemap is a misconfiguration there).
+- robots.txt stays a static file (making it dynamic for one line is not
+  worth another route + proxy rule), but its hard-coded `Sitemap:` URL
+  must agree with `SITE_ORIGIN`: the deploy checklist's `SITE_ORIGIN` row
+  says to update `frontend/public/robots.txt` in the same change, and the
+  Phase 0 gate includes `curl /robots.txt` + `curl /sitemap.xml` and
+  checking both carry the same origin — a mismatch is a silent
+  crawlers-never-find-the-sitemap failure.
 - Serving details: respond `Content-Type: application/xml`, and add
   `/sitemap.xml` to the `isKnownApiPath` allowlist — the API server 404s
   unknown paths before routing. If URL count ever approaches the
