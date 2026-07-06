@@ -7,6 +7,7 @@ import {
   type PresidentialNomineePayload,
 } from "../contracts/presidentialNomineePayloadContract.js";
 import { loadProjectEnv } from "../config/env.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import {
   loadActivePresidentialCycleCandidatesForNomineeResolution,
   resolvePresidentialNomineeCandidate,
@@ -281,7 +282,9 @@ async function main(): Promise<void> {
   loadProjectEnv();
   const options = parseManualPresidentialNomineeScriptArgs(process.argv.slice(2));
   const rawPayload = await readJsonFile(options.file);
-  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
+  const databaseUrl = requireEnv("DATABASE_URL");
+  requireLocalDatabaseTarget(databaseUrl);
+  const pool = new Pool({ connectionString: databaseUrl });
 
   try {
     const result = await runManualPresidentialNomineeWrite({

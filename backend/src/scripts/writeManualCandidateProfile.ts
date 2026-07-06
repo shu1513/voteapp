@@ -7,6 +7,7 @@ import { resolveIncludePartyForCandidateContest } from "../ai/candidatePartisans
 import { resolveCandidateResearchMode } from "../ai/candidateResearchMode.js";
 import { validateCandidateProfileAiPayload } from "../ai/enrichCandidateProfile.js";
 import { loadProjectEnv } from "../config/env.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { STAGING_ITEM_TYPE_CANDIDATE_ROSTER } from "../config/electionsPipeline.js";
 import { parseCandidateRosterPayload } from "../contracts/candidateRosterPayloadContract.js";
 import type { CandidateProfilePayload } from "../contracts/candidateProfilePayloadContract.js";
@@ -543,6 +544,7 @@ async function main(): Promise<void> {
   const isIncumbent = readBooleanFlag("--is-incumbent");
   const rosterIndex = readNonNegativeIntegerFlag("--roster-index");
   const databaseUrl = requireEnv("DATABASE_URL");
+  requireLocalDatabaseTarget(databaseUrl);
   // Running mates never emit record drafts for the ticket election, so do not
   // demand REDIS_URL for them even when --emit-record-draft is set.
   const redisUrl = emitRecordDraft && !dryRun && !runningMateOf ? requireEnv("REDIS_URL") : null;

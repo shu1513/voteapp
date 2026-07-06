@@ -6,6 +6,7 @@ import type {
 } from "../pipeline/address/ballotElectionOrdering.js";
 import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import type { UserEmailPreferences } from "../pipeline/users/userEmailPreferences.js";
+import type { CreatedContentReport, ContentReportInput } from "../pipeline/reports/contentReports.js";
 import type { UserIdentity } from "../pipeline/users/userIdentity.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { AddressSuggestion, RetrievedSuggestedAddress } from "../pipeline/address/googlePlacesAutocomplete.js";
@@ -143,6 +144,8 @@ export type AddressApiServerOptions = {
   captureUnexpectedError?: (error: unknown, context: { requestId: string; method: string; path: string }) => void;
   rateLimit?: (input: AddressApiRateLimitInput) => AddressApiRateLimitResult;
   authRateLimit?: (input: AuthApiRateLimitInput) => AuthApiRateLimitResult;
+  contentReportRateLimit?: (input: AddressApiRateLimitInput) => AddressApiRateLimitResult;
+  createContentReport?: (input: ContentReportInput) => Promise<CreatedContentReport>;
   resolveClientIp?: (input: AddressApiClientIpInput) => string;
   resolveAuthenticatedUserId?: (input: {
     headers: AddressApiClientIpInput["headers"];

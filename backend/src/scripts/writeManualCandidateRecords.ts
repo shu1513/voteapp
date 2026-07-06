@@ -7,6 +7,7 @@ import {
   type CandidateRecordDroppedRecord,
 } from "../ai/enrichCandidateRecords.js";
 import { loadProjectEnv } from "../config/env.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { parseCandidateRecordAreaLabelPayload } from "../contracts/candidateRecordAreaLabelPayloadContract.js";
 import {
   loadAllowedResearchAreasForOfficeId,
@@ -385,7 +386,9 @@ async function main(): Promise<void> {
 
   const dryRun = hasFlag("--dry-run");
 
-  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
+  const databaseUrl = requireEnv("DATABASE_URL");
+  requireLocalDatabaseTarget(databaseUrl);
+  const pool = new Pool({ connectionString: databaseUrl });
 
   try {
     const context = await loadCandidateElectionOfficeContext(pool, candidateId, electionId);

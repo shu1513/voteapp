@@ -252,3 +252,84 @@ describe("research area API contract constants", () => {
     expect(() => parseResearchAreaPreferencesBodyValue(payload)).toThrow(message);
   });
 });
+
+describe("content report API contract constants", () => {
+  it("defines and parses the public content report path", async () => {
+    const { CONTENT_REPORTS_PATH, parseContentReportBodyValue } = await import("../../src/api/apiValidation.js");
+    expect(CONTENT_REPORTS_PATH).toBe("/api/content-reports");
+    expect(
+      parseContentReportBodyValue({
+        entity_type: "candidate_record",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "  This record looks wrong.  ",
+        suggested_source_url: " https://example.org/source ",
+        reporter_email: " reader@example.com ",
+      })
+    ).toEqual({
+      entityType: "candidate_record",
+      entityId: "22222222-2222-4222-8222-222222222222",
+      message: "This record looks wrong.",
+      suggestedSourceUrl: "https://example.org/source",
+      reporterEmail: "reader@example.com",
+    });
+  });
+
+  it.each([
+    [null, "Request body must be a JSON object"],
+    [{}, "Request body must include string field: entity_type"],
+    [
+      {
+        entity_type: "bad",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "wrong",
+      },
+      "entity_type must be one of",
+    ],
+    [
+      {
+        entity_type: "candidate",
+        entity_id: "not-a-uuid",
+        message: "wrong",
+      },
+      "entity_id must be a valid UUID: not-a-uuid",
+    ],
+    [
+      {
+        entity_type: "candidate",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: " ",
+      },
+      "Request body must include non-empty string field: message",
+    ],
+    [
+      {
+        entity_type: "candidate",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "wrong",
+        suggested_source_url: "ftp://example.org/file",
+      },
+      "suggested_source_url must be a valid http(s) URL",
+    ],
+    [
+      {
+        entity_type: "candidate",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "wrong",
+        reporter_email: "not-an-email",
+      },
+      "reporter_email must be a valid email address when provided",
+    ],
+    [
+      {
+        entity_type: "candidate",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "wrong",
+        entity_label_snapshot: "client supplied",
+      },
+      "Request body contains unknown field: entity_label_snapshot",
+    ],
+  ])("rejects invalid content report payload %#", async (payload, message) => {
+    const { parseContentReportBodyValue } = await import("../../src/api/apiValidation.js");
+    expect(() => parseContentReportBodyValue(payload)).toThrow(message);
+  });
+});

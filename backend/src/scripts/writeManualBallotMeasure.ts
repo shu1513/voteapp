@@ -3,6 +3,7 @@ import { Pool } from "pg";
 
 import { validateBallotMeasureAiPayload } from "../ai/enrichBallotMeasure.js";
 import { loadProjectEnv } from "../config/env.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import {
   loadAllowedBallotMeasureResearchAreas,
   upsertBallotMeasureResearchAreaTags,
@@ -101,7 +102,9 @@ async function main(): Promise<void> {
   const dryRun = hasFlag("--dry-run");
   const manualKey = `manual:ballot-measure:${electionId}`;
 
-  const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });
+  const databaseUrl = requireEnv("DATABASE_URL");
+  requireLocalDatabaseTarget(databaseUrl);
+  const pool = new Pool({ connectionString: databaseUrl });
 
   try {
     const [election, allowedAreas] = await Promise.all([
