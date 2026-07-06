@@ -17,17 +17,28 @@ export function scrubText(value: string): string {
 }
 
 /** Exported for tests. Defense in depth: with defaultIntegrations off these
- * fields should not exist, but a future integration change must fail safe. */
+ * fields should not exist, but a future integration change (or a capture
+ * call attaching structured data) must fail safe. */
 export function scrubSentryEvent<TEvent extends Sentry.ErrorEvent>(event: TEvent): TEvent {
   delete event.request;
   delete event.user;
   delete event.breadcrumbs;
+  // Structured attachments can carry whole objects (payloads, upstream
+  // request context); nothing legitimate uses extra today, so drop it whole.
+  delete event.extra;
   if (event.message) {
     event.message = scrubText(event.message);
   }
   for (const exception of event.exception?.values ?? []) {
     if (exception.value) {
       exception.value = scrubText(exception.value);
+    }
+  }
+  if (event.tags) {
+    for (const [key, value] of Object.entries(event.tags)) {
+      if (typeof value === "string") {
+        event.tags[key] = scrubText(value);
+      }
     }
   }
   return event;

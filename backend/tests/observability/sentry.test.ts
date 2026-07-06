@@ -1,7 +1,27 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type { ErrorEvent } from "@sentry/node";
 
-import { scrubSentryEvent, scrubText } from "../../src/observability/sentry.js";
+import {
+  captureError,
+  flushSentry,
+  initSentryFromEnv,
+  scrubSentryEvent,
+  scrubText,
+} from "../../src/observability/sentry.js";
+
+const sentryMock = vi.hoisted(() => ({
+  init: vi.fn(),
+  setTag: vi.fn(),
+  captureException: vi.fn(),
+  flush: vi.fn(),
+}));
+
+vi.mock("@sentry/node", () => sentryMock);
+
+afterEach(() => {
+  vi.unstubAllEnvs();
+  vi.clearAllMocks();
+});
 
 describe("scrubText", () => {
   it("replaces email addresses", () => {
@@ -23,12 +43,13 @@ describe("scrubText", () => {
 });
 
 describe("scrubSentryEvent", () => {
-  it("drops request, user, and breadcrumbs and scrubs exception values", () => {
+  it("drops request, user, breadcrumbs, and extra and scrubs exception values", () => {
     const event = {
       message: "wrapper says voter@example.com broke",
       request: { url: "https://api.example.com/api/ballot?d=abc" },
       user: { ip_address: "203.0.113.9" },
       breadcrumbs: [{ message: "clicked" }],
+      extra: { requestBody: { address: "123 Main St", email: "voter@example.com" } },
       exception: {
         values: [{ type: "Error", value: "db rejected voter@example.com via /x?d=1" }],
       },
@@ -39,7 +60,61 @@ describe("scrubSentryEvent", () => {
     expect(scrubbed.request).toBeUndefined();
     expect(scrubbed.user).toBeUndefined();
     expect(scrubbed.breadcrumbs).toBeUndefined();
+    expect(scrubbed.extra).toBeUndefined();
     expect(scrubbed.message).toBe("wrapper says [email] broke");
     expect(scrubbed.exception?.values?.[0]?.value).toBe("db rejected [email] via /x?[scrubbed]");
+  });
+
+  it("scrubs string tag values", () => {
+    const event = {
+      tags: { path: "/api/ballot?d=abc", note: "from voter@example.com", count: 3 },
+    } as unknown as ErrorEvent;
+
+    const scrubbed = scrubSentryEvent(event);
+
+    expect(scrubbed.tags).toEqual({ path: "/api/ballot?[scrubbed]", note: "from [email]", count: 3 });
+  });
+});
+
+describe("initSentryFromEnv", () => {
+  it("stays dark without SENTRY_DSN", () => {
+    vi.stubEnv("SENTRY_DSN", "");
+    expect(initSentryFromEnv("api")).toBe(false);
+    expect(sentryMock.init).not.toHaveBeenCalled();
+  });
+
+  it("initializes errors-only and tags the component when a DSN is set", () => {
+    vi.stubEnv("SENTRY_DSN", "https://key@example.ingest.sentry.io/1");
+    vi.stubEnv("DEPLOY_ENV", "staging");
+    vi.stubEnv("DEPLOY_RELEASE", "abc1234");
+
+    expect(initSentryFromEnv("worker")).toBe(true);
+
+    expect(sentryMock.init).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dsn: "https://key@example.ingest.sentry.io/1",
+        environment: "staging",
+        release: "abc1234",
+        sendDefaultPii: false,
+        defaultIntegrations: false,
+        tracesSampleRate: 0,
+        maxBreadcrumbs: 0,
+      })
+    );
+    expect(sentryMock.setTag).toHaveBeenCalledWith("component", "worker");
+  });
+});
+
+describe("capture and flush never throw", () => {
+  it("swallows captureException failures", () => {
+    sentryMock.captureException.mockImplementation(() => {
+      throw new Error("sentry down");
+    });
+    expect(() => captureError(new Error("boom"), { component: "api" })).not.toThrow();
+  });
+
+  it("resolves even when flush rejects", async () => {
+    sentryMock.flush.mockRejectedValue(new Error("timeout"));
+    await expect(flushSentry(10)).resolves.toBeUndefined();
   });
 });
