@@ -1,5 +1,5 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { ApiError, apiRequest } from "../api/client";
 import type { ContentReportEntityType, CreateContentReportResponse } from "../api/types";
 
@@ -27,9 +27,11 @@ export function ReportContentButton({ entityType, entityId, contextLabel, report
   const [email, setEmail] = useState(reporterEmail ?? "");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const submissionGeneration = useRef(0);
 
   function openDialog() {
-    setEmail(reporterEmail ?? email);
+    submissionGeneration.current += 1;
+    setEmail(reporterEmail ?? "");
     setStatus("idle");
     setErrorMessage(null);
     // Preserve unsent draft text when a user closes the dialog accidentally.
@@ -53,6 +55,7 @@ export function ReportContentButton({ entityType, entityId, contextLabel, report
       return;
     }
 
+    const generation = ++submissionGeneration.current;
     setStatus("submitting");
     setErrorMessage(null);
     try {
@@ -66,8 +69,14 @@ export function ReportContentButton({ entityType, entityId, contextLabel, report
           ...(email.trim() ? { reporter_email: email.trim() } : {}),
         },
       });
+      if (submissionGeneration.current !== generation) {
+        return;
+      }
       setStatus("success");
     } catch (error) {
+      if (submissionGeneration.current !== generation) {
+        return;
+      }
       setErrorMessage(formatError(error));
       setStatus("error");
     }

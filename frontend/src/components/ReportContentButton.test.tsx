@@ -57,4 +57,41 @@ describe("ReportContentButton", () => {
 
     expect(await screen.findByText("Too many reports. Try later.")).toBeInTheDocument();
   });
+
+  it("validates whitespace-only messages before calling the API", async () => {
+    const fetchMock = stubApiRoutes({
+      "/api/content-reports": { status: 201, body: { report: { id: "report-1" } } },
+    });
+
+    render(<ReportContentButton entityType="election" entityId="e-1" contextLabel="election" />);
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Report an issue with election" }));
+    await user.type(screen.getByLabelText("Details"), "   ");
+    await user.click(screen.getByRole("button", { name: "Send report" }));
+
+    expect(screen.getByText("Tell us what looks wrong.")).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("clears the prefilled email when the signed-in email disappears", async () => {
+    const { rerender } = render(
+      <ReportContentButton
+        entityType="candidate"
+        entityId="c-1"
+        contextLabel="candidate profile"
+        reporterEmail="voter@example.com"
+      />
+    );
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Report an issue with candidate profile" }));
+    expect(screen.getByLabelText("Optional email")).toHaveValue("voter@example.com");
+    await user.click(screen.getByRole("button", { name: "Close" }));
+
+    rerender(<ReportContentButton entityType="candidate" entityId="c-1" contextLabel="candidate profile" />);
+    await user.click(screen.getByRole("button", { name: "Report an issue with candidate profile" }));
+
+    expect(screen.getByLabelText("Optional email")).toHaveValue("");
+  });
 });
