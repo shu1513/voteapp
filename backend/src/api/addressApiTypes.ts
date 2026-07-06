@@ -81,6 +81,7 @@ export type AddressApiServerOptions = {
   lookupCandidateDetail?: (candidateId: string, userId?: string | null) => Promise<CandidateDetailResult | null>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
   listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
+  getSitemapXml?: () => Promise<string>;
   listAuthenticatedCandidateFollows?: (userId: string) => Promise<AuthenticatedCandidateFollowsResult>;
   setAuthenticatedCandidateFollow?: (
     userId: string,

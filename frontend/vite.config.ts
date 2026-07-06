@@ -64,6 +64,9 @@ export default defineConfig({
           });
         },
       },
+      "/sitemap.xml": {
+        target: "http://127.0.0.1:3001",
+      },
     },
     fs: {
       // The disclaimer page raw-imports docs/legal/disclaimer.md. Allow ONLY
