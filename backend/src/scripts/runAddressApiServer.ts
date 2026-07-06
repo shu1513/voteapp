@@ -27,7 +27,7 @@ import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
 import type { AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
 import { createApiApp } from "../api/apiServer.js";
 import { loadProjectEnv } from "../config/env.js";
-import { captureError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
+import { captureError, describeError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
 import {
   createInMemoryAddressApiRateLimiter,
   DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_BUCKETS,
@@ -571,13 +571,10 @@ async function main(): Promise<void> {
   // process manager's log shows WHY the server died. Same exit-and-restart
   // semantics as the defaults — state after an uncaught error is unknown,
   // so limping on is worse than restarting.
-  // Stack string only, matching the API error middleware: raw objects can
-  // print enumerable custom properties (request context, payloads) into
-  // the process log.
-  const describeCrash = (cause: unknown): string =>
-    cause instanceof Error ? (cause.stack ?? cause.message) : String(cause);
+  // describeError: stack string only with emails/query strings masked —
+  // crash logs get the same scrubbing as the middleware and Sentry events.
   const crash = (label: string, cause: unknown): void => {
-    console.error(`address API server ${label}:`, describeCrash(cause));
+    console.error(`address API server ${label}:`, describeError(cause));
     captureError(cause, { crash: label.replaceAll(" ", "_") });
     void flushSentry().finally(() => {
       process.exit(1);

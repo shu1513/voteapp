@@ -7,13 +7,24 @@ import * as Sentry from "@sentry/node";
 // except what the explicit capture calls pass in. The scrubber is a second
 // layer on top of that.
 
-const EMAIL_PATTERN = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
-// Query strings are location-adjacent here (?d=<district-ids>); strip the
-// value part of any URL that sneaks into an error message.
-const QUERY_STRING_PATTERN = /\?[^\s"']+/g;
+import { scrubText } from "./scrubText.js";
 
-export function scrubText(value: string): string {
-  return value.replaceAll(EMAIL_PATTERN, "[email]").replaceAll(QUERY_STRING_PATTERN, "?[scrubbed]");
+export { describeError, scrubText } from "./scrubText.js";
+
+/** Recursively masks every string in a structured value (used for
+ * event.contexts, which the SDK populates with runtime info worth keeping
+ * but future capture calls could load with arbitrary data). */
+function scrubDeep(value: unknown): unknown {
+  if (typeof value === "string") {
+    return scrubText(value);
+  }
+  if (Array.isArray(value)) {
+    return value.map(scrubDeep);
+  }
+  if (value !== null && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, scrubDeep(entry)]));
+  }
+  return value;
 }
 
 /** Exported for tests. Defense in depth: with defaultIntegrations off these
@@ -40,6 +51,9 @@ export function scrubSentryEvent<TEvent extends Sentry.ErrorEvent>(event: TEvent
         event.tags[key] = scrubText(value);
       }
     }
+  }
+  if (event.contexts) {
+    event.contexts = scrubDeep(event.contexts) as typeof event.contexts;
   }
   return event;
 }

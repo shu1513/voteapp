@@ -537,7 +537,9 @@ describe("createApiApp", () => {
   it("maps unexpected route errors to internal_error with a logged request id", async () => {
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     try {
-      const resolveAddress = vi.fn().mockRejectedValue(new Error("database went sideways"));
+      const resolveAddress = vi
+        .fn()
+        .mockRejectedValue(new Error("database went sideways for voter@example.com"));
       const captureUnexpectedError = vi.fn();
 
       const response = await invokeExpressApp(createApiApp({ resolveAddress, captureUnexpectedError }), {
@@ -560,8 +562,10 @@ describe("createApiApp", () => {
       expect(logLine).toContain("POST /api/address/resolve");
       expect(logLine).not.toContain("Harlan Ave");
       // Stack string, not the error object: custom enumerable properties on
-      // wrapped errors must not reach the log.
-      expect(loggedError).toEqual(expect.stringContaining("database went sideways"));
+      // wrapped errors must not reach the log — and the local log line gets
+      // the same email/query-string masking as Sentry events.
+      expect(loggedError).toEqual(expect.stringContaining("database went sideways for [email]"));
+      expect(loggedError).not.toContain("voter@example.com");
       // The monitoring hook receives the same id the user can report.
       expect(captureUnexpectedError).toHaveBeenCalledTimes(1);
       expect(captureUnexpectedError).toHaveBeenCalledWith(expect.any(Error), {

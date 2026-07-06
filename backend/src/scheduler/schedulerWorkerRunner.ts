@@ -1,6 +1,6 @@
 import type { Worker } from "bullmq";
 
-import { captureError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
+import { captureError, describeError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
 
 /**
  * Shared entrypoint body for the notification scheduler workers: identical
@@ -29,12 +29,12 @@ export function runSchedulerWorker(
     });
 
     worker.on("failed", (job, error) => {
-      console.error(`${workerName} scheduler worker failed jobId=${job?.id ?? "unknown"}:`, error);
+      console.error(`${workerName} scheduler worker failed jobId=${job?.id ?? "unknown"}:`, describeError(error));
       captureError(error, { worker: workerName, event: "failed", job_id: job?.id ?? "unknown" });
     });
 
     worker.on("error", (error) => {
-      console.error(`${workerName} scheduler worker error:`, error);
+      console.error(`${workerName} scheduler worker error:`, describeError(error));
       captureError(error, { worker: workerName, event: "error" });
     });
 
@@ -44,7 +44,7 @@ export function runSchedulerWorker(
         await flushSentry();
         process.exit(0);
       } catch (error) {
-        console.error(`${workerName} scheduler worker shutdown failed:`, error);
+        console.error(`${workerName} scheduler worker shutdown failed:`, describeError(error));
         captureError(error, { worker: workerName, event: "shutdown_failed" });
         await flushSentry();
         process.exit(1);
@@ -58,10 +58,7 @@ export function runSchedulerWorker(
       void shutdown();
     });
   } catch (error) {
-    console.error(
-      `${workerName} scheduler worker crashed:`,
-      error instanceof Error ? (error.stack ?? error.message) : String(error)
-    );
+    console.error(`${workerName} scheduler worker crashed:`, describeError(error));
     captureError(error, { worker: workerName, event: "crashed" });
     void flushSentry().finally(() => {
       process.exit(1);

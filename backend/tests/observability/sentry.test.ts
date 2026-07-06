@@ -3,6 +3,7 @@ import type { ErrorEvent } from "@sentry/node";
 
 import {
   captureError,
+  describeError,
   flushSentry,
   initSentryFromEnv,
   scrubSentryEvent,
@@ -73,6 +74,35 @@ describe("scrubSentryEvent", () => {
     const scrubbed = scrubSentryEvent(event);
 
     expect(scrubbed.tags).toEqual({ path: "/api/ballot?[scrubbed]", note: "from [email]", count: 3 });
+  });
+
+  it("recursively scrubs strings inside contexts while keeping the shape", () => {
+    const event = {
+      contexts: {
+        runtime: { name: "node", version: "v23.9.0" },
+        custom: { nested: { detail: "sent to voter@example.com", urls: ["/x?d=1"] } },
+      },
+    } as unknown as ErrorEvent;
+
+    const scrubbed = scrubSentryEvent(event);
+
+    expect(scrubbed.contexts).toEqual({
+      runtime: { name: "node", version: "v23.9.0" },
+      custom: { nested: { detail: "sent to [email]", urls: ["/x?[scrubbed]"] } },
+    });
+  });
+});
+
+describe("describeError", () => {
+  it("returns the scrubbed stack string for Errors", () => {
+    const error = new Error("lookup for voter@example.com failed at /api/ballot?d=1");
+    const described = describeError(error);
+    expect(described).toContain("lookup for [email] failed at /api/ballot?[scrubbed]");
+    expect(described).toContain("at "); // stack frames retained
+  });
+
+  it("stringifies and scrubs non-Errors", () => {
+    expect(describeError("raw voter@example.com")).toBe("raw [email]");
   });
 });
 
