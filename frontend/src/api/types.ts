@@ -304,3 +304,9 @@ export type CandidateDetail = {
     is_following: boolean;
   };
 };
+
+export type ContentReportEntityType = "candidate" | "candidate_record" | "election" | "ballot_measure";
+
+export type CreateContentReportResponse = {
+  report: { id: string };
+};
