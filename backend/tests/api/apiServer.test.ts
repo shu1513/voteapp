@@ -260,6 +260,7 @@ describe("createApiApp", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.headers["content-type"]).toContain("application/xml");
+    expect(response.headers["cache-control"]).toBe("public, max-age=3600");
     expect(response.rawBody).toContain("<urlset>");
     expect(response.rawBody).toContain("https://impactperdollar.com/");
     expect(response.body).toBe(response.rawBody);

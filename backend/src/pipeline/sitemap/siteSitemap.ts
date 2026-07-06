@@ -143,6 +143,11 @@ export function createCachedSiteSitemap(options: CachedSiteSitemapOptions): () =
 
     try {
       return await inFlight;
+    } catch (error) {
+      if (cachedXml) {
+        return cachedXml;
+      }
+      throw error;
     } finally {
       inFlight = null;
     }

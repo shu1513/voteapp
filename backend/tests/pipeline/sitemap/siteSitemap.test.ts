@@ -103,4 +103,25 @@ describe("site sitemap", () => {
     expect(third).not.toBe(first);
     expect(db.query).toHaveBeenCalledTimes(4);
   });
+
+  it("serves stale cached XML when a refresh fails", async () => {
+    const db = createDbMock();
+    let now = 1_000;
+    const getSitemapXml = createCachedSiteSitemap({
+      db,
+      siteOrigin: "https://example.test",
+      ttlMs: 60_000,
+      now: () => now,
+    });
+
+    const first = await getSitemapXml();
+    now += 60_001;
+    db.query
+      .mockRejectedValueOnce(new Error("database unavailable"))
+      .mockResolvedValueOnce({ rows: [] });
+    const second = await getSitemapXml();
+
+    expect(second).toBe(first);
+    expect(db.query).toHaveBeenCalledTimes(4);
+  });
 });

@@ -94,6 +94,8 @@ type ExpressBodyParserError = Error & {
   statusCode?: number;
 };
 
+const SITE_SITEMAP_CACHE_CONTROL = "public, max-age=3600";
+
 function isKnownApiPath(pathname: string): boolean {
   return (
     pathname === ADDRESS_AUTOCOMPLETE_PATH ||
@@ -414,7 +416,10 @@ async function dispatchApiRequest(
     }
 
     const sitemapXml = await options.getSitemapXml();
-    sendApiResponse(response, toXmlResponse(200, sitemapXml, corsHeaders));
+    sendApiResponse(
+      response,
+      toXmlResponse(200, sitemapXml, { ...corsHeaders, "cache-control": SITE_SITEMAP_CACHE_CONTROL })
+    );
     return;
   }
 
