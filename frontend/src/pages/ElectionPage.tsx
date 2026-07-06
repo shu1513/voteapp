@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import type { ElectionDetail } from "../api/types";
@@ -277,6 +277,8 @@ export function ElectionPage() {
     </div>
   );
 }
+
+export default ElectionPage;
 
 // Client-side "for/against my issues" candidate ordering: weighted unique
 // matched areas dominate, matching record volume breaks ties, and candidates

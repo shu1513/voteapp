@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { ErrorNotice } from "../components/Status";
@@ -100,3 +100,5 @@ export function ResetPasswordPage() {
     </div>
   );
 }
+
+export default ResetPasswordPage;

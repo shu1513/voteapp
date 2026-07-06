@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { BALLOT_SORT_DESCRIPTIONS, PUBLIC_BALLOT_SORTS, type BallotSort, type BallotSummary } from "../api/types";
@@ -130,3 +130,5 @@ export function BallotPage() {
     </div>
   );
 }
+
+export default BallotPage;

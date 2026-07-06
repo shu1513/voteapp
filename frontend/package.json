@@ -7,8 +7,8 @@
     "node": ">=20.19.0 || >=22.12.0"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "react-router dev",
+    "build": "tsc -b && react-router build",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
@@ -20,8 +20,10 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@headlessui/react": "^2.2.10",
+    "@react-router/node": "^7.18.1",
     "@sentry/react": "^10.63.0",
     "@tanstack/react-query": "^5.101.2",
+    "isbot": "^5.1.44",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-markdown": "^10.1.0",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
+    "@react-router/dev": "^7.18.1",
     "@sentry/vite-plugin": "^5.3.0",
     "@tailwindcss/vite": "^4.3.2",
     "@testing-library/jest-dom": "^6.9.1",
@@ -38,7 +41,6 @@
     "@types/pg": "^8.20.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.3",
     "jsdom": "^27.0.1",
     "oxlint": "^1.71.0",
     "pg": "^8.22.0",

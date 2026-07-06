@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import type { ElectionSummary } from "../api/types";
 import { formatDistrictType, formatElectionDate, formatOutcome, formatVotePowerLabel } from "../lib/format";
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import type { CandidateDetail, CandidateRecord, ResearchAreaPreference } from "../api/types";
@@ -239,3 +239,5 @@ export function CandidatePage() {
     </div>
   );
 }
+
+export default CandidatePage;

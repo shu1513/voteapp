@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useRouteError } from "react-router-dom";
+import { Link, useRouteError } from "react-router";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { captureMonitoredError } from "../lib/errorMonitoring";
 

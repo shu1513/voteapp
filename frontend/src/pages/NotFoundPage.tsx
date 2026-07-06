@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export function NotFoundPage() {
@@ -16,3 +16,5 @@ export function NotFoundPage() {
     </div>
   );
 }
+
+export default NotFoundPage;

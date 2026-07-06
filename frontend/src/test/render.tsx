@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { createMemoryRouter, RouterProvider, type RouteObject } from "react-router-dom";
+import { createMemoryRouter, RouterProvider, type RouteObject } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 /** Renders routes under a fresh QueryClient with retries off (so error

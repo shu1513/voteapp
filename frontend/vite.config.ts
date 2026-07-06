@@ -1,7 +1,7 @@
 import { execSync } from "node:child_process";
 import path from "node:path";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 
@@ -23,7 +23,7 @@ function resolveRelease(): string | undefined {
 const release = resolveRelease();
 // Source maps upload to Sentry only when a CI/deploy token is present; the
 // maps are generated hidden (no sourceMappingURL comment, nothing served
-// publicly) and deleted from dist after upload.
+// publicly) and deleted from the React Router client build after upload.
 const uploadSourceMaps = Boolean(process.env.SENTRY_AUTH_TOKEN?.trim());
 
 // Dev proxy makes the app same-origin with the backend: no CORS config, and
@@ -31,7 +31,7 @@ const uploadSourceMaps = Boolean(process.env.SENTRY_AUTH_TOKEN?.trim());
 // vitest.config.ts (vite 8 and vitest's bundled vite types conflict).
 export default defineConfig({
   plugins: [
-    react(),
+    reactRouter(),
     tailwindcss(),
     ...(uploadSourceMaps
       ? [
@@ -40,7 +40,7 @@ export default defineConfig({
             project: "voteapp-frontend",
             authToken: process.env.SENTRY_AUTH_TOKEN,
             release: release ? { name: release } : undefined,
-            sourcemaps: { filesToDeleteAfterUpload: ["dist/**/*.map"] },
+            sourcemaps: { filesToDeleteAfterUpload: ["build/client/**/*.map"] },
           }),
         ]
       : []),
