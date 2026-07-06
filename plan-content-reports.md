@@ -98,12 +98,17 @@ Backend:
 - Migration `content_reports` as above — next free number at implementation time
   (`155_add_content_reports.sql` as of writing; re-check, duplicate prefixes have
   bitten before and the preflight flags them).
-- `requireLocalDatabaseTarget()` helper + wire it into the manual writer scripts
-  (`writeManualCandidateRecords`, `writeManualBallotMeasure`,
-  `writeManualCandidateProfile`, `injectManualElections`, presidential variants —
-  one import + call each). Ships in Phase 1, not later: once reports start
-  accumulating, an operator acting on them with a production DSN in the environment
-  must fail loudly, and the writers are unguarded today.
+- `requireLocalDatabaseTarget()` helper + wire it into **every** manual write-path
+  script that opens `DATABASE_URL` — one import + call each. Not a hand-picked list:
+  enumerate at implementation time with
+  `grep -l "DATABASE_URL" backend/src/scripts/{writeManual,injectManual,fanoutManual}*.ts`
+  (verified today: all 10 — `writeManualCandidateRecords`,
+  `writeManualCandidateProfile`, `writeManualBallotMeasure`, the four presidential
+  `writeManual*` scripts, `injectManualElections`, `injectManualCandidateRoster`,
+  `fanoutManualCandidateRoster`), and re-run the grep before merging so
+  a newly added writer can't ship unguarded. Ships in Phase 1, not later: once
+  reports start accumulating, an operator acting on them with a production DSN in
+  the environment must fail loudly, and the writers are unguarded today.
 - `backend/src/pipeline/reports/contentReports.ts`: `createContentReport` (validates
   entity existence per type — candidates not-deleted, elections, candidate_records,
   ballot_measures — captures the label snapshot, inserts) + `getContentReportStats`.
