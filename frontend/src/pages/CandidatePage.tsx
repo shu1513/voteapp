@@ -135,14 +135,14 @@ export function CandidatePage() {
         </p>
       ) : null}
       {candidate.summary ? <p className="mt-3 text-ink">{candidate.summary}</p> : null}
-      <p className="mt-3">
+      <div className="mt-3">
         <ReportContentButton
           entityType="candidate"
           entityId={candidate.candidate_id}
           contextLabel="candidate profile"
           reporterEmail={me?.email}
         />
-      </p>
+      </div>
 
       {recordGroups.length > 0 ? (
         <section className="mt-6">
@@ -174,14 +174,14 @@ export function CandidatePage() {
                       : ""}
                   </p>
                   <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />
-                  <p className="mt-2">
+                  <div className="mt-2">
                     <ReportContentButton
                       entityType="candidate_record"
                       entityId={record.id}
                       contextLabel="candidate record"
                       reporterEmail={me?.email}
                     />
-                  </p>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -195,14 +195,14 @@ export function CandidatePage() {
                       <p className="text-sm text-ink">{record.description}</p>
                       <p className="mt-1 text-xs text-ink-soft">{formatElectionDate(record.event_date)}</p>
                       <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />
-                      <p className="mt-2">
+                      <div className="mt-2">
                         <ReportContentButton
                           entityType="candidate_record"
                           entityId={record.id}
                           contextLabel="candidate record"
                           reporterEmail={me?.email}
                         />
-                      </p>
+                      </div>
                     </li>
                   ))}
                 </ul>

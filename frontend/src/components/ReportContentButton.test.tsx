@@ -34,7 +34,7 @@ describe("ReportContentButton", () => {
 
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Report an issue with candidate record" }));
-    await user.type(screen.getByLabelText("What's wrong?"), "The vote summary is outdated.");
+    await user.type(screen.getByLabelText("Details"), "The vote summary is outdated.");
     await user.type(screen.getByLabelText("Optional source URL"), "https://example.gov/source");
     expect(screen.getByLabelText("Optional email")).toHaveValue("voter@example.com");
     await user.click(screen.getByRole("button", { name: "Send report" }));
@@ -52,7 +52,7 @@ describe("ReportContentButton", () => {
 
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Report an issue with election" }));
-    await user.type(screen.getByLabelText("What's wrong?"), "Wrong date.");
+    await user.type(screen.getByLabelText("Details"), "Wrong date.");
     await user.click(screen.getByRole("button", { name: "Send report" }));
 
     expect(await screen.findByText("Too many reports. Try later.")).toBeInTheDocument();

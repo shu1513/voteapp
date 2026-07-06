@@ -1,3 +1,4 @@
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState, type FormEvent } from "react";
 import { ApiError, apiRequest } from "../api/client";
 import type { ContentReportEntityType, CreateContentReportResponse } from "../api/types";
@@ -31,6 +32,7 @@ export function ReportContentButton({ entityType, entityId, contextLabel, report
     setEmail(reporterEmail ?? email);
     setStatus("idle");
     setErrorMessage(null);
+    // Preserve unsent draft text when a user closes the dialog accidentally.
     setIsOpen(true);
   }
 
@@ -81,19 +83,23 @@ export function ReportContentButton({ entityType, entityId, contextLabel, report
       >
         Report an issue
       </button>
-      {isOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/30 px-4 py-6">
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={`report-content-title-${entityType}-${entityId}`}
-            className="w-full max-w-md rounded-2xl border border-line bg-white p-5 shadow-xl"
-          >
+      <Dialog
+        open={isOpen}
+        onClose={(open) => {
+          if (!open) {
+            closeDialog();
+          }
+        }}
+        className="relative z-50"
+      >
+        <DialogBackdrop className="fixed inset-0 bg-ink/30" />
+        <div className="fixed inset-0 flex items-center justify-center px-4 py-6">
+          <DialogPanel className="w-full max-w-md rounded-2xl border border-line bg-white p-5 shadow-xl">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 id={`report-content-title-${entityType}-${entityId}`} className="text-lg font-semibold text-ink">
+                <DialogTitle className="text-lg font-semibold text-ink">
                   What's wrong?
-                </h2>
+                </DialogTitle>
                 <p className="mt-1 text-xs text-ink-soft">
                   Reports help us investigate accuracy issues. Don't include sensitive personal information; your message is stored as-is.
                 </p>
@@ -110,10 +116,11 @@ export function ReportContentButton({ entityType, entityId, contextLabel, report
             ) : (
               <form onSubmit={onSubmit} className="mt-4 space-y-3">
                 <label className="block text-sm font-medium text-ink">
-                  What's wrong?
+                  Details
                   <textarea
                     value={message}
                     onChange={(event) => setMessage(event.target.value)}
+                    autoFocus
                     required
                     maxLength={2000}
                     rows={4}
@@ -158,9 +165,9 @@ export function ReportContentButton({ entityType, entityId, contextLabel, report
                 </div>
               </form>
             )}
-          </div>
+          </DialogPanel>
         </div>
-      ) : null}
+      </Dialog>
     </>
   );
 }

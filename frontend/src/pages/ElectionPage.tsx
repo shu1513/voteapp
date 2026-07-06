@@ -73,14 +73,14 @@ export function ElectionPage() {
         {formatDistrictType(data.district.district_type)}
         {data.election_stage ? <> · {data.election_stage}</> : null}
       </p>
-      <p className="mt-2">
+      <div className="mt-2">
         <ReportContentButton
           entityType="election"
           entityId={data.id}
           contextLabel="election"
           reporterEmail={me?.email}
         />
-      </p>
+      </div>
       <div className="mt-2 flex flex-wrap gap-2 text-xs">
         {data.vote_power.label !== "unknown" ? (
           <span className="rounded bg-rausch/10 px-2 py-0.5 text-rausch-dark">
@@ -134,14 +134,14 @@ export function ElectionPage() {
               <SourceLine key={url} url={url} />
             )
           )}
-          <p className="mt-3">
+          <div className="mt-3">
             <ReportContentButton
               entityType="ballot_measure"
               entityId={measure.id}
               contextLabel="ballot measure"
               reporterEmail={me?.email}
             />
-          </p>
+          </div>
         </section>
       ) : null}
 

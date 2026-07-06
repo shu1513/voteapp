@@ -58,7 +58,7 @@ describe("CandidatePage", () => {
 
     const user = userEvent.setup();
     await user.click(await screen.findByRole("button", { name: "Report an issue with candidate record" }));
-    await user.type(screen.getByLabelText("What's wrong?"), "This record needs another source.");
+    await user.type(screen.getByLabelText("Details"), "This record needs another source.");
     await user.click(screen.getByRole("button", { name: "Send report" }));
 
     expect(await screen.findByText("Report sent. Thank you.")).toBeInTheDocument();
