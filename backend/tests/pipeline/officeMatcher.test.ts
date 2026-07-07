@@ -884,4 +884,86 @@ describe("OfficeMatcher", () => {
     expect(result.method).toBe("none");
     expect(result.shouldPersistAlias).toBe(false);
   });
+
+  it("matches a county-name-prefixed executive title via the bare-title alias (Harris County Judge)", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [{ office_id: "office-county-executive", normalized_alias: "county judge" }],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-county-executive", canonical_name: "County Executive" },
+          { id: "office-county-judge-judicial", canonical_name: "County Level Judge" },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Harris County, Texas",
+      state: "TX",
+      officialBallotTitle: "Harris County Judge",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-executive");
+    expect(result.method).toBe("alias_exact");
+  });
+
+  it("matches a county board president title via alias after stripping the county name", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          {
+            office_id: "office-county-executive",
+            normalized_alias: "president of the county board of commissioners",
+          },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-county-executive", canonical_name: "County Executive" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Cook County, Illinois",
+      state: "IL",
+      officialBallotTitle: "President of the Cook County Board of Commissioners",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-executive");
+    expect(result.method).toBe("alias_exact");
+  });
+
+  it("scores a county-name-prefixed standard title into the right office without an alias", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+          { id: "office-county-treasurer", canonical_name: "County Treasurer" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Dallas County, Texas",
+      state: "TX",
+      officialBallotTitle: "Dallas County Clerk",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-clerk");
+  });
 });

@@ -88,7 +88,7 @@ describe("claimCandidateRecordsSearch", () => {
 });
 
 describe("markCandidateRecordsSearchCompleted", () => {
-  it("updates searched timestamp, researched_through, and clears claim", async () => {
+  it("updates searched timestamp, researched_through, and clears claim by default", async () => {
     const query = vi.fn().mockResolvedValueOnce({ rowCount: 1 });
 
     await markCandidateRecordsSearchCompleted(
@@ -100,8 +100,24 @@ describe("markCandidateRecordsSearchCompleted", () => {
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).toContain("last_records_searched_at = now()");
     expect(query.mock.calls[0]?.[0]).toContain("last_records_researched_through = $2::date");
-    expect(query.mock.calls[0]?.[0]).toContain("records_search_claimed_at = NULL");
-    expect(query.mock.calls[0]?.[1]).toEqual(["cand-3", "2026-05-30"]);
+    expect(query.mock.calls[0]?.[0]).toContain(
+      "records_search_claimed_at = CASE WHEN $3::boolean THEN records_search_claimed_at ELSE NULL END"
+    );
+    expect(query.mock.calls[0]?.[1]).toEqual(["cand-3", "2026-05-30", false]);
+  });
+
+  it("preserves an existing claim when preserveClaim is set (manual writes never claim)", async () => {
+    const query = vi.fn().mockResolvedValueOnce({ rowCount: 1 });
+
+    await markCandidateRecordsSearchCompleted(
+      { query },
+      "cand-3",
+      new Date("2026-05-30T12:00:00.000Z"),
+      { preserveClaim: true }
+    );
+
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(query.mock.calls[0]?.[1]).toEqual(["cand-3", "2026-05-30", true]);
   });
 });
 

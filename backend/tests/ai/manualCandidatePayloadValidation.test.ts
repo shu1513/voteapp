@@ -108,7 +108,9 @@ describe("manual candidate payload validation helpers", () => {
 
     expect(disallowedResult.ok).toBe(false);
     if (!disallowedResult.ok) {
-      expect(disallowedResult.reason).toBe("payload.fec_ids is not allowed for this contest mode");
+      expect(disallowedResult.reason).toBe(
+        "payload.fec_ids is not allowed for this contest mode; omit fec_ids from the profile payload — identity IDs are inherited from the staged roster row"
+      );
     }
     expect(verifyHttpUrlReachabilityMock).not.toHaveBeenCalled();
   });
