@@ -94,19 +94,23 @@ export async function claimCandidateRecordsSearch(
 export async function markCandidateRecordsSearchCompleted(
   client: CandidateRecordsSearchClaimQueryable,
   candidateId: string,
-  researchedThrough: Date | string
+  researchedThrough: Date | string,
+  // preserveClaim: for callers that never claimed the candidate (manual
+  // writes) so completion stamping cannot clear a concurrent worker's lease.
+  options?: { preserveClaim?: boolean }
 ): Promise<void> {
   const researchedThroughDate = toDateOnly(researchedThrough);
+  const preserveClaim = options?.preserveClaim === true;
   await client.query(
     `
       UPDATE public.candidates
       SET last_records_searched_at = now(),
           last_records_researched_through = $2::date,
-          records_search_claimed_at = NULL,
+          records_search_claimed_at = CASE WHEN $3::boolean THEN records_search_claimed_at ELSE NULL END,
           updated_at = now()
       WHERE id = $1
     `,
-    [candidateId, researchedThroughDate]
+    [candidateId, researchedThroughDate, preserveClaim]
   );
 }
 

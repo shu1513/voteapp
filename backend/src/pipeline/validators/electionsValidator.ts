@@ -129,6 +129,18 @@ const STATE_LOWER_MARKERS = [
   /\bmember of the general court\b/,
 ];
 
+// Titles that clearly signal a school-board contest. "schools?" covers both
+// "* School District" and "* City Schools" naming; "Governing Board" (AZ) and
+// "Board of Trustees" (NV and others) are official school-board titles in
+// several states. Shared by the hard- and soft-scope checks so they stay in
+// sync.
+const SCHOOL_TITLE_MARKERS = [
+  /\bschools?\b/,
+  /\bboard of education\b/,
+  /\bboard of trustees\b/,
+  /\bgoverning board\b/,
+];
+
 function currentUtcDateYmd(): string {
   return new Date().toISOString().slice(0, 10);
 }
@@ -180,9 +192,7 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
   // Most large US school districts are named "* County School District" or
   // "* City Schools", so county/city tokens inside a clearly-school title are
   // part of the district's name, not a sign of a mis-scoped county/city race.
-  const schoolTitleMarker =
-    entry.race_type === "office" &&
-    /\bschool\b|\bboard of education\b|\bboard of trustees\b|\bgoverning board\b/.test(scopeText);
+  const schoolTitleMarker = entry.race_type === "office" && hasAny(scopeText, SCHOOL_TITLE_MARKERS);
 
   if (districtType === "place" && (usSenate || usHouse || stateSenate || stateHouse || governorLike || countyLike || schoolLike)) {
     return "place scope contains clearly non-place race";
@@ -281,12 +291,7 @@ function isSoftScopeAmbiguous(
     return "place entry lacks clear place markers";
   }
 
-  if (
-    districtType.startsWith("school_") &&
-    // "Governing Board" (AZ) and "Board of Trustees" (NV and others) are the
-    // official school-board titles in several states.
-    !hasAny(text, [/\bschool\b/, /\bboard of education\b/, /\bschool board\b/, /\bgoverning board\b/, /\bboard of trustees\b/])
-  ) {
+  if (districtType.startsWith("school_") && !hasAny(text, SCHOOL_TITLE_MARKERS)) {
     return "school entry lacks clear school markers";
   }
 

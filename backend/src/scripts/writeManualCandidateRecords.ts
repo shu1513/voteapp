@@ -550,9 +550,11 @@ async function main(): Promise<void> {
       // Stamp the same completion columns the AI lifecycle stamps so a manual
       // record pass (including a confirmed zero-record pass) is
       // distinguishable from a candidate whose records were never searched,
-      // and shares the rollover cooldown with the AI path.
+      // and shares the rollover cooldown with the AI path. preserveClaim: this
+      // script never claims the candidate, so it must not clear a lease a
+      // concurrent worker may hold.
       const researchedThrough = new Date();
-      await markCandidateRecordsSearchCompleted(client, candidateId, researchedThrough);
+      await markCandidateRecordsSearchCompleted(client, candidateId, researchedThrough, { preserveClaim: true });
       await client.query("COMMIT");
 
       console.log(

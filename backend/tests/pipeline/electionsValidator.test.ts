@@ -1184,6 +1184,50 @@ describe("runElectionsValidator", () => {
     expect(softFailCall).toBeUndefined();
   });
 
+  it("accepts a plural '* City Schools' title without another board phrase in school scope", async () => {
+    const payload = {
+      district_id: "d-tn-mcs",
+      district_name: "Murfreesboro City School District, Tennessee",
+      district_type: "school_elementary",
+      state: "TN",
+      entries: [
+        {
+          official_ballot_title: "Murfreesboro City Schools Board Member, Zone 1",
+          election_date: "2099-08-06",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: false,
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:1",
+            payload,
+            status: "pending",
+            run_id: "run_mcs_plural",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
   it("still hard-rejects a county race without school markers in school scope", async () => {
     const payload = {
       district_id: "d-nv-ccsd",
