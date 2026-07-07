@@ -67,6 +67,7 @@ const REQUIRED_COLUMNS: RequiredColumn[] = [
 
 const REQUIRED_TABLES: RequiredTable[] = [
   { table: "user_candidate_follow_notification_events" },
+  { table: "manual_research_deferrals" },
 ];
 
 const REQUIRED_UNIQUE_OBJECTS: RequiredUniqueObject[] = [
