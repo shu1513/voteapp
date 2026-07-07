@@ -135,6 +135,9 @@ function classifyCitationVerificationFailure(reason: string): "transient" | "per
   return "permanent";
 }
 
+const CITATION_TRANSIENT_RETRY_ATTEMPTS = 2;
+const CITATION_TRANSIENT_RETRY_DELAY_MS = 1_000;
+
 async function verifyUniqueCandidateSourceUrls(
   urls: string[],
   timeoutMs: number
@@ -144,32 +147,57 @@ async function verifyUniqueCandidateSourceUrls(
     return results;
   }
 
-  const maxConcurrency = 6;
-  const workerCount = Math.min(maxConcurrency, urls.length);
-  let nextIndex = 0;
+  const verifyBatch = async (batch: string[]): Promise<void> => {
+    const maxConcurrency = 6;
+    const workerCount = Math.min(maxConcurrency, batch.length);
+    let nextIndex = 0;
 
-  const workers = Array.from({ length: workerCount }, async () => {
-    while (true) {
-      const currentIndex = nextIndex;
-      nextIndex += 1;
-      if (currentIndex >= urls.length) {
-        return;
+    const workers = Array.from({ length: workerCount }, async () => {
+      while (true) {
+        const currentIndex = nextIndex;
+        nextIndex += 1;
+        if (currentIndex >= batch.length) {
+          return;
+        }
+
+        const sourceUrl = batch[currentIndex];
+        if (!sourceUrl) {
+          continue;
+        }
+
+        const verification = await verifyHttpUrlReachability(sourceUrl, {
+          timeoutMs: Math.min(timeoutMs, 8_000),
+          allowStatusCodes: [403],
+        });
+        results.set(sourceUrl, verification);
       }
+    });
 
-      const sourceUrl = urls[currentIndex];
-      if (!sourceUrl) {
-        continue;
-      }
+    await Promise.all(workers);
+  };
 
-      const verification = await verifyHttpUrlReachability(sourceUrl, {
-        timeoutMs: Math.min(timeoutMs, 8_000),
-        allowStatusCodes: [403],
-      });
-      results.set(sourceUrl, verification);
+  await verifyBatch(urls);
+
+  // Transient failures (timeouts, 5xx, dropped fetches) on slow official hosts
+  // routinely pass on a plain retry; without this, a one-off slow fetch fails
+  // the whole payload and the manual wrapper surfaces it as a validation error.
+  // Permanent failures (404s, DNS, TLS) are never retried.
+  for (let attempt = 0; attempt < CITATION_TRANSIENT_RETRY_ATTEMPTS; attempt += 1) {
+    const transientUrls = urls.filter((url) => {
+      const verification = results.get(url);
+      return (
+        verification !== undefined &&
+        !verification.ok &&
+        classifyCitationVerificationFailure(verification.reason) === "transient"
+      );
+    });
+    if (transientUrls.length === 0) {
+      break;
     }
-  });
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, CITATION_TRANSIENT_RETRY_DELAY_MS));
+    await verifyBatch(transientUrls);
+  }
 
-  await Promise.all(workers);
   return results;
 }
 

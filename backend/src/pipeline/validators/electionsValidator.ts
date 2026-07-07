@@ -23,6 +23,12 @@ type ValidatorOptions = {
   once?: boolean;
   batchSize?: number;
   blockMs?: number;
+  // Targeted mode: validate ONE staging row by ingest_key directly, without
+  // reading the pending stream. The row's stale stream message stays in the
+  // backlog; when a later drain reaches it, the status check acks and skips
+  // it. This lets a fresh manual inject proceed when the stream holds
+  // thousands of stale messages that would starve a default --once batch.
+  ingestKey?: string;
 };
 
 type ValidationSeverity = "pass" | "soft_fail" | "hard_fail";
@@ -441,7 +447,7 @@ async function reclaimPendingEntries(
 }
 
 export async function runElectionsValidator(options: ValidatorOptions = {}): Promise<void> {
-  const { once = false, batchSize = 25, blockMs = 5000 } = options;
+  const { once = false, batchSize = 25, blockMs = 5000, ingestKey: targetIngestKey } = options;
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
@@ -451,6 +457,13 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
     await redis.connect();
     await ensureConsumerGroup(redis);
 
+    // Targeted-mode entries carry no stream id; skip the ack for them.
+    const ack = async (entryId: string): Promise<void> => {
+      if (entryId) {
+        await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entryId);
+      }
+    };
+
     const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
       for (const entry of entries) {
         const ingestKey = entry.message.ingest_key;
@@ -458,13 +471,13 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
 
         try {
           if (!ingestKey || itemType !== STAGING_ITEM_TYPE_ELECTION) {
-            await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+            await ack(entry.id);
             continue;
           }
 
           const row = await getStagingRow(pool, ingestKey);
           if (!row || row.status !== "pending" || row.schema_version !== ELECTION_ENRICHMENT_SCHEMA_VERSION) {
-            await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+            await ack(entry.id);
             continue;
           }
 
@@ -487,7 +500,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
               run_id: row.run_id ?? "",
               reason: `hard_fail: ${parsed.reason}`,
             });
-            await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+            await ack(entry.id);
             continue;
           }
 
@@ -529,7 +542,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
                 run_id: row.run_id ?? "",
               });
 
-              await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+              await ack(entry.id);
               continue;
             }
 
@@ -551,7 +564,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
               run_id: row.run_id ?? "",
               reason: rejectReason,
             });
-            await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+            await ack(entry.id);
             continue;
           }
 
@@ -576,7 +589,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
               run_id: row.run_id ?? "",
               reason,
             });
-            await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+            await ack(entry.id);
             continue;
           }
 
@@ -615,7 +628,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
                 run_id: row.run_id ?? "",
               });
 
-              await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+              await ack(entry.id);
               continue;
             }
 
@@ -639,7 +652,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
                 run_id: row.run_id ?? "",
                 payload: JSON.stringify(payloadForValidation),
               });
-              await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+              await ack(entry.id);
               continue;
             }
 
@@ -661,7 +674,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
               run_id: row.run_id ?? "",
               reason: rejectReason,
             });
-            await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+            await ack(entry.id);
             continue;
           }
 
@@ -685,12 +698,12 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
             run_id: row.run_id ?? "",
             payload: JSON.stringify(payloadForValidation),
           });
-          await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+          await ack(entry.id);
         } catch (error) {
           const reason = toReason(error);
           if (!ingestKey) {
             try {
-              await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+              await ack(entry.id);
             } catch {
               // keep unacked when ack fails; reclaim pass will retry later
             }
@@ -706,7 +719,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
           }
 
           try {
-            await redis.xAck(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, entry.id);
+            await ack(entry.id);
           } catch {
             // keep unacked when ack fails; reclaim pass will retry later
           }
@@ -714,6 +727,17 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
         }
       }
     };
+
+    if (targetIngestKey) {
+      await handleEntries([
+        { id: "", message: { ingest_key: targetIngestKey, item_type: STAGING_ITEM_TYPE_ELECTION } },
+      ]);
+      const finalStatus = await getStagingStatus(pool, targetIngestKey);
+      console.log(
+        JSON.stringify({ targeted: true, ingest_key: targetIngestKey, status: finalStatus })
+      );
+      return;
+    }
 
     do {
       const reclaimed = await reclaimPendingEntries(redis, consumerName, batchSize);

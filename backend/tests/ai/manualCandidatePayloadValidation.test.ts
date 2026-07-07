@@ -210,4 +210,78 @@ describe("manual candidate payload validation helpers", () => {
     }
     expect(verifyHttpUrlReachabilityMock).not.toHaveBeenCalled();
   });
+
+  it("retries transient citation failures in-place and passes when the retry succeeds", async () => {
+    let attempts = 0;
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => {
+      attempts += 1;
+      if (attempts === 1) {
+        return { ok: false, reason: "citation URL fetch timed out" };
+      }
+      return { ok: true, finalUrl: url, status: 200 };
+    });
+
+    const result = await validateCandidateProfileAiPayload(
+      {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        party: "Democratic",
+        summary: "Former city council member.",
+        sources: ["https://slow.example/about"],
+      },
+      1000
+    );
+
+    expect(result.ok).toBe(true);
+    expect(attempts).toBe(2);
+  });
+
+  it("does not retry permanent citation failures", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async () => ({
+      ok: false,
+      reason: "citation fetch returned status 404",
+    }));
+
+    const result = await validateCandidateProfileAiPayload(
+      {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        party: "Democratic",
+        summary: "Former city council member.",
+        sources: ["https://dead.example/about"],
+      },
+      1000
+    );
+
+    expect(result.ok).toBe(false);
+    expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("fails with the transient reason when retries keep timing out", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async () => ({
+      ok: false,
+      reason: "citation URL fetch timed out",
+    }));
+
+    const result = await validateCandidateProfileAiPayload(
+      {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        party: "Democratic",
+        summary: "Former city council member.",
+        sources: ["https://down.example/about"],
+      },
+      1000
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain("transient");
+    }
+    // initial pass + CITATION_TRANSIENT_RETRY_ATTEMPTS retries
+    expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(3);
+  });
 });

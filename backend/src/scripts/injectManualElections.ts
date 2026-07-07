@@ -145,6 +145,92 @@ function requireEnv(name: string): string {
   return value;
 }
 
+// Shared with the bulk no-results injector: stage one manual election payload
+// and publish its pending-stream message, exactly as a single inject does.
+export async function stageManualElectionPayload(
+  pool: Pool,
+  redis: ReturnType<typeof createClient>,
+  options: {
+    ingestKey: string;
+    runId: string;
+    payloadJson: string;
+    failureDebugJson: string | null;
+    aiRawDebugJson: string;
+  }
+): Promise<string> {
+  const { ingestKey, runId, payloadJson, failureDebugJson, aiRawDebugJson } = options;
+  await pool.query(
+    `
+      INSERT INTO staging_items (
+        ingest_key,
+        item_type,
+        payload,
+        status,
+        reason,
+        run_id,
+        model,
+        schema_version,
+        prompt_version,
+        validated_at,
+        written_at,
+        failure_debug,
+        ai_raw_debug
+      )
+      VALUES ($1, $2, $3::jsonb, 'pending', NULL, $4, $5, $6, $7, NULL, NULL, $8::jsonb, $9::jsonb)
+      ON CONFLICT (ingest_key) DO UPDATE SET
+        item_type = EXCLUDED.item_type,
+        payload = EXCLUDED.payload,
+        status = 'pending',
+        reason = NULL,
+        run_id = EXCLUDED.run_id,
+        model = EXCLUDED.model,
+        schema_version = EXCLUDED.schema_version,
+        prompt_version = EXCLUDED.prompt_version,
+        validated_at = NULL,
+        written_at = NULL,
+        failure_debug = EXCLUDED.failure_debug,
+        ai_raw_debug = EXCLUDED.ai_raw_debug,
+        updated_at = now()
+    `,
+    [
+      ingestKey,
+      STAGING_ITEM_TYPE_ELECTION,
+      payloadJson,
+      runId,
+      "manual-research:codex",
+      ELECTION_ENRICHMENT_SCHEMA_VERSION,
+      ELECTION_PROMPT_VERSION,
+      failureDebugJson,
+      aiRawDebugJson,
+    ]
+  );
+
+  try {
+    return await redis.xAdd(STAGING_PENDING_STREAM, "*", {
+      ingest_key: ingestKey,
+      item_type: STAGING_ITEM_TYPE_ELECTION,
+      run_id: runId,
+    });
+  } catch (error) {
+    await pool.query(
+      `
+        UPDATE staging_items
+        SET status = 'failed',
+            reason = $2,
+            updated_at = now()
+        WHERE ingest_key = $1
+          AND item_type = $3
+      `,
+      [
+        ingestKey,
+        `manual inject redis publish failed: ${toReason(error)}`,
+        STAGING_ITEM_TYPE_ELECTION,
+      ]
+    );
+    throw error;
+  }
+}
+
 async function main(): Promise<void> {
   loadProjectEnv();
 
@@ -201,77 +287,13 @@ async function main(): Promise<void> {
   try {
     await redis.connect();
 
-    await pool.query(
-      `
-        INSERT INTO staging_items (
-          ingest_key,
-          item_type,
-          payload,
-          status,
-          reason,
-          run_id,
-          model,
-          schema_version,
-          prompt_version,
-          validated_at,
-          written_at,
-          failure_debug,
-          ai_raw_debug
-        )
-        VALUES ($1, $2, $3::jsonb, 'pending', NULL, $4, $5, $6, $7, NULL, NULL, $8::jsonb, $9::jsonb)
-        ON CONFLICT (ingest_key) DO UPDATE SET
-          item_type = EXCLUDED.item_type,
-          payload = EXCLUDED.payload,
-          status = 'pending',
-          reason = NULL,
-          run_id = EXCLUDED.run_id,
-          model = EXCLUDED.model,
-          schema_version = EXCLUDED.schema_version,
-          prompt_version = EXCLUDED.prompt_version,
-          validated_at = NULL,
-          written_at = NULL,
-          failure_debug = EXCLUDED.failure_debug,
-          ai_raw_debug = EXCLUDED.ai_raw_debug,
-          updated_at = now()
-      `,
-      [
-        ingestKey,
-        STAGING_ITEM_TYPE_ELECTION,
-        payloadJson,
-        runId,
-        "manual-research:codex",
-        ELECTION_ENRICHMENT_SCHEMA_VERSION,
-        ELECTION_PROMPT_VERSION,
-        failureDebugJson,
-        JSON.stringify(aiRawDebug),
-      ]
-    );
-
-    let redisMessageId: string;
-    try {
-      redisMessageId = await redis.xAdd(STAGING_PENDING_STREAM, "*", {
-        ingest_key: ingestKey,
-        item_type: STAGING_ITEM_TYPE_ELECTION,
-        run_id: runId,
-      });
-    } catch (error) {
-      await pool.query(
-        `
-          UPDATE staging_items
-          SET status = 'failed',
-              reason = $2,
-              updated_at = now()
-          WHERE ingest_key = $1
-            AND item_type = $3
-        `,
-        [
-          ingestKey,
-          `manual inject redis publish failed: ${toReason(error)}`,
-          STAGING_ITEM_TYPE_ELECTION,
-        ]
-      );
-      throw error;
-    }
+    const redisMessageId = await stageManualElectionPayload(pool, redis, {
+      ingestKey,
+      runId,
+      payloadJson,
+      failureDebugJson,
+      aiRawDebugJson: JSON.stringify(aiRawDebug),
+    });
 
     console.log(
       JSON.stringify(
