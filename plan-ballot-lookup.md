@@ -12,8 +12,11 @@ started, without changing a single output byte.
    campaign-finance loaders plus the federal FEC loader** — each a
    self-contained ~150–500-line block (`loadTexas…`, `loadWashington…`,
    `loadMassachusetts…`, …) with the same four-step shape: feature-flag
-   gate → build requests → early-return if empty → one SQL query → map rows
-   to `BallotLookupFinanceSummary`.
+   gate → build requests → early-return if empty → a bounded sequence of
+   SQL queries (summary, then direct breakdowns, outside groups, and
+   industry-label classification as needed; the FEC loader runs five,
+   Virginia two, each short-circuiting when the previous returns no rows)
+   → map rows to `BallotLookupFinanceSummary`.
 2. **The target pattern already exists in the repo — three generations
    coexist:**
    - *Externalized, static import* (the right shape): Kentucky —
@@ -42,10 +45,10 @@ started, without changing a single output byte.
    `competitivenessLabels.test.ts` covers the label thresholds. The
    original "no test pins these numbers" concern was wrong — no new math
    tests are needed.
-7. **`ballotLookup.test.ts` is an 8,065-line, 49-test characterization net
+7. **`ballotLookup.test.ts` is an 8,065-line, 47-test characterization net
    that already exercises every state's loader path** (per-state
    `vi.stubEnv("<STATE>_CAMPAIGN_FINANCE_ENABLED", "true")` + ordered
-   `db.query` mocks). It is coupled to the exact query *sequence*, which
+   `db.query` mocks; counts are the pre-Phase-0 baseline). It is coupled to the exact query *sequence*, which
    makes it brittle for reordering work but a perfectly good pin for
    verbatim code moves: if behavior and query order don't change, it
    passes unchanged.
@@ -54,6 +57,58 @@ started, without changing a single output byte.
    therefore cheap in practice — an election belongs to one state, so all
    other states' request builders produce zero requests and skip their
    query.
+
+## Defect found while writing Phase 0 (blocks the precedence test)
+
+Writing the FEC-precedence test surfaced a real bug, not just a missing test:
+
+- `candidate_finance_summaries` has **no `election_id` column**; it is keyed
+  `(fec_candidate_id, election_year)`, and the FEC loader joins on exactly
+  those two columns.
+- Every **state** loader joins its links table on `candidate_id` **and**
+  `election_id`, so state finance is scoped to the specific election.
+- `buildFinanceSummaryRequests` applies **no federal-office gate** — it emits
+  an FEC request for *every* election of any candidate holding an `fec_id`.
+- `fec_ids` are stored **additively** (`mergeIdentifierLists`), so a candidate
+  keeps FEC ids from earlier federal races forever.
+- The FEC sync itself gates correctly (`candidateFinanceBatchSync.ts`:
+  Senate = `statewide` + `United States Senator` + `S…` id; House = `us_house`
+  + `United States Representative` + `H…` id; presidential via cycles).
+
+Consequence: a candidate running for a **state** office in the same year they
+have a federal summary row (dual candidacy, or a retained id plus a same-year
+federal race) gets federal money rendered on the state race — and because FEC
+merges **last**, it *overrides* the correct state finance. Wrong dollar figures
+on a real contest, failing silently.
+
+Two further findings that shape the fix:
+
+- **No state finance system covers federal offices** (all 30
+  `*EligibleOffices.ts` lists are `statewide`/`state_upper`/`state_lower`/
+  `place` state offices; zero reference `United States Senator`,
+  `United States Representative`, or `presidential`). So once FEC is gated to
+  federal offices, FEC and state **can never both** produce a summary for one
+  `(candidate, election)` — the "FEC wins last" rule becomes unreachable by
+  construction, and there is nothing to pin.
+- A naive gate on `office_canonical_name` is **not** safe: elections can carry
+  `office_canonical_name: null` (the existing FEC test's U.S. Senate fixture
+  does) and still legitimately load FEC finance today. Requiring office
+  metadata would silently drop federal finance wherever `office_id` is unset.
+
+Therefore **Phase 0 is not "pin FEC-wins"** — that pins the bug. The real
+contract to freeze is *FEC finance never reaches a non-federal election*, and
+the test for it fails today, so it must land **with** the fix:
+
+1. Gate `buildFinanceSummaryRequests` to federal offices, mirroring the sync's
+   office+id-prefix rules. First resolve how to classify a federal election
+   when office metadata is null (`discovery_contest_family = 'federal'`,
+   backfilling `office_id`, or matching on id prefix) — this is the one real
+   judgment call.
+2. Regression test: a state office (Governor) held by a candidate with a
+   retained `fec_id` keeps state finance and issues **no** FEC query.
+3. Keep the existing federal-office FEC test as the positive case.
+
+Phases 1–3 below are unaffected and can proceed once this lands.
 
 ## Verdict
 
