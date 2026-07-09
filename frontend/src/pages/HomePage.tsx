@@ -8,6 +8,7 @@ import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { formatDistrictType } from "../lib/format";
 import { savePendingDistrictIds } from "../lib/pendingDistricts";
+import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useMe } from "../lib/useMe";
 import {
   PRE_SEARCH_ACCEPTANCE_STORAGE_KEY,
@@ -30,6 +31,8 @@ export function HomePage() {
   const [searchParams] = useSearchParams();
   const { me } = useMe();
   const [address, setAddress] = useState("");
+  // Landing page is prerendered: rescue address text typed before hydration.
+  useAdoptPreHydrationValue("address", setAddress);
   const [accepted, setAccepted] = useState(readStoredAcceptance);
 
   // Returning verified users land on their saved ballot; ?new=1 is the

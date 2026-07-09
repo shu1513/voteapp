@@ -6,6 +6,7 @@ import { apiRequest } from "../api/client";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { SIGNUP_CHECKBOX_LABEL, TERMS_VERSION } from "../legal/copy";
+import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export const meta: MetaFunction = () => [{ title: "Create your account · VoteApp" }];
@@ -16,6 +17,11 @@ export function RegisterPage() {
   const [firstName, setFirstName] = useState("");
   const [password, setPassword] = useState("");
   const [accepted, setAccepted] = useState(false);
+  // The page is prerendered: text entered (or autofilled) before hydration
+  // exists only in the DOM. Fold it into state or the submit drops it.
+  useAdoptPreHydrationValue("register-email", setEmail);
+  useAdoptPreHydrationValue("register-first-name", setFirstName);
+  useAdoptPreHydrationValue("register-password", setPassword);
 
   const register = useMutation({
     mutationFn: () =>

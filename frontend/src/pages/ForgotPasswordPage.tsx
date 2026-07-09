@@ -3,11 +3,14 @@ import { Link } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { ErrorNotice } from "../components/Status";
+import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export function ForgotPasswordPage() {
   useDocumentTitle("Reset your password");
   const [email, setEmail] = useState("");
+  // Prerendered page: rescue input typed or autofilled before hydration.
+  useAdoptPreHydrationValue("forgot-email", setEmail);
 
   const forgot = useMutation({
     mutationFn: () =>

@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { ErrorNotice } from "../components/Status";
 import { purgeAccountScopedQueries } from "../lib/useMe";
+import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export const meta: MetaFunction = () => [{ title: "Log in · VoteApp" }];
@@ -13,6 +14,9 @@ export function LoginPage() {
   useDocumentTitle("Log in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // Prerendered page: rescue input typed or autofilled before hydration.
+  useAdoptPreHydrationValue("login-email", setEmail);
+  useAdoptPreHydrationValue("login-password", setPassword);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
