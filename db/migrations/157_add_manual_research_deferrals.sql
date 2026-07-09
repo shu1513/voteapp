@@ -1,5 +1,18 @@
 BEGIN;
 
+-- A deferral row that names an election also stores that election's district.
+-- Without a composite key on the parent, nothing stops a row from pairing
+-- district A with an election from district B, and the `due` worklist would
+-- then surface a self-contradictory research unit. elections.id is already
+-- unique, so this only adds the (id, district_id) pair the composite FK below
+-- needs (same pattern as migration 096 for ballot_measure_results).
+ALTER TABLE public.elections
+  DROP CONSTRAINT IF EXISTS uq_elections_id_district;
+
+ALTER TABLE public.elections
+  ADD CONSTRAINT uq_elections_id_district
+  UNIQUE (id, district_id);
+
 -- Deferral ledger for manual research. When a research pass finds that a
 -- stage cannot be completed until a known future date (general roster not
 -- certified until September, filing closes in July, ballot questions not yet
@@ -32,14 +45,26 @@ CREATE TABLE public.manual_research_deferrals (
         FOREIGN KEY (district_id)
         REFERENCES public.districts(id)
         ON DELETE CASCADE,
-    CONSTRAINT fk_manual_research_deferrals_election
-        FOREIGN KEY (election_id)
-        REFERENCES public.elections(id)
+    -- Composite FK, not a plain elections(id) reference: it pins the named
+    -- election to THIS row's district. Default MATCH SIMPLE means the
+    -- constraint is not enforced when election_id IS NULL, which is exactly
+    -- the district-wide deferral case.
+    CONSTRAINT fk_manual_research_deferrals_election_district
+        FOREIGN KEY (election_id, district_id)
+        REFERENCES public.elections(id, district_id)
         ON DELETE CASCADE,
     CONSTRAINT chk_manual_research_deferrals_stage
         CHECK (stage IN ('elections', 'candidate_roster', 'candidate_profile', 'candidate_records', 'ballot_measure')),
     CONSTRAINT chk_manual_research_deferrals_status
-        CHECK (status IN ('deferred', 'resolved', 'cancelled'))
+        CHECK (status IN ('deferred', 'resolved', 'cancelled')),
+    -- Lifecycle fields must agree with status, so `due`/`status` scans can
+    -- never read a half-closed row (deferred with a close timestamp, or
+    -- resolved/cancelled without one).
+    CONSTRAINT chk_manual_research_deferrals_resolution_state
+        CHECK (
+            (status = 'deferred' AND resolved_at IS NULL)
+            OR (status IN ('resolved', 'cancelled') AND resolved_at IS NOT NULL)
+        )
 );
 
 -- Dedupe open deferrals: one per election+stage, and one district-wide per

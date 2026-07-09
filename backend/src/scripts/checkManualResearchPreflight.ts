@@ -63,6 +63,20 @@ const REQUIRED_COLUMNS: RequiredColumn[] = [
   { table: "ballot_measure_research_area_tags", column: "updated_at" },
   { table: "office_research_areas", column: "office_id" },
   { table: "research_areas", column: "slug" },
+  // Deferral-ledger columns the record/due/resolve commands read and write.
+  // Its dedupe indexes are deliberately PARTIAL, so they cannot be listed in
+  // REQUIRED_UNIQUE_OBJECTS below — that check treats a partial index as drift.
+  { table: "manual_research_deferrals", column: "district_id" },
+  { table: "manual_research_deferrals", column: "election_id" },
+  { table: "manual_research_deferrals", column: "stage" },
+  { table: "manual_research_deferrals", column: "reason" },
+  { table: "manual_research_deferrals", column: "blocked_until" },
+  { table: "manual_research_deferrals", column: "source_url" },
+  { table: "manual_research_deferrals", column: "district_name_snapshot" },
+  { table: "manual_research_deferrals", column: "status" },
+  { table: "manual_research_deferrals", column: "resolved_at" },
+  { table: "manual_research_deferrals", column: "resolution_note" },
+  { table: "manual_research_deferrals", column: "updated_at" },
 ];
 
 const REQUIRED_TABLES: RequiredTable[] = [

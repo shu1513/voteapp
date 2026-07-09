@@ -24,7 +24,7 @@ function usage(): string {
     "           [--election-id <id>] [--source-url <url>]",
     `           Stages: ${DEFERRAL_STAGES.join(", ")}`,
     "  due      List deferred rows whose blocked_until has passed. [--limit <n>] [--all]",
-    "           (--all lists every open deferral regardless of date)",
+    "           (--all lists every open deferral regardless of date, uncapped unless --limit is given)",
     "  resolve  Close a deferral after the deferred unit was completed. --deferral-id <id> [--note <text>]",
     "  cancel   Close a deferral recorded in error or made moot. --deferral-id <id> --note <text>",
     "  status   Print counts by status, due-now count, and the next due date.",
@@ -66,13 +66,39 @@ function requireFlag(flags: Map<string, string>, name: string): string {
   return value;
 }
 
+// parseFlags stores a bare `--foo` as "true". For flags that carry a value,
+// that must be an error rather than the literal string "true" reaching SQL.
+function optionalValueFlag(flags: Map<string, string>, name: string): string | null {
+  const value = flags.get(name);
+  if (value === undefined) {
+    return null;
+  }
+  if (value.trim().length === 0 || value === "true") {
+    throw new Error(`Missing value for flag: --${name}`);
+  }
+  return value;
+}
+
 function print(payload: unknown): void {
   console.log(JSON.stringify(payload, null, 2));
 }
 
+// Date.parse accepts overflow dates and silently normalizes them
+// ("2026-02-30" -> Mar 2). Round-trip the parsed parts so only real calendar
+// days are accepted.
 function parseBlockedUntil(raw: string): string {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw) || Number.isNaN(Date.parse(raw))) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
+  if (!match) {
     throw new Error(`Invalid --blocked-until: ${raw}. Expected YYYY-MM-DD.`);
+  }
+  const [, year, month, day] = match.map(Number) as [never, number, number, number];
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new Error(`Invalid --blocked-until: ${raw}. Not a real calendar date.`);
   }
   return raw;
 }
@@ -87,8 +113,8 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
       }
       const reason = requireFlag(flags, "reason");
       const blockedUntil = parseBlockedUntil(requireFlag(flags, "blocked-until"));
-      const electionId = flags.get("election-id") ?? null;
-      const sourceUrl = flags.get("source-url") ?? null;
+      const electionId = optionalValueFlag(flags, "election-id");
+      const sourceUrl = optionalValueFlag(flags, "source-url");
 
       const districtRow = await pool.query(`SELECT name FROM public.districts WHERE id = $1`, [
         districtId,
@@ -140,12 +166,19 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
     }
 
     case "due": {
-      const limitRaw = flags.get("limit");
-      const limit = limitRaw ? Number.parseInt(limitRaw, 10) : 20;
-      if (!Number.isFinite(limit) || limit <= 0) {
+      const limitRaw = optionalValueFlag(flags, "limit");
+      // Number.parseInt would accept "20abc"; require a clean positive integer.
+      if (limitRaw !== null && !/^\d+$/.test(limitRaw)) {
+        throw new Error(`Invalid --limit: ${limitRaw}. Expected a positive integer.`);
+      }
+      const limit = limitRaw !== null ? Number(limitRaw) : 20;
+      if (!Number.isSafeInteger(limit) || limit <= 0) {
         throw new Error(`Invalid --limit: ${limitRaw}. Expected a positive integer.`);
       }
       const all = flags.get("all") === "true";
+      // `--all` promises every open deferral, so it is unbounded unless the
+      // caller explicitly asked for a cap.
+      const applyLimit = !all || limitRaw !== null;
       const rows = await pool.query(
         `
           SELECT id, district_id, election_id, stage, reason, blocked_until::text, source_url,
@@ -154,9 +187,9 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
           WHERE status = 'deferred'
             ${all ? "" : "AND blocked_until <= CURRENT_DATE"}
           ORDER BY blocked_until ASC, created_at ASC
-          LIMIT $1
+          ${applyLimit ? "LIMIT $1" : ""}
         `,
-        [limit]
+        applyLimit ? [limit] : []
       );
       print({ due_count: rows.rows.length, deferrals: rows.rows });
       return;
@@ -165,7 +198,7 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
     case "resolve":
     case "cancel": {
       const deferralId = requireFlag(flags, "deferral-id");
-      const note = command === "cancel" ? requireFlag(flags, "note") : (flags.get("note") ?? null);
+      const note = command === "cancel" ? requireFlag(flags, "note") : optionalValueFlag(flags, "note");
       const status = command === "resolve" ? "resolved" : "cancelled";
       const result = await pool.query(
         `
@@ -208,6 +241,8 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
       print({
         by_status: stats.rows,
         due_now: due.rows[0]?.due_now ?? 0,
+        // Oldest already-due date: what an operator acts on first.
+        next_due: due.rows[0]?.next_due ?? null,
         next_upcoming: upcoming.rows[0]?.next_upcoming ?? null,
       });
       return;
