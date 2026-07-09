@@ -225,6 +225,12 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "Public Administrator",
+    summary:
+      "An elected county officer who administers the estates of people who die without a will or without a qualified executor, acting as a court-supervised fiduciary over decedent assets. In some counties the same officer also serves as Public Guardian for incapacitated adults.",
+  },
+  {
+    scope: "county",
     canonicalName: "County Recorder",
     summary:
       "Records and preserves public documents such as deeds, liens, and other official county filings.",
@@ -759,6 +765,21 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Executive",
     aliasText: "County Judge/Executive",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Public Administrator",
+    aliasText: "Public Administrator",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Public Administrator",
+    aliasText: "Public Administrator/Public Guardian",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Public Administrator",
+    aliasText: "Public Administrator/Guardian",
   },
   {
     scope: "county",

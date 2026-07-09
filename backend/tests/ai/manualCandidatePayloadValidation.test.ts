@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const { verifyHttpUrlReachabilityMock } = vi.hoisted(() => ({
   verifyHttpUrlReachabilityMock: vi.fn(),
@@ -19,6 +19,10 @@ describe("manual candidate payload validation helpers", () => {
       finalUrl: url,
       status: 200,
     }));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("validates candidate profile payload shape and source reachability", async () => {
@@ -212,6 +216,7 @@ describe("manual candidate payload validation helpers", () => {
   });
 
   it("retries transient citation failures in-place and passes when the retry succeeds", async () => {
+    vi.useFakeTimers();
     let attempts = 0;
     verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => {
       attempts += 1;
@@ -221,7 +226,7 @@ describe("manual candidate payload validation helpers", () => {
       return { ok: true, finalUrl: url, status: 200 };
     });
 
-    const result = await validateCandidateProfileAiPayload(
+    const resultPromise = validateCandidateProfileAiPayload(
       {
         display_name: "Jane Candidate",
         first_name: "Jane",
@@ -232,12 +237,15 @@ describe("manual candidate payload validation helpers", () => {
       },
       1000
     );
+    await vi.runAllTimersAsync();
+    const result = await resultPromise;
 
     expect(result.ok).toBe(true);
     expect(attempts).toBe(2);
   });
 
   it("retries only transient URLs in a mixed citation batch", async () => {
+    vi.useFakeTimers();
     const transientUrl = "https://slow.example/about";
     const permanentUrl = "https://dead.example/about";
     const successfulUrl = "https://ok.example/about";
@@ -254,7 +262,7 @@ describe("manual candidate payload validation helpers", () => {
       return { ok: true, finalUrl: url, status: 200 };
     });
 
-    const result = await validateCandidateProfileAiPayload(
+    const resultPromise = validateCandidateProfileAiPayload(
       {
         display_name: "Jane Candidate",
         first_name: "Jane",
@@ -265,6 +273,8 @@ describe("manual candidate payload validation helpers", () => {
       },
       1000
     );
+    await vi.runAllTimersAsync();
+    const result = await resultPromise;
 
     expect(result.ok).toBe(false);
     expect(attemptsByUrl.get(transientUrl)).toBe(2);
@@ -295,12 +305,13 @@ describe("manual candidate payload validation helpers", () => {
   });
 
   it("fails with the transient reason when retries keep timing out", async () => {
+    vi.useFakeTimers();
     verifyHttpUrlReachabilityMock.mockImplementation(async () => ({
       ok: false,
       reason: "citation URL fetch timed out",
     }));
 
-    const result = await validateCandidateProfileAiPayload(
+    const resultPromise = validateCandidateProfileAiPayload(
       {
         display_name: "Jane Candidate",
         first_name: "Jane",
@@ -311,6 +322,8 @@ describe("manual candidate payload validation helpers", () => {
       },
       1000
     );
+    await vi.runAllTimersAsync();
+    const result = await resultPromise;
 
     expect(result.ok).toBe(false);
     if (!result.ok) {

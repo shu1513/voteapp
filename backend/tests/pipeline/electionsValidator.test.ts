@@ -1273,4 +1273,41 @@ describe("runElectionsValidator", () => {
       })
     );
   });
+
+  it("validates a targeted ingest key without reading or acknowledging the pending stream", async () => {
+    const ingestKey = "manual:elections:targeted:2026";
+    const payload = {
+      district_id: "d-targeted",
+      district_name: "Targeted District",
+      district_type: "place",
+      state: "WA",
+      entries: [],
+    };
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: ingestKey,
+            payload,
+            status: "pending",
+            run_id: "run_targeted",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1, rows: [] })
+      .mockResolvedValueOnce({ rows: [{ status: "validated" }] });
+
+    await runElectionsValidator({ ingestKey });
+
+    expect(redisXAutoClaimMock).not.toHaveBeenCalled();
+    expect(redisXReadGroupMock).not.toHaveBeenCalled();
+    expect(redisXAckMock).not.toHaveBeenCalled();
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      STAGING_VALIDATED_STREAM,
+      "*",
+      expect.objectContaining({ ingest_key: ingestKey })
+    );
+  });
 });

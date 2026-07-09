@@ -730,4 +730,44 @@ describe("runElectionsWriter", () => {
     expect(senateMetadataUpsertCall?.[1]?.[1]).toEqual(["class_i"]);
     expect(senateMetadataUpsertCall?.[1]?.[2]).toEqual(["2031"]);
   });
+
+  it("writes a targeted ingest key without reading or acknowledging the validated stream", async () => {
+    const ingestKey = "manual:elections:targeted:2026";
+    const payload = {
+      district_id: "d-targeted",
+      district_name: "Targeted District",
+      district_type: "place",
+      state: "WA",
+      entries: [],
+    };
+    let stagingReadCount = 0;
+    poolQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM staging_items") && sql.includes("WHERE ingest_key")) {
+        stagingReadCount += 1;
+        return {
+          rows: [
+            {
+              ingest_key: ingestKey,
+              payload,
+              status: stagingReadCount === 1 ? "validated" : "no_results",
+              run_id: "run_targeted",
+            },
+          ],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+    clientQueryMock.mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsWriter({ ingestKey });
+
+    expect(redisXAutoClaimMock).not.toHaveBeenCalled();
+    expect(redisXReadGroupMock).not.toHaveBeenCalled();
+    expect(redisXAckMock).not.toHaveBeenCalled();
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      STAGING_WRITTEN_STREAM,
+      "*",
+      expect.objectContaining({ ingest_key: ingestKey })
+    );
+  });
 });
