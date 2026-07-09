@@ -2,9 +2,9 @@ import { useEffect } from "react";
 
 const BASE_TITLE = "VoteApp";
 
-// The launch description in index.html is the single source; captured on the
-// first hook run (before any page has overwritten it) so routes without
-// their own description always fall back to it.
+// The launch description in root.tsx's meta export is the single source;
+// captured on the first hook run (before any page has overwritten it) so
+// routes without their own description always fall back to it.
 let baseDescription: string | null = null;
 
 /**
