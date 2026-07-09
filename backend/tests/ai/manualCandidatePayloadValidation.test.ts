@@ -237,6 +237,41 @@ describe("manual candidate payload validation helpers", () => {
     expect(attempts).toBe(2);
   });
 
+  it("retries only transient URLs in a mixed citation batch", async () => {
+    const transientUrl = "https://slow.example/about";
+    const permanentUrl = "https://dead.example/about";
+    const successfulUrl = "https://ok.example/about";
+    const attemptsByUrl = new Map<string, number>();
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => {
+      const attempts = (attemptsByUrl.get(url) ?? 0) + 1;
+      attemptsByUrl.set(url, attempts);
+      if (url === transientUrl && attempts === 1) {
+        return { ok: false, reason: "citation URL fetch timed out" };
+      }
+      if (url === permanentUrl) {
+        return { ok: false, reason: "citation fetch returned status 404" };
+      }
+      return { ok: true, finalUrl: url, status: 200 };
+    });
+
+    const result = await validateCandidateProfileAiPayload(
+      {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        party: "Democratic",
+        summary: "Former city council member.",
+        sources: [transientUrl, permanentUrl, successfulUrl],
+      },
+      1000
+    );
+
+    expect(result.ok).toBe(false);
+    expect(attemptsByUrl.get(transientUrl)).toBe(2);
+    expect(attemptsByUrl.get(permanentUrl)).toBe(1);
+    expect(attemptsByUrl.get(successfulUrl)).toBe(1);
+  });
+
   it("does not retry permanent citation failures", async () => {
     verifyHttpUrlReachabilityMock.mockImplementation(async () => ({
       ok: false,

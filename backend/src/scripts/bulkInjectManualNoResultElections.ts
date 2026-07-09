@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 import { createClient } from "redis";
 
@@ -21,6 +22,7 @@ function usage(): string {
     "",
     "Districts that already have a FUTURE election row in the DB are skipped and reported:",
     "staging no_results for them would contradict known data.",
+    "Existing non-terminal or written staging rows are also skipped so curated payloads are preserved.",
     "",
     "After injecting, drain with:",
     "  npm run elections:validate -- --once --batch-size=<count>",
@@ -71,6 +73,139 @@ async function readDistrictIdsFile(path: string): Promise<string[]> {
   return unique;
 }
 
+const REPLACEABLE_STAGING_STATUSES = new Set(["failed", "rejected", "no_results"]);
+
+type BulkNoResultFailure = {
+  districtId: string;
+  reason: string;
+};
+
+export type BulkNoResultSummary = {
+  staged: number;
+  missingDistricts: string[];
+  skippedWithFutureElections: string[];
+  skippedWithExistingStaging: Array<{ districtId: string; status: string }>;
+  failed: BulkNoResultFailure[];
+};
+
+function toReason(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.length > 1000 ? `${message.slice(0, 997)}...` : message;
+}
+
+export async function bulkInjectManualNoResultElections(
+  pool: Pool,
+  redis: ReturnType<typeof createClient> | null,
+  options: {
+    districtIds: string[];
+    dryRun: boolean;
+    runId: string;
+    runYear: number;
+  }
+): Promise<BulkNoResultSummary> {
+  const { districtIds, dryRun, runId, runYear } = options;
+  if (!dryRun && !redis) {
+    throw new Error("Redis client is required outside dry-run mode");
+  }
+
+  const districts = await pool.query<{
+    id: string;
+    name: string;
+    district_type: string;
+    state: string;
+    has_future_election: boolean;
+    existing_staging_status: string | null;
+  }>(
+    `
+      SELECT d.id, d.name, d.district_type, d.state,
+             EXISTS (
+               SELECT 1 FROM public.elections e
+               WHERE e.district_id = d.id AND e.election_date >= CURRENT_DATE
+             ) AS has_future_election,
+             (
+               SELECT si.status
+               FROM staging_items si
+               WHERE si.ingest_key = 'manual:elections:' || d.id::text || ':' || $2::text
+                 AND si.item_type = 'election'
+             ) AS existing_staging_status
+      FROM public.districts d
+      WHERE d.id = ANY($1::uuid[])
+    `,
+    [districtIds, runYear]
+  );
+  const districtById = new Map(districts.rows.map((row) => [row.id, row]));
+
+  let staged = 0;
+  const missingDistricts: string[] = [];
+  const skippedWithFutureElections: string[] = [];
+  const skippedWithExistingStaging: Array<{ districtId: string; status: string }> = [];
+  const failed: BulkNoResultFailure[] = [];
+
+  for (const districtId of districtIds) {
+    const district = districtById.get(districtId);
+    if (!district) {
+      missingDistricts.push(districtId);
+      continue;
+    }
+    if (district.has_future_election) {
+      skippedWithFutureElections.push(districtId);
+      continue;
+    }
+    if (
+      district.existing_staging_status &&
+      !REPLACEABLE_STAGING_STATUSES.has(district.existing_staging_status)
+    ) {
+      skippedWithExistingStaging.push({
+        districtId,
+        status: district.existing_staging_status,
+      });
+      continue;
+    }
+
+    try {
+      const parsed = parseCanonicalElectionPayload({
+        district_id: district.id,
+        district_name: district.name,
+        district_type: district.district_type,
+        state: district.state,
+        entries: [],
+      });
+      if (!parsed.ok) {
+        throw new Error(`payload failed validation: ${parsed.reason}`);
+      }
+
+      if (!dryRun && redis) {
+        const result = await stageManualElectionPayload(pool, redis, {
+          ingestKey: `manual:elections:${district.id}:${runYear}`,
+          runId,
+          payloadJson: JSON.stringify(parsed.payload),
+          failureDebugJson: null,
+          aiRawDebugJson: JSON.stringify({ manual_research: true, bulk_no_results: true }),
+          overwriteExisting: false,
+        });
+        if (!result.staged) {
+          skippedWithExistingStaging.push({
+            districtId,
+            status: district.existing_staging_status ?? "changed_concurrently",
+          });
+          continue;
+        }
+      }
+      staged += 1;
+    } catch (error) {
+      failed.push({ districtId, reason: toReason(error) });
+    }
+  }
+
+  return {
+    staged,
+    missingDistricts,
+    skippedWithFutureElections,
+    skippedWithExistingStaging,
+    failed,
+  };
+}
+
 async function main(): Promise<void> {
   loadProjectEnv();
 
@@ -88,69 +223,18 @@ async function main(): Promise<void> {
 
   const runId = `manual_elections_no_results_bulk_${new Date().toISOString()}`;
   const runYear = new Date().getUTCFullYear();
-  let staged = 0;
-  const missing: string[] = [];
-  const skippedWithFutureElections: string[] = [];
 
   try {
     if (redis) {
       await redis.connect();
     }
 
-    const districts = await pool.query<{
-      id: string;
-      name: string;
-      district_type: string;
-      state: string;
-      has_future_election: boolean;
-    }>(
-      `
-        SELECT d.id, d.name, d.district_type, d.state,
-               EXISTS (
-                 SELECT 1 FROM public.elections e
-                 WHERE e.district_id = d.id AND e.election_date >= CURRENT_DATE
-               ) AS has_future_election
-        FROM public.districts d
-        WHERE d.id = ANY($1::uuid[])
-      `,
-      [districtIds]
-    );
-    const districtById = new Map(districts.rows.map((row) => [row.id, row]));
-
-    for (const districtId of districtIds) {
-      const district = districtById.get(districtId);
-      if (!district) {
-        missing.push(districtId);
-        continue;
-      }
-      if (district.has_future_election) {
-        skippedWithFutureElections.push(districtId);
-        continue;
-      }
-
-      const payload = {
-        district_id: district.id,
-        district_name: district.name,
-        district_type: district.district_type,
-        state: district.state,
-        entries: [],
-      };
-      const parsed = parseCanonicalElectionPayload(payload);
-      if (!parsed.ok) {
-        throw new Error(`No-results payload failed validation for district ${districtId}: ${parsed.reason}`);
-      }
-
-      if (!dryRun && redis) {
-        await stageManualElectionPayload(pool, redis, {
-          ingestKey: `manual:elections:${district.id}:${runYear}`,
-          runId,
-          payloadJson: JSON.stringify(parsed.payload),
-          failureDebugJson: null,
-          aiRawDebugJson: JSON.stringify({ manual_research: true, bulk_no_results: true }),
-        });
-      }
-      staged += 1;
-    }
+    const summary = await bulkInjectManualNoResultElections(pool, redis, {
+      districtIds,
+      dryRun,
+      runId,
+      runYear,
+    });
 
     console.log(
       JSON.stringify(
@@ -158,9 +242,7 @@ async function main(): Promise<void> {
           dryRun,
           runId,
           requested: districtIds.length,
-          staged,
-          missingDistricts: missing,
-          skippedWithFutureElections,
+          ...summary,
           next: dryRun
             ? []
             : [
@@ -173,7 +255,12 @@ async function main(): Promise<void> {
       )
     );
 
-    if (missing.length > 0 || skippedWithFutureElections.length > 0) {
+    if (
+      summary.missingDistricts.length > 0 ||
+      summary.skippedWithFutureElections.length > 0 ||
+      summary.skippedWithExistingStaging.length > 0 ||
+      summary.failed.length > 0
+    ) {
       process.exitCode = 1;
     }
   } finally {
@@ -184,8 +271,10 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error("manual bulk no-results inject failed:", message);
-  process.exitCode = 1;
-});
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    console.error("manual bulk no-results inject failed:", toReason(error));
+    process.exitCode = 1;
+  });
+}

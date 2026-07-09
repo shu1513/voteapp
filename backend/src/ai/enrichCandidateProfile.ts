@@ -194,7 +194,8 @@ async function verifyUniqueCandidateSourceUrls(
     if (transientUrls.length === 0) {
       break;
     }
-    await new Promise((resolveDelay) => setTimeout(resolveDelay, CITATION_TRANSIENT_RETRY_DELAY_MS));
+    const retryDelayMs = CITATION_TRANSIENT_RETRY_DELAY_MS * 2 ** attempt;
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, retryDelayMs));
     await verifyBatch(transientUrls);
   }
 

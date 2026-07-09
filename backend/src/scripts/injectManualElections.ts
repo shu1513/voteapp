@@ -147,6 +147,10 @@ function requireEnv(name: string): string {
 
 // Shared with the bulk no-results injector: stage one manual election payload
 // and publish its pending-stream message, exactly as a single inject does.
+export type StageManualElectionPayloadResult =
+  | { staged: true; redisMessageId: string }
+  | { staged: false };
+
 export async function stageManualElectionPayload(
   pool: Pool,
   redis: ReturnType<typeof createClient>,
@@ -156,10 +160,18 @@ export async function stageManualElectionPayload(
     payloadJson: string;
     failureDebugJson: string | null;
     aiRawDebugJson: string;
+    overwriteExisting?: boolean;
   }
-): Promise<string> {
-  const { ingestKey, runId, payloadJson, failureDebugJson, aiRawDebugJson } = options;
-  await pool.query(
+): Promise<StageManualElectionPayloadResult> {
+  const {
+    ingestKey,
+    runId,
+    payloadJson,
+    failureDebugJson,
+    aiRawDebugJson,
+    overwriteExisting = true,
+  } = options;
+  const upsert = await pool.query(
     `
       INSERT INTO staging_items (
         ingest_key,
@@ -191,6 +203,9 @@ export async function stageManualElectionPayload(
         failure_debug = EXCLUDED.failure_debug,
         ai_raw_debug = EXCLUDED.ai_raw_debug,
         updated_at = now()
+      WHERE $10::boolean
+         OR staging_items.status IN ('failed', 'rejected', 'no_results')
+      RETURNING ingest_key
     `,
     [
       ingestKey,
@@ -202,15 +217,21 @@ export async function stageManualElectionPayload(
       ELECTION_PROMPT_VERSION,
       failureDebugJson,
       aiRawDebugJson,
+      overwriteExisting,
     ]
   );
 
+  if (!upsert.rowCount) {
+    return { staged: false };
+  }
+
   try {
-    return await redis.xAdd(STAGING_PENDING_STREAM, "*", {
+    const redisMessageId = await redis.xAdd(STAGING_PENDING_STREAM, "*", {
       ingest_key: ingestKey,
       item_type: STAGING_ITEM_TYPE_ELECTION,
       run_id: runId,
     });
+    return { staged: true, redisMessageId };
   } catch (error) {
     await pool.query(
       `
@@ -220,11 +241,13 @@ export async function stageManualElectionPayload(
             updated_at = now()
         WHERE ingest_key = $1
           AND item_type = $3
+          AND run_id = $4
       `,
       [
         ingestKey,
         `manual inject redis publish failed: ${toReason(error)}`,
         STAGING_ITEM_TYPE_ELECTION,
+        runId,
       ]
     );
     throw error;
@@ -287,20 +310,23 @@ async function main(): Promise<void> {
   try {
     await redis.connect();
 
-    const redisMessageId = await stageManualElectionPayload(pool, redis, {
+    const staged = await stageManualElectionPayload(pool, redis, {
       ingestKey,
       runId,
       payloadJson,
       failureDebugJson,
       aiRawDebugJson: JSON.stringify(aiRawDebug),
     });
+    if (!staged.staged) {
+      throw new Error(`Manual election staging unexpectedly skipped existing ingest key ${ingestKey}`);
+    }
 
     console.log(
       JSON.stringify(
         {
           ingestKey,
           runId,
-          redisMessageId,
+          redisMessageId: staged.redisMessageId,
           districtId: parsed.payload.district_id,
           entryCount: parsed.payload.entries.length,
           familySourceUrlFamilies: familySourceUrls ? Object.keys(familySourceUrls) : [],
