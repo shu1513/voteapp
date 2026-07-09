@@ -28,6 +28,7 @@ deploy needs beyond `git pull`. Database migrations are covered separately in
 |---|---|
 | `API_INTERNAL_URL` | internal origin of the API server for route-loader fetches, e.g. `http://127.0.0.1:3001` (the default). Loader fetches are anonymous by design — never a public URL that would add a proxy hop |
 | `PORT` | react-router-serve bind port (default 3000) |
+| `ADDRESS_API_TRUSTED_CLIENT_IP_HEADER` | **required in production, same value on both servers.** The API rate-limits per client IP; SSR loader fetches all arrive from the SSR server's own IP, so without this relay the entire site's detail-page traffic shares ONE rate-limit bucket (60 req/min default) and a single sitemap crawler takes detail pages down for everyone. Set the same header name here and on the API server, have the edge proxy stamp the real client IP into it (and strip client-supplied copies) on requests to both servers; the SSR loader relays it verbatim |
 
 ## API server environment
 
@@ -35,6 +36,7 @@ deploy needs beyond `git pull`. Database migrations are covered separately in
 |---|---|
 | `DATABASE_URL` | production Postgres |
 | `REDIS_URL` | required — sessions, rate limits, address cache |
+| `ADDRESS_API_TRUSTED_CLIENT_IP_HEADER` | required in production — see the SSR table above; without it all rate limiting keys on the proxy/SSR socket IP |
 | `ADDRESS_API_HOST` / `ADDRESS_API_PORT` | bind address |
 | `ADDRESS_API_ALLOWED_ORIGINS` | only needed if NOT strictly same-origin; the frontend origin(s) |
 | `AUTH_SESSION_COOKIE_SECURE` | `true` in production (HTTPS) |

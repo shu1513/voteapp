@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { CandidatePage, ErrorBoundary } from "./CandidatePage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
-import { candidateDetail } from "../test/fixtures";
+import { candidateDetail, candidateFollow, ME_VERIFIED } from "../test/fixtures";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
@@ -49,6 +49,18 @@ describe("CandidatePage", () => {
     expect(screen.getByText("Environment")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Report an issue with candidate profile" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Report an issue with candidate record" })).toBeInTheDocument();
+  });
+
+  it("shows the follow button as Following once the follows list confirms it", async () => {
+    // The anonymous loader payload always carries is_following=false; the
+    // button must reflect the client-fetched follows list, not the payload.
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [candidateFollow()] } },
+    });
+    renderCandidate(() => candidateDetail());
+
+    expect(await screen.findByRole("button", { name: "Following" })).toBeInTheDocument();
   });
 
   it("submits record reports with the candidate record target", async () => {

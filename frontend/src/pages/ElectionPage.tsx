@@ -20,15 +20,18 @@ type CandidateSort = "ballot" | "for_mine" | "against_mine";
 
 // Server loader: the election subject arrives in the document HTML so
 // non-JS crawlers can read it. Anonymous by design — see loadFromApi.
-export async function loader({ params }: LoaderFunctionArgs) {
-  return loadFromApi<ElectionDetail>(`/api/elections/${params.electionId}`);
+export async function loader({ params, request }: LoaderFunctionArgs) {
+  return loadFromApi<ElectionDetail>(`/api/elections/${params.electionId}`, request);
 }
 
 // Replaces useDocumentTitle here: a leaf meta export fully overrides the
 // root's, so it must carry both title and description.
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (!data) {
-    return [{ title: "Not found · VoteApp" }];
+    // "Not found" only for real 404s; a 429/502/504 render must not tell
+    // crawlers the page doesn't exist.
+    const isNotFound = isRouteErrorResponse(error) && error.status === 404;
+    return [{ title: isNotFound ? "Not found · VoteApp" : "Something went wrong · VoteApp" }];
   }
   return [
     { title: `${data.official_ballot_title} · VoteApp` },
@@ -50,7 +53,9 @@ export function ErrorBoundary() {
 export function ElectionPage() {
   const { me } = useMe();
   // Election payload candidates carry no follow state; derive it from the
-  // follows list (only fetched for verified users).
+  // follows list (only fetched for verified users). Follow controls render
+  // only once that list has loaded — before then a followed candidate would
+  // briefly (or, on fetch failure, permanently) show as unfollowed.
   const { follows, canFollow } = useFollows();
   const followedIds = new Set((follows ?? []).map((follow) => follow.candidate_id));
   const { savedAreaIds, weights, hasSaved } = useMyResearchAreas();
@@ -189,7 +194,7 @@ export function ElectionPage() {
                         Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
                       </span>
                     ) : null}
-                    {canFollow ? (
+                    {canFollow && follows ? (
                       <span
                         onClick={(event) => {
                           // The card is a Link; the follow toggle must not navigate.

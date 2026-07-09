@@ -67,15 +67,18 @@ function orderGroupsByPreference(
 
 // Server loader: the candidate subject arrives in the document HTML so
 // non-JS crawlers can read it. Anonymous by design — see loadFromApi.
-export async function loader({ params }: LoaderFunctionArgs) {
-  return loadFromApi<CandidateDetail>(`/api/candidates/${params.candidateId}`);
+export async function loader({ params, request }: LoaderFunctionArgs) {
+  return loadFromApi<CandidateDetail>(`/api/candidates/${params.candidateId}`, request);
 }
 
 // Replaces useDocumentTitle here: a leaf meta export fully overrides the
 // root's, so it must carry both title and description.
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (!data) {
-    return [{ title: "Not found · VoteApp" }];
+    // "Not found" only for real 404s; a 429/502/504 render must not tell
+    // crawlers the page doesn't exist.
+    const isNotFound = isRouteErrorResponse(error) && error.status === 404;
+    return [{ title: isNotFound ? "Not found · VoteApp" : "Something went wrong · VoteApp" }];
   }
   const candidate = data.candidate;
   return [
@@ -99,6 +102,9 @@ export function CandidatePage() {
   // The anonymous loader payload always carries is_following=false; derive
   // the real state from the follows list (only fetched for verified users),
   // same as ElectionPage. useSetFollow invalidates that list on toggle.
+  // The button renders only once the list has loaded — before then a
+  // followed candidate would briefly (or, on fetch failure, permanently)
+  // show as unfollowed.
   const { follows, canFollow } = useFollows();
   const { me } = useMe();
   const { hasSaved, preferences } = useMyResearchAreas();
@@ -124,7 +130,9 @@ export function CandidatePage() {
       <AiBanner />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
-        {canFollow ? <FollowButton candidateId={candidate.candidate_id} isFollowing={isFollowing} /> : null}
+        {canFollow && follows ? (
+          <FollowButton candidateId={candidate.candidate_id} isFollowing={isFollowing} />
+        ) : null}
       </div>
       <p className="mt-1 text-sm text-ink-soft">
         {candidate.party} · {candidate.state}
