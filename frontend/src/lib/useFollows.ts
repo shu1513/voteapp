@@ -39,11 +39,11 @@ export function useSetFollow() {
     mutationKey: ["set-follow"],
     mutationFn: (update: CandidateFollowUpdate) =>
       apiRequest<{ follow: unknown }>("/api/me/candidate-follows", { method: "PUT", body: update }),
-    onSuccess: (_data, update) => {
-      // The follows list, the candidate detail's is_following, and the saved
-      // ballot's followed-first ordering can all change.
+    onSuccess: () => {
+      // The follows list and the saved ballot's followed-first ordering can
+      // change. (Candidate/election pages derive follow state from the
+      // follows list — the subject itself comes from the route loader.)
       void queryClient.invalidateQueries({ queryKey: ["me", "follows"] });
-      void queryClient.invalidateQueries({ queryKey: ["candidate", update.candidate_id] });
       void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
     },
   });

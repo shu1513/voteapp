@@ -1,17 +1,25 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CandidatePage } from "./CandidatePage";
+import { CandidatePage, ErrorBoundary } from "./CandidatePage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { candidateDetail } from "../test/fixtures";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
-function renderCandidate(id = "c-1") {
+// The subject arrives via the route loader (server-fetched in production);
+// tests supply it directly instead of stubbing the loader's fetch.
+function renderCandidate(loader: () => unknown, id = "c-1") {
   return renderRoutes(
     [
-      { path: "/candidates/:candidateId", element: <CandidatePage /> },
+      {
+        path: "/candidates/:candidateId",
+        element: <CandidatePage />,
+        errorElement: <ErrorBoundary />,
+        hydrateFallbackElement: <p />,
+        loader,
+      },
       { path: "/elections/:electionId", element: <p /> },
     ],
     `/candidates/${id}`
@@ -23,18 +31,17 @@ afterEach(() => {
 });
 
 describe("CandidatePage", () => {
-  it("surfaces the backend's 404 message for an unknown candidate", async () => {
-    stubApiRoutes({
-      ...ANONYMOUS,
-      "/api/candidates/c-missing": apiError(404, "not_found", "Candidate not found"),
-    });
-    renderCandidate("c-missing");
+  it("renders not-found UI when the loader throws a 404", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => {
+      throw new Response("Not Found", { status: 404 });
+    }, "c-missing");
     expect(await screen.findByText("Candidate not found")).toBeInTheDocument();
   });
 
   it("renders the profile with records grouped under their research area", async () => {
-    stubApiRoutes({ ...ANONYMOUS, "/api/candidates/c-1": { body: candidateDetail() } });
-    renderCandidate();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail());
 
     expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
     expect(screen.getByText("Voted for the clean water act.")).toBeInTheDocument();
@@ -48,13 +55,12 @@ describe("CandidatePage", () => {
     let submittedBody: unknown = null;
     stubApiRoutes({
       ...ANONYMOUS,
-      "/api/candidates/c-1": { body: candidateDetail() },
       "/api/content-reports": (_url, init) => {
         submittedBody = JSON.parse(String(init?.body));
         return { status: 201, body: { report: { id: "report-1" } } };
       },
     });
-    renderCandidate();
+    renderCandidate(() => candidateDetail());
 
     const user = userEvent.setup();
     await user.click(await screen.findByRole("button", { name: "Report an issue with candidate record" }));
