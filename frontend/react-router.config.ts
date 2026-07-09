@@ -2,6 +2,9 @@ import type { Config } from "@react-router/dev/config";
 
 export default {
   appDirectory: "src",
-  ssr: false,
+  // Server-render at request time so non-JS crawlers (GPTBot, ClaudeBot,
+  // PerplexityBot) can read election/candidate content; the listed static
+  // routes still prerender at build time and are served as static HTML.
+  ssr: true,
   prerender: ["/", "/disclaimer", "/terms", "/privacy", "/register", "/login"],
 } satisfies Config;
