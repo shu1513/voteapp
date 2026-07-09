@@ -27,7 +27,7 @@ export function useAdoptPreHydrationChecked(inputId: string, adopt: (checked: bo
   useEffect(() => {
     const element = document.getElementById(inputId);
     if (element instanceof HTMLInputElement && element.checked) {
-      adopt(true);
+      adopt(element.checked);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -66,4 +66,10 @@ describe("useAdoptPreHydrationChecked", () => {
     render(<HookHost hook={() => useAdoptPreHydrationChecked("signup-terms", adopt)} />);
     expect(adopt).not.toHaveBeenCalled();
   });
+
+  it("does nothing when the checkbox does not exist", () => {
+    const adopt = vi.fn();
+    render(<HookHost hook={() => useAdoptPreHydrationChecked("missing", adopt)} />);
+    expect(adopt).not.toHaveBeenCalled();
+  });
 });
