@@ -9,9 +9,27 @@
 // would bake one user's personalized state into server HTML that crawlers
 // read and a CDN would cache for everyone. Personalization stays in
 // client-side TanStack Query.
+
+// Generous for a loopback hop (normally milliseconds): a stalled API must
+// fail the render fast instead of pinning SSR request handlers until
+// undici's ~300s default timeouts fire.
+const LOADER_TIMEOUT_MS = 10_000;
+
+function rethrowTimeoutAs504(error: unknown): never {
+  if (error instanceof DOMException && error.name === "TimeoutError") {
+    throw new Response("Upstream API timeout", { status: 504 });
+  }
+  throw error;
+}
+
 export async function loadFromApi<T>(path: string): Promise<T> {
   const base = process.env.API_INTERNAL_URL ?? "http://127.0.0.1:3001";
-  const response = await fetch(`${base}${path}`);
+  let response: Response;
+  try {
+    response = await fetch(`${base}${path}`, { signal: AbortSignal.timeout(LOADER_TIMEOUT_MS) });
+  } catch (error) {
+    rethrowTimeoutAs504(error);
+  }
   // 400 covers malformed ids (the API rejects non-UUID path segments);
   // for a crawler or visitor that is the same thing as not existing.
   if (response.status === 404 || response.status === 400) {
@@ -20,5 +38,11 @@ export async function loadFromApi<T>(path: string): Promise<T> {
   if (!response.ok) {
     throw new Response("Upstream API error", { status: 502 });
   }
-  return (await response.json()) as T;
+  try {
+    // The timeout signal also aborts a stalled body read, not just the
+    // connection.
+    return (await response.json()) as T;
+  } catch (error) {
+    rethrowTimeoutAs504(error);
+  }
 }
