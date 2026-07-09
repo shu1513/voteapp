@@ -68,19 +68,24 @@ to postpone (every new state grows the file and deepens the coupling).
 
 ## Phase 0 — pin the one unpinned behavior: merge precedence
 
-The 8k-line net exercises every state loader, but **nothing tests the
-merge semantics** (verified: no test covers FEC-vs-state precedence). The
-registry rewrite in Phase 3 is exactly the change that could silently flip
-it. Four small characterization tests against the current code:
+Four behaviors make up the merge contract. Reading the suite showed
+three are already pinned — do not duplicate them:
 
-- A state summary appears when its flag is enabled.
-- A disabled state issues no query and contributes nothing.
-- **FEC wins over a state summary for the same candidate/election** (the
-  currently-comment-only rule).
-- An office ineligible for a state's finance program loads no state
-  summary.
+- *A state summary appears when its flag is enabled* — covered by the ~20
+  per-state "includes locally synced … finance summaries" tests.
+- *A disabled state issues no query* — covered for Oregon, Utah, Texas,
+  plus the all-finance-disabled test.
+- *An ineligible office loads no state summary* — covered for Alaska,
+  Virginia, Massachusetts, Vermont, Wisconsin.
 
-No formula work, no assembly rewrite — just freeze the merge contract.
+The one real gap: **FEC wins over a state summary for the same
+candidate/election**. Every state test sets
+`CANDIDATE_FINANCE_ENABLED=false` and the FEC test enables no state, so
+the two sources never overlap anywhere in the suite — the precedence rule
+lived only in a comment, and the Phase 3 registry rewrite is exactly the
+change that could silently flip it. Phase 0 therefore adds a single test
+(verified by mutation: merging FEC first fails only this test; the other
+47 pass the flipped rule). No formula work, no assembly rewrite.
 
 ## Phase 1 — shared finance types/helpers module (reverse the dependency)
 
