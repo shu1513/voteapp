@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const { verifyHttpUrlReachabilityMock } = vi.hoisted(() => ({
   verifyHttpUrlReachabilityMock: vi.fn(),
@@ -19,6 +19,10 @@ describe("manual candidate payload validation helpers", () => {
       finalUrl: url,
       status: 200,
     }));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("validates candidate profile payload shape and source reachability", async () => {
@@ -209,5 +213,123 @@ describe("manual candidate payload validation helpers", () => {
       });
     }
     expect(verifyHttpUrlReachabilityMock).not.toHaveBeenCalled();
+  });
+
+  it("retries transient citation failures in-place and passes when the retry succeeds", async () => {
+    vi.useFakeTimers();
+    let attempts = 0;
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => {
+      attempts += 1;
+      if (attempts === 1) {
+        return { ok: false, reason: "citation URL fetch timed out" };
+      }
+      return { ok: true, finalUrl: url, status: 200 };
+    });
+
+    const resultPromise = validateCandidateProfileAiPayload(
+      {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        party: "Democratic",
+        summary: "Former city council member.",
+        sources: ["https://slow.example/about"],
+      },
+      1000
+    );
+    await vi.runAllTimersAsync();
+    const result = await resultPromise;
+
+    expect(result.ok).toBe(true);
+    expect(attempts).toBe(2);
+  });
+
+  it("retries only transient URLs in a mixed citation batch", async () => {
+    vi.useFakeTimers();
+    const transientUrl = "https://slow.example/about";
+    const permanentUrl = "https://dead.example/about";
+    const successfulUrl = "https://ok.example/about";
+    const attemptsByUrl = new Map<string, number>();
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => {
+      const attempts = (attemptsByUrl.get(url) ?? 0) + 1;
+      attemptsByUrl.set(url, attempts);
+      if (url === transientUrl && attempts === 1) {
+        return { ok: false, reason: "citation URL fetch timed out" };
+      }
+      if (url === permanentUrl) {
+        return { ok: false, reason: "citation fetch returned status 404" };
+      }
+      return { ok: true, finalUrl: url, status: 200 };
+    });
+
+    const resultPromise = validateCandidateProfileAiPayload(
+      {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        party: "Democratic",
+        summary: "Former city council member.",
+        sources: [transientUrl, permanentUrl, successfulUrl],
+      },
+      1000
+    );
+    await vi.runAllTimersAsync();
+    const result = await resultPromise;
+
+    expect(result.ok).toBe(false);
+    expect(attemptsByUrl.get(transientUrl)).toBe(2);
+    expect(attemptsByUrl.get(permanentUrl)).toBe(1);
+    expect(attemptsByUrl.get(successfulUrl)).toBe(1);
+  });
+
+  it("does not retry permanent citation failures", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async () => ({
+      ok: false,
+      reason: "citation fetch returned status 404",
+    }));
+
+    const result = await validateCandidateProfileAiPayload(
+      {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        party: "Democratic",
+        summary: "Former city council member.",
+        sources: ["https://dead.example/about"],
+      },
+      1000
+    );
+
+    expect(result.ok).toBe(false);
+    expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("fails with the transient reason when retries keep timing out", async () => {
+    vi.useFakeTimers();
+    verifyHttpUrlReachabilityMock.mockImplementation(async () => ({
+      ok: false,
+      reason: "citation URL fetch timed out",
+    }));
+
+    const resultPromise = validateCandidateProfileAiPayload(
+      {
+        display_name: "Jane Candidate",
+        first_name: "Jane",
+        last_name: "Candidate",
+        party: "Democratic",
+        summary: "Former city council member.",
+        sources: ["https://down.example/about"],
+      },
+      1000
+    );
+    await vi.runAllTimersAsync();
+    const result = await resultPromise;
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain("transient");
+    }
+    // initial pass + CITATION_TRANSIENT_RETRY_ATTEMPTS retries
+    expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(3);
   });
 });

@@ -29,6 +29,10 @@ type WriterOptions = {
   once?: boolean;
   batchSize?: number;
   blockMs?: number;
+  // Targeted mode: write ONE validated staging row by ingest_key directly,
+  // without reading the validated stream (see the validator's option of the
+  // same name for the stale-backlog rationale).
+  ingestKey?: string;
 };
 
 type StagingRow = {
@@ -620,7 +624,7 @@ async function writeElectionsForDistrict(
 }
 
 export async function runElectionsWriter(options: WriterOptions = {}): Promise<void> {
-  const { once = false, batchSize = 25, blockMs = 5000 } = options;
+  const { once = false, batchSize = 25, blockMs = 5000, ingestKey: targetIngestKey } = options;
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
@@ -630,6 +634,13 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
     await redis.connect();
     await ensureConsumerGroup(redis);
 
+    // Targeted-mode entries carry no stream id; skip the ack for them.
+    const ack = async (entryId: string): Promise<void> => {
+      if (entryId) {
+        await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entryId);
+      }
+    };
+
     const handleEntries = async (entries: Array<{ id: string; message: Record<string, string> }>): Promise<void> => {
       for (const entry of entries) {
         const ingestKey = entry.message.ingest_key;
@@ -637,13 +648,13 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
 
         try {
           if (!ingestKey || itemType !== STAGING_ITEM_TYPE_ELECTION) {
-            await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
+            await ack(entry.id);
             continue;
           }
 
           const row = await getStagingRow(pool, ingestKey);
           if (!row) {
-            await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
+            await ack(entry.id);
             continue;
           }
 
@@ -660,7 +671,7 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
               `,
               [ingestKey, `writer parse error: ${parsed.reason}`, STAGING_ITEM_TYPE_ELECTION]
             );
-            await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
+            await ack(entry.id);
             continue;
           }
 
@@ -696,7 +707,7 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
                     payload: JSON.stringify(parsed.payload),
                   });
                 }
-                await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
+                await ack(entry.id);
                 continue;
               }
               ballotMeasureElectionIds = writeResult.ballotMeasureElectionIds;
@@ -712,7 +723,7 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
             await enqueueBallotMeasureDrafts(redis, ballotMeasureElectionIds, row.run_id);
             await enqueueCandidateRosterDrafts(redis, eligibleOfficeElectionIds, row.run_id);
           } else if (row.status !== "written" && row.status !== "no_results") {
-            await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
+            await ack(entry.id);
             continue;
           } else {
             const ballotMeasureElectionIds = await resolveBallotMeasureElectionIds(pool, parsed.payload);
@@ -733,7 +744,7 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
             run_id: row.run_id ?? "",
             payload: JSON.stringify(parsed.payload),
           });
-          await redis.xAck(STAGING_VALIDATED_STREAM, STAGING_ELECTIONS_WRITER_GROUP, entry.id);
+          await ack(entry.id);
         } catch (error) {
           const reason = toReason(error);
           if (ingestKey) {
@@ -745,6 +756,17 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
         }
       }
     };
+
+    if (targetIngestKey) {
+      await handleEntries([
+        { id: "", message: { ingest_key: targetIngestKey, item_type: STAGING_ITEM_TYPE_ELECTION } },
+      ]);
+      const finalRow = await getStagingRow(pool, targetIngestKey);
+      console.log(
+        JSON.stringify({ targeted: true, ingest_key: targetIngestKey, status: finalRow?.status ?? null })
+      );
+      return;
+    }
 
     do {
       const reclaimed = await reclaimPendingEntries(redis, consumerName, batchSize);

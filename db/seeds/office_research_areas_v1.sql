@@ -2314,6 +2314,58 @@ $$;
 
 DO $$
 DECLARE
+  desired_slugs text[] := ARRAY[
+    'government_spending_reduction',
+    'government_efficiency',
+    'anti_corruption',
+    'data_privacy',
+    'housing_affordability',
+    'corporate_accountability',
+    'civil_rights'
+  ]::text[];
+  expected_area_count integer;
+  office_count integer;
+  area_count integer;
+BEGIN
+  expected_area_count := COALESCE(array_length(desired_slugs, 1), 0);
+
+  SELECT COUNT(*)
+  INTO office_count
+  FROM public.offices
+  WHERE scope = 'county'
+    AND canonical_name = 'Public Administrator';
+
+  IF office_count <> 1 THEN
+    RAISE EXCEPTION
+      'Expected exactly 1 office row for scope=county canonical_name=Public Administrator, found %',
+      office_count;
+  END IF;
+
+  SELECT COUNT(*)
+  INTO area_count
+  FROM public.research_areas
+  WHERE slug = ANY (desired_slugs);
+
+  IF area_count <> expected_area_count THEN
+    RAISE EXCEPTION
+      'Expected % research areas for public administrator mapping, found %',
+      expected_area_count,
+      area_count;
+  END IF;
+
+  INSERT INTO public.office_research_areas (office_id, research_area_id)
+  SELECT office.id, area.id
+  FROM public.offices office
+  JOIN public.research_areas area
+    ON area.slug = ANY (desired_slugs)
+  WHERE office.scope = 'county'
+    AND office.canonical_name = 'Public Administrator'
+  ON CONFLICT (office_id, research_area_id) DO NOTHING;
+END
+$$;
+
+DO $$
+DECLARE
   desired_scopes text[] := ARRAY[
     'school_elementary',
     'school_secondary',

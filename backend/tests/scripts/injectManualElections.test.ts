@@ -1,6 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { resolveReviewApproveFailureDebugJson } from "../../src/scripts/injectManualElections.js";
+import {
+  resolveReviewApproveFailureDebugJson,
+  stageManualElectionPayload,
+} from "../../src/scripts/injectManualElections.js";
 
 describe("resolveReviewApproveFailureDebugJson", () => {
   it("returns null when review approval is not requested", () => {
@@ -38,5 +41,49 @@ describe("resolveReviewApproveFailureDebugJson", () => {
     expect(() =>
       resolveReviewApproveFailureDebugJson({ review_decision: "reject", review_reason: "no" }, true)
     ).toThrow('--review-approve requires the payload to carry review_decision: "approve"');
+  });
+});
+
+describe("stageManualElectionPayload", () => {
+  const options = {
+    ingestKey: "manual:elections:11111111-1111-4111-8111-111111111111:2026",
+    runId: "manual-test-run",
+    payloadJson: JSON.stringify({ entries: [] }),
+    failureDebugJson: null,
+    aiRawDebugJson: JSON.stringify({ manual_research: true }),
+  };
+
+  it("does not publish when protected existing staging prevents the upsert", async () => {
+    const query = vi.fn().mockResolvedValue({ rowCount: 0, rows: [] });
+    const xAdd = vi.fn();
+
+    const result = await stageManualElectionPayload(
+      { query } as unknown as Parameters<typeof stageManualElectionPayload>[0],
+      { xAdd } as unknown as Parameters<typeof stageManualElectionPayload>[1],
+      { ...options, overwriteExisting: false }
+    );
+
+    expect(result).toEqual({ staged: false });
+    expect(xAdd).not.toHaveBeenCalled();
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(query.mock.calls[0]?.[0]).toContain(
+      "staging_items.status IN ('failed', 'rejected', 'no_results')"
+    );
+    expect(query.mock.calls[0]?.[1]?.[9]).toBe(false);
+  });
+
+  it("publishes after a successful upsert", async () => {
+    const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [{ ingest_key: options.ingestKey }] });
+    const xAdd = vi.fn().mockResolvedValue("123-0");
+
+    const result = await stageManualElectionPayload(
+      { query } as unknown as Parameters<typeof stageManualElectionPayload>[0],
+      { xAdd } as unknown as Parameters<typeof stageManualElectionPayload>[1],
+      options
+    );
+
+    expect(result).toEqual({ staged: true, redisMessageId: "123-0" });
+    expect(xAdd).toHaveBeenCalledTimes(1);
+    expect(query.mock.calls[0]?.[1]?.[9]).toBe(true);
   });
 });
