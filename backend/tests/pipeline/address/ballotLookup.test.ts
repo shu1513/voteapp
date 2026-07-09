@@ -1413,6 +1413,121 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
   });
 
+  // Pins the merge contract of loadCandidateFinanceSummariesByCandidateElection:
+  // state loaders merge first, FEC merges last and therefore wins a shared
+  // candidate/election key. Every other finance test enables exactly one
+  // source, so this overlap is otherwise unexercised. Mocks dispatch on the
+  // queried table instead of call order, so the assertion stays valid if the
+  // loaders are ever reordered.
+  it("prefers federal FEC finance summaries over state finance for the same candidate and election", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
+    vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "true");
+
+    const query = vi.fn().mockImplementation((sql: string) => {
+      const text = String(sql);
+      if (text.includes("public.elections")) {
+        return Promise.resolve({
+          rows: [
+            {
+              election_id: officeElectionId,
+              district_id: districtId,
+              district_type: "statewide",
+              geoid_compact: "51",
+              district_name: "Virginia",
+              state: "VA",
+              state_fips: "51",
+              representation_power_score: "80",
+              race_type: "office",
+              official_ballot_title: "Governor",
+              election_date: "2026-11-03",
+              election_stage: "general",
+              is_partisan: true,
+              discovery_contest_family: "non_judicial_office",
+              sources: ["https://example.test/elections"],
+              office_scope: "statewide",
+              office_canonical_name: "Governor",
+            },
+          ],
+        });
+      }
+      if (text.includes("public.candidate_elections")) {
+        return Promise.resolve({
+          rows: [
+            {
+              election_id: officeElectionId,
+              candidate_election_id: candidateElectionId,
+              candidate_id: candidateId,
+              display_name: "Jane Commonwealth",
+              party: "Democratic",
+              is_incumbent: false,
+              status: "declared",
+              summary: "Candidate summary.",
+              current_office: "Governor",
+              state: "VA",
+              fec_ids: ["S4VA00001"],
+              state_filing_ids: [],
+            },
+          ],
+        });
+      }
+      // Checked before the federal table: the Virginia summary query name
+      // contains "candidate_finance_summaries" as a substring.
+      if (text.includes("public.va_candidate_finance_summaries")) {
+        return Promise.resolve({
+          rows: [
+            {
+              candidate_id: candidateId,
+              election_id: officeElectionId,
+              committee_id: "CC-25-00001",
+              election_year: 2026,
+              total_receipts: "210000.00",
+              direct_contribution_total: "180000.00",
+              source_url: "https://cfreports.elections.virginia.gov/Committee/Index/CC-25-00001",
+              last_synced_at: "2026-06-22 04:05:00+00",
+            },
+          ],
+        });
+      }
+      if (text.includes("public.candidate_finance_summaries")) {
+        return Promise.resolve({
+          rows: [
+            {
+              candidate_id: candidateId,
+              election_id: officeElectionId,
+              fec_candidate_id: "S4VA00001",
+              election_year: 2026,
+              total_receipts: "1000.50",
+              total_disbursements: "700.25",
+              cash_on_hand: "300.00",
+              debts_owed: "10.00",
+              outside_support_total: null,
+              outside_oppose_total: null,
+              source_url: "https://www.fec.gov/data/candidate/S4VA00001/?cycle=2026",
+              last_synced_at: "2026-01-02 03:04:05+00",
+            },
+          ],
+        });
+      }
+      return Promise.resolve({ rows: [] });
+    });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+    const financeSummary = result?.candidates[0]?.finance_summary;
+
+    // Both sources produced a summary for this candidate/election...
+    const queriedTables = query.mock.calls.map((call) => String(call[0])).join("\n");
+    expect(queriedTables).toContain("public.va_candidate_finance_summaries");
+    expect(queriedTables).toContain("public.candidate_finance_summaries");
+
+    // ...and the federal one is the summary that survives the merge.
+    expect(financeSummary?.source).toBe("FEC");
+    expect(financeSummary?.fec_candidate_id).toBe("S4VA00001");
+    expect(financeSummary?.cycle).toBe(2026);
+    expect(financeSummary?.last_synced_at).toBe("2026-01-02 03:04:05+00");
+    expect(financeSummary?.direct_campaign.total_raised).toBe(1000.5);
+    expect(financeSummary?.controlled_committee_id ?? null).toBeNull();
+  });
+
   it("includes locally synced California finance summaries for California candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("CALIFORNIA_CAMPAIGN_FINANCE_ENABLED", "true");
