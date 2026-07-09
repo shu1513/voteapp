@@ -1,20 +1,20 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "../api/client";
+import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { CandidateDetail, CandidateRecord, ResearchAreaPreference } from "../api/types";
 import { AiBanner } from "../components/AiBanner";
-import { ErrorNotice, LoadingNotice } from "../components/Status";
+import { JsonLdScript } from "../components/JsonLdScript";
+import { NotFoundNotice } from "../components/NotFoundNotice";
+import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { ReportContentButton } from "../components/ReportContentButton";
 import { formatElectionDate } from "../lib/format";
+import { loadFromApi } from "../lib/loadFromApi";
 import { useFollows } from "../lib/useFollows";
 import { useMe } from "../lib/useMe";
 import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { UNRANKED_RESEARCH_AREA_RANK } from "../lib/researchAreaScoring";
-import { useDocumentTitle } from "../lib/useDocumentTitle";
-import { useJsonLd } from "../lib/useJsonLd";
 
 type RecordView = "by_issue" | "my_issues" | "newest";
 
@@ -65,58 +65,74 @@ function orderGroupsByPreference(
     .map(({ group }) => group);
 }
 
+// Server loader: the candidate subject arrives in the document HTML so
+// non-JS crawlers can read it. Anonymous by design — see loadFromApi.
+export async function loader({ params, request }: LoaderFunctionArgs) {
+  return loadFromApi<CandidateDetail>(`/api/candidates/${params.candidateId}`, request);
+}
+
+// Replaces useDocumentTitle here: a leaf meta export fully overrides the
+// root's, so it must carry both title and description.
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+  if (!data) {
+    // "Not found" only for real 404s; a 429/502/504 render must not tell
+    // crawlers the page doesn't exist.
+    const isNotFound = isRouteErrorResponse(error) && error.status === 404;
+    return [{ title: isNotFound ? "Not found · VoteApp" : "Something went wrong · VoteApp" }];
+  }
+  const candidate = data.candidate;
+  return [
+    { title: `${candidate.display_name} · VoteApp` },
+    {
+      name: "description",
+      content: `${candidate.display_name} (${candidate.party}, ${candidate.state}) — issue-tagged records with sources, election history, and campaign finance.`,
+    },
+  ];
+};
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  if (isRouteErrorResponse(error) && error.status === 404) {
+    return <NotFoundNotice subject="Candidate" />;
+  }
+  return <RouteError />;
+}
+
 export function CandidatePage() {
-  const { candidateId } = useParams();
-  const { canFollow } = useFollows();
+  // The anonymous loader payload always carries is_following=false; derive
+  // the real state from the follows list (only fetched for verified users),
+  // same as ElectionPage. useSetFollow invalidates that list on toggle.
+  // The button renders only once the list has loaded — before then a
+  // followed candidate would briefly (or, on fetch failure, permanently)
+  // show as unfollowed.
+  const { follows, canFollow } = useFollows();
   const { me } = useMe();
   const { hasSaved, preferences } = useMyResearchAreas();
   const [recordView, setRecordView] = useState<RecordView>("by_issue");
 
-  const detail = useQuery({
-    queryKey: ["candidate", candidateId],
-    queryFn: () => apiRequest<CandidateDetail>(`/api/candidates/${candidateId}`),
-    enabled: Boolean(candidateId),
-  });
-  const candidateData = detail.data?.candidate;
-  useDocumentTitle(
-    candidateData?.display_name,
-    candidateData
-      ? `${candidateData.display_name} (${candidateData.party}, ${candidateData.state}) — issue-tagged records with sources, election history, and campaign finance.`
-      : undefined
-  );
-  useJsonLd(
-    candidateData
-      ? {
-          "@type": "Person",
-          name: candidateData.display_name,
-          ...(candidateData.current_office ? { jobTitle: candidateData.current_office } : {}),
-          ...(candidateData.official_website_url ? { url: candidateData.official_website_url } : {}),
-        }
-      : undefined
-  );
-
-  if (detail.isPending) {
-    return <LoadingNotice text="Loading candidate…" />;
-  }
-  if (detail.isError) {
-    return (
-      <div className="mx-auto max-w-3xl px-4 py-8">
-        <ErrorNotice error={detail.error} />
-      </div>
-    );
-  }
-
-  const candidate = detail.data.candidate;
+  const detail = useLoaderData<typeof loader>();
+  const candidate = detail.candidate;
+  const isFollowing = (follows ?? []).some((follow) => follow.candidate_id === candidate.candidate_id);
   const baseGroups = groupRecords(candidate.records);
   const recordGroups =
     recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      <JsonLdScript
+        data={{
+          "@type": "Person",
+          name: candidate.display_name,
+          ...(candidate.current_office ? { jobTitle: candidate.current_office } : {}),
+          ...(candidate.official_website_url ? { url: candidate.official_website_url } : {}),
+        }}
+      />
       <AiBanner />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
-        {canFollow ? <FollowButton candidateId={candidate.candidate_id} isFollowing={candidate.is_following} /> : null}
+        {canFollow && follows ? (
+          <FollowButton candidateId={candidate.candidate_id} isFollowing={isFollowing} />
+        ) : null}
       </div>
       <p className="mt-1 text-sm text-ink-soft">
         {candidate.party} · {candidate.state}

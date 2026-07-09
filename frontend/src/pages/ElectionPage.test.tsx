@@ -1,16 +1,24 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
-import { ElectionPage } from "./ElectionPage";
+import { ElectionPage, ErrorBoundary } from "./ElectionPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { electionDetail } from "../test/fixtures";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
-function renderElection(id = "e-1") {
+// The subject arrives via the route loader (server-fetched in production);
+// tests supply it directly instead of stubbing the loader's fetch.
+function renderElection(loader: () => unknown, id = "e-1") {
   return renderRoutes(
     [
-      { path: "/elections/:electionId", element: <ElectionPage /> },
+      {
+        path: "/elections/:electionId",
+        element: <ElectionPage />,
+        errorElement: <ErrorBoundary />,
+        hydrateFallbackElement: <p />,
+        loader,
+      },
       { path: "/candidates/:candidateId", element: <p /> },
       { path: "/disclaimer", element: <p /> },
     ],
@@ -23,18 +31,17 @@ afterEach(() => {
 });
 
 describe("ElectionPage", () => {
-  it("surfaces the backend's 404 message for an unknown election", async () => {
-    stubApiRoutes({
-      ...ANONYMOUS,
-      "/api/elections/e-missing": apiError(404, "not_found", "Election not found"),
-    });
-    renderElection("e-missing");
+  it("renders not-found UI when the loader throws a 404", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => {
+      throw new Response("Not Found", { status: 404 });
+    }, "e-missing");
     expect(await screen.findByText("Election not found")).toBeInTheDocument();
   });
 
   it("renders the election header and every candidate", async () => {
-    stubApiRoutes({ ...ANONYMOUS, "/api/elections/e-1": { body: electionDetail() } });
-    renderElection();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail());
 
     expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
     expect(screen.getByText("Jordan Voter")).toBeInTheDocument();
@@ -45,27 +52,24 @@ describe("ElectionPage", () => {
   });
 
   it("renders ballot measure yes/no explanations when present", async () => {
-    stubApiRoutes({
-      ...ANONYMOUS,
-      "/api/elections/e-1": {
-        body: electionDetail({
-          race_type: "ballot_measure",
-          candidates: [],
-          ballot_measure: {
-            id: "m-1",
-            official_ballot_title: "Measure 1",
-            summary: "A measure.",
-            what_yes_means: "Yes approves the bond.",
-            what_no_means: "No rejects the bond.",
-            result: null,
-            source_urls: [],
-            official_measure_url: null,
-            research_area_tags: [],
-          },
-        }),
-      },
-    });
-    renderElection();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: null,
+          source_urls: [],
+          official_measure_url: null,
+          research_area_tags: [],
+        },
+      })
+    );
 
     expect(await screen.findByText("Yes approves the bond.")).toBeInTheDocument();
     expect(screen.getByText("No rejects the bond.")).toBeInTheDocument();

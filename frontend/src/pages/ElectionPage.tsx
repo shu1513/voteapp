@@ -1,71 +1,79 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "../api/client";
+import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { ElectionDetail } from "../api/types";
 import { AiBanner } from "../components/AiBanner";
-import { ErrorNotice, LoadingNotice } from "../components/Status";
+import { JsonLdScript } from "../components/JsonLdScript";
+import { NotFoundNotice } from "../components/NotFoundNotice";
+import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { ReportContentButton } from "../components/ReportContentButton";
 import { formatDistrictType, formatElectionDate, formatMoney, formatOutcome, formatVotePowerLabel } from "../lib/format";
+import { loadFromApi } from "../lib/loadFromApi";
 import { useFollows } from "../lib/useFollows";
 import { useMe } from "../lib/useMe";
 import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { aggregateRecordAreaStances, scoreStanceDirection } from "../lib/researchAreaScoring";
-import { useDocumentTitle } from "../lib/useDocumentTitle";
-import { useJsonLd } from "../lib/useJsonLd";
 
 type CandidateSort = "ballot" | "for_mine" | "against_mine";
 
+// Server loader: the election subject arrives in the document HTML so
+// non-JS crawlers can read it. Anonymous by design — see loadFromApi.
+export async function loader({ params, request }: LoaderFunctionArgs) {
+  return loadFromApi<ElectionDetail>(`/api/elections/${params.electionId}`, request);
+}
+
+// Replaces useDocumentTitle here: a leaf meta export fully overrides the
+// root's, so it must carry both title and description.
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+  if (!data) {
+    // "Not found" only for real 404s; a 429/502/504 render must not tell
+    // crawlers the page doesn't exist.
+    const isNotFound = isRouteErrorResponse(error) && error.status === 404;
+    return [{ title: isNotFound ? "Not found · VoteApp" : "Something went wrong · VoteApp" }];
+  }
+  return [
+    { title: `${data.official_ballot_title} · VoteApp` },
+    {
+      name: "description",
+      content: `${data.official_ballot_title} — ${data.district.name} election on ${data.election_date}: candidates, campaign finance, and issue research.`,
+    },
+  ];
+};
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  if (isRouteErrorResponse(error) && error.status === 404) {
+    return <NotFoundNotice subject="Election" />;
+  }
+  return <RouteError />;
+}
+
 export function ElectionPage() {
-  const { electionId } = useParams();
   const { me } = useMe();
   // Election payload candidates carry no follow state; derive it from the
-  // follows list (only fetched for verified users).
+  // follows list (only fetched for verified users). Follow controls render
+  // only once that list has loaded — before then a followed candidate would
+  // briefly (or, on fetch failure, permanently) show as unfollowed.
   const { follows, canFollow } = useFollows();
   const followedIds = new Set((follows ?? []).map((follow) => follow.candidate_id));
   const { savedAreaIds, weights, hasSaved } = useMyResearchAreas();
   const [candidateSort, setCandidateSort] = useState<CandidateSort>("ballot");
 
-  const election = useQuery({
-    queryKey: ["election", electionId],
-    queryFn: () => apiRequest<ElectionDetail>(`/api/elections/${electionId}`),
-    enabled: Boolean(electionId),
-  });
-  useDocumentTitle(
-    election.data?.official_ballot_title,
-    election.data
-      ? `${election.data.official_ballot_title} — ${election.data.district.name} election on ${election.data.election_date}: candidates, campaign finance, and issue research.`
-      : undefined
-  );
-  useJsonLd(
-    election.data
-      ? {
-          "@type": "Event",
-          name: election.data.official_ballot_title,
-          startDate: election.data.election_date,
-          location: { "@type": "AdministrativeArea", name: election.data.district.name },
-        }
-      : undefined
-  );
-
-  if (election.isPending) {
-    return <LoadingNotice text="Loading election…" />;
-  }
-  if (election.isError) {
-    return (
-      <div className="mx-auto max-w-3xl px-4 py-8">
-        <ErrorNotice error={election.error} />
-      </div>
-    );
-  }
-
-  const data = election.data;
+  const data = useLoaderData<typeof loader>();
   const measure = data.ballot_measure;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      <JsonLdScript
+        data={{
+          "@type": "Event",
+          name: data.official_ballot_title,
+          startDate: data.election_date,
+          location: { "@type": "AdministrativeArea", name: data.district.name },
+        }}
+      />
       <AiBanner />
       <h1 className="text-2xl font-bold">{data.official_ballot_title}</h1>
       <p className="mt-1 text-sm text-ink-soft">
@@ -186,7 +194,7 @@ export function ElectionPage() {
                         Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
                       </span>
                     ) : null}
-                    {canFollow ? (
+                    {canFollow && follows ? (
                       <span
                         onClick={(event) => {
                           // The card is a Link; the follow toggle must not navigate.
