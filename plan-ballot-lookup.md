@@ -121,10 +121,16 @@ Every step is behavior-preserving and verifiable against the existing
 8k-line test net — that net is what makes this safe to do now and unsafe
 to postpone (every new state grows the file and deepens the coupling).
 
-## Phase 0 — pin the one unpinned behavior: merge precedence
+## Phase 0 — fix the federal-finance leak, freeze the real merge contract
 
-Four behaviors make up the merge contract. Reading the suite showed
-three are already pinned — do not duplicate them:
+*(Redefined by the defect section above. The first attempt — a test
+pinning "FEC wins over state for a shared key" — was written, verified by
+mutation (merging FEC first failed only it; the 47 pre-existing tests
+passed the flipped rule), and then found to be pinning the bug itself:
+the only way FEC and state overlap is the missing federal-office gate.)*
+
+Three of the four merge-contract behaviors were already pinned before this
+phase — do not duplicate them:
 
 - *A state summary appears when its flag is enabled* — covered by the ~20
   per-state "includes locally synced … finance summaries" tests.
@@ -133,14 +139,21 @@ three are already pinned — do not duplicate them:
 - *An ineligible office loads no state summary* — covered for Alaska,
   Virginia, Massachusetts, Vermont, Wisconsin.
 
-The one real gap: **FEC wins over a state summary for the same
-candidate/election**. Every state test sets
-`CANDIDATE_FINANCE_ENABLED=false` and the FEC test enables no state, so
-the two sources never overlap anywhere in the suite — the precedence rule
-lived only in a comment, and the Phase 3 registry rewrite is exactly the
-change that could silently flip it. Phase 0 therefore adds a single test
-(verified by mutation: merging FEC first fails only this test; the other
-47 pass the flipped rule). No formula work, no assembly rewrite.
+What Phase 0 actually ships (one PR, fix + tests together, since the
+regression test fails without the fix):
+
+1. Gate `buildFinanceSummaryRequests` to federal elections, mirroring the
+   sync's rules (Senate `S…`/House `H…` id prefixes + office identity;
+   presidential via its own path). Resolve the null-office-metadata
+   question first — the existing FEC test's U.S. Senate fixture has
+   `office_canonical_name: null` and must keep loading finance.
+2. Regression test: a state-office election (Governor) whose candidate
+   retains an `fec_id` keeps state finance and issues **no** FEC summary
+   query.
+3. Keep the existing FEC test as the positive federal case.
+4. Replace the withdrawn "FEC wins" test: after the gate, FEC-vs-state
+   overlap is impossible by construction, so there is no precedence to
+   pin — the no-leak test *is* the merge-contract test.
 
 ## Phase 1 — shared finance types/helpers module (reverse the dependency)
 
@@ -202,8 +215,9 @@ would create runtime import cycles back into the file that imports them.
   ```
 
   The aggregator becomes: loop the registry in its current order, merge
-  each result, merge FEC last with the existing "federal wins" comment —
-  now guarded by the Phase 0 precedence tests, not just the comment.
+  each result, merge FEC last (harmless once Phase 0's gate makes
+  FEC-vs-state overlap impossible; Phase 0's no-leak regression test is
+  the guard that matters).
   Keep the loop **sequential** — parallelizing changes query interleaving,
   breaks the ordered mocks in the 8k-line test file for zero practical
   latency win (only one state is non-empty per election).
@@ -242,9 +256,9 @@ would create runtime import cycles back into the file that imports them.
 
 ## Order and rationale
 
-Phase 0 first because the merge contract is the one behavior the later
-phases could silently change and the only one the existing net doesn't
-pin. Phase 1 next because it is small, independently shippable, proves the
+Phase 0 first because it is a live correctness bug (federal money shown on
+state races) and because the later phases reshuffle exactly the code it
+gates and tests. Phase 1 next because it is small, independently shippable, proves the
 "suite passes with zero test edits" workflow, and removes the import-cycle
 trap before any loader moves. Phase 2 is the bulk and is deliberately dumb
 (verbatim moves) so it can be reviewed at volume. Phase 3 is the only
