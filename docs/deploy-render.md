@@ -50,6 +50,22 @@ the platform-agnostic reference; this file is the click-by-click order.
      candidate names in raw HTML,
    - register with a personal (SES-verified) address end-to-end.
 
+## Free-tier launch state (2026-07-10)
+
+The first deploy went out with no card on file, so render.yaml pins free
+plans. Consequences, in order of urgency:
+
+1. **Free Postgres expires ~30 days after creation** — the instance (and
+   data) is deleted unless upgraded. Add a card and upgrade the DB plan
+   well before expiry.
+2. Free web services spin down after ~15 idle minutes; the next request
+   pays a cold start (tens of seconds). Upgrade `voteapp-api` /
+   `voteapp-ssr` to `starter` for always-on.
+3. The notification worker + prune cron are commented out in render.yaml
+   (paid-only service types). Uncomment and re-sync after billing exists.
+   Until then: no digest/alert/reminder emails (SES is sandboxed anyway)
+   and BullMQ schedules accumulate unprocessed.
+
 ## Platform notes
 
 - **tsx runtime**: the backend runs TypeScript directly via `tsx` (no build
