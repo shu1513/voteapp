@@ -80,7 +80,11 @@ const LENGTH_LOWER_BOUND: Record<PlainLanguageRewriteKind, number> = {
   measure_what_no_means: 0.5,
   record_description: 0.5,
 };
+// Ratio cap catches runaway embellishment; the flat allowance keeps short
+// originals from failing just because the rewrite defines a term or two
+// in-line ("subpoena — a court order to appear"), which adds absolute words.
 const LENGTH_UPPER_BOUND = 1.7;
+const LENGTH_UPPER_ALLOWANCE_CHARS = 120;
 
 function extractUrls(text: string): Set<string> {
   return new Set((text.match(/https?:\/\/\S+/gi) ?? []).map((url) => url.replace(/[).,;]+$/, "")));
@@ -163,7 +167,7 @@ export function mechanicalCheckFailure(
   if (ratio < LENGTH_LOWER_BOUND[kind]) {
     return `rewrite too short (${Math.round(ratio * 100)}% of original)`;
   }
-  if (ratio > LENGTH_UPPER_BOUND) {
+  if (rewrittenText.length > originalText.length * LENGTH_UPPER_BOUND + LENGTH_UPPER_ALLOWANCE_CHARS) {
     return `rewrite too long (${Math.round(ratio * 100)}% of original)`;
   }
 

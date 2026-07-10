@@ -32,13 +32,12 @@ describe("buildPlainLanguageRewritePrompt", () => {
     });
 
     expect(prompt).toContain('- official_ballot_title: "Sheriff"');
-    expect(prompt).toContain("Remove clauses that name the contest shown above");
-    expect(prompt).toContain("the ONLY permitted content removal");
-    expect(prompt).toContain("Do not mention the candidacy, the primary, the runoff, or the general election at all");
+    expect(prompt).toContain("Delete everything about the contest shown above");
+    expect(prompt).toContain("This is the ONLY permitted removal; describe only who the person is.");
     expect(prompt).toContain(
-      "Offices the person currently holds or previously held are facts to keep — including the exact office name, place, and district, and that they are the incumbent."
+      "Offices the person currently holds or previously held are facts to keep — exact office name, place, district, and incumbency"
     );
-    expect(prompt).toContain("If nothing substantive remains after those removals");
+    expect(prompt).toContain("If nothing substantive remains after the removal");
     expect(prompt).not.toContain("Keep every sentence's content; only the wording changes.");
   });
 });

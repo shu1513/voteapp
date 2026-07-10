@@ -49,9 +49,8 @@ export function buildPlainLanguageRewriteVerifyPrompt(
           '- "The current X" and "the incumbent X" state the same fact.',
         ]
       : ["- The rewrite may not drop any claim; simplified wording is fine, missing content is not."]),
-    '- Wording changes that keep the meaning (simpler words, shorter sentences, defined terms) are "same_facts". A synonym for the same role or action is the same fact: "directs the clinic" -> "runs the clinic", "served as" -> "was". Only a verb that changes what the person actually did (for example "tried cases" -> "led cases") is a mismatch.',
-    '- Replacing a technical term with its plain-language meaning is "same_facts", not a dropped fact: "general obligation bonds" -> "borrow money", "a century" -> "100 years", "subpoena" -> "a court order to appear". Flag it only when the plain phrase says something different or vaguer than the term.',
-    '- Watch who-does-what: a rewrite that moves an action to a different actor is a "mismatch" — including moving a government action onto the reader ("the state borrows" -> "you agree to borrow money").',
+    '- Meaning-preserving swaps are "same_facts": simpler words, synonyms for the same role or action ("directs" -> "runs", "served as" -> "was"), and technical terms replaced by their plain meaning ("general obligation bonds" -> "borrow money", "a century" -> "100 years").',
+    '- A changed action or actor is a "mismatch": a verb that changes what the person did ("tried cases" -> "led cases"), or a government action moved onto the reader ("the state borrows" -> "you agree to borrow money").',
     '- When in doubt, answer "mismatch".',
     "- return JSON only (no prose, no markdown).",
   ].join("\n");
