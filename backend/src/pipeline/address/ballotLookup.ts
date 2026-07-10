@@ -57,6 +57,8 @@ import {
   addFinanceBreakdown,
   buildOutsideIndustrySupportExplanation,
   buildStateFinanceSummaryRequests,
+  electionYear,
+  officeInputFromElectionRow,
   candidateElectionKey,
   financeIndustryDisplayName,
   firstNonEmptySourceUrl,
@@ -68,6 +70,11 @@ import {
   type BallotLookupFinanceOutsideIndustrySupportEvidence,
   type BallotLookupFinanceOutsideIndustrySupportSummary,
   type BallotLookupFinanceSummary,
+  type StateFinanceDirectBreakdownRow,
+  type StateFinanceOutsideDonorEvidenceRow,
+  type StateFinanceOutsideGroupRow,
+  type StateFinanceOutsideIndustryRow,
+  type StateFinanceSummaryRow,
 } from "./ballotLookupFinanceShared.js";
 
 // Re-exported so existing importers (the per-state ballot-lookup finance
@@ -732,65 +739,15 @@ type IndianaFinanceDirectBreakdownRow = {
   source_url: string | null;
 };
 
-type TexasFinanceSummaryRow = {
-  candidate_id: string;
-  election_id: string;
-  committee_id: string | null;
-  election_year: number;
-  total_receipts: string | number | null;
-  direct_contribution_total: string | number | null;
-  total_disbursements: string | number | null;
-  cash_on_hand: string | number | null;
-  outside_support_total: string | number | null;
-  outside_oppose_total: string | number | null;
-  source_url: string | null;
-  last_synced_at: string;
-};
+type TexasFinanceSummaryRow = StateFinanceSummaryRow;
 
-type TexasFinanceDirectBreakdownRow = {
-  candidate_id: string;
-  election_id: string;
-  category_type: "occupation" | "contribution_size";
-  category_name: string;
-  amount: string | number;
-  contributor_count: string | number | null;
-  source_url: string | null;
-};
+type TexasFinanceDirectBreakdownRow = StateFinanceDirectBreakdownRow;
 
-type TexasFinanceOutsideGroupRow = {
-  candidate_id: string;
-  election_id: string;
-  committee_id: string;
-  committee_name: string;
-  support_oppose: "support" | "oppose";
-  amount: string | number;
-  expenditure_count?: string | number | null;
-  source_url: string | null;
-};
+type TexasFinanceOutsideGroupRow = StateFinanceOutsideGroupRow;
 
-type TexasFinanceOutsideIndustryRow = {
-  candidate_id: string;
-  election_id: string;
-  support_oppose: "support" | "oppose";
-  category_name: string;
-  amount: string | number;
-  contributor_count: string | number | null;
-  source_url: string | null;
-};
+type TexasFinanceOutsideIndustryRow = StateFinanceOutsideIndustryRow;
 
-type TexasFinanceOutsideDonorEvidenceRow = {
-  candidate_id: string;
-  election_id: string;
-  industry_name: string;
-  committee_id: string;
-  committee_name: string;
-  support_oppose: "support" | "oppose";
-  organization_name: string;
-  organization_type?: "employer" | "donor";
-  amount: string | number;
-  contributor_count: string | number | null;
-  source_url: string | null;
-};
+type TexasFinanceOutsideDonorEvidenceRow = StateFinanceOutsideDonorEvidenceRow;
 
 type WashingtonFinanceSummaryRow = TexasFinanceSummaryRow;
 type WashingtonFinanceDirectBreakdownRow = TexasFinanceDirectBreakdownRow;
@@ -893,15 +850,7 @@ type VirginiaFinanceSummaryRow = {
   last_synced_at: string;
 };
 
-type VirginiaFinanceDirectBreakdownRow = {
-  candidate_id: string;
-  election_id: string;
-  category_type: "occupation" | "contribution_size";
-  category_name: string;
-  amount: string | number;
-  contributor_count: string | number | null;
-  source_url: string | null;
-};
+type VirginiaFinanceDirectBreakdownRow = StateFinanceDirectBreakdownRow;
 
 type TennesseeFinanceSummaryRow = {
   candidate_id: string;
@@ -1128,18 +1077,6 @@ function isFecRequestableElection(row: ElectionRow, fecCandidateId: string): boo
   return false;
 }
 
-// Adapter between the election rows this module loads and the
-// {officeScope, officeCanonicalName} input every state eligible-office
-// predicate takes.
-function officeInputFromElectionRow(row: ElectionRow): {
-  officeScope: string | null;
-  officeCanonicalName: string | null;
-} {
-  return {
-    officeScope: row.office_scope ?? null,
-    officeCanonicalName: row.office_canonical_name ?? null,
-  };
-}
 
 function buildFinanceSummaryRequests(
   candidateRows: readonly CandidateRow[],
@@ -1250,10 +1187,6 @@ function priorElectionYear(electionDate: string): number | null {
   return Number.isInteger(year) ? year - 1 : null;
 }
 
-function electionYear(electionDate: string): number | null {
-  const year = Number.parseInt(electionDate.slice(0, 4), 10);
-  return Number.isInteger(year) ? year : null;
-}
 
 function toHistoricalCompetitiveness(
   row: HistoricalContestWeightedMarginLookupRecord | null | undefined

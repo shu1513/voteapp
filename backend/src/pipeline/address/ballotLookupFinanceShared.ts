@@ -233,7 +233,7 @@ export type StateFinanceSummaryRequest = {
   election_id: string;
 };
 
-type StateFinanceRequestCandidateRow = {
+export type StateFinanceRequestCandidateRow = {
   candidate_id: string;
   election_id: string;
 };
@@ -282,4 +282,92 @@ export function buildStateFinanceSummaryRequests<TElectionRow extends StateFinan
     });
   }
   return [...requests.values()];
+}
+
+// The SQL row shapes most state ballot-lookup finance loaders share: 15 of
+// the 22 states (the Texas-derived family, plus Virginia's identical direct
+// breakdown) read their summary/breakdown/outside-spending tables into these
+// exact shapes. States whose disclosure system returns different columns
+// (e.g. California, New Mexico, New Jersey) keep their own row types beside
+// their loader.
+
+export type StateFinanceSummaryRow = {
+  candidate_id: string;
+  election_id: string;
+  committee_id: string | null;
+  election_year: number;
+  total_receipts: string | number | null;
+  direct_contribution_total: string | number | null;
+  total_disbursements: string | number | null;
+  cash_on_hand: string | number | null;
+  outside_support_total: string | number | null;
+  outside_oppose_total: string | number | null;
+  source_url: string | null;
+  last_synced_at: string;
+};
+
+export type StateFinanceDirectBreakdownRow = {
+  candidate_id: string;
+  election_id: string;
+  category_type: "occupation" | "contribution_size";
+  category_name: string;
+  amount: string | number;
+  contributor_count: string | number | null;
+  source_url: string | null;
+};
+
+export type StateFinanceOutsideGroupRow = {
+  candidate_id: string;
+  election_id: string;
+  committee_id: string;
+  committee_name: string;
+  support_oppose: "support" | "oppose";
+  amount: string | number;
+  expenditure_count?: string | number | null;
+  source_url: string | null;
+};
+
+export type StateFinanceOutsideIndustryRow = {
+  candidate_id: string;
+  election_id: string;
+  support_oppose: "support" | "oppose";
+  category_name: string;
+  amount: string | number;
+  contributor_count: string | number | null;
+  source_url: string | null;
+};
+
+export type StateFinanceOutsideDonorEvidenceRow = {
+  candidate_id: string;
+  election_id: string;
+  industry_name: string;
+  committee_id: string;
+  committee_name: string;
+  support_oppose: "support" | "oppose";
+  organization_name: string;
+  organization_type?: "employer" | "donor";
+  amount: string | number;
+  contributor_count: string | number | null;
+  source_url: string | null;
+};
+
+// Used by the finance request builders (cycle = election year) and the
+// ballot summaries assembly.
+
+export function electionYear(electionDate: string): number | null {
+  const year = Number.parseInt(electionDate.slice(0, 4), 10);
+  return Number.isInteger(year) ? year : null;
+}
+
+// Adapter between the election rows ballot lookup loads and the
+// {officeScope, officeCanonicalName} input every state eligible-office
+// predicate takes.
+export function officeInputFromElectionRow(row: StateFinanceRequestElectionRow): {
+  officeScope: string | null;
+  officeCanonicalName: string | null;
+} {
+  return {
+    officeScope: row.office_scope ?? null,
+    officeCanonicalName: row.office_canonical_name ?? null,
+  };
 }
