@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { CandidateRecord } from "../api/types";
+import type { CandidateRecord } from "./types";
 import {
   aggregateRecordAreaStances,
   buildResearchAreaWeights,

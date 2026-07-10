@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ApiError, apiRequest } from "../api/client";
+import { ApiError, apiRequest } from "@voteapp/api-client";
 import {
   BALLOT_SORT_DESCRIPTIONS,
   BALLOT_SORTS,
   type BallotPreferences,
   type BallotSummary,
-} from "../api/types";
+} from "@voteapp/api-client";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { AiBanner } from "../components/AiBanner";
 import { ElectionCard } from "../components/ElectionCard";
-import { useMyResearchAreas } from "../lib/useMyResearchAreas";
+import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
-import { useMe } from "../lib/useMe";
+import { useMe } from "@voteapp/api-client";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingDistricts";
 import { PRIVACY_NOTICE } from "../legal/copy";
 import { VerifyPrompt } from "../components/VerifyPrompt";

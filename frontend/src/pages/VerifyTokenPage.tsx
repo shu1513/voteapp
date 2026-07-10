@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "../api/client";
+import { apiRequest } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 

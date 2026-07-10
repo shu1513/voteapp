@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import type { ElectionSummary } from "../api/types";
-import { formatDistrictType, formatElectionDate, formatOutcome, formatVotePowerLabel } from "../lib/format";
+import type { ElectionSummary } from "@voteapp/api-client";
+import { formatDistrictType, formatElectionDate, formatOutcome, formatVotePowerLabel } from "@voteapp/api-client";
 
 /**
  * Shared between the anonymous ballot and the saved (account) ballot.

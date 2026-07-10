@@ -19,11 +19,11 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { apiRequest } from "../api/client";
-import type { EmailPreferences, ResearchAreaCatalog, ResearchAreaPreferencesResult } from "../api/types";
+import { apiRequest } from "@voteapp/api-client";
+import type { EmailPreferences, ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
-import { purgeAccountScopedQueries, useMe, type Me } from "../lib/useMe";
-import { MAX_RESEARCH_AREA_RANK } from "../lib/researchAreaScoring";
+import { purgeAccountScopedQueries, useMe, type Me } from "@voteapp/api-client";
+import { MAX_RESEARCH_AREA_RANK } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Account settings. Sections mirror the backend's gating: profile, password,

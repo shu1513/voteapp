@@ -1,6 +1,6 @@
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "../api/client";
-import type { CandidateFollowsResult, CandidateFollowUpdate } from "../api/types";
+import { apiRequest } from "./client";
+import type { CandidateFollowsResult, CandidateFollowUpdate } from "./types";
 import { useMe } from "./useMe";
 
 /**

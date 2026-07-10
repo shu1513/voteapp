@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ApiError, apiRequest } from "../api/client";
-import type { AddressAutocompleteResponse, AddressRetrieveResponse, AddressSuggestion } from "../api/types";
+import { ApiError, apiRequest } from "./client";
+import type { AddressAutocompleteResponse, AddressRetrieveResponse, AddressSuggestion } from "./types";
 
 // Autocomplete state machine per docs/address-autocomplete-frontend.md:
 // - fresh crypto.randomUUID() session token at the first keystroke that

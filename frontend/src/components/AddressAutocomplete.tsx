@@ -1,7 +1,7 @@
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
-import type { AddressSuggestion } from "../api/types";
+import type { AddressSuggestion } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
-import { useAddressSuggestions } from "../lib/useAddressSuggestions";
+import { useAddressSuggestions } from "@voteapp/api-client";
 
 // ARIA combobox via Headless UI (the contract doc says not to hand-roll
 // keyboard handling). Autocomplete failing must never block the form: the

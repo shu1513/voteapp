@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { useMe } from "../lib/useMe";
-import { useFollows, useFollowSaving, useSetFollow } from "../lib/useFollows";
+import { useMe } from "@voteapp/api-client";
+import { useFollows, useFollowSaving, useSetFollow } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { VerifyPrompt } from "../components/VerifyPrompt";
-import { formatElectionDate } from "../lib/format";
-import type { CandidateFollow } from "../api/types";
+import { formatElectionDate } from "@voteapp/api-client";
+import type { CandidateFollow } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 function NotifyToggle({

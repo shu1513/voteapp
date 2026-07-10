@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "../api/client";
-import type { ResearchAreaPreference, ResearchAreaPreferencesResult } from "../api/types";
+import { apiRequest } from "./client";
+import type { ResearchAreaPreference, ResearchAreaPreferencesResult } from "./types";
 import { useMe } from "./useMe";
 import { buildResearchAreaWeights, type ResearchAreaWeight } from "./researchAreaScoring";
 

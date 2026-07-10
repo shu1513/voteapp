@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "../api/client";
+import { apiRequest } from "@voteapp/api-client";
 import { ErrorNotice } from "./Status";
 
 // Interstitial for the unverified state: personalized features 403 until the

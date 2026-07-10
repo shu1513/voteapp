@@ -1,4 +1,4 @@
-import { useFollowSaving, useSetFollow } from "../lib/useFollows";
+import { useFollowSaving, useSetFollow } from "@voteapp/api-client";
 
 // Follow/unfollow toggle. Rendered only for verified users (callers gate on
 // useFollows().canFollow); new follows default to both notification kinds on,

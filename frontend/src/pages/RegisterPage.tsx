@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import type { MetaFunction } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "../api/client";
+import { apiRequest } from "@voteapp/api-client";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { SIGNUP_CHECKBOX_LABEL, TERMS_VERSION } from "../legal/copy";
