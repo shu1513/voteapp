@@ -145,7 +145,9 @@ export function ElectionPage() {
                 rel="noopener noreferrer"
                 className="font-medium text-rausch-dark underline hover:text-rausch"
               >
-                Read the official measure text{isPdfUrl(measure.official_measure_url) ? " (PDF)" : ""}
+                {isGovernmentUrl(measure.official_measure_url)
+                  ? `Read the official measure text${isPdfUrl(measure.official_measure_url) ? " (PDF)" : ""}`
+                  : "More about this measure"}
               </a>
             </p>
           ) : null}
@@ -302,6 +304,19 @@ export default ElectionPage;
 
 function isPdfUrl(url: string): boolean {
   return /\.pdf($|[?#])/i.test(url);
+}
+
+// "Official" is a claim, not a style: the pipeline intends
+// official_measure_url to be an official full-text page, but real rows point
+// at Wikipedia/Ballotpedia. Only government-hosted links get the official
+// label; anything else keeps neutral wording.
+function isGovernmentUrl(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return host.endsWith(".gov") || host.endsWith(".us");
+  } catch {
+    return false;
+  }
 }
 
 // Client-side "for/against my issues" candidate ordering: weighted unique

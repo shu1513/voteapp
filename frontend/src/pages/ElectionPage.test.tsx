@@ -108,6 +108,32 @@ describe("ElectionPage", () => {
     );
   });
 
+  it("uses neutral wording when the measure URL is not government-hosted", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: null,
+          source_urls: ["https://ballotpedia.org/Example_Measure_(2026)"],
+          official_measure_url: "https://ballotpedia.org/Example_Measure_(2026)",
+          research_area_tags: [],
+        },
+      })
+    );
+
+    // A third-party page must not be presented as the official measure text.
+    const link = await screen.findByRole("link", { name: "More about this measure" });
+    expect(link).toHaveAttribute("href", "https://ballotpedia.org/Example_Measure_(2026)");
+    expect(screen.queryByRole("link", { name: /official measure text/ })).not.toBeInTheDocument();
+  });
+
   it("lists every measure source when there is no official measure URL", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
