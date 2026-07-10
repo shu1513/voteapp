@@ -1,3 +1,5 @@
+import { PLAIN_LANGUAGE_STYLE_RULES } from "./promptWritingStyle.js";
+
 export type BallotMeasurePromptInput = {
   districtName: string;
   districtType: string;
@@ -52,6 +54,7 @@ export function buildBallotMeasuresPrompt(input: BallotMeasurePromptInput): stri
     "- official_measure_url must point to the source where a reader can view the full official measure text in its entirety (for example, the election authority's official measure page or official PDF text).",
     "- summary must be a neutral, concise plain-language summary of the measure’s real-world policy impact if enacted.",
     "- what_yes_means and what_no_means must be concrete and neutral.",
+    ...PLAIN_LANGUAGE_STYLE_RULES,
     "- research_area_tags describes the likely policy effect if YES wins / the measure passes.",
     '- For research_area_tags, "for" means the YES outcome advances that research area’s goal.',
     '- For research_area_tags, "against" means the YES outcome cuts against that research area’s goal.',

@@ -1,5 +1,6 @@
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
 import type { CandidateResearchMode } from "../candidateResearchMode.js";
+import { PLAIN_LANGUAGE_STYLE_RULES } from "./promptWritingStyle.js";
 
 export type CandidateProfilePromptInput = {
   candidateDisplayName: string;
@@ -87,6 +88,10 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     "- Do not put occupation, employer, campaign status, or past office in current_office.",
     "- Use null/omission for current_office if no reliable source-backed current office is found.",
     "- Use null/omission for unknown optional fields; do not invent.",
+    "- summary is who the person is and what they have done: current role, career, qualifications.",
+    "- The app always shows the summary next to the contest, so in summary do not name the office, election, election date, or stage the candidate is running for.",
+    '- No campaign-status or horse-race content in summary: no vote percentages, no primary results, no opponents, no "running for...", "seeking re-election", or "faces X in the runoff".',
+    ...PLAIN_LANGUAGE_STYLE_RULES,
     "- Include sources used for this profile and identity evidence.",
     "- return JSON only (no prose, no markdown).",
     ...(seedUrls.length > 0

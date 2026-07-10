@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { buildCandidateProfilePrompt } from "../../src/ai/providers/candidateProfilePrompt.js";
+import { PLAIN_LANGUAGE_STYLE_RULES } from "../../src/ai/providers/promptWritingStyle.js";
 
 describe("buildCandidateProfilePrompt", () => {
   const baseInput = {
@@ -14,6 +15,20 @@ describe("buildCandidateProfilePrompt", () => {
     seedUrls: [],
     reviewFeedbackLines: [],
   };
+
+  it("includes the plain-language style rules and summary contest-context bans", () => {
+    const prompt = buildCandidateProfilePrompt(baseInput);
+
+    for (const rule of PLAIN_LANGUAGE_STYLE_RULES) {
+      expect(prompt).toContain(rule);
+    }
+    expect(prompt).toContain("summary is who the person is and what they have done");
+    expect(prompt).toContain(
+      "do not name the office, election, election date, or stage the candidate is running for"
+    );
+    expect(prompt).toContain("No campaign-status or horse-race content in summary");
+    expect(prompt).toContain('"faces X in the runoff"');
+  });
 
   it("does not include party field even for standard contests", () => {
     const prompt = buildCandidateProfilePrompt({

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { buildCandidateRecordDiscoveryPrompt } from "../../src/ai/providers/candidateRecordDiscoveryPrompt.js";
+import { PLAIN_LANGUAGE_STYLE_RULES } from "../../src/ai/providers/promptWritingStyle.js";
 
 describe("buildCandidateRecordDiscoveryPrompt", () => {
   const baseInput = {
@@ -12,6 +13,15 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     officialBallotTitle: "Governor",
     reviewFeedbackLines: [],
   };
+
+  it("includes the plain-language style rules", () => {
+    const prompt = buildCandidateRecordDiscoveryPrompt(baseInput);
+
+    for (const rule of PLAIN_LANGUAGE_STYLE_RULES) {
+      expect(prompt).toContain(rule);
+    }
+    expect(prompt).toContain("6th-grade reader");
+  });
 
   it("includes since_date for incremental mode prompts", () => {
     const prompt = buildCandidateRecordDiscoveryPrompt({
