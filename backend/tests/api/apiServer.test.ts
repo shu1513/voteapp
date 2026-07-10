@@ -198,7 +198,7 @@ describe("createApiApp", () => {
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true",
       "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "access-control-allow-headers": "authorization, content-type",
+      "access-control-allow-headers": "authorization, content-type, x-voteapp-client",
       "access-control-max-age": "600",
       vary: "Origin",
     });
