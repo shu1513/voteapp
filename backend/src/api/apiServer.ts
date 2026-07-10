@@ -219,23 +219,38 @@ async function requireVerifiedAuthenticatedUser(
 
 // Only requests that declare themselves as the mobile app receive the session
 // id in the response body (for Bearer use); web responses stay cookie-only so
-// the id is never readable by browser JS. An XSS payload could set this
-// header, but these endpoints require the account password, which XSS does
-// not have — the httpOnly protection of existing sessions is unchanged.
+// the id is never readable by browser JS.
 const MOBILE_CLIENT_HEADER_NAME = "x-voteapp-client";
 const MOBILE_CLIENT_HEADER_VALUE = "mobile";
+
+// The mobile-client header alone is not a trust boundary: browser JS can set
+// it, and an XSS wrapping the user's own login request could then read the
+// session id from the response — exactly what httpOnly exists to prevent.
+// Browsers, however, always attach Origin to POSTs and Sec-Fetch-* to every
+// request, and scripts cannot remove these forbidden headers. Native HTTP
+// stacks (React Native fetch, OkHttp, NSURLSession) send neither, so any
+// browser provenance disqualifies the request from the mobile transport.
+function hasBrowserProvenance(request: Request): boolean {
+  if (request.headers.origin !== undefined) {
+    return true;
+  }
+  return Object.keys(request.headers).some((name) => name.startsWith("sec-fetch-"));
+}
 
 function isMobileClientRequest(request: Request): boolean {
   const rawValue = request.headers[MOBILE_CLIENT_HEADER_NAME];
   const value = Array.isArray(rawValue) ? rawValue[0] : rawValue;
-  return value?.trim().toLowerCase() === MOBILE_CLIENT_HEADER_VALUE;
+  return value?.trim().toLowerCase() === MOBILE_CLIENT_HEADER_VALUE && !hasBrowserProvenance(request);
 }
 
 function getAuthSessionId(request: Request): string | null {
-  // Cookie (web) first, Bearer header (mobile) second — same opaque id.
+  // Bearer (explicit, attached per-request by the mobile app) wins over the
+  // cookie (ambient, replayed by cookie jars): a stale jar cookie must not
+  // shadow the session the client actually presented. Web clients never send
+  // a Bearer header, so their behavior is unchanged.
   return (
-    parseCookieHeaderValue(request.headers.cookie, AUTH_SESSION_COOKIE_NAME) ??
-    parseBearerAuthorizationValue(request.headers.authorization)
+    parseBearerAuthorizationValue(request.headers.authorization) ??
+    parseCookieHeaderValue(request.headers.cookie, AUTH_SESSION_COOKIE_NAME)
   );
 }
 
@@ -679,18 +694,24 @@ async function dispatchApiRequest(
       password: payload.password,
       currentSessionId,
     });
+    // Mobile gets the id in the body and no Set-Cookie: native cookie jars
+    // store cookies automatically, and a jar copy of the session would later
+    // be replayed alongside the Bearer header and diverge from it.
+    const mobileClient = isMobileClientRequest(request);
     sendApiResponse(response, {
       ...toJsonResponse(200, { status: "ok" }, corsHeaders),
       headers: {
         ...corsHeaders,
         "content-type": "application/json; charset=utf-8",
-        "set-cookie": serializeAuthSessionCookie(result.sessionId, {
-          ...options.authSessionCookieOptions,
-        }),
+        ...(mobileClient
+          ? {}
+          : {
+              "set-cookie": serializeAuthSessionCookie(result.sessionId, {
+                ...options.authSessionCookieOptions,
+              }),
+            }),
       },
-      body: isMobileClientRequest(request)
-        ? { status: "ok", session_id: result.sessionId }
-        : { status: "ok" },
+      body: mobileClient ? { status: "ok", session_id: result.sessionId } : { status: "ok" },
       statusCode: 200,
     });
     return;
@@ -972,24 +993,29 @@ async function dispatchApiRequest(
     const payload = parseMePasswordBodyValue(request.body);
     // changePassword rotates every session; hand the fresh one back so the
     // caller stays logged in while any stolen session dies. Mobile callers
-    // get it in the body because the rotation just revoked their Bearer id.
+    // get it in the body (their Bearer id was just revoked) and no
+    // Set-Cookie, so native cookie jars never hold a session copy that could
+    // later diverge from the Bearer header.
     const result = await options.authService.changePassword({
       userId,
       currentPassword: payload.current_password,
       newPassword: payload.new_password,
     });
+    const mobileClient = isMobileClientRequest(request);
     sendApiResponse(response, {
       ...toJsonResponse(200, { status: "ok" }, corsHeaders),
       headers: {
         ...corsHeaders,
         "content-type": "application/json; charset=utf-8",
-        "set-cookie": serializeAuthSessionCookie(result.sessionId, {
-          ...options.authSessionCookieOptions,
-        }),
+        ...(mobileClient
+          ? {}
+          : {
+              "set-cookie": serializeAuthSessionCookie(result.sessionId, {
+                ...options.authSessionCookieOptions,
+              }),
+            }),
       },
-      body: isMobileClientRequest(request)
-        ? { status: "ok", session_id: result.sessionId }
-        : { status: "ok" },
+      body: mobileClient ? { status: "ok", session_id: result.sessionId } : { status: "ok" },
       statusCode: 200,
     });
     return;

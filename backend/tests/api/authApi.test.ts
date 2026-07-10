@@ -203,20 +203,62 @@ describe("public auth API endpoints", () => {
     });
     expect(mobile.statusCode).toBe(200);
     expect(mobile.body).toEqual({ status: "ok", session_id: "session-abc" });
-    // The cookie transport still works for a mobile webview that keeps it.
-    expect(mobile.headers["set-cookie"]).toContain(`${AUTH_SESSION_COOKIE_NAME}=session-abc`);
+    // No Set-Cookie for mobile: a native cookie jar copy of the session
+    // would later be replayed alongside the Bearer header and diverge.
+    expect(mobile.headers["set-cookie"]).toBeUndefined();
 
     const web = await invokeExpressApp(app, {
       ...loginInput,
       headers: { "content-type": "application/json" },
     });
     expect(web.body).toEqual({ status: "ok" });
+    expect(web.headers["set-cookie"]).toContain(`${AUTH_SESSION_COOKIE_NAME}=session-abc`);
 
     const otherClient = await invokeExpressApp(app, {
       ...loginInput,
       headers: { "content-type": "application/json", "x-voteapp-client": "kiosk" },
     });
     expect(otherClient.body).toEqual({ status: "ok" });
+  });
+
+  it("refuses the mobile session transport for requests with browser provenance", async () => {
+    // Browser JS can spoof x-voteapp-client, but it cannot remove the
+    // forbidden Origin/Sec-Fetch-* headers the browser attaches. An XSS
+    // wrapping the user's own login must never receive the session id.
+    const resolveAddress = vi.fn();
+    const authService = createAuthServiceMock({
+      login: vi.fn().mockResolvedValue({ sessionId: "session-abc" }),
+    });
+    const app = createApiApp({ resolveAddress, authService });
+    const loginInput = {
+      method: "POST",
+      path: "/api/auth/login",
+      body: JSON.stringify({ email: "user@example.com", password: "correct horse battery staple" }),
+    };
+
+    const withSecFetch = await invokeExpressApp(app, {
+      ...loginInput,
+      headers: {
+        "content-type": "application/json",
+        "x-voteapp-client": "mobile",
+        "sec-fetch-site": "same-origin",
+      },
+    });
+    expect(withSecFetch.statusCode).toBe(200);
+    expect(withSecFetch.body).toEqual({ status: "ok" });
+    expect(withSecFetch.headers["set-cookie"]).toContain(`${AUTH_SESSION_COOKIE_NAME}=session-abc`);
+
+    // Origin-bearing requests only pass CORS when the origin is allowed;
+    // even then the body must stay cookie-only.
+    const origin = "https://frontend.example";
+    const originApp = createApiApp({ resolveAddress, authService, allowedOrigins: [origin] });
+    const withOrigin = await invokeExpressApp(originApp, {
+      ...loginInput,
+      headers: { "content-type": "application/json", "x-voteapp-client": "mobile", origin },
+    });
+    expect(withOrigin.statusCode).toBe(200);
+    expect(withOrigin.body).toEqual({ status: "ok" });
+    expect(withOrigin.headers["set-cookie"]).toContain(`${AUTH_SESSION_COOKIE_NAME}=session-abc`);
   });
 
   it("accepts the current session as a Bearer header on login (mobile re-login)", async () => {
@@ -481,6 +523,7 @@ describe("account management endpoints", () => {
     // id in the body the mobile client would be logged out by its own change.
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({ status: "ok", session_id: "session-rotated" });
+    expect(response.headers["set-cookie"]).toBeUndefined();
   });
 
   it("requires a session for password change", async () => {
