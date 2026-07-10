@@ -49,7 +49,7 @@ export function buildPlainLanguageRewriteVerifyPrompt(
           '- "The current X" and "the incumbent X" state the same fact.',
         ]
       : ["- The rewrite may not drop any claim; simplified wording is fine, missing content is not."]),
-    '- Meaning-preserving swaps are "same_facts": simpler words, synonyms for the same role or action ("directs" -> "runs", "served as" -> "was"), and technical terms replaced by their plain meaning ("general obligation bonds" -> "borrow money", "a century" -> "100 years").',
+    '- Meaning-preserving swaps are "same_facts": simpler words, synonyms for the same role or action ("directs" -> "runs", "rebuffed" -> "refused"), a technical term kept but explained in plain words, and exact equivalents ("a century" -> "100 years"). A specific term replaced by a broader one that loses its meaning ("general obligation bonds" -> just "loans") is a dropped fact.',
     '- A changed action or actor is a "mismatch": a verb that changes what the person did ("tried cases" -> "led cases"), or a government action moved onto the reader ("the state borrows" -> "you agree to borrow money").',
     '- When in doubt, answer "mismatch".',
     "- return JSON only (no prose, no markdown).",

@@ -59,6 +59,7 @@ export function buildPlainLanguageRewritePrompt(input: PlainLanguageRewritePromp
     "Rules:",
     "- Do not add, drop, soften, or strengthen any factual claim; keep every name, amount, date, and outcome exactly as stated.",
     "- Do not state anything the original does not state.",
+    "- Keep the rewrite about as long as the original or shorter; a defined term may add a few words.",
     ...(input.kind === "candidate_summary"
       ? [
           "- Delete everything about the contest shown above (office sought, election, date, stage, candidacy, opponents, vote percentages, results) — the app already displays the contest next to this text. This is the ONLY permitted removal; describe only who the person is.",
@@ -66,9 +67,14 @@ export function buildPlainLanguageRewritePrompt(input: PlainLanguageRewritePromp
           '- If nothing substantive remains after the removal, one short sentence with what does remain (party, profession, past office) — for example "Jane Doe is a lawyer."',
         ]
       : ["- Keep every sentence's content; only the wording changes."]),
-    ...(input.kind === "measure_what_yes_means" || input.kind === "measure_what_no_means"
+    ...(input.kind === "measure_what_yes_means"
       ? [
           '- A vote approves or rejects a government action; the reader never performs it. Write "Voting yes approves the state borrowing money for...", never "you agree to borrow money".',
+        ]
+      : []),
+    ...(input.kind === "measure_what_no_means"
+      ? [
+          '- A vote approves or rejects a government action; the reader never performs it. Write "Voting no rejects the state borrowing money for...", never "you refuse to borrow money".',
         ]
       : []),
     ...PLAIN_LANGUAGE_STYLE_RULES,
