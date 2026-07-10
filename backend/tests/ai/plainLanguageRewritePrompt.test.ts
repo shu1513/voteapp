@@ -32,13 +32,12 @@ describe("buildPlainLanguageRewritePrompt", () => {
     });
 
     expect(prompt).toContain('- official_ballot_title: "Sheriff"');
-    expect(prompt).toContain("Remove clauses that name the contest shown above");
-    expect(prompt).toContain("the ONLY permitted content removal");
-    expect(prompt).toContain("Do not mention the candidacy, the primary, the runoff, or the general election at all");
+    expect(prompt).toContain("Delete everything about the contest shown above");
+    expect(prompt).toContain("This is the ONLY permitted removal; describe only who the person is.");
     expect(prompt).toContain(
-      "Offices the person currently holds or previously held are facts to keep — including the exact office name, place, and district, and that they are the incumbent."
+      "Offices the person currently holds or previously held are facts to keep — exact office name, place, district, and incumbency"
     );
-    expect(prompt).toContain("If nothing substantive remains after those removals");
+    expect(prompt).toContain("If nothing substantive remains after the removal");
     expect(prompt).not.toContain("Keep every sentence's content; only the wording changes.");
   });
 });
@@ -56,7 +55,7 @@ describe("buildPlainLanguageRewriteVerifyPrompt", () => {
     expect(prompt).toContain('A lost negation, a flipped stance, a changed number, a changed name, or a new or dropped factual claim is a "mismatch".');
     expect(prompt).toContain('When in doubt, answer "mismatch".');
     expect(prompt).toContain("The rewrite may not drop any claim");
-    expect(prompt).not.toContain("ALLOWED — and expected — to drop everything");
+    expect(prompt).not.toContain("IMPORTANT CONTEXT");
   });
 
   it("allows contest-clause drops only for candidate summaries", () => {
@@ -66,9 +65,12 @@ describe("buildPlainLanguageRewriteVerifyPrompt", () => {
       rewrittenText: "rewrite",
     });
 
-    expect(prompt).toContain("the rewrite is ALLOWED — and expected — to drop everything about the contest the candidate is currently seeking");
+    expect(prompt).toContain(
+      "IMPORTANT CONTEXT: this rewrite was deliberately instructed to DELETE everything about the contest the candidate is currently seeking"
+    );
+    expect(prompt).toContain("never report a missing contest detail as a mismatch");
+    expect(prompt).toContain("Judge ONLY the claims that remain in scope: current and past offices held, career history, and qualifications.");
     expect(prompt).toContain('"The current X" and "the incumbent X" state the same fact.');
-    expect(prompt).toContain("current and past offices held, career history, and qualifications must be preserved");
     expect(prompt).not.toContain("The rewrite may not drop any claim");
   });
 });

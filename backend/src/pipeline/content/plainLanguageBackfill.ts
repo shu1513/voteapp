@@ -80,7 +80,11 @@ const LENGTH_LOWER_BOUND: Record<PlainLanguageRewriteKind, number> = {
   measure_what_no_means: 0.5,
   record_description: 0.5,
 };
+// Ratio cap catches runaway embellishment; the flat allowance keeps short
+// originals from failing just because the rewrite defines a term or two
+// in-line ("subpoena — a court order to appear"), which adds absolute words.
 const LENGTH_UPPER_BOUND = 1.7;
+const LENGTH_UPPER_ALLOWANCE_CHARS = 120;
 
 function extractUrls(text: string): Set<string> {
   return new Set((text.match(/https?:\/\/\S+/gi) ?? []).map((url) => url.replace(/[).,;]+$/, "")));
@@ -92,6 +96,92 @@ function extractNumberTokens(text: string): Set<string> {
   return new Set(
     (text.match(/\d[\d,.]*/g) ?? []).map((token) => token.replace(/,/g, "").replace(/\.$/, ""))
   );
+}
+
+// A plain-language rewrite legitimately turns number WORDS into digits
+// ("over a century" -> "over 100 years", "twenty-five years" -> "25 years",
+// "two million" -> "2 million" or "2,000,000"); the invented-number check
+// must not flag those. Number phrases are composed before licensing so that
+// a phrase only licenses ITS value: "two million" licenses 2 and 2000000 but
+// never a bare 1000000, and "half a million" licenses 500000 but never 50 —
+// a rewrite that changes the quantity still fails the check.
+const NUMBER_UNIT_VALUES: Record<string, number> = {
+  one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9,
+  ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15,
+  sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19,
+  twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90,
+  dozen: 12,
+};
+const NUMBER_SCALE_VALUES: Record<string, number> = {
+  hundred: 100, thousand: 1_000, million: 1_000_000, billion: 1_000_000_000, trillion: 1_000_000_000_000,
+};
+const NUMBER_STANDALONE_VALUES: Record<string, string[]> = {
+  century: ["100"], centuries: ["100"], decade: ["10"], decades: ["10"],
+  first: ["1", "1st"], second: ["2", "2nd"], third: ["3", "3rd"],
+};
+
+function numberTokensLicensedByWords(text: string): Set<string> {
+  const licensed = new Set<string>();
+  const words = text.toLowerCase().match(/[a-z]+/g) ?? [];
+
+  for (let index = 0; index < words.length; index += 1) {
+    const word = words[index];
+
+    for (const value of NUMBER_STANDALONE_VALUES[word] ?? []) {
+      licensed.add(value);
+    }
+
+    // "half (a/of) <scale>" licenses the computed value; a bare "half"
+    // licenses only 0.5, never 50.
+    if (word === "half") {
+      let next = index + 1;
+      while (words[next] === "a" || words[next] === "of" || words[next] === "an") {
+        next += 1;
+      }
+      const scale = NUMBER_SCALE_VALUES[words[next] ?? ""];
+      licensed.add("0.5");
+      if (scale) {
+        licensed.add(String(0.5 * scale));
+        index = next;
+      }
+      continue;
+    }
+
+    // "a/an <scale>" reads as one of that scale: "a million" -> 1, 1000000.
+    if ((word === "a" || word === "an") && NUMBER_SCALE_VALUES[words[index + 1] ?? ""]) {
+      licensed.add("1");
+      licensed.add(String(NUMBER_SCALE_VALUES[words[index + 1]]));
+      index += 1;
+      continue;
+    }
+
+    let value = NUMBER_UNIT_VALUES[word];
+    if (value === undefined) {
+      continue;
+    }
+    // Compose "twenty five" (also reached by hyphenated "twenty-five").
+    const follower = NUMBER_UNIT_VALUES[words[index + 1] ?? ""];
+    if (value >= 20 && value % 10 === 0 && follower !== undefined && follower < 10) {
+      value += follower;
+      index += 1;
+    }
+    // The count is always licensed ("two million" -> "2 million" keeps "2").
+    licensed.add(String(value));
+    // Multiply through scale words: "two hundred thousand" -> 200000. The
+    // scale value itself is deliberately NOT licensed on its own.
+    let scaled = value;
+    let sawScale = false;
+    while (NUMBER_SCALE_VALUES[words[index + 1] ?? ""] !== undefined) {
+      scaled *= NUMBER_SCALE_VALUES[words[index + 1]];
+      sawScale = true;
+      index += 1;
+    }
+    if (sawScale) {
+      licensed.add(String(scaled));
+    }
+  }
+
+  return licensed;
 }
 
 /**
@@ -113,7 +203,7 @@ export function mechanicalCheckFailure(
   if (ratio < LENGTH_LOWER_BOUND[kind]) {
     return `rewrite too short (${Math.round(ratio * 100)}% of original)`;
   }
-  if (ratio > LENGTH_UPPER_BOUND) {
+  if (rewrittenText.length > originalText.length * LENGTH_UPPER_BOUND + LENGTH_UPPER_ALLOWANCE_CHARS) {
     return `rewrite too long (${Math.round(ratio * 100)}% of original)`;
   }
 
@@ -128,8 +218,9 @@ export function mechanicalCheckFailure(
   // with the horse-race clauses), so only invented numbers are checked; the
   // verifier owns dropped-content judgment for every kind.
   const originalNumbers = extractNumberTokens(originalText);
+  const licensedByWords = numberTokensLicensedByWords(originalText);
   for (const token of extractNumberTokens(rewrittenText)) {
-    if (!originalNumbers.has(token)) {
+    if (!originalNumbers.has(token) && !licensedByWords.has(token)) {
       return `rewrite introduced a number not in the original: ${token}`;
     }
   }

@@ -63,6 +63,101 @@ describe("mechanicalCheckFailure", () => {
       mechanicalCheckFailure("record_description", "The budget grew under his tenure a lot.", "The budget grew 300% under his tenure.")
     ).toContain("introduced a number");
   });
+
+  it("licenses digits that spell out number words from the original", () => {
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "He was the first challenger in over a century to unseat an incumbent county sheriff.",
+        "He was the first person in over 100 years to beat the sitting county sheriff in an election."
+      )
+    ).toBeNull();
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "The measure funds a thousand new housing units in the county over the years.",
+        "The measure pays for 1000 new housing units in the county over the years."
+      )
+    ).toBeNull();
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "The budget grew sharply during his tenure at the department, records show.",
+        "The budget grew 100-fold during his tenure at the department, records show."
+      )
+    ).toContain("introduced a number"); // no number word in the original licenses "100"
+  });
+
+  it("composes number phrases so a licensed word cannot excuse a changed quantity", () => {
+    // "two million" licenses 2 and 2000000 — never a bare 1000000.
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "The settlement cost the county two million dollars, according to court records.",
+        "The settlement cost the county 1,000,000 dollars, according to court records."
+      )
+    ).toContain("not in the original: 1000000");
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "The settlement cost the county two million dollars, according to court records.",
+        "The settlement cost the county 2 million dollars, according to court records."
+      )
+    ).toBeNull();
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "The settlement cost the county two million dollars, according to court records.",
+        "The settlement cost the county $2,000,000, according to court records."
+      )
+    ).toBeNull();
+    // "half a million" licenses 500000 — never 50.
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "The program spent half a million dollars on outreach efforts in the county.",
+        "The program spent 50 million dollars on outreach efforts in the county."
+      )
+    ).toContain("not in the original: 50");
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "The program spent half a million dollars on outreach efforts in the county.",
+        "The program spent 500,000 dollars on outreach efforts in the county."
+      )
+    ).toBeNull();
+    // Hyphenated compounds compose: "twenty-five" licenses 25 — never a bare 20.
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "He spent twenty-five years working in the county Public Defender's Office.",
+        "He spent 25 years working in the county Public Defender's Office."
+      )
+    ).toBeNull();
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "He spent twenty-five years working in the county Public Defender's Office.",
+        "He spent 20 years working in the county Public Defender's Office."
+      )
+    ).toContain("not in the original: 20");
+    // Multi-scale chains compose: "two hundred thousand" -> 200000.
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "The fund distributed two hundred thousand dollars to local housing groups.",
+        "The fund distributed 200,000 dollars to local housing groups."
+      )
+    ).toBeNull();
+    // A bare "half" licenses 0.5 only, never 50.
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "More than half the commission members disagreed with the sheriff's decision.",
+        "More than 50 of the commission members disagreed with the sheriff's decision."
+      )
+    ).toContain("not in the original: 50");
+  });
 });
 
 type FakeQuery = { text: string; params: unknown[] | undefined };

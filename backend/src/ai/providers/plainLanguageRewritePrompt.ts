@@ -59,15 +59,24 @@ export function buildPlainLanguageRewritePrompt(input: PlainLanguageRewritePromp
     "Rules:",
     "- Do not add, drop, soften, or strengthen any factual claim; keep every name, amount, date, and outcome exactly as stated.",
     "- Do not state anything the original does not state.",
+    "- Keep the rewrite about as long as the original or shorter; a defined term may add a few words.",
     ...(input.kind === "candidate_summary"
       ? [
-          "- Remove clauses that name the contest shown above (the office, election, election date, or stage the candidate is running for); the app already displays them next to this text.",
-          '- Remove campaign-status and horse-race content: vote percentages, primary results, opponents, "running for...", "seeking re-election", "faces X in the runoff". Removing these clauses is the ONLY permitted content removal.',
-          "- Do not mention the candidacy, the primary, the runoff, or the general election at all; describe only who the person is.",
-          "- Offices the person currently holds or previously held are facts to keep — including the exact office name, place, and district, and that they are the incumbent. Only the contest being sought is removable, even when it is the same seat.",
-          '- If nothing substantive remains after those removals, state the little that does remain (party, profession, current or past office) in one short sentence — for example "Jane Doe is a lawyer." Never re-add contest content to fill space.',
+          "- Delete everything about the contest shown above (office sought, election, date, stage, candidacy, opponents, vote percentages, results) — the app already displays the contest next to this text. This is the ONLY permitted removal; describe only who the person is.",
+          "- Offices the person currently holds or previously held are facts to keep — exact office name, place, district, and incumbency — even when it is the same seat they now seek.",
+          '- If nothing substantive remains after the removal, one short sentence with what does remain (party, profession, past office) — for example "Jane Doe is a lawyer."',
         ]
       : ["- Keep every sentence's content; only the wording changes."]),
+    ...(input.kind === "measure_what_yes_means"
+      ? [
+          '- A vote approves or rejects a government action; the reader never performs it. Write "Voting yes approves the state borrowing money for...", never "you agree to borrow money".',
+        ]
+      : []),
+    ...(input.kind === "measure_what_no_means"
+      ? [
+          '- A vote approves or rejects a government action; the reader never performs it. Write "Voting no rejects the state borrowing money for...", never "you refuse to borrow money".',
+        ]
+      : []),
     ...PLAIN_LANGUAGE_STYLE_RULES,
     "- return JSON only (no prose, no markdown).",
   ].join("\n");
