@@ -64,6 +64,7 @@ import {
   RESEARCH_AREAS_PATH,
   SITE_SITEMAP_PATH,
 } from "./apiValidation.js";
+import { parseBearerAuthorizationValue } from "../auth/authBearer.js";
 import {
   AUTH_SESSION_COOKIE_NAME,
   parseCookieHeaderValue,
@@ -216,8 +217,26 @@ async function requireVerifiedAuthenticatedUser(
   return userId;
 }
 
+// Only requests that declare themselves as the mobile app receive the session
+// id in the response body (for Bearer use); web responses stay cookie-only so
+// the id is never readable by browser JS. An XSS payload could set this
+// header, but these endpoints require the account password, which XSS does
+// not have — the httpOnly protection of existing sessions is unchanged.
+const MOBILE_CLIENT_HEADER_NAME = "x-voteapp-client";
+const MOBILE_CLIENT_HEADER_VALUE = "mobile";
+
+function isMobileClientRequest(request: Request): boolean {
+  const rawValue = request.headers[MOBILE_CLIENT_HEADER_NAME];
+  const value = Array.isArray(rawValue) ? rawValue[0] : rawValue;
+  return value?.trim().toLowerCase() === MOBILE_CLIENT_HEADER_VALUE;
+}
+
 function getAuthSessionId(request: Request): string | null {
-  return parseCookieHeaderValue(request.headers.cookie, AUTH_SESSION_COOKIE_NAME);
+  // Cookie (web) first, Bearer header (mobile) second — same opaque id.
+  return (
+    parseCookieHeaderValue(request.headers.cookie, AUTH_SESSION_COOKIE_NAME) ??
+    parseBearerAuthorizationValue(request.headers.authorization)
+  );
 }
 
 function sendApiResponse(response: Response, apiResponse: ApiResponse): void {
@@ -669,7 +688,9 @@ async function dispatchApiRequest(
           ...options.authSessionCookieOptions,
         }),
       },
-      body: { status: "ok" },
+      body: isMobileClientRequest(request)
+        ? { status: "ok", session_id: result.sessionId }
+        : { status: "ok" },
       statusCode: 200,
     });
     return;
@@ -950,7 +971,8 @@ async function dispatchApiRequest(
 
     const payload = parseMePasswordBodyValue(request.body);
     // changePassword rotates every session; hand the fresh one back so the
-    // caller stays logged in while any stolen session dies.
+    // caller stays logged in while any stolen session dies. Mobile callers
+    // get it in the body because the rotation just revoked their Bearer id.
     const result = await options.authService.changePassword({
       userId,
       currentPassword: payload.current_password,
@@ -965,7 +987,9 @@ async function dispatchApiRequest(
           ...options.authSessionCookieOptions,
         }),
       },
-      body: { status: "ok" },
+      body: isMobileClientRequest(request)
+        ? { status: "ok", session_id: result.sessionId }
+        : { status: "ok" },
       statusCode: 200,
     });
     return;
