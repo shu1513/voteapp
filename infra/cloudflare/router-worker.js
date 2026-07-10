@@ -26,6 +26,9 @@ function isApiPath(pathname) {
 
 export default {
   async fetch(request, env) {
+    if (!env.API_ORIGIN || !env.SSR_ORIGIN) {
+      return new Response("Worker misconfigured: API_ORIGIN and SSR_ORIGIN must be set", { status: 503 });
+    }
     const url = new URL(request.url);
 
     if (url.hostname.startsWith("www.")) {
