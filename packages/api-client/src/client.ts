@@ -36,6 +36,28 @@ type RequestOptions = {
 
 export const REQUEST_TIMEOUT_MS = 15_000;
 
+type ApiClientConfig = {
+  /**
+   * Origin prepended to request paths. Empty (the default) keeps the web
+   * behavior: same-origin relative paths through the Vite proxy / same-site
+   * deploy. The mobile app sets its API origin here.
+   */
+  baseUrl: string;
+  /**
+   * Returns the Authorization header value (e.g. "Bearer <sessionId>") or
+   * null when there is no session. Null (the default) sends no header — the
+   * web frontend authenticates with the httpOnly cookie instead.
+   */
+  getAuthHeader: (() => string | null | Promise<string | null>) | null;
+};
+
+const config: ApiClientConfig = { baseUrl: "", getAuthHeader: null };
+
+/** Platform setup, called once at app start; web apps need no call at all. */
+export function configureApi(overrides: Partial<ApiClientConfig>): void {
+  Object.assign(config, overrides);
+}
+
 /**
  * Combines the request timeout with an optional caller signal without
  * requiring AbortSignal.any (Chrome 116+/Safari 17.4+): on older browsers a
@@ -66,12 +88,20 @@ function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal 
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const method = options.method ?? "GET";
-  const response = await fetch(path, {
+  const headers: Record<string, string> = {};
+  if (options.body !== undefined) {
+    headers["content-type"] = "application/json";
+  }
+  const authHeader = config.getAuthHeader ? await config.getAuthHeader() : null;
+  if (authHeader) {
+    headers.authorization = authHeader;
+  }
+  const response = await fetch(`${config.baseUrl}${path}`, {
     method,
     // "include" behaves identically same-origin but keeps the session cookie
     // flowing if production ever splits onto app./api. subdomains.
     credentials: "include",
-    headers: options.body !== undefined ? { "content-type": "application/json" } : undefined,
+    headers: Object.keys(headers).length > 0 ? headers : undefined,
     body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
     // A stalled request must fail instead of pinning queries in pending
     // forever; callers can additionally cancel.
