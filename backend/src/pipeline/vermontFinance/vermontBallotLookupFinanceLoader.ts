@@ -6,7 +6,7 @@ import type {
   BallotLookupFinanceOutsideIndustrySupportEvidence,
   BallotLookupFinanceOutsideIndustrySupportSummary,
   BallotLookupFinanceSummary,
-} from "../address/ballotLookup.js";
+} from "../address/ballotLookupFinanceShared.js";
 import { isVermontCampaignFinanceEnabled } from "../../config/featureFlags.js";
 import { isVermontFinanceEligibleOffice } from "./vermontFinanceEligibleOffices.js";
 

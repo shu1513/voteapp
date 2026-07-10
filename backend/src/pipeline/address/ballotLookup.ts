@@ -59,20 +59,6 @@ import {
   type BallotLookupFinanceSummary,
 } from "./ballotLookupFinanceShared.js";
 
-// Re-exported for the seven pre-Phase-2 loaders that still import these
-// types from here (the KY/AK/AZ/FL/LA/PA/VT ballot-lookup finance files);
-// they switch to ballotLookupFinanceShared.js when Phase 3 touches them.
-// New code should import from the shared module directly.
-export type {
-  BallotLookupFinanceBackingSummary,
-  BallotLookupFinanceBreakdown,
-  BallotLookupFinanceOutsideGroup,
-  BallotLookupFinanceOutsideIndustrySupportEvidence,
-  BallotLookupFinanceOutsideIndustrySupportSummary,
-  BallotLookupFinanceSupportingCommitteeIndustrySummary,
-  BallotLookupFinanceSummary,
-} from "./ballotLookupFinanceShared.js";
-
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 export type BallotLookupDistrict = {

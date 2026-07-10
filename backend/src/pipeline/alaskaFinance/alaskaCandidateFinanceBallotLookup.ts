@@ -7,7 +7,7 @@ import type {
   BallotLookupFinanceOutsideIndustrySupportEvidence,
   BallotLookupFinanceOutsideIndustrySupportSummary,
   BallotLookupFinanceSummary,
-} from "../address/ballotLookup.js";
+} from "../address/ballotLookupFinanceShared.js";
 import { isAlaskaFinanceEligibleOffice } from "./alaskaFinanceEligibleOffices.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
