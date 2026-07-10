@@ -1,0 +1,164 @@
+# Render Blueprint for the first public deploy (docs/deploy-render.md is the
+# runbook; docs/deploy-checklist.md stays the platform-agnostic reference).
+#
+# Topology: Cloudflare (impactperdollar.com) fronts everything with a Worker
+# that routes /api/* and /sitemap.xml to voteapp-api and everything else to
+# voteapp-ssr (infra/cloudflare/router-worker.js). Cookies stay same-origin,
+# and Cloudflare stamps CF-Connecting-IP with the real client IP (it always
+# overwrites any client-supplied copy), which both servers trust via
+# ADDRESS_API_TRUSTED_CLIENT_IP_HEADER.
+#
+# Secrets (sync: false) are entered once in the Render dashboard on first
+# blueprint sync: AWS SES send-only key pair.
+#
+# PLANS: everything below is on free plans so the first deploy needs no card
+# on file. Free web services spin down after ~15 idle minutes (cold start on
+# the next request) and the free Postgres instance EXPIRES ~30 DAYS after
+# creation unless upgraded — upgrade the DB plan (and the web services, and
+# uncomment the worker + cron sections) once billing is set up.
+
+services:
+  # ---------------------------------------------------------------- API ----
+  - name: voteapp-api
+    type: web
+    runtime: node
+    region: ohio
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm run address:api
+    # DB-backed read: proves Postgres connectivity, not just an open port.
+    healthCheckPath: /api/research-areas
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: voteapp-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: voteapp-redis
+          type: keyvalue
+          property: connectionString
+      - key: ADDRESS_API_HOST
+        value: 0.0.0.0
+      - key: ADDRESS_API_PORT
+        value: "10000"
+      - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
+        value: CF-Connecting-IP
+      - key: AUTH_PUBLIC_BASE_URL
+        value: https://impactperdollar.com
+      - key: SITE_ORIGIN
+        value: https://impactperdollar.com
+      - key: AUTH_SESSION_COOKIE_SECURE
+        value: "true"
+      - key: AUTH_FROM_EMAIL
+        value: noreply@impactperdollar.com
+      - key: AUTH_REPLY_TO_EMAIL
+        value: contact@impactperdollar.com
+      - key: AUTH_SES_REGION
+        value: us-east-2
+      - key: NOTIFICATIONS_UNSUBSCRIBE_URL
+        value: https://impactperdollar.com/api/email/unsubscribe
+      - key: DEPLOY_ENV
+        value: production
+      - fromGroup: voteapp-shared
+
+  # ---------------------------------------------------------------- SSR ----
+  - name: voteapp-ssr
+    type: web
+    runtime: node
+    region: ohio
+    plan: free
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    envVars:
+      # Render private-network address of the API service; loader fetches
+      # never leave Render's network.
+      - key: API_INTERNAL_URL
+        value: http://voteapp-api:10000
+      - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
+        value: CF-Connecting-IP
+
+  # ------------------------------------------------------------- workers ----
+  # One process runs all three notification scheduler workers and re-asserts
+  # their recurring BullMQ jobs on every boot (idempotent upserts).
+  # COMMENTED OUT for the card-less free-tier launch: background workers and
+  # cron jobs require a paid plan. Uncomment (and re-sync the blueprint) once
+  # billing is set up. Until then no digest/alert/reminder emails send — SES
+  # is still sandboxed at launch anyway.
+  # - name: voteapp-notification-workers
+  #   type: worker
+  #   runtime: node
+  #   region: ohio
+  #   plan: starter
+  #   rootDir: backend
+  #   buildCommand: npm ci
+  #   startCommand: npm run notifications:workers
+  #   envVars:
+  #     - key: DATABASE_URL
+  #       fromDatabase:
+  #         name: voteapp-db
+  #         property: connectionString
+  #     - key: REDIS_URL
+  #       fromService:
+  #         name: voteapp-redis
+  #         type: keyvalue
+  #         property: connectionString
+  #     - key: AUTH_FROM_EMAIL
+  #       value: noreply@impactperdollar.com
+  #     - key: AUTH_REPLY_TO_EMAIL
+  #       value: contact@impactperdollar.com
+  #     - key: AUTH_SES_REGION
+  #       value: us-east-2
+  #     - key: AUTH_PUBLIC_BASE_URL
+  #       value: https://impactperdollar.com
+  #     - key: NOTIFICATIONS_UNSUBSCRIBE_URL
+  #       value: https://impactperdollar.com/api/email/unsubscribe
+  #     - key: DEPLOY_ENV
+  #       value: production
+  #     - fromGroup: voteapp-shared
+
+  # ------------------------------------------------------------------ cron ----
+  # COMMENTED OUT with the worker above (paid plan required).
+  # - name: voteapp-notifications-prune
+  #   type: cron
+  #   runtime: node
+  #   region: ohio
+  #   schedule: "0 6 * * *"
+  #   rootDir: backend
+  #   buildCommand: npm ci
+  #   startCommand: npm run notifications:prune
+  #   envVars:
+  #     - key: DATABASE_URL
+  #       fromDatabase:
+  #         name: voteapp-db
+  #         property: connectionString
+
+  # ------------------------------------------------------------- key value ----
+  - name: voteapp-redis
+    type: keyvalue
+    region: ohio
+    plan: free
+    maxmemoryPolicy: noeviction
+    # Private-network access only; nothing outside Render needs Redis.
+    ipAllowList: []
+
+databases:
+  - name: voteapp-db
+    region: ohio
+    # FREE PLAN EXPIRES ~30 days after creation (instance deleted). Upgrade
+    # to basic-256mb or larger before expiry once billing is set up.
+    plan: free
+
+envVarGroups:
+  - name: voteapp-shared
+    envVars:
+      # Send-only SES IAM key (ses:SendEmail only).
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      # Shared by the API server (verify) and every mailer (sign).
+      - key: NOTIFICATIONS_UNSUBSCRIBE_SECRET
+        generateValue: true

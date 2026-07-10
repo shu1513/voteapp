@@ -23,6 +23,7 @@
     "elections:write": "tsx src/scripts/writeElections.ts",
     "manual:research:preflight": "tsx src/scripts/checkManualResearchPreflight.ts",
     "notifications:prune": "tsx src/scripts/pruneNotificationEvents.ts",
+    "notifications:workers": "tsx src/scripts/runNotificationSchedulerWorkers.ts",
     "notifications:digest": "tsx src/scripts/sendCandidateFollowDigests.ts",
     "notifications:digest:scheduler:upsert": "tsx src/scripts/upsertCandidateFollowDigestDailyScheduler.ts",
     "notifications:digest:scheduler:worker": "tsx src/scripts/runCandidateFollowDigestSchedulerWorker.ts",
