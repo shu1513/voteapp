@@ -90,11 +90,9 @@ export function normalizeMinnesotaFinanceOfficeName(value: string | null | undef
   }
 }
 
-export function isMinnesotaFinanceEligibleOffice(input: MinnesotaFinanceOfficeInput): boolean {
-  return mapMinnesotaFinanceOffice(input) !== null;
-}
-
-export function mapMinnesotaFinanceOffice(input: MinnesotaFinanceOfficeInput): MinnesotaFinanceOfficeMatch | null {
+function matchMinnesotaFinanceEligibleOffice(
+  input: MinnesotaFinanceOfficeInput
+): { officeScope: MinnesotaFinanceEligibleOfficeScope; officeName: MinnesotaFinanceEligibleOfficeName } | null {
   const officeScope = normalizeOfficeScope(input.officeScope);
   const officeName = normalizeMinnesotaFinanceOfficeName(input.officeCanonicalName);
   if (!officeScope || !officeName) {
@@ -110,15 +108,34 @@ export function mapMinnesotaFinanceOffice(input: MinnesotaFinanceOfficeInput): M
     return null;
   }
 
+  return { officeScope, officeName };
+}
+
+// Eligibility is scope+name only, like the other states' is*FinanceEligibleOffice
+// predicates: ballot lookup and the profile enricher call this without a district
+// (their election rows carry none), and by then the mn_candidate_finance_links
+// table already scopes candidate+election, so district disambiguation happened at
+// link time. The district requirement lives in mapMinnesotaFinanceOffice, which
+// the committee-matching sync side uses.
+export function isMinnesotaFinanceEligibleOffice(input: MinnesotaFinanceOfficeInput): boolean {
+  return matchMinnesotaFinanceEligibleOffice(input) !== null;
+}
+
+export function mapMinnesotaFinanceOffice(input: MinnesotaFinanceOfficeInput): MinnesotaFinanceOfficeMatch | null {
+  const match = matchMinnesotaFinanceEligibleOffice(input);
+  if (!match) {
+    return null;
+  }
+
+  const requiresDistrict = match.officeScope === "state_upper" || match.officeScope === "state_lower";
   const district = normalizeMinnesotaFinanceDistrict(input.district);
-  if ((officeScope === "state_upper" || officeScope === "state_lower") && !district) {
+  if (requiresDistrict && !district) {
     return null;
   }
 
   return {
-    officeScope,
-    officeName,
-    requiresDistrict: officeScope === "state_upper" || officeScope === "state_lower",
+    ...match,
+    requiresDistrict,
     district: district || null,
   };
 }
