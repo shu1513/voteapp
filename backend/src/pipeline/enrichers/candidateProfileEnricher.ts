@@ -81,6 +81,7 @@ import {
   splitDisplayNameToFirstLast,
 } from "../../utils/candidateIdentity.js";
 import {
+  AmbiguousCandidateIdentityError,
   findOrCreateCandidateFromProfile,
   hasAtLeastOneHardIdentifier,
 } from "../candidates/candidateProfileIdentity.js";
@@ -1841,7 +1842,9 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           );
         } catch (error) {
           const reason = toReason(error);
-          if (error instanceof ParkCandidateProfileDraftError) {
+          if (error instanceof ParkCandidateProfileDraftError || error instanceof AmbiguousCandidateIdentityError) {
+            // Ambiguous identity means duplicate candidate rows already
+            // exist; retrying cannot resolve it — park for operator merge.
             await parkMessage(redis, entry, reason, deliveryCount);
             continue;
           }

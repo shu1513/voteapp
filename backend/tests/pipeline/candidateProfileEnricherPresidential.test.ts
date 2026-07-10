@@ -302,6 +302,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       if (text === "BEGIN" || text === "COMMIT" || text === "ROLLBACK") {
         return { rows: [], rowCount: null };
       }
+      if (text.includes("pg_advisory_xact_lock")) {
+        return { rows: [], rowCount: null };
+      }
       if (text.includes("FROM public.candidates")) {
         return { rows: [], rowCount: 0 };
       }
@@ -592,6 +595,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       if (text === "BEGIN" || text === "ROLLBACK") {
         return { rows: [], rowCount: null };
       }
+      if (text.includes("pg_advisory_xact_lock")) {
+        return { rows: [], rowCount: null };
+      }
       if (text.includes("FROM public.candidates")) {
         return { rows: [], rowCount: 0 };
       }
@@ -842,6 +848,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       if (text === "BEGIN" || text === "COMMIT" || text === "ROLLBACK") {
         return { rows: [], rowCount: null };
       }
+      if (text.includes("pg_advisory_xact_lock")) {
+        return { rows: [], rowCount: null };
+      }
       if (text.includes("FROM public.candidates")) {
         return { rows: [], rowCount: 0 };
       }
@@ -943,6 +952,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     clientQueryMock.mockImplementation(async (sql: string) => {
       const text = String(sql);
       if (text === "BEGIN" || text === "COMMIT" || text === "ROLLBACK") {
+        return { rows: [], rowCount: null };
+      }
+      if (text.includes("pg_advisory_xact_lock")) {
         return { rows: [], rowCount: null };
       }
       if (text.includes("FROM public.candidates")) {
@@ -2384,6 +2396,9 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     clientQueryMock.mockImplementation(async (sql: string) => {
       const text = String(sql);
       if (text === "BEGIN" || text === "COMMIT" || text === "ROLLBACK") {
+        return { rows: [], rowCount: null };
+      }
+      if (text.includes("pg_advisory_xact_lock")) {
         return { rows: [], rowCount: null };
       }
       if (text.includes("FROM public.candidates")) {

@@ -3,9 +3,23 @@ import type { PoolClient } from "pg";
 import type { CandidateProfilePayload } from "../../contracts/candidateProfilePayloadContract.js";
 import {
   hasNormalizedIntersection,
+  normalizeCandidateName,
   normalizeOptionalUrl,
   normalizeTwitterHandle,
 } from "../../utils/candidateIdentity.js";
+
+/**
+ * Two or more same-name candidates match the incoming profile's hard
+ * identifiers: the data already holds duplicates for this person, and
+ * inserting yet another row would compound them. Callers park or surface
+ * the profile so an operator can merge the duplicate rows first.
+ */
+export class AmbiguousCandidateIdentityError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AmbiguousCandidateIdentityError";
+  }
+}
 
 export type ExistingCandidateRow = {
   id: string;
@@ -444,6 +458,19 @@ async function findCandidateLinkedToElectionByDisplayName(
 export async function findOrCreateCandidateFromProfile(
   input: FindOrCreateCandidateFromProfileInput
 ): Promise<FindOrCreateCandidateFromProfileResult> {
+  // Serialize identity resolution per person: the read below and the insert
+  // at the bottom are otherwise an unlocked read-then-insert, and the
+  // candidates table has no uniqueness constraint — two workers processing
+  // the same person concurrently would both see no match and insert
+  // duplicate rows. The transaction-scoped advisory lock releases on
+  // commit/rollback. Keyed by name only (not state) so the cross-state
+  // presidential path contends with the per-state path for the same person.
+  const lockName = normalizeCandidateName(`${input.profile.first_name} ${input.profile.last_name}`);
+  await input.client.query(
+    `SELECT pg_advisory_xact_lock(hashtextextended('candidate_identity:' || $1, 0))`,
+    [lockName]
+  );
+
   const existingCandidates = input.allowCrossStateHardIdentifierMatch
     ? await loadSameNameCandidatesAcrossStates(input.client, input.profile)
     : await loadSameNameCandidates(input.client, input.profile, input.state);
@@ -459,6 +486,14 @@ export async function findOrCreateCandidateFromProfile(
         input.overwriteProfileFields
       );
       return { candidateId: matchedCandidate.id, matchedExisting: true };
+    }
+    if (matched.length > 1) {
+      // Falling through would insert a third row for an already-duplicated
+      // person. Surface instead so an operator merges the duplicates.
+      throw new AmbiguousCandidateIdentityError(
+        `Multiple existing candidates named "${input.profile.display_name}" match this profile's hard identifiers ` +
+          `(${matched.map((row) => row.id).join(", ")}); merge the duplicate rows before re-writing this profile.`
+      );
     }
   }
 
