@@ -1,4 +1,8 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+afterEach(() => {
+  vi.unstubAllEnvs();
+});
 
 import { loadLouisianaCandidateFinanceSummariesByCandidateElection } from "../../../src/pipeline/louisianaFinance/louisianaBallotLookupFinanceLoader.js";
 
@@ -7,6 +11,7 @@ const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
 
 describe("louisianaBallotLookupFinanceLoader", () => {
   it("maps Louisiana finance tables into ballot lookup summaries without occupation data", async () => {
+    vi.stubEnv("LOUISIANA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
       .mockResolvedValueOnce({
@@ -179,6 +184,7 @@ describe("louisianaBallotLookupFinanceLoader", () => {
   });
 
   it("skips non-Louisiana and unsupported-office requests without querying", async () => {
+    vi.stubEnv("LOUISIANA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi.fn();
 
     const result = await loadLouisianaCandidateFinanceSummariesByCandidateElection(
@@ -192,6 +198,7 @@ describe("louisianaBallotLookupFinanceLoader", () => {
   });
 
   it("uses one read transaction when called with a pool", async () => {
+    vi.stubEnv("LOUISIANA_CAMPAIGN_FINANCE_ENABLED", "true");
     const client = {
       query: vi.fn().mockResolvedValue({ rows: [] }),
       release: vi.fn(),
