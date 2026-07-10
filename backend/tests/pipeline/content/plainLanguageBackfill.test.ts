@@ -72,10 +72,16 @@ function makeFakePool(options: {
   measureRows?: Array<Record<string, unknown>>;
   processedMeasureRows?: Array<Record<string, unknown>>;
   recordRows?: Array<Record<string, unknown>>;
+  auditCounts?: Array<{ status: string; count: string }>;
+  /** rowCount returned for write statements; 0 simulates the staleness guard rejecting. */
+  writeRowCount?: number;
 }) {
   const writes: FakeQuery[] = [];
   const pool = {
     query: vi.fn(async (text: string, params?: unknown[]) => {
+      if (text.includes("GROUP BY status")) {
+        return { rows: options.auditCounts ?? [] };
+      }
       if (text.includes("FROM public.candidates c")) {
         return { rows: options.candidateRows ?? [] };
       }
@@ -89,7 +95,7 @@ function makeFakePool(options: {
         return { rows: options.recordRows ?? [] };
       }
       writes.push({ text, params });
-      return { rows: [] };
+      return { rows: [], rowCount: options.writeRowCount ?? 1 };
     }),
   } as unknown as Pool;
   return { pool, writes };
@@ -120,21 +126,24 @@ function makeDeps(overrides: Partial<PlainLanguageBackfillDeps> = {}): PlainLang
 const RECORD_TEXT = "Repeatedly rebuffed subpoenas to appear before the county oversight commission during hearings.";
 
 function recordRow(id: string) {
-  return { id, description: RECORD_TEXT };
+  return { id, description: RECORD_TEXT, source_url: "https://example.com/report", event_date: "2022-12-02" };
 }
 
 describe("runPlainLanguageBackfill", () => {
-  it("applies a verified rewrite atomically (UPDATE and audit INSERT in one statement)", async () => {
+  it("applies a verified rewrite atomically with staleness guard and recomputed record identity key", async () => {
     const { pool, writes } = makeFakePool({ recordRows: [recordRow("r1")] });
     const deps = makeDeps();
 
     const summary = await runPlainLanguageBackfill(pool, deps);
 
-    expect(summary).toMatchObject({ processed: 1, applied: 1, flagged: 0, remaining: 0 });
+    expect(summary).toMatchObject({ processed: 1, applied: 1, flagged: 0, staleSkipped: 0, remaining: 0 });
     expect(writes).toHaveLength(1);
-    expect(writes[0].text).toContain("UPDATE public.candidate_records SET description = $4");
-    expect(writes[0].text).toContain("INSERT INTO public.plain_language_rewrites");
-    expect(writes[0].params).toEqual([
+    expect(writes[0].text).toContain("SET description = $4");
+    expect(writes[0].text).toContain("record_identity_key = $8");
+    expect(writes[0].text).toContain("WHERE id = $2 AND description IS NOT DISTINCT FROM $5");
+    expect(writes[0].text).toContain("RETURNING id");
+    expect(writes[0].text).toContain("SELECT $1, $2, $3, 'applied', $5, $4, NULL, $6, $7 FROM updated");
+    expect(writes[0].params?.slice(0, 7)).toEqual([
       "candidate_records",
       "r1",
       "description",
@@ -143,6 +152,56 @@ describe("runPlainLanguageBackfill", () => {
       "gemini",
       "gemini-2.5-flash-lite",
     ]);
+    expect(writes[0].params?.[7]).toMatch(/^v3_[0-9a-f]{32}$/);
+  });
+
+  it("does not touch record_identity_key for non-record targets", async () => {
+    const { pool, writes } = makeFakePool({
+      measureRows: [
+        {
+          id: "m1",
+          summary: null,
+          what_yes_means: "Approves issuing the housing bonds described in the measure text.",
+          what_no_means: "",
+        },
+      ],
+    });
+
+    await runPlainLanguageBackfill(pool, makeDeps());
+
+    expect(writes).toHaveLength(1);
+    expect(writes[0].text).not.toContain("record_identity_key");
+    expect(writes[0].params).toHaveLength(7);
+  });
+
+  it("counts a stale row (text changed mid-run) without writing an audit row", async () => {
+    const { pool, writes } = makeFakePool({ recordRows: [recordRow("r1")], writeRowCount: 0 });
+
+    const summary = await runPlainLanguageBackfill(pool, makeDeps());
+
+    expect(summary).toMatchObject({ processed: 1, applied: 0, flagged: 0, staleSkipped: 1 });
+    expect(writes).toHaveLength(1); // the guarded statement ran but wrote nothing
+  });
+
+  it("passes the rewriter provider to the verifier", async () => {
+    const { pool } = makeFakePool({ recordRows: [recordRow("r1")] });
+    const deps = makeDeps();
+
+    await runPlainLanguageBackfill(pool, deps);
+
+    expect(deps.verify).toHaveBeenCalledWith(expect.anything(), expect.anything(), "gemini");
+  });
+
+  it("halts immediately when prior audit history already exceeds the flag rate", async () => {
+    const { pool } = makeFakePool({
+      recordRows: [recordRow("r1"), recordRow("r2")],
+      auditCounts: [
+        { status: "applied", count: "50" },
+        { status: "flagged", count: "10" },
+      ],
+    });
+
+    await expect(runPlainLanguageBackfill(pool, makeDeps())).rejects.toThrow("halting: flag rate");
   });
 
   it("flags a verifier mismatch, keeps the column untouched, and records the reason", async () => {
@@ -301,6 +360,10 @@ describe("runPlainLanguageBackfill", () => {
       expect.objectContaining({ kind: "measure_what_no_means" }),
       expect.anything()
     );
-    expect(writes.some((write) => write.text.includes("UPDATE public.ballot_measures SET what_no_means"))).toBe(true);
+    expect(
+      writes.some(
+        (write) => write.text.includes("UPDATE public.ballot_measures") && write.text.includes("SET what_no_means = $4")
+      )
+    ).toBe(true);
   });
 });

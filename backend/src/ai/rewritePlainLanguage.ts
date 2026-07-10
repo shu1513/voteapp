@@ -107,10 +107,23 @@ export async function rewriteToPlainLanguage(
 export async function verifyPlainLanguageRewrite(
   input: PlainLanguageRewriteVerifyPromptInput,
   config: PlainLanguageAiConfig,
+  rewriterProvider: AiProvider,
   candidates: readonly AiCandidate[] = PLAIN_LANGUAGE_REWRITE_VERIFY_AI_CANDIDATES
 ): Promise<PlainLanguageVerifyResult> {
+  // The verifier chain leading with a different provider is only a
+  // preference; fallback could otherwise land the judgment on the exact model
+  // that wrote the rewrite. Enforce independence: never verify with the
+  // rewriter's provider, and fail closed (abort, retry on resume) when no
+  // other provider is configured.
+  const independentCandidates = candidates.filter((candidate) => candidate.provider !== rewriterProvider);
+  if (independentCandidates.length === 0) {
+    return {
+      ok: false,
+      reason: `no verifier provider independent of rewriter provider ${rewriterProvider} is configured`,
+    };
+  }
   const result = await callFirstWorkingProvider(
-    candidates,
+    independentCandidates,
     buildPlainLanguageRewriteVerifyPrompt(input),
     config,
     parseVerifyPayload

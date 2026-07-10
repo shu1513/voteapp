@@ -5,11 +5,13 @@ import type {
   PlainLanguageRewriteResult,
   PlainLanguageVerifyResult,
 } from "../../ai/rewritePlainLanguage.js";
+import type { AiProvider } from "../../ai/types.js";
 import type {
   PlainLanguageRewriteKind,
   PlainLanguageRewritePromptInput,
 } from "../../ai/providers/plainLanguageRewritePrompt.js";
 import type { PlainLanguageRewriteVerifyPromptInput } from "../../ai/providers/plainLanguageRewriteVerifyPrompt.js";
+import { buildCandidateRecordIdentityKey } from "../candidates/candidateRecordStore.js";
 
 export type PlainLanguageBackfillTarget = {
   targetTable: "candidates" | "ballot_measures" | "candidate_records";
@@ -22,6 +24,11 @@ export type PlainLanguageBackfillTarget = {
     districtName: string;
     electionDate: string;
   };
+  /** candidate_records only: inputs for recomputing record_identity_key. */
+  recordIdentity?: {
+    sourceUrl: string;
+    eventDate: string;
+  };
 };
 
 export type PlainLanguageBackfillDeps = {
@@ -29,9 +36,15 @@ export type PlainLanguageBackfillDeps = {
     input: PlainLanguageRewritePromptInput,
     config: PlainLanguageAiConfig
   ) => Promise<PlainLanguageRewriteResult>;
+  /**
+   * rewriterProvider is the provider that produced the rewrite; the verify
+   * implementation must exclude it so the judge is never the writer's own
+   * model family (fail closed when no other provider is configured).
+   */
   verify: (
     input: PlainLanguageRewriteVerifyPromptInput,
-    config: PlainLanguageAiConfig
+    config: PlainLanguageAiConfig,
+    rewriterProvider: AiProvider
   ) => Promise<PlainLanguageVerifyResult>;
   aiConfig: PlainLanguageAiConfig;
   dryRun: boolean;
@@ -43,6 +56,8 @@ export type PlainLanguageBackfillSummary = {
   processed: number;
   applied: number;
   flagged: number;
+  /** Rows whose text changed under us mid-run: nothing written, resume retries. */
+  staleSkipped: number;
   remaining: number;
   dryRun: boolean;
 };
@@ -53,11 +68,13 @@ export type PlainLanguageBackfillSummary = {
 const FLAG_RATE_HALT_THRESHOLD = 0.05;
 const FLAG_RATE_MINIMUM_SAMPLE = 40;
 
-// The rewrite may only shrink candidate summaries by stripping contest/horse-
-// race clauses, which can legitimately remove half the text. Other kinds must
-// keep every claim, so a large shrink there means content was dropped.
+// Candidate summaries have no ratio floor: the prompt tells the model to
+// strip contest/horse-race clauses, and a contest-only summary legitimately
+// shrinks to "Jane Doe is a lawyer." — the emptiness check plus the verifier
+// own content loss there. Other kinds must keep every claim, so a large
+// shrink means content was dropped.
 const LENGTH_LOWER_BOUND: Record<PlainLanguageRewriteKind, number> = {
-  candidate_summary: 0.25,
+  candidate_summary: 0,
   measure_summary: 0.5,
   measure_what_yes_means: 0.5,
   measure_what_no_means: 0.5,
@@ -120,27 +137,43 @@ export function mechanicalCheckFailure(
   return null;
 }
 
-// Apply is a single statement (UPDATE in a CTE + audit INSERT), so a crash
-// can never update the column without its audit row — the audit table is the
-// resume marker, and a missing row would re-rewrite already-rewritten text.
-// Identifiers are compile-time constants keyed by the target enum, never
-// interpolated from data.
+// Apply is a single statement (UPDATE in a CTE + audit INSERT driven by
+// RETURNING), so a crash can never update the column without its audit row —
+// the audit table is the resume marker, and a missing row would re-rewrite
+// already-rewritten text. The UPDATE also requires the column to still equal
+// the text the rewrite was based on: the run takes hours and research workers
+// refresh rows concurrently, so a stale apply would silently overwrite newer
+// research. Zero rows back means stale — nothing written, resume retries with
+// fresh text. Identifiers are compile-time constants keyed by the target
+// enum, never interpolated from data.
 function buildApplySql(targetTable: string, targetColumn: string): string {
+  const identityKeySet =
+    targetTable === "candidate_records" ? ", record_identity_key = $8" : "";
   return `
     WITH updated AS (
-      UPDATE public.${targetTable} SET ${targetColumn} = $4, updated_at = now() WHERE id = $2
+      UPDATE public.${targetTable}
+      SET ${targetColumn} = $4, updated_at = now()${identityKeySet}
+      WHERE id = $2 AND ${targetColumn} IS NOT DISTINCT FROM $5
+      RETURNING id
     )
     INSERT INTO public.plain_language_rewrites
       (target_table, target_id, target_column, status, original_text, rewritten_text, flag_reason, provider, model)
-    VALUES ($1, $2, $3, 'applied', $5, $4, NULL, $6, $7)
+    SELECT $1, $2, $3, 'applied', $5, $4, NULL, $6, $7 FROM updated
   `;
 }
 
-const INSERT_FLAGGED_SQL = `
-  INSERT INTO public.plain_language_rewrites
-    (target_table, target_id, target_column, status, original_text, rewritten_text, flag_reason, provider, model)
-  VALUES ($1, $2, $3, 'flagged', $4, $5, $6, $7, $8)
-`;
+// Flag inserts carry the same staleness guard: a flag permanently blocks
+// auto-retry, which is only right if it judged the text the row still holds.
+function buildFlaggedSql(targetTable: string, targetColumn: string): string {
+  return `
+    INSERT INTO public.plain_language_rewrites
+      (target_table, target_id, target_column, status, original_text, rewritten_text, flag_reason, provider, model)
+    SELECT $1, $2, $3, 'flagged', $4, $5, $6, $7, $8
+    WHERE EXISTS (
+      SELECT 1 FROM public.${targetTable} WHERE id = $2 AND ${targetColumn} IS NOT DISTINCT FROM $4
+    )
+  `;
+}
 
 /**
  * Loads every row the backfill still has to process. The audit table is the
@@ -229,11 +262,16 @@ export async function loadPlainLanguageBackfillTargets(pool: Pool): Promise<Plai
     }
   }
 
-  const recordRows = await pool.query<{ id: string; description: string }>(
+  const recordRows = await pool.query<{
+    id: string;
+    description: string;
+    source_url: string;
+    event_date: string;
+  }>(
     `
-      SELECT cr.id, cr.description
+      SELECT cr.id, cr.description, cr.source_url, cr.event_date::text
       FROM public.candidate_records cr
-      WHERE NOT EXISTS (
+      WHERE cr.description <> '' AND NOT EXISTS (
         SELECT 1 FROM public.plain_language_rewrites r
         WHERE r.target_table = 'candidate_records' AND r.target_id = cr.id AND r.target_column = 'description'
       )
@@ -247,6 +285,7 @@ export async function loadPlainLanguageBackfillTargets(pool: Pool): Promise<Plai
       targetColumn: "description",
       kind: "record_description",
       originalText: row.description,
+      recordIdentity: { sourceUrl: row.source_url, eventDate: row.event_date },
     });
   }
 
@@ -264,6 +303,25 @@ export async function runPlainLanguageBackfill(
   let processed = 0;
   let applied = 0;
   let flagged = 0;
+  let staleSkipped = 0;
+
+  // The halt gate judges the WHOLE backfill, not one invocation: small
+  // --limit batches and resumes would otherwise reset the counters and let a
+  // bad prompt grind every row into the manual queue. Dry runs write no audit
+  // rows and judge only themselves.
+  let gateProcessed = 0;
+  let gateFlagged = 0;
+  if (!deps.dryRun) {
+    const auditCounts = await pool.query<{ status: string; count: string }>(
+      `SELECT status, count(*)::text AS count FROM public.plain_language_rewrites GROUP BY status`
+    );
+    for (const row of auditCounts.rows) {
+      gateProcessed += Number(row.count);
+      if (row.status === "flagged") {
+        gateFlagged += Number(row.count);
+      }
+    }
+  }
 
   for (const target of targets) {
     const rewriteResult = await deps.rewrite(
@@ -287,7 +345,8 @@ export async function runPlainLanguageBackfill(
     if (flagReason === null) {
       const verifyResult = await deps.verify(
         { kind: target.kind, originalText: target.originalText, rewrittenText: rewriteResult.rewrittenText },
-        deps.aiConfig
+        deps.aiConfig,
+        rewriteResult.provider
       );
       if (!verifyResult.ok) {
         throw new Error(
@@ -303,12 +362,14 @@ export async function runPlainLanguageBackfill(
     processed += 1;
     const label = `${target.targetTable}/${target.targetId}/${target.targetColumn}`;
 
+    let outcome: "applied" | "flagged" | "stale";
     if (deps.dryRun) {
       log(`--- ${label} (${flagReason === null ? "would apply" : `would flag: ${flagReason}`})`);
       log(`  before: ${target.originalText}`);
       log(`  after:  ${rewriteResult.rewrittenText}`);
+      outcome = flagReason === null ? "applied" : "flagged";
     } else if (flagReason === null) {
-      await pool.query(buildApplySql(target.targetTable, target.targetColumn), [
+      const params: unknown[] = [
         target.targetTable,
         target.targetId,
         target.targetColumn,
@@ -316,10 +377,32 @@ export async function runPlainLanguageBackfill(
         target.originalText,
         rewriteResult.provider,
         rewriteResult.model,
-      ]);
-      log(`applied ${label} rewriter=${rewriteResult.provider}/${rewriteResult.model}${verifierMeta}`);
+      ];
+      if (target.targetTable === "candidate_records") {
+        if (!target.recordIdentity) {
+          throw new Error(`missing record identity inputs for ${label}`);
+        }
+        // The identity key hashes (url, date, description); the research
+        // refresh dedupe relies on the stored key matching the stored text,
+        // and every other description-changing path recomputes it.
+        params.push(
+          buildCandidateRecordIdentityKey({
+            description: rewriteResult.rewrittenText,
+            sourceUrl: target.recordIdentity.sourceUrl,
+            eventDate: target.recordIdentity.eventDate,
+          })
+        );
+      }
+      const result = await pool.query(buildApplySql(target.targetTable, target.targetColumn), params);
+      if ((result.rowCount ?? 0) > 0) {
+        log(`applied ${label} rewriter=${rewriteResult.provider}/${rewriteResult.model}${verifierMeta}`);
+        outcome = "applied";
+      } else {
+        log(`stale ${label}: text changed mid-run, nothing written; resume retries`);
+        outcome = "stale";
+      }
     } else {
-      await pool.query(INSERT_FLAGGED_SQL, [
+      const result = await pool.query(buildFlaggedSql(target.targetTable, target.targetColumn), [
         target.targetTable,
         target.targetId,
         target.targetColumn,
@@ -329,18 +412,32 @@ export async function runPlainLanguageBackfill(
         rewriteResult.provider,
         rewriteResult.model,
       ]);
-      log(`FLAGGED ${label}: ${flagReason}`);
+      if ((result.rowCount ?? 0) > 0) {
+        log(`FLAGGED ${label}: ${flagReason}`);
+        outcome = "flagged";
+      } else {
+        log(`stale ${label}: text changed mid-run, flag not recorded; resume retries`);
+        outcome = "stale";
+      }
     }
 
-    if (flagReason === null) {
+    if (outcome === "applied") {
       applied += 1;
-    } else {
+    } else if (outcome === "flagged") {
       flagged += 1;
+    } else {
+      staleSkipped += 1;
+    }
+    if (outcome !== "stale") {
+      gateProcessed += 1;
+      if (outcome === "flagged") {
+        gateFlagged += 1;
+      }
     }
 
-    if (processed >= FLAG_RATE_MINIMUM_SAMPLE && flagged / processed > FLAG_RATE_HALT_THRESHOLD) {
+    if (gateProcessed >= FLAG_RATE_MINIMUM_SAMPLE && gateFlagged / gateProcessed > FLAG_RATE_HALT_THRESHOLD) {
       throw new Error(
-        `halting: flag rate ${flagged}/${processed} exceeds ${FLAG_RATE_HALT_THRESHOLD * 100}% — tune the rewrite prompt before re-running`
+        `halting: flag rate ${gateFlagged}/${gateProcessed} across the backfill exceeds ${FLAG_RATE_HALT_THRESHOLD * 100}% — tune the rewrite prompt before re-running`
       );
     }
   }
@@ -349,6 +446,7 @@ export async function runPlainLanguageBackfill(
     processed,
     applied,
     flagged,
+    staleSkipped,
     remaining: allTargets.length - targets.length,
     dryRun: deps.dryRun,
   };

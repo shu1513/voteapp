@@ -1,6 +1,29 @@
 import { describe, expect, it } from "vitest";
 
-import { parseRewritePayload, parseVerifyPayload } from "../../src/ai/rewritePlainLanguage.js";
+import {
+  parseRewritePayload,
+  parseVerifyPayload,
+  verifyPlainLanguageRewrite,
+} from "../../src/ai/rewritePlainLanguage.js";
+
+describe("verifyPlainLanguageRewrite", () => {
+  it("fails closed when no provider independent of the rewriter is configured", async () => {
+    const result = await verifyPlainLanguageRewrite(
+      { kind: "record_description", originalText: "a", rewrittenText: "b" },
+      { timeoutMs: 1000 },
+      "openai",
+      [
+        { provider: "openai", model: "gpt-5.4-mini" },
+        { provider: "openai", model: "gpt-5.5" },
+      ]
+    );
+
+    expect(result).toEqual({
+      ok: false,
+      reason: "no verifier provider independent of rewriter provider openai is configured",
+    });
+  });
+});
 
 describe("parseRewritePayload", () => {
   it("returns the trimmed rewritten text", () => {
