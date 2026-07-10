@@ -174,6 +174,15 @@ export async function destroyAuthSession(
   return deleted > 0;
 }
 
+/**
+ * Best-effort sweep of a user's sessions via the reverse index. Deliberately
+ * not atomic with concurrent logins: a new-epoch session created mid-sweep
+ * can be swept too (that user just logs in again) or miss the index deletion
+ * and stay unindexed (harmless — the index only feeds this sweep, and every
+ * caller first makes the revocation durable in the database: an epoch bump,
+ * or the soft delete that fails the per-request user lookup).
+ * Per-request epoch validation is the correctness mechanism; this is cleanup.
+ */
 export async function destroyAuthSessionsByUserId(
   redis: Pick<AuthSessionRedisClient, "del" | "sMembers" | "sRem">,
   input: DestroyAuthSessionsByUserIdInput

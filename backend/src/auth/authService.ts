@@ -280,6 +280,11 @@ async function createOrRefreshAuthUser(
   }
 
   if (existing) {
+    // Re-registering an unverified address replaces its password, so it must
+    // also revoke existing sessions (epoch bump). Otherwise an attacker who
+    // pre-registered the victim's email and logged in would keep a live
+    // session across the victim's registration — and inherit the account the
+    // moment the victim verifies.
     const updated = await client.query<AuthUserRow>(
       `
         UPDATE public.users
@@ -288,6 +293,7 @@ async function createOrRefreshAuthUser(
           password_hash = $3,
           accepted_terms_version = $4,
           accepted_terms_at = now(),
+          session_epoch = session_epoch + 1,
           updated_at = now()
         WHERE id = $1::uuid
           AND deleted_at IS NULL
@@ -457,10 +463,16 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           throw new TypeError("Verification token is invalid or expired");
         }
 
+        // Verification upgrades every session's privileges, so revoke the
+        // pre-verification ones (epoch bump): a session created against the
+        // unverified account — e.g. by whoever registered the address first —
+        // must not silently become a verified-account session. The frontend
+        // already tells the user to log in after verifying.
         const updated = await client.query(
           `
             UPDATE public.users
             SET email_verified = true,
+                session_epoch = session_epoch + 1,
                 updated_at = now()
             WHERE id = $1::uuid
               AND deleted_at IS NULL

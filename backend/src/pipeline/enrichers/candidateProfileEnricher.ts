@@ -1330,17 +1330,26 @@ async function findElectionLinkedCandidateByName(
     [electionId]
   );
 
-  for (const row of result.rows) {
-    const existingFirstLast = normalizeCandidateName(`${row.first_name} ${row.last_name}`);
-    if (existingFirstLast === incomingFirstLast) {
-      const fecIds = Array.isArray(row.fec_ids)
-        ? row.fec_ids.filter((value): value is string => typeof value === "string")
-        : [];
-      return { candidateId: row.id, fecIds };
-    }
+  const matches = result.rows.filter(
+    (row) => normalizeCandidateName(`${row.first_name} ${row.last_name}`) === incomingFirstLast
+  );
+  if (matches.length === 0) {
+    return null;
   }
-
-  return null;
+  // Two same-name candidates linked to one election means duplicate rows
+  // already exist; replaying the fanout against an arbitrary one would
+  // attach records/finance to the wrong duplicate. Park for operator merge
+  // (mirrors the identity layer's ambiguity guards).
+  if (matches.length > 1) {
+    throw new ParkCandidateProfileDraftError(
+      `multiple candidates named "${displayName}" are linked to election ${electionId}; merge the duplicate rows before this draft can be retried`
+    );
+  }
+  const match = matches[0]!;
+  const fecIds = Array.isArray(match.fec_ids)
+    ? match.fec_ids.filter((value): value is string => typeof value === "string")
+    : [];
+  return { candidateId: match.id, fecIds };
 }
 
 function effectivePresidentialParty(

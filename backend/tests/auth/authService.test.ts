@@ -653,6 +653,67 @@ describe("createAuthService session epoch revocation", () => {
     ).resolves.toBeUndefined();
   });
 
+  it("re-registering an unverified address bumps the epoch so pre-registration sessions die", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // existing unverified FOR UPDATE
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: false, session_epoch: 2 })] }) // refresh UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
+      .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // issue verification token
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.register({
+      email: "user@example.com",
+      password: "brand-new-password-456",
+      acceptedTermsVersion: "1.0",
+    });
+
+    const refreshCall = client.query.mock.calls.find((call) => String(call[0]).includes("password_hash = $3"));
+    expect(String(refreshCall?.[0])).toContain("session_epoch = session_epoch + 1");
+  });
+
+  it("verifyEmail bumps the epoch so pre-verification sessions cannot become verified ones", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: "token-1",
+            user_id: USER_ID,
+            token_hash: "hash",
+            purpose: "email_verify",
+            new_email: null,
+            expires_at: new Date(Date.now() + 60_000),
+            consumed_at: null,
+            created_at: new Date(),
+          },
+        ],
+      }) // consume verify token
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.verifyEmail({ token: "raw-token" });
+
+    const verifyCall = client.query.mock.calls.find((call) => String(call[0]).includes("email_verified = true"));
+    expect(String(verifyCall?.[0])).toContain("session_epoch = session_epoch + 1");
+  });
+
   it("login stores the user's current session epoch in the new session", async () => {
     const client = createDbClientMock();
     client.query

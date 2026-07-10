@@ -153,6 +153,30 @@ describe("runCandidateProfileEnricher fanout replay on redelivered drafts", () =
     expect(poolConnectMock).not.toHaveBeenCalled();
   });
 
+  it("parks the draft instead of guessing when two same-name duplicates are linked", async () => {
+    poolQueryMock.mockResolvedValueOnce({
+      rows: [
+        { id: "cand-1", first_name: "Jane", last_name: "Doe", fec_ids: [] },
+        { id: "cand-2", first_name: "Jane", last_name: "Doe", fec_ids: [] },
+      ],
+    });
+
+    await runCandidateProfileEnricher({ once: true, batchSize: 5, blockMs: 10 });
+
+    // Parked: rejected-stream message + ack, and no fanout against an
+    // arbitrarily chosen duplicate.
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      "staging:candidates:profile:rejected",
+      "*",
+      expect.objectContaining({
+        reason: expect.stringContaining("merge the duplicate rows"),
+      })
+    );
+    expect(redisXAckMock).toHaveBeenCalledTimes(1);
+    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
+    expect(enqueueCandidateRecordDraftsMock).not.toHaveBeenCalled();
+  });
+
   it("leaves the message unacked when the record-draft replay fails", async () => {
     poolQueryMock
       .mockResolvedValueOnce({
