@@ -19,6 +19,7 @@ import type {
   ElectionEnrichedPayload,
   ElectionEntryPayload,
 } from "../types/election.js";
+import { districtTypeRequiresContestFamily } from "../types/election.js";
 import { verifyHttpUrlReachability } from "./urlReachability.js";
 import { normalizeElectionTitleKey } from "../utils/normalizeElectionTitleKey.js";
 import { filterPresidentialElectionEntries } from "../utils/presidentialOffice.js";
@@ -135,10 +136,6 @@ export type EnrichElectionsConfig = {
   anthropicApiKey?: string;
   geminiApiKey?: string;
 };
-
-function needsContestFamilySplit(districtType: ElectionDraftPayload["district_type"]): boolean {
-  return districtType === "statewide" || districtType === "county" || districtType === "place";
-}
 
 function toDiscoveryContestFamily(scope: ElectionContestScope): ElectionContestFamily | undefined {
   return scope === "all" ? undefined : scope;
@@ -849,7 +846,7 @@ export async function enrichElections(
   const familyPlan: ElectionContestScope[] =
     input.draft.district_type === "statewide"
       ? ["non_judicial_office", "judicial_office", "ballot_measure", "us_senate"]
-      : needsContestFamilySplit(input.draft.district_type)
+      : districtTypeRequiresContestFamily(input.draft.district_type)
         ? ["non_judicial_office", "judicial_office", "ballot_measure"]
         : ["all"];
 

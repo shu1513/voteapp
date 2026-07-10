@@ -26,6 +26,15 @@ export type ElectionDistrictType =
 
 export type OfficeScope = ElectionDistrictType | "presidential";
 
+// District types whose election discovery runs split per-family passes
+// (statewide/county/place); their entries must each carry a
+// discovery_contest_family. All other types run one combined "all" pass and
+// omit it. Shared by the discovery planner and the payload contract so the
+// plan and the validation can never disagree.
+export function districtTypeRequiresContestFamily(districtType: ElectionDistrictType): boolean {
+  return districtType === "statewide" || districtType === "county" || districtType === "place";
+}
+
 export type ElectionEntryPayload = {
   official_ballot_title: string;
   election_date: string; // YYYY-MM-DD

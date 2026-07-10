@@ -34,6 +34,12 @@ const PURE_CANDIDACY_PATTERNS = [
 const FUTURE_PROMISE_PATTERNS = [
   /\b(?:campaign|platform|website)\b.*\b(?:promises?|pledges?|vows?|plans?|proposes?)\b/i,
   /\b(?:promises?|pledges?|vows?)\s+to\b/i,
+  // Past-tense promissory verbs are still promises, in any position:
+  // "Promised as a judicial candidate to uphold ..." slipped past the
+  // adjacent present-tense pattern above and became a canonical record.
+  // Substantive completed-action verbs are matched first, so a description
+  // that pairs a real action with its promise is still kept.
+  /\b(?:promised|pledged|vowed)\b/i,
   /\b(?:says|said)\s+(?:he|she|they)\s+(?:will|would)\b/i,
   /\b(?:will|would)\s+(?:fight|work|cut|raise|support|oppose|create|expand|reduce|protect)\b/i,
 ] as const;
@@ -64,6 +70,21 @@ function matchesAny(value: string, patterns: readonly RegExp[]): boolean {
   return patterns.some((pattern) => pattern.test(value));
 }
 
+// A substantive verb inside a promissory infinitive complement is not a
+// completed action: in "promised to veto any tax increase passed by the
+// legislature", both "veto" and "passed" describe the promise's content.
+// Blank the complement through the end of its clause (period/semicolon/comma)
+// before the substantive check; the promise patterns still see the original
+// text. A clause that mixes a promise with a real action in the same
+// unpunctuated breath loses the action and rejects — the operator then leads
+// with the completed action, which is the phrasing the contract wants anyway.
+const PROMISSORY_INFINITIVE_PATTERN =
+  /\b(?:promis(?:es?|ed|ing)|pledg(?:es?|ed|ing)|vow(?:s|ed|ing)?)\s+(?:\w+\s+){0,3}?to\s+[^.;,]*/gi;
+
+function withoutPromissoryComplements(value: string): string {
+  return value.replace(PROMISSORY_INFINITIVE_PATTERN, " ");
+}
+
 export function classifyCandidateRecordQuality(
   input: CandidateRecordQualityInput
 ): CandidateRecordQualityResult {
@@ -72,7 +93,7 @@ export function classifyCandidateRecordQuality(
     return { classification: "disallowed_thin", reason: "unclassified_context" };
   }
 
-  if (matchesAny(description, SUBSTANTIVE_ACTION_PATTERNS)) {
+  if (matchesAny(withoutPromissoryComplements(description), SUBSTANTIVE_ACTION_PATTERNS)) {
     return { classification: "substantive", reason: "actual_record_action" };
   }
 

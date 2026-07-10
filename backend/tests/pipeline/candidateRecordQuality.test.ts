@@ -40,6 +40,54 @@ describe("candidate record quality", () => {
     ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
   });
 
+  it("classifies past-tense promissory phrasing as a future promise", () => {
+    // Live escape: this exact phrasing was accepted and written as a
+    // canonical record because only present-tense "promises to" matched.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Promised as a judicial candidate to uphold impartiality and legal competence on the bench.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "She pledged during the forum that she would recuse herself from conflicts.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    // A completed action alongside promissory language is still substantive.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "As promised during the campaign, she sponsored the disclosure bill in 2025.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+  });
+
+  it("does not let a substantive verb inside a promise's content rescue the promise", () => {
+    // "passed" belongs to the promise's object, not to anything the
+    // candidate did; the promissory infinitive complement is blanked before
+    // the substantive check.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "She promised to veto any tax increase passed by the legislature.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Vowed to sponsor legislation expanding the homestead exemption.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    // A real action in a separate clause survives the blanking.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "He pledged to reform the agency, and in 2024 he signed the reorganization order.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+  });
+
   it("classifies completed public actions and service as substantive records", () => {
     expect(
       classifyCandidateRecordQuality({

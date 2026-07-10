@@ -4,7 +4,7 @@ import type {
   ElectionEnrichedPayload,
   ElectionEntryPayload,
 } from "../types/election.js";
-import { ELECTION_CONTEST_FAMILIES } from "../types/election.js";
+import { ELECTION_CONTEST_FAMILIES, districtTypeRequiresContestFamily } from "../types/election.js";
 import {
   ELECTION_ALLOWED_DISTRICT_TYPES,
   ELECTION_RACE_TYPES,
@@ -296,10 +296,33 @@ export function parseCanonicalElectionPayload(payload: unknown): ParseResult {
   }
 
   const entries: ElectionEntryPayload[] = [];
-  for (const row of input.entries) {
+  for (const [index, row] of input.entries.entries()) {
     const parsed = parseEntry(row);
     if (!parsed) {
       return { ok: false, reason: "payload.entries contains invalid row" };
+    }
+    // Split-pass district types research each contest family in its own
+    // pass, and downstream stages read the family off the entry (judicial
+    // office matching, roster research mode). An entry without one is
+    // pipeline-survivable but silently loses that provenance — two live runs
+    // collapsed the split passes into one and were only caught by a manual
+    // post-write audit, so fail it here instead.
+    if (districtTypeRequiresContestFamily(input.district_type) && !parsed.discovery_contest_family) {
+      return {
+        ok: false,
+        reason: `payload.entries[${index}] is missing discovery_contest_family; ${input.district_type} districts research per-family passes (non_judicial_office|judicial_office|ballot_measure${input.district_type === "statewide" ? "|us_senate" : ""})`,
+      };
+    }
+    // The inverse also holds: combined-pass types have no family plan (the
+    // AI path maps scope "all" to no family), and a persisted family would
+    // flip downstream office matching and record research to that family's
+    // objective — e.g. a us_house entry stamped judicial_office switches the
+    // race to the judicial research mode.
+    if (!districtTypeRequiresContestFamily(input.district_type) && parsed.discovery_contest_family) {
+      return {
+        ok: false,
+        reason: `payload.entries[${index}] must omit discovery_contest_family; ${input.district_type} districts research one combined pass with no per-entry family`,
+      };
     }
     entries.push(parsed);
   }
