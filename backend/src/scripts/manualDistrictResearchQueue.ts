@@ -14,6 +14,7 @@ import {
   type ManualResearchAgentKind,
 } from "../pipeline/address/manualDistrictResearchRequests.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 const DEFAULT_MAX_CLAIM_HOURS = 6;
 
 function usage(): string {
@@ -255,6 +256,7 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:district-research", process.argv.slice(2), ["--agent", "--agent-kind", "--request-id", "--manifest-path", "--summary", "--error", "--note", "--district-id", "--max-claim-hours", "--help"]);
   loadProjectEnv();
 
   const [command, ...rest] = process.argv.slice(2);

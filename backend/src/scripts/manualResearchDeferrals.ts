@@ -2,6 +2,7 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 const DEFERRAL_STAGES = [
   "elections",
   "candidate_roster",
@@ -274,6 +275,7 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:deferral", process.argv.slice(2), ["--district-id", "--election-id", "--stage", "--reason", "--blocked-until", "--source-url", "--limit", "--all", "--deferral-id", "--note", "--help"]);
   loadProjectEnv();
 
   const [command, ...rest] = process.argv.slice(2);

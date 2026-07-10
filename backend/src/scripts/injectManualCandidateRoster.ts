@@ -15,6 +15,7 @@ import {
   type CandidateRosterEntry,
 } from "../contracts/candidateRosterPayloadContract.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 type ElectionPreflightRow = {
   id: string;
   official_ballot_title: string;
@@ -156,6 +157,7 @@ export function buildInjectedCandidateRosterStagingPayload(input: {
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:candidate-roster:inject", process.argv.slice(2), ["--election-id", "--file", "--run-id", "--dry-run"]);
   loadProjectEnv();
 
   const file = readFlag("--file");

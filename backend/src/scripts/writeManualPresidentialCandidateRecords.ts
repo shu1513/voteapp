@@ -42,6 +42,7 @@ import {
   type ManualResearchRepairGap,
 } from "./manualResearchRepairReport.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 export type ManualPresidentialCandidateRecordsOptions = {
   candidateId: string;
   presidentialCycleId: string;
@@ -315,6 +316,7 @@ async function deleteStaleCandidateRecordAreaTags(
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:presidential-records:write", process.argv.slice(2), ["--candidate-id", "--presidential-cycle-id", "--presidential-role", "--records-file", "--labels-file", "--repair-report-file", "--strict-quality-gate", "--confirmed-gap", "--evidence-file", "--dry-run"]);
   loadProjectEnv();
   const options = parseManualPresidentialCandidateRecordsArgs(process.argv.slice(2));
   const key = manualKey(options);

@@ -8,6 +8,7 @@ import { STAGING_ITEM_TYPE_CANDIDATE_ROSTER } from "../config/electionsPipeline.
 import { parseCandidateRosterPayload, type CandidateRosterEntry } from "../contracts/candidateRosterPayloadContract.js";
 import { enqueueCandidateProfileDrafts } from "../pipeline/candidates/candidateProfileDraftEmitter.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 type ElectionRow = {
   id: string;
   sources: unknown;
@@ -206,6 +207,7 @@ async function markStagingWritten(pool: Pool, ingestKey: string): Promise<void> 
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:candidate-roster:fanout", process.argv.slice(2), ["--election-id", "--run-id", "--dry-run"]);
   loadProjectEnv();
 
   const electionId = readFlag("--election-id");

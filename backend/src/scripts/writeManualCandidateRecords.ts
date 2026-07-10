@@ -36,6 +36,7 @@ import {
   sweepEvidenceRequired,
 } from "./candidateRecordSweepEvidence.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 function usage(): string {
   return [
     "Usage:",
@@ -318,6 +319,7 @@ async function deleteStaleCandidateRecordAreaTags(
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:candidate-records:write", process.argv.slice(2), ["--candidate-id", "--election-id", "--records-file", "--labels-file", "--repair-report-file", "--strict-quality-gate", "--confirmed-gap", "--evidence-file", "--dry-run"]);
   loadProjectEnv();
 
   const candidateId = readFlag("--candidate-id");

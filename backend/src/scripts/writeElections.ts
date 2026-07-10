@@ -4,7 +4,9 @@ import {
   parsePositiveIntegerFlag,
 } from "./electionsWorkerCliArgs.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 async function main(): Promise<void> {
+  assertKnownCliFlags("elections:write", process.argv.slice(2), ["--once", "--batch-size", "--block-ms", "--ingest-key"]);
   const once = process.argv.includes("--once");
   const batchSize = parsePositiveIntegerFlag(process.argv, "--batch-size", 25);
   const blockMs = parsePositiveIntegerFlag(process.argv, "--block-ms", 5000);

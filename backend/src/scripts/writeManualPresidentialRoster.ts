@@ -25,6 +25,7 @@ import {
   type PresidentialRosterEnricherResult,
 } from "../pipeline/enrichers/presidentialRosterEnricher.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 type RedisSendCommandClient = {
   sendCommand(args: string[]): Promise<unknown>;
 };
@@ -359,6 +360,7 @@ export async function runManualPresidentialRosterWrite(input: {
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:presidential-roster:write", process.argv.slice(2), ["--cycle-id", "--presidential-cycle-id", "--election-year", "--year", "--party", "--file", "--run-id", "--dry-run"]);
   const startedAt = new Date();
   loadProjectEnv();
   const options = parseManualPresidentialRosterScriptArgs(process.argv.slice(2), startedAt);

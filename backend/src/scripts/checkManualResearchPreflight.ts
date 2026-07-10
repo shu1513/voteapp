@@ -5,6 +5,7 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 type RequiredColumn = {
   table: string;
   column: string;
@@ -284,6 +285,7 @@ function requireEnv(name: string): string {
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:research:preflight", process.argv.slice(2), ["--help"]);
   loadProjectEnv();
 
   if (process.argv.includes("--help") || process.argv.includes("-h")) {

@@ -37,6 +37,7 @@ import {
 } from "./manualResearchRepairReport.js";
 import { normalizeCandidateName, splitDisplayNameToFirstLast } from "../utils/candidateIdentity.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 type ElectionContextRow = {
   election_id: string;
   state: string;
@@ -507,6 +508,7 @@ async function writeProfileRepairReport(input: {
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:candidate-profile:write", process.argv.slice(2), ["--election-id", "--file", "--roster-index", "--running-mate-of", "--run-id", "--is-incumbent", "--emit-record-draft", "--emit-finance-sync", "--allow-no-hard-identifier", "--strict-quality-gate", "--confirmed-gap", "--replace-profile-fields", "--repair-report-file", "--dry-run"]);
   loadProjectEnv();
 
   const file = readFlag("--file");

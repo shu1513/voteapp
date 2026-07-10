@@ -37,6 +37,7 @@ import {
   type ManualResearchRepairGap,
 } from "./manualResearchRepairReport.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 type RedisSendCommandClient = {
   sendCommand(args: string[]): Promise<unknown>;
 };
@@ -756,6 +757,7 @@ export async function runManualPresidentialProfileWrite(input: {
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:presidential-profile:write", process.argv.slice(2), ["--presidential-cycle-id", "--presidential-role", "--parent-presidential-candidate-fec-id", "--file", "--run-id", "--emit-record-draft", "--allow-no-hard-identifier", "--strict-quality-gate", "--confirmed-gap", "--repair-report-file", "--dry-run"]);
   loadProjectEnv();
   const options = parseManualPresidentialProfileScriptArgs(process.argv.slice(2));
   const rawPayload = await readJsonFile(options.file);

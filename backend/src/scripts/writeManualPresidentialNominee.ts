@@ -19,6 +19,7 @@ import {
   type PromotePresidentialNomineeResult,
 } from "../pipeline/presidential/presidentialNomineePromotion.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 type Queryable = Pick<Pool, "query">;
 
 type PresidentialNomineeCyclePreflightRow = {
@@ -279,6 +280,7 @@ export async function runManualPresidentialNomineeWrite(input: {
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:presidential-nominee:write", process.argv.slice(2), ["--cycle-id", "--presidential-cycle-id", "--election-year", "--year", "--party", "--confirmed-at", "--file", "--dry-run"]);
   loadProjectEnv();
   const options = parseManualPresidentialNomineeScriptArgs(process.argv.slice(2));
   const rawPayload = await readJsonFile(options.file);
