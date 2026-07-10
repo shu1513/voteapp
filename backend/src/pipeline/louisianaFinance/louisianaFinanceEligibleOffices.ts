@@ -11,7 +11,10 @@ export const LOUISIANA_FINANCE_ELIGIBLE_OFFICE_KEYS = new Set([
   "statewide::Secretary of State",
   "statewide::Attorney General",
   "statewide::State Treasurer",
-  "statewide::Commissioner of Agriculture and Forestry",
+  // Keys are matched literally against `office.scope || '::' || office.canonical_name`,
+  // so they must be the repository's canonical office names (seedOffices.ts), not
+  // Louisiana's longer statutory titles.
+  "statewide::Commissioner of Agriculture",
   "statewide::Commissioner of Insurance",
   "state_upper::State Senator",
   "state_lower::State Lower Chamber Legislator",
@@ -58,7 +61,11 @@ export function normalizeLouisianaFinanceOfficeName(value: string | null | undef
       return "State Treasurer";
     case "COMMISSIONER AGRICULTURE FORESTRY":
     case "COMMISSIONER OF AGRICULTURE AND FORESTRY":
+    case "COMMISSIONER OF AGRICULTURE":
     case "AGRICULTURE COMMISSIONER":
+      // Returned label is an internal join key only: both the repository canonical
+      // name and Louisiana's raw OfficeSought values normalize into it before they
+      // are compared, and the link row persists the canonical name instead.
       return "Commissioner of Agriculture and Forestry";
     case "COMMISSIONER INSURANCE":
     case "COMMISSIONER OF INSURANCE":

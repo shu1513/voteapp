@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  LOUISIANA_FINANCE_ELIGIBLE_OFFICE_KEYS,
   isLouisianaFinanceEligibleOffice,
   mapLouisianaFinanceOffice,
   normalizeLouisianaFinanceDistrict,
@@ -53,6 +54,43 @@ describe("Louisiana finance eligible offices", () => {
       requiresDistrict: true,
     });
     expect(isLouisianaFinanceEligibleOffice({ officeScope: "county", officeCanonicalName: "Sheriff" })).toBe(false);
+  });
+
+  it("resolves every eligible office key back through the normalizer", () => {
+    // The auto-link and batch-sync queries select `office.canonical_name` for rows
+    // matching these keys, then hand that name to the resolver, which normalizes it.
+    // A key the normalizer cannot read back is an office that links but never syncs.
+    // This does not prove a key matches a seeded canonical name -- seedOffices.ts
+    // runs main() on import, so it cannot be read from here; the per-office cases
+    // below cover that.
+    for (const key of LOUISIANA_FINANCE_ELIGIBLE_OFFICE_KEYS) {
+      const [officeScope, officeCanonicalName] = key.split("::");
+      expect(normalizeLouisianaFinanceOfficeName(officeCanonicalName)).not.toBeNull();
+      expect(
+        isLouisianaFinanceEligibleOffice({ officeScope: officeScope ?? "", officeCanonicalName: officeCanonicalName ?? "" })
+      ).toBe(true);
+    }
+  });
+
+  it("recognizes the Agriculture Commissioner under its canonical name and Louisiana's statutory title", () => {
+    expect(LOUISIANA_FINANCE_ELIGIBLE_OFFICE_KEYS.has("statewide::Commissioner of Agriculture")).toBe(true);
+    expect(normalizeLouisianaFinanceOfficeName("Commissioner of Agriculture")).toBe(
+      "Commissioner of Agriculture and Forestry"
+    );
+    expect(normalizeLouisianaFinanceOfficeName("Commissioner of Agriculture and Forestry")).toBe(
+      "Commissioner of Agriculture and Forestry"
+    );
+    expect(
+      isLouisianaFinanceEligibleOffice({ officeScope: "statewide", officeCanonicalName: "Commissioner of Agriculture" })
+    ).toBe(true);
+    expect(
+      mapLouisianaFinanceOffice({ officeScope: "statewide", officeCanonicalName: "Commissioner of Agriculture" })
+    ).toEqual({
+      officeScope: "statewide",
+      officeName: "Commissioner of Agriculture and Forestry",
+      district: null,
+      requiresDistrict: false,
+    });
   });
 
   it("treats legislative offices as eligible without a district, unlike committee mapping", () => {
