@@ -220,6 +220,11 @@ function rowToCandidate(
   };
 }
 
+// Candidate detail is a candidate-wide view, so records keep ALL their area
+// tags here — including areas outside any single election office's allowed
+// set. Election-scoped views (ballot lookup) filter tags to the election
+// office's allowed research areas instead; see loadFullElectionDetails in
+// pipeline/address/ballotLookup.ts.
 async function lookupCandidateRecords(
   db: Queryable,
   normalizedCandidateId: string

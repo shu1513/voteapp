@@ -15,6 +15,10 @@ import {
 } from "../competitiveness/historicalContestMarginLookup.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
 import { calculateVotePower, type VotePowerResult } from "./votePower.js";
+import {
+  GENERAL_RESEARCH_AREA_SLUG,
+  INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG,
+} from "../candidates/candidateRecordResearchAreaPolicy.js";
 import { loadKentuckyCandidateFinanceSummariesByCandidateElection } from "../kentuckyFinance/kentuckyBallotLookupFinanceLoader.js";
 import { isVirginiaFinanceEligibleOffice } from "../virginiaFinance/virginiaFinanceEligibleOffices.js";
 import { isWisconsinFinanceEligibleOffice } from "../wisconsinFinance/wisconsinFinanceEligibleOffices.js";
@@ -357,6 +361,7 @@ type ElectionRow = {
   is_partisan: boolean | null;
   discovery_contest_family: ElectionContestFamily | null;
   sources: unknown;
+  office_id?: string | null;
   office_scope?: OfficeScope | null;
   office_canonical_name?: string | null;
 };
@@ -455,6 +460,13 @@ type CandidateRecordTagRow = {
   slug: string;
   name: string;
   stance: "for" | "against" | null;
+};
+
+// office_id is null for the universal areas (general, integrity_and_ethics),
+// which are allowed for every office.
+type OfficeAllowedResearchAreaRow = {
+  office_id: string | null;
+  research_area_id: string;
 };
 
 type BallotMeasureRow = {
@@ -11507,6 +11519,67 @@ async function loadFullElectionDetails(
           [ballotMeasureIds]
         );
 
+  // Candidate records and their area tags are candidate-wide: a tag can point
+  // at a research area that is not allowed for THIS election's office (e.g. a
+  // legacy tag from before the office's allowed set was curated, or a tag that
+  // only applies to an office the candidate ran for previously). Tags are
+  // never deleted for that reason, so the election view must scope them here:
+  // keep a tag only when its area is in the election office's allowed set
+  // (office_research_areas) or is one of the universal areas. Elections with
+  // no linked office have no allowed set and keep every tag.
+  const electionOfficeIds = [
+    ...new Set(
+      electionRows
+        .map((row) => row.office_id)
+        .filter((officeId): officeId is string => typeof officeId === "string" && officeId.length > 0)
+    ),
+  ];
+  const officeAllowedAreaResult =
+    candidateRecordTagResult.rows.length === 0 || electionOfficeIds.length === 0
+      ? { rows: [] as OfficeAllowedResearchAreaRow[] }
+      : await db.query<OfficeAllowedResearchAreaRow>(
+          `
+            SELECT
+              ora.office_id,
+              ora.research_area_id
+            FROM public.office_research_areas AS ora
+            WHERE ora.office_id = ANY($1::uuid[])
+            UNION ALL
+            SELECT
+              NULL::uuid AS office_id,
+              ra.id AS research_area_id
+            FROM public.research_areas AS ra
+            WHERE ra.slug = ANY($2::text[])
+          `,
+          [electionOfficeIds, [GENERAL_RESEARCH_AREA_SLUG, INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG]]
+        );
+  const universalAreaIds = new Set<string>();
+  const allowedAreaIdsByOffice = new Map<string, Set<string>>();
+  for (const row of officeAllowedAreaResult.rows) {
+    if (row.office_id === null) {
+      universalAreaIds.add(row.research_area_id);
+      continue;
+    }
+    const set = allowedAreaIdsByOffice.get(row.office_id) ?? new Set<string>();
+    set.add(row.research_area_id);
+    allowedAreaIdsByOffice.set(row.office_id, set);
+  }
+  const scopeRecordTagsToOffice = (
+    records: BallotLookupCandidateRecord[],
+    officeId: string | null
+  ): BallotLookupCandidateRecord[] => {
+    if (officeId === null || officeAllowedAreaResult.rows.length === 0) {
+      return records;
+    }
+    const allowed = allowedAreaIdsByOffice.get(officeId);
+    return records.map((record) => ({
+      ...record,
+      research_area_tags: record.research_area_tags.filter(
+        (tag) => universalAreaIds.has(tag.research_area_id) || allowed?.has(tag.research_area_id) === true
+      ),
+    }));
+  };
+
   const financeSummaryByCandidateElection = await loadCandidateFinanceSummariesByCandidateElection(
     db,
     candidateResult.rows,
@@ -11527,6 +11600,9 @@ async function loadFullElectionDetails(
     candidateRecordsByCandidate.set(row.candidate_id, list);
   }
 
+  const officeIdByElection = new Map<string, string | null>(
+    electionRows.map((row) => [row.election_id, row.office_id ?? null])
+  );
   const candidatesByElection = new Map<string, BallotLookupCandidate[]>();
   for (const row of candidateResult.rows) {
     const list = candidatesByElection.get(row.election_id) ?? [];
@@ -11551,7 +11627,10 @@ async function loadFullElectionDetails(
             },
           }
         : {}),
-      records: candidateRecordsByCandidate.get(row.candidate_id) ?? [],
+      records: scopeRecordTagsToOffice(
+        candidateRecordsByCandidate.get(row.candidate_id) ?? [],
+        officeIdByElection.get(row.election_id) ?? null
+      ),
       finance_summary:
         financeSummaryByCandidateElection.get(candidateElectionKey(row.candidate_id, row.election_id)) ?? null,
     });
@@ -11908,6 +11987,7 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
         e.is_partisan,
         e.discovery_contest_family,
         e.sources,
+        office.id AS office_id,
         office.scope AS office_scope,
         office.canonical_name AS office_canonical_name
       FROM public.elections AS e

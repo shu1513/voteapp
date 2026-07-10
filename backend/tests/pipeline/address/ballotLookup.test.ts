@@ -1136,6 +1136,214 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[7]?.[0]).toContain("public.historical_contest_margins");
   });
 
+  it("scopes candidate record tags to the election office's allowed research areas", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    const wealthGapAreaId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+    const integrityAreaId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "place",
+            geoid_compact: "0644000",
+            district_name: "Los Angeles city",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: "64.25",
+            race_type: "office",
+            official_ballot_title: "Mayor",
+            election_date: "2026-06-02",
+            election_stage: "primary",
+            is_partisan: false,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_id: officeId,
+            office_canonical_name: "Mayor",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Pat Connolly",
+            party: "Nonpartisan",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Trial attorney.",
+            current_office: null,
+            state: "CA",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            candidate_record_id: candidateRecordId,
+            description: "Handled public corruption cases.",
+            source_url: "https://example.test/record",
+            event_date: "2025-05-01",
+            created_at: "2026-06-04 00:00:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_record_id: candidateRecordId,
+            research_area_id: researchAreaId,
+            slug: "anti_corruption",
+            name: "Anti-Corruption",
+            stance: "for",
+          },
+          {
+            candidate_record_id: candidateRecordId,
+            research_area_id: integrityAreaId,
+            slug: "integrity_and_ethics",
+            name: "Integrity & Ethics",
+            stance: null,
+          },
+          {
+            candidate_record_id: candidateRecordId,
+            research_area_id: wealthGapAreaId,
+            slug: "reduce_wealth_gap",
+            name: "Reduce Wealth Gap",
+            stance: "for",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          { office_id: officeId, research_area_id: researchAreaId },
+          { office_id: null, research_area_id: integrityAreaId },
+        ],
+      });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    // reduce_wealth_gap is not in the mayor office's allowed set, so its
+    // candidate-wide legacy tag is dropped from this election's view; the
+    // office-allowed and universal tags survive.
+    expect(result?.candidates[0]?.records[0]?.research_area_tags).toEqual([
+      {
+        research_area_id: researchAreaId,
+        slug: "anti_corruption",
+        name: "Anti-Corruption",
+        stance: "for",
+      },
+      {
+        research_area_id: integrityAreaId,
+        slug: "integrity_and_ethics",
+        name: "Integrity & Ethics",
+        stance: null,
+      },
+    ]);
+    expect(query).toHaveBeenCalledTimes(8);
+    expect(query.mock.calls[7]?.[0]).toContain("public.office_research_areas");
+    expect(query.mock.calls[7]?.[1]).toEqual([[officeId], ["general", "integrity_and_ethics"]]);
+  });
+
+  it("keeps all candidate record tags when the election has no linked office", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "county",
+            geoid_compact: "06037",
+            district_name: "Los Angeles County",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: "64.25",
+            race_type: "office",
+            official_ballot_title: "Sheriff",
+            election_date: "2026-06-02",
+            election_stage: "primary",
+            is_partisan: false,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_id: null,
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Pat Connolly",
+            party: "Nonpartisan",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Trial attorney.",
+            current_office: null,
+            state: "CA",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            candidate_record_id: candidateRecordId,
+            description: "Handled public corruption cases.",
+            source_url: "https://example.test/record",
+            event_date: "2025-05-01",
+            created_at: "2026-06-04 00:00:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_record_id: candidateRecordId,
+            research_area_id: researchAreaId,
+            slug: "reduce_wealth_gap",
+            name: "Reduce Wealth Gap",
+            stance: "for",
+          },
+        ],
+      });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    // No office → no allowed set to scope by, so the allowed-areas query is
+    // skipped entirely and the tag passes through.
+    expect(result?.candidates[0]?.records[0]?.research_area_tags).toEqual([
+      {
+        research_area_id: researchAreaId,
+        slug: "reduce_wealth_gap",
+        name: "Reduce Wealth Gap",
+        stance: "for",
+      },
+    ]);
+    expect(query).toHaveBeenCalledTimes(7);
+    for (const call of query.mock.calls) {
+      expect(call[0]).not.toContain("public.office_research_areas");
+    }
+  });
+
   it("includes locally synced FEC finance summaries for candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
     const query = vi
