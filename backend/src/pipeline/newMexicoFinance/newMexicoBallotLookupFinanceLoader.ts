@@ -9,7 +9,6 @@ import {
   firstNonEmptySourceUrl,
   mapFinanceBreakdown,
   parseFinanceAmount,
-  parseFinanceCount,
   type BallotLookupFinanceBreakdown,
   type BallotLookupFinanceOutsideGroup,
   type BallotLookupFinanceOutsideIndustrySupportSummary,
@@ -59,7 +58,6 @@ type NewMexicoFinanceOutsideGroupRow = {
   committee_name: string;
   support_oppose: "support" | "oppose";
   amount: string | number;
-  expenditure_count?: string | number | null;
   source_url: string | null;
 };
 
@@ -208,10 +206,6 @@ export async function loadNewMexicoCandidateFinanceSummariesByCandidateElection(
           min(outside_group.committee_name) AS committee_name,
           outside_group.support_oppose,
           max(outside_group.amount) AS amount,
-          CASE
-            WHEN count(outside_group.expenditure_count) = 0 THEN NULL
-            ELSE max(outside_group.expenditure_count)
-          END AS expenditure_count,
           min(outside_group.source_url) FILTER (WHERE outside_group.source_url IS NOT NULL) AS source_url
         FROM selected
         JOIN public.nm_candidate_finance_links AS link
@@ -232,7 +226,7 @@ export async function loadNewMexicoCandidateFinanceSummariesByCandidateElection(
           ) AS rn
         FROM grouped
       )
-      SELECT candidate_id, election_id, committee_id, committee_name, support_oppose, amount, expenditure_count, source_url
+      SELECT candidate_id, election_id, committee_id, committee_name, support_oppose, amount, source_url
       FROM ranked
       WHERE rn <= 5
       ORDER BY candidate_id, election_id, support_oppose, amount DESC, committee_name ASC
@@ -338,7 +332,6 @@ export async function loadNewMexicoCandidateFinanceSummariesByCandidateElection(
       committee_name: row.committee_name,
       support_oppose: row.support_oppose,
       amount: parseFinanceAmount(row.amount) ?? 0,
-      expenditure_count: parseFinanceCount(row.expenditure_count ?? null),
       source_url: firstNonEmptySourceUrl(row.source_url, GENERIC_NEW_MEXICO_CFIS_SOURCE_URL),
     });
     map.set(key, list);
