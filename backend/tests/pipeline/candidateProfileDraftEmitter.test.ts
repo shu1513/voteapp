@@ -43,6 +43,10 @@ describe("enqueueCandidateProfileDrafts", () => {
     expect(args[16]).toBe(JSON.stringify(["SF-1"]));
     expect(args[18]).toBe("election");
     expect(args[19]).toBe("");
+    // Marker TTL rides as the last ARGV; the Lua script must apply it so
+    // parked or lost drafts become re-emittable after expiry.
+    expect(args.at(-1)).toBe("86400");
+    expect(args[1]).toContain('"EX"');
   });
 
   it("emits running-mate drafts with ticket role and lead name fields", async () => {
@@ -67,8 +71,8 @@ describe("enqueueCandidateProfileDrafts", () => {
     expect(result).toEqual({ emittedCount: 1, skippedCount: 0 });
     const args = sendCommand.mock.calls[0]?.[0] as string[];
     expect(args[8]).toBe("Hnilicka, Julia");
-    expect(args.at(-2)).toBe("running_mate");
-    expect(args.at(-1)).toBe("Begich, Tom");
+    expect(args.at(-3)).toBe("running_mate");
+    expect(args.at(-2)).toBe("Begich, Tom");
   });
 
   it("supports explicit dedupe keys for non-roster producers", async () => {

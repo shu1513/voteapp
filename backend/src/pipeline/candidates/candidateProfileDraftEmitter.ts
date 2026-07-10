@@ -50,6 +50,12 @@ export type CandidateProfileDraftEmitInput =
   | PresidentialCycleCandidateProfileDraftEmitInput;
 
 const PROFILE_DRAFT_EMIT_MARKER_PREFIX = "staging:candidate_profile_draft_emitted:";
+// Markers expire like the roster and record emit markers do (24h): a
+// permanent marker made parked or lost drafts unrecoverable — the same
+// candidate/election/index could never be emitted again without a manual
+// Redis DEL. Re-emission after expiry is safe: the profile enricher's
+// per-election dedupe gates ack drafts whose candidate is already linked.
+const PROFILE_DRAFT_EMIT_MARKER_TTL_SECONDS = 86_400;
 
 const EMIT_CANDIDATE_PROFILE_DRAFT_IF_NEEDED_LUA = `
 if redis.call("EXISTS", KEYS[2]) == 1 then
@@ -98,7 +104,7 @@ redis.call(
   "ticket_lead_display_name",
   ARGV[19]
 )
-redis.call("SET", KEYS[2], ARGV[13])
+redis.call("SET", KEYS[2], ARGV[13], "EX", ARGV[20])
 return 1
 `;
 
@@ -203,6 +209,7 @@ export async function enqueueCandidateProfileDrafts(
       parentPresidentialCandidateFecIdForInput(input),
       input.electionTicketRole ?? "",
       input.ticketLeadDisplayName?.trim() ?? "",
+      String(PROFILE_DRAFT_EMIT_MARKER_TTL_SECONDS),
     ]);
 
     const value = typeof raw === "number" ? raw : Number.parseInt(String(raw), 10);
