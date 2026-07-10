@@ -6,7 +6,8 @@ import type {
   BallotLookupFinanceOutsideIndustrySupportEvidence,
   BallotLookupFinanceOutsideIndustrySupportSummary,
   BallotLookupFinanceSummary,
-} from "../address/ballotLookup.js";
+} from "../address/ballotLookupFinanceShared.js";
+import { isVermontCampaignFinanceEnabled } from "../../config/featureFlags.js";
 import { isVermontFinanceEligibleOffice } from "./vermontFinanceEligibleOffices.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -246,6 +247,9 @@ export async function loadVermontCandidateFinanceSummariesByCandidateElection(
   candidateRows: readonly VermontBallotLookupCandidateRow[],
   electionRows: readonly VermontBallotLookupElectionRow[]
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
+  if (!isVermontCampaignFinanceEnabled()) {
+    return new Map();
+  }
   const requests = buildVermontFinanceSummaryRequests(candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();

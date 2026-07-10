@@ -1,12 +1,32 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { loadLouisianaCandidateFinanceSummariesByCandidateElection } from "../../../src/pipeline/louisianaFinance/louisianaBallotLookupFinanceLoader.js";
+
+afterEach(() => {
+  vi.unstubAllEnvs();
+});
 
 const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
 
 describe("louisianaBallotLookupFinanceLoader", () => {
+  // Pins the loader-internal flag gate the Phase 3 registry relies on
+  // (adapters carry no enabled-checks; every loader must self-gate).
+  it("returns an empty map without querying when Louisiana campaign finance is disabled", async () => {
+    const query = vi.fn();
+
+    const result = await loadLouisianaCandidateFinanceSummariesByCandidateElection(
+      { query },
+      [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID }],
+      [{ election_id: ELECTION_ID, state: "LA", office_scope: "statewide", office_canonical_name: "Governor" }]
+    );
+
+    expect(result.size).toBe(0);
+    expect(query).not.toHaveBeenCalled();
+  });
+
   it("maps Louisiana finance tables into ballot lookup summaries without occupation data", async () => {
+    vi.stubEnv("LOUISIANA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
       .mockResolvedValueOnce({
@@ -179,6 +199,7 @@ describe("louisianaBallotLookupFinanceLoader", () => {
   });
 
   it("skips non-Louisiana and unsupported-office requests without querying", async () => {
+    vi.stubEnv("LOUISIANA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi.fn();
 
     const result = await loadLouisianaCandidateFinanceSummariesByCandidateElection(
@@ -192,6 +213,7 @@ describe("louisianaBallotLookupFinanceLoader", () => {
   });
 
   it("uses one read transaction when called with a pool", async () => {
+    vi.stubEnv("LOUISIANA_CAMPAIGN_FINANCE_ENABLED", "true");
     const client = {
       query: vi.fn().mockResolvedValue({ rows: [] }),
       release: vi.fn(),

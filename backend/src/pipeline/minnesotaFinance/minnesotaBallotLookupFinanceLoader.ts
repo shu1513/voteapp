@@ -1,5 +1,8 @@
 import type { Pool, PoolClient } from "pg";
 
+import { isMinnesotaCampaignFinanceEnabled } from "../../config/featureFlags.js";
+import { isMinnesotaFinanceEligibleOffice } from "./minnesotaFinanceEligibleOffices.js";
+
 import {
   addFinanceBreakdown,
   buildOutsideIndustrySupportExplanation,
@@ -27,10 +30,10 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 // The loader body below moved verbatim from ballotLookup.ts
 // (plan-ballot-lookup.md Phase 2); these aliases keep its signature and row
-// references byte-identical while the shapes live in the shared module. The
-// integration module is still loaded dynamically with missing-module
-// tolerance, exactly as before the move (unifying the optional-import
-// pattern is a Phase 3 decision) -- only the sibling import path changed.
+// references byte-identical while the shapes live in the shared module.
+// Phase 3 replaced the dynamic integration-module loading with the static
+// imports above -- flags and eligibility are plain sibling/repo modules, so
+// the missing-module tolerance guarded nothing.
 type CandidateRow = StateFinanceRequestCandidateRow;
 type ElectionRow = StateFinanceRequestElectionRow;
 type MinnesotaFinanceOutsideDonorEvidenceRow = StateFinanceOutsideDonorEvidenceRow;
@@ -41,41 +44,17 @@ type MinnesotaFinanceSummaryRow = StateFinanceSummaryRow;
 const GENERIC_MINNESOTA_CFB_SOURCE_URL =
   "https://register.cfb.mn.gov/reports-and-data/self-help/data-downloads/campaign-finance/";
 
-type MinnesotaFinanceIntegrationModule = {
-  isMinnesotaCampaignFinanceEnabled: () => boolean;
-  isMinnesotaFinanceEligibleOffice: (input: {
-    officeScope: string | null;
-    officeCanonicalName: string | null;
-  }) => boolean;
-};
-
-async function loadMinnesotaFinanceIntegrationModule(): Promise<MinnesotaFinanceIntegrationModule | null> {
-  try {
-    const [featureFlagsModule, eligibleOfficesModule] = await Promise.all([
-      import("../../config/featureFlags.js"),
-      import("./minnesotaFinanceEligibleOffices.js"),
-    ]);
-    return {
-      isMinnesotaCampaignFinanceEnabled: featureFlagsModule.isMinnesotaCampaignFinanceEnabled,
-      isMinnesotaFinanceEligibleOffice: eligibleOfficesModule.isMinnesotaFinanceEligibleOffice,
-    };
-  } catch {
-    return null;
-  }
-}
-
 export async function loadMinnesotaCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly CandidateRow[],
   electionRows: readonly ElectionRow[]
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
-  const minnesotaFinance = await loadMinnesotaFinanceIntegrationModule();
-  if (!minnesotaFinance || !minnesotaFinance.isMinnesotaCampaignFinanceEnabled()) {
+  if (!isMinnesotaCampaignFinanceEnabled()) {
     return new Map();
   }
 
   const requests = buildStateFinanceSummaryRequests("MN", candidateRows, electionRows, (row) =>
-    minnesotaFinance.isMinnesotaFinanceEligibleOffice(officeInputFromElectionRow(row))
+    isMinnesotaFinanceEligibleOffice(officeInputFromElectionRow(row))
   );
   if (requests.length === 0) {
     return new Map();

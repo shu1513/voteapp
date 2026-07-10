@@ -20,6 +20,13 @@ import {
   INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG,
 } from "../candidates/candidateRecordResearchAreaPolicy.js";
 import { loadKentuckyCandidateFinanceSummariesByCandidateElection } from "../kentuckyFinance/kentuckyBallotLookupFinanceLoader.js";
+import { loadAlaskaCandidateFinanceSummariesByCandidateElection } from "../alaskaFinance/alaskaCandidateFinanceBallotLookup.js";
+import { loadArizonaCandidateFinanceSummariesByCandidateElection } from "../arizonaFinance/arizonaFinanceBallotLookup.js";
+import { loadFloridaCandidateFinanceSummariesByCandidateElection } from "../floridaFinance/floridaFinanceBallotSummary.js";
+import { loadLouisianaCandidateFinanceSummariesByCandidateElection } from "../louisianaFinance/louisianaBallotLookupFinanceLoader.js";
+import { loadPennsylvaniaCandidateFinanceSummariesByCandidateElection } from "../pennsylvaniaFinance/pennsylvaniaBallotLookupFinance.js";
+import { loadUtahCandidateFinanceSummariesByCandidateElection } from "../utahFinance/utahBallotLookupFinanceLoader.js";
+import { loadVermontCandidateFinanceSummariesByCandidateElection } from "../vermontFinance/vermontBallotLookupFinanceLoader.js";
 import { loadFecCandidateFinanceSummariesByCandidateElection } from "../finance/fecBallotLookupFinanceLoader.js";
 import { loadMinnesotaCandidateFinanceSummariesByCandidateElection } from "../minnesotaFinance/minnesotaBallotLookupFinanceLoader.js";
 import { loadNewJerseyCandidateFinanceSummariesByCandidateElection } from "../newJerseyFinance/newJerseyBallotLookupFinanceLoader.js";
@@ -44,30 +51,12 @@ import { loadConnecticutCandidateFinanceSummariesByCandidateElection } from "../
 import { loadColoradoCandidateFinanceSummariesByCandidateElection } from "../coloradoFinance/coloradoBallotLookupFinanceLoader.js";
 import { loadCaliforniaCandidateFinanceSummariesByCandidateElection } from "../californiaFinance/californiaBallotLookupFinanceLoader.js";
 import {
-  isAlaskaCampaignFinanceEnabled,
-  isFloridaCampaignFinanceEnabled,
-  isVermontCampaignFinanceEnabled,
-  isLouisianaCampaignFinanceEnabled,
 } from "../../config/featureFlags.js";
 
 import {
   electionYear,
   candidateElectionKey,
   type BallotLookupFinanceSummary,
-} from "./ballotLookupFinanceShared.js";
-
-// Re-exported for the seven pre-Phase-2 loaders that still import these
-// types from here (the KY/AK/AZ/FL/LA/PA/VT ballot-lookup finance files);
-// they switch to ballotLookupFinanceShared.js when Phase 3 touches them.
-// New code should import from the shared module directly.
-export type {
-  BallotLookupFinanceBackingSummary,
-  BallotLookupFinanceBreakdown,
-  BallotLookupFinanceOutsideGroup,
-  BallotLookupFinanceOutsideIndustrySupportEvidence,
-  BallotLookupFinanceOutsideIndustrySupportSummary,
-  BallotLookupFinanceSupportingCommitteeIndustrySummary,
-  BallotLookupFinanceSummary,
 } from "./ballotLookupFinanceShared.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -509,16 +498,6 @@ function parseRepresentationPowerScore(value: string | number | null | undefined
   return Math.min(100, Math.max(0, parsed));
 }
 
-const OPTIONAL_FLORIDA_BALLOT_SUMMARY_MODULE_PATH = "../floridaFinance/floridaFinanceBallotSummary.js";
-
-type OptionalFloridaBallotSummaryModule = {
-  loadFloridaCandidateFinanceSummariesByCandidateElection: (
-    db: Queryable,
-    candidateRows: readonly CandidateRow[],
-    electionRows: readonly ElectionRow[]
-  ) => Promise<Map<string, BallotLookupFinanceSummary>>;
-};
-
 function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): BallotLookupDistrict {
   const id = "district_id" in row ? row.district_id : row.id;
   const name = "district_name" in row ? row.district_name : row.name;
@@ -705,417 +684,81 @@ async function loadHistoricalCompetitivenessByElection(
   );
 }
 
-async function loadUtahCandidateFinanceSummariesByCandidateElection(
-  db: Queryable,
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): Promise<Map<string, BallotLookupFinanceSummary>> {
-  if (!electionRows.some((row) => row.state.trim().toUpperCase() === "UT")) {
-    return new Map();
-  }
-
-  const modulePath = "../utahFinance/utahBallotLookupFinanceLoader.js";
-  try {
-    const module = (await import(modulePath)) as {
-      loadUtahCandidateFinanceSummariesByCandidateElection(input: {
-        db: Queryable;
-        candidateRows: readonly CandidateRow[];
-        electionRows: readonly ElectionRow[];
-      }): Promise<Map<string, BallotLookupFinanceSummary>>;
-    };
-    return await module.loadUtahCandidateFinanceSummariesByCandidateElection({ db, candidateRows, electionRows });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "";
-    if (
-      error &&
-      typeof error === "object" &&
-      "code" in error &&
-      ((error as { code?: unknown }).code === "ERR_MODULE_NOT_FOUND" ||
-        (error as { code?: unknown }).code === "MODULE_NOT_FOUND") &&
-      message.includes("utahBallotLookupFinanceLoader")
-    ) {
-      return new Map();
-    }
-    throw error;
-  }
-}
-
-type OptionalArizonaFinanceBallotLookupModule = {
-  loadArizonaCandidateFinanceSummariesByCandidateElection: (
+// Every ballot-lookup finance source, in the order the old hand-written
+// aggregator awaited them. Each loader gates itself on its own feature flag
+// and returns an empty map when disabled, so the registry carries no
+// enabled-checks. Order is inherited, not semantic: since the federal-office
+// gate (#214), no two sources can produce a summary for the same
+// candidate/election key. Adding a state = write the family-folder loader
+// and add one entry here.
+type StateFinanceLookupAdapter = {
+  state: string;
+  load: (
     db: Queryable,
     candidateRows: readonly CandidateRow[],
     electionRows: readonly ElectionRow[]
   ) => Promise<Map<string, BallotLookupFinanceSummary>>;
 };
 
-function readOptionalBooleanEnv(name: string, fallback: boolean): boolean {
-  const raw = process.env[name];
-  if (!raw || raw.trim().length === 0) {
-    return fallback;
-  }
-
-  const normalized = raw.trim().toLowerCase();
-  if (["1", "true", "yes", "y", "on"].includes(normalized)) {
-    return true;
-  }
-  if (["0", "false", "no", "n", "off"].includes(normalized)) {
-    return false;
-  }
-
-  throw new Error(`Invalid boolean env ${name}: ${raw}`);
-}
-
-async function loadArizonaCandidateFinanceSummariesByCandidateElection(
-  db: Queryable,
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): Promise<Map<string, BallotLookupFinanceSummary>> {
-  if (!readOptionalBooleanEnv("ARIZONA_CAMPAIGN_FINANCE_ENABLED", false)) {
-    return new Map();
-  }
-
-  const modulePath = "../arizonaFinance/arizonaFinanceBallotLookup.js";
-  const module = (await import(modulePath)) as OptionalArizonaFinanceBallotLookupModule;
-  return module.loadArizonaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-}
-
-type OptionalStateFinanceSummaryLoader = (input: {
-  db: Queryable;
-  candidateRows: readonly CandidateRow[];
-  electionRows: readonly ElectionRow[];
-}) => Promise<Map<string, BallotLookupFinanceSummary>>;
-
-const OPTIONAL_PENNSYLVANIA_BALLOT_LOOKUP_FINANCE_MODULE =
-  "../pennsylvaniaFinance/pennsylvaniaBallotLookupFinance.js";
-
-function isMissingOptionalModule(error: unknown, moduleName: string): boolean {
-  const value = error as { code?: unknown; message?: unknown };
-  return value.code === "ERR_MODULE_NOT_FOUND" && typeof value.message === "string" && value.message.includes(moduleName);
-}
-
-async function loadOptionalPennsylvaniaCandidateFinanceSummariesByCandidateElection(
-  db: Queryable,
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): Promise<Map<string, BallotLookupFinanceSummary>> {
-  if (!electionRows.some((row) => row.state.trim().toUpperCase() === "PA")) {
-    return new Map();
-  }
-
-  try {
-    const modulePath = OPTIONAL_PENNSYLVANIA_BALLOT_LOOKUP_FINANCE_MODULE;
-    const module = (await import(modulePath)) as {
-      loadPennsylvaniaCandidateFinanceSummariesByCandidateElection?: OptionalStateFinanceSummaryLoader;
-    };
-    const loader = module.loadPennsylvaniaCandidateFinanceSummariesByCandidateElection;
-    if (typeof loader !== "function") {
-      throw new Error("Pennsylvania ballot finance module is missing its summary loader export");
-    }
-    return await loader({ db, candidateRows, electionRows });
-  } catch (error) {
-    if (isMissingOptionalModule(error, "pennsylvaniaBallotLookupFinance")) {
-      return new Map();
-    }
-    throw error;
-  }
-}
-
-const VERMONT_BALLOT_LOOKUP_FINANCE_LOADER_PATH = "../vermontFinance/vermontBallotLookupFinanceLoader.js";
-const LOUISIANA_BALLOT_LOOKUP_FINANCE_LOADER_PATH = "../louisianaFinance/louisianaBallotLookupFinanceLoader.js";
-
-type VermontBallotLookupFinanceLoaderModule = {
-  loadVermontCandidateFinanceSummariesByCandidateElection: (
-    db: Queryable,
-    candidateRows: readonly CandidateRow[],
-    electionRows: readonly ElectionRow[]
-  ) => Promise<Map<string, BallotLookupFinanceSummary>>;
-};
-
-type LouisianaBallotLookupFinanceLoaderModule = {
-  loadLouisianaCandidateFinanceSummariesByCandidateElection: (
-    db: Queryable,
-    candidateRows: readonly CandidateRow[],
-    electionRows: readonly ElectionRow[]
-  ) => Promise<Map<string, BallotLookupFinanceSummary>>;
-};
-
-type AlaskaCandidateFinanceBallotLookupModule = {
-  loadAlaskaCandidateFinanceSummariesByCandidateElection: (
-    db: Queryable,
-    candidateRows: readonly CandidateRow[],
-    electionRows: readonly ElectionRow[]
-  ) => Promise<Map<string, BallotLookupFinanceSummary>>;
-};
-
-const ALASKA_CANDIDATE_FINANCE_BALLOT_LOOKUP_MODULE = "../alaskaFinance/alaskaCandidateFinanceBallotLookup.js";
-
-function missingModuleSpecifier(error: Error): string | null {
-  const match =
-    error.message.match(/Cannot find module '([^']+)'/) ?? error.message.match(/Cannot find package '([^']+)'/);
-  return match?.[1] ?? null;
-}
-
-function isMissingOptionalCampaignFinanceModule(error: unknown, modulePath: string): boolean {
-  if (!(error instanceof Error)) {
-    return false;
-  }
-  const code = "code" in error ? String(error.code) : "";
-  if (code !== "ERR_MODULE_NOT_FOUND" && code !== "MODULE_NOT_FOUND") {
-    return false;
-  }
-  const missingSpecifier = missingModuleSpecifier(error);
-  if (!missingSpecifier) {
-    return false;
-  }
-  const expectedFileName = modulePath.split("/").pop() ?? modulePath;
-  return (
-    missingSpecifier === modulePath ||
-    missingSpecifier === expectedFileName ||
-    missingSpecifier.endsWith(`/${modulePath}`) ||
-    missingSpecifier.endsWith(`/${expectedFileName}`)
-  );
-}
-
-async function loadVermontCandidateFinanceSummariesByCandidateElection(
-  db: Queryable,
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): Promise<Map<string, BallotLookupFinanceSummary>> {
-  if (!isVermontCampaignFinanceEnabled()) {
-    return new Map();
-  }
-
-  try {
-    const loader = (await import(VERMONT_BALLOT_LOOKUP_FINANCE_LOADER_PATH)) as VermontBallotLookupFinanceLoaderModule;
-    return await loader.loadVermontCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  } catch (error) {
-    if (isMissingOptionalCampaignFinanceModule(error, VERMONT_BALLOT_LOOKUP_FINANCE_LOADER_PATH)) {
-      console.warn("Vermont campaign finance ballot lookup loader is unavailable; skipping Vermont finance summaries");
-      return new Map();
-    }
-    throw error;
-  }
-}
-
-async function loadLouisianaCandidateFinanceSummariesByCandidateElection(
-  db: Queryable,
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): Promise<Map<string, BallotLookupFinanceSummary>> {
-  if (!isLouisianaCampaignFinanceEnabled()) {
-    return new Map();
-  }
-
-  try {
-    const loader = (await import(LOUISIANA_BALLOT_LOOKUP_FINANCE_LOADER_PATH)) as LouisianaBallotLookupFinanceLoaderModule;
-    return await loader.loadLouisianaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  } catch (error) {
-    if (isMissingOptionalCampaignFinanceModule(error, LOUISIANA_BALLOT_LOOKUP_FINANCE_LOADER_PATH)) {
-      console.warn("Louisiana campaign finance ballot lookup loader is unavailable; skipping Louisiana finance summaries");
-      return new Map();
-    }
-    throw error;
-  }
-}
-
-async function loadOptionalAlaskaCandidateFinanceSummariesByCandidateElection(
-  db: Queryable,
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): Promise<Map<string, BallotLookupFinanceSummary>> {
-  if (!isAlaskaCampaignFinanceEnabled()) {
-    return new Map();
-  }
-
-  try {
-    const module = (await import(ALASKA_CANDIDATE_FINANCE_BALLOT_LOOKUP_MODULE)) as AlaskaCandidateFinanceBallotLookupModule;
-    return module.loadAlaskaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  } catch (error) {
-    if (isMissingOptionalCampaignFinanceModule(error, ALASKA_CANDIDATE_FINANCE_BALLOT_LOOKUP_MODULE)) {
-      console.warn("Alaska campaign finance adapter is unavailable; skipping Alaska finance summaries");
-      return new Map();
-    }
-    throw error;
-  }
-}
-
-function isMissingOptionalFloridaModuleError(error: unknown): boolean {
-  const code = typeof error === "object" && error !== null && "code" in error ? String(error.code) : "";
-  const message = error instanceof Error ? error.message : String(error);
-  return (
-    (code === "ERR_MODULE_NOT_FOUND" || code === "MODULE_NOT_FOUND") &&
-    message.includes("floridaFinanceBallotSummary.js")
-  );
-}
-
-async function loadOptionalFloridaCandidateFinanceSummariesByCandidateElection(
-  db: Queryable,
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): Promise<Map<string, BallotLookupFinanceSummary>> {
-  if (!isFloridaCampaignFinanceEnabled()) {
-    return new Map();
-  }
-
-  try {
-    const module = (await import(OPTIONAL_FLORIDA_BALLOT_SUMMARY_MODULE_PATH)) as OptionalFloridaBallotSummaryModule;
-    return module.loadFloridaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  } catch (error) {
-    if (isMissingOptionalFloridaModuleError(error)) {
-      console.warn("Florida campaign finance module is enabled but unavailable; skipping Florida finance summaries");
-      return new Map();
-    }
-    throw error;
-  }
-}
+const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
+  { state: "WI", load: loadWisconsinCandidateFinanceSummariesByCandidateElection },
+  { state: "MA", load: loadMassachusettsCandidateFinanceSummariesByCandidateElection },
+  { state: "VT", load: loadVermontCandidateFinanceSummariesByCandidateElection },
+  { state: "LA", load: loadLouisianaCandidateFinanceSummariesByCandidateElection },
+  { state: "MD", load: loadMarylandCandidateFinanceSummariesByCandidateElection },
+  { state: "ME", load: loadMaineCandidateFinanceSummariesByCandidateElection },
+  { state: "AK", load: loadAlaskaCandidateFinanceSummariesByCandidateElection },
+  { state: "MI", load: loadMichiganCandidateFinanceSummariesByCandidateElection },
+  { state: "IL", load: loadIllinoisCandidateFinanceSummariesByCandidateElection },
+  { state: "MN", load: loadMinnesotaCandidateFinanceSummariesByCandidateElection },
+  { state: "OR", load: loadOregonCandidateFinanceSummariesByCandidateElection },
+  {
+    state: "PA",
+    load: (db, candidateRows, electionRows) =>
+      loadPennsylvaniaCandidateFinanceSummariesByCandidateElection({ db, candidateRows, electionRows }),
+  },
+  { state: "WA", load: loadWashingtonCandidateFinanceSummariesByCandidateElection },
+  { state: "HI", load: loadHawaiiCandidateFinanceSummariesByCandidateElection },
+  { state: "DC", load: loadDistrictOfColumbiaCandidateFinanceSummariesByCandidateElection },
+  { state: "KY", load: loadKentuckyCandidateFinanceSummariesByCandidateElection },
+  { state: "FL", load: loadFloridaCandidateFinanceSummariesByCandidateElection },
+  { state: "VA", load: loadVirginiaCandidateFinanceSummariesByCandidateElection },
+  { state: "TN", load: loadTennesseeCandidateFinanceSummariesByCandidateElection },
+  { state: "TX", load: loadTexasCandidateFinanceSummariesByCandidateElection },
+  { state: "AZ", load: loadArizonaCandidateFinanceSummariesByCandidateElection },
+  {
+    state: "UT",
+    load: (db, candidateRows, electionRows) =>
+      loadUtahCandidateFinanceSummariesByCandidateElection({ db, candidateRows, electionRows }),
+  },
+  { state: "IN", load: loadIndianaCandidateFinanceSummariesByCandidateElection },
+  { state: "NE", load: loadNebraskaCandidateFinanceSummariesByCandidateElection },
+  { state: "OK", load: loadOklahomaCandidateFinanceSummariesByCandidateElection },
+  { state: "NJ", load: loadNewJerseyCandidateFinanceSummariesByCandidateElection },
+  { state: "NM", load: loadNewMexicoCandidateFinanceSummariesByCandidateElection },
+  { state: "CT", load: loadConnecticutCandidateFinanceSummariesByCandidateElection },
+  { state: "CO", load: loadColoradoCandidateFinanceSummariesByCandidateElection },
+  { state: "CA", load: loadCaliforniaCandidateFinanceSummariesByCandidateElection },
+];
 
 async function loadCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly CandidateRow[],
   electionRows: readonly ElectionRow[]
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
-  const wisconsinSummaries = await loadWisconsinCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const massachusettsSummaries = await loadMassachusettsCandidateFinanceSummariesByCandidateElection(
-    db,
-    candidateRows,
-    electionRows
-  );
-  const vermontSummaries = await loadVermontCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const louisianaSummaries = await loadLouisianaCandidateFinanceSummariesByCandidateElection(
-    db,
-    candidateRows,
-    electionRows
-  );
-  const marylandSummaries = await loadMarylandCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const maineSummaries = await loadMaineCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const alaskaSummaries = await loadOptionalAlaskaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const michiganSummaries = await loadMichiganCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const illinoisSummaries = await loadIllinoisCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const minnesotaSummaries = await loadMinnesotaCandidateFinanceSummariesByCandidateElection(
-    db,
-    candidateRows,
-    electionRows
-  );
-  const oregonSummaries = await loadOregonCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const pennsylvaniaSummaries = await loadOptionalPennsylvaniaCandidateFinanceSummariesByCandidateElection(
-    db,
-    candidateRows,
-    electionRows
-  );
-  const washingtonSummaries = await loadWashingtonCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const hawaiiSummaries = await loadHawaiiCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const districtOfColumbiaSummaries = await loadDistrictOfColumbiaCandidateFinanceSummariesByCandidateElection(
-    db,
-    candidateRows,
-    electionRows
-  );
-  const kentuckySummaries = await loadKentuckyCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const floridaSummaries = await loadOptionalFloridaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const virginiaSummaries = await loadVirginiaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const tennesseeSummaries = await loadTennesseeCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const texasSummaries = await loadTexasCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const arizonaSummaries = await loadArizonaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const utahSummaries = await loadUtahCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const indianaSummaries = await loadIndianaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const nebraskaSummaries = await loadNebraskaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const oklahomaSummaries = await loadOklahomaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const newJerseySummaries = await loadNewJerseyCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const newMexicoSummaries = await loadNewMexicoCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const connecticutSummaries = await loadConnecticutCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const coloradoSummaries = await loadColoradoCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const californiaSummaries = await loadCaliforniaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  const fecSummaries = await loadFecCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-
-  const merged = new Map(wisconsinSummaries);
-  for (const [key, summary] of massachusettsSummaries) {
-    merged.set(key, summary);
+  const merged = new Map<string, BallotLookupFinanceSummary>();
+  // Sequential on purpose: parallelizing changes query interleaving for no
+  // practical win (only one state is non-empty per election) and would break
+  // the ordered query mocks across the test suite.
+  for (const adapter of STATE_FINANCE_LOOKUP_ADAPTERS) {
+    for (const [key, summary] of await adapter.load(db, candidateRows, electionRows)) {
+      merged.set(key, summary);
+    }
   }
-  for (const [key, summary] of vermontSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of louisianaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of marylandSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of maineSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of alaskaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of michiganSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of illinoisSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of minnesotaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of oregonSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of pennsylvaniaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of washingtonSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of hawaiiSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of districtOfColumbiaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of kentuckySummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of floridaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of virginiaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of tennesseeSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of texasSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of arizonaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of utahSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of indianaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of nebraskaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of oklahomaSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of newJerseySummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of newMexicoSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of connecticutSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of coloradoSummaries) {
-    merged.set(key, summary);
-  }
-  for (const [key, summary] of californiaSummaries) {
-    merged.set(key, summary);
-  }
-  // Federal FEC summaries intentionally win when both sources exist for the same candidate/election.
-  for (const [key, summary] of fecSummaries) {
+  // Federal FEC summaries intentionally win when both sources exist for the
+  // same candidate/election (unreachable since the federal-office gate, and
+  // pinned by the no-leak regression tests).
+  for (const [key, summary] of await loadFecCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows)) {
     merged.set(key, summary);
   }
   return merged;

@@ -1,4 +1,5 @@
 import type { Pool, PoolClient } from "pg";
+import { isLouisianaCampaignFinanceEnabled } from "../../config/featureFlags.js";
 
 import type {
   BallotLookupFinanceBreakdown,
@@ -6,7 +7,7 @@ import type {
   BallotLookupFinanceOutsideIndustrySupportEvidence,
   BallotLookupFinanceOutsideIndustrySupportSummary,
   BallotLookupFinanceSummary,
-} from "../address/ballotLookup.js";
+} from "../address/ballotLookupFinanceShared.js";
 import { isLouisianaFinanceEligibleOffice } from "./louisianaFinanceEligibleOffices.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -757,6 +758,9 @@ export async function loadLouisianaCandidateFinanceSummariesByCandidateElection(
   candidateRows: readonly LouisianaBallotLookupCandidateRow[],
   electionRows: readonly LouisianaBallotLookupElectionRow[]
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
+  if (!isLouisianaCampaignFinanceEnabled()) {
+    return new Map();
+  }
   const requests = buildLouisianaFinanceSummaryRequests(candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();

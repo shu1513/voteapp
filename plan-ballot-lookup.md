@@ -228,6 +228,35 @@ would create runtime import cycles back into the file that imports them.
 - Gate per PR: full backend suite green with zero test edits, plus
   `git diff --stat` sanity — ballotLookup.ts only shrinks.
 
+## Implementation record (all phases landed)
+
+- **Phase 0** (#210/#214): redefined by the federal-finance leak; the gate +
+  no-leak tests shipped together.
+- **Phase 1** (#216): as planned, with corrections — 22 builder copies (not
+  ~20), and review added stateCode normalization inside the generic builder.
+- **Phase 2** (#219): one structural addition the plan missed — 12 states
+  aliased Texas's row structs and Tennessee aliased Virginia's, so a prep
+  commit promoted five neutral `StateFinance*Row` shapes into the shared
+  module to keep family folders from importing each other. One deviation:
+  the plan said *move* the MD/ME eligible-office functions, but the family
+  folders already held byte-equivalent files, so ballotLookup's duplicates
+  were deleted instead — MD/ME ballot-lookup eligibility now shares one
+  source of truth with the sync side.
+- **Phase 3**: the registry carries no `isEnabled` field (deviation from the
+  sketch below) — every loader gates itself on its own flag, with
+  Vermont/Louisiana gaining their internal gates first so all 30 are
+  uniform. The optional-import investigation found the pattern arrived in
+  the Vermont finance commit with no stated rationale and was copy-pasted;
+  all targets are plain repo modules, so everything unified on static
+  imports and the tolerance machinery (four helper predicates, the module
+  types, path consts, Minnesota's dynamic integration module, and the
+  `readOptionalBooleanEnv` duplicate) was deleted. Utah/Pennsylvania keep
+  their object-parameter loader signatures behind one-line registry
+  adapters; Utah's election-row fields became optional (the old wrapper hid
+  the mismatch behind an `as` cast). ballotLookup.ts landed at ~1.4k lines,
+  under the 2.5–3k estimate, with zero campaign-finance flag references and
+  zero dynamic imports.
+
 ## Phase 3 — registry aggregator + import unification
 
 - A typed list:
