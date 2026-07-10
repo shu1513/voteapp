@@ -1,5 +1,6 @@
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
 import type { ElectionContestFamily } from "../../types/election.js";
+import { PLAIN_LANGUAGE_STYLE_RULES } from "./promptWritingStyle.js";
 
 export type CandidateRecordDiscoveryPromptInput = {
   candidateDisplayName: string;
@@ -85,6 +86,7 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
     "- Use one row per concrete record; do not duplicate the same source/event.",
     "- Keep descriptions neutral and factual.",
     "- For damaging claims, require official/legal sources or reputable news and do not state allegations as proven facts.",
+    ...PLAIN_LANGUAGE_STYLE_RULES,
     "- return JSON only (no prose, no markdown).",
     ...(reviewFeedbackLines.length > 0
       ? [

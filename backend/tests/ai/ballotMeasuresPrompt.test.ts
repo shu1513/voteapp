@@ -1,8 +1,26 @@
 import { describe, expect, it } from "vitest";
 
 import { buildBallotMeasuresPrompt } from "../../src/ai/providers/ballotMeasuresPrompt.js";
+import { PLAIN_LANGUAGE_STYLE_RULES } from "../../src/ai/providers/promptWritingStyle.js";
 
 describe("buildBallotMeasuresPrompt", () => {
+  it("includes the plain-language style rules", () => {
+    const prompt = buildBallotMeasuresPrompt({
+      districtName: "Los Angeles County, California",
+      districtType: "county",
+      state: "CA",
+      electionDate: "2026-06-02",
+      officialBallotTitle: "Measure H",
+      seedUrls: [],
+      allowedResearchAreaSlugs: ["healthcare_affordability"],
+    });
+
+    for (const rule of PLAIN_LANGUAGE_STYLE_RULES) {
+      expect(prompt).toContain(rule);
+    }
+    expect(prompt).toContain("6th-grade reader");
+  });
+
   it("requests binary YES-outcome research-area tags from allowed slugs", () => {
     const prompt = buildBallotMeasuresPrompt({
       districtName: "Los Angeles County, California",

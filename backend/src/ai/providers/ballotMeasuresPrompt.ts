@@ -1,3 +1,5 @@
+import { PLAIN_LANGUAGE_STYLE_RULES } from "./promptWritingStyle.js";
+
 export type BallotMeasurePromptInput = {
   districtName: string;
   districtType: string;
@@ -60,6 +62,7 @@ export function buildBallotMeasuresPrompt(input: BallotMeasurePromptInput): stri
     "- research_area_tags must use only allowed research_area_slug values.",
     "- Return an empty research_area_tags array only if no allowed area clearly applies.",
     "- sources must include the official/full-text URL and the best supporting URLs used for this research, up to 20 unique URLs.",
+    ...PLAIN_LANGUAGE_STYLE_RULES,
     "- return JSON only (no prose, no markdown).",
     "",
     "Allowed research_area_slug values:",
