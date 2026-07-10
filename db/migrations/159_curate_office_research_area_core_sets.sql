@@ -108,28 +108,25 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
 -- a silently incomplete set (offices being linked for the first time), with no
 -- error either way.
 --
--- Bootstrap is detected globally, not per office: only when NO curated office
--- has any link yet (a fresh migrations-only database, where db:migrate runs
--- before db:seed:research-areas per DB_DEPLOYMENT.md and research_areas is
--- legitimately still incomplete) is the check skipped — the reconcile's insert
--- is then healed by the seed layer moments later. If even one curated office
--- has links, this is a live database and EVERY curated slug must resolve, so a
--- partially-installed database cannot hand an unlinked office an incomplete
--- area set.
+-- Bootstrap (a fresh migrations-only database, where db:migrate runs before
+-- any seed per DB_DEPLOYMENT.md) is detected by the absence of the Governor
+-- office row: Governor is created only by elections:offices:seed, never by a
+-- migration. Counting curated-office links does NOT work as a bootstrap
+-- signal — migrations 075 (judges) and 077 (District Attorney) create both
+-- offices and links for curated offices long before the seeds run, so a
+-- fresh replay always has some curated links. During bootstrap the check is
+-- skipped and the reconcile's partial insert is healed by the seed layer
+-- moments later. On a seeded database EVERY curated slug must resolve, so a
+-- live database cannot hand an unlinked office an incomplete area set.
 DO $$
 DECLARE
-    curated_link_count bigint;
     missing_slugs text;
 BEGIN
-    SELECT COUNT(*)
-    INTO curated_link_count
-    FROM public.office_research_areas ora
-    JOIN public.offices o ON o.id = ora.office_id
-    JOIN curated_office_core_areas c
-      ON c.scope = o.scope AND c.canonical_name = o.canonical_name;
-
-    IF curated_link_count = 0 THEN
-        RETURN; -- bootstrap: nothing the reconcile can damage or half-fill persistently
+    IF NOT EXISTS (
+        SELECT 1 FROM public.offices
+        WHERE scope = 'statewide' AND canonical_name = 'Governor'
+    ) THEN
+        RETURN; -- bootstrap: seed layer produces the authoritative state right after
     END IF;
 
     SELECT string_agg(DISTINCT s.slug, ', ' ORDER BY s.slug)

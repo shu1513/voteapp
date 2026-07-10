@@ -184,6 +184,15 @@ From `backend/` (non-prod DB/Redis only):
 - Migration runner enforces checksum consistency for already-applied files.
 - Do not edit historical migration files after they are applied in shared environments.
 - Add new migrations as new numbered files (e.g., `029_...sql`).
+- Exception to the no-edit rule: a bug in an applied migration's own execution
+  path (it throws on a fresh, migrations-only database) can ONLY be fixed by
+  editing the file — a forward-only migration never runs because the broken
+  file throws first during fresh replay. Migrations 158/159 were repaired this
+  way (they assumed seed-created offices existed at migration time). After
+  pulling such a fix, databases that already applied the old file content will
+  fail `db:migrate` with "Checksum mismatch for applied migration(s)"; if the
+  edited migration is idempotent, re-register it:
+  `psql "$DATABASE_URL" -c "DELETE FROM schema_migrations WHERE filename IN ('<file1>.sql','<file2>.sql');" && npm run db:migrate`
 - Ballot-measure detail rows are intentionally constrained to 0-or-1 per `elections.id` (`UNIQUE (election_id)`), as enforced by migration `035_propositions_unique_election_id.sql`.
 - Migration `087_prevent_office_alias_reassignment.sql` prevents changing `office_title_aliases.office_id`.
   Future migrations that intentionally rehome aliases must handle that explicitly instead of using `ON CONFLICT ... DO UPDATE SET office_id`.
