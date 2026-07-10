@@ -12,16 +12,18 @@ BEGIN;
 -- office_research_areas_v1.sql), which carries its own Public Administrator
 -- block. The copy below only covers already-seeded databases so the office is
 -- usable immediately without re-running seeds; on a fresh migrations-only
--- database it inserts zero rows by design and the seed layer fills the areas
--- afterward. The guard still fails loudly if the County Treasurer office row
--- itself is missing.
+-- database County Treasurer does not exist yet (offices are created by
+-- elections:offices:seed, which DB_DEPLOYMENT.md runs AFTER db:migrate), the
+-- mirror inserts zero rows by design, and the seed layer fills the areas
+-- afterward. An exception here would brick every fresh install, so the
+-- missing-Treasurer case is a NOTICE, not an error.
 DO $$
 BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM public.offices
     WHERE scope = 'county' AND canonical_name = 'County Treasurer'
   ) THEN
-    RAISE EXCEPTION 'migration 158: County Treasurer office not found; cannot seed Public Administrator research areas';
+    RAISE NOTICE 'migration 158: County Treasurer office not present (fresh install); Public Administrator research areas will come from the seed layer';
   END IF;
 END
 $$;

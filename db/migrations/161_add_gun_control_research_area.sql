@@ -18,8 +18,9 @@
 --
 -- The seed layer (db/seeds/research_areas_v1.sql +
 -- db/seeds/office_research_areas_v1.sql, including its curated reconcile
--- tail) is updated in the same change; this migration applies the identical
--- state to already-migrated databases.
+-- tail) is updated in the same change and remains authoritative for links;
+-- this migration applies the identical state to already-seeded databases so
+-- the area is usable without re-running seeds.
 
 BEGIN;
 
@@ -35,87 +36,61 @@ DO UPDATE SET
   description = EXCLUDED.description,
   updated_at = now();
 
+-- Best-effort link copy for already-seeded databases. On a fresh
+-- migrations-only database most of these offices do not exist yet (offices
+-- are created by elections:offices:seed, which DB_DEPLOYMENT.md runs AFTER
+-- db:migrate; only a few, like District Attorney from migration 077, are
+-- migration-created), so unresolved pairs are expected there and must not
+-- raise — an exception would brick every fresh install before the seeds
+-- could run. The seed layer produces the complete link set either way; the
+-- NOTICE keeps partial resolution visible on live databases.
 DO $$
 DECLARE
   expected_pair_count integer;
-  resolved_pair_count integer;
+  inserted_or_existing_count integer;
 BEGIN
-  WITH desired(scope, canonical_name) AS (
-    VALUES
-      ('presidential', 'President of the United States'),
-      ('presidential', 'Vice President of the United States'),
-      ('statewide', 'United States Senator'),
-      ('us_house', 'United States Representative'),
-      ('statewide', 'Governor'),
-      ('statewide', 'Lieutenant Governor'),
-      ('statewide', 'Attorney General'),
-      ('statewide', 'State Level Judge'),
-      ('state_upper', 'State Senator'),
-      ('state_lower', 'State Lower Chamber Legislator'),
-      ('county', 'Sheriff'),
-      ('county', 'District Attorney')
-  )
-  SELECT COUNT(*)
-  INTO expected_pair_count
-  FROM desired;
+  CREATE TEMP TABLE desired_gun_control_offices (scope text, canonical_name text)
+  ON COMMIT DROP;
 
-  -- Fail fast if any office row or the research area is missing: a silent
-  -- partial link set would surface later as inexplicable labeling gaps.
-  WITH desired(scope, canonical_name) AS (
-    VALUES
-      ('presidential', 'President of the United States'),
-      ('presidential', 'Vice President of the United States'),
-      ('statewide', 'United States Senator'),
-      ('us_house', 'United States Representative'),
-      ('statewide', 'Governor'),
-      ('statewide', 'Lieutenant Governor'),
-      ('statewide', 'Attorney General'),
-      ('statewide', 'State Level Judge'),
-      ('state_upper', 'State Senator'),
-      ('state_lower', 'State Lower Chamber Legislator'),
-      ('county', 'Sheriff'),
-      ('county', 'District Attorney')
-  )
-  SELECT COUNT(*)
-  INTO resolved_pair_count
-  FROM desired
-  JOIN public.offices office
-    ON office.scope = desired.scope
-   AND office.canonical_name = desired.canonical_name
-  JOIN public.research_areas area
-    ON area.slug = 'gun_control';
+  INSERT INTO desired_gun_control_offices (scope, canonical_name) VALUES
+    ('presidential', 'President of the United States'),
+    ('presidential', 'Vice President of the United States'),
+    ('statewide', 'United States Senator'),
+    ('us_house', 'United States Representative'),
+    ('statewide', 'Governor'),
+    ('statewide', 'Lieutenant Governor'),
+    ('statewide', 'Attorney General'),
+    ('statewide', 'State Level Judge'),
+    ('state_upper', 'State Senator'),
+    ('state_lower', 'State Lower Chamber Legislator'),
+    ('county', 'Sheriff'),
+    ('county', 'District Attorney');
 
-  IF resolved_pair_count <> expected_pair_count THEN
-    RAISE EXCEPTION
-      'Expected % office/gun_control pairs to resolve, found %',
-      expected_pair_count,
-      resolved_pair_count;
-  END IF;
+  SELECT COUNT(*) INTO expected_pair_count FROM desired_gun_control_offices;
 
-  WITH desired(scope, canonical_name) AS (
-    VALUES
-      ('presidential', 'President of the United States'),
-      ('presidential', 'Vice President of the United States'),
-      ('statewide', 'United States Senator'),
-      ('us_house', 'United States Representative'),
-      ('statewide', 'Governor'),
-      ('statewide', 'Lieutenant Governor'),
-      ('statewide', 'Attorney General'),
-      ('statewide', 'State Level Judge'),
-      ('state_upper', 'State Senator'),
-      ('state_lower', 'State Lower Chamber Legislator'),
-      ('county', 'Sheriff'),
-      ('county', 'District Attorney')
-  )
   INSERT INTO public.office_research_areas (office_id, research_area_id)
   SELECT office.id, area.id
-  FROM desired
+  FROM desired_gun_control_offices desired
   JOIN public.offices office
     ON office.scope = desired.scope
    AND office.canonical_name = desired.canonical_name
   JOIN public.research_areas area
     ON area.slug = 'gun_control'
   ON CONFLICT (office_id, research_area_id) DO NOTHING;
+
+  SELECT COUNT(*)
+  INTO inserted_or_existing_count
+  FROM desired_gun_control_offices desired
+  JOIN public.offices office
+    ON office.scope = desired.scope
+   AND office.canonical_name = desired.canonical_name;
+
+  IF inserted_or_existing_count <> expected_pair_count THEN
+    RAISE NOTICE
+      'migration 161: % of % gun_control office links resolved; the rest are created by the seed layer (fresh install path)',
+      inserted_or_existing_count,
+      expected_pair_count;
+  END IF;
 END
 $$;
 
