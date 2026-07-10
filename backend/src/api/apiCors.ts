@@ -1,5 +1,10 @@
 export const CORS_ALLOW_METHODS = "GET, POST, PUT, DELETE, OPTIONS";
-export const CORS_ALLOW_HEADERS = "content-type";
+// authorization / x-voteapp-client: the mobile session transport. Native
+// requests skip CORS entirely; this only keeps browser-based dev tooling from
+// failing preflight. Browser-originated requests never receive a session id
+// regardless (the mobile transport requires the absence of browser
+// provenance), so allowing these headers grants nothing.
+export const CORS_ALLOW_HEADERS = "authorization, content-type, x-voteapp-client";
 export const CORS_MAX_AGE_SECONDS = "600";
 
 export type HeaderRecord = Record<string, string | string[] | undefined>;

@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { AUTH_SESSION_COOKIE_NAME } from "../../src/auth/authCookies.js";
+import { hashSessionId } from "../../src/auth/authPrimitives.js";
 import {
   assertTrustedUserIdHeaderConfigIsSafe,
   createSessionAwareTrustedUserIdResolver,
@@ -125,6 +126,69 @@ describe("session-aware authenticated user resolver", () => {
 
     expect(userId).toBeNull();
     expect(trustedUserIdResolver).toHaveBeenCalled();
+  });
+
+  it("authenticates from an Authorization: Bearer session id (mobile transport)", async () => {
+    const redis = {
+      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999:1"),
+    };
+    const trustedUserIdResolver = vi.fn().mockReturnValue(null);
+    const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+      redis,
+      trustedUserIdResolver,
+      lookupUserSessionEpoch: vi.fn().mockResolvedValue(1),
+    });
+
+    const userId = await resolveAuthenticatedUserId({
+      headers: { authorization: "Bearer session-abc" },
+    });
+
+    expect(userId).toBe("99999999-9999-4999-8999-999999999999");
+    expect(redis.get).toHaveBeenCalledOnce();
+  });
+
+  it("prefers the Bearer header over the session cookie when both are present", async () => {
+    // Mobile requests can carry both: the app attaches its Bearer session
+    // while the platform cookie jar replays whatever cookie it holds. The
+    // explicit Bearer credential must win, or a stale jar cookie would
+    // shadow — and 401 — a perfectly valid session.
+    const redis = {
+      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999:1"),
+    };
+    const trustedUserIdResolver = vi.fn().mockReturnValue(null);
+    const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+      redis,
+      trustedUserIdResolver,
+    });
+
+    await resolveAuthenticatedUserId({
+      headers: {
+        cookie: `${AUTH_SESSION_COOKIE_NAME}=cookie-session`,
+        authorization: "Bearer bearer-session",
+      },
+    });
+
+    expect(redis.get).toHaveBeenCalledOnce();
+    expect(String(redis.get.mock.calls[0]?.[0])).toContain(hashSessionId("bearer-session"));
+    expect(String(redis.get.mock.calls[0]?.[0])).not.toContain(hashSessionId("cookie-session"));
+  });
+
+  it("applies the same epoch revocation to bearer sessions", async () => {
+    const redis = {
+      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999:1"),
+    };
+    const trustedUserIdResolver = vi.fn().mockReturnValue(null);
+    const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+      redis,
+      trustedUserIdResolver,
+      lookupUserSessionEpoch: vi.fn().mockResolvedValue(2),
+    });
+
+    const userId = await resolveAuthenticatedUserId({
+      headers: { authorization: "Bearer session-abc" },
+    });
+
+    expect(userId).toBeNull();
   });
 
   it("falls back to the trusted header when there is no session cookie", async () => {

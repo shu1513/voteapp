@@ -1,3 +1,4 @@
+import { parseBearerAuthorizationValue } from "../auth/authBearer.js";
 import { AUTH_SESSION_COOKIE_NAME, parseCookieHeaderValue } from "../auth/authCookies.js";
 import { resolveAuthSession, type AuthSessionRedisClient } from "../auth/authSessionStore.js";
 import type { HeaderRecord } from "./addressApiClientIp.js";
@@ -76,10 +77,17 @@ export function createSessionAwareTrustedUserIdResolver(options: {
   const cookieName = options.cookieName ?? AUTH_SESSION_COOKIE_NAME;
 
   return async (input) => {
-    const cookieSessionId = parseCookieHeaderValue(readHeader(input.headers, "cookie"), cookieName);
-    if (cookieSessionId && options.redis) {
+    // Same opaque session id, two transports. Bearer (explicit, attached
+    // per-request by the mobile app) wins over the cookie (ambient, replayed
+    // by cookie jars): a stale jar cookie must not shadow — and 401 — the
+    // session the client actually presented. Web clients never send a Bearer
+    // header, so their behavior is unchanged.
+    const sessionId =
+      parseBearerAuthorizationValue(readHeader(input.headers, "authorization")) ??
+      parseCookieHeaderValue(readHeader(input.headers, "cookie"), cookieName);
+    if (sessionId && options.redis) {
       try {
-        const session = await resolveAuthSession(options.redis, cookieSessionId);
+        const session = await resolveAuthSession(options.redis, sessionId);
         if (session) {
           if (!options.lookupUserSessionEpoch) {
             return session.userId;
