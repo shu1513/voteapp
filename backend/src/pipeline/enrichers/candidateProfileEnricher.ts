@@ -1301,23 +1301,25 @@ async function electionTicketAlreadyLinksRunningMate(
   return (result.rowCount ?? 0) > 0;
 }
 
-async function electionAlreadyHasCandidateName(
+async function findElectionLinkedCandidateByName(
   pool: Pool,
   electionId: string,
   displayName: string
-): Promise<boolean> {
+): Promise<{ candidateId: string; fecIds: string[] } | null> {
   const incomingName = splitDisplayNameToFirstLast(displayName);
   const incomingFirstLast = normalizeCandidateName(`${incomingName.firstName} ${incomingName.lastName}`);
   if (incomingFirstLast.length === 0) {
-    return false;
+    return null;
   }
 
   const result = await pool.query<{
+    id: string;
     first_name: string;
     last_name: string;
+    fec_ids: unknown;
   }>(
     `
-      SELECT c.first_name, c.last_name
+      SELECT c.id, c.first_name, c.last_name, c.fec_ids
       FROM public.candidate_elections AS ce
       JOIN public.candidates AS c
         ON c.id = ce.candidate_id
@@ -1330,11 +1332,14 @@ async function electionAlreadyHasCandidateName(
   for (const row of result.rows) {
     const existingFirstLast = normalizeCandidateName(`${row.first_name} ${row.last_name}`);
     if (existingFirstLast === incomingFirstLast) {
-      return true;
+      const fecIds = Array.isArray(row.fec_ids)
+        ? row.fec_ids.filter((value): value is string => typeof value === "string")
+        : [];
+      return { candidateId: row.id, fecIds };
     }
   }
 
-  return false;
+  return null;
 }
 
 function effectivePresidentialParty(
@@ -1564,23 +1569,51 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             continue;
           }
 
-          if (
-            contextType === "election" &&
-            electionTicketRole !== "running_mate" &&
-            !skipPerElectionNameDedupe &&
-            (await electionAlreadyHasCandidateName(pool, contextId, candidateDisplayName))
-          ) {
-            await redis.xAck(
-              STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
-              STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
-              entry.id
-            );
-            continue;
-          }
-
           const rosterParty = entry.message.roster_party?.trim() || undefined;
           const rosterIncumbent = parseBooleanField(entry.message.roster_is_incumbent);
           const messageSeedUrls = parseSeedUrls(entry.message.seed_urls);
+
+          if (contextType === "election" && electionTicketRole !== "running_mate" && !skipPerElectionNameDedupe) {
+            const linkedCandidate = await findElectionLinkedCandidateByName(pool, contextId, candidateDisplayName);
+            if (linkedCandidate) {
+              // The candidate write committed on an earlier delivery, but the
+              // post-commit fanout (finance sync + record drafts) may have
+              // failed before the ack — the fanout is not part of the
+              // transaction. Acking here without replaying it would lose the
+              // candidate's record research permanently (record rollover is
+              // flag-gated) and delay finance a day, so replay from persisted
+              // state. A redundant replay is cheap: record drafts dedupe on
+              // their 24h emit marker and the finance sync overwrites the
+              // same candidate/cycle rows it would have written anyway.
+              const linkedContext = await resolveElectionDraftContext({
+                pool,
+                electionId: contextId,
+                rosterParty,
+                rosterIncumbent,
+                messageSeedUrls,
+              });
+              if (linkedContext && linkedContext.type === "election") {
+                await enqueueCandidateProfileFinanceSyncFanoutForLinkedElection({
+                  context: linkedContext,
+                  candidateId: linkedCandidate.candidateId,
+                  fecIds: linkedCandidate.fecIds,
+                });
+                await enqueueCandidateRecordDrafts(redis, [
+                  {
+                    candidateId: linkedCandidate.candidateId,
+                    electionId: contextId,
+                    runId,
+                  },
+                ]);
+              }
+              await redis.xAck(
+                STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
+                STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
+                entry.id
+              );
+              continue;
+            }
+          }
           const draftContext =
             contextType === "presidential_cycle"
               ? await resolvePresidentialCycleDraftContext({
