@@ -571,7 +571,7 @@ describe("createAuthService logoutAll", () => {
     await expect(service.logoutAll({ userId: "bob" })).rejects.toThrow("userId must be a UUID");
   });
 
-  it("bumps the session epoch so revocation holds even if Redis fails", async () => {
+  it("bumps the session epoch and still succeeds when the Redis sweep fails", async () => {
     const redis = createRedisMock();
     redis.sMembers.mockRejectedValue(new Error("redis down"));
     const db = createDbMock(createDbClientMock());
@@ -584,8 +584,9 @@ describe("createAuthService logoutAll", () => {
     });
 
     // The epoch bump lands on the pool before Redis is touched, so the DB
-    // revocation is durable even when the session sweep then throws.
-    await expect(service.logoutAll({ userId: USER_ID })).rejects.toThrow("redis down");
+    // revocation is durable and the best-effort sweep failure must not
+    // surface an error for a logout-all that already succeeded.
+    await expect(service.logoutAll({ userId: USER_ID })).resolves.toBeUndefined();
     const bumpCall = db.query.mock.calls.find((call) => String(call[0]).includes("session_epoch = session_epoch + 1"));
     expect(bumpCall?.[1]).toEqual([USER_ID]);
   });

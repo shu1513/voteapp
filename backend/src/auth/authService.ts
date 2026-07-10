@@ -900,7 +900,17 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         `,
         [userId]
       );
-      await destroyAuthSessionsByUserId(options.redis, { userId });
+      // Best-effort, like the other credential flows: the bump above already
+      // revoked every session, so a Redis failure must not fail a logout-all
+      // that succeeded from a security standpoint.
+      try {
+        await destroyAuthSessionsByUserId(options.redis, { userId });
+      } catch (error) {
+        console.warn(
+          "auth logoutAll session cleanup failed (epoch bump already revoked access):",
+          error instanceof Error ? error.message : String(error)
+        );
+      }
     },
   };
 }

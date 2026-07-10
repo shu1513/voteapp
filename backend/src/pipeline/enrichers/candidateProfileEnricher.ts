@@ -1562,6 +1562,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             ticketLeadDisplayName &&
             (await electionTicketAlreadyLinksRunningMate(pool, contextId, ticketLeadDisplayName, candidateDisplayName))
           ) {
+            // Unlike the linked-candidate gate below, there is no fanout to
+            // replay here: running mates deliberately get no finance sync and
+            // no record drafts for the ticket election (see the post-commit
+            // fanout guard), so acking a redelivered mate loses nothing.
             await redis.xAck(
               STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
               STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
