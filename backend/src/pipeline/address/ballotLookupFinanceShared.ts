@@ -227,3 +227,57 @@ export function buildOutsideIndustrySupportExplanation(
     evidence.map((item) => item.committee_name)
   )}, which reported ${supportAction}.`;
 }
+
+export type StateFinanceSummaryRequest = {
+  candidate_id: string;
+  election_id: string;
+};
+
+type StateFinanceRequestCandidateRow = {
+  candidate_id: string;
+  election_id: string;
+};
+
+export type StateFinanceRequestElectionRow = {
+  election_id: string;
+  state: string;
+  office_scope?: string | null;
+  office_canonical_name?: string | null;
+};
+
+/**
+ * The request builder every state's ballot-lookup finance loader shares:
+ * take the elections in this state (optionally narrowed to offices the
+ * state's finance program covers), and emit one deduped
+ * candidate/election request per candidate in them. Replaces 21
+ * per-state copies that differed only in the state code and, for some,
+ * the eligibility predicate. The state match is trim().toUpperCase() —
+ * two of the old copies (CO, CT) compared raw, but districts.state is
+ * uniformly normalized (verified: 0 of 51 states differ), so the
+ * normalized compare is behavior-identical on real data and strictly
+ * more defensive.
+ */
+export function buildStateFinanceSummaryRequests<TElectionRow extends StateFinanceRequestElectionRow>(
+  stateCode: string,
+  candidateRows: readonly StateFinanceRequestCandidateRow[],
+  electionRows: readonly TElectionRow[],
+  isEligibleElection?: (row: TElectionRow) => boolean
+): StateFinanceSummaryRequest[] {
+  const electionIds = new Set(
+    electionRows
+      .filter((row) => row.state.trim().toUpperCase() === stateCode && (isEligibleElection?.(row) ?? true))
+      .map((row) => row.election_id)
+  );
+  const requests = new Map<string, StateFinanceSummaryRequest>();
+  for (const row of candidateRows) {
+    if (!electionIds.has(row.election_id)) {
+      continue;
+    }
+    const key = candidateElectionKey(row.candidate_id, row.election_id);
+    requests.set(key, {
+      candidate_id: row.candidate_id,
+      election_id: row.election_id,
+    });
+  }
+  return [...requests.values()];
+}

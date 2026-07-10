@@ -52,19 +52,17 @@ import {
 import {
   addFinanceBreakdown,
   buildOutsideIndustrySupportExplanation,
+  buildStateFinanceSummaryRequests,
   candidateElectionKey,
   financeIndustryDisplayName,
   firstNonEmptySourceUrl,
-  formatShortList,
   mapFinanceBreakdown,
   parseFinanceAmount,
   parseFinanceCount,
-  type BallotLookupFinanceBackingSummary,
   type BallotLookupFinanceBreakdown,
   type BallotLookupFinanceOutsideGroup,
   type BallotLookupFinanceOutsideIndustrySupportEvidence,
   type BallotLookupFinanceOutsideIndustrySupportSummary,
-  type BallotLookupFinanceSupportingCommitteeIndustrySummary,
   type BallotLookupFinanceSummary,
 } from "./ballotLookupFinanceShared.js";
 
@@ -441,80 +439,20 @@ type CandidateFinanceSummaryRequest = {
   election_year: number;
 };
 
-type CaliforniaFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type ColoradoFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type ConnecticutFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type NebraskaFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type IndianaFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type NewJerseyFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type NewMexicoFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type OklahomaFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type TexasFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type WashingtonFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type WisconsinFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type HawaiiFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type DistrictOfColumbiaFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type VirginiaFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type TennesseeFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
 const TENNESSEE_BALLOT_FINANCE_ELIGIBLE_OFFICES = new Set([
   "statewide::Governor",
@@ -522,40 +460,12 @@ const TENNESSEE_BALLOT_FINANCE_ELIGIBLE_OFFICES = new Set([
   "state_lower::State Lower Chamber Legislator",
 ]);
 
-type MassachusettsFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type MarylandFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type MaineFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type MichiganFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type IllinoisFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type MinnesotaFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
-type OregonFinanceSummaryRequest = {
-  candidate_id: string;
-  election_id: string;
-};
 
 type CandidateFinanceSummaryRow = {
   candidate_id: string;
@@ -1186,6 +1096,19 @@ function isMaineFinanceEligibleOffice(input: {
 // fail-closed — no finance beats wrong finance. P ids never match:
 // presidential contests live in presidential_cycles, never in district
 // elections.
+// Adapter between the election rows this module loads and the
+// {officeScope, officeCanonicalName} input every state eligible-office
+// predicate takes.
+function officeInputFromElectionRow(row: ElectionRow): {
+  officeScope: string | null;
+  officeCanonicalName: string | null;
+} {
+  return {
+    officeScope: row.office_scope ?? null,
+    officeCanonicalName: row.office_canonical_name ?? null,
+  };
+}
+
 function isFecRequestableElection(row: ElectionRow, fecCandidateId: string): boolean {
   if (row.race_type !== "office") {
     return false;
@@ -1240,488 +1163,24 @@ function buildFinanceSummaryRequests(
   return [...requests.values()];
 }
 
-function buildCaliforniaFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): CaliforniaFinanceSummaryRequest[] {
-  const californiaElectionIds = new Set(
-    electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "CA")
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, CaliforniaFinanceSummaryRequest>();
 
-  for (const row of candidateRows) {
-    if (!californiaElectionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
 
-  return [...requests.values()];
-}
 
-function buildColoradoFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): ColoradoFinanceSummaryRequest[] {
-  const electionIds = new Set(electionRows.filter((row) => row.state === "CO").map((row) => row.election_id));
-  const requests = new Map<string, ColoradoFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildConnecticutFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): ConnecticutFinanceSummaryRequest[] {
-  const electionIds = new Set(electionRows.filter((row) => row.state === "CT").map((row) => row.election_id));
-  const requests = new Map<string, ConnecticutFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildNebraskaFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): NebraskaFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "NE")
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, NebraskaFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildIndianaFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): IndianaFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "IN")
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, IndianaFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildNewMexicoFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): NewMexicoFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "NM")
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, NewMexicoFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildOklahomaFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): OklahomaFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "OK")
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, OklahomaFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildTexasFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): TexasFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "TX")
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, TexasFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildWashingtonFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): WashingtonFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "WA")
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, WashingtonFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildWisconsinFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): WisconsinFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter(
-        (row) =>
-          row.state.trim().toUpperCase() === "WI" &&
-          isWisconsinFinanceEligibleOffice({
-            officeScope: row.office_scope ?? null,
-            officeCanonicalName: row.office_canonical_name ?? null,
-          })
-      )
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, WisconsinFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildHawaiiFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): HawaiiFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "HI")
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, HawaiiFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildDistrictOfColumbiaFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): DistrictOfColumbiaFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "DC")
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, DistrictOfColumbiaFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildMassachusettsFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): MassachusettsFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter(
-        (row) =>
-          row.state.trim().toUpperCase() === "MA" &&
-          isMassachusettsFinanceEligibleOffice({
-            officeScope: row.office_scope ?? null,
-            officeCanonicalName: row.office_canonical_name ?? null,
-          })
-      )
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, MassachusettsFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildMarylandFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): MarylandFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter(
-        (row) =>
-          row.state.trim().toUpperCase() === "MD" &&
-          isMarylandFinanceEligibleOffice({
-            officeScope: row.office_scope ?? null,
-            officeCanonicalName: row.office_canonical_name ?? null,
-          })
-      )
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, MarylandFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildMaineFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): MaineFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter(
-        (row) =>
-          row.state.trim().toUpperCase() === "ME" &&
-          isMaineFinanceEligibleOffice({
-            officeScope: row.office_scope ?? null,
-            officeCanonicalName: row.office_canonical_name ?? null,
-          })
-      )
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, MaineFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildMichiganFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): MichiganFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter(
-        (row) =>
-          row.state.trim().toUpperCase() === "MI" &&
-          isMichiganFinanceEligibleOffice({
-            officeScope: row.office_scope ?? null,
-            officeCanonicalName: row.office_canonical_name ?? null,
-          })
-      )
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, MichiganFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildIllinoisFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): IllinoisFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter(
-        (row) =>
-          row.state.trim().toUpperCase() === "IL" &&
-          ILLINOIS_FINANCE_BALLOT_LOOKUP_OFFICE_KEYS.has(
-            `${row.office_scope?.trim() ?? ""}::${row.office_canonical_name?.trim() ?? ""}`
-          )
-      )
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, IllinoisFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
-
-function buildMinnesotaFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[],
-  isMinnesotaFinanceEligibleOffice: (input: {
-    officeScope: string | null;
-    officeCanonicalName: string | null;
-  }) => boolean
-): MinnesotaFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter(
-        (row) =>
-          row.state.trim().toUpperCase() === "MN" &&
-          isMinnesotaFinanceEligibleOffice({
-            officeScope: row.office_scope ?? null,
-            officeCanonicalName: row.office_canonical_name ?? null,
-          })
-      )
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, MinnesotaFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
-
-function buildOregonFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): OregonFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter((row) => row.state.trim().toUpperCase() === "OR")
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, OregonFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
 const NEW_JERSEY_BALLOT_LOOKUP_FINANCE_ELIGIBLE_OFFICE_KEYS = new Set([
   "statewide::governor",
@@ -1739,94 +1198,8 @@ function isNewJerseyBallotLookupFinanceEligibleOffice(input: {
   return NEW_JERSEY_BALLOT_LOOKUP_FINANCE_ELIGIBLE_OFFICE_KEYS.has(`${officeScope}::${officeCanonicalName}`);
 }
 
-function buildNewJerseyFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): NewJerseyFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter(
-        (row) =>
-          row.state.trim().toUpperCase() === "NJ" &&
-          isNewJerseyBallotLookupFinanceEligibleOffice({
-            officeScope: row.office_scope ?? null,
-            officeCanonicalName: row.office_canonical_name ?? null,
-          })
-      )
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, NewJerseyFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildVirginiaFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): VirginiaFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter(
-        (row) =>
-          row.state.trim().toUpperCase() === "VA" &&
-          isVirginiaFinanceEligibleOffice({
-            officeScope: row.office_scope ?? null,
-            officeCanonicalName: row.office_canonical_name ?? null,
-          })
-      )
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, VirginiaFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
-function buildTennesseeFinanceSummaryRequests(
-  candidateRows: readonly CandidateRow[],
-  electionRows: readonly ElectionRow[]
-): TennesseeFinanceSummaryRequest[] {
-  const electionIds = new Set(
-    electionRows
-      .filter(
-        (row) =>
-          row.state.trim().toUpperCase() === "TN" &&
-          TENNESSEE_BALLOT_FINANCE_ELIGIBLE_OFFICES.has(
-            `${row.office_scope?.trim() ?? ""}::${row.office_canonical_name?.trim() ?? ""}`
-          )
-      )
-      .map((row) => row.election_id)
-  );
-  const requests = new Map<string, TennesseeFinanceSummaryRequest>();
-  for (const row of candidateRows) {
-    if (!electionIds.has(row.election_id)) {
-      continue;
-    }
-    const key = candidateElectionKey(row.candidate_id, row.election_id);
-    requests.set(key, {
-      candidate_id: row.candidate_id,
-      election_id: row.election_id,
-    });
-  }
-  return [...requests.values()];
-}
 
 function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): BallotLookupDistrict {
   const id = "district_id" in row ? row.district_id : row.id;
@@ -2456,7 +1829,7 @@ async function loadCaliforniaCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildCaliforniaFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("CA", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -2784,7 +2157,7 @@ async function loadColoradoCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildColoradoFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("CO", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -2947,7 +2320,7 @@ async function loadConnecticutCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildConnecticutFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("CT", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -3111,7 +2484,7 @@ async function loadNebraskaCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildNebraskaFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("NE", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -3279,7 +2652,7 @@ async function loadOklahomaCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildOklahomaFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("OK", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -3447,7 +2820,7 @@ async function loadIndianaCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildIndianaFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("IN", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -3661,7 +3034,7 @@ async function loadNewMexicoCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildNewMexicoFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("NM", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -3991,7 +3364,7 @@ async function loadTexasCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildTexasFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("TX", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -4526,7 +3899,7 @@ async function loadWashingtonCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildWashingtonFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("WA", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -5018,7 +4391,9 @@ async function loadWisconsinCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildWisconsinFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("WI", candidateRows, electionRows, (row) =>
+    isWisconsinFinanceEligibleOffice(officeInputFromElectionRow(row))
+  );
   if (requests.length === 0) {
     return new Map();
   }
@@ -5510,7 +4885,9 @@ async function loadMarylandCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildMarylandFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("MD", candidateRows, electionRows, (row) =>
+    isMarylandFinanceEligibleOffice(officeInputFromElectionRow(row))
+  );
   if (requests.length === 0) {
     return new Map();
   }
@@ -6000,7 +5377,9 @@ async function loadMaineCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildMaineFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("ME", candidateRows, electionRows, (row) =>
+    isMaineFinanceEligibleOffice(officeInputFromElectionRow(row))
+  );
   if (requests.length === 0) {
     return new Map();
   }
@@ -6490,7 +5869,7 @@ async function loadOregonCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildOregonFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("OR", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -7021,7 +6400,9 @@ async function loadMichiganCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildMichiganFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("MI", candidateRows, electionRows, (row) =>
+    isMichiganFinanceEligibleOffice(officeInputFromElectionRow(row))
+  );
   if (requests.length === 0) {
     return new Map();
   }
@@ -7513,7 +6894,9 @@ async function loadIllinoisCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildIllinoisFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("IL", candidateRows, electionRows, (row) =>
+    ILLINOIS_FINANCE_BALLOT_LOOKUP_OFFICE_KEYS.has(`${row.office_scope?.trim() ?? ""}::${row.office_canonical_name?.trim() ?? ""}`)
+  );
   if (requests.length === 0) {
     return new Map();
   }
@@ -8004,10 +7387,8 @@ async function loadMinnesotaCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildMinnesotaFinanceSummaryRequests(
-    candidateRows,
-    electionRows,
-    minnesotaFinance.isMinnesotaFinanceEligibleOffice
+  const requests = buildStateFinanceSummaryRequests("MN", candidateRows, electionRows, (row) =>
+    minnesotaFinance.isMinnesotaFinanceEligibleOffice(officeInputFromElectionRow(row))
   );
   if (requests.length === 0) {
     return new Map();
@@ -8427,7 +7808,7 @@ async function loadHawaiiCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildHawaiiFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("HI", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -8917,7 +8298,7 @@ async function loadDistrictOfColumbiaCandidateFinanceSummariesByCandidateElectio
     return new Map();
   }
 
-  const requests = buildDistrictOfColumbiaFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("DC", candidateRows, electionRows);
   if (requests.length === 0) {
     return new Map();
   }
@@ -9408,7 +8789,9 @@ async function loadMassachusettsCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildMassachusettsFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("MA", candidateRows, electionRows, (row) =>
+    isMassachusettsFinanceEligibleOffice(officeInputFromElectionRow(row))
+  );
   if (requests.length === 0) {
     return new Map();
   }
@@ -9898,7 +9281,9 @@ async function loadVirginiaCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildVirginiaFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("VA", candidateRows, electionRows, (row) =>
+    isVirginiaFinanceEligibleOffice(officeInputFromElectionRow(row))
+  );
   if (requests.length === 0) {
     return new Map();
   }
@@ -10219,7 +9604,9 @@ async function loadNewJerseyCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildNewJerseyFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("NJ", candidateRows, electionRows, (row) =>
+    isNewJerseyBallotLookupFinanceEligibleOffice(officeInputFromElectionRow(row))
+  );
   if (requests.length === 0) {
     return new Map();
   }
@@ -10553,7 +9940,9 @@ async function loadTennesseeCandidateFinanceSummariesByCandidateElection(
     return new Map();
   }
 
-  const requests = buildTennesseeFinanceSummaryRequests(candidateRows, electionRows);
+  const requests = buildStateFinanceSummaryRequests("TN", candidateRows, electionRows, (row) =>
+    TENNESSEE_BALLOT_FINANCE_ELIGIBLE_OFFICES.has(`${row.office_scope?.trim() ?? ""}::${row.office_canonical_name?.trim() ?? ""}`)
+  );
   if (requests.length === 0) {
     return new Map();
   }
