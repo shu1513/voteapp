@@ -199,7 +199,50 @@ describe("parseCanonicalElectionPayload", () => {
           official_ballot_title: "Governor",
           election_date: "2028-02-29",
           race_type: "office",
+          discovery_contest_family: "non_judicial_office",
           sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+  });
+
+  it("rejects split-pass district entries missing discovery_contest_family", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          race_type: "office",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      reason:
+        "payload.entries[0] is missing discovery_contest_family; statewide districts research per-family passes (non_judicial_office|judicial_office|ballot_measure|us_senate)",
+    });
+  });
+
+  it("accepts combined-pass district entries without discovery_contest_family", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "House District 3",
+      district_type: "us_house",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "United States Representative, District 3",
+          election_date: "2026-11-03",
+          race_type: "office",
+          sources: ["https://example.gov/elections/us-house-3"],
         },
       ],
     });

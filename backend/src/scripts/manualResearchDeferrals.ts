@@ -23,11 +23,11 @@ function usage(): string {
     "           --district-id <id> --stage <stage> --reason <text> --blocked-until <YYYY-MM-DD>",
     "           [--election-id <id>] [--source-url <url>]",
     `           Stages: ${DEFERRAL_STAGES.join(", ")}`,
-    "  due      List deferred rows whose blocked_until has passed. [--limit <n>] [--all]",
+    "  due      List deferred rows whose blocked_until has passed. [--limit <n>] [--all] [--district-id <id>]",
     "           (--all lists every open deferral regardless of date, uncapped unless --limit is given)",
     "  resolve  Close a deferral after the deferred unit was completed. --deferral-id <id> [--note <text>]",
     "  cancel   Close a deferral recorded in error or made moot. --deferral-id <id> --note <text>",
-    "  status   Print counts by status, due-now count, and the next due date.",
+    "  status   Print counts by status, due-now count, and the next due date. [--district-id <id>]",
   ].join("\n");
 }
 
@@ -176,9 +176,20 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
         throw new Error(`Invalid --limit: ${limitRaw}. Expected a positive integer.`);
       }
       const all = flags.get("all") === "true";
+      // Resuming one district should not require reading every district's
+      // ledger (a statewide audit had to eyeball 66 global rows).
+      const districtId = optionalValueFlag(flags, "district-id");
       // `--all` promises every open deferral, so it is unbounded unless the
       // caller explicitly asked for a cap.
       const applyLimit = !all || limitRaw !== null;
+      const params: unknown[] = [];
+      if (districtId !== null) {
+        params.push(districtId);
+      }
+      const districtClause = districtId !== null ? `AND district_id = $${params.length}` : "";
+      if (applyLimit) {
+        params.push(limit);
+      }
       const rows = await pool.query(
         `
           SELECT id, district_id, election_id, stage, reason, blocked_until::text, source_url,
@@ -186,10 +197,11 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
           FROM public.manual_research_deferrals
           WHERE status = 'deferred'
             ${all ? "" : "AND blocked_until <= CURRENT_DATE"}
+            ${districtClause}
           ORDER BY blocked_until ASC, created_at ASC
-          ${applyLimit ? "LIMIT $1" : ""}
+          ${applyLimit ? `LIMIT $${params.length}` : ""}
         `,
-        applyLimit ? [limit] : []
+        params
       );
       print({ due_count: rows.rows.length, deferrals: rows.rows });
       return;
@@ -217,28 +229,36 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
     }
 
     case "status": {
+      const districtId = optionalValueFlag(flags, "district-id");
+      const districtClause = districtId !== null ? "district_id = $1" : "TRUE";
+      const params = districtId !== null ? [districtId] : [];
       const stats = await pool.query(
         `
           SELECT status, count(*)::int AS count
           FROM public.manual_research_deferrals
+          WHERE ${districtClause}
           GROUP BY status
-        `
+        `,
+        params
       );
       const due = await pool.query(
         `
           SELECT count(*)::int AS due_now, min(blocked_until)::text AS next_due
           FROM public.manual_research_deferrals
-          WHERE status = 'deferred' AND blocked_until <= CURRENT_DATE
-        `
+          WHERE status = 'deferred' AND blocked_until <= CURRENT_DATE AND ${districtClause}
+        `,
+        params
       );
       const upcoming = await pool.query(
         `
           SELECT min(blocked_until)::text AS next_upcoming
           FROM public.manual_research_deferrals
-          WHERE status = 'deferred' AND blocked_until > CURRENT_DATE
-        `
+          WHERE status = 'deferred' AND blocked_until > CURRENT_DATE AND ${districtClause}
+        `,
+        params
       );
       print({
+        ...(districtId !== null ? { district_id: districtId } : {}),
         by_status: stats.rows,
         due_now: due.rows[0]?.due_now ?? 0,
         // Oldest already-due date: what an operator acts on first.

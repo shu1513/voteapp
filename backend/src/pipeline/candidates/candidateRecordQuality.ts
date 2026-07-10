@@ -34,6 +34,12 @@ const PURE_CANDIDACY_PATTERNS = [
 const FUTURE_PROMISE_PATTERNS = [
   /\b(?:campaign|platform|website)\b.*\b(?:promises?|pledges?|vows?|plans?|proposes?)\b/i,
   /\b(?:promises?|pledges?|vows?)\s+to\b/i,
+  // Past-tense promissory verbs are still promises, in any position:
+  // "Promised as a judicial candidate to uphold ..." slipped past the
+  // adjacent present-tense pattern above and became a canonical record.
+  // Substantive completed-action verbs are matched first, so a description
+  // that pairs a real action with its promise is still kept.
+  /\b(?:promised|pledged|vowed)\b/i,
   /\b(?:says|said)\s+(?:he|she|they)\s+(?:will|would)\b/i,
   /\b(?:will|would)\s+(?:fight|work|cut|raise|support|oppose|create|expand|reduce|protect)\b/i,
 ] as const;
