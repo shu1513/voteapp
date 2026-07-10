@@ -29,13 +29,19 @@ import {
   writeManualResearchRepairReport,
   type ManualResearchRepairGap,
 } from "./manualResearchRepairReport.js";
+import {
+  parseSweepEvidencePayload,
+  sweepEvidenceMissingError,
+  sweepEvidenceRequired,
+} from "./candidateRecordSweepEvidence.js";
 
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
+    "  npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--evidence-file evidence.json] [--repair-report-file file] [--dry-run]",
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
+    'A zero-record payload, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
   ].join("\n");
 }
 
@@ -318,6 +324,7 @@ async function main(): Promise<void> {
   const recordsFile = readFlag("--records-file");
   const labelsFile = readFlag("--labels-file");
   const repairReportFile = readFlag("--repair-report-file");
+  const evidenceFile = readFlag("--evidence-file");
   const strictQualityGate = hasFlag("--strict-quality-gate");
   const confirmedGapIds = normalizeConfirmedGaps(readRepeatedFlag("--confirmed-gap"));
   if (!candidateId || !electionId || !recordsFile || !labelsFile) {
@@ -383,6 +390,28 @@ async function main(): Promise<void> {
     throw new Error(
       `Candidate records payload needs focused repair before import; dropped=${validatedRecords.droppedRecords.length}; ${summarizeDroppedRecords(validatedRecords.droppedRecords)}.${hint}`
     );
+  }
+
+  // Sweep-completeness guard: an empty verified record set stamps
+  // `last_records_searched_at` even without any confirmed-gap flag, and the
+  // no_records_found / only_general_labels gap ids assert a finished
+  // discovery sweep. All three claims require the per-question evidence
+  // table; a bare assertion is refused (false gaps poison the candidate
+  // forever — the completion stamp stops future re-search).
+  const evidenceIsRequired = sweepEvidenceRequired({
+    recordCount: validatedRecords.records.length,
+    confirmedGapIds,
+  });
+  let sweepEvidenceEntryCount: number | null = null;
+  if (evidenceIsRequired) {
+    if (!evidenceFile) {
+      throw sweepEvidenceMissingError("candidate-records");
+    }
+    const parsedEvidence = parseSweepEvidencePayload(await readJsonFile(evidenceFile));
+    if (!parsedEvidence.ok) {
+      throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
+    }
+    sweepEvidenceEntryCount = parsedEvidence.entries.length;
   }
 
   const dryRun = hasFlag("--dry-run");
@@ -472,6 +501,10 @@ async function main(): Promise<void> {
               strict: strictQualityGate,
               confirmedGaps: [...confirmedGapIds].sort(),
               gaps: qualityGaps,
+            },
+            sweepEvidence: {
+              required: evidenceIsRequired,
+              entryCount: sweepEvidenceEntryCount,
             },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },
@@ -568,6 +601,10 @@ async function main(): Promise<void> {
             processed: upsert.processed,
             tagsDeleted: staleTagDelete.deleted,
             tagsProcessed: tagResult.processed,
+            sweepEvidence: {
+              required: evidenceIsRequired,
+              entryCount: sweepEvidenceEntryCount,
+            },
             recordsSearchCompletedThrough: researchedThrough.toISOString().slice(0, 10),
           },
           null,

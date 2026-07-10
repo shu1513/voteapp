@@ -30,6 +30,11 @@ import {
   isBlockingCandidateRecordQualityGap,
 } from "./writeManualCandidateRecords.js";
 import {
+  parseSweepEvidencePayload,
+  sweepEvidenceMissingError,
+  sweepEvidenceRequired,
+} from "./candidateRecordSweepEvidence.js";
+import {
   buildManualResearchRepairReport,
   summarizeManualResearchGaps,
   writeManualResearchRepairReport,
@@ -43,6 +48,7 @@ export type ManualPresidentialCandidateRecordsOptions = {
   recordsFile: string;
   labelsFile: string;
   repairReportFile: string | null;
+  evidenceFile: string | null;
   strictQualityGate: boolean;
   confirmedGapIds: Set<string>;
   dryRun: boolean;
@@ -51,9 +57,10 @@ export type ManualPresidentialCandidateRecordsOptions = {
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:presidential-records:write -- --candidate-id uuid --presidential-cycle-id uuid --presidential-role president|vice_president --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
+    "  npm run manual:presidential-records:write -- --candidate-id uuid --presidential-cycle-id uuid --presidential-role president|vice_president --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--evidence-file evidence.json] [--repair-report-file file] [--dry-run]",
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
+    'A zero-record payload, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
   ].join("\n");
 }
 
@@ -153,6 +160,7 @@ export function parseManualPresidentialCandidateRecordsArgs(
     recordsFile: normalizeRequiredFlag(readValueFlag(args, "--records-file"), "--records-file"),
     labelsFile: normalizeRequiredFlag(readValueFlag(args, "--labels-file"), "--labels-file"),
     repairReportFile: readValueFlag(args, "--repair-report-file"),
+    evidenceFile: readValueFlag(args, "--evidence-file"),
     strictQualityGate: readBooleanFlag(args, "--strict-quality-gate"),
     confirmedGapIds: normalizeConfirmedGaps(readRepeatedFlag(args, "--confirmed-gap")),
     dryRun: readBooleanFlag(args, "--dry-run"),
@@ -363,6 +371,25 @@ async function main(): Promise<void> {
     );
   }
 
+  // Sweep-completeness guard: mirrors manual:candidate-records:write — a
+  // zero-record or neutral-only pass asserts a finished discovery sweep and
+  // must carry the per-question evidence table.
+  const evidenceIsRequired = sweepEvidenceRequired({
+    recordCount: validatedRecords.records.length,
+    confirmedGapIds: options.confirmedGapIds,
+  });
+  let sweepEvidenceEntryCount: number | null = null;
+  if (evidenceIsRequired) {
+    if (!options.evidenceFile) {
+      throw sweepEvidenceMissingError("presidential-records");
+    }
+    const parsedEvidence = parseSweepEvidencePayload(await readJsonFile(options.evidenceFile));
+    if (!parsedEvidence.ok) {
+      throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
+    }
+    sweepEvidenceEntryCount = parsedEvidence.entries.length;
+  }
+
   const databaseUrl = requireEnv("DATABASE_URL");
   requireLocalDatabaseTarget(databaseUrl);
   const pool = new Pool({ connectionString: databaseUrl });
@@ -454,6 +481,10 @@ async function main(): Promise<void> {
               confirmedGaps: [...options.confirmedGapIds].sort(),
               gaps: qualityGaps,
             },
+            sweepEvidence: {
+              required: evidenceIsRequired,
+              entryCount: sweepEvidenceEntryCount,
+            },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },
           null,
@@ -536,6 +567,10 @@ async function main(): Promise<void> {
             processed: upsert.processed,
             tagsDeleted: staleTagDelete.deleted,
             tagsProcessed: tagResult.processed,
+            sweepEvidence: {
+              required: evidenceIsRequired,
+              entryCount: sweepEvidenceEntryCount,
+            },
           },
           null,
           2
