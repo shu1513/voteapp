@@ -1,5 +1,5 @@
 import { AUTH_SESSION_COOKIE_NAME, parseCookieHeaderValue } from "../auth/authCookies.js";
-import { resolveAuthSessionUserId, type AuthSessionRedisClient } from "../auth/authSessionStore.js";
+import { resolveAuthSession, type AuthSessionRedisClient } from "../auth/authSessionStore.js";
 import type { HeaderRecord } from "./addressApiClientIp.js";
 
 export type AddressApiAuthenticatedUserInput = {
@@ -62,6 +62,15 @@ export function assertTrustedUserIdHeaderConfigIsSafe(input: {
 export function createSessionAwareTrustedUserIdResolver(options: {
   redis: Pick<AuthSessionRedisClient, "get"> | null;
   trustedUserIdResolver: (input: AddressApiAuthenticatedUserInput) => string | null;
+  /**
+   * Current users.session_epoch for a user id, or null when the user does
+   * not exist / is deleted. When provided, a session only authenticates if
+   * its stored epoch matches — this is what makes password reset/change and
+   * logout-all revoke sessions even when the Redis destroy failed, and what
+   * kills an old-password login session created concurrently with a reset.
+   * Lookup failures fail closed (the session does not authenticate).
+   */
+  lookupUserSessionEpoch?: (userId: string) => Promise<number | null>;
   cookieName?: string;
 }): (input: AddressApiAuthenticatedUserInput) => Promise<string | null> {
   const cookieName = options.cookieName ?? AUTH_SESSION_COOKIE_NAME;
@@ -70,9 +79,19 @@ export function createSessionAwareTrustedUserIdResolver(options: {
     const cookieSessionId = parseCookieHeaderValue(readHeader(input.headers, "cookie"), cookieName);
     if (cookieSessionId && options.redis) {
       try {
-        const sessionUserId = await resolveAuthSessionUserId(options.redis, cookieSessionId);
-        if (sessionUserId) {
-          return sessionUserId;
+        const session = await resolveAuthSession(options.redis, cookieSessionId);
+        if (session) {
+          if (!options.lookupUserSessionEpoch) {
+            return session.userId;
+          }
+          const currentEpoch = await options.lookupUserSessionEpoch(session.userId);
+          if (currentEpoch !== null && currentEpoch === session.sessionEpoch) {
+            return session.userId;
+          }
+          // Stale epoch or missing/deleted user: the session is revoked and
+          // behaves exactly like no session (same trusted-header fallback,
+          // which resolves to null unless a gateway deployment opted in).
+          return options.trustedUserIdResolver(input);
         }
       } catch {
         // Fall back to the trusted header path below.

@@ -52,6 +52,7 @@ function userRow(overrides: Record<string, unknown> = {}) {
     first_name: "User",
     password_hash: currentPasswordHash,
     email_verified: true,
+    session_epoch: 1,
     ...overrides,
   };
 }
@@ -219,7 +220,7 @@ describe("createAuthService changePassword", () => {
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
-      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE password_hash
+      .mockResolvedValueOnce({ rows: [{ session_epoch: 2 }], rowCount: 1 }) // UPDATE password_hash + epoch bump
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
     const redis = createRedisMock();
 
@@ -568,5 +569,109 @@ describe("createAuthService logoutAll", () => {
     });
 
     await expect(service.logoutAll({ userId: "bob" })).rejects.toThrow("userId must be a UUID");
+  });
+
+  it("bumps the session epoch so revocation holds even if Redis fails", async () => {
+    const redis = createRedisMock();
+    redis.sMembers.mockRejectedValue(new Error("redis down"));
+    const db = createDbMock(createDbClientMock());
+
+    const service = createAuthService({
+      db: db as never,
+      redis: redis as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    // The epoch bump lands on the pool before Redis is touched, so the DB
+    // revocation is durable even when the session sweep then throws.
+    await expect(service.logoutAll({ userId: USER_ID })).rejects.toThrow("redis down");
+    const bumpCall = db.query.mock.calls.find((call) => String(call[0]).includes("session_epoch = session_epoch + 1"));
+    expect(bumpCall?.[1]).toEqual([USER_ID]);
+  });
+});
+
+describe("createAuthService session epoch revocation", () => {
+  function tokenRow() {
+    return {
+      id: "token-1",
+      user_id: USER_ID,
+      token_hash: "hash",
+      purpose: "password_reset",
+      new_email: null,
+      expires_at: new Date(Date.now() + 60_000),
+      consumed_at: null,
+      created_at: new Date(),
+    };
+  }
+
+  it("resetPassword bumps session_epoch in the same UPDATE as the password hash", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [tokenRow()] }) // consume reset token
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const redis = createRedisMock();
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: redis as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.resetPassword({ token: "raw-token", password: "brand-new-password-456" });
+
+    const updateCall = client.query.mock.calls.find((call) => String(call[0]).includes("SET password_hash"));
+    expect(String(updateCall?.[0])).toContain("session_epoch = session_epoch + 1");
+    expect(redis.sMembers).toHaveBeenCalled();
+  });
+
+  it("resetPassword still succeeds when the post-commit Redis sweep fails", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [tokenRow()] }) // consume reset token
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const redis = createRedisMock();
+    redis.sMembers.mockRejectedValue(new Error("redis down"));
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: redis as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    // The epoch bump already revoked every session; a Redis failure must not
+    // surface an error for a reset that committed (the token is consumed).
+    await expect(
+      service.resetPassword({ token: "raw-token", password: "brand-new-password-456" })
+    ).resolves.toBeUndefined();
+  });
+
+  it("login stores the user's current session epoch in the new session", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [] }) // last_logged_in update
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const db = createDbMock(client);
+    db.query.mockResolvedValueOnce({ rows: [userRow({ session_epoch: 7 })] }); // findActiveUserByEmail
+    const redis = createRedisMock();
+
+    const service = createAuthService({
+      db: db as never,
+      redis: redis as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.login({ email: "user@example.com", password: CURRENT_PASSWORD });
+
+    const storedValue = redis.setEx.mock.calls[0]?.[2] as string;
+    expect(storedValue).toBe(`${USER_ID}:7`);
   });
 });
