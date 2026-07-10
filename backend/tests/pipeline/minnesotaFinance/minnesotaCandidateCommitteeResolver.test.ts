@@ -47,6 +47,19 @@ describe("Minnesota finance eligible offices", () => {
       true
     );
   });
+
+  it("treats legislative offices as eligible without a district, unlike committee mapping", () => {
+    expect(
+      isMinnesotaFinanceEligibleOffice({ officeScope: "state_lower", officeCanonicalName: "State Representative" })
+    ).toBe(true);
+    expect(
+      isMinnesotaFinanceEligibleOffice({ officeScope: "state_upper", officeCanonicalName: "State Senator" })
+    ).toBe(true);
+    expect(isMinnesotaFinanceEligibleOffice({ officeScope: "state_upper", officeCanonicalName: "Governor" })).toBe(false);
+    expect(
+      mapMinnesotaFinanceOffice({ officeScope: "state_lower", officeCanonicalName: "State Representative" })
+    ).toBeNull();
+  });
 });
 
 describe("Minnesota candidate committee resolver", () => {

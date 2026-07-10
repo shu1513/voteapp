@@ -4861,6 +4861,97 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[10]?.[0]).toContain("classification.normalized_label");
   });
 
+  it("includes Minnesota finance summaries for legislative races whose election rows carry no district", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("MINNESOTA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "state_lower",
+            geoid_compact: "2707A",
+            district_name: "Minnesota House District 7A",
+            state: "MN",
+            state_fips: "27",
+            representation_power_score: "40",
+            race_type: "office",
+            official_ballot_title: "State Representative District 7A",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_id: officeId,
+            office_scope: "state_lower",
+            office_canonical_name: "State Representative",
+            office_summary: "Member of the Minnesota House of Representatives.",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Northstar",
+            party: "Democratic-Farmer-Labor",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "State Representative",
+            state: "MN",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "31002",
+            election_year: 2026,
+            total_receipts: "40000.00",
+            direct_contribution_total: "40000.00",
+            total_disbursements: "15000.00",
+            cash_on_hand: "25000.00",
+            outside_support_total: null,
+            outside_oppose_total: null,
+            source_url: null,
+            last_synced_at: "2026-06-21 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toMatchObject({
+      source: "MINNESOTA_CFB",
+      cycle: 2026,
+      controlled_committee_id: "31002",
+      direct_campaign: {
+        total_raised: 40000,
+        total_spent: 15000,
+        cash_on_hand: 25000,
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(11);
+    expect(query.mock.calls[7]?.[0]).toContain("public.mn_candidate_finance_summaries");
+  });
+
   it("includes locally synced Massachusetts finance summaries for Massachusetts candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED", "true");
