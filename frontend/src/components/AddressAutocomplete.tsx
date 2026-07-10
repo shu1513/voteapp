@@ -1,5 +1,6 @@
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 import type { AddressSuggestion } from "../api/types";
+import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useAddressSuggestions } from "../lib/useAddressSuggestions";
 
 // ARIA combobox via Headless UI (the contract doc says not to hand-roll
@@ -16,6 +17,15 @@ type AddressAutocompleteProps = {
 
 export function AddressAutocomplete({ value, onChange, inputId, placeholder }: AddressAutocompleteProps) {
   const { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions } = useAddressSuggestions();
+
+  // The landing page is prerendered: text typed before hydration exists only
+  // in the DOM. Adopt it the same way a keystroke would land — into the
+  // caller's state AND the suggestion machinery, so autocomplete wakes up
+  // instead of staying dormant until the next keystroke.
+  useAdoptPreHydrationValue(inputId, (adopted) => {
+    onChange(adopted);
+    onInputChanged(adopted);
+  });
 
   async function onSelect(suggestion: AddressSuggestion | null) {
     if (!suggestion) {

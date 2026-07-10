@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { ErrorNotice } from "../components/Status";
+import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export function ResetPasswordPage() {
@@ -10,6 +11,8 @@ export function ResetPasswordPage() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token")?.trim() ?? "";
   const [password, setPassword] = useState("");
+  // Prerendered page: rescue input typed or autofilled before hydration.
+  useAdoptPreHydrationValue("reset-password", setPassword);
 
   const reset = useMutation({
     mutationFn: () =>

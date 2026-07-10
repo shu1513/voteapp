@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { useAdoptPreHydrationChecked } from "../lib/preHydrationInput";
 
 // Clickwrap checkbox (Meyer v. Uber / Nguyen / Berman requirements):
 // unchecked by default, sits directly above the action it gates, visible
@@ -15,6 +16,10 @@ type LegalGateProps = {
 };
 
 export function LegalGate({ label, checked, onChange, inputId }: LegalGateProps) {
+  // A click that lands before hydration checks the DOM box without reaching
+  // state; adopt it so the gated action unlocks. Still a user action — the
+  // clickwrap record is unaffected.
+  useAdoptPreHydrationChecked(inputId, onChange);
   return (
     <div className="rounded-xl border border-line bg-surface p-4 text-sm text-ink">
       <label htmlFor={inputId} className="flex cursor-pointer items-start gap-3">
