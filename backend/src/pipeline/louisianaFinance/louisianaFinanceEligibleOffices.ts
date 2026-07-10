@@ -11,7 +11,10 @@ export const LOUISIANA_FINANCE_ELIGIBLE_OFFICE_KEYS = new Set([
   "statewide::Secretary of State",
   "statewide::Attorney General",
   "statewide::State Treasurer",
-  "statewide::Commissioner of Agriculture and Forestry",
+  // Keys are matched literally against `office.scope || '::' || office.canonical_name`,
+  // so they must be the repository's canonical office names (seedOffices.ts), not
+  // Louisiana's longer statutory titles.
+  "statewide::Commissioner of Agriculture",
   "statewide::Commissioner of Insurance",
   "state_upper::State Senator",
   "state_lower::State Lower Chamber Legislator",
@@ -58,7 +61,11 @@ export function normalizeLouisianaFinanceOfficeName(value: string | null | undef
       return "State Treasurer";
     case "COMMISSIONER AGRICULTURE FORESTRY":
     case "COMMISSIONER OF AGRICULTURE AND FORESTRY":
+    case "COMMISSIONER OF AGRICULTURE":
     case "AGRICULTURE COMMISSIONER":
+      // Returned label is an internal join key only: both the repository canonical
+      // name and Louisiana's raw OfficeSought values normalize into it before they
+      // are compared, and the link row persists the canonical name instead.
       return "Commissioner of Agriculture and Forestry";
     case "COMMISSIONER INSURANCE":
     case "COMMISSIONER OF INSURANCE":
@@ -79,60 +86,75 @@ export function normalizeLouisianaFinanceOfficeName(value: string | null | undef
   }
 }
 
-export function mapLouisianaFinanceOffice(input: {
+function matchLouisianaFinanceEligibleOffice(input: {
   officeScope: string;
   officeCanonicalName: string;
-  district?: string | null;
-}): LouisianaFinanceOfficeSearchInput | null {
+}): { officeScope: LouisianaFinanceOfficeSearchInput["officeScope"]; officeName: string } | null {
   const officeScope = input.officeScope.trim().toLowerCase();
   const officeName = normalizeLouisianaFinanceOfficeName(input.officeCanonicalName);
-  const district = normalizeLouisianaFinanceDistrict(input.district);
+  if (officeName === null) {
+    return null;
+  }
 
   if (
     officeScope === "statewide" &&
-    officeName !== null &&
     officeName !== "State Senator" &&
     officeName !== "State Lower Chamber Legislator"
   ) {
-    return {
-      officeScope: "statewide",
-      officeName,
-      district: null,
-      requiresDistrict: false,
-    };
+    return { officeScope: "statewide", officeName };
   }
 
   if (officeScope === "state_upper" && officeName === "State Senator") {
-    if (!district) {
-      return null;
-    }
-    return {
-      officeScope: "state_upper",
-      officeName,
-      district,
-      requiresDistrict: true,
-    };
+    return { officeScope: "state_upper", officeName };
   }
 
   if (officeScope === "state_lower" && officeName === "State Lower Chamber Legislator") {
-    if (!district) {
-      return null;
-    }
-    return {
-      officeScope: "state_lower",
-      officeName,
-      district,
-      requiresDistrict: true,
-    };
+    return { officeScope: "state_lower", officeName };
   }
 
   return null;
 }
 
-export function isLouisianaFinanceEligibleOffice(input: {
+export function mapLouisianaFinanceOffice(input: {
   officeScope: string;
   officeCanonicalName: string;
   district?: string | null;
+}): LouisianaFinanceOfficeSearchInput | null {
+  const match = matchLouisianaFinanceEligibleOffice(input);
+  if (!match) {
+    return null;
+  }
+
+  if (match.officeScope === "statewide") {
+    return {
+      officeScope: "statewide",
+      officeName: match.officeName,
+      district: null,
+      requiresDistrict: false,
+    };
+  }
+
+  const district = normalizeLouisianaFinanceDistrict(input.district);
+  if (!district) {
+    return null;
+  }
+  return {
+    officeScope: match.officeScope,
+    officeName: match.officeName,
+    district,
+    requiresDistrict: true,
+  };
+}
+
+// Eligibility is scope+name only, like the other states' is*FinanceEligibleOffice
+// predicates: ballot lookup calls this without a district (its election rows carry
+// none), and by then the la_candidate_finance_links table already scopes
+// candidate+election, so district disambiguation happened at link time. The
+// district requirement lives in mapLouisianaFinanceOffice, which the
+// committee-matching sync side uses.
+export function isLouisianaFinanceEligibleOffice(input: {
+  officeScope: string;
+  officeCanonicalName: string;
 }): boolean {
-  return mapLouisianaFinanceOffice(input) !== null;
+  return matchLouisianaFinanceEligibleOffice(input) !== null;
 }
