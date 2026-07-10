@@ -96,11 +96,11 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
     }
   });
 
-  // Same shared-helper regression as discovery: partial dates parse as UTC
-  // midnight and shift back a day in timezones behind UTC, so the repair path
-  // must reject them too instead of re-admitting a shifted date.
-  it("rejects year-only and year-month event_date instead of timezone-shifting them", () => {
-    for (const eventDate of ["2025", "2025-04"]) {
+  // Same shared-helper regression as discovery: partial dates either shift a
+  // day back in timezones behind UTC or invent day 01, so the repair path
+  // must reject every spelling too instead of re-admitting a guessed date.
+  it("rejects partial event_date spellings instead of shifting or inventing a day", () => {
+    for (const eventDate of ["2025", "2025-04", "2025-4", "2025/04", "April 2025"]) {
       const parsed = parseCandidateRecordSourceRepairPayload(
         {
           repairs: [
