@@ -10,6 +10,8 @@ import {
 } from "../../src/auth/authSessionStore.js";
 
 const userId = "11111111-1111-4111-8111-111111111111";
+const sessionEpoch = 3;
+const sessionValue = `${userId}:${sessionEpoch}`;
 const sessionIdA = "session-id-a";
 const sessionIdB = "session-id-b";
 const ttlSeconds = 3600;
@@ -52,23 +54,25 @@ describe("authSessionStore", () => {
     const result = await createAuthSession(redis, {
       userId,
       ttlSeconds,
+      sessionEpoch,
       generateSessionId: () => sessionIdA,
     });
 
     expect(result).toEqual({
       sessionId: sessionIdA,
       userId,
+      sessionEpoch,
       ttlSeconds,
     });
     expect(redis.setEx).toHaveBeenCalledTimes(1);
-    expect(redis.setEx).toHaveBeenCalledWith(buildAuthSessionKey(sessionIdA), ttlSeconds, userId);
-    expect(store.get(buildAuthSessionKey(sessionIdA))).toBe(userId);
+    expect(redis.setEx).toHaveBeenCalledWith(buildAuthSessionKey(sessionIdA), ttlSeconds, sessionValue);
+    expect(store.get(buildAuthSessionKey(sessionIdA))).toBe(sessionValue);
     expect(buildAuthSessionKey(sessionIdA)).toContain(AUTH_SESSION_KEY_PREFIX);
   });
 
   it("resolves and destroys sessions by raw session id", async () => {
     const { redis, store } = createRedisMock();
-    store.set(buildAuthSessionKey(sessionIdA), userId);
+    store.set(buildAuthSessionKey(sessionIdA), sessionValue);
 
     await expect(resolveAuthSessionUserId(redis, sessionIdA)).resolves.toBe(userId);
     await expect(destroyAuthSession(redis, sessionIdA)).resolves.toBe(true);
@@ -77,7 +81,7 @@ describe("authSessionStore", () => {
 
   it("rotates an existing session into a new session id", async () => {
     const { redis, store } = createRedisMock();
-    store.set(buildAuthSessionKey(sessionIdA), userId);
+    store.set(buildAuthSessionKey(sessionIdA), sessionValue);
 
     const result = await rotateAuthSession(redis, {
       sessionId: sessionIdA,
@@ -88,10 +92,11 @@ describe("authSessionStore", () => {
     expect(result).toEqual({
       sessionId: sessionIdB,
       userId,
+      sessionEpoch,
       ttlSeconds,
     });
     expect(store.has(buildAuthSessionKey(sessionIdA))).toBe(false);
-    expect(store.get(buildAuthSessionKey(sessionIdB))).toBe(userId);
+    expect(store.get(buildAuthSessionKey(sessionIdB))).toBe(sessionValue);
   });
 
   it("returns null when rotating a missing session", async () => {
@@ -114,9 +119,18 @@ describe("authSessionStore", () => {
       createAuthSession(redis, {
         userId: "not-a-uuid",
         ttlSeconds,
+        sessionEpoch,
         generateSessionId: () => sessionIdA,
       })
     ).rejects.toThrow("User ID must be a valid UUID");
+    await expect(
+      createAuthSession(redis, {
+        userId,
+        ttlSeconds,
+        sessionEpoch: 0,
+        generateSessionId: () => sessionIdA,
+      })
+    ).rejects.toThrow("Session epoch must be a positive integer");
     await expect(resolveAuthSessionUserId(redis, "   ")).rejects.toThrow("Session ID must be a non-empty string");
     await expect(destroyAuthSession(redis, "   ")).rejects.toThrow("Session ID must be a non-empty string");
   });

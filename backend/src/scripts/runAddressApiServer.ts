@@ -423,6 +423,22 @@ async function main(): Promise<void> {
   const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
     redis: redis?.isOpen ? redis : null,
     trustedUserIdResolver,
+    // Per-request epoch check: sessions created before a password
+    // reset/change or logout-all carry an older epoch and stop
+    // authenticating the moment the bump commits, regardless of Redis.
+    lookupUserSessionEpoch: async (userId) => {
+      const result = await pool.query<{ session_epoch: number }>(
+        `
+          SELECT session_epoch
+          FROM public.users
+          WHERE id = $1::uuid
+            AND deleted_at IS NULL
+        `,
+        [userId]
+      );
+      const epoch = result.rows[0]?.session_epoch;
+      return typeof epoch === "number" ? epoch : null;
+    },
   });
   const lookupAuthenticatedUserEmailVerified = async (userId: string): Promise<boolean> => {
     const result = await pool.query<{ email_verified: boolean }>(

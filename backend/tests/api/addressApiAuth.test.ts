@@ -10,7 +10,7 @@ import {
 describe("session-aware authenticated user resolver", () => {
   it("uses the Redis session cookie before the trusted header", async () => {
     const redis = {
-      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999"),
+      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999:1"),
     };
     const trustedUserIdResolver = vi.fn().mockReturnValue("88888888-8888-4888-8888-888888888888");
     const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
@@ -28,6 +28,103 @@ describe("session-aware authenticated user resolver", () => {
     expect(userId).toBe("99999999-9999-4999-8999-999999999999");
     expect(redis.get).toHaveBeenCalledOnce();
     expect(trustedUserIdResolver).not.toHaveBeenCalled();
+  });
+
+  it("authenticates only when the session epoch matches the user's current epoch", async () => {
+    const redis = {
+      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999:2"),
+    };
+    const trustedUserIdResolver = vi.fn().mockReturnValue(null);
+    const lookupUserSessionEpoch = vi.fn().mockResolvedValue(2);
+    const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+      redis,
+      trustedUserIdResolver,
+      lookupUserSessionEpoch,
+    });
+
+    const userId = await resolveAuthenticatedUserId({
+      headers: { cookie: `${AUTH_SESSION_COOKIE_NAME}=session-abc` },
+    });
+
+    expect(userId).toBe("99999999-9999-4999-8999-999999999999");
+    expect(lookupUserSessionEpoch).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+  });
+
+  it("rejects a session whose epoch is stale (password was reset after login)", async () => {
+    const redis = {
+      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999:1"),
+    };
+    const trustedUserIdResolver = vi.fn().mockReturnValue(null);
+    // The reset bumped users.session_epoch to 2; this session captured 1.
+    const lookupUserSessionEpoch = vi.fn().mockResolvedValue(2);
+    const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+      redis,
+      trustedUserIdResolver,
+      lookupUserSessionEpoch,
+    });
+
+    const userId = await resolveAuthenticatedUserId({
+      headers: { cookie: `${AUTH_SESSION_COOKIE_NAME}=session-abc` },
+    });
+
+    expect(userId).toBeNull();
+  });
+
+  it("rejects a session whose user no longer exists (deleted account)", async () => {
+    const redis = {
+      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999:1"),
+    };
+    const trustedUserIdResolver = vi.fn().mockReturnValue(null);
+    const lookupUserSessionEpoch = vi.fn().mockResolvedValue(null);
+    const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+      redis,
+      trustedUserIdResolver,
+      lookupUserSessionEpoch,
+    });
+
+    const userId = await resolveAuthenticatedUserId({
+      headers: { cookie: `${AUTH_SESSION_COOKIE_NAME}=session-abc` },
+    });
+
+    expect(userId).toBeNull();
+  });
+
+  it("fails closed when the epoch lookup itself fails", async () => {
+    const redis = {
+      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999:1"),
+    };
+    const trustedUserIdResolver = vi.fn().mockReturnValue(null);
+    const lookupUserSessionEpoch = vi.fn().mockRejectedValue(new Error("db down"));
+    const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+      redis,
+      trustedUserIdResolver,
+      lookupUserSessionEpoch,
+    });
+
+    const userId = await resolveAuthenticatedUserId({
+      headers: { cookie: `${AUTH_SESSION_COOKIE_NAME}=session-abc` },
+    });
+
+    expect(userId).toBeNull();
+  });
+
+  it("treats a legacy plain-userId session value as no session", async () => {
+    const redis = {
+      get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999"),
+    };
+    const trustedUserIdResolver = vi.fn().mockReturnValue(null);
+    const resolveAuthenticatedUserId = createSessionAwareTrustedUserIdResolver({
+      redis,
+      trustedUserIdResolver,
+      lookupUserSessionEpoch: vi.fn().mockResolvedValue(1),
+    });
+
+    const userId = await resolveAuthenticatedUserId({
+      headers: { cookie: `${AUTH_SESSION_COOKIE_NAME}=session-abc` },
+    });
+
+    expect(userId).toBeNull();
+    expect(trustedUserIdResolver).toHaveBeenCalled();
   });
 
   it("falls back to the trusted header when there is no session cookie", async () => {

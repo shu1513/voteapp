@@ -19,13 +19,21 @@ export const AUTH_SESSION_USER_SET_KEY_PREFIX = "auth:user-sessions:";
 export type CreateAuthSessionInput = {
   userId: string;
   ttlSeconds: number;
+  /** users.session_epoch at creation time; per-request auth compares it against the DB. */
+  sessionEpoch: number;
   generateSessionId?: () => string;
 };
 
 export type CreateAuthSessionResult = {
   sessionId: string;
   userId: string;
+  sessionEpoch: number;
   ttlSeconds: number;
+};
+
+export type AuthSessionRecord = {
+  userId: string;
+  sessionEpoch: number;
 };
 
 export type RotateAuthSessionInput = {
@@ -61,6 +69,37 @@ function normalizeTtlSeconds(ttlSeconds: number): number {
   return ttlSeconds;
 }
 
+function normalizeSessionEpoch(sessionEpoch: number): number {
+  if (!Number.isInteger(sessionEpoch) || sessionEpoch <= 0) {
+    throw new TypeError("Session epoch must be a positive integer");
+  }
+  return sessionEpoch;
+}
+
+// Session values are "<userId>:<epoch>". UUIDs carry no colon, so the split
+// is unambiguous. Values that do not parse (including any pre-epoch plain
+// userId values) are treated as no session: the holder just logs in again.
+function parseAuthSessionValue(value: string | null | undefined): AuthSessionRecord | null {
+  const trimmed = value?.trim();
+  if (!trimmed) {
+    return null;
+  }
+  const separatorIndex = trimmed.lastIndexOf(":");
+  if (separatorIndex <= 0) {
+    return null;
+  }
+  const userId = trimmed.slice(0, separatorIndex);
+  const epochText = trimmed.slice(separatorIndex + 1);
+  if (!isUuid(userId) || !/^\d+$/.test(epochText)) {
+    return null;
+  }
+  const sessionEpoch = Number.parseInt(epochText, 10);
+  if (!Number.isInteger(sessionEpoch) || sessionEpoch <= 0) {
+    return null;
+  }
+  return { userId, sessionEpoch };
+}
+
 function buildUserSessionsKey(userId: string): string {
   return `${AUTH_SESSION_USER_SET_KEY_PREFIX}${normalizeUserId(userId)}`;
 }
@@ -94,19 +133,27 @@ export async function createAuthSession(
 ): Promise<CreateAuthSessionResult> {
   const userId = normalizeUserId(input.userId);
   const ttlSeconds = normalizeTtlSeconds(input.ttlSeconds);
+  const sessionEpoch = normalizeSessionEpoch(input.sessionEpoch);
   const sessionId = normalizeSessionId((input.generateSessionId ?? generateSessionId)());
-  await redis.setEx(buildAuthSessionKey(sessionId), ttlSeconds, userId);
+  await redis.setEx(buildAuthSessionKey(sessionId), ttlSeconds, `${userId}:${sessionEpoch}`);
   await recordSessionMembership(redis, sessionId, userId, ttlSeconds);
-  return { sessionId, userId, ttlSeconds };
+  return { sessionId, userId, sessionEpoch, ttlSeconds };
+}
+
+export async function resolveAuthSession(
+  redis: Pick<AuthSessionRedisClient, "get">,
+  sessionId: string
+): Promise<AuthSessionRecord | null> {
+  const value = await redis.get(buildAuthSessionKey(sessionId));
+  return parseAuthSessionValue(value);
 }
 
 export async function resolveAuthSessionUserId(
   redis: Pick<AuthSessionRedisClient, "get">,
   sessionId: string
 ): Promise<string | null> {
-  const value = await redis.get(buildAuthSessionKey(sessionId));
-  const trimmed = value?.trim();
-  return trimmed && trimmed.length > 0 ? trimmed : null;
+  const record = await resolveAuthSession(redis, sessionId);
+  return record?.userId ?? null;
 }
 
 export async function destroyAuthSession(
@@ -115,11 +162,11 @@ export async function destroyAuthSession(
 ): Promise<boolean> {
   const normalizedSessionId = normalizeSessionId(sessionId);
   const sessionKey = buildAuthSessionKey(normalizedSessionId);
-  const existingUserId = await redis.get(sessionKey);
+  const existingRecord = parseAuthSessionValue(await redis.get(sessionKey));
   const deleted = await redis.del(sessionKey);
-  if (deleted > 0 && existingUserId?.trim()) {
+  if (deleted > 0 && existingRecord) {
     try {
-      await redis.sRem(buildUserSessionsKey(existingUserId), hashSessionId(normalizedSessionId));
+      await redis.sRem(buildUserSessionsKey(existingRecord.userId), hashSessionId(normalizedSessionId));
     } catch {
       // Best-effort reverse index cleanup; the session itself is already removed.
     }
@@ -127,6 +174,15 @@ export async function destroyAuthSession(
   return deleted > 0;
 }
 
+/**
+ * Best-effort sweep of a user's sessions via the reverse index. Deliberately
+ * not atomic with concurrent logins: a new-epoch session created mid-sweep
+ * can be swept too (that user just logs in again) or miss the index deletion
+ * and stay unindexed (harmless — the index only feeds this sweep, and every
+ * caller first makes the revocation durable in the database: an epoch bump,
+ * or the soft delete that fails the per-request user lookup).
+ * Per-request epoch validation is the correctness mechanism; this is cleanup.
+ */
 export async function destroyAuthSessionsByUserId(
   redis: Pick<AuthSessionRedisClient, "del" | "sMembers" | "sRem">,
   input: DestroyAuthSessionsByUserIdInput
@@ -149,15 +205,16 @@ export async function rotateAuthSession(
   redis: AuthSessionRedisClient,
   input: RotateAuthSessionInput
 ): Promise<CreateAuthSessionResult | null> {
-  const existingUserId = await resolveAuthSessionUserId(redis, input.sessionId);
-  if (!existingUserId) {
+  const existing = await resolveAuthSession(redis, input.sessionId);
+  if (!existing) {
     return null;
   }
 
   await destroyAuthSession(redis, input.sessionId);
   return createAuthSession(redis, {
-    userId: existingUserId,
+    userId: existing.userId,
     ttlSeconds: input.ttlSeconds,
+    sessionEpoch: existing.sessionEpoch,
     generateSessionId: input.generateSessionId,
   });
 }

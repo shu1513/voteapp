@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  AmbiguousCandidateIdentityError,
   findOrCreateCandidateFromProfile,
   mergeIdentifierLists,
 } from "../../src/pipeline/candidates/candidateProfileIdentity.js";
@@ -15,6 +16,12 @@ function profile(overrides: Partial<CandidateProfilePayload> = {}): CandidatePro
     sources: ["https://example.com/profile"],
     ...overrides,
   };
+}
+
+// findOrCreateCandidateFromProfile's first query is always the per-person
+// advisory lock; pre-load its response so tests only chain the identity reads.
+function identityQueryMock() {
+  return vi.fn().mockResolvedValueOnce({ rows: [] });
 }
 
 describe("mergeIdentifierLists", () => {
@@ -44,8 +51,7 @@ describe("mergeIdentifierLists", () => {
 
 describe("findOrCreateCandidateFromProfile", () => {
   it("inserts a new candidate when no same-name hard-identifier match exists", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: "candidate-new" }], rowCount: 1 });
 
@@ -58,15 +64,14 @@ describe("findOrCreateCandidateFromProfile", () => {
     });
 
     expect(result).toEqual({ candidateId: "candidate-new", matchedExisting: false });
-    expect(query).toHaveBeenCalledTimes(2);
-    expect(query.mock.calls[1]?.[1]).toContain("Jane Candidate");
-    expect(query.mock.calls[1]?.[1]).toContain("Democratic");
-    expect(query.mock.calls[1]?.[1]).toContain("US");
+    expect(query).toHaveBeenCalledTimes(3);
+    expect(query.mock.calls[2]?.[1]).toContain("Jane Candidate");
+    expect(query.mock.calls[2]?.[1]).toContain("Democratic");
+    expect(query.mock.calls[2]?.[1]).toContain("US");
   });
 
   it("writes current office when inserting a new candidate", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: "candidate-new" }], rowCount: 1 });
 
@@ -78,16 +83,15 @@ describe("findOrCreateCandidateFromProfile", () => {
       includeParty: true,
     });
 
-    const insertSql = String(query.mock.calls[1]?.[0]);
+    const insertSql = String(query.mock.calls[2]?.[0]);
     expect(insertSql).toContain("current_office");
     expect(insertSql).toContain("profile_sources");
-    expect(query.mock.calls[1]?.[1]).toContain(JSON.stringify(["https://example.com/profile"]));
-    expect(query.mock.calls[1]?.[1]).toContain("Governor");
+    expect(query.mock.calls[2]?.[1]).toContain(JSON.stringify(["https://example.com/profile"]));
+    expect(query.mock.calls[2]?.[1]).toContain("Governor");
   });
 
   it("reuses an existing same-name candidate when hard identifiers match", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       .mockResolvedValueOnce({
         rows: [
           {
@@ -117,15 +121,14 @@ describe("findOrCreateCandidateFromProfile", () => {
     });
 
     expect(result).toEqual({ candidateId: "candidate-existing", matchedExisting: true });
-    expect(query).toHaveBeenCalledTimes(3);
+    expect(query).toHaveBeenCalledTimes(4);
     expect(query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.candidates"))).toBe(false);
-    expect(String(query.mock.calls[2]?.[0])).toContain("last_researched = now()");
-    expect(String(query.mock.calls[2]?.[0])).toContain("profile_sources = $4::jsonb");
+    expect(String(query.mock.calls[3]?.[0])).toContain("last_researched = now()");
+    expect(String(query.mock.calls[3]?.[0])).toContain("profile_sources = $4::jsonb");
   });
 
   it("fills a blank current office for an existing hard-identifier match", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       .mockResolvedValueOnce({
         rows: [
           {
@@ -155,9 +158,9 @@ describe("findOrCreateCandidateFromProfile", () => {
     });
 
     expect(result).toEqual({ candidateId: "candidate-existing", matchedExisting: true });
-    expect(query).toHaveBeenCalledTimes(3);
-    expect(String(query.mock.calls[2]?.[0])).toContain("current_office = CASE");
-    expect(query.mock.calls[2]?.[1]).toEqual([
+    expect(query).toHaveBeenCalledTimes(4);
+    expect(String(query.mock.calls[3]?.[0])).toContain("current_office = CASE");
+    expect(query.mock.calls[3]?.[1]).toEqual([
       "candidate-existing",
       JSON.stringify(["P80000001"]),
       null,
@@ -178,8 +181,7 @@ describe("findOrCreateCandidateFromProfile", () => {
   });
 
   it("does not overwrite a non-blank current office for an existing hard-identifier match", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       .mockResolvedValueOnce({
         rows: [
           {
@@ -209,11 +211,11 @@ describe("findOrCreateCandidateFromProfile", () => {
     });
 
     expect(result).toEqual({ candidateId: "candidate-existing", matchedExisting: true });
-    expect(query).toHaveBeenCalledTimes(3);
-    expect(String(query.mock.calls[2]?.[0])).toContain("current_office = CASE");
-    expect(String(query.mock.calls[2]?.[0])).toContain("last_researched = now()");
-    expect(String(query.mock.calls[2]?.[0])).toContain("profile_sources = $4::jsonb");
-    expect(query.mock.calls[2]?.[1]).toEqual([
+    expect(query).toHaveBeenCalledTimes(4);
+    expect(String(query.mock.calls[3]?.[0])).toContain("current_office = CASE");
+    expect(String(query.mock.calls[3]?.[0])).toContain("last_researched = now()");
+    expect(String(query.mock.calls[3]?.[0])).toContain("profile_sources = $4::jsonb");
+    expect(query.mock.calls[3]?.[1]).toEqual([
       "candidate-existing",
       JSON.stringify(["P80000001"]),
       null,
@@ -234,8 +236,7 @@ describe("findOrCreateCandidateFromProfile", () => {
   });
 
   it("can reuse a same-name candidate from another state when explicitly allowed and hard identifiers match", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       .mockResolvedValueOnce({
         rows: [
           {
@@ -266,14 +267,13 @@ describe("findOrCreateCandidateFromProfile", () => {
     });
 
     expect(result).toEqual({ candidateId: "candidate-home-state", matchedExisting: true });
-    expect(String(query.mock.calls[0]?.[0])).not.toContain("AND state = $3");
-    expect(query.mock.calls[0]?.[1]).toEqual(["Jane", "Candidate"]);
+    expect(String(query.mock.calls[1]?.[0])).not.toContain("AND state = $3");
+    expect(query.mock.calls[1]?.[1]).toEqual(["Jane", "Candidate"]);
     expect(query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.candidates"))).toBe(false);
   });
 
   it("keeps default candidate matching scoped to the requested state", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: "candidate-new-us" }], rowCount: 1 });
 
@@ -286,8 +286,8 @@ describe("findOrCreateCandidateFromProfile", () => {
     });
 
     expect(result).toEqual({ candidateId: "candidate-new-us", matchedExisting: false });
-    expect(String(query.mock.calls[0]?.[0])).toContain("AND state = $3");
-    expect(query.mock.calls[0]?.[1]).toEqual(["Jane", "Candidate", "US"]);
+    expect(String(query.mock.calls[1]?.[0])).toContain("AND state = $3");
+    expect(query.mock.calls[1]?.[1]).toEqual(["Jane", "Candidate", "US"]);
     expect(query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.candidates"))).toBe(true);
   });
 });
@@ -309,8 +309,7 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
   };
 
   it("fills empty scalar columns on a matched re-write (fill-if-empty, never clobber)", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       // loadSameNameCandidates
       .mockResolvedValueOnce({ rows: [{ ...existingRow, linkedin_url: null }] })
       // merge lock SELECT
@@ -330,18 +329,17 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     });
 
     expect(result.matchedExisting).toBe(true);
-    const updateSql = String(query.mock.calls[2]?.[0]);
+    const updateSql = String(query.mock.calls[3]?.[0]);
     expect(updateSql).toContain("linkedin_url = CASE");
     expect(updateSql).toContain("official_website_url = CASE");
     expect(updateSql).toContain("summary = CASE");
-    const params = query.mock.calls[2]?.[1] as unknown[];
+    const params = query.mock.calls[3]?.[1] as unknown[];
     // linkedin value present, overwrite false: fills only because column is empty
     expect(params).toContain("https://www.linkedin.com/in/jane");
   });
 
   it("matches a candidate already linked to the election when the sole hard identifier changed", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       // loadSameNameCandidates: same-name row exists but hard identifiers no longer match
       .mockResolvedValueOnce({ rows: [existingRow] })
       // election-scoped display_name lookup
@@ -361,14 +359,13 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     });
 
     expect(result).toEqual({ candidateId: "candidate-existing", matchedExisting: true });
-    const electionLookupSql = String(query.mock.calls[1]?.[0]);
+    const electionLookupSql = String(query.mock.calls[2]?.[0]);
     expect(electionLookupSql).toContain("candidate_elections");
     expect(electionLookupSql).toContain("running_mate_candidate_id");
   });
 
   it("replaces a non-empty stored value only for fields listed in overwriteProfileFields", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       .mockResolvedValueOnce({ rows: [{ ...existingRow, official_website_url: "https://old-site.example" }] })
       .mockResolvedValueOnce({ rows: [{ fec_ids: null, state_filing_ids: null }] })
       .mockResolvedValueOnce({ rowCount: 1 });
@@ -382,7 +379,7 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
       overwriteProfileFields: new Set(["summary"]),
     });
 
-    const params = query.mock.calls[2]?.[1] as unknown[];
+    const params = query.mock.calls[3]?.[1] as unknown[];
     // summary value + its overwrite flag true; website overwrite flag stays false
     const summaryIndex = params.indexOf("Corrected summary");
     expect(summaryIndex).toBeGreaterThan(-1);
@@ -392,8 +389,7 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
   });
 
   it("never overwrites a stored value with a blank string, even for overwrite-listed fields", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       .mockResolvedValueOnce({ rows: [{ ...existingRow, official_website_url: "https://old-site.example" }] })
       .mockResolvedValueOnce({ rows: [{ fec_ids: null, state_filing_ids: null }] })
       .mockResolvedValueOnce({ rowCount: 1 });
@@ -409,14 +405,13 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
       overwriteProfileFields: new Set(["summary"]),
     });
 
-    const updateSql = String(query.mock.calls[2]?.[0]);
+    const updateSql = String(query.mock.calls[3]?.[0]);
     // The overwrite branch requires a non-blank incoming value.
     expect(updateSql).toContain("length(trim($13::text)) > 0");
   });
 
   it("throws when two same-name candidates are linked to the election", async () => {
-    const query = vi
-      .fn()
+    const query = identityQueryMock()
       .mockResolvedValueOnce({ rows: [existingRow] })
       .mockResolvedValueOnce({ rows: [{ id: "candidate-a" }, { id: "candidate-b" }] });
 
@@ -430,5 +425,56 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
         matchByLinkedElectionId: "election-1",
       })
     ).rejects.toThrow(/Multiple candidates named/);
+  });
+});
+
+describe("findOrCreateCandidateFromProfile identity hardening", () => {
+  const duplicateRows = ["candidate-a", "candidate-b"].map((id) => ({
+    id,
+    first_name: "Jane",
+    last_name: "Candidate",
+    date_of_birth: null,
+    twitter_handle: null,
+    linkedin_url: null,
+    official_website_url: null,
+    fec_ids: ["P80000001"],
+    state_filing_ids: null,
+    current_office: null,
+    state: "US",
+  }));
+
+  it("throws AmbiguousCandidateIdentityError instead of inserting when several rows match hard identifiers", async () => {
+    const query = identityQueryMock().mockResolvedValueOnce({ rows: duplicateRows });
+
+    await expect(
+      findOrCreateCandidateFromProfile({
+        client: { query } as never,
+        profile: profile({ fec_ids: ["P80000001"] }),
+        state: "US",
+        rosterParty: "Democratic",
+        includeParty: true,
+      })
+    ).rejects.toBeInstanceOf(AmbiguousCandidateIdentityError);
+
+    expect(query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.candidates"))).toBe(false);
+  });
+
+  it("takes the per-person advisory lock before reading candidate identity", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ id: "candidate-new" }], rowCount: 1 });
+
+    await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ fec_ids: ["P80000001"] }),
+      state: "US",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    const lockSql = String(query.mock.calls[0]?.[0]);
+    expect(lockSql).toContain("pg_advisory_xact_lock");
+    expect(query.mock.calls[0]?.[1]).toEqual(["jane candidate"]);
+    expect(String(query.mock.calls[1]?.[0])).toContain("FROM public.candidates");
   });
 });

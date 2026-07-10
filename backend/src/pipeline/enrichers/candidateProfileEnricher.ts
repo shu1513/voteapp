@@ -81,6 +81,7 @@ import {
   splitDisplayNameToFirstLast,
 } from "../../utils/candidateIdentity.js";
 import {
+  AmbiguousCandidateIdentityError,
   findOrCreateCandidateFromProfile,
   hasAtLeastOneHardIdentifier,
 } from "../candidates/candidateProfileIdentity.js";
@@ -1301,23 +1302,25 @@ async function electionTicketAlreadyLinksRunningMate(
   return (result.rowCount ?? 0) > 0;
 }
 
-async function electionAlreadyHasCandidateName(
+async function findElectionLinkedCandidateByName(
   pool: Pool,
   electionId: string,
   displayName: string
-): Promise<boolean> {
+): Promise<{ candidateId: string; fecIds: string[] } | null> {
   const incomingName = splitDisplayNameToFirstLast(displayName);
   const incomingFirstLast = normalizeCandidateName(`${incomingName.firstName} ${incomingName.lastName}`);
   if (incomingFirstLast.length === 0) {
-    return false;
+    return null;
   }
 
   const result = await pool.query<{
+    id: string;
     first_name: string;
     last_name: string;
+    fec_ids: unknown;
   }>(
     `
-      SELECT c.first_name, c.last_name
+      SELECT c.id, c.first_name, c.last_name, c.fec_ids
       FROM public.candidate_elections AS ce
       JOIN public.candidates AS c
         ON c.id = ce.candidate_id
@@ -1327,14 +1330,26 @@ async function electionAlreadyHasCandidateName(
     [electionId]
   );
 
-  for (const row of result.rows) {
-    const existingFirstLast = normalizeCandidateName(`${row.first_name} ${row.last_name}`);
-    if (existingFirstLast === incomingFirstLast) {
-      return true;
-    }
+  const matches = result.rows.filter(
+    (row) => normalizeCandidateName(`${row.first_name} ${row.last_name}`) === incomingFirstLast
+  );
+  if (matches.length === 0) {
+    return null;
   }
-
-  return false;
+  // Two same-name candidates linked to one election means duplicate rows
+  // already exist; replaying the fanout against an arbitrary one would
+  // attach records/finance to the wrong duplicate. Park for operator merge
+  // (mirrors the identity layer's ambiguity guards).
+  if (matches.length > 1) {
+    throw new ParkCandidateProfileDraftError(
+      `multiple candidates named "${displayName}" are linked to election ${electionId}; merge the duplicate rows before this draft can be retried`
+    );
+  }
+  const match = matches[0]!;
+  const fecIds = Array.isArray(match.fec_ids)
+    ? match.fec_ids.filter((value): value is string => typeof value === "string")
+    : [];
+  return { candidateId: match.id, fecIds };
 }
 
 function effectivePresidentialParty(
@@ -1556,20 +1571,10 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             ticketLeadDisplayName &&
             (await electionTicketAlreadyLinksRunningMate(pool, contextId, ticketLeadDisplayName, candidateDisplayName))
           ) {
-            await redis.xAck(
-              STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
-              STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
-              entry.id
-            );
-            continue;
-          }
-
-          if (
-            contextType === "election" &&
-            electionTicketRole !== "running_mate" &&
-            !skipPerElectionNameDedupe &&
-            (await electionAlreadyHasCandidateName(pool, contextId, candidateDisplayName))
-          ) {
+            // Unlike the linked-candidate gate below, there is no fanout to
+            // replay here: running mates deliberately get no finance sync and
+            // no record drafts for the ticket election (see the post-commit
+            // fanout guard), so acking a redelivered mate loses nothing.
             await redis.xAck(
               STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
               STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
@@ -1581,6 +1586,48 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           const rosterParty = entry.message.roster_party?.trim() || undefined;
           const rosterIncumbent = parseBooleanField(entry.message.roster_is_incumbent);
           const messageSeedUrls = parseSeedUrls(entry.message.seed_urls);
+
+          if (contextType === "election" && electionTicketRole !== "running_mate" && !skipPerElectionNameDedupe) {
+            const linkedCandidate = await findElectionLinkedCandidateByName(pool, contextId, candidateDisplayName);
+            if (linkedCandidate) {
+              // The candidate write committed on an earlier delivery, but the
+              // post-commit fanout (finance sync + record drafts) may have
+              // failed before the ack — the fanout is not part of the
+              // transaction. Acking here without replaying it would lose the
+              // candidate's record research permanently (record rollover is
+              // flag-gated) and delay finance a day, so replay from persisted
+              // state. A redundant replay is cheap: record drafts dedupe on
+              // their 24h emit marker and the finance sync overwrites the
+              // same candidate/cycle rows it would have written anyway.
+              const linkedContext = await resolveElectionDraftContext({
+                pool,
+                electionId: contextId,
+                rosterParty,
+                rosterIncumbent,
+                messageSeedUrls,
+              });
+              if (linkedContext && linkedContext.type === "election") {
+                await enqueueCandidateProfileFinanceSyncFanoutForLinkedElection({
+                  context: linkedContext,
+                  candidateId: linkedCandidate.candidateId,
+                  fecIds: linkedCandidate.fecIds,
+                });
+                await enqueueCandidateRecordDrafts(redis, [
+                  {
+                    candidateId: linkedCandidate.candidateId,
+                    electionId: contextId,
+                    runId,
+                  },
+                ]);
+              }
+              await redis.xAck(
+                STAGING_CANDIDATE_PROFILE_DRAFT_STREAM,
+                STAGING_CANDIDATE_PROFILE_ENRICHER_GROUP,
+                entry.id
+              );
+              continue;
+            }
+          }
           const draftContext =
             contextType === "presidential_cycle"
               ? await resolvePresidentialCycleDraftContext({
@@ -1808,7 +1855,9 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
           );
         } catch (error) {
           const reason = toReason(error);
-          if (error instanceof ParkCandidateProfileDraftError) {
+          if (error instanceof ParkCandidateProfileDraftError || error instanceof AmbiguousCandidateIdentityError) {
+            // Ambiguous identity means duplicate candidate rows already
+            // exist; retrying cannot resolve it — park for operator merge.
             await parkMessage(redis, entry, reason, deliveryCount);
             continue;
           }

@@ -319,6 +319,21 @@ export async function runElectionsEnricher(options: EnricherOptions = {}): Promi
 
           const row = await getStagingRow(pool, ingestKey);
           if (!row || row.status !== "pending" || row.schema_version !== ELECTION_DRAFT_SCHEMA_VERSION) {
+            // A pending row already carrying the enrichment schema means a
+            // previous run updated the row but died before publishing to the
+            // pending stream (the DB write and the XADD are not atomic).
+            // Acking without republishing would strand the row as 'pending'
+            // forever — the validator only sees stream messages. Republish
+            // from the persisted row; duplicates are safe because every
+            // downstream consumer re-checks status/schema before acting.
+            if (row && row.status === "pending" && row.schema_version === ELECTION_ENRICHMENT_SCHEMA_VERSION) {
+              await redis.xAdd(STAGING_PENDING_STREAM, "*", {
+                ingest_key: ingestKey,
+                item_type: STAGING_ITEM_TYPE_ELECTION,
+                run_id: row.run_id ?? "",
+                payload: JSON.stringify(row.payload),
+              });
+            }
             await redis.xAck(STAGING_DRAFT_STREAM, STAGING_ELECTIONS_ENRICHER_GROUP, entry.id);
             continue;
           }

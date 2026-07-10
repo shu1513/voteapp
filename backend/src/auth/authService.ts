@@ -101,6 +101,7 @@ type AuthUserRow = {
   first_name: string;
   password_hash: string;
   email_verified: boolean;
+  session_epoch: number;
 };
 
 function normalizeEmail(email: string): string {
@@ -174,7 +175,8 @@ async function findActiveUserByEmail(db: Queryable, email: string): Promise<Auth
         email::text AS email,
         first_name,
         password_hash,
-        email_verified
+        email_verified,
+        session_epoch
       FROM public.users
       WHERE email = $1::citext
         AND deleted_at IS NULL
@@ -192,7 +194,8 @@ async function findActiveUserByEmailForUpdate(db: Queryable, email: string): Pro
         email::text AS email,
         first_name,
         password_hash,
-        email_verified
+        email_verified,
+        session_epoch
       FROM public.users
       WHERE email = $1::citext
         AND deleted_at IS NULL
@@ -227,7 +230,8 @@ async function findActiveUserByIdForUpdate(db: Queryable, userId: string): Promi
         email::text AS email,
         first_name,
         password_hash,
-        email_verified
+        email_verified,
+        session_epoch
       FROM public.users
       WHERE id = $1::uuid
         AND deleted_at IS NULL
@@ -276,6 +280,11 @@ async function createOrRefreshAuthUser(
   }
 
   if (existing) {
+    // Re-registering an unverified address replaces its password, so it must
+    // also revoke existing sessions (epoch bump). Otherwise an attacker who
+    // pre-registered the victim's email and logged in would keep a live
+    // session across the victim's registration — and inherit the account the
+    // moment the victim verifies.
     const updated = await client.query<AuthUserRow>(
       `
         UPDATE public.users
@@ -284,6 +293,7 @@ async function createOrRefreshAuthUser(
           password_hash = $3,
           accepted_terms_version = $4,
           accepted_terms_at = now(),
+          session_epoch = session_epoch + 1,
           updated_at = now()
         WHERE id = $1::uuid
           AND deleted_at IS NULL
@@ -292,7 +302,8 @@ async function createOrRefreshAuthUser(
           email::text AS email,
           first_name,
           password_hash,
-          email_verified
+          email_verified,
+          session_epoch
       `,
       [existing.id, input.firstName, input.passwordHash, input.acceptedTermsVersion]
     );
@@ -319,7 +330,8 @@ async function createOrRefreshAuthUser(
         email::text AS email,
         first_name,
         password_hash,
-        email_verified
+        email_verified,
+        session_epoch
     `,
     [input.firstName, input.email, input.passwordHash, input.acceptedTermsVersion]
   );
@@ -451,10 +463,16 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           throw new TypeError("Verification token is invalid or expired");
         }
 
+        // Verification upgrades every session's privileges, so revoke the
+        // pre-verification ones (epoch bump): a session created against the
+        // unverified account — e.g. by whoever registered the address first —
+        // must not silently become a verified-account session. The frontend
+        // already tells the user to log in after verifying.
         const updated = await client.query(
           `
             UPDATE public.users
             SET email_verified = true,
+                session_epoch = session_epoch + 1,
                 updated_at = now()
             WHERE id = $1::uuid
               AND deleted_at IS NULL
@@ -504,9 +522,15 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         }
       }
 
+      // The epoch was read together with the password hash. If a concurrent
+      // reset committed (and bumped the epoch) between the verify above and
+      // this create, the session carries the stale epoch and fails the
+      // per-request epoch check — an old-password login cannot outlive a
+      // reset even though this code never re-reads the row.
       const session = await createAuthSession(options.redis, {
         userId: user.id,
         ttlSeconds: sessionTtlSeconds,
+        sessionEpoch: user.session_epoch,
       });
       return { sessionId: session.sessionId };
     },
@@ -580,10 +604,14 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         // so the token is not wasted.
         const passwordHash = await hashPassword(input.password);
 
+        // Bumping session_epoch in the same transaction is the guaranteed
+        // revocation: every session created under the old epoch fails the
+        // per-request check the moment this commits, regardless of Redis.
         const updated = await client.query(
           `
             UPDATE public.users
             SET password_hash = $2,
+                session_epoch = session_epoch + 1,
                 updated_at = now()
             WHERE id = $1::uuid
               AND deleted_at IS NULL
@@ -603,12 +631,18 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         client.release();
       }
 
-      // Invalidate sessions only after the password change is committed: a
-      // rollback must not log the user out of everything, and a concurrent
-      // old-password login can no longer create a session behind a
-      // pre-commit invalidation.
+      // Best-effort immediate cleanup after commit: the epoch bump above is
+      // what revokes access, so a Redis failure here must not fail a reset
+      // that already succeeded (the token is consumed and unrepeatable).
       if (userIdToInvalidate) {
-        await destroyAuthSessionsByUserId(options.redis, { userId: userIdToInvalidate });
+        try {
+          await destroyAuthSessionsByUserId(options.redis, { userId: userIdToInvalidate });
+        } catch (error) {
+          console.warn(
+            "auth resetPassword session cleanup failed (epoch bump already revoked access):",
+            error instanceof Error ? error.message : String(error)
+          );
+        }
       }
     },
 
@@ -620,6 +654,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       validatePasswordPolicy(input.newPassword);
 
       const client = await options.db.connect();
+      let newSessionEpoch: number;
       try {
         await client.query("BEGIN");
         const user = await findActiveUserByIdForUpdate(client, userId);
@@ -629,16 +664,26 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         }
 
         const passwordHash = await hashPassword(input.newPassword);
-        await client.query(
+        // Same-transaction epoch bump: guaranteed revocation of every
+        // existing session (see resetPassword). RETURNING feeds the fresh
+        // session below so the caller stays logged in under the new epoch.
+        const updated = await client.query<{ session_epoch: number }>(
           `
             UPDATE public.users
             SET password_hash = $2,
+                session_epoch = session_epoch + 1,
                 updated_at = now()
             WHERE id = $1::uuid
               AND deleted_at IS NULL
+            RETURNING session_epoch
           `,
           [userId, passwordHash]
         );
+        const bumpedEpoch = updated.rows[0]?.session_epoch;
+        if (typeof bumpedEpoch !== "number") {
+          throw new Error("Failed to update user password");
+        }
+        newSessionEpoch = bumpedEpoch;
         await client.query("COMMIT");
       } catch (error) {
         await rollbackQuietly(client);
@@ -649,11 +694,21 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
 
       // Rotate every session (including the caller's) after commit, then hand
       // back a fresh one so the caller stays logged in: any session an
-      // attacker may hold dies with the old password.
-      await destroyAuthSessionsByUserId(options.redis, { userId });
+      // attacker may hold dies with the old password. The destroy is
+      // best-effort cleanup — the epoch bump already revoked those sessions —
+      // but the fresh session must be created, so its failure still throws.
+      try {
+        await destroyAuthSessionsByUserId(options.redis, { userId });
+      } catch (error) {
+        console.warn(
+          "auth changePassword session cleanup failed (epoch bump already revoked access):",
+          error instanceof Error ? error.message : String(error)
+        );
+      }
       const session = await createAuthSession(options.redis, {
         userId,
         ttlSeconds: sessionTtlSeconds,
+        sessionEpoch: newSessionEpoch,
       });
       return { sessionId: session.sessionId };
     },
@@ -829,12 +884,45 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         client.release();
       }
 
-      await destroyAuthSessionsByUserId(options.redis, { userId });
+      // Best-effort: a deleted user already fails the per-request epoch
+      // lookup (deleted_at filter), so a Redis failure here must not surface
+      // an error for an account that is already gone.
+      try {
+        await destroyAuthSessionsByUserId(options.redis, { userId });
+      } catch (error) {
+        console.warn(
+          "auth deleteAccount session cleanup failed (deleted user already fails per-request auth):",
+          error instanceof Error ? error.message : String(error)
+        );
+      }
     },
 
     async logoutAll(input) {
       const userId = normalizeUserId(input.userId);
-      await destroyAuthSessionsByUserId(options.redis, { userId });
+      // Epoch bump first: revocation must not depend on Redis. The caller's
+      // own session dies too — logout-all means everywhere, and the API
+      // clears the cookie in the same response.
+      await options.db.query(
+        `
+          UPDATE public.users
+          SET session_epoch = session_epoch + 1,
+              updated_at = now()
+          WHERE id = $1::uuid
+            AND deleted_at IS NULL
+        `,
+        [userId]
+      );
+      // Best-effort, like the other credential flows: the bump above already
+      // revoked every session, so a Redis failure must not fail a logout-all
+      // that succeeded from a security standpoint.
+      try {
+        await destroyAuthSessionsByUserId(options.redis, { userId });
+      } catch (error) {
+        console.warn(
+          "auth logoutAll session cleanup failed (epoch bump already revoked access):",
+          error instanceof Error ? error.message : String(error)
+        );
+      }
     },
   };
 }
