@@ -74,9 +74,11 @@ services:
     startCommand: npm run start
     envVars:
       # Render private-network address of the API service; loader fetches
-      # never leave Render's network.
+      # never leave Render's network. Render appends a per-service suffix to
+      # the internal hostname (this deploy got voteapp-api-pzns), so this is
+      # the actual assigned host, not the bare service name.
       - key: API_INTERNAL_URL
-        value: http://voteapp-api:10000
+        value: http://voteapp-api-pzns:10000
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
         value: CF-Connecting-IP
 
