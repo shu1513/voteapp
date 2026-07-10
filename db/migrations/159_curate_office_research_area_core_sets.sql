@@ -19,7 +19,13 @@
 --     Attorney + womens_reproductive_rights (charging discretion under
 --     state abortion laws).
 -- Deliberately untouched: plenary offices whose breadth is real (President/
--- VP, Governor, U.S. Senator/Representative, state legislators). The
+-- VP, Governor, U.S. Senator/Representative, state legislators). Lieutenant
+-- Governor keeps the BROAD state-legislator area set on purpose: the schema
+-- has one shared office row with no jurisdiction dimension, and Lt Gov
+-- powers vary by state more than any other office (TX/GA: presides over the
+-- senate and appoints its committees across every policy area; UT/AK: chief
+-- election officer; elsewhere largely ceremonial). The union of real formal
+-- powers is the honest set until offices can vary by state. The
 -- federal 17-area set intentionally excludes state-owned areas
 -- (public_education_quality, election_integrity) per existing design.
 --
@@ -83,7 +89,7 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('statewide', 'Corporation Commissioner', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'public_infrastructure']::text[]),
     ('statewide', 'Labor Commissioner', ARRAY['civil_rights', 'corporate_accountability', 'reduce_wealth_gap', 'social_programs_and_welfare']::text[]),
     ('statewide', 'Land Commissioner', ARRAY['corporate_accountability', 'environment_and_public_health', 'government_spending_reduction', 'housing_affordability']::text[]),
-    ('statewide', 'Lieutenant Governor', ARRAY['government_efficiency', 'government_spending_reduction', 'public_infrastructure']::text[]),
+    ('statewide', 'Lieutenant Governor', ARRAY['anti_corruption', 'civil_rights', 'corporate_accountability', 'data_privacy', 'election_integrity', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'personal_income_tax_reduction', 'public_education_quality', 'public_infrastructure', 'public_safety_and_crime_control', 'reduce_wealth_gap', 'social_programs_and_welfare', 'womens_reproductive_rights']::text[]),
     ('statewide', 'Public Service Commissioner', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'public_infrastructure']::text[]),
     ('statewide', 'Railroad Commissioner', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'public_infrastructure']::text[]),
     ('statewide', 'Secretary of State', ARRAY['anti_corruption', 'civil_rights', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
@@ -95,43 +101,49 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('statewide', 'State Treasurer', ARRAY['anti_corruption', 'government_efficiency', 'government_spending_reduction']::text[]),
     ('statewide', 'Superintendent of Public Instruction', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality']::text[]);
 
--- Fail fast rather than silently shrinking an office. The reconcile below
+-- Fail fast rather than silently mis-shaping an office. The reconcile below
 -- deletes every link outside the curated set and re-inserts the curated ones by
 -- joining research_areas on slug; a curated slug that resolves to no research
--- area would therefore be deleted-and-not-restored, with no error.
+-- area would therefore be deleted-and-not-restored (linked offices) or produce
+-- a silently incomplete set (offices being linked for the first time), with no
+-- error either way.
 --
--- The check is deliberately scoped to curated offices that ALREADY have links,
--- i.e. exactly the offices the DELETE can damage. `db:migrate` runs before
--- `db:seed:research-areas` and `elections:offices:seed` (see DB_DEPLOYMENT.md),
--- so on a fresh database research_areas is still incomplete; an unscoped
--- "every curated slug must exist" guard would abort the migration there. On a
--- fresh database no office has links yet, so this guard correctly checks
--- nothing and the seed layer produces the curated state afterwards. On an
--- already-seeded database (this migration's real target, and the state the seed
--- file's own curation pass runs in) every curated office has links, so coverage
--- is complete.
+-- Bootstrap is detected globally, not per office: only when NO curated office
+-- has any link yet (a fresh migrations-only database, where db:migrate runs
+-- before db:seed:research-areas per DB_DEPLOYMENT.md and research_areas is
+-- legitimately still incomplete) is the check skipped — the reconcile's insert
+-- is then healed by the seed layer moments later. If even one curated office
+-- has links, this is a live database and EVERY curated slug must resolve, so a
+-- partially-installed database cannot hand an unlinked office an incomplete
+-- area set.
 DO $$
 DECLARE
+    curated_link_count bigint;
     missing_slugs text;
 BEGIN
-    SELECT string_agg(DISTINCT bad.slug, ', ' ORDER BY bad.slug)
+    SELECT COUNT(*)
+    INTO curated_link_count
+    FROM public.office_research_areas ora
+    JOIN public.offices o ON o.id = ora.office_id
+    JOIN curated_office_core_areas c
+      ON c.scope = o.scope AND c.canonical_name = o.canonical_name;
+
+    IF curated_link_count = 0 THEN
+        RETURN; -- bootstrap: nothing the reconcile can damage or half-fill persistently
+    END IF;
+
+    SELECT string_agg(DISTINCT s.slug, ', ' ORDER BY s.slug)
     INTO missing_slugs
     FROM (
-        SELECT unnest(c.slugs) AS slug
-        FROM curated_office_core_areas c
-        JOIN public.offices o
-          ON o.scope = c.scope AND o.canonical_name = c.canonical_name
-        WHERE EXISTS (
-            SELECT 1 FROM public.office_research_areas ora WHERE ora.office_id = o.id
-        )
-    ) bad
+        SELECT DISTINCT unnest(slugs) AS slug FROM curated_office_core_areas
+    ) s
     WHERE NOT EXISTS (
-        SELECT 1 FROM public.research_areas ra WHERE ra.slug = bad.slug
+        SELECT 1 FROM public.research_areas ra WHERE ra.slug = s.slug
     );
 
     IF missing_slugs IS NOT NULL THEN
         RAISE EXCEPTION
-            'Curated research-area slugs not found in public.research_areas: %. Refusing to reconcile: these links would be deleted and never restored.',
+            'Curated research-area slugs not found in public.research_areas: %. Refusing to reconcile: linked offices would lose these links and unlinked offices would receive incomplete sets.',
             missing_slugs;
     END IF;
 END
