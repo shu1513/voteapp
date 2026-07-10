@@ -155,7 +155,6 @@ export function mapLouisianaFinanceOffice(input: {
 export function isLouisianaFinanceEligibleOffice(input: {
   officeScope: string;
   officeCanonicalName: string;
-  district?: string | null;
 }): boolean {
   return matchLouisianaFinanceEligibleOffice(input) !== null;
 }
