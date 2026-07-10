@@ -70,8 +70,17 @@ services:
     region: ohio
     plan: free
     rootDir: frontend
-    buildCommand: npm ci && npm run build
+    # The npm lockfile lives at the repo root (npm workspaces: frontend +
+    # packages/*), so install there; build and start stay in frontend/.
+    buildCommand: cd .. && npm ci && cd frontend && npm run build
     startCommand: npm run start
+    # rootDir alone would ignore changes to the shared packages/ directory.
+    buildFilter:
+      paths:
+        - frontend/**
+        - packages/**
+        - package.json
+        - package-lock.json
     envVars:
       # Render private-network address of the API service; loader fetches
       # never leave Render's network.
