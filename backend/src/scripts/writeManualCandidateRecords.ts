@@ -29,13 +29,20 @@ import {
   writeManualResearchRepairReport,
   type ManualResearchRepairGap,
 } from "./manualResearchRepairReport.js";
+import {
+  SWEEP_COMPLETENESS_GAP_IDS,
+  parseSweepEvidencePayload,
+  sweepEvidenceMissingError,
+  sweepEvidenceRequired,
+} from "./candidateRecordSweepEvidence.js";
 
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
+    "  npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--evidence-file evidence.json] [--repair-report-file file] [--dry-run]",
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
+    'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
   ].join("\n");
 }
 
@@ -318,6 +325,7 @@ async function main(): Promise<void> {
   const recordsFile = readFlag("--records-file");
   const labelsFile = readFlag("--labels-file");
   const repairReportFile = readFlag("--repair-report-file");
+  const evidenceFile = readFlag("--evidence-file");
   const strictQualityGate = hasFlag("--strict-quality-gate");
   const confirmedGapIds = normalizeConfirmedGaps(readRepeatedFlag("--confirmed-gap"));
   if (!candidateId || !electionId || !recordsFile || !labelsFile) {
@@ -435,6 +443,34 @@ async function main(): Promise<void> {
       confirmedGapIds
     );
     const blockingQualityGaps = qualityGaps.filter(isBlockingCandidateRecordQualityGap);
+
+    // Sweep-completeness guard: an empty verified record set stamps
+    // `last_records_searched_at` even without any confirmed-gap flag, an
+    // all-neutral label set makes the same finished-issue-search claim in
+    // ANY mode (strict or not), and the no_records_found /
+    // only_general_labels flags assert a finished discovery sweep outright.
+    // Every such claim requires the per-question evidence table; a bare
+    // assertion is refused (false gaps poison the candidate forever — the
+    // completion stamp stops future re-search). Evaluated AFTER the quality
+    // gaps are built so the neutral-only case is caught even when the
+    // operator passes no flag and skips --strict-quality-gate.
+    const evidenceIsRequired =
+      sweepEvidenceRequired({
+        recordCount: validatedRecords.records.length,
+        confirmedGapIds,
+      }) || qualityGaps.some((gap) => SWEEP_COMPLETENESS_GAP_IDS.has(gap.id));
+    let sweepEvidenceEntryCount: number | null = null;
+    if (evidenceIsRequired) {
+      if (!evidenceFile) {
+        throw sweepEvidenceMissingError("candidate-records");
+      }
+      const parsedEvidence = parseSweepEvidencePayload(await readJsonFile(evidenceFile));
+      if (!parsedEvidence.ok) {
+        throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
+      }
+      sweepEvidenceEntryCount = parsedEvidence.entries.length;
+    }
+
     if (repairReportFile && qualityGaps.length > 0) {
       await writeRecordsRepairReport({
         reportFile: repairReportFile,
@@ -472,6 +508,10 @@ async function main(): Promise<void> {
               strict: strictQualityGate,
               confirmedGaps: [...confirmedGapIds].sort(),
               gaps: qualityGaps,
+            },
+            sweepEvidence: {
+              required: evidenceIsRequired,
+              entryCount: sweepEvidenceEntryCount,
             },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },
@@ -568,6 +608,10 @@ async function main(): Promise<void> {
             processed: upsert.processed,
             tagsDeleted: staleTagDelete.deleted,
             tagsProcessed: tagResult.processed,
+            sweepEvidence: {
+              required: evidenceIsRequired,
+              entryCount: sweepEvidenceEntryCount,
+            },
             recordsSearchCompletedThrough: researchedThrough.toISOString().slice(0, 10),
           },
           null,
