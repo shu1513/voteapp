@@ -313,6 +313,17 @@ export function parseCanonicalElectionPayload(payload: unknown): ParseResult {
         reason: `payload.entries[${index}] is missing discovery_contest_family; ${input.district_type} districts research per-family passes (non_judicial_office|judicial_office|ballot_measure${input.district_type === "statewide" ? "|us_senate" : ""})`,
       };
     }
+    // The inverse also holds: combined-pass types have no family plan (the
+    // AI path maps scope "all" to no family), and a persisted family would
+    // flip downstream office matching and record research to that family's
+    // objective — e.g. a us_house entry stamped judicial_office switches the
+    // race to the judicial research mode.
+    if (!districtTypeRequiresContestFamily(input.district_type) && parsed.discovery_contest_family) {
+      return {
+        ok: false,
+        reason: `payload.entries[${index}] must omit discovery_contest_family; ${input.district_type} districts research one combined pass with no per-entry family`,
+      };
+    }
     entries.push(parsed);
   }
 

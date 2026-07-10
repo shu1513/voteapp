@@ -249,6 +249,30 @@ describe("parseCanonicalElectionPayload", () => {
 
     expect(result.ok).toBe(true);
   });
+
+  it("rejects combined-pass district entries carrying a discovery_contest_family", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "House District 3",
+      district_type: "us_house",
+      state: "CA",
+      entries: [
+        {
+          official_ballot_title: "United States Representative, District 3",
+          election_date: "2026-11-03",
+          race_type: "office",
+          discovery_contest_family: "judicial_office",
+          sources: ["https://example.gov/elections/us-house-3"],
+        },
+      ],
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      reason:
+        "payload.entries[0] must omit discovery_contest_family; us_house districts research one combined pass with no per-entry family",
+    });
+  });
 });
 
 describe("parseAiElectionEntriesPayload", () => {
