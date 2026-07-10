@@ -1,5 +1,7 @@
 export const CORS_ALLOW_METHODS = "GET, POST, PUT, DELETE, OPTIONS";
-export const CORS_ALLOW_HEADERS = "content-type";
+// authorization: Bearer session transport for mobile clients. Native requests
+// skip CORS entirely; this covers browser-based dev tooling hitting the API.
+export const CORS_ALLOW_HEADERS = "authorization, content-type";
 export const CORS_MAX_AGE_SECONDS = "600";
 
 export type HeaderRecord = Record<string, string | string[] | undefined>;
