@@ -54,6 +54,22 @@ describe("Louisiana finance eligible offices", () => {
     });
     expect(isLouisianaFinanceEligibleOffice({ officeScope: "county", officeCanonicalName: "Sheriff" })).toBe(false);
   });
+
+  it("treats legislative offices as eligible without a district, unlike committee mapping", () => {
+    expect(
+      isLouisianaFinanceEligibleOffice({ officeScope: "state_lower", officeCanonicalName: "State Representative" })
+    ).toBe(true);
+    expect(
+      isLouisianaFinanceEligibleOffice({ officeScope: "state_upper", officeCanonicalName: "State Senator" })
+    ).toBe(true);
+    expect(isLouisianaFinanceEligibleOffice({ officeScope: "state_upper", officeCanonicalName: "Governor" })).toBe(false);
+    expect(
+      mapLouisianaFinanceOffice({ officeScope: "state_lower", officeCanonicalName: "State Representative" })
+    ).toBeNull();
+    expect(
+      mapLouisianaFinanceOffice({ officeScope: "state_upper", officeCanonicalName: "State Senator" })
+    ).toBeNull();
+  });
 });
 
 describe("Louisiana candidate committee resolver", () => {

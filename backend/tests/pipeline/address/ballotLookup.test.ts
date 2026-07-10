@@ -4946,6 +4946,99 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[7]?.[0]).toContain("public.mn_candidate_finance_summaries");
   });
 
+  it("includes Louisiana finance summaries for legislative races whose election rows carry no district", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    vi.stubEnv("LOUISIANA_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "state_lower",
+            geoid_compact: "22042",
+            district_name: "Louisiana House District 42",
+            state: "LA",
+            state_fips: "22",
+            representation_power_score: "40",
+            race_type: "office",
+            official_ballot_title: "State Representative District 42",
+            election_date: "2027-10-09",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_id: officeId,
+            office_scope: "state_lower",
+            office_canonical_name: "State Representative",
+            office_summary: "Member of the Louisiana House of Representatives.",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Jane Bayou",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "declared",
+            summary: "Candidate summary.",
+            current_office: "State Representative",
+            state: "LA",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            committee_id: "54321",
+            election_year: 2027,
+            total_receipts: "40000.00",
+            direct_contribution_total: "40000.00",
+            total_disbursements: "15000.00",
+            cash_on_hand: "25000.00",
+            outside_support_total: null,
+            outside_oppose_total: null,
+            source_url: null,
+            last_synced_at: "2026-06-21 04:05:00+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toMatchObject({
+      source: "LOUISIANA_ETHICS",
+      cycle: 2027,
+      controlled_committee_id: "54321",
+      direct_campaign: {
+        total_raised: 40000,
+        total_spent: 15000,
+        cash_on_hand: 25000,
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(12);
+    expect(query.mock.calls[7]?.[0]).toContain("public.la_candidate_finance_summaries");
+    expect(query.mock.calls[8]?.[0]).toContain("public.la_candidate_finance_direct_breakdowns");
+  });
+
   it("includes locally synced Massachusetts finance summaries for Massachusetts candidate detail", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     vi.stubEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED", "true");

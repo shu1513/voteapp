@@ -79,60 +79,76 @@ export function normalizeLouisianaFinanceOfficeName(value: string | null | undef
   }
 }
 
-export function mapLouisianaFinanceOffice(input: {
+function matchLouisianaFinanceEligibleOffice(input: {
   officeScope: string;
   officeCanonicalName: string;
-  district?: string | null;
-}): LouisianaFinanceOfficeSearchInput | null {
+}): { officeScope: LouisianaFinanceOfficeSearchInput["officeScope"]; officeName: string } | null {
   const officeScope = input.officeScope.trim().toLowerCase();
   const officeName = normalizeLouisianaFinanceOfficeName(input.officeCanonicalName);
-  const district = normalizeLouisianaFinanceDistrict(input.district);
+  if (officeName === null) {
+    return null;
+  }
 
   if (
     officeScope === "statewide" &&
-    officeName !== null &&
     officeName !== "State Senator" &&
     officeName !== "State Lower Chamber Legislator"
   ) {
-    return {
-      officeScope: "statewide",
-      officeName,
-      district: null,
-      requiresDistrict: false,
-    };
+    return { officeScope: "statewide", officeName };
   }
 
   if (officeScope === "state_upper" && officeName === "State Senator") {
-    if (!district) {
-      return null;
-    }
-    return {
-      officeScope: "state_upper",
-      officeName,
-      district,
-      requiresDistrict: true,
-    };
+    return { officeScope: "state_upper", officeName };
   }
 
   if (officeScope === "state_lower" && officeName === "State Lower Chamber Legislator") {
-    if (!district) {
-      return null;
-    }
-    return {
-      officeScope: "state_lower",
-      officeName,
-      district,
-      requiresDistrict: true,
-    };
+    return { officeScope: "state_lower", officeName };
   }
 
   return null;
 }
 
+export function mapLouisianaFinanceOffice(input: {
+  officeScope: string;
+  officeCanonicalName: string;
+  district?: string | null;
+}): LouisianaFinanceOfficeSearchInput | null {
+  const match = matchLouisianaFinanceEligibleOffice(input);
+  if (!match) {
+    return null;
+  }
+
+  if (match.officeScope === "statewide") {
+    return {
+      officeScope: "statewide",
+      officeName: match.officeName,
+      district: null,
+      requiresDistrict: false,
+    };
+  }
+
+  const district = normalizeLouisianaFinanceDistrict(input.district);
+  if (!district) {
+    return null;
+  }
+  return {
+    officeScope: match.officeScope,
+    officeName: match.officeName,
+    district,
+    requiresDistrict: true,
+  };
+}
+
+// Eligibility is scope+name only, like the other states' is*FinanceEligibleOffice
+// predicates: ballot lookup calls this without a district (its election rows carry
+// none), and by then the la_candidate_finance_links table already scopes
+// candidate+election, so district disambiguation happened at link time. The
+// district requirement lives in mapLouisianaFinanceOffice, which the
+// committee-matching sync side uses.
 export function isLouisianaFinanceEligibleOffice(input: {
   officeScope: string;
   officeCanonicalName: string;
   district?: string | null;
 }): boolean {
-  return mapLouisianaFinanceOffice(input) !== null;
+  return matchLouisianaFinanceEligibleOffice(input) !== null;
 }
