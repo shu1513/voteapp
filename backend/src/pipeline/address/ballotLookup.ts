@@ -11534,25 +11534,25 @@ async function loadFullElectionDetails(
         .filter((officeId): officeId is string => typeof officeId === "string" && officeId.length > 0)
     ),
   ];
-  const officeAllowedAreaResult =
-    candidateRecordTagResult.rows.length === 0 || electionOfficeIds.length === 0
-      ? { rows: [] as OfficeAllowedResearchAreaRow[] }
-      : await db.query<OfficeAllowedResearchAreaRow>(
-          `
-            SELECT
-              ora.office_id,
-              ora.research_area_id
-            FROM public.office_research_areas AS ora
-            WHERE ora.office_id = ANY($1::uuid[])
-            UNION ALL
-            SELECT
-              NULL::uuid AS office_id,
-              ra.id AS research_area_id
-            FROM public.research_areas AS ra
-            WHERE ra.slug = ANY($2::text[])
-          `,
-          [electionOfficeIds, [GENERAL_RESEARCH_AREA_SLUG, INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG]]
-        );
+  const shouldScopeTagsToOffice = candidateRecordTagResult.rows.length > 0 && electionOfficeIds.length > 0;
+  const officeAllowedAreaResult = !shouldScopeTagsToOffice
+    ? { rows: [] as OfficeAllowedResearchAreaRow[] }
+    : await db.query<OfficeAllowedResearchAreaRow>(
+        `
+          SELECT
+            ora.office_id,
+            ora.research_area_id
+          FROM public.office_research_areas AS ora
+          WHERE ora.office_id = ANY($1::uuid[])
+          UNION ALL
+          SELECT
+            NULL::uuid AS office_id,
+            ra.id AS research_area_id
+          FROM public.research_areas AS ra
+          WHERE ra.slug = ANY($2::text[])
+        `,
+        [electionOfficeIds, [GENERAL_RESEARCH_AREA_SLUG, INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG]]
+      );
   const universalAreaIds = new Set<string>();
   const allowedAreaIdsByOffice = new Map<string, Set<string>>();
   for (const row of officeAllowedAreaResult.rows) {
@@ -11568,7 +11568,12 @@ async function loadFullElectionDetails(
     records: BallotLookupCandidateRecord[],
     officeId: string | null
   ): BallotLookupCandidateRecord[] => {
-    if (officeId === null || officeAllowedAreaResult.rows.length === 0) {
+    // Gate on whether the allowed-areas query ran, not on its row count: a
+    // query that runs and finds nothing means nothing is allowed for these
+    // offices beyond what the rows say, so filtering must still apply
+    // (matching loadAllowedResearchAreasForOfficeId, where an empty result
+    // rejects every non-listed area) rather than silently passing tags through.
+    if (officeId === null || !shouldScopeTagsToOffice) {
       return records;
     }
     const allowed = allowedAreaIdsByOffice.get(officeId);
