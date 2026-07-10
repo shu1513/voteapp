@@ -91,8 +91,8 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     "- summary is who the person is and what they have done: current role, career, qualifications.",
     "- The app always shows the summary next to the contest, so in summary do not name the office, election, election date, or stage the candidate is running for.",
     '- No campaign-status or horse-race content in summary: no vote percentages, no primary results, no opponents, no "running for...", "seeking re-election", or "faces X in the runoff".',
-    ...PLAIN_LANGUAGE_STYLE_RULES,
     "- Include sources used for this profile and identity evidence.",
+    ...PLAIN_LANGUAGE_STYLE_RULES,
     "- return JSON only (no prose, no markdown).",
     ...(seedUrls.length > 0
       ? [

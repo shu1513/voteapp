@@ -85,8 +85,8 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
     "- If neither action/event date nor publication date is available, omit that record.",
     "- Use one row per concrete record; do not duplicate the same source/event.",
     "- Keep descriptions neutral and factual.",
-    ...PLAIN_LANGUAGE_STYLE_RULES,
     "- For damaging claims, require official/legal sources or reputable news and do not state allegations as proven facts.",
+    ...PLAIN_LANGUAGE_STYLE_RULES,
     "- return JSON only (no prose, no markdown).",
     ...(reviewFeedbackLines.length > 0
       ? [

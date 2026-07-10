@@ -37,9 +37,16 @@ multiple research-area groups (by-design grouping in `CandidatePage.tsx`,
 | Measure summary / what_yes_means / what_no_means | `ballot_measures.*` | `ballotMeasuresPrompt.ts` | 34 |
 | Record description | `candidate_records.description` | `candidateRecordDiscoveryPrompt.ts` | 1,651 |
 
-`electionsPrompt.ts` emits no user-facing prose. Presidential profiles reuse the
-candidate profile prompt, so they inherit the fix. The manual-research skill
-reuses these prompts verbatim, so it inherits the fix too.
+A fourth prompt writes to the same record `description` column:
+`candidateRecordSourceRepairPrompt.ts` ("You may fix description…"), whose
+repaired rows the enricher persists verbatim. It carries the same style rules so
+repairs cannot reintroduce the old register.
+
+`electionsPrompt.ts` emits no user-facing prose, and the presidential roster
+prompt's `description` field is internal roster evidence, never displayed.
+Presidential profiles reuse the candidate profile prompt, so they inherit the
+fix. The manual-research skill reuses these prompts verbatim, so it inherits the
+fix too.
 
 ## Non-goals
 
@@ -60,7 +67,8 @@ rule block (array of prompt lines, matching the existing line-array idiom):
   sentence ("bonds — money the state borrows and pays back over time").
 - Keep numbers concrete; do not round away meaning.
 
-Splice the block into the three prompts. Add profile-summary-specific rules to
+Splice the block into the four prompts (trailing position, after every
+content rule, before "return JSON only"). Add profile-summary-specific rules to
 `candidateProfilePrompt.ts`:
 
 - Do not name the office, election, election date, or stage the candidate is
@@ -81,18 +89,36 @@ One-off rewrite pass (no web research): a script reads each row, asks the AI to
 rewrite to the Phase 1 style **changing no facts**, and updates the text column.
 
 - Input text is authoritative: the model must not add, drop, or reorder claims.
-- Rewrites run through cheap sanity checks before UPDATE: no URLs introduced or
-  lost, no dates changed, length within a band of the original (guards against
-  truncation/expansion), non-empty.
 - Candidate summaries additionally strip contest context: the script passes the
   candidate's known office/election so the model can remove those clauses.
 - Batched with resume support (processed-ids table or file) so a crash or rate
   limit does not restart from zero. 2,607 rows total.
 - Local `DATABASE_URL` only (same guard as other manual scripts).
 
+Fact preservation is enforced in three layers — mechanical checks alone cannot
+catch a flipped stance, lost negation, or changed amount, and for civic data a
+silent fact change is worse than ugly wording:
+
+1. **Mechanical pre-filter**: no URLs introduced or lost, no dates changed,
+   length within a band of the original, non-empty. Cheap rejection of obvious
+   breakage before spending a verification call.
+2. **Independent fact-consistency verification**: a second AI pass (separate
+   call, verifier role — never the rewriter judging itself) compares original
+   and rewrite claim by claim and answers only: same facts, same direction,
+   same quantities, nothing added or dropped? Any mismatch → the rewrite is
+   discarded, the original row is kept unchanged, and the row id lands in a
+   flagged list for manual review. Flagged rows are never auto-accepted or
+   auto-retried into the database.
+3. **Original text retention**: every rewritten row's prior text is stored
+   (audit table keyed by table/row/column) before UPDATE, so any later report
+   can be diffed against what research originally produced and reverted
+   one row at a time.
+
 Gates:
 - Dry-run mode prints before/after pairs for a sample; human spot-check before
   the write run.
+- Verification-pass discard/flag rate reported at the end of the run; a high
+  flag rate (>5%) halts the run for prompt tuning instead of grinding through.
 - Spot-check the Baldwin Park ballot (Prop 1, Office No. 87, Sheriff) reads at
   target level after the run.
 

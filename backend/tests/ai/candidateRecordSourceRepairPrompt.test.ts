@@ -1,8 +1,27 @@
 import { describe, expect, it } from "vitest";
 
 import { buildCandidateRecordSourceRepairPrompt } from "../../src/ai/providers/candidateRecordSourceRepairPrompt.js";
+import { PLAIN_LANGUAGE_STYLE_RULES } from "../../src/ai/providers/promptWritingStyle.js";
 
 describe("buildCandidateRecordSourceRepairPrompt", () => {
+  it("includes the plain-language style rules (repairs may rewrite description)", () => {
+    const prompt = buildCandidateRecordSourceRepairPrompt({
+      candidateDisplayName: "Jane Doe",
+      districtName: "California",
+      districtType: "statewide",
+      state: "CA",
+      electionDate: "2026-11-03",
+      officialBallotTitle: "Governor",
+      blockedUrls: [],
+      badRecords: [],
+    });
+
+    for (const rule of PLAIN_LANGUAGE_STYLE_RULES) {
+      expect(prompt).toContain(rule);
+    }
+    expect(prompt).toContain("6th-grade reader");
+  });
+
   it("includes blocked URLs and allows no_replacement", () => {
     const prompt = buildCandidateRecordSourceRepairPrompt({
       candidateDisplayName: "Jane Doe",

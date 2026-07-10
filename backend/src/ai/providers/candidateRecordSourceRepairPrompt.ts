@@ -1,4 +1,5 @@
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
+import { PLAIN_LANGUAGE_STYLE_RULES } from "./promptWritingStyle.js";
 
 export type CandidateRecordSourceRepairPromptBadRecord = {
   badIndex: number;
@@ -87,6 +88,7 @@ export function buildCandidateRecordSourceRepairPrompt(
     "- source_url must be a valid public http(s) URL.",
     "- event_date must be YYYY-MM-DD.",
     "- Do not invent sources; if no reliable source exists, return no_replacement=true.",
+    ...PLAIN_LANGUAGE_STYLE_RULES,
     "- return JSON only (no prose, no markdown).",
     ...(reviewFeedbackLines.length > 0
       ? [
