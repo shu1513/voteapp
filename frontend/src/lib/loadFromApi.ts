@@ -32,8 +32,31 @@ function rethrowTimeoutAs504(error: unknown): never {
   throw error;
 }
 
+/**
+ * API base resolution, most explicit first:
+ * 1. API_INTERNAL_URL — full URL. Dev override, or a deployment where the
+ *    private network can't be used (Render free instances can send private
+ *    traffic but not receive it, so the API's public URL goes here).
+ * 2. API_INTERNAL_HOSTPORT — "host:port" on the private network, e.g. a
+ *    Render blueprint `fromService` hostport reference that tracks the
+ *    assigned internal hostname across service recreation. Plain http:
+ *    private-network traffic isn't TLS-terminated.
+ * 3. Loopback default for local dev.
+ */
+function resolveApiBase(): string {
+  const explicitUrl = process.env.API_INTERNAL_URL;
+  if (explicitUrl) {
+    return explicitUrl;
+  }
+  const hostport = process.env.API_INTERNAL_HOSTPORT;
+  if (hostport) {
+    return `http://${hostport}`;
+  }
+  return "http://127.0.0.1:3001";
+}
+
 export async function loadFromApi<T>(path: string, incomingRequest: Request): Promise<T> {
-  const base = process.env.API_INTERNAL_URL ?? "http://127.0.0.1:3001";
+  const base = resolveApiBase();
   const headers = new Headers();
   const trustedIpHeader = process.env.ADDRESS_API_TRUSTED_CLIENT_IP_HEADER;
   if (trustedIpHeader) {

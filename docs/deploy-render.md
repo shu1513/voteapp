@@ -65,6 +65,14 @@ plans. Consequences, in order of urgency:
    (paid-only service types). Uncomment and re-sync after billing exists.
    Until then: no digest/alert/reminder emails (SES is sandboxed anyway)
    and BullMQ schedules accumulate unprocessed.
+4. **SSR loaders use the API's PUBLIC URL** (`API_INTERNAL_URL` in
+   render.yaml): free instances can send private-network traffic but not
+   receive it, so the API's private hostname is unreachable while
+   `voteapp-api` is free. This deviates from deploy-checklist.md's
+   "never a public URL" guidance by necessity. After upgrading the API,
+   swap to the commented `API_INTERNAL_HOSTPORT` `fromService` block in
+   render.yaml (the SSR loader composes `http://<hostport>` from it), which
+   also stops hardcoding the instance's generated `-pzns` hostname.
 
 ## Platform notes
 

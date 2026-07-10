@@ -84,12 +84,22 @@ services:
         - package-lock.json
         - render.yaml
     envVars:
-      # Render private-network address of the API service; loader fetches
-      # never leave Render's network. Render appends a per-service suffix to
-      # the internal hostname (this deploy got voteapp-api-pzns), so this is
-      # the actual assigned host, not the bare service name.
+      # FREE-TIER CONSTRAINT: free web services can SEND private-network
+      # requests but cannot RECEIVE them, so voteapp-api's private hostname
+      # is unreachable until it moves to a paid instance type. Loader
+      # fetches go through the API's public URL for now (the -pzns suffix is
+      # this service instance's assigned hostname; it changes only if the
+      # service is deleted and recreated).
+      # After upgrading voteapp-api: delete API_INTERNAL_URL and uncomment
+      # API_INTERNAL_HOSTPORT below — fromService tracks the assigned
+      # private hostname automatically, surviving service recreation.
       - key: API_INTERNAL_URL
-        value: http://voteapp-api-pzns:10000
+        value: https://voteapp-api-pzns.onrender.com
+      # - key: API_INTERNAL_HOSTPORT
+      #   fromService:
+      #     name: voteapp-api
+      #     type: web
+      #     property: hostport
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
         value: CF-Connecting-IP
 
