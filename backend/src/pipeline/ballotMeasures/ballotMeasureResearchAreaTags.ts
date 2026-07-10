@@ -20,6 +20,7 @@ export const BALLOT_MEASURE_RESEARCH_AREA_SLUGS = [
   "housing_affordability",
   "civil_rights",
   "public_education_quality",
+  "gun_control",
 ] as const;
 
 export type BallotMeasureResearchAreaSlug = (typeof BALLOT_MEASURE_RESEARCH_AREA_SLUGS)[number];

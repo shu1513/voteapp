@@ -129,6 +129,11 @@ VALUES
     'public_education_quality',
     'Public Education Quality',
     'Strengthen student outcomes through effective teaching, standards, funding, and accountability.'
+  ),
+  (
+    'gun_control',
+    'Gun Control',
+    'Regulate firearm access through background checks, licensing, and safe-storage requirements to reduce gun violence.'
   )
 ON CONFLICT (slug)
 DO UPDATE SET
