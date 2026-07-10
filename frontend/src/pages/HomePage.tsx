@@ -6,7 +6,6 @@ import type { AddressResolution } from "../api/types";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
-import { formatDistrictType } from "../lib/format";
 import { savePendingDistrictIds } from "../lib/pendingDistricts";
 import { useMe } from "../lib/useMe";
 import {
@@ -53,6 +52,12 @@ export function HomePage() {
       if (me === null || me?.email_verified === false) {
         savePendingDistrictIds(resolution.districts.map((district) => district.id));
       }
+      // Straight to the elections — the districts list is a detour nobody asked for.
+      // The matched address rides along in router state (never the URL — it is
+      // personal data) so the ballot page can show which address was geocoded.
+      navigate(`/ballot?d=${resolution.districts.map((district) => district.id).join(",")}`, {
+        state: { matchedAddress: resolution.matched_address },
+      });
     },
   });
 
@@ -79,13 +84,11 @@ export function HomePage() {
     resolve.mutate(address.trim());
   }
 
-  const districts = resolve.data?.districts ?? [];
-
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <h1 className="text-3xl font-bold">Find what's on your ballot</h1>
       <p className="mt-2 text-ink-soft">
-        Enter your home address to see your districts and the elections coming up in them.
+        Enter your home address to see the elections coming up on your ballot.
       </p>
 
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
@@ -124,27 +127,6 @@ export function HomePage() {
         </div>
       ) : null}
 
-      {resolve.isSuccess ? (
-        <section className="mt-8">
-          <h2 className="text-lg font-semibold">Matched: {resolve.data.matched_address}</h2>
-          <p className="mt-1 text-sm text-ink-soft">Your districts:</p>
-          <ul className="mt-2 divide-y divide-line rounded-xl border border-line">
-            {districts.map((district) => (
-              <li key={district.id} className="flex items-center justify-between px-3 py-2 text-sm">
-                <span>{district.name}</span>
-                <span className="text-ink-soft">{formatDistrictType(district.district_type)}</span>
-              </li>
-            ))}
-          </ul>
-          <button
-            type="button"
-            onClick={() => navigate(`/ballot?d=${districts.map((district) => district.id).join(",")}`)}
-            className="mt-4 w-full rounded-md bg-rausch px-4 py-3 font-semibold text-white transition hover:bg-rausch-dark"
-          >
-            See your ballot
-          </button>
-        </section>
-      ) : null}
     </div>
   );
 }

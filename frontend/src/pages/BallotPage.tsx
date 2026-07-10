@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router";
+import { Link, useLocation, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "../api/client";
 import { BALLOT_SORT_DESCRIPTIONS, PUBLIC_BALLOT_SORTS, type BallotSort, type BallotSummary } from "../api/types";
@@ -6,6 +6,7 @@ import { AiBanner } from "../components/AiBanner";
 import { ElectionCard } from "../components/ElectionCard";
 import { useMyResearchAreas } from "../lib/useMyResearchAreas";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
+import { formatDistrictType } from "../lib/format";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Public page: only the sorts the anonymous endpoint can honor. A my_areas
@@ -18,6 +19,15 @@ export function BallotPage() {
   // Signed-in verified visitors get their saved areas highlighted even on
   // the public ballot; anonymous visitors get an empty set (no highlights).
   const { savedAreaIds } = useMyResearchAreas();
+  // Set by the home page's post-search navigation so the visitor can confirm
+  // the geocoder matched the right address. Router state only — the address is
+  // personal data and must stay out of the URL; a refresh or shared link
+  // simply omits the confirmation line.
+  const location = useLocation();
+  const matchedAddress =
+    typeof (location.state as { matchedAddress?: unknown } | null)?.matchedAddress === "string"
+      ? (location.state as { matchedAddress: string }).matchedAddress
+      : null;
   const [searchParams, setSearchParams] = useSearchParams();
   const districtIds = (searchParams.get("d") ?? "")
     .split(",")
@@ -80,6 +90,15 @@ export function BallotPage() {
         </label>
       </div>
 
+      {matchedAddress ? (
+        <p className="mt-1 text-sm text-ink-soft">
+          Matched address: <span className="font-medium text-ink">{matchedAddress}</span>{" "}
+          <Link to="/?new=1" className="underline hover:text-rausch">
+            Not your address?
+          </Link>
+        </p>
+      ) : null}
+
       {ballot.isPending ? <LoadingNotice text="Loading your elections…" /> : null}
       {ballot.isError ? (
         <div className="mt-4">
@@ -94,6 +113,17 @@ export function BallotPage() {
             {ballot.data.districts.length} district{ballot.data.districts.length === 1 ? "" : "s"},{" "}
             {BALLOT_SORT_DESCRIPTIONS[sort]}
           </p>
+          <details className="mt-2 text-xs text-ink-soft">
+            <summary className="cursor-pointer select-none underline">Which districts?</summary>
+            <ul className="mt-2 divide-y divide-line rounded-lg border border-line">
+              {ballot.data.districts.map((district) => (
+                <li key={district.id} className="flex items-center justify-between px-3 py-2">
+                  <span className="text-ink">{district.name}</span>
+                  <span>{formatDistrictType(district.district_type)}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
           <details className="mt-2 text-xs text-ink-soft">
             <summary className="cursor-pointer select-none underline">What do these labels mean?</summary>
             <div className="mt-2 space-y-2 rounded-lg border border-line bg-surface p-3">
