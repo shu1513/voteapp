@@ -56,7 +56,7 @@ describe("buildPlainLanguageRewriteVerifyPrompt", () => {
     expect(prompt).toContain('A lost negation, a flipped stance, a changed number, a changed name, or a new or dropped factual claim is a "mismatch".');
     expect(prompt).toContain('When in doubt, answer "mismatch".');
     expect(prompt).toContain("The rewrite may not drop any claim");
-    expect(prompt).not.toContain("ALLOWED — and expected — to drop everything");
+    expect(prompt).not.toContain("IMPORTANT CONTEXT");
   });
 
   it("allows contest-clause drops only for candidate summaries", () => {
@@ -66,9 +66,12 @@ describe("buildPlainLanguageRewriteVerifyPrompt", () => {
       rewrittenText: "rewrite",
     });
 
-    expect(prompt).toContain("the rewrite is ALLOWED — and expected — to drop everything about the contest the candidate is currently seeking");
+    expect(prompt).toContain(
+      "IMPORTANT CONTEXT: this rewrite was deliberately instructed to DELETE everything about the contest the candidate is currently seeking"
+    );
+    expect(prompt).toContain("never report a missing contest detail as a mismatch");
+    expect(prompt).toContain("Judge ONLY the claims that remain in scope: current and past offices held, career history, and qualifications.");
     expect(prompt).toContain('"The current X" and "the incumbent X" state the same fact.');
-    expect(prompt).toContain("current and past offices held, career history, and qualifications must be preserved");
     expect(prompt).not.toContain("The rewrite may not drop any claim");
   });
 });

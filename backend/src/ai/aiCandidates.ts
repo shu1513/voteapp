@@ -151,21 +151,24 @@ export const FINANCE_INDUSTRY_CLASSIFICATION_AI_CANDIDATES: readonly AiCandidate
 
 /**
  * Plain-language rewrite (Phase 2 backfill) AI candidates. Text-to-text
- * rewriting with no web research, so cheap models lead. The verifier chain
- * deliberately leads with a different provider than the rewriter chain: the
- * fact-consistency check is more independent when a different model family
- * judges the rewrite than the one that (usually) produced it.
+ * rewriting with no web research. The rewriter leads with a mid-tier model on
+ * purpose: live sampling showed gemini-2.5-flash-lite kept violating the
+ * style constraints (reader-as-actor phrasing, vague simplifications, choppy
+ * padding) that claude-sonnet-4-6 follows. The verifier chain deliberately
+ * leads with a different provider, and verifyPlainLanguageRewrite excludes
+ * the rewriter's provider at call time: the fact-consistency check is only
+ * independent when a different model family judges the rewrite.
  */
 export const PLAIN_LANGUAGE_REWRITE_AI_CANDIDATES: readonly AiCandidate[] = [
-  { provider: "gemini", model: "gemini-2.5-flash-lite" },
-  { provider: "openai", model: "gpt-5.4-mini" },
   { provider: "claude", model: "claude-sonnet-4-6" },
+  { provider: "openai", model: "gpt-5.4-mini" },
+  { provider: "gemini", model: "gemini-2.5-pro" },
 ] as const;
 
 export const PLAIN_LANGUAGE_REWRITE_VERIFY_AI_CANDIDATES: readonly AiCandidate[] = [
   { provider: "openai", model: "gpt-5.4-mini" },
-  { provider: "claude", model: "claude-sonnet-4-6" },
   { provider: "gemini", model: "gemini-2.5-pro" },
+  { provider: "claude", model: "claude-sonnet-4-6" },
 ] as const;
 
 export const DEFAULT_AI_CANDIDATE: AiCandidate = STATE_RESOURCES_AI_CANDIDATES[0];

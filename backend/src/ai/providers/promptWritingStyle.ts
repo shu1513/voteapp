@@ -13,4 +13,7 @@ export const PLAIN_LANGUAGE_STYLE_RULES: readonly string[] = [
   '- Prefer the plain phrase over the technical one (say "borrow money", not "issue general obligation bonds"; say "refused", not "rebuffed").',
   '- When a technical term is unavoidable, define it in plain words in the same sentence (for example: "bonds — money the state borrows and pays back over time").',
   "- Keep numbers concrete; do not round away meaning.",
+  '- Plain must stay precise: never swap a specific term for a vague one (say "officials whose job is to check on the sheriff\'s department", never "officials who watch over things"). Simplify by explaining, not by blurring.',
+  '- Keep who-does-what exact: never move a government action onto the reader (a measure lets THE STATE borrow money — do not write "you agree to borrow money").',
+  "- Plain does not mean padded: keep the text about as short as what a newspaper would write, combine related facts into one sentence, and never chop everything into single-fact baby sentences.",
 ];

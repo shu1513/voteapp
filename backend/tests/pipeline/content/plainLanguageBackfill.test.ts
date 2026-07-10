@@ -63,6 +63,30 @@ describe("mechanicalCheckFailure", () => {
       mechanicalCheckFailure("record_description", "The budget grew under his tenure a lot.", "The budget grew 300% under his tenure.")
     ).toContain("introduced a number");
   });
+
+  it("licenses digits that spell out number words from the original", () => {
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "He was the first challenger in over a century to unseat an incumbent county sheriff.",
+        "He was the first person in over 100 years to beat the sitting county sheriff in an election."
+      )
+    ).toBeNull();
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "The measure funds a thousand new housing units in the county over the years.",
+        "The measure pays for 1000 new housing units in the county over the years."
+      )
+    ).toBeNull();
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "The budget grew sharply during his tenure at the department, records show.",
+        "The budget grew 100-fold during his tenure at the department, records show."
+      )
+    ).toContain("introduced a number"); // no number word in the original licenses "100"
+  });
 });
 
 type FakeQuery = { text: string; params: unknown[] | undefined };

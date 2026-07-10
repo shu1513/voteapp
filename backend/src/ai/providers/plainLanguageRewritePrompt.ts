@@ -68,6 +68,11 @@ export function buildPlainLanguageRewritePrompt(input: PlainLanguageRewritePromp
           '- If nothing substantive remains after those removals, state the little that does remain (party, profession, current or past office) in one short sentence — for example "Jane Doe is a lawyer." Never re-add contest content to fill space.',
         ]
       : ["- Keep every sentence's content; only the wording changes."]),
+    ...(input.kind === "measure_what_yes_means" || input.kind === "measure_what_no_means"
+      ? [
+          '- A vote approves or rejects a government action; the reader never performs it. Write "Voting yes approves the state borrowing money for...", never "you agree to borrow money".',
+        ]
+      : []),
     ...PLAIN_LANGUAGE_STYLE_RULES,
     "- return JSON only (no prose, no markdown).",
   ].join("\n");

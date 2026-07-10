@@ -94,6 +94,56 @@ function extractNumberTokens(text: string): Set<string> {
   );
 }
 
+// A plain-language rewrite legitimately turns number WORDS into digits
+// ("over a century" -> "over 100 years"); the invented-number check must not
+// flag those. Word forms in the original license their digit equivalents.
+const NUMBER_WORD_VALUES: Record<string, string[]> = {
+  one: ["1"],
+  two: ["2"],
+  three: ["3"],
+  four: ["4"],
+  five: ["5"],
+  six: ["6"],
+  seven: ["7"],
+  eight: ["8"],
+  nine: ["9"],
+  ten: ["10"],
+  eleven: ["11"],
+  twelve: ["12"],
+  dozen: ["12"],
+  twenty: ["20"],
+  thirty: ["30"],
+  forty: ["40"],
+  fifty: ["50"],
+  sixty: ["60"],
+  seventy: ["70"],
+  eighty: ["80"],
+  ninety: ["90"],
+  hundred: ["100"],
+  century: ["100"],
+  decade: ["10"],
+  decades: ["10"],
+  centuries: ["100"],
+  thousand: ["1000"],
+  million: ["1000000"],
+  billion: ["1000000000"],
+  trillion: ["1000000000000"],
+  first: ["1", "1st"],
+  second: ["2", "2nd"],
+  third: ["3", "3rd"],
+  half: ["0.5", "50"],
+};
+
+function numberTokensLicensedByWords(text: string): Set<string> {
+  const licensed = new Set<string>();
+  for (const word of text.toLowerCase().match(/[a-z]+/g) ?? []) {
+    for (const value of NUMBER_WORD_VALUES[word] ?? []) {
+      licensed.add(value);
+    }
+  }
+  return licensed;
+}
+
 /**
  * Cheap mechanical pre-filter (plan-content-wording.md Phase 2 layer 1).
  * Catches obvious breakage before spending a verification call; everything
@@ -128,8 +178,9 @@ export function mechanicalCheckFailure(
   // with the horse-race clauses), so only invented numbers are checked; the
   // verifier owns dropped-content judgment for every kind.
   const originalNumbers = extractNumberTokens(originalText);
+  const licensedByWords = numberTokensLicensedByWords(originalText);
   for (const token of extractNumberTokens(rewrittenText)) {
-    if (!originalNumbers.has(token)) {
+    if (!originalNumbers.has(token) && !licensedByWords.has(token)) {
       return `rewrite introduced a number not in the original: ${token}`;
     }
   }
