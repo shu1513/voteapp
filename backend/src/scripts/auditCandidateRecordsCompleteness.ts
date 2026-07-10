@@ -39,20 +39,20 @@ async function main(): Promise<void> {
           c.id::text AS candidate_id,
           c.display_name,
           c.current_office,
-          bool_or(ce.is_incumbent) AS is_incumbent,
+          coalesce(bool_or(ce.is_incumbent), false) AS is_incumbent,
           c.last_records_searched_at::text AS last_records_searched_at,
-          array_agg(DISTINCT e.official_ballot_title) AS election_titles
+          array_remove(array_agg(DISTINCT e.official_ballot_title), NULL) AS election_titles
         FROM public.candidates c
-        JOIN public.candidate_elections ce ON ce.candidate_id = c.id
-        JOIN public.elections e ON e.id = ce.election_id
+        LEFT JOIN public.candidate_elections ce ON ce.candidate_id = c.id
+        LEFT JOIN public.elections e ON e.id = ce.election_id
         WHERE c.deleted_at IS NULL
           AND c.merged_into_candidate_id IS NULL
           AND c.last_records_searched_at IS NOT NULL
-          AND (c.current_office IS NOT NULL OR ce.is_incumbent)
           AND NOT EXISTS (
             SELECT 1 FROM public.candidate_records r WHERE r.candidate_id = c.id
           )
         GROUP BY c.id, c.display_name, c.current_office, c.last_records_searched_at
+        HAVING (c.current_office IS NOT NULL OR coalesce(bool_or(ce.is_incumbent), false))
         ORDER BY c.display_name ASC
       `
     );

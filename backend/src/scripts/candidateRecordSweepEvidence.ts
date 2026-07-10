@@ -66,6 +66,7 @@ export function parseSweepEvidencePayload(payload: unknown): SweepEvidenceParseR
     return { ok: false, reason: "evidence payload.entries must be an array" };
   }
   const entries: SweepEvidenceEntry[] = [];
+  const seenQuestions = new Map<string, number>();
   for (const [index, row] of input.entries.entries()) {
     if (typeof row !== "object" || row === null || Array.isArray(row)) {
       return { ok: false, reason: `evidence entries[${index}] must be an object` };
@@ -80,7 +81,17 @@ export function parseSweepEvidencePayload(payload: unknown): SweepEvidenceParseR
         reason: `evidence entries[${index}].finding must be a non-empty string (use "nothing found" for empty answers)`,
       };
     }
-    entries.push({ question: entry.question.trim(), finding: entry.finding.trim() });
+    const question = entry.question.trim();
+    const normalizedQuestion = question.toLowerCase().replace(/\s+/g, " ");
+    const duplicateOf = seenQuestions.get(normalizedQuestion);
+    if (duplicateOf !== undefined) {
+      return {
+        ok: false,
+        reason: `evidence entries[${index}].question duplicates entries[${duplicateOf}] — each row must be a distinct discovery question (asking the same question for a different era/session? name the era in the question text)`,
+      };
+    }
+    seenQuestions.set(normalizedQuestion, index);
+    entries.push({ question, finding: entry.finding.trim() });
   }
   if (entries.length < SWEEP_EVIDENCE_MIN_ENTRIES) {
     return {

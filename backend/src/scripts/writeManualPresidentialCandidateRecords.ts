@@ -30,6 +30,7 @@ import {
   isBlockingCandidateRecordQualityGap,
 } from "./writeManualCandidateRecords.js";
 import {
+  SWEEP_COMPLETENESS_GAP_IDS,
   parseSweepEvidencePayload,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
@@ -60,7 +61,7 @@ function usage(): string {
     "  npm run manual:presidential-records:write -- --candidate-id uuid --presidential-cycle-id uuid --presidential-role president|vice_president --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--evidence-file evidence.json] [--repair-report-file file] [--dry-run]",
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
-    'A zero-record payload, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
+    'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
   ].join("\n");
 }
 
@@ -371,25 +372,6 @@ async function main(): Promise<void> {
     );
   }
 
-  // Sweep-completeness guard: mirrors manual:candidate-records:write — a
-  // zero-record or neutral-only pass asserts a finished discovery sweep and
-  // must carry the per-question evidence table.
-  const evidenceIsRequired = sweepEvidenceRequired({
-    recordCount: validatedRecords.records.length,
-    confirmedGapIds: options.confirmedGapIds,
-  });
-  let sweepEvidenceEntryCount: number | null = null;
-  if (evidenceIsRequired) {
-    if (!options.evidenceFile) {
-      throw sweepEvidenceMissingError("presidential-records");
-    }
-    const parsedEvidence = parseSweepEvidencePayload(await readJsonFile(options.evidenceFile));
-    if (!parsedEvidence.ok) {
-      throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
-    }
-    sweepEvidenceEntryCount = parsedEvidence.entries.length;
-  }
-
   const databaseUrl = requireEnv("DATABASE_URL");
   requireLocalDatabaseTarget(databaseUrl);
   const pool = new Pool({ connectionString: databaseUrl });
@@ -444,6 +426,30 @@ async function main(): Promise<void> {
       options.confirmedGapIds
     );
     const blockingQualityGaps = qualityGaps.filter(isBlockingCandidateRecordQualityGap);
+
+    // Sweep-completeness guard: mirrors manual:candidate-records:write — a
+    // zero-record payload, an all-neutral label set (any mode, strict or
+    // not), or a completeness confirmed-gap flag asserts a finished
+    // discovery sweep and must carry the per-question evidence table.
+    // Evaluated AFTER the quality gaps are built so the neutral-only case
+    // is caught even without a flag.
+    const evidenceIsRequired =
+      sweepEvidenceRequired({
+        recordCount: validatedRecords.records.length,
+        confirmedGapIds: options.confirmedGapIds,
+      }) || qualityGaps.some((gap) => SWEEP_COMPLETENESS_GAP_IDS.has(gap.id));
+    let sweepEvidenceEntryCount: number | null = null;
+    if (evidenceIsRequired) {
+      if (!options.evidenceFile) {
+        throw sweepEvidenceMissingError("presidential-records");
+      }
+      const parsedEvidence = parseSweepEvidencePayload(await readJsonFile(options.evidenceFile));
+      if (!parsedEvidence.ok) {
+        throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
+      }
+      sweepEvidenceEntryCount = parsedEvidence.entries.length;
+    }
+
     if (options.repairReportFile && qualityGaps.length > 0) {
       await writeRecordsRepairReport({
         reportFile: options.repairReportFile,

@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  SWEEP_COMPLETENESS_GAP_IDS,
   SWEEP_EVIDENCE_MIN_ENTRIES,
   parseSweepEvidencePayload,
   sweepEvidenceRequired,
 } from "../../src/scripts/candidateRecordSweepEvidence.js";
+import { buildCandidateRecordQualityGaps } from "../../src/scripts/writeManualCandidateRecords.js";
 
 describe("sweepEvidenceRequired", () => {
   it("requires evidence for a zero-record payload even without any confirmed-gap flag", () => {
@@ -95,6 +97,31 @@ describe("parseSweepEvidencePayload", () => {
     }
   });
 
+  it("rejects duplicate questions (same text repeated to pad the minimum)", () => {
+    const result = parseSweepEvidencePayload({
+      entries: [
+        { question: "What endorsements did they receive?", finding: "nothing found" },
+        { question: "what endorsements  did they receive?", finding: "nothing found" },
+        { question: "Any court or ethics records?", finding: "nothing found" },
+      ],
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain("entries[1].question duplicates entries[0]");
+    }
+  });
+
+  it("accepts the same question asked for distinct eras when the era is named", () => {
+    const result = parseSweepEvidencePayload({
+      entries: [
+        { question: "Major roll-call votes (2021 session)?", finding: "nothing found" },
+        { question: "Major roll-call votes (2023 session)?", finding: "HB 9 veto override" },
+        { question: "Any court or ethics records?", finding: "nothing found" },
+      ],
+    });
+    expect(result.ok).toBe(true);
+  });
+
   it("trims question and finding text", () => {
     const result = parseSweepEvidencePayload({
       entries: validEntries.map((entry) => ({
@@ -106,5 +133,31 @@ describe("parseSweepEvidencePayload", () => {
     if (result.ok) {
       expect(result.entries[1].finding).toBe("HB 123 signed 2024-05-02");
     }
+  });
+});
+
+describe("neutral-only writes trigger the evidence guard via quality gaps", () => {
+  it("raises only_general_labels — a SWEEP_COMPLETENESS_GAP_ID — for an all-neutral label set", () => {
+    const gaps = buildCandidateRecordQualityGaps({
+      recordCount: 2,
+      labels: [
+        { research_area_slug: "general" },
+        { research_area_slug: "integrity_and_ethics" },
+      ],
+    });
+    expect(gaps.some((gap) => SWEEP_COMPLETENESS_GAP_IDS.has(gap.id))).toBe(true);
+  });
+
+  it("raises no_records_found — a SWEEP_COMPLETENESS_GAP_ID — for a zero-record payload", () => {
+    const gaps = buildCandidateRecordQualityGaps({ recordCount: 0, labels: [] });
+    expect(gaps.some((gap) => SWEEP_COMPLETENESS_GAP_IDS.has(gap.id))).toBe(true);
+  });
+
+  it("raises no completeness gap for a stance-bearing record set", () => {
+    const gaps = buildCandidateRecordQualityGaps({
+      recordCount: 1,
+      labels: [{ research_area_slug: "healthcare_affordability" }],
+    });
+    expect(gaps.some((gap) => SWEEP_COMPLETENESS_GAP_IDS.has(gap.id))).toBe(false);
   });
 });
