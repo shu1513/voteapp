@@ -4871,7 +4871,7 @@ describe("lookupElectionDetailById", () => {
           {
             election_id: officeElectionId,
             district_id: districtId,
-            district_type: "state_house",
+            district_type: "state_lower",
             geoid_compact: "2707A",
             district_name: "Minnesota House District 7A",
             state: "MN",
