@@ -13,8 +13,11 @@ export type UtahBallotLookupCandidateRow = {
 export type UtahBallotLookupElectionRow = {
   election_id: string;
   state: string;
-  office_scope: string | null;
-  office_canonical_name: string | null;
+  // Optional to accept ballot lookup's election rows directly (the old
+  // dynamic-import wrapper cast this away); the loader already reads both
+  // with ?? null.
+  office_scope?: string | null;
+  office_canonical_name?: string | null;
 };
 
 export type UtahBallotLookupFinanceBreakdown = {
