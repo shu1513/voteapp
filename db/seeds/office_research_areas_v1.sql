@@ -3061,3 +3061,162 @@ BEGIN
   END IF;
 END
 $$;
+
+-- ============================================================================
+-- FINAL CURATION PASS (authoritative core sets)
+-- The generous per-office blocks above are kept for provenance, but this final
+-- pass is the source of truth for every office it lists: it deletes links
+-- outside the curated core set and inserts any missing ones, so re-seeding
+-- always converges to the curated state. Offices not listed (President/VP,
+-- Governor, U.S. Senator/Representative, state legislators) keep their earlier
+-- broad sets deliberately, and Lieutenant Governor is curated TO the broad
+-- state-legislator set because its powers vary by state more than any other
+-- office (TX/GA senate control; UT/AK chief election officer). Rationale, and
+-- the ADDed Sheriff/immigration and District Attorney/womens_reproductive_rights
+-- links: see db/migrations/159_curate_office_research_area_core_sets.sql.
+--
+-- No BEGIN/COMMIT here, matching every other block in this file: the seed
+-- runner (backend/src/scripts/seedOfficeResearchAreas.ts) already wraps the
+-- whole file in one transaction and rolls back on error. A nested BEGIN would
+-- warn, and the nested COMMIT would end the runner's transaction early --
+-- removing the very atomicity it appears to add.
+-- ============================================================================
+
+-- The curated data lives in exactly ONE place per file: this temp table.
+-- Both the guard and the reconcile statement below read from it, so a future
+-- single-office edit cannot leave a DELETE copy and an INSERT copy out of sync
+-- (a slug present only in a DELETE copy would be pruned and never restored).
+-- No ON COMMIT DROP: the table is dropped explicitly so the file behaves the
+-- same whether the caller wraps it in a transaction (the migration and seed
+-- runners both do) or runs it statement-at-a-time.
+DROP TABLE IF EXISTS curated_office_core_areas;
+
+CREATE TEMP TABLE curated_office_core_areas (
+    scope text NOT NULL,
+    canonical_name text NOT NULL,
+    slugs text[] NOT NULL
+);
+
+INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
+    ('county', 'Clerk of Court', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
+    ('county', 'County Assessor', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'housing_affordability']::text[]),
+    ('county', 'County Auditor', ARRAY['anti_corruption', 'corporate_accountability', 'election_integrity', 'government_efficiency', 'government_spending_reduction']::text[]),
+    ('county', 'County Clerk', ARRAY['anti_corruption', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
+    ('county', 'County Commissioner', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
+    ('county', 'County Coroner', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'public_safety_and_crime_control']::text[]),
+    ('county', 'County Executive', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
+    ('county', 'County Level Judge', ARRAY['civil_rights', 'housing_affordability', 'impartiality', 'legal_competence', 'public_safety_and_crime_control']::text[]),
+    ('county', 'County Recorder', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
+    ('county', 'County Superintendent of Schools', ARRAY['civil_rights', 'government_efficiency', 'government_spending_reduction', 'public_education_quality']::text[]),
+    ('county', 'County Supervisor', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
+    ('county', 'County Treasurer', ARRAY['anti_corruption', 'government_efficiency', 'government_spending_reduction', 'housing_affordability']::text[]),
+    ('county', 'District Attorney', ARRAY['anti_corruption', 'civil_rights', 'corporate_accountability', 'public_safety_and_crime_control', 'womens_reproductive_rights']::text[]),
+    ('county', 'Public Administrator', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
+    ('county', 'Sheriff', ARRAY['civil_rights', 'data_privacy', 'immigration', 'public_safety_and_crime_control']::text[]),
+    ('place', 'Alderman', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
+    ('place', 'City Clerk', ARRAY['anti_corruption', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
+    ('place', 'City Council Member', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
+    ('place', 'City Treasurer', ARRAY['anti_corruption', 'government_efficiency', 'government_spending_reduction']::text[]),
+    ('place', 'Mayor', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
+    ('place', 'Municipal Assessor', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'housing_affordability']::text[]),
+    ('place', 'Municipal Attorney', ARRAY['civil_rights', 'government_efficiency', 'housing_affordability', 'public_safety_and_crime_control']::text[]),
+    ('place', 'Municipal Constable', ARRAY['civil_rights', 'housing_affordability', 'public_safety_and_crime_control']::text[]),
+    ('place', 'Place Level Judge', ARRAY['civil_rights', 'housing_affordability', 'impartiality', 'legal_competence', 'public_safety_and_crime_control']::text[]),
+    ('place', 'Town Council Member', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
+    ('place', 'Town Moderator', ARRAY['election_integrity', 'government_efficiency']::text[]),
+    ('school_elementary', 'School Board Member', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality', 'public_infrastructure', 'public_safety_and_crime_control']::text[]),
+    ('school_secondary', 'School Board Member', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality', 'public_infrastructure', 'public_safety_and_crime_control']::text[]),
+    ('school_unified', 'School Board Member', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality', 'public_infrastructure', 'public_safety_and_crime_control']::text[]),
+    ('statewide', 'Attorney General', ARRAY['anti_corruption', 'civil_rights', 'corporate_accountability', 'data_privacy', 'election_integrity', 'environment_and_public_health', 'healthcare_affordability', 'immigration', 'public_safety_and_crime_control', 'womens_reproductive_rights']::text[]),
+    ('statewide', 'Commissioner of Agriculture', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'foreign_trade', 'social_programs_and_welfare']::text[]),
+    ('statewide', 'Commissioner of Insurance', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'healthcare_affordability', 'housing_affordability']::text[]),
+    ('statewide', 'Comptroller', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'government_spending_reduction']::text[]),
+    ('statewide', 'Corporation Commissioner', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'public_infrastructure']::text[]),
+    ('statewide', 'Labor Commissioner', ARRAY['civil_rights', 'corporate_accountability', 'reduce_wealth_gap', 'social_programs_and_welfare']::text[]),
+    ('statewide', 'Land Commissioner', ARRAY['corporate_accountability', 'environment_and_public_health', 'government_spending_reduction', 'housing_affordability']::text[]),
+    ('statewide', 'Lieutenant Governor', ARRAY['anti_corruption', 'civil_rights', 'corporate_accountability', 'data_privacy', 'election_integrity', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'personal_income_tax_reduction', 'public_education_quality', 'public_infrastructure', 'public_safety_and_crime_control', 'reduce_wealth_gap', 'social_programs_and_welfare', 'womens_reproductive_rights']::text[]),
+    ('statewide', 'Public Service Commissioner', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'public_infrastructure']::text[]),
+    ('statewide', 'Railroad Commissioner', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'public_infrastructure']::text[]),
+    ('statewide', 'Secretary of State', ARRAY['anti_corruption', 'civil_rights', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
+    ('statewide', 'State Auditor', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'government_spending_reduction']::text[]),
+    ('statewide', 'State Board of Education Member', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality']::text[]),
+    ('statewide', 'State Board of Equalization Member', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'government_efficiency', 'housing_affordability']::text[]),
+    ('statewide', 'State Board of Regents Member', ARRAY['civil_rights', 'government_efficiency', 'government_spending_reduction', 'public_education_quality']::text[]),
+    ('statewide', 'State Level Judge', ARRAY['civil_rights', 'election_integrity', 'impartiality', 'legal_competence', 'public_safety_and_crime_control', 'womens_reproductive_rights']::text[]),
+    ('statewide', 'State Treasurer', ARRAY['anti_corruption', 'government_efficiency', 'government_spending_reduction']::text[]),
+    ('statewide', 'Superintendent of Public Instruction', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality']::text[]);
+
+-- Fail fast rather than silently mis-shaping an office. The reconcile below
+-- deletes every link outside the curated set and re-inserts the curated ones by
+-- joining research_areas on slug; a curated slug that resolves to no research
+-- area would therefore be deleted-and-not-restored (linked offices) or produce
+-- a silently incomplete set (offices being linked for the first time), with no
+-- error either way.
+--
+-- Bootstrap is detected globally, not per office: only when NO curated office
+-- has any link yet (a fresh migrations-only database, where db:migrate runs
+-- before db:seed:research-areas per DB_DEPLOYMENT.md and research_areas is
+-- legitimately still incomplete) is the check skipped — the reconcile's insert
+-- is then healed by the seed layer moments later. If even one curated office
+-- has links, this is a live database and EVERY curated slug must resolve, so a
+-- partially-installed database cannot hand an unlinked office an incomplete
+-- area set.
+DO $$
+DECLARE
+    curated_link_count bigint;
+    missing_slugs text;
+BEGIN
+    SELECT COUNT(*)
+    INTO curated_link_count
+    FROM public.office_research_areas ora
+    JOIN public.offices o ON o.id = ora.office_id
+    JOIN curated_office_core_areas c
+      ON c.scope = o.scope AND c.canonical_name = o.canonical_name;
+
+    IF curated_link_count = 0 THEN
+        RETURN; -- bootstrap: nothing the reconcile can damage or half-fill persistently
+    END IF;
+
+    SELECT string_agg(DISTINCT s.slug, ', ' ORDER BY s.slug)
+    INTO missing_slugs
+    FROM (
+        SELECT DISTINCT unnest(slugs) AS slug FROM curated_office_core_areas
+    ) s
+    WHERE NOT EXISTS (
+        SELECT 1 FROM public.research_areas ra WHERE ra.slug = s.slug
+    );
+
+    IF missing_slugs IS NOT NULL THEN
+        RAISE EXCEPTION
+            'Curated research-area slugs not found in public.research_areas: %. Refusing to reconcile: linked offices would lose these links and unlinked offices would receive incomplete sets.',
+            missing_slugs;
+    END IF;
+END
+$$;
+
+-- One statement, one snapshot: the DELETE removes links outside each office's
+-- curated set and the INSERT adds any missing curated links. The two operate on
+-- disjoint rows (non-curated vs curated), so combining them in a single
+-- data-modifying CTE is safe and keeps both driven by the same `targets`.
+WITH targets AS (
+    SELECT o.id AS office_id, c.slugs
+    FROM public.offices o
+    JOIN curated_office_core_areas c
+      ON c.scope = o.scope AND c.canonical_name = o.canonical_name
+),
+deleted AS (
+    DELETE FROM public.office_research_areas ora
+    USING targets t, public.research_areas ra
+    WHERE ora.office_id = t.office_id
+      AND ra.id = ora.research_area_id
+      AND NOT (ra.slug = ANY (t.slugs))
+    RETURNING 1
+)
+INSERT INTO public.office_research_areas (office_id, research_area_id)
+SELECT t.office_id, ra.id
+FROM targets t
+JOIN public.research_areas ra
+  ON ra.slug = ANY (t.slugs)
+ON CONFLICT (office_id, research_area_id) DO NOTHING;
+
+DROP TABLE curated_office_core_areas;
