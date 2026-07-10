@@ -137,11 +137,25 @@ export function ElectionPage() {
               Result: <span className={measure.result === "passed" ? "text-green-700" : "text-red-700"}>{measure.result}</span>
             </p>
           ) : null}
-          {(measure.official_measure_url ? [measure.official_measure_url] : measure.source_urls.slice(0, 1)).map(
-            (url) => (
+          {measure.official_measure_url ? (
+            <p className="mt-3 text-sm">
+              <a
+                href={measure.official_measure_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-rausch-dark underline hover:text-rausch"
+              >
+                {isGovernmentUrl(measure.official_measure_url)
+                  ? `Read the official measure text${isPdfUrl(measure.official_measure_url) ? " (PDF)" : ""}`
+                  : "More about this measure"}
+              </a>
+            </p>
+          ) : null}
+          {measure.source_urls
+            .filter((url) => url !== measure.official_measure_url)
+            .map((url) => (
               <SourceLine key={url} url={url} />
-            )
-          )}
+            ))}
           <div className="mt-3">
             <ReportContentButton
               entityType="ballot_measure"
@@ -287,6 +301,23 @@ export function ElectionPage() {
 }
 
 export default ElectionPage;
+
+function isPdfUrl(url: string): boolean {
+  return /\.pdf($|[?#])/i.test(url);
+}
+
+// "Official" is a claim, not a style: the pipeline intends
+// official_measure_url to be an official full-text page, but real rows point
+// at Wikipedia/Ballotpedia. Only government-hosted links get the official
+// label; anything else keeps neutral wording.
+function isGovernmentUrl(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return host.endsWith(".gov") || host.endsWith(".us");
+  } catch {
+    return false;
+  }
+}
 
 // Client-side "for/against my issues" candidate ordering: weighted unique
 // matched areas dominate, matching record volume breaks ties, and candidates
