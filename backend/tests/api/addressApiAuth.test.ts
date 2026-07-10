@@ -147,7 +147,11 @@ describe("session-aware authenticated user resolver", () => {
     expect(redis.get).toHaveBeenCalledOnce();
   });
 
-  it("prefers the session cookie over a Bearer header when both are present", async () => {
+  it("prefers the Bearer header over the session cookie when both are present", async () => {
+    // Mobile requests can carry both: the app attaches its Bearer session
+    // while the platform cookie jar replays whatever cookie it holds. The
+    // explicit Bearer credential must win, or a stale jar cookie would
+    // shadow — and 401 — a perfectly valid session.
     const redis = {
       get: vi.fn().mockResolvedValue("99999999-9999-4999-8999-999999999999:1"),
     };
@@ -165,8 +169,8 @@ describe("session-aware authenticated user resolver", () => {
     });
 
     expect(redis.get).toHaveBeenCalledOnce();
-    expect(String(redis.get.mock.calls[0]?.[0])).toContain(hashSessionId("cookie-session"));
-    expect(String(redis.get.mock.calls[0]?.[0])).not.toContain(hashSessionId("bearer-session"));
+    expect(String(redis.get.mock.calls[0]?.[0])).toContain(hashSessionId("bearer-session"));
+    expect(String(redis.get.mock.calls[0]?.[0])).not.toContain(hashSessionId("cookie-session"));
   });
 
   it("applies the same epoch revocation to bearer sessions", async () => {
