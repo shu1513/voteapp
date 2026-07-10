@@ -48,6 +48,7 @@ type StagingRow = {
   payload: unknown;
   status: string;
   run_id: string | null;
+  reason: string | null;
   failure_debug: unknown;
   schema_version: string | null;
 };
@@ -391,7 +392,7 @@ async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Prom
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
-      SELECT ingest_key, payload, status, run_id, failure_debug, schema_version
+      SELECT ingest_key, payload, status, run_id, reason, failure_debug, schema_version
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -497,6 +498,17 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
                 ingest_key: ingestKey,
                 item_type: STAGING_ITEM_TYPE_ELECTION,
                 run_id: row.run_id ?? "",
+              });
+            } else if (row?.status === "rejected") {
+              // Rejection event whose rejected-stream publish never landed.
+              // Nothing consumes this stream today (it is an audit trail; the
+              // durable rejection is the row itself), but a future consumer
+              // must not inherit a silent gap.
+              await redis.xAdd(STAGING_REJECTED_STREAM, "*", {
+                ingest_key: ingestKey,
+                item_type: STAGING_ITEM_TYPE_ELECTION,
+                run_id: row.run_id ?? "",
+                reason: row.reason ?? "",
               });
             }
             await ack(entry.id);
@@ -734,10 +746,11 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
           }
 
           const status = await getStagingStatus(pool, ingestKey);
-          if (status === "pending" || status === "validated") {
-            // leave unacked so reclaim pass can retry; 'validated' means the
-            // row transitioned but the validated-stream publish may have
-            // failed — the redelivery gate republishes it from the row.
+          if (status === "pending" || status === "validated" || status === "rejected") {
+            // leave unacked so reclaim pass can retry; 'validated' and
+            // 'rejected' mean the row transitioned but the follow-up stream
+            // publish may have failed — the redelivery gate republishes it
+            // from the row.
             console.warn(`elections validator retrying ingest_key=${ingestKey}: ${reason}`);
             continue;
           }

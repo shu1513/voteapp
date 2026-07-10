@@ -148,6 +148,14 @@ describe("runCandidateProfileEnricher fanout replay on redelivered drafts", () =
     const [, drafts] = enqueueCandidateRecordDraftsMock.mock.calls[0]!;
     expect(drafts).toEqual([{ candidateId: "cand-1", electionId: "e-1", runId: "run-1" }]);
     expect(redisXAckMock).toHaveBeenCalledTimes(1);
+    // Ordering matters: an ack that slips ahead of the fanout recreates the
+    // loss this replay exists to prevent.
+    expect(enqueueCandidateLinkCandidateFinanceSyncJobMock.mock.invocationCallOrder[0]!).toBeLessThan(
+      redisXAckMock.mock.invocationCallOrder[0]!
+    );
+    expect(enqueueCandidateRecordDraftsMock.mock.invocationCallOrder[0]!).toBeLessThan(
+      redisXAckMock.mock.invocationCallOrder[0]!
+    );
     // The replay must short-circuit: no AI call, no candidate write transaction.
     expect(enrichCandidateProfileMock).not.toHaveBeenCalled();
     expect(poolConnectMock).not.toHaveBeenCalled();

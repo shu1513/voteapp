@@ -1366,6 +1366,58 @@ describe("runElectionsValidator", () => {
     expect(redisXAckMock).toHaveBeenCalledWith(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, "1-0");
   });
 
+  it("republishes the rejected-stream event for a redelivered row already marked rejected", async () => {
+    poolQueryMock.mockResolvedValueOnce({
+      rows: [
+        {
+          ingest_key: "elections:test:1",
+          payload: {},
+          status: "rejected",
+          run_id: "run_x",
+          reason: "hard_fail: out of scope",
+          failure_debug: null,
+          schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+        },
+      ],
+    });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).toHaveBeenCalledWith(STAGING_REJECTED_STREAM, "*", {
+      ingest_key: "elections:test:1",
+      item_type: STAGING_ITEM_TYPE_ELECTION,
+      run_id: "run_x",
+      reason: "hard_fail: out of scope",
+    });
+    expect(redisXAckMock).toHaveBeenCalledWith(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, "1-0");
+  });
+
+  it("leaves the message unacked when the rejected-stream publish fails after the row was marked rejected", async () => {
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:1",
+            payload: "not-a-valid-payload",
+            status: "pending",
+            run_id: "run_x",
+            reason: null,
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      // UPDATE ... status='rejected' (hard-fail on unparseable payload)
+      .mockResolvedValueOnce({ rowCount: 1 })
+      // catch-path getStagingStatus: row already transitioned
+      .mockResolvedValueOnce({ rows: [{ status: "rejected" }] });
+    redisXAddMock.mockRejectedValueOnce(new Error("redis down"));
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAckMock).not.toHaveBeenCalled();
+  });
+
   it("still acks terminal rows without republishing anything", async () => {
     poolQueryMock.mockResolvedValueOnce({
       rows: [
