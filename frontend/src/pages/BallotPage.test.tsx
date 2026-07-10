@@ -8,7 +8,7 @@ import { ballotSummary, electionSummary } from "../test/fixtures";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
-function renderBallot(entry: string) {
+function renderBallot(entry: string | { pathname: string; search?: string; state?: unknown }) {
   return renderRoutes(
     [
       { path: "/ballot", element: <BallotPage /> },
@@ -61,6 +61,38 @@ describe("BallotPage", () => {
     const options = screen.getAllByRole("option").map((option) => option.textContent);
     expect(options).not.toContain("My issues");
     expect(options).toContain("Vote power");
+  });
+
+  it("confirms the matched address from router state and lists the districts", async () => {
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderBallot({
+      pathname: "/ballot",
+      search: "?d=d-1",
+      state: { matchedAddress: "123 MAIN ST, JUNEAU, AK, 99801" },
+    });
+
+    // Geocoder confirmation: the visitor can catch a wrong match and bail out.
+    expect(screen.getByText("123 MAIN ST, JUNEAU, AK, 99801")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Not your address?" })).toHaveAttribute("href", "/?new=1");
+
+    // District names come from the ballot response, so they survive a refresh.
+    const districtsToggle = await screen.findByText("Which districts?");
+    const list = districtsToggle.closest("details");
+    expect(list).not.toBeNull();
+    expect(list).toHaveTextContent("Alaska");
+  });
+
+  it("omits the matched-address line on direct visits without router state", async () => {
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderBallot("/ballot?d=d-1");
+    await screen.findByText("Governor");
+    expect(screen.queryByText(/Matched address:/)).not.toBeInTheDocument();
   });
 
   it("shows the empty-ballot message when districts have no elections", async () => {

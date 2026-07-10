@@ -53,7 +53,11 @@ export function HomePage() {
         savePendingDistrictIds(resolution.districts.map((district) => district.id));
       }
       // Straight to the elections — the districts list is a detour nobody asked for.
-      navigate(`/ballot?d=${resolution.districts.map((district) => district.id).join(",")}`);
+      // The matched address rides along in router state (never the URL — it is
+      // personal data) so the ballot page can show which address was geocoded.
+      navigate(`/ballot?d=${resolution.districts.map((district) => district.id).join(",")}`, {
+        state: { matchedAddress: resolution.matched_address },
+      });
     },
   });
 

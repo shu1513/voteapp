@@ -3,8 +3,12 @@ import { createMemoryRouter, RouterProvider, type RouteObject } from "react-rout
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 /** Renders routes under a fresh QueryClient with retries off (so error
- * states assert immediately instead of after retry backoff). */
-export function renderRoutes(routes: RouteObject[], initialEntry = "/") {
+ * states assert immediately instead of after retry backoff). Pass an object
+ * entry ({ pathname, state }) to simulate navigation carrying router state. */
+export function renderRoutes(
+  routes: RouteObject[],
+  initialEntry: string | { pathname: string; search?: string; state?: unknown } = "/"
+) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   });
