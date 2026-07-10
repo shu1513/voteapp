@@ -1,13 +1,7 @@
-import { readFileSync } from "node:fs";
-
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { migrationTableColumns } from "../../helpers/migrationTableColumns.js";
 import { loadNewMexicoCandidateFinanceSummariesByCandidateElection } from "../../../src/pipeline/newMexicoFinance/newMexicoBallotLookupFinanceLoader.js";
-
-const MIGRATION_SQL = readFileSync(
-  new URL("../../../../db/migrations/115_add_new_mexico_campaign_finance_tables.sql", import.meta.url),
-  "utf8"
-);
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -16,28 +10,13 @@ afterEach(() => {
 const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
 
-function migrationTableColumns(tableName: string): Set<string> {
-  const start = MIGRATION_SQL.indexOf(`CREATE TABLE IF NOT EXISTS public.${tableName} (`);
-  expect(start).toBeGreaterThanOrEqual(0);
-  const block = MIGRATION_SQL.slice(start, MIGRATION_SQL.indexOf("\n);", start));
-  const columns = new Set<string>();
-  for (const line of block.split("\n").slice(1)) {
-    const match = /^ {2}([a-z_]+) /.exec(line);
-    if (match) {
-      columns.add(match[1]);
-    }
-  }
-  expect(columns.size).toBeGreaterThan(0);
-  return columns;
-}
-
 describe("newMexicoBallotLookupFinanceLoader", () => {
   // Regression guard for the schema drift where the outside-groups query
-  // selected outside_group.expenditure_count, a column migration 115 never
-  // created (only the Tennessee table has it). Unit tests mock db.query, so
-  // this cross-checks every column the query references against the actual
-  // CREATE TABLE statement.
-  it("only references outside-group columns that migration 115 creates", async () => {
+  // selected outside_group.expenditure_count, a column no migration ever
+  // created for New Mexico (only the Tennessee table has it). Unit tests
+  // mock db.query, so this cross-checks every column the query references
+  // against the columns the migrations actually build.
+  it("only references outside-group columns that the migrations create", async () => {
     vi.stubEnv("NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED", "true");
     const queries: string[] = [];
     const query = vi.fn(async (sql: string) => {
@@ -63,6 +42,7 @@ describe("newMexicoBallotLookupFinanceLoader", () => {
     expect(referencedColumns.size).toBeGreaterThan(0);
 
     const schemaColumns = migrationTableColumns("nm_candidate_finance_outside_groups");
+    expect(schemaColumns.size).toBeGreaterThan(0);
     for (const column of referencedColumns) {
       expect(
         schemaColumns.has(column),
