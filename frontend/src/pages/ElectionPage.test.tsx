@@ -75,4 +75,36 @@ describe("ElectionPage", () => {
     expect(screen.getByText("No rejects the bond.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Report an issue with ballot measure" })).toBeInTheDocument();
   });
+
+  it("links the official measure text and lists the remaining measure sources", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: null,
+          source_urls: [
+            "https://sos.example.gov/qualified-measures",
+            "https://sos.example.gov/measures/measure-1.pdf",
+          ],
+          official_measure_url: "https://sos.example.gov/measures/measure-1.pdf",
+          research_area_tags: [],
+        },
+      })
+    );
+
+    const measureLink = await screen.findByRole("link", { name: "Read the official measure text (PDF)" });
+    expect(measureLink).toHaveAttribute("href", "https://sos.example.gov/measures/measure-1.pdf");
+    // The official URL renders only as the prominent link, not a second source line.
+    expect(screen.getByRole("link", { name: "sos.example.gov" })).toHaveAttribute(
+      "href",
+      "https://sos.example.gov/qualified-measures"
+    );
+  });
 });
