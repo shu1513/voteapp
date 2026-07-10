@@ -1096,19 +1096,6 @@ function isMaineFinanceEligibleOffice(input: {
 // fail-closed — no finance beats wrong finance. P ids never match:
 // presidential contests live in presidential_cycles, never in district
 // elections.
-// Adapter between the election rows this module loads and the
-// {officeScope, officeCanonicalName} input every state eligible-office
-// predicate takes.
-function officeInputFromElectionRow(row: ElectionRow): {
-  officeScope: string | null;
-  officeCanonicalName: string | null;
-} {
-  return {
-    officeScope: row.office_scope ?? null,
-    officeCanonicalName: row.office_canonical_name ?? null,
-  };
-}
-
 function isFecRequestableElection(row: ElectionRow, fecCandidateId: string): boolean {
   if (row.race_type !== "office") {
     return false;
@@ -1127,6 +1114,19 @@ function isFecRequestableElection(row: ElectionRow, fecCandidateId: string): boo
     return row.discovery_contest_family === "us_senate";
   }
   return false;
+}
+
+// Adapter between the election rows this module loads and the
+// {officeScope, officeCanonicalName} input every state eligible-office
+// predicate takes.
+function officeInputFromElectionRow(row: ElectionRow): {
+  officeScope: string | null;
+  officeCanonicalName: string | null;
+} {
+  return {
+    officeScope: row.office_scope ?? null,
+    officeCanonicalName: row.office_canonical_name ?? null,
+  };
 }
 
 function buildFinanceSummaryRequests(
