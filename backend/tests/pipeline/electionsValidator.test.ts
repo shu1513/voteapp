@@ -1310,4 +1310,120 @@ describe("runElectionsValidator", () => {
       expect.objectContaining({ ingest_key: ingestKey })
     );
   });
+
+  it("republishes the validated-stream message for a redelivered row already marked validated", async () => {
+    // A prior run died between UPDATE ... status='validated' and the XADD:
+    // the redelivered pending message must rebuild the missing message, not
+    // ack it away and strand the row.
+    const payload = { district_id: "d-x", entries: [] };
+    poolQueryMock.mockResolvedValueOnce({
+      rows: [
+        {
+          ingest_key: "elections:test:1",
+          payload,
+          status: "validated",
+          run_id: "run_x",
+          failure_debug: null,
+          schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+        },
+      ],
+    });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).toHaveBeenCalledWith(STAGING_VALIDATED_STREAM, "*", {
+      ingest_key: "elections:test:1",
+      item_type: STAGING_ITEM_TYPE_ELECTION,
+      run_id: "run_x",
+      payload: JSON.stringify(payload),
+    });
+    expect(redisXAckMock).toHaveBeenCalledWith(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, "1-0");
+    const updateCall = poolQueryMock.mock.calls.find((call) => String(call[0]).includes("UPDATE"));
+    expect(updateCall).toBeUndefined();
+  });
+
+  it("republishes the draft-stream message for a redelivered soft-fail requeue whose publish never landed", async () => {
+    poolQueryMock.mockResolvedValueOnce({
+      rows: [
+        {
+          ingest_key: "elections:test:1",
+          payload: { district_id: "d-x", entries: [] },
+          status: "pending",
+          run_id: "run_x",
+          failure_debug: null,
+          schema_version: "elections_draft_v1",
+        },
+      ],
+    });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).toHaveBeenCalledWith(STAGING_DRAFT_STREAM, "*", {
+      ingest_key: "elections:test:1",
+      item_type: STAGING_ITEM_TYPE_ELECTION,
+      run_id: "run_x",
+    });
+    expect(redisXAckMock).toHaveBeenCalledWith(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, "1-0");
+  });
+
+  it("still acks terminal rows without republishing anything", async () => {
+    poolQueryMock.mockResolvedValueOnce({
+      rows: [
+        {
+          ingest_key: "elections:test:1",
+          payload: {},
+          status: "written",
+          run_id: "run_x",
+          failure_debug: null,
+          schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+        },
+      ],
+    });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).not.toHaveBeenCalled();
+    expect(redisXAckMock).toHaveBeenCalledWith(STAGING_PENDING_STREAM, STAGING_ELECTIONS_VALIDATOR_GROUP, "1-0");
+  });
+
+  it("leaves the message unacked when the validated-stream publish fails after the row was marked validated", async () => {
+    const payload = {
+      district_id: "d-ak",
+      district_name: "Congressional District (at Large) (119th Congress), Alaska",
+      district_type: "us_house",
+      state: "AK",
+      entries: [
+        {
+          official_ballot_title: "United States Representative",
+          election_date: "2099-08-18",
+          race_type: "office",
+          election_stage: "primary",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:1",
+            payload,
+            status: "pending",
+            run_id: "run_x",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      // UPDATE ... status='validated'
+      .mockResolvedValueOnce({ rowCount: 1 })
+      // catch-path getStagingStatus: row already transitioned
+      .mockResolvedValueOnce({ rows: [{ status: "validated" }] });
+    redisXAddMock.mockRejectedValueOnce(new Error("redis down"));
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAckMock).not.toHaveBeenCalled();
+  });
 });
