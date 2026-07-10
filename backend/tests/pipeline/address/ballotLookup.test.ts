@@ -1156,7 +1156,7 @@ describe("lookupElectionDetailById", () => {
             election_date: "2024-11-05",
             election_stage: "general",
             is_partisan: true,
-            discovery_contest_family: "federal",
+            discovery_contest_family: "us_senate",
             sources: ["https://example.test/elections"],
             office_canonical_name: null,
           },
@@ -1411,6 +1411,181 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
     expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
+  });
+
+  // FEC ids are office-typed (S=Senate, H=House, P=President) and stored
+  // additively, so a candidate keeps ids from earlier federal runs. The FEC
+  // summaries table is keyed (fec_candidate_id, election_year) with no
+  // election_id, so without an office gate a state race would match the
+  // candidate's federal money for the same year — and override the correct
+  // state summary, since FEC merges last. These mocks dispatch on the queried
+  // table, not call order, so they survive loader reordering.
+  it("does not load FEC finance for a state office race when the candidate retains a federal FEC id", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
+    vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "true");
+
+    const query = vi.fn().mockImplementation((sql: string) => {
+      const text = String(sql);
+      if (text.includes("public.elections")) {
+        return Promise.resolve({
+          rows: [
+            {
+              election_id: officeElectionId,
+              district_id: districtId,
+              district_type: "statewide",
+              geoid_compact: "51",
+              district_name: "Virginia",
+              state: "VA",
+              state_fips: "51",
+              representation_power_score: "80",
+              race_type: "office",
+              official_ballot_title: "Governor",
+              election_date: "2026-11-03",
+              election_stage: "general",
+              is_partisan: true,
+              discovery_contest_family: "non_judicial_office",
+              sources: ["https://example.test/elections"],
+              office_scope: "statewide",
+              office_canonical_name: "Governor",
+            },
+          ],
+        });
+      }
+      if (text.includes("public.candidate_elections")) {
+        return Promise.resolve({
+          rows: [
+            {
+              election_id: officeElectionId,
+              candidate_election_id: candidateElectionId,
+              candidate_id: candidateId,
+              display_name: "Jane Commonwealth",
+              party: "Democratic",
+              is_incumbent: false,
+              status: "declared",
+              summary: "Candidate summary.",
+              current_office: "United States Senator",
+              state: "VA",
+              fec_ids: ["S4VA00001"],
+              state_filing_ids: [],
+            },
+          ],
+        });
+      }
+      if (text.includes("public.va_candidate_finance_summaries")) {
+        return Promise.resolve({
+          rows: [
+            {
+              candidate_id: candidateId,
+              election_id: officeElectionId,
+              committee_id: "CC-25-00001",
+              election_year: 2026,
+              total_receipts: "210000.00",
+              direct_contribution_total: "180000.00",
+              source_url: "https://cfreports.elections.virginia.gov/Committee/Index/CC-25-00001",
+              last_synced_at: "2026-06-22 04:05:00+00",
+            },
+          ],
+        });
+      }
+      if (text.includes("public.candidate_finance_summaries")) {
+        return Promise.resolve({
+          rows: [
+            {
+              candidate_id: candidateId,
+              election_id: officeElectionId,
+              fec_candidate_id: "S4VA00001",
+              election_year: 2026,
+              total_receipts: "1000.50",
+              total_disbursements: "700.25",
+              cash_on_hand: "300.00",
+              debts_owed: "10.00",
+              outside_support_total: null,
+              outside_oppose_total: null,
+              source_url: "https://www.fec.gov/data/candidate/S4VA00001/?cycle=2026",
+              last_synced_at: "2026-01-02 03:04:05+00",
+            },
+          ],
+        });
+      }
+      return Promise.resolve({ rows: [] });
+    });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+    const financeSummary = result?.candidates[0]?.finance_summary;
+
+    // The governor race keeps its state finance...
+    expect(financeSummary?.source).toBe("VIRGINIA_CFREPORTS");
+    expect(financeSummary?.controlled_committee_id).toBe("CC-25-00001");
+    expect(financeSummary?.direct_campaign.total_raised).toBe(180000);
+
+    // ...and the federal summaries table is never queried for it.
+    const queriedTables = query.mock.calls.map((call) => String(call[0])).join("\n");
+    expect(queriedTables).toContain("public.va_candidate_finance_summaries");
+    expect(queriedTables).not.toContain("public.candidate_finance_summaries AS");
+  });
+
+  it("requests FEC finance only for the id matching the election's federal office", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
+
+    const query = vi.fn().mockImplementation((sql: string) => {
+      const text = String(sql);
+      if (text.includes("public.elections")) {
+        return Promise.resolve({
+          rows: [
+            {
+              election_id: officeElectionId,
+              district_id: districtId,
+              district_type: "us_house",
+              geoid_compact: "5101",
+              district_name: "Virginia's 1st Congressional District",
+              state: "VA",
+              state_fips: "51",
+              representation_power_score: "60",
+              race_type: "office",
+              official_ballot_title: "U.S. House, Virginia District 1",
+              election_date: "2026-11-03",
+              election_stage: "general",
+              is_partisan: true,
+              discovery_contest_family: "non_judicial_office",
+              sources: ["https://example.test/elections"],
+              office_scope: "us_house",
+              office_canonical_name: "United States Representative",
+            },
+          ],
+        });
+      }
+      if (text.includes("public.candidate_elections")) {
+        return Promise.resolve({
+          rows: [
+            {
+              election_id: officeElectionId,
+              candidate_election_id: candidateElectionId,
+              candidate_id: candidateId,
+              display_name: "Jane Commonwealth",
+              party: "Democratic",
+              is_incumbent: false,
+              status: "declared",
+              summary: "Candidate summary.",
+              current_office: null,
+              state: "VA",
+              // A House id plus a retained Senate id from an earlier run.
+              fec_ids: ["H6VA01234", "S4VA00001"],
+              state_filing_ids: [],
+            },
+          ],
+        });
+      }
+      return Promise.resolve({ rows: [] });
+    });
+
+    await lookupElectionDetailById({ query }, officeElectionId);
+
+    const fecSummaryCall = query.mock.calls.find((call) =>
+      String(call[0]).includes("public.candidate_finance_summaries AS")
+    );
+    expect(fecSummaryCall).toBeDefined();
+    const requests = JSON.parse(String(fecSummaryCall?.[1]?.[0])) as Array<{ fec_candidate_id: string }>;
+    expect(requests.map((request) => request.fec_candidate_id)).toEqual(["H6VA01234"]);
   });
 
   it("includes locally synced California finance summaries for California candidate detail", async () => {
@@ -7476,7 +7651,7 @@ describe("lookupElectionDetailById", () => {
             election_date: "2024-11-05",
             election_stage: "general",
             is_partisan: true,
-            discovery_contest_family: "federal",
+            discovery_contest_family: "us_senate",
             sources: ["https://example.test/elections"],
             office_canonical_name: null,
           },

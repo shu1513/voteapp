@@ -1278,21 +1278,54 @@ function mapFinanceBreakdown(
   };
 }
 
+// FEC ids are office-typed (S = Senate, H = House, P = President), stored
+// additively on the candidate, and candidate_finance_summaries is keyed
+// (fec_candidate_id, election_year) with no election_id — so an id must only
+// be requested for an election of its own federal office, or a candidate's
+// federal money would attach to an unrelated same-year race (and win the
+// merge, since FEC merges last). Mirrors the office gates in
+// candidateFinanceBatchSync. US House is identified structurally (us_house
+// districts hold nothing else); US Senate shares statewide districts with
+// governors, so it needs the contest family or the office identity — Senate
+// elections missing both stay fail-closed (no finance beats wrong finance).
+// P ids never match: presidential contests live in presidential_cycles,
+// never in district elections.
+function isFecRequestableElection(row: ElectionRow, fecCandidateId: string): boolean {
+  if (row.race_type !== "office") {
+    return false;
+  }
+  if (fecCandidateId.startsWith("H")) {
+    return row.district_type === "us_house";
+  }
+  if (fecCandidateId.startsWith("S")) {
+    return (
+      row.district_type === "statewide" &&
+      (row.discovery_contest_family === "us_senate" ||
+        row.office_canonical_name?.trim() === "United States Senator")
+    );
+  }
+  return false;
+}
+
 function buildFinanceSummaryRequests(
   candidateRows: readonly CandidateRow[],
   electionRows: readonly ElectionRow[]
 ): CandidateFinanceSummaryRequest[] {
-  const electionYearById = new Map(electionRows.map((row) => [row.election_id, electionYear(row.election_date)]));
+  const electionById = new Map(electionRows.map((row) => [row.election_id, row]));
   const requests = new Map<string, CandidateFinanceSummaryRequest>();
 
   for (const row of candidateRows) {
-    const year = electionYearById.get(row.election_id) ?? null;
+    const election = electionById.get(row.election_id);
+    if (!election) {
+      continue;
+    }
+    const year = electionYear(election.election_date);
     if (year === null) {
       continue;
     }
     for (const rawFecId of parseStringArray(row.fec_ids)) {
       const fecCandidateId = normalizeFecCandidateIdForFinance(rawFecId);
-      if (!fecCandidateId) {
+      if (!fecCandidateId || !isFecRequestableElection(election, fecCandidateId)) {
         continue;
       }
       const key = `${row.candidate_id}\u0000${row.election_id}\u0000${fecCandidateId}\u0000${year}`;

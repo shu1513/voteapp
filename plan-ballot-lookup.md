@@ -101,12 +101,27 @@ the test for it fails today, so it must land **with** the fix:
 
 1. Gate `buildFinanceSummaryRequests` to federal offices, mirroring the sync's
    office+id-prefix rules. First resolve how to classify a federal election
-   when office metadata is null (`discovery_contest_family = 'federal'`,
-   backfilling `office_id`, or matching on id prefix) — this is the one real
-   judgment call.
+   when office metadata is null — this is the one real judgment call.
 2. Regression test: a state office (Governor) held by a candidate with a
    retained `fec_id` keeps state finance and issues **no** FEC query.
 3. Keep the existing federal-office FEC test as the positive case.
+
+**Resolution (implemented):** `isFecRequestableElection` matches id prefix to
+office. `H…` ids require `district_type = 'us_house'` (structural — those
+districts hold nothing else; contest family is unreliable there, null for
+half the local House rows). `S…` ids require a statewide district plus
+`discovery_contest_family = 'us_senate'` **or**
+`office_canonical_name = 'United States Senator'` (local data: all 22 Senate
+elections carry both); a Senate election missing both signals fails closed —
+no finance beats wrong finance. `P…` ids never match (presidential contests
+live in `presidential_cycles`, never in district elections, enforced by
+`injectManualElections`). Note: `discovery_contest_family = 'federal'` — the
+first idea above — does not exist; the legal values are
+`non_judicial_office/judicial_office/ballot_measure/us_senate`, and two test
+fixtures carrying `"federal"` (a value the DB CHECK rejects) were corrected
+to `us_senate`. A second test pins the id-level filter: a House election
+where the candidate holds both `H…` and `S…` ids requests FEC data for the
+`H…` id only.
 
 Phases 1–3 below are unaffected and can proceed once this lands.
 
@@ -144,9 +159,10 @@ regression test fails without the fix):
 
 1. Gate `buildFinanceSummaryRequests` to federal elections, mirroring the
    sync's rules (Senate `S…`/House `H…` id prefixes + office identity;
-   presidential via its own path). Resolve the null-office-metadata
-   question first — the existing FEC test's U.S. Senate fixture has
-   `office_canonical_name: null` and must keep loading finance.
+   presidential via its own path). The null-office-metadata question is
+   resolved in the defect section above; the existing FEC test's fixture
+   carried an illegal `discovery_contest_family: "federal"` and was
+   corrected to `us_senate`, which the gate accepts.
 2. Regression test: a state-office election (Governor) whose candidate
    retains an `fec_id` keeps state finance and issues **no** FEC summary
    query.
