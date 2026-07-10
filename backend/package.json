@@ -114,6 +114,7 @@
     "candidates:record:scheduler:upsert": "tsx src/scripts/upsertCandidateRecordDailyScheduler.ts",
     "candidates:record:scheduler:worker": "tsx src/scripts/runCandidateRecordSchedulerWorker.ts",
     "candidates:record:scheduler:trigger": "tsx src/scripts/triggerCandidateRecordRollover.ts",
+    "content:backfill-plain-language": "tsx src/scripts/backfillPlainLanguage.ts",
     "db:migrate": "tsx src/scripts/dbMigrate.ts",
     "db:migrate:status": "tsx src/scripts/dbMigrate.ts --status",
     "db:migrate:check-files": "tsx src/scripts/dbMigrate.ts --check-files",
