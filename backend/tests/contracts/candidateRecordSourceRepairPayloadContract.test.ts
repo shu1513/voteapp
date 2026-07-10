@@ -96,6 +96,33 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
     }
   });
 
+  // Same shared-helper regression as discovery: partial dates parse as UTC
+  // midnight and shift back a day in timezones behind UTC, so the repair path
+  // must reject them too instead of re-admitting a shifted date.
+  it("rejects year-only and year-month event_date instead of timezone-shifting them", () => {
+    for (const eventDate of ["2025", "2025-04"]) {
+      const parsed = parseCandidateRecordSourceRepairPayload(
+        {
+          repairs: [
+            {
+              bad_index: 0,
+              description: "Repaired with only a partial date",
+              source_url: "https://example.org/a",
+              event_date: eventDate,
+            },
+          ],
+        },
+        { badRecordCount: 1 }
+      );
+
+      expect(parsed.ok).toBe(false);
+      if (!parsed.ok) {
+        expect(parsed.reason).toContain(`payload.repairs[].event_date "${eventDate}" is incomplete`);
+        expect(parsed.reason).toContain("publication date");
+      }
+    }
+  });
+
   it("rejects an impossible calendar date", () => {
     const parsed = parseCandidateRecordSourceRepairPayload(
       {

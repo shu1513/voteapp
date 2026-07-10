@@ -147,6 +147,30 @@ describe("parseCandidateRecordDiscoveryPayload", () => {
     expect(beyond.ok).toBe(false);
   });
 
+  // Regression: year-only/year-month strings parse as UTC midnight in
+  // new Date(), so the local-component fallback shifted "2025" to 2024-12-31
+  // in timezones behind UTC (e.g. TZ=America/Los_Angeles). They must be
+  // rejected outright, never silently shifted.
+  it("rejects year-only and year-month event_date instead of timezone-shifting them", () => {
+    for (const eventDate of ["2025", "2025-04"]) {
+      const parsed = parseCandidateRecordDiscoveryPayload({
+        records: [
+          {
+            description: "Record reported with only a partial date.",
+            source_url: "https://example.org/partial-date",
+            event_date: eventDate,
+          },
+        ],
+      });
+
+      expect(parsed.ok).toBe(false);
+      if (!parsed.ok) {
+        expect(parsed.reason).toContain(`event_date "${eventDate}" is incomplete`);
+        expect(parsed.reason).toContain("publication date");
+      }
+    }
+  });
+
   it("rejects an impossible calendar date that matches the YYYY-MM-DD format", () => {
     const parsed = parseCandidateRecordDiscoveryPayload({
       records: [

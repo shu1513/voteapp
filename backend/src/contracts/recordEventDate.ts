@@ -49,6 +49,18 @@ function normalizeEventDate(value: unknown): string | null {
 export function parseRecordEventDate(
   value: unknown
 ): { ok: true; eventDate: string } | { ok: false; reason: string } {
+  // Year-only ("2025") and year-month ("2025-04") strings parse as UTC
+  // midnight in new Date(), so the local-component fallback below shifts them
+  // back a day (or a whole year/month) in timezones behind UTC. They are also
+  // too vague for records, which are dated actions: the prompt already tells
+  // the model to fall back to the source publication date — a full date — or
+  // omit the record. Reject instead of guessing a canonical day.
+  if (typeof value === "string" && /^\d{4}(-\d{2})?$/.test(value.trim())) {
+    return {
+      ok: false,
+      reason: `event_date "${value.trim()}" is incomplete; use the full YYYY-MM-DD action date, or the source publication date when the action date is unknown`,
+    };
+  }
   const eventDate = normalizeEventDate(value);
   if (!eventDate) {
     return { ok: false, reason: "event_date must be parseable date" };
