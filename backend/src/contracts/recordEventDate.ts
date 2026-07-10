@@ -31,6 +31,17 @@ function normalizeEventDate(value: unknown): string | null {
   if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
     return trimmed;
   }
+  // A timestamp names an instant, not a calendar date; which date the instant
+  // falls on depends on timezone. Reading local components here would make
+  // the result depend on the *server's* timezone (a UTC-midnight timestamp
+  // shifts back a day in timezones behind UTC), so the same payload would
+  // produce different event dates — and identity keys — per environment.
+  // Take the date the string itself states, i.e. the date in the source's
+  // own zone, which is deterministic everywhere.
+  const timestamp = trimmed.match(/^(\d{4}-\d{2}-\d{2})[T ]/);
+  if (timestamp) {
+    return Number.isNaN(new Date(trimmed).getTime()) ? null : timestamp[1];
+  }
   // Natural-language fallback intentionally uses local date components:
   // new Date("April 5, 2026") is local midnight, and UTC slicing would shift
   // date-only strings back a day in timezones behind UTC.
@@ -44,11 +55,45 @@ function normalizeEventDate(value: unknown): string | null {
   return `${year}-${month}-${day}`;
 }
 
+// Partial dates ("2025", "2025-04", "2025/04", "April 2025") must be
+// rejected, not guessed: records are dated actions, and every parser path
+// either invents a day (legacy parsing lands on the 1st) or, for ISO
+// year/year-month forms, parses as UTC midnight and shifts a day back in
+// timezones behind UTC. Instead of enumerating spellings, detect the absence
+// of a day-of-month: a full date always carries year + month + day tokens.
+function isMissingDayOfMonth(value: string): boolean {
+  if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
+    return false;
+  }
+  const numbers = value.match(/\d+/g) ?? [];
+  if (numbers.length === 0) {
+    // No digits at all is not a partial date; let the parse-failure path
+    // report it as unparseable.
+    return false;
+  }
+  if (/[a-z]/i.test(value)) {
+    // Month is spelled out ("April 2025" vs "April 5, 2025"): a day is any
+    // standalone 1-2 digit number alongside the year.
+    return !numbers.some((token) => token.length <= 2);
+  }
+  // All-numeric ("2025-4", "2025/04"): a full date needs three fields.
+  return numbers.length < 3;
+}
+
 // Reasons start with "event_date" so callers can either use them as-is or
 // prefix a field path (e.g. `payload.repairs[].${reason}`).
 export function parseRecordEventDate(
   value: unknown
 ): { ok: true; eventDate: string } | { ok: false; reason: string } {
+  // The prompt already tells the model to fall back to the source
+  // publication date — a full date — or omit the record, so reject partial
+  // dates instead of guessing a canonical day.
+  if (typeof value === "string" && value.trim().length > 0 && isMissingDayOfMonth(value.trim())) {
+    return {
+      ok: false,
+      reason: `event_date "${value.trim()}" is incomplete; use the full YYYY-MM-DD action date, or the source publication date when the action date is unknown`,
+    };
+  }
   const eventDate = normalizeEventDate(value);
   if (!eventDate) {
     return { ok: false, reason: "event_date must be parseable date" };

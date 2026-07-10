@@ -96,6 +96,33 @@ describe("parseCandidateRecordSourceRepairPayload", () => {
     }
   });
 
+  // Same shared-helper regression as discovery: partial dates either shift a
+  // day back in timezones behind UTC or invent day 01, so the repair path
+  // must reject every spelling too instead of re-admitting a guessed date.
+  it("rejects partial event_date spellings instead of shifting or inventing a day", () => {
+    for (const eventDate of ["2025", "2025-04", "2025-4", "2025/04", "April 2025"]) {
+      const parsed = parseCandidateRecordSourceRepairPayload(
+        {
+          repairs: [
+            {
+              bad_index: 0,
+              description: "Repaired with only a partial date",
+              source_url: "https://example.org/a",
+              event_date: eventDate,
+            },
+          ],
+        },
+        { badRecordCount: 1 }
+      );
+
+      expect(parsed.ok).toBe(false);
+      if (!parsed.ok) {
+        expect(parsed.reason).toContain(`payload.repairs[].event_date "${eventDate}" is incomplete`);
+        expect(parsed.reason).toContain("publication date");
+      }
+    }
+  });
+
   it("rejects an impossible calendar date", () => {
     const parsed = parseCandidateRecordSourceRepairPayload(
       {

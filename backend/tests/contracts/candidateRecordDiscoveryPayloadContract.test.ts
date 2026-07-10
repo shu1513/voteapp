@@ -147,6 +147,62 @@ describe("parseCandidateRecordDiscoveryPayload", () => {
     expect(beyond.ok).toBe(false);
   });
 
+  // Timestamps name an instant; which calendar date it falls on depends on
+  // timezone. The contract must return the date the string itself states —
+  // never local server components, which turn "…T00:00:00Z" into the prior
+  // day under TZ=America/Los_Angeles, and never the UTC date, which shifts
+  // "…T23:30:00-07:00" to the next day.
+  it("takes the stated date from timestamps regardless of server timezone", () => {
+    const parsed = parseCandidateRecordDiscoveryPayload({
+      records: [
+        {
+          description: "Vote recorded at UTC midnight.",
+          source_url: "https://example.org/utc-midnight",
+          event_date: "2026-04-05T00:00:00.000Z",
+        },
+        {
+          description: "Late-evening action in a timezone behind UTC.",
+          source_url: "https://example.org/late-evening",
+          event_date: "2026-04-05T23:30:00-07:00",
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+    expect(parsed.payload.records.map((record) => record.event_date)).toEqual([
+      "2026-04-05",
+      "2026-04-05",
+    ]);
+  });
+
+  // Regression: year-only/year-month strings parse as UTC midnight in
+  // new Date(), so the local-component fallback shifted "2025" to 2024-12-31
+  // in timezones behind UTC (e.g. TZ=America/Los_Angeles), and other partial
+  // spellings hit the legacy parser and silently invent day 01. All partial
+  // dates must be rejected outright, whatever the spelling.
+  it("rejects partial event_date spellings instead of shifting or inventing a day", () => {
+    for (const eventDate of ["2025", "2025-04", "2025-4", "2025/04", "April 2025"]) {
+      const parsed = parseCandidateRecordDiscoveryPayload({
+        records: [
+          {
+            description: "Record reported with only a partial date.",
+            source_url: "https://example.org/partial-date",
+            event_date: eventDate,
+          },
+        ],
+      });
+
+      expect(parsed.ok).toBe(false);
+      if (!parsed.ok) {
+        expect(parsed.reason).toContain(`event_date "${eventDate}" is incomplete`);
+        expect(parsed.reason).toContain("publication date");
+      }
+    }
+  });
+
   it("rejects an impossible calendar date that matches the YYYY-MM-DD format", () => {
     const parsed = parseCandidateRecordDiscoveryPayload({
       records: [
