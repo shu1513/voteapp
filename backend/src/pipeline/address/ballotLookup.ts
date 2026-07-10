@@ -1285,11 +1285,18 @@ function mapFinanceBreakdown(
 // federal money would attach to an unrelated same-year race (and win the
 // merge, since FEC merges last). Mirrors the office gates in
 // candidateFinanceBatchSync. US House is identified structurally (us_house
-// districts hold nothing else); US Senate shares statewide districts with
-// governors, so it needs the contest family or the office identity — Senate
-// elections missing both stay fail-closed (no finance beats wrong finance).
-// P ids never match: presidential contests live in presidential_cycles,
-// never in district elections.
+// districts hold nothing else). US Senate shares statewide districts with
+// governors, so it needs identity metadata — and the two signals are not
+// equally trustworthy: office_canonical_name comes from the curated offices
+// table via write-time office matching, while discovery_contest_family is a
+// breadcrumb of which search found the election, stored with no
+// consistency check against the office. So a resolved office is
+// authoritative in both directions (a linked Governor blocks Senate finance
+// even if the family wrongly says us_senate), and the family only decides
+// when no office is linked. Senate elections with neither signal stay
+// fail-closed — no finance beats wrong finance. P ids never match:
+// presidential contests live in presidential_cycles, never in district
+// elections.
 function isFecRequestableElection(row: ElectionRow, fecCandidateId: string): boolean {
   if (row.race_type !== "office") {
     return false;
@@ -1298,11 +1305,14 @@ function isFecRequestableElection(row: ElectionRow, fecCandidateId: string): boo
     return row.district_type === "us_house";
   }
   if (fecCandidateId.startsWith("S")) {
-    return (
-      row.district_type === "statewide" &&
-      (row.discovery_contest_family === "us_senate" ||
-        row.office_canonical_name?.trim() === "United States Senator")
-    );
+    if (row.district_type !== "statewide") {
+      return false;
+    }
+    const canonicalOffice = row.office_canonical_name?.trim();
+    if (canonicalOffice) {
+      return canonicalOffice === "United States Senator";
+    }
+    return row.discovery_contest_family === "us_senate";
   }
   return false;
 }

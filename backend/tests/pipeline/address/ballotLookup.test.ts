@@ -1524,6 +1524,72 @@ describe("lookupElectionDetailById", () => {
     expect(queriedTables).not.toContain("public.candidate_finance_summaries AS");
   });
 
+  // discovery_contest_family records which search found the election and is
+  // stored with no consistency check against the resolved office, so the two
+  // can disagree. The office link is curated and must win: a Governor office
+  // blocks Senate finance even when the family wrongly says us_senate.
+  it("does not load FEC finance when a mislabeled contest family contradicts the resolved office", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
+
+    const query = vi.fn().mockImplementation((sql: string) => {
+      const text = String(sql);
+      if (text.includes("public.elections")) {
+        return Promise.resolve({
+          rows: [
+            {
+              election_id: officeElectionId,
+              district_id: districtId,
+              district_type: "statewide",
+              geoid_compact: "51",
+              district_name: "Virginia",
+              state: "VA",
+              state_fips: "51",
+              representation_power_score: "80",
+              race_type: "office",
+              official_ballot_title: "Governor",
+              election_date: "2026-11-03",
+              election_stage: "general",
+              is_partisan: true,
+              // Wrong: the discovering search's family, never validated
+              // against the office the matcher resolved below.
+              discovery_contest_family: "us_senate",
+              sources: ["https://example.test/elections"],
+              office_scope: "statewide",
+              office_canonical_name: "Governor",
+            },
+          ],
+        });
+      }
+      if (text.includes("public.candidate_elections")) {
+        return Promise.resolve({
+          rows: [
+            {
+              election_id: officeElectionId,
+              candidate_election_id: candidateElectionId,
+              candidate_id: candidateId,
+              display_name: "Jane Commonwealth",
+              party: "Democratic",
+              is_incumbent: false,
+              status: "declared",
+              summary: "Candidate summary.",
+              current_office: "United States Senator",
+              state: "VA",
+              fec_ids: ["S4VA00001"],
+              state_filing_ids: [],
+            },
+          ],
+        });
+      }
+      return Promise.resolve({ rows: [] });
+    });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates[0]?.finance_summary).toBeNull();
+    const queriedTables = query.mock.calls.map((call) => String(call[0])).join("\n");
+    expect(queriedTables).not.toContain("public.candidate_finance_summaries AS");
+  });
+
   it("requests FEC finance only for the id matching the election's federal office", async () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
 

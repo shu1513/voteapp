@@ -109,11 +109,22 @@ the test for it fails today, so it must land **with** the fix:
 **Resolution (implemented):** `isFecRequestableElection` matches id prefix to
 office. `H…` ids require `district_type = 'us_house'` (structural — those
 districts hold nothing else; contest family is unreliable there, null for
-half the local House rows). `S…` ids require a statewide district plus
-`discovery_contest_family = 'us_senate'` **or**
-`office_canonical_name = 'United States Senator'` (local data: all 22 Senate
-elections carry both); a Senate election missing both signals fails closed —
-no finance beats wrong finance. `P…` ids never match (presidential contests
+half the local House rows). `S…` ids require a statewide
+district plus Senate identity, with the two signals ranked by trust: a
+resolved `office_canonical_name` (curated offices table, write-time match)
+is authoritative in both directions — it must equal
+`United States Senator`, and a linked non-Senate office blocks finance even
+if `discovery_contest_family` wrongly says `us_senate` (the family is only
+the discovering search's breadcrumb, stored with no consistency check
+against the office, so review flagged the earlier OR of the two signals as
+re-openable by a mislabeled family). The family decides alone only when no
+office is linked (7 local elections are office-unlinked; all 22 local
+Senate elections carry both signals). A Senate election with neither signal
+fails closed — no finance beats wrong finance. A title-text heuristic for
+the unlinked case was considered and rejected: it would be a new fragile
+matcher guarding a corner that needs two independent data failures at once
+(wrong family and missing office link) plus a same-year synced federal
+summary for the same id. `P…` ids never match (presidential contests
 live in `presidential_cycles`, never in district elections, enforced by
 `injectManualElections`). Note: `discovery_contest_family = 'federal'` — the
 first idea above — does not exist; the legal values are
