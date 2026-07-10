@@ -56,9 +56,10 @@ import {
   type BallotLookupFinanceSummary,
 } from "./ballotLookupFinanceShared.js";
 
-// Re-exported so existing importers (the per-state ballot-lookup finance
-// loaders) keep compiling; new code should import from
-// ballotLookupFinanceShared.js directly.
+// Re-exported for the seven pre-Phase-2 loaders that still import these
+// types from here (the KY/AK/AZ/FL/LA/PA/VT ballot-lookup finance files);
+// they switch to ballotLookupFinanceShared.js when Phase 3 touches them.
+// New code should import from the shared module directly.
 export type {
   BallotLookupFinanceBackingSummary,
   BallotLookupFinanceBreakdown,
@@ -68,7 +69,6 @@ export type {
   BallotLookupFinanceSupportingCommitteeIndustrySummary,
   BallotLookupFinanceSummary,
 } from "./ballotLookupFinanceShared.js";
-
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -430,64 +430,6 @@ type BallotMeasureResultRow = {
   retrieved_at: string;
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function normalizeIds(ids: readonly string[]): string[] {
   return [...new Set(ids.map((id) => id.trim()).filter((id) => id.length > 0))];
 }
@@ -567,7 +509,6 @@ function parseRepresentationPowerScore(value: string | number | null | undefined
   return Math.min(100, Math.max(0, parsed));
 }
 
-
 const OPTIONAL_FLORIDA_BALLOT_SUMMARY_MODULE_PATH = "../floridaFinance/floridaFinanceBallotSummary.js";
 
 type OptionalFloridaBallotSummaryModule = {
@@ -577,36 +518,6 @@ type OptionalFloridaBallotSummaryModule = {
     electionRows: readonly ElectionRow[]
   ) => Promise<Map<string, BallotLookupFinanceSummary>>;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function toDistrict(row: DistrictRow | ElectionRow | ElectionSummaryRow): BallotLookupDistrict {
   const id = "district_id" in row ? row.district_id : row.id;
@@ -644,7 +555,6 @@ function priorElectionYear(electionDate: string): number | null {
   const year = Number.parseInt(electionDate.slice(0, 4), 10);
   return Number.isInteger(year) ? year - 1 : null;
 }
-
 
 function toHistoricalCompetitiveness(
   row: HistoricalContestWeightedMarginLookupRecord | null | undefined
@@ -795,14 +705,6 @@ async function loadHistoricalCompetitivenessByElection(
   );
 }
 
-
-
-
-
-
-
-
-
 async function loadUtahCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly CandidateRow[],
@@ -837,8 +739,6 @@ async function loadUtahCandidateFinanceSummariesByCandidateElection(
     throw error;
   }
 }
-
-
 
 type OptionalArizonaFinanceBallotLookupModule = {
   loadArizonaCandidateFinanceSummariesByCandidateElection: (
@@ -878,13 +778,6 @@ async function loadArizonaCandidateFinanceSummariesByCandidateElection(
   const module = (await import(modulePath)) as OptionalArizonaFinanceBallotLookupModule;
   return module.loadArizonaCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
 }
-
-
-
-
-
-
-
 
 type OptionalStateFinanceSummaryLoader = (input: {
   db: Queryable;
@@ -926,15 +819,6 @@ async function loadOptionalPennsylvaniaCandidateFinanceSummariesByCandidateElect
     throw error;
   }
 }
-
-
-
-
-
-
-
-
-
 
 const VERMONT_BALLOT_LOOKUP_FINANCE_LOADER_PATH = "../vermontFinance/vermontBallotLookupFinanceLoader.js";
 const LOUISIANA_BALLOT_LOOKUP_FINANCE_LOADER_PATH = "../louisianaFinance/louisianaBallotLookupFinanceLoader.js";
@@ -1084,8 +968,6 @@ async function loadOptionalFloridaCandidateFinanceSummariesByCandidateElection(
     throw error;
   }
 }
-
-
 
 async function loadCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
@@ -1849,7 +1731,6 @@ export async function lookupBallotSummariesByDistrictIds(
     elections,
   };
 }
-
 
 export async function lookupElectionDetailById(db: Queryable, electionId: string): Promise<BallotLookupElection | null> {
   const trimmedElectionId = electionId.trim();
