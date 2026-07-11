@@ -1,4 +1,4 @@
-import type { CandidateRecord, ResearchAreaPreference } from "../api/types";
+import type { CandidateRecord, ResearchAreaPreference } from "./types";
 
 // Client mirror of backend/src/pipeline/users/userResearchAreaScoring.ts —
 // the shared weighting for everything that scores content against the user's

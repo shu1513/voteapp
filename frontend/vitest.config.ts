@@ -8,7 +8,9 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],
-    // Playwright owns e2e/**; vitest must not pick those specs up.
-    include: ["src/**/*.test.{ts,tsx}"],
+    // Playwright owns e2e/**; vitest must not pick those specs up. The
+    // shared api-client package keeps its tests colocated and runs them
+    // here, where jsdom and @testing-library are installed.
+    include: ["src/**/*.test.{ts,tsx}", "../packages/api-client/src/**/*.test.{ts,tsx}"],
   },
 });

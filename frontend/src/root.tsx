@@ -3,7 +3,7 @@ import { Links, Meta, Outlet, Scripts } from "react-router";
 import type { MetaFunction } from "react-router";
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
-import { ApiError } from "./api/client";
+import { ApiError } from "@voteapp/api-client";
 import { RouteError } from "./components/RouteError";
 import { captureMonitoredError } from "./lib/errorMonitoring";
 

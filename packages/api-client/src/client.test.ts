@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiError, apiRequest } from "./client";
+import { ApiError, apiRequest, configureApi } from "./client";
 
 function mockFetch(response: {
   ok?: boolean;
@@ -20,6 +20,8 @@ function mockFetch(response: {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  // Config is module-level; restore the web defaults between tests.
+  configureApi({ baseUrl: "", getAuthHeader: null });
 });
 
 describe("apiRequest", () => {
@@ -109,6 +111,45 @@ describe("apiRequest", () => {
     } finally {
       AbortSignal.any = originalAny;
     }
+  });
+
+  it("prefixes paths with the configured base URL (mobile transport)", async () => {
+    const fetchMock = mockFetch({ jsonBody: { ok: true } });
+    configureApi({ baseUrl: "https://api.example.com" });
+
+    await apiRequest("/api/me");
+
+    expect(fetchMock).toHaveBeenCalledWith("https://api.example.com/api/me", expect.anything());
+  });
+
+  it("normalizes a trailing slash on the base URL", async () => {
+    const fetchMock = mockFetch({ jsonBody: { ok: true } });
+    configureApi({ baseUrl: "https://api.example.com/" });
+
+    await apiRequest("/api/me");
+
+    expect(fetchMock).toHaveBeenCalledWith("https://api.example.com/api/me", expect.anything());
+  });
+
+  it("attaches the configured auth header, resolving async providers", async () => {
+    const fetchMock = mockFetch({ jsonBody: { ok: true } });
+    configureApi({ getAuthHeader: async () => "Bearer session-abc" });
+
+    await apiRequest("/api/me");
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/me",
+      expect.objectContaining({ headers: { authorization: "Bearer session-abc" } })
+    );
+  });
+
+  it("sends no auth header when the provider returns null (logged out)", async () => {
+    const fetchMock = mockFetch({ jsonBody: { ok: true } });
+    configureApi({ getAuthHeader: () => null });
+
+    await apiRequest("/api/ballot");
+
+    expect(fetchMock).toHaveBeenCalledWith("/api/ballot", expect.objectContaining({ headers: undefined }));
   });
 
   it("keeps a generic message when the error body is not JSON", async () => {

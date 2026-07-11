@@ -8,7 +8,7 @@ import type {
   ElectionDetail,
   ElectionSummary,
   VotePower,
-} from "../api/types";
+} from "@voteapp/api-client";
 
 export const ME_VERIFIED = {
   user: { email: "voter@example.com", first_name: "Sam", email_verified: true },

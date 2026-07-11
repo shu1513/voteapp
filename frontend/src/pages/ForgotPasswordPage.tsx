@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "../api/client";
+import { apiRequest } from "@voteapp/api-client";
 import { ErrorNotice } from "../components/Status";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useDocumentTitle } from "../lib/useDocumentTitle";

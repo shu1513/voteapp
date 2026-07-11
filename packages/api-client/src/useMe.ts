@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
-import { ApiError, apiRequest } from "../api/client";
+import { ApiError, apiRequest } from "./client";
 
 /**
  * Drops every cached query except the exact ["me"] identity entry.

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router";
 import { RouteError } from "./components/RouteError";
-import { useLogout, useMe } from "./lib/useMe";
+import { useLogout, useMe } from "@voteapp/api-client";
 
 function AccountNav() {
   const { me, isLoading } = useMe();

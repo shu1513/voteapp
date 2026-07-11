@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, renderHook } from "@testing-library/react";
-import { ApiError } from "../api/client";
+import { ApiError } from "./client";
 
 const apiRequestMock = vi.fn();
-vi.mock("../api/client", async (importOriginal) => {
-  const original = await importOriginal<typeof import("../api/client")>();
+vi.mock("./client", async (importOriginal) => {
+  const original = await importOriginal<typeof import("./client")>();
   return {
     ...original,
     apiRequest: (...args: unknown[]) => apiRequestMock(...args),

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import type { ElectionDetail } from "../api/types";
+import type { ElectionDetail } from "@voteapp/api-client";
 import { AiBanner } from "../components/AiBanner";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
@@ -9,12 +9,12 @@ import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { ReportContentButton } from "../components/ReportContentButton";
-import { formatDistrictType, formatElectionDate, formatMoney, formatOutcome, formatVotePowerLabel } from "../lib/format";
+import { formatDistrictType, formatElectionDate, formatMoney, formatOutcome, formatVotePowerLabel } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
-import { useFollows } from "../lib/useFollows";
-import { useMe } from "../lib/useMe";
-import { useMyResearchAreas } from "../lib/useMyResearchAreas";
-import { aggregateRecordAreaStances, scoreStanceDirection } from "../lib/researchAreaScoring";
+import { useFollows } from "@voteapp/api-client";
+import { useMe } from "@voteapp/api-client";
+import { useMyResearchAreas } from "@voteapp/api-client";
+import { aggregateRecordAreaStances, scoreStanceDirection } from "@voteapp/api-client";
 
 type CandidateSort = "ballot" | "for_mine" | "against_mine";
 

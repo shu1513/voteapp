@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import type { CandidateDetail, CandidateRecord, ResearchAreaPreference } from "../api/types";
+import type { CandidateDetail, CandidateRecord, ResearchAreaPreference } from "@voteapp/api-client";
 import { AiBanner } from "../components/AiBanner";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
@@ -9,12 +9,12 @@ import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { ReportContentButton } from "../components/ReportContentButton";
-import { formatElectionDate } from "../lib/format";
+import { formatElectionDate } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
-import { useFollows } from "../lib/useFollows";
-import { useMe } from "../lib/useMe";
-import { useMyResearchAreas } from "../lib/useMyResearchAreas";
-import { UNRANKED_RESEARCH_AREA_RANK } from "../lib/researchAreaScoring";
+import { useFollows } from "@voteapp/api-client";
+import { useMe } from "@voteapp/api-client";
+import { useMyResearchAreas } from "@voteapp/api-client";
+import { UNRANKED_RESEARCH_AREA_RANK } from "@voteapp/api-client";
 
 type RecordView = "by_issue" | "my_issues" | "newest";
 

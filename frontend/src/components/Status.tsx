@@ -1,4 +1,4 @@
-import { ApiError } from "../api/client";
+import { ApiError } from "@voteapp/api-client";
 
 export function LoadingNotice({ text = "Loading…" }: { text?: string }) {
   return <p className="py-8 text-center text-ink-soft">{text}</p>;

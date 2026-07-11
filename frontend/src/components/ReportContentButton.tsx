@@ -1,7 +1,7 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useRef, useState, type FormEvent } from "react";
-import { ApiError, apiRequest } from "../api/client";
-import type { ContentReportEntityType, CreateContentReportResponse } from "../api/types";
+import { ApiError, apiRequest } from "@voteapp/api-client";
+import type { ContentReportEntityType, CreateContentReportResponse } from "@voteapp/api-client";
 
 type ReportContentButtonProps = {
   entityType: ContentReportEntityType;

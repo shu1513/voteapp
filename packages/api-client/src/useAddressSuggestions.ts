@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ApiError, apiRequest } from "../api/client";
-import type { AddressAutocompleteResponse, AddressRetrieveResponse, AddressSuggestion } from "../api/types";
+import { ApiError, apiRequest } from "./client";
+import type { AddressAutocompleteResponse, AddressRetrieveResponse, AddressSuggestion } from "./types";
 
 // Autocomplete state machine per docs/address-autocomplete-frontend.md:
 // - fresh crypto.randomUUID() session token at the first keystroke that
@@ -43,6 +43,11 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
   }, []);
 
   const fireSuggest = useCallback(async (input: string) => {
+    // Google Places autocomplete session token: groups suggest+retrieve
+    // calls for billing. Uniqueness matters, cryptographic strength does not.
+    // React Native's Hermes has no crypto.randomUUID — the mobile app must
+    // polyfill it at startup (expo-crypto's Crypto.randomUUID), the standard
+    // Expo approach. Web and Node 19+ provide it natively.
     sessionTokenRef.current ??= crypto.randomUUID();
     abortRef.current?.abort();
     const controller = new AbortController();

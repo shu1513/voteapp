@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "../api/client";
-import type { AddressResolution } from "../api/types";
+import { apiRequest } from "@voteapp/api-client";
+import type { AddressResolution } from "@voteapp/api-client";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { savePendingDistrictIds } from "../lib/pendingDistricts";
-import { useMe } from "../lib/useMe";
+import { useMe } from "@voteapp/api-client";
 import {
   PRE_SEARCH_ACCEPTANCE_STORAGE_KEY,
   PRE_SEARCH_CHECKBOX_LABEL,

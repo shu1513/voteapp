@@ -1,0 +1,5 @@
+{
+  "name": "voteapp",
+  "private": true,
+  "workspaces": ["frontend", "packages/*"]
+}

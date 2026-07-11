@@ -1,4 +1,4 @@
-import { formatElectionDate, formatSourceHost } from "../lib/format";
+import { formatElectionDate, formatSourceHost } from "@voteapp/api-client";
 
 // Per-record provenance line required by the legal copy:
 // "Source: [link] · researched [date]".
