@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import { ElectionPage, ErrorBoundary } from "./ElectionPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
-import { electionDetail } from "../test/fixtures";
+import { electionDetail, financeSummary } from "../test/fixtures";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
@@ -49,6 +49,31 @@ describe("ElectionPage", () => {
     // Anonymous visitors get no follow controls.
     expect(screen.queryByRole("button", { name: /follow/i })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Report an issue with election" })).toBeInTheDocument();
+  });
+
+  it("renders a collapsed campaign finance disclosure only for candidates with finance data", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const detail = electionDetail();
+    detail.candidates[0].finance_summary = financeSummary();
+    renderElection(() => detail);
+
+    // One candidate has finance, the other (finance_summary: null) must not
+    // grow an empty disclosure.
+    expect(await screen.findByText("Jordan Voter")).toBeInTheDocument();
+    expect(screen.getAllByText("Campaign finance")).toHaveLength(1);
+    // The panel content is in the DOM (details renders children; collapsed
+    // is a display state) with occupations and industries distinct.
+    expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();
+    expect(screen.getByText("Retired")).toBeInTheDocument();
+    expect(screen.getByText("Oil, gas, and energy")).toBeInTheDocument();
+    expect(screen.getByText("Growth PAC")).toBeInTheDocument();
+    // The header chip still summarizes the total.
+    expect(screen.getByText("Raised $120,000")).toBeInTheDocument();
+    // The card link to the profile survives the card restructure, and the
+    // disclosure is not nested inside it.
+    const cardLink = screen.getByRole("link", { name: /Jordan Voter/ });
+    expect(cardLink).toHaveAttribute("href", "/candidates/c-1");
+    expect(cardLink.querySelector("details")).toBeNull();
   });
 
   it("renders ballot measure yes/no explanations when present", async () => {

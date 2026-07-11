@@ -8,6 +8,7 @@ import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
+import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
 import { formatDistrictType, formatElectionDate, formatMoney, formatOutcome, formatVotePowerLabel } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
@@ -188,69 +189,81 @@ export function ElectionPage() {
           </div>
           <div className="mt-3 space-y-3">
             {sortCandidatesByStance(data.candidates, candidateSort, weights).map(({ candidate, stances }) => (
-              <Link
+              // The card splits into a Link and a sibling finance disclosure:
+              // an expandable <details> is interactive content and may not
+              // nest inside an anchor.
+              <div
                 key={candidate.candidate_id}
-                to={`/candidates/${candidate.candidate_id}`}
-                className="block rounded-xl border border-line bg-white p-4 shadow-sm transition hover:shadow-md"
+                className="rounded-xl border border-line bg-white shadow-sm transition hover:shadow-md"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h3 className="font-semibold">{candidate.display_name}</h3>
-                    <p className="text-sm text-ink-soft">
-                      {candidate.party}
-                      {candidate.is_incumbent ? " · Incumbent" : ""}
-                      {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
-                    </p>
+                <Link to={`/candidates/${candidate.candidate_id}`} className="block p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="font-semibold">{candidate.display_name}</h3>
+                      <p className="text-sm text-ink-soft">
+                        {candidate.party}
+                        {candidate.is_incumbent ? " · Incumbent" : ""}
+                        {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
+                      </p>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-3">
+                      {candidate.finance_summary?.direct_campaign.total_raised != null ? (
+                        <span className="text-sm text-ink-soft">
+                          Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
+                        </span>
+                      ) : null}
+                      {canFollow && follows ? (
+                        <span
+                          onClick={(event) => {
+                            // The card is a Link; the follow toggle must not navigate.
+                            event.preventDefault();
+                            event.stopPropagation();
+                          }}
+                        >
+                          <FollowButton
+                            candidateId={candidate.candidate_id}
+                            isFollowing={followedIds.has(candidate.candidate_id)}
+                            size="sm"
+                          />
+                        </span>
+                      ) : null}
+                    </div>
                   </div>
-                  <div className="flex shrink-0 items-center gap-3">
-                    {candidate.finance_summary?.direct_campaign.total_raised != null ? (
-                      <span className="text-sm text-ink-soft">
-                        Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
-                      </span>
-                    ) : null}
-                    {canFollow && follows ? (
-                      <span
-                        onClick={(event) => {
-                          // The card is a Link; the follow toggle must not navigate.
-                          event.preventDefault();
-                          event.stopPropagation();
-                        }}
-                      >
-                        <FollowButton
-                          candidateId={candidate.candidate_id}
-                          isFollowing={followedIds.has(candidate.candidate_id)}
-                          size="sm"
-                        />
-                      </span>
-                    ) : null}
-                  </div>
-                </div>
-                {candidate.summary ? (
-                  <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>
+                  {candidate.summary ? (
+                    <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>
+                  ) : null}
+                  {stances.length > 0 ? (
+                    <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                      {stances.map((stance) => (
+                        <span
+                          key={stance.research_area_id}
+                          className={
+                            savedAreaIds.has(stance.research_area_id)
+                              ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+                              : "rounded bg-surface px-2 py-0.5 text-ink-soft"
+                          }
+                        >
+                          {stance.name} ·{" "}
+                          {[
+                            stance.for_count > 0 ? `${stance.for_count} for` : null,
+                            stance.against_count > 0 ? `${stance.against_count} against` : null,
+                          ]
+                            .filter(Boolean)
+                            .join(", ")}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
+                </Link>
+                {hasFinanceContent(candidate.finance_summary) ? (
+                  <details className="border-t border-line px-4 py-3">
+                    <summary className="cursor-pointer text-sm font-medium text-ink">Campaign finance</summary>
+                    <div className="mt-2">
+                      <FinanceSummaryCard summary={candidate.finance_summary} />
+                    </div>
+                  </details>
                 ) : null}
-                {stances.length > 0 ? (
-                  <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                    {stances.map((stance) => (
-                      <span
-                        key={stance.research_area_id}
-                        className={
-                          savedAreaIds.has(stance.research_area_id)
-                            ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
-                            : "rounded bg-surface px-2 py-0.5 text-ink-soft"
-                        }
-                      >
-                        {stance.name} ·{" "}
-                        {[
-                          stance.for_count > 0 ? `${stance.for_count} for` : null,
-                          stance.against_count > 0 ? `${stance.against_count} against` : null,
-                        ]
-                          .filter(Boolean)
-                          .join(", ")}
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
-              </Link>
+              </div>
             ))}
           </div>
         </section>
