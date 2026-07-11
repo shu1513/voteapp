@@ -1433,3 +1433,106 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
     }),
   };
 }
+
+export type CandidateElectionFinanceResult = {
+  finance_summary: BallotLookupFinanceSummary | null;
+};
+
+// Narrow read for the candidate-profile page: one candidate's finance
+// summary in one election, without loading every opponent's records and
+// tags the way lookupElectionDetailById must. null = the election does not
+// exist or the candidate is not in it (the API maps that to 404); an
+// existing pairing with no finance coverage is { finance_summary: null }.
+export async function lookupCandidateElectionFinanceSummaryById(
+  db: Queryable,
+  electionId: string,
+  candidateId: string
+): Promise<CandidateElectionFinanceResult | null> {
+  const trimmedElectionId = electionId.trim();
+  const trimmedCandidateId = candidateId.trim();
+  if (trimmedElectionId.length === 0 || trimmedCandidateId.length === 0) {
+    return null;
+  }
+
+  const electionResult = await db.query<ElectionRow>(
+    `
+      SELECT
+        e.id AS election_id,
+        d.id AS district_id,
+        d.district_type,
+        d.geoid_compact,
+        d.name AS district_name,
+        d.state,
+        d.state_fips,
+        d.representation_power_score,
+        d.population,
+        e.race_type,
+        e.official_ballot_title,
+        e.election_date::text AS election_date,
+        e.election_stage,
+        e.is_partisan,
+        e.discovery_contest_family,
+        e.sources,
+        office.id AS office_id,
+        office.scope AS office_scope,
+        office.canonical_name AS office_canonical_name
+      FROM public.elections AS e
+      JOIN public.districts AS d
+        ON d.id = e.district_id
+      LEFT JOIN public.offices AS office
+        ON office.id = e.office_id
+      WHERE e.id = $1::uuid
+      LIMIT 1
+    `,
+    [trimmedElectionId]
+  );
+  if (electionResult.rows.length === 0) {
+    return null;
+  }
+
+  // The finance loaders only read candidate_id/election_id plus the FEC
+  // loader's fec_ids; the remaining CandidateRow columns are selected so the
+  // row honestly satisfies the shared loader signature, minus the
+  // running-mate join, which no finance source consults.
+  const candidateResult = await db.query<CandidateRow>(
+    `
+      SELECT
+        ce.election_id,
+        ce.id AS candidate_election_id,
+        c.id AS candidate_id,
+        COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name)) AS display_name,
+        c.party,
+        ce.is_incumbent,
+        ce.status,
+        c.summary,
+        c.current_office,
+        c.state,
+        c.fec_ids,
+        c.state_filing_ids,
+        NULL::uuid AS running_mate_candidate_id,
+        NULL::text AS running_mate_display_name,
+        NULL::text AS running_mate_party
+      FROM public.candidate_elections AS ce
+      JOIN public.candidates AS c
+        ON c.id = ce.candidate_id
+      WHERE ce.election_id = $1::uuid
+        AND ce.candidate_id = $2::uuid
+        AND c.deleted_at IS NULL
+      LIMIT 1
+    `,
+    [trimmedElectionId, trimmedCandidateId]
+  );
+  if (candidateResult.rows.length === 0) {
+    return null;
+  }
+
+  const financeSummaryByCandidateElection = await loadCandidateFinanceSummariesByCandidateElection(
+    db,
+    candidateResult.rows,
+    electionResult.rows
+  );
+  return {
+    finance_summary:
+      financeSummaryByCandidateElection.get(candidateElectionKey(trimmedCandidateId, trimmedElectionId)) ?? null,
+  };
+}

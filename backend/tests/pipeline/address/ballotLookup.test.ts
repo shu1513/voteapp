@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   lookupBallotSummariesByDistrictIds,
+  lookupCandidateElectionFinanceSummaryById,
   lookupElectionDetailById,
 } from "../../../src/pipeline/address/ballotLookup.js";
 
@@ -8792,3 +8793,133 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("wi_candidate_finance");
   });
 });
+
+describe("lookupCandidateElectionFinanceSummaryById", () => {
+  it("returns null without querying for empty IDs", async () => {
+    const query = vi.fn();
+
+    await expect(lookupCandidateElectionFinanceSummaryById({ query }, "   ", candidateId)).resolves.toBeNull();
+    await expect(lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, "")).resolves.toBeNull();
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it("returns null without a candidate query when the election does not exist", async () => {
+    const query = vi.fn().mockResolvedValueOnce({ rows: [] });
+
+    await expect(lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, candidateId)).resolves.toBeNull();
+    expect(query).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns null when the candidate is not in the election", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [senateElectionRowForFinance()] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    await expect(lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, candidateId)).resolves.toBeNull();
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(query.mock.calls[1]?.[1]).toEqual([officeElectionId, candidateId]);
+  });
+
+  it("returns a null summary without finance queries when finance is disabled", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [senateElectionRowForFinance()] })
+      .mockResolvedValueOnce({ rows: [senateCandidateRowForFinance()] });
+
+    const result = await lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, candidateId);
+
+    expect(result).toEqual({ finance_summary: null });
+    expect(query).toHaveBeenCalledTimes(2);
+  });
+
+  it("returns the FEC finance summary for a single candidate/election pair", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [senateElectionRowForFinance()] })
+      .mockResolvedValueOnce({ rows: [senateCandidateRowForFinance()] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            fec_candidate_id: "S4CA00001",
+            election_year: 2024,
+            total_receipts: "1000.50",
+            total_disbursements: "700.25",
+            cash_on_hand: "300.00",
+            debts_owed: "10.00",
+            outside_support_total: null,
+            outside_oppose_total: null,
+            source_url: "https://www.fec.gov/data/candidate/S4CA00001/?cycle=2024",
+            last_synced_at: "2026-01-02 03:04:05+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, candidateId);
+
+    expect(result?.finance_summary).toMatchObject({
+      source: "FEC",
+      cycle: 2024,
+      fec_candidate_id: "S4CA00001",
+      last_synced_at: "2026-01-02 03:04:05+00",
+      direct_campaign: {
+        total_raised: 1000.5,
+        total_spent: 700.25,
+        cash_on_hand: 300,
+        debts_owed: 10,
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(7);
+    expect(query.mock.calls[1]?.[1]).toEqual([officeElectionId, candidateId]);
+    expect(query.mock.calls[2]?.[0]).toContain("public.candidate_finance_summaries");
+  });
+});
+
+function senateElectionRowForFinance() {
+  return {
+    election_id: officeElectionId,
+    district_id: districtId,
+    district_type: "statewide",
+    geoid_compact: "06",
+    district_name: "California",
+    state: "CA",
+    state_fips: "06",
+    representation_power_score: "80",
+    race_type: "office",
+    official_ballot_title: "U.S. Senate",
+    election_date: "2024-11-05",
+    election_stage: "general",
+    is_partisan: true,
+    discovery_contest_family: "us_senate",
+    sources: ["https://example.test/elections"],
+    office_canonical_name: null,
+  };
+}
+
+function senateCandidateRowForFinance() {
+  return {
+    election_id: officeElectionId,
+    candidate_election_id: candidateElectionId,
+    candidate_id: candidateId,
+    display_name: "Pat Connolly",
+    party: "Democratic",
+    is_incumbent: false,
+    status: "declared",
+    summary: "Candidate summary.",
+    current_office: null,
+    state: "CA",
+    fec_ids: ["S4CA00001"],
+    state_filing_ids: [],
+    running_mate_candidate_id: null,
+    running_mate_display_name: null,
+    running_mate_party: null,
+  };
+}

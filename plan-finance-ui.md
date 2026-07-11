@@ -121,8 +121,9 @@ New "Campaign finance" section between the header block and "Record":
 - **Ongoing elections** = `election_date >= today` (calendar-date string
   compare on the viewer's local date — same YYYY-MM-DD semantics as
   `formatElectionDate`; election day itself counts as ongoing).
-- For each ongoing election (typically 0–2): `useQuery(["election", id])` →
-  `GET /api/elections/:id` → pick this candidate's `finance_summary` →
+- For each ongoing election (typically 0–2):
+  `useQuery(["election-finance", electionId, candidateId])` →
+  `GET /api/elections/:id/candidates/:candidate_id/finance` →
   `FinanceSummaryCard` under a sub-heading naming the election + date.
   Candidates whose ongoing election has no finance render nothing — no
   "unavailable" placeholder (matches the user requirement: show only when
@@ -140,14 +141,14 @@ New "Campaign finance" section between the header block and "Record":
 New hook `useElectionFinance(electionId, candidateId, enabled)` in the page
 file (not api-client — single consumer; promote later if a second appears).
 
-Known cost, accepted for now: the profile fetches the full election detail
-(all candidates + records) to extract one candidate's finance summary,
-0–2 times per profile visit, client-side, react-query-cached. State finance
-adapters short-circuit for non-matching states, so the overhead is the
-records payload the election page already serves. Eager display is the
-product requirement, so the fix is not "make it lazy" — it is a narrow
-backend endpoint (single candidate/election pair through
-`loadCandidateFinanceSummariesByCandidateElection`) as a follow-up.
+The profile originally fetched the full election detail (all candidates +
+records) to extract one candidate's finance summary — accepted at first as
+a known cost. The planned follow-up landed: the profile now uses the narrow
+`GET /api/elections/:election_id/candidates/:candidate_id/finance` endpoint
+(`lookupCandidateElectionFinanceSummaryById` → one candidate/election pair
+through `loadCandidateFinanceSummariesByCandidateElection`), so it no
+longer pulls every opponent's records. The election page keeps the full
+detail payload.
 
 ### 5. Tests
 

@@ -676,6 +676,33 @@ export function isElectionDetailPath(pathname: string): boolean {
   return pathname.startsWith(ELECTION_DETAIL_PATH_PREFIX);
 }
 
+// Matches /api/elections/:election_id/candidates/:candidate_id/finance.
+// Shares the election-detail prefix, so the router must test this predicate
+// before isElectionDetailPath.
+const CANDIDATE_ELECTION_FINANCE_PATH_PATTERN = /^\/api\/elections\/([^/]+)\/candidates\/([^/]+)\/finance$/;
+
+export function isCandidateElectionFinancePath(pathname: string): boolean {
+  return CANDIDATE_ELECTION_FINANCE_PATH_PATTERN.test(pathname);
+}
+
+export function parseCandidateElectionFinancePath(url: URL): { electionId: string; candidateId: string } {
+  const match = CANDIDATE_ELECTION_FINANCE_PATH_PATTERN.exec(url.pathname);
+  if (!match) {
+    throw new TypeError(
+      "Candidate election finance path must be /api/elections/:election_id/candidates/:candidate_id/finance"
+    );
+  }
+  const electionId = match[1].trim();
+  const candidateId = match[2].trim();
+  if (!isUuid(electionId)) {
+    throw new TypeError(`Candidate election finance path contains invalid election UUID: ${electionId}`);
+  }
+  if (!isUuid(candidateId)) {
+    throw new TypeError(`Candidate election finance path contains invalid candidate UUID: ${candidateId}`);
+  }
+  return { electionId, candidateId };
+}
+
 export function parseElectionId(url: URL): string {
   const electionId = url.pathname.slice(ELECTION_DETAIL_PATH_PREFIX.length).trim();
   if (electionId.length === 0 || electionId.includes("/")) {

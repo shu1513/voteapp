@@ -1,4 +1,4 @@
-import type { BallotLookupElection } from "../pipeline/address/ballotLookup.js";
+import type { BallotLookupElection, CandidateElectionFinanceResult } from "../pipeline/address/ballotLookup.js";
 // [ballot-personalized-ordering] see ballotElectionOrdering.ts for removal notes
 import type {
   BallotSummaryOptions,
@@ -80,6 +80,10 @@ export type AddressApiServerOptions = {
   lookupAuthenticatedUserEmailVerified?: (userId: string) => Promise<boolean>;
   lookupCandidateDetail?: (candidateId: string, userId?: string | null) => Promise<CandidateDetailResult | null>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
+  /** GET /api/elections/:election_id/candidates/:candidate_id/finance —
+   * one candidate's finance summary without the full election payload.
+   * null = election or candidate/election pairing not found (404). */
+  lookupCandidateElectionFinance?: (electionId: string, candidateId: string) => Promise<CandidateElectionFinanceResult | null>;
   listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
   getSitemapXml?: () => Promise<string>;
   listAuthenticatedCandidateFollows?: (userId: string) => Promise<AuthenticatedCandidateFollowsResult>;

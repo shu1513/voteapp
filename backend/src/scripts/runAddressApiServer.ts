@@ -40,7 +40,11 @@ import {
   DEFAULT_ADDRESS_API_RATE_LIMIT_MAX_REQUESTS,
   DEFAULT_ADDRESS_API_RATE_LIMIT_WINDOW_MS,
 } from "../api/addressApiRateLimiter.js";
-import { lookupBallotSummariesByDistrictIds, lookupElectionDetailById } from "../pipeline/address/ballotLookup.js";
+import {
+  lookupBallotSummariesByDistrictIds,
+  lookupCandidateElectionFinanceSummaryById,
+  lookupElectionDetailById,
+} from "../pipeline/address/ballotLookup.js";
 // [ballot-personalized-ordering]
 import { applyBallotElectionOrdering } from "../pipeline/address/ballotElectionOrdering.js";
 import { resolveAddressToDistricts } from "../pipeline/address/addressResolverService.js";
@@ -504,6 +508,8 @@ async function main(): Promise<void> {
     lookupAuthenticatedUserEmailVerified,
     lookupCandidateDetail: (candidateId, userId) => lookupCandidateDetailById(pool, { candidateId, userId }),
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
+    lookupCandidateElectionFinance: (electionId, candidateId) =>
+      lookupCandidateElectionFinanceSummaryById(pool, electionId, candidateId),
     listResearchAreas: () => listSelectableResearchAreas(pool),
     listAuthenticatedCandidateFollows: (userId) => listUserCandidateFollows(pool, userId),
     setAuthenticatedCandidateFollow: (userId, input) => setUserCandidateFollow(pool, userId, input),
