@@ -1,6 +1,7 @@
 import type { FinanceBreakdown, FinanceOutsideGroup, FinanceSummary } from "@voteapp/api-client";
 import {
   financeSourceLabel,
+  firstFinanceSourceUrl,
   formatElectionDate,
   formatFinanceCategory,
   formatMoney,
@@ -16,23 +17,6 @@ import { openExternalUrl } from "../lib/openExternalUrl";
 // committees are "outside groups" (state terminology differs; not every one
 // is a Super PAC). "Anything to render" gating (hasFinanceContent) lives in
 // the shared package.
-
-function firstSourceUrl(summary: FinanceSummary): string | null {
-  const rows: { source_url: string | null }[] = [
-    ...summary.direct_campaign.top_occupations,
-    ...summary.direct_campaign.top_industries,
-    ...summary.outside_spending.top_supporting_groups,
-    ...summary.outside_spending.top_opposing_groups,
-    ...summary.outside_spending.top_supporting_industries,
-    ...summary.outside_spending.top_opposing_industries,
-  ];
-  for (const row of rows) {
-    if (row.source_url) {
-      return row.source_url;
-    }
-  }
-  return null;
-}
 
 function MoneyStat({ label, amount }: { label: string; amount: number | null }) {
   if (amount === null) {
@@ -148,7 +132,7 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
     direct.total_spent !== null ||
     direct.cash_on_hand !== null ||
     direct.debts_owed !== null;
-  const sourceUrl = firstSourceUrl(summary);
+  const sourceUrl = firstFinanceSourceUrl(summary);
 
   return (
     <View>

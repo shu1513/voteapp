@@ -24,6 +24,27 @@ export function hasFinanceContent(summary: FinanceSummary | null | undefined): s
   );
 }
 
+/**
+ * First source URL across every breakdown row, for the card's footer link.
+ * Rows share one disclosure portal per source, so any row's URL serves.
+ */
+export function firstFinanceSourceUrl(summary: FinanceSummary): string | null {
+  const rows: { source_url: string | null }[] = [
+    ...summary.direct_campaign.top_occupations,
+    ...summary.direct_campaign.top_industries,
+    ...summary.outside_spending.top_supporting_groups,
+    ...summary.outside_spending.top_opposing_groups,
+    ...summary.outside_spending.top_supporting_industries,
+    ...summary.outside_spending.top_opposing_industries,
+  ];
+  for (const row of rows) {
+    if (row.source_url) {
+      return row.source_url;
+    }
+  }
+  return null;
+}
+
 export function hasOutsideFinanceContent(summary: FinanceSummary): boolean {
   const outside = summary.outside_spending;
   return (

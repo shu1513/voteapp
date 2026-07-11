@@ -1,6 +1,7 @@
 import type { FinanceBreakdown, FinanceOutsideGroup, FinanceSummary } from "@voteapp/api-client";
 import {
   financeSourceLabel,
+  firstFinanceSourceUrl,
   formatElectionDate,
   formatFinanceCategory,
   formatMoney,
@@ -18,23 +19,6 @@ import {
 // "Anything to render" logic lives in the shared package (the mobile card
 // uses the same definition); re-exported here for this component's callers.
 export { hasFinanceContent };
-
-function firstSourceUrl(summary: FinanceSummary): string | null {
-  const rows: Array<{ source_url: string | null }> = [
-    ...summary.direct_campaign.top_occupations,
-    ...summary.direct_campaign.top_industries,
-    ...summary.outside_spending.top_supporting_groups,
-    ...summary.outside_spending.top_opposing_groups,
-    ...summary.outside_spending.top_supporting_industries,
-    ...summary.outside_spending.top_opposing_industries,
-  ];
-  for (const row of rows) {
-    if (row.source_url) {
-      return row.source_url;
-    }
-  }
-  return null;
-}
 
 function MoneyStat({ label, amount }: { label: string; amount: number | null }) {
   if (amount === null) {
@@ -143,7 +127,7 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
     direct.total_spent !== null ||
     direct.cash_on_hand !== null ||
     direct.debts_owed !== null;
-  const sourceUrl = firstSourceUrl(summary);
+  const sourceUrl = firstFinanceSourceUrl(summary);
 
   return (
     <div className="text-sm">
