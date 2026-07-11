@@ -6,38 +6,36 @@ import {
   formatFinanceCategory,
   formatMoney,
   formatSourceHost,
-  hasFinanceContent,
   hasOutsideFinanceContent,
 } from "@voteapp/api-client";
+import { Text, View } from "react-native";
+import { openExternalUrl } from "../lib/openExternalUrl";
 
-// Campaign finance disclosure panel shared by the election page (per
-// candidate card) and the candidate profile page. Wording is claims-precise:
-// these are amounts and categories reported to the disclosing agency, so
-// headings say "disclosed" / "reporting", and outside committees are
-// "outside groups" (state terminology differs; not every one is a Super PAC).
-
-// "Anything to render" logic lives in the shared package (the mobile card
-// uses the same definition); re-exported here for this component's callers.
-export { hasFinanceContent };
+// Port of the web FinanceSummaryCard (frontend/src/components). Wording is
+// claims-precise: these are amounts and categories reported to the
+// disclosing agency, so headings say "disclosed" / "reporting", and outside
+// committees are "outside groups" (state terminology differs; not every one
+// is a Super PAC). "Anything to render" gating (hasFinanceContent) lives in
+// the shared package.
 
 function MoneyStat({ label, amount }: { label: string; amount: number | null }) {
   if (amount === null) {
     return null;
   }
   return (
-    <div>
-      <dt className="text-xs text-ink-soft">{label}</dt>
-      <dd className="text-sm font-semibold text-ink">{formatMoney(amount)}</dd>
-    </div>
+    <View className="w-1/2 pb-3 pr-3">
+      <Text className="text-xs text-ink-soft">{label}</Text>
+      <Text className="text-sm font-semibold text-ink">{formatMoney(amount)}</Text>
+    </View>
   );
 }
 
 function AmountRow({ name, right }: { name: string; right: string }) {
   return (
-    <li className="flex justify-between gap-3 text-sm">
-      <span className="text-ink">{name}</span>
-      <span className="shrink-0 text-ink-soft">{right}</span>
-    </li>
+    <View className="flex-row justify-between gap-3">
+      <Text className="flex-1 text-sm text-ink">{name}</Text>
+      <Text className="shrink-0 text-sm text-ink-soft">{right}</Text>
+    </View>
   );
 }
 
@@ -46,20 +44,21 @@ function BreakdownList({ heading, rows }: { heading: string; rows: FinanceBreakd
     return null;
   }
   return (
-    <div className="mt-3">
-      <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{heading}</h4>
-      <ul className="mt-1 space-y-0.5">
+    <View className="mt-3">
+      <Text className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{heading}</Text>
+      <View className="mt-1 gap-0.5">
         {rows.map((row) => (
           // contributor_count is deliberately not rendered: state adapters
-          // disagree on its meaning (Colorado counts contribution rows, Utah
-          // counts distinct contributors, FEC counts itemized receipts), so
-          // any single label ("donors", "contributions") would be wrong for
-          // some sources. Show it only once the backend guarantees one
-          // semantic across every loader.
-          <AmountRow key={row.category_name} name={formatFinanceCategory(row.category_name)} right={formatMoney(row.amount)} />
+          // disagree on its meaning, so any single label would be wrong for
+          // some sources. Same policy as the web card.
+          <AmountRow
+            key={row.category_name}
+            name={formatFinanceCategory(row.category_name)}
+            right={formatMoney(row.amount)}
+          />
         ))}
-      </ul>
-    </div>
+      </View>
+    </View>
   );
 }
 
@@ -81,30 +80,36 @@ function OutsideColumn({
   }
   const support = direction === "support";
   return (
-    <div className={support ? "rounded border border-green-200 bg-green-50 p-2" : "rounded border border-red-200 bg-red-50 p-2"}>
-      <p className={support ? "text-sm font-medium text-green-900" : "text-sm font-medium text-red-900"}>
+    <View
+      className={
+        support
+          ? "rounded border border-green-200 bg-green-50 p-2"
+          : "rounded border border-red-200 bg-red-50 p-2"
+      }
+    >
+      <Text className={support ? "text-sm font-medium text-green-900" : "text-sm font-medium text-red-900"}>
         Reported {direction}
         {total !== null ? `: ${formatMoney(total)}` : ""}
-      </p>
+      </Text>
       {groups.length > 0 ? (
-        <div className="mt-2">
-          <h5 className="text-xs font-medium text-ink-soft">Outside groups reporting {direction}</h5>
-          <ul className="mt-1 space-y-0.5">
+        <View className="mt-2">
+          <Text className="text-xs font-medium text-ink-soft">Outside groups reporting {direction}</Text>
+          <View className="mt-1 gap-0.5">
             {groups.map((row) => (
               <AmountRow key={row.committee_id} name={row.committee_name} right={formatMoney(row.amount)} />
             ))}
-          </ul>
-        </div>
+          </View>
+        </View>
       ) : null}
       {industries.length > 0 ? (
-        <div className="mt-2">
-          {/* These amounts are contributions INTO the groups (aggregated
-              from committee income across the cycle), while the total above
-              is candidate-specific expenditure — an industry can have given
-              a group more than the group spent on this race. The heading and
+        <View className="mt-2">
+          {/* These amounts are contributions INTO the groups, while the
+              total above is candidate-specific expenditure — the heading and
               the card's shared note keep the two from being conflated. */}
-          <h5 className="text-xs font-medium text-ink-soft">Industries funding groups reporting {direction}</h5>
-          <ul className="mt-1 space-y-0.5">
+          <Text className="text-xs font-medium text-ink-soft">
+            Industries funding groups reporting {direction}
+          </Text>
+          <View className="mt-1 gap-0.5">
             {industries.map((row) => (
               <AmountRow
                 key={row.category_name}
@@ -112,10 +117,10 @@ function OutsideColumn({
                 right={formatMoney(row.amount)}
               />
             ))}
-          </ul>
-        </div>
+          </View>
+        </View>
       ) : null}
-    </div>
+    </View>
   );
 }
 
@@ -130,29 +135,29 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
   const sourceUrl = firstFinanceSourceUrl(summary);
 
   return (
-    <div className="text-sm">
+    <View>
       {hasMoneyRow ? (
-        <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <View className="flex-row flex-wrap">
           <MoneyStat label="Raised" amount={direct.total_raised} />
           <MoneyStat label="Spent" amount={direct.total_spent} />
           <MoneyStat label="Cash on hand" amount={direct.cash_on_hand} />
           <MoneyStat label="Debts" amount={direct.debts_owed} />
-        </dl>
+        </View>
       ) : null}
 
       <BreakdownList heading="Top disclosed occupations of direct donors" rows={direct.top_occupations} />
       <BreakdownList heading="Industries represented among direct contributions" rows={direct.top_industries} />
 
       {hasOutsideFinanceContent(summary) ? (
-        <div className="mt-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Outside spending</h4>
+        <View className="mt-3">
+          <Text className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Outside spending</Text>
           {outside.top_supporting_industries.length > 0 || outside.top_opposing_industries.length > 0 ? (
-            <p className="mt-1 text-xs text-ink-soft">
+            <Text className="mt-1 text-xs text-ink-soft">
               Industry amounts are contributions to these groups, not amounts necessarily spent on this
               candidate.
-            </p>
+            </Text>
           ) : null}
-          <div className="mt-1 grid gap-3 sm:grid-cols-2">
+          <View className="mt-1 gap-3">
             <OutsideColumn
               direction="support"
               total={outside.support_total}
@@ -165,22 +170,22 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
               groups={outside.top_opposing_groups}
               industries={outside.top_opposing_industries}
             />
-          </div>
-        </div>
+          </View>
+        </View>
       ) : null}
 
-      <p className="mt-3 text-xs text-ink-soft">
+      <Text className="mt-3 text-xs text-ink-soft">
         Source: {financeSourceLabel(summary.source)} · {summary.cycle} cycle · synced{" "}
         {formatElectionDate(summary.last_synced_at.slice(0, 10))}
         {sourceUrl ? (
           <>
             {" · "}
-            <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-ink">
+            <Text className="underline" accessibilityRole="link" onPress={() => openExternalUrl(sourceUrl)}>
               {formatSourceHost(sourceUrl)}
-            </a>
+            </Text>
           </>
         ) : null}
-      </p>
-    </div>
+      </Text>
+    </View>
   );
 }
