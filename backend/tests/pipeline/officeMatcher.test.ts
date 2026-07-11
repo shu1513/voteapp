@@ -117,6 +117,48 @@ describe("OfficeMatcher", () => {
     }
   });
 
+  it("resolves the SF county Assessor-Recorder and Public Defender titles via the seeded aliases", async () => {
+    // Guards the normalizer-parity invariant for migration 165's aliases: the
+    // seed layer stores normalizeElectionTitleKey(alias) while the matcher
+    // looks titles up under its own normalization — if the two ever diverge
+    // for these official ballot titles (SF's hyphenated combined office and
+    // the elected Public Defender), the alias silently stops matching and the
+    // shell strands with office_id = NULL again.
+    const assessorRecorderOfficeId = "office-county-assessor-recorder";
+    const publicDefenderOfficeId = "office-public-defender";
+    const aliasCases: Array<{ title: string; officeId: string }> = [
+      { title: "Assessor-Recorder", officeId: assessorRecorderOfficeId },
+      { title: "County Assessor-Recorder", officeId: assessorRecorderOfficeId },
+      { title: "Public Defender", officeId: publicDefenderOfficeId },
+    ];
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: aliasCases.map(({ title, officeId }) => ({
+          office_id: officeId,
+          normalized_alias: normalizeElectionTitleKey(title),
+        })),
+      },
+      officesByScope: {
+        county: [
+          { id: assessorRecorderOfficeId, canonical_name: "County Assessor-Recorder" },
+          { id: publicDefenderOfficeId, canonical_name: "Public Defender" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    for (const { title, officeId } of aliasCases) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: "San Francisco County, California",
+        state: "CA",
+        officialBallotTitle: title,
+      });
+      expect(result.officeId).toBe(officeId);
+      expect(result.method).toBe("alias_exact");
+    }
+  });
+
   it("still honors a judge-office alias when the entry family is judicial", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: {
