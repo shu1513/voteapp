@@ -154,7 +154,12 @@ export async function verifyHttpUrlReachability(
       signal: controller.signal,
     });
 
-    if (response.status === 405 || response.status === 501) {
+    // HEAD is an optimization, not the authoritative answer: beyond hosts
+    // that reject the method outright (405/501), some servers answer HEAD
+    // with a different status than GET for the same resource (CivicPlus
+    // DocumentCenter PDFs return HEAD 404 / GET 200, verified live), so any
+    // failing HEAD status is confirmed with a GET before the URL is failed.
+    if (!response.ok && !allowStatusCodes.has(response.status)) {
       try {
         await response.body?.cancel();
       } catch {
