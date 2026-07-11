@@ -75,9 +75,13 @@ One component, used by both pages. Renders from a `FinanceSummary`:
 - **Money row**: Raised / Spent / Cash on hand / Debts (only non-null ones —
   `$0` is a real value and renders), `formatMoney`.
 - **Top disclosed occupations of direct donors** and **Industries
-  represented among direct contributions**: compact rows
-  `name · $amount · N donors` (contributor_count when non-null). Lists
-  arrive pre-capped and pre-sorted from the backend — render as-is.
+  represented among direct contributions**: compact rows `name · $amount`.
+  Lists arrive pre-capped and pre-sorted from the backend — render as-is.
+  `contributor_count` is deliberately not rendered: state adapters disagree
+  on its meaning (Colorado counts contribution rows, Utah counts distinct
+  contributors, FEC counts itemized receipts), so any single label
+  ("donors", "contributions") would be misinformation for some sources.
+  Show it only after the backend guarantees one semantic across loaders.
 - **Outside spending** (only when support or oppose total non-null): support
   and oppose columns, green/red accents matching the ballot-measure YES/NO
   pattern; each lists its total, top groups, and top industries. Wording is

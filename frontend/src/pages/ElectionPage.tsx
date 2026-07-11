@@ -257,7 +257,16 @@ export function ElectionPage() {
                 </Link>
                 {hasFinanceContent(candidate.finance_summary) ? (
                   <details className="border-t border-line px-4 py-3">
-                    <summary className="cursor-pointer text-sm font-medium text-ink">Campaign finance</summary>
+                    {/* Every card repeats this toggle; the aria-label keeps
+                        repeated disclosures distinguishable for screen-reader
+                        users (an sr-only span would glue words together in
+                        the computed accessible name). */}
+                    <summary
+                      className="cursor-pointer text-sm font-medium text-ink"
+                      aria-label={`Campaign finance for ${candidate.display_name}`}
+                    >
+                      Campaign finance
+                    </summary>
                     <div className="mt-2">
                       <FinanceSummaryCard summary={candidate.finance_summary} />
                     </div>

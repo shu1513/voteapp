@@ -82,7 +82,9 @@ describe("CandidatePage", () => {
     stubApiRoutes({ ...ANONYMOUS, "/api/elections/e-1": { body: election } });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
-    expect(await screen.findByRole("heading", { name: "Campaign finance" })).toBeInTheDocument();
+    // The accessible name carries the election for screen-reader heading
+    // navigation (a candidate can be in two concurrent races).
+    expect(await screen.findByRole("heading", { name: "Campaign finance — Governor" })).toBeInTheDocument();
     expect(screen.getByText("$120,000")).toBeInTheDocument();
     expect(screen.queryByText("$999,999")).not.toBeInTheDocument();
     expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();
@@ -93,7 +95,7 @@ describe("CandidatePage", () => {
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
     expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Campaign finance" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Campaign finance/ })).not.toBeInTheDocument();
   });
 
   it("keeps the profile intact when the finance fetch fails", async () => {
@@ -105,7 +107,7 @@ describe("CandidatePage", () => {
 
     expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
     expect(screen.getByText("Voted for the clean water act.")).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Campaign finance" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Campaign finance/ })).not.toBeInTheDocument();
   });
 
   it("fetches past-election finance only after the row's disclosure is opened", async () => {
@@ -117,6 +119,11 @@ describe("CandidatePage", () => {
     );
 
     expect(await screen.findByRole("heading", { name: "Elections" })).toBeInTheDocument();
+    // The toggle's accessible name carries the election and date so repeated
+    // rows stay distinguishable for screen-reader users.
+    expect(screen.getByText("Campaign finance")).toHaveAccessibleName(
+      "Campaign finance for Governor, November 3, 2000"
+    );
     // Past rows must not preload their election payloads.
     const electionCalls = () =>
       fetchMock.mock.calls.filter((call) => String(call[0]).includes("/api/elections/")).length;

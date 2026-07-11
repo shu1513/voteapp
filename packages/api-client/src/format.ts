@@ -127,7 +127,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   VIRGINIA_CFREPORTS: "Virginia CFReports",
   TENNESSEE_CAMP: "Tennessee Registry of Election Finance",
   WASHINGTON_PDC: "Washington PDC",
-  WISCONSIN_SUNSHINE: "Wisconsin CFIS",
+  WISCONSIN_SUNSHINE: "Wisconsin Sunshine",
   MASSACHUSETTS_OCPF: "Massachusetts OCPF",
   VERMONT_CFD: "Vermont Campaign Finance",
   LOUISIANA_ETHICS: "Louisiana Ethics Administration",

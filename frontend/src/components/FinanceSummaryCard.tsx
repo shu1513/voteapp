@@ -93,15 +93,13 @@ function BreakdownList({ heading, rows }: { heading: string; rows: FinanceBreakd
       <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{heading}</h4>
       <ul className="mt-1 space-y-0.5">
         {rows.map((row) => (
-          <AmountRow
-            key={row.category_name}
-            name={formatFinanceCategory(row.category_name)}
-            right={
-              row.contributor_count !== null
-                ? `${formatMoney(row.amount)} · ${row.contributor_count} donor${row.contributor_count === 1 ? "" : "s"}`
-                : formatMoney(row.amount)
-            }
-          />
+          // contributor_count is deliberately not rendered: state adapters
+          // disagree on its meaning (Colorado counts contribution rows, Utah
+          // counts distinct contributors, FEC counts itemized receipts), so
+          // any single label ("donors", "contributions") would be wrong for
+          // some sources. Show it only once the backend guarantees one
+          // semantic across every loader.
+          <AmountRow key={row.category_name} name={formatFinanceCategory(row.category_name)} right={formatMoney(row.amount)} />
         ))}
       </ul>
     </div>

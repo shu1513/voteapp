@@ -61,6 +61,9 @@ describe("ElectionPage", () => {
     // grow an empty disclosure.
     expect(await screen.findByText("Jordan Voter")).toBeInTheDocument();
     expect(screen.getAllByText("Campaign finance")).toHaveLength(1);
+    // The toggle's accessible name carries the candidate so repeated
+    // disclosures stay distinguishable for screen-reader users.
+    expect(screen.getByText("Campaign finance")).toHaveAccessibleName("Campaign finance for Jordan Voter");
     // The panel content is in the DOM (details renders children; collapsed
     // is a display state) with occupations and industries distinct.
     expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();

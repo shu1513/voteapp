@@ -114,7 +114,12 @@ function OngoingElectionFinance({ election, candidateId }: { election: Candidate
   }
   return (
     <section className="mt-6">
-      <h2 className="text-lg font-semibold">Campaign finance</h2>
+      {/* A candidate can be in two concurrent races, repeating this heading;
+          the aria-label keeps heading navigation distinguishable (an sr-only
+          span would glue words together in the computed accessible name). */}
+      <h2 className="text-lg font-semibold" aria-label={`Campaign finance — ${election.official_ballot_title}`}>
+        Campaign finance
+      </h2>
       <p className="mt-1 text-sm text-ink-soft">
         {election.official_ballot_title} · {formatElectionDate(election.election_date)}
       </p>
@@ -140,7 +145,15 @@ function PastElectionFinance({ election, candidateId }: { election: CandidateEle
         }
       }}
     >
-      <summary className="cursor-pointer text-xs text-ink-soft hover:text-ink">Campaign finance</summary>
+      {/* Every past-election row repeats this toggle; the aria-label keeps
+          them distinguishable for screen-reader users (an sr-only span would
+          glue words together in the computed accessible name). */}
+      <summary
+        className="cursor-pointer text-xs text-ink-soft hover:text-ink"
+        aria-label={`Campaign finance for ${election.official_ballot_title}, ${formatElectionDate(election.election_date)}`}
+      >
+        Campaign finance
+      </summary>
       <div className="mt-2">
         {!opened || isPending ? (
           <p className="text-xs text-ink-soft">Loading…</p>
