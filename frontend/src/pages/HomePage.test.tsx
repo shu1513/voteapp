@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HomePage } from "./HomePage";
-import { PRE_SEARCH_ACCEPTANCE_STORAGE_KEY } from "../legal/copy";
+import { PRE_SEARCH_ACCEPTANCE_STORAGE_KEY } from "@voteapp/api-client";
 
 function renderHome() {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
