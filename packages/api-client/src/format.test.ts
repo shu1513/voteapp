@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { formatDistrictType, formatElectionDate, formatMoney, formatSourceHost } from "./format";
+import {
+  formatDistrictType,
+  formatElectionDate,
+  formatMoney,
+  formatOutcome,
+  formatSourceHost,
+  formatVotePowerLabel,
+} from "./format";
 
 describe("formatElectionDate", () => {
   it("renders YYYY-MM-DD as a local calendar date without timezone drift", () => {
@@ -33,5 +40,26 @@ describe("formatSourceHost", () => {
       "capitol.texas.gov"
     );
     expect(formatSourceHost("not a url")).toBe("not a url");
+  });
+});
+
+describe("formatVotePowerLabel", () => {
+  it("maps known labels and passes unknown ones through untouched", () => {
+    expect(formatVotePowerLabel("very_low")).toBe("Very low");
+    expect(formatVotePowerLabel("unknown")).toBe("Unknown");
+    expect(formatVotePowerLabel("super_high")).toBe("super_high");
+  });
+});
+
+describe("formatOutcome", () => {
+  it("sentence-cases snake_case outcomes", () => {
+    expect(formatOutcome("too_close")).toBe("Too close");
+    expect(formatOutcome("won")).toBe("Won");
+  });
+
+  it("returns empty or whitespace-only input unchanged", () => {
+    expect(formatOutcome("")).toBe("");
+    expect(formatOutcome("  ")).toBe("  ");
+    expect(formatOutcome("___")).toBe("___");
   });
 });
