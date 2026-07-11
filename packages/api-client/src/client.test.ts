@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiError, apiRequest, configureApi } from "./client";
+import { ApiError, apiRequest, configureApi, REQUEST_TIMEOUT_MS } from "./client";
 
 function mockFetch(response: {
   ok?: boolean;
@@ -20,8 +20,9 @@ function mockFetch(response: {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
   // Config is module-level; restore the web defaults between tests.
-  configureApi({ baseUrl: "", getAuthHeader: null });
+  configureApi({ baseUrl: "", getAuthHeader: null, defaultHeaders: {}, timeoutMs: REQUEST_TIMEOUT_MS });
 });
 
 describe("apiRequest", () => {
@@ -141,6 +142,47 @@ describe("apiRequest", () => {
       "/api/me",
       expect.objectContaining({ headers: { authorization: "Bearer session-abc" } })
     );
+  });
+
+  it("attaches configured default headers to every request (mobile client marker)", async () => {
+    const fetchMock = mockFetch({ jsonBody: { ok: true } });
+    configureApi({ defaultHeaders: { "x-voteapp-client": "mobile" } });
+
+    await apiRequest("/api/auth/login", { method: "POST", body: { email: "a@b.co" } });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/auth/login",
+      expect.objectContaining({
+        headers: { "x-voteapp-client": "mobile", "content-type": "application/json" },
+      })
+    );
+  });
+
+  it("lets computed headers win over default headers on collision", async () => {
+    const fetchMock = mockFetch({ jsonBody: { ok: true } });
+    configureApi({
+      defaultHeaders: { authorization: "Bearer stale", "content-type": "text/plain" },
+      getAuthHeader: () => "Bearer fresh",
+    });
+
+    await apiRequest("/api/me", { method: "POST", body: {} });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/me",
+      expect.objectContaining({
+        headers: { authorization: "Bearer fresh", "content-type": "application/json" },
+      })
+    );
+  });
+
+  it("uses the configured timeout for the request signal", async () => {
+    const timeoutSpy = vi.spyOn(AbortSignal, "timeout");
+    mockFetch({ jsonBody: { ok: true } });
+    configureApi({ timeoutMs: 75_000 });
+
+    await apiRequest("/api/ballot");
+
+    expect(timeoutSpy).toHaveBeenCalledWith(75_000);
   });
 
   it("sends no auth header when the provider returns null (logged out)", async () => {

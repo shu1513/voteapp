@@ -49,9 +49,26 @@ type ApiClientConfig = {
    * web frontend authenticates with the httpOnly cookie instead.
    */
   getAuthHeader: (() => string | null | Promise<string | null>) | null;
+  /**
+   * Headers attached to every request (lowercase names). The mobile app
+   * sends { "x-voteapp-client": "mobile" } so login/password-change return
+   * the session id in the body instead of a Set-Cookie. Computed headers
+   * (content-type, authorization) win on collision.
+   */
+  defaultHeaders: Record<string, string>;
+  /**
+   * Per-request timeout. The mobile app raises it while the API runs on
+   * infrastructure with cold starts longer than the 15s web default.
+   */
+  timeoutMs: number;
 };
 
-const config: ApiClientConfig = { baseUrl: "", getAuthHeader: null };
+const config: ApiClientConfig = {
+  baseUrl: "",
+  getAuthHeader: null,
+  defaultHeaders: {},
+  timeoutMs: REQUEST_TIMEOUT_MS,
+};
 
 /** Platform setup, called once at app start; web apps need no call at all. */
 export function configureApi(overrides: Partial<ApiClientConfig>): void {
@@ -67,7 +84,7 @@ export function configureApi(overrides: Partial<ApiClientConfig>): void {
  * silently kill features like autocomplete.
  */
 function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal | undefined {
-  const timeout = typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(REQUEST_TIMEOUT_MS) : undefined;
+  const timeout = typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(config.timeoutMs) : undefined;
   if (!callerSignal) {
     return timeout;
   }
@@ -90,7 +107,7 @@ function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal 
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const method = options.method ?? "GET";
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...config.defaultHeaders };
   if (options.body !== undefined) {
     headers["content-type"] = "application/json";
   }
