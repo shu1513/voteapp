@@ -79,12 +79,15 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   return loadFromApi<CandidateDetail>(`/api/candidates/${params.candidateId}`, request);
 }
 
-// Election dates are YYYY-MM-DD calendar strings; compare against the
-// viewer's local calendar date the same way (election day itself still
-// counts as ongoing).
-function todayLocalDate(): string {
-  const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+// Election dates are YYYY-MM-DD calendar strings; "today" is the last US
+// clock still on a given date — Pacific/Honolulu, UTC-10, no DST — mirroring
+// the backend's US_LATEST_LOCAL_DATE_SQL (usLocalDate.ts): an election
+// counts as past only once the entire United States has finished that day.
+// Fixing the timezone also makes the value identical on the SSR host and in
+// the viewer's browser, so ongoing/past classification cannot flip during
+// hydration. en-CA formats as YYYY-MM-DD.
+function usLatestLocalDate(): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Pacific/Honolulu" }).format(new Date());
 }
 
 // Election-specific finance deliberately lives on GET /api/elections/:id
@@ -214,7 +217,7 @@ export function CandidatePage() {
   const baseGroups = groupRecords(candidate.records);
   const recordGroups =
     recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
-  const today = todayLocalDate();
+  const today = usLatestLocalDate();
   const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
 
   return (

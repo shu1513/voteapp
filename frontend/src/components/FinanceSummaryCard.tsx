@@ -141,7 +141,12 @@ function OutsideColumn({
       ) : null}
       {industries.length > 0 ? (
         <div className="mt-2">
-          <h5 className="text-xs font-medium text-ink-soft">Industries funding outside {direction}</h5>
+          {/* These amounts are contributions INTO the groups (aggregated
+              from committee income across the cycle), while the total above
+              is candidate-specific expenditure — an industry can have given
+              a group more than the group spent on this race. The heading and
+              the card's shared note keep the two from being conflated. */}
+          <h5 className="text-xs font-medium text-ink-soft">Industries funding groups reporting {direction}</h5>
           <ul className="mt-1 space-y-0.5">
             {industries.map((row) => (
               <AmountRow
@@ -184,6 +189,12 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
       {hasOutsideContent(summary) ? (
         <div className="mt-3">
           <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Outside spending</h4>
+          {outside.top_supporting_industries.length > 0 || outside.top_opposing_industries.length > 0 ? (
+            <p className="mt-1 text-xs text-ink-soft">
+              Industry amounts are contributions to these groups, not amounts necessarily spent on this
+              candidate.
+            </p>
+          ) : null}
           <div className="mt-1 grid gap-3 sm:grid-cols-2">
             <OutsideColumn
               direction="support"

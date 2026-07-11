@@ -86,9 +86,11 @@ One component, used by both pages. Renders from a `FinanceSummary`:
   and oppose columns, green/red accents matching the ballot-measure YES/NO
   pattern; each lists its total, top groups, and top industries. Wording is
   claims-precise: "Outside groups reporting support" / "reporting
-  opposition", "Industries funding outside support" / "outside opposition" —
-  these are disclosure reports, and "outside group" (never "Super PAC")
-  because state terminology differs.
+  opposition", "Industries funding groups reporting support" / "reporting
+  opposition" — these are disclosure reports, and "outside group" (never
+  "Super PAC") because state terminology differs. Industry amounts are
+  contributions INTO the groups across the cycle, not candidate-specific
+  expenditure, so the card carries a one-line note saying exactly that.
 - **Footer**: `Source: <financeSourceLabel> · 2026 cycle · synced <date>`
   plus one source link — the first non-null `source_url` across rows — via
   the existing `SourceLine` provenance pattern. No per-row links (noise).

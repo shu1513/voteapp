@@ -42,6 +42,13 @@ describe("FinanceSummaryCard", () => {
     expect(screen.getByText("Growth PAC")).toBeInTheDocument();
     expect(screen.getByText("Reported opposition: $20,000")).toBeInTheDocument();
     expect(screen.getByText("Stop Them PAC")).toBeInTheDocument();
+    // Industry money flows into the groups, not necessarily onto this race —
+    // the heading and note must not present it as candidate-specific spend.
+    expect(screen.getByText("Industries funding groups reporting support")).toBeInTheDocument();
+    expect(screen.getByText("Industries funding groups reporting opposition")).toBeInTheDocument();
+    expect(
+      screen.getByText("Industry amounts are contributions to these groups, not amounts necessarily spent on this candidate.")
+    ).toBeInTheDocument();
     // Source enum renders as a display label with the provenance link.
     expect(screen.getByText(/Source: FEC · 2026 cycle · synced/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "fec.gov" })).toHaveAttribute(
