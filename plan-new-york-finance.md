@@ -67,6 +67,10 @@ L, N, O, R ("Expense Allocation Among Candidates").
   `district`, `election_year_r`, explicit `r_support_oppose`, `org_amt`,
   `trans_mapping` → parent Schedule F expenditure (verified: GUID resolves to
   single same-filer F row, allocation ≤ parent amount).
+- **Not every `trans_mapping` resolves** (verified 2026-07-11: 5 of 47 CFAR
+  mappings point at expenditures absent from the dataset — amended/superseded
+  filings). Strict rule 8 below drops those rows by design; expect and accept
+  a modest undercount rather than counting unverifiable allocations.
 - **Trap (verified live): party committees also file Schedule R.** 2026
   Governor support rows include NYS Democratic Committee ($1.64M → Hochul) and
   NY Republican State Committee ($163k → Blakeman). That is coordinated party
@@ -174,9 +178,11 @@ Files (names follow repo convention):
   9. allocation > 0 and ≤ parent expenditure amount
   10. conflicting/duplicate `trans_number` rows skipped
 - `newYorkOutsideGroupContributionAggregator.ts` — IE committee funders from
-  their own receipt schedules (A/B/C/D); **organization donors only** feed
-  industry classification (existing `donor` labelType path); individuals never
-  treated as company money.
+  their own receipt schedules (A/B/C/D), **filtered to `election_year`
+  matching the linked election** so historical funding is never presented as
+  support in the current race; **organization donors only** feed industry
+  classification (existing `donor` labelType path); individuals never treated
+  as company money.
 - `newYorkFinanceWriter.ts`, `newYorkCandidateFinanceSync.ts`,
   `newYorkCandidateFinanceBatchSync.ts`, scheduler, enricher hook in
   `candidateProfileEnricher.ts` (state `"NY"` + eligible-office gate),
