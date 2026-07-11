@@ -31,7 +31,7 @@ export function initApi(): void {
   }
 
   const timeoutRaw = Number.parseInt(process.env.EXPO_PUBLIC_API_TIMEOUT_MS ?? "", 10);
-  const timeoutMs = Number.isFinite(timeoutRaw) && timeoutRaw > 0 ? timeoutRaw : DEFAULT_TIMEOUT_MS;
+  const requestTimeoutMs = Number.isFinite(timeoutRaw) && timeoutRaw > 0 ? timeoutRaw : DEFAULT_TIMEOUT_MS;
 
   configureApi({
     baseUrl,
@@ -39,7 +39,7 @@ export function initApi(): void {
     // then return the session id in the body and skip the Set-Cookie, so the
     // platform cookie jar never competes with the SecureStore transport.
     defaultHeaders: { "x-voteapp-client": "mobile" },
-    timeoutMs,
+    requestTimeoutMs,
     getAuthHeader: async () => {
       // A keystore failure must degrade to "signed out", not kill the
       // request (expo-secure-store throws on web, where Expo serves the
