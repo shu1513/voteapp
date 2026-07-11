@@ -7,6 +7,7 @@ import type {
   CandidateFollow,
   ElectionDetail,
   ElectionSummary,
+  FinanceSummary,
   VotePower,
 } from "@voteapp/api-client";
 
@@ -126,6 +127,75 @@ export function candidateDetail(
       elections: [],
       is_following: false,
       ...overrides,
+    },
+  };
+}
+
+/** A summary with every money field null and every list empty — the shape a
+ * state adapter emits when a committee exists but nothing is disclosed yet. */
+export function emptyFinanceSummary(): FinanceSummary {
+  return {
+    source: "FEC",
+    cycle: 2026,
+    last_synced_at: "2026-07-01T00:00:00.000Z",
+    direct_campaign: {
+      total_raised: null,
+      total_spent: null,
+      cash_on_hand: null,
+      debts_owed: null,
+      top_occupations: [],
+      top_industries: [],
+    },
+    outside_spending: {
+      support_total: null,
+      oppose_total: null,
+      top_supporting_groups: [],
+      top_opposing_groups: [],
+      top_supporting_industries: [],
+      top_opposing_industries: [],
+    },
+  };
+}
+
+/** A fully populated summary covering every section the card renders. */
+export function financeSummary(): FinanceSummary {
+  return {
+    source: "FEC",
+    cycle: 2026,
+    last_synced_at: "2026-07-01T00:00:00.000Z",
+    direct_campaign: {
+      total_raised: 120000,
+      total_spent: 80000,
+      cash_on_hand: 40000,
+      debts_owed: 0,
+      top_occupations: [
+        { category_name: "Retired", amount: 30000, contributor_count: 40, source_url: null },
+        { category_name: "Attorney", amount: 20000, contributor_count: 12, source_url: null },
+      ],
+      top_industries: [
+        {
+          category_name: "oil_gas_energy",
+          amount: 25000,
+          contributor_count: 9,
+          source_url: "https://www.fec.gov/data/candidate/H0AK00001/",
+        },
+      ],
+    },
+    outside_spending: {
+      support_total: 50000,
+      oppose_total: 20000,
+      top_supporting_groups: [
+        { committee_id: "pac-1", committee_name: "Growth PAC", support_oppose: "support", amount: 50000, source_url: null },
+      ],
+      top_opposing_groups: [
+        { committee_id: "pac-2", committee_name: "Stop Them PAC", support_oppose: "oppose", amount: 20000, source_url: null },
+      ],
+      top_supporting_industries: [
+        { category_name: "technology", amount: 35000, contributor_count: null, source_url: null },
+      ],
+      top_opposing_industries: [
+        { category_name: "labor_unions", amount: 15000, contributor_count: null, source_url: null },
+      ],
     },
   };
 }
