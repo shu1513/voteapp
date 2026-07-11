@@ -47,6 +47,17 @@ export default function ElectionScreen() {
     retry: false,
   });
 
+  // A missing/empty id disables the query but leaves isPending true forever;
+  // without this guard a malformed deep link traps the user on the spinner.
+  if (typeof electionId !== "string" || electionId.length === 0) {
+    return (
+      <View className="flex-1 bg-white px-4 py-8">
+        <Stack.Screen options={{ title: "Election" }} />
+        <NotFoundNotice subject="Election" />
+      </View>
+    );
+  }
+
   if (election.isPending) {
     return (
       <View className="flex-1 bg-white">
@@ -132,7 +143,7 @@ export default function ElectionScreen() {
           ) : null}
           {measure.official_measure_url ? (
             <Text
-              className="mt-3 text-sm font-medium text-rausch-dark underline"
+              className="mt-3 text-sm font-medium text-rausch-dark underline" accessibilityRole="link"
               onPress={() => openExternalUrl(measure.official_measure_url as string)}
             >
               {isGovernmentUrl(measure.official_measure_url)
@@ -285,12 +296,13 @@ function isPdfUrl(url: string): boolean {
   return /\.pdf($|[?#])/i.test(url);
 }
 
-// "Official" is a claim, not a style: only government-hosted links get the
-// official label; anything else keeps neutral wording.
+// "Official" is a claim, not a style: only .gov links get the official
+// label; anything else keeps neutral wording. .us is deliberately excluded —
+// it is an open registry (individuals and businesses register ordinary .us
+// domains), so it is not evidence of government hosting.
 function isGovernmentUrl(url: string): boolean {
   try {
-    const host = new URL(url).hostname.toLowerCase();
-    return host.endsWith(".gov") || host.endsWith(".us");
+    return new URL(url).hostname.toLowerCase().endsWith(".gov");
   } catch {
     return false;
   }
