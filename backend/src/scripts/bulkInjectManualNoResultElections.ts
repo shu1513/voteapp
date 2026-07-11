@@ -208,7 +208,7 @@ export async function bulkInjectManualNoResultElections(
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:elections:inject-no-results", process.argv.slice(2), ["--districts-file", "--dry-run"]);
+  assertKnownCliFlags("manual:elections:inject-no-results", process.argv.slice(2), [{ name: "--districts-file", value: "space" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const districtsFile = readFlag("--districts-file");

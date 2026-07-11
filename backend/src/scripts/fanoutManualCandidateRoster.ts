@@ -207,7 +207,7 @@ async function markStagingWritten(pool: Pool, ingestKey: string): Promise<void> 
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:candidate-roster:fanout", process.argv.slice(2), ["--election-id", "--run-id", "--dry-run"]);
+  assertKnownCliFlags("manual:candidate-roster:fanout", process.argv.slice(2), [{ name: "--election-id", value: "space" }, { name: "--run-id", value: "space" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const electionId = readFlag("--election-id");

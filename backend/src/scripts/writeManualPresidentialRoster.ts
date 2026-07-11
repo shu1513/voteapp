@@ -360,7 +360,7 @@ export async function runManualPresidentialRosterWrite(input: {
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:presidential-roster:write", process.argv.slice(2), ["--cycle-id", "--presidential-cycle-id", "--election-year", "--year", "--party", "--file", "--run-id", "--dry-run"]);
+  assertKnownCliFlags("manual:presidential-roster:write", process.argv.slice(2), [{ name: "--cycle-id", value: "both" }, { name: "--election-year", value: "both" }, { name: "--year", value: "both" }, { name: "--party", value: "both" }, { name: "--file", value: "both" }, { name: "--run-id", value: "both" }, { name: "--dry-run", value: "none" }]);
   const startedAt = new Date();
   loadProjectEnv();
   const options = parseManualPresidentialRosterScriptArgs(process.argv.slice(2), startedAt);

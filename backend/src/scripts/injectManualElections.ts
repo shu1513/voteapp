@@ -256,7 +256,7 @@ export async function stageManualElectionPayload(
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:elections:inject", process.argv.slice(2), ["--file", "--ingest-key", "--run-id", "--review-approve", "--dry-run"]);
+  assertKnownCliFlags("manual:elections:inject", process.argv.slice(2), [{ name: "--file", value: "space" }, { name: "--ingest-key", value: "space" }, { name: "--run-id", value: "space" }, { name: "--review-approve", value: "none" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const file = readFlag("--file");

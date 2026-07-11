@@ -285,7 +285,7 @@ function requireEnv(name: string): string {
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:research:preflight", process.argv.slice(2), ["--help"]);
+  assertKnownCliFlags("manual:research:preflight", process.argv.slice(2), [{ name: "--help", value: "none" }]);
   loadProjectEnv();
 
   if (process.argv.includes("--help") || process.argv.includes("-h")) {

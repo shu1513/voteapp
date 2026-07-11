@@ -280,7 +280,7 @@ export async function runManualPresidentialNomineeWrite(input: {
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:presidential-nominee:write", process.argv.slice(2), ["--cycle-id", "--presidential-cycle-id", "--election-year", "--year", "--party", "--confirmed-at", "--file", "--dry-run"]);
+  assertKnownCliFlags("manual:presidential-nominee:write", process.argv.slice(2), [{ name: "--cycle-id", value: "both" }, { name: "--presidential-cycle-id", value: "both" }, { name: "--election-year", value: "both" }, { name: "--year", value: "both" }, { name: "--party", value: "both" }, { name: "--confirmed-at", value: "both" }, { name: "--file", value: "both" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
   const options = parseManualPresidentialNomineeScriptArgs(process.argv.slice(2));
   const rawPayload = await readJsonFile(options.file);

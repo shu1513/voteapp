@@ -2,7 +2,7 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 
-import { assertKnownCliFlags } from "./manualCliFlags.js";
+import { assertKnownCliFlags, type CliFlagSpec } from "./manualCliFlags.js";
 const DEFERRAL_STAGES = [
   "elections",
   "candidate_roster",
@@ -274,14 +274,47 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
   }
 }
 
+// Per-command flag sets: a union across commands would let a flag that is
+// valid only for ANOTHER command pass validation and be silently ignored
+// ("status --note ..." doing nothing) — the exact failure class this guard
+// exists to remove. All values are space-form: parseFlags reads the next
+// token and does not understand "--name=value".
+const COMMAND_FLAG_SPECS: Record<string, readonly CliFlagSpec[]> = {
+  record: [
+    { name: "--district-id", value: "space" },
+    { name: "--election-id", value: "space" },
+    { name: "--stage", value: "space" },
+    { name: "--reason", value: "space" },
+    { name: "--blocked-until", value: "space" },
+    { name: "--source-url", value: "space" },
+  ],
+  due: [
+    { name: "--limit", value: "space" },
+    { name: "--all", value: "none" },
+    { name: "--district-id", value: "space" },
+  ],
+  resolve: [
+    { name: "--deferral-id", value: "space" },
+    { name: "--note", value: "space" },
+  ],
+  cancel: [
+    { name: "--deferral-id", value: "space" },
+    { name: "--note", value: "space" },
+  ],
+  status: [{ name: "--district-id", value: "space" }],
+};
+
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:deferral", process.argv.slice(2), ["--district-id", "--election-id", "--stage", "--reason", "--blocked-until", "--source-url", "--limit", "--all", "--deferral-id", "--note", "--help"]);
   loadProjectEnv();
 
   const [command, ...rest] = process.argv.slice(2);
   if (!command || command === "help" || command === "--help") {
     console.log(usage());
     return;
+  }
+  const specs = COMMAND_FLAG_SPECS[command];
+  if (specs) {
+    assertKnownCliFlags(`manual:deferral ${command}`, rest, specs);
   }
 
   const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });

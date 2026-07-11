@@ -319,7 +319,7 @@ async function deleteStaleCandidateRecordAreaTags(
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:candidate-records:write", process.argv.slice(2), ["--candidate-id", "--election-id", "--records-file", "--labels-file", "--repair-report-file", "--strict-quality-gate", "--confirmed-gap", "--evidence-file", "--dry-run"]);
+  assertKnownCliFlags("manual:candidate-records:write", process.argv.slice(2), [{ name: "--candidate-id", value: "space" }, { name: "--election-id", value: "space" }, { name: "--records-file", value: "space" }, { name: "--labels-file", value: "space" }, { name: "--repair-report-file", value: "space" }, { name: "--confirmed-gap", value: "space" }, { name: "--evidence-file", value: "space" }, { name: "--strict-quality-gate", value: "none" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const candidateId = readFlag("--candidate-id");

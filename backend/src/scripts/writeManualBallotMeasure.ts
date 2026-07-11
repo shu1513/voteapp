@@ -91,7 +91,7 @@ async function loadElection(pool: Pool, electionId: string): Promise<BallotMeasu
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:ballot-measure:write", process.argv.slice(2), ["--election-id", "--file", "--dry-run"]);
+  assertKnownCliFlags("manual:ballot-measure:write", process.argv.slice(2), [{ name: "--election-id", value: "space" }, { name: "--file", value: "space" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const file = readFlag("--file");

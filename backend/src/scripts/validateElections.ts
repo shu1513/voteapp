@@ -6,7 +6,7 @@ import {
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 async function main(): Promise<void> {
-  assertKnownCliFlags("elections:validate", process.argv.slice(2), ["--once", "--batch-size", "--block-ms", "--ingest-key"]);
+  assertKnownCliFlags("elections:validate", process.argv.slice(2), [{ name: "--once", value: "none" }, { name: "--batch-size", value: "equals" }, { name: "--block-ms", value: "equals" }, { name: "--ingest-key", value: "both" }]);
   const once = process.argv.includes("--once");
   const batchSize = parsePositiveIntegerFlag(process.argv, "--batch-size", 25);
   const blockMs = parsePositiveIntegerFlag(process.argv, "--block-ms", 5000);

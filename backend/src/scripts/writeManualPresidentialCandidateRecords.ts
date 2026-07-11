@@ -316,7 +316,7 @@ async function deleteStaleCandidateRecordAreaTags(
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:presidential-records:write", process.argv.slice(2), ["--candidate-id", "--presidential-cycle-id", "--presidential-role", "--records-file", "--labels-file", "--repair-report-file", "--strict-quality-gate", "--confirmed-gap", "--evidence-file", "--dry-run"]);
+  assertKnownCliFlags("manual:presidential-records:write", process.argv.slice(2), [{ name: "--candidate-id", value: "both" }, { name: "--presidential-cycle-id", value: "both" }, { name: "--presidential-role", value: "both" }, { name: "--records-file", value: "both" }, { name: "--labels-file", value: "both" }, { name: "--repair-report-file", value: "both" }, { name: "--confirmed-gap", value: "both" }, { name: "--evidence-file", value: "both" }, { name: "--strict-quality-gate", value: "none" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
   const options = parseManualPresidentialCandidateRecordsArgs(process.argv.slice(2));
   const key = manualKey(options);

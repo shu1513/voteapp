@@ -157,7 +157,7 @@ export function buildInjectedCandidateRosterStagingPayload(input: {
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:candidate-roster:inject", process.argv.slice(2), ["--election-id", "--file", "--run-id", "--dry-run"]);
+  assertKnownCliFlags("manual:candidate-roster:inject", process.argv.slice(2), [{ name: "--election-id", value: "space" }, { name: "--file", value: "space" }, { name: "--run-id", value: "space" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const file = readFlag("--file");
