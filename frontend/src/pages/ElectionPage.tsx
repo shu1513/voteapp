@@ -189,17 +189,26 @@ export function ElectionPage() {
           </div>
           <div className="mt-3 space-y-3">
             {sortCandidatesByStance(data.candidates, candidateSort, weights).map(({ candidate, stances }) => (
-              // The card splits into a Link and a sibling finance disclosure:
-              // an expandable <details> is interactive content and may not
-              // nest inside an anchor.
+              // The follow button and the finance <details> are interactive
+              // content and may not nest inside an anchor. The whole-card
+              // click target survives via a stretched link: the name Link's
+              // ::after overlays the wrapper, and the interactive siblings
+              // sit above it (z-10) so they receive their own clicks.
               <div
                 key={candidate.candidate_id}
-                className="rounded-xl border border-line bg-white shadow-sm transition hover:shadow-md"
+                className="relative rounded-xl border border-line bg-white shadow-sm transition hover:shadow-md"
               >
-                <Link to={`/candidates/${candidate.candidate_id}`} className="block p-4">
+                <div className="p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <h3 className="font-semibold">{candidate.display_name}</h3>
+                      <h3 className="font-semibold">
+                        <Link
+                          to={`/candidates/${candidate.candidate_id}`}
+                          className="after:absolute after:inset-0"
+                        >
+                          {candidate.display_name}
+                        </Link>
+                      </h3>
                       <p className="text-sm text-ink-soft">
                         {candidate.party}
                         {candidate.is_incumbent ? " · Incumbent" : ""}
@@ -213,13 +222,7 @@ export function ElectionPage() {
                         </span>
                       ) : null}
                       {canFollow && follows ? (
-                        <span
-                          onClick={(event) => {
-                            // The card is a Link; the follow toggle must not navigate.
-                            event.preventDefault();
-                            event.stopPropagation();
-                          }}
-                        >
+                        <span className="relative z-10">
                           <FollowButton
                             candidateId={candidate.candidate_id}
                             isFollowing={followedIds.has(candidate.candidate_id)}
@@ -254,9 +257,9 @@ export function ElectionPage() {
                       ))}
                     </div>
                   ) : null}
-                </Link>
+                </div>
                 {hasFinanceContent(candidate.finance_summary) ? (
-                  <details className="border-t border-line px-4 py-3">
+                  <details className="relative z-10 border-t border-line px-4 py-3">
                     {/* Every card repeats this toggle; the aria-label keeps
                         repeated disclosures distinguishable for screen-reader
                         users (an sr-only span would glue words together in

@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import { ElectionPage, ErrorBoundary } from "./ElectionPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
-import { electionDetail, financeSummary } from "../test/fixtures";
+import { electionDetail, financeSummary, ME_VERIFIED } from "../test/fixtures";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
@@ -77,6 +77,25 @@ describe("ElectionPage", () => {
     const cardLink = screen.getByRole("link", { name: /Jordan Voter/ });
     expect(cardLink).toHaveAttribute("href", "/candidates/c-1");
     expect(cardLink.querySelector("details")).toBeNull();
+  });
+
+  it("keeps the follow button outside the card link for verified users", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+    });
+    renderElection(() => electionDetail());
+
+    // One button per candidate once the follows list has loaded.
+    const followButtons = await screen.findAllByRole("button", { name: "Follow" });
+    expect(followButtons).toHaveLength(2);
+    // A button may not nest inside an anchor; the whole-card click target
+    // is a stretched link, so the button must be a sibling of it.
+    for (const button of followButtons) {
+      expect(button.closest("a")).toBeNull();
+    }
+    const cardLink = screen.getByRole("link", { name: "Jordan Voter" });
+    expect(cardLink).toHaveAttribute("href", "/candidates/c-1");
   });
 
   it("renders ballot measure yes/no explanations when present", async () => {
