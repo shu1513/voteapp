@@ -10,4 +10,6 @@ export function openExternalUrl(url: string): void {
   void WebBrowser.openBrowserAsync(url).catch(() => {});
 }
 
-export const WEB_ORIGIN = "https://impactperdollar.com";
+// Overridable so dev/staging builds can point legal pages at their own web
+// deployment instead of production.
+export const WEB_ORIGIN = process.env.EXPO_PUBLIC_WEB_ORIGIN ?? "https://impactperdollar.com";

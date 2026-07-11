@@ -7,7 +7,7 @@ export function AiBanner() {
   return (
     <Text className="mb-4 rounded-lg border border-line bg-surface px-3 py-2 text-xs text-ink-soft">
       {AI_BANNER}{" "}
-      <Text className="underline" onPress={() => openExternalUrl(`${WEB_ORIGIN}/disclaimer`)}>
+      <Text className="underline" accessibilityRole="link" onPress={() => openExternalUrl(`${WEB_ORIGIN}/disclaimer`)}>
         Learn more
       </Text>
     </Text>

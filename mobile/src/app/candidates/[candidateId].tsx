@@ -82,6 +82,17 @@ export default function CandidateScreen() {
     retry: false,
   });
 
+  // A missing/empty id disables the query but leaves isPending true forever;
+  // without this guard a malformed deep link traps the user on the spinner.
+  if (typeof candidateId !== "string" || candidateId.length === 0) {
+    return (
+      <View className="flex-1 bg-white px-4 py-8">
+        <Stack.Screen options={{ title: "Candidate" }} />
+        <NotFoundNotice subject="Candidate" />
+      </View>
+    );
+  }
+
   if (detail.isPending) {
     return (
       <View className="flex-1 bg-white">
@@ -122,7 +133,7 @@ export default function CandidateScreen() {
       </Text>
       {candidate.official_website_url ? (
         <Text
-          className="mt-1 text-sm text-ink underline"
+          className="mt-1 text-sm text-ink underline" accessibilityRole="link"
           onPress={() => openExternalUrl(candidate.official_website_url as string)}
         >
           Official website

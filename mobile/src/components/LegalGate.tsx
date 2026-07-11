@@ -34,17 +34,17 @@ export function LegalGate({ label, checked, onChange }: LegalGateProps) {
         <Text className="flex-1 text-sm text-ink">{label}</Text>
       </Pressable>
       <View className="mt-2 flex-row flex-wrap gap-x-4 pl-8">
-        <Text className="text-sm font-medium text-ink underline" onPress={() => openExternalUrl(`${WEB_ORIGIN}/terms`)}>
+        <Text className="text-sm font-medium text-ink underline" accessibilityRole="link" onPress={() => openExternalUrl(`${WEB_ORIGIN}/terms`)}>
           Terms of Use
         </Text>
         <Text
-          className="text-sm font-medium text-ink underline"
+          className="text-sm font-medium text-ink underline" accessibilityRole="link"
           onPress={() => openExternalUrl(`${WEB_ORIGIN}/privacy`)}
         >
           Privacy Policy
         </Text>
         <Text
-          className="text-sm font-medium text-ink underline"
+          className="text-sm font-medium text-ink underline" accessibilityRole="link"
           onPress={() => openExternalUrl(`${WEB_ORIGIN}/disclaimer`)}
         >
           Disclaimer

@@ -14,7 +14,7 @@ export function SourceLine({ url, researchedDate }: SourceLineProps) {
   return (
     <Text className="mt-1 text-xs text-ink-soft">
       Source:{" "}
-      <Text className="underline" onPress={() => openExternalUrl(url)}>
+      <Text className="underline" accessibilityRole="link" onPress={() => openExternalUrl(url)}>
         {formatSourceHost(url)}
       </Text>
       {researchedDate ? <> · researched {formatElectionDate(researchedDate)}</> : null}
