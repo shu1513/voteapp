@@ -2,7 +2,7 @@ import type {
   CandidateDetail,
   CandidateElection,
   CandidateRecord,
-  ElectionDetail,
+  FinanceSummary,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
 import {
@@ -83,20 +83,20 @@ function usLatestLocalDate(): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Pacific/Honolulu" }).format(new Date());
 }
 
-// Election-specific finance deliberately lives on GET /api/elections/:id —
-// the profile fetches that payload and picks out this candidate's summary.
-// Exact candidate_id match: the payload also carries every opponent's
-// finance. Same query key as the election screen, so the cache is shared.
+// Narrow per-candidate finance endpoint (mirrors the web CandidatePage):
+// the full election payload would drag every opponent's records and finance
+// along just to read one summary.
 function useElectionFinance(electionId: string, candidateId: string, enabled: boolean) {
   const query = useQuery({
-    queryKey: ["election", electionId],
-    queryFn: () => apiRequest<ElectionDetail>(`/api/elections/${electionId}`),
+    queryKey: ["election-finance", electionId, candidateId],
+    queryFn: () =>
+      apiRequest<{ finance_summary: FinanceSummary | null }>(
+        `/api/elections/${electionId}/candidates/${candidateId}/finance`
+      ),
     enabled,
     staleTime: 60_000,
   });
-  const summary =
-    query.data?.candidates.find((entry) => entry.candidate_id === candidateId)?.finance_summary ?? null;
-  return { summary, isPending: query.isPending, isError: query.isError };
+  return { summary: query.data?.finance_summary ?? null, isPending: query.isPending, isError: query.isError };
 }
 
 // Eager finance for an election the candidate is currently in. Renders its
@@ -156,7 +156,9 @@ function PastElectionFinance({
         accessibilityState={{ expanded }}
         accessibilityLabel={`Campaign finance for ${election.official_ballot_title}, ${formatElectionDate(election.election_date)}`}
       >
-        <Text className="text-xs text-ink-soft underline">Campaign finance</Text>
+        <Text className="text-xs text-ink-soft underline">
+          {expanded ? "▾" : "▸"} Campaign finance
+        </Text>
       </Pressable>
       {expanded ? (
         <View className="mt-2">

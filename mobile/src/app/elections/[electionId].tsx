@@ -303,7 +303,11 @@ function CandidateCard({
             accessibilityState={{ expanded: financeOpen }}
             accessibilityLabel={`Campaign finance for ${candidate.display_name}`}
           >
-            <Text className="text-sm font-medium text-ink">Campaign finance</Text>
+            {/* The web gets a free disclosure triangle from <details>;
+                mirror that affordance for sighted users. */}
+            <Text className="text-sm font-medium text-ink">
+              {financeOpen ? "▾" : "▸"} Campaign finance
+            </Text>
           </Pressable>
           {financeOpen ? (
             <View className="mt-2">
