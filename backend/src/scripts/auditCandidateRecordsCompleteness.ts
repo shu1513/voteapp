@@ -3,6 +3,7 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 /**
  * Red-flag audit for false records-sweep completeness.
  *
@@ -25,6 +26,7 @@ type AuditRow = {
 };
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:records:audit", process.argv.slice(2), []);
   loadProjectEnv();
 
   const databaseUrl = process.env.DATABASE_URL?.trim();

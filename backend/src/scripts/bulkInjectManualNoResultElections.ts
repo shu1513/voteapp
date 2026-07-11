@@ -8,6 +8,7 @@ import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { parseCanonicalElectionPayload } from "../contracts/electionPayloadContract.js";
 import { stageManualElectionPayload } from "./injectManualElections.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 function usage(): string {
   return [
     "Usage:",
@@ -207,6 +208,7 @@ export async function bulkInjectManualNoResultElections(
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:elections:inject-no-results", process.argv.slice(2), [{ name: "--districts-file", value: "space" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const districtsFile = readFlag("--districts-file");

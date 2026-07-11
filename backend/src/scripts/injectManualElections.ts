@@ -15,6 +15,7 @@ import {
 } from "../contracts/electionEnrichmentContract.js";
 import { parseCanonicalElectionPayload } from "../contracts/electionPayloadContract.js";
 
+import { assertKnownCliFlags } from "./manualCliFlags.js";
 function readFlag(name: string): string | null {
   const index = process.argv.indexOf(name);
   if (index >= 0) {
@@ -255,6 +256,7 @@ export async function stageManualElectionPayload(
 }
 
 async function main(): Promise<void> {
+  assertKnownCliFlags("manual:elections:inject", process.argv.slice(2), [{ name: "--file", value: "space" }, { name: "--ingest-key", value: "space" }, { name: "--run-id", value: "space" }, { name: "--review-approve", value: "none" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const file = readFlag("--file");

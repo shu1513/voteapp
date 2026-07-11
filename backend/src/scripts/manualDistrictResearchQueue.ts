@@ -14,6 +14,7 @@ import {
   type ManualResearchAgentKind,
 } from "../pipeline/address/manualDistrictResearchRequests.js";
 
+import { assertKnownCliFlags, type CliFlagSpec } from "./manualCliFlags.js";
 const DEFAULT_MAX_CLAIM_HOURS = 6;
 
 function usage(): string {
@@ -254,6 +255,35 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
   }
 }
 
+// Per-command flag sets: a union across commands would let a flag that is
+// valid only for ANOTHER command pass validation and be silently ignored
+// ("status --error ..." doing nothing) — the exact failure class this guard
+// exists to remove. All values are space-form: parseFlags reads the next
+// token and does not understand "--name=value".
+const COMMAND_FLAG_SPECS: Record<string, readonly CliFlagSpec[]> = {
+  claim: [
+    { name: "--agent", value: "space" },
+    { name: "--agent-kind", value: "space" },
+  ],
+  start: [{ name: "--request-id", value: "space" }],
+  complete: [
+    { name: "--request-id", value: "space" },
+    { name: "--manifest-path", value: "space" },
+    { name: "--summary", value: "space" },
+  ],
+  fail: [
+    { name: "--request-id", value: "space" },
+    { name: "--error", value: "space" },
+  ],
+  release: [
+    { name: "--request-id", value: "space" },
+    { name: "--note", value: "space" },
+  ],
+  sweep: [{ name: "--max-claim-hours", value: "space" }],
+  seed: [{ name: "--district-id", value: "space" }],
+  status: [],
+};
+
 async function main(): Promise<void> {
   loadProjectEnv();
 
@@ -261,6 +291,10 @@ async function main(): Promise<void> {
   if (!command || command === "--help" || command === "-h") {
     console.log(usage());
     return;
+  }
+  const specs = COMMAND_FLAG_SPECS[command];
+  if (specs) {
+    assertKnownCliFlags(`manual:district-research ${command}`, rest, specs);
   }
 
   const flags = parseFlags(rest);
