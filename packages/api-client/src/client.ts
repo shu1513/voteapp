@@ -50,6 +50,13 @@ type ApiClientConfig = {
    */
   getAuthHeader: (() => string | null | Promise<string | null>) | null;
   /**
+   * Headers attached to every request (lowercase names). The mobile app
+   * sends { "x-voteapp-client": "mobile" } so login/password-change return
+   * the session id in the body instead of a Set-Cookie. Computed headers
+   * (content-type, authorization) win on collision.
+   */
+  defaultHeaders: Record<string, string>;
+  /**
    * Per-request timeout ceiling. The default suits an always-on API; a
    * deployment whose API cold-starts from idle (e.g. a free-tier instance
    * that takes ~a minute to wake) raises it so requests ride out the wake
@@ -58,7 +65,12 @@ type ApiClientConfig = {
   requestTimeoutMs: number;
 };
 
-const config: ApiClientConfig = { baseUrl: "", getAuthHeader: null, requestTimeoutMs: REQUEST_TIMEOUT_MS };
+const config: ApiClientConfig = {
+  baseUrl: "",
+  getAuthHeader: null,
+  defaultHeaders: {},
+  requestTimeoutMs: REQUEST_TIMEOUT_MS,
+};
 
 /** Platform setup, called once at app start; web apps need no call at all. */
 export function configureApi(overrides: Partial<ApiClientConfig>): void {
@@ -103,7 +115,7 @@ function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal 
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const method = options.method ?? "GET";
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...config.defaultHeaders };
   if (options.body !== undefined) {
     headers["content-type"] = "application/json";
   }

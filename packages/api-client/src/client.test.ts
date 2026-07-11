@@ -22,7 +22,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
   // Config is module-level; restore the web defaults between tests.
-  configureApi({ baseUrl: "", getAuthHeader: null, requestTimeoutMs: REQUEST_TIMEOUT_MS });
+  configureApi({ baseUrl: "", getAuthHeader: null, defaultHeaders: {}, requestTimeoutMs: REQUEST_TIMEOUT_MS });
 });
 
 describe("apiRequest", () => {
@@ -170,6 +170,37 @@ describe("apiRequest", () => {
     expect(fetchMock).toHaveBeenCalledWith(
       "/api/me",
       expect.objectContaining({ headers: { authorization: "Bearer session-abc" } })
+    );
+  });
+
+  it("attaches configured default headers to every request (mobile client marker)", async () => {
+    const fetchMock = mockFetch({ jsonBody: { ok: true } });
+    configureApi({ defaultHeaders: { "x-voteapp-client": "mobile" } });
+
+    await apiRequest("/api/auth/login", { method: "POST", body: { email: "a@b.co" } });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/auth/login",
+      expect.objectContaining({
+        headers: { "x-voteapp-client": "mobile", "content-type": "application/json" },
+      })
+    );
+  });
+
+  it("lets computed headers win over default headers on collision", async () => {
+    const fetchMock = mockFetch({ jsonBody: { ok: true } });
+    configureApi({
+      defaultHeaders: { authorization: "Bearer stale", "content-type": "text/plain" },
+      getAuthHeader: () => "Bearer fresh",
+    });
+
+    await apiRequest("/api/me", { method: "POST", body: {} });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/me",
+      expect.objectContaining({
+        headers: { authorization: "Bearer fresh", "content-type": "application/json" },
+      })
     );
   });
 
