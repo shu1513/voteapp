@@ -25,12 +25,26 @@
  * the apex so the canonical origin matches SITE_ORIGIN and robots.txt).
  */
 
-function isApiPath(pathname) {
+export function isApiPath(pathname) {
   return pathname === "/sitemap.xml" || pathname === "/api" || pathname.startsWith("/api/");
 }
 
-/** Returns the validated bare hostname, or null for anything else. */
-function resolveUpstreamHost(raw) {
+// RFC 1123 label: 1-63 chars, alphanumeric at both ends, alphanumeric or
+// hyphen inside. Deliberately stricter than the URL parser, which (with the
+// non-strict IDNA browsers use) happily accepts ".", "foo..bar",
+// "-bad.example", or "_bad.example" — values that would only fail later as
+// an uncaught fetch() error instead of a controlled 503.
+const DNS_LABEL = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/;
+
+function isValidDnsHostname(hostname) {
+  if (hostname.length === 0 || hostname.length > 253) {
+    return false;
+  }
+  return hostname.split(".").every((label) => DNS_LABEL.test(label));
+}
+
+/** Returns the validated, canonicalized bare hostname, or null. */
+export function resolveUpstreamHost(raw) {
   const value = (raw ?? "").trim();
   if (!value) {
     return null;
@@ -42,11 +56,17 @@ function resolveUpstreamHost(raw) {
     return null;
   }
   // A bare hostname round-trips exactly; a scheme, port, path, credentials,
-  // or query string all leave residue that breaks the equality.
-  if (parsed.hostname !== value.toLowerCase()) {
+  // or query string all leave residue that breaks the equality. The FQDN
+  // trailing dot ("host.example.") is canonicalized away on BOTH sides
+  // before comparing — the WHATWG spec keeps it in .hostname, but stripping
+  // first makes the check hold even on a parser that normalizes it away,
+  // and the self-proxy guard's equality can't be dodged by a dot that DNS
+  // ignores.
+  const hostname = parsed.hostname.replace(/\.$/, "");
+  if (hostname !== value.toLowerCase().replace(/\.$/, "")) {
     return null;
   }
-  return parsed.hostname;
+  return isValidDnsHostname(hostname) ? hostname : null;
 }
 
 export default {
@@ -70,9 +90,10 @@ export default {
     }
 
     const upstreamHost = isApiPath(url.pathname) ? apiHost : ssrHost;
-    // An origin equal to the public hostname would make the Worker fetch
-    // itself — the same loop the hostname validation above exists to stop.
-    if (upstreamHost === url.hostname) {
+    // The Worker owns both the apex and its www variant; an origin equal to
+    // either would send traffic back into hostnames this Worker serves (or
+    // their placeholder DNS records) instead of a real upstream.
+    if (upstreamHost === url.hostname || upstreamHost === `www.${url.hostname}`) {
       return new Response(
         "Worker misconfigured: upstream origin equals the public hostname",
         { status: 503 }

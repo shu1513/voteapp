@@ -1,0 +1,8 @@
+{
+  "name": "voteapp-infra-cloudflare",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
