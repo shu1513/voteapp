@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  financeSourceLabel,
   formatDistrictType,
   formatElectionDate,
+  formatFinanceCategory,
   formatMoney,
   formatOutcome,
   formatSourceHost,
@@ -61,5 +63,33 @@ describe("formatOutcome", () => {
     expect(formatOutcome("")).toBe("");
     expect(formatOutcome("  ")).toBe("  ");
     expect(formatOutcome("___")).toBe("___");
+  });
+});
+
+describe("formatFinanceCategory", () => {
+  it("maps known industry slugs to display names", () => {
+    expect(formatFinanceCategory("oil_gas_energy")).toBe("Oil, gas, and energy");
+    expect(formatFinanceCategory("labor_unions")).toBe("Labor unions");
+  });
+
+  it("sentence-cases unknown slugs", () => {
+    expect(formatFinanceCategory("crypto_assets")).toBe("Crypto assets");
+  });
+
+  it("passes free-text occupation names through unchanged", () => {
+    expect(formatFinanceCategory("Retired")).toBe("Retired");
+    expect(formatFinanceCategory("Software Engineer")).toBe("Software Engineer");
+  });
+});
+
+describe("financeSourceLabel", () => {
+  it("maps known source enums to display names", () => {
+    expect(financeSourceLabel("FEC")).toBe("FEC");
+    expect(financeSourceLabel("MASSACHUSETTS_OCPF")).toBe("Massachusetts OCPF");
+    expect(financeSourceLabel("UTAH_DISCLOSURES")).toBe("Utah Financial Disclosures");
+  });
+
+  it("title-cases unknown enums instead of leaking raw values", () => {
+    expect(financeSourceLabel("NEW_STATE_PORTAL")).toBe("New State Portal");
   });
 });
