@@ -1456,8 +1456,10 @@ export type CandidateElectionFinanceResult = {
 // Narrow read for the candidate-profile page: one candidate's finance
 // summary in one election, without loading every opponent's records and
 // tags the way lookupElectionDetailById must. null = the election does not
-// exist or the candidate is not in it (the API maps that to 404); an
-// existing pairing with no finance coverage is { finance_summary: null }.
+// exist or the candidate is not in it — including deleted or merged
+// candidates, matching the profile reader's identity guards, so this
+// sub-resource 404s whenever the profile itself does. An existing pairing
+// with no finance coverage is { finance_summary: null }.
 export async function lookupCandidateElectionFinanceSummaryById(
   db: Queryable,
   electionId: string,
@@ -1486,6 +1488,7 @@ export async function lookupCandidateElectionFinanceSummaryById(
       WHERE ce.election_id = $1::uuid
         AND ce.candidate_id = $2::uuid
         AND c.deleted_at IS NULL
+        AND c.merged_into_candidate_id IS NULL
       LIMIT 1
     `,
     [trimmedElectionId, trimmedCandidateId]

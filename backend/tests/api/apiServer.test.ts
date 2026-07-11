@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { createApiApp } from "../../src/api/apiServer.js";
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../../src/api/apiValidation.js";
+import type { CandidateElectionFinanceResult } from "../../src/pipeline/address/ballotLookup.js";
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
 import { UserCandidateFollowsError } from "../../src/pipeline/users/userCandidateFollows.js";
@@ -3021,25 +3022,38 @@ describe("createApiApp", () => {
     it("serves one candidate's finance summary without touching the election detail lookup", async () => {
       const resolveAddress = vi.fn();
       const lookupElectionDetail = vi.fn();
-      const lookupCandidateElectionFinance = vi.fn().mockResolvedValue({
+      // satisfies pins the fixture to the real BallotLookupFinanceSummary
+      // contract (editor/IDE-checked only — backend tsc does not cover
+      // tests) so the route test cannot document a made-up shape.
+      const financeResult = {
         finance_summary: {
-          election_year: 2026,
-          total_receipts: 1200,
-          total_disbursements: 800,
-          cash_on_hand: 400,
-          debts_owed: null,
-          outside_support_total: null,
-          outside_oppose_total: null,
-          top_occupations: [],
-          top_employers: [],
-          top_industries: [],
-          outside_groups: [],
-          outside_industry_support: [],
-          source_url: "https://www.fec.gov/data/",
-          source: "fec",
+          source: "FEC",
+          cycle: 2026,
+          fec_candidate_id: "S6CA00001",
           last_synced_at: "2026-07-01T00:00:00.000Z",
+          direct_campaign: {
+            total_raised: 1200,
+            total_spent: 800,
+            cash_on_hand: 400,
+            debts_owed: null,
+            top_occupations: [],
+            top_industries: [],
+          },
+          outside_spending: {
+            support_total: null,
+            oppose_total: null,
+            top_supporting_groups: [],
+            top_opposing_groups: [],
+            top_supporting_industries: [],
+            top_opposing_industries: [],
+          },
+          backing_summary: {
+            top_direct_donor_occupations: [],
+            top_outside_supporting_industries: [],
+          },
         },
-      });
+      } satisfies CandidateElectionFinanceResult;
+      const lookupCandidateElectionFinance = vi.fn().mockResolvedValue(financeResult);
 
       const response = await invokeExpressApp(
         createApiApp({ resolveAddress, lookupElectionDetail, lookupCandidateElectionFinance }),
@@ -3050,13 +3064,7 @@ describe("createApiApp", () => {
       );
 
       expect(response.statusCode).toBe(200);
-      expect(response.body).toMatchObject({
-        finance_summary: {
-          election_year: 2026,
-          total_receipts: 1200,
-          source: "fec",
-        },
-      });
+      expect(response.body).toEqual(financeResult);
       expect(lookupCandidateElectionFinance).toHaveBeenCalledWith(electionId, candidateId);
       expect(lookupElectionDetail).not.toHaveBeenCalled();
     });

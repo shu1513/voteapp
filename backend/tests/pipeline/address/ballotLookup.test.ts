@@ -8819,11 +8819,14 @@ describe("lookupCandidateElectionFinanceSummaryById", () => {
     await expect(lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, candidateId)).resolves.toBeNull();
     expect(query).toHaveBeenCalledTimes(2);
     expect(query.mock.calls[1]?.[1]).toEqual([officeElectionId, candidateId]);
-    // The candidate filter and soft-delete guard live only in this SQL —
+    // The candidate filter and identity guards live only in this SQL —
     // the ordered mocks return rows unconditionally, so pin the query text.
+    // deleted_at and merged_into mirror the profile reader's guards: this
+    // endpoint must 404 whenever the candidate profile itself does.
     const candidateSql = String(query.mock.calls[1]?.[0]);
     expect(candidateSql).toContain("ce.candidate_id = $2::uuid");
     expect(candidateSql).toContain("c.deleted_at IS NULL");
+    expect(candidateSql).toContain("c.merged_into_candidate_id IS NULL");
   });
 
   it("returns a null summary without finance queries when finance is disabled", async () => {
