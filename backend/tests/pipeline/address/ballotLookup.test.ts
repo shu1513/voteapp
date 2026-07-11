@@ -8819,6 +8819,11 @@ describe("lookupCandidateElectionFinanceSummaryById", () => {
     await expect(lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, candidateId)).resolves.toBeNull();
     expect(query).toHaveBeenCalledTimes(2);
     expect(query.mock.calls[1]?.[1]).toEqual([officeElectionId, candidateId]);
+    // The candidate filter and soft-delete guard live only in this SQL —
+    // the ordered mocks return rows unconditionally, so pin the query text.
+    const candidateSql = String(query.mock.calls[1]?.[0]);
+    expect(candidateSql).toContain("ce.candidate_id = $2::uuid");
+    expect(candidateSql).toContain("c.deleted_at IS NULL");
   });
 
   it("returns a null summary without finance queries when finance is disabled", async () => {
@@ -8881,6 +8886,53 @@ describe("lookupCandidateElectionFinanceSummaryById", () => {
     expect(query.mock.calls[1]?.[1]).toEqual([officeElectionId, candidateId]);
     expect(query.mock.calls[2]?.[0]).toContain("public.candidate_finance_summaries");
   });
+
+  it("finds the summary for uppercase request UUIDs by keying on the DB row ids", async () => {
+    // isUuid accepts uppercase hex and Postgres uuid casts match it, but the
+    // finance maps are keyed on the lowercase ids the database returns — the
+    // final lookup must use the row values, not the request strings. The ids
+    // must contain hex letters (the shared numeric-only fixtures are
+    // case-insensitive by accident).
+    const letterElectionId = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+    const letterCandidateId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [{ ...senateElectionRowForFinance(), election_id: letterElectionId }] })
+      .mockResolvedValueOnce({
+        rows: [{ election_id: letterElectionId, candidate_id: letterCandidateId, fec_ids: ["S4CA00001"] }],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: letterCandidateId,
+            election_id: letterElectionId,
+            fec_candidate_id: "S4CA00001",
+            election_year: 2024,
+            total_receipts: "1000.50",
+            total_disbursements: "700.25",
+            cash_on_hand: "300.00",
+            debts_owed: "10.00",
+            outside_support_total: null,
+            outside_oppose_total: null,
+            source_url: "https://www.fec.gov/data/candidate/S4CA00001/?cycle=2024",
+            last_synced_at: "2026-01-02 03:04:05+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupCandidateElectionFinanceSummaryById(
+      { query },
+      letterElectionId.toUpperCase(),
+      letterCandidateId.toUpperCase()
+    );
+
+    expect(result?.finance_summary).toMatchObject({ source: "FEC", cycle: 2024 });
+  });
 });
 
 function senateElectionRowForFinance() {
@@ -8904,22 +8956,12 @@ function senateElectionRowForFinance() {
   };
 }
 
+// Mirrors the finance lookup's candidate projection: only the columns the
+// finance sources read (candidate_id/election_id/fec_ids).
 function senateCandidateRowForFinance() {
   return {
     election_id: officeElectionId,
-    candidate_election_id: candidateElectionId,
     candidate_id: candidateId,
-    display_name: "Pat Connolly",
-    party: "Democratic",
-    is_incumbent: false,
-    status: "declared",
-    summary: "Candidate summary.",
-    current_office: null,
-    state: "CA",
     fec_ids: ["S4CA00001"],
-    state_filing_ids: [],
-    running_mate_candidate_id: null,
-    running_mate_display_name: null,
-    running_mate_party: null,
   };
 }

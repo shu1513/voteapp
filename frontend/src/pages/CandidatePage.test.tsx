@@ -73,7 +73,7 @@ describe("CandidatePage", () => {
   it("shows finance for an ongoing election from the per-candidate endpoint", async () => {
     // The narrow endpoint carries the candidate id, so the server — not the
     // client — scopes the summary to this candidate.
-    stubApiRoutes({
+    const fetchMock = stubApiRoutes({
       ...ANONYMOUS,
       "/api/elections/e-1/candidates/c-1/finance": { body: { finance_summary: financeSummary() } },
     });
@@ -84,6 +84,11 @@ describe("CandidatePage", () => {
     expect(await screen.findByRole("heading", { name: "Campaign finance — Governor" })).toBeInTheDocument();
     expect(screen.getByText("$120,000")).toBeInTheDocument();
     expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();
+    // No-leak guard moved server-side: the client's only obligation is to
+    // request exactly this candidate's summary.
+    expect(
+      fetchMock.mock.calls.some((call) => String(call[0]).includes("/api/elections/e-1/candidates/c-1/finance"))
+    ).toBe(true);
   });
 
   it("renders no finance section when the ongoing election has no finance for the candidate", async () => {

@@ -129,6 +129,10 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === RESEARCH_AREAS_PATH ||
     pathname === SITE_SITEMAP_PATH ||
     isCandidateDetailPath(pathname) ||
+    // Listed explicitly even though the loose election-detail prefix also
+    // matches it today: recognition of the finance route must not depend on
+    // a sibling predicate staying loose.
+    isCandidateElectionFinancePath(pathname) ||
     isElectionDetailPath(pathname)
   );
 }

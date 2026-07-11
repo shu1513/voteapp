@@ -691,11 +691,18 @@ async function loadHistoricalCompetitivenessByElection(
 // gate (#214), no two sources can produce a summary for the same
 // candidate/election key. Adding a state = write the family-folder loader
 // and add one entry here.
+// Everything the finance sources read off a candidate row: the shared
+// request builder uses candidate_id/election_id and the FEC loader reads
+// fec_ids. Declaring the narrow shape here lets the profile finance lookup
+// query only these columns while the full-row callers pass CandidateRow
+// unchanged (structural subtyping).
+type FinanceLookupCandidateRow = Pick<CandidateRow, "candidate_id" | "election_id" | "fec_ids">;
+
 type StateFinanceLookupAdapter = {
   state: string;
   load: (
     db: Queryable,
-    candidateRows: readonly CandidateRow[],
+    candidateRows: readonly FinanceLookupCandidateRow[],
     electionRows: readonly ElectionRow[]
   ) => Promise<Map<string, BallotLookupFinanceSummary>>;
 };
@@ -743,7 +750,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
 
 async function loadCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
-  candidateRows: readonly CandidateRow[],
+  candidateRows: readonly FinanceLookupCandidateRow[],
   electionRows: readonly ElectionRow[]
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   const merged = new Map<string, BallotLookupFinanceSummary>();
@@ -1375,13 +1382,11 @@ export async function lookupBallotSummariesByDistrictIds(
   };
 }
 
-export async function lookupElectionDetailById(db: Queryable, electionId: string): Promise<BallotLookupElection | null> {
-  const trimmedElectionId = electionId.trim();
-  if (trimmedElectionId.length === 0) {
-    return null;
-  }
-
-  const electionResult = await db.query<ElectionDetailRow>(
+// The single-election ElectionRow projection shared by the detail and
+// finance lookups; both issue it as their leading query, so extracting it
+// leaves every ordered query mock in the test suite untouched.
+async function loadElectionRowById(db: Queryable, electionId: string): Promise<ElectionDetailRow[]> {
+  const result = await db.query<ElectionDetailRow>(
     `
       SELECT
         e.id AS election_id,
@@ -1411,16 +1416,26 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
       WHERE e.id = $1::uuid
       LIMIT 1
     `,
-    [trimmedElectionId]
+    [electionId]
   );
+  return result.rows;
+}
 
-  const details = await loadFullElectionDetails(db, electionResult.rows);
+export async function lookupElectionDetailById(db: Queryable, electionId: string): Promise<BallotLookupElection | null> {
+  const trimmedElectionId = electionId.trim();
+  if (trimmedElectionId.length === 0) {
+    return null;
+  }
+
+  const electionRows = await loadElectionRowById(db, trimmedElectionId);
+
+  const details = await loadFullElectionDetails(db, electionRows);
   const detail = details[0];
   if (!detail) {
     return null;
   }
 
-  const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionResult.rows);
+  const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionRows);
   const historicalCompetitiveness = historicalCompetitivenessByElection.get(detail.id) ?? null;
   return {
     ...detail,
@@ -1454,64 +1469,17 @@ export async function lookupCandidateElectionFinanceSummaryById(
     return null;
   }
 
-  const electionResult = await db.query<ElectionRow>(
-    `
-      SELECT
-        e.id AS election_id,
-        d.id AS district_id,
-        d.district_type,
-        d.geoid_compact,
-        d.name AS district_name,
-        d.state,
-        d.state_fips,
-        d.representation_power_score,
-        d.population,
-        e.race_type,
-        e.official_ballot_title,
-        e.election_date::text AS election_date,
-        e.election_stage,
-        e.is_partisan,
-        e.discovery_contest_family,
-        e.sources,
-        office.id AS office_id,
-        office.scope AS office_scope,
-        office.canonical_name AS office_canonical_name
-      FROM public.elections AS e
-      JOIN public.districts AS d
-        ON d.id = e.district_id
-      LEFT JOIN public.offices AS office
-        ON office.id = e.office_id
-      WHERE e.id = $1::uuid
-      LIMIT 1
-    `,
-    [trimmedElectionId]
-  );
-  if (electionResult.rows.length === 0) {
+  const electionRows = await loadElectionRowById(db, trimmedElectionId);
+  if (electionRows.length === 0) {
     return null;
   }
 
-  // The finance loaders only read candidate_id/election_id plus the FEC
-  // loader's fec_ids; the remaining CandidateRow columns are selected so the
-  // row honestly satisfies the shared loader signature, minus the
-  // running-mate join, which no finance source consults.
-  const candidateResult = await db.query<CandidateRow>(
+  const candidateResult = await db.query<FinanceLookupCandidateRow>(
     `
       SELECT
         ce.election_id,
-        ce.id AS candidate_election_id,
         c.id AS candidate_id,
-        COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name)) AS display_name,
-        c.party,
-        ce.is_incumbent,
-        ce.status,
-        c.summary,
-        c.current_office,
-        c.state,
-        c.fec_ids,
-        c.state_filing_ids,
-        NULL::uuid AS running_mate_candidate_id,
-        NULL::text AS running_mate_display_name,
-        NULL::text AS running_mate_party
+        c.fec_ids
       FROM public.candidate_elections AS ce
       JOIN public.candidates AS c
         ON c.id = ce.candidate_id
@@ -1522,17 +1490,22 @@ export async function lookupCandidateElectionFinanceSummaryById(
     `,
     [trimmedElectionId, trimmedCandidateId]
   );
-  if (candidateResult.rows.length === 0) {
+  const candidateRow = candidateResult.rows[0];
+  if (!candidateRow) {
     return null;
   }
 
   const financeSummaryByCandidateElection = await loadCandidateFinanceSummariesByCandidateElection(
     db,
     candidateResult.rows,
-    electionResult.rows
+    electionRows
   );
+  // Key on the DB-canonical row ids, not the request strings: the loaders
+  // key their maps on lowercase ids from the database, and isUuid accepts
+  // uppercase hex that Postgres matches but a string-keyed Map does not.
   return {
     finance_summary:
-      financeSummaryByCandidateElection.get(candidateElectionKey(trimmedCandidateId, trimmedElectionId)) ?? null,
+      financeSummaryByCandidateElection.get(candidateElectionKey(candidateRow.candidate_id, candidateRow.election_id)) ??
+      null,
   };
 }
