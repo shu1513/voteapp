@@ -126,6 +126,16 @@ describe("OfficeMatcher", () => {
     // shell strands with office_id = NULL again.
     const assessorRecorderOfficeId = "office-county-assessor-recorder";
     const publicDefenderOfficeId = "office-public-defender";
+
+    // Pin migration 165's hand-written normalized_alias literals to the
+    // current normalizer output. Without these, both sides of the test below
+    // run through normalizeElectionTitleKey, so the test would keep passing
+    // even after a normalizer change left the migration's stored DB rows
+    // stale.
+    expect(normalizeElectionTitleKey("Assessor-Recorder")).toBe("assessor recorder");
+    expect(normalizeElectionTitleKey("County Assessor-Recorder")).toBe("county assessor recorder");
+    expect(normalizeElectionTitleKey("Public Defender")).toBe("public defender");
+
     const aliasCases: Array<{ title: string; officeId: string }> = [
       { title: "Assessor-Recorder", officeId: assessorRecorderOfficeId },
       { title: "County Assessor-Recorder", officeId: assessorRecorderOfficeId },
