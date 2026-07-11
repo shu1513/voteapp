@@ -45,6 +45,7 @@ jobs:
   migrate:
     name: Apply migrations from empty database
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults:
       run:
         working-directory: backend
