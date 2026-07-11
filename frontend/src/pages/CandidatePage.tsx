@@ -6,7 +6,7 @@ import type {
   CandidateDetail,
   CandidateElection,
   CandidateRecord,
-  ElectionDetail,
+  FinanceSummary,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
 import { AiBanner } from "../components/AiBanner";
@@ -90,20 +90,21 @@ function usLatestLocalDate(): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Pacific/Honolulu" }).format(new Date());
 }
 
-// Election-specific finance deliberately lives on GET /api/elections/:id
-// (see backend candidateDetailReader.ts) — the profile fetches that payload
-// client-side and picks out this candidate's summary. Exact candidate_id
-// match: the payload also carries every opponent's finance.
+// Election-specific finance stays off the candidate detail payload (see
+// backend candidateDetailReader.ts) — the profile fetches this candidate's
+// summary for one election from the narrow finance endpoint, instead of the
+// full election detail with every opponent's records.
 function useElectionFinance(electionId: string, candidateId: string, enabled: boolean) {
   const query = useQuery({
-    queryKey: ["election", electionId],
-    queryFn: () => apiRequest<ElectionDetail>(`/api/elections/${electionId}`),
+    queryKey: ["election-finance", electionId, candidateId],
+    queryFn: () =>
+      apiRequest<{ finance_summary: FinanceSummary | null }>(
+        `/api/elections/${electionId}/candidates/${candidateId}/finance`
+      ),
     enabled,
     staleTime: 60_000,
   });
-  const summary =
-    query.data?.candidates.find((entry) => entry.candidate_id === candidateId)?.finance_summary ?? null;
-  return { summary, isPending: query.isPending, isError: query.isError };
+  return { summary: query.data?.finance_summary ?? null, isPending: query.isPending, isError: query.isError };
 }
 
 // Eager finance for an election the candidate is currently in. Renders its

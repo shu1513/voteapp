@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   lookupBallotSummariesByDistrictIds,
+  lookupCandidateElectionFinanceSummaryById,
   lookupElectionDetailById,
 } from "../../../src/pipeline/address/ballotLookup.js";
 
@@ -8792,3 +8793,178 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("wi_candidate_finance");
   });
 });
+
+describe("lookupCandidateElectionFinanceSummaryById", () => {
+  it("returns null without querying for empty IDs", async () => {
+    const query = vi.fn();
+
+    await expect(lookupCandidateElectionFinanceSummaryById({ query }, "   ", candidateId)).resolves.toBeNull();
+    await expect(lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, "")).resolves.toBeNull();
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it("returns null without a candidate query when the election does not exist", async () => {
+    const query = vi.fn().mockResolvedValueOnce({ rows: [] });
+
+    await expect(lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, candidateId)).resolves.toBeNull();
+    expect(query).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns null when the candidate is not in the election", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [senateElectionRowForFinance()] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    await expect(lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, candidateId)).resolves.toBeNull();
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(query.mock.calls[1]?.[1]).toEqual([officeElectionId, candidateId]);
+    // The candidate filter and identity guards live only in this SQL —
+    // the ordered mocks return rows unconditionally, so pin the query text.
+    // deleted_at and merged_into mirror the profile reader's guards: this
+    // endpoint must 404 whenever the candidate profile itself does.
+    const candidateSql = String(query.mock.calls[1]?.[0]);
+    expect(candidateSql).toContain("ce.candidate_id = $2::uuid");
+    expect(candidateSql).toContain("c.deleted_at IS NULL");
+    expect(candidateSql).toContain("c.merged_into_candidate_id IS NULL");
+  });
+
+  it("returns a null summary without finance queries when finance is disabled", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [senateElectionRowForFinance()] })
+      .mockResolvedValueOnce({ rows: [senateCandidateRowForFinance()] });
+
+    const result = await lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, candidateId);
+
+    expect(result).toEqual({ finance_summary: null });
+    expect(query).toHaveBeenCalledTimes(2);
+  });
+
+  it("returns the FEC finance summary for a single candidate/election pair", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [senateElectionRowForFinance()] })
+      .mockResolvedValueOnce({ rows: [senateCandidateRowForFinance()] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateId,
+            election_id: officeElectionId,
+            fec_candidate_id: "S4CA00001",
+            election_year: 2024,
+            total_receipts: "1000.50",
+            total_disbursements: "700.25",
+            cash_on_hand: "300.00",
+            debts_owed: "10.00",
+            outside_support_total: null,
+            outside_oppose_total: null,
+            source_url: "https://www.fec.gov/data/candidate/S4CA00001/?cycle=2024",
+            last_synced_at: "2026-01-02 03:04:05+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupCandidateElectionFinanceSummaryById({ query }, officeElectionId, candidateId);
+
+    expect(result?.finance_summary).toMatchObject({
+      source: "FEC",
+      cycle: 2024,
+      fec_candidate_id: "S4CA00001",
+      last_synced_at: "2026-01-02 03:04:05+00",
+      direct_campaign: {
+        total_raised: 1000.5,
+        total_spent: 700.25,
+        cash_on_hand: 300,
+        debts_owed: 10,
+      },
+    });
+    expect(query).toHaveBeenCalledTimes(7);
+    expect(query.mock.calls[1]?.[1]).toEqual([officeElectionId, candidateId]);
+    expect(query.mock.calls[2]?.[0]).toContain("public.candidate_finance_summaries");
+  });
+
+  it("finds the summary for uppercase request UUIDs by keying on the DB row ids", async () => {
+    // isUuid accepts uppercase hex and Postgres uuid casts match it, but the
+    // finance maps are keyed on the lowercase ids the database returns — the
+    // final lookup must use the row values, not the request strings. The ids
+    // must contain hex letters (the shared numeric-only fixtures are
+    // case-insensitive by accident).
+    const letterElectionId = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+    const letterCandidateId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [{ ...senateElectionRowForFinance(), election_id: letterElectionId }] })
+      .mockResolvedValueOnce({
+        rows: [{ election_id: letterElectionId, candidate_id: letterCandidateId, fec_ids: ["S4CA00001"] }],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: letterCandidateId,
+            election_id: letterElectionId,
+            fec_candidate_id: "S4CA00001",
+            election_year: 2024,
+            total_receipts: "1000.50",
+            total_disbursements: "700.25",
+            cash_on_hand: "300.00",
+            debts_owed: "10.00",
+            outside_support_total: null,
+            outside_oppose_total: null,
+            source_url: "https://www.fec.gov/data/candidate/S4CA00001/?cycle=2024",
+            last_synced_at: "2026-01-02 03:04:05+00",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupCandidateElectionFinanceSummaryById(
+      { query },
+      letterElectionId.toUpperCase(),
+      letterCandidateId.toUpperCase()
+    );
+
+    expect(result?.finance_summary).toMatchObject({ source: "FEC", cycle: 2024 });
+  });
+});
+
+function senateElectionRowForFinance() {
+  return {
+    election_id: officeElectionId,
+    district_id: districtId,
+    district_type: "statewide",
+    geoid_compact: "06",
+    district_name: "California",
+    state: "CA",
+    state_fips: "06",
+    representation_power_score: "80",
+    race_type: "office",
+    official_ballot_title: "U.S. Senate",
+    election_date: "2024-11-05",
+    election_stage: "general",
+    is_partisan: true,
+    discovery_contest_family: "us_senate",
+    sources: ["https://example.test/elections"],
+    office_canonical_name: null,
+  };
+}
+
+// Mirrors the finance lookup's candidate projection: only the columns the
+// finance sources read (candidate_id/election_id/fec_ids).
+function senateCandidateRowForFinance() {
+  return {
+    election_id: officeElectionId,
+    candidate_id: candidateId,
+    fec_ids: ["S4CA00001"],
+  };
+}

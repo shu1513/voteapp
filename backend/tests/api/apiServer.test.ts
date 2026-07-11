@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { createApiApp } from "../../src/api/apiServer.js";
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../../src/api/apiValidation.js";
+import type { CandidateElectionFinanceResult } from "../../src/pipeline/address/ballotLookup.js";
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
 import { UserCandidateFollowsError } from "../../src/pipeline/users/userCandidateFollows.js";
@@ -3011,6 +3012,168 @@ describe("createApiApp", () => {
         code: "internal_error",
         message: "Election detail lookup is not configured",
       },
+    });
+  });
+
+  describe("GET /api/elections/:election_id/candidates/:candidate_id/finance", () => {
+    const candidateId = "44444444-4444-4444-8444-444444444444";
+    const financePath = `/api/elections/${electionId}/candidates/${candidateId}/finance`;
+
+    it("serves one candidate's finance summary without touching the election detail lookup", async () => {
+      const resolveAddress = vi.fn();
+      const lookupElectionDetail = vi.fn();
+      // satisfies pins the fixture to the real BallotLookupFinanceSummary
+      // contract (editor/IDE-checked only — backend tsc does not cover
+      // tests) so the route test cannot document a made-up shape.
+      const financeResult = {
+        finance_summary: {
+          source: "FEC",
+          cycle: 2026,
+          fec_candidate_id: "S6CA00001",
+          last_synced_at: "2026-07-01T00:00:00.000Z",
+          direct_campaign: {
+            total_raised: 1200,
+            total_spent: 800,
+            cash_on_hand: 400,
+            debts_owed: null,
+            top_occupations: [],
+            top_industries: [],
+          },
+          outside_spending: {
+            support_total: null,
+            oppose_total: null,
+            top_supporting_groups: [],
+            top_opposing_groups: [],
+            top_supporting_industries: [],
+            top_opposing_industries: [],
+          },
+          backing_summary: {
+            top_direct_donor_occupations: [],
+            top_outside_supporting_industries: [],
+          },
+        },
+      } satisfies CandidateElectionFinanceResult;
+      const lookupCandidateElectionFinance = vi.fn().mockResolvedValue(financeResult);
+
+      const response = await invokeExpressApp(
+        createApiApp({ resolveAddress, lookupElectionDetail, lookupCandidateElectionFinance }),
+        {
+          method: "GET",
+          path: financePath,
+        }
+      );
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toEqual(financeResult);
+      expect(lookupCandidateElectionFinance).toHaveBeenCalledWith(electionId, candidateId);
+      expect(lookupElectionDetail).not.toHaveBeenCalled();
+    });
+
+    it("serves an explicit null finance summary for a covered pairing without finance data", async () => {
+      const resolveAddress = vi.fn();
+      const lookupCandidateElectionFinance = vi.fn().mockResolvedValue({ finance_summary: null });
+
+      const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupCandidateElectionFinance }), {
+        method: "GET",
+        path: financePath,
+      });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toEqual({ finance_summary: null });
+    });
+
+    it("returns 404 when the candidate/election pairing is missing", async () => {
+      const resolveAddress = vi.fn();
+      const lookupCandidateElectionFinance = vi.fn().mockResolvedValue(null);
+
+      const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupCandidateElectionFinance }), {
+        method: "GET",
+        path: financePath,
+      });
+
+      expect(response.statusCode).toBe(404);
+      expect(response.body).toEqual({
+        error: {
+          code: "not_found",
+          message: "Candidate election not found",
+        },
+      });
+      expect(lookupCandidateElectionFinance).toHaveBeenCalledWith(electionId, candidateId);
+    });
+
+    it("keeps wrong methods as 405 responses", async () => {
+      const resolveAddress = vi.fn();
+      const lookupCandidateElectionFinance = vi.fn();
+
+      const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupCandidateElectionFinance }), {
+        method: "POST",
+        path: financePath,
+      });
+
+      expect(response.statusCode).toBe(405);
+      expect(response.headers).toMatchObject({ allow: "GET" });
+      expect(response.body).toEqual({
+        error: {
+          code: "method_not_allowed",
+          message: "Use GET /api/elections/:election_id/candidates/:candidate_id/finance",
+        },
+      });
+      expect(lookupCandidateElectionFinance).not.toHaveBeenCalled();
+    });
+
+    it("rejects invalid election UUIDs before lookup", async () => {
+      const resolveAddress = vi.fn();
+      const lookupCandidateElectionFinance = vi.fn();
+
+      const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupCandidateElectionFinance }), {
+        method: "GET",
+        path: `/api/elections/not-a-uuid/candidates/${candidateId}/finance`,
+      });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toEqual({
+        error: {
+          code: "invalid_request",
+          message: "Candidate election finance path contains invalid election UUID: not-a-uuid",
+        },
+      });
+      expect(lookupCandidateElectionFinance).not.toHaveBeenCalled();
+    });
+
+    it("rejects invalid candidate UUIDs before lookup", async () => {
+      const resolveAddress = vi.fn();
+      const lookupCandidateElectionFinance = vi.fn();
+
+      const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupCandidateElectionFinance }), {
+        method: "GET",
+        path: `/api/elections/${electionId}/candidates/not-a-uuid/finance`,
+      });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toEqual({
+        error: {
+          code: "invalid_request",
+          message: "Candidate election finance path contains invalid candidate UUID: not-a-uuid",
+        },
+      });
+      expect(lookupCandidateElectionFinance).not.toHaveBeenCalled();
+    });
+
+    it("returns 500 when the finance lookup is not configured", async () => {
+      const resolveAddress = vi.fn();
+
+      const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+        method: "GET",
+        path: financePath,
+      });
+
+      expect(response.statusCode).toBe(500);
+      expect(response.body).toEqual({
+        error: {
+          code: "internal_error",
+          message: "Candidate election finance lookup is not configured",
+        },
+      });
     });
   });
 });

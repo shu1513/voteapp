@@ -33,6 +33,7 @@ import {
   CANDIDATE_DETAIL_PATH_PREFIX,
   ELECTION_DETAIL_PATH_PREFIX,
   isCandidateDetailPath,
+  isCandidateElectionFinancePath,
   isElectionDetailPath,
   MAX_ADDRESS_REQUEST_BODY_BYTES,
   EMAIL_UNSUBSCRIBE_PATH,
@@ -56,6 +57,7 @@ import {
   parseEmailPreferencesBodyValue,
   parseEmailUnsubscribePreference,
   parseBallotSummaryOptions,
+  parseCandidateElectionFinancePath,
   parseCandidateId,
   parseDistrictIds,
   parseElectionId,
@@ -127,6 +129,10 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === RESEARCH_AREAS_PATH ||
     pathname === SITE_SITEMAP_PATH ||
     isCandidateDetailPath(pathname) ||
+    // Listed explicitly even though the loose election-detail prefix also
+    // matches it today: recognition of the finance route must not depend on
+    // a sibling predicate staying loose.
+    isCandidateElectionFinancePath(pathname) ||
     isElectionDetailPath(pathname)
   );
 }
@@ -1396,6 +1402,42 @@ async function dispatchApiRequest(
     const result = await options.lookupCandidateDetail(candidateId, userId);
     if (!result) {
       sendApiResponse(response, toErrorResponse(404, "not_found", "Candidate not found", corsHeaders));
+      return;
+    }
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  // Before the election-detail branch: the finance path shares its prefix,
+  // and parseElectionId rejects any path with extra segments.
+  if (isCandidateElectionFinancePath(url.pathname)) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(
+          405,
+          "method_not_allowed",
+          "Use GET /api/elections/:election_id/candidates/:candidate_id/finance",
+          {
+            ...corsHeaders,
+            allow: "GET",
+          }
+        )
+      );
+      return;
+    }
+    if (!options.lookupCandidateElectionFinance) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Candidate election finance lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const { electionId, candidateId } = parseCandidateElectionFinancePath(url);
+    const result = await options.lookupCandidateElectionFinance(electionId, candidateId);
+    if (!result) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Candidate election not found", corsHeaders));
       return;
     }
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
