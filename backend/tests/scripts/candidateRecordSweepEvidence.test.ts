@@ -4,10 +4,12 @@ import {
   SWEEP_COMPLETENESS_GAP_IDS,
   SWEEP_EVIDENCE_MIN_ENTRIES,
   assertedSweepCompletenessGapIds,
+  deleteSweepConfirmation,
   parseSweepEvidencePayload,
   sweepEvidenceRequired,
   upsertSweepConfirmation,
 } from "../../src/scripts/candidateRecordSweepEvidence.js";
+import { isConfirmedNull } from "../../src/scripts/auditCandidateRecordsCompleteness.js";
 import { buildCandidateRecordQualityGaps } from "../../src/scripts/writeManualCandidateRecords.js";
 
 describe("sweepEvidenceRequired", () => {
@@ -235,5 +237,58 @@ describe("upsertSweepConfirmation", () => {
     });
     expect(calls[0]!.values[3]).toBe("election");
     expect(calls[0]!.values[4]).toBe("election-1");
+  });
+});
+
+describe("deleteSweepConfirmation", () => {
+  it("removes the candidate's confirmation row", async () => {
+    const calls: { text: string; values: unknown[] }[] = [];
+    const client = {
+      query: async (text: string, values?: unknown[]) => {
+        calls.push({ text, values: values ?? [] });
+        return { rows: [], rowCount: 1 } as never;
+      },
+    };
+
+    await deleteSweepConfirmation(client as never, "candidate-1");
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.text).toContain("DELETE FROM public.candidate_record_sweep_confirmations");
+    expect(calls[0]!.values).toEqual(["candidate-1"]);
+  });
+});
+
+describe("audit isConfirmedNull", () => {
+  it("accepts a no_records_found confirmation that covers the latest search", () => {
+    expect(
+      isConfirmedNull({
+        confirmed_gap_ids: ["candidate_records.no_records_found"],
+        confirmation_covers_latest_search: true,
+      })
+    ).toBe(true);
+  });
+
+  it("rejects a stale confirmation — a later search re-stamped past the evidence", () => {
+    expect(
+      isConfirmedNull({
+        confirmed_gap_ids: ["candidate_records.no_records_found"],
+        confirmation_covers_latest_search: false,
+      })
+    ).toBe(false);
+  });
+
+  it("rejects a candidate with no confirmation at all", () => {
+    expect(
+      isConfirmedNull({ confirmed_gap_ids: null, confirmation_covers_latest_search: null })
+    ).toBe(false);
+  });
+
+  it("rejects a current confirmation that never asserted no_records_found", () => {
+    expect(
+      isConfirmedNull({
+        confirmed_gap_ids: ["candidate_records.only_general_labels"],
+        confirmation_covers_latest_search: true,
+      })
+    ).toBe(false);
   });
 });

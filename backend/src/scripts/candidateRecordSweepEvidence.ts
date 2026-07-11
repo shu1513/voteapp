@@ -169,6 +169,24 @@ export async function upsertSweepConfirmation(
   );
 }
 
+/**
+ * A live write that did NOT require evidence found real, stance-labeled
+ * records — any earlier completeness confirmation no longer describes the
+ * candidate's state, so remove it inside the same transaction. Without this,
+ * the table would keep asserting no_records_found for a candidate who now
+ * has records (the current audit gates on zero records so it stays correct,
+ * but any future reader of this table would be misled).
+ */
+export async function deleteSweepConfirmation(
+  client: Pick<PoolClient, "query">,
+  candidateId: string
+): Promise<void> {
+  await client.query(
+    `DELETE FROM public.candidate_record_sweep_confirmations WHERE candidate_id = $1`,
+    [candidateId]
+  );
+}
+
 export function sweepEvidenceMissingError(context: string): Error {
   return new Error(
     [

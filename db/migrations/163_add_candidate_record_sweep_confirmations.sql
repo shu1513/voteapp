@@ -22,7 +22,7 @@ CREATE TABLE public.candidate_record_sweep_confirmations (
     -- The research context the sweep ran under. Records are candidate-wide,
     -- so this is provenance, not identity.
     context_type text NOT NULL,
-    context_id uuid,
+    context_id uuid NOT NULL,
     confirmed_at timestamptz NOT NULL DEFAULT now(),
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now(),

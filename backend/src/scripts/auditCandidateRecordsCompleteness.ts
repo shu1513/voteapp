@@ -18,6 +18,13 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
  * evidence-file guard) are reported separately as confirmed nulls, not
  * suspects — their sweep was finished and evidenced, so they need no re-run.
  *
+ * The confirmation only counts while it covers the latest completion stamp:
+ * writer and confirmation share one transaction (both timestamps are that
+ * transaction's now()), so a fresh confirmation compares equal — but any
+ * LATER search that re-stamps last_records_searched_at without refreshing
+ * the evidence row (AI worker pass, pre-guard manual write) makes the old
+ * evidence a historical claim, and the candidate goes back to suspects.
+ *
  * Usage: npm run manual:records:audit
  */
 
@@ -31,12 +38,18 @@ type AuditRow = {
   confirmed_gap_ids: string[] | null;
   confirmed_at: string | null;
   evidence_entry_count: number | null;
+  confirmation_covers_latest_search: boolean | null;
 };
 
 const NO_RECORDS_FOUND_GAP_ID = "candidate_records.no_records_found";
 
-function isConfirmedNull(row: AuditRow): boolean {
-  return (row.confirmed_gap_ids ?? []).includes(NO_RECORDS_FOUND_GAP_ID);
+export function isConfirmedNull(
+  row: Pick<AuditRow, "confirmed_gap_ids" | "confirmation_covers_latest_search">
+): boolean {
+  return (
+    row.confirmation_covers_latest_search === true &&
+    (row.confirmed_gap_ids ?? []).includes(NO_RECORDS_FOUND_GAP_ID)
+  );
 }
 
 async function main(): Promise<void> {
@@ -60,7 +73,8 @@ async function main(): Promise<void> {
           array_remove(array_agg(DISTINCT e.official_ballot_title), NULL) AS election_titles,
           sc.confirmed_gap_ids,
           sc.confirmed_at::text AS confirmed_at,
-          jsonb_array_length(sc.evidence -> 'entries')::int AS evidence_entry_count
+          jsonb_array_length(sc.evidence -> 'entries')::int AS evidence_entry_count,
+          (sc.confirmed_at >= c.last_records_searched_at) AS confirmation_covers_latest_search
         FROM public.candidates c
         LEFT JOIN public.candidate_elections ce ON ce.candidate_id = c.id
         LEFT JOIN public.elections e ON e.id = ce.election_id
@@ -87,7 +101,7 @@ async function main(): Promise<void> {
           suspectCount: suspects.length,
           confirmedNullCount: confirmedNulls.length,
           explanation:
-            "Suspects: candidates with a records-search completion stamp, a current office or incumbent election link, ZERO candidate_records rows, and NO persisted sweep confirmation. Each needs a proper per-question record sweep re-run (the stamp may be a false no_records_found). Confirmed nulls carry an evidence-backed candidate_record_sweep_confirmations row and need no re-run.",
+            "Suspects: candidates with a records-search completion stamp, a current office or incumbent election link, ZERO candidate_records rows, and no sweep confirmation covering the latest search (a confirmation older than last_records_searched_at is historical — a later search re-opened the question). Each needs a proper per-question record sweep re-run. Confirmed nulls carry an evidence-backed candidate_record_sweep_confirmations row at least as new as the latest completion stamp and need no re-run.",
           suspects: suspects.map((row) => ({
             candidateId: row.candidate_id,
             displayName: row.display_name,
@@ -95,6 +109,15 @@ async function main(): Promise<void> {
             isIncumbent: row.is_incumbent,
             lastRecordsSearchedAt: row.last_records_searched_at,
             electionTitles: row.election_titles,
+            ...(row.confirmed_at
+              ? {
+                  staleConfirmation: {
+                    confirmedGapIds: row.confirmed_gap_ids,
+                    confirmedAt: row.confirmed_at,
+                    evidenceEntryCount: row.evidence_entry_count,
+                  },
+                }
+              : {}),
           })),
           confirmedNulls: confirmedNulls.map((row) => ({
             candidateId: row.candidate_id,

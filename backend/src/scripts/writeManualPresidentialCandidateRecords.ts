@@ -32,6 +32,7 @@ import {
 import {
   SWEEP_COMPLETENESS_GAP_IDS,
   assertedSweepCompletenessGapIds,
+  deleteSweepConfirmation,
   parseSweepEvidencePayload,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
@@ -579,6 +580,10 @@ async function main(): Promise<void> {
           contextType: "presidential_cycle",
           contextId: options.presidentialCycleId,
         });
+      } else {
+        // This write found real stance-labeled records; drop any earlier
+        // completeness confirmation it supersedes.
+        await deleteSweepConfirmation(client, options.candidateId);
       }
       await client.query("COMMIT");
 
