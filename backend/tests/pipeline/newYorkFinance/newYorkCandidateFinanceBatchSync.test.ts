@@ -141,9 +141,11 @@ describe("autoLinkNewYorkCandidateFinanceForCandidateElection", () => {
     });
 
     expect(linked).toMatchObject({ status: "linked", filerId: "16851" });
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.ny_candidate_finance_links");
+    // First call retires other active links; second upserts the new one.
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("SET link_status = 'inactive'");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.ny_candidate_finance_links");
     // link_source records the automated path.
-    expect(db.query.mock.calls[0]?.[1]).toContain("ny_soda_api");
+    expect(db.query.mock.calls[1]?.[1]).toContain("ny_soda_api");
 
     const ambiguousResolver = vi.fn(async () => ({
       status: "ambiguous" as const,

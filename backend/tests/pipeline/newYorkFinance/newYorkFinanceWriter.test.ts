@@ -25,14 +25,20 @@ function baseLink() {
 }
 
 describe("newYorkFinanceWriter", () => {
-  it("upserts New York finance links and returns the link id", async () => {
+  it("retires other active links before upserting, so committee changes cannot trip the single-active index", async () => {
     const db = { query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }) };
 
     await expect(upsertNewYorkFinanceLink({ db, link: baseLink() })).resolves.toEqual({ linkId: LINK_ID });
 
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.ny_candidate_finance_links");
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("ON CONFLICT (candidate_id, election_id, filer_id)");
-    expect(db.query.mock.calls[0]?.[1]).toEqual([
+    expect(db.query).toHaveBeenCalledTimes(2);
+    const [deactivateSql, deactivateParams] = db.query.mock.calls[0];
+    expect(String(deactivateSql)).toContain("SET link_status = 'inactive'");
+    expect(String(deactivateSql)).toContain("filer_id <> $3");
+    expect(deactivateParams).toEqual([CANDIDATE_ID, ELECTION_ID, "16851"]);
+
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.ny_candidate_finance_links");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("ON CONFLICT (candidate_id, election_id, filer_id)");
+    expect(db.query.mock.calls[1]?.[1]).toEqual([
       CANDIDATE_ID,
       ELECTION_ID,
       2026,

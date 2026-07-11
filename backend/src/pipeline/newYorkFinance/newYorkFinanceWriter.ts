@@ -206,6 +206,28 @@ export async function upsertNewYorkFinanceLink(input: {
 }): Promise<{ linkId: string }> {
   validateNewYorkFinanceLinkInput(input.link);
 
+  // Only one active link may exist per candidate/election (partial unique
+  // index). When a candidate switches authorized committees the new filer_id
+  // upserts a fresh row, so any other active link must be retired first or
+  // the write fails and leaves stale finance data behind.
+  if ((input.link.linkStatus ?? "active") === "active") {
+    await input.db.query(
+      `
+        UPDATE public.ny_candidate_finance_links
+        SET link_status = 'inactive'
+        WHERE candidate_id = $1::uuid
+          AND election_id = $2::uuid
+          AND filer_id <> $3
+          AND link_status = 'active'
+      `,
+      [
+        requireNonEmpty(input.link.candidateId, "candidate id"),
+        requireNonEmpty(input.link.electionId, "election id"),
+        requireNonEmpty(input.link.filerId, "New York filer id"),
+      ]
+    );
+  }
+
   const result = await input.db.query<{ id: string }>(
     `
       INSERT INTO public.ny_candidate_finance_links (

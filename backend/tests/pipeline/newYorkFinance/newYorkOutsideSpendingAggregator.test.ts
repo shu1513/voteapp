@@ -130,6 +130,27 @@ describe("aggregateNewYorkOutsideSpending", () => {
     });
   });
 
+  it("caps allocations sharing one parent expenditure at the parent amount cumulatively", () => {
+    const result = aggregateNewYorkOutsideSpending({
+      candidateName: "Kathy Hochul",
+      allocations: [
+        // Both rows map to the same $150 Schedule F parent; each alone fits,
+        // together they exceed it — only the first may count.
+        allocation({ amount: 100 }),
+        allocation({ filingTransId: "F-2", transNumber: "T-2", amount: 100 }),
+        allocation({ filingTransId: "F-3", transNumber: "T-3", amount: 40 }),
+      ],
+      filerRecords: new Map([["590891", CFAR]]),
+      parentExpendituresByFiler: new Map([
+        ["590891", parents({ "M-1": [{ transNumber: "M-1", scheduleAbbrev: "F", amount: 150 }] })],
+      ]),
+    });
+
+    expect(result.groups).toHaveLength(1);
+    expect(result.groups[0]).toMatchObject({ amount: 140, allocationCount: 2 });
+    expect(result.counters).toMatchObject({ acceptedRowCount: 2, unresolvedMappingRowCount: 1 });
+  });
+
   it("keeps explicit oppose allocations separate from support", () => {
     const result = aggregateNewYorkOutsideSpending({
       candidateName: "Kathy Hochul",

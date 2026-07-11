@@ -200,36 +200,49 @@ async function fetchNewYorkSodaJson(url: string, options: NewYorkSodaClientOptio
     headers.set("X-App-Token", options.appToken.trim());
   }
 
-  let response: Response;
+  // The timeout must cover the body read too, so it is cleared only after
+  // response.json() settles; a stalled body would otherwise hang forever.
   try {
-    response = await (options.fetchImpl ?? fetch)(url, { headers, signal: controller.signal });
-  } catch (error) {
-    if (isAbortError(error)) {
-      throw new NewYorkSodaClientError("network_error", `New York SODA request timed out after ${timeoutMs}ms for ${url}`);
+    let response: Response;
+    try {
+      response = await (options.fetchImpl ?? fetch)(url, { headers, signal: controller.signal });
+    } catch (error) {
+      if (isAbortError(error)) {
+        throw new NewYorkSodaClientError(
+          "network_error",
+          `New York SODA request timed out after ${timeoutMs}ms for ${url}`
+        );
+      }
+      throw new NewYorkSodaClientError(
+        "network_error",
+        `New York SODA request failed for ${url}: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
-    throw new NewYorkSodaClientError(
-      "network_error",
-      `New York SODA request failed for ${url}: ${error instanceof Error ? error.message : String(error)}`
-    );
+
+    if (!response.ok) {
+      throw new NewYorkSodaClientError(
+        "http_error",
+        `New York SODA request failed: ${response.status} ${response.statusText}`,
+        response.status
+      );
+    }
+
+    try {
+      return await response.json();
+    } catch (error) {
+      if (isAbortError(error)) {
+        throw new NewYorkSodaClientError(
+          "network_error",
+          `New York SODA request timed out after ${timeoutMs}ms for ${url}`
+        );
+      }
+      throw new NewYorkSodaClientError(
+        "bad_response",
+        `New York SODA response was not valid JSON: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
   } finally {
     clearTimeout(timeout);
-  }
-
-  if (!response.ok) {
-    throw new NewYorkSodaClientError(
-      "http_error",
-      `New York SODA request failed: ${response.status} ${response.statusText}`,
-      response.status
-    );
-  }
-
-  try {
-    return await response.json();
-  } catch (error) {
-    throw new NewYorkSodaClientError(
-      "bad_response",
-      `New York SODA response was not valid JSON: ${error instanceof Error ? error.message : String(error)}`
-    );
   }
 }
 
@@ -296,26 +309,33 @@ export async function getNewYorkFilerRecords(
 ): Promise<Map<string, NewYorkFilerRecord>> {
   const filerIds = [...new Set(input.filerIds.map((filerId) => requireFilerId(filerId)))];
   const records = new Map<string, NewYorkFilerRecord>();
+  const duplicateFilerIds = new Set<string>();
   for (const filerIdChunk of chunk(filerIds, FILER_ID_CHUNK_SIZE)) {
     const rows = await fetchNewYorkSodaRows(
       NEW_YORK_SODA_FILERS_DATASET,
       {
         $where: `filer_id IN ${soqlInList(filerIdChunk)}`,
+        $order: "filer_id",
         $limit: filerIdChunk.length * 2,
       },
       options
     );
     for (const row of rows) {
       const record = filerRecordFromRow(row);
-      // A filer id appearing more than once in the registry is unexpected;
-      // drop it entirely rather than trusting either copy.
-      if (record) {
-        if (records.has(record.filerId)) {
-          records.delete(record.filerId);
-        } else {
-          records.set(record.filerId, record);
-        }
+      if (!record) {
+        continue;
       }
+      // A filer id appearing more than once in the registry is unexpected;
+      // drop it entirely rather than trusting any copy.
+      if (duplicateFilerIds.has(record.filerId)) {
+        continue;
+      }
+      if (records.has(record.filerId)) {
+        records.delete(record.filerId);
+        duplicateFilerIds.add(record.filerId);
+        continue;
+      }
+      records.set(record.filerId, record);
     }
   }
   return records;
@@ -359,10 +379,14 @@ export async function searchNewYorkActiveAuthorizedCommitteeFilers(
   const rows = await fetchNewYorkSodaPagedRows(
     NEW_YORK_SODA_FILERS_DATASET,
     {
+      // filer_type_desc='State' matters: ~80% of active authorized committees
+      // are county-level filers, and a county candidate with the same name
+      // must never be linked to a state candidate (verified 2026-07-11).
       $where: [
         "compliance_type_desc='COMMITTEE'",
         `committee_type_desc=${soqlString(NEW_YORK_AUTHORIZED_SINGLE_CANDIDATE_COMMITTEE_TYPE)}`,
         "filer_status='ACTIVE'",
+        "filer_type_desc='State'",
         `upper(filer_name) like ${soqlString(`%${nameContains}%`)}`,
       ].join(" AND "),
       $order: "filer_id",

@@ -31,7 +31,7 @@ describe("newYorkSodaClient", () => {
     expect(soqlString("O'Brien")).toBe("'O''Brien'");
   });
 
-  it("looks up filer registry records in chunks and drops duplicate filer ids", async () => {
+  it("looks up filer registry records in chunks and drops duplicate filer ids entirely", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       jsonResponse([
         {
@@ -42,8 +42,10 @@ describe("newYorkSodaClient", () => {
           filer_status: "ACTIVE",
           filer_type_desc: "State",
         },
+        // Three copies must stay dropped, not toggle back in.
         { filer_id: "111", filer_name: "Duplicate Filer" },
         { filer_id: "111", filer_name: "Duplicate Filer Copy" },
+        { filer_id: "111", filer_name: "Duplicate Filer Third Copy" },
         { filer_name: "Missing id is skipped" },
       ])
     );
@@ -53,12 +55,13 @@ describe("newYorkSodaClient", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(1);
     const url = new URL(String(fetchImpl.mock.calls[0][0]));
     expect(url.searchParams.get("$where")).toBe("filer_id IN ('590891','111')");
+    expect(url.searchParams.get("$order")).toBe("filer_id");
     expect(records.get("590891")).toMatchObject({
       filerName: "Citizens for Affordable Rates PAC",
       committeeType: "Independent Expenditure Committee",
     });
     expect(records.has("111")).toBe(false);
-    expect(() => getNewYorkFilerRecords({ filerIds: ["abc"] }, { fetchImpl })).rejects.toThrow(
+    await expect(getNewYorkFilerRecords({ filerIds: ["abc"] }, { fetchImpl })).rejects.toThrow(
       "Invalid New York filer id"
     );
   });
@@ -97,8 +100,9 @@ describe("newYorkSodaClient", () => {
     await searchNewYorkActiveAuthorizedCommitteeFilers({ nameContains: "  ho%chul_ " }, { fetchImpl });
 
     const url = new URL(String(fetchImpl.mock.calls[0][0]));
+    // filer_type_desc='State' keeps same-name county committees out.
     expect(url.searchParams.get("$where")).toBe(
-      "compliance_type_desc='COMMITTEE' AND committee_type_desc='Authorized Single Candidate Committee' AND filer_status='ACTIVE' AND upper(filer_name) like '%HOCHUL%'"
+      "compliance_type_desc='COMMITTEE' AND committee_type_desc='Authorized Single Candidate Committee' AND filer_status='ACTIVE' AND filer_type_desc='State' AND upper(filer_name) like '%HOCHUL%'"
     );
     await expect(
       searchNewYorkActiveAuthorizedCommitteeFilers({ nameContains: "x" }, { fetchImpl })
@@ -210,6 +214,25 @@ describe("newYorkSodaClient", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(2);
     expect(new URL(String(fetchImpl.mock.calls[1][0])).searchParams.get("$offset")).toBe("3");
     expect(receipts).toHaveLength(4);
+  });
+
+  it("applies the timeout to body reads, not just response headers", async () => {
+    const fetchImpl = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      statusText: "OK",
+      headers: new Headers(),
+      json: () =>
+        new Promise((_resolve, reject) => {
+          // Real fetch bodies reject with AbortError once the controller
+          // fires; simulate a body that stalls past the timeout.
+          setTimeout(() => reject(new DOMException("The operation was aborted", "AbortError")), 30);
+        }),
+    })) as unknown as typeof fetch;
+
+    await expect(
+      getNewYorkFilerRecords({ filerIds: ["590891"] }, { fetchImpl, timeoutMs: 10 })
+    ).rejects.toThrow("timed out after 10ms");
   });
 
   it("surfaces HTTP errors with status and stops runaway paging", async () => {
