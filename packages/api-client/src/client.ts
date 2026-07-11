@@ -56,6 +56,8 @@ const config: ApiClientConfig = { baseUrl: "", getAuthHeader: null };
 /** Platform setup, called once at app start; web apps need no call at all. */
 export function configureApi(overrides: Partial<ApiClientConfig>): void {
   Object.assign(config, overrides);
+  // A trailing slash would produce "https://host//api/..." on every request.
+  config.baseUrl = config.baseUrl.replace(/\/+$/, "");
 }
 
 /**

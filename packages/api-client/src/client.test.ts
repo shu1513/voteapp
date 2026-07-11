@@ -122,6 +122,15 @@ describe("apiRequest", () => {
     expect(fetchMock).toHaveBeenCalledWith("https://api.example.com/api/me", expect.anything());
   });
 
+  it("normalizes a trailing slash on the base URL", async () => {
+    const fetchMock = mockFetch({ jsonBody: { ok: true } });
+    configureApi({ baseUrl: "https://api.example.com/" });
+
+    await apiRequest("/api/me");
+
+    expect(fetchMock).toHaveBeenCalledWith("https://api.example.com/api/me", expect.anything());
+  });
+
   it("attaches the configured auth header, resolving async providers", async () => {
     const fetchMock = mockFetch({ jsonBody: { ok: true } });
     configureApi({ getAuthHeader: async () => "Bearer session-abc" });
