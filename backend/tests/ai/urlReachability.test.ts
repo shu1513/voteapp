@@ -183,7 +183,30 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     const result = await verifyHttpUrlReachability("https://example.gov/loop");
 
     expect(calls.length).toBe(6);
-    expect(result).toEqual({ ok: false, reason: "citation URL exceeded the redirect limit" });
+    // The reason names every walked hop so the terminal target is diagnosable.
+    const hop = "https://example.gov/loop";
+    expect(result).toEqual({
+      ok: false,
+      reason: `citation URL exceeded the redirect limit (chain: ${Array(7).fill(hop).join(" -> ")})`,
+    });
+  });
+
+  it("redacts credentials and query strings from the reported redirect chain", async () => {
+    // The signed hop was never in the citation payload; the reason must not
+    // persist its token, userinfo, or fragment.
+    const signedHop = "https://user:secretpass@files.gov/document.pdf?X-Amz-Signature=secret123#frag";
+    stubFetch(() => ({ status: 302, location: signedHop }));
+
+    const result = await verifyHttpUrlReachability("https://portal.gov/doc");
+
+    expect(result.ok).toBe(false);
+    const reason = (result as { ok: false; reason: string }).reason;
+    expect(reason).toContain("citation URL exceeded the redirect limit");
+    expect(reason).toContain("https://files.gov/document.pdf?[redacted]");
+    expect(reason).not.toContain("secret123");
+    expect(reason).not.toContain("secretpass");
+    expect(reason).not.toContain("X-Amz-Signature");
+    expect(reason).not.toContain("#frag");
   });
 
   it("resolves relative Location headers against the current hop", async () => {

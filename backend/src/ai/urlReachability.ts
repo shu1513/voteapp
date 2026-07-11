@@ -131,6 +131,42 @@ const MAX_REDIRECT_HOPS = 5;
 
 const FOLLOWABLE_REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 
+// Keeps a failure reason readable when a hop URL carries a huge query string.
+const REDIRECT_CHAIN_HOP_MAX_LENGTH = 200;
+
+/**
+ * Intermediate redirect targets can carry live credentials the original
+ * citation never contained (presigned S3 signatures, auth codes, session
+ * tokens in query strings, userinfo). The reason string is persisted to
+ * staging failure debug and fed back to AI retries, so every hop is
+ * sanitized to origin + path before it is reported.
+ */
+function sanitizeHopUrlForReason(hopUrl: string): string {
+  let parsed: URL;
+  try {
+    parsed = new URL(hopUrl);
+  } catch {
+    return "[unparseable-url]";
+  }
+  parsed.username = "";
+  parsed.password = "";
+  parsed.hash = "";
+  const hadQuery = parsed.search.length > 0;
+  parsed.search = "";
+  return hadQuery ? `${parsed.toString()}?[redacted]` : parsed.toString();
+}
+
+function formatRedirectChain(hops: readonly string[]): string {
+  return hops
+    .map((hop) => sanitizeHopUrlForReason(hop))
+    .map((hop) =>
+      hop.length > REDIRECT_CHAIN_HOP_MAX_LENGTH
+        ? `${hop.slice(0, REDIRECT_CHAIN_HOP_MAX_LENGTH)}…`
+        : hop
+    )
+    .join(" -> ");
+}
+
 async function cancelResponseBody(response: Response): Promise<void> {
   try {
     await response.body?.cancel();
@@ -152,6 +188,7 @@ async function fetchWithValidatedRedirects(
   timeoutMs: number
 ): Promise<{ response: Response; finalUrl: string } | { failure: UrlReachabilityFailure }> {
   let currentUrl = startUrl;
+  const visitedUrls: string[] = [startUrl];
   for (let hop = 0; hop <= MAX_REDIRECT_HOPS; hop++) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -190,8 +227,16 @@ async function fetchWithValidatedRedirects(
       return { failure: nextSafety };
     }
     currentUrl = nextUrl;
+    visitedUrls.push(nextUrl);
   }
-  return { failure: { ok: false, reason: "citation URL exceeded the redirect limit" } };
+  // Expose the walked chain so the terminal hop is diagnosable from the
+  // failure reason alone (live run reports could not tell where a loop landed).
+  return {
+    failure: {
+      ok: false,
+      reason: `citation URL exceeded the redirect limit (chain: ${formatRedirectChain(visitedUrls)})`,
+    },
+  };
 }
 
 export async function verifyHttpUrlReachability(
