@@ -8,6 +8,7 @@ import {
   formatMoney,
   formatOutcome,
   formatVotePowerLabel,
+  hasFinanceContent,
   scoreStanceDirection,
   useMyResearchAreas,
 } from "@voteapp/api-client";
@@ -16,6 +17,7 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AiBanner } from "../../components/AiBanner";
+import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
 import { SortChips } from "../../components/SortChips";
 import { SourceLine } from "../../components/SourceLine";
@@ -240,55 +242,77 @@ function CandidateCard({
   savedAreaIds: Set<string>;
 }) {
   const router = useRouter();
+  const [financeOpen, setFinanceOpen] = useState(false);
   return (
-    <Pressable
-      onPress={() => router.push(`/candidates/${candidate.candidate_id}`)}
-      className="rounded-xl border border-line bg-white p-4 active:bg-surface"
-      accessibilityRole="link"
-    >
-      <View className="flex-row items-start justify-between gap-3">
-        <View className="flex-1">
-          <Text className="font-semibold text-ink">{candidate.display_name}</Text>
-          <Text className="text-sm text-ink-soft">
-            {candidate.party}
-            {candidate.is_incumbent ? " · Incumbent" : ""}
-            {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
-          </Text>
+    <View className="rounded-xl border border-line bg-white">
+      <Pressable
+        onPress={() => router.push(`/candidates/${candidate.candidate_id}`)}
+        className="p-4 active:bg-surface"
+        accessibilityRole="link"
+      >
+        <View className="flex-row items-start justify-between gap-3">
+          <View className="flex-1">
+            <Text className="font-semibold text-ink">{candidate.display_name}</Text>
+            <Text className="text-sm text-ink-soft">
+              {candidate.party}
+              {candidate.is_incumbent ? " · Incumbent" : ""}
+              {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
+            </Text>
+          </View>
+          {candidate.finance_summary?.direct_campaign.total_raised != null ? (
+            <Text className="shrink-0 text-sm text-ink-soft">
+              Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
+            </Text>
+          ) : null}
         </View>
-        {candidate.finance_summary?.direct_campaign.total_raised != null ? (
-          <Text className="shrink-0 text-sm text-ink-soft">
-            Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
+        {candidate.summary ? (
+          <Text className="mt-2 text-sm text-ink" numberOfLines={3}>
+            {candidate.summary}
           </Text>
         ) : null}
-      </View>
-      {candidate.summary ? (
-        <Text className="mt-2 text-sm text-ink" numberOfLines={3}>
-          {candidate.summary}
-        </Text>
-      ) : null}
-      {stances.length > 0 ? (
-        <View className="mt-2 flex-row flex-wrap gap-2">
-          {stances.map((stance) => (
-            <Text
-              key={stance.research_area_id}
-              className={
-                savedAreaIds.has(stance.research_area_id)
-                  ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 text-xs font-medium text-rausch-dark"
-                  : "rounded bg-surface px-2 py-0.5 text-xs text-ink-soft"
-              }
-            >
-              {stance.name} ·{" "}
-              {[
-                stance.for_count > 0 ? `${stance.for_count} for` : null,
-                stance.against_count > 0 ? `${stance.against_count} against` : null,
-              ]
-                .filter(Boolean)
-                .join(", ")}
-            </Text>
-          ))}
+        {stances.length > 0 ? (
+          <View className="mt-2 flex-row flex-wrap gap-2">
+            {stances.map((stance) => (
+              <Text
+                key={stance.research_area_id}
+                className={
+                  savedAreaIds.has(stance.research_area_id)
+                    ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 text-xs font-medium text-rausch-dark"
+                    : "rounded bg-surface px-2 py-0.5 text-xs text-ink-soft"
+                }
+              >
+                {stance.name} ·{" "}
+                {[
+                  stance.for_count > 0 ? `${stance.for_count} for` : null,
+                  stance.against_count > 0 ? `${stance.against_count} against` : null,
+                ]
+                  .filter(Boolean)
+                  .join(", ")}
+              </Text>
+            ))}
+          </View>
+        ) : null}
+      </Pressable>
+      {hasFinanceContent(candidate.finance_summary) ? (
+        // Same per-card disclosure as the web page's <details>; a separate
+        // pressable so opening finance never triggers the card's navigation.
+        <View className="border-t border-line px-4 py-3">
+          <Pressable
+            onPress={() => setFinanceOpen((current) => !current)}
+            accessibilityRole="button"
+            accessibilityState={{ expanded: financeOpen }}
+            accessibilityLabel={`Campaign finance for ${candidate.display_name}`}
+          >
+            <Text className="text-sm font-medium text-ink">Campaign finance</Text>
+          </Pressable>
+          {financeOpen ? (
+            <View className="mt-2">
+              <FinanceSummaryCard summary={candidate.finance_summary} />
+            </View>
+          ) : null}
         </View>
       ) : null}
-    </Pressable>
+    </View>
   );
 }
 
