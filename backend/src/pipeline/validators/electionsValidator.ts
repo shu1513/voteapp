@@ -170,6 +170,7 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
     /\bu\.?s\.?\s+house\s+of\s+representatives?\b/.test(scopeText) ||
     /\brepresentative in congress\b/.test(scopeText) ||
     /\brepresentative to congress\b/.test(scopeText) ||
+    /\brepresentative to the (?:\d+(?:st|nd|rd|th) )?united states congress\b/.test(scopeText) ||
     /\bcongressional district\b/.test(scopeText);
   const stateSenate = !usSenate && hasAny(scopeText, STATE_UPPER_STRICT_MARKERS);
   const stateHouse = !usHouse && hasAny(scopeText, STATE_LOWER_STRICT_MARKERS);
@@ -263,6 +264,9 @@ function isSoftScopeAmbiguous(
       /\bunited states house\b/,
       /\brepresentative in congress\b/,
       /\brepresentative to congress\b/,
+      // Official election-authority wording, e.g. Colorado's
+      // "Representative to the 120th United States Congress - District 2".
+      /\brepresentative to the (?:\d+(?:st|nd|rd|th) )?united states congress\b/,
       /\bcongressional district\b/,
     ])
   ) {
