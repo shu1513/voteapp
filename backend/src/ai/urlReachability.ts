@@ -127,6 +127,73 @@ async function validateParsedUrlSafety(url: string): Promise<UrlReachabilityFail
   return null;
 }
 
+const MAX_REDIRECT_HOPS = 5;
+
+const FOLLOWABLE_REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
+
+async function cancelResponseBody(response: Response): Promise<void> {
+  try {
+    await response.body?.cancel();
+  } catch {
+    // Best effort: do not mask the primary result.
+  }
+}
+
+/**
+ * SSRF-safe fetch: redirects are followed manually so every Location target
+ * is safety-checked BEFORE it is contacted. `redirect: "follow"` would let a
+ * public URL bounce the backend into a private/internal address and only
+ * reject it after the request already happened. Each hop gets its own
+ * timeout window; abort errors propagate to the caller's catch.
+ */
+async function fetchWithValidatedRedirects(
+  startUrl: string,
+  method: "HEAD" | "GET",
+  timeoutMs: number
+): Promise<{ response: Response; finalUrl: string } | { failure: UrlReachabilityFailure }> {
+  let currentUrl = startUrl;
+  for (let hop = 0; hop <= MAX_REDIRECT_HOPS; hop++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    let response: Response;
+    try {
+      response = await fetch(currentUrl, {
+        method,
+        redirect: "manual",
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    if (!FOLLOWABLE_REDIRECT_STATUSES.has(response.status)) {
+      return { response, finalUrl: currentUrl };
+    }
+
+    const location = response.headers.get("location");
+    await cancelResponseBody(response);
+    if (!location) {
+      return { failure: { ok: false, reason: "citation URL redirect is missing a Location header" } };
+    }
+    let resolvedLocation: string;
+    try {
+      resolvedLocation = new URL(location, currentUrl).toString();
+    } catch {
+      return { failure: { ok: false, reason: "citation final URL is invalid after redirects" } };
+    }
+    const nextUrl = normalizeHttpUrl(resolvedLocation);
+    if (!nextUrl) {
+      return { failure: { ok: false, reason: "citation final URL is invalid after redirects" } };
+    }
+    const nextSafety = await validateParsedUrlSafety(nextUrl);
+    if (nextSafety) {
+      return { failure: nextSafety };
+    }
+    currentUrl = nextUrl;
+  }
+  return { failure: { ok: false, reason: "citation URL exceeded the redirect limit" } };
+}
+
 export async function verifyHttpUrlReachability(
   rawUrl: string,
   options: UrlReachabilityOptions = {}
@@ -143,64 +210,41 @@ export async function verifyHttpUrlReachability(
     return inputSafety;
   }
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   let response: Response | null = null;
 
   try {
-    response = await fetch(normalizedInputUrl, {
-      method: "HEAD",
-      redirect: "follow",
-      signal: controller.signal,
-    });
+    const headResult = await fetchWithValidatedRedirects(normalizedInputUrl, "HEAD", timeoutMs);
+    if ("failure" in headResult) {
+      return headResult.failure;
+    }
+    response = headResult.response;
+    let finalUrl = headResult.finalUrl;
 
     // HEAD is an optimization, not the authoritative answer: beyond hosts
     // that reject the method outright (405/501), some servers answer HEAD
     // with a different status than GET for the same resource (CivicPlus
     // DocumentCenter PDFs return HEAD 404 / GET 200, verified live), so any
     // failing HEAD status is confirmed with a GET before the URL is failed.
+    // The GET re-walks the redirect chain from the original URL with the
+    // same per-hop validation — HEAD and GET can redirect differently, so
+    // HEAD's chain proves nothing about GET's.
     if (!response.ok && !allowStatusCodes.has(response.status)) {
-      try {
-        await response.body?.cancel();
-      } catch {
-        // Best effort.
+      await cancelResponseBody(response);
+      response = null;
+      const getResult = await fetchWithValidatedRedirects(normalizedInputUrl, "GET", timeoutMs);
+      if ("failure" in getResult) {
+        return getResult.failure;
       }
-      // SSRF guard: HEAD already followed redirects, so if its chain ended
-      // on a blocked/private destination, fail here instead of repeating the
-      // request as a GET against that destination.
-      const headFinalUrl = normalizeHttpUrl(response.url || normalizedInputUrl);
-      if (!headFinalUrl) {
-        return { ok: false, reason: "citation final URL is invalid after redirects" };
-      }
-      const headFinalSafety = await validateParsedUrlSafety(headFinalUrl);
-      if (headFinalSafety) {
-        return headFinalSafety;
-      }
-      // The GET gets its own timeout window: a slow-failing HEAD would
-      // otherwise leave the shared timer with almost no budget and surface a
-      // misleading timeout instead of a status failure.
-      const getController = new AbortController();
-      const getTimeout = setTimeout(() => getController.abort(), timeoutMs);
-      try {
-        response = await fetch(normalizedInputUrl, {
-          method: "GET",
-          redirect: "follow",
-          signal: getController.signal,
-        });
-      } finally {
-        clearTimeout(getTimeout);
-      }
+      response = getResult.response;
+      finalUrl = getResult.finalUrl;
     }
 
     if (!response.ok && !allowStatusCodes.has(response.status)) {
       return { ok: false, reason: `citation fetch returned status ${response.status}` };
     }
 
-    const finalUrl = normalizeHttpUrl(response.url || normalizedInputUrl);
-    if (!finalUrl) {
-      return { ok: false, reason: "citation final URL is invalid after redirects" };
-    }
-
+    // Every hop, including this final URL, was validated before it was
+    // requested; re-check once more as defense in depth.
     const finalSafety = await validateParsedUrlSafety(finalUrl);
     if (finalSafety) {
       return finalSafety;
@@ -220,12 +264,7 @@ export async function verifyHttpUrlReachability(
     return { ok: false, reason: `citation URL fetch failed: ${message}` };
   } finally {
     if (response) {
-      try {
-        await response.body?.cancel();
-      } catch {
-        // Best effort: do not mask primary result.
-      }
+      await cancelResponseBody(response);
     }
-    clearTimeout(timeout);
   }
 }
