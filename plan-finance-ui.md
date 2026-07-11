@@ -140,6 +140,15 @@ New "Campaign finance" section between the header block and "Record":
 New hook `useElectionFinance(electionId, candidateId, enabled)` in the page
 file (not api-client — single consumer; promote later if a second appears).
 
+Known cost, accepted for now: the profile fetches the full election detail
+(all candidates + records) to extract one candidate's finance summary,
+0–2 times per profile visit, client-side, react-query-cached. State finance
+adapters short-circuit for non-matching states, so the overhead is the
+records payload the election page already serves. Eager display is the
+product requirement, so the fix is not "make it lazy" — it is a narrow
+backend endpoint (single candidate/election pair through
+`loadCandidateFinanceSummariesByCandidateElection`) as a follow-up.
+
 ### 5. Tests
 
 - `frontend/src/test/fixtures.ts`: one full `financeSummaryFixture`
