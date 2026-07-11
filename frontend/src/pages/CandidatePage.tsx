@@ -1,15 +1,23 @@
 import { useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import type { CandidateDetail, CandidateRecord, ResearchAreaPreference } from "@voteapp/api-client";
+import { useQuery } from "@tanstack/react-query";
+import type {
+  CandidateDetail,
+  CandidateElection,
+  CandidateRecord,
+  ElectionDetail,
+  ResearchAreaPreference,
+} from "@voteapp/api-client";
 import { AiBanner } from "../components/AiBanner";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
+import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
-import { formatElectionDate } from "@voteapp/api-client";
+import { apiRequest, formatElectionDate } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
 import { useFollows } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
@@ -71,6 +79,83 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   return loadFromApi<CandidateDetail>(`/api/candidates/${params.candidateId}`, request);
 }
 
+// Election dates are YYYY-MM-DD calendar strings; compare against the
+// viewer's local calendar date the same way (election day itself still
+// counts as ongoing).
+function todayLocalDate(): string {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+}
+
+// Election-specific finance deliberately lives on GET /api/elections/:id
+// (see backend candidateDetailReader.ts) — the profile fetches that payload
+// client-side and picks out this candidate's summary. Exact candidate_id
+// match: the payload also carries every opponent's finance.
+function useElectionFinance(electionId: string, candidateId: string, enabled: boolean) {
+  const query = useQuery({
+    queryKey: ["election", electionId],
+    queryFn: () => apiRequest<ElectionDetail>(`/api/elections/${electionId}`),
+    enabled,
+    staleTime: 60_000,
+  });
+  const summary =
+    query.data?.candidates.find((entry) => entry.candidate_id === candidateId)?.finance_summary ?? null;
+  return { summary, isPending: query.isPending, isError: query.isError };
+}
+
+// Eager finance for an election the candidate is currently in. Renders its
+// own section so there is no orphan heading while the fetch is in flight or
+// when the election has no finance coverage — a fetch failure also just
+// leaves the profile without the section.
+function OngoingElectionFinance({ election, candidateId }: { election: CandidateElection; candidateId: string }) {
+  const { summary } = useElectionFinance(election.election_id, candidateId, true);
+  if (!hasFinanceContent(summary)) {
+    return null;
+  }
+  return (
+    <section className="mt-6">
+      <h2 className="text-lg font-semibold">Campaign finance</h2>
+      <p className="mt-1 text-sm text-ink-soft">
+        {election.official_ballot_title} · {formatElectionDate(election.election_date)}
+      </p>
+      <div className="mt-2 rounded-xl border border-line bg-white p-4">
+        <FinanceSummaryCard summary={summary} />
+      </div>
+    </section>
+  );
+}
+
+// Lazy finance for a past election-history row: nothing is fetched until
+// the user opens the disclosure (opening is the explicit ask, so unlike the
+// ongoing section this one states it when there is nothing to show).
+function PastElectionFinance({ election, candidateId }: { election: CandidateElection; candidateId: string }) {
+  const [opened, setOpened] = useState(false);
+  const { summary, isPending, isError } = useElectionFinance(election.election_id, candidateId, opened);
+  return (
+    <details
+      className="mt-1"
+      onToggle={(event) => {
+        if (event.currentTarget.open) {
+          setOpened(true);
+        }
+      }}
+    >
+      <summary className="cursor-pointer text-xs text-ink-soft hover:text-ink">Campaign finance</summary>
+      <div className="mt-2">
+        {!opened || isPending ? (
+          <p className="text-xs text-ink-soft">Loading…</p>
+        ) : isError ? (
+          <p className="text-xs text-ink-soft">Couldn’t load finance data for this election.</p>
+        ) : hasFinanceContent(summary) ? (
+          <FinanceSummaryCard summary={summary} />
+        ) : (
+          <p className="text-xs text-ink-soft">No finance data for this election.</p>
+        )}
+      </div>
+    </details>
+  );
+}
+
 // Replaces useDocumentTitle here: a leaf meta export fully overrides the
 // root's, so it must carry both title and description.
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
@@ -116,6 +201,8 @@ export function CandidatePage() {
   const baseGroups = groupRecords(candidate.records);
   const recordGroups =
     recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
+  const today = todayLocalDate();
+  const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -159,6 +246,14 @@ export function CandidatePage() {
           reporterEmail={me?.email}
         />
       </div>
+
+      {ongoingElections.map((election) => (
+        <OngoingElectionFinance
+          key={election.candidate_election_id}
+          election={election}
+          candidateId={candidate.candidate_id}
+        />
+      ))}
 
       {recordGroups.length > 0 ? (
         <section className="mt-6">
@@ -241,6 +336,11 @@ export function CandidatePage() {
                   · {formatElectionDate(election.election_date)} · {election.district.name}
                   {election.is_incumbent ? " · incumbent" : ""}
                 </span>
+                {election.election_date < today ? (
+                  // Ongoing races already show finance eagerly above; past
+                  // rows offer it on demand.
+                  <PastElectionFinance election={election} candidateId={candidate.candidate_id} />
+                ) : null}
               </li>
             ))}
           </ul>

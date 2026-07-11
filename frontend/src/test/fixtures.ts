@@ -4,6 +4,7 @@
 import type {
   BallotSummary,
   CandidateDetail,
+  CandidateElection,
   CandidateFollow,
   ElectionDetail,
   ElectionSummary,
@@ -128,6 +129,21 @@ export function candidateDetail(
       is_following: false,
       ...overrides,
     },
+  };
+}
+
+export function candidateElection(overrides: Partial<CandidateElection> = {}): CandidateElection {
+  return {
+    candidate_election_id: "ce-1",
+    election_id: "e-1",
+    district: DISTRICT,
+    race_type: "office",
+    official_ballot_title: "Governor",
+    election_date: "2099-11-03",
+    is_incumbent: false,
+    status: "active",
+    office_canonical_name: null,
+    ...overrides,
   };
 }
 

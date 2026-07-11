@@ -4,7 +4,15 @@ import userEvent from "@testing-library/user-event";
 import { CandidatePage, ErrorBoundary } from "./CandidatePage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
-import { candidateDetail, candidateFollow, ME_VERIFIED } from "../test/fixtures";
+import {
+  candidateDetail,
+  candidateElection,
+  candidateFollow,
+  electionDetail,
+  emptyFinanceSummary,
+  financeSummary,
+  ME_VERIFIED,
+} from "../test/fixtures";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
@@ -61,6 +69,78 @@ describe("CandidatePage", () => {
     renderCandidate(() => candidateDetail());
 
     expect(await screen.findByRole("button", { name: "Following" })).toBeInTheDocument();
+  });
+
+  it("shows finance for an ongoing election, selecting this candidate's summary by exact id", async () => {
+    // The election payload also carries the opponent's finance (c-2, raised
+    // $999,999) — only c-1's summary may render.
+    const election = electionDetail();
+    election.candidates[0].finance_summary = financeSummary();
+    const opponentSummary = financeSummary();
+    opponentSummary.direct_campaign.total_raised = 999999;
+    election.candidates[1].finance_summary = opponentSummary;
+    stubApiRoutes({ ...ANONYMOUS, "/api/elections/e-1": { body: election } });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    expect(await screen.findByRole("heading", { name: "Campaign finance" })).toBeInTheDocument();
+    expect(screen.getByText("$120,000")).toBeInTheDocument();
+    expect(screen.queryByText("$999,999")).not.toBeInTheDocument();
+    expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();
+  });
+
+  it("renders no finance section when the ongoing election has no finance for the candidate", async () => {
+    stubApiRoutes({ ...ANONYMOUS, "/api/elections/e-1": { body: electionDetail() } });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Campaign finance" })).not.toBeInTheDocument();
+  });
+
+  it("keeps the profile intact when the finance fetch fails", async () => {
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/elections/e-1": apiError(500, "internal_error", "boom"),
+    });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
+    expect(screen.getByText("Voted for the clean water act.")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Campaign finance" })).not.toBeInTheDocument();
+  });
+
+  it("fetches past-election finance only after the row's disclosure is opened", async () => {
+    const election = electionDetail();
+    election.candidates[0].finance_summary = financeSummary();
+    const fetchMock = stubApiRoutes({ ...ANONYMOUS, "/api/elections/e-1": { body: election } });
+    renderCandidate(() =>
+      candidateDetail({ elections: [candidateElection({ election_date: "2000-11-03" })] })
+    );
+
+    expect(await screen.findByRole("heading", { name: "Elections" })).toBeInTheDocument();
+    // Past rows must not preload their election payloads.
+    const electionCalls = () =>
+      fetchMock.mock.calls.filter((call) => String(call[0]).includes("/api/elections/")).length;
+    expect(electionCalls()).toBe(0);
+
+    const user = userEvent.setup();
+    await user.click(screen.getByText("Campaign finance"));
+
+    expect(await screen.findByText("$120,000")).toBeInTheDocument();
+    expect(electionCalls()).toBe(1);
+  });
+
+  it("says so when an opened past election has no finance data", async () => {
+    const election = electionDetail();
+    election.candidates[0].finance_summary = emptyFinanceSummary();
+    stubApiRoutes({ ...ANONYMOUS, "/api/elections/e-1": { body: election } });
+    renderCandidate(() =>
+      candidateDetail({ elections: [candidateElection({ election_date: "2000-11-03" })] })
+    );
+
+    const user = userEvent.setup();
+    await user.click(await screen.findByText("Campaign finance"));
+
+    expect(await screen.findByText("No finance data for this election.")).toBeInTheDocument();
   });
 
   it("submits record reports with the candidate record target", async () => {
