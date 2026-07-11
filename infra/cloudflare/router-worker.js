@@ -70,9 +70,10 @@ export default {
     }
 
     const upstreamHost = isApiPath(url.pathname) ? apiHost : ssrHost;
-    // An origin equal to the public hostname would make the Worker fetch
-    // itself — the same loop the hostname validation above exists to stop.
-    if (upstreamHost === url.hostname) {
+    // The Worker owns both the apex and its www variant; an origin equal to
+    // either would send traffic back into hostnames this Worker serves (or
+    // their placeholder DNS records) instead of a real upstream.
+    if (upstreamHost === url.hostname || upstreamHost === `www.${url.hostname}`) {
       return new Response(
         "Worker misconfigured: upstream origin equals the public hostname",
         { status: 503 }
