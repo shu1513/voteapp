@@ -1,0 +1,49 @@
+name: Mobile
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Typecheck, lint, and bundle
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      # The lockfile lives at the repo root (npm workspaces).
+      - name: Install dependencies
+        run: npm ci
+        working-directory: .
+
+      - name: Dependency compatibility (expo install --check)
+        run: npx expo install --check
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      # Proves metro + NativeWind + the shared api-client bundle on both
+      # store platforms without needing native toolchains. Web is excluded:
+      # it is not a shipping target, and its static render executes the app
+      # at export time, tripping the missing-API-URL release guard.
+      - name: Export bundles
+        run: npx expo export --platform ios --platform android --output-dir /tmp/expo-export
