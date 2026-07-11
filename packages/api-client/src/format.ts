@@ -66,3 +66,94 @@ export function formatOutcome(outcome: string): string {
   const spaced = outcome.replaceAll("_", " ").trim();
   return spaced.length > 0 ? spaced[0].toUpperCase() + spaced.slice(1) : outcome;
 }
+
+// Mirrors the backend's FINANCE_INDUSTRY_DISPLAY_NAMES
+// (ballotLookupFinanceShared.ts). Finance industry categories arrive as
+// slugs; occupation categories arrive as free text and pass through
+// unchanged (no underscores).
+const FINANCE_CATEGORY_LABELS: Record<string, string> = {
+  agriculture_and_food: "Agriculture and food",
+  business_associations: "Business associations",
+  construction: "Construction",
+  defense_aerospace: "Defense and aerospace",
+  education: "Education",
+  environmental_group: "Environmental groups",
+  finance_investment: "Finance and investment",
+  healthcare: "Healthcare",
+  hospitality: "Hospitality",
+  insurance: "Insurance",
+  labor_unions: "Labor unions",
+  lawyers_and_legal_services: "Lawyers and legal services",
+  manufacturing: "Manufacturing",
+  oil_gas_energy: "Oil, gas, and energy",
+  pharmaceuticals: "Pharmaceuticals",
+  real_estate: "Real estate",
+  technology: "Technology",
+  transportation: "Transportation",
+  waste_management: "Waste management",
+};
+
+export function formatFinanceCategory(categoryName: string): string {
+  const trimmed = categoryName.trim();
+  const mapped = FINANCE_CATEGORY_LABELS[trimmed];
+  if (mapped) {
+    return mapped;
+  }
+  if (!trimmed.includes("_")) {
+    return trimmed.length > 0 ? trimmed : categoryName;
+  }
+  const spaced = trimmed.replaceAll("_", " ");
+  return spaced[0].toUpperCase() + spaced.slice(1).toLowerCase();
+}
+
+// Keys are the FinanceSummary.source enum values (backend
+// ballotLookupFinanceShared.ts). Raw values like MASSACHUSETTS_OCPF must
+// never reach the screen.
+const FINANCE_SOURCE_LABELS: Record<string, string> = {
+  FEC: "FEC",
+  ARIZONA_SOS: "Arizona Secretary of State",
+  CALIFORNIA_SOS: "California Secretary of State",
+  COLORADO_TRACER: "Colorado TRACER",
+  CONNECTICUT_ECRIS: "Connecticut eCRIS",
+  INDIANA_CAMPAIGN_FINANCE: "Indiana Campaign Finance",
+  NEBRASKA_NADC: "Nebraska NADC",
+  NEW_JERSEY_ELEC: "New Jersey ELEC",
+  NEW_MEXICO_CFIS: "New Mexico CFIS",
+  OKLAHOMA_GUARDIAN: "Oklahoma Guardian",
+  TEXAS_TEC: "Texas Ethics Commission",
+  FLORIDA_DOS: "Florida Division of Elections",
+  UTAH_DISCLOSURES: "Utah Financial Disclosures",
+  HAWAII_CSC: "Hawaii Campaign Spending Commission",
+  VIRGINIA_CFREPORTS: "Virginia CFReports",
+  TENNESSEE_CAMP: "Tennessee Registry of Election Finance",
+  WASHINGTON_PDC: "Washington PDC",
+  WISCONSIN_SUNSHINE: "Wisconsin CFIS",
+  MASSACHUSETTS_OCPF: "Massachusetts OCPF",
+  VERMONT_CFD: "Vermont Campaign Finance",
+  LOUISIANA_ETHICS: "Louisiana Ethics Administration",
+  KENTUCKY_KREF: "Kentucky KREF",
+  MARYLAND_CFS: "Maryland Campaign Reporting",
+  MAINE_CFIS: "Maine CFIS",
+  MICHIGAN_MITN: "Michigan Campaign Finance",
+  ILLINOIS_SBE: "Illinois State Board of Elections",
+  MINNESOTA_CFB: "Minnesota CFB",
+  ALASKA_APOC: "Alaska APOC",
+  ORESTAR: "Oregon ORESTAR",
+  PENNSYLVANIA_DOS: "Pennsylvania Department of State",
+  DISTRICT_OF_COLUMBIA_OCF: "DC Office of Campaign Finance",
+};
+
+export function financeSourceLabel(source: string): string {
+  const mapped = FINANCE_SOURCE_LABELS[source];
+  if (mapped) {
+    return mapped;
+  }
+  const spaced = source.replaceAll("_", " ").trim();
+  if (spaced.length === 0) {
+    return source;
+  }
+  return spaced
+    .split(" ")
+    .map((word) => (word.length > 0 ? word[0].toUpperCase() + word.slice(1).toLowerCase() : word))
+    .join(" ");
+}

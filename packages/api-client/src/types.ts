@@ -98,8 +98,31 @@ export type BallotSummary = {
   elections: ElectionSummary[];
 };
 
-// Mirrors BallotLookupFinanceSummary (backend ballotLookup.ts): the money
-// lives under direct_campaign, not at the top level.
+// Mirrors BallotLookupFinanceBreakdown (backend ballotLookupFinanceShared.ts).
+// Industry category_name values arrive as slugs (oil_gas_energy) — display
+// them through formatFinanceCategory; occupation names arrive as free text.
+export type FinanceBreakdown = {
+  category_name: string;
+  amount: number;
+  contributor_count: number | null;
+  source_url: string | null;
+};
+
+// Mirrors BallotLookupFinanceOutsideGroup (backend ballotLookupFinanceShared.ts).
+export type FinanceOutsideGroup = {
+  committee_id: string;
+  committee_name: string;
+  support_oppose: "support" | "oppose";
+  amount: number;
+  source_url: string | null;
+};
+
+// Mirrors BallotLookupFinanceSummary (backend ballotLookupFinanceShared.ts):
+// the money lives under direct_campaign, not at the top level. Deliberately
+// partial — only what the UI renders (top_employers,
+// contribution_size_buckets, and backing_summary stay backend-only until a
+// UI needs them). null money values mean "not reported"; 0 is a real
+// disclosed amount.
 export type FinanceSummary = {
   source: string;
   cycle: number;
@@ -109,10 +132,16 @@ export type FinanceSummary = {
     total_spent: number | null;
     cash_on_hand: number | null;
     debts_owed: number | null;
+    top_occupations: FinanceBreakdown[];
+    top_industries: FinanceBreakdown[];
   };
   outside_spending: {
     support_total: number | null;
     oppose_total: number | null;
+    top_supporting_groups: FinanceOutsideGroup[];
+    top_opposing_groups: FinanceOutsideGroup[];
+    top_supporting_industries: FinanceBreakdown[];
+    top_opposing_industries: FinanceBreakdown[];
   };
 };
 
