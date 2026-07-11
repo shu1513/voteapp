@@ -12,7 +12,7 @@ import {
   PRE_SEARCH_ACCEPTANCE_STORAGE_KEY,
   PRE_SEARCH_CHECKBOX_LABEL,
   PRIVACY_NOTICE,
-} from "../legal/copy";
+} from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 function readStoredAcceptance(): boolean {

@@ -308,12 +308,13 @@ function isPdfUrl(url: string): boolean {
 
 // "Official" is a claim, not a style: the pipeline intends
 // official_measure_url to be an official full-text page, but real rows point
-// at Wikipedia/Ballotpedia. Only government-hosted links get the official
-// label; anything else keeps neutral wording.
+// at Wikipedia/Ballotpedia. Only .gov links get the official label; anything
+// else keeps neutral wording. .us is deliberately excluded — it is an open
+// registry (individuals and businesses register ordinary .us domains), so it
+// is not evidence of government hosting.
 function isGovernmentUrl(url: string): boolean {
   try {
-    const host = new URL(url).hostname.toLowerCase();
-    return host.endsWith(".gov") || host.endsWith(".us");
+    return new URL(url).hostname.toLowerCase().endsWith(".gov");
   } catch {
     return false;
   }

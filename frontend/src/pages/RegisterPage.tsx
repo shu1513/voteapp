@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
-import { SIGNUP_CHECKBOX_LABEL, TERMS_VERSION } from "../legal/copy";
+import { SIGNUP_CHECKBOX_LABEL, TERMS_VERSION } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 

@@ -8,6 +8,7 @@
 export * from "./types";
 export * from "./client";
 export * from "./format";
+export * from "./legalCopy";
 export * from "./researchAreaScoring";
 export * from "./useAddressSuggestions";
 export * from "./useFollows";

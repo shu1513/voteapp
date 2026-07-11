@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { AI_BANNER } from "../legal/copy";
+import { AI_BANNER } from "@voteapp/api-client";
 
 /** Rendered at the top of every ballot, election, and candidate view. */
 export function AiBanner() {

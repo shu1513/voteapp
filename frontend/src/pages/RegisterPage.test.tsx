@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RegisterPage } from "./RegisterPage";
-import { TERMS_VERSION } from "../legal/copy";
+import { TERMS_VERSION } from "@voteapp/api-client";
 
 function renderRegister() {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });

@@ -15,7 +15,7 @@ import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingDistricts";
-import { PRIVACY_NOTICE } from "../legal/copy";
+import { PRIVACY_NOTICE } from "@voteapp/api-client";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
