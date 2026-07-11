@@ -99,6 +99,9 @@ describe("fetch handler", () => {
         SSR_ORIGIN: bad,
       });
       assert.equal(response.status, 503, bad);
+      // Malformed values must be rejected by validation, not reach the
+      // self-proxy guard.
+      assert.match(await response.text(), /must both be set/, new Error(bad));
     }
   });
 
@@ -109,6 +112,10 @@ describe("fetch handler", () => {
         SSR_ORIGIN: self,
       });
       assert.equal(response.status, 503, self);
+      // The body pins WHICH guard fired: these are syntactically valid
+      // hostnames that must reach and trip the self-proxy check (the dotted
+      // form specifically proves canonicalization ran before the equality).
+      assert.match(await response.text(), /upstream origin equals/, new Error(self));
     }
   });
 

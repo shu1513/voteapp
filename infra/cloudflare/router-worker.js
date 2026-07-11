@@ -56,13 +56,16 @@ export function resolveUpstreamHost(raw) {
     return null;
   }
   // A bare hostname round-trips exactly; a scheme, port, path, credentials,
-  // or query string all leave residue that breaks the equality.
-  if (parsed.hostname !== value.toLowerCase()) {
+  // or query string all leave residue that breaks the equality. The FQDN
+  // trailing dot ("host.example.") is canonicalized away on BOTH sides
+  // before comparing — the WHATWG spec keeps it in .hostname, but stripping
+  // first makes the check hold even on a parser that normalizes it away,
+  // and the self-proxy guard's equality can't be dodged by a dot that DNS
+  // ignores.
+  const hostname = parsed.hostname.replace(/\.$/, "");
+  if (hostname !== value.toLowerCase().replace(/\.$/, "")) {
     return null;
   }
-  // Canonicalize the FQDN trailing dot ("host.example.") so the self-proxy
-  // guard's equality check can't be dodged by a dot that DNS ignores.
-  const hostname = parsed.hostname.replace(/\.$/, "");
   return isValidDnsHostname(hostname) ? hostname : null;
 }
 
