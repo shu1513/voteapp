@@ -1,8 +1,15 @@
-import type { CandidateDetail, CandidateRecord, ResearchAreaPreference } from "@voteapp/api-client";
+import type {
+  CandidateDetail,
+  CandidateElection,
+  CandidateRecord,
+  ElectionDetail,
+  ResearchAreaPreference,
+} from "@voteapp/api-client";
 import {
   ApiError,
   apiRequest,
   formatElectionDate,
+  hasFinanceContent,
   UNRANKED_RESEARCH_AREA_RANK,
   useMyResearchAreas,
 } from "@voteapp/api-client";
@@ -11,6 +18,7 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AiBanner } from "../../components/AiBanner";
+import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
 import { SortChips } from "../../components/SortChips";
 import { SourceLine } from "../../components/SourceLine";
@@ -66,6 +74,107 @@ function orderGroupsByPreference(
     .map(({ group }) => group);
 }
 
+// Election dates are YYYY-MM-DD calendar strings; "today" is the last US
+// clock still on a given date — Pacific/Honolulu, UTC-10, no DST — mirroring
+// the backend's US_LATEST_LOCAL_DATE_SQL: an election counts as past only
+// once the entire United States has finished that day. en-CA formats as
+// YYYY-MM-DD. Same logic as the web CandidatePage.
+function usLatestLocalDate(): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Pacific/Honolulu" }).format(new Date());
+}
+
+// Election-specific finance deliberately lives on GET /api/elections/:id —
+// the profile fetches that payload and picks out this candidate's summary.
+// Exact candidate_id match: the payload also carries every opponent's
+// finance. Same query key as the election screen, so the cache is shared.
+function useElectionFinance(electionId: string, candidateId: string, enabled: boolean) {
+  const query = useQuery({
+    queryKey: ["election", electionId],
+    queryFn: () => apiRequest<ElectionDetail>(`/api/elections/${electionId}`),
+    enabled,
+    staleTime: 60_000,
+  });
+  const summary =
+    query.data?.candidates.find((entry) => entry.candidate_id === candidateId)?.finance_summary ?? null;
+  return { summary, isPending: query.isPending, isError: query.isError };
+}
+
+// Eager finance for an election the candidate is currently in. Renders its
+// own section so there is no orphan heading while the fetch is in flight or
+// when the election has no finance coverage — a fetch failure also just
+// leaves the profile without the section.
+function OngoingElectionFinance({
+  election,
+  candidateId,
+}: {
+  election: CandidateElection;
+  candidateId: string;
+}) {
+  const { summary } = useElectionFinance(election.election_id, candidateId, true);
+  if (!hasFinanceContent(summary)) {
+    return null;
+  }
+  return (
+    <View className="mt-6">
+      <Text
+        className="text-lg font-semibold text-ink"
+        accessibilityLabel={`Campaign finance — ${election.official_ballot_title}`}
+      >
+        Campaign finance
+      </Text>
+      <Text className="mt-1 text-sm text-ink-soft">
+        {election.official_ballot_title} · {formatElectionDate(election.election_date)}
+      </Text>
+      <View className="mt-2 rounded-xl border border-line bg-white p-4">
+        <FinanceSummaryCard summary={summary} />
+      </View>
+    </View>
+  );
+}
+
+// Lazy finance for a past election-history row: nothing is fetched until
+// the user opens the disclosure (opening is the explicit ask, so unlike the
+// ongoing section this one states it when there is nothing to show).
+function PastElectionFinance({
+  election,
+  candidateId,
+}: {
+  election: CandidateElection;
+  candidateId: string;
+}) {
+  const [opened, setOpened] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const { summary, isPending, isError } = useElectionFinance(election.election_id, candidateId, opened);
+  return (
+    <View className="mt-1">
+      <Pressable
+        onPress={() => {
+          setExpanded((current) => !current);
+          setOpened(true);
+        }}
+        accessibilityRole="button"
+        accessibilityState={{ expanded }}
+        accessibilityLabel={`Campaign finance for ${election.official_ballot_title}, ${formatElectionDate(election.election_date)}`}
+      >
+        <Text className="text-xs text-ink-soft underline">Campaign finance</Text>
+      </Pressable>
+      {expanded ? (
+        <View className="mt-2">
+          {isPending ? (
+            <Text className="text-xs text-ink-soft">Loading…</Text>
+          ) : isError ? (
+            <Text className="text-xs text-ink-soft">Couldn’t load finance data for this election.</Text>
+          ) : hasFinanceContent(summary) ? (
+            <FinanceSummaryCard summary={summary} />
+          ) : (
+            <Text className="text-xs text-ink-soft">No finance data for this election.</Text>
+          )}
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
 /**
  * Port of the web CandidatePage. SSR loader becomes plain useQuery;
  * follow/report controls arrive with the auth chunk.
@@ -116,6 +225,8 @@ export default function CandidateScreen() {
   const baseGroups = groupRecords(candidate.records);
   const recordGroups =
     recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
+  const today = usLatestLocalDate();
+  const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
   const viewOptions = [
     { value: "by_issue" as const, label: "By issue" },
     ...(hasSaved ? [{ value: "my_issues" as const, label: "My issues first" }] : []),
@@ -140,6 +251,14 @@ export default function CandidateScreen() {
         </Text>
       ) : null}
       {candidate.summary ? <Text className="mt-3 text-ink">{candidate.summary}</Text> : null}
+
+      {ongoingElections.map((election) => (
+        <OngoingElectionFinance
+          key={election.candidate_election_id}
+          election={election}
+          candidateId={candidate.candidate_id}
+        />
+      ))}
 
       {recordGroups.length > 0 ? (
         <View className="mt-6">
@@ -176,7 +295,15 @@ export default function CandidateScreen() {
           <Text className="text-lg font-semibold text-ink">Elections</Text>
           <View className="mt-2 rounded-xl border border-line bg-white">
             {candidate.elections.map((election, index) => (
-              <ElectionRow key={election.candidate_election_id} election={election} first={index === 0} />
+              <ElectionRow
+                key={election.candidate_election_id}
+                election={election}
+                first={index === 0}
+                // Ongoing races already show finance eagerly above; past
+                // rows offer it on demand.
+                showPastFinance={election.election_date < today}
+                candidateId={candidate.candidate_id}
+              />
             ))}
           </View>
         </View>
@@ -209,24 +336,31 @@ function RecordItem({ record, showTags = false }: { record: CandidateRecord; sho
 function ElectionRow({
   election,
   first,
+  showPastFinance,
+  candidateId,
 }: {
-  election: CandidateDetail["candidate"]["elections"][number];
+  election: CandidateElection;
   first: boolean;
+  showPastFinance: boolean;
+  candidateId: string;
 }) {
   const router = useRouter();
   return (
-    <Pressable
-      onPress={() => router.push(`/elections/${election.election_id}`)}
-      className={first ? "px-3 py-2 active:bg-surface" : "border-t border-line px-3 py-2 active:bg-surface"}
-      accessibilityRole="link"
-    >
-      <Text className="text-sm">
-        <Text className="text-ink underline">{election.official_ballot_title}</Text>{" "}
-        <Text className="text-ink-soft">
-          · {formatElectionDate(election.election_date)} · {election.district.name}
-          {election.is_incumbent ? " · incumbent" : ""}
+    <View className={first ? "px-3 py-2" : "border-t border-line px-3 py-2"}>
+      <Pressable
+        onPress={() => router.push(`/elections/${election.election_id}`)}
+        className="active:bg-surface"
+        accessibilityRole="link"
+      >
+        <Text className="text-sm">
+          <Text className="text-ink underline">{election.official_ballot_title}</Text>{" "}
+          <Text className="text-ink-soft">
+            · {formatElectionDate(election.election_date)} · {election.district.name}
+            {election.is_incumbent ? " · incumbent" : ""}
+          </Text>
         </Text>
-      </Text>
-    </Pressable>
+      </Pressable>
+      {showPastFinance ? <PastElectionFinance election={election} candidateId={candidateId} /> : null}
+    </View>
   );
 }
