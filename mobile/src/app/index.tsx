@@ -13,13 +13,14 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } fro
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
+import { setMatchedAddress } from "../lib/matchedAddress";
 
 /**
  * Port of the web HomePage's anonymous flow. Web-only concerns dropped:
  * the verified-user redirect to the saved ballot (no account screens yet)
- * and pre-hydration input adoption (no SSR). The matched address rides in
- * navigation params (in-memory only — never a URL), mirroring the web's
- * router-state approach for the same privacy reason.
+ * and pre-hydration input adoption (no SSR). The matched address goes
+ * through an in-memory holder — Expo Router serializes params into its
+ * URL-based navigation state, and the address must never reach a URL.
  */
 export default function HomeScreen() {
   const router = useRouter();
@@ -45,13 +46,12 @@ export default function HomeScreen() {
     onSuccess: (resolution) => {
       // Straight to the elections — the districts list is a detour nobody
       // asked for. (The web's pending-districts signup handoff lands with
-      // the auth screens.)
+      // the auth screens.) The matched address goes through the in-memory
+      // holder, never navigation params — see lib/matchedAddress.ts.
+      setMatchedAddress(resolution.matched_address);
       router.push({
         pathname: "/ballot",
-        params: {
-          d: resolution.districts.map((district) => district.id).join(","),
-          matchedAddress: resolution.matched_address,
-        },
+        params: { d: resolution.districts.map((district) => district.id).join(",") },
       });
     },
   });

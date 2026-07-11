@@ -15,25 +15,28 @@ import { Collapsible } from "../components/Collapsible";
 import { ElectionCard } from "../components/ElectionCard";
 import { SortChips } from "../components/SortChips";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
+import { consumeMatchedAddress } from "../lib/matchedAddress";
 
 /**
  * Port of the web BallotPage. Params mirror the web URL (`d` = comma-joined
- * district ids) plus `matchedAddress`, which the web carries in router state
- * for the same reason it lives in navigation params here: personal data
- * stays out of anything shareable. Sort is local state instead of a URL
- * param — there is no address bar to reflect it into.
+ * district ids). The matched address arrives through the in-memory holder,
+ * never navigation params (Expo Router would serialize it into URL-shaped
+ * state — see lib/matchedAddress.ts); the web keeps it in router state for
+ * the same reason. Sort is local state instead of a URL param — there is no
+ * address bar to reflect it into.
  */
 export default function BallotScreen() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ d?: string; matchedAddress?: string }>();
+  const params = useLocalSearchParams<{ d?: string }>();
   const { savedAreaIds } = useMyResearchAreas();
   const [sort, setSort] = useState<BallotSort>("vote_power");
+  // Consume once on mount; state keeps it across re-renders and sort changes.
+  const [matchedAddress] = useState<string | null>(consumeMatchedAddress);
 
   const districtIds = (params.d ?? "")
     .split(",")
     .map((id) => id.trim())
     .filter((id) => id.length > 0);
-  const matchedAddress = typeof params.matchedAddress === "string" ? params.matchedAddress : null;
 
   const ballot = useQuery({
     queryKey: ["ballot", districtIds.join(","), sort],
@@ -49,7 +52,7 @@ export default function BallotScreen() {
       <View className="flex-1 bg-white px-4 py-10">
         <Stack.Screen options={{ title: "Your ballot" }} />
         <EmptyNotice text="No districts selected." />
-        <Pressable onPress={() => router.dismissTo("/")}>
+        <Pressable accessibilityRole="link" onPress={() => router.dismissTo("/")}>
           <Text className="text-center text-ink underline">Start with your address</Text>
         </Pressable>
       </View>
@@ -65,7 +68,7 @@ export default function BallotScreen() {
       {matchedAddress ? (
         <Text className="mt-1 text-sm text-ink-soft">
           Matched address: <Text className="font-medium text-ink">{matchedAddress}</Text>{" "}
-          <Text className="underline" onPress={() => router.dismissTo("/")}>
+          <Text className="underline" accessibilityRole="link" onPress={() => router.dismissTo("/")}>
             Not your address?
           </Text>
         </Text>
