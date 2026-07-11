@@ -31,9 +31,12 @@ import {
 } from "./writeManualCandidateRecords.js";
 import {
   SWEEP_COMPLETENESS_GAP_IDS,
+  assertedSweepCompletenessGapIds,
   parseSweepEvidencePayload,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
+  upsertSweepConfirmation,
+  type SweepEvidenceEntry,
 } from "./candidateRecordSweepEvidence.js";
 import {
   buildManualResearchRepairReport,
@@ -440,7 +443,7 @@ async function main(): Promise<void> {
         recordCount: validatedRecords.records.length,
         confirmedGapIds: options.confirmedGapIds,
       }) || qualityGaps.some((gap) => SWEEP_COMPLETENESS_GAP_IDS.has(gap.id));
-    let sweepEvidenceEntryCount: number | null = null;
+    let sweepEvidenceEntries: SweepEvidenceEntry[] | null = null;
     if (evidenceIsRequired) {
       if (!options.evidenceFile) {
         throw sweepEvidenceMissingError("presidential-records");
@@ -449,8 +452,9 @@ async function main(): Promise<void> {
       if (!parsedEvidence.ok) {
         throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
       }
-      sweepEvidenceEntryCount = parsedEvidence.entries.length;
+      sweepEvidenceEntries = parsedEvidence.entries;
     }
+    const sweepEvidenceEntryCount = sweepEvidenceEntries ? sweepEvidenceEntries.length : null;
 
     if (options.repairReportFile && qualityGaps.length > 0) {
       await writeRecordsRepairReport({
@@ -560,6 +564,22 @@ async function main(): Promise<void> {
         validation.normalized,
         researchAreaIdBySlug
       );
+      // Persist the validated completeness confirmation so
+      // manual:records:audit can separate this evidence-backed confirmed
+      // null from a skipped sweep.
+      if (sweepEvidenceEntries) {
+        await upsertSweepConfirmation(client, {
+          candidateId: options.candidateId,
+          confirmedGapIds: assertedSweepCompletenessGapIds({
+            recordCount: validatedRecords.records.length,
+            confirmedGapIds: options.confirmedGapIds,
+            qualityGapIds: qualityGaps.map((gap) => gap.id),
+          }),
+          entries: sweepEvidenceEntries,
+          contextType: "presidential_cycle",
+          contextId: options.presidentialCycleId,
+        });
+      }
       await client.query("COMMIT");
 
       console.log(

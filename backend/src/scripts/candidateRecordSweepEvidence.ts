@@ -15,7 +15,13 @@
  * entries is the floor. Era coverage and officeholder-vs-challenger question
  * counts are research-derived facts the writer cannot verify from the
  * database, so no attempt is made to check them here.
+ *
+ * Validated confirmations are also persisted (candidate_record_sweep_confirmations,
+ * one row per candidate, newest sweep wins) so manual:records:audit can tell
+ * an evidence-backed confirmed-null candidate apart from a skipped sweep.
  */
+
+import type { PoolClient } from "pg";
 
 export const SWEEP_EVIDENCE_MIN_ENTRIES = 3;
 
@@ -100,6 +106,67 @@ export function parseSweepEvidencePayload(payload: unknown): SweepEvidenceParseR
     };
   }
   return { ok: true, entries };
+}
+
+/**
+ * The completeness claims a passing write actually asserts: zero verified
+ * records implies no_records_found even without any flag, and the
+ * only_general_labels claim can arrive as either an operator flag or a
+ * detected quality gap. Non-completeness gap ids are ignored.
+ */
+export function assertedSweepCompletenessGapIds(input: {
+  recordCount: number;
+  confirmedGapIds: ReadonlySet<string>;
+  qualityGapIds: readonly string[];
+}): string[] {
+  const asserted = new Set<string>();
+  if (input.recordCount === 0) {
+    asserted.add("candidate_records.no_records_found");
+  }
+  for (const id of [...input.confirmedGapIds, ...input.qualityGapIds]) {
+    if (SWEEP_COMPLETENESS_GAP_IDS.has(id)) {
+      asserted.add(id);
+    }
+  }
+  return [...asserted].sort();
+}
+
+/**
+ * Persist the validated confirmation inside the writer's transaction. One
+ * row per candidate: a newer sweep supersedes the older confirmation.
+ */
+export async function upsertSweepConfirmation(
+  client: Pick<PoolClient, "query">,
+  input: {
+    candidateId: string;
+    confirmedGapIds: readonly string[];
+    entries: readonly SweepEvidenceEntry[];
+    contextType: "election" | "presidential_cycle";
+    contextId: string;
+  }
+): Promise<void> {
+  await client.query(
+    `
+      INSERT INTO public.candidate_record_sweep_confirmations
+        (candidate_id, confirmed_gap_ids, evidence, context_type, context_id)
+      VALUES ($1, $2::text[], $3::jsonb, $4, $5)
+      ON CONFLICT (candidate_id)
+      DO UPDATE SET
+        confirmed_gap_ids = EXCLUDED.confirmed_gap_ids,
+        evidence = EXCLUDED.evidence,
+        context_type = EXCLUDED.context_type,
+        context_id = EXCLUDED.context_id,
+        confirmed_at = now(),
+        updated_at = now()
+    `,
+    [
+      input.candidateId,
+      [...input.confirmedGapIds],
+      JSON.stringify({ entries: input.entries }),
+      input.contextType,
+      input.contextId,
+    ]
+  );
 }
 
 export function sweepEvidenceMissingError(context: string): Error {
