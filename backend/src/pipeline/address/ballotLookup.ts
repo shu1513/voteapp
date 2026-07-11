@@ -691,11 +691,18 @@ async function loadHistoricalCompetitivenessByElection(
 // gate (#214), no two sources can produce a summary for the same
 // candidate/election key. Adding a state = write the family-folder loader
 // and add one entry here.
+// Everything the finance sources read off a candidate row: the shared
+// request builder uses candidate_id/election_id and the FEC loader reads
+// fec_ids. Declaring the narrow shape here lets the profile finance lookup
+// query only these columns while the full-row callers pass CandidateRow
+// unchanged (structural subtyping).
+type FinanceLookupCandidateRow = Pick<CandidateRow, "candidate_id" | "election_id" | "fec_ids">;
+
 type StateFinanceLookupAdapter = {
   state: string;
   load: (
     db: Queryable,
-    candidateRows: readonly CandidateRow[],
+    candidateRows: readonly FinanceLookupCandidateRow[],
     electionRows: readonly ElectionRow[]
   ) => Promise<Map<string, BallotLookupFinanceSummary>>;
 };
@@ -743,7 +750,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
 
 async function loadCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
-  candidateRows: readonly CandidateRow[],
+  candidateRows: readonly FinanceLookupCandidateRow[],
   electionRows: readonly ElectionRow[]
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   const merged = new Map<string, BallotLookupFinanceSummary>();
@@ -1375,13 +1382,11 @@ export async function lookupBallotSummariesByDistrictIds(
   };
 }
 
-export async function lookupElectionDetailById(db: Queryable, electionId: string): Promise<BallotLookupElection | null> {
-  const trimmedElectionId = electionId.trim();
-  if (trimmedElectionId.length === 0) {
-    return null;
-  }
-
-  const electionResult = await db.query<ElectionDetailRow>(
+// The single-election ElectionRow projection shared by the detail and
+// finance lookups; both issue it as their leading query, so extracting it
+// leaves every ordered query mock in the test suite untouched.
+async function loadElectionRowById(db: Queryable, electionId: string): Promise<ElectionDetailRow[]> {
+  const result = await db.query<ElectionDetailRow>(
     `
       SELECT
         e.id AS election_id,
@@ -1411,16 +1416,26 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
       WHERE e.id = $1::uuid
       LIMIT 1
     `,
-    [trimmedElectionId]
+    [electionId]
   );
+  return result.rows;
+}
 
-  const details = await loadFullElectionDetails(db, electionResult.rows);
+export async function lookupElectionDetailById(db: Queryable, electionId: string): Promise<BallotLookupElection | null> {
+  const trimmedElectionId = electionId.trim();
+  if (trimmedElectionId.length === 0) {
+    return null;
+  }
+
+  const electionRows = await loadElectionRowById(db, trimmedElectionId);
+
+  const details = await loadFullElectionDetails(db, electionRows);
   const detail = details[0];
   if (!detail) {
     return null;
   }
 
-  const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionResult.rows);
+  const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionRows);
   const historicalCompetitiveness = historicalCompetitivenessByElection.get(detail.id) ?? null;
   return {
     ...detail,
@@ -1431,5 +1446,69 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
       representationPowerScore: detail.district.representation_power_score,
       competitivenessLabel: historicalCompetitiveness?.competitiveness_label,
     }),
+  };
+}
+
+export type CandidateElectionFinanceResult = {
+  finance_summary: BallotLookupFinanceSummary | null;
+};
+
+// Narrow read for the candidate-profile page: one candidate's finance
+// summary in one election, without loading every opponent's records and
+// tags the way lookupElectionDetailById must. null = the election does not
+// exist or the candidate is not in it — including deleted or merged
+// candidates, matching the profile reader's identity guards, so this
+// sub-resource 404s whenever the profile itself does. An existing pairing
+// with no finance coverage is { finance_summary: null }.
+export async function lookupCandidateElectionFinanceSummaryById(
+  db: Queryable,
+  electionId: string,
+  candidateId: string
+): Promise<CandidateElectionFinanceResult | null> {
+  const trimmedElectionId = electionId.trim();
+  const trimmedCandidateId = candidateId.trim();
+  if (trimmedElectionId.length === 0 || trimmedCandidateId.length === 0) {
+    return null;
+  }
+
+  const electionRows = await loadElectionRowById(db, trimmedElectionId);
+  if (electionRows.length === 0) {
+    return null;
+  }
+
+  const candidateResult = await db.query<FinanceLookupCandidateRow>(
+    `
+      SELECT
+        ce.election_id,
+        c.id AS candidate_id,
+        c.fec_ids
+      FROM public.candidate_elections AS ce
+      JOIN public.candidates AS c
+        ON c.id = ce.candidate_id
+      WHERE ce.election_id = $1::uuid
+        AND ce.candidate_id = $2::uuid
+        AND c.deleted_at IS NULL
+        AND c.merged_into_candidate_id IS NULL
+      LIMIT 1
+    `,
+    [trimmedElectionId, trimmedCandidateId]
+  );
+  const candidateRow = candidateResult.rows[0];
+  if (!candidateRow) {
+    return null;
+  }
+
+  const financeSummaryByCandidateElection = await loadCandidateFinanceSummariesByCandidateElection(
+    db,
+    candidateResult.rows,
+    electionRows
+  );
+  // Key on the DB-canonical row ids, not the request strings: the loaders
+  // key their maps on lowercase ids from the database, and isUuid accepts
+  // uppercase hex that Postgres matches but a string-keyed Map does not.
+  return {
+    finance_summary:
+      financeSummaryByCandidateElection.get(candidateElectionKey(candidateRow.candidate_id, candidateRow.election_id)) ??
+      null,
   };
 }
