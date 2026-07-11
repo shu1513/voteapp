@@ -20,10 +20,25 @@
 // (the edge proxy sets it); when the env var or header is absent (dev),
 // nothing is sent and the API falls back to socket-IP keying as before.
 
-// Generous for a loopback hop (normally milliseconds): a stalled API must
-// fail the render fast instead of pinning SSR request handlers until
-// undici's ~300s default timeouts fire.
-const LOADER_TIMEOUT_MS = 10_000;
+// Generous for a loopback/private-network hop (normally milliseconds): a
+// stalled API must fail the render fast instead of pinning SSR request
+// handlers until undici's ~300s default timeouts fire.
+const DEFAULT_LOADER_TIMEOUT_MS = 10_000;
+
+/**
+ * API_LOADER_TIMEOUT_MS raises the ceiling when the API needs time to answer
+ * at all — concretely, a free-tier instance cold-starting from idle takes
+ * about a minute to wake, and the default would 504 every wake-up request.
+ * Invalid values fall back to the default.
+ */
+function resolveLoaderTimeoutMs(): number {
+  const raw = process.env.API_LOADER_TIMEOUT_MS?.trim();
+  if (!raw) {
+    return DEFAULT_LOADER_TIMEOUT_MS;
+  }
+  const parsed = Number.parseInt(raw, 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : DEFAULT_LOADER_TIMEOUT_MS;
+}
 
 function rethrowTimeoutAs504(error: unknown): never {
   if (error instanceof DOMException && error.name === "TimeoutError") {
@@ -33,19 +48,22 @@ function rethrowTimeoutAs504(error: unknown): never {
 }
 
 /**
- * API base resolution, most explicit first:
- * 1. API_INTERNAL_URL — full URL. Dev override, or a deployment where the
- *    private network can't be used (Render free instances can send private
- *    traffic but not receive it, so the API's public URL goes here).
+ * API base resolution, most preferred first:
+ * 1. API_INTERNAL_URL — explicit full URL; overrides everything (dev, or
+ *    any topology the tiers below don't describe).
  * 2. API_INTERNAL_HOSTPORT — "host:port" on the private network, e.g. a
  *    Render blueprint `fromService` hostport reference that tracks the
  *    assigned internal hostname across service recreation. Plain http:
- *    private-network traffic isn't TLS-terminated.
- * 3. Loopback default for local dev.
+ *    private-network traffic isn't TLS-terminated. Preferred over the
+ *    public tier so upgrading to private networking is one blueprint edit.
+ * 3. API_PUBLIC_HOST — the API's public hostname (e.g. a Render
+ *    RENDER_EXTERNAL_HOSTNAME reference), https. The free-tier fallback:
+ *    free instances can send private-network traffic but not receive it.
+ * 4. Loopback default for local dev.
  */
 function resolveApiBase(): string {
   // Paths are appended verbatim and always start with "/"; a trailing slash
-  // on either env var would produce "//api/..." — which the API server's
+  // on any of these would produce "//api/..." — which the API server's
   // exact path matching 404s — so strip it rather than 404 every loader.
   const explicitUrl = process.env.API_INTERNAL_URL;
   if (explicitUrl) {
@@ -54,6 +72,10 @@ function resolveApiBase(): string {
   const hostport = process.env.API_INTERNAL_HOSTPORT;
   if (hostport) {
     return `http://${hostport.replace(/\/+$/, "")}`;
+  }
+  const publicHost = process.env.API_PUBLIC_HOST;
+  if (publicHost) {
+    return `https://${publicHost.replace(/\/+$/, "")}`;
   }
   return "http://127.0.0.1:3001";
 }
@@ -73,7 +95,7 @@ export async function loadFromApi<T>(path: string, incomingRequest: Request): Pr
   try {
     response = await fetch(`${base}${path}`, {
       headers,
-      signal: AbortSignal.timeout(LOADER_TIMEOUT_MS),
+      signal: AbortSignal.timeout(resolveLoaderTimeoutMs()),
     });
   } catch (error) {
     rethrowTimeoutAs504(error);
