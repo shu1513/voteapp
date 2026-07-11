@@ -25,12 +25,26 @@
  * the apex so the canonical origin matches SITE_ORIGIN and robots.txt).
  */
 
-function isApiPath(pathname) {
+export function isApiPath(pathname) {
   return pathname === "/sitemap.xml" || pathname === "/api" || pathname.startsWith("/api/");
 }
 
-/** Returns the validated bare hostname, or null for anything else. */
-function resolveUpstreamHost(raw) {
+// RFC 1123 label: 1-63 chars, alphanumeric at both ends, alphanumeric or
+// hyphen inside. Deliberately stricter than the URL parser, which (with the
+// non-strict IDNA browsers use) happily accepts ".", "foo..bar",
+// "-bad.example", or "_bad.example" — values that would only fail later as
+// an uncaught fetch() error instead of a controlled 503.
+const DNS_LABEL = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/;
+
+function isValidDnsHostname(hostname) {
+  if (hostname.length === 0 || hostname.length > 253) {
+    return false;
+  }
+  return hostname.split(".").every((label) => DNS_LABEL.test(label));
+}
+
+/** Returns the validated, canonicalized bare hostname, or null. */
+export function resolveUpstreamHost(raw) {
   const value = (raw ?? "").trim();
   if (!value) {
     return null;
@@ -46,7 +60,10 @@ function resolveUpstreamHost(raw) {
   if (parsed.hostname !== value.toLowerCase()) {
     return null;
   }
-  return parsed.hostname;
+  // Canonicalize the FQDN trailing dot ("host.example.") so the self-proxy
+  // guard's equality check can't be dodged by a dot that DNS ignores.
+  const hostname = parsed.hostname.replace(/\.$/, "");
+  return isValidDnsHostname(hostname) ? hostname : null;
 }
 
 export default {
