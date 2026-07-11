@@ -41,3 +41,46 @@ jobs:
 
       - name: Auth proxy E2E
         run: npm run test:e2e:proxy
+
+  migrate:
+    name: Apply migrations from empty database
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: voteapp
+          POSTGRES_PASSWORD: voteapp
+          POSTGRES_DB: voteapp
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U voteapp"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Apply all migrations against empty database
+        run: npm run db:migrate
+        env:
+          DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
