@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  resolveHistoricalImportDebugJson,
   resolveReviewApproveFailureDebugJson,
   stageManualElectionPayload,
 } from "../../src/scripts/injectManualElections.js";
@@ -41,6 +42,27 @@ describe("resolveReviewApproveFailureDebugJson", () => {
     expect(() =>
       resolveReviewApproveFailureDebugJson({ review_decision: "reject", review_reason: "no" }, true)
     ).toThrow('--review-approve requires the payload to carry review_decision: "approve"');
+  });
+});
+
+describe("resolveHistoricalImportDebugJson", () => {
+  it("requires explicit review approval", () => {
+    expect(() => resolveHistoricalImportDebugJson({}, true)).toThrow(
+      '--historical requires the payload to carry review_decision: "approve"'
+    );
+    expect(() =>
+      resolveHistoricalImportDebugJson({ review_decision: "approve", review_reason: " " }, true)
+    ).toThrow("--historical requires a non-empty payload review_reason");
+  });
+
+  it("stamps an approved historical import", () => {
+    const json = resolveHistoricalImportDebugJson(
+      { review_decision: "approve", review_reason: "official dated result verified" },
+      true
+    );
+    const parsed = JSON.parse(json!) as Record<string, unknown>;
+    expect(parsed.historical_import_approved).toBe(true);
+    expect(typeof parsed.historical_import_approved_at).toBe("string");
   });
 });
 

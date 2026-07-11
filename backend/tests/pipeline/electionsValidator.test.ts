@@ -256,6 +256,55 @@ describe("runElectionsValidator", () => {
     expect(softFailCall).toBeUndefined();
   });
 
+  it("accepts verified historical dates only when manual import is explicitly approved", async () => {
+    const payload = {
+      district_id: "d-lausd",
+      district_name: "Los Angeles Unified School District",
+      district_type: "school_unified",
+      state: "CA",
+      review_decision: "approve",
+      review_reason: "official election schedule verified",
+      entries: [
+        {
+          official_ballot_title: "Member of the Board of Education, District 6",
+          election_date: "2000-06-06",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: false,
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:lausd-historical",
+            payload,
+            status: "pending",
+            run_id: "run_lausd_historical",
+            failure_debug: null,
+            ai_raw_debug: { manual_research: true, historical_import_approved: true },
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const rejectionCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("election_date is too far in the past")
+    );
+    expect(rejectionCall).toBeUndefined();
+  });
+
   it("soft-fails 'Judge of the Superior Court' in a Pennsylvania county, where the Superior Court is statewide appellate", async () => {
     const payload = {
       district_id: "d-pa",

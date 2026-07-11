@@ -50,6 +50,7 @@ type StagingRow = {
   run_id: string | null;
   reason: string | null;
   failure_debug: unknown;
+  ai_raw_debug: unknown;
   schema_version: string | null;
 };
 
@@ -72,6 +73,12 @@ function parseSoftRetryCount(failureDebug: unknown): number {
   }
   const raw = failureDebug.soft_retry_count;
   return typeof raw === "number" && Number.isFinite(raw) && raw >= 0 ? Math.floor(raw) : 0;
+}
+
+function isHistoricalImportApproved(aiRawDebug: unknown): boolean {
+  return isObjectRecord(aiRawDebug) &&
+    aiRawDebug.manual_research === true &&
+    aiRawDebug.historical_import_approved === true;
 }
 
 function normalize(text: string): string {
@@ -342,14 +349,14 @@ function filterPresidentialEntries(payload: ElectionEnrichedPayload): Presidenti
   };
 }
 
-function validateScope(payload: ElectionEnrichedPayload): ValidationResult {
+function validateScope(payload: ElectionEnrichedPayload, allowHistoricalDate: boolean): ValidationResult {
   const reasons: string[] = [];
   let severity: ValidationSeverity = "pass";
   const todayUtc = currentUtcDateYmd();
   const oldestAllowedDate = utcDateYmdDaysAgo(1);
 
   for (const entry of payload.entries) {
-    if (entry.election_date < oldestAllowedDate) {
+    if (!allowHistoricalDate && entry.election_date < oldestAllowedDate) {
       return {
         severity: "hard_fail",
         reasons: [
@@ -396,7 +403,7 @@ async function ensureConsumerGroup(redis: ReturnType<typeof createClient>): Prom
 async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow | null> {
   const result = await pool.query<StagingRow>(
     `
-      SELECT ingest_key, payload, status, run_id, reason, failure_debug, schema_version
+      SELECT ingest_key, payload, status, run_id, reason, failure_debug, schema_version, ai_raw_debug
       FROM staging_items
       WHERE ingest_key = $1
         AND item_type = $2
@@ -606,7 +613,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
             continue;
           }
 
-          const validation = validateScope(payloadForValidation);
+          const validation = validateScope(payloadForValidation, isHistoricalImportApproved(row.ai_raw_debug));
 
           if (validation.severity === "hard_fail") {
             const reason = `hard_fail: ${validation.reasons.join("; ")}`;
