@@ -65,6 +65,21 @@ plans. Consequences, in order of urgency:
    (paid-only service types). Uncomment and re-sync after billing exists.
    Until then: no digest/alert/reminder emails (SES is sandboxed anyway)
    and BullMQ schedules accumulate unprocessed.
+4. **SSR loaders use the API's PUBLIC hostname** (`API_PUBLIC_HOST` in
+   render.yaml, a `fromService`/`envVarKey` reference to the API's
+   `RENDER_EXTERNAL_HOSTNAME` — nothing hardcodes the generated hostname):
+   free instances can send private-network traffic but not receive it, so
+   the API's private hostname is unreachable while `voteapp-api` is free.
+   This deviates from deploy-checklist.md's "never a public URL" guidance
+   by necessity. After upgrading the API, uncomment the
+   `API_INTERNAL_HOSTPORT` block in render.yaml — the loader prefers the
+   private hostport over the public host, so that one edit moves loader
+   traffic onto the private network.
+5. **Cold-start timeout headroom**: `API_LOADER_TIMEOUT_MS=75000` (SSR
+   loaders) and `VITE_API_TIMEOUT_MS=75000` (browser client, baked at
+   build time) ride out the API's ~1-minute free-tier wake-up instead of
+   timing out at the 10s/15s defaults. Drop both once the API is
+   paid/always-on.
 
 ## Platform notes
 

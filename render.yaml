@@ -84,12 +84,36 @@ services:
         - package-lock.json
         - render.yaml
     envVars:
-      # Render private-network address of the API service; loader fetches
-      # never leave Render's network. Render appends a per-service suffix to
-      # the internal hostname (this deploy got voteapp-api-pzns), so this is
-      # the actual assigned host, not the bare service name.
-      - key: API_INTERNAL_URL
-        value: http://voteapp-api-pzns:10000
+      # FREE-TIER CONSTRAINT: free web services can SEND private-network
+      # requests but cannot RECEIVE them, so voteapp-api's private hostname
+      # is unreachable until it moves to a paid instance type. Loaders use
+      # the API's public hostname instead, resolved by Render itself
+      # (RENDER_EXTERNAL_HOSTNAME via fromService/envVarKey) — nothing
+      # hardcodes the generated hostname, so it survives service recreation
+      # and keeps preview environments pointed at their own API.
+      - key: API_PUBLIC_HOST
+        fromService:
+          name: voteapp-api
+          type: web
+          envVarKey: RENDER_EXTERNAL_HOSTNAME
+      # After upgrading voteapp-api to a paid plan, uncomment: the private
+      # hostport outranks API_PUBLIC_HOST in the loader, so this one edit
+      # moves loader traffic onto the private network.
+      # - key: API_INTERNAL_HOSTPORT
+      #   fromService:
+      #     name: voteapp-api
+      #     type: web
+      #     property: hostport
+      # Free instances cold-start (~1 minute) after 15 idle minutes, and the
+      # loaders point at exactly such an instance; without headroom every
+      # wake-up request 504s at the loader's 10s default. Drop both timeout
+      # overrides once the API is paid/always-on.
+      - key: API_LOADER_TIMEOUT_MS
+        value: "75000"
+      # Baked into the browser bundle at build time (Vite): client-side API
+      # calls (address search, auth) need the same cold-start headroom.
+      - key: VITE_API_TIMEOUT_MS
+        value: "75000"
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
         value: CF-Connecting-IP
 

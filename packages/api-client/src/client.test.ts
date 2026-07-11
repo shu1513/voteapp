@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiError, apiRequest, configureApi } from "./client";
+import { ApiError, apiRequest, configureApi, REQUEST_TIMEOUT_MS } from "./client";
 
 function mockFetch(response: {
   ok?: boolean;
@@ -20,8 +20,9 @@ function mockFetch(response: {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
   // Config is module-level; restore the web defaults between tests.
-  configureApi({ baseUrl: "", getAuthHeader: null });
+  configureApi({ baseUrl: "", getAuthHeader: null, requestTimeoutMs: REQUEST_TIMEOUT_MS });
 });
 
 describe("apiRequest", () => {
@@ -129,6 +130,35 @@ describe("apiRequest", () => {
     await apiRequest("/api/me");
 
     expect(fetchMock).toHaveBeenCalledWith("https://api.example.com/api/me", expect.anything());
+  });
+
+  it("uses the default request timeout when none is configured", async () => {
+    const timeoutSpy = vi.spyOn(AbortSignal, "timeout");
+    mockFetch({ jsonBody: { ok: true } });
+
+    await apiRequest("/api/me");
+
+    expect(timeoutSpy).toHaveBeenCalledWith(REQUEST_TIMEOUT_MS);
+  });
+
+  it("applies a configured request timeout (free-tier cold-start headroom)", async () => {
+    const timeoutSpy = vi.spyOn(AbortSignal, "timeout");
+    mockFetch({ jsonBody: { ok: true } });
+    configureApi({ requestTimeoutMs: 75_000 });
+
+    await apiRequest("/api/me");
+
+    expect(timeoutSpy).toHaveBeenCalledWith(75_000);
+  });
+
+  it("falls back to the default timeout on invalid configured values", async () => {
+    const timeoutSpy = vi.spyOn(AbortSignal, "timeout");
+    mockFetch({ jsonBody: { ok: true } });
+    configureApi({ requestTimeoutMs: Number.NaN });
+
+    await apiRequest("/api/me");
+
+    expect(timeoutSpy).toHaveBeenCalledWith(REQUEST_TIMEOUT_MS);
   });
 
   it("attaches the configured auth header, resolving async providers", async () => {

@@ -49,15 +49,27 @@ type ApiClientConfig = {
    * web frontend authenticates with the httpOnly cookie instead.
    */
   getAuthHeader: (() => string | null | Promise<string | null>) | null;
+  /**
+   * Per-request timeout ceiling. The default suits an always-on API; a
+   * deployment whose API cold-starts from idle (e.g. a free-tier instance
+   * that takes ~a minute to wake) raises it so requests ride out the wake
+   * instead of failing at the ceiling.
+   */
+  requestTimeoutMs: number;
 };
 
-const config: ApiClientConfig = { baseUrl: "", getAuthHeader: null };
+const config: ApiClientConfig = { baseUrl: "", getAuthHeader: null, requestTimeoutMs: REQUEST_TIMEOUT_MS };
 
 /** Platform setup, called once at app start; web apps need no call at all. */
 export function configureApi(overrides: Partial<ApiClientConfig>): void {
   Object.assign(config, overrides);
   // A trailing slash would produce "https://host//api/..." on every request.
   config.baseUrl = config.baseUrl.replace(/\/+$/, "");
+  // Callers often derive this from an env string; a NaN or nonpositive value
+  // would silently disable or break the timeout, so fall back to the default.
+  if (!Number.isInteger(config.requestTimeoutMs) || config.requestTimeoutMs <= 0) {
+    config.requestTimeoutMs = REQUEST_TIMEOUT_MS;
+  }
 }
 
 /**
@@ -67,7 +79,8 @@ export function configureApi(overrides: Partial<ApiClientConfig>): void {
  * silently kill features like autocomplete.
  */
 function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal | undefined {
-  const timeout = typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(REQUEST_TIMEOUT_MS) : undefined;
+  const timeout =
+    typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(config.requestTimeoutMs) : undefined;
   if (!callerSignal) {
     return timeout;
   }
