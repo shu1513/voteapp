@@ -42,6 +42,13 @@ export type NewYorkSodaClientOptions = {
   maxPages?: number;
 };
 
+// Socrata rate-limits unauthenticated calls by shared IP pool; production
+// should always set NEW_YORK_SODA_APP_TOKEN (free, not a user credential).
+export function defaultNewYorkSodaClientOptions(): NewYorkSodaClientOptions {
+  const appToken = process.env.NEW_YORK_SODA_APP_TOKEN?.trim();
+  return appToken ? { appToken } : {};
+}
+
 export type NewYorkFilerRecord = {
   filerId: string;
   filerName: string;

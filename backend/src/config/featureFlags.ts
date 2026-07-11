@@ -329,6 +329,17 @@ export function isWashingtonCampaignFinanceSyncEnabled(force = false): boolean {
   );
 }
 
+export function isNewYorkCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("NEW_YORK_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isNewYorkCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isNewYorkCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("NEW_YORK_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isHawaiiCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("HAWAII_CAMPAIGN_FINANCE_ENABLED", false);
 }
