@@ -5,6 +5,8 @@ import {
   formatFinanceCategory,
   formatMoney,
   formatSourceHost,
+  hasFinanceContent,
+  hasOutsideFinanceContent,
 } from "@voteapp/api-client";
 
 // Campaign finance disclosure panel shared by the election page (per
@@ -13,38 +15,9 @@ import {
 // headings say "disclosed" / "reporting", and outside committees are
 // "outside groups" (state terminology differs; not every one is a Super PAC).
 
-/**
- * Whether a summary has anything worth rendering. null money values mean
- * "not reported" and hide; an explicit 0 is a real disclosed amount and
- * counts as content.
- */
-export function hasFinanceContent(summary: FinanceSummary | null | undefined): summary is FinanceSummary {
-  if (!summary) {
-    return false;
-  }
-  const direct = summary.direct_campaign;
-  return (
-    direct.total_raised !== null ||
-    direct.total_spent !== null ||
-    direct.cash_on_hand !== null ||
-    direct.debts_owed !== null ||
-    direct.top_occupations.length > 0 ||
-    direct.top_industries.length > 0 ||
-    hasOutsideContent(summary)
-  );
-}
-
-function hasOutsideContent(summary: FinanceSummary): boolean {
-  const outside = summary.outside_spending;
-  return (
-    outside.support_total !== null ||
-    outside.oppose_total !== null ||
-    outside.top_supporting_groups.length > 0 ||
-    outside.top_opposing_groups.length > 0 ||
-    outside.top_supporting_industries.length > 0 ||
-    outside.top_opposing_industries.length > 0
-  );
-}
+// "Anything to render" logic lives in the shared package (the mobile card
+// uses the same definition); re-exported here for this component's callers.
+export { hasFinanceContent };
 
 function firstSourceUrl(summary: FinanceSummary): string | null {
   const rows: Array<{ source_url: string | null }> = [
@@ -186,7 +159,7 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
       <BreakdownList heading="Top disclosed occupations of direct donors" rows={direct.top_occupations} />
       <BreakdownList heading="Industries represented among direct contributions" rows={direct.top_industries} />
 
-      {hasOutsideContent(summary) ? (
+      {hasOutsideFinanceContent(summary) ? (
         <div className="mt-3">
           <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Outside spending</h4>
           {outside.top_supporting_industries.length > 0 || outside.top_opposing_industries.length > 0 ? (
