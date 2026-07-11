@@ -134,8 +134,31 @@ const FOLLOWABLE_REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 // Keeps a failure reason readable when a hop URL carries a huge query string.
 const REDIRECT_CHAIN_HOP_MAX_LENGTH = 200;
 
+/**
+ * Intermediate redirect targets can carry live credentials the original
+ * citation never contained (presigned S3 signatures, auth codes, session
+ * tokens in query strings, userinfo). The reason string is persisted to
+ * staging failure debug and fed back to AI retries, so every hop is
+ * sanitized to origin + path before it is reported.
+ */
+function sanitizeHopUrlForReason(hopUrl: string): string {
+  let parsed: URL;
+  try {
+    parsed = new URL(hopUrl);
+  } catch {
+    return "[unparseable-url]";
+  }
+  parsed.username = "";
+  parsed.password = "";
+  parsed.hash = "";
+  const hadQuery = parsed.search.length > 0;
+  parsed.search = "";
+  return hadQuery ? `${parsed.toString()}?[redacted]` : parsed.toString();
+}
+
 function formatRedirectChain(hops: readonly string[]): string {
   return hops
+    .map((hop) => sanitizeHopUrlForReason(hop))
     .map((hop) =>
       hop.length > REDIRECT_CHAIN_HOP_MAX_LENGTH
         ? `${hop.slice(0, REDIRECT_CHAIN_HOP_MAX_LENGTH)}…`

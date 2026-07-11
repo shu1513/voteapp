@@ -191,6 +191,24 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     });
   });
 
+  it("redacts credentials and query strings from the reported redirect chain", async () => {
+    // The signed hop was never in the citation payload; the reason must not
+    // persist its token, userinfo, or fragment.
+    const signedHop = "https://user:secretpass@files.gov/document.pdf?X-Amz-Signature=secret123#frag";
+    stubFetch(() => ({ status: 302, location: signedHop }));
+
+    const result = await verifyHttpUrlReachability("https://portal.gov/doc");
+
+    expect(result.ok).toBe(false);
+    const reason = (result as { ok: false; reason: string }).reason;
+    expect(reason).toContain("citation URL exceeded the redirect limit");
+    expect(reason).toContain("https://files.gov/document.pdf?[redacted]");
+    expect(reason).not.toContain("secret123");
+    expect(reason).not.toContain("secretpass");
+    expect(reason).not.toContain("X-Amz-Signature");
+    expect(reason).not.toContain("#frag");
+  });
+
   it("resolves relative Location headers against the current hop", async () => {
     const { calls } = stubFetch((_method, url) =>
       url.endsWith("/start") ? { status: 302, location: "/moved/here" } : { status: 200 }
