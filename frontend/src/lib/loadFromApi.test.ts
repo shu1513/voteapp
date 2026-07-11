@@ -50,6 +50,21 @@ describe("loadFromApi", () => {
     expect(fetchMock.mock.calls[0][0]).toBe("https://api.example.com/api/elections/e-1");
   });
 
+  it("strips trailing slashes from either base so paths never double-slash", async () => {
+    vi.stubEnv("API_INTERNAL_URL", "https://api.example.com/");
+    const fetchMock = stubFetch(async () => ({ ok: true, status: 200, json: async () => ({}) }));
+
+    await loadFromApi("/api/elections/e-1", incoming());
+
+    expect(fetchMock.mock.calls[0][0]).toBe("https://api.example.com/api/elections/e-1");
+
+    vi.stubEnv("API_INTERNAL_URL", "");
+    vi.stubEnv("API_INTERNAL_HOSTPORT", "voteapp-api-abcd:10000/");
+    await loadFromApi("/api/elections/e-1", incoming());
+
+    expect(fetchMock.mock.calls[1][0]).toBe("http://voteapp-api-abcd:10000/api/elections/e-1");
+  });
+
   it("relays the trusted client-IP header when configured and present", async () => {
     vi.stubEnv("ADDRESS_API_TRUSTED_CLIENT_IP_HEADER", "x-real-client-ip");
     const fetchMock = stubFetch(async () => ({ ok: true, status: 200, json: async () => ({}) }));

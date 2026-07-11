@@ -44,13 +44,16 @@ function rethrowTimeoutAs504(error: unknown): never {
  * 3. Loopback default for local dev.
  */
 function resolveApiBase(): string {
+  // Paths are appended verbatim and always start with "/"; a trailing slash
+  // on either env var would produce "//api/..." — which the API server's
+  // exact path matching 404s — so strip it rather than 404 every loader.
   const explicitUrl = process.env.API_INTERNAL_URL;
   if (explicitUrl) {
-    return explicitUrl;
+    return explicitUrl.replace(/\/+$/, "");
   }
   const hostport = process.env.API_INTERNAL_HOSTPORT;
   if (hostport) {
-    return `http://${hostport}`;
+    return `http://${hostport.replace(/\/+$/, "")}`;
   }
   return "http://127.0.0.1:3001";
 }
