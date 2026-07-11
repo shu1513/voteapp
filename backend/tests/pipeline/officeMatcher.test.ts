@@ -78,6 +78,45 @@ describe("OfficeMatcher", () => {
     expect(result.officeId).not.toBe("office-county-judge-judicial");
   });
 
+  it("resolves official state schools-chief title variants via the seeded aliases", async () => {
+    // Guards the normalizer-parity invariant for migration 164's aliases: the
+    // seed layer stores normalizeElectionTitleKey(alias) while the matcher
+    // looks titles up under its own normalization — if the two ever diverge
+    // for these official ballot titles (GA/SC/WI-CA forms), the alias silently
+    // stops matching and the shell strands with office_id = NULL again.
+    const superintendentOfficeId = "office-superintendent-of-public-instruction";
+    const aliasTitles = [
+      "State School Superintendent",
+      "State Superintendent of Public Instruction",
+      "State Superintendent of Education",
+    ];
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        statewide: aliasTitles.map((title) => ({
+          office_id: superintendentOfficeId,
+          normalized_alias: normalizeElectionTitleKey(title),
+        })),
+      },
+      officesByScope: {
+        statewide: [
+          { id: superintendentOfficeId, canonical_name: "Superintendent of Public Instruction" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    for (const title of aliasTitles) {
+      const result = await matcher.resolve({
+        scope: "statewide",
+        districtName: "Georgia",
+        state: "GA",
+        officialBallotTitle: title,
+      });
+      expect(result.officeId).toBe(superintendentOfficeId);
+      expect(result.method).toBe("alias_exact");
+    }
+  });
+
   it("still honors a judge-office alias when the entry family is judicial", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: {

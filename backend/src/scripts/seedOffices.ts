@@ -453,6 +453,21 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
   {
     scope: "statewide",
+    officeCanonicalName: "Superintendent of Public Instruction",
+    aliasText: "State School Superintendent",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Superintendent of Public Instruction",
+    aliasText: "State Superintendent of Public Instruction",
+  },
+  {
+    scope: "statewide",
+    officeCanonicalName: "Superintendent of Public Instruction",
+    aliasText: "State Superintendent of Education",
+  },
+  {
+    scope: "statewide",
     officeCanonicalName: "State Board of Equalization Member",
     aliasText: "State Board of Equalization Member",
   },
