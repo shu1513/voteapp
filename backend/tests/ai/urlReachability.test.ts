@@ -183,7 +183,12 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     const result = await verifyHttpUrlReachability("https://example.gov/loop");
 
     expect(calls.length).toBe(6);
-    expect(result).toEqual({ ok: false, reason: "citation URL exceeded the redirect limit" });
+    // The reason names every walked hop so the terminal target is diagnosable.
+    const hop = "https://example.gov/loop";
+    expect(result).toEqual({
+      ok: false,
+      reason: `citation URL exceeded the redirect limit (chain: ${Array(7).fill(hop).join(" -> ")})`,
+    });
   });
 
   it("resolves relative Location headers against the current hop", async () => {
