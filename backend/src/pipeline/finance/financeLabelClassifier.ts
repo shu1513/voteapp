@@ -149,6 +149,10 @@ const EXACT_ORGANIZATION_RULES = new Map<string, ClassificationRule>([
   ["MOUNTAIRE", { industrySlug: "agriculture_and_food", confidence: "high", name: "organization_exact_mountaire" }],
   ["MOUNTAIRE FARMS", { industrySlug: "agriculture_and_food", confidence: "high", name: "organization_exact_mountaire_farms" }],
   ["AMERICAN AIRLINES", { industrySlug: "transportation", confidence: "high", name: "organization_exact_american_airlines" }],
+  // Exact rules beat the generic TECHNOLOGIES pattern, which would misfile rideshare companies as technology.
+  ["UBER", { industrySlug: "transportation", confidence: "high", name: "organization_exact_uber" }],
+  ["UBER TECHNOLOGIES", { industrySlug: "transportation", confidence: "high", name: "organization_exact_uber_technologies" }],
+  ["LYFT", { industrySlug: "transportation", confidence: "high", name: "organization_exact_lyft" }],
   ["SOUTHERN WASTE SYSTEMS", { industrySlug: "waste_management", confidence: "medium", name: "organization_exact_southern_waste_systems" }],
   ["HENDRICKS HOLDING", { industrySlug: "construction", confidence: "medium", name: "organization_exact_hendricks_holding" }],
   ["KY CHAMBER ADVOCACY COMMITTEE", { industrySlug: "business_associations", confidence: "high", name: "organization_exact_ky_chamber_advocacy" }],

@@ -170,6 +170,28 @@ describe("financeLabelClassifier", () => {
       matchedRule: "organization_exact_american_airlines",
     });
 
+    // "Uber Technologies Inc." must not fall through to the generic TECHNOLOGIES pattern (technology).
+    expect(classifyFinanceLabel({ rawLabel: "Uber Technologies Inc.", labelType: "donor" })).toMatchObject({
+      normalizedLabel: "UBER TECHNOLOGIES",
+      industrySlug: "transportation",
+      confidence: "high",
+      matchedRule: "organization_exact_uber_technologies",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Uber", labelType: "employer" })).toMatchObject({
+      normalizedLabel: "UBER",
+      industrySlug: "transportation",
+      confidence: "high",
+      matchedRule: "organization_exact_uber",
+    });
+
+    expect(classifyFinanceLabel({ rawLabel: "Lyft, Inc.", labelType: "donor" })).toMatchObject({
+      normalizedLabel: "LYFT",
+      industrySlug: "transportation",
+      confidence: "high",
+      matchedRule: "organization_exact_lyft",
+    });
+
     expect(classifyFinanceLabel({ rawLabel: "Haworth Inc.", labelType: "employer" })).toMatchObject({
       normalizedLabel: "HAWORTH",
       industrySlug: "manufacturing",
