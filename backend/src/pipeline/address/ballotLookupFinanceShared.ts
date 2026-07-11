@@ -57,6 +57,7 @@ export type BallotLookupFinanceSummary = {
     | "NEBRASKA_NADC"
     | "NEW_JERSEY_ELEC"
     | "NEW_MEXICO_CFIS"
+    | "NEW_YORK_SODA"
     | "OKLAHOMA_GUARDIAN"
     | "TEXAS_TEC"
     | "FLORIDA_DOS"
