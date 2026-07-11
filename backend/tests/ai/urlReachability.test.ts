@@ -51,33 +51,40 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     vi.unstubAllGlobals();
   });
 
-  function stubFetch(handler: (method: string) => { status: number }) {
+  function stubFetch(handler: (method: string) => { status: number; finalUrl?: string }) {
     const calls: string[] = [];
-    vi.stubGlobal("fetch", async (url: string, init?: { method?: string }) => {
+    const signals: (AbortSignal | undefined)[] = [];
+    vi.stubGlobal("fetch", async (url: string, init?: { method?: string; signal?: AbortSignal }) => {
       const method = init?.method ?? "GET";
       calls.push(method);
-      const { status } = handler(method);
+      signals.push(init?.signal);
+      const { status, finalUrl } = handler(method);
       return {
         ok: status >= 200 && status < 300,
         status,
-        url,
+        url: finalUrl ?? url,
         body: null,
       } as Response;
     });
-    return calls;
+    return { calls, signals };
   }
 
   it("accepts a URL whose host answers HEAD 404 but GET 200 (CivicPlus DocumentCenter)", async () => {
-    const calls = stubFetch((method) => ({ status: method === "HEAD" ? 404 : 200 }));
+    const { calls, signals } = stubFetch((method) => ({ status: method === "HEAD" ? 404 : 200 }));
 
     const result = await verifyHttpUrlReachability("https://ropl.org/DocumentCenter/View/33411/Minutes");
 
     expect(calls).toEqual(["HEAD", "GET"]);
     expect(result.ok).toBe(true);
+    // The GET runs on its own AbortController so a slow-failing HEAD cannot
+    // starve its timeout budget.
+    expect(signals[0]).toBeDefined();
+    expect(signals[1]).toBeDefined();
+    expect(signals[1]).not.toBe(signals[0]);
   });
 
   it("still retries GET on method-not-allowed hosts", async () => {
-    const calls = stubFetch((method) => ({ status: method === "HEAD" ? 405 : 200 }));
+    const { calls } = stubFetch((method) => ({ status: method === "HEAD" ? 405 : 200 }));
 
     const result = await verifyHttpUrlReachability("https://example.gov/doc");
 
@@ -86,7 +93,7 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
   });
 
   it("fails with the GET status when both methods fail", async () => {
-    const calls = stubFetch(() => ({ status: 404 }));
+    const { calls } = stubFetch(() => ({ status: 404 }));
 
     const result = await verifyHttpUrlReachability("https://example.gov/really-gone");
 
@@ -95,7 +102,7 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
   });
 
   it("does not issue a GET when HEAD already succeeded", async () => {
-    const calls = stubFetch(() => ({ status: 200 }));
+    const { calls } = stubFetch(() => ({ status: 200 }));
 
     const result = await verifyHttpUrlReachability("https://example.gov/fine");
 
@@ -103,8 +110,20 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     expect(result.ok).toBe(true);
   });
 
-  it("does not issue a GET when the HEAD status is explicitly allowed", async () => {
-    const calls = stubFetch(() => ({ status: 403 }));
+  it("does not issue a GET when the failed HEAD's redirect chain ended on a blocked/private host", async () => {
+    const { calls } = stubFetch((method) => ({
+      status: method === "HEAD" ? 404 : 200,
+      finalUrl: "http://127.0.0.1:8080/internal-admin",
+    }));
+
+    const result = await verifyHttpUrlReachability("https://example.gov/redirects-internally");
+
+    expect(calls).toEqual(["HEAD"]);
+    expect(result).toEqual({ ok: false, reason: "citation URL points to a blocked/private host" });
+  });
+
+  it("does not issue a GET when the HEAD status is in the default allowlist", async () => {
+    const { calls } = stubFetch(() => ({ status: 403 }));
 
     const result = await verifyHttpUrlReachability("https://example.gov/anti-bot");
 

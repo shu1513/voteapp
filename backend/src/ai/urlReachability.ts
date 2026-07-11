@@ -165,11 +165,31 @@ export async function verifyHttpUrlReachability(
       } catch {
         // Best effort.
       }
-      response = await fetch(normalizedInputUrl, {
-        method: "GET",
-        redirect: "follow",
-        signal: controller.signal,
-      });
+      // SSRF guard: HEAD already followed redirects, so if its chain ended
+      // on a blocked/private destination, fail here instead of repeating the
+      // request as a GET against that destination.
+      const headFinalUrl = normalizeHttpUrl(response.url || normalizedInputUrl);
+      if (!headFinalUrl) {
+        return { ok: false, reason: "citation final URL is invalid after redirects" };
+      }
+      const headFinalSafety = await validateParsedUrlSafety(headFinalUrl);
+      if (headFinalSafety) {
+        return headFinalSafety;
+      }
+      // The GET gets its own timeout window: a slow-failing HEAD would
+      // otherwise leave the shared timer with almost no budget and surface a
+      // misleading timeout instead of a status failure.
+      const getController = new AbortController();
+      const getTimeout = setTimeout(() => getController.abort(), timeoutMs);
+      try {
+        response = await fetch(normalizedInputUrl, {
+          method: "GET",
+          redirect: "follow",
+          signal: getController.signal,
+        });
+      } finally {
+        clearTimeout(getTimeout);
+      }
     }
 
     if (!response.ok && !allowStatusCodes.has(response.status)) {
