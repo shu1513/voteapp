@@ -31,9 +31,13 @@ import {
 } from "./manualResearchRepairReport.js";
 import {
   SWEEP_COMPLETENESS_GAP_IDS,
+  assertedSweepCompletenessGapIds,
+  deleteSweepConfirmation,
   parseSweepEvidencePayload,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
+  upsertSweepConfirmation,
+  type SweepEvidenceEntry,
 } from "./candidateRecordSweepEvidence.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
@@ -461,7 +465,7 @@ async function main(): Promise<void> {
         recordCount: validatedRecords.records.length,
         confirmedGapIds,
       }) || qualityGaps.some((gap) => SWEEP_COMPLETENESS_GAP_IDS.has(gap.id));
-    let sweepEvidenceEntryCount: number | null = null;
+    let sweepEvidenceEntries: SweepEvidenceEntry[] | null = null;
     if (evidenceIsRequired) {
       if (!evidenceFile) {
         throw sweepEvidenceMissingError("candidate-records");
@@ -470,8 +474,9 @@ async function main(): Promise<void> {
       if (!parsedEvidence.ok) {
         throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
       }
-      sweepEvidenceEntryCount = parsedEvidence.entries.length;
+      sweepEvidenceEntries = parsedEvidence.entries;
     }
+    const sweepEvidenceEntryCount = sweepEvidenceEntries ? sweepEvidenceEntries.length : null;
 
     if (repairReportFile && qualityGaps.length > 0) {
       await writeRecordsRepairReport({
@@ -597,6 +602,26 @@ async function main(): Promise<void> {
       // concurrent worker may hold.
       const researchedThrough = new Date();
       await markCandidateRecordsSearchCompleted(client, candidateId, researchedThrough, { preserveClaim: true });
+      // Persist the validated completeness confirmation so
+      // manual:records:audit can separate this evidence-backed confirmed
+      // null from a skipped sweep.
+      if (sweepEvidenceEntries) {
+        await upsertSweepConfirmation(client, {
+          candidateId,
+          confirmedGapIds: assertedSweepCompletenessGapIds({
+            recordCount: validatedRecords.records.length,
+            confirmedGapIds,
+            qualityGapIds: qualityGaps.map((gap) => gap.id),
+          }),
+          entries: sweepEvidenceEntries,
+          contextType: "election",
+          contextId: electionId,
+        });
+      } else {
+        // This write found real stance-labeled records; drop any earlier
+        // completeness confirmation it supersedes.
+        await deleteSweepConfirmation(client, candidateId);
+      }
       await client.query("COMMIT");
 
       console.log(

@@ -3,9 +3,13 @@ import { describe, expect, it } from "vitest";
 import {
   SWEEP_COMPLETENESS_GAP_IDS,
   SWEEP_EVIDENCE_MIN_ENTRIES,
+  assertedSweepCompletenessGapIds,
+  deleteSweepConfirmation,
   parseSweepEvidencePayload,
   sweepEvidenceRequired,
+  upsertSweepConfirmation,
 } from "../../src/scripts/candidateRecordSweepEvidence.js";
+import { isConfirmedNull } from "../../src/scripts/auditCandidateRecordsCompleteness.js";
 import { buildCandidateRecordQualityGaps } from "../../src/scripts/writeManualCandidateRecords.js";
 
 describe("sweepEvidenceRequired", () => {
@@ -159,5 +163,132 @@ describe("neutral-only writes trigger the evidence guard via quality gaps", () =
       labels: [{ research_area_slug: "healthcare_affordability" }],
     });
     expect(gaps.some((gap) => SWEEP_COMPLETENESS_GAP_IDS.has(gap.id))).toBe(false);
+  });
+});
+
+describe("assertedSweepCompletenessGapIds", () => {
+  it("implies no_records_found for a zero-record payload without any flag", () => {
+    expect(
+      assertedSweepCompletenessGapIds({ recordCount: 0, confirmedGapIds: new Set(), qualityGapIds: [] })
+    ).toEqual(["candidate_records.no_records_found"]);
+  });
+
+  it("collects the only_general_labels claim from either the flag or the detected quality gap", () => {
+    expect(
+      assertedSweepCompletenessGapIds({
+        recordCount: 2,
+        confirmedGapIds: new Set(["candidate_records.only_general_labels"]),
+        qualityGapIds: [],
+      })
+    ).toEqual(["candidate_records.only_general_labels"]);
+    expect(
+      assertedSweepCompletenessGapIds({
+        recordCount: 2,
+        confirmedGapIds: new Set(),
+        qualityGapIds: ["candidate_records.only_general_labels"],
+      })
+    ).toEqual(["candidate_records.only_general_labels"]);
+  });
+
+  it("ignores non-completeness gap ids and dedupes overlapping claims", () => {
+    expect(
+      assertedSweepCompletenessGapIds({
+        recordCount: 0,
+        confirmedGapIds: new Set(["candidate_records.no_records_found", "candidate_records.payload"]),
+        qualityGapIds: ["candidate_records.no_records_found", "candidate_records.dropped.0"],
+      })
+    ).toEqual(["candidate_records.no_records_found"]);
+  });
+});
+
+describe("upsertSweepConfirmation", () => {
+  it("writes one upsert row keyed by candidate with the evidence entries as jsonb", async () => {
+    const calls: { text: string; values: unknown[] }[] = [];
+    const client = {
+      query: async (text: string, values?: unknown[]) => {
+        calls.push({ text, values: values ?? [] });
+        return { rows: [], rowCount: 1 } as never;
+      },
+    };
+
+    await upsertSweepConfirmation(client as never, {
+      candidateId: "candidate-1",
+      confirmedGapIds: ["candidate_records.no_records_found"],
+      entries: [
+        { question: "votes?", finding: "nothing found" },
+        { question: "litigation?", finding: "nothing found" },
+        { question: "endorsements?", finding: "nothing found" },
+      ],
+      contextType: "election",
+      contextId: "election-1",
+    });
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.text).toContain("INSERT INTO public.candidate_record_sweep_confirmations");
+    expect(calls[0]!.text).toContain("ON CONFLICT (candidate_id)");
+    expect(calls[0]!.values[0]).toBe("candidate-1");
+    expect(calls[0]!.values[1]).toEqual(["candidate_records.no_records_found"]);
+    expect(JSON.parse(calls[0]!.values[2] as string)).toEqual({
+      entries: [
+        { question: "votes?", finding: "nothing found" },
+        { question: "litigation?", finding: "nothing found" },
+        { question: "endorsements?", finding: "nothing found" },
+      ],
+    });
+    expect(calls[0]!.values[3]).toBe("election");
+    expect(calls[0]!.values[4]).toBe("election-1");
+  });
+});
+
+describe("deleteSweepConfirmation", () => {
+  it("removes the candidate's confirmation row", async () => {
+    const calls: { text: string; values: unknown[] }[] = [];
+    const client = {
+      query: async (text: string, values?: unknown[]) => {
+        calls.push({ text, values: values ?? [] });
+        return { rows: [], rowCount: 1 } as never;
+      },
+    };
+
+    await deleteSweepConfirmation(client as never, "candidate-1");
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.text).toContain("DELETE FROM public.candidate_record_sweep_confirmations");
+    expect(calls[0]!.values).toEqual(["candidate-1"]);
+  });
+});
+
+describe("audit isConfirmedNull", () => {
+  it("accepts a no_records_found confirmation that covers the latest search", () => {
+    expect(
+      isConfirmedNull({
+        confirmed_gap_ids: ["candidate_records.no_records_found"],
+        confirmation_covers_latest_search: true,
+      })
+    ).toBe(true);
+  });
+
+  it("rejects a stale confirmation — a later search re-stamped past the evidence", () => {
+    expect(
+      isConfirmedNull({
+        confirmed_gap_ids: ["candidate_records.no_records_found"],
+        confirmation_covers_latest_search: false,
+      })
+    ).toBe(false);
+  });
+
+  it("rejects a candidate with no confirmation at all", () => {
+    expect(
+      isConfirmedNull({ confirmed_gap_ids: null, confirmation_covers_latest_search: null })
+    ).toBe(false);
+  });
+
+  it("rejects a current confirmation that never asserted no_records_found", () => {
+    expect(
+      isConfirmedNull({
+        confirmed_gap_ids: ["candidate_records.only_general_labels"],
+        confirmation_covers_latest_search: true,
+      })
+    ).toBe(false);
   });
 });

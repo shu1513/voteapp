@@ -78,11 +78,19 @@ const REQUIRED_COLUMNS: RequiredColumn[] = [
   { table: "manual_research_deferrals", column: "resolved_at" },
   { table: "manual_research_deferrals", column: "resolution_note" },
   { table: "manual_research_deferrals", column: "updated_at" },
+  // Sweep-confirmation columns the records writers persist and the audit reads.
+  { table: "candidate_record_sweep_confirmations", column: "candidate_id" },
+  { table: "candidate_record_sweep_confirmations", column: "confirmed_gap_ids" },
+  { table: "candidate_record_sweep_confirmations", column: "evidence" },
+  { table: "candidate_record_sweep_confirmations", column: "context_type" },
+  { table: "candidate_record_sweep_confirmations", column: "context_id" },
+  { table: "candidate_record_sweep_confirmations", column: "confirmed_at" },
 ];
 
 const REQUIRED_TABLES: RequiredTable[] = [
   { table: "user_candidate_follow_notification_events" },
   { table: "manual_research_deferrals" },
+  { table: "candidate_record_sweep_confirmations" },
 ];
 
 const REQUIRED_UNIQUE_OBJECTS: RequiredUniqueObject[] = [
