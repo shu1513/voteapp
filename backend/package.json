@@ -187,6 +187,7 @@
     "new-mexico-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertNewMexicoCandidateFinanceSyncScheduler.ts",
     "new-mexico-candidates:finance:scheduler:worker": "tsx src/scripts/runNewMexicoCandidateFinanceSyncSchedulerWorker.ts",
     "new-mexico-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerNewMexicoCandidateFinanceSync.ts",
+    "new-york-candidates:finance:soda-probe": "tsx src/scripts/probeNewYorkSodaConnectivity.ts",
     "minnesota-candidates:finance:sync-due": "tsx src/scripts/syncDueMinnesotaCandidateFinance.ts",
     "minnesota-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertMinnesotaCandidateFinanceSyncScheduler.ts",
     "minnesota-candidates:finance:scheduler:worker": "tsx src/scripts/runMinnesotaCandidateFinanceSyncSchedulerWorker.ts",
