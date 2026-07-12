@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { isLosAngelesCityFinanceEligibleElection } from "../../../src/pipeline/losAngelesCityFinance/losAngelesCityFinanceEligibleOffices.js";
+import {
+  isLosAngelesCityFinanceEligibleElection,
+  LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_NAMES,
+  LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  toLosAngelesEthicsOfficeName,
+} from "../../../src/pipeline/losAngelesCityFinance/losAngelesCityFinanceEligibleOffices.js";
 
 describe("Los Angeles City finance eligibility", () => {
   const mayor = {
@@ -9,8 +14,30 @@ describe("Los Angeles City finance eligibility", () => {
     officeScope: "place",
     officeCanonicalName: "Mayor",
   };
-  it("accepts only exact Los Angeles Mayor identity", () => {
+  it("accepts exact Los Angeles Phase 2 citywide office identities", () => {
+    expect(LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_NAMES).toEqual([
+      "Mayor",
+      "Municipal Attorney",
+      "Municipal Controller",
+    ]);
+    expect(LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS).toEqual([
+      "place::Mayor",
+      "place::Municipal Attorney",
+      "place::Municipal Controller",
+    ]);
     expect(isLosAngelesCityFinanceEligibleElection(mayor)).toBe(true);
+    expect(
+      isLosAngelesCityFinanceEligibleElection({
+        ...mayor,
+        officeCanonicalName: "Municipal Attorney",
+      }),
+    ).toBe(true);
+    expect(
+      isLosAngelesCityFinanceEligibleElection({
+        ...mayor,
+        officeCanonicalName: "Municipal Controller",
+      }),
+    ).toBe(true);
     expect(
       isLosAngelesCityFinanceEligibleElection({
         ...mayor,
@@ -29,5 +56,32 @@ describe("Los Angeles City finance eligibility", () => {
         districtType: "county",
       }),
     ).toBe(false);
+  });
+
+  it("maps VoteApp canonical names to exact Ethics section names", () => {
+    expect(
+      toLosAngelesEthicsOfficeName({
+        officeScope: "place",
+        officeCanonicalName: "Mayor",
+      }),
+    ).toBe("Mayor");
+    expect(
+      toLosAngelesEthicsOfficeName({
+        officeScope: "place",
+        officeCanonicalName: "Municipal Attorney",
+      }),
+    ).toBe("City Attorney");
+    expect(
+      toLosAngelesEthicsOfficeName({
+        officeScope: "place",
+        officeCanonicalName: "Municipal Controller",
+      }),
+    ).toBe("City Controller");
+    expect(
+      toLosAngelesEthicsOfficeName({
+        officeScope: "place",
+        officeCanonicalName: "City Council Member",
+      }),
+    ).toBeNull();
   });
 });
