@@ -1,0 +1,18 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["TEAMID.com.impactperdollar.voteapp"],
+        "components": [
+          { "/": "/verify-email" },
+          { "/": "/verify-email-change" },
+          { "/": "/reset-password" },
+          { "/": "/ballot" },
+          { "/": "/elections/*" },
+          { "/": "/candidates/*" }
+        ]
+      }
+    ]
+  }
+}
