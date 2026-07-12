@@ -60,3 +60,57 @@ export function useLogout() {
     },
   });
 }
+
+export function useChangePassword() {
+  return useMutation({
+    mutationFn: async (input: { currentPassword: string; newPassword: string }) => {
+      const response = await apiRequest<{ status: string; session_id?: string }>("/api/me/password", {
+        method: "POST",
+        body: { current_password: input.currentPassword, new_password: input.newPassword },
+      });
+      // changePassword rotates every session server-side, including the one
+      // this request authenticated with; the mobile response carries the
+      // replacement id (Phase 0 contract). Not storing it would leave a
+      // revoked Bearer id in the keystore and the next request would 401.
+      if (response.session_id) {
+        try {
+          await setSessionId(response.session_id);
+        } catch {
+          // The password DID change and the old session is already dead —
+          // don't fail the mutation as if nothing happened. Drop the stale
+          // id; the next launch lands signed out and the new password works.
+          await clearSessionId().catch(() => {});
+        }
+      }
+      return response;
+    },
+  });
+}
+
+export function useLogoutAll() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiRequest<{ status: string }>("/api/auth/logout-all", { method: "POST", body: {} }),
+    // Unlike useLogout, clear only on SUCCESS (web parity): if the request
+    // failed the other sessions were NOT revoked, and clearing locally would
+    // dress a failure up as "logged out everywhere".
+    onSuccess: async () => {
+      await clearSessionId().catch(() => {});
+      queryClient.setQueryData(["me"], null);
+      purgeAccountScopedQueries(queryClient);
+    },
+  });
+}
+
+export function useDeleteAccount() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { password: string }) =>
+      apiRequest<{ status: string }>("/api/me", { method: "DELETE", body: { password: input.password } }),
+    onSuccess: async () => {
+      await clearSessionId().catch(() => {});
+      queryClient.setQueryData(["me"], null);
+      purgeAccountScopedQueries(queryClient);
+    },
+  });
+}

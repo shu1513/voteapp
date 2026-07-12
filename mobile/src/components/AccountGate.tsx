@@ -11,12 +11,19 @@ import { VerifyPrompt } from "./VerifyPrompt";
  * loading, identity-fetch failure with retry, signed-out login prompt, and
  * the unverified interstitial. Children render only for a verified user —
  * the same ladder every web account page implements inline.
+ *
+ * `allowUnverified` skips the verify interstitial for screens that mirror
+ * the backend's own gating: profile, password, email change, sessions and
+ * delete all work unverified (fixing a typo or leaving must not require a
+ * verified inbox — same rule as the web settings page).
  */
 export function AccountGate({
   signedOutText,
+  allowUnverified = false,
   children,
 }: {
   signedOutText: string;
+  allowUnverified?: boolean;
   children: (me: Me) => ReactNode;
 }) {
   const router = useRouter();
@@ -55,7 +62,7 @@ export function AccountGate({
       </View>
     );
   }
-  if (!me.email_verified) {
+  if (!me.email_verified && !allowUnverified) {
     return <VerifyPrompt email={me.email} />;
   }
   return <>{children(me)}</>;
