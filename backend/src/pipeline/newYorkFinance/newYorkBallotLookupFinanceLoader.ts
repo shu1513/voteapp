@@ -424,7 +424,7 @@ export async function loadNewYorkCandidateFinanceSummariesByCandidateElection(
       source_url: firstNonEmptySourceUrl(row.source_url, GENERIC_NEW_YORK_SODA_SOURCE_URL),
     });
     map.set(key, list);
-    outsideGroupNameByCandidateElectionCommittee.set(`${key} ${row.committee_id} ${row.support_oppose}`, row.committee_name);
+    outsideGroupNameByCandidateElectionCommittee.set(`${key}\u0000${row.committee_id}\u0000${row.support_oppose}`, row.committee_name);
   }
 
   const supportingIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
@@ -446,7 +446,7 @@ export async function loadNewYorkCandidateFinanceSummariesByCandidateElection(
   >();
   for (const row of outsideDonorEvidenceResult.rows) {
     const candidateKey = candidateElectionKey(row.candidate_id, row.election_id);
-    const evidenceKey = `${candidateKey} ${row.industry_name}`;
+    const evidenceKey = `${candidateKey}\u0000${row.industry_name}`;
     const list = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(evidenceKey) ?? [];
     list.push({
       organization_name: row.organization_name,
@@ -455,7 +455,7 @@ export async function loadNewYorkCandidateFinanceSummariesByCandidateElection(
       contributor_count: parseFinanceCount(row.contributor_count),
       committee_id: row.committee_id,
       committee_name:
-        outsideGroupNameByCandidateElectionCommittee.get(`${candidateKey} ${row.committee_id} ${row.support_oppose}`) ??
+        outsideGroupNameByCandidateElectionCommittee.get(`${candidateKey}\u0000${row.committee_id}\u0000${row.support_oppose}`) ??
         row.committee_name,
       source_url: firstNonEmptySourceUrl(row.source_url, GENERIC_NEW_YORK_SODA_SOURCE_URL),
     });
@@ -471,7 +471,7 @@ export async function loadNewYorkCandidateFinanceSummariesByCandidateElection(
       const contributionSizeBuckets = contributionSizeBucketsByCandidateElection.get(key) ?? [];
       const topOutsideSupportingIndustries = (supportingIndustriesByCandidateElection.get(key) ?? []).map(
         (industry): BallotLookupFinanceOutsideIndustrySupportSummary => {
-          const evidenceKey = `${key} ${industry.category_name}`;
+          const evidenceKey = `${key}\u0000${industry.category_name}`;
           const supportingOrganizations = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(evidenceKey) ?? [];
           return {
             ...industry,

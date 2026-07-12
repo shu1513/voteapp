@@ -63,7 +63,12 @@ describe("syncNewYorkCandidateFinance", () => {
     const db = createMockDb();
     const nyClient = {
       searchAndResolveCandidateCommittee: vi.fn(async () => MATCHED_RESOLUTION),
-      collectOutsideSpending: vi.fn(async () => ({ groups: [CFAR_GROUP], counters: OUTSIDE_COUNTERS })),
+      collectOutsideSpending: vi.fn(async () => ({
+        groups: [CFAR_GROUP],
+        supportTotal: CFAR_GROUP.amount,
+        opposeTotal: 0,
+        counters: OUTSIDE_COUNTERS,
+      })),
       getOutsideGroupFunderBreakdowns: vi.fn(async () => ({
         funders: [
           {
@@ -145,6 +150,8 @@ describe("syncNewYorkCandidateFinance", () => {
       searchAndResolveCandidateCommittee: vi.fn(),
       collectOutsideSpending: vi.fn(async () => ({
         groups: [CFAR_GROUP, { ...CFAR_GROUP, supportOppose: "oppose" as const, amount: 10 }],
+        supportTotal: CFAR_GROUP.amount,
+        opposeTotal: 10,
         counters: OUTSIDE_COUNTERS,
       })),
       getOutsideGroupFunderBreakdowns: vi.fn(async () => ({

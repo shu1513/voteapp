@@ -166,6 +166,7 @@ describe("aggregateNewYorkOutsideSpending", () => {
       ["support", 100],
       ["oppose", 25],
     ]);
+    expect(result).toMatchObject({ supportTotal: 100, opposeTotal: 25 });
   });
 });
 
@@ -202,6 +203,45 @@ describe("collectNewYorkOutsideSpending", () => {
     expect(getParentExpenditures).toHaveBeenCalledWith({ filerId: "590891", transNumbers: ["M-1"] }, {});
     expect(result.groups).toHaveLength(1);
     expect(result.counters.nonIeCommitteeRowCount).toBe(1);
+  });
+
+  it("keeps totals uncapped when maxGroups truncates the persisted groups", async () => {
+    const ieFilers = new Map(
+      Array.from({ length: 3 }, (_unused, index) => {
+        const filerId = String(700000 + index);
+        return [filerId, ieFiler(filerId, `IE Committee ${index}`)] as const;
+      })
+    );
+    const getScheduleRAllocations = vi.fn(async () =>
+      [...ieFilers.keys()].map((filerId, index) =>
+        allocation({
+          filerId,
+          committeeName: `IE Committee ${index}`,
+          filingTransId: `F-${filerId}`,
+          transNumber: `T-${filerId}`,
+          amount: 100 - index,
+        })
+      )
+    );
+    const getFilerRecords = vi.fn(async () => ieFilers);
+    const getParentExpenditures = vi.fn(async () => parents({ "M-1": [F_PARENT] }));
+
+    const result = await collectNewYorkOutsideSpending(
+      {
+        candidateName: "Kathy Hochul",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        maxGroups: 2,
+      },
+      {},
+      { getScheduleRAllocations, getFilerRecords, getParentExpenditures }
+    );
+
+    expect(result.groups).toHaveLength(2);
+    // 100 + 99 + 98 across three groups; the total must not drop the third.
+    expect(result.supportTotal).toBe(297);
+    expect(result.opposeTotal).toBe(0);
   });
 
   it("returns empty for unsupported offices without fetching", async () => {
