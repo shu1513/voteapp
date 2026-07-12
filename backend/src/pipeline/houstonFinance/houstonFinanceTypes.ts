@@ -1,3 +1,5 @@
+import type { HoustonFinanceOfficeTarget } from "./houstonFinanceOfficeTargets.js";
+
 export type HoustonFinanceSourceSystem = "legacy_webforms" | "ethics_efile";
 
 export type HoustonFinanceReportIndexRecord = {
@@ -29,7 +31,7 @@ export type HoustonFinanceParsedReport = {
   index: HoustonFinanceReportIndexRecord;
   candidateName: string;
   electionDate: string;
-  officeSought: string;
+  officeSought: HoustonFinanceOfficeTarget;
   periodStart: string;
   periodEnd: string;
   directContributionTotal: number | null;
