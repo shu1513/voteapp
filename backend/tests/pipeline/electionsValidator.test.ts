@@ -166,6 +166,106 @@ describe("runElectionsValidator", () => {
     expect(softFailCall).toBeUndefined();
   });
 
+  it("accepts bare 'Council Member for District 2' and one-word 'Councilmember' as clear place titles without a review pass", async () => {
+    const payload = {
+      district_id: "d-ftw",
+      district_name: "Fort Worth city, Texas",
+      district_type: "place",
+      state: "TX",
+      entries: [
+        {
+          // Fort Worth's official title omits "City" (live: all ten council
+          // entries soft-failed and needed per-run review approval).
+          official_ballot_title: "Council Member for District 2",
+          election_date: "2099-05-01",
+          race_type: "office",
+          election_stage: "general",
+          sources: ["https://example.org/election"],
+          discovery_contest_family: "non_judicial_office",
+        },
+        {
+          // Flagstaff's one-word official form (live).
+          official_ballot_title: "Councilmember",
+          election_date: "2099-07-21",
+          race_type: "office",
+          election_stage: "primary",
+          sources: ["https://example.org/election"],
+          discovery_contest_family: "non_judicial_office",
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:ftw",
+            payload,
+            status: "pending",
+            run_id: "run_ftw",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
+  it("accepts Illinois' ordinal-only '3RD SENATE' as a clear state_upper title without a review pass", async () => {
+    const payload = {
+      district_id: "d-il-sd3",
+      district_name: "State Senate District 3 (2024), Illinois",
+      district_type: "state_upper",
+      state: "IL",
+      entries: [
+        {
+          // The Illinois State Board of Elections candidate list uses this
+          // form verbatim (live soft-fail).
+          official_ballot_title: "3RD SENATE",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:il-sd3",
+            payload,
+            status: "pending",
+            run_id: "run_il_sd3",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
   it("accepts 'Judge of the Superior Court, Office No. 64' as a clear county title without a review pass", async () => {
     const payload = {
       district_id: "d-la",

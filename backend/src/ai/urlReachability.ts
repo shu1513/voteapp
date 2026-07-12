@@ -218,9 +218,26 @@ async function fetchWithValidatedRedirects(
     } catch {
       return { failure: { ok: false, reason: "citation final URL is invalid after redirects" } };
     }
-    const nextUrl = normalizeHttpUrl(resolvedLocation);
+    // Hop targets keep their trailing slash: many hosts redirect the slashless
+    // path TO the trailing-slash form, so the comparison-oriented default
+    // (stripTrailingSlash) would recreate the slashless URL and walk a
+    // synthetic self-loop until the hop limit (hit live on ordinary readable
+    // pages across four run reports). Normalization here only validates the
+    // scheme and drops the fragment.
+    const nextUrl = normalizeHttpUrl(resolvedLocation, { stripTrailingSlash: false });
     if (!nextUrl) {
       return { failure: { ok: false, reason: "citation final URL is invalid after redirects" } };
+    }
+    // A repeated URL is a genuine redirect cycle (host anti-bot behavior or
+    // scheme oscillation) — fail it immediately with its own reason instead of
+    // burning the remaining hops as "exceeded the redirect limit".
+    if (visitedUrls.includes(nextUrl)) {
+      return {
+        failure: {
+          ok: false,
+          reason: `citation URL redirect loop detected (chain: ${formatRedirectChain([...visitedUrls, nextUrl])})`,
+        },
+      };
     }
     const nextSafety = await validateParsedUrlSafety(nextUrl);
     if (nextSafety) {
