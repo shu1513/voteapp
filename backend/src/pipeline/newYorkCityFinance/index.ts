@@ -1,5 +1,6 @@
 export * from "./newYorkCityCfbArtifactCache.js";
 export * from "./newYorkCityCfbCsv.js";
+export * from "./newYorkCityCfbIndependentSpendingClient.js";
 export * from "./newYorkCityCandidateResolver.js";
 export * from "./newYorkCityCandidateFinanceSync.js";
 export * from "./newYorkCityCandidateFinanceBatchSync.js";
@@ -7,3 +8,5 @@ export * from "./newYorkCityBallotLookupFinanceLoader.js";
 export * from "./newYorkCityDirectContributionAggregator.js";
 export * from "./newYorkCityFinanceEligibleOffices.js";
 export * from "./newYorkCityFinanceWriter.js";
+export * from "./newYorkCityOutsideSpendingAggregator.js";
+export * from "./newYorkCityOutsideGroupFunderAggregator.js";

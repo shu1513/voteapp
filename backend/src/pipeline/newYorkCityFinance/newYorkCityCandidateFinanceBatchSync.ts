@@ -13,6 +13,13 @@ import {
 } from "./newYorkCityCfbCsv.js";
 import { syncNewYorkCityCandidateFinance } from "./newYorkCityCandidateFinanceSync.js";
 import {
+  fetchNewYorkCityCfbIndependentSpending,
+  fetchNewYorkCityCfbIndependentSpenderFunders,
+  resolveNewYorkCityCfbCandidateElectionCycles,
+  type NewYorkCityCfbIndependentSpenderFunderRow,
+  type NewYorkCityCfbIndependentSpendingRow,
+} from "./newYorkCityCfbIndependentSpendingClient.js";
+import {
   resolveNewYorkCityCandidate,
   type NewYorkCityCandidateFinanceResolution,
 } from "./newYorkCityCandidateResolver.js";
@@ -230,6 +237,9 @@ type BatchDataSource = {
   refreshArtifact: typeof refreshNewYorkCityCfbArtifact;
   readAnalysis: typeof readNewYorkCityCfbFinancialAnalysis;
   readContributions: typeof readNewYorkCityCfbContributions;
+  fetchOutsideSpending: typeof fetchNewYorkCityCfbIndependentSpending;
+  fetchOutsideFunders: typeof fetchNewYorkCityCfbIndependentSpenderFunders;
+  resolveOutsideCycles: typeof resolveNewYorkCityCfbCandidateElectionCycles;
   syncCandidate: typeof syncNewYorkCityCandidateFinance;
   recordAttempt: typeof recordNewYorkCityCandidateFinanceAttempt;
 };
@@ -239,6 +249,9 @@ const DEFAULT_DATA_SOURCE: BatchDataSource = {
   refreshArtifact: refreshNewYorkCityCfbArtifact,
   readAnalysis: readNewYorkCityCfbFinancialAnalysis,
   readContributions: readNewYorkCityCfbContributions,
+  fetchOutsideSpending: fetchNewYorkCityCfbIndependentSpending,
+  fetchOutsideFunders: fetchNewYorkCityCfbIndependentSpenderFunders,
+  resolveOutsideCycles: resolveNewYorkCityCfbCandidateElectionCycles,
   syncCandidate: syncNewYorkCityCandidateFinance,
   recordAttempt: recordNewYorkCityCandidateFinanceAttempt,
 };
@@ -375,9 +388,38 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
         resolutions.set(`${row.candidateId}\u0000${row.electionId}`, resolution);
         if (resolution.status === "matched") cfbCandidateIds.add(resolution.cfbCandidateId);
       }
-      const contributionRows: NewYorkCityCfbContributionRow[] = cfbCandidateIds.size
-        ? (await dataSource.readContributions({ filePath: contributionPath, candidateIds: cfbCandidateIds })).rows
-        : [];
+      let contributionRows: NewYorkCityCfbContributionRow[] = [];
+      const outsideByCycle = new Map<string, {
+        spendingRows?: NewYorkCityCfbIndependentSpendingRow[];
+        funderRows?: NewYorkCityCfbIndependentSpenderFunderRow[];
+        error?: unknown;
+      }>();
+      let outsideCycles: Awaited<ReturnType<typeof resolveNewYorkCityCfbCandidateElectionCycles>> | undefined;
+      let outsideCycleError: unknown;
+      if (cfbCandidateIds.size) {
+        contributionRows = (
+          await dataSource.readContributions({ filePath: contributionPath, candidateIds: cfbCandidateIds })
+        ).rows;
+        try {
+          outsideCycles = await dataSource.resolveOutsideCycles({ electionYear, candidateIds: cfbCandidateIds });
+          await Promise.all([...new Set(outsideCycles.resolved.values())].map(async (electionCycle) => {
+            try {
+              const [outsideSpending, outsideFunders] = await Promise.all([
+                dataSource.fetchOutsideSpending({ electionYear, electionCycle }),
+                dataSource.fetchOutsideFunders({ electionYear, electionCycle }),
+              ]);
+              outsideByCycle.set(electionCycle, {
+                spendingRows: outsideSpending.rows,
+                funderRows: outsideFunders.rows,
+              });
+            } catch (error) {
+              outsideByCycle.set(electionCycle, { error });
+            }
+          }));
+        } catch (error) {
+          outsideCycleError = error;
+        }
+      }
       for (const row of yearRows) {
         const resolution = resolutions.get(`${row.candidateId}\u0000${row.electionId}`)!;
         if (resolution.status !== "matched") {
@@ -387,6 +429,17 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
             dryRun: Boolean(input.dryRun) }));
           continue;
         }
+        const electionCycle = outsideCycles?.resolved.get(resolution.cfbCandidateId);
+        const outsideData = electionCycle ? outsideByCycle.get(electionCycle) : undefined;
+        const outsideReason = outsideCycleError
+          ? outsideCycleError instanceof Error ? outsideCycleError.message : String(outsideCycleError)
+          : outsideCycles?.ambiguousCandidateIds.has(resolution.cfbCandidateId)
+            ? `ambiguous election cycle for CFB candidate ${resolution.cfbCandidateId}`
+            : outsideCycles?.missingCandidateIds.has(resolution.cfbCandidateId)
+              ? `no exact election cycle for CFB candidate ${resolution.cfbCandidateId}`
+              : outsideData?.error
+                ? outsideData.error instanceof Error ? outsideData.error.message : String(outsideData.error)
+                : undefined;
         try {
           await dataSource.syncCandidate({
             db: input.db,
@@ -396,12 +449,26 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
             electionYear,
             resolution,
             contributionRows,
+            ...(electionCycle && outsideData?.spendingRows && outsideData.funderRows
+              ? {
+                  outsideElectionCycle: electionCycle,
+                  outsideSpendingRows: outsideData.spendingRows,
+                  outsideFunderRows: outsideData.funderRows,
+                }
+              : {}),
             now,
             dryRun: input.dryRun,
             financeIndustryClassifier: input.financeIndustryClassifier,
             aiClassificationMinAmount: input.aiClassificationMinAmount,
           });
-          results.push({ candidateId: row.candidateId, electionId: row.electionId, status: "synced" });
+          results.push({
+            candidateId: row.candidateId,
+            electionId: row.electionId,
+            status: "synced",
+            ...(outsideReason
+              ? { reason: `outside_spending_unavailable: ${outsideReason}` }
+              : {}),
+          });
         } catch (error) {
           results.push(await recordFailure({
             dataSource,

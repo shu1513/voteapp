@@ -21,9 +21,24 @@ describe("newYorkCityCandidateFinanceSync", () => {
         schedule: "ABC", referenceNumber: "R1", contributorName: "Alex Smith", contributorType: "IND",
         occupation: "Teacher", employer: "NYC DOE", amount: 100, adjustmentType: null,
       }],
+      outsideSpendingRows: [{
+        electionYear: 2025, electionCycle: "2025", spenderId: "Z1", spenderName: "Outside Group", communicationId: "C1",
+        candidateId: "A1", candidateName: "DOE, JANE", allocation: 25, supportOppose: "support",
+      }],
+      outsideFunderRows: [{
+        electionYear: 2025, electionCycle: "2025", spenderId: "Z1", transactionId: "ICONT:R1",
+        funderName: "Business Group", funderType: "CORP", amount: 50,
+      }],
+      outsideElectionCycle: "2025",
       dryRun: true,
     });
-    expect(result).toEqual({ dryRun: true, breakdownsWritten: 0, acceptedContributionRows: 1 });
+    expect(result).toEqual({
+      dryRun: true,
+      breakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideUpdated: true,
+      acceptedContributionRows: 1,
+    });
     expect(db.query).not.toHaveBeenCalled();
     expect(db.connect).not.toHaveBeenCalled();
   });

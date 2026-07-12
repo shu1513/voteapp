@@ -103,6 +103,36 @@ export function parseCsvRecord(text: string): string[] {
   return rows[0] ?? [];
 }
 
+export function parseCsvObjects(input: {
+  text: string;
+  requiredHeaders?: readonly string[];
+}): { rows: CsvObject[]; headers: string[]; malformedRowCount: number } {
+  const state: CsvParserState = { row: [], field: "", inQuotes: false, pendingQuote: false };
+  const rows: CsvObject[] = [];
+  let header: string[] | null = null;
+  let malformedRowCount = 0;
+  const consumeRow = (cells: string[]): void => {
+    if (!cells.some((value) => value.trim().length > 0)) return;
+    if (!header) {
+      header = validateHeader(cells, input.requiredHeaders ?? []);
+      return;
+    }
+    if (cells.length !== header.length) {
+      malformedRowCount += 1;
+      return;
+    }
+    rows.push(toObject(cells, header));
+  };
+  consumeCsvText(state, input.text, true, consumeRow);
+  if (state.inQuotes || state.pendingQuote) throw new Error("CSV has an unterminated quoted field");
+  if (state.field.length > 0 || state.row.length > 0) {
+    state.row.push(state.field);
+    consumeRow(state.row);
+  }
+  if (!header) throw new Error("CSV is empty");
+  return { rows, headers: header, malformedRowCount };
+}
+
 export async function readCsvObjects(input: {
   filePath: string;
   requiredHeaders?: readonly string[];
