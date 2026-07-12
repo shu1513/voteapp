@@ -17,6 +17,7 @@ describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
       expenditureCsvPaths: undefined,
       contributionSourceUrl: undefined,
       expenditureSourceUrl: undefined,
+      normalizedArtifactPath: undefined,
     });
   });
 
@@ -36,6 +37,7 @@ describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
         "--expenditures-csv=/exports/il-exp.csv",
         "--contributions-url=https://example.test/contributions.csv",
         "--expenditures-url=https://example.test/expenditures.csv",
+        "--normalized-artifact=/exports/illinois-normalized.json",
       ])
     ).toEqual({
       dryRun: false,
@@ -50,6 +52,7 @@ describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
       expenditureCsvPaths: ["/exports/il-exp.csv"],
       contributionSourceUrl: "https://example.test/contributions.csv",
       expenditureSourceUrl: "https://example.test/expenditures.csv",
+      normalizedArtifactPath: "/exports/illinois-normalized.json",
     });
   });
 
@@ -76,11 +79,21 @@ describe("upsertIllinoisCandidateFinanceSyncScheduler script", () => {
 
   it("requires contribution artifacts when artifact source flags are provided", () => {
     expect(() => parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(["--expenditures-csv=/exports/il-exp.csv"]))
-      .toThrow("Provide --contributions-csv when using Illinois SBE artifact flags");
+      .toThrow("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
     expect(() =>
       parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs([
         "--contributions-url=https://example.test/contributions.csv",
       ])
-    ).toThrow("Provide --contributions-csv when using Illinois SBE artifact flags");
+    ).toThrow("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
+    expect(
+      parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs([
+        "--normalized-artifact=/exports/illinois-normalized.json",
+        "--expenditures-csv=/exports/il-exp.csv",
+      ])
+    ).toMatchObject({
+      contributionCsvPaths: undefined,
+      expenditureCsvPaths: ["/exports/il-exp.csv"],
+      normalizedArtifactPath: "/exports/illinois-normalized.json",
+    });
   });
 });

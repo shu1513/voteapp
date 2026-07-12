@@ -3143,6 +3143,7 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('place', 'Municipal Attorney', ARRAY['civil_rights', 'government_efficiency', 'housing_affordability', 'public_safety_and_crime_control']::text[]),
     ('place', 'Municipal Controller', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'government_spending_reduction']::text[]),
     ('place', 'Municipal Constable', ARRAY['civil_rights', 'housing_affordability', 'public_safety_and_crime_control']::text[]),
+    ('place', 'Municipal Trustee', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('place', 'Place Level Judge', ARRAY['civil_rights', 'housing_affordability', 'impartiality', 'legal_competence', 'public_safety_and_crime_control']::text[]),
     ('place', 'Town Council Member', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('place', 'Town Moderator', ARRAY['election_integrity', 'government_efficiency']::text[]),

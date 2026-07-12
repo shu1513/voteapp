@@ -151,6 +151,10 @@ describe("syncIllinoisCandidateFinance", () => {
       "JANE DOE",
       "Governor",
       null,
+      null,
+      null,
+      null,
+      null,
       "FRIENDS OF JANE",
       "Friends of Jane",
       "active",
@@ -287,6 +291,7 @@ describe("syncIllinoisCandidateFinance", () => {
       null,
       null,
       null,
+      null,
       SOURCE_URL,
       "2022-07-08T09:10:11.000Z",
     ]);
@@ -295,6 +300,96 @@ describe("syncIllinoisCandidateFinance", () => {
     expect(
       statements.some((statement) => statement.includes("INSERT INTO public.il_candidate_finance_outside_group_breakdowns"))
     ).toBe(false);
+  });
+
+  it("uses D-2 summaries for local totals instead of itemized receipt sums", async () => {
+    const db = createMockDb();
+    const result = await syncIllinoisCandidateFinance({
+      db,
+      ...baseInput(),
+      electionYear: 2025,
+      officeScope: "place",
+      officeName: "Mayor",
+      district: "Aurora",
+      sbeCandidateId: "101",
+      sbeDistrictType: "City",
+      sbeOffice: "Mayor",
+      isAtLarge: false,
+      sbeCommitteeId: "201",
+      committeeKey: "SBE:201",
+      committeeName: "Aurora Forward",
+      directContributionRecords: [contribution({ amount: 250, receivedDate: "3/1/2025" })],
+      d2ReportSummaries: [
+        {
+          reportId: "q1",
+          committeeId: "201",
+          periodStart: "2024-01-01",
+          periodEnd: "2024-03-31",
+          filedAt: "2024-04-15T12:00:00.000Z",
+          totalReceipts: 1200,
+          totalDisbursements: 550,
+          cashOnHand: 800,
+          debtsOwed: 90,
+          sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/CommitteeDetail.aspx?ID=201",
+        },
+      ],
+    });
+
+    expect(result).toMatchObject({
+      totalReceipts: 1200,
+      directContributionTotal: null,
+      totalDisbursements: 550,
+      cashOnHand: 800,
+      debtsOwed: 90,
+    });
+    const summaryCall = db.client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.il_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2025,
+      1200,
+      null,
+      550,
+      800,
+      90,
+      null,
+      null,
+      "https://www.elections.il.gov/CampaignDisclosure/CommitteeDetail.aspx?ID=201",
+      "2022-07-08T09:10:11.000Z",
+    ]);
+  });
+
+  it("does not overwrite a local D-2 summary when D-2 data was unavailable", async () => {
+    const db = createMockDb();
+    const result = await syncIllinoisCandidateFinance({
+      db,
+      ...baseInput(),
+      electionYear: 2025,
+      officeScope: "place",
+      officeName: "Mayor",
+      district: "Aurora",
+      sbeCandidateId: "101",
+      sbeDistrictType: "City",
+      sbeOffice: "Mayor",
+      isAtLarge: false,
+      sbeCommitteeId: "201",
+      committeeKey: "SBE:201",
+      committeeName: "Aurora Forward",
+      directContributionRecords: [contribution({ amount: 250, receivedDate: "3/1/2025" })],
+    });
+
+    expect(result).toMatchObject({
+      linkWritten: true,
+      summaryWritten: false,
+      totalReceipts: null,
+      totalDisbursements: null,
+      cashOnHand: null,
+      debtsOwed: null,
+    });
+    const statements = db.client.query.mock.calls.map((call) => String(call[0]));
+    expect(statements.some((statement) => statement.includes("INSERT INTO public.il_candidate_finance_links"))).toBe(true);
+    expect(statements.some((statement) => statement.includes("INSERT INTO public.il_candidate_finance_summaries"))).toBe(false);
   });
 
   it("uses shared AI classification for high-dollar unknown PAC funders", async () => {

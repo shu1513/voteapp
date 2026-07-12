@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   normalizeIllinoisCandidateNameForStorage,
   resolveIllinoisCandidateCommittee,
+  resolveIllinoisCandidateCommitteesFromRelations,
 } from "../../../src/pipeline/illinoisFinance/illinoisCandidateCommitteeResolver.js";
 import type { IllinoisSbeContributionRecord } from "../../../src/pipeline/illinoisFinance/illinoisSbeClient.js";
 
@@ -46,14 +47,18 @@ describe("illinoisCandidateCommitteeResolver", () => {
       sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/ContributionSearchByCandidates.aspx",
     });
 
-    expect(resolution).toEqual({
+    expect(resolution).toMatchObject({
       status: "matched",
-      committeeKey: "FRIENDS OF JANE DOE",
-      committeeName: "Friends of Jane Doe",
-      confidence: "exact",
-      source: "illinois_sbe",
-      sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/ContributionSearchByCandidates.aspx",
-      matchedContributionRowCount: 2,
+      matches: [
+        {
+          committeeKey: "FRIENDS OF JANE DOE",
+          committeeName: "Friends of Jane Doe",
+          confidence: "name_fallback",
+          source: "illinois_sbe",
+          sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/ContributionSearchByCandidates.aspx",
+          matchedContributionRowCount: 2,
+        },
+      ],
     });
   });
 
@@ -94,5 +99,86 @@ describe("illinoisCandidateCommitteeResolver", () => {
       status: "unmatched",
       reason: "missing_legislative_district",
     });
+  });
+
+  it("resolves every official committee relation for one local candidate", () => {
+    const sourceUrl = "https://www.elections.il.gov/CampaignDisclosure/CandidateDetailCD.aspx?id=101";
+    const resolution = resolveIllinoisCandidateCommitteesFromRelations({
+      candidateName: "Jane Doe",
+      officeScope: "place",
+      officeName: "Mayor",
+      electionYear: 2025,
+      district: "Aurora city, Illinois",
+      relations: [
+        {
+          candidateId: "101",
+          candidateName: "Doe, Jane",
+          electionYear: 2025,
+          districtType: "City",
+          district: "Aurora",
+          office: "Mayor",
+          isAtLarge: false,
+          committeeId: "201",
+          committeeName: "Aurora Forward",
+          committeeStatus: "active",
+          sourceUrl,
+        },
+        {
+          candidateId: "101",
+          candidateName: "Jane Doe",
+          electionYear: 2025,
+          districtType: "City",
+          district: "Aurora",
+          office: "Mayor",
+          isAtLarge: false,
+          committeeId: "202",
+          committeeName: "Citizens for Aurora",
+          committeeStatus: "final",
+          sourceUrl,
+        },
+      ],
+    });
+
+    expect(resolution).toMatchObject({
+      status: "matched",
+      matches: [
+        { committeeKey: "SBE:201", sbeCandidateId: "101", confidence: "official_relation" },
+        { committeeKey: "SBE:202", sbeCandidateId: "101", confidence: "official_relation" },
+      ],
+    });
+  });
+
+  it("rejects cross-city and ward relations", () => {
+    const base = {
+      candidateId: "101",
+      candidateName: "Jane Doe",
+      electionYear: 2025,
+      office: "Alderperson",
+      isAtLarge: true,
+      committeeId: "201",
+      committeeName: "Aurora Forward",
+      committeeStatus: "active" as const,
+      sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/CandidateDetailCD.aspx?id=101",
+    };
+    expect(
+      resolveIllinoisCandidateCommitteesFromRelations({
+        candidateName: "Jane Doe",
+        officeScope: "place",
+        officeName: "Alderman",
+        electionYear: 2025,
+        district: "Aurora city, Illinois",
+        relations: [{ ...base, districtType: "City", district: "Chicago" }],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "jurisdiction_mismatch" });
+    expect(
+      resolveIllinoisCandidateCommitteesFromRelations({
+        candidateName: "Jane Doe",
+        officeScope: "place",
+        officeName: "Alderman",
+        electionYear: 2025,
+        district: "Chicago city, Illinois",
+        relations: [{ ...base, districtType: "Ward", district: "Chicago 44" }],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "jurisdiction_mismatch" });
   });
 });

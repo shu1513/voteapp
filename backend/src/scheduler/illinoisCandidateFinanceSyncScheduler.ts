@@ -32,6 +32,7 @@ export type IllinoisCandidateFinanceSyncJobData = {
   expenditureCsvPaths?: string[];
   contributionSourceUrl?: string;
   expenditureSourceUrl?: string;
+  normalizedArtifactPath?: string;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -60,6 +61,7 @@ type NormalizedIllinoisCandidateFinanceArtifactJobData = {
   expenditureCsvPaths?: string[];
   contributionSourceUrl?: string;
   expenditureSourceUrl?: string;
+  normalizedArtifactPath?: string;
 };
 
 function readSchedulerRuntimeConfig(): IllinoisCandidateFinanceSyncSchedulerRuntimeConfig {
@@ -110,8 +112,9 @@ function normalizeArtifactJobData(
   const expenditureCsvPaths = normalizeOptionalStringArray(data.expenditureCsvPaths, "expenditureCsvPaths");
   const contributionSourceUrl = normalizeOptionalString(data.contributionSourceUrl, "contributionSourceUrl");
   const expenditureSourceUrl = normalizeOptionalString(data.expenditureSourceUrl, "expenditureSourceUrl");
+  const normalizedArtifactPath = normalizeOptionalString(data.normalizedArtifactPath, "normalizedArtifactPath");
 
-  if (!contributionCsvPaths) {
+  if (!contributionCsvPaths && !normalizedArtifactPath) {
     if (expenditureCsvPaths || contributionSourceUrl || expenditureSourceUrl) {
       throw new Error("Illinois finance sync scheduler artifact options require contributionCsvPaths");
     }
@@ -119,10 +122,11 @@ function normalizeArtifactJobData(
   }
 
   return {
-    contributionCsvPaths,
+    contributionCsvPaths: contributionCsvPaths ?? [],
     expenditureCsvPaths,
     contributionSourceUrl,
     expenditureSourceUrl,
+    normalizedArtifactPath,
   };
 }
 
@@ -221,6 +225,7 @@ export async function upsertRecurringIllinoisCandidateFinanceSyncJobs(
           expenditureCsvPaths: artifacts?.expenditureCsvPaths,
           contributionSourceUrl: artifacts?.contributionSourceUrl,
           expenditureSourceUrl: artifacts?.expenditureSourceUrl,
+          normalizedArtifactPath: artifacts?.normalizedArtifactPath,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -259,6 +264,7 @@ export async function enqueueManualIllinoisCandidateFinanceSyncJob(
         expenditureCsvPaths: artifacts?.expenditureCsvPaths,
         contributionSourceUrl: artifacts?.contributionSourceUrl,
         expenditureSourceUrl: artifacts?.expenditureSourceUrl,
+        normalizedArtifactPath: artifacts?.normalizedArtifactPath,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -274,7 +280,12 @@ export async function runIllinoisCandidateFinanceSyncJob(
   data: IllinoisCandidateFinanceSyncJobData = {}
 ): Promise<IllinoisCandidateFinanceSyncJobResult> {
   assertValidJobOptions(data);
-  const artifactJobData = normalizeArtifactJobData(data);
+  const artifactJobData = normalizeArtifactJobData({
+    ...data,
+    normalizedArtifactPath:
+      data.normalizedArtifactPath ??
+      (process.env.ILLINOIS_SBE_NORMALIZED_ARTIFACT_PATH?.trim() || undefined),
+  });
   const force = Boolean(data.force);
   const dryRun = Boolean(data.dryRun);
   const triggeredBy = data.triggeredBy ?? "unknown";

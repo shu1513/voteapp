@@ -73,6 +73,7 @@ export function parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(
     "--expenditures-csv",
     "--contributions-url",
     "--expenditures-url",
+    "--normalized-artifact",
   ]);
   assertBareBooleanFlags(args, ["--dry-run", "--force", "--ai-classify-industries", "--no-ai-classify-industries"]);
   assertMutuallyExclusiveFlags(args, "--ai-classify-industries", "--no-ai-classify-industries");
@@ -80,11 +81,13 @@ export function parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(
   const expenditureCsvPaths = parseFlagValues(args, "--expenditures-csv");
   const contributionSourceUrl = parseFlagValue(args, "--contributions-url") || undefined;
   const expenditureSourceUrl = parseFlagValue(args, "--expenditures-url") || undefined;
+  const normalizedArtifactPath = parseFlagValue(args, "--normalized-artifact") || undefined;
   if (
     contributionCsvPaths.length === 0 &&
+    !normalizedArtifactPath &&
     (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl)
   ) {
-    throw new Error("Provide --contributions-csv when using Illinois SBE artifact flags");
+    throw new Error("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
   }
   return {
     dryRun: args.includes("--dry-run"),
@@ -99,6 +102,7 @@ export function parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(
     expenditureCsvPaths: expenditureCsvPaths.length > 0 ? expenditureCsvPaths : undefined,
     contributionSourceUrl,
     expenditureSourceUrl,
+    normalizedArtifactPath,
   };
 }
 

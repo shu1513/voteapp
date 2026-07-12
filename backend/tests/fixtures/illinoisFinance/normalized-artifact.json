@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "complete": true,
+  "source": "illinois_sbe",
+  "acquiredAt": "2026-07-11T12:00:00.000Z",
+  "sourceUrl": "https://www.elections.il.gov/CampaignDisclosure/CandidateSearch.aspx",
+  "candidateCommitteeRelations": [
+    {
+      "candidateId": "101",
+      "candidateName": "Jane Doe",
+      "electionYear": 2025,
+      "districtType": "City",
+      "district": "Aurora",
+      "office": "Mayor",
+      "isAtLarge": false,
+      "committeeId": "201",
+      "committeeName": "Aurora Forward",
+      "committeeStatus": "active",
+      "sourceUrl": "https://www.elections.il.gov/CampaignDisclosure/CandidateDetailCD.aspx?ID=101"
+    },
+    {
+      "candidateId": "101",
+      "candidateName": "Jane Doe",
+      "electionYear": 2025,
+      "districtType": "City",
+      "district": "Aurora",
+      "office": "Mayor",
+      "isAtLarge": false,
+      "committeeId": "202",
+      "committeeName": "Citizens for Aurora",
+      "committeeStatus": "final",
+      "sourceUrl": "https://www.elections.il.gov/CampaignDisclosure/CandidateDetailCD.aspx?ID=101"
+    }
+  ],
+  "d2ReportSummaries": [
+    {
+      "reportId": "report-201-q1",
+      "committeeId": "201",
+      "periodStart": "2024-01-01",
+      "periodEnd": "2024-03-31",
+      "filedAt": "2024-04-15T12:00:00.000Z",
+      "totalReceipts": 1000,
+      "totalDisbursements": 500,
+      "cashOnHand": 700,
+      "debtsOwed": 100,
+      "sourceUrl": "https://www.elections.il.gov/CampaignDisclosure/CommitteeDetail.aspx?ID=201"
+    }
+  ]
+}

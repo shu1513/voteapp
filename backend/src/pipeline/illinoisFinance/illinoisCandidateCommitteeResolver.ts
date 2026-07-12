@@ -1,4 +1,10 @@
-import { toIllinoisSbeOfficeSearchInput } from "./illinoisFinanceEligibleOffices.js";
+import {
+  illinoisMunicipalityMatches,
+  mapIllinoisSbeOffice,
+  normalizeIllinoisSbeLegislativeDistrict,
+  toIllinoisFinanceOfficeKey,
+  toIllinoisSbeOfficeSearchInput,
+} from "./illinoisFinanceEligibleOffices.js";
 import { normalizeIllinoisCommitteeKey } from "./illinoisFinanceAggregators.js";
 import {
   fetchIllinoisSbeCandidateContributionRecords,
@@ -6,6 +12,7 @@ import {
   type IllinoisSbeClientOptions,
   type IllinoisSbeContributionRecord,
 } from "./illinoisSbeClient.js";
+import type { IllinoisSbeCandidateCommitteeRelation } from "./illinoisSbeNormalizedArtifact.js";
 
 export type IllinoisCandidateCommitteeResolverInput = {
   candidateName: string;
@@ -17,30 +24,47 @@ export type IllinoisCandidateCommitteeResolverInput = {
   sourceUrl?: string | null;
 };
 
+export type IllinoisCandidateCommitteeRelationResolverInput = {
+  candidateName: string;
+  officeScope: string;
+  officeName: string;
+  electionYear: number;
+  district?: string | null;
+  relations: readonly IllinoisSbeCandidateCommitteeRelation[];
+};
+
 export type IllinoisCandidateCommitteeMatch = {
   committeeKey: string;
   committeeName: string;
-  confidence: "exact";
+  confidence: "official_relation" | "name_fallback";
   source: "illinois_sbe";
   sourceUrl: string | null;
   matchedContributionRowCount: number;
+  sbeCandidateId: string | null;
+  sbeCommitteeId: string | null;
+  sbeDistrictType: string | null;
+  sbeOffice: string | null;
+  district: string | null;
+  isAtLarge: boolean | null;
 };
 
 export type IllinoisCandidateCommitteeResolution =
-  | ({ status: "matched" } & IllinoisCandidateCommitteeMatch)
+  | { status: "matched"; matches: IllinoisCandidateCommitteeMatch[] }
   | {
       status: "unmatched";
       reason:
         | "missing_candidate_name"
         | "unsupported_office"
         | "missing_legislative_district"
-        | "no_candidate_committee_match";
+        | "no_candidate_committee_match"
+        | "no_official_candidate_relation"
+        | "jurisdiction_mismatch";
       candidateNameNormalized: string;
       officeNameNormalized: string;
     }
   | {
       status: "ambiguous";
-      reason: "multiple_matching_committees";
+      reason: "multiple_matching_committees" | "multiple_official_candidates";
       candidateNameNormalized: string;
       officeNameNormalized: string;
       matches: IllinoisCandidateCommitteeMatch[];
@@ -178,10 +202,16 @@ function toCommitteeMatch(input: {
   return {
     committeeKey: input.accumulator.committeeKey,
     committeeName: input.accumulator.committeeName,
-    confidence: "exact",
+    confidence: "name_fallback",
     source: "illinois_sbe",
     sourceUrl: input.sourceUrl,
     matchedContributionRowCount: input.accumulator.rows.length,
+    sbeCandidateId: null,
+    sbeCommitteeId: null,
+    sbeDistrictType: null,
+    sbeOffice: null,
+    district: null,
+    isAtLarge: null,
   };
 }
 
@@ -223,6 +253,159 @@ function splitCandidateNameForSearch(value: string): { firstName: string | null;
     firstName: parts.slice(0, -1).join(" "),
     lastName: parts[parts.length - 1]!,
   };
+}
+
+function relationCandidateNameMatches(
+  relation: IllinoisSbeCandidateCommitteeRelation,
+  candidateNameKeys: ReadonlySet<string>
+): boolean {
+  for (const key of normalizeIllinoisCandidateNameKeys(relation.candidateName)) {
+    if (candidateNameKeys.has(key)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function relationJurisdictionMatches(input: {
+  relation: IllinoisSbeCandidateCommitteeRelation;
+  mappedOffice: NonNullable<ReturnType<typeof mapIllinoisSbeOffice>>;
+  officeScope: string;
+  district?: string | null;
+}): boolean {
+  if (input.officeScope === "place") {
+    return illinoisMunicipalityMatches({
+      voteAppDistrictName: input.district,
+      sbeDistrictName: input.relation.district,
+      sbeDistrictType: input.relation.districtType,
+    });
+  }
+  if (input.officeScope === "state_upper" || input.officeScope === "state_lower") {
+    const maxDistrict = input.officeScope === "state_upper" ? 59 : 118;
+    return (
+      input.mappedOffice.district ===
+      normalizeIllinoisSbeLegislativeDistrict(input.district, maxDistrict, input.officeScope)
+    );
+  }
+  return input.officeScope === "statewide";
+}
+
+export function resolveIllinoisCandidateCommitteesFromRelations(
+  input: IllinoisCandidateCommitteeRelationResolverInput
+): IllinoisCandidateCommitteeResolution {
+  const electionYear = normalizeElectionYear(input.electionYear);
+  const candidateNameKeys = normalizeIllinoisCandidateNameKeys(input.candidateName);
+  const candidateNameKey = candidateNameNormalized(input.candidateName);
+  const expectedOfficeKey = toIllinoisFinanceOfficeKey({
+    officeScope: input.officeScope,
+    officeCanonicalName: input.officeName,
+  });
+  const officeNameNormalized = normalizeTextKey(input.officeName);
+  if (candidateNameKeys.size === 0) {
+    return {
+      status: "unmatched",
+      reason: "missing_candidate_name",
+      candidateNameNormalized: candidateNameKey,
+      officeNameNormalized,
+    };
+  }
+  if (!expectedOfficeKey) {
+    return {
+      status: "unmatched",
+      reason: "unsupported_office",
+      candidateNameNormalized: candidateNameKey,
+      officeNameNormalized,
+    };
+  }
+
+  const namedRelations = input.relations.filter(
+    (relation) =>
+      relation.electionYear === electionYear && relationCandidateNameMatches(relation, candidateNameKeys)
+  );
+  if (namedRelations.length === 0) {
+    return {
+      status: "unmatched",
+      reason: "no_official_candidate_relation",
+      candidateNameNormalized: candidateNameKey,
+      officeNameNormalized,
+    };
+  }
+
+  const matchingRelations = namedRelations.flatMap((relation) => {
+    const mappedOffice = mapIllinoisSbeOffice({
+      office: relation.office,
+      district: relation.district,
+      districtType: relation.districtType,
+      isAtLarge: relation.isAtLarge,
+    });
+    if (
+      !mappedOffice ||
+      mappedOffice.officeKey !== expectedOfficeKey ||
+      !relationJurisdictionMatches({
+        relation,
+        mappedOffice,
+        officeScope: input.officeScope,
+        district: input.district,
+      })
+    ) {
+      return [];
+    }
+    return [{ relation, mappedOffice }];
+  });
+  if (matchingRelations.length === 0) {
+    return {
+      status: "unmatched",
+      reason: "jurisdiction_mismatch",
+      candidateNameNormalized: candidateNameKey,
+      officeNameNormalized,
+    };
+  }
+
+  const candidateIds = new Set(matchingRelations.map(({ relation }) => relation.candidateId));
+  const toMatch = ({ relation }: (typeof matchingRelations)[number]): IllinoisCandidateCommitteeMatch => ({
+    committeeKey: `SBE:${relation.committeeId}`,
+    committeeName: relation.committeeName,
+    confidence: "official_relation",
+    source: "illinois_sbe",
+    sourceUrl: relation.sourceUrl,
+    matchedContributionRowCount: 0,
+    sbeCandidateId: relation.candidateId,
+    sbeCommitteeId: relation.committeeId,
+    sbeDistrictType: relation.districtType,
+    sbeOffice: relation.office,
+    district: relation.district,
+    isAtLarge: relation.isAtLarge,
+  });
+  if (candidateIds.size > 1) {
+    return {
+      status: "ambiguous",
+      reason: "multiple_official_candidates",
+      candidateNameNormalized: candidateNameKey,
+      officeNameNormalized,
+      matches: matchingRelations.map(toMatch),
+    };
+  }
+
+  const matchesByCommittee = new Map<string, IllinoisCandidateCommitteeMatch>();
+  for (const entry of matchingRelations) {
+    if (entry.relation.committeeStatus === "inactive") {
+      continue;
+    }
+    const match = toMatch(entry);
+    matchesByCommittee.set(match.committeeKey, match);
+  }
+  const matches = [...matchesByCommittee.values()].sort((left, right) =>
+    left.committeeKey.localeCompare(right.committeeKey)
+  );
+  if (matches.length === 0) {
+    return {
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+      candidateNameNormalized: candidateNameKey,
+      officeNameNormalized,
+    };
+  }
+  return { status: "matched", matches };
 }
 
 export function resolveIllinoisCandidateCommittee(
@@ -291,10 +474,7 @@ export function resolveIllinoisCandidateCommittee(
     };
   }
   if (matches.length === 1 || matches[0]!.matchedContributionRowCount > matches[1]!.matchedContributionRowCount) {
-    return {
-      status: "matched",
-      ...matches[0]!,
-    };
+    return { status: "matched", matches: [matches[0]!] };
   }
   return {
     status: "ambiguous",

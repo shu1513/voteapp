@@ -26,6 +26,10 @@ function dueRow(overrides: Record<string, unknown> = {}) {
     office_scope: "statewide",
     office_name: "Governor",
     district: null,
+    sbe_candidate_id: null,
+    sbe_district_type: null,
+    sbe_office: null,
+    is_at_large: null,
     committee_key: "FRIENDS OF JANE DOE",
     committee_name: "Friends of Jane Doe",
     source_url: SOURCE_URL,
@@ -67,6 +71,9 @@ function successfulSync(overrides: Partial<IllinoisCandidateFinanceSyncResult> =
     outsideGroupBreakdownsWritten: 0,
     totalReceipts: 250,
     directContributionTotal: 250,
+    totalDisbursements: null,
+    cashOnHand: null,
+    debtsOwed: null,
     outsideExpenditureDataAvailable: true,
     outsideGroupContributionDataAvailable: true,
     outsideSupportTotal: 0,
@@ -127,6 +134,10 @@ describe("illinoisCandidateFinanceBatchSync", () => {
           officeScope: "statewide",
           officeName: "Governor",
           district: null,
+          sbeCandidateId: null,
+          sbeDistrictType: null,
+          sbeOffice: null,
+          isAtLarge: null,
           committeeKey: "FRIENDS OF JANE DOE",
           committeeName: "Friends of Jane Doe",
           sourceUrl: SOURCE_URL,
@@ -140,6 +151,10 @@ describe("illinoisCandidateFinanceBatchSync", () => {
           officeScope: "state_lower",
           officeName: "State Lower Chamber Legislator",
           district: "44",
+          sbeCandidateId: null,
+          sbeDistrictType: null,
+          sbeOffice: null,
+          isAtLarge: null,
           committeeKey: "FRIENDS OF JOHN SMITH",
           committeeName: "Friends of John Smith",
           sourceUrl: null,
@@ -272,6 +287,13 @@ describe("illinoisCandidateFinanceBatchSync", () => {
   });
 
   it("auto-links missing candidates before listing due rows when enabled", async () => {
+    const txQuery = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 })
+      .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 });
+    const txClient = { query: txQuery, release: vi.fn() };
     const db = {
       query: vi
         .fn()
@@ -289,9 +311,8 @@ describe("illinoisCandidateFinanceBatchSync", () => {
           ],
           rowCount: 1,
         })
-        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
         .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
-      connect: vi.fn(),
+      connect: vi.fn(async () => txClient as never),
     };
 
     const result = await syncDueIllinoisCandidateFinance({
@@ -300,12 +321,22 @@ describe("illinoisCandidateFinanceBatchSync", () => {
       maxCandidates: 1,
       resolveCandidateCommittee: vi.fn(async () => ({
         status: "matched",
-        committeeKey: "FRIENDS OF JANE DOE",
-        committeeName: "Friends of Jane Doe",
-        confidence: "exact",
-        source: "illinois_sbe",
-        sourceUrl: SOURCE_URL,
-        matchedContributionRowCount: 1,
+        matches: [
+          {
+            committeeKey: "FRIENDS OF JANE DOE",
+            committeeName: "Friends of Jane Doe",
+            confidence: "name_fallback",
+            source: "illinois_sbe",
+            sourceUrl: SOURCE_URL,
+            matchedContributionRowCount: 1,
+            sbeCandidateId: null,
+            sbeCommitteeId: null,
+            sbeDistrictType: null,
+            sbeOffice: null,
+            district: null,
+            isAtLarge: null,
+          },
+        ],
       })),
       loadIllinoisFinanceDataFn: vi.fn(),
       syncIllinoisCandidateFinanceFn: vi.fn() as never,
@@ -318,8 +349,12 @@ describe("illinoisCandidateFinanceBatchSync", () => {
       autoLinkLinkedCount: 1,
     });
     expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.candidate_elections AS candidate_election");
-    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
-    expect(String(db.query.mock.calls[2]?.[0])).toContain("FROM public.il_candidate_finance_links AS link");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("FROM public.il_candidate_finance_links AS link");
+    expect(txQuery.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(String(txQuery.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
+    expect(String(txQuery.mock.calls[2]?.[0])).toContain("NOT (committee_key = ANY($4::text[]))");
+    expect(txQuery.mock.calls[3]?.[0]).toBe("COMMIT");
+    expect(txClient.release).toHaveBeenCalledTimes(1);
   });
 
   it("can auto-link and sync due candidates from artifact contribution records", async () => {
@@ -332,6 +367,13 @@ describe("illinoisCandidateFinanceBatchSync", () => {
       contributionRecords: [artifactContribution],
       contributionSourceUrl: SOURCE_URL,
     };
+    const txQuery = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 })
+      .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 });
+    const txClient = { query: txQuery, release: vi.fn() };
     const db = {
       query: vi
         .fn()
@@ -349,9 +391,8 @@ describe("illinoisCandidateFinanceBatchSync", () => {
           ],
           rowCount: 1,
         })
-        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
         .mockResolvedValueOnce({ rows: [dueRow()], rowCount: 1 }),
-      connect: vi.fn(),
+      connect: vi.fn(async () => txClient as never),
     };
     const syncIllinoisCandidateFinanceFn = vi.fn(async () => successfulSync({ totalReceipts: 1000 }));
 
@@ -372,7 +413,7 @@ describe("illinoisCandidateFinanceBatchSync", () => {
       autoLinkAttemptedCount: 1,
       autoLinkLinkedCount: 1,
     });
-    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
+    expect(String(txQuery.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
     expect(syncIllinoisCandidateFinanceFn).toHaveBeenCalledWith(
       expect.objectContaining({
         candidateId: CANDIDATE_ID,
