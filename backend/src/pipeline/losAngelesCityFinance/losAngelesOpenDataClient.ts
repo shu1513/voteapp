@@ -211,9 +211,13 @@ export async function getLosAngelesCommitteeContributions(
           .map((row) => row.electionDate)
           .filter((value): value is string => value !== null),
       );
-      if (results.length > 0 && sourceElectionDates.size !== 1)
+      if (results.length > 0 && sourceElectionDates.size === 0)
         throw new Error(
-          `Los Angeles committee ${committeeId} does not have exactly one source election date in ${input.electionYear}`,
+          `Los Angeles committee ${committeeId} returned contributions without a source election date in ${input.electionYear}`,
+        );
+      if (sourceElectionDates.size > 1)
+        throw new Error(
+          `Los Angeles committee ${committeeId} has multiple source election dates in ${input.electionYear}: ${[...sourceElectionDates].sort().join(", ")}`,
         );
       return results;
     }

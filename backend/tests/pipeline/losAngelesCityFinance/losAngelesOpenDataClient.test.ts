@@ -65,6 +65,31 @@ describe("Los Angeles Open Data client", () => {
         { committeeId: "1471359", electionYear: 2026 },
         { fetchImpl },
       ),
-    ).rejects.toThrow("exactly one source election date");
+    ).rejects.toThrow(
+      "multiple source election dates in 2026: 2026-06-02T00:00:00.000, 2026-11-03T00:00:00.000",
+    );
+  });
+
+  it("rejects contribution rows missing their source election date", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify([
+          {
+            cmt_id: "1471359",
+            cmt_nm: "Committee",
+            schedule: "A",
+            con_amount: "10.00",
+          },
+        ]),
+      ),
+    );
+    await expect(
+      getLosAngelesCommitteeContributions(
+        { committeeId: "1471359", electionYear: 2026 },
+        { fetchImpl },
+      ),
+    ).rejects.toThrow(
+      "returned contributions without a source election date in 2026",
+    );
   });
 });
