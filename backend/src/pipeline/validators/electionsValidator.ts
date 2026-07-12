@@ -204,9 +204,14 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
   const countyLike =
     entry.race_type === "office" &&
     /\bcounty\b|\bsheriff\b|\bcounty commissioner\b|\bcounty clerk\b|\bdistrict attorney\b/.test(scopeText);
+  // "(?<!\bcounty )" — several county charters title the elected county
+  // executive "County Mayor" (Orange County FL, Miami-Dade, Nashville); that
+  // is a county office, not a city one. Every other scope branch that uses
+  // cityLike to reject a mis-scoped "County Mayor" also checks countyLike
+  // (the "county" token), so no protection is lost.
   const cityLike =
     entry.race_type === "office" &&
-    /\bcity\b|\bmayor\b|\bcity council\b|\balderman\b/.test(scopeText);
+    /\bcity\b|(?<!\bcounty )\bmayor\b|\bcity council\b|\balderman\b/.test(scopeText);
   const schoolLike =
     entry.race_type === "office" &&
     /\bschool board\b|\bschool district\b|\bboard of education\b/.test(scopeText);
