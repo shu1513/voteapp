@@ -7,7 +7,10 @@ ALTER TABLE public.nyc_candidate_finance_summaries
     CHECK (
       (outside_support_total IS NULL OR outside_support_total >= 0)
       AND (outside_oppose_total IS NULL OR outside_oppose_total >= 0)
-    );
+    ) NOT VALID;
+
+ALTER TABLE public.nyc_candidate_finance_summaries
+  VALIDATE CONSTRAINT nyc_candidate_finance_summaries_outside_amounts_check;
 
 CREATE TABLE public.nyc_candidate_finance_outside_groups (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),

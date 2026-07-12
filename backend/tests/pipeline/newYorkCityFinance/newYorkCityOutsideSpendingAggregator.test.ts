@@ -3,6 +3,26 @@ import { describe, expect, it } from "vitest";
 import { aggregateNewYorkCityOutsideSpending } from "../../../src/pipeline/newYorkCityFinance/newYorkCityOutsideSpendingAggregator.js";
 
 describe("newYorkCityOutsideSpendingAggregator", () => {
+  const baseRow = {
+    electionYear: 2025,
+    electionCycle: "2025",
+    spenderId: "Z1",
+    spenderName: "Group One",
+    communicationId: "1",
+    candidateId: "A1",
+    candidateName: "Candidate",
+    allocation: 10,
+    supportOppose: "support" as const,
+  };
+  const aggregate = (rows: Parameters<typeof aggregateNewYorkCityOutsideSpending>[0]["rows"]) =>
+    aggregateNewYorkCityOutsideSpending({
+      electionYear: 2025,
+      electionCycle: "2025",
+      candidateId: "A1",
+      sourceUrl: "https://example.test/source",
+      rows,
+    });
+
   it("groups exact candidate allocations by spender and direction using cent arithmetic", () => {
     const result = aggregateNewYorkCityOutsideSpending({
       electionYear: 2025,
@@ -24,5 +44,20 @@ describe("newYorkCityOutsideSpendingAggregator", () => {
         { spenderId: "Z2", spenderName: "Group Two", supportOppose: "oppose", amount: 7, expenditureCount: 1, sourceUrl: "https://example.test/source" },
       ],
     });
+  });
+
+  it.each([
+    ["spender name", { spenderName: "Different Group" }],
+    ["direction", { supportOppose: "oppose" as const }],
+    ["allocation", { allocation: 11 }],
+  ])("rejects duplicate communication allocations with conflicting %s", (_label, changed) => {
+    expect(() => aggregate([baseRow, { ...baseRow, ...changed }])).toThrow("Conflicting NYC outside-spending allocation");
+  });
+
+  it("rejects conflicting names for the same spender group", () => {
+    expect(() => aggregate([
+      baseRow,
+      { ...baseRow, communicationId: "2", spenderName: "Different Group" },
+    ])).toThrow("Conflicting NYC outside-spending spender name");
   });
 });

@@ -27,4 +27,25 @@ describe("newYorkCityOutsideGroupFunderAggregator", () => {
       contributorCount: 1,
     })]);
   });
+
+  it("sorts deterministically, applies the funder limit, and ignores unmatched spenders", () => {
+    const result = aggregateNewYorkCityOutsideGroupFunders({
+      electionYear: 2025,
+      electionCycle: "2025",
+      maxFundersPerGroup: 2,
+      groups: [{
+        spenderId: "Z1", spenderName: "Outside Group", supportOppose: "support",
+        amount: 200, expenditureCount: 2, sourceUrl: "https://example.test/spending",
+      }],
+      rows: [
+        { electionYear: 2025, electionCycle: "2025", spenderId: "Z1", transactionId: "ICONT:R1", funderName: "Zulu LLC", funderType: "LLC", amount: 75 },
+        { electionYear: 2025, electionCycle: "2025", spenderId: "Z1", transactionId: "ICONT:R2", funderName: "Alpha LLC", funderType: "LLC", amount: 75 },
+        { electionYear: 2025, electionCycle: "2025", spenderId: "Z1", transactionId: "ICONT:R3", funderName: "Small LLC", funderType: "LLC", amount: 25 },
+        { electionYear: 2025, electionCycle: "2025", spenderId: "Z2", transactionId: "ICONT:R4", funderName: "Unmatched LLC", funderType: "LLC", amount: 999 },
+      ],
+    });
+
+    expect(result.map((row) => row.categoryName)).toEqual(["Alpha LLC", "Zulu LLC"]);
+    expect(result).toHaveLength(2);
+  });
 });

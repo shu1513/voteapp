@@ -184,6 +184,49 @@ async function fetchWithTimeout(
   }
 }
 
+async function readResponseBytesWithLimit(input: {
+  response: Response;
+  maxBytes: number;
+  tooLargeError: (size: number) => Error;
+}): Promise<Uint8Array> {
+  const declaredSize = Number.parseInt(input.response.headers.get("content-length") ?? "", 10);
+  if (Number.isFinite(declaredSize) && declaredSize > input.maxBytes) {
+    throw input.tooLargeError(declaredSize);
+  }
+  if (!input.response.body) return new Uint8Array();
+
+  const reader = input.response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      if (!value) continue;
+      totalBytes += value.byteLength;
+      if (totalBytes > input.maxBytes) {
+        try {
+          await reader.cancel();
+        } catch {
+          // The size error is authoritative even if stream cancellation fails.
+        }
+        throw input.tooLargeError(totalBytes);
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return bytes;
+}
+
 export async function resolveNewYorkCityCfbCandidateElectionCycles(input: {
   electionYear: number;
   candidateIds: ReadonlySet<string>;
@@ -295,8 +338,12 @@ export async function fetchNewYorkCityCfbIndependentSpending(input: {
   if (!download.ok) {
     throw new Error(`Failed to download NYC CFB independent-spending export: ${download.status} ${download.statusText}`);
   }
-  const bytes = new Uint8Array(await download.arrayBuffer());
-  if (bytes.byteLength === 0 || bytes.byteLength > MAX_EXPORT_BYTES) {
+  const bytes = await readResponseBytesWithLimit({
+    response: download,
+    maxBytes: MAX_EXPORT_BYTES,
+    tooLargeError: (size) => new Error(`NYC CFB independent-spending export had invalid size: ${size}`),
+  });
+  if (bytes.byteLength === 0) {
     throw new Error(`NYC CFB independent-spending export had invalid size: ${bytes.byteLength}`);
   }
   let files: Record<string, Uint8Array>;
@@ -449,14 +496,12 @@ export async function fetchNewYorkCityCfbIndependentSpenderFunders(input: {
   if (!download.ok) {
     throw new Error(`Failed to download NYC CFB independent-spender funder export: ${download.status} ${download.statusText}`);
   }
-  const contentLength = Number(download.headers.get("content-length"));
-  if (Number.isFinite(contentLength) && contentLength > MAX_EXPORT_BYTES) {
-    throw new Error(`NYC CFB independent-spender funder export was too large: ${contentLength}`);
-  }
-  const csv = await download.text();
-  if (Buffer.byteLength(csv, "utf8") > MAX_EXPORT_BYTES) {
-    throw new Error(`NYC CFB independent-spender funder export was too large: ${Buffer.byteLength(csv, "utf8")}`);
-  }
+  const bytes = await readResponseBytesWithLimit({
+    response: download,
+    maxBytes: MAX_EXPORT_BYTES,
+    tooLargeError: (size) => new Error(`NYC CFB independent-spender funder export was too large: ${size}`),
+  });
+  const csv = new TextDecoder().decode(bytes);
   return parseNewYorkCityCfbIndependentSpenderFunderCsv({ csv, electionYear, electionCycle });
 }
 

@@ -67,6 +67,29 @@ describe("newYorkCityCfbIndependentSpendingClient", () => {
     expect(String(fetchImpl.mock.calls[1]?.[0])).toContain("/FTMSearch/Temp/IndependentSpendersExpenditures/");
   });
 
+  it("stops reading a chunked spending export as soon as it exceeds the byte limit", async () => {
+    const chunk = new Uint8Array(1024 * 1024);
+    let chunksEmitted = 0;
+    let cancelled = false;
+    const body = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        chunksEmitted += 1;
+        controller.enqueue(chunk);
+      },
+      cancel() {
+        cancelled = true;
+      },
+    });
+    const fetchImpl = vi.fn()
+      .mockResolvedValueOnce(new Response("..\\Temp\\IndependentSpendersExpenditures\\CFB-IE_202507010000.zip"))
+      .mockResolvedValueOnce(new Response(body));
+
+    await expect(fetchNewYorkCityCfbIndependentSpending({ electionYear: 2025, fetchImpl }))
+      .rejects.toThrow("independent-spending export had invalid size");
+    expect(chunksEmitted).toBeLessThanOrEqual(102);
+    expect(cancelled).toBe(true);
+  });
+
   it("parses organization funders and signed refunds without retaining address fields", () => {
     const result = parseNewYorkCityCfbIndependentSpenderFunderCsv({
       electionYear: 2025,
@@ -96,6 +119,27 @@ describe("newYorkCityCfbIndependentSpendingClient", () => {
     const result = await fetchNewYorkCityCfbIndependentSpenderFunders({ electionYear: 2025, fetchImpl });
     expect(result.rows).toHaveLength(1);
     expect(String(fetchImpl.mock.calls[0]?.[1]?.body)).toContain("RecipientType=ind");
+  });
+
+  it("rejects an oversized funder export from Content-Length before consuming its body", async () => {
+    let pullCount = 0;
+    const body = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        pullCount += 1;
+        controller.enqueue(new Uint8Array([1]));
+        controller.close();
+      },
+    });
+    const download = new Response(body, { headers: { "content-length": String(100 * 1024 * 1024 + 1) } });
+    await Promise.resolve();
+    const pullsBeforeFetch = pullCount;
+    const fetchImpl = vi.fn()
+      .mockResolvedValueOnce(new Response("..\\Temp\\IndependentSpendersContributions\\CFB_202507010000.csv"))
+      .mockResolvedValueOnce(download);
+
+    await expect(fetchNewYorkCityCfbIndependentSpenderFunders({ electionYear: 2025, fetchImpl }))
+      .rejects.toThrow("independent-spender funder export was too large");
+    expect(pullCount).toBe(pullsBeforeFetch);
   });
 
   it("resolves a candidate to an exact lettered cycle and reports cross-cycle ambiguity", async () => {

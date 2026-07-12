@@ -23,9 +23,11 @@ describe("newYorkCityBallotLookupFinanceLoader", () => {
       ] })
       .mockResolvedValueOnce({ rows: [
         { candidate_id: "candidate-1", election_id: "election-1", spender_id: "Z1", spender_name: "Outside Group", support_oppose: "support", amount: "300", expenditure_count: "2", source_url: "https://example.test/outside" },
+        { candidate_id: "candidate-1", election_id: "election-1", spender_id: "Z2", spender_name: "Opposing Group", support_oppose: "oppose", amount: "50", expenditure_count: "1", source_url: "https://example.test/outside-oppose" },
       ] })
       .mockResolvedValueOnce({ rows: [
         { candidate_id: "candidate-1", election_id: "election-1", support_oppose: "support", category_type: "industry", category_name: "real_estate", amount: "200", contributor_count: "2", source_url: "https://example.test/funders" },
+        { candidate_id: "candidate-1", election_id: "election-1", support_oppose: "oppose", category_type: "industry", category_name: "technology", amount: "40", contributor_count: "1", source_url: "https://example.test/funders-oppose" },
       ] })
       .mockResolvedValueOnce({ rows: [
         { candidate_id: "candidate-1", election_id: "election-1", industry_name: "real_estate", committee_id: "Z1", committee_name: "Outside Group", support_oppose: "support", organization_name: "Example Realty LLC", organization_type: "donor", amount: "200", contributor_count: "1", source_url: "https://example.test/funders" },
@@ -47,7 +49,9 @@ describe("newYorkCityBallotLookupFinanceLoader", () => {
         support_total: 300,
         oppose_total: 50,
         top_supporting_groups: [expect.objectContaining({ committee_id: "Z1", amount: 300, expenditure_count: 2 })],
+        top_opposing_groups: [expect.objectContaining({ committee_id: "Z2", amount: 50, expenditure_count: 1 })],
         top_supporting_industries: [expect.objectContaining({ category_name: "real_estate", amount: 200 })],
+        top_opposing_industries: [expect.objectContaining({ category_name: "technology", amount: 40 })],
       },
       backing_summary: {
         top_outside_supporting_industries: [expect.objectContaining({
