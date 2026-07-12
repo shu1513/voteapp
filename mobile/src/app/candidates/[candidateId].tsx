@@ -11,6 +11,7 @@ import {
   formatElectionDate,
   hasFinanceContent,
   UNRANKED_RESEARCH_AREA_RANK,
+  useFollows,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
@@ -19,6 +20,7 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AiBanner } from "../../components/AiBanner";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
+import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
 import { SortChips } from "../../components/SortChips";
 import { SourceLine } from "../../components/SourceLine";
@@ -184,6 +186,10 @@ function PastElectionFinance({
 export default function CandidateScreen() {
   const { candidateId } = useLocalSearchParams<{ candidateId: string }>();
   const { hasSaved, preferences } = useMyResearchAreas();
+  // Follow state comes from the follows list (only fetched for verified
+  // users); the button renders only once that list has loaded — before then
+  // a followed candidate would briefly show as unfollowed. Same as the web.
+  const { follows, canFollow } = useFollows();
   const [recordView, setRecordView] = useState<RecordView>("by_issue");
 
   const detail = useQuery({
@@ -239,7 +245,15 @@ export default function CandidateScreen() {
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
       <Stack.Screen options={{ title: candidate.display_name }} />
       <AiBanner />
-      <Text className="text-2xl font-bold text-ink">{candidate.display_name}</Text>
+      <View className="flex-row flex-wrap items-center justify-between gap-3">
+        <Text className="flex-1 text-2xl font-bold text-ink">{candidate.display_name}</Text>
+        {canFollow && follows ? (
+          <FollowButton
+            candidateId={candidate.candidate_id}
+            isFollowing={follows.some((follow) => follow.candidate_id === candidate.candidate_id)}
+          />
+        ) : null}
+      </View>
       <Text className="mt-1 text-sm text-ink-soft">
         {candidate.party} · {candidate.state}
         {candidate.current_office ? <> · {candidate.current_office}</> : null}

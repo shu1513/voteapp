@@ -10,6 +10,7 @@ import {
   formatVotePowerLabel,
   hasFinanceContent,
   scoreStanceDirection,
+  useFollows,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
@@ -18,6 +19,7 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AiBanner } from "../../components/AiBanner";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
+import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
 import { SortChips } from "../../components/SortChips";
 import { SourceLine } from "../../components/SourceLine";
@@ -40,6 +42,11 @@ const CANDIDATE_SORT_OPTIONS = [
 export default function ElectionScreen() {
   const { electionId } = useLocalSearchParams<{ electionId: string }>();
   const { savedAreaIds, weights, hasSaved } = useMyResearchAreas();
+  // Election payload candidates carry no follow state; derive it from the
+  // follows list (only fetched for verified users). Controls render only
+  // once that list has loaded. Same as the web.
+  const { follows, canFollow } = useFollows();
+  const followedIds = new Set((follows ?? []).map((follow) => follow.candidate_id));
   const [candidateSort, setCandidateSort] = useState<CandidateSort>("ballot");
 
   const election = useQuery({
@@ -180,6 +187,15 @@ export default function ElectionScreen() {
                 candidate={candidate}
                 stances={stances}
                 savedAreaIds={savedAreaIds}
+                followButton={
+                  canFollow && follows ? (
+                    <FollowButton
+                      candidateId={candidate.candidate_id}
+                      isFollowing={followedIds.has(candidate.candidate_id)}
+                      size="sm"
+                    />
+                  ) : null
+                }
               />
             ))}
           </View>
@@ -236,10 +252,12 @@ function CandidateCard({
   candidate,
   stances,
   savedAreaIds,
+  followButton,
 }: {
   candidate: ElectionDetail["candidates"][number];
   stances: ReturnType<typeof aggregateRecordAreaStances>;
   savedAreaIds: Set<string>;
+  followButton?: React.ReactNode;
 }) {
   const router = useRouter();
   const [financeOpen, setFinanceOpen] = useState(false);
@@ -259,11 +277,16 @@ function CandidateCard({
               {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
             </Text>
           </View>
-          {candidate.finance_summary?.direct_campaign.total_raised != null ? (
-            <Text className="shrink-0 text-sm text-ink-soft">
-              Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
-            </Text>
-          ) : null}
+          <View className="shrink-0 items-end gap-2">
+            {candidate.finance_summary?.direct_campaign.total_raised != null ? (
+              <Text className="text-sm text-ink-soft">
+                Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
+              </Text>
+            ) : null}
+            {/* Nested pressable: the follow tap wins over the card's
+                navigation, mirroring the web's stopPropagation wrapper. */}
+            {followButton}
+          </View>
         </View>
         {candidate.summary ? (
           <Text className="mt-2 text-sm text-ink" numberOfLines={3}>
