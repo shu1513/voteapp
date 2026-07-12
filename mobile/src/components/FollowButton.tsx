@@ -1,9 +1,15 @@
 import { useFollowSaving, useSetFollow } from "@voteapp/api-client";
 import { Pressable, Text } from "react-native";
+import { registerForPushRequestingPermission } from "../lib/pushNotifications";
 
 // Follow/unfollow toggle. Rendered only for verified users (callers gate on
 // useFollows().canFollow); new follows default to both notification kinds on,
 // matching the backend's defaults. Port of the web component.
+//
+// A successful follow is one of the two moments the push permission prompt
+// is allowed to appear (the other: saving a ballot) — the user just asked to
+// be notified about someone, so the ask is in context, per the plan's
+// "not on launch" rule.
 
 type FollowButtonProps = {
   candidateId: string;
@@ -20,7 +26,18 @@ export function FollowButton({ candidateId, isFollowing, size = "md" }: FollowBu
   return (
     <Pressable
       disabled={saving}
-      onPress={() => setFollow.mutate({ candidate_id: candidateId, following: !isFollowing })}
+      onPress={() =>
+        setFollow.mutate(
+          { candidate_id: candidateId, following: !isFollowing },
+          {
+            onSuccess: () => {
+              if (!isFollowing) {
+                void registerForPushRequestingPermission();
+              }
+            },
+          }
+        )
+      }
       accessibilityRole="button"
       accessibilityState={{ selected: isFollowing, disabled: saving }}
       className={
