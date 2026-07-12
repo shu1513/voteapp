@@ -77,4 +77,23 @@ describe("FinanceSummaryCard", () => {
     expect(screen.getByText("$0")).toBeInTheDocument();
     expect(screen.queryByText("Spent")).not.toBeInTheDocument();
   });
+
+  it("renders NYC public funds, employers, and size buckets", () => {
+    const summary = emptyFinanceSummary();
+    summary.source = "NEW_YORK_CITY_CFB";
+    summary.direct_campaign.public_funds_received = 250_000;
+    summary.direct_campaign.top_employers = [
+      { category_name: "NYC DOE", amount: 50_000, contributor_count: 20, source_url: null },
+    ];
+    summary.direct_campaign.contribution_size_buckets = [
+      { category_name: "$1-$99", amount: 10_000, contributor_count: 200, source_url: null },
+    ];
+    render(<FinanceSummaryCard summary={summary} />);
+    expect(screen.getByText("Public funds")).toBeInTheDocument();
+    expect(screen.getByText("$250,000")).toBeInTheDocument();
+    expect(screen.getByText("Top disclosed employers of direct donors")).toBeInTheDocument();
+    expect(screen.getByText("NYC DOE")).toBeInTheDocument();
+    expect(screen.getByText("Direct contributions by size")).toBeInTheDocument();
+    expect(screen.getByText(/Source: NYC Campaign Finance Board/)).toBeInTheDocument();
+  });
 });

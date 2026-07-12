@@ -18,8 +18,11 @@ export function hasFinanceContent(summary: FinanceSummary | null | undefined): s
     direct.total_spent !== null ||
     direct.cash_on_hand !== null ||
     direct.debts_owed !== null ||
+    direct.public_funds_received != null ||
     direct.top_occupations.length > 0 ||
+    (direct.top_employers?.length ?? 0) > 0 ||
     direct.top_industries.length > 0 ||
+    (direct.contribution_size_buckets?.length ?? 0) > 0 ||
     hasOutsideFinanceContent(summary)
   );
 }
@@ -31,7 +34,9 @@ export function hasFinanceContent(summary: FinanceSummary | null | undefined): s
 export function firstFinanceSourceUrl(summary: FinanceSummary): string | null {
   const rows: { source_url: string | null }[] = [
     ...summary.direct_campaign.top_occupations,
+    ...(summary.direct_campaign.top_employers ?? []),
     ...summary.direct_campaign.top_industries,
+    ...(summary.direct_campaign.contribution_size_buckets ?? []),
     ...summary.outside_spending.top_supporting_groups,
     ...summary.outside_spending.top_opposing_groups,
     ...summary.outside_spending.top_supporting_industries,

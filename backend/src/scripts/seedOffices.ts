@@ -189,6 +189,12 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "Borough President",
+    summary:
+      "Represents a borough in city government, advocates for borough priorities, and exercises budget, land-use, and appointment powers defined by the city charter.",
+  },
+  {
+    scope: "county",
     canonicalName: "Sheriff",
     summary:
       "Leads county law enforcement operations, jail administration, and public safety duties assigned by law.",
@@ -276,6 +282,18 @@ const SEED_OFFICES: SeedOffice[] = [
     canonicalName: "Mayor",
     summary:
       "Leads municipal executive functions, oversees city administration, and helps set city policy priorities.",
+  },
+  {
+    scope: "place",
+    canonicalName: "Public Advocate",
+    summary:
+      "Serves as a citywide ombudsman, investigates city services, advocates for residents, and performs legislative duties defined by the city charter.",
+  },
+  {
+    scope: "place",
+    canonicalName: "Comptroller",
+    summary:
+      "Oversees municipal accounting, audits city agencies, reviews contracts, and monitors the city's finances and pension funds.",
   },
   {
     scope: "place",
@@ -800,6 +818,11 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
   {
     scope: "county",
+    officeCanonicalName: "Borough President",
+    aliasText: "Borough President",
+  },
+  {
+    scope: "county",
     officeCanonicalName: "Public Administrator",
     aliasText: "Public Administrator",
   },
@@ -981,6 +1004,21 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "place",
     officeCanonicalName: "City Council Member",
     aliasText: "City Council Member",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Public Advocate",
+    aliasText: "Public Advocate",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Comptroller",
+    aliasText: "Comptroller",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Comptroller",
+    aliasText: "City Comptroller",
   },
   // El Paso titles its council members "City Representative"; the matcher's
   // jurisdiction/seat stripping reduces those titles to this generic form.

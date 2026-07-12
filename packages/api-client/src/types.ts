@@ -119,10 +119,8 @@ export type FinanceOutsideGroup = {
 
 // Mirrors BallotLookupFinanceSummary (backend ballotLookupFinanceShared.ts):
 // the money lives under direct_campaign, not at the top level. Deliberately
-// partial — only what the UI renders (top_employers,
-// contribution_size_buckets, and backing_summary stay backend-only until a
-// UI needs them). null money values mean "not reported"; 0 is a real
-// disclosed amount.
+// partial — only what the UI renders; backing_summary stays backend-only.
+// null money values mean "not reported"; 0 is a real disclosed amount.
 export type FinanceSummary = {
   source: string;
   cycle: number;
@@ -132,8 +130,11 @@ export type FinanceSummary = {
     total_spent: number | null;
     cash_on_hand: number | null;
     debts_owed: number | null;
+    public_funds_received?: number | null;
     top_occupations: FinanceBreakdown[];
+    top_employers?: FinanceBreakdown[];
     top_industries: FinanceBreakdown[];
+    contribution_size_buckets?: FinanceBreakdown[];
   };
   outside_spending: {
     support_total: number | null;

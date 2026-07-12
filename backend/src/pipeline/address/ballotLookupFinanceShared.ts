@@ -58,6 +58,7 @@ export type BallotLookupFinanceSummary = {
     | "NEW_JERSEY_ELEC"
     | "NEW_MEXICO_CFIS"
     | "NEW_YORK_SODA"
+    | "NEW_YORK_CITY_CFB"
     | "OKLAHOMA_GUARDIAN"
     | "TEXAS_TEC"
     | "FLORIDA_DOS"
@@ -89,6 +90,7 @@ export type BallotLookupFinanceSummary = {
     total_spent: number | null;
     cash_on_hand: number | null;
     debts_owed: number | null;
+    public_funds_received?: number | null;
     top_occupations: BallotLookupFinanceBreakdown[];
     top_employers?: BallotLookupFinanceBreakdown[];
     top_industries: BallotLookupFinanceBreakdown[];
@@ -244,7 +246,26 @@ export type StateFinanceRequestElectionRow = {
   state: string;
   office_scope?: string | null;
   office_canonical_name?: string | null;
+  geoid_compact?: string | null;
 };
+
+export function mergeFinanceSummaryMapsStrict(
+  namedMaps: readonly { source: string; summaries: ReadonlyMap<string, BallotLookupFinanceSummary> }[]
+): Map<string, BallotLookupFinanceSummary> {
+  const merged = new Map<string, BallotLookupFinanceSummary>();
+  const owner = new Map<string, string>();
+  for (const named of namedMaps) {
+    for (const [key, summary] of named.summaries) {
+      const existingOwner = owner.get(key);
+      if (existingOwner) {
+        throw new Error(`Duplicate finance summary key from ${existingOwner} and ${named.source}: ${key}`);
+      }
+      owner.set(key, named.source);
+      merged.set(key, summary);
+    }
+  }
+  return merged;
+}
 
 /**
  * The request builder every state's ballot-lookup finance loader shares:

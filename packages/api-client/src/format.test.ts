@@ -87,6 +87,7 @@ describe("financeSourceLabel", () => {
     expect(financeSourceLabel("FEC")).toBe("FEC");
     expect(financeSourceLabel("MASSACHUSETTS_OCPF")).toBe("Massachusetts OCPF");
     expect(financeSourceLabel("UTAH_DISCLOSURES")).toBe("Utah Financial Disclosures");
+    expect(financeSourceLabel("NEW_YORK_CITY_CFB")).toBe("NYC Campaign Finance Board");
   });
 
   it("title-cases unknown enums instead of leaking raw values", () => {
