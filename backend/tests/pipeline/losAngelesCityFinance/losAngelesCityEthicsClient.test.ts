@@ -12,6 +12,7 @@ const legacyFixture = `<a name="S241"></a><h4><strong>City Attorney:</strong></h
 const completedElectionFixture = `<a name="S260"></a><h4><strong>Council District 2:</strong></h4><table><tbody><tr><td><a name="C22889"></a><a class="candidatelink"><strong>Jon Paul Bird</strong></a></td><td align="right">12/31/25</td>${metric("100.00")}${metric("80.00")}${metric("20.00")}${metric("12,345")}${metric("N/A")}${metric("50.00")}${metric("40.00")}${metric("30.00")}${metric("20.00")}${metric("10.00")}</tr><tr class="C22889_detail"><td><a href="?elec_seat_cand_id=1441&cmt_per_id=22890">contact</a></td></tr><tr class="C22889_detail"><td>1459431 - BIRD FOR CITY COUNCIL 2024</td></tr></tbody></table><a name="S261"></a>`;
 const completedLegacyFixture = `<a name="S260"></a><h4><strong>Council District 2:</strong></h4><table><tbody><tr><td><a name="C22889"></a><a class="candidatelink"><strong>Jon Paul Bird</strong></a></td><td align="right">12/31/25</td><td align="right">$100.00</td><td align="right">$80.00</td><td align="right">$20.00</td><td align="right">12,345</td><td align="right">N/A</td><td align="right">$50.00</td><td align="right">$40.00</td><td align="right">$30.00</td><td align="right">$20.00</td><td align="right">$10.00</td></tr><tr class="C22889_detail"><td><a href="?elec_seat_cand_id=1441&cmt_per_id=22890">contact</a></td></tr><tr class="C22889_detail"><td>1459431 - BIRD FOR CITY COUNCIL 2024</td></tr></tbody></table><a name="S261"></a>`;
 const lausdFixture = `<a name="S289"></a><h4><strong>LAUSD District 6:</strong></h4><table><tbody><tr><td><a name="C13549"></a><a class="candidatelink"><strong>Kelly Gonez</strong></a></td><td align="right">05/27/26</td>${metric("133,539.00")}${metric("106,177.85")}${metric("23,311.15")}${metric("41,774.84")}${metric("0.00")}${metric("0.00")}${metric("0.00")}</tr><tr class="C13549_detail"><td><a href="?elec_seat_cand_id=1541&cmt_per_id=25917">contact</a></td></tr><tr class="C13549_detail"><td>1482173 - Kelly Gonez for School Board 2026</td></tr></tbody></table><a name="S290"></a>`;
+const completedLausdFixture = `<a name="S267"></a><h4><strong>LAUSD District 1:</strong></h4><table><tbody><tr><td><a name="C10001"></a><a class="candidatelink"><strong>Jordan Lee</strong></a></td><td align="right">12/31/25</td>${metric("100.00")}${metric("80.00")}${metric("20.00")}${metric("12,345")}${metric("N/A")}${metric("50.00")}${metric("40.00")}${metric("30.00")}${metric("10.00")}</tr><tr class="C10001_detail"><td><a href="?elec_seat_cand_id=1601&cmt_per_id=10002">contact</a></td></tr><tr class="C10001_detail"><td>1480001 - JORDAN LEE FOR SCHOOL BOARD 2024</td></tr></tbody></table><a name="S268"></a>`;
 
 describe("Los Angeles Ethics parsers", () => {
   it("parses election index", () =>
@@ -135,6 +136,23 @@ describe("Los Angeles Ethics parsers", () => {
       matchingFunds: null,
       outsideSupportTotal: 41774.84,
       membershipOpposeTotal: 0,
+    });
+  });
+  it("ignores vote columns on completed LAUSD rows", () => {
+    const [candidate] = parseLosAngelesEthicsCandidateTotals({
+      html: completedLausdFixture,
+      electionId: "70",
+      officeName: "LAUSD District 1",
+    });
+    expect(candidate).toMatchObject({
+      totalContributions: 100,
+      totalExpenditures: 80,
+      cashOnHand: 20,
+      matchingFunds: null,
+      outsideSupportTotal: 50,
+      outsideOpposeTotal: 40,
+      membershipSupportTotal: 30,
+      membershipOpposeTotal: 10,
     });
   });
 });
