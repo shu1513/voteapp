@@ -51,6 +51,10 @@ import {
   enqueueManualWashingtonCandidateFinanceSyncJob,
 } from "../../scheduler/washingtonCandidateFinanceSyncScheduler.js";
 import {
+  buildNewYorkCandidateFinanceLinkedElectionSyncJobId,
+  enqueueManualNewYorkCandidateFinanceSyncJob,
+} from "../../scheduler/newYorkCandidateFinanceSyncScheduler.js";
+import {
   buildVirginiaCandidateFinanceLinkedElectionSyncJobId,
   enqueueManualVirginiaCandidateFinanceSyncJob,
 } from "../../scheduler/virginiaCandidateFinanceSyncScheduler.js";
@@ -110,6 +114,7 @@ import { isOklahomaFinanceEligibleOffice } from "../oklahomaFinance/oklahomaFina
 import { isTexasFinanceEligibleOffice } from "../texasFinance/texasFinanceEligibleOffices.js";
 import { isHawaiiFinanceEligibleOffice } from "../hawaiiFinance/hawaiiFinanceEligibleOffices.js";
 import { isWashingtonFinanceEligibleOffice } from "../washingtonFinance/washingtonFinanceEligibleOffices.js";
+import { isNewYorkFinanceEligibleOffice } from "../newYorkFinance/newYorkFinanceEligibleOffices.js";
 import { isKentuckyFinanceEligibleOffice } from "../kentuckyFinance/kentuckyFinanceEligibleOffices.js";
 import { isVirginiaFinanceEligibleOffice } from "../virginiaFinance/virginiaFinanceEligibleOffices.js";
 import { isWisconsinFinanceEligibleOffice } from "../wisconsinFinance/wisconsinFinanceEligibleOffices.js";
@@ -771,6 +776,38 @@ async function enqueueWashingtonFinanceSyncForLinkedElection(input: {
   }
 }
 
+async function enqueueNewYorkFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (
+    input.context.state !== "NY" ||
+    !isNewYorkFinanceEligibleOffice({
+      officeScope: input.context.officeScope,
+      officeCanonicalName: input.context.officeCanonicalName,
+    })
+  ) {
+    return;
+  }
+
+  try {
+    await enqueueManualNewYorkCandidateFinanceSyncJob(
+      {
+        aiClassifyIndustries: true,
+        triggeredBy: "manual",
+      },
+      {
+        jobId: buildNewYorkCandidateFinanceLinkedElectionSyncJobId(),
+      }
+    );
+  } catch (error) {
+    const reason = toReason(error);
+    console.warn(
+      `candidate-profile enricher could not enqueue New York finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
 async function enqueueVirginiaFinanceSyncForLinkedElection(input: {
   context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
   candidateId: string;
@@ -1017,6 +1054,10 @@ export async function enqueueCandidateProfileFinanceSyncFanoutForLinkedElection(
     candidateId: input.candidateId,
   });
   await enqueueWashingtonFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueNewYorkFinanceSyncForLinkedElection({
     context: input.context,
     candidateId: input.candidateId,
   });

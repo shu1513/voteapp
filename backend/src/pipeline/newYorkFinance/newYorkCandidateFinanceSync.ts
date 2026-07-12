@@ -1,0 +1,475 @@
+import type { Pool, PoolClient } from "pg";
+
+import {
+  classifyFinanceLabel,
+  normalizeFinanceLabel,
+  type FinanceLabelClassification,
+} from "../finance/financeLabelClassifier.js";
+import {
+  buildFinanceIndustryBreakdownsFromClassifications,
+  mergeFinanceLabelClassification,
+  resolveFinanceIndustryClassifications,
+  type FinanceIndustryClassifier,
+} from "../finance/financeIndustryClassificationService.js";
+import {
+  normalizeNewYorkCandidateNameKeys,
+  searchAndResolveNewYorkCandidateCommittee,
+  type NewYorkCandidateCommitteeResolution,
+} from "./newYorkCandidateCommitteeResolver.js";
+import {
+  collectNewYorkOutsideSpending,
+  type NewYorkOutsideSpendingCounters,
+  type NewYorkOutsideSpendingGroup,
+} from "./newYorkOutsideSpendingAggregator.js";
+import { getNewYorkOutsideGroupFunderBreakdowns } from "./newYorkOutsideGroupContributionAggregator.js";
+import {
+  defaultNewYorkSodaClientOptions,
+  type NewYorkSodaClientOptions,
+} from "./newYorkSodaClient.js";
+import {
+  replaceNewYorkCandidateFinanceSnapshot,
+  type NewYorkFinanceLinkInput,
+  type NewYorkFinanceOutsideGroupBreakdownInput,
+  type NewYorkFinanceOutsideGroupInput,
+  type NewYorkFinanceSummaryInput,
+} from "./newYorkFinanceWriter.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & Pick<Pool, "connect">;
+
+type NewYorkFinanceDataClient = {
+  searchAndResolveCandidateCommittee: typeof searchAndResolveNewYorkCandidateCommittee;
+  collectOutsideSpending: typeof collectNewYorkOutsideSpending;
+  getOutsideGroupFunderBreakdowns: typeof getNewYorkOutsideGroupFunderBreakdowns;
+};
+
+export type NewYorkCandidateFinanceSyncInput = {
+  db: ConnectableQueryable;
+  candidateId: string;
+  electionId: string;
+  candidateName: string;
+  electionYear: number;
+  officeScope: string;
+  officeName: string;
+  district?: string | null;
+  sourceUrl?: string | null;
+  sodaClientOptions?: NewYorkSodaClientOptions;
+  nyClient?: Partial<NewYorkFinanceDataClient>;
+  now?: Date;
+  dryRun?: boolean;
+  outsideMaxGroups?: number;
+  outsideMaxFundersPerGroup?: number;
+  financeIndustryClassifier?: FinanceIndustryClassifier;
+  aiClassificationMinAmount?: number;
+  trustedCommittee?: {
+    filerId: string;
+    filerName: string;
+    sourceUrl?: string | null;
+  };
+};
+
+export type NewYorkCandidateFinanceSyncResult = {
+  candidateId: string;
+  electionId: string;
+  electionYear: number;
+  dryRun: boolean;
+  resolution: NewYorkCandidateCommitteeResolution;
+  linkWritten: boolean;
+  summaryWritten: boolean;
+  outsideGroupsWritten: number;
+  outsideGroupBreakdownsWritten: number;
+  outsideSupportTotal: number | null;
+  outsideOpposeTotal: number | null;
+  outsideGroupCount: number;
+  outsideFunderRowCount: number;
+  outsideCounters: NewYorkOutsideSpendingCounters | null;
+};
+
+const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
+const DEFAULT_OUTSIDE_MAX_GROUPS = 20;
+const DEFAULT_OUTSIDE_MAX_FUNDERS_PER_GROUP = 20;
+
+const DEFAULT_NY_CLIENT: NewYorkFinanceDataClient = {
+  searchAndResolveCandidateCommittee: searchAndResolveNewYorkCandidateCommittee,
+  collectOutsideSpending: collectNewYorkOutsideSpending,
+  getOutsideGroupFunderBreakdowns: getNewYorkOutsideGroupFunderBreakdowns,
+};
+
+type MatchedNewYorkCommitteeResolution = Extract<NewYorkCandidateCommitteeResolution, { status: "matched" }>;
+
+function requireNonEmpty(value: string, fieldName: string): string {
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
+    throw new Error(`${fieldName} is required`);
+  }
+  return trimmed;
+}
+
+function normalizeElectionYear(value: number): number {
+  if (!Number.isInteger(value) || value < 2000 || value > 2100) {
+    throw new Error(`Invalid New York finance election year: ${value}`);
+  }
+  return value;
+}
+
+function normalizeTimestamp(value: Date | undefined): Date {
+  const normalized = value ?? new Date();
+  if (Number.isNaN(normalized.getTime())) {
+    throw new Error("Invalid New York finance sync timestamp");
+  }
+  return normalized;
+}
+
+function normalizeAiClassificationMinAmount(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT;
+  if (!Number.isFinite(normalized) || normalized < 0) {
+    throw new Error(`Invalid New York finance AI classification minimum amount: ${value}`);
+  }
+  return normalized;
+}
+
+function normalizeCandidateNameForStorage(value: string): string {
+  return (
+    [...normalizeNewYorkCandidateNameKeys(value)][0] ??
+    requireNonEmpty(value, "candidate name").replace(/\s+/g, " ").toUpperCase()
+  );
+}
+
+function toMatchedTrustedCommittee(
+  input: NonNullable<NewYorkCandidateFinanceSyncInput["trustedCommittee"]>
+): MatchedNewYorkCommitteeResolution {
+  return {
+    status: "matched",
+    filerId: requireNonEmpty(input.filerId, "trusted New York filer id"),
+    filerName: requireNonEmpty(input.filerName, "trusted New York filer name"),
+    candidateFilerId: "",
+    confidence: "exact",
+    source: "ny_soda_api",
+    sourceUrl: input.sourceUrl ?? null,
+  };
+}
+
+function toFinanceLink(input: {
+  candidateId: string;
+  electionId: string;
+  candidateName: string;
+  electionYear: number;
+  officeName: string;
+  district?: string | null;
+  resolution: MatchedNewYorkCommitteeResolution;
+  sourceUrl?: string | null;
+  verifiedAt: Date;
+}): NewYorkFinanceLinkInput {
+  return {
+    candidateId: requireNonEmpty(input.candidateId, "candidate id"),
+    electionId: requireNonEmpty(input.electionId, "election id"),
+    electionYear: input.electionYear,
+    candidateNameNormalized: normalizeCandidateNameForStorage(input.candidateName),
+    officeName: requireNonEmpty(input.officeName, "office name"),
+    district: input.district ?? null,
+    filerId: requireNonEmpty(input.resolution.filerId, "New York filer id"),
+    filerName: requireNonEmpty(input.resolution.filerName, "New York filer name"),
+    linkStatus: "active",
+    linkSource: "ny_soda_api",
+    sourceUrl: input.resolution.sourceUrl ?? input.sourceUrl ?? null,
+    lastVerifiedAt: input.verifiedAt,
+  };
+}
+
+function toOutsideGroups(groups: readonly NewYorkOutsideSpendingGroup[]): NewYorkFinanceOutsideGroupInput[] {
+  return groups.map((group) => ({
+    filerId: group.filerId,
+    filerName: group.filerName,
+    supportOppose: group.supportOppose,
+    amount: group.amount,
+    sourceUrl: group.sourceUrl,
+  }));
+}
+
+function donorBreakdownKey(input: NewYorkFinanceOutsideGroupBreakdownInput): string {
+  const categoryKey =
+    input.categoryType === "donor"
+      ? normalizeFinanceLabel(input.categoryName, "donor")
+      : input.categoryName.trim().toUpperCase();
+  return `${input.filerId.trim()}\u0000${input.supportOppose}\u0000${input.categoryType}\u0000${categoryKey}`;
+}
+
+function addOutsideBreakdown(
+  breakdowns: Map<string, NewYorkFinanceOutsideGroupBreakdownInput>,
+  breakdown: NewYorkFinanceOutsideGroupBreakdownInput
+): void {
+  const key = donorBreakdownKey(breakdown);
+  const existing = breakdowns.get(key);
+  if (!existing) {
+    breakdowns.set(key, breakdown);
+    return;
+  }
+  breakdowns.set(key, {
+    ...existing,
+    amount: Math.round((existing.amount + breakdown.amount) * 100) / 100,
+    contributorCount:
+      existing.contributorCount === null ||
+      existing.contributorCount === undefined ||
+      breakdown.contributorCount === null ||
+      breakdown.contributorCount === undefined
+        ? existing.contributorCount ?? breakdown.contributorCount ?? null
+        : existing.contributorCount + breakdown.contributorCount,
+    sourceUrl: existing.sourceUrl ?? breakdown.sourceUrl,
+  });
+}
+
+function collectOutsideClassifications(
+  breakdowns: Iterable<NewYorkFinanceOutsideGroupBreakdownInput>,
+  minAmount: number
+): Map<string, FinanceLabelClassification> {
+  const classifications = new Map<string, FinanceLabelClassification>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType !== "donor" || breakdown.amount < minAmount) {
+      continue;
+    }
+    mergeFinanceLabelClassification(
+      classifications,
+      classifyFinanceLabel({ rawLabel: breakdown.categoryName, labelType: "donor" })
+    );
+  }
+  return classifications;
+}
+
+function asClassifiableOutsideBreakdowns(breakdowns: Iterable<NewYorkFinanceOutsideGroupBreakdownInput>) {
+  return [...breakdowns].map((breakdown) => ({
+    committeeId: breakdown.filerId,
+    supportOppose: breakdown.supportOppose,
+    categoryType: breakdown.categoryType,
+    categoryName: breakdown.categoryName,
+    amount: breakdown.amount,
+    contributorCount: breakdown.contributorCount,
+    sourceUrl: breakdown.sourceUrl,
+  }));
+}
+
+async function enrichOutsideGroupIndustryBreakdowns(input: {
+  db: Queryable;
+  outsideGroupBreakdowns: readonly NewYorkFinanceOutsideGroupBreakdownInput[];
+  classifier: FinanceIndustryClassifier | undefined;
+  aiClassificationMinAmount: number;
+  dryRun: boolean;
+}): Promise<{
+  outsideGroupBreakdowns: NewYorkFinanceOutsideGroupBreakdownInput[];
+  classifications: FinanceLabelClassification[];
+}> {
+  const breakdowns = new Map<string, NewYorkFinanceOutsideGroupBreakdownInput>();
+  for (const breakdown of input.outsideGroupBreakdowns) {
+    if (breakdown.categoryType !== "industry") {
+      addOutsideBreakdown(breakdowns, breakdown);
+    }
+  }
+
+  const classifiableOutsideBreakdowns = asClassifiableOutsideBreakdowns(breakdowns.values());
+  const classifications = collectOutsideClassifications(breakdowns.values(), input.aiClassificationMinAmount);
+  await resolveFinanceIndustryClassifications({
+    db: input.db,
+    directBreakdowns: [],
+    outsideBreakdowns: classifiableOutsideBreakdowns,
+    classifications,
+    classifier: input.classifier,
+    minAmount: input.aiClassificationMinAmount,
+    dryRun: input.dryRun,
+  });
+
+  const industryBreakdowns = buildFinanceIndustryBreakdownsFromClassifications({
+    directBreakdowns: [],
+    outsideBreakdowns: classifiableOutsideBreakdowns,
+    classifications,
+  });
+  for (const breakdown of industryBreakdowns.outsideIndustryBreakdowns) {
+    addOutsideBreakdown(breakdowns, {
+      filerId: breakdown.committeeId,
+      supportOppose: breakdown.supportOppose,
+      categoryType: "industry",
+      categoryName: breakdown.categoryName,
+      amount: breakdown.amount,
+      contributorCount: breakdown.contributorCount,
+      sourceUrl: breakdown.sourceUrl,
+    });
+  }
+
+  return {
+    outsideGroupBreakdowns: [...breakdowns.values()],
+    classifications: [...classifications.values()],
+  };
+}
+
+function toSummary(input: {
+  // Uncapped totals from the aggregator: the groups array may be capped at
+  // maxGroups, and a field named "total" must cover every accepted group.
+  supportTotal: number;
+  opposeTotal: number;
+  sourceUrl?: string | null;
+}): NewYorkFinanceSummaryInput {
+  // Phase 1 is outside-spending only (plan-new-york-finance.md); the direct
+  // campaign money fields stay null until Phase 2 lands.
+  return {
+    totalReceipts: null,
+    directContributionTotal: null,
+    totalDisbursements: null,
+    outsideSupportTotal: input.supportTotal,
+    outsideOpposeTotal: input.opposeTotal,
+    sourceUrl: input.sourceUrl ?? null,
+  };
+}
+
+function emptyResult(input: {
+  candidateId: string;
+  electionId: string;
+  electionYear: number;
+  dryRun: boolean;
+  resolution: NewYorkCandidateCommitteeResolution;
+}): NewYorkCandidateFinanceSyncResult {
+  return {
+    candidateId: input.candidateId,
+    electionId: input.electionId,
+    electionYear: input.electionYear,
+    dryRun: input.dryRun,
+    resolution: input.resolution,
+    linkWritten: false,
+    summaryWritten: false,
+    outsideGroupsWritten: 0,
+    outsideGroupBreakdownsWritten: 0,
+    outsideSupportTotal: null,
+    outsideOpposeTotal: null,
+    outsideGroupCount: 0,
+    outsideFunderRowCount: 0,
+    outsideCounters: null,
+  };
+}
+
+export async function syncNewYorkCandidateFinance(
+  input: NewYorkCandidateFinanceSyncInput
+): Promise<NewYorkCandidateFinanceSyncResult> {
+  const candidateId = requireNonEmpty(input.candidateId, "candidate id");
+  const electionId = requireNonEmpty(input.electionId, "election id");
+  const candidateName = requireNonEmpty(input.candidateName, "candidate name");
+  const officeScope = requireNonEmpty(input.officeScope, "office scope");
+  const officeName = requireNonEmpty(input.officeName, "office name");
+  const electionYear = normalizeElectionYear(input.electionYear);
+  const syncedAt = normalizeTimestamp(input.now);
+  const dryRun = input.dryRun === true;
+  const nyClient: NewYorkFinanceDataClient = { ...DEFAULT_NY_CLIENT, ...(input.nyClient ?? {}) };
+  const sodaClientOptions = input.sodaClientOptions ?? defaultNewYorkSodaClientOptions();
+  const aiClassificationMinAmount = normalizeAiClassificationMinAmount(input.aiClassificationMinAmount);
+
+  const resolution = input.trustedCommittee
+    ? toMatchedTrustedCommittee(input.trustedCommittee)
+    : await nyClient.searchAndResolveCandidateCommittee(
+        {
+          candidateName,
+          officeScope,
+          officeName,
+          electionYear,
+          district: input.district,
+        },
+        sodaClientOptions
+      );
+
+  if (resolution.status !== "matched") {
+    return emptyResult({ candidateId, electionId, electionYear, dryRun, resolution });
+  }
+
+  const outside = await nyClient.collectOutsideSpending(
+    {
+      candidateName,
+      officeScope,
+      officeName,
+      electionYear,
+      district: input.district,
+      maxGroups: input.outsideMaxGroups ?? DEFAULT_OUTSIDE_MAX_GROUPS,
+    },
+    sodaClientOptions
+  );
+
+  // A group's own receipts are fetched once per filer even when the same
+  // committee appears on both the support and oppose side.
+  const funderResultsByFiler = new Map<string, Awaited<ReturnType<typeof getNewYorkOutsideGroupFunderBreakdowns>>>();
+  let outsideFunderRowCount = 0;
+  const rawOutsideBreakdowns: NewYorkFinanceOutsideGroupBreakdownInput[] = [];
+  for (const group of outside.groups) {
+    let funderResult = funderResultsByFiler.get(group.filerId);
+    if (!funderResult) {
+      funderResult = await nyClient.getOutsideGroupFunderBreakdowns(
+        {
+          filerId: group.filerId,
+          electionYear,
+          maxFunders: input.outsideMaxFundersPerGroup ?? DEFAULT_OUTSIDE_MAX_FUNDERS_PER_GROUP,
+        },
+        sodaClientOptions
+      );
+      funderResultsByFiler.set(group.filerId, funderResult);
+      outsideFunderRowCount += funderResult.organizationRowCount;
+    }
+    for (const funder of funderResult.funders) {
+      rawOutsideBreakdowns.push({
+        filerId: group.filerId,
+        supportOppose: group.supportOppose,
+        categoryType: funder.categoryType,
+        categoryName: funder.categoryName,
+        amount: funder.amount,
+        contributorCount: funder.contributorCount,
+        sourceUrl: funder.sourceUrl ?? group.sourceUrl ?? null,
+      });
+    }
+  }
+
+  const outsideIndustryFinance = await enrichOutsideGroupIndustryBreakdowns({
+    db: input.db,
+    outsideGroupBreakdowns: rawOutsideBreakdowns,
+    classifier: input.financeIndustryClassifier,
+    aiClassificationMinAmount,
+    dryRun,
+  });
+  const summary = toSummary({
+    supportTotal: outside.supportTotal,
+    opposeTotal: outside.opposeTotal,
+    sourceUrl: input.sourceUrl ?? resolution.sourceUrl,
+  });
+  const writerOutsideGroups = toOutsideGroups(outside.groups);
+  const link = toFinanceLink({
+    candidateId,
+    electionId,
+    candidateName,
+    electionYear,
+    officeName,
+    district: input.district,
+    resolution,
+    sourceUrl: input.sourceUrl,
+    verifiedAt: syncedAt,
+  });
+
+  if (!dryRun) {
+    await replaceNewYorkCandidateFinanceSnapshot({
+      db: input.db,
+      link,
+      syncedAt,
+      summary,
+      outsideGroups: writerOutsideGroups,
+      outsideGroupBreakdowns: outsideIndustryFinance.outsideGroupBreakdowns,
+      classifications: outsideIndustryFinance.classifications,
+    });
+  }
+
+  return {
+    candidateId,
+    electionId,
+    electionYear,
+    dryRun,
+    resolution,
+    linkWritten: !dryRun,
+    summaryWritten: !dryRun,
+    outsideGroupsWritten: dryRun ? 0 : writerOutsideGroups.length,
+    outsideGroupBreakdownsWritten: dryRun ? 0 : outsideIndustryFinance.outsideGroupBreakdowns.length,
+    outsideSupportTotal: summary.outsideSupportTotal ?? null,
+    outsideOpposeTotal: summary.outsideOpposeTotal ?? null,
+    outsideGroupCount: outside.groups.length,
+    outsideFunderRowCount,
+    outsideCounters: outside.counters,
+  };
+}
