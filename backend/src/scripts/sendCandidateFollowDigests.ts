@@ -268,11 +268,19 @@ export async function sendCandidateFollowDigests(
 
   // Follow up on earlier runs' push sends before producing new ones, so dead
   // tokens stop receiving before this run's fan-out. Live only: receipt
-  // processing mutates (revokes tokens, deletes checked rows).
+  // processing mutates (revokes tokens, deletes checked rows). Best-effort
+  // like every other push step: a transient Expo/DB failure here must not
+  // abort the run before any email goes out — the unchecked receipts stay
+  // stored and the next run picks them up.
   if (options.live && options.pushClient) {
-    const receipts = await processMaturePushReceipts(db, options.pushClient);
-    result.pushReceiptsCheckedCount = receipts.checkedCount;
-    result.pushTokensRevokedCount += receipts.revokedTokenCount;
+    try {
+      const receipts = await processMaturePushReceipts(db, options.pushClient);
+      result.pushReceiptsCheckedCount = receipts.checkedCount;
+      result.pushTokensRevokedCount += receipts.revokedTokenCount;
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : String(error);
+      console.warn(`push receipt processing failed; continuing the run: ${reason}`);
+    }
   }
 
   // Resolve orphans first so the send loop below only ever sees deliverable

@@ -362,6 +362,36 @@ describe("sendCandidateFollowDigests", () => {
     expect(db.deletedReceiptIds).toEqual([["r1", "r2"]]);
   });
 
+  it("continues the email run when receipt processing fails (best-effort)", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const db = createDbMock({
+        users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+        pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Jane Doe")] },
+        pendingPushReceipts: [{ receipt_id: "r1", expo_push_token: "ExponentPushToken[aaa]" }],
+      });
+      const mailer = createMailerMock();
+      const pushClient = createPushClientMock({
+        getPushNotificationReceiptsAsync: vi.fn(async () => {
+          throw new Error("expo receipts api down");
+        }),
+      });
+
+      const result = await sendCandidateFollowDigests(db as never, mailer, {
+        ...options,
+        pushClient: pushClient as never,
+      });
+
+      // The receipt failure is logged, not fatal: the email still goes out.
+      expect(result.usersEmailedCount).toBe(1);
+      expect(result.eventsDeliveredCount).toBe(1);
+      expect(result.pushReceiptsCheckedCount).toBe(0);
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining("push receipt processing failed"));
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
   it("does not touch the push channel in dry runs", async () => {
     const db = createDbMock({
       users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],

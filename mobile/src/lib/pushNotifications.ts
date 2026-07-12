@@ -55,17 +55,25 @@ export async function registerForPushRequestingPermission(): Promise<void> {
 }
 
 // One registration at a time: a follow spree must not stack identical
-// permission prompts or duplicate POSTs.
-let inFlight: Promise<void> | null = null;
+// permission prompts or duplicate POSTs. The in-flight mode is tracked so a
+// prompting call landing during a silent one (login's re-register racing a
+// first follow) is not swallowed — it re-runs, with the prompt, once the
+// silent attempt settles; re-running after a successful registration is just
+// an idempotent upsert.
+let inFlight: { requestPermission: boolean; promise: Promise<void> } | null = null;
 
 async function register(options: { requestPermission: boolean }): Promise<void> {
   if (Platform.OS === "web") {
     return;
   }
   if (inFlight) {
-    return inFlight;
+    if (options.requestPermission && !inFlight.requestPermission) {
+      // The in-flight promise never rejects — everything below is caught.
+      return inFlight.promise.then(() => register(options));
+    }
+    return inFlight.promise;
   }
-  inFlight = (async () => {
+  const promise = (async () => {
     try {
       // Android 13+ shows no permission prompt until a channel exists.
       if (Platform.OS === "android") {
@@ -119,7 +127,8 @@ async function register(options: { requestPermission: boolean }): Promise<void> 
       inFlight = null;
     }
   })();
-  return inFlight;
+  inFlight = { requestPermission: options.requestPermission, promise };
+  return promise;
 }
 
 /**
