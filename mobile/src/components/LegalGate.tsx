@@ -1,5 +1,5 @@
+import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
-import { openExternalUrl, WEB_ORIGIN } from "../lib/openExternalUrl";
 
 // Clickwrap checkbox (Meyer v. Uber / Nguyen / Berman requirements):
 // unchecked by default, sits directly above the action it gates, visible
@@ -13,6 +13,7 @@ type LegalGateProps = {
 };
 
 export function LegalGate({ label, checked, onChange }: LegalGateProps) {
+  const router = useRouter();
   return (
     <View className="rounded-xl border border-line bg-surface p-4">
       <Pressable
@@ -34,18 +35,18 @@ export function LegalGate({ label, checked, onChange }: LegalGateProps) {
         <Text className="flex-1 text-sm text-ink">{label}</Text>
       </Pressable>
       <View className="mt-2 flex-row flex-wrap gap-x-4 pl-8">
-        <Text className="text-sm font-medium text-ink underline" accessibilityRole="link" onPress={() => openExternalUrl(`${WEB_ORIGIN}/terms`)}>
+        <Text className="text-sm font-medium text-ink underline" accessibilityRole="link" onPress={() => router.push("/legal/terms")}>
           Terms of Use
         </Text>
         <Text
           className="text-sm font-medium text-ink underline" accessibilityRole="link"
-          onPress={() => openExternalUrl(`${WEB_ORIGIN}/privacy`)}
+          onPress={() => router.push("/legal/privacy")}
         >
           Privacy Policy
         </Text>
         <Text
           className="text-sm font-medium text-ink underline" accessibilityRole="link"
-          onPress={() => openExternalUrl(`${WEB_ORIGIN}/disclaimer`)}
+          onPress={() => router.push("/legal/disclaimer")}
         >
           Disclaimer
         </Text>

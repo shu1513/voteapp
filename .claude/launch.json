@@ -13,6 +13,13 @@
       "runtimeArgs": ["run", "dev", "--prefix", "frontend"],
       "port": 5173,
       "autoPort": true
+    },
+    {
+      "name": "mobile-web",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["expo", "start", "--web", "--port", "8082", "--offline"],
+      "cwd": "mobile",
+      "port": 8082
     }
   ]
 }

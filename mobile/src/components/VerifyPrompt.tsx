@@ -1,5 +1,6 @@
 import { apiRequest } from "@voteapp/api-client";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import { ErrorNotice } from "./Status";
 
@@ -8,6 +9,7 @@ import { ErrorNotice } from "./Status";
 // to offer a resend for. Port of the web component.
 
 export function VerifyPrompt({ email }: { email: string }) {
+  const router = useRouter();
   const resend = useMutation({
     mutationFn: () =>
       apiRequest<{ status: string }>("/api/auth/resend-verification", {
@@ -44,6 +46,13 @@ export function VerifyPrompt({ email }: { email: string }) {
           <ErrorNotice error={resend.error} />
         </View>
       ) : null}
+      <Text
+        className="mt-4 text-sm text-ink-soft underline"
+        accessibilityRole="link"
+        onPress={() => router.push("/verify-email")}
+      >
+        Have a confirmation code? Enter it here.
+      </Text>
     </View>
   );
 }
