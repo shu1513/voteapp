@@ -143,6 +143,16 @@ function normalizeNullableAmount(value: number | null | undefined, fieldName: st
   return normalizeAmount(value, fieldName);
 }
 
+function normalizeNullableFiniteAmount(value: number | null | undefined, fieldName: string): number | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  if (!Number.isFinite(value)) {
+    throw new Error(`${fieldName} must be a finite number`);
+  }
+  return value;
+}
+
 function normalizeNullableCount(value: number | null | undefined): number | null {
   if (value === undefined || value === null) {
     return null;
@@ -486,7 +496,7 @@ async function upsertSummary(input: {
       normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
       normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
       normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
-      normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
+      normalizeNullableFiniteAmount(input.summary.cashOnHand, "cash on hand"),
       normalizeNullableAmount(input.summary.debtsOwed, "debts owed"),
       normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
       normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),

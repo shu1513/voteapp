@@ -1,0 +1,11 @@
+ID	CandidateID	ElectionType	ElectionYear	IncChallOpen	WonLost	FairCampaign	LimitsOff	LimitsOffReason
+19259	9811	CE	2021	    	Won 	False	False	""
+81551	19135	CP	2021	Inc 	Won 	False	False	""
+98500	19135	CP	2025	Inc 	Won 	False	False	""
+40162	21181	CP	2007		Won 	False	False	""
+84990	37835	CP	2023	Inc 	Won 	False	False	""
+85240	42345	CP	2023	Inc 	Won 	False	False	""
+84937	46454	CP	2023	Chal	Won 	False	True	Limits Off for Race
+87099	46454	CE	2023	Chal	Won 	False	True	Limits Off for Race
+100455	46454	CP	2027	Inc 	    	False	True	Limits Off for Race
+85011	46519	CE	2023	    	Lost	False	False	""

@@ -4,6 +4,24 @@
 campaign-finance support to reliable municipal offices across every Illinois
 place already modeled by VoteApp. This is not a Chicago-only implementation.*
 
+## Status update — 2026-07-12
+
+The ID-based relation path, jurisdiction-aware local mapping, D-2 aggregation,
+and normalized artifact consumer are now present on `main`. The next narrow
+slice is implemented on `codex/illinois-normalized-artifact-producer`:
+
+- a read-only producer for the six official SBE bulk files;
+- exact header, row-width, and truncated-download validation;
+- stable candidate/election/committee/filing joins into
+  `illinois_sbe_normalized/v1`;
+- official source fixtures covering Chicago Mayor/Clerk/Treasurer, Elgin,
+  Inverness Village, Cicero Town, multiple committees, amendments, and a
+  rejected ward race.
+
+Still required after this slice: durable acquisition/publishing of the official
+files, broader real-source fixture coverage, canonical Illinois place elections
+and rosters, statewide dry-sync reconciliation, staged rollout, and monitoring.
+
 ## 1. Fresh code and data audit
 
 ### Existing path
