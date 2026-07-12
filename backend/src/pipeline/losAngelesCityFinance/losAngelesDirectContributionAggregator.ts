@@ -74,6 +74,9 @@ export function aggregateLosAngelesDirectContributions(input: {
     includedRowCount += 1;
     add("occupation", record.occupation, cents, net > 0 ? 1 : 0);
     add("employer", record.employer, cents, net > 0 ? 1 : 0);
+    // Size buckets describe gross positive receipts. A negative amendment or
+    // refund does not identify its original receipt, so bucketing its absolute
+    // amount could move a partial refund into the wrong original-size bucket.
     if (net > 0) add("contribution_size", bucket(net), cents, 1);
   }
   const breakdowns: LosAngelesDirectBreakdown[] = [];

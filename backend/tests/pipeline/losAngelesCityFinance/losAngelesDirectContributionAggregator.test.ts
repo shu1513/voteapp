@@ -23,7 +23,7 @@ const row = (
 });
 
 describe("aggregateLosAngelesDirectContributions", () => {
-  it("excludes Schedule I and nets repaid/forgiven loans", () => {
+  it("nets refunds in totals while size buckets describe gross positive receipts", () => {
     const result = aggregateLosAngelesDirectContributions({
       records: [
         row({ amount: 500 }),
