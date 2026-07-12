@@ -57,7 +57,9 @@ function decodeHtml(value: string): string {
     .trim();
 }
 function money(value: string): number | null {
-  const parsed = Number(value.replace(/[$,\s]/g, ""));
+  const normalized = value.replace(/[$,\s]/g, "");
+  if (!normalized) return null;
+  const parsed = Number(normalized);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
 }
 function isoDateFromUs(value: string): string | null {

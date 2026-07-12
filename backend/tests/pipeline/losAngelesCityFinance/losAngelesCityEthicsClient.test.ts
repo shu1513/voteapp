@@ -72,4 +72,12 @@ describe("Los Angeles Ethics parsers", () => {
         officeName: "Mayor",
       }),
     ).toEqual([]));
+  it("does not treat an empty metric cell as a reported zero", () =>
+    expect(
+      parseLosAngelesEthicsCandidateTotals({
+        html: fixture.replace(metric("0.00"), metric("")),
+        electionId: "76",
+        officeName: "Mayor",
+      }),
+    ).toEqual([]));
 });

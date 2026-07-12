@@ -97,13 +97,14 @@ export async function autoLinkMissingLosAngelesCandidateFinanceLinks(input: {
         });
         continue;
       }
-      let totals = totalsByElection.get(election.electionId);
+      const totalsCacheKey = `${election.electionId}:${candidate.officeName}`;
+      let totals = totalsByElection.get(totalsCacheKey);
       if (!totals) {
         totals = await getLosAngelesEthicsCandidateTotals(
           { electionId: election.electionId, officeName: candidate.officeName },
           input.ethicsClientOptions,
         );
-        totalsByElection.set(election.electionId, totals);
+        totalsByElection.set(totalsCacheKey, totals);
       }
       const resolution = resolveLosAngelesCandidateCommittee({
         candidateName: candidate.candidateName,

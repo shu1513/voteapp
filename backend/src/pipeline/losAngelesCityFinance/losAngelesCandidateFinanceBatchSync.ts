@@ -117,13 +117,14 @@ export async function syncDueLosAngelesCandidateFinance(input: {
   const results: LosAngelesCandidateFinanceBatchSyncResult["results"] = [];
   for (const row of due.rows) {
     try {
-      let totals = totalsCache.get(row.ethics_election_id);
+      const totalsCacheKey = `${row.ethics_election_id}:${row.office_name}`;
+      let totals = totalsCache.get(totalsCacheKey);
       if (!totals) {
         totals = await getLosAngelesEthicsCandidateTotals(
           { electionId: row.ethics_election_id, officeName: row.office_name },
           input.ethicsClientOptions,
         );
-        totalsCache.set(row.ethics_election_id, totals);
+        totalsCache.set(totalsCacheKey, totals);
       }
       const total = totals.find(
         (item) => item.candidatePersonId === row.ethics_candidate_person_id,
