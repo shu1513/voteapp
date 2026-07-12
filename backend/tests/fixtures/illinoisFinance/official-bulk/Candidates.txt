@@ -1,0 +1,9 @@
+ID	LastName	FirstName	Address1	Address2	City	State	Zip	Office	DistrictType	District	ResidenceCounty	PartyAffiliation	RedactionRequested
+46284	"Young" Weber	Lauren	512 N Paulina St		Chicago	IL	60622	Alderperson	Ward	1	Cook	Non Partisan	False
+46519	Aagesen	Christina "Tia"	215 Wing Park Boulevard		Elgin	IL	60123	Councilman	City	Elgin		Non Partisan	False
+42345	Conyears-Ervin	Melissa	3323 W. Jackson Blvd		Chicago	IL	60624	Treasurer	City	Chicago	Cook	Democratic	False
+21181	Del Valle	Miguel	2218 N Lamon Ave		Chicago	IL	60639	Clerk	City	Chicago	Cook	Democratic	False
+19135	Dominick	Larry	6110 W 38th St.		Cicero	IL	60804	President	Town	Cicero	Cook	Independent	False
+46454	Johnson	Brandon	5715 W. Superior		Chicago	IL	60644	Mayor	City	Chicago		Non Partisan	False
+9811	Post	Linda	2150 Common Ridings Way	Village Of Inverness	Barrington	IL	60010	Trustee	Village	Inverness	Cook	Independent	False
+37835	Valencia	Anna	PO Box 10785		Chicago	IL	60610	Clerk	City	Chicago	Cook	Democratic	False

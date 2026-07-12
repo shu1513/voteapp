@@ -1,0 +1,4 @@
+ID	CommitteeID	FiledDocType	DocName	Amend	Comment	Pages	ElectionType	ElectionYear	RptPdBegDate	RptPdEndDate	RcvdAt	RcvdDateTime	Source	Provider	SignerLastOnlyName	SignerFirstName	SbmttrLastOnlyName	SbmttrFirstName	SbmttrAddress1	SbmttrAddress2	SbmttrCity	SbmttrState	SbmttrZip	B9SignerLastOnlyName	B9SignerFirstName	Archived	Clarification	RedactionRequested
+197072	1078	10	Pre-election	False		25	GE	2000	2000-07-01 00:00:00	2000-10-08 00:00:00	C	2000-10-23 16:47:11	D													True		False
+199515	1078	10	Pre-election	True		7	GE	2000	2000-07-01 00:00:00	2000-10-08 00:00:00	S	2000-11-22 11:15:19	I													True		False
+203941	1078	45	Semiannual	False		12			2000-07-01 00:00:00	2000-12-31 00:00:00	S	2001-01-31 11:51:38	I													False		False

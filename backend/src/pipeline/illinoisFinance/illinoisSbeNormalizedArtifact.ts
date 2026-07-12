@@ -114,6 +114,20 @@ function nullableNonnegativeAmount(
   return Math.round(value * 100) / 100;
 }
 
+function nullableFiniteAmount(record: Record<string, unknown>, key: string, context: string): number | null {
+  const value = record[key];
+  if (value === undefined) {
+    throw new Error(`Illinois SBE normalized artifact ${context}.${key} is required`);
+  }
+  if (value === null) {
+    return null;
+  }
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    throw new Error(`Illinois SBE normalized artifact ${context}.${key} must be null or a finite number`);
+  }
+  return Math.round(value * 100) / 100;
+}
+
 function parseRelation(value: unknown, index: number): IllinoisSbeCandidateCommitteeRelation {
   const context = `candidateCommitteeRelations[${index}]`;
   if (!isRecord(value)) {
@@ -159,7 +173,7 @@ function parseD2Report(value: unknown, index: number): IllinoisSbeD2ReportSummar
     filedAt: requireTimestamp(value, "filedAt", context),
     totalReceipts: nullableNonnegativeAmount(value, "totalReceipts", context),
     totalDisbursements: nullableNonnegativeAmount(value, "totalDisbursements", context),
-    cashOnHand: nullableNonnegativeAmount(value, "cashOnHand", context),
+    cashOnHand: nullableFiniteAmount(value, "cashOnHand", context),
     debtsOwed: nullableNonnegativeAmount(value, "debtsOwed", context),
     sourceUrl: requireUrl(value, "sourceUrl", context),
   };
