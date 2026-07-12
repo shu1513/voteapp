@@ -51,13 +51,29 @@ describe("newYorkCityCfbArtifactCache", () => {
     }
   });
 
+  it("reports a missing current-year artifact as not yet published", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "nyc-cfb-cache-"));
+    tempDirs.push(cacheDir);
+    const electionYear = new Date().getUTCFullYear();
+    const result = await refreshNewYorkCityCfbArtifact({
+      cacheDir, electionYear, kind: "contributions",
+      fetchImpl: vi.fn<typeof fetch>().mockResolvedValue(new Response(null, { status: 404 })),
+    });
+    expect(result.status).toBe("not_yet_published");
+    if (result.status === "not_yet_published") {
+      expect(result.electionYear).toBe(electionYear);
+      expect(Date.parse(result.nextCheckAt)).toBeGreaterThan(Date.parse(result.checkedAt));
+    }
+  });
+
   it("fails loudly when an expected published-cycle artifact returns 404", async () => {
     const cacheDir = await mkdtemp(join(tmpdir(), "nyc-cfb-cache-"));
     tempDirs.push(cacheDir);
+    const electionYear = new Date().getUTCFullYear() - 1;
     await expect(refreshNewYorkCityCfbArtifact({
-      cacheDir, electionYear: 2025, kind: "contributions",
+      cacheDir, electionYear, kind: "contributions",
       fetchImpl: vi.fn<typeof fetch>().mockResolvedValue(new Response(null, { status: 404 })),
-    })).rejects.toThrow("artifact missing for published election year 2025");
+    })).rejects.toThrow(`artifact missing for published election year ${electionYear}`);
   });
 
   it("rejects HTML challenge bodies", async () => {
