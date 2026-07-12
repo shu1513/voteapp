@@ -65,6 +65,11 @@ describe("SettingsPage", () => {
     const confirmation = await screen.findByRole("status");
     expect(confirmation).toHaveTextContent("matched to 123 MAIN ST, AUSTIN, TX");
     expect(confirmation).toHaveTextContent("1 district");
+
+    // Editing again starts a new attempt: the old confirmation must not sit
+    // beside a half-typed next address as if it described it.
+    await user.type(screen.getByLabelText("New address"), "456 Oak");
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 
   it("shows all four email toggles with the saved values for verified users", async () => {
