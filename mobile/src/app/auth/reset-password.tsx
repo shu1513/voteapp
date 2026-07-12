@@ -1,10 +1,11 @@
-import { apiRequest } from "@voteapp/api-client";
-import { useMutation } from "@tanstack/react-query";
+import { apiRequest, purgeAccountScopedQueries } from "@voteapp/api-client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from "react-native";
 import { LabeledInput } from "../../components/LabeledInput";
 import { ErrorNotice } from "../../components/Status";
+import { clearSessionId } from "../../lib/sessionStore";
 
 /**
  * Port of the web ResetPasswordPage. The token normally arrives via the
@@ -29,12 +30,21 @@ export default function ResetPasswordScreen() {
     setToken(paramToken);
   }
 
+  const queryClient = useQueryClient();
   const reset = useMutation({
     mutationFn: () =>
       apiRequest<{ status: string }>("/api/auth/reset-password", {
         method: "POST",
         body: { token: token.trim(), password },
       }),
+    onSuccess: async () => {
+      // The backend just revoked every session (epoch bump). Drop the local
+      // remnants too — the success copy says "logged out everywhere", so a
+      // stored (now dead) Bearer id and cached identity must not linger.
+      await clearSessionId().catch(() => {});
+      queryClient.setQueryData(["me"], null);
+      purgeAccountScopedQueries(queryClient);
+    },
   });
 
   const canSubmit = token.trim().length > 0 && password.length > 0 && !reset.isPending;

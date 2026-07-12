@@ -26,14 +26,18 @@ export function useLogin() {
           "Login succeeded but no mobile session was issued (browser-originated requests are cookie-only by design). Use the native app."
         );
       }
+      // Storing is part of the mutation, not onSuccess: a keystore write
+      // failure must fail the login (a session that exists only in memory
+      // would silently die on the next app launch), and callbacks that
+      // throw cannot stop the caller's own onSuccess navigation.
+      await setSessionId(response.session_id);
       return { sessionId: response.session_id };
     },
-    onSuccess: async (result) => {
-      // Store the Bearer id BEFORE any refetch so /api/me goes out
-      // authenticated.
-      await setSessionId(result.sessionId);
+    onSuccess: async () => {
       // A previous session may have ended without a clean logout; cached
       // account data (e.g. ["me","ballot"]) must not bleed into this one.
+      // The Bearer id is already stored, so this refetch goes out
+      // authenticated.
       purgeAccountScopedQueries(queryClient);
       await queryClient.invalidateQueries({ queryKey: ["me"] });
     },

@@ -2,10 +2,13 @@
 // lives in the platform keystore (iOS Keychain / Android Keystore), never in
 // AsyncStorage. Login/password-change flows write it, logout clears it.
 //
-// expo-secure-store throws on web, where Expo serves the app during
-// development; an in-memory fallback keeps the session for the tab's
-// lifetime there (mobile-client API responses set no cookie, so without it
-// web dev logins would silently not stick).
+// Web (where expo-secure-store throws) gets an in-memory fallback for the
+// tab's lifetime — that surface can't receive a session id from the backend
+// anyway (browser-provenance gate), so this only serves dev flows. On
+// native, a keystore WRITE failure propagates so login fails loudly instead
+// of "succeeding" into a session that silently dies on the next app launch;
+// read/clear failures degrade to signed-out rather than bricking requests.
+import { Platform } from "react-native";
 import * as SecureStore from "expo-secure-store";
 
 const SESSION_KEY = "voteapp_session_id";
@@ -16,16 +19,16 @@ export async function getSessionId(): Promise<string | null> {
   try {
     return await SecureStore.getItemAsync(SESSION_KEY);
   } catch {
-    return memoryFallback;
+    return Platform.OS === "web" ? memoryFallback : null;
   }
 }
 
 export async function setSessionId(sessionId: string): Promise<void> {
-  try {
-    await SecureStore.setItemAsync(SESSION_KEY, sessionId);
-  } catch {
+  if (Platform.OS === "web") {
     memoryFallback = sessionId;
+    return;
   }
+  await SecureStore.setItemAsync(SESSION_KEY, sessionId);
 }
 
 export async function clearSessionId(): Promise<void> {
@@ -33,6 +36,7 @@ export async function clearSessionId(): Promise<void> {
   try {
     await SecureStore.deleteItemAsync(SESSION_KEY);
   } catch {
-    // Keystore unavailable (web): the memory fallback above is the store.
+    // Clearing must never block logout; on web the memory reset above is
+    // the store, and a native delete failure leaves only a dead id behind.
   }
 }
