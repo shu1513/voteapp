@@ -18,7 +18,7 @@ describe("Houston candidate committee resolver", () => {
     expect(resolveHoustonCandidateCommittee({
       candidateName: "John Whitmire",
       electionYear: 2023,
-      officeTarget: { officeName: "City Controller", seat: "Houston" },
+      officeTarget: { officeName: "Municipal Controller", seat: "Houston" },
       reports: [report("legacy_webforms", "1")],
     }).status).toBe("not_found");
   });

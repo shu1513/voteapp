@@ -16,7 +16,7 @@ One source limitation remains deliberate: Houston-local SPAC filings are not inc
 
 ## 2026-07-12 office expansion
 
-The merged Mayor flow is extended without new finance tables to City Controller and exact-seat City Council races. Live probes established the required identity fields:
+The merged Mayor flow is extended without new finance tables to City Controller and exact-seat City Council races. City Controller reuses the shared `place::Municipal Controller` canonical office already used by Los Angeles; Houston source text still says `Controller` or `City Controller`. Live probes established the required identity fields:
 
 - Legacy Controller PDFs identify `Controller` on the cover page.
 - Legacy council PDFs preserve seats such as `City Council - District C`.

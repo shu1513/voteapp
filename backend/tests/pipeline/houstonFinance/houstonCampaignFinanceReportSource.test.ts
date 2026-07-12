@@ -95,4 +95,18 @@ describe("Houston candidate finance report source", () => {
       efileReports: [index("1")],
     })).rejects.toThrow("All 1 Houston candidate finance reports failed");
   });
+
+  it("does not download eFile reports with an unknown office code", async () => {
+    const report = { ...index("1"), officeDescription: "UNKNOWN_OFFICE" };
+
+    await expect(loadHoustonCandidateFinanceReports({
+      candidateName: "Jane Doe",
+      firstName: "Jane",
+      lastName: "Doe",
+      electionYear: 2027,
+      efileReports: [report],
+    })).resolves.toEqual([]);
+    expect(mocks.downloadEfile).not.toHaveBeenCalled();
+    expect(mocks.parsePdf).not.toHaveBeenCalled();
+  });
 });

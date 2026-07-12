@@ -1,6 +1,6 @@
 export const HOUSTON_FINANCE_OFFICE_NAMES = [
   "Mayor",
-  "City Controller",
+  "Municipal Controller",
   "City Council Member",
 ] as const;
 
@@ -28,7 +28,7 @@ function councilSeat(value: string): HoustonFinanceCouncilSeat | null {
   const text = normalized(value);
   const district = /\b(?:DISTRICT|DIST)\s*([A-K])\b/.exec(text)?.[1];
   if (district) return `District ${district}`;
-  const atLarge = /\b(?:AT\s*LARGE(?:\s+POSITION)?|AL|POSITION)(?:\s+NO)?\s*([1-5])\b/.exec(text)?.[1];
+  const atLarge = /\b(?:AT\s*(?:LARGE|LG|LRG)|ATLG|AL)(?:\s+(?:POSITION|POS|PT))?(?:\s+NO)?\s*([1-5])\b/.exec(text)?.[1];
   return atLarge ? `At-Large ${Number(atLarge)}` : null;
 }
 
@@ -41,7 +41,7 @@ export function resolveHoustonElectionOfficeTarget(input: {
   officialBallotTitle: string | null | undefined;
 }): HoustonFinanceOfficeTarget | null {
   const officeName = input.officeCanonicalName?.trim();
-  if (officeName === "Mayor" || officeName === "City Controller") {
+  if (officeName === "Mayor" || officeName === "Municipal Controller") {
     return { officeName, seat: "Houston" };
   }
   if (officeName !== "City Council Member") return null;
@@ -59,7 +59,7 @@ export function parseHoustonDisclosureOfficeTarget(value: string): HoustonFinanc
     return { officeName: "Mayor", seat: "Houston" };
   }
   if (hasController) {
-    return { officeName: "City Controller", seat: "Houston" };
+    return { officeName: "Municipal Controller", seat: "Houston" };
   }
   const seat = councilSeat(text);
   return seat ? { officeName: "City Council Member", seat } : null;
@@ -68,7 +68,9 @@ export function parseHoustonDisclosureOfficeTarget(value: string): HoustonFinanc
 export function parseHoustonEfileOfficeTarget(value: string | null | undefined): HoustonFinanceOfficeTarget | null {
   const code = value?.trim().toUpperCase() ?? "";
   if (code === "MAYOR") return { officeName: "Mayor", seat: "Houston" };
-  if (/^(?:CITY_?)?CONTROLLER$/.test(code)) return { officeName: "City Controller", seat: "Houston" };
+  if (/^(?:(?:CITY|MUNICIPAL)_?)?CONTROLLER$/.test(code)) {
+    return { officeName: "Municipal Controller", seat: "Houston" };
+  }
   const atLarge = /^CCM_(?:AL|AT_LARGE_?)([1-5])$/.exec(code)?.[1];
   if (atLarge) return { officeName: "City Council Member", seat: `At-Large ${Number(atLarge)}` };
   const district = /^CCM_(?:DIST(?:RICT)?_?)?([A-K])$/.exec(code)?.[1];
@@ -81,7 +83,7 @@ export function parseStoredHoustonFinanceOfficeTarget(input: {
   district: string | null | undefined;
 }): HoustonFinanceOfficeTarget | null {
   const officeName = input.officeName?.trim();
-  if (officeName === "Mayor" || officeName === "City Controller") {
+  if (officeName === "Mayor" || officeName === "Municipal Controller") {
     return { officeName, seat: "Houston" };
   }
   if (officeName !== "City Council Member") return null;

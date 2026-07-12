@@ -20,7 +20,7 @@ describe("Houston finance eligibility", () => {
     })).toBe(true);
     expect(isHoustonFinanceEligibleElection({
       state: "TX", districtType: "place", geoidCompact: HOUSTON_CITY_GEOID,
-      officeScope: "place", officeCanonicalName: "City Controller",
+      officeScope: "place", officeCanonicalName: "Municipal Controller",
     })).toBe(true);
     expect(isHoustonFinanceEligibleElection({
       state: "TX", districtType: "place", geoidCompact: HOUSTON_CITY_GEOID,

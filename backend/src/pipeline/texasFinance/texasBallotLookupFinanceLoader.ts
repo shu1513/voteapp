@@ -9,7 +9,7 @@ import { loadStandardStateFinanceSummariesByCandidateElection } from "../finance
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
-const HOUSTON_LOCAL_FINANCE_OFFICES = new Set(["Mayor", "City Controller", "City Council Member"]);
+const HOUSTON_LOCAL_FINANCE_OFFICES = new Set(["Mayor", "Municipal Controller", "City Council Member"]);
 
 export async function loadTexasCandidateFinanceSummariesByCandidateElection(
   db: Queryable,

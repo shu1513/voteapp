@@ -11,7 +11,7 @@ const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
 
 describe("texasBallotLookupFinanceLoader", () => {
-  it.each(["Mayor", "City Controller", "City Council Member"])(
+  it.each(["Mayor", "Municipal Controller", "City Council Member"])(
     "does not query Texas TEC tables for Houston local finance office %s",
     async (officeCanonicalName) => {
     vi.stubEnv("TEXAS_CAMPAIGN_FINANCE_ENABLED", "true");

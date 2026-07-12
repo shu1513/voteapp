@@ -297,12 +297,6 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "place",
-    canonicalName: "City Controller",
-    summary:
-      "Oversees municipal accounting, financial reporting, payments, investments, debt administration, and independent audits where the office is elected.",
-  },
-  {
-    scope: "place",
     canonicalName: "Place Level Judge",
     summary:
       "Serves in a municipal or place-level judicial role, handling local court matters and applying relevant law and procedure.",
@@ -1136,21 +1130,6 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "place",
     officeCanonicalName: "City Treasurer",
     aliasText: "Village Treasurer",
-  },
-  {
-    scope: "place",
-    officeCanonicalName: "City Controller",
-    aliasText: "Controller",
-  },
-  {
-    scope: "place",
-    officeCanonicalName: "City Controller",
-    aliasText: "City Controller",
-  },
-  {
-    scope: "place",
-    officeCanonicalName: "City Controller",
-    aliasText: "Municipal Controller",
   },
   {
     scope: "place",

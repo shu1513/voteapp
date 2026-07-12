@@ -64,7 +64,7 @@ export async function loadHoustonCandidateFinanceReports(input: {
     Number(report.periodEnd?.slice(0, 4) ?? report.receivedDate.slice(0, 4)) <= input.electionYear &&
     (() => {
       const indexedTarget = parseHoustonEfileOfficeTarget(report.officeDescription);
-      return !indexedTarget || houstonFinanceOfficeTargetsEqual(indexedTarget, officeTarget);
+      return indexedTarget !== null && houstonFinanceOfficeTargetsEqual(indexedTarget, officeTarget);
     })()
   );
   const legacySession = await searchHoustonLegacyCandidateReports(

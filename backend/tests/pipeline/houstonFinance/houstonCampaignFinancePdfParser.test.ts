@@ -51,7 +51,7 @@ describe("Houston PDF parsing", () => {
   });
 
   it.each([
-    ["Controller", { officeName: "City Controller", seat: "Houston" }],
+    ["Controller", { officeName: "Municipal Controller", seat: "Houston" }],
     ["City Council - District C", { officeName: "City Council Member", seat: "District C" }],
     ["City Council Member, District, At Large 2", { officeName: "City Council Member", seat: "At-Large 2" }],
   ])("parses supported office target %s", async (office, expected) => {

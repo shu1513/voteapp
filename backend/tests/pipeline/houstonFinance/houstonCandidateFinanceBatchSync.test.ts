@@ -29,7 +29,7 @@ describe("Houston candidate finance batch selection", () => {
     await listHoustonCandidateElectionsMissingFinanceLinks({ db: { query }, now: new Date("2026-01-01T00:00:00Z"), maxCandidates: 10, lookbackDays: 1, lookaheadDays: 730 });
     expect(query.mock.calls[0]?.[0]).toContain("district.geoid_compact = $5");
     expect(query.mock.calls[0]?.[1]?.[4]).toBe("4835000");
-    expect(query.mock.calls[0]?.[1]?.[5]).toEqual(["Mayor", "City Controller", "City Council Member"]);
+    expect(query.mock.calls[0]?.[1]?.[5]).toEqual(["Mayor", "Municipal Controller", "City Council Member"]);
   });
 
   it("requires an exact council seat when mapping auto-link candidates", async () => {

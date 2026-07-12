@@ -62,7 +62,7 @@ describe("Houston Texas GPAC outside spending", () => {
   it("matches explicit Houston Controller rows and rejects generic city-controller context", () => {
     const result = aggregateHoustonTexasGpacOutsideSpending({
       candidateName: "Chris Hollins", electionYear: 2023,
-      officeTarget: { officeName: "City Controller", seat: "Houston" },
+      officeTarget: { officeName: "Municipal Controller", seat: "Houston" },
       purposeRows: [
         purpose({ filerIdent: "100", filerTypeCd: "GPAC", reportInfoIdent: "10", subjectCategoryCd: "CANDIDATE", subjectPositionCd: "SUPPORT", commActivityName: "Hollins, Chris", activitySeekOfficeDescr: "City of Houston Controller" }),
         purpose({ filerIdent: "200", filerTypeCd: "GPAC", reportInfoIdent: "20", subjectCategoryCd: "CANDIDATE", subjectPositionCd: "SUPPORT", commActivityName: "Hollins, Chris", activitySeekOfficeDescr: "City Controller" }),
@@ -102,5 +102,26 @@ describe("Houston Texas GPAC outside spending", () => {
     });
     expect(result.summary?.supportTotal).toBe(40000);
     expect(result.summary?.groups.map((group) => group.committeeName)).toEqual(["District C Group"]);
+  });
+
+  it("matches explicit at-large TEC fields and skips ambiguous numeric-only positions", () => {
+    const result = aggregateHoustonTexasGpacOutsideSpending({
+      candidateName: "Janaeya Carmouche", electionYear: 2023,
+      officeTarget: { officeName: "City Council Member", seat: "At-Large 3" },
+      purposeRows: [
+        purpose({ filerIdent: "100", filerTypeCd: "GPAC", reportInfoIdent: "10", subjectCategoryCd: "CANDIDATE", subjectPositionCd: "SUPPORT", commActivityName: "Carmouche, Janaeya", activitySeekOfficePlace: "Houston", activitySeekOfficeDescr: "City Council", activitySeekOfficeDistrict: "At Large 3" }),
+        purpose({ filerIdent: "200", filerTypeCd: "GPAC", reportInfoIdent: "20", subjectCategoryCd: "CANDIDATE", subjectPositionCd: "SUPPORT", commActivityName: "Carmouche, Janaeya", activitySeekOfficePlace: "Houston", activitySeekOfficeDescr: "City Council", activitySeekOfficeDistrict: "3" }),
+      ],
+      candidateRows: [
+        candidate({ filerIdent: "100", filerName: "Exact At-Large Group", reportInfoIdent: "10", expendInfoId: "1", candidateNameFirst: "Janaeya", candidateNameLast: "Carmouche", candidateSeekOfficePlace: "Houston", candidateSeekOfficeDescr: "City Council", candidateSeekOfficeDistrict: "At Large 3" }),
+        candidate({ filerIdent: "200", filerName: "Ambiguous Position", reportInfoIdent: "20", expendInfoId: "2", candidateNameFirst: "Janaeya", candidateNameLast: "Carmouche", candidateSeekOfficePlace: "Houston", candidateSeekOfficeDescr: "City Council", candidateSeekOfficeDistrict: "3" }),
+      ],
+      expenditureRows: [
+        expenditure({ filerIdent: "100", expendInfoId: "1", expendDt: "20231023", expendAmount: "30000" }),
+        expenditure({ filerIdent: "200", expendInfoId: "2", expendDt: "20231023", expendAmount: "90000" }),
+      ],
+    });
+    expect(result.summary?.supportTotal).toBe(30000);
+    expect(result.summary?.groups.map((group) => group.committeeName)).toEqual(["Exact At-Large Group"]);
   });
 });

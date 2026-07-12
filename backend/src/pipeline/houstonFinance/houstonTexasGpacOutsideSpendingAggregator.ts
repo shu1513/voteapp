@@ -56,7 +56,8 @@ export function isTexasTecHoustonOfficeDescription(
 
 function officeDescription(input: { place: string; description: string; district: string }): string {
   const district = input.district.trim();
-  return [input.place, input.description, district ? `District ${district}` : ""].filter(Boolean).join(" ");
+  const districtDescription = /^[A-K]$/i.test(district) ? `District ${district}` : district;
+  return [input.place, input.description, districtDescription].filter(Boolean).join(" ");
 }
 
 function isInfoOnly(value: string): boolean {
