@@ -63,6 +63,7 @@
     "manual:candidate-records:write": "tsx src/scripts/writeManualCandidateRecords.ts",
     "manual:records:audit": "tsx src/scripts/auditCandidateRecordsCompleteness.ts",
     "manual:ballot-measure:write": "tsx src/scripts/writeManualBallotMeasure.ts",
+    "manual:election-date:correct": "tsx src/scripts/correctManualElectionDate.ts",
     "manual:district-research:claim": "tsx src/scripts/manualDistrictResearchQueue.ts claim",
     "manual:district-research:start": "tsx src/scripts/manualDistrictResearchQueue.ts start",
     "manual:district-research:complete": "tsx src/scripts/manualDistrictResearchQueue.ts complete",
