@@ -2,8 +2,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
 
 /**
- * Bottom tabs (the plan's mobile IA): Home search, saved ballot, follows.
- * Settings joins with its own chunk. Detail and auth screens stay in the
+ * Bottom tabs (the plan's mobile IA): Home search, saved ballot, follows,
+ * settings. Detail, auth, settings-detail and legal screens stay in the
  * root stack so they push over the tab bar's content.
  */
 export default function TabsLayout() {
@@ -36,6 +36,14 @@ export default function TabsLayout() {
           title: "Candidates you follow",
           tabBarLabel: "Follows",
           tabBarIcon: ({ color, size }) => <Ionicons name="people-outline" color={color} size={size} />,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+          tabBarLabel: "Settings",
+          tabBarIcon: ({ color, size }) => <Ionicons name="settings-outline" color={color} size={size} />,
         }}
       />
     </Tabs>
