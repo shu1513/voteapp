@@ -119,7 +119,10 @@ export async function autoLinkMissingLosAngelesCandidateFinanceLinks(input: {
           candidateId: candidate.candidateId,
           electionId: candidate.electionId,
           status: "not_found",
-          reason: "Office is not eligible for Los Angeles City finance",
+          reason:
+            candidate.officeName === "City Council Member"
+              ? "Council seat number could not be parsed from the official ballot title"
+              : "Office is not eligible for Los Angeles City finance",
         });
         continue;
       }

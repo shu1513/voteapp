@@ -44,9 +44,7 @@ export function parseLosAngelesCityCouncilSeatNumber(
     );
   if (!match) return null;
   const seatNumber = Number(match[1]);
-  return Number.isInteger(seatNumber) && seatNumber >= 1 && seatNumber <= 15
-    ? seatNumber
-    : null;
+  return isLosAngelesCityCouncilSeatNumber(seatNumber) ? seatNumber : null;
 }
 
 function isLosAngelesCityCouncilSeatNumber(

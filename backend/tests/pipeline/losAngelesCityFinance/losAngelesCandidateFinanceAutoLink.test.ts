@@ -303,6 +303,8 @@ describe("Los Angeles candidate finance auto-link", () => {
         candidateId: "candidate",
         electionId: "election",
         status: "not_found",
+        reason:
+          "Council seat number could not be parsed from the official ballot title",
       }),
     ]);
     expect(getLosAngelesEthicsCandidateTotals).not.toHaveBeenCalled();

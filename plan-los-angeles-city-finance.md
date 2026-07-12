@@ -346,7 +346,9 @@ cycle/seat subset first, then all validated seats.
 Implementation validation on 2026-07-12 added strict parsing for the deployed
 VoteApp title `Member of the City Council, District No. N`, plus narrowly
 recognized normalized variants. Migration 178 stores `seat_number` and
-enforces that council links have seats 1–15 while citywide links have none.
+enforces that council links have seats 1–15 while citywide links have none;
+migration 179 validates existing rows without holding the stronger table lock
+during the validation scan.
 Official Ethics election 76 parsed all eight odd districts and election 70
 parsed all seven even districts. Completed-election pages add votes received
 and cost-per-vote columns; the parser now explicitly excludes those two fields

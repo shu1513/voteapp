@@ -11,6 +11,6 @@ ALTER TABLE public.lacity_candidate_finance_links
       )
       OR
       (office_name <> 'City Council Member' AND seat_number IS NULL)
-    );
+    ) NOT VALID;
 
 COMMIT;
