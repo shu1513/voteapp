@@ -8,14 +8,15 @@ import {
   useMe,
 } from "@voteapp/api-client";
 import { useMutation } from "@tanstack/react-query";
-import { Stack, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from "react-native";
-import { AddressAutocomplete } from "../components/AddressAutocomplete";
-import { LegalGate } from "../components/LegalGate";
-import { ErrorNotice } from "../components/Status";
-import { useLogout } from "../lib/auth";
-import { setMatchedAddress } from "../lib/matchedAddress";
+import { AddressAutocomplete } from "../../components/AddressAutocomplete";
+import { LegalGate } from "../../components/LegalGate";
+import { ErrorNotice } from "../../components/Status";
+import { useLogout } from "../../lib/auth";
+import { setMatchedAddress } from "../../lib/matchedAddress";
+import { savePendingDistrictIds } from "../../lib/pendingDistricts";
 
 /**
  * Signed-in state / auth entry links. The account screens (saved ballot,
@@ -81,6 +82,7 @@ function AuthStrip() {
  */
 export default function HomeScreen() {
   const router = useRouter();
+  const { me } = useMe();
   const [address, setAddress] = useState("");
   const [accepted, setAccepted] = useState(false);
 
@@ -101,10 +103,17 @@ export default function HomeScreen() {
     mutationFn: (input: string) =>
       apiRequest<AddressResolution>("/api/address/resolve", { method: "POST", body: { address: input } }),
     onSuccess: (resolution) => {
+      // Stash for the anonymous-to-account handoff: if this visitor signs
+      // up, these districts become their saved ballot once they verify.
+      // Save only when identity is KNOWN to be logged out or unverified —
+      // while /api/me is still loading (me === undefined) a verified user's
+      // one-off search must not re-arm the handoff. Same rule as the web.
+      if (me === null || me?.email_verified === false) {
+        void savePendingDistrictIds(resolution.districts.map((district) => district.id));
+      }
       // Straight to the elections — the districts list is a detour nobody
-      // asked for. (The web's pending-districts signup handoff lands with
-      // the auth screens.) The matched address goes through the in-memory
-      // holder, never navigation params — see lib/matchedAddress.ts.
+      // asked for. The matched address goes through the in-memory holder,
+      // never navigation params — see lib/matchedAddress.ts.
       setMatchedAddress(resolution.matched_address);
       router.push({
         pathname: "/ballot",
@@ -127,7 +136,6 @@ export default function HomeScreen() {
 
   return (
     <KeyboardAvoidingView className="flex-1 bg-white" behavior={Platform.OS === "ios" ? "padding" : undefined}>
-      <Stack.Screen options={{ title: "VoteApp" }} />
       <ScrollView keyboardShouldPersistTaps="handled" contentContainerClassName="px-4 py-10">
         <AuthStrip />
         <Text className="text-3xl font-bold text-ink">Find what&apos;s on your ballot</Text>
