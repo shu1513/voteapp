@@ -3487,6 +3487,165 @@ describe("email preferences and unsubscribe endpoints", () => {
   });
 });
 
+describe("push token endpoints", () => {
+  const userId = "99999999-9999-4999-8999-999999999999";
+  const token = "ExponentPushToken[abc123]";
+
+  it("registers a device token via POST /api/me/push-tokens", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const registerAuthenticatedPushToken = vi.fn().mockResolvedValue(undefined);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, registerAuthenticatedPushToken }),
+      {
+        method: "POST",
+        path: "/api/me/push-tokens",
+        headers: { "x-user-id": userId, "content-type": "application/json" },
+        body: JSON.stringify({ expo_push_token: token, native_token: "fcm-native", platform: "android" }),
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "registered" });
+    expect(registerAuthenticatedPushToken).toHaveBeenCalledWith(userId, {
+      expoPushToken: token,
+      nativeToken: "fcm-native",
+      platform: "android",
+    });
+  });
+
+  it("registers without a native token (Expo Go / unavailable native token)", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const registerAuthenticatedPushToken = vi.fn().mockResolvedValue(undefined);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, registerAuthenticatedPushToken }),
+      {
+        method: "POST",
+        path: "/api/me/push-tokens",
+        headers: { "x-user-id": userId, "content-type": "application/json" },
+        body: JSON.stringify({ expo_push_token: token, platform: "ios" }),
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(registerAuthenticatedPushToken).toHaveBeenCalledWith(userId, {
+      expoPushToken: token,
+      nativeToken: null,
+      platform: "ios",
+    });
+  });
+
+  it("rejects a registration with a bad platform with 400", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const registerAuthenticatedPushToken = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, registerAuthenticatedPushToken }),
+      {
+        method: "POST",
+        path: "/api/me/push-tokens",
+        headers: { "x-user-id": userId, "content-type": "application/json" },
+        body: JSON.stringify({ expo_push_token: token, platform: "web" }),
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(registerAuthenticatedPushToken).not.toHaveBeenCalled();
+  });
+
+  it("rejects a registration without a token with 400", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const registerAuthenticatedPushToken = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, registerAuthenticatedPushToken }),
+      {
+        method: "POST",
+        path: "/api/me/push-tokens",
+        headers: { "x-user-id": userId, "content-type": "application/json" },
+        body: JSON.stringify({ platform: "ios" }),
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(registerAuthenticatedPushToken).not.toHaveBeenCalled();
+  });
+
+  it("revokes a device token via DELETE /api/me/push-tokens", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const revokeAuthenticatedPushToken = vi.fn().mockResolvedValue(undefined);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, revokeAuthenticatedPushToken }),
+      {
+        method: "DELETE",
+        path: "/api/me/push-tokens",
+        headers: { "x-user-id": userId, "content-type": "application/json" },
+        body: JSON.stringify({ expo_push_token: token }),
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "revoked" });
+    expect(revokeAuthenticatedPushToken).toHaveBeenCalledWith(userId, token);
+  });
+
+  it("rejects unverified users with 403 (senders only deliver to verified accounts)", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const lookupAuthenticatedUserEmailVerified = vi.fn().mockResolvedValue(false);
+    const registerAuthenticatedPushToken = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({
+        resolveAuthenticatedUserId,
+        lookupAuthenticatedUserEmailVerified,
+        registerAuthenticatedPushToken,
+      }),
+      {
+        method: "POST",
+        path: "/api/me/push-tokens",
+        headers: { "x-user-id": userId, "content-type": "application/json" },
+        body: JSON.stringify({ expo_push_token: token, platform: "ios" }),
+      }
+    );
+
+    expect(response.statusCode).toBe(403);
+    expect(registerAuthenticatedPushToken).not.toHaveBeenCalled();
+  });
+
+  it("requires auth for push token registration", async () => {
+    const response = await invokeExpressApp(createApiApp({}), {
+      method: "POST",
+      path: "/api/me/push-tokens",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ expo_push_token: token, platform: "ios" }),
+    });
+    expect(response.statusCode).toBe(401);
+  });
+
+  it("rejects non-POST/DELETE methods with 405", async () => {
+    const response = await invokeExpressApp(createApiApp({}), {
+      method: "GET",
+      path: "/api/me/push-tokens",
+    });
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("POST, DELETE");
+  });
+
+  it("returns 500 when registration is not configured", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+
+    const response = await invokeExpressApp(createApiApp({ resolveAuthenticatedUserId }), {
+      method: "POST",
+      path: "/api/me/push-tokens",
+      headers: { "x-user-id": userId, "content-type": "application/json" },
+      body: JSON.stringify({ expo_push_token: token, platform: "ios" }),
+    });
+    expect(response.statusCode).toBe(500);
+  });
+});
+
 describe("content report API", () => {
   it("serves anonymous POST /api/content-reports and echoes only the report id", async () => {
     const createContentReport = vi.fn().mockResolvedValue({ id: "99999999-9999-4999-8999-999999999999" });

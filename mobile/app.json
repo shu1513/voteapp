@@ -8,9 +8,26 @@
     "scheme": "voteapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.impactperdollar.voteapp",
+      "associatedDomains": ["applinks:impactperdollar.com"]
     },
     "android": {
+      "package": "com.impactperdollar.voteapp",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "category": ["BROWSABLE", "DEFAULT"],
+          "data": [
+            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/verify-email" },
+            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/reset-password" },
+            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/ballot" },
+            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/elections/" },
+            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/candidates/" }
+          ]
+        }
+      ],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -34,6 +51,7 @@
         }
       ],
       "expo-secure-store",
+      "expo-notifications",
       "@sentry/react-native"
     ],
     "experiments": {

@@ -23,6 +23,66 @@ function createMatcherDataClient(input: {
 }
 
 describe("OfficeMatcher", () => {
+  it("resolves 'Council Member for District N' through the seeded place alias (Fort Worth)", async () => {
+    // The official title omits "City"; before the 'for district N' seat strip
+    // the matcher key kept a dangling "for" ("council member for"), missed
+    // the seeded alias, and tied City vs Town Council Member into an
+    // ambiguous NULL office for all ten council contests (live).
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [{ office_id: "office-city-council-member", normalized_alias: "council member" }],
+      },
+      officesByScope: {
+        place: [
+          { id: "office-city-council-member", canonical_name: "City Council Member" },
+          { id: "office-town-council-member", canonical_name: "Town Council Member" },
+          { id: "office-mayor", canonical_name: "Mayor" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "place",
+      districtName: "Fort Worth city, Texas",
+      state: "TX",
+      officialBallotTitle: "Council Member for District 2",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-city-council-member");
+    expect(result.method).toBe("alias_exact");
+  });
+
+  it("resolves one-word 'Councilmember' titles through the two-word place alias (Flagstaff)", async () => {
+    // "City of Flagstaff Councilmember" previously produced the single token
+    // "councilmember" — zero overlap with the catalog, method=none,
+    // office_id NULL (live).
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [{ office_id: "office-city-council-member", normalized_alias: "council member" }],
+      },
+      officesByScope: {
+        place: [
+          { id: "office-city-council-member", canonical_name: "City Council Member" },
+          { id: "office-town-council-member", canonical_name: "Town Council Member" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "place",
+      districtName: "Flagstaff city, Arizona",
+      state: "AZ",
+      officialBallotTitle: "City of Flagstaff Councilmember",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-city-council-member");
+    expect(result.method).toBe("alias_exact");
+  });
+
   it("does not score a non-judicial county contest into a judge office (TX County Judge)", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { county: [] },

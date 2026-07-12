@@ -13,6 +13,7 @@ import {
   DEFAULT_DIGEST_MAX_USERS,
   type SendCandidateFollowDigestsResult,
 } from "../scripts/sendCandidateFollowDigests.js";
+import { buildPushClientFromEnv } from "../pipeline/users/pushNotificationSender.js";
 
 export const CANDIDATE_FOLLOW_DIGEST_JOB_NAME = "candidate_follow_digest";
 export const CANDIDATE_FOLLOW_DIGEST_DAILY_SCHEDULER_ID = "candidate_follow_digest_daily";
@@ -116,12 +117,14 @@ export async function runCandidateFollowDigestJob(
     // events from failed sends (stage "send", retried) or failed marks
     // (stage "mark_after_send", re-sent — the at-least-once duplicate).
     const buildUnsubscribeUrl = buildUnsubscribeUrlBuilderFromEnv();
+    const pushClient = buildPushClientFromEnv();
     const result = await withDigestRunLock(pool, () =>
       sendCandidateFollowDigests(pool, mailer, {
         live: true,
         maxUsers: data.maxUsers ?? DEFAULT_DIGEST_MAX_USERS,
         maxItemsPerEmail: data.maxItemsPerEmail ?? DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL,
         ...(buildUnsubscribeUrl ? { buildUnsubscribeUrl } : {}),
+        ...(pushClient ? { pushClient } : {}),
       })
     );
     if (result === null) {
@@ -133,6 +136,9 @@ export async function runCandidateFollowDigestJob(
         eventsPendingCount: 0,
         usersEmailedCount: 0,
         eventsDeliveredCount: 0,
+        usersPushedCount: 0,
+        pushTokensRevokedCount: 0,
+        pushReceiptsCheckedCount: 0,
         failures: [],
         triggeredBy,
         lockSkipped: true,
