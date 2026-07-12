@@ -24,9 +24,11 @@ import { setMatchedAddress } from "../lib/matchedAddress";
  */
 function AuthStrip() {
   const router = useRouter();
-  const { me, isLoading } = useMe();
+  const { me, isLoading, isError } = useMe();
   const logout = useLogout();
-  if (isLoading) {
+  // A failed identity fetch (backend down, network) must not masquerade as
+  // "signed out" — render nothing rather than the log-in links.
+  if (isLoading || isError) {
     return null;
   }
   if (!me) {

@@ -13,6 +13,7 @@ export function LabeledInput({
         className="mt-1 w-full rounded-md border border-line bg-white px-3 py-3 text-ink"
         placeholderTextColor="#717171"
         accessibilityLabel={label}
+        accessibilityHint={hint}
         {...inputProps}
       />
       {hint ? <Text className="mt-1 text-xs text-ink-soft">{hint}</Text> : null}

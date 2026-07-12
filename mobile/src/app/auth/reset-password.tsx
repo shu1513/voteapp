@@ -15,8 +15,19 @@ import { ErrorNotice } from "../../components/Status";
 export default function ResetPasswordScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ token?: string }>();
-  const [token, setToken] = useState(typeof params.token === "string" ? params.token.trim() : "");
+  const paramToken = typeof params.token === "string" ? params.token.trim() : "";
+  const [token, setToken] = useState(paramToken);
+  const [lastParamToken, setLastParamToken] = useState(paramToken);
   const [password, setPassword] = useState("");
+
+  // A deep link can update the param while this screen stays mounted
+  // (Phase 4); sync it into state then — but never clobber a pasted code
+  // with an absent param. Render-time adjustment, per React's
+  // "adjusting state when a prop changes" pattern.
+  if (paramToken && paramToken !== lastParamToken) {
+    setLastParamToken(paramToken);
+    setToken(paramToken);
+  }
 
   const reset = useMutation({
     mutationFn: () =>

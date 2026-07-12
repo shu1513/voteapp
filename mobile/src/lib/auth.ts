@@ -10,17 +10,28 @@ import { clearSessionId, setSessionId } from "./sessionStore";
 export function useLogin() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (input: { email: string; password: string }) =>
-      apiRequest<{ status: string; session_id?: string }>("/api/auth/login", {
+    mutationFn: async (input: { email: string; password: string }) => {
+      const response = await apiRequest<{ status: string; session_id?: string }>("/api/auth/login", {
         method: "POST",
         body: { email: input.email, password: input.password },
-      }),
-    onSuccess: async (response) => {
+      });
+      // A 200 without session_id means the backend classified this request
+      // as browser-originated (its provenance gate withholds the id — the
+      // Expo web dev surface). Navigating "logged in" without a stored
+      // session would be a silent lie; fail the mutation instead. Validated
+      // here rather than onSuccess because mutation callbacks that throw do
+      // not stop the caller's own onSuccess from running.
+      if (!response.session_id) {
+        throw new Error(
+          "Login succeeded but no mobile session was issued (browser-originated requests are cookie-only by design). Use the native app."
+        );
+      }
+      return { sessionId: response.session_id };
+    },
+    onSuccess: async (result) => {
       // Store the Bearer id BEFORE any refetch so /api/me goes out
       // authenticated.
-      if (response.session_id) {
-        await setSessionId(response.session_id);
-      }
+      await setSessionId(result.sessionId);
       // A previous session may have ended without a clean logout; cached
       // account data (e.g. ["me","ballot"]) must not bleed into this one.
       purgeAccountScopedQueries(queryClient);
