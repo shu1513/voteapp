@@ -263,6 +263,16 @@ describe("appendElectionSource", () => {
     ]);
     expect(appendElectionSource(null, "https://b.example")).toEqual(["https://b.example"]);
   });
+
+  it("trims entries so whitespace variants dedupe instead of surviving as duplicates", () => {
+    expect(appendElectionSource([" https://b.example "], "https://b.example")).toEqual([
+      "https://b.example",
+    ]);
+    expect(appendElectionSource(["https://a.example"], " https://b.example ")).toEqual([
+      "https://a.example",
+      "https://b.example",
+    ]);
+  });
 });
 
 describe("assertIsoDate", () => {
