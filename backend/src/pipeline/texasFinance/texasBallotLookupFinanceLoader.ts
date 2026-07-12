@@ -22,6 +22,9 @@ export async function loadTexasCandidateFinanceSummariesByCandidateElection(
     source: "TEXAS_TEC",
     sourceUrl: "https://www.ethics.state.tx.us/search/cf/",
     enabled: isTexasCampaignFinanceEnabled,
+    isEligibleElection: (row) => !(
+      row.office_scope?.trim() === "place" && row.office_canonical_name?.trim() === "Mayor"
+    ),
     tables: {
       links: "tx_candidate_finance_links",
       summaries: "tx_candidate_finance_summaries",

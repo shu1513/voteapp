@@ -28,6 +28,12 @@ function amount(value: string): number {
   return Math.round(parsed * 100) / 100;
 }
 
+function totalAmount(value: string): number {
+  const parsed = Number(value.replaceAll(",", ""));
+  if (!Number.isFinite(parsed) || parsed < 0) throw new Error(`Invalid Houston finance total amount: ${value}`);
+  return Math.round(parsed * 100) / 100;
+}
+
 type HoustonPdfTextItem = {
   str: string;
   transform: ArrayLike<number>;
@@ -98,7 +104,8 @@ function candidateName(lines: readonly HoustonPdfLine[], fallback: string): stri
 
 function electionDate(lines: readonly HoustonPdfLine[]): string {
   const electionHeader = lines.findIndex((line) => /(?:10 ELECTION\s+ELECTION DATE|11 ELECTION)/i.test(line.text));
-  for (let index = electionHeader + 1; index >= 1 && index < Math.min(lines.length, electionHeader + 12); index += 1) {
+  if (electionHeader < 0) throw new Error("Houston finance PDF is missing the election date");
+  for (let index = electionHeader + 1; index < Math.min(lines.length, electionHeader + 12); index += 1) {
     const match = /\b(\d{1,2}\/\d{1,2}\/\d{4})\b/.exec(lines[index]!.text);
     if (match?.[1]) return isoDate(match[1]);
   }
@@ -107,13 +114,17 @@ function electionDate(lines: readonly HoustonPdfLine[]): string {
 
 function officeSought(lines: readonly HoustonPdfLine[]): string {
   const header = lines.findIndex((line) => /12 OFFICE SOUGHT/i.test(line.text));
-  for (let index = header + 1; index >= 1 && index < Math.min(lines.length, header + 6); index += 1) {
-    const text = lines[index]!.text;
-    if (/\bMAYOR\b/i.test(text)) return "Mayor";
+  if (header >= 0) {
+    for (let index = header + 1; index < Math.min(lines.length, header + 6); index += 1) {
+      const text = lines[index]!.text;
+      if (/\bMAYOR\b/i.test(text)) return "Mayor";
+    }
   }
   const legacyHeader = lines.findIndex((line) => /OFFICE HELD.*OFFICE SOUGHT/i.test(line.text));
-  for (let index = legacyHeader + 1; index >= 1 && index < Math.min(lines.length, legacyHeader + 5); index += 1) {
-    if (/\bMAYOR\b/i.test(lines[index]!.text)) return "Mayor";
+  if (legacyHeader >= 0) {
+    for (let index = legacyHeader + 1; index < Math.min(lines.length, legacyHeader + 5); index += 1) {
+      if (/\bMAYOR\b/i.test(lines[index]!.text)) return "Mayor";
+    }
   }
   throw new Error("Houston finance PDF is not a Mayor filing");
 }
@@ -197,7 +208,7 @@ function directContributionTotal(lines: readonly HoustonPdfLine[]): number | nul
   for (let offset = index; index >= 0 && offset < Math.min(lines.length, index + 4); offset += 1) {
     const values = [...lines[offset]!.text.matchAll(/\$\s*([\d,]+\.\d{2})/g)];
     const value = values.at(-1)?.[1];
-    if (value) return amount(value);
+    if (value) return totalAmount(value);
   }
   return null;
 }

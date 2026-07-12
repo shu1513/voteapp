@@ -22,4 +22,17 @@ describe("Houston direct contribution aggregation", () => {
       { contributionDate: "2026-01-01", contributorName: "A", amount: 100, occupation: "Teacher", sourceUrl: "x" },
     ])] }).directContributionTotal).toBe(100);
   });
+
+  it("uses five contribution-size buckets so the public loader can return all of them", () => {
+    const amounts = [50, 250, 500, 1_000, 5_000];
+    const result = aggregateHoustonDirectContributions({ reports: [report(null, amounts.map((amount, index) => ({
+      contributionDate: "2026-01-01",
+      contributorName: `Donor ${index}`,
+      amount,
+      occupation: null,
+      sourceUrl: "x",
+    })))] });
+
+    expect(result.directBreakdowns.filter((row) => row.categoryType === "contribution_size")).toHaveLength(5);
+  });
 });

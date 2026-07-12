@@ -70,33 +70,40 @@ export async function loadHoustonCandidateFinanceReports(input: {
     throw new Error("Houston candidate report count exceeds safety limit");
   }
   const parsed: HoustonFinanceParsedReport[] = [];
+  const failures: Array<{ report: HoustonFinanceReportIndexRecord; error: unknown }> = [];
+  const loadReport = async (report: HoustonFinanceReportIndexRecord, download: () => Promise<Uint8Array>) => {
+    try {
+      const data = await cachedOrDownload({ cacheDir, report, download });
+      parsed.push(await parseHoustonCandidateFinancePdf({ data, index: report }));
+    } catch (error) {
+      failures.push({ report, error });
+      console.warn("Houston finance report skipped after download or parse failure:", {
+        sourceSystem: report.sourceSystem,
+        reportId: report.reportId,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  };
   for (const report of efileReports) {
-    const data = await cachedOrDownload({
-      cacheDir,
-      report,
-      download: () => downloadHoustonEthicsEfileReportPdf(report, input.efileOptions),
-    });
-    parsed.push(await parseHoustonCandidateFinancePdf({ data, index: report }));
+    await loadReport(report, () => downloadHoustonEthicsEfileReportPdf(report, input.efileOptions));
   }
   for (const report of legacyReports) {
-    const data = await cachedOrDownload({
-      cacheDir,
-      report,
-      download: async () => {
-        try {
-          return await downloadHoustonLegacyReportPdf(legacySession, report, input.legacyOptions);
-        } catch {
-          const retrySession = await searchHoustonLegacyCandidateReports(
-            { firstName: input.firstName, lastName: input.lastName },
-            input.legacyOptions
-          );
-          const retryReport = retrySession.reports.find((candidate) => candidate.reportId === report.reportId);
-          if (!retryReport) throw new Error(`Houston legacy report disappeared during retry: ${report.reportId}`);
-          return await downloadHoustonLegacyReportPdf(retrySession, retryReport, input.legacyOptions);
-        }
-      },
+    await loadReport(report, async () => {
+      try {
+        return await downloadHoustonLegacyReportPdf(legacySession, report, input.legacyOptions);
+      } catch {
+        const retrySession = await searchHoustonLegacyCandidateReports(
+          { firstName: input.firstName, lastName: input.lastName },
+          input.legacyOptions
+        );
+        const retryReport = retrySession.reports.find((candidate) => candidate.reportId === report.reportId);
+        if (!retryReport) throw new Error(`Houston legacy report disappeared during retry: ${report.reportId}`);
+        return downloadHoustonLegacyReportPdf(retrySession, retryReport, input.legacyOptions);
+      }
     });
-    parsed.push(await parseHoustonCandidateFinancePdf({ data, index: report }));
+  }
+  if (parsed.length === 0 && failures.length > 0) {
+    throw new Error(`All ${failures.length} Houston candidate finance reports failed to load or parse`);
   }
   return parsed;
 }

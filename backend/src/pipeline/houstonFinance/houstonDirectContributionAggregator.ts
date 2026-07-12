@@ -13,8 +13,7 @@ function cents(value: number): number {
 }
 
 function bucket(amount: number): string {
-  if (amount < 100) return "$1-$99";
-  if (amount < 250) return "$100-$249";
+  if (amount < 250) return "$1-$249";
   if (amount < 500) return "$250-$499";
   if (amount < 1_000) return "$500-$999";
   if (amount < 5_000) return "$1,000-$4,999";
