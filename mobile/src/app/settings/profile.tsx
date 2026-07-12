@@ -38,7 +38,9 @@ function NameSection({ me }: { me: Me }) {
           }
         >
           <Text className="text-center font-semibold text-white">
-            {update.isSuccess && firstName === me.first_name ? "Saved" : "Save"}
+            {/* Trimmed: the PUT sends firstName.trim(), so that's what
+                me.first_name echoes back. */}
+            {update.isSuccess && firstName.trim() === me.first_name ? "Saved" : "Save"}
           </Text>
         </Pressable>
       </View>

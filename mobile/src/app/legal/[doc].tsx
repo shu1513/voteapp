@@ -22,6 +22,15 @@ const DOCUMENTS = {
   privacy: { title: "Privacy Policy", markdown: stripHtmlComments(privacyMarkdown) },
 } as const;
 
+// The docs cross-link each other by web route path (terms links /privacy
+// and /disclaimer). Those are SPA routes, not URLs — the in-app browser
+// can't open them, so route them to the sibling native screen instead.
+const INTERNAL_LINKS: Record<string, keyof typeof DOCUMENTS> = {
+  "/terms": "terms",
+  "/privacy": "privacy",
+  "/disclaimer": "disclaimer",
+};
+
 // react-native-markdown-display styles per node type; tokens match the web
 // prose styling (ink text, rausch-dark links).
 const markdownStyles = {
@@ -60,7 +69,12 @@ export default function LegalDocumentScreen() {
       <Markdown
         style={markdownStyles}
         onLinkPress={(url) => {
-          openExternalUrl(url);
+          const internal = INTERNAL_LINKS[url];
+          if (internal) {
+            router.push(`/legal/${internal}`);
+          } else {
+            openExternalUrl(url);
+          }
           // Handled — stop the library's default Linking.openURL.
           return false;
         }}

@@ -79,6 +79,12 @@ function EmailPreferencesBody() {
                 // out of order and the earlier write would win.
                 disabled={saving}
                 onChange={(next) => {
+                  // `saving` above is from the last render; a tap landing
+                  // before the disabling re-render commits would start a
+                  // second overlapping PUT. Same guard as research-areas.
+                  if (queryClient.isMutating({ mutationKey: ["put-email-preferences"] }) > 0) {
+                    return;
+                  }
                   const nextPrefs = { ...current, [key]: next };
                   setPending(nextPrefs);
                   update.mutate(nextPrefs);

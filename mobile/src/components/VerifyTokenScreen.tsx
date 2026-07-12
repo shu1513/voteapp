@@ -1,4 +1,4 @@
-import { apiRequest, purgeAccountScopedQueries } from "@voteapp/api-client";
+import { apiRequest } from "@voteapp/api-client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -53,7 +53,24 @@ export function VerifyTokenScreen({ endpoint, title, successMessage, revokesSess
   const queryClient = useQueryClient();
   const verify = useQuery({
     queryKey: ["verify-token", endpoint, submittedToken],
-    queryFn: () => apiRequest<{ status: string }>(endpoint, { method: "POST", body: { token: submittedToken } }),
+    queryFn: async () => {
+      const result = await apiRequest<{ status: string }>(endpoint, {
+        method: "POST",
+        body: { token: submittedToken },
+      });
+      if (revokesSessions) {
+        // Awaited here, not in an effect, so (a) the success UI and its
+        // Log in button render only after the dead session is gone, and
+        // (b) the cached success can never run this again — an effect
+        // keyed on isSuccess re-fires on remount (deep link tapped twice)
+        // and would wipe the session of whoever logged in since. No
+        // account-cache purge: it would remove this query's own entry and
+        // re-POST the consumed token on remount; useLogin purges anyway.
+        await clearSessionId().catch(() => {});
+        queryClient.setQueryData(["me"], null);
+      }
+      return result;
+    },
     enabled: submittedToken.length > 0,
     retry: false,
     staleTime: Infinity,
@@ -64,17 +81,9 @@ export function VerifyTokenScreen({ endpoint, title, successMessage, revokesSess
   });
 
   useEffect(() => {
-    if (!verify.isSuccess) {
-      return;
-    }
-    if (revokesSessions) {
-      void (async () => {
-        await clearSessionId().catch(() => {});
-        queryClient.setQueryData(["me"], null);
-        purgeAccountScopedQueries(queryClient);
-      })();
-    } else {
+    if (verify.isSuccess && !revokesSessions) {
       // Identity fields (email, email_verified) changed server-side.
+      // Re-running on remount is harmless — it is just a refetch.
       void queryClient.invalidateQueries({ queryKey: ["me"] });
     }
   }, [verify.isSuccess, revokesSessions, queryClient]);

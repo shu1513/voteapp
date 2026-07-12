@@ -62,6 +62,7 @@ export function useLogout() {
 }
 
 export function useChangePassword() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: { currentPassword: string; newPassword: string }) => {
       const response = await apiRequest<{ status: string; session_id?: string }>("/api/me/password", {
@@ -75,13 +76,20 @@ export function useChangePassword() {
       if (response.session_id) {
         try {
           await setSessionId(response.session_id);
+          return response;
         } catch {
-          // The password DID change and the old session is already dead —
-          // don't fail the mutation as if nothing happened. Drop the stale
-          // id; the next launch lands signed out and the new password works.
-          await clearSessionId().catch(() => {});
+          // Fall through to the local sign-out below.
         }
       }
+      // Keystore write failed, or the response carried no replacement id
+      // (contract violation). Either way the password DID change and the
+      // old session is already dead — don't fail the mutation as if nothing
+      // happened. Drop the stale id AND the cached identity so the UI lands
+      // signed out instead of a signed-in shell whose every request 401s;
+      // the new password works at the next login.
+      await clearSessionId().catch(() => {});
+      queryClient.setQueryData(["me"], null);
+      purgeAccountScopedQueries(queryClient);
       return response;
     },
   });
