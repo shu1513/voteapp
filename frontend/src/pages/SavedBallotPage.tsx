@@ -177,10 +177,13 @@ export function SavedBallotPage() {
 
   // Anonymous-to-account handoff: initialize saved districts from the last
   // anonymous search, but only once verified (the endpoint is
-  // verified-email-gated). Permanent rejections (4xx: stale/unknown ids)
-  // resolve to "the account's ballot is the source of truth"; transient
-  // failures keep the ids and surface an explicit retry instead of dropping
-  // the user onto the empty set-address form with their search still queued.
+  // verified-email-gated). Only a definitive rejection of the payload itself
+  // (400: malformed or unknown district ids) resolves to "the account's
+  // ballot is the source of truth". Everything else — 401/403 (session or
+  // verification state changed server-side), 429, network and server
+  // failures — is recoverable, so keep the queued ids and surface an
+  // explicit retry instead of dropping the user onto the empty set-address
+  // form with their search lost.
   useEffect(() => {
     if (!verified || handoffState !== "pending" || handoffFiredRef.current) {
       return;
@@ -197,7 +200,7 @@ export function SavedBallotPage() {
         setHandoffState("done");
         void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
       } catch (error) {
-        if (error instanceof ApiError && error.status < 500) {
+        if (error instanceof ApiError && error.status === 400) {
           clearPendingDistrictIds();
           setHandoffState("done");
           void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });

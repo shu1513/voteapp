@@ -15,7 +15,11 @@ const queryClient = new QueryClient();
 export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Stack />
+      <Stack>
+        {/* The tab navigator draws its own headers; a stack header on top
+            would double them. */}
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
     </QueryClientProvider>
   );
 }
