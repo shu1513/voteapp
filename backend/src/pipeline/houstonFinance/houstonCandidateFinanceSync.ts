@@ -79,6 +79,38 @@ export type HoustonCandidateFinanceSyncResult = {
   outsideGroupBreakdownsWritten: number;
 };
 
+export function mergeHoustonOutsideIndustryBreakdowns(
+  breakdowns: readonly HoustonFinanceOutsideGroupBreakdownInput[]
+): HoustonFinanceOutsideGroupBreakdownInput[] {
+  const merged = new Map<string, HoustonFinanceOutsideGroupBreakdownInput>();
+
+  for (const breakdown of breakdowns) {
+    const key = [
+      breakdown.committeeId.trim().toUpperCase(),
+      breakdown.supportOppose,
+      breakdown.categoryName,
+    ].join("\u0000");
+    const existing = merged.get(key);
+    if (!existing) {
+      merged.set(key, { ...breakdown });
+      continue;
+    }
+
+    const contributorCount =
+      existing.contributorCount === null || existing.contributorCount === undefined
+        ? breakdown.contributorCount ?? null
+        : existing.contributorCount + (breakdown.contributorCount ?? 0);
+    merged.set(key, {
+      ...existing,
+      amount: Math.round((existing.amount + breakdown.amount) * 100) / 100,
+      contributorCount,
+      sourceUrl: existing.sourceUrl ?? breakdown.sourceUrl ?? null,
+    });
+  }
+
+  return [...merged.values()];
+}
+
 export async function syncHoustonCandidateFinance(input: {
   db: ConnectableDb;
   candidateId: string;
@@ -179,16 +211,18 @@ export async function syncHoustonCandidateFinance(input: {
     minAmount,
     dryRun,
   });
-  const industryBreakdowns = buildFinanceIndustryBreakdownsFromClassifications({
-    directBreakdowns: [],
-    outsideBreakdowns: donorBreakdowns.map((breakdown) => ({ ...breakdown, categoryType: "donor" })),
-    classifications,
-  }).outsideIndustryBreakdowns;
+  const industryBreakdowns = mergeHoustonOutsideIndustryBreakdowns(
+    buildFinanceIndustryBreakdownsFromClassifications({
+      directBreakdowns: [],
+      outsideBreakdowns: donorBreakdowns.map((breakdown) => ({ ...breakdown, categoryType: "donor" })),
+      classifications,
+    }).outsideIndustryBreakdowns.map((breakdown) => ({ ...breakdown, categoryType: "industry" as const }))
+  );
   const outsideBreakdowns: HoustonFinanceOutsideGroupBreakdownInput[] | undefined = baseBreakdowns === undefined
     ? undefined
     : [
         ...donorBreakdowns.map((breakdown) => ({ ...breakdown, categoryType: "donor" as const })),
-        ...industryBreakdowns.map((breakdown) => ({ ...breakdown, categoryType: "industry" as const })),
+        ...industryBreakdowns,
       ];
 
   if (!dryRun) {
