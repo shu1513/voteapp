@@ -25,6 +25,7 @@ import {
   type IllinoisSbeContributionRecord,
   type IllinoisSbeExpenditureRecord,
 } from "./illinoisSbeClient.js";
+import type { IllinoisSbeD2ReportSummary } from "./illinoisSbeNormalizedArtifact.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & Pick<Pool, "connect">;
@@ -37,6 +38,10 @@ export type IllinoisCandidateFinanceDueRow = {
   officeScope: string;
   officeName: string;
   district: string | null;
+  sbeCandidateId: string | null;
+  sbeDistrictType: string | null;
+  sbeOffice: string | null;
+  isAtLarge: boolean | null;
   committeeKey: string;
   committeeName: string;
   sourceUrl: string | null;
@@ -47,6 +52,7 @@ export type IllinoisCandidateFinanceData = {
   directContributionRecords: readonly IllinoisSbeContributionRecord[];
   outsideExpenditureRecords?: readonly IllinoisSbeExpenditureRecord[];
   outsideGroupContributionRecords?: readonly IllinoisSbeContributionRecord[];
+  d2ReportSummaries?: readonly IllinoisSbeD2ReportSummary[];
   directContributionSourceUrl?: string | null;
   outsideExpenditureSourceUrl?: string | null;
   outsideGroupContributionSourceUrl?: string | null;
@@ -104,6 +110,10 @@ type IllinoisCandidateFinanceDueQueryRow = {
   office_scope: string;
   office_name: string;
   district: string | null;
+  sbe_candidate_id: string | null;
+  sbe_district_type: string | null;
+  sbe_office: string | null;
+  is_at_large: boolean | null;
   committee_key: string;
   committee_name: string;
   source_url: string | null;
@@ -145,6 +155,10 @@ function mapDueRow(row: IllinoisCandidateFinanceDueQueryRow): IllinoisCandidateF
     officeScope: row.office_scope,
     officeName: row.office_name,
     district: row.district,
+    sbeCandidateId: row.sbe_candidate_id,
+    sbeDistrictType: row.sbe_district_type,
+    sbeOffice: row.sbe_office,
+    isAtLarge: row.is_at_large,
     committeeKey: row.committee_key,
     committeeName: row.committee_name,
     sourceUrl: row.source_url,
@@ -212,6 +226,9 @@ export async function loadIllinoisFinanceDataForDueRow(
     officeScope: row.officeScope,
     officeCanonicalName: row.officeName,
     district: row.district,
+    districtType: row.sbeDistrictType,
+    sbeOffice: row.sbeOffice,
+    isAtLarge: row.isAtLarge,
   });
   if (!officeSearch) {
     throw new Error(
@@ -220,9 +237,11 @@ export async function loadIllinoisFinanceDataForDueRow(
     );
   }
   const office = officeSearchText(officeSearch, row.officeName);
+  const sbeCommitteeId = row.committeeKey.match(/^SBE:(.+)$/i)?.[1] ?? null;
   const directContributionRecords = await fetchIllinoisSbeCommitteeContributionRecords(
     {
-      committeeName: row.committeeName,
+      committeeName: sbeCommitteeId ? undefined : row.committeeName,
+      committeeId: sbeCommitteeId,
       contributionType: "All Types",
     },
     options
@@ -318,6 +337,10 @@ export async function listDueIllinoisCandidateFinanceSyncRows(
           office.scope AS office_scope,
           link.office_name,
           link.district,
+          link.sbe_candidate_id,
+          link.sbe_district_type,
+          link.sbe_office,
+          link.is_at_large,
           link.committee_key,
           link.committee_name,
           link.source_url,
@@ -364,6 +387,10 @@ export async function listDueIllinoisCandidateFinanceSyncRows(
         office_scope,
         office_name,
         district,
+        sbe_candidate_id,
+        sbe_district_type,
+        sbe_office,
+        is_at_large,
         committee_key,
         committee_name,
         source_url,
@@ -462,13 +489,20 @@ export async function syncDueIllinoisCandidateFinance(
         electionId: row.electionId,
         candidateName: row.candidateName,
         electionYear: row.electionYear,
+        officeScope: row.officeScope,
         officeName: row.officeName,
         district: row.district,
+        sbeCandidateId: row.sbeCandidateId,
+        sbeDistrictType: row.sbeDistrictType,
+        sbeOffice: row.sbeOffice,
+        isAtLarge: row.isAtLarge,
+        sbeCommitteeId: row.committeeKey.match(/^SBE:(.+)$/i)?.[1] ?? null,
         committeeKey: row.committeeKey,
         committeeName: row.committeeName,
         directContributionRecords: data.directContributionRecords,
         outsideExpenditureRecords: data.outsideExpenditureRecords,
         outsideGroupContributionRecords: data.outsideGroupContributionRecords,
+        d2ReportSummaries: data.d2ReportSummaries,
         sourceUrl: row.sourceUrl ?? data.directContributionSourceUrl,
         directContributionSourceUrl: data.directContributionSourceUrl,
         outsideExpenditureSourceUrl: data.outsideExpenditureSourceUrl,

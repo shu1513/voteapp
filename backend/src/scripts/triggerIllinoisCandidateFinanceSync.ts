@@ -72,6 +72,7 @@ export function parseIllinoisCandidateFinanceSyncTriggerArgs(
     "--expenditures-csv",
     "--contributions-url",
     "--expenditures-url",
+    "--normalized-artifact",
   ]);
   assertBareBooleanFlags(args, ["--dry-run", "--force", "--ai-classify-industries", "--no-ai-classify-industries"]);
   assertMutuallyExclusiveFlags(args, "--ai-classify-industries", "--no-ai-classify-industries");
@@ -79,6 +80,7 @@ export function parseIllinoisCandidateFinanceSyncTriggerArgs(
   const expenditureCsvPaths = parseFlagValues(args, "--expenditures-csv");
   const contributionSourceUrl = parseFlagValue(args, "--contributions-url") || undefined;
   const expenditureSourceUrl = parseFlagValue(args, "--expenditures-url") || undefined;
+  const normalizedArtifactPath = parseFlagValue(args, "--normalized-artifact") || undefined;
   if (
     contributionCsvPaths.length === 0 &&
     (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl)
@@ -98,6 +100,7 @@ export function parseIllinoisCandidateFinanceSyncTriggerArgs(
     expenditureCsvPaths: expenditureCsvPaths.length > 0 ? expenditureCsvPaths : undefined,
     contributionSourceUrl,
     expenditureSourceUrl,
+    normalizedArtifactPath,
   };
 }
 

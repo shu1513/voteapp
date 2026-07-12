@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import {
   normalizeIllinoisCandidateNameKeys,
   resolveIllinoisCandidateCommittee,
+  resolveIllinoisCandidateCommitteesFromRelations,
 } from "./illinoisCandidateCommitteeResolver.js";
 import type { IllinoisCandidateCommitteeResolver } from "./illinoisCandidateFinanceAutoLink.js";
 import type {
@@ -14,7 +15,10 @@ import {
   normalizeIllinoisCommitteeKey,
   normalizeIllinoisFinanceTextKey,
 } from "./illinoisFinanceAggregators.js";
-import { toIllinoisSbeOfficeSearchInput } from "./illinoisFinanceEligibleOffices.js";
+import {
+  illinoisMunicipalityMatches,
+  toIllinoisSbeOfficeSearchInput,
+} from "./illinoisFinanceEligibleOffices.js";
 import {
   ILLINOIS_SBE_CONTRIBUTION_COMMITTEE_SEARCH_URL,
   ILLINOIS_SBE_EXPENDITURE_ALL_SEARCH_URL,
@@ -25,12 +29,17 @@ import {
   type IllinoisSbeContributionRecord,
   type IllinoisSbeExpenditureRecord,
 } from "./illinoisSbeCsvReader.js";
+import {
+  loadIllinoisSbeNormalizedArtifact,
+  type IllinoisSbeNormalizedArtifact,
+} from "./illinoisSbeNormalizedArtifact.js";
 
 export type IllinoisSbeArtifactDataSet = {
   contributionRecords: IllinoisSbeContributionRecord[];
   expenditureRecords?: IllinoisSbeExpenditureRecord[];
   contributionSourceUrl: string;
   expenditureSourceUrl?: string | null;
+  normalizedArtifact?: IllinoisSbeNormalizedArtifact;
 };
 
 export type IllinoisSbeArtifactDataSourceConfig = {
@@ -38,6 +47,7 @@ export type IllinoisSbeArtifactDataSourceConfig = {
   expenditureCsvPaths?: readonly string[];
   contributionSourceUrl?: string | null;
   expenditureSourceUrl?: string | null;
+  normalizedArtifactPath?: string | null;
 };
 
 function normalizePathList(paths: readonly string[] | undefined, label: string, required: boolean): string[] {
@@ -77,7 +87,12 @@ async function loadExpenditureRecords(input: {
 export async function loadIllinoisSbeArtifactDataSet(
   config: IllinoisSbeArtifactDataSourceConfig
 ): Promise<IllinoisSbeArtifactDataSet> {
-  const contributionCsvPaths = normalizePathList(config.contributionCsvPaths, "contribution", true);
+  const normalizedArtifactPath = config.normalizedArtifactPath?.trim() || null;
+  const contributionCsvPaths = normalizePathList(
+    config.contributionCsvPaths,
+    "contribution",
+    normalizedArtifactPath === null
+  );
   const expenditureCsvPaths = normalizePathList(config.expenditureCsvPaths, "expenditure", false);
   const contributionSourceUrl = config.contributionSourceUrl?.trim() || ILLINOIS_SBE_CONTRIBUTION_COMMITTEE_SEARCH_URL;
   const expenditureSourceUrl = config.expenditureSourceUrl?.trim() || ILLINOIS_SBE_EXPENDITURE_ALL_SEARCH_URL;
@@ -88,6 +103,10 @@ export async function loadIllinoisSbeArtifactDataSet(
     }),
     contributionSourceUrl,
   };
+
+  if (normalizedArtifactPath) {
+    dataSet.normalizedArtifact = await loadIllinoisSbeNormalizedArtifact(normalizedArtifactPath);
+  }
 
   if (expenditureCsvPaths.length > 0) {
     dataSet.expenditureRecords = await loadExpenditureRecords({
@@ -106,7 +125,7 @@ function directContributionMatchesDueRow(input: {
 }): boolean {
   return (
     normalizeIllinoisCommitteeKey(input.record.recipientCommitteeName) ===
-    normalizeIllinoisCommitteeKey(input.row.committeeKey)
+    normalizeIllinoisCommitteeKey(input.row.committeeName)
   );
 }
 
@@ -136,18 +155,35 @@ function officeDistrictMatches(input: {
     officeScope: input.row.officeScope,
     officeCanonicalName: input.row.officeName,
     district: input.row.district,
+    districtType: input.row.sbeDistrictType,
+    sbeOffice: input.row.sbeOffice,
+    isAtLarge: input.row.isAtLarge,
   });
   if (!officeSearch) {
     return false;
   }
   const recordOffice = normalizeIllinoisFinanceTextKey(input.record.officeDistrict);
   const targetOffice = normalizeIllinoisFinanceTextKey(officeSearch.sbeOffice);
-  if (!recordOffice || !targetOffice || !recordOffice.includes(targetOffice)) {
+  if (!recordOffice || !targetOffice) {
     return false;
   }
   const district = officeSearch.district?.trim();
   if (!district) {
-    return true;
+    return recordOffice === targetOffice;
+  }
+  if (officeSearch.sbeDistrictType) {
+    if (!recordOffice.startsWith(`${targetOffice} `)) {
+      return false;
+    }
+    const recordMunicipality = recordOffice.slice(targetOffice.length).trim().replace(/^OF\s+/, "");
+    return illinoisMunicipalityMatches({
+      voteAppDistrictName: district,
+      sbeDistrictName: recordMunicipality,
+      sbeDistrictType: officeSearch.sbeDistrictType,
+    });
+  }
+  if (!recordOffice.includes(targetOffice)) {
+    return false;
   }
   const districtKey = normalizeIllinoisFinanceTextKey(district).replace(/^0+/, "");
   const recordDistrictTokens = recordOffice
@@ -191,6 +227,15 @@ export function loadIllinoisFinanceDataForDueRowFromArtifacts(input: {
     directContributionSourceUrl: input.artifacts.contributionSourceUrl,
   };
 
+  if (input.artifacts.normalizedArtifact && input.row.sbeCandidateId) {
+    const committeeId = input.row.committeeKey.match(/^SBE:(.+)$/i)?.[1] ?? null;
+    if (committeeId) {
+      data.d2ReportSummaries = input.artifacts.normalizedArtifact.d2ReportSummaries.filter(
+        (report) => report.committeeId === committeeId
+      );
+    }
+  }
+
   if (input.artifacts.expenditureRecords !== undefined) {
     const outsideExpenditureRecords = input.artifacts.expenditureRecords.filter((record) =>
       outsideExpenditureMatchesDueRow({ record, row: input.row })
@@ -214,6 +259,13 @@ export function loadIllinoisFinanceDataForDueRowFromArtifacts(input: {
 export function createIllinoisSbeArtifactCandidateCommitteeResolver(
   artifacts: IllinoisSbeArtifactDataSet
 ): IllinoisCandidateCommitteeResolver {
+  if (artifacts.normalizedArtifact) {
+    return async (input) =>
+      resolveIllinoisCandidateCommitteesFromRelations({
+        ...input,
+        relations: artifacts.normalizedArtifact!.candidateCommitteeRelations,
+      });
+  }
   return async (input) =>
     resolveIllinoisCandidateCommittee({
       ...input,

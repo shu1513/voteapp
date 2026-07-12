@@ -24,6 +24,10 @@ export type IllinoisFinanceLinkInput = {
   candidateNameNormalized: string;
   officeName: string;
   district?: string | null;
+  sbeCandidateId?: string | null;
+  sbeDistrictType?: string | null;
+  sbeOffice?: string | null;
+  isAtLarge?: boolean | null;
   committeeKey: string;
   committeeName: string;
   linkStatus?: IllinoisFinanceLinkStatus;
@@ -37,6 +41,7 @@ export type IllinoisFinanceSummaryInput = {
   directContributionTotal?: number | null;
   totalDisbursements?: number | null;
   cashOnHand?: number | null;
+  debtsOwed?: number | null;
   outsideSupportTotal?: number | null;
   outsideOpposeTotal?: number | null;
   sourceUrl?: string | null;
@@ -246,6 +251,10 @@ export async function upsertIllinoisFinanceLink(input: {
         candidate_name_normalized,
         office_name,
         district,
+        sbe_candidate_id,
+        sbe_district_type,
+        sbe_office,
+        is_at_large,
         committee_key,
         committee_name,
         link_status,
@@ -253,13 +262,17 @@ export async function upsertIllinoisFinanceLink(input: {
         source_url,
         last_verified_at
       )
-      VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::timestamptz)
+      VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16::timestamptz)
       ON CONFLICT (candidate_id, election_id, committee_key)
       DO UPDATE SET
         election_year = EXCLUDED.election_year,
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
+        sbe_candidate_id = EXCLUDED.sbe_candidate_id,
+        sbe_district_type = EXCLUDED.sbe_district_type,
+        sbe_office = EXCLUDED.sbe_office,
+        is_at_large = EXCLUDED.is_at_large,
         committee_name = EXCLUDED.committee_name,
         link_status = CASE
           WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.link_status
@@ -286,6 +299,10 @@ export async function upsertIllinoisFinanceLink(input: {
       requireNonEmpty(input.link.candidateNameNormalized, "Illinois finance candidate name"),
       requireNonEmpty(input.link.officeName, "Illinois finance office name"),
       normalizeOptionalText(input.link.district),
+      normalizeOptionalText(input.link.sbeCandidateId),
+      normalizeOptionalText(input.link.sbeDistrictType),
+      normalizeOptionalText(input.link.sbeOffice),
+      input.link.isAtLarge ?? null,
       normalizeCommitteeKey(requireNonEmpty(input.link.committeeKey, "Illinois committee key")),
       requireNonEmpty(input.link.committeeName, "Illinois committee name"),
       input.link.linkStatus ?? "active",
@@ -330,6 +347,41 @@ export async function deactivateIllinoisFinanceLinksForCandidateElection(input: 
   return typeof result.rowCount === "number" ? result.rowCount : 0;
 }
 
+export async function deactivateIllinoisFinanceLinksExcept(input: {
+  db: Queryable;
+  candidateId: string;
+  electionId: string;
+  electionYear: number;
+  activeCommitteeKeys: readonly string[];
+  verifiedAt?: Date | null;
+}): Promise<number> {
+  const activeCommitteeKeys = [...new Set(input.activeCommitteeKeys.map(normalizeCommitteeKey))];
+  if (activeCommitteeKeys.length === 0) {
+    throw new Error("Illinois finance active committee keys are required");
+  }
+  const result = await input.db.query(
+    `
+      UPDATE public.il_candidate_finance_links
+      SET link_status = 'inactive',
+          last_verified_at = $5::timestamptz
+      WHERE candidate_id = $1::uuid
+        AND election_id = $2::uuid
+        AND election_year = $3
+        AND link_status = 'active'
+        AND link_source IS DISTINCT FROM 'manual'
+        AND NOT (committee_key = ANY($4::text[]))
+    `,
+    [
+      requireNonEmpty(input.candidateId, "candidate id"),
+      requireNonEmpty(input.electionId, "election id"),
+      normalizeElectionYear(input.electionYear),
+      activeCommitteeKeys,
+      normalizeNullableDate(input.verifiedAt),
+    ]
+  );
+  return typeof result.rowCount === "number" ? result.rowCount : 0;
+}
+
 async function upsertSummary(input: {
   db: Queryable;
   linkId: string;
@@ -346,18 +398,20 @@ async function upsertSummary(input: {
         direct_contribution_total,
         total_disbursements,
         cash_on_hand,
+        debts_owed,
         outside_support_total,
         outside_oppose_total,
         source_url,
         last_synced_at
       )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
         total_receipts = EXCLUDED.total_receipts,
         direct_contribution_total = EXCLUDED.direct_contribution_total,
         total_disbursements = EXCLUDED.total_disbursements,
         cash_on_hand = EXCLUDED.cash_on_hand,
+        debts_owed = EXCLUDED.debts_owed,
         outside_support_total = COALESCE(
           EXCLUDED.outside_support_total,
           il_candidate_finance_summaries.outside_support_total
@@ -376,6 +430,7 @@ async function upsertSummary(input: {
       normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
       normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
       normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
+      normalizeNullableAmount(input.summary.debtsOwed, "debts owed"),
       normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
       normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
       normalizeOptionalText(input.summary.sourceUrl),

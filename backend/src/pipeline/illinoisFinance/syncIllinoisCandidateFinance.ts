@@ -37,6 +37,8 @@ import {
   type IllinoisSbeContributionRecord,
   type IllinoisSbeExpenditureRecord,
 } from "./illinoisSbeClient.js";
+import { aggregateIllinoisD2Summaries } from "./illinoisD2SummaryAggregator.js";
+import type { IllinoisSbeD2ReportSummary } from "./illinoisSbeNormalizedArtifact.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -48,13 +50,20 @@ export type IllinoisCandidateFinanceSyncInput = {
   electionId: string;
   candidateName: string;
   electionYear: number;
+  officeScope?: string | null;
   officeName: string;
   district?: string | null;
+  sbeCandidateId?: string | null;
+  sbeDistrictType?: string | null;
+  sbeOffice?: string | null;
+  isAtLarge?: boolean | null;
+  sbeCommitteeId?: string | null;
   committeeKey: string;
   committeeName: string;
   directContributionRecords: readonly IllinoisSbeContributionRecord[];
   outsideExpenditureRecords?: readonly IllinoisSbeExpenditureRecord[];
   outsideGroupContributionRecords?: readonly IllinoisSbeContributionRecord[];
+  d2ReportSummaries?: readonly IllinoisSbeD2ReportSummary[];
   sourceUrl?: string | null;
   directContributionSourceUrl?: string | null;
   outsideExpenditureSourceUrl?: string | null;
@@ -81,6 +90,9 @@ export type IllinoisCandidateFinanceSyncResult = {
   outsideGroupBreakdownsWritten: number;
   totalReceipts: number | null;
   directContributionTotal: number | null;
+  totalDisbursements: number | null;
+  cashOnHand: number | null;
+  debtsOwed: number | null;
   outsideExpenditureDataAvailable: boolean;
   outsideGroupContributionDataAvailable: boolean;
   outsideSupportTotal: number | null;
@@ -138,6 +150,10 @@ function toFinanceLink(input: {
   electionYear: number;
   officeName: string;
   district?: string | null;
+  sbeCandidateId?: string | null;
+  sbeDistrictType?: string | null;
+  sbeOffice?: string | null;
+  isAtLarge?: boolean | null;
   committeeKey: string;
   committeeName: string;
   sourceUrl?: string | null;
@@ -150,6 +166,10 @@ function toFinanceLink(input: {
     candidateNameNormalized: normalizeCandidateNameForStorage(input.candidateName),
     officeName: requireNonEmpty(input.officeName, "office name"),
     district: input.district ?? null,
+    sbeCandidateId: input.sbeCandidateId ?? null,
+    sbeDistrictType: input.sbeDistrictType ?? null,
+    sbeOffice: input.sbeOffice ?? null,
+    isAtLarge: input.isAtLarge ?? null,
     committeeKey: normalizeIllinoisCommitteeKey(requireNonEmpty(input.committeeKey, "Illinois committee key")),
     committeeName: requireNonEmpty(input.committeeName, "Illinois committee name"),
     linkStatus: "active",
@@ -369,8 +389,11 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
 }
 
 function toSummary(input: {
-  totalReceipts: number;
-  directContributionTotal: number;
+  totalReceipts: number | null;
+  directContributionTotal: number | null;
+  totalDisbursements: number | null;
+  cashOnHand: number | null;
+  debtsOwed: number | null;
   outsideFinance: IllinoisOutsideSpendingAggregationResult;
   outsideDataAvailable: boolean;
   fallbackSourceUrl?: string | null;
@@ -378,6 +401,9 @@ function toSummary(input: {
   return {
     totalReceipts: input.totalReceipts,
     directContributionTotal: input.directContributionTotal,
+    totalDisbursements: input.totalDisbursements,
+    cashOnHand: input.cashOnHand,
+    debtsOwed: input.debtsOwed,
     outsideSupportTotal: input.outsideDataAvailable ? input.outsideFinance.summary?.supportTotal ?? 0 : null,
     outsideOpposeTotal: input.outsideDataAvailable ? input.outsideFinance.summary?.opposeTotal ?? 0 : null,
     sourceUrl: input.fallbackSourceUrl ?? null,
@@ -407,11 +433,14 @@ export async function syncIllinoisCandidateFinance(
   const outsideSourceUrl = input.outsideExpenditureSourceUrl ?? ILLINOIS_SBE_EXPENDITURE_ALL_SEARCH_URL;
   const outsideGroupSourceUrl =
     input.outsideGroupContributionSourceUrl ?? ILLINOIS_SBE_CONTRIBUTION_COMMITTEE_SEARCH_URL;
+  const sbeCommitteeId = input.sbeCommitteeId?.trim() || input.committeeKey.match(/^SBE:(.+)$/i)?.[1] || null;
 
   const directFinance = aggregateIllinoisDirectContributions({
     electionYear,
     contributionRecords: input.directContributionRecords,
-    committeeKey: input.committeeKey,
+    // SBE transaction exports identify the recipient by committee name even
+    // when our stable link key is SBE:<committee-id>.
+    committeeKey: input.committeeName,
     sourceUrl: directSourceUrl,
     maxBreakdownsPerCategory: input.directMaxBreakdownsPerCategory,
   });
@@ -448,17 +477,33 @@ export async function syncIllinoisCandidateFinance(
     electionYear,
     officeName,
     district: input.district,
+    sbeCandidateId: input.sbeCandidateId,
+    sbeDistrictType: input.sbeDistrictType,
+    sbeOffice: input.sbeOffice,
+    isAtLarge: input.isAtLarge,
     committeeKey: input.committeeKey,
     committeeName: input.committeeName,
     sourceUrl: input.sourceUrl ?? directSourceUrl,
     verifiedAt: syncedAt,
   });
+  const d2Finance =
+    input.d2ReportSummaries !== undefined && sbeCommitteeId
+      ? aggregateIllinoisD2Summaries({
+          electionYear,
+          committeeId: sbeCommitteeId,
+          reports: input.d2ReportSummaries,
+        })
+      : null;
+  const requiresD2Totals = input.officeScope === "place" || input.d2ReportSummaries !== undefined;
   const summary = toSummary({
-    totalReceipts: directFinance.summary.totalReceipts,
-    directContributionTotal: directFinance.summary.directContributionTotal,
+    totalReceipts: d2Finance?.totalReceipts ?? (requiresD2Totals ? null : directFinance.summary.totalReceipts),
+    directContributionTotal: requiresD2Totals ? null : directFinance.summary.directContributionTotal,
+    totalDisbursements: d2Finance?.totalDisbursements ?? null,
+    cashOnHand: d2Finance?.cashOnHand ?? null,
+    debtsOwed: d2Finance?.debtsOwed ?? null,
     outsideFinance,
     outsideDataAvailable,
-    fallbackSourceUrl: input.sourceUrl ?? directSourceUrl ?? outsideSourceUrl ?? outsideGroupSourceUrl,
+    fallbackSourceUrl: d2Finance?.sourceUrl ?? input.sourceUrl ?? directSourceUrl ?? outsideSourceUrl ?? outsideGroupSourceUrl,
   });
 
   if (!input.dryRun) {
@@ -484,8 +529,11 @@ export async function syncIllinoisCandidateFinance(
     directBreakdownsWritten: input.dryRun ? 0 : directFinance.directBreakdowns.length,
     outsideGroupsWritten: input.dryRun ? 0 : outsideGroups?.length ?? 0,
     outsideGroupBreakdownsWritten: input.dryRun ? 0 : outsideIndustryFinance.outsideGroupBreakdowns?.length ?? 0,
-    totalReceipts: directFinance.summary.totalReceipts,
-    directContributionTotal: directFinance.summary.directContributionTotal,
+    totalReceipts: summary.totalReceipts ?? null,
+    directContributionTotal: summary.directContributionTotal ?? null,
+    totalDisbursements: summary.totalDisbursements ?? null,
+    cashOnHand: summary.cashOnHand ?? null,
+    debtsOwed: summary.debtsOwed ?? null,
     outsideExpenditureDataAvailable: outsideDataAvailable,
     outsideGroupContributionDataAvailable,
     outsideSupportTotal: outsideDataAvailable ? outsideFinance.summary?.supportTotal ?? 0 : null,

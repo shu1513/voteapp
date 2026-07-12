@@ -6,7 +6,10 @@ import {
   type IllinoisCandidateCommitteeResolution,
 } from "./illinoisCandidateCommitteeResolver.js";
 import { ILLINOIS_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./illinoisFinanceEligibleOffices.js";
-import { upsertIllinoisFinanceLink } from "./illinoisFinanceWriter.js";
+import {
+  deactivateIllinoisFinanceLinksExcept,
+  upsertIllinoisFinanceLink,
+} from "./illinoisFinanceWriter.js";
 import type { IllinoisSbeClientOptions } from "./illinoisSbeClient.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -27,6 +30,7 @@ export type IllinoisFinanceAutoLinkResult =
       electionId: string;
       status: IllinoisCandidateCommitteeResolution["status"] | "linked";
       committeeKey?: string;
+      committeeKeys?: string[];
       reason?: string;
     }
   | {
@@ -101,6 +105,7 @@ export async function listIllinoisCandidateElectionsMissingFinanceLinks(
               ),
               ''
             )
+          WHEN district.district_type = 'place' THEN district.name
           ELSE NULL
         END AS district
       FROM public.candidate_elections AS candidate_election
@@ -170,29 +175,45 @@ export async function autoLinkIllinoisCandidateFinanceForCandidateElection(input
     };
   }
 
-  await upsertIllinoisFinanceLink({
+  for (const match of resolution.matches) {
+    await upsertIllinoisFinanceLink({
+      db: input.db,
+      link: {
+        candidateId: input.candidateElection.candidateId,
+        electionId: input.candidateElection.electionId,
+        electionYear: input.candidateElection.electionYear,
+        candidateNameNormalized: normalizeIllinoisCandidateNameForStorage(input.candidateElection.candidateName),
+        officeName: input.candidateElection.officeName,
+        district: match.district ?? input.candidateElection.district,
+        sbeCandidateId: match.sbeCandidateId,
+        sbeDistrictType: match.sbeDistrictType,
+        sbeOffice: match.sbeOffice,
+        isAtLarge: match.isAtLarge,
+        committeeKey: match.committeeKey,
+        committeeName: match.committeeName,
+        linkStatus: "active",
+        linkSource: "illinois_sbe",
+        sourceUrl: match.sourceUrl,
+        lastVerifiedAt: input.now,
+      },
+    });
+  }
+  const committeeKeys = resolution.matches.map((match) => match.committeeKey);
+  await deactivateIllinoisFinanceLinksExcept({
     db: input.db,
-    link: {
-      candidateId: input.candidateElection.candidateId,
-      electionId: input.candidateElection.electionId,
-      electionYear: input.candidateElection.electionYear,
-      candidateNameNormalized: normalizeIllinoisCandidateNameForStorage(input.candidateElection.candidateName),
-      officeName: input.candidateElection.officeName,
-      district: input.candidateElection.district,
-      committeeKey: resolution.committeeKey,
-      committeeName: resolution.committeeName,
-      linkStatus: "active",
-      linkSource: "illinois_sbe",
-      sourceUrl: resolution.sourceUrl,
-      lastVerifiedAt: input.now,
-    },
+    candidateId: input.candidateElection.candidateId,
+    electionId: input.candidateElection.electionId,
+    electionYear: input.candidateElection.electionYear,
+    activeCommitteeKeys: committeeKeys,
+    verifiedAt: input.now,
   });
 
   return {
     candidateId: input.candidateElection.candidateId,
     electionId: input.candidateElection.electionId,
     status: "linked",
-    committeeKey: resolution.committeeKey,
+    committeeKey: committeeKeys[0],
+    committeeKeys,
   };
 }
 

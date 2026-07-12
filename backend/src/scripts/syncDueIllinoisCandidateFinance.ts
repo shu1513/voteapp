@@ -30,6 +30,7 @@ export type SyncDueIllinoisCandidateFinanceScriptOptions = {
   expenditureCsvPaths: string[];
   contributionSourceUrl?: string;
   expenditureSourceUrl?: string;
+  normalizedArtifactPath?: string;
 };
 
 function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
@@ -74,11 +75,13 @@ export function parseSyncDueIllinoisCandidateFinanceScriptArgs(
     "--expenditures-csv",
     "--contributions-url",
     "--expenditures-url",
+    "--normalized-artifact",
   ]);
   const contributionCsvPaths = parseFlagValues(args, "--contributions-csv");
   const expenditureCsvPaths = parseFlagValues(args, "--expenditures-csv");
   const contributionSourceUrl = parseFlagValue(args, "--contributions-url") || undefined;
   const expenditureSourceUrl = parseFlagValue(args, "--expenditures-url") || undefined;
+  const normalizedArtifactPath = parseFlagValue(args, "--normalized-artifact") || undefined;
   if (
     contributionCsvPaths.length === 0 &&
     (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl)
@@ -99,6 +102,7 @@ export function parseSyncDueIllinoisCandidateFinanceScriptArgs(
     expenditureCsvPaths,
     contributionSourceUrl,
     expenditureSourceUrl,
+    normalizedArtifactPath,
   };
 }
 
@@ -121,9 +125,11 @@ export function toSyncDueIllinoisCandidateFinanceScriptOutput(input: {
     ts: new Date().toISOString(),
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
-    data_source: input.options.contributionCsvPaths.length > 0 ? "artifact" : "live",
+    data_source:
+      input.options.contributionCsvPaths.length > 0 || input.options.normalizedArtifactPath ? "artifact" : "live",
     artifact_contribution_csv_count: input.options.contributionCsvPaths.length,
     artifact_expenditure_csv_count: input.options.expenditureCsvPaths.length,
+    normalized_artifact: Boolean(input.options.normalizedArtifactPath),
     outside_expenditure_data_available_count: successfulResults.filter(
       (result) => result.outsideExpenditureDataAvailable
     ).length,
@@ -148,13 +154,17 @@ async function main(): Promise<void> {
   const pool = new Pool({ connectionString: getDatabaseUrl() });
 
   try {
+    const normalizedArtifactPath =
+      options.normalizedArtifactPath ??
+      (process.env.ILLINOIS_SBE_NORMALIZED_ARTIFACT_PATH?.trim() || undefined);
     const artifacts =
-      options.contributionCsvPaths.length > 0
+      options.contributionCsvPaths.length > 0 || normalizedArtifactPath
         ? await loadIllinoisSbeArtifactDataSet({
             contributionCsvPaths: options.contributionCsvPaths,
             expenditureCsvPaths: options.expenditureCsvPaths,
             contributionSourceUrl: options.contributionSourceUrl,
             expenditureSourceUrl: options.expenditureSourceUrl,
+            normalizedArtifactPath,
           })
         : null;
     const artifactCandidateCommitteeResolver = artifacts

@@ -75,13 +75,23 @@ export async function loadIllinoisCandidateFinanceSummariesByCandidateElection(
           ELSE NULL
         END AS committee_id,
         max(summary.election_year) AS election_year,
-        CASE WHEN count(summary.total_receipts) = 0 THEN NULL ELSE sum(summary.total_receipts) END AS total_receipts,
         CASE
-          WHEN count(summary.direct_contribution_total) = 0 THEN NULL
-          ELSE sum(summary.direct_contribution_total)
+          WHEN count(DISTINCT link.committee_key) = 1 AND count(summary.total_receipts) > 0
+          THEN sum(summary.total_receipts)
+          ELSE NULL
+        END AS total_receipts,
+        CASE
+          WHEN count(DISTINCT link.committee_key) = 1 AND count(summary.direct_contribution_total) > 0
+          THEN sum(summary.direct_contribution_total)
+          ELSE NULL
         END AS direct_contribution_total,
-        CASE WHEN count(summary.total_disbursements) = 0 THEN NULL ELSE sum(summary.total_disbursements) END AS total_disbursements,
+        CASE
+          WHEN count(DISTINCT link.committee_key) = 1 AND count(summary.total_disbursements) > 0
+          THEN sum(summary.total_disbursements)
+          ELSE NULL
+        END AS total_disbursements,
         CASE WHEN count(summary.cash_on_hand) = 0 THEN NULL ELSE sum(summary.cash_on_hand) END AS cash_on_hand,
+        CASE WHEN count(summary.debts_owed) = 0 THEN NULL ELSE sum(summary.debts_owed) END AS debts_owed,
         max(summary.outside_support_total) AS outside_support_total,
         max(summary.outside_oppose_total) AS outside_oppose_total,
         min(summary.source_url) FILTER (WHERE summary.source_url IS NOT NULL) AS source_url,
@@ -505,10 +515,10 @@ export async function loadIllinoisCandidateFinanceSummariesByCandidateElection(
           controlled_committee_id: row.committee_id,
           last_synced_at: row.last_synced_at,
           direct_campaign: {
-            total_raised: parseFinanceAmount(row.direct_contribution_total) ?? parseFinanceAmount(row.total_receipts),
+            total_raised: parseFinanceAmount(row.total_receipts) ?? parseFinanceAmount(row.direct_contribution_total),
             total_spent: parseFinanceAmount(row.total_disbursements),
             cash_on_hand: parseFinanceAmount(row.cash_on_hand),
-            debts_owed: null,
+            debts_owed: parseFinanceAmount(row.debts_owed),
             top_occupations: topDirectDonorOccupations,
             top_employers: [],
             top_industries: [],

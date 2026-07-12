@@ -25,6 +25,7 @@ describe("syncDueIllinoisCandidateFinance script", () => {
         "--expenditures-csv=exports/il-exp.csv",
         "--contributions-url=https://example.test/contributions.csv",
         "--expenditures-url=https://example.test/expenditures.csv",
+        "--normalized-artifact=exports/illinois-normalized.json",
       ])
     ).toEqual({
       dryRun: true,
@@ -40,6 +41,7 @@ describe("syncDueIllinoisCandidateFinance script", () => {
       expenditureCsvPaths: ["exports/il-exp.csv"],
       contributionSourceUrl: "https://example.test/contributions.csv",
       expenditureSourceUrl: "https://example.test/expenditures.csv",
+      normalizedArtifactPath: "exports/illinois-normalized.json",
     });
   });
 
@@ -50,6 +52,7 @@ describe("syncDueIllinoisCandidateFinance script", () => {
       aiClassifyIndustries: true,
       contributionCsvPaths: [],
       expenditureCsvPaths: [],
+      normalizedArtifactPath: undefined,
     });
   });
 
@@ -107,6 +110,7 @@ describe("syncDueIllinoisCandidateFinance script", () => {
         aiClassifyIndustries: false,
         contributionCsvPaths: ["exports/il-contrib.csv"],
         expenditureCsvPaths: [],
+        normalizedArtifactPath: undefined,
       },
       result: {
         dryRun: true,

@@ -20,6 +20,7 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
         "--expenditures-csv=/exports/il-exp.csv",
         "--contributions-url=https://example.test/contributions.csv",
         "--expenditures-url=https://example.test/expenditures.csv",
+        "--normalized-artifact=/exports/illinois-normalized.json",
       ])
     ).toEqual({
       dryRun: true,
@@ -34,6 +35,7 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
       expenditureCsvPaths: ["/exports/il-exp.csv"],
       contributionSourceUrl: "https://example.test/contributions.csv",
       expenditureSourceUrl: "https://example.test/expenditures.csv",
+      normalizedArtifactPath: "/exports/illinois-normalized.json",
     });
   });
 

@@ -23,12 +23,22 @@ function matchedResolution(
 ) {
   return {
     status: "matched" as const,
-    committeeKey: "FRIENDS OF JANE DOE",
-    committeeName: "Friends of Jane Doe",
-    confidence: "exact" as const,
-    source: "illinois_sbe" as const,
-    sourceUrl: SOURCE_URL,
-    matchedContributionRowCount: 2,
+    matches: [
+      {
+        committeeKey: "FRIENDS OF JANE DOE",
+        committeeName: "Friends of Jane Doe",
+        confidence: "name_fallback" as const,
+        source: "illinois_sbe" as const,
+        sourceUrl: SOURCE_URL,
+        matchedContributionRowCount: 2,
+        sbeCandidateId: null,
+        sbeCommitteeId: null,
+        sbeDistrictType: null,
+        sbeOffice: null,
+        district: null,
+        isAtLarge: null,
+      },
+    ],
     ...overrides,
   };
 }
@@ -105,6 +115,7 @@ describe("illinoisCandidateFinanceAutoLink", () => {
       electionId: ELECTION_ID,
       status: "linked",
       committeeKey: "FRIENDS OF JANE DOE",
+      committeeKeys: ["FRIENDS OF JANE DOE"],
     });
 
     expect(resolveCandidateCommittee).toHaveBeenCalledWith(
@@ -125,6 +136,10 @@ describe("illinoisCandidateFinanceAutoLink", () => {
       "JANE DOE",
       "Governor",
       null,
+      null,
+      null,
+      null,
+      null,
       "FRIENDS OF JANE DOE",
       "Friends of Jane Doe",
       "active",
@@ -132,6 +147,7 @@ describe("illinoisCandidateFinanceAutoLink", () => {
       SOURCE_URL,
       "2026-06-01T00:00:00.000Z",
     ]);
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("NOT (committee_key = ANY($4::text[]))");
   });
 
   it("does not write a link when committee resolution is unmatched", async () => {
@@ -197,9 +213,10 @@ describe("illinoisCandidateFinanceAutoLink", () => {
         electionId: ELECTION_ID,
         status: "linked",
         committeeKey: "FRIENDS OF JANE DOE",
+        committeeKeys: ["FRIENDS OF JANE DOE"],
       },
     ]);
     expect(resolveCandidateCommittee).toHaveBeenCalledTimes(1);
-    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(db.query).toHaveBeenCalledTimes(2);
   });
 });

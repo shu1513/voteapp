@@ -167,6 +167,43 @@ export function normalizeIllinoisSbeMunicipality(value: string | null | undefine
   return normalized ? normalized : null;
 }
 
+function normalizeMunicipalityKey(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase()
+    .replace(/,?\s+(?:ILLINOIS|IL)\s*$/, "")
+    .replace(/[^A-Z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export function illinoisMunicipalityMatches(input: {
+  voteAppDistrictName: string | null | undefined;
+  sbeDistrictName: string | null | undefined;
+  sbeDistrictType: string | null | undefined;
+}): boolean {
+  const districtType = normalizeIllinoisSbeLocalDistrictType(input.sbeDistrictType);
+  const voteAppName = input.voteAppDistrictName?.trim() ?? "";
+  const sbeName = input.sbeDistrictName?.trim() ?? "";
+  if (!districtType || !voteAppName || !sbeName) {
+    return false;
+  }
+  const voteAppWithoutState = normalizeMunicipalityKey(voteAppName);
+  const suffixMatch = voteAppWithoutState.match(/^(.*)\s+(CITY|VILLAGE|TOWN)$/);
+  if (suffixMatch?.[2] && suffixMatch[2] !== districtType.toUpperCase()) {
+    return false;
+  }
+  const voteAppCore = suffixMatch?.[1]?.trim() ?? voteAppWithoutState;
+  const normalizedSbeName = normalizeMunicipalityKey(sbeName);
+  const sbeSuffixMatch = normalizedSbeName.match(/^(.*)\s+(CITY|VILLAGE|TOWN)$/);
+  if (sbeSuffixMatch?.[2] && sbeSuffixMatch[2] !== districtType.toUpperCase()) {
+    return false;
+  }
+  const sbeCore = sbeSuffixMatch?.[1]?.trim() ?? normalizedSbeName;
+  return voteAppCore.length > 0 && voteAppCore === sbeCore;
+}
+
 export function normalizeIllinoisSbeLegislativeDistrict(
   value: string | null | undefined,
   maxDistrict: number,
