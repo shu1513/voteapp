@@ -43,6 +43,12 @@ export type NewYorkCityCandidateFinanceBatchItem = {
   nextCheckAt?: string;
 };
 
+type NewYorkCityCandidateFinanceAttemptStatus =
+  | "unmatched"
+  | "ambiguous"
+  | "not_yet_published"
+  | "failed";
+
 export type NewYorkCityCandidateFinanceBatchResult = {
   dryRun: boolean;
   dueCandidateCount: number;
@@ -120,12 +126,10 @@ export async function listDueNewYorkCityCandidateFinanceRows(input: {
           AND candidate_election.status <> 'withdrawn'
           AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
           AND (
-            summary.last_synced_at < ($1::timestamptz - make_interval(days => $3::int))
-            OR (
-              summary.last_synced_at IS NULL
-              AND (attempt.next_attempt_at IS NULL OR attempt.next_attempt_at <= $1::timestamptz)
-            )
+            summary.last_synced_at IS NULL
+            OR summary.last_synced_at < ($1::timestamptz - make_interval(days => $3::int))
           )
+          AND (attempt.next_attempt_at IS NULL OR attempt.next_attempt_at <= $1::timestamptz)
         ORDER BY COALESCE(summary.last_synced_at, attempt.last_attempted_at) ASC NULLS FIRST,
                  election.election_date ASC, candidate_name ASC
         LIMIT $2::int
@@ -156,11 +160,11 @@ export async function listDueNewYorkCityCandidateFinanceRows(input: {
   };
 }
 
-export async function recordNewYorkCityCandidateFinanceDeferral(input: {
+export async function recordNewYorkCityCandidateFinanceAttempt(input: {
   db: Queryable;
   candidateId: string;
   electionId: string;
-  status: "unmatched" | "ambiguous" | "not_yet_published";
+  status: NewYorkCityCandidateFinanceAttemptStatus;
   reason?: string;
   attemptedAt: Date;
   nextAttemptAt: Date;
@@ -227,7 +231,7 @@ type BatchDataSource = {
   readAnalysis: typeof readNewYorkCityCfbFinancialAnalysis;
   readContributions: typeof readNewYorkCityCfbContributions;
   syncCandidate: typeof syncNewYorkCityCandidateFinance;
-  recordDeferral: typeof recordNewYorkCityCandidateFinanceDeferral;
+  recordAttempt: typeof recordNewYorkCityCandidateFinanceAttempt;
 };
 
 const DEFAULT_DATA_SOURCE: BatchDataSource = {
@@ -236,14 +240,14 @@ const DEFAULT_DATA_SOURCE: BatchDataSource = {
   readAnalysis: readNewYorkCityCfbFinancialAnalysis,
   readContributions: readNewYorkCityCfbContributions,
   syncCandidate: syncNewYorkCityCandidateFinance,
-  recordDeferral: recordNewYorkCityCandidateFinanceDeferral,
+  recordAttempt: recordNewYorkCityCandidateFinanceAttempt,
 };
 
-async function recordDeferral(input: {
+async function recordAttempt(input: {
   dataSource: BatchDataSource;
   db: Queryable;
   row: NewYorkCityCandidateFinanceDueRow;
-  status: "unmatched" | "ambiguous" | "not_yet_published";
+  status: NewYorkCityCandidateFinanceAttemptStatus;
   reason?: string;
   now: Date;
   nextAttemptAt: Date;
@@ -251,7 +255,7 @@ async function recordDeferral(input: {
 }): Promise<NewYorkCityCandidateFinanceBatchItem> {
   if (!input.dryRun) {
     try {
-      await input.dataSource.recordDeferral({
+      await input.dataSource.recordAttempt({
         db: input.db, candidateId: input.row.candidateId, electionId: input.row.electionId,
         status: input.status, ...(input.reason ? { reason: input.reason } : {}),
         attemptedAt: input.now, nextAttemptAt: input.nextAttemptAt,
@@ -326,7 +330,7 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
         const proposedNextAttemptAt = nextCheckAt ? new Date(nextCheckAt) : null;
         const nextAttemptAt = proposedNextAttemptAt && proposedNextAttemptAt > now
           ? proposedNextAttemptAt : new Date(now.getTime() + 24 * 60 * 60 * 1000);
-        results.push(await recordDeferral({ dataSource, db: input.db, row, status: "not_yet_published",
+        results.push(await recordAttempt({ dataSource, db: input.db, row, status: "not_yet_published",
           now, nextAttemptAt, dryRun: Boolean(input.dryRun) }));
       }
       continue;
@@ -346,7 +350,7 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
       for (const row of yearRows) {
         const resolution = resolutions.get(`${row.candidateId}\u0000${row.electionId}`)!;
         if (resolution.status !== "matched") {
-          results.push(await recordDeferral({ dataSource, db: input.db, row, status: resolution.status,
+          results.push(await recordAttempt({ dataSource, db: input.db, row, status: resolution.status,
             reason: resolution.reason, now,
             nextAttemptAt: new Date(now.getTime() + staleAfterDays * 24 * 60 * 60 * 1000),
             dryRun: Boolean(input.dryRun) }));
@@ -368,7 +372,16 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
           });
           results.push({ candidateId: row.candidateId, electionId: row.electionId, status: "synced" });
         } catch (error) {
-          results.push({ candidateId: row.candidateId, electionId: row.electionId, status: "failed", reason: error instanceof Error ? error.message : String(error) });
+          results.push(await recordAttempt({
+            dataSource,
+            db: input.db,
+            row,
+            status: "failed",
+            reason: error instanceof Error ? error.message : String(error),
+            now,
+            nextAttemptAt: new Date(now.getTime() + staleAfterDays * 24 * 60 * 60 * 1000),
+            dryRun: Boolean(input.dryRun),
+          }));
         }
       }
     } catch (error) {

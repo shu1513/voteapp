@@ -23,6 +23,9 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
     });
     expect(query.mock.calls[0]?.[0]).toContain("nyc_candidate_finance_sync_attempts");
     expect(query.mock.calls[0]?.[0]).toContain("candidate_election.status <> 'withdrawn'");
+    expect(query.mock.calls[0]?.[0]).toMatch(
+      /summary\.last_synced_at <[\s\S]*\)\s+AND \(attempt\.next_attempt_at IS NULL/
+    );
     expect(query.mock.calls[0]?.[1]?.[5]).toEqual([
       "place::Mayor", "place::Public Advocate", "place::Comptroller", "county::Borough President",
     ]);
@@ -30,7 +33,7 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
 
   it("defers unpublished future files without failing", async () => {
     const listDueRows = vi.fn().mockResolvedValue({ rows: [dueRow], totalDueRows: 1 });
-    const recordDeferral = vi.fn().mockResolvedValue(undefined);
+    const recordAttempt = vi.fn().mockResolvedValue(undefined);
     const refreshArtifact = vi.fn().mockImplementation(async (input: { electionYear: number; kind: "contributions" | "financial_analysis" }) => ({
       status: "not_yet_published", electionYear: input.electionYear, kind: input.kind, url: "https://example.test/missing.csv",
       checkedAt: "2026-07-11T00:00:00Z",
@@ -42,14 +45,14 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
       dataSource: {
         listDueRows,
         refreshArtifact,
-        recordDeferral,
+        recordAttempt,
       },
     });
     expect(result).toMatchObject({ syncedCandidateCount: 0, deferredCandidateCount: 1, failedCandidateCount: 0 });
     expect(result.results[0]?.status).toBe("not_yet_published");
     expect(result.results[0]?.nextCheckAt).toBe("2026-07-13T00:00:00.000Z");
     expect(listDueRows).toHaveBeenCalledWith(expect.objectContaining({ electionLookbackDays: 1_460 }));
-    expect(recordDeferral).toHaveBeenCalledWith(expect.objectContaining({ status: "not_yet_published" }));
+    expect(recordAttempt).toHaveBeenCalledWith(expect.objectContaining({ status: "not_yet_published" }));
   });
 
   it("resolves once, filters contributions, and syncs candidate", async () => {
@@ -82,7 +85,7 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
   });
 
   it("reports ambiguity as deferred, not failed", async () => {
-    const recordDeferral = vi.fn().mockResolvedValue(undefined);
+    const recordAttempt = vi.fn().mockResolvedValue(undefined);
     const refreshArtifact = vi.fn().mockImplementation(async (input: { electionYear: number; kind: "contributions" | "financial_analysis" }) => ({
       status: "downloaded",
       current: { version: 1, electionYear: input.electionYear, kind: input.kind, url: "x", filePath: `/tmp/${input.kind}.csv`, downloadedAt: "x", bytes: 1, etag: null, lastModified: null },
@@ -100,11 +103,48 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
           { ...analysisBase, candidateId: "A1" }, { ...analysisBase, candidateId: "A2" },
         ] }),
         readContributions: vi.fn(),
-        recordDeferral,
+        recordAttempt,
       },
     });
     expect(result).toMatchObject({ deferredCandidateCount: 1, failedCandidateCount: 0 });
     expect(result.results[0]?.status).toBe("ambiguous");
-    expect(recordDeferral).toHaveBeenCalledWith(expect.objectContaining({ status: "ambiguous" }));
+    expect(recordAttempt).toHaveBeenCalledWith(expect.objectContaining({ status: "ambiguous" }));
+  });
+
+  it("records a retry cooldown when candidate sync fails", async () => {
+    const now = new Date("2026-07-12T00:00:00Z");
+    const recordAttempt = vi.fn().mockResolvedValue(undefined);
+    const refreshArtifact = vi.fn().mockImplementation(async (input: { electionYear: number; kind: "contributions" | "financial_analysis" }) => ({
+      status: "downloaded",
+      current: { version: 1, electionYear: input.electionYear, kind: input.kind, url: "x", filePath: `/tmp/${input.kind}.csv`, downloadedAt: "x", bytes: 1, etag: null, lastModified: null },
+    }));
+    const result = await syncDueNewYorkCityCandidateFinance({
+      db: {} as never,
+      now,
+      staleAfterDays: 7,
+      dataSource: {
+        listDueRows: vi.fn().mockResolvedValue({ rows: [dueRow], totalDueRows: 1 }),
+        refreshArtifact,
+        readAnalysis: vi.fn().mockResolvedValue({ rawRowCount: 1, malformedRowCount: 0, rows: [{
+          electionYear: 2029, fromStatement: 1, toStatement: 1, officeCode: "1", candidateName: "DOE, JANE",
+          candidateId: "A1", boroughCode: null, privateContributions: 100, publicFunds: 20,
+          netExpenditures: 50, outstandingBills: 0,
+        }] }),
+        readContributions: vi.fn().mockResolvedValue({ rows: [], rawRowCount: 0, malformedRowCount: 0 }),
+        syncCandidate: vi.fn().mockRejectedValue(new Error("writer unavailable")),
+        recordAttempt,
+      },
+    });
+    expect(result).toMatchObject({ syncedCandidateCount: 0, deferredCandidateCount: 0, failedCandidateCount: 1 });
+    expect(result.results[0]).toMatchObject({
+      status: "failed",
+      reason: "writer unavailable",
+      nextCheckAt: "2026-07-19T00:00:00.000Z",
+    });
+    expect(recordAttempt).toHaveBeenCalledWith(expect.objectContaining({
+      status: "failed",
+      reason: "writer unavailable",
+      nextAttemptAt: new Date("2026-07-19T00:00:00.000Z"),
+    }));
   });
 });

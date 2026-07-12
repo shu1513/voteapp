@@ -138,7 +138,7 @@ CREATE TABLE public.nyc_candidate_finance_sync_attempts (
   updated_at timestamptz NOT NULL DEFAULT now(),
   PRIMARY KEY (candidate_id, election_id),
   CONSTRAINT nyc_candidate_finance_sync_attempts_status_check
-    CHECK (status IN ('unmatched', 'ambiguous', 'not_yet_published')),
+    CHECK (status IN ('unmatched', 'ambiguous', 'not_yet_published', 'failed')),
   CONSTRAINT nyc_candidate_finance_sync_attempts_reason_check
     CHECK (reason IS NULL OR btrim(reason) <> ''),
   CONSTRAINT nyc_candidate_finance_sync_attempts_retry_check
