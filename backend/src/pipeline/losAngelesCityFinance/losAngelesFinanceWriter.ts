@@ -11,6 +11,7 @@ export type LosAngelesFinanceLinkInput = {
   electionYear: number;
   candidateNameNormalized: string;
   officeName: string;
+  seatNumber?: number | null;
   ethicsElectionId: string;
   ethicsCandidatePersonId: string;
   ethicsSeatCandidateId: string;
@@ -55,11 +56,35 @@ const amount = (value: number | null, label: string): number | null => {
     throw new Error(`${label} must be nonnegative`);
   return value;
 };
+const seatNumber = (
+  value: number | null | undefined,
+  officeName: string,
+): number | null => {
+  if (officeName === "City Council Member") {
+    if (
+      typeof value !== "number" ||
+      !Number.isInteger(value) ||
+      value < 1 ||
+      value > 15
+    )
+      throw new Error(
+        "Los Angeles City Council seat number must be 1 through 15",
+      );
+    return value;
+  }
+  if (value !== null && value !== undefined)
+    throw new Error(
+      "Los Angeles citywide finance link cannot have a seat number",
+    );
+  return null;
+};
 
 async function upsertLink(
   db: Queryable,
   link: LosAngelesFinanceLinkInput,
 ): Promise<string> {
+  const officeName = text(link.officeName, "office name");
+  const normalizedSeatNumber = seatNumber(link.seatNumber, officeName);
   if (
     (link.linkSource ?? "manual") === "lacity_ethics" &&
     (link.linkStatus ?? "active") === "active"
@@ -82,13 +107,14 @@ async function upsertLink(
       [link.candidateId, link.electionId, link.fppcCommitteeId],
     );
   const result = await db.query<{ id: string }>(
-    `INSERT INTO public.lacity_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,office_name,ethics_election_id,ethics_candidate_person_id,ethics_seat_candidate_id,fppc_committee_id,committee_name,internal_committee_person_id,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15::timestamptz) ON CONFLICT (candidate_id,election_id,fppc_committee_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,office_name=EXCLUDED.office_name,ethics_election_id=EXCLUDED.ethics_election_id,ethics_candidate_person_id=EXCLUDED.ethics_candidate_person_id,ethics_seat_candidate_id=EXCLUDED.ethics_seat_candidate_id,committee_name=EXCLUDED.committee_name,internal_committee_person_id=EXCLUDED.internal_committee_person_id,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at RETURNING id::text`,
+    `INSERT INTO public.lacity_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,office_name,seat_number,ethics_election_id,ethics_candidate_person_id,ethics_seat_candidate_id,fppc_committee_id,committee_name,internal_committee_person_id,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16::timestamptz) ON CONFLICT (candidate_id,election_id,fppc_committee_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,office_name=EXCLUDED.office_name,seat_number=EXCLUDED.seat_number,ethics_election_id=EXCLUDED.ethics_election_id,ethics_candidate_person_id=EXCLUDED.ethics_candidate_person_id,ethics_seat_candidate_id=EXCLUDED.ethics_seat_candidate_id,committee_name=EXCLUDED.committee_name,internal_committee_person_id=EXCLUDED.internal_committee_person_id,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at RETURNING id::text`,
     [
       text(link.candidateId, "candidate id"),
       text(link.electionId, "election id"),
       link.electionYear,
       text(link.candidateNameNormalized, "candidate name"),
-      text(link.officeName, "office name"),
+      officeName,
+      normalizedSeatNumber,
       text(link.ethicsElectionId, "Ethics election id"),
       text(link.ethicsCandidatePersonId, "Ethics candidate person id"),
       text(link.ethicsSeatCandidateId, "Ethics seat candidate id"),

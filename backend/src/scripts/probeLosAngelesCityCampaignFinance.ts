@@ -9,19 +9,14 @@ import { getLosAngelesCommitteeContributions } from "../pipeline/losAngelesCityF
 import { toLosAngelesEthicsOfficeName } from "../pipeline/losAngelesCityFinance/losAngelesCityFinanceEligibleOffices.js";
 const yearArg = process.argv.find((arg) => /^--year=\d{4}$/.test(arg));
 const year = yearArg ? Number(yearArg.slice(7)) : new Date().getUTCFullYear();
-const dateArg = process.argv.find((arg) =>
-  /^--election-date=\d{4}-\d{2}-\d{2}$/.test(arg),
-);
-const electionDate =
-  dateArg?.slice("--election-date=".length) ??
-  (year === 2026 ? "2026-06-02" : null);
-if (!electionDate)
-  throw new Error("Pass --election-date=YYYY-MM-DD for non-2026 probes");
 const officeArg = process.argv.find((arg) => arg.startsWith("--office="));
 const officeCanonicalName = officeArg?.slice("--office=".length) || "Mayor";
+const seatArg = process.argv.find((arg) => /^--seat=\d{1,2}$/.test(arg));
+const seatNumber = seatArg ? Number(seatArg.slice("--seat=".length)) : null;
 const ethicsOfficeName = toLosAngelesEthicsOfficeName({
   officeScope: "place",
   officeCanonicalName,
+  seatNumber,
 });
 if (!ethicsOfficeName)
   throw new Error(
@@ -43,7 +38,7 @@ for (const total of totals) {
   try {
     const records = await getLosAngelesCommitteeContributions({
       committeeId: total.fppcCommitteeId,
-      electionDate,
+      electionYear: year,
     });
     const direct = aggregateLosAngelesDirectContributions({ records });
     const [support, oppose] = await Promise.all([
@@ -81,6 +76,7 @@ console.log(
     {
       election,
       office_canonical_name: officeCanonicalName,
+      seat_number: seatNumber,
       ethics_office_name: ethicsOfficeName,
       candidate_count: totals.length,
       candidates,

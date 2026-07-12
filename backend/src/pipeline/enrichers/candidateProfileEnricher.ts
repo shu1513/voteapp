@@ -459,6 +459,7 @@ async function enqueueLosAngelesCityFinanceSyncForLinkedElection(input: {
       geoidCompact: input.context.geoidCompact,
       officeScope: input.context.officeScope,
       officeCanonicalName: input.context.officeCanonicalName,
+      officialBallotTitle: input.context.officialBallotTitle,
     })
   ) {
     return;

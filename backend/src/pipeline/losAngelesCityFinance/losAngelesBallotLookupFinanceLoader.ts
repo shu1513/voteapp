@@ -20,6 +20,7 @@ type Election = {
   geoid_compact?: string | null;
   office_scope?: string | null;
   office_canonical_name?: string | null;
+  official_ballot_title?: string | null;
 };
 type SummaryRow = {
   candidate_id: string;
@@ -50,6 +51,7 @@ export async function loadLosAngelesCandidateFinanceSummariesByCandidateElection
           geoidCompact: row.geoid_compact,
           officeScope: row.office_scope,
           officeCanonicalName: row.office_canonical_name,
+          officialBallotTitle: row.official_ballot_title,
         }),
       )
       .map((row) => row.election_id),
