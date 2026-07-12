@@ -4,8 +4,11 @@ import type { CandidateRecordDroppedRecord } from "../../src/ai/enrichCandidateR
 import {
   applyConfirmedGaps,
   buildCandidateRecordQualityGaps,
+  decideDeltaZeroRecordConfirmation,
   droppedRecordToGap,
   isBlockingCandidateRecordQualityGap,
+  listRecordsBeforeSinceDate,
+  parseSinceDate,
 } from "../../src/scripts/writeManualCandidateRecords.js";
 import { buildManualResearchRepairReport } from "../../src/scripts/manualResearchRepairReport.js";
 
@@ -201,5 +204,77 @@ describe("writeManualCandidateRecords quality repair gaps", () => {
         outcome: "confirmed_null",
       })
     );
+  });
+});
+
+describe("writeManualCandidateRecords delta (--since-date) helpers", () => {
+  const today = "2026-07-12";
+
+  it("parseSinceDate accepts a real past-or-today YYYY-MM-DD date", () => {
+    expect(parseSinceDate("2026-06-10", today)).toBe("2026-06-10");
+    expect(parseSinceDate(" 2026-07-12 ", today)).toBe("2026-07-12");
+  });
+
+  it("parseSinceDate rejects partial, malformed, impossible, and future dates", () => {
+    expect(() => parseSinceDate("2026", today)).toThrow(/full YYYY-MM-DD/);
+    expect(() => parseSinceDate("2026-06", today)).toThrow(/full YYYY-MM-DD/);
+    expect(() => parseSinceDate("06/10/2026", today)).toThrow(/full YYYY-MM-DD/);
+    expect(() => parseSinceDate("2026-02-30", today)).toThrow(/not a real calendar date/);
+    expect(() => parseSinceDate("2026-07-13", today)).toThrow(/cannot be in the future/);
+  });
+
+  it("listRecordsBeforeSinceDate reports out-of-window rows with their original indices", () => {
+    const records = [
+      { event_date: "2026-06-15", description: "in window" },
+      { event_date: "2026-05-01", description: "before window" },
+      { event_date: "2026-06-10", description: "on window start" },
+      { event_date: "2024-01-01", description: "far before window" },
+    ];
+
+    const outOfWindow = listRecordsBeforeSinceDate(records, "2026-06-10");
+
+    expect(outOfWindow.map((entry) => entry.index)).toEqual([1, 3]);
+    expect(outOfWindow[0]!.record.description).toBe("before window");
+  });
+
+  it("decideDeltaZeroRecordConfirmation leaves the confirmation alone when the candidate has records", () => {
+    expect(
+      decideDeltaZeroRecordConfirmation({ existingRecordCount: 4, priorConfirmedGapIds: null })
+    ).toEqual({ action: "leave" });
+    expect(
+      decideDeltaZeroRecordConfirmation({
+        existingRecordCount: 4,
+        priorConfirmedGapIds: ["candidate_records.no_records_found"],
+      })
+    ).toEqual({ action: "leave" });
+  });
+
+  it("decideDeltaZeroRecordConfirmation refreshes a prior no_records_found confirmation for a zero-record candidate", () => {
+    expect(
+      decideDeltaZeroRecordConfirmation({
+        existingRecordCount: 0,
+        priorConfirmedGapIds: ["candidate_records.no_records_found"],
+      })
+    ).toEqual({
+      action: "refresh",
+      confirmedGapIds: ["candidate_records.no_records_found"],
+    });
+  });
+
+  it("decideDeltaZeroRecordConfirmation refuses to close a never-confirmed full-history question from a windowed pass", () => {
+    const noPrior = decideDeltaZeroRecordConfirmation({
+      existingRecordCount: 0,
+      priorConfirmedGapIds: null,
+    });
+    expect(noPrior.action).toBe("error");
+    if (noPrior.action === "error") {
+      expect(noPrior.reason).toContain("FULL discovery sweep");
+    }
+
+    const wrongPrior = decideDeltaZeroRecordConfirmation({
+      existingRecordCount: 0,
+      priorConfirmedGapIds: ["candidate_records.only_general_labels"],
+    });
+    expect(wrongPrior.action).toBe("error");
   });
 });
