@@ -121,6 +121,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   NEW_MEXICO_CFIS: "New Mexico CFIS",
   OKLAHOMA_GUARDIAN: "Oklahoma Guardian",
   TEXAS_TEC: "Texas Ethics Commission",
+  HOUSTON_CAMPAIGN_FINANCE: "City of Houston / Texas Ethics Commission",
   FLORIDA_DOS: "Florida Division of Elections",
   UTAH_DISCLOSURES: "Utah Financial Disclosures",
   HAWAII_CSC: "Hawaii Campaign Spending Commission",
