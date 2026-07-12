@@ -160,6 +160,10 @@ function normalizeMatcherText(value: string): string {
   return value
     .toLowerCase()
     .replace(/\bu\.?\s*s\.?\b/g, "united states")
+    // Several cities title the office as one word ("City of Flagstaff
+    // Councilmember", live); the catalog and its aliases key on the two-word
+    // form, and one word tokenizes into zero overlap.
+    .replace(/\bcouncilmembers?\b/g, "council member")
     .replace(/[^a-z0-9\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -240,6 +244,11 @@ function stripJurisdictionPrefixes(value: string, input: { districtName: string;
 function stripSeatSuffixes(value: string): string {
   return value
     .replace(/\boffice no \d+\b/g, " ")
+    // "for" is removed with the seat it introduces: "Council Member for
+    // District 2" (Fort Worth, live) must reduce to "council member", not
+    // "council member for" — the dangling connector misses the alias table
+    // and left ten council elections office-less.
+    .replace(/\bfor district \d+[a-z]{0,2}\b/g, " ")
     .replace(/\bdistrict \d+[a-z]{0,2}\b/g, " ")
     .replace(/\b\d+(st|nd|rd|th)\s+district\b/g, " ")
     .replace(/\s+/g, " ")

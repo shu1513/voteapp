@@ -177,17 +177,86 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     expect(result).toEqual({ ok: false, reason: "citation URL points to a blocked/private host" });
   });
 
-  it("stops at the redirect limit instead of looping", async () => {
+  it("fails a genuine self-redirect as a loop on the first repeat instead of burning the hop limit", async () => {
     const { calls } = stubFetch(() => ({ status: 301, location: "https://example.gov/loop" }));
 
     const result = await verifyHttpUrlReachability("https://example.gov/loop");
 
-    expect(calls.length).toBe(6);
-    // The reason names every walked hop so the terminal target is diagnosable.
+    // One request proves the cycle; the reason names the walked hops so the
+    // repeated target is diagnosable.
+    expect(calls.length).toBe(1);
     const hop = "https://example.gov/loop";
     expect(result).toEqual({
       ok: false,
-      reason: `citation URL exceeded the redirect limit (chain: ${Array(7).fill(hop).join(" -> ")})`,
+      reason: `citation URL redirect loop detected (chain: ${hop} -> ${hop})`,
+    });
+  });
+
+  it("follows a slashless-to-trailing-slash redirect instead of walking a synthetic self-loop", async () => {
+    // The stored citation is normalized slashless; the host 301s to the
+    // trailing-slash form. Before the fix the hop target was re-normalized
+    // slashless, recreating the original URL until the redirect limit —
+    // rejecting ordinary readable pages (Open States, Copper Courier,
+    // campaign /about/ pages, all live).
+    const { calls } = stubFetch((_method, url) =>
+      url === "https://example.org/about"
+        ? { status: 301, location: "https://example.org/about/" }
+        : { status: 200 }
+    );
+
+    const result = await verifyHttpUrlReachability("https://example.org/about");
+
+    expect(calls.map((call) => call.url)).toEqual([
+      "https://example.org/about",
+      "https://example.org/about/",
+    ]);
+    expect(result).toEqual(
+      expect.objectContaining({ ok: true, finalUrl: "https://example.org/about/", status: 200 })
+    );
+  });
+
+  it("catches a root self-loop one hop late because the slash-stripped input is a different visited form", async () => {
+    // The input normalizes slashless while hop targets keep their slash, so
+    // the first redirect to the slashed root is deliberately treated as a new
+    // URL (slash-insensitive matching would falsely flag legitimate
+    // slashless->slashed redirects as loops). The cycle is still caught on
+    // the second, exact-form repeat — one extra request, well inside the hop
+    // limit.
+    const { calls } = stubFetch(() => ({ status: 301, location: "https://example.org/" }));
+
+    const result = await verifyHttpUrlReachability("https://example.org/");
+
+    expect(calls.map((call) => call.url)).toEqual([
+      "https://example.org",
+      "https://example.org/",
+    ]);
+    // The reported chain re-parses each hop, so the slashless first entry
+    // renders with the root slash restored.
+    expect(result).toEqual({
+      ok: false,
+      reason:
+        "citation URL redirect loop detected (chain: https://example.org/ -> https://example.org/ -> https://example.org/)",
+    });
+  });
+
+  it("detects an https/http scheme-oscillation cycle as a redirect loop", async () => {
+    // Arizona Capitol Times live: https redirects to http, which redirects
+    // back to https — a genuine cycle that must fail fast with the loop
+    // reason, not the hop-limit reason.
+    const { calls } = stubFetch((_method, url) => ({
+      status: 302,
+      location: url.startsWith("https://")
+        ? url.replace("https://", "http://")
+        : url.replace("http://", "https://"),
+    }));
+
+    const result = await verifyHttpUrlReachability("https://news.example.com/story");
+
+    expect(calls.length).toBe(2);
+    expect(result).toEqual({
+      ok: false,
+      reason:
+        "citation URL redirect loop detected (chain: https://news.example.com/story -> http://news.example.com/story -> https://news.example.com/story)",
     });
   });
 
@@ -201,7 +270,7 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
 
     expect(result.ok).toBe(false);
     const reason = (result as { ok: false; reason: string }).reason;
-    expect(reason).toContain("citation URL exceeded the redirect limit");
+    expect(reason).toContain("citation URL redirect loop detected");
     expect(reason).toContain("https://files.gov/document.pdf?[redacted]");
     expect(reason).not.toContain("secret123");
     expect(reason).not.toContain("secretpass");

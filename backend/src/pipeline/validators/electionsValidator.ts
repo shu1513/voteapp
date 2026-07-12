@@ -111,6 +111,11 @@ const STATE_UPPER_MARKERS = [
   /\blegislature district\b/,
   /\blegislative district\b/,
   /\bstate legislature district\b/,
+  // Illinois' official candidate list titles the contest by ordinal alone
+  // ("3RD SENATE", live). US Senate races carry no ordinal-district form, so
+  // this cannot mis-capture a federal contest. Soft-marker list only — not a
+  // strict marker, so it never drives hard scope mismatches on other types.
+  /\b\d+(?:st|nd|rd|th) senate\b/,
 ];
 
 const STATE_LOWER_STRICT_MARKERS = [
@@ -316,7 +321,14 @@ function isSoftScopeAmbiguous(
     }
   }
 
-  if (districtType === "place" && !hasAny(text, [/\bcity\b/, /\bmayor\b/, /\bcity council\b/, /\btown\b/, /\bvillage\b/])) {
+  // "council ?member" covers both the two-word form and one-word official
+  // titles ("Councilmember"); bare "Council Member for District N" (Fort
+  // Worth) and "Councilmember" (Flagstaff) are municipal offices that
+  // previously soft-failed ten-at-a-time despite verified official titles.
+  if (
+    districtType === "place" &&
+    !hasAny(text, [/\bcity\b/, /\bmayor\b/, /\bcity council\b/, /\bcouncil ?member\b/, /\btown\b/, /\bvillage\b/])
+  ) {
     return "place entry lacks clear place markers";
   }
 
