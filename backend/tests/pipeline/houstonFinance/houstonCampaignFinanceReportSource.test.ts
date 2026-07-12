@@ -54,7 +54,7 @@ function parsed(reportIndex: HoustonFinanceReportIndexRecord): HoustonFinancePar
     index: reportIndex,
     candidateName: "Jane Doe",
     electionDate: "2027-11-02",
-    officeSought: "Mayor",
+    officeSought: { officeName: "Mayor", seat: "Houston" },
     periodStart: "2026-01-01",
     periodEnd: "2026-06-30",
     directContributionTotal: 10,

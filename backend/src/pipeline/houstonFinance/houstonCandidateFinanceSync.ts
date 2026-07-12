@@ -13,6 +13,10 @@ import { normalizeTexasCandidateNameKeys } from "../texasFinance/texasCandidateC
 import { selectEffectiveHoustonCandidateReports } from "./houstonCampaignFinancePdfParser.js";
 import { aggregateHoustonDirectContributions } from "./houstonDirectContributionAggregator.js";
 import type { HoustonFinanceParsedReport } from "./houstonFinanceTypes.js";
+import {
+  houstonFinanceOfficeTargetsEqual,
+  parseStoredHoustonFinanceOfficeTarget,
+} from "./houstonFinanceOfficeTargets.js";
 import { aggregateHoustonTexasGpacOutsideSpending } from "./houstonTexasGpacOutsideSpendingAggregator.js";
 import { replaceHoustonCandidateFinanceSnapshot, type HoustonFinanceOutsideGroupBreakdownInput } from "./houstonFinanceWriter.js";
 
@@ -82,6 +86,8 @@ export async function syncHoustonCandidateFinance(input: {
   candidateName: string;
   electionYear: number;
   electionDate: string;
+  officeName?: string;
+  district?: string | null;
   committeeId: string;
   committeeName: string;
   sourceUrl?: string | null;
@@ -102,6 +108,11 @@ export async function syncHoustonCandidateFinance(input: {
   const candidateName = required(input.candidateName, "candidate name");
   const committeeId = required(input.committeeId, "Houston filer id");
   const committeeName = required(input.committeeName, "Houston filer name");
+  const officeTarget = parseStoredHoustonFinanceOfficeTarget({
+    officeName: input.officeName ?? "Mayor",
+    district: input.district ?? "Houston",
+  });
+  if (!officeTarget) throw new Error(`Unsupported Houston finance office target: ${input.officeName ?? ""} ${input.district ?? ""}`);
   if (!Number.isInteger(input.electionYear) || input.electionYear < 2014 || input.electionYear > 2100) {
     throw new Error(`Invalid Houston finance election year: ${input.electionYear}`);
   }
@@ -115,7 +126,7 @@ export async function syncHoustonCandidateFinance(input: {
     ? selectEffectiveHoustonCandidateReports(
         input.reports.filter((report) =>
           report.electionDate.startsWith(String(input.electionYear)) &&
-          report.officeSought === "Mayor" &&
+          houstonFinanceOfficeTargetsEqual(report.officeSought, officeTarget) &&
           namesMatch(candidateName, report.candidateName)
         )
       )
@@ -131,6 +142,7 @@ export async function syncHoustonCandidateFinance(input: {
     ? aggregateHoustonTexasGpacOutsideSpending({
         candidateName,
         electionYear: input.electionYear,
+        officeTarget,
         purposeRows: input.purposeRows!,
         candidateRows: input.candidateRows!,
         expenditureRows: input.expenditureRows!,
@@ -188,8 +200,8 @@ export async function syncHoustonCandidateFinance(input: {
         electionId,
         electionYear: input.electionYear,
         candidateNameNormalized: [...normalizeTexasCandidateNameKeys(candidateName)].sort()[0] ?? candidateName.toUpperCase(),
-        officeName: "Mayor",
-        district: "Houston",
+        officeName: officeTarget.officeName,
+        district: officeTarget.seat,
         committeeId,
         committeeName,
         linkSource: "houston_reports",

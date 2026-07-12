@@ -3,6 +3,10 @@ import type {
   HoustonFinanceParsedReport,
   HoustonFinanceReportIndexRecord,
 } from "./houstonFinanceTypes.js";
+import {
+  parseHoustonDisclosureOfficeTarget,
+  type HoustonFinanceOfficeTarget,
+} from "./houstonFinanceOfficeTargets.js";
 
 export type HoustonPdfCell = { text: string; x: number };
 export type HoustonPdfLine = { text: string; cells: HoustonPdfCell[] };
@@ -112,21 +116,33 @@ function electionDate(lines: readonly HoustonPdfLine[]): string {
   throw new Error("Houston finance PDF is missing the election date");
 }
 
-function officeSought(lines: readonly HoustonPdfLine[]): string {
-  const header = lines.findIndex((line) => /12 OFFICE SOUGHT/i.test(line.text));
-  if (header >= 0) {
-    for (let index = header + 1; index < Math.min(lines.length, header + 6); index += 1) {
-      const text = lines[index]!.text;
-      if (/\bMAYOR\b/i.test(text)) return "Mayor";
-    }
+function officeTargetAfterHeader(
+  lines: readonly HoustonPdfLine[],
+  headerIndex: number,
+  maxFollowingLines: number
+): HoustonFinanceOfficeTarget | null {
+  if (headerIndex < 0) return null;
+  const soughtX = lines[headerIndex]!.cells.find((cell) => /OFFICE SOUGHT/i.test(cell.text))?.x;
+  for (let index = headerIndex + 1; index < Math.min(lines.length, headerIndex + maxFollowingLines); index += 1) {
+    const line = lines[index]!;
+    const soughtText = soughtX === undefined
+      ? line.text
+      : normalizeText(line.cells.filter((cell) => cell.x >= soughtX - 2).map((cell) => cell.text).join(" "));
+    const target = parseHoustonDisclosureOfficeTarget(soughtText) ??
+      (soughtText === line.text ? null : parseHoustonDisclosureOfficeTarget(line.text));
+    if (target) return target;
   }
+  return null;
+}
+
+function officeSought(lines: readonly HoustonPdfLine[]): HoustonFinanceOfficeTarget {
+  const currentHeader = lines.findIndex((line) => /12 OFFICE SOUGHT/i.test(line.text));
+  const current = officeTargetAfterHeader(lines, currentHeader, 6);
+  if (current) return current;
   const legacyHeader = lines.findIndex((line) => /OFFICE HELD.*OFFICE SOUGHT/i.test(line.text));
-  if (legacyHeader >= 0) {
-    for (let index = legacyHeader + 1; index < Math.min(lines.length, legacyHeader + 5); index += 1) {
-      if (/\bMAYOR\b/i.test(lines[index]!.text)) return "Mayor";
-    }
-  }
-  throw new Error("Houston finance PDF is not a Mayor filing");
+  const legacy = officeTargetAfterHeader(lines, legacyHeader, 5);
+  if (legacy) return legacy;
+  throw new Error("Houston finance PDF has an unsupported or ambiguous office sought");
 }
 
 function reportPeriod(lines: readonly HoustonPdfLine[]): { periodStart: string; periodEnd: string } {

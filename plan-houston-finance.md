@@ -1,4 +1,4 @@
-# Houston Mayor Campaign Finance Plan
+# Houston Local Campaign Finance Plan
 
 Written 2026-07-11 after probing both City of Houston disclosure systems and auditing the post-refactor campaign-finance architecture. The implementation must remain isolated, flag-gated, conservative about identity, and reuse shared finance infrastructure instead of adding another large loader inside `ballotLookup.ts`.
 
@@ -13,6 +13,17 @@ Live validation completed against both city systems:
 - TEC GPACs: exact 2023-cycle matching produced `$1,679,144.71` support and no safely matched opposition, with finance, real estate, construction, oil/gas, and insurance among deterministic organization-donor industries before optional AI fallback.
 
 One source limitation remains deliberate: Houston-local SPAC filings are not included in v1, so outside-spending results are labeled Texas-level GPAC coverage and are not exhaustive.
+
+## 2026-07-12 office expansion
+
+The merged Mayor flow is extended without new finance tables to City Controller and exact-seat City Council races. Live probes established the required identity fields:
+
+- Legacy Controller PDFs identify `Controller` on the cover page.
+- Legacy council PDFs preserve seats such as `City Council - District C`.
+- Current eFile uses seat-specific codes such as `CCM_AL2`, and its PDF preserves `At Large 2`.
+- TEC purpose and candidate-expenditure rows contain explicit Houston Controller and exact council-district descriptions, but also contain generic, wrong-seat, `ASSIST`, and later cross-office rows for the same people.
+
+The expansion therefore carries a normalized office target through every stage. Council sync is allowed only for ballot titles and disclosure rows that resolve to `District A`–`District K` or `At-Large 1`–`At-Large 5`. Generic council labels and mismatched seats are skipped. City-only SPACs remain deferred.
 
 ## Goal and v1 scope
 

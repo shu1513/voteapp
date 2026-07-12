@@ -11,19 +11,22 @@ const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
 
 describe("texasBallotLookupFinanceLoader", () => {
-  it("does not query Texas TEC tables for Houston Mayor elections", async () => {
+  it.each(["Mayor", "City Controller", "City Council Member"])(
+    "does not query Texas TEC tables for Houston local finance office %s",
+    async (officeCanonicalName) => {
     vi.stubEnv("TEXAS_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi.fn();
 
     const result = await loadTexasCandidateFinanceSummariesByCandidateElection(
       { query },
       [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID }],
-      [{ election_id: ELECTION_ID, state: "TX", office_scope: "place", office_canonical_name: "Mayor" }]
+      [{ election_id: ELECTION_ID, state: "TX", office_scope: "place", office_canonical_name: officeCanonicalName }]
     );
 
     expect(result.size).toBe(0);
     expect(query).not.toHaveBeenCalled();
-  });
+    }
+  );
 
   // Regression guard for the schema drift where the outside-groups query
   // selected outside_group.expenditure_count, a column no migration ever

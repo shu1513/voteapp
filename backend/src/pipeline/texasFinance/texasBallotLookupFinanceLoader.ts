@@ -9,6 +9,8 @@ import { loadStandardStateFinanceSummariesByCandidateElection } from "../finance
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
+const HOUSTON_LOCAL_FINANCE_OFFICES = new Set(["Mayor", "City Controller", "City Council Member"]);
+
 export async function loadTexasCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly StateFinanceRequestCandidateRow[],
@@ -23,7 +25,8 @@ export async function loadTexasCandidateFinanceSummariesByCandidateElection(
     sourceUrl: "https://www.ethics.state.tx.us/search/cf/",
     enabled: isTexasCampaignFinanceEnabled,
     isEligibleElection: (row) => !(
-      row.office_scope?.trim() === "place" && row.office_canonical_name?.trim() === "Mayor"
+      row.office_scope?.trim() === "place" &&
+      HOUSTON_LOCAL_FINANCE_OFFICES.has(row.office_canonical_name?.trim() ?? "")
     ),
     tables: {
       links: "tx_candidate_finance_links",

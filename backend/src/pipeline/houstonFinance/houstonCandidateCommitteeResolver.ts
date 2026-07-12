@@ -1,5 +1,9 @@
 import { normalizeTexasCandidateNameKeys } from "../texasFinance/texasCandidateCommitteeResolver.js";
 import type { HoustonFinanceParsedReport } from "./houstonFinanceTypes.js";
+import {
+  houstonFinanceOfficeTargetsEqual,
+  type HoustonFinanceOfficeTarget,
+} from "./houstonFinanceOfficeTargets.js";
 
 function namesMatch(left: string, right: string): boolean {
   const rightKeys = normalizeTexasCandidateNameKeys(right);
@@ -14,14 +18,16 @@ export type HoustonCandidateCommitteeResolution =
 export function resolveHoustonCandidateCommittee(input: {
   candidateName: string;
   electionYear: number;
+  officeTarget?: HoustonFinanceOfficeTarget;
   reports: readonly HoustonFinanceParsedReport[];
 }): HoustonCandidateCommitteeResolution {
+  const officeTarget = input.officeTarget ?? { officeName: "Mayor", seat: "Houston" };
   const reports = input.reports.filter((report) =>
-    report.officeSought === "Mayor" &&
+    houstonFinanceOfficeTargetsEqual(report.officeSought, officeTarget) &&
     report.electionDate.startsWith(`${input.electionYear}-`) &&
     namesMatch(input.candidateName, report.candidateName)
   );
-  if (reports.length === 0) return { status: "not_found", reason: "no exact Houston Mayor report" };
+  if (reports.length === 0) return { status: "not_found", reason: `no exact Houston ${officeTarget.officeName} ${officeTarget.seat} report` };
   const names = new Set(reports.map((report) => [...normalizeTexasCandidateNameKeys(report.candidateName)][0]).filter(Boolean));
   if (names.size !== 1) return { status: "ambiguous", reason: "multiple candidate identities matched Houston reports" };
   const efileIds = new Set(

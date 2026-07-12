@@ -16,6 +16,11 @@ import {
   validateHoustonFinancePdf,
 } from "./houstonCampaignFinancePdfCache.js";
 import { parseHoustonCandidateFinancePdf } from "./houstonCampaignFinancePdfParser.js";
+import {
+  houstonFinanceOfficeTargetsEqual,
+  parseHoustonEfileOfficeTarget,
+  type HoustonFinanceOfficeTarget,
+} from "./houstonFinanceOfficeTargets.js";
 import { normalizeTexasCandidateNameKeys } from "../texasFinance/texasCandidateCommitteeResolver.js";
 
 const MAX_REPORTS_PER_CANDIDATE = 100;
@@ -44,18 +49,23 @@ export async function loadHoustonCandidateFinanceReports(input: {
   firstName: string;
   lastName: string;
   electionYear: number;
+  officeTarget?: HoustonFinanceOfficeTarget;
   cacheDir?: string;
   efileReports?: readonly HoustonFinanceReportIndexRecord[];
   efileOptions?: HoustonEthicsEfileClientOptions;
   legacyOptions?: HoustonLegacyClientOptions;
 }): Promise<HoustonFinanceParsedReport[]> {
   const cacheDir = input.cacheDir ?? process.env.HOUSTON_CAMPAIGN_FINANCE_PDF_CACHE_DIR?.trim() ?? DEFAULT_HOUSTON_FINANCE_PDF_CACHE_DIR;
+  const officeTarget = input.officeTarget ?? { officeName: "Mayor", seat: "Houston" };
   const allEfileReports = input.efileReports ?? await listHoustonEthicsEfileReports(input.efileOptions);
   const efileReports = allEfileReports.filter((report) =>
     report.filerType === "COH" &&
-    report.officeDescription?.trim().toUpperCase() === "MAYOR" &&
     namesMatch(input.candidateName, report.filerName) &&
-    Number(report.periodEnd?.slice(0, 4) ?? report.receivedDate.slice(0, 4)) <= input.electionYear
+    Number(report.periodEnd?.slice(0, 4) ?? report.receivedDate.slice(0, 4)) <= input.electionYear &&
+    (() => {
+      const indexedTarget = parseHoustonEfileOfficeTarget(report.officeDescription);
+      return !indexedTarget || houstonFinanceOfficeTargetsEqual(indexedTarget, officeTarget);
+    })()
   );
   const legacySession = await searchHoustonLegacyCandidateReports(
     { firstName: input.firstName, lastName: input.lastName },
@@ -74,7 +84,11 @@ export async function loadHoustonCandidateFinanceReports(input: {
   const loadReport = async (report: HoustonFinanceReportIndexRecord, download: () => Promise<Uint8Array>) => {
     try {
       const data = await cachedOrDownload({ cacheDir, report, download });
-      parsed.push(await parseHoustonCandidateFinancePdf({ data, index: report }));
+      const parsedReport = await parseHoustonCandidateFinancePdf({ data, index: report });
+      if (
+        parsedReport.electionDate.startsWith(`${input.electionYear}-`) &&
+        houstonFinanceOfficeTargetsEqual(parsedReport.officeSought, officeTarget)
+      ) parsed.push(parsedReport);
     } catch (error) {
       failures.push({ report, error });
       console.warn("Houston finance report skipped after download or parse failure:", {

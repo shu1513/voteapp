@@ -3,7 +3,7 @@ import { aggregateHoustonDirectContributions } from "../../../src/pipeline/houst
 import type { HoustonFinanceParsedReport } from "../../../src/pipeline/houstonFinance/houstonFinanceTypes.js";
 
 function report(total: number | null, contributions: HoustonFinanceParsedReport["contributions"]): HoustonFinanceParsedReport {
-  return { index: { sourceSystem: "ethics_efile", reportId: "1", filerId: "f", filerName: "Jane Doe", filerType: "COH", reportType: "SEMIJUL", receivedDate: "2026-07-01", filedAt: "2026-07-01", periodStart: "2026-01-01", periodEnd: "2026-06-30", officeDescription: "MAYOR", campaignYear: null, pdfUrl: "https://example.test/report.pdf" }, candidateName: "Jane Doe", electionDate: "2027-11-02", officeSought: "Mayor", periodStart: "2026-01-01", periodEnd: "2026-06-30", directContributionTotal: total, contributions };
+  return { index: { sourceSystem: "ethics_efile", reportId: "1", filerId: "f", filerName: "Jane Doe", filerType: "COH", reportType: "SEMIJUL", receivedDate: "2026-07-01", filedAt: "2026-07-01", periodStart: "2026-01-01", periodEnd: "2026-06-30", officeDescription: "MAYOR", campaignYear: null, pdfUrl: "https://example.test/report.pdf" }, candidateName: "Jane Doe", electionDate: "2027-11-02", officeSought: { officeName: "Mayor", seat: "Houston" }, periodStart: "2026-01-01", periodEnd: "2026-06-30", directContributionTotal: total, contributions };
 }
 
 describe("Houston direct contribution aggregation", () => {
