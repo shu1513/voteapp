@@ -230,7 +230,13 @@ async function fetchWithValidatedRedirects(
     }
     // A repeated URL is a genuine redirect cycle (host anti-bot behavior or
     // scheme oscillation) — fail it immediately with its own reason instead of
-    // burning the remaining hops as "exceeded the redirect limit".
+    // burning the remaining hops as "exceeded the redirect limit". Membership
+    // is exact-form on purpose: visitedUrls[0] is the slash-stripped input, so
+    // a slashless->slashed redirect is correctly treated as a NEW URL (the
+    // very case the hop normalization above preserves); comparing
+    // slash-insensitively would re-flag it as a false loop. The only cost is
+    // that a root URL redirecting to itself is caught one hop later, when its
+    // slashed form repeats.
     if (visitedUrls.includes(nextUrl)) {
       return {
         failure: {

@@ -215,6 +215,30 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     );
   });
 
+  it("catches a root self-loop one hop late because the slash-stripped input is a different visited form", async () => {
+    // The input normalizes slashless while hop targets keep their slash, so
+    // the first redirect to the slashed root is deliberately treated as a new
+    // URL (slash-insensitive matching would falsely flag legitimate
+    // slashless->slashed redirects as loops). The cycle is still caught on
+    // the second, exact-form repeat — one extra request, well inside the hop
+    // limit.
+    const { calls } = stubFetch(() => ({ status: 301, location: "https://example.org/" }));
+
+    const result = await verifyHttpUrlReachability("https://example.org/");
+
+    expect(calls.map((call) => call.url)).toEqual([
+      "https://example.org",
+      "https://example.org/",
+    ]);
+    // The reported chain re-parses each hop, so the slashless first entry
+    // renders with the root slash restored.
+    expect(result).toEqual({
+      ok: false,
+      reason:
+        "citation URL redirect loop detected (chain: https://example.org/ -> https://example.org/ -> https://example.org/)",
+    });
+  });
+
   it("detects an https/http scheme-oscillation cycle as a redirect loop", async () => {
     // Arizona Capitol Times live: https redirects to http, which redirects
     // back to https — a genuine cycle that must fail fast with the loop
