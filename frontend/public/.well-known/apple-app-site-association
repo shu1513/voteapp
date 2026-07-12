@@ -3,13 +3,14 @@
     "apps": [],
     "details": [
       {
-        "appID": "TEAMID.com.impactperdollar.voteapp",
-        "paths": [
-          "/verify-email",
-          "/verify-email-change",
-          "/reset-password",
-          "/elections/*",
-          "/candidates/*"
+        "appIDs": ["TEAMID.com.impactperdollar.voteapp"],
+        "components": [
+          { "/": "/verify-email" },
+          { "/": "/verify-email-change" },
+          { "/": "/reset-password" },
+          { "/": "/ballot" },
+          { "/": "/elections/*" },
+          { "/": "/candidates/*" }
         ]
       }
     ]

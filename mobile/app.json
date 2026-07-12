@@ -22,6 +22,7 @@
           "data": [
             { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/verify-email" },
             { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/reset-password" },
+            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/ballot" },
             { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/elections/" },
             { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/candidates/" }
           ]
