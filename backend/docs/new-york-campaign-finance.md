@@ -10,18 +10,27 @@ explicitly enabled.
 
 ## Scope
 
-Supported in Phase 1:
+Supported:
 
 - Outside support/oppose totals and top groups from Schedule R expense
   allocations filed by registry-verified Independent Expenditure Committees.
 - Industries funding those outside groups, from the groups' own cycle-scoped
   itemized receipts (organization donors only).
+- Direct-campaign receipts for the linked authorized committee (Phase 2):
+  contribution totals, Schedule F disbursement totals, contribution-size
+  buckets, contributor-type buckets, and organization donors classified into
+  industries. Unitemized lumps count toward totals only. `contributor_type`
+  and `donor` rows are stored but not yet surfaced by ballot lookup: the
+  donor rows anchor industry classification, and contributor-type buckets
+  await a shared API field. Direct industries derive from the stored top
+  organization donors (capped per category, matching the other state
+  modules), so they describe the largest donors rather than every receipt.
 
 Not supported:
 
 - Donor occupation breakdowns — NYSBOE never collects occupation/employer, so
   `top_direct_donor_occupations` is permanently empty for New York.
-- Direct-campaign receipts (totals, contribution-size buckets) — Phase 2.
+- Cash on hand — the transaction dataset has no opening balances.
 - Federal offices (FEC wins), county/local offices, and every NYC city office
   (Mayor, City Council, Public Advocate, NYC Comptroller, Borough President —
   NYC CFB territory).
@@ -51,6 +60,22 @@ bounded paging; the ~18M-row dataset is never bulk-downloaded.
 
 Set `NEW_YORK_SODA_APP_TOKEN` in production (free Socrata app token, sent as
 `X-App-Token`) — unauthenticated calls share a small IP-based rate pool.
+
+## Cycle Scoping
+
+On disclosure rows, `election_year` is the **disclosure report year** (dataset
+metadata: "Disclosure Report Year"), not the race year — filtering on it
+captures a single reporting year and badly undercounts multi-year cycles. Only
+Schedule R rows carry a real race year (`election_year_r`, "Candidate Election
+Year"), which the outside-spending query uses.
+
+Committee receipts and Schedule F totals are therefore scoped by a
+`sched_date` (transaction date) window instead: the day after the previous
+general election through election day. Statewide offices use a four-year
+cycle, Senate/Assembly two years. Post-election transactions (debt
+retirement, wind-down spending) fall outside the window by design. Bad
+`sched_date` values are negligible (~400 null/absurd rows out of ~18M) and
+simply fall outside every window.
 
 ## Strict Schedule R Rules
 
@@ -88,7 +113,8 @@ the escape hatch.
    candidates: Schedule R outside groups, group funder breakdowns, and
    industry classifications into the `ny_candidate_finance_*` tables.
 3. Ballot lookup reads those rows when `NEW_YORK_CAMPAIGN_FINANCE_ENABLED=true`
-   (source `NEW_YORK_SODA`), with direct-campaign fields null until Phase 2.
+   (source `NEW_YORK_SODA`), including direct totals, contribution-size
+   buckets, and classified direct-donor industries.
 
 The sync window stops after election day plus a one-day grace period,
 matching the other state finance modules.

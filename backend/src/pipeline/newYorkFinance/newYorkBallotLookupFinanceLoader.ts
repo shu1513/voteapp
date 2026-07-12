@@ -94,9 +94,9 @@ export async function loadNewYorkCandidateFinanceSummariesByCandidateElection(
     election_id: row.election_id,
   }));
 
-  // Phase 2 fills contribution_size rows; the query is shaped now so the
-  // loader needs no change when they land. New York never has occupation
-  // rows (NYSBOE does not collect occupation).
+  // New York never has occupation rows (NYSBOE does not collect occupation);
+  // direct breakdowns are contribution-size buckets plus classified donor
+  // industries.
   const directBreakdownResult = await db.query<StateFinanceDirectBreakdownRow>(
     `
       WITH selected AS (
@@ -128,7 +128,7 @@ export async function loadNewYorkCandidateFinanceSummariesByCandidateElection(
         JOIN public.ny_candidate_finance_direct_breakdowns AS breakdown
           ON breakdown.link_id = link.id
          AND breakdown.election_year = link.election_year
-        WHERE breakdown.category_type = 'contribution_size'
+        WHERE breakdown.category_type IN ('contribution_size', 'industry')
         GROUP BY selected.candidate_id, selected.election_id, breakdown.category_type, breakdown.category_name
       ),
       ranked AS (
@@ -396,13 +396,16 @@ export async function loadNewYorkCandidateFinanceSummariesByCandidateElection(
   );
 
   const contributionSizeBucketsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  const directIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const summaryByCandidateElection = new Map(
     summaryResult.rows.map((row) => [candidateElectionKey(row.candidate_id, row.election_id), row])
   );
   for (const row of directBreakdownResult.rows) {
     const summary = summaryByCandidateElection.get(candidateElectionKey(row.candidate_id, row.election_id));
+    const targetMap =
+      row.category_type === "industry" ? directIndustriesByCandidateElection : contributionSizeBucketsByCandidateElection;
     addFinanceBreakdown(
-      contributionSizeBucketsByCandidateElection,
+      targetMap,
       row.candidate_id,
       row.election_id,
       mapFinanceBreakdown(row, summary?.source_url ?? GENERIC_NEW_YORK_SODA_SOURCE_URL)
@@ -496,7 +499,7 @@ export async function loadNewYorkCandidateFinanceSummariesByCandidateElection(
             // NYSBOE never collects donor occupations; this stays empty by design.
             top_occupations: [],
             top_employers: [],
-            top_industries: [],
+            top_industries: directIndustriesByCandidateElection.get(key) ?? [],
             contribution_size_buckets: contributionSizeBuckets,
           },
           outside_spending: {

@@ -1,7 +1,8 @@
 import {
-  getNewYorkIeCommitteeReceipts,
+  getNewYorkCommitteeItemizedReceipts,
   NEW_YORK_SODA_DISCLOSURES_PAGE_URL,
-  type NewYorkIeCommitteeReceiptRow,
+  type NewYorkCommitteeReceiptRow,
+  type NewYorkCycleYears,
   type NewYorkSodaClientOptions,
 } from "./newYorkSodaClient.js";
 
@@ -9,7 +10,7 @@ import {
 // candidate/family money) are never presented as company backing, and NYSBOE
 // has no occupation/employer fields to classify them with anyway
 // (plan-new-york-finance.md). Receipts are already cycle-scoped by the client
-// (election_year filter) so historical funding never counts toward a current
+// (sched_date window) so historical funding never counts toward a current
 // race.
 
 export type NewYorkOutsideGroupFunder = {
@@ -39,11 +40,13 @@ function roundCurrency(value: number): number {
   return Math.round(value * 100) / 100;
 }
 
-function normalizeFunderKey(value: string): string {
+export function normalizeNewYorkFunderKey(value: string): string {
   return value.toUpperCase().replace(/\s+/g, " ").trim();
 }
 
-function isOrganizationReceipt(row: NewYorkIeCommitteeReceiptRow): boolean {
+// Shared with the direct-campaign aggregator: organization receipts are the
+// only ones that may feed donor/industry breakdowns.
+export function isNewYorkOrganizationReceipt(row: NewYorkCommitteeReceiptRow): boolean {
   if (!row.entityName || row.entityFirstName || row.entityLastName) {
     return false;
   }
@@ -54,7 +57,7 @@ function isOrganizationReceipt(row: NewYorkIeCommitteeReceiptRow): boolean {
 }
 
 export function aggregateNewYorkOutsideGroupFunders(input: {
-  receipts: readonly NewYorkIeCommitteeReceiptRow[];
+  receipts: readonly NewYorkCommitteeReceiptRow[];
   maxFunders?: number;
 }): NewYorkOutsideGroupFunderResult {
   const maxFunders = input.maxFunders ?? DEFAULT_MAX_FUNDERS;
@@ -65,11 +68,11 @@ export function aggregateNewYorkOutsideGroupFunders(input: {
   const funders = new Map<string, NewYorkOutsideGroupFunder>();
   let organizationRowCount = 0;
   for (const receipt of input.receipts) {
-    if (!isOrganizationReceipt(receipt)) {
+    if (!isNewYorkOrganizationReceipt(receipt)) {
       continue;
     }
     organizationRowCount += 1;
-    const key = normalizeFunderKey(receipt.entityName);
+    const key = normalizeNewYorkFunderKey(receipt.entityName);
     const existing = funders.get(key);
     if (existing) {
       existing.amount = roundCurrency(existing.amount + receipt.amount);
@@ -96,10 +99,13 @@ export function aggregateNewYorkOutsideGroupFunders(input: {
 }
 
 export async function getNewYorkOutsideGroupFunderBreakdowns(
-  input: { filerId: string; electionYear: number; maxFunders?: number },
+  input: { filerId: string; electionYear: number; cycleYears: NewYorkCycleYears; maxFunders?: number },
   options: NewYorkSodaClientOptions = {},
-  getReceipts: typeof getNewYorkIeCommitteeReceipts = getNewYorkIeCommitteeReceipts
+  getReceipts: typeof getNewYorkCommitteeItemizedReceipts = getNewYorkCommitteeItemizedReceipts
 ): Promise<NewYorkOutsideGroupFunderResult> {
-  const receipts = await getReceipts({ filerId: input.filerId, electionYear: input.electionYear }, options);
+  const receipts = await getReceipts(
+    { filerId: input.filerId, electionYear: input.electionYear, cycleYears: input.cycleYears },
+    options
+  );
   return aggregateNewYorkOutsideGroupFunders({ receipts, maxFunders: input.maxFunders });
 }

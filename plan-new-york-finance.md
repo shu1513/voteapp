@@ -201,7 +201,7 @@ Phase 1 ships with `direct_campaign` money fields null/empty and
 `top_direct_donor_occupations: []` — response shape already supports this
 (`ballotLookupFinanceShared.ts`).
 
-### Phase 2 — direct campaign (flag-gated follow-up, may share the PR train)
+### Phase 2 — direct campaign (SHIPPED 2026-07-11)
 
 - Auto-link candidate→authorized committee with the conservative rule above;
   ambiguity skips; support `link_source='manual'` rows for hand-curated links.

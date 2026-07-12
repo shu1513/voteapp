@@ -4,9 +4,9 @@ import {
   aggregateNewYorkOutsideGroupFunders,
   getNewYorkOutsideGroupFunderBreakdowns,
 } from "../../../src/pipeline/newYorkFinance/newYorkOutsideGroupContributionAggregator.js";
-import type { NewYorkIeCommitteeReceiptRow } from "../../../src/pipeline/newYorkFinance/newYorkSodaClient.js";
+import type { NewYorkCommitteeReceiptRow } from "../../../src/pipeline/newYorkFinance/newYorkSodaClient.js";
 
-function receipt(overrides: Partial<NewYorkIeCommitteeReceiptRow>): NewYorkIeCommitteeReceiptRow {
+function receipt(overrides: Partial<NewYorkCommitteeReceiptRow>): NewYorkCommitteeReceiptRow {
   return {
     entityName: "Uber Technologies Inc.",
     entityFirstName: "",
@@ -83,11 +83,11 @@ describe("getNewYorkOutsideGroupFunderBreakdowns", () => {
   it("fetches cycle-scoped receipts for the group and aggregates them", async () => {
     const getReceipts = vi.fn(async () => [receipt({ amount: 11_686_700.23 })]);
     const result = await getNewYorkOutsideGroupFunderBreakdowns(
-      { filerId: "590891", electionYear: 2026, maxFunders: 5 },
+      { filerId: "590891", electionYear: 2026, cycleYears: 4, maxFunders: 5 },
       {},
       getReceipts
     );
-    expect(getReceipts).toHaveBeenCalledWith({ filerId: "590891", electionYear: 2026 }, {});
+    expect(getReceipts).toHaveBeenCalledWith({ filerId: "590891", electionYear: 2026, cycleYears: 4 }, {});
     expect(result.funders[0]).toMatchObject({ categoryName: "Uber Technologies Inc.", amount: 11_686_700.23 });
   });
 });

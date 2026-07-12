@@ -4,9 +4,11 @@ import {
   NewYorkSodaClientError,
   buildNewYorkSodaDatasetUrl,
   getNewYorkFilerRecords,
-  getNewYorkIeCommitteeReceipts,
+  getNewYorkCommitteeItemizedReceipts,
   getNewYorkParentExpenditures,
   getNewYorkScheduleRAllocations,
+  newYorkCycleSchedDateWindow,
+  newYorkGeneralElectionDay,
   searchNewYorkActiveAuthorizedCommitteeFilers,
   searchNewYorkActiveCandidateFilers,
   soqlString,
@@ -29,6 +31,22 @@ describe("newYorkSodaClient", () => {
     expect(url.searchParams.get("$where")).toBe("filer_id='590891'");
     expect(() => buildNewYorkSodaDatasetUrl("bad", {})).toThrow(NewYorkSodaClientError);
     expect(soqlString("O'Brien")).toBe("'O''Brien'");
+  });
+
+  it("computes general election days and cycle sched_date windows", () => {
+    expect(newYorkGeneralElectionDay(2022)).toBe("2022-11-08");
+    expect(newYorkGeneralElectionDay(2024)).toBe("2024-11-05");
+    expect(newYorkGeneralElectionDay(2026)).toBe("2026-11-03");
+
+    expect(newYorkCycleSchedDateWindow(2026, 4)).toEqual({
+      startDate: "2022-11-09",
+      endDateExclusive: "2026-11-04",
+    });
+    expect(newYorkCycleSchedDateWindow(2026, 2)).toEqual({
+      startDate: "2024-11-06",
+      endDateExclusive: "2026-11-04",
+    });
+    expect(() => newYorkCycleSchedDateWindow(2026, 3 as 2)).toThrow("Invalid New York SODA cycle years");
   });
 
   it("looks up filer registry records in chunks and drops duplicate filer ids entirely", async () => {
@@ -201,14 +219,14 @@ describe("newYorkSodaClient", () => {
       .mockResolvedValueOnce(jsonResponse(pageOne))
       .mockResolvedValueOnce(jsonResponse([{ flng_ent_name: "Org 3", filing_sched_abbrev: "B", org_amt: "50" }]));
 
-    const receipts = await getNewYorkIeCommitteeReceipts(
-      { filerId: "590891", electionYear: 2026 },
+    const receipts = await getNewYorkCommitteeItemizedReceipts(
+      { filerId: "590891", electionYear: 2026, cycleYears: 4 },
       { fetchImpl, pageLimit: 3 }
     );
 
     const firstUrl = new URL(String(fetchImpl.mock.calls[0][0]));
     expect(firstUrl.searchParams.get("$where")).toBe(
-      "filer_id='590891' AND filing_sched_abbrev IN ('A','B','C','D') AND filing_cat_desc='Itemized' AND election_year='2026'"
+      "filer_id='590891' AND filing_sched_abbrev IN ('A','B','C','D') AND filing_cat_desc='Itemized' AND sched_date>='2022-11-09' AND sched_date<'2026-11-04'"
     );
     expect(firstUrl.searchParams.get("$order")).toBe("filing_trans_id");
     expect(fetchImpl).toHaveBeenCalledTimes(2);
@@ -235,18 +253,45 @@ describe("newYorkSodaClient", () => {
     ).rejects.toThrow("timed out after 10ms");
   });
 
+  it("computes the committee expenditure total server-side", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(jsonResponse([{ total: "3706000.56" }]));
+
+    const { getNewYorkCommitteeExpenditureTotal } = await import(
+      "../../../src/pipeline/newYorkFinance/newYorkSodaClient.js"
+    );
+    const total = await getNewYorkCommitteeExpenditureTotal(
+      { filerId: "16851", electionYear: 2026, cycleYears: 4 },
+      { fetchImpl }
+    );
+
+    const url = new URL(String(fetchImpl.mock.calls[0][0]));
+    expect(url.searchParams.get("$select")).toBe("sum(org_amt) AS total");
+    expect(url.searchParams.get("$where")).toBe(
+      "filer_id='16851' AND filing_sched_abbrev='F' AND filing_cat_desc='Itemized' AND sched_date>='2022-11-09' AND sched_date<'2026-11-04'"
+    );
+    expect(total).toBe(3_706_000.56);
+
+    const emptyFetch = vi.fn().mockResolvedValue(jsonResponse([{}]));
+    await expect(
+      getNewYorkCommitteeExpenditureTotal({ filerId: "16851", electionYear: 2026, cycleYears: 4 }, { fetchImpl: emptyFetch })
+    ).resolves.toBeNull();
+  });
+
   it("surfaces HTTP errors with status and stops runaway paging", async () => {
     const failingFetch = vi.fn().mockResolvedValue(jsonResponse({ error: true }, { status: 429, statusText: "Too Many" }));
     await expect(
-      getNewYorkIeCommitteeReceipts({ filerId: "590891", electionYear: 2026 }, { fetchImpl: failingFetch })
+      getNewYorkCommitteeItemizedReceipts(
+        { filerId: "590891", electionYear: 2026, cycleYears: 4 },
+        { fetchImpl: failingFetch }
+      )
     ).rejects.toMatchObject({ code: "http_error", status: 429 });
 
     const endlessFetch = vi
       .fn()
       .mockImplementation(async () => jsonResponse([{ flng_ent_name: "Org", filing_sched_abbrev: "B", org_amt: "1" }]));
     await expect(
-      getNewYorkIeCommitteeReceipts(
-        { filerId: "590891", electionYear: 2026 },
+      getNewYorkCommitteeItemizedReceipts(
+        { filerId: "590891", electionYear: 2026, cycleYears: 4 },
         { fetchImpl: endlessFetch, pageLimit: 1, maxPages: 2 }
       )
     ).rejects.toThrow("exceeded 2 pages");

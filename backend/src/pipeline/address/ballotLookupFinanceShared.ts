@@ -310,7 +310,7 @@ export type StateFinanceSummaryRow = {
 export type StateFinanceDirectBreakdownRow = {
   candidate_id: string;
   election_id: string;
-  category_type: "occupation" | "contribution_size";
+  category_type: "occupation" | "contribution_size" | "industry";
   category_name: string;
   amount: string | number;
   contributor_count: string | number | null;
