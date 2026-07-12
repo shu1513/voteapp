@@ -343,6 +343,25 @@ Test all 15 districts, title variants, single-digit collisions (`1` vs `11`),
 and candidates with the same name in different seats. Roll out one election
 cycle/seat subset first, then all validated seats.
 
+Implementation validation on 2026-07-12 added strict parsing for the deployed
+VoteApp title `Member of the City Council, District No. N`, plus narrowly
+recognized normalized variants. Migration 177 stores `seat_number` and
+enforces that council links have seats 1–15 while citywide links have none.
+Official Ethics election 76 parsed all eight odd districts and election 70
+parsed all seven even districts. Completed-election pages add votes received
+and cost-per-vote columns; the parser now explicitly excludes those two fields
+from the eight finance totals in both page layouts.
+
+Live no-write probes for the two current VoteApp seats, districts 3 and 9,
+parsed 12 candidates, fetched independent support/oppose, and reconciled every
+candidate's Open Data contributions exactly to the Ethics headline. Open Data
+labels these cycle records with the primary date even when VoteApp's contest is
+the general election, so contribution queries now use the resolved Ethics
+election year and reject a committee if more than one source election date
+appears in that year. Three of four current VoteApp candidates exact-match;
+`Timothy K. Gaspar` versus Ethics `Tim Gaspar` remains deliberately unlinked
+instead of adding unsafe nickname matching.
+
 ### Phase 4 — LAUSD board districts
 
 First query the deployed database to pin the exact LAUSD `school_unified`

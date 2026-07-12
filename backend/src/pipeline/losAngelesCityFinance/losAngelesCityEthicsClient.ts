@@ -161,13 +161,18 @@ function metricTotals(candidateMainRow: string): CandidateMetricTotals {
     ...candidateMainRow.matchAll(/border-top:[^>]*>([\s\S]*?)<\/td>/gi),
   ];
   if (currentCells.length > 0) {
-    const totals = currentCells.map((match) =>
-      money(decodeHtml(match[1] ?? "")),
-    );
-    if (totals.length !== 8)
+    const cells = currentCells.map((match) => decodeHtml(match[1] ?? ""));
+    if (cells.length !== 8 && cells.length !== 10)
       throw new Error(
-        `Los Angeles Ethics candidate row has ${totals.length} totals; expected 8`,
+        `Los Angeles Ethics candidate row has ${cells.length} totals; expected 8 or 10`,
       );
+    // Completed election pages may insert votes received and cost per vote
+    // after cash on hand. They are not finance-summary fields.
+    const financeCells =
+      cells.length === 10
+        ? [cells[0], cells[1], cells[2], ...cells.slice(5)]
+        : cells;
+    const totals = financeCells.map(money);
     const invalidIndex = totals.findIndex((value) => value === null);
     if (invalidIndex >= 0)
       throw new Error(
@@ -183,11 +188,15 @@ function metricTotals(candidateMainRow: string): CandidateMetricTotals {
       /<td\s+align=["']right["'][^>]*>([\s\S]*?)<\/td>/gi,
     ),
   ].map((match) => decodeHtml(match[1] ?? ""));
-  if (legacyCells.length !== 9)
+  if (legacyCells.length !== 9 && legacyCells.length !== 11)
     throw new Error(
-      `Los Angeles Ethics legacy candidate row has ${Math.max(0, legacyCells.length - 1)} totals; expected 8`,
+      `Los Angeles Ethics legacy candidate row has ${Math.max(0, legacyCells.length - 1)} totals; expected 8 or 10`,
     );
-  const totals = legacyCells.slice(1).map((cell, index) => {
+  const financeCells =
+    legacyCells.length === 11
+      ? [legacyCells[1], legacyCells[2], legacyCells[3], ...legacyCells.slice(6)]
+      : legacyCells.slice(1);
+  const totals = financeCells.map((cell, index) => {
     const value = money(cell);
     if (value !== null) return value;
     // Historical matching-fund cells may report qualification status rather

@@ -163,7 +163,7 @@ async function fetchPage(
 }
 
 export async function getLosAngelesCommitteeContributions(
-  input: { committeeId: string; electionDate: string },
+  input: { committeeId: string; electionYear: number },
   options: LosAngelesOpenDataClientOptions = {},
 ): Promise<LosAngelesContributionRecord[]> {
   const committeeId = input.committeeId.trim();
@@ -171,8 +171,12 @@ export async function getLosAngelesCommitteeContributions(
     throw new Error(
       `Invalid Los Angeles FPPC committee id: ${input.committeeId}`,
     );
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(input.electionDate))
-    throw new Error(`Invalid Los Angeles election date: ${input.electionDate}`);
+  if (
+    !Number.isInteger(input.electionYear) ||
+    input.electionYear < 2000 ||
+    input.electionYear > 2100
+  )
+    throw new Error(`Invalid Los Angeles election year: ${input.electionYear}`);
   const pageLimit = positiveInteger(
     options.pageLimit,
     DEFAULT_PAGE_LIMIT,
@@ -190,7 +194,7 @@ export async function getLosAngelesCommitteeContributions(
     );
     url.searchParams.set(
       "$where",
-      `cmt_id=${soqlString(committeeId)} AND election_date=${soqlString(`${input.electionDate}T00:00:00.000`)}`,
+      `cmt_id=${soqlString(committeeId)} AND election_date>=${soqlString(`${input.electionYear}-01-01T00:00:00.000`)} AND election_date<${soqlString(`${input.electionYear + 1}-01-01T00:00:00.000`)}`,
     );
     url.searchParams.set("$order", "con_date,cmt_id,con_name,con_amount,:id");
     url.searchParams.set("$limit", String(pageLimit));
@@ -201,7 +205,18 @@ export async function getLosAngelesCommitteeContributions(
         .map(mapContribution)
         .filter((row): row is LosAngelesContributionRecord => row !== null),
     );
-    if (rows.length < pageLimit) return results;
+    if (rows.length < pageLimit) {
+      const sourceElectionDates = new Set(
+        results
+          .map((row) => row.electionDate)
+          .filter((value): value is string => value !== null),
+      );
+      if (results.length > 0 && sourceElectionDates.size !== 1)
+        throw new Error(
+          `Los Angeles committee ${committeeId} does not have exactly one source election date in ${input.electionYear}`,
+        );
+      return results;
+    }
   }
   throw new Error(`Los Angeles Open Data query exceeded ${maxPages} pages`);
 }

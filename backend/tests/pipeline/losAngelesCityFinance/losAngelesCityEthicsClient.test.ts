@@ -9,6 +9,8 @@ const metric = (amount: string): string =>
   `<td align="right"><table><tr><td></td><td align="right" style="border-top: 1px solid #666 !important;">$${amount}</td></tr></table></td>`;
 const fixture = `<a name="S276"></a><h4><strong>Mayor:</strong></h4><table><tbody><tr><td><a name="C172"></a><a class="candidatelink"><strong>Karen Bass</strong></a></td><td align="right">05/27/26</td>${metric("3,214,043.01")}${metric("4,114,009.00")}${metric("278,667.52")}${metric("1,257,000.00")}${metric("2,553,259.88")}${metric("14,871.54")}${metric("145,512.00")}${metric("0.00")}</tr><tr class="C172_detail"><td><a href="?elec_seat_cand_id=1509&cmt_per_id=24713">contact</a></td></tr><tr class="C172_detail"><td>1471359 - Re-Elect Karen Bass for Mayor 2026</td></tr></tbody></table><a name="S277"></a>`;
 const legacyFixture = `<a name="S241"></a><h4><strong>City Attorney:</strong></h4><table><tbody><tr><td><a name="C19897"></a><a class="candidatelink"><strong>Sherri Onica Cole</strong></a></td><td align="right">12/31/23</td><td align="right">$208,888.09</td><td align="right">$210,888.09</td><td align="right">$0.00</td><td align="right"><font>ACCEPTED</font></td><td align="right">$1,000.00</td><td align="right">$2,000.00</td><td align="right">$3,000.00</td><td align="right">$4,000.00</td></tr><tr class="C19897_detail"><td><a href="?elec_seat_cand_id=1297&cmt_per_id=19898">contact</a></td></tr><tr class="C19897_detail"><td>1437848 - SHERRI ONICA VALLE COLE FOR CITY ATTORNEY 2022</td></tr></tbody></table><a name="S242"></a>`;
+const completedElectionFixture = `<a name="S260"></a><h4><strong>Council District 2:</strong></h4><table><tbody><tr><td><a name="C22889"></a><a class="candidatelink"><strong>Jon Paul Bird</strong></a></td><td align="right">12/31/25</td>${metric("100.00")}${metric("80.00")}${metric("20.00")}${metric("12,345")}${metric("N/A")}${metric("50.00")}${metric("40.00")}${metric("30.00")}${metric("20.00")}${metric("10.00")}</tr><tr class="C22889_detail"><td><a href="?elec_seat_cand_id=1441&cmt_per_id=22890">contact</a></td></tr><tr class="C22889_detail"><td>1459431 - BIRD FOR CITY COUNCIL 2024</td></tr></tbody></table><a name="S261"></a>`;
+const completedLegacyFixture = `<a name="S260"></a><h4><strong>Council District 2:</strong></h4><table><tbody><tr><td><a name="C22889"></a><a class="candidatelink"><strong>Jon Paul Bird</strong></a></td><td align="right">12/31/25</td><td align="right">$100.00</td><td align="right">$80.00</td><td align="right">$20.00</td><td align="right">12,345</td><td align="right">N/A</td><td align="right">$50.00</td><td align="right">$40.00</td><td align="right">$30.00</td><td align="right">$20.00</td><td align="right">$10.00</td></tr><tr class="C22889_detail"><td><a href="?elec_seat_cand_id=1441&cmt_per_id=22890">contact</a></td></tr><tr class="C22889_detail"><td>1459431 - BIRD FOR CITY COUNCIL 2024</td></tr></tbody></table><a name="S261"></a>`;
 
 describe("Los Angeles Ethics parsers", () => {
   it("parses election index", () =>
@@ -97,5 +99,25 @@ describe("Los Angeles Ethics parsers", () => {
       outsideSupportTotal: 1000,
       membershipOpposeTotal: 4000,
     });
+  });
+  it("ignores votes and cost-per-vote columns on completed elections", () => {
+    for (const html of [completedElectionFixture, completedLegacyFixture]) {
+      const [candidate] = parseLosAngelesEthicsCandidateTotals({
+        html,
+        electionId: "70",
+        officeName: "Council District 2",
+      });
+      expect(candidate).toMatchObject({
+        candidateName: "Jon Paul Bird",
+        totalContributions: 100,
+        totalExpenditures: 80,
+        cashOnHand: 20,
+        matchingFunds: 50,
+        outsideSupportTotal: 40,
+        outsideOpposeTotal: 30,
+        membershipSupportTotal: 20,
+        membershipOpposeTotal: 10,
+      });
+    }
   });
 });

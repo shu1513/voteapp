@@ -78,7 +78,7 @@ describe("Los Angeles candidate finance auto-link", () => {
     vi.mocked(upsertLosAngelesFinanceLink).mockResolvedValue("link-id");
   });
 
-  it("lists all Phase 2 canonical offices from the shared allowlist", async () => {
+  it("lists all Phase 3 canonical offices from the shared allowlist", async () => {
     const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 0 });
     await listLosAngelesCandidateElectionsMissingFinanceLinks(
       { query },
@@ -96,6 +96,45 @@ describe("Los Angeles candidate finance auto-link", () => {
       "Mayor",
       "Municipal Attorney",
       "Municipal Controller",
+      "City Council Member",
+    ]);
+  });
+
+  it("extracts the council seat from the election title", async () => {
+    const query = vi.fn().mockResolvedValue({
+      rows: [
+        {
+          candidate_id: "candidate",
+          election_id: "election",
+          candidate_name: "Jordan Lee",
+          election_year: 2026,
+          election_date: "2026-11-03",
+          office_name: "City Council Member",
+          official_ballot_title: "Member of the City Council, District No. 3",
+        },
+      ],
+      rowCount: 1,
+    });
+    await expect(
+      listLosAngelesCandidateElectionsMissingFinanceLinks(
+        { query },
+        {
+          now: NOW,
+          maxCandidates: 25,
+          electionLookbackDays: 45,
+          electionLookaheadDays: 730,
+        },
+      ),
+    ).resolves.toEqual([
+      {
+        candidateId: "candidate",
+        electionId: "election",
+        candidateName: "Jordan Lee",
+        electionYear: 2026,
+        electionDate: "2026-11-03",
+        officeName: "City Council Member",
+        seatNumber: 3,
+      },
     ]);
   });
 
@@ -108,6 +147,7 @@ describe("Los Angeles candidate finance auto-link", () => {
         electionYear: 2026,
         electionDate: "2026-06-02",
         officeName: "Mayor",
+        seatNumber: null,
       },
       {
         candidateId: "candidate-2",
@@ -116,6 +156,7 @@ describe("Los Angeles candidate finance auto-link", () => {
         electionYear: 2026,
         electionDate: "2026-06-02",
         officeName: "Municipal Attorney",
+        seatNumber: null,
       },
       {
         candidateId: "candidate-3",
@@ -124,6 +165,7 @@ describe("Los Angeles candidate finance auto-link", () => {
         electionYear: 2026,
         electionDate: "2026-06-02",
         officeName: "Municipal Controller",
+        seatNumber: null,
       },
     ];
 
@@ -167,5 +209,103 @@ describe("Los Angeles candidate finance auto-link", () => {
         link: expect.objectContaining({ officeName: "Municipal Attorney" }),
       }),
     );
+  });
+
+  it("maps council titles to exact Ethics seats and stores the seat number", async () => {
+    vi.mocked(getLosAngelesEthicsCandidateTotals).mockImplementation(
+      async ({ officeName }) => [
+        candidateTotal(
+          "Jordan Lee",
+          officeName,
+          officeName.endsWith("3") ? "303" : "311",
+        ),
+      ],
+    );
+    const candidates: LosAngelesFinanceAutoLinkCandidate[] = [
+      {
+        candidateId: "candidate-3",
+        electionId: "election-3",
+        candidateName: "Jordan Lee",
+        electionYear: 2026,
+        electionDate: "2026-11-03",
+        officeName: "City Council Member",
+        seatNumber: 3,
+      },
+      {
+        candidateId: "candidate-11",
+        electionId: "election-11",
+        candidateName: "Jordan Lee",
+        electionYear: 2026,
+        electionDate: "2026-11-03",
+        officeName: "City Council Member",
+        seatNumber: 11,
+      },
+    ];
+
+    await expect(
+      autoLinkMissingLosAngelesCandidateFinanceLinks({
+        db: { query: vi.fn() },
+        now: NOW,
+        candidates,
+      }),
+    ).resolves.toEqual([
+      {
+        candidateId: "candidate-3",
+        electionId: "election-3",
+        status: "linked",
+      },
+      {
+        candidateId: "candidate-11",
+        electionId: "election-11",
+        status: "linked",
+      },
+    ]);
+    expect(getLosAngelesEthicsCandidateTotals).toHaveBeenNthCalledWith(
+      1,
+      { electionId: "76", officeName: "Council District 3" },
+      undefined,
+    );
+    expect(getLosAngelesEthicsCandidateTotals).toHaveBeenNthCalledWith(
+      2,
+      { electionId: "76", officeName: "Council District 11" },
+      undefined,
+    );
+    expect(upsertLosAngelesFinanceLink).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        link: expect.objectContaining({
+          officeName: "City Council Member",
+          seatNumber: 3,
+        }),
+      }),
+    );
+  });
+
+  it("skips an unrecognized council title instead of making a citywide match", async () => {
+    await expect(
+      autoLinkMissingLosAngelesCandidateFinanceLinks({
+        db: { query: vi.fn() },
+        now: NOW,
+        candidates: [
+          {
+            candidateId: "candidate",
+            electionId: "election",
+            candidateName: "Jordan Lee",
+            electionYear: 2026,
+            electionDate: "2026-11-03",
+            officeName: "City Council Member",
+            seatNumber: null,
+          },
+        ],
+      }),
+    ).resolves.toEqual([
+      expect.objectContaining({
+        candidateId: "candidate",
+        electionId: "election",
+        status: "not_found",
+      }),
+    ]);
+    expect(getLosAngelesEthicsCandidateTotals).not.toHaveBeenCalled();
+    expect(upsertLosAngelesFinanceLink).not.toHaveBeenCalled();
   });
 });

@@ -29,8 +29,7 @@ function candidateTotal(
     electionSeatId: "276",
     electionSeatCandidateId: `seat-${candidatePersonId}`,
     candidatePersonId,
-    candidateName:
-      officeName === "Mayor" ? "Alex Mayor" : "Casey Controller",
+    candidateName: officeName === "Mayor" ? "Alex Mayor" : "Casey Controller",
     officeName,
     reportedThrough: "2026-07-01",
     fppcCommitteeId: `committee-${candidatePersonId}`,
@@ -48,15 +47,19 @@ function candidateTotal(
   };
 }
 
-function dueRow(officeName: string, candidatePersonId: string) {
+function dueRow(
+  officeName: string,
+  candidatePersonId: string,
+  seatNumber: number | null = null,
+) {
   return {
     candidate_id: `candidate-${candidatePersonId}`,
     election_id: `election-${candidatePersonId}`,
-    candidate_name:
-      officeName === "Mayor" ? "Alex Mayor" : "Casey Controller",
+    candidate_name: officeName === "Mayor" ? "Alex Mayor" : "Casey Controller",
     election_year: 2026,
     election_date: "2026-06-02",
     office_name: officeName,
+    seat_number: seatNumber,
     ethics_election_id: "76",
     ethics_candidate_person_id: candidatePersonId,
     last_synced_at: null,
@@ -84,10 +87,7 @@ describe("Los Angeles candidate finance batch sync", () => {
   it("caches candidate totals by election and office", async () => {
     const db = {
       query: vi.fn().mockResolvedValue({
-        rows: [
-          dueRow("Mayor", "101"),
-          dueRow("Municipal Controller", "202"),
-        ],
+        rows: [dueRow("Mayor", "101"), dueRow("Municipal Controller", "202")],
         rowCount: 2,
       }),
       connect: vi.fn(),
@@ -115,6 +115,40 @@ describe("Los Angeles candidate finance batch sync", () => {
     expect(syncLosAngelesCandidateFinance).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({ officeName: "Municipal Controller" }),
+    );
+  });
+
+  it("syncs council links through their stored exact seat", async () => {
+    vi.mocked(getLosAngelesEthicsCandidateTotals).mockResolvedValue([
+      candidateTotal("Council District 3", "303"),
+    ]);
+    const db = {
+      query: vi.fn().mockResolvedValue({
+        rows: [dueRow("City Council Member", "303", 3)],
+        rowCount: 1,
+      }),
+      connect: vi.fn(),
+    };
+
+    await expect(
+      syncDueLosAngelesCandidateFinance({
+        db,
+        now: NOW,
+        autoLinkMissingLinks: false,
+      }),
+    ).resolves.toMatchObject({
+      syncedCandidateCount: 1,
+      failedCandidateCount: 0,
+    });
+    expect(getLosAngelesEthicsCandidateTotals).toHaveBeenCalledWith(
+      { electionId: "76", officeName: "Council District 3" },
+      undefined,
+    );
+    expect(syncLosAngelesCandidateFinance).toHaveBeenCalledWith(
+      expect.objectContaining({
+        officeName: "City Council Member",
+        seatNumber: 3,
+      }),
     );
   });
 });

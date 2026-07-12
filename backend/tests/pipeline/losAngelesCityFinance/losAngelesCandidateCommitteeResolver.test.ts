@@ -46,6 +46,29 @@ describe("Los Angeles candidate resolver", () => {
       }).status,
     ).toBe("ambiguous");
   });
+  it("does not collide same-name candidates across council seats", () => {
+    expect(
+      resolveLosAngelesCandidateCommittee({
+        candidateName: "Jordan Lee",
+        officeName: "Council District 1",
+        candidates: [
+          {
+            ...candidate,
+            candidateName: "Jordan Lee",
+            officeName: "Council District 1",
+          },
+          {
+            ...candidate,
+            candidateName: "Jordan Lee",
+            officeName: "Council District 11",
+          },
+        ],
+      }),
+    ).toMatchObject({
+      status: "matched",
+      candidate: { officeName: "Council District 1" },
+    });
+  });
   it("requires one City and LAUSD election for year", () => {
     expect(
       resolveLosAngelesEthicsElection({

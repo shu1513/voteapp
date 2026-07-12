@@ -100,4 +100,39 @@ describe("Los Angeles ballot finance loader", () => {
       { candidate_id: "controller", election_id: "controller-election" },
     ]);
   });
+
+  it("accepts a council election only with a recognized exact seat title", async () => {
+    vi.stubEnv("LOS_ANGELES_CITY_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi.fn().mockResolvedValue({ rows: [] });
+    await loadLosAngelesCandidateFinanceSummariesByCandidateElection(
+      { query } as never,
+      [
+        { candidate_id: "district-3", election_id: "valid" },
+        { candidate_id: "unknown", election_id: "invalid" },
+      ],
+      [
+        {
+          election_id: "valid",
+          state: "CA",
+          district_type: "place",
+          geoid_compact: "0644000",
+          office_scope: "place",
+          office_canonical_name: "City Council Member",
+          official_ballot_title: "Member of the City Council, District No. 3",
+        },
+        {
+          election_id: "invalid",
+          state: "CA",
+          district_type: "place",
+          geoid_compact: "0644000",
+          office_scope: "place",
+          office_canonical_name: "City Council Member",
+          official_ballot_title: "City Council Member",
+        },
+      ],
+    );
+    expect(JSON.parse(String(query.mock.calls[0]?.[1]?.[0]))).toEqual([
+      { candidate_id: "district-3", election_id: "valid" },
+    ]);
+  });
 });
