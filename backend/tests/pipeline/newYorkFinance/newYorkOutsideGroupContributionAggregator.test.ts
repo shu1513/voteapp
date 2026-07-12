@@ -4,9 +4,9 @@ import {
   aggregateNewYorkOutsideGroupFunders,
   getNewYorkOutsideGroupFunderBreakdowns,
 } from "../../../src/pipeline/newYorkFinance/newYorkOutsideGroupContributionAggregator.js";
-import type { NewYorkIeCommitteeReceiptRow } from "../../../src/pipeline/newYorkFinance/newYorkSodaClient.js";
+import type { NewYorkCommitteeReceiptRow } from "../../../src/pipeline/newYorkFinance/newYorkSodaClient.js";
 
-function receipt(overrides: Partial<NewYorkIeCommitteeReceiptRow>): NewYorkIeCommitteeReceiptRow {
+function receipt(overrides: Partial<NewYorkCommitteeReceiptRow>): NewYorkCommitteeReceiptRow {
   return {
     entityName: "Uber Technologies Inc.",
     entityFirstName: "",

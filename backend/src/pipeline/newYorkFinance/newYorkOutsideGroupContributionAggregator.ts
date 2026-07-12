@@ -1,7 +1,7 @@
 import {
-  getNewYorkIeCommitteeReceipts,
+  getNewYorkCommitteeItemizedReceipts,
   NEW_YORK_SODA_DISCLOSURES_PAGE_URL,
-  type NewYorkIeCommitteeReceiptRow,
+  type NewYorkCommitteeReceiptRow,
   type NewYorkSodaClientOptions,
 } from "./newYorkSodaClient.js";
 
@@ -43,7 +43,7 @@ function normalizeFunderKey(value: string): string {
   return value.toUpperCase().replace(/\s+/g, " ").trim();
 }
 
-function isOrganizationReceipt(row: NewYorkIeCommitteeReceiptRow): boolean {
+function isOrganizationReceipt(row: NewYorkCommitteeReceiptRow): boolean {
   if (!row.entityName || row.entityFirstName || row.entityLastName) {
     return false;
   }
@@ -54,7 +54,7 @@ function isOrganizationReceipt(row: NewYorkIeCommitteeReceiptRow): boolean {
 }
 
 export function aggregateNewYorkOutsideGroupFunders(input: {
-  receipts: readonly NewYorkIeCommitteeReceiptRow[];
+  receipts: readonly NewYorkCommitteeReceiptRow[];
   maxFunders?: number;
 }): NewYorkOutsideGroupFunderResult {
   const maxFunders = input.maxFunders ?? DEFAULT_MAX_FUNDERS;
@@ -98,7 +98,7 @@ export function aggregateNewYorkOutsideGroupFunders(input: {
 export async function getNewYorkOutsideGroupFunderBreakdowns(
   input: { filerId: string; electionYear: number; maxFunders?: number },
   options: NewYorkSodaClientOptions = {},
-  getReceipts: typeof getNewYorkIeCommitteeReceipts = getNewYorkIeCommitteeReceipts
+  getReceipts: typeof getNewYorkCommitteeItemizedReceipts = getNewYorkCommitteeItemizedReceipts
 ): Promise<NewYorkOutsideGroupFunderResult> {
   const receipts = await getReceipts({ filerId: input.filerId, electionYear: input.electionYear }, options);
   return aggregateNewYorkOutsideGroupFunders({ receipts, maxFunders: input.maxFunders });

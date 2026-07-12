@@ -4,7 +4,7 @@ import {
   NewYorkSodaClientError,
   buildNewYorkSodaDatasetUrl,
   getNewYorkFilerRecords,
-  getNewYorkIeCommitteeReceipts,
+  getNewYorkCommitteeItemizedReceipts,
   getNewYorkParentExpenditures,
   getNewYorkScheduleRAllocations,
   searchNewYorkActiveAuthorizedCommitteeFilers,
@@ -201,7 +201,7 @@ describe("newYorkSodaClient", () => {
       .mockResolvedValueOnce(jsonResponse(pageOne))
       .mockResolvedValueOnce(jsonResponse([{ flng_ent_name: "Org 3", filing_sched_abbrev: "B", org_amt: "50" }]));
 
-    const receipts = await getNewYorkIeCommitteeReceipts(
+    const receipts = await getNewYorkCommitteeItemizedReceipts(
       { filerId: "590891", electionYear: 2026 },
       { fetchImpl, pageLimit: 3 }
     );
@@ -235,17 +235,38 @@ describe("newYorkSodaClient", () => {
     ).rejects.toThrow("timed out after 10ms");
   });
 
+  it("computes the committee expenditure total server-side", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(jsonResponse([{ total: "3706000.56" }]));
+
+    const { getNewYorkCommitteeExpenditureTotal } = await import(
+      "../../../src/pipeline/newYorkFinance/newYorkSodaClient.js"
+    );
+    const total = await getNewYorkCommitteeExpenditureTotal({ filerId: "16851", electionYear: 2026 }, { fetchImpl });
+
+    const url = new URL(String(fetchImpl.mock.calls[0][0]));
+    expect(url.searchParams.get("$select")).toBe("sum(org_amt) AS total");
+    expect(url.searchParams.get("$where")).toBe(
+      "filer_id='16851' AND filing_sched_abbrev='F' AND filing_cat_desc='Itemized' AND election_year='2026'"
+    );
+    expect(total).toBe(3_706_000.56);
+
+    const emptyFetch = vi.fn().mockResolvedValue(jsonResponse([{}]));
+    await expect(
+      getNewYorkCommitteeExpenditureTotal({ filerId: "16851", electionYear: 2026 }, { fetchImpl: emptyFetch })
+    ).resolves.toBeNull();
+  });
+
   it("surfaces HTTP errors with status and stops runaway paging", async () => {
     const failingFetch = vi.fn().mockResolvedValue(jsonResponse({ error: true }, { status: 429, statusText: "Too Many" }));
     await expect(
-      getNewYorkIeCommitteeReceipts({ filerId: "590891", electionYear: 2026 }, { fetchImpl: failingFetch })
+      getNewYorkCommitteeItemizedReceipts({ filerId: "590891", electionYear: 2026 }, { fetchImpl: failingFetch })
     ).rejects.toMatchObject({ code: "http_error", status: 429 });
 
     const endlessFetch = vi
       .fn()
       .mockImplementation(async () => jsonResponse([{ flng_ent_name: "Org", filing_sched_abbrev: "B", org_amt: "1" }]));
     await expect(
-      getNewYorkIeCommitteeReceipts(
+      getNewYorkCommitteeItemizedReceipts(
         { filerId: "590891", electionYear: 2026 },
         { fetchImpl: endlessFetch, pageLimit: 1, maxPages: 2 }
       )

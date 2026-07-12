@@ -83,7 +83,7 @@ export type NewYorkParentExpenditureRow = {
   amount: number | null;
 };
 
-export type NewYorkIeCommitteeReceiptRow = {
+export type NewYorkCommitteeReceiptRow = {
   entityName: string;
   entityFirstName: string;
   entityLastName: string;
@@ -502,7 +502,7 @@ export async function getNewYorkParentExpenditures(
   return rowsByTransNumber;
 }
 
-function ieReceiptFromRow(row: Record<string, unknown>): NewYorkIeCommitteeReceiptRow | null {
+function committeeReceiptFromRow(row: Record<string, unknown>): NewYorkCommitteeReceiptRow | null {
   const amount = getAmount(row, "org_amt");
   const scheduleAbbrev = getString(row, "filing_sched_abbrev");
   if (amount === null || amount <= 0 || !scheduleAbbrev) {
@@ -518,10 +518,10 @@ function ieReceiptFromRow(row: Record<string, unknown>): NewYorkIeCommitteeRecei
   };
 }
 
-export async function getNewYorkIeCommitteeReceipts(
+export async function getNewYorkCommitteeItemizedReceipts(
   input: { filerId: string; electionYear: number },
   options: NewYorkSodaClientOptions = {}
-): Promise<NewYorkIeCommitteeReceiptRow[]> {
+): Promise<NewYorkCommitteeReceiptRow[]> {
   const filerId = requireFilerId(input.filerId);
   const electionYear = normalizeElectionYear(input.electionYear);
   const rows = await fetchNewYorkSodaPagedRows(
@@ -538,5 +538,30 @@ export async function getNewYorkIeCommitteeReceipts(
     },
     options
   );
-  return rows.map(ieReceiptFromRow).filter((row): row is NewYorkIeCommitteeReceiptRow => row !== null);
+  return rows.map(committeeReceiptFromRow).filter((row): row is NewYorkCommitteeReceiptRow => row !== null);
+}
+
+// Total itemized Schedule F spending for one committee and cycle, computed
+// server-side; NULL when the committee has no matching rows.
+export async function getNewYorkCommitteeExpenditureTotal(
+  input: { filerId: string; electionYear: number },
+  options: NewYorkSodaClientOptions = {}
+): Promise<number | null> {
+  const filerId = requireFilerId(input.filerId);
+  const electionYear = normalizeElectionYear(input.electionYear);
+  const rows = await fetchNewYorkSodaRows(
+    NEW_YORK_SODA_DISCLOSURES_DATASET,
+    {
+      $select: "sum(org_amt) AS total",
+      $where: [
+        `filer_id=${soqlString(filerId)}`,
+        "filing_sched_abbrev='F'",
+        "filing_cat_desc='Itemized'",
+        `election_year=${soqlString(String(electionYear))}`,
+      ].join(" AND "),
+    },
+    options
+  );
+  const total = rows.length === 1 ? getAmount(rows[0], "total") : null;
+  return total !== null && total >= 0 ? total : null;
 }
