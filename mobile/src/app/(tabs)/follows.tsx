@@ -59,6 +59,7 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
           disabled={saving}
           onPress={() => setFollow.mutate({ candidate_id: follow.candidate_id, following: false })}
           accessibilityRole="button"
+          accessibilityLabel={`Unfollow ${follow.display_name}`}
           className="rounded-lg border border-line bg-white px-3 py-1 active:border-rausch"
         >
           <Text className="text-xs font-semibold text-ink">Unfollow</Text>

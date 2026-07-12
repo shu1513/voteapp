@@ -39,12 +39,17 @@ export function useSetFollow() {
     mutationKey: ["set-follow"],
     mutationFn: (update: CandidateFollowUpdate) =>
       apiRequest<{ follow: unknown }>("/api/me/candidate-follows", { method: "PUT", body: update }),
-    onSuccess: () => {
+    onSuccess: () =>
       // The follows list and the saved ballot's followed-first ordering can
       // change. (Candidate/election pages derive follow state from the
       // follows list — the subject itself comes from the route loader.)
-      void queryClient.invalidateQueries({ queryKey: ["me", "follows"] });
-      void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
-    },
+      // Returned (not fire-and-forget) so the mutation stays pending until
+      // the refetched server truth is in the cache: useFollowSaving keeps
+      // controls disabled through the refetch, and callers can safely clear
+      // optimistic overlays in onSettled without falling back to stale props.
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["me", "follows"] }),
+        queryClient.invalidateQueries({ queryKey: ["me", "ballot"] }),
+      ]).then(() => undefined),
   });
 }

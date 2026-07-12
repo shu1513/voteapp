@@ -190,7 +190,9 @@ function SavedBallotBody({ email }: { email: string }) {
         setHandoffState("done");
         void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
       } catch (error) {
-        if (error instanceof ApiError && error.status < 500) {
+        // 429 is transient (rate limit), not a stale/unknown-ids rejection —
+        // keep the queued ids and offer the retry UI.
+        if (error instanceof ApiError && error.status < 500 && error.status !== 429) {
           await clearPendingDistrictIds();
           setHandoffState("done");
           void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
