@@ -72,6 +72,18 @@ const seatNumber = (
       );
     return value;
   }
+  if (officeName === "School Board Member") {
+    if (
+      typeof value !== "number" ||
+      !Number.isInteger(value) ||
+      value < 1 ||
+      value > 7
+    )
+      throw new Error(
+        "Los Angeles school board seat number must be 1 through 7",
+      );
+    return value;
+  }
   if (value !== null && value !== undefined)
     throw new Error(
       "Los Angeles citywide finance link cannot have a seat number",

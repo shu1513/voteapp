@@ -3,7 +3,9 @@ import {
   isLosAngelesCityFinanceEligibleElection,
   LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_NAMES,
   LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  LOS_ANGELES_UNIFIED_SCHOOL_DISTRICT_GEOID,
   parseLosAngelesCityCouncilSeatNumber,
+  parseLosAngelesSchoolBoardSeatNumber,
   toLosAngelesEthicsOfficeName,
 } from "../../../src/pipeline/losAngelesCityFinance/losAngelesCityFinanceEligibleOffices.js";
 
@@ -21,12 +23,14 @@ describe("Los Angeles City finance eligibility", () => {
       "Municipal Attorney",
       "Municipal Controller",
       "City Council Member",
+      "School Board Member",
     ]);
     expect(LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS).toEqual([
       "place::Mayor",
       "place::Municipal Attorney",
       "place::Municipal Controller",
       "place::City Council Member",
+      "school_unified::School Board Member",
     ]);
     expect(isLosAngelesCityFinanceEligibleElection(mayor)).toBe(true);
     expect(
@@ -60,6 +64,38 @@ describe("Los Angeles City finance eligibility", () => {
         districtType: "county",
       }),
     ).toBe(false);
+  });
+
+  it("accepts only exact LAUSD school-board identity and seat", () => {
+    const lausd = {
+      state: "CA",
+      districtType: "school_unified",
+      geoidCompact: LOS_ANGELES_UNIFIED_SCHOOL_DISTRICT_GEOID,
+      officeScope: "school_unified",
+      officeCanonicalName: "School Board Member",
+      officialBallotTitle: "Member of the Board of Education, District 6",
+    };
+    expect(isLosAngelesCityFinanceEligibleElection(lausd)).toBe(true);
+    expect(
+      isLosAngelesCityFinanceEligibleElection({
+        ...lausd,
+        geoidCompact: "0600001",
+      }),
+    ).toBe(false);
+    expect(
+      isLosAngelesCityFinanceEligibleElection({
+        ...lausd,
+        districtType: "place",
+        geoidCompact: "0644000",
+      }),
+    ).toBe(false);
+    expect(
+      toLosAngelesEthicsOfficeName({
+        officeScope: "school_unified",
+        officeCanonicalName: "School Board Member",
+        seatNumber: 6,
+      }),
+    ).toBe("LAUSD District 6");
   });
 
   it("maps VoteApp canonical names to exact Ethics section names", () => {
@@ -137,5 +173,21 @@ describe("Los Angeles City finance eligibility", () => {
         }),
       ).toBe(false);
     }
+  });
+
+  it("parses only recognized LAUSD board titles and seats 1 through 7", () => {
+    for (let seat = 1; seat <= 7; seat += 1)
+      expect(
+        parseLosAngelesSchoolBoardSeatNumber(
+          `Member of the Board of Education, District ${seat}`,
+        ),
+      ).toBe(seat);
+    expect(
+      parseLosAngelesSchoolBoardSeatNumber("School Board District 4"),
+    ).toBe(4);
+    expect(parseLosAngelesSchoolBoardSeatNumber("District 6")).toBeNull();
+    expect(
+      parseLosAngelesSchoolBoardSeatNumber("Board of Education District 8"),
+    ).toBeNull();
   });
 });

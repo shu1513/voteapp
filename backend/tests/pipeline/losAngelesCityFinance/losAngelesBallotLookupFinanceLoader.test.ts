@@ -135,4 +135,40 @@ describe("Los Angeles ballot finance loader", () => {
       { candidate_id: "district-3", election_id: "valid" },
     ]);
   });
+  it("accepts only the exact LAUSD district and board-seat title", async () => {
+    vi.stubEnv("LOS_ANGELES_CITY_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi.fn().mockResolvedValue({ rows: [] });
+    await loadLosAngelesCandidateFinanceSummariesByCandidateElection(
+      { query } as never,
+      [
+        { candidate_id: "lausd", election_id: "valid" },
+        { candidate_id: "other-school", election_id: "invalid" },
+      ],
+      [
+        {
+          election_id: "valid",
+          state: "CA",
+          district_type: "school_unified",
+          geoid_compact: "0622710",
+          office_scope: "school_unified",
+          office_canonical_name: "School Board Member",
+          official_ballot_title:
+            "Member of the Board of Education, District 6",
+        },
+        {
+          election_id: "invalid",
+          state: "CA",
+          district_type: "school_unified",
+          geoid_compact: "0600001",
+          office_scope: "school_unified",
+          office_canonical_name: "School Board Member",
+          official_ballot_title:
+            "Member of the Board of Education, District 6",
+        },
+      ],
+    );
+    expect(JSON.parse(String(query.mock.calls[0]?.[1]?.[0]))).toEqual([
+      { candidate_id: "lausd", election_id: "valid" },
+    ]);
+  });
 });

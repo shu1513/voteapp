@@ -97,6 +97,7 @@ describe("Los Angeles candidate finance auto-link", () => {
       "Municipal Attorney",
       "Municipal Controller",
       "City Council Member",
+      "School Board Member",
     ]);
   });
 
@@ -136,6 +137,48 @@ describe("Los Angeles candidate finance auto-link", () => {
         seatNumber: 3,
       },
     ]);
+  });
+
+  it("extracts the LAUSD board seat from the election title", async () => {
+    const query = vi.fn().mockResolvedValue({
+      rows: [
+        {
+          candidate_id: "candidate",
+          election_id: "election",
+          candidate_name: "Kelly Gonez",
+          election_year: 2026,
+          election_date: "2026-06-02",
+          office_name: "School Board Member",
+          official_ballot_title:
+            "Member of the Board of Education, District 6",
+        },
+      ],
+      rowCount: 1,
+    });
+    await expect(
+      listLosAngelesCandidateElectionsMissingFinanceLinks(
+        { query },
+        {
+          now: NOW,
+          maxCandidates: 25,
+          electionLookbackDays: 45,
+          electionLookaheadDays: 730,
+        },
+      ),
+    ).resolves.toEqual([
+      {
+        candidateId: "candidate",
+        electionId: "election",
+        candidateName: "Kelly Gonez",
+        electionYear: 2026,
+        electionDate: "2026-06-02",
+        officeName: "School Board Member",
+        seatNumber: 6,
+      },
+    ]);
+    expect(String(query.mock.calls[0]?.[0])).toContain(
+      "district.geoid_compact='0622710'",
+    );
   });
 
   it("caches candidate totals by election and office", async () => {
@@ -207,6 +250,47 @@ describe("Los Angeles candidate finance auto-link", () => {
       2,
       expect.objectContaining({
         link: expect.objectContaining({ officeName: "Municipal Attorney" }),
+      }),
+    );
+  });
+
+  it("maps an exact LAUSD board seat and candidate", async () => {
+    vi.mocked(getLosAngelesEthicsCandidateTotals).mockResolvedValue([
+      candidateTotal("Kelly Gonez", "LAUSD District 6", "13549"),
+    ]);
+    await expect(
+      autoLinkMissingLosAngelesCandidateFinanceLinks({
+        db: { query: vi.fn() },
+        now: NOW,
+        candidates: [
+          {
+            candidateId: "candidate",
+            electionId: "election",
+            candidateName: "Kelly Gonez",
+            electionYear: 2026,
+            electionDate: "2026-06-02",
+            officeName: "School Board Member",
+            seatNumber: 6,
+          },
+        ],
+      }),
+    ).resolves.toEqual([
+      {
+        candidateId: "candidate",
+        electionId: "election",
+        status: "linked",
+      },
+    ]);
+    expect(getLosAngelesEthicsCandidateTotals).toHaveBeenCalledWith(
+      { electionId: "76", officeName: "LAUSD District 6" },
+      undefined,
+    );
+    expect(upsertLosAngelesFinanceLink).toHaveBeenCalledWith(
+      expect.objectContaining({
+        link: expect.objectContaining({
+          officeName: "School Board Member",
+          seatNumber: 6,
+        }),
       }),
     );
   });

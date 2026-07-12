@@ -12,6 +12,7 @@ import {
 import {
   LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_NAMES,
   parseLosAngelesCityCouncilSeatNumber,
+  parseLosAngelesSchoolBoardSeatNumber,
   toLosAngelesEthicsOfficeName,
 } from "./losAngelesCityFinanceEligibleOffices.js";
 import { upsertLosAngelesFinanceLink } from "./losAngelesFinanceWriter.js";
@@ -45,7 +46,7 @@ export async function listLosAngelesCandidateElectionsMissingFinanceLinks(
     office_name: string;
     official_ballot_title: string;
   }>(
-    `SELECT candidate.id::text candidate_id,election.id::text election_id,COALESCE(NULLIF(trim(candidate.display_name),''),NULLIF(trim(candidate.first_name||' '||candidate.last_name),'')) candidate_name,extract(year from election.election_date)::int election_year,election.election_date::text election_date,office.canonical_name office_name,election.official_ballot_title FROM public.candidate_elections candidate_election JOIN public.candidates candidate ON candidate.id=candidate_election.candidate_id JOIN public.elections election ON election.id=candidate_election.election_id JOIN public.districts district ON district.id=election.district_id JOIN public.offices office ON office.id=election.office_id WHERE candidate.deleted_at IS NULL AND district.state='CA' AND district.district_type='place' AND district.geoid_compact='0644000' AND office.scope='place' AND office.canonical_name=ANY($5::text[]) AND election.race_type='office' AND election.election_date>=($1::date-make_interval(days=>$3::int)) AND election.election_date<=($1::date+make_interval(days=>$4::int)) AND candidate_election.status NOT IN ('withdrawn','lost') AND NOT EXISTS (SELECT 1 FROM public.lacity_candidate_finance_links link WHERE link.candidate_id=candidate.id AND link.election_id=election.id AND link.link_status='active') ORDER BY election.election_date,candidate.display_name NULLS LAST,candidate.id LIMIT $2::int`,
+    `SELECT candidate.id::text candidate_id,election.id::text election_id,COALESCE(NULLIF(trim(candidate.display_name),''),NULLIF(trim(candidate.first_name||' '||candidate.last_name),'')) candidate_name,extract(year from election.election_date)::int election_year,election.election_date::text election_date,office.canonical_name office_name,election.official_ballot_title FROM public.candidate_elections candidate_election JOIN public.candidates candidate ON candidate.id=candidate_election.candidate_id JOIN public.elections election ON election.id=candidate_election.election_id JOIN public.districts district ON district.id=election.district_id JOIN public.offices office ON office.id=election.office_id WHERE candidate.deleted_at IS NULL AND district.state='CA' AND ((district.district_type='place' AND district.geoid_compact='0644000' AND office.scope='place') OR (district.district_type='school_unified' AND district.geoid_compact='0622710' AND office.scope='school_unified')) AND office.canonical_name=ANY($5::text[]) AND election.race_type='office' AND election.election_date>=($1::date-make_interval(days=>$3::int)) AND election.election_date<=($1::date+make_interval(days=>$4::int)) AND candidate_election.status NOT IN ('withdrawn','lost') AND NOT EXISTS (SELECT 1 FROM public.lacity_candidate_finance_links link WHERE link.candidate_id=candidate.id AND link.election_id=election.id AND link.link_status='active') ORDER BY election.election_date,candidate.display_name NULLS LAST,candidate.id LIMIT $2::int`,
     [
       input.now.toISOString(),
       input.maxCandidates,
@@ -64,7 +65,9 @@ export async function listLosAngelesCandidateElectionsMissingFinanceLinks(
     seatNumber:
       row.office_name === "City Council Member"
         ? parseLosAngelesCityCouncilSeatNumber(row.official_ballot_title)
-        : null,
+        : row.office_name === "School Board Member"
+          ? parseLosAngelesSchoolBoardSeatNumber(row.official_ballot_title)
+          : null,
   }));
 }
 
@@ -110,7 +113,10 @@ export async function autoLinkMissingLosAngelesCandidateFinanceLinks(input: {
         continue;
       }
       const ethicsOfficeName = toLosAngelesEthicsOfficeName({
-        officeScope: "place",
+        officeScope:
+          candidate.officeName === "School Board Member"
+            ? "school_unified"
+            : "place",
         officeCanonicalName: candidate.officeName,
         seatNumber: candidate.seatNumber,
       });
@@ -122,7 +128,9 @@ export async function autoLinkMissingLosAngelesCandidateFinanceLinks(input: {
           reason:
             candidate.officeName === "City Council Member"
               ? "Council seat number could not be parsed from the official ballot title"
-              : "Office is not eligible for Los Angeles City finance",
+              : candidate.officeName === "School Board Member"
+                ? "School board seat number could not be parsed from the official ballot title"
+                : "Office is not eligible for Los Angeles City finance",
         });
         continue;
       }

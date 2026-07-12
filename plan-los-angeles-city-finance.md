@@ -372,6 +372,21 @@ definition plus board-seat parser for districts 1–7. Reuse source and storage
 components, but keep eligibility independent from Los Angeles place offices.
 Do not infer LAUSD merely from state, county, or district name text.
 
+Implementation validation on 2026-07-12 pinned the VoteApp district to
+`school_unified` GEOID `0622710` (`Los Angeles Unified School District,
+California`) and the loaded VoteApp title form `Member of the Board of Education,
+District N`. Ethics uses `LAUSD District N`. Unlike city candidate rows, the
+LAUSD table omits the matching-funds column; the parser preserves that field
+as unknown (`null`) instead of shifting later totals or inventing zero. A live
+District 6 probe parsed both Ethics candidates and reconciled both Open Data
+contribution totals exactly. The local VoteApp candidate Kelly Gonez then
+linked and synced end to end; unmatched candidates continue to fail closed.
+The loaded VoteApp election row for District 6 uses that exact anchored title.
+Additional live Ethics probes covered all seven seats across elections 76 and
+70, plus historical elections 64 and 58: no LAUSD header had a dedicated
+matching-funds column, active finance rows had seven metrics, and completed
+rows had nine metrics including votes and cost per vote.
+
 ## 5. Operational behavior and observability
 
 Each run should report elections discovered, candidates examined, linked,
