@@ -269,6 +269,27 @@ async function recordAttempt(input: {
     ...(input.reason ? { reason: input.reason } : {}), nextCheckAt: input.nextAttemptAt.toISOString() };
 }
 
+async function recordFailure(input: {
+  dataSource: BatchDataSource;
+  db: Queryable;
+  row: NewYorkCityCandidateFinanceDueRow;
+  error: unknown;
+  now: Date;
+  staleAfterDays: number;
+  dryRun: boolean;
+}): Promise<NewYorkCityCandidateFinanceBatchItem> {
+  return recordAttempt({
+    dataSource: input.dataSource,
+    db: input.db,
+    row: input.row,
+    status: "failed",
+    reason: input.error instanceof Error ? input.error.message : String(input.error),
+    now: input.now,
+    nextAttemptAt: new Date(input.now.getTime() + input.staleAfterDays * 24 * 60 * 60 * 1000),
+    dryRun: input.dryRun,
+  });
+}
+
 function artifactPath(result: NewYorkCityCfbArtifactRefreshResult): string | null {
   return result.status === "not_yet_published" ? null : result.current.filePath;
 }
@@ -315,7 +336,17 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
         dataSource.refreshArtifact({ cacheDir: input.cacheDir, electionYear, kind: "financial_analysis" }),
       ]);
     } catch (error) {
-      for (const row of yearRows) results.push({ candidateId: row.candidateId, electionId: row.electionId, status: "failed", reason: error instanceof Error ? error.message : String(error) });
+      for (const row of yearRows) {
+        results.push(await recordFailure({
+          dataSource,
+          db: input.db,
+          row,
+          error,
+          now,
+          staleAfterDays,
+          dryRun: Boolean(input.dryRun),
+        }));
+      }
       continue;
     }
     const contributionPath = artifactPath(contributionArtifact);
@@ -372,14 +403,13 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
           });
           results.push({ candidateId: row.candidateId, electionId: row.electionId, status: "synced" });
         } catch (error) {
-          results.push(await recordAttempt({
+          results.push(await recordFailure({
             dataSource,
             db: input.db,
             row,
-            status: "failed",
-            reason: error instanceof Error ? error.message : String(error),
+            error,
             now,
-            nextAttemptAt: new Date(now.getTime() + staleAfterDays * 24 * 60 * 60 * 1000),
+            staleAfterDays,
             dryRun: Boolean(input.dryRun),
           }));
         }
@@ -387,7 +417,15 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
     } catch (error) {
       for (const row of yearRows) {
         if (!results.some((result) => result.candidateId === row.candidateId && result.electionId === row.electionId)) {
-          results.push({ candidateId: row.candidateId, electionId: row.electionId, status: "failed", reason: error instanceof Error ? error.message : String(error) });
+          results.push(await recordFailure({
+            dataSource,
+            db: input.db,
+            row,
+            error,
+            now,
+            staleAfterDays,
+            dryRun: Boolean(input.dryRun),
+          }));
         }
       }
     }

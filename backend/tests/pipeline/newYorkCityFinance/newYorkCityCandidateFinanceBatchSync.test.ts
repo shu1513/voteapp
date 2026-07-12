@@ -147,4 +147,61 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
       nextAttemptAt: new Date("2026-07-19T00:00:00.000Z"),
     }));
   });
+
+  it("records a retry cooldown when artifact refresh fails", async () => {
+    const now = new Date("2026-07-12T00:00:00Z");
+    const recordAttempt = vi.fn().mockResolvedValue(undefined);
+    const result = await syncDueNewYorkCityCandidateFinance({
+      db: {} as never,
+      now,
+      staleAfterDays: 7,
+      dataSource: {
+        listDueRows: vi.fn().mockResolvedValue({ rows: [dueRow], totalDueRows: 1 }),
+        refreshArtifact: vi.fn().mockRejectedValue(new Error("CFB unavailable")),
+        recordAttempt,
+      },
+    });
+    expect(result).toMatchObject({ syncedCandidateCount: 0, deferredCandidateCount: 0, failedCandidateCount: 1 });
+    expect(result.results[0]).toMatchObject({
+      status: "failed",
+      reason: "CFB unavailable",
+      nextCheckAt: "2026-07-19T00:00:00.000Z",
+    });
+    expect(recordAttempt).toHaveBeenCalledWith(expect.objectContaining({
+      status: "failed",
+      reason: "CFB unavailable",
+      nextAttemptAt: new Date("2026-07-19T00:00:00.000Z"),
+    }));
+  });
+
+  it("records a retry cooldown when CSV reading fails", async () => {
+    const now = new Date("2026-07-12T00:00:00Z");
+    const recordAttempt = vi.fn().mockResolvedValue(undefined);
+    const refreshArtifact = vi.fn().mockImplementation(async (input: { electionYear: number; kind: "contributions" | "financial_analysis" }) => ({
+      status: "downloaded",
+      current: { version: 1, electionYear: input.electionYear, kind: input.kind, url: "x", filePath: `/tmp/${input.kind}.csv`, downloadedAt: "x", bytes: 1, etag: null, lastModified: null },
+    }));
+    const result = await syncDueNewYorkCityCandidateFinance({
+      db: {} as never,
+      now,
+      staleAfterDays: 7,
+      dataSource: {
+        listDueRows: vi.fn().mockResolvedValue({ rows: [dueRow], totalDueRows: 1 }),
+        refreshArtifact,
+        readAnalysis: vi.fn().mockRejectedValue(new Error("invalid analysis CSV")),
+        recordAttempt,
+      },
+    });
+    expect(result).toMatchObject({ syncedCandidateCount: 0, deferredCandidateCount: 0, failedCandidateCount: 1 });
+    expect(result.results[0]).toMatchObject({
+      status: "failed",
+      reason: "invalid analysis CSV",
+      nextCheckAt: "2026-07-19T00:00:00.000Z",
+    });
+    expect(recordAttempt).toHaveBeenCalledWith(expect.objectContaining({
+      status: "failed",
+      reason: "invalid analysis CSV",
+      nextAttemptAt: new Date("2026-07-19T00:00:00.000Z"),
+    }));
+  });
 });
