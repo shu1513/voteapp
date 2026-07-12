@@ -84,9 +84,10 @@ export function parseSyncDueIllinoisCandidateFinanceScriptArgs(
   const normalizedArtifactPath = parseFlagValue(args, "--normalized-artifact") || undefined;
   if (
     contributionCsvPaths.length === 0 &&
+    !normalizedArtifactPath &&
     (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl)
   ) {
-    throw new Error("Provide --contributions-csv when using Illinois SBE artifact flags");
+    throw new Error("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
   }
   return {
     dryRun: args.includes("--dry-run"),
@@ -117,19 +118,21 @@ function getDatabaseUrl(): string {
 export function toSyncDueIllinoisCandidateFinanceScriptOutput(input: {
   startedAt: Date;
   options: SyncDueIllinoisCandidateFinanceScriptOptions;
+  normalizedArtifactPath?: string;
   result: IllinoisCandidateFinanceBatchSyncResult;
 }) {
   const successfulResults = input.result.results.flatMap((item) => (item.ok && item.result ? [item.result] : []));
+  const normalizedArtifactPath = input.normalizedArtifactPath ?? input.options.normalizedArtifactPath;
   return {
     type: "illinois_candidate_finance_due_sync",
     ts: new Date().toISOString(),
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
     data_source:
-      input.options.contributionCsvPaths.length > 0 || input.options.normalizedArtifactPath ? "artifact" : "live",
+      input.options.contributionCsvPaths.length > 0 || normalizedArtifactPath ? "artifact" : "live",
     artifact_contribution_csv_count: input.options.contributionCsvPaths.length,
     artifact_expenditure_csv_count: input.options.expenditureCsvPaths.length,
-    normalized_artifact: Boolean(input.options.normalizedArtifactPath),
+    normalized_artifact: Boolean(normalizedArtifactPath),
     outside_expenditure_data_available_count: successfulResults.filter(
       (result) => result.outsideExpenditureDataAvailable
     ).length,
@@ -188,7 +191,13 @@ async function main(): Promise<void> {
       aiClassificationMinAmount: options.aiClassificationMinAmount,
     });
 
-    console.log(JSON.stringify(toSyncDueIllinoisCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));
+    console.log(
+      JSON.stringify(
+        toSyncDueIllinoisCandidateFinanceScriptOutput({ startedAt, options, normalizedArtifactPath, result }),
+        null,
+        2
+      )
+    );
   } finally {
     await pool.end();
   }

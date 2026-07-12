@@ -93,11 +93,21 @@ describe("syncDueIllinoisCandidateFinance script", () => {
 
   it("requires a contribution artifact when artifact source flags are provided", () => {
     expect(() => parseSyncDueIllinoisCandidateFinanceScriptArgs(["--expenditures-csv=exports/il-exp.csv"])).toThrow(
-      "Provide --contributions-csv when using Illinois SBE artifact flags"
+      "Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags"
     );
     expect(() =>
       parseSyncDueIllinoisCandidateFinanceScriptArgs(["--contributions-url=https://example.test/contributions.csv"])
-    ).toThrow("Provide --contributions-csv when using Illinois SBE artifact flags");
+    ).toThrow("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
+    expect(
+      parseSyncDueIllinoisCandidateFinanceScriptArgs([
+        "--normalized-artifact=exports/illinois-normalized.json",
+        "--expenditures-csv=exports/il-exp.csv",
+      ])
+    ).toMatchObject({
+      contributionCsvPaths: [],
+      expenditureCsvPaths: ["exports/il-exp.csv"],
+      normalizedArtifactPath: "exports/illinois-normalized.json",
+    });
   });
 
   it("formats script output", () => {
@@ -108,10 +118,11 @@ describe("syncDueIllinoisCandidateFinance script", () => {
         force: false,
         maxCandidates: 2,
         aiClassifyIndustries: false,
-        contributionCsvPaths: ["exports/il-contrib.csv"],
+        contributionCsvPaths: [],
         expenditureCsvPaths: [],
         normalizedArtifactPath: undefined,
       },
+      normalizedArtifactPath: "exports/from-env-normalized.json",
       result: {
         dryRun: true,
         now: "2026-01-02T03:04:05.000Z",
@@ -166,8 +177,9 @@ describe("syncDueIllinoisCandidateFinance script", () => {
       started_at: "2026-01-02T03:04:05.000Z",
       dry_run: true,
       data_source: "artifact",
-      artifact_contribution_csv_count: 1,
+      artifact_contribution_csv_count: 0,
       artifact_expenditure_csv_count: 0,
+      normalized_artifact: true,
       outside_expenditure_data_available_count: 0,
       outside_group_contribution_data_available_count: 0,
       ai_classify_industries: false,

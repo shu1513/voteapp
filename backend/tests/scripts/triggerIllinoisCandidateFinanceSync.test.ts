@@ -57,9 +57,19 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
 
   it("requires contribution artifacts when artifact source flags are provided", () => {
     expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--expenditures-csv=/exports/il-exp.csv"]))
-      .toThrow("Provide --contributions-csv when using Illinois SBE artifact flags");
+      .toThrow("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
     expect(() =>
       parseIllinoisCandidateFinanceSyncTriggerArgs(["--contributions-url=https://example.test/contributions.csv"])
-    ).toThrow("Provide --contributions-csv when using Illinois SBE artifact flags");
+    ).toThrow("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
+    expect(
+      parseIllinoisCandidateFinanceSyncTriggerArgs([
+        "--normalized-artifact=/exports/illinois-normalized.json",
+        "--expenditures-csv=/exports/il-exp.csv",
+      ])
+    ).toMatchObject({
+      contributionCsvPaths: undefined,
+      expenditureCsvPaths: ["/exports/il-exp.csv"],
+      normalizedArtifactPath: "/exports/illinois-normalized.json",
+    });
   });
 });

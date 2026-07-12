@@ -48,6 +48,15 @@ function manifest(overrides: Record<string, unknown> = {}): string {
   });
 }
 
+type MutableManifest = Record<string, unknown> & {
+  candidateCommitteeRelations: Array<Record<string, unknown>>;
+  d2ReportSummaries: Array<Record<string, unknown>>;
+};
+
+function mutableManifest(): MutableManifest {
+  return JSON.parse(manifest()) as MutableManifest;
+}
+
 describe("Illinois normalized SBE artifacts", () => {
   it("parses a complete, versioned artifact", () => {
     expect(parseIllinoisSbeNormalizedArtifact(manifest())).toMatchObject({
@@ -96,6 +105,53 @@ describe("Illinois normalized SBE artifacts", () => {
 
     expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(invalid))).toThrow(
       "d2ReportSummaries[0].totalReceipts is required"
+    );
+  });
+
+  it("fails closed across identity, date, amount, and uniqueness validation", () => {
+    const invalidUrl = mutableManifest();
+    invalidUrl.sourceUrl = "file:///tmp/source.json";
+    expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(invalidUrl))).toThrow("must be an http(s) URL");
+
+    const missingUrl = mutableManifest();
+    delete missingUrl.candidateCommitteeRelations[0]!.sourceUrl;
+    expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(missingUrl))).toThrow("sourceUrl must be a non-empty string");
+
+    const invalidTimestamp = mutableManifest();
+    invalidTimestamp.acquiredAt = "not-a-timestamp";
+    expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(invalidTimestamp))).toThrow("must be a timestamp");
+
+    const invalidYear = mutableManifest();
+    invalidYear.candidateCommitteeRelations[0]!.electionYear = 1999;
+    expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(invalidYear))).toThrow(
+      "electionYear must be an integer from 2000 to 2100"
+    );
+
+    const negativeAmount = mutableManifest();
+    negativeAmount.d2ReportSummaries[0]!.totalReceipts = -1;
+    expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(negativeAmount))).toThrow(
+      "must be null or a nonnegative number"
+    );
+
+    const reversedPeriod = mutableManifest();
+    reversedPeriod.d2ReportSummaries[0]!.periodStart = "2024-04-01";
+    expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(reversedPeriod))).toThrow(
+      "has periodStart after periodEnd"
+    );
+
+    const noValues = mutableManifest();
+    Object.assign(noValues.d2ReportSummaries[0]!, {
+      totalReceipts: null,
+      totalDisbursements: null,
+      cashOnHand: null,
+      debtsOwed: null,
+    });
+    expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(noValues))).toThrow("has no financial values");
+
+    const duplicateReport = mutableManifest();
+    duplicateReport.d2ReportSummaries.push({ ...duplicateReport.d2ReportSummaries[0]! });
+    expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(duplicateReport))).toThrow(
+      "duplicate D-2 report ID"
     );
   });
 });

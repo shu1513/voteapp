@@ -1,7 +1,10 @@
 import type { Pool, PoolClient } from "pg";
 
 import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
-import { aggregateIllinoisOutsideSpending } from "./illinoisFinanceAggregators.js";
+import {
+  aggregateIllinoisOutsideSpending,
+  extractIllinoisSbeCommitteeId,
+} from "./illinoisFinanceAggregators.js";
 import {
   autoLinkMissingIllinoisCandidateFinanceLinks,
   listIllinoisCandidateElectionsMissingFinanceLinks,
@@ -237,7 +240,7 @@ export async function loadIllinoisFinanceDataForDueRow(
     );
   }
   const office = officeSearchText(officeSearch, row.officeName);
-  const sbeCommitteeId = row.committeeKey.match(/^SBE:(.+)$/i)?.[1] ?? null;
+  const sbeCommitteeId = extractIllinoisSbeCommitteeId(row.committeeKey);
   const directContributionRecords = await fetchIllinoisSbeCommitteeContributionRecords(
     {
       committeeName: sbeCommitteeId ? undefined : row.committeeName,
@@ -496,7 +499,7 @@ export async function syncDueIllinoisCandidateFinance(
         sbeDistrictType: row.sbeDistrictType,
         sbeOffice: row.sbeOffice,
         isAtLarge: row.isAtLarge,
-        sbeCommitteeId: row.committeeKey.match(/^SBE:(.+)$/i)?.[1] ?? null,
+        sbeCommitteeId: extractIllinoisSbeCommitteeId(row.committeeKey),
         committeeKey: row.committeeKey,
         committeeName: row.committeeName,
         directContributionRecords: data.directContributionRecords,

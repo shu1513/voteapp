@@ -52,6 +52,10 @@ describe("illinoisFinanceWriter", () => {
     expect(String(db.query.mock.calls[0]?.[0])).toContain("WHEN il_candidate_finance_links.link_source = 'manual'");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("THEN il_candidate_finance_links.source_url");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("THEN il_candidate_finance_links.last_verified_at");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("THEN il_candidate_finance_links.sbe_candidate_id");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("THEN il_candidate_finance_links.sbe_district_type");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("THEN il_candidate_finance_links.sbe_office");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("THEN il_candidate_finance_links.is_at_large");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       CANDIDATE_ID,
       ELECTION_ID,

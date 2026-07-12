@@ -90,8 +90,16 @@ export async function loadIllinoisCandidateFinanceSummariesByCandidateElection(
           THEN sum(summary.total_disbursements)
           ELSE NULL
         END AS total_disbursements,
-        CASE WHEN count(summary.cash_on_hand) = 0 THEN NULL ELSE sum(summary.cash_on_hand) END AS cash_on_hand,
-        CASE WHEN count(summary.debts_owed) = 0 THEN NULL ELSE sum(summary.debts_owed) END AS debts_owed,
+        CASE
+          WHEN count(summary.cash_on_hand) = count(DISTINCT link.committee_key)
+          THEN sum(summary.cash_on_hand)
+          ELSE NULL
+        END AS cash_on_hand,
+        CASE
+          WHEN count(summary.debts_owed) = count(DISTINCT link.committee_key)
+          THEN sum(summary.debts_owed)
+          ELSE NULL
+        END AS debts_owed,
         max(summary.outside_support_total) AS outside_support_total,
         max(summary.outside_oppose_total) AS outside_oppose_total,
         min(summary.source_url) FILTER (WHERE summary.source_url IS NOT NULL) AS source_url,

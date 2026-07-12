@@ -11,6 +11,7 @@ import type {
   IllinoisCandidateFinanceDueRow,
 } from "./illinoisCandidateFinanceBatchSync.js";
 import {
+  extractIllinoisSbeCommitteeId,
   isIllinoisFinanceCycleDate,
   normalizeIllinoisCommitteeKey,
   normalizeIllinoisFinanceTextKey,
@@ -230,8 +231,8 @@ export function loadIllinoisFinanceDataForDueRowFromArtifacts(input: {
     directContributionSourceUrl: input.artifacts.contributionSourceUrl,
   };
 
-  if (input.artifacts.normalizedArtifact && input.row.sbeCandidateId) {
-    const committeeId = input.row.committeeKey.match(/^SBE:(.+)$/i)?.[1] ?? null;
+  if (input.artifacts.normalizedArtifact) {
+    const committeeId = extractIllinoisSbeCommitteeId(input.row.committeeKey);
     if (committeeId) {
       data.d2ReportSummaries = input.artifacts.normalizedArtifact.d2ReportSummaries.filter(
         (report) => report.committeeId === committeeId

@@ -14,6 +14,7 @@ import {
 } from "../finance/financeIndustryClassificationService.js";
 import {
   aggregateIllinoisDirectContributions,
+  extractIllinoisSbeCommitteeId,
   aggregateIllinoisOutsideGroupContributions,
   aggregateIllinoisOutsideSpending,
   normalizeIllinoisCommitteeKey,
@@ -433,7 +434,7 @@ export async function syncIllinoisCandidateFinance(
   const outsideSourceUrl = input.outsideExpenditureSourceUrl ?? ILLINOIS_SBE_EXPENDITURE_ALL_SEARCH_URL;
   const outsideGroupSourceUrl =
     input.outsideGroupContributionSourceUrl ?? ILLINOIS_SBE_CONTRIBUTION_COMMITTEE_SEARCH_URL;
-  const sbeCommitteeId = input.sbeCommitteeId?.trim() || input.committeeKey.match(/^SBE:(.+)$/i)?.[1] || null;
+  const sbeCommitteeId = input.sbeCommitteeId?.trim() || extractIllinoisSbeCommitteeId(input.committeeKey);
 
   const directFinance = aggregateIllinoisDirectContributions({
     electionYear,
@@ -505,13 +506,14 @@ export async function syncIllinoisCandidateFinance(
     outsideDataAvailable,
     fallbackSourceUrl: d2Finance?.sourceUrl ?? input.sourceUrl ?? directSourceUrl ?? outsideSourceUrl ?? outsideGroupSourceUrl,
   });
+  const summaryAvailable = input.officeScope !== "place" || input.d2ReportSummaries !== undefined;
 
   if (!input.dryRun) {
     await replaceIllinoisCandidateFinanceSnapshot({
       db: input.db,
       link,
       syncedAt,
-      summary,
+      summary: summaryAvailable ? summary : undefined,
       directBreakdowns: directFinance.directBreakdowns.map(toDirectBreakdown),
       outsideGroups,
       outsideGroupBreakdowns: outsideIndustryFinance.outsideGroupBreakdowns,
@@ -525,7 +527,7 @@ export async function syncIllinoisCandidateFinance(
     electionYear,
     dryRun: input.dryRun === true,
     linkWritten: !input.dryRun,
-    summaryWritten: !input.dryRun,
+    summaryWritten: !input.dryRun && summaryAvailable,
     directBreakdownsWritten: input.dryRun ? 0 : directFinance.directBreakdowns.length,
     outsideGroupsWritten: input.dryRun ? 0 : outsideGroups?.length ?? 0,
     outsideGroupBreakdownsWritten: input.dryRun ? 0 : outsideIndustryFinance.outsideGroupBreakdowns?.length ?? 0,

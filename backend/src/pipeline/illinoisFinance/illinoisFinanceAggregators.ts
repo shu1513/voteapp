@@ -175,6 +175,10 @@ export function normalizeIllinoisCommitteeKey(value: string | null | undefined):
   return normalizeIllinoisFinanceTextKey(value);
 }
 
+export function extractIllinoisSbeCommitteeId(committeeKey: string | null | undefined): string | null {
+  return committeeKey?.trim().match(/^SBE:(.+)$/i)?.[1] ?? null;
+}
+
 function amountToCents(amount: number): number | null {
   if (!Number.isFinite(amount)) {
     return null;

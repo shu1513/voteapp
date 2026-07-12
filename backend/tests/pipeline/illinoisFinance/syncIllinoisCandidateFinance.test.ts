@@ -360,6 +360,38 @@ describe("syncIllinoisCandidateFinance", () => {
     ]);
   });
 
+  it("does not overwrite a local D-2 summary when D-2 data was unavailable", async () => {
+    const db = createMockDb();
+    const result = await syncIllinoisCandidateFinance({
+      db,
+      ...baseInput(),
+      electionYear: 2025,
+      officeScope: "place",
+      officeName: "Mayor",
+      district: "Aurora",
+      sbeCandidateId: "101",
+      sbeDistrictType: "City",
+      sbeOffice: "Mayor",
+      isAtLarge: false,
+      sbeCommitteeId: "201",
+      committeeKey: "SBE:201",
+      committeeName: "Aurora Forward",
+      directContributionRecords: [contribution({ amount: 250, receivedDate: "3/1/2025" })],
+    });
+
+    expect(result).toMatchObject({
+      linkWritten: true,
+      summaryWritten: false,
+      totalReceipts: null,
+      totalDisbursements: null,
+      cashOnHand: null,
+      debtsOwed: null,
+    });
+    const statements = db.client.query.mock.calls.map((call) => String(call[0]));
+    expect(statements.some((statement) => statement.includes("INSERT INTO public.il_candidate_finance_links"))).toBe(true);
+    expect(statements.some((statement) => statement.includes("INSERT INTO public.il_candidate_finance_summaries"))).toBe(false);
+  });
+
   it("uses shared AI classification for high-dollar unknown PAC funders", async () => {
     const db = createMockDb();
     const classifier = vi.fn().mockResolvedValue([

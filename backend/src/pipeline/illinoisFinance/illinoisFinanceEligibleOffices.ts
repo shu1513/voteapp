@@ -259,7 +259,8 @@ export function mapIllinoisSbeOffice(input: {
     return null;
   }
 
-  const stateDefinition = ILLINOIS_SBE_STATE_OFFICE_DEFINITIONS.get(normalizedOffice);
+  const districtType = normalizeIllinoisSbeLocalDistrictType(input.districtType);
+  const stateDefinition = districtType ? undefined : ILLINOIS_SBE_STATE_OFFICE_DEFINITIONS.get(normalizedOffice);
   if (stateDefinition) {
     const district = stateDefinition.requiresDistrict
       ? normalizeIllinoisSbeLegislativeDistrict(
@@ -278,7 +279,6 @@ export function mapIllinoisSbeOffice(input: {
     return { ...stateDefinition, officeKey, district };
   }
 
-  const districtType = normalizeIllinoisSbeLocalDistrictType(input.districtType);
   const district = normalizeIllinoisSbeMunicipality(input.district);
   if (!districtType || !district) {
     return null;

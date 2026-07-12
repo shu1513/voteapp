@@ -83,9 +83,10 @@ export function parseIllinoisCandidateFinanceSyncTriggerArgs(
   const normalizedArtifactPath = parseFlagValue(args, "--normalized-artifact") || undefined;
   if (
     contributionCsvPaths.length === 0 &&
+    !normalizedArtifactPath &&
     (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl)
   ) {
-    throw new Error("Provide --contributions-csv when using Illinois SBE artifact flags");
+    throw new Error("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
   }
   return {
     dryRun: args.includes("--dry-run"),

@@ -269,10 +269,22 @@ export async function upsertIllinoisFinanceLink(input: {
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
-        sbe_candidate_id = EXCLUDED.sbe_candidate_id,
-        sbe_district_type = EXCLUDED.sbe_district_type,
-        sbe_office = EXCLUDED.sbe_office,
-        is_at_large = EXCLUDED.is_at_large,
+        sbe_candidate_id = CASE
+          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.sbe_candidate_id
+          ELSE EXCLUDED.sbe_candidate_id
+        END,
+        sbe_district_type = CASE
+          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.sbe_district_type
+          ELSE EXCLUDED.sbe_district_type
+        END,
+        sbe_office = CASE
+          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.sbe_office
+          ELSE EXCLUDED.sbe_office
+        END,
+        is_at_large = CASE
+          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.is_at_large
+          ELSE EXCLUDED.is_at_large
+        END,
         committee_name = EXCLUDED.committee_name,
         link_status = CASE
           WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.link_status

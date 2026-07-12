@@ -70,6 +70,19 @@ describe("illinoisFinanceEligibleOffices", () => {
   });
 
   it("maps only jurisdiction-safe local offices", () => {
+    expect(mapIllinoisSbeOffice({ office: "Treasurer" })).toMatchObject({
+      officeScope: "statewide",
+      officeCanonicalName: "Treasurer",
+    });
+    expect(
+      mapIllinoisSbeOffice({ office: "Treasurer", districtType: "City", district: "Aurora" })
+    ).toMatchObject({
+      officeScope: "place",
+      officeCanonicalName: "City Treasurer",
+      officeKey: "place::City Treasurer",
+      district: "Aurora",
+      sbeDistrictType: "City",
+    });
     expect(
       mapIllinoisSbeOffice({ office: "President", districtType: "Village", district: "Oak Park" })
     ).toMatchObject({

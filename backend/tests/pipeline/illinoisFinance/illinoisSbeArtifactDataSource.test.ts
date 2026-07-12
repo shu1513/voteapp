@@ -144,7 +144,7 @@ describe("illinoisSbeArtifactDataSource", () => {
         officeScope: "place",
         officeName: "Mayor",
         district: "Aurora",
-        sbeCandidateId: "101",
+        sbeCandidateId: null,
         sbeDistrictType: "City",
         sbeOffice: "Mayor",
         isAtLarge: false,
