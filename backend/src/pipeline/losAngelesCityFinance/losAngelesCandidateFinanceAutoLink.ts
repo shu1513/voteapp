@@ -10,16 +10,12 @@ import {
   resolveLosAngelesEthicsElection,
 } from "./losAngelesCandidateCommitteeResolver.js";
 import {
-  LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_NAMES,
   toLosAngelesEthicsOfficeName,
 } from "./losAngelesCityFinanceEligibleOffices.js";
 import { upsertLosAngelesFinanceLink } from "./losAngelesFinanceWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
-const ELIGIBLE_OFFICE_NAMES =
-  LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS.map((key) =>
-    key.slice("place::".length),
-  );
 export type LosAngelesFinanceAutoLinkCandidate = {
   candidateId: string;
   electionId: string;
@@ -52,7 +48,7 @@ export async function listLosAngelesCandidateElectionsMissingFinanceLinks(
       input.maxCandidates,
       input.electionLookbackDays,
       input.electionLookaheadDays,
-      ELIGIBLE_OFFICE_NAMES,
+      LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_NAMES,
     ],
   );
   return result.rows.map((row) => ({

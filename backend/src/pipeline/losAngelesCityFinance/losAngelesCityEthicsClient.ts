@@ -164,11 +164,16 @@ function metricTotals(candidateMainRow: string): CandidateMetricTotals {
     const totals = currentCells.map((match) =>
       money(decodeHtml(match[1] ?? "")),
     );
-    if (totals.length === 8 && totals.every((value) => value !== null))
-      return totals as CandidateMetricTotals;
-    throw new Error(
-      `Los Angeles Ethics candidate row has ${totals.length} totals; expected 8`,
-    );
+    if (totals.length !== 8)
+      throw new Error(
+        `Los Angeles Ethics candidate row has ${totals.length} totals; expected 8`,
+      );
+    const invalidIndex = totals.findIndex((value) => value === null);
+    if (invalidIndex >= 0)
+      throw new Error(
+        `Los Angeles Ethics candidate metric ${invalidIndex + 1} is not a nonnegative money amount`,
+      );
+    return totals as CandidateMetricTotals;
   }
 
   // Older election pages render one reported-through cell followed by eight
@@ -276,14 +281,14 @@ export function parseLosAngelesEthicsCandidateTotals(input: {
       fppcCommitteeId: committeeIds[0]!,
       committeeName: decodeHtml(committee[2] ?? ""),
       internalCommitteePersonId: /\bcmt_per_id=(\d+)/i.exec(block)?.[1] ?? null,
-      totalContributions: totals[0]!,
-      totalExpenditures: totals[1]!,
-      cashOnHand: totals[2]!,
-      matchingFunds: totals[3]!,
-      outsideSupportTotal: totals[4]!,
-      outsideOpposeTotal: totals[5]!,
-      membershipSupportTotal: totals[6]!,
-      membershipOpposeTotal: totals[7]!,
+      totalContributions: totals[0],
+      totalExpenditures: totals[1],
+      cashOnHand: totals[2],
+      matchingFunds: totals[3],
+      outsideSupportTotal: totals[4],
+      outsideOpposeTotal: totals[5],
+      membershipSupportTotal: totals[6],
+      membershipOpposeTotal: totals[7],
       sourceUrl: buildLosAngelesEthicsElectionTotalsUrl(input.electionId),
     });
   }

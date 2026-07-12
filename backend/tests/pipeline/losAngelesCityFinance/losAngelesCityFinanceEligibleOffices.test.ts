@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   isLosAngelesCityFinanceEligibleElection,
+  LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_NAMES,
   LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS,
   toLosAngelesEthicsOfficeName,
 } from "../../../src/pipeline/losAngelesCityFinance/losAngelesCityFinanceEligibleOffices.js";
@@ -14,6 +15,11 @@ describe("Los Angeles City finance eligibility", () => {
     officeCanonicalName: "Mayor",
   };
   it("accepts exact Los Angeles Phase 2 citywide office identities", () => {
+    expect(LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_NAMES).toEqual([
+      "Mayor",
+      "Municipal Attorney",
+      "Municipal Controller",
+    ]);
     expect(LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS).toEqual([
       "place::Mayor",
       "place::Municipal Attorney",
