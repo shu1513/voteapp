@@ -332,7 +332,8 @@ Add:
 Use a default NYC election lookahead of 1,460 days, not the repository's common
 730 days. NYC candidates register and disclose more than two years before the
 election; the first 2029 reporting period began in January 2026. Keep the
-one-day post-election grace and seven-day stale threshold. Artifact refresh is
+four-year post-election lookback and seven-day stale threshold so winners' and
+losers' periodic post-election filings and audit amendments remain refreshable. Artifact refresh is
 once per run/cycle, not once per due candidate.
 
 If the current election/roster is not yet in VoteApp, auto-linking correctly

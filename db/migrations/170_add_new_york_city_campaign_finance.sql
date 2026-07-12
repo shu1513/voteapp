@@ -127,6 +127,31 @@ CREATE TRIGGER nyc_candidate_finance_links_set_updated_at
 BEFORE UPDATE ON public.nyc_candidate_finance_links
 FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
+CREATE TABLE public.nyc_candidate_finance_sync_attempts (
+  candidate_id uuid NOT NULL REFERENCES public.candidates(id) ON DELETE CASCADE,
+  election_id uuid NOT NULL REFERENCES public.elections(id) ON DELETE CASCADE,
+  status text NOT NULL,
+  reason text,
+  last_attempted_at timestamptz NOT NULL,
+  next_attempt_at timestamptz NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (candidate_id, election_id),
+  CONSTRAINT nyc_candidate_finance_sync_attempts_status_check
+    CHECK (status IN ('unmatched', 'ambiguous', 'not_yet_published')),
+  CONSTRAINT nyc_candidate_finance_sync_attempts_reason_check
+    CHECK (reason IS NULL OR btrim(reason) <> ''),
+  CONSTRAINT nyc_candidate_finance_sync_attempts_retry_check
+    CHECK (next_attempt_at > last_attempted_at)
+);
+
+CREATE INDEX nyc_candidate_finance_sync_attempts_due_idx
+  ON public.nyc_candidate_finance_sync_attempts (next_attempt_at);
+
+CREATE TRIGGER nyc_candidate_finance_sync_attempts_set_updated_at
+BEFORE UPDATE ON public.nyc_candidate_finance_sync_attempts
+FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
 CREATE TABLE public.nyc_candidate_finance_summaries (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   link_id uuid NOT NULL,

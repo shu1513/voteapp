@@ -16,7 +16,10 @@ import {
   resolveNewYorkCityCandidate,
   type NewYorkCityCandidateFinanceResolution,
 } from "./newYorkCityCandidateResolver.js";
-import { toNewYorkCityCfbOfficeSearchInput } from "./newYorkCityFinanceEligibleOffices.js";
+import {
+  NEW_YORK_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  toNewYorkCityCfbOfficeSearchInput,
+} from "./newYorkCityFinanceEligibleOffices.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type Connectable = Queryable & Pick<Pool, "connect">;
@@ -65,7 +68,7 @@ type DueQueryRow = {
 const DEFAULT_MAX_CANDIDATES = 25;
 const DEFAULT_STALE_AFTER_DAYS = 7;
 const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 1_460;
-const DEFAULT_ELECTION_LOOKBACK_DAYS = 1;
+const DEFAULT_ELECTION_LOOKBACK_DAYS = 1_460;
 
 function positiveInteger(value: number | undefined, fallback: number, field: string): number {
   const normalized = value ?? fallback;
@@ -106,18 +109,25 @@ export async function listDueNewYorkCityCandidateFinanceRows(input: {
         LEFT JOIN public.nyc_candidate_finance_summaries AS summary
           ON summary.link_id = link.id
          AND summary.election_year = link.election_year
+        LEFT JOIN public.nyc_candidate_finance_sync_attempts AS attempt
+          ON attempt.candidate_id = candidate.id
+         AND attempt.election_id = election.id
         WHERE candidate.deleted_at IS NULL
           AND district.state = 'NY'
           AND election.race_type = 'office'
           AND election.election_date >= ($1::date - make_interval(days => $5::int))
           AND election.election_date <= ($1::date + make_interval(days => $4::int))
-          AND candidate_election.status NOT IN ('withdrawn', 'lost')
+          AND candidate_election.status <> 'withdrawn'
           AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
           AND (
-            summary.last_synced_at IS NULL
-            OR summary.last_synced_at < ($1::timestamptz - make_interval(days => $3::int))
+            summary.last_synced_at < ($1::timestamptz - make_interval(days => $3::int))
+            OR (
+              summary.last_synced_at IS NULL
+              AND (attempt.next_attempt_at IS NULL OR attempt.next_attempt_at <= $1::timestamptz)
+            )
           )
-        ORDER BY summary.last_synced_at ASC NULLS FIRST, election.election_date ASC, candidate_name ASC
+        ORDER BY COALESCE(summary.last_synced_at, attempt.last_attempted_at) ASC NULLS FIRST,
+                 election.election_date ASC, candidate_name ASC
         LIMIT $2::int
       )
       SELECT * FROM due
@@ -128,7 +138,7 @@ export async function listDueNewYorkCityCandidateFinanceRows(input: {
       input.staleAfterDays,
       input.electionLookaheadDays,
       input.electionLookbackDays,
-      ["place::Mayor", "place::Public Advocate", "place::Comptroller", "county::Borough President"],
+      Array.from(NEW_YORK_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS),
     ]
   );
   return {
@@ -144,6 +154,30 @@ export async function listDueNewYorkCityCandidateFinanceRows(input: {
     })),
     totalDueRows: Number(result.rows[0]?.total_due_rows ?? 0),
   };
+}
+
+export async function recordNewYorkCityCandidateFinanceDeferral(input: {
+  db: Queryable;
+  candidateId: string;
+  electionId: string;
+  status: "unmatched" | "ambiguous" | "not_yet_published";
+  reason?: string;
+  attemptedAt: Date;
+  nextAttemptAt: Date;
+}): Promise<void> {
+  await input.db.query(
+    `
+      INSERT INTO public.nyc_candidate_finance_sync_attempts (
+        candidate_id, election_id, status, reason, last_attempted_at, next_attempt_at
+      )
+      VALUES ($1, $2, $3, $4, $5, $6)
+      ON CONFLICT (candidate_id, election_id)
+      DO UPDATE SET status = EXCLUDED.status, reason = EXCLUDED.reason,
+        last_attempted_at = EXCLUDED.last_attempted_at, next_attempt_at = EXCLUDED.next_attempt_at
+    `,
+    [input.candidateId, input.electionId, input.status, input.reason ?? null,
+      input.attemptedAt.toISOString(), input.nextAttemptAt.toISOString()]
+  );
 }
 
 function resolutionForDueRow(
@@ -193,6 +227,7 @@ type BatchDataSource = {
   readAnalysis: typeof readNewYorkCityCfbFinancialAnalysis;
   readContributions: typeof readNewYorkCityCfbContributions;
   syncCandidate: typeof syncNewYorkCityCandidateFinance;
+  recordDeferral: typeof recordNewYorkCityCandidateFinanceDeferral;
 };
 
 const DEFAULT_DATA_SOURCE: BatchDataSource = {
@@ -201,7 +236,34 @@ const DEFAULT_DATA_SOURCE: BatchDataSource = {
   readAnalysis: readNewYorkCityCfbFinancialAnalysis,
   readContributions: readNewYorkCityCfbContributions,
   syncCandidate: syncNewYorkCityCandidateFinance,
+  recordDeferral: recordNewYorkCityCandidateFinanceDeferral,
 };
+
+async function recordDeferral(input: {
+  dataSource: BatchDataSource;
+  db: Queryable;
+  row: NewYorkCityCandidateFinanceDueRow;
+  status: "unmatched" | "ambiguous" | "not_yet_published";
+  reason?: string;
+  now: Date;
+  nextAttemptAt: Date;
+  dryRun: boolean;
+}): Promise<NewYorkCityCandidateFinanceBatchItem> {
+  if (!input.dryRun) {
+    try {
+      await input.dataSource.recordDeferral({
+        db: input.db, candidateId: input.row.candidateId, electionId: input.row.electionId,
+        status: input.status, ...(input.reason ? { reason: input.reason } : {}),
+        attemptedAt: input.now, nextAttemptAt: input.nextAttemptAt,
+      });
+    } catch (error) {
+      return { candidateId: input.row.candidateId, electionId: input.row.electionId, status: "failed",
+        reason: error instanceof Error ? error.message : String(error) };
+    }
+  }
+  return { candidateId: input.row.candidateId, electionId: input.row.electionId, status: input.status,
+    ...(input.reason ? { reason: input.reason } : {}), nextCheckAt: input.nextAttemptAt.toISOString() };
+}
 
 function artifactPath(result: NewYorkCityCfbArtifactRefreshResult): string | null {
   return result.status === "not_yet_published" ? null : result.current.filePath;
@@ -223,11 +285,12 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
   const now = input.now ?? new Date();
   if (Number.isNaN(now.getTime())) throw new Error("Invalid NYC finance batch timestamp");
   const dataSource = { ...DEFAULT_DATA_SOURCE, ...input.dataSource };
+  const staleAfterDays = positiveInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "stale days");
   const due = await dataSource.listDueRows({
     db: input.db,
     now,
     maxCandidates: positiveInteger(input.maxCandidates, DEFAULT_MAX_CANDIDATES, "max candidates"),
-    staleAfterDays: positiveInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "stale days"),
+    staleAfterDays,
     electionLookaheadDays: positiveInteger(input.electionLookaheadDays, DEFAULT_ELECTION_LOOKAHEAD_DAYS, "lookahead days"),
     electionLookbackDays: positiveInteger(input.electionLookbackDays, DEFAULT_ELECTION_LOOKBACK_DAYS, "lookback days"),
   });
@@ -259,12 +322,11 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
         .map((artifact) => artifact.nextCheckAt)
         .sort()[0];
       for (const row of yearRows) {
-        results.push({
-          candidateId: row.candidateId,
-          electionId: row.electionId,
-          status: "not_yet_published",
-          ...(nextCheckAt ? { nextCheckAt } : {}),
-        });
+        const proposedNextAttemptAt = nextCheckAt ? new Date(nextCheckAt) : null;
+        const nextAttemptAt = proposedNextAttemptAt && proposedNextAttemptAt > now
+          ? proposedNextAttemptAt : new Date(now.getTime() + 24 * 60 * 60 * 1000);
+        results.push(await recordDeferral({ dataSource, db: input.db, row, status: "not_yet_published",
+          now, nextAttemptAt, dryRun: Boolean(input.dryRun) }));
       }
       continue;
     }
@@ -283,7 +345,10 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
       for (const row of yearRows) {
         const resolution = resolutions.get(`${row.candidateId}\u0000${row.electionId}`)!;
         if (resolution.status !== "matched") {
-          results.push({ candidateId: row.candidateId, electionId: row.electionId, status: resolution.status, reason: resolution.reason });
+          results.push(await recordDeferral({ dataSource, db: input.db, row, status: resolution.status,
+            reason: resolution.reason, now,
+            nextAttemptAt: new Date(now.getTime() + staleAfterDays * 24 * 60 * 60 * 1000),
+            dryRun: Boolean(input.dryRun) }));
           continue;
         }
         try {

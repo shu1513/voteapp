@@ -6,6 +6,7 @@ describe("newYorkCityFinanceWriter", () => {
   it("replaces one snapshot transactionally", async () => {
     const query = vi.fn()
       .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: "link-1" }] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
@@ -29,7 +30,7 @@ describe("newYorkCityFinanceWriter", () => {
     });
     expect(result).toEqual({ linkId: "link-1", breakdownsWritten: 1 });
     expect(query.mock.calls.map((call) => String(call[0]).trim().split(/\s+/, 1)[0])).toEqual([
-      "BEGIN", "INSERT", "INSERT", "DELETE", "INSERT", "COMMIT",
+      "BEGIN", "UPDATE", "INSERT", "INSERT", "DELETE", "INSERT", "COMMIT",
     ]);
     expect(client.release).toHaveBeenCalledOnce();
   });

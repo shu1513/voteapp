@@ -62,4 +62,18 @@ describe("newYorkCityCfbCsv", () => {
     await writeFile(path, "ELECTION,RECIPID\n2025,1\n");
     await expect(readNewYorkCityCfbContributions({ filePath: path })).rejects.toThrow("CSV missing required headers");
   });
+
+  it("counts rows whose cell count does not match the header as malformed", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "nyc-cfb-csv-"));
+    tempDirs.push(dir);
+    const path = join(dir, "malformed.csv");
+    await writeFile(path, [
+      "ELECTION,OFFICECD,RECIPID,RECIPNAME,FILING,SCHEDULE,REFNO,NAME,C_CODE,OCCUPATION,EMPNAME,AMNT,ADJTYPECD",
+      "2025,1,123,DOE JANE,12,ABC,R1,DONOR,IND,TEACHER,SCHOOL,100.00,",
+      "2025,1,123,DOE,JANE,12,ABC,R2,DONOR,IND,TEACHER,SCHOOL,50.00,",
+    ].join("\n"));
+    const result = await readNewYorkCityCfbContributions({ filePath: path });
+    expect(result).toMatchObject({ rawRowCount: 2, malformedRowCount: 1 });
+    expect(result.rows).toHaveLength(1);
+  });
 });

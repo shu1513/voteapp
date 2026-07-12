@@ -160,7 +160,11 @@ export async function readNewYorkCityCfbContributions(input: {
       else malformedRowCount += 1;
     },
   });
-  return { rows, rawRowCount: result.rowCount, malformedRowCount };
+  return {
+    rows,
+    rawRowCount: result.rowCount + result.malformedRowCount,
+    malformedRowCount: malformedRowCount + result.malformedRowCount,
+  };
 }
 
 export async function readNewYorkCityCfbFinancialAnalysis(input: {
@@ -185,5 +189,9 @@ export async function readNewYorkCityCfbFinancialAnalysis(input: {
       else malformedRowCount += 1;
     },
   });
-  return { rows, rawRowCount: result.rowCount, malformedRowCount };
+  return {
+    rows,
+    rawRowCount: result.rowCount + result.malformedRowCount,
+    malformedRowCount: malformedRowCount + result.malformedRowCount,
+  };
 }

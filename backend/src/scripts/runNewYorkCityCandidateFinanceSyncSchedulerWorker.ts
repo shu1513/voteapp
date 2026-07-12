@@ -4,6 +4,9 @@ import { createNewYorkCityFinanceSyncWorker } from "../scheduler/newYorkCityCand
 loadProjectEnv();
 const worker = createNewYorkCityFinanceSyncWorker();
 console.log("NYC candidate finance scheduler worker started");
+worker.on("error", (error) => {
+  console.error("NYC candidate finance scheduler worker error:", error);
+});
 
 async function shutdown(): Promise<void> {
   await worker.close();

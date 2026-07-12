@@ -66,10 +66,22 @@ function validateSnapshot(input: NewYorkCityFinanceSnapshotInput): void {
   }
 }
 
-export async function upsertNewYorkCityFinanceLink(input: {
+async function upsertNewYorkCityFinanceLink(input: {
   db: Queryable;
   link: NewYorkCityFinanceLinkInput;
 }): Promise<string> {
+  await input.db.query(
+    `
+      UPDATE public.nyc_candidate_finance_links
+      SET link_status = 'inactive'
+      WHERE candidate_id = $1
+        AND election_id = $2
+        AND cfb_candidate_id <> $3
+        AND link_status = 'active'
+        AND (link_source <> 'manual' OR $4 = 'manual')
+    `,
+    [input.link.candidateId, input.link.electionId, input.link.cfbCandidateId, input.link.linkSource]
+  );
   const result = await input.db.query<{ id: string }>(
     `
       INSERT INTO public.nyc_candidate_finance_links (

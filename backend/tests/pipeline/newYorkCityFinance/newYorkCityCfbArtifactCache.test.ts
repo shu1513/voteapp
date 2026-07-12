@@ -59,4 +59,29 @@ describe("newYorkCityCfbArtifactCache", () => {
       fetchImpl: vi.fn<typeof fetch>().mockResolvedValue(new Response("<!doctype html><title>Blocked</title>", { status: 200 })),
     })).rejects.toThrow("HTML, not CSV");
   });
+
+  it("accepts a quoted header containing a comma", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "nyc-cfb-cache-"));
+    tempDirs.push(cacheDir);
+    const csv = '"IGNORED,HEADER",RECIPID\nvalue,123\n';
+    const result = await refreshNewYorkCityCfbArtifact({
+      cacheDir, electionYear: 2025, kind: "contributions",
+      fetchImpl: vi.fn<typeof fetch>().mockResolvedValue(new Response(csv, { status: 200 })),
+    });
+    expect(result.status).toBe("downloaded");
+  });
+
+  it("applies the request timeout while streaming the response body", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "nyc-cfb-cache-"));
+    tempDirs.push(cacheDir);
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode("ELECTION,OFFICECD,RECIPID\n"));
+      },
+    });
+    await expect(refreshNewYorkCityCfbArtifact({
+      cacheDir, electionYear: 2025, kind: "contributions", timeoutMs: 20,
+      fetchImpl: vi.fn<typeof fetch>().mockResolvedValue(new Response(body, { status: 200 })),
+    })).rejects.toThrow("request timed out after 20ms");
+  });
 });

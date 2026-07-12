@@ -90,15 +90,29 @@ function toObject(cells: readonly string[], header: readonly string[]): CsvObjec
   return row;
 }
 
+export function parseCsvRecord(text: string): string[] {
+  const state: CsvParserState = { row: [], field: "", inQuotes: false, pendingQuote: false };
+  const rows: string[][] = [];
+  consumeCsvText(state, text, true, (row) => rows.push(row));
+  if (state.inQuotes || state.pendingQuote) throw new Error("CSV has an unterminated quoted field");
+  if (state.field.length > 0 || state.row.length > 0) {
+    state.row.push(state.field);
+    rows.push(state.row);
+  }
+  if (rows.length !== 1) throw new Error(`Expected one CSV record, received ${rows.length}`);
+  return rows[0] ?? [];
+}
+
 export async function readCsvObjects(input: {
   filePath: string;
   requiredHeaders?: readonly string[];
   onRow: (row: CsvObject) => void;
-}): Promise<{ rowCount: number; headers: string[] }> {
+}): Promise<{ rowCount: number; headers: string[]; malformedRowCount: number }> {
   const decoder = new StringDecoder("utf8");
   const state: CsvParserState = { row: [], field: "", inQuotes: false, pendingQuote: false };
   let header: string[] | null = null;
   let rowCount = 0;
+  let malformedRowCount = 0;
 
   const consumeRow = (cells: string[]): void => {
     if (!cells.some((value) => value.trim().length > 0)) {
@@ -106,6 +120,10 @@ export async function readCsvObjects(input: {
     }
     if (!header) {
       header = validateHeader(cells, input.requiredHeaders ?? []);
+      return;
+    }
+    if (cells.length !== header.length) {
+      malformedRowCount += 1;
       return;
     }
     input.onRow(toObject(cells, header));
@@ -126,5 +144,5 @@ export async function readCsvObjects(input: {
   if (!header) {
     throw new Error("CSV is empty");
   }
-  return { rowCount, headers: header };
+  return { rowCount, headers: header, malformedRowCount };
 }

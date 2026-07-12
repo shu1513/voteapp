@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { syncDueNewYorkCityCandidateFinance } from "../../../src/pipeline/newYorkCityFinance/newYorkCityCandidateFinanceBatchSync.js";
+import {
+  listDueNewYorkCityCandidateFinanceRows,
+  syncDueNewYorkCityCandidateFinance,
+} from "../../../src/pipeline/newYorkCityFinance/newYorkCityCandidateFinanceBatchSync.js";
 
 const dueRow = {
   candidateId: "candidate-1", electionId: "election-1", candidateName: "Jane Doe", electionYear: 2029,
@@ -8,21 +11,44 @@ const dueRow = {
 };
 
 describe("newYorkCityCandidateFinanceBatchSync", () => {
+  it("gates deferred rows, retains losing candidates, and uses the shared office allowlist", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [] });
+    await listDueNewYorkCityCandidateFinanceRows({
+      db: { query } as never,
+      now: new Date("2026-07-12T00:00:00Z"),
+      maxCandidates: 25,
+      staleAfterDays: 7,
+      electionLookaheadDays: 1_460,
+      electionLookbackDays: 1_460,
+    });
+    expect(query.mock.calls[0]?.[0]).toContain("nyc_candidate_finance_sync_attempts");
+    expect(query.mock.calls[0]?.[0]).toContain("candidate_election.status <> 'withdrawn'");
+    expect(query.mock.calls[0]?.[1]?.[5]).toEqual([
+      "place::Mayor", "place::Public Advocate", "place::Comptroller", "county::Borough President",
+    ]);
+  });
+
   it("defers unpublished future files without failing", async () => {
+    const listDueRows = vi.fn().mockResolvedValue({ rows: [dueRow], totalDueRows: 1 });
+    const recordDeferral = vi.fn().mockResolvedValue(undefined);
     const refreshArtifact = vi.fn().mockImplementation(async (input: { electionYear: number; kind: "contributions" | "financial_analysis" }) => ({
       status: "not_yet_published", electionYear: input.electionYear, kind: input.kind, url: "https://example.test/missing.csv",
       checkedAt: "2026-07-11T00:00:00Z", nextCheckAt: "2026-07-12T00:00:00Z",
     }));
     const result = await syncDueNewYorkCityCandidateFinance({
       db: {} as never,
+      now: new Date("2026-07-11T00:00:00Z"),
       dataSource: {
-        listDueRows: vi.fn().mockResolvedValue({ rows: [dueRow], totalDueRows: 1 }),
+        listDueRows,
         refreshArtifact,
+        recordDeferral,
       },
     });
     expect(result).toMatchObject({ syncedCandidateCount: 0, deferredCandidateCount: 1, failedCandidateCount: 0 });
     expect(result.results[0]?.status).toBe("not_yet_published");
-    expect(result.results[0]?.nextCheckAt).toBe("2026-07-12T00:00:00Z");
+    expect(result.results[0]?.nextCheckAt).toBe("2026-07-12T00:00:00.000Z");
+    expect(listDueRows).toHaveBeenCalledWith(expect.objectContaining({ electionLookbackDays: 1_460 }));
+    expect(recordDeferral).toHaveBeenCalledWith(expect.objectContaining({ status: "not_yet_published" }));
   });
 
   it("resolves once, filters contributions, and syncs candidate", async () => {
@@ -55,6 +81,7 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
   });
 
   it("reports ambiguity as deferred, not failed", async () => {
+    const recordDeferral = vi.fn().mockResolvedValue(undefined);
     const refreshArtifact = vi.fn().mockImplementation(async (input: { electionYear: number; kind: "contributions" | "financial_analysis" }) => ({
       status: "downloaded",
       current: { version: 1, electionYear: input.electionYear, kind: input.kind, url: "x", filePath: `/tmp/${input.kind}.csv`, downloadedAt: "x", bytes: 1, etag: null, lastModified: null },
@@ -72,9 +99,11 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
           { ...analysisBase, candidateId: "A1" }, { ...analysisBase, candidateId: "A2" },
         ] }),
         readContributions: vi.fn(),
+        recordDeferral,
       },
     });
     expect(result).toMatchObject({ deferredCandidateCount: 1, failedCandidateCount: 0 });
     expect(result.results[0]?.status).toBe("ambiguous");
+    expect(recordDeferral).toHaveBeenCalledWith(expect.objectContaining({ status: "ambiguous" }));
   });
 });
