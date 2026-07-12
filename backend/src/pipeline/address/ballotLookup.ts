@@ -51,6 +51,7 @@ import { loadNebraskaCandidateFinanceSummariesByCandidateElection } from "../neb
 import { loadConnecticutCandidateFinanceSummariesByCandidateElection } from "../connecticutFinance/connecticutBallotLookupFinanceLoader.js";
 import { loadColoradoCandidateFinanceSummariesByCandidateElection } from "../coloradoFinance/coloradoBallotLookupFinanceLoader.js";
 import { loadCaliforniaCandidateFinanceSummariesByCandidateElection } from "../californiaFinance/californiaBallotLookupFinanceLoader.js";
+import { loadLosAngelesCandidateFinanceSummariesByCandidateElection } from "../losAngelesCityFinance/losAngelesBallotLookupFinanceLoader.js";
 import {
 } from "../../config/featureFlags.js";
 
@@ -748,6 +749,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "CT", load: loadConnecticutCandidateFinanceSummariesByCandidateElection },
   { state: "CO", load: loadColoradoCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadCaliforniaCandidateFinanceSummariesByCandidateElection },
+  { state: "CA", load: loadLosAngelesCandidateFinanceSummariesByCandidateElection },
 ];
 
 async function loadCandidateFinanceSummariesByCandidateElection(
