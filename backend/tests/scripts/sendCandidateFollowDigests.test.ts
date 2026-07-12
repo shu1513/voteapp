@@ -36,17 +36,41 @@ function pendingRow(id: string, candidate: string, overrides: Partial<PendingRow
   };
 }
 
-// Routes the sender's four statements by their distinguishing SQL fragments.
+// Routes the sender's statements by their distinguishing SQL fragments.
 function createDbMock(fixtures: {
   orphanCount?: number;
   users: Array<{ id: string; email: string; first_name: string }>;
   pendingByUser: Record<string, PendingRow[]>;
   failMark?: boolean;
+  pushTokensByUser?: Record<string, string[]>;
+  pendingPushReceipts?: Array<{ receipt_id: string; expo_push_token: string }>;
 }) {
   const markedEventIds: string[][] = [];
+  const revokedPushTokens: string[] = [];
+  const deletedReceiptIds: string[][] = [];
   const query = vi.fn(async (sql: string, params?: unknown[]) => {
     if (sql.includes("count(*)")) {
       return { rows: [{ matched: String(fixtures.orphanCount ?? 0) }], rowCount: 1 };
+    }
+    if (sql.includes("SELECT expo_push_token")) {
+      const userId = params?.[0] as string;
+      const rows = (fixtures.pushTokensByUser?.[userId] ?? []).map((token) => ({ expo_push_token: token }));
+      return { rows, rowCount: rows.length };
+    }
+    if (sql.includes("SET revoked_at = now()")) {
+      revokedPushTokens.push(params?.[0] as string);
+      return { rows: [], rowCount: 1 };
+    }
+    if (sql.includes("INSERT INTO public.user_push_notification_receipts")) {
+      return { rows: [], rowCount: (params?.[0] as string[]).length };
+    }
+    if (sql.includes("DELETE FROM public.user_push_notification_receipts")) {
+      deletedReceiptIds.push([...(params?.[0] as string[])]);
+      return { rows: [], rowCount: (params?.[0] as string[]).length };
+    }
+    if (sql.includes("FROM public.user_push_notification_receipts")) {
+      const rows = fixtures.pendingPushReceipts ?? [];
+      return { rows, rowCount: rows.length };
     }
     if (sql.includes("ANY($1::uuid[])")) {
       if (fixtures.failMark) {
@@ -68,7 +92,19 @@ function createDbMock(fixtures: {
     }
     throw new Error(`Unexpected SQL in test: ${sql.slice(0, 80)}`);
   });
-  return { query, markedEventIds };
+  return { query, markedEventIds, revokedPushTokens, deletedReceiptIds };
+}
+
+function createPushClientMock(overrides: Record<string, unknown> = {}) {
+  return {
+    chunkPushNotifications: vi.fn((messages: unknown[]) => [messages]),
+    sendPushNotificationsAsync: vi.fn(async (chunk: Array<{ to: string }>) =>
+      chunk.map((_, index) => ({ status: "ok", id: `receipt-${index}` }))
+    ),
+    chunkPushNotificationReceiptIds: vi.fn((ids: string[]) => [ids]),
+    getPushNotificationReceiptsAsync: vi.fn(async () => ({})),
+    ...overrides,
+  };
 }
 
 function createMailerMock(failFor?: string) {
@@ -224,6 +260,156 @@ describe("sendCandidateFollowDigests", () => {
     expect(result.failures).toEqual([
       { userId: USER_ALPHA, stage: "mark_after_send", reason: "mark update failed" },
     ]);
+  });
+
+  it("sends a summary push after the email and still marks the events", async () => {
+    const db = createDbMock({
+      users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+      pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Jane Doe"), pendingRow("e2", "Jane Doe")] },
+      pushTokensByUser: { [USER_ALPHA]: ["ExponentPushToken[aaa]"] },
+    });
+    const mailer = createMailerMock();
+    const pushClient = createPushClientMock();
+
+    const result = await sendCandidateFollowDigests(db as never, mailer, {
+      ...options,
+      pushClient: pushClient as never,
+    });
+
+    expect(result).toMatchObject({ usersEmailedCount: 1, usersPushedCount: 1, failures: [] });
+    expect(db.markedEventIds).toEqual([["e1", "e2"]]);
+    const sentChunk = pushClient.sendPushNotificationsAsync.mock.calls[0][0];
+    expect(sentChunk).toEqual([
+      {
+        to: "ExponentPushToken[aaa]",
+        title: "VoteApp",
+        body: "2 updates on candidates you follow",
+        data: { url: "/follows" },
+        sound: "default",
+      },
+    ]);
+  });
+
+  it("records a push failure without blocking the mark (push is best-effort)", async () => {
+    const db = createDbMock({
+      users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+      pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Jane Doe")] },
+      pushTokensByUser: { [USER_ALPHA]: ["ExponentPushToken[aaa]"] },
+    });
+    const mailer = createMailerMock();
+    const pushClient = createPushClientMock({
+      sendPushNotificationsAsync: vi.fn(async () => {
+        throw new Error("expo api unreachable");
+      }),
+    });
+
+    const result = await sendCandidateFollowDigests(db as never, mailer, {
+      ...options,
+      pushClient: pushClient as never,
+    });
+
+    expect(result.usersEmailedCount).toBe(1);
+    expect(result.usersPushedCount).toBe(0);
+    expect(result.eventsDeliveredCount).toBe(1);
+    expect(result.failures).toEqual([
+      { userId: USER_ALPHA, stage: "push_send", reason: "expo api unreachable" },
+    ]);
+    expect(db.markedEventIds).toEqual([["e1"]]);
+  });
+
+  it("skips the push channel entirely for users without tokens", async () => {
+    const db = createDbMock({
+      users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+      pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Jane Doe")] },
+    });
+    const mailer = createMailerMock();
+    const pushClient = createPushClientMock();
+
+    const result = await sendCandidateFollowDigests(db as never, mailer, {
+      ...options,
+      pushClient: pushClient as never,
+    });
+
+    expect(result).toMatchObject({ usersEmailedCount: 1, usersPushedCount: 0, failures: [] });
+    expect(pushClient.sendPushNotificationsAsync).not.toHaveBeenCalled();
+  });
+
+  it("checks mature push receipts at run start and revokes dead tokens", async () => {
+    const db = createDbMock({
+      users: [],
+      pendingByUser: {},
+      pendingPushReceipts: [
+        { receipt_id: "r1", expo_push_token: "ExponentPushToken[dead]" },
+        { receipt_id: "r2", expo_push_token: "ExponentPushToken[fine]" },
+      ],
+    });
+    const mailer = createMailerMock();
+    const pushClient = createPushClientMock({
+      getPushNotificationReceiptsAsync: vi.fn(async () => ({
+        r1: { status: "error", message: "gone", details: { error: "DeviceNotRegistered" } },
+        r2: { status: "ok" },
+      })),
+    });
+
+    const result = await sendCandidateFollowDigests(db as never, mailer, {
+      ...options,
+      pushClient: pushClient as never,
+    });
+
+    expect(result.pushReceiptsCheckedCount).toBe(2);
+    expect(result.pushTokensRevokedCount).toBe(1);
+    expect(db.revokedPushTokens).toEqual(["ExponentPushToken[dead]"]);
+    expect(db.deletedReceiptIds).toEqual([["r1", "r2"]]);
+  });
+
+  it("continues the email run when receipt processing fails (best-effort)", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const db = createDbMock({
+        users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+        pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Jane Doe")] },
+        pendingPushReceipts: [{ receipt_id: "r1", expo_push_token: "ExponentPushToken[aaa]" }],
+      });
+      const mailer = createMailerMock();
+      const pushClient = createPushClientMock({
+        getPushNotificationReceiptsAsync: vi.fn(async () => {
+          throw new Error("expo receipts api down");
+        }),
+      });
+
+      const result = await sendCandidateFollowDigests(db as never, mailer, {
+        ...options,
+        pushClient: pushClient as never,
+      });
+
+      // The receipt failure is logged, not fatal: the email still goes out.
+      expect(result.usersEmailedCount).toBe(1);
+      expect(result.eventsDeliveredCount).toBe(1);
+      expect(result.pushReceiptsCheckedCount).toBe(0);
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining("push receipt processing failed"));
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
+  it("does not touch the push channel in dry runs", async () => {
+    const db = createDbMock({
+      users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+      pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Jane Doe")] },
+      pushTokensByUser: { [USER_ALPHA]: ["ExponentPushToken[aaa]"] },
+      pendingPushReceipts: [{ receipt_id: "r1", expo_push_token: "ExponentPushToken[aaa]" }],
+    });
+    const mailer = createMailerMock();
+    const pushClient = createPushClientMock();
+
+    await sendCandidateFollowDigests(db as never, mailer, {
+      ...options,
+      live: false,
+      pushClient: pushClient as never,
+    });
+
+    expect(pushClient.sendPushNotificationsAsync).not.toHaveBeenCalled();
+    expect(pushClient.getPushNotificationReceiptsAsync).not.toHaveBeenCalled();
   });
 
   it("caps rendered items per email while marking and counting every event", async () => {

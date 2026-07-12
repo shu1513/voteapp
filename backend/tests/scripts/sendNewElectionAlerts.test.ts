@@ -37,11 +37,23 @@ function createDbMock(fixtures: {
   users: Array<{ id: string; email: string; first_name: string }>;
   pendingByUser: Record<string, PendingRow[]>;
   failMark?: boolean;
+  pushTokensByUser?: Record<string, string[]>;
 }) {
   const markedEventIds: string[][] = [];
   const query = vi.fn(async (sql: string, params?: unknown[]) => {
     if (sql.includes("count(*)")) {
       return { rows: [{ matched: String(fixtures.orphanCount ?? 0) }], rowCount: 1 };
+    }
+    if (sql.includes("SELECT expo_push_token")) {
+      const userId = params?.[0] as string;
+      const rows = (fixtures.pushTokensByUser?.[userId] ?? []).map((token) => ({ expo_push_token: token }));
+      return { rows, rowCount: rows.length };
+    }
+    if (sql.includes("INSERT INTO public.user_push_notification_receipts")) {
+      return { rows: [], rowCount: (params?.[0] as string[]).length };
+    }
+    if (sql.includes("FROM public.user_push_notification_receipts")) {
+      return { rows: [], rowCount: 0 };
     }
     if (sql.includes("ANY($1::uuid[])")) {
       if (fixtures.failMark) {
@@ -64,6 +76,18 @@ function createDbMock(fixtures: {
     throw new Error(`Unexpected SQL in test: ${sql.slice(0, 80)}`);
   });
   return { query, markedEventIds };
+}
+
+function createPushClientMock(overrides: Record<string, unknown> = {}) {
+  return {
+    chunkPushNotifications: vi.fn((messages: unknown[]) => [messages]),
+    sendPushNotificationsAsync: vi.fn(async (chunk: Array<{ to: string }>) =>
+      chunk.map((_, index) => ({ status: "ok", id: `receipt-${index}` }))
+    ),
+    chunkPushNotificationReceiptIds: vi.fn((ids: string[]) => [ids]),
+    getPushNotificationReceiptsAsync: vi.fn(async () => ({})),
+    ...overrides,
+  };
 }
 
 function createMailerMock(failFor?: string) {
@@ -206,6 +230,60 @@ describe("sendNewElectionAlerts", () => {
     expect(result.failures).toEqual([
       { userId: USER_ALPHA, stage: "mark_after_send", reason: "mark update failed" },
     ]);
+  });
+
+  it("sends a summary push after the email and still marks the events", async () => {
+    const db = createDbMock({
+      users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+      pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Springfield")] },
+      pushTokensByUser: { [USER_ALPHA]: ["ExponentPushToken[aaa]"] },
+    });
+    const mailer = createMailerMock();
+    const pushClient = createPushClientMock();
+
+    const result = await sendNewElectionAlerts(db as never, mailer, {
+      ...options,
+      pushClient: pushClient as never,
+    });
+
+    expect(result).toMatchObject({ usersEmailedCount: 1, usersPushedCount: 1, failures: [] });
+    expect(db.markedEventIds).toEqual([["e1"]]);
+    const sentChunk = pushClient.sendPushNotificationsAsync.mock.calls[0][0];
+    expect(sentChunk).toEqual([
+      {
+        to: "ExponentPushToken[aaa]",
+        title: "VoteApp",
+        body: "1 new election in your districts",
+        data: { url: "/my-ballot" },
+        sound: "default",
+      },
+    ]);
+  });
+
+  it("records a push failure without blocking the mark (push is best-effort)", async () => {
+    const db = createDbMock({
+      users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+      pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Springfield")] },
+      pushTokensByUser: { [USER_ALPHA]: ["ExponentPushToken[aaa]"] },
+    });
+    const mailer = createMailerMock();
+    const pushClient = createPushClientMock({
+      sendPushNotificationsAsync: vi.fn(async () => {
+        throw new Error("expo api unreachable");
+      }),
+    });
+
+    const result = await sendNewElectionAlerts(db as never, mailer, {
+      ...options,
+      pushClient: pushClient as never,
+    });
+
+    expect(result.usersEmailedCount).toBe(1);
+    expect(result.eventsDeliveredCount).toBe(1);
+    expect(result.failures).toEqual([
+      { userId: USER_ALPHA, stage: "push_send", reason: "expo api unreachable" },
+    ]);
+    expect(db.markedEventIds).toEqual([["e1"]]);
   });
 
   it("caps rendered items per email while marking and counting every event", async () => {

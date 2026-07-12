@@ -46,6 +46,7 @@ import {
   ME_CANDIDATE_FOLLOWS_PATH,
   ME_DISTRICTS_INITIALIZE_PATH,
   ME_EMAIL_PREFERENCES_PATH,
+  ME_PUSH_TOKENS_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
   parseAuthenticatedAddressBodyValue,
   parseAddressBodyValue,
@@ -56,6 +57,8 @@ import {
   parseBallotPreferencesBodyValue,
   parseEmailPreferencesBodyValue,
   parseEmailUnsubscribePreference,
+  parsePushTokenDeleteBodyValue,
+  parsePushTokenRegisterBodyValue,
   parseBallotSummaryOptions,
   parseCandidateElectionFinancePath,
   parseCandidateId,
@@ -125,6 +128,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_CANDIDATE_FOLLOWS_PATH ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
     pathname === ME_EMAIL_PREFERENCES_PATH ||
+    pathname === ME_PUSH_TOKENS_PATH ||
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
     pathname === RESEARCH_AREAS_PATH ||
     pathname === SITE_SITEMAP_PATH ||
@@ -402,8 +406,9 @@ function createJsonBodyParser() {
           // Like logout: requiring JSON blocks plain cross-site form POSTs.
           request.path === AUTH_LOGOUT_ALL_PATH ||
           request.path === ME_EMAIL_PATH ||
-          request.path === ME_PASSWORD_PATH)) ||
-      (request.method === "DELETE" && request.path === ME_PATH) ||
+          request.path === ME_PASSWORD_PATH ||
+          request.path === ME_PUSH_TOKENS_PATH)) ||
+      (request.method === "DELETE" && (request.path === ME_PATH || request.path === ME_PUSH_TOKENS_PATH)) ||
       (request.method === "PUT" &&
         (request.path === ME_PATH ||
           request.path === ME_ADDRESS_PATH ||
@@ -1248,6 +1253,59 @@ async function dispatchApiRequest(
     const preferences = parseEmailPreferencesBodyValue(request.body);
     const result = await options.setAuthenticatedEmailPreferences(userId, preferences);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_PUSH_TOKENS_PATH) {
+    if (request.method !== "POST" && request.method !== "DELETE") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST or DELETE /api/me/push-tokens", {
+          ...corsHeaders,
+          allow: "POST, DELETE",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    // Same verified-email gate as the other notification preferences: the
+    // senders only ever deliver to verified accounts, so an unverified
+    // registration would be a dead row.
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
+    if (!userId) {
+      return;
+    }
+
+    if (request.method === "POST") {
+      if (!options.registerAuthenticatedPushToken) {
+        sendApiResponse(
+          response,
+          toErrorResponse(500, "internal_error", "Push token registration is not configured", corsHeaders)
+        );
+        return;
+      }
+
+      const input = parsePushTokenRegisterBodyValue(request.body);
+      await options.registerAuthenticatedPushToken(userId, input);
+      sendApiResponse(response, toJsonResponse(200, { status: "registered" }, corsHeaders));
+      return;
+    }
+
+    if (!options.revokeAuthenticatedPushToken) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Push token revocation is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const { expoPushToken } = parsePushTokenDeleteBodyValue(request.body);
+    await options.revokeAuthenticatedPushToken(userId, expoPushToken);
+    sendApiResponse(response, toJsonResponse(200, { status: "revoked" }, corsHeaders));
     return;
   }
 

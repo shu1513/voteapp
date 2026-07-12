@@ -1,5 +1,6 @@
 import { apiRequest, purgeAccountScopedQueries } from "@voteapp/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { registerForPushIfPermitted, revokeStoredPushRegistration } from "./pushNotifications";
 import { clearSessionId, setSessionId } from "./sessionStore";
 
 // Mobile session lifecycle around the shared api-client. The web relies on
@@ -39,6 +40,10 @@ export function useLogin() {
       // The Bearer id is already stored, so this refetch goes out
       // authenticated.
       purgeAccountScopedQueries(queryClient);
+      // Logout revoked this device's push token; quietly re-register when
+      // the OS permission is already granted (never prompts). Unverified
+      // accounts 403 on the endpoint and the helper swallows it.
+      void registerForPushIfPermitted();
       await queryClient.invalidateQueries({ queryKey: ["me"] });
     },
   });
@@ -49,8 +54,14 @@ export function useLogout() {
   return useMutation({
     // The request must go out while the Bearer id is still stored — the
     // backend destroys the session it authenticates as. JSON content type is
-    // the backend's CSRF guard, same as the web.
-    mutationFn: () => apiRequest<{ status: string }>("/api/auth/logout", { method: "POST", body: {} }),
+    // the backend's CSRF guard, same as the web. The push revoke goes first
+    // because it is bearer-authed too, and it is best-effort (it swallows
+    // its errors): a signed-out device should stop receiving pushes, but a
+    // failed revoke must never block logout.
+    mutationFn: async () => {
+      await revokeStoredPushRegistration();
+      return apiRequest<{ status: string }>("/api/auth/logout", { method: "POST", body: {} });
+    },
     onSettled: async () => {
       // Clear even when the request failed: a dead session id that the
       // backend already revoked must not keep the UI signed in.

@@ -25,6 +25,14 @@ function mockAlertModule(sendMock: ReturnType<typeof vi.fn>, opts: { lockBusy?: 
   }));
 }
 
+const fakePushClient = { fake: "push-client" };
+
+function mockPushModule() {
+  vi.doMock("../../src/pipeline/users/pushNotificationSender.js", () => ({
+    buildPushClientFromEnv: vi.fn(() => fakePushClient),
+  }));
+}
+
 function mockPipelineEnv() {
   vi.doMock("../../src/config/env.js", () => ({
     getPipelineEnv: () => ({
@@ -47,6 +55,7 @@ describe("runNewElectionAlertJob", () => {
     const endMock = vi.fn(async () => {});
     mockAlertModule(sendMock);
     mockPipelineEnv();
+    mockPushModule();
     mockPg(endMock);
 
     const { runNewElectionAlertJob } = await import("../../src/scheduler/newElectionAlertScheduler.js");
@@ -60,6 +69,7 @@ describe("runNewElectionAlertJob", () => {
       live: true,
       maxUsers: 500,
       maxItemsPerEmail: 20,
+      pushClient: fakePushClient,
     });
     expect(endMock).toHaveBeenCalledTimes(1);
   });
@@ -72,6 +82,7 @@ describe("runNewElectionAlertJob", () => {
     const endMock = vi.fn(async () => {});
     mockAlertModule(sendMock);
     mockPipelineEnv();
+    mockPushModule();
     mockPg(endMock);
 
     const { runNewElectionAlertJob } = await import("../../src/scheduler/newElectionAlertScheduler.js");
@@ -79,7 +90,12 @@ describe("runNewElectionAlertJob", () => {
     await expect(
       runNewElectionAlertJob({ triggeredBy: "manual", maxUsers: 10, maxItemsPerEmail: 5 })
     ).rejects.toThrow("db unavailable");
-    expect(sendMock.mock.calls[0][2]).toEqual({ live: true, maxUsers: 10, maxItemsPerEmail: 5 });
+    expect(sendMock.mock.calls[0][2]).toEqual({
+      live: true,
+      maxUsers: 10,
+      maxItemsPerEmail: 5,
+      pushClient: fakePushClient,
+    });
     expect(endMock).toHaveBeenCalledTimes(1);
   });
 
@@ -89,6 +105,7 @@ describe("runNewElectionAlertJob", () => {
     const endMock = vi.fn(async () => {});
     mockAlertModule(sendMock, { lockBusy: true });
     mockPipelineEnv();
+    mockPushModule();
     mockPg(endMock);
 
     const { runNewElectionAlertJob } = await import("../../src/scheduler/newElectionAlertScheduler.js");

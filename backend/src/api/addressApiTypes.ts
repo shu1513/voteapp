@@ -6,6 +6,7 @@ import type {
 } from "../pipeline/address/ballotElectionOrdering.js";
 import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import type { UserEmailPreferences } from "../pipeline/users/userEmailPreferences.js";
+import type { RegisterUserPushTokenInput } from "../pipeline/users/userPushTokens.js";
 import type { CreatedContentReport, ContentReportInput } from "../pipeline/reports/contentReports.js";
 import type { UserIdentity } from "../pipeline/users/userIdentity.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
@@ -110,6 +111,10 @@ export type AddressApiServerOptions = {
     userId: string,
     preferences: UserEmailPreferences
   ) => Promise<UserEmailPreferences>;
+  /** POST /api/me/push-tokens: registers/refreshes a mobile device token. */
+  registerAuthenticatedPushToken?: (userId: string, input: RegisterUserPushTokenInput) => Promise<void>;
+  /** DELETE /api/me/push-tokens: soft-revokes the caller's device token. */
+  revokeAuthenticatedPushToken?: (userId: string, expoPushToken: string) => Promise<void>;
   /**
    * Signed-token email unsubscribe (no session). mode "confirm" only
    * verifies the token (GET renders a confirmation form and must not mutate:

@@ -21,6 +21,7 @@ import { SortChips } from "../../components/SortChips";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../../components/Status";
 import { VerifyPrompt } from "../../components/VerifyPrompt";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../../lib/pendingDistricts";
+import { registerForPushRequestingPermission } from "../../lib/pushNotifications";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
 
@@ -109,6 +110,10 @@ function AddressForm({ compact }: { compact: boolean }) {
       // refetch the canonical version instead of caching the PUT body.
       void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
       setAddress("");
+      // Saved-ballot moment: one of the two places the push permission
+      // prompt may appear (the other: first follow). No-op after a denial
+      // or when already registered.
+      void registerForPushRequestingPermission();
     },
   });
 
@@ -191,6 +196,9 @@ function SavedBallotBody({ email }: { email: string }) {
         await clearPendingDistrictIds();
         setHandoffState("done");
         void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+        // The anonymous search just became a saved ballot — same prompt
+        // moment as the explicit address save below.
+        void registerForPushRequestingPermission();
       } catch (error) {
         if (error instanceof ApiError && error.status === 400) {
           await clearPendingDistrictIds();
