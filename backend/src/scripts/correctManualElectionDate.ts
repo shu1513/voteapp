@@ -117,11 +117,17 @@ export function assertIsoDate(name: string, value: string): void {
 // elections.sources is a jsonb array of URL strings everywhere the pipeline
 // writes it; anything else in an existing row is dropped rather than
 // round-tripped so a malformed row cannot smuggle non-string entries forward.
+// Entries are trimmed before the Set so a whitespace variant of an existing
+// URL dedupes instead of surviving as a second entry (defensive only — the
+// election payload contract trims on parse and no live row carries
+// untrimmed sources).
 export function appendElectionSource(sources: unknown, sourceUrl: string): string[] {
   const existing = Array.isArray(sources)
-    ? sources.filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+    ? sources
+        .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+        .map((value) => value.trim())
     : [];
-  return [...new Set([...existing, sourceUrl])];
+  return [...new Set([...existing, sourceUrl.trim()])];
 }
 
 export async function runElectionDateCorrection(
@@ -168,9 +174,16 @@ export async function runElectionDateCorrection(
       // already corrected without the official source (out-of-band repair)
       // gets the source appended so re-running the exact command always ends
       // in the same final state.
+      // Same trim-normalized comparison appendElectionSource uses, so the
+      // sourceAppended flag never reports an append that the merge would
+      // dedupe away (or vice versa).
       const merged = appendElectionSource(row.sources, sourceUrl);
+      const trimmedSourceUrl = sourceUrl.trim();
       const sourceMissing =
-        !Array.isArray(row.sources) || !row.sources.includes(sourceUrl);
+        !Array.isArray(row.sources) ||
+        !row.sources.some(
+          (value) => typeof value === "string" && value.trim() === trimmedSourceUrl
+        );
       if (sourceMissing && !dryRun) {
         await client.query(
           `
@@ -247,6 +260,16 @@ export async function runElectionDateCorrection(
       // would make the scheduler skip the election on its corrected date. On
       // the normal never-polled row these are already NULL/0 and the reset is
       // a no-op.
+      //
+      // Redis-side scheduling state is deliberately NOT touched here. Every
+      // completed polling pass persists an election_results row (the writer
+      // upserts not_found/not_final_yet rows too), so the persisted-results
+      // refusal above already blocks correction on any election that has
+      // been polled. The residual Redis state is a producer emit-marker set
+      // in the emit-to-write race window — it self-expires (7-day TTL, see
+      // electionResultPassMarkers.ts) and the certified pass clears it for
+      // unchecked elections — and a queued group job, whose enricher
+      // re-reads election_date from the database at execution time.
       await client.query(
         `
           UPDATE public.elections
