@@ -62,6 +62,11 @@ describe("Illinois SBE bulk data producer", () => {
       )
     ).toHaveLength(2);
     expect(new Set(artifact.candidateCommitteeRelations.map((relation) => relation.committeeId)).size).toBe(12);
+    expect(artifact.d2ReportSummaries.map((report) => report.filedAt)).toEqual([
+      "2000-10-23T21:47:11.000Z",
+      "2000-11-22T17:15:19.000Z",
+      "2001-01-31T17:51:38.000Z",
+    ]);
 
     expect(
       aggregateIllinoisD2Summaries({

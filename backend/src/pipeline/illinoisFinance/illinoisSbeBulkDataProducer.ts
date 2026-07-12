@@ -11,6 +11,17 @@ import {
 
 export const ILLINOIS_SBE_BULK_DOWNLOAD_URL =
   "https://www.elections.il.gov/CampaignDisclosure/DownloadCDDataFiles.aspx";
+const ILLINOIS_SBE_TIME_ZONE = "America/Chicago";
+const ILLINOIS_SBE_DATE_TIME_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  timeZone: ILLINOIS_SBE_TIME_ZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hourCycle: "h23",
+});
 
 const HEADERS = {
   candidates: ["ID", "LastName", "FirstName", "Address1", "Address2", "City", "State", "Zip", "Office", "DistrictType", "District", "ResidenceCounty", "PartyAffiliation", "RedactionRequested"],
@@ -154,11 +165,49 @@ function parseSbeDate(value: string): string | null {
   return match?.[1] ?? null;
 }
 
+function zonedDateTimeParts(timestamp: number): Record<string, number> {
+  return Object.fromEntries(
+    ILLINOIS_SBE_DATE_TIME_FORMATTER.formatToParts(new Date(timestamp))
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, Number.parseInt(part.value, 10)])
+  );
+}
+
 function parseSbeTimestamp(value: string): string | null {
   const match = clean(value).match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2}:\d{2})$/);
   if (!match) return null;
-  const timestamp = new Date(`${match[1]}T${match[2]}.000Z`);
-  return Number.isNaN(timestamp.getTime()) ? null : timestamp.toISOString();
+  const components = [...match[1].split("-"), ...match[2].split(":")].map((part) => Number.parseInt(part, 10));
+  const [year, month, day, hour, minute, second] = components;
+  if ([year, month, day, hour, minute, second].some((part) => !Number.isInteger(part))) return null;
+
+  const localAsUtc = Date.UTC(year!, month! - 1, day!, hour!, minute!, second!);
+  let timestamp = localAsUtc;
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const parts = zonedDateTimeParts(timestamp);
+    const representedLocalTime = Date.UTC(
+      parts.year!,
+      parts.month! - 1,
+      parts.day!,
+      parts.hour!,
+      parts.minute!,
+      parts.second!
+    );
+    const next = localAsUtc - (representedLocalTime - timestamp);
+    if (next === timestamp) break;
+    timestamp = next;
+  }
+  const resolved = zonedDateTimeParts(timestamp);
+  if (
+    resolved.year !== year ||
+    resolved.month !== month ||
+    resolved.day !== day ||
+    resolved.hour !== hour ||
+    resolved.minute !== minute ||
+    resolved.second !== second
+  ) {
+    return null;
+  }
+  return new Date(timestamp).toISOString();
 }
 
 function committeeStatus(value: string): Committee["status"] {
@@ -184,7 +233,7 @@ export async function produceIllinoisSbeNormalizedArtifact(input: {
     const localDistrictType = normalizeIllinoisSbeLocalDistrictType(districtType);
     const office = clean(row[8]!);
     const isAtLarge = localDistrictType !== null;
-    const mapping = mapIllinoisSbeOffice({ office, district: row[10], districtType, isAtLarge });
+    const mapping = mapIllinoisSbeOffice({ office, district: clean(row[10]!), districtType, isAtLarge });
     if (!mapping) {
       rejectedCandidates += 1;
       return;
