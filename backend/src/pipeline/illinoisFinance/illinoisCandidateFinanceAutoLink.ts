@@ -7,8 +7,8 @@ import {
 } from "./illinoisCandidateCommitteeResolver.js";
 import { ILLINOIS_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./illinoisFinanceEligibleOffices.js";
 import {
-  deactivateIllinoisFinanceLinksExcept,
-  upsertIllinoisFinanceLink,
+  replaceIllinoisAutoLinkedFinanceLinks,
+  type IllinoisFinanceLinkInput,
 } from "./illinoisFinanceWriter.js";
 import type { IllinoisSbeClientOptions } from "./illinoisSbeClient.js";
 
@@ -175,36 +175,28 @@ export async function autoLinkIllinoisCandidateFinanceForCandidateElection(input
     };
   }
 
-  for (const match of resolution.matches) {
-    await upsertIllinoisFinanceLink({
-      db: input.db,
-      link: {
-        candidateId: input.candidateElection.candidateId,
-        electionId: input.candidateElection.electionId,
-        electionYear: input.candidateElection.electionYear,
-        candidateNameNormalized: normalizeIllinoisCandidateNameForStorage(input.candidateElection.candidateName),
-        officeName: input.candidateElection.officeName,
-        district: match.district ?? input.candidateElection.district,
-        sbeCandidateId: match.sbeCandidateId,
-        sbeDistrictType: match.sbeDistrictType,
-        sbeOffice: match.sbeOffice,
-        isAtLarge: match.isAtLarge,
-        committeeKey: match.committeeKey,
-        committeeName: match.committeeName,
-        linkStatus: "active",
-        linkSource: "illinois_sbe",
-        sourceUrl: match.sourceUrl,
-        lastVerifiedAt: input.now,
-      },
-    });
-  }
-  const committeeKeys = resolution.matches.map((match) => match.committeeKey);
-  await deactivateIllinoisFinanceLinksExcept({
-    db: input.db,
+  const links: IllinoisFinanceLinkInput[] = resolution.matches.map((match) => ({
     candidateId: input.candidateElection.candidateId,
     electionId: input.candidateElection.electionId,
     electionYear: input.candidateElection.electionYear,
-    activeCommitteeKeys: committeeKeys,
+    candidateNameNormalized: normalizeIllinoisCandidateNameForStorage(input.candidateElection.candidateName),
+    officeName: input.candidateElection.officeName,
+    district: match.district ?? input.candidateElection.district,
+    sbeCandidateId: match.sbeCandidateId,
+    sbeDistrictType: match.sbeDistrictType,
+    sbeOffice: match.sbeOffice,
+    isAtLarge: match.isAtLarge,
+    committeeKey: match.committeeKey,
+    committeeName: match.committeeName,
+    linkStatus: "active",
+    linkSource: "illinois_sbe",
+    sourceUrl: match.sourceUrl,
+    lastVerifiedAt: input.now,
+  }));
+  const committeeKeys = resolution.matches.map((match) => match.committeeKey);
+  await replaceIllinoisAutoLinkedFinanceLinks({
+    db: input.db,
+    links,
     verifiedAt: input.now,
   });
 

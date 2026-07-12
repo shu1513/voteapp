@@ -382,6 +382,51 @@ export async function deactivateIllinoisFinanceLinksExcept(input: {
   return typeof result.rowCount === "number" ? result.rowCount : 0;
 }
 
+export async function replaceIllinoisAutoLinkedFinanceLinks(input: {
+  db: Queryable;
+  links: readonly IllinoisFinanceLinkInput[];
+  verifiedAt: Date;
+}): Promise<void> {
+  if (input.links.length === 0) {
+    throw new Error("Illinois auto-linked finance links are required");
+  }
+  const first = input.links[0]!;
+  validateIllinoisFinanceLinkInput(first);
+  const candidateId = requireNonEmpty(first.candidateId, "candidate id");
+  const electionId = requireNonEmpty(first.electionId, "election id");
+  const electionYear = normalizeElectionYear(first.electionYear);
+  const committeeKeys: string[] = [];
+
+  for (const link of input.links) {
+    validateIllinoisFinanceLinkInput(link);
+    if (
+      requireNonEmpty(link.candidateId, "candidate id") !== candidateId ||
+      requireNonEmpty(link.electionId, "election id") !== electionId ||
+      normalizeElectionYear(link.electionYear) !== electionYear
+    ) {
+      throw new Error("Illinois auto-linked finance links must share one candidate election");
+    }
+    if (link.linkSource !== "illinois_sbe" || link.linkStatus !== "active") {
+      throw new Error("Illinois auto-linked finance links must be active Illinois SBE links");
+    }
+    committeeKeys.push(normalizeCommitteeKey(requireNonEmpty(link.committeeKey, "Illinois committee key")));
+  }
+
+  await withIllinoisFinanceTransaction(input.db, async (db) => {
+    for (const link of input.links) {
+      await upsertIllinoisFinanceLink({ db, link });
+    }
+    await deactivateIllinoisFinanceLinksExcept({
+      db,
+      candidateId,
+      electionId,
+      electionYear,
+      activeCommitteeKeys: committeeKeys,
+      verifiedAt: input.verifiedAt,
+    });
+  });
+}
+
 async function upsertSummary(input: {
   db: Queryable;
   linkId: string;

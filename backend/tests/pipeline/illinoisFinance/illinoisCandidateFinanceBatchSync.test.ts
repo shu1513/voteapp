@@ -287,6 +287,13 @@ describe("illinoisCandidateFinanceBatchSync", () => {
   });
 
   it("auto-links missing candidates before listing due rows when enabled", async () => {
+    const txQuery = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 })
+      .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 });
+    const txClient = { query: txQuery, release: vi.fn() };
     const db = {
       query: vi
         .fn()
@@ -304,10 +311,8 @@ describe("illinoisCandidateFinanceBatchSync", () => {
           ],
           rowCount: 1,
         })
-        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
-        .mockResolvedValueOnce({ rows: [], rowCount: 0 })
         .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
-      connect: vi.fn(),
+      connect: vi.fn(async () => txClient as never),
     };
 
     const result = await syncDueIllinoisCandidateFinance({
@@ -344,9 +349,12 @@ describe("illinoisCandidateFinanceBatchSync", () => {
       autoLinkLinkedCount: 1,
     });
     expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.candidate_elections AS candidate_election");
-    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
-    expect(String(db.query.mock.calls[2]?.[0])).toContain("NOT (committee_key = ANY($4::text[]))");
-    expect(String(db.query.mock.calls[3]?.[0])).toContain("FROM public.il_candidate_finance_links AS link");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("FROM public.il_candidate_finance_links AS link");
+    expect(txQuery.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(String(txQuery.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
+    expect(String(txQuery.mock.calls[2]?.[0])).toContain("NOT (committee_key = ANY($4::text[]))");
+    expect(txQuery.mock.calls[3]?.[0]).toBe("COMMIT");
+    expect(txClient.release).toHaveBeenCalledTimes(1);
   });
 
   it("can auto-link and sync due candidates from artifact contribution records", async () => {
@@ -359,6 +367,13 @@ describe("illinoisCandidateFinanceBatchSync", () => {
       contributionRecords: [artifactContribution],
       contributionSourceUrl: SOURCE_URL,
     };
+    const txQuery = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 })
+      .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 })
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 });
+    const txClient = { query: txQuery, release: vi.fn() };
     const db = {
       query: vi
         .fn()
@@ -376,10 +391,8 @@ describe("illinoisCandidateFinanceBatchSync", () => {
           ],
           rowCount: 1,
         })
-        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
-        .mockResolvedValueOnce({ rows: [], rowCount: 0 })
         .mockResolvedValueOnce({ rows: [dueRow()], rowCount: 1 }),
-      connect: vi.fn(),
+      connect: vi.fn(async () => txClient as never),
     };
     const syncIllinoisCandidateFinanceFn = vi.fn(async () => successfulSync({ totalReceipts: 1000 }));
 
@@ -400,7 +413,7 @@ describe("illinoisCandidateFinanceBatchSync", () => {
       autoLinkAttemptedCount: 1,
       autoLinkLinkedCount: 1,
     });
-    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
+    expect(String(txQuery.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
     expect(syncIllinoisCandidateFinanceFn).toHaveBeenCalledWith(
       expect.objectContaining({
         candidateId: CANDIDATE_ID,

@@ -87,6 +87,17 @@ describe("Illinois normalized SBE artifacts", () => {
     invalid.candidateCommitteeRelations = [relation];
     expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(invalid))).toThrow("isAtLarge must be boolean");
   });
+
+  it("identifies a missing required D-2 amount field", () => {
+    const invalid = JSON.parse(manifest()) as Record<string, unknown>;
+    const d2 = { ...((invalid.d2ReportSummaries as Record<string, unknown>[])[0] ?? {}) };
+    delete d2.totalReceipts;
+    invalid.d2ReportSummaries = [d2];
+
+    expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(invalid))).toThrow(
+      "d2ReportSummaries[0].totalReceipts is required"
+    );
+  });
 });
 
 function report(overrides: Partial<IllinoisSbeD2ReportSummary> = {}): IllinoisSbeD2ReportSummary {
@@ -152,5 +163,25 @@ describe("Illinois D-2 summary aggregation", () => {
         reports: [report({ periodStart: "2023-01-01", periodEnd: "2023-03-31" })],
       })
     ).toBeNull();
+  });
+
+  it("keeps cash and debt on one reporting date instead of carrying stale debt forward", () => {
+    expect(
+      aggregateIllinoisD2Summaries({
+        electionYear: 2025,
+        committeeId: "456",
+        reports: [
+          report({ debtsOwed: 100 }),
+          report({
+            reportId: "q2",
+            periodStart: "2024-04-01",
+            periodEnd: "2024-06-30",
+            filedAt: "2024-07-15T12:00:00.000Z",
+            cashOnHand: 900,
+            debtsOwed: null,
+          }),
+        ],
+      })
+    ).toMatchObject({ cashOnHand: 900, debtsOwed: null });
   });
 });

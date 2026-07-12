@@ -102,6 +102,9 @@ function nullableNonnegativeAmount(
   context: string
 ): number | null {
   const value = record[key];
+  if (value === undefined) {
+    throw new Error(`Illinois SBE normalized artifact ${context}.${key} is required`);
+  }
   if (value === null) {
     return null;
   }

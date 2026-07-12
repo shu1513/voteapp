@@ -67,6 +67,8 @@ export function aggregateIllinoisD2Summaries(input: {
   if (reports.length === 0) {
     return null;
   }
+  // Keep both balances on one reporting date. Carrying an older non-null debt
+  // into a newer cash report would present a stale liability as current.
   const latestBalanceReport = [...reports].reverse().find(
     (report) => report.cashOnHand !== null || report.debtsOwed !== null
   );

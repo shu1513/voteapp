@@ -169,7 +169,10 @@ function officeDistrictMatches(input: {
   }
   const district = officeSearch.district?.trim();
   if (!district) {
-    return recordOffice === targetOffice;
+    // Preserve the existing statewide matcher: SBE exports may append
+    // statewide text after the office label. Place offices take the exact
+    // jurisdiction-aware path below.
+    return recordOffice.includes(targetOffice);
   }
   if (officeSearch.sbeDistrictType) {
     if (!recordOffice.startsWith(`${targetOffice} `)) {

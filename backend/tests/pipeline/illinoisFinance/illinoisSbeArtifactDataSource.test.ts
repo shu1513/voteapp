@@ -257,6 +257,36 @@ describe("illinoisSbeArtifactDataSource", () => {
     expect(data.outsideExpenditureRecords?.map((record) => record.officeDistrict)).toEqual(["Mayor - Aurora"]);
   });
 
+  it("preserves statewide matching when SBE appends statewide office text", () => {
+    const officeDistrict = "Governor - State of Illinois";
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({
+      row: dueRow(),
+      artifacts: {
+        contributionRecords: [],
+        contributionSourceUrl: CONTRIBUTIONS_URL,
+        expenditureRecords: [
+          {
+            payeeName: "Mailer",
+            payeeAddress: null,
+            amount: 100,
+            expendedDate: "10/1/2022",
+            reportReceivedDate: null,
+            expenditureType: "Independent Expenditures",
+            expendingCommitteeName: "Statewide Support",
+            purpose: "Mail",
+            candidateName: "Jane Doe",
+            officeDistrict,
+            supportOppose: "support",
+            sourceUrl: EXPENDITURES_URL,
+          },
+        ],
+        expenditureSourceUrl: EXPENDITURES_URL,
+      },
+    });
+
+    expect(data.outsideExpenditureRecords?.map((record) => record.officeDistrict)).toEqual([officeDistrict]);
+  });
+
   it("rejects missing contribution CSV paths", async () => {
     await expect(loadIllinoisSbeArtifactDataSet({ contributionCsvPaths: [" "] })).rejects.toThrow(
       "Illinois SBE contribution artifact requires at least one CSV path"
