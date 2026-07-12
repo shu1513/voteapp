@@ -320,7 +320,8 @@ export async function syncDueNewYorkCityCandidateFinance(input: {
       const nextCheckAt = [contributionArtifact, analysisArtifact]
         .filter((artifact): artifact is Extract<NewYorkCityCfbArtifactRefreshResult, { status: "not_yet_published" }> => artifact.status === "not_yet_published")
         .map((artifact) => artifact.nextCheckAt)
-        .sort()[0];
+        .sort()
+        .at(-1);
       for (const row of yearRows) {
         const proposedNextAttemptAt = nextCheckAt ? new Date(nextCheckAt) : null;
         const nextAttemptAt = proposedNextAttemptAt && proposedNextAttemptAt > now

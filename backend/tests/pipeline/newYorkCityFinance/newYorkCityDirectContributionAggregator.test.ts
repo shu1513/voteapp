@@ -47,4 +47,14 @@ describe("newYorkCityDirectContributionAggregator", () => {
     expect(result.ignoredRowCount).toBe(1);
     expect(result.breakdowns).toEqual([]);
   });
+
+  it("accepts the contribution schedules defined by the official CFB data key", () => {
+    const schedules = ["ABC", "D", "G", "K", "M", "N"];
+    const result = aggregateNewYorkCityDirectContributions({
+      candidateId: "A1", electionYear: 2025, officeCode: "1",
+      rows: schedules.map((schedule, index) => row({ schedule, referenceNumber: `R${index}`, amount: 10 })),
+    });
+    expect(result.acceptedRowCount).toBe(5);
+    expect(result.ignoredRowCount).toBe(1);
+  });
 });

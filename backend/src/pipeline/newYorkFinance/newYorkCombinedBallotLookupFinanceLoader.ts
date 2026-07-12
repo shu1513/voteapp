@@ -1,7 +1,6 @@
 import type { Pool, PoolClient } from "pg";
 
 import {
-  mergeFinanceSummaryMapsStrict,
   type BallotLookupFinanceSummary,
   type StateFinanceRequestCandidateRow,
   type StateFinanceRequestElectionRow,
@@ -11,6 +10,24 @@ import { loadNewYorkCandidateFinanceSummariesByCandidateElection } from "./newYo
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
+export function mergeNewYorkFinanceSummaryMaps(input: {
+  state: ReadonlyMap<string, BallotLookupFinanceSummary>;
+  city: ReadonlyMap<string, BallotLookupFinanceSummary>;
+  onCollision?: (key: string) => void;
+}): Map<string, BallotLookupFinanceSummary> {
+  const merged = new Map(input.state);
+  const onCollision = input.onCollision ?? ((key: string) => {
+    console.warn(`Duplicate NY finance summary key; preferring NEW_YORK_CITY_CFB: ${key}`);
+  });
+  for (const [key, summary] of input.city) {
+    if (merged.has(key)) {
+      onCollision(key);
+    }
+    merged.set(key, summary);
+  }
+  return merged;
+}
+
 export async function loadCombinedNewYorkCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly StateFinanceRequestCandidateRow[],
@@ -18,8 +35,5 @@ export async function loadCombinedNewYorkCandidateFinanceSummariesByCandidateEle
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   const state = await loadNewYorkCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
   const city = await loadNewYorkCityCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows);
-  return mergeFinanceSummaryMapsStrict([
-    { source: "NEW_YORK_SODA", summaries: state },
-    { source: "NEW_YORK_CITY_CFB", summaries: city },
-  ]);
+  return mergeNewYorkFinanceSummaryMaps({ state, city });
 }

@@ -51,6 +51,15 @@ describe("newYorkCityCfbArtifactCache", () => {
     }
   });
 
+  it("fails loudly when an expected published-cycle artifact returns 404", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "nyc-cfb-cache-"));
+    tempDirs.push(cacheDir);
+    await expect(refreshNewYorkCityCfbArtifact({
+      cacheDir, electionYear: 2025, kind: "contributions",
+      fetchImpl: vi.fn<typeof fetch>().mockResolvedValue(new Response(null, { status: 404 })),
+    })).rejects.toThrow("artifact missing for published election year 2025");
+  });
+
   it("rejects HTML challenge bodies", async () => {
     const cacheDir = await mkdtemp(join(tmpdir(), "nyc-cfb-cache-"));
     tempDirs.push(cacheDir);

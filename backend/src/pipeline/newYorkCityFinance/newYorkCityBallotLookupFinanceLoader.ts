@@ -115,7 +115,7 @@ export async function loadNewYorkCityCandidateFinanceSummariesByCandidateElectio
       )
       SELECT candidate_id, election_id, category_type, category_name, amount, contributor_count, source_url
       FROM ranked
-      WHERE rn <= 5
+      WHERE category_type = 'contribution_size' OR rn <= 5
       ORDER BY candidate_id, election_id, category_type, amount DESC, category_name ASC
     `,
     [JSON.stringify(selected)]

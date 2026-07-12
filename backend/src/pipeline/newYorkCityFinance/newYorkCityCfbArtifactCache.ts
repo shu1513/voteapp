@@ -156,6 +156,9 @@ export async function refreshNewYorkCityCfbArtifact(input: {
   if (response.status === 404) {
     const checkedAt = new Date();
     request.clear();
+    if (electionYear <= checkedAt.getUTCFullYear()) {
+      throw new Error(`NYC CFB ${input.kind} artifact missing for published election year ${electionYear}`);
+    }
     return {
       status: "not_yet_published",
       electionYear,

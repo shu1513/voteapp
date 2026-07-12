@@ -34,6 +34,7 @@ describe("newYorkCityBallotLookupFinanceLoader", () => {
         top_employers: [expect.objectContaining({ category_name: "NYC DOE", amount: 400 })],
       },
     });
+    expect(db.query.mock.calls[1]?.[0]).toContain("category_type = 'contribution_size' OR rn <= 5");
   });
 
   it("does not query for City Council or a non-NYC place", async () => {

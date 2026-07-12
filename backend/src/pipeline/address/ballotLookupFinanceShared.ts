@@ -249,24 +249,6 @@ export type StateFinanceRequestElectionRow = {
   geoid_compact?: string | null;
 };
 
-export function mergeFinanceSummaryMapsStrict(
-  namedMaps: readonly { source: string; summaries: ReadonlyMap<string, BallotLookupFinanceSummary> }[]
-): Map<string, BallotLookupFinanceSummary> {
-  const merged = new Map<string, BallotLookupFinanceSummary>();
-  const owner = new Map<string, string>();
-  for (const named of namedMaps) {
-    for (const [key, summary] of named.summaries) {
-      const existingOwner = owner.get(key);
-      if (existingOwner) {
-        throw new Error(`Duplicate finance summary key from ${existingOwner} and ${named.source}: ${key}`);
-      }
-      owner.set(key, named.source);
-      merged.set(key, summary);
-    }
-  }
-  return merged;
-}
-
 /**
  * The request builder every state's ballot-lookup finance loader shares:
  * take the elections in this state (optionally narrowed to offices the

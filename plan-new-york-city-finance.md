@@ -14,7 +14,7 @@ Implemented on `codex/nyc-cfb-finance`:
 - Phase 0 source probe/cache/parser and explicit `not_yet_published` outcome;
 - Phase 1 office catalog, migration 170, exact resolver, contribution
   aggregation, transactional snapshots, batch sync;
-- Phase 2 strict composed NY ballot adapter, shared API fields, web/mobile UI,
+- Phase 2 composed NY ballot adapter, shared API fields, web/mobile UI,
   CLI, and BullMQ operations;
 - Phase 3 independent expenditures remains intentionally deferred: no stable
   machine-readable candidate-target/direction contract was found;
@@ -59,7 +59,8 @@ not part of the initial finance implementation.
 - Ballot lookup currently registers exactly one state finance adapter per
   state. Adding a second `state: "NY"` entry would violate that assumption and
   could overwrite one provider's summary. NYC and NYS loaders must be composed
-  behind the single NY adapter, with a duplicate-key assertion.
+  behind the single NY adapter, with warned CFB precedence for impossible
+  duplicates.
 - The shared finance response supports totals, debts, occupations, optional
   employers, industries, size buckets, and outside spending. The public API
   client intentionally omits employers and size buckets, and web/mobile do not
@@ -213,11 +214,12 @@ Replace the one NY registry function with a small composed NY loader:
 1. call NYS loader;
 2. call NYC loader;
 3. merge maps;
-4. throw on duplicate candidate/election keys instead of silently choosing.
+4. prefer CFB for impossible-by-design duplicate candidate/election keys and
+   emit an operational warning instead of failing the ballot request.
 
-The office allowlists make collisions impossible by design, but the assertion
-protects future office changes. FEC retains its existing final precedence for
-federal races.
+The office allowlists make collisions impossible by design; CFB precedence
+keeps corrupt cross-provider links from failing a voter request. FEC retains
+its existing final precedence for federal races.
 
 ## 3. Implementation phases
 
@@ -322,7 +324,7 @@ Add:
 
 - NYC feature flags in `backend/src/config/featureFlags.ts`;
 - `newYorkCityBallotLookupFinanceLoader.ts`;
-- composed NY loader in `ballotLookup.ts` with duplicate-key assertion;
+- composed NY loader in `ballotLookup.ts` with warned CFB precedence;
 - `NEW_YORK_CITY_CFB` to the shared source union and source-label map;
 - `public_funds_received`, employers, and size buckets to the API-client
   contract, content detection/source-link helpers, web card, and mobile card;
@@ -354,7 +356,7 @@ Acceptance:
 
 - NYS state-office summaries still load unchanged;
 - NYC summaries load only for eligible NYC elections;
-- no duplicate key is silently overwritten;
+- impossible duplicate keys warn and resolve to authoritative CFB data;
 - public funds are labeled separately from private contributions;
 - `NULL` remains "not reported" while numeric zero remains visible;
 - disabled NYC flags cause no NYC queries or network calls;
@@ -410,7 +412,7 @@ extension of this provider.
 - Writer: transaction rollback, idempotency, stale-row deletion, active-link
   uniqueness, decimal precision, statement ordering.
 - Loader: flag off, no candidate rows, NYC direct summary, NYS summary,
-  duplicate-key assertion, FEC precedence, null-vs-zero semantics.
+  duplicate-key warning/CFB precedence, FEC precedence, null-vs-zero semantics.
 - UI/API: public funds, employers, size buckets, source label/link, empty
   outside section, responsive web/mobile money grid.
 - Operations: 304/not-modified, interrupted download, corrupt replacement,
