@@ -8,9 +8,10 @@ import { LabeledInput } from "./LabeledInput";
 import { ErrorNotice, LoadingNotice } from "./Status";
 
 // Shared body for the two email-link token flows, port of the web
-// VerifyTokenPage. The token normally arrives via the email link (a deep
-// link once Phase 4 lands); until then the email opens the web page, so
-// this screen also accepts a pasted token — same rule as reset-password.
+// VerifyTokenPage. The token normally arrives via the email link (deep
+// link when the app is installed); the pasted-token input stays as a
+// fallback for mail clients that mangle links — same rule as
+// reset-password.
 //
 // Tokens are single-use server-side, so the POST is modeled as a cached
 // query keyed by token (web parity): the QueryClient deduplicates it, and
@@ -41,8 +42,8 @@ export function VerifyTokenScreen({ endpoint, title, successMessage, revokesSess
   const [submittedToken, setSubmittedToken] = useState(paramToken);
   const [lastParamToken, setLastParamToken] = useState(paramToken);
 
-  // A deep link can update the param while this screen stays mounted
-  // (Phase 4); sync it into state then — but never clobber a pasted code
+  // A deep link can update the param while this screen stays mounted;
+  // sync it into state then — but never clobber a pasted code
   // with an absent param. Render-time adjustment, per React's
   // "adjusting state when a prop changes" pattern.
   if (paramToken && paramToken !== lastParamToken) {

@@ -9,9 +9,10 @@ import { clearSessionId } from "../../lib/sessionStore";
 
 /**
  * Port of the web ResetPasswordPage. The token normally arrives via the
- * email link (a deep link once Phase 4 lands); until then the email opens
- * the web page, so this screen also accepts a pasted token — unlike the
- * web, which can rely on ?token= always being present.
+ * email link (deep link when the app is installed, via the /reset-password
+ * alias route); the pasted-token input stays as a fallback for mail
+ * clients that mangle links — unlike the web, which can rely on ?token=
+ * always being present.
  */
 export default function ResetPasswordScreen() {
   const router = useRouter();
@@ -21,8 +22,8 @@ export default function ResetPasswordScreen() {
   const [lastParamToken, setLastParamToken] = useState(paramToken);
   const [password, setPassword] = useState("");
 
-  // A deep link can update the param while this screen stays mounted
-  // (Phase 4); sync it into state then — but never clobber a pasted code
+  // A deep link can update the param while this screen stays mounted;
+  // sync it into state then — but never clobber a pasted code
   // with an absent param. Render-time adjustment, per React's
   // "adjusting state when a prop changes" pattern.
   if (paramToken && paramToken !== lastParamToken) {
