@@ -26,6 +26,9 @@ describe("newYorkCityBallotLookupFinanceLoader", () => {
       ] })
       .mockResolvedValueOnce({ rows: [
         { candidate_id: "candidate-1", election_id: "election-1", support_oppose: "support", category_type: "industry", category_name: "real_estate", amount: "200", contributor_count: "2", source_url: "https://example.test/funders" },
+      ] })
+      .mockResolvedValueOnce({ rows: [
+        { candidate_id: "candidate-1", election_id: "election-1", industry_name: "real_estate", committee_id: "Z1", committee_name: "Outside Group", support_oppose: "support", organization_name: "Example Realty LLC", organization_type: "donor", amount: "200", contributor_count: "1", source_url: "https://example.test/funders" },
       ] }),
     };
     const result = await loadNewYorkCityCandidateFinanceSummariesByCandidateElection(
@@ -45,6 +48,16 @@ describe("newYorkCityBallotLookupFinanceLoader", () => {
         oppose_total: 50,
         top_supporting_groups: [expect.objectContaining({ committee_id: "Z1", amount: 300, expenditure_count: 2 })],
         top_supporting_industries: [expect.objectContaining({ category_name: "real_estate", amount: 200 })],
+      },
+      backing_summary: {
+        top_outside_supporting_industries: [expect.objectContaining({
+          explanation: expect.stringContaining("entire election cycle; it is not earmarked to this candidate"),
+          supporting_organizations: [expect.objectContaining({
+            organization_name: "Example Realty LLC",
+            committee_name: "Outside Group",
+            amount: 200,
+          })],
+        })],
       },
     });
     expect(db.query.mock.calls[1]?.[0]).toContain("category_type = 'contribution_size' OR rn <= 5");

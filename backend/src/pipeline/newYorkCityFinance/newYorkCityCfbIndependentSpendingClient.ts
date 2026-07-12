@@ -1,4 +1,4 @@
-import { strFromU8, unzipSync } from "fflate";
+import { strFromU8, unzip } from "fflate";
 
 import { parseCsvObjects, type CsvObject } from "../../utils/csvObjects.js";
 
@@ -301,14 +301,23 @@ export async function fetchNewYorkCityCfbIndependentSpending(input: {
   }
   let files: Record<string, Uint8Array>;
   try {
-    files = unzipSync(bytes, {
-      filter: (file) => {
-        const isCommunicationCsv = /^CFB-IE-COMM_[A-Za-z0-9_.-]+\.csv$/.test(file.name);
-        if (isCommunicationCsv && file.originalSize > MAX_EXPORT_BYTES) {
-          throw new Error(`NYC CFB independent-spending communication CSV was too large: ${file.originalSize}`);
+    files = await new Promise<Record<string, Uint8Array>>((resolve, reject) => {
+      unzip(
+        bytes,
+        {
+          filter: (file) => {
+            const isCommunicationCsv = /^CFB-IE-COMM_[A-Za-z0-9_.-]+\.csv$/.test(file.name);
+            if (isCommunicationCsv && file.originalSize > MAX_EXPORT_BYTES) {
+              throw new Error(`NYC CFB independent-spending communication CSV was too large: ${file.originalSize}`);
+            }
+            return isCommunicationCsv;
+          },
+        },
+        (error, unzipped) => {
+          if (error) reject(error);
+          else resolve(unzipped);
         }
-        return isCommunicationCsv;
-      },
+      );
     });
   } catch (error) {
     throw new Error("NYC CFB independent-spending export was not a valid ZIP", { cause: error });
