@@ -41,7 +41,16 @@ export type ElectionDateCorrectionOptions = {
 };
 
 export type ElectionDateCorrectionResult =
-  | { alreadyCorrected: true; electionId: string; correctedDate: string }
+  | {
+      alreadyCorrected: true;
+      electionId: string;
+      correctedDate: string;
+      // The already-corrected path still converges provenance: when the stored
+      // row is missing the official source (corrected out-of-band), a live
+      // re-run appends it. dryRun=true reports what would be appended.
+      sourceAppended: boolean;
+      dryRun: boolean;
+    }
   | {
       alreadyCorrected: false;
       dryRun: boolean;
@@ -121,6 +130,24 @@ export async function runElectionDateCorrection(
 ): Promise<ElectionDateCorrectionResult> {
   const { electionId, expectedDate, correctedDate, sourceUrl, dryRun } = options;
 
+  // Enforced here, not only in main(): a direct caller (test, future script)
+  // must not be able to store non-HTTPS provenance.
+  if (new URL(sourceUrl).protocol !== "https:") {
+    throw new Error("--source-url must use HTTPS");
+  }
+  // State campaign-finance links denormalize election_year from
+  // election_date at link time and every summary/breakdown join keys on that
+  // year, so a correction that crosses a calendar year strands finance data
+  // on the old year. That repair needs coordinated finance updates this
+  // wrapper deliberately does not attempt.
+  if (expectedDate.slice(0, 4) !== correctedDate.slice(0, 4)) {
+    throw new Error(
+      `Cross-calendar-year correction (${expectedDate} -> ${correctedDate}) is not supported: ` +
+        "campaign-finance links key summaries by election_year and would be stranded on the old year; " +
+        "this needs a coordinated finance repair, not a date-only update"
+    );
+  }
+
   await client.query("BEGIN");
   try {
     const locked = await client.query<ElectionRow>(
@@ -137,8 +164,34 @@ export async function runElectionDateCorrection(
     if (!row) throw new Error(`Election not found: ${electionId}`);
 
     if (row.election_date === correctedDate) {
-      await client.query("ROLLBACK");
-      return { alreadyCorrected: true, electionId, correctedDate };
+      // Idempotent path, but still converge provenance: a row whose date was
+      // already corrected without the official source (out-of-band repair)
+      // gets the source appended so re-running the exact command always ends
+      // in the same final state.
+      const merged = appendElectionSource(row.sources, sourceUrl);
+      const sourceMissing =
+        !Array.isArray(row.sources) || !row.sources.includes(sourceUrl);
+      if (sourceMissing && !dryRun) {
+        await client.query(
+          `
+            UPDATE public.elections
+            SET sources = $2::jsonb,
+                updated_at = now()
+            WHERE id = $1::uuid
+          `,
+          [electionId, JSON.stringify(merged)]
+        );
+        await client.query("COMMIT");
+      } else {
+        await client.query("ROLLBACK");
+      }
+      return {
+        alreadyCorrected: true,
+        electionId,
+        correctedDate,
+        sourceAppended: sourceMissing,
+        dryRun,
+      };
     }
     if (row.election_date !== expectedDate) {
       throw new Error(
@@ -164,15 +217,47 @@ export async function runElectionDateCorrection(
       );
     }
 
+    // Result rows were collected for the stored (wrong) date. Rewriting the
+    // date under them would silently present wrong-date results as this
+    // contest's outcome — that cleanup is a user decision, not a side effect.
+    const persistedResults = await client.query<{ source: string }>(
+      `
+        SELECT 'election_results' AS source
+        FROM public.election_results WHERE election_id = $1::uuid
+        UNION ALL
+        SELECT 'ballot_measure_results' AS source
+        FROM public.ballot_measure_results WHERE election_id = $1::uuid
+        LIMIT 1
+      `,
+      [electionId]
+    );
+    if (persistedResults.rows[0]) {
+      throw new Error(
+        `Election ${electionId} has persisted ${persistedResults.rows[0].source} rows collected under the stored date; ` +
+          "refusing date correction — resolve the result rows first (user decision), then re-run"
+      );
+    }
+
     const sources = appendElectionSource(row.sources, sourceUrl);
     if (dryRun) {
       await client.query("ROLLBACK");
     } else {
+      // Reset result-polling state alongside the date: markers set while the
+      // row carried the wrong date (checked stamps, exhausted attempt counts)
+      // would make the scheduler skip the election on its corrected date. On
+      // the normal never-polled row these are already NULL/0 and the reset is
+      // a no-op.
       await client.query(
         `
           UPDATE public.elections
           SET election_date = $2::date,
               sources = $3::jsonb,
+              election_night_results_checked_at = NULL,
+              election_night_results_attempt_count = 0,
+              election_night_results_last_attempted_at = NULL,
+              certified_results_checked_at = NULL,
+              certified_results_attempt_count = 0,
+              certified_results_last_attempted_at = NULL,
               updated_at = now()
           WHERE id = $1::uuid
         `,
@@ -219,8 +304,6 @@ async function main(): Promise<void> {
   assertIsoDate("--expected-date", expectedDate);
   assertIsoDate("--corrected-date", correctedDate);
   if (expectedDate === correctedDate) throw new Error("Expected and corrected dates must differ");
-  const parsedSource = new URL(sourceUrl);
-  if (parsedSource.protocol !== "https:") throw new Error("--source-url must use HTTPS");
   if (reason.length < 20) {
     throw new Error("--reason must explain the correction in at least 20 characters");
   }
