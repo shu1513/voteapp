@@ -12,6 +12,12 @@ import {
   type NewElectionAlertItem,
   type NewElectionAlertMailer,
 } from "../pipeline/users/newElectionAlertMailer.js";
+import {
+  buildPushClientFromEnv,
+  processMaturePushReceipts,
+  sendUserPushNotification,
+  type PushNotificationClient,
+} from "../pipeline/users/pushNotificationSender.js";
 
 // Delivery consumer for user_district_notification_events: sends one alert
 // email per user covering all their unsent new-election events, then stamps
@@ -20,6 +26,12 @@ import {
 // without email so they do not linger as forever-pending. Marking happens
 // only after a successful send, so a crash between send and mark can
 // duplicate an email but never lose one.
+//
+// Push is a best-effort second channel on the same events: after the email
+// goes out (the durable, at-least-once channel), a summary push goes to the
+// user's registered devices. Push failures never block marking — the email
+// already delivered the content — and a run also checks the mature Expo
+// receipts stored by earlier runs so dead device tokens get revoked.
 
 export const DEFAULT_ALERT_MAX_USERS = 500;
 export const DEFAULT_ALERT_MAX_ITEMS_PER_EMAIL = 20;
@@ -30,6 +42,8 @@ export type SendNewElectionAlertsOptions = {
   maxItemsPerEmail: number;
   /** Per-user signed unsubscribe link builder; omit to send without one. */
   buildUnsubscribeUrl?: (userId: string) => string;
+  /** Expo push client; omit to skip the push channel entirely. */
+  pushClient?: PushNotificationClient;
 };
 
 export type SendNewElectionAlertsResult = {
@@ -48,12 +62,20 @@ export type SendNewElectionAlertsResult = {
   usersEmailedCount: number;
   /** Events both sent and marked notified. */
   eventsDeliveredCount: number;
+  /** Users who received at least one summary push (best-effort channel). */
+  usersPushedCount: number;
+  /** Device tokens revoked this run (invalid, or Expo said DeviceNotRegistered). */
+  pushTokensRevokedCount: number;
+  /** Mature Expo receipts from earlier runs checked at run start. */
+  pushReceiptsCheckedCount: number;
   /**
    * stage "send": the email did not go out; the next run retries it.
    * stage "mark_after_send": the email DID go out but stamping notified_at
    * failed, so the next run will re-send those events (at-least-once).
+   * stage "push_send": the email went out but the summary push did not;
+   * events are still marked (push is best-effort).
    */
-  failures: Array<{ userId: string; stage: "send" | "mark_after_send"; reason: string }>;
+  failures: Array<{ userId: string; stage: "send" | "mark_after_send" | "push_send"; reason: string }>;
 };
 
 type Queryable = Pick<Pool, "query">;
@@ -215,8 +237,20 @@ export async function sendNewElectionAlerts(
     eventsPendingCount: 0,
     usersEmailedCount: 0,
     eventsDeliveredCount: 0,
+    usersPushedCount: 0,
+    pushTokensRevokedCount: 0,
+    pushReceiptsCheckedCount: 0,
     failures: [],
   };
+
+  // Follow up on earlier runs' push sends before producing new ones, so dead
+  // tokens stop receiving before this run's fan-out. Live only: receipt
+  // processing mutates (revokes tokens, deletes checked rows).
+  if (options.live && options.pushClient) {
+    const receipts = await processMaturePushReceipts(db, options.pushClient);
+    result.pushReceiptsCheckedCount = receipts.checkedCount;
+    result.pushTokensRevokedCount += receipts.revokedTokenCount;
+  }
 
   // Resolve orphans first so the send loop below only ever sees deliverable
   // events (in live mode; the dry run only counts them).
@@ -251,6 +285,26 @@ export async function sendNewElectionAlerts(
     }
     result.usersEmailedCount += 1;
 
+    // Summary push to the user's registered devices. After the email (the
+    // durable channel) and before marking: a crash here re-sends both next
+    // run (at-least-once), and a push failure never blocks marking.
+    if (options.pushClient) {
+      try {
+        const pushed = await sendUserPushNotification(db, options.pushClient, user.id, {
+          title: "VoteApp",
+          body: buildAlertSubjectLine(pendingEvents.length),
+          url: "/my-ballot",
+        });
+        result.pushTokensRevokedCount += pushed.revokedTokenCount;
+        if (pushed.sentCount > 0) {
+          result.usersPushedCount += 1;
+        }
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        result.failures.push({ userId: user.id, stage: "push_send", reason });
+      }
+    }
+
     try {
       await markEventsNotified(
         db,
@@ -264,6 +318,12 @@ export async function sendNewElectionAlerts(
   }
 
   return result;
+}
+
+/** Push body: the email subject's copy without the bracketed brand prefix. */
+function buildAlertSubjectLine(totalEventCount: number): string {
+  const noun = totalEventCount === 1 ? "election" : "elections";
+  return `${totalEventCount} new ${noun} in your districts`;
 }
 
 /** App-unique advisory lock key for the live alert run (digest uses 74_310_146). */
@@ -341,9 +401,12 @@ async function main(): Promise<void> {
   loadProjectEnv();
   const parsedOptions = parseSendNewElectionAlertsArgs(process.argv.slice(2));
   const buildUnsubscribeUrl = buildUnsubscribeUrlBuilderFromEnv("new_election_alerts");
+  // The dry run never touches the push channel, so it needs no client.
+  const pushClient = parsedOptions.live ? buildPushClientFromEnv() : null;
   const options: SendNewElectionAlertsOptions = {
     ...parsedOptions,
     ...(buildUnsubscribeUrl ? { buildUnsubscribeUrl } : {}),
+    ...(pushClient ? { pushClient } : {}),
   };
   const connectionString = process.env.DATABASE_URL?.trim();
   if (!connectionString) {

@@ -317,6 +317,7 @@
     "@node-rs/argon2": "^2.0.2",
     "@sentry/node": "^10.63.0",
     "bullmq": "^5.71.1",
+    "expo-server-sdk": "^6.1.0",
     "express": "^5.2.1",
     "pg": "^8.13.1",
     "pg-connection-string": "^2.12.0",

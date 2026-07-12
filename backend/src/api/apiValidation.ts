@@ -12,6 +12,7 @@ import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFo
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
 import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import type { UserEmailPreferences } from "../pipeline/users/userEmailPreferences.js";
+import type { RegisterUserPushTokenInput } from "../pipeline/users/userPushTokens.js";
 import { CONTENT_REPORT_ENTITY_TYPES, type ContentReportEntityType } from "../pipeline/reports/contentReports.js";
 import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
 
@@ -48,6 +49,9 @@ export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferen
 // [ballot-personalized-ordering]
 export const ME_BALLOT_PREFERENCES_PATH = "/api/me/ballot-preferences";
 export const ME_EMAIL_PREFERENCES_PATH = "/api/me/email-preferences";
+// Mobile device push-token registration (POST registers/refreshes, DELETE
+// revokes). Bearer-authed like every other /api/me route.
+export const ME_PUSH_TOKENS_PATH = "/api/me/push-tokens";
 // Signed-token unsubscribe target linked from notification emails; GET for
 // humans, POST for RFC 8058 one-click mailbox buttons. No session auth. The
 // optional pref query param picks which opt-in the link disables.
@@ -606,6 +610,61 @@ export function parseCandidateFollowBodyValue(parsed: unknown): CandidateFollowP
     ...(payload.notify_elections === undefined ? {} : { notifyElections: payload.notify_elections }),
     ...(payload.notify_updates === undefined ? {} : { notifyUpdates: payload.notify_updates }),
   };
+}
+
+// Expo push tokens are opaque short strings (ExponentPushToken[…]); the cap
+// guards the unique index and storage against garbage, not the format — the
+// Expo push API is the format authority and rejects invalid tokens itself.
+const MAX_PUSH_TOKEN_LENGTH = 512;
+
+function parsePushTokenField(record: Record<string, unknown>): string {
+  const raw = record.expo_push_token;
+  if (typeof raw !== "string" || raw.trim().length === 0) {
+    throw new TypeError("Request body must include string field: expo_push_token");
+  }
+  const token = raw.trim();
+  if (token.length > MAX_PUSH_TOKEN_LENGTH) {
+    throw new TypeError(`expo_push_token must be at most ${MAX_PUSH_TOKEN_LENGTH} characters`);
+  }
+  return token;
+}
+
+// Parses the POST /api/me/push-tokens body.
+export function parsePushTokenRegisterBodyValue(parsed: unknown): RegisterUserPushTokenInput {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  const record = parsed as Record<string, unknown>;
+
+  const expoPushToken = parsePushTokenField(record);
+
+  const platform = record.platform;
+  if (platform !== "ios" && platform !== "android") {
+    throw new TypeError('Body field platform must be "ios" or "android"');
+  }
+
+  const rawNativeToken = record.native_token;
+  if (rawNativeToken !== undefined && rawNativeToken !== null && typeof rawNativeToken !== "string") {
+    throw new TypeError("native_token must be a string or null");
+  }
+  const nativeToken = typeof rawNativeToken === "string" ? rawNativeToken.trim() : "";
+  if (nativeToken.length > MAX_PUSH_TOKEN_LENGTH) {
+    throw new TypeError(`native_token must be at most ${MAX_PUSH_TOKEN_LENGTH} characters`);
+  }
+
+  return {
+    expoPushToken,
+    nativeToken: nativeToken.length > 0 ? nativeToken : null,
+    platform,
+  };
+}
+
+// Parses the DELETE /api/me/push-tokens body.
+export function parsePushTokenDeleteBodyValue(parsed: unknown): { expoPushToken: string } {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  return { expoPushToken: parsePushTokenField(parsed as Record<string, unknown>) };
 }
 
 // [ballot-personalized-ordering]

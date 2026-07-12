@@ -24,6 +24,11 @@ import { US_LATEST_LOCAL_DATE_SQL } from "../utils/usLocalDate.js";
 // only guards its own date, so once that date is far past, the row is pure
 // audit. The table has a composite (user_id, election_date) primary key and
 // no id column, so its delete batches key on ctid instead.
+//
+// Push rows follow the same retention: a long-revoked device token is pure
+// audit (re-registration would upsert a fresh row anyway), and a push
+// receipt the send scripts somehow never processed can no longer be checked
+// (Expo expires receipts after a day) so it is safe to drop.
 
 type NotificationEventTable = {
   table: string;
@@ -47,6 +52,16 @@ export const NOTIFICATION_EVENT_TABLES: readonly NotificationEventTable[] = [
   {
     table: "user_election_reminder_sends",
     ageCondition: `election_date < ${US_LATEST_LOCAL_DATE_SQL} - $1::int`,
+    batchKey: "ctid",
+  },
+  {
+    table: "user_push_tokens",
+    ageCondition: "revoked_at IS NOT NULL AND revoked_at < now() - make_interval(days => $1::int)",
+    batchKey: "id",
+  },
+  {
+    table: "user_push_notification_receipts",
+    ageCondition: "created_at < now() - make_interval(days => $1::int)",
     batchKey: "ctid",
   },
 ] as const;

@@ -23,6 +23,14 @@ function mockDigestModule(sendMock: ReturnType<typeof vi.fn>, opts: { lockBusy?:
   }));
 }
 
+const fakePushClient = { fake: "push-client" };
+
+function mockPushModule() {
+  vi.doMock("../../src/pipeline/users/pushNotificationSender.js", () => ({
+    buildPushClientFromEnv: vi.fn(() => fakePushClient),
+  }));
+}
+
 function mockPipelineEnv() {
   vi.doMock("../../src/config/env.js", () => ({
     getPipelineEnv: () => ({
@@ -45,6 +53,7 @@ describe("runCandidateFollowDigestJob", () => {
     const endMock = vi.fn(async () => {});
     mockDigestModule(sendMock);
     mockPipelineEnv();
+    mockPushModule();
     mockPg(endMock);
 
     const { runCandidateFollowDigestJob } = await import(
@@ -61,6 +70,7 @@ describe("runCandidateFollowDigestJob", () => {
       live: true,
       maxUsers: 500,
       maxItemsPerEmail: 20,
+      pushClient: fakePushClient,
     });
     expect(endMock).toHaveBeenCalledTimes(1);
   });
@@ -73,6 +83,7 @@ describe("runCandidateFollowDigestJob", () => {
     const endMock = vi.fn(async () => {});
     mockDigestModule(sendMock);
     mockPipelineEnv();
+    mockPushModule();
     mockPg(endMock);
 
     const { runCandidateFollowDigestJob } = await import(
@@ -82,7 +93,12 @@ describe("runCandidateFollowDigestJob", () => {
     await expect(
       runCandidateFollowDigestJob({ triggeredBy: "manual", maxUsers: 10, maxItemsPerEmail: 5 })
     ).rejects.toThrow("db unavailable");
-    expect(sendMock.mock.calls[0][2]).toEqual({ live: true, maxUsers: 10, maxItemsPerEmail: 5 });
+    expect(sendMock.mock.calls[0][2]).toEqual({
+      live: true,
+      maxUsers: 10,
+      maxItemsPerEmail: 5,
+      pushClient: fakePushClient,
+    });
     expect(endMock).toHaveBeenCalledTimes(1);
   });
 
@@ -96,6 +112,7 @@ describe("runCandidateFollowDigestJob", () => {
     const endMock = vi.fn(async () => {});
     mockDigestModule(sendMock);
     mockPipelineEnv();
+    mockPushModule();
     mockPg(endMock);
 
     const { runCandidateFollowDigestJob } = await import(
@@ -114,6 +131,7 @@ describe("runCandidateFollowDigestJob", () => {
     const endMock = vi.fn(async () => {});
     mockDigestModule(sendMock, { lockBusy: true });
     mockPipelineEnv();
+    mockPushModule();
     mockPg(endMock);
 
     const { runCandidateFollowDigestJob } = await import(

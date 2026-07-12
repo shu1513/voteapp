@@ -92,6 +92,7 @@ import {
   setUserEmailPreferences,
   UserEmailPreferencesError,
 } from "../pipeline/users/userEmailPreferences.js";
+import { registerUserPushToken, revokeUserPushToken } from "../pipeline/users/userPushTokens.js";
 import { verifyEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
 import { getUserIdentity, setUserFirstName } from "../pipeline/users/userIdentity.js";
 import { createCachedSiteSitemap } from "../pipeline/sitemap/siteSitemap.js";
@@ -520,6 +521,8 @@ async function main(): Promise<void> {
     updateAuthenticatedUserFirstName: (userId, firstName) => setUserFirstName(pool, userId, firstName),
     getAuthenticatedEmailPreferences: (userId) => getUserEmailPreferences(pool, userId),
     setAuthenticatedEmailPreferences: (userId, preferences) => setUserEmailPreferences(pool, userId, preferences),
+    registerAuthenticatedPushToken: (userId, input) => registerUserPushToken(pool, userId, input),
+    revokeAuthenticatedPushToken: (userId, expoPushToken) => revokeUserPushToken(pool, userId, expoPushToken),
     ...(unsubscribeSecret
       ? {
           unsubscribeFromEmailNotifications: async (

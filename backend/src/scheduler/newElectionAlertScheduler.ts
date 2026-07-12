@@ -13,6 +13,7 @@ import {
   DEFAULT_ALERT_MAX_USERS,
   type SendNewElectionAlertsResult,
 } from "../scripts/sendNewElectionAlerts.js";
+import { buildPushClientFromEnv } from "../pipeline/users/pushNotificationSender.js";
 
 export const NEW_ELECTION_ALERT_JOB_NAME = "new_election_alert";
 export const NEW_ELECTION_ALERT_DAILY_SCHEDULER_ID = "new_election_alert_daily";
@@ -117,12 +118,14 @@ export async function runNewElectionAlertJob(
     // events from failed sends (stage "send", retried) or failed marks
     // (stage "mark_after_send", re-sent — the at-least-once duplicate).
     const buildUnsubscribeUrl = buildUnsubscribeUrlBuilderFromEnv("new_election_alerts");
+    const pushClient = buildPushClientFromEnv();
     const result = await withNewElectionAlertRunLock(pool, () =>
       sendNewElectionAlerts(pool, mailer, {
         live: true,
         maxUsers: data.maxUsers ?? DEFAULT_ALERT_MAX_USERS,
         maxItemsPerEmail: data.maxItemsPerEmail ?? DEFAULT_ALERT_MAX_ITEMS_PER_EMAIL,
         ...(buildUnsubscribeUrl ? { buildUnsubscribeUrl } : {}),
+        ...(pushClient ? { pushClient } : {}),
       })
     );
     if (result === null) {
@@ -134,6 +137,9 @@ export async function runNewElectionAlertJob(
         eventsPendingCount: 0,
         usersEmailedCount: 0,
         eventsDeliveredCount: 0,
+        usersPushedCount: 0,
+        pushTokensRevokedCount: 0,
+        pushReceiptsCheckedCount: 0,
         failures: [],
         triggeredBy,
         lockSkipped: true,
