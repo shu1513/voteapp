@@ -43,6 +43,10 @@ import {
   enqueueManualTexasCandidateFinanceSyncJob,
 } from "../../scheduler/texasCandidateFinanceSyncScheduler.js";
 import {
+  buildHoustonCandidateFinanceLinkedElectionSyncJobId,
+  enqueueManualHoustonCandidateFinanceSyncJob,
+} from "../../scheduler/houstonCandidateFinanceSyncScheduler.js";
+import {
   buildHawaiiCandidateFinanceLinkedElectionSyncJobId,
   enqueueManualHawaiiCandidateFinanceSyncJob,
 } from "../../scheduler/hawaiiCandidateFinanceSyncScheduler.js";
@@ -112,6 +116,7 @@ import { isDistrictOfColumbiaFinanceEligibleOffice } from "../districtOfColumbia
 import { isNewMexicoFinanceEligibleOffice } from "../newMexicoFinance/newMexicoFinanceEligibleOffices.js";
 import { isOklahomaFinanceEligibleOffice } from "../oklahomaFinance/oklahomaFinanceEligibleOffices.js";
 import { isTexasFinanceEligibleOffice } from "../texasFinance/texasFinanceEligibleOffices.js";
+import { isHoustonFinanceEligibleLinkedElection } from "../houstonFinance/houstonFinanceEligibleOffices.js";
 import { isHawaiiFinanceEligibleOffice } from "../hawaiiFinance/hawaiiFinanceEligibleOffices.js";
 import { isWashingtonFinanceEligibleOffice } from "../washingtonFinance/washingtonFinanceEligibleOffices.js";
 import { isNewYorkFinanceEligibleOffice } from "../newYorkFinance/newYorkFinanceEligibleOffices.js";
@@ -657,6 +662,29 @@ async function enqueueTexasFinanceSyncForLinkedElection(input: {
   }
 }
 
+async function enqueueHoustonFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (!isHoustonFinanceEligibleLinkedElection({
+    state: input.context.state,
+    districtType: input.context.districtType,
+    districtName: input.context.districtName,
+    officeScope: input.context.officeScope,
+    officeCanonicalName: input.context.officeCanonicalName,
+  })) return;
+  try {
+    await enqueueManualHoustonCandidateFinanceSyncJob(
+      { aiClassifyIndustries: true, triggeredBy: "manual" },
+      { jobId: buildHoustonCandidateFinanceLinkedElectionSyncJobId() }
+    );
+  } catch (error) {
+    console.warn(
+      `candidate-profile enricher could not enqueue Houston finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${toReason(error)}`
+    );
+  }
+}
+
 function isMissingOptionalFloridaModuleError(error: unknown): boolean {
   const code = typeof error === "object" && error !== null && "code" in error ? String(error.code) : "";
   const message = error instanceof Error ? error.message : String(error);
@@ -1042,6 +1070,10 @@ export async function enqueueCandidateProfileFinanceSyncFanoutForLinkedElection(
     candidateId: input.candidateId,
   });
   await enqueueTexasFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
+  await enqueueHoustonFinanceSyncForLinkedElection({
     context: input.context,
     candidateId: input.candidateId,
   });

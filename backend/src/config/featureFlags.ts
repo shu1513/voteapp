@@ -282,6 +282,17 @@ export function isTexasCampaignFinanceSyncEnabled(force = false): boolean {
   );
 }
 
+export function isHoustonCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("HOUSTON_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isHoustonCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isHoustonCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("HOUSTON_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isTennesseeCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("TENNESSEE_CAMPAIGN_FINANCE_ENABLED", false);
 }

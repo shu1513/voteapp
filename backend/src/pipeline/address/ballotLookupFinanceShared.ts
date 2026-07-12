@@ -60,6 +60,7 @@ export type BallotLookupFinanceSummary = {
     | "NEW_YORK_SODA"
     | "OKLAHOMA_GUARDIAN"
     | "TEXAS_TEC"
+    | "HOUSTON_CAMPAIGN_FINANCE"
     | "FLORIDA_DOS"
     | "UTAH_DISCLOSURES"
     | "HAWAII_CSC"
@@ -242,6 +243,8 @@ export type StateFinanceRequestCandidateRow = {
 export type StateFinanceRequestElectionRow = {
   election_id: string;
   state: string;
+  district_type?: string | null;
+  geoid_compact?: string | null;
   office_scope?: string | null;
   office_canonical_name?: string | null;
 };
