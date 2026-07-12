@@ -8,14 +8,13 @@ import {
   type BallotPreferences,
   type BallotSummary,
 } from "@voteapp/api-client";
-import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { AiBanner } from "../components/AiBanner";
+import { SavedAddressForm } from "../components/SavedAddressForm";
 import { ElectionCard } from "../components/ElectionCard";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingDistricts";
-import { PRIVACY_NOTICE } from "@voteapp/api-client";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
@@ -102,56 +101,6 @@ function BallotPreferenceControls() {
       </div>
       {update.isError ? <ErrorNotice error={update.error} /> : null}
     </div>
-  );
-}
-
-function AddressForm({ compact }: { compact: boolean }) {
-  const [address, setAddress] = useState("");
-  const queryClient = useQueryClient();
-
-  const update = useMutation({
-    mutationFn: () =>
-      apiRequest<SavedBallot>("/api/me/address", { method: "PUT", body: { address: address.trim() } }),
-    onSuccess: () => {
-      // The PUT returns a plain district ballot, but GET /api/me/ballot
-      // applies saved sort preferences and followed-candidate ordering —
-      // refetch the canonical version instead of caching the PUT body.
-      void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
-      setAddress("");
-    },
-  });
-
-  return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        if (address.trim() && !update.isPending) {
-          update.mutate();
-        }
-      }}
-      className={compact ? "mt-2 space-y-3" : "mt-6 space-y-3"}
-    >
-      <div>
-        <label htmlFor="saved-address" className="block text-sm font-medium text-ink">
-          {compact ? "New address" : "Home address"}
-        </label>
-        <AddressAutocomplete
-          inputId="saved-address"
-          value={address}
-          onChange={setAddress}
-          placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
-        />
-        <p className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</p>
-      </div>
-      <button
-        type="submit"
-        disabled={!address.trim() || update.isPending}
-        className="w-full rounded-md bg-rausch px-4 py-3 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line"
-      >
-        {update.isPending ? "Saving…" : "Save address"}
-      </button>
-      {update.isError ? <ErrorNotice error={update.error} /> : null}
-    </form>
   );
 }
 
@@ -305,7 +254,9 @@ export function SavedBallotPage() {
         <p className="mt-2 text-sm text-ink-soft">
           Save your home address once and your ballot will be waiting every time you come back.
         </p>
-        <AddressForm compact={false} />
+        <div className="mt-3">
+          <SavedAddressForm inputId="saved-address" label="Home address" />
+        </div>
       </div>
     );
   }
@@ -333,11 +284,14 @@ export function SavedBallotPage() {
         </div>
       )}
 
-      <details className="mt-8 rounded-xl border border-line bg-surface p-4 text-sm">
-        <summary className="cursor-pointer select-none font-medium text-ink">Change your address</summary>
-        <AddressForm compact />
-      </details>
-      <p className="mt-4 text-sm text-ink-soft">
+      <p className="mt-8 text-sm text-ink-soft">
+        Moved?{" "}
+        <Link to="/me/settings" className="underline hover:text-ink">
+          Change your address in Settings
+        </Link>
+        .
+      </p>
+      <p className="mt-2 text-sm text-ink-soft">
         Looking somewhere else?{" "}
         <Link to="/?new=1" className="underline hover:text-ink">
           Run a one-off address search
