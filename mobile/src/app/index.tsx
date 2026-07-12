@@ -5,6 +5,7 @@ import {
   PRE_SEARCH_ACCEPTANCE_STORAGE_KEY,
   PRE_SEARCH_CHECKBOX_LABEL,
   PRIVACY_NOTICE,
+  useMe,
 } from "@voteapp/api-client";
 import { useMutation } from "@tanstack/react-query";
 import { Stack, useRouter } from "expo-router";
@@ -13,7 +14,63 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } fro
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
+import { useLogout } from "../lib/auth";
 import { setMatchedAddress } from "../lib/matchedAddress";
+
+/**
+ * Signed-in state / auth entry links. The account screens (saved ballot,
+ * follows, settings) land in the next chunk; until then this strip is the
+ * whole account surface.
+ */
+function AuthStrip() {
+  const router = useRouter();
+  const { me, isLoading, isError } = useMe();
+  const logout = useLogout();
+  // A failed identity fetch (backend down, network) must not masquerade as
+  // "signed out" — render nothing rather than the log-in links.
+  if (isLoading || isError) {
+    return null;
+  }
+  if (!me) {
+    return (
+      <View className="flex-row justify-end gap-4 pb-2">
+        <Text
+          className="text-sm text-ink underline"
+          accessibilityRole="link"
+          onPress={() => router.push("/auth/login")}
+        >
+          Log in
+        </Text>
+        <Text
+          className="text-sm text-ink underline"
+          accessibilityRole="link"
+          onPress={() => router.push("/auth/register")}
+        >
+          Sign up
+        </Text>
+      </View>
+    );
+  }
+  return (
+    <View className="flex-row items-center justify-end gap-4 pb-2">
+      <Text className="shrink text-sm text-ink-soft" numberOfLines={1}>
+        {me.email}
+        {me.email_verified ? "" : " (unverified)"}
+      </Text>
+      <Text
+        className="text-sm text-ink underline"
+        accessibilityRole="button"
+        onPress={() => {
+          if (!logout.isPending) {
+            logout.mutate();
+          }
+        }}
+      >
+        {logout.isPending ? "Logging out…" : "Log out"}
+      </Text>
+    </View>
+  );
+}
 
 /**
  * Port of the web HomePage's anonymous flow. Web-only concerns dropped:
@@ -72,6 +129,7 @@ export default function HomeScreen() {
     <KeyboardAvoidingView className="flex-1 bg-white" behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <Stack.Screen options={{ title: "VoteApp" }} />
       <ScrollView keyboardShouldPersistTaps="handled" contentContainerClassName="px-4 py-10">
+        <AuthStrip />
         <Text className="text-3xl font-bold text-ink">Find what&apos;s on your ballot</Text>
         <Text className="mt-2 text-ink-soft">
           Enter your home address to see the elections coming up on your ballot.
