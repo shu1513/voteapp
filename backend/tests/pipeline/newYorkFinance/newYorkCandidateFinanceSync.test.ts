@@ -59,7 +59,7 @@ function baseSyncInput(db: ReturnType<typeof createMockDb>) {
 }
 
 describe("syncNewYorkCandidateFinance", () => {
-  it("writes an outside-spending-only snapshot with rule-classified industries", async () => {
+  it("writes a full snapshot with direct campaign data and rule-classified industries", async () => {
     const db = createMockDb();
     const nyClient = {
       searchAndResolveCandidateCommittee: vi.fn(async () => MATCHED_RESOLUTION),
@@ -83,6 +83,35 @@ describe("syncNewYorkCandidateFinance", () => {
         organizationRowCount: 28,
         skippedIndividualRowCount: 0,
       })),
+      collectDirectCampaign: vi.fn(async () => ({
+        directContributionTotal: 5_454_286.73,
+        totalDisbursements: 3_706_000.56,
+        breakdowns: [
+          {
+            categoryType: "contribution_size" as const,
+            categoryName: "$1-$99",
+            amount: 120_000,
+            contributorCount: 4_000,
+            sourceUrl: "https://data.ny.gov/d/e9ss-239a",
+          },
+          {
+            categoryType: "contributor_type" as const,
+            categoryName: "Individual",
+            amount: 4_001_893.48,
+            contributorCount: 8_198,
+            sourceUrl: "https://data.ny.gov/d/e9ss-239a",
+          },
+          {
+            categoryType: "donor" as const,
+            categoryName: "Lyft, Inc.",
+            amount: 50_000,
+            contributorCount: 2,
+            sourceUrl: "https://data.ny.gov/d/e9ss-239a",
+          },
+        ],
+        receiptRowCount: 8_442,
+        lumpRowCount: 1,
+      })),
     };
 
     const result = await syncNewYorkCandidateFinance({
@@ -96,6 +125,10 @@ describe("syncNewYorkCandidateFinance", () => {
       dryRun: false,
       linkWritten: true,
       summaryWritten: true,
+      directBreakdownsWritten: 4,
+      directContributionTotal: 5_454_286.73,
+      totalDisbursements: 3_706_000.56,
+      directReceiptRowCount: 8_442,
       outsideGroupsWritten: 1,
       outsideGroupBreakdownsWritten: 2,
       outsideSupportTotal: 12_320_650.23,
@@ -110,9 +143,19 @@ describe("syncNewYorkCandidateFinance", () => {
     expect(linkInsert?.[1]).toContain("16851");
 
     const summaryInsert = statements.find(([sql]) => sql.includes("INSERT INTO public.ny_candidate_finance_summaries"));
-    // Phase 1: direct-campaign money fields stay null.
-    expect(summaryInsert?.[1]?.slice(2, 6)).toEqual([null, null, null, null]);
+    // Phase 2: direct totals fill in; cash_on_hand stays null (no opening balances).
+    expect(summaryInsert?.[1]?.slice(2, 6)).toEqual([5_454_286.73, 5_454_286.73, 3_706_000.56, null]);
     expect(summaryInsert?.[1]).toContain(12_320_650.23);
+
+    const directInserts = statements.filter(([sql]) =>
+      sql.includes("INSERT INTO public.ny_candidate_finance_direct_breakdowns")
+    );
+    const directPairs = directInserts.map(([, params]) => [params?.[2], params?.[3]]);
+    expect(directPairs).toContainEqual(["contribution_size", "$1-$99"]);
+    expect(directPairs).toContainEqual(["contributor_type", "Individual"]);
+    expect(directPairs).toContainEqual(["donor", "Lyft, Inc."]);
+    // The exact classifier rule pins Lyft to transportation without AI.
+    expect(directPairs).toContainEqual(["industry", "transportation"]);
 
     const breakdownInserts = statements.filter(([sql]) =>
       sql.includes("INSERT INTO public.ny_candidate_finance_outside_group_breakdowns")
@@ -135,12 +178,14 @@ describe("syncNewYorkCandidateFinance", () => {
       })),
       collectOutsideSpending: vi.fn(),
       getOutsideGroupFunderBreakdowns: vi.fn(),
+      collectDirectCampaign: vi.fn(),
     };
 
     const result = await syncNewYorkCandidateFinance({ ...baseSyncInput(db), nyClient, sodaClientOptions: {} });
 
     expect(result).toMatchObject({ linkWritten: false, outsideGroupCount: 0, outsideCounters: null });
     expect(nyClient.collectOutsideSpending).not.toHaveBeenCalled();
+    expect(nyClient.collectDirectCampaign).not.toHaveBeenCalled();
     expect(db.connect).not.toHaveBeenCalled();
   });
 
@@ -160,6 +205,13 @@ describe("syncNewYorkCandidateFinance", () => {
         organizationRowCount: 0,
         skippedIndividualRowCount: 0,
       })),
+      collectDirectCampaign: vi.fn(async () => ({
+        directContributionTotal: 0,
+        totalDisbursements: null,
+        breakdowns: [],
+        receiptRowCount: 0,
+        lumpRowCount: 0,
+      })),
     };
 
     const result = await syncNewYorkCandidateFinance({
@@ -172,6 +224,10 @@ describe("syncNewYorkCandidateFinance", () => {
 
     expect(nyClient.searchAndResolveCandidateCommittee).not.toHaveBeenCalled();
     expect(nyClient.getOutsideGroupFunderBreakdowns).toHaveBeenCalledTimes(1);
+    expect(nyClient.collectDirectCampaign).toHaveBeenCalledWith(
+      expect.objectContaining({ filerId: "16851", electionYear: 2026 }),
+      {}
+    );
     expect(result).toMatchObject({
       dryRun: true,
       linkWritten: false,
