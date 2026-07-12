@@ -213,6 +213,18 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "County Assessor-Recorder",
+    summary:
+      "Assesses taxable property and records deeds, liens, and other official land documents when a county combines assessor and recorder duties.",
+  },
+  {
+    scope: "county",
+    canonicalName: "Public Defender",
+    summary:
+      "Provides constitutionally required defense representation to eligible people accused of crimes and unable to afford counsel.",
+  },
+  {
+    scope: "county",
     canonicalName: "County Auditor",
     summary:
       "Audits county finances, oversees fiscal controls, and may administer records, payments, or elections duties assigned by state law.",
@@ -850,6 +862,21 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Supervisor",
     aliasText: "Fiscal Court Member",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Assessor-Recorder",
+    aliasText: "Assessor-Recorder",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Assessor-Recorder",
+    aliasText: "County Assessor-Recorder",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Public Defender",
+    aliasText: "Public Defender",
   },
   {
     scope: "county",

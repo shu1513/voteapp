@@ -3111,6 +3111,9 @@ CREATE TEMP TABLE curated_office_core_areas (
 INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('county', 'Clerk of Court', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
     ('county', 'County Assessor', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'housing_affordability']::text[]),
+    -- Combined office (e.g. San Francisco): union of the County Assessor and
+    -- County Recorder curated sets, since the officeholder does both jobs.
+    ('county', 'County Assessor-Recorder', ARRAY['anti_corruption', 'corporate_accountability', 'data_privacy', 'government_efficiency', 'housing_affordability']::text[]),
     ('county', 'County Auditor', ARRAY['anti_corruption', 'corporate_accountability', 'election_integrity', 'government_efficiency', 'government_spending_reduction']::text[]),
     ('county', 'County Clerk', ARRAY['anti_corruption', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
     ('county', 'County Commissioner', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
@@ -3123,6 +3126,13 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('county', 'County Treasurer', ARRAY['anti_corruption', 'government_efficiency', 'government_spending_reduction', 'housing_affordability']::text[]),
     ('county', 'District Attorney', ARRAY['anti_corruption', 'civil_rights', 'corporate_accountability', 'gun_control', 'public_safety_and_crime_control', 'womens_reproductive_rights']::text[]),
     ('county', 'Public Administrator', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
+    -- Defense-side justice set, NOT a District Attorney mirror: the DA slugs
+    -- that track prosecutorial charging discretion (gun_control,
+    -- womens_reproductive_rights, corporate_accountability, anti_corruption)
+    -- don't apply to an office whose job is representing the accused.
+    -- legal_competence mirrors the judge sets (quality of representation);
+    -- immigration covers crimmigration consequences of pleas (Padilla).
+    ('county', 'Public Defender', ARRAY['civil_rights', 'immigration', 'legal_competence', 'public_safety_and_crime_control']::text[]),
     ('county', 'Sheriff', ARRAY['civil_rights', 'data_privacy', 'gun_control', 'immigration', 'public_safety_and_crime_control']::text[]),
     ('place', 'Alderman', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('place', 'City Clerk', ARRAY['anti_corruption', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
