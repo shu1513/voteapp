@@ -256,6 +256,179 @@ describe("runElectionsValidator", () => {
     expect(softFailCall).toBeUndefined();
   });
 
+  it("accepts verified historical dates only when manual import is explicitly approved", async () => {
+    const payload = {
+      district_id: "d-lausd",
+      district_name: "Los Angeles Unified School District",
+      district_type: "school_unified",
+      state: "CA",
+      review_decision: "approve",
+      review_reason: "official election schedule verified",
+      entries: [
+        {
+          official_ballot_title: "Member of the Board of Education, District 6",
+          election_date: "2000-06-06",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: false,
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:lausd-historical",
+            payload,
+            status: "pending",
+            run_id: "run_lausd_historical",
+            failure_debug: null,
+            ai_raw_debug: { manual_research: true, historical_import_approved: true },
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const rejectionCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("election_date is too far in the past")
+    );
+    expect(rejectionCall).toBeUndefined();
+  });
+
+  it("still hard-rejects a past election_date on a manual row without historical approval", async () => {
+    const payload = {
+      district_id: "d-lausd",
+      district_name: "Los Angeles Unified School District",
+      district_type: "school_unified",
+      state: "CA",
+      review_decision: "approve",
+      review_reason: "official election schedule verified",
+      entries: [
+        {
+          official_ballot_title: "Member of the Board of Education, District 6",
+          election_date: "2000-06-06",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: false,
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:lausd-unapproved",
+            payload,
+            status: "pending",
+            run_id: "run_lausd_unapproved",
+            failure_debug: null,
+            ai_raw_debug: { manual_research: true },
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const rejectionCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("election_date is too far in the past")
+    );
+    expect(rejectionCall).toBeTruthy();
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeUndefined();
+  });
+
+  it("does not enqueue a soft-failed manual row to the AI draft stream", async () => {
+    const payload = {
+      district_id: "d-kings",
+      district_name: "Kings County",
+      district_type: "county",
+      state: "NY",
+      entries: [
+        {
+          official_ballot_title: "Supreme Court Justice - 2nd Judicial District",
+          election_date: "2099-11-03",
+          race_type: "office",
+          discovery_contest_family: "judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:manual-soft",
+            payload,
+            status: "pending",
+            run_id: "run_manual_soft",
+            failure_debug: null,
+            ai_raw_debug: { manual_research: true },
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const softFailUpdate = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").startsWith("soft_fail:")
+    );
+    expect(softFailUpdate).toBeTruthy();
+    const draftCall = redisXAddMock.mock.calls.find((call) => call[0] === STAGING_DRAFT_STREAM);
+    expect(draftCall).toBeUndefined();
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      STAGING_PENDING_STREAM,
+      STAGING_ELECTIONS_VALIDATOR_GROUP,
+      "1-0"
+    );
+  });
+
+  it("does not republish a redelivered soft-failed manual row to the AI draft stream", async () => {
+    poolQueryMock.mockResolvedValueOnce({
+      rows: [
+        {
+          ingest_key: "elections:test:1",
+          payload: { district_id: "d-x", entries: [] },
+          status: "pending",
+          run_id: "run_x",
+          failure_debug: null,
+          ai_raw_debug: { manual_research: true },
+          schema_version: "elections_draft_v1",
+        },
+      ],
+    });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const draftCall = redisXAddMock.mock.calls.find((call) => call[0] === STAGING_DRAFT_STREAM);
+    expect(draftCall).toBeUndefined();
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      STAGING_PENDING_STREAM,
+      STAGING_ELECTIONS_VALIDATOR_GROUP,
+      "1-0"
+    );
+  });
+
   it("soft-fails 'Judge of the Superior Court' in a Pennsylvania county, where the Superior Court is statewide appellate", async () => {
     const payload = {
       district_id: "d-pa",

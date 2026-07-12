@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  historicalDefaultIngestKey,
+  resolveHistoricalImportDebugJson,
   resolveReviewApproveFailureDebugJson,
   stageManualElectionPayload,
 } from "../../src/scripts/injectManualElections.js";
@@ -41,6 +43,44 @@ describe("resolveReviewApproveFailureDebugJson", () => {
     expect(() =>
       resolveReviewApproveFailureDebugJson({ review_decision: "reject", review_reason: "no" }, true)
     ).toThrow('--review-approve requires the payload to carry review_decision: "approve"');
+  });
+});
+
+describe("resolveHistoricalImportDebugJson", () => {
+  it("requires explicit review approval", () => {
+    expect(() => resolveHistoricalImportDebugJson({}, true)).toThrow(
+      '--historical requires the payload to carry review_decision: "approve"'
+    );
+    expect(() =>
+      resolveHistoricalImportDebugJson({ review_decision: "approve", review_reason: " " }, true)
+    ).toThrow("--historical requires a non-empty payload review_reason");
+  });
+
+  it("stamps an approved historical import", () => {
+    const json = resolveHistoricalImportDebugJson(
+      { review_decision: "approve", review_reason: "official dated result verified" },
+      true
+    );
+    const parsed = JSON.parse(json!) as Record<string, unknown>;
+    expect(parsed.historical_import_approved).toBe(true);
+    expect(typeof parsed.historical_import_approved_at).toBe("string");
+  });
+});
+
+describe("historicalDefaultIngestKey", () => {
+  it("namespaces by the earliest entry election year, never the run year", () => {
+    expect(
+      historicalDefaultIngestKey("d-1", {
+        entries: [{ election_date: "2026-06-02" }, { election_date: "2021-11-02" }],
+      })
+    ).toBe("manual:elections:d-1:historical:2021");
+  });
+
+  it("falls back to the run year when no entry carries a parseable date", () => {
+    const runYear = new Date().getUTCFullYear();
+    expect(historicalDefaultIngestKey("d-1", { entries: [] })).toBe(
+      `manual:elections:d-1:historical:${runYear}`
+    );
   });
 });
 

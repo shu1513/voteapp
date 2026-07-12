@@ -49,7 +49,7 @@ function toReason(error: unknown): string {
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:elections:inject -- --file payload.json [--ingest-key key] [--run-id id] [--review-approve] [--dry-run]",
+    "  npm run manual:elections:inject -- --file payload.json [--ingest-key key] [--run-id id] [--review-approve] [--historical] [--dry-run]",
     "",
     "Payload must match ElectionEnrichedPayload and will be staged for the existing elections validator.",
     "",
@@ -60,6 +60,11 @@ function usage(): string {
     "It applies only to scope-validation soft-fails. A payload whose entries were all filtered as",
     "presidential is still rejected regardless of review_decision: presidential contests belong to",
     "presidential_cycles, never district elections, and approval cannot override that.",
+    "--historical is a separate, review-gated path for verified past elections. It requires",
+    "review_decision: \"approve\" plus a non-empty review_reason and only relaxes the date guard,",
+    "for every entry in the payload. Its default ingest key is namespaced by the earliest entry's",
+    "election year (manual:elections:<district>:historical:<year>) so a historical import never",
+    "overwrites the district's current-year staging row.",
   ].join("\n");
 }
 
@@ -93,6 +98,29 @@ export function resolveReviewApproveFailureDebugJson(
     soft_retry_count: 1,
     manual_review_approved: true,
     manual_approve_at: new Date().toISOString(),
+  });
+}
+
+export function resolveHistoricalImportDebugJson(
+  payload: { review_decision?: "approve" | "reject"; review_reason?: string },
+  historical: boolean
+): string | null {
+  if (!historical) {
+    return null;
+  }
+  if (payload.review_decision !== "approve") {
+    throw new Error(
+      `--historical requires the payload to carry review_decision: "approve".\n${usage()}`
+    );
+  }
+  if (!payload.review_reason?.trim()) {
+    throw new Error(
+      `--historical requires a non-empty payload review_reason documenting why the historical election is verified.\n${usage()}`
+    );
+  }
+  return JSON.stringify({
+    historical_import_approved: true,
+    historical_import_approved_at: new Date().toISOString(),
   });
 }
 
@@ -136,6 +164,20 @@ function extractFamilySourceUrls(payload: unknown): Record<string, string[]> | n
 function defaultIngestKey(districtId: string): string {
   const runYear = new Date().getUTCFullYear();
   return `manual:elections:${districtId}:${runYear}`;
+}
+
+// A historical import must never default onto the district's current-year key:
+// staging is an upsert by ingest_key, so reusing the run-year key would
+// overwrite a pending/validated current-election row (and its audit trail).
+export function historicalDefaultIngestKey(
+  districtId: string,
+  payload: { entries: ReadonlyArray<{ election_date: string }> }
+): string {
+  const years = payload.entries
+    .map((entry) => Number.parseInt(entry.election_date.slice(0, 4), 10))
+    .filter((year) => Number.isFinite(year));
+  const year = years.length > 0 ? Math.min(...years) : new Date().getUTCFullYear();
+  return `manual:elections:${districtId}:historical:${year}`;
 }
 
 function requireEnv(name: string): string {
@@ -256,7 +298,7 @@ export async function stageManualElectionPayload(
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:elections:inject", process.argv.slice(2), [{ name: "--file", value: "space" }, { name: "--ingest-key", value: "space" }, { name: "--run-id", value: "space" }, { name: "--review-approve", value: "none" }, { name: "--dry-run", value: "none" }]);
+  assertKnownCliFlags("manual:elections:inject", process.argv.slice(2), [{ name: "--file", value: "space" }, { name: "--ingest-key", value: "space" }, { name: "--run-id", value: "space" }, { name: "--review-approve", value: "none" }, { name: "--historical", value: "none" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const file = readFlag("--file");
@@ -272,10 +314,14 @@ async function main(): Promise<void> {
 
   const dryRun = hasFlag("--dry-run");
   const reviewApprove = hasFlag("--review-approve");
+  const historical = hasFlag("--historical");
   const failureDebugJson = resolveReviewApproveFailureDebugJson(parsed.payload, reviewApprove);
+  const historicalImportDebugJson = resolveHistoricalImportDebugJson(parsed.payload, historical);
   const ingestKey =
     readFlag("--ingest-key") ??
-    defaultIngestKey(parsed.payload.district_id);
+    (historical
+      ? historicalDefaultIngestKey(parsed.payload.district_id, parsed.payload)
+      : defaultIngestKey(parsed.payload.district_id));
   const runId = readFlag("--run-id") ?? `manual_elections_${new Date().toISOString()}`;
   const payloadJson = JSON.stringify(parsed.payload);
   const familySourceUrls = extractFamilySourceUrls(rawPayload);
@@ -283,6 +329,7 @@ async function main(): Promise<void> {
     manual_research: true,
     ...(familySourceUrls ? { family_source_urls: familySourceUrls } : {}),
     ...(reviewApprove ? { manual_review_approved: true } : {}),
+    ...(historicalImportDebugJson ? JSON.parse(historicalImportDebugJson) : {}),
   };
 
   if (dryRun) {
@@ -296,6 +343,7 @@ async function main(): Promise<void> {
           entryCount: parsed.payload.entries.length,
           familySourceUrlFamilies: familySourceUrls ? Object.keys(familySourceUrls) : [],
           reviewApprove,
+          historical,
         },
         null,
         2
@@ -333,6 +381,7 @@ async function main(): Promise<void> {
           entryCount: parsed.payload.entries.length,
           familySourceUrlFamilies: familySourceUrls ? Object.keys(familySourceUrls) : [],
           reviewApprove,
+          historical,
           next: [
             "npm run elections:validate -- --once",
             "npm run elections:write -- --once",
