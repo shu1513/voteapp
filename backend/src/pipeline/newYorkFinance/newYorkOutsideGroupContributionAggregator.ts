@@ -39,11 +39,13 @@ function roundCurrency(value: number): number {
   return Math.round(value * 100) / 100;
 }
 
-function normalizeFunderKey(value: string): string {
+export function normalizeNewYorkFunderKey(value: string): string {
   return value.toUpperCase().replace(/\s+/g, " ").trim();
 }
 
-function isOrganizationReceipt(row: NewYorkCommitteeReceiptRow): boolean {
+// Shared with the direct-campaign aggregator: organization receipts are the
+// only ones that may feed donor/industry breakdowns.
+export function isNewYorkOrganizationReceipt(row: NewYorkCommitteeReceiptRow): boolean {
   if (!row.entityName || row.entityFirstName || row.entityLastName) {
     return false;
   }
@@ -65,11 +67,11 @@ export function aggregateNewYorkOutsideGroupFunders(input: {
   const funders = new Map<string, NewYorkOutsideGroupFunder>();
   let organizationRowCount = 0;
   for (const receipt of input.receipts) {
-    if (!isOrganizationReceipt(receipt)) {
+    if (!isNewYorkOrganizationReceipt(receipt)) {
       continue;
     }
     organizationRowCount += 1;
-    const key = normalizeFunderKey(receipt.entityName);
+    const key = normalizeNewYorkFunderKey(receipt.entityName);
     const existing = funders.get(key);
     if (existing) {
       existing.amount = roundCurrency(existing.amount + receipt.amount);
