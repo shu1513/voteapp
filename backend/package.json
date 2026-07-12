@@ -337,6 +337,7 @@
     "bullmq": "^5.71.1",
     "expo-server-sdk": "^6.1.0",
     "express": "^5.2.1",
+    "fflate": "^0.8.3",
     "pdfjs-dist": "4.10.38",
     "pg": "^8.13.1",
     "pg-connection-string": "^2.12.0",

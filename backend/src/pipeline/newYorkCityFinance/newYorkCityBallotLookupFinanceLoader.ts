@@ -3,12 +3,18 @@ import type { Pool, PoolClient } from "pg";
 import { isNewYorkCityCampaignFinanceEnabled } from "../../config/featureFlags.js";
 import {
   addFinanceBreakdown,
+  buildOutsideIndustrySupportExplanation,
   buildStateFinanceSummaryRequests,
   candidateElectionKey,
   mapFinanceBreakdown,
   parseFinanceAmount,
+  parseFinanceCount,
   type BallotLookupFinanceBreakdown,
+  type BallotLookupFinanceOutsideGroup,
+  type BallotLookupFinanceOutsideIndustrySupportEvidence,
+  type BallotLookupFinanceOutsideIndustrySupportSummary,
   type BallotLookupFinanceSummary,
+  type StateFinanceOutsideDonorEvidenceRow,
   type StateFinanceRequestCandidateRow,
   type StateFinanceRequestElectionRow,
 } from "../address/ballotLookupFinanceShared.js";
@@ -26,6 +32,8 @@ type SummaryRow = {
   net_expenditures: string | number | null;
   outstanding_bills: string | number | null;
   public_funds: string | number | null;
+  outside_support_total: string | number | null;
+  outside_oppose_total: string | number | null;
   source_url: string | null;
   last_synced_at: string;
 };
@@ -39,6 +47,24 @@ type BreakdownRow = {
   contributor_count: string | number | null;
   source_url: string | null;
 };
+
+type OutsideGroupRow = {
+  candidate_id: string;
+  election_id: string;
+  spender_id: string;
+  spender_name: string;
+  support_oppose: "support" | "oppose";
+  amount: string | number;
+  expenditure_count: string | number;
+  source_url: string | null;
+};
+
+function buildNewYorkCityOutsideIndustrySupportExplanation(
+  industryName: string,
+  evidence: readonly BallotLookupFinanceOutsideIndustrySupportEvidence[]
+): string {
+  return `${buildOutsideIndustrySupportExplanation(industryName, evidence)} NYC CFB reports each organization's funding for the outside group's entire election cycle; it is not earmarked to this candidate.`;
+}
 
 export async function loadNewYorkCityCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
@@ -70,6 +96,8 @@ export async function loadNewYorkCityCandidateFinanceSummariesByCandidateElectio
         summary.net_expenditures,
         summary.outstanding_bills,
         summary.public_funds,
+        summary.outside_support_total,
+        summary.outside_oppose_total,
         summary.source_url,
         summary.last_synced_at::text
       FROM requested
@@ -86,8 +114,9 @@ export async function loadNewYorkCityCandidateFinanceSummariesByCandidateElectio
   if (summaryResult.rows.length === 0) return new Map();
 
   const selected = summaryResult.rows.map((row) => ({ candidate_id: row.candidate_id, election_id: row.election_id }));
-  const breakdownResult = await db.query<BreakdownRow>(
-    `
+  const [breakdownResult, outsideGroupResult, outsideIndustryResult, outsideDonorEvidenceResult] = await Promise.all([
+    db.query<BreakdownRow>(
+      `
       WITH selected AS (
         SELECT candidate_id::uuid AS candidate_id, election_id::uuid AS election_id
         FROM jsonb_to_recordset($1::jsonb) AS x(candidate_id text, election_id text)
@@ -117,9 +146,179 @@ export async function loadNewYorkCityCandidateFinanceSummariesByCandidateElectio
       FROM ranked
       WHERE category_type = 'contribution_size' OR rn <= 5
       ORDER BY candidate_id, election_id, category_type, amount DESC, category_name ASC
-    `,
-    [JSON.stringify(selected)]
-  );
+      `,
+      [JSON.stringify(selected)]
+    ),
+    db.query<OutsideGroupRow>(
+      `
+      WITH selected AS (
+        SELECT candidate_id::uuid AS candidate_id, election_id::uuid AS election_id
+        FROM jsonb_to_recordset($1::jsonb) AS x(candidate_id text, election_id text)
+      ), ranked AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          outside_group.spender_id,
+          outside_group.spender_name,
+          outside_group.support_oppose,
+          outside_group.amount,
+          outside_group.expenditure_count,
+          outside_group.source_url,
+          row_number() OVER (
+            PARTITION BY selected.candidate_id, selected.election_id, outside_group.support_oppose
+            ORDER BY outside_group.amount DESC, outside_group.spender_name ASC
+          ) AS rn
+        FROM selected
+        JOIN public.nyc_candidate_finance_links AS link
+          ON link.candidate_id = selected.candidate_id
+         AND link.election_id = selected.election_id
+         AND link.link_status = 'active'
+        JOIN public.nyc_candidate_finance_outside_groups AS outside_group
+          ON outside_group.link_id = link.id
+         AND outside_group.election_year = link.election_year
+      )
+      SELECT candidate_id, election_id, spender_id, spender_name, support_oppose,
+             amount, expenditure_count, source_url
+      FROM ranked
+      WHERE rn <= 5
+      ORDER BY candidate_id, election_id, support_oppose, amount DESC, spender_name ASC
+      `,
+      [JSON.stringify(selected)]
+    ),
+    db.query<BreakdownRow & { support_oppose: "support" | "oppose" }>(
+      `
+      WITH selected AS (
+        SELECT candidate_id::uuid AS candidate_id, election_id::uuid AS election_id
+        FROM jsonb_to_recordset($1::jsonb) AS x(candidate_id text, election_id text)
+      ), grouped AS (
+        SELECT
+          selected.candidate_id::text AS candidate_id,
+          selected.election_id::text AS election_id,
+          breakdown.support_oppose,
+          breakdown.category_name,
+          SUM(breakdown.amount) AS amount,
+          SUM(breakdown.contributor_count) AS contributor_count,
+          MIN(breakdown.source_url) AS source_url
+        FROM selected
+        JOIN public.nyc_candidate_finance_links AS link
+          ON link.candidate_id = selected.candidate_id
+         AND link.election_id = selected.election_id
+         AND link.link_status = 'active'
+        JOIN public.nyc_candidate_finance_outside_group_breakdowns AS breakdown
+          ON breakdown.link_id = link.id
+         AND breakdown.election_year = link.election_year
+         AND breakdown.category_type = 'industry'
+        GROUP BY selected.candidate_id, selected.election_id,
+                 breakdown.support_oppose, breakdown.category_name
+      ), ranked AS (
+        SELECT grouped.*,
+          row_number() OVER (
+            PARTITION BY candidate_id, election_id, support_oppose
+            ORDER BY amount DESC, category_name ASC
+          ) AS rn
+        FROM grouped
+      )
+      SELECT candidate_id, election_id, support_oppose, 'industry'::text AS category_type,
+             category_name, amount, contributor_count, source_url
+      FROM ranked
+      WHERE rn <= 5
+      ORDER BY candidate_id, election_id, support_oppose, amount DESC, category_name ASC
+      `,
+      [JSON.stringify(selected)]
+    ),
+    db.query<StateFinanceOutsideDonorEvidenceRow>(
+      `
+        WITH selected AS (
+          SELECT candidate_id::uuid AS candidate_id, election_id::uuid AS election_id
+          FROM jsonb_to_recordset($1::jsonb) AS x(candidate_id text, election_id text)
+        ), top_industries_per_group AS (
+          SELECT
+            selected.candidate_id::text AS candidate_id,
+            selected.election_id::text AS election_id,
+            industry.spender_id AS committee_id,
+            industry.category_name AS industry_name,
+            MAX(industry.amount) AS amount
+          FROM selected
+          JOIN public.nyc_candidate_finance_links AS link
+            ON link.candidate_id = selected.candidate_id
+           AND link.election_id = selected.election_id
+           AND link.link_status = 'active'
+          JOIN public.nyc_candidate_finance_outside_group_breakdowns AS industry
+            ON industry.link_id = link.id
+           AND industry.election_year = link.election_year
+          WHERE industry.support_oppose = 'support'
+            AND industry.category_type = 'industry'
+          GROUP BY selected.candidate_id, selected.election_id, industry.spender_id, industry.category_name
+        ), top_industries_grouped AS (
+          SELECT candidate_id, election_id, industry_name, SUM(amount) AS amount
+          FROM top_industries_per_group
+          GROUP BY candidate_id, election_id, industry_name
+        ), top_industries AS (
+          SELECT candidate_id, election_id, industry_name
+          FROM (
+            SELECT *, row_number() OVER (
+              PARTITION BY candidate_id, election_id
+              ORDER BY amount DESC, industry_name ASC
+            ) AS rn
+            FROM top_industries_grouped
+          ) AS ranked_industries
+          WHERE rn <= 5
+        ), evidence AS (
+          SELECT
+            selected.candidate_id::text AS candidate_id,
+            selected.election_id::text AS election_id,
+            top_industries.industry_name,
+            breakdown.spender_id AS committee_id,
+            outside_group.spender_name AS committee_name,
+            breakdown.support_oppose,
+            breakdown.category_name AS organization_name,
+            'donor'::text AS organization_type,
+            breakdown.amount,
+            breakdown.contributor_count,
+            breakdown.source_url,
+            row_number() OVER (
+              PARTITION BY selected.candidate_id, selected.election_id, top_industries.industry_name
+              ORDER BY breakdown.amount DESC, breakdown.category_name ASC, breakdown.spender_id ASC
+            ) AS rn
+          FROM selected
+          JOIN top_industries
+            ON top_industries.candidate_id = selected.candidate_id::text
+           AND top_industries.election_id = selected.election_id::text
+          JOIN public.nyc_candidate_finance_links AS link
+            ON link.candidate_id = selected.candidate_id
+           AND link.election_id = selected.election_id
+           AND link.link_status = 'active'
+          JOIN public.nyc_candidate_finance_outside_group_breakdowns AS breakdown
+            ON breakdown.link_id = link.id
+           AND breakdown.election_year = link.election_year
+          CROSS JOIN LATERAL (
+            SELECT btrim(regexp_replace(regexp_replace(btrim(regexp_replace(regexp_replace(
+              regexp_replace(upper(replace(breakdown.category_name, '&', ' AND ')), '[^A-Z0-9]+', ' ', 'g'),
+              '\\m(INC|INCORPORATED|LLC|L L C|LP|L P|LLP|L L P|LTD|LIMITED|CO|COMPANY|CORP|CORPORATION|PLC)\\M',
+              ' ', 'g'), '\\s+', ' ', 'g')), '\\s+', ' ', 'g'), '^\\s+|\\s+$', '', 'g')) AS normalized_label
+          ) AS normalized_breakdown
+          JOIN public.finance_label_classifications AS classification
+            ON classification.label_type = 'donor'
+           AND classification.normalized_label = normalized_breakdown.normalized_label
+           AND classification.industry_slug = top_industries.industry_name
+          JOIN public.nyc_candidate_finance_outside_groups AS outside_group
+            ON outside_group.link_id = breakdown.link_id
+           AND outside_group.election_year = breakdown.election_year
+           AND outside_group.spender_id = breakdown.spender_id
+           AND outside_group.support_oppose = breakdown.support_oppose
+          WHERE breakdown.category_type = 'donor'
+            AND breakdown.support_oppose = 'support'
+        )
+        SELECT candidate_id, election_id, industry_name, committee_id, committee_name,
+               support_oppose, organization_name, organization_type, amount,
+               contributor_count, source_url
+        FROM evidence
+        WHERE rn <= 3
+        ORDER BY candidate_id, election_id, industry_name, amount DESC, organization_name ASC
+      `,
+      [JSON.stringify(selected)]
+    ),
+  ]);
 
   const byType = {
     occupation: new Map<string, BallotLookupFinanceBreakdown[]>(),
@@ -130,10 +329,52 @@ export async function loadNewYorkCityCandidateFinanceSummariesByCandidateElectio
   for (const row of breakdownResult.rows) {
     addFinanceBreakdown(byType[row.category_type], row.candidate_id, row.election_id, mapFinanceBreakdown(row, NEW_YORK_CITY_CFB_DATA_LIBRARY_URL));
   }
+  const outsideGroups = new Map<string, BallotLookupFinanceOutsideGroup[]>();
+  for (const row of outsideGroupResult.rows) {
+    const key = `${candidateElectionKey(row.candidate_id, row.election_id)}\u0000${row.support_oppose}`;
+    const groups = outsideGroups.get(key) ?? [];
+    groups.push({
+      committee_id: row.spender_id,
+      committee_name: row.spender_name,
+      support_oppose: row.support_oppose,
+      amount: parseFinanceAmount(row.amount) ?? 0,
+      expenditure_count: parseFinanceCount(row.expenditure_count),
+      source_url: row.source_url,
+    });
+    outsideGroups.set(key, groups);
+  }
+  const outsideIndustries = {
+    support: new Map<string, BallotLookupFinanceBreakdown[]>(),
+    oppose: new Map<string, BallotLookupFinanceBreakdown[]>(),
+  };
+  for (const row of outsideIndustryResult.rows) {
+    addFinanceBreakdown(
+      outsideIndustries[row.support_oppose],
+      row.candidate_id,
+      row.election_id,
+      mapFinanceBreakdown(row)
+    );
+  }
+  const outsideIndustryEvidence = new Map<string, BallotLookupFinanceOutsideIndustrySupportEvidence[]>();
+  for (const row of outsideDonorEvidenceResult.rows) {
+    const key = `${candidateElectionKey(row.candidate_id, row.election_id)}\u0000${row.industry_name}`;
+    const evidence = outsideIndustryEvidence.get(key) ?? [];
+    evidence.push({
+      organization_name: row.organization_name,
+      organization_type: row.organization_type ?? "donor",
+      amount: parseFinanceAmount(row.amount) ?? 0,
+      contributor_count: parseFinanceCount(row.contributor_count),
+      committee_id: row.committee_id,
+      committee_name: row.committee_name,
+      source_url: row.source_url,
+    });
+    outsideIndustryEvidence.set(key, evidence);
+  }
 
   return new Map(summaryResult.rows.map((row) => {
     const key = candidateElectionKey(row.candidate_id, row.election_id);
     const occupations = byType.occupation.get(key) ?? [];
+    const supportingIndustries = outsideIndustries.support.get(key) ?? [];
     return [key, {
       source: "NEW_YORK_CITY_CFB",
       cycle: row.election_year,
@@ -152,16 +393,25 @@ export async function loadNewYorkCityCandidateFinanceSummariesByCandidateElectio
         contribution_size_buckets: byType.contribution_size.get(key) ?? [],
       },
       outside_spending: {
-        support_total: null,
-        oppose_total: null,
-        top_supporting_groups: [],
-        top_opposing_groups: [],
-        top_supporting_industries: [],
-        top_opposing_industries: [],
+        support_total: parseFinanceAmount(row.outside_support_total),
+        oppose_total: parseFinanceAmount(row.outside_oppose_total),
+        top_supporting_groups: outsideGroups.get(`${key}\u0000support`) ?? [],
+        top_opposing_groups: outsideGroups.get(`${key}\u0000oppose`) ?? [],
+        top_supporting_industries: supportingIndustries,
+        top_opposing_industries: outsideIndustries.oppose.get(key) ?? [],
       },
       backing_summary: {
         top_direct_donor_occupations: occupations,
-        top_outside_supporting_industries: [],
+        top_outside_supporting_industries: supportingIndustries.map(
+          (industry): BallotLookupFinanceOutsideIndustrySupportSummary => {
+            const evidence = outsideIndustryEvidence.get(`${key}\u0000${industry.category_name}`) ?? [];
+            return {
+              ...industry,
+              explanation: buildNewYorkCityOutsideIndustrySupportExplanation(industry.category_name, evidence),
+              supporting_organizations: evidence,
+            };
+          }
+        ),
       },
     } satisfies BallotLookupFinanceSummary];
   }));

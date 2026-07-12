@@ -77,6 +77,11 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
           }],
         }),
         readContributions: vi.fn().mockResolvedValue({ rows: [], rawRowCount: 0, malformedRowCount: 0 }),
+        fetchOutsideSpending: vi.fn().mockResolvedValue({ rows: [], rawRowCount: 0, malformedRowCount: 0, ignoredPositionRowCount: 0 }),
+        fetchOutsideFunders: vi.fn().mockResolvedValue({ rows: [], rawRowCount: 0, ignoredRowCount: 0 }),
+        resolveOutsideCycles: vi.fn().mockResolvedValue({
+          resolved: new Map([["A1", "2029"]]), ambiguousCandidateIds: new Set(), missingCandidateIds: new Set(),
+        }),
         syncCandidate,
       },
     });
@@ -131,6 +136,11 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
           netExpenditures: 50, outstandingBills: 0,
         }] }),
         readContributions: vi.fn().mockResolvedValue({ rows: [], rawRowCount: 0, malformedRowCount: 0 }),
+        fetchOutsideSpending: vi.fn().mockResolvedValue({ rows: [], rawRowCount: 0, malformedRowCount: 0, ignoredPositionRowCount: 0 }),
+        fetchOutsideFunders: vi.fn().mockResolvedValue({ rows: [], rawRowCount: 0, ignoredRowCount: 0 }),
+        resolveOutsideCycles: vi.fn().mockResolvedValue({
+          resolved: new Map([["A1", "2029"]]), ambiguousCandidateIds: new Set(), missingCandidateIds: new Set(),
+        }),
         syncCandidate: vi.fn().mockRejectedValue(new Error("writer unavailable")),
         recordAttempt,
       },
@@ -146,6 +156,41 @@ describe("newYorkCityCandidateFinanceBatchSync", () => {
       reason: "writer unavailable",
       nextAttemptAt: new Date("2026-07-19T00:00:00.000Z"),
     }));
+  });
+
+  it("syncs direct finance and reports degraded outside data when the outside export fails", async () => {
+    const syncCandidate = vi.fn().mockResolvedValue({
+      dryRun: false, breakdownsWritten: 0, outsideGroupsWritten: 0, outsideUpdated: false, acceptedContributionRows: 0,
+    });
+    const refreshArtifact = vi.fn().mockImplementation(async (input: { electionYear: number; kind: "contributions" | "financial_analysis" }) => ({
+      status: "downloaded",
+      current: { version: 1, electionYear: input.electionYear, kind: input.kind, url: "x", filePath: `/tmp/${input.kind}.csv`, downloadedAt: "x", bytes: 1, etag: null, lastModified: null },
+    }));
+    const result = await syncDueNewYorkCityCandidateFinance({
+      db: {} as never,
+      dataSource: {
+        listDueRows: vi.fn().mockResolvedValue({ rows: [dueRow], totalDueRows: 1 }),
+        refreshArtifact,
+        readAnalysis: vi.fn().mockResolvedValue({ rawRowCount: 1, malformedRowCount: 0, rows: [{
+          electionYear: 2029, fromStatement: 1, toStatement: 1, officeCode: "1", candidateName: "DOE, JANE",
+          candidateId: "A1", boroughCode: null, privateContributions: 100, publicFunds: 20,
+          netExpenditures: 50, outstandingBills: 0,
+        }] }),
+        readContributions: vi.fn().mockResolvedValue({ rows: [], rawRowCount: 0, malformedRowCount: 0 }),
+        fetchOutsideSpending: vi.fn().mockRejectedValue(new Error("outside endpoint unavailable")),
+        fetchOutsideFunders: vi.fn().mockResolvedValue({ rows: [], rawRowCount: 0, ignoredRowCount: 0 }),
+        resolveOutsideCycles: vi.fn().mockResolvedValue({
+          resolved: new Map([["A1", "2029"]]), ambiguousCandidateIds: new Set(), missingCandidateIds: new Set(),
+        }),
+        syncCandidate,
+      },
+    });
+    expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
+    expect(result.results[0]).toMatchObject({
+      status: "synced",
+      reason: "outside_spending_unavailable: outside endpoint unavailable",
+    });
+    expect(syncCandidate).toHaveBeenCalledWith(expect.not.objectContaining({ outsideSpendingRows: expect.anything() }));
   });
 
   it("records a retry cooldown when artifact refresh fails", async () => {
