@@ -28,6 +28,7 @@ import {
 } from "./newYorkDirectContributionAggregator.js";
 import {
   defaultNewYorkSodaClientOptions,
+  type NewYorkCycleYears,
   type NewYorkSodaClientOptions,
 } from "./newYorkSodaClient.js";
 import {
@@ -122,6 +123,12 @@ function normalizeElectionYear(value: number): number {
     throw new Error(`Invalid New York finance election year: ${value}`);
   }
   return value;
+}
+
+// Statewide offices (Governor, Lieutenant Governor, Attorney General,
+// Comptroller) run four-year cycles; Senate and Assembly run two-year cycles.
+function toCycleYears(officeScope: string): NewYorkCycleYears {
+  return officeScope === "statewide" ? 4 : 2;
 }
 
 function normalizeTimestamp(value: Date | undefined): Date {
@@ -348,6 +355,10 @@ async function enrichIndustryBreakdowns(input: {
     });
   }
 
+  // Raw "donor" rows stay in the output on purpose: the snapshot writer
+  // replaces all rows per sync, and stored donor rows are the classification
+  // anchors for industry rows. Ballot lookup only reads contribution_size and
+  // industry rows, so donor (and contributor_type) rows never reach clients.
   return {
     directBreakdowns: [...directBreakdowns, ...directIndustryByName.values()],
     outsideGroupBreakdowns: [...breakdowns.values()],
@@ -417,6 +428,7 @@ export async function syncNewYorkCandidateFinance(
   const electionYear = normalizeElectionYear(input.electionYear);
   const syncedAt = normalizeTimestamp(input.now);
   const dryRun = input.dryRun === true;
+  const cycleYears = toCycleYears(officeScope);
   const nyClient: NewYorkFinanceDataClient = { ...DEFAULT_NY_CLIENT, ...(input.nyClient ?? {}) };
   const sodaClientOptions = input.sodaClientOptions ?? defaultNewYorkSodaClientOptions();
   const aiClassificationMinAmount = normalizeAiClassificationMinAmount(input.aiClassificationMinAmount);
@@ -462,6 +474,7 @@ export async function syncNewYorkCandidateFinance(
         {
           filerId: group.filerId,
           electionYear,
+          cycleYears,
           maxFunders: input.outsideMaxFundersPerGroup ?? DEFAULT_OUTSIDE_MAX_FUNDERS_PER_GROUP,
         },
         sodaClientOptions
@@ -486,6 +499,7 @@ export async function syncNewYorkCandidateFinance(
     {
       filerId: resolution.filerId,
       electionYear,
+      cycleYears,
       maxBreakdownsPerCategory: input.directMaxBreakdownsPerCategory,
     },
     sodaClientOptions

@@ -225,7 +225,11 @@ describe("syncNewYorkCandidateFinance", () => {
     expect(nyClient.searchAndResolveCandidateCommittee).not.toHaveBeenCalled();
     expect(nyClient.getOutsideGroupFunderBreakdowns).toHaveBeenCalledTimes(1);
     expect(nyClient.collectDirectCampaign).toHaveBeenCalledWith(
-      expect.objectContaining({ filerId: "16851", electionYear: 2026 }),
+      expect.objectContaining({ filerId: "16851", electionYear: 2026, cycleYears: 4 }),
+      {}
+    );
+    expect(nyClient.getOutsideGroupFunderBreakdowns).toHaveBeenCalledWith(
+      expect.objectContaining({ cycleYears: 4 }),
       {}
     );
     expect(result).toMatchObject({

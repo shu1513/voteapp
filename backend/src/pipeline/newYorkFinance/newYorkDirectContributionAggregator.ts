@@ -7,6 +7,7 @@ import {
   getNewYorkCommitteeItemizedReceipts,
   NEW_YORK_SODA_DISCLOSURES_PAGE_URL,
   type NewYorkCommitteeReceiptRow,
+  type NewYorkCycleYears,
   type NewYorkSodaClientOptions,
 } from "./newYorkSodaClient.js";
 
@@ -166,14 +167,20 @@ const DEFAULT_DIRECT_CAMPAIGN_CLIENT: NewYorkDirectCampaignDataClient = {
 };
 
 export async function collectNewYorkDirectCampaign(
-  input: { filerId: string; electionYear: number; maxBreakdownsPerCategory?: number },
+  input: {
+    filerId: string;
+    electionYear: number;
+    cycleYears: NewYorkCycleYears;
+    maxBreakdownsPerCategory?: number;
+  },
   options: NewYorkSodaClientOptions = {},
   client: Partial<NewYorkDirectCampaignDataClient> = {}
 ): Promise<NewYorkDirectCampaignResult> {
   const dataClient: NewYorkDirectCampaignDataClient = { ...DEFAULT_DIRECT_CAMPAIGN_CLIENT, ...client };
+  const cycleScope = { filerId: input.filerId, electionYear: input.electionYear, cycleYears: input.cycleYears };
   const [receipts, totalDisbursements] = await Promise.all([
-    dataClient.getCommitteeItemizedReceipts({ filerId: input.filerId, electionYear: input.electionYear }, options),
-    dataClient.getCommitteeExpenditureTotal({ filerId: input.filerId, electionYear: input.electionYear }, options),
+    dataClient.getCommitteeItemizedReceipts(cycleScope, options),
+    dataClient.getCommitteeExpenditureTotal(cycleScope, options),
   ]);
   return {
     ...aggregateNewYorkDirectContributions({

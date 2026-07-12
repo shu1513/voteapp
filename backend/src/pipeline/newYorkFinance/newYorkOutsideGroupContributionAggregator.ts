@@ -2,6 +2,7 @@ import {
   getNewYorkCommitteeItemizedReceipts,
   NEW_YORK_SODA_DISCLOSURES_PAGE_URL,
   type NewYorkCommitteeReceiptRow,
+  type NewYorkCycleYears,
   type NewYorkSodaClientOptions,
 } from "./newYorkSodaClient.js";
 
@@ -9,7 +10,7 @@ import {
 // candidate/family money) are never presented as company backing, and NYSBOE
 // has no occupation/employer fields to classify them with anyway
 // (plan-new-york-finance.md). Receipts are already cycle-scoped by the client
-// (election_year filter) so historical funding never counts toward a current
+// (sched_date window) so historical funding never counts toward a current
 // race.
 
 export type NewYorkOutsideGroupFunder = {
@@ -98,10 +99,13 @@ export function aggregateNewYorkOutsideGroupFunders(input: {
 }
 
 export async function getNewYorkOutsideGroupFunderBreakdowns(
-  input: { filerId: string; electionYear: number; maxFunders?: number },
+  input: { filerId: string; electionYear: number; cycleYears: NewYorkCycleYears; maxFunders?: number },
   options: NewYorkSodaClientOptions = {},
   getReceipts: typeof getNewYorkCommitteeItemizedReceipts = getNewYorkCommitteeItemizedReceipts
 ): Promise<NewYorkOutsideGroupFunderResult> {
-  const receipts = await getReceipts({ filerId: input.filerId, electionYear: input.electionYear }, options);
+  const receipts = await getReceipts(
+    { filerId: input.filerId, electionYear: input.electionYear, cycleYears: input.cycleYears },
+    options
+  );
   return aggregateNewYorkOutsideGroupFunders({ receipts, maxFunders: input.maxFunders });
 }

@@ -85,13 +85,19 @@ describe("collectNewYorkDirectCampaign", () => {
     const getCommitteeExpenditureTotal = vi.fn(async () => 3_706_000.56);
 
     const result = await collectNewYorkDirectCampaign(
-      { filerId: "16851", electionYear: 2026 },
+      { filerId: "16851", electionYear: 2026, cycleYears: 4 },
       {},
       { getCommitteeItemizedReceipts, getCommitteeExpenditureTotal }
     );
 
-    expect(getCommitteeItemizedReceipts).toHaveBeenCalledWith({ filerId: "16851", electionYear: 2026 }, {});
-    expect(getCommitteeExpenditureTotal).toHaveBeenCalledWith({ filerId: "16851", electionYear: 2026 }, {});
+    expect(getCommitteeItemizedReceipts).toHaveBeenCalledWith(
+      { filerId: "16851", electionYear: 2026, cycleYears: 4 },
+      {}
+    );
+    expect(getCommitteeExpenditureTotal).toHaveBeenCalledWith(
+      { filerId: "16851", electionYear: 2026, cycleYears: 4 },
+      {}
+    );
     expect(result).toMatchObject({
       directContributionTotal: 100,
       totalDisbursements: 3_706_000.56,

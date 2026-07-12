@@ -110,6 +110,48 @@ function normalizeElectionYear(value: number): number {
   return value;
 }
 
+// Statewide races run on four-year cycles, legislative races on two-year
+// cycles; the caller derives this from the office scope.
+export type NewYorkCycleYears = 2 | 4;
+
+function normalizeCycleYears(value: number): NewYorkCycleYears {
+  if (value !== 2 && value !== 4) {
+    throw new NewYorkSodaClientError("invalid_request", `Invalid New York SODA cycle years: ${value}`);
+  }
+  return value;
+}
+
+function isoDate(utcMs: number): string {
+  return new Date(utcMs).toISOString().slice(0, 10);
+}
+
+// New York general election day: first Tuesday after the first Monday in
+// November.
+export function newYorkGeneralElectionDay(year: number): string {
+  const firstOfNovember = Date.UTC(year, 10, 1);
+  const dayOfWeek = new Date(firstOfNovember).getUTCDay();
+  const firstMonday = 1 + ((8 - dayOfWeek) % 7);
+  return isoDate(Date.UTC(year, 10, firstMonday + 1));
+}
+
+// Transaction-date window covering one race's fundraising cycle: the day
+// after the previous general election through election day. On non-Schedule-R
+// disclosure rows, election_year is the *disclosure report year* (dataset
+// metadata: "Disclosure Report Year"), not the race year, so cycle queries
+// must filter on sched_date instead of election_year.
+export function newYorkCycleSchedDateWindow(
+  electionYear: number,
+  cycleYears: NewYorkCycleYears
+): { startDate: string; endDateExclusive: string } {
+  const year = normalizeElectionYear(electionYear);
+  const normalizedCycleYears = normalizeCycleYears(cycleYears);
+  const dayAfter = (date: string): string => isoDate(Date.parse(`${date}T00:00:00Z`) + 24 * 60 * 60 * 1_000);
+  return {
+    startDate: dayAfter(newYorkGeneralElectionDay(year - normalizedCycleYears)),
+    endDateExclusive: dayAfter(newYorkGeneralElectionDay(year)),
+  };
+}
+
 function normalizePageLimit(value: number | undefined): number {
   const normalized = value ?? NEW_YORK_SODA_DEFAULT_PAGE_LIMIT;
   if (!Number.isInteger(normalized) || normalized <= 0 || normalized > NEW_YORK_SODA_MAX_PAGE_LIMIT) {
@@ -519,11 +561,11 @@ function committeeReceiptFromRow(row: Record<string, unknown>): NewYorkCommittee
 }
 
 export async function getNewYorkCommitteeItemizedReceipts(
-  input: { filerId: string; electionYear: number },
+  input: { filerId: string; electionYear: number; cycleYears: NewYorkCycleYears },
   options: NewYorkSodaClientOptions = {}
 ): Promise<NewYorkCommitteeReceiptRow[]> {
   const filerId = requireFilerId(input.filerId);
-  const electionYear = normalizeElectionYear(input.electionYear);
+  const window = newYorkCycleSchedDateWindow(input.electionYear, input.cycleYears);
   const rows = await fetchNewYorkSodaPagedRows(
     NEW_YORK_SODA_DISCLOSURES_DATASET,
     {
@@ -532,7 +574,8 @@ export async function getNewYorkCommitteeItemizedReceipts(
         `filer_id=${soqlString(filerId)}`,
         `filing_sched_abbrev IN ${soqlInList([...RECEIPT_SCHEDULE_ABBREVS])}`,
         "filing_cat_desc='Itemized'",
-        `election_year=${soqlString(String(electionYear))}`,
+        `sched_date>=${soqlString(window.startDate)}`,
+        `sched_date<${soqlString(window.endDateExclusive)}`,
       ].join(" AND "),
       $order: "filing_trans_id",
     },
@@ -542,13 +585,15 @@ export async function getNewYorkCommitteeItemizedReceipts(
 }
 
 // Total itemized Schedule F spending for one committee and cycle, computed
-// server-side; NULL when the committee has no matching rows.
+// server-side; NULL when the committee has no matching rows. The window ends
+// on election day, so post-election spending (debt retirement, wind-down) is
+// deliberately excluded.
 export async function getNewYorkCommitteeExpenditureTotal(
-  input: { filerId: string; electionYear: number },
+  input: { filerId: string; electionYear: number; cycleYears: NewYorkCycleYears },
   options: NewYorkSodaClientOptions = {}
 ): Promise<number | null> {
   const filerId = requireFilerId(input.filerId);
-  const electionYear = normalizeElectionYear(input.electionYear);
+  const window = newYorkCycleSchedDateWindow(input.electionYear, input.cycleYears);
   const rows = await fetchNewYorkSodaRows(
     NEW_YORK_SODA_DISCLOSURES_DATASET,
     {
@@ -557,7 +602,8 @@ export async function getNewYorkCommitteeExpenditureTotal(
         `filer_id=${soqlString(filerId)}`,
         "filing_sched_abbrev='F'",
         "filing_cat_desc='Itemized'",
-        `election_year=${soqlString(String(electionYear))}`,
+        `sched_date>=${soqlString(window.startDate)}`,
+        `sched_date<${soqlString(window.endDateExclusive)}`,
       ].join(" AND "),
     },
     options
