@@ -8,6 +8,7 @@ import {
   candidateElectionKey,
   firstNonEmptySourceUrl,
   mapFinanceBreakdown,
+  officeInputFromElectionRow,
   parseFinanceAmount,
   parseFinanceCount,
   type BallotLookupFinanceBreakdown,
@@ -23,17 +24,7 @@ import {
   type StateFinanceRequestCandidateRow,
   type StateFinanceRequestElectionRow,
 } from "../address/ballotLookupFinanceShared.js";
-
-const ILLINOIS_FINANCE_BALLOT_LOOKUP_OFFICE_KEYS = new Set([
-  "statewide::Governor",
-  "statewide::Lieutenant Governor",
-  "statewide::Secretary of State",
-  "statewide::Attorney General",
-  "statewide::Treasurer",
-  "statewide::Comptroller",
-  "state_upper::State Senator",
-  "state_lower::State Lower Chamber Legislator",
-]);
+import { isIllinoisFinanceEligibleOffice } from "./illinoisFinanceEligibleOffices.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -59,7 +50,7 @@ export async function loadIllinoisCandidateFinanceSummariesByCandidateElection(
   }
 
   const requests = buildStateFinanceSummaryRequests("IL", candidateRows, electionRows, (row) =>
-    ILLINOIS_FINANCE_BALLOT_LOOKUP_OFFICE_KEYS.has(`${row.office_scope?.trim() ?? ""}::${row.office_canonical_name?.trim() ?? ""}`)
+    isIllinoisFinanceEligibleOffice(officeInputFromElectionRow(row))
   );
   if (requests.length === 0) {
     return new Map();
