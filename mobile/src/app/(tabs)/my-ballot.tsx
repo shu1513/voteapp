@@ -170,10 +170,12 @@ function SavedBallotBody({ email }: { email: string }) {
 
   // Initialize saved districts from the last anonymous search (this body
   // only renders verified — the endpoint is verified-email-gated).
-  // Permanent rejections (4xx: stale/unknown ids) resolve to "the account's
-  // ballot is the source of truth"; transient failures keep the ids and
-  // surface an explicit retry instead of dropping the user onto the empty
-  // set-address form with their search still queued.
+  // Only a definitive rejection of the payload itself (400: malformed or
+  // unknown district ids) resolves to "the account's ballot is the source
+  // of truth". Everything else — 401/403 (session or verification state
+  // changed server-side), 429, network and server failures — is recoverable,
+  // so keep the queued ids and surface an explicit retry instead of dropping
+  // the user onto the empty set-address form with their search lost.
   useEffect(() => {
     if (handoffState !== "pending" || handoffFiredRef.current) {
       return;
@@ -190,9 +192,7 @@ function SavedBallotBody({ email }: { email: string }) {
         setHandoffState("done");
         void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
       } catch (error) {
-        // 429 is transient (rate limit), not a stale/unknown-ids rejection —
-        // keep the queued ids and offer the retry UI.
-        if (error instanceof ApiError && error.status < 500 && error.status !== 429) {
+        if (error instanceof ApiError && error.status === 400) {
           await clearPendingDistrictIds();
           setHandoffState("done");
           void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
