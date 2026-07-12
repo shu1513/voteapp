@@ -34,6 +34,7 @@ function buildStateResourcesInput() {
 
 const stateResourcesConfig = {
   timeoutMs: 1000,
+  model: "test-model",
   openAiApiKey: "test-openai-key",
   anthropicApiKey: "test-anthropic-key",
   geminiApiKey: "test-gemini-key",
@@ -77,7 +78,6 @@ describe("callResearchProvider guard", () => {
   });
 
   it("proceeds to the provider call when AI calls are allowed", async () => {
-    vi.stubEnv("AI_API_CALLS_ALLOWED", "true");
     const fetchSpy = vi.fn().mockResolvedValue(
       new Response(
         JSON.stringify({
@@ -123,5 +123,21 @@ describe("state resources provider guards", () => {
       expect(result.reason).toBe(AI_CALLS_BLOCKED_REASON);
     }
     expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["claudeProvider", claudeProvider],
+    ["openAiProvider", openAiProvider],
+    ["geminiProvider", geminiProvider],
+  ] as const)("%s reaches fetch when AI calls are allowed", async (_name, provider) => {
+    // Baseline AI_API_CALLS_ALLOWED=true comes from vitest.config.ts. Asserting
+    // fetch is reached guards against the guard check drifting below fetch in a
+    // future refactor, which the blocked-path test alone would not catch.
+    const fetchSpy = vi.fn().mockResolvedValue(new Response(JSON.stringify({}), { status: 200 }));
+    globalThis.fetch = fetchSpy as never;
+
+    await provider(buildStateResourcesInput() as never, stateResourcesConfig);
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 });
