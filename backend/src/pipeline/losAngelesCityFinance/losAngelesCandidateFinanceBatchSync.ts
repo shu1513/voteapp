@@ -10,6 +10,7 @@ import {
   type LosAngelesCityEthicsClientOptions,
 } from "./losAngelesCityEthicsClient.js";
 import type { LosAngelesOpenDataClientOptions } from "./losAngelesOpenDataClient.js";
+import { toLosAngelesEthicsOfficeName } from "./losAngelesCityFinanceEligibleOffices.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type PoolLike = Queryable & Pick<Pool, "connect">;
@@ -117,11 +118,19 @@ export async function syncDueLosAngelesCandidateFinance(input: {
   const results: LosAngelesCandidateFinanceBatchSyncResult["results"] = [];
   for (const row of due.rows) {
     try {
-      const totalsCacheKey = `${row.ethics_election_id}:${row.office_name}`;
+      const ethicsOfficeName = toLosAngelesEthicsOfficeName({
+        officeScope: "place",
+        officeCanonicalName: row.office_name,
+      });
+      if (!ethicsOfficeName)
+        throw new Error(
+          `Linked Los Angeles finance office is not eligible: ${row.office_name}`,
+        );
+      const totalsCacheKey = `${row.ethics_election_id}:${ethicsOfficeName}`;
       let totals = totalsCache.get(totalsCacheKey);
       if (!totals) {
         totals = await getLosAngelesEthicsCandidateTotals(
-          { electionId: row.ethics_election_id, officeName: row.office_name },
+          { electionId: row.ethics_election_id, officeName: ethicsOfficeName },
           input.ethicsClientOptions,
         );
         totalsCache.set(totalsCacheKey, totals);

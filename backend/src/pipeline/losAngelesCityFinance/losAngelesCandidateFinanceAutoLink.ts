@@ -9,9 +9,17 @@ import {
   resolveLosAngelesCandidateCommittee,
   resolveLosAngelesEthicsElection,
 } from "./losAngelesCandidateCommitteeResolver.js";
+import {
+  LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  toLosAngelesEthicsOfficeName,
+} from "./losAngelesCityFinanceEligibleOffices.js";
 import { upsertLosAngelesFinanceLink } from "./losAngelesFinanceWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
+const ELIGIBLE_OFFICE_NAMES =
+  LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS.map((key) =>
+    key.slice("place::".length),
+  );
 export type LosAngelesFinanceAutoLinkCandidate = {
   candidateId: string;
   electionId: string;
@@ -38,12 +46,13 @@ export async function listLosAngelesCandidateElectionsMissingFinanceLinks(
     election_date: string;
     office_name: string;
   }>(
-    `SELECT candidate.id::text candidate_id,election.id::text election_id,COALESCE(NULLIF(trim(candidate.display_name),''),NULLIF(trim(candidate.first_name||' '||candidate.last_name),'')) candidate_name,extract(year from election.election_date)::int election_year,election.election_date::text election_date,office.canonical_name office_name FROM public.candidate_elections candidate_election JOIN public.candidates candidate ON candidate.id=candidate_election.candidate_id JOIN public.elections election ON election.id=candidate_election.election_id JOIN public.districts district ON district.id=election.district_id JOIN public.offices office ON office.id=election.office_id WHERE candidate.deleted_at IS NULL AND district.state='CA' AND district.district_type='place' AND district.geoid_compact='0644000' AND office.scope='place' AND office.canonical_name='Mayor' AND election.race_type='office' AND election.election_date>=($1::date-make_interval(days=>$3::int)) AND election.election_date<=($1::date+make_interval(days=>$4::int)) AND candidate_election.status NOT IN ('withdrawn','lost') AND NOT EXISTS (SELECT 1 FROM public.lacity_candidate_finance_links link WHERE link.candidate_id=candidate.id AND link.election_id=election.id AND link.link_status='active') ORDER BY election.election_date,candidate.display_name NULLS LAST,candidate.id LIMIT $2::int`,
+    `SELECT candidate.id::text candidate_id,election.id::text election_id,COALESCE(NULLIF(trim(candidate.display_name),''),NULLIF(trim(candidate.first_name||' '||candidate.last_name),'')) candidate_name,extract(year from election.election_date)::int election_year,election.election_date::text election_date,office.canonical_name office_name FROM public.candidate_elections candidate_election JOIN public.candidates candidate ON candidate.id=candidate_election.candidate_id JOIN public.elections election ON election.id=candidate_election.election_id JOIN public.districts district ON district.id=election.district_id JOIN public.offices office ON office.id=election.office_id WHERE candidate.deleted_at IS NULL AND district.state='CA' AND district.district_type='place' AND district.geoid_compact='0644000' AND office.scope='place' AND office.canonical_name=ANY($5::text[]) AND election.race_type='office' AND election.election_date>=($1::date-make_interval(days=>$3::int)) AND election.election_date<=($1::date+make_interval(days=>$4::int)) AND candidate_election.status NOT IN ('withdrawn','lost') AND NOT EXISTS (SELECT 1 FROM public.lacity_candidate_finance_links link WHERE link.candidate_id=candidate.id AND link.election_id=election.id AND link.link_status='active') ORDER BY election.election_date,candidate.display_name NULLS LAST,candidate.id LIMIT $2::int`,
     [
       input.now.toISOString(),
       input.maxCandidates,
       input.electionLookbackDays,
       input.electionLookaheadDays,
+      ELIGIBLE_OFFICE_NAMES,
     ],
   );
   return result.rows.map((row) => ({
@@ -97,18 +106,31 @@ export async function autoLinkMissingLosAngelesCandidateFinanceLinks(input: {
         });
         continue;
       }
-      const totalsCacheKey = `${election.electionId}:${candidate.officeName}`;
+      const ethicsOfficeName = toLosAngelesEthicsOfficeName({
+        officeScope: "place",
+        officeCanonicalName: candidate.officeName,
+      });
+      if (!ethicsOfficeName) {
+        results.push({
+          candidateId: candidate.candidateId,
+          electionId: candidate.electionId,
+          status: "not_found",
+          reason: "Office is not eligible for Los Angeles City finance",
+        });
+        continue;
+      }
+      const totalsCacheKey = `${election.electionId}:${ethicsOfficeName}`;
       let totals = totalsByElection.get(totalsCacheKey);
       if (!totals) {
         totals = await getLosAngelesEthicsCandidateTotals(
-          { electionId: election.electionId, officeName: candidate.officeName },
+          { electionId: election.electionId, officeName: ethicsOfficeName },
           input.ethicsClientOptions,
         );
         totalsByElection.set(totalsCacheKey, totals);
       }
       const resolution = resolveLosAngelesCandidateCommittee({
         candidateName: candidate.candidateName,
-        officeName: candidate.officeName,
+        officeName: ethicsOfficeName,
         candidates: totals,
       });
       if (resolution.status !== "matched") {

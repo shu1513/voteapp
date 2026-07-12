@@ -30,7 +30,7 @@ function candidateTotal(
     electionSeatCandidateId: `seat-${candidatePersonId}`,
     candidatePersonId,
     candidateName:
-      officeName === "Mayor" ? "Alex Mayor" : "Bailey Attorney",
+      officeName === "Mayor" ? "Alex Mayor" : "Casey Controller",
     officeName,
     reportedThrough: "2026-07-01",
     fppcCommitteeId: `committee-${candidatePersonId}`,
@@ -53,7 +53,7 @@ function dueRow(officeName: string, candidatePersonId: string) {
     candidate_id: `candidate-${candidatePersonId}`,
     election_id: `election-${candidatePersonId}`,
     candidate_name:
-      officeName === "Mayor" ? "Alex Mayor" : "Bailey Attorney",
+      officeName === "Mayor" ? "Alex Mayor" : "Casey Controller",
     election_year: 2026,
     election_date: "2026-06-02",
     office_name: officeName,
@@ -84,7 +84,10 @@ describe("Los Angeles candidate finance batch sync", () => {
   it("caches candidate totals by election and office", async () => {
     const db = {
       query: vi.fn().mockResolvedValue({
-        rows: [dueRow("Mayor", "101"), dueRow("City Attorney", "202")],
+        rows: [
+          dueRow("Mayor", "101"),
+          dueRow("Municipal Controller", "202"),
+        ],
         rowCount: 2,
       }),
       connect: vi.fn(),
@@ -105,9 +108,13 @@ describe("Los Angeles candidate finance batch sync", () => {
     expect(getLosAngelesEthicsCandidateTotals).toHaveBeenCalledTimes(2);
     expect(getLosAngelesEthicsCandidateTotals).toHaveBeenNthCalledWith(
       2,
-      { electionId: "76", officeName: "City Attorney" },
+      { electionId: "76", officeName: "City Controller" },
       undefined,
     );
     expect(syncLosAngelesCandidateFinance).toHaveBeenCalledTimes(2);
+    expect(syncLosAngelesCandidateFinance).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({ officeName: "Municipal Controller" }),
+    );
   });
 });
