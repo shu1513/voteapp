@@ -122,6 +122,8 @@ function OutsideColumn({
 export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
   const direct = summary.direct_campaign;
   const outside = summary.outside_spending;
+  const publicFundsReceived = direct.public_funds_received;
+  const hasPublicFunds = publicFundsReceived != null;
   const hasMoneyRow =
     direct.total_raised !== null ||
     direct.total_spent !== null ||
@@ -133,12 +135,12 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
   return (
     <div className="text-sm">
       {hasMoneyRow ? (
-        <dl className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+        <dl className={`grid grid-cols-2 gap-3 ${hasPublicFunds ? "sm:grid-cols-5" : "sm:grid-cols-4"}`}>
           <MoneyStat label="Raised" amount={direct.total_raised} />
           <MoneyStat label="Spent" amount={direct.total_spent} />
           <MoneyStat label="Cash on hand" amount={direct.cash_on_hand} />
           <MoneyStat label="Debts" amount={direct.debts_owed} />
-          <MoneyStat label="Public funds" amount={direct.public_funds_received ?? null} />
+          {hasPublicFunds ? <MoneyStat label="Public funds" amount={publicFundsReceived} /> : null}
         </dl>
       ) : null}
 

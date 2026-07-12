@@ -26,9 +26,15 @@ describe("hasFinanceContent", () => {
 
 describe("FinanceSummaryCard", () => {
   it("renders money, occupations, industries, outside spending, and the source line", () => {
-    render(<FinanceSummaryCard summary={financeSummary()} />);
+    const summary = financeSummary();
+    summary.direct_campaign.public_funds_received = null;
+    render(<FinanceSummaryCard summary={summary} />);
 
-    expect(screen.getByText("Raised")).toBeInTheDocument();
+    const raisedLabel = screen.getByText("Raised");
+    expect(raisedLabel).toBeInTheDocument();
+    expect(raisedLabel.closest("dl")).toHaveClass("sm:grid-cols-4");
+    expect(raisedLabel.closest("dl")).not.toHaveClass("sm:grid-cols-5");
+    expect(screen.queryByText("Public funds")).not.toBeInTheDocument();
     expect(screen.getByText("$120,000")).toBeInTheDocument();
     // Occupations stay distinct from industries.
     expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();
@@ -89,7 +95,9 @@ describe("FinanceSummaryCard", () => {
       { category_name: "$1-$99", amount: 10_000, contributor_count: 200, source_url: null },
     ];
     render(<FinanceSummaryCard summary={summary} />);
-    expect(screen.getByText("Public funds")).toBeInTheDocument();
+    const publicFundsLabel = screen.getByText("Public funds");
+    expect(publicFundsLabel).toBeInTheDocument();
+    expect(publicFundsLabel.closest("dl")).toHaveClass("sm:grid-cols-5");
     expect(screen.getByText("$250,000")).toBeInTheDocument();
     expect(screen.getByText("Top disclosed employers of direct donors")).toBeInTheDocument();
     expect(screen.getByText("NYC DOE")).toBeInTheDocument();
