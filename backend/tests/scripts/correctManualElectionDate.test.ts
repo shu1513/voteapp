@@ -179,6 +179,42 @@ describe("runElectionDateCorrection", () => {
     expect(statements.at(-1)?.text).toBe("COMMIT");
   });
 
+  it("already-corrected path compares sources trim-normalized so no redundant write fires", async () => {
+    // Untrimmed incoming URL vs clean stored entry: the merge would dedupe
+    // to the existing set, so no append may be reported or written.
+    const { client, statements } = fakeClient({
+      row: electionRow({
+        election_date: "2026-07-21",
+        sources: [SOURCE_URL],
+      }),
+    });
+
+    const result = await runElectionDateCorrection(
+      client,
+      options({ sourceUrl: ` ${SOURCE_URL} ` })
+    );
+
+    expect(result).toMatchObject({ alreadyCorrected: true, sourceAppended: false });
+    expect(statements.some((statement) => statement.text.includes("UPDATE public.elections"))).toBe(
+      false
+    );
+
+    // Whitespace variant stored: trim-equal, so also no append.
+    const stored = fakeClient({
+      row: electionRow({
+        election_date: "2026-07-21",
+        sources: [` ${SOURCE_URL} `],
+      }),
+    });
+
+    const storedResult = await runElectionDateCorrection(stored.client, options());
+
+    expect(storedResult).toMatchObject({ alreadyCorrected: true, sourceAppended: false });
+    expect(
+      stored.statements.some((statement) => statement.text.includes("UPDATE public.elections"))
+    ).toBe(false);
+  });
+
   it("already-corrected dry-run reports the pending source append without writing", async () => {
     const { client, statements } = fakeClient({
       row: electionRow({ election_date: "2026-07-21" }),

@@ -174,9 +174,16 @@ export async function runElectionDateCorrection(
       // already corrected without the official source (out-of-band repair)
       // gets the source appended so re-running the exact command always ends
       // in the same final state.
+      // Same trim-normalized comparison appendElectionSource uses, so the
+      // sourceAppended flag never reports an append that the merge would
+      // dedupe away (or vice versa).
       const merged = appendElectionSource(row.sources, sourceUrl);
+      const trimmedSourceUrl = sourceUrl.trim();
       const sourceMissing =
-        !Array.isArray(row.sources) || !row.sources.includes(sourceUrl);
+        !Array.isArray(row.sources) ||
+        !row.sources.some(
+          (value) => typeof value === "string" && value.trim() === trimmedSourceUrl
+        );
       if (sourceMissing && !dryRun) {
         await client.query(
           `
