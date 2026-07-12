@@ -61,7 +61,10 @@ function usage(): string {
     "presidential is still rejected regardless of review_decision: presidential contests belong to",
     "presidential_cycles, never district elections, and approval cannot override that.",
     "--historical is a separate, review-gated path for verified past elections. It requires",
-    "review_decision: \"approve\" plus a non-empty review_reason and only relaxes the date guard.",
+    "review_decision: \"approve\" plus a non-empty review_reason and only relaxes the date guard,",
+    "for every entry in the payload. Its default ingest key is namespaced by the earliest entry's",
+    "election year (manual:elections:<district>:historical:<year>) so a historical import never",
+    "overwrites the district's current-year staging row.",
   ].join("\n");
 }
 
@@ -161,6 +164,20 @@ function extractFamilySourceUrls(payload: unknown): Record<string, string[]> | n
 function defaultIngestKey(districtId: string): string {
   const runYear = new Date().getUTCFullYear();
   return `manual:elections:${districtId}:${runYear}`;
+}
+
+// A historical import must never default onto the district's current-year key:
+// staging is an upsert by ingest_key, so reusing the run-year key would
+// overwrite a pending/validated current-election row (and its audit trail).
+export function historicalDefaultIngestKey(
+  districtId: string,
+  payload: { entries: ReadonlyArray<{ election_date: string }> }
+): string {
+  const years = payload.entries
+    .map((entry) => Number.parseInt(entry.election_date.slice(0, 4), 10))
+    .filter((year) => Number.isFinite(year));
+  const year = years.length > 0 ? Math.min(...years) : new Date().getUTCFullYear();
+  return `manual:elections:${districtId}:historical:${year}`;
 }
 
 function requireEnv(name: string): string {
@@ -302,7 +319,9 @@ async function main(): Promise<void> {
   const historicalImportDebugJson = resolveHistoricalImportDebugJson(parsed.payload, historical);
   const ingestKey =
     readFlag("--ingest-key") ??
-    defaultIngestKey(parsed.payload.district_id);
+    (historical
+      ? historicalDefaultIngestKey(parsed.payload.district_id, parsed.payload)
+      : defaultIngestKey(parsed.payload.district_id));
   const runId = readFlag("--run-id") ?? `manual_elections_${new Date().toISOString()}`;
   const payloadJson = JSON.stringify(parsed.payload);
   const familySourceUrls = extractFamilySourceUrls(rawPayload);

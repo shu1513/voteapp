@@ -81,6 +81,10 @@ function isHistoricalImportApproved(aiRawDebug: unknown): boolean {
     aiRawDebug.historical_import_approved === true;
 }
 
+function isManualResearchRow(aiRawDebug: unknown): boolean {
+  return isObjectRecord(aiRawDebug) && aiRawDebug.manual_research === true;
+}
+
 function normalize(text: string): string {
   return text.toLowerCase().replace(/\s+/g, " ").trim();
 }
@@ -503,8 +507,15 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
                 run_id: row.run_id ?? "",
                 payload: JSON.stringify(row.payload),
               });
-            } else if (row && row.status === "pending" && row.schema_version === ELECTION_DRAFT_SCHEMA_VERSION) {
+            } else if (
+              row &&
+              row.status === "pending" &&
+              row.schema_version === ELECTION_DRAFT_SCHEMA_VERSION &&
+              !isManualResearchRow(row.ai_raw_debug)
+            ) {
               // Soft-fail requeue whose draft-stream publish never landed.
+              // Manual rows are never enqueued for AI enrichment (see the
+              // soft-fail branch below), so they are not republished either.
               await redis.xAdd(STAGING_DRAFT_STREAM, "*", {
                 ingest_key: ingestKey,
                 item_type: STAGING_ITEM_TYPE_ELECTION,
@@ -667,11 +678,19 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
                 ]
               );
 
-              await redis.xAdd(STAGING_DRAFT_STREAM, "*", {
-                ingest_key: ingestKey,
-                item_type: STAGING_ITEM_TYPE_ELECTION,
-                run_id: row.run_id ?? "",
-              });
+              // A manually researched row is never handed to the AI enricher:
+              // the enricher regenerates the payload and replaces ai_raw_debug
+              // wholesale, which would clobber the manual payload and strip
+              // manual_research / historical_import_approved. The manual repair
+              // path is a re-validate (the review-approve branch below) or a
+              // corrected re-inject.
+              if (!isManualResearchRow(row.ai_raw_debug)) {
+                await redis.xAdd(STAGING_DRAFT_STREAM, "*", {
+                  ingest_key: ingestKey,
+                  item_type: STAGING_ITEM_TYPE_ELECTION,
+                  run_id: row.run_id ?? "",
+                });
+              }
 
               await ack(entry.id);
               continue;
