@@ -131,7 +131,8 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
     direct.total_raised !== null ||
     direct.total_spent !== null ||
     direct.cash_on_hand !== null ||
-    direct.debts_owed !== null;
+    direct.debts_owed !== null ||
+    direct.public_funds_received != null;
   const sourceUrl = firstFinanceSourceUrl(summary);
 
   return (
@@ -142,11 +143,14 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
           <MoneyStat label="Spent" amount={direct.total_spent} />
           <MoneyStat label="Cash on hand" amount={direct.cash_on_hand} />
           <MoneyStat label="Debts" amount={direct.debts_owed} />
+          <MoneyStat label="Public funds" amount={direct.public_funds_received ?? null} />
         </View>
       ) : null}
 
       <BreakdownList heading="Top disclosed occupations of direct donors" rows={direct.top_occupations} />
+      <BreakdownList heading="Top disclosed employers of direct donors" rows={direct.top_employers ?? []} />
       <BreakdownList heading="Industries represented among direct contributions" rows={direct.top_industries} />
+      <BreakdownList heading="Direct contributions by size" rows={direct.contribution_size_buckets ?? []} />
 
       {hasOutsideFinanceContent(summary) ? (
         <View className="mt-3">

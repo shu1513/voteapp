@@ -9,3 +9,4 @@ export * from "./newYorkFinanceWriter.js";
 export * from "./newYorkCandidateFinanceSync.js";
 export * from "./newYorkCandidateFinanceAutoLink.js";
 export * from "./newYorkCandidateFinanceBatchSync.js";
+export * from "./newYorkCombinedBallotLookupFinanceLoader.js";

@@ -59,6 +59,7 @@ export type BallotLookupFinanceSummary = {
     | "NEW_JERSEY_ELEC"
     | "NEW_MEXICO_CFIS"
     | "NEW_YORK_SODA"
+    | "NEW_YORK_CITY_CFB"
     | "OKLAHOMA_GUARDIAN"
     | "TEXAS_TEC"
     | "HOUSTON_CAMPAIGN_FINANCE"
@@ -91,6 +92,7 @@ export type BallotLookupFinanceSummary = {
     total_spent: number | null;
     cash_on_hand: number | null;
     debts_owed: number | null;
+    public_funds_received?: number | null;
     top_occupations: BallotLookupFinanceBreakdown[];
     top_employers?: BallotLookupFinanceBreakdown[];
     top_industries: BallotLookupFinanceBreakdown[];

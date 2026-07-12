@@ -351,6 +351,17 @@ export function isNewYorkCampaignFinanceSyncEnabled(force = false): boolean {
   );
 }
 
+export function isNewYorkCityCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("NEW_YORK_CITY_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isNewYorkCityCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isNewYorkCityCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("NEW_YORK_CITY_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isLosAngelesCityCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("LOS_ANGELES_CITY_CAMPAIGN_FINANCE_ENABLED", false);
 }

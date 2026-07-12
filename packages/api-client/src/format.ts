@@ -142,6 +142,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   ORESTAR: "Oregon ORESTAR",
   PENNSYLVANIA_DOS: "Pennsylvania Department of State",
   DISTRICT_OF_COLUMBIA_OCF: "DC Office of Campaign Finance",
+  NEW_YORK_CITY_CFB: "NYC Campaign Finance Board",
 };
 
 export function financeSourceLabel(source: string): string {

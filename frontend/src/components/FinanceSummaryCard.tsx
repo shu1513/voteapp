@@ -122,26 +122,32 @@ function OutsideColumn({
 export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
   const direct = summary.direct_campaign;
   const outside = summary.outside_spending;
+  const publicFundsReceived = direct.public_funds_received;
+  const hasPublicFunds = publicFundsReceived != null;
   const hasMoneyRow =
     direct.total_raised !== null ||
     direct.total_spent !== null ||
     direct.cash_on_hand !== null ||
-    direct.debts_owed !== null;
+    direct.debts_owed !== null ||
+    direct.public_funds_received != null;
   const sourceUrl = firstFinanceSourceUrl(summary);
 
   return (
     <div className="text-sm">
       {hasMoneyRow ? (
-        <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <dl className={`grid grid-cols-2 gap-3 ${hasPublicFunds ? "sm:grid-cols-5" : "sm:grid-cols-4"}`}>
           <MoneyStat label="Raised" amount={direct.total_raised} />
           <MoneyStat label="Spent" amount={direct.total_spent} />
           <MoneyStat label="Cash on hand" amount={direct.cash_on_hand} />
           <MoneyStat label="Debts" amount={direct.debts_owed} />
+          {hasPublicFunds ? <MoneyStat label="Public funds" amount={publicFundsReceived} /> : null}
         </dl>
       ) : null}
 
       <BreakdownList heading="Top disclosed occupations of direct donors" rows={direct.top_occupations} />
+      <BreakdownList heading="Top disclosed employers of direct donors" rows={direct.top_employers ?? []} />
       <BreakdownList heading="Industries represented among direct contributions" rows={direct.top_industries} />
+      <BreakdownList heading="Direct contributions by size" rows={direct.contribution_size_buckets ?? []} />
 
       {hasOutsideFinanceContent(summary) ? (
         <div className="mt-3">
