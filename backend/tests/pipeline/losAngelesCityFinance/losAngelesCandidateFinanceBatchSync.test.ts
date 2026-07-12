@@ -151,4 +151,37 @@ describe("Los Angeles candidate finance batch sync", () => {
       }),
     );
   });
+
+  it("syncs only exact LAUSD board links through their stored seat", async () => {
+    vi.mocked(getLosAngelesEthicsCandidateTotals).mockResolvedValue([
+      candidateTotal("LAUSD District 6", "13549"),
+    ]);
+    const query = vi.fn().mockResolvedValue({
+      rows: [dueRow("School Board Member", "13549", 6)],
+      rowCount: 1,
+    });
+    await expect(
+      syncDueLosAngelesCandidateFinance({
+        db: { query, connect: vi.fn() },
+        now: NOW,
+        autoLinkMissingLinks: false,
+      }),
+    ).resolves.toMatchObject({
+      syncedCandidateCount: 1,
+      failedCandidateCount: 0,
+    });
+    expect(String(query.mock.calls[0]?.[0])).toContain(
+      "district.geoid_compact='0622710' AND link.office_name='School Board Member'",
+    );
+    expect(getLosAngelesEthicsCandidateTotals).toHaveBeenCalledWith(
+      { electionId: "76", officeName: "LAUSD District 6" },
+      undefined,
+    );
+    expect(syncLosAngelesCandidateFinance).toHaveBeenCalledWith(
+      expect.objectContaining({
+        officeName: "School Board Member",
+        seatNumber: 6,
+      }),
+    );
+  });
 });

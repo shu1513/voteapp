@@ -156,29 +156,46 @@ type CandidateMetricTotals = [
   number,
 ];
 
-function metricTotals(candidateMainRow: string): CandidateMetricTotals {
+function metricTotals(
+  candidateMainRow: string,
+  matchingFundsOmitted: boolean,
+): CandidateMetricTotals {
+  const parseMetricCells = (
+    cells: string[],
+    completedElection: boolean,
+  ): CandidateMetricTotals => {
+    const withoutCompletedColumns = completedElection
+      ? [cells[0]!, cells[1]!, cells[2]!, ...cells.slice(5)]
+      : cells;
+    const financeCells = matchingFundsOmitted
+      ? [
+          withoutCompletedColumns[0]!,
+          withoutCompletedColumns[1]!,
+          withoutCompletedColumns[2]!,
+          null,
+          ...withoutCompletedColumns.slice(3),
+        ]
+      : withoutCompletedColumns;
+    const totals = financeCells.map((cell, index) => {
+      if (cell === null) return null;
+      const value = money(cell);
+      if (value !== null) return value;
+      if (index === 3 && /^ACCEPTED$/i.test(cell)) return null;
+      throw new Error("Los Angeles Ethics candidate metric is not money");
+    });
+    return totals as CandidateMetricTotals;
+  };
   const currentCells = [
     ...candidateMainRow.matchAll(/border-top:[^>]*>([\s\S]*?)<\/td>/gi),
   ];
   if (currentCells.length > 0) {
     const cells = currentCells.map((match) => decodeHtml(match[1] ?? ""));
-    if (cells.length !== 8 && cells.length !== 10)
+    const expected = matchingFundsOmitted ? [7, 9] : [8, 10];
+    if (!expected.includes(cells.length))
       throw new Error(
-        `Los Angeles Ethics candidate row has ${cells.length} totals; expected 8 or 10`,
+        `Los Angeles Ethics candidate row has ${cells.length} totals; expected ${expected.join(" or ")}`,
       );
-    // Completed election pages may insert votes received and cost per vote
-    // after cash on hand. They are not finance-summary fields.
-    const financeCells =
-      cells.length === 10
-        ? [cells[0], cells[1], cells[2], ...cells.slice(5)]
-        : cells;
-    const totals = financeCells.map(money);
-    const invalidIndex = totals.findIndex((value) => value === null);
-    if (invalidIndex >= 0)
-      throw new Error(
-        `Los Angeles Ethics candidate metric ${invalidIndex + 1} is not a nonnegative money amount`,
-      );
-    return totals as CandidateMetricTotals;
+    return parseMetricCells(cells, cells.length === expected[1]);
   }
 
   // Older election pages render one reported-through cell followed by eight
@@ -188,23 +205,15 @@ function metricTotals(candidateMainRow: string): CandidateMetricTotals {
       /<td\s+align=["']right["'][^>]*>([\s\S]*?)<\/td>/gi,
     ),
   ].map((match) => decodeHtml(match[1] ?? ""));
-  if (legacyCells.length !== 9 && legacyCells.length !== 11)
+  const expected = matchingFundsOmitted ? [8, 10] : [9, 11];
+  if (!expected.includes(legacyCells.length))
     throw new Error(
-      `Los Angeles Ethics legacy candidate row has ${Math.max(0, legacyCells.length - 1)} totals; expected 8 or 10`,
+      `Los Angeles Ethics legacy candidate row has ${Math.max(0, legacyCells.length - 1)} totals; expected ${expected[0]! - 1} or ${expected[1]! - 1}`,
     );
-  const financeCells =
-    legacyCells.length === 11
-      ? [legacyCells[1], legacyCells[2], legacyCells[3], ...legacyCells.slice(6)]
-      : legacyCells.slice(1);
-  const totals = financeCells.map((cell, index) => {
-    const value = money(cell);
-    if (value !== null) return value;
-    // Historical matching-fund cells may report qualification status rather
-    // than a dollar amount. Preserve that as unknown, never as zero.
-    if (index === 3 && /^ACCEPTED$/i.test(cell)) return null;
-    throw new Error("Los Angeles Ethics legacy candidate metric is not money");
-  });
-  return totals as CandidateMetricTotals;
+  return parseMetricCells(
+    legacyCells.slice(1),
+    legacyCells.length === expected[1],
+  );
 }
 
 export function parseLosAngelesEthicsCandidateTotals(input: {
@@ -268,7 +277,10 @@ export function parseLosAngelesEthicsCandidateTotals(input: {
       continue;
     let totals: CandidateMetricTotals;
     try {
-      totals = metricTotals(main);
+      totals = metricTotals(
+        main,
+        /^LAUSD District [1-7]$/i.test(input.officeName),
+      );
     } catch {
       // One malformed candidate row must not discard every candidate
       // in the election. Caller records unresolved candidates individually.

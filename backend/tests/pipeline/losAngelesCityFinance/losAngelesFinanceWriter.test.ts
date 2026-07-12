@@ -140,6 +140,8 @@ describe("Los Angeles finance writer", () => {
     for (const link of [
       { ...base, officeName: "City Council Member" },
       { ...base, officeName: "City Council Member", seatNumber: 16 },
+      { ...base, officeName: "School Board Member" },
+      { ...base, officeName: "School Board Member", seatNumber: 8 },
       { ...base, officeName: "Mayor", seatNumber: 3 },
     ]) {
       await expect(

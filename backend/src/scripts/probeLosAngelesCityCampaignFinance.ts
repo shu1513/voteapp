@@ -14,7 +14,10 @@ const officeCanonicalName = officeArg?.slice("--office=".length) || "Mayor";
 const seatArg = process.argv.find((arg) => /^--seat=\d{1,2}$/.test(arg));
 const seatNumber = seatArg ? Number(seatArg.slice("--seat=".length)) : null;
 const ethicsOfficeName = toLosAngelesEthicsOfficeName({
-  officeScope: "place",
+  officeScope:
+    officeCanonicalName === "School Board Member"
+      ? "school_unified"
+      : "place",
   officeCanonicalName,
   seatNumber,
 });
