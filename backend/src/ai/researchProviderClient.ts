@@ -1,5 +1,6 @@
 import type { AiProvider } from "./types.js";
 import type { AiCandidate } from "./aiCandidates.js";
+import { AI_CALLS_BLOCKED_REASON, isAiApiCallAllowed } from "./aiCallGuard.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 import {
   extractProviderRateLimitDebugHeaders,
@@ -683,6 +684,10 @@ export async function callResearchProvider(
   prompt: string,
   config: ResearchProviderConfig
 ): Promise<ResearchProviderResult> {
+  if (!isAiApiCallAllowed()) {
+    return { ok: false, retryable: false, errorCode: "CONFIGURATION_ERROR", reason: AI_CALLS_BLOCKED_REASON };
+  }
+
   if (candidate.provider === "openai") {
     if (!config.openAiApiKey) {
       return { ok: false, retryable: false, errorCode: "CONFIGURATION_ERROR", reason: "OPENAI_API_KEY is missing" };

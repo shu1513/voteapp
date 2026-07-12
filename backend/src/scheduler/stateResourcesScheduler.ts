@@ -312,6 +312,23 @@ export async function runStateResourcesRefreshJob(
       console.warn("state_resources refresh job missing triggeredBy; recording as unknown");
     }
 
+    const enabled = force || process.env.STATE_RESOURCES_SCHEDULER_ENABLED === "true";
+    if (!enabled) {
+      return {
+        dryRun,
+        force,
+        triggeredBy,
+        skipped: true,
+        skipReason: "STATE_RESOURCES_SCHEDULER_ENABLED is not true (pass --force to run manually)",
+        passes: 0,
+        retrySweeps: 0,
+        requeuedToDraft: 0,
+        requeuedToPending: 0,
+        startedAt,
+        finishedAt: new Date().toISOString(),
+      };
+    }
+
     await runStateResourcesProducer({ dryRun, force });
 
     if (dryRun) {

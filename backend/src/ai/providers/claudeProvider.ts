@@ -3,6 +3,7 @@ import type {
   EnrichStateResourcesInput,
   ProviderGenerateResult,
 } from "../types.js";
+import { AI_CALLS_BLOCKED_REASON, isAiApiCallAllowed } from "../aiCallGuard.js";
 import { buildRetryFeedbackPromptLines } from "../retryFeedback.js";
 import { buildStateResourcesPrompt } from "./stateResourcesPrompt.js";
 import {
@@ -43,6 +44,15 @@ export async function claudeProvider(
   input: EnrichStateResourcesInput,
   config: EnrichStateResourcesConfig
 ): Promise<ProviderGenerateResult> {
+  if (!isAiApiCallAllowed()) {
+    return {
+      ok: false,
+      retryable: false,
+      errorCode: "CONFIGURATION_ERROR",
+      reason: AI_CALLS_BLOCKED_REASON,
+    };
+  }
+
   if (!config.anthropicApiKey) {
     return {
       ok: false,
