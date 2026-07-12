@@ -119,7 +119,9 @@ const STATE_LOWER_STRICT_MARKERS = [
   /\bstate delegate\b/,
   /\bhouse delegate\b/,
   /\bhouse of representatives district\b/,
-  /\brepresentative district\b/,
+  // "(?<!\bcity )" — El Paso titles its council members "City Representative
+  // District N", which is a municipal seat, not a state-house race.
+  /(?<!\bcity )\brepresentative district\b/,
   /\bmember of the house of representatives\b/,
   /\bmember,\s*house of representatives\b/,
   /\bstate assembly\b/,
