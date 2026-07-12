@@ -51,6 +51,7 @@ export type BallotLookupFinanceSummary = {
     | "FEC"
     | "ARIZONA_SOS"
     | "CALIFORNIA_SOS"
+    | "LOS_ANGELES_CITY_ETHICS"
     | "COLORADO_TRACER"
     | "CONNECTICUT_ECRIS"
     | "INDIANA_CAMPAIGN_FINANCE"

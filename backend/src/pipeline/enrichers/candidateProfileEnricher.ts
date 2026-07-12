@@ -13,6 +13,10 @@ import {
   buildCaliforniaCandidateFinanceLinkedElectionSyncJobId,
   enqueueManualCaliforniaCandidateFinanceSyncJob,
 } from "../../scheduler/californiaCandidateFinanceSyncScheduler.js";
+import {
+  buildLosAngelesCityFinanceLinkedElectionSyncJobId,
+  enqueueManualLosAngelesCityFinanceSyncJob,
+} from "../../scheduler/losAngelesCityCandidateFinanceSyncScheduler.js";
 import { enqueueCandidateLinkCandidateFinanceSyncJob } from "../../scheduler/candidateFinanceSyncScheduler.js";
 import {
   buildColoradoCandidateFinanceLinkedElectionSyncJobId,
@@ -158,6 +162,7 @@ type ElectionRow = {
   state: string;
   district_name: string;
   district_type: string;
+  geoid_compact: string;
   election_date: string;
   official_ballot_title: string;
   election_stage: string | null;
@@ -179,6 +184,7 @@ type CandidateProfileResolvedContext =
       state: string;
       districtName: string;
       districtType: string;
+      geoidCompact?: string;
       electionDate: string;
       officialBallotTitle: string;
       electionStage: string | null;
@@ -432,6 +438,31 @@ async function enqueueCaliforniaFinanceSyncForLinkedElection(input: {
     const reason = toReason(error);
     console.warn(
       `candidate-profile enricher could not enqueue California finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${reason}`
+    );
+  }
+}
+
+async function enqueueLosAngelesCityFinanceSyncForLinkedElection(input: {
+  context: Extract<CandidateProfileResolvedContext, { type: "election" }>;
+  candidateId: string;
+}): Promise<void> {
+  if (
+    input.context.state !== "CA" ||
+    input.context.districtType !== "place" ||
+    input.context.geoidCompact !== "0644000" ||
+    input.context.officeScope !== "place" ||
+    input.context.officeCanonicalName !== "Mayor"
+  ) {
+    return;
+  }
+  try {
+    await enqueueManualLosAngelesCityFinanceSyncJob(
+      { aiClassifyIndustries: true, triggeredBy: "manual" },
+      { jobId: buildLosAngelesCityFinanceLinkedElectionSyncJobId() }
+    );
+  } catch (error) {
+    console.warn(
+      `candidate-profile enricher could not enqueue Los Angeles City finance sync for candidate=${input.candidateId} election=${input.context.contextId}: ${toReason(error)}`
     );
   }
 }
@@ -1017,6 +1048,10 @@ export async function enqueueCandidateProfileFinanceSyncFanoutForLinkedElection(
     context: input.context,
     candidateId: input.candidateId,
   });
+  await enqueueLosAngelesCityFinanceSyncForLinkedElection({
+    context: input.context,
+    candidateId: input.candidateId,
+  });
   await enqueueColoradoFinanceSyncForLinkedElection({
     context: input.context,
     candidateId: input.candidateId,
@@ -1287,6 +1322,7 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
         d.state,
         d.name AS district_name,
         d.district_type,
+        d.geoid_compact,
         e.election_date::text AS election_date,
         e.official_ballot_title,
         e.election_stage::text AS election_stage,
@@ -1430,6 +1466,7 @@ async function resolveElectionDraftContext(input: {
     state: election.state,
     districtName: election.district_name,
     districtType: election.district_type,
+    geoidCompact: election.geoid_compact,
     electionDate: election.election_date,
     officialBallotTitle: election.official_ballot_title,
     electionStage: election.election_stage,
