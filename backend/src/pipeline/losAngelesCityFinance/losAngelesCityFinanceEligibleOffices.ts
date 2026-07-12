@@ -4,6 +4,7 @@ export const LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_NAMES = [
   "Mayor",
   "Municipal Attorney",
   "Municipal Controller",
+  "City Council Member",
 ] as const;
 
 type LosAngelesCityFinanceEligibleOfficeName =
@@ -16,12 +17,46 @@ export const LOS_ANGELES_CITY_FINANCE_ELIGIBLE_OFFICE_KEYS: readonly `place::${L
   );
 
 const ETHICS_OFFICE_BY_CANONICAL_NAME: Readonly<
-  Record<LosAngelesCityFinanceEligibleOfficeName, string>
+  Record<
+    Exclude<LosAngelesCityFinanceEligibleOfficeName, "City Council Member">,
+    string
+  >
 > = {
   Mayor: "Mayor",
   "Municipal Attorney": "City Attorney",
   "Municipal Controller": "City Controller",
 };
+
+export function parseLosAngelesCityCouncilSeatNumber(
+  officialBallotTitle: string | null | undefined,
+): number | null {
+  const normalized = officialBallotTitle
+    ?.normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!normalized) return null;
+  const match =
+    /^(?:MEMBER OF THE CITY COUNCIL|CITY COUNCIL MEMBER|COUNCIL MEMBER|COUNCILMEMBER|CITY COUNCIL|COUNCIL) DISTRICT (?:NO )?(\d{1,2})$/.exec(
+      normalized,
+    );
+  if (!match) return null;
+  const seatNumber = Number(match[1]);
+  return isLosAngelesCityCouncilSeatNumber(seatNumber) ? seatNumber : null;
+}
+
+function isLosAngelesCityCouncilSeatNumber(
+  value: number | null | undefined,
+): value is number {
+  return (
+    typeof value === "number" &&
+    Number.isInteger(value) &&
+    value >= 1 &&
+    value <= 15
+  );
+}
 
 function isLosAngelesCityFinanceEligibleOfficeName(
   value: string,
@@ -34,12 +69,17 @@ function isLosAngelesCityFinanceEligibleOfficeName(
 export function toLosAngelesEthicsOfficeName(input: {
   officeScope: string | null | undefined;
   officeCanonicalName: string | null | undefined;
+  seatNumber?: number | null;
 }): string | null {
   if (input.officeScope?.trim() !== "place") return null;
   const officeName = input.officeCanonicalName?.trim() ?? "";
-  return isLosAngelesCityFinanceEligibleOfficeName(officeName)
-    ? ETHICS_OFFICE_BY_CANONICAL_NAME[officeName]
-    : null;
+  if (!isLosAngelesCityFinanceEligibleOfficeName(officeName)) return null;
+  if (officeName === "City Council Member") {
+    return isLosAngelesCityCouncilSeatNumber(input.seatNumber)
+      ? `Council District ${input.seatNumber}`
+      : null;
+  }
+  return ETHICS_OFFICE_BY_CANONICAL_NAME[officeName];
 }
 
 export function isLosAngelesCityFinanceEligibleElection(input: {
@@ -48,11 +88,16 @@ export function isLosAngelesCityFinanceEligibleElection(input: {
   geoidCompact: string | null | undefined;
   officeScope: string | null | undefined;
   officeCanonicalName: string | null | undefined;
+  officialBallotTitle?: string | null;
 }): boolean {
+  const seatNumber =
+    input.officeCanonicalName?.trim() === "City Council Member"
+      ? parseLosAngelesCityCouncilSeatNumber(input.officialBallotTitle)
+      : null;
   return (
     input.state?.trim().toUpperCase() === "CA" &&
     input.districtType?.trim() === "place" &&
     input.geoidCompact?.trim() === LOS_ANGELES_CITY_GEOID &&
-    toLosAngelesEthicsOfficeName(input) !== null
+    toLosAngelesEthicsOfficeName({ ...input, seatNumber }) !== null
   );
 }

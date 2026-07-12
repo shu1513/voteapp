@@ -9,6 +9,11 @@ import type {
   TexasOutsideSpendingSummary,
   TexasSupportOppose,
 } from "../texasFinance/texasOutsideSpendingAggregator.js";
+import {
+  houstonFinanceOfficeTargetsEqual,
+  parseHoustonDisclosureOfficeTarget,
+  type HoustonFinanceOfficeTarget,
+} from "./houstonFinanceOfficeTargets.js";
 
 function key(value: string): string {
   return value
@@ -36,6 +41,23 @@ const HOUSTON_MAYOR_ALIASES = new Set([
 export function isTexasTecHoustonMayorDescription(value: string): boolean {
   const normalized = key(value).replace(/\bOF\b/g, " ").replace(/\s+/g, " ").trim();
   return HOUSTON_MAYOR_ALIASES.has(normalized);
+}
+
+export function isTexasTecHoustonOfficeDescription(
+  value: string,
+  officeTarget: HoustonFinanceOfficeTarget
+): boolean {
+  if (officeTarget.officeName === "Mayor") return isTexasTecHoustonMayorDescription(value);
+  const normalized = key(value);
+  if (!/\bHOUSTON\b/.test(normalized)) return false;
+  const parsed = parseHoustonDisclosureOfficeTarget(normalized);
+  return parsed !== null && houstonFinanceOfficeTargetsEqual(parsed, officeTarget);
+}
+
+function officeDescription(input: { place: string; description: string; district: string }): string {
+  const district = input.district.trim();
+  const districtDescription = /^[A-K]$/i.test(district) ? `District ${district}` : district;
+  return [input.place, input.description, districtDescription].filter(Boolean).join(" ");
 }
 
 function isInfoOnly(value: string): boolean {
@@ -83,6 +105,7 @@ function dateYear(value: string): number | null {
 export function aggregateHoustonTexasGpacOutsideSpending(input: {
   candidateName: string;
   electionYear: number;
+  officeTarget?: HoustonFinanceOfficeTarget;
   purposeRows: readonly TexasTecPurposeRow[];
   candidateRows: readonly TexasTecCandidateRow[];
   expenditureRows: readonly TexasTecExpenditureRow[];
@@ -98,6 +121,7 @@ export function aggregateHoustonTexasGpacOutsideSpending(input: {
     throw new Error(`Invalid Houston TEC outside-spending election year: ${input.electionYear}`);
   }
   const targetNames = normalizeTexasCandidateNameKeys(input.candidateName);
+  const officeTarget = input.officeTarget ?? { officeName: "Mayor", seat: "Houston" };
   const relationshipByReport = new Map<string, TexasSupportOppose | null>();
   for (const row of input.purposeRows) {
     if (
@@ -105,7 +129,11 @@ export function aggregateHoustonTexasGpacOutsideSpending(input: {
       !["GPAC", "MPAC"].includes(key(row.filerTypeCd)) ||
       key(row.subjectCategoryCd) !== "CANDIDATE" ||
       !namesIntersect(targetNames, purposeCandidateKeys(row)) ||
-      !isTexasTecHoustonMayorDescription([row.activitySeekOfficePlace, row.activitySeekOfficeDescr].filter(Boolean).join(" "))
+      !isTexasTecHoustonOfficeDescription(officeDescription({
+        place: row.activitySeekOfficePlace,
+        description: row.activitySeekOfficeDescr,
+        district: row.activitySeekOfficeDistrict,
+      }), officeTarget)
     ) continue;
     const rowDirection = direction(row.subjectPositionCd);
     if (!rowDirection) continue;
@@ -130,7 +158,11 @@ export function aggregateHoustonTexasGpacOutsideSpending(input: {
     if (
       isInfoOnly(row.infoOnlyFlag) ||
       !namesIntersect(targetNames, candidateKeys(row)) ||
-      !isTexasTecHoustonMayorDescription([row.candidateSeekOfficePlace, row.candidateSeekOfficeDescr].filter(Boolean).join(" "))
+      !isTexasTecHoustonOfficeDescription(officeDescription({
+        place: row.candidateSeekOfficePlace,
+        description: row.candidateSeekOfficeDescr,
+        district: row.candidateSeekOfficeDistrict,
+      }), officeTarget)
     ) continue;
     matchedCandidateRowCount += 1;
     const reportKey = `${key(row.filerIdent)}\u0000${key(row.reportInfoIdent)}`;

@@ -21,6 +21,7 @@ type DueRow = {
   election_year: number;
   election_date: string;
   office_name: string;
+  seat_number: number | null;
   ethics_election_id: string;
   ethics_candidate_person_id: string;
   last_synced_at: string | null;
@@ -108,7 +109,7 @@ export async function syncDueLosAngelesCandidateFinance(input: {
     }
   }
   const due = await input.db.query<DueRow>(
-    `WITH due AS (SELECT link.candidate_id::text candidate_id,link.election_id::text election_id,COALESCE(NULLIF(trim(candidate.display_name),''),link.candidate_name_normalized) candidate_name,link.election_year,election.election_date::text election_date,link.office_name,link.ethics_election_id,link.ethics_candidate_person_id,summary.last_synced_at::text last_synced_at,count(*) OVER() total_due_rows FROM public.lacity_candidate_finance_links link JOIN public.candidates candidate ON candidate.id=link.candidate_id JOIN public.candidate_elections ce ON ce.candidate_id=link.candidate_id AND ce.election_id=link.election_id JOIN public.elections election ON election.id=link.election_id JOIN public.districts district ON district.id=election.district_id LEFT JOIN public.lacity_candidate_finance_summaries summary ON summary.link_id=link.id AND summary.election_year=link.election_year WHERE link.link_status='active' AND candidate.deleted_at IS NULL AND district.state='CA' AND district.district_type='place' AND district.geoid_compact='0644000' AND election.election_date>=($1::date-make_interval(days=>$4::int)) AND election.election_date<=($1::date+make_interval(days=>$5::int)) AND ce.status NOT IN ('withdrawn','lost') AND (summary.last_synced_at IS NULL OR summary.last_synced_at<($1::timestamptz-make_interval(days=>$2::int))) ORDER BY summary.last_synced_at NULLS FIRST,election.election_date,link.candidate_name_normalized LIMIT $3::int) SELECT * FROM due`,
+    `WITH due AS (SELECT link.candidate_id::text candidate_id,link.election_id::text election_id,COALESCE(NULLIF(trim(candidate.display_name),''),link.candidate_name_normalized) candidate_name,link.election_year,election.election_date::text election_date,link.office_name,link.seat_number,link.ethics_election_id,link.ethics_candidate_person_id,summary.last_synced_at::text last_synced_at,count(*) OVER() total_due_rows FROM public.lacity_candidate_finance_links link JOIN public.candidates candidate ON candidate.id=link.candidate_id JOIN public.candidate_elections ce ON ce.candidate_id=link.candidate_id AND ce.election_id=link.election_id JOIN public.elections election ON election.id=link.election_id JOIN public.districts district ON district.id=election.district_id LEFT JOIN public.lacity_candidate_finance_summaries summary ON summary.link_id=link.id AND summary.election_year=link.election_year WHERE link.link_status='active' AND candidate.deleted_at IS NULL AND district.state='CA' AND district.district_type='place' AND district.geoid_compact='0644000' AND election.election_date>=($1::date-make_interval(days=>$4::int)) AND election.election_date<=($1::date+make_interval(days=>$5::int)) AND ce.status NOT IN ('withdrawn','lost') AND (summary.last_synced_at IS NULL OR summary.last_synced_at<($1::timestamptz-make_interval(days=>$2::int))) ORDER BY summary.last_synced_at NULLS FIRST,election.election_date,link.candidate_name_normalized LIMIT $3::int) SELECT * FROM due`,
     [now.toISOString(), stale, max, lookback, lookahead],
   );
   const totalsCache = new Map<
@@ -121,6 +122,7 @@ export async function syncDueLosAngelesCandidateFinance(input: {
       const ethicsOfficeName = toLosAngelesEthicsOfficeName({
         officeScope: "place",
         officeCanonicalName: row.office_name,
+        seatNumber: row.seat_number,
       });
       if (!ethicsOfficeName)
         throw new Error(
@@ -147,9 +149,9 @@ export async function syncDueLosAngelesCandidateFinance(input: {
         candidateId: row.candidate_id,
         electionId: row.election_id,
         electionYear: row.election_year,
-        electionDate: row.election_date.slice(0, 10),
         candidateName: row.candidate_name,
         officeName: row.office_name,
+        seatNumber: row.seat_number,
         total,
         ethicsClientOptions: input.ethicsClientOptions,
         openDataClientOptions: input.openDataClientOptions,

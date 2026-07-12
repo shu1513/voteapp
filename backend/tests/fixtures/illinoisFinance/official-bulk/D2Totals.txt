@@ -1,0 +1,4 @@
+ID	CommitteeID	FiledDocID	BegFundsAvail	IndivContribI	IndivContribNI	XferInI	XferInNI	LoanRcvI	LoanRcvNI	OtherRctI	OtherRctNI	TotalReceipts	InKindI	InKindNI	TotalInKind	XferOutI	XferOutNI	LoanMadeI	LoanMadeNI	ExpendI	ExpendNI	IndependentExpI	IndependentExpNI	TotalExpend	DebtsI	DebtsNI	TotalDebts	TotalInvest	EndFundsAvail	Archived
+111247	1078	197072	5147.16	15100	6123	3446	448	0	0	0	0	25117	2580	0	2580	2950	0	0	0	0	0	0	0	0	0	0	0	0	0	True
+111452	1078	199515	5147	14800	5735	3446	836	0	0	0	0	24817	2580	0	2580	2950	0	0	0	0	0	0	0	0	0	0	0	0	0	True
+114266	1078	203941	5147	19740	5885	3446	836	0	0	0	0	29907	2580	0	2580	2950	0	0	0	17459.85	2187.56	0	0	22597.41	0	0	0	0	12456.59	False

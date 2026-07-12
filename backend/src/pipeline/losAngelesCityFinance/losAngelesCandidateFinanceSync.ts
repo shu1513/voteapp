@@ -34,9 +34,9 @@ export async function syncLosAngelesCandidateFinance(input: {
   candidateId: string;
   electionId: string;
   electionYear: number;
-  electionDate: string;
   candidateName: string;
   officeName: string;
+  seatNumber?: number | null;
   total: LosAngelesEthicsCandidateTotal;
   ethicsClientOptions?: LosAngelesCityEthicsClientOptions;
   openDataClientOptions?: LosAngelesOpenDataClientOptions;
@@ -56,7 +56,7 @@ export async function syncLosAngelesCandidateFinance(input: {
     getLosAngelesCommitteeContributions(
       {
         committeeId: input.total.fppcCommitteeId,
-        electionDate: input.electionDate,
+        electionYear: input.electionYear,
       },
       {
         ...defaultLosAngelesOpenDataClientOptions(),
@@ -134,6 +134,7 @@ export async function syncLosAngelesCandidateFinance(input: {
           input.candidateName,
         ),
         officeName: input.officeName,
+        seatNumber: input.seatNumber,
         ethicsElectionId: input.total.electionId,
         ethicsCandidatePersonId: input.total.candidatePersonId,
         ethicsSeatCandidateId: input.total.electionSeatCandidateId,

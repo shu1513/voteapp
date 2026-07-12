@@ -4,10 +4,12 @@ import { loadHoustonCandidateFinanceReports } from "./houstonCampaignFinanceRepo
 import { autoLinkHoustonCandidateFinance, listHoustonCandidateElectionsMissingFinanceLinks } from "./houstonCandidateFinanceAutoLink.js";
 import { syncHoustonCandidateFinance, type HoustonCandidateFinanceSyncResult } from "./houstonCandidateFinanceSync.js";
 import { loadHoustonTexasTecData, type HoustonTexasTecData } from "./houstonTexasTecDataSource.js";
+import { parseStoredHoustonFinanceOfficeTarget } from "./houstonFinanceOfficeTargets.js";
 
 export type HoustonCandidateFinanceDueRow = {
   candidateId: string; electionId: string; candidateName: string; firstName: string; lastName: string;
-  electionYear: number; electionDate: string; committeeId: string; committeeName: string; sourceUrl: string | null;
+  electionYear: number; electionDate: string; officeName: string; district: string | null;
+  committeeId: string; committeeName: string; sourceUrl: string | null;
 };
 
 export type HoustonCandidateFinanceBatchSyncResult = {
@@ -23,12 +25,13 @@ export async function listDueHoustonCandidateFinanceRows(input: {
 }): Promise<HoustonCandidateFinanceDueRow[]> {
   const result = await input.db.query<{
     candidate_id: string; election_id: string; candidate_name: string; first_name: string; last_name: string;
-    election_year: number; election_date: string; committee_id: string; committee_name: string; source_url: string | null;
+    election_year: number; election_date: string; office_name: string; district: string | null;
+    committee_id: string; committee_name: string; source_url: string | null;
   }>(`
     SELECT candidate.id::text candidate_id, election.id::text election_id,
       COALESCE(NULLIF(trim(candidate.display_name), ''), trim(candidate.first_name || ' ' || candidate.last_name)) candidate_name,
       candidate.first_name, candidate.last_name, link.election_year, election.election_date::text election_date,
-      link.committee_id, link.committee_name, link.source_url
+      link.office_name, link.district, link.committee_id, link.committee_name, link.source_url
     FROM public.hou_candidate_finance_links link
     JOIN public.candidates candidate ON candidate.id = link.candidate_id
     JOIN public.elections election ON election.id = link.election_id
@@ -41,7 +44,8 @@ export async function listDueHoustonCandidateFinanceRows(input: {
   `, [input.now.toISOString(), input.maxCandidates, input.staleAfterDays, input.lookbackDays, input.lookaheadDays, input.force === true]);
   return result.rows.map((row) => ({ candidateId: row.candidate_id, electionId: row.election_id, candidateName: row.candidate_name,
     firstName: row.first_name, lastName: row.last_name, electionYear: row.election_year, electionDate: row.election_date,
-    committeeId: row.committee_id, committeeName: row.committee_name, sourceUrl: row.source_url }));
+    officeName: row.office_name, district: row.district, committeeId: row.committee_id,
+    committeeName: row.committee_name, sourceUrl: row.source_url }));
 }
 
 export async function syncDueHoustonCandidateFinance(input: {
@@ -77,8 +81,10 @@ export async function syncDueHoustonCandidateFinance(input: {
     try {
       let reports;
       try {
+        const officeTarget = parseStoredHoustonFinanceOfficeTarget(row);
+        if (!officeTarget) throw new Error(`Houston finance link has an unsupported office target: ${row.officeName} ${row.district ?? ""}`);
         reports = await (input.loadReportsFn ?? loadHoustonCandidateFinanceReports)({ candidateName: row.candidateName, firstName: row.firstName,
-          lastName: row.lastName, electionYear: row.electionYear, cacheDir });
+          lastName: row.lastName, electionYear: row.electionYear, officeTarget, cacheDir });
       } catch (error) {
         console.warn(`Houston direct finance unavailable for candidate=${row.candidateId}; preserving prior direct data:`, error);
       }

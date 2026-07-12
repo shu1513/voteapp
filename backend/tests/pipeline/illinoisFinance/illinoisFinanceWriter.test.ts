@@ -162,6 +162,29 @@ describe("illinoisFinanceWriter", () => {
     expect(outsideBreakdownCall?.[1]?.[2]).toBe("ILLINOIS CONSERVATION ACTION");
   });
 
+  it("stores signed ending cash while keeping flow amounts nonnegative", async () => {
+    const db = createMockDb();
+
+    await replaceIllinoisCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      summary: { cashOnHand: -423.14, totalReceipts: 100 },
+    });
+
+    const summaryCall = db.client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.il_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]?.[5]).toBe(-423.14);
+
+    await expect(
+      replaceIllinoisCandidateFinanceSnapshot({
+        db: createMockDb(),
+        link: baseLink(),
+        summary: { totalReceipts: -1 },
+      })
+    ).rejects.toThrow("total receipts must be a nonnegative number");
+  });
+
   it("rejects outside group breakdowns without matching outside groups", async () => {
     const db = createMockDb();
 

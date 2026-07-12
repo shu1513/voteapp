@@ -54,7 +54,7 @@ function parsed(reportIndex: HoustonFinanceReportIndexRecord): HoustonFinancePar
     index: reportIndex,
     candidateName: "Jane Doe",
     electionDate: "2027-11-02",
-    officeSought: "Mayor",
+    officeSought: { officeName: "Mayor", seat: "Houston" },
     periodStart: "2026-01-01",
     periodEnd: "2026-06-30",
     directContributionTotal: 10,
@@ -94,5 +94,19 @@ describe("Houston candidate finance report source", () => {
       electionYear: 2027,
       efileReports: [index("1")],
     })).rejects.toThrow("All 1 Houston candidate finance reports failed");
+  });
+
+  it("does not download eFile reports with an unknown office code", async () => {
+    const report = { ...index("1"), officeDescription: "UNKNOWN_OFFICE" };
+
+    await expect(loadHoustonCandidateFinanceReports({
+      candidateName: "Jane Doe",
+      firstName: "Jane",
+      lastName: "Doe",
+      electionYear: 2027,
+      efileReports: [report],
+    })).resolves.toEqual([]);
+    expect(mocks.downloadEfile).not.toHaveBeenCalled();
+    expect(mocks.parsePdf).not.toHaveBeenCalled();
   });
 });

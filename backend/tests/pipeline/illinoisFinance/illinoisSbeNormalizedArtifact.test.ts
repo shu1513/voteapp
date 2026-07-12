@@ -108,6 +108,19 @@ describe("Illinois normalized SBE artifacts", () => {
     );
   });
 
+  it("accepts an official negative ending funds balance without allowing negative flow amounts", () => {
+    const negativeBalance = mutableManifest();
+    negativeBalance.d2ReportSummaries[0]!.cashOnHand = -423.14;
+    expect(parseIllinoisSbeNormalizedArtifact(JSON.stringify(negativeBalance)).d2ReportSummaries[0]!.cashOnHand).toBe(
+      -423.14
+    );
+
+    negativeBalance.d2ReportSummaries[0]!.totalDisbursements = -1;
+    expect(() => parseIllinoisSbeNormalizedArtifact(JSON.stringify(negativeBalance))).toThrow(
+      "must be null or a nonnegative number"
+    );
+  });
+
   it("fails closed across identity, date, amount, and uniqueness validation", () => {
     const invalidUrl = mutableManifest();
     invalidUrl.sourceUrl = "file:///tmp/source.json";
