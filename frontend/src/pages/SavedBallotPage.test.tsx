@@ -64,6 +64,12 @@ describe("SavedBallotPage", () => {
     expect(screen.getByText("Governor")).toBeInTheDocument();
     expect(screen.getByText(/1 election across 1 district/)).toBeInTheDocument();
     expect(screen.getByText(/ordered by where your vote carries the most weight/)).toBeInTheDocument();
+    // Address changes live in Settings now; the ballot only links there.
+    expect(screen.getByRole("link", { name: "Change your address in Settings" })).toHaveAttribute(
+      "href",
+      "/me/settings"
+    );
+    expect(screen.queryByLabelText("New address")).not.toBeInTheDocument();
   });
 
   it("falls back to the verify interstitial when the ballot 403s", async () => {
