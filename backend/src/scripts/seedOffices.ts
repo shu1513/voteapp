@@ -795,6 +795,11 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
   {
     scope: "county",
+    officeCanonicalName: "County Executive",
+    aliasText: "County Mayor",
+  },
+  {
+    scope: "county",
     officeCanonicalName: "Public Administrator",
     aliasText: "Public Administrator",
   },
@@ -963,10 +968,26 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     officeCanonicalName: "County Level Judge",
     aliasText: "Judge",
   },
+  // New York elects Supreme Court Justices by numbered Judicial District
+  // (1st-13th); each maps to the generic county judge office.
+  ...["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th"].map(
+    (ordinal) => ({
+      scope: "county" as const,
+      officeCanonicalName: "County Level Judge",
+      aliasText: `Supreme Court Justice - ${ordinal} Judicial District`,
+    })
+  ),
   {
     scope: "place",
     officeCanonicalName: "City Council Member",
     aliasText: "City Council Member",
+  },
+  // El Paso titles its council members "City Representative"; the matcher's
+  // jurisdiction/seat stripping reduces those titles to this generic form.
+  {
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "City Representative",
   },
   {
     scope: "place",

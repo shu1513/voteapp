@@ -169,6 +169,78 @@ describe("OfficeMatcher", () => {
     }
   });
 
+  it("resolves the migration 169 alias gaps: City Representative, County Mayor, NY judicial districts", async () => {
+    // Guards the normalizer-parity invariant for migration 169's aliases,
+    // same as the 164/165 tests above: pin the migration's hand-written
+    // normalized_alias literals to the current normalizer output, then prove
+    // each official title resolves through the matcher.
+    expect(normalizeElectionTitleKey("City Representative")).toBe("city representative");
+    expect(normalizeElectionTitleKey("County Mayor")).toBe("county mayor");
+    expect(normalizeElectionTitleKey("Supreme Court Justice - 1st Judicial District")).toBe(
+      "supreme court justice 1st judicial district"
+    );
+
+    const cityCouncilOfficeId = "office-city-council-member";
+    const countyExecutiveOfficeId = "office-county-executive";
+    const countyJudgeOfficeId = "office-county-judge-judicial";
+
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [
+          { office_id: cityCouncilOfficeId, normalized_alias: normalizeElectionTitleKey("City Representative") },
+        ],
+        county: [
+          { office_id: countyExecutiveOfficeId, normalized_alias: normalizeElectionTitleKey("County Mayor") },
+          {
+            office_id: countyJudgeOfficeId,
+            normalized_alias: normalizeElectionTitleKey("Supreme Court Justice - 1st Judicial District"),
+          },
+        ],
+      },
+      officesByScope: {
+        place: [{ id: cityCouncilOfficeId, canonical_name: "City Council Member" }],
+        county: [
+          { id: countyExecutiveOfficeId, canonical_name: "County Executive" },
+          { id: countyJudgeOfficeId, canonical_name: "County Level Judge" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+
+    // El Paso's full seat title reduces to the generic "city representative"
+    // key via jurisdiction + seat stripping, so one alias covers every seat.
+    const elPaso = await matcher.resolve({
+      scope: "place",
+      districtName: "El Paso city, Texas",
+      state: "TX",
+      officialBallotTitle: "City Representative District 1, City of El Paso",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(elPaso.officeId).toBe(cityCouncilOfficeId);
+    expect(elPaso.method).toBe("alias_exact");
+
+    const countyMayor = await matcher.resolve({
+      scope: "county",
+      districtName: "Orange County, Florida",
+      state: "FL",
+      officialBallotTitle: "County Mayor",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(countyMayor.officeId).toBe(countyExecutiveOfficeId);
+    expect(countyMayor.method).toBe("alias_exact");
+
+    const nyJustice = await matcher.resolve({
+      scope: "county",
+      districtName: "New York County, New York",
+      state: "NY",
+      officialBallotTitle: "Supreme Court Justice - 1st Judicial District",
+      discoveryContestFamily: "judicial_office",
+    });
+    expect(nyJustice.officeId).toBe(countyJudgeOfficeId);
+    expect(nyJustice.method).toBe("alias_exact");
+  });
+
   it("still honors a judge-office alias when the entry family is judicial", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: {

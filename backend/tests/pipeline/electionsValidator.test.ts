@@ -561,6 +561,192 @@ describe("runElectionsValidator", () => {
     expect(rejectedCall).toBeUndefined();
   });
 
+  it("accepts El Paso's 'City Representative District 1, City of El Paso' as a place race", async () => {
+    // "City Representative" is El Paso's official council title; the bare
+    // `representative district` state-house marker must not hard-reject it.
+    const payload = {
+      district_id: "d-elpaso",
+      district_name: "El Paso city, Texas",
+      district_type: "place",
+      state: "TX",
+      entries: [
+        {
+          official_ballot_title: "City Representative District 1, City of El Paso",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: false,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:elpaso",
+            payload,
+            status: "pending",
+            run_id: "run_elpaso",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const hardFailCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("place scope contains clearly non-place race")
+    );
+    expect(hardFailCall).toBeUndefined();
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+  });
+
+  it("still hard-rejects a bare 'Representative District' state-house title in place scope", async () => {
+    const payload = {
+      district_id: "d-place-statehouse",
+      district_name: "Some city, Texas",
+      district_type: "place",
+      state: "TX",
+      entries: [
+        {
+          official_ballot_title: "Representative District 145",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:place-statehouse",
+            payload,
+            status: "pending",
+            run_id: "run_place_statehouse",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const hardFailCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("place scope contains clearly non-place race")
+    );
+    expect(hardFailCall).toBeTruthy();
+  });
+
+  it("accepts 'County Mayor' as a county race instead of hard-rejecting it as city-like", async () => {
+    // Orange County FL (also Miami-Dade, Nashville) titles the elected county
+    // executive "County Mayor"; the bare `mayor` city marker must not
+    // hard-reject it, or the County Mayor -> County Executive alias is
+    // unreachable for fresh county-scope injects.
+    const payload = {
+      district_id: "d-orange",
+      district_name: "Orange County, Florida",
+      district_type: "county",
+      state: "FL",
+      entries: [
+        {
+          official_ballot_title: "County Mayor",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: false,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:orange-county-mayor",
+            payload,
+            status: "pending",
+            run_id: "run_orange_county_mayor",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const hardFailCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("county scope contains clearly non-county race")
+    );
+    expect(hardFailCall).toBeUndefined();
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+  });
+
+  it("still hard-rejects a bare 'Mayor' title in county scope as a city-like race", async () => {
+    const payload = {
+      district_id: "d-county-mayor-bare",
+      district_name: "Some County, Texas",
+      district_type: "county",
+      state: "TX",
+      entries: [
+        {
+          official_ballot_title: "Mayor",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: false,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:county-bare-mayor",
+            payload,
+            status: "pending",
+            run_id: "run_county_bare_mayor",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const hardFailCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("county scope contains clearly non-county race")
+    );
+    expect(hardFailCall).toBeTruthy();
+  });
+
   it("accepts Ohio's 'For Representative to Congress' phrasing as a clear us_house title", async () => {
     const payload = {
       district_id: "d-oh",
