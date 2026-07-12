@@ -78,7 +78,7 @@ describe("illinoisFinance hardening fixtures", () => {
       skippedContributionRowCount: 1,
       summary: {
         totalReceipts: 31000,
-        directContributionTotal: 31000,
+        directContributionTotal: 1000,
         sourceUrl: "fixture://contributions.csv",
       },
     });
@@ -87,13 +87,6 @@ describe("illinoisFinance hardening fixtures", () => {
         categoryType: "occupation",
         categoryName: "Attorney",
         amount: 1000,
-        contributorCount: 1,
-        sourceUrl: "fixture://contributions.csv",
-      },
-      {
-        categoryType: "contribution_size",
-        categoryName: "$5,000+",
-        amount: 30000,
         contributorCount: 1,
         sourceUrl: "fixture://contributions.csv",
       },

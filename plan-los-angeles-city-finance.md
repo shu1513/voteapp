@@ -319,6 +319,18 @@ schema, writer, sync, scheduler, and ballot loader. Validate each office's
 Ethics election ID mapping and at least two candidates before turning reads
 on. No new architecture.
 
+Implementation validation on 2026-07-12 pinned the source mapping to Ethics
+election `76` for 2026 and `64` for the 2022 citywide cycle. End-to-end live
+2026 probes found three City Attorney candidates and two City Controller
+candidates; each candidate's Open Data contribution aggregate reconciled
+exactly to the Ethics headline, and independent support/oppose requests
+succeeded. The live 2022 page additionally parsed four conservatively
+linkable City Attorney candidates and five City Controller candidates;
+candidates with multiple controlled committee IDs remained skipped as
+ambiguous. Historical pages use direct headline cells and may report
+matching-fund status as `ACCEPTED`; the parser preserves that status as an
+unknown amount (`null`), never a fabricated zero.
+
 ### Phase 3 — City Council districts
 
 Add `place::City Council Member`, still requiring parent GEOID `0644000`.

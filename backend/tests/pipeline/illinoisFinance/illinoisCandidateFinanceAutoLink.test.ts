@@ -23,12 +23,22 @@ function matchedResolution(
 ) {
   return {
     status: "matched" as const,
-    committeeKey: "FRIENDS OF JANE DOE",
-    committeeName: "Friends of Jane Doe",
-    confidence: "exact" as const,
-    source: "illinois_sbe" as const,
-    sourceUrl: SOURCE_URL,
-    matchedContributionRowCount: 2,
+    matches: [
+      {
+        committeeKey: "FRIENDS OF JANE DOE",
+        committeeName: "Friends of Jane Doe",
+        confidence: "name_fallback" as const,
+        source: "illinois_sbe" as const,
+        sourceUrl: SOURCE_URL,
+        matchedContributionRowCount: 2,
+        sbeCandidateId: null,
+        sbeCommitteeId: null,
+        sbeDistrictType: null,
+        sbeOffice: null,
+        district: null,
+        isAtLarge: null,
+      },
+    ],
     ...overrides,
   };
 }
@@ -105,6 +115,7 @@ describe("illinoisCandidateFinanceAutoLink", () => {
       electionId: ELECTION_ID,
       status: "linked",
       committeeKey: "FRIENDS OF JANE DOE",
+      committeeKeys: ["FRIENDS OF JANE DOE"],
     });
 
     expect(resolveCandidateCommittee).toHaveBeenCalledWith(
@@ -117,13 +128,18 @@ describe("illinoisCandidateFinanceAutoLink", () => {
       },
       undefined
     );
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
-    expect(db.query.mock.calls[0]?.[1]).toEqual([
+    expect(db.query.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.il_candidate_finance_links");
+    expect(db.query.mock.calls[1]?.[1]).toEqual([
       CANDIDATE_ID,
       ELECTION_ID,
       2026,
       "JANE DOE",
       "Governor",
+      null,
+      null,
+      null,
+      null,
       null,
       "FRIENDS OF JANE DOE",
       "Friends of Jane Doe",
@@ -131,6 +147,57 @@ describe("illinoisCandidateFinanceAutoLink", () => {
       "illinois_sbe",
       SOURCE_URL,
       "2026-06-01T00:00:00.000Z",
+    ]);
+    expect(String(db.query.mock.calls[2]?.[0])).toContain("NOT (committee_key = ANY($4::text[]))");
+    expect(db.query.mock.calls[3]?.[0]).toBe("COMMIT");
+  });
+
+  it("rolls back the whole official committee set when one link upsert fails", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 })
+        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+        .mockRejectedValueOnce(new Error("second upsert failed"))
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
+    };
+    const first = matchedResolution().matches[0]!;
+    const resolveCandidateCommittee = vi.fn(async () =>
+      matchedResolution({
+        matches: [
+          first,
+          {
+            ...first,
+            committeeKey: "SBE:202",
+            committeeName: "Citizens for Jane",
+            sbeCommitteeId: "202",
+          },
+        ],
+      })
+    );
+
+    await expect(
+      autoLinkIllinoisCandidateFinanceForCandidateElection({
+        db,
+        now: NOW,
+        resolveCandidateCommittee,
+        candidateElection: {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          candidateName: "Jane Doe",
+          electionYear: 2026,
+          officeScope: "statewide",
+          officeName: "Governor",
+          district: null,
+        },
+      })
+    ).rejects.toThrow("second upsert failed");
+
+    expect(db.query.mock.calls.map((call) => call[0])).toEqual([
+      "BEGIN",
+      expect.stringContaining("INSERT INTO public.il_candidate_finance_links"),
+      expect.stringContaining("INSERT INTO public.il_candidate_finance_links"),
+      "ROLLBACK",
     ]);
   });
 
@@ -197,9 +264,10 @@ describe("illinoisCandidateFinanceAutoLink", () => {
         electionId: ELECTION_ID,
         status: "linked",
         committeeKey: "FRIENDS OF JANE DOE",
+        committeeKeys: ["FRIENDS OF JANE DOE"],
       },
     ]);
     expect(resolveCandidateCommittee).toHaveBeenCalledTimes(1);
-    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(db.query).toHaveBeenCalledTimes(4);
   });
 });

@@ -307,6 +307,7 @@ export type StateFinanceSummaryRow = {
   direct_contribution_total: string | number | null;
   total_disbursements: string | number | null;
   cash_on_hand: string | number | null;
+  debts_owed?: string | number | null;
   outside_support_total: string | number | null;
   outside_oppose_total: string | number | null;
   source_url: string | null;

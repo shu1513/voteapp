@@ -168,7 +168,15 @@ export function normalizeIllinoisFinanceTextKey(value: string | null | undefined
 }
 
 export function normalizeIllinoisCommitteeKey(value: string | null | undefined): string {
+  const externalId = value?.trim().toUpperCase();
+  if (externalId && /^SBE:[A-Z0-9-]+$/.test(externalId)) {
+    return externalId;
+  }
   return normalizeIllinoisFinanceTextKey(value);
+}
+
+export function extractIllinoisSbeCommitteeId(committeeKey: string | null | undefined): string | null {
+  return committeeKey?.trim().match(/^SBE:(.+)$/i)?.[1] ?? null;
 }
 
 function amountToCents(amount: number): number | null {
@@ -245,6 +253,11 @@ function contributionSizeBucket(amount: number): string {
     return "$1,000-$4,999";
   }
   return "$5,000+";
+}
+
+function isIndividualContribution(record: IllinoisSbeContributionRecord): boolean {
+  const type = normalizeIllinoisFinanceTextKey(record.contributionType);
+  return type === "INDIVIDUAL CONTRIBUTIONS" || type === "INDIVIDUAL CONTRIBUTION";
 }
 
 function directAggregateKey(categoryType: DirectAggregate["categoryType"], categoryName: string): string {
@@ -341,6 +354,9 @@ export function aggregateIllinoisDirectContributions(
 
     totalReceiptsCents += amountCents;
     includedContributionRowCount += 1;
+    if (!isIndividualContribution(record)) {
+      continue;
+    }
     directContributionTotalCents += amountCents;
     const contributorKey = contributorIdentityKey(record);
     addDirectAggregate(aggregates, {

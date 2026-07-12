@@ -22,6 +22,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { apiRequest } from "@voteapp/api-client";
 import type { EmailPreferences, ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
+import { SavedAddressForm } from "../components/SavedAddressForm";
 import { purgeAccountScopedQueries, useMe, type Me } from "@voteapp/api-client";
 import { MAX_RESEARCH_AREA_RANK } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
@@ -232,6 +233,21 @@ function EmailSection({ me }: { me: Me }) {
           <ErrorNotice error={request.error} />
         </div>
       ) : null}
+    </Section>
+  );
+}
+
+function HomeAddressSection() {
+  return (
+    <Section title="Home address">
+      <p className="mt-1 text-sm text-ink-soft">
+        Saving a new address replaces the districts on your{" "}
+        <Link to="/me/ballot" className="underline hover:text-ink">
+          saved ballot
+        </Link>
+        .
+      </p>
+      <SavedAddressForm inputId="settings-address" label="New address" />
     </Section>
   );
 }
@@ -671,12 +687,13 @@ export function SettingsPage() {
       <ProfileSection me={me} />
       {me.email_verified ? (
         <>
+          <HomeAddressSection />
           <EmailPreferencesSection />
           <ResearchAreasSection />
         </>
       ) : (
         <p className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">
-          Verify your email to manage notifications and issue preferences.
+          Verify your email to manage your address, notifications and issue preferences.
         </p>
       )}
       <PasswordSection />

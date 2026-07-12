@@ -114,6 +114,7 @@ import {
   type PresidentialCycleProfileContext,
 } from "../presidential/presidentialProfileContext.js";
 import { isCaliforniaFinanceEligibleOffice } from "../californiaFinance/californiaFinanceEligibleOffices.js";
+import { isLosAngelesCityFinanceEligibleElection } from "../losAngelesCityFinance/losAngelesCityFinanceEligibleOffices.js";
 import { isColoradoFinanceEligibleOffice } from "../coloradoFinance/coloradoFinanceEligibleOffices.js";
 import { isConnecticutFinanceEligibleOffice } from "../connecticutFinance/connecticutFinanceEligibleOffices.js";
 import { isDistrictOfColumbiaFinanceEligibleOffice } from "../districtOfColumbiaFinance/districtOfColumbiaFinanceEligibleOffices.js";
@@ -452,11 +453,13 @@ async function enqueueLosAngelesCityFinanceSyncForLinkedElection(input: {
   candidateId: string;
 }): Promise<void> {
   if (
-    input.context.state !== "CA" ||
-    input.context.districtType !== "place" ||
-    input.context.geoidCompact !== "0644000" ||
-    input.context.officeScope !== "place" ||
-    input.context.officeCanonicalName !== "Mayor"
+    !isLosAngelesCityFinanceEligibleElection({
+      state: input.context.state,
+      districtType: input.context.districtType,
+      geoidCompact: input.context.geoidCompact,
+      officeScope: input.context.officeScope,
+      officeCanonicalName: input.context.officeCanonicalName,
+    })
   ) {
     return;
   }

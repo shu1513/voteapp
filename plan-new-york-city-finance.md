@@ -12,7 +12,7 @@ branch, including the completed New York State finance module from migration
 Implemented on `codex/nyc-cfb-finance`:
 
 - Phase 0 source probe/cache/parser and explicit `not_yet_published` outcome;
-- Phase 1 office catalog, migration 174, exact resolver, contribution
+- Phase 1 office catalog, migration 177, exact resolver, contribution
   aggregation, transactional snapshots, batch sync;
 - Phase 2 composed NY ballot adapter, shared API fields, web/mobile UI,
   CLI, and BullMQ operations;

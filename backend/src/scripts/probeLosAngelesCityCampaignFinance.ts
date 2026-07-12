@@ -6,6 +6,7 @@ import {
 } from "../pipeline/losAngelesCityFinance/losAngelesCityEthicsClient.js";
 import { resolveLosAngelesEthicsElection } from "../pipeline/losAngelesCityFinance/losAngelesCandidateCommitteeResolver.js";
 import { getLosAngelesCommitteeContributions } from "../pipeline/losAngelesCityFinance/losAngelesOpenDataClient.js";
+import { toLosAngelesEthicsOfficeName } from "../pipeline/losAngelesCityFinance/losAngelesCityFinanceEligibleOffices.js";
 const yearArg = process.argv.find((arg) => /^--year=\d{4}$/.test(arg));
 const year = yearArg ? Number(yearArg.slice(7)) : new Date().getUTCFullYear();
 const dateArg = process.argv.find((arg) =>
@@ -16,6 +17,16 @@ const electionDate =
   (year === 2026 ? "2026-06-02" : null);
 if (!electionDate)
   throw new Error("Pass --election-date=YYYY-MM-DD for non-2026 probes");
+const officeArg = process.argv.find((arg) => arg.startsWith("--office="));
+const officeCanonicalName = officeArg?.slice("--office=".length) || "Mayor";
+const ethicsOfficeName = toLosAngelesEthicsOfficeName({
+  officeScope: "place",
+  officeCanonicalName,
+});
+if (!ethicsOfficeName)
+  throw new Error(
+    `Unsupported Los Angeles City finance office: ${officeCanonicalName}`,
+  );
 const elections = await getLosAngelesEthicsElections();
 const election = resolveLosAngelesEthicsElection({
   elections,
@@ -25,7 +36,7 @@ if (!election)
   throw new Error(`No unique Los Angeles City election for ${year}`);
 const totals = await getLosAngelesEthicsCandidateTotals({
   electionId: election.electionId,
-  officeName: "Mayor",
+  officeName: ethicsOfficeName,
 });
 const candidates = [];
 for (const total of totals) {
@@ -67,7 +78,13 @@ for (const total of totals) {
 }
 console.log(
   JSON.stringify(
-    { election, candidate_count: totals.length, candidates },
+    {
+      election,
+      office_canonical_name: officeCanonicalName,
+      ethics_office_name: ethicsOfficeName,
+      candidate_count: totals.length,
+      candidates,
+    },
     null,
     2,
   ),

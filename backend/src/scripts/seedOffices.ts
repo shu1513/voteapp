@@ -333,6 +333,12 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "place",
+    canonicalName: "Municipal Trustee",
+    summary:
+      "Serves on a village or town governing board, setting local policy, budgets, and oversight for municipal operations.",
+  },
+  {
+    scope: "place",
     canonicalName: "Town Moderator",
     summary:
       "Presides over town meetings or local deliberative proceedings, helping manage procedure, debate, and public votes.",
@@ -348,6 +354,12 @@ const SEED_OFFICES: SeedOffice[] = [
     canonicalName: "Municipal Attorney",
     summary:
       "Provides legal representation and advice for municipal government and may handle local legal matters assigned by law.",
+  },
+  {
+    scope: "place",
+    canonicalName: "Municipal Controller",
+    summary:
+      "Oversees municipal accounting, audits, financial reporting, and fiscal controls for city government.",
   },
   {
     scope: "place",
@@ -1049,6 +1061,31 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
   {
     scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "Councilman",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "Councilperson",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "City Council",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Alderman",
+    aliasText: "Alderman",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Alderman",
+    aliasText: "Alderperson",
+  },
+  {
+    scope: "place",
     officeCanonicalName: "Town Council Member",
     aliasText: "Town Council Member",
   },
@@ -1066,6 +1103,31 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "place",
     officeCanonicalName: "Town Council Member",
     aliasText: "Town Select Board Member",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Trustee",
+    aliasText: "Trustee",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Trustee",
+    aliasText: "Village Trustee",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Trustee",
+    aliasText: "Town Trustee",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Mayor",
+    aliasText: "Village President",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Mayor",
+    aliasText: "Town President",
   },
   {
     scope: "place",
@@ -1156,6 +1218,16 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "place",
     officeCanonicalName: "Municipal Attorney",
     aliasText: "Village Attorney",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Controller",
+    aliasText: "Municipal Controller",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Municipal Controller",
+    aliasText: "City Controller",
   },
   {
     scope: "place",

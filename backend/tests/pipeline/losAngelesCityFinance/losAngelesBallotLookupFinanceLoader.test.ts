@@ -67,4 +67,37 @@ describe("Los Angeles ballot finance loader", () => {
     expect(result.size).toBe(0);
     expect(query).not.toHaveBeenCalled();
   });
+  it("accepts both Phase 2 offices before querying snapshots", async () => {
+    vi.stubEnv("LOS_ANGELES_CITY_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi.fn().mockResolvedValue({ rows: [] });
+    await loadLosAngelesCandidateFinanceSummariesByCandidateElection(
+      { query } as never,
+      [
+        { candidate_id: "attorney", election_id: "attorney-election" },
+        { candidate_id: "controller", election_id: "controller-election" },
+      ],
+      [
+        {
+          election_id: "attorney-election",
+          state: "CA",
+          district_type: "place",
+          geoid_compact: "0644000",
+          office_scope: "place",
+          office_canonical_name: "Municipal Attorney",
+        },
+        {
+          election_id: "controller-election",
+          state: "CA",
+          district_type: "place",
+          geoid_compact: "0644000",
+          office_scope: "place",
+          office_canonical_name: "Municipal Controller",
+        },
+      ],
+    );
+    expect(JSON.parse(String(query.mock.calls[0]?.[1]?.[0]))).toEqual([
+      { candidate_id: "attorney", election_id: "attorney-election" },
+      { candidate_id: "controller", election_id: "controller-election" },
+    ]);
+  });
 });

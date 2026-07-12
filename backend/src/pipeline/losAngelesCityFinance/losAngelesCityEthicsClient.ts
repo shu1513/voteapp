@@ -27,7 +27,7 @@ export type LosAngelesEthicsCandidateTotal = {
   totalContributions: number;
   totalExpenditures: number;
   cashOnHand: number;
-  matchingFunds: number;
+  matchingFunds: number | null;
   outsideSupportTotal: number;
   outsideOpposeTotal: number;
   membershipSupportTotal: number;
@@ -145,17 +145,57 @@ export function parseLosAngelesEthicsElectionIndex(
   return elections;
 }
 
-function metricTotals(candidateMainRow: string): number[] {
-  const totals = [
+type CandidateMetricTotals = [
+  number,
+  number,
+  number,
+  number | null,
+  number,
+  number,
+  number,
+  number,
+];
+
+function metricTotals(candidateMainRow: string): CandidateMetricTotals {
+  const currentCells = [
     ...candidateMainRow.matchAll(/border-top:[^>]*>([\s\S]*?)<\/td>/gi),
-  ]
-    .map((match) => money(decodeHtml(match[1] ?? "")))
-    .filter((value): value is number => value !== null);
-  if (totals.length !== 8)
-    throw new Error(
-      `Los Angeles Ethics candidate row has ${totals.length} totals; expected 8`,
+  ];
+  if (currentCells.length > 0) {
+    const totals = currentCells.map((match) =>
+      money(decodeHtml(match[1] ?? "")),
     );
-  return totals;
+    if (totals.length !== 8)
+      throw new Error(
+        `Los Angeles Ethics candidate row has ${totals.length} totals; expected 8`,
+      );
+    const invalidIndex = totals.findIndex((value) => value === null);
+    if (invalidIndex >= 0)
+      throw new Error(
+        `Los Angeles Ethics candidate metric ${invalidIndex + 1} is not a nonnegative money amount`,
+      );
+    return totals as CandidateMetricTotals;
+  }
+
+  // Older election pages render one reported-through cell followed by eight
+  // direct metric cells instead of nested tables with border-top totals.
+  const legacyCells = [
+    ...candidateMainRow.matchAll(
+      /<td\s+align=["']right["'][^>]*>([\s\S]*?)<\/td>/gi,
+    ),
+  ].map((match) => decodeHtml(match[1] ?? ""));
+  if (legacyCells.length !== 9)
+    throw new Error(
+      `Los Angeles Ethics legacy candidate row has ${Math.max(0, legacyCells.length - 1)} totals; expected 8`,
+    );
+  const totals = legacyCells.slice(1).map((cell, index) => {
+    const value = money(cell);
+    if (value !== null) return value;
+    // Historical matching-fund cells may report qualification status rather
+    // than a dollar amount. Preserve that as unknown, never as zero.
+    if (index === 3 && /^ACCEPTED$/i.test(cell)) return null;
+    throw new Error("Los Angeles Ethics legacy candidate metric is not money");
+  });
+  return totals as CandidateMetricTotals;
 }
 
 export function parseLosAngelesEthicsCandidateTotals(input: {
@@ -217,11 +257,11 @@ export function parseLosAngelesEthicsCandidateTotals(input: {
       committeeIds.length !== 1
     )
       continue;
-    let totals: number[];
+    let totals: CandidateMetricTotals;
     try {
       totals = metricTotals(main);
     } catch {
-      // One malformed/legacy candidate row must not discard every candidate
+      // One malformed candidate row must not discard every candidate
       // in the election. Caller records unresolved candidates individually.
       continue;
     }
@@ -241,14 +281,14 @@ export function parseLosAngelesEthicsCandidateTotals(input: {
       fppcCommitteeId: committeeIds[0]!,
       committeeName: decodeHtml(committee[2] ?? ""),
       internalCommitteePersonId: /\bcmt_per_id=(\d+)/i.exec(block)?.[1] ?? null,
-      totalContributions: totals[0]!,
-      totalExpenditures: totals[1]!,
-      cashOnHand: totals[2]!,
-      matchingFunds: totals[3]!,
-      outsideSupportTotal: totals[4]!,
-      outsideOpposeTotal: totals[5]!,
-      membershipSupportTotal: totals[6]!,
-      membershipOpposeTotal: totals[7]!,
+      totalContributions: totals[0],
+      totalExpenditures: totals[1],
+      cashOnHand: totals[2],
+      matchingFunds: totals[3],
+      outsideSupportTotal: totals[4],
+      outsideOpposeTotal: totals[5],
+      membershipSupportTotal: totals[6],
+      membershipOpposeTotal: totals[7],
       sourceUrl: buildLosAngelesEthicsElectionTotalsUrl(input.electionId),
     });
   }

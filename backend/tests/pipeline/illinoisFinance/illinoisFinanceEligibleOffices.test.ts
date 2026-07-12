@@ -16,6 +16,8 @@ describe("illinoisFinanceEligibleOffices", () => {
       })
     ).toBe(true);
     expect(isIllinoisFinanceEligibleOffice({ officeScope: "county", officeCanonicalName: "Sheriff" })).toBe(false);
+    expect(isIllinoisFinanceEligibleOffice({ officeScope: "place", officeCanonicalName: "Mayor" })).toBe(true);
+    expect(isIllinoisFinanceEligibleOffice({ officeScope: "place", officeCanonicalName: "Municipal Trustee" })).toBe(true);
   });
 
   it("maps app offices to SBE search labels and legislative districts", () => {
@@ -65,5 +67,71 @@ describe("illinoisFinanceEligibleOffices", () => {
       district: "12",
       maxDistrict: 118,
     });
+  });
+
+  it("maps only jurisdiction-safe local offices", () => {
+    expect(mapIllinoisSbeOffice({ office: "Treasurer" })).toMatchObject({
+      officeScope: "statewide",
+      officeCanonicalName: "Treasurer",
+    });
+    expect(
+      mapIllinoisSbeOffice({ office: "Treasurer", districtType: "City", district: "Aurora" })
+    ).toMatchObject({
+      officeScope: "place",
+      officeCanonicalName: "City Treasurer",
+      officeKey: "place::City Treasurer",
+      district: "Aurora",
+      sbeDistrictType: "City",
+    });
+    expect(
+      mapIllinoisSbeOffice({ office: "President", districtType: "Village", district: "Oak Park" })
+    ).toMatchObject({
+      officeScope: "place",
+      officeCanonicalName: "Mayor",
+      officeKey: "place::Mayor",
+      sbeOffice: "President",
+      district: "Oak Park",
+      sbeDistrictType: "Village",
+    });
+    expect(mapIllinoisSbeOffice({ office: "President", districtType: "City", district: "Chicago" })).toBeNull();
+    expect(
+      mapIllinoisSbeOffice({
+        office: "Alderperson",
+        districtType: "City",
+        district: "Aurora",
+        isAtLarge: true,
+      })
+    ).toMatchObject({
+      officeScope: "place",
+      officeCanonicalName: "Alderman",
+      officeKey: "place::Alderman",
+    });
+    expect(
+      mapIllinoisSbeOffice({ office: "Alderperson", districtType: "City", district: "Aurora" })
+    ).toBeNull();
+    expect(
+      mapIllinoisSbeOffice({ office: "Alderperson", districtType: "Ward", district: "Chicago 44", isAtLarge: true })
+    ).toBeNull();
+  });
+
+  it("builds exact local SBE search identities", () => {
+    expect(
+      toIllinoisSbeOfficeSearchInput({
+        officeScope: "place",
+        officeCanonicalName: "Mayor",
+        districtType: "Village",
+        district: "Villa Park",
+        sbeOffice: "President",
+      })
+    ).toEqual({ sbeOffice: "President", district: "Villa Park", sbeDistrictType: "Village" });
+    expect(
+      toIllinoisSbeOfficeSearchInput({
+        officeScope: "place",
+        officeCanonicalName: "Municipal Trustee",
+        districtType: "Village",
+        district: "Schaumburg",
+        isAtLarge: true,
+      })
+    ).toEqual({ sbeOffice: "Trustee", district: "Schaumburg", sbeDistrictType: "Village" });
   });
 });

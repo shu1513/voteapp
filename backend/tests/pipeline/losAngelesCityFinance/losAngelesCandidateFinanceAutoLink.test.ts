@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   autoLinkMissingLosAngelesCandidateFinanceLinks,
+  listLosAngelesCandidateElectionsMissingFinanceLinks,
   type LosAngelesFinanceAutoLinkCandidate,
 } from "../../../src/pipeline/losAngelesCityFinance/losAngelesCandidateFinanceAutoLink.js";
 import {
@@ -66,13 +67,36 @@ describe("Los Angeles candidate finance auto-link", () => {
       },
     ]);
     vi.mocked(getLosAngelesEthicsCandidateTotals).mockImplementation(
-      async ({ officeName }) => [
-        officeName === "Mayor"
-          ? candidateTotal("Alex Mayor", officeName, "101")
-          : candidateTotal("Bailey Attorney", officeName, "202"),
-      ],
+      async ({ officeName }) => {
+        if (officeName === "Mayor")
+          return [candidateTotal("Alex Mayor", officeName, "101")];
+        if (officeName === "City Attorney")
+          return [candidateTotal("Bailey Attorney", officeName, "202")];
+        return [candidateTotal("Casey Controller", officeName, "303")];
+      },
     );
     vi.mocked(upsertLosAngelesFinanceLink).mockResolvedValue("link-id");
+  });
+
+  it("lists all Phase 2 canonical offices from the shared allowlist", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 0 });
+    await listLosAngelesCandidateElectionsMissingFinanceLinks(
+      { query },
+      {
+        now: NOW,
+        maxCandidates: 25,
+        electionLookbackDays: 45,
+        electionLookaheadDays: 730,
+      },
+    );
+    expect(String(query.mock.calls[0]?.[0])).toContain(
+      "office.canonical_name=ANY($5::text[])",
+    );
+    expect(query.mock.calls[0]?.[1]?.[4]).toEqual([
+      "Mayor",
+      "Municipal Attorney",
+      "Municipal Controller",
+    ]);
   });
 
   it("caches candidate totals by election and office", async () => {
@@ -91,7 +115,15 @@ describe("Los Angeles candidate finance auto-link", () => {
         candidateName: "Bailey Attorney",
         electionYear: 2026,
         electionDate: "2026-06-02",
-        officeName: "City Attorney",
+        officeName: "Municipal Attorney",
+      },
+      {
+        candidateId: "candidate-3",
+        electionId: "election-3",
+        candidateName: "Casey Controller",
+        electionYear: 2026,
+        electionDate: "2026-06-02",
+        officeName: "Municipal Controller",
       },
     ];
 
@@ -112,12 +144,28 @@ describe("Los Angeles candidate finance auto-link", () => {
         electionId: "election-2",
         status: "linked",
       },
+      {
+        candidateId: "candidate-3",
+        electionId: "election-3",
+        status: "linked",
+      },
     ]);
-    expect(getLosAngelesEthicsCandidateTotals).toHaveBeenCalledTimes(2);
+    expect(getLosAngelesEthicsCandidateTotals).toHaveBeenCalledTimes(3);
     expect(getLosAngelesEthicsCandidateTotals).toHaveBeenNthCalledWith(
       2,
       { electionId: "76", officeName: "City Attorney" },
       undefined,
+    );
+    expect(getLosAngelesEthicsCandidateTotals).toHaveBeenNthCalledWith(
+      3,
+      { electionId: "76", officeName: "City Controller" },
+      undefined,
+    );
+    expect(upsertLosAngelesFinanceLink).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        link: expect.objectContaining({ officeName: "Municipal Attorney" }),
+      }),
     );
   });
 });

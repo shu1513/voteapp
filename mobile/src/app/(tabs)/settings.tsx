@@ -62,6 +62,12 @@ function SettingsBody({ me }: { me: Me }) {
         {me.email_verified ? (
           <>
             <SettingsRow
+              icon="home-outline"
+              label="Home address"
+              detail="The address that builds your saved ballot"
+              onPress={push("/settings/address")}
+            />
+            <SettingsRow
               icon="mail-outline"
               label="Email notifications"
               detail="Digest, alerts and reminders"
@@ -76,7 +82,7 @@ function SettingsBody({ me }: { me: Me }) {
           </>
         ) : (
           <Text className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">
-            Verify your email to manage notifications and issue preferences.
+            Verify your email to manage your address, notifications and issue preferences.
           </Text>
         )}
       </View>
