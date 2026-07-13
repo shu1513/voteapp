@@ -170,6 +170,31 @@ export async function upsertSweepConfirmation(
 }
 
 /**
+ * Re-assert an existing confirmation without touching its content: a
+ * zero-record DELTA write re-verified the claim for its window, and the
+ * audit treats a confirmation older than the latest search stamp as
+ * historical — so confirmed_at must advance with the stamp. The original
+ * full-sweep evidence, gap ids, and context are the support for the
+ * full-history claim and must NOT be replaced by window-only evidence
+ * (the window evidence lives in the writer's --evidence-file and the run
+ * report). Caller guarantees the row exists.
+ */
+export async function refreshSweepConfirmationTimestamp(
+  client: Pick<PoolClient, "query">,
+  candidateId: string
+): Promise<void> {
+  await client.query(
+    `
+      UPDATE public.candidate_record_sweep_confirmations
+      SET confirmed_at = now(),
+          updated_at = now()
+      WHERE candidate_id = $1
+    `,
+    [candidateId]
+  );
+}
+
+/**
  * A live write that did NOT require evidence found real, stance-labeled
  * records — any earlier completeness confirmation no longer describes the
  * candidate's state, so remove it inside the same transaction. Without this,

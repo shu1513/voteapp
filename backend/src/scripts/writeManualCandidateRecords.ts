@@ -34,6 +34,7 @@ import {
   assertedSweepCompletenessGapIds,
   deleteSweepConfirmation,
   parseSweepEvidencePayload,
+  refreshSweepConfirmationTimestamp,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
   upsertSweepConfirmation,
@@ -44,10 +45,12 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--evidence-file evidence.json] [--repair-report-file file] [--dry-run]",
+    "  npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--since-date YYYY-MM-DD] [--strict-quality-gate] [--confirmed-gap id] [--evidence-file evidence.json] [--repair-report-file file] [--dry-run]",
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
     'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
+    "",
+    "--since-date runs a DELTA (windowed) refresh: it must be on/before the candidate's last_records_researched_through checkpoint (later would skip dates forever), and every record must have event_date >= since-date (out-of-window rows are an error, not a silent drop — remove them and their labels so indices stay aligned). Delta mode makes no full-history claims: the no_records_found / only_general_labels quality gaps are skipped and ALL --confirmed-gap flags are disallowed. A zero-record delta write still requires --evidence-file with the WINDOW-scoped per-question evidence table.",
   ].join("\n");
 }
 
@@ -263,6 +266,112 @@ export function isBlockingCandidateRecordQualityGap(gap: ManualResearchRepairGap
   );
 }
 
+/**
+ * Delta (windowed) refresh support: --since-date scopes a manual records pass
+ * to events on/after the window start (normally the candidate's
+ * last_records_researched_through, per the followed-candidate refresh
+ * workflow). The window start must be a real past-or-today calendar date;
+ * anything else would silently window out every record and stamp a false
+ * completion.
+ */
+export function parseSinceDate(value: string, todayIsoDate: string): string {
+  const normalized = value.trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(normalized)) {
+    throw new Error(`--since-date must be a full YYYY-MM-DD date, got: ${value}`);
+  }
+  const parsed = new Date(`${normalized}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== normalized) {
+    throw new Error(`--since-date is not a real calendar date: ${value}`);
+  }
+  if (normalized > todayIsoDate) {
+    throw new Error(`--since-date cannot be in the future: ${value} (today is ${todayIsoDate})`);
+  }
+  return normalized;
+}
+
+/**
+ * The labels file addresses records by index into the operator's records
+ * file, so a delta write cannot silently window-filter rows the way the AI
+ * lifecycle does — a filtered mid-list row would slide later labels onto the
+ * wrong records. Out-of-window rows are therefore a hard error the operator
+ * fixes in the files.
+ */
+export function listRecordsBeforeSinceDate<T extends { event_date: string; description: string }>(
+  records: readonly T[],
+  sinceDate: string
+): Array<{ index: number; record: T }> {
+  const outOfWindow: Array<{ index: number; record: T }> = [];
+  for (const [index, record] of records.entries()) {
+    if (record.event_date < sinceDate) {
+      outOfWindow.push({ index, record });
+    }
+  }
+  return outOfWindow;
+}
+
+/**
+ * A delta write's window must start at (or before) the candidate's stored
+ * research checkpoint. The completion stamp advances
+ * last_records_researched_through to today no matter what window was
+ * searched, so a --since-date later than the checkpoint would leave the
+ * dates in between permanently unsearched — the gap never resurfaces on any
+ * due list. Starting earlier than the checkpoint merely re-covers ground
+ * (identity-key dedupe absorbs the overlap), so it is allowed.
+ * Returns an error reason, or null when the window is safe.
+ */
+export function validateSinceDateAgainstCheckpoint(
+  sinceDate: string,
+  researchedThrough: string | null
+): string | null {
+  if (!researchedThrough) {
+    return "Candidate has no last_records_researched_through checkpoint, so there is no covered history for a delta to extend. Run a FULL discovery sweep (no --since-date) instead.";
+  }
+  if (sinceDate > researchedThrough) {
+    return `--since-date ${sinceDate} is after the candidate's research checkpoint ${researchedThrough}; the dates in between would be skipped forever (the completion stamp advances the checkpoint to today). Use --since-date ${researchedThrough} (the due list prints it) or earlier.`;
+  }
+  return null;
+}
+
+export type DeltaZeroRecordConfirmationDecision =
+  | { action: "leave" }
+  | { action: "refresh" }
+  | { action: "error"; reason: string };
+
+/**
+ * A zero-record DELTA write asserts only "no new records in the window", so
+ * it must not create a fresh full-history confirmation. But it still stamps
+ * last_records_searched_at, and manual:records:audit treats a confirmation
+ * older than the latest search stamp as historical — so for a candidate with
+ * zero records overall, leaving the prior no_records_found confirmation
+ * untouched would resurface an already-confirmed candidate as an audit
+ * suspect. Decision:
+ *  - candidate has records → confirmation table is irrelevant to the audit
+ *    gate; leave it untouched.
+ *  - candidate has zero records and a prior no_records_found confirmation →
+ *    the full-history claim is still true (prior sweep covered history, this
+ *    window found nothing new); re-assert it by bumping confirmed_at only.
+ *    The original full-sweep evidence stays — window-only evidence must not
+ *    replace the support for a full-history claim.
+ *  - candidate has zero records and no such confirmation → the full-history
+ *    question was never evidence-closed; a windowed pass cannot close it.
+ */
+export function decideDeltaZeroRecordConfirmation(input: {
+  existingRecordCount: number;
+  priorConfirmedGapIds: readonly string[] | null;
+}): DeltaZeroRecordConfirmationDecision {
+  if (input.existingRecordCount > 0) {
+    return { action: "leave" };
+  }
+  if (input.priorConfirmedGapIds?.includes(NO_RECORDS_FOUND_GAP_ID)) {
+    return { action: "refresh" };
+  }
+  return {
+    action: "error",
+    reason:
+      "Delta write found zero records for a candidate with zero stored records and no evidence-backed no_records_found confirmation. The full-history sweep was never closed, and a windowed pass cannot close it. Run a FULL discovery sweep (no --since-date) with the per-question evidence table instead.",
+  };
+}
+
 async function writeRecordsRepairReport(input: {
   reportFile: string | null;
   manualKey: string;
@@ -323,7 +432,7 @@ async function deleteStaleCandidateRecordAreaTags(
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:candidate-records:write", process.argv.slice(2), [{ name: "--candidate-id", value: "space" }, { name: "--election-id", value: "space" }, { name: "--records-file", value: "space" }, { name: "--labels-file", value: "space" }, { name: "--repair-report-file", value: "space" }, { name: "--confirmed-gap", value: "space" }, { name: "--evidence-file", value: "space" }, { name: "--strict-quality-gate", value: "none" }, { name: "--dry-run", value: "none" }]);
+  assertKnownCliFlags("manual:candidate-records:write", process.argv.slice(2), [{ name: "--candidate-id", value: "space" }, { name: "--election-id", value: "space" }, { name: "--records-file", value: "space" }, { name: "--labels-file", value: "space" }, { name: "--since-date", value: "space" }, { name: "--repair-report-file", value: "space" }, { name: "--confirmed-gap", value: "space" }, { name: "--evidence-file", value: "space" }, { name: "--strict-quality-gate", value: "none" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const candidateId = readFlag("--candidate-id");
@@ -334,8 +443,27 @@ async function main(): Promise<void> {
   const evidenceFile = readFlag("--evidence-file");
   const strictQualityGate = hasFlag("--strict-quality-gate");
   const confirmedGapIds = normalizeConfirmedGaps(readRepeatedFlag("--confirmed-gap"));
+  const rawSinceDate = readFlag("--since-date");
+  const sinceDate = rawSinceDate
+    ? parseSinceDate(rawSinceDate, new Date().toISOString().slice(0, 10))
+    : null;
   if (!candidateId || !electionId || !recordsFile || !labelsFile) {
     throw new Error(`Missing required flag.\n${usage()}`);
+  }
+  if (sinceDate && confirmedGapIds.size > 0) {
+    // No --confirmed-gap flag can do anything in a delta write: the two
+    // completeness ids assert full-history claims a windowed pass must not
+    // make, and every other id is only consumed by the full-sweep quality
+    // gate, which delta mode skips. Rejecting them all beats silently
+    // accepting a flag that has no effect (e.g. one reused from a prior
+    // repair-report invocation).
+    const flags = [...confirmedGapIds].sort();
+    const completenessFlags = flags.filter((id) => SWEEP_COMPLETENESS_GAP_IDS.has(id));
+    throw new Error(
+      completenessFlags.length > 0
+        ? `--confirmed-gap ${completenessFlags.join(", ")} asserts a full-history claim and is not allowed with --since-date. A delta write only asserts the window; run a full sweep (no --since-date) to make completeness claims.`
+        : `--confirmed-gap has no effect in a delta (--since-date) write and is not allowed: ${flags.join(", ")}. Delta mode skips the full-sweep quality gate; repair dropped rows in the payload files instead.`
+    );
   }
   const manualKey = `manual:candidate-records:${electionId}:${candidateId}`;
 
@@ -398,6 +526,19 @@ async function main(): Promise<void> {
       `Candidate records payload needs focused repair before import; dropped=${validatedRecords.droppedRecords.length}; ${summarizeDroppedRecords(validatedRecords.droppedRecords)}.${hint}`
     );
   }
+  if (sinceDate) {
+    const outOfWindow = listRecordsBeforeSinceDate(validatedRecords.records, sinceDate);
+    if (outOfWindow.length > 0) {
+      const preview = outOfWindow
+        .slice(0, 5)
+        .map(({ index, record }) => `index=${index} event_date=${record.event_date}: ${record.description.slice(0, 80)}`)
+        .join("; ");
+      const extra = outOfWindow.length > 5 ? `; +${outOfWindow.length - 5} more` : "";
+      throw new Error(
+        `Delta write rejects records dated before --since-date ${sinceDate}: ${preview}${extra}. Remove these rows (and their labels, keeping record_index aligned) from the payload files — records before the window start were covered by the previous sweep.`
+      );
+    }
+  }
 
   const dryRun = hasFlag("--dry-run");
 
@@ -412,6 +553,20 @@ async function main(): Promise<void> {
     }
     if (!context.officeId) {
       throw new Error(`Election has no office_id for candidate-record labeling; election_id=${electionId}`);
+    }
+    if (sinceDate) {
+      const checkpoint = await pool.query<{ last_records_researched_through: string | null }>(
+        `SELECT last_records_researched_through::text AS last_records_researched_through
+         FROM public.candidates WHERE id = $1::uuid`,
+        [candidateId]
+      );
+      const windowError = validateSinceDateAgainstCheckpoint(
+        sinceDate,
+        checkpoint.rows[0]?.last_records_researched_through ?? null
+      );
+      if (windowError) {
+        throw new Error(windowError);
+      }
     }
 
     const allowedAreas = await loadAllowedResearchAreasForOfficeId(pool, context.officeId);
@@ -439,15 +594,21 @@ async function main(): Promise<void> {
       });
       throw new Error(`Candidate record labels payload failed validation: ${parsedLabels.reason}`);
     }
-    const qualityGaps = applyConfirmedGaps(
-      [
-        ...buildCandidateRecordQualityGaps({
-          recordCount: validatedRecords.records.length,
-          labels: parsedLabels.payload.labels,
-        }),
-      ],
-      confirmedGapIds
-    );
+    // Delta mode skips the full-history quality gaps: "no new records in the
+    // window" is not no_records_found, and window-only neutral labels are not
+    // only_general_labels. The zero-record evidence requirement below still
+    // applies (window-scoped question table).
+    const qualityGaps = sinceDate
+      ? []
+      : applyConfirmedGaps(
+          [
+            ...buildCandidateRecordQualityGaps({
+              recordCount: validatedRecords.records.length,
+              labels: parsedLabels.payload.labels,
+            }),
+          ],
+          confirmedGapIds
+        );
     const blockingQualityGaps = qualityGaps.filter(isBlockingCandidateRecordQualityGap);
 
     // Sweep-completeness guard: an empty verified record set stamps
@@ -505,6 +666,7 @@ async function main(): Promise<void> {
             candidateId,
             electionId,
             candidateDisplayName: context.candidateDisplayName,
+            sinceDate,
             recordCount: validatedRecords.records.length,
             labelCount: parsedLabels.payload.labels.length,
             sourceValidation: {
@@ -605,7 +767,31 @@ async function main(): Promise<void> {
       // Persist the validated completeness confirmation so
       // manual:records:audit can separate this evidence-backed confirmed
       // null from a skipped sweep.
-      if (sweepEvidenceEntries) {
+      if (sweepEvidenceEntries && sinceDate) {
+        // Zero-record DELTA write: asserts only the window, so it never
+        // creates a fresh full-history confirmation. See
+        // decideDeltaZeroRecordConfirmation for why the prior confirmation
+        // is refreshed (audit treats confirmations older than the search
+        // stamp this write is about to make as historical).
+        const existingRecords = await client.query<{ record_count: string }>(
+          `SELECT count(*)::text AS record_count FROM public.candidate_records WHERE candidate_id = $1`,
+          [candidateId]
+        );
+        const priorConfirmation = await client.query<{ confirmed_gap_ids: string[] | null }>(
+          `SELECT confirmed_gap_ids FROM public.candidate_record_sweep_confirmations WHERE candidate_id = $1`,
+          [candidateId]
+        );
+        const decision = decideDeltaZeroRecordConfirmation({
+          existingRecordCount: Number(existingRecords.rows[0]?.record_count ?? "0"),
+          priorConfirmedGapIds: priorConfirmation.rows[0]?.confirmed_gap_ids ?? null,
+        });
+        if (decision.action === "error") {
+          throw new Error(decision.reason);
+        }
+        if (decision.action === "refresh") {
+          await refreshSweepConfirmationTimestamp(client, candidateId);
+        }
+      } else if (sweepEvidenceEntries) {
         await upsertSweepConfirmation(client, {
           candidateId,
           confirmedGapIds: assertedSweepCompletenessGapIds({
@@ -630,6 +816,7 @@ async function main(): Promise<void> {
             manualKey,
             candidateId,
             electionId,
+            sinceDate,
             inserted: upsert.inserted,
             updated: upsert.updated,
             processed: upsert.processed,

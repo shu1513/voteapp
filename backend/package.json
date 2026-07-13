@@ -61,6 +61,7 @@
     "manual:candidate-profile:write": "tsx src/scripts/writeManualCandidateProfile.ts",
     "candidates:record:enrich": "tsx src/scripts/enrichCandidateRecords.ts",
     "manual:candidate-records:write": "tsx src/scripts/writeManualCandidateRecords.ts",
+    "manual:candidate-records:due": "tsx src/scripts/listFollowedCandidateRecordsDue.ts",
     "manual:records:audit": "tsx src/scripts/auditCandidateRecordsCompleteness.ts",
     "manual:ballot-measure:write": "tsx src/scripts/writeManualBallotMeasure.ts",
     "manual:election-date:correct": "tsx src/scripts/correctManualElectionDate.ts",
