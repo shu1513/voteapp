@@ -761,8 +761,9 @@ async function loadCandidateFinanceSummariesByCandidateElection(
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   const merged = new Map<string, BallotLookupFinanceSummary>();
   // Sequential on purpose: parallelizing changes query interleaving for no
-  // practical win (only one state is non-empty per election) and would break
-  // the ordered query mocks across the test suite.
+  // practical win (only one adapter is non-empty per election — the two
+  // adapters that TX and CA each register are mutually exclusive by office
+  // scope) and would break the ordered query mocks across the test suite.
   for (const adapter of STATE_FINANCE_LOOKUP_ADAPTERS) {
     for (const [key, summary] of await adapter.load(db, candidateRows, electionRows)) {
       merged.set(key, summary);
