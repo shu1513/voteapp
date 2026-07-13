@@ -47,6 +47,12 @@ describe("listFollowedCandidateRecordsDue", () => {
     expect(sql).toContain("last_records_searched_at IS NULL");
     expect(sql).toContain("race_type = 'office'");
     expect(sql).toContain("merged_into_candidate_id IS NULL");
+    // The writer cannot label records without an office_id, so the ranking
+    // must never surface an office-less election.
+    expect(sql).toContain("e.office_id IS NOT NULL");
+    // Cooldown cutoff pinned to UTC so the boundary does not drift with the
+    // session TimeZone (last_records_searched_at is timestamptz).
+    expect(sql).toContain("AT TIME ZONE 'UTC'");
   });
 
   it("orders the due list most-overdue first (never-searched candidates lead)", async () => {
@@ -74,6 +80,10 @@ describe("listFollowedCandidatesWithoutOfficeElection", () => {
     const [sql] = db.query.mock.calls[0]!;
     expect(sql).toContain("NOT EXISTS");
     expect(sql).toContain("race_type = 'office'");
+    // A candidate whose only office elections lack an office_id is blocked
+    // for the writer too, so the NOT EXISTS must require a usable office_id
+    // — otherwise such candidates appear in neither list.
+    expect(sql).toContain("e.office_id IS NOT NULL");
   });
 });
 

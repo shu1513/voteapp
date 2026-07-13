@@ -14,9 +14,11 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 // last_records_researched_through as the delta-window start (null means the
 // candidate needs a full sweep, not a windowed one).
 //
-// Followed candidates with no office election link cannot go through the
-// records writer at all (it requires a candidate/election office context),
-// so they are reported in a separate list instead of silently vanishing.
+// Followed candidates with no usable office election link (none at all, or
+// only office elections whose office_id is NULL — the writer requires an
+// office_id to load allowed research areas) cannot go through the records
+// writer, so they are reported in a separate list instead of silently
+// vanishing.
 
 type Queryable = Pick<Pool, "query">;
 
@@ -75,7 +77,10 @@ export async function listFollowedCandidateRecordsDue(
           AND c.merged_into_candidate_id IS NULL
           AND (
             c.last_records_searched_at IS NULL
-            OR c.last_records_searched_at < ($1::date - make_interval(days => $2::int))
+            -- AT TIME ZONE 'UTC' pins the cutoff: the as-of date is derived
+            -- from UTC, and without the cast the timestamp-to-timestamptz
+            -- comparison would shift with the session TimeZone.
+            OR c.last_records_searched_at < (($1::date - make_interval(days => $2::int)) AT TIME ZONE 'UTC')
           )
       ),
       ranked_election AS (
@@ -92,6 +97,10 @@ export async function listFollowedCandidateRecordsDue(
         JOIN public.elections AS e
           ON e.id = ce.election_id
         WHERE e.race_type = 'office'
+          -- The writer refuses elections without an office_id (it cannot load
+          -- allowed research areas for labeling), so an office-less election
+          -- must never win the ranking.
+          AND e.office_id IS NOT NULL
           AND ce.candidate_id IN (SELECT id FROM followed_candidate)
       )
       SELECT
@@ -149,6 +158,11 @@ export async function listFollowedCandidatesWithoutOfficeElection(
             ON e.id = ce.election_id
           WHERE ce.candidate_id = c.id
             AND e.race_type = 'office'
+            -- Mirrors the due-list ranking: an office election without an
+            -- office_id is unusable by the writer, so a candidate whose only
+            -- office elections lack one belongs on this blocked list, not in
+            -- neither list.
+            AND e.office_id IS NOT NULL
         )
       ORDER BY display_name ASC, c.id ASC
     `

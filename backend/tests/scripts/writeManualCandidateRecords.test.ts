@@ -9,6 +9,7 @@ import {
   isBlockingCandidateRecordQualityGap,
   listRecordsBeforeSinceDate,
   parseSinceDate,
+  validateSinceDateAgainstCheckpoint,
 } from "../../src/scripts/writeManualCandidateRecords.js";
 import { buildManualResearchRepairReport } from "../../src/scripts/manualResearchRepairReport.js";
 
@@ -249,16 +250,28 @@ describe("writeManualCandidateRecords delta (--since-date) helpers", () => {
     ).toEqual({ action: "leave" });
   });
 
-  it("decideDeltaZeroRecordConfirmation refreshes a prior no_records_found confirmation for a zero-record candidate", () => {
+  it("decideDeltaZeroRecordConfirmation re-asserts (timestamp-only) a prior no_records_found confirmation for a zero-record candidate", () => {
     expect(
       decideDeltaZeroRecordConfirmation({
         existingRecordCount: 0,
         priorConfirmedGapIds: ["candidate_records.no_records_found"],
       })
-    ).toEqual({
-      action: "refresh",
-      confirmedGapIds: ["candidate_records.no_records_found"],
-    });
+    ).toEqual({ action: "refresh" });
+  });
+
+  it("validateSinceDateAgainstCheckpoint allows windows starting at or before the checkpoint", () => {
+    expect(validateSinceDateAgainstCheckpoint("2026-06-10", "2026-06-10")).toBeNull();
+    expect(validateSinceDateAgainstCheckpoint("2026-05-01", "2026-06-10")).toBeNull();
+  });
+
+  it("validateSinceDateAgainstCheckpoint rejects a window that would skip unsearched dates", () => {
+    const reason = validateSinceDateAgainstCheckpoint("2026-06-11", "2026-06-10");
+    expect(reason).toContain("skipped forever");
+    expect(reason).toContain("2026-06-10");
+  });
+
+  it("validateSinceDateAgainstCheckpoint rejects delta mode when no checkpoint exists", () => {
+    expect(validateSinceDateAgainstCheckpoint("2026-06-10", null)).toContain("FULL discovery sweep");
   });
 
   it("decideDeltaZeroRecordConfirmation refuses to close a never-confirmed full-history question from a windowed pass", () => {

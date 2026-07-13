@@ -34,6 +34,7 @@ import {
   assertedSweepCompletenessGapIds,
   deleteSweepConfirmation,
   parseSweepEvidencePayload,
+  refreshSweepConfirmationTimestamp,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
   upsertSweepConfirmation,
@@ -49,7 +50,7 @@ function usage(): string {
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
     'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
     "",
-    "--since-date runs a DELTA (windowed) refresh: every record must have event_date >= since-date (out-of-window rows are an error, not a silent drop — remove them and their labels so indices stay aligned). Delta mode makes no full-history claims: the no_records_found / only_general_labels quality gaps and confirmed-gap flags are disallowed. A zero-record delta write still requires --evidence-file with the WINDOW-scoped per-question evidence table.",
+    "--since-date runs a DELTA (windowed) refresh: it must be on/before the candidate's last_records_researched_through checkpoint (later would skip dates forever), and every record must have event_date >= since-date (out-of-window rows are an error, not a silent drop — remove them and their labels so indices stay aligned). Delta mode makes no full-history claims: the no_records_found / only_general_labels quality gaps are skipped and ALL --confirmed-gap flags are disallowed. A zero-record delta write still requires --evidence-file with the WINDOW-scoped per-question evidence table.",
   ].join("\n");
 }
 
@@ -308,9 +309,32 @@ export function listRecordsBeforeSinceDate<T extends { event_date: string; descr
   return outOfWindow;
 }
 
+/**
+ * A delta write's window must start at (or before) the candidate's stored
+ * research checkpoint. The completion stamp advances
+ * last_records_researched_through to today no matter what window was
+ * searched, so a --since-date later than the checkpoint would leave the
+ * dates in between permanently unsearched — the gap never resurfaces on any
+ * due list. Starting earlier than the checkpoint merely re-covers ground
+ * (identity-key dedupe absorbs the overlap), so it is allowed.
+ * Returns an error reason, or null when the window is safe.
+ */
+export function validateSinceDateAgainstCheckpoint(
+  sinceDate: string,
+  researchedThrough: string | null
+): string | null {
+  if (!researchedThrough) {
+    return "Candidate has no last_records_researched_through checkpoint, so there is no covered history for a delta to extend. Run a FULL discovery sweep (no --since-date) instead.";
+  }
+  if (sinceDate > researchedThrough) {
+    return `--since-date ${sinceDate} is after the candidate's research checkpoint ${researchedThrough}; the dates in between would be skipped forever (the completion stamp advances the checkpoint to today). Use --since-date ${researchedThrough} (the due list prints it) or earlier.`;
+  }
+  return null;
+}
+
 export type DeltaZeroRecordConfirmationDecision =
   | { action: "leave" }
-  | { action: "refresh"; confirmedGapIds: string[] }
+  | { action: "refresh" }
   | { action: "error"; reason: string };
 
 /**
@@ -325,7 +349,9 @@ export type DeltaZeroRecordConfirmationDecision =
  *    gate; leave it untouched.
  *  - candidate has zero records and a prior no_records_found confirmation →
  *    the full-history claim is still true (prior sweep covered history, this
- *    window found nothing new); refresh it with the window evidence.
+ *    window found nothing new); re-assert it by bumping confirmed_at only.
+ *    The original full-sweep evidence stays — window-only evidence must not
+ *    replace the support for a full-history claim.
  *  - candidate has zero records and no such confirmation → the full-history
  *    question was never evidence-closed; a windowed pass cannot close it.
  */
@@ -337,7 +363,7 @@ export function decideDeltaZeroRecordConfirmation(input: {
     return { action: "leave" };
   }
   if (input.priorConfirmedGapIds?.includes(NO_RECORDS_FOUND_GAP_ID)) {
-    return { action: "refresh", confirmedGapIds: [...input.priorConfirmedGapIds] };
+    return { action: "refresh" };
   }
   return {
     action: "error",
@@ -424,13 +450,20 @@ async function main(): Promise<void> {
   if (!candidateId || !electionId || !recordsFile || !labelsFile) {
     throw new Error(`Missing required flag.\n${usage()}`);
   }
-  if (sinceDate) {
-    const completenessFlags = [...confirmedGapIds].filter((id) => SWEEP_COMPLETENESS_GAP_IDS.has(id));
-    if (completenessFlags.length > 0) {
-      throw new Error(
-        `--confirmed-gap ${completenessFlags.join(", ")} asserts a full-history claim and is not allowed with --since-date. A delta write only asserts the window; run a full sweep (no --since-date) to make completeness claims.`
-      );
-    }
+  if (sinceDate && confirmedGapIds.size > 0) {
+    // No --confirmed-gap flag can do anything in a delta write: the two
+    // completeness ids assert full-history claims a windowed pass must not
+    // make, and every other id is only consumed by the full-sweep quality
+    // gate, which delta mode skips. Rejecting them all beats silently
+    // accepting a flag that has no effect (e.g. one reused from a prior
+    // repair-report invocation).
+    const flags = [...confirmedGapIds].sort();
+    const completenessFlags = flags.filter((id) => SWEEP_COMPLETENESS_GAP_IDS.has(id));
+    throw new Error(
+      completenessFlags.length > 0
+        ? `--confirmed-gap ${completenessFlags.join(", ")} asserts a full-history claim and is not allowed with --since-date. A delta write only asserts the window; run a full sweep (no --since-date) to make completeness claims.`
+        : `--confirmed-gap has no effect in a delta (--since-date) write and is not allowed: ${flags.join(", ")}. Delta mode skips the full-sweep quality gate; repair dropped rows in the payload files instead.`
+    );
   }
   const manualKey = `manual:candidate-records:${electionId}:${candidateId}`;
 
@@ -520,6 +553,20 @@ async function main(): Promise<void> {
     }
     if (!context.officeId) {
       throw new Error(`Election has no office_id for candidate-record labeling; election_id=${electionId}`);
+    }
+    if (sinceDate) {
+      const checkpoint = await pool.query<{ last_records_researched_through: string | null }>(
+        `SELECT last_records_researched_through::text AS last_records_researched_through
+         FROM public.candidates WHERE id = $1::uuid`,
+        [candidateId]
+      );
+      const windowError = validateSinceDateAgainstCheckpoint(
+        sinceDate,
+        checkpoint.rows[0]?.last_records_researched_through ?? null
+      );
+      if (windowError) {
+        throw new Error(windowError);
+      }
     }
 
     const allowedAreas = await loadAllowedResearchAreasForOfficeId(pool, context.officeId);
@@ -742,13 +789,7 @@ async function main(): Promise<void> {
           throw new Error(decision.reason);
         }
         if (decision.action === "refresh") {
-          await upsertSweepConfirmation(client, {
-            candidateId,
-            confirmedGapIds: decision.confirmedGapIds,
-            entries: sweepEvidenceEntries,
-            contextType: "election",
-            contextId: electionId,
-          });
+          await refreshSweepConfirmationTimestamp(client, candidateId);
         }
       } else if (sweepEvidenceEntries) {
         await upsertSweepConfirmation(client, {
