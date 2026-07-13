@@ -1,6 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 import { isLosAngelesCityCampaignFinanceEnabled } from "../../config/featureFlags.js";
 import {
+  buildStateFinanceSummaryRequests,
   candidateElectionKey,
   mapFinanceBreakdown,
   parseFinanceAmount,
@@ -42,21 +43,16 @@ export async function loadLosAngelesCandidateFinanceSummariesByCandidateElection
   electionRows: readonly Election[],
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   if (!isLosAngelesCityCampaignFinanceEnabled()) return new Map();
-  const eligible = new Set(
-    electionRows
-      .filter((row) =>
-        isLosAngelesCityFinanceEligibleElection({
-          state: row.state,
-          districtType: row.district_type,
-          geoidCompact: row.geoid_compact,
-          officeScope: row.office_scope,
-          officeCanonicalName: row.office_canonical_name,
-          officialBallotTitle: row.official_ballot_title,
-        }),
-      )
-      .map((row) => row.election_id),
+  const requests = buildStateFinanceSummaryRequests("CA", candidateRows, electionRows, (row) =>
+    isLosAngelesCityFinanceEligibleElection({
+      state: row.state,
+      districtType: row.district_type,
+      geoidCompact: row.geoid_compact,
+      officeScope: row.office_scope,
+      officeCanonicalName: row.office_canonical_name,
+      officialBallotTitle: row.official_ballot_title,
+    }),
   );
-  const requests = candidateRows.filter((row) => eligible.has(row.election_id));
   if (!requests.length) return new Map();
   const summaries = await db.query<SummaryRow>(
     `WITH requested AS (SELECT candidate_id::uuid candidate_id,election_id::uuid election_id FROM jsonb_to_recordset($1::jsonb) x(candidate_id text,election_id text)) SELECT requested.candidate_id::text candidate_id,requested.election_id::text election_id,link.fppc_committee_id,summary.election_year,summary.total_receipts,summary.total_disbursements,summary.cash_on_hand,summary.outside_support_total,summary.outside_oppose_total,summary.source_url,summary.last_synced_at::text FROM requested JOIN public.lacity_candidate_finance_links link ON link.candidate_id=requested.candidate_id AND link.election_id=requested.election_id AND link.link_status='active' JOIN public.lacity_candidate_finance_summaries summary ON summary.link_id=link.id AND summary.election_year=link.election_year`,
