@@ -6,10 +6,13 @@ import type {
   StateFinanceRequestElectionRow,
 } from "../address/ballotLookupFinanceShared.js";
 import { loadStandardStateFinanceSummariesByCandidateElection } from "../finance/standardStateFinanceBallotLookupLoader.js";
+import { HOUSTON_FINANCE_OFFICE_NAMES } from "../houstonFinance/houstonFinanceOfficeTargets.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
-const HOUSTON_LOCAL_FINANCE_OFFICES = new Set(["Mayor", "Municipal Controller", "City Council Member"]);
+// The Houston loader owns these place-scope offices, so Texas skips them to
+// avoid double-counting. Sourced from the Houston module to stay in sync.
+const HOUSTON_LOCAL_FINANCE_OFFICES = new Set<string>(HOUSTON_FINANCE_OFFICE_NAMES);
 
 export async function loadTexasCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
