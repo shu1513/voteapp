@@ -88,6 +88,7 @@ export function mergeHoustonOutsideIndustryBreakdowns(
     const key = [
       breakdown.committeeId.trim().toUpperCase(),
       breakdown.supportOppose,
+      breakdown.categoryType,
       breakdown.categoryName,
     ].join("\u0000");
     const existing = merged.get(key);

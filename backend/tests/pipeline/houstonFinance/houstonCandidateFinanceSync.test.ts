@@ -69,4 +69,20 @@ describe("Houston finance outside-industry donor safety", () => {
       },
     ]);
   });
+
+  it("sums known contributor counts regardless of null ordering", () => {
+    const breakdown = (contributorCount: number | null) => ({
+      committeeId: "00063767",
+      supportOppose: "support" as const,
+      categoryType: "industry" as const,
+      categoryName: "finance_investment",
+      amount: 1_000,
+      contributorCount,
+      sourceUrl: "https://example.test/tec.zip",
+    });
+
+    expect(mergeHoustonOutsideIndustryBreakdowns([breakdown(null), breakdown(1)])[0]?.contributorCount).toBe(1);
+    expect(mergeHoustonOutsideIndustryBreakdowns([breakdown(1), breakdown(null)])[0]?.contributorCount).toBe(1);
+    expect(mergeHoustonOutsideIndustryBreakdowns([breakdown(null), breakdown(null)])[0]?.contributorCount).toBeNull();
+  });
 });
