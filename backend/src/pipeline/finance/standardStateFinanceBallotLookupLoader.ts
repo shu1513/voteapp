@@ -41,9 +41,41 @@ export type StandardStateFinanceTables = {
   outsideGroupBreakdowns: string;
 };
 
+export type StandardStateFinanceCommitteeColumn = "committee_id" | "committee_key";
+
+/**
+ * How summary rows aggregate across a candidate's committees.
+ * - "totals": sum every reported value (single-committee sources).
+ * - "illinoisD2": D-2 semantics — receipts/spending only when exactly one
+ *   committee reports (transfers between a candidate's committees would
+ *   double-count), cash/debts only when every committee reported them.
+ */
+export type StandardStateFinanceSummaryVariant = "totals" | "illinoisD2";
+
+export type StandardStateFinanceEvidenceLabelType = "donor" | "employer";
+
+const STANDARD_COMMITTEE_COLUMNS: readonly StandardStateFinanceCommitteeColumn[] = ["committee_id", "committee_key"];
+const STANDARD_EVIDENCE_LABEL_TYPES: readonly StandardStateFinanceEvidenceLabelType[] = ["donor", "employer"];
+
 function assertIdentifier(value: string): string {
   if (!/^[a-z][a-z0-9_]*$/.test(value)) throw new Error(`Invalid standard finance table identifier: ${value}`);
   return value;
+}
+
+function assertCommitteeColumn(value: StandardStateFinanceCommitteeColumn): StandardStateFinanceCommitteeColumn {
+  if (!STANDARD_COMMITTEE_COLUMNS.includes(value)) {
+    throw new Error(`Invalid standard finance committee column: ${value}`);
+  }
+  return value;
+}
+
+function assertEvidenceLabelTypes(
+  values: readonly StandardStateFinanceEvidenceLabelType[]
+): readonly StandardStateFinanceEvidenceLabelType[] {
+  if (values.length === 0 || values.some((value) => !STANDARD_EVIDENCE_LABEL_TYPES.includes(value))) {
+    throw new Error(`Invalid standard finance evidence label types: ${values.join(", ")}`);
+  }
+  return values;
 }
 
 export async function loadStandardStateFinanceSummariesByCandidateElection(input: {
@@ -56,6 +88,9 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
   enabled: () => boolean;
   tables: StandardStateFinanceTables;
   isEligibleElection?: (row: ElectionRow) => boolean;
+  committeeColumn?: StandardStateFinanceCommitteeColumn;
+  summaryVariant?: StandardStateFinanceSummaryVariant;
+  evidenceLabelTypes?: readonly StandardStateFinanceEvidenceLabelType[];
 }
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   if (!input.enabled()) {
@@ -64,11 +99,52 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
   const tables = Object.fromEntries(
     Object.entries(input.tables).map(([name, value]) => [name, assertIdentifier(value)])
   ) as StandardStateFinanceTables;
+  const committeeColumn = assertCommitteeColumn(input.committeeColumn ?? "committee_id");
+  const summaryVariant = input.summaryVariant ?? "totals";
+  const evidenceLabelTypes = assertEvidenceLabelTypes(input.evidenceLabelTypes ?? STANDARD_EVIDENCE_LABEL_TYPES);
+  const evidenceLabelTypeList = evidenceLabelTypes.map((value) => `'${value}'`).join(", ");
   const { candidateRows, electionRows, source, sourceUrl } = input;
   const requests = buildStateFinanceSummaryRequests(input.state, candidateRows, electionRows, input.isEligibleElection);
   if (requests.length === 0) {
     return new Map();
   }
+
+  const summaryAggregateColumns =
+    summaryVariant === "illinoisD2"
+      ? `
+        CASE
+          WHEN count(DISTINCT link.${committeeColumn}) = 1 AND count(summary.total_receipts) > 0
+          THEN sum(summary.total_receipts)
+          ELSE NULL
+        END AS total_receipts,
+        CASE
+          WHEN count(DISTINCT link.${committeeColumn}) = 1 AND count(summary.direct_contribution_total) > 0
+          THEN sum(summary.direct_contribution_total)
+          ELSE NULL
+        END AS direct_contribution_total,
+        CASE
+          WHEN count(DISTINCT link.${committeeColumn}) = 1 AND count(summary.total_disbursements) > 0
+          THEN sum(summary.total_disbursements)
+          ELSE NULL
+        END AS total_disbursements,
+        CASE
+          WHEN count(summary.cash_on_hand) = count(DISTINCT link.${committeeColumn})
+          THEN sum(summary.cash_on_hand)
+          ELSE NULL
+        END AS cash_on_hand,
+        CASE
+          WHEN count(summary.debts_owed) = count(DISTINCT link.${committeeColumn})
+          THEN sum(summary.debts_owed)
+          ELSE NULL
+        END AS debts_owed,`
+      : `
+        CASE WHEN count(summary.total_receipts) = 0 THEN NULL ELSE sum(summary.total_receipts) END AS total_receipts,
+        CASE
+          WHEN count(summary.direct_contribution_total) = 0 THEN NULL
+          ELSE sum(summary.direct_contribution_total)
+        END AS direct_contribution_total,
+        CASE WHEN count(summary.total_disbursements) = 0 THEN NULL ELSE sum(summary.total_disbursements) END AS total_disbursements,
+        CASE WHEN count(summary.cash_on_hand) = 0 THEN NULL ELSE sum(summary.cash_on_hand) END AS cash_on_hand,`;
 
   const summaryResult = await input.db.query<StandardStateFinanceSummaryRow>(
     `
@@ -85,17 +161,10 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         requested.candidate_id::text AS candidate_id,
         requested.election_id::text AS election_id,
         CASE
-          WHEN count(DISTINCT link.committee_id) = 1 THEN min(link.committee_id)
+          WHEN count(DISTINCT link.${committeeColumn}) = 1 THEN min(link.${committeeColumn})
           ELSE NULL
         END AS committee_id,
-        max(summary.election_year) AS election_year,
-        CASE WHEN count(summary.total_receipts) = 0 THEN NULL ELSE sum(summary.total_receipts) END AS total_receipts,
-        CASE
-          WHEN count(summary.direct_contribution_total) = 0 THEN NULL
-          ELSE sum(summary.direct_contribution_total)
-        END AS direct_contribution_total,
-        CASE WHEN count(summary.total_disbursements) = 0 THEN NULL ELSE sum(summary.total_disbursements) END AS total_disbursements,
-        CASE WHEN count(summary.cash_on_hand) = 0 THEN NULL ELSE sum(summary.cash_on_hand) END AS cash_on_hand,
+        max(summary.election_year) AS election_year,${summaryAggregateColumns}
         max(summary.outside_support_total) AS outside_support_total,
         max(summary.outside_oppose_total) AS outside_oppose_total,
         min(summary.source_url) FILTER (WHERE summary.source_url IS NOT NULL) AS source_url,
@@ -188,7 +257,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         SELECT
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
-          outside_group.committee_id,
+          outside_group.${committeeColumn} AS committee_id,
           min(outside_group.committee_name) AS committee_name,
           outside_group.support_oppose,
           max(outside_group.amount) AS amount,
@@ -201,7 +270,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         JOIN public.${tables.outsideGroups} AS outside_group
           ON outside_group.link_id = link.id
          AND outside_group.election_year = link.election_year
-        GROUP BY selected.candidate_id, selected.election_id, outside_group.committee_id, outside_group.support_oppose
+        GROUP BY selected.candidate_id, selected.election_id, outside_group.${committeeColumn}, outside_group.support_oppose
       ),
       ranked AS (
         SELECT
@@ -235,7 +304,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         SELECT
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
-          breakdown.committee_id,
+          breakdown.${committeeColumn} AS committee_id,
           breakdown.support_oppose,
           breakdown.category_name,
           max(breakdown.amount) AS amount,
@@ -256,7 +325,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         GROUP BY
           selected.candidate_id,
           selected.election_id,
-          breakdown.committee_id,
+          breakdown.${committeeColumn},
           breakdown.support_oppose,
           breakdown.category_name
       ),
@@ -307,7 +376,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         SELECT
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
-          industry.committee_id,
+          industry.${committeeColumn} AS committee_id,
           industry.category_name AS industry_name,
           max(industry.amount) AS amount
         FROM selected
@@ -320,7 +389,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
          AND industry.election_year = link.election_year
         WHERE industry.support_oppose = 'support'
           AND industry.category_type = 'industry'
-        GROUP BY selected.candidate_id, selected.election_id, industry.committee_id, industry.category_name
+        GROUP BY selected.candidate_id, selected.election_id, industry.${committeeColumn}, industry.category_name
       ),
       top_industries_grouped AS (
         SELECT
@@ -349,8 +418,8 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
           top_industries.industry_name,
-          breakdown.committee_id,
-          COALESCE(outside_group.committee_name, breakdown.committee_id) AS committee_name,
+          breakdown.${committeeColumn} AS committee_id,
+          COALESCE(outside_group.committee_name, breakdown.${committeeColumn}) AS committee_name,
           breakdown.support_oppose,
           breakdown.category_name AS organization_name,
           breakdown.category_type AS organization_type,
@@ -359,7 +428,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
           COALESCE(breakdown.source_url, outside_group.source_url) AS source_url,
           row_number() OVER (
             PARTITION BY selected.candidate_id, selected.election_id, top_industries.industry_name
-            ORDER BY breakdown.amount DESC, breakdown.category_name ASC, breakdown.committee_id ASC
+            ORDER BY breakdown.amount DESC, breakdown.category_name ASC, breakdown.${committeeColumn} ASC
           ) AS rn
         FROM selected
         JOIN top_industries
@@ -407,9 +476,9 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         LEFT JOIN public.${tables.outsideGroups} AS outside_group
           ON outside_group.link_id = breakdown.link_id
          AND outside_group.election_year = breakdown.election_year
-         AND outside_group.committee_id = breakdown.committee_id
+         AND outside_group.${committeeColumn} = breakdown.${committeeColumn}
          AND outside_group.support_oppose = breakdown.support_oppose
-        WHERE breakdown.category_type IN ('donor', 'employer')
+        WHERE breakdown.category_type IN (${evidenceLabelTypeList})
           AND breakdown.support_oppose = 'support'
       )
       SELECT candidate_id, election_id, industry_name, committee_id, committee_name, support_oppose, organization_name, organization_type, amount, contributor_count, source_url
@@ -520,10 +589,13 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
           controlled_committee_id: row.committee_id,
           last_synced_at: row.last_synced_at,
           direct_campaign: {
-            total_raised: parseFinanceAmount(row.direct_contribution_total) ?? parseFinanceAmount(row.total_receipts),
+            total_raised:
+              summaryVariant === "illinoisD2"
+                ? parseFinanceAmount(row.total_receipts) ?? parseFinanceAmount(row.direct_contribution_total)
+                : parseFinanceAmount(row.direct_contribution_total) ?? parseFinanceAmount(row.total_receipts),
             total_spent: parseFinanceAmount(row.total_disbursements),
             cash_on_hand: parseFinanceAmount(row.cash_on_hand),
-            debts_owed: null,
+            debts_owed: summaryVariant === "illinoisD2" ? parseFinanceAmount(row.debts_owed) : null,
             top_occupations: topDirectDonorOccupations,
             top_employers: [],
             top_industries: [],
