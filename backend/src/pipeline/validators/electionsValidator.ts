@@ -436,6 +436,14 @@ async function getStagingRow(pool: Pool, ingestKey: string): Promise<StagingRow 
   return result.rows[0] ?? null;
 }
 
+// Every terminal or parked transition prints one line: a soft-failed row
+// parks as status='pending' with the reason only in the DB, which looked
+// identical to a starved worker from the terminal — operators had to query
+// staging_items to learn the validator had actually run and why it parked.
+function logStagingTransition(ingestKey: string, outcome: string, reason: string): void {
+  console.warn(`elections validator ${outcome} ingest_key=${ingestKey}: ${reason}`);
+}
+
 async function getStagingStatus(pool: Pool, ingestKey: string): Promise<string | null> {
   const result = await pool.query<{ status: string }>(
     `
@@ -575,6 +583,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
               run_id: row.run_id ?? "",
               reason: `hard_fail: ${parsed.reason}`,
             });
+            logStagingTransition(ingestKey, "rejected", `hard_fail: ${parsed.reason}`);
             await ack(entry.id);
             continue;
           }
@@ -617,6 +626,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
                 run_id: row.run_id ?? "",
               });
 
+              logStagingTransition(ingestKey, "parked pending (soft_fail)", reason);
               await ack(entry.id);
               continue;
             }
@@ -639,6 +649,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
               run_id: row.run_id ?? "",
               reason: rejectReason,
             });
+            logStagingTransition(ingestKey, "rejected", rejectReason);
             await ack(entry.id);
             continue;
           }
@@ -664,6 +675,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
               run_id: row.run_id ?? "",
               reason,
             });
+            logStagingTransition(ingestKey, "rejected", reason);
             await ack(entry.id);
             continue;
           }
@@ -711,6 +723,11 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
                 });
               }
 
+              logStagingTransition(
+                ingestKey,
+                "parked pending (soft_fail)",
+                validation.reasons.join("; ")
+              );
               await ack(entry.id);
               continue;
             }
@@ -757,6 +774,7 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
               run_id: row.run_id ?? "",
               reason: rejectReason,
             });
+            logStagingTransition(ingestKey, "rejected", rejectReason);
             await ack(entry.id);
             continue;
           }
@@ -818,9 +836,16 @@ export async function runElectionsValidator(options: ValidatorOptions = {}): Pro
       await handleEntries([
         { id: "", message: { ingest_key: targetIngestKey, item_type: STAGING_ITEM_TYPE_ELECTION } },
       ]);
-      const finalStatus = await getStagingStatus(pool, targetIngestKey);
+      const finalRow = await getStagingRow(pool, targetIngestKey);
       console.log(
-        JSON.stringify({ targeted: true, ingest_key: targetIngestKey, status: finalStatus })
+        JSON.stringify({
+          targeted: true,
+          ingest_key: targetIngestKey,
+          status: finalRow?.status ?? null,
+          // A parked soft-fail keeps status='pending'; without the reason the
+          // summary is indistinguishable from a row the validator never saw.
+          reason: finalRow?.reason ?? null,
+        })
       );
       return;
     }
