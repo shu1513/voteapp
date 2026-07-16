@@ -142,10 +142,19 @@ const DUE_SCAN_BATCH_SIZE = 1000;
 // results search. The state-specific schedule gate (poll close for
 // election_night, certification offset for certified) is applied in TS after
 // this query, also mirroring the producer.
+//
+// One deliberate divergence: the night bucket also requires the certified
+// pass to be un-checked. The producer never faces that ordering (its night
+// pass runs on election night, weeks before certified), but a manual sweep
+// can reach an election only after certification — unofficial election-night
+// results are obsolete once certified results are recorded, and without this
+// condition such elections would nag the due list until three pointless
+// night attempts were burned.
 const NIGHT_BUCKET_OPEN_SQL = `
   (
     e.election_night_results_checked_at IS NULL
     AND e.election_night_results_attempt_count < ${ELECTION_NIGHT_RESULT_MAX_ATTEMPTS}
+    AND e.certified_results_checked_at IS NULL
   )
 `;
 
@@ -305,13 +314,18 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
       const certifiedOpen =
         row.certified_bucket_open && (certifiedDueAt === null || (certifiedDueAt !== undefined && now >= certifiedDueAt));
 
-      const suggestedPass: ElectionResultPassType = nightOpen
-        ? "election_night"
-        : certifiedOpen
-          ? "certified"
-          : row.night_bucket_open
-            ? "election_night"
-            : "certified";
+      // Prefer certified whenever it is open: only certified official results
+      // can update canonical candidate/ballot-measure state, so once the
+      // certification window has arrived, election-night work is the fallback
+      // (the skill records unofficial results through the night pass only
+      // when the state turns out not to have certified yet).
+      const suggestedPass: ElectionResultPassType = certifiedOpen
+        ? "certified"
+        : nightOpen
+          ? "election_night"
+          : row.certified_bucket_open
+            ? "certified"
+            : "election_night";
       const annotated: AnnotatedRow = {
         ...row,
         suggested_pass: suggestedPass,
@@ -515,23 +529,55 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
   const passState = await pool.query<{
     night_checked: boolean;
     certified_checked: boolean;
+    night_attempt_count: number;
+    certified_attempt_count: number;
+    certified_in_cooldown: boolean;
   }>(
     `
       SELECT
         election_night_results_checked_at IS NOT NULL AS night_checked,
-        certified_results_checked_at IS NOT NULL AS certified_checked
+        certified_results_checked_at IS NOT NULL AS certified_checked,
+        election_night_results_attempt_count AS night_attempt_count,
+        certified_results_attempt_count AS certified_attempt_count,
+        (
+          certified_results_last_attempted_at IS NOT NULL
+          AND certified_results_last_attempted_at >
+            now() - (${CERTIFIED_RESULT_RETRY_INTERVAL_DAYS} * interval '1 day')
+        ) AS certified_in_cooldown
       FROM public.elections
       WHERE id::text = $1
     `,
     [electionId]
   );
+  const state = passState.rows[0];
   const alreadyChecked =
-    passType === "election_night"
-      ? (passState.rows[0]?.night_checked ?? false)
-      : (passState.rows[0]?.certified_checked ?? false);
+    passType === "election_night" ? (state?.night_checked ?? false) : (state?.certified_checked ?? false);
   if (alreadyChecked && !force) {
     throw new Error(
       `The ${passType} pass for election ${electionId} is already marked checked; this write would be a correction. Re-run with --force if the correction is intended.`
+    );
+  }
+  if (passType === "election_night" && state?.certified_checked && !force) {
+    throw new Error(
+      `Election ${electionId} already has checked certified results; an election_night write would record obsolete unofficial results. Re-run with --force if that is really intended.`
+    );
+  }
+  // Mirror the due list's attempt-cap and certified-cooldown predicates:
+  // every write increments the pass's attempt counter, and the counter cap
+  // force-marks the pass checked, so immediate re-runs could permanently
+  // close an unresolved pass without ever passing through the due list.
+  const attemptCount =
+    passType === "election_night" ? (state?.night_attempt_count ?? 0) : (state?.certified_attempt_count ?? 0);
+  const attemptCap =
+    passType === "election_night" ? ELECTION_NIGHT_RESULT_MAX_ATTEMPTS : CERTIFIED_RESULT_MAX_ATTEMPTS;
+  if (attemptCount >= attemptCap && !force) {
+    throw new Error(
+      `The ${passType} pass for election ${electionId} already used ${attemptCount} of ${attemptCap} attempts; another write would close it regardless of outcome. Re-run with --force if this final write is intended.`
+    );
+  }
+  if (passType === "certified" && state?.certified_in_cooldown && !force) {
+    throw new Error(
+      `The certified pass for election ${electionId} was attempted within the last ${CERTIFIED_RESULT_RETRY_INTERVAL_DAYS} days and is in its retry cooldown; writing again now would burn an attempt on the same unresolved question. Re-run with --force only for a correction or when the state has certified since the last attempt.`
     );
   }
   const now = new Date();
