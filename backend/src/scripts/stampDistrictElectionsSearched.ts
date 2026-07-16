@@ -130,10 +130,15 @@ export async function runStampDistrictElectionsSearched(
   }
 
   if (!dryRun) {
-    // The UPDATE re-checks both guards so a staging row or election written
-    // between the SELECT above and this statement cannot slip through; a zero
-    // row count means the state changed concurrently, and the reload names
-    // which guard now fails.
+    // The UPDATE re-checks both guards at statement time, closing the gap
+    // between the SELECT above and the write. A commit landing inside the
+    // UPDATE's own snapshot window can still slip past, and that residual
+    // race is accepted: a concurrent election write stamps the district
+    // itself (so this stamp asserts nothing false), and a concurrent staging
+    // insert stays visible in staging_items and is drained normally — this
+    // manual wrapper does not justify a per-district lock protocol across
+    // every producer/writer. A zero row count means the state changed
+    // concurrently, and the reload names which guard now fails.
     const update = await client.query(
       `
         UPDATE public.districts d

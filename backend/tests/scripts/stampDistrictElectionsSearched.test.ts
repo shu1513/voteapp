@@ -37,9 +37,12 @@ describe("runStampDistrictElectionsSearched", () => {
     expect(updateSql).toContain("SET last_elections_searched_at = now()");
     // The UPDATE itself re-checks both guards (no separate-check race), and
     // staging rows are matched by payload district_id, not ingest-key shape —
-    // automatic producers use 'elections:<district>:<year>' keys.
-    expect(updateSql).toContain("NOT EXISTS");
+    // automatic producers use 'elections:<district>:<year>' keys. Pin each
+    // guard individually so dropping either one fails the test.
+    expect(updateSql.match(/NOT EXISTS/g)).toHaveLength(2);
+    expect(updateSql).toContain("e.election_date >= CURRENT_DATE");
     expect(updateSql).toContain("si.payload->>'district_id' = d.id::text");
+    expect(updateSql).toContain("si.status IN ('pending', 'validated')");
     expect(updateCall?.[1]).toEqual([DISTRICT_ID]);
   });
 
