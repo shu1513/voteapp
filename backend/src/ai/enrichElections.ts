@@ -487,6 +487,7 @@ function classifyCitationVerificationFailure(reason: string): "transient" | "per
 
   if (
     normalized.includes("timed out") ||
+    normalized.includes("dns lookup failed transiently") ||
     normalized.includes("fetch failed") ||
     normalized.includes("status 500") ||
     normalized.includes("status 502") ||

@@ -49,6 +49,12 @@ function stripIpv6Brackets(hostnameOrIp: string): string {
   return hostnameOrIp.toLowerCase().replace(/^\[|\]$/g, "");
 }
 
+// RFC 8215 local-use NAT64 prefix. ipaddr.js only special-cases the
+// well-known RFC 6052 prefix (64:ff9b::/96, range "rfc6052"), so this one
+// comes back plain "unicast" — but on a network with a NAT64 translator it
+// maps onto arbitrary IPv4, including loopback and RFC 1918.
+const NAT64_LOCAL_USE_RANGE = ipaddr.parseCIDR("64:ff9b:1::/48");
+
 /** Only ordinary globally routable unicast addresses are safe citation targets. */
 function isBlockedIpLiteral(hostnameOrIp: string): boolean {
   const host = stripIpv6Brackets(hostnameOrIp);
@@ -57,8 +63,12 @@ function isBlockedIpLiteral(hostnameOrIp: string): boolean {
   }
 
   let address = ipaddr.parse(host);
-  if (address instanceof ipaddr.IPv6 && address.isIPv4MappedAddress()) {
-    address = address.toIPv4Address();
+  if (address instanceof ipaddr.IPv6) {
+    if (address.isIPv4MappedAddress()) {
+      address = address.toIPv4Address();
+    } else if (address.match(NAT64_LOCAL_USE_RANGE)) {
+      return true;
+    }
   }
 
   return address.range() !== "unicast";
@@ -89,7 +99,19 @@ type UrlTargetResolution =
   | { target: ResolvedUrlTarget }
   | { failure: UrlReachabilityFailure };
 
-async function resolveSafeUrlTarget(url: string): Promise<UrlTargetResolution> {
+// dns.lookup error codes that indicate the resolver (not the name) failed.
+// These must stay retryable downstream; ENOTFOUND/ENODATA stay permanent.
+const TRANSIENT_DNS_LOOKUP_ERROR_CODES = new Set([
+  "EAI_AGAIN",
+  "ETIMEOUT",
+  "ETIMEDOUT",
+  "ESERVFAIL",
+  "EREFUSED",
+]);
+
+const DNS_LOOKUP_TIMEOUT_CODE = "DNS_LOOKUP_TIMEOUT";
+
+async function resolveSafeUrlTarget(url: string, timeoutMs: number): Promise<UrlTargetResolution> {
   let parsed: URL;
   try {
     parsed = new URL(url);
@@ -114,13 +136,44 @@ async function resolveSafeUrlTarget(url: string): Promise<UrlTargetResolution> {
     };
   }
 
+  // dns.lookup has no abort support, so race it against a timer: the fetch
+  // timeout only starts after resolution, and a stalled resolver must not
+  // hold the verifier far past its advertised budget. On timeout the
+  // in-flight getaddrinfo call is abandoned (it settles into a no-op).
+  //
+  // Reason strings are a contract with classifyCitationVerificationFailure
+  // (five copies, e.g. enrichCandidateRecords.ts): "timed out" and
+  // "dns lookup failed transiently" classify as transient/retryable, the
+  // bare could-not-be-resolved reason as permanent.
   let records: LookupAddress[];
+  let dnsTimeoutTimer: NodeJS.Timeout | undefined;
   try {
-    records = await dnsLookup(hostname, { all: true, verbatim: true });
-  } catch {
+    records = await Promise.race([
+      dnsLookup(hostname, { all: true, verbatim: true }),
+      new Promise<never>((_, reject) => {
+        dnsTimeoutTimer = setTimeout(() => {
+          reject(
+            Object.assign(new Error("DNS lookup timed out"), { code: DNS_LOOKUP_TIMEOUT_CODE })
+          );
+        }, timeoutMs);
+      }),
+    ]);
+  } catch (error) {
+    const code =
+      error instanceof Error && "code" in error ? String((error as { code?: unknown }).code) : "";
+    if (code === DNS_LOOKUP_TIMEOUT_CODE) {
+      return { failure: { ok: false, reason: "citation URL DNS lookup timed out" } };
+    }
+    if (TRANSIENT_DNS_LOOKUP_ERROR_CODES.has(code)) {
+      return {
+        failure: { ok: false, reason: `citation URL DNS lookup failed transiently: ${code}` },
+      };
+    }
     return {
       failure: { ok: false, reason: "citation URL hostname could not be resolved" },
     };
+  } finally {
+    clearTimeout(dnsTimeoutTimer);
   }
 
   if (records.length === 0) {
@@ -288,7 +341,11 @@ async function fetchPinnedUrl(
     if (response) {
       await cancelResponseBody(response);
     }
-    await dispatcher.close();
+    try {
+      await dispatcher.close();
+    } catch {
+      // Best effort: do not mask the primary result.
+    }
   }
 }
 
@@ -307,7 +364,7 @@ async function fetchWithValidatedRedirects(
   let currentUrl = startUrl;
   const visitedUrls: string[] = [startUrl];
   for (let hop = 0; hop <= MAX_REDIRECT_HOPS; hop++) {
-    const resolution = await resolveSafeUrlTarget(currentUrl);
+    const resolution = await resolveSafeUrlTarget(currentUrl, timeoutMs);
     if ("failure" in resolution) {
       return resolution;
     }

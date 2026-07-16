@@ -123,6 +123,7 @@ function classifyCitationVerificationFailure(reason: string): "transient" | "per
   const normalized = reason.toLowerCase();
   if (
     normalized.includes("timed out") ||
+    normalized.includes("dns lookup failed transiently") ||
     normalized.includes("fetch failed") ||
     normalized.includes("status 429") ||
     normalized.includes("status 500") ||
