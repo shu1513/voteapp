@@ -4,8 +4,10 @@ import {
   SWEEP_COMPLETENESS_GAP_IDS,
   SWEEP_EVIDENCE_MIN_ENTRIES,
   assertedSweepCompletenessGapIds,
+  deleteSweepCompletenessConfirmation,
   deleteSweepConfirmation,
   parseSweepEvidencePayload,
+  retainSuppliedSweepEvidence,
   sweepEvidenceRequired,
   upsertSweepConfirmation,
 } from "../../src/scripts/candidateRecordSweepEvidence.js";
@@ -238,10 +240,60 @@ describe("upsertSweepConfirmation", () => {
     expect(calls[0]!.values[3]).toBe("election");
     expect(calls[0]!.values[4]).toBe("election-1");
   });
+
+  it("accepts an empty claim set for a stance-bearing evidenced sweep", async () => {
+    const calls: { text: string; values: unknown[] }[] = [];
+    const client = {
+      query: async (text: string, values?: unknown[]) => {
+        calls.push({ text, values: values ?? [] });
+        return { rows: [], rowCount: 1 } as never;
+      },
+    };
+
+    await upsertSweepConfirmation(client as never, {
+      candidateId: "candidate-1",
+      confirmedGapIds: [],
+      entries: [
+        { question: "votes?", finding: "HB 9 veto override" },
+        { question: "litigation?", finding: "nothing found" },
+        { question: "endorsements?", finding: "endorsed by union local 12" },
+      ],
+      contextType: "election",
+      contextId: "election-1",
+    });
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.values[1]).toEqual([]);
+  });
+});
+
+describe("deleteSweepCompletenessConfirmation", () => {
+  it("removes only completeness-claim rows, matched by gap-id overlap", async () => {
+    const calls: { text: string; values: unknown[] }[] = [];
+    const client = {
+      query: async (text: string, values?: unknown[]) => {
+        calls.push({ text, values: values ?? [] });
+        return { rows: [], rowCount: 1 } as never;
+      },
+    };
+
+    await deleteSweepCompletenessConfirmation(client as never, "candidate-1");
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.text).toContain("DELETE FROM public.candidate_record_sweep_confirmations");
+    // Overlap predicate: an empty-claim-set row ('{}' && ARRAY[...] is false)
+    // survives — finding records does not falsify "sweep ran, stances found".
+    expect(calls[0]!.text).toContain("confirmed_gap_ids && $2::text[]");
+    expect(calls[0]!.values[0]).toBe("candidate-1");
+    expect([...(calls[0]!.values[1] as string[])].sort()).toEqual([
+      "candidate_records.no_records_found",
+      "candidate_records.only_general_labels",
+    ]);
+  });
 });
 
 describe("deleteSweepConfirmation", () => {
-  it("removes the candidate's confirmation row", async () => {
+  it("removes any confirmation row unconditionally (writers that advance no search stamp)", async () => {
     const calls: { text: string; values: unknown[] }[] = [];
     const client = {
       query: async (text: string, values?: unknown[]) => {
@@ -254,7 +306,26 @@ describe("deleteSweepConfirmation", () => {
 
     expect(calls).toHaveLength(1);
     expect(calls[0]!.text).toContain("DELETE FROM public.candidate_record_sweep_confirmations");
+    // No gap-id predicate: without an advancing last_records_searched_at
+    // stamp (presidential writer), a surviving empty-claim-set row could
+    // never be dated as historical.
+    expect(calls[0]!.text).not.toContain("confirmed_gap_ids");
     expect(calls[0]!.values).toEqual(["candidate-1"]);
+  });
+});
+
+describe("retainSuppliedSweepEvidence", () => {
+  it("keeps supplied entries on any full-history write", () => {
+    expect(retainSuppliedSweepEvidence({ evidenceRequired: false, deltaMode: false })).toBe(true);
+    expect(retainSuppliedSweepEvidence({ evidenceRequired: true, deltaMode: false })).toBe(true);
+  });
+
+  it("keeps delta entries only when the zero-record path required them", () => {
+    expect(retainSuppliedSweepEvidence({ evidenceRequired: true, deltaMode: true })).toBe(true);
+  });
+
+  it("leaves a non-required window ledger external in delta mode", () => {
+    expect(retainSuppliedSweepEvidence({ evidenceRequired: false, deltaMode: true })).toBe(false);
   });
 });
 

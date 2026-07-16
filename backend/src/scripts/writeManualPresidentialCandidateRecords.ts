@@ -68,6 +68,7 @@ function usage(): string {
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
     'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
+    "A supplied --evidence-file on a stance-bearing write is persisted too (candidate_record_sweep_confirmations with an empty claim set), so keep supplying the ledger — the output reports sweepEvidence.persisted (dry-run: wouldPersist).",
   ].join("\n");
 }
 
@@ -449,18 +450,25 @@ async function main(): Promise<void> {
         recordCount: validatedRecords.records.length,
         confirmedGapIds: options.confirmedGapIds,
       }) || qualityGaps.some((gap) => SWEEP_COMPLETENESS_GAP_IDS.has(gap.id));
+    // A supplied --evidence-file is always parsed and validated, even when
+    // the completeness gate does not require it (a stance-bearing record
+    // set) — a silently ignored ledger reads as a failed handoff. This
+    // writer has no delta mode, so every write is a full-history claim and
+    // a validated ledger is always persisted (empty claim set for the
+    // stance-bearing case), mirroring manual:candidate-records:write.
     let sweepEvidenceEntries: SweepEvidenceEntry[] | null = null;
-    if (evidenceIsRequired) {
-      if (!options.evidenceFile) {
-        throw sweepEvidenceMissingError("presidential-records");
-      }
+    let sweepEvidenceEntryCount: number | null = null;
+    if (options.evidenceFile) {
       const parsedEvidence = parseSweepEvidencePayload(await readJsonFile(options.evidenceFile));
       if (!parsedEvidence.ok) {
         throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
       }
+      sweepEvidenceEntryCount = parsedEvidence.entries.length;
       sweepEvidenceEntries = parsedEvidence.entries;
+    } else if (evidenceIsRequired) {
+      throw sweepEvidenceMissingError("presidential-records");
     }
-    const sweepEvidenceEntryCount = sweepEvidenceEntries ? sweepEvidenceEntries.length : null;
+    const sweepEvidencePersisted = sweepEvidenceEntries !== null;
 
     if (options.repairReportFile && qualityGaps.length > 0) {
       await writeRecordsRepairReport({
@@ -502,6 +510,9 @@ async function main(): Promise<void> {
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
+              // Plan language: --dry-run writes nothing, so a past-tense
+              // `persisted` here would be factually wrong for JSON consumers.
+              wouldPersist: sweepEvidencePersisted,
             },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },
@@ -570,9 +581,9 @@ async function main(): Promise<void> {
         validation.normalized,
         researchAreaIdBySlug
       );
-      // Persist the validated completeness confirmation so
-      // manual:records:audit can separate this evidence-backed confirmed
-      // null from a skipped sweep.
+      // Persist the validated confirmation so manual:records:audit can
+      // separate an evidence-backed sweep (confirmed null OR stance-bearing
+      // with an empty claim set) from a skipped one.
       if (sweepEvidenceEntries) {
         await upsertSweepConfirmation(client, {
           candidateId: options.candidateId,
@@ -586,8 +597,11 @@ async function main(): Promise<void> {
           contextId: options.presidentialCycleId,
         });
       } else {
-        // This write found real stance-labeled records; drop any earlier
-        // completeness confirmation it supersedes.
+        // This write found real stance-labeled records without carrying a
+        // ledger; drop ANY earlier confirmation. Unlike the district writer,
+        // this writer advances no per-candidate search stamp, so a surviving
+        // empty-claim-set row could never be dated as historical — deletion
+        // is what keeps "newest sweep wins" honest here.
         await deleteSweepConfirmation(client, options.candidateId);
       }
       await client.query("COMMIT");
@@ -608,6 +622,7 @@ async function main(): Promise<void> {
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
+              persisted: sweepEvidencePersisted,
             },
           },
           null,

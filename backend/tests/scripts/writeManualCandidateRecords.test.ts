@@ -294,6 +294,7 @@ describe("writeManualCandidateRecords delta (--since-date) helpers", () => {
     expect(noPrior.action).toBe("error");
     if (noPrior.action === "error") {
       expect(noPrior.reason).toContain("FULL discovery sweep");
+      expect(noPrior.reason).toContain("never closed");
     }
 
     const wrongPrior = decideDeltaZeroRecordConfirmation({
@@ -301,5 +302,24 @@ describe("writeManualCandidateRecords delta (--since-date) helpers", () => {
       priorConfirmedGapIds: ["candidate_records.only_general_labels"],
     });
     expect(wrongPrior.action).toBe("error");
+  });
+
+  it("decideDeltaZeroRecordConfirmation names removed records when a prior confirmation implies records existed", () => {
+    // Empty claim set ("sweep ran, stances found") and only_general_labels
+    // both imply records existed when the confirmation was written; zero
+    // stored records now means they were removed externally — the error
+    // must say that, not "the sweep was never closed".
+    for (const priorConfirmedGapIds of [[], ["candidate_records.only_general_labels"]]) {
+      const decision = decideDeltaZeroRecordConfirmation({
+        existingRecordCount: 0,
+        priorConfirmedGapIds,
+      });
+      expect(decision.action).toBe("error");
+      if (decision.action === "error") {
+        expect(decision.reason).toContain("removed since");
+        expect(decision.reason).toContain("FULL discovery sweep");
+        expect(decision.reason).not.toContain("never closed");
+      }
+    }
   });
 });
