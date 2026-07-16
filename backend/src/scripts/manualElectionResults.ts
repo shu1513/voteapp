@@ -129,9 +129,12 @@ type DueRow = {
   has_ballot_measure: boolean;
 };
 
-// Hard cap on rows pulled for schedule filtering; --limit slices after the
-// per-pass schedule gate so gated-out rows never eat into the listed count.
-const DUE_SCAN_CAP = 5000;
+// Keyset batch size for the due scan. The schedule gate runs in TS, so the
+// scan pages through open-pass rows until the requested --limit of due rows
+// is filled (or rows run out) — a burst of gated rows (one national election
+// day can put thousands of same-date rows inside their certification window)
+// can never starve genuinely due rows out of the list.
+const DUE_SCAN_BATCH_SIZE = 1000;
 
 // Per-pass openness by checked/attempt state, mirroring the automated
 // producer (attempt caps and the certified retry interval included) so manual
@@ -212,46 +215,6 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
     params
   );
 
-  params.push(DUE_SCAN_CAP);
-  const result = await pool.query<DueRow>(
-    `
-      SELECT
-        e.id::text AS election_id,
-        d.state,
-        d.name AS district_name,
-        d.district_type,
-        e.race_type,
-        e.official_ballot_title,
-        e.election_date::text AS election_date,
-        e.election_stage,
-        e.election_night_results_checked_at::text AS election_night_results_checked_at,
-        e.election_night_results_attempt_count,
-        e.certified_results_checked_at::text AS certified_results_checked_at,
-        e.certified_results_attempt_count,
-        e.certified_results_last_attempted_at::text AS certified_results_last_attempted_at,
-        ${NIGHT_BUCKET_OPEN_SQL} AS night_bucket_open,
-        ${CERTIFIED_BUCKET_OPEN_SQL} AS certified_bucket_open,
-        (
-          SELECT count(*)::int
-          FROM public.candidate_elections AS ce
-          WHERE ce.election_id = e.id
-        ) AS candidate_count,
-        EXISTS (
-          SELECT 1
-          FROM public.ballot_measures AS bm
-          WHERE bm.election_id = e.id
-        ) AS has_ballot_measure
-      FROM public.elections AS e
-      JOIN public.districts AS d
-        ON d.id = e.district_id
-      WHERE ${DUE_WHERE}
-      ${stateClause}
-      ORDER BY e.election_date ASC, d.state ASC, e.id ASC
-      LIMIT $${params.length}::int
-    `,
-    params
-  );
-
   // Apply the state-specific schedule gate per pass, like the producer: an
   // election-night search is not due before the state's poll-close instant,
   // and a certified search is not due before the state's certification
@@ -268,47 +231,109 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
   };
   const due: AnnotatedRow[] = [];
   const scheduledLater: AnnotatedRow[] = [];
+  let scannedCount = 0;
+  let scanExhausted = false;
+  let cursor: { electionDate: string; state: string; electionId: string } | null = null;
 
-  for (const row of result.rows) {
-    const nightDueAt = row.night_bucket_open
-      ? await computePassDueAt(pool, scheduleCache, {
-          state: row.state,
-          electionDate: row.election_date,
-          passType: "election_night",
-        })
-      : undefined;
-    const certifiedDueAt = row.certified_bucket_open
-      ? await computePassDueAt(pool, scheduleCache, {
-          state: row.state,
-          electionDate: row.election_date,
-          passType: "certified",
-        })
-      : undefined;
-
-    const nightOpen = row.night_bucket_open && (nightDueAt === null || (nightDueAt !== undefined && now >= nightDueAt));
-    const certifiedOpen =
-      row.certified_bucket_open && (certifiedDueAt === null || (certifiedDueAt !== undefined && now >= certifiedDueAt));
-
-    const suggestedPass: ElectionResultPassType = nightOpen
-      ? "election_night"
-      : certifiedOpen
-        ? "certified"
-        : row.night_bucket_open
-          ? "election_night"
-          : "certified";
-    const annotated: AnnotatedRow = {
-      ...row,
-      suggested_pass: suggestedPass,
-      schedule_known: Boolean(getElectionResultScheduleForState(row.state)),
-      night_due_at: nightDueAt instanceof Date ? nightDueAt.toISOString() : null,
-      certified_due_at: certifiedDueAt instanceof Date ? certifiedDueAt.toISOString() : null,
-    };
-
-    if (nightOpen || certifiedOpen) {
-      due.push(annotated);
-    } else {
-      scheduledLater.push(annotated);
+  while (due.length < limit) {
+    const batchParams = [...params];
+    let cursorClause = "";
+    if (cursor) {
+      batchParams.push(cursor.electionDate, cursor.state, cursor.electionId);
+      cursorClause = `AND (e.election_date, d.state, e.id) > ($${batchParams.length - 2}::date, $${batchParams.length - 1}, $${batchParams.length}::uuid)`;
     }
+    batchParams.push(DUE_SCAN_BATCH_SIZE);
+
+    const result = await pool.query<DueRow>(
+      `
+        SELECT
+          e.id::text AS election_id,
+          d.state,
+          d.name AS district_name,
+          d.district_type,
+          e.race_type,
+          e.official_ballot_title,
+          e.election_date::text AS election_date,
+          e.election_stage,
+          e.election_night_results_checked_at::text AS election_night_results_checked_at,
+          e.election_night_results_attempt_count,
+          e.certified_results_checked_at::text AS certified_results_checked_at,
+          e.certified_results_attempt_count,
+          e.certified_results_last_attempted_at::text AS certified_results_last_attempted_at,
+          ${NIGHT_BUCKET_OPEN_SQL} AS night_bucket_open,
+          ${CERTIFIED_BUCKET_OPEN_SQL} AS certified_bucket_open,
+          (
+            SELECT count(*)::int
+            FROM public.candidate_elections AS ce
+            WHERE ce.election_id = e.id
+          ) AS candidate_count,
+          EXISTS (
+            SELECT 1
+            FROM public.ballot_measures AS bm
+            WHERE bm.election_id = e.id
+          ) AS has_ballot_measure
+        FROM public.elections AS e
+        JOIN public.districts AS d
+          ON d.id = e.district_id
+        WHERE ${DUE_WHERE}
+        ${stateClause}
+        ${cursorClause}
+        ORDER BY e.election_date ASC, d.state ASC, e.id ASC
+        LIMIT $${batchParams.length}::int
+      `,
+      batchParams
+    );
+
+    for (const row of result.rows) {
+      const nightDueAt = row.night_bucket_open
+        ? await computePassDueAt(pool, scheduleCache, {
+            state: row.state,
+            electionDate: row.election_date,
+            passType: "election_night",
+          })
+        : undefined;
+      const certifiedDueAt = row.certified_bucket_open
+        ? await computePassDueAt(pool, scheduleCache, {
+            state: row.state,
+            electionDate: row.election_date,
+            passType: "certified",
+          })
+        : undefined;
+
+      const nightOpen =
+        row.night_bucket_open && (nightDueAt === null || (nightDueAt !== undefined && now >= nightDueAt));
+      const certifiedOpen =
+        row.certified_bucket_open && (certifiedDueAt === null || (certifiedDueAt !== undefined && now >= certifiedDueAt));
+
+      const suggestedPass: ElectionResultPassType = nightOpen
+        ? "election_night"
+        : certifiedOpen
+          ? "certified"
+          : row.night_bucket_open
+            ? "election_night"
+            : "certified";
+      const annotated: AnnotatedRow = {
+        ...row,
+        suggested_pass: suggestedPass,
+        schedule_known: Boolean(getElectionResultScheduleForState(row.state)),
+        night_due_at: nightDueAt instanceof Date ? nightDueAt.toISOString() : null,
+        certified_due_at: certifiedDueAt instanceof Date ? certifiedDueAt.toISOString() : null,
+      };
+
+      if (nightOpen || certifiedOpen) {
+        due.push(annotated);
+      } else {
+        scheduledLater.push(annotated);
+      }
+    }
+
+    scannedCount += result.rows.length;
+    const lastRow = result.rows[result.rows.length - 1];
+    if (!lastRow || result.rows.length < DUE_SCAN_BATCH_SIZE) {
+      scanExhausted = true;
+      break;
+    }
+    cursor = { electionDate: lastRow.election_date, state: lastRow.state, electionId: lastRow.election_id };
   }
 
   console.log(
@@ -318,9 +343,11 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
         now: now.toISOString(),
         stateFilter,
         limit,
-        scannedCount: result.rows.length,
-        scanCapHit: result.rows.length >= DUE_SCAN_CAP,
-        totalOpenPassCount: totalResult.rows[0]?.total ?? 0,
+        scannedCount,
+        // false = the scan stopped once --limit due rows were found, so
+        // dueCount/scheduledLaterCount cover only the scanned prefix.
+        scanExhausted,
+        totalOpenElectionCount: totalResult.rows[0]?.total ?? 0,
         dueCount: due.length,
         listedCount: Math.min(due.length, limit),
         scheduledLaterCount: scheduledLater.length,
