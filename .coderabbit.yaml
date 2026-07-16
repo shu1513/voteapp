@@ -7,6 +7,12 @@ reviews:
     enabled: true
     drafts: false
   review_status: true
+  tools:
+    # The workspace root pulls in the mobile (Expo) dependency tree, and
+    # CodeRabbit's sandboxed ESLint install times out on it every PR. Only
+    # mobile has an ESLint config, and mobile CI already runs npm run lint.
+    eslint:
+      enabled: false
 
 chat:
   auto_reply: true
