@@ -26,6 +26,137 @@ describe("candidate record quality", () => {
     ).toBe(true);
   });
 
+  it("classifies routine candidacy-machinery filings as disallowed thin records", () => {
+    // Live escape (38 Orange County FL candidates): periodic finance-report
+    // filings were accepted as neutral records and made unresearched
+    // candidates look complete.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Asima Azam filed a P2 campaign-finance report covering June 13 through June 26, 2026.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Her campaign reported a $7,639.20 payment to the Supervisor of Elections for her candidate qualifying fee.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Florida election records show he qualified as a Republican candidate for Governor after paying the qualifying fee.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // Article/pronoun boundary forms of the filing pattern, and the plural
+    // fee form — ordinary wording must not resurrect the original escape.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "She filed the required P2 campaign-finance report on time.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "He filed his year-end campaign finance disclosure with the county.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Paid the qualifying fees for both county offices in June 2026.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+  });
+
+  it("rescues campaign-finance misconduct from the candidacy-machinery patterns", () => {
+    // The machinery patterns match these sentences, but the misconduct verb
+    // is the record: past-tense enforcement/misconduct verbs are substantive
+    // and are checked first.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "She filed a false campaign-finance report that concealed a $50,000 contribution.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "An ethics audit found that her campaign illegally reimbursed the candidate qualifying fee.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "He was fined $2,500 for filing his campaign-finance reports late.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+  });
+
+  it("does not let routine reimbursements rescue candidacy-machinery rows", () => {
+    // Bare "reimbursed" is campaign bookkeeping, not misconduct — only the
+    // adverb-anchored wrongdoing form is substantive.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "The campaign reimbursed the candidate qualifying fee in July 2026.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Her committee reimbursed her for campaign travel expenses.",
+      })
+    ).toEqual({ classification: "neutral_context", reason: "unclassified_context" });
+  });
+
+  it("keeps the misconduct verbs from rescuing future promises", () => {
+    // Tenseless wrongdoing adjectives ("illegal", "false") are deliberately
+    // NOT substantive: they would pull promises like this one out of
+    // future_promise.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "The candidate says she will fight illegal dumping in the harbor.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Promised to hold anyone who concealed contributions accountable.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+  });
+
+  it("keeps records where a finance filing is the source, not the event", () => {
+    // Live canonical integrity record: the finding is a sitting judge's
+    // contribution; the filing is only where it surfaced. The filing pattern
+    // is article-anchored ("filed a/his ... report") so this participle noun
+    // phrase does not match.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "A filed campaign-finance statement for Karen McDonald for Prosecutor reported a $100 direct contribution from Christopher Dingell, identified as a State of Michigan judge.",
+      })
+    ).toEqual({ classification: "neutral_context", reason: "unclassified_context" });
+  });
+
+  it("keeps legislation about fees, reports, or qualifying programs substantive", () => {
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Sponsored a bill waiving the qualifying fee for veteran candidates.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Sponsored Senate Bill 589, requiring qualifying health plans to cover a 12-month contraceptive refill.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+  });
+
   it("classifies campaign promises and future plans as disallowed thin records", () => {
     expect(
       classifyCandidateRecordQuality({
