@@ -252,13 +252,32 @@ function stripJurisdictionPrefixes(value: string, input: { districtName: string;
 
 function stripSeatSuffixes(value: string): string {
   return value
+    // North Carolina certifications title every county-commission seat by its
+    // governing body ("ALAMANCE COUNTY BOARD OF COMMISSIONERS DISTRICT 02",
+    // ~150 live rows); the catalog keys on "County Commissioner" and the body
+    // form's plural tokenizes into near-zero overlap ("commissioners" ≠
+    // "commissioner"). The "county"-anchored phrase leaves city boards of
+    // commissioners (place scope) untouched. Not after "president of the": a
+    // board PRESIDENT (Cook County IL) is the county executive, matched by
+    // its own alias, and the rewrite would misroute it into the member
+    // office. (Lives here, after the jurisdiction strip, so the county's own
+    // name never sits between "president of the" and the body phrase.)
+    .replace(/(?<!\bpresident of the )\bcounty board of commissioners\b/g, "county commissioner")
     .replace(/\boffice (?:no )?\d+\b/g, " ")
     .replace(/\bposition (?:no )?\d+\b/g, " ")
     // "Council District No. 5" (Seattle live) titles the council-member SEAT
     // by its district; a plain seat strip would leave the bare token
     // "council", which under-tokenizes against "City Council Member". Map
     // the phrase to the office the seat belongs to before the generic strip.
-    .replace(/\bcouncil (?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, "council member")
+    // Not when "member of" already governs it ("For Member of County Council
+    // (District 1)", Howard County MD live — one qualifier word may sit in
+    // between): the office word is already present and the mapping would
+    // duplicate it ("member of county council member"); the generic district
+    // strip below handles that seat form.
+    .replace(
+      /(?<!\bmember of (?:[a-z]+ )?)\bcouncil (?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g,
+      "council member"
+    )
     // "for" is removed with the seat it introduces: "Council Member for
     // District 2" (Fort Worth, live) must reduce to "council member", not
     // "council member for" — the dangling connector misses the alias table
@@ -269,8 +288,34 @@ function stripSeatSuffixes(value: string): string {
     // both previously survived the strip and produced zero-overlap keys.
     .replace(/\b(?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, " ")
     .replace(/\b\d+(st|nd|rd|th)\s+district\b/g, " ")
+    // Ward/Zone/Seat/Part and (justice) precinct forms are the same numbered
+    // seat suffix as District/Position, all hit live: Florida city commissions
+    // ("City Commission Ward 1" / "Zone 3" / "Seat 4"), Carson City NV wards,
+    // Tennessee judicial parts ("Chancellor Part II"), and Arizona constable
+    // precincts ("Constable, Justice Prec. 2" — the seat is the justice-court
+    // precinct, so the "justice" that introduces it goes with the number;
+    // "Justice of the Peace, Prec. 2" keeps its office words because there
+    // the number follows bare "prec").
+    .replace(
+      /\b(?:ward|zone|seat|part|(?:justice )?(?:precinct|prec)) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g,
+      " "
+    )
+    // At-large is a seat designator, not an office word ("County Council At
+    // Large", "Sarasota City Commission At-Large", NC "AT-LARGE" commission
+    // seats, all live), optionally lettered ("County Council At-Large A").
+    .replace(/\bat large(?: [a-z])?\b/g, " ")
+    // A bare trailing "seat" left behind once its qualifier is stripped
+    // ("BOARD OF COMMISSIONERS DISTRICT 01 SEAT", "AT-LARGE SEAT", NC live).
+    .replace(/\bseat\b/g, " ")
+    // Vacancy descriptors qualify the term being filled, never the office
+    // ("(UNEXPIRED)" NC commission seats, "Chancellor ... Unexpired Term" TN).
+    .replace(/\b(?:unexpired|vacancy)(?: term)?\b/g, " ")
     .replace(/\s+/g, " ")
-    .trim();
+    .trim()
+    // Ballot-heading form "For <office>" ("For Member of County Council",
+    // Howard County MD live) — leading connector only, so office names that
+    // merely contain "for" are untouched.
+    .replace(/^for /, "");
 }
 
 function toMatcherTokens(value: string): string[] {
