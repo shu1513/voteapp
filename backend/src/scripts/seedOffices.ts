@@ -278,6 +278,24 @@ const SEED_OFFICES: SeedOffice[] = [
       "Serves in a county-level judicial role, hearing cases and issuing rulings under state and local court procedure.",
   },
   {
+    scope: "county",
+    canonicalName: "Constable",
+    summary:
+      "Serves civil process such as evictions, subpoenas, and court orders, and provides limited law-enforcement support for local justice courts.",
+  },
+  {
+    scope: "county",
+    canonicalName: "County Surveyor",
+    summary:
+      "Maintains official land surveys, boundary records, and plats for the county.",
+  },
+  {
+    scope: "county",
+    canonicalName: "Soil and Water Conservation District Supervisor",
+    summary:
+      "Directs local soil and water conservation programs, guiding land-use, drainage, and watershed-protection practices.",
+  },
+  {
     scope: "place",
     canonicalName: "Mayor",
     summary:
@@ -1258,6 +1276,217 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "place",
     officeCanonicalName: "Place Level Judge",
     aliasText: "Judge",
+  },
+  // Migration 184 batch — every alias below is a live-hit official ballot
+  // title (or its jurisdiction/seat-stripped matcher key) that stranded a
+  // NULL-office election shell.
+  {
+    // "County Council At Large" and the seat-stripped "<X> County Council"
+    // forms; the catalog's existing county-council mapping ("County Council
+    // Member") already points at County Supervisor.
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "County Council",
+  },
+  {
+    // "For Member of County Council (District 1)" (Howard County MD) after
+    // the leading-"For" and seat strips.
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Member of County Council",
+  },
+  {
+    // "Honolulu Councilmember, Dist II" — consolidated city-county council.
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Council Member",
+  },
+  {
+    // DuPage County IL — presiding member of the county's legislative board.
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "County Board Chair",
+  },
+  {
+    // Multnomah County OR — the chair runs county government (executive).
+    scope: "county",
+    officeCanonicalName: "County Executive",
+    aliasText: "County Chair",
+  },
+  {
+    // Maryland/Illinois-style chief county prosecutor.
+    scope: "county",
+    officeCanonicalName: "District Attorney",
+    aliasText: "State's Attorney",
+  },
+  {
+    // Georgia misdemeanor prosecutor ("Gwinnett County Solicitor General").
+    scope: "county",
+    officeCanonicalName: "District Attorney",
+    aliasText: "County Solicitor General",
+  },
+  {
+    // Minnesota/Kentucky chief county prosecutor title.
+    scope: "county",
+    officeCanonicalName: "District Attorney",
+    aliasText: "County Attorney",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Recorder",
+    aliasText: "Register of Deeds",
+  },
+  {
+    // "<X> COUNTY REGISTER OF DEEDS" keeps the generic civic word after the
+    // jurisdiction strip (NC/TN live).
+    scope: "county",
+    officeCanonicalName: "County Recorder",
+    aliasText: "County Register of Deeds",
+  },
+  {
+    // Maryland probate registrar.
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "Register of Wills",
+  },
+  {
+    // Massachusetts probate-court clerk.
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "Register of Probate",
+  },
+  {
+    // "Suffolk County Register of Probate" after the jurisdiction strip.
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "County Register of Probate",
+  },
+  {
+    // Matcher-key residue of "Register of Probate, <Name> County": the strip
+    // removes the county's proper-noun core but keeps the civic word, leaving
+    // it trailing (Middlesex County MA live).
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "Register of Probate County",
+  },
+  {
+    // New Jersey probate-court officer.
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "County Surrogate",
+  },
+  {
+    // Tennessee elected court clerks (Davidson/Shelby live).
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "County Circuit Court Clerk",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "County Criminal Court Clerk",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "County Juvenile Court Clerk",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Clerk of Court",
+    aliasText: "County Probate Court Clerk",
+  },
+  {
+    // Tennessee county treasurer title ("Davidson County Trustee").
+    scope: "county",
+    officeCanonicalName: "County Treasurer",
+    aliasText: "County Trustee",
+  },
+  {
+    // Kentucky assessor title.
+    scope: "county",
+    officeCanonicalName: "County Assessor",
+    aliasText: "Property Valuation Administrator",
+  },
+  {
+    // "Jefferson County Property Valuation Administrator" after the strip.
+    scope: "county",
+    officeCanonicalName: "County Assessor",
+    aliasText: "County Property Valuation Administrator",
+  },
+  {
+    // Tennessee chancery-court trial judge ("Chancellor Part II ...").
+    scope: "county",
+    officeCanonicalName: "County Level Judge",
+    aliasText: "Chancellor",
+  },
+  {
+    // North Dakota's elected revenue commissioner; the catalog's statewide
+    // fiscal-controls office is Comptroller.
+    scope: "statewide",
+    officeCanonicalName: "Comptroller",
+    aliasText: "Tax Commissioner",
+  },
+  {
+    // Florida-style city commissions (Deltona/Gainesville/Kissimmee/... live)
+    // are the municipal council.
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "City Commission",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "City Commissioner",
+  },
+  {
+    // Carson City NV consolidated municipality's governing board.
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "City Board of Supervisors",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "Board of Supervisors",
+  },
+  {
+    // "Louisville Metro Council Member, District 23" — consolidated metro
+    // council; City vs Town Council Member tie into ambiguous without it.
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "Metro Council Member",
+  },
+  {
+    // The jurisdiction strip cannot remove "Louisville" from the title: the
+    // district row is the consolidated government name ("Louisville/Jefferson
+    // County metro government"), whose proper-noun core never reduces to the
+    // bare city word.
+    scope: "place",
+    officeCanonicalName: "City Council Member",
+    aliasText: "Louisville Metro Council Member",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Constable",
+    aliasText: "Constable",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Surveyor",
+    aliasText: "County Surveyor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Soil and Water Conservation District Supervisor",
+    aliasText: "Soil and Water Conservation District Supervisor",
+  },
+  {
+    // "Jefferson County Soil and Water Conservation District Supervisor"
+    // keeps the generic civic word after the jurisdiction strip (KY live).
+    scope: "county",
+    officeCanonicalName: "Soil and Water Conservation District Supervisor",
+    aliasText: "County Soil and Water Conservation District Supervisor",
   },
 ];
 

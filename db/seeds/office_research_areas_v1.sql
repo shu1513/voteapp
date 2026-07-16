@@ -3110,6 +3110,9 @@ CREATE TEMP TABLE curated_office_core_areas (
 
 INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('county', 'Clerk of Court', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
+    -- Same civil-process set as Municipal Constable (housing_affordability
+    -- because constables serve evictions).
+    ('county', 'Constable', ARRAY['civil_rights', 'housing_affordability', 'public_safety_and_crime_control']::text[]),
     ('county', 'County Assessor', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'housing_affordability']::text[]),
     -- Combined office (e.g. San Francisco): union of the County Assessor and
     -- County Recorder curated sets, since the officeholder does both jobs.
@@ -3124,6 +3127,8 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('county', 'County Recorder', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
     ('county', 'County Superintendent of Schools', ARRAY['civil_rights', 'government_efficiency', 'government_spending_reduction', 'public_education_quality']::text[]),
     ('county', 'County Supervisor', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
+    -- Boundary records and plats: recorder-adjacent land administration.
+    ('county', 'County Surveyor', ARRAY['government_efficiency', 'housing_affordability', 'public_infrastructure']::text[]),
     ('county', 'County Treasurer', ARRAY['anti_corruption', 'government_efficiency', 'government_spending_reduction', 'housing_affordability']::text[]),
     ('county', 'District Attorney', ARRAY['anti_corruption', 'civil_rights', 'corporate_accountability', 'gun_control', 'public_safety_and_crime_control', 'womens_reproductive_rights']::text[]),
     ('county', 'Public Administrator', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
@@ -3135,6 +3140,7 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     -- immigration covers crimmigration consequences of pleas (Padilla).
     ('county', 'Public Defender', ARRAY['civil_rights', 'immigration', 'legal_competence', 'public_safety_and_crime_control']::text[]),
     ('county', 'Sheriff', ARRAY['civil_rights', 'data_privacy', 'gun_control', 'immigration', 'public_safety_and_crime_control']::text[]),
+    ('county', 'Soil and Water Conservation District Supervisor', ARRAY['environment_and_public_health', 'government_efficiency', 'public_infrastructure']::text[]),
     ('place', 'Alderman', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('place', 'City Clerk', ARRAY['anti_corruption', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
     ('place', 'City Council Member', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
