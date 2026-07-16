@@ -55,6 +55,10 @@ function stripIpv6Brackets(hostnameOrIp: string): string {
 // maps onto arbitrary IPv4, including loopback and RFC 1918.
 const NAT64_LOCAL_USE_RANGE = ipaddr.IPv6.parseCIDR("64:ff9b:1::/48");
 
+// RFC 2544 benchmarking range. ipaddr.js only labels it "benchmarking" from
+// v2.x; the installed 1.x returns plain "unicast", so check it explicitly.
+const BENCHMARKING_RANGE = ipaddr.IPv4.parseCIDR("198.18.0.0/15");
+
 /** Only ordinary globally routable unicast addresses are safe citation targets. */
 function isBlockedIpLiteral(hostnameOrIp: string): boolean {
   const host = stripIpv6Brackets(hostnameOrIp);
@@ -69,6 +73,10 @@ function isBlockedIpLiteral(hostnameOrIp: string): boolean {
     } else if (address.match(NAT64_LOCAL_USE_RANGE)) {
       return true;
     }
+  }
+
+  if (address instanceof ipaddr.IPv4 && address.match(BENCHMARKING_RANGE)) {
+    return true;
   }
 
   return address.range() !== "unicast";
