@@ -96,6 +96,22 @@ describe("candidate record quality", () => {
     ).toEqual({ classification: "substantive", reason: "actual_record_action" });
   });
 
+  it("does not let routine reimbursements rescue candidacy-machinery rows", () => {
+    // Bare "reimbursed" is campaign bookkeeping, not misconduct — only the
+    // adverb-anchored wrongdoing form is substantive.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "The campaign reimbursed the candidate qualifying fee in July 2026.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Her committee reimbursed her for campaign travel expenses.",
+      })
+    ).toEqual({ classification: "neutral_context", reason: "unclassified_context" });
+  });
+
   it("keeps the misconduct verbs from rescuing future promises", () => {
     // Tenseless wrongdoing adjectives ("illegal", "false") are deliberately
     // NOT substantive: they would pull promises like this one out of

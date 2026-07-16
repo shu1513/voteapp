@@ -77,8 +77,11 @@ const SUBSTANTIVE_ACTION_PATTERNS = [
   // Past-tense forms only — a tenseless adjective ("illegal", "false")
   // would rescue future promises like "will fight illegal dumping" out of
   // future_promise, which the past-tense anchoring of this whole list
-  // deliberately prevents.
-  /\b(?:fined|charged|indicted|convicted|sanctioned|censured|investigated|audited|falsified|concealed|misreported|omitted|reimbursed)\b/i,
+  // deliberately prevents. "reimbursed" is additionally adverb-anchored:
+  // bare "reimbursed" is routine campaign bookkeeping and must not rescue
+  // machinery rows like "the campaign reimbursed the qualifying fee".
+  /\b(?:fined|charged|indicted|convicted|sanctioned|censured|investigated|audited|falsified|concealed|misreported|omitted)\b/i,
+  /\b(?:illegally|improperly|unlawfully)\s+reimbursed\b/i,
   /\b(?:endorsed|received\s+an?\s+endorsement)\b/i,
   /\b(?:published|released)\s+(?:a\s+)?(?:report|study|audit|decision|opinion)\b/i,
 ] as const;
