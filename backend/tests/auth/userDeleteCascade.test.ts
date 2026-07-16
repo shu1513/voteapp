@@ -7,6 +7,12 @@ import { describe, expect, it } from "vitest";
 // replays the migration files and fails if any table stores a user_id without
 // declaring what happens on user deletion — the way a new table would silently
 // start leaking personal data past account deletion.
+//
+// Tables linked to a user without a user_id column (today:
+// user_push_notification_receipts via expo_push_token, and
+// content_reports.reporter_email beyond its nulled user_id) are outside what
+// a schema scan can prove; deleteAccount scrubs those explicitly in its
+// transaction, covered by the authService unit tests.
 
 const MIGRATIONS_DIR = new URL("../../../db/migrations/", import.meta.url);
 
@@ -17,6 +23,14 @@ type UserReference = {
   table: string;
   onDelete: "CASCADE" | "SET NULL" | null;
 };
+
+function parseOnDelete(sqlFragment: string): UserReference["onDelete"] {
+  const reference = /REFERENCES\s+(?:public\.)?users\s*\(id\)[\s,]*(ON DELETE (?:CASCADE|SET NULL))?/.exec(sqlFragment);
+  if (!reference?.[1]) {
+    return null;
+  }
+  return reference[1].endsWith("CASCADE") ? "CASCADE" : "SET NULL";
+}
 
 function collectUserReferences(): Map<string, UserReference> {
   const files = readdirSync(MIGRATIONS_DIR)
@@ -34,14 +48,19 @@ function collectUserReferences(): Map<string, UserReference> {
       if (table === "users" || !/^\s+user_id /m.test(block)) {
         continue;
       }
+      references.set(table, { table, onDelete: parseOnDelete(block) });
+    }
 
-      const reference = /REFERENCES\s+(?:public\.)?users\s*\(id\)[\s,]*(ON DELETE (?:CASCADE|SET NULL))?/.exec(block);
-      const onDelete = reference?.[1]?.endsWith("CASCADE")
-        ? ("CASCADE" as const)
-        : reference?.[1]?.endsWith("SET NULL")
-          ? ("SET NULL" as const)
-          : null;
-      references.set(table, { table, onDelete: reference ? onDelete : null });
+    // A user_id column bolted onto an existing table arrives via ALTER TABLE
+    // instead of a CREATE TABLE block; hold it to the same requirement.
+    for (const statement of sql.split(";")) {
+      const alterTarget = /ALTER TABLE\s+(?:ONLY\s+)?(?:IF EXISTS\s+)?(?:public\.)?([a-z_]+)/.exec(statement);
+      if (!alterTarget || alterTarget[1] === "users") {
+        continue;
+      }
+      if (/ADD COLUMN (?:IF NOT EXISTS )?user_id\b/.test(statement)) {
+        references.set(alterTarget[1], { table: alterTarget[1], onDelete: parseOnDelete(statement) });
+      }
     }
   }
 

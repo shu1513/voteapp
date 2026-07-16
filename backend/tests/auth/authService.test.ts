@@ -496,11 +496,13 @@ describe("createAuthService verifyEmailChange", () => {
 });
 
 describe("createAuthService deleteAccount", () => {
-  it("hard-deletes the user row and destroys all sessions", async () => {
+  it("hard-deletes the user row, scrubs surviving tables, and destroys all sessions", async () => {
     const client = createDbClientMock();
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // clear content_report emails
+      .mockResolvedValueOnce({ rows: [] }) // delete pending push receipts
       .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // hard delete
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
     const redis = createRedisMock();
@@ -520,6 +522,23 @@ describe("createAuthService deleteAccount", () => {
     const deleteCall = client.query.mock.calls.find((call) => String(call[0]).includes("DELETE FROM public.users"));
     expect(deleteCall?.[1]).toEqual([USER_ID]);
     expect(client.query.mock.calls.some((call) => String(call[0]).includes("SET deleted_at"))).toBe(false);
+
+    // The two tables that outlive the user row are scrubbed before it goes:
+    // content reports keep the message but lose the pre-filled account
+    // email, and pending push receipts lose the device token.
+    const callOrder = client.query.mock.calls.map((call) => String(call[0]));
+    const clearEmailIndex = callOrder.findIndex((sql) => sql.includes("SET reporter_email = NULL"));
+    const receiptsIndex = callOrder.findIndex((sql) =>
+      sql.includes("DELETE FROM public.user_push_notification_receipts")
+    );
+    const userDeleteIndex = callOrder.findIndex((sql) => sql.includes("DELETE FROM public.users"));
+    expect(clearEmailIndex).toBeGreaterThan(-1);
+    expect(receiptsIndex).toBeGreaterThan(-1);
+    expect(clearEmailIndex).toBeLessThan(userDeleteIndex);
+    expect(receiptsIndex).toBeLessThan(userDeleteIndex);
+    expect(client.query.mock.calls[clearEmailIndex]?.[1]).toEqual([USER_ID]);
+    expect(client.query.mock.calls[receiptsIndex]?.[1]).toEqual([USER_ID]);
+
     expect(client.query).toHaveBeenCalledWith("COMMIT");
     expect(redis.sMembers).toHaveBeenCalled();
   });

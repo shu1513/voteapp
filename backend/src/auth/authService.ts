@@ -851,6 +851,36 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           throw new TypeError("Password is incorrect");
         }
 
+        // Two tables outlive the user row and need explicit scrubbing before
+        // it goes (afterwards the linking rows are gone or nulled):
+        // content_reports survives with user_id set NULL for moderation, but
+        // the web form pre-fills reporter_email with the account email, so
+        // clear it; and user_push_notification_receipts stores the device's
+        // expo_push_token with no FK, so pending receipt rows would keep the
+        // token up to the prune window. Dropping them only skips a receipt
+        // check whose sole effect — revoking a dead token — is moot once the
+        // token rows cascade away.
+        await client.query(
+          `
+            UPDATE public.content_reports
+            SET reporter_email = NULL
+            WHERE user_id = $1::uuid
+              AND reporter_email IS NOT NULL
+          `,
+          [userId]
+        );
+        await client.query(
+          `
+            DELETE FROM public.user_push_notification_receipts
+            WHERE expo_push_token IN (
+              SELECT expo_push_token
+              FROM public.user_push_tokens
+              WHERE user_id = $1::uuid
+            )
+          `,
+          [userId]
+        );
+
         // Hard delete. The UI and privacy policy promise permanent removal
         // of the account, districts, follows, and preferences, so the row
         // goes away for real: every user-owned table (districts, follows,
