@@ -9,10 +9,11 @@ import { normalizeFinanceLabel } from "../../../src/pipeline/finance/financeLabe
  *
  * finance_label_classifications.normalized_label is written by the TypeScript
  * normalizeFinanceLabel, and the ballot-lookup evidence queries recompute the
- * key at read time with public.normalize_finance_label (migration 185). If
- * the two implementations ever disagree, the classification join silently
- * matches nothing — no error, just missing evidence. This test feeds a corpus
- * of messy labels through both and asserts identical output.
+ * key at read time with public.normalize_finance_label (created in migration
+ * 185, converged with TypeScript in migration 186). If the two
+ * implementations ever disagree, the classification join silently matches
+ * nothing — no error, just missing evidence. This test feeds a corpus of
+ * messy labels through both and asserts identical output.
  *
  * The SQL function implements the non-occupation branch of the TypeScript
  * function: every evidence query filters to 'donor'/'employer' labels before
@@ -23,20 +24,22 @@ import { normalizeFinanceLabel } from "../../../src/pipeline/finance/financeLabe
  *
  * Needs a live Postgres (DATABASE_URL); it installs the function from the
  * migration file into pg_temp, so it never touches the target schema and does
- * not require migration 184 to be applied. CI runs it in the migrate job,
+ * not require migration 186 to be applied. CI runs it in the migrate job,
  * which provides a Postgres service; the unit-test job skips it.
  */
 
 const MIGRATION_URL = new URL(
-  "../../../../db/migrations/185_add_normalize_finance_label_function.sql",
+  "../../../../db/migrations/186_normalize_finance_label_ts_parity.sql",
   import.meta.url
 );
 
 const databaseUrl = process.env.DATABASE_URL;
 
-// Messy-but-ASCII labels. Postgres upper() on non-ASCII depends on the
-// database locale, so locale-sensitive inputs live in the known-divergence
-// tests below instead of this exact-parity corpus.
+// Messy labels, including accented Latin-1/Latin-Extended-A names (folded by
+// migration 186's translate() map before upper(), so no locale dependence)
+// and labels made entirely of business suffixes (fallback to the unstripped
+// form). Characters with multi-character NFKD forms (ligatures, fullwidth)
+// stay out of this corpus — the known-divergence test below pins them.
 const PARITY_CORPUS: readonly string[] = [
   // suffix variants, one per BUSINESS_SUFFIX_PATTERN alternative
   "Acme Widgets, Inc.",
@@ -105,6 +108,27 @@ const PARITY_CORPUS: readonly string[] = [
   "Homemaker",
   "None",
   "N/A",
+  // accented names (previously a known divergence, converged by 186)
+  "Café Inc",
+  "Nestlé S.A.",
+  "L'Oréal USA, Inc.",
+  "Müller & Söhne GmbH",
+  "Peña Nieto Ltd.",
+  "São Paulo Investments",
+  "Škoda Auto a.s.",
+  "Łódź Holdings",
+  "Zürich Insurance Group",
+  "Crème Brûlée Bakery LLC",
+  "Señor Frog's",
+  "Björk Seafood Co",
+  "ÀÁÂÃÄÅ Test",
+  "Straße GmbH",
+  // all-suffix labels (previously a known divergence, converged by 186)
+  "LLC",
+  "L.L.C.",
+  "Inc.",
+  "CO",
+  "Corp Company Inc",
   // degenerate but agreeing inputs
   "",
   "   ",
@@ -117,11 +141,12 @@ describe.skipIf(!databaseUrl)("normalize_finance_label parity (requires DATABASE
 
   beforeAll(async () => {
     const migrationSql = readFileSync(MIGRATION_URL, "utf8");
-    const functionMatch = /CREATE FUNCTION public\.normalize_finance_label[\s\S]*?\$\$;/.exec(
-      migrationSql
-    );
+    const functionMatch =
+      /CREATE (?:OR REPLACE )?FUNCTION public\.normalize_finance_label[\s\S]*?\$\$;/.exec(
+        migrationSql
+      );
     if (!functionMatch) {
-      throw new Error("CREATE FUNCTION public.normalize_finance_label not found in migration 185");
+      throw new Error("CREATE FUNCTION public.normalize_finance_label not found in migration 186");
     }
 
     // pg_temp is per-connection, so a single Client (not a Pool) keeps the
@@ -162,17 +187,9 @@ describe.skipIf(!databaseUrl)("normalize_finance_label parity (requires DATABASE
     expect(result.rows[0]?.normalized).toBeNull();
   });
 
-  // The function is a verbatim copy of the SQL expression the evidence
-  // queries always inlined, and that expression never agreed with TypeScript
-  // on these inputs. The divergence predates the function; these tests pin it
-  // down so a future fix is a deliberate change to both this file and the
-  // function, not an accident.
-  it("known divergence: labels made only of business suffixes", async () => {
-    const [fromPostgres] = await normalizeInPostgres(["LLC"]);
-    expect(normalizeFinanceLabel("LLC", "employer")).toBe("LLC");
-    expect(fromPostgres).toBe("");
-  });
-
+  // Remaining known divergences after migration 186 converged the diacritic
+  // and all-suffix cases. These tests pin them down so a future change to
+  // either side is deliberate, not an accident.
   it("known divergence: occupation labels keep business suffixes in TypeScript", async () => {
     // The function has no label-type parameter and always strips suffixes,
     // matching only the non-occupation TypeScript branch. Evidence queries
@@ -183,11 +200,14 @@ describe.skipIf(!databaseUrl)("normalize_finance_label parity (requires DATABASE
     expect(fromPostgres).toBe("ACME");
   });
 
-  it("known divergence: diacritics are folded by TypeScript but not by SQL", async () => {
-    const [fromPostgres] = await normalizeInPostgres(["Café Inc"]);
-    expect(normalizeFinanceLabel("Café Inc", "employer")).toBe("CAFE");
-    // Exact SQL output depends on the database locale's upper(); parity is
-    // what matters, and it does not hold.
-    expect(fromPostgres).not.toBe("CAFE");
+  it("known divergence: multi-character NFKD forms fold to letters only in TypeScript", async () => {
+    // translate() is strictly one-to-one, so characters whose NFKD form is
+    // multi-character (the ﬁ ligature here; also Ĳ ĳ Ŀ ŀ ŉ and fullwidth
+    // forms) become a space in SQL while TypeScript folds them to letters.
+    // The exact SQL output depends on the database locale's upper(), so only
+    // the disagreement itself is pinned.
+    const [fromPostgres] = await normalizeInPostgres(["ﬁnance Inc"]);
+    expect(normalizeFinanceLabel("ﬁnance Inc", "employer")).toBe("FINANCE");
+    expect(fromPostgres).not.toBe("FINANCE");
   });
 });
