@@ -14,6 +14,13 @@ BEGIN;
 -- through both and asserts identical output — change either side only
 -- together with that test.
 --
+-- This function implements only the non-occupation branch of the TypeScript
+-- normalizeFinanceLabel: for label_type 'occupation' TypeScript skips the
+-- business-suffix stripping, while this function always strips. Every
+-- evidence query filters to 'donor'/'employer' before joining through this
+-- function, so occupation labels never reach it — do not point it at
+-- occupation-typed labels without adding a label-type parameter first.
+--
 -- Known pre-existing divergences preserved by this verbatim copy (the parity
 -- test documents them; fixing them is a deliberate follow-up, not part of
 -- this refactor):

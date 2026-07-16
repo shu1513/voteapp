@@ -9,10 +9,17 @@ import { normalizeFinanceLabel } from "../../../src/pipeline/finance/financeLabe
  *
  * finance_label_classifications.normalized_label is written by the TypeScript
  * normalizeFinanceLabel, and the ballot-lookup evidence queries recompute the
- * key at read time with public.normalize_finance_label (migration 184). If
+ * key at read time with public.normalize_finance_label (migration 185). If
  * the two implementations ever disagree, the classification join silently
  * matches nothing — no error, just missing evidence. This test feeds a corpus
  * of messy labels through both and asserts identical output.
+ *
+ * The SQL function implements the non-occupation branch of the TypeScript
+ * function: every evidence query filters to 'donor'/'employer' labels before
+ * joining through it, so the corpus runs the TypeScript side as "employer"
+ * (the "donor" branch is the same code path). The occupation branch skips
+ * suffix stripping entirely and must never be pointed at this function; a
+ * divergence test below pins that difference.
  *
  * Needs a live Postgres (DATABASE_URL); it installs the function from the
  * migration file into pg_temp, so it never touches the target schema and does
@@ -21,7 +28,7 @@ import { normalizeFinanceLabel } from "../../../src/pipeline/finance/financeLabe
  */
 
 const MIGRATION_URL = new URL(
-  "../../../../db/migrations/184_add_normalize_finance_label_function.sql",
+  "../../../../db/migrations/185_add_normalize_finance_label_function.sql",
   import.meta.url
 );
 
@@ -114,7 +121,7 @@ describe.skipIf(!databaseUrl)("normalize_finance_label parity (requires DATABASE
       migrationSql
     );
     if (!functionMatch) {
-      throw new Error("CREATE FUNCTION public.normalize_finance_label not found in migration 184");
+      throw new Error("CREATE FUNCTION public.normalize_finance_label not found in migration 185");
     }
 
     // pg_temp is per-connection, so a single Client (not a Pool) keeps the
@@ -164,6 +171,16 @@ describe.skipIf(!databaseUrl)("normalize_finance_label parity (requires DATABASE
     const [fromPostgres] = await normalizeInPostgres(["LLC"]);
     expect(normalizeFinanceLabel("LLC", "employer")).toBe("LLC");
     expect(fromPostgres).toBe("");
+  });
+
+  it("known divergence: occupation labels keep business suffixes in TypeScript", async () => {
+    // The function has no label-type parameter and always strips suffixes,
+    // matching only the non-occupation TypeScript branch. Evidence queries
+    // filter to 'donor'/'employer' before joining through it; if occupation
+    // labels ever need this join, the function needs a label-type parameter.
+    const [fromPostgres] = await normalizeInPostgres(["Acme Corp"]);
+    expect(normalizeFinanceLabel("Acme Corp", "occupation")).toBe("ACME CORP");
+    expect(fromPostgres).toBe("ACME");
   });
 
   it("known divergence: diacritics are folded by TypeScript but not by SQL", async () => {
