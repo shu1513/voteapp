@@ -11,7 +11,7 @@ and confirm the "no advertising use" configuration claims hold for it.
 
 # VoteApp Privacy Policy
 
-**Last updated:** July 5, 2026
+**Last updated:** July 16, 2026
 **Version:** 1.0
 
 This Privacy Policy describes how impactperdollar, the operator of the VoteApp service ("VoteApp," "we," "us"), collects, uses, and shares information when you use the VoteApp website and services (the "Service").
@@ -51,7 +51,7 @@ We may also disclose information if we believe in good faith that disclosure is 
 
 ## 4. Retention and deletion
 
-Account data is kept while your account is active. If you delete your account, it is deactivated immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration; residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics data is kept only as long as needed for the improvement purposes described above.
+Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, saved districts, follows, preferences, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted are kept for moderation purposes with your account identifier removed. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics data is kept only as long as needed for the improvement purposes described above.
 
 ## 5. Your choices
 
