@@ -85,3 +85,10 @@ jobs:
         run: npm run db:migrate
         env:
           DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
+
+      # The parity test needs a live Postgres, which only this job provides;
+      # the unit-test job skips it because DATABASE_URL is unset there.
+      - name: Finance label normalization parity
+        run: npx vitest run tests/pipeline/finance/normalizeFinanceLabelParity.test.ts
+        env:
+          DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
