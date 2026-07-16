@@ -18,6 +18,10 @@ import {
   ELECTION_NIGHT_RESULT_MAX_ATTEMPTS,
 } from "../pipeline/electionResults/electionResultRetryPolicy.js";
 import {
+  computeElectionResultScheduledAtUtc,
+  getElectionResultScheduleForState,
+} from "../pipeline/electionResults/electionResultSchedules.js";
+import {
   validateElectionResultSourceUrls,
   type ElectionResultSourceVerification,
 } from "../pipeline/electionResults/electionResultSourceValidation.js";
@@ -61,7 +65,7 @@ function usage(): string {
     "Usage:",
     "  npm run manual:election-results:due -- [--state XX] [--limit 200]",
     "  npm run manual:election-results:context -- --election-id uuid",
-    "  npm run manual:election-results:write -- --election-id uuid --pass-type election_night|certified --file payload.json [--dry-run]",
+    "  npm run manual:election-results:write -- --election-id uuid --pass-type election_night|certified --file payload.json [--dry-run] [--force]",
     "",
     "The write payload must match the election-result payload contract:",
     '  { "results": [ { "election_id", "result_status", "outcome", "winners", "source_url", "source_type", "notes"? } ] }',
@@ -119,37 +123,69 @@ type DueRow = {
   certified_results_checked_at: string | null;
   certified_results_attempt_count: number;
   certified_results_last_attempted_at: string | null;
+  night_bucket_open: boolean;
+  certified_bucket_open: boolean;
   candidate_count: number;
   has_ballot_measure: boolean;
 };
 
-// Mirrors the automated producer's due conditions (attempt caps and the
-// certified retry interval included) so manual runs and the dormant producer
-// agree about which elections still owe a results search.
-const DUE_WHERE = `
-  e.election_date <= $1::date
-  AND (
-    (
-      e.election_night_results_checked_at IS NULL
-      AND e.election_night_results_attempt_count < ${ELECTION_NIGHT_RESULT_MAX_ATTEMPTS}
-    )
-    OR (
-      e.certified_results_checked_at IS NULL
-      AND e.certified_results_attempt_count < ${CERTIFIED_RESULT_MAX_ATTEMPTS}
-      AND (
-        e.certified_results_last_attempted_at IS NULL
-        OR e.certified_results_last_attempted_at <=
-          now() - (${CERTIFIED_RESULT_RETRY_INTERVAL_DAYS} * interval '1 day')
-      )
+// Hard cap on rows pulled for schedule filtering; --limit slices after the
+// per-pass schedule gate so gated-out rows never eat into the listed count.
+const DUE_SCAN_CAP = 5000;
+
+// Per-pass openness by checked/attempt state, mirroring the automated
+// producer (attempt caps and the certified retry interval included) so manual
+// runs and the dormant producer agree about which elections still owe a
+// results search. The state-specific schedule gate (poll close for
+// election_night, certification offset for certified) is applied in TS after
+// this query, also mirroring the producer.
+const NIGHT_BUCKET_OPEN_SQL = `
+  (
+    e.election_night_results_checked_at IS NULL
+    AND e.election_night_results_attempt_count < ${ELECTION_NIGHT_RESULT_MAX_ATTEMPTS}
+  )
+`;
+
+const CERTIFIED_BUCKET_OPEN_SQL = `
+  (
+    e.certified_results_checked_at IS NULL
+    AND e.certified_results_attempt_count < ${CERTIFIED_RESULT_MAX_ATTEMPTS}
+    AND (
+      e.certified_results_last_attempted_at IS NULL
+      OR e.certified_results_last_attempted_at <=
+        now() - (${CERTIFIED_RESULT_RETRY_INTERVAL_DAYS} * interval '1 day')
     )
   )
 `;
 
-function suggestedPass(row: DueRow): ElectionResultPassType {
-  const nightOpen =
-    !row.election_night_results_checked_at &&
-    row.election_night_results_attempt_count < ELECTION_NIGHT_RESULT_MAX_ATTEMPTS;
-  return nightOpen ? "election_night" : "certified";
+const DUE_WHERE = `
+  e.election_date <= $1::date
+  AND (${NIGHT_BUCKET_OPEN_SQL} OR ${CERTIFIED_BUCKET_OPEN_SQL})
+`;
+
+// null = the state has no election-result schedule entry; the producer skips
+// such states entirely, but the manual flow is exactly the catch-all for
+// them, so callers treat null as "no timing gate" and keep the row due.
+async function computePassDueAt(
+  pool: Pool,
+  cache: Map<string, Date | null>,
+  input: { state: string; electionDate: string; passType: ElectionResultPassType }
+): Promise<Date | null> {
+  const state = input.state.trim().toUpperCase();
+  const key = `${state}:${input.electionDate}:${input.passType}`;
+  const cached = cache.get(key);
+  if (cached !== undefined) {
+    return cached;
+  }
+  const dueAt = getElectionResultScheduleForState(state)
+    ? await computeElectionResultScheduledAtUtc(pool, {
+        state,
+        electionDate: input.electionDate,
+        passType: input.passType,
+      })
+    : null;
+  cache.set(key, dueAt);
+  return dueAt;
 }
 
 async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
@@ -176,7 +212,7 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
     params
   );
 
-  params.push(limit);
+  params.push(DUE_SCAN_CAP);
   const result = await pool.query<DueRow>(
     `
       SELECT
@@ -193,6 +229,8 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
         e.certified_results_checked_at::text AS certified_results_checked_at,
         e.certified_results_attempt_count,
         e.certified_results_last_attempted_at::text AS certified_results_last_attempted_at,
+        ${NIGHT_BUCKET_OPEN_SQL} AS night_bucket_open,
+        ${CERTIFIED_BUCKET_OPEN_SQL} AS certified_bucket_open,
         (
           SELECT count(*)::int
           FROM public.candidate_elections AS ce
@@ -214,18 +252,80 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
     params
   );
 
+  // Apply the state-specific schedule gate per pass, like the producer: an
+  // election-night search is not due before the state's poll-close instant,
+  // and a certified search is not due before the state's certification
+  // offset. Without this gate a manual sweep can burn all certified attempts
+  // on not_final_yet writes weeks before certification exists, permanently
+  // closing the pass.
+  const now = new Date();
+  const scheduleCache = new Map<string, Date | null>();
+  type AnnotatedRow = DueRow & {
+    suggested_pass: ElectionResultPassType;
+    schedule_known: boolean;
+    night_due_at: string | null;
+    certified_due_at: string | null;
+  };
+  const due: AnnotatedRow[] = [];
+  const scheduledLater: AnnotatedRow[] = [];
+
+  for (const row of result.rows) {
+    const nightDueAt = row.night_bucket_open
+      ? await computePassDueAt(pool, scheduleCache, {
+          state: row.state,
+          electionDate: row.election_date,
+          passType: "election_night",
+        })
+      : undefined;
+    const certifiedDueAt = row.certified_bucket_open
+      ? await computePassDueAt(pool, scheduleCache, {
+          state: row.state,
+          electionDate: row.election_date,
+          passType: "certified",
+        })
+      : undefined;
+
+    const nightOpen = row.night_bucket_open && (nightDueAt === null || (nightDueAt !== undefined && now >= nightDueAt));
+    const certifiedOpen =
+      row.certified_bucket_open && (certifiedDueAt === null || (certifiedDueAt !== undefined && now >= certifiedDueAt));
+
+    const suggestedPass: ElectionResultPassType = nightOpen
+      ? "election_night"
+      : certifiedOpen
+        ? "certified"
+        : row.night_bucket_open
+          ? "election_night"
+          : "certified";
+    const annotated: AnnotatedRow = {
+      ...row,
+      suggested_pass: suggestedPass,
+      schedule_known: Boolean(getElectionResultScheduleForState(row.state)),
+      night_due_at: nightDueAt instanceof Date ? nightDueAt.toISOString() : null,
+      certified_due_at: certifiedDueAt instanceof Date ? certifiedDueAt.toISOString() : null,
+    };
+
+    if (nightOpen || certifiedOpen) {
+      due.push(annotated);
+    } else {
+      scheduledLater.push(annotated);
+    }
+  }
+
   console.log(
     JSON.stringify(
       {
         asOfDate,
+        now: now.toISOString(),
         stateFilter,
         limit,
-        totalDueCount: totalResult.rows[0]?.total ?? 0,
-        listedCount: result.rows.length,
-        due: result.rows.map((row) => ({
-          ...row,
-          suggested_pass: suggestedPass(row),
-        })),
+        scannedCount: result.rows.length,
+        scanCapHit: result.rows.length >= DUE_SCAN_CAP,
+        totalOpenPassCount: totalResult.rows[0]?.total ?? 0,
+        dueCount: due.length,
+        listedCount: Math.min(due.length, limit),
+        scheduledLaterCount: scheduledLater.length,
+        due: due.slice(0, limit),
+        scheduledLater: scheduledLater.slice(0, limit),
       },
       null,
       2
@@ -360,6 +460,7 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
     throw new Error(`Invalid --pass-type: ${passTypeRaw}. Expected election_night or certified.`);
   }
   const dryRun = argv.includes("--dry-run");
+  const force = argv.includes("--force");
 
   const contexts = await loadElectionResultContexts(pool, [electionId]);
   const context = contexts[0];
@@ -375,6 +476,46 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
   if (context.raceType === "ballot_measure" && !context.ballotMeasure) {
     throw new Error(
       `Election ${electionId} is a ballot measure without a ballot_measures row; run manual:ballot-measure:write first so the result has a measure to attach to.`
+    );
+  }
+
+  // Lifecycle and timing gates, matching the automated producer. Every write
+  // increments the pass's attempt counter and can mark the pass checked, so a
+  // premature write is not harmless: three early certified attempts close
+  // certified research permanently. --force is the reviewed escape hatch for
+  // legitimate exceptions (a state that certified earlier than its schedule
+  // offset, or a correction to an already-closed pass).
+  const passState = await pool.query<{
+    night_checked: boolean;
+    certified_checked: boolean;
+  }>(
+    `
+      SELECT
+        election_night_results_checked_at IS NOT NULL AS night_checked,
+        certified_results_checked_at IS NOT NULL AS certified_checked
+      FROM public.elections
+      WHERE id::text = $1
+    `,
+    [electionId]
+  );
+  const alreadyChecked =
+    passType === "election_night"
+      ? (passState.rows[0]?.night_checked ?? false)
+      : (passState.rows[0]?.certified_checked ?? false);
+  if (alreadyChecked && !force) {
+    throw new Error(
+      `The ${passType} pass for election ${electionId} is already marked checked; this write would be a correction. Re-run with --force if the correction is intended.`
+    );
+  }
+  const now = new Date();
+  const passDueAt = await computePassDueAt(pool, new Map(), {
+    state: context.district.state,
+    electionDate: context.electionDate,
+    passType: passType as ElectionResultPassType,
+  });
+  if (passDueAt !== null && now < passDueAt && !force) {
+    throw new Error(
+      `The ${passType} pass for election ${electionId} (${context.district.state}) is not due until ${passDueAt.toISOString()} — before poll close for election_night, before the state's certification offset for certified. Re-run with --force only if the result is genuinely available early from an official source.`
     );
   }
 
@@ -445,13 +586,18 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
     runId: `manual:election-results:${electionId}:${passType}`,
   };
   const runDatabaseId = await createElectionResultRun(pool, runInput);
+  // The failed-status catch covers only BEGIN..COMMIT (matching the
+  // enricher): once the transaction commits, the data is live, and a failure
+  // in post-commit reporting must not relabel a successful run as failed —
+  // that would invite a re-run and a double attempt increment.
+  let writeResult;
   let client: PoolClient | undefined;
   let transactionStarted = false;
   try {
     client = await pool.connect();
     await client.query("BEGIN");
     transactionStarted = true;
-    const writeResult = await writeElectionResultPayloadRows(client, runDatabaseId, {
+    writeResult = await writeElectionResultPayloadRows(client, runDatabaseId, {
       ...runInput,
       contexts,
       payload,
@@ -462,53 +608,6 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
     });
     await client.query("COMMIT");
     transactionStarted = false;
-
-    await finishElectionResultRun(pool, runDatabaseId, {
-      status: writeResult.runStatus,
-      sourceSummary: {
-        provider: MANUAL_PROVIDER,
-        model: MANUAL_MODEL,
-        result_count: payload.results.length,
-      },
-      rawPayload: payload,
-    });
-
-    const after = await pool.query<{
-      election_night_results_checked_at: string | null;
-      certified_results_checked_at: string | null;
-    }>(
-      `
-        SELECT
-          election_night_results_checked_at::text AS election_night_results_checked_at,
-          certified_results_checked_at::text AS certified_results_checked_at
-        FROM public.elections
-        WHERE id::text = $1
-      `,
-      [electionId]
-    );
-
-    console.log(
-      JSON.stringify(
-        {
-          electionId,
-          passType,
-          runDatabaseId,
-          runStatus: writeResult.runStatus,
-          electionRowsWritten: writeResult.electionRowsWritten,
-          ballotMeasureRowsWritten: writeResult.ballotMeasureRowsWritten,
-          checkedElectionCount: writeResult.checkedElectionCount,
-          uncheckedElectionIds: writeResult.uncheckedElectionIds,
-          canonicalCandidateStatusUpdates: writeResult.canonicalCandidateStatusUpdates,
-          canonicalBallotMeasureUpdates: writeResult.canonicalBallotMeasureUpdates,
-          projectionPreview,
-          unmatchedWinners,
-          warnings,
-          electionSearchStateAfter: after.rows[0] ?? null,
-        },
-        null,
-        2
-      )
-    );
   } catch (error) {
     if (transactionStarted && client) {
       await client.query("ROLLBACK").catch(() => undefined);
@@ -524,6 +623,53 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
   } finally {
     client?.release();
   }
+
+  await finishElectionResultRun(pool, runDatabaseId, {
+    status: writeResult.runStatus,
+    sourceSummary: {
+      provider: MANUAL_PROVIDER,
+      model: MANUAL_MODEL,
+      result_count: payload.results.length,
+    },
+    rawPayload: payload,
+  });
+
+  const after = await pool.query<{
+    election_night_results_checked_at: string | null;
+    certified_results_checked_at: string | null;
+  }>(
+    `
+      SELECT
+        election_night_results_checked_at::text AS election_night_results_checked_at,
+        certified_results_checked_at::text AS certified_results_checked_at
+      FROM public.elections
+      WHERE id::text = $1
+    `,
+    [electionId]
+  );
+
+  console.log(
+    JSON.stringify(
+      {
+        electionId,
+        passType,
+        runDatabaseId,
+        runStatus: writeResult.runStatus,
+        electionRowsWritten: writeResult.electionRowsWritten,
+        ballotMeasureRowsWritten: writeResult.ballotMeasureRowsWritten,
+        checkedElectionCount: writeResult.checkedElectionCount,
+        uncheckedElectionIds: writeResult.uncheckedElectionIds,
+        canonicalCandidateStatusUpdates: writeResult.canonicalCandidateStatusUpdates,
+        canonicalBallotMeasureUpdates: writeResult.canonicalBallotMeasureUpdates,
+        projectionPreview,
+        unmatchedWinners,
+        warnings,
+        electionSearchStateAfter: after.rows[0] ?? null,
+      },
+      null,
+      2
+    )
+  );
 }
 
 async function main(): Promise<void> {
@@ -544,6 +690,7 @@ async function main(): Promise<void> {
       { name: "--pass-type", value: "both" as const },
       { name: "--file", value: "both" as const },
       { name: "--dry-run", value: "none" as const },
+      { name: "--force", value: "none" as const },
     ],
   }[subcommand];
   assertKnownCliFlags(`manual:election-results:${subcommand}`, rest, flagSpecs);
