@@ -36,6 +36,7 @@ import {
   deleteSweepCompletenessConfirmation,
   parseSweepEvidencePayload,
   refreshSweepConfirmationTimestamp,
+  retainSuppliedSweepEvidence,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
   upsertSweepConfirmation,
@@ -51,6 +52,7 @@ function usage(): string {
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
     'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
+    "A supplied --evidence-file on a stance-bearing FULL-history write is persisted too (candidate_record_sweep_confirmations with an empty claim set), so keep supplying the ledger — the output reports sweepEvidence.persisted.",
     "",
     "--since-date runs a DELTA (windowed) refresh: it must be on/before the candidate's last_records_researched_through checkpoint (later would skip dates forever), and every record must have event_date >= since-date (out-of-window rows are an error, not a silent drop — remove them and their labels so indices stay aligned). Delta mode makes no full-history claims: the no_records_found / only_general_labels quality gaps are skipped and ALL --confirmed-gap flags are disallowed. A zero-record delta write still requires --evidence-file with the WINDOW-scoped per-question evidence table.",
   ].join("\n");
@@ -636,8 +638,10 @@ async function main(): Promise<void> {
     // the completeness gate does not require it (a stance-bearing record
     // set): reporting `entryCount: null` for a ledger the operator supplied
     // read as "the evidence was silently ignored" across eight live runs.
-    // Only the REQUIRED cases persist a confirmation; for the rest the
-    // ledger is validated, counted in the output, and kept external.
+    // A validated ledger on a FULL-history write is persisted (empty claim
+    // set for the stance-bearing case) so the audit can tell an evidenced
+    // sweep from a skipped one; a non-required DELTA window ledger stays
+    // external — window evidence cannot back a full-history claim.
     let sweepEvidenceEntries: SweepEvidenceEntry[] | null = null;
     let sweepEvidenceEntryCount: number | null = null;
     if (evidenceFile) {
@@ -646,12 +650,22 @@ async function main(): Promise<void> {
         throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
       }
       sweepEvidenceEntryCount = parsedEvidence.entries.length;
-      if (evidenceIsRequired) {
+      if (
+        retainSuppliedSweepEvidence({
+          evidenceRequired: evidenceIsRequired,
+          deltaMode: sinceDate !== null,
+        })
+      ) {
         sweepEvidenceEntries = parsedEvidence.entries;
       }
     } else if (evidenceIsRequired) {
       throw sweepEvidenceMissingError("candidate-records");
     }
+    // True whenever this write will upsert (or would, in dry-run) the
+    // supplied ledger as a candidate_record_sweep_confirmations row; the
+    // delta zero-record path only refreshes a prior confirmation, so its
+    // window ledger is not persisted.
+    const sweepEvidencePersisted = sweepEvidenceEntries !== null && sinceDate === null;
 
     if (repairReportFile && qualityGaps.length > 0) {
       await writeRecordsRepairReport({
@@ -695,6 +709,7 @@ async function main(): Promise<void> {
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
+              persisted: sweepEvidencePersisted,
             },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },
@@ -782,9 +797,9 @@ async function main(): Promise<void> {
       // western-timezone writes).
       const researchedThrough = usLatestLocalDateIso();
       await markCandidateRecordsSearchCompleted(client, candidateId, researchedThrough, { preserveClaim: true });
-      // Persist the validated completeness confirmation so
-      // manual:records:audit can separate this evidence-backed confirmed
-      // null from a skipped sweep.
+      // Persist the validated confirmation so manual:records:audit can
+      // separate an evidence-backed sweep (confirmed null OR stance-bearing
+      // with an empty claim set) from a skipped one.
       if (sweepEvidenceEntries && sinceDate) {
         // Zero-record DELTA write: asserts only the window, so it never
         // creates a fresh full-history confirmation. See
@@ -844,6 +859,7 @@ async function main(): Promise<void> {
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
+              persisted: sweepEvidencePersisted,
             },
             recordsSearchCompletedThrough: researchedThrough,
           },
