@@ -164,6 +164,15 @@ function normalizeMatcherText(value: string): string {
     // Councilmember", live); the catalog and its aliases key on the two-word
     // form, and one word tokenizes into zero overlap.
     .replace(/\bcouncilmembers?\b/g, "council member")
+    // California-style county ballots title the supervisor seat by its
+    // governing body ("MEMBER, BOARD OF SUPERVISORS DISTRICT NO. 5", San
+    // Diego live); the catalog keys on "County Supervisor", and the body
+    // form tokenizes into zero overlap ("supervisors" ≠ "supervisor").
+    .replace(/\bmember,? board of supervisors\b/g, "county supervisor")
+    // "TREASURER/TAX COLLECTOR" (San Diego live) is the county treasurer's
+    // combined office; the compound form scores 1-of-3 token overlap against
+    // "County Treasurer" and misses the confidence floor.
+    .replace(/\btreasurer\s*[/-]\s*tax collector\b/g, "treasurer")
     .replace(/[^a-z0-9\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -243,13 +252,22 @@ function stripJurisdictionPrefixes(value: string, input: { districtName: string;
 
 function stripSeatSuffixes(value: string): string {
   return value
-    .replace(/\boffice no \d+\b/g, " ")
+    .replace(/\boffice (?:no )?\d+\b/g, " ")
+    .replace(/\bposition (?:no )?\d+\b/g, " ")
+    // "Council District No. 5" (Seattle live) titles the council-member SEAT
+    // by its district; a plain seat strip would leave the bare token
+    // "council", which under-tokenizes against "City Council Member". Map
+    // the phrase to the office the seat belongs to before the generic strip.
+    .replace(/\bcouncil (?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, "council member")
     // "for" is removed with the seat it introduces: "Council Member for
     // District 2" (Fort Worth, live) must reduce to "council member", not
     // "council member for" — the dangling connector misses the alias table
     // and left ten council elections office-less.
-    .replace(/\bfor district \d+[a-z]{0,2}\b/g, " ")
-    .replace(/\bdistrict \d+[a-z]{0,2}\b/g, " ")
+    .replace(/\bfor (?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, " ")
+    // Interposed "No." ("District No. 5", San Diego/Seattle live) and
+    // Honolulu's abbreviated Roman form ("Dist II") are the same seat suffix;
+    // both previously survived the strip and produced zero-overlap keys.
+    .replace(/\b(?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, " ")
     .replace(/\b\d+(st|nd|rd|th)\s+district\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();

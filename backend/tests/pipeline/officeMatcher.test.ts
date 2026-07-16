@@ -83,6 +83,118 @@ describe("OfficeMatcher", () => {
     expect(result.method).toBe("alias_exact");
   });
 
+  it("resolves 'Council District No. N' seat titles through the place alias (Seattle)", async () => {
+    // "City of Seattle Council District No. 5" wrote a NULL-office shell
+    // (live): the interposed "No." survived the seat strip, and even a plain
+    // strip would leave the bare token "council", which under-tokenizes
+    // against City Council Member.
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [{ office_id: "office-city-council-member", normalized_alias: "council member" }],
+      },
+      officesByScope: {
+        place: [
+          { id: "office-city-council-member", canonical_name: "City Council Member" },
+          { id: "office-mayor", canonical_name: "Mayor" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "place",
+      districtName: "Seattle city, Washington",
+      state: "WA",
+      officialBallotTitle: "City of Seattle Council District No. 5",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-city-council-member");
+    expect(result.method).toBe("alias_exact");
+  });
+
+  it("resolves Honolulu's 'Councilmember Dist II' Roman-numeral seat form", async () => {
+    // Honolulu's official titles abbreviate the seat as "Dist II"; the Roman
+    // numeral survived the numeric-only seat strip and left the key
+    // "council member dist ii", missing the alias table (live, 4 shells).
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [{ office_id: "office-city-council-member", normalized_alias: "council member" }],
+      },
+      officesByScope: {
+        place: [{ id: "office-city-council-member", canonical_name: "City Council Member" }],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "place",
+      districtName: "Honolulu county, Hawaii",
+      state: "HI",
+      officialBallotTitle: "Councilmember Dist II",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-city-council-member");
+    expect(result.method).toBe("alias_exact");
+  });
+
+  it("matches 'MEMBER, BOARD OF SUPERVISORS DISTRICT NO. N' to County Supervisor (San Diego)", async () => {
+    // The California body-form title tokenizes into zero overlap with the
+    // catalog ("supervisors" never equals "supervisor") and wrote a
+    // NULL-office shell (live).
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-supervisor", canonical_name: "County Supervisor" },
+          { id: "office-county-treasurer", canonical_name: "County Treasurer" },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "San Diego County, California",
+      state: "CA",
+      officialBallotTitle: "MEMBER, BOARD OF SUPERVISORS DISTRICT NO. 5",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-supervisor");
+    expect(result.method).toBe("deterministic_fallback");
+  });
+
+  it("matches 'TREASURER/TAX COLLECTOR' to County Treasurer (San Diego)", async () => {
+    // The combined-office form scored 1-of-3 token overlap against County
+    // Treasurer, below the confidence floor, and wrote a NULL-office shell
+    // (live).
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-supervisor", canonical_name: "County Supervisor" },
+          { id: "office-county-treasurer", canonical_name: "County Treasurer" },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "San Diego County, California",
+      state: "CA",
+      officialBallotTitle: "TREASURER/TAX COLLECTOR",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-treasurer");
+    expect(result.method).toBe("deterministic_fallback");
+  });
+
   it("does not score a non-judicial county contest into a judge office (TX County Judge)", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { county: [] },

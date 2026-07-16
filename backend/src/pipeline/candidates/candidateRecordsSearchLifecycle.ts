@@ -10,6 +10,7 @@ import {
   readCandidateRecordsOverlapDaysFromEnv,
   type CandidateRecordsSearchWindow,
 } from "./candidateRecordsSearchWindow.js";
+import { usLatestLocalDateIso } from "../../utils/usLocalDate.js";
 
 export type CandidateRecordsSearchMetrics = {
   discovered_count: number;
@@ -143,7 +144,14 @@ export async function runCandidateRecordsSearchLifecycle(
       window,
     });
 
-    const researchedThrough = toDateOnly(options.researchedThrough ?? options.asOf ?? new Date());
+    // Default checkpoint: the US-latest local date of the run instant, not
+    // its UTC date. Converting the instant via toISOString stamped tomorrow's
+    // date after 5pm Pacific, and later incremental windows starting at the
+    // checkpoint skipped that local day forever. An explicit
+    // researchedThrough date string still wins untouched.
+    const researchedThrough = options.researchedThrough
+      ? toDateOnly(options.researchedThrough)
+      : usLatestLocalDateIso(options.asOf ?? new Date());
     await markCandidateRecordsSearchCompleted(client, claim.candidateId, researchedThrough);
 
     return {

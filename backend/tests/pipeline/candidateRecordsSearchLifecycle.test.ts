@@ -81,6 +81,11 @@ describe("runCandidateRecordsSearchLifecycle", () => {
     });
     expect(query).toHaveBeenCalledTimes(2);
     expect(query.mock.calls[1]?.[0]).toContain("last_records_searched_at = now()");
+    // The default researched-through checkpoint is the US-latest local date
+    // of the run instant, never its UTC calendar date: 2026-05-31T00:00Z is
+    // still 2026-05-30 everywhere in the US, and a UTC stamp would leave a
+    // local day permanently unsearched by later incremental windows.
+    expect(query.mock.calls[1]?.[1]?.[1]).toBe("2026-05-30");
   });
 
   it("releases claim and rethrows when executeSearch fails", async () => {
