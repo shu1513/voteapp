@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Links, Meta, Outlet, Scripts } from "react-router";
 import type { MetaFunction } from "react-router";
-import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { isServer, MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
 import { ApiError } from "@voteapp/api-client";
 import { RouteError } from "./components/RouteError";
@@ -31,19 +31,46 @@ function reportServerError(error: unknown): void {
   }
 }
 
-const queryClient = new QueryClient({
-  queryCache: new QueryCache({ onError: reportServerError }),
-  mutationCache: new MutationCache({ onError: reportServerError }),
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      staleTime: 60_000,
+function makeQueryClient(): QueryClient {
+  return new QueryClient({
+    queryCache: new QueryCache({ onError: reportServerError }),
+    mutationCache: new MutationCache({ onError: reportServerError }),
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        staleTime: 60_000,
+      },
     },
-  },
-});
+  });
+}
+
+let browserQueryClient: QueryClient | undefined;
+
+// The SSR server keeps this module loaded across requests, and useQuery
+// inserts a cache entry for every key it renders with — with gcTime
+// defaulting to Infinity on the server, a shared client would retain every
+// attacker-controlled URL value (verification tokens, district/candidate
+// ids) forever: an unbounded memory leak. So the server gets a fresh client
+// per render (dropped with the render), while the browser keeps a singleton
+// so the cache survives navigation. Per TanStack Query's SSR guidance, this
+// is deliberately not React state: React can discard and re-run renders
+// (StrictMode, suspense), and client identity must not change when it does.
+//
+// Invariants this relies on: (1) a server re-render getting a fresh client is
+// harmless because SSR never populates the cache — nothing prefetches or
+// dehydrates, so every request renders pending state regardless; (2) the
+// browser singleton resets when Vite HMR re-evaluates this module in dev,
+// same as the previous module-global client — accepted, dev-only.
+export function getQueryClient(): QueryClient {
+  if (isServer) {
+    return makeQueryClient();
+  }
+  browserQueryClient ??= makeQueryClient();
+  return browserQueryClient;
+}
 
 function Providers({ children }: { children: ReactNode }) {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return <QueryClientProvider client={getQueryClient()}>{children}</QueryClientProvider>;
 }
 
 export function Layout({ children }: { children: ReactNode }) {
