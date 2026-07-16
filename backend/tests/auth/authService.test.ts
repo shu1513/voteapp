@@ -496,13 +496,12 @@ describe("createAuthService verifyEmailChange", () => {
 });
 
 describe("createAuthService deleteAccount", () => {
-  it("soft-deletes, voids outstanding tokens, and destroys all sessions", async () => {
+  it("hard-deletes the user row and destroys all sessions", async () => {
     const client = createDbClientMock();
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
-      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // soft delete
-      .mockResolvedValueOnce({ rows: [] }) // void tokens
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // hard delete
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
     const redis = createRedisMock();
 
@@ -515,10 +514,13 @@ describe("createAuthService deleteAccount", () => {
 
     await service.deleteAccount({ userId: USER_ID, password: CURRENT_PASSWORD });
 
-    const deleteCall = client.query.mock.calls.find((call) => String(call[0]).includes("SET deleted_at = now()"));
+    // Permanent removal, not a soft delete: associated rows (districts,
+    // follows, preferences, tokens, push tokens, notification history) go
+    // with the row via ON DELETE CASCADE.
+    const deleteCall = client.query.mock.calls.find((call) => String(call[0]).includes("DELETE FROM public.users"));
     expect(deleteCall?.[1]).toEqual([USER_ID]);
-    const voidCall = client.query.mock.calls.find((call) => String(call[0]).includes("UPDATE public.user_auth_tokens"));
-    expect(voidCall?.[1]).toEqual([USER_ID]);
+    expect(client.query.mock.calls.some((call) => String(call[0]).includes("SET deleted_at"))).toBe(false);
+    expect(client.query).toHaveBeenCalledWith("COMMIT");
     expect(redis.sMembers).toHaveBeenCalled();
   });
 
@@ -539,7 +541,7 @@ describe("createAuthService deleteAccount", () => {
     await expect(service.deleteAccount({ userId: USER_ID, password: "wrong-password-000" })).rejects.toThrow(
       "Password is incorrect"
     );
-    expect(client.query.mock.calls.some((call) => String(call[0]).includes("SET deleted_at"))).toBe(false);
+    expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
     expect(redis.sMembers).not.toHaveBeenCalled();
   });
 });
