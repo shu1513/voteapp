@@ -35,6 +35,9 @@ function strandedRow(overrides: Partial<StrandedRow> = {}): StrandedRow {
 function fakeClient(input: {
   stranded: StrandedRow[];
   aliases?: Array<{ office_id: string; normalized_alias: string }>;
+  // Rows the alias INSERT reports as written; defaults to every queued row
+  // (no ON CONFLICT skips).
+  aliasInsertRowCount?: number;
 }) {
   const statements: { text: string; values?: unknown[] }[] = [];
   const offices = [
@@ -45,6 +48,10 @@ function fakeClient(input: {
     statements.push({ text, values });
     if (text.includes("FOR UPDATE OF e")) {
       return { rows: input.stranded };
+    }
+    if (text.includes("INSERT INTO public.office_title_aliases")) {
+      const queued = Array.isArray(values?.[0]) ? (values[0] as unknown[]).length : 0;
+      return { rows: [], rowCount: input.aliasInsertRowCount ?? queued };
     }
     if (text.includes("FROM public.office_title_aliases")) {
       return { rows: input.aliases ?? [] };
@@ -95,7 +102,7 @@ describe("runElectionOfficeIdRepair", () => {
     // The guard keeps a concurrently-repaired row untouched.
     expect(update?.text).toContain("office_id IS NULL");
 
-    expect(summary.aliasRowsPersisted).toBe(1);
+    expect(summary.aliasRowsInserted).toBe(1);
     // The learned alias is the fully reduced matcher key (body rewrite +
     // seat strip), not the raw title.
     const aliasInsert = aliasInserts(statements)[0];
@@ -144,7 +151,7 @@ describe("runElectionOfficeIdRepair", () => {
       }),
     ]);
     expect(updates(statements)).toHaveLength(2);
-    expect(summary.aliasRowsPersisted).toBe(1);
+    expect(summary.aliasRowsInserted).toBe(1);
   });
 
   it("resolves via a seeded alias without re-learning it", async () => {
@@ -167,7 +174,22 @@ describe("runElectionOfficeIdRepair", () => {
         method: "alias_exact",
       }),
     ]);
-    expect(summary.aliasRowsPersisted).toBe(0);
+    expect(summary.aliasRowsInserted).toBe(0);
     expect(aliasInserts(statements)).toHaveLength(0);
+  });
+
+  it("reports the alias rows the INSERT wrote, not the rows it queued", async () => {
+    // A concurrent writer (or an earlier partial run) may already hold the
+    // (scope, normalized_alias) key; ON CONFLICT DO NOTHING skips it and the
+    // summary must reflect the real insert count.
+    const { client } = fakeClient({
+      stranded: [strandedRow()],
+      aliasInsertRowCount: 0,
+    });
+
+    const summary = await runElectionOfficeIdRepair(client, { dryRun: false });
+
+    expect(summary.repaired).toHaveLength(1);
+    expect(summary.aliasRowsInserted).toBe(0);
   });
 });

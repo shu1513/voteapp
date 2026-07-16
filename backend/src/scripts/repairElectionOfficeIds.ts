@@ -23,7 +23,11 @@ import { Pool, type PoolClient } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { OfficeMatcher } from "../pipeline/elections/officeMatcher.js";
-import type { ElectionDistrictType } from "../types/election.js";
+import {
+  ELECTION_CONTEST_FAMILIES,
+  type ElectionContestFamily,
+  type ElectionDistrictType,
+} from "../types/election.js";
 import { US_LATEST_LOCAL_DATE_SQL } from "../utils/usLocalDate.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
@@ -71,8 +75,22 @@ export type OfficeRepairSummary = {
   examined: number;
   repaired: OfficeRepairMatch[];
   unmatched: OfficeRepairUnmatched[];
-  aliasRowsPersisted: number;
+  // Rows the alias INSERT actually wrote inside the transaction — ON CONFLICT
+  // skips are excluded. Under --dry-run the transaction is rolled back, so
+  // (like `repaired`) this reports what a live run would write, not what
+  // survived the rollback.
+  aliasRowsInserted: number;
 };
+
+// The stored column is CHECK-constrained to the contract's contest families,
+// but the read comes back as free text; narrow it at runtime instead of
+// trusting a cast, so schema drift degrades to "no family hint" rather than
+// feeding the matcher an impossible value.
+function toContestFamily(value: string | null): ElectionContestFamily | undefined {
+  return (ELECTION_CONTEST_FAMILIES as readonly string[]).includes(value ?? "")
+    ? (value as ElectionContestFamily)
+    : undefined;
+}
 
 export async function runElectionOfficeIdRepair(
   client: OfficeRepairClient,
@@ -125,8 +143,7 @@ export async function runElectionOfficeIdRepair(
         districtName: row.district_name,
         state: row.state,
         officialBallotTitle: row.official_ballot_title,
-        discoveryContestFamily:
-          (row.discovery_contest_family as OfficeRepairMatchInputFamily) ?? undefined,
+        discoveryContestFamily: toContestFamily(row.discovery_contest_family),
       });
 
       if (!match.officeId || match.method === "none" || match.method === "ambiguous") {
@@ -175,8 +192,9 @@ export async function runElectionOfficeIdRepair(
       }
     }
 
+    let aliasRowsInserted = 0;
     if (aliasRowsToInsert.length > 0) {
-      await client.query(
+      const aliasInsertResult = await client.query(
         `
           INSERT INTO public.office_title_aliases (
             office_id,
@@ -200,6 +218,7 @@ export async function runElectionOfficeIdRepair(
           aliasRowsToInsert.map((row) => row.normalized_alias),
         ]
       );
+      aliasRowsInserted = aliasInsertResult.rowCount ?? 0;
     }
 
     if (options.dryRun) {
@@ -213,20 +232,13 @@ export async function runElectionOfficeIdRepair(
       examined: stranded.rows?.length ?? 0,
       repaired,
       unmatched,
-      aliasRowsPersisted: aliasRowsToInsert.length,
+      aliasRowsInserted,
     };
   } catch (error) {
     await client.query("ROLLBACK").catch(() => undefined);
     throw error;
   }
 }
-
-// The matcher accepts the payload contract's contest-family union; the stored
-// column is free text from that same contract, so the cast is a narrowing of
-// values the writer itself persisted.
-type OfficeRepairMatchInputFamily = Parameters<
-  OfficeMatcher["resolve"]
->[0]["discoveryContestFamily"];
 
 function usage(): string {
   return [
@@ -275,7 +287,7 @@ async function main(): Promise<void> {
     console.log(
       `office-id repair summary dry_run=${summary.dryRun} examined=${summary.examined} ` +
         `repaired=${summary.repaired.length} unmatched=${summary.unmatched.length} ` +
-        `alias_rows=${summary.aliasRowsPersisted}`
+        `alias_rows_inserted=${summary.aliasRowsInserted}`
     );
   } finally {
     client.release();
