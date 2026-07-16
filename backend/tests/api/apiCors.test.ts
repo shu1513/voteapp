@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { buildAllowedOrigins, resolveCorsHeaders } from "../../src/api/apiCors.js";
 
@@ -63,6 +63,34 @@ describe("buildAllowedOrigins", () => {
 
   it("ignores blank and unparseable fallback URLs", () => {
     expect(buildAllowedOrigins("", [undefined, "  ", "not a url"])).toEqual([]);
+  });
+
+  it("rejects non-http(s) fallback URLs instead of allowlisting the null origin", () => {
+    expect(buildAllowedOrigins(undefined, ["data:text/html,x", "javascript:alert(1)", "file:///etc/passwd"])).toEqual(
+      []
+    );
+  });
+
+  it("normalizes http(s) env entries so slashes, paths, case, and default ports match the browser Origin", () => {
+    expect(
+      buildAllowedOrigins("https://staging.example/, https://EXAMPLE.com:443/app, http://localhost:5173")
+    ).toEqual(["https://staging.example", "https://example.com", "http://localhost:5173"]);
+  });
+
+  it("keeps wildcard and non-URL env entries verbatim", () => {
+    expect(buildAllowedOrigins("*, custom-scheme://thing")).toEqual(["*", "custom-scheme://thing"]);
+  });
+
+  it("warns when a fallback URL is dropped", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      buildAllowedOrigins(undefined, ["not a url"]);
+      expect(warn).toHaveBeenCalledWith(
+        'buildAllowedOrigins: ignoring non-http(s) or unparseable fallback URL "not a url"'
+      );
+    } finally {
+      warn.mockRestore();
+    }
   });
 
   it("keeps same-origin browser POSTs allowed when only fallbacks are configured", () => {

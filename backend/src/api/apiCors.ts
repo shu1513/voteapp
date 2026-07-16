@@ -18,6 +18,19 @@ function normalizeAllowedOrigins(origins: readonly string[] | undefined): Set<st
   return new Set((origins ?? []).map((origin) => origin.trim()).filter((origin) => origin.length > 0));
 }
 
+// Only http(s) URLs yield a usable origin: every other scheme (data:, file:,
+// javascript:, ...) parses to origin "null", which browsers also send as
+// `Origin: null` from sandboxed iframes — allowlisting it would grant
+// credentialed CORS to those contexts.
+function toHttpOrigin(value: string): string | null {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:" ? url.origin : null;
+  } catch {
+    return null;
+  }
+}
+
 // Browsers attach an Origin header to every non-GET request even when the
 // request is same-origin, so a same-origin deployment still needs its own
 // origin allowlisted or every login/settings/unsubscribe POST 403s. Folding
@@ -27,21 +40,30 @@ export function buildAllowedOrigins(
   rawAllowedOrigins: string | undefined,
   fallbackOriginUrls: readonly (string | undefined)[] = []
 ): string[] {
-  const origins = new Set(
-    (rawAllowedOrigins ?? "")
-      .split(",")
-      .map((origin) => origin.trim())
-      .filter((origin) => origin.length > 0)
-  );
+  const origins = new Set<string>();
+  for (const entry of (rawAllowedOrigins ?? "").split(",")) {
+    const trimmed = entry.trim();
+    if (!trimmed) {
+      continue;
+    }
+    // Normalize http(s) entries to their origin so a trailing slash, path,
+    // uppercase host, or explicit default port still matches the browser's
+    // Origin header. Anything else ("*", deliberate exact-match strings)
+    // stays verbatim — never coerced to "null".
+    origins.add(toHttpOrigin(trimmed) ?? trimmed);
+  }
   for (const url of fallbackOriginUrls) {
     const trimmed = url?.trim();
     if (!trimmed) {
       continue;
     }
-    try {
-      origins.add(new URL(trimmed).origin);
-    } catch {
-      // Unparseable fallback URLs contribute nothing; explicit entries still apply.
+    const origin = toHttpOrigin(trimmed);
+    if (origin) {
+      origins.add(origin);
+    } else {
+      // Surface the misconfiguration: a skipped fallback means same-origin
+      // browser writes 403 unless the explicit allowlist covers the site.
+      console.warn(`buildAllowedOrigins: ignoring non-http(s) or unparseable fallback URL "${trimmed}"`);
     }
   }
   return [...origins];
