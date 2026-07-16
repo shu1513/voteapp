@@ -55,6 +55,12 @@ let browserQueryClient: QueryClient | undefined;
 // so the cache survives navigation. Per TanStack Query's SSR guidance, this
 // is deliberately not React state: React can discard and re-run renders
 // (StrictMode, suspense), and client identity must not change when it does.
+//
+// Invariants this relies on: (1) a server re-render getting a fresh client is
+// harmless because SSR never populates the cache — nothing prefetches or
+// dehydrates, so every request renders pending state regardless; (2) the
+// browser singleton resets when Vite HMR re-evaluates this module in dev,
+// same as the previous module-global client — accepted, dev-only.
 export function getQueryClient(): QueryClient {
   if (isServer) {
     return makeQueryClient();
