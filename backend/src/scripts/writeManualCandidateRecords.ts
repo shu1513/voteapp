@@ -23,6 +23,7 @@ import {
   upsertCandidateRecords,
 } from "../pipeline/candidates/candidateRecordStore.js";
 import { createCandidateRecordUpdateNotificationEvents } from "../pipeline/users/candidateFollowNotificationEvents.js";
+import { usLatestLocalDateIso } from "../utils/usLocalDate.js";
 import {
   buildManualResearchRepairReport,
   summarizeManualResearchGaps,
@@ -626,18 +627,26 @@ async function main(): Promise<void> {
         recordCount: validatedRecords.records.length,
         confirmedGapIds,
       }) || qualityGaps.some((gap) => SWEEP_COMPLETENESS_GAP_IDS.has(gap.id));
+    // A supplied --evidence-file is always parsed and validated, even when
+    // the completeness gate does not require it (a stance-bearing record
+    // set): reporting `entryCount: null` for a ledger the operator supplied
+    // read as "the evidence was silently ignored" across eight live runs.
+    // Only the REQUIRED cases persist a confirmation; for the rest the
+    // ledger is validated, counted in the output, and kept external.
     let sweepEvidenceEntries: SweepEvidenceEntry[] | null = null;
-    if (evidenceIsRequired) {
-      if (!evidenceFile) {
-        throw sweepEvidenceMissingError("candidate-records");
-      }
+    let sweepEvidenceEntryCount: number | null = null;
+    if (evidenceFile) {
       const parsedEvidence = parseSweepEvidencePayload(await readJsonFile(evidenceFile));
       if (!parsedEvidence.ok) {
         throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
       }
-      sweepEvidenceEntries = parsedEvidence.entries;
+      sweepEvidenceEntryCount = parsedEvidence.entries.length;
+      if (evidenceIsRequired) {
+        sweepEvidenceEntries = parsedEvidence.entries;
+      }
+    } else if (evidenceIsRequired) {
+      throw sweepEvidenceMissingError("candidate-records");
     }
-    const sweepEvidenceEntryCount = sweepEvidenceEntries ? sweepEvidenceEntries.length : null;
 
     if (repairReportFile && qualityGaps.length > 0) {
       await writeRecordsRepairReport({
@@ -761,8 +770,12 @@ async function main(): Promise<void> {
       // distinguishable from a candidate whose records were never searched,
       // and shares the rollover cooldown with the AI path. preserveClaim: this
       // script never claims the candidate, so it must not clear a lease a
-      // concurrent worker may hold.
-      const researchedThrough = new Date();
+      // concurrent worker may hold. The checkpoint is the US-latest local
+      // date, not the UTC date: a UTC stamp taken after 5pm Pacific claimed
+      // tomorrow as researched, and delta refreshes starting from the
+      // checkpoint would skip that local day forever (hit live across eight
+      // western-timezone writes).
+      const researchedThrough = usLatestLocalDateIso();
       await markCandidateRecordsSearchCompleted(client, candidateId, researchedThrough, { preserveClaim: true });
       // Persist the validated completeness confirmation so
       // manual:records:audit can separate this evidence-backed confirmed
@@ -826,7 +839,7 @@ async function main(): Promise<void> {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
             },
-            recordsSearchCompletedThrough: researchedThrough.toISOString().slice(0, 10),
+            recordsSearchCompletedThrough: researchedThrough,
           },
           null,
           2
