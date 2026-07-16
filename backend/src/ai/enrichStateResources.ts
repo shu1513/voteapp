@@ -1,5 +1,3 @@
-import { isIP } from "node:net";
-import { lookup as dnsLookup } from "node:dns/promises";
 import {
   STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION,
   STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
@@ -27,6 +25,7 @@ import {
   getStateResourceFieldGroupConfig,
   type StateResourceFieldGroup,
 } from "./stateResourceFieldGroups.js";
+import { verifyHttpUrlReachability } from "./urlReachability.js";
 
 const PROVIDER_ADAPTERS: Record<AiProvider, ProviderAdapter> = {
   openai: openAiProvider,
@@ -52,85 +51,8 @@ function normalizeWhitespace(input: string): string {
   return input.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim();
 }
 
-function isPrivateIpLiteral(hostnameOrIp: string): boolean {
-  const host = hostnameOrIp.toLowerCase().replace(/^\[|\]$/g, "");
-  const ipVersion = isIP(host);
-  if (ipVersion === 4) {
-    const octets = host.split(".").map((part) => Number.parseInt(part, 10));
-    if (octets.length !== 4 || octets.some((n) => !Number.isInteger(n) || n < 0 || n > 255)) {
-      return true;
-    }
-
-    const [a, b] = octets;
-    return (
-      a === 10 ||
-      a === 127 ||
-      (a === 169 && b === 254) ||
-      (a === 172 && b >= 16 && b <= 31) ||
-      (a === 192 && b === 168) ||
-      a === 0 ||
-      (a === 100 && b >= 64 && b <= 127) ||
-      (a === 198 && (b === 18 || b === 19)) ||
-      a >= 224
-    );
-  }
-
-  if (ipVersion === 6) {
-    return (
-      host === "::1" ||
-      host === "::" ||
-      host.startsWith("fc") ||
-      host.startsWith("fd") ||
-      host.startsWith("fe8") ||
-      host.startsWith("fe9") ||
-      host.startsWith("fea") ||
-      host.startsWith("feb")
-    );
-  }
-
-  return false;
-}
-
-function isBlockedCitationHostname(hostname: string): boolean {
-  const host = hostname.toLowerCase().replace(/^\[|\]$/g, "");
-  if (
-    host === "localhost" ||
-    host.endsWith(".localhost") ||
-    host.endsWith(".local") ||
-    host.endsWith(".internal") ||
-    host === "metadata.google.internal" ||
-    host === "metadata"
-  ) {
-    return true;
-  }
-
-  return isPrivateIpLiteral(host);
-}
-
-async function resolvesToBlockedPrivateIp(hostname: string): Promise<boolean> {
-  const host = hostname.toLowerCase().replace(/^\[|\]$/g, "");
-  if (!host || isIP(host) > 0) {
-    return false;
-  }
-
-  try {
-    const records = await dnsLookup(host, {
-      all: true,
-      verbatim: true,
-    });
-    return records.some((record) => isPrivateIpLiteral(record.address));
-  } catch {
-    // Best-effort DNS safety check: keep flow resilient if DNS resolution is unavailable.
-    return false;
-  }
-}
-
 function isAllowedCitationContentType(contentType: string): boolean {
   const lower = contentType.toLowerCase();
-  if (!lower) {
-    return false;
-  }
-
   return (
     lower.includes("text/html") ||
     lower.includes("text/plain") ||
@@ -140,138 +62,41 @@ function isAllowedCitationContentType(contentType: string): boolean {
   );
 }
 
-function stripHtmlToText(input: string): string {
-  const withoutScripts = input.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ");
-  const withoutStyles = withoutScripts.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ");
-  const withoutTags = withoutStyles.replace(/<[^>]+>/g, " ");
-  return normalizeWhitespace(withoutTags);
-}
-
 async function fetchCitationEvidenceSnippet(
   citationUrl: string,
   fallbackSourceName: string
 ): Promise<{ ok: true; snippet: EvidenceSnippet } | { ok: false; reason: string }> {
-  const normalizedInputUrl = normalizeHttpUrl(citationUrl);
-  if (!normalizedInputUrl) {
-    return { ok: false, reason: "citation URL is not a valid http(s) URL" };
+  const verification = await verifyHttpUrlReachability(citationUrl, {
+    timeoutMs: CITATION_FETCH_TIMEOUT_MS,
+    allowStatusCodes: [403],
+    method: "GET",
+  });
+  if (!verification.ok) {
+    return verification;
   }
 
-  let inputParsed: URL;
-  try {
-    inputParsed = new URL(normalizedInputUrl);
-  } catch {
-    return { ok: false, reason: "citation URL is not parseable" };
+  if (
+    verification.status !== 403 &&
+    !isAllowedCitationContentType(verification.contentType ?? "")
+  ) {
+    return { ok: false, reason: "citation URL response content-type is not allowed" };
+  }
+  if (
+    typeof verification.contentLength === "number" &&
+    verification.contentLength > CITATION_MAX_RESPONSE_BYTES
+  ) {
+    return { ok: false, reason: "citation URL response is too large" };
   }
 
-  if (isBlockedCitationHostname(inputParsed.hostname)) {
-    return { ok: false, reason: "citation URL points to a blocked/private host" };
-  }
-  if (await resolvesToBlockedPrivateIp(inputParsed.hostname)) {
-    return { ok: false, reason: "citation URL hostname resolves to a blocked/private IP" };
-  }
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), CITATION_FETCH_TIMEOUT_MS);
-  let response: Response | null = null;
-
-  try {
-    response = await fetch(normalizedInputUrl, {
-      method: "GET",
-      redirect: "follow",
-      signal: controller.signal,
-    });
-
-    if (!response.ok) {
-      if (response.status === 403) {
-        const finalUrl = normalizeHttpUrl(response.url || normalizedInputUrl);
-        if (!finalUrl) {
-          return { ok: false, reason: "citation final URL is invalid after redirects" };
-        }
-
-        let finalParsed: URL;
-        try {
-          finalParsed = new URL(finalUrl);
-        } catch {
-          return { ok: false, reason: "citation final URL is not parseable" };
-        }
-
-        if (isBlockedCitationHostname(finalParsed.hostname)) {
-          return { ok: false, reason: "citation final URL points to a blocked/private host" };
-        }
-        if (await resolvesToBlockedPrivateIp(finalParsed.hostname)) {
-          return { ok: false, reason: "citation final URL hostname resolves to a blocked/private IP" };
-        }
-
-        const sourceName = normalizeWhitespace(fallbackSourceName) || getHostname(finalUrl) || "source";
-        return {
-          ok: true,
-          snippet: {
-            url: finalUrl,
-            title: sourceName,
-          },
-        };
-      }
-      return { ok: false, reason: `citation fetch returned status ${response.status}` };
-    }
-
-    const finalUrl = normalizeHttpUrl(response.url || normalizedInputUrl);
-    if (!finalUrl) {
-      return { ok: false, reason: "citation final URL is invalid after redirects" };
-    }
-
-    let finalParsed: URL;
-    try {
-      finalParsed = new URL(finalUrl);
-    } catch {
-      return { ok: false, reason: "citation final URL is not parseable" };
-    }
-
-    if (isBlockedCitationHostname(finalParsed.hostname)) {
-      return { ok: false, reason: "citation final URL points to a blocked/private host" };
-    }
-    if (await resolvesToBlockedPrivateIp(finalParsed.hostname)) {
-      return { ok: false, reason: "citation final URL hostname resolves to a blocked/private IP" };
-    }
-
-    const contentType = response.headers.get("content-type") ?? "";
-    if (!isAllowedCitationContentType(contentType)) {
-      return { ok: false, reason: "citation URL response content-type is not allowed" };
-    }
-
-    const contentLengthRaw = response.headers.get("content-length");
-    if (contentLengthRaw) {
-      const contentLength = Number.parseInt(contentLengthRaw, 10);
-      if (Number.isFinite(contentLength) && contentLength > CITATION_MAX_RESPONSE_BYTES) {
-        return { ok: false, reason: "citation URL response is too large" };
-      }
-    }
-
-    const sourceName = normalizeWhitespace(fallbackSourceName) || getHostname(finalUrl) || "source";
-
-    return {
-      ok: true,
-      snippet: {
-        url: finalUrl,
-        title: sourceName,
-      },
-    };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    if (message.toLowerCase().includes("aborted")) {
-      return { ok: false, reason: "citation URL fetch timed out" };
-    }
-    return { ok: false, reason: `citation URL fetch failed: ${message}` };
-  } finally {
-    // We validate headers/url only; always cancel body to release sockets promptly.
-    if (response) {
-      try {
-        await response.body?.cancel();
-      } catch {
-        // best effort: do not mask the primary result
-      }
-    }
-    clearTimeout(timeout);
-  }
+  const sourceName =
+    normalizeWhitespace(fallbackSourceName) || getHostname(verification.finalUrl) || "source";
+  return {
+    ok: true,
+    snippet: {
+      url: verification.finalUrl,
+      title: sourceName,
+    },
+  };
 }
 
 async function verifyAndCollectAdditionalCitationEvidence(
