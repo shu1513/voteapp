@@ -52,7 +52,7 @@ function usage(): string {
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
     'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
-    "A supplied --evidence-file on a stance-bearing FULL-history write is persisted too (candidate_record_sweep_confirmations with an empty claim set), so keep supplying the ledger — the output reports sweepEvidence.persisted.",
+    "A supplied --evidence-file on a stance-bearing FULL-history write is persisted too (candidate_record_sweep_confirmations with an empty claim set), so keep supplying the ledger — the output reports sweepEvidence.persisted (dry-run: wouldPersist).",
     "",
     "--since-date runs a DELTA (windowed) refresh: it must be on/before the candidate's last_records_researched_through checkpoint (later would skip dates forever), and every record must have event_date >= since-date (out-of-window rows are an error, not a silent drop — remove them and their labels so indices stay aligned). Delta mode makes no full-history claims: the no_records_found / only_general_labels quality gaps are skipped and ALL --confirmed-gap flags are disallowed. A zero-record delta write still requires --evidence-file with the WINDOW-scoped per-question evidence table.",
   ].join("\n");
@@ -356,6 +356,10 @@ export type DeltaZeroRecordConfirmationDecision =
  *    window found nothing new); re-assert it by bumping confirmed_at only.
  *    The original full-sweep evidence stays — window-only evidence must not
  *    replace the support for a full-history claim.
+ *  - candidate has zero records and a confirmation that never claimed
+ *    no_records_found (empty claim set / only_general_labels — both imply
+ *    records existed) → records were removed externally since; refuse with
+ *    a message that says so instead of "the sweep was never closed".
  *  - candidate has zero records and no such confirmation → the full-history
  *    question was never evidence-closed; a windowed pass cannot close it.
  */
@@ -368,6 +372,18 @@ export function decideDeltaZeroRecordConfirmation(input: {
   }
   if (input.priorConfirmedGapIds?.includes(NO_RECORDS_FOUND_GAP_ID)) {
     return { action: "refresh" };
+  }
+  if (input.priorConfirmedGapIds !== null) {
+    // A confirmation exists but never claimed no_records_found (an
+    // empty-claim-set or only_general_labels row) — both imply records
+    // existed when it was written, yet the candidate now has zero stored
+    // records. Something removed them since; "the sweep was never closed"
+    // would be actively misleading here.
+    return {
+      action: "error",
+      reason:
+        "Delta write found zero records, but the candidate's sweep confirmation says records existed when it was written — candidate_records rows have been removed since. A windowed pass cannot re-close the full-history question; run a FULL discovery sweep (no --since-date) with the per-question evidence table instead.",
+    };
   }
   return {
     action: "error",
@@ -709,7 +725,9 @@ async function main(): Promise<void> {
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
-              persisted: sweepEvidencePersisted,
+              // Plan language: --dry-run writes nothing, so a past-tense
+              // `persisted` here would be factually wrong for JSON consumers.
+              wouldPersist: sweepEvidencePersisted,
             },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },

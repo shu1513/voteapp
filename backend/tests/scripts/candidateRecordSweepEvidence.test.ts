@@ -5,6 +5,7 @@ import {
   SWEEP_EVIDENCE_MIN_ENTRIES,
   assertedSweepCompletenessGapIds,
   deleteSweepCompletenessConfirmation,
+  deleteSweepConfirmation,
   parseSweepEvidencePayload,
   retainSuppliedSweepEvidence,
   sweepEvidenceRequired,
@@ -288,6 +289,28 @@ describe("deleteSweepCompletenessConfirmation", () => {
       "candidate_records.no_records_found",
       "candidate_records.only_general_labels",
     ]);
+  });
+});
+
+describe("deleteSweepConfirmation", () => {
+  it("removes any confirmation row unconditionally (writers that advance no search stamp)", async () => {
+    const calls: { text: string; values: unknown[] }[] = [];
+    const client = {
+      query: async (text: string, values?: unknown[]) => {
+        calls.push({ text, values: values ?? [] });
+        return { rows: [], rowCount: 1 } as never;
+      },
+    };
+
+    await deleteSweepConfirmation(client as never, "candidate-1");
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.text).toContain("DELETE FROM public.candidate_record_sweep_confirmations");
+    // No gap-id predicate: without an advancing last_records_searched_at
+    // stamp (presidential writer), a surviving empty-claim-set row could
+    // never be dated as historical.
+    expect(calls[0]!.text).not.toContain("confirmed_gap_ids");
+    expect(calls[0]!.values).toEqual(["candidate-1"]);
   });
 });
 

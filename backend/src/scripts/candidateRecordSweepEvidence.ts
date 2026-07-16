@@ -226,6 +226,11 @@ export async function refreshSweepConfirmationTimestamp(
  * falsified by finding more records; they stay and age out against the
  * search stamp like any confirmation (the audit already treats a
  * confirmation older than the latest stamp as historical).
+ *
+ * Only safe where the write ALSO advances last_records_searched_at (the
+ * district writer does): the stamp is what dates a surviving row as
+ * historical. A writer that advances no stamp must use
+ * deleteSweepConfirmation instead.
  */
 export async function deleteSweepCompletenessConfirmation(
   client: Pick<PoolClient, "query">,
@@ -238,6 +243,23 @@ export async function deleteSweepCompletenessConfirmation(
         AND confirmed_gap_ids && $2::text[]
     `,
     [candidateId, [...SWEEP_COMPLETENESS_GAP_IDS]]
+  );
+}
+
+/**
+ * Unconditional variant for writers that advance no per-candidate search
+ * stamp (manual:presidential-records:write — markCandidateRecordsSearchCompleted
+ * is district-path only). Without an advancing stamp, a surviving
+ * empty-claim-set row could never be dated as historical, so "newest sweep
+ * wins" demands removal when a newer sweep arrives without a ledger.
+ */
+export async function deleteSweepConfirmation(
+  client: Pick<PoolClient, "query">,
+  candidateId: string
+): Promise<void> {
+  await client.query(
+    `DELETE FROM public.candidate_record_sweep_confirmations WHERE candidate_id = $1`,
+    [candidateId]
   );
 }
 

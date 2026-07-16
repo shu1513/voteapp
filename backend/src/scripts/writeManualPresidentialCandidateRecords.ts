@@ -32,7 +32,7 @@ import {
 import {
   SWEEP_COMPLETENESS_GAP_IDS,
   assertedSweepCompletenessGapIds,
-  deleteSweepCompletenessConfirmation,
+  deleteSweepConfirmation,
   parseSweepEvidencePayload,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
@@ -68,7 +68,7 @@ function usage(): string {
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
     'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
-    "A supplied --evidence-file on a stance-bearing write is persisted too (candidate_record_sweep_confirmations with an empty claim set), so keep supplying the ledger — the output reports sweepEvidence.persisted.",
+    "A supplied --evidence-file on a stance-bearing write is persisted too (candidate_record_sweep_confirmations with an empty claim set), so keep supplying the ledger — the output reports sweepEvidence.persisted (dry-run: wouldPersist).",
   ].join("\n");
 }
 
@@ -510,7 +510,9 @@ async function main(): Promise<void> {
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
-              persisted: sweepEvidencePersisted,
+              // Plan language: --dry-run writes nothing, so a past-tense
+              // `persisted` here would be factually wrong for JSON consumers.
+              wouldPersist: sweepEvidencePersisted,
             },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },
@@ -596,9 +598,11 @@ async function main(): Promise<void> {
         });
       } else {
         // This write found real stance-labeled records without carrying a
-        // ledger; drop any earlier completeness confirmation it falsifies
-        // (empty-claim-set rows survive — see deleteSweepCompletenessConfirmation).
-        await deleteSweepCompletenessConfirmation(client, options.candidateId);
+        // ledger; drop ANY earlier confirmation. Unlike the district writer,
+        // this writer advances no per-candidate search stamp, so a surviving
+        // empty-claim-set row could never be dated as historical — deletion
+        // is what keeps "newest sweep wins" honest here.
+        await deleteSweepConfirmation(client, options.candidateId);
       }
       await client.query("COMMIT");
 
