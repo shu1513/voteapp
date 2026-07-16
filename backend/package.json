@@ -55,6 +55,7 @@
     "candidates:roster:enrich": "tsx src/scripts/enrichCandidateRoster.ts",
     "manual:candidate-roster:inject": "tsx src/scripts/injectManualCandidateRoster.ts",
     "manual:candidate-roster:fanout": "tsx src/scripts/fanoutManualCandidateRoster.ts",
+    "manual:candidate-roster:due": "tsx src/scripts/listCandidateRostersDue.ts",
     "candidates:roster:produce-rollover": "tsx src/scripts/produceCandidateRosterRollover.ts",
     "candidates:roster:scheduler:upsert": "tsx src/scripts/upsertCandidateRosterDailyScheduler.ts",
     "candidates:roster:scheduler:worker": "tsx src/scripts/runCandidateRosterSchedulerWorker.ts",
