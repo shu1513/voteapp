@@ -43,6 +43,17 @@ describe("buildAuditTargetConditions", () => {
     ]);
   });
 
+  it("accepts joint-ticket running mates through either side of the election link", () => {
+    const result = buildAuditTargetConditions({
+      candidateId: null,
+      electionId: "22222222-2222-2222-2222-222222222222",
+      districtId: "33333333-3333-3333-3333-333333333333",
+    });
+    for (const condition of result.conditions) {
+      expect(condition).toContain("cef.candidate_id = c.id OR cef.running_mate_candidate_id = c.id");
+    }
+  });
+
   it("combines all three filters with sequential placeholders", () => {
     const result = buildAuditTargetConditions({
       candidateId: "11111111-1111-1111-1111-111111111111",

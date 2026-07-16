@@ -69,18 +69,21 @@ export function buildAuditTargetConditions(filters: AuditTargetFilters): {
   if (filters.candidateId) {
     push(filters.candidateId, (p) => `c.id = ${p}::uuid`);
   }
+  // Joint-ticket running mates have no candidate_elections row of their own
+  // (they live in running_mate_candidate_id on the ticket lead's row), so the
+  // election/district predicates must accept either side of the link.
   if (filters.electionId) {
     push(
       filters.electionId,
       (p) =>
-        `EXISTS (SELECT 1 FROM public.candidate_elections cef WHERE cef.candidate_id = c.id AND cef.election_id = ${p}::uuid)`
+        `EXISTS (SELECT 1 FROM public.candidate_elections cef WHERE (cef.candidate_id = c.id OR cef.running_mate_candidate_id = c.id) AND cef.election_id = ${p}::uuid)`
     );
   }
   if (filters.districtId) {
     push(
       filters.districtId,
       (p) =>
-        `EXISTS (SELECT 1 FROM public.candidate_elections cef JOIN public.elections ef ON ef.id = cef.election_id WHERE cef.candidate_id = c.id AND ef.district_id = ${p}::uuid)`
+        `EXISTS (SELECT 1 FROM public.candidate_elections cef JOIN public.elections ef ON ef.id = cef.election_id WHERE (cef.candidate_id = c.id OR cef.running_mate_candidate_id = c.id) AND ef.district_id = ${p}::uuid)`
     );
   }
   return { conditions, values };
@@ -146,7 +149,8 @@ async function main(): Promise<void> {
           jsonb_array_length(sc.evidence -> 'entries')::int AS evidence_entry_count,
           (sc.confirmed_at >= c.last_records_searched_at) AS confirmation_covers_latest_search
         FROM public.candidates c
-        LEFT JOIN public.candidate_elections ce ON ce.candidate_id = c.id
+        LEFT JOIN public.candidate_elections ce
+          ON ce.candidate_id = c.id OR ce.running_mate_candidate_id = c.id
         LEFT JOIN public.elections e ON e.id = ce.election_id
         LEFT JOIN public.candidate_record_sweep_confirmations sc ON sc.candidate_id = c.id
         WHERE c.deleted_at IS NULL
