@@ -38,6 +38,7 @@ import {
 import { normalizeCandidateName, splitDisplayNameToFirstLast } from "../utils/candidateIdentity.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
+import { withWallClockTimeout } from "./wallClockTimeout.js";
 type ElectionContextRow = {
   election_id: string;
   state: string;
@@ -573,10 +574,13 @@ async function main(): Promise<void> {
       officialBallotTitle: election.official_ballot_title,
       electionIsPartisan: election.is_partisan,
     });
-    const validatedProfile = await validateCandidateProfileAiPayload(
-      rawPayload,
-      readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
-      { allowFecIds: false, requireFecIds: false }
+    const validatedProfile = await withWallClockTimeout(
+      validateCandidateProfileAiPayload(
+        rawPayload,
+        readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
+        { allowFecIds: false, requireFecIds: false }
+      ),
+      "candidate profile source validation"
     );
     if (!validatedProfile.ok) {
       const gaps = buildProfileValidationGaps({

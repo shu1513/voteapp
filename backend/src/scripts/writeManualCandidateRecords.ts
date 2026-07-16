@@ -43,6 +43,7 @@ import {
 } from "./candidateRecordSweepEvidence.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
+import { withWallClockTimeout } from "./wallClockTimeout.js";
 function usage(): string {
   return [
     "Usage:",
@@ -469,9 +470,12 @@ async function main(): Promise<void> {
   const manualKey = `manual:candidate-records:${electionId}:${candidateId}`;
 
   const rawRecords = await readJsonFile(recordsFile);
-  const validatedRecords = await validateCandidateRecordDiscoveryPayload(
-    rawRecords,
-    readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000)
+  const validatedRecords = await withWallClockTimeout(
+    validateCandidateRecordDiscoveryPayload(
+      rawRecords,
+      readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000)
+    ),
+    "candidate record citation validation"
   );
   if (!validatedRecords.ok) {
     const gaps: ManualResearchRepairGap[] = [
