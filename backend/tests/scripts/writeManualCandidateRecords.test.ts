@@ -12,6 +12,7 @@ import {
   validateSinceDateAgainstCheckpoint,
 } from "../../src/scripts/writeManualCandidateRecords.js";
 import { buildManualResearchRepairReport } from "../../src/scripts/manualResearchRepairReport.js";
+import { usLatestLocalDateIso } from "../../src/utils/usLocalDate.js";
 
 describe("writeManualCandidateRecords quality repair gaps", () => {
   it("turns quality-dropped records into deeper record-only repair instructions", () => {
@@ -222,6 +223,17 @@ describe("writeManualCandidateRecords delta (--since-date) helpers", () => {
     expect(() => parseSinceDate("06/10/2026", today)).toThrow(/full YYYY-MM-DD/);
     expect(() => parseSinceDate("2026-02-30", today)).toThrow(/not a real calendar date/);
     expect(() => parseSinceDate("2026-07-13", today)).toThrow(/cannot be in the future/);
+  });
+
+  it("parseSinceDate validates against the US-latest local date, not the UTC date", () => {
+    // 05:00 UTC on 07-13 is still 19:00 on 07-12 in Pacific/Honolulu. A
+    // since-date of 07-13 (e.g. a UTC-ahead checkpoint stamped by the old
+    // bug) must be rejected as future instead of opening a window that
+    // excludes every legitimate same-day record.
+    const hawaiiToday = usLatestLocalDateIso(new Date("2026-07-13T05:00:00Z"));
+    expect(hawaiiToday).toBe("2026-07-12");
+    expect(() => parseSinceDate("2026-07-13", hawaiiToday)).toThrow(/cannot be in the future/);
+    expect(parseSinceDate("2026-07-12", hawaiiToday)).toBe("2026-07-12");
   });
 
   it("listRecordsBeforeSinceDate reports out-of-window rows with their original indices", () => {

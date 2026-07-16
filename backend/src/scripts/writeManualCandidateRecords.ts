@@ -446,7 +446,7 @@ async function main(): Promise<void> {
   const confirmedGapIds = normalizeConfirmedGaps(readRepeatedFlag("--confirmed-gap"));
   const rawSinceDate = readFlag("--since-date");
   const sinceDate = rawSinceDate
-    ? parseSinceDate(rawSinceDate, new Date().toISOString().slice(0, 10))
+    ? parseSinceDate(rawSinceDate, usLatestLocalDateIso())
     : null;
   if (!candidateId || !electionId || !recordsFile || !labelsFile) {
     throw new Error(`Missing required flag.\n${usage()}`);

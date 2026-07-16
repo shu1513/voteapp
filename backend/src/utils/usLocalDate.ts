@@ -24,6 +24,13 @@ const US_LATEST_LOCAL_DATE_FORMATTER = new Intl.DateTimeFormat("en-CA", {
 });
 
 export function usLatestLocalDateIso(now: Date = new Date()): string {
-  // en-CA formats as YYYY-MM-DD.
-  return US_LATEST_LOCAL_DATE_FORMATTER.format(now);
+  // Assemble YYYY-MM-DD from typed parts instead of trusting en-CA's rendered
+  // string: the Intl spec guarantees the part values, not the separator or
+  // field order of any locale's short-date pattern.
+  const parts = Object.fromEntries(
+    US_LATEST_LOCAL_DATE_FORMATTER.formatToParts(now)
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, part.value])
+  );
+  return `${parts.year}-${parts.month}-${parts.day}`;
 }
