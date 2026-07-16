@@ -53,7 +53,7 @@ function stripIpv6Brackets(hostnameOrIp: string): string {
 // well-known RFC 6052 prefix (64:ff9b::/96, range "rfc6052"), so this one
 // comes back plain "unicast" — but on a network with a NAT64 translator it
 // maps onto arbitrary IPv4, including loopback and RFC 1918.
-const NAT64_LOCAL_USE_RANGE = ipaddr.parseCIDR("64:ff9b:1::/48");
+const NAT64_LOCAL_USE_RANGE = ipaddr.IPv6.parseCIDR("64:ff9b:1::/48");
 
 /** Only ordinary globally routable unicast addresses are safe citation targets. */
 function isBlockedIpLiteral(hostnameOrIp: string): boolean {
