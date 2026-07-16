@@ -1301,4 +1301,347 @@ describe("OfficeMatcher", () => {
 
     expect(result.officeId).toBe("office-county-clerk");
   });
+
+  it("scores NC 'COUNTY BOARD OF COMMISSIONERS' seat titles into County Commissioner without aliases", async () => {
+    // North Carolina certifications title every commission seat by its
+    // governing body; ~150 live shells stranded with office_id NULL because
+    // the plural body form near-zero-overlaps "County Commissioner". The seat
+    // descriptors are deliberately varied: numbered districts, at-large
+    // (lettered and with trailing SEAT), townships, named districts,
+    // chairman, and unexpired terms all reduce to a scoreable key.
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-supervisor", canonical_name: "County Supervisor" },
+          { id: "office-county-executive", canonical_name: "County Executive" },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const titles: Array<[district: string, title: string]> = [
+      ["Alamance County, North Carolina", "ALAMANCE COUNTY BOARD OF COMMISSIONERS"],
+      ["Anson County, North Carolina", "ANSON COUNTY BOARD OF COMMISSIONERS DISTRICT 02"],
+      ["Moore County, North Carolina", "MOORE COUNTY BOARD OF COMMISSIONERS DISTRICT III"],
+      ["Caswell County, North Carolina", "CASWELL COUNTY BOARD OF COMMISSIONERS AT-LARGE (UNEXPIRED)"],
+      ["Franklin County, North Carolina", "FRANKLIN COUNTY BOARD OF COMMISSIONERS AT-LARGE SEAT"],
+      ["Chowan County, North Carolina", "CHOWAN COUNTY BOARD OF COMMISSIONERS DISTRICT 01 SEAT"],
+      ["Gaston County, North Carolina", "GASTON COUNTY BOARD OF COMMISSIONERS DALLAS TWP"],
+      ["Camden County, North Carolina", "CAMDEN COUNTY BOARD OF COMMISSIONERS SHILOH DISTRICT"],
+      ["Jackson County, North Carolina", "JACKSON COUNTY BOARD OF COMMISSIONERS CHAIRMAN"],
+      ["Cumberland County, North Carolina", "CUMBERLAND COUNTY BOARD OF COMMISSIONERS DISTRICT"],
+      ["Forsyth County, North Carolina", "FORSYTH COUNTY BOARD OF COMMISSIONERS DISTRICT A"],
+      ["Wake County, North Carolina", "Wake County Board of Commissioners At-Large"],
+    ];
+    for (const [districtName, officialBallotTitle] of titles) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName,
+        state: "NC",
+        officialBallotTitle,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, officialBallotTitle).toBe("office-county-commissioner");
+      expect(result.method, officialBallotTitle).toBe("deterministic_fallback");
+    }
+  });
+
+  it("keeps the Cook County board PRESIDENT on its County Executive alias despite the body rewrite", async () => {
+    // The county-board-of-commissioners rewrite must not fire after
+    // "president of the": the board president is the county executive with
+    // its own alias, and a rewritten key would misroute the race into the
+    // member office via the token scorer.
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          {
+            office_id: "office-county-executive",
+            normalized_alias: "president of the county board of commissioners",
+          },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-county-executive", canonical_name: "County Executive" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Cook County, Illinois",
+      state: "IL",
+      officialBallotTitle: "President of the Cook County Board of Commissioners",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-executive");
+    expect(result.method).toBe("alias_exact");
+  });
+
+  it("strips ward/zone/seat/part/justice-precinct numbered seat suffixes and at-large designators", async () => {
+    // Each form wrote a live NULL-office shell; the essential contract is the
+    // matcher KEY each title reduces to (pinned via aliasMemoryKey with an
+    // empty catalog), because the migration-184 aliases and new offices key
+    // on exactly these reduced forms.
+    const matcher = new OfficeMatcher(
+      createMatcherDataClient({ aliasesByScope: {}, officesByScope: {} }) as never
+    );
+
+    const cases: Array<[district: string, state: string, title: string, expectedKey: string]> = [
+      ["Callaway city, Florida", "FL", "Callaway City Commission Ward 1", "city commission"],
+      ["Ormond Beach city, Florida", "FL", "Ormond Beach City Commission Zone 4", "city commission"],
+      ["Kissimmee city, Florida", "FL", "Kissimmee City Commission Seat 2", "city commission"],
+      ["Sarasota city, Florida", "FL", "Sarasota City Commission At-Large", "city commission"],
+      ["Daytona Beach city, Florida", "FL", "Daytona Beach City Commissioner Zone 5", "city commissioner"],
+      ["Carson City, Nevada", "NV", "Carson City Board of Supervisors, Ward 1", "city board of supervisors"],
+      ["Howard County, Maryland", "MD", "For Member of County Council (District 1)", "member of county council"],
+      ["Anne Arundel County, Maryland", "MD", "County Council At Large", "county council"],
+      ["Anne Arundel County, Maryland", "MD", "County Council At-Large A", "county council"],
+      ["Davidson County, Tennessee", "TN", "Chancellor Part II, District 30, Unexpired Term", "chancellor"],
+      ["Maricopa County, Arizona", "AZ", "Constable, Justice Prec. 2", "constable"],
+      ["Maricopa County, Arizona", "AZ", "Justice of the Peace, Prec. 2", "justice of the peace"],
+    ];
+    for (const [districtName, state, officialBallotTitle, expectedKey] of cases) {
+      const result = await matcher.resolve({
+        scope: districtName.includes("County") ? "county" : "place",
+        districtName,
+        state,
+        officialBallotTitle,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.aliasMemoryKey, officialBallotTitle).toBe(expectedKey);
+    }
+  });
+
+  it("resolves the migration 184 alias gaps end-to-end from the live ballot titles", async () => {
+    // Guards the normalizer-parity invariant for migration 184's aliases
+    // (same guard pattern as migrations 164/165/169): the migration stores
+    // hand-written normalized_alias literals while the seed layer stores
+    // normalizeElectionTitleKey(aliasText) — pin the non-obvious ones so a
+    // normalizer change cannot silently strand these titles again.
+    expect(normalizeElectionTitleKey("State's Attorney")).toBe("state s attorney");
+    expect(normalizeElectionTitleKey("Register of Probate County")).toBe(
+      "register of probate county"
+    );
+    expect(normalizeElectionTitleKey("Member of County Council")).toBe("member of county council");
+    expect(normalizeElectionTitleKey("City Board of Supervisors")).toBe(
+      "city board of supervisors"
+    );
+
+    const aliasRow = (officeId: string, aliasText: string) => ({
+      office_id: officeId,
+      normalized_alias: normalizeElectionTitleKey(aliasText),
+    });
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          aliasRow("office-county-supervisor", "County Council"),
+          aliasRow("office-county-supervisor", "Member of County Council"),
+          aliasRow("office-county-supervisor", "Council Member"),
+          aliasRow("office-district-attorney", "State's Attorney"),
+          aliasRow("office-district-attorney", "County Attorney"),
+          aliasRow("office-county-recorder", "County Register of Deeds"),
+          aliasRow("office-clerk-of-court", "County Register of Probate"),
+          aliasRow("office-clerk-of-court", "Register of Probate County"),
+          aliasRow("office-clerk-of-court", "County Circuit Court Clerk"),
+          aliasRow("office-county-treasurer", "County Trustee"),
+          aliasRow("office-county-level-judge", "Chancellor"),
+          aliasRow("office-constable", "Constable"),
+          aliasRow(
+            "office-soil-water-supervisor",
+            "County Soil and Water Conservation District Supervisor"
+          ),
+        ],
+        statewide: [aliasRow("office-comptroller", "Tax Commissioner")],
+        place: [
+          aliasRow("office-city-council-member", "City Commission"),
+          aliasRow("office-city-council-member", "City Board of Supervisors"),
+          aliasRow("office-city-council-member", "Louisville Metro Council Member"),
+        ],
+      },
+      officesByScope: {
+        // County Clerk and Clerk of Court both sit in the catalog: before the
+        // alias, "Davidson County Circuit Court Clerk" tied them into an
+        // ambiguous NULL office (live).
+        county: [
+          { id: "office-county-supervisor", canonical_name: "County Supervisor" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+          { id: "office-county-recorder", canonical_name: "County Recorder" },
+          { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+          { id: "office-county-treasurer", canonical_name: "County Treasurer" },
+          { id: "office-county-level-judge", canonical_name: "County Level Judge" },
+          { id: "office-constable", canonical_name: "Constable" },
+          {
+            id: "office-soil-water-supervisor",
+            canonical_name: "Soil and Water Conservation District Supervisor",
+          },
+          { id: "office-county-surveyor", canonical_name: "County Surveyor" },
+        ],
+        statewide: [
+          { id: "office-comptroller", canonical_name: "Comptroller" },
+          { id: "office-state-auditor", canonical_name: "State Auditor" },
+        ],
+        place: [
+          { id: "office-city-council-member", canonical_name: "City Council Member" },
+          { id: "office-town-council-member", canonical_name: "Town Council Member" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const cases: Array<{
+      scope: "county" | "statewide" | "place";
+      districtName: string;
+      state: string;
+      title: string;
+      family?: "non_judicial_office" | "judicial_office";
+      expected: string;
+    }> = [
+      {
+        scope: "county",
+        districtName: "Anne Arundel County, Maryland",
+        state: "MD",
+        title: "County Council At-Large A",
+        expected: "office-county-supervisor",
+      },
+      {
+        scope: "county",
+        districtName: "Howard County, Maryland",
+        state: "MD",
+        title: "For Member of County Council (District 5)",
+        expected: "office-county-supervisor",
+      },
+      {
+        scope: "county",
+        districtName: "Honolulu County, Hawaii",
+        state: "HI",
+        title: "Honolulu Councilmember, Dist II",
+        expected: "office-county-supervisor",
+      },
+      {
+        scope: "county",
+        districtName: "Baltimore city, Maryland",
+        state: "MD",
+        title: "State's Attorney",
+        expected: "office-district-attorney",
+      },
+      {
+        scope: "county",
+        districtName: "Jefferson County, Kentucky",
+        state: "KY",
+        title: "Jefferson County Attorney",
+        expected: "office-district-attorney",
+      },
+      {
+        scope: "county",
+        districtName: "Yadkin County, North Carolina",
+        state: "NC",
+        title: "YADKIN COUNTY REGISTER OF DEEDS",
+        expected: "office-county-recorder",
+      },
+      {
+        scope: "county",
+        districtName: "Suffolk County, Massachusetts",
+        state: "MA",
+        title: "Suffolk County Register of Probate",
+        expected: "office-clerk-of-court",
+      },
+      {
+        scope: "county",
+        districtName: "Middlesex County, Massachusetts",
+        state: "MA",
+        title: "Register of Probate, Middlesex County",
+        expected: "office-clerk-of-court",
+      },
+      {
+        scope: "county",
+        districtName: "Davidson County, Tennessee",
+        state: "TN",
+        title: "Davidson County Circuit Court Clerk",
+        expected: "office-clerk-of-court",
+      },
+      {
+        scope: "county",
+        districtName: "Shelby County, Tennessee",
+        state: "TN",
+        title: "Shelby County Trustee",
+        expected: "office-county-treasurer",
+      },
+      {
+        scope: "county",
+        districtName: "Davidson County, Tennessee",
+        state: "TN",
+        title: "Chancellor Part II, District 30, Unexpired Term",
+        family: "judicial_office",
+        expected: "office-county-level-judge",
+      },
+      {
+        scope: "county",
+        districtName: "Maricopa County, Arizona",
+        state: "AZ",
+        title: "Constable, Justice Prec. 2",
+        expected: "office-constable",
+      },
+      {
+        scope: "county",
+        districtName: "Jefferson County, Kentucky",
+        state: "KY",
+        title: "Jefferson County Soil and Water Conservation District Supervisor",
+        expected: "office-soil-water-supervisor",
+      },
+      {
+        scope: "county",
+        districtName: "Boulder County, Colorado",
+        state: "CO",
+        title: "Boulder County Surveyor",
+        expected: "office-county-surveyor",
+      },
+      {
+        scope: "statewide",
+        districtName: "North Dakota",
+        state: "ND",
+        title: "Tax Commissioner",
+        expected: "office-comptroller",
+      },
+      {
+        scope: "place",
+        districtName: "Callaway city, Florida",
+        state: "FL",
+        title: "Callaway City Commission Ward 1",
+        expected: "office-city-council-member",
+      },
+      {
+        scope: "place",
+        districtName: "Carson City, Nevada",
+        state: "NV",
+        title: "Carson City Board of Supervisors, Ward 1",
+        expected: "office-city-council-member",
+      },
+      {
+        scope: "place",
+        districtName: "Louisville/Jefferson County metro government, Kentucky",
+        state: "KY",
+        title: "Louisville Metro Council Member, District 23",
+        expected: "office-city-council-member",
+      },
+    ];
+    for (const testCase of cases) {
+      const result = await matcher.resolve({
+        scope: testCase.scope,
+        districtName: testCase.districtName,
+        state: testCase.state,
+        officialBallotTitle: testCase.title,
+        discoveryContestFamily: testCase.family ?? "non_judicial_office",
+      });
+      expect(result.officeId, testCase.title).toBe(testCase.expected);
+    }
+  });
 });
