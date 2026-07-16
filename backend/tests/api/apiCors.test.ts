@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { resolveCorsHeaders } from "../../src/api/apiCors.js";
+import { buildAllowedOrigins, resolveCorsHeaders } from "../../src/api/apiCors.js";
 
 describe("resolveCorsHeaders", () => {
   it("enables credentialed CORS for explicit allowed origins", () => {
@@ -35,5 +35,38 @@ describe("resolveCorsHeaders", () => {
         vary: "Origin",
       },
     });
+  });
+});
+
+describe("buildAllowedOrigins", () => {
+  it("splits and trims the env value", () => {
+    expect(buildAllowedOrigins(" https://a.example , https://b.example ,")).toEqual([
+      "https://a.example",
+      "https://b.example",
+    ]);
+  });
+
+  it("derives origins from fallback URLs when the env value is unset", () => {
+    expect(buildAllowedOrigins(undefined, ["https://impactperdollar.com/api/email/unsubscribe"])).toEqual([
+      "https://impactperdollar.com",
+    ]);
+  });
+
+  it("merges env entries with fallback origins without duplicates", () => {
+    expect(
+      buildAllowedOrigins("https://impactperdollar.com,https://staging.example", [
+        "https://impactperdollar.com",
+        "https://impactperdollar.com/",
+      ])
+    ).toEqual(["https://impactperdollar.com", "https://staging.example"]);
+  });
+
+  it("ignores blank and unparseable fallback URLs", () => {
+    expect(buildAllowedOrigins("", [undefined, "  ", "not a url"])).toEqual([]);
+  });
+
+  it("keeps same-origin browser POSTs allowed when only fallbacks are configured", () => {
+    const allowedOrigins = buildAllowedOrigins(undefined, ["https://impactperdollar.com"]);
+    expect(resolveCorsHeaders({ origin: "https://impactperdollar.com" }, allowedOrigins).ok).toBe(true);
   });
 });

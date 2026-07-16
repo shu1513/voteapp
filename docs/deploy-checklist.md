@@ -38,7 +38,7 @@ deploy needs beyond `git pull`. Database migrations are covered separately in
 | `REDIS_URL` | required — sessions, rate limits, address cache |
 | `ADDRESS_API_TRUSTED_CLIENT_IP_HEADER` | required in production — see the SSR table above; without it all rate limiting keys on the proxy/SSR socket IP |
 | `ADDRESS_API_HOST` / `ADDRESS_API_PORT` | bind address |
-| `ADDRESS_API_ALLOWED_ORIGINS` | only needed if NOT strictly same-origin; the frontend origin(s) |
+| `ADDRESS_API_ALLOWED_ORIGINS` | the frontend origin(s), including the site's own origin — browsers send `Origin` on every non-GET request even same-origin, so an empty allowlist 403s all browser writes; unset falls back to the origins of `SITE_ORIGIN`/`AUTH_PUBLIC_BASE_URL` |
 | `AUTH_SESSION_COOKIE_SECURE` | `true` in production (HTTPS) |
 | `AUTH_SESSION_COOKIE_DOMAIN` | only for the subdomain split (e.g. `.impactperdollar.com`) |
 | `AUTH_PUBLIC_BASE_URL` | the FRONTEND origin — email links land on `/verify-email`, `/reset-password`, `/verify-email-change` |

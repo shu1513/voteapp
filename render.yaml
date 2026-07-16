@@ -49,6 +49,12 @@ services:
         value: https://impactperdollar.com
       - key: SITE_ORIGIN
         value: https://impactperdollar.com
+      # Browsers send an Origin header on every non-GET request even
+      # same-origin, so the site's own origin must be allowlisted or all
+      # browser POST/PUT/DELETE calls 403. The server also derives this from
+      # SITE_ORIGIN; the explicit value guards against config drift.
+      - key: ADDRESS_API_ALLOWED_ORIGINS
+        value: https://impactperdollar.com
       - key: AUTH_SESSION_COOKIE_SECURE
         value: "true"
       - key: AUTH_FROM_EMAIL

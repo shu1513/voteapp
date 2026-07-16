@@ -18,6 +18,35 @@ function normalizeAllowedOrigins(origins: readonly string[] | undefined): Set<st
   return new Set((origins ?? []).map((origin) => origin.trim()).filter((origin) => origin.length > 0));
 }
 
+// Browsers attach an Origin header to every non-GET request even when the
+// request is same-origin, so a same-origin deployment still needs its own
+// origin allowlisted or every login/settings/unsubscribe POST 403s. Folding
+// in the deployment's public base URLs keeps an unset allowlist env var from
+// breaking same-origin traffic.
+export function buildAllowedOrigins(
+  rawAllowedOrigins: string | undefined,
+  fallbackOriginUrls: readonly (string | undefined)[] = []
+): string[] {
+  const origins = new Set(
+    (rawAllowedOrigins ?? "")
+      .split(",")
+      .map((origin) => origin.trim())
+      .filter((origin) => origin.length > 0)
+  );
+  for (const url of fallbackOriginUrls) {
+    const trimmed = url?.trim();
+    if (!trimmed) {
+      continue;
+    }
+    try {
+      origins.add(new URL(trimmed).origin);
+    } catch {
+      // Unparseable fallback URLs contribute nothing; explicit entries still apply.
+    }
+  }
+  return [...origins];
+}
+
 export function readHeader(headers: HeaderRecord | undefined, name: string): string | undefined {
   if (!headers) {
     return undefined;

@@ -25,6 +25,7 @@ import {
 } from "../api/addressApiAuth.js";
 import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
 import type { AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
+import { buildAllowedOrigins } from "../api/apiCors.js";
 import { createApiApp } from "../api/apiServer.js";
 import {
   createInMemoryContentReportRateLimiter,
@@ -141,10 +142,14 @@ function readBooleanEnv(name: string, fallback: boolean): boolean {
 }
 
 function readAllowedOrigins(): string[] {
-  return (process.env.ADDRESS_API_ALLOWED_ORIGINS ?? "")
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter((origin) => origin.length > 0);
+  // Same-origin browser POSTs still carry an Origin header, so the site's own
+  // origin must always be in the allowlist even when no cross-origin frontend
+  // exists; derive it from the public base URLs so an unset
+  // ADDRESS_API_ALLOWED_ORIGINS cannot 403 all browser mutations.
+  return buildAllowedOrigins(process.env.ADDRESS_API_ALLOWED_ORIGINS, [
+    process.env.SITE_ORIGIN,
+    process.env.AUTH_PUBLIC_BASE_URL,
+  ]);
 }
 
 function readOptionalEnv(name: string): string | null {
