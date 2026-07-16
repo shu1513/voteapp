@@ -5,6 +5,7 @@ import {
   districtTypeFromMtfcc,
   extractAddressDistrictKeysFromGeographies,
   resolveAddressDistrictKeysFromGeographies,
+  warningAffectsSupportedDistrict,
 } from "../../../src/pipeline/address/addressDistrictResolver.js";
 
 describe("addressDistrictResolver", () => {
@@ -144,5 +145,26 @@ describe("addressDistrictResolver", () => {
       { layer_name: "Counties", reason: "geography layer is not an array" },
       { layer_name: "States", mtfcc: "G4000", reason: "geography feature is missing GEOID" },
     ]);
+  });
+
+  it("classifies warnings by whether a supported district failed to resolve", () => {
+    // Layer maps to a supported type.
+    expect(
+      warningAffectsSupportedDistrict({ layer_name: "Counties", reason: "geography layer is not an array" })
+    ).toBe(true);
+    // Layer name unknown but the MTFCC identifies a supported district.
+    expect(
+      warningAffectsSupportedDistrict({
+        layer_name: "Renamed Layer",
+        mtfcc: "G5220",
+        reason: "geography feature is missing GEOID",
+      })
+    ).toBe(true);
+    // Layers the app never tracks (returned because layers=all) are noise.
+    expect(
+      warningAffectsSupportedDistrict({ layer_name: "Census Tracts", reason: "geography feature is missing GEOID" })
+    ).toBe(false);
+    // Fully malformed geographies carry no attributable layer.
+    expect(warningAffectsSupportedDistrict({ layer_name: "", reason: "geographies must be an object" })).toBe(false);
   });
 });

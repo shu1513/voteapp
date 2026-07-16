@@ -57,6 +57,117 @@ describe("updateAuthenticatedAddressDistricts", () => {
     expect(lookupBallotSummariesByDistrictIds).toHaveBeenCalledWith([districtId]);
   });
 
+  it("refuses a partial resolution instead of replacing saved districts with the subset", async () => {
+    // One district resolved, one Census key with no matching districts row
+    // (vintage drift / incomplete load): saving the subset would silently
+    // drop the user's still-valid districts.
+    const resolveAddressToDistricts = vi.fn().mockResolvedValue({
+      ...resolvedAddress,
+      missing_district_keys: [{ district_type: "state_lower", geoid_compact: "08007" }],
+    });
+    const replaceUserDistricts = vi.fn();
+    const lookupBallotSummariesByDistrictIds = vi.fn();
+
+    await expect(
+      updateAuthenticatedAddressDistricts(
+        { resolveAddressToDistricts, replaceUserDistricts, lookupBallotSummariesByDistrictIds },
+        userId,
+        "123 Main St Denver CO 80203"
+      )
+    ).rejects.toSatisfy((error) => {
+      expect(error).toBeInstanceOf(AuthenticatedAddressDistrictUpdateError);
+      expect((error as AuthenticatedAddressDistrictUpdateError).code).toBe("partial_district_resolution");
+      return true;
+    });
+
+    expect(replaceUserDistricts).not.toHaveBeenCalled();
+    expect(lookupBallotSummariesByDistrictIds).not.toHaveBeenCalled();
+  });
+
+  it("treats every key missing as an unsupported address, not a retryable gap", async () => {
+    // Territories hit this: the Census geocoder answers for Puerto Rico but
+    // the district loaders cover 50 states + DC, so every key is unmapped —
+    // permanently. A retryable 503 would tell those users to try again
+    // forever; 422 no_supported_districts is the honest answer.
+    const resolveAddressToDistricts = vi.fn().mockResolvedValue({
+      ...resolvedAddress,
+      districts: [],
+      missing_district_keys: [{ district_type: "county", geoid_compact: "72127" }],
+    });
+    const replaceUserDistricts = vi.fn();
+    const lookupBallotSummariesByDistrictIds = vi.fn();
+
+    await expect(
+      updateAuthenticatedAddressDistricts(
+        { resolveAddressToDistricts, replaceUserDistricts, lookupBallotSummariesByDistrictIds },
+        userId,
+        "123 Calle Sol San Juan PR 00901"
+      )
+    ).rejects.toSatisfy((error) => {
+      expect((error as AuthenticatedAddressDistrictUpdateError).code).toBe("no_supported_districts");
+      return true;
+    });
+
+    expect(replaceUserDistricts).not.toHaveBeenCalled();
+  });
+
+  it("refuses when a supported district was skipped with only a warning to show for it", async () => {
+    // A supported district that never became a key (missing GEOID,
+    // MTFCC/layer conflict) cannot appear in missing_district_keys — the
+    // warning is the only trace. Without this check the saved set would be
+    // replaced by the partial subset.
+    const resolveAddressToDistricts = vi.fn().mockResolvedValue({
+      ...resolvedAddress,
+      warnings: [
+        {
+          layer_name: "2024 State Legislative Districts - Lower",
+          mtfcc: "G5220",
+          reason: "geography feature is missing GEOID",
+        },
+      ],
+    });
+    const replaceUserDistricts = vi.fn();
+    const lookupBallotSummariesByDistrictIds = vi.fn();
+
+    await expect(
+      updateAuthenticatedAddressDistricts(
+        { resolveAddressToDistricts, replaceUserDistricts, lookupBallotSummariesByDistrictIds },
+        userId,
+        "123 Main St Denver CO 80203"
+      )
+    ).rejects.toSatisfy((error) => {
+      expect((error as AuthenticatedAddressDistrictUpdateError).code).toBe("partial_district_resolution");
+      return true;
+    });
+
+    expect(replaceUserDistricts).not.toHaveBeenCalled();
+  });
+
+  it("ignores warnings from layers the app does not track", async () => {
+    // layers=all makes the geocoder return every Census layer; a malformed
+    // tract or block feature says nothing about the user's districts and
+    // must not block the update.
+    const resolveAddressToDistricts = vi.fn().mockResolvedValue({
+      ...resolvedAddress,
+      warnings: [{ layer_name: "Census Tracts", reason: "geography feature is missing GEOID" }],
+    });
+    const replaceUserDistricts = vi.fn().mockResolvedValue({ districtCount: 1 });
+    const lookupBallotSummariesByDistrictIds = vi.fn().mockResolvedValue({
+      district_ids: [districtId],
+      districts: resolvedAddress.districts,
+      elections: [],
+    });
+
+    const result = await updateAuthenticatedAddressDistricts(
+      { resolveAddressToDistricts, replaceUserDistricts, lookupBallotSummariesByDistrictIds },
+      userId,
+      "123 Main St Denver CO 80203"
+    );
+
+    expect(result.matched_address).toBe(resolvedAddress.matched_address);
+    expect(replaceUserDistricts).toHaveBeenCalledWith(userId, [districtId]);
+  });
+
   it("does not replace saved districts when the resolved address has no supported districts", async () => {
     const resolveAddressToDistricts = vi.fn().mockResolvedValue({ ...resolvedAddress, districts: [] });
     const replaceUserDistricts = vi.fn();

@@ -121,6 +121,15 @@ function preferDistrictKey(existing: AddressDistrictKey, next: AddressDistrictKe
   return existing;
 }
 
+// True when the warning's layer or MTFCC maps to a supported district type,
+// i.e. a district the app tracks failed to resolve into a key (missing GEOID,
+// MTFCC/layer conflict, malformed feature). Warnings from layers the geocoder
+// returns but the app ignores (tracts, blocks — layers=all requests
+// everything) stay non-blocking.
+export function warningAffectsSupportedDistrict(warning: AddressDistrictResolverWarning): boolean {
+  return districtTypeFromLayerName(warning.layer_name) !== null || districtTypeFromMtfcc(warning.mtfcc) !== null;
+}
+
 export function resolveAddressDistrictKeysFromGeographies(geographies: unknown): AddressDistrictResolution {
   const warnings: AddressDistrictResolverWarning[] = [];
   const deduped = new Map<string, AddressDistrictKey>();

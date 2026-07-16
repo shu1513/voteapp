@@ -24,7 +24,7 @@ import {
   createTrustedUserIdResolver,
 } from "../api/addressApiAuth.js";
 import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
-import type { AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
+import { toAddressResolutionDiagnostics, type AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
 import { buildAllowedOrigins } from "../api/apiCors.js";
 import { createApiApp } from "../api/apiServer.js";
 import {
@@ -168,7 +168,7 @@ function readAuthCookieSameSiteEnv(name: string, fallback: "lax" | "strict" | "n
   throw new Error(`Invalid ${name}: ${process.env[name]}`);
 }
 
-function logAddressResolutionDiagnostics(diagnostics: AddressResolutionDiagnostics): void {
+function logAddressResolutionDiagnostics(diagnostics: AddressResolutionDiagnostics, source = "address_resolve"): void {
   if (diagnostics.missing_district_keys.length === 0 && diagnostics.warnings.length === 0) {
     return;
   }
@@ -176,6 +176,7 @@ function logAddressResolutionDiagnostics(diagnostics: AddressResolutionDiagnosti
     JSON.stringify({
       type: "address_resolution_diagnostics",
       ts: new Date().toISOString(),
+      source,
       address_match_count: diagnostics.address_match_count,
       district_key_count: diagnostics.district_keys.length,
       missing_district_keys: diagnostics.missing_district_keys,
@@ -569,8 +570,20 @@ async function main(): Promise<void> {
     updateAuthenticatedAddressDistricts: (userId, address) =>
       updateAuthenticatedAddressDistricts(
         {
-          resolveAddressToDistricts: (inputAddress) =>
-            resolveAddressWithAutoResearch(inputAddress, "me_address_update"),
+          // Unlike the anonymous resolve handler, this path has no
+          // logDiagnostics hook, and the partial-resolution 503 it can turn
+          // into is an expected error that never reaches Sentry — so log the
+          // missing keys and warnings here or operators would have nothing
+          // to repair the districts data from.
+          resolveAddressToDistricts: async (inputAddress) => {
+            const result = await resolveAddressWithAutoResearch(inputAddress, "me_address_update");
+            try {
+              logAddressResolutionDiagnostics(toAddressResolutionDiagnostics(result), "me_address_update");
+            } catch {
+              // Diagnostics are best-effort; never fail the update for them.
+            }
+            return result;
+          },
           replaceUserDistricts: (inputUserId, districtIds) => replaceUserDistricts(pool, inputUserId, districtIds),
           lookupBallotSummariesByDistrictIds: (districtIds) =>
             lookupBallotSummariesByDistrictIds(pool, districtIds),

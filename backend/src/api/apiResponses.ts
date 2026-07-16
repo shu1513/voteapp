@@ -8,6 +8,7 @@ export type ApiErrorCode =
   | "unsupported_media_type"
   | "rate_limited"
   | "address_not_found"
+  | "districts_unavailable"
   | "upstream_unavailable"
   | "bad_upstream_response"
   | "internal_error";
