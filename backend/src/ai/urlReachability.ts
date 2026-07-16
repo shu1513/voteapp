@@ -1,10 +1,14 @@
-import { isIP } from "node:net";
+import type { LookupAddress } from "node:dns";
 import { lookup as dnsLookup } from "node:dns/promises";
+import { isIP, type LookupFunction } from "node:net";
+import ipaddr from "ipaddr.js";
+import { Agent } from "undici";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 type UrlReachabilityOptions = {
   timeoutMs?: number;
   allowStatusCodes?: readonly number[];
+  method?: "HEAD" | "GET";
 };
 
 export type UrlReachabilitySuccess = {
@@ -12,6 +16,8 @@ export type UrlReachabilitySuccess = {
   normalizedUrl: string;
   finalUrl: string;
   status: number;
+  contentType?: string;
+  contentLength?: number;
 };
 
 export type UrlReachabilityFailure = {
@@ -39,47 +45,37 @@ export function isTlsCertificateReachabilityFailure(reason: string): boolean {
   return TLS_CERTIFICATE_FAILURE_PATTERNS.some((pattern) => normalized.includes(pattern));
 }
 
-function isPrivateIpLiteral(hostnameOrIp: string): boolean {
-  const host = hostnameOrIp.toLowerCase().replace(/^\[|\]$/g, "");
-  const ipVersion = isIP(host);
-  if (ipVersion === 4) {
-    const octets = host.split(".").map((part) => Number.parseInt(part, 10));
-    if (octets.length !== 4 || octets.some((n) => !Number.isInteger(n) || n < 0 || n > 255)) {
+function stripIpv6Brackets(hostnameOrIp: string): string {
+  return hostnameOrIp.toLowerCase().replace(/^\[|\]$/g, "");
+}
+
+// RFC 8215 local-use NAT64 prefix. ipaddr.js only special-cases the
+// well-known RFC 6052 prefix (64:ff9b::/96, range "rfc6052"), so this one
+// comes back plain "unicast" — but on a network with a NAT64 translator it
+// maps onto arbitrary IPv4, including loopback and RFC 1918.
+const NAT64_LOCAL_USE_RANGE = ipaddr.parseCIDR("64:ff9b:1::/48");
+
+/** Only ordinary globally routable unicast addresses are safe citation targets. */
+function isBlockedIpLiteral(hostnameOrIp: string): boolean {
+  const host = stripIpv6Brackets(hostnameOrIp);
+  if (!ipaddr.isValid(host)) {
+    return true;
+  }
+
+  let address = ipaddr.parse(host);
+  if (address instanceof ipaddr.IPv6) {
+    if (address.isIPv4MappedAddress()) {
+      address = address.toIPv4Address();
+    } else if (address.match(NAT64_LOCAL_USE_RANGE)) {
       return true;
     }
-
-    const [a, b] = octets;
-    return (
-      a === 10 ||
-      a === 127 ||
-      (a === 169 && b === 254) ||
-      (a === 172 && b >= 16 && b <= 31) ||
-      (a === 192 && b === 168) ||
-      a === 0 ||
-      (a === 100 && b >= 64 && b <= 127) ||
-      (a === 198 && (b === 18 || b === 19)) ||
-      a >= 224
-    );
   }
 
-  if (ipVersion === 6) {
-    return (
-      host === "::1" ||
-      host === "::" ||
-      host.startsWith("fc") ||
-      host.startsWith("fd") ||
-      host.startsWith("fe8") ||
-      host.startsWith("fe9") ||
-      host.startsWith("fea") ||
-      host.startsWith("feb")
-    );
-  }
-
-  return false;
+  return address.range() !== "unicast";
 }
 
 function isBlockedHostname(hostname: string): boolean {
-  const host = hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  const host = stripIpv6Brackets(hostname);
   if (
     host === "localhost" ||
     host.endsWith(".localhost") ||
@@ -91,40 +87,161 @@ function isBlockedHostname(hostname: string): boolean {
     return true;
   }
 
-  return isPrivateIpLiteral(host);
+  return isIP(host) > 0 && isBlockedIpLiteral(host);
 }
 
-async function resolvesToBlockedPrivateIp(hostname: string): Promise<boolean> {
-  const host = hostname.toLowerCase().replace(/^\[|\]$/g, "");
-  if (!host || isIP(host) > 0) {
-    return false;
-  }
+type ResolvedUrlTarget = {
+  hostname: string;
+  addresses: LookupAddress[];
+};
 
-  try {
-    const records = await dnsLookup(host, { all: true, verbatim: true });
-    return records.some((record) => isPrivateIpLiteral(record.address));
-  } catch {
-    // Best-effort DNS safety check.
-    return false;
-  }
-}
+type UrlTargetResolution =
+  | { target: ResolvedUrlTarget }
+  | { failure: UrlReachabilityFailure };
 
-async function validateParsedUrlSafety(url: string): Promise<UrlReachabilityFailure | null> {
+// dns.lookup error codes that indicate the resolver (not the name) failed.
+// These must stay retryable downstream; ENOTFOUND/ENODATA stay permanent.
+const TRANSIENT_DNS_LOOKUP_ERROR_CODES = new Set([
+  "EAI_AGAIN",
+  "ETIMEOUT",
+  "ETIMEDOUT",
+  "ESERVFAIL",
+  "EREFUSED",
+]);
+
+const DNS_LOOKUP_TIMEOUT_CODE = "DNS_LOOKUP_TIMEOUT";
+
+async function resolveSafeUrlTarget(url: string, timeoutMs: number): Promise<UrlTargetResolution> {
   let parsed: URL;
   try {
     parsed = new URL(url);
   } catch {
-    return { ok: false, reason: "citation URL is not parseable" };
+    return { failure: { ok: false, reason: "citation URL is not parseable" } };
   }
 
   if (isBlockedHostname(parsed.hostname)) {
-    return { ok: false, reason: "citation URL points to a blocked/private host" };
-  }
-  if (await resolvesToBlockedPrivateIp(parsed.hostname)) {
-    return { ok: false, reason: "citation URL hostname resolves to a blocked/private IP" };
+    return {
+      failure: { ok: false, reason: "citation URL points to a blocked/private host" },
+    };
   }
 
-  return null;
+  const hostname = stripIpv6Brackets(parsed.hostname);
+  const literalFamily = isIP(hostname);
+  if (literalFamily > 0) {
+    return {
+      target: {
+        hostname,
+        addresses: [{ address: hostname, family: literalFamily }],
+      },
+    };
+  }
+
+  // dns.lookup has no abort support, so race it against a timer: the fetch
+  // timeout only starts after resolution, and a stalled resolver must not
+  // hold the verifier far past its advertised budget. On timeout the
+  // in-flight getaddrinfo call is abandoned (it settles into a no-op).
+  //
+  // Reason strings are a contract with classifyCitationVerificationFailure
+  // (five copies, e.g. enrichCandidateRecords.ts): "timed out" and
+  // "dns lookup failed transiently" classify as transient/retryable, the
+  // bare could-not-be-resolved reason as permanent.
+  let records: LookupAddress[];
+  let dnsTimeoutTimer: NodeJS.Timeout | undefined;
+  try {
+    records = await Promise.race([
+      dnsLookup(hostname, { all: true, verbatim: true }),
+      new Promise<never>((_, reject) => {
+        dnsTimeoutTimer = setTimeout(() => {
+          reject(
+            Object.assign(new Error("DNS lookup timed out"), { code: DNS_LOOKUP_TIMEOUT_CODE })
+          );
+        }, timeoutMs);
+      }),
+    ]);
+  } catch (error) {
+    const code =
+      error instanceof Error && "code" in error ? String((error as { code?: unknown }).code) : "";
+    if (code === DNS_LOOKUP_TIMEOUT_CODE) {
+      return { failure: { ok: false, reason: "citation URL DNS lookup timed out" } };
+    }
+    if (TRANSIENT_DNS_LOOKUP_ERROR_CODES.has(code)) {
+      return {
+        failure: { ok: false, reason: `citation URL DNS lookup failed transiently: ${code}` },
+      };
+    }
+    return {
+      failure: { ok: false, reason: "citation URL hostname could not be resolved" },
+    };
+  } finally {
+    clearTimeout(dnsTimeoutTimer);
+  }
+
+  if (records.length === 0) {
+    return {
+      failure: { ok: false, reason: "citation URL hostname could not be resolved" },
+    };
+  }
+
+  if (
+    records.some(
+      (record) =>
+        (record.family !== 4 && record.family !== 6) ||
+        isIP(record.address) !== record.family ||
+        isBlockedIpLiteral(record.address)
+    )
+  ) {
+    return {
+      failure: {
+        ok: false,
+        reason: "citation URL hostname resolves to a blocked/private IP",
+      },
+    };
+  }
+
+  const uniqueRecords = records.filter(
+    (record, index) =>
+      records.findIndex(
+        (candidate) =>
+          candidate.family === record.family && candidate.address === record.address
+      ) === index
+  );
+
+  return { target: { hostname, addresses: uniqueRecords } };
+}
+
+function createPinnedLookup(target: ResolvedUrlTarget): LookupFunction {
+  // Return only the addresses already classified above. The socket never gets
+  // a second DNS answer that could differ from the one we validated.
+  return (hostname, options, callback) => {
+    if (stripIpv6Brackets(hostname) !== target.hostname) {
+      const error = Object.assign(new Error("Pinned DNS lookup received an unexpected hostname"), {
+        code: "ENOTFOUND",
+      });
+      callback(error, "", 0);
+      return;
+    }
+
+    const family = options.family === 4 || options.family === 6 ? options.family : 0;
+    const addresses =
+      family === 0
+        ? target.addresses
+        : target.addresses.filter((address) => address.family === family);
+    if (addresses.length === 0) {
+      const error = Object.assign(
+        new Error("Pinned DNS lookup has no address for the requested family"),
+        { code: "EAI_ADDRFAMILY" }
+      );
+      callback(error, "", 0);
+      return;
+    }
+
+    if (options.all) {
+      callback(null, addresses);
+      return;
+    }
+    const [address] = addresses;
+    callback(null, address.address, address.family);
+  };
 }
 
 const MAX_REDIRECT_HOPS = 5;
@@ -175,6 +292,63 @@ async function cancelResponseBody(response: Response): Promise<void> {
   }
 }
 
+type HopResponse = {
+  ok: boolean;
+  status: number;
+  location: string | null;
+  contentType: string | null;
+  contentLength: number | null;
+};
+
+async function fetchPinnedUrl(
+  url: string,
+  target: ResolvedUrlTarget,
+  method: "HEAD" | "GET",
+  timeoutMs: number
+): Promise<HopResponse> {
+  const dispatcher = new Agent({
+    connect: { lookup: createPinnedLookup(target) },
+    autoSelectFamily:
+      target.addresses.some((address) => address.family === 4) &&
+      target.addresses.some((address) => address.family === 6),
+  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  let response: Response | null = null;
+  try {
+    response = await fetch(url, {
+      method,
+      redirect: "manual",
+      signal: controller.signal,
+      dispatcher,
+    } as RequestInit & { dispatcher: Agent });
+    return {
+      ok: response.ok,
+      status: response.status,
+      location: response.headers.get("location"),
+      contentType: response.headers.get("content-type"),
+      contentLength: (() => {
+        const raw = response.headers.get("content-length");
+        if (!raw) {
+          return null;
+        }
+        const parsed = Number.parseInt(raw, 10);
+        return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
+      })(),
+    };
+  } finally {
+    clearTimeout(timeout);
+    if (response) {
+      await cancelResponseBody(response);
+    }
+    try {
+      await dispatcher.close();
+    } catch {
+      // Best effort: do not mask the primary result.
+    }
+  }
+}
+
 /**
  * SSRF-safe fetch: redirects are followed manually so every Location target
  * is safety-checked BEFORE it is contacted. `redirect: "follow"` would let a
@@ -186,29 +360,21 @@ async function fetchWithValidatedRedirects(
   startUrl: string,
   method: "HEAD" | "GET",
   timeoutMs: number
-): Promise<{ response: Response; finalUrl: string } | { failure: UrlReachabilityFailure }> {
+): Promise<{ response: HopResponse; finalUrl: string } | { failure: UrlReachabilityFailure }> {
   let currentUrl = startUrl;
   const visitedUrls: string[] = [startUrl];
   for (let hop = 0; hop <= MAX_REDIRECT_HOPS; hop++) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), timeoutMs);
-    let response: Response;
-    try {
-      response = await fetch(currentUrl, {
-        method,
-        redirect: "manual",
-        signal: controller.signal,
-      });
-    } finally {
-      clearTimeout(timeout);
+    const resolution = await resolveSafeUrlTarget(currentUrl, timeoutMs);
+    if ("failure" in resolution) {
+      return resolution;
     }
+    const response = await fetchPinnedUrl(currentUrl, resolution.target, method, timeoutMs);
 
     if (!FOLLOWABLE_REDIRECT_STATUSES.has(response.status)) {
       return { response, finalUrl: currentUrl };
     }
 
-    const location = response.headers.get("location");
-    await cancelResponseBody(response);
+    const location = response.location;
     if (!location) {
       return { failure: { ok: false, reason: "citation URL redirect is missing a Location header" } };
     }
@@ -245,10 +411,6 @@ async function fetchWithValidatedRedirects(
         },
       };
     }
-    const nextSafety = await validateParsedUrlSafety(nextUrl);
-    if (nextSafety) {
-      return { failure: nextSafety };
-    }
     currentUrl = nextUrl;
     visitedUrls.push(nextUrl);
   }
@@ -268,25 +430,23 @@ export async function verifyHttpUrlReachability(
 ): Promise<UrlReachabilityResult> {
   const timeoutMs = options.timeoutMs ?? 8_000;
   const allowStatusCodes = new Set(options.allowStatusCodes ?? [403]);
+  const initialMethod = options.method ?? "HEAD";
   const normalizedInputUrl = normalizeHttpUrl(rawUrl);
   if (!normalizedInputUrl) {
     return { ok: false, reason: "citation URL is not a valid http(s) URL" };
   }
 
-  const inputSafety = await validateParsedUrlSafety(normalizedInputUrl);
-  if (inputSafety) {
-    return inputSafety;
-  }
-
-  let response: Response | null = null;
-
   try {
-    const headResult = await fetchWithValidatedRedirects(normalizedInputUrl, "HEAD", timeoutMs);
-    if ("failure" in headResult) {
-      return headResult.failure;
+    const initialResult = await fetchWithValidatedRedirects(
+      normalizedInputUrl,
+      initialMethod,
+      timeoutMs
+    );
+    if ("failure" in initialResult) {
+      return initialResult.failure;
     }
-    response = headResult.response;
-    let finalUrl = headResult.finalUrl;
+    let response = initialResult.response;
+    let finalUrl = initialResult.finalUrl;
 
     // HEAD is an optimization, not the authoritative answer: beyond hosts
     // that reject the method outright (405/501), some servers answer HEAD
@@ -296,9 +456,11 @@ export async function verifyHttpUrlReachability(
     // The GET re-walks the redirect chain from the original URL with the
     // same per-hop validation — HEAD and GET can redirect differently, so
     // HEAD's chain proves nothing about GET's.
-    if (!response.ok && !allowStatusCodes.has(response.status)) {
-      await cancelResponseBody(response);
-      response = null;
+    if (
+      initialMethod === "HEAD" &&
+      !response.ok &&
+      !allowStatusCodes.has(response.status)
+    ) {
       const getResult = await fetchWithValidatedRedirects(normalizedInputUrl, "GET", timeoutMs);
       if ("failure" in getResult) {
         return getResult.failure;
@@ -311,18 +473,13 @@ export async function verifyHttpUrlReachability(
       return { ok: false, reason: `citation fetch returned status ${response.status}` };
     }
 
-    // Every hop, including this final URL, was validated before it was
-    // requested; re-check once more as defense in depth.
-    const finalSafety = await validateParsedUrlSafety(finalUrl);
-    if (finalSafety) {
-      return finalSafety;
-    }
-
     return {
       ok: true,
       normalizedUrl: normalizedInputUrl,
       finalUrl,
       status: response.status,
+      ...(response.contentType ? { contentType: response.contentType } : {}),
+      ...(response.contentLength !== null ? { contentLength: response.contentLength } : {}),
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
@@ -330,9 +487,5 @@ export async function verifyHttpUrlReachability(
       return { ok: false, reason: "citation URL fetch timed out" };
     }
     return { ok: false, reason: `citation URL fetch failed: ${message}` };
-  } finally {
-    if (response) {
-      await cancelResponseBody(response);
-    }
   }
 }

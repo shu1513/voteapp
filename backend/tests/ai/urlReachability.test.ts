@@ -1,6 +1,26 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { afterEach, vi } from "vitest";
+const { agentCloseMock, agentOptionsMock, dnsLookupMock } = vi.hoisted(() => ({
+  agentCloseMock: vi.fn(),
+  agentOptionsMock: vi.fn(),
+  dnsLookupMock: vi.fn(),
+}));
+
+vi.mock("node:dns/promises", () => ({
+  lookup: dnsLookupMock,
+}));
+
+vi.mock("undici", () => ({
+  Agent: class MockAgent {
+    constructor(options: unknown) {
+      agentOptionsMock(options);
+    }
+
+    close() {
+      return agentCloseMock();
+    }
+  },
+}));
 
 import {
   isTlsCertificateReachabilityFailure,
@@ -47,30 +67,271 @@ describe("urlReachability", () => {
 });
 
 describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
+  beforeEach(() => {
+    agentCloseMock.mockReset();
+    agentCloseMock.mockResolvedValue(undefined);
+    agentOptionsMock.mockReset();
+    dnsLookupMock.mockReset();
+    dnsLookupMock.mockResolvedValue([{ address: "93.184.216.34", family: 4 }]);
+  });
+
   afterEach(() => {
     vi.unstubAllGlobals();
   });
 
-  type StubStep = { status: number; location?: string };
+  type StubStep = {
+    status: number;
+    location?: string;
+    contentType?: string;
+    contentLength?: number;
+  };
 
   function stubFetch(handler: (method: string, url: string) => StubStep) {
     const calls: { method: string; url: string }[] = [];
+    const dispatchers: unknown[] = [];
     const signals: (AbortSignal | undefined)[] = [];
-    vi.stubGlobal("fetch", async (url: string, init?: { method?: string; signal?: AbortSignal }) => {
-      const method = init?.method ?? "GET";
-      calls.push({ method, url });
-      signals.push(init?.signal);
-      const { status, location } = handler(method, url);
-      return {
-        ok: status >= 200 && status < 300,
-        status,
-        url,
-        headers: { get: (name: string) => (name.toLowerCase() === "location" ? location ?? null : null) },
-        body: null,
-      } as unknown as Response;
-    });
-    return { calls, signals };
+    vi.stubGlobal(
+      "fetch",
+      async (
+        url: string,
+        init?: { dispatcher?: unknown; method?: string; signal?: AbortSignal }
+      ) => {
+        const method = init?.method ?? "GET";
+        calls.push({ method, url });
+        dispatchers.push(init?.dispatcher);
+        signals.push(init?.signal);
+        const { status, location, contentLength, contentType } = handler(method, url);
+        return {
+          ok: status >= 200 && status < 300,
+          status,
+          url,
+          headers: {
+            get: (name: string) => {
+              const lowerName = name.toLowerCase();
+              if (lowerName === "location") {
+                return location ?? null;
+              }
+              if (lowerName === "content-type") {
+                return contentType ?? null;
+              }
+              if (lowerName === "content-length") {
+                return contentLength === undefined ? null : String(contentLength);
+              }
+              return null;
+            },
+          },
+          body: null,
+        } as unknown as Response;
+      }
+    );
+    return { calls, dispatchers, signals };
   }
+
+  it("blocks an IPv4-mapped IPv6 loopback literal before fetch", async () => {
+    const { calls } = stubFetch(() => ({ status: 200 }));
+
+    const result = await verifyHttpUrlReachability("http://[::ffff:127.0.0.1]:9/internal");
+
+    expect(calls).toEqual([]);
+    expect(result).toEqual({ ok: false, reason: "citation URL points to a blocked/private host" });
+  });
+
+  it.each([
+    "http://0.0.0.0/source",
+    "http://10.0.0.1/source",
+    "http://100.64.0.1/source",
+    "http://127.0.0.1/source",
+    "http://169.254.169.254/source",
+    "http://172.16.0.1/source",
+    "http://192.0.2.1/source",
+    "http://192.168.0.1/source",
+    "http://198.18.0.1/source",
+    "http://224.0.0.1/source",
+    "http://240.0.0.1/source",
+    "http://[::]/source",
+    "http://[::1]/source",
+    "http://[fc00::1]/source",
+    "http://[fe80::1]/source",
+    "http://[ff02::1]/source",
+    "http://[2001:db8::1]/source",
+    "http://[::ffff:10.0.0.1]/source",
+    // RFC 6052 well-known NAT64 prefix embedding loopback
+    "http://[64:ff9b::7f00:1]/source",
+    // RFC 8215 local-use NAT64 prefix embedding loopback (ipaddr.js labels
+    // it plain unicast, so it needs the explicit range check)
+    "http://[64:ff9b:1::7f00:1]/source",
+  ])("blocks reserved IP literal %s before fetch", async (url) => {
+    const { calls } = stubFetch(() => ({ status: 200 }));
+
+    const result = await verifyHttpUrlReachability(url);
+
+    expect(calls).toEqual([]);
+    expect(result).toEqual({ ok: false, reason: "citation URL points to a blocked/private host" });
+  });
+
+  it("rejects a hostname that resolves to a local-use NAT64 address", async () => {
+    const { calls } = stubFetch(() => ({ status: 200 }));
+    dnsLookupMock.mockResolvedValueOnce([{ address: "64:ff9b:1::7f00:1", family: 6 }]);
+
+    const result = await verifyHttpUrlReachability("https://nat64-rebind.example/source");
+
+    expect(calls).toEqual([]);
+    expect(result).toEqual({
+      ok: false,
+      reason: "citation URL hostname resolves to a blocked/private IP",
+    });
+  });
+
+  it("never contacts a local-use NAT64 redirect target", async () => {
+    const { calls } = stubFetch(() => ({
+      status: 302,
+      location: "http://[64:ff9b:1::7f00:1]/internal-admin",
+    }));
+
+    const result = await verifyHttpUrlReachability("https://example.gov/redirects-to-nat64");
+
+    expect(calls).toEqual([
+      { method: "HEAD", url: "https://example.gov/redirects-to-nat64" },
+    ]);
+    expect(result).toEqual({ ok: false, reason: "citation URL points to a blocked/private host" });
+  });
+
+  it("fails closed when hostname resolution fails", async () => {
+    const { calls } = stubFetch(() => ({ status: 200 }));
+    dnsLookupMock.mockRejectedValueOnce(
+      Object.assign(new Error("getaddrinfo ENOTFOUND"), { code: "ENOTFOUND" })
+    );
+
+    const result = await verifyHttpUrlReachability("https://does-not-resolve.example/source");
+
+    expect(calls).toEqual([]);
+    expect(result).toEqual({ ok: false, reason: "citation URL hostname could not be resolved" });
+  });
+
+  it("reports a transient reason for resolver failures like EAI_AGAIN", async () => {
+    const { calls } = stubFetch(() => ({ status: 200 }));
+    dnsLookupMock.mockRejectedValueOnce(
+      Object.assign(new Error("getaddrinfo EAI_AGAIN"), { code: "EAI_AGAIN" })
+    );
+
+    const result = await verifyHttpUrlReachability("https://flaky-resolver.example/source");
+
+    expect(calls).toEqual([]);
+    // "dns lookup failed transiently" is matched by every
+    // classifyCitationVerificationFailure copy, keeping resolver outages
+    // retryable while ENOTFOUND stays permanent.
+    expect(result).toEqual({
+      ok: false,
+      reason: "citation URL DNS lookup failed transiently: EAI_AGAIN",
+    });
+  });
+
+  it("bounds DNS resolution with the same timeout budget as the fetch", async () => {
+    const { calls } = stubFetch(() => ({ status: 200 }));
+    dnsLookupMock.mockImplementationOnce(() => new Promise(() => {}));
+
+    const result = await verifyHttpUrlReachability("https://stalled-resolver.example/source", {
+      timeoutMs: 25,
+    });
+
+    expect(calls).toEqual([]);
+    // "timed out" already classifies as transient downstream.
+    expect(result).toEqual({ ok: false, reason: "citation URL DNS lookup timed out" });
+  });
+
+  it("rejects a hostname if any resolved address is private", async () => {
+    const { calls } = stubFetch(() => ({ status: 200 }));
+    dnsLookupMock.mockResolvedValueOnce([
+      { address: "93.184.216.34", family: 4 },
+      { address: "10.0.0.7", family: 4 },
+    ]);
+
+    const result = await verifyHttpUrlReachability("https://mixed-addresses.example/source");
+
+    expect(calls).toEqual([]);
+    expect(result).toEqual({
+      ok: false,
+      reason: "citation URL hostname resolves to a blocked/private IP",
+    });
+  });
+
+  it("pins the connection lookup to the already-validated DNS answers", async () => {
+    const { dispatchers } = stubFetch(() => ({ status: 200 }));
+    dnsLookupMock.mockResolvedValueOnce([
+      { address: "93.184.216.34", family: 4 },
+      { address: "2606:4700:4700::1111", family: 6 },
+    ]);
+
+    const result = await verifyHttpUrlReachability("https://pinned.example/source");
+
+    expect(result.ok).toBe(true);
+    expect(dnsLookupMock).toHaveBeenCalledTimes(1);
+    expect(dispatchers[0]).toBeDefined();
+    expect(agentCloseMock).toHaveBeenCalledTimes(1);
+
+    const agentOptions = agentOptionsMock.mock.calls[0]?.[0] as {
+      connect?: {
+        lookup?: (
+          hostname: string,
+          options: { all: boolean; family: number },
+          callback: (
+            error: Error | null,
+            addresses: string | Array<{ address: string; family: number }>,
+            family?: number
+          ) => void
+        ) => void;
+      };
+    };
+    const lookup = agentOptions.connect?.lookup;
+    expect(lookup).toBeTypeOf("function");
+    const pinnedAddresses = await new Promise<Array<{ address: string; family: number }>>(
+      (resolve, reject) => {
+        lookup?.("pinned.example", { all: true, family: 0 }, (error, addresses) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(addresses as Array<{ address: string; family: number }>);
+        });
+      }
+    );
+    expect(pinnedAddresses).toEqual([
+      { address: "93.184.216.34", family: 4 },
+      { address: "2606:4700:4700::1111", family: 6 },
+    ]);
+    expect(dnsLookupMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not let a rejected dispatcher close mask a successful response", async () => {
+    stubFetch(() => ({ status: 200 }));
+    agentCloseMock.mockRejectedValueOnce(new Error("lingering connection"));
+
+    const result = await verifyHttpUrlReachability("https://example.gov/fine");
+
+    expect(result.ok).toBe(true);
+  });
+
+  it("supports a direct GET check and returns final response metadata", async () => {
+    const { calls } = stubFetch(() => ({
+      status: 200,
+      contentType: "text/html; charset=utf-8",
+      contentLength: 1234,
+    }));
+
+    const result = await verifyHttpUrlReachability("https://example.gov/source", {
+      method: "GET",
+    });
+
+    expect(calls.map((call) => call.method)).toEqual(["GET"]);
+    expect(result).toEqual({
+      ok: true,
+      normalizedUrl: "https://example.gov/source",
+      finalUrl: "https://example.gov/source",
+      status: 200,
+      contentType: "text/html; charset=utf-8",
+      contentLength: 1234,
+    });
+  });
 
   it("accepts a URL whose host answers HEAD 404 but GET 200 (CivicPlus DocumentCenter)", async () => {
     const { calls, signals } = stubFetch((method) => ({ status: method === "HEAD" ? 404 : 200 }));
@@ -156,6 +417,41 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
 
     expect(calls).toEqual([{ method: "HEAD", url: "https://example.gov/redirects-internally" }]);
     expect(result).toEqual({ ok: false, reason: "citation URL points to a blocked/private host" });
+  });
+
+  it("never contacts an IPv4-mapped IPv6 private redirect target", async () => {
+    const { calls } = stubFetch(() => ({
+      status: 302,
+      location: "http://[::ffff:127.0.0.1]:8080/internal-admin",
+    }));
+
+    const result = await verifyHttpUrlReachability(
+      "https://example.gov/redirects-to-mapped-loopback"
+    );
+
+    expect(calls).toEqual([
+      { method: "HEAD", url: "https://example.gov/redirects-to-mapped-loopback" },
+    ]);
+    expect(result).toEqual({ ok: false, reason: "citation URL points to a blocked/private host" });
+  });
+
+  it("never contacts a redirect hostname that resolves to a private address", async () => {
+    const { calls } = stubFetch((_method, url) =>
+      url === "https://example.gov/start"
+        ? { status: 302, location: "https://private-after-redirect.example/internal" }
+        : { status: 200 }
+    );
+    dnsLookupMock
+      .mockResolvedValueOnce([{ address: "93.184.216.34", family: 4 }])
+      .mockResolvedValueOnce([{ address: "192.168.1.20", family: 4 }]);
+
+    const result = await verifyHttpUrlReachability("https://example.gov/start");
+
+    expect(calls).toEqual([{ method: "HEAD", url: "https://example.gov/start" }]);
+    expect(result).toEqual({
+      ok: false,
+      reason: "citation URL hostname resolves to a blocked/private IP",
+    });
   });
 
   it("never contacts a private redirect target reached only by the GET fallback", async () => {
