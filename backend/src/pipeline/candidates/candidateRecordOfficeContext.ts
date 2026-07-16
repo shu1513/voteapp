@@ -83,6 +83,10 @@ function toPresidentialRecordContext(
   };
 }
 
+// Accepts the candidate either as the direct candidate_elections link or as a
+// joint-ticket running mate (candidate_elections.running_mate_candidate_id),
+// mirroring the vice_president path in the presidential loader below. The
+// returned candidate fields are always the requested candidate's own row.
 export async function loadCandidateElectionOfficeContext(
   client: Queryable,
   candidateId: string,
@@ -108,14 +112,14 @@ export async function loadCandidateElectionOfficeContext(
         e.sources AS "electionSources"
       FROM public.candidate_elections ce
       JOIN public.candidates c
-        ON c.id = ce.candidate_id
+        ON c.id = $1
       JOIN public.elections e
         ON e.id = ce.election_id
       JOIN public.districts d
         ON d.id = e.district_id
       LEFT JOIN public.election_senate_metadata sm
         ON sm.election_id = e.id
-      WHERE ce.candidate_id = $1
+      WHERE (ce.candidate_id = c.id OR ce.running_mate_candidate_id = c.id)
         AND ce.election_id = $2
         AND c.deleted_at IS NULL
       LIMIT 1

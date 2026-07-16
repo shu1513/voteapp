@@ -39,6 +39,42 @@ describe("loadCandidateElectionOfficeContext", () => {
     expect(query.mock.calls[0]?.[1]).toEqual(["cand-1", "e-1"]);
   });
 
+  it("matches joint-ticket running mates via running_mate_candidate_id and returns the mate's own candidate row", async () => {
+    const query = vi.fn().mockResolvedValueOnce({
+      rows: [
+        {
+          candidateId: "cand-mate",
+          candidateDisplayName: "Gwen Graham",
+          currentOffice: null,
+          electionId: "e-fl-gov",
+          districtName: "Florida",
+          districtType: "statewide",
+          state: "FL",
+          electionDate: "2026-11-03",
+          officialBallotTitle: "Governor and Lieutenant Governor",
+          electionStage: "general",
+          senateClass: null,
+          termEndYear: null,
+          officeId: "office-governor",
+          discoveryContestFamily: "non_judicial_office",
+          electionSources: [],
+        },
+      ],
+    });
+
+    const result = await loadCandidateElectionOfficeContext({ query }, "cand-mate", "e-fl-gov");
+
+    expect(result?.candidateId).toBe("cand-mate");
+    expect(result?.officeId).toBe("office-governor");
+    const sql = query.mock.calls[0]?.[0] as string;
+    // The requested candidate must be joined by its own id (mate context
+    // returns the mate's row, not the head of ticket), and the link must be
+    // accepted through either side of the joint ticket.
+    expect(sql).toContain("ON c.id = $1");
+    expect(sql).toContain("ce.candidate_id = c.id OR ce.running_mate_candidate_id = c.id");
+    expect(query.mock.calls[0]?.[1]).toEqual(["cand-mate", "e-fl-gov"]);
+  });
+
   it("returns context for linked candidate-election pair when office_id is null", async () => {
     const query = vi.fn().mockResolvedValueOnce({
       rows: [
