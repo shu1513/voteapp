@@ -558,31 +558,7 @@ export async function loadAlaskaCandidateFinanceSummariesByCandidateElection(
          AND breakdown.election_year = link.election_year
         CROSS JOIN LATERAL (
           SELECT
-            btrim(
-              regexp_replace(
-                regexp_replace(
-                  btrim(
-                    regexp_replace(
-                      regexp_replace(
-                        regexp_replace(upper(replace(breakdown.category_name, '&', ' AND ')), '[^A-Z0-9]+', ' ', 'g'),
-                        '\\m(INC|INCORPORATED|LLC|L L C|LP|L P|LLP|L L P|LTD|LIMITED|CO|COMPANY|CORP|CORPORATION|PLC)\\M',
-                        ' ',
-                        'g'
-                      ),
-                      '\\s+',
-                      ' ',
-                      'g'
-                    )
-                  ),
-                  '\\s+',
-                  ' ',
-                  'g'
-                ),
-                '^\\s+|\\s+$',
-                '',
-                'g'
-              )
-            ) AS normalized_label
+            public.normalize_finance_label(breakdown.category_name) AS normalized_label
         ) AS normalized_breakdown
         JOIN public.finance_label_classifications AS classification
           ON classification.label_type = 'donor'
