@@ -33,8 +33,39 @@ describe("runStampDistrictElectionsSearched", () => {
     expect(result.previousLastElectionsSearchedAt).toBe("2026-01-01 00:00:00+00");
     expect(result.districtName).toBe("Example CDP");
     const updateCall = query.mock.calls[1];
-    expect(String(updateCall?.[0])).toContain("SET last_elections_searched_at = now()");
+    const updateSql = String(updateCall?.[0]);
+    expect(updateSql).toContain("SET last_elections_searched_at = now()");
+    // The UPDATE itself re-checks both guards (no separate-check race), and
+    // staging rows are matched by payload district_id, not ingest-key shape —
+    // automatic producers use 'elections:<district>:<year>' keys.
+    expect(updateSql).toContain("NOT EXISTS");
+    expect(updateSql).toContain("si.payload->>'district_id' = d.id::text");
     expect(updateCall?.[1]).toEqual([DISTRICT_ID]);
+  });
+
+  it("matches in-flight staging rows by payload district_id in the guard query", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [districtRow()] });
+
+    await runStampDistrictElectionsSearched({ query }, { districtId: DISTRICT_ID, dryRun: true });
+
+    const guardSql = String(query.mock.calls[0]?.[0]);
+    expect(guardSql).toContain("si.payload->>'district_id' = d.id::text");
+    expect(guardSql).not.toContain("LIKE");
+  });
+
+  it("throws the accurate guard error when the state changes between check and update", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [districtRow()] })
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rows: [districtRow({ in_flight_staging_status: "pending" })] });
+
+    await expect(
+      runStampDistrictElectionsSearched({ query }, { districtId: DISTRICT_ID, dryRun: false })
+    ).rejects.toThrow(/staging row in flight \(status=pending\)/);
+    expect(query).toHaveBeenCalledTimes(3);
   });
 
   it("dry-run reports without updating", async () => {

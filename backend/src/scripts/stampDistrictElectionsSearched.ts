@@ -68,16 +68,12 @@ export async function runStampDistrictElectionsSearched(
 ): Promise<StampDistrictSearchedResult> {
   const { districtId, dryRun } = options;
 
-  const district = await client.query<{
-    id: string;
-    name: string;
-    district_type: string;
-    state: string;
-    last_elections_searched_at: string | null;
-    has_future_election: boolean;
-    in_flight_staging_status: string | null;
-  }>(
-    `
+  // Staging rows are matched by the payload's district_id, not by ingest-key
+  // shape: manual keys are 'manual:elections:<district>:<year>' but the
+  // automatic producers use 'elections:<district>:<year>' and ad-hoc manual
+  // keys exist live — a key-prefix match would let this wrapper stamp a
+  // district while an automatic research pass was still in flight.
+  const guardStateSql = `
       SELECT d.id::text AS id, d.name, d.district_type, d.state,
              d.last_elections_searched_at::text AS last_elections_searched_at,
              EXISTS (
@@ -88,40 +84,81 @@ export async function runStampDistrictElectionsSearched(
                SELECT si.status
                FROM staging_items si
                WHERE si.item_type = 'election'
-                 AND si.ingest_key LIKE 'manual:elections:' || d.id::text || ':%'
+                 AND si.payload->>'district_id' = d.id::text
                  AND si.status IN ('pending', 'validated')
                LIMIT 1
              ) AS in_flight_staging_status
       FROM public.districts d
       WHERE d.id = $1::uuid
-    `,
-    [districtId]
-  );
+    `;
 
-  const row = district.rows[0];
+  const loadGuardState = async () => {
+    const result = await client.query<{
+      id: string;
+      name: string;
+      district_type: string;
+      state: string;
+      last_elections_searched_at: string | null;
+      has_future_election: boolean;
+      in_flight_staging_status: string | null;
+    }>(guardStateSql, [districtId]);
+    return result.rows[0] ?? null;
+  };
+
+  const throwGuardFailure = (row: NonNullable<Awaited<ReturnType<typeof loadGuardState>>>): never => {
+    if (row.has_future_election) {
+      throw new Error(
+        `District ${districtId} (${row.name}) has a future election row — "nothing writable" contradicts known data, and the writer already stamps the district when elections are written. Nothing to do.`
+      );
+    }
+    if (row.in_flight_staging_status) {
+      throw new Error(
+        `District ${districtId} (${row.name}) has an election staging row in flight (status=${row.in_flight_staging_status}). Drain it first (elections:validate / elections:write) — the write stamps the district itself.`
+      );
+    }
+    throw new Error(
+      `District ${districtId} (${row.name}) changed concurrently while stamping; re-run to see its current state.`
+    );
+  };
+
+  const row = await loadGuardState();
   if (!row) {
     throw new Error(`District not found: ${districtId}`);
   }
-  if (row.has_future_election) {
-    throw new Error(
-      `District ${districtId} (${row.name}) has a future election row — "nothing writable" contradicts known data, and the writer already stamps the district when elections are written. Nothing to do.`
-    );
-  }
-  if (row.in_flight_staging_status) {
-    throw new Error(
-      `District ${districtId} (${row.name}) has an election staging row in flight (status=${row.in_flight_staging_status}). Drain it first (elections:validate / elections:write) — the write stamps the district itself.`
-    );
+  if (row.has_future_election || row.in_flight_staging_status) {
+    throwGuardFailure(row);
   }
 
   if (!dryRun) {
-    await client.query(
+    // The UPDATE re-checks both guards so a staging row or election written
+    // between the SELECT above and this statement cannot slip through; a zero
+    // row count means the state changed concurrently, and the reload names
+    // which guard now fails.
+    const update = await client.query(
       `
-        UPDATE public.districts
+        UPDATE public.districts d
         SET last_elections_searched_at = now()
-        WHERE id = $1::uuid
+        WHERE d.id = $1::uuid
+          AND NOT EXISTS (
+            SELECT 1 FROM public.elections e
+            WHERE e.district_id = d.id AND e.election_date >= CURRENT_DATE
+          )
+          AND NOT EXISTS (
+            SELECT 1 FROM staging_items si
+            WHERE si.item_type = 'election'
+              AND si.payload->>'district_id' = d.id::text
+              AND si.status IN ('pending', 'validated')
+          )
       `,
       [districtId]
     );
+    if (update.rowCount !== 1) {
+      const changed = await loadGuardState();
+      if (!changed) {
+        throw new Error(`District not found: ${districtId}`);
+      }
+      throwGuardFailure(changed);
+    }
   }
 
   return {
@@ -146,8 +183,11 @@ async function main(): Promise<void> {
   const districtId = readFlag("--district-id");
   const reason = readFlag("--reason");
   const dryRun = process.argv.includes("--dry-run");
-  if (!districtId || !UUID_PATTERN.test(districtId)) {
-    throw new Error(`--district-id must be a UUID.\n${usage()}`);
+  if (!districtId) {
+    throw new Error(`--district-id is required.\n${usage()}`);
+  }
+  if (!UUID_PATTERN.test(districtId)) {
+    throw new Error(`--district-id must be a UUID, got "${districtId}".\n${usage()}`);
   }
   if (!reason) {
     throw new Error(
