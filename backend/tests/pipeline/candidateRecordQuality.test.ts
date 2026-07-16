@@ -49,6 +49,68 @@ describe("candidate record quality", () => {
           "Florida election records show he qualified as a Republican candidate for Governor after paying the qualifying fee.",
       })
     ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // Article/pronoun boundary forms of the filing pattern, and the plural
+    // fee form — ordinary wording must not resurrect the original escape.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "She filed the required P2 campaign-finance report on time.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "He filed his year-end campaign finance disclosure with the county.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Paid the qualifying fees for both county offices in June 2026.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+  });
+
+  it("rescues campaign-finance misconduct from the candidacy-machinery patterns", () => {
+    // The machinery patterns match these sentences, but the misconduct verb
+    // is the record: past-tense enforcement/misconduct verbs are substantive
+    // and are checked first.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "She filed a false campaign-finance report that concealed a $50,000 contribution.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "An ethics audit found that her campaign illegally reimbursed the candidate qualifying fee.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "He was fined $2,500 for filing his campaign-finance reports late.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+  });
+
+  it("keeps the misconduct verbs from rescuing future promises", () => {
+    // Tenseless wrongdoing adjectives ("illegal", "false") are deliberately
+    // NOT substantive: they would pull promises like this one out of
+    // future_promise.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "The candidate says she will fight illegal dumping in the harbor.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Promised to hold anyone who concealed contributions accountable.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
   });
 
   it("keeps records where a finance filing is the source, not the event", () => {
