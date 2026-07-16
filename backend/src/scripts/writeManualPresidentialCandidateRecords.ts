@@ -47,6 +47,7 @@ import {
 } from "./manualResearchRepairReport.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
+import { WALL_CLOCK_FORCE_EXIT_GRACE_MS, withWallClockTimeout } from "./wallClockTimeout.js";
 export type ManualPresidentialCandidateRecordsOptions = {
   candidateId: string;
   presidentialCycleId: string;
@@ -326,9 +327,13 @@ async function main(): Promise<void> {
   const key = manualKey(options);
 
   const rawRecords = await readJsonFile(options.recordsFile);
-  const validatedRecords = await validateCandidateRecordDiscoveryPayload(
-    rawRecords,
-    readPositiveIntegerEnv("AI_TIMEOUT_MS", 90_000)
+  const validatedRecords = await withWallClockTimeout(
+    validateCandidateRecordDiscoveryPayload(
+      rawRecords,
+      readPositiveIntegerEnv("AI_TIMEOUT_MS", 90_000)
+    ),
+    "presidential candidate record citation validation",
+    { forceExitAfterMs: WALL_CLOCK_FORCE_EXIT_GRACE_MS }
   );
   if (!validatedRecords.ok) {
     const gaps: ManualResearchRepairGap[] = [

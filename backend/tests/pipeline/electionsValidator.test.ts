@@ -503,6 +503,99 @@ describe("runElectionsValidator", () => {
     );
   });
 
+  it("prints the parked soft-fail reason to the terminal so a parked row is not mistaken for a starved worker", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const payload = {
+        district_id: "d-kings",
+        district_name: "Kings County",
+        district_type: "county",
+        state: "NY",
+        entries: [
+          {
+            official_ballot_title: "Supreme Court Justice - 2nd Judicial District",
+            election_date: "2099-11-03",
+            race_type: "office",
+            discovery_contest_family: "judicial_office",
+            sources: ["https://example.org/election"],
+          },
+        ],
+      };
+
+      poolQueryMock
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              ingest_key: "elections:test:manual-soft",
+              payload,
+              status: "pending",
+              run_id: "run_manual_soft",
+              failure_debug: null,
+              ai_raw_debug: { manual_research: true },
+              schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ rowCount: 1 })
+        .mockResolvedValue({ rowCount: 1, rows: [] });
+
+      await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+      const parkedLine = warnSpy.mock.calls
+        .map((call) => String(call[0]))
+        .find((line) => line.includes("parked pending (soft_fail)"));
+      expect(parkedLine).toBeTruthy();
+      // The stream fixture delivers ingest_key=elections:test:1; the log line
+      // must carry the stream's key and the stored soft-fail reason.
+      expect(parkedLine).toContain("ingest_key=elections:test:1");
+      expect(parkedLine).toContain("Supreme Court Justice");
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it("includes the stored reason in the targeted-mode summary", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    try {
+      const ingestKey = "manual:elections:targeted:parked";
+      poolQueryMock
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              ingest_key: ingestKey,
+              payload: { district_id: "d-x", entries: [] },
+              status: "rejected",
+              run_id: "run_x",
+              reason: "soft_fail_final: something ambiguous",
+              failure_debug: null,
+              schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+            },
+          ],
+        })
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              ingest_key: ingestKey,
+              status: "rejected",
+              reason: "soft_fail_final: something ambiguous",
+            },
+          ],
+        });
+
+      await runElectionsValidator({ ingestKey });
+
+      const summaryLine = logSpy.mock.calls
+        .map((call) => String(call[0]))
+        .find((line) => line.includes('"targeted":true'));
+      expect(summaryLine).toBeTruthy();
+      const summary = JSON.parse(summaryLine!) as { status: string; reason: string };
+      expect(summary.status).toBe("rejected");
+      expect(summary.reason).toBe("soft_fail_final: something ambiguous");
+    } finally {
+      logSpy.mockRestore();
+    }
+  });
+
   it("does not republish a redelivered soft-failed manual row to the AI draft stream", async () => {
     poolQueryMock.mockResolvedValueOnce({
       rows: [

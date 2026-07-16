@@ -25,7 +25,12 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
  * the evidence row (AI worker pass, pre-guard manual write) makes the old
  * evidence a historical claim, and the candidate goes back to suspects.
  *
- * Usage: npm run manual:records:audit
+ * Usage: npm run manual:records:audit [-- --candidate-id uuid] [--election-id uuid] [--district-id uuid]
+ *
+ * Targeting flags narrow the audit to one candidate, the candidates linked to
+ * one election, or the candidates linked to any election in one district —
+ * useful right after a per-district or per-election research pass instead of
+ * scanning the whole table. Flags combine with AND.
  */
 
 type AuditRow = {
@@ -43,6 +48,62 @@ type AuditRow = {
 
 const NO_RECORDS_FOUND_GAP_ID = "candidate_records.no_records_found";
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+export type AuditTargetFilters = {
+  candidateId: string | null;
+  electionId: string | null;
+  districtId: string | null;
+};
+
+export function buildAuditTargetConditions(filters: AuditTargetFilters): {
+  conditions: string[];
+  values: string[];
+} {
+  const conditions: string[] = [];
+  const values: string[] = [];
+  const push = (value: string, condition: (placeholder: string) => string): void => {
+    values.push(value);
+    conditions.push(condition(`$${values.length}`));
+  };
+  if (filters.candidateId) {
+    push(filters.candidateId, (p) => `c.id = ${p}::uuid`);
+  }
+  // Joint-ticket running mates have no candidate_elections row of their own
+  // (they live in running_mate_candidate_id on the ticket lead's row), so the
+  // election/district predicates must accept either side of the link.
+  if (filters.electionId) {
+    push(
+      filters.electionId,
+      (p) =>
+        `EXISTS (SELECT 1 FROM public.candidate_elections cef WHERE (cef.candidate_id = c.id OR cef.running_mate_candidate_id = c.id) AND cef.election_id = ${p}::uuid)`
+    );
+  }
+  if (filters.districtId) {
+    push(
+      filters.districtId,
+      (p) =>
+        `EXISTS (SELECT 1 FROM public.candidate_elections cef JOIN public.elections ef ON ef.id = cef.election_id WHERE (cef.candidate_id = c.id OR cef.running_mate_candidate_id = c.id) AND ef.district_id = ${p}::uuid)`
+    );
+  }
+  return { conditions, values };
+}
+
+function readUuidFlag(name: string): string | null {
+  const index = process.argv.indexOf(name);
+  if (index < 0) {
+    return null;
+  }
+  const value = process.argv[index + 1]?.trim();
+  if (!value || value.startsWith("--")) {
+    throw new Error(`Missing value for ${name}`);
+  }
+  if (!UUID_PATTERN.test(value)) {
+    throw new Error(`${name} must be a UUID, got "${value}"`);
+  }
+  return value;
+}
+
 export function isConfirmedNull(
   row: Pick<AuditRow, "confirmed_gap_ids" | "confirmation_covers_latest_search">
 ): boolean {
@@ -53,8 +114,20 @@ export function isConfirmedNull(
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:records:audit", process.argv.slice(2), []);
+  assertKnownCliFlags("manual:records:audit", process.argv.slice(2), [
+    { name: "--candidate-id", value: "space" },
+    { name: "--election-id", value: "space" },
+    { name: "--district-id", value: "space" },
+  ]);
   loadProjectEnv();
+
+  const filters: AuditTargetFilters = {
+    candidateId: readUuidFlag("--candidate-id"),
+    electionId: readUuidFlag("--election-id"),
+    districtId: readUuidFlag("--district-id"),
+  };
+  const target = buildAuditTargetConditions(filters);
+  const targetSql = target.conditions.map((condition) => `          AND ${condition}`).join("\n");
 
   const databaseUrl = process.env.DATABASE_URL?.trim();
   if (!databaseUrl) {
@@ -76,7 +149,8 @@ async function main(): Promise<void> {
           jsonb_array_length(sc.evidence -> 'entries')::int AS evidence_entry_count,
           (sc.confirmed_at >= c.last_records_searched_at) AS confirmation_covers_latest_search
         FROM public.candidates c
-        LEFT JOIN public.candidate_elections ce ON ce.candidate_id = c.id
+        LEFT JOIN public.candidate_elections ce
+          ON ce.candidate_id = c.id OR ce.running_mate_candidate_id = c.id
         LEFT JOIN public.elections e ON e.id = ce.election_id
         LEFT JOIN public.candidate_record_sweep_confirmations sc ON sc.candidate_id = c.id
         WHERE c.deleted_at IS NULL
@@ -85,19 +159,26 @@ async function main(): Promise<void> {
           AND NOT EXISTS (
             SELECT 1 FROM public.candidate_records r WHERE r.candidate_id = c.id
           )
+${targetSql}
         GROUP BY c.id, c.display_name, c.current_office, c.last_records_searched_at,
           sc.confirmed_gap_ids, sc.confirmed_at, sc.evidence
         HAVING (c.current_office IS NOT NULL OR coalesce(bool_or(ce.is_incumbent), false))
         ORDER BY c.display_name ASC
-      `
+      `,
+      target.values
     );
 
     const suspects = result.rows.filter((row) => !isConfirmedNull(row));
     const confirmedNulls = result.rows.filter((row) => isConfirmedNull(row));
 
+    const appliedFilters = Object.fromEntries(
+      Object.entries(filters).filter(([, value]) => value !== null)
+    );
+
     console.log(
       JSON.stringify(
         {
+          ...(Object.keys(appliedFilters).length > 0 ? { filters: appliedFilters } : {}),
           suspectCount: suspects.length,
           confirmedNullCount: confirmedNulls.length,
           explanation:

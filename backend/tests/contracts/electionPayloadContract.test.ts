@@ -469,6 +469,52 @@ describe("parseAiElectionEntriesPayload", () => {
     expect(result.ok).toBe(false);
   });
 
+  it.each([
+    ["2", "class_ii"],
+    ["II", "class_ii"],
+    ["ii", "class_ii"],
+    ["Class II", "class_ii"],
+    ["class 2", "class_ii"],
+    ["class-iii", "class_iii"],
+    ["1", "class_i"],
+    ["I", "class_i"],
+    ["3", "class_iii"],
+  ])("normalizes unambiguous senate_class spelling %s to %s", (input, expected) => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "United States Senator",
+          election_date: "2026-11-03",
+          race_type: "office",
+          senate_class: input,
+          sources: ["https://example.gov/elections/us-senate"],
+        },
+      ],
+    });
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries[0].senate_class).toBe(expected);
+    }
+  });
+
+  it.each(["4", "IV", "class", "class_", "iiii", "senate class", ""])(
+    "still rejects ambiguous or unknown senate_class %s",
+    (input) => {
+      const result = parseAiElectionEntriesPayload({
+        entries: [
+          {
+            official_ballot_title: "United States Senator",
+            election_date: "2026-11-03",
+            race_type: "office",
+            senate_class: input,
+            sources: ["https://example.gov/elections/us-senate"],
+          },
+        ],
+      });
+      expect(result.ok).toBe(false);
+    }
+  );
+
   it("rejects non-string term_end_year", () => {
     const result = parseAiElectionEntriesPayload({
       entries: [

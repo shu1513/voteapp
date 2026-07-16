@@ -79,8 +79,28 @@ function isElectionStage(value: unknown): value is NonNullable<ElectionEntryPayl
   return typeof value === "string" && ELECTION_STAGES.includes(value as NonNullable<ElectionEntryPayload["election_stage"]>);
 }
 
-function isElectionSenateClass(value: unknown): value is NonNullable<ElectionEntryPayload["senate_class"]> {
-  return typeof value === "string" && ELECTION_SENATE_CLASSES.includes(value as NonNullable<ElectionEntryPayload["senate_class"]>);
+// Accepts the canonical enum plus unambiguous operator spellings of the same
+// class ("2", "II", "Class II", "class 2"); anything else stays rejected.
+const SENATE_CLASS_BY_TOKEN: Record<string, NonNullable<ElectionEntryPayload["senate_class"]>> = {
+  "1": "class_i",
+  i: "class_i",
+  "2": "class_ii",
+  ii: "class_ii",
+  "3": "class_iii",
+  iii: "class_iii",
+};
+
+function normalizeElectionSenateClass(
+  value: unknown
+): NonNullable<ElectionEntryPayload["senate_class"]> | null {
+  if (typeof value !== "string") {
+    return null;
+  }
+  if (ELECTION_SENATE_CLASSES.includes(value as NonNullable<ElectionEntryPayload["senate_class"]>)) {
+    return value as NonNullable<ElectionEntryPayload["senate_class"]>;
+  }
+  const token = value.trim().toLowerCase().replace(/^class[\s_-]*/, "");
+  return SENATE_CLASS_BY_TOKEN[token] ?? null;
 }
 
 function normalizeSources(value: unknown): string[] | null {
@@ -144,10 +164,11 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
     if (raceType !== "office") {
       return null;
     }
-    if (!isElectionSenateClass(input.senate_class)) {
+    const normalizedSenateClass = normalizeElectionSenateClass(input.senate_class);
+    if (!normalizedSenateClass) {
       return null;
     }
-    senateClass = input.senate_class;
+    senateClass = normalizedSenateClass;
   }
 
   let termEndYear: string | undefined;

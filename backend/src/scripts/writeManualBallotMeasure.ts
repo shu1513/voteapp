@@ -10,6 +10,7 @@ import {
 } from "../pipeline/ballotMeasures/ballotMeasureResearchAreaTags.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
+import { WALL_CLOCK_FORCE_EXIT_GRACE_MS, withWallClockTimeout } from "./wallClockTimeout.js";
 type BallotMeasureElectionRow = {
   id: string;
   district_id: string;
@@ -120,10 +121,14 @@ async function main(): Promise<void> {
       throw new Error(`Ballot-measure write requires race_type=ballot_measure; election_id=${electionId} has race_type=${election.race_type}`);
     }
 
-    const validated = await validateBallotMeasureAiPayload(
-      rawPayload,
-      readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
-      new Set(allowedAreas.map((area) => area.slug))
+    const validated = await withWallClockTimeout(
+      validateBallotMeasureAiPayload(
+        rawPayload,
+        readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
+        new Set(allowedAreas.map((area) => area.slug))
+      ),
+      "ballot measure source validation",
+      { forceExitAfterMs: WALL_CLOCK_FORCE_EXIT_GRACE_MS }
     );
     if (!validated.ok) {
       throw new Error(`Ballot-measure payload failed validation: ${validated.reason}`);

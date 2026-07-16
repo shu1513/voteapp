@@ -37,6 +37,7 @@
     "manual:elections:inject": "tsx src/scripts/injectManualElections.ts",
     "manual:elections:inject-no-results": "tsx src/scripts/bulkInjectManualNoResultElections.ts",
     "manual:elections:repair-office-ids": "tsx src/scripts/repairElectionOfficeIds.ts",
+    "manual:districts:stamp-searched": "tsx src/scripts/stampDistrictElectionsSearched.ts",
     "elections:search:scheduler:upsert": "tsx src/scripts/upsertElectionsSearchDailyScheduler.ts",
     "elections:search:scheduler:worker": "tsx src/scripts/runElectionsSearchSchedulerWorker.ts",
     "elections:search:scheduler:trigger": "tsx src/scripts/triggerElectionsSearchRollover.ts",

@@ -38,6 +38,7 @@ import {
 } from "./manualResearchRepairReport.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
+import { WALL_CLOCK_FORCE_EXIT_GRACE_MS, withWallClockTimeout } from "./wallClockTimeout.js";
 type RedisSendCommandClient = {
   sendCommand(args: string[]): Promise<unknown>;
 };
@@ -536,7 +537,11 @@ export async function runManualPresidentialProfileWrite(input: {
     presidentialRole: input.options.presidentialRole,
     profile: null,
   });
-  const validatedProfile = await deps.validateProfile(input.rawPayload, readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000));
+  const validatedProfile = await withWallClockTimeout(
+    deps.validateProfile(input.rawPayload, readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000)),
+    "presidential profile source validation",
+    { forceExitAfterMs: WALL_CLOCK_FORCE_EXIT_GRACE_MS }
+  );
   if (!validatedProfile.ok) {
     const gaps = buildProfileValidationGaps({
       reason: validatedProfile.reason,
