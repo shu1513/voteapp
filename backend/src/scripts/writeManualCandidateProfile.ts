@@ -38,7 +38,7 @@ import {
 import { normalizeCandidateName, splitDisplayNameToFirstLast } from "../utils/candidateIdentity.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
-import { withWallClockTimeout } from "./wallClockTimeout.js";
+import { WALL_CLOCK_FORCE_EXIT_GRACE_MS, withWallClockTimeout } from "./wallClockTimeout.js";
 type ElectionContextRow = {
   election_id: string;
   state: string;
@@ -580,7 +580,8 @@ async function main(): Promise<void> {
         readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
         { allowFecIds: false, requireFecIds: false }
       ),
-      "candidate profile source validation"
+      "candidate profile source validation",
+      { forceExitAfterMs: WALL_CLOCK_FORCE_EXIT_GRACE_MS }
     );
     if (!validatedProfile.ok) {
       const gaps = buildProfileValidationGaps({

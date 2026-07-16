@@ -10,7 +10,7 @@ import {
 } from "../pipeline/ballotMeasures/ballotMeasureResearchAreaTags.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
-import { withWallClockTimeout } from "./wallClockTimeout.js";
+import { WALL_CLOCK_FORCE_EXIT_GRACE_MS, withWallClockTimeout } from "./wallClockTimeout.js";
 type BallotMeasureElectionRow = {
   id: string;
   district_id: string;
@@ -127,7 +127,8 @@ async function main(): Promise<void> {
         readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
         new Set(allowedAreas.map((area) => area.slug))
       ),
-      "ballot measure source validation"
+      "ballot measure source validation",
+      { forceExitAfterMs: WALL_CLOCK_FORCE_EXIT_GRACE_MS }
     );
     if (!validated.ok) {
       throw new Error(`Ballot-measure payload failed validation: ${validated.reason}`);

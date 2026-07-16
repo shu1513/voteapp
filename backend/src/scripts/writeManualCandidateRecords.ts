@@ -43,7 +43,7 @@ import {
 } from "./candidateRecordSweepEvidence.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
-import { withWallClockTimeout } from "./wallClockTimeout.js";
+import { WALL_CLOCK_FORCE_EXIT_GRACE_MS, withWallClockTimeout } from "./wallClockTimeout.js";
 function usage(): string {
   return [
     "Usage:",
@@ -475,7 +475,8 @@ async function main(): Promise<void> {
       rawRecords,
       readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000)
     ),
-    "candidate record citation validation"
+    "candidate record citation validation",
+    { forceExitAfterMs: WALL_CLOCK_FORCE_EXIT_GRACE_MS }
   );
   if (!validatedRecords.ok) {
     const gaps: ManualResearchRepairGap[] = [
