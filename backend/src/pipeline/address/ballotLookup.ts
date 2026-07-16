@@ -542,6 +542,11 @@ function mapResearchAreaTag(row: CandidateRecordTagRow | BallotMeasureTagRow): B
 // section) is discoverable without a direct link. After this window the
 // election disappears from ballot summaries; the detail endpoint still
 // serves it by ID indefinitely.
+//
+// Deliberately anchored to the election date, not result arrival: certified
+// results landing weeks later (E+38..E+81 in some states) must not make old
+// elections reappear on the ballot — delivering late results to users is a
+// notification concern (results email), not a ballot-list concern.
 export const BALLOT_PAST_ELECTION_VISIBILITY_DAYS = 3;
 
 function priorElectionYear(electionDate: string): number | null {
