@@ -2,31 +2,26 @@ BEGIN;
 
 -- Converges public.normalize_finance_label (migration 185) with the
 -- TypeScript normalizeFinanceLabel it must stay in lockstep with. The 185
--- body was a verbatim copy of the long-inlined SQL expression, which had two
--- known divergences from TypeScript — both silent-miss bugs, since the
+-- body was a verbatim copy of the long-inlined SQL expression, which had
+-- known divergences from TypeScript — all silent-miss bugs, since the
 -- classification join finds nothing when the two sides disagree:
 --
---   * No diacritic folding: TypeScript applies NFKD and strips combining
---     marks ("Café" -> CAFE) while the SQL dropped the accented letter
---     ("Café" -> CAF).
+--   * No Unicode folding: TypeScript applies NFKD and strips combining
+--     marks U+0300..U+036F ("Café" -> CAFE, "Nguyễn" -> NGUYEN, decomposed
+--     input included) while the SQL dropped every non-ASCII letter.
 --   * No all-suffix fallback: TypeScript falls back to the unstripped label
 --     when suffix-stripping empties it ("LLC" -> LLC) while the SQL
 --     returned an empty string.
 --
--- The translate() pair below is generated from the TypeScript pipeline
--- itself: for every character in Latin-1 Supplement + Latin Extended-A
--- (U+00C0..U+017F), apply NFKD and strip combining marks U+0300..U+036F; a
--- single surviving ASCII letter becomes the mapping, anything else becomes
--- a space (TypeScript's [^A-Za-z0-9] cleanup spaces those characters too).
--- Pre-mapping the whole block also keeps upper() away from non-ASCII input,
--- so the result does not depend on the database locale (e.g. ICU upper()
--- turning 'ß' into 'SS').
---
--- Remaining known divergences, pinned by the parity test: characters whose
--- NFKD form is multi-character (ligatures Ĳ ĳ Ŀ ŀ ŉ, and compatibility
--- forms outside this block such as ﬁ or fullwidth letters) fold to letters
--- in TypeScript but to a space here — translate() is strictly one-to-one
--- and such characters do not occur in campaign-finance labels.
+-- The body now mirrors the TypeScript pipeline step for step:
+--   normalize(NFKD) -> strip combining marks U+0300..U+036F -> '&' to
+--   ' AND ' -> non-alphanumeric runs to a space -> upper() -> collapse and
+--   trim -> business-suffix strip with fallback to the unstripped form.
+-- Postgres normalize() requires a UTF8 database (all environments here) and
+-- is IMMUTABLE PARALLEL SAFE, matching this function's own labels. Because
+-- the non-alphanumeric cleanup runs before upper(), upper() only ever sees
+-- ASCII, so the result does not depend on the database locale (no ICU
+-- upper() turning 'ß' into 'SS').
 --
 -- Lockstep contract unchanged: change this function only together with
 -- tests/pipeline/finance/normalizeFinanceLabelParity.test.ts, which feeds a
@@ -44,17 +39,17 @@ AS $$
   WITH cleaned AS (
     SELECT btrim(
       regexp_replace(
-        regexp_replace(
-          upper(
-            translate(
-              replace(raw_label, '&', ' AND '),
-              'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſ',
-              'AAAAAA CEEEEIIII NOOOOO  UUUUY  aaaaaa ceeeeiiii nooooo  uuuuy yAaAaAaCcCcCcCcDd  EeEeEeEeEeGgGgGgGgHh  IiIiIiIiI   JjKk LlLlLl    NnNnNn   OoOoOo  RrRrRrSsSsSsSsTtTt  UuUuUuUuUuUuWwYyYZzZzZzs'
-            )
-          ),
-          '[^A-Z0-9]+',
-          ' ',
-          'g'
+        upper(
+          regexp_replace(
+            replace(
+              regexp_replace(normalize(raw_label, NFKD), '[\u0300-\u036f]', '', 'g'),
+              '&',
+              ' AND '
+            ),
+            '[^A-Za-z0-9]+',
+            ' ',
+            'g'
+          )
         ),
         '\s+',
         ' ',

@@ -35,11 +35,11 @@ const MIGRATION_URL = new URL(
 
 const databaseUrl = process.env.DATABASE_URL;
 
-// Messy labels, including accented Latin-1/Latin-Extended-A names (folded by
-// migration 186's translate() map before upper(), so no locale dependence)
-// and labels made entirely of business suffixes (fallback to the unstripped
-// form). Characters with multi-character NFKD forms (ligatures, fullwidth)
-// stay out of this corpus — the known-divergence test below pins them.
+// Messy labels, including accented and decomposed Unicode names (migration
+// 186 mirrors TypeScript's NFKD + combining-mark strip, so precomposed,
+// decomposed, Vietnamese, ligature, and fullwidth forms all agree) and
+// labels made entirely of business suffixes (fallback to the unstripped
+// form).
 const PARITY_CORPUS: readonly string[] = [
   // suffix variants, one per BUSINESS_SUFFIX_PATTERN alternative
   "Acme Widgets, Inc.",
@@ -123,6 +123,14 @@ const PARITY_CORPUS: readonly string[] = [
   "Björk Seafood Co",
   "ÀÁÂÃÄÅ Test",
   "Straße GmbH",
+  // decomposed input (combining diaeresis, not precomposed \u00fc)
+  "Mu\u0308ller GmbH",
+  // Latin Extended Additional (outside the old translate() map's range)
+  "Nguyễn Holdings",
+  // multi-character NFKD forms: ligature and fullwidth
+  "ﬁnance Inc",
+  "ＡＣＭＥ Ｗｉｄｇｅｔｓ Ｉｎｃ",
+  "½ Price Stores",
   // all-suffix labels (previously a known divergence, converged by 186)
   "LLC",
   "L.L.C.",
@@ -187,9 +195,9 @@ describe.skipIf(!databaseUrl)("normalize_finance_label parity (requires DATABASE
     expect(result.rows[0]?.normalized).toBeNull();
   });
 
-  // Remaining known divergences after migration 186 converged the diacritic
-  // and all-suffix cases. These tests pin them down so a future change to
-  // either side is deliberate, not an accident.
+  // The one remaining intentional divergence after migration 186 mirrored
+  // TypeScript's full NFKD pipeline. Pinned so a future change to either
+  // side is deliberate, not an accident.
   it("known divergence: occupation labels keep business suffixes in TypeScript", async () => {
     // The function has no label-type parameter and always strips suffixes,
     // matching only the non-occupation TypeScript branch. Evidence queries
@@ -198,16 +206,5 @@ describe.skipIf(!databaseUrl)("normalize_finance_label parity (requires DATABASE
     const [fromPostgres] = await normalizeInPostgres(["Acme Corp"]);
     expect(normalizeFinanceLabel("Acme Corp", "occupation")).toBe("ACME CORP");
     expect(fromPostgres).toBe("ACME");
-  });
-
-  it("known divergence: multi-character NFKD forms fold to letters only in TypeScript", async () => {
-    // translate() is strictly one-to-one, so characters whose NFKD form is
-    // multi-character (the ﬁ ligature here; also Ĳ ĳ Ŀ ŀ ŉ and fullwidth
-    // forms) become a space in SQL while TypeScript folds them to letters.
-    // The exact SQL output depends on the database locale's upper(), so only
-    // the disagreement itself is pinned.
-    const [fromPostgres] = await normalizeInPostgres(["ﬁnance Inc"]);
-    expect(normalizeFinanceLabel("ﬁnance Inc", "employer")).toBe("FINANCE");
-    expect(fromPostgres).not.toBe("FINANCE");
   });
 });
