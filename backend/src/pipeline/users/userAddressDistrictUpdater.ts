@@ -1,4 +1,5 @@
 import type { BallotSummaryResult } from "../address/ballotLookup.js";
+import { warningAffectsSupportedDistrict } from "../address/addressDistrictResolver.js";
 import type { AddressResolutionResult } from "../address/addressResolverService.js";
 import type { ReplaceUserDistrictsResult } from "./userDistrictReplacer.js";
 
@@ -31,27 +32,34 @@ export async function updateAuthenticatedAddressDistricts(
 ): Promise<AuthenticatedAddressDistrictUpdateResult> {
   const resolved = await dependencies.resolveAddressToDistricts(address);
 
-  // A key the Census geocoder returned but the districts table lacks
-  // (vintage drift after redistricting, an incomplete load) means the
-  // resolution is incomplete. Replacing the saved set with the partial
-  // subset would silently drop valid districts — shrinking the user's
-  // ballot and notifications — so refuse and leave the saved districts
-  // untouched. The address API already logs the missing keys for the
-  // operator, and the update succeeds once the districts data is reloaded.
-  // Checked before the empty case: all keys missing is still a data gap,
-  // not an unsupported address.
-  if (resolved.missing_district_keys.length > 0) {
-    throw new AuthenticatedAddressDistrictUpdateError(
-      "partial_district_resolution",
-      "Some districts for this address are temporarily unavailable, so your saved districts were left unchanged. Try again later."
-    );
-  }
-
+  // Nothing usable resolved: the address is outside supported coverage
+  // (e.g. territories — the district loaders cover 50 states + DC while the
+  // Census geocoder also answers for Puerto Rico). Checked first so those
+  // addresses get a definitive "unsupported" instead of the retryable data-
+  // gap error below, which would tell them to try again forever. Nothing is
+  // replaced either way.
   const districtIds = resolved.districts.map((district) => district.id);
   if (districtIds.length === 0) {
     throw new AuthenticatedAddressDistrictUpdateError(
       "no_supported_districts",
       "Resolved address did not match any supported districts"
+    );
+  }
+
+  // Something resolved but not everything: a key the districts table cannot
+  // map (vintage drift after redistricting, an incomplete load), or a
+  // supported district's geography that never became a key (missing GEOID,
+  // MTFCC/layer conflict — those skip key emission and surface only as
+  // warnings). Replacing the saved set with the partial subset would
+  // silently drop valid districts — shrinking the user's ballot and
+  // notifications — so refuse and leave the saved districts untouched. The
+  // authenticated resolve path logs the diagnostics for the operator, and
+  // the update succeeds once the districts data is repaired.
+  const blockingWarnings = resolved.warnings.filter(warningAffectsSupportedDistrict);
+  if (resolved.missing_district_keys.length > 0 || blockingWarnings.length > 0) {
+    throw new AuthenticatedAddressDistrictUpdateError(
+      "partial_district_resolution",
+      "Some districts for this address are temporarily unavailable, so your saved districts were left unchanged. Try again later."
     );
   }
 
