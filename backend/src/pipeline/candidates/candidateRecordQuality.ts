@@ -29,6 +29,19 @@ const PURE_CANDIDACY_PATTERNS = [
   /\blist(?:s|ed)\s+(?:by|on|as)?\b.*\b(?:candidate|ballot|roster)\b/i,
   /\b(?:candidate|campaign)\s+(?:announcement|launch|filing)\b/i,
   /\bdeclared\s+(?:a\s+)?candidacy\b/i,
+  // Routine candidacy-machinery filings are candidacy facts, not governance
+  // records: a periodic campaign-finance report, the ballot-qualifying fee,
+  // and qualifying as a candidate are steps every filer takes to run — 38
+  // Orange County FL candidates were made to look researched by "filed a P2
+  // campaign-finance report" rows. The filing pattern is article-anchored
+  // ("filed a/an/his/her/their ... report") so a participle noun phrase like
+  // "A filed campaign-finance statement ... reported a contribution from a
+  // sitting judge" — a real integrity record — does not match. Substantive
+  // verbs are checked first, so legislation ABOUT fees, reports, or
+  // "qualifying" programs (health plans, veterans) stays substantive.
+  /\bfiled\s+(?:a|an|his|her|their)\s+(?:[\w-]+\s+){0,3}?campaign[-\s]finance\s+(?:report|statement|disclosure)s?\b/i,
+  /\bqualifying\s+fee\b/i,
+  /\bqualified\s+as\s+an?\s+(?:[\w-]+\s+){0,3}?candidate\b/i,
 ] as const;
 
 const FUTURE_PROMISE_PATTERNS = [
