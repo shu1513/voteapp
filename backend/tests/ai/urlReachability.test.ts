@@ -146,6 +146,8 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     "http://192.0.2.1/source",
     "http://192.168.0.1/source",
     "http://198.18.0.1/source",
+    // upper half of the RFC 2544 benchmarking /15 (198.18.0.0-198.19.255.255)
+    "http://198.19.0.1/source",
     "http://224.0.0.1/source",
     "http://240.0.0.1/source",
     "http://[::]/source",
@@ -155,6 +157,8 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     "http://[ff02::1]/source",
     "http://[2001:db8::1]/source",
     "http://[::ffff:10.0.0.1]/source",
+    // IPv4-mapped benchmarking address must be caught after unmapping
+    "http://[::ffff:198.18.0.1]/source",
     // RFC 6052 well-known NAT64 prefix embedding loopback
     "http://[64:ff9b::7f00:1]/source",
     // RFC 8215 local-use NAT64 prefix embedding loopback (ipaddr.js labels
