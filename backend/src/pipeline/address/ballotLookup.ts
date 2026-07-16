@@ -754,7 +754,13 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "CA", load: loadLosAngelesCandidateFinanceSummariesByCandidateElection },
 ];
 
-async function loadCandidateFinanceSummariesByCandidateElection(
+function financeSummaryFailureReason(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+// Exported for the fault-isolation unit tests; production code reaches this
+// only through the ballot lookup entry points.
+export async function loadCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly FinanceLookupCandidateRow[],
   electionRows: readonly ElectionRow[]
@@ -768,16 +774,39 @@ async function loadCandidateFinanceSummariesByCandidateElection(
   // reads — its state and LA adapters stay disjoint only because their link
   // tables hold different candidate/elections; on the (in-practice unreached)
   // overlap the later adapter, LA, wins.
+  //
+  // Each source is fault-isolated: finance summaries enrich the ballot
+  // lookup, so a broken finance module must degrade to "no summaries from
+  // that source" instead of failing the whole lookup for every state.
   for (const adapter of STATE_FINANCE_LOOKUP_ADAPTERS) {
-    for (const [key, summary] of await adapter.load(db, candidateRows, electionRows)) {
+    let summaries: ReadonlyMap<string, BallotLookupFinanceSummary>;
+    try {
+      summaries = await adapter.load(db, candidateRows, electionRows);
+    } catch (error) {
+      console.warn("candidate finance summaries failed; continuing without this source:", {
+        state: adapter.state,
+        loader: adapter.load.name,
+        reason: financeSummaryFailureReason(error),
+      });
+      continue;
+    }
+    for (const [key, summary] of summaries) {
       merged.set(key, summary);
     }
   }
   // Federal FEC summaries intentionally win when both sources exist for the
   // same candidate/election (unreachable since the federal-office gate, and
   // pinned by the no-leak regression tests).
-  for (const [key, summary] of await loadFecCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows)) {
-    merged.set(key, summary);
+  try {
+    for (const [key, summary] of await loadFecCandidateFinanceSummariesByCandidateElection(db, candidateRows, electionRows)) {
+      merged.set(key, summary);
+    }
+  } catch (error) {
+    console.warn("candidate finance summaries failed; continuing without this source:", {
+      state: "FEC",
+      loader: loadFecCandidateFinanceSummariesByCandidateElection.name,
+      reason: financeSummaryFailureReason(error),
+    });
   }
   return merged;
 }
