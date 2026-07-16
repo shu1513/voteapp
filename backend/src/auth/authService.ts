@@ -851,28 +851,49 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           throw new TypeError("Password is incorrect");
         }
 
-        // Soft delete. The partial unique index on users(email) only covers
-        // deleted_at IS NULL rows, so the address frees up for re-signup.
-        // Every reader and sender in the app filters deleted_at IS NULL.
+        // Two tables outlive the user row and need explicit scrubbing before
+        // it goes (afterwards the linking rows are gone or nulled):
+        // content_reports survives with user_id set NULL for moderation, but
+        // the web form pre-fills reporter_email with the account email, so
+        // clear it; and user_push_notification_receipts stores the device's
+        // expo_push_token with no FK, so pending receipt rows would keep the
+        // token up to the prune window. Dropping them only skips a receipt
+        // check whose sole effect — revoking a dead token — is moot once the
+        // token rows cascade away.
         await client.query(
           `
-            UPDATE public.users
-            SET deleted_at = now(),
-                updated_at = now()
-            WHERE id = $1::uuid
-              AND deleted_at IS NULL
+            UPDATE public.content_reports
+            SET reporter_email = NULL
+            WHERE user_id = $1::uuid
+              AND reporter_email IS NOT NULL
+          `,
+          [userId]
+        );
+        await client.query(
+          `
+            DELETE FROM public.user_push_notification_receipts
+            WHERE expo_push_token IN (
+              SELECT expo_push_token
+              FROM public.user_push_tokens
+              WHERE user_id = $1::uuid
+            )
           `,
           [userId]
         );
 
-        // Void outstanding tokens so a pre-delete reset/verify link cannot
-        // act on the corpse.
+        // Hard delete. The UI and privacy policy promise permanent removal
+        // of the account, districts, follows, and preferences, so the row
+        // goes away for real: every user-owned table (districts, follows,
+        // preferences, auth tokens, push tokens, notification history)
+        // references users(id) ON DELETE CASCADE — which also voids any
+        // outstanding reset/verify links — and content_reports keeps its
+        // reports with user_id set NULL. The partial unique index on
+        // users(email) already released the address for re-signup; with the
+        // row gone that stays true.
         await client.query(
           `
-            UPDATE public.user_auth_tokens
-            SET consumed_at = now()
-            WHERE user_id = $1::uuid
-              AND consumed_at IS NULL
+            DELETE FROM public.users
+            WHERE id = $1::uuid
           `,
           [userId]
         );
@@ -885,7 +906,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       }
 
       // Best-effort: a deleted user already fails the per-request epoch
-      // lookup (deleted_at filter), so a Redis failure here must not surface
+      // lookup (the row is gone), so a Redis failure here must not surface
       // an error for an account that is already gone.
       try {
         await destroyAuthSessionsByUserId(options.redis, { userId });
