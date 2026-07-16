@@ -95,6 +95,16 @@ describe("mapErrorToResponse", () => {
     });
   });
 
+  it("maps partial district resolution to a retryable 503, not an address error", () => {
+    expect(
+      mapErrorToResponse(new AuthenticatedAddressDistrictUpdateError("partial_district_resolution", "Try again later."))
+    ).toEqual({
+      statusCode: 503,
+      code: "districts_unavailable",
+      message: "Try again later.",
+    });
+  });
+
   it.each([
     ["invalid_user_id", "User ID must be a valid UUID"],
     ["user_not_found", "User not found"],

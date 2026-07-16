@@ -57,6 +57,56 @@ describe("updateAuthenticatedAddressDistricts", () => {
     expect(lookupBallotSummariesByDistrictIds).toHaveBeenCalledWith([districtId]);
   });
 
+  it("refuses a partial resolution instead of replacing saved districts with the subset", async () => {
+    // One district resolved, one Census key with no matching districts row
+    // (vintage drift / incomplete load): saving the subset would silently
+    // drop the user's still-valid districts.
+    const resolveAddressToDistricts = vi.fn().mockResolvedValue({
+      ...resolvedAddress,
+      missing_district_keys: [{ district_type: "state_lower", geoid_compact: "08007" }],
+    });
+    const replaceUserDistricts = vi.fn();
+    const lookupBallotSummariesByDistrictIds = vi.fn();
+
+    await expect(
+      updateAuthenticatedAddressDistricts(
+        { resolveAddressToDistricts, replaceUserDistricts, lookupBallotSummariesByDistrictIds },
+        userId,
+        "123 Main St Denver CO 80203"
+      )
+    ).rejects.toSatisfy((error) => {
+      expect(error).toBeInstanceOf(AuthenticatedAddressDistrictUpdateError);
+      expect((error as AuthenticatedAddressDistrictUpdateError).code).toBe("partial_district_resolution");
+      return true;
+    });
+
+    expect(replaceUserDistricts).not.toHaveBeenCalled();
+    expect(lookupBallotSummariesByDistrictIds).not.toHaveBeenCalled();
+  });
+
+  it("treats every key missing as a data gap, not an unsupported address", async () => {
+    const resolveAddressToDistricts = vi.fn().mockResolvedValue({
+      ...resolvedAddress,
+      districts: [],
+      missing_district_keys: [{ district_type: "county", geoid_compact: "08031" }],
+    });
+    const replaceUserDistricts = vi.fn();
+    const lookupBallotSummariesByDistrictIds = vi.fn();
+
+    await expect(
+      updateAuthenticatedAddressDistricts(
+        { resolveAddressToDistricts, replaceUserDistricts, lookupBallotSummariesByDistrictIds },
+        userId,
+        "123 Main St Denver CO 80203"
+      )
+    ).rejects.toSatisfy((error) => {
+      expect((error as AuthenticatedAddressDistrictUpdateError).code).toBe("partial_district_resolution");
+      return true;
+    });
+
+    expect(replaceUserDistricts).not.toHaveBeenCalled();
+  });
+
   it("does not replace saved districts when the resolved address has no supported districts", async () => {
     const resolveAddressToDistricts = vi.fn().mockResolvedValue({ ...resolvedAddress, districts: [] });
     const replaceUserDistricts = vi.fn();

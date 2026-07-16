@@ -62,6 +62,11 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
   }
   if (error instanceof AuthenticatedAddressDistrictUpdateError) {
+    // Server-side data gap, not a problem with the submitted address: the
+    // saved districts were preserved and a later retry can succeed.
+    if (error.code === "partial_district_resolution") {
+      return { statusCode: 503, code: "districts_unavailable", message: error.message };
+    }
     return { statusCode: 422, code: "address_not_found", message: error.message };
   }
   if (error instanceof ReplaceUserDistrictsError) {

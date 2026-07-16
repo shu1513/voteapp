@@ -12,7 +12,7 @@ export type AuthenticatedAddressDistrictUpdaterDependencies = {
   lookupBallotSummariesByDistrictIds: (districtIds: readonly string[]) => Promise<BallotSummaryResult>;
 };
 
-export type AuthenticatedAddressDistrictUpdateErrorCode = "no_supported_districts";
+export type AuthenticatedAddressDistrictUpdateErrorCode = "no_supported_districts" | "partial_district_resolution";
 
 export class AuthenticatedAddressDistrictUpdateError extends Error {
   constructor(
@@ -30,6 +30,23 @@ export async function updateAuthenticatedAddressDistricts(
   address: string
 ): Promise<AuthenticatedAddressDistrictUpdateResult> {
   const resolved = await dependencies.resolveAddressToDistricts(address);
+
+  // A key the Census geocoder returned but the districts table lacks
+  // (vintage drift after redistricting, an incomplete load) means the
+  // resolution is incomplete. Replacing the saved set with the partial
+  // subset would silently drop valid districts — shrinking the user's
+  // ballot and notifications — so refuse and leave the saved districts
+  // untouched. The address API already logs the missing keys for the
+  // operator, and the update succeeds once the districts data is reloaded.
+  // Checked before the empty case: all keys missing is still a data gap,
+  // not an unsupported address.
+  if (resolved.missing_district_keys.length > 0) {
+    throw new AuthenticatedAddressDistrictUpdateError(
+      "partial_district_resolution",
+      "Some districts for this address are temporarily unavailable, so your saved districts were left unchanged. Try again later."
+    );
+  }
+
   const districtIds = resolved.districts.map((district) => district.id);
   if (districtIds.length === 0) {
     throw new AuthenticatedAddressDistrictUpdateError(
