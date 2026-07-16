@@ -33,7 +33,7 @@ import {
 import {
   SWEEP_COMPLETENESS_GAP_IDS,
   assertedSweepCompletenessGapIds,
-  deleteSweepConfirmation,
+  deleteSweepCompletenessConfirmation,
   parseSweepEvidencePayload,
   refreshSweepConfirmationTimestamp,
   sweepEvidenceMissingError,
@@ -822,9 +822,10 @@ async function main(): Promise<void> {
           contextId: electionId,
         });
       } else {
-        // This write found real stance-labeled records; drop any earlier
-        // completeness confirmation it supersedes.
-        await deleteSweepConfirmation(client, candidateId);
+        // This write found real stance-labeled records without carrying a
+        // ledger; drop any earlier completeness confirmation it falsifies
+        // (empty-claim-set rows survive — see deleteSweepCompletenessConfirmation).
+        await deleteSweepCompletenessConfirmation(client, candidateId);
       }
       await client.query("COMMIT");
 
