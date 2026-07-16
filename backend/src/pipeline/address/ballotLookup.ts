@@ -10,6 +10,7 @@ import type {
   OfficeScope,
 } from "../../types/election.js";
 import type { CandidateElectionStatus, ElectionResultPassType } from "../../types/electionResults.js";
+import { US_LATEST_LOCAL_DATE_SQL } from "../../utils/usLocalDate.js";
 import {
   calculateWeightedHistoricalContestMargin,
   lookupHistoricalContestMarginRows,
@@ -534,6 +535,19 @@ function mapResearchAreaTag(row: CandidateRecordTagRow | BallotMeasureTagRow): B
     stance: row.stance,
   };
 }
+
+// How long a finished election stays on the ballot list. Users only see
+// upcoming elections, except a just-finished one sticks around briefly so
+// its result (the ElectionCard result badge and the detail page's results
+// section) is discoverable without a direct link. After this window the
+// election disappears from ballot summaries; the detail endpoint still
+// serves it by ID indefinitely.
+//
+// Deliberately anchored to the election date, not result arrival: certified
+// results landing weeks later (E+38..E+81 in some states) must not make old
+// elections reappear on the ballot — delivering late results to users is a
+// notification concern (results email), not a ballot-list concern.
+export const BALLOT_PAST_ELECTION_VISIBILITY_DAYS = 3;
 
 function priorElectionYear(electionDate: string): number | null {
   const year = Number.parseInt(electionDate.slice(0, 4), 10);
@@ -1211,6 +1225,7 @@ export async function lookupBallotSummariesByDistrictIds(
       LEFT JOIN public.offices AS office
         ON office.id = e.office_id
       WHERE e.district_id = ANY($1::uuid[])
+        AND e.election_date >= ${US_LATEST_LOCAL_DATE_SQL} - ${BALLOT_PAST_ELECTION_VISIBILITY_DAYS}
       ORDER BY e.election_date ASC, e.race_type ASC, e.official_ballot_title ASC, e.id ASC
     `,
     [ids]

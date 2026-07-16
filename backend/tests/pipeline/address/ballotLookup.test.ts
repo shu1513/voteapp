@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  BALLOT_PAST_ELECTION_VISIBILITY_DAYS,
   lookupBallotSummariesByDistrictIds,
   lookupCandidateElectionFinanceSummaryById,
   lookupElectionDetailById,
@@ -252,6 +253,12 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     expect(result.elections).toHaveLength(2);
     expect(query).toHaveBeenCalledTimes(8);
     expect(query.mock.calls[0]?.[1]).toEqual([[districtId]]);
+    // Ballot summaries hide finished elections after the results-visibility
+    // window; the boundary must be the last US local date (Honolulu), not
+    // the server's UTC date, so a west-coast election never expires early.
+    expect(query.mock.calls[1]?.[0]).toContain(
+      `AND e.election_date >= (now() AT TIME ZONE 'Pacific/Honolulu')::date - ${BALLOT_PAST_ELECTION_VISIBILITY_DAYS}`
+    );
     expect(query.mock.calls[6]?.[0]).toContain("CASE pass_type");
     expect(query.mock.calls[6]?.[0]).toContain("WHEN 'certified' THEN 1");
     expect(query.mock.calls[6]?.[0]).toContain("WHEN 'election_night' THEN 2");
