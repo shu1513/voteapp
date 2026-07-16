@@ -349,6 +349,42 @@ async function markCandidateRosterStagingValidated(
   );
 }
 
+// An AI roster run that found zero candidates is a "nothing announced yet"
+// outcome, not a completed roster: stamping it 'written' would trip the
+// eligibility gate's already_written check and freeze the election with an
+// empty roster forever. 'no_results' (same semantics as the elections
+// writer) leaves the election eligible for a later re-research.
+async function markCandidateRosterStagingNoResults(
+  pool: Pool,
+  ingestKey: string,
+  electionId: string,
+  runId: string | null,
+  aiRawDebug: Record<string, unknown> | null
+): Promise<void> {
+  await pool.query(
+    `
+      UPDATE staging_items
+      SET payload = jsonb_build_object('election_id', $2::text, 'candidates', '[]'::jsonb),
+          status = 'no_results',
+          reason = NULL,
+          failure_debug = NULL,
+          ai_raw_debug = $3::jsonb,
+          run_id = $4,
+          written_at = now(),
+          updated_at = now()
+      WHERE ingest_key = $1
+        AND item_type = $5
+    `,
+    [
+      ingestKey,
+      electionId,
+      aiRawDebug ? JSON.stringify(aiRawDebug) : null,
+      runId ?? "",
+      STAGING_ITEM_TYPE_CANDIDATE_ROSTER,
+    ]
+  );
+}
+
 async function markCandidateRosterStagingWritten(pool: Pool, ingestKey: string): Promise<void> {
   await pool.query(
     `
@@ -856,6 +892,26 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
                 `candidate-roster enricher retrying election_id=${electionId}: ${aiResult.errorCode} ${aiResult.reason}`
               );
               // Leave unacked so reclaim retries.
+              continue;
+            }
+
+            // Checked before the already-linked filter: an empty post-filter
+            // list can also mean every candidate is already linked (roster
+            // complete), so only the raw AI result signals "none found".
+            if (aiResult.candidates.length === 0) {
+              await markCandidateRosterStagingNoResults(
+                pool,
+                ingestKey,
+                electionId,
+                runId || stagingRow.run_id,
+                aiResult.aiRawDebug ?? null
+              );
+              console.log(`candidate-roster enricher no results election_id=${electionId}`);
+              await redis.xAck(
+                STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
+                STAGING_CANDIDATE_ROSTER_ENRICHER_GROUP,
+                entry.id
+              );
               continue;
             }
 
