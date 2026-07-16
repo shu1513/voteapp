@@ -15,7 +15,13 @@ vi.mock("../../../src/pipeline/massachusettsFinance/massachusettsBallotLookupFin
 vi.mock("../../../src/pipeline/finance/fecBallotLookupFinanceLoader.js", () => ({
   loadFecCandidateFinanceSummariesByCandidateElection: vi.fn(),
 }));
+// Fault-isolated failures are Sentry capture points of their own (the API
+// error middleware never sees swallowed errors), so pin the capture calls.
+vi.mock("../../../src/observability/sentry.js", () => ({
+  captureError: vi.fn(),
+}));
 
+import { captureError } from "../../../src/observability/sentry.js";
 import { loadCandidateFinanceSummariesByCandidateElection } from "../../../src/pipeline/address/ballotLookup.js";
 import { loadFecCandidateFinanceSummariesByCandidateElection } from "../../../src/pipeline/finance/fecBallotLookupFinanceLoader.js";
 import { loadMassachusettsCandidateFinanceSummariesByCandidateElection } from "../../../src/pipeline/massachusettsFinance/massachusettsBallotLookupFinanceLoader.js";
@@ -118,7 +124,16 @@ describe("ballot lookup finance fault isolation", () => {
     expect(warn).toHaveBeenCalledTimes(1);
     expect(warn).toHaveBeenCalledWith(
       "candidate finance summaries failed; continuing without this source:",
-      expect.objectContaining({ state: "WI", reason: "wisconsin finance exploded" })
+      expect.objectContaining({
+        source: "WI",
+        // describeError logs the scrubbed stack string, never the raw object
+        reason: expect.stringContaining("wisconsin finance exploded"),
+      })
+    );
+    expect(captureError).toHaveBeenCalledTimes(1);
+    expect(captureError).toHaveBeenCalledWith(
+      expect.objectContaining({ message: "wisconsin finance exploded" }),
+      expect.objectContaining({ finance_source: "WI" })
     );
   });
 
@@ -133,7 +148,14 @@ describe("ballot lookup finance fault isolation", () => {
     expect(warn).toHaveBeenCalledTimes(1);
     expect(warn).toHaveBeenCalledWith(
       "candidate finance summaries failed; continuing without this source:",
-      expect.objectContaining({ state: "FEC", reason: "fec finance exploded" })
+      expect.objectContaining({
+        source: "FEC",
+        reason: expect.stringContaining("fec finance exploded"),
+      })
+    );
+    expect(captureError).toHaveBeenCalledWith(
+      expect.objectContaining({ message: "fec finance exploded" }),
+      expect.objectContaining({ finance_source: "FEC" })
     );
   });
 
@@ -145,9 +167,10 @@ describe("ballot lookup finance fault isolation", () => {
 
     expect(merged.size).toBe(0);
     expect(warn).toHaveBeenCalledTimes(3);
+    expect(captureError).toHaveBeenCalledTimes(3);
   });
 
-  it("no warning is logged when every source succeeds", async () => {
+  it("no warning or capture happens when every source succeeds", async () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     arrange({ wisconsin: "ok", massachusetts: "ok", fec: "ok" });
 
@@ -155,5 +178,6 @@ describe("ballot lookup finance fault isolation", () => {
 
     expect(merged.get(KEY)).toEqual(SUMMARY);
     expect(warn).not.toHaveBeenCalled();
+    expect(captureError).not.toHaveBeenCalled();
   });
 });
