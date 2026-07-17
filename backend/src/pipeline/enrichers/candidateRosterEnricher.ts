@@ -747,6 +747,13 @@ export async function resolveCandidateRosterForProfileDrafts(
   };
 }
 
+type ProcessCandidateRosterOutcome =
+  | { outcome: "written"; candidateCount: number; rosterSource: "ai" | "staged_payload"; runId: string }
+  | { outcome: "no_results" }
+  | { outcome: "election_not_found" }
+  | { outcome: "staging_row_missing" }
+  | { outcome: "ai_failure"; errorCode: string; reason: string };
+
 async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionRow | null> {
   const result = await pool.query<ElectionRow>(
     `
@@ -775,6 +782,224 @@ async function getElectionRow(pool: Pool, electionId: string): Promise<ElectionR
   );
 
   return result.rows[0] ?? null;
+}
+
+// Single-election processing shared by the stream worker and the targeted
+// --election-id entrypoint. The election lookup runs before the staging-row
+// insert so a mistyped election id never leaves a junk pending staging row.
+// Throws on an invalid validated/written staging payload (stream path leaves
+// the message unacked for retry; targeted path surfaces the error).
+async function processCandidateRosterElection(
+  pool: Pool,
+  redis: ReturnType<typeof createClient>,
+  aiConfig: ReturnType<typeof buildCandidateRosterConfigFromEnv>,
+  electionId: string,
+  runId: string
+): Promise<ProcessCandidateRosterOutcome> {
+  const election = await getElectionRow(pool, electionId);
+  if (!election) {
+    return { outcome: "election_not_found" };
+  }
+
+  const ingestKey = rosterIngestKeyForElection(electionId);
+  await ensureCandidateRosterStagingRow(pool, ingestKey, electionId, runId);
+  const stagingRow = await getCandidateRosterStagingRow(pool, ingestKey);
+  if (!stagingRow) {
+    return { outcome: "staging_row_missing" };
+  }
+
+  // One run id for both the staging updates and the profile-draft fanout: the
+  // caller's run id when present (stream message / future explicit callers),
+  // else the staging row's (a targeted run on an injected roster keeps the
+  // injection's correlation id on the drafts it emits — the emitter's Redis
+  // marker dedupe means a later worker redelivery cannot re-emit them with
+  // the right id). Empty when neither exists, matching the worker's handling
+  // of run-id-less messages.
+  const effectiveRunId = runId || stagingRow.run_id || "";
+
+  let candidatesForFanout: CandidateRosterResolvedEntry[] | null = null;
+  let rosterSource: "ai" | "staged_payload";
+  if (stagingRow.status === "validated" || stagingRow.status === "written") {
+    rosterSource = "staged_payload";
+    candidatesForFanout = extractRosterCandidatesFromStagingPayload(stagingRow.payload);
+    if (!candidatesForFanout) {
+      throw new Error(`invalid candidate roster staging payload for ${ingestKey}`);
+    }
+  } else {
+    rosterSource = "ai";
+    const aiResult = await enrichCandidateRoster(
+      {
+        districtName: election.district_name,
+        districtType: election.district_type,
+        state: election.state,
+        electionDate: election.election_date,
+        officialBallotTitle: election.official_ballot_title,
+        electionStage: election.election_stage,
+        senateClass: election.senate_class,
+        termEndYear: election.term_end_year,
+        electionIsPartisan: election.is_partisan,
+        seedUrls: parseSeedUrls(election.sources),
+      },
+      aiConfig
+    );
+
+    if (!aiResult.ok) {
+      await recordCandidateRosterAiFailure(
+        pool,
+        ingestKey,
+        `ai failure (${aiResult.errorCode}): ${aiResult.reason}`,
+        aiResult.failureDebug
+      );
+      return { outcome: "ai_failure", errorCode: aiResult.errorCode, reason: aiResult.reason };
+    }
+
+    // Checked before the already-linked filter: an empty post-filter
+    // list can also mean every candidate is already linked (roster
+    // complete), so only the raw AI result signals "none found".
+    if (aiResult.candidates.length === 0) {
+      await markCandidateRosterStagingNoResults(
+        pool,
+        ingestKey,
+        electionId,
+        effectiveRunId,
+        aiResult.aiRawDebug ?? null
+      );
+      return { outcome: "no_results" };
+    }
+
+    const indexedCandidates: CandidateRosterIndexedEntry[] = aiResult.candidates.map((candidate, rosterIndex) => ({
+      ...candidate,
+      roster_index: rosterIndex,
+    }));
+    const filteredCandidates = await filterAlreadyLinkedCandidates(pool, electionId, indexedCandidates);
+    const resolved = await resolveCandidateRosterForProfileDrafts(
+      {
+        districtName: election.district_name,
+        districtType: election.district_type,
+        state: election.state,
+        electionDate: election.election_date,
+        officialBallotTitle: election.official_ballot_title,
+        electionStage: election.election_stage,
+        senateClass: election.senate_class,
+        termEndYear: election.term_end_year,
+        electionIsPartisan: election.is_partisan,
+        seedUrls: parseSeedUrls(election.sources),
+        candidates: filteredCandidates,
+      },
+      aiConfig
+    );
+    const mergedRosterDebug = {
+      ...(aiResult.aiRawDebug ?? {}),
+      duplicate_resolution: resolved.debug,
+    };
+    await markCandidateRosterStagingValidated(
+      pool,
+      ingestKey,
+      electionId,
+      resolved.resolvedCandidates,
+      effectiveRunId,
+      mergedRosterDebug
+    );
+    candidatesForFanout = resolved.resolvedCandidates;
+  }
+
+  const electionSeedUrls = parseSeedUrls(election.sources);
+  for (const candidate of candidatesForFanout) {
+    await enqueueCandidateProfileDrafts(redis, [
+      {
+        electionId,
+        runId: effectiveRunId,
+        displayName: candidate.display_name,
+        rosterIndex: candidate.roster_index,
+        rosterParty: candidate.party,
+        rosterIsIncumbent: candidate.is_incumbent,
+        disambiguationHint: candidate.disambiguation_hint,
+        fecIds: candidate.fec_ids,
+        stateFilingIdsHint: candidate.state_filing_ids,
+        skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
+        seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
+      },
+      ...(candidate.running_mate
+        ? [
+            {
+              electionId,
+              runId: effectiveRunId,
+              displayName: candidate.running_mate.display_name,
+              rosterIndex: candidate.roster_index,
+              rosterParty: candidate.running_mate.party,
+              seedUrls: mergeSeedUrls(candidate.running_mate.sources, electionSeedUrls),
+              electionTicketRole: "running_mate" as const,
+              ticketLeadDisplayName: candidate.display_name,
+            },
+          ]
+        : []),
+    ]);
+  }
+
+  await markCandidateRosterStagingWritten(pool, ingestKey);
+
+  return { outcome: "written", candidateCount: candidatesForFanout.length, rosterSource, runId: effectiveRunId };
+}
+
+// Targeted single-election enrichment for manual research: processes exactly
+// one election end-to-end (AI enrich when the staging row is not yet
+// validated, then profile-draft fanout) WITHOUT touching the shared draft
+// stream — no consumer group, no reads, no acks — so a manual run can never
+// consume or park other elections' queue messages. A stream message for this
+// election may still exist; a later worker delivery finds the staging row
+// validated/written and re-fans-out idempotently (Redis marker dedupe), which
+// is the same tolerated redelivery path the worker already has.
+export async function runCandidateRosterEnricherForElection(electionId: string): Promise<{
+  outcome: "written" | "no_results";
+  candidateCount?: number;
+  rosterSource?: "ai" | "staged_payload";
+  runId?: string;
+}> {
+  const env = getPipelineEnv();
+  const pool = new Pool({ connectionString: env.DATABASE_URL });
+  const redis = createClient({ url: env.REDIS_URL });
+  const aiConfig = buildCandidateRosterConfigFromEnv();
+
+  try {
+    await redis.connect();
+    const result = await processCandidateRosterElection(pool, redis, aiConfig, electionId, "");
+    switch (result.outcome) {
+      case "election_not_found":
+        throw new Error(`election not found (or race_type is not 'office') for election_id=${electionId}`);
+      case "staging_row_missing":
+        throw new Error(
+          `candidate roster staging row missing for ingest_key=${rosterIngestKeyForElection(electionId)} — a staging_items row with that ingest_key but a different item_type already exists`
+        );
+      case "ai_failure":
+        throw new Error(
+          `ai failure (${result.errorCode}): ${result.reason} — recorded on the staging row; fix and re-run`
+        );
+      case "no_results":
+        return { outcome: "no_results" };
+      case "written":
+        return {
+          outcome: "written",
+          candidateCount: result.candidateCount,
+          rosterSource: result.rosterSource,
+          runId: result.runId,
+        };
+      default: {
+        const unreachable: never = result;
+        throw new Error(`unhandled candidate roster outcome: ${JSON.stringify(unreachable)}`);
+      }
+    }
+  } finally {
+    try {
+      await redis.quit();
+    } catch (error) {
+      console.error("candidate-roster enricher cleanup warning (redis.quit):", toReason(error));
+    }
+    try {
+      await pool.end();
+    } catch (error) {
+      console.error("candidate-roster enricher cleanup warning (pool.end):", toReason(error));
+    }
+  }
 }
 
 export async function runCandidateRosterEnricher(options: EnricherOptions = {}): Promise<void> {
@@ -838,156 +1063,19 @@ export async function runCandidateRosterEnricher(options: EnricherOptions = {}):
             }
           }
 
-          const ingestKey = rosterIngestKeyForElection(electionId);
-          await ensureCandidateRosterStagingRow(pool, ingestKey, electionId, runId);
-          const stagingRow = await getCandidateRosterStagingRow(pool, ingestKey);
-          if (!stagingRow) {
-            await redis.xAck(
-              STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
-              STAGING_CANDIDATE_ROSTER_ENRICHER_GROUP,
-              entry.id
+          const result = await processCandidateRosterElection(pool, redis, aiConfig, electionId, runId);
+          if (result.outcome === "ai_failure") {
+            console.warn(
+              `candidate-roster enricher retrying election_id=${electionId}: ${result.errorCode} ${result.reason}`
             );
+            // Leave unacked so reclaim retries.
             continue;
           }
-
-          const election = await getElectionRow(pool, electionId);
-          if (!election) {
-            await redis.xAck(
-              STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
-              STAGING_CANDIDATE_ROSTER_ENRICHER_GROUP,
-              entry.id
-            );
-            continue;
+          if (result.outcome === "no_results") {
+            console.log(`candidate-roster enricher no results election_id=${electionId}`);
           }
-
-          let candidatesForFanout: CandidateRosterResolvedEntry[] | null = null;
-          if (stagingRow.status === "validated" || stagingRow.status === "written") {
-            candidatesForFanout = extractRosterCandidatesFromStagingPayload(stagingRow.payload);
-            if (!candidatesForFanout) {
-              throw new Error(`invalid candidate roster staging payload for ${ingestKey}`);
-            }
-          } else {
-            const aiResult = await enrichCandidateRoster(
-              {
-                districtName: election.district_name,
-                districtType: election.district_type,
-                state: election.state,
-                electionDate: election.election_date,
-                officialBallotTitle: election.official_ballot_title,
-                electionStage: election.election_stage,
-                senateClass: election.senate_class,
-                termEndYear: election.term_end_year,
-                electionIsPartisan: election.is_partisan,
-                seedUrls: parseSeedUrls(election.sources),
-              },
-              aiConfig
-            );
-
-            if (!aiResult.ok) {
-              await recordCandidateRosterAiFailure(
-                pool,
-                ingestKey,
-                `ai failure (${aiResult.errorCode}): ${aiResult.reason}`,
-                aiResult.failureDebug
-              );
-              console.warn(
-                `candidate-roster enricher retrying election_id=${electionId}: ${aiResult.errorCode} ${aiResult.reason}`
-              );
-              // Leave unacked so reclaim retries.
-              continue;
-            }
-
-            // Checked before the already-linked filter: an empty post-filter
-            // list can also mean every candidate is already linked (roster
-            // complete), so only the raw AI result signals "none found".
-            if (aiResult.candidates.length === 0) {
-              await markCandidateRosterStagingNoResults(
-                pool,
-                ingestKey,
-                electionId,
-                runId || stagingRow.run_id,
-                aiResult.aiRawDebug ?? null
-              );
-              console.log(`candidate-roster enricher no results election_id=${electionId}`);
-              await redis.xAck(
-                STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
-                STAGING_CANDIDATE_ROSTER_ENRICHER_GROUP,
-                entry.id
-              );
-              continue;
-            }
-
-            const indexedCandidates: CandidateRosterIndexedEntry[] = aiResult.candidates.map((candidate, rosterIndex) => ({
-              ...candidate,
-              roster_index: rosterIndex,
-            }));
-            const filteredCandidates = await filterAlreadyLinkedCandidates(pool, electionId, indexedCandidates);
-            const resolved = await resolveCandidateRosterForProfileDrafts(
-              {
-                districtName: election.district_name,
-                districtType: election.district_type,
-                state: election.state,
-                electionDate: election.election_date,
-                officialBallotTitle: election.official_ballot_title,
-                electionStage: election.election_stage,
-                senateClass: election.senate_class,
-                termEndYear: election.term_end_year,
-                electionIsPartisan: election.is_partisan,
-                seedUrls: parseSeedUrls(election.sources),
-                candidates: filteredCandidates,
-              },
-              aiConfig
-            );
-            const mergedRosterDebug = {
-              ...(aiResult.aiRawDebug ?? {}),
-              duplicate_resolution: resolved.debug,
-            };
-            await markCandidateRosterStagingValidated(
-              pool,
-              ingestKey,
-              electionId,
-              resolved.resolvedCandidates,
-              runId || stagingRow.run_id,
-              mergedRosterDebug
-            );
-            candidatesForFanout = resolved.resolvedCandidates;
-          }
-
-          const electionSeedUrls = parseSeedUrls(election.sources);
-          for (const candidate of candidatesForFanout) {
-            await enqueueCandidateProfileDrafts(redis, [
-              {
-                electionId,
-                runId,
-                displayName: candidate.display_name,
-                rosterIndex: candidate.roster_index,
-                rosterParty: candidate.party,
-                rosterIsIncumbent: candidate.is_incumbent,
-                disambiguationHint: candidate.disambiguation_hint,
-                fecIds: candidate.fec_ids,
-                stateFilingIdsHint: candidate.state_filing_ids,
-                skipPerElectionNameDedupe: candidate.skip_per_election_name_dedupe,
-                seedUrls: mergeSeedUrls(candidate.sources, electionSeedUrls),
-              },
-              ...(candidate.running_mate
-                ? [
-                    {
-                      electionId,
-                      runId,
-                      displayName: candidate.running_mate.display_name,
-                      rosterIndex: candidate.roster_index,
-                      rosterParty: candidate.running_mate.party,
-                      seedUrls: mergeSeedUrls(candidate.running_mate.sources, electionSeedUrls),
-                      electionTicketRole: "running_mate" as const,
-                      ticketLeadDisplayName: candidate.display_name,
-                    },
-                  ]
-                : []),
-            ]);
-          }
-
-          await markCandidateRosterStagingWritten(pool, ingestKey);
-
+          // written, no_results, election_not_found, and staging_row_missing
+          // all ack: the message is either done or can never succeed.
           await redis.xAck(
             STAGING_CANDIDATE_ROSTER_DRAFT_STREAM,
             STAGING_CANDIDATE_ROSTER_ENRICHER_GROUP,
