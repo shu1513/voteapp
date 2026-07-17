@@ -65,10 +65,19 @@ describe("FollowsPage", () => {
     await user.type(screen.getByRole("searchbox", { name: "Search followed candidates by name" }), "jord");
     expect(screen.getByText("Jordan Voter")).toBeInTheDocument();
     expect(screen.queryByText("Alex Mayor")).not.toBeInTheDocument();
+    // Screen readers hear the result count through the polite live region.
+    expect(screen.getByRole("status")).toHaveTextContent("1 of 2 followed candidates shown.");
 
+    // Clearing the query restores the full list and silences the live region.
     await user.clear(screen.getByRole("searchbox", { name: "Search followed candidates by name" }));
+    expect(screen.getByText("Jordan Voter")).toBeInTheDocument();
+    expect(screen.getByText("Alex Mayor")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("");
+
     await user.type(screen.getByRole("searchbox", { name: "Search followed candidates by name" }), "nobody");
-    expect(screen.getByText(/No followed candidates match/)).toBeInTheDocument();
+    // Once in the visible notice, once in the live region.
+    expect(screen.getAllByText(/No followed candidates match/)).toHaveLength(2);
+    expect(screen.getByRole("status")).toHaveTextContent("No followed candidates match “nobody”.");
   });
 
   it("renders follow rows and sends following:false on Unfollow", async () => {

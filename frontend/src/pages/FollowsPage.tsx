@@ -148,7 +148,7 @@ export function FollowsPage() {
   }
 
   const trimmedQuery = query.trim().toLowerCase();
-  const visibleFollows = follows?.filter((follow) =>
+  const visibleFollows = (follows ?? []).filter((follow) =>
     follow.display_name.toLowerCase().includes(trimmedQuery)
   );
 
@@ -177,11 +177,22 @@ export function FollowsPage() {
             aria-label="Search followed candidates by name"
             className="mt-4 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-soft focus:border-rausch focus:outline-none"
           />
-          {visibleFollows && visibleFollows.length === 0 ? (
+          {/* Persistent polite live region: announces filter results to screen
+              readers. Kept always-mounted (conditionally inserted live regions
+              are unreliably announced) and empty until a query is typed so the
+              initial load stays silent. */}
+          <p role="status" className="sr-only">
+            {trimmedQuery
+              ? visibleFollows.length === 0
+                ? `No followed candidates match “${query.trim()}”.`
+                : `${visibleFollows.length} of ${follows.length} followed candidates shown.`
+              : ""}
+          </p>
+          {visibleFollows.length === 0 ? (
             <EmptyNotice text={`No followed candidates match “${query.trim()}”.`} />
           ) : (
             <ul className="mt-4 space-y-3">
-              {visibleFollows?.map((follow) => (
+              {visibleFollows.map((follow) => (
                 <FollowRow key={follow.candidate_id} follow={follow} />
               ))}
             </ul>
