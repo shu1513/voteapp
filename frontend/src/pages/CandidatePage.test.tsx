@@ -58,6 +58,28 @@ describe("CandidatePage", () => {
     expect(screen.getByRole("button", { name: "Report an issue with candidate record" })).toBeInTheDocument();
   });
 
+  it("says no records were found when the empty list was actually researched", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ records: [], records_researched_through: "2026-07-10" }));
+
+    expect(
+      await screen.findByText(
+        "No public records found for this candidate — record history researched through July 10, 2026."
+      )
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Record" })).not.toBeInTheDocument();
+  });
+
+  it("says records are not researched yet when there is no research checkpoint", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ records: [], records_researched_through: null }));
+
+    expect(
+      await screen.findByText("This candidate's record history has not been researched yet.")
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/No public records found/)).not.toBeInTheDocument();
+  });
+
   it("shows the follow button as Following once the follows list confirms it", async () => {
     // The anonymous loader payload always carries is_following=false; the
     // button must reflect the client-fetched follows list, not the payload.
