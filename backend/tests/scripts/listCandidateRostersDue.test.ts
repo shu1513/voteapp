@@ -13,18 +13,21 @@ function createMockQueryable(rows: unknown[] = []) {
 
 describe("listCandidateRostersDue", () => {
   it("passes the as-of date, cooldown, window, and item type as parameters and returns the rows", async () => {
+    // Federal row: only federal rosters can carry a non-null no-FEC skip
+    // list — non-federal rosters project null for roster_skipped_no_fec_id.
     const row = {
       election_id: "e-1",
-      district_name: "Denver County",
-      district_type: "county",
-      state: "CO",
-      official_ballot_title: "County Commissioner",
+      district_name: "Congressional District 4, Michigan",
+      district_type: "us_house",
+      state: "MI",
+      official_ballot_title: "Representative in Congress District 4",
       election_date: "2026-08-11",
-      election_stage: "general",
+      election_stage: "primary",
       roster_status: "written",
       roster_written_at: "2026-05-01 12:00:00+00",
       staged_candidate_count: 3,
       linked_candidate_count: 3,
+      roster_skipped_no_fec_id: ["Tanis, Philip"],
       reason: "stale",
     };
     const db = createMockQueryable([row]);
@@ -60,6 +63,9 @@ describe("listCandidateRostersDue", () => {
     expect(sql).toContain("s.status = 'no_results'");
     // Linked-candidate count must ignore deleted candidates.
     expect(sql).toContain("c.deleted_at IS NULL");
+    // The federal no-FEC skip list rides along so the refresh pass re-checks
+    // those names for late FEC registrations.
+    expect(sql).toContain("s.ai_raw_debug->'roster_skipped_no_fec_id'");
   });
 
   it("orders soonest election first, oldest roster first within a date", async () => {
