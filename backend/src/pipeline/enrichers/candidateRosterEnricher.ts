@@ -748,7 +748,7 @@ export async function resolveCandidateRosterForProfileDrafts(
 }
 
 type ProcessCandidateRosterOutcome =
-  | { outcome: "written"; candidateCount: number; rosterSource: "ai" | "staged_payload" }
+  | { outcome: "written"; candidateCount: number; rosterSource: "ai" | "staged_payload"; runId: string }
   | { outcome: "no_results" }
   | { outcome: "election_not_found" }
   | { outcome: "staging_row_missing" }
@@ -808,6 +808,15 @@ async function processCandidateRosterElection(
     return { outcome: "staging_row_missing" };
   }
 
+  // One run id for both the staging updates and the profile-draft fanout: the
+  // caller's run id when present (stream message / future explicit callers),
+  // else the staging row's (a targeted run on an injected roster keeps the
+  // injection's correlation id on the drafts it emits — the emitter's Redis
+  // marker dedupe means a later worker redelivery cannot re-emit them with
+  // the right id). Empty when neither exists, matching the worker's handling
+  // of run-id-less messages.
+  const effectiveRunId = runId || stagingRow.run_id || "";
+
   let candidatesForFanout: CandidateRosterResolvedEntry[] | null = null;
   let rosterSource: "ai" | "staged_payload";
   if (stagingRow.status === "validated" || stagingRow.status === "written") {
@@ -852,7 +861,7 @@ async function processCandidateRosterElection(
         pool,
         ingestKey,
         electionId,
-        runId || stagingRow.run_id,
+        effectiveRunId,
         aiResult.aiRawDebug ?? null
       );
       return { outcome: "no_results" };
@@ -888,7 +897,7 @@ async function processCandidateRosterElection(
       ingestKey,
       electionId,
       resolved.resolvedCandidates,
-      runId || stagingRow.run_id,
+      effectiveRunId,
       mergedRosterDebug
     );
     candidatesForFanout = resolved.resolvedCandidates;
@@ -899,7 +908,7 @@ async function processCandidateRosterElection(
     await enqueueCandidateProfileDrafts(redis, [
       {
         electionId,
-        runId,
+        runId: effectiveRunId,
         displayName: candidate.display_name,
         rosterIndex: candidate.roster_index,
         rosterParty: candidate.party,
@@ -914,7 +923,7 @@ async function processCandidateRosterElection(
         ? [
             {
               electionId,
-              runId,
+              runId: effectiveRunId,
               displayName: candidate.running_mate.display_name,
               rosterIndex: candidate.roster_index,
               rosterParty: candidate.running_mate.party,
@@ -929,7 +938,7 @@ async function processCandidateRosterElection(
 
   await markCandidateRosterStagingWritten(pool, ingestKey);
 
-  return { outcome: "written", candidateCount: candidatesForFanout.length, rosterSource };
+  return { outcome: "written", candidateCount: candidatesForFanout.length, rosterSource, runId: effectiveRunId };
 }
 
 // Targeted single-election enrichment for manual research: processes exactly
@@ -940,9 +949,12 @@ async function processCandidateRosterElection(
 // election may still exist; a later worker delivery finds the staging row
 // validated/written and re-fans-out idempotently (Redis marker dedupe), which
 // is the same tolerated redelivery path the worker already has.
-export async function runCandidateRosterEnricherForElection(
-  electionId: string
-): Promise<{ outcome: "written" | "no_results"; candidateCount?: number; rosterSource?: "ai" | "staged_payload" }> {
+export async function runCandidateRosterEnricherForElection(electionId: string): Promise<{
+  outcome: "written" | "no_results";
+  candidateCount?: number;
+  rosterSource?: "ai" | "staged_payload";
+  runId?: string;
+}> {
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   const redis = createClient({ url: env.REDIS_URL });
@@ -965,7 +977,12 @@ export async function runCandidateRosterEnricherForElection(
       case "no_results":
         return { outcome: "no_results" };
       case "written":
-        return { outcome: "written", candidateCount: result.candidateCount, rosterSource: result.rosterSource };
+        return {
+          outcome: "written",
+          candidateCount: result.candidateCount,
+          rosterSource: result.rosterSource,
+          runId: result.runId,
+        };
       default: {
         const unreachable: never = result;
         throw new Error(`unhandled candidate roster outcome: ${JSON.stringify(unreachable)}`);

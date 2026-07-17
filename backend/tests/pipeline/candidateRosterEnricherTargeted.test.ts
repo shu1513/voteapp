@@ -131,13 +131,18 @@ describe("runCandidateRosterEnricherForElection", () => {
 
     const result = await runCandidateRosterEnricherForElection(ELECTION_ID);
 
-    expect(result).toEqual({ outcome: "written", candidateCount: 1, rosterSource: "ai" });
+    expect(result).toEqual({ outcome: "written", candidateCount: 1, rosterSource: "ai", runId: "run_1" });
 
     const sqlStatements = poolQueryMock.mock.calls.map(([sql]) => String(sql));
     expect(sqlStatements.some((sql) => sql.includes("status = 'validated'"))).toBe(true);
     expect(sqlStatements.some((sql) => sql.includes("status = 'written'"))).toBe(true);
-    // Fanout reached Redis via the profile-draft emitter.
+    // Fanout reached Redis via the profile-draft emitter, carrying the
+    // staging row's run_id even though the targeted entrypoint has none of
+    // its own — the emitter's marker dedupe means these drafts are the only
+    // chance to attach the right correlation id.
     expect(redisSendCommandMock).toHaveBeenCalled();
+    const emitArgs = redisSendCommandMock.mock.calls[0]![0] as string[];
+    expect(emitArgs).toContain("run_1");
 
     // The whole point of targeted mode: the shared stream is never consumed,
     // so other elections' messages cannot be read, acked, or parked.
@@ -192,7 +197,7 @@ describe("runCandidateRosterEnricherForElection", () => {
 
     const result = await runCandidateRosterEnricherForElection(ELECTION_ID);
 
-    expect(result).toEqual({ outcome: "written", candidateCount: 1, rosterSource: "staged_payload" });
+    expect(result).toEqual({ outcome: "written", candidateCount: 1, rosterSource: "staged_payload", runId: "run_1" });
     expect(enrichCandidateRosterMock).not.toHaveBeenCalled();
     expect(redisSendCommandMock).toHaveBeenCalled();
   });
