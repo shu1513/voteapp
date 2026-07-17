@@ -33,7 +33,9 @@
 //   fl_candidate_finance_outside_group_links) carry no candidate_id or
 //   election_id of their own, so the election-scoped finance scan above
 //   cannot see them, and ON DELETE CASCADE would silently take their rows
-//   with the link (checked dynamically against the catalog);
+//   with the link (checked dynamically against the catalog; FK shapes the
+//   check cannot count — composite, or not referencing id — are refused
+//   outright);
 // - running-mate uniqueness on the target shell is pre-checked so the move
 //   cannot trip uq_candidate_elections_election_running_mate_candidate_id;
 // - local-database guard, single transaction, --dry-run.
@@ -146,29 +148,50 @@ export async function listCandidateScopedElectionFkTables(
 }
 
 /**
- * Every table with a foreign key onto public.candidate_elections references
- * link rows by id, not by (candidate_id, election_id), so the election-scoped
- * scan above cannot see it. The duplicate-merge path deletes the from-link,
- * which would cascade (or orphan) such rows. Discovered from the catalog at
+ * Every foreign key onto public.candidate_elections references link rows the
+ * duplicate-merge delete would cascade (or orphan), and none of them is
+ * visible to the election-scoped scan above. conkey and confkey are unnested
+ * together (positional pairing) so each child column is reported with the
+ * link column it actually references: the guard can only count single-column
+ * FKs onto id, and must refuse any other shape rather than compare the wrong
+ * column against the link id and under-count. Discovered from the catalog at
  * run time so a newly added link-scoped table is covered without touching
  * this wrapper.
  */
-export async function listCandidateElectionLinkFkTables(
+export async function listCandidateElectionLinkFkReferences(
   client: MoveCandidateElectionLinkClient
-): Promise<{ table: string; column: string }[]> {
-  const result = await client.query<{ table_name: string; column_name: string }>(
+): Promise<
+  { constraintName: string; table: string; column: string; referencedColumn: string; columnCount: number }[]
+> {
+  const result = await client.query<{
+    constraint_name: string;
+    table_name: string;
+    column_name: string;
+    referenced_column: string;
+    column_count: number;
+  }>(
     `
-      SELECT DISTINCT c.conrelid::regclass::text AS table_name,
-             quote_ident(a.attname) AS column_name
+      SELECT c.conname AS constraint_name,
+             c.conrelid::regclass::text AS table_name,
+             quote_ident(a.attname) AS column_name,
+             fa.attname AS referenced_column,
+             cardinality(c.conkey) AS column_count
       FROM pg_constraint c
-      JOIN unnest(c.conkey) AS k(attnum) ON true
-      JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = k.attnum
+      JOIN unnest(c.conkey, c.confkey) WITH ORDINALITY AS u(attnum, fattnum, ord) ON true
+      JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = u.attnum
+      JOIN pg_attribute fa ON fa.attrelid = c.confrelid AND fa.attnum = u.fattnum
       WHERE c.contype = 'f'
         AND c.confrelid = 'public.candidate_elections'::regclass
-      ORDER BY 1, 2
+      ORDER BY 1, 2, 3
     `
   );
-  return result.rows.map((row) => ({ table: row.table_name, column: row.column_name }));
+  return result.rows.map((row) => ({
+    constraintName: row.constraint_name,
+    table: row.table_name,
+    column: row.column_name,
+    referencedColumn: row.referenced_column,
+    columnCount: Number(row.column_count),
+  }));
 }
 
 export async function runMoveCandidateElectionLink(
@@ -299,15 +322,38 @@ export async function runMoveCandidateElectionLink(
       // (invisible to the election-scoped scan above) would be silently
       // cascaded away by the duplicate-merge delete. Identifiers come from
       // the catalog, not from user input.
-      const linkFkTables = await listCandidateElectionLinkFkTables(client);
+      const linkFkReferences = await listCandidateElectionLinkFkReferences(client);
+      // The count below keys each child column on the from-link id, which is
+      // only meaningful for a single-column FK onto id. Any other shape
+      // (composite, or referencing another unique column) would compare the
+      // wrong value, count zero, and let the delete cascade — so it is
+      // refused outright instead of guessed at.
+      const unsupported = [
+        ...new Set(
+          linkFkReferences
+            .filter((ref) => ref.columnCount !== 1 || ref.referencedColumn !== "id")
+            .map((ref) => `${ref.table}.${ref.constraintName}`)
+        ),
+      ];
+      if (unsupported.length > 0) {
+        throw new Error(
+          `Foreign keys onto candidate_elections whose shape this guard cannot check ` +
+            `(composite, or not referencing id): ${unsupported.join(", ")}. ` +
+            "Refusing the duplicate-merge delete; extend the guard before merging under such constraints."
+        );
+      }
       const cascading: string[] = [];
-      for (const { table, column } of linkFkTables) {
+      const counted = new Set<string>();
+      for (const { table, column } of linkFkReferences) {
+        const key = `${table}.${column}`;
+        if (counted.has(key)) continue;
+        counted.add(key);
         const countResult = await client.query<{ n: string }>(
           `SELECT count(*)::text AS n FROM ${table} WHERE ${column} = $1::uuid`,
           [link.id]
         );
         const n = Number(countResult.rows[0]?.n ?? "0");
-        if (n > 0) cascading.push(`${table}.${column} (${n})`);
+        if (n > 0) cascading.push(`${key} (${n})`);
       }
       if (cascading.length > 0) {
         throw new Error(
