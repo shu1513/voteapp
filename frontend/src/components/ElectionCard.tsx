@@ -58,11 +58,14 @@ export function ElectionList({
 }
 
 /**
- * Shared between the anonymous ballot and the saved (account) ballot.
- * savedAreaIds (verified users with saved research areas) highlights the
- * matching area chips so "affects what I care about" reads at a glance.
+ * A single election card. Deliberately NOT exported: it omits its own date
+ * (ElectionList's group heading carries it), so a standalone render would be
+ * dateless. Render elections through ElectionList, which is the public API
+ * and is shared between the anonymous and saved ballots. savedAreaIds
+ * (verified users with saved research areas) highlights the matching area
+ * chips so "affects what I care about" reads at a glance.
  */
-export function ElectionCard({
+function ElectionCard({
   election,
   savedAreaIds,
 }: {

@@ -57,7 +57,8 @@ function AccountNav() {
       </span>
       <Menu as="div" className="relative sm:hidden">
         <MenuButton className="rounded-lg border border-line px-3 py-1.5 font-medium text-ink">
-          Hi {me.first_name} ▾
+          Hi {me.first_name}{" "}
+          <span aria-hidden="true">▾</span>
         </MenuButton>
         <MenuItems className="absolute right-0 z-20 mt-2 w-44 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none">
           <MenuItem>
