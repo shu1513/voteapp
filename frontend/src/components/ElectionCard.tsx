@@ -119,25 +119,34 @@ function ElectionCard({
               : "Results available"}
           </span>
         ) : null}
-        {savedAreas.map((area) => (
-          <span
-            key={area.id}
-            className="rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
-          >
-            {area.name}
-          </span>
-        ))}
-        {visibleOtherAreas.map((area) => (
-          <span key={area.id} className="rounded bg-surface px-2 py-0.5 text-ink-soft">
-            {area.name}
-          </span>
-        ))}
-        {hiddenAreaCount > 0 ? (
-          <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
-            +{hiddenAreaCount} more issue{hiddenAreaCount === 1 ? "" : "s"}
-          </span>
-        ) : null}
       </div>
+      {election.research_areas.length > 0 ? (
+        // Own labeled row so the issue chips read as "what this race
+        // affects" rather than blending into the status chips above.
+        // Saved-area matches lead the list (all of them, highlighted);
+        // unsaved areas follow under the cap.
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-ink-soft">Affected areas:</span>
+          {savedAreas.map((area) => (
+            <span
+              key={area.id}
+              className="rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+            >
+              {area.name}
+            </span>
+          ))}
+          {visibleOtherAreas.map((area) => (
+            <span key={area.id} className="rounded bg-surface px-2 py-0.5 text-ink-soft">
+              {area.name}
+            </span>
+          ))}
+          {hiddenAreaCount > 0 ? (
+            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
+              +{hiddenAreaCount} more issue{hiddenAreaCount === 1 ? "" : "s"}
+            </span>
+          ) : null}
+        </div>
+      ) : null}
     </Link>
   );
 }

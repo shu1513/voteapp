@@ -32,12 +32,38 @@ describe("ElectionCard", () => {
       })
     );
 
+    expect(screen.getByText("Affected areas:")).toBeInTheDocument();
     expect(screen.getByText("Civil Rights")).toBeInTheDocument();
     expect(screen.getByText("Gun Control")).toBeInTheDocument();
     expect(screen.getByText("Housing Affordability")).toBeInTheDocument();
     expect(screen.queryByText("Data Privacy")).not.toBeInTheDocument();
     expect(screen.queryByText("Public Infrastructure")).not.toBeInTheDocument();
     expect(screen.getByText("+2 more issues")).toBeInTheDocument();
+  });
+
+  it("omits the affected-areas row when a race has no research areas", () => {
+    renderCard(electionSummary({ research_areas: [] }));
+    expect(screen.queryByText("Affected areas:")).not.toBeInTheDocument();
+  });
+
+  it("orders saved-area chips ahead of unsaved ones", () => {
+    renderCard(
+      electionSummary({
+        research_areas: [
+          area("a-1", "Civil Rights"),
+          area("a-2", "Gun Control"),
+          area("a-3", "Housing Affordability"),
+        ],
+      }),
+      new Set(["a-3"])
+    );
+
+    const label = screen.getByText("Affected areas:");
+    const chipTexts = Array.from(label.parentElement?.children ?? []).map(
+      (chip) => chip.textContent
+    );
+    // Saved match leads even though it is last in the payload.
+    expect(chipTexts).toEqual(["Affected areas:", "Housing Affordability", "Civil Rights", "Gun Control"]);
   });
 
   it("always shows saved-area matches, ahead of the cap", () => {
