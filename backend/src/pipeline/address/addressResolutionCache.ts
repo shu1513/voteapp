@@ -32,11 +32,16 @@ export function buildAddressLookupCacheKey(input: {
   address: string;
   benchmark: string;
   vintage: string;
+  layers: string;
 }): string {
   const normalized = JSON.stringify({
     address: normalizeAddressForCache(input.address),
     benchmark: normalizeCacheContext(input.benchmark),
     vintage: normalizeCacheContext(input.vintage),
+    // The layers parameter shapes which geographies the geocoder returns, so
+    // cached district keys are only valid for the layers they were fetched
+    // with — a config change must miss rather than reuse 14-day-old results.
+    layers: normalizeCacheContext(input.layers),
   });
   const hash = createHash("sha256").update(normalized).digest("hex");
   return `${ADDRESS_LOOKUP_CACHE_KEY_PREFIX}${hash}`;

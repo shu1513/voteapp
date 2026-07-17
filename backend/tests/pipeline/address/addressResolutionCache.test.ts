@@ -14,17 +14,31 @@ describe("addressResolutionCache", () => {
       address: " 3921   Harlan Ave Baldwin Park CA 91706 ",
       benchmark: "Public_AR_Current",
       vintage: "ACS2024_Current",
+      layers: "all",
     });
     const sameKey = buildAddressLookupCacheKey({
       address: "3921 harlan ave baldwin park ca 91706",
       benchmark: "Public_AR_Current",
       vintage: "ACS2024_Current",
+      layers: "all",
     });
 
     expect(key).toBe(sameKey);
     expect(key).toMatch(new RegExp(`^${ADDRESS_LOOKUP_CACHE_KEY_PREFIX}[a-f0-9]{64}$`));
     expect(key).not.toContain("Harlan");
     expect(key).not.toContain("3921");
+  });
+
+  it("keys on the layers configuration so a layers change cannot reuse stale results", () => {
+    const base = {
+      address: "3921 harlan ave baldwin park ca 91706",
+      benchmark: "Public_AR_Current",
+      vintage: "ACS2024_Current",
+    };
+
+    expect(buildAddressLookupCacheKey({ ...base, layers: "all" })).not.toBe(
+      buildAddressLookupCacheKey({ ...base, layers: "54,56" })
+    );
   });
 
   it("writes JSON with TTL and reads it back", async () => {
