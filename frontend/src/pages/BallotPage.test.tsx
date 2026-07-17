@@ -77,8 +77,10 @@ describe("BallotPage", () => {
     });
     renderBallot("/ballot?d=d-1");
 
-    expect(await screen.findByText("Candidate list not final")).toBeInTheDocument();
-    expect(screen.queryByText("0 candidates")).not.toBeInTheDocument();
+    // The roster status renders inside the card's meta line, so match as a
+    // substring of that line rather than a standalone element.
+    expect(await screen.findByText(/Candidate list not final/)).toBeInTheDocument();
+    expect(screen.queryByText(/0 candidates/)).not.toBeInTheDocument();
   });
 
   it("confirms the matched address from router state and lists the districts", async () => {
