@@ -130,6 +130,7 @@ type EventRow = {
   user_id: string;
   event_type: string;
   election_id: string | null;
+  candidate_record_id: string | null;
 };
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -549,7 +550,7 @@ export async function runMergeCandidates(
     // candidate_record_id) and record ids stay unique across the merge.
     const eventsResult = await client.query<EventRow>(
       `
-        SELECT id, candidate_id, user_id, event_type, election_id
+        SELECT id, candidate_id, user_id, event_type, election_id, candidate_record_id
         FROM public.user_candidate_follow_notification_events
         WHERE candidate_id = ANY($1::uuid[])
         ORDER BY id
@@ -557,8 +558,15 @@ export async function runMergeCandidates(
       `,
       [pair]
     );
+    // In a live run events tied to duplicate-deleted records are already gone
+    // (their record FK cascades); a dry run skipped that delete, so filter
+    // them here to keep the reported counts identical in both modes.
+    const cascadedRecordIds = new Set(duplicateRecordIds);
+    const liveEvents = eventsResult.rows.filter(
+      (row) => !(row.candidate_record_id && cascadedRecordIds.has(row.candidate_record_id))
+    );
     const survivorElectionEventKeys = new Set(
-      eventsResult.rows
+      liveEvents
         .filter(
           (row) =>
             row.candidate_id === survivorId &&
@@ -569,7 +577,7 @@ export async function runMergeCandidates(
     );
     const rehomeEventIds: string[] = [];
     const duplicateEventIds: string[] = [];
-    for (const event of eventsResult.rows) {
+    for (const event of liveEvents) {
       if (event.candidate_id !== mergedId) continue;
       const collides =
         event.event_type === "candidate_future_election" &&

@@ -467,6 +467,45 @@ describe("runMergeCandidates", () => {
     expect(rehome?.values).toEqual([["e3"], SURVIVOR]);
   });
 
+  it("excludes events cascading with duplicate-deleted records from dry-run counts", async () => {
+    // Live runs delete the duplicate record before reading events (its
+    // record-update event cascades away); a dry run must report the same
+    // counts despite skipping the delete.
+    const responses = () =>
+      happyResponses({
+        "FROM public.candidate_records\n        WHERE candidate_id = ANY": [
+          [
+            { id: "r2", candidate_id: MERGED, record_identity_key: "shared" },
+            { id: "r3", candidate_id: SURVIVOR, record_identity_key: "shared" },
+          ],
+        ],
+        "FROM public.user_candidate_follow_notification_events\n        WHERE candidate_id = ANY": [
+          [
+            {
+              id: "e1",
+              candidate_id: MERGED,
+              user_id: USER_ID,
+              event_type: "candidate_record_update",
+              election_id: null,
+              candidate_record_id: "r2",
+            },
+          ],
+        ],
+      });
+
+    const dry = await run({ query: buildClient(responses()).query }, { dryRun: true });
+    expect(dry.notificationEvents).toEqual({ rehomed: 0, duplicatesDeleted: 0 });
+
+    const live = buildClient(responses());
+    const result = await run({ query: live.query });
+    expect(result.notificationEvents).toEqual({ rehomed: 0, duplicatesDeleted: 0 });
+    expect(
+      live.calls.some((call) =>
+        call.text.includes("UPDATE public.user_candidate_follow_notification_events")
+      )
+    ).toBe(false);
+  });
+
   it("refuses when both candidates have rows in the same referencing table", async () => {
     const { query } = buildClient(
       happyResponses({
