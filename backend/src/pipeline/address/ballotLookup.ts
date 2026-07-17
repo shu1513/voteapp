@@ -228,6 +228,8 @@ export type BallotLookupElection = {
   election_date: string;
   election_stage: ElectionStage | null;
   is_partisan: boolean | null;
+  // null = seat count never recorded (display treats null and 1 the same).
+  seats_to_fill: number | null;
   discovery_contest_family: ElectionContestFamily | null;
   sources: string[];
   candidates: BallotLookupCandidate[];
@@ -290,6 +292,7 @@ type ElectionRow = {
   election_date: string;
   election_stage: ElectionStage | null;
   is_partisan: boolean | null;
+  seats_to_fill: number | null;
   discovery_contest_family: ElectionContestFamily | null;
   sources: unknown;
   office_id?: string | null;
@@ -1293,6 +1296,7 @@ async function loadFullElectionDetails(
     election_date: row.election_date,
     election_stage: row.election_stage,
     is_partisan: row.is_partisan,
+    seats_to_fill: row.seats_to_fill ?? null,
     discovery_contest_family: row.discovery_contest_family,
     sources: parseStringArray(row.sources),
     candidates: candidatesByElection.get(row.election_id) ?? [],
@@ -1356,6 +1360,7 @@ export async function lookupBallotSummariesByDistrictIds(
         e.election_date::text AS election_date,
         e.election_stage,
         e.is_partisan,
+        e.seats_to_fill,
         e.discovery_contest_family,
         e.sources,
         office.id AS office_id,
@@ -1626,6 +1631,7 @@ async function loadElectionRowById(db: Queryable, electionId: string): Promise<E
         e.election_date::text AS election_date,
         e.election_stage,
         e.is_partisan,
+        e.seats_to_fill,
         e.discovery_contest_family,
         e.sources,
         office.id AS office_id,

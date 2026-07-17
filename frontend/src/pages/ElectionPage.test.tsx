@@ -89,6 +89,22 @@ describe("ElectionPage", () => {
     expect(screen.queryByText("Why this vote power rating?")).not.toBeInTheDocument();
   });
 
+  it("shows the seat count for multi-seat contests and hides it otherwise", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ seats_to_fill: 3 }));
+
+    expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
+    expect(screen.getByText(/3 seats/)).toBeInTheDocument();
+  });
+
+  it("shows no seat count when seats_to_fill is absent or 1", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ seats_to_fill: 1 }));
+
+    expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
+    expect(screen.queryByText(/seats/)).not.toBeInTheDocument();
+  });
+
   it("explains an empty candidate list instead of hiding the section", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
