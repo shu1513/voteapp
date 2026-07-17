@@ -338,7 +338,19 @@ export function CandidatePage() {
             ))
           )}
         </section>
-      ) : null}
+      ) : (
+        // An empty record list is ambiguous on its own: researched-and-none-
+        // found and not-researched-yet must read differently or absence looks
+        // like a completed (empty) record. "Verified", not "found": a search
+        // can finish with every discovered record dropped for permanently
+        // failing source checks, and the checkpoint still advances — the
+        // array only proves nothing verifiable was kept.
+        <p className="mt-6 text-sm text-ink-soft">
+          {candidate.records_researched_through
+            ? `No verified public records for this candidate — record history researched through ${formatElectionDate(candidate.records_researched_through)}.`
+            : "This candidate's record history has not been researched yet."}
+        </p>
+      )}
 
       {candidate.elections.length > 0 ? (
         <section className="mt-6">

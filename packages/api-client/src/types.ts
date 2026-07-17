@@ -355,6 +355,12 @@ export type CandidateDetail = {
     official_website_url: string | null;
     profile_sources: string[];
     last_researched: string | null;
+    /**
+     * Date the record history has been researched through. Null means no
+     * records search has completed yet, so an empty `records` array is "not
+     * researched" rather than "researched and none found".
+     */
+    records_researched_through: string | null;
     records: CandidateRecord[];
     elections: CandidateElection[];
     is_following: boolean;

@@ -115,6 +115,7 @@ export function candidateDetail(
       official_website_url: null,
       profile_sources: ["https://example.gov/profile"],
       last_researched: "2026-06-01T00:00:00.000Z",
+      records_researched_through: "2026-06-01",
       records: [
         {
           id: "r-1",

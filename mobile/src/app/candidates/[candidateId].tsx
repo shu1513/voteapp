@@ -304,7 +304,19 @@ export default function CandidateScreen() {
             ))
           )}
         </View>
-      ) : null}
+      ) : (
+        // Same empty-state distinction as the web candidate page: an empty
+        // record list is ambiguous on its own — researched-and-none-found and
+        // not-researched-yet must read differently. "Verified", not "found":
+        // a search can finish with every discovered record dropped for
+        // permanently failing source checks, and the checkpoint still
+        // advances — the array only proves nothing verifiable was kept.
+        <Text className="mt-6 text-sm text-ink-soft">
+          {candidate.records_researched_through
+            ? `No verified public records for this candidate — record history researched through ${formatElectionDate(candidate.records_researched_through)}.`
+            : "This candidate's record history has not been researched yet."}
+        </Text>
+      )}
 
       {candidate.elections.length > 0 ? (
         <View className="mt-6">
