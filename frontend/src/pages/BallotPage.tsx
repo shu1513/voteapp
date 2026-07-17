@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
 import { BALLOT_SORT_DESCRIPTIONS, PUBLIC_BALLOT_SORTS, type BallotSort, type BallotSummary } from "@voteapp/api-client";
 import { AiBanner } from "../components/AiBanner";
-import { ElectionCard } from "../components/ElectionCard";
+import { ElectionList } from "../components/ElectionCard";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { formatDistrictType } from "@voteapp/api-client";
@@ -163,11 +163,7 @@ export function BallotPage() {
           {ballot.data.elections.length === 0 ? (
             <EmptyNotice text="No upcoming elections found for these districts yet. Check back — new elections are added as they are announced." />
           ) : (
-            <div className="mt-4 space-y-3">
-              {ballot.data.elections.map((election) => (
-                <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
-              ))}
-            </div>
+            <ElectionList elections={ballot.data.elections} savedAreaIds={savedAreaIds} />
           )}
         </>
       ) : null}

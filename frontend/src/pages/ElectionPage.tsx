@@ -183,7 +183,7 @@ export function ElectionPage() {
               </a>
             </p>
           ) : null}
-          {measure.source_urls
+          {[...new Set(measure.source_urls)]
             .filter((url) => url !== measure.official_measure_url)
             .map((url) => (
               <SourceLine key={url} url={url} />
@@ -358,7 +358,9 @@ export function ElectionPage() {
       {data.sources.length > 0 ? (
         <section className="mt-6">
           <h2 className="text-sm font-semibold text-ink">Election sources</h2>
-          {data.sources.map((url) => (
+          {/* Research passes can record the same source twice; showing the
+              repeat reads as a rendering bug. */}
+          {[...new Set(data.sources)].map((url) => (
             <SourceLine key={url} url={url} />
           ))}
         </section>

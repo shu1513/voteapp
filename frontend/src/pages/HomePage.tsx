@@ -88,49 +88,58 @@ export function HomePage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <h1 className="text-3xl font-bold">Find what's on your ballot</h1>
-      <p className="mt-2 text-ink-soft">
-        Enter your home address to see the elections coming up on your ballot.
-      </p>
+    <>
+      <div className="border-b border-line bg-surface">
+        <div className="mx-auto max-w-2xl px-4 py-10">
+          <h1 className="text-3xl font-bold">Find what's on your ballot</h1>
+          <p className="mt-2 text-ink-soft">
+            Enter your home address to see the elections coming up on your ballot.
+          </p>
+          <p className="mt-3 text-sm text-ink-soft">
+            Every election on your ballot · AI-researched candidate records · Campaign finance, sourced
+          </p>
+        </div>
+      </div>
+      <div className="mx-auto max-w-2xl px-4 py-8">
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="address" className="block text-sm font-medium text-ink">
+              Home address
+            </label>
+            <AddressAutocomplete
+              inputId="address"
+              value={address}
+              onChange={setAddress}
+              placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
+            />
+            <p className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</p>
+          </div>
 
-      <form onSubmit={onSubmit} className="mt-6 space-y-4">
-        <div>
-          <label htmlFor="address" className="block text-sm font-medium text-ink">
-            Home address
-          </label>
-          <AddressAutocomplete
-            inputId="address"
-            value={address}
-            onChange={setAddress}
-            placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
+          <LegalGate
+            inputId="pre-search-terms"
+            label={PRE_SEARCH_CHECKBOX_LABEL}
+            checked={accepted}
+            onChange={onAcceptChange}
           />
-          <p className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</p>
-        </div>
 
-        <LegalGate
-          inputId="pre-search-terms"
-          label={PRE_SEARCH_CHECKBOX_LABEL}
-          checked={accepted}
-          onChange={onAcceptChange}
-        />
+          <button
+            type="submit"
+            disabled={!canSearch}
+            // Disabled keeps the brand color at reduced opacity: the old
+            // gray-out read as broken rather than "accept the terms first".
+            className="w-full rounded-md bg-rausch px-4 py-3 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-rausch"
+          >
+            {resolve.isPending ? "Searching…" : "Search"}
+          </button>
+        </form>
 
-        <button
-          type="submit"
-          disabled={!canSearch}
-          className="w-full rounded-md bg-rausch px-4 py-3 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line"
-        >
-          {resolve.isPending ? "Searching…" : "Search"}
-        </button>
-      </form>
-
-      {resolve.isError ? (
-        <div className="mt-4">
-          <ErrorNotice error={resolve.error} />
-        </div>
-      ) : null}
-
-    </div>
+        {resolve.isError ? (
+          <div className="mt-4">
+            <ErrorNotice error={resolve.error} />
+          </div>
+        ) : null}
+      </div>
+    </>
   );
 }
 

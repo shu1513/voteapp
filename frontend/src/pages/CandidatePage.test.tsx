@@ -58,6 +58,62 @@ describe("CandidatePage", () => {
     expect(screen.getByRole("button", { name: "Report an issue with candidate record" })).toBeInTheDocument();
   });
 
+  it("opens the first issue groups and collapses the rest", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const record = (id: string, areaId: string, areaName: string) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: [{ research_area_id: areaId, slug: areaId, name: areaName, stance: "for" as const }],
+    });
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          record("r-1", "a-1", "Civil Rights"),
+          record("r-2", "a-2", "Gun Control"),
+          record("r-3", "a-3", "Housing"),
+          record("r-4", "a-4", "Privacy"),
+        ],
+      })
+    );
+
+    const groupState = (name: string) =>
+      (screen.getByText(name).closest("details") as HTMLDetailsElement).open;
+    expect(await screen.findByText("Civil Rights")).toBeInTheDocument();
+    // Alphabetical group order: Civil Rights, Gun Control, Housing, Privacy.
+    expect(groupState("Civil Rights")).toBe(true);
+    expect(groupState("Gun Control")).toBe(true);
+    expect(groupState("Housing")).toBe(true);
+    expect(groupState("Privacy")).toBe(false);
+    // Collapsed groups still state their size.
+    expect(screen.getAllByText("· 1 record")).toHaveLength(4);
+  });
+
+  it("cuts the newest-first view off at 20 with a show-all button", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const records = Array.from({ length: 25 }, (_, index) => ({
+      id: `r-${index + 1}`,
+      description: `Record number ${index + 1}.`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: [],
+    }));
+    renderCandidate(() => candidateDetail({ records }));
+
+    const user = userEvent.setup();
+    await user.selectOptions(await screen.findByRole("combobox"), "newest");
+
+    expect(screen.getByText("Record number 20.")).toBeInTheDocument();
+    expect(screen.queryByText("Record number 21.")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Show all 25 records" }));
+    expect(screen.getByText("Record number 25.")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Show all/ })).not.toBeInTheDocument();
+  });
+
   it("says no verified records when the empty list was actually researched", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ records: [], records_researched_through: "2026-07-10" }));

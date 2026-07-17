@@ -1,0 +1,96 @@
+import { describe, expect, it } from "vitest";
+import { screen } from "@testing-library/react";
+import { ElectionCard, ElectionList } from "./ElectionCard";
+import { renderRoutes } from "../test/render";
+import { electionSummary } from "../test/fixtures";
+
+function area(id: string, name: string) {
+  return { id, slug: id, name, description: null };
+}
+
+function renderCard(element: React.ReactElement) {
+  return renderRoutes([{ path: "/", element }], "/");
+}
+
+describe("ElectionCard", () => {
+  it("caps unsaved research-area chips and counts the rest", () => {
+    renderCard(
+      <ElectionCard
+        election={electionSummary({
+          research_areas: [
+            area("a-1", "Civil Rights"),
+            area("a-2", "Gun Control"),
+            area("a-3", "Housing Affordability"),
+            area("a-4", "Data Privacy"),
+            area("a-5", "Public Infrastructure"),
+          ],
+        })}
+      />
+    );
+
+    expect(screen.getByText("Civil Rights")).toBeInTheDocument();
+    expect(screen.getByText("Gun Control")).toBeInTheDocument();
+    expect(screen.getByText("Housing Affordability")).toBeInTheDocument();
+    expect(screen.queryByText("Data Privacy")).not.toBeInTheDocument();
+    expect(screen.queryByText("Public Infrastructure")).not.toBeInTheDocument();
+    expect(screen.getByText("+2 more issues")).toBeInTheDocument();
+  });
+
+  it("always shows saved-area matches, ahead of the cap", () => {
+    renderCard(
+      <ElectionCard
+        election={electionSummary({
+          research_areas: [
+            area("a-1", "Civil Rights"),
+            area("a-2", "Gun Control"),
+            area("a-3", "Housing Affordability"),
+            area("a-4", "Data Privacy"),
+            area("a-5", "Public Infrastructure"),
+          ],
+        })}
+        savedAreaIds={new Set(["a-4", "a-5"])}
+      />
+    );
+
+    // Saved matches render regardless of position in the payload…
+    expect(screen.getByText("Data Privacy")).toBeInTheDocument();
+    expect(screen.getByText("Public Infrastructure")).toBeInTheDocument();
+    // …and the unsaved chips still fit under the cap, so no overflow chip.
+    expect(screen.getByText("Civil Rights")).toBeInTheDocument();
+    expect(screen.queryByText(/more issue/)).not.toBeInTheDocument();
+  });
+
+  it("groups consecutive same-date elections under one date heading", () => {
+    renderCard(
+      <ElectionList
+        elections={[
+          electionSummary({ id: "e-1", official_ballot_title: "Governor" }),
+          electionSummary({ id: "e-2", official_ballot_title: "State Senate" }),
+          electionSummary({
+            id: "e-3",
+            official_ballot_title: "Special Runoff",
+            election_date: "2027-03-02",
+          }),
+        ]}
+      />
+    );
+
+    // One heading for the shared date, one for the outlier — not one per card.
+    expect(screen.getAllByRole("heading", { name: "November 3, 2026" })).toHaveLength(1);
+    expect(screen.getByRole("heading", { name: "March 2, 2027" })).toBeInTheDocument();
+    expect(screen.getByText("Governor")).toBeInTheDocument();
+    expect(screen.getByText("State Senate")).toBeInTheDocument();
+    expect(screen.getByText("Special Runoff")).toBeInTheDocument();
+  });
+
+  it("shows every chip when the list is short", () => {
+    renderCard(
+      <ElectionCard
+        election={electionSummary({ research_areas: [area("a-1", "Civil Rights")] })}
+      />
+    );
+
+    expect(screen.getByText("Civil Rights")).toBeInTheDocument();
+    expect(screen.queryByText(/more issue/)).not.toBeInTheDocument();
+  });
+});
