@@ -768,6 +768,80 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
       expect((await late).ok).toBe(true);
     });
 
+    it("keeps the longer deadline when a concurrent shorter 429 lands after a longer one", async () => {
+      vi.useFakeTimers();
+      // Two requests in flight before any cooldown exists: the long
+      // Retry-After lands first, the short one 500ms later. A blind
+      // replacement would let traffic resume after the SHORT deadline.
+      vi.stubGlobal(
+        "fetch",
+        async (url: string | URL) => {
+          const target = String(url);
+          const respond = (retryAfter: string) =>
+            ({
+              ok: false,
+              status: 429,
+              headers: {
+                get: (name: string) =>
+                  name.toLowerCase() === "retry-after" ? retryAfter : null,
+              },
+              body: null,
+            }) as unknown as Response;
+          if (target.includes("/long")) {
+            return respond("10");
+          }
+          if (target.includes("/short")) {
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            return respond("1");
+          }
+          return {
+            ok: true,
+            status: 200,
+            headers: { get: () => null },
+            body: null,
+          } as unknown as Response;
+        }
+      );
+
+      const long = verifyHttpUrlReachability("https://ratelimited-h.example.gov/long");
+      const short = verifyHttpUrlReachability("https://ratelimited-h.example.gov/short");
+      await vi.advanceTimersByTimeAsync(0);
+      expect((await long).ok).toBe(false);
+      await vi.advanceTimersByTimeAsync(500);
+      expect((await short).ok).toBe(false);
+
+      let lateSettled = false;
+      const late = verifyHttpUrlReachability("https://ratelimited-h.example.gov/ok").then(
+        (result) => {
+          lateSettled = true;
+          return result;
+        }
+      );
+      // Well past the short deadline (t=1500ms) but before the long one
+      // (t=10000ms): the verification must still be waiting.
+      await vi.advanceTimersByTimeAsync(3_000);
+      expect(lateSettled).toBe(false);
+
+      await vi.advanceTimersByTimeAsync(7_000);
+      expect((await late).ok).toBe(true);
+    });
+
+    it("starts with GET on a host whose limiter has 429ed a HEAD before", async () => {
+      vi.useFakeTimers();
+      // This limiter throttles HEAD but serves GET — retrying HEAD would 429
+      // forever and the citation would never be tested with GET.
+      const { calls } = stubFetch((method) => (method === "HEAD" ? { status: 429 } : { status: 200 }));
+
+      const first = await verifyHttpUrlReachability("https://headhostile.example.gov/doc");
+      expect(first.ok).toBe(false);
+      expect(calls.map((call) => call.method)).toEqual(["HEAD"]);
+
+      await vi.advanceTimersByTimeAsync(1_000);
+      const second = await verifyHttpUrlReachability("https://headhostile.example.gov/doc");
+      expect(second.ok).toBe(true);
+      expect(calls.map((call) => call.method)).toEqual(["HEAD", "GET"]);
+    });
+
     it("does not delay verifications against other hosts", async () => {
       vi.useFakeTimers();
       const { calls } = stubFetch((_method, url) =>

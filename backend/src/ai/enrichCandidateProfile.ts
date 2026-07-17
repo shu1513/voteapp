@@ -121,10 +121,6 @@ function normalizeStateFilingIds(values: readonly string[] | undefined): string[
 
 const CITATION_TRANSIENT_RETRY_ATTEMPTS = 2;
 const CITATION_TRANSIENT_RETRY_DELAY_MS = 1_000;
-// A 429's Retry-After is honored up to this bound; the manual wrapper wraps
-// validation in a wall-clock timeout, so an hour-scale header must not park
-// the whole run.
-const CITATION_RETRY_AFTER_MAX_HONOR_MS = 15_000;
 
 async function verifyUniqueCandidateSourceUrls(
   urls: string[],
@@ -182,19 +178,12 @@ async function verifyUniqueCandidateSourceUrls(
     if (transientUrls.length === 0) {
       break;
     }
-    // When a rate-limited host said how long to wait, waiting less just burns
-    // the retry; take the largest advertised Retry-After (bounded) if it
-    // exceeds the default backoff.
-    const maxRetryAfterMs = Math.max(
-      0,
-      ...transientUrls.map((url) => {
-        const verification = results.get(url);
-        return verification && !verification.ok && verification.retryAfterSeconds !== undefined
-          ? Math.min(verification.retryAfterSeconds * 1_000, CITATION_RETRY_AFTER_MAX_HONOR_MS)
-          : 0;
-      })
-    );
-    const retryDelayMs = Math.max(CITATION_TRANSIENT_RETRY_DELAY_MS * 2 ** attempt, maxRetryAfterMs);
+    // Retry-After waiting is owned by the verifier's per-host cooldown (a
+    // deadline, so this sleep counts toward it): each re-verification waits
+    // out whatever remains of the rate-limited host's cooldown at entry.
+    // Honoring Retry-After here as well stacked two bounded waits per
+    // attempt on the same header.
+    const retryDelayMs = CITATION_TRANSIENT_RETRY_DELAY_MS * 2 ** attempt;
     await new Promise((resolveDelay) => setTimeout(resolveDelay, retryDelayMs));
     await verifyBatch(transientUrls);
   }

@@ -583,12 +583,36 @@ function recordHostCooldown(hostname: string, retryAfterSeconds: number | null):
     retryAfterSeconds !== null && retryAfterSeconds > 0
       ? retryAfterSeconds * 1_000
       : HOST_COOLDOWN_DEFAULT_MS;
-  hostCooldownUntilMs.set(hostname, nowMs + cooldownMs);
+  // Max-merge: two in-flight requests can both 429 with different
+  // Retry-After values, and a later, shorter answer must not shorten the
+  // deadline a longer one already established.
+  const existingUntilMs = hostCooldownUntilMs.get(hostname);
+  const nextUntilMs = nowMs + cooldownMs;
+  hostCooldownUntilMs.set(
+    hostname,
+    existingUntilMs !== undefined && existingUntilMs > nextUntilMs ? existingUntilMs : nextUntilMs
+  );
+}
+
+// Hosts whose rate limiter has answered a HEAD with 429. Some WAFs throttle
+// HEAD while serving GET, so retrying the same HEAD would 429 forever and a
+// valid citation would never be tested with the method that matters. Later
+// verifications against these hosts skip the HEAD optimization and start
+// with GET (the authoritative method). Bounded: cleared wholesale if it ever
+// grows past the cooldown map's cap — hosts simply re-learn.
+const getPreferredHosts = new Set<string>();
+
+function recordGetPreferredHost(hostname: string): void {
+  if (getPreferredHosts.size > HOST_COOLDOWN_MAP_MAX_ENTRIES) {
+    getPreferredHosts.clear();
+  }
+  getPreferredHosts.add(hostname);
 }
 
 /** Test-only: cooldown state is module-global and must not leak across tests. */
 export function resetCitationHostCooldownsForTests(): void {
   hostCooldownUntilMs.clear();
+  getPreferredHosts.clear();
 }
 
 export async function verifyHttpUrlReachability(
@@ -597,7 +621,6 @@ export async function verifyHttpUrlReachability(
 ): Promise<UrlReachabilityResult> {
   const timeoutMs = options.timeoutMs ?? 8_000;
   const allowStatusCodes = new Set(options.allowStatusCodes ?? [403]);
-  const initialMethod = options.method ?? "HEAD";
   const normalizedInputUrl = normalizeHttpUrl(rawUrl);
   if (!normalizedInputUrl) {
     return { ok: false, reason: "citation URL is not a valid http(s) URL" };
@@ -609,6 +632,11 @@ export async function verifyHttpUrlReachability(
       return null;
     }
   })();
+  // An explicit caller method always wins; otherwise skip the HEAD
+  // optimization for hosts that have rate-limited a HEAD before (their
+  // limiter may serve GET fine, and GET is the authoritative method).
+  const initialMethod =
+    options.method ?? (inputHostname && getPreferredHosts.has(inputHostname) ? "GET" : "HEAD");
   if (inputHostname) {
     await awaitHostCooldown(inputHostname);
   }
@@ -634,11 +662,11 @@ export async function verifyHttpUrlReachability(
     // same per-hop validation — HEAD and GET can redirect differently, so
     // HEAD's chain proves nothing about GET's.
     //
-    // EXCEPT 429: rate limiting is method-agnostic, so an immediate GET
-    // would double the burst at a host that just asked us to back off, and
-    // a differing GET status would silently discard the 429 and its
-    // Retry-After. The HEAD 429 is authoritative; the transient retry path
-    // re-verifies after the cooldown.
+    // EXCEPT 429: an immediate GET would double the burst at a host that
+    // just asked us to back off, and a differing GET status would silently
+    // discard the 429 and its Retry-After. The host is instead marked
+    // GET-preferred, so the post-cooldown retry tests the resource with GET
+    // directly — covering limiters that throttle HEAD but serve GET.
     if (
       initialMethod === "HEAD" &&
       !response.ok &&
@@ -673,6 +701,9 @@ export async function verifyHttpUrlReachability(
           [inputHostname, finalHostname].filter((host): host is string => host !== null)
         )) {
           recordHostCooldown(hostname, response.retryAfterSeconds);
+          if (initialMethod === "HEAD") {
+            recordGetPreferredHost(hostname);
+          }
         }
         return {
           ok: false,
