@@ -159,8 +159,50 @@ describe("ElectionPage", () => {
 
     expect(await screen.findByText("Passed")).toBeInTheDocument();
     expect(screen.getByText("· Unofficial")).toBeInTheDocument();
+    // Nothing certified yet, so the pre-certification notice applies.
+    expect(screen.getByText("Unofficial until certified by the relevant election authority.")).toBeInTheDocument();
     const source = screen.getByRole("link", { name: /results\.example\.gov/ });
     expect(source).toHaveAttribute("href", "https://results.example.gov/measure-1");
+  });
+
+  it("drops the pre-certification notice once a certified result row exists", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: "passed",
+          source_urls: [],
+          official_measure_url: null,
+          research_area_tags: [],
+          results: [
+            {
+              id: "mr-2",
+              pass_type: "certified",
+              result_status: "certified",
+              outcome: "passed",
+              source_url: "https://sos.example.gov/certified-results",
+              source_type: "official",
+              retrieved_at: "2026-12-01T06:00:00.000Z",
+            },
+          ],
+        },
+      })
+    );
+
+    expect(await screen.findByText("Passed")).toBeInTheDocument();
+    expect(screen.getByText("· Certified")).toBeInTheDocument();
+    // "Unofficial until certified" above a row labeled Certified is
+    // contradictory for official election information.
+    expect(
+      screen.queryByText("Unofficial until certified by the relevant election authority.")
+    ).not.toBeInTheDocument();
   });
 
   it("links the official measure text and lists the remaining measure sources", async () => {

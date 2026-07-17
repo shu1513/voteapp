@@ -136,9 +136,11 @@ export function ElectionPage() {
           {measure.results.length > 0 ? (
             <div className="mt-3">
               <h3 className="text-sm font-semibold">Results</h3>
-              <p className="mt-1 text-xs text-ink-soft">
-                Unofficial until certified by the relevant election authority.
-              </p>
+              {hasCertifiedRow(measure.results) ? null : (
+                <p className="mt-1 text-xs text-ink-soft">
+                  Unofficial until certified by the relevant election authority.
+                </p>
+              )}
               <ul className="mt-2 space-y-3">
                 {measure.results.map((result) => (
                   <li key={result.id} className="text-sm">
@@ -306,9 +308,11 @@ export function ElectionPage() {
       {data.results.length > 0 ? (
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
           <h2 className="text-lg font-semibold">Results</h2>
-          <p className="mt-1 text-xs text-ink-soft">
-            Unofficial until certified by the relevant election authority.
-          </p>
+          {hasCertifiedRow(data.results) ? null : (
+            <p className="mt-1 text-xs text-ink-soft">
+              Unofficial until certified by the relevant election authority.
+            </p>
+          )}
           <ul className="mt-2 space-y-3">
             {data.results.map((result) => (
               <li key={result.id} className="text-sm">
@@ -348,6 +352,12 @@ export function ElectionPage() {
 }
 
 export default ElectionPage;
+
+// The blanket pre-certification notice contradicts a row already labeled
+// "Certified"; show it only while everything listed is pre-certification.
+function hasCertifiedRow(results: readonly { result_status: string }[]): boolean {
+  return results.some((result) => result.result_status === "certified");
+}
 
 function isPdfUrl(url: string): boolean {
   return /\.pdf($|[?#])/i.test(url);
