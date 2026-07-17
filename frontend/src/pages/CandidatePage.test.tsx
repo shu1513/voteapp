@@ -58,13 +58,13 @@ describe("CandidatePage", () => {
     expect(screen.getByRole("button", { name: "Report an issue with candidate record" })).toBeInTheDocument();
   });
 
-  it("says no records were found when the empty list was actually researched", async () => {
+  it("says no verified records when the empty list was actually researched", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ records: [], records_researched_through: "2026-07-10" }));
 
     expect(
       await screen.findByText(
-        "No public records found for this candidate — record history researched through July 10, 2026."
+        "No verified public records for this candidate — record history researched through July 10, 2026."
       )
     ).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Record" })).not.toBeInTheDocument();
@@ -77,7 +77,7 @@ describe("CandidatePage", () => {
     expect(
       await screen.findByText("This candidate's record history has not been researched yet.")
     ).toBeInTheDocument();
-    expect(screen.queryByText(/No public records found/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/No verified public records/)).not.toBeInTheDocument();
   });
 
   it("shows the follow button as Following once the follows list confirms it", async () => {

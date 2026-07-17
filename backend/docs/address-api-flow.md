@@ -450,7 +450,7 @@ Response:
 Candidate profile notes:
 
 1. `records` are full candidate record entries, ordered newest first, with research-area tags attached.
-2. `records_researched_through` is the date the candidate's record history has been researched through; `null` means no records search has completed yet. Clients use it to distinguish "researched and no records found" from "not researched yet" when `records` is empty.
+2. `records_researched_through` is the date the candidate's record history has been researched through; `null` means no records search has completed yet. Clients use it to distinguish "researched with no verified records" from "not researched yet" when `records` is empty (a completed search can drop every discovered record for permanently failing source checks, so an empty array means nothing verifiable was kept, not necessarily that nothing was found).
 3. `elections` are compact links to election detail pages. Upcoming/current elections are ordered first; past elections follow with most recent first.
 4. `elections` intentionally do not include `finance_summary`. Keep finance details on `GET /api/elections/:election_id`, where the ballot/election detail response already owns finance summary logic.
 5. `is_following` is `false` and `follow` is `null` for anonymous users and signed-in users who do not follow the candidate.
