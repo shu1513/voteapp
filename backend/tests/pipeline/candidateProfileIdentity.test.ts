@@ -177,6 +177,13 @@ describe("findOrCreateCandidateFromProfile", () => {
       false,
       "Governor",
       false,
+      // clear flags: no field listed for clearing
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
     ]);
   });
 
@@ -231,6 +238,13 @@ describe("findOrCreateCandidateFromProfile", () => {
       "Candidate summary",
       false,
       "Governor",
+      false,
+      // clear flags: no field listed for clearing
+      false,
+      false,
+      false,
+      false,
+      false,
       false,
     ]);
   });
@@ -408,6 +422,52 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     const updateSql = String(query.mock.calls[3]?.[0]);
     // The overwrite branch requires a non-blank incoming value.
     expect(updateSql).toContain("length(trim($13::text)) > 0");
+  });
+
+  it("clears listed fields to NULL on a matched re-write, winning over fill-if-empty", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({ rows: [{ ...existingRow, current_office: "Attorney, Noble Law" }] })
+      .mockResolvedValueOnce({ rows: [{ fec_ids: null, state_filing_ids: null }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    const result = await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      // Payload deliberately carries no current_office: the wrapper refuses
+      // clear+supply for the same field, so the cleared field arrives absent.
+      profile: profile({ official_website_url: "https://old-site.example" }),
+      state: "OH",
+      rosterParty: "Democratic",
+      includeParty: true,
+      clearProfileFields: new Set(["current_office"]),
+    });
+
+    expect(result.matchedExisting).toBe(true);
+    const updateSql = String(query.mock.calls[3]?.[0]);
+    // The clear branch leads every scalar CASE so it wins over overwrite and
+    // fill-if-empty alike.
+    expect(updateSql).toContain("current_office = CASE\n            WHEN $22::boolean THEN NULL");
+    const params = query.mock.calls[3]?.[1] as unknown[];
+    // Last six params are the per-field clear flags in declaration order;
+    // only current_office (last) is set.
+    expect(params.slice(-6)).toEqual([false, false, false, false, false, true]);
+  });
+
+  it("passes clear flags as false for every field when clearing is not requested", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({ rows: [existingRow] })
+      .mockResolvedValueOnce({ rows: [{ fec_ids: null, state_filing_ids: null }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ official_website_url: "https://old-site.example" }),
+      state: "OH",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    const params = query.mock.calls[3]?.[1] as unknown[];
+    expect(params.slice(-6)).toEqual([false, false, false, false, false, false]);
   });
 
   it("throws when two same-name candidates are linked to the election", async () => {
