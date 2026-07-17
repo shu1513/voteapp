@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 
-import worker, { isApiPath, resolveUpstreamHost } from "./router-worker.js";
+import worker, { isApiPath, resolveUpstreamHost, withSecurityHeaders } from "./router-worker.js";
 
 const ENV = {
   API_ORIGIN: "voteapp-api-pzns.onrender.com",
@@ -148,5 +148,62 @@ describe("fetch handler", () => {
     assert.equal(calls[0].method, "POST");
     assert.equal(calls[0].headers.get("cf-connecting-ip"), "203.0.113.9");
     assert.equal(new URL(calls[0].url).pathname, "/api/auth/login");
+  });
+});
+
+describe("security headers", () => {
+  const EXPECTED = {
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "permissions-policy": "camera=(), microphone=(), geolocation=()",
+  };
+
+  function assertSecurityHeaders(response) {
+    for (const [name, value] of Object.entries(EXPECTED)) {
+      assert.equal(response.headers.get(name), value, name);
+    }
+  }
+
+  it("stamps proxied responses while preserving status, body, and upstream headers", async () => {
+    globalThis.fetch = async () =>
+      new Response("upstream body", { status: 201, headers: { "x-upstream": "kept" } });
+
+    const response = await worker.fetch(new Request("https://impactperdollar.com/api/elections"), ENV);
+
+    assertSecurityHeaders(response);
+    assert.equal(response.status, 201);
+    assert.equal(response.headers.get("x-upstream"), "kept");
+    assert.equal(await response.text(), "upstream body");
+  });
+
+  it("overwrites upstream copies so the edge stays authoritative", async () => {
+    globalThis.fetch = async () =>
+      new Response("ok", { headers: { "x-frame-options": "ALLOWALL" } });
+
+    const response = await worker.fetch(new Request("https://impactperdollar.com/"), ENV);
+
+    assert.equal(response.headers.get("x-frame-options"), "DENY");
+  });
+
+  it("stamps the www redirect and misconfiguration responses", async () => {
+    const redirect = await worker.fetch(new Request("https://www.impactperdollar.com/ballot"), {});
+    assertSecurityHeaders(redirect);
+    assert.equal(redirect.status, 301);
+    assert.equal(redirect.headers.get("location"), "https://impactperdollar.com/ballot");
+
+    const misconfigured = await worker.fetch(new Request("https://impactperdollar.com/"), {});
+    assertSecurityHeaders(misconfigured);
+    assert.equal(misconfigured.status, 503);
+  });
+
+  it("withSecurityHeaders copies immutable-header responses instead of mutating", () => {
+    const original = Response.redirect("https://impactperdollar.com/", 301);
+    const stamped = withSecurityHeaders(original);
+
+    assert.equal(stamped.headers.get("x-content-type-options"), "nosniff");
+    assert.equal(stamped.headers.get("location"), "https://impactperdollar.com/");
+    assert.equal(original.headers.get("x-content-type-options"), null);
   });
 });

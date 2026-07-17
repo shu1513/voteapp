@@ -23,10 +23,38 @@
  *
  * Route: impactperdollar.com/* and www.impactperdollar.com/* (www 301s to
  * the apex so the canonical origin matches SITE_ORIGIN and robots.txt).
+ *
+ * Every response — proxied, redirect, or error — is stamped with the
+ * baseline security headers (SECURITY_HEADERS below); neither origin sets
+ * them, and note direct *.onrender.com responses bypass this stamping.
  */
 
 export function isApiPath(pathname) {
   return pathname === "/sitemap.xml" || pathname === "/api" || pathname.startsWith("/api/");
+}
+
+// Baseline security headers, stamped on every response the Worker returns
+// (proxied, redirect, or error) — neither origin sets them itself. The edge
+// is authoritative: values here overwrite any upstream copy so the policy
+// has one home. CSP is deliberately absent — it needs an inventory of
+// inline scripts and third-party endpoints first (see docs/deploy-render.md).
+// HSTS is safe because Cloudflare terminates TLS for every proxied record
+// on the zone; skip `preload` so the commitment stays revocable.
+const SECURITY_HEADERS = {
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+};
+
+/** Copies the response (upstream headers are immutable) and stamps the set. */
+export function withSecurityHeaders(response) {
+  const wrapped = new Response(response.body, response);
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    wrapped.headers.set(name, value);
+  }
+  return wrapped;
 }
 
 // RFC 1123 label: 1-63 chars, alphanumeric at both ends, alphanumeric or
@@ -77,15 +105,17 @@ export default {
     // even while the vars are broken.
     if (url.hostname.startsWith("www.")) {
       url.hostname = url.hostname.slice("www.".length);
-      return Response.redirect(url.toString(), 301);
+      return withSecurityHeaders(Response.redirect(url.toString(), 301));
     }
 
     const apiHost = resolveUpstreamHost(env.API_ORIGIN);
     const ssrHost = resolveUpstreamHost(env.SSR_ORIGIN);
     if (!apiHost || !ssrHost) {
-      return new Response(
-        "Worker misconfigured: API_ORIGIN and SSR_ORIGIN must both be set to bare hostnames",
-        { status: 503 }
+      return withSecurityHeaders(
+        new Response(
+          "Worker misconfigured: API_ORIGIN and SSR_ORIGIN must both be set to bare hostnames",
+          { status: 503 }
+        )
       );
     }
 
@@ -94,9 +124,11 @@ export default {
     // either would send traffic back into hostnames this Worker serves (or
     // their placeholder DNS records) instead of a real upstream.
     if (upstreamHost === url.hostname || upstreamHost === `www.${url.hostname}`) {
-      return new Response(
-        "Worker misconfigured: upstream origin equals the public hostname",
-        { status: 503 }
+      return withSecurityHeaders(
+        new Response(
+          "Worker misconfigured: upstream origin equals the public hostname",
+          { status: 503 }
+        )
       );
     }
 
@@ -106,6 +138,6 @@ export default {
 
     // Re-wrap so method, headers, and body stream pass through; fetch()
     // rewrites the Host header to the new hostname automatically.
-    return fetch(new Request(url.toString(), request));
+    return withSecurityHeaders(await fetch(new Request(url.toString(), request)));
   },
 };
