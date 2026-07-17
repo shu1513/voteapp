@@ -10,7 +10,7 @@ import {
 } from "@voteapp/api-client";
 import { AiBanner } from "../components/AiBanner";
 import { SavedAddressForm } from "../components/SavedAddressForm";
-import { ElectionCard } from "../components/ElectionCard";
+import { ElectionList } from "../components/ElectionCard";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
@@ -277,11 +277,7 @@ export function SavedBallotPage() {
       {data.elections.length === 0 ? (
         <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />
       ) : (
-        <div className="mt-4 space-y-3">
-          {data.elections.map((election) => (
-            <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
-          ))}
-        </div>
+        <ElectionList elections={data.elections} savedAreaIds={savedAreaIds} />
       )}
 
       <p className="mt-8 text-sm text-ink-soft">

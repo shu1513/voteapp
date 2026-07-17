@@ -26,6 +26,13 @@ import { UNRANKED_RESEARCH_AREA_RANK } from "@voteapp/api-client";
 
 type RecordView = "by_issue" | "my_issues" | "newest";
 
+// A researched incumbent can carry 50+ records; rendering everything open
+// made the profile a 10,000px wall. Grouped views open the first few issue
+// groups and collapse the rest behind per-group counts; the flat newest
+// view cuts off with an explicit "show all".
+const INITIAL_OPEN_GROUPS = 3;
+const INITIAL_NEWEST_RECORDS = 20;
+
 type RecordGroup = {
   /** null for the untagged "Other records" pseudo-group. */
   areaId: string | null;
@@ -173,6 +180,40 @@ function PastElectionFinance({ election, candidateId }: { election: CandidateEle
   );
 }
 
+// One record card, shared by the grouped and flat views (the flat view adds
+// the area tags to the meta line since there is no group heading to carry
+// them).
+function RecordItem({
+  record,
+  showTags,
+  reporterEmail,
+}: {
+  record: CandidateRecord;
+  showTags: boolean;
+  reporterEmail?: string | null;
+}) {
+  return (
+    <li className="rounded-xl border border-line bg-white p-3">
+      <p className="text-sm text-ink">{record.description}</p>
+      <p className="mt-1 text-xs text-ink-soft">
+        {formatElectionDate(record.event_date)}
+        {showTags && record.research_area_tags.length > 0
+          ? ` · ${record.research_area_tags.map((tag) => tag.name).join(", ")}`
+          : ""}
+      </p>
+      <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />
+      <div className="mt-2">
+        <ReportContentButton
+          entityType="candidate_record"
+          entityId={record.id}
+          contextLabel="candidate record"
+          reporterEmail={reporterEmail}
+        />
+      </div>
+    </li>
+  );
+}
+
 // Replaces useDocumentTitle here: a leaf meta export fully overrides the
 // root's, so it must carry both title and description.
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
@@ -211,6 +252,7 @@ export function CandidatePage() {
   const { me } = useMe();
   const { hasSaved, preferences } = useMyResearchAreas();
   const [recordView, setRecordView] = useState<RecordView>("by_issue");
+  const [showAllNewest, setShowAllNewest] = useState(false);
 
   const detail = useLoaderData<typeof loader>();
   const candidate = detail.candidate;
@@ -291,50 +333,50 @@ export function CandidatePage() {
           </div>
           {recordView === "newest" ? (
             // Flat chronological view; the payload already arrives newest-first.
-            <ul className="mt-2 space-y-3">
-              {candidate.records.map((record) => (
-                <li key={record.id} className="rounded-xl border border-line bg-white p-3">
-                  <p className="text-sm text-ink">{record.description}</p>
-                  <p className="mt-1 text-xs text-ink-soft">
-                    {formatElectionDate(record.event_date)}
-                    {record.research_area_tags.length > 0
-                      ? ` · ${record.research_area_tags.map((tag) => tag.name).join(", ")}`
-                      : ""}
-                  </p>
-                  <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />
-                  <div className="mt-2">
-                    <ReportContentButton
-                      entityType="candidate_record"
-                      entityId={record.id}
-                      contextLabel="candidate record"
-                      reporterEmail={me?.email}
-                    />
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <>
+              <ul className="mt-2 space-y-3">
+                {(showAllNewest ? candidate.records : candidate.records.slice(0, INITIAL_NEWEST_RECORDS)).map(
+                  (record) => (
+                    <RecordItem key={record.id} record={record} showTags reporterEmail={me?.email} />
+                  )
+                )}
+              </ul>
+              {!showAllNewest && candidate.records.length > INITIAL_NEWEST_RECORDS ? (
+                <button
+                  type="button"
+                  onClick={() => setShowAllNewest(true)}
+                  className="mt-3 rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink"
+                >
+                  Show all {candidate.records.length} records
+                </button>
+              ) : null}
+            </>
           ) : (
-            recordGroups.map((group) => (
-              <div key={group.areaId ?? "other"} className="mt-4">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">{group.areaName}</h3>
+            recordGroups.map((group, groupIndex) => (
+              // The first few groups start open, the rest collapsed. `open`
+              // only re-applies when a group's position changes (a view
+              // switch reordering the groups), which just resets that
+              // group's disclosure — user toggles otherwise stick.
+              <details key={group.areaId ?? "other"} open={groupIndex < INITIAL_OPEN_GROUPS} className="mt-4">
+                <summary className="cursor-pointer select-none">
+                  <h3 className="inline text-sm font-semibold uppercase tracking-wide text-ink-soft">
+                    {group.areaName}
+                  </h3>{" "}
+                  <span className="text-xs text-ink-soft">
+                    · {group.records.length} record{group.records.length === 1 ? "" : "s"}
+                  </span>
+                </summary>
                 <ul className="mt-2 space-y-3">
                   {group.records.map((record) => (
-                    <li key={`${group.areaId ?? "other"}-${record.id}`} className="rounded-xl border border-line bg-white p-3">
-                      <p className="text-sm text-ink">{record.description}</p>
-                      <p className="mt-1 text-xs text-ink-soft">{formatElectionDate(record.event_date)}</p>
-                      <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />
-                      <div className="mt-2">
-                        <ReportContentButton
-                          entityType="candidate_record"
-                          entityId={record.id}
-                          contextLabel="candidate record"
-                          reporterEmail={me?.email}
-                        />
-                      </div>
-                    </li>
+                    <RecordItem
+                      key={`${group.areaId ?? "other"}-${record.id}`}
+                      record={record}
+                      showTags={false}
+                      reporterEmail={me?.email}
+                    />
                   ))}
                 </ul>
-              </div>
+              </details>
             ))
           )}
         </section>

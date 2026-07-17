@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { RouteError } from "./components/RouteError";
 import { useLogout, useMe } from "@voteapp/api-client";
 
@@ -26,32 +27,67 @@ function AccountNav() {
       </span>
     );
   }
+
+  function signOut() {
+    logout.mutate(undefined, {
+      onSuccess: () => {
+        navigate("/");
+      },
+    });
+  }
+
+  // Five inline items wrap into a broken two-line header on phones, so the
+  // signed-in nav is inline links on sm+ and a menu below that breakpoint.
   return (
-    <span className="flex items-center gap-4">
-      <span className="text-ink">Hi {me.first_name}</span>
-      <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
-        My ballot
-      </Link>
-      <Link to="/me/follows" className="text-ink-soft hover:text-ink">
-        Following
-      </Link>
-      <Link to="/me/settings" className="text-ink-soft hover:text-ink">
-        Settings
-      </Link>
-      <button
-        type="button"
-        className="text-ink-soft hover:text-ink"
-        onClick={() =>
-          logout.mutate(undefined, {
-            onSuccess: () => {
-              navigate("/");
-            },
-          })
-        }
-      >
-        Log out
-      </button>
-    </span>
+    <>
+      <span className="hidden items-center gap-4 sm:flex">
+        <span className="text-ink">Hi {me.first_name}</span>
+        <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
+          My ballot
+        </Link>
+        <Link to="/me/follows" className="text-ink-soft hover:text-ink">
+          Following
+        </Link>
+        <Link to="/me/settings" className="text-ink-soft hover:text-ink">
+          Settings
+        </Link>
+        <button type="button" className="text-ink-soft hover:text-ink" onClick={signOut}>
+          Log out
+        </button>
+      </span>
+      <Menu as="div" className="relative sm:hidden">
+        <MenuButton className="rounded-lg border border-line px-3 py-1.5 font-medium text-ink">
+          Hi {me.first_name}{" "}
+          <span aria-hidden="true">▾</span>
+        </MenuButton>
+        <MenuItems className="absolute right-0 z-20 mt-2 w-44 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none">
+          <MenuItem>
+            <Link to="/me/ballot" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
+              My ballot
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link to="/me/follows" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
+              Following
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link to="/me/settings" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
+              Settings
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <button
+              type="button"
+              onClick={signOut}
+              className="block w-full px-4 py-2 text-left text-ink data-[focus]:bg-surface"
+            >
+              Log out
+            </button>
+          </MenuItem>
+        </MenuItems>
+      </Menu>
+    </>
   );
 }
 
