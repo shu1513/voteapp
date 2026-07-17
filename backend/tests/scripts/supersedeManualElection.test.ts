@@ -186,6 +186,51 @@ describe("runSupersedeElection", () => {
     expect(query).not.toHaveBeenCalled();
   });
 
+  it("still appends a new retired source when the survivor carries duplicate existing sources", async () => {
+    // Regression: [a, a] existing + [b] retired must count b as appended —
+    // an un-deduped existing length made the diff zero and dropped b.
+    const { query, calls } = buildClient(happyResponses({
+      "WHERE id = ANY($1::uuid[])": [
+        [
+          survivorRow(SURVIVOR_A, {
+            sources: ["https://chicagoelections.gov/district", "https://chicagoelections.gov/district"],
+          }),
+          survivorRow(SURVIVOR_B),
+        ],
+      ],
+    }));
+
+    const result = await runSupersedeElection(
+      { query },
+      { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false }
+    );
+
+    expect(result.supersededBy[0]).toMatchObject({ electionId: SURVIVOR_A, sourcesAppended: 1 });
+    const update = calls.find(
+      (call) => call.text.includes("SET sources") && call.values[0] === SURVIVOR_A
+    );
+    expect(JSON.parse(update?.values[1] as string)).toEqual([
+      "https://chicagoelections.gov/district",
+      "https://chicagoelections.gov/contests",
+    ]);
+  });
+
+  it("accepts uppercase UUID input by normalizing before survivor matching", async () => {
+    const { query } = buildClient(happyResponses());
+
+    const result = await runSupersedeElection(
+      { query },
+      {
+        electionId: RETIRED.toUpperCase(),
+        supersededByIds: [SURVIVOR_A.toUpperCase(), SURVIVOR_B.toUpperCase()],
+        dryRun: true,
+      }
+    );
+
+    expect(result.deletedElectionId).toBe(RETIRED);
+    expect(result.supersededBy.map((entry) => entry.electionId)).toEqual([SURVIVOR_A, SURVIVOR_B]);
+  });
+
   it("skips the source update when the survivor already carries every retired source", async () => {
     const { query, calls } = buildClient(happyResponses({
       "WHERE id = ANY($1::uuid[])": [

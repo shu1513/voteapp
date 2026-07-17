@@ -13,8 +13,12 @@
 //
 // Guard rails, all of which must pass before a single row changes:
 // - the link (candidate, from-election) exists and is row-locked;
-// - both elections exist and share district_id AND election_date (crossing
-//   either means this is not a duplicate-shell repair — wrong tool);
+// - both elections exist, are row-locked, and share district_id AND
+//   election_date (crossing either means this is not a duplicate-shell
+//   repair — wrong tool);
+// - the from-election has no persisted election_results rows: their
+//   winners JSON references candidate_elections ids, which a move or
+//   merge-delete would corrupt;
 // - no state campaign-finance link rows exist for (candidate, from-election):
 //   finance tables denormalize election_id + election_year and their
 //   summaries join on the election, so a bare link move would strand them
@@ -117,7 +121,8 @@ export async function listCandidateScopedElectionFkTables(
 ): Promise<{ table: string; electionColumn: string }[]> {
   const result = await client.query<{ table_name: string; election_column: string }>(
     `
-      SELECT DISTINCT c.conrelid::regclass::text AS table_name, a.attname AS election_column
+      SELECT DISTINCT c.conrelid::regclass::text AS table_name,
+             quote_ident(a.attname) AS election_column
       FROM pg_constraint c
       JOIN unnest(c.conkey) AS k(attnum) ON true
       JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = k.attnum
@@ -138,7 +143,12 @@ export async function runMoveCandidateElectionLink(
   client: MoveCandidateElectionLinkClient,
   options: MoveCandidateElectionLinkOptions
 ): Promise<MoveCandidateElectionLinkResult> {
-  const { candidateId, fromElectionId, toElectionId, dryRun } = options;
+  // PostgreSQL returns uuid columns lowercased; a valid uppercase input
+  // would otherwise fail the row-matching below with a false "not found".
+  const candidateId = options.candidateId.toLowerCase();
+  const fromElectionId = options.fromElectionId.toLowerCase();
+  const toElectionId = options.toElectionId.toLowerCase();
+  const { dryRun } = options;
   if (fromElectionId === toElectionId) {
     throw new Error("--from-election-id and --to-election-id must differ");
   }
@@ -161,11 +171,17 @@ export async function runMoveCandidateElectionLink(
       );
     }
 
+    // Locked so the district/date sibling guard cannot pass on stale rows
+    // while a concurrent edit (e.g. manual:election-date:correct) changes
+    // one of them mid-transaction. Deterministic order avoids deadlocks
+    // between two concurrent movers.
     const electionsResult = await client.query<ElectionRow>(
       `
         SELECT id, district_id, election_date::text, official_ballot_title
         FROM public.elections
         WHERE id = ANY($1::uuid[])
+        ORDER BY id
+        FOR UPDATE
       `,
       [[fromElectionId, toElectionId]]
     );
@@ -182,6 +198,24 @@ export async function runMoveCandidateElectionLink(
       throw new Error(
         `Elections have different dates (${fromElection.election_date} vs ${toElection.election_date}); ` +
           "a cross-date move is not a duplicate-shell repair (see manual:election-date:correct for date fixes)"
+      );
+    }
+
+    // Persisted-results guard: election_results.winners stores
+    // candidate_election_id inside JSON (the matcher resolves winners by
+    // exact link id against the election's roster), and the FK/finance scan
+    // below cannot see into JSON. Moving a link out from under a persisted
+    // result — or deleting it on the merge path — would leave the winner
+    // JSON pointing at another election's link, or dangling. Same rule as
+    // manual:election-date:correct: resolve the result rows first.
+    const persistedResults = await client.query<{ id: string }>(
+      `SELECT id FROM public.election_results WHERE election_id = $1::uuid LIMIT 1`,
+      [fromElectionId]
+    );
+    if (persistedResults.rows[0]) {
+      throw new Error(
+        `Election ${fromElectionId} has persisted election_results rows whose winners reference ` +
+          "candidate_elections ids; refusing link move — resolve the result rows first (user decision), then re-run."
       );
     }
 
@@ -235,11 +269,16 @@ export async function runMoveCandidateElectionLink(
       action = "merged_duplicate";
     } else {
       if (link.running_mate_candidate_id) {
+        // FOR UPDATE pins a found collision row for the friendly error; a
+        // concurrent INSERT of a colliding row after a not-found result is
+        // still possible (no predicate locks at read committed) and falls
+        // through to the unique-constraint error, which keeps data correct.
         const mateCollision = await client.query<{ id: string }>(
           `
             SELECT id FROM public.candidate_elections
             WHERE election_id = $1::uuid AND running_mate_candidate_id = $2::uuid
             LIMIT 1
+            FOR UPDATE
           `,
           [toElectionId, link.running_mate_candidate_id]
         );

@@ -119,7 +119,8 @@ export async function listElectionFkReferences(
 ): Promise<{ table: string; column: string }[]> {
   const result = await client.query<{ table_name: string; column_name: string }>(
     `
-      SELECT DISTINCT c.conrelid::regclass::text AS table_name, a.attname AS column_name
+      SELECT DISTINCT c.conrelid::regclass::text AS table_name,
+             quote_ident(a.attname) AS column_name
       FROM pg_constraint c
       JOIN unnest(c.conkey) AS k(attnum) ON true
       JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = k.attnum
@@ -135,7 +136,12 @@ export async function runSupersedeElection(
   client: SupersedeElectionClient,
   options: SupersedeElectionOptions
 ): Promise<SupersedeElectionResult> {
-  const { electionId, supersededByIds, dryRun } = options;
+  // PostgreSQL returns uuid columns lowercased; a valid uppercase input
+  // would otherwise fail the survivor lookups below with a false
+  // "not found".
+  const electionId = options.electionId.toLowerCase();
+  const supersededByIds = options.supersededByIds.map((id) => id.toLowerCase());
+  const { dryRun } = options;
   if (supersededByIds.length === 0) {
     throw new Error("--superseded-by must name at least one replacement election");
   }
@@ -211,7 +217,10 @@ export async function runSupersedeElection(
     const supersededBy: SupersedeElectionResult["supersededBy"] = [];
     for (const id of supersededByIds) {
       const survivor = survivorsById.get(id)!;
-      const existingSources = normalizeElectionSources(survivor.sources);
+      // Deduped BEFORE the count: a survivor already carrying [a, a] would
+      // otherwise make merged.length equal the raw length even when a
+      // retired source was added, skipping the update and losing it.
+      const existingSources = [...new Set(normalizeElectionSources(survivor.sources))];
       const merged = [...new Set([...existingSources, ...retiredSources])];
       const sourcesAppended = merged.length - existingSources.length;
       if (sourcesAppended > 0 && !dryRun) {

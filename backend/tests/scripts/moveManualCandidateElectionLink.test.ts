@@ -76,10 +76,46 @@ describe("runMoveCandidateElectionLink", () => {
 
     expect(result.action).toBe("moved");
     expect(result.toElectionTitle).toBe("Governing Board Member, Seat 3");
+    // The sibling guard must validate against locked rows (deterministic
+    // order so two concurrent movers cannot deadlock).
+    const electionsLoad = calls.find((call) => call.text.includes("FROM public.elections"));
+    expect(electionsLoad?.text).toContain("ORDER BY id");
+    expect(electionsLoad?.text).toContain("FOR UPDATE");
     const update = calls.find((call) => call.text.includes("UPDATE public.candidate_elections"));
     expect(update?.text).toContain("SET election_id = $2::uuid");
     expect(update?.values).toEqual([LINK_ID, TO_ELECTION]);
     expect(calls.at(-1)?.text).toBe("COMMIT");
+  });
+
+  it("accepts uppercase UUID input by normalizing before row matching", async () => {
+    const { query, calls } = buildClient(happyResponses());
+
+    const result = await runMoveCandidateElectionLink(
+      { query },
+      {
+        candidateId: CANDIDATE_ID.toUpperCase(),
+        fromElectionId: FROM_ELECTION.toUpperCase(),
+        toElectionId: TO_ELECTION.toUpperCase(),
+        dryRun: false,
+      }
+    );
+
+    expect(result.action).toBe("moved");
+    const linkLock = calls.find((call) => call.text.includes("WHERE candidate_id"));
+    expect(linkLock?.values).toEqual([CANDIDATE_ID, FROM_ELECTION]);
+  });
+
+  it("refuses when the from-election has persisted election results", async () => {
+    const { query } = buildClient(happyResponses({
+      "FROM public.election_results": [[{ id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa" }]],
+    }));
+
+    await expect(
+      runMoveCandidateElectionLink(
+        { query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(/persisted election_results rows whose winners reference/);
   });
 
   it("dry-run rolls back and writes nothing", async () => {
@@ -91,7 +127,9 @@ describe("runMoveCandidateElectionLink", () => {
     );
 
     expect(result.dryRun).toBe(true);
-    expect(calls.some((call) => call.text.startsWith("UPDATE") || call.text.startsWith("DELETE"))).toBe(false);
+    // Leading-whitespace-tolerant: the production UPDATE is a multiline
+    // template literal starting with a newline.
+    expect(calls.some((call) => /^\s*(UPDATE|DELETE)\b/i.test(call.text))).toBe(false);
     expect(calls.at(-1)?.text).toBe("ROLLBACK");
   });
 
