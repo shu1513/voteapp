@@ -141,6 +141,26 @@ describe("createApiApp", () => {
     });
   });
 
+  it("defaults every response to cache-control no-store", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+
+    const resolved = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      headers: { "content-type": "application/json" },
+    });
+    // Error paths must not be cached either.
+    const notFound = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "GET",
+      path: "/api/does-not-exist",
+    });
+
+    expect(resolved.headers["cache-control"]).toBe("no-store");
+    expect(notFound.statusCode).toBe(404);
+    expect(notFound.headers["cache-control"]).toBe("no-store");
+  });
+
   it("keeps address resolve read-only even when user district initialization is configured", async () => {
     const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
     const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
