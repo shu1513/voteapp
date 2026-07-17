@@ -126,6 +126,17 @@ export async function runUnlinkCandidateElection(
         `No candidate_elections link found for candidate ${candidateId} on election ${electionId}`
       );
     }
+    // A non-declared status asserts recorded history: 'withdrawn' is an
+    // evidence-backed manual record (followers may already have been told),
+    // and result statuses are settled outcomes. Deleting such a link as a
+    // "research error" is a compound mess that needs a user decision, not a
+    // silent wrapper path.
+    if (link.status !== "declared") {
+      throw new Error(
+        `Link ${link.id} has status '${link.status}', which asserts recorded history; refusing a ` +
+          "research-error unlink. If that status itself is wrong, resolve it first (user decision), then re-run."
+      );
+    }
 
     const electionResult = await client.query<ElectionRow>(
       `
@@ -157,7 +168,13 @@ export async function runUnlinkCandidateElection(
     // Election-scoped candidate rows (state finance links etc.) assert the
     // pairing was real; deleting the link as a "research error" under them is
     // contradictory. Identifiers come from the catalog, not user input.
-    const fkTables = await listCandidateScopedElectionFkTables(client);
+    // The follow-notification events table matches the scan's shape (FK to
+    // elections + candidate_id column) but is explicitly handled below —
+    // unsent events are deleted, sent ones tolerated (they cannot be
+    // recalled) — so it must not trip the conflict guard it precedes.
+    const fkTables = (await listCandidateScopedElectionFkTables(client)).filter(
+      ({ table }) => table !== "public.user_candidate_follow_notification_events"
+    );
     const conflicting: string[] = [];
     for (const { table, electionColumn } of fkTables) {
       const countResult = await client.query<{ n: string }>(

@@ -121,6 +121,56 @@ describe("runUnlinkCandidateElection", () => {
     expect(calls.some((call) => call.text.includes("DELETE FROM public.candidate_elections"))).toBe(false);
   });
 
+  it("refuses to unlink a link whose status asserts recorded history", async () => {
+    const { query, calls } = buildClient(
+      happyResponses({
+        "FROM public.candidate_elections\n        WHERE candidate_id": [{ rows: [linkRow({ status: "withdrawn" })] }],
+      })
+    );
+
+    await expect(
+      runUnlinkCandidateElection({ query }, { candidateId: CANDIDATE_ID, electionId: ELECTION_ID, dryRun: false })
+    ).rejects.toThrow(/status 'withdrawn', which asserts recorded history/);
+    expect(calls.some((call) => call.text.includes("DELETE FROM public.candidate_elections"))).toBe(false);
+  });
+
+  it("does not let the follow-notification events table trip the conflict scan", async () => {
+    // The events table matches the scan's shape (FK to elections +
+    // candidate_id column), but the wrapper handles it explicitly: unsent
+    // events are deleted, sent ones tolerated. Without the exclusion, any
+    // follower event for the pair would block the unlink it precedes.
+    const { query, calls } = buildClient(
+      happyResponses({
+        "pg_constraint": [
+          {
+            rows: [
+              {
+                table_name: "public.user_candidate_follow_notification_events",
+                election_column: "election_id",
+              },
+              { table_name: "public.az_candidate_finance_links", election_column: "election_id" },
+            ],
+          },
+        ],
+        // A sent event exists for the pair; it must not be counted as a
+        // conflict (and must never be probed at all).
+        "count(*)::text AS n FROM public.user_candidate_follow_notification_events": [{ rows: [{ n: "5" }] }],
+      })
+    );
+
+    const result = await runUnlinkCandidateElection(
+      { query },
+      { candidateId: CANDIDATE_ID, electionId: ELECTION_ID, dryRun: false }
+    );
+
+    expect(result.action).toBe("unlinked");
+    expect(
+      calls.some((call) =>
+        call.text.includes("count(*)::text AS n FROM public.user_candidate_follow_notification_events")
+      )
+    ).toBe(false);
+  });
+
   it("accepts uppercase UUID input by normalizing before row matching", async () => {
     const { query, calls } = buildClient(happyResponses());
 
