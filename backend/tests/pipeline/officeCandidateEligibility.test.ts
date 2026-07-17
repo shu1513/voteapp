@@ -33,6 +33,21 @@ describe("officeCandidateEligibility", () => {
     expect(query.mock.calls[0]?.[1]?.[0]).toEqual(["id-1", "id-2"]);
   });
 
+  it("treats no_results rosters as complete so the rollover producer never auto-retries them", async () => {
+    const query = vi.fn(async () => ({ rows: [] }));
+    const pool = { query } as unknown as Pool;
+    const config = defaultOfficeCandidateEligibilityConfig();
+
+    await evaluateOfficeCandidateEligibilityByElectionIds(pool, ["id-1"], config);
+
+    const [sql] = query.mock.calls[0]!;
+    // A roster pass that found nobody ('no_results') must block automated
+    // re-research the same way 'written' does — refresh is manual, via
+    // manual:candidate-roster:due + manual:candidate-roster:inject.
+    expect(sql).toContain("s.status IN ('written', 'no_results')");
+    expect(sql).not.toContain("s.status = 'written'");
+  });
+
   it("returns not_office_or_missing fallback when selector has no row", async () => {
     const query = vi.fn(async () => ({ rows: [] }));
     const pool = { query } as unknown as Pool;

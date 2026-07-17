@@ -77,7 +77,11 @@ const ELIGIBILITY_SELECT_SQL = `
     SELECT s.ingest_key
     FROM public.staging_items AS s
     WHERE s.item_type = $3
-      AND s.status = 'written'
+      -- 'no_results' counts as complete for the automated path too: a roster
+      -- pass that found nobody must not be auto-retried by the rollover
+      -- producer every day. Refresh is manual — manual:candidate-roster:due
+      -- surfaces these and manual:candidate-roster:inject re-opens them.
+      AND s.status IN ('written', 'no_results')
   )
   SELECT
     b.id AS election_id,
@@ -191,7 +195,9 @@ const ELIGIBILITY_SELECT_UPCOMING_OFFICES_SQL = `
     SELECT s.ingest_key
     FROM public.staging_items AS s
     WHERE s.item_type = $2
-      AND s.status = 'written'
+      -- Mirrors the by-ids variant: 'no_results' is complete for the
+      -- automated path; refresh happens through the manual due list.
+      AND s.status IN ('written', 'no_results')
   )
   SELECT
     b.id AS election_id,
