@@ -71,6 +71,16 @@ export type BallotDistrict = {
   state: string;
 };
 
+// Mirrors BallotLookupCandidateRosterStatus (backend ballotLookup.ts): why an
+// office election currently shows zero candidates. `reason` is an open enum —
+// render unknown values with the generic unavailable copy (formatRosterStatus
+// does this) so new backend reasons never break older clients. check_after is
+// always a FUTURE date when present.
+export type CandidateRosterStatus = {
+  reason: "awaiting_official_roster" | "roster_processing" | "candidate_information_unavailable" | (string & {});
+  check_after: string | null;
+};
+
 export type ElectionSummary = {
   id: string;
   district_id: string;
@@ -81,6 +91,8 @@ export type ElectionSummary = {
   election_stage: string | null;
   is_partisan: boolean | null;
   candidate_count: number;
+  /** null unless race_type is "office" and candidate_count is 0. */
+  candidate_roster_status: CandidateRosterStatus | null;
   ballot_measure_id: string | null;
   has_results: boolean;
   current_result_outcome: string | null;
@@ -230,6 +242,8 @@ export type ElectionDetail = {
   is_partisan: boolean | null;
   sources: string[];
   candidates: ElectionCandidate[];
+  /** null unless race_type is "office" and candidates is empty. */
+  candidate_roster_status: CandidateRosterStatus | null;
   ballot_measure: BallotMeasure | null;
   results: ElectionResult[];
   historical_competitiveness: HistoricalCompetitiveness | null;

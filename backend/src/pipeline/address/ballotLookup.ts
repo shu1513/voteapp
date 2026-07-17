@@ -10,7 +10,7 @@ import type {
   OfficeScope,
 } from "../../types/election.js";
 import type { CandidateElectionStatus, ElectionResultPassType } from "../../types/electionResults.js";
-import { US_LATEST_LOCAL_DATE_SQL } from "../../utils/usLocalDate.js";
+import { US_LATEST_LOCAL_DATE_SQL, usLatestLocalDateIso } from "../../utils/usLocalDate.js";
 import {
   calculateWeightedHistoricalContestMargin,
   lookupHistoricalContestMarginRows,
@@ -145,6 +145,21 @@ export type BallotLookupRunningMate = {
   party: string;
 };
 
+export type CandidateRosterStatusReason =
+  | "awaiting_official_roster"
+  | "roster_processing"
+  | "candidate_information_unavailable";
+
+// Public "why is the candidate list empty" signal for office elections with
+// zero visible candidates. Derived from internal research state (roster
+// staging + deferral ledger) but exposes only a fixed enum and an optional
+// re-check date — never internal free-text reasons. null on elections that
+// have candidates and on ballot measures.
+export type BallotLookupCandidateRosterStatus = {
+  reason: CandidateRosterStatusReason;
+  check_after: string | null;
+};
+
 export type BallotLookupCandidate = {
   candidate_election_id: string;
   candidate_id: string;
@@ -216,6 +231,7 @@ export type BallotLookupElection = {
   discovery_contest_family: ElectionContestFamily | null;
   sources: string[];
   candidates: BallotLookupCandidate[];
+  candidate_roster_status: BallotLookupCandidateRosterStatus | null;
   ballot_measure: BallotLookupBallotMeasure | null;
   results: BallotLookupElectionResult[];
   historical_competitiveness: BallotLookupHistoricalCompetitiveness | null;
@@ -236,6 +252,7 @@ export type BallotLookupElectionSummary = {
   discovery_contest_family: ElectionContestFamily | null;
   sources: string[];
   candidate_count: number;
+  candidate_roster_status: BallotLookupCandidateRosterStatus | null;
   ballot_measure_id: string | null;
   has_results: boolean;
   current_result_outcome: string | null;
@@ -828,6 +845,79 @@ export async function loadCandidateFinanceSummariesByCandidateElection(
   return merged;
 }
 
+type CandidateRosterStatusRow = {
+  election_id: string;
+  election_date: string;
+  staging_status: string | null;
+  staged_candidate_count: string | number | null;
+  blocked_until: string | null;
+};
+
+// Pure derivation so tests can pin every branch without a database.
+// Precedence: staged names beat an open deferral (the roster is already
+// known, profiles are just pending), which beats the generic fallback.
+// check_after is only ever a FUTURE date — an overdue deferral renders no
+// date rather than a stale promise — and deferral-based "awaiting" copy is
+// suppressed entirely for past elections.
+export function deriveCandidateRosterStatus(
+  row: Pick<CandidateRosterStatusRow, "election_date" | "staging_status" | "staged_candidate_count" | "blocked_until">,
+  todayIso: string
+): BallotLookupCandidateRosterStatus {
+  const stagedCount = Number(row.staged_candidate_count ?? 0);
+  if ((row.staging_status === "written" || row.staging_status === "validated") && stagedCount > 0) {
+    return { reason: "roster_processing", check_after: null };
+  }
+  if (row.blocked_until !== null && row.election_date >= todayIso) {
+    return {
+      reason: "awaiting_official_roster",
+      check_after: row.blocked_until > todayIso ? row.blocked_until : null,
+    };
+  }
+  return { reason: "candidate_information_unavailable", check_after: null };
+}
+
+// Batched "why is this roster empty" lookup. Callers pass only office
+// elections that currently show zero candidates, so ballots with fully
+// populated rosters issue no extra query (and existing ordered query mocks
+// in tests stay untouched).
+async function loadCandidateRosterStatusesByElection(
+  db: Queryable,
+  electionIds: readonly string[]
+): Promise<Map<string, BallotLookupCandidateRosterStatus>> {
+  if (electionIds.length === 0) {
+    return new Map();
+  }
+  const result = await db.query<CandidateRosterStatusRow>(
+    `
+      SELECT
+        e.id AS election_id,
+        e.election_date::text AS election_date,
+        s.status AS staging_status,
+        jsonb_array_length(coalesce(s.payload->'candidates', '[]'::jsonb)) AS staged_candidate_count,
+        d.blocked_until::text AS blocked_until
+      FROM public.elections AS e
+      LEFT JOIN public.staging_items AS s
+        ON s.item_type = 'candidate_roster'
+       AND s.ingest_key = 'candidate_roster:' || e.id::text
+      LEFT JOIN LATERAL (
+        SELECT md.blocked_until
+        FROM public.manual_research_deferrals AS md
+        WHERE md.status = 'deferred'
+          AND md.stage = 'candidate_roster'
+          AND (md.election_id = e.id OR (md.election_id IS NULL AND md.district_id = e.district_id))
+        -- An election-specific deferral beats a district-wide one; ties
+        -- resolve to the earliest re-check date.
+        ORDER BY (md.election_id IS NOT NULL) DESC, md.blocked_until ASC
+        LIMIT 1
+      ) AS d ON true
+      WHERE e.id = ANY($1::uuid[])
+    `,
+    [electionIds]
+  );
+  const todayIso = usLatestLocalDateIso();
+  return new Map(result.rows.map((row) => [row.election_id, deriveCandidateRosterStatus(row, todayIso)]));
+}
+
 async function loadFullElectionDetails(
   db: Queryable,
   electionRows: readonly ElectionRow[]
@@ -1144,6 +1234,17 @@ async function loadFullElectionDetails(
     });
   }
 
+  // Empty office rosters get a "why" status; issued last so populated
+  // ballots skip the query and ordered test mocks keep their slots.
+  const rosterStatusByElection = await loadCandidateRosterStatusesByElection(
+    db,
+    electionRows
+      .filter(
+        (row) => row.race_type === "office" && (candidatesByElection.get(row.election_id) ?? []).length === 0
+      )
+      .map((row) => row.election_id)
+  );
+
   const officeResultsByElection = groupBy(officeResult.rows, (row) => row.election_id);
   return electionRows.map((row) => ({
     id: row.election_id,
@@ -1157,6 +1258,7 @@ async function loadFullElectionDetails(
     discovery_contest_family: row.discovery_contest_family,
     sources: parseStringArray(row.sources),
     candidates: candidatesByElection.get(row.election_id) ?? [],
+    candidate_roster_status: rosterStatusByElection.get(row.election_id) ?? null,
     ballot_measure: ballotMeasureByElection.get(row.election_id) ?? null,
     results: (officeResultsByElection.get(row.election_id) ?? []).map((result) => ({
       id: result.id,
@@ -1389,6 +1491,17 @@ export async function lookupBallotSummariesByDistrictIds(
   const resultOutcomeByElection = new Map(resultSummaryResult.rows.map((row) => [row.election_id, row.outcome]));
   const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionResult.rows);
 
+  // Empty office rosters get a "why" status; issued last so populated
+  // ballots skip the query and ordered test mocks keep their slots.
+  const rosterStatusByElection = await loadCandidateRosterStatusesByElection(
+    db,
+    electionResult.rows
+      .filter(
+        (row) => row.race_type === "office" && (candidateCountsByElection.get(row.election_id) ?? 0) === 0
+      )
+      .map((row) => row.election_id)
+  );
+
   const elections: BallotLookupElectionSummary[] = electionResult.rows.map((row) => {
     const currentResultOutcome = resultOutcomeByElection.get(row.election_id) ?? null;
     // Office columns are nullable only because this is a LEFT JOIN; resolved office rows have non-empty fields.
@@ -1418,6 +1531,7 @@ export async function lookupBallotSummariesByDistrictIds(
       discovery_contest_family: row.discovery_contest_family,
       sources: parseStringArray(row.sources),
       candidate_count: candidateCount,
+      candidate_roster_status: rosterStatusByElection.get(row.election_id) ?? null,
       ballot_measure_id: ballotMeasureIdsByElection.get(row.election_id) ?? null,
       has_results: currentResultOutcome !== null,
       current_result_outcome: currentResultOutcome,

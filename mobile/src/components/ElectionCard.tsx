@@ -1,5 +1,11 @@
 import type { ElectionSummary } from "@voteapp/api-client";
-import { formatDistrictType, formatElectionDate, formatOutcome, formatVotePowerLabel } from "@voteapp/api-client";
+import {
+  formatDistrictType,
+  formatElectionDate,
+  formatOutcome,
+  formatRosterStatus,
+  formatVotePowerLabel,
+} from "@voteapp/api-client";
 import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
@@ -40,7 +46,9 @@ export function ElectionCard({
           <Text className="rounded bg-ink/10 px-2 py-0.5 text-xs text-ink">Ballot measure</Text>
         ) : (
           <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">
-            {election.candidate_count} candidate{election.candidate_count === 1 ? "" : "s"}
+            {election.candidate_count === 0 && election.candidate_roster_status
+              ? formatRosterStatus(election.candidate_roster_status).short
+              : `${election.candidate_count} candidate${election.candidate_count === 1 ? "" : "s"}`}
           </Text>
         )}
         {election.vote_power.label !== "unknown" ? (

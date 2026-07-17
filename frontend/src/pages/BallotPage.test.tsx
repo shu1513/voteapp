@@ -63,6 +63,24 @@ describe("BallotPage", () => {
     expect(options).toContain("Vote power");
   });
 
+  it("replaces the 0-candidates chip with the roster-status explanation", async () => {
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": {
+        body: ballotSummary([
+          electionSummary({
+            candidate_count: 0,
+            candidate_roster_status: { reason: "awaiting_official_roster", check_after: "2026-08-27" },
+          }),
+        ]),
+      },
+    });
+    renderBallot("/ballot?d=d-1");
+
+    expect(await screen.findByText("Candidate list not final")).toBeInTheDocument();
+    expect(screen.queryByText("0 candidates")).not.toBeInTheDocument();
+  });
+
   it("confirms the matched address from router state and lists the districts", async () => {
     stubApiRoutes({
       ...ANONYMOUS,
