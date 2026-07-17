@@ -18,7 +18,7 @@ import {
   buildCandidateRecordAreasConfigFromEnv,
   enrichCandidateRecordAreas,
 } from "../../ai/enrichCandidateRecordAreas.js";
-import { verifyHttpUrlReachability } from "../../ai/urlReachability.js";
+import { classifyCitationVerificationFailure, verifyHttpUrlReachability } from "../../ai/urlReachability.js";
 import { getPipelineEnv } from "../../config/env.js";
 import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
 import {
@@ -239,23 +239,6 @@ async function replacePresidentialCandidateRecordsAtomically(input: {
   } finally {
     client.release();
   }
-}
-
-function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
-  const normalized = reason.toLowerCase();
-  if (
-    normalized.includes("timed out") ||
-    normalized.includes("dns lookup failed transiently") ||
-    normalized.includes("fetch failed") ||
-    normalized.includes("status 429") ||
-    normalized.includes("status 500") ||
-    normalized.includes("status 502") ||
-    normalized.includes("status 503") ||
-    normalized.includes("status 504")
-  ) {
-    return "transient";
-  }
-  return "permanent";
 }
 
 function parseCandidateRecordContextType(value: string | undefined): "election" | "presidential_cycle" {

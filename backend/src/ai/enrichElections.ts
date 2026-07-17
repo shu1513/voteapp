@@ -20,7 +20,7 @@ import type {
   ElectionEntryPayload,
 } from "../types/election.js";
 import { districtTypeRequiresContestFamily } from "../types/election.js";
-import { verifyHttpUrlReachability } from "./urlReachability.js";
+import { classifyCitationVerificationFailure, verifyHttpUrlReachability } from "./urlReachability.js";
 import { normalizeElectionTitleKey } from "../utils/normalizeElectionTitleKey.js";
 import { filterPresidentialElectionEntries } from "../utils/presidentialOffice.js";
 import { hasSpecialSeatMarker, isUsSenateOfficeTitle } from "../utils/senateOffice.js";
@@ -481,25 +481,6 @@ type CitationVerificationFailure = {
   reason: string;
   failureType: "transient" | "permanent";
 };
-
-function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
-  const normalized = reason.toLowerCase();
-
-  if (
-    normalized.includes("timed out") ||
-    normalized.includes("dns lookup failed transiently") ||
-    normalized.includes("fetch failed") ||
-    normalized.includes("status 500") ||
-    normalized.includes("status 502") ||
-    normalized.includes("status 503") ||
-    normalized.includes("status 504") ||
-    normalized.includes("status 429")
-  ) {
-    return "transient";
-  }
-
-  return "permanent";
-}
 
 async function verifyUniqueElectionSourceUrls(
   urls: string[],

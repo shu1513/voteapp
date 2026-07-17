@@ -23,6 +23,10 @@ export type UrlReachabilitySuccess = {
 export type UrlReachabilityFailure = {
   ok: false;
   reason: string;
+  // Present when the server answered 429 with a parseable Retry-After header:
+  // callers with retry loops can wait at least this long instead of their
+  // default backoff.
+  retryAfterSeconds?: number;
 };
 
 export type UrlReachabilityResult = UrlReachabilitySuccess | UrlReachabilityFailure;
@@ -38,11 +42,46 @@ const TLS_CERTIFICATE_FAILURE_PATTERNS = [
   "certificate has expired",
   "cert_has_expired",
   "unable_to_get_issuer_cert",
+  // Hostname/SAN mismatch (live: wrong.host.badssl.com) — as permanent as an
+  // expired certificate, and previously misclassified transient because only
+  // the "fetch failed" wrapper text reached the classifier.
+  "err_tls_cert_altname_invalid",
+  "does not match certificate's altnames",
 ];
 
 export function isTlsCertificateReachabilityFailure(reason: string): boolean {
   const normalized = reason.trim().toLowerCase();
   return TLS_CERTIFICATE_FAILURE_PATTERNS.some((pattern) => normalized.includes(pattern));
+}
+
+/**
+ * Single owner of the reason-string retry contract (this module produces
+ * every reason these substrings match). TLS certificate failures classify
+ * permanent FIRST: they arrive wrapped in undici's "fetch failed" (which is
+ * otherwise transient), and retrying an expired or self-signed certificate
+ * can never succeed.
+ */
+export function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
+  if (isTlsCertificateReachabilityFailure(reason)) {
+    return "permanent";
+  }
+  const normalized = reason.toLowerCase();
+  if (
+    normalized.includes("timed out") ||
+    normalized.includes("dns lookup failed transiently") ||
+    normalized.includes("fetch failed") ||
+    normalized.includes("status 429") ||
+    // Synthetic no-contact failure while a host's Retry-After deadline is
+    // still running — retryable by definition.
+    normalized.includes("rate-limit cooldown") ||
+    normalized.includes("status 500") ||
+    normalized.includes("status 502") ||
+    normalized.includes("status 503") ||
+    normalized.includes("status 504")
+  ) {
+    return "transient";
+  }
+  return "permanent";
 }
 
 function stripIpv6Brackets(hostnameOrIp: string): string {
@@ -150,9 +189,9 @@ async function resolveSafeUrlTarget(url: string, timeoutMs: number): Promise<Url
   // in-flight getaddrinfo call is abandoned (it settles into a no-op).
   //
   // Reason strings are a contract with classifyCitationVerificationFailure
-  // (five copies, e.g. enrichCandidateRecords.ts): "timed out" and
-  // "dns lookup failed transiently" classify as transient/retryable, the
-  // bare could-not-be-resolved reason as permanent.
+  // (exported below): "timed out" and "dns lookup failed transiently"
+  // classify as transient/retryable, the bare could-not-be-resolved reason
+  // as permanent.
   let records: LookupAddress[];
   let dnsTimeoutTimer: NodeJS.Timeout | undefined;
   try {
@@ -306,7 +345,31 @@ type HopResponse = {
   location: string | null;
   contentType: string | null;
   contentLength: number | null;
+  retryAfterSeconds: number | null;
 };
+
+// Retry-After sanity ceiling: some hosts send hour-scale values; anything a
+// verifier or its callers would actually wait is far below this, and the
+// cap keeps a hostile header from parking a worker.
+const RETRY_AFTER_MAX_SECONDS = 900;
+
+/** Parses Retry-After in both delta-seconds and HTTP-date forms. */
+function parseRetryAfterSeconds(raw: string | null): number | null {
+  if (!raw) {
+    return null;
+  }
+  const trimmed = raw.trim();
+  if (/^\d+$/.test(trimmed)) {
+    const seconds = Number.parseInt(trimmed, 10);
+    return Number.isFinite(seconds) ? Math.min(seconds, RETRY_AFTER_MAX_SECONDS) : null;
+  }
+  const dateMs = Date.parse(trimmed);
+  if (Number.isNaN(dateMs)) {
+    return null;
+  }
+  const seconds = Math.ceil((dateMs - Date.now()) / 1000);
+  return seconds > 0 ? Math.min(seconds, RETRY_AFTER_MAX_SECONDS) : 0;
+}
 
 async function fetchPinnedUrl(
   url: string,
@@ -343,6 +406,8 @@ async function fetchPinnedUrl(
         const parsed = Number.parseInt(raw, 10);
         return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
       })(),
+      retryAfterSeconds:
+        response.status === 429 ? parseRetryAfterSeconds(response.headers.get("retry-after")) : null,
     };
   } finally {
     clearTimeout(timeout);
@@ -432,16 +497,161 @@ async function fetchWithValidatedRedirects(
   };
 }
 
+/**
+ * undici's fetch reports every network-level failure as a bare
+ * `TypeError: fetch failed` and hides the real error (TLS certificate codes,
+ * ECONNRESET, ECONNREFUSED, ...) in the `cause` chain. Reasons built from the
+ * top-level message alone made every such failure look identical AND
+ * misclassified permanent TLS failures as transient (live: ERR-321/329).
+ * Walk the chain and surface each distinct message/code.
+ */
+function describeFetchError(error: unknown): string {
+  const parts: string[] = [];
+  let current: unknown = error;
+  for (let depth = 0; depth < 4 && current instanceof Error; depth += 1) {
+    const code =
+      "code" in current && typeof (current as { code?: unknown }).code === "string"
+        ? ((current as { code: string }).code)
+        : undefined;
+    const message = current.message?.trim();
+    // "||" not "??": an empty trimmed message must fall through to the code.
+    const label = message && code && message !== code ? `${message} (${code})` : (message || code);
+    if (label && !parts.includes(label)) {
+      parts.push(label);
+    }
+    current = current.cause;
+  }
+  return parts.length > 0 ? parts.join(": ") : String(error);
+}
+
+// Adaptive per-host cooldown: set only when a host answers 429, so the
+// normal path pays nothing. Later verifications against the same host wait
+// out the cooldown (Retry-After when given, a short default otherwise)
+// instead of re-bursting a host that just told us to slow down (ERR-022).
+const HOST_COOLDOWN_DEFAULT_MS = 1_000;
+const HOST_COOLDOWN_MAX_WAIT_MS = 15_000;
+const HOST_COOLDOWN_MAP_MAX_ENTRIES = 200;
+
+const hostCooldownUntilMs = new Map<string, number>();
+
+// Drops expired entries on every record. Entries inside an active cooldown
+// are never evicted, even past HOST_COOLDOWN_MAP_MAX_ENTRIES: evicting one
+// would let the verifier re-contact a host whose Retry-After deadline is
+// still running. Every entry expires within RETRY_AFTER_MAX_SECONDS, so the
+// map is bounded by the number of distinct hosts 429ing inside one such
+// window — hostname strings, negligible next to that correctness cost.
+function pruneExpiredHostCooldowns(nowMs: number): void {
+  for (const [host, untilMs] of hostCooldownUntilMs) {
+    if (untilMs <= nowMs) {
+      hostCooldownUntilMs.delete(host);
+    }
+  }
+}
+
+// Waits out the host's active cooldown when it fits inside
+// HOST_COOLDOWN_MAX_WAIT_MS; when the deadline lies beyond what we are
+// willing to wait in-call, returns the remaining seconds WITHOUT sleeping so
+// the caller can refuse contact — a request before the advertised
+// Retry-After deadline is exactly what the cooldown exists to prevent.
+// Re-reads the map after every sleep: another in-flight verification can 429
+// and EXTEND the entry while this one sleeps, and deleting unconditionally
+// on wake would erase that newer cooldown. Entries are only deleted when the
+// observed value is still current.
+async function awaitHostCooldown(hostname: string): Promise<number | null> {
+  const waitDeadlineMs = Date.now() + HOST_COOLDOWN_MAX_WAIT_MS;
+  while (true) {
+    const untilMs = hostCooldownUntilMs.get(hostname);
+    if (untilMs === undefined) {
+      return null;
+    }
+    const nowMs = Date.now();
+    if (untilMs <= nowMs) {
+      if (hostCooldownUntilMs.get(hostname) === untilMs) {
+        hostCooldownUntilMs.delete(hostname);
+      }
+      return null;
+    }
+    if (untilMs > waitDeadlineMs) {
+      return Math.ceil((untilMs - nowMs) / 1_000);
+    }
+    await new Promise((resolve) => setTimeout(resolve, untilMs - nowMs));
+  }
+}
+
+function recordHostCooldown(hostname: string, retryAfterSeconds: number | null): void {
+  const nowMs = Date.now();
+  pruneExpiredHostCooldowns(nowMs);
+  const cooldownMs =
+    retryAfterSeconds !== null && retryAfterSeconds > 0
+      ? retryAfterSeconds * 1_000
+      : HOST_COOLDOWN_DEFAULT_MS;
+  // Max-merge: two in-flight requests can both 429 with different
+  // Retry-After values, and a later, shorter answer must not shorten the
+  // deadline a longer one already established.
+  const existingUntilMs = hostCooldownUntilMs.get(hostname);
+  const nextUntilMs = nowMs + cooldownMs;
+  hostCooldownUntilMs.set(
+    hostname,
+    existingUntilMs !== undefined && existingUntilMs > nextUntilMs ? existingUntilMs : nextUntilMs
+  );
+}
+
+// Hosts whose rate limiter has answered a HEAD with 429. Some WAFs throttle
+// HEAD while serving GET, so retrying the same HEAD would 429 forever and a
+// valid citation would never be tested with the method that matters. Later
+// verifications against these hosts skip the HEAD optimization and start
+// with GET (the authoritative method). Bounded: cleared wholesale if it ever
+// grows past the cooldown map's cap — hosts simply re-learn.
+const getPreferredHosts = new Set<string>();
+
+function recordGetPreferredHost(hostname: string): void {
+  if (getPreferredHosts.size > HOST_COOLDOWN_MAP_MAX_ENTRIES) {
+    getPreferredHosts.clear();
+  }
+  getPreferredHosts.add(hostname);
+}
+
+/** Test-only: cooldown state is module-global and must not leak across tests. */
+export function resetCitationHostCooldownsForTests(): void {
+  hostCooldownUntilMs.clear();
+  getPreferredHosts.clear();
+}
+
 export async function verifyHttpUrlReachability(
   rawUrl: string,
   options: UrlReachabilityOptions = {}
 ): Promise<UrlReachabilityResult> {
   const timeoutMs = options.timeoutMs ?? 8_000;
   const allowStatusCodes = new Set(options.allowStatusCodes ?? [403]);
-  const initialMethod = options.method ?? "HEAD";
   const normalizedInputUrl = normalizeHttpUrl(rawUrl);
   if (!normalizedInputUrl) {
     return { ok: false, reason: "citation URL is not a valid http(s) URL" };
+  }
+  const inputHostname = (() => {
+    try {
+      return new URL(normalizedInputUrl).hostname.toLowerCase();
+    } catch {
+      return null;
+    }
+  })();
+  // An explicit caller method always wins; otherwise skip the HEAD
+  // optimization for hosts that have rate-limited a HEAD before (their
+  // limiter may serve GET fine, and GET is the authoritative method).
+  const initialMethod =
+    options.method ?? (inputHostname && getPreferredHosts.has(inputHostname) ? "GET" : "HEAD");
+  if (inputHostname) {
+    const coolingSeconds = await awaitHostCooldown(inputHostname);
+    if (coolingSeconds !== null) {
+      // Contacting the host before its advertised Retry-After deadline is
+      // exactly what the cooldown exists to prevent; fail fast (transient,
+      // zero network contact) instead of sleeping the in-call bound and
+      // then requesting anyway.
+      return {
+        ok: false,
+        reason: `citation fetch skipped: host rate-limit cooldown has ${coolingSeconds}s remaining (retry-after)`,
+        retryAfterSeconds: coolingSeconds,
+      };
+    }
   }
 
   try {
@@ -464,9 +674,16 @@ export async function verifyHttpUrlReachability(
     // The GET re-walks the redirect chain from the original URL with the
     // same per-hop validation — HEAD and GET can redirect differently, so
     // HEAD's chain proves nothing about GET's.
+    //
+    // EXCEPT 429: an immediate GET would double the burst at a host that
+    // just asked us to back off, and a differing GET status would silently
+    // discard the 429 and its Retry-After. The host is instead marked
+    // GET-preferred, so the post-cooldown retry tests the resource with GET
+    // directly — covering limiters that throttle HEAD but serve GET.
     if (
       initialMethod === "HEAD" &&
       !response.ok &&
+      response.status !== 429 &&
       !allowStatusCodes.has(response.status)
     ) {
       const getResult = await fetchWithValidatedRedirects(normalizedInputUrl, "GET", timeoutMs);
@@ -478,6 +695,40 @@ export async function verifyHttpUrlReachability(
     }
 
     if (!response.ok && !allowStatusCodes.has(response.status)) {
+      if (response.status === 429) {
+        // The 429 comes from the FINAL hop (a redirect can land on a CDN or
+        // document host), so cool that host down; the input host is cooled
+        // too because retries re-enter through the input URL. Cooldowns are
+        // still only awaited at entry, not per redirect hop — a different
+        // citation that merely redirects onto the limited host won't wait.
+        // Accepted: this pacing is a best-effort burst damper, not a rate
+        // limiter.
+        const finalHostname = (() => {
+          try {
+            return new URL(finalUrl).hostname.toLowerCase();
+          } catch {
+            return null;
+          }
+        })();
+        for (const hostname of new Set(
+          [inputHostname, finalHostname].filter((host): host is string => host !== null)
+        )) {
+          recordHostCooldown(hostname, response.retryAfterSeconds);
+          if (initialMethod === "HEAD") {
+            recordGetPreferredHost(hostname);
+          }
+        }
+        return {
+          ok: false,
+          reason:
+            response.retryAfterSeconds !== null
+              ? `citation fetch returned status 429 (retry-after: ${response.retryAfterSeconds}s)`
+              : "citation fetch returned status 429",
+          ...(response.retryAfterSeconds !== null
+            ? { retryAfterSeconds: response.retryAfterSeconds }
+            : {}),
+        };
+      }
       return { ok: false, reason: `citation fetch returned status ${response.status}` };
     }
 
@@ -494,6 +745,6 @@ export async function verifyHttpUrlReachability(
     if (message.toLowerCase().includes("aborted")) {
       return { ok: false, reason: "citation URL fetch timed out" };
     }
-    return { ok: false, reason: `citation URL fetch failed: ${message}` };
+    return { ok: false, reason: `citation URL fetch failed: ${describeFetchError(error)}` };
   }
 }

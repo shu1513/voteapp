@@ -5,7 +5,7 @@ import {
   trimDebugText,
   type ResearchErrorCode,
 } from "./researchProviderClient.js";
-import { verifyHttpUrlReachability } from "./urlReachability.js";
+import { classifyCitationVerificationFailure, verifyHttpUrlReachability } from "./urlReachability.js";
 import {
   type CandidateProfilePayload,
   type CandidateProfilePayloadParseOptions,
@@ -119,23 +119,6 @@ function normalizeStateFilingIds(values: readonly string[] | undefined): string[
   return [...new Set((values ?? []).map((value) => value.trim().toUpperCase()).filter((value) => value.length > 0))];
 }
 
-function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
-  const normalized = reason.toLowerCase();
-  if (
-    normalized.includes("timed out") ||
-    normalized.includes("dns lookup failed transiently") ||
-    normalized.includes("fetch failed") ||
-    normalized.includes("status 429") ||
-    normalized.includes("status 500") ||
-    normalized.includes("status 502") ||
-    normalized.includes("status 503") ||
-    normalized.includes("status 504")
-  ) {
-    return "transient";
-  }
-  return "permanent";
-}
-
 const CITATION_TRANSIENT_RETRY_ATTEMPTS = 2;
 const CITATION_TRANSIENT_RETRY_DELAY_MS = 1_000;
 
@@ -195,6 +178,12 @@ async function verifyUniqueCandidateSourceUrls(
     if (transientUrls.length === 0) {
       break;
     }
+    // Retry-After waiting is owned by the verifier's per-host cooldown (a
+    // deadline, so this sleep counts toward it): a re-verification waits out
+    // a short remaining cooldown at entry, and refuses contact (fast
+    // transient failure carrying the remaining seconds) when the deadline
+    // lies beyond its in-call wait bound. Honoring Retry-After here as well
+    // stacked two bounded waits per attempt on the same header.
     const retryDelayMs = CITATION_TRANSIENT_RETRY_DELAY_MS * 2 ** attempt;
     await new Promise((resolveDelay) => setTimeout(resolveDelay, retryDelayMs));
     await verifyBatch(transientUrls);

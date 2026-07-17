@@ -11,7 +11,7 @@ import {
 } from "../contracts/candidateRecordDiscoveryPayloadContract.js";
 import { buildCandidateRecordDiscoveryPrompt } from "./providers/candidateRecordDiscoveryPrompt.js";
 import type { AiProvider } from "./types.js";
-import { verifyHttpUrlReachability } from "./urlReachability.js";
+import { classifyCitationVerificationFailure, verifyHttpUrlReachability } from "./urlReachability.js";
 import type { ElectionContestFamily } from "../types/election.js";
 import { classifyCandidateRecordQuality } from "../pipeline/candidates/candidateRecordQuality.js";
 
@@ -94,23 +94,6 @@ export type EnrichCandidateRecordsResult =
 
 const CLAUDE_INTER_CALL_DELAY_MS = 20_000;
 const CLAUDE_RETRY_AFTER_BUFFER_MS = 10_000;
-
-function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
-  const normalized = reason.toLowerCase();
-  if (
-    normalized.includes("timed out") ||
-    normalized.includes("dns lookup failed transiently") ||
-    normalized.includes("fetch failed") ||
-    normalized.includes("status 429") ||
-    normalized.includes("status 500") ||
-    normalized.includes("status 502") ||
-    normalized.includes("status 503") ||
-    normalized.includes("status 504")
-  ) {
-    return "transient";
-  }
-  return "permanent";
-}
 
 async function verifyUniqueCandidateRecordSourceUrls(
   urls: string[],
