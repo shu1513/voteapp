@@ -114,6 +114,7 @@ describe("ElectionPage", () => {
           source_urls: [],
           official_measure_url: null,
           research_area_tags: [],
+          results: [],
         },
       })
     );
@@ -121,6 +122,87 @@ describe("ElectionPage", () => {
     expect(await screen.findByText("Yes approves the bond.")).toBeInTheDocument();
     expect(screen.getByText("No rejects the bond.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Report an issue with ballot measure" })).toBeInTheDocument();
+  });
+
+  it("renders measure result rows, including election-night outcomes", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          // Canonical result unset: election-night outcomes never project it,
+          // yet the rows below must still be visible.
+          result: null,
+          source_urls: [],
+          official_measure_url: null,
+          research_area_tags: [],
+          results: [
+            {
+              id: "mr-1",
+              pass_type: "election_night",
+              result_status: "unofficial",
+              outcome: "passed",
+              source_url: "https://results.example.gov/measure-1",
+              source_type: "official",
+              retrieved_at: "2026-11-04T06:00:00.000Z",
+            },
+          ],
+        },
+      })
+    );
+
+    expect(await screen.findByText("Passed")).toBeInTheDocument();
+    expect(screen.getByText("· Unofficial")).toBeInTheDocument();
+    // Nothing certified yet, so the pre-certification notice applies.
+    expect(screen.getByText("Unofficial until certified by the relevant election authority.")).toBeInTheDocument();
+    const source = screen.getByRole("link", { name: /results\.example\.gov/ });
+    expect(source).toHaveAttribute("href", "https://results.example.gov/measure-1");
+  });
+
+  it("drops the pre-certification notice once a certified result row exists", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: "passed",
+          source_urls: [],
+          official_measure_url: null,
+          research_area_tags: [],
+          results: [
+            {
+              id: "mr-2",
+              pass_type: "certified",
+              result_status: "certified",
+              outcome: "passed",
+              source_url: "https://sos.example.gov/certified-results",
+              source_type: "official",
+              retrieved_at: "2026-12-01T06:00:00.000Z",
+            },
+          ],
+        },
+      })
+    );
+
+    expect(await screen.findByText("Passed")).toBeInTheDocument();
+    expect(screen.getByText("· Certified")).toBeInTheDocument();
+    // "Unofficial until certified" above a row labeled Certified is
+    // contradictory for official election information.
+    expect(
+      screen.queryByText("Unofficial until certified by the relevant election authority.")
+    ).not.toBeInTheDocument();
   });
 
   it("links the official measure text and lists the remaining measure sources", async () => {
@@ -142,6 +224,7 @@ describe("ElectionPage", () => {
           ],
           official_measure_url: "https://sos.example.gov/measures/measure-1.pdf",
           research_area_tags: [],
+          results: [],
         },
       })
     );
@@ -171,6 +254,7 @@ describe("ElectionPage", () => {
           source_urls: ["https://ballotpedia.org/Example_Measure_(2026)"],
           official_measure_url: "https://ballotpedia.org/Example_Measure_(2026)",
           research_area_tags: [],
+          results: [],
         },
       })
     );
@@ -197,6 +281,7 @@ describe("ElectionPage", () => {
           source_urls: ["https://sos.example.gov/qualified-measures", "https://news.example.org/measure-1"],
           official_measure_url: null,
           research_area_tags: [],
+          results: [],
         },
       })
     );

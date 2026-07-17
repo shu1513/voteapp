@@ -133,7 +133,31 @@ export function ElectionPage() {
               <p className="mt-1 text-sm text-red-900">{measure.what_no_means}</p>
             </div>
           </div>
-          {measure.result ? (
+          {measure.results.length > 0 ? (
+            <div className="mt-3">
+              <h3 className="text-sm font-semibold">Results</h3>
+              {hasCertifiedRow(measure.results) ? null : (
+                <p className="mt-1 text-xs text-ink-soft">
+                  Unofficial until certified by the relevant election authority.
+                </p>
+              )}
+              <ul className="mt-2 space-y-3">
+                {measure.results.map((result) => (
+                  <li key={result.id} className="text-sm">
+                    <p className="text-ink">
+                      <span className="font-medium">{formatOutcome(result.outcome)}</span>
+                      {result.result_status ? (
+                        <span className="text-ink-soft"> · {formatOutcome(result.result_status)}</span>
+                      ) : null}
+                    </p>
+                    <SourceLine url={result.source_url} researchedDate={result.retrieved_at.slice(0, 10)} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : measure.result ? (
+            // Legacy canonical outcome kept as a fallback for measures whose
+            // result predates the per-pass results rows.
             <p className="mt-3 text-sm font-medium">
               Result: <span className={measure.result === "passed" ? "text-green-700" : "text-red-700"}>{measure.result}</span>
             </p>
@@ -284,9 +308,11 @@ export function ElectionPage() {
       {data.results.length > 0 ? (
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
           <h2 className="text-lg font-semibold">Results</h2>
-          <p className="mt-1 text-xs text-ink-soft">
-            Unofficial until certified by the relevant election authority.
-          </p>
+          {hasCertifiedRow(data.results) ? null : (
+            <p className="mt-1 text-xs text-ink-soft">
+              Unofficial until certified by the relevant election authority.
+            </p>
+          )}
           <ul className="mt-2 space-y-3">
             {data.results.map((result) => (
               <li key={result.id} className="text-sm">
@@ -326,6 +352,12 @@ export function ElectionPage() {
 }
 
 export default ElectionPage;
+
+// The blanket pre-certification notice contradicts a row already labeled
+// "Certified"; show it only while everything listed is pre-certification.
+function hasCertifiedRow(results: readonly { result_status: string }[]): boolean {
+  return results.some((result) => result.result_status === "certified");
+}
 
 function isPdfUrl(url: string): boolean {
   return /\.pdf($|[?#])/i.test(url);

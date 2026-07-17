@@ -159,9 +159,16 @@ export type ElectionCandidate = {
   [key: string]: unknown;
 };
 
+// Mirrors BallotLookupBallotMeasureResult (backend ballotLookup.ts): one row
+// per results pass (election_night, certified) for the measure.
 export type BallotMeasureResult = {
-  outcome: string | null;
-  [key: string]: unknown;
+  id: string;
+  pass_type: string;
+  result_status: string;
+  outcome: string;
+  source_url: string;
+  source_type: string;
+  retrieved_at: string;
 };
 
 export type BallotMeasure = {
@@ -170,10 +177,12 @@ export type BallotMeasure = {
   summary: string | null;
   what_yes_means: string;
   what_no_means: string;
+  /** Canonical outcome, set only from a certified official verified source. */
   result: "passed" | "failed" | null;
   source_urls: string[];
   official_measure_url: string | null;
   research_area_tags: { research_area_id: string; slug: string; name: string; stance: string | null }[];
+  results: BallotMeasureResult[];
 };
 
 export type ElectionResultWinner = {
