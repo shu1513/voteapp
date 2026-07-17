@@ -76,6 +76,13 @@ function ElectionCard({
   const otherAreas = election.research_areas.filter((area) => !(savedAreaIds?.has(area.id) ?? false));
   const visibleOtherAreas = otherAreas.slice(0, MAX_UNSAVED_AREA_CHIPS);
   const hiddenAreaCount = otherAreas.length - visibleOtherAreas.length;
+  // Skip an empty chip row so the card doesn't carry stray spacing when a
+  // race has no signals to show.
+  const hasSignalChips =
+    (election.followed_candidates?.length ?? 0) > 0 ||
+    election.vote_power.label !== "unknown" ||
+    election.historical_competitiveness !== null ||
+    election.has_results;
   return (
     <Link
       to={`/elections/${election.id}`}
@@ -83,49 +90,54 @@ function ElectionCard({
     >
       {/* No per-card date: ElectionList's group heading carries it. */}
       <h3 className="font-semibold text-ink">{election.official_ballot_title}</h3>
+      {/* Three tiers, visually distinct: race FACTS read as plain meta text
+          (district, office, who's running), SIGNALS read as colored chips
+          (follow, vote power, competitiveness, results), and the affected
+          AREAS sit behind a hairline divider with their own label. */}
       <p className="mt-1 text-sm text-ink-soft">
         {election.district.name} · {formatDistrictType(election.district.district_type)}
         {election.office ? <> · {election.office.canonical_name}</> : null}
-      </p>
-      <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-        {election.followed_candidates && election.followed_candidates.length > 0 ? (
-          <span className="rounded bg-rausch px-2 py-0.5 font-medium text-white">
-            You follow {election.followed_candidates.map((candidate) => candidate.display_name).join(", ")}
-          </span>
-        ) : null}
         {election.race_type === "ballot_measure" ? (
-          <span className="rounded bg-ink/10 px-2 py-0.5 text-ink">Ballot measure</span>
+          <> · Ballot measure</>
         ) : (
-          <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
+          <>
+            {" · "}
             {election.candidate_count === 0 && election.candidate_roster_status
               ? formatRosterStatus(election.candidate_roster_status).short
               : `${election.candidate_count} candidate${election.candidate_count === 1 ? "" : "s"}`}
-          </span>
+          </>
         )}
-        {election.vote_power.label !== "unknown" ? (
-          <span className="rounded bg-rausch/10 px-2 py-0.5 text-rausch-dark">
-            Vote power: {formatVotePowerLabel(election.vote_power.label)}
-          </span>
-        ) : null}
-        {election.historical_competitiveness ? (
-          <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
-            {election.historical_competitiveness.display_label}
-          </span>
-        ) : null}
-        {election.has_results ? (
-          <span className="rounded bg-surface px-2 py-0.5 text-ink">
-            {election.current_result_outcome
-              ? `Result: ${formatOutcome(election.current_result_outcome)}`
-              : "Results available"}
-          </span>
-        ) : null}
-      </div>
+      </p>
+      {hasSignalChips ? (
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+          {election.followed_candidates && election.followed_candidates.length > 0 ? (
+            <span className="rounded bg-rausch px-2 py-0.5 font-medium text-white">
+              You follow {election.followed_candidates.map((candidate) => candidate.display_name).join(", ")}
+            </span>
+          ) : null}
+          {election.vote_power.label !== "unknown" ? (
+            <span className="rounded bg-rausch/10 px-2 py-0.5 text-rausch-dark">
+              Vote power: {formatVotePowerLabel(election.vote_power.label)}
+            </span>
+          ) : null}
+          {election.historical_competitiveness ? (
+            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
+              {election.historical_competitiveness.display_label}
+            </span>
+          ) : null}
+          {election.has_results ? (
+            <span className="rounded bg-surface px-2 py-0.5 text-ink">
+              {election.current_result_outcome
+                ? `Result: ${formatOutcome(election.current_result_outcome)}`
+                : "Results available"}
+            </span>
+          ) : null}
+        </div>
+      ) : null}
       {election.research_areas.length > 0 ? (
-        // Own labeled row so the issue chips read as "what this race
-        // affects" rather than blending into the status chips above.
         // Saved-area matches lead the list (all of them, highlighted);
         // unsaved areas follow under the cap.
-        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3 text-xs">
           <span className="text-ink-soft">Affected areas:</span>
           {savedAreas.map((area) => (
             <span
