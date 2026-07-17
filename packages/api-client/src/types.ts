@@ -49,12 +49,23 @@ export type OfficeSummary = {
   summary: string;
 };
 
+// Mirrors VotePowerExplanation (backend votePower.ts): backend-authored,
+// ready-to-render copy explaining how the rating was calculated and why this
+// election got its rating. Only the election detail payload carries it.
+export type VotePowerExplanation = {
+  how: string;
+  reasons: string[];
+  caveat: string | null;
+};
+
 export type VotePower = {
   score: number | null;
   label: "very_low" | "low" | "medium" | "high" | "very_high" | "unknown";
   confidence: string;
   representation_level: string;
   decisiveness_level: string;
+  /** Present on the election detail payload only. */
+  explanation?: VotePowerExplanation;
 };
 
 export type HistoricalCompetitiveness = {

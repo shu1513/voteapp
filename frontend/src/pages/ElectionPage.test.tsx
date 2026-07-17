@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import { ElectionPage, ErrorBoundary } from "./ElectionPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
-import { electionDetail, financeSummary, ME_VERIFIED } from "../test/fixtures";
+import { electionDetail, financeSummary, ME_VERIFIED, VOTE_POWER_WITH_EXPLANATION } from "../test/fixtures";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
@@ -49,6 +49,44 @@ describe("ElectionPage", () => {
     // Anonymous visitors get no follow controls.
     expect(screen.queryByRole("button", { name: /follow/i })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Report an issue with election" })).toBeInTheDocument();
+  });
+
+  it("renders a collapsed vote power explanation when the detail payload carries one", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ vote_power: VOTE_POWER_WITH_EXPLANATION }));
+
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(screen.getByText("Why this vote power rating?")).toBeInTheDocument();
+    // Native <details> keeps content in the DOM while collapsed; the backend
+    // copy must arrive verbatim.
+    expect(screen.getByText("Vote power combines representation and decisiveness.")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Representation is medium (50 out of 100): this district's population is mid-range for its type."
+      )
+    ).toBeInTheDocument();
+    expect(screen.getByText("Some underlying data is missing.")).toBeInTheDocument();
+  });
+
+  it("omits the vote power explanation when the payload has none or the label is unknown", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail());
+
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(screen.queryByText("Why this vote power rating?")).not.toBeInTheDocument();
+  });
+
+  it("hides the vote power explanation entirely for an unknown label", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        vote_power: { ...VOTE_POWER_WITH_EXPLANATION, label: "unknown", score: null },
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(screen.queryByText(/Vote power:/)).not.toBeInTheDocument();
+    expect(screen.queryByText("Why this vote power rating?")).not.toBeInTheDocument();
   });
 
   it("explains an empty candidate list instead of hiding the section", async () => {

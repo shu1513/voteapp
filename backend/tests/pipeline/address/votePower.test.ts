@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest";
 import {
   calculateVotePower,
   decisivenessLevelFromContest,
+  explainVotePower,
   representationLevelFromScore,
+  type VotePowerInput,
 } from "../../../src/pipeline/address/votePower.js";
 
 describe("representationLevelFromScore", () => {
@@ -336,5 +338,94 @@ describe("calculateVotePower", () => {
       confidence: "low",
       factors: ["missing_representation_data", "missing_decisiveness_data"],
     });
+  });
+});
+
+describe("explainVotePower", () => {
+  function explain(input: VotePowerInput) {
+    return explainVotePower(input, calculateVotePower(input));
+  }
+
+  it("explains a fully-known contested office race with one reason per factor and no caveat", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 90,
+      competitivenessLabel: "toss_up",
+    });
+
+    expect(explanation.how).toContain("representation");
+    expect(explanation.how).toContain("decisiveness");
+    expect(explanation.how).toContain("55%");
+    expect(explanation.reasons).toEqual([
+      "Representation is high (90 out of 100): this district's population is small for its type, so each vote is a larger share of the outcome.",
+      "Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it.",
+    ]);
+    expect(explanation.caveat).toBeNull();
+  });
+
+  it("rounds the representation score in the reason text", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 64.25,
+      competitivenessLabel: "safe",
+    });
+
+    expect(explanation.reasons[0]).toContain("(64 out of 100)");
+  });
+
+  it("explains an uncontested race without a margin reason", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 1,
+      representationPowerScore: 90,
+      competitivenessLabel: "toss_up",
+    });
+
+    expect(explanation.reasons).toEqual([
+      "Representation is high (90 out of 100): this district's population is small for its type, so each vote is a larger share of the outcome.",
+      "Only one candidate is on the ballot, so the outcome will not turn on vote margin.",
+    ]);
+  });
+
+  it("explains the ballot measure boost", () => {
+    const explanation = explain({
+      raceType: "ballot_measure",
+      candidateCount: 0,
+      representationPowerScore: 50,
+      competitivenessLabel: "competitive",
+    });
+
+    expect(explanation.reasons).toContain(
+      "This is a ballot measure: your vote sets policy directly instead of electing a representative, which raises the rating one step."
+    );
+  });
+
+  it("carries a partial-data caveat when one core axis is missing", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 90,
+      competitivenessLabel: null,
+    });
+
+    expect(explanation.reasons).toContain("No past-results data is available for this contest yet.");
+    expect(explanation.caveat).toContain("partial information");
+  });
+
+  it("carries a low-confidence caveat when both core axes are missing", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: null,
+      competitivenessLabel: null,
+    });
+
+    expect(explanation.reasons).toEqual([
+      "No representation score is available for this district yet.",
+      "No past-results data is available for this contest yet.",
+    ]);
+    expect(explanation.caveat).toBe("Not enough data is available to rate vote power for this election.");
   });
 });

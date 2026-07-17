@@ -28,6 +28,19 @@ export const VOTE_POWER: VotePower = {
   decisiveness_level: "high",
 };
 
+// Detail payloads carry a backend-authored explanation; list payloads do not.
+export const VOTE_POWER_WITH_EXPLANATION: VotePower = {
+  ...VOTE_POWER,
+  explanation: {
+    how: "Vote power combines representation and decisiveness.",
+    reasons: [
+      "Representation is medium (50 out of 100): this district's population is mid-range for its type.",
+      "Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it.",
+    ],
+    caveat: "Some underlying data is missing.",
+  },
+};
+
 const DISTRICT = { id: "d-1", district_type: "state", name: "Alaska", state: "AK" };
 
 export function electionSummary(overrides: Partial<ElectionSummary> = {}): ElectionSummary {

@@ -39,6 +39,16 @@ export type VotePowerResult = {
   factors: VotePowerFactor[];
 };
 
+// Detail-page-only companion to VotePowerResult: ready-to-render copy so
+// clients never re-derive rating language. Kept off the ballot list payload
+// (dozens of elections per response) — only the election detail lookup
+// attaches it.
+export type VotePowerExplanation = {
+  how: string;
+  reasons: string[];
+  caveat: string | null;
+};
+
 const LABELS: readonly Exclude<VotePowerLabel, "unknown">[] = ["very_low", "low", "medium", "high", "very_high"];
 
 const DECISIVENESS_SCORE_BY_LABEL: Record<HistoricalContestCompetitivenessLabel, number> = {
@@ -283,6 +293,62 @@ function factorsFor(input: {
   }
 
   return factors;
+}
+
+const HOW_CALCULATED =
+  "Vote power combines two measures: representation (how much weight one vote carries in this district — districts with smaller populations for their type score higher) and decisiveness (how likely this race is to be decided by a narrow margin, based on past results for this contest). When both are known, decisiveness counts for 55% and representation for 45%.";
+
+function explanationReasonFor(factor: VotePowerFactor, representationPowerScore: number | null): string {
+  // Representation factors only occur with a known score, but fall back to
+  // level-only phrasing rather than rendering "null out of 100".
+  const scoreSuffix =
+    representationPowerScore === null ? "" : ` (${Math.round(representationPowerScore)} out of 100)`;
+
+  switch (factor) {
+    case "high_representation":
+      return `Representation is high${scoreSuffix}: this district's population is small for its type, so each vote is a larger share of the outcome.`;
+    case "medium_representation":
+      return `Representation is medium${scoreSuffix}: this district's population is mid-range for its type.`;
+    case "low_representation":
+      return `Representation is low${scoreSuffix}: this district's population is large for its type, so each vote is a smaller share of the outcome.`;
+    case "missing_representation_data":
+      return "No representation score is available for this district yet.";
+    case "uncontested_race":
+      return "Only one candidate is on the ballot, so the outcome will not turn on vote margin.";
+    case "high_decisiveness":
+      return "Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it.";
+    case "medium_decisiveness":
+      return "Decisiveness is medium: past results for this contest were moderately competitive.";
+    case "low_decisiveness":
+      return "Decisiveness is low: past results for this contest were decided by wide margins.";
+    case "missing_decisiveness_data":
+      return "No past-results data is available for this contest yet.";
+    case "direct_vote_on_policy":
+      return "This is a ballot measure: your vote sets policy directly instead of electing a representative, which raises the rating one step.";
+  }
+}
+
+function explanationCaveatFor(confidence: VotePowerConfidence): string | null {
+  switch (confidence) {
+    case "high":
+      return null;
+    case "medium":
+      return 'Some underlying data is missing, so this rating is based on partial information and is capped at "high".';
+    case "low":
+      return "Not enough data is available to rate vote power for this election.";
+  }
+}
+
+// Deterministic, backend-owned explanation of a computed rating. Reasons
+// mirror result.factors one-to-one so the explanation can never drift from
+// the rating logic that produced it.
+export function explainVotePower(input: VotePowerInput, result: VotePowerResult): VotePowerExplanation {
+  const representationPowerScore = normalizeRepresentationPowerScore(input.representationPowerScore);
+  return {
+    how: HOW_CALCULATED,
+    reasons: result.factors.map((factor) => explanationReasonFor(factor, representationPowerScore)),
+    caveat: explanationCaveatFor(result.confidence),
+  };
 }
 
 export function calculateVotePower(input: VotePowerInput): VotePowerResult {
