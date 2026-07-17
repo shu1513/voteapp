@@ -26,7 +26,7 @@
 //   and rolls back, so the reported counts are real).
 import { pathToFileURL } from "node:url";
 
-import { Pool } from "pg";
+import { Pool, type PoolClient } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { createCandidateElectionWithdrawalNotificationEvents } from "../pipeline/users/candidateFollowNotificationEvents.js";
@@ -188,10 +188,13 @@ export async function runWithdrawCandidateElection(
       [candidateId, electionId]
     );
 
-    const notification = await createCandidateElectionWithdrawalNotificationEvents(client, {
-      candidateId,
-      electionId,
-    });
+    // The creator types its handle as pg's overloaded query signature; this
+    // wrapper's minimal (text, values) client satisfies it at runtime — the
+    // creator only ever calls query(text, values).
+    const notification = await createCandidateElectionWithdrawalNotificationEvents(
+      client as unknown as Pick<PoolClient, "query">,
+      { candidateId, electionId }
+    );
 
     if (dryRun) {
       await client.query("ROLLBACK");
