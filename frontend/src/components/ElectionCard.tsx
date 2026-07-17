@@ -141,8 +141,9 @@ function ElectionCard({
             </span>
           ))}
           {hiddenAreaCount > 0 ? (
+            // "areas", matching the row's own label — not "issues".
             <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
-              +{hiddenAreaCount} more issue{hiddenAreaCount === 1 ? "" : "s"}
+              +{hiddenAreaCount} more area{hiddenAreaCount === 1 ? "" : "s"}
             </span>
           ) : null}
         </div>

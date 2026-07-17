@@ -38,7 +38,7 @@ describe("ElectionCard", () => {
     expect(screen.getByText("Housing Affordability")).toBeInTheDocument();
     expect(screen.queryByText("Data Privacy")).not.toBeInTheDocument();
     expect(screen.queryByText("Public Infrastructure")).not.toBeInTheDocument();
-    expect(screen.getByText("+2 more issues")).toBeInTheDocument();
+    expect(screen.getByText("+2 more areas")).toBeInTheDocument();
   });
 
   it("omits the affected-areas row when a race has no research areas", () => {
@@ -58,12 +58,14 @@ describe("ElectionCard", () => {
       new Set(["a-3"])
     );
 
+    // Filter the label out by text (not position) so this assertion covers
+    // chip order only and survives DOM reshuffles around the label.
     const label = screen.getByText("Affected areas:");
-    const chipTexts = Array.from(label.parentElement?.children ?? []).map(
-      (chip) => chip.textContent
-    );
+    const chipTexts = Array.from(label.parentElement?.children ?? [])
+      .map((chip) => chip.textContent)
+      .filter((text) => text !== "Affected areas:");
     // Saved match leads even though it is last in the payload.
-    expect(chipTexts).toEqual(["Affected areas:", "Housing Affordability", "Civil Rights", "Gun Control"]);
+    expect(chipTexts).toEqual(["Housing Affordability", "Civil Rights", "Gun Control"]);
   });
 
   it("always shows saved-area matches, ahead of the cap", () => {
@@ -85,7 +87,7 @@ describe("ElectionCard", () => {
     expect(screen.getByText("Public Infrastructure")).toBeInTheDocument();
     // …and the unsaved chips still fit under the cap, so no overflow chip.
     expect(screen.getByText("Civil Rights")).toBeInTheDocument();
-    expect(screen.queryByText(/more issue/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/more area/)).not.toBeInTheDocument();
   });
 
   it("groups consecutive same-date elections under one date heading", () => {
@@ -123,6 +125,6 @@ describe("ElectionCard", () => {
     renderCard(electionSummary({ research_areas: [area("a-1", "Civil Rights")] }));
 
     expect(screen.getByText("Civil Rights")).toBeInTheDocument();
-    expect(screen.queryByText(/more issue/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/more area/)).not.toBeInTheDocument();
   });
 });
