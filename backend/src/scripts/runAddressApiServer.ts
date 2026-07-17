@@ -326,9 +326,21 @@ async function main(): Promise<void> {
       console.warn("Redis error (address cache/auth sessions/auto district research); continuing without failing requests", error);
     });
     try {
+      // With the default reconnect strategy an unreachable Redis keeps this
+      // await pending (retrying) until it connects, so a down Redis delays
+      // boot rather than rejecting here.
       await redis.connect();
     } catch (error) {
-      console.warn("Redis unavailable: address cache, auth sessions, and auto district research disabled until it connects", error);
+      // A rejected connect() leaves the client permanently closed — node-redis
+      // only auto-reconnects after a successful connect, and nothing re-calls
+      // connect() — so continuing would run without auth sessions, the address
+      // cache, and auto district research for the life of the process. Fail
+      // the boot instead and let the process manager restart into a clean
+      // retry.
+      throw new Error(
+        `Redis connection failed at startup: ${error instanceof Error ? error.message : String(error)}`,
+        { cause: error }
+      );
     }
   }
 
