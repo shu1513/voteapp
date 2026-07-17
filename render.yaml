@@ -8,8 +8,11 @@
 # overwrites any client-supplied copy), which both servers trust via
 # ADDRESS_API_TRUSTED_CLIENT_IP_HEADER.
 #
-# Secrets (sync: false) are entered once in the Render dashboard on first
-# blueprint sync: AWS SES send-only key pair.
+# Secrets (sync: false) are entered in the Render dashboard: AWS SES
+# send-only key pair, plus the optional EDGE_SHARED_SECRET. NOTE: a
+# Blueprint sync only prompts for sync: false vars present at blueprint
+# creation — ones added later must be entered manually on the service
+# (docs/deploy-render.md "Direct onrender.com access" has the sequence).
 #
 # PLANS: everything below is on free plans so the first deploy needs no card
 # on file. Free web services spin down after ~15 idle minutes (cold start on

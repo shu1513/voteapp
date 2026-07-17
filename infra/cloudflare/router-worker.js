@@ -162,8 +162,12 @@ export default {
     // Prove to the origin that this hop is the edge: with EDGE_SHARED_SECRET
     // set (Worker secret + the API/SSR env), the API only trusts
     // CF-Connecting-IP on requests carrying it, closing the direct
-    // *.onrender.com header-spoofing bypass. Always drop a client-supplied
-    // copy so the header only ever holds this Worker's value.
+    // *.onrender.com header-spoofing bypass. Deliberately stamped on
+    // SSR-bound requests too, not just API paths: the SSR loaders verify it
+    // before relaying the client IP to the API, so a direct hit on the SSR
+    // host can't launder a spoofed IP through the relay
+    // (frontend/src/lib/loadFromApi.ts). Always drop a client-supplied copy
+    // so the header only ever holds this Worker's value.
     upstreamRequest.headers.delete("X-Edge-Secret");
     const edgeSharedSecret = typeof env.EDGE_SHARED_SECRET === "string" ? env.EDGE_SHARED_SECRET.trim() : "";
     if (edgeSharedSecret) {
