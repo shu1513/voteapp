@@ -1670,7 +1670,15 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
   return {
     ...detail,
     historical_competitiveness: historicalCompetitiveness,
-    vote_power: { ...votePower, explanation: explainVotePower(votePowerInput, votePower) },
+    vote_power: {
+      ...votePower,
+      explanation: explainVotePower(
+        // Redistricting staleness qualifies the explanation's decisiveness
+        // wording; the rating itself ignores it (calculateVotePower above).
+        { ...votePowerInput, staleAfterRedistricting: historicalCompetitiveness?.stale_after_redistricting },
+        votePower
+      ),
+    },
   };
 }
 

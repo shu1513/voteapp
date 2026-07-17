@@ -295,14 +295,30 @@ function factorsFor(input: {
   return factors;
 }
 
+// Describes the LABEL algorithm (the level matrix), not the numeric score:
+// the 45/55 weighted score is a sorting signal only and never shown on the
+// detail page, so surfacing its formula here would misattribute the rating.
 const HOW_CALCULATED =
-  "Vote power combines two measures: representation (how much weight one vote carries in this district — districts with smaller populations for their type score higher) and decisiveness (how likely this race is to be decided by a narrow margin, based on past results for this contest). When both are known, decisiveness counts for 55% and representation for 45%.";
+  "Vote power combines two measures: representation (how much weight one vote carries in this district — districts with smaller populations for their type score higher) and decisiveness (how likely this race is to be decided by a narrow margin, based on past results for this contest). Each measure is graded low, medium, or high, and the two grades together set the rating — the more of each, the higher it goes.";
 
-function explanationReasonFor(factor: VotePowerFactor, representationPowerScore: number | null): string {
+const STALE_HISTORY_QUALIFIER =
+  " District boundaries have changed since those results, so they may be a weaker guide.";
+
+function explanationReasonFor(
+  factor: VotePowerFactor,
+  representationPowerScore: number | null,
+  staleAfterRedistricting: boolean
+): string {
   // Representation factors only occur with a known score, but fall back to
-  // level-only phrasing rather than rendering "null out of 100".
+  // level-only phrasing rather than rendering "null out of 100". Floor, not
+  // round: the level thresholds are the integers 33 and 66, so flooring can
+  // never display a number that sits in a higher bucket than the unrounded
+  // value it summarizes (65.6 must not render as the high-threshold 66).
   const scoreSuffix =
-    representationPowerScore === null ? "" : ` (${Math.round(representationPowerScore)} out of 100)`;
+    representationPowerScore === null ? "" : ` (${Math.floor(representationPowerScore)} out of 100)`;
+  // Only decisiveness grades rest on historical results; staleness says
+  // nothing about representation, uncontested races, or missing data.
+  const staleSuffix = staleAfterRedistricting ? STALE_HISTORY_QUALIFIER : "";
 
   switch (factor) {
     case "high_representation":
@@ -316,11 +332,11 @@ function explanationReasonFor(factor: VotePowerFactor, representationPowerScore:
     case "uncontested_race":
       return "Only one candidate is on the ballot, so the outcome will not turn on vote margin.";
     case "high_decisiveness":
-      return "Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it.";
+      return `Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it.${staleSuffix}`;
     case "medium_decisiveness":
-      return "Decisiveness is medium: past results for this contest were moderately competitive.";
+      return `Decisiveness is medium: past results for this contest were moderately competitive.${staleSuffix}`;
     case "low_decisiveness":
-      return "Decisiveness is low: past results for this contest were decided by wide margins.";
+      return `Decisiveness is low: past results for this contest were decided by wide margins.${staleSuffix}`;
     case "missing_decisiveness_data":
       return "No past-results data is available for this contest yet.";
     case "direct_vote_on_policy":
@@ -341,12 +357,19 @@ function explanationCaveatFor(confidence: VotePowerConfidence): string | null {
 
 // Deterministic, backend-owned explanation of a computed rating. Reasons
 // mirror result.factors one-to-one so the explanation can never drift from
-// the rating logic that produced it.
-export function explainVotePower(input: VotePowerInput, result: VotePowerResult): VotePowerExplanation {
+// the rating logic that produced it. staleAfterRedistricting is explanation
+// context only — the rating deliberately keeps ignoring it, so it lives
+// outside VotePowerInput rather than implying calculateVotePower reads it.
+export function explainVotePower(
+  input: VotePowerInput & { staleAfterRedistricting?: boolean },
+  result: VotePowerResult
+): VotePowerExplanation {
   const representationPowerScore = normalizeRepresentationPowerScore(input.representationPowerScore);
   return {
     how: HOW_CALCULATED,
-    reasons: result.factors.map((factor) => explanationReasonFor(factor, representationPowerScore)),
+    reasons: result.factors.map((factor) =>
+      explanationReasonFor(factor, representationPowerScore, input.staleAfterRedistricting === true)
+    ),
     caveat: explanationCaveatFor(result.confidence),
   };
 }

@@ -356,7 +356,10 @@ describe("explainVotePower", () => {
 
     expect(explanation.how).toContain("representation");
     expect(explanation.how).toContain("decisiveness");
-    expect(explanation.how).toContain("55%");
+    // The how copy explains the displayed label (the level matrix), never the
+    // internal 45/55 sorting-score formula.
+    expect(explanation.how).toContain("the two grades together set the rating");
+    expect(explanation.how).not.toContain("%");
     expect(explanation.reasons).toEqual([
       "Representation is high (90 out of 100): this district's population is small for its type, so each vote is a larger share of the outcome.",
       "Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it.",
@@ -364,7 +367,7 @@ describe("explainVotePower", () => {
     expect(explanation.caveat).toBeNull();
   });
 
-  it("rounds the representation score in the reason text", () => {
+  it("floors the representation score so the displayed number stays in the level's bucket", () => {
     const explanation = explain({
       raceType: "office",
       candidateCount: 2,
@@ -373,6 +376,42 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.reasons[0]).toContain("(64 out of 100)");
+
+    // 65.6 is medium (< 66); rounding would display the high-threshold 66 and
+    // contradict the stated level.
+    const boundary = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 65.6,
+      competitivenessLabel: "safe",
+    });
+
+    expect(boundary.reasons[0]).toContain("Representation is medium (65 out of 100)");
+  });
+
+  it("qualifies decisiveness reasons when the historical results predate redistricting", () => {
+    const explanation = explainVotePower(
+      {
+        raceType: "office",
+        candidateCount: 2,
+        representationPowerScore: 90,
+        competitivenessLabel: "toss_up",
+        staleAfterRedistricting: true,
+      },
+      calculateVotePower({
+        raceType: "office",
+        candidateCount: 2,
+        representationPowerScore: 90,
+        competitivenessLabel: "toss_up",
+      })
+    );
+
+    expect(explanation.reasons[1]).toBe(
+      "Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it. District boundaries have changed since those results, so they may be a weaker guide."
+    );
+    // Staleness qualifies historical evidence only; representation is a
+    // present-day population measure.
+    expect(explanation.reasons[0]).not.toContain("boundaries");
   });
 
   it("explains an uncontested race without a margin reason", () => {
