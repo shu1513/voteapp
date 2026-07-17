@@ -44,6 +44,33 @@ describe("FollowsPage", () => {
     expect(await screen.findByText(/You aren't following anyone yet/)).toBeInTheDocument();
   });
 
+  it("filters follows by name via the search bar", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": {
+        body: {
+          follows: [
+            candidateFollow(),
+            candidateFollow({ candidate_id: "c-2", display_name: "Alex Mayor" }),
+          ],
+        },
+      },
+    });
+    const user = userEvent.setup();
+    renderFollows();
+
+    expect(await screen.findByText("Jordan Voter")).toBeInTheDocument();
+    expect(screen.getByText("Alex Mayor")).toBeInTheDocument();
+
+    await user.type(screen.getByRole("searchbox", { name: "Search followed candidates by name" }), "jord");
+    expect(screen.getByText("Jordan Voter")).toBeInTheDocument();
+    expect(screen.queryByText("Alex Mayor")).not.toBeInTheDocument();
+
+    await user.clear(screen.getByRole("searchbox", { name: "Search followed candidates by name" }));
+    await user.type(screen.getByRole("searchbox", { name: "Search followed candidates by name" }), "nobody");
+    expect(screen.getByText(/No followed candidates match/)).toBeInTheDocument();
+  });
+
   it("renders follow rows and sends following:false on Unfollow", async () => {
     const fetchMock = stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },

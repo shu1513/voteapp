@@ -52,6 +52,9 @@ export default defineConfig({
     sourcemap: uploadSourceMaps ? "hidden" : false,
   },
   server: {
+    // Harness-assigned port (e.g. Claude Code preview autoPort); vite does
+    // not read PORT on its own.
+    port: process.env.PORT ? Number(process.env.PORT) : undefined,
     proxy: {
       "/api": {
         target: "http://127.0.0.1:3001",
