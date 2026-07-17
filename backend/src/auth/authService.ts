@@ -540,7 +540,21 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       if (!currentSessionId) {
         return;
       }
-      await destroyAuthSession(options.redis, currentSessionId);
+      // Best-effort: if this throws, the API skips the Set-Cookie clear and
+      // the browser keeps a cookie for a session Redis never deleted — the
+      // logout silently undoes itself once Redis recovers. Clearing the
+      // cookie is the user-visible logout; unlike logoutAll there is no
+      // durable revocation behind it, so an undeleted session stays valid
+      // server-side until its TTL (unusable while Redis is down, since every
+      // request's session lookup needs Redis).
+      try {
+        await destroyAuthSession(options.redis, currentSessionId);
+      } catch (error) {
+        console.warn(
+          "auth logout session cleanup failed (cookie still cleared; orphaned session expires by TTL):",
+          error instanceof Error ? error.message : String(error)
+        );
+      }
     },
 
     async forgotPassword(input) {
