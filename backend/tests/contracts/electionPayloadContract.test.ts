@@ -356,6 +356,75 @@ describe("parseAiElectionEntriesPayload", () => {
     }
   });
 
+  it("parses optional seats_to_fill for office entries", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "City Council At-Large",
+          election_date: "2026-11-03",
+          race_type: "office",
+          seats_to_fill: 3,
+          sources: ["https://example.gov/elections/council"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries[0].seats_to_fill).toBe(3);
+    }
+  });
+
+  it("omits seats_to_fill from the parsed entry when absent", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          race_type: "office",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect("seats_to_fill" in result.payload.entries[0]).toBe(false);
+    }
+  });
+
+  it("rejects non-integer, zero, and negative seats_to_fill", () => {
+    for (const bad of ["3", 2.5, 0, -1]) {
+      const result = parseAiElectionEntriesPayload({
+        entries: [
+          {
+            official_ballot_title: "City Council At-Large",
+            election_date: "2026-11-03",
+            race_type: "office",
+            seats_to_fill: bad,
+            sources: ["https://example.gov/elections/council"],
+          },
+        ],
+      });
+      expect(result.ok).toBe(false);
+    }
+  });
+
+  it("rejects seats_to_fill on ballot_measure entries", () => {
+    const result = parseAiElectionEntriesPayload({
+      entries: [
+        {
+          official_ballot_title: "Measure A",
+          election_date: "2026-11-03",
+          race_type: "ballot_measure",
+          seats_to_fill: 2,
+          sources: ["https://example.gov/elections/measure-a"],
+        },
+      ],
+    });
+    expect(result.ok).toBe(false);
+  });
+
   it("rejects invalid entries row in AI payload", () => {
     const result = parseAiElectionEntriesPayload({
       entries: [

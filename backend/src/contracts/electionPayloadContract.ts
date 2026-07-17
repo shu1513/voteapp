@@ -198,6 +198,17 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
     }
   }
 
+  let seatsToFill: number | undefined;
+  if (input.seats_to_fill !== undefined && input.seats_to_fill !== null) {
+    if (raceType !== "office") {
+      return null;
+    }
+    if (typeof input.seats_to_fill !== "number" || !Number.isInteger(input.seats_to_fill) || input.seats_to_fill < 1) {
+      return null;
+    }
+    seatsToFill = input.seats_to_fill;
+  }
+
   let discoveryContestFamily: ElectionContestFamily | undefined;
   if (input.discovery_contest_family !== undefined && input.discovery_contest_family !== null) {
     if (!isElectionContestFamily(input.discovery_contest_family)) {
@@ -220,6 +231,7 @@ function parseEntry(value: unknown): ElectionEntryPayload | null {
     election_date: input.election_date.trim(),
     race_type: raceType,
     ...(isPartisan !== undefined ? { is_partisan: isPartisan } : {}),
+    ...(seatsToFill !== undefined ? { seats_to_fill: seatsToFill } : {}),
     ...(electionStage ? { election_stage: electionStage } : {}),
     ...(senateClass ? { senate_class: senateClass } : {}),
     ...(termEndYear ? { term_end_year: termEndYear } : {}),

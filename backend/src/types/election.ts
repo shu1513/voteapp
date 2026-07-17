@@ -40,6 +40,9 @@ export type ElectionEntryPayload = {
   election_date: string; // YYYY-MM-DD
   race_type: ElectionRaceType;
   is_partisan?: boolean;
+  // How many seats this contest fills ("vote for up to 3" at-large races).
+  // Omitted = not recorded; display treats absent and 1 identically.
+  seats_to_fill?: number;
   election_stage?: ElectionStage;
   senate_class?: ElectionSenateClass;
   term_end_year?: string;

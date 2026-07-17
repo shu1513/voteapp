@@ -394,15 +394,23 @@ async function writeElectionsForDistrict(
             election_date,
             race_type,
             is_partisan,
+            seats_to_fill,
             election_stage,
             sources,
             office_id,
             discovery_contest_family
-          ) VALUES ($1, $2, $3, $4::date, $5, $6, $7, $8::jsonb, $9::uuid, $10)
+          ) VALUES ($1, $2, $3, $4::date, $5, $6, $7, $8, $9::jsonb, $10::uuid, $11)
           ON CONFLICT (district_id, official_ballot_title_key, election_date) DO UPDATE SET
             race_type = EXCLUDED.race_type,
             -- Keep prior partisanship when a subsequent run omits it (e.g., mixed-state school contests).
             is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan),
+            -- A reclassification to ballot_measure must drop any stored seat
+            -- count: the contract rejects seats_to_fill on measure entries,
+            -- so a preserved office-era value could never be corrected.
+            seats_to_fill = CASE
+              WHEN EXCLUDED.race_type = 'ballot_measure' THEN NULL
+              ELSE COALESCE(EXCLUDED.seats_to_fill, elections.seats_to_fill)
+            END,
             election_stage = COALESCE(EXCLUDED.election_stage, elections.election_stage),
             office_id = COALESCE(EXCLUDED.office_id, elections.office_id),
             discovery_contest_family = CASE
@@ -429,6 +437,7 @@ async function writeElectionsForDistrict(
           entry.election_date,
           entry.race_type,
           entry.is_partisan ?? null,
+          entry.seats_to_fill ?? null,
           entry.election_stage ?? null,
           JSON.stringify(entry.sources),
           matchedOfficeId,
