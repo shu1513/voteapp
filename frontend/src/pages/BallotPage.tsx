@@ -24,9 +24,13 @@ export function BallotPage() {
   // personal data and must stay out of the URL; a refresh or shared link
   // simply omits the confirmation line.
   const location = useLocation();
-  const matchedAddress =
-    typeof (location.state as { matchedAddress?: unknown } | null)?.matchedAddress === "string"
-      ? (location.state as { matchedAddress: string }).matchedAddress
+  const routerState = location.state as { matchedAddress?: unknown; addressMatchCount?: unknown } | null;
+  const matchedAddress = typeof routerState?.matchedAddress === "string" ? routerState.matchedAddress : null;
+  // The geocoder returned more than one candidate address and the ballot is
+  // for the first one — the confirmation line alone is too easy to skim past.
+  const ambiguousMatchCount =
+    typeof routerState?.addressMatchCount === "number" && routerState.addressMatchCount > 1
+      ? routerState.addressMatchCount
       : null;
   const [searchParams, setSearchParams] = useSearchParams();
   const districtIds = (searchParams.get("d") ?? "")
@@ -96,6 +100,16 @@ export function BallotPage() {
           <Link to="/?new=1" className="underline hover:text-rausch">
             Not your address?
           </Link>
+        </p>
+      ) : null}
+      {matchedAddress && ambiguousMatchCount ? (
+        <p role="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
+          Your search matched {ambiguousMatchCount} possible addresses, and this ballot is for the first one.
+          Please check the matched address above — if it is not yours,{" "}
+          <Link to="/?new=1" className="underline hover:text-rausch">
+            search again
+          </Link>{" "}
+          with your full street address, city, and ZIP code.
         </p>
       ) : null}
 

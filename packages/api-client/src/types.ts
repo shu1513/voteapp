@@ -14,6 +14,9 @@ export type ResolvedDistrict = {
 
 export type AddressResolution = {
   matched_address: string;
+  // Geocoder candidate count; above 1 means the search was ambiguous and the
+  // ballot is for the first match, so the UI must flag the matched address.
+  address_match_count: number;
   districts: ResolvedDistrict[];
 };
 
