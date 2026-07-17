@@ -60,7 +60,11 @@ const SECURITY_HEADERS = {
 const NO_REFERRER_PATHS = new Set(["/verify-email", "/verify-email-change", "/reset-password"]);
 
 export function referrerPolicyForPath(pathname) {
-  return NO_REFERRER_PATHS.has(pathname) ? "no-referrer" : SECURITY_HEADERS["Referrer-Policy"];
+  // React Router matches routes case-insensitively and ignores trailing
+  // slashes, so /VERIFY-email or /verify-email/ still renders the token
+  // page — normalize the same way or those variants leak the Referer.
+  const normalized = pathname.toLowerCase().replace(/\/+$/, "");
+  return NO_REFERRER_PATHS.has(normalized) ? "no-referrer" : SECURITY_HEADERS["Referrer-Policy"];
 }
 
 /** Copies the response (upstream headers are immutable) and stamps the set. */

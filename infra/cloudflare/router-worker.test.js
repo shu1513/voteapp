@@ -201,7 +201,16 @@ describe("security headers", () => {
   it("uses no-referrer on token-bearing auth pages and the default elsewhere", async () => {
     stubFetch();
 
-    for (const path of ["/verify-email", "/verify-email-change", "/reset-password"]) {
+    // Includes case and trailing-slash variants: React Router still renders
+    // the token page for those, so the policy must cover them too.
+    for (const path of [
+      "/verify-email",
+      "/verify-email-change",
+      "/reset-password",
+      "/VERIFY-email",
+      "/verify-email/",
+      "/reset-password///",
+    ]) {
       const response = await worker.fetch(
         new Request(`https://impactperdollar.com${path}?token=secret`),
         ENV
