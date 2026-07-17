@@ -262,6 +262,11 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     expect(query.mock.calls[6]?.[0]).toContain("CASE pass_type");
     expect(query.mock.calls[6]?.[0]).toContain("WHEN 'certified' THEN 1");
     expect(query.mock.calls[6]?.[0]).toContain("WHEN 'election_night' THEN 2");
+    // unknown-outcome rows (not_found / not_final_yet sweeps) must not win the
+    // summary pick over a decisive election-night row, nor flag has_results on
+    // their own — both result tables filter them out before ranking.
+    expect(query.mock.calls[6]?.[0]).toContain("AND er.outcome <> 'unknown'");
+    expect(query.mock.calls[6]?.[0]).toContain("AND bmr.outcome <> 'unknown'");
     expect(query.mock.calls[7]?.[0]).toContain("historical_contest_margins");
     // The lightweight summary must not embed the full candidate array (the
     // detail endpoint's "candidates" key).
