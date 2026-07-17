@@ -48,12 +48,28 @@ const SECURITY_HEADERS = {
   "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
 };
 
+// Pages whose URLs carry single-use auth tokens in the query string
+// (email links land here). Under the default policy a same-origin request
+// from these pages sends the full URL — token included — as the Referer,
+// duplicating the secret into API request logs; no-referrer suppresses it.
+// Deliberately NOT global: no-referrer makes browsers send "Origin: null"
+// on non-CORS-mode POSTs (HTML form submissions), and the API's CORS
+// middleware 403s unknown origins — a global policy would break the
+// API-served unsubscribe confirmation form. SPA fetch() calls are
+// CORS-mode, so their Origin header is unaffected by this policy.
+const NO_REFERRER_PATHS = new Set(["/verify-email", "/verify-email-change", "/reset-password"]);
+
+export function referrerPolicyForPath(pathname) {
+  return NO_REFERRER_PATHS.has(pathname) ? "no-referrer" : SECURITY_HEADERS["Referrer-Policy"];
+}
+
 /** Copies the response (upstream headers are immutable) and stamps the set. */
-export function withSecurityHeaders(response) {
+export function withSecurityHeaders(response, pathname = "") {
   const wrapped = new Response(response.body, response);
   for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
     wrapped.headers.set(name, value);
   }
+  wrapped.headers.set("Referrer-Policy", referrerPolicyForPath(pathname));
   return wrapped;
 }
 
@@ -105,7 +121,7 @@ export default {
     // even while the vars are broken.
     if (url.hostname.startsWith("www.")) {
       url.hostname = url.hostname.slice("www.".length);
-      return withSecurityHeaders(Response.redirect(url.toString(), 301));
+      return withSecurityHeaders(Response.redirect(url.toString(), 301), url.pathname);
     }
 
     const apiHost = resolveUpstreamHost(env.API_ORIGIN);
@@ -138,6 +154,6 @@ export default {
 
     // Re-wrap so method, headers, and body stream pass through; fetch()
     // rewrites the Host header to the new hostname automatically.
-    return withSecurityHeaders(await fetch(new Request(url.toString(), request)));
+    return withSecurityHeaders(await fetch(new Request(url.toString(), request)), url.pathname);
   },
 };

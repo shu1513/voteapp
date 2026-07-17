@@ -198,6 +198,26 @@ describe("security headers", () => {
     assert.equal(misconfigured.status, 503);
   });
 
+  it("uses no-referrer on token-bearing auth pages and the default elsewhere", async () => {
+    stubFetch();
+
+    for (const path of ["/verify-email", "/verify-email-change", "/reset-password"]) {
+      const response = await worker.fetch(
+        new Request(`https://impactperdollar.com${path}?token=secret`),
+        ENV
+      );
+      assert.equal(response.headers.get("referrer-policy"), "no-referrer", path);
+    }
+
+    // The API-served unsubscribe page must keep the default: no-referrer
+    // would make its HTML form POST send "Origin: null", which the API's
+    // CORS allowlist rejects.
+    for (const path of ["/", "/api/email/unsubscribe", "/login"]) {
+      const response = await worker.fetch(new Request(`https://impactperdollar.com${path}`), ENV);
+      assert.equal(response.headers.get("referrer-policy"), "strict-origin-when-cross-origin", path);
+    }
+  });
+
   it("withSecurityHeaders copies immutable-header responses instead of mutating", () => {
     const original = Response.redirect("https://impactperdollar.com/", 301);
     const stamped = withSecurityHeaders(original);
