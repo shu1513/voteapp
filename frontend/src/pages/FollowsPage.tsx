@@ -123,6 +123,7 @@ export function FollowsPage() {
   useDocumentTitle("Candidates you follow");
   const { me, isLoading } = useMe();
   const { follows, isLoading: followsLoading, isError } = useFollows();
+  const [query, setQuery] = useState("");
 
   if (isLoading || me === undefined) {
     return <LoadingNotice text="Loading…" />;
@@ -146,6 +147,11 @@ export function FollowsPage() {
     return <VerifyPrompt email={me.email} />;
   }
 
+  const trimmedQuery = query.trim().toLowerCase();
+  const visibleFollows = (follows ?? []).filter((follow) =>
+    follow.display_name.toLowerCase().includes(trimmedQuery)
+  );
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold">Candidates you follow</h1>
@@ -162,11 +168,36 @@ export function FollowsPage() {
         <EmptyNotice text="You aren't following anyone yet. Use the Follow button on any candidate page." />
       ) : null}
       {follows && follows.length > 0 ? (
-        <ul className="mt-4 space-y-3">
-          {follows.map((follow) => (
-            <FollowRow key={follow.candidate_id} follow={follow} />
-          ))}
-        </ul>
+        <>
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search by candidate name"
+            aria-label="Search followed candidates by name"
+            className="mt-4 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-soft focus:border-rausch focus:outline-none"
+          />
+          {/* Persistent polite live region: announces filter results to screen
+              readers. Kept always-mounted (conditionally inserted live regions
+              are unreliably announced) and empty until a query is typed so the
+              initial load stays silent. */}
+          <p role="status" className="sr-only">
+            {trimmedQuery
+              ? visibleFollows.length === 0
+                ? `No followed candidates match “${query.trim()}”.`
+                : `${visibleFollows.length} of ${follows.length} followed candidates shown.`
+              : ""}
+          </p>
+          {visibleFollows.length === 0 ? (
+            <EmptyNotice text={`No followed candidates match “${query.trim()}”.`} />
+          ) : (
+            <ul className="mt-4 space-y-3">
+              {visibleFollows.map((follow) => (
+                <FollowRow key={follow.candidate_id} follow={follow} />
+              ))}
+            </ul>
+          )}
+        </>
       ) : null}
     </div>
   );
