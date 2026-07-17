@@ -127,6 +127,7 @@ describe("createApiApp", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
       matched_address: resolvedAddress.matched_address,
+      address_match_count: resolvedAddress.address_match_count,
       districts: resolvedAddress.districts,
     });
     expect(response.body).not.toHaveProperty("coordinates");
@@ -176,6 +177,7 @@ describe("createApiApp", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
       matched_address: resolvedAddress.matched_address,
+      address_match_count: resolvedAddress.address_match_count,
       districts: resolvedAddress.districts,
     });
     expect(logDiagnostics).toHaveBeenCalledOnce();
@@ -2615,6 +2617,7 @@ describe("createApiApp", () => {
     expect(resolveResponse.statusCode).toBe(200);
     expect(resolveResponse.body).toEqual({
       matched_address: resolvedAddressWithUuidDistrict.matched_address,
+      address_match_count: resolvedAddressWithUuidDistrict.address_match_count,
       districts: resolvedAddressWithUuidDistrict.districts,
     });
     expect(initializeUserDistricts).not.toHaveBeenCalled();
