@@ -55,7 +55,9 @@ describe("SettingsPage", () => {
       "/api/research-areas": { body: { research_areas: [] } },
       "/api/me/research-area-preferences": { body: { preferences: [] } },
       "/api/address/autocomplete": { body: { suggestions: [] } },
-      "/api/me/address": { body: { ...ballotSummary([]), matched_address: "123 MAIN ST, AUSTIN, TX" } },
+      "/api/me/address": {
+        body: { ...ballotSummary([]), matched_address: "123 MAIN ST, AUSTIN, TX", address_match_count: 1 },
+      },
     });
     renderSettings();
 
@@ -65,11 +67,37 @@ describe("SettingsPage", () => {
     const confirmation = await screen.findByRole("status");
     expect(confirmation).toHaveTextContent("matched to 123 MAIN ST, AUSTIN, TX");
     expect(confirmation).toHaveTextContent("1 district");
+    // Exact single match: no ambiguity warning.
+    expect(confirmation).not.toHaveTextContent("possible locations");
 
     // Editing again starts a new attempt: the old confirmation must not sit
     // beside a half-typed next address as if it described it.
     await user.type(screen.getByLabelText("New address"), "456 Oak");
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
+  it("warns when the saved address matched multiple locations", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/research-areas": { body: { research_areas: [] } },
+      "/api/me/research-area-preferences": { body: { preferences: [] } },
+      "/api/address/autocomplete": { body: { suggestions: [] } },
+      "/api/me/address": {
+        body: { ...ballotSummary([]), matched_address: "100 MAIN ST, SPRINGFIELD, MA, 01105", address_match_count: 7 },
+      },
+    });
+    renderSettings();
+
+    await user.type(await screen.findByLabelText("New address"), "100 Main St, Springfield");
+    await user.click(screen.getByRole("button", { name: "Save address" }));
+
+    const confirmation = await screen.findByRole("status");
+    expect(confirmation).toHaveTextContent("matched to 100 MAIN ST, SPRINGFIELD, MA, 01105");
+    expect(confirmation).toHaveTextContent(
+      "Your address matched 7 possible locations and the first one was used"
+    );
   });
 
   it("shows all four email toggles with the saved values for verified users", async () => {
