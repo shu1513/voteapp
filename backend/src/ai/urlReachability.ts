@@ -23,6 +23,10 @@ export type UrlReachabilitySuccess = {
 export type UrlReachabilityFailure = {
   ok: false;
   reason: string;
+  // Present when the server answered 429 with a parseable Retry-After header:
+  // callers with retry loops can wait at least this long instead of their
+  // default backoff.
+  retryAfterSeconds?: number;
 };
 
 export type UrlReachabilityResult = UrlReachabilitySuccess | UrlReachabilityFailure;
@@ -43,6 +47,33 @@ const TLS_CERTIFICATE_FAILURE_PATTERNS = [
 export function isTlsCertificateReachabilityFailure(reason: string): boolean {
   const normalized = reason.trim().toLowerCase();
   return TLS_CERTIFICATE_FAILURE_PATTERNS.some((pattern) => normalized.includes(pattern));
+}
+
+/**
+ * Single owner of the reason-string retry contract (this module produces
+ * every reason these substrings match). TLS certificate failures classify
+ * permanent FIRST: they arrive wrapped in undici's "fetch failed" (which is
+ * otherwise transient), and retrying an expired or self-signed certificate
+ * can never succeed.
+ */
+export function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
+  if (isTlsCertificateReachabilityFailure(reason)) {
+    return "permanent";
+  }
+  const normalized = reason.toLowerCase();
+  if (
+    normalized.includes("timed out") ||
+    normalized.includes("dns lookup failed transiently") ||
+    normalized.includes("fetch failed") ||
+    normalized.includes("status 429") ||
+    normalized.includes("status 500") ||
+    normalized.includes("status 502") ||
+    normalized.includes("status 503") ||
+    normalized.includes("status 504")
+  ) {
+    return "transient";
+  }
+  return "permanent";
 }
 
 function stripIpv6Brackets(hostnameOrIp: string): string {
@@ -150,9 +181,9 @@ async function resolveSafeUrlTarget(url: string, timeoutMs: number): Promise<Url
   // in-flight getaddrinfo call is abandoned (it settles into a no-op).
   //
   // Reason strings are a contract with classifyCitationVerificationFailure
-  // (five copies, e.g. enrichCandidateRecords.ts): "timed out" and
-  // "dns lookup failed transiently" classify as transient/retryable, the
-  // bare could-not-be-resolved reason as permanent.
+  // (exported below): "timed out" and "dns lookup failed transiently"
+  // classify as transient/retryable, the bare could-not-be-resolved reason
+  // as permanent.
   let records: LookupAddress[];
   let dnsTimeoutTimer: NodeJS.Timeout | undefined;
   try {
@@ -306,7 +337,31 @@ type HopResponse = {
   location: string | null;
   contentType: string | null;
   contentLength: number | null;
+  retryAfterSeconds: number | null;
 };
+
+// Retry-After sanity ceiling: some hosts send hour-scale values; anything a
+// verifier or its callers would actually wait is far below this, and the
+// cap keeps a hostile header from parking a worker.
+const RETRY_AFTER_MAX_SECONDS = 900;
+
+/** Parses Retry-After in both delta-seconds and HTTP-date forms. */
+function parseRetryAfterSeconds(raw: string | null): number | null {
+  if (!raw) {
+    return null;
+  }
+  const trimmed = raw.trim();
+  if (/^\d+$/.test(trimmed)) {
+    const seconds = Number.parseInt(trimmed, 10);
+    return Number.isFinite(seconds) ? Math.min(seconds, RETRY_AFTER_MAX_SECONDS) : null;
+  }
+  const dateMs = Date.parse(trimmed);
+  if (Number.isNaN(dateMs)) {
+    return null;
+  }
+  const seconds = Math.ceil((dateMs - Date.now()) / 1000);
+  return seconds > 0 ? Math.min(seconds, RETRY_AFTER_MAX_SECONDS) : 0;
+}
 
 async function fetchPinnedUrl(
   url: string,
@@ -343,6 +398,8 @@ async function fetchPinnedUrl(
         const parsed = Number.parseInt(raw, 10);
         return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
       })(),
+      retryAfterSeconds:
+        response.status === 429 ? parseRetryAfterSeconds(response.headers.get("retry-after")) : null,
     };
   } finally {
     clearTimeout(timeout);
@@ -432,6 +489,82 @@ async function fetchWithValidatedRedirects(
   };
 }
 
+/**
+ * undici's fetch reports every network-level failure as a bare
+ * `TypeError: fetch failed` and hides the real error (TLS certificate codes,
+ * ECONNRESET, ECONNREFUSED, ...) in the `cause` chain. Reasons built from the
+ * top-level message alone made every such failure look identical AND
+ * misclassified permanent TLS failures as transient (live: ERR-321/329).
+ * Walk the chain and surface each distinct message/code.
+ */
+function describeFetchError(error: unknown): string {
+  const parts: string[] = [];
+  let current: unknown = error;
+  for (let depth = 0; depth < 4 && current instanceof Error; depth += 1) {
+    const code =
+      "code" in current && typeof (current as { code?: unknown }).code === "string"
+        ? ((current as { code: string }).code)
+        : undefined;
+    const message = current.message?.trim();
+    const label = message && code && message !== code ? `${message} (${code})` : (message ?? code);
+    if (label && !parts.includes(label)) {
+      parts.push(label);
+    }
+    current = current.cause;
+  }
+  return parts.length > 0 ? parts.join(": ") : String(error);
+}
+
+// Adaptive per-host cooldown: set only when a host answers 429, so the
+// normal path pays nothing. Later verifications against the same host wait
+// out the cooldown (Retry-After when given, a short default otherwise)
+// instead of re-bursting a host that just told us to slow down (ERR-022).
+const HOST_COOLDOWN_DEFAULT_MS = 1_000;
+const HOST_COOLDOWN_MAX_WAIT_MS = 15_000;
+const HOST_COOLDOWN_MAP_MAX_ENTRIES = 200;
+
+const hostCooldownUntilMs = new Map<string, number>();
+
+function pruneExpiredHostCooldowns(nowMs: number): void {
+  if (hostCooldownUntilMs.size <= HOST_COOLDOWN_MAP_MAX_ENTRIES) {
+    return;
+  }
+  for (const [host, untilMs] of hostCooldownUntilMs) {
+    if (untilMs <= nowMs) {
+      hostCooldownUntilMs.delete(host);
+    }
+  }
+}
+
+async function awaitHostCooldown(hostname: string): Promise<void> {
+  const untilMs = hostCooldownUntilMs.get(hostname);
+  if (untilMs === undefined) {
+    return;
+  }
+  const waitMs = Math.min(untilMs - Date.now(), HOST_COOLDOWN_MAX_WAIT_MS);
+  if (waitMs <= 0) {
+    hostCooldownUntilMs.delete(hostname);
+    return;
+  }
+  await new Promise((resolve) => setTimeout(resolve, waitMs));
+  hostCooldownUntilMs.delete(hostname);
+}
+
+function recordHostCooldown(hostname: string, retryAfterSeconds: number | null): void {
+  const nowMs = Date.now();
+  pruneExpiredHostCooldowns(nowMs);
+  const cooldownMs =
+    retryAfterSeconds !== null && retryAfterSeconds > 0
+      ? retryAfterSeconds * 1_000
+      : HOST_COOLDOWN_DEFAULT_MS;
+  hostCooldownUntilMs.set(hostname, nowMs + cooldownMs);
+}
+
+/** Test-only: cooldown state is module-global and must not leak across tests. */
+export function resetCitationHostCooldownsForTests(): void {
+  hostCooldownUntilMs.clear();
+}
+
 export async function verifyHttpUrlReachability(
   rawUrl: string,
   options: UrlReachabilityOptions = {}
@@ -442,6 +575,16 @@ export async function verifyHttpUrlReachability(
   const normalizedInputUrl = normalizeHttpUrl(rawUrl);
   if (!normalizedInputUrl) {
     return { ok: false, reason: "citation URL is not a valid http(s) URL" };
+  }
+  const inputHostname = (() => {
+    try {
+      return new URL(normalizedInputUrl).hostname.toLowerCase();
+    } catch {
+      return null;
+    }
+  })();
+  if (inputHostname) {
+    await awaitHostCooldown(inputHostname);
   }
 
   try {
@@ -478,6 +621,21 @@ export async function verifyHttpUrlReachability(
     }
 
     if (!response.ok && !allowStatusCodes.has(response.status)) {
+      if (response.status === 429) {
+        if (inputHostname) {
+          recordHostCooldown(inputHostname, response.retryAfterSeconds);
+        }
+        return {
+          ok: false,
+          reason:
+            response.retryAfterSeconds !== null
+              ? `citation fetch returned status 429 (retry-after: ${response.retryAfterSeconds}s)`
+              : "citation fetch returned status 429",
+          ...(response.retryAfterSeconds !== null
+            ? { retryAfterSeconds: response.retryAfterSeconds }
+            : {}),
+        };
+      }
       return { ok: false, reason: `citation fetch returned status ${response.status}` };
     }
 
@@ -494,6 +652,6 @@ export async function verifyHttpUrlReachability(
     if (message.toLowerCase().includes("aborted")) {
       return { ok: false, reason: "citation URL fetch timed out" };
     }
-    return { ok: false, reason: `citation URL fetch failed: ${message}` };
+    return { ok: false, reason: `citation URL fetch failed: ${describeFetchError(error)}` };
   }
 }

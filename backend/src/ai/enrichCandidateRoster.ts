@@ -5,7 +5,7 @@ import {
   trimDebugText,
   type ResearchErrorCode,
 } from "./researchProviderClient.js";
-import { verifyHttpUrlReachability } from "./urlReachability.js";
+import { classifyCitationVerificationFailure, verifyHttpUrlReachability } from "./urlReachability.js";
 import {
   type CandidateRosterEntry,
   parseCandidateRosterPayload,
@@ -132,23 +132,6 @@ function removePartyFromCandidates(candidates: CandidateRosterEntry[]): Candidat
     const { party: _party, ...rest } = candidate;
     return rest;
   });
-}
-
-function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
-  const normalized = reason.toLowerCase();
-  if (
-    normalized.includes("timed out") ||
-    normalized.includes("dns lookup failed transiently") ||
-    normalized.includes("fetch failed") ||
-    normalized.includes("status 429") ||
-    normalized.includes("status 500") ||
-    normalized.includes("status 502") ||
-    normalized.includes("status 503") ||
-    normalized.includes("status 504")
-  ) {
-    return "transient";
-  }
-  return "permanent";
 }
 
 function normalizeOptionalStringArray(value: unknown): string[] | null | undefined {

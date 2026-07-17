@@ -10,7 +10,8 @@ vi.mock("../../src/ai/researchProviderClient.js", () => ({
   trimDebugText: (text: string) => text,
 }));
 
-vi.mock("../../src/ai/urlReachability.js", () => ({
+vi.mock("../../src/ai/urlReachability.js", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../../src/ai/urlReachability.js")>()),
   verifyHttpUrlReachability: verifyHttpUrlReachabilityMock,
 }));
 

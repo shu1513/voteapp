@@ -4,7 +4,8 @@ const { verifyHttpUrlReachabilityMock } = vi.hoisted(() => ({
   verifyHttpUrlReachabilityMock: vi.fn(),
 }));
 
-vi.mock("../../src/ai/urlReachability.js", () => ({
+vi.mock("../../src/ai/urlReachability.js", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../../src/ai/urlReachability.js")>()),
   verifyHttpUrlReachability: verifyHttpUrlReachabilityMock,
 }));
 

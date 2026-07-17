@@ -5,7 +5,7 @@ import {
   trimDebugText,
   type ResearchErrorCode,
 } from "./researchProviderClient.js";
-import { verifyHttpUrlReachability } from "./urlReachability.js";
+import { classifyCitationVerificationFailure, verifyHttpUrlReachability } from "./urlReachability.js";
 import {
   type CandidateProfilePayload,
   type CandidateProfilePayloadParseOptions,
@@ -119,25 +119,12 @@ function normalizeStateFilingIds(values: readonly string[] | undefined): string[
   return [...new Set((values ?? []).map((value) => value.trim().toUpperCase()).filter((value) => value.length > 0))];
 }
 
-function classifyCitationVerificationFailure(reason: string): "transient" | "permanent" {
-  const normalized = reason.toLowerCase();
-  if (
-    normalized.includes("timed out") ||
-    normalized.includes("dns lookup failed transiently") ||
-    normalized.includes("fetch failed") ||
-    normalized.includes("status 429") ||
-    normalized.includes("status 500") ||
-    normalized.includes("status 502") ||
-    normalized.includes("status 503") ||
-    normalized.includes("status 504")
-  ) {
-    return "transient";
-  }
-  return "permanent";
-}
-
 const CITATION_TRANSIENT_RETRY_ATTEMPTS = 2;
 const CITATION_TRANSIENT_RETRY_DELAY_MS = 1_000;
+// A 429's Retry-After is honored up to this bound; the manual wrapper wraps
+// validation in a wall-clock timeout, so an hour-scale header must not park
+// the whole run.
+const CITATION_RETRY_AFTER_MAX_HONOR_MS = 15_000;
 
 async function verifyUniqueCandidateSourceUrls(
   urls: string[],
@@ -195,7 +182,19 @@ async function verifyUniqueCandidateSourceUrls(
     if (transientUrls.length === 0) {
       break;
     }
-    const retryDelayMs = CITATION_TRANSIENT_RETRY_DELAY_MS * 2 ** attempt;
+    // When a rate-limited host said how long to wait, waiting less just burns
+    // the retry; take the largest advertised Retry-After (bounded) if it
+    // exceeds the default backoff.
+    const maxRetryAfterMs = Math.max(
+      0,
+      ...transientUrls.map((url) => {
+        const verification = results.get(url);
+        return verification && !verification.ok && verification.retryAfterSeconds !== undefined
+          ? Math.min(verification.retryAfterSeconds * 1_000, CITATION_RETRY_AFTER_MAX_HONOR_MS)
+          : 0;
+      })
+    );
+    const retryDelayMs = Math.max(CITATION_TRANSIENT_RETRY_DELAY_MS * 2 ** attempt, maxRetryAfterMs);
     await new Promise((resolveDelay) => setTimeout(resolveDelay, retryDelayMs));
     await verifyBatch(transientUrls);
   }
