@@ -850,6 +850,7 @@ type CandidateRosterStatusRow = {
   election_date: string;
   staging_status: string | null;
   staged_candidate_count: string | number | null;
+  has_candidate_links: boolean;
   blocked_until: string | null;
 };
 
@@ -863,13 +864,23 @@ type CandidateRosterStatusRow = {
 // check_after is only ever a FUTURE date — an overdue deferral renders no
 // date rather than a stale promise.
 export function deriveCandidateRosterStatus(
-  row: Pick<CandidateRosterStatusRow, "election_date" | "staging_status" | "staged_candidate_count" | "blocked_until">,
+  row: Pick<
+    CandidateRosterStatusRow,
+    "election_date" | "staging_status" | "staged_candidate_count" | "has_candidate_links" | "blocked_until"
+  >,
   todayIso: string
 ): BallotLookupCandidateRosterStatus {
   const electionIsUpcoming = row.election_date >= todayIso;
   const stagedCount = Number(row.staged_candidate_count ?? 0);
+  // has_candidate_links counts EVERY link, including withdrawn candidates and
+  // deleted candidate rows that the visible-candidate queries filter out. Any
+  // link means the staged roster was already processed — a race emptied by
+  // withdrawals must not read as "profiles are being prepared" forever. An
+  // open deferral can still apply there (a party replacing a withdrawn
+  // nominee is genuinely awaiting a new official roster).
   if (
     electionIsUpcoming &&
+    !row.has_candidate_links &&
     (row.staging_status === "written" || row.staging_status === "validated") &&
     stagedCount > 0
   ) {
@@ -901,7 +912,18 @@ async function loadCandidateRosterStatusesByElection(
         e.id AS election_id,
         e.election_date::text AS election_date,
         s.status AS staging_status,
-        jsonb_array_length(coalesce(s.payload->'candidates', '[]'::jsonb)) AS staged_candidate_count,
+        -- typeof-guarded: one malformed staging row (candidates not an
+        -- array) must degrade this secondary metadata to zero, never 500
+        -- the whole ballot request via jsonb_array_length.
+        CASE
+          WHEN jsonb_typeof(s.payload->'candidates') = 'array'
+            THEN jsonb_array_length(s.payload->'candidates')
+          ELSE 0
+        END AS staged_candidate_count,
+        EXISTS (
+          SELECT 1 FROM public.candidate_elections AS ce
+          WHERE ce.election_id = e.id
+        ) AS has_candidate_links,
         d.blocked_until::text AS blocked_until
       FROM public.elections AS e
       LEFT JOIN public.staging_items AS s

@@ -979,17 +979,49 @@ describe("deriveCandidateRosterStatus", () => {
     for (const staging_status of ["written", "validated"]) {
       expect(
         deriveCandidateRosterStatus(
-          { election_date: upcoming, staging_status, staged_candidate_count: 2, blocked_until: "2026-08-27" },
+          { election_date: upcoming, staging_status, staged_candidate_count: 2, has_candidate_links: false, blocked_until: "2026-08-27" },
           today
         )
       ).toEqual({ reason: "roster_processing", check_after: null });
     }
   });
 
+  it("never reads a withdrawn-emptied race as processing", () => {
+    // Every candidate withdrew (or was deleted): links exist but none are
+    // visible. The staged roster was already processed, so "profiles are
+    // being prepared" would be false forever.
+    expect(
+      deriveCandidateRosterStatus(
+        {
+          election_date: upcoming,
+          staging_status: "written",
+          staged_candidate_count: 2,
+          has_candidate_links: true,
+          blocked_until: null,
+        },
+        today
+      )
+    ).toEqual({ reason: "candidate_information_unavailable", check_after: null });
+    // A deferral still applies there: replacing a withdrawn nominee is
+    // genuinely awaiting a new official roster.
+    expect(
+      deriveCandidateRosterStatus(
+        {
+          election_date: upcoming,
+          staging_status: "written",
+          staged_candidate_count: 2,
+          has_candidate_links: true,
+          blocked_until: "2026-08-27",
+        },
+        today
+      )
+    ).toEqual({ reason: "awaiting_official_roster", check_after: "2026-08-27" });
+  });
+
   it("maps an open deferral on an upcoming election to awaiting with a future check_after", () => {
     expect(
       deriveCandidateRosterStatus(
-        { election_date: upcoming, staging_status: "pending", staged_candidate_count: 0, blocked_until: "2026-08-27" },
+        { election_date: upcoming, staging_status: "pending", staged_candidate_count: 0, has_candidate_links: false, blocked_until: "2026-08-27" },
         today
       )
     ).toEqual({ reason: "awaiting_official_roster", check_after: "2026-08-27" });
@@ -999,7 +1031,7 @@ describe("deriveCandidateRosterStatus", () => {
     for (const blocked_until of ["2026-07-01", today]) {
       expect(
         deriveCandidateRosterStatus(
-          { election_date: upcoming, staging_status: null, staged_candidate_count: null, blocked_until },
+          { election_date: upcoming, staging_status: null, staged_candidate_count: null, has_candidate_links: false, blocked_until },
           today
         )
       ).toEqual({ reason: "awaiting_official_roster", check_after: null });
@@ -1010,7 +1042,7 @@ describe("deriveCandidateRosterStatus", () => {
     // Open deferral on a finished race: no "we'll check again" promise.
     expect(
       deriveCandidateRosterStatus(
-        { election_date: past, staging_status: "pending", staged_candidate_count: 0, blocked_until: "2026-08-27" },
+        { election_date: past, staging_status: "pending", staged_candidate_count: 0, has_candidate_links: false, blocked_until: "2026-08-27" },
         today
       )
     ).toEqual({ reason: "candidate_information_unavailable", check_after: null });
@@ -1019,7 +1051,7 @@ describe("deriveCandidateRosterStatus", () => {
     for (const staging_status of ["written", "validated"]) {
       expect(
         deriveCandidateRosterStatus(
-          { election_date: past, staging_status, staged_candidate_count: 2, blocked_until: null },
+          { election_date: past, staging_status, staged_candidate_count: 2, has_candidate_links: false, blocked_until: null },
           today
         )
       ).toEqual({ reason: "candidate_information_unavailable", check_after: null });
@@ -1028,12 +1060,12 @@ describe("deriveCandidateRosterStatus", () => {
 
   it("falls back to unavailable for pending/failed/no_results/empty-payload staging without a deferral", () => {
     for (const row of [
-      { staging_status: "pending", staged_candidate_count: 0 },
-      { staging_status: "failed", staged_candidate_count: 0 },
-      { staging_status: "no_results", staged_candidate_count: 0 },
+      { staging_status: "pending", staged_candidate_count: 0, has_candidate_links: false },
+      { staging_status: "failed", staged_candidate_count: 0, has_candidate_links: false },
+      { staging_status: "no_results", staged_candidate_count: 0, has_candidate_links: false },
       // A written row with an empty payload is a no-roster marker, not names.
-      { staging_status: "written", staged_candidate_count: 0 },
-      { staging_status: null, staged_candidate_count: null },
+      { staging_status: "written", staged_candidate_count: 0, has_candidate_links: false },
+      { staging_status: null, staged_candidate_count: null, has_candidate_links: false },
     ]) {
       expect(
         deriveCandidateRosterStatus({ election_date: upcoming, ...row, blocked_until: null }, today)
@@ -1120,6 +1152,7 @@ describe("candidate_roster_status wiring", () => {
             election_date: futureElectionDate,
             staging_status: "pending",
             staged_candidate_count: 0,
+            has_candidate_links: false,
             blocked_until: futureBlockedUntil,
           },
         ],
@@ -1187,6 +1220,7 @@ describe("candidate_roster_status wiring", () => {
             election_date: "2099-11-03",
             staging_status: "written",
             staged_candidate_count: 2,
+            has_candidate_links: false,
             blocked_until: null,
           },
         ],
