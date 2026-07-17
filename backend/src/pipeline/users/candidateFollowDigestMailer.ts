@@ -2,7 +2,7 @@ import { SendEmailCommand, type SESv2Client } from "@aws-sdk/client-sesv2";
 
 export type CandidateFollowDigestItem = {
   candidateDisplayName: string;
-  eventType: "candidate_record_update" | "candidate_future_election";
+  eventType: "candidate_record_update" | "candidate_future_election" | "candidate_election_withdrawal";
   recordDescription?: string | null;
   electionTitle?: string | null;
   electionDate?: string | null;
@@ -77,6 +77,11 @@ function describeItem(item: CandidateFollowDigestItem): string {
     const title = item.electionTitle?.trim() || "an upcoming election";
     const date = item.electionDate?.trim();
     return date ? `On the ballot: ${title} (${date})` : `On the ballot: ${title}`;
+  }
+  if (item.eventType === "candidate_election_withdrawal") {
+    const title = item.electionTitle?.trim() || "an upcoming election";
+    const date = item.electionDate?.trim();
+    return date ? `Withdrew from: ${title} (${date})` : `Withdrew from: ${title}`;
   }
   const description = item.recordDescription?.trim();
   return description

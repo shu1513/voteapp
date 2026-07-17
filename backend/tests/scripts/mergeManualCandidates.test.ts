@@ -513,6 +513,68 @@ describe("runMergeCandidates", () => {
     expect(rehome?.values).toEqual([["e3"], SURVIVOR]);
   });
 
+  it("dedupes withdrawal events per event type, not just future-election events", async () => {
+    // Both election-scoped event types carry their own per-(user, candidate,
+    // election) partial unique index; rehoming a duplicate's withdrawal event
+    // onto a survivor that already has one would violate
+    // uq_ucf_notification_events_withdrawal and roll back the whole merge.
+    // A same-election event of the OTHER type is not a collision.
+    const { query, calls } = buildClient(
+      happyResponses({
+        "FROM public.user_candidate_follow_notification_events\n        WHERE candidate_id = ANY": [
+          [
+            {
+              id: "w1",
+              candidate_id: MERGED,
+              user_id: USER_ID,
+              event_type: "candidate_election_withdrawal",
+              election_id: ELECTION_A,
+            },
+            {
+              id: "w2",
+              candidate_id: SURVIVOR,
+              user_id: USER_ID,
+              event_type: "candidate_election_withdrawal",
+              election_id: ELECTION_A,
+            },
+            // Survivor has a future-election event for ELECTION_B; the
+            // duplicate's withdrawal for ELECTION_B must still rehome.
+            {
+              id: "f1",
+              candidate_id: SURVIVOR,
+              user_id: USER_ID,
+              event_type: "candidate_future_election",
+              election_id: ELECTION_B,
+            },
+            {
+              id: "w3",
+              candidate_id: MERGED,
+              user_id: USER_ID,
+              event_type: "candidate_election_withdrawal",
+              election_id: ELECTION_B,
+            },
+          ],
+        ],
+      })
+    );
+
+    const result = await run({ query });
+
+    expect(result.notificationEvents).toEqual({
+      rehomed: 1,
+      duplicatesDeleted: 1,
+      remappedToSurvivorRecords: 0,
+    });
+    const del = calls.find((call) =>
+      call.text.includes("DELETE FROM public.user_candidate_follow_notification_events")
+    );
+    expect(del?.values).toEqual([["w1"]]);
+    const rehome = calls.find((call) =>
+      call.text.includes("UPDATE public.user_candidate_follow_notification_events")
+    );
+    expect(rehome?.values).toEqual([["w3"], SURVIVOR]);
+  });
+
   it("copies missing area tags to the survivor's record before deleting a duplicate record", async () => {
     const responses = () =>
       happyResponses({

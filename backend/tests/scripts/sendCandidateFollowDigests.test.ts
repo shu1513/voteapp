@@ -177,6 +177,27 @@ describe("sendCandidateFollowDigests", () => {
     expect(usersSql).toContain("merged_into_candidate_id IS NULL");
   });
 
+  it("routes withdrawal events through the election-alert toggle in every event query", async () => {
+    const db = createDbMock({
+      users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+      pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Jane Doe")] },
+    });
+    const mailer = createMailerMock();
+
+    await sendCandidateFollowDigests(db as never, mailer, { ...options, live: false });
+
+    // Withdrawal is election news: the orphan sweep, user eligibility, and
+    // pending-event selection must all pair candidate_election_withdrawal
+    // with notify_elections, or withdrawal events would strand as permanent
+    // orphans (or never orphan when the toggle is off).
+    const sqls = db.query.mock.calls.map((call) => String(call[0]));
+    const eventTypeQueries = sqls.filter((sql) => sql.includes("candidate_record_update"));
+    expect(eventTypeQueries.length).toBeGreaterThanOrEqual(3);
+    for (const sql of eventTypeQueries) {
+      expect(sql).toContain("e.event_type IN ('candidate_future_election', 'candidate_election_withdrawal') AND f.notify_elections");
+    }
+  });
+
   it("live run sends one digest per user and marks exactly the sent events", async () => {
     const db = createDbMock({
       users: [

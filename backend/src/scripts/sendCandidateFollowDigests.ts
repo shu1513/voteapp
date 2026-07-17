@@ -105,7 +105,7 @@ const ORPHANED_EVENT_CONDITION = `
         AND f.candidate_id = e.candidate_id
         AND (
           (e.event_type = 'candidate_record_update' AND f.notify_updates)
-          OR (e.event_type = 'candidate_future_election' AND f.notify_elections)
+          OR (e.event_type IN ('candidate_future_election', 'candidate_election_withdrawal') AND f.notify_elections)
         )
     )
     OR NOT EXISTS (
@@ -169,7 +169,7 @@ async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<Eli
            AND f.candidate_id = e.candidate_id
            AND (
              (e.event_type = 'candidate_record_update' AND f.notify_updates)
-             OR (e.event_type = 'candidate_future_election' AND f.notify_elections)
+             OR (e.event_type IN ('candidate_future_election', 'candidate_election_withdrawal') AND f.notify_elections)
            )
           WHERE e.user_id = u.id
             AND e.notified_at IS NULL
@@ -184,7 +184,7 @@ async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<Eli
 
 type PendingEventRow = {
   id: string;
-  event_type: "candidate_record_update" | "candidate_future_election";
+  event_type: "candidate_record_update" | "candidate_future_election" | "candidate_election_withdrawal";
   candidate_display_name: string;
   record_description: string | null;
   election_title: string | null;
@@ -211,7 +211,7 @@ async function selectPendingEvents(db: Queryable, userId: string): Promise<Pendi
        AND f.candidate_id = e.candidate_id
        AND (
          (e.event_type = 'candidate_record_update' AND f.notify_updates)
-         OR (e.event_type = 'candidate_future_election' AND f.notify_elections)
+         OR (e.event_type IN ('candidate_future_election', 'candidate_election_withdrawal') AND f.notify_elections)
        )
       LEFT JOIN public.candidate_records AS r
         ON r.id = e.candidate_record_id

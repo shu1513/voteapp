@@ -550,12 +550,18 @@ export async function runMergeCandidates(
 
     // Notification events are reconciled BEFORE the duplicate records are
     // deleted so nothing cascades away silently. Rehomed so "already
-    // notified" history survives; a future-election event colliding with the
-    // survivor's (uq_ucf_notification_events_election) is deleted — the user
-    // was already notified about that election for this person. Events on
-    // duplicate-deleted records are remapped to the survivor's copy of the
-    // same content (deleted when the user already has one there), so pending
-    // digest events stay pending and nobody is re-notified later.
+    // notified" history survives; an election-scoped event colliding with the
+    // survivor's (uq_ucf_notification_events_election /
+    // uq_ucf_notification_events_withdrawal — both per-type on
+    // user/candidate/election) is deleted — the user was already notified
+    // about that election for this person. Events on duplicate-deleted
+    // records are remapped to the survivor's copy of the same content
+    // (deleted when the user already has one there), so pending digest
+    // events stay pending and nobody is re-notified later.
+    const ELECTION_SCOPED_EVENT_TYPES = new Set([
+      "candidate_future_election",
+      "candidate_election_withdrawal",
+    ]);
     const eventsResult = await client.query<EventRow>(
       `
         SELECT id, candidate_id, user_id, event_type, election_id, candidate_record_id
@@ -571,10 +577,10 @@ export async function runMergeCandidates(
         .filter(
           (row) =>
             row.candidate_id === survivorId &&
-            row.event_type === "candidate_future_election" &&
+            ELECTION_SCOPED_EVENT_TYPES.has(row.event_type) &&
             row.election_id !== null
         )
-        .map((row) => `${row.user_id}:${row.election_id}`)
+        .map((row) => `${row.user_id}:${row.event_type}:${row.election_id}`)
     );
     const survivorRecordEventKeys = new Set(
       eventsResult.rows
@@ -603,9 +609,9 @@ export async function runMergeCandidates(
         continue;
       }
       const collides =
-        event.event_type === "candidate_future_election" &&
+        ELECTION_SCOPED_EVENT_TYPES.has(event.event_type) &&
         event.election_id !== null &&
-        survivorElectionEventKeys.has(`${event.user_id}:${event.election_id}`);
+        survivorElectionEventKeys.has(`${event.user_id}:${event.event_type}:${event.election_id}`);
       if (collides) {
         duplicateEventIds.push(event.id);
       } else {

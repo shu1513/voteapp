@@ -47,7 +47,13 @@ export async function upsertCandidateElection(input: {
       VALUES ($1, $2, $3, 'declared')
       ON CONFLICT (candidate_id, election_id) DO UPDATE
       SET is_incumbent = EXCLUDED.is_incumbent,
-          status = EXCLUDED.status,
+          -- A profile re-run must not resurrect a withdrawn candidacy: the
+          -- withdrawal was recorded manually with evidence, and stale research
+          -- sources keep listing the candidate.
+          status = CASE
+            WHEN candidate_elections.status = 'withdrawn' THEN candidate_elections.status
+            ELSE EXCLUDED.status
+          END,
           updated_at = now()
       RETURNING (xmax = 0) AS created
     `,
