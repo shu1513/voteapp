@@ -25,6 +25,7 @@ describe("listCandidateRostersDue", () => {
       roster_written_at: "2026-05-01 12:00:00+00",
       staged_candidate_count: 3,
       linked_candidate_count: 3,
+      roster_skipped_no_fec_id: ["Dan Osborn"],
       reason: "stale",
     };
     const db = createMockQueryable([row]);
@@ -60,6 +61,9 @@ describe("listCandidateRostersDue", () => {
     expect(sql).toContain("s.status = 'no_results'");
     // Linked-candidate count must ignore deleted candidates.
     expect(sql).toContain("c.deleted_at IS NULL");
+    // The federal no-FEC skip list rides along so the refresh pass re-checks
+    // those names for late FEC registrations.
+    expect(sql).toContain("s.ai_raw_debug->'roster_skipped_no_fec_id'");
   });
 
   it("orders soonest election first, oldest roster first within a date", async () => {

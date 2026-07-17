@@ -42,6 +42,11 @@ export type CandidateRosterDueRow = {
   roster_written_at: string | null;
   staged_candidate_count: number;
   linked_candidate_count: number;
+  // Candidates the federal roster contract dropped for having no FEC ID
+  // (staging_items.ai_raw_debug.roster_skipped_no_fec_id). Surfaced here so
+  // the refresh pass re-checks fec.gov for late registrants; null when the
+  // roster skipped nobody or is non-federal.
+  roster_skipped_no_fec_id: string[] | null;
   reason: "no_results" | "empty_roster" | "stale";
 };
 
@@ -75,6 +80,7 @@ export async function listCandidateRostersDue(
         s.written_at::text AS roster_written_at,
         COALESCE(jsonb_array_length(s.payload->'candidates'), 0) AS staged_candidate_count,
         linked.linked_candidate_count,
+        s.ai_raw_debug->'roster_skipped_no_fec_id' AS roster_skipped_no_fec_id,
         CASE
           WHEN s.status = 'no_results' THEN 'no_results'
           WHEN COALESCE(jsonb_array_length(s.payload->'candidates'), 0) = 0 THEN 'empty_roster'
