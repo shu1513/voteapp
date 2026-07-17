@@ -3,7 +3,10 @@ import { createHash } from "node:crypto";
 import type { AddressDistrictKey, AddressDistrictResolverWarning } from "./addressDistrictResolver.js";
 import type { CensusAddressCoordinates } from "./censusAddressGeocoder.js";
 
-export const ADDRESS_LOOKUP_CACHE_KEY_PREFIX = "address_lookup:v1:";
+// v2: the hashed key input gained the geocoder layers dimension. The version
+// tracks key-derivation changes so orphaned generations stay identifiable
+// (e.g. SCAN address_lookup:v1:* to sweep them on the small noeviction Redis).
+export const ADDRESS_LOOKUP_CACHE_KEY_PREFIX = "address_lookup:v2:";
 export const DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS = 14 * 24 * 60 * 60;
 
 export type AddressLookupCacheClient = {
