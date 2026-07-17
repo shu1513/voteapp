@@ -80,6 +80,7 @@ export function electionDetail(overrides: Partial<ElectionDetail> = {}): Electio
     election_date: "2026-11-03",
     election_stage: null,
     is_partisan: true,
+    seats_to_fill: null,
     sources: ["https://elections.example.gov"],
     candidates: [
       {

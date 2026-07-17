@@ -264,7 +264,7 @@ export type ElectionDetail = {
   election_stage: string | null;
   is_partisan: boolean | null;
   /** Seats this contest fills; null = never recorded (treat like 1). */
-  seats_to_fill?: number | null;
+  seats_to_fill: number | null;
   sources: string[];
   candidates: ElectionCandidate[];
   /** null unless race_type is "office" and candidates is empty. */

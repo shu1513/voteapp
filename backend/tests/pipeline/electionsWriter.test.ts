@@ -197,7 +197,11 @@ describe("runElectionsWriter", () => {
     );
     expect(upsertCall).toBeTruthy();
     expect(String(upsertCall?.[0])).toContain("is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan)");
-    expect(String(upsertCall?.[0])).toContain("seats_to_fill = COALESCE(EXCLUDED.seats_to_fill, elections.seats_to_fill)");
+    // Reclassification to ballot_measure clears any stored office-era seat
+    // count; otherwise the COALESCE preserves an existing value when a later
+    // payload omits the field.
+    expect(String(upsertCall?.[0])).toContain("WHEN EXCLUDED.race_type = 'ballot_measure' THEN NULL");
+    expect(String(upsertCall?.[0])).toContain("ELSE COALESCE(EXCLUDED.seats_to_fill, elections.seats_to_fill)");
     expect(String(upsertCall?.[0])).toContain("discovery_contest_family");
     expect(String(upsertCall?.[0])).toContain("EXCLUDED.discovery_contest_family = 'us_senate'");
     expect(upsertCall?.[1]?.[5]).toBeNull();

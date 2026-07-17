@@ -404,7 +404,13 @@ async function writeElectionsForDistrict(
             race_type = EXCLUDED.race_type,
             -- Keep prior partisanship when a subsequent run omits it (e.g., mixed-state school contests).
             is_partisan = COALESCE(EXCLUDED.is_partisan, elections.is_partisan),
-            seats_to_fill = COALESCE(EXCLUDED.seats_to_fill, elections.seats_to_fill),
+            -- A reclassification to ballot_measure must drop any stored seat
+            -- count: the contract rejects seats_to_fill on measure entries,
+            -- so a preserved office-era value could never be corrected.
+            seats_to_fill = CASE
+              WHEN EXCLUDED.race_type = 'ballot_measure' THEN NULL
+              ELSE COALESCE(EXCLUDED.seats_to_fill, elections.seats_to_fill)
+            END,
             election_stage = COALESCE(EXCLUDED.election_stage, elections.election_stage),
             office_id = COALESCE(EXCLUDED.office_id, elections.office_id),
             discovery_contest_family = CASE

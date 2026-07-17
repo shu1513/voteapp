@@ -99,6 +99,7 @@ export default function ElectionScreen() {
         {formatElectionDate(data.election_date)} · {data.district.name} ·{" "}
         {formatDistrictType(data.district.district_type)}
         {data.election_stage ? <> · {data.election_stage}</> : null}
+        {data.seats_to_fill != null && data.seats_to_fill > 1 ? <> · {data.seats_to_fill} seats</> : null}
       </Text>
       <View className="mt-2 flex-row flex-wrap gap-2">
         {data.vote_power.label !== "unknown" ? (
