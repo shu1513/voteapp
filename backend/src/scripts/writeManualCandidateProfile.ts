@@ -757,6 +757,14 @@ async function main(): Promise<void> {
             },
             replaceProfileFields: [...overwriteProfileFields].sort(),
             clearProfileFields: [...clearProfileFields].sort(),
+            // Candidate identity is resolved only on the live run, so a
+            // passing dry-run cannot promise the clear will apply.
+            ...(clearProfileFields.size > 0
+              ? {
+                  clearProfileFieldsNote:
+                    "clearing requires an existing candidate match; identity resolves on the live run — if no candidate matches, the live run refuses and rolls back",
+                }
+              : {}),
           },
           null,
           2
