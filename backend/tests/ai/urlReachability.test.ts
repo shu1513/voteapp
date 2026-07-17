@@ -842,6 +842,29 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
       expect(calls.map((call) => call.method)).toEqual(["HEAD", "GET"]);
     });
 
+    it("refuses contact entirely while a Retry-After deadline beyond the wait bound is running", async () => {
+      const { calls } = stubFetch(() => ({ status: 429, retryAfter: "900" }));
+
+      const first = await verifyHttpUrlReachability("https://ratelimited-i.example.gov/limited");
+      expect(first.ok).toBe(false);
+      const callsAfterFirst = calls.length;
+
+      // The host asked for 900s; the in-call bound is 15s. The verifier must
+      // not sleep the bound and then contact the host anyway — it fails fast
+      // with the remaining cooldown and performs ZERO network requests.
+      const second = await verifyHttpUrlReachability("https://ratelimited-i.example.gov/other");
+      expect(calls.length).toBe(callsAfterFirst);
+      expect(second.ok).toBe(false);
+      const failure = second as { reason: string; retryAfterSeconds?: number };
+      expect(failure.reason).toMatch(
+        /^citation fetch skipped: host rate-limit cooldown has \d+s remaining \(retry-after\)$/
+      );
+      expect(failure.retryAfterSeconds).toBeGreaterThan(880);
+      expect(failure.retryAfterSeconds).toBeLessThanOrEqual(900);
+      // Retryable by definition: the deadline passes on its own.
+      expect(classifyCitationVerificationFailure(failure.reason)).toBe("transient");
+    });
+
     it("does not delay verifications against other hosts", async () => {
       vi.useFakeTimers();
       const { calls } = stubFetch((_method, url) =>

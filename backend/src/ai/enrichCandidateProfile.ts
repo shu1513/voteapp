@@ -179,10 +179,11 @@ async function verifyUniqueCandidateSourceUrls(
       break;
     }
     // Retry-After waiting is owned by the verifier's per-host cooldown (a
-    // deadline, so this sleep counts toward it): each re-verification waits
-    // out whatever remains of the rate-limited host's cooldown at entry.
-    // Honoring Retry-After here as well stacked two bounded waits per
-    // attempt on the same header.
+    // deadline, so this sleep counts toward it): a re-verification waits out
+    // a short remaining cooldown at entry, and refuses contact (fast
+    // transient failure carrying the remaining seconds) when the deadline
+    // lies beyond its in-call wait bound. Honoring Retry-After here as well
+    // stacked two bounded waits per attempt on the same header.
     const retryDelayMs = CITATION_TRANSIENT_RETRY_DELAY_MS * 2 ** attempt;
     await new Promise((resolveDelay) => setTimeout(resolveDelay, retryDelayMs));
     await verifyBatch(transientUrls);

@@ -71,6 +71,9 @@ export function classifyCitationVerificationFailure(reason: string): "transient"
     normalized.includes("dns lookup failed transiently") ||
     normalized.includes("fetch failed") ||
     normalized.includes("status 429") ||
+    // Synthetic no-contact failure while a host's Retry-After deadline is
+    // still running — retryable by definition.
+    normalized.includes("rate-limit cooldown") ||
     normalized.includes("status 500") ||
     normalized.includes("status 502") ||
     normalized.includes("status 503") ||
@@ -531,15 +534,13 @@ const HOST_COOLDOWN_MAP_MAX_ENTRIES = 200;
 
 const hostCooldownUntilMs = new Map<string, number>();
 
-// Drops expired entries once the map grows past the threshold. Entries still
-// inside an active cooldown are deliberately kept even beyond the threshold:
-// every entry expires within RETRY_AFTER_MAX_SECONDS, so the map is bounded
-// in time, and a few hundred hostname strings are cheaper than evicting a
-// cooldown a rate-limited host asked for.
+// Drops expired entries on every record. Entries inside an active cooldown
+// are never evicted, even past HOST_COOLDOWN_MAP_MAX_ENTRIES: evicting one
+// would let the verifier re-contact a host whose Retry-After deadline is
+// still running. Every entry expires within RETRY_AFTER_MAX_SECONDS, so the
+// map is bounded by the number of distinct hosts 429ing inside one such
+// window — hostname strings, negligible next to that correctness cost.
 function pruneExpiredHostCooldowns(nowMs: number): void {
-  if (hostCooldownUntilMs.size <= HOST_COOLDOWN_MAP_MAX_ENTRIES) {
-    return;
-  }
   for (const [host, untilMs] of hostCooldownUntilMs) {
     if (untilMs <= nowMs) {
       hostCooldownUntilMs.delete(host);
@@ -547,32 +548,33 @@ function pruneExpiredHostCooldowns(nowMs: number): void {
   }
 }
 
-// Waits out the host's active cooldown, bounded overall by
-// HOST_COOLDOWN_MAX_WAIT_MS. Re-reads the map after every sleep: another
-// in-flight verification can 429 and EXTEND the entry while this one sleeps,
-// and deleting unconditionally on wake would erase that newer cooldown.
-// Entries are only deleted when the observed value is still current.
-async function awaitHostCooldown(hostname: string): Promise<void> {
+// Waits out the host's active cooldown when it fits inside
+// HOST_COOLDOWN_MAX_WAIT_MS; when the deadline lies beyond what we are
+// willing to wait in-call, returns the remaining seconds WITHOUT sleeping so
+// the caller can refuse contact — a request before the advertised
+// Retry-After deadline is exactly what the cooldown exists to prevent.
+// Re-reads the map after every sleep: another in-flight verification can 429
+// and EXTEND the entry while this one sleeps, and deleting unconditionally
+// on wake would erase that newer cooldown. Entries are only deleted when the
+// observed value is still current.
+async function awaitHostCooldown(hostname: string): Promise<number | null> {
   const waitDeadlineMs = Date.now() + HOST_COOLDOWN_MAX_WAIT_MS;
   while (true) {
     const untilMs = hostCooldownUntilMs.get(hostname);
     if (untilMs === undefined) {
-      return;
+      return null;
     }
     const nowMs = Date.now();
     if (untilMs <= nowMs) {
       if (hostCooldownUntilMs.get(hostname) === untilMs) {
         hostCooldownUntilMs.delete(hostname);
       }
-      return;
+      return null;
     }
-    const waitMs = Math.min(untilMs, waitDeadlineMs) - nowMs;
-    if (waitMs <= 0) {
-      // Overall bound reached; proceed rather than park the verifier. The
-      // entry stays for the next caller.
-      return;
+    if (untilMs > waitDeadlineMs) {
+      return Math.ceil((untilMs - nowMs) / 1_000);
     }
-    await new Promise((resolve) => setTimeout(resolve, waitMs));
+    await new Promise((resolve) => setTimeout(resolve, untilMs - nowMs));
   }
 }
 
@@ -638,7 +640,18 @@ export async function verifyHttpUrlReachability(
   const initialMethod =
     options.method ?? (inputHostname && getPreferredHosts.has(inputHostname) ? "GET" : "HEAD");
   if (inputHostname) {
-    await awaitHostCooldown(inputHostname);
+    const coolingSeconds = await awaitHostCooldown(inputHostname);
+    if (coolingSeconds !== null) {
+      // Contacting the host before its advertised Retry-After deadline is
+      // exactly what the cooldown exists to prevent; fail fast (transient,
+      // zero network contact) instead of sleeping the in-call bound and
+      // then requesting anyway.
+      return {
+        ok: false,
+        reason: `citation fetch skipped: host rate-limit cooldown has ${coolingSeconds}s remaining (retry-after)`,
+        retryAfterSeconds: coolingSeconds,
+      };
+    }
   }
 
   try {
