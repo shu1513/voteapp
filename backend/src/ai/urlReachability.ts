@@ -42,6 +42,11 @@ const TLS_CERTIFICATE_FAILURE_PATTERNS = [
   "certificate has expired",
   "cert_has_expired",
   "unable_to_get_issuer_cert",
+  // Hostname/SAN mismatch (live: wrong.host.badssl.com) — as permanent as an
+  // expired certificate, and previously misclassified transient because only
+  // the "fetch failed" wrapper text reached the classifier.
+  "err_tls_cert_altname_invalid",
+  "does not match certificate's altnames",
 ];
 
 export function isTlsCertificateReachabilityFailure(reason: string): boolean {
@@ -506,7 +511,8 @@ function describeFetchError(error: unknown): string {
         ? ((current as { code: string }).code)
         : undefined;
     const message = current.message?.trim();
-    const label = message && code && message !== code ? `${message} (${code})` : (message ?? code);
+    // "||" not "??": an empty trimmed message must fall through to the code.
+    const label = message && code && message !== code ? `${message} (${code})` : (message || code);
     if (label && !parts.includes(label)) {
       parts.push(label);
     }
@@ -525,6 +531,11 @@ const HOST_COOLDOWN_MAP_MAX_ENTRIES = 200;
 
 const hostCooldownUntilMs = new Map<string, number>();
 
+// Drops expired entries once the map grows past the threshold. Entries still
+// inside an active cooldown are deliberately kept even beyond the threshold:
+// every entry expires within RETRY_AFTER_MAX_SECONDS, so the map is bounded
+// in time, and a few hundred hostname strings are cheaper than evicting a
+// cooldown a rate-limited host asked for.
 function pruneExpiredHostCooldowns(nowMs: number): void {
   if (hostCooldownUntilMs.size <= HOST_COOLDOWN_MAP_MAX_ENTRIES) {
     return;
@@ -536,18 +547,33 @@ function pruneExpiredHostCooldowns(nowMs: number): void {
   }
 }
 
+// Waits out the host's active cooldown, bounded overall by
+// HOST_COOLDOWN_MAX_WAIT_MS. Re-reads the map after every sleep: another
+// in-flight verification can 429 and EXTEND the entry while this one sleeps,
+// and deleting unconditionally on wake would erase that newer cooldown.
+// Entries are only deleted when the observed value is still current.
 async function awaitHostCooldown(hostname: string): Promise<void> {
-  const untilMs = hostCooldownUntilMs.get(hostname);
-  if (untilMs === undefined) {
-    return;
+  const waitDeadlineMs = Date.now() + HOST_COOLDOWN_MAX_WAIT_MS;
+  while (true) {
+    const untilMs = hostCooldownUntilMs.get(hostname);
+    if (untilMs === undefined) {
+      return;
+    }
+    const nowMs = Date.now();
+    if (untilMs <= nowMs) {
+      if (hostCooldownUntilMs.get(hostname) === untilMs) {
+        hostCooldownUntilMs.delete(hostname);
+      }
+      return;
+    }
+    const waitMs = Math.min(untilMs, waitDeadlineMs) - nowMs;
+    if (waitMs <= 0) {
+      // Overall bound reached; proceed rather than park the verifier. The
+      // entry stays for the next caller.
+      return;
+    }
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
   }
-  const waitMs = Math.min(untilMs - Date.now(), HOST_COOLDOWN_MAX_WAIT_MS);
-  if (waitMs <= 0) {
-    hostCooldownUntilMs.delete(hostname);
-    return;
-  }
-  await new Promise((resolve) => setTimeout(resolve, waitMs));
-  hostCooldownUntilMs.delete(hostname);
 }
 
 function recordHostCooldown(hostname: string, retryAfterSeconds: number | null): void {
@@ -607,9 +633,16 @@ export async function verifyHttpUrlReachability(
     // The GET re-walks the redirect chain from the original URL with the
     // same per-hop validation — HEAD and GET can redirect differently, so
     // HEAD's chain proves nothing about GET's.
+    //
+    // EXCEPT 429: rate limiting is method-agnostic, so an immediate GET
+    // would double the burst at a host that just asked us to back off, and
+    // a differing GET status would silently discard the 429 and its
+    // Retry-After. The HEAD 429 is authoritative; the transient retry path
+    // re-verifies after the cooldown.
     if (
       initialMethod === "HEAD" &&
       !response.ok &&
+      response.status !== 429 &&
       !allowStatusCodes.has(response.status)
     ) {
       const getResult = await fetchWithValidatedRedirects(normalizedInputUrl, "GET", timeoutMs);
@@ -622,8 +655,24 @@ export async function verifyHttpUrlReachability(
 
     if (!response.ok && !allowStatusCodes.has(response.status)) {
       if (response.status === 429) {
-        if (inputHostname) {
-          recordHostCooldown(inputHostname, response.retryAfterSeconds);
+        // The 429 comes from the FINAL hop (a redirect can land on a CDN or
+        // document host), so cool that host down; the input host is cooled
+        // too because retries re-enter through the input URL. Cooldowns are
+        // still only awaited at entry, not per redirect hop — a different
+        // citation that merely redirects onto the limited host won't wait.
+        // Accepted: this pacing is a best-effort burst damper, not a rate
+        // limiter.
+        const finalHostname = (() => {
+          try {
+            return new URL(finalUrl).hostname.toLowerCase();
+          } catch {
+            return null;
+          }
+        })();
+        for (const hostname of new Set(
+          [inputHostname, finalHostname].filter((host): host is string => host !== null)
+        )) {
+          recordHostCooldown(hostname, response.retryAfterSeconds);
         }
         return {
           ok: false,

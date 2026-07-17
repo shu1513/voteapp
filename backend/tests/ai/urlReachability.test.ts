@@ -618,7 +618,7 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     });
 
     it("surfaces a delta-seconds Retry-After on 429 in the reason and as a field", async () => {
-      stubFetch(() => ({ status: 429, retryAfter: "7" }));
+      const { calls } = stubFetch(() => ({ status: 429, retryAfter: "7" }));
 
       const result = await verifyHttpUrlReachability("https://ratelimited-a.example.gov/page");
 
@@ -627,6 +627,10 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
         reason: "citation fetch returned status 429 (retry-after: 7s)",
         retryAfterSeconds: 7,
       });
+      // Rate limiting is method-agnostic: a HEAD 429 is authoritative and
+      // must NOT trigger the immediate GET confirmation — that would double
+      // the burst and could mask the 429 behind a different GET status.
+      expect(calls.map((call) => call.method)).toEqual(["HEAD"]);
     });
 
     it("returns a plain 429 reason when Retry-After is absent or unparseable", async () => {
@@ -693,6 +697,77 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
       expect(calls.length).toBeGreaterThan(callsAfterFirst);
     });
 
+    it("cools down the redirect target that actually returned the 429, not just the input host", async () => {
+      vi.useFakeTimers();
+      const { calls } = stubFetch((_method, url) => {
+        if (url.includes("frontdoor.example.gov")) {
+          return { status: 302, location: "https://cdn-docs.example.gov/file.pdf" };
+        }
+        if (url.includes("cdn-docs.example.gov/file.pdf")) {
+          return { status: 429, retryAfter: "2" };
+        }
+        return { status: 200 };
+      });
+
+      const first = await verifyHttpUrlReachability("https://frontdoor.example.gov/doc");
+      expect(first.ok).toBe(false);
+      const callsAfterFirst = calls.length;
+
+      // A later citation pointing DIRECTLY at the rate-limited CDN host must
+      // wait out its cooldown even though the 429 arrived via a redirect.
+      let directSettled = false;
+      const direct = verifyHttpUrlReachability("https://cdn-docs.example.gov/other.pdf").then(
+        (result) => {
+          directSettled = true;
+          return result;
+        }
+      );
+      await vi.advanceTimersByTimeAsync(0);
+      expect(calls.length).toBe(callsAfterFirst);
+      expect(directSettled).toBe(false);
+
+      await vi.advanceTimersByTimeAsync(2_000);
+      expect((await direct).ok).toBe(true);
+    });
+
+    it("keeps a cooldown extended by a concurrent 429 alive across another waiter's wake-up", async () => {
+      vi.useFakeTimers();
+      stubFetch((_method, url) => {
+        if (url.includes("/limited-short")) {
+          return { status: 429, retryAfter: "1" };
+        }
+        if (url.includes("/limited-long")) {
+          return { status: 429, retryAfter: "3" };
+        }
+        return { status: 200 };
+      });
+
+      const first = await verifyHttpUrlReachability("https://ratelimited-g.example.gov/limited-short");
+      expect(first.ok).toBe(false);
+
+      // Both wake when the 1s cooldown lapses; waiterB then 429s again and
+      // extends the cooldown by 3s. waiterA's wake-path cleanup must not
+      // erase that newer entry.
+      const waiterA = verifyHttpUrlReachability("https://ratelimited-g.example.gov/ok");
+      const waiterB = verifyHttpUrlReachability("https://ratelimited-g.example.gov/limited-long");
+      await vi.advanceTimersByTimeAsync(1_000);
+      expect((await waiterA).ok).toBe(true);
+      expect((await waiterB).ok).toBe(false);
+
+      let lateSettled = false;
+      const late = verifyHttpUrlReachability("https://ratelimited-g.example.gov/ok2").then(
+        (result) => {
+          lateSettled = true;
+          return result;
+        }
+      );
+      await vi.advanceTimersByTimeAsync(0);
+      expect(lateSettled).toBe(false);
+
+      await vi.advanceTimersByTimeAsync(3_000);
+      expect((await late).ok).toBe(true);
+    });
+
     it("does not delay verifications against other hosts", async () => {
       vi.useFakeTimers();
       const { calls } = stubFetch((_method, url) =>
@@ -740,6 +815,48 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
       expect(classifyCitationVerificationFailure((result as { reason: string }).reason)).toBe(
         "permanent"
       );
+    });
+
+    it("classifies a hostname/SAN mismatch as a permanent TLS failure (wrong.host.badssl.com)", async () => {
+      vi.stubGlobal(
+        "fetch",
+        async () => {
+          throw Object.assign(new TypeError("fetch failed"), {
+            cause: Object.assign(
+              new Error(
+                "Hostname/IP does not match certificate's altnames: Host: wrong.host.badssl.com. is not in the cert's altnames: DNS:*.badssl.com, DNS:badssl.com"
+              ),
+              { code: "ERR_TLS_CERT_ALTNAME_INVALID" }
+            ),
+          });
+        }
+      );
+
+      const result = await verifyHttpUrlReachability("https://wrong.host.example.gov/page");
+
+      expect(result.ok).toBe(false);
+      const reason = (result as { reason: string }).reason;
+      expect(reason).toContain("ERR_TLS_CERT_ALTNAME_INVALID");
+      expect(isTlsCertificateReachabilityFailure(reason)).toBe(true);
+      expect(classifyCitationVerificationFailure(reason)).toBe("permanent");
+    });
+
+    it("falls back to the code when a cause has an empty message", async () => {
+      vi.stubGlobal(
+        "fetch",
+        async () => {
+          throw Object.assign(new TypeError("fetch failed"), {
+            cause: Object.assign(new Error(""), { code: "ECONNREFUSED" }),
+          });
+        }
+      );
+
+      const result = await verifyHttpUrlReachability("https://refused.example.gov/page");
+
+      expect(result).toEqual({
+        ok: false,
+        reason: "citation URL fetch failed: fetch failed: ECONNREFUSED",
+      });
     });
 
     it("surfaces socket-level codes and keeps them transient", async () => {
