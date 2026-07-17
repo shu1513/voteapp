@@ -866,6 +866,9 @@ async function loadFullElectionDetails(
           AND rm.deleted_at IS NULL
         WHERE ce.election_id = ANY($1::uuid[])
           AND c.deleted_at IS NULL
+          -- Withdrawn candidates are hidden from election pages entirely
+          -- (product decision); their own candidate page still shows the link.
+          AND ce.status <> 'withdrawn'
         ORDER BY
           ce.election_id,
           lower(COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name))),
@@ -1250,6 +1253,9 @@ export async function lookupBallotSummariesByDistrictIds(
         ON c.id = ce.candidate_id
       WHERE ce.election_id = ANY($1::uuid[])
         AND c.deleted_at IS NULL
+        -- Mirrors the detail query: withdrawn candidates are hidden from
+        -- election pages, so they must not inflate the summary count either.
+        AND ce.status <> 'withdrawn'
       GROUP BY ce.election_id
     `,
     [electionIds]

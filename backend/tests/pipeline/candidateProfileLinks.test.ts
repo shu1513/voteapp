@@ -105,6 +105,24 @@ describe("upsertCandidateElection", () => {
     expect(query.mock.calls[0]?.[1]).toEqual(["candidate-1", "election-1", true]);
   });
 
+  it("preserves a withdrawn status on re-upsert", async () => {
+    const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [{ created: false }] });
+
+    await upsertCandidateElection({
+      client: { query } as never,
+      candidateId: "candidate-1",
+      electionId: "election-1",
+      isIncumbent: false,
+    });
+
+    // A profile re-run replays this upsert for existing links; without the
+    // CASE guard it would flip a manually recorded withdrawal back to
+    // 'declared' because stale research sources keep listing the candidate.
+    const sql = String(query.mock.calls[0]?.[0]);
+    expect(sql).toContain("WHEN candidate_elections.status = 'withdrawn' THEN candidate_elections.status");
+    expect(sql).not.toContain("status = EXCLUDED.status,");
+  });
+
   it("defaults unknown incumbent status to false", async () => {
     const query = vi.fn().mockResolvedValue({ rowCount: 1, rows: [{ created: false }] });
 
