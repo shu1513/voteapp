@@ -50,6 +50,11 @@ export const NOTIFICATION_EVENT_TABLES: readonly NotificationEventTable[] = [
     batchKey: "id",
   },
   {
+    table: "user_election_result_notification_events",
+    ageCondition: "created_at < now() - make_interval(days => $1::int) AND notified_at IS NOT NULL",
+    batchKey: "id",
+  },
+  {
     table: "user_election_reminder_sends",
     ageCondition: `election_date < ${US_LATEST_LOCAL_DATE_SQL} - $1::int`,
     batchKey: "ctid",

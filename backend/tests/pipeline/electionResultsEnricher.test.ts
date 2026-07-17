@@ -3,8 +3,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ElectionResultPayload } from "../../src/contracts/electionResultPayloadContract.js";
 import type { ElectionResultContext } from "../../src/pipeline/electionResults/electionResultContextLoader.js";
 
-const ELECTION_ID = "00000000-0000-0000-0000-000000000001";
-const CANDIDATE_ELECTION_ID = "10000000-0000-0000-0000-000000000001";
+// Version/variant-valid UUIDs: the writer fans decisive results out to
+// notification events, whose creator rejects ids failing the strict isUuid
+// check (version nibble 1-5), as production ids always pass it.
+const ELECTION_ID = "00000000-0000-4000-8000-000000000001";
+const CANDIDATE_ELECTION_ID = "10000000-0000-4000-8000-000000000001";
 const CANDIDATE_ID = "20000000-0000-0000-0000-000000000001";
 
 const poolQueryMock = vi.fn();
