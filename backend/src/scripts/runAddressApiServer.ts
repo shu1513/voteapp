@@ -204,6 +204,18 @@ async function main(): Promise<void> {
       `address API trusting client IP header "${trustedClientIpHeader}"; ensure the edge proxy strips client-supplied copies`
     );
   }
+  // When set, the client-IP header is only trusted on requests carrying the
+  // matching X-Edge-Secret header (attached by the Cloudflare Worker and the
+  // SSR loaders). Closes the direct *.onrender.com spoofing bypass in
+  // docs/deploy-render.md. Fail fast on a weak value, like the unsubscribe
+  // secret above.
+  const edgeSharedSecret = readOptionalEnv("EDGE_SHARED_SECRET");
+  if (edgeSharedSecret && edgeSharedSecret.length < 32) {
+    throw new Error("EDGE_SHARED_SECRET must be at least 32 characters");
+  }
+  if (edgeSharedSecret && !trustedClientIpHeader) {
+    console.warn("EDGE_SHARED_SECRET is set but ADDRESS_API_TRUSTED_CLIENT_IP_HEADER is not; the secret has no effect");
+  }
   // Security boundary: only trust a user-id header when an authenticated gateway
   // injects it and strips client-supplied copies. If unset, authenticated routes
   // fail closed with 401.
@@ -508,7 +520,7 @@ async function main(): Promise<void> {
     contentReportRateLimit,
     authSessionCookieOptions,
     rateLimit,
-    resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader),
+    resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader, edgeSharedSecret),
     resolveAuthenticatedUserId,
     getSitemapXml,
     createContentReport: (input) => createContentReport(pool, input),

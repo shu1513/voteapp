@@ -47,4 +47,49 @@ describe("createTrustedClientIpResolver", () => {
       })
     ).toBe("127.0.0.1");
   });
+
+  describe("edge shared secret", () => {
+    const SECRET = "test-edge-shared-secret-0123456789abcdef";
+
+    it("trusts the client-IP header when the request carries the matching secret", () => {
+      const resolveClientIp = createTrustedClientIpResolver("CF-Connecting-IP", SECRET);
+
+      expect(
+        resolveClientIp({
+          headers: { "cf-connecting-ip": "203.0.113.10", "x-edge-secret": SECRET },
+          remoteAddress: "127.0.0.1",
+        })
+      ).toBe("203.0.113.10");
+    });
+
+    it("ignores a spoofed client-IP header when the secret is missing or wrong", () => {
+      const resolveClientIp = createTrustedClientIpResolver("CF-Connecting-IP", SECRET);
+
+      // Direct *.onrender.com hit: attacker controls every header except the
+      // secret's value, so both variants must collapse to the socket IP.
+      expect(
+        resolveClientIp({
+          headers: { "cf-connecting-ip": "203.0.113.10" },
+          remoteAddress: "10.0.0.5",
+        })
+      ).toBe("10.0.0.5");
+      expect(
+        resolveClientIp({
+          headers: { "cf-connecting-ip": "203.0.113.10", "x-edge-secret": "wrong-guess" },
+          remoteAddress: "10.0.0.5",
+        })
+      ).toBe("10.0.0.5");
+    });
+
+    it("keeps legacy blind-trust behavior when no secret is configured", () => {
+      const resolveClientIp = createTrustedClientIpResolver("CF-Connecting-IP", null);
+
+      expect(
+        resolveClientIp({
+          headers: { "cf-connecting-ip": "203.0.113.10" },
+          remoteAddress: "127.0.0.1",
+        })
+      ).toBe("203.0.113.10");
+    });
+  });
 });

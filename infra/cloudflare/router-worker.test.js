@@ -133,6 +133,30 @@ describe("fetch handler", () => {
     assert.equal(new URL(calls[0].url).search, "?y=1");
   });
 
+  it("attaches the edge shared secret when configured and strips client-supplied copies", async () => {
+    const calls = stubFetch();
+
+    await worker.fetch(
+      new Request("https://impactperdollar.com/api/auth/login", {
+        method: "POST",
+        headers: { "x-edge-secret": "attacker-guess" },
+        body: "{}",
+      }),
+      { ...ENV, EDGE_SHARED_SECRET: "real-secret-value" }
+    );
+    await worker.fetch(
+      new Request("https://impactperdollar.com/api/elections", {
+        headers: { "x-edge-secret": "attacker-guess" },
+      }),
+      ENV
+    );
+
+    // Configured: the Worker's value replaces the client's.
+    assert.equal(calls[0].headers.get("x-edge-secret"), "real-secret-value");
+    // Not configured: the client-supplied copy must still be dropped.
+    assert.equal(calls[1].headers.get("x-edge-secret"), null);
+  });
+
   it("preserves method and headers on the proxied request", async () => {
     const calls = stubFetch();
 

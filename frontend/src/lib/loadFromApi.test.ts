@@ -121,6 +121,25 @@ describe("loadFromApi", () => {
     expect([...new Headers(init.headers).keys()]).toEqual([]);
   });
 
+  it("attaches the edge shared secret when configured", async () => {
+    vi.stubEnv("EDGE_SHARED_SECRET", "test-edge-shared-secret-0123456789abcdef");
+    const fetchMock = stubFetch(async () => ({ ok: true, status: 200, json: async () => ({}) }));
+
+    await loadFromApi("/api/elections/e-1", incoming());
+
+    const sent = new Headers((fetchMock.mock.calls[0][1] as RequestInit).headers);
+    expect(sent.get("x-edge-secret")).toBe("test-edge-shared-secret-0123456789abcdef");
+  });
+
+  it("sends no edge secret when the env var is unset", async () => {
+    const fetchMock = stubFetch(async () => ({ ok: true, status: 200, json: async () => ({}) }));
+
+    await loadFromApi("/api/elections/e-1", incoming());
+
+    const sent = new Headers((fetchMock.mock.calls[0][1] as RequestInit).headers);
+    expect(sent.get("x-edge-secret")).toBeNull();
+  });
+
   it("never forwards cookies even when the incoming request has them", async () => {
     vi.stubEnv("ADDRESS_API_TRUSTED_CLIENT_IP_HEADER", "x-real-client-ip");
     const fetchMock = stubFetch(async () => ({ ok: true, status: 200, json: async () => ({}) }));

@@ -92,9 +92,17 @@ plans. Consequences, in order of urgency:
   restart, or upgrade the KV plan for persistence.
 - **Direct onrender.com access bypasses Cloudflare**: someone hitting the
   `*.onrender.com` hosts directly can spoof `CF-Connecting-IP` to dodge
-  per-IP rate limiting (not sessions/auth — those are cookie-based). Known
-  launch tradeoff; revisit with a shared-secret header check or Render's
-  IP restrictions if abuse shows up.
+  per-IP rate limiting (not sessions/auth — those are cookie-based).
+  Closed by `EDGE_SHARED_SECRET` when set in all three places: Cloudflare
+  Worker secret (attached as `X-Edge-Secret`), `voteapp-api` env (gates
+  trust in `CF-Connecting-IP`; without proof the request falls back to the
+  socket IP, collapsing direct traffic into one bucket), and `voteapp-ssr`
+  env (loaders hit the public API host and relay the client IP, so they
+  need the same proof). Set the Worker + SSR sides before the API side so
+  legitimate traffic never falls into the shared bucket. Residual gap:
+  direct hits on the SSR host can still launder a spoofed IP through the
+  loader relay, but loaders only reach public GET detail endpoints — auth
+  endpoints stay protected.
 - **Scaling past one API instance**: auth rate limits are in-memory per
   process (address rate limit + sessions are Redis-backed already); more
   than one instance weakens only the auth limiter.

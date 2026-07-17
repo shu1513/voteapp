@@ -45,6 +45,14 @@ services:
         value: "10000"
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
         value: CF-Connecting-IP
+      # Shared with the Cloudflare Worker (secret var of the same name) and
+      # the SSR service below: the API only trusts CF-Connecting-IP on
+      # requests carrying the matching X-Edge-Secret header, so a direct
+      # *.onrender.com hit can no longer spoof per-IP rate limiting. Must be
+      # >= 32 chars (the server fails fast otherwise). Optional: unset keeps
+      # the legacy blind-trust behavior.
+      - key: EDGE_SHARED_SECRET
+        sync: false
       - key: AUTH_PUBLIC_BASE_URL
         value: https://impactperdollar.com
       - key: SITE_ORIGIN
@@ -122,6 +130,14 @@ services:
         value: "75000"
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
         value: CF-Connecting-IP
+      # Same value as the API's secret (referenced, not duplicated): loaders
+      # hit the API's public host, so their relayed client-IP header needs
+      # the same proof-of-edge the Worker attaches.
+      - key: EDGE_SHARED_SECRET
+        fromService:
+          name: voteapp-api
+          type: web
+          envVarKey: EDGE_SHARED_SECRET
 
   # ------------------------------------------------------------- workers ----
   # One process runs all three notification scheduler workers and re-asserts

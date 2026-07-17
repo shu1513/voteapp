@@ -90,6 +90,14 @@ export async function loadFromApi<T>(path: string, incomingRequest: Request): Pr
       headers.set(trustedIpHeader, clientIpValue);
     }
   }
+  // The API only trusts the relayed client-IP header above when the request
+  // also proves it came from a trusted hop (edge Worker or this server) —
+  // otherwise a direct hit on the API's public host could spoof it. Same
+  // env var the API and the Worker hold; absent (dev) nothing is sent.
+  const edgeSharedSecret = process.env.EDGE_SHARED_SECRET?.trim();
+  if (edgeSharedSecret) {
+    headers.set("x-edge-secret", edgeSharedSecret);
+  }
 
   let response: Response;
   try {
