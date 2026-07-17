@@ -138,11 +138,15 @@ export async function runUnlinkCandidateElection(
       );
     }
 
+    // Locked like manual:candidate-elections:move locks its elections: the
+    // guards below must not pass on a row a concurrent election edit (date
+    // correction, supersede) is changing mid-transaction.
     const electionResult = await client.query<ElectionRow>(
       `
         SELECT id, official_ballot_title
         FROM public.elections
         WHERE id = $1::uuid
+        FOR UPDATE
       `,
       [electionId]
     );

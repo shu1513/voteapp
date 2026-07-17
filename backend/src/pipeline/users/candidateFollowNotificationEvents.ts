@@ -119,6 +119,14 @@ export async function createCandidateFutureElectionNotificationEvents(
           -- re-runs re-fire this creator for existing links.
           AND candidate_election.status <> 'withdrawn'
           AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
+        -- Share-lock the candidacy row so this cannot race the withdraw
+        -- wrapper's FOR UPDATE: a plain read could see the pre-withdrawal
+        -- 'declared' row and commit a stale event after the wrapper's
+        -- unsent-event cleanup ran. The lock waits out the wrapper and
+        -- read-committed re-evaluation then filters the withdrawn row (and
+        -- in the converse order, the wrapper waits on this lock, so its
+        -- cleanup sees this event once committed).
+        FOR SHARE OF candidate_election
       ),
       eligible_follows AS (
         SELECT

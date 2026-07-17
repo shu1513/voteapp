@@ -159,5 +159,8 @@ describe("runWithdrawCandidateElection", () => {
 
     const electionLoad = calls.find((call) => call.text.includes("FROM public.elections"));
     expect(electionLoad?.text).toContain("(now() AT TIME ZONE 'Pacific/Honolulu')::date");
+    // The upcoming-election guard must not evaluate a date a concurrent
+    // manual:election-date:correct is changing mid-transaction.
+    expect(electionLoad?.text).toContain("FOR UPDATE");
   });
 });

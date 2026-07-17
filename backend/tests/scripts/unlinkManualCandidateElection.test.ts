@@ -60,6 +60,10 @@ describe("runUnlinkCandidateElection", () => {
     });
     const linkDelete = calls.find((call) => call.text.includes("DELETE FROM public.candidate_elections"));
     expect(linkDelete?.values).toEqual([LINK_ID]);
+    // The guards must not evaluate an election row a concurrent election
+    // edit (date correction, supersede) is changing mid-transaction.
+    const electionLoad = calls.find((call) => call.text.includes("FROM public.elections"));
+    expect(electionLoad?.text).toContain("FOR UPDATE");
     // A research error is silent cleanup: every unsent event for the pair
     // dies (any event_type), and no withdrawal event is created.
     const eventDelete = calls.find((call) =>

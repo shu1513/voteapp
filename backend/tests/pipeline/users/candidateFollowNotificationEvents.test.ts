@@ -136,6 +136,10 @@ describe("createCandidateFutureElectionNotificationEvents", () => {
     // Profile re-runs re-fire this creator for existing links; a withdrawn
     // link must never (re-)announce "on the ballot".
     expect(sql).toContain("candidate_election.status <> 'withdrawn'");
+    // The status check must not race the withdraw wrapper's FOR UPDATE: a
+    // plain read could see the pre-withdrawal row and commit a stale event
+    // after the wrapper's cleanup ran.
+    expect(sql).toContain("FOR SHARE OF candidate_election");
     expect(sql).toContain("election.election_date >= (now() AT TIME ZONE 'Pacific/Honolulu')::date");
     expect(sql).toContain("JOIN public.user_candidate_follows AS follow");
     expect(sql).toContain("follow.notify_elections = true");

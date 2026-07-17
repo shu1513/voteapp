@@ -142,6 +142,9 @@ export async function runWithdrawCandidateElection(
       );
     }
 
+    // Locked like manual:candidate-elections:move locks its elections: the
+    // upcoming-election guard must not pass on a date a concurrent
+    // manual:election-date:correct is changing mid-transaction.
     const electionResult = await client.query<ElectionRow>(
       `
         SELECT
@@ -151,6 +154,7 @@ export async function runWithdrawCandidateElection(
           (election_date >= ${US_LATEST_LOCAL_DATE_SQL}) AS is_upcoming
         FROM public.elections
         WHERE id = $1::uuid
+        FOR UPDATE
       `,
       [electionId]
     );
