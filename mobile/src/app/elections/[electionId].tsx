@@ -7,6 +7,7 @@ import {
   formatElectionDate,
   formatMoney,
   formatOutcome,
+  formatRosterStatus,
   formatVotePowerLabel,
   hasFinanceContent,
   scoreStanceDirection,
@@ -198,6 +199,15 @@ export default function ElectionScreen() {
                 }
               />
             ))}
+          </View>
+        </View>
+      ) : data.candidate_roster_status ? (
+        // Empty office roster: say WHY instead of hiding the section (roster
+        // awaiting certification, profiles being prepared, or unavailable).
+        <View className="mt-6">
+          <Text className="text-lg font-semibold text-ink">Candidates</Text>
+          <View className="mt-3 rounded-xl border border-line bg-white p-4">
+            <Text className="text-sm text-ink-soft">{formatRosterStatus(data.candidate_roster_status).long}</Text>
           </View>
         </View>
       ) : null}

@@ -10,7 +10,14 @@ import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
-import { formatDistrictType, formatElectionDate, formatMoney, formatOutcome, formatVotePowerLabel } from "@voteapp/api-client";
+import {
+  formatDistrictType,
+  formatElectionDate,
+  formatMoney,
+  formatOutcome,
+  formatRosterStatus,
+  formatVotePowerLabel,
+} from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
 import { useFollows } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
@@ -302,6 +309,15 @@ export function ElectionPage() {
               </div>
             ))}
           </div>
+        </section>
+      ) : data.candidate_roster_status ? (
+        // Empty office roster: say WHY instead of hiding the section (roster
+        // awaiting certification, profiles being prepared, or unavailable).
+        <section className="mt-6">
+          <h2 className="text-lg font-semibold">Candidates</h2>
+          <p className="mt-3 rounded-xl border border-line bg-white p-4 text-sm text-ink-soft">
+            {formatRosterStatus(data.candidate_roster_status).long}
+          </p>
         </section>
       ) : null}
 

@@ -2,6 +2,8 @@
 // must be treated as calendar dates, not instants: new Date("2026-11-03")
 // parses as UTC midnight and renders the previous day in US timezones.
 
+import type { CandidateRosterStatus } from "./types";
+
 export function formatElectionDate(isoDate: string): string {
   const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(isoDate.trim());
   if (!match) {
@@ -144,6 +146,33 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   DISTRICT_OF_COLUMBIA_OCF: "DC Office of Campaign Finance",
   NEW_YORK_CITY_CFB: "NYC Campaign Finance Board",
 };
+
+// Copy for the "why is the candidate list empty" statuses (see
+// CandidateRosterStatus in types.ts). `short` fits a ballot-card chip;
+// `long` is a sentence for the election page's empty state. Unknown reasons
+// (a newer backend) fall back to the generic unavailable copy so the enum
+// can grow without breaking older clients.
+export function formatRosterStatus(status: CandidateRosterStatus): { short: string; long: string } {
+  switch (status.reason) {
+    case "awaiting_official_roster":
+      return {
+        short: "Candidate list not final",
+        long:
+          "Election officials haven't published a final candidate list for this race." +
+          (status.check_after ? ` We'll check again after ${formatElectionDate(status.check_after)}.` : ""),
+      };
+    case "roster_processing":
+      return {
+        short: "Candidate details coming soon",
+        long: "A candidate list is available — candidate profiles are being prepared.",
+      };
+    default:
+      return {
+        short: "Candidate list unavailable",
+        long: "Candidate information for this race isn't available yet.",
+      };
+  }
+}
 
 export function financeSourceLabel(source: string): string {
   const mapped = FINANCE_SOURCE_LABELS[source];

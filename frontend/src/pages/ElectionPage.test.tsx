@@ -51,6 +51,43 @@ describe("ElectionPage", () => {
     expect(screen.getByRole("button", { name: "Report an issue with election" })).toBeInTheDocument();
   });
 
+  it("explains an empty candidate list instead of hiding the section", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        candidates: [],
+        candidate_roster_status: { reason: "awaiting_official_roster", check_after: "2026-08-27" },
+      })
+    );
+
+    expect(await screen.findByRole("heading", { name: "Candidates" })).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Election officials haven't published a final candidate list for this race. We'll check again after August 27, 2026."
+      )
+    ).toBeInTheDocument();
+  });
+
+  it("hides the candidates section entirely when empty with no roster status", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ candidates: [], candidate_roster_status: null }));
+
+    expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Candidates" })).not.toBeInTheDocument();
+  });
+
+  it("falls back to generic copy for an unknown roster status reason", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        candidates: [],
+        candidate_roster_status: { reason: "some_future_reason", check_after: null },
+      })
+    );
+
+    expect(await screen.findByText("Candidate information for this race isn't available yet.")).toBeInTheDocument();
+  });
+
   it("renders a collapsed campaign finance disclosure only for candidates with finance data", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const detail = electionDetail();

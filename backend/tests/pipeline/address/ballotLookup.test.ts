@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   BALLOT_PAST_ELECTION_VISIBILITY_DAYS,
+  deriveCandidateRosterStatus,
   lookupBallotSummariesByDistrictIds,
   lookupCandidateElectionFinanceSummaryById,
   lookupElectionDetailById,
@@ -178,6 +179,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           discovery_contest_family: "non_judicial_office",
           sources: ["https://example.test/elections"],
           candidate_count: 3,
+          candidate_roster_status: null,
           ballot_measure_id: null,
           has_results: true,
           current_result_outcome: "won",
@@ -226,6 +228,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           discovery_contest_family: "ballot_measure",
           sources: ["https://example.test/measure"],
           candidate_count: 0,
+          candidate_roster_status: null,
           ballot_measure_id: ballotMeasureId,
           has_results: false,
           current_result_outcome: null,
@@ -970,6 +973,337 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     ]);
   });
 
+});
+
+describe("deriveCandidateRosterStatus", () => {
+  const today = "2026-07-16";
+  const upcoming = "2026-11-03";
+  const past = "2026-06-02";
+
+  it("marks staged rosters with names as processing regardless of deferrals", () => {
+    for (const staging_status of ["written", "validated"]) {
+      expect(
+        deriveCandidateRosterStatus(
+          { election_date: upcoming, staging_status, staged_candidate_count: 2, has_candidate_links: false, blocked_until: "2026-08-27" },
+          today
+        )
+      ).toEqual({ reason: "roster_processing", check_after: null });
+    }
+  });
+
+  it("never reads a withdrawn-emptied race as processing", () => {
+    // Every candidate withdrew (or was deleted): links exist but none are
+    // visible. The staged roster was already processed, so "profiles are
+    // being prepared" would be false forever.
+    expect(
+      deriveCandidateRosterStatus(
+        {
+          election_date: upcoming,
+          staging_status: "written",
+          staged_candidate_count: 2,
+          has_candidate_links: true,
+          blocked_until: null,
+        },
+        today
+      )
+    ).toEqual({ reason: "candidate_information_unavailable", check_after: null });
+    // A deferral still applies there: replacing a withdrawn nominee is
+    // genuinely awaiting a new official roster.
+    expect(
+      deriveCandidateRosterStatus(
+        {
+          election_date: upcoming,
+          staging_status: "written",
+          staged_candidate_count: 2,
+          has_candidate_links: true,
+          blocked_until: "2026-08-27",
+        },
+        today
+      )
+    ).toEqual({ reason: "awaiting_official_roster", check_after: "2026-08-27" });
+  });
+
+  it("maps an open deferral on an upcoming election to awaiting with a future check_after", () => {
+    expect(
+      deriveCandidateRosterStatus(
+        { election_date: upcoming, staging_status: "pending", staged_candidate_count: 0, has_candidate_links: false, blocked_until: "2026-08-27" },
+        today
+      )
+    ).toEqual({ reason: "awaiting_official_roster", check_after: "2026-08-27" });
+  });
+
+  it("never exposes a past or same-day check_after date", () => {
+    for (const blocked_until of ["2026-07-01", today]) {
+      expect(
+        deriveCandidateRosterStatus(
+          { election_date: upcoming, staging_status: null, staged_candidate_count: null, has_candidate_links: false, blocked_until },
+          today
+        )
+      ).toEqual({ reason: "awaiting_official_roster", check_after: null });
+    }
+  });
+
+  it("suppresses awaiting and processing copy for past elections", () => {
+    // Open deferral on a finished race: no "we'll check again" promise.
+    expect(
+      deriveCandidateRosterStatus(
+        { election_date: past, staging_status: "pending", staged_candidate_count: 0, has_candidate_links: false, blocked_until: "2026-08-27" },
+        today
+      )
+    ).toEqual({ reason: "candidate_information_unavailable", check_after: null });
+    // Staged-but-never-linked roster on a finished race: no "coming soon"
+    // promise either — fanout debt must not read as active processing forever.
+    for (const staging_status of ["written", "validated"]) {
+      expect(
+        deriveCandidateRosterStatus(
+          { election_date: past, staging_status, staged_candidate_count: 2, has_candidate_links: false, blocked_until: null },
+          today
+        )
+      ).toEqual({ reason: "candidate_information_unavailable", check_after: null });
+    }
+  });
+
+  it("falls back to unavailable for pending/failed/no_results/empty-payload staging without a deferral", () => {
+    for (const row of [
+      { staging_status: "pending", staged_candidate_count: 0, has_candidate_links: false },
+      { staging_status: "failed", staged_candidate_count: 0, has_candidate_links: false },
+      { staging_status: "no_results", staged_candidate_count: 0, has_candidate_links: false },
+      // A written row with an empty payload is a no-roster marker, not names.
+      { staging_status: "written", staged_candidate_count: 0, has_candidate_links: false },
+      { staging_status: null, staged_candidate_count: null, has_candidate_links: false },
+    ]) {
+      expect(
+        deriveCandidateRosterStatus({ election_date: upcoming, ...row, blocked_until: null }, today)
+      ).toEqual({ reason: "candidate_information_unavailable", check_after: null });
+    }
+  });
+});
+
+describe("candidate_roster_status wiring", () => {
+  it("attaches roster status to zero-candidate office summaries and leaves measures null", async () => {
+    const futureElectionDate = "2099-11-03";
+    const futureBlockedUntil = "2099-08-27";
+    const electionRowBase = {
+      district_id: districtId,
+      district_type: "county",
+      geoid_compact: "06037",
+      district_name: "Los Angeles County",
+      state: "CA",
+      state_fips: "06",
+      representation_power_score: "72.5",
+      election_date: futureElectionDate,
+      sources: ["https://example.test/elections"],
+    };
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: districtId,
+            district_type: "county",
+            geoid_compact: "06037",
+            name: "Los Angeles County",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: "72.5",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ...electionRowBase,
+            election_id: officeElectionId,
+            race_type: "office",
+            official_ballot_title: "Sheriff",
+            election_stage: "general",
+            is_partisan: false,
+            discovery_contest_family: "non_judicial_office",
+            office_id: null,
+            office_scope: null,
+            office_canonical_name: null,
+            office_summary: null,
+          },
+          {
+            ...electionRowBase,
+            election_id: measureElectionId,
+            race_type: "ballot_measure",
+            official_ballot_title: "Measure H",
+            election_stage: null,
+            is_partisan: null,
+            discovery_contest_family: "ballot_measure",
+            office_id: null,
+            office_scope: null,
+            office_canonical_name: null,
+            office_summary: null,
+          },
+        ],
+      })
+      // candidate counts: none for either election
+      .mockResolvedValueOnce({ rows: [] })
+      // ballot measures
+      .mockResolvedValueOnce({
+        rows: [{ election_id: measureElectionId, ballot_measure_id: ballotMeasureId }],
+      })
+      // measure research areas (office research areas skipped: no office ids)
+      .mockResolvedValueOnce({ rows: [] })
+      // result outcomes
+      .mockResolvedValueOnce({ rows: [] })
+      // roster status (only the zero-candidate OFFICE election)
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            election_date: futureElectionDate,
+            staging_status: "pending",
+            staged_candidate_count: 0,
+            has_candidate_links: false,
+            blocked_until: futureBlockedUntil,
+          },
+        ],
+      });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId]);
+
+    const officeSummary = result.elections.find((election) => election.id === officeElectionId);
+    const measureSummary = result.elections.find((election) => election.id === measureElectionId);
+    expect(officeSummary?.candidate_roster_status).toEqual({
+      reason: "awaiting_official_roster",
+      check_after: futureBlockedUntil,
+    });
+    expect(measureSummary?.candidate_roster_status).toBeNull();
+
+    expect(query).toHaveBeenCalledTimes(7);
+    const rosterStatusCall = query.mock.calls[6];
+    expect(rosterStatusCall?.[0]).toContain("candidate_roster:");
+    expect(rosterStatusCall?.[0]).toContain("manual_research_deferrals");
+    // Only the zero-candidate office election is queried — never the measure.
+    expect(rosterStatusCall?.[1]).toEqual([[officeElectionId]]);
+  });
+
+  it("attaches roster status to a zero-candidate office detail", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "state_upper",
+            geoid_compact: "36028",
+            district_name: "State Senate District 28 (2024); New York",
+            state: "NY",
+            state_fips: "36",
+            representation_power_score: "50",
+            race_type: "office",
+            official_ballot_title: "State Senator, District 28",
+            election_date: "2099-11-03",
+            election_stage: "general",
+            is_partisan: true,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_id: null,
+            office_scope: null,
+            office_canonical_name: null,
+          },
+        ],
+      })
+      // candidates: none
+      .mockResolvedValueOnce({ rows: [] })
+      // ballot measures
+      .mockResolvedValueOnce({ rows: [] })
+      // office results
+      .mockResolvedValueOnce({ rows: [] })
+      // ballot measure outcomes
+      .mockResolvedValueOnce({ rows: [] })
+      // roster status
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            election_date: "2099-11-03",
+            staging_status: "written",
+            staged_candidate_count: 2,
+            has_candidate_links: false,
+            blocked_until: null,
+          },
+        ],
+      })
+      // historical competitiveness
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidates).toEqual([]);
+    expect(result?.candidate_roster_status).toEqual({ reason: "roster_processing", check_after: null });
+    expect(query.mock.calls[5]?.[0]).toContain("candidate_roster:");
+    expect(query.mock.calls[5]?.[1]).toEqual([[officeElectionId]]);
+  });
+
+  it("issues no roster-status query when every office election has candidates", async () => {
+    vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "county",
+            geoid_compact: "06037",
+            district_name: "Los Angeles County",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: "64.25",
+            race_type: "office",
+            official_ballot_title: "Sheriff",
+            election_date: "2099-06-02",
+            election_stage: "primary",
+            is_partisan: false,
+            discovery_contest_family: "non_judicial_office",
+            sources: ["https://example.test/elections"],
+            office_id: null,
+            office_scope: null,
+            office_canonical_name: null,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Pat Connolly",
+            party: "Nonpartisan",
+            is_incumbent: false,
+            status: "declared",
+            summary: null,
+            current_office: null,
+            state: "CA",
+            fec_ids: [],
+            state_filing_ids: [],
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      // candidate records
+      .mockResolvedValueOnce({ rows: [] })
+      // candidate record tags
+      .mockResolvedValueOnce({ rows: [] })
+      // historical competitiveness
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await lookupElectionDetailById({ query }, officeElectionId);
+
+    expect(result?.candidate_roster_status).toBeNull();
+    for (const call of query.mock.calls) {
+      expect(call[0]).not.toContain("manual_research_deferrals");
+    }
+  });
 });
 
 describe("lookupElectionDetailById", () => {

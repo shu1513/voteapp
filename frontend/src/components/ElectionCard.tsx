@@ -1,6 +1,12 @@
 import { Link } from "react-router";
 import type { ElectionSummary } from "@voteapp/api-client";
-import { formatDistrictType, formatElectionDate, formatOutcome, formatVotePowerLabel } from "@voteapp/api-client";
+import {
+  formatDistrictType,
+  formatElectionDate,
+  formatOutcome,
+  formatRosterStatus,
+  formatVotePowerLabel,
+} from "@voteapp/api-client";
 
 /**
  * Shared between the anonymous ballot and the saved (account) ballot.
@@ -37,7 +43,9 @@ export function ElectionCard({
           <span className="rounded bg-ink/10 px-2 py-0.5 text-ink">Ballot measure</span>
         ) : (
           <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
-            {election.candidate_count} candidate{election.candidate_count === 1 ? "" : "s"}
+            {election.candidate_count === 0 && election.candidate_roster_status
+              ? formatRosterStatus(election.candidate_roster_status).short
+              : `${election.candidate_count} candidate${election.candidate_count === 1 ? "" : "s"}`}
           </span>
         )}
         {election.vote_power.label !== "unknown" ? (
