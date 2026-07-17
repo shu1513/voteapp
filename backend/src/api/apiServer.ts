@@ -1728,6 +1728,15 @@ export function createApiApp(options: AddressApiServerOptions): Express {
   const app = express();
   app.disable("x-powered-by");
 
+  // Everything this API serves is dynamic and often personalized (/api/me,
+  // ballot, auth, unsubscribe pages), so default every response to no-store
+  // and keep heuristic/shared caches out. Handlers with genuinely cacheable
+  // output (the sitemap) overwrite it per-response via their own headers.
+  app.use((_request, response, next) => {
+    response.setHeader("cache-control", "no-store");
+    next();
+  });
+
   // Ordering is load-bearing:
   // - CORS/preflight and unknown-path handling run before rate limiting.
   // - Rate limiting runs before JSON body parsing so oversized POSTs cannot bypass it.

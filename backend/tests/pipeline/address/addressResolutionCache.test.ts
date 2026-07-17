@@ -14,17 +14,31 @@ describe("addressResolutionCache", () => {
       address: " 3921   Harlan Ave Baldwin Park CA 91706 ",
       benchmark: "Public_AR_Current",
       vintage: "ACS2024_Current",
+      layers: "all",
     });
     const sameKey = buildAddressLookupCacheKey({
       address: "3921 harlan ave baldwin park ca 91706",
       benchmark: "Public_AR_Current",
       vintage: "ACS2024_Current",
+      layers: "all",
     });
 
     expect(key).toBe(sameKey);
     expect(key).toMatch(new RegExp(`^${ADDRESS_LOOKUP_CACHE_KEY_PREFIX}[a-f0-9]{64}$`));
     expect(key).not.toContain("Harlan");
     expect(key).not.toContain("3921");
+  });
+
+  it("keys on the layers configuration so a layers change cannot reuse stale results", () => {
+    const base = {
+      address: "3921 harlan ave baldwin park ca 91706",
+      benchmark: "Public_AR_Current",
+      vintage: "ACS2024_Current",
+    };
+
+    expect(buildAddressLookupCacheKey({ ...base, layers: "all" })).not.toBe(
+      buildAddressLookupCacheKey({ ...base, layers: "54,56" })
+    );
   });
 
   it("writes JSON with TTL and reads it back", async () => {
@@ -39,7 +53,7 @@ describe("addressResolutionCache", () => {
 
     await writeAddressLookupCache(
       cache,
-      "address_lookup:v1:test",
+      "address_lookup:v2:test",
       {
         matched_address: "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
         coordinates: { lat: 34.08, lng: -117.98 },
@@ -59,8 +73,8 @@ describe("addressResolutionCache", () => {
       60
     );
 
-    expect(cache.set).toHaveBeenCalledWith("address_lookup:v1:test", expect.any(String), { EX: 60 });
-    await expect(readAddressLookupCache(cache, "address_lookup:v1:test")).resolves.toMatchObject({
+    expect(cache.set).toHaveBeenCalledWith("address_lookup:v2:test", expect.any(String), { EX: 60 });
+    await expect(readAddressLookupCache(cache, "address_lookup:v2:test")).resolves.toMatchObject({
       matched_address: "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
       coordinates: { lat: 34.08, lng: -117.98 },
       address_match_count: 1,
@@ -72,13 +86,13 @@ describe("addressResolutionCache", () => {
   it("returns null for malformed cached payloads", async () => {
     const cache = { get: vi.fn(async () => "not-json") };
 
-    await expect(readAddressLookupCache(cache, "address_lookup:v1:test")).resolves.toBeNull();
+    await expect(readAddressLookupCache(cache, "address_lookup:v2:test")).resolves.toBeNull();
   });
 
   it("uses the default TTL when none is provided", async () => {
     const cache = { set: vi.fn(async () => "OK") };
 
-    await writeAddressLookupCache(cache, "address_lookup:v1:test", {
+    await writeAddressLookupCache(cache, "address_lookup:v2:test", {
       matched_address: "matched",
       coordinates: { lat: 1, lng: 2 },
       address_match_count: 1,
@@ -86,7 +100,7 @@ describe("addressResolutionCache", () => {
       warnings: [],
     });
 
-    expect(cache.set).toHaveBeenCalledWith("address_lookup:v1:test", expect.any(String), {
+    expect(cache.set).toHaveBeenCalledWith("address_lookup:v2:test", expect.any(String), {
       EX: DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS,
     });
   });

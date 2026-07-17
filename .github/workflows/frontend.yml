@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Typecheck and test
+    name: Typecheck, lint, test, and build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -36,5 +36,14 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Lint
+        run: npm run lint
+
       - name: Unit tests
         run: npm run test
+
+      # The production build exercises code paths typecheck and vitest do
+      # not (react-router/vite bundling, CSS pipeline); Sentry source-map
+      # upload stays off because SENTRY_AUTH_TOKEN is absent in CI.
+      - name: Production build
+        run: npm run build

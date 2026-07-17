@@ -11,6 +11,7 @@ import {
   type CensusAddressGeocodeResult,
   type CensusAddressGeocoderOptions,
   DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK,
+  DEFAULT_CENSUS_ADDRESS_GEOCODER_LAYERS,
   DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE,
   geocodeAddressWithCensus,
 } from "./censusAddressGeocoder.js";
@@ -50,10 +51,12 @@ export type AddressResolverServiceOptions = {
 function effectiveGeocoderCacheContext(options: CensusAddressGeocoderOptions | undefined): {
   benchmark: string;
   vintage: string;
+  layers: string;
 } {
   return {
     benchmark: options?.benchmark?.trim() || DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK,
     vintage: options?.vintage?.trim() || DEFAULT_CENSUS_ADDRESS_GEOCODER_VINTAGE,
+    layers: options?.layers?.trim() || DEFAULT_CENSUS_ADDRESS_GEOCODER_LAYERS,
   };
 }
 

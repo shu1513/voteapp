@@ -194,7 +194,7 @@ describe("resolveAddressToDistricts", () => {
     });
 
     expect(geocodeAddress).toHaveBeenCalledOnce();
-    expect(cache.set).toHaveBeenCalledWith(expect.stringMatching(/^address_lookup:v1:[a-f0-9]{64}$/), expect.any(String), {
+    expect(cache.set).toHaveBeenCalledWith(expect.stringMatching(/^address_lookup:v2:[a-f0-9]{64}$/), expect.any(String), {
       EX: 123,
     });
     const cachedPayload = JSON.parse(String(cache.set.mock.calls[0]?.[1]));
