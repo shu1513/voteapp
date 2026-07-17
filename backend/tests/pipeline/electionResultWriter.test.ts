@@ -4,10 +4,13 @@ import { writeElectionResultPayload } from "../../src/pipeline/electionResults/e
 import type { ElectionResultContext } from "../../src/pipeline/electionResults/electionResultContextLoader.js";
 import type { ElectionResultPayload } from "../../src/contracts/electionResultPayloadContract.js";
 
-const ELECTION_ID = "00000000-0000-0000-0000-000000000001";
-const CANDIDATE_ELECTION_ID = "10000000-0000-0000-0000-000000000001";
-const CANDIDATE_ID = "20000000-0000-0000-0000-000000000001";
-const BALLOT_MEASURE_ID = "30000000-0000-0000-0000-000000000001";
+// Version/variant-valid UUIDs: the writer now fans decisive results out to
+// notification events, whose creator rejects ids that fail the app's strict
+// isUuid check (version nibble 1-5), as production ids always pass it.
+const ELECTION_ID = "00000000-0000-4000-8000-000000000001";
+const CANDIDATE_ELECTION_ID = "10000000-0000-4000-8000-000000000001";
+const CANDIDATE_ID = "20000000-0000-4000-8000-000000000001";
+const BALLOT_MEASURE_ID = "30000000-0000-4000-8000-000000000001";
 
 function makeClient() {
   return {

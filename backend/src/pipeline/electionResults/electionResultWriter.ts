@@ -14,6 +14,7 @@ import {
 import type { ElectionResultContext } from "./electionResultContextLoader.js";
 import { markElectionResultPassAttemptAndChecked } from "./electionResultCheckedTimestamps.js";
 import type { ElectionResultSourceVerification } from "./electionResultSourceValidation.js";
+import { createElectionResultNotificationEvents } from "../users/electionResultNotificationEvents.js";
 
 export type ElectionResultRunInput = {
   state: string;
@@ -42,6 +43,7 @@ export type ElectionResultWriteResult = {
   uncheckedElectionIds: string[];
   canonicalCandidateStatusUpdates: number;
   canonicalBallotMeasureUpdates: number;
+  resultNotificationEventsCreated: number;
 };
 
 type RunRow = {
@@ -248,6 +250,17 @@ async function upsertBallotMeasureResultRow(
   );
 }
 
+// Outcomes worth announcing to users: an office race decided (or advanced to
+// the next round) and a measure passed/failed. Everything else — unknown,
+// too_close, and the terminal-missing statuses — has no result to report.
+const DECISIVE_RESULT_OUTCOMES = new Set<ParsedElectionResultPayloadRow["outcome"]>([
+  "won",
+  "advanced",
+  "runoff",
+  "passed",
+  "failed",
+]);
+
 function winnerStatusForOutcome(outcome: ParsedElectionResultPayloadRow["outcome"]): CandidateElectionStatus | null {
   if (outcome === "won") {
     return "won";
@@ -440,6 +453,15 @@ export async function writeElectionResultPayloadRows(
   });
   const runStatus = deriveRunStatus(input.payload.results);
 
+  // Same transaction as the result upserts: notification events commit
+  // atomically with the rows they announce. Only decisive outcomes fan out —
+  // not_found / not_final_yet / unknown / too_close rows carry nothing worth
+  // emailing — and the (user, election) unique constraint absorbs re-writes.
+  const decisiveElectionIds = input.payload.results
+    .filter((row) => DECISIVE_RESULT_OUTCOMES.has(row.outcome))
+    .map((row) => row.election_id);
+  const notification = await createElectionResultNotificationEvents(client, decisiveElectionIds);
+
   return {
     runId,
     runStatus,
@@ -449,5 +471,6 @@ export async function writeElectionResultPayloadRows(
     uncheckedElectionIds: passMarking.uncheckedElectionIds,
     canonicalCandidateStatusUpdates,
     canonicalBallotMeasureUpdates,
+    resultNotificationEventsCreated: notification.createdCount,
   };
 }

@@ -734,6 +734,7 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
         uncheckedElectionIds: writeResult.uncheckedElectionIds,
         canonicalCandidateStatusUpdates: writeResult.canonicalCandidateStatusUpdates,
         canonicalBallotMeasureUpdates: writeResult.canonicalBallotMeasureUpdates,
+        resultNotificationEventsCreated: writeResult.resultNotificationEventsCreated,
         projectionPreview,
         unmatchedWinners,
         warnings,

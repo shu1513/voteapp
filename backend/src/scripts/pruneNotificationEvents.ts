@@ -50,6 +50,15 @@ export const NOTIFICATION_EVENT_TABLES: readonly NotificationEventTable[] = [
     batchKey: "id",
   },
   {
+    table: "user_election_result_notification_events",
+    // Age alone, like candidate-follow events: result events have no
+    // date-bound orphan path (district alerts resolve once the election date
+    // passes), so a never-verifying user's pending events would otherwise
+    // live forever — and a result alert this old is stale news anyway.
+    ageCondition: "created_at < now() - make_interval(days => $1::int)",
+    batchKey: "id",
+  },
+  {
     table: "user_election_reminder_sends",
     ageCondition: `election_date < ${US_LATEST_LOCAL_DATE_SQL} - $1::int`,
     batchKey: "ctid",

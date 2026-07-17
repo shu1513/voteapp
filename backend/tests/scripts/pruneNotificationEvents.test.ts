@@ -49,14 +49,14 @@ describe("parsePruneNotificationEventsArgs", () => {
 });
 
 describe("pruneNotificationEvents", () => {
-  it("counts all five tables without deleting on dry run", async () => {
+  it("counts all six tables without deleting on dry run", async () => {
     const query = vi.fn().mockResolvedValue({ rows: [{ matched: "12" }], rowCount: 1 });
 
     await expect(
       pruneNotificationEvents({ query } as never, { olderThanDays: 90, live: false, batchSize: 1000 })
-    ).resolves.toEqual({ matchedCount: 60, deletedCount: 0 });
+    ).resolves.toEqual({ matchedCount: 72, deletedCount: 0 });
 
-    expect(query).toHaveBeenCalledTimes(5);
+    expect(query).toHaveBeenCalledTimes(6);
     const sqls = query.mock.calls.map((call) => String(call[0]));
     expect(sqls[0]).toContain("SELECT count(*)");
     expect(sqls[0]).toContain("user_candidate_follow_notification_events");
@@ -66,14 +66,18 @@ describe("pruneNotificationEvents", () => {
     expect(sqls[0]).not.toContain("notified_at IS NOT NULL");
     expect(sqls[1]).toContain("user_district_notification_events");
     expect(sqls[1]).toContain("notified_at IS NOT NULL");
+    // Result alerts prune by age alone: they have no date-bound orphan path,
+    // so a never-verifying user's pending events must still age out.
+    expect(sqls[2]).toContain("user_election_result_notification_events");
+    expect(sqls[2]).not.toContain("notified_at IS NOT NULL");
     // Reminder sends age by the election date itself, not row creation time.
-    expect(sqls[2]).toContain("user_election_reminder_sends");
-    expect(sqls[2]).toContain("election_date <");
-    expect(sqls[2]).not.toContain("created_at");
+    expect(sqls[3]).toContain("user_election_reminder_sends");
+    expect(sqls[3]).toContain("election_date <");
+    expect(sqls[3]).not.toContain("created_at");
     // Only long-revoked device tokens are prunable; active rows stay.
-    expect(sqls[3]).toContain("user_push_tokens");
-    expect(sqls[3]).toContain("revoked_at IS NOT NULL");
-    expect(sqls[4]).toContain("user_push_notification_receipts");
+    expect(sqls[4]).toContain("user_push_tokens");
+    expect(sqls[4]).toContain("revoked_at IS NOT NULL");
+    expect(sqls[5]).toContain("user_push_notification_receipts");
     expect(sqls.join(" ")).not.toContain("DELETE");
     expect(query.mock.calls[0]?.[1]).toEqual([90]);
   });
@@ -85,15 +89,16 @@ describe("pruneNotificationEvents", () => {
       .mockResolvedValueOnce({ rows: [], rowCount: 2 })
       .mockResolvedValueOnce({ rows: [], rowCount: 1 })
       .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // district table: single short batch
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // result alerts: single short batch
       .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // reminder sends: single short batch
       .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // push tokens: single short batch
       .mockResolvedValueOnce({ rows: [], rowCount: 1 }); // push receipts: single short batch
 
     await expect(
       pruneNotificationEvents({ query } as never, { olderThanDays: 30, live: true, batchSize: 2 })
-    ).resolves.toEqual({ matchedCount: 9, deletedCount: 9 });
+    ).resolves.toEqual({ matchedCount: 10, deletedCount: 10 });
 
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     const sql = String(query.mock.calls[0]?.[0]);
     expect(sql).toContain("DELETE FROM public.user_candidate_follow_notification_events");
     expect(sql).toContain("created_at < now() - make_interval(days => $1::int)");
@@ -103,17 +108,20 @@ describe("pruneNotificationEvents", () => {
     const districtSql = String(query.mock.calls[3]?.[0]);
     expect(districtSql).toContain("DELETE FROM public.user_district_notification_events");
     expect(districtSql).toContain("notified_at IS NOT NULL");
+    const resultAlertSql = String(query.mock.calls[4]?.[0]);
+    expect(resultAlertSql).toContain("DELETE FROM public.user_election_result_notification_events");
+    expect(resultAlertSql).not.toContain("notified_at IS NOT NULL");
     // No id column on the composite-key reminder table: batches key on ctid.
-    const reminderSql = String(query.mock.calls[4]?.[0]);
+    const reminderSql = String(query.mock.calls[5]?.[0]);
     expect(reminderSql).toContain("DELETE FROM public.user_election_reminder_sends");
     expect(reminderSql).toContain("ctid IN");
     expect(reminderSql).toContain("election_date <");
-    const pushTokensSql = String(query.mock.calls[5]?.[0]);
+    const pushTokensSql = String(query.mock.calls[6]?.[0]);
     expect(pushTokensSql).toContain("DELETE FROM public.user_push_tokens");
     expect(pushTokensSql).toContain("revoked_at IS NOT NULL");
     expect(pushTokensSql).toContain("id IN");
     // No id column on the receipt table: batches key on ctid.
-    const receiptsSql = String(query.mock.calls[6]?.[0]);
+    const receiptsSql = String(query.mock.calls[7]?.[0]);
     expect(receiptsSql).toContain("DELETE FROM public.user_push_notification_receipts");
     expect(receiptsSql).toContain("ctid IN");
   });
@@ -124,6 +132,6 @@ describe("pruneNotificationEvents", () => {
     await expect(
       pruneNotificationEvents({ query } as never, { olderThanDays: 30, live: true, batchSize: 1000 })
     ).resolves.toEqual({ matchedCount: 0, deletedCount: 0 });
-    expect(query).toHaveBeenCalledTimes(5);
+    expect(query).toHaveBeenCalledTimes(6);
   });
 });
