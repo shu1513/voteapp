@@ -565,6 +565,40 @@ describe("createAuthService deleteAccount", () => {
   });
 });
 
+describe("createAuthService logout", () => {
+  it("destroys the current session", async () => {
+    const redis = createRedisMock();
+
+    const service = createAuthService({
+      db: createDbMock(createDbClientMock()) as never,
+      redis: redis as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.logout({ currentSessionId: "session-1" });
+    expect(redis.del).toHaveBeenCalled();
+  });
+
+  it("still resolves when Redis is down, so the API can clear the cookie", async () => {
+    const redis = createRedisMock();
+    redis.get.mockRejectedValue(new Error("redis down"));
+    redis.del.mockRejectedValue(new Error("redis down"));
+
+    const service = createAuthService({
+      db: createDbMock(createDbClientMock()) as never,
+      redis: redis as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    // A propagated Redis error would make the API skip the Set-Cookie clear;
+    // the browser would then keep a cookie for a session the failed delete
+    // left in Redis, and the logout would undo itself once Redis recovers.
+    await expect(service.logout({ currentSessionId: "session-1" })).resolves.toBeUndefined();
+  });
+});
+
 describe("createAuthService logoutAll", () => {
   it("destroys every session for the user", async () => {
     const redis = createRedisMock();
