@@ -18,6 +18,17 @@ function linkRow(overrides: Partial<Record<string, unknown>> = {}) {
   };
 }
 
+function linkFkRow(overrides: Partial<Record<string, unknown>> = {}) {
+  return {
+    constraint_name: "fl_candidate_finance_outside_group_l_candidate_election_id_fkey",
+    table_name: "public.fl_candidate_finance_outside_group_links",
+    column_name: "candidate_election_id",
+    referenced_column: "id",
+    column_count: 1,
+    ...overrides,
+  };
+}
+
 function electionRows(overrides: { fromDate?: string; toDate?: string; toDistrict?: string } = {}) {
   return [
     {
@@ -36,7 +47,9 @@ function electionRows(overrides: { fromDate?: string; toDate?: string; toDistric
 }
 
 // Query order: BEGIN, lock from-link, load elections, FK-table catalog scan,
-// (per-table finance counts), target-link lock, [mate collision], write, COMMIT/ROLLBACK.
+// (per-table finance counts), target-link lock, then either
+// [link-FK catalog scan, per-table link counts, DELETE] on the merge path or
+// [mate collision, UPDATE] on the move path, COMMIT/ROLLBACK.
 function buildClient(responses: Record<string, unknown[][]>) {
   const calls: { text: string; values: unknown[] }[] = [];
   const queue = { ...responses };
@@ -184,6 +197,7 @@ describe("runMoveCandidateElectionLink", () => {
   it("converges an identical duplicate link by deleting the from-link", async () => {
     const { query, calls } = buildClient(happyResponses({
       "FROM public.candidate_elections\n        WHERE candidate_id": [[linkRow()], [linkRow({ id: "99999999-9999-9999-9999-999999999999" })]],
+      "confrelid = 'public.candidate_elections'": [[]],
     }));
 
     const result = await runMoveCandidateElectionLink(
@@ -194,6 +208,94 @@ describe("runMoveCandidateElectionLink", () => {
     expect(result.action).toBe("merged_duplicate");
     const del = calls.find((call) => call.text.includes("DELETE FROM public.candidate_elections"));
     expect(del?.values).toEqual([LINK_ID]);
+  });
+
+  it("refuses the duplicate merge when rows reference the from-link id", async () => {
+    const { query, calls } = buildClient(happyResponses({
+      "FROM public.candidate_elections\n        WHERE candidate_id": [[linkRow()], [linkRow({ id: "99999999-9999-9999-9999-999999999999" })]],
+      "confrelid = 'public.candidate_elections'": [
+        [linkFkRow()],
+      ],
+      "count(*)::text AS n FROM public.fl_candidate_finance_outside_group_links": [[{ n: "3" }]],
+    }));
+
+    await expect(
+      runMoveCandidateElectionLink(
+        { query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(
+      /fl_candidate_finance_outside_group_links\.candidate_election_id \(3\)/
+    );
+    // The count must key on the from-link id, and the delete must not run.
+    const count = calls.find((call) =>
+      call.text.includes("FROM public.fl_candidate_finance_outside_group_links")
+    );
+    expect(count?.values).toEqual([LINK_ID]);
+    expect(calls.some((call) => call.text.includes("DELETE FROM public.candidate_elections"))).toBe(false);
+    expect(calls.at(-1)?.text).toBe("ROLLBACK");
+  });
+
+  it("refuses the duplicate merge under an FK shape the guard cannot count", async () => {
+    // A composite FK (or one referencing a non-id unique column) cannot be
+    // checked by comparing a single child column to the from-link id; the
+    // guard must fail closed instead of counting zero and cascading.
+    const { query, calls } = buildClient(happyResponses({
+      "FROM public.candidate_elections\n        WHERE candidate_id": [[linkRow()], [linkRow({ id: "99999999-9999-9999-9999-999999999999" })]],
+      "confrelid = 'public.candidate_elections'": [
+        [
+          linkFkRow({
+            constraint_name: "future_composite_fkey",
+            table_name: "public.future_link_scoped_table",
+            column_name: "candidate_id",
+            referenced_column: "candidate_id",
+            column_count: 2,
+          }),
+          linkFkRow({
+            constraint_name: "future_composite_fkey",
+            table_name: "public.future_link_scoped_table",
+            column_name: "election_id",
+            referenced_column: "election_id",
+            column_count: 2,
+          }),
+        ],
+      ],
+    }));
+
+    await expect(
+      runMoveCandidateElectionLink(
+        { query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(/cannot check.*future_link_scoped_table\.future_composite_fkey/s);
+    expect(calls.some((call) => call.text.includes("FROM public.future_link_scoped_table"))).toBe(false);
+    expect(calls.some((call) => call.text.includes("DELETE FROM public.candidate_elections"))).toBe(false);
+    expect(calls.at(-1)?.text).toBe("ROLLBACK");
+  });
+
+  it("runs the cascade guard on a dry-run duplicate merge without deleting", async () => {
+    const { query, calls } = buildClient(happyResponses({
+      "FROM public.candidate_elections\n        WHERE candidate_id": [[linkRow()], [linkRow({ id: "99999999-9999-9999-9999-999999999999" })]],
+      "confrelid = 'public.candidate_elections'": [[linkFkRow()]],
+      "count(*)::text AS n FROM public.fl_candidate_finance_outside_group_links": [[{ n: "0" }]],
+    }));
+
+    const result = await runMoveCandidateElectionLink(
+      { query },
+      { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: true }
+    );
+
+    expect(result.action).toBe("merged_duplicate");
+    expect(result.dryRun).toBe(true);
+    // The guard must not be gated behind !dryRun: a dry run has to report
+    // the same refusal a live run would.
+    expect(calls.some((call) => call.text.includes("confrelid = 'public.candidate_elections'"))).toBe(true);
+    const count = calls.find((call) =>
+      call.text.includes("FROM public.fl_candidate_finance_outside_group_links")
+    );
+    expect(count?.values).toEqual([LINK_ID]);
+    expect(calls.some((call) => /^\s*(UPDATE|DELETE)\b/i.test(call.text))).toBe(false);
+    expect(calls.at(-1)?.text).toBe("ROLLBACK");
   });
 
   it("refuses to merge disagreeing duplicate links", async () => {
