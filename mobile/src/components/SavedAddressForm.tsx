@@ -7,7 +7,7 @@ import { registerForPushRequestingPermission } from "../lib/pushNotifications";
 import { AddressAutocomplete } from "./AddressAutocomplete";
 import { ErrorNotice } from "./Status";
 
-type SavedBallot = BallotSummary & { matched_address?: string };
+type SavedBallot = BallotSummary & { matched_address?: string; address_match_count?: number };
 
 // Saves the account's home address and replaces the saved districts. Used by
 // the settings "Home address" screen and the my-ballot empty state. The PUT
@@ -99,6 +99,15 @@ export function SavedAddressForm({ label }: { label: string }) {
             ) : null}
             . Your ballot now covers {update.data.districts.length} district
             {update.data.districts.length === 1 ? "" : "s"}.
+            {typeof update.data.address_match_count === "number" && update.data.address_match_count > 1 ? (
+              // The geocoder returned multiple candidates and saved the first —
+              // a silently wrong match here replaces the user's whole ballot.
+              <>
+                {" "}Your address matched {update.data.address_match_count} possible locations and the first one
+                was used — if the matched address is not yours, save again with your full street address, city,
+                and ZIP code.
+              </>
+            ) : null}
           </Text>
         </View>
       ) : null}
