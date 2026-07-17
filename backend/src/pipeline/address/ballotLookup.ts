@@ -854,20 +854,28 @@ type CandidateRosterStatusRow = {
 };
 
 // Pure derivation so tests can pin every branch without a database.
-// Precedence: staged names beat an open deferral (the roster is already
+// Past elections always fall through to the generic reason: "coming soon"
+// and "we'll check again" are promises, and a finished race gets neither
+// (a staged-but-never-linked roster otherwise reads as roster_processing
+// forever once its election day passes). For upcoming elections the
+// precedence is: staged names beat an open deferral (the roster is already
 // known, profiles are just pending), which beats the generic fallback.
 // check_after is only ever a FUTURE date — an overdue deferral renders no
-// date rather than a stale promise — and deferral-based "awaiting" copy is
-// suppressed entirely for past elections.
+// date rather than a stale promise.
 export function deriveCandidateRosterStatus(
   row: Pick<CandidateRosterStatusRow, "election_date" | "staging_status" | "staged_candidate_count" | "blocked_until">,
   todayIso: string
 ): BallotLookupCandidateRosterStatus {
+  const electionIsUpcoming = row.election_date >= todayIso;
   const stagedCount = Number(row.staged_candidate_count ?? 0);
-  if ((row.staging_status === "written" || row.staging_status === "validated") && stagedCount > 0) {
+  if (
+    electionIsUpcoming &&
+    (row.staging_status === "written" || row.staging_status === "validated") &&
+    stagedCount > 0
+  ) {
     return { reason: "roster_processing", check_after: null };
   }
-  if (row.blocked_until !== null && row.election_date >= todayIso) {
+  if (electionIsUpcoming && row.blocked_until !== null) {
     return {
       reason: "awaiting_official_roster",
       check_after: row.blocked_until > todayIso ? row.blocked_until : null,

@@ -1006,13 +1006,24 @@ describe("deriveCandidateRosterStatus", () => {
     }
   });
 
-  it("suppresses awaiting copy for past elections", () => {
+  it("suppresses awaiting and processing copy for past elections", () => {
+    // Open deferral on a finished race: no "we'll check again" promise.
     expect(
       deriveCandidateRosterStatus(
         { election_date: past, staging_status: "pending", staged_candidate_count: 0, blocked_until: "2026-08-27" },
         today
       )
     ).toEqual({ reason: "candidate_information_unavailable", check_after: null });
+    // Staged-but-never-linked roster on a finished race: no "coming soon"
+    // promise either — fanout debt must not read as active processing forever.
+    for (const staging_status of ["written", "validated"]) {
+      expect(
+        deriveCandidateRosterStatus(
+          { election_date: past, staging_status, staged_candidate_count: 2, blocked_until: null },
+          today
+        )
+      ).toEqual({ reason: "candidate_information_unavailable", check_after: null });
+    }
   });
 
   it("falls back to unavailable for pending/failed/no_results/empty-payload staging without a deferral", () => {
