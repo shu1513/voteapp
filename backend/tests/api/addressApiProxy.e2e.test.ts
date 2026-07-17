@@ -236,6 +236,7 @@ describeE2e("address API auth proxy E2E", () => {
     updateAuthenticatedAddressDistricts.mockReset();
     updateAuthenticatedAddressDistricts.mockResolvedValue({
       matched_address: resolvedAddress.matched_address,
+      address_match_count: resolvedAddress.address_match_count,
       district_ids: [districtId],
       districts: resolvedAddress.districts,
       elections: [],
@@ -355,6 +356,7 @@ describeE2e("address API auth proxy E2E", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
       matched_address: resolvedAddress.matched_address,
+      address_match_count: resolvedAddress.address_match_count,
       district_ids: [districtId],
       districts: resolvedAddress.districts,
       elections: [],
