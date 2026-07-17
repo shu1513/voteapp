@@ -70,6 +70,12 @@ export type CandidateDetailCandidate = {
   state_filing_ids: string[];
   profile_sources: string[];
   last_researched: string | null;
+  // Date the candidate's record history has been researched through
+  // (candidates.last_records_researched_through). Null means no records
+  // search has completed yet, so an empty `records` array is "not researched"
+  // rather than "researched and none found" — clients use this to tell the
+  // two apart.
+  records_researched_through: string | null;
   records: CandidateDetailRecord[];
   elections: CandidateDetailElection[];
   is_following: boolean;
@@ -109,6 +115,7 @@ type CandidateDetailRow = {
   state_filing_ids: unknown;
   profile_sources: unknown;
   last_researched: string | null;
+  records_researched_through: string | null;
 };
 
 type CandidateFollowRow = {
@@ -213,6 +220,7 @@ function rowToCandidate(
     state_filing_ids: parseStringArray(row.state_filing_ids),
     profile_sources: parseStringArray(row.profile_sources),
     last_researched: row.last_researched,
+    records_researched_through: row.records_researched_through,
     records,
     elections,
     is_following: follow !== null,
@@ -410,7 +418,8 @@ export async function lookupCandidateDetailById(
         candidate.fec_ids,
         candidate.state_filing_ids,
         candidate.profile_sources,
-        candidate.last_researched::text AS last_researched
+        candidate.last_researched::text AS last_researched,
+        candidate.last_records_researched_through::text AS records_researched_through
       FROM public.candidates AS candidate
       WHERE candidate.id = $1::uuid
         AND candidate.deleted_at IS NULL

@@ -74,6 +74,7 @@ describe("lookupCandidateDetailById", () => {
           state_filing_ids: ["CA-123"],
           profile_sources: ["https://janesmith.example/about", "https://city.example/mayor"],
           last_researched: "2026-06-30 12:00:00+00",
+          records_researched_through: "2026-06-30",
         },
       ],
     });
@@ -99,6 +100,7 @@ describe("lookupCandidateDetailById", () => {
         state_filing_ids: ["CA-123"],
         profile_sources: ["https://janesmith.example/about", "https://city.example/mayor"],
         last_researched: "2026-06-30 12:00:00+00",
+        records_researched_through: "2026-06-30",
         records: [],
         elections: [],
         is_following: false,
@@ -404,6 +406,7 @@ describe("lookupCandidateDetailById", () => {
           state_filing_ids: null,
           profile_sources: null,
           last_researched: null,
+          records_researched_through: null,
         },
       ],
     });
@@ -429,6 +432,7 @@ describe("lookupCandidateDetailById", () => {
         state_filing_ids: [],
         profile_sources: [],
         last_researched: null,
+        records_researched_through: null,
         records: [],
         elections: [],
         is_following: false,
