@@ -540,13 +540,14 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       if (!currentSessionId) {
         return;
       }
-      // Best-effort: if this throws, the API skips the Set-Cookie clear and
-      // the browser keeps a cookie for a session Redis never deleted — the
-      // logout silently undoes itself once Redis recovers. Clearing the
-      // cookie is the user-visible logout; unlike logoutAll there is no
-      // durable revocation behind it, so an undeleted session stays valid
-      // server-side until its TTL (unusable while Redis is down, since every
-      // request's session lookup needs Redis).
+      // Best-effort: without this guard a Redis error would propagate to the
+      // API handler, causing it to return 500 before the Set-Cookie clear —
+      // the browser would keep its cookie for a session Redis never deleted,
+      // and the logout would silently undo itself once Redis recovered.
+      // Clearing the cookie is the user-visible logout; unlike logoutAll
+      // there is no durable revocation behind it, so an undeleted session
+      // stays valid server-side until its TTL (unusable while Redis is down,
+      // since every request's session lookup needs Redis).
       try {
         await destroyAuthSession(options.redis, currentSessionId);
       } catch (error) {
