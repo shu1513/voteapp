@@ -28,6 +28,12 @@
 //   converges only when both rows agree on status/is_incumbent/running mate
 //   (the from-link is then deleted as a duplicate); disagreeing rows are a
 //   research question, not a merge;
+// - before that duplicate-merge delete, no rows may reference the from-link
+//   id itself: tables that FK onto candidate_elections(id) (e.g.
+//   fl_candidate_finance_outside_group_links) carry no candidate_id or
+//   election_id of their own, so the election-scoped finance scan above
+//   cannot see them, and ON DELETE CASCADE would silently take their rows
+//   with the link (checked dynamically against the catalog);
 // - running-mate uniqueness on the target shell is pre-checked so the move
 //   cannot trip uq_candidate_elections_election_running_mate_candidate_id;
 // - local-database guard, single transaction, --dry-run.
@@ -137,6 +143,32 @@ export async function listCandidateScopedElectionFkTables(
     `
   );
   return result.rows.map((row) => ({ table: row.table_name, electionColumn: row.election_column }));
+}
+
+/**
+ * Every table with a foreign key onto public.candidate_elections references
+ * link rows by id, not by (candidate_id, election_id), so the election-scoped
+ * scan above cannot see it. The duplicate-merge path deletes the from-link,
+ * which would cascade (or orphan) such rows. Discovered from the catalog at
+ * run time so a newly added link-scoped table is covered without touching
+ * this wrapper.
+ */
+export async function listCandidateElectionLinkFkTables(
+  client: MoveCandidateElectionLinkClient
+): Promise<{ table: string; column: string }[]> {
+  const result = await client.query<{ table_name: string; column_name: string }>(
+    `
+      SELECT DISTINCT c.conrelid::regclass::text AS table_name,
+             quote_ident(a.attname) AS column_name
+      FROM pg_constraint c
+      JOIN unnest(c.conkey) AS k(attnum) ON true
+      JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = k.attnum
+      WHERE c.contype = 'f'
+        AND c.confrelid = 'public.candidate_elections'::regclass
+      ORDER BY 1, 2
+    `
+  );
+  return result.rows.map((row) => ({ table: row.table_name, column: row.column_name }));
 }
 
 export async function runMoveCandidateElectionLink(
@@ -261,6 +293,26 @@ export async function runMoveCandidateElectionLink(
             `(from: status=${link.status}, is_incumbent=${link.is_incumbent}, running_mate=${link.running_mate_candidate_id ?? "null"}; ` +
             `to: status=${targetLink.status}, is_incumbent=${targetLink.is_incumbent}, running_mate=${targetLink.running_mate_candidate_id ?? "null"}). ` +
             "Which row is right is a research question; resolve it, then re-run."
+        );
+      }
+      // Link-scoped cascade guard: rows that FK onto the from-link's id
+      // (invisible to the election-scoped scan above) would be silently
+      // cascaded away by the duplicate-merge delete. Identifiers come from
+      // the catalog, not from user input.
+      const linkFkTables = await listCandidateElectionLinkFkTables(client);
+      const cascading: string[] = [];
+      for (const { table, column } of linkFkTables) {
+        const countResult = await client.query<{ n: string }>(
+          `SELECT count(*)::text AS n FROM ${table} WHERE ${column} = $1::uuid`,
+          [link.id]
+        );
+        const n = Number(countResult.rows[0]?.n ?? "0");
+        if (n > 0) cascading.push(`${table}.${column} (${n})`);
+      }
+      if (cascading.length > 0) {
+        throw new Error(
+          `From-link ${link.id} is referenced by rows the duplicate-merge delete would cascade away: ${cascading.join(", ")}. ` +
+            "Resolve those rows first (user decision), then re-run."
         );
       }
       if (!dryRun) {

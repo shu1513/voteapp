@@ -36,7 +36,9 @@ function electionRows(overrides: { fromDate?: string; toDate?: string; toDistric
 }
 
 // Query order: BEGIN, lock from-link, load elections, FK-table catalog scan,
-// (per-table finance counts), target-link lock, [mate collision], write, COMMIT/ROLLBACK.
+// (per-table finance counts), target-link lock, then either
+// [link-FK catalog scan, per-table link counts, DELETE] on the merge path or
+// [mate collision, UPDATE] on the move path, COMMIT/ROLLBACK.
 function buildClient(responses: Record<string, unknown[][]>) {
   const calls: { text: string; values: unknown[] }[] = [];
   const queue = { ...responses };
@@ -184,6 +186,7 @@ describe("runMoveCandidateElectionLink", () => {
   it("converges an identical duplicate link by deleting the from-link", async () => {
     const { query, calls } = buildClient(happyResponses({
       "FROM public.candidate_elections\n        WHERE candidate_id": [[linkRow()], [linkRow({ id: "99999999-9999-9999-9999-999999999999" })]],
+      "confrelid = 'public.candidate_elections'": [[]],
     }));
 
     const result = await runMoveCandidateElectionLink(
@@ -194,6 +197,32 @@ describe("runMoveCandidateElectionLink", () => {
     expect(result.action).toBe("merged_duplicate");
     const del = calls.find((call) => call.text.includes("DELETE FROM public.candidate_elections"));
     expect(del?.values).toEqual([LINK_ID]);
+  });
+
+  it("refuses the duplicate merge when rows reference the from-link id", async () => {
+    const { query, calls } = buildClient(happyResponses({
+      "FROM public.candidate_elections\n        WHERE candidate_id": [[linkRow()], [linkRow({ id: "99999999-9999-9999-9999-999999999999" })]],
+      "confrelid = 'public.candidate_elections'": [
+        [{ table_name: "public.fl_candidate_finance_outside_group_links", column_name: "candidate_election_id" }],
+      ],
+      "count(*)::text AS n FROM public.fl_candidate_finance_outside_group_links": [[{ n: "3" }]],
+    }));
+
+    await expect(
+      runMoveCandidateElectionLink(
+        { query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(
+      /fl_candidate_finance_outside_group_links\.candidate_election_id \(3\)/
+    );
+    // The count must key on the from-link id, and the delete must not run.
+    const count = calls.find((call) =>
+      call.text.includes("FROM public.fl_candidate_finance_outside_group_links")
+    );
+    expect(count?.values).toEqual([LINK_ID]);
+    expect(calls.some((call) => call.text.includes("DELETE FROM public.candidate_elections"))).toBe(false);
+    expect(calls.at(-1)?.text).toBe("ROLLBACK");
   });
 
   it("refuses to merge disagreeing duplicate links", async () => {
