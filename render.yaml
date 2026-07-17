@@ -8,8 +8,11 @@
 # overwrites any client-supplied copy), which both servers trust via
 # ADDRESS_API_TRUSTED_CLIENT_IP_HEADER.
 #
-# Secrets (sync: false) are entered once in the Render dashboard on first
-# blueprint sync: AWS SES send-only key pair.
+# Secrets (sync: false) are entered in the Render dashboard: AWS SES
+# send-only key pair, plus the optional EDGE_SHARED_SECRET. NOTE: a
+# Blueprint sync only prompts for sync: false vars present at blueprint
+# creation — ones added later must be entered manually on the service
+# (docs/deploy-render.md "Direct onrender.com access" has the sequence).
 #
 # PLANS: everything below is on free plans so the first deploy needs no card
 # on file. Free web services spin down after ~15 idle minutes (cold start on
@@ -45,6 +48,14 @@ services:
         value: "10000"
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
         value: CF-Connecting-IP
+      # Shared with the Cloudflare Worker (secret var of the same name) and
+      # the SSR service below: the API only trusts CF-Connecting-IP on
+      # requests carrying the matching X-Edge-Secret header, so a direct
+      # *.onrender.com hit can no longer spoof per-IP rate limiting. Must be
+      # >= 32 chars (the server fails fast otherwise). Optional: unset keeps
+      # the legacy blind-trust behavior.
+      - key: EDGE_SHARED_SECRET
+        sync: false
       - key: AUTH_PUBLIC_BASE_URL
         value: https://impactperdollar.com
       - key: SITE_ORIGIN
@@ -122,6 +133,14 @@ services:
         value: "75000"
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
         value: CF-Connecting-IP
+      # Same value as the API's secret (referenced, not duplicated): loaders
+      # hit the API's public host, so their relayed client-IP header needs
+      # the same proof-of-edge the Worker attaches.
+      - key: EDGE_SHARED_SECRET
+        fromService:
+          name: voteapp-api
+          type: web
+          envVarKey: EDGE_SHARED_SECRET
 
   # ------------------------------------------------------------- workers ----
   # One process runs all three notification scheduler workers and re-asserts

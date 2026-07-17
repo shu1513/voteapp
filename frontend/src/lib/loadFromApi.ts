@@ -16,9 +16,17 @@
 // every loader fetch arrives from the SSR server's own socket IP and the
 // entire site's detail-page traffic shares a single rate-limit bucket — one
 // sitemap-following crawler could 429 the bucket and take detail pages down
-// for everyone. The value is relayed verbatim from the incoming request
-// (the edge proxy sets it); when the env var or header is absent (dev),
-// nothing is sent and the API falls back to socket-IP keying as before.
+// for everyone. When the env var or header is absent (dev), nothing is sent
+// and the API falls back to socket-IP keying as before.
+//
+// With EDGE_SHARED_SECRET set, the relay itself is gated: the edge Worker
+// stamps X-Edge-Secret on every request it proxies (SSR-bound included),
+// and the loader only relays the client-IP header when the incoming request
+// carries the matching value. Otherwise a direct hit on the SSR's public
+// *.onrender.com host could launder a spoofed IP through this relay — the
+// loader would forward the fake IP together with its own valid secret and
+// the API would trust it, re-opening per-IP rate-limit bypass for the
+// endpoints loaders reach.
 
 // Generous for a loopback/private-network hop (normally milliseconds): a
 // stalled API must fail the render fast instead of pinning SSR request
@@ -80,15 +88,47 @@ function resolveApiBase(): string {
   return "http://127.0.0.1:3001";
 }
 
+// Constant-time string comparison without node:crypto (this module rides
+// through the client bundler even though only the server executes it). The
+// loop always runs over the longer input and folds the length difference
+// into the result, so neither an early exit nor the iteration count leaks
+// where a guess diverges from the secret.
+function timingSafeStringEqual(presented: string, expected: string): boolean {
+  const length = Math.max(presented.length, expected.length);
+  // Unequal lengths already force a nonzero result here, so the loop's
+  // out-of-range padding (charCodeAt is NaN past the end; NaN | 0 is 0)
+  // can never turn a length mismatch into a match.
+  let mismatch = presented.length ^ expected.length;
+  for (let i = 0; i < length; i += 1) {
+    mismatch |= (presented.charCodeAt(i) | 0) ^ (expected.charCodeAt(i) | 0);
+  }
+  return mismatch === 0;
+}
+
 export async function loadFromApi<T>(path: string, incomingRequest: Request): Promise<T> {
   const base = resolveApiBase();
   const headers = new Headers();
+  // Same env var the API and the Worker hold; absent (dev) nothing is sent
+  // and the relay below stays ungated, matching the API's legacy behavior.
+  const edgeSharedSecret = process.env.EDGE_SHARED_SECRET?.trim();
   const trustedIpHeader = process.env.ADDRESS_API_TRUSTED_CLIENT_IP_HEADER;
   if (trustedIpHeader) {
     const clientIpValue = incomingRequest.headers.get(trustedIpHeader);
-    if (clientIpValue) {
+    // Relay only when the incoming request proves it came through the edge
+    // Worker (see module comment): a direct hit on the SSR host carries no
+    // proof and must not get its spoofed client IP laundered into a request
+    // that DOES carry this server's valid secret.
+    const incomingProof = incomingRequest.headers.get("x-edge-secret");
+    const edgeVerified =
+      !edgeSharedSecret || (incomingProof !== null && timingSafeStringEqual(incomingProof, edgeSharedSecret));
+    if (clientIpValue && edgeVerified) {
       headers.set(trustedIpHeader, clientIpValue);
     }
+  }
+  // Proves to the API that this hop is trusted, so the relayed header above
+  // is honored for per-user rate buckets instead of ignored.
+  if (edgeSharedSecret) {
+    headers.set("x-edge-secret", edgeSharedSecret);
   }
 
   let response: Response;
