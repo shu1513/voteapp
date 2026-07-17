@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "@voteapp/api-client";
 import {
@@ -13,6 +13,7 @@ import {
   AddressSavedNotice,
   SavedAddressForm,
   type AddressSavedLocationState,
+  type AddressSavedNoticeData,
 } from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
 import { useMyResearchAreas } from "@voteapp/api-client";
@@ -112,9 +113,23 @@ export function SavedBallotPage() {
   useDocumentTitle("Your saved ballot");
   const { me, isLoading, isError: meError, refetch: refetchMe } = useMe();
   const location = useLocation();
+  const navigate = useNavigate();
   // Set when SavedAddressForm just navigated here after a successful save;
   // the notice carries the matched address and the ambiguous-match warning.
-  const addressSaved = (location.state as Partial<AddressSavedLocationState> | null)?.addressSaved;
+  const [addressSaved, setAddressSaved] = useState<AddressSavedNoticeData | null>(null);
+  // Capture-then-clear: React Router copies navigation state into
+  // window.history.state, which survives refresh and back/forward — left in
+  // place, the "Address saved" banner (home address included) would replay
+  // from the history entry indefinitely, even beside a newer address's
+  // ballot. An effect, not a mount-time read: the empty-state form on this
+  // page saves without remounting it, so the state can arrive mid-life.
+  useEffect(() => {
+    const saved = (location.state as Partial<AddressSavedLocationState> | null)?.addressSaved;
+    if (saved) {
+      setAddressSaved(saved);
+      void navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location.pathname, location.state, navigate]);
   const queryClient = useQueryClient();
   // Same key as BallotPreferenceControls: shared cache entry, no extra fetch.
   // Drives the subtitle so the copy matches the saved sort.

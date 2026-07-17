@@ -13,9 +13,12 @@ export function renderRoutes(
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   });
   const router = createMemoryRouter(routes, { initialEntries: [initialEntry] });
-  return render(
+  const result = render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
     </QueryClientProvider>
   );
+  // The router rides along so tests can assert on navigation outcomes the
+  // DOM does not show (e.g. history state being cleared after use).
+  return Object.assign(result, { router });
 }

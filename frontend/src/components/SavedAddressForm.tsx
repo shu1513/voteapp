@@ -6,11 +6,22 @@ import type { BallotSummary } from "@voteapp/api-client";
 import { AddressAutocomplete } from "./AddressAutocomplete";
 import { ErrorNotice } from "./Status";
 
-export type AddressSaveResult = BallotSummary & { matched_address?: string; address_match_count?: number };
+type AddressSaveResult = BallotSummary & { matched_address?: string; address_match_count?: number };
+
+// Only what the confirmation renders. Router state is copied into
+// window.history.state and can outlive the navigation (refresh, session
+// restore), so the home address's exposure is kept minimal and the ballot
+// payload — which GET /api/me/ballot re-derives anyway — stays out entirely.
+export type AddressSavedNoticeData = {
+  matched_address?: string;
+  district_count: number;
+  address_match_count?: number;
+};
 
 // Router state carried to /me/ballot after a successful save; the saved
-// ballot page renders <AddressSavedNotice> from it.
-export type AddressSavedLocationState = { addressSaved: AddressSaveResult };
+// ballot page renders <AddressSavedNotice> from it, then wipes the history
+// entry so the notice shows once instead of replaying on refresh/back.
+export type AddressSavedLocationState = { addressSaved: AddressSavedNoticeData };
 
 // Saves the account's home address and replaces the saved districts. Used by
 // the settings "Home address" section and the saved-ballot empty state. A
@@ -33,7 +44,13 @@ export function SavedAddressForm({ inputId, label }: { inputId: string; label: s
       // refetch the canonical version instead of caching the PUT body.
       void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
       void navigate("/me/ballot", {
-        state: { addressSaved: saved } satisfies AddressSavedLocationState,
+        state: {
+          addressSaved: {
+            matched_address: saved.matched_address,
+            district_count: saved.districts.length,
+            address_match_count: saved.address_match_count,
+          },
+        } satisfies AddressSavedLocationState,
       });
     },
   });
@@ -93,12 +110,12 @@ export function SavedAddressForm({ inputId, label }: { inputId: string; label: s
 // Post-save confirmation rendered on the saved ballot page from the router
 // state the form navigates with. The PUT succeeds silently server-side, so
 // this line is the user's only textual feedback on what was matched.
-export function AddressSavedNotice({ saved }: { saved: AddressSaveResult }) {
+export function AddressSavedNotice({ saved }: { saved: AddressSavedNoticeData }) {
   return (
     <p role="status" className="rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
       Address saved{saved.matched_address ? <> — matched to <strong>{saved.matched_address}</strong></> : null}.
-      Your ballot now covers {saved.districts.length} district
-      {saved.districts.length === 1 ? "" : "s"}.
+      Your ballot now covers {saved.district_count} district
+      {saved.district_count === 1 ? "" : "s"}.
       {typeof saved.address_match_count === "number" && saved.address_match_count > 1 ? (
         // The geocoder returned multiple candidates and saved the first —
         // a silently wrong match here replaces the user's whole ballot.
