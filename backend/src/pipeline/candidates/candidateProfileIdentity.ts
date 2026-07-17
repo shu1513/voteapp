@@ -53,6 +53,12 @@ export type FindOrCreateCandidateFromProfileInput = {
   // profile (deliberate correction). Everything else keeps fill-if-empty
   // semantics: never overwrite a non-empty stored value.
   overwriteProfileFields?: ReadonlySet<OverwritableProfileField>;
+  // Field names whose stored values are set to NULL (deliberate retraction of
+  // stale data, e.g. a current_office the person no longer holds). Clearing
+  // only applies when an existing candidate matched — there is nothing to
+  // clear on an insert — and a field cannot be both cleared and supplied.
+  // Manual-wrapper-only; the AI pipeline never passes this.
+  clearProfileFields?: ReadonlySet<OverwritableProfileField>;
 };
 
 export const OVERWRITABLE_PROFILE_FIELDS = [
@@ -327,7 +333,8 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   client: PoolClient,
   candidateId: string,
   profile: CandidateProfilePayload,
-  overwriteFields?: ReadonlySet<OverwritableProfileField>
+  overwriteFields?: ReadonlySet<OverwritableProfileField>,
+  clearFields?: ReadonlySet<OverwritableProfileField>
 ): Promise<void> {
   const locked = await client.query<{
     fec_ids: unknown;
@@ -354,11 +361,14 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   const mergedStateFilingIds = mergeIdentifierLists(existingStateFilingIds, profile.state_filing_ids);
 
   // Scalar fields fill empty columns but never overwrite non-empty stored
-  // values, unless the caller explicitly listed the field for replacement.
-  // Identifier lists stay additive and profile_sources always refreshes.
+  // values, unless the caller explicitly listed the field for replacement —
+  // or listed it for clearing, which sets the column to NULL and wins over
+  // every other branch. Identifier lists stay additive and profile_sources
+  // always refreshes.
   const scalarValue = (field: OverwritableProfileField, value: string | undefined | null) => ({
     value: value ?? null,
     overwrite: overwriteFields?.has(field) ?? false,
+    clear: clearFields?.has(field) ?? false,
   });
   const scalars = {
     date_of_birth: scalarValue("date_of_birth", profile.date_of_birth),
@@ -375,31 +385,37 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       SET fec_ids = $2::jsonb,
           state_filing_ids = $3::jsonb,
           date_of_birth = CASE
+            WHEN $17::boolean THEN NULL
             WHEN $6::boolean AND $5::date IS NOT NULL THEN $5::date
             WHEN date_of_birth IS NULL THEN $5::date
             ELSE date_of_birth
           END,
           twitter_handle = CASE
+            WHEN $18::boolean THEN NULL
             WHEN $8::boolean AND $7::text IS NOT NULL AND length(trim($7::text)) > 0 THEN $7::text
             WHEN twitter_handle IS NULL OR length(trim(twitter_handle)) = 0 THEN COALESCE($7::text, twitter_handle)
             ELSE twitter_handle
           END,
           linkedin_url = CASE
+            WHEN $19::boolean THEN NULL
             WHEN $10::boolean AND $9::text IS NOT NULL AND length(trim($9::text)) > 0 THEN $9::text
             WHEN linkedin_url IS NULL OR length(trim(linkedin_url)) = 0 THEN COALESCE($9::text, linkedin_url)
             ELSE linkedin_url
           END,
           official_website_url = CASE
+            WHEN $20::boolean THEN NULL
             WHEN $12::boolean AND $11::text IS NOT NULL AND length(trim($11::text)) > 0 THEN $11::text
             WHEN official_website_url IS NULL OR length(trim(official_website_url)) = 0 THEN COALESCE($11::text, official_website_url)
             ELSE official_website_url
           END,
           summary = CASE
+            WHEN $21::boolean THEN NULL
             WHEN $14::boolean AND $13::text IS NOT NULL AND length(trim($13::text)) > 0 THEN $13::text
             WHEN summary IS NULL OR length(trim(summary)) = 0 THEN COALESCE($13::text, summary)
             ELSE summary
           END,
           current_office = CASE
+            WHEN $22::boolean THEN NULL
             WHEN $16::boolean AND $15::text IS NOT NULL AND length(trim($15::text)) > 0 THEN $15::text
             WHEN current_office IS NULL OR length(trim(current_office)) = 0 THEN COALESCE($15::text, current_office)
             ELSE current_office
@@ -426,6 +442,12 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       scalars.summary.overwrite,
       scalars.current_office.value,
       scalars.current_office.overwrite,
+      scalars.date_of_birth.clear,
+      scalars.twitter_handle.clear,
+      scalars.linkedin_url.clear,
+      scalars.official_website_url.clear,
+      scalars.summary.clear,
+      scalars.current_office.clear,
     ]
   );
 }
@@ -483,7 +505,8 @@ export async function findOrCreateCandidateFromProfile(
         input.client,
         matchedCandidate.id,
         input.profile,
-        input.overwriteProfileFields
+        input.overwriteProfileFields,
+        input.clearProfileFields
       );
       return { candidateId: matchedCandidate.id, matchedExisting: true };
     }
@@ -508,7 +531,8 @@ export async function findOrCreateCandidateFromProfile(
         input.client,
         linkedCandidateId,
         input.profile,
-        input.overwriteProfileFields
+        input.overwriteProfileFields,
+        input.clearProfileFields
       );
       return { candidateId: linkedCandidateId, matchedExisting: true };
     }

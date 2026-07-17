@@ -72,7 +72,7 @@ function toReason(error: unknown): string {
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--roster-index n] [--running-mate-of \"Lead Ballot Name\"] [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--replace-profile-fields f1,f2] [--repair-report-file file] [--dry-run]",
+    "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--roster-index n] [--running-mate-of \"Lead Ballot Name\"] [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--replace-profile-fields f1,f2] [--clear-profile-fields f1,f2] [--repair-report-file file] [--dry-run]",
     "",
     "Payload must match CandidateProfilePayload. Live runs find/create a candidate and link it to the election.",
     "With --running-mate-of, the profile is written as the joint-ticket running mate: the candidate is created/matched normally, then linked via candidate_elections.running_mate_candidate_id on the ticket lead's row instead of getting an own candidate_elections row. Write the ticket lead's profile first.",
@@ -313,7 +313,16 @@ export function applyRegularElectionProfileContext(input: {
     if (fecIds.length === 0) {
       throw new Error("candidate_fec_ids is required in roster context for federal profile import");
     }
-    const { date_of_birth: _dateOfBirth, state_filing_ids: _stateFilingIds, ...federalProfile } = withoutParty;
+    // The regular federal profile path stores date_of_birth as null (the AI
+    // prompt tells the model to omit it). Refuse instead of silently
+    // stripping: a manual payload that carries it either followed stale
+    // guidance or expects the value to persist — neither should pass quietly.
+    if (withoutParty.date_of_birth !== undefined) {
+      throw new Error(
+        "payload.date_of_birth is not allowed for federal contests; backend policy stores it as null — remove it from the profile payload"
+      );
+    }
+    const { state_filing_ids: _stateFilingIds, ...federalProfile } = withoutParty;
     return {
       ...federalProfile,
       fec_ids: fecIds,
@@ -509,7 +518,7 @@ async function writeProfileRepairReport(input: {
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:candidate-profile:write", process.argv.slice(2), [{ name: "--election-id", value: "space" }, { name: "--file", value: "space" }, { name: "--roster-index", value: "space" }, { name: "--running-mate-of", value: "space" }, { name: "--run-id", value: "space" }, { name: "--is-incumbent", value: "space" }, { name: "--confirmed-gap", value: "space" }, { name: "--replace-profile-fields", value: "space" }, { name: "--repair-report-file", value: "space" }, { name: "--emit-record-draft", value: "none" }, { name: "--emit-finance-sync", value: "none" }, { name: "--allow-no-hard-identifier", value: "none" }, { name: "--strict-quality-gate", value: "none" }, { name: "--dry-run", value: "none" }]);
+  assertKnownCliFlags("manual:candidate-profile:write", process.argv.slice(2), [{ name: "--election-id", value: "space" }, { name: "--file", value: "space" }, { name: "--roster-index", value: "space" }, { name: "--running-mate-of", value: "space" }, { name: "--run-id", value: "space" }, { name: "--is-incumbent", value: "space" }, { name: "--confirmed-gap", value: "space" }, { name: "--replace-profile-fields", value: "space" }, { name: "--clear-profile-fields", value: "space" }, { name: "--repair-report-file", value: "space" }, { name: "--emit-record-draft", value: "none" }, { name: "--emit-finance-sync", value: "none" }, { name: "--allow-no-hard-identifier", value: "none" }, { name: "--strict-quality-gate", value: "none" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
 
   const file = readFlag("--file");
@@ -517,21 +526,33 @@ async function main(): Promise<void> {
   const repairReportFile = readFlag("--repair-report-file");
   const strictQualityGate = hasFlag("--strict-quality-gate");
   const confirmedGapIds = normalizeConfirmedGaps(readRepeatedFlag("--confirmed-gap"));
-  const replaceFieldsRaw = readFlag("--replace-profile-fields");
-  const overwriteProfileFields = new Set<OverwritableProfileField>();
-  if (replaceFieldsRaw) {
-    for (const raw of replaceFieldsRaw.split(",")) {
+  const parseProfileFieldListFlag = (flagName: string): Set<OverwritableProfileField> => {
+    const rawValue = readFlag(flagName);
+    const fields = new Set<OverwritableProfileField>();
+    if (!rawValue) {
+      return fields;
+    }
+    for (const raw of rawValue.split(",")) {
       const field = raw.trim();
       if (!field) {
         continue;
       }
       if (!(OVERWRITABLE_PROFILE_FIELDS as readonly string[]).includes(field)) {
         throw new Error(
-          `--replace-profile-fields: unknown field "${field}". Allowed: ${OVERWRITABLE_PROFILE_FIELDS.join(", ")}`
+          `${flagName}: unknown field "${field}". Allowed: ${OVERWRITABLE_PROFILE_FIELDS.join(", ")}`
         );
       }
-      overwriteProfileFields.add(field as OverwritableProfileField);
+      fields.add(field as OverwritableProfileField);
     }
+    return fields;
+  };
+  const overwriteProfileFields = parseProfileFieldListFlag("--replace-profile-fields");
+  const clearProfileFields = parseProfileFieldListFlag("--clear-profile-fields");
+  const clearReplaceOverlap = [...clearProfileFields].filter((field) => overwriteProfileFields.has(field));
+  if (clearReplaceOverlap.length > 0) {
+    throw new Error(
+      `--clear-profile-fields and --replace-profile-fields cannot share fields (${clearReplaceOverlap.join(", ")}): clearing sets NULL, replacing needs a payload value — pick one intent per field`
+    );
   }
   if (!file || !electionId) {
     throw new Error(`Missing --file or --election-id.\n${usage()}`);
@@ -638,6 +659,17 @@ async function main(): Promise<void> {
       throw error;
     }
 
+    // A field cannot be cleared and supplied in the same write: the payload
+    // value would say "store this" while the flag says "store NULL".
+    const clearedFieldsWithPayloadValue = [...clearProfileFields].filter(
+      (field) => profile[field] !== undefined
+    );
+    if (clearedFieldsWithPayloadValue.length > 0) {
+      throw new Error(
+        `--clear-profile-fields lists fields the profile payload also supplies (${clearedFieldsWithPayloadValue.join(", ")}); remove them from the payload or drop them from the flag`
+      );
+    }
+
     const manualKey = `manual:candidate-profile:${electionId}:${profile.display_name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
     if (!hasFlag("--allow-no-hard-identifier") && !hasAtLeastOneHardIdentifier(profile)) {
       const gaps = buildProfileValidationGaps({
@@ -723,6 +755,8 @@ async function main(): Promise<void> {
               confirmedGaps: [...confirmedGapIds].sort(),
               gaps: qualityGaps,
             },
+            replaceProfileFields: [...overwriteProfileFields].sort(),
+            clearProfileFields: [...clearProfileFields].sort(),
           },
           null,
           2
@@ -747,9 +781,18 @@ async function main(): Promise<void> {
         includeParty,
         matchByLinkedElectionId: electionId,
         overwriteProfileFields,
+        clearProfileFields,
       });
       candidateId = candidateResult.candidateId;
       matchedExisting = candidateResult.matchedExisting;
+      if (clearProfileFields.size > 0 && !matchedExisting) {
+        // Clearing targets stale stored values; a freshly inserted candidate
+        // has none. Roll back rather than silently no-op the operator's
+        // stated intent — this usually means the profile matched nothing.
+        throw new Error(
+          `--clear-profile-fields was requested but no existing candidate matched this profile (a new row would have been inserted); verify the identity fields, or re-run without the flag`
+        );
+      }
 
       if (runningMateOf) {
         // Joint-ticket running mate: link to the ticket lead's
@@ -849,6 +892,7 @@ async function main(): Promise<void> {
           candidateId,
           matchedExisting,
           candidateElectionCreated,
+          ...(clearProfileFields.size > 0 ? { clearedProfileFields: [...clearProfileFields].sort() } : {}),
           ...(runningMateLinkedToCandidateId
             ? { runningMateOf: runningMateOf, ticketLeadCandidateId: runningMateLinkedToCandidateId }
             : {}),

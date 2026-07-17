@@ -67,7 +67,6 @@ describe("applyRegularElectionProfileContext", () => {
     const result = applyRegularElectionProfileContext({
       profile: profile({
         party: "Republican",
-        date_of_birth: "1970-01-01",
         state_filing_ids: ["AK-state-id"],
       }),
       researchMode: "federal_us_senate",
@@ -83,6 +82,34 @@ describe("applyRegularElectionProfileContext", () => {
     expect(result.party).toBeUndefined();
     expect(result.date_of_birth).toBeUndefined();
     expect(result.state_filing_ids).toBeUndefined();
+  });
+
+  it("refuses a federal payload that carries date_of_birth instead of silently stripping it", () => {
+    expect(() =>
+      applyRegularElectionProfileContext({
+        profile: profile({
+          party: "Republican",
+          date_of_birth: "1970-01-01",
+        }),
+        researchMode: "federal_us_senate",
+        rosterHints: {
+          rosterIndex: 0,
+          displayName: "Jane Candidate",
+          fecIds: ["S6AK00001"],
+          stateFilingIds: [],
+        },
+      })
+    ).toThrow("payload.date_of_birth is not allowed for federal contests");
+  });
+
+  it("keeps date_of_birth for state-level profiles", () => {
+    const result = applyRegularElectionProfileContext({
+      profile: profile({ party: "Independent", date_of_birth: "1970-01-01" }),
+      researchMode: "state_level",
+      rosterHints: null,
+    });
+
+    expect(result.date_of_birth).toBe("1970-01-01");
   });
 
   it("requires roster FEC IDs for federal profiles", () => {
