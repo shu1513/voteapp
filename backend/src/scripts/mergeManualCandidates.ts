@@ -75,13 +75,18 @@ export type MergeCandidatesResult = {
   survivorCandidateName: string;
   links: { rehomed: number; duplicatesDeleted: number };
   mateLinks: { rehomed: number };
-  records: { rehomed: number; duplicatesDeleted: number };
+  records: { rehomed: number; duplicatesDeleted: number; areaTagsCopied: number };
   sweepConfirmations: { mergedDeleted: boolean; survivorDeleted: boolean };
   follows: { rehomed: number; duplicatesDeleted: number };
-  notificationEvents: { rehomed: number; duplicatesDeleted: number };
+  notificationEvents: {
+    rehomed: number;
+    duplicatesDeleted: number;
+    remappedToSurvivorRecords: number;
+  };
   otherTables: { table: string; column: string; rowsRehomed: number }[];
   chainCollapsedCandidates: number;
   identifiers: { fecIdsAppended: number; stateFilingIdsAppended: number };
+  profile: { fieldsFilled: string[]; sourcesAppended: number };
 };
 
 type CandidateRow = {
@@ -95,6 +100,13 @@ type CandidateRow = {
   merged_into_candidate_id: string | null;
   fec_ids: unknown;
   state_filing_ids: unknown;
+  summary: string | null;
+  current_office: string | null;
+  date_of_birth: string | null;
+  twitter_handle: string | null;
+  linkedin_url: string | null;
+  official_website_url: string | null;
+  profile_sources: unknown;
 };
 
 type LinkRow = {
@@ -104,12 +116,6 @@ type LinkRow = {
   is_incumbent: boolean;
   status: string;
   running_mate_candidate_id: string | null;
-};
-
-type MateRow = {
-  id: string;
-  candidate_id: string;
-  running_mate_candidate_id: string;
 };
 
 type RecordRow = {
@@ -132,6 +138,34 @@ type EventRow = {
   election_id: string | null;
   candidate_record_id: string | null;
 };
+
+// Scalar profile fields copied from the duplicate ONLY where the survivor is
+// blank — a populated survivor value always wins (the operator explicitly
+// picked the survivor). display_name is deliberately excluded: the
+// duplicate's name presentation is often exactly what made it a duplicate.
+const PROFILE_FILL_FIELDS = [
+  "summary",
+  "current_office",
+  "date_of_birth",
+  "twitter_handle",
+  "linkedin_url",
+  "official_website_url",
+] as const;
+type ProfileFillField = (typeof PROFILE_FILL_FIELDS)[number];
+
+function isBlank(value: string | null | undefined): boolean {
+  return value == null || value.trim().length === 0;
+}
+
+// elections.sources-style jsonb array of URL strings; trimmed, exact dedupe
+// (same semantics as the supersede wrapper's source handling).
+function normalizeUrlList(raw: unknown): string[] {
+  return Array.isArray(raw)
+    ? raw
+        .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+        .map((value) => value.trim())
+    : [];
+}
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -242,7 +276,9 @@ export async function runMergeCandidates(
     const candidatesResult = await client.query<CandidateRow>(
       `
         SELECT id, display_name, first_name, last_name, party, state,
-               deleted_at::text, merged_into_candidate_id, fec_ids, state_filing_ids
+               deleted_at::text, merged_into_candidate_id, fec_ids, state_filing_ids,
+               summary, current_office, date_of_birth::text, twitter_handle,
+               linkedin_url, official_website_url, profile_sources
         FROM public.candidates
         WHERE id = ANY($1::uuid[])
         ORDER BY id
@@ -268,12 +304,15 @@ export async function runMergeCandidates(
       throw new Error(`Survivor ${survivorId} is soft-deleted; a merge target must be live`);
     }
 
-    // Both candidates' election links, locked together in id order.
+    // Every candidate_elections row either candidate touches — as the
+    // candidate or as a running mate — locked in ONE query in id order, so
+    // two concurrent merges reaching the same rows through different columns
+    // still acquire locks in the same sequence and cannot deadlock.
     const linksResult = await client.query<LinkRow>(
       `
         SELECT id, candidate_id, election_id, is_incumbent, status, running_mate_candidate_id
         FROM public.candidate_elections
-        WHERE candidate_id = ANY($1::uuid[])
+        WHERE candidate_id = ANY($1::uuid[]) OR running_mate_candidate_id = ANY($1::uuid[])
         ORDER BY id
         FOR UPDATE
       `,
@@ -285,23 +324,10 @@ export async function runMergeCandidates(
         .filter((row) => row.candidate_id === survivorId)
         .map((row) => [row.election_id, row])
     );
-
-    // Links where either candidate rides as a running mate, locked for the
-    // mate rehome below.
-    const matesResult = await client.query<MateRow>(
-      `
-        SELECT id, candidate_id, running_mate_candidate_id
-        FROM public.candidate_elections
-        WHERE running_mate_candidate_id = ANY($1::uuid[])
-        ORDER BY id
-        FOR UPDATE
-      `,
-      [pair]
-    );
-    const mergedAsMate = matesResult.rows.filter(
+    const mergedAsMate = linksResult.rows.filter(
       (row) => row.running_mate_candidate_id === mergedId
     );
-    const survivorAsMate = matesResult.rows.filter(
+    const survivorAsMate = linksResult.rows.filter(
       (row) => row.running_mate_candidate_id === survivorId
     );
 
@@ -330,6 +356,22 @@ export async function runMergeCandidates(
       throw new Error(
         `presidential_cycle_candidates row ${presidentialPair.rows[0].id} pairs these two candidates ` +
           "as a ticket; resolve that row first, then re-run."
+      );
+    }
+
+    // Running-mate collision, scoped to the election: the unique key at risk
+    // is (election_id, running_mate_candidate_id), so both candidates riding
+    // as mates on DIFFERENT elections is the normal duplicate shape (primary
+    // shell recorded under one row, general under the other) and merges fine.
+    // The same election carrying both is two mate rows for one person —
+    // a research question. Checked before any write so a refusal implies an
+    // untouched database.
+    const survivorMateElectionIds = new Set(survivorAsMate.map((row) => row.election_id));
+    const mateCollision = mergedAsMate.find((row) => survivorMateElectionIds.has(row.election_id));
+    if (mateCollision) {
+      throw new Error(
+        `Election ${mateCollision.election_id} has links carrying both candidates as running mates; ` +
+          "resolve the duplicate ticket first, then re-run."
       );
     }
 
@@ -362,6 +404,14 @@ export async function runMergeCandidates(
     // and candidate_election_id inside JSON, invisible to the FK scans below.
     // A merge would leave a winner pointing at a merged candidate, or — for
     // links deleted as duplicates — at nothing at all.
+    //
+    // Known residual race: a concurrent result write that loaded its roster
+    // before this merge commits can still persist winners referencing the
+    // duplicate afterwards. No lock taken here fixes that — blocking the
+    // writer's INSERT until the merge commits does not refresh the roster
+    // snapshot it already matched against; only writer-side validation
+    // could. Result writes are manual/scheduled and rare, so this stays a
+    // documented gap rather than an ineffective table lock.
     const winnersResult = await client.query<{ id: string }>(
       `
         SELECT er.id FROM public.election_results er
@@ -418,16 +468,7 @@ export async function runMergeCandidates(
       ]);
     }
 
-    // Running-mate rehome. Both candidates appearing as mates anywhere is
-    // refused wholesale: uq_candidate_elections_election_running_mate_candidate_id
-    // could collide, and which ticket row is right is a research question.
-    if (mergedAsMate.length > 0 && survivorAsMate.length > 0) {
-      throw new Error(
-        "Both candidates appear as running mates on candidate_elections rows " +
-          `(duplicate on ${mergedAsMate.length}, survivor on ${survivorAsMate.length}); ` +
-          "resolve the tickets first, then re-run."
-      );
-    }
+    // Running-mate rehome (collisions were refused before any write above).
     if (!dryRun && mergedAsMate.length > 0) {
       await client.query(
         `UPDATE public.candidate_elections SET running_mate_candidate_id = $2::uuid, updated_at = now() WHERE id = ANY($1::uuid[])`,
@@ -435,9 +476,14 @@ export async function runMergeCandidates(
       );
     }
 
-    // Records: duplicates by record_identity_key keep the survivor's copy
-    // (area tags and record-update notification events cascade with the
-    // deleted row); everything else is rehomed.
+    // Records: duplicates by record_identity_key keep the survivor's copy;
+    // everything else is rehomed. Before a duplicate row is deleted, its
+    // dependents are reconciled onto the survivor's copy instead of being
+    // cascaded away (migration 069 set this precedent for tags when it
+    // deduped identical keys): area tags the survivor's copy lacks are
+    // copied over (survivor's stance wins on conflict), and record-update
+    // notification events are remapped so "already notified" history and
+    // pending digest events survive the delete.
     const recordsResult = await client.query<RecordRow>(
       `
         SELECT id, candidate_id, record_identity_key
@@ -448,21 +494,145 @@ export async function runMergeCandidates(
       `,
       [pair]
     );
-    const survivorRecordKeys = new Set(
+    const survivorRecordIdByKey = new Map(
       recordsResult.rows
         .filter((row) => row.candidate_id === survivorId)
-        .map((row) => row.record_identity_key)
+        .map((row) => [row.record_identity_key, row.id])
     );
     const rehomeRecordIds: string[] = [];
-    const duplicateRecordIds: string[] = [];
+    const duplicateRecordPairs: { duplicateRecordId: string; survivorRecordId: string }[] = [];
     for (const record of recordsResult.rows) {
       if (record.candidate_id !== mergedId) continue;
-      if (survivorRecordKeys.has(record.record_identity_key)) {
-        duplicateRecordIds.push(record.id);
+      const survivorRecordId = survivorRecordIdByKey.get(record.record_identity_key);
+      if (survivorRecordId) {
+        duplicateRecordPairs.push({ duplicateRecordId: record.id, survivorRecordId });
       } else {
         rehomeRecordIds.push(record.id);
       }
     }
+    const duplicateRecordIds = duplicateRecordPairs.map((pairRow) => pairRow.duplicateRecordId);
+    const survivorRecordIdByDuplicate = new Map(
+      duplicateRecordPairs.map((pairRow) => [pairRow.duplicateRecordId, pairRow.survivorRecordId])
+    );
+
+    let areaTagsCopied = 0;
+    for (const { duplicateRecordId, survivorRecordId } of duplicateRecordPairs) {
+      // Counted via a conflict-free pre-check rather than INSERT ... RETURNING
+      // so dry runs report the same number a live run would.
+      const missingTags = await client.query<{ id: string }>(
+        `
+          SELECT t.id
+          FROM public.candidate_record_area_tags t
+          WHERE t.candidate_record_id = $1::uuid
+            AND NOT EXISTS (
+              SELECT 1 FROM public.candidate_record_area_tags s
+              WHERE s.candidate_record_id = $2::uuid
+                AND s.research_area_id = t.research_area_id
+            )
+        `,
+        [duplicateRecordId, survivorRecordId]
+      );
+      areaTagsCopied += missingTags.rows.length;
+      if (!dryRun && missingTags.rows.length > 0) {
+        await client.query(
+          `
+            INSERT INTO public.candidate_record_area_tags
+              (candidate_record_id, research_area_id, stance, created_at, updated_at)
+            SELECT $2::uuid, t.research_area_id, t.stance, t.created_at, t.updated_at
+            FROM public.candidate_record_area_tags t
+            WHERE t.candidate_record_id = $1::uuid
+            ON CONFLICT (candidate_record_id, research_area_id) DO NOTHING
+          `,
+          [duplicateRecordId, survivorRecordId]
+        );
+      }
+    }
+
+    // Notification events are reconciled BEFORE the duplicate records are
+    // deleted so nothing cascades away silently. Rehomed so "already
+    // notified" history survives; a future-election event colliding with the
+    // survivor's (uq_ucf_notification_events_election) is deleted — the user
+    // was already notified about that election for this person. Events on
+    // duplicate-deleted records are remapped to the survivor's copy of the
+    // same content (deleted when the user already has one there), so pending
+    // digest events stay pending and nobody is re-notified later.
+    const eventsResult = await client.query<EventRow>(
+      `
+        SELECT id, candidate_id, user_id, event_type, election_id, candidate_record_id
+        FROM public.user_candidate_follow_notification_events
+        WHERE candidate_id = ANY($1::uuid[])
+        ORDER BY id
+        FOR UPDATE
+      `,
+      [pair]
+    );
+    const survivorElectionEventKeys = new Set(
+      eventsResult.rows
+        .filter(
+          (row) =>
+            row.candidate_id === survivorId &&
+            row.event_type === "candidate_future_election" &&
+            row.election_id !== null
+        )
+        .map((row) => `${row.user_id}:${row.election_id}`)
+    );
+    const survivorRecordEventKeys = new Set(
+      eventsResult.rows
+        .filter(
+          (row) =>
+            row.candidate_id === survivorId &&
+            row.event_type === "candidate_record_update" &&
+            row.candidate_record_id !== null
+        )
+        .map((row) => `${row.user_id}:${row.candidate_record_id}`)
+    );
+    const rehomeEventIds: string[] = [];
+    const duplicateEventIds: string[] = [];
+    const remapEvents: { eventId: string; survivorRecordId: string }[] = [];
+    for (const event of eventsResult.rows) {
+      if (event.candidate_id !== mergedId) continue;
+      const remapTarget = event.candidate_record_id
+        ? survivorRecordIdByDuplicate.get(event.candidate_record_id)
+        : undefined;
+      if (remapTarget) {
+        if (survivorRecordEventKeys.has(`${event.user_id}:${remapTarget}`)) {
+          duplicateEventIds.push(event.id);
+        } else {
+          remapEvents.push({ eventId: event.id, survivorRecordId: remapTarget });
+        }
+        continue;
+      }
+      const collides =
+        event.event_type === "candidate_future_election" &&
+        event.election_id !== null &&
+        survivorElectionEventKeys.has(`${event.user_id}:${event.election_id}`);
+      if (collides) {
+        duplicateEventIds.push(event.id);
+      } else {
+        rehomeEventIds.push(event.id);
+      }
+    }
+    if (!dryRun && duplicateEventIds.length > 0) {
+      await client.query(
+        `DELETE FROM public.user_candidate_follow_notification_events WHERE id = ANY($1::uuid[])`,
+        [duplicateEventIds]
+      );
+    }
+    if (!dryRun) {
+      for (const { eventId, survivorRecordId } of remapEvents) {
+        await client.query(
+          `UPDATE public.user_candidate_follow_notification_events SET candidate_id = $2::uuid, candidate_record_id = $3::uuid WHERE id = $1::uuid`,
+          [eventId, survivorId, survivorRecordId]
+        );
+      }
+    }
+    if (!dryRun && rehomeEventIds.length > 0) {
+      await client.query(
+        `UPDATE public.user_candidate_follow_notification_events SET candidate_id = $2::uuid WHERE id = ANY($1::uuid[])`,
+        [rehomeEventIds, survivorId]
+      );
+    }
+
     if (!dryRun && duplicateRecordIds.length > 0) {
       await client.query(`DELETE FROM public.candidate_records WHERE id = ANY($1::uuid[])`, [
         duplicateRecordIds,
@@ -542,66 +712,6 @@ export async function runMergeCandidates(
       );
     }
 
-    // Notification events: rehomed so "already notified" history survives the
-    // merge. A future-election event colliding with the survivor's
-    // (uq_ucf_notification_events_election) is deleted — the user was already
-    // notified about that election for this person. Record-update events
-    // cannot collide: their partial unique key is (user_id,
-    // candidate_record_id) and record ids stay unique across the merge.
-    const eventsResult = await client.query<EventRow>(
-      `
-        SELECT id, candidate_id, user_id, event_type, election_id, candidate_record_id
-        FROM public.user_candidate_follow_notification_events
-        WHERE candidate_id = ANY($1::uuid[])
-        ORDER BY id
-        FOR UPDATE
-      `,
-      [pair]
-    );
-    // In a live run events tied to duplicate-deleted records are already gone
-    // (their record FK cascades); a dry run skipped that delete, so filter
-    // them here to keep the reported counts identical in both modes.
-    const cascadedRecordIds = new Set(duplicateRecordIds);
-    const liveEvents = eventsResult.rows.filter(
-      (row) => !(row.candidate_record_id && cascadedRecordIds.has(row.candidate_record_id))
-    );
-    const survivorElectionEventKeys = new Set(
-      liveEvents
-        .filter(
-          (row) =>
-            row.candidate_id === survivorId &&
-            row.event_type === "candidate_future_election" &&
-            row.election_id !== null
-        )
-        .map((row) => `${row.user_id}:${row.election_id}`)
-    );
-    const rehomeEventIds: string[] = [];
-    const duplicateEventIds: string[] = [];
-    for (const event of liveEvents) {
-      if (event.candidate_id !== mergedId) continue;
-      const collides =
-        event.event_type === "candidate_future_election" &&
-        event.election_id !== null &&
-        survivorElectionEventKeys.has(`${event.user_id}:${event.election_id}`);
-      if (collides) {
-        duplicateEventIds.push(event.id);
-      } else {
-        rehomeEventIds.push(event.id);
-      }
-    }
-    if (!dryRun && duplicateEventIds.length > 0) {
-      await client.query(
-        `DELETE FROM public.user_candidate_follow_notification_events WHERE id = ANY($1::uuid[])`,
-        [duplicateEventIds]
-      );
-    }
-    if (!dryRun && rehomeEventIds.length > 0) {
-      await client.query(
-        `UPDATE public.user_candidate_follow_notification_events SET candidate_id = $2::uuid WHERE id = ANY($1::uuid[])`,
-        [rehomeEventIds, survivorId]
-      );
-    }
-
     // Everything else that references candidates — every state finance table,
     // the presidential tables, whatever ships next. Rehome when only the
     // duplicate has rows; refuse when both do (unique keys like
@@ -670,10 +780,44 @@ export async function runMergeCandidates(
       mergeIdentifierLists(survivorFilingIds, parseIdentifierList(merged.state_filing_ids)) ?? [];
     const fecIdsAppended = mergedFecIds.length - survivorFecIds.length;
     const stateFilingIdsAppended = mergedFilingIds.length - survivorFilingIds.length;
-    if (!dryRun && (fecIdsAppended > 0 || stateFilingIdsAppended > 0)) {
+    // Profile fields: fill survivor blanks from the duplicate (a populated
+    // survivor value always wins), and union profile_sources so provenance
+    // survives. Without this, a website or summary living only on the
+    // duplicate would silently vanish from the visible profile.
+    const fieldsFilled: ProfileFillField[] = [];
+    for (const field of PROFILE_FILL_FIELDS) {
+      if (isBlank(survivor[field]) && !isBlank(merged[field])) {
+        fieldsFilled.push(field);
+      }
+    }
+    const survivorProfileSources = [...new Set(normalizeUrlList(survivor.profile_sources))];
+    const mergedProfileSources = [
+      ...new Set([...survivorProfileSources, ...normalizeUrlList(merged.profile_sources)]),
+    ];
+    const profileSourcesAppended = mergedProfileSources.length - survivorProfileSources.length;
+
+    // Column names come from the PROFILE_FILL_FIELDS constant above, never
+    // from user input.
+    const survivorSet: string[] = [];
+    const survivorValues: unknown[] = [survivorId];
+    const addAssignment = (column: string, cast: string, value: unknown) => {
+      survivorValues.push(value);
+      survivorSet.push(`${column} = $${survivorValues.length}${cast}`);
+    };
+    if (fecIdsAppended > 0) addAssignment("fec_ids", "::jsonb", JSON.stringify(mergedFecIds));
+    if (stateFilingIdsAppended > 0) {
+      addAssignment("state_filing_ids", "::jsonb", JSON.stringify(mergedFilingIds));
+    }
+    for (const field of fieldsFilled) {
+      addAssignment(field, field === "date_of_birth" ? "::date" : "", merged[field]);
+    }
+    if (profileSourcesAppended > 0) {
+      addAssignment("profile_sources", "::jsonb", JSON.stringify(mergedProfileSources));
+    }
+    if (!dryRun && survivorSet.length > 0) {
       await client.query(
-        `UPDATE public.candidates SET fec_ids = $2::jsonb, state_filing_ids = $3::jsonb, updated_at = now() WHERE id = $1::uuid`,
-        [survivorId, JSON.stringify(mergedFecIds), JSON.stringify(mergedFilingIds)]
+        `UPDATE public.candidates SET ${survivorSet.join(", ")}, updated_at = now() WHERE id = $1::uuid`,
+        survivorValues
       );
     }
 
@@ -707,7 +851,11 @@ export async function runMergeCandidates(
       survivorCandidateName: candidateName(survivor),
       links: { rehomed: rehomeLinkIds.length, duplicatesDeleted: duplicateLinkIds.length },
       mateLinks: { rehomed: mergedAsMate.length },
-      records: { rehomed: rehomeRecordIds.length, duplicatesDeleted: duplicateRecordIds.length },
+      records: {
+        rehomed: rehomeRecordIds.length,
+        duplicatesDeleted: duplicateRecordIds.length,
+        areaTagsCopied,
+      },
       sweepConfirmations: {
         mergedDeleted: mergedConfirmationDeleted,
         survivorDeleted: survivorConfirmationDeleted,
@@ -716,10 +864,12 @@ export async function runMergeCandidates(
       notificationEvents: {
         rehomed: rehomeEventIds.length,
         duplicatesDeleted: duplicateEventIds.length,
+        remappedToSurvivorRecords: remapEvents.length,
       },
       otherTables,
       chainCollapsedCandidates: chainResult.rows.length,
       identifiers: { fecIdsAppended, stateFilingIdsAppended },
+      profile: { fieldsFilled: fieldsFilled, sourcesAppended: profileSourcesAppended },
     };
   } catch (error) {
     await client.query("ROLLBACK").catch(() => undefined);

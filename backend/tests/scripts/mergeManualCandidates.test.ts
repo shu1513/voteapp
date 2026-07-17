@@ -22,6 +22,13 @@ function candidateRow(id: string, overrides: Partial<Record<string, unknown>> = 
     merged_into_candidate_id: null,
     fec_ids: [],
     state_filing_ids: [],
+    summary: null,
+    current_office: null,
+    date_of_birth: null,
+    twitter_handle: null,
+    linkedin_url: null,
+    official_website_url: null,
+    profile_sources: [],
     ...overrides,
   };
 }
@@ -113,9 +120,14 @@ describe("runMergeCandidates", () => {
     const result = await run({ query });
 
     expect(result.links).toEqual({ rehomed: 1, duplicatesDeleted: 0 });
-    expect(result.records).toEqual({ rehomed: 1, duplicatesDeleted: 0 });
+    expect(result.records).toEqual({ rehomed: 1, duplicatesDeleted: 0, areaTagsCopied: 0 });
     expect(result.follows).toEqual({ rehomed: 1, duplicatesDeleted: 0 });
-    expect(result.notificationEvents).toEqual({ rehomed: 1, duplicatesDeleted: 0 });
+    expect(result.notificationEvents).toEqual({
+      rehomed: 1,
+      duplicatesDeleted: 0,
+      remappedToSurvivorRecords: 0,
+    });
+    expect(result.profile).toEqual({ fieldsFilled: [], sourcesAppended: 0 });
     expect(result.otherTables).toEqual([
       { table: "public.az_candidate_finance_links", column: "candidate_id", rowsRehomed: 2 },
     ]);
@@ -292,29 +304,43 @@ describe("runMergeCandidates", () => {
     await expect(run({ query })).rejects.toThrow(/persisted winners referencing candidate/);
   });
 
-  it("refuses ticket conflicts: self-tickets, both-sides mates, and presidential pairs", async () => {
+  it("refuses ticket conflicts: self-tickets, same-election mate collisions, and presidential pairs", async () => {
     const selfTicket = buildClient(
       happyResponses({
-        "WHERE running_mate_candidate_id = ANY": [
-          [{ id: LINK_ID, candidate_id: SURVIVOR, running_mate_candidate_id: MERGED }],
+        "FROM public.candidate_elections\n        WHERE candidate_id = ANY": [
+          [linkRow({ candidate_id: SURVIVOR, running_mate_candidate_id: MERGED })],
         ],
       })
     );
     await expect(run({ query: selfTicket.query })).rejects.toThrow(/head and running mate/);
 
-    const bothMates = buildClient(
+    const sameElectionMates = buildClient(
       happyResponses({
-        "WHERE running_mate_candidate_id = ANY": [
+        "FROM public.candidate_elections\n        WHERE candidate_id = ANY": [
           [
-            { id: "m1", candidate_id: "66666666-6666-6666-6666-666666666666", running_mate_candidate_id: MERGED },
-            { id: "m2", candidate_id: "77777777-7777-7777-7777-777777777777", running_mate_candidate_id: SURVIVOR },
+            linkRow({
+              id: "m1",
+              candidate_id: "66666666-6666-6666-6666-666666666666",
+              election_id: ELECTION_A,
+              running_mate_candidate_id: MERGED,
+            }),
+            linkRow({
+              id: "m2",
+              candidate_id: "77777777-7777-7777-7777-777777777777",
+              election_id: ELECTION_A,
+              running_mate_candidate_id: SURVIVOR,
+            }),
           ],
         ],
       })
     );
-    await expect(run({ query: bothMates.query })).rejects.toThrow(
-      /Both candidates appear as running mates/
+    await expect(run({ query: sameElectionMates.query })).rejects.toThrow(
+      /links carrying both candidates as running mates/
     );
+    // Refusal must precede every write in the transaction.
+    expect(
+      sameElectionMates.calls.some((call) => /^\s*(UPDATE|DELETE|INSERT)\b/i.test(call.text))
+    ).toBe(false);
 
     const presidentialPair = buildClient(
       happyResponses({
@@ -326,11 +352,27 @@ describe("runMergeCandidates", () => {
     );
   });
 
-  it("rehomes running-mate references when only the duplicate rides as a mate", async () => {
+  it("rehomes mate references, allowing both candidates as mates on different elections", async () => {
+    // The classic duplicate shape: the duplicate rides as mate on one shell,
+    // the survivor on a sibling — different elections, so the partial unique
+    // key cannot collide and the merge must NOT refuse.
     const { query, calls } = buildClient(
       happyResponses({
-        "WHERE running_mate_candidate_id = ANY": [
-          [{ id: "m1", candidate_id: "66666666-6666-6666-6666-666666666666", running_mate_candidate_id: MERGED }],
+        "FROM public.candidate_elections\n        WHERE candidate_id = ANY": [
+          [
+            linkRow({
+              id: "m1",
+              candidate_id: "66666666-6666-6666-6666-666666666666",
+              election_id: ELECTION_A,
+              running_mate_candidate_id: MERGED,
+            }),
+            linkRow({
+              id: "m2",
+              candidate_id: "77777777-7777-7777-7777-777777777777",
+              election_id: ELECTION_B,
+              running_mate_candidate_id: SURVIVOR,
+            }),
+          ],
         ],
       })
     );
@@ -359,7 +401,7 @@ describe("runMergeCandidates", () => {
 
     const result = await run({ query });
 
-    expect(result.records).toEqual({ rehomed: 1, duplicatesDeleted: 1 });
+    expect(result.records).toEqual({ rehomed: 1, duplicatesDeleted: 1, areaTagsCopied: 0 });
     const del = calls.find((call) => call.text.includes("DELETE FROM public.candidate_records"));
     expect(del?.values).toEqual([["r2"]]);
     const rehome = calls.find((call) =>
@@ -456,7 +498,11 @@ describe("runMergeCandidates", () => {
 
     const result = await run({ query });
 
-    expect(result.notificationEvents).toEqual({ rehomed: 1, duplicatesDeleted: 1 });
+    expect(result.notificationEvents).toEqual({
+      rehomed: 1,
+      duplicatesDeleted: 1,
+      remappedToSurvivorRecords: 0,
+    });
     const del = calls.find((call) =>
       call.text.includes("DELETE FROM public.user_candidate_follow_notification_events")
     );
@@ -467,11 +513,45 @@ describe("runMergeCandidates", () => {
     expect(rehome?.values).toEqual([["e3"], SURVIVOR]);
   });
 
-  it("excludes events cascading with duplicate-deleted records from dry-run counts", async () => {
-    // Live runs delete the duplicate record before reading events (its
-    // record-update event cascades away); a dry run must report the same
-    // counts despite skipping the delete.
+  it("copies missing area tags to the survivor's record before deleting a duplicate record", async () => {
     const responses = () =>
+      happyResponses({
+        "FROM public.candidate_records\n        WHERE candidate_id = ANY": [
+          [
+            { id: "r2", candidate_id: MERGED, record_identity_key: "shared" },
+            { id: "r3", candidate_id: SURVIVOR, record_identity_key: "shared" },
+          ],
+        ],
+        "FROM public.candidate_record_area_tags t": [[{ id: "t1" }]],
+      });
+
+    const live = buildClient(responses());
+    const result = await run({ query: live.query });
+    expect(result.records).toEqual({ rehomed: 0, duplicatesDeleted: 1, areaTagsCopied: 1 });
+    const insert = live.calls.find((call) =>
+      call.text.includes("INSERT INTO public.candidate_record_area_tags")
+    );
+    expect(insert?.values).toEqual(["r2", "r3"]);
+    expect(insert?.text).toContain("ON CONFLICT (candidate_record_id, research_area_id) DO NOTHING");
+    // The copy must land before the duplicate record's delete in the same
+    // transaction, or the tags cascade away first.
+    const insertIndex = live.calls.findIndex((call) =>
+      call.text.includes("INSERT INTO public.candidate_record_area_tags")
+    );
+    const deleteIndex = live.calls.findIndex((call) =>
+      call.text.includes("DELETE FROM public.candidate_records")
+    );
+    expect(insertIndex).toBeGreaterThan(-1);
+    expect(insertIndex).toBeLessThan(deleteIndex);
+
+    const dry = buildClient(responses());
+    const dryResult = await run({ query: dry.query }, { dryRun: true });
+    expect(dryResult.records.areaTagsCopied).toBe(1);
+    expect(dry.calls.some((call) => /^\s*INSERT\b/i.test(call.text))).toBe(false);
+  });
+
+  it("remaps events from duplicate-deleted records onto the survivor's copy", async () => {
+    const responses = (survivorAlreadyNotified: boolean) =>
       happyResponses({
         "FROM public.candidate_records\n        WHERE candidate_id = ANY": [
           [
@@ -489,21 +569,88 @@ describe("runMergeCandidates", () => {
               election_id: null,
               candidate_record_id: "r2",
             },
+            ...(survivorAlreadyNotified
+              ? [
+                  {
+                    id: "e2",
+                    candidate_id: SURVIVOR,
+                    user_id: USER_ID,
+                    event_type: "candidate_record_update",
+                    election_id: null,
+                    candidate_record_id: "r3",
+                  },
+                ]
+              : []),
           ],
         ],
       });
 
-    const dry = await run({ query: buildClient(responses()).query }, { dryRun: true });
-    expect(dry.notificationEvents).toEqual({ rehomed: 0, duplicatesDeleted: 0 });
+    // No survivor-side event: the pending/history event follows the content.
+    const remap = buildClient(responses(false));
+    const remapResult = await run({ query: remap.query });
+    expect(remapResult.notificationEvents).toEqual({
+      rehomed: 0,
+      duplicatesDeleted: 0,
+      remappedToSurvivorRecords: 1,
+    });
+    const remapUpdate = remap.calls.find((call) =>
+      call.text.includes("candidate_record_id = $3::uuid")
+    );
+    expect(remapUpdate?.values).toEqual(["e1", SURVIVOR, "r3"]);
 
-    const live = buildClient(responses());
-    const result = await run({ query: live.query });
-    expect(result.notificationEvents).toEqual({ rehomed: 0, duplicatesDeleted: 0 });
-    expect(
-      live.calls.some((call) =>
-        call.text.includes("UPDATE public.user_candidate_follow_notification_events")
-      )
-    ).toBe(false);
+    // Survivor-side event exists: remapping would trip the partial unique
+    // key, and the user already heard about this content — delete instead.
+    const collide = buildClient(responses(true));
+    const collideResult = await run({ query: collide.query });
+    expect(collideResult.notificationEvents).toEqual({
+      rehomed: 0,
+      duplicatesDeleted: 1,
+      remappedToSurvivorRecords: 0,
+    });
+    const del = collide.calls.find((call) =>
+      call.text.includes("DELETE FROM public.user_candidate_follow_notification_events")
+    );
+    expect(del?.values).toEqual([["e1"]]);
+  });
+
+  it("fills blank survivor profile fields from the duplicate and unions profile sources", async () => {
+    const { query, calls } = buildClient(
+      happyResponses({
+        "FROM public.candidates\n        WHERE id = ANY": [
+          [
+            candidateRow(MERGED, {
+              summary: "Long-form summary written on the duplicate.",
+              official_website_url: "https://example.gov",
+              current_office: "City Council Member",
+              profile_sources: ["https://sos.example.gov/filing", "https://example.gov"],
+            }),
+            candidateRow(SURVIVOR, {
+              summary: "   ",
+              current_office: "Mayor",
+              profile_sources: ["https://example.gov"],
+            }),
+          ],
+        ],
+      })
+    );
+
+    const result = await run({ query });
+
+    // Blank summary and missing website fill in; the survivor's populated
+    // current_office wins over the duplicate's.
+    expect(result.profile).toEqual({
+      fieldsFilled: ["summary", "official_website_url"],
+      sourcesAppended: 1,
+    });
+    const update = calls.find((call) => call.text.includes("summary = $"));
+    expect(update?.values?.[0]).toBe(SURVIVOR);
+    expect(update?.values).toContain("Long-form summary written on the duplicate.");
+    expect(update?.values).toContain("https://example.gov");
+    expect(JSON.parse(update?.values?.at(-1) as string)).toEqual([
+      "https://example.gov",
+      "https://sos.example.gov/filing",
+    ]);
+    expect(update?.text).not.toContain("current_office");
   });
 
   it("refuses when both candidates have rows in the same referencing table", async () => {
