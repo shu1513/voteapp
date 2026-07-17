@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "@voteapp/api-client";
 import {
@@ -9,7 +9,12 @@ import {
   type BallotSummary,
 } from "@voteapp/api-client";
 import { AiBanner } from "../components/AiBanner";
-import { SavedAddressForm } from "../components/SavedAddressForm";
+import {
+  AddressSavedNotice,
+  SavedAddressForm,
+  type AddressSavedLocationState,
+  type AddressSavedNoticeData,
+} from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
@@ -107,6 +112,24 @@ function BallotPreferenceControls() {
 export function SavedBallotPage() {
   useDocumentTitle("Your saved ballot");
   const { me, isLoading, isError: meError, refetch: refetchMe } = useMe();
+  const location = useLocation();
+  const navigate = useNavigate();
+  // Set when SavedAddressForm just navigated here after a successful save;
+  // the notice carries the matched address and the ambiguous-match warning.
+  const [addressSaved, setAddressSaved] = useState<AddressSavedNoticeData | null>(null);
+  // Capture-then-clear: React Router copies navigation state into
+  // window.history.state, which survives refresh and back/forward — left in
+  // place, the "Address saved" banner (home address included) would replay
+  // from the history entry indefinitely, even beside a newer address's
+  // ballot. An effect, not a mount-time read: the empty-state form on this
+  // page saves without remounting it, so the state can arrive mid-life.
+  useEffect(() => {
+    const saved = (location.state as Partial<AddressSavedLocationState> | null)?.addressSaved;
+    if (saved) {
+      setAddressSaved(saved);
+      void navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location.pathname, location.state, navigate]);
   const queryClient = useQueryClient();
   // Same key as BallotPreferenceControls: shared cache entry, no extra fetch.
   // Drives the subtitle so the copy matches the saved sort.
@@ -250,6 +273,13 @@ export function SavedBallotPage() {
   if (data.districts.length === 0) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10">
+        {/* A save can succeed and still map to zero districts; without the
+            notice the user lands back on the form with no feedback. */}
+        {addressSaved ? (
+          <div className="mb-4">
+            <AddressSavedNotice saved={addressSaved} />
+          </div>
+        ) : null}
         <h1 className="text-2xl font-bold">Set your address</h1>
         <p className="mt-2 text-sm text-ink-soft">
           Save your home address once and your ballot will be waiting every time you come back.
@@ -264,6 +294,11 @@ export function SavedBallotPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <AiBanner />
+      {addressSaved ? (
+        <div className="mb-4">
+          <AddressSavedNotice saved={addressSaved} />
+        </div>
+      ) : null}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">Your saved ballot</h1>
         <BallotPreferenceControls />

@@ -7,7 +7,6 @@ import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
-import { FollowButton } from "../components/FollowButton";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
 import {
@@ -19,7 +18,6 @@ import {
   formatVotePowerLabel,
 } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
-import { useFollows } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { aggregateRecordAreaStances, scoreStanceDirection } from "@voteapp/api-client";
@@ -60,12 +58,6 @@ export function ErrorBoundary() {
 
 export function ElectionPage() {
   const { me } = useMe();
-  // Election payload candidates carry no follow state; derive it from the
-  // follows list (only fetched for verified users). Follow controls render
-  // only once that list has loaded — before then a followed candidate would
-  // briefly (or, on fetch failure, permanently) show as unfollowed.
-  const { follows, canFollow } = useFollows();
-  const followedIds = new Set((follows ?? []).map((follow) => follow.candidate_id));
   const { savedAreaIds, weights, hasSaved } = useMyResearchAreas();
   const [candidateSort, setCandidateSort] = useState<CandidateSort>("ballot");
 
@@ -239,11 +231,12 @@ export function ElectionPage() {
           </div>
           <div className="mt-3 space-y-3">
             {sortCandidatesByStance(data.candidates, candidateSort, weights).map(({ candidate, stances }) => (
-              // The follow button and the finance <details> are interactive
-              // content and may not nest inside an anchor. The whole-card
-              // click target survives via a stretched link: the name Link's
-              // ::after overlays the wrapper, and the interactive siblings
-              // sit above it (z-10) so they receive their own clicks.
+              // The finance <details> is interactive content and may not
+              // nest inside an anchor. The whole-card click target survives
+              // via a stretched link: the name Link's ::after overlays the
+              // wrapper, and the interactive sibling sits above it (z-10) so
+              // it receives its own clicks. Following happens on the
+              // candidate profile page, not here.
               <div
                 key={candidate.candidate_id}
                 className="relative rounded-xl border border-line bg-white shadow-sm transition hover:shadow-md"
@@ -265,22 +258,11 @@ export function ElectionPage() {
                         {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
                       </p>
                     </div>
-                    <div className="flex shrink-0 items-center gap-3">
-                      {candidate.finance_summary?.direct_campaign.total_raised != null ? (
-                        <span className="text-sm text-ink-soft">
-                          Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
-                        </span>
-                      ) : null}
-                      {canFollow && follows ? (
-                        <span className="relative z-10">
-                          <FollowButton
-                            candidateId={candidate.candidate_id}
-                            isFollowing={followedIds.has(candidate.candidate_id)}
-                            size="sm"
-                          />
-                        </span>
-                      ) : null}
-                    </div>
+                    {candidate.finance_summary?.direct_campaign.total_raised != null ? (
+                      <span className="shrink-0 text-sm text-ink-soft">
+                        Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
+                      </span>
+                    ) : null}
                   </div>
                   {candidate.summary ? (
                     <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>

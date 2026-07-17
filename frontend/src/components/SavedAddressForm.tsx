@@ -1,33 +1,57 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { useIsMutating, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest, PRIVACY_NOTICE } from "@voteapp/api-client";
 import type { BallotSummary } from "@voteapp/api-client";
 import { AddressAutocomplete } from "./AddressAutocomplete";
 import { ErrorNotice } from "./Status";
 
-type SavedBallot = BallotSummary & { matched_address?: string; address_match_count?: number };
+type AddressSaveResult = BallotSummary & { matched_address?: string; address_match_count?: number };
+
+// Only what the confirmation renders. Router state is copied into
+// window.history.state and can outlive the navigation (refresh, session
+// restore), so the home address's exposure is kept minimal and the ballot
+// payload — which GET /api/me/ballot re-derives anyway — stays out entirely.
+export type AddressSavedNoticeData = {
+  matched_address?: string;
+  district_count: number;
+  address_match_count?: number;
+};
+
+// Router state carried to /me/ballot after a successful save; the saved
+// ballot page renders <AddressSavedNotice> from it, then wipes the history
+// entry so the notice shows once instead of replaying on refresh/back.
+export type AddressSavedLocationState = { addressSaved: AddressSavedNoticeData };
 
 // Saves the account's home address and replaces the saved districts. Used by
-// the settings "Home address" section and the saved-ballot empty state. The
-// PUT succeeds silently server-side, so the confirmation line here is the
-// user's only feedback — without it a save looks like nothing happened.
+// the settings "Home address" section and the saved-ballot empty state. A
+// successful save navigates to the saved ballot so the user lands on the
+// election list for their new districts; the confirmation (including the
+// ambiguous-match warning) travels along as router state.
 
 export function SavedAddressForm({ inputId, label }: { inputId: string; label: string }) {
   const [address, setAddress] = useState("");
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const update = useMutation({
     mutationKey: ["put-address"],
     mutationFn: (submitted: string) =>
-      apiRequest<SavedBallot>("/api/me/address", { method: "PUT", body: { address: submitted } }),
-    onSuccess: (_saved, submitted) => {
+      apiRequest<AddressSaveResult>("/api/me/address", { method: "PUT", body: { address: submitted } }),
+    onSuccess: (saved) => {
       // The PUT returns a plain district ballot, but GET /api/me/ballot
       // applies saved sort preferences and followed-candidate ordering —
       // refetch the canonical version instead of caching the PUT body.
       void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
-      // Clear only the text that was submitted: anything typed while the
-      // save was in flight is the user's next address, not ours to erase.
-      setAddress((current) => (current.trim() === submitted ? "" : current));
+      void navigate("/me/ballot", {
+        state: {
+          addressSaved: {
+            matched_address: saved.matched_address,
+            district_count: saved.districts.length,
+            address_match_count: saved.address_match_count,
+          },
+        } satisfies AddressSavedLocationState,
+      });
     },
   });
   // Cross-mount in-flight guard, same as the other full-replace preference
@@ -37,8 +61,8 @@ export function SavedAddressForm({ inputId, label }: { inputId: string; label: s
   const saving = useIsMutating({ mutationKey: ["put-address"] }) > 0;
 
   function onAddressChange(next: string) {
-    // Editing starts a new attempt: drop the previous save's confirmation
-    // (or error) so it cannot read as status for the address being typed.
+    // Editing starts a new attempt: drop the previous save's error so it
+    // cannot read as status for the address being typed.
     if (!update.isIdle && !update.isPending) {
       update.reset();
     }
@@ -78,23 +102,29 @@ export function SavedAddressForm({ inputId, label }: { inputId: string; label: s
       >
         {saving ? "Saving…" : "Save address"}
       </button>
-      {update.isSuccess ? (
-        <p role="status" className="rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
-          Address saved{update.data.matched_address ? <> — matched to <strong>{update.data.matched_address}</strong></> : null}.
-          Your ballot now covers {update.data.districts.length} district
-          {update.data.districts.length === 1 ? "" : "s"}.
-          {typeof update.data.address_match_count === "number" && update.data.address_match_count > 1 ? (
-            // The geocoder returned multiple candidates and saved the first —
-            // a silently wrong match here replaces the user's whole ballot.
-            <>
-              {" "}Your address matched {update.data.address_match_count} possible locations and the first one was
-              used — if the matched address is not yours, save again with your full street address, city, and ZIP
-              code.
-            </>
-          ) : null}
-        </p>
-      ) : null}
       {update.isError ? <ErrorNotice error={update.error} /> : null}
     </form>
+  );
+}
+
+// Post-save confirmation rendered on the saved ballot page from the router
+// state the form navigates with. The PUT succeeds silently server-side, so
+// this line is the user's only textual feedback on what was matched.
+export function AddressSavedNotice({ saved }: { saved: AddressSavedNoticeData }) {
+  return (
+    <p role="status" className="rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
+      Address saved{saved.matched_address ? <> — matched to <strong>{saved.matched_address}</strong></> : null}.
+      Your ballot now covers {saved.district_count} district
+      {saved.district_count === 1 ? "" : "s"}.
+      {typeof saved.address_match_count === "number" && saved.address_match_count > 1 ? (
+        // The geocoder returned multiple candidates and saved the first —
+        // a silently wrong match here replaces the user's whole ballot.
+        <>
+          {" "}Your address matched {saved.address_match_count} possible locations and the first one was
+          used — if the matched address is not yours, save again with your full street address, city, and ZIP
+          code.
+        </>
+      ) : null}
+    </p>
   );
 }

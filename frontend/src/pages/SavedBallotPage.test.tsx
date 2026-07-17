@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { SavedBallotPage } from "./SavedBallotPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
@@ -11,14 +11,14 @@ const VERIFIED_BASE = {
   "/api/me/research-area-preferences": { body: { preferences: [] } },
 };
 
-function renderSavedBallot() {
+function renderSavedBallot(state?: unknown) {
   return renderRoutes(
     [
       { path: "/me/ballot", element: <SavedBallotPage /> },
       { path: "/login", element: <p /> },
       { path: "/elections/:electionId", element: <p /> },
     ],
-    "/me/ballot"
+    { pathname: "/me/ballot", state }
   );
 }
 
@@ -70,6 +70,51 @@ describe("SavedBallotPage", () => {
       "/me/settings"
     );
     expect(screen.queryByLabelText("New address")).not.toBeInTheDocument();
+  });
+
+  it("confirms a fresh address save from router state, then wipes the history state", async () => {
+    stubApiRoutes({
+      ...VERIFIED_BASE,
+      "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    const { router } = renderSavedBallot({
+      addressSaved: { matched_address: "123 MAIN ST, AUSTIN, TX", district_count: 1, address_match_count: 1 },
+    });
+
+    const confirmation = await screen.findByRole("status");
+    expect(confirmation).toHaveTextContent("matched to 123 MAIN ST, AUSTIN, TX");
+    expect(confirmation).toHaveTextContent("1 district");
+    // Exact single match: no ambiguity warning.
+    expect(confirmation).not.toHaveTextContent("possible locations");
+    // The election list renders beneath the confirmation.
+    expect(screen.getByText("Governor")).toBeInTheDocument();
+
+    // Regression: the history entry must not keep the save state, or a
+    // refresh/back-forward would replay the banner (and retain the home
+    // address) indefinitely — while the banner itself stays visible for
+    // this visit.
+    await waitFor(() => expect(router.state.location.state).toBeNull());
+    expect(screen.getByRole("status")).toBeInTheDocument();
+  });
+
+  it("warns when the saved address matched multiple locations", async () => {
+    stubApiRoutes({
+      ...VERIFIED_BASE,
+      "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderSavedBallot({
+      addressSaved: {
+        matched_address: "100 MAIN ST, SPRINGFIELD, MA, 01105",
+        district_count: 1,
+        address_match_count: 7,
+      },
+    });
+
+    const confirmation = await screen.findByRole("status");
+    expect(confirmation).toHaveTextContent("matched to 100 MAIN ST, SPRINGFIELD, MA, 01105");
+    expect(confirmation).toHaveTextContent(
+      "Your address matched 7 possible locations and the first one was used"
+    );
   });
 
   it("falls back to the verify interstitial when the ballot 403s", async () => {

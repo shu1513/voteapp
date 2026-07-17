@@ -46,7 +46,8 @@ describe("ElectionPage", () => {
     expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
     expect(screen.getByText("Jordan Voter")).toBeInTheDocument();
     expect(screen.getByText("Riley Runner")).toBeInTheDocument();
-    // Anonymous visitors get no follow controls.
+    // The candidate list carries no follow controls; following lives on the
+    // candidate profile page.
     expect(screen.queryByRole("button", { name: /follow/i })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Report an issue with election" })).toBeInTheDocument();
   });
@@ -170,21 +171,17 @@ describe("ElectionPage", () => {
     expect(cardLink.querySelector("details")).toBeNull();
   });
 
-  it("keeps the follow button outside the card link for verified users", async () => {
+  it("shows no follow buttons in the candidate list even for verified users", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/candidate-follows": { body: { follows: [] } },
     });
     renderElection(() => electionDetail());
 
-    // One button per candidate once the follows list has loaded.
-    const followButtons = await screen.findAllByRole("button", { name: "Follow" });
-    expect(followButtons).toHaveLength(2);
-    // A button may not nest inside an anchor; the whole-card click target
-    // is a stretched link, so the button must be a sibling of it.
-    for (const button of followButtons) {
-      expect(button.closest("a")).toBeNull();
-    }
+    // Following moved to the candidate profile page; the list stays a pure
+    // navigation surface.
+    expect(await screen.findByText("Jordan Voter")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Follow" })).not.toBeInTheDocument();
     const cardLink = screen.getByRole("link", { name: "Jordan Voter" });
     expect(cardLink).toHaveAttribute("href", "/candidates/c-1");
   });
