@@ -5,6 +5,9 @@ import type { ReplaceUserDistrictsResult } from "./userDistrictReplacer.js";
 
 export type AuthenticatedAddressDistrictUpdateResult = BallotSummaryResult & {
   matched_address: string;
+  // Geocoder candidate count; above 1 means the input was ambiguous and the
+  // first match was used, so the client should surface the matched address.
+  address_match_count: number;
 };
 
 export type AuthenticatedAddressDistrictUpdaterDependencies = {
@@ -67,6 +70,7 @@ export async function updateAuthenticatedAddressDistricts(
   const ballot = await dependencies.lookupBallotSummariesByDistrictIds(districtIds);
   return {
     matched_address: resolved.matched_address,
+    address_match_count: resolved.address_match_count,
     ...ballot,
   };
 }

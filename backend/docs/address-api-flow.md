@@ -20,6 +20,7 @@ Response:
 ```json
 {
   "matched_address": "3921 HARLAN AVE, BALDWIN PARK, CA, 91706",
+  "address_match_count": 1,
   "districts": [
     {
       "id": "...",
@@ -34,6 +35,8 @@ Response:
   ]
 }
 ```
+
+`address_match_count` is the geocoder's candidate count: above 1 means the input was ambiguous and `matched_address` is the first candidate, so clients show a confirmation warning next to the matched address.
 
 Frontend behavior:
 
@@ -149,6 +152,7 @@ Response:
 ```json
 {
   "matched_address": "123 MAIN ST, DENVER, CO, 80203",
+  "address_match_count": 1,
   "district_ids": ["..."],
   "districts": [
     {

@@ -85,6 +85,38 @@ describe("BallotPage", () => {
     expect(list).toHaveTextContent("Alaska");
   });
 
+  it("warns when the search matched multiple addresses so the visitor confirms the first match", async () => {
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderBallot({
+      pathname: "/ballot",
+      search: "?d=d-1",
+      state: { matchedAddress: "100 MAIN ST, SPRINGFIELD, MA, 01105", addressMatchCount: 7 },
+    });
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Your search matched 7 possible addresses, and this ballot is for the first one."
+    );
+    expect(screen.getByRole("link", { name: "search again" })).toHaveAttribute("href", "/?new=1");
+  });
+
+  it("shows no ambiguity warning for an exact single match", async () => {
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderBallot({
+      pathname: "/ballot",
+      search: "?d=d-1",
+      state: { matchedAddress: "123 MAIN ST, JUNEAU, AK, 99801", addressMatchCount: 1 },
+    });
+
+    await screen.findByText("Governor");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
   it("omits the matched-address line on direct visits without router state", async () => {
     stubApiRoutes({
       ...ANONYMOUS,

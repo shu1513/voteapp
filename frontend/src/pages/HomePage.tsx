@@ -56,7 +56,10 @@ export function HomePage() {
       // The matched address rides along in router state (never the URL — it is
       // personal data) so the ballot page can show which address was geocoded.
       navigate(`/ballot?d=${resolution.districts.map((district) => district.id).join(",")}`, {
-        state: { matchedAddress: resolution.matched_address },
+        state: {
+          matchedAddress: resolution.matched_address,
+          addressMatchCount: resolution.address_match_count,
+        },
       });
     },
   });

@@ -2,6 +2,11 @@ import type { AddressResolutionResult } from "../pipeline/address/addressResolve
 
 export type PublicAddressResolutionResult = {
   matched_address: string;
+  // How many candidate addresses the geocoder returned. The resolver uses the
+  // first match, so anything above 1 means the input was ambiguous (e.g.
+  // "100 Main St, Springfield" matches several states) and the client should
+  // ask the user to confirm the matched address.
+  address_match_count: number;
   districts: AddressResolutionResult["districts"];
 };
 
@@ -15,6 +20,7 @@ export type AddressResolutionDiagnostics = {
 export function toPublicAddressResolution(result: AddressResolutionResult): PublicAddressResolutionResult {
   return {
     matched_address: result.matched_address,
+    address_match_count: result.address_match_count,
     districts: result.districts,
   };
 }

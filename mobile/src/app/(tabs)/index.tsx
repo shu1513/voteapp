@@ -114,7 +114,7 @@ export default function HomeScreen() {
       // Straight to the elections — the districts list is a detour nobody
       // asked for. The matched address goes through the in-memory holder,
       // never navigation params — see lib/matchedAddress.ts.
-      setMatchedAddress(resolution.matched_address);
+      setMatchedAddress(resolution.matched_address, resolution.address_match_count);
       router.push({
         pathname: "/ballot",
         params: { d: resolution.districts.map((district) => district.id).join(",") },

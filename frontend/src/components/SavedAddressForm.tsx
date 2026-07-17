@@ -5,7 +5,7 @@ import type { BallotSummary } from "@voteapp/api-client";
 import { AddressAutocomplete } from "./AddressAutocomplete";
 import { ErrorNotice } from "./Status";
 
-type SavedBallot = BallotSummary & { matched_address?: string };
+type SavedBallot = BallotSummary & { matched_address?: string; address_match_count?: number };
 
 // Saves the account's home address and replaces the saved districts. Used by
 // the settings "Home address" section and the saved-ballot empty state. The
@@ -83,6 +83,15 @@ export function SavedAddressForm({ inputId, label }: { inputId: string; label: s
           Address saved{update.data.matched_address ? <> — matched to <strong>{update.data.matched_address}</strong></> : null}.
           Your ballot now covers {update.data.districts.length} district
           {update.data.districts.length === 1 ? "" : "s"}.
+          {typeof update.data.address_match_count === "number" && update.data.address_match_count > 1 ? (
+            // The geocoder returned multiple candidates and saved the first —
+            // a silently wrong match here replaces the user's whole ballot.
+            <>
+              {" "}Your address matched {update.data.address_match_count} possible locations and the first one was
+              used — if the matched address is not yours, save again with your full street address, city, and ZIP
+              code.
+            </>
+          ) : null}
         </p>
       ) : null}
       {update.isError ? <ErrorNotice error={update.error} /> : null}

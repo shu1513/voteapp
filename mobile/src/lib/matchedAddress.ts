@@ -5,15 +5,22 @@
 // state is lost on reload — the ballot screen simply omits the confirmation
 // line then, same as the web after a refresh (router state there).
 
-let pendingMatchedAddress: string | null = null;
+export type MatchedAddressHandoff = {
+  address: string;
+  // Geocoder candidate count; above 1 means the search was ambiguous and the
+  // ballot is for the first match, so the ballot screen shows a warning.
+  matchCount: number;
+};
 
-export function setMatchedAddress(address: string): void {
-  pendingMatchedAddress = address;
+let pendingMatchedAddress: MatchedAddressHandoff | null = null;
+
+export function setMatchedAddress(address: string, matchCount: number): void {
+  pendingMatchedAddress = { address, matchCount };
 }
 
-/** Returns and clears the pending address (single handoff). */
-export function consumeMatchedAddress(): string | null {
-  const address = pendingMatchedAddress;
+/** Returns and clears the pending handoff (single use). */
+export function consumeMatchedAddress(): MatchedAddressHandoff | null {
+  const handoff = pendingMatchedAddress;
   pendingMatchedAddress = null;
-  return address;
+  return handoff;
 }

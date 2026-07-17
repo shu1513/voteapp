@@ -15,7 +15,7 @@ import { Collapsible } from "../components/Collapsible";
 import { ElectionCard } from "../components/ElectionCard";
 import { SortChips } from "../components/SortChips";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
-import { consumeMatchedAddress } from "../lib/matchedAddress";
+import { consumeMatchedAddress, type MatchedAddressHandoff } from "../lib/matchedAddress";
 
 /**
  * Port of the web BallotPage. Params mirror the web URL (`d` = comma-joined
@@ -31,7 +31,11 @@ export default function BallotScreen() {
   const { savedAreaIds } = useMyResearchAreas();
   const [sort, setSort] = useState<BallotSort>("vote_power");
   // Consume once on mount; state keeps it across re-renders and sort changes.
-  const [matchedAddress] = useState<string | null>(consumeMatchedAddress);
+  const [matched] = useState<MatchedAddressHandoff | null>(consumeMatchedAddress);
+  const matchedAddress = matched?.address ?? null;
+  // The geocoder returned more than one candidate address and the ballot is
+  // for the first one — the confirmation line alone is too easy to skim past.
+  const ambiguousMatchCount = matched && matched.matchCount > 1 ? matched.matchCount : null;
 
   const districtIds = (params.d ?? "")
     .split(",")
@@ -72,6 +76,19 @@ export default function BallotScreen() {
             Not your address?
           </Text>
         </Text>
+      ) : null}
+      {matchedAddress && ambiguousMatchCount ? (
+        // Same warning as the web ballot page (role="alert" there).
+        <View accessibilityRole="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2">
+          <Text className="text-sm text-ink">
+            Your search matched {ambiguousMatchCount} possible addresses, and this ballot is for the first one.
+            Please check the matched address above — if it is not yours,{" "}
+            <Text className="underline" accessibilityRole="link" onPress={() => router.dismissTo("/")}>
+              search again
+            </Text>{" "}
+            with your full street address, city, and ZIP code.
+          </Text>
+        </View>
       ) : null}
 
       <View className="mt-3">

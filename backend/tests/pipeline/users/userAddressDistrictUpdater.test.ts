@@ -48,6 +48,7 @@ describe("updateAuthenticatedAddressDistricts", () => {
 
     expect(result).toEqual({
       matched_address: resolvedAddress.matched_address,
+      address_match_count: resolvedAddress.address_match_count,
       district_ids: [districtId],
       districts: resolvedAddress.districts,
       elections: [],
