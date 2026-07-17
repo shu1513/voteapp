@@ -7,6 +7,7 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 export const CANDIDATE_RECORD_UPDATE_EVENT_TYPE = "candidate_record_update";
 export const CANDIDATE_FUTURE_ELECTION_EVENT_TYPE = "candidate_future_election";
+export const CANDIDATE_ELECTION_WITHDRAWAL_EVENT_TYPE = "candidate_election_withdrawal";
 
 export type CandidateFollowNotificationEventCreationResult = {
   createdCount: number;
@@ -114,6 +115,9 @@ export async function createCandidateFutureElectionNotificationEvents(
           AND election.id = $2::uuid
           AND candidate.deleted_at IS NULL
           AND candidate.merged_into_candidate_id IS NULL
+          -- A withdrawn link must never (re-)announce "on the ballot": profile
+          -- re-runs re-fire this creator for existing links.
+          AND candidate_election.status <> 'withdrawn'
           AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
       ),
       eligible_follows AS (
@@ -145,6 +149,73 @@ export async function createCandidateFutureElectionNotificationEvents(
       RETURNING id
     `,
     [normalizedCandidateId, normalizedElectionId, CANDIDATE_FUTURE_ELECTION_EVENT_TYPE]
+  );
+
+  return { createdCount: result.rowCount ?? result.rows.length };
+}
+
+// Fired by manual:candidate-elections:withdraw after it stamps the link
+// withdrawn. Withdrawal is election news, so it uses the same follow toggle
+// as candidate_future_election (notify_elections), and only for elections
+// that have not happened yet — a withdrawal recorded after election day is
+// history, not news.
+export async function createCandidateElectionWithdrawalNotificationEvents(
+  db: Queryable,
+  input: { candidateId: string; electionId: string }
+): Promise<CandidateFollowNotificationEventCreationResult> {
+  const normalizedCandidateId = normalizeUuid(input.candidateId, "invalid_candidate_id", "Candidate ID");
+  const normalizedElectionId = normalizeUuid(input.electionId, "invalid_election_id", "Election ID");
+
+  const result = await db.query<{ id: string }>(
+    `
+      WITH source_event AS (
+        SELECT
+          candidate.id AS candidate_id,
+          election.id AS election_id
+        FROM public.candidates AS candidate
+        JOIN public.candidate_elections AS candidate_election
+          ON candidate_election.candidate_id = candidate.id
+        JOIN public.elections AS election
+          ON election.id = candidate_election.election_id
+        WHERE candidate.id = $1::uuid
+          AND election.id = $2::uuid
+          AND candidate.deleted_at IS NULL
+          AND candidate.merged_into_candidate_id IS NULL
+          -- The link must actually be withdrawn: this creator runs after the
+          -- wrapper's status update, and refusing other statuses keeps a
+          -- mis-targeted call from notifying followers about nothing.
+          AND candidate_election.status = 'withdrawn'
+          AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
+      ),
+      eligible_follows AS (
+        SELECT
+          follow.user_id,
+          source_event.candidate_id,
+          source_event.election_id
+        FROM source_event
+        JOIN public.user_candidate_follows AS follow
+          ON follow.candidate_id = source_event.candidate_id
+        JOIN public.users AS user_row
+          ON user_row.id = follow.user_id
+        WHERE follow.notify_elections = true
+          AND user_row.deleted_at IS NULL
+      )
+      INSERT INTO public.user_candidate_follow_notification_events (
+        user_id,
+        candidate_id,
+        event_type,
+        election_id
+      )
+      SELECT
+        eligible_follows.user_id,
+        eligible_follows.candidate_id,
+        $3,
+        eligible_follows.election_id
+      FROM eligible_follows
+      ON CONFLICT DO NOTHING
+      RETURNING id
+    `,
+    [normalizedCandidateId, normalizedElectionId, CANDIDATE_ELECTION_WITHDRAWAL_EVENT_TYPE]
   );
 
   return { createdCount: result.rowCount ?? result.rows.length };

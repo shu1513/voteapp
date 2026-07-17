@@ -48,6 +48,27 @@ describe("digest message builders", () => {
     expect(body).not.toContain("more update");
   });
 
+  it("renders withdrawal items with the election title and date", () => {
+    const body = buildDigestTextBody(undefined, {
+      ...baseInput,
+      items: [
+        {
+          candidateDisplayName: "Roland Gutierrez",
+          eventType: "candidate_election_withdrawal",
+          electionTitle: "State Senator, District 19",
+          electionDate: "2026-11-03",
+        },
+        {
+          candidateDisplayName: "Marcus Cardenas",
+          eventType: "candidate_election_withdrawal",
+        },
+      ],
+      totalEventCount: 2,
+    });
+    expect(body).toContain("- Withdrew from: State Senator, District 19 (2026-11-03)");
+    expect(body).toContain("- Withdrew from: an upcoming election");
+  });
+
   it("notes the remainder when rendered items are capped below the total", () => {
     const body = buildDigestTextBody(undefined, { ...baseInput, totalEventCount: 10 });
     expect(body).toContain("…and 7 more updates.");
