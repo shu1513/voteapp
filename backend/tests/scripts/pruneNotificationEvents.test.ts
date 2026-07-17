@@ -66,9 +66,10 @@ describe("pruneNotificationEvents", () => {
     expect(sqls[0]).not.toContain("notified_at IS NOT NULL");
     expect(sqls[1]).toContain("user_district_notification_events");
     expect(sqls[1]).toContain("notified_at IS NOT NULL");
-    // Result alerts prune like district alerts: only delivered/resolved rows.
+    // Result alerts prune by age alone: they have no date-bound orphan path,
+    // so a never-verifying user's pending events must still age out.
     expect(sqls[2]).toContain("user_election_result_notification_events");
-    expect(sqls[2]).toContain("notified_at IS NOT NULL");
+    expect(sqls[2]).not.toContain("notified_at IS NOT NULL");
     // Reminder sends age by the election date itself, not row creation time.
     expect(sqls[3]).toContain("user_election_reminder_sends");
     expect(sqls[3]).toContain("election_date <");
@@ -109,7 +110,7 @@ describe("pruneNotificationEvents", () => {
     expect(districtSql).toContain("notified_at IS NOT NULL");
     const resultAlertSql = String(query.mock.calls[4]?.[0]);
     expect(resultAlertSql).toContain("DELETE FROM public.user_election_result_notification_events");
-    expect(resultAlertSql).toContain("notified_at IS NOT NULL");
+    expect(resultAlertSql).not.toContain("notified_at IS NOT NULL");
     // No id column on the composite-key reminder table: batches key on ctid.
     const reminderSql = String(query.mock.calls[5]?.[0]);
     expect(reminderSql).toContain("DELETE FROM public.user_election_reminder_sends");

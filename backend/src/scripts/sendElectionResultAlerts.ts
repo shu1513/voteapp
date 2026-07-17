@@ -27,8 +27,7 @@ import {
 export const DEFAULT_RESULT_ALERT_MAX_USERS = 500;
 export const DEFAULT_RESULT_ALERT_MAX_ITEMS_PER_EMAIL = 20;
 
-export const DECISIVE_OFFICE_OUTCOMES_SQL = "('won', 'advanced', 'runoff')";
-export const DECISIVE_MEASURE_OUTCOMES_SQL = "('passed', 'failed')";
+export const DECISIVE_RESULT_OUTCOMES_SQL = "('won', 'advanced', 'runoff', 'passed', 'failed')";
 
 export type SendElectionResultAlertsOptions = {
   live: boolean;
@@ -76,30 +75,53 @@ export function parseSendElectionResultAlertsArgs(argv: readonly string[]): Send
   };
 }
 
-// An election "has a decisive result" when any result row (office or ballot
-// measure) carries a decisive outcome. Content selection ranks those rows;
-// deliverability only needs existence.
-const ELECTION_HAS_DECISIVE_RESULT_CONDITION = `
-  EXISTS (
-    SELECT 1
-    FROM public.election_results AS er
-    WHERE er.election_id = e.election_id
-      AND er.outcome IN ${DECISIVE_OFFICE_OUTCOMES_SQL}
-  )
-  OR EXISTS (
-    SELECT 1
-    FROM public.ballot_measure_results AS bmr
-    JOIN public.ballot_measures AS bm
-      ON bm.id = bmr.ballot_measure_id
-    WHERE bm.election_id = e.election_id
-      AND bmr.outcome IN ${DECISIVE_MEASURE_OUTCOMES_SQL}
-  )
+// All result rows (office and ballot measure) that carry information.
+// not_found / not_final_yet rows mean "the source had nothing yet" (the
+// contract forces outcome=unknown on them) — they never mask an earlier
+// decisive row. Rows with a real status (projected/unofficial/certified) do
+// participate in canonical precedence: a non-decisive one there (too_close,
+// unknown) is an authoritative correction that must suppress the alert
+// instead of letting an older, retracted winner go out.
+const INFORMATIVE_RESULT_ROWS_SQL = `
+  SELECT election_id, outcome, winners, pass_type, retrieved_at
+  FROM public.election_results
+  WHERE result_status NOT IN ('not_found', 'not_final_yet')
+
+  UNION ALL
+
+  SELECT
+    bm.election_id,
+    bmr.outcome,
+    '[]'::jsonb AS winners,
+    bmr.pass_type,
+    bmr.retrieved_at
+  FROM public.ballot_measure_results AS bmr
+  JOIN public.ballot_measures AS bm
+    ON bm.id = bmr.ballot_measure_id
+  WHERE bmr.result_status NOT IN ('not_found', 'not_final_yet')
+`;
+
+// An election "has a deliverable result" when its most authoritative
+// informative row (certified over election_night, then freshest) is
+// decisive. Selecting the top row FIRST and then requiring decisiveness is
+// what lets a certified too_close/unknown correction override an older
+// election-night winner.
+const ELECTION_HAS_DELIVERABLE_RESULT_CONDITION = `
+  COALESCE((
+    SELECT r.outcome IN ${DECISIVE_RESULT_OUTCOMES_SQL}
+    FROM (${INFORMATIVE_RESULT_ROWS_SQL}) AS r
+    WHERE r.election_id = e.election_id
+    ORDER BY
+      CASE r.pass_type WHEN 'certified' THEN 1 ELSE 2 END,
+      r.retrieved_at DESC
+    LIMIT 1
+  ), false)
 `;
 
 // An unsent event is orphaned when the user has turned the digest off, no
-// longer lives in the election's district (moved), or the election no longer
-// has any decisive result (a correction downgraded it). A deleted election
-// removes its events via ON DELETE CASCADE.
+// longer lives in the election's district (moved), or the election's most
+// authoritative result is no longer decisive (a correction downgraded it).
+// A deleted election removes its events via ON DELETE CASCADE.
 const ORPHANED_EVENT_CONDITION = `
   e.notified_at IS NULL
   AND (
@@ -118,7 +140,7 @@ const ORPHANED_EVENT_CONDITION = `
        AND ud.user_id = e.user_id
       WHERE el.id = e.election_id
     )
-    OR NOT (${ELECTION_HAS_DECISIVE_RESULT_CONDITION})
+    OR NOT (${ELECTION_HAS_DELIVERABLE_RESULT_CONDITION})
   )
 `;
 
@@ -171,7 +193,7 @@ async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<Eli
            AND ud.district_id = el.district_id
           WHERE e.user_id = u.id
             AND e.notified_at IS NULL
-            AND (${ELECTION_HAS_DECISIVE_RESULT_CONDITION})
+            AND (${ELECTION_HAS_DELIVERABLE_RESULT_CONDITION})
         )
       ORDER BY u.id
       LIMIT $1::int
@@ -191,12 +213,15 @@ type PendingEventRow = {
 };
 
 async function selectPendingEvents(db: Queryable, userId: string): Promise<PendingEventRow[]> {
-  // decisive_results ranks only decisive rows (certified over election_night,
-  // then freshest), so a later non-decisive correction row can never mask an
-  // existing decisive one; full absence is handled by the orphan pass.
+  // ranked_results ranks every informative row (certified over
+  // election_night, then freshest) and only THEN requires the selected row to
+  // be decisive — so a certified too_close/unknown correction suppresses an
+  // older election-night winner instead of letting it go out, while
+  // not_found/not_final_yet rows (excluded upstream as information-free)
+  // never mask a legitimate unofficial result awaiting certification.
   const result = await db.query<PendingEventRow>(
     `
-      WITH decisive_results AS (
+      WITH ranked_results AS (
         SELECT
           er.election_id,
           er.outcome,
@@ -207,24 +232,7 @@ async function selectPendingEvents(db: Queryable, userId: string): Promise<Pendi
               CASE er.pass_type WHEN 'certified' THEN 1 ELSE 2 END,
               er.retrieved_at DESC
           ) AS rn
-        FROM (
-          SELECT election_id, outcome, winners, pass_type, retrieved_at
-          FROM public.election_results
-          WHERE outcome IN ${DECISIVE_OFFICE_OUTCOMES_SQL}
-
-          UNION ALL
-
-          SELECT
-            bm.election_id,
-            bmr.outcome,
-            '[]'::jsonb AS winners,
-            bmr.pass_type,
-            bmr.retrieved_at
-          FROM public.ballot_measure_results AS bmr
-          JOIN public.ballot_measures AS bm
-            ON bm.id = bmr.ballot_measure_id
-          WHERE bmr.outcome IN ${DECISIVE_MEASURE_OUTCOMES_SQL}
-        ) AS er
+        FROM (${INFORMATIVE_RESULT_ROWS_SQL}) AS er
       )
       SELECT
         e.id,
@@ -241,9 +249,10 @@ async function selectPendingEvents(db: Queryable, userId: string): Promise<Pendi
        AND ud.district_id = el.district_id
       JOIN public.districts AS d
         ON d.id = el.district_id
-      JOIN decisive_results AS r
+      JOIN ranked_results AS r
         ON r.election_id = e.election_id
        AND r.rn = 1
+       AND r.outcome IN ${DECISIVE_RESULT_OUTCOMES_SQL}
       WHERE e.user_id = $1::uuid
         AND e.notified_at IS NULL
       ORDER BY d.name, el.election_date, e.id
