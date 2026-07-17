@@ -327,7 +327,7 @@ async function main(): Promise<void> {
           requiresFecIds: includeFecIds,
           candidateCount: parsed.payload.candidates.length,
           skippedCandidatesWithoutFecIds: parsed.skippedCandidatesWithoutFecIds,
-          next: ["npm run candidates:roster:enrich -- --once"],
+          next: [`npm run candidates:roster:enrich -- --election-id=${electionId}`],
         },
         null,
         2
