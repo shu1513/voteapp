@@ -133,9 +133,10 @@ describe("runCandidateRosterEnricher empty roster", () => {
     await runCandidateRosterEnricher({ once: true, batchSize: 5, blockMs: 10 });
 
     const sqlStatements = poolQueryMock.mock.calls.map(([sql]) => String(sql));
-    // A frozen empty roster is the bug: 'written' trips the eligibility
-    // gate's already_written check forever, so zero candidates must land as
-    // the retryable 'no_results' and never as 'validated'/'written'.
+    // A frozen empty roster is the bug: 'written' makes the election look
+    // like it has a real roster, so zero candidates must land as
+    // 'no_results' (surfaced by manual:candidate-roster:due for a manual
+    // refresh) and never as 'validated'/'written'.
     expect(sqlStatements.some((sql) => sql.includes("status = 'no_results'"))).toBe(true);
     expect(sqlStatements.some((sql) => sql.includes("status = 'written'"))).toBe(false);
     expect(sqlStatements.some((sql) => sql.includes("status = 'validated'"))).toBe(false);

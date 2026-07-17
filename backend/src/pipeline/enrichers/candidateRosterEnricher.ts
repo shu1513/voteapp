@@ -350,10 +350,12 @@ async function markCandidateRosterStagingValidated(
 }
 
 // An AI roster run that found zero candidates is a "nothing announced yet"
-// outcome, not a completed roster: stamping it 'written' would trip the
-// eligibility gate's already_written check and freeze the election with an
-// empty roster forever. 'no_results' (same semantics as the elections
-// writer) leaves the election eligible for a later re-research.
+// outcome, not a completed roster: stamping it 'written' would make the
+// election indistinguishable from one with a real roster. 'no_results'
+// (same semantics as the elections writer) keeps that distinction —
+// manual:candidate-roster:due surfaces it for a manual refresh. The
+// automated eligibility gate still treats it as complete, so the rollover
+// producer never auto-retries it.
 async function markCandidateRosterStagingNoResults(
   pool: Pool,
   ingestKey: string,

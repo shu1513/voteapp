@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { listCandidateRostersDue } from "../../src/scripts/listCandidateRostersDue.js";
+import {
+  listCandidateRosterFanoutDebt,
+  listCandidateRostersDue,
+} from "../../src/scripts/listCandidateRostersDue.js";
 
 function createMockQueryable(rows: unknown[] = []) {
   return {
@@ -20,6 +23,7 @@ describe("listCandidateRostersDue", () => {
       election_stage: "general",
       roster_status: "written",
       roster_written_at: "2026-05-01 12:00:00+00",
+      staged_candidate_count: 3,
       linked_candidate_count: 3,
       reason: "stale",
     };
@@ -46,8 +50,12 @@ describe("listCandidateRostersDue", () => {
     // Cooldown cutoff pinned to UTC so the boundary does not drift with the
     // session TimeZone (written_at is timestamptz).
     expect(sql).toContain("AT TIME ZONE 'UTC'");
-    // Zero-candidate written rosters (pre-fix data debt) are due regardless
-    // of age, as are no_results rosters.
+    // Emptiness is judged on the staged payload, never on candidate_elections
+    // links: zero links with staged candidates is fanout debt (the profile
+    // pipeline stalled), and re-researching the roster targets the wrong
+    // stage — those rows are excluded here and owned by the fanout-debt list.
+    expect(sql).toContain("jsonb_array_length(s.payload->'candidates'), 0) = 0");
+    expect(sql).toContain("AND NOT (");
     expect(sql).toContain("linked.linked_candidate_count = 0");
     expect(sql).toContain("s.status = 'no_results'");
     // Linked-candidate count must ignore deleted candidates.
@@ -58,6 +66,39 @@ describe("listCandidateRostersDue", () => {
     const db = createMockQueryable();
     await listCandidateRostersDue(db, { asOfDate: "2026-07-16", cooldownDays: 30, withinDays: 90 });
     const [sql] = db.query.mock.calls[0]!;
+    expect(sql).toContain("ORDER BY e.election_date ASC, s.written_at ASC NULLS FIRST, e.id ASC");
+  });
+});
+
+describe("listCandidateRosterFanoutDebt", () => {
+  it("lists written rosters whose staged candidates never became links", async () => {
+    const row = {
+      election_id: "e-2",
+      district_name: "Congressional District 1 (119th Congress), Connecticut",
+      district_type: "us_house",
+      state: "CT",
+      official_ballot_title: "United States Representative",
+      election_date: "2026-08-11",
+      election_stage: "primary",
+      roster_written_at: "2026-07-06 18:50:10+00",
+      staged_candidate_count: 4,
+    };
+    const db = createMockQueryable([row]);
+
+    const result = await listCandidateRosterFanoutDebt(db, {
+      asOfDate: "2026-07-16",
+      withinDays: 90,
+    });
+
+    expect(result).toEqual([row]);
+    const [sql, params] = db.query.mock.calls[0]!;
+    expect(params).toEqual(["2026-07-16", 90, "candidate_roster"]);
+    // Fanout debt is only meaningful for completed rosters: staged
+    // candidates exist but no candidate_elections links do.
+    expect(sql).toContain("s.status = 'written'");
+    expect(sql).toContain("jsonb_array_length(s.payload->'candidates'), 0) > 0");
+    expect(sql).toContain("linked.linked_candidate_count = 0");
+    expect(sql).toContain("c.deleted_at IS NULL");
     expect(sql).toContain("ORDER BY e.election_date ASC, s.written_at ASC NULLS FIRST, e.id ASC");
   });
 });
