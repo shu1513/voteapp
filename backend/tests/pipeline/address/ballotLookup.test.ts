@@ -1146,6 +1146,11 @@ describe("lookupElectionDetailById", () => {
     });
     expect(query).toHaveBeenCalledTimes(8);
     expect(query.mock.calls[0]?.[1]).toEqual([officeElectionId]);
+    // A not_found/not_final_yet sweep row would render as "Unknown · Not
+    // found" above the decisive row; the detail queries filter it out like
+    // the summary ranking does.
+    expect(query.mock.calls[3]?.[0]).toContain("AND er.outcome <> 'unknown'");
+    expect(query.mock.calls[4]?.[0]).toContain("AND bmr.outcome <> 'unknown'");
     expect(query.mock.calls[7]?.[0]).toContain("public.historical_contest_margins");
   });
 

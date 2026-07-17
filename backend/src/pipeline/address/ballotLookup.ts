@@ -909,6 +909,11 @@ async function loadFullElectionDetails(
           er.retrieved_at::text AS retrieved_at
         FROM public.election_results AS er
         WHERE er.election_id = ANY($1::uuid[])
+          -- unknown-outcome rows (not_found / not_final_yet sweeps) have
+          -- nothing to show; on the page they would render as "Unknown ·
+          -- Not found" above a decisive election-night row. Matches the
+          -- summary ranking filter.
+          AND er.outcome <> 'unknown'
         ORDER BY er.election_id, er.pass_type, er.retrieved_at DESC
       `,
     [electionIds]
@@ -928,6 +933,7 @@ async function loadFullElectionDetails(
         JOIN public.ballot_measures AS bm
           ON bm.id = bmr.ballot_measure_id
         WHERE bm.election_id = ANY($1::uuid[])
+          AND bmr.outcome <> 'unknown'
         ORDER BY bmr.ballot_measure_id, bmr.pass_type, bmr.retrieved_at DESC
       `,
     [electionIds]
