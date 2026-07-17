@@ -17,7 +17,7 @@ import {
   type HistoricalContestWeightedMarginLookupRecord,
 } from "../competitiveness/historicalContestMarginLookup.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
-import { calculateVotePower, type VotePowerResult } from "./votePower.js";
+import { calculateVotePower, explainVotePower, type VotePowerExplanation, type VotePowerResult } from "./votePower.js";
 import {
   GENERAL_RESEARCH_AREA_SLUG,
   INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG,
@@ -235,7 +235,9 @@ export type BallotLookupElection = {
   ballot_measure: BallotLookupBallotMeasure | null;
   results: BallotLookupElectionResult[];
   historical_competitiveness: BallotLookupHistoricalCompetitiveness | null;
-  vote_power: VotePowerResult;
+  // The detail payload carries the explanation; the ballot summary list
+  // (BallotLookupElectionSummary) deliberately does not.
+  vote_power: VotePowerResult & { explanation: VotePowerExplanation };
 };
 
 type BallotLookupElectionBase = Omit<BallotLookupElection, "historical_competitiveness" | "vote_power">;
@@ -1658,15 +1660,25 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
 
   const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionRows);
   const historicalCompetitiveness = historicalCompetitivenessByElection.get(detail.id) ?? null;
+  const votePowerInput = {
+    raceType: detail.race_type,
+    candidateCount: detail.candidates.length,
+    representationPowerScore: detail.district.representation_power_score,
+    competitivenessLabel: historicalCompetitiveness?.competitiveness_label,
+  };
+  const votePower = calculateVotePower(votePowerInput);
   return {
     ...detail,
     historical_competitiveness: historicalCompetitiveness,
-    vote_power: calculateVotePower({
-      raceType: detail.race_type,
-      candidateCount: detail.candidates.length,
-      representationPowerScore: detail.district.representation_power_score,
-      competitivenessLabel: historicalCompetitiveness?.competitiveness_label,
-    }),
+    vote_power: {
+      ...votePower,
+      explanation: explainVotePower(
+        // Redistricting staleness qualifies the explanation's decisiveness
+        // wording; the rating itself ignores it (calculateVotePower above).
+        { ...votePowerInput, staleAfterRedistricting: historicalCompetitiveness?.stale_after_redistricting },
+        votePower
+      ),
+    },
   };
 }
 
