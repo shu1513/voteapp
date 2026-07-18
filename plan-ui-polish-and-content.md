@@ -20,7 +20,7 @@ Check off as PRs ship.
   `bg-rausch/10 text-rausch-dark`. New mapping (text+bg tint per level):
   - very_high → red
   - high → orange
-  - medium (displays "Medium" until Group B renames it "Average") → amber/yellow
+  - medium (displays "Average" since Group B) → amber/yellow
   - low (displays "Below average") → slate/blue-gray
   - very_low → gray
   Keep `unknown` hidden as today. Extract a shared `votePowerBadgeClass(label)`
@@ -45,10 +45,10 @@ Check off as PRs ship.
 
 Wire enum value `medium` stays unchanged (no API break); display copy only.
 
-- [ ] `packages/api-client/src/format.ts` ~line 56: `medium: "Medium"` →
+- [x] `packages/api-client/src/format.ts` ~line 56: `medium: "Medium"` →
   `"Average"`. Scale reads: Very low / Below average / Average / High /
   Very high.
-- [ ] `backend/src/pipeline/address/votePower.ts` explanation copy: grades use
+- [x] `backend/src/pipeline/address/votePower.ts` explanation copy: grades use
   `capitalize(level)` → "Medium"; formula/scale strings say "33+ medium" etc.
   (~lines 362, 454); any result/detail sentences mentioning "medium".
   Change user-visible words to "average" while internal level keys stay

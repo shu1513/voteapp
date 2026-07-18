@@ -370,7 +370,7 @@ describe("explainVotePower", () => {
         detail:
           "Smaller districts give each vote more weight, and this district is small for its type. About 736,081 people live here.",
         formula:
-          "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(39,287,377 ÷ 736,081) ÷ ln(39,287,377 ÷ 582,397) = 94.44, comparing all statewide districts nationwide (grades: 66+ high, 33+ medium, otherwise low)",
+          "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(39,287,377 ÷ 736,081) ÷ ln(39,287,377 ÷ 582,397) = 94.44, comparing all statewide districts nationwide (grades: 66+ high, 33+ average, otherwise low)",
       },
       {
         title: "Decisiveness",
@@ -378,7 +378,7 @@ describe("explainVotePower", () => {
         stat: "1.8-point margin in 2022",
         detail: "Past results here were very close — a small number of votes could decide the winner.",
         formula:
-          'margin = 1.8 points → "toss-up" → grade high (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low)',
+          'margin = 1.8 points → "toss-up" → grade high (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low)',
       },
     ]);
     expect(explanation.result).toBe("High representation + high decisiveness → Very high vote power.");
@@ -395,7 +395,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[0]?.formula).toBe(
-      "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts), rounded to 2 decimals = 90 (grades: 66+ high, 33+ medium, otherwise low)"
+      "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts), rounded to 2 decimals = 90 (grades: 66+ high, 33+ average, otherwise low)"
     );
   });
 
@@ -414,7 +414,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[1]?.formula).toBe(
-      'margin = 0.625 × 9.2 (2024) + 0.375 × 14.8 (2022) = 11.3 points → "somewhat competitive" → grade medium (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low)'
+      'margin = 0.625 × 9.2 (2024) + 0.375 × 14.8 (2022) = 11.3 points → "somewhat competitive" → grade average (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low)'
     );
   });
 
@@ -428,7 +428,7 @@ describe("explainVotePower", () => {
       competitivenessLabel: "safe",
     });
 
-    expect(explanation.parts[0]).toMatchObject({ grade: "Medium", stat: "65 out of 100" });
+    expect(explanation.parts[0]).toMatchObject({ grade: "Average", stat: "65 out of 100" });
     // Without a population the detail stays a single sentence.
     expect(explanation.parts[0]?.detail).toBe("This district is mid-sized for its type, so each vote carries average weight.");
   });
@@ -443,7 +443,21 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[1]).toMatchObject({ grade: "Low", stat: "40-point margin" });
-    expect(explanation.result).toBe("Medium representation + low decisiveness → Below average vote power.");
+    expect(explanation.result).toBe("Average representation + low decisiveness → Below average vote power.");
+  });
+
+  it('displays a medium rating as "Average" in the result line', () => {
+    // medium representation + medium decisiveness → medium label; every
+    // user-visible "medium" — both axes and the rating — reads "average".
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 50,
+      competitivenessLabel: "competitive",
+      marginPercent: 8,
+    });
+
+    expect(explanation.result).toBe("Average representation + average decisiveness → Average vote power.");
   });
 
   it("labels a multi-year margin as a weighted blend instead of pinning it on one year", () => {
@@ -526,7 +540,7 @@ describe("explainVotePower", () => {
 
     expect(explanation.parts.map((part) => part.title)).toEqual(["Representation", "Decisiveness", "Ballot measure"]);
     expect(explanation.result).toBe(
-      "Medium representation + medium decisiveness + a ballot-measure boost → High vote power."
+      "Average representation + average decisiveness + a ballot-measure boost → High vote power."
     );
   });
 
@@ -638,7 +652,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[0]?.formula).toBe(
-      "score = 50 by rule: counties in AK currently all have the same population, so the model assigns the midpoint of 50 (grades: 66+ high, 33+ medium, otherwise low)"
+      "score = 50 by rule: counties in AK currently all have the same population, so the model assigns the midpoint of 50 (grades: 66+ high, 33+ average, otherwise low)"
     );
   });
 
@@ -655,7 +669,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[0]?.formula).toBe(
-      "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts), rounded to 2 decimals = 90 (grades: 66+ high, 33+ medium, otherwise low)"
+      "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts), rounded to 2 decimals = 90 (grades: 66+ high, 33+ average, otherwise low)"
     );
   });
 });
