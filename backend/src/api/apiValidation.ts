@@ -35,6 +35,9 @@ export const AUTH_LOGOUT_ALL_PATH = "/api/auth/logout-all";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
 export const CONTENT_REPORTS_PATH = "/api/content-reports";
 export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
+// Shares the candidate-detail prefix, so the router must test this path
+// before isCandidateDetailPath (whose UUID parse would reject "search").
+export const CANDIDATE_SEARCH_PATH = "/api/candidates/search";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
 // Session-holder identity (email, first_name, email_verified). Not gated on
 // email verification: the frontend needs it to render the unverified state.
@@ -714,6 +717,23 @@ export function parseDistrictIds(url: URL): string[] {
     throw new TypeError(`Query parameter district_ids contains invalid UUID: ${invalidId}`);
   }
   return districtIds;
+}
+
+// Matches the client hook's CANDIDATE_SEARCH_MIN_CHARS: the endpoint is
+// public and runs an unindexed scan, so single-character sweeps are refused
+// server-side too.
+const MIN_CANDIDATE_SEARCH_QUERY_LENGTH = 2;
+const MAX_CANDIDATE_SEARCH_QUERY_LENGTH = 100;
+
+export function parseCandidateSearchQuery(url: URL): string {
+  const query = (url.searchParams.get("q") ?? "").trim();
+  if (query.length < MIN_CANDIDATE_SEARCH_QUERY_LENGTH) {
+    throw new TypeError(`Query parameter q requires at least ${MIN_CANDIDATE_SEARCH_QUERY_LENGTH} characters`);
+  }
+  if (query.length > MAX_CANDIDATE_SEARCH_QUERY_LENGTH) {
+    throw new TypeError(`Query parameter q supports at most ${MAX_CANDIDATE_SEARCH_QUERY_LENGTH} characters`);
+  }
+  return query;
 }
 
 export function isCandidateDetailPath(pathname: string): boolean {

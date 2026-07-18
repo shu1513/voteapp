@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 import { useMe } from "@voteapp/api-client";
-import { useFollows, useFollowSaving, useSetFollow } from "@voteapp/api-client";
+import { useCandidateSearch, useFollows, useFollowSaving, useSetFollow } from "@voteapp/api-client";
+import type { CandidateSearchMatch } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { formatElectionDate } from "@voteapp/api-client";
@@ -124,6 +126,8 @@ export function FollowsPage() {
   const { me, isLoading } = useMe();
   const { follows, isLoading: followsLoading, isError } = useFollows();
   const [query, setQuery] = useState("");
+  const { matches, onInputChanged } = useCandidateSearch();
+  const navigate = useNavigate();
 
   if (isLoading || me === undefined) {
     return <LoadingNotice text="Loading…" />;
@@ -158,6 +162,53 @@ export function FollowsPage() {
       <p className="mt-1 text-sm text-ink-soft">
         Followed candidates surface first on your ballot; the toggles control the daily email digest.
       </p>
+      {/* One input, two jobs: the text live-filters the follows list below,
+          while the dropdown suggests matching candidates from the whole
+          database (ARIA combobox via Headless UI — do not hand-roll keyboard
+          handling; no `static` on the options so Escape/blur close the
+          dropdown natively). Picking a suggestion opens that candidate's
+          page. Rendered outside the follows-list branch: discovery must work
+          with zero follows and when the follows fetch fails. */}
+      <Combobox<CandidateSearchMatch | null>
+        value={null}
+        onChange={(match) => {
+          if (match) {
+            void navigate(`/candidates/${match.candidate_id}`);
+          }
+        }}
+        immediate={false}
+      >
+        <div className="relative">
+          <ComboboxInput
+            type="search"
+            value={query}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              onInputChanged(event.target.value);
+            }}
+            placeholder="Search by candidate name"
+            aria-label="Search candidates by name"
+            className="mt-4 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-soft focus:border-rausch focus:outline-none"
+          />
+          {matches.length > 0 ? (
+            <ComboboxOptions className="absolute z-10 mt-1 w-full overflow-hidden rounded-xl border border-line bg-white shadow-md">
+              {matches.map((match) => (
+                <ComboboxOption
+                  key={match.candidate_id}
+                  value={match}
+                  className="cursor-pointer px-3 py-2 text-sm data-focus:bg-surface"
+                >
+                  <span className="font-semibold text-ink">{match.display_name}</span>{" "}
+                  <span className="text-ink-soft">
+                    {match.party} · {match.state}
+                    {match.current_office ? <> · {match.current_office}</> : null}
+                  </span>
+                </ComboboxOption>
+              ))}
+            </ComboboxOptions>
+          ) : null}
+        </div>
+      </Combobox>
       {followsLoading ? <LoadingNotice text="Loading follows…" /> : null}
       {isError ? (
         <div className="mt-4">
@@ -169,14 +220,6 @@ export function FollowsPage() {
       ) : null}
       {follows && follows.length > 0 ? (
         <>
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search by candidate name"
-            aria-label="Search followed candidates by name"
-            className="mt-4 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-soft focus:border-rausch focus:outline-none"
-          />
           {/* Persistent polite live region: announces filter results to screen
               readers. Kept always-mounted (conditionally inserted live regions
               are unreliably announced) and empty until a query is typed so the
