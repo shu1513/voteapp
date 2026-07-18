@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { screen } from "@testing-library/react";
 import { ElectionList } from "./ElectionCard";
 import { renderRoutes } from "../test/render";
-import { electionSummary } from "../test/fixtures";
+import { electionSummary, VOTE_POWER } from "../test/fixtures";
 import type { ElectionSummary } from "@voteapp/api-client";
 
 function area(id: string, name: string) {
@@ -19,6 +19,30 @@ function renderCard(election: ElectionSummary, savedAreaIds?: Set<string>) {
 }
 
 describe("ElectionCard", () => {
+  it("puts vote power and the candidate count on the title row, without district meta", () => {
+    renderCard(electionSummary());
+
+    const row = screen.getByRole("heading", { name: "Governor" }).parentElement;
+    expect(row).toHaveTextContent("Vote power: High");
+    expect(row).toHaveTextContent("2 candidates");
+    // The district/office meta line is gone — the ballot title names the race.
+    expect(screen.queryByText(/Alaska/)).not.toBeInTheDocument();
+  });
+
+  it("omits the vote-power chip when the score is unknown", () => {
+    renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "unknown" } }));
+
+    expect(screen.queryByText(/Vote power:/)).not.toBeInTheDocument();
+    expect(screen.getByText("2 candidates")).toBeInTheDocument();
+  });
+
+  it("labels ballot measures instead of counting candidates", () => {
+    renderCard(electionSummary({ race_type: "ballot_measure", candidate_count: 0 }));
+
+    expect(screen.getByText("Ballot measure")).toBeInTheDocument();
+    expect(screen.queryByText(/candidates?/)).not.toBeInTheDocument();
+  });
+
   it("caps unsaved research-area chips and counts the rest", () => {
     renderCard(
       electionSummary({
