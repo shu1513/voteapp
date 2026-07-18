@@ -57,7 +57,7 @@ describe("ElectionPage", () => {
     renderElection(() => electionDetail({ vote_power: VOTE_POWER_WITH_EXPLANATION }));
 
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.getByText("How do we calculate the vote power rating?")).toBeInTheDocument();
+    expect(screen.getByText("How do we calculate vote power?")).toBeInTheDocument();
     // Native <details> keeps content in the DOM while collapsed; the backend
     // copy must arrive verbatim.
     expect(screen.getByText("Vote power = representation + decisiveness.")).toBeInTheDocument();
@@ -80,7 +80,7 @@ describe("ElectionPage", () => {
     renderElection(() => electionDetail());
 
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.queryByText("How do we calculate the vote power rating?")).not.toBeInTheDocument();
+    expect(screen.queryByText("How do we calculate vote power?")).not.toBeInTheDocument();
   });
 
   it("hides the explanation without crashing when an old backend sends the pre-parts shape", async () => {
@@ -95,7 +95,7 @@ describe("ElectionPage", () => {
     );
 
     expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
-    expect(screen.queryByText("How do we calculate the vote power rating?")).not.toBeInTheDocument();
+    expect(screen.queryByText("How do we calculate vote power?")).not.toBeInTheDocument();
   });
 
   it("hides the vote power explanation entirely for an unknown label", async () => {
@@ -108,7 +108,7 @@ describe("ElectionPage", () => {
 
     await screen.findByRole("heading", { name: "Governor" });
     expect(screen.queryByText(/Vote power:/)).not.toBeInTheDocument();
-    expect(screen.queryByText("How do we calculate the vote power rating?")).not.toBeInTheDocument();
+    expect(screen.queryByText("How do we calculate vote power?")).not.toBeInTheDocument();
   });
 
   it("shows the seat count for multi-seat contests and hides it otherwise", async () => {
