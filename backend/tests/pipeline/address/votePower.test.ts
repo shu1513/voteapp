@@ -349,7 +349,7 @@ describe("explainVotePower", () => {
     const explanation = explain({
       raceType: "office",
       candidateCount: 2,
-      representationPowerScore: 90,
+      representationPowerScore: 94.44,
       competitivenessLabel: "toss_up",
       districtPopulation: 736081,
       representationScope: { maxPopulation: 39287377, minPopulation: 582397, description: "all statewide districts nationwide" },
@@ -366,11 +366,11 @@ describe("explainVotePower", () => {
       {
         title: "Representation",
         grade: "High",
-        stat: "90 out of 100",
+        stat: "94 out of 100",
         detail:
           "Smaller districts give each vote more weight, and this district is small for its type. About 736,081 people live here.",
         formula:
-          "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(39,287,377 ÷ 736,081) ÷ ln(39,287,377 ÷ 582,397) = 90, comparing all statewide districts nationwide (grades: 66+ high, 33+ medium, otherwise low)",
+          "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(39,287,377 ÷ 736,081) ÷ ln(39,287,377 ÷ 582,397) = 94.44, comparing all statewide districts nationwide (grades: 66+ high, 33+ medium, otherwise low)",
       },
       {
         title: "Decisiveness",
@@ -654,7 +654,24 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[0]?.formula).toBe(
-      "score = 50 by rule: this district is the only one among counties in AK, so the model assigns the midpoint of 50 (grades: 66+ high, 33+ medium, otherwise low)"
+      "score = 50 by rule: counties in AK currently all have the same population, so the model assigns the midpoint of 50 (grades: 66+ high, 33+ medium, otherwise low)"
+    );
+  });
+
+  it("degrades to the symbolic formula when the stored score no longer matches the live extremes", () => {
+    // Stored 90 but the live scope recomputes to 94.44: emitting the numeric
+    // equation would show arithmetic that does not produce the printed score.
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 90,
+      competitivenessLabel: null,
+      districtPopulation: 736081,
+      representationScope: { maxPopulation: 39287377, minPopulation: 582397, description: "all statewide districts nationwide" },
+    });
+
+    expect(explanation.parts[0]?.formula).toBe(
+      "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts), rounded to 2 decimals = 90 (grades: 66+ high, 33+ medium, otherwise low)"
     );
   });
 });

@@ -368,9 +368,14 @@ const REPRESENTATION_GRADE_SCALE = "grades: 66+ high, 33+ medium, otherwise low"
 // district's real numbers (see recomputeRepresentationPowerScores in
 // districtsLoader.ts — this string must describe that SQL faithfully,
 // including its two-decimal rounding and its equal-extremes midpoint rule).
-// The value after "=" is the STORED score the rating graded on; the
-// expression's inputs are the current extremes, which match it whenever the
-// loader last recomputed both together.
+//
+// The value after "=" is the STORED score the rating graded on, while the
+// expression's inputs are the CURRENT extremes from a live subselect. The
+// numeric equation therefore only renders after re-evaluating the model
+// here and confirming it reproduces the stored score; any drift (population
+// edits since the last scoring run, or SQL-numeric vs float rounding at a
+// .005 boundary) degrades to the symbolic form, which shows the stored
+// score without claiming the live inputs derive it.
 function representationFormula(input: {
   representationPowerScore: number;
   districtPopulation: number | null;
@@ -381,11 +386,27 @@ function representationFormula(input: {
     const scope = input.representationScope;
     if (scope.maxPopulation === scope.minPopulation) {
       // ln(x ÷ x) ÷ ln(x ÷ x) is 0/0 — the SQL never evaluates it and
-      // assigns the midpoint instead, so the copy must say that, not fake
-      // an undefined division.
-      return `score = ${score} by rule: this district is the only one among ${scope.description}, so the model assigns the midpoint of 50 (${REPRESENTATION_GRADE_SCALE})`;
+      // assigns the midpoint instead. Equal extremes can also mean several
+      // districts with identical populations, so don't claim "only one".
+      if (score === 50) {
+        return `score = 50 by rule: ${scope.description} currently all have the same population, so the model assigns the midpoint of 50 (${REPRESENTATION_GRADE_SCALE})`;
+      }
+    } else {
+      const recomputed =
+        Math.round(
+          Math.min(
+            100,
+            Math.max(
+              0,
+              (100 * (Math.log(scope.maxPopulation) - Math.log(input.districtPopulation))) /
+                (Math.log(scope.maxPopulation) - Math.log(scope.minPopulation))
+            )
+          ) * 100
+        ) / 100;
+      if (recomputed === score) {
+        return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(input.districtPopulation)}) ÷ ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(scope.minPopulation)}) = ${score}, comparing ${scope.description} (${REPRESENTATION_GRADE_SCALE})`;
+      }
     }
-    return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(input.districtPopulation)}) ÷ ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(scope.minPopulation)}) = ${score}, comparing ${scope.description} (${REPRESENTATION_GRADE_SCALE})`;
   }
   return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts), rounded to 2 decimals = ${score} (${REPRESENTATION_GRADE_SCALE})`;
 }
