@@ -114,6 +114,72 @@ describe("apiRequest", () => {
     }
   });
 
+  it("aborts stalled requests at the timeout when AbortSignal.timeout is unavailable", async () => {
+    const originalTimeout = AbortSignal.timeout;
+    // @ts-expect-error simulating a runtime without AbortSignal.timeout (older Safari, Hermes)
+    AbortSignal.timeout = undefined;
+    vi.useFakeTimers();
+    try {
+      // A request that never settles on its own: rejects only via its signal.
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(
+          (_url: string, init: { signal: AbortSignal }) =>
+            new Promise((_resolve, reject) => {
+              init.signal.addEventListener("abort", () => reject(init.signal.reason as Error), {
+                once: true,
+              });
+            })
+        )
+      );
+
+      const request = apiRequest("/api/me");
+      const outcome = request.catch((caught: unknown) => caught);
+      await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS);
+
+      const error = await outcome;
+      expect(error).toBeInstanceOf(DOMException);
+      expect((error as DOMException).name).toBe("TimeoutError");
+    } finally {
+      vi.useRealTimers();
+      AbortSignal.timeout = originalTimeout;
+    }
+  });
+
+  it("still aborts at the timeout on runtimes without DOMException (Hermes)", async () => {
+    const originalTimeout = AbortSignal.timeout;
+    // @ts-expect-error simulating a runtime without AbortSignal.timeout (older Safari, Hermes)
+    AbortSignal.timeout = undefined;
+    vi.stubGlobal("DOMException", undefined);
+    vi.useFakeTimers();
+    try {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(
+          (_url: string, init: { signal: AbortSignal }) =>
+            new Promise((_resolve, reject) => {
+              init.signal.addEventListener(
+                "abort",
+                // A bare abort() carries the runtime's default AbortError reason.
+                () => reject(init.signal.reason ?? new Error("aborted")),
+                { once: true }
+              );
+            })
+        )
+      );
+
+      const request = apiRequest("/api/me");
+      const outcome = request.catch((caught: unknown) => caught);
+      await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS);
+
+      const error = await outcome;
+      expect((error as Error).name).toBe("AbortError");
+    } finally {
+      vi.useRealTimers();
+      AbortSignal.timeout = originalTimeout;
+    }
+  });
+
   it("prefixes paths with the configured base URL (mobile transport)", async () => {
     const fetchMock = mockFetch({ jsonBody: { ok: true } });
     configureApi({ baseUrl: "https://api.example.com" });
