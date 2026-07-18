@@ -20,7 +20,7 @@ Check off as PRs ship.
   `bg-rausch/10 text-rausch-dark`. New mapping (text+bg tint per level):
   - very_high → red
   - high → orange
-  - medium (displays "Average") → amber/yellow
+  - medium (displays "Medium" until Group B renames it "Average") → amber/yellow
   - low (displays "Below average") → slate/blue-gray
   - very_low → gray
   Keep `unknown` hidden as today. Extract a shared `votePowerBadgeClass(label)`

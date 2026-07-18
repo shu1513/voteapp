@@ -67,6 +67,14 @@ describe("ElectionCard", () => {
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "very_high" } }));
     expect(screen.getByText("Vote power: Very high").className).toContain("text-red-700");
 
+    renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "medium" } }));
+    expect(screen.getByText("Vote power: Medium").className).toContain("text-amber-800");
+
+    // "low" displays as "Below average" — the label map and color map key on
+    // the same wire value, so both must hold at once.
+    renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "low" } }));
+    expect(screen.getByText("Vote power: Below average").className).toContain("text-slate-600");
+
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "very_low" } }));
     expect(screen.getByText("Vote power: Very low").className).toContain("text-gray-500");
   });

@@ -144,8 +144,9 @@ export function ElectionPage() {
             // Stance colors the chip: green = the measure works for that
             // area, red = against it. Stance wins over the saved-area green
             // (same hue anyway for "for"); stanceless tags keep the
-            // saved/muted styling. Color is not the only carrier — an
-            // sr-only suffix says the direction out loud.
+            // saved/muted styling. The direction renders as visible text —
+            // color alone would be invisible to color-blind readers — and
+            // saved areas keep the sr-only cue the area chips use elsewhere.
             <div className="mt-2 flex flex-wrap gap-2 text-xs">
               {measure.research_area_tags.map((tag) => (
                 <span
@@ -161,8 +162,8 @@ export function ElectionPage() {
                   }
                 >
                   {tag.name}
-                  {tag.stance === "for" ? <span className="sr-only"> (for)</span> : null}
-                  {tag.stance === "against" ? <span className="sr-only"> (against)</span> : null}
+                  {tag.stance === "for" || tag.stance === "against" ? ` · ${tag.stance}` : null}
+                  {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
                 </span>
               ))}
             </div>
@@ -297,9 +298,13 @@ export function ElectionPage() {
                   {stances.length > 0 ? (
                     // Stance direction colors the chip: all-for green, all-
                     // against red, mixed amber — replacing the saved-area
-                    // green, which said nothing about the candidate. Counts
-                    // compress to +N/-N; screen readers get the spelled-out
-                    // counts instead, since "-2" can be read as just "2".
+                    // green, which said nothing about the candidate (saved
+                    // areas keep their sr-only cue). Counts compress to
+                    // +N/-N; screen readers get the spelled-out counts
+                    // instead, since "-2" can be read as just "2". Every
+                    // stance has for_count + against_count >= 1 —
+                    // aggregateRecordAreaStances drops neutral/untagged
+                    // records — so "against == 0" can only mean all-for.
                     <div className="mt-2 flex flex-wrap gap-2 text-xs">
                       {stances.map((stance) => (
                         <span
@@ -329,6 +334,9 @@ export function ElectionPage() {
                               .filter(Boolean)
                               .join(", ")}
                           </span>
+                          {savedAreaIds.has(stance.research_area_id) ? (
+                            <span className="sr-only"> (saved)</span>
+                          ) : null}
                         </span>
                       ))}
                     </div>

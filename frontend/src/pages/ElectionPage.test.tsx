@@ -280,16 +280,69 @@ describe("ElectionPage", () => {
     );
 
     // The measure works FOR housing (green), AGAINST civil rights (red);
-    // a stanceless tag stays muted. sr-only text carries the direction for
-    // assistive tech, so color is not the only signal.
-    const forChip = await screen.findByText("Housing Affordability");
+    // a stanceless tag stays muted. The direction is visible text, not just
+    // color, so color-blind readers can tell the chips apart too.
+    const forChip = await screen.findByText("Housing Affordability · for");
     expect(forChip.className).toContain("text-green-900");
-    expect(forChip).toHaveTextContent("Housing Affordability (for)");
-    const againstChip = screen.getByText("Civil Rights");
+    const againstChip = screen.getByText("Civil Rights · against");
     expect(againstChip.className).toContain("text-red-900");
-    expect(againstChip).toHaveTextContent("Civil Rights (against)");
     const neutralChip = screen.getByText("Gun Control");
     expect(neutralChip.className).toContain("text-ink-soft");
+  });
+
+  it("marks saved areas with an sr-only cue on measure and candidate chips", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    const detail = electionDetail({
+      race_type: "ballot_measure",
+      ballot_measure: {
+        id: "m-1",
+        official_ballot_title: "Measure 1",
+        summary: "A measure.",
+        what_yes_means: "Yes approves the bond.",
+        what_no_means: "No rejects the bond.",
+        result: null,
+        source_urls: [],
+        official_measure_url: null,
+        research_area_tags: [
+          { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+        ],
+        results: [],
+      },
+    });
+    detail.candidates[0].records = [
+      {
+        id: "r-1",
+        description: "A record.",
+        source_url: "https://example.gov/record",
+        event_date: "2025-01-15",
+        created_at: "2025-02-01T00:00:00.000Z",
+        research_area_tags: [
+          { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+        ],
+      },
+    ];
+    renderElection(() => detail);
+
+    // Both chip surfaces voice saved-ness for assistive tech, matching the
+    // ElectionCard precedent. The cue arrives with the async preferences
+    // fetch, after the loader-fed chips render — so wait on the cue itself.
+    const savedCues = await screen.findAllByText("(saved)");
+    expect(savedCues).toHaveLength(2);
+    const measureChip = screen.getByText("Housing Affordability · for");
+    expect(measureChip).toHaveTextContent("(saved)");
+    const candidateChip = screen.getByText("Housing Affordability").closest("span")!;
+    expect(candidateChip).toHaveTextContent("1 for");
+    expect(candidateChip).toHaveTextContent("(saved)");
   });
 
   it("renders measure result rows, including election-night outcomes", async () => {

@@ -195,7 +195,9 @@ function ElectionCard({
         // sighted cue, so saved chips carry a screen-reader-only "(saved)"
         // to keep the distinction audible.
         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-          <span className="rounded bg-amber-100 px-2 py-0.5 font-medium text-amber-900">Affected Areas:</span>
+          {/* Quiet label: the chips carry the color; a boxed/tinted label
+              competed with them for attention. */}
+          <span className="font-medium text-ink-soft">Affected Areas:</span>
           {savedAreas.map((area) => (
             <span key={area.id} className={AREA_CHIP_CLASS}>
               {area.name}
