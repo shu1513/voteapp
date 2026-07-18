@@ -12,9 +12,15 @@
  *
  * The guard deliberately validates only shape, not truth: the smallest
  * complete question list (judicial candidates) has three questions, so three
- * entries is the floor. Era coverage and officeholder-vs-challenger question
- * counts are research-derived facts the writer cannot verify from the
- * database, so no attempt is made to check them here.
+ * entries is the floor. Truth of the findings stays unverifiable, but the
+ * ROUTING of the sweep no longer relies on skill discipline: the 2026-07-15
+ * bulk runs collapsed every candidate onto a generic officeholder-framed
+ * template (first-time candidates were never asked the career question) and
+ * their 4-entry ledgers passed this guard. Full-history completeness claims
+ * now require each entry to be tagged with a question_id and the tagged set
+ * to cover the candidate's route (officeholder / never-held / judicial) —
+ * see resolveSweepRoute and listMissingSweepRouteQuestionIds. Era coverage
+ * remains research-derived and unchecked.
  *
  * Validated confirmations are also persisted (candidate_record_sweep_confirmations,
  * one row per candidate, newest sweep wins) so manual:records:audit can tell
@@ -35,13 +41,56 @@ export const SWEEP_COMPLETENESS_GAP_IDS: ReadonlySet<string> = new Set([
   "candidate_records.only_general_labels",
 ]);
 
+/**
+ * Discovery routes and their canonical question ids, mirroring the three
+ * question lists in the manual-research skill (references/records.md) and the
+ * AI discovery prompt. A route's every id must appear on at least one tagged
+ * evidence entry before a full-history completeness claim is accepted; a
+ * question that cannot apply (e.g. `executive` for a legislator who never
+ * held an executive role) still gets its one-line entry — that IS the answer.
+ * Era-split sweeps tag multiple entries with the same id.
+ */
+export const SWEEP_ROUTE_QUESTION_IDS = {
+  officeholder: [
+    "rollcalls",
+    "sponsorship",
+    "executive",
+    "proceedings",
+    "leadership",
+    "outside_chamber",
+    "endorsements",
+  ],
+  never_held_office: ["career", "orgs_advocacy", "court_legal", "endorsements"],
+  judicial: ["cases", "discipline", "endorsements"],
+} as const satisfies Record<string, readonly string[]>;
+
+export type SweepRoute = keyof typeof SWEEP_ROUTE_QUESTION_IDS;
+
+const ALL_SWEEP_QUESTION_IDS: ReadonlySet<string> = new Set(
+  Object.values(SWEEP_ROUTE_QUESTION_IDS).flat()
+);
+
 export type SweepEvidenceEntry = {
   question: string;
   finding: string;
+  /**
+   * Canonical discovery-question id this entry answers (null for extra
+   * entries outside the route's list: archive scans, office-area follow-ups).
+   */
+  questionId: string | null;
 };
 
 export type SweepEvidenceParseResult =
-  | { ok: true; entries: SweepEvidenceEntry[] }
+  | {
+      ok: true;
+      entries: SweepEvidenceEntry[];
+      /**
+       * Top-level `has_held_public_office` from the evidence file: the
+       * operator's research-derived routing answer, used (and persisted)
+       * only when candidates.has_held_public_office is still NULL.
+       */
+      hasHeldPublicOffice: boolean | null;
+    }
   | { ok: false; reason: string };
 
 function isNonEmptyString(value: unknown): value is string {
@@ -76,6 +125,15 @@ export function parseSweepEvidencePayload(payload: unknown): SweepEvidenceParseR
   if (!Array.isArray(input.entries)) {
     return { ok: false, reason: "evidence payload.entries must be an array" };
   }
+  if (
+    input.has_held_public_office !== undefined &&
+    typeof input.has_held_public_office !== "boolean"
+  ) {
+    return {
+      ok: false,
+      reason: "evidence payload.has_held_public_office must be a boolean when present",
+    };
+  }
   const entries: SweepEvidenceEntry[] = [];
   const seenQuestions = new Map<string, number>();
   for (const [index, row] of input.entries.entries()) {
@@ -92,6 +150,16 @@ export function parseSweepEvidencePayload(payload: unknown): SweepEvidenceParseR
         reason: `evidence entries[${index}].finding must be a non-empty string (use "nothing found" for empty answers)`,
       };
     }
+    let questionId: string | null = null;
+    if (entry.question_id !== undefined && entry.question_id !== null) {
+      if (typeof entry.question_id !== "string" || !ALL_SWEEP_QUESTION_IDS.has(entry.question_id)) {
+        return {
+          ok: false,
+          reason: `evidence entries[${index}].question_id must be one of: ${[...ALL_SWEEP_QUESTION_IDS].sort().join(", ")}; got ${JSON.stringify(entry.question_id)}. Omit question_id on extra entries (archive scans, office-area follow-ups).`,
+        };
+      }
+      questionId = entry.question_id;
+    }
     const question = entry.question.trim();
     const normalizedQuestion = question.toLowerCase().replace(/\s+/g, " ");
     const duplicateOf = seenQuestions.get(normalizedQuestion);
@@ -102,7 +170,7 @@ export function parseSweepEvidencePayload(payload: unknown): SweepEvidenceParseR
       };
     }
     seenQuestions.set(normalizedQuestion, index);
-    entries.push({ question, finding: entry.finding.trim() });
+    entries.push({ question, finding: entry.finding.trim(), questionId });
   }
   if (entries.length < SWEEP_EVIDENCE_MIN_ENTRIES) {
     return {
@@ -110,7 +178,81 @@ export function parseSweepEvidencePayload(payload: unknown): SweepEvidenceParseR
       reason: `evidence payload.entries needs at least ${SWEEP_EVIDENCE_MIN_ENTRIES} question/finding rows (one per discovery question actually asked); got ${entries.length}`,
     };
   }
-  return { ok: true, entries };
+  return {
+    ok: true,
+    entries,
+    hasHeldPublicOffice: (input.has_held_public_office as boolean | undefined) ?? null,
+  };
+}
+
+export type SweepRouteResolution =
+  | {
+      ok: true;
+      route: SweepRoute;
+      /**
+       * Non-null when candidates.has_held_public_office is NULL and the
+       * evidence file supplied the answer: the writer persists it inside the
+       * write transaction so the next sweep routes from the database.
+       */
+      persistHasHeldPublicOffice: boolean | null;
+    }
+  | { ok: false; reason: string };
+
+/**
+ * Derive which question list a full-history completeness claim must cover.
+ * Judicial contests route on the election's discovery_contest_family alone;
+ * everything else routes on has-EVER-held-public-office — the database
+ * column when set, else the evidence file's has_held_public_office answer.
+ * A contradiction between the two is refused rather than silently resolved:
+ * one of them is wrong, and the operator has the research in front of them.
+ */
+export function resolveSweepRoute(input: {
+  discoveryContestFamily: string | null;
+  candidateHasHeldPublicOffice: boolean | null;
+  evidenceHasHeldPublicOffice: boolean | null;
+}): SweepRouteResolution {
+  const { candidateHasHeldPublicOffice, evidenceHasHeldPublicOffice } = input;
+  if (
+    candidateHasHeldPublicOffice !== null &&
+    evidenceHasHeldPublicOffice !== null &&
+    candidateHasHeldPublicOffice !== evidenceHasHeldPublicOffice
+  ) {
+    return {
+      ok: false,
+      reason: `evidence file says has_held_public_office=${evidenceHasHeldPublicOffice} but candidates.has_held_public_office=${candidateHasHeldPublicOffice}. One of them is wrong: if the stored value is stale, correct it through the profile flow first; otherwise fix the evidence file.`,
+    };
+  }
+  const persistHasHeldPublicOffice =
+    candidateHasHeldPublicOffice === null ? evidenceHasHeldPublicOffice : null;
+  if (input.discoveryContestFamily === "judicial_office") {
+    return { ok: true, route: "judicial", persistHasHeldPublicOffice };
+  }
+  const hasHeld = candidateHasHeldPublicOffice ?? evidenceHasHeldPublicOffice;
+  if (hasHeld === null) {
+    return {
+      ok: false,
+      reason:
+        'Cannot route the sweep-completeness check: candidates.has_held_public_office is NULL and the evidence file has no top-level "has_held_public_office". Answer it from the profile research (has this candidate EVER held public office, current or former?) and add "has_held_public_office": true|false to the evidence file.',
+    };
+  }
+  return {
+    ok: true,
+    route: hasHeld ? "officeholder" : "never_held_office",
+    persistHasHeldPublicOffice,
+  };
+}
+
+/**
+ * The route question ids not yet covered by any tagged entry. Empty means
+ * the claim's question list was fully worked; anything else blocks the
+ * completeness claim.
+ */
+export function listMissingSweepRouteQuestionIds(
+  entries: readonly SweepEvidenceEntry[],
+  route: SweepRoute
+): string[] {
+  const tagged = new Set(entries.map((entry) => entry.questionId).filter((id) => id !== null));
+  return SWEEP_ROUTE_QUESTION_IDS[route].filter((id) => !tagged.has(id));
 }
 
 /**
@@ -185,7 +327,15 @@ export async function upsertSweepConfirmation(
     [
       input.candidateId,
       [...input.confirmedGapIds],
-      JSON.stringify({ entries: input.entries }),
+      // Stored shape mirrors the evidence-file contract (snake_case
+      // question_id, omitted when untagged) so audits read one format.
+      JSON.stringify({
+        entries: input.entries.map((entry) => ({
+          question: entry.question,
+          finding: entry.finding,
+          ...(entry.questionId != null ? { question_id: entry.questionId } : {}),
+        })),
+      }),
       input.contextType,
       input.contextId,
     ]
@@ -267,7 +417,7 @@ export function sweepEvidenceMissingError(context: string): Error {
   return new Error(
     [
       `A zero-record or neutral-only ${context} pass asserts a FINISHED discovery sweep, so it requires --evidence-file evidence.json.`,
-      `The file must contain {"entries": [{"question": "...", "finding": "..."}, ...]} — one row per discovery question actually asked (minimum ${SWEEP_EVIDENCE_MIN_ENTRIES}).`,
+      `The file must contain {"entries": [{"question": "...", "finding": "...", "question_id": "..."}, ...]} — one row per discovery question actually asked (minimum ${SWEEP_EVIDENCE_MIN_ENTRIES}), with question_id tags covering the candidate's route question list.`,
       "If the question list has not been finished, finish it (or run the remaining questions) instead of asserting completeness.",
     ].join("\n")
   );

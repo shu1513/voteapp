@@ -10,6 +10,7 @@ export type CandidateElectionOfficeContext = {
   candidateId: string;
   candidateDisplayName: string;
   currentOffice: string | null;
+  hasHeldPublicOffice: boolean | null;
   electionId: string;
   presidentialCycleId?: string | null;
   presidentialRole?: CandidateRecordPresidentialRole | null;
@@ -30,6 +31,7 @@ type PresidentialCycleRecordContextRow = {
   candidateId: string;
   candidateDisplayName: string;
   currentOffice: string | null;
+  hasHeldPublicOffice: boolean | null;
   presidentialCycleId: string;
   electionYear: number;
   stage: string;
@@ -66,6 +68,7 @@ function toPresidentialRecordContext(
     candidateId: row.candidateId,
     candidateDisplayName: row.candidateDisplayName,
     currentOffice: row.currentOffice,
+    hasHeldPublicOffice: row.hasHeldPublicOffice,
     electionId: "",
     presidentialCycleId: row.presidentialCycleId,
     presidentialRole: role,
@@ -98,6 +101,7 @@ export async function loadCandidateElectionOfficeContext(
         c.id AS "candidateId",
         COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name)) AS "candidateDisplayName",
         c.current_office AS "currentOffice",
+        c.has_held_public_office AS "hasHeldPublicOffice",
         e.id AS "electionId",
         d.name AS "districtName",
         d.district_type AS "districtType",
@@ -149,6 +153,7 @@ export async function loadCandidatePresidentialCycleOfficeContext(
         c.id AS "candidateId",
         COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name)) AS "candidateDisplayName",
         c.current_office AS "currentOffice",
+        c.has_held_public_office AS "hasHeldPublicOffice",
         cycle.id AS "presidentialCycleId",
         cycle.election_year AS "electionYear",
         cycle.stage::text AS "stage",
