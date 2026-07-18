@@ -1686,7 +1686,11 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
           staleAfterRedistricting: historicalCompetitiveness?.stale_after_redistricting,
           districtPopulation: detail.district.population,
           marginPercent: historicalCompetitiveness?.margin_percent ?? null,
-          marginElectionYear: historicalCompetitiveness?.election_year ?? null,
+          // Full year list: a weighted multi-year margin must not be pinned
+          // on the single latest election_year.
+          marginElectionYears: historicalCompetitiveness
+            ? (historicalCompetitiveness.election_years ?? [historicalCompetitiveness.election_year])
+            : null,
         },
         votePower
       ),

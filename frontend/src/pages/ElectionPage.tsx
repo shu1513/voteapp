@@ -102,7 +102,12 @@ export function ElectionPage() {
           </span>
         ) : null}
       </div>
-      {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
+      {/* Array.isArray guards a live backend still emitting the pre-parts
+          explanation shape during a non-atomic deploy: hide the section
+          rather than crash the page on parts.map. */}
+      {data.vote_power.label !== "unknown" &&
+      data.vote_power.explanation &&
+      Array.isArray(data.vote_power.explanation.parts) ? (
         <details className="mt-2 text-sm">
           <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
             Why this vote power rating?

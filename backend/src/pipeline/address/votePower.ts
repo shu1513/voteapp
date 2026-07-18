@@ -59,6 +59,9 @@ export type VotePowerExplanation = {
   parts: VotePowerExplanationPart[];
   result: string;
   caveat: string | null;
+  /** @deprecated Transitional: pre-parts frontends render these bullets.
+   * Remove once the parts-aware frontend is deployed everywhere. */
+  reasons: string[];
 };
 
 // Extra context that qualifies the explanation copy only — the rating math
@@ -68,7 +71,10 @@ export type VotePowerExplanationContext = VotePowerInput & {
   staleAfterRedistricting?: boolean;
   districtPopulation?: number | null;
   marginPercent?: number | null;
-  marginElectionYear?: number | null;
+  // Every contest year behind marginPercent: one entry for a plain margin,
+  // several when it is a weighted multi-year blend (the stat must not pin a
+  // blended number on a single year).
+  marginElectionYears?: number[] | null;
 };
 
 const LABELS: readonly Exclude<VotePowerLabel, "unknown">[] = ["very_low", "low", "medium", "high", "very_high"];
@@ -369,7 +375,7 @@ function representationPart(input: {
 function decisivenessPart(input: {
   decisivenessLevel: VotePowerDecisivenessLevel;
   marginPercent: number | null;
-  marginElectionYear: number | null;
+  marginElectionYears: number[] | null;
   staleAfterRedistricting: boolean;
 }): VotePowerExplanationPart {
   if (input.decisivenessLevel === "none") {
@@ -400,29 +406,63 @@ function decisivenessPart(input: {
   const staleSuffix = input.staleAfterRedistricting
     ? " District lines have changed since then, so older results are a weaker guide."
     : "";
-  const stat =
-    input.marginPercent === null
-      ? null
-      : `${formatMarginPoints(input.marginPercent)}-point margin${
-          input.marginElectionYear === null ? "" : ` in ${input.marginElectionYear}`
-        }`;
-
   return {
     title: "Decisiveness",
     grade: capitalize(input.decisivenessLevel),
-    stat,
+    stat: marginStat(input.marginPercent, input.marginElectionYears),
     detail: `${detailByLevel[input.decisivenessLevel]}${staleSuffix}`,
   };
 }
 
-const BALLOT_MEASURE_PART: VotePowerExplanationPart = {
-  title: "Ballot measure",
-  grade: "+1 step",
-  stat: null,
-  detail: "Your vote sets the policy directly, so the rating gets a one-step boost.",
-};
+// "12 and 2022" reads as a typo; spell the blend out. Years arrive in the
+// lookup's order (latest first) and render as given.
+function formatYearList(years: number[]): string {
+  if (years.length === 1) {
+    return `${years[0]}`;
+  }
+  if (years.length === 2) {
+    return `${years[0]} and ${years[1]}`;
+  }
+  return `${years.slice(0, -1).join(", ")}, and ${years[years.length - 1]}`;
+}
 
-function explanationResultFor(result: VotePowerResult, includeBallotMeasure: boolean, skipDecisiveness: boolean): string {
+// A multi-year margin is a weighted blend; pinning it on the single latest
+// year would claim a number that election never produced.
+function marginStat(marginPercent: number | null, marginElectionYears: number[] | null): string | null {
+  if (marginPercent === null) {
+    return null;
+  }
+  const points = `${formatMarginPoints(marginPercent)}-point`;
+  const years = marginElectionYears ?? [];
+  if (years.length === 0) {
+    return `${points} margin`;
+  }
+  if (years.length === 1) {
+    return `${points} margin in ${years[0]}`;
+  }
+  return `${points} weighted margin across ${formatYearList(years)}`;
+}
+
+// The bump can no-op (already at very_high, or eaten by the missing-data
+// cap), so the copy must not promise a boost the label never received.
+function ballotMeasurePart(boostApplied: boolean): VotePowerExplanationPart {
+  if (boostApplied) {
+    return {
+      title: "Ballot measure",
+      grade: "+1 step",
+      stat: null,
+      detail: "Your vote sets the policy directly, so the rating gets a one-step boost.",
+    };
+  }
+  return {
+    title: "Ballot measure",
+    grade: "Direct vote",
+    stat: null,
+    detail: "Your vote sets the policy directly, but it did not raise this rating further.",
+  };
+}
+
+function explanationResultFor(result: VotePowerResult, boostApplied: boolean, skipDecisiveness: boolean): string {
   if (result.label === "unknown") {
     return "Not enough data → no rating yet.";
   }
@@ -441,7 +481,7 @@ function explanationResultFor(result: VotePowerResult, includeBallotMeasure: boo
       pieces.push(`${result.decisiveness_level} decisiveness`);
     }
   }
-  if (includeBallotMeasure) {
+  if (boostApplied) {
     pieces.push("a ballot-measure boost");
   }
 
@@ -482,20 +522,40 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
       decisivenessPart({
         decisivenessLevel: result.decisiveness_level,
         marginPercent: input.marginPercent ?? null,
-        marginElectionYear: input.marginElectionYear ?? null,
+        marginElectionYears: input.marginElectionYears ?? null,
         staleAfterRedistricting: input.staleAfterRedistricting === true,
       })
     );
   }
+
+  // Re-run the label pipeline without the measure bump: the boost is only
+  // claimable when it actually moved the displayed label (bumpLabel tops out
+  // at very_high, and the missing-data cap runs after the bump).
+  let boostApplied = false;
+  if (isBallotMeasure && result.label !== "unknown") {
+    const missingCoreAxis =
+      result.representation_level === "unknown" ||
+      (result.decisiveness_level === "unknown" && !skipDecisiveness);
+    let noBoostLabel = labelFromKnownAxis({
+      representationLevel: result.representation_level,
+      decisivenessLevel: result.decisiveness_level,
+    });
+    if (missingCoreAxis) {
+      noBoostLabel = capLabel(noBoostLabel, "high");
+    }
+    boostApplied = result.label !== noBoostLabel;
+  }
   if (isBallotMeasure) {
-    parts.push(BALLOT_MEASURE_PART);
+    parts.push(ballotMeasurePart(boostApplied));
   }
 
   return {
     how: HOW_CALCULATED,
     parts,
-    result: explanationResultFor(result, isBallotMeasure, skipDecisiveness),
+    result: explanationResultFor(result, boostApplied, skipDecisiveness),
     caveat: explanationCaveatFor(result.confidence),
+    // Transitional bullets for frontends still on the pre-parts shape.
+    reasons: parts.map((part) => `${part.title}: ${part.grade}${part.stat ? ` (${part.stat})` : ""}. ${part.detail}`),
   };
 }
 
