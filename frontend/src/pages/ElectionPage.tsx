@@ -295,23 +295,40 @@ export function ElectionPage() {
                     <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>
                   ) : null}
                   {stances.length > 0 ? (
+                    // Stance direction colors the chip: all-for green, all-
+                    // against red, mixed amber — replacing the saved-area
+                    // green, which said nothing about the candidate. Counts
+                    // compress to +N/-N; screen readers get the spelled-out
+                    // counts instead, since "-2" can be read as just "2".
                     <div className="mt-2 flex flex-wrap gap-2 text-xs">
                       {stances.map((stance) => (
                         <span
                           key={stance.research_area_id}
                           className={
-                            savedAreaIds.has(stance.research_area_id)
+                            stance.against_count === 0
                               ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
-                              : "rounded bg-surface px-2 py-0.5 text-ink-soft"
+                              : stance.for_count === 0
+                                ? "rounded border border-red-600/40 bg-red-600/10 px-2 py-0.5 font-medium text-red-900"
+                                : "rounded border border-amber-500/40 bg-amber-400/10 px-2 py-0.5 font-medium text-amber-900"
                           }
                         >
-                          {stance.name} ·{" "}
-                          {[
-                            stance.for_count > 0 ? `${stance.for_count} for` : null,
-                            stance.against_count > 0 ? `${stance.against_count} against` : null,
-                          ]
-                            .filter(Boolean)
-                            .join(", ")}
+                          {stance.name}{" "}
+                          <span aria-hidden="true">
+                            {[
+                              stance.for_count > 0 ? `+${stance.for_count}` : null,
+                              stance.against_count > 0 ? `-${stance.against_count}` : null,
+                            ]
+                              .filter(Boolean)
+                              .join(" ")}
+                          </span>
+                          <span className="sr-only">
+                            {[
+                              stance.for_count > 0 ? `${stance.for_count} for` : null,
+                              stance.against_count > 0 ? `${stance.against_count} against` : null,
+                            ]
+                              .filter(Boolean)
+                              .join(", ")}
+                          </span>
                         </span>
                       ))}
                     </div>
