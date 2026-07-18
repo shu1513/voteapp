@@ -31,21 +31,28 @@ const RESEARCH_AREA_PRIORITY: readonly string[] = [
 const rankBySlug = new Map(RESEARCH_AREA_PRIORITY.map((slug, index) => [slug, index]));
 
 /**
- * Sorts research areas by public-salience priority (highest first). Slugs
- * outside the ranking — the judicial criteria (impartiality, legal
+ * Compares two research areas by public-salience priority (highest first).
+ * Slugs outside the ranking — the judicial criteria (impartiality, legal
  * competence, integrity and ethics), the "general" catch-all, and any area
  * added later — sink below every ranked one, alphabetically so their order
- * is still deterministic. Returns a new array; the input is not mutated.
+ * is still deterministic. Exported on its own so personalized sorts can use
+ * it as their tiebreak.
  */
+export function compareByResearchAreaPriority(
+  a: { slug: string; name: string },
+  b: { slug: string; name: string }
+): number {
+  const rankA = rankBySlug.get(a.slug) ?? Number.POSITIVE_INFINITY;
+  const rankB = rankBySlug.get(b.slug) ?? Number.POSITIVE_INFINITY;
+  if (rankA !== rankB) {
+    return rankA - rankB;
+  }
+  return a.name.localeCompare(b.name);
+}
+
+/** compareByResearchAreaPriority over a copy; the input is not mutated. */
 export function sortByResearchAreaPriority<T extends { slug: string; name: string }>(
   areas: readonly T[]
 ): T[] {
-  return [...areas].sort((a, b) => {
-    const rankA = rankBySlug.get(a.slug) ?? Number.POSITIVE_INFINITY;
-    const rankB = rankBySlug.get(b.slug) ?? Number.POSITIVE_INFINITY;
-    if (rankA !== rankB) {
-      return rankA - rankB;
-    }
-    return a.name.localeCompare(b.name);
-  });
+  return [...areas].sort(compareByResearchAreaPriority);
 }
