@@ -6,6 +6,7 @@ import {
   formatRosterStatus,
   formatVotePowerLabel,
 } from "@voteapp/api-client";
+import { sortByResearchAreaPriority } from "../lib/researchAreaPriority";
 
 // Statewide races carry a dozen-plus research areas; rendering every one
 // buried the card's actual signal (title, candidates, vote power) under a
@@ -91,8 +92,15 @@ function ElectionCard({
   savedAreaIds?: Set<string>;
   showDistrict?: boolean;
 }) {
-  const savedAreas = election.research_areas.filter((area) => savedAreaIds?.has(area.id) ?? false);
-  const otherAreas = election.research_areas.filter((area) => !(savedAreaIds?.has(area.id) ?? false));
+  // Both groups render in public-salience priority order (not the API's
+  // alphabetical order): saved matches first, then the rest — so the chips
+  // that survive the cap are the areas voters care about most.
+  const savedAreas = sortByResearchAreaPriority(
+    election.research_areas.filter((area) => savedAreaIds?.has(area.id) ?? false)
+  );
+  const otherAreas = sortByResearchAreaPriority(
+    election.research_areas.filter((area) => !(savedAreaIds?.has(area.id) ?? false))
+  );
   const visibleOtherAreas = otherAreas.slice(0, MAX_UNSAVED_AREA_CHIPS);
   const hiddenAreaCount = otherAreas.length - visibleOtherAreas.length;
   // Skip an empty chip row so the card doesn't carry stray spacing when a
@@ -160,20 +168,16 @@ function ElectionCard({
         </div>
       ) : null}
       {election.research_areas.length > 0 ? (
-        // Saved-area matches lead the list (all of them, highlighted);
-        // unsaved areas follow under the cap.
+        // Every chip wears the same green accent; saved-vs-unsaved shows in
+        // ORDER only (saved matches lead, all of them, then unsaved under
+        // the cap — both groups in public-salience priority order).
         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
           <span className="rounded bg-amber-100 px-2 py-0.5 font-medium text-amber-900">Affected Areas:</span>
-          {savedAreas.map((area) => (
+          {[...savedAreas, ...visibleOtherAreas].map((area) => (
             <span
               key={area.id}
               className="rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
             >
-              {area.name}
-            </span>
-          ))}
-          {visibleOtherAreas.map((area) => (
-            <span key={area.id} className="rounded bg-surface px-2 py-0.5 text-ink-soft">
               {area.name}
             </span>
           ))}

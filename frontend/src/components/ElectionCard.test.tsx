@@ -5,8 +5,11 @@ import { renderRoutes } from "../test/render";
 import { electionSummary, VOTE_POWER } from "../test/fixtures";
 import type { ElectionSummary } from "@voteapp/api-client";
 
-function area(id: string, name: string) {
-  return { id, slug: id, name, description: null };
+// Test ids double as slugs by default; slugs like "a-1" are unranked in the
+// priority list, so those chips fall back to alphabetical order. Pass a real
+// slug to exercise the priority ranking.
+function area(id: string, name: string, slug = id) {
+  return { id, slug, name, description: null };
 }
 
 // ElectionCard is private to ElectionList (it omits its own date), so the
@@ -101,13 +104,46 @@ describe("ElectionCard", () => {
       })
     );
 
+    // These slugs are unranked, so they fall back to alphabetical order and
+    // the cap keeps the first three names.
     expect(screen.getByText("Affected Areas:")).toBeInTheDocument();
     expect(screen.getByText("Civil Rights")).toBeInTheDocument();
+    expect(screen.getByText("Data Privacy")).toBeInTheDocument();
     expect(screen.getByText("Gun Control")).toBeInTheDocument();
-    expect(screen.getByText("Housing Affordability")).toBeInTheDocument();
-    expect(screen.queryByText("Data Privacy")).not.toBeInTheDocument();
+    expect(screen.queryByText("Housing Affordability")).not.toBeInTheDocument();
     expect(screen.queryByText("Public Infrastructure")).not.toBeInTheDocument();
     expect(screen.getByText("+2 more areas")).toBeInTheDocument();
+  });
+
+  it("orders chips by public-salience priority, not the payload order", () => {
+    renderCard(
+      electionSummary({
+        research_areas: [
+          // Payload arrives alphabetical; priority rank must win.
+          area("a-1", "Civil Rights", "civil_rights"),
+          area("a-2", "Environment and Public Health", "environment_and_public_health"),
+          area("a-3", "Gun Control", "gun_control"),
+        ],
+      })
+    );
+
+    const label = screen.getByText("Affected Areas:");
+    const chipTexts = Array.from(label.parentElement?.children ?? [])
+      .map((chip) => chip.textContent)
+      .filter((text) => text !== "Affected Areas:");
+    expect(chipTexts).toEqual(["Environment and Public Health", "Gun Control", "Civil Rights"]);
+  });
+
+  it("styles saved and unsaved chips alike — only order tells them apart", () => {
+    renderCard(
+      electionSummary({
+        research_areas: [area("a-1", "Civil Rights"), area("a-2", "Gun Control")],
+      }),
+      new Set(["a-2"])
+    );
+
+    // Same green accent on both; the saved match just leads.
+    expect(screen.getByText("Gun Control").className).toBe(screen.getByText("Civil Rights").className);
   });
 
   it("omits the affected-areas row when a race has no research areas", () => {
