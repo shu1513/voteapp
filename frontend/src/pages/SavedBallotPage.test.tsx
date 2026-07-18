@@ -84,9 +84,11 @@ describe("SavedBallotPage", () => {
     const confirmation = await screen.findByRole("status");
     expect(confirmation).toHaveTextContent("Districts updated from 123 MAIN ST, AUSTIN, TX");
     expect(confirmation).toHaveTextContent("1 district");
-    // The address is only used to find districts, never stored — the notice
-    // must say so instead of announcing "Address saved".
-    expect(confirmation).toHaveTextContent("your address itself is not stored");
+    // The account keeps districts, not the address — the notice must say so
+    // instead of announcing "Address saved". Scoped to the profile: the
+    // backend's short-lived geocoder cache means an absolute "not stored"
+    // would be false.
+    expect(confirmation).toHaveTextContent("your street address is not kept in your profile");
     expect(confirmation).not.toHaveTextContent("Address saved");
     // Exact single match: no ambiguity warning.
     expect(confirmation).not.toHaveTextContent("possible locations");
