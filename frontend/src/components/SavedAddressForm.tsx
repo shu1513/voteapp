@@ -14,7 +14,6 @@ type AddressSaveResult = BallotSummary & { matched_address?: string; address_mat
 // payload — which GET /api/me/ballot re-derives anyway — stays out entirely.
 export type AddressSavedNoticeData = {
   matched_address?: string;
-  district_count: number;
   address_match_count?: number;
 };
 
@@ -47,7 +46,6 @@ export function SavedAddressForm({ inputId, label }: { inputId: string; label: s
         state: {
           addressSaved: {
             matched_address: saved.matched_address,
-            district_count: saved.districts.length,
             address_match_count: saved.address_match_count,
           },
         } satisfies AddressSavedLocationState,
@@ -110,19 +108,18 @@ export function SavedAddressForm({ inputId, label }: { inputId: string; label: s
 // Post-save confirmation rendered on the saved ballot page from the router
 // state the form navigates with. The PUT succeeds silently server-side, so
 // this line is the user's only textual feedback on what was matched. The
-// copy leads with districts, not "address saved", because that is what the
-// account keeps: user_districts has no address column. Deliberately scoped
-// to "your account/profile" rather than an absolute "not stored" — the
-// backend keeps a short-lived geocoder cache (matched address and
-// coordinates, hash-keyed, TTL-bound; see addressResolutionCache.ts) that
-// the privacy policy discloses, so an absolute claim would be false.
+// copy leads with election districts, not "address saved", because that is
+// what the account keeps: user_districts has no address column. "we do not
+// save your actual address" describes the account, not the backend's
+// short-lived geocoder cache (matched address and coordinates, hash-keyed,
+// TTL-bound; see addressResolutionCache.ts) which the privacy policy
+// discloses separately.
 export function AddressSavedNotice({ saved }: { saved: AddressSavedNoticeData }) {
   return (
     <p role="status" className="rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
-      Districts updated{saved.matched_address ? <> from <strong>{saved.matched_address}</strong></> : null}.
-      Your ballot now covers {saved.district_count} district
-      {saved.district_count === 1 ? "" : "s"}. Only these districts were saved to your account — your
-      street address is not kept in your profile.
+      Your election districts are updated
+      {saved.matched_address ? <> from <strong>{saved.matched_address}</strong></> : null}. Only these new
+      election districts were saved — we do not save your actual address.
       {typeof saved.address_match_count === "number" && saved.address_match_count > 1 ? (
         // The geocoder returned multiple candidates and saved the first —
         // a silently wrong match here replaces the user's whole ballot.

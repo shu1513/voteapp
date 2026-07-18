@@ -110,7 +110,7 @@ export function RegisterPage() {
         </div>
         <div>
           <label htmlFor="register-first-name" className="block text-sm font-medium text-ink">
-            First name <span className="font-normal text-ink-soft">(optional)</span>
+            First Name <span className="font-normal text-ink-soft">(optional)</span>
           </label>
           <input
             id="register-first-name"

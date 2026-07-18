@@ -71,7 +71,7 @@ function ProfileSection({ me }: { me: Me }) {
       >
         <div className="grow">
           <label htmlFor="settings-first-name" className="block text-sm font-medium text-ink">
-            First name
+            First Name
           </label>
           <input
             id="settings-first-name"
