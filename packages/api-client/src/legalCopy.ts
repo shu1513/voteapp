@@ -22,6 +22,11 @@ export const SIGNUP_CHECKBOX_LABEL =
   "authorities. I agree that disputes are resolved by binding individual arbitration with a class-action " +
   "waiver as described in Section 12 of the Terms of Use, unless I opt out as described there.";
 
+export const RENEWAL_CHECKBOX_LABEL =
+  "I have read and agree to the updated Terms of Use, Privacy Policy, and AI Research and Election " +
+  "Information Disclaimer, including the agreement to resolve disputes by binding individual arbitration " +
+  "with a class-action waiver (Terms of Use Section 12), unless I opt out as described there.";
+
 export const PRIVACY_NOTICE =
   "Privacy notice: we collect the address you enter, account information if you sign up, and device and " +
   "usage information, to generate results, operate and secure the Service, and comply with law — as " +

@@ -18,7 +18,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { AiBanner } from "../../components/AiBanner";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
@@ -93,7 +92,6 @@ export default function ElectionScreen() {
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
       <Stack.Screen options={{ title: data.official_ballot_title }} />
-      <AiBanner />
       <Text className="text-2xl font-bold text-ink">{data.official_ballot_title}</Text>
       <Text className="mt-1 text-sm text-ink-soft">
         {formatElectionDate(data.election_date)} · {data.district.name} ·{" "}

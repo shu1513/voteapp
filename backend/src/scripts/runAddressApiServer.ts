@@ -96,7 +96,7 @@ import {
 } from "../pipeline/users/userEmailPreferences.js";
 import { registerUserPushToken, revokeUserPushToken } from "../pipeline/users/userPushTokens.js";
 import { verifyEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
-import { getUserIdentity, setUserFirstName } from "../pipeline/users/userIdentity.js";
+import { acceptUserTerms, getUserIdentity, setUserFirstName } from "../pipeline/users/userIdentity.js";
 import { createCachedSiteSitemap } from "../pipeline/sitemap/siteSitemap.js";
 
 function readEnv(name: string, fallback?: string): string {
@@ -561,6 +561,7 @@ async function main(): Promise<void> {
     getAuthenticatedBallotPreferences: (userId) => getUserBallotPreferences(pool, userId),
     setAuthenticatedBallotPreferences: (userId, preferences) => setUserBallotPreferences(pool, userId, preferences),
     getAuthenticatedUser: (userId) => getUserIdentity(pool, userId),
+    acceptAuthenticatedUserTerms: (userId, termsVersion) => acceptUserTerms(pool, userId, termsVersion),
     updateAuthenticatedUserFirstName: (userId, firstName) => setUserFirstName(pool, userId, firstName),
     getAuthenticatedEmailPreferences: (userId) => getUserEmailPreferences(pool, userId),
     setAuthenticatedEmailPreferences: (userId, preferences) => setUserEmailPreferences(pool, userId, preferences),

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { RouteError } from "./components/RouteError";
+import { TermsRenewalGate } from "./components/TermsRenewalGate";
 import { useLogout, useMe } from "@voteapp/api-client";
 
 function AccountNav() {
@@ -130,6 +131,7 @@ export function App() {
       <main id="main" ref={mainRef} tabIndex={-1} className="outline-none">
         <Outlet />
       </main>
+      <TermsRenewalGate />
       <ScrollRestoration />
       <footer className="mt-16 border-t border-line py-8 text-center text-xs text-ink-soft">
         <p>

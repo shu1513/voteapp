@@ -18,7 +18,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { AiBanner } from "../../components/AiBanner";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
@@ -244,7 +243,6 @@ export default function CandidateScreen() {
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
       <Stack.Screen options={{ title: candidate.display_name }} />
-      <AiBanner />
       <View className="flex-row flex-wrap items-center justify-between gap-3">
         <Text className="flex-1 text-2xl font-bold text-ink">{candidate.display_name}</Text>
         {canFollow && follows ? (

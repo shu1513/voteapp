@@ -1,6 +1,7 @@
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { createAuthService } from "../../src/auth/authService.js";
+import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
 import { hashPassword } from "../../src/auth/authPrimitives.js";
 
 const USER_ID = "11111111-1111-4111-8111-111111111111";
@@ -145,13 +146,13 @@ describe("createAuthService register terms acceptance", () => {
     await service.register({
       email: "new@example.com",
       password: "correct horse battery staple",
-      acceptedTermsVersion: "1.0",
+      acceptedTermsVersion: CURRENT_TERMS_VERSION,
     });
 
     const insertCall = client.query.mock.calls.find((call) => String(call[0]).includes("INSERT INTO public.users"));
     expect(String(insertCall?.[0])).toContain("accepted_terms_version");
     expect(String(insertCall?.[0])).toContain("accepted_terms_at");
-    expect(insertCall?.[1]?.[3]).toBe("1.0");
+    expect(insertCall?.[1]?.[3]).toBe(CURRENT_TERMS_VERSION);
   });
 
   it("stamps acceptance on the unverified-refresh update path too", async () => {
@@ -174,13 +175,13 @@ describe("createAuthService register terms acceptance", () => {
     await service.register({
       email: "user@example.com",
       password: "correct horse battery staple",
-      acceptedTermsVersion: "1.0",
+      acceptedTermsVersion: CURRENT_TERMS_VERSION,
     });
 
     const updateCall = client.query.mock.calls.find((call) => String(call[0]).includes("UPDATE public.users"));
     expect(String(updateCall?.[0])).toContain("accepted_terms_version = $4");
     expect(String(updateCall?.[0])).toContain("accepted_terms_at = now()");
-    expect(updateCall?.[1]?.[3]).toBe("1.0");
+    expect(updateCall?.[1]?.[3]).toBe(CURRENT_TERMS_VERSION);
   });
 
   it("rejects blank or stale terms versions before touching the database", async () => {
@@ -728,7 +729,7 @@ describe("createAuthService session epoch revocation", () => {
     await service.register({
       email: "user@example.com",
       password: "brand-new-password-456",
-      acceptedTermsVersion: "1.0",
+      acceptedTermsVersion: CURRENT_TERMS_VERSION,
     });
 
     const refreshCall = client.query.mock.calls.find((call) => String(call[0]).includes("password_hash = $3"));

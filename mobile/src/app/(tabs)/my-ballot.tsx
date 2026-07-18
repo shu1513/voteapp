@@ -11,7 +11,6 @@ import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
-import { AiBanner } from "../../components/AiBanner";
 import { Checkbox } from "../../components/Checkbox";
 import { ElectionCard } from "../../components/ElectionCard";
 import { SavedAddressForm } from "../../components/SavedAddressForm";
@@ -222,7 +221,6 @@ function SavedBallotBody({ email }: { email: string }) {
 
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8" keyboardShouldPersistTaps="handled">
-      <AiBanner />
       <Text className="text-2xl font-bold text-ink">Your saved ballot</Text>
       <Text className="mt-1 text-sm text-ink-soft">
         {data.elections.length} election{data.elections.length === 1 ? "" : "s"} across{" "}

@@ -1,6 +1,7 @@
 // Minimal typed payload builders for page tests. Only the fields the pages
 // actually render get non-trivial values; everything else is a quiet default.
 
+import { TERMS_VERSION } from "@voteapp/api-client";
 import type {
   BallotSummary,
   CandidateDetail,
@@ -13,11 +14,11 @@ import type {
 } from "@voteapp/api-client";
 
 export const ME_VERIFIED = {
-  user: { email: "voter@example.com", first_name: "Sam", email_verified: true },
+  user: { email: "voter@example.com", first_name: "Sam", email_verified: true, accepted_terms_version: TERMS_VERSION },
 };
 
 export const ME_UNVERIFIED = {
-  user: { email: "voter@example.com", first_name: "Sam", email_verified: false },
+  user: { email: "voter@example.com", first_name: "Sam", email_verified: false, accepted_terms_version: TERMS_VERSION },
 };
 
 export const VOTE_POWER: VotePower = {
