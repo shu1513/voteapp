@@ -36,6 +36,51 @@ describe("ElectionCard", () => {
     expect(screen.getByText("2 candidates")).toBeInTheDocument();
   });
 
+  it("shows district names only on cards whose ballot titles collide", () => {
+    renderRoutes(
+      [
+        {
+          path: "/",
+          element: (
+            <ElectionList
+              elections={[
+                // Overlapping school districts: same generic title, one ballot.
+                electionSummary({
+                  id: "e-1",
+                  official_ballot_title: "Board of Education Member",
+                  district: {
+                    id: "d-el",
+                    district_type: "school_elementary",
+                    name: "Yuma Elementary District, Arizona",
+                    state: "AZ",
+                  },
+                }),
+                electionSummary({
+                  id: "e-2",
+                  official_ballot_title: "Board of Education Member",
+                  district: {
+                    id: "d-hi",
+                    district_type: "school_secondary",
+                    name: "Yuma Union High School District, Arizona",
+                    state: "AZ",
+                  },
+                }),
+                electionSummary({ id: "e-3", official_ballot_title: "Governor" }),
+              ]}
+            />
+          ),
+        },
+      ],
+      "/"
+    );
+
+    // Colliding titles each carry their district as a disambiguator…
+    expect(screen.getByText("Yuma Elementary District, Arizona")).toBeInTheDocument();
+    expect(screen.getByText("Yuma Union High School District, Arizona")).toBeInTheDocument();
+    // …while the unique title stays district-free ("Alaska" is its fixture district).
+    expect(screen.queryByText("Alaska")).not.toBeInTheDocument();
+  });
+
   it("labels ballot measures instead of counting candidates", () => {
     renderCard(electionSummary({ race_type: "ballot_measure", candidate_count: 0 }));
 

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "cacheKey": "fl-contrib-candidate-all-doe-jane-live",
+  "tsvPath": "/Users/shu/voteApp/.claude/worktrees/awesome-kowalevski-0968c4/scratch/florida-campaign-finance/dos/fl-contrib-candidate-all-doe-jane-live.tsv",
+  "metadataPath": "/Users/shu/voteApp/.claude/worktrees/awesome-kowalevski-0968c4/scratch/florida-campaign-finance/dos/fl-contrib-candidate-all-doe-jane-live.metadata.json",
+  "request": {
+    "searchType": "candidate_detail",
+    "electionCode": null,
+    "candidateFirstName": "Jane",
+    "candidateLastName": "Doe",
+    "committeeName": null,
+    "committeeType": null,
+    "dateFrom": null,
+    "dateTo": null,
+    "rowLimit": 10000
+  },
+  "exportUrl": "https://dos.elections.myflorida.com/cgi-bin/contrib.exe",
+  "sourceUrl": "https://dos.elections.myflorida.com/cgi-bin/contrib.exe?download=1",
+  "retrievedAt": "2026-06-20T20:00:00.000Z",
+  "rowCount": 2,
+  "formData": {}
+}
