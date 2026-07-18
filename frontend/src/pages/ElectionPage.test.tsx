@@ -83,21 +83,6 @@ describe("ElectionPage", () => {
     expect(screen.queryByText("How do we calculate vote power?")).not.toBeInTheDocument();
   });
 
-  it("hides the explanation without crashing when an old backend sends the pre-parts shape", async () => {
-    stubApiRoutes({ ...ANONYMOUS });
-    const legacyExplanation = {
-      how: "Vote power combines representation and decisiveness.",
-      reasons: ["Representation is medium."],
-      caveat: null,
-    } as unknown as NonNullable<typeof VOTE_POWER_WITH_EXPLANATION.explanation>;
-    renderElection(() =>
-      electionDetail({ vote_power: { ...VOTE_POWER_WITH_EXPLANATION, explanation: legacyExplanation } })
-    );
-
-    expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
-    expect(screen.queryByText("How do we calculate vote power?")).not.toBeInTheDocument();
-  });
-
   it("hides the vote power explanation entirely for an unknown label", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>

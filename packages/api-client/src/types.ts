@@ -69,8 +69,6 @@ export type VotePowerExplanation = {
   parts: VotePowerExplanationPart[];
   result: string;
   caveat: string | null;
-  /** @deprecated Transitional bullets for pre-parts frontends; do not render. */
-  reasons?: string[];
 };
 
 export type VotePower = {
