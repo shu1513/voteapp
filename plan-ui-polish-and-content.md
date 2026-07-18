@@ -71,18 +71,19 @@ Wire enum value `medium` stays unchanged (no API break); display copy only.
 
 ## Group C — Election detail page enrichment (backend + frontend)
 
-- [ ] **Backend: add `office` + `research_areas` to detail payload.**
+- [x] **Backend: add `office` + `research_areas` to detail payload.**
   `BallotLookupElection` (backend/src/pipeline/address/ballotLookup.ts ~line
   222) lacks both; the summary type has them. Extend
   `lookupElectionDetailById` / `loadFullElectionDetails` to include
   `office: OfficeSummary | null` (with `summary` description) and
   `research_areas: ResearchAreaSummary[]`. Mirror in
   `packages/api-client/src/types.ts` `ElectionDetail`.
-- [ ] **Frontend: render office description, then affected areas** on
+- [x] **Frontend: render office description, then affected areas** on
   `ElectionPage.tsx`, above candidates. Affected-areas chips reuse
   ElectionCard styling (saved-first ordering, green chips, no cap or a
   higher cap — detail page carries the full set per ElectionCard comment).
-- [ ] **Sort dropdown fixes** — `ElectionPage.tsx` ~lines 232–245:
+- [x] **Sort dropdown fixes** (web + mobile — the API order is alphabetical
+  by display name, confirmed in the candidate query's ORDER BY):
   - Verify what order the API actually returns candidates in (true ballot
     order vs alphabetical) before renaming "Ballot order". If alphabetical,
     label it "Alphabetical".
