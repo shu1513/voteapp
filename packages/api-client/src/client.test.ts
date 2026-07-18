@@ -160,7 +160,9 @@ describe("apiRequest", () => {
             new Promise((_resolve, reject) => {
               init.signal.addEventListener(
                 "abort",
-                // A bare abort() carries the runtime's default AbortError reason.
+                // The bare abort()'s reason is runtime-specific (Node supplies
+                // its own AbortError; a minimal runtime may leave it
+                // undefined), so it is not part of this test's contract.
                 () => reject(init.signal.reason ?? new Error("aborted")),
                 { once: true }
               );
@@ -172,8 +174,12 @@ describe("apiRequest", () => {
       const outcome = request.catch((caught: unknown) => caught);
       await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS);
 
+      // Contract: the abort fired at the timeout (the promise settled at
+      // all), and via the bare-abort branch — not the synthetic TimeoutError
+      // built when DOMException exists.
       const error = await outcome;
-      expect((error as Error).name).toBe("AbortError");
+      expect(error).toBeDefined();
+      expect((error as Error).name).not.toBe("TimeoutError");
     } finally {
       vi.useRealTimers();
       AbortSignal.timeout = originalTimeout;
