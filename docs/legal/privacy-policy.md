@@ -18,7 +18,7 @@ This Privacy Policy describes how impactperdollar, the operator of the VoteApp s
 
 ## 1. Information we collect
 
-**Address and search input.** When you enter an address, we process it to determine your voting districts. The address is sent to geocoding services (see Section 3) and may be held briefly in a server-side cache to speed up repeat lookups. What we store on your account is the resulting **list of districts** — not your street address. We do not maintain a saved-address book.
+**Address and search input.** When you enter an address, we process it to determine your voting districts. The address is sent to geocoding services (see Section 3) and may be held in a server-side cache for up to 14 days to speed up repeat lookups; this cache is not linked to your account. What we store on your account is the resulting **list of districts** — not your street address. We do not maintain a saved-address book.
 
 **Account information.** If you create an account: your email address, first name, and a cryptographic hash of your password (we never store the password itself). We also record which version of our terms you accepted and when.
 
