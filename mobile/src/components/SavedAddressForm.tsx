@@ -90,9 +90,9 @@ export function SavedAddressForm({ label }: { label: string }) {
         // confirmation should not interrupt the screen reader mid-speech.
         <View accessibilityLiveRegion="polite" className="rounded-md border border-line bg-surface px-3 py-2">
           {/* Same copy as the web AddressSavedNotice: the account keeps
-              election districts, not the address. Scoped to "in your
-              profile" — an absolute "we do not save" would be false, since
-              the backend keeps a 14-day geocoder cache (see
+              election districts, not the address. States only what WAS
+              saved ("in your profile"), no absolute claim about the
+              address — the backend keeps a 14-day geocoder cache (see
               addressResolutionCache.ts) that the privacy policy discloses. */}
           <Text className="text-sm text-ink">
             Your election districts are updated
@@ -102,8 +102,7 @@ export function SavedAddressForm({ label }: { label: string }) {
                 <Text className="font-semibold">{update.data.matched_address}</Text>
               </>
             ) : null}
-            . Only these new election districts were saved — we do not keep your actual address in your
-            profile.
+            . Only the new election districts were saved in your profile.
             {typeof update.data.address_match_count === "number" && update.data.address_match_count > 1 ? (
               // The geocoder returned multiple candidates and saved the first —
               // a silently wrong match here replaces the user's whole ballot.

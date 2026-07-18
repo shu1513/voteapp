@@ -83,11 +83,11 @@ describe("SavedBallotPage", () => {
 
     const confirmation = await screen.findByRole("status");
     expect(confirmation).toHaveTextContent("Your election districts are updated from 123 MAIN ST, AUSTIN, TX");
-    // The account keeps election districts, not the address — the notice must
-    // say so instead of announcing "Address saved". Scoped to the profile:
-    // the backend's 14-day geocoder cache means an absolute "we do not save"
-    // would be false.
-    expect(confirmation).toHaveTextContent("we do not keep your actual address in your profile");
+    // The account keeps election districts, not the address — the notice
+    // states only what WAS saved instead of announcing "Address saved" or
+    // making an absolute no-save claim (the backend's 14-day geocoder cache
+    // would falsify one).
+    expect(confirmation).toHaveTextContent("Only the new election districts were saved in your profile");
     expect(confirmation).not.toHaveTextContent("Address saved");
     // Exact single match: no ambiguity warning.
     expect(confirmation).not.toHaveTextContent("possible locations");
