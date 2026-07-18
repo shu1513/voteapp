@@ -85,19 +85,42 @@ export function configureApi(overrides: Partial<ApiClientConfig>): void {
 }
 
 /**
+ * AbortSignal.timeout (Chrome 103+/Safari 16+/Node 17.3+) with a manual
+ * timer fallback: on runtimes without it (older Safari, Hermes) the timeout
+ * must degrade to a timer, not silently vanish — a stalled request with no
+ * ceiling pins every query in pending forever ("Loading…" with no way out).
+ */
+function makeTimeoutSignal(): AbortSignal {
+  if (typeof AbortSignal.timeout === "function") {
+    return AbortSignal.timeout(config.requestTimeoutMs);
+  }
+  const controller = new AbortController();
+  // Mirrors the native TimeoutError reason where DOMException exists; a bare
+  // abort() on runtimes without it still fails the request. The one-shot
+  // timer firing after the request settles is a no-op, so it is not cleared.
+  setTimeout(() => {
+    controller.abort(
+      typeof DOMException === "function" ? new DOMException("signal timed out", "TimeoutError") : undefined
+    );
+  }, config.requestTimeoutMs);
+  return controller.signal;
+}
+
+/**
  * Combines the request timeout with an optional caller signal without
  * requiring AbortSignal.any (Chrome 116+/Safari 17.4+): on older browsers a
  * missing .any must degrade to a manual combine, not throw before fetch and
  * silently kill features like autocomplete.
+ *
+ * The manual combine leaves its { once } listener on the caller signal until
+ * that signal aborts or is collected, so callers must pass per-request
+ * signals (as autocomplete does) — reusing one long-lived signal across many
+ * requests would accumulate a listener per request on pre-.any runtimes.
  */
-function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal | undefined {
-  const timeout =
-    typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(config.requestTimeoutMs) : undefined;
+function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal {
+  const timeout = makeTimeoutSignal();
   if (!callerSignal) {
     return timeout;
-  }
-  if (!timeout) {
-    return callerSignal;
   }
   if (typeof AbortSignal.any === "function") {
     return AbortSignal.any([timeout, callerSignal]);
