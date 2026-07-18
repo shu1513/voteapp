@@ -82,13 +82,95 @@ describe("CandidatePage", () => {
     const groupState = (name: string) =>
       (screen.getByText(name).closest("details") as HTMLDetailsElement).open;
     expect(await screen.findByText("Civil Rights")).toBeInTheDocument();
-    // Alphabetical group order: Civil Rights, Gun Control, Housing, Privacy.
+    // Test slugs (a-1…a-4) sit outside the salience ranking, so the groups
+    // fall back to alphabetical: Civil Rights, Gun Control, Housing, Privacy.
     expect(groupState("Civil Rights")).toBe(true);
     expect(groupState("Gun Control")).toBe(true);
     expect(groupState("Housing")).toBe(true);
     expect(groupState("Privacy")).toBe(false);
     // Collapsed groups still state their size.
     expect(screen.getAllByText("· 1 record")).toHaveLength(4);
+  });
+
+  it("orders issue groups by public salience with untagged records last", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const record = (id: string, tags: { areaId: string; slug: string; name: string }[]) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: tags.map((tag) => ({
+        research_area_id: tag.areaId,
+        slug: tag.slug,
+        name: tag.name,
+        stance: "for" as const,
+      })),
+    });
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          // Payload arrives alphabetical-ish; salience rank must win, with
+          // the untagged pseudo-group sinking to the end.
+          record("r-1", [{ areaId: "a-civ", slug: "civil_rights", name: "Civil Rights" }]),
+          record("r-2", []),
+          record("r-3", [{ areaId: "a-env", slug: "environment_and_public_health", name: "Environment and Public Health" }]),
+          record("r-4", [{ areaId: "a-gun", slug: "gun_control", name: "Gun Control" }]),
+        ],
+      })
+    );
+
+    await screen.findByText("Civil Rights");
+    const headings = screen
+      .getAllByRole("heading", { level: 3 })
+      .map((heading) => heading.textContent);
+    expect(headings).toEqual([
+      "Environment and Public Health",
+      "Gun Control",
+      "Civil Rights",
+      "Other records",
+    ]);
+  });
+
+  it("defaults the record view to \"My issues first\" once saved areas load", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-gun", slug: "gun_control", name: "Gun Control", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    const record = (id: string, areaId: string, slug: string, name: string) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: [{ research_area_id: areaId, slug, name, stance: "for" as const }],
+    });
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          record("r-1", "a-env", "environment_and_public_health", "Environment and Public Health"),
+          record("r-2", "a-gun", "gun_control", "Gun Control"),
+        ],
+      })
+    );
+
+    // The option only exists for users with saved areas, and it becomes the
+    // default selection — the saved Gun Control group leads even though
+    // Environment outranks it publicly.
+    const select = await screen.findByRole("combobox");
+    await screen.findByRole("option", { name: "My issues first" });
+    expect(select).toHaveValue("my_issues");
+    const headings = screen
+      .getAllByRole("heading", { level: 3 })
+      .map((heading) => heading.textContent);
+    expect(headings).toEqual(["Gun Control", "Environment and Public Health"]);
   });
 
   it("cuts the newest-first view off at 20 with a show-all button", async () => {

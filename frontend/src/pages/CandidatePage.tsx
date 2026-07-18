@@ -18,6 +18,7 @@ import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSumm
 import { ReportContentButton } from "../components/ReportContentButton";
 import { apiRequest, formatElectionDate } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
+import { compareByResearchAreaPriority } from "../lib/researchAreaPriority";
 import { useFollows } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
@@ -35,6 +36,8 @@ const INITIAL_NEWEST_RECORDS = 20;
 type RecordGroup = {
   /** null for the untagged "Other records" pseudo-group. */
   areaId: string | null;
+  /** null for "Other records"; drives the public-salience ordering. */
+  areaSlug: string | null;
   areaName: string;
   records: CandidateRecord[];
 };
@@ -42,12 +45,19 @@ type RecordGroup = {
 // Records grouped by research area (a record with several tags appears under
 // each; untagged records fall into "Other records"). Groups key on the
 // stable research_area_id — display names are presentation, not identity.
+// Groups order by public salience (same ranking as election-card chips), not
+// alphabetically, so the issues voters care about most lead; "Other records"
+// stays last.
 function groupRecords(records: CandidateRecord[]): RecordGroup[] {
   const groups = new Map<string | null, RecordGroup>();
   for (const record of records) {
     const areas = record.research_area_tags.length
-      ? record.research_area_tags.map((tag) => ({ areaId: tag.research_area_id, areaName: tag.name }))
-      : [{ areaId: null, areaName: "Other records" }];
+      ? record.research_area_tags.map((tag) => ({
+          areaId: tag.research_area_id,
+          areaSlug: tag.slug,
+          areaName: tag.name,
+        }))
+      : [{ areaId: null, areaSlug: null, areaName: "Other records" }];
     for (const area of areas) {
       const group = groups.get(area.areaId) ?? { ...area, records: [] };
       group.records.push(record);
@@ -55,13 +65,20 @@ function groupRecords(records: CandidateRecord[]): RecordGroup[] {
     }
   }
   return [...groups.values()].sort((a, b) =>
-    a.areaId === null ? 1 : b.areaId === null ? -1 : a.areaName.localeCompare(b.areaName)
+    a.areaId === null || a.areaSlug === null
+      ? 1
+      : b.areaId === null || b.areaSlug === null
+        ? -1
+        : compareByResearchAreaPriority(
+            { slug: a.areaSlug, name: a.areaName },
+            { slug: b.areaSlug, name: b.areaName }
+          )
   );
 }
 
 // "My issues first": saved-area groups move to the front ordered by the
 // user's rank (unranked saved areas after ranked ones), everything else
-// keeps the alphabetical order groupRecords produced.
+// keeps the public-salience order groupRecords produced.
 function orderGroupsByPreference(
   groups: RecordGroup[],
   preferences: readonly ResearchAreaPreference[]
@@ -250,7 +267,17 @@ export function CandidatePage() {
   const { follows, canFollow } = useFollows();
   const { me } = useMe();
   const { hasSaved, preferences } = useMyResearchAreas();
-  const [recordView, setRecordView] = useState<RecordView>("by_issue");
+  // null = the user hasn't picked a view; default to "my issues first" once
+  // saved areas exist (they load async, so this can't live in useState's
+  // initial value). An explicit pick always wins — except a picked
+  // "my_issues" is ignored while hasSaved is false (the user cleared their
+  // areas in Settings; the shared query key syncs it here), because its
+  // <option> is gated on hasSaved and a value without an option leaves the
+  // select uncontrolled. The pick is kept, not cleared: re-saving areas
+  // restores it.
+  const [chosenRecordView, setChosenRecordView] = useState<RecordView | null>(null);
+  const effectiveChosenView = chosenRecordView === "my_issues" && !hasSaved ? null : chosenRecordView;
+  const recordView = effectiveChosenView ?? (hasSaved ? "my_issues" : "by_issue");
   const [showAllNewest, setShowAllNewest] = useState(false);
 
   const detail = useLoaderData<typeof loader>();
@@ -320,7 +347,7 @@ export function CandidatePage() {
               View
               <select
                 value={recordView}
-                onChange={(event) => setRecordView(event.target.value as RecordView)}
+                onChange={(event) => setChosenRecordView(event.target.value as RecordView)}
                 className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
               >
                 <option value="by_issue">By issue</option>
