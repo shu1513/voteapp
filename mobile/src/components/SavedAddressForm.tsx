@@ -89,16 +89,22 @@ export function SavedAddressForm({ label }: { label: string }) {
         // Polite live region, matching the web's role="status": a success
         // confirmation should not interrupt the screen reader mid-speech.
         <View accessibilityLiveRegion="polite" className="rounded-md border border-line bg-surface px-3 py-2">
+          {/* Same copy as the web AddressSavedNotice: the account keeps
+              districts, not the address. Scoped to "your profile" rather
+              than an absolute "not stored" — the backend keeps a
+              short-lived, TTL-bound geocoder cache (see
+              addressResolutionCache.ts) that the privacy policy discloses. */}
           <Text className="text-sm text-ink">
-            Address saved
+            Districts updated
             {update.data.matched_address ? (
               <>
-                {" — matched to "}
+                {" from "}
                 <Text className="font-semibold">{update.data.matched_address}</Text>
               </>
             ) : null}
             . Your ballot now covers {update.data.districts.length} district
-            {update.data.districts.length === 1 ? "" : "s"}.
+            {update.data.districts.length === 1 ? "" : "s"}. Only these districts were saved to your
+            account — your street address is not kept in your profile.
             {typeof update.data.address_match_count === "number" && update.data.address_match_count > 1 ? (
               // The geocoder returned multiple candidates and saved the first —
               // a silently wrong match here replaces the user's whole ballot.
