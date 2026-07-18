@@ -122,7 +122,7 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
 }
 
 export function FollowsPage() {
-  useDocumentTitle("Candidates you follow");
+  useDocumentTitle("Followed Candidates");
   const { me, isLoading } = useMe();
   const { follows, isLoading: followsLoading, isError } = useFollows();
   const [query, setQuery] = useState("");
