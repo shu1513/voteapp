@@ -82,8 +82,12 @@ describe("SavedBallotPage", () => {
     });
 
     const confirmation = await screen.findByRole("status");
-    expect(confirmation).toHaveTextContent("matched to 123 MAIN ST, AUSTIN, TX");
+    expect(confirmation).toHaveTextContent("Districts updated from 123 MAIN ST, AUSTIN, TX");
     expect(confirmation).toHaveTextContent("1 district");
+    // The address is only used to find districts, never stored — the notice
+    // must say so instead of announcing "Address saved".
+    expect(confirmation).toHaveTextContent("your address itself is not stored");
+    expect(confirmation).not.toHaveTextContent("Address saved");
     // Exact single match: no ambiguity warning.
     expect(confirmation).not.toHaveTextContent("possible locations");
     // The election list renders beneath the confirmation.
@@ -111,7 +115,7 @@ describe("SavedBallotPage", () => {
     });
 
     const confirmation = await screen.findByRole("status");
-    expect(confirmation).toHaveTextContent("matched to 100 MAIN ST, SPRINGFIELD, MA, 01105");
+    expect(confirmation).toHaveTextContent("Districts updated from 100 MAIN ST, SPRINGFIELD, MA, 01105");
     expect(confirmation).toHaveTextContent(
       "Your address matched 7 possible locations and the first one was used"
     );
