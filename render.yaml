@@ -56,8 +56,9 @@ services:
       # the SSR service below: the API only trusts X-Voteapp-Client-IP on
       # requests carrying the matching X-Edge-Secret header, so a direct
       # *.onrender.com hit can no longer spoof per-IP rate limiting. Must be
-      # >= 32 chars (the server fails fast otherwise). Optional: unset keeps
-      # the legacy blind-trust behavior.
+      # >= 32 chars, and REQUIRED here: with DEPLOY_ENV=production and the
+      # trusted header set, the server refuses to boot without it (nothing
+      # shields the custom header from direct *.onrender.com spoofing).
       - key: EDGE_SHARED_SECRET
         sync: false
       - key: AUTH_PUBLIC_BASE_URL
