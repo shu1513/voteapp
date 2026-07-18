@@ -43,10 +43,38 @@ export type VotePowerResult = {
 // clients never re-derive rating language. Kept off the ballot list payload
 // (dozens of elections per response) — only the election detail lookup
 // attaches it.
+//
+// parts render as a compact formula: one row per graded measure with this
+// election's actual numbers (score, population, past margin), then `result`
+// states how the grades combine into the displayed rating.
+export type VotePowerExplanationPart = {
+  title: string;
+  grade: string;
+  stat: string | null;
+  detail: string;
+};
+
 export type VotePowerExplanation = {
   how: string;
-  reasons: string[];
+  parts: VotePowerExplanationPart[];
+  result: string;
   caveat: string | null;
+  /** @deprecated Transitional: pre-parts frontends render these bullets.
+   * Remove once the parts-aware frontend is deployed everywhere. */
+  reasons: string[];
+};
+
+// Extra context that qualifies the explanation copy only — the rating math
+// in calculateVotePower deliberately ignores all of it, so it lives outside
+// VotePowerInput rather than implying the rating reads it.
+export type VotePowerExplanationContext = VotePowerInput & {
+  staleAfterRedistricting?: boolean;
+  districtPopulation?: number | null;
+  marginPercent?: number | null;
+  // Every contest year behind marginPercent: one entry for a plain margin,
+  // several when it is a weighted multi-year blend (the stat must not pin a
+  // blended number on a single year).
+  marginElectionYears?: number[] | null;
 };
 
 const LABELS: readonly Exclude<VotePowerLabel, "unknown">[] = ["very_low", "low", "medium", "high", "very_high"];
@@ -299,49 +327,165 @@ function factorsFor(input: {
 // the 45/55 weighted score is a sorting signal only and never shown on the
 // detail page, so surfacing its formula here would misattribute the rating.
 const HOW_CALCULATED =
-  "Vote power combines two measures: representation (how much weight one vote carries in this district — districts with smaller populations for their type score higher) and decisiveness (how likely this race is to be decided by a narrow margin, based on past results for this contest). Each measure is graded low, medium, or high, and the two grades together set the rating — the more of each, the higher it goes.";
+  "Vote power = representation (how much weight one vote carries here) + decisiveness (how likely this race is to be close). Each is graded low, medium, or high, and the two grades together set the rating.";
 
-const STALE_HISTORY_QUALIFIER =
-  " District boundaries have changed since those results, so they may be a weaker guide.";
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
 
-function explanationReasonFor(
-  factor: VotePowerFactor,
-  representationPowerScore: number | null,
-  staleAfterRedistricting: boolean
-): string {
-  // Representation factors only occur with a known score, but fall back to
-  // level-only phrasing rather than rendering "null out of 100". Floor, not
-  // round: the level thresholds are the integers 33 and 66, so flooring can
-  // never display a number that sits in a higher bucket than the unrounded
-  // value it summarizes (65.6 must not render as the high-threshold 66).
-  const scoreSuffix =
-    representationPowerScore === null ? "" : ` (${Math.floor(representationPowerScore)} out of 100)`;
-  // Only decisiveness grades rest on historical results; staleness says
-  // nothing about representation, uncontested races, or missing data.
-  const staleSuffix = staleAfterRedistricting ? STALE_HISTORY_QUALIFIER : "";
+// 12 -> "12", 3.25 -> "3.3": one decimal at most, no trailing ".0".
+function formatMarginPoints(marginPercent: number): string {
+  const rounded = Math.round(marginPercent * 10) / 10;
+  return `${Number.isInteger(rounded) ? rounded.toFixed(0) : rounded}`;
+}
 
-  switch (factor) {
-    case "high_representation":
-      return `Representation is high${scoreSuffix}: this district's population is small for its type, so each vote is a larger share of the outcome.`;
-    case "medium_representation":
-      return `Representation is medium${scoreSuffix}: this district's population is mid-range for its type.`;
-    case "low_representation":
-      return `Representation is low${scoreSuffix}: this district's population is large for its type, so each vote is a smaller share of the outcome.`;
-    case "missing_representation_data":
-      return "No representation score is available for this district yet.";
-    case "uncontested_race":
-      return "Only one candidate is on the ballot, so the outcome will not turn on vote margin.";
-    case "high_decisiveness":
-      return `Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it.${staleSuffix}`;
-    case "medium_decisiveness":
-      return `Decisiveness is medium: past results for this contest were moderately competitive.${staleSuffix}`;
-    case "low_decisiveness":
-      return `Decisiveness is low: past results for this contest were decided by wide margins.${staleSuffix}`;
-    case "missing_decisiveness_data":
-      return "No past-results data is available for this contest yet.";
-    case "direct_vote_on_policy":
-      return "This is a ballot measure: your vote sets policy directly instead of electing a representative, which raises the rating one step.";
+function representationPart(input: {
+  representationLevel: VotePowerRepresentationLevel;
+  representationPowerScore: number | null;
+  districtPopulation: number | null;
+}): VotePowerExplanationPart {
+  if (input.representationLevel === "unknown" || input.representationPowerScore === null) {
+    return {
+      title: "Representation",
+      grade: "Unknown",
+      stat: null,
+      detail: "We don't have a representation score for this district yet.",
+    };
   }
+
+  const detailByLevel: Record<Exclude<VotePowerRepresentationLevel, "unknown">, string> = {
+    high: "Smaller districts give each vote more weight, and this district is small for its type.",
+    medium: "This district is mid-sized for its type, so each vote carries average weight.",
+    low: "This district is large for its type, so each vote is a smaller slice of the outcome.",
+  };
+  const populationSuffix =
+    input.districtPopulation === null ? "" : ` About ${input.districtPopulation.toLocaleString("en-US")} people live here.`;
+
+  return {
+    title: "Representation",
+    grade: capitalize(input.representationLevel),
+    // Floor, not round: the grade thresholds are the integers 33 and 66, so
+    // flooring can never display a number that sits in a higher bucket than
+    // the unrounded value (65.6 must not render as the high-threshold 66).
+    stat: `${Math.floor(input.representationPowerScore)} out of 100`,
+    detail: `${detailByLevel[input.representationLevel]}${populationSuffix}`,
+  };
+}
+
+function decisivenessPart(input: {
+  decisivenessLevel: VotePowerDecisivenessLevel;
+  marginPercent: number | null;
+  marginElectionYears: number[] | null;
+  staleAfterRedistricting: boolean;
+}): VotePowerExplanationPart {
+  if (input.decisivenessLevel === "none") {
+    return {
+      title: "Decisiveness",
+      grade: "None",
+      stat: "only 1 candidate",
+      detail: "One candidate is running unopposed, so votes can't change the outcome.",
+    };
+  }
+  if (input.decisivenessLevel === "unknown") {
+    return {
+      title: "Decisiveness",
+      grade: "Unknown",
+      stat: null,
+      detail: "No past results for this contest yet.",
+    };
+  }
+
+  const detailByLevel: Record<"low" | "medium" | "high", string> = {
+    high: "Past results here were very close — a small number of votes could decide the winner.",
+    medium: "Past results here were somewhat close.",
+    low: "Past results here were one-sided.",
+  };
+  // Only these grades rest on historical results, so only they carry the
+  // redistricting qualifier; staleness says nothing about representation,
+  // uncontested races, or missing data.
+  const staleSuffix = input.staleAfterRedistricting
+    ? " District lines have changed since then, so older results are a weaker guide."
+    : "";
+  return {
+    title: "Decisiveness",
+    grade: capitalize(input.decisivenessLevel),
+    stat: marginStat(input.marginPercent, input.marginElectionYears),
+    detail: `${detailByLevel[input.decisivenessLevel]}${staleSuffix}`,
+  };
+}
+
+// "12 and 2022" reads as a typo; spell the blend out. Years arrive in the
+// lookup's order (latest first) and render as given.
+function formatYearList(years: number[]): string {
+  if (years.length === 1) {
+    return `${years[0]}`;
+  }
+  if (years.length === 2) {
+    return `${years[0]} and ${years[1]}`;
+  }
+  return `${years.slice(0, -1).join(", ")}, and ${years[years.length - 1]}`;
+}
+
+// A multi-year margin is a weighted blend; pinning it on the single latest
+// year would claim a number that election never produced.
+function marginStat(marginPercent: number | null, marginElectionYears: number[] | null): string | null {
+  if (marginPercent === null) {
+    return null;
+  }
+  const points = `${formatMarginPoints(marginPercent)}-point`;
+  const years = marginElectionYears ?? [];
+  if (years.length === 0) {
+    return `${points} margin`;
+  }
+  if (years.length === 1) {
+    return `${points} margin in ${years[0]}`;
+  }
+  return `${points} weighted margin across ${formatYearList(years)}`;
+}
+
+// The bump can no-op (already at very_high, or eaten by the missing-data
+// cap), so the copy must not promise a boost the label never received.
+function ballotMeasurePart(boostApplied: boolean): VotePowerExplanationPart {
+  if (boostApplied) {
+    return {
+      title: "Ballot measure",
+      grade: "+1 step",
+      stat: null,
+      detail: "Your vote sets the policy directly, so the rating gets a one-step boost.",
+    };
+  }
+  return {
+    title: "Ballot measure",
+    grade: "Direct vote",
+    stat: null,
+    detail: "Your vote sets the policy directly, but it did not raise this rating further.",
+  };
+}
+
+function explanationResultFor(result: VotePowerResult, boostApplied: boolean, skipDecisiveness: boolean): string {
+  if (result.label === "unknown") {
+    return "Not enough data → no rating yet.";
+  }
+
+  const pieces: string[] = [
+    result.representation_level === "unknown"
+      ? "unknown representation"
+      : `${result.representation_level} representation`,
+  ];
+  if (!skipDecisiveness) {
+    if (result.decisiveness_level === "none") {
+      pieces.push("an uncontested race");
+    } else if (result.decisiveness_level === "unknown") {
+      pieces.push("unknown decisiveness");
+    } else {
+      pieces.push(`${result.decisiveness_level} decisiveness`);
+    }
+  }
+  if (boostApplied) {
+    pieces.push("a ballot-measure boost");
+  }
+
+  return `${capitalize(pieces.join(" + "))} → ${capitalize(result.label.replace("_", " "))} vote power.`;
 }
 
 function explanationCaveatFor(confidence: VotePowerConfidence): string | null {
@@ -349,28 +493,69 @@ function explanationCaveatFor(confidence: VotePowerConfidence): string | null {
     case "high":
       return null;
     case "medium":
-      return 'Some underlying data is missing, so this rating is based on partial information and is capped at "high".';
+      return 'Some data is missing, so this rating is based on partial information and capped at "High".';
     case "low":
-      return "Not enough data is available to rate vote power for this election.";
+      return "Not enough data to rate this election yet.";
   }
 }
 
-// Deterministic, backend-owned explanation of a computed rating. Reasons
-// mirror result.factors one-to-one so the explanation can never drift from
-// the rating logic that produced it. staleAfterRedistricting is explanation
-// context only — the rating deliberately keeps ignoring it, so it lives
-// outside VotePowerInput rather than implying calculateVotePower reads it.
-export function explainVotePower(
-  input: VotePowerInput & { staleAfterRedistricting?: boolean },
-  result: VotePowerResult
-): VotePowerExplanation {
-  const representationPowerScore = normalizeRepresentationPowerScore(input.representationPowerScore);
+// Deterministic, backend-owned explanation of a computed rating. Parts derive
+// from the same levels the rating used, so the explanation can never drift
+// from the rating logic that produced it.
+export function explainVotePower(input: VotePowerExplanationContext, result: VotePowerResult): VotePowerExplanation {
+  const isBallotMeasure = input.raceType === "ballot_measure";
+  // Measures with a known representation grade rate fine without history
+  // (mirrors factorsFor's omitMissingDecisiveness): a "no past results"
+  // row would read as a data gap the rating doesn't actually suffer from.
+  const skipDecisiveness =
+    isBallotMeasure && result.decisiveness_level === "unknown" && result.representation_level !== "unknown";
+
+  const parts: VotePowerExplanationPart[] = [
+    representationPart({
+      representationLevel: result.representation_level,
+      representationPowerScore: normalizeRepresentationPowerScore(input.representationPowerScore),
+      districtPopulation: input.districtPopulation ?? null,
+    }),
+  ];
+  if (!skipDecisiveness) {
+    parts.push(
+      decisivenessPart({
+        decisivenessLevel: result.decisiveness_level,
+        marginPercent: input.marginPercent ?? null,
+        marginElectionYears: input.marginElectionYears ?? null,
+        staleAfterRedistricting: input.staleAfterRedistricting === true,
+      })
+    );
+  }
+
+  // Re-run the label pipeline without the measure bump: the boost is only
+  // claimable when it actually moved the displayed label (bumpLabel tops out
+  // at very_high, and the missing-data cap runs after the bump).
+  let boostApplied = false;
+  if (isBallotMeasure && result.label !== "unknown") {
+    const missingCoreAxis =
+      result.representation_level === "unknown" ||
+      (result.decisiveness_level === "unknown" && !skipDecisiveness);
+    let noBoostLabel = labelFromKnownAxis({
+      representationLevel: result.representation_level,
+      decisivenessLevel: result.decisiveness_level,
+    });
+    if (missingCoreAxis) {
+      noBoostLabel = capLabel(noBoostLabel, "high");
+    }
+    boostApplied = result.label !== noBoostLabel;
+  }
+  if (isBallotMeasure) {
+    parts.push(ballotMeasurePart(boostApplied));
+  }
+
   return {
     how: HOW_CALCULATED,
-    reasons: result.factors.map((factor) =>
-      explanationReasonFor(factor, representationPowerScore, input.staleAfterRedistricting === true)
-    ),
+    parts,
+    result: explanationResultFor(result, boostApplied, skipDecisiveness),
     caveat: explanationCaveatFor(result.confidence),
+    // Transitional bullets for frontends still on the pre-parts shape.
+    reasons: parts.map((part) => `${part.title}: ${part.grade}${part.stat ? ` (${part.stat})` : ""}. ${part.detail}`),
   };
 }
 

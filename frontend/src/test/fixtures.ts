@@ -32,12 +32,23 @@ export const VOTE_POWER: VotePower = {
 export const VOTE_POWER_WITH_EXPLANATION: VotePower = {
   ...VOTE_POWER,
   explanation: {
-    how: "Vote power combines representation and decisiveness.",
-    reasons: [
-      "Representation is medium (50 out of 100): this district's population is mid-range for its type.",
-      "Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it.",
+    how: "Vote power = representation + decisiveness.",
+    parts: [
+      {
+        title: "Representation",
+        grade: "Medium",
+        stat: "50 out of 100",
+        detail: "This district is mid-sized for its type, so each vote carries average weight.",
+      },
+      {
+        title: "Decisiveness",
+        grade: "High",
+        stat: "3.3-point margin in 2022",
+        detail: "Past results here were very close — a small number of votes could decide the winner.",
+      },
     ],
-    caveat: "Some underlying data is missing.",
+    result: "Medium representation + high decisiveness → High vote power.",
+    caveat: "Some data is missing.",
   },
 };
 

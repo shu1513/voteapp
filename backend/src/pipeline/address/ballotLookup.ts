@@ -1679,9 +1679,19 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
     vote_power: {
       ...votePower,
       explanation: explainVotePower(
-        // Redistricting staleness qualifies the explanation's decisiveness
-        // wording; the rating itself ignores it (calculateVotePower above).
-        { ...votePowerInput, staleAfterRedistricting: historicalCompetitiveness?.stale_after_redistricting },
+        // Explanation-only context (population, past margin, redistricting
+        // staleness): the rating itself ignores it (calculateVotePower above).
+        {
+          ...votePowerInput,
+          staleAfterRedistricting: historicalCompetitiveness?.stale_after_redistricting,
+          districtPopulation: detail.district.population,
+          marginPercent: historicalCompetitiveness?.margin_percent ?? null,
+          // Full year list: a weighted multi-year margin must not be pinned
+          // on the single latest election_year.
+          marginElectionYears: historicalCompetitiveness
+            ? (historicalCompetitiveness.election_years ?? [historicalCompetitiveness.election_year])
+            : null,
+        },
         votePower
       ),
     },

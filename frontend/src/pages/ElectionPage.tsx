@@ -102,18 +102,33 @@ export function ElectionPage() {
           </span>
         ) : null}
       </div>
-      {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
+      {/* Array.isArray guards a live backend still emitting the pre-parts
+          explanation shape during a non-atomic deploy: hide the section
+          rather than crash the page on parts.map. */}
+      {data.vote_power.label !== "unknown" &&
+      data.vote_power.explanation &&
+      Array.isArray(data.vote_power.explanation.parts) ? (
         <details className="mt-2 text-sm">
           <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
             Why this vote power rating?
           </summary>
           <div className="mt-2 rounded-xl border border-line bg-white p-4">
             <p className="text-ink">{data.vote_power.explanation.how}</p>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-ink">
-              {data.vote_power.explanation.reasons.map((reason) => (
-                <li key={reason}>{reason}</li>
+            {/* One row per graded measure, formula-style: title, grade, this
+                election's actual numbers, then a one-line why. */}
+            <div className="mt-3 space-y-2">
+              {data.vote_power.explanation.parts.map((part) => (
+                <div key={part.title} className="rounded-lg bg-surface p-3">
+                  <p className="text-ink">
+                    <span className="font-semibold">{part.title}:</span>{" "}
+                    <span className="font-medium">{part.grade}</span>
+                    {part.stat ? <span className="text-ink-soft"> · {part.stat}</span> : null}
+                  </p>
+                  <p className="mt-1 text-xs text-ink-soft">{part.detail}</p>
+                </div>
               ))}
-            </ul>
+            </div>
+            <p className="mt-3 font-medium text-ink">{data.vote_power.explanation.result}</p>
             {data.vote_power.explanation.caveat ? (
               <p className="mt-2 text-xs text-ink-soft">{data.vote_power.explanation.caveat}</p>
             ) : null}

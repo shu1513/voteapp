@@ -1477,11 +1477,22 @@ describe("lookupElectionDetailById", () => {
         decisiveness_level: "none",
         factors: ["medium_representation", "uncontested_race"],
         explanation: {
-          how: expect.stringContaining("Vote power combines two measures"),
-          reasons: [
-            "Representation is medium (64 out of 100): this district's population is mid-range for its type.",
-            "Only one candidate is on the ballot, so the outcome will not turn on vote margin.",
+          how: expect.stringContaining("Vote power = representation"),
+          parts: [
+            {
+              title: "Representation",
+              grade: "Medium",
+              stat: "64 out of 100",
+              detail: "This district is mid-sized for its type, so each vote carries average weight.",
+            },
+            {
+              title: "Decisiveness",
+              grade: "None",
+              stat: "only 1 candidate",
+              detail: "One candidate is running unopposed, so votes can't change the outcome.",
+            },
           ],
+          result: "Medium representation + an uncontested race → Low vote power.",
           caveat: null,
         },
       },

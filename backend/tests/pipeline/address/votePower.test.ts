@@ -5,7 +5,6 @@ import {
   decisivenessLevelFromContest,
   explainVotePower,
   representationLevelFromScore,
-  type VotePowerInput,
 } from "../../../src/pipeline/address/votePower.js";
 
 describe("representationLevelFromScore", () => {
@@ -342,93 +341,158 @@ describe("calculateVotePower", () => {
 });
 
 describe("explainVotePower", () => {
-  function explain(input: VotePowerInput) {
+  function explain(input: Parameters<typeof explainVotePower>[0]) {
     return explainVotePower(input, calculateVotePower(input));
   }
 
-  it("explains a fully-known contested office race with one reason per factor and no caveat", () => {
+  it("explains a fully-known contested office race with graded parts, stats, and no caveat", () => {
     const explanation = explain({
       raceType: "office",
       candidateCount: 2,
       representationPowerScore: 90,
       competitivenessLabel: "toss_up",
+      districtPopulation: 736081,
+      marginPercent: 3.25,
+      marginElectionYears: [2022],
     });
 
-    expect(explanation.how).toContain("representation");
-    expect(explanation.how).toContain("decisiveness");
-    // The how copy explains the displayed label (the level matrix), never the
-    // internal 45/55 sorting-score formula.
-    expect(explanation.how).toContain("the two grades together set the rating");
-    expect(explanation.how).not.toContain("%");
-    expect(explanation.reasons).toEqual([
-      "Representation is high (90 out of 100): this district's population is small for its type, so each vote is a larger share of the outcome.",
-      "Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it.",
+    // The how copy explains the displayed label (grade combination), never
+    // the internal 45/55 sorting-score formula.
+    expect(explanation.how).toBe(
+      "Vote power = representation (how much weight one vote carries here) + decisiveness (how likely this race is to be close). Each is graded low, medium, or high, and the two grades together set the rating."
+    );
+    expect(explanation.parts).toEqual([
+      {
+        title: "Representation",
+        grade: "High",
+        stat: "90 out of 100",
+        detail:
+          "Smaller districts give each vote more weight, and this district is small for its type. About 736,081 people live here.",
+      },
+      {
+        title: "Decisiveness",
+        grade: "High",
+        stat: "3.3-point margin in 2022",
+        detail: "Past results here were very close — a small number of votes could decide the winner.",
+      },
     ]);
+    expect(explanation.result).toBe("High representation + high decisiveness → Very high vote power.");
     expect(explanation.caveat).toBeNull();
   });
 
-  it("floors the representation score so the displayed number stays in the level's bucket", () => {
-    const explanation = explain({
-      raceType: "office",
-      candidateCount: 2,
-      representationPowerScore: 64.25,
-      competitivenessLabel: "safe",
-    });
-
-    expect(explanation.reasons[0]).toContain("(64 out of 100)");
-
+  it("floors the representation stat so the displayed number stays in the grade's bucket", () => {
     // 65.6 is medium (< 66); rounding would display the high-threshold 66 and
-    // contradict the stated level.
-    const boundary = explain({
+    // contradict the stated grade.
+    const explanation = explain({
       raceType: "office",
       candidateCount: 2,
       representationPowerScore: 65.6,
       competitivenessLabel: "safe",
     });
 
-    expect(boundary.reasons[0]).toContain("Representation is medium (65 out of 100)");
+    expect(explanation.parts[0]).toMatchObject({ grade: "Medium", stat: "65 out of 100" });
+    // Without a population the detail stays a single sentence.
+    expect(explanation.parts[0]?.detail).toBe("This district is mid-sized for its type, so each vote carries average weight.");
   });
 
-  it("qualifies decisiveness reasons when the historical results predate redistricting", () => {
-    const explanation = explainVotePower(
-      {
-        raceType: "office",
-        candidateCount: 2,
-        representationPowerScore: 90,
-        competitivenessLabel: "toss_up",
-        staleAfterRedistricting: true,
-      },
-      calculateVotePower({
-        raceType: "office",
-        candidateCount: 2,
-        representationPowerScore: 90,
-        competitivenessLabel: "toss_up",
-      })
-    );
+  it("drops the margin year from the stat when it is not provided", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 50,
+      competitivenessLabel: "safe",
+      marginPercent: 40,
+    });
 
-    expect(explanation.reasons[1]).toBe(
-      "Decisiveness is high: past results for this contest were very close, so a small number of votes could decide it. District boundaries have changed since those results, so they may be a weaker guide."
-    );
-    // Staleness qualifies historical evidence only; representation is a
-    // present-day population measure.
-    expect(explanation.reasons[0]).not.toContain("boundaries");
+    expect(explanation.parts[1]).toMatchObject({ grade: "Low", stat: "40-point margin" });
+    expect(explanation.result).toBe("Medium representation + low decisiveness → Low vote power.");
   });
 
-  it("explains an uncontested race without a margin reason", () => {
+  it("labels a multi-year margin as a weighted blend instead of pinning it on one year", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 50,
+      competitivenessLabel: "somewhat_competitive",
+      marginPercent: 11.45,
+      marginElectionYears: [2024, 2022],
+    });
+
+    expect(explanation.parts[1]?.stat).toBe("11.5-point weighted margin across 2024 and 2022");
+  });
+
+  it("mirrors the parts as transitional reason bullets for pre-parts frontends", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 90,
+      competitivenessLabel: "toss_up",
+      marginPercent: 3.25,
+      marginElectionYears: [2022],
+    });
+
+    expect(explanation.reasons).toEqual([
+      "Representation: High (90 out of 100). Smaller districts give each vote more weight, and this district is small for its type.",
+      "Decisiveness: High (3.3-point margin in 2022). Past results here were very close — a small number of votes could decide the winner.",
+    ]);
+  });
+
+  it("explains an uncontested race without a margin stat", () => {
     const explanation = explain({
       raceType: "office",
       candidateCount: 1,
       representationPowerScore: 90,
       competitivenessLabel: "toss_up",
+      marginPercent: 3.25,
+      marginElectionYears: [2022],
     });
 
-    expect(explanation.reasons).toEqual([
-      "Representation is high (90 out of 100): this district's population is small for its type, so each vote is a larger share of the outcome.",
-      "Only one candidate is on the ballot, so the outcome will not turn on vote margin.",
-    ]);
+    expect(explanation.parts[1]).toEqual({
+      title: "Decisiveness",
+      grade: "None",
+      stat: "only 1 candidate",
+      detail: "One candidate is running unopposed, so votes can't change the outcome.",
+    });
+    expect(explanation.result).toBe("High representation + an uncontested race → Low vote power.");
   });
 
-  it("explains the ballot measure boost", () => {
+  it("qualifies decisiveness when the historical results predate redistricting", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 90,
+      competitivenessLabel: "toss_up",
+      staleAfterRedistricting: true,
+    });
+
+    expect(explanation.parts[1]?.detail).toBe(
+      "Past results here were very close — a small number of votes could decide the winner. District lines have changed since then, so older results are a weaker guide."
+    );
+    // Staleness qualifies historical evidence only; representation is a
+    // present-day population measure.
+    expect(explanation.parts[0]?.detail).not.toContain("District lines");
+  });
+
+  it("adds a ballot-measure boost part and skips the decisiveness row when history is structurally absent", () => {
+    const explanation = explain({
+      raceType: "ballot_measure",
+      candidateCount: 0,
+      representationPowerScore: 90,
+      competitivenessLabel: null,
+    });
+
+    expect(explanation.parts.map((part) => part.title)).toEqual(["Representation", "Ballot measure"]);
+    expect(explanation.parts[1]).toEqual({
+      title: "Ballot measure",
+      grade: "+1 step",
+      stat: null,
+      detail: "Your vote sets the policy directly, so the rating gets a one-step boost.",
+    });
+    expect(explanation.result).toBe("High representation + a ballot-measure boost → Very high vote power.");
+    expect(explanation.caveat).toBeNull();
+  });
+
+  it("keeps the decisiveness row for ballot measures that have history", () => {
     const explanation = explain({
       raceType: "ballot_measure",
       candidateCount: 0,
@@ -436,9 +500,43 @@ describe("explainVotePower", () => {
       competitivenessLabel: "competitive",
     });
 
-    expect(explanation.reasons).toContain(
-      "This is a ballot measure: your vote sets policy directly instead of electing a representative, which raises the rating one step."
+    expect(explanation.parts.map((part) => part.title)).toEqual(["Representation", "Decisiveness", "Ballot measure"]);
+    expect(explanation.result).toBe(
+      "Medium representation + medium decisiveness + a ballot-measure boost → High vote power."
     );
+  });
+
+  it("does not claim a boost when the measure was already rated very high", () => {
+    // high/high matrixes to very_high before the bump; bumpLabel tops out
+    // there, so no step was actually applied.
+    const explanation = explain({
+      raceType: "ballot_measure",
+      candidateCount: 0,
+      representationPowerScore: 90,
+      competitivenessLabel: "toss_up",
+    });
+
+    expect(explanation.parts[2]).toEqual({
+      title: "Ballot measure",
+      grade: "Direct vote",
+      stat: null,
+      detail: "Your vote sets the policy directly, but it did not raise this rating further.",
+    });
+    expect(explanation.result).toBe("High representation + high decisiveness → Very high vote power.");
+  });
+
+  it("does not claim a boost when the missing-data cap ate the bump", () => {
+    // Unknown representation + high decisiveness rates high; the bump to
+    // very_high is then capped back to high, so the label never moved.
+    const explanation = explain({
+      raceType: "ballot_measure",
+      candidateCount: 0,
+      representationPowerScore: null,
+      competitivenessLabel: "toss_up",
+    });
+
+    expect(explanation.parts[2]).toMatchObject({ grade: "Direct vote" });
+    expect(explanation.result).toBe("Unknown representation + high decisiveness → High vote power.");
   });
 
   it("carries a partial-data caveat when one core axis is missing", () => {
@@ -449,11 +547,17 @@ describe("explainVotePower", () => {
       competitivenessLabel: null,
     });
 
-    expect(explanation.reasons).toContain("No past-results data is available for this contest yet.");
+    expect(explanation.parts[1]).toEqual({
+      title: "Decisiveness",
+      grade: "Unknown",
+      stat: null,
+      detail: "No past results for this contest yet.",
+    });
+    expect(explanation.result).toBe("High representation + unknown decisiveness → High vote power.");
     expect(explanation.caveat).toContain("partial information");
   });
 
-  it("carries a low-confidence caveat when both core axes are missing", () => {
+  it("reports no rating when both core axes are missing", () => {
     const explanation = explain({
       raceType: "office",
       candidateCount: 2,
@@ -461,10 +565,21 @@ describe("explainVotePower", () => {
       competitivenessLabel: null,
     });
 
-    expect(explanation.reasons).toEqual([
-      "No representation score is available for this district yet.",
-      "No past-results data is available for this contest yet.",
+    expect(explanation.parts).toEqual([
+      {
+        title: "Representation",
+        grade: "Unknown",
+        stat: null,
+        detail: "We don't have a representation score for this district yet.",
+      },
+      {
+        title: "Decisiveness",
+        grade: "Unknown",
+        stat: null,
+        detail: "No past results for this contest yet.",
+      },
     ]);
-    expect(explanation.caveat).toBe("Not enough data is available to rate vote power for this election.");
+    expect(explanation.result).toBe("Not enough data → no rating yet.");
+    expect(explanation.caveat).toBe("Not enough data to rate this election yet.");
   });
 });
