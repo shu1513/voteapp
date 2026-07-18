@@ -51,7 +51,7 @@ describe("RegisterPage clickwrap", () => {
     renderRegister();
 
     await user.type(screen.getByLabelText("Email"), "voter@example.com");
-    await user.type(screen.getByLabelText(/First name/), "Val");
+    await user.type(screen.getByLabelText(/First Name/), "Val");
     await user.type(screen.getByLabelText("Password"), "correct horse battery staple");
     await user.click(screen.getByRole("checkbox"));
     await user.click(screen.getByRole("button", { name: "Create account" }));

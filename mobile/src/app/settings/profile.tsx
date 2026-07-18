@@ -28,7 +28,7 @@ function NameSection({ me }: { me: Me }) {
       <Text className="text-lg font-semibold text-ink">Profile</Text>
       <Text className="mt-1 text-sm text-ink-soft">Signed in as {me.email}</Text>
       <View className="mt-3 gap-3">
-        <LabeledInput label="First name" value={firstName} maxLength={80} onChangeText={setFirstName} />
+        <LabeledInput label="First Name" value={firstName} maxLength={80} onChangeText={setFirstName} />
         <Pressable
           disabled={!canSave}
           onPress={() => update.mutate()}
