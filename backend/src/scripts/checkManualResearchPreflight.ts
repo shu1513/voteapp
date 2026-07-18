@@ -78,6 +78,9 @@ const REQUIRED_COLUMNS: RequiredColumn[] = [
   { table: "manual_research_deferrals", column: "resolved_at" },
   { table: "manual_research_deferrals", column: "resolution_note" },
   { table: "manual_research_deferrals", column: "updated_at" },
+  // Sweep routing: the records writer reads (and backfills) the officeholder
+  // answer that picks the discovery question list.
+  { table: "candidates", column: "has_held_public_office" },
   // Sweep-confirmation columns the records writers persist and the audit reads.
   { table: "candidate_record_sweep_confirmations", column: "candidate_id" },
   { table: "candidate_record_sweep_confirmations", column: "confirmed_gap_ids" },
