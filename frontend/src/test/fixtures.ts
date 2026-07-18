@@ -121,6 +121,8 @@ export function electionDetail(overrides: Partial<ElectionDetail> = {}): Electio
     candidate_roster_status: null,
     ballot_measure: null,
     results: [],
+    office: null,
+    research_areas: [],
     historical_competitiveness: null,
     vote_power: VOTE_POWER,
     ...overrides,

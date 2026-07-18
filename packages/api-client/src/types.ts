@@ -284,6 +284,10 @@ export type ElectionDetail = {
   candidate_roster_status: CandidateRosterStatus | null;
   ballot_measure: BallotMeasure | null;
   results: ElectionResult[];
+  /** Same shapes as ElectionSummary, so the detail page can show the office
+   * description and affected areas without a second request. */
+  office: OfficeSummary | null;
+  research_areas: ResearchAreaSummary[];
   historical_competitiveness: HistoricalCompetitiveness | null;
   vote_power: VotePower;
 };

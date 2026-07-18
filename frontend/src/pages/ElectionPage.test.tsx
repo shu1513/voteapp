@@ -345,6 +345,93 @@ describe("ElectionPage", () => {
     expect(candidateChip).toHaveTextContent("(saved)");
   });
 
+  it("renders the office description before the affected areas, in public-salience order", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        office: { id: "o-1", scope: "statewide", canonical_name: "Governor", summary: "Heads the state's executive branch." },
+        // Alphabetical (API order) on purpose: the page must re-order by
+        // public salience, which puts Environment ahead of Civil Rights.
+        research_areas: [
+          { id: "a-civ", slug: "civil_rights", name: "Civil Rights", description: null },
+          { id: "a-env", slug: "environment_and_public_health", name: "Environment & Public Health", description: null },
+        ],
+      })
+    );
+
+    expect(await screen.findByRole("heading", { name: "About this office" })).toBeInTheDocument();
+    const description = screen.getByText("Heads the state's executive branch.");
+    const label = screen.getByText("Affected Areas:");
+    expect(description.compareDocumentPosition(label) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    const environment = screen.getByText("Environment & Public Health");
+    const civilRights = screen.getByText("Civil Rights");
+    expect(environment.compareDocumentPosition(civilRights) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("puts the viewer's saved areas first with an sr-only cue", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-civ", slug: "civil_rights", name: "Civil Rights", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    renderElection(() =>
+      electionDetail({
+        research_areas: [
+          { id: "a-civ", slug: "civil_rights", name: "Civil Rights", description: null },
+          { id: "a-env", slug: "environment_and_public_health", name: "Environment & Public Health", description: null },
+        ],
+      })
+    );
+
+    // Saved-ness arrives with the async preferences fetch; wait on the cue.
+    const savedCue = await screen.findByText("(saved)");
+    expect(savedCue.parentElement?.textContent).toContain("Civil Rights");
+    // Saved Civil Rights outranks the globally higher-salience Environment.
+    const civilRights = screen.getByText("Civil Rights");
+    const environment = screen.getByText("Environment & Public Health");
+    expect(civilRights.compareDocumentPosition(environment) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("shows no office section on ballot measure elections", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        // The measure's areas arrive on research_areas too; the measure
+        // section owns rendering them (with stance), so the office row
+        // must not duplicate the chips.
+        research_areas: [
+          { id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null },
+        ],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: null,
+          source_urls: [],
+          official_measure_url: null,
+          research_area_tags: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+          ],
+          results: [],
+        },
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Ballot Measure" });
+    expect(screen.queryByText("About this office")).not.toBeInTheDocument();
+    expect(screen.queryByText("Affected Areas:")).not.toBeInTheDocument();
+  });
+
   it("renders measure result rows, including election-night outcomes", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>

@@ -17,6 +17,8 @@ import {
   formatVotePowerLabel,
 } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
+import { AREA_CHIP_CLASS } from "../components/ElectionCard";
+import { splitResearchAreasBySaved } from "../lib/researchAreaPriority";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
@@ -63,6 +65,12 @@ export function ElectionPage() {
 
   const data = useLoaderData<typeof loader>();
   const measure = data.ballot_measure;
+  // Full set, uncapped — the list card previews these; the detail page is
+  // where they all fit. Measure elections skip this row: the measure section
+  // already shows the same areas with their for/against stance.
+  const orderedAreas = splitResearchAreasBySaved(data.research_areas, weights);
+  const showOfficeInfo =
+    data.race_type !== "ballot_measure" && (data.office !== null || data.research_areas.length > 0);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -133,6 +141,34 @@ export function ElectionPage() {
             ) : null}
           </div>
         </details>
+      ) : null}
+
+      {showOfficeInfo ? (
+        // Description first, then the affected areas — what the office does,
+        // then which issues it touches.
+        <section className="mt-6 rounded-xl border border-line bg-white p-4">
+          <h2 className="text-lg font-semibold">About this office</h2>
+          {data.office ? <p className="mt-2 text-sm text-ink">{data.office.summary}</p> : null}
+          {data.research_areas.length > 0 ? (
+            // Same one-list presentation as the ballot cards: saved matches
+            // lead with a screen-reader-only "(saved)" cue, position is the
+            // only sighted distinction.
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+              <span className="font-medium text-ink-soft">Affected Areas:</span>
+              {orderedAreas.saved.map((area) => (
+                <span key={area.id} className={AREA_CHIP_CLASS}>
+                  {area.name}
+                  <span className="sr-only"> (saved)</span>
+                </span>
+              ))}
+              {orderedAreas.others.map((area) => (
+                <span key={area.id} className={AREA_CHIP_CLASS}>
+                  {area.name}
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </section>
       ) : null}
 
       {measure ? (

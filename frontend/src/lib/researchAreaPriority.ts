@@ -56,3 +56,29 @@ export function sortByResearchAreaPriority<T extends { slug: string; name: strin
 ): T[] {
   return [...areas].sort(compareByResearchAreaPriority);
 }
+
+/**
+ * Splits an election's research areas into the viewer's saved matches and
+ * the rest, each ordered for display: saved matches by the user's own 1–7
+ * ranking (their explicit priority outranks any global one; unranked saves
+ * and rank ties fall back to public salience), the rest in pure
+ * public-salience order. Shared by ElectionCard (which caps the unsaved
+ * list) and the election detail page (which shows everything), so the two
+ * can't drift.
+ */
+export function splitResearchAreasBySaved<T extends { id: string; slug: string; name: string }>(
+  areas: readonly T[],
+  savedAreaWeights?: Map<string, { rank: number }>
+): { saved: T[]; others: T[] } {
+  const saved = areas
+    .filter((area) => savedAreaWeights?.has(area.id) ?? false)
+    .sort(
+      (a, b) =>
+        (savedAreaWeights?.get(a.id)?.rank ?? 0) - (savedAreaWeights?.get(b.id)?.rank ?? 0) ||
+        compareByResearchAreaPriority(a, b)
+    );
+  const others = sortByResearchAreaPriority(
+    areas.filter((area) => !(savedAreaWeights?.has(area.id) ?? false))
+  );
+  return { saved, others };
+}
