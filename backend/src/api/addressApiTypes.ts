@@ -12,6 +12,7 @@ import type { UserIdentity } from "../pipeline/users/userIdentity.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { AddressSuggestion, RetrievedSuggestedAddress } from "../pipeline/address/googlePlacesAutocomplete.js";
 import type { CandidateDetailResult } from "../pipeline/candidates/candidateDetailReader.js";
+import type { CandidateSearchResult } from "../pipeline/candidates/candidateSearchReader.js";
 import type { AuthSessionCookieOptions } from "../auth/authCookies.js";
 import type { AuthService } from "../auth/authService.js";
 import type { AuthenticatedAddressDistrictUpdateResult } from "../pipeline/users/userAddressDistrictUpdater.js";
@@ -80,6 +81,8 @@ export type AddressApiServerOptions = {
   ) => Promise<OrderedBallotSummaryResult>;
   lookupAuthenticatedUserEmailVerified?: (userId: string) => Promise<boolean>;
   lookupCandidateDetail?: (candidateId: string, userId?: string | null) => Promise<CandidateDetailResult | null>;
+  /** GET /api/candidates/search?q= — public name typeahead. */
+  searchCandidates?: (query: string) => Promise<CandidateSearchResult>;
   lookupElectionDetail?: (electionId: string) => Promise<BallotLookupElection | null>;
   /** GET /api/elections/:election_id/candidates/:candidate_id/finance —
    * one candidate's finance summary without the full election payload.

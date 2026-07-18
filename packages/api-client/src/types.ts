@@ -275,6 +275,18 @@ export type ElectionDetail = {
   vote_power: VotePower;
 };
 
+export type CandidateSearchMatch = {
+  candidate_id: string;
+  display_name: string;
+  party: string;
+  state: string;
+  current_office: string | null;
+};
+
+export type CandidateSearchResponse = {
+  candidates: CandidateSearchMatch[];
+};
+
 export type CandidateFollow = {
   candidate_id: string;
   display_name: string;

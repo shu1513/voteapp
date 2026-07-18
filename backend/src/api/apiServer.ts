@@ -31,6 +31,7 @@ import {
   BALLOT_LOOKUP_PATH,
   CONTENT_REPORTS_PATH,
   CANDIDATE_DETAIL_PATH_PREFIX,
+  CANDIDATE_SEARCH_PATH,
   ELECTION_DETAIL_PATH_PREFIX,
   isCandidateDetailPath,
   isCandidateElectionFinancePath,
@@ -62,6 +63,7 @@ import {
   parseBallotSummaryOptions,
   parseCandidateElectionFinancePath,
   parseCandidateId,
+  parseCandidateSearchQuery,
   parseDistrictIds,
   parseElectionId,
   parseInitializeUserDistrictsBodyValue,
@@ -132,6 +134,10 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
     pathname === RESEARCH_AREAS_PATH ||
     pathname === SITE_SITEMAP_PATH ||
+    // Listed explicitly even though the loose candidate-detail prefix also
+    // matches it today: recognition of the search route must not depend on
+    // a sibling predicate staying loose.
+    pathname === CANDIDATE_SEARCH_PATH ||
     isCandidateDetailPath(pathname) ||
     // Listed explicitly even though the loose election-detail prefix also
     // matches it today: recognition of the finance route must not depend on
@@ -1432,6 +1438,33 @@ async function dispatchApiRequest(
 
     const payload = parseResearchAreaPreferencesBodyValue(request.body);
     const result = await options.replaceAuthenticatedResearchAreaPreferences(userId, payload.preferences);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  // Before the candidate-detail branch: the search path shares its prefix,
+  // and parseCandidateId rejects "search" as an invalid UUID.
+  if (url.pathname === CANDIDATE_SEARCH_PATH) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /api/candidates/search", {
+          ...corsHeaders,
+          allow: "GET",
+        })
+      );
+      return;
+    }
+    if (!options.searchCandidates) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Candidate search is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const searchQuery = parseCandidateSearchQuery(url);
+    const result = await options.searchCandidates(searchQuery);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }

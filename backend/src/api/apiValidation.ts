@@ -35,6 +35,9 @@ export const AUTH_LOGOUT_ALL_PATH = "/api/auth/logout-all";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
 export const CONTENT_REPORTS_PATH = "/api/content-reports";
 export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
+// Shares the candidate-detail prefix, so the router must test this path
+// before isCandidateDetailPath (whose UUID parse would reject "search").
+export const CANDIDATE_SEARCH_PATH = "/api/candidates/search";
 export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
 // Session-holder identity (email, first_name, email_verified). Not gated on
 // email verification: the frontend needs it to render the unverified state.
@@ -714,6 +717,19 @@ export function parseDistrictIds(url: URL): string[] {
     throw new TypeError(`Query parameter district_ids contains invalid UUID: ${invalidId}`);
   }
   return districtIds;
+}
+
+const MAX_CANDIDATE_SEARCH_QUERY_LENGTH = 100;
+
+export function parseCandidateSearchQuery(url: URL): string {
+  const query = (url.searchParams.get("q") ?? "").trim();
+  if (query.length === 0) {
+    throw new TypeError("Query parameter q must not be empty");
+  }
+  if (query.length > MAX_CANDIDATE_SEARCH_QUERY_LENGTH) {
+    throw new TypeError(`Query parameter q supports at most ${MAX_CANDIDATE_SEARCH_QUERY_LENGTH} characters`);
+  }
+  return query;
 }
 
 export function isCandidateDetailPath(pathname: string): boolean {

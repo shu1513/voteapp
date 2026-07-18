@@ -65,6 +65,7 @@ import {
   suggestAddressesWithGooglePlaces,
 } from "../pipeline/address/googlePlacesAutocomplete.js";
 import { lookupCandidateDetailById } from "../pipeline/candidates/candidateDetailReader.js";
+import { searchCandidatesByName } from "../pipeline/candidates/candidateSearchReader.js";
 import { DEFAULT_ADDRESS_LOOKUP_CACHE_TTL_SECONDS } from "../pipeline/address/addressResolutionCache.js";
 import {
   DEFAULT_CENSUS_ADDRESS_GEOCODER_BENCHMARK,
@@ -538,6 +539,7 @@ async function main(): Promise<void> {
     },
     lookupAuthenticatedUserEmailVerified,
     lookupCandidateDetail: (candidateId, userId) => lookupCandidateDetailById(pool, { candidateId, userId }),
+    searchCandidates: (searchQuery) => searchCandidatesByName(pool, searchQuery),
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
     lookupCandidateElectionFinance: (electionId, candidateId) =>
       lookupCandidateElectionFinanceSummaryById(pool, electionId, candidateId),
