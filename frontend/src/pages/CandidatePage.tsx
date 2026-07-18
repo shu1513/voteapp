@@ -270,9 +270,15 @@ export function CandidatePage() {
   const { hasSaved, preferences } = useMyResearchAreas();
   // null = the user hasn't picked a view; default to "my issues first" once
   // saved areas exist (they load async, so this can't live in useState's
-  // initial value). An explicit pick always wins.
+  // initial value). An explicit pick always wins — except a picked
+  // "my_issues" is ignored while hasSaved is false (the user cleared their
+  // areas in Settings; the shared query key syncs it here), because its
+  // <option> is gated on hasSaved and a value without an option leaves the
+  // select uncontrolled. The pick is kept, not cleared: re-saving areas
+  // restores it.
   const [chosenRecordView, setChosenRecordView] = useState<RecordView | null>(null);
-  const recordView = chosenRecordView ?? (hasSaved ? "my_issues" : "by_issue");
+  const effectiveChosenView = chosenRecordView === "my_issues" && !hasSaved ? null : chosenRecordView;
+  const recordView = effectiveChosenView ?? (hasSaved ? "my_issues" : "by_issue");
   const [showAllNewest, setShowAllNewest] = useState(false);
 
   const detail = useLoaderData<typeof loader>();
