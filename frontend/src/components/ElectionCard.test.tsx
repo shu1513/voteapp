@@ -101,7 +101,7 @@ describe("ElectionCard", () => {
       })
     );
 
-    expect(screen.getByText("Affected areas:")).toBeInTheDocument();
+    expect(screen.getByText("Affected Areas:")).toBeInTheDocument();
     expect(screen.getByText("Civil Rights")).toBeInTheDocument();
     expect(screen.getByText("Gun Control")).toBeInTheDocument();
     expect(screen.getByText("Housing Affordability")).toBeInTheDocument();
@@ -112,7 +112,7 @@ describe("ElectionCard", () => {
 
   it("omits the affected-areas row when a race has no research areas", () => {
     renderCard(electionSummary({ research_areas: [] }));
-    expect(screen.queryByText("Affected areas:")).not.toBeInTheDocument();
+    expect(screen.queryByText("Affected Areas:")).not.toBeInTheDocument();
   });
 
   it("orders saved-area chips ahead of unsaved ones", () => {
@@ -129,10 +129,10 @@ describe("ElectionCard", () => {
 
     // Filter the label out by text (not position) so this assertion covers
     // chip order only and survives DOM reshuffles around the label.
-    const label = screen.getByText("Affected areas:");
+    const label = screen.getByText("Affected Areas:");
     const chipTexts = Array.from(label.parentElement?.children ?? [])
       .map((chip) => chip.textContent)
-      .filter((text) => text !== "Affected areas:");
+      .filter((text) => text !== "Affected Areas:");
     // Saved match leads even though it is last in the payload.
     expect(chipTexts).toEqual(["Housing Affordability", "Civil Rights", "Gun Control"]);
   });

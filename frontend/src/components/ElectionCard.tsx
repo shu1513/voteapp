@@ -163,7 +163,7 @@ function ElectionCard({
         // Saved-area matches lead the list (all of them, highlighted);
         // unsaved areas follow under the cap.
         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-          <span className="text-ink-soft">Affected areas:</span>
+          <span className="rounded bg-amber-100 px-2 py-0.5 font-medium text-amber-900">Affected Areas:</span>
           {savedAreas.map((area) => (
             <span
               key={area.id}
