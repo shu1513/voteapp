@@ -50,10 +50,13 @@ export function formatSourceHost(url: string): string {
   }
 }
 
+// Display scale reads Very low / Below average / Average / High / Very high:
+// "low" as a verdict on the voter and "medium" as a size word both misread,
+// so they ship as the average-relative phrases. Wire values stay unchanged.
 const VOTE_POWER_LABELS: Record<string, string> = {
   very_low: "Very low",
   low: "Below average",
-  medium: "Medium",
+  medium: "Average",
   high: "High",
   very_high: "Very high",
   unknown: "Unknown",
