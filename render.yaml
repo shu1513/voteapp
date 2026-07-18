@@ -3,10 +3,14 @@
 #
 # Topology: Cloudflare (impactperdollar.com) fronts everything with a Worker
 # that routes /api/* and /sitemap.xml to voteapp-api and everything else to
-# voteapp-ssr (infra/cloudflare/router-worker.js). Cookies stay same-origin,
-# and Cloudflare stamps CF-Connecting-IP with the real client IP (it always
-# overwrites any client-supplied copy), which both servers trust via
-# ADDRESS_API_TRUSTED_CLIENT_IP_HEADER.
+# voteapp-ssr (infra/cloudflare/router-worker.js). Cookies stay same-origin.
+# Client IP: the Worker copies Cloudflare's CF-Connecting-IP into the custom
+# X-Voteapp-Client-IP header (stripping client-supplied copies), which both
+# servers trust via ADDRESS_API_TRUSTED_CLIENT_IP_HEADER. The reserved
+# CF-Connecting-IP name itself is unusable past the Worker: the
+# *.onrender.com origins sit behind Render's own Cloudflare, which 403s
+# outside clients presenting that header — the SSR loader's relay to the
+# API's public host would break (and the value would be overwritten anyway).
 #
 # Secrets (sync: false) are entered in the Render dashboard: AWS SES
 # send-only key pair, plus the optional EDGE_SHARED_SECRET. NOTE: a
@@ -47,13 +51,14 @@ services:
       - key: ADDRESS_API_PORT
         value: "10000"
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
-        value: CF-Connecting-IP
+        value: X-Voteapp-Client-IP
       # Shared with the Cloudflare Worker (secret var of the same name) and
-      # the SSR service below: the API only trusts CF-Connecting-IP on
+      # the SSR service below: the API only trusts X-Voteapp-Client-IP on
       # requests carrying the matching X-Edge-Secret header, so a direct
       # *.onrender.com hit can no longer spoof per-IP rate limiting. Must be
-      # >= 32 chars (the server fails fast otherwise). Optional: unset keeps
-      # the legacy blind-trust behavior.
+      # >= 32 chars, and REQUIRED here: with DEPLOY_ENV=production and the
+      # trusted header set, the server refuses to boot without it (nothing
+      # shields the custom header from direct *.onrender.com spoofing).
       - key: EDGE_SHARED_SECRET
         sync: false
       - key: AUTH_PUBLIC_BASE_URL
@@ -132,7 +137,7 @@ services:
       - key: VITE_API_TIMEOUT_MS
         value: "75000"
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
-        value: CF-Connecting-IP
+        value: X-Voteapp-Client-IP
       # Same value as the API's secret (referenced, not duplicated): loaders
       # hit the API's public host, so their relayed client-IP header needs
       # the same proof-of-edge the Worker attaches.

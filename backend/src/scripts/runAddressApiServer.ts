@@ -217,6 +217,17 @@ async function main(): Promise<void> {
   if (edgeSharedSecret && !trustedClientIpHeader) {
     console.warn("EDGE_SHARED_SECRET is set but ADDRESS_API_TRUSTED_CLIENT_IP_HEADER is not; the secret has no effect");
   }
+  // The custom client-IP header (X-Voteapp-Client-IP) is NOT protected by
+  // any edge — anyone hitting the public *.onrender.com host directly can
+  // send it — so in production trusting it without the secret gate hands
+  // out per-IP rate-limit evasion. Fail fast instead of booting spoofable
+  // (the reserved CF-Connecting-IP at least got 403'd by Render's own
+  // Cloudflare; the custom name has no such accidental shield).
+  if (trustedClientIpHeader && !edgeSharedSecret && process.env.DEPLOY_ENV?.trim() === "production") {
+    throw new Error(
+      "ADDRESS_API_TRUSTED_CLIENT_IP_HEADER is set but EDGE_SHARED_SECRET is not; production would blindly trust a client-spoofable header"
+    );
+  }
   // Security boundary: only trust a user-id header when an authenticated gateway
   // injects it and strips client-supplied copies. If unset, authenticated routes
   // fail closed with 401.
