@@ -132,6 +132,47 @@ describe("CandidatePage", () => {
     ]);
   });
 
+  it("defaults the record view to \"My issues first\" once saved areas load", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-gun", slug: "gun_control", name: "Gun Control", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    const record = (id: string, areaId: string, slug: string, name: string) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: [{ research_area_id: areaId, slug, name, stance: "for" as const }],
+    });
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          record("r-1", "a-env", "environment_and_public_health", "Environment and Public Health"),
+          record("r-2", "a-gun", "gun_control", "Gun Control"),
+        ],
+      })
+    );
+
+    // The option only exists for users with saved areas, and it becomes the
+    // default selection — the saved Gun Control group leads even though
+    // Environment outranks it publicly.
+    const select = await screen.findByRole("combobox");
+    await screen.findByRole("option", { name: "My issues first" });
+    expect(select).toHaveValue("my_issues");
+    const headings = screen
+      .getAllByRole("heading", { level: 3 })
+      .map((heading) => heading.textContent);
+    expect(headings).toEqual(["Gun Control", "Environment and Public Health"]);
+  });
+
   it("cuts the newest-first view off at 20 with a show-all button", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const records = Array.from({ length: 25 }, (_, index) => ({

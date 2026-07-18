@@ -268,7 +268,11 @@ export function CandidatePage() {
   const { follows, canFollow } = useFollows();
   const { me } = useMe();
   const { hasSaved, preferences } = useMyResearchAreas();
-  const [recordView, setRecordView] = useState<RecordView>("by_issue");
+  // null = the user hasn't picked a view; default to "my issues first" once
+  // saved areas exist (they load async, so this can't live in useState's
+  // initial value). An explicit pick always wins.
+  const [chosenRecordView, setChosenRecordView] = useState<RecordView | null>(null);
+  const recordView = chosenRecordView ?? (hasSaved ? "my_issues" : "by_issue");
   const [showAllNewest, setShowAllNewest] = useState(false);
 
   const detail = useLoaderData<typeof loader>();
@@ -339,7 +343,7 @@ export function CandidatePage() {
               View
               <select
                 value={recordView}
-                onChange={(event) => setRecordView(event.target.value as RecordView)}
+                onChange={(event) => setChosenRecordView(event.target.value as RecordView)}
                 className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
               >
                 <option value="by_issue">By issue</option>
