@@ -59,9 +59,6 @@ export type VotePowerExplanation = {
   parts: VotePowerExplanationPart[];
   result: string;
   caveat: string | null;
-  /** @deprecated Transitional: pre-parts frontends render these bullets.
-   * Remove once the parts-aware frontend is deployed everywhere. */
-  reasons: string[];
 };
 
 // Extra context that qualifies the explanation copy only — the rating math
@@ -554,8 +551,6 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
     parts,
     result: explanationResultFor(result, boostApplied, skipDecisiveness),
     caveat: explanationCaveatFor(result.confidence),
-    // Transitional bullets for frontends still on the pre-parts shape.
-    reasons: parts.map((part) => `${part.title}: ${part.grade}${part.stat ? ` (${part.stat})` : ""}. ${part.detail}`),
   };
 }
 

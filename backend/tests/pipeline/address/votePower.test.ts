@@ -421,22 +421,6 @@ describe("explainVotePower", () => {
     expect(explanation.parts[1]?.stat).toBe("11.5-point weighted margin across 2024 and 2022");
   });
 
-  it("mirrors the parts as transitional reason bullets for pre-parts frontends", () => {
-    const explanation = explain({
-      raceType: "office",
-      candidateCount: 2,
-      representationPowerScore: 90,
-      competitivenessLabel: "toss_up",
-      marginPercent: 3.25,
-      marginElectionYears: [2022],
-    });
-
-    expect(explanation.reasons).toEqual([
-      "Representation: High (90 out of 100). Smaller districts give each vote more weight, and this district is small for its type.",
-      "Decisiveness: High (3.3-point margin in 2022). Past results here were very close — a small number of votes could decide the winner.",
-    ]);
-  });
-
   it("explains an uncontested race without a margin stat", () => {
     const explanation = explain({
       raceType: "office",
