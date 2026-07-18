@@ -2,7 +2,6 @@ import { useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { ElectionDetail } from "@voteapp/api-client";
-import { AiBanner } from "../components/AiBanner";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -74,7 +73,6 @@ export function ElectionPage() {
           location: { "@type": "AdministrativeArea", name: data.district.name },
         }}
       />
-      <AiBanner />
       <h1 className="text-2xl font-bold">{data.official_ballot_title}</h1>
       <p className="mt-1 text-sm text-ink-soft">
         {formatElectionDate(data.election_date)} · {data.district.name} ·{" "}

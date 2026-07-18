@@ -1,5 +1,4 @@
 <!--
-DRAFT — pending attorney review before public launch.
 The frontend must copy these strings verbatim. Version bumps to
 disclaimer.md require re-review of this file too.
 
@@ -17,7 +16,7 @@ Freedom Financial Network):
   localStorage may remember it per version.
 -->
 
-# Checkbox and notice copy — Version 1.0
+# Checkbox and notice copy — Version 1.1
 
 ## Pre-search checkbox (anonymous address search)
 
@@ -27,7 +26,10 @@ Freedom Financial Network):
 > official election source; results may be inaccurate, incomplete, outdated,
 > or misleading; and I must verify voting, registration, ballot, district,
 > polling-place, deadline, and election-result information with official
-> election authorities before relying on it.
+> election authorities before relying on it. I agree that disputes are
+> resolved by binding individual arbitration with a class-action waiver as
+> described in Section 12 of the Terms of Use, unless I opt out as described
+> there.
 
 ## Signup checkbox (account registration)
 
@@ -36,7 +38,10 @@ Freedom Financial Network):
 > Disclaimer]. I consent to enter this agreement electronically. I understand
 > that VoteApp is not an official election source, does not register voters
 > or cast ballots, and may display AI-assisted content that must be
-> independently verified with official election authorities.
+> independently verified with official election authorities. I agree that
+> disputes are resolved by binding individual arbitration with a class-action
+> waiver as described in Section 12 of the Terms of Use, unless I opt out as
+> described there.
 
 ## Privacy notice (under the address input)
 
@@ -45,12 +50,6 @@ Freedom Financial Network):
 > and secure the Service, and comply with law — as described in our
 > [Privacy Policy]. Your address is used to find your districts and is not
 > sold.
-
-## Results-page banner (every ballot, election, and candidate view)
-
-> AI-assisted research — verify before relying on it. This information may be
-> inaccurate, incomplete, or outdated, and is not official election
-> information.
 
 ## Per-record source line (candidate records, measures, results)
 

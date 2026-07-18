@@ -8,7 +8,6 @@ import {
   type BallotPreferences,
   type BallotSummary,
 } from "@voteapp/api-client";
-import { AiBanner } from "../components/AiBanner";
 import {
   AddressSavedNotice,
   SavedAddressForm,
@@ -293,7 +292,6 @@ export function SavedBallotPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <AiBanner />
       {addressSaved ? (
         <div className="mb-4">
           <AddressSavedNotice saved={addressSaved} />

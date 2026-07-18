@@ -1,5 +1,4 @@
 <!--
-DRAFT — pending attorney review before public launch.
 Version history is tracked by git; the version string below must match
 CURRENT_TERMS_VERSION in backend/src/constants/legal.ts. Bump both together
 and require renewed acceptance for material changes.
@@ -9,8 +8,8 @@ monitored before launch.
 
 # VoteApp AI Research and Election Information Disclaimer
 
-**Last updated:** July 5, 2026
-**Version:** 1.0
+**Last updated:** July 18, 2026
+**Version:** 1.1
 
 ## 1. Informational purposes only
 
@@ -74,6 +73,8 @@ Candidate-related content may be incomplete, outdated, misattributed, incorrectl
 
 Users should review the cited source materials, candidate websites, official filings, public records, and other primary sources before relying on candidate-related content.
 
+Candidate-related content is intended to summarize identified sources, not to make independent factual assertions. Where a source link or citation is shown, it identifies the public record, government filing, or reporting the content is drawn from; VoteApp relays and summarizes what those sources say and does not independently verify or adopt the truth of the underlying source material. Labels, research-area classifications, scores, and similar designations are VoteApp's methodology-driven research judgments — expressions of opinion, not statements of independently verified fact.
+
 ## 8. Metrics, scores, ordering, and rankings
 
 VoteApp may display metrics, estimates, scores, ordering, rankings, comparisons, or labels, including election competitiveness estimates, vote-power-related metrics, campaign finance summaries, candidate comparison metrics, or other derived measurements.
@@ -136,6 +137,8 @@ We may review reports, update content, remove content, add warnings, or decline 
 
 For urgent voting issues, contact your state or local election office directly. Do not wait for VoteApp to respond.
 
+**Subjects of content.** If you are a candidate, public official, or other person described in VoteApp content — or their authorized representative — and you believe content about you is false or misleading, email contact@impactperdollar.com with "CORRECTION" in the subject line, identifying the specific content at issue and providing the correct information with supporting sources. We prioritize review of these reports and will correct, remove, annotate, or contextualize content that we determine to be materially false, subject to the discretion described above.
+
 ## 16. No warranty
 
 THE SERVICE AND ALL CONTENT ARE PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE.
@@ -166,7 +169,11 @@ By accessing or using VoteApp, submitting an address or search query, creating a
 (h) you will not use VoteApp for unlawful, misleading, voter-suppressive, harassing, discriminatory, or prohibited purposes; and
 (i) this acknowledgment is a material condition of your permission to use VoteApp.
 
-## 19. Changes
+**Release.** To the maximum extent permitted by law, you release VoteApp, its operator, and its officers, directors, employees, contractors, service providers, licensors, and affiliates from all claims, demands, and damages of every kind, known or unknown, arising out of or relating to your use of, or reliance on, VoteApp or its content. You waive any statute or legal principle that would otherwise limit this release to claims you knew about when you agreed to it, including, if you are a California resident, the protections of California Civil Code Section 1542 as applied to this release.
+
+## 19. Severability and changes
+
+If any provision of this Disclaimer is held unenforceable, it will be enforced to the maximum extent permissible, and the remaining provisions will remain in full effect.
 
 We may update this Disclaimer from time to time. The "Last updated" date and version number identify the current version.
 

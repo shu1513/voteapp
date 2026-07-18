@@ -2,7 +2,6 @@ import { Link, useLocation, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
 import { BALLOT_SORT_DESCRIPTIONS, PUBLIC_BALLOT_SORTS, type BallotSort, type BallotSummary } from "@voteapp/api-client";
-import { AiBanner } from "../components/AiBanner";
 import { ElectionList } from "../components/ElectionCard";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
@@ -76,7 +75,6 @@ export function BallotPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <AiBanner />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">Your ballot</h1>
         <label className="flex items-center gap-2 text-sm text-ink-soft">

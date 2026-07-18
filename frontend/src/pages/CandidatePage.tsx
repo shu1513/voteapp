@@ -9,7 +9,6 @@ import type {
   FinanceSummary,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
-import { AiBanner } from "../components/AiBanner";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -273,7 +272,6 @@ export function CandidatePage() {
           ...(candidate.official_website_url ? { url: candidate.official_website_url } : {}),
         }}
       />
-      <AiBanner />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
         {canFollow && follows ? (

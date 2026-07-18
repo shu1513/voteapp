@@ -6,10 +6,14 @@ import termsMarkdown from "../../../docs/legal/terms-of-use.md?raw";
 import privacyMarkdown from "../../../docs/legal/privacy-policy.md?raw";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
+/** ReactMarkdown escapes raw HTML, so the maintainer-only <!-- --> comments
+ * at the top of each document would render as visible text; strip them. */
+const stripHtmlComments = (markdown: string) => markdown.replace(/<!--[\s\S]*?-->\n?/g, "");
+
 const DOCUMENTS = {
-  disclaimer: disclaimerMarkdown,
-  terms: termsMarkdown,
-  privacy: privacyMarkdown,
+  disclaimer: stripHtmlComments(disclaimerMarkdown),
+  terms: stripHtmlComments(termsMarkdown),
+  privacy: stripHtmlComments(privacyMarkdown),
 } as const;
 
 const TITLES = {
