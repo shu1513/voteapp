@@ -342,7 +342,7 @@ function factorsFor(input: {
 // the 45/55 weighted score is a sorting signal only and never shown on the
 // detail page, so surfacing its formula here would misattribute the rating.
 const HOW_CALCULATED =
-  "Vote power = representation (how much weight one vote carries here) + decisiveness (how likely this race is to be close). Each is graded low, medium, or high, and the two grades together set the rating.";
+  "Vote power = representation (how much weight one vote carries here, the smaller the district's population, the higher the representation) + decisiveness (how likely this race is to be close, based on past results).";
 
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -610,8 +610,19 @@ function explanationResultFor(result: VotePowerResult, boostApplied: boolean, sk
     pieces.push("a ballot-measure boost");
   }
 
-  return `${capitalize(pieces.join(" + "))} → ${capitalize(result.label.replace("_", " "))} vote power.`;
+  return `${capitalize(pieces.join(" + "))} → ${capitalize(RESULT_LABEL_TEXT[result.label])} vote power.`;
 }
+
+// Display words for the rating in the result line. "low" reads as a verdict
+// on the voter, so it ships as "below average" (mirrors the api-client's
+// formatVotePowerLabel chip copy).
+const RESULT_LABEL_TEXT: Record<Exclude<VotePowerLabel, "unknown">, string> = {
+  very_low: "very low",
+  low: "below average",
+  medium: "medium",
+  high: "high",
+  very_high: "very high",
+};
 
 function explanationCaveatFor(confidence: VotePowerConfidence): string | null {
   switch (confidence) {

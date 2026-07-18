@@ -1499,7 +1499,7 @@ describe("lookupElectionDetailById", () => {
               formula: null,
             },
           ],
-          result: "Medium representation + an uncontested race → Low vote power.",
+          result: "Medium representation + an uncontested race → Below average vote power.",
           caveat: null,
         },
       },
