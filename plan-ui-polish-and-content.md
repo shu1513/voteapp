@@ -56,15 +56,18 @@ Wire enum value `medium` stays unchanged (no API break); display copy only.
 
 ## Group D — Candidate records ordering (small, frontend)
 
-- [ ] `frontend/src/pages/CandidatePage.tsx` `groupRecords` (~line 58):
+- [x] `frontend/src/pages/CandidatePage.tsx` `groupRecords` (~line 58):
   non-saved group fallback sort is alphabetical. Change to public-salience
   order from `frontend/src/lib/researchAreaPriority.ts` (env → wealth gap →
   anti-corruption → gov efficiency → healthcare → …); "Other records" stays
   last. Saved-areas-first-by-user-rank behavior (orderGroupsByPreference)
   already correct — keep.
-- [ ] Groups need `slug` to use the priority comparator — confirm record tags
+- [x] Groups need `slug` to use the priority comparator — confirm record tags
   carry slug (they do: `research_area_tags[].slug`) and thread it through
   `RecordGroup`.
+- [x] Default record view is "My issues first" when the viewer has saved
+  areas (explicit picks win) — part of the original ask this plan
+  under-captured.
 
 ## Group C — Election detail page enrichment (backend + frontend)
 
