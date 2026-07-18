@@ -9,4 +9,6 @@
   --color-ink-soft: #717171;
   --color-line: #dddddd;
   --color-surface: #f7f7f7;
+  /* Democratic party brand blue; marks ballot-measure labels. */
+  --color-dem-blue: #0015bc;
 }

@@ -18,6 +18,7 @@ import {
   formatVotePowerLabel,
 } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
+import { votePowerBadgeClass } from "../lib/votePowerBadge";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { aggregateRecordAreaStances, scoreStanceDirection } from "@voteapp/api-client";
@@ -92,7 +93,7 @@ export function ElectionPage() {
       </div>
       <div className="mt-2 flex flex-wrap gap-2 text-xs">
         {data.vote_power.label !== "unknown" ? (
-          <span className="rounded bg-rausch/10 px-2 py-0.5 text-rausch-dark">
+          <span className={`rounded px-2 py-0.5 ${votePowerBadgeClass(data.vote_power.label)}`}>
             Vote power: {formatVotePowerLabel(data.vote_power.label)}
           </span>
         ) : null}
@@ -138,19 +139,31 @@ export function ElectionPage() {
 
       {measure ? (
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
-          <h2 className="text-lg font-semibold">Ballot measure</h2>
+          <h2 className="text-lg font-semibold text-dem-blue">Ballot Measure</h2>
           {measure.research_area_tags.length > 0 ? (
+            // Stance colors the chip: green = the measure works for that
+            // area, red = against it. Stance wins over the saved-area green
+            // (same hue anyway for "for"); stanceless tags keep the
+            // saved/muted styling. The direction renders as visible text —
+            // color alone would be invisible to color-blind readers — and
+            // saved areas keep the sr-only cue the area chips use elsewhere.
             <div className="mt-2 flex flex-wrap gap-2 text-xs">
               {measure.research_area_tags.map((tag) => (
                 <span
                   key={tag.research_area_id}
                   className={
-                    savedAreaIds.has(tag.research_area_id)
+                    tag.stance === "for"
                       ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
-                      : "rounded bg-surface px-2 py-0.5 text-ink-soft"
+                      : tag.stance === "against"
+                        ? "rounded border border-red-600/40 bg-red-600/10 px-2 py-0.5 font-medium text-red-900"
+                        : savedAreaIds.has(tag.research_area_id)
+                          ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
+                          : "rounded bg-surface px-2 py-0.5 text-ink-soft"
                   }
                 >
                   {tag.name}
+                  {tag.stance === "for" || tag.stance === "against" ? ` · ${tag.stance}` : null}
+                  {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
                 </span>
               ))}
             </div>
@@ -283,23 +296,47 @@ export function ElectionPage() {
                     <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>
                   ) : null}
                   {stances.length > 0 ? (
+                    // Stance direction colors the chip: all-for green, all-
+                    // against red, mixed amber — replacing the saved-area
+                    // green, which said nothing about the candidate (saved
+                    // areas keep their sr-only cue). Counts compress to
+                    // +N/-N; screen readers get the spelled-out counts
+                    // instead, since "-2" can be read as just "2". Every
+                    // stance has for_count + against_count >= 1 —
+                    // aggregateRecordAreaStances drops neutral/untagged
+                    // records — so "against == 0" can only mean all-for.
                     <div className="mt-2 flex flex-wrap gap-2 text-xs">
                       {stances.map((stance) => (
                         <span
                           key={stance.research_area_id}
                           className={
-                            savedAreaIds.has(stance.research_area_id)
+                            stance.against_count === 0
                               ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
-                              : "rounded bg-surface px-2 py-0.5 text-ink-soft"
+                              : stance.for_count === 0
+                                ? "rounded border border-red-600/40 bg-red-600/10 px-2 py-0.5 font-medium text-red-900"
+                                : "rounded border border-amber-500/40 bg-amber-400/10 px-2 py-0.5 font-medium text-amber-900"
                           }
                         >
-                          {stance.name} ·{" "}
-                          {[
-                            stance.for_count > 0 ? `${stance.for_count} for` : null,
-                            stance.against_count > 0 ? `${stance.against_count} against` : null,
-                          ]
-                            .filter(Boolean)
-                            .join(", ")}
+                          {stance.name}{" "}
+                          <span aria-hidden="true">
+                            {[
+                              stance.for_count > 0 ? `+${stance.for_count}` : null,
+                              stance.against_count > 0 ? `-${stance.against_count}` : null,
+                            ]
+                              .filter(Boolean)
+                              .join(" ")}
+                          </span>
+                          <span className="sr-only">
+                            {[
+                              stance.for_count > 0 ? `${stance.for_count} for` : null,
+                              stance.against_count > 0 ? `${stance.against_count} against` : null,
+                            ]
+                              .filter(Boolean)
+                              .join(", ")}
+                          </span>
+                          {savedAreaIds.has(stance.research_area_id) ? (
+                            <span className="sr-only"> (saved)</span>
+                          ) : null}
                         </span>
                       ))}
                     </div>

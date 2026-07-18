@@ -10,6 +10,7 @@ import {
   compareByResearchAreaPriority,
   sortByResearchAreaPriority,
 } from "../lib/researchAreaPriority";
+import { votePowerBadgeClass } from "../lib/votePowerBadge";
 
 // Statewide races carry a dozen-plus research areas; rendering every one
 // buried the card's actual signal (title, candidates, vote power) under a
@@ -144,17 +145,21 @@ function ElectionCard({
             nowrap sits on each label so neither breaks mid-phrase. */}
         <span className="flex flex-wrap items-baseline justify-end gap-x-2 gap-y-1">
           {election.vote_power.label !== "unknown" ? (
-            <span className="whitespace-nowrap rounded bg-rausch/10 px-2 py-0.5 text-xs text-rausch-dark">
+            <span
+              className={`whitespace-nowrap rounded px-2 py-0.5 text-xs ${votePowerBadgeClass(election.vote_power.label)}`}
+            >
               Vote power: {formatVotePowerLabel(election.vote_power.label)}
             </span>
           ) : null}
-          <span className="whitespace-nowrap text-sm text-ink-soft">
-            {election.race_type === "ballot_measure"
-              ? "Ballot measure"
-              : election.candidate_count === 0 && election.candidate_roster_status
+          {election.race_type === "ballot_measure" ? (
+            <span className="whitespace-nowrap text-sm text-dem-blue">Ballot Measure</span>
+          ) : (
+            <span className="whitespace-nowrap text-sm text-ink-soft">
+              {election.candidate_count === 0 && election.candidate_roster_status
                 ? formatRosterStatus(election.candidate_roster_status).short
                 : `${election.candidate_count} candidate${election.candidate_count === 1 ? "" : "s"}`}
-          </span>
+            </span>
+          )}
         </span>
       </div>
       {showDistrict ? (
@@ -190,7 +195,9 @@ function ElectionCard({
         // sighted cue, so saved chips carry a screen-reader-only "(saved)"
         // to keep the distinction audible.
         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-          <span className="rounded bg-amber-100 px-2 py-0.5 font-medium text-amber-900">Affected Areas:</span>
+          {/* Quiet label: the chips carry the color; a boxed/tinted label
+              competed with them for attention. */}
+          <span className="font-medium text-ink-soft">Affected Areas:</span>
           {savedAreas.map((area) => (
             <span key={area.id} className={AREA_CHIP_CLASS}>
               {area.name}
@@ -203,8 +210,9 @@ function ElectionCard({
             </span>
           ))}
           {hiddenAreaCount > 0 ? (
-            // "areas", matching the row's own label — not "issues".
-            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
+            // "areas", matching the row's own label — not "issues". Same green
+            // as the area chips: the overflow count is part of the same list.
+            <span className={AREA_CHIP_CLASS}>
               +{hiddenAreaCount} more area{hiddenAreaCount === 1 ? "" : "s"}
             </span>
           ) : null}

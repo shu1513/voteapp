@@ -59,6 +59,26 @@ describe("ElectionCard", () => {
     expect(screen.queryByText(/Alaska/)).not.toBeInTheDocument();
   });
 
+  it("color-codes the vote-power badge by level", () => {
+    // Fixture default is "high" → orange; hotter and cooler levels shift hue.
+    renderCard(electionSummary());
+    expect(screen.getByText("Vote power: High").className).toContain("text-orange-700");
+
+    renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "very_high" } }));
+    expect(screen.getByText("Vote power: Very high").className).toContain("text-red-700");
+
+    renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "medium" } }));
+    expect(screen.getByText("Vote power: Medium").className).toContain("text-amber-800");
+
+    // "low" displays as "Below average" — the label map and color map key on
+    // the same wire value, so both must hold at once.
+    renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "low" } }));
+    expect(screen.getByText("Vote power: Below average").className).toContain("text-slate-600");
+
+    renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "very_low" } }));
+    expect(screen.getByText("Vote power: Very low").className).toContain("text-gray-500");
+  });
+
   it("omits the vote-power chip when the score is unknown", () => {
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "unknown" } }));
 
@@ -114,7 +134,10 @@ describe("ElectionCard", () => {
   it("labels ballot measures instead of counting candidates", () => {
     renderCard(electionSummary({ race_type: "ballot_measure", candidate_count: 0 }));
 
-    expect(screen.getByText("Ballot measure")).toBeInTheDocument();
+    const label = screen.getByText("Ballot Measure");
+    // Democratic-party blue on the letters only — no chip background.
+    expect(label.className).toContain("text-dem-blue");
+    expect(label.className).not.toContain("bg-");
     expect(screen.queryByText(/candidates?/)).not.toBeInTheDocument();
   });
 
@@ -139,7 +162,9 @@ describe("ElectionCard", () => {
     expect(screen.getByText("Gun Control")).toBeInTheDocument();
     expect(screen.queryByText("Housing Affordability")).not.toBeInTheDocument();
     expect(screen.queryByText("Public Infrastructure")).not.toBeInTheDocument();
-    expect(screen.getByText("+2 more areas")).toBeInTheDocument();
+    // The overflow count wears the same green as the area chips — it is part
+    // of the same list, not a muted footnote.
+    expect(screen.getByText("+2 more areas").className).toBe(screen.getByText("Civil Rights").className);
   });
 
   it("orders chips by public-salience priority, not the payload order", () => {

@@ -218,6 +218,133 @@ describe("ElectionPage", () => {
     expect(screen.getByRole("button", { name: "Report an issue with ballot measure" })).toBeInTheDocument();
   });
 
+  it("renders candidate stance chips as +N/-N colored by direction", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const record = (id: string, tag: { research_area_id: string; slug: string; name: string; stance: "for" | "against" | null }) => ({
+      id,
+      description: "A record.",
+      source_url: "https://example.gov/record",
+      event_date: "2025-01-15",
+      created_at: "2025-02-01T00:00:00.000Z",
+      research_area_tags: [tag],
+    });
+    const detail = electionDetail();
+    detail.candidates[0].records = [
+      record("r-1", { research_area_id: "a-1", slug: "civil_rights", name: "Civil Rights", stance: "for" }),
+      record("r-2", { research_area_id: "a-2", slug: "housing_affordability", name: "Housing Affordability", stance: "against" }),
+      record("r-3", { research_area_id: "a-2", slug: "housing_affordability", name: "Housing Affordability", stance: "against" }),
+      record("r-4", { research_area_id: "a-3", slug: "gun_control", name: "Gun Control", stance: "for" }),
+      record("r-5", { research_area_id: "a-3", slug: "gun_control", name: "Gun Control", stance: "against" }),
+      record("r-6", { research_area_id: "a-3", slug: "gun_control", name: "Gun Control", stance: "against" }),
+    ];
+    renderElection(() => detail);
+
+    // All-for compresses to +N in green, all-against to -N in red, and a
+    // mixed area shows both counts in amber.
+    const forChip = (await screen.findByText("Civil Rights")).closest("span")!;
+    expect(forChip.textContent).toContain("+1");
+    expect(forChip.className).toContain("text-green-900");
+    const againstChip = screen.getByText("Housing Affordability").closest("span")!;
+    expect(againstChip.textContent).toContain("-2");
+    expect(againstChip.className).toContain("text-red-900");
+    const mixedChip = screen.getByText("Gun Control").closest("span")!;
+    expect(mixedChip.textContent).toContain("+1 -2");
+    expect(mixedChip.className).toContain("text-amber-900");
+    // Screen readers hear spelled-out counts — "-2" alone can be read as "2".
+    expect(mixedChip.textContent).toContain("1 for, 2 against");
+  });
+
+  it("colors measure research-area chips by stance", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: null,
+          source_urls: [],
+          official_measure_url: null,
+          research_area_tags: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+            { research_area_id: "a-2", slug: "civil_rights", name: "Civil Rights", stance: "against" },
+            { research_area_id: "a-3", slug: "gun_control", name: "Gun Control", stance: null },
+          ],
+          results: [],
+        },
+      })
+    );
+
+    // The measure works FOR housing (green), AGAINST civil rights (red);
+    // a stanceless tag stays muted. The direction is visible text, not just
+    // color, so color-blind readers can tell the chips apart too.
+    const forChip = await screen.findByText("Housing Affordability · for");
+    expect(forChip.className).toContain("text-green-900");
+    const againstChip = screen.getByText("Civil Rights · against");
+    expect(againstChip.className).toContain("text-red-900");
+    const neutralChip = screen.getByText("Gun Control");
+    expect(neutralChip.className).toContain("text-ink-soft");
+  });
+
+  it("marks saved areas with an sr-only cue on measure and candidate chips", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    const detail = electionDetail({
+      race_type: "ballot_measure",
+      ballot_measure: {
+        id: "m-1",
+        official_ballot_title: "Measure 1",
+        summary: "A measure.",
+        what_yes_means: "Yes approves the bond.",
+        what_no_means: "No rejects the bond.",
+        result: null,
+        source_urls: [],
+        official_measure_url: null,
+        research_area_tags: [
+          { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+        ],
+        results: [],
+      },
+    });
+    detail.candidates[0].records = [
+      {
+        id: "r-1",
+        description: "A record.",
+        source_url: "https://example.gov/record",
+        event_date: "2025-01-15",
+        created_at: "2025-02-01T00:00:00.000Z",
+        research_area_tags: [
+          { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+        ],
+      },
+    ];
+    renderElection(() => detail);
+
+    // Both chip surfaces voice saved-ness for assistive tech, matching the
+    // ElectionCard precedent. The cue arrives with the async preferences
+    // fetch, after the loader-fed chips render — so wait on the cue itself.
+    const savedCues = await screen.findAllByText("(saved)");
+    expect(savedCues).toHaveLength(2);
+    const measureChip = screen.getByText("Housing Affordability · for");
+    expect(measureChip).toHaveTextContent("(saved)");
+    const candidateChip = screen.getByText("Housing Affordability").closest("span")!;
+    expect(candidateChip).toHaveTextContent("1 for");
+    expect(candidateChip).toHaveTextContent("(saved)");
+  });
+
   it("renders measure result rows, including election-night outcomes", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
