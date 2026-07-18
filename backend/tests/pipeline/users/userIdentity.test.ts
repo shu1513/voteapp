@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  acceptUserTerms,
   getUserIdentity,
   MAX_FIRST_NAME_LENGTH,
   setUserFirstName,
@@ -8,14 +9,20 @@ import {
 } from "../../../src/pipeline/users/userIdentity.js";
 
 const USER_ID = "11111111-1111-4111-8111-111111111111";
-const IDENTITY = { email: "voter@example.com", first_name: "Val", email_verified: true };
+const IDENTITY = {
+  email: "voter@example.com",
+  first_name: "Val",
+  email_verified: true,
+  accepted_terms_version: "1.1",
+};
 
 describe("userIdentity", () => {
-  it("getUserIdentity returns email, first_name, and email_verified", async () => {
+  it("getUserIdentity returns email, first_name, email_verified, and accepted_terms_version", async () => {
     const query = vi.fn().mockResolvedValue({ rows: [IDENTITY], rowCount: 1 });
 
     await expect(getUserIdentity({ query } as never, USER_ID)).resolves.toEqual(IDENTITY);
     expect(String(query.mock.calls[0][0])).toContain("deleted_at IS NULL");
+    expect(String(query.mock.calls[0][0])).toContain("accepted_terms_version");
     expect(query.mock.calls[0][1]).toEqual([USER_ID]);
   });
 
@@ -58,6 +65,34 @@ describe("userIdentity", () => {
     const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 0 });
 
     await expect(setUserFirstName({ query } as never, USER_ID, "Val")).rejects.toMatchObject({
+      code: "user_not_found",
+    });
+  });
+
+  it("acceptUserTerms stamps the version and acceptance timestamp", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [IDENTITY], rowCount: 1 });
+
+    await expect(acceptUserTerms({ query } as never, USER_ID, " 1.1 ")).resolves.toEqual(IDENTITY);
+    const sql = String(query.mock.calls[0][0]);
+    expect(sql).toContain("accepted_terms_version = $2");
+    expect(sql).toContain("accepted_terms_at = now()");
+    expect(sql).toContain("deleted_at IS NULL");
+    expect(query.mock.calls[0][1]).toEqual([USER_ID, "1.1"]);
+  });
+
+  it("acceptUserTerms rejects an empty version without querying", async () => {
+    const query = vi.fn();
+
+    await expect(acceptUserTerms({ query } as never, USER_ID, "   ")).rejects.toThrow(
+      "termsVersion must be a non-empty string"
+    );
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it("acceptUserTerms throws user_not_found for unknown or deleted users", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 0 });
+
+    await expect(acceptUserTerms({ query } as never, USER_ID, "1.1")).rejects.toMatchObject({
       code: "user_not_found",
     });
   });

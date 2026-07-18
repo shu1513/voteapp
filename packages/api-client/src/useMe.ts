@@ -18,6 +18,7 @@ export type Me = {
   email: string;
   first_name: string;
   email_verified: boolean;
+  accepted_terms_version: string | null;
 };
 
 /**
@@ -44,6 +45,25 @@ export function useMe() {
     staleTime: 60_000,
   });
   return { me: query.data, isLoading: query.isPending, isError: query.isError, refetch: query.refetch };
+}
+
+/**
+ * Records the signed-in user's acceptance of the current terms bundle after
+ * a version bump. The backend rejects any version other than its current
+ * one, mirroring registration's clickwrap rule.
+ */
+export function useAcceptTerms() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (acceptedTermsVersion: string) =>
+      apiRequest<{ user: Me }>("/api/me/terms-acceptance", {
+        method: "POST",
+        body: { accepted_terms_version: acceptedTermsVersion },
+      }),
+    onSuccess: (response) => {
+      queryClient.setQueryData(["me"], response.user);
+    },
+  });
 }
 
 export function useLogout() {

@@ -1,6 +1,5 @@
 <!--
-DRAFT — pending attorney review before public launch (CCPA/state privacy
-law applicability in particular). Written to match the ACTUAL data practices
+Written to match the ACTUAL data practices
 in this codebase as of July 2026 — if practices change (analytics,
 advertising, new processors, address retention), this document must change
 with them. The contact mailbox (contact@impactperdollar.com) must exist and

@@ -5,13 +5,14 @@ import { isUuid } from "../../utils/uuid.js";
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 // Session-holder identity for GET /api/me. Deliberately minimal: only what
-// the frontend needs to render header state and the unverified-email
-// interstitial. Not gated on email verification — an unverified user must be
-// able to learn that they are unverified.
+// the frontend needs to render header state and the unverified-email and
+// terms-reacceptance interstitials. Not gated on email verification — an
+// unverified user must be able to learn that they are unverified.
 export type UserIdentity = {
   email: string;
   first_name: string;
   email_verified: boolean;
+  accepted_terms_version: string | null;
 };
 
 export type UserIdentityErrorCode = "invalid_user_id" | "user_not_found";
@@ -54,7 +55,7 @@ export async function setUserFirstName(db: Queryable, userId: string, firstName:
           updated_at = now()
       WHERE id = $1::uuid
         AND deleted_at IS NULL
-      RETURNING email, first_name, email_verified
+      RETURNING email, first_name, email_verified, accepted_terms_version
     `,
     [normalizedUserId, normalizedFirstName]
   );
@@ -67,6 +68,42 @@ export async function setUserFirstName(db: Queryable, userId: string, firstName:
     email: row.email,
     first_name: row.first_name,
     email_verified: row.email_verified,
+    accepted_terms_version: row.accepted_terms_version,
+  };
+}
+
+/** Records the session holder's acceptance of the given terms version.
+ * The caller (apiServer) is responsible for only passing the current
+ * version; this just stamps what was accepted and when. */
+export async function acceptUserTerms(db: Queryable, userId: string, termsVersion: string): Promise<UserIdentity> {
+  const normalizedUserId = normalizeUserId(userId);
+  const normalizedVersion = typeof termsVersion === "string" ? termsVersion.trim() : "";
+  if (normalizedVersion.length === 0) {
+    throw new TypeError("termsVersion must be a non-empty string");
+  }
+
+  const result = await db.query<UserIdentity>(
+    `
+      UPDATE public.users
+      SET accepted_terms_version = $2,
+          accepted_terms_at = now(),
+          updated_at = now()
+      WHERE id = $1::uuid
+        AND deleted_at IS NULL
+      RETURNING email, first_name, email_verified, accepted_terms_version
+    `,
+    [normalizedUserId, normalizedVersion]
+  );
+
+  const row = result.rows[0];
+  if (!row) {
+    throw new UserIdentityError("user_not_found", "User not found");
+  }
+  return {
+    email: row.email,
+    first_name: row.first_name,
+    email_verified: row.email_verified,
+    accepted_terms_version: row.accepted_terms_version,
   };
 }
 
@@ -75,7 +112,7 @@ export async function getUserIdentity(db: Queryable, userId: string): Promise<Us
 
   const result = await db.query<UserIdentity>(
     `
-      SELECT email, first_name, email_verified
+      SELECT email, first_name, email_verified, accepted_terms_version
       FROM public.users
       WHERE id = $1::uuid
         AND deleted_at IS NULL
@@ -91,5 +128,6 @@ export async function getUserIdentity(db: Queryable, userId: string): Promise<Us
     email: row.email,
     first_name: row.first_name,
     email_verified: row.email_verified,
+    accepted_terms_version: row.accepted_terms_version,
   };
 }

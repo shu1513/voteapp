@@ -43,6 +43,10 @@ export const ELECTION_DETAIL_PATH_PREFIX = "/api/elections/";
 // email verification: the frontend needs it to render the unverified state.
 export const ME_PATH = "/api/me";
 export const ME_ADDRESS_PATH = "/api/me/address";
+// Authenticated re-acceptance of the current terms bundle after a version
+// bump (registration handles first acceptance). Not gated on email
+// verification: acceptance must be recordable before the inbox is confirmed.
+export const ME_TERMS_ACCEPTANCE_PATH = "/api/me/terms-acceptance";
 export const ME_PASSWORD_PATH = "/api/me/password";
 export const ME_EMAIL_PATH = "/api/me/email";
 export const ME_BALLOT_PATH = "/api/me/ballot";
@@ -149,6 +153,10 @@ export type MeDeletePayload = {
 
 export type MeUpdatePayload = {
   first_name: string;
+};
+
+export type MeTermsAcceptancePayload = {
+  accepted_terms_version: string;
 };
 
 export type InitializeUserDistrictsPayload = {
@@ -438,6 +446,12 @@ export function parseMeDeleteBodyValue(parsed: unknown): MeDeletePayload {
 export function parseMeUpdateBodyValue(parsed: unknown): MeUpdatePayload {
   return {
     first_name: parseStringField(parsed, "first_name"),
+  };
+}
+
+export function parseMeTermsAcceptanceBodyValue(parsed: unknown): MeTermsAcceptancePayload {
+  return {
+    accepted_terms_version: parseStringField(parsed, "accepted_terms_version"),
   };
 }
 

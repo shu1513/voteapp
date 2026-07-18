@@ -107,6 +107,10 @@ export type AddressApiServerOptions = {
    * must be able to learn that they are unverified.
    */
   getAuthenticatedUser?: (userId: string) => Promise<UserIdentity>;
+
+  /** Records the session holder's acceptance of the current terms version
+   * after a version bump; apiServer validates the version before calling. */
+  acceptAuthenticatedUserTerms?: (userId: string, termsVersion: string) => Promise<UserIdentity>;
   /** PUT /api/me: profile name edit; returns the updated identity. */
   updateAuthenticatedUserFirstName?: (userId: string, firstName: string) => Promise<UserIdentity>;
   getAuthenticatedEmailPreferences?: (userId: string) => Promise<UserEmailPreferences>;

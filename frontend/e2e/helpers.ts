@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Client } from "pg";
 import type { APIRequestContext } from "@playwright/test";
+import { TERMS_VERSION } from "@voteapp/api-client";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 
@@ -85,7 +86,7 @@ export const E2E_PASSWORD = "correct horse battery staple";
 export async function registerVerifiedUser(request: APIRequestContext): Promise<string> {
   const email = uniqueEmail();
   const register = await request.post("/api/auth/register", {
-    data: { email, password: E2E_PASSWORD, first_name: "Smoke", accepted_terms_version: "1.0" },
+    data: { email, password: E2E_PASSWORD, first_name: "Smoke", accepted_terms_version: TERMS_VERSION },
   });
   if (!register.ok()) {
     throw new Error(`register failed: ${register.status()} ${await register.text()}`);

@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { createApiApp } from "../../src/api/apiServer.js";
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../../src/api/apiValidation.js";
+import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
 import type { CandidateElectionFinanceResult } from "../../src/pipeline/address/ballotLookup.js";
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
@@ -3352,6 +3353,80 @@ describe("GET /api/me", () => {
         message: "Authenticated user lookup is not configured",
       },
     });
+  });
+});
+
+describe("POST /api/me/terms-acceptance", () => {
+  const userId = "99999999-9999-4999-8999-999999999999";
+  const identity = {
+    email: "voter@example.com",
+    first_name: "Val",
+    email_verified: false,
+    accepted_terms_version: CURRENT_TERMS_VERSION,
+  };
+
+  it("records acceptance of the current version and returns the identity", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const acceptAuthenticatedUserTerms = vi.fn().mockResolvedValue(identity);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, acceptAuthenticatedUserTerms }),
+      {
+        method: "POST",
+        path: "/api/me/terms-acceptance",
+        headers: { "x-user-id": userId, "content-type": "application/json" },
+        body: JSON.stringify({ accepted_terms_version: CURRENT_TERMS_VERSION }),
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ user: identity });
+    expect(acceptAuthenticatedUserTerms).toHaveBeenCalledWith(userId, CURRENT_TERMS_VERSION);
+  });
+
+  it("rejects any version other than the current one", async () => {
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
+    const acceptAuthenticatedUserTerms = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId, acceptAuthenticatedUserTerms }),
+      {
+        method: "POST",
+        path: "/api/me/terms-acceptance",
+        headers: { "x-user-id": userId, "content-type": "application/json" },
+        body: JSON.stringify({ accepted_terms_version: "0.9" }),
+      }
+    );
+
+    expect(response.statusCode).toBe(422);
+    expect(acceptAuthenticatedUserTerms).not.toHaveBeenCalled();
+  });
+
+  it("returns 401 without a session", async () => {
+    const acceptAuthenticatedUserTerms = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAuthenticatedUserId: () => null, acceptAuthenticatedUserTerms }),
+      {
+        method: "POST",
+        path: "/api/me/terms-acceptance",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ accepted_terms_version: CURRENT_TERMS_VERSION }),
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(acceptAuthenticatedUserTerms).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-POST methods with 405", async () => {
+    const response = await invokeExpressApp(createApiApp({}), {
+      method: "GET",
+      path: "/api/me/terms-acceptance",
+    });
+
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("POST");
   });
 });
 

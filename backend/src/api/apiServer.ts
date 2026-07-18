@@ -19,6 +19,7 @@ import {
   parseMeDeleteBodyValue,
   parseMeEmailBodyValue,
   parseMePasswordBodyValue,
+  parseMeTermsAcceptanceBodyValue,
   parseMeUpdateBodyValue,
 } from "./apiValidation.js";
 import type { AddressApiServerOptions } from "./addressApiTypes.js";
@@ -49,6 +50,7 @@ import {
   ME_EMAIL_PREFERENCES_PATH,
   ME_PUSH_TOKENS_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
+  ME_TERMS_ACCEPTANCE_PATH,
   parseAuthenticatedAddressBodyValue,
   parseAddressBodyValue,
   parseAutocompleteRetrieveBodyValue,
@@ -125,6 +127,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_EMAIL_PATH ||
     pathname === ME_PASSWORD_PATH ||
     pathname === ME_ADDRESS_PATH ||
+    pathname === ME_TERMS_ACCEPTANCE_PATH ||
     pathname === ME_BALLOT_PATH ||
     pathname === ME_BALLOT_PREFERENCES_PATH ||
     pathname === ME_CANDIDATE_FOLLOWS_PATH ||
@@ -413,7 +416,8 @@ function createJsonBodyParser() {
           request.path === AUTH_LOGOUT_ALL_PATH ||
           request.path === ME_EMAIL_PATH ||
           request.path === ME_PASSWORD_PATH ||
-          request.path === ME_PUSH_TOKENS_PATH)) ||
+          request.path === ME_PUSH_TOKENS_PATH ||
+          request.path === ME_TERMS_ACCEPTANCE_PATH)) ||
       (request.method === "DELETE" && (request.path === ME_PATH || request.path === ME_PUSH_TOKENS_PATH)) ||
       (request.method === "PUT" &&
         (request.path === ME_PATH ||
@@ -972,6 +976,60 @@ async function dispatchApiRequest(
       body: { status: "ok" },
       statusCode: 200,
     });
+    return;
+  }
+
+  if (url.pathname === ME_TERMS_ACCEPTANCE_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/me/terms-acceptance", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+    if (!options.acceptAuthenticatedUserTerms) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Terms acceptance is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    // Deliberately not requireVerifiedAuthenticatedUser: like GET /api/me,
+    // re-acceptance after a terms bump must work before the inbox is
+    // verified, or an unverified user is wedged behind two interstitials.
+    const userId = await resolveAuthenticatedUserId(options, request);
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    const payload = parseMeTermsAcceptanceBodyValue(request.body);
+    // Same clickwrap rule as registration: only the current version can be
+    // accepted, so a stale frontend cannot record acceptance of superseded
+    // terms.
+    if (payload.accepted_terms_version !== CURRENT_TERMS_VERSION) {
+      sendApiResponse(
+        response,
+        toErrorResponse(
+          422,
+          "invalid_request",
+          `accepted_terms_version must be the current terms version (${CURRENT_TERMS_VERSION})`,
+          corsHeaders
+        )
+      );
+      return;
+    }
+
+    const user = await options.acceptAuthenticatedUserTerms(userId, payload.accepted_terms_version);
+    sendApiResponse(response, toJsonResponse(200, { user }, corsHeaders));
     return;
   }
 
