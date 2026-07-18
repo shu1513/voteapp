@@ -470,6 +470,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                 {
                   candidateDisplayName: context.candidateDisplayName,
                   knownCurrentOffice: context.currentOffice,
+                  hasHeldPublicOffice: context.hasHeldPublicOffice,
                   districtName: context.districtName,
                   districtType: context.districtType,
                   state: context.state,

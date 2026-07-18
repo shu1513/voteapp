@@ -5,6 +5,15 @@ import { PLAIN_LANGUAGE_STYLE_RULES } from "./promptWritingStyle.js";
 export type CandidateRecordDiscoveryPromptInput = {
   candidateDisplayName: string;
   knownCurrentOffice?: string | null;
+  /**
+   * candidates.has_held_public_office: has this person EVER held public
+   * office (research-verified, persisted by the profile stage). When set,
+   * the prompt states it as fact and gives only the matching question list
+   * instead of asking the model to re-derive officeholder status — the
+   * 2026-07-15 incident showed self-derivation defaults everyone onto the
+   * officeholder framing. NULL keeps the legacy self-decide rule.
+   */
+  hasHeldPublicOffice?: boolean | null;
   districtName: string;
   districtType: string;
   state: string;
@@ -26,9 +35,24 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
   const includeSenateContext = isUsSenateOfficeTitle(input.officialBallotTitle);
   const useJudicialRecordObjective = input.discoveryContestFamily === "judicial_office";
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
+  // Officeholder status routes the non-judicial question list. When the
+  // profile stage has answered it, state it as fact and give only the
+  // matching list; only an unanswered column falls back to the self-decide
+  // rule (which the 07-15 incident showed defaults toward officeholder
+  // framing).
+  const officeholderObjectiveRule =
+    "- This candidate has held public office (verified fact — do not re-derive it). Research reliable public records covering each of: major votes and sponsored legislation; executive actions (if they ever held an executive role); court, ethics, or disciplinary proceedings, campaign finance issues, or conflicts of interest; and committees, caucuses, or organizations they led.";
+  const neverHeldObjectiveRule =
+    "- This candidate has NEVER held public office (verified fact — do not re-derive it, and do not use officeholder framing like votes or sponsored legislation). Research reliable public records covering each of: career record; organizations and boards they led or served on and public advocacy; and court, legal, or regulatory records.";
+  const selfDecideObjectiveRule =
+    "- Research reliable public records about this exact candidate. If the candidate holds or has EVER held public office, cover each of: major votes and sponsored legislation; executive actions (if they ever held an executive role); court, ethics, or disciplinary proceedings, campaign finance issues, or conflicts of interest; and committees, caucuses, or organizations they led. If they never held public office: career record; organizations and boards they led or served on and public advocacy; and court, legal, or regulatory records.";
   const objectiveRule = useJudicialRecordObjective
     ? "- Research the web for publicly available reliable records about this exact judicial candidate, covering each of: notable cases or rulings they handled (as judge, or as prosecutor/defense/counsel before taking the bench); any discipline, ethics complaints, reversals, or conduct-commission proceedings; and endorsements they made or received. Focus on evidence for evaluating legal competence, integrity and ethics, impartiality, and professional record."
-    : "- Research reliable public records about this exact candidate. If the candidate holds or has EVER held public office, cover each of: major votes and sponsored legislation; executive actions (if they ever held an executive role); court, ethics, or disciplinary proceedings, campaign finance issues, or conflicts of interest; and committees, caucuses, or organizations they led. If they never held public office: career record; organizations and boards they led or served on and public advocacy; and court, legal, or regulatory records.";
+    : input.hasHeldPublicOffice === true
+      ? officeholderObjectiveRule
+      : input.hasHeldPublicOffice === false
+        ? neverHeldObjectiveRule
+        : selfDecideObjectiveRule;
 
   return [
     "You are researching substantive public records about one election candidate.",

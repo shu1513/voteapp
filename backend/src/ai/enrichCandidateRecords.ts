@@ -61,6 +61,9 @@ export type CandidateRecordDiscoveryPayloadValidationResult =
 export type EnrichCandidateRecordsInput = {
   candidateDisplayName: string;
   knownCurrentOffice?: string | null;
+  // candidates.has_held_public_office — when set, the discovery prompt states
+  // officeholder status as fact instead of asking the model to self-decide.
+  hasHeldPublicOffice?: boolean | null;
   districtName: string;
   districtType: string;
   state: string;
