@@ -151,22 +151,17 @@ export function FollowsPage() {
     return <VerifyPrompt email={me.email} />;
   }
 
-  const trimmedQuery = query.trim().toLowerCase();
-  const visibleFollows = (follows ?? []).filter((follow) =>
-    follow.display_name.toLowerCase().includes(trimmedQuery)
-  );
-
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">Followed Candidates</h1>
-        {/* One input, two jobs: the text live-filters the follows list below,
-            while the dropdown suggests matching candidates from the whole
-            database (ARIA combobox via Headless UI — do not hand-roll keyboard
-            handling; no `static` on the options so Escape/blur close the
-            dropdown natively). Picking a suggestion opens that candidate's
-            page. Rendered outside the follows-list branch: discovery must work
-            with zero follows and when the follows fetch fails. */}
+        {/* Typeahead over the whole candidate database (ARIA combobox via
+            Headless UI — do not hand-roll keyboard handling; no `static` on
+            the options so Escape/blur close the dropdown natively). Picking a
+            suggestion opens that candidate's page. Deliberately does NOT
+            filter the follows list below — the list stays put while typing.
+            Rendered outside the follows-list branch: discovery must work with
+            zero follows and when the follows fetch fails. */}
         <div className="relative w-full sm:w-56">
           <Combobox<CandidateSearchMatch | null>
             value={null}
@@ -218,28 +213,11 @@ export function FollowsPage() {
         <EmptyNotice text="You aren't following anyone yet. Use the Follow button on any candidate page." />
       ) : null}
       {follows && follows.length > 0 ? (
-        <>
-          {/* Persistent polite live region: announces filter results to screen
-              readers. Kept always-mounted (conditionally inserted live regions
-              are unreliably announced) and empty until a query is typed so the
-              initial load stays silent. */}
-          <p role="status" className="sr-only">
-            {trimmedQuery
-              ? visibleFollows.length === 0
-                ? `No followed candidates match “${query.trim()}”.`
-                : `${visibleFollows.length} of ${follows.length} followed candidates shown.`
-              : ""}
-          </p>
-          {visibleFollows.length === 0 ? (
-            <EmptyNotice text={`No followed candidates match “${query.trim()}”.`} />
-          ) : (
-            <ul className="mt-4 space-y-3">
-              {visibleFollows.map((follow) => (
-                <FollowRow key={follow.candidate_id} follow={follow} />
-              ))}
-            </ul>
-          )}
-        </>
+        <ul className="mt-4 space-y-3">
+          {follows.map((follow) => (
+            <FollowRow key={follow.candidate_id} follow={follow} />
+          ))}
+        </ul>
       ) : null}
     </div>
   );

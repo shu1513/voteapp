@@ -139,8 +139,10 @@ function ElectionCard({
       {hasSignalChips ? (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {election.followed_candidates && election.followed_candidates.length > 0 ? (
-            <span className="rounded bg-rausch px-2 py-0.5 font-medium text-white">
-              You follow {election.followed_candidates.map((candidate) => candidate.display_name).join(", ")}
+            <span className="rounded bg-green-600 px-2 py-0.5 font-medium text-white">
+              Your followed candidate{election.followed_candidates.length === 1 ? "" : "s"}{" "}
+              {election.followed_candidates.map((candidate) => candidate.display_name).join(", ")}{" "}
+              {election.followed_candidates.length === 1 ? "is" : "are"} running
             </span>
           ) : null}
           {election.historical_competitiveness ? (
@@ -160,12 +162,12 @@ function ElectionCard({
       {election.research_areas.length > 0 ? (
         // Saved-area matches lead the list (all of them, highlighted);
         // unsaved areas follow under the cap.
-        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3 text-xs">
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
           <span className="text-ink-soft">Affected areas:</span>
           {savedAreas.map((area) => (
             <span
               key={area.id}
-              className="rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+              className="rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
             >
               {area.name}
             </span>

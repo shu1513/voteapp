@@ -131,7 +131,7 @@ export function ElectionPage() {
                   key={tag.research_area_id}
                   className={
                     savedAreaIds.has(tag.research_area_id)
-                      ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+                      ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
                       : "rounded bg-surface px-2 py-0.5 text-ink-soft"
                   }
                 >
@@ -274,7 +274,7 @@ export function ElectionPage() {
                           key={stance.research_area_id}
                           className={
                             savedAreaIds.has(stance.research_area_id)
-                              ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+                              ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
                               : "rounded bg-surface px-2 py-0.5 text-ink-soft"
                           }
                         >
