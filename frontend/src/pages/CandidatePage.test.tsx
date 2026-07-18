@@ -82,13 +82,54 @@ describe("CandidatePage", () => {
     const groupState = (name: string) =>
       (screen.getByText(name).closest("details") as HTMLDetailsElement).open;
     expect(await screen.findByText("Civil Rights")).toBeInTheDocument();
-    // Alphabetical group order: Civil Rights, Gun Control, Housing, Privacy.
+    // Test slugs (a-1…a-4) sit outside the salience ranking, so the groups
+    // fall back to alphabetical: Civil Rights, Gun Control, Housing, Privacy.
     expect(groupState("Civil Rights")).toBe(true);
     expect(groupState("Gun Control")).toBe(true);
     expect(groupState("Housing")).toBe(true);
     expect(groupState("Privacy")).toBe(false);
     // Collapsed groups still state their size.
     expect(screen.getAllByText("· 1 record")).toHaveLength(4);
+  });
+
+  it("orders issue groups by public salience with untagged records last", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const record = (id: string, tags: { areaId: string; slug: string; name: string }[]) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: tags.map((tag) => ({
+        research_area_id: tag.areaId,
+        slug: tag.slug,
+        name: tag.name,
+        stance: "for" as const,
+      })),
+    });
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          // Payload arrives alphabetical-ish; salience rank must win, with
+          // the untagged pseudo-group sinking to the end.
+          record("r-1", [{ areaId: "a-civ", slug: "civil_rights", name: "Civil Rights" }]),
+          record("r-2", []),
+          record("r-3", [{ areaId: "a-env", slug: "environment_and_public_health", name: "Environment and Public Health" }]),
+          record("r-4", [{ areaId: "a-gun", slug: "gun_control", name: "Gun Control" }]),
+        ],
+      })
+    );
+
+    await screen.findByText("Civil Rights");
+    const headings = screen
+      .getAllByRole("heading", { level: 3 })
+      .map((heading) => heading.textContent);
+    expect(headings).toEqual([
+      "Environment and Public Health",
+      "Gun Control",
+      "Civil Rights",
+      "Other records",
+    ]);
   });
 
   it("cuts the newest-first view off at 20 with a show-all button", async () => {
