@@ -52,9 +52,19 @@ export type OfficeSummary = {
 // Mirrors VotePowerExplanation (backend votePower.ts): backend-authored,
 // ready-to-render copy explaining how the rating was calculated and why this
 // election got its rating. Only the election detail payload carries it.
+// parts render as a compact formula — one graded row per measure with this
+// election's actual numbers — and result states how the grades combine.
+export type VotePowerExplanationPart = {
+  title: string;
+  grade: string;
+  stat: string | null;
+  detail: string;
+};
+
 export type VotePowerExplanation = {
   how: string;
-  reasons: string[];
+  parts: VotePowerExplanationPart[];
+  result: string;
   caveat: string | null;
 };
 

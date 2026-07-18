@@ -60,13 +60,16 @@ describe("ElectionPage", () => {
     expect(screen.getByText("Why this vote power rating?")).toBeInTheDocument();
     // Native <details> keeps content in the DOM while collapsed; the backend
     // copy must arrive verbatim.
-    expect(screen.getByText("Vote power combines representation and decisiveness.")).toBeInTheDocument();
+    expect(screen.getByText("Vote power = representation + decisiveness.")).toBeInTheDocument();
+    // Each part renders formula-style: title, grade, stat, then the detail.
+    expect(screen.getByText("Representation:")).toBeInTheDocument();
+    expect(screen.getByText("· 50 out of 100")).toBeInTheDocument();
+    expect(screen.getByText("· 3.3-point margin in 2022")).toBeInTheDocument();
     expect(
-      screen.getByText(
-        "Representation is medium (50 out of 100): this district's population is mid-range for its type."
-      )
+      screen.getByText("Past results here were very close — a small number of votes could decide the winner.")
     ).toBeInTheDocument();
-    expect(screen.getByText("Some underlying data is missing.")).toBeInTheDocument();
+    expect(screen.getByText("Medium representation + high decisiveness → High vote power.")).toBeInTheDocument();
+    expect(screen.getByText("Some data is missing.")).toBeInTheDocument();
   });
 
   it("omits the vote power explanation when the payload has none or the label is unknown", async () => {
