@@ -42,6 +42,8 @@ describe("FollowsPage", () => {
     });
     renderFollows();
     expect(await screen.findByText(/You aren't following anyone yet/)).toBeInTheDocument();
+    // The tab title matches the on-page heading.
+    expect(document.title).toContain("Followed Candidates");
   });
 
   it("filters follows by name via the search bar", async () => {

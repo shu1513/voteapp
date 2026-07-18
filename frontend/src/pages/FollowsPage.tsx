@@ -122,7 +122,7 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
 }
 
 export function FollowsPage() {
-  useDocumentTitle("Candidates you follow");
+  useDocumentTitle("Followed Candidates");
   const { me, isLoading } = useMe();
   const { follows, isLoading: followsLoading, isError } = useFollows();
   const [query, setQuery] = useState("");
@@ -158,57 +158,56 @@ export function FollowsPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold">Candidates you follow</h1>
-      <p className="mt-1 text-sm text-ink-soft">
-        Followed candidates surface first on your ballot; the toggles control the daily email digest.
-      </p>
-      {/* One input, two jobs: the text live-filters the follows list below,
-          while the dropdown suggests matching candidates from the whole
-          database (ARIA combobox via Headless UI — do not hand-roll keyboard
-          handling; no `static` on the options so Escape/blur close the
-          dropdown natively). Picking a suggestion opens that candidate's
-          page. Rendered outside the follows-list branch: discovery must work
-          with zero follows and when the follows fetch fails. */}
-      <Combobox<CandidateSearchMatch | null>
-        value={null}
-        onChange={(match) => {
-          if (match) {
-            void navigate(`/candidates/${match.candidate_id}`);
-          }
-        }}
-        immediate={false}
-      >
-        <div className="relative">
-          <ComboboxInput
-            type="search"
-            value={query}
-            onChange={(event) => {
-              setQuery(event.target.value);
-              onInputChanged(event.target.value);
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold">Followed Candidates</h1>
+        {/* One input, two jobs: the text live-filters the follows list below,
+            while the dropdown suggests matching candidates from the whole
+            database (ARIA combobox via Headless UI — do not hand-roll keyboard
+            handling; no `static` on the options so Escape/blur close the
+            dropdown natively). Picking a suggestion opens that candidate's
+            page. Rendered outside the follows-list branch: discovery must work
+            with zero follows and when the follows fetch fails. */}
+        <div className="relative w-full sm:w-56">
+          <Combobox<CandidateSearchMatch | null>
+            value={null}
+            onChange={(match) => {
+              if (match) {
+                void navigate(`/candidates/${match.candidate_id}`);
+              }
             }}
-            placeholder="Search by candidate name"
-            aria-label="Search candidates by name"
-            className="mt-4 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-soft focus:border-rausch focus:outline-none"
-          />
-          {matches.length > 0 ? (
-            <ComboboxOptions className="absolute z-10 mt-1 w-full overflow-hidden rounded-xl border border-line bg-white shadow-md">
-              {matches.map((match) => (
-                <ComboboxOption
-                  key={match.candidate_id}
-                  value={match}
-                  className="cursor-pointer px-3 py-2 text-sm data-focus:bg-surface"
-                >
-                  <span className="font-semibold text-ink">{match.display_name}</span>{" "}
-                  <span className="text-ink-soft">
-                    {match.party} · {match.state}
-                    {match.current_office ? <> · {match.current_office}</> : null}
-                  </span>
-                </ComboboxOption>
-              ))}
-            </ComboboxOptions>
-          ) : null}
+            immediate={false}
+          >
+            <ComboboxInput
+              type="search"
+              value={query}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                onInputChanged(event.target.value);
+              }}
+              placeholder="Search by candidate name"
+              aria-label="Search candidates by name"
+              className="w-full rounded-lg border border-line bg-white px-3 py-1.5 text-sm text-ink placeholder:text-ink-soft focus:border-rausch focus:outline-none"
+            />
+            {matches.length > 0 ? (
+              <ComboboxOptions className="absolute right-0 z-10 mt-1 w-full min-w-64 overflow-hidden rounded-xl border border-line bg-white shadow-md">
+                {matches.map((match) => (
+                  <ComboboxOption
+                    key={match.candidate_id}
+                    value={match}
+                    className="cursor-pointer px-3 py-2 text-sm data-focus:bg-surface"
+                  >
+                    <span className="font-semibold text-ink">{match.display_name}</span>{" "}
+                    <span className="text-ink-soft">
+                      {match.party} · {match.state}
+                      {match.current_office ? <> · {match.current_office}</> : null}
+                    </span>
+                  </ComboboxOption>
+                ))}
+              </ComboboxOptions>
+            ) : null}
+          </Combobox>
         </div>
-      </Combobox>
+      </div>
       {followsLoading ? <LoadingNotice text="Loading follows…" /> : null}
       {isError ? (
         <div className="mt-4">
