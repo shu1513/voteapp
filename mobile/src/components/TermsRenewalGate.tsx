@@ -7,7 +7,7 @@ import {
 } from "@voteapp/api-client";
 import { usePathname } from "expo-router";
 import { useEffect, useState } from "react";
-import { AccessibilityInfo, Modal, Pressable, Text, View } from "react-native";
+import { AccessibilityInfo, AppState, Modal, Pressable, Text, View } from "react-native";
 import { LegalGate } from "./LegalGate";
 
 /**
@@ -50,10 +50,29 @@ function acceptedVersionIsBefore(accepted: string | null, current: string): bool
  * screens are unreachable by TalkBack/VoiceOver on both platforms.
  */
 export function TermsRenewalGate() {
-  const { me } = useMe();
+  const { me, refetch } = useMe();
   const pathname = usePathname();
   const acceptTerms = useAcceptTerms();
   const [checked, setChecked] = useState(false);
+
+  const gateActive = me != null && acceptedVersionIsBefore(me.accepted_terms_version, TERMS_VERSION);
+
+  // Acceptance can also happen on the web (the escape hatch for outdated
+  // builds), but this app has no AppState bridge into React Query's focus
+  // manager, so nothing ever refetches ["me"] while the modal blocks every
+  // screen — the gate would hold a fresh web acceptance hostage until an
+  // app restart. Re-check on every return to the foreground instead.
+  useEffect(() => {
+    if (!gateActive) {
+      return;
+    }
+    const subscription = AppState.addEventListener("change", (state) => {
+      if (state === "active") {
+        void refetch();
+      }
+    });
+    return () => subscription.remove();
+  }, [gateActive, refetch]);
 
   // The component outlives sessions, so consent state must not: a box
   // checked by one user (or before a later terms bump) must never carry
@@ -87,7 +106,7 @@ export function TermsRenewalGate() {
     }
   }, [showError, errorText]);
 
-  if (!me || !acceptedVersionIsBefore(me.accepted_terms_version, TERMS_VERSION)) {
+  if (!gateActive) {
     return null;
   }
   if (pathname.startsWith("/legal/")) {
@@ -119,6 +138,18 @@ export function TermsRenewalGate() {
           {acceptTerms.isError ? (
             <Text accessibilityLiveRegion="assertive" className="mt-3 text-sm text-red-900">
               {errorText}
+            </Text>
+          ) : null}
+          {staleBuild ? (
+            // Foreground refetch covers accepting on this device's browser;
+            // this covers accepting on another device while the app never
+            // leaves the foreground.
+            <Text
+              accessibilityRole="button"
+              onPress={() => void refetch()}
+              className="mt-2 text-sm font-medium text-ink underline"
+            >
+              I&apos;ve accepted on the website — check again
             </Text>
           ) : null}
           <Pressable
