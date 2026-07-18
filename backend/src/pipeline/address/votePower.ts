@@ -52,6 +52,10 @@ export type VotePowerExplanationPart = {
   grade: string;
   stat: string | null;
   detail: string;
+  // The exact scoring formula with this election's real numbers plugged in,
+  // plus the grade cutoffs. null when the measure has no numeric input
+  // (unknown data, uncontested, the ballot-measure step).
+  formula: string | null;
 };
 
 export type VotePowerExplanation = {
@@ -75,6 +79,17 @@ export type VotePowerExplanationContext = VotePowerInput & {
   // several when it is a weighted multi-year blend (the stat must not pin a
   // blended number on a single year).
   marginElectionYears?: number[] | null;
+  // Population extremes of the district's comparison group (the same scope
+  // the loader's representation-score SQL uses) plus a human name for the
+  // group, so the formula can show the real numbers.
+  representationScope?: {
+    maxPopulation: number;
+    minPopulation: number;
+    description: string;
+  } | null;
+  // Per-contest inputs behind a weighted multi-year margin, so the formula
+  // can show the actual blend arithmetic.
+  marginContests?: { marginPercent: number; electionYear: number; weight: number }[] | null;
 };
 
 const LABELS: readonly Exclude<VotePowerLabel, "unknown">[] = ["very_low", "low", "medium", "high", "very_high"];
@@ -339,10 +354,33 @@ function formatMarginPoints(marginPercent: number): string {
   return `${Number.isInteger(rounded) ? rounded.toFixed(0) : rounded}`;
 }
 
+function formatCount(value: number): string {
+  return value.toLocaleString("en-US");
+}
+
+const REPRESENTATION_GRADE_SCALE = "grades: 66–100 high, 33–65 medium, 0–32 low";
+
+// The loader's log-scaled inverse-population model, spelled out with this
+// district's real numbers (see recomputeRepresentationPowerScores in
+// districtsLoader.ts — this string must describe that SQL faithfully).
+function representationFormula(input: {
+  representationPowerScore: number;
+  districtPopulation: number | null;
+  representationScope: { maxPopulation: number; minPopulation: number; description: string } | null;
+}): string {
+  const score = Math.floor(input.representationPowerScore);
+  if (input.districtPopulation !== null && input.representationScope !== null) {
+    const scope = input.representationScope;
+    return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest) = 100 × ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(input.districtPopulation)}) ÷ ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(scope.minPopulation)}) = ${score}, comparing ${scope.description} (${REPRESENTATION_GRADE_SCALE})`;
+  }
+  return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts) = ${score} (${REPRESENTATION_GRADE_SCALE})`;
+}
+
 function representationPart(input: {
   representationLevel: VotePowerRepresentationLevel;
   representationPowerScore: number | null;
   districtPopulation: number | null;
+  representationScope: { maxPopulation: number; minPopulation: number; description: string } | null;
 }): VotePowerExplanationPart {
   if (input.representationLevel === "unknown" || input.representationPowerScore === null) {
     return {
@@ -350,6 +388,7 @@ function representationPart(input: {
       grade: "Unknown",
       stat: null,
       detail: "We don't have a representation score for this district yet.",
+      formula: null,
     };
   }
 
@@ -369,13 +408,50 @@ function representationPart(input: {
     // the unrounded value (65.6 must not render as the high-threshold 66).
     stat: `${Math.floor(input.representationPowerScore)} out of 100`,
     detail: `${detailByLevel[input.representationLevel]}${populationSuffix}`,
+    formula: representationFormula({
+      representationPowerScore: input.representationPowerScore,
+      districtPopulation: input.districtPopulation,
+      representationScope: input.representationScope,
+    }),
   };
+}
+
+const MARGIN_GRADE_SCALE =
+  "margins: 0–2 toss-up, 2–5 very competitive, 5–10 competitive, 10–15 somewhat competitive, over 15 safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low";
+
+// The margin-to-grade pipeline with this contest's real numbers (see
+// classifyHistoricalContestMargin — this string must match its cutoffs).
+function decisivenessFormula(input: {
+  decisivenessLevel: "low" | "medium" | "high";
+  competitivenessLabel: HistoricalContestCompetitivenessLabel | null | undefined;
+  marginPercent: number | null;
+  marginContests: { marginPercent: number; electionYear: number; weight: number }[] | null;
+}): string | null {
+  if (input.marginPercent === null || input.competitivenessLabel == null) {
+    return null;
+  }
+  const labelText = input.competitivenessLabel === "toss_up" ? "toss-up" : input.competitivenessLabel.replace(/_/g, " ");
+  const contests = input.marginContests ?? [];
+  const marginExpression =
+    contests.length > 1
+      ? `margin = ${contests
+          .map((contest) => `${formatWeight(contest.weight)} × ${formatMarginPoints(contest.marginPercent)} (${contest.electionYear})`)
+          .join(" + ")} = ${formatMarginPoints(input.marginPercent)} points`
+      : `margin = ${formatMarginPoints(input.marginPercent)} points`;
+  return `${marginExpression} → "${labelText}" → grade ${input.decisivenessLevel} (${MARGIN_GRADE_SCALE})`;
+}
+
+// 0.6 -> "0.6", 0.256 -> "0.26": weights print with at most two decimals.
+function formatWeight(weight: number): string {
+  return `${Math.round(weight * 100) / 100}`;
 }
 
 function decisivenessPart(input: {
   decisivenessLevel: VotePowerDecisivenessLevel;
+  competitivenessLabel: HistoricalContestCompetitivenessLabel | null | undefined;
   marginPercent: number | null;
   marginElectionYears: number[] | null;
+  marginContests: { marginPercent: number; electionYear: number; weight: number }[] | null;
   staleAfterRedistricting: boolean;
 }): VotePowerExplanationPart {
   if (input.decisivenessLevel === "none") {
@@ -384,6 +460,7 @@ function decisivenessPart(input: {
       grade: "None",
       stat: "only 1 candidate",
       detail: "One candidate is running unopposed, so votes can't change the outcome.",
+      formula: null,
     };
   }
   if (input.decisivenessLevel === "unknown") {
@@ -392,6 +469,7 @@ function decisivenessPart(input: {
       grade: "Unknown",
       stat: null,
       detail: "No past results for this contest yet.",
+      formula: null,
     };
   }
 
@@ -411,6 +489,12 @@ function decisivenessPart(input: {
     grade: capitalize(input.decisivenessLevel),
     stat: marginStat(input.marginPercent, input.marginElectionYears),
     detail: `${detailByLevel[input.decisivenessLevel]}${staleSuffix}`,
+    formula: decisivenessFormula({
+      decisivenessLevel: input.decisivenessLevel,
+      competitivenessLabel: input.competitivenessLabel,
+      marginPercent: input.marginPercent,
+      marginContests: input.marginContests,
+    }),
   };
 }
 
@@ -452,6 +536,7 @@ function ballotMeasurePart(boostApplied: boolean): VotePowerExplanationPart {
       grade: "+1 step",
       stat: null,
       detail: "Your vote sets the policy directly, so the rating gets a one-step boost.",
+      formula: null,
     };
   }
   return {
@@ -459,6 +544,7 @@ function ballotMeasurePart(boostApplied: boolean): VotePowerExplanationPart {
     grade: "Direct vote",
     stat: null,
     detail: "Your vote sets the policy directly, but it did not raise this rating further.",
+    formula: null,
   };
 }
 
@@ -515,14 +601,17 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
       representationLevel: result.representation_level,
       representationPowerScore: normalizeRepresentationPowerScore(input.representationPowerScore),
       districtPopulation: input.districtPopulation ?? null,
+      representationScope: input.representationScope ?? null,
     }),
   ];
   if (!skipDecisiveness) {
     parts.push(
       decisivenessPart({
         decisivenessLevel: result.decisiveness_level,
+        competitivenessLabel: input.competitivenessLabel,
         marginPercent: input.marginPercent ?? null,
         marginElectionYears: input.marginElectionYears ?? null,
+        marginContests: input.marginContests ?? null,
         staleAfterRedistricting: input.staleAfterRedistricting === true,
       })
     );

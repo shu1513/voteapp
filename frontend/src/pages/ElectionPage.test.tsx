@@ -70,6 +70,9 @@ describe("ElectionPage", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Medium representation + high decisiveness → High vote power.")).toBeInTheDocument();
     expect(screen.getByText("Some data is missing.")).toBeInTheDocument();
+    // The exact formula renders when the backend provides one; the null
+    // formula on the other part must not render an empty line.
+    expect(screen.getByText("score = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50")).toBeInTheDocument();
   });
 
   it("omits the vote power explanation when the payload has none or the label is unknown", async () => {

@@ -125,6 +125,11 @@ export function ElectionPage() {
                     {part.stat ? <span className="text-ink-soft"> · {part.stat}</span> : null}
                   </p>
                   <p className="mt-1 text-xs text-ink-soft">{part.detail}</p>
+                  {part.formula ? (
+                    <p className="mt-1 break-words font-mono text-[11px] leading-relaxed text-ink-soft">
+                      {part.formula}
+                    </p>
+                  ) : null}
                 </div>
               ))}
             </div>

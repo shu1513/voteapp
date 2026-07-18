@@ -352,7 +352,8 @@ describe("explainVotePower", () => {
       representationPowerScore: 90,
       competitivenessLabel: "toss_up",
       districtPopulation: 736081,
-      marginPercent: 3.25,
+      representationScope: { maxPopulation: 39287377, minPopulation: 582397, description: "all statewide districts nationwide" },
+      marginPercent: 1.8,
       marginElectionYears: [2022],
     });
 
@@ -368,16 +369,53 @@ describe("explainVotePower", () => {
         stat: "90 out of 100",
         detail:
           "Smaller districts give each vote more weight, and this district is small for its type. About 736,081 people live here.",
+        formula:
+          "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest) = 100 × ln(39,287,377 ÷ 736,081) ÷ ln(39,287,377 ÷ 582,397) = 90, comparing all statewide districts nationwide (grades: 66–100 high, 33–65 medium, 0–32 low)",
       },
       {
         title: "Decisiveness",
         grade: "High",
-        stat: "3.3-point margin in 2022",
+        stat: "1.8-point margin in 2022",
         detail: "Past results here were very close — a small number of votes could decide the winner.",
+        formula:
+          'margin = 1.8 points → "toss-up" → grade high (margins: 0–2 toss-up, 2–5 very competitive, 5–10 competitive, 10–15 somewhat competitive, over 15 safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low)',
       },
     ]);
     expect(explanation.result).toBe("High representation + high decisiveness → Very high vote power.");
     expect(explanation.caveat).toBeNull();
+  });
+
+  it("falls back to a symbolic representation formula when scope extremes are unavailable", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 90,
+      competitivenessLabel: null,
+      districtPopulation: 736081,
+    });
+
+    expect(explanation.parts[0]?.formula).toBe(
+      "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts) = 90 (grades: 66–100 high, 33–65 medium, 0–32 low)"
+    );
+  });
+
+  it("shows the weighted blend arithmetic in the decisiveness formula", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 50,
+      competitivenessLabel: "somewhat_competitive",
+      marginPercent: 11.45,
+      marginElectionYears: [2024, 2022],
+      marginContests: [
+        { marginPercent: 9.2, electionYear: 2024, weight: 0.6 },
+        { marginPercent: 14.8, electionYear: 2022, weight: 0.4 },
+      ],
+    });
+
+    expect(explanation.parts[1]?.formula).toBe(
+      'margin = 0.6 × 9.2 (2024) + 0.4 × 14.8 (2022) = 11.5 points → "somewhat competitive" → grade medium (margins: 0–2 toss-up, 2–5 very competitive, 5–10 competitive, 10–15 somewhat competitive, over 15 safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low)'
+    );
   });
 
   it("floors the representation stat so the displayed number stays in the grade's bucket", () => {
@@ -452,6 +490,7 @@ describe("explainVotePower", () => {
       grade: "None",
       stat: "only 1 candidate",
       detail: "One candidate is running unopposed, so votes can't change the outcome.",
+      formula: null,
     });
     expect(explanation.result).toBe("High representation + an uncontested race → Low vote power.");
   });
@@ -487,6 +526,7 @@ describe("explainVotePower", () => {
       grade: "+1 step",
       stat: null,
       detail: "Your vote sets the policy directly, so the rating gets a one-step boost.",
+      formula: null,
     });
     expect(explanation.result).toBe("High representation + a ballot-measure boost → Very high vote power.");
     expect(explanation.caveat).toBeNull();
@@ -521,6 +561,7 @@ describe("explainVotePower", () => {
       grade: "Direct vote",
       stat: null,
       detail: "Your vote sets the policy directly, but it did not raise this rating further.",
+      formula: null,
     });
     expect(explanation.result).toBe("High representation + high decisiveness → Very high vote power.");
   });
@@ -552,6 +593,7 @@ describe("explainVotePower", () => {
       grade: "Unknown",
       stat: null,
       detail: "No past results for this contest yet.",
+      formula: null,
     });
     expect(explanation.result).toBe("High representation + unknown decisiveness → High vote power.");
     expect(explanation.caveat).toContain("partial information");
@@ -571,12 +613,14 @@ describe("explainVotePower", () => {
         grade: "Unknown",
         stat: null,
         detail: "We don't have a representation score for this district yet.",
+        formula: null,
       },
       {
         title: "Decisiveness",
         grade: "Unknown",
         stat: null,
         detail: "No past results for this contest yet.",
+        formula: null,
       },
     ]);
     expect(explanation.result).toBe("Not enough data → no rating yet.");

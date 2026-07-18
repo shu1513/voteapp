@@ -1336,6 +1336,9 @@ describe("lookupElectionDetailById", () => {
             state: "CA",
             state_fips: "06",
             representation_power_score: "64.25",
+            population: "104650",
+            scope_max_population: "9808667",
+            scope_min_population: "1204",
             race_type: "office",
             official_ballot_title: "Sheriff",
             election_date: "2026-06-02",
@@ -1483,13 +1486,17 @@ describe("lookupElectionDetailById", () => {
               title: "Representation",
               grade: "Medium",
               stat: "64 out of 100",
-              detail: "This district is mid-sized for its type, so each vote carries average weight.",
+              detail:
+                "This district is mid-sized for its type, so each vote carries average weight. About 104,650 people live here.",
+              formula:
+                "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest) = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 64, comparing counties in CA (grades: 66–100 high, 33–65 medium, 0–32 low)",
             },
             {
               title: "Decisiveness",
               grade: "None",
               stat: "only 1 candidate",
               detail: "One candidate is running unopposed, so votes can't change the outcome.",
+              formula: null,
             },
           ],
           result: "Medium representation + an uncontested race → Low vote power.",
