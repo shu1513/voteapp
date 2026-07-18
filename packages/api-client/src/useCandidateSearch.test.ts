@@ -75,6 +75,26 @@ describe("useCandidateSearch", () => {
     expect(result.current.matches).toEqual([]);
   });
 
+  it("drops already-loaded suggestions the moment the input changes", async () => {
+    apiRequestMock.mockResolvedValue({ candidates: [MATCH] });
+    const { result } = renderHook(() => useCandidateSearch());
+
+    act(() => {
+      result.current.onInputChanged("jo");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(CANDIDATE_SEARCH_DEBOUNCE_MS + 10);
+    });
+    expect(result.current.matches).toEqual([MATCH]);
+
+    // Loaded "jo" results must not stay selectable under "alex" during the
+    // debounce + network window.
+    act(() => {
+      result.current.onInputChanged("alex");
+    });
+    expect(result.current.matches).toEqual([]);
+  });
+
   it("ignores an in-flight response once the input has changed again", async () => {
     let resolveFirst: (value: unknown) => void = () => {};
     apiRequestMock.mockImplementationOnce(

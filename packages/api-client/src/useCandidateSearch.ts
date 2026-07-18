@@ -59,16 +59,16 @@ export function useCandidateSearch(): UseCandidateSearchResult {
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
-      // Every keystroke invalidates whatever is in flight: without this, a
-      // request for the previous text can resolve during the debounce window
-      // and show stale suggestions. Existing matches stay visible until the
-      // new results land — clearing here would flicker the dropdown shut on
-      // each keystroke.
+      // Every keystroke invalidates whatever is in flight AND whatever is on
+      // screen: a request for the previous text must not resolve into the
+      // dropdown, and already-loaded suggestions for the previous text must
+      // not stay selectable under an input they no longer match. The dropdown
+      // simply stays closed until results for the current text land.
       abortRef.current?.abort();
       requestSeqRef.current += 1;
+      setMatches([]);
       const trimmed = text.trim();
       if (trimmed.length < CANDIDATE_SEARCH_MIN_CHARS) {
-        setMatches([]);
         return;
       }
       debounceRef.current = setTimeout(() => {
