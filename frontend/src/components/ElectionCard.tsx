@@ -140,7 +140,6 @@ function ElectionCard({
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {election.followed_candidates && election.followed_candidates.length > 0 ? (
             <span className="rounded bg-green-600 px-2 py-0.5 font-medium text-white">
-              Your followed candidate{election.followed_candidates.length === 1 ? "" : "s"}{" "}
               {election.followed_candidates.map((candidate) => candidate.display_name).join(", ")}{" "}
               {election.followed_candidates.length === 1 ? "is" : "are"} running
             </span>
