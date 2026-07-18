@@ -969,12 +969,15 @@ describe("createApiApp", () => {
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
-  it("rejects candidate search without a query", async () => {
+  it.each([
+    ["blank", "/api/candidates/search?q=%20"],
+    ["single-character", "/api/candidates/search?q=h"],
+  ])("rejects a %s candidate search query", async (_label, path) => {
     const searchCandidates = vi.fn();
 
     const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn(), searchCandidates }), {
       method: "GET",
-      path: "/api/candidates/search?q=%20",
+      path,
     });
 
     expect(response.statusCode).toBe(400);

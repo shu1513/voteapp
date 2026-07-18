@@ -83,6 +83,61 @@ describe("FollowsPage", () => {
     expect(screen.getByRole("status")).toHaveTextContent("No followed candidates match “nobody”.");
   });
 
+  it("offers candidate search to users with zero follows", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/candidates/search": {
+        body: {
+          candidates: [
+            {
+              candidate_id: "33333333-3333-4333-8333-333333333333",
+              display_name: "Hilary Brown",
+              party: "Independent",
+              state: "CA",
+              current_office: null,
+            },
+          ],
+        },
+      },
+    });
+    const user = userEvent.setup();
+    renderFollows();
+
+    expect(await screen.findByText(/You aren't following anyone yet/)).toBeInTheDocument();
+    await user.type(screen.getByRole("combobox", { name: "Search candidates by name" }), "hilar");
+    expect(await screen.findByRole("option", { name: /Hilary Brown/ })).toBeInTheDocument();
+  });
+
+  it("closes the suggestion dropdown on Escape", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [candidateFollow()] } },
+      "/api/candidates/search": {
+        body: {
+          candidates: [
+            {
+              candidate_id: "33333333-3333-4333-8333-333333333333",
+              display_name: "Hilary Brown",
+              party: "Independent",
+              state: "CA",
+              current_office: null,
+            },
+          ],
+        },
+      },
+    });
+    const user = userEvent.setup();
+    renderFollows();
+
+    expect(await screen.findByText("Jordan Voter")).toBeInTheDocument();
+    await user.type(screen.getByRole("combobox", { name: "Search candidates by name" }), "hilar");
+    expect(await screen.findByRole("option", { name: /Hilary Brown/ })).toBeInTheDocument();
+
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("option")).not.toBeInTheDocument();
+  });
+
   it("suggests candidates from the whole database and navigates on pick", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },

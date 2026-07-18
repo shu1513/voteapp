@@ -719,12 +719,16 @@ export function parseDistrictIds(url: URL): string[] {
   return districtIds;
 }
 
+// Matches the client hook's CANDIDATE_SEARCH_MIN_CHARS: the endpoint is
+// public and runs an unindexed scan, so single-character sweeps are refused
+// server-side too.
+const MIN_CANDIDATE_SEARCH_QUERY_LENGTH = 2;
 const MAX_CANDIDATE_SEARCH_QUERY_LENGTH = 100;
 
 export function parseCandidateSearchQuery(url: URL): string {
   const query = (url.searchParams.get("q") ?? "").trim();
-  if (query.length === 0) {
-    throw new TypeError("Query parameter q must not be empty");
+  if (query.length < MIN_CANDIDATE_SEARCH_QUERY_LENGTH) {
+    throw new TypeError(`Query parameter q requires at least ${MIN_CANDIDATE_SEARCH_QUERY_LENGTH} characters`);
   }
   if (query.length > MAX_CANDIDATE_SEARCH_QUERY_LENGTH) {
     throw new TypeError(`Query parameter q supports at most ${MAX_CANDIDATE_SEARCH_QUERY_LENGTH} characters`);

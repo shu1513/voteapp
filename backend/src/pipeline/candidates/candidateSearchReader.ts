@@ -35,6 +35,12 @@ type CandidateSearchRow = {
  * Name typeahead: case-insensitive substring match on the same coalesced
  * display name the candidate detail endpoint serves. Prefix matches sort
  * first so "Hilar" ranks "Hilary …" above "Ann Hilary …".
+ *
+ * Deliberately unindexed: the leading-wildcard ILIKE seq-scans the table,
+ * measured at ~7ms over 9.2k candidates (EXPLAIN ANALYZE, 2026-07), behind a
+ * debounced client and the global rate limiter. If the table grows enough to
+ * hurt, add a pg_trgm GIN expression index on the exact COALESCE expression
+ * below rather than reaching for a heavier search stack.
  */
 export async function searchCandidatesByName(db: Queryable, query: string): Promise<CandidateSearchResult> {
   const trimmed = query.trim();

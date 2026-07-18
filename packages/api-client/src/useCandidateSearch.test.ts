@@ -75,6 +75,36 @@ describe("useCandidateSearch", () => {
     expect(result.current.matches).toEqual([]);
   });
 
+  it("ignores an in-flight response once the input has changed again", async () => {
+    let resolveFirst: (value: unknown) => void = () => {};
+    apiRequestMock.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveFirst = resolve;
+        })
+    );
+    const { result } = renderHook(() => useCandidateSearch());
+
+    act(() => {
+      result.current.onInputChanged("jo");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(CANDIDATE_SEARCH_DEBOUNCE_MS + 10);
+    });
+    expect(apiRequestMock).toHaveBeenCalledTimes(1);
+
+    // New keystroke while the "jo" request is still in flight: its late
+    // response must not surface stale suggestions during the debounce window.
+    act(() => {
+      result.current.onInputChanged("alex");
+    });
+    await act(async () => {
+      resolveFirst({ candidates: [MATCH] });
+      await Promise.resolve();
+    });
+    expect(result.current.matches).toEqual([]);
+  });
+
   it("hides the dropdown on request failure", async () => {
     apiRequestMock.mockRejectedValue(new Error("network down"));
     const { result } = renderHook(() => useCandidateSearch());
