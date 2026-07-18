@@ -3,13 +3,20 @@ import { describe, expect, it } from "vitest";
 import {
   SWEEP_COMPLETENESS_GAP_IDS,
   SWEEP_EVIDENCE_MIN_ENTRIES,
+  SWEEP_ROUTE_QUESTION_IDS,
   assertedSweepCompletenessGapIds,
   deleteSweepCompletenessConfirmation,
   deleteSweepConfirmation,
+  enforceSweepRouteCoverage,
+  hasHeldPublicOfficeContradiction,
+  listMissingSweepRouteQuestionIds,
   parseSweepEvidencePayload,
+  persistHasHeldPublicOfficeAnswer,
+  resolveSweepRoute,
   retainSuppliedSweepEvidence,
   sweepEvidenceRequired,
   upsertSweepConfirmation,
+  type SweepEvidenceEntry,
 } from "../../src/scripts/candidateRecordSweepEvidence.js";
 import { isConfirmedNull } from "../../src/scripts/auditCandidateRecordsCompleteness.js";
 import { buildCandidateRecordQualityGaps } from "../../src/scripts/writeManualCandidateRecords.js";
@@ -140,6 +147,306 @@ describe("parseSweepEvidencePayload", () => {
       expect(result.entries[1].finding).toBe("HB 123 signed 2024-05-02");
     }
   });
+
+  it("parses question_id tags and defaults untagged entries to null", () => {
+    const result = parseSweepEvidencePayload({
+      entries: [
+        { question: "Career record?", finding: "founded a bakery 2019-03-02", question_id: "career" },
+        { question: "Endorsements?", finding: "nothing found", question_id: "endorsements" },
+        { question: "Official archive scan", finding: "no archive exists" },
+      ],
+    });
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.entries.map((entry) => entry.questionId)).toEqual([
+        "career",
+        "endorsements",
+        null,
+      ]);
+    }
+  });
+
+  it("rejects an unknown question_id", () => {
+    const result = parseSweepEvidencePayload({
+      entries: [
+        { question: "Career record?", finding: "nothing found", question_id: "resume" },
+        { question: "Endorsements?", finding: "nothing found" },
+        { question: "Court records?", finding: "nothing found" },
+      ],
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain("entries[0].question_id must be one of");
+    }
+  });
+
+  it("parses a top-level has_held_public_office answer (absent means null)", () => {
+    const withAnswer = parseSweepEvidencePayload({
+      has_held_public_office: false,
+      entries: validEntries,
+    });
+    expect(withAnswer.ok).toBe(true);
+    if (withAnswer.ok) {
+      expect(withAnswer.hasHeldPublicOffice).toBe(false);
+    }
+    const withoutAnswer = parseSweepEvidencePayload({ entries: validEntries });
+    expect(withoutAnswer.ok).toBe(true);
+    if (withoutAnswer.ok) {
+      expect(withoutAnswer.hasHeldPublicOffice).toBeNull();
+    }
+  });
+
+  it("rejects a non-boolean has_held_public_office", () => {
+    const result = parseSweepEvidencePayload({
+      has_held_public_office: "yes",
+      entries: validEntries,
+    });
+    expect(result).toEqual({
+      ok: false,
+      reason: "evidence payload.has_held_public_office must be a boolean when present",
+    });
+  });
+});
+
+describe("resolveSweepRoute", () => {
+  it("routes judicial contests from the contest family alone", () => {
+    const result = resolveSweepRoute({
+      discoveryContestFamily: "judicial_office",
+      candidateHasHeldPublicOffice: null,
+      evidenceHasHeldPublicOffice: null,
+    });
+    expect(result).toEqual({ ok: true, route: "judicial", persistHasHeldPublicOffice: null });
+  });
+
+  it("routes from the stored column when set", () => {
+    const result = resolveSweepRoute({
+      discoveryContestFamily: "non_judicial_office",
+      candidateHasHeldPublicOffice: true,
+      evidenceHasHeldPublicOffice: null,
+    });
+    expect(result).toEqual({ ok: true, route: "officeholder", persistHasHeldPublicOffice: null });
+  });
+
+  it("falls back to the evidence answer and marks it for persistence", () => {
+    const result = resolveSweepRoute({
+      discoveryContestFamily: null,
+      candidateHasHeldPublicOffice: null,
+      evidenceHasHeldPublicOffice: false,
+    });
+    expect(result).toEqual({
+      ok: true,
+      route: "never_held_office",
+      persistHasHeldPublicOffice: false,
+    });
+  });
+
+  it("does not re-persist when the column already holds the answer", () => {
+    const result = resolveSweepRoute({
+      discoveryContestFamily: null,
+      candidateHasHeldPublicOffice: false,
+      evidenceHasHeldPublicOffice: false,
+    });
+    expect(result).toEqual({
+      ok: true,
+      route: "never_held_office",
+      persistHasHeldPublicOffice: null,
+    });
+  });
+
+  it("refuses a contradiction between the column and the evidence file", () => {
+    const result = resolveSweepRoute({
+      discoveryContestFamily: "non_judicial_office",
+      candidateHasHeldPublicOffice: true,
+      evidenceHasHeldPublicOffice: false,
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain("has_held_public_office=false");
+      expect(result.reason).toContain("candidates.has_held_public_office=true");
+    }
+  });
+
+  it("refuses to route a non-judicial sweep with no officeholder answer anywhere", () => {
+    const result = resolveSweepRoute({
+      discoveryContestFamily: "non_judicial_office",
+      candidateHasHeldPublicOffice: null,
+      evidenceHasHeldPublicOffice: null,
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain('"has_held_public_office": true|false');
+    }
+  });
+
+  it("still persists the officeholder answer on a judicial contest when the column is NULL", () => {
+    const result = resolveSweepRoute({
+      discoveryContestFamily: "judicial_office",
+      candidateHasHeldPublicOffice: null,
+      evidenceHasHeldPublicOffice: true,
+    });
+    expect(result).toEqual({ ok: true, route: "judicial", persistHasHeldPublicOffice: true });
+  });
+});
+
+describe("hasHeldPublicOfficeContradiction", () => {
+  it("is silent when either side is unknown or they agree", () => {
+    expect(
+      hasHeldPublicOfficeContradiction({
+        candidateHasHeldPublicOffice: null,
+        evidenceHasHeldPublicOffice: false,
+      })
+    ).toBeNull();
+    expect(
+      hasHeldPublicOfficeContradiction({
+        candidateHasHeldPublicOffice: true,
+        evidenceHasHeldPublicOffice: null,
+      })
+    ).toBeNull();
+    expect(
+      hasHeldPublicOfficeContradiction({
+        candidateHasHeldPublicOffice: true,
+        evidenceHasHeldPublicOffice: true,
+      })
+    ).toBeNull();
+  });
+
+  it("names both values when they disagree", () => {
+    const reason = hasHeldPublicOfficeContradiction({
+      candidateHasHeldPublicOffice: true,
+      evidenceHasHeldPublicOffice: false,
+    });
+    expect(reason).toContain("has_held_public_office=false");
+    expect(reason).toContain("candidates.has_held_public_office=true");
+  });
+});
+
+describe("enforceSweepRouteCoverage", () => {
+  const neverHeldEntries = SWEEP_ROUTE_QUESTION_IDS.never_held_office.map((id, index) => ({
+    question: `question ${index}?`,
+    finding: "nothing found",
+    questionId: id,
+  }));
+
+  it("returns the route and persistence answer for a covered sweep", () => {
+    expect(
+      enforceSweepRouteCoverage({
+        discoveryContestFamily: "non_judicial_office",
+        candidateHasHeldPublicOffice: null,
+        evidenceHasHeldPublicOffice: false,
+        entries: neverHeldEntries,
+      })
+    ).toEqual({ route: "never_held_office", persistHasHeldPublicOffice: false });
+  });
+
+  it("throws the routing error when unroutable", () => {
+    expect(() =>
+      enforceSweepRouteCoverage({
+        discoveryContestFamily: null,
+        candidateHasHeldPublicOffice: null,
+        evidenceHasHeldPublicOffice: null,
+        entries: neverHeldEntries,
+      })
+    ).toThrow(/Sweep evidence routing failed/);
+  });
+
+  it("throws the coverage error naming the missing question ids", () => {
+    expect(() =>
+      enforceSweepRouteCoverage({
+        discoveryContestFamily: null,
+        candidateHasHeldPublicOffice: false,
+        evidenceHasHeldPublicOffice: null,
+        entries: neverHeldEntries.slice(1),
+      })
+    ).toThrow(/missing question_id career/);
+  });
+});
+
+describe("persistHasHeldPublicOfficeAnswer", () => {
+  function clientWith(handlers: {
+    updateRowCount: number;
+    storedValue?: boolean | null;
+  }) {
+    const calls: { text: string; values: unknown[] }[] = [];
+    return {
+      calls,
+      client: {
+        query: async (text: string, values?: unknown[]) => {
+          calls.push({ text, values: values ?? [] });
+          if (text.includes("UPDATE public.candidates")) {
+            return { rows: [], rowCount: handlers.updateRowCount } as never;
+          }
+          return {
+            rows: [{ has_held_public_office: handlers.storedValue ?? null }],
+            rowCount: 1,
+          } as never;
+        },
+      },
+    };
+  }
+
+  it("updates the NULL column and skips the re-read", async () => {
+    const { calls, client } = clientWith({ updateRowCount: 1 });
+    await persistHasHeldPublicOfficeAnswer(client as never, "candidate-1", true);
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.text).toContain("has_held_public_office IS NULL");
+    expect(calls[0]!.values).toEqual(["candidate-1", true]);
+  });
+
+  it("accepts a concurrent write that persisted the SAME answer", async () => {
+    const { calls, client } = clientWith({ updateRowCount: 0, storedValue: true });
+    await persistHasHeldPublicOfficeAnswer(client as never, "candidate-1", true);
+    expect(calls).toHaveLength(2);
+  });
+
+  it("throws when a concurrent write persisted the OPPOSITE answer", async () => {
+    const { client } = clientWith({ updateRowCount: 0, storedValue: false });
+    await expect(
+      persistHasHeldPublicOfficeAnswer(client as never, "candidate-1", true)
+    ).rejects.toThrow(/concurrent write landed first/);
+  });
+});
+
+describe("listMissingSweepRouteQuestionIds", () => {
+  const entry = (questionId: string | null, question: string): SweepEvidenceEntry => ({
+    question,
+    finding: "nothing found",
+    questionId,
+  });
+
+  it("passes a never-held sweep that tags every route question", () => {
+    const entries = SWEEP_ROUTE_QUESTION_IDS.never_held_office.map((id, index) =>
+      entry(id, `question ${index}?`)
+    );
+    expect(listMissingSweepRouteQuestionIds(entries, "never_held_office")).toEqual([]);
+  });
+
+  it("reports the untagged career question the 2026-07-15 templates skipped", () => {
+    const entries = [
+      entry("orgs_advocacy", "Organizations/committees/advocacy?"),
+      entry("court_legal", "Court, ethics, or regulatory proceedings?"),
+      entry("endorsements", "Endorsements made/received?"),
+      entry(null, "Major official actions / roll-call votes / sponsored legislation?"),
+    ];
+    expect(listMissingSweepRouteQuestionIds(entries, "never_held_office")).toEqual(["career"]);
+  });
+
+  it("counts era-split entries tagged with the same id once and ignores extras", () => {
+    const entries = [
+      entry("cases", "Notable cases (pre-bench era)?"),
+      entry("cases", "Notable cases (on the bench)?"),
+      entry("discipline", "Any discipline or reversals?"),
+      entry("endorsements", "Endorsements?"),
+      entry(null, "Official archive scan"),
+    ];
+    expect(listMissingSweepRouteQuestionIds(entries, "judicial")).toEqual([]);
+  });
+
+  it("requires every officeholder question, including executive, even for legislators", () => {
+    const entries = SWEEP_ROUTE_QUESTION_IDS.officeholder
+      .filter((id) => id !== "executive")
+      .map((id, index) => entry(id, `question ${index}?`));
+    expect(listMissingSweepRouteQuestionIds(entries, "officeholder")).toEqual(["executive"]);
+  });
 });
 
 describe("neutral-only writes trigger the evidence guard via quality gaps", () => {
@@ -217,9 +524,9 @@ describe("upsertSweepConfirmation", () => {
       candidateId: "candidate-1",
       confirmedGapIds: ["candidate_records.no_records_found"],
       entries: [
-        { question: "votes?", finding: "nothing found" },
-        { question: "litigation?", finding: "nothing found" },
-        { question: "endorsements?", finding: "nothing found" },
+        { question: "votes?", finding: "nothing found", questionId: "rollcalls" },
+        { question: "litigation?", finding: "nothing found", questionId: "proceedings" },
+        { question: "endorsements?", finding: "nothing found", questionId: null },
       ],
       contextType: "election",
       contextId: "election-1",
@@ -230,10 +537,12 @@ describe("upsertSweepConfirmation", () => {
     expect(calls[0]!.text).toContain("ON CONFLICT (candidate_id)");
     expect(calls[0]!.values[0]).toBe("candidate-1");
     expect(calls[0]!.values[1]).toEqual(["candidate_records.no_records_found"]);
+    // Stored entries mirror the evidence-file contract: snake_case
+    // question_id, omitted entirely on untagged entries.
     expect(JSON.parse(calls[0]!.values[2] as string)).toEqual({
       entries: [
-        { question: "votes?", finding: "nothing found" },
-        { question: "litigation?", finding: "nothing found" },
+        { question: "votes?", finding: "nothing found", question_id: "rollcalls" },
+        { question: "litigation?", finding: "nothing found", question_id: "proceedings" },
         { question: "endorsements?", finding: "nothing found" },
       ],
     });
@@ -254,9 +563,9 @@ describe("upsertSweepConfirmation", () => {
       candidateId: "candidate-1",
       confirmedGapIds: [],
       entries: [
-        { question: "votes?", finding: "HB 9 veto override" },
-        { question: "litigation?", finding: "nothing found" },
-        { question: "endorsements?", finding: "endorsed by union local 12" },
+        { question: "votes?", finding: "HB 9 veto override", questionId: "rollcalls" },
+        { question: "litigation?", finding: "nothing found", questionId: "proceedings" },
+        { question: "endorsements?", finding: "endorsed by union local 12", questionId: "endorsements" },
       ],
       contextType: "election",
       contextId: "election-1",

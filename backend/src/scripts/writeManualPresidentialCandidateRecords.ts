@@ -33,11 +33,14 @@ import {
   SWEEP_COMPLETENESS_GAP_IDS,
   assertedSweepCompletenessGapIds,
   deleteSweepConfirmation,
+  enforceSweepRouteCoverage,
   parseSweepEvidencePayload,
+  persistHasHeldPublicOfficeAnswer,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
   upsertSweepConfirmation,
   type SweepEvidenceEntry,
+  type SweepRoute,
 } from "./candidateRecordSweepEvidence.js";
 import {
   buildManualResearchRepairReport,
@@ -67,8 +70,10 @@ function usage(): string {
     "  npm run manual:presidential-records:write -- --candidate-id uuid --presidential-cycle-id uuid --presidential-role president|vice_president --records-file records.json --labels-file labels.json [--strict-quality-gate] [--confirmed-gap id] [--evidence-file evidence.json] [--repair-report-file file] [--dry-run]",
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
-    'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
+    'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "...", "question_id": "..."}, ...]}.',
     "A supplied --evidence-file on a stance-bearing write is persisted too (candidate_record_sweep_confirmations with an empty claim set), so keep supplying the ledger — the output reports sweepEvidence.persisted (dry-run: wouldPersist).",
+    "",
+    "Every ledger here is a full-history claim and must COVER its route's question list via question_id tags (presidential contests are never judicial): officeholders (has EVER held public office) need rollcalls, sponsorship, executive, proceedings, leadership, outside_chamber, endorsements; never-held candidates need career, orgs_advocacy, court_legal, endorsements. Routing reads candidates.has_held_public_office; when NULL the evidence file must carry a top-level \"has_held_public_office\": true|false, which the write persists.",
   ].join("\n");
 }
 
@@ -458,17 +463,37 @@ async function main(): Promise<void> {
     // stance-bearing case), mirroring manual:candidate-records:write.
     let sweepEvidenceEntries: SweepEvidenceEntry[] | null = null;
     let sweepEvidenceEntryCount: number | null = null;
+    let evidenceHasHeldPublicOffice: boolean | null = null;
     if (options.evidenceFile) {
       const parsedEvidence = parseSweepEvidencePayload(await readJsonFile(options.evidenceFile));
       if (!parsedEvidence.ok) {
         throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
       }
       sweepEvidenceEntryCount = parsedEvidence.entries.length;
+      evidenceHasHeldPublicOffice = parsedEvidence.hasHeldPublicOffice;
       sweepEvidenceEntries = parsedEvidence.entries;
     } else if (evidenceIsRequired) {
       throw sweepEvidenceMissingError("presidential-records");
     }
     const sweepEvidencePersisted = sweepEvidenceEntries !== null;
+
+    // Route-coverage gate, mirroring manual:candidate-records:write: every
+    // ledger here is a full-history claim, so it must be routed and cover
+    // its route's question list. Presidential contests are never judicial —
+    // the loader hardcodes discoveryContestFamily null — so routing always
+    // comes down to the has-EVER-held-public-office answer.
+    let sweepRoute: SweepRoute | null = null;
+    let persistHasHeldPublicOffice: boolean | null = null;
+    if (sweepEvidenceEntries) {
+      const coverage = enforceSweepRouteCoverage({
+        discoveryContestFamily: context.discoveryContestFamily,
+        candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
+        evidenceHasHeldPublicOffice,
+        entries: sweepEvidenceEntries,
+      });
+      sweepRoute = coverage.route;
+      persistHasHeldPublicOffice = coverage.persistHasHeldPublicOffice;
+    }
 
     if (options.repairReportFile && qualityGaps.length > 0) {
       await writeRecordsRepairReport({
@@ -510,9 +535,11 @@ async function main(): Promise<void> {
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
+              route: sweepRoute,
               // Plan language: --dry-run writes nothing, so a past-tense
               // `persisted` here would be factually wrong for JSON consumers.
               wouldPersist: sweepEvidencePersisted,
+              wouldPersistHasHeldPublicOffice: persistHasHeldPublicOffice,
             },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },
@@ -581,6 +608,12 @@ async function main(): Promise<void> {
         validation.normalized,
         researchAreaIdBySlug
       );
+      // First evidence-backed routing answer for this candidate: persist it
+      // inside the transaction (throws on a concurrent opposite answer,
+      // rolling back the confirmation with it).
+      if (persistHasHeldPublicOffice !== null) {
+        await persistHasHeldPublicOfficeAnswer(client, options.candidateId, persistHasHeldPublicOffice);
+      }
       // Persist the validated confirmation so manual:records:audit can
       // separate an evidence-backed sweep (confirmed null OR stance-bearing
       // with an empty claim set) from a skipped one.
@@ -622,7 +655,9 @@ async function main(): Promise<void> {
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
+              route: sweepRoute,
               persisted: sweepEvidencePersisted,
+              persistedHasHeldPublicOffice: persistHasHeldPublicOffice,
             },
           },
           null,

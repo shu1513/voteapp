@@ -34,13 +34,17 @@ import {
   SWEEP_COMPLETENESS_GAP_IDS,
   assertedSweepCompletenessGapIds,
   deleteSweepCompletenessConfirmation,
+  enforceSweepRouteCoverage,
+  hasHeldPublicOfficeContradiction,
   parseSweepEvidencePayload,
+  persistHasHeldPublicOfficeAnswer,
   refreshSweepConfirmationTimestamp,
   retainSuppliedSweepEvidence,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
   upsertSweepConfirmation,
   type SweepEvidenceEntry,
+  type SweepRoute,
 } from "./candidateRecordSweepEvidence.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
@@ -51,8 +55,10 @@ function usage(): string {
     "  npm run manual:candidate-records:write -- --candidate-id uuid --election-id uuid --records-file records.json --labels-file labels.json [--since-date YYYY-MM-DD] [--strict-quality-gate] [--confirmed-gap id] [--evidence-file evidence.json] [--repair-report-file file] [--dry-run]",
     "",
     "records.json must match CandidateRecordDiscoveryPayload. labels.json must match CandidateRecordAreaLabelPayload.",
-    'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "..."}, ...]}.',
+    'A zero-record payload, an all-neutral (general/integrity_and_ethics-only) label set, --confirmed-gap candidate_records.no_records_found, or --confirmed-gap candidate_records.only_general_labels asserts a FINISHED discovery sweep — in any mode, strict or not — and requires --evidence-file with the per-question evidence table: {"entries": [{"question": "...", "finding": "...", "question_id": "..."}, ...]}.',
     "A supplied --evidence-file on a stance-bearing FULL-history write is persisted too (candidate_record_sweep_confirmations with an empty claim set), so keep supplying the ledger — the output reports sweepEvidence.persisted (dry-run: wouldPersist).",
+    "",
+    "Every full-history ledger must COVER its route's question list via question_id tags: judicial contests (discovery_contest_family=judicial_office) need cases, discipline, endorsements; officeholders (has EVER held public office) need rollcalls, sponsorship, executive, proceedings, leadership, outside_chamber, endorsements; never-held candidates need career, orgs_advocacy, court_legal, endorsements. Era-split sweeps tag several entries with the same question_id; extra entries (archive scans, office-area follow-ups) omit it. Non-judicial routing reads candidates.has_held_public_office; when that column is NULL the evidence file must carry a top-level \"has_held_public_office\": true|false, which the write persists.",
     "",
     "--since-date runs a DELTA (windowed) refresh: it must be on/before the candidate's last_records_researched_through checkpoint (later would skip dates forever), and every record must have event_date >= since-date (out-of-window rows are an error, not a silent drop — remove them and their labels so indices stay aligned). Delta mode makes no full-history claims: the no_records_found / only_general_labels quality gaps are skipped and ALL --confirmed-gap flags are disallowed. A zero-record delta write still requires --evidence-file with the WINDOW-scoped per-question evidence table.",
   ].join("\n");
@@ -660,12 +666,14 @@ async function main(): Promise<void> {
     // external — window evidence cannot back a full-history claim.
     let sweepEvidenceEntries: SweepEvidenceEntry[] | null = null;
     let sweepEvidenceEntryCount: number | null = null;
+    let evidenceHasHeldPublicOffice: boolean | null = null;
     if (evidenceFile) {
       const parsedEvidence = parseSweepEvidencePayload(await readJsonFile(evidenceFile));
       if (!parsedEvidence.ok) {
         throw new Error(`Sweep evidence file failed validation: ${parsedEvidence.reason}`);
       }
       sweepEvidenceEntryCount = parsedEvidence.entries.length;
+      evidenceHasHeldPublicOffice = parsedEvidence.hasHeldPublicOffice;
       if (
         retainSuppliedSweepEvidence({
           evidenceRequired: evidenceIsRequired,
@@ -682,6 +690,37 @@ async function main(): Promise<void> {
     // delta zero-record path only refreshes a prior confirmation, so its
     // window ledger is not persisted.
     const sweepEvidencePersisted = sweepEvidenceEntries !== null && sinceDate === null;
+
+    // Route-coverage gate: a full-history ledger asserts the candidate's
+    // whole question list was worked, so it must be routed (officeholder /
+    // never-held / judicial) and every route question id must be tagged on
+    // at least one entry. This is what stops the 2026-07-15 failure class —
+    // a generic officeholder-framed template confirmed first-time candidates
+    // record-less without the career question ever being asked. Delta window
+    // ledgers are exempt from coverage (they assert only their window and
+    // never persist), but a routing answer they carry must still not
+    // contradict the stored column — silence there would hide a research
+    // conflict from the operator.
+    let sweepRoute: SweepRoute | null = null;
+    let persistHasHeldPublicOffice: boolean | null = null;
+    if (sweepEvidencePersisted && sweepEvidenceEntries) {
+      const coverage = enforceSweepRouteCoverage({
+        discoveryContestFamily: context.discoveryContestFamily,
+        candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
+        evidenceHasHeldPublicOffice,
+        entries: sweepEvidenceEntries,
+      });
+      sweepRoute = coverage.route;
+      persistHasHeldPublicOffice = coverage.persistHasHeldPublicOffice;
+    } else if (sinceDate !== null) {
+      const contradiction = hasHeldPublicOfficeContradiction({
+        candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
+        evidenceHasHeldPublicOffice,
+      });
+      if (contradiction !== null) {
+        throw new Error(`Sweep evidence routing failed: ${contradiction}`);
+      }
+    }
 
     if (repairReportFile && qualityGaps.length > 0) {
       await writeRecordsRepairReport({
@@ -725,9 +764,11 @@ async function main(): Promise<void> {
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
+              route: sweepRoute,
               // Plan language: --dry-run writes nothing, so a past-tense
               // `persisted` here would be factually wrong for JSON consumers.
               wouldPersist: sweepEvidencePersisted,
+              wouldPersistHasHeldPublicOffice: persistHasHeldPublicOffice,
             },
             allowedResearchAreaSlugs: [...allowedSlugs].sort(),
           },
@@ -815,6 +856,14 @@ async function main(): Promise<void> {
       // western-timezone writes).
       const researchedThrough = usLatestLocalDateIso();
       await markCandidateRecordsSearchCompleted(client, candidateId, researchedThrough, { preserveClaim: true });
+      // First evidence-backed routing answer for this candidate: persist it
+      // so the next sweep (manual or AI) routes from the database instead of
+      // re-deriving officeholder status. Throws (rolling back the whole
+      // write, confirmation included) if a concurrent write set the column
+      // to the opposite answer after this run's pre-transaction read.
+      if (persistHasHeldPublicOffice !== null) {
+        await persistHasHeldPublicOfficeAnswer(client, candidateId, persistHasHeldPublicOffice);
+      }
       // Persist the validated confirmation so manual:records:audit can
       // separate an evidence-backed sweep (confirmed null OR stance-bearing
       // with an empty claim set) from a skipped one.
@@ -877,7 +926,9 @@ async function main(): Promise<void> {
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
+              route: sweepRoute,
               persisted: sweepEvidencePersisted,
+              persistedHasHeldPublicOffice: persistHasHeldPublicOffice,
             },
             recordsSearchCompletedThrough: researchedThrough,
           },
