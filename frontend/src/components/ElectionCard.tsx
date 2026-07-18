@@ -203,8 +203,9 @@ function ElectionCard({
             </span>
           ))}
           {hiddenAreaCount > 0 ? (
-            // "areas", matching the row's own label — not "issues".
-            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
+            // "areas", matching the row's own label — not "issues". Same green
+            // as the area chips: the overflow count is part of the same list.
+            <span className={AREA_CHIP_CLASS}>
               +{hiddenAreaCount} more area{hiddenAreaCount === 1 ? "" : "s"}
             </span>
           ) : null}

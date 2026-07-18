@@ -139,7 +139,9 @@ describe("ElectionCard", () => {
     expect(screen.getByText("Gun Control")).toBeInTheDocument();
     expect(screen.queryByText("Housing Affordability")).not.toBeInTheDocument();
     expect(screen.queryByText("Public Infrastructure")).not.toBeInTheDocument();
-    expect(screen.getByText("+2 more areas")).toBeInTheDocument();
+    // The overflow count wears the same green as the area chips — it is part
+    // of the same list, not a muted footnote.
+    expect(screen.getByText("+2 more areas").className).toBe(screen.getByText("Civil Rights").className);
   });
 
   it("orders chips by public-salience priority, not the payload order", () => {
