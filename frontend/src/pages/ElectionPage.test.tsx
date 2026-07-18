@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ElectionPage, ErrorBoundary } from "./ElectionPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
@@ -430,6 +431,53 @@ describe("ElectionPage", () => {
     await screen.findByRole("heading", { name: "Ballot Measure" });
     expect(screen.queryByText("About this office")).not.toBeInTheDocument();
     expect(screen.queryByText("Affected Areas:")).not.toBeInTheDocument();
+  });
+
+  it("defaults to my-issues order for viewers with saved areas and can switch to alphabetical", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    const detail = electionDetail();
+    // Riley (second in the alphabetical payload) is the only match on the
+    // viewer's saved area, so the my-issues default must lift them first.
+    detail.candidates[1].records = [
+      {
+        id: "r-1",
+        description: "A record.",
+        source_url: "https://example.gov/record",
+        event_date: "2025-01-15",
+        created_at: "2025-02-01T00:00:00.000Z",
+        research_area_tags: [
+          { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+        ],
+      },
+    ];
+    renderElection(() => detail);
+
+    // The dropdown only renders once the async preferences arrive.
+    const select = await screen.findByRole("combobox");
+    expect(select).toHaveValue("my_issues");
+    expect(screen.getByRole("option", { name: "My issues first" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Alphabetical" })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: /against my issues/i })).not.toBeInTheDocument();
+    const riley = screen.getByText("Riley Runner");
+    const jordan = screen.getByText("Jordan Voter");
+    expect(riley.compareDocumentPosition(jordan) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+    const user = userEvent.setup();
+    await user.selectOptions(select, "alphabetical");
+    expect(
+      screen.getByText("Jordan Voter").compareDocumentPosition(screen.getByText("Riley Runner")) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
   });
 
   it("renders measure result rows, including election-night outcomes", async () => {

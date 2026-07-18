@@ -26,12 +26,14 @@ import { SourceLine } from "../../components/SourceLine";
 import { ErrorNotice, LoadingNotice } from "../../components/Status";
 import { openExternalUrl } from "../../lib/openExternalUrl";
 
-type CandidateSort = "ballot" | "for_mine" | "against_mine";
+// "alphabetical" is the payload's own order: the API sorts candidates by
+// display name (there is no true ballot-position data). "my_issues" is the
+// default for viewers with saved research areas. Same as the web.
+type CandidateSort = "alphabetical" | "my_issues";
 
 const CANDIDATE_SORT_OPTIONS = [
-  { value: "ballot", label: "Ballot order" },
-  { value: "for_mine", label: "For my issues" },
-  { value: "against_mine", label: "Against my issues" },
+  { value: "my_issues", label: "My issues first" },
+  { value: "alphabetical", label: "Alphabetical" },
 ] as const;
 
 /**
@@ -47,7 +49,13 @@ export default function ElectionScreen() {
   // once that list has loaded. Same as the web.
   const { follows, canFollow } = useFollows();
   const followedIds = new Set((follows ?? []).map((follow) => follow.candidate_id));
-  const [candidateSort, setCandidateSort] = useState<CandidateSort>("ballot");
+  // null = no explicit pick; viewers with saved areas default to "my
+  // issues first", everyone else to the alphabetical payload order. A
+  // picked "my_issues" is ignored while saved areas are empty and honored
+  // again once areas are re-saved. Same as the web.
+  const [chosenSort, setChosenSort] = useState<CandidateSort | null>(null);
+  const effectiveChosenSort = chosenSort === "my_issues" && !hasSaved ? null : chosenSort;
+  const candidateSort = effectiveChosenSort ?? (hasSaved ? "my_issues" : "alphabetical");
 
   const election = useQuery({
     queryKey: ["election", electionId],
@@ -176,7 +184,7 @@ export default function ElectionScreen() {
               <SortChips
                 options={CANDIDATE_SORT_OPTIONS}
                 value={candidateSort}
-                onChange={setCandidateSort}
+                onChange={setChosenSort}
               />
             </View>
           ) : null}
@@ -368,10 +376,10 @@ function isGovernmentUrl(url: string): boolean {
   }
 }
 
-// Client-side "for/against my issues" candidate ordering: weighted unique
-// matched areas dominate, matching record volume breaks ties, and candidates
-// that tie completely keep their ballot order (stable sort over the
-// payload's original sequence). Same logic as the web ElectionPage.
+// Client-side "my issues first" candidate ordering: weighted unique matched
+// areas dominate, matching record volume breaks ties, and candidates that
+// tie completely keep the payload's alphabetical order (stable sort over
+// the original sequence). Same logic as the web ElectionPage.
 function sortCandidatesByStance(
   candidates: ElectionDetail["candidates"],
   sort: CandidateSort,
@@ -384,12 +392,11 @@ function sortCandidatesByStance(
     candidate,
     stances: aggregateRecordAreaStances(candidate.records),
   }));
-  if (sort === "ballot") {
+  if (sort === "alphabetical") {
     return entries;
   }
-  const direction = sort === "for_mine" ? ("for" as const) : ("against" as const);
   return entries
-    .map((entry, index) => ({ entry, index, score: scoreStanceDirection(entry.stances, weights, direction) }))
+    .map((entry, index) => ({ entry, index, score: scoreStanceDirection(entry.stances, weights, "for") }))
     .sort(
       (a, b) =>
         b.score.score - a.score.score || b.score.recordCount - a.score.recordCount || a.index - b.index

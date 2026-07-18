@@ -24,7 +24,10 @@ import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { aggregateRecordAreaStances, scoreStanceDirection } from "@voteapp/api-client";
 
-type CandidateSort = "ballot" | "for_mine" | "against_mine";
+// "alphabetical" is the payload's own order: the API sorts candidates by
+// display name (there is no true ballot-position data). "my_issues" is the
+// default for viewers with saved research areas.
+type CandidateSort = "alphabetical" | "my_issues";
 
 // Server loader: the election subject arrives in the document HTML so
 // non-JS crawlers can read it. Anonymous by design — see loadFromApi.
@@ -61,7 +64,14 @@ export function ErrorBoundary() {
 export function ElectionPage() {
   const { me } = useMe();
   const { savedAreaIds, weights, hasSaved } = useMyResearchAreas();
-  const [candidateSort, setCandidateSort] = useState<CandidateSort>("ballot");
+  // null = no explicit pick; viewers with saved areas default to "my
+  // issues first" (their picks are the point of saving areas), everyone
+  // else to the alphabetical payload order. A picked "my_issues" is
+  // ignored while saved areas are empty — same resilience as the record
+  // view on CandidatePage — and honored again once areas are re-saved.
+  const [chosenSort, setChosenSort] = useState<CandidateSort | null>(null);
+  const effectiveChosenSort = chosenSort === "my_issues" && !hasSaved ? null : chosenSort;
+  const candidateSort = effectiveChosenSort ?? (hasSaved ? "my_issues" : "alphabetical");
 
   const data = useLoaderData<typeof loader>();
   const measure = data.ballot_measure;
@@ -281,12 +291,11 @@ export function ElectionPage() {
                 Sort by
                 <select
                   value={candidateSort}
-                  onChange={(event) => setCandidateSort(event.target.value as CandidateSort)}
+                  onChange={(event) => setChosenSort(event.target.value as CandidateSort)}
                   className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
                 >
-                  <option value="ballot">Ballot order</option>
-                  <option value="for_mine">For my issues first</option>
-                  <option value="against_mine">Against my issues first</option>
+                  <option value="my_issues">My issues first</option>
+                  <option value="alphabetical">Alphabetical</option>
                 </select>
               </label>
             ) : null}
@@ -482,10 +491,10 @@ function isGovernmentUrl(url: string): boolean {
   }
 }
 
-// Client-side "for/against my issues" candidate ordering: weighted unique
-// matched areas dominate, matching record volume breaks ties, and candidates
-// that tie completely (including all zero-scores) keep their ballot order —
-// the sort is stable over the payload's original sequence.
+// Client-side "my issues first" candidate ordering: weighted unique matched
+// areas dominate, matching record volume breaks ties, and candidates that
+// tie completely (including all zero-scores) keep the payload's alphabetical
+// order — the sort is stable over the original sequence.
 function sortCandidatesByStance(
   candidates: ElectionDetail["candidates"],
   sort: CandidateSort,
@@ -495,12 +504,11 @@ function sortCandidatesByStance(
     candidate,
     stances: aggregateRecordAreaStances(candidate.records),
   }));
-  if (sort === "ballot") {
+  if (sort === "alphabetical") {
     return entries;
   }
-  const direction = sort === "for_mine" ? ("for" as const) : ("against" as const);
   return entries
-    .map((entry, index) => ({ entry, index, score: scoreStanceDirection(entry.stances, weights, direction) }))
+    .map((entry, index) => ({ entry, index, score: scoreStanceDirection(entry.stances, weights, "for") }))
     .sort(
       (a, b) =>
         b.score.score - a.score.score || b.score.recordCount - a.score.recordCount || a.index - b.index
