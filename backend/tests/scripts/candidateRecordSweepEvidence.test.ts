@@ -7,8 +7,11 @@ import {
   assertedSweepCompletenessGapIds,
   deleteSweepCompletenessConfirmation,
   deleteSweepConfirmation,
+  enforceSweepRouteCoverage,
+  hasHeldPublicOfficeContradiction,
   listMissingSweepRouteQuestionIds,
   parseSweepEvidencePayload,
+  persistHasHeldPublicOfficeAnswer,
   resolveSweepRoute,
   retainSuppliedSweepEvidence,
   sweepEvidenceRequired,
@@ -282,6 +285,124 @@ describe("resolveSweepRoute", () => {
       evidenceHasHeldPublicOffice: true,
     });
     expect(result).toEqual({ ok: true, route: "judicial", persistHasHeldPublicOffice: true });
+  });
+});
+
+describe("hasHeldPublicOfficeContradiction", () => {
+  it("is silent when either side is unknown or they agree", () => {
+    expect(
+      hasHeldPublicOfficeContradiction({
+        candidateHasHeldPublicOffice: null,
+        evidenceHasHeldPublicOffice: false,
+      })
+    ).toBeNull();
+    expect(
+      hasHeldPublicOfficeContradiction({
+        candidateHasHeldPublicOffice: true,
+        evidenceHasHeldPublicOffice: null,
+      })
+    ).toBeNull();
+    expect(
+      hasHeldPublicOfficeContradiction({
+        candidateHasHeldPublicOffice: true,
+        evidenceHasHeldPublicOffice: true,
+      })
+    ).toBeNull();
+  });
+
+  it("names both values when they disagree", () => {
+    const reason = hasHeldPublicOfficeContradiction({
+      candidateHasHeldPublicOffice: true,
+      evidenceHasHeldPublicOffice: false,
+    });
+    expect(reason).toContain("has_held_public_office=false");
+    expect(reason).toContain("candidates.has_held_public_office=true");
+  });
+});
+
+describe("enforceSweepRouteCoverage", () => {
+  const neverHeldEntries = SWEEP_ROUTE_QUESTION_IDS.never_held_office.map((id, index) => ({
+    question: `question ${index}?`,
+    finding: "nothing found",
+    questionId: id,
+  }));
+
+  it("returns the route and persistence answer for a covered sweep", () => {
+    expect(
+      enforceSweepRouteCoverage({
+        discoveryContestFamily: "non_judicial_office",
+        candidateHasHeldPublicOffice: null,
+        evidenceHasHeldPublicOffice: false,
+        entries: neverHeldEntries,
+      })
+    ).toEqual({ route: "never_held_office", persistHasHeldPublicOffice: false });
+  });
+
+  it("throws the routing error when unroutable", () => {
+    expect(() =>
+      enforceSweepRouteCoverage({
+        discoveryContestFamily: null,
+        candidateHasHeldPublicOffice: null,
+        evidenceHasHeldPublicOffice: null,
+        entries: neverHeldEntries,
+      })
+    ).toThrow(/Sweep evidence routing failed/);
+  });
+
+  it("throws the coverage error naming the missing question ids", () => {
+    expect(() =>
+      enforceSweepRouteCoverage({
+        discoveryContestFamily: null,
+        candidateHasHeldPublicOffice: false,
+        evidenceHasHeldPublicOffice: null,
+        entries: neverHeldEntries.slice(1),
+      })
+    ).toThrow(/missing question_id career/);
+  });
+});
+
+describe("persistHasHeldPublicOfficeAnswer", () => {
+  function clientWith(handlers: {
+    updateRowCount: number;
+    storedValue?: boolean | null;
+  }) {
+    const calls: { text: string; values: unknown[] }[] = [];
+    return {
+      calls,
+      client: {
+        query: async (text: string, values?: unknown[]) => {
+          calls.push({ text, values: values ?? [] });
+          if (text.includes("UPDATE public.candidates")) {
+            return { rows: [], rowCount: handlers.updateRowCount } as never;
+          }
+          return {
+            rows: [{ has_held_public_office: handlers.storedValue ?? null }],
+            rowCount: 1,
+          } as never;
+        },
+      },
+    };
+  }
+
+  it("updates the NULL column and skips the re-read", async () => {
+    const { calls, client } = clientWith({ updateRowCount: 1 });
+    await persistHasHeldPublicOfficeAnswer(client as never, "candidate-1", true);
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.text).toContain("has_held_public_office IS NULL");
+    expect(calls[0]!.values).toEqual(["candidate-1", true]);
+  });
+
+  it("accepts a concurrent write that persisted the SAME answer", async () => {
+    const { calls, client } = clientWith({ updateRowCount: 0, storedValue: true });
+    await persistHasHeldPublicOfficeAnswer(client as never, "candidate-1", true);
+    expect(calls).toHaveLength(2);
+  });
+
+  it("throws when a concurrent write persisted the OPPOSITE answer", async () => {
+    const { client } = clientWith({ updateRowCount: 0, storedValue: false });
+    await expect(
+      persistHasHeldPublicOfficeAnswer(client as never, "candidate-1", true)
+    ).rejects.toThrow(/concurrent write landed first/);
   });
 });
 

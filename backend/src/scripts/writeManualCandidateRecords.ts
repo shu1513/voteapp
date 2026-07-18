@@ -34,10 +34,11 @@ import {
   SWEEP_COMPLETENESS_GAP_IDS,
   assertedSweepCompletenessGapIds,
   deleteSweepCompletenessConfirmation,
-  listMissingSweepRouteQuestionIds,
+  enforceSweepRouteCoverage,
+  hasHeldPublicOfficeContradiction,
   parseSweepEvidencePayload,
+  persistHasHeldPublicOfficeAnswer,
   refreshSweepConfirmationTimestamp,
-  resolveSweepRoute,
   retainSuppliedSweepEvidence,
   sweepEvidenceMissingError,
   sweepEvidenceRequired,
@@ -696,25 +697,28 @@ async function main(): Promise<void> {
     // at least one entry. This is what stops the 2026-07-15 failure class —
     // a generic officeholder-framed template confirmed first-time candidates
     // record-less without the career question ever being asked. Delta window
-    // ledgers are exempt: they assert only their window and never persist.
+    // ledgers are exempt from coverage (they assert only their window and
+    // never persist), but a routing answer they carry must still not
+    // contradict the stored column — silence there would hide a research
+    // conflict from the operator.
     let sweepRoute: SweepRoute | null = null;
     let persistHasHeldPublicOffice: boolean | null = null;
     if (sweepEvidencePersisted && sweepEvidenceEntries) {
-      const resolution = resolveSweepRoute({
+      const coverage = enforceSweepRouteCoverage({
         discoveryContestFamily: context.discoveryContestFamily,
         candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
         evidenceHasHeldPublicOffice,
+        entries: sweepEvidenceEntries,
       });
-      if (!resolution.ok) {
-        throw new Error(`Sweep evidence routing failed: ${resolution.reason}`);
-      }
-      sweepRoute = resolution.route;
-      persistHasHeldPublicOffice = resolution.persistHasHeldPublicOffice;
-      const missingQuestionIds = listMissingSweepRouteQuestionIds(sweepEvidenceEntries, sweepRoute);
-      if (missingQuestionIds.length > 0) {
-        throw new Error(
-          `Sweep evidence does not cover the ${sweepRoute} question list: missing question_id ${missingQuestionIds.join(", ")}. Tag each entry with its question_id (era-split sweeps tag several entries with the same id; extra entries like archive scans omit it). A question that cannot apply still gets its one-line entry — the finding says why it does not apply.`
-        );
+      sweepRoute = coverage.route;
+      persistHasHeldPublicOffice = coverage.persistHasHeldPublicOffice;
+    } else if (sinceDate !== null) {
+      const contradiction = hasHeldPublicOfficeContradiction({
+        candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
+        evidenceHasHeldPublicOffice,
+      });
+      if (contradiction !== null) {
+        throw new Error(`Sweep evidence routing failed: ${contradiction}`);
       }
     }
 
@@ -854,20 +858,11 @@ async function main(): Promise<void> {
       await markCandidateRecordsSearchCompleted(client, candidateId, researchedThrough, { preserveClaim: true });
       // First evidence-backed routing answer for this candidate: persist it
       // so the next sweep (manual or AI) routes from the database instead of
-      // re-deriving officeholder status. Guarded on IS NULL — a set value is
-      // only ever corrected through the profile flow, and resolveSweepRoute
-      // already refused any contradiction with the evidence file.
+      // re-deriving officeholder status. Throws (rolling back the whole
+      // write, confirmation included) if a concurrent write set the column
+      // to the opposite answer after this run's pre-transaction read.
       if (persistHasHeldPublicOffice !== null) {
-        await client.query(
-          `
-            UPDATE public.candidates
-            SET has_held_public_office = $2,
-                updated_at = now()
-            WHERE id = $1
-              AND has_held_public_office IS NULL
-          `,
-          [candidateId, persistHasHeldPublicOffice]
-        );
+        await persistHasHeldPublicOfficeAnswer(client, candidateId, persistHasHeldPublicOffice);
       }
       // Persist the validated confirmation so manual:records:audit can
       // separate an evidence-backed sweep (confirmed null OR stance-bearing

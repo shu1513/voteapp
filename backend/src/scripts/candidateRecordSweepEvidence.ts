@@ -206,21 +206,32 @@ export type SweepRouteResolution =
  * A contradiction between the two is refused rather than silently resolved:
  * one of them is wrong, and the operator has the research in front of them.
  */
+export function hasHeldPublicOfficeContradiction(input: {
+  candidateHasHeldPublicOffice: boolean | null;
+  evidenceHasHeldPublicOffice: boolean | null;
+}): string | null {
+  if (
+    input.candidateHasHeldPublicOffice === null ||
+    input.evidenceHasHeldPublicOffice === null ||
+    input.candidateHasHeldPublicOffice === input.evidenceHasHeldPublicOffice
+  ) {
+    return null;
+  }
+  return `evidence file says has_held_public_office=${input.evidenceHasHeldPublicOffice} but candidates.has_held_public_office=${input.candidateHasHeldPublicOffice}. One of them is wrong: if the evidence file is wrong, fix it; if the stored value is stale, stop and surface it in the run report as a user-decision fix (no supported correction path exists yet).`;
+}
+
 export function resolveSweepRoute(input: {
   discoveryContestFamily: string | null;
   candidateHasHeldPublicOffice: boolean | null;
   evidenceHasHeldPublicOffice: boolean | null;
 }): SweepRouteResolution {
   const { candidateHasHeldPublicOffice, evidenceHasHeldPublicOffice } = input;
-  if (
-    candidateHasHeldPublicOffice !== null &&
-    evidenceHasHeldPublicOffice !== null &&
-    candidateHasHeldPublicOffice !== evidenceHasHeldPublicOffice
-  ) {
-    return {
-      ok: false,
-      reason: `evidence file says has_held_public_office=${evidenceHasHeldPublicOffice} but candidates.has_held_public_office=${candidateHasHeldPublicOffice}. One of them is wrong: if the stored value is stale, correct it through the profile flow first; otherwise fix the evidence file.`,
-    };
+  const contradiction = hasHeldPublicOfficeContradiction({
+    candidateHasHeldPublicOffice,
+    evidenceHasHeldPublicOffice,
+  });
+  if (contradiction !== null) {
+    return { ok: false, reason: contradiction };
   }
   const persistHasHeldPublicOffice =
     candidateHasHeldPublicOffice === null ? evidenceHasHeldPublicOffice : null;
@@ -253,6 +264,81 @@ export function listMissingSweepRouteQuestionIds(
 ): string[] {
   const tagged = new Set(entries.map((entry) => entry.questionId).filter((id) => id !== null));
   return SWEEP_ROUTE_QUESTION_IDS[route].filter((id) => !tagged.has(id));
+}
+
+/**
+ * The full route-coverage gate both records writers run before persisting a
+ * full-history ledger: resolve the route (or refuse), then require every
+ * route question id on at least one tagged entry. Throws with the
+ * operator-facing message; returns the route and the routing answer to
+ * persist (non-null only when candidates.has_held_public_office is NULL and
+ * the evidence file supplied it).
+ */
+export function enforceSweepRouteCoverage(input: {
+  discoveryContestFamily: string | null;
+  candidateHasHeldPublicOffice: boolean | null;
+  evidenceHasHeldPublicOffice: boolean | null;
+  entries: readonly SweepEvidenceEntry[];
+}): { route: SweepRoute; persistHasHeldPublicOffice: boolean | null } {
+  const resolution = resolveSweepRoute({
+    discoveryContestFamily: input.discoveryContestFamily,
+    candidateHasHeldPublicOffice: input.candidateHasHeldPublicOffice,
+    evidenceHasHeldPublicOffice: input.evidenceHasHeldPublicOffice,
+  });
+  if (!resolution.ok) {
+    throw new Error(`Sweep evidence routing failed: ${resolution.reason}`);
+  }
+  const missingQuestionIds = listMissingSweepRouteQuestionIds(input.entries, resolution.route);
+  if (missingQuestionIds.length > 0) {
+    throw new Error(
+      `Sweep evidence does not cover the ${resolution.route} question list: missing question_id ${missingQuestionIds.join(", ")}. Tag each entry with its question_id (era-split sweeps tag several entries with the same id; extra entries like archive scans omit it). A question that cannot apply still gets its one-line entry — the finding says why it does not apply.`
+    );
+  }
+  return {
+    route: resolution.route,
+    persistHasHeldPublicOffice: resolution.persistHasHeldPublicOffice,
+  };
+}
+
+/**
+ * Persist the first evidence-backed routing answer inside the write
+ * transaction. Guarded on IS NULL so a set value is never overwritten — but
+ * the guard alone is not enough under concurrency: two writers can both read
+ * NULL before either commits, resolve OPPOSITE routes, and the loser's
+ * conditional update would silently match zero rows while its
+ * opposite-routed confirmation still committed. So a zero-row update
+ * re-reads the column: same value → another writer persisted the same
+ * answer, fine; different value → throw, rolling back this writer's
+ * confirmation with it.
+ */
+export async function persistHasHeldPublicOfficeAnswer(
+  client: Pick<PoolClient, "query">,
+  candidateId: string,
+  value: boolean
+): Promise<void> {
+  const updated = await client.query(
+    `
+      UPDATE public.candidates
+      SET has_held_public_office = $2,
+          updated_at = now()
+      WHERE id = $1
+        AND has_held_public_office IS NULL
+    `,
+    [candidateId, value]
+  );
+  if ((updated.rowCount ?? 0) > 0) {
+    return;
+  }
+  const current = await client.query<{ has_held_public_office: boolean | null }>(
+    `SELECT has_held_public_office FROM public.candidates WHERE id = $1`,
+    [candidateId]
+  );
+  const stored = current.rows[0]?.has_held_public_office ?? null;
+  if (stored !== value) {
+    throw new Error(
+      `candidates.has_held_public_office is now ${stored} but this write resolved has_held_public_office=${value} from its evidence file — a concurrent write landed first with the opposite answer. Nothing was written; re-check the research and rerun against the stored value.`
+    );
+  }
 }
 
 /**
