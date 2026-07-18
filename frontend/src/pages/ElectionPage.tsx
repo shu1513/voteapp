@@ -77,10 +77,13 @@ export function ElectionPage() {
   const measure = data.ballot_measure;
   // Full set, uncapped — the list card previews these; the detail page is
   // where they all fit. Measure elections skip this row: the measure section
-  // already shows the same areas with their for/against stance.
-  const orderedAreas = splitResearchAreasBySaved(data.research_areas, weights);
-  const showOfficeInfo =
-    data.race_type !== "ballot_measure" && (data.office !== null || data.research_areas.length > 0);
+  // already shows the same areas with their for/against stance. The ??
+  // fallbacks cover deploy skew — a not-yet-redeployed backend omits both
+  // fields, which must degrade to "no section", not a crash.
+  const office = data.office ?? null;
+  const researchAreas = data.research_areas ?? [];
+  const orderedAreas = splitResearchAreasBySaved(researchAreas, weights);
+  const showOfficeInfo = data.race_type !== "ballot_measure" && (office !== null || researchAreas.length > 0);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -158,8 +161,8 @@ export function ElectionPage() {
         // then which issues it touches.
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
           <h2 className="text-lg font-semibold">About this office</h2>
-          {data.office ? <p className="mt-2 text-sm text-ink">{data.office.summary}</p> : null}
-          {data.research_areas.length > 0 ? (
+          {office ? <p className="mt-2 text-sm text-ink">{office.summary}</p> : null}
+          {researchAreas.length > 0 ? (
             // Same one-list presentation as the ballot cards: saved matches
             // lead with a screen-reader-only "(saved)" cue, position is the
             // only sighted distinction.
