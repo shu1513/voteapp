@@ -167,46 +167,46 @@ export function FollowsPage() {
             dropdown natively). Picking a suggestion opens that candidate's
             page. Rendered outside the follows-list branch: discovery must work
             with zero follows and when the follows fetch fails. */}
-        <Combobox<CandidateSearchMatch | null>
-          as="div"
-          className="relative w-full sm:w-56"
-          value={null}
-          onChange={(match) => {
-            if (match) {
-              void navigate(`/candidates/${match.candidate_id}`);
-            }
-          }}
-          immediate={false}
-        >
-          <ComboboxInput
-            type="search"
-            value={query}
-            onChange={(event) => {
-              setQuery(event.target.value);
-              onInputChanged(event.target.value);
+        <div className="relative w-full sm:w-56">
+          <Combobox<CandidateSearchMatch | null>
+            value={null}
+            onChange={(match) => {
+              if (match) {
+                void navigate(`/candidates/${match.candidate_id}`);
+              }
             }}
-            placeholder="Search by candidate name"
-            aria-label="Search candidates by name"
-            className="w-full rounded-lg border border-line bg-white px-3 py-1.5 text-sm text-ink placeholder:text-ink-soft focus:border-rausch focus:outline-none"
-          />
-          {matches.length > 0 ? (
-            <ComboboxOptions className="absolute right-0 z-10 mt-1 w-full min-w-64 overflow-hidden rounded-xl border border-line bg-white shadow-md">
-              {matches.map((match) => (
-                <ComboboxOption
-                  key={match.candidate_id}
-                  value={match}
-                  className="cursor-pointer px-3 py-2 text-sm data-focus:bg-surface"
-                >
-                  <span className="font-semibold text-ink">{match.display_name}</span>{" "}
-                  <span className="text-ink-soft">
-                    {match.party} · {match.state}
-                    {match.current_office ? <> · {match.current_office}</> : null}
-                  </span>
-                </ComboboxOption>
-              ))}
-            </ComboboxOptions>
-          ) : null}
-        </Combobox>
+            immediate={false}
+          >
+            <ComboboxInput
+              type="search"
+              value={query}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                onInputChanged(event.target.value);
+              }}
+              placeholder="Search by candidate name"
+              aria-label="Search candidates by name"
+              className="w-full rounded-lg border border-line bg-white px-3 py-1.5 text-sm text-ink placeholder:text-ink-soft focus:border-rausch focus:outline-none"
+            />
+            {matches.length > 0 ? (
+              <ComboboxOptions className="absolute right-0 z-10 mt-1 w-full min-w-64 overflow-hidden rounded-xl border border-line bg-white shadow-md">
+                {matches.map((match) => (
+                  <ComboboxOption
+                    key={match.candidate_id}
+                    value={match}
+                    className="cursor-pointer px-3 py-2 text-sm data-focus:bg-surface"
+                  >
+                    <span className="font-semibold text-ink">{match.display_name}</span>{" "}
+                    <span className="text-ink-soft">
+                      {match.party} · {match.state}
+                      {match.current_office ? <> · {match.current_office}</> : null}
+                    </span>
+                  </ComboboxOption>
+                ))}
+              </ComboboxOptions>
+            ) : null}
+          </Combobox>
+        </div>
       </div>
       {followsLoading ? <LoadingNotice text="Loading follows…" /> : null}
       {isError ? (
