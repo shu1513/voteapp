@@ -68,6 +68,11 @@ export const OVERWRITABLE_PROFILE_FIELDS = [
   "official_website_url",
   "summary",
   "current_office",
+  // Boolean routing fact. Fill-if-NULL by default; listing it under
+  // --replace-profile-fields is the supported correction path for a stale
+  // stored value (the records writers refuse to sweep past a contradiction).
+  // Not clearable: the profile contract requires an answer on every payload.
+  "has_held_public_office",
 ] as const;
 export type OverwritableProfileField = (typeof OVERWRITABLE_PROFILE_FIELDS)[number];
 
@@ -282,6 +287,7 @@ async function insertCandidate(
         official_website_url,
         profile_sources,
         current_office,
+        has_held_public_office,
         last_researched
       )
       VALUES (
@@ -299,6 +305,7 @@ async function insertCandidate(
         $12,
         $13::jsonb,
         $14,
+        $15::boolean,
         now()
       )
       RETURNING id
@@ -318,6 +325,7 @@ async function insertCandidate(
       profile.official_website_url ?? null,
       JSON.stringify(profile.sources),
       profile.current_office ?? null,
+      profile.has_held_public_office ?? null,
     ]
   );
 
@@ -420,6 +428,11 @@ async function mergeCandidateIdentifiersForExistingCandidate(
             WHEN current_office IS NULL OR length(trim(current_office)) = 0 THEN COALESCE($15::text, current_office)
             ELSE current_office
           END,
+          has_held_public_office = CASE
+            WHEN $24::boolean AND $23::boolean IS NOT NULL THEN $23::boolean
+            WHEN has_held_public_office IS NULL THEN $23::boolean
+            ELSE has_held_public_office
+          END,
           profile_sources = $4::jsonb,
           last_researched = now(),
           updated_at = now()
@@ -448,6 +461,11 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       scalars.official_website_url.clear,
       scalars.summary.clear,
       scalars.current_office.clear,
+      // Boolean routing fact: fill-if-NULL, replace only when explicitly
+      // listed. Never cleared — the contract requires an answer, so a clear
+      // would immediately conflict with the payload (writers refuse the flag).
+      profile.has_held_public_office ?? null,
+      overwriteFields?.has("has_held_public_office") ?? false,
     ]
   );
 }

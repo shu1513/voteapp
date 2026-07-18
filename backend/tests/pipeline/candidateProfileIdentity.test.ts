@@ -13,6 +13,7 @@ function profile(overrides: Partial<CandidateProfilePayload> = {}): CandidatePro
     first_name: "Jane",
     last_name: "Candidate",
     summary: "Candidate summary",
+    has_held_public_office: false,
     sources: ["https://example.com/profile"],
     ...overrides,
   };
@@ -184,6 +185,9 @@ describe("findOrCreateCandidateFromProfile", () => {
       false,
       false,
       false,
+      // has_held_public_office value + overwrite flag
+      false,
+      false,
     ]);
   });
 
@@ -244,6 +248,9 @@ describe("findOrCreateCandidateFromProfile", () => {
       false,
       false,
       false,
+      false,
+      false,
+      // has_held_public_office value + overwrite flag
       false,
       false,
     ]);
@@ -447,9 +454,9 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     // fill-if-empty alike.
     expect(updateSql).toContain("current_office = CASE\n            WHEN $22::boolean THEN NULL");
     const params = query.mock.calls[3]?.[1] as unknown[];
-    // Last six params are the per-field clear flags in declaration order;
-    // only current_office (last) is set.
-    expect(params.slice(-6)).toEqual([false, false, false, false, false, true]);
+    // The six per-field clear flags (declaration order, only current_office
+    // set) are followed by the has_held_public_office value + overwrite flag.
+    expect(params.slice(-8)).toEqual([false, false, false, false, false, true, false, false]);
   });
 
   it("passes clear flags as false for every field when clearing is not requested", async () => {
@@ -467,7 +474,7 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     });
 
     const params = query.mock.calls[3]?.[1] as unknown[];
-    expect(params.slice(-6)).toEqual([false, false, false, false, false, false]);
+    expect(params.slice(-8)).toEqual([false, false, false, false, false, false, false, false]);
   });
 
   it("throws when two same-name candidates are linked to the election", async () => {

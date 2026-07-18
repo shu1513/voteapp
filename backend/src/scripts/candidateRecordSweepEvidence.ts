@@ -217,7 +217,7 @@ export function hasHeldPublicOfficeContradiction(input: {
   ) {
     return null;
   }
-  return `evidence file says has_held_public_office=${input.evidenceHasHeldPublicOffice} but candidates.has_held_public_office=${input.candidateHasHeldPublicOffice}. One of them is wrong: if the evidence file is wrong, fix it; if the stored value is stale, stop and surface it in the run report as a user-decision fix (no supported correction path exists yet).`;
+  return `evidence file says has_held_public_office=${input.evidenceHasHeldPublicOffice} but candidates.has_held_public_office=${input.candidateHasHeldPublicOffice}. One of them is wrong: if the evidence file is wrong, fix it; if the stored value is stale, correct it with a profile re-write carrying the researched answer and --replace-profile-fields has_held_public_office (manual:candidate-profile:write or manual:presidential-profile:write), then rerun this records write.`;
 }
 
 export function resolveSweepRoute(input: {

@@ -13,6 +13,10 @@ export type CandidateProfilePayload = {
   fec_ids?: string[];
   state_filing_ids?: string[];
   current_office?: string;
+  // Has this person EVER held public office (current or former, elected or
+  // appointed)? Routing fact for candidate-record discovery sweeps; required
+  // so every profile pass answers it once and the sweep never re-derives it.
+  has_held_public_office: boolean;
   summary?: string;
   sources: string[];
 };
@@ -197,6 +201,14 @@ export function parseCandidateProfilePayload(
     currentOffice = input.current_office.trim();
   }
 
+  if (typeof input.has_held_public_office !== "boolean") {
+    return {
+      ok: false,
+      reason:
+        "payload.has_held_public_office must be true or false: has this person EVER held elected or appointed public office (current or former)? Answer it from the profile research; it routes the candidate-record discovery sweep.",
+    };
+  }
+
   let summary: string | undefined;
   if (input.summary !== undefined && input.summary !== null) {
     if (!isNonEmptyString(input.summary)) {
@@ -219,6 +231,7 @@ export function parseCandidateProfilePayload(
       ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),
       ...(stateFilingIds !== undefined ? { state_filing_ids: stateFilingIds } : {}),
       ...(currentOffice ? { current_office: currentOffice } : {}),
+      has_held_public_office: input.has_held_public_office,
       ...(summary ? { summary } : {}),
       sources,
     },

@@ -74,7 +74,7 @@ function usage(): string {
     "Usage:",
     "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--roster-index n] [--running-mate-of \"Lead Ballot Name\"] [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--replace-profile-fields f1,f2] [--clear-profile-fields f1,f2] [--repair-report-file file] [--dry-run]",
     "",
-    "Payload must match CandidateProfilePayload. Live runs find/create a candidate and link it to the election.",
+    "Payload must match CandidateProfilePayload (has_held_public_office true|false is required: has this person EVER held elected or appointed public office?). Stored candidates.has_held_public_office fills only when NULL; pass --replace-profile-fields has_held_public_office to correct a stale stored value.",
     "With --running-mate-of, the profile is written as the joint-ticket running mate: the candidate is created/matched normally, then linked via candidate_elections.running_mate_candidate_id on the ticket lead's row instead of getting an own candidate_elections row. Write the ticket lead's profile first.",
   ].join("\n");
 }
@@ -552,6 +552,13 @@ async function main(): Promise<void> {
   if (clearReplaceOverlap.length > 0) {
     throw new Error(
       `--clear-profile-fields and --replace-profile-fields cannot share fields (${clearReplaceOverlap.join(", ")}): clearing sets NULL, replacing needs a payload value — pick one intent per field`
+    );
+  }
+  if (clearProfileFields.has("has_held_public_office")) {
+    // The contract requires an answer on every payload, so a clear would
+    // always conflict with the supplied value; the correction path is replace.
+    throw new Error(
+      "--clear-profile-fields has_held_public_office is not supported: the profile contract requires an answer on every payload — use --replace-profile-fields has_held_public_office to correct a stale stored value"
     );
   }
   if (!file || !electionId) {
