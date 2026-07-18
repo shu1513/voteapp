@@ -1,11 +1,15 @@
 import { Link } from "react-router";
-import type { ElectionSummary } from "@voteapp/api-client";
+import type { ElectionSummary, ResearchAreaWeight } from "@voteapp/api-client";
 import {
   formatElectionDate,
   formatOutcome,
   formatRosterStatus,
   formatVotePowerLabel,
 } from "@voteapp/api-client";
+import {
+  compareByResearchAreaPriority,
+  sortByResearchAreaPriority,
+} from "../lib/researchAreaPriority";
 
 // Statewide races carry a dozen-plus research areas; rendering every one
 // buried the card's actual signal (title, candidates, vote power) under a
@@ -13,6 +17,11 @@ import {
 // show (they are the personal signal), other areas cap out and the election
 // page carries the full set.
 const MAX_UNSAVED_AREA_CHIPS = 3;
+
+// Saved and unsaved chips deliberately share one style: the row reads as one
+// list, and position alone marks the saved matches (they lead).
+const AREA_CHIP_CLASS =
+  "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900";
 
 /**
  * Date-grouped card list shared by both ballot pages. Elections cluster on
@@ -24,10 +33,14 @@ const MAX_UNSAVED_AREA_CHIPS = 3;
  */
 export function ElectionList({
   elections,
-  savedAreaIds,
+  savedAreaWeights,
 }: {
   elections: ElectionSummary[];
-  savedAreaIds?: Set<string>;
+  /**
+   * The session holder's saved research areas (useMyResearchAreas().weights):
+   * membership decides which chips lead, rank decides their order.
+   */
+  savedAreaWeights?: Map<string, ResearchAreaWeight>;
 }) {
   const groups: { date: string; elections: ElectionSummary[] }[] = [];
   for (const election of elections) {
@@ -63,7 +76,7 @@ export function ElectionList({
               <ElectionCard
                 key={election.id}
                 election={election}
-                savedAreaIds={savedAreaIds}
+                savedAreaWeights={savedAreaWeights}
                 showDistrict={collidingTitles.has(election.official_ballot_title)}
               />
             ))}
@@ -78,21 +91,34 @@ export function ElectionList({
  * A single election card. Deliberately NOT exported: it omits its own date
  * (ElectionList's group heading carries it), so a standalone render would be
  * dateless. Render elections through ElectionList, which is the public API
- * and is shared between the anonymous and saved ballots. savedAreaIds
- * (verified users with saved research areas) highlights the matching area
- * chips so "affects what I care about" reads at a glance.
+ * and is shared between the anonymous and saved ballots. savedAreaWeights
+ * (verified users with saved research areas) puts the matching area chips
+ * first so "affects what I care about" reads at a glance.
  */
 function ElectionCard({
   election,
-  savedAreaIds,
+  savedAreaWeights,
   showDistrict,
 }: {
   election: ElectionSummary;
-  savedAreaIds?: Set<string>;
+  savedAreaWeights?: Map<string, ResearchAreaWeight>;
   showDistrict?: boolean;
 }) {
-  const savedAreas = election.research_areas.filter((area) => savedAreaIds?.has(area.id) ?? false);
-  const otherAreas = election.research_areas.filter((area) => !(savedAreaIds?.has(area.id) ?? false));
+  // Saved matches lead, ordered by the user's own 1–7 ranking — their
+  // explicit priority outranks any global one. Unranked-but-saved areas (and
+  // rank ties) fall back to public salience. Unsaved areas follow in pure
+  // public-salience order (not the API's alphabetical order), so the chips
+  // that survive the cap are the areas voters care about most.
+  const savedAreas = election.research_areas
+    .filter((area) => savedAreaWeights?.has(area.id) ?? false)
+    .sort(
+      (a, b) =>
+        (savedAreaWeights?.get(a.id)?.rank ?? 0) - (savedAreaWeights?.get(b.id)?.rank ?? 0) ||
+        compareByResearchAreaPriority(a, b)
+    );
+  const otherAreas = sortByResearchAreaPriority(
+    election.research_areas.filter((area) => !(savedAreaWeights?.has(area.id) ?? false))
+  );
   const visibleOtherAreas = otherAreas.slice(0, MAX_UNSAVED_AREA_CHIPS);
   const hiddenAreaCount = otherAreas.length - visibleOtherAreas.length;
   // Skip an empty chip row so the card doesn't carry stray spacing when a
@@ -160,20 +186,20 @@ function ElectionCard({
         </div>
       ) : null}
       {election.research_areas.length > 0 ? (
-        // Saved-area matches lead the list (all of them, highlighted);
-        // unsaved areas follow under the cap.
+        // Visually one list: saved matches lead (all of them, in the user's
+        // rank order), unsaved follow under the cap. Position is the only
+        // sighted cue, so saved chips carry a screen-reader-only "(saved)"
+        // to keep the distinction audible.
         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
           <span className="rounded bg-amber-100 px-2 py-0.5 font-medium text-amber-900">Affected Areas:</span>
           {savedAreas.map((area) => (
-            <span
-              key={area.id}
-              className="rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
-            >
+            <span key={area.id} className={AREA_CHIP_CLASS}>
               {area.name}
+              <span className="sr-only"> (saved)</span>
             </span>
           ))}
           {visibleOtherAreas.map((area) => (
-            <span key={area.id} className="rounded bg-surface px-2 py-0.5 text-ink-soft">
+            <span key={area.id} className={AREA_CHIP_CLASS}>
               {area.name}
             </span>
           ))}

@@ -139,7 +139,7 @@ export function SavedBallotPage() {
     staleTime: 60_000,
     enabled: me?.email_verified === true,
   });
-  const { savedAreaIds } = useMyResearchAreas();
+  const { weights: savedAreaWeights } = useMyResearchAreas();
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
   );
@@ -312,7 +312,7 @@ export function SavedBallotPage() {
       {data.elections.length === 0 ? (
         <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />
       ) : (
-        <ElectionList elections={data.elections} savedAreaIds={savedAreaIds} />
+        <ElectionList elections={data.elections} savedAreaWeights={savedAreaWeights} />
       )}
 
       <p className="mt-8 text-sm text-ink-soft">
