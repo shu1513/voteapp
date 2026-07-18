@@ -138,7 +138,7 @@ export function ElectionPage() {
 
       {measure ? (
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
-          <h2 className="text-lg font-semibold">Ballot measure</h2>
+          <h2 className="text-lg font-semibold text-dem-blue">Ballot Measure</h2>
           {measure.research_area_tags.length > 0 ? (
             <div className="mt-2 flex flex-wrap gap-2 text-xs">
               {measure.research_area_tags.map((tag) => (

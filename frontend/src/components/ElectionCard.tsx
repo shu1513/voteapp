@@ -148,13 +148,15 @@ function ElectionCard({
               Vote power: {formatVotePowerLabel(election.vote_power.label)}
             </span>
           ) : null}
-          <span className="whitespace-nowrap text-sm text-ink-soft">
-            {election.race_type === "ballot_measure"
-              ? "Ballot measure"
-              : election.candidate_count === 0 && election.candidate_roster_status
+          {election.race_type === "ballot_measure" ? (
+            <span className="whitespace-nowrap text-sm text-dem-blue">Ballot Measure</span>
+          ) : (
+            <span className="whitespace-nowrap text-sm text-ink-soft">
+              {election.candidate_count === 0 && election.candidate_roster_status
                 ? formatRosterStatus(election.candidate_roster_status).short
                 : `${election.candidate_count} candidate${election.candidate_count === 1 ? "" : "s"}`}
-          </span>
+            </span>
+          )}
         </span>
       </div>
       {showDistrict ? (
