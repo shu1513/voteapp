@@ -68,7 +68,7 @@ describe("ElectionPage", () => {
     expect(
       screen.getByText("Past results here were very close — a small number of votes could decide the winner.")
     ).toBeInTheDocument();
-    expect(screen.getByText("Medium representation + high decisiveness → High vote power.")).toBeInTheDocument();
+    expect(screen.getByText("Average representation + high decisiveness → High vote power.")).toBeInTheDocument();
     expect(screen.getByText("Some data is missing.")).toBeInTheDocument();
     // The exact formula renders when the backend provides one; the null
     // formula on the other part must not render an empty line.
