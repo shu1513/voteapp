@@ -111,6 +111,11 @@ function makeTimeoutSignal(): AbortSignal {
  * requiring AbortSignal.any (Chrome 116+/Safari 17.4+): on older browsers a
  * missing .any must degrade to a manual combine, not throw before fetch and
  * silently kill features like autocomplete.
+ *
+ * The manual combine leaves its { once } listener on the caller signal until
+ * that signal aborts or is collected, so callers must pass per-request
+ * signals (as autocomplete does) — reusing one long-lived signal across many
+ * requests would accumulate a listener per request on pre-.any runtimes.
  */
 function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal {
   const timeout = makeTimeoutSignal();
