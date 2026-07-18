@@ -93,14 +93,24 @@ plans. Consequences, in order of urgency:
   cache, and *pending BullMQ schedules* — the worker re-upserts its
   recurring jobs on boot, so restart the worker service after any Redis
   restart, or upgrade the KV plan for persistence.
+- **Client IP travels as `X-Voteapp-Client-IP`, not `CF-Connecting-IP`**:
+  the Worker copies Cloudflare's `CF-Connecting-IP` into the custom
+  `X-Voteapp-Client-IP` header (stripping client-supplied copies) and both
+  servers read that name via `ADDRESS_API_TRUSTED_CLIENT_IP_HEADER`. The
+  reserved name can't be used past the Worker: the `*.onrender.com` origins
+  sit behind Render's OWN Cloudflare, which 403s outside clients that
+  present `CF-Connecting-IP` (verified 2026-07-17: with header → 403,
+  without → 200) and would overwrite the value with the sender's socket IP
+  anyway — so the SSR loader's relay to the API's public host 500'd every
+  detail page until the rename.
 - **Direct onrender.com access bypasses Cloudflare**: someone hitting the
-  `*.onrender.com` hosts directly can spoof `CF-Connecting-IP` to dodge
+  `*.onrender.com` hosts directly can spoof `X-Voteapp-Client-IP` to dodge
   per-IP rate limiting (not sessions/auth — those are cookie-based).
   Closed by `EDGE_SHARED_SECRET` when set in all three places: Cloudflare
   Worker secret (attached as `X-Edge-Secret` on every proxied request),
-  `voteapp-api` env (gates trust in `CF-Connecting-IP`; without proof the
-  request falls back to the socket IP, collapsing direct traffic into one
-  bucket), and `voteapp-ssr` env (loaders hit the public API host and
+  `voteapp-api` env (gates trust in `X-Voteapp-Client-IP`; without proof
+  the request falls back to the socket IP, collapsing direct traffic into
+  one bucket), and `voteapp-ssr` env (loaders hit the public API host and
   relay the client IP with the same proof — and only relay it when the
   incoming request itself carried the Worker's proof, so direct SSR hits
   can't launder a spoofed IP through the relay either).
