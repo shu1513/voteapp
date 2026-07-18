@@ -1484,12 +1484,12 @@ describe("lookupElectionDetailById", () => {
           parts: [
             {
               title: "Representation",
-              grade: "Medium",
+              grade: "Average",
               stat: "50 out of 100",
               detail:
                 "This district is mid-sized for its type, so each vote carries average weight. About 104,650 people live here.",
               formula:
-                "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50.42, comparing counties in CA (grades: 66+ high, 33+ medium, otherwise low)",
+                "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50.42, comparing counties in CA (grades: 66+ high, 33+ average, otherwise low)",
             },
             {
               title: "Decisiveness",
@@ -1499,7 +1499,7 @@ describe("lookupElectionDetailById", () => {
               formula: null,
             },
           ],
-          result: "Medium representation + an uncontested race → Below average vote power.",
+          result: "Average representation + an uncontested race → Below average vote power.",
           caveat: null,
         },
       },

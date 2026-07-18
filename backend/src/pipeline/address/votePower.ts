@@ -345,6 +345,13 @@ function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+// Display word for an axis level or rating: "medium" ships as "average"
+// (the user-facing scale speaks in average-relative terms; see the
+// api-client's formatVotePowerLabel). Internal level keys stay "medium".
+function levelDisplayWord(level: string): string {
+  return level === "medium" ? "average" : level;
+}
+
 // 12 -> "12", 3.25 -> "3.25", 2.04 -> "2.04": two decimals at most — the
 // SAME precision classifyHistoricalContestMargin grades on. Coarser display
 // rounding would let a 2.04 margin render as "2" beside a "very competitive"
@@ -357,9 +364,9 @@ function formatCount(value: number): string {
   return value.toLocaleString("en-US");
 }
 
-// First-match thresholds, not ranges: "33–65 medium" would leave a 65.6
+// First-match thresholds, not ranges: "33–65 average" would leave a 65.6
 // score in no bucket, and the grader itself works on >= comparisons.
-const REPRESENTATION_GRADE_SCALE = "grades: 66+ high, 33+ medium, otherwise low";
+const REPRESENTATION_GRADE_SCALE = "grades: 66+ high, 33+ average, otherwise low";
 
 // The loader's log-scaled inverse-population model, spelled out with this
 // district's real numbers (see recomputeRepresentationPowerScores in
@@ -434,7 +441,7 @@ function representationPart(input: {
 
   return {
     title: "Representation",
-    grade: capitalize(input.representationLevel),
+    grade: capitalize(levelDisplayWord(input.representationLevel)),
     // Floor, not round: the grade thresholds are the integers 33 and 66, so
     // flooring can never display a number that sits in a higher bucket than
     // the unrounded value (65.6 must not render as the high-threshold 66).
@@ -451,7 +458,7 @@ function representationPart(input: {
 // First-match thresholds so boundary margins read unambiguously: a 2.04
 // margin is "not ≤2, so ≤5 → very competitive", never inside a "0–2" range.
 const MARGIN_GRADE_SCALE =
-  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low";
+  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low";
 
 // The margin-to-grade pipeline with this contest's real numbers (see
 // classifyHistoricalContestMargin — this string must match its cutoffs).
@@ -472,7 +479,7 @@ function decisivenessFormula(input: {
           .map((contest) => `${formatWeight(contest.weight)} × ${formatMarginPoints(contest.marginPercent)} (${contest.electionYear})`)
           .join(" + ")} = ${formatMarginPoints(input.marginPercent)} points`
       : `margin = ${formatMarginPoints(input.marginPercent)} points`;
-  return `${marginExpression} → "${labelText}" → grade ${input.decisivenessLevel} (${MARGIN_GRADE_SCALE})`;
+  return `${marginExpression} → "${labelText}" → grade ${levelDisplayWord(input.decisivenessLevel)} (${MARGIN_GRADE_SCALE})`;
 }
 
 // 0.6 -> "0.6", 0.625 -> "0.625": up to four decimals, because rounding a
@@ -522,7 +529,7 @@ function decisivenessPart(input: {
     : "";
   return {
     title: "Decisiveness",
-    grade: capitalize(input.decisivenessLevel),
+    grade: capitalize(levelDisplayWord(input.decisivenessLevel)),
     stat: marginStat(input.marginPercent, input.marginElectionYears),
     detail: `${detailByLevel[input.decisivenessLevel]}${staleSuffix}`,
     formula: decisivenessFormula({
@@ -592,7 +599,7 @@ function explanationResultFor(result: VotePowerResult, boostApplied: boolean, sk
   const pieces: string[] = [
     result.representation_level === "unknown"
       ? "unknown representation"
-      : `${result.representation_level} representation`,
+      : `${levelDisplayWord(result.representation_level)} representation`,
   ];
   if (!skipDecisiveness) {
     if (result.decisiveness_level === "none") {
@@ -600,7 +607,7 @@ function explanationResultFor(result: VotePowerResult, boostApplied: boolean, sk
     } else if (result.decisiveness_level === "unknown") {
       pieces.push("unknown decisiveness");
     } else {
-      pieces.push(`${result.decisiveness_level} decisiveness`);
+      pieces.push(`${levelDisplayWord(result.decisiveness_level)} decisiveness`);
     }
   }
   if (boostApplied) {
@@ -611,12 +618,12 @@ function explanationResultFor(result: VotePowerResult, boostApplied: boolean, sk
 }
 
 // Display words for the rating in the result line. "low" reads as a verdict
-// on the voter, so it ships as "below average" (mirrors the api-client's
-// formatVotePowerLabel chip copy).
+// on the voter and "medium" as a size word, so they ship as "below average"
+// and "average" (mirrors the api-client's formatVotePowerLabel chip copy).
 const RESULT_LABEL_TEXT: Record<Exclude<VotePowerLabel, "unknown">, string> = {
   very_low: "very low",
   low: "below average",
-  medium: "medium",
+  medium: "average",
   high: "high",
   very_high: "very high",
 };
