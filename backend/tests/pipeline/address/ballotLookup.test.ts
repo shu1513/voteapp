@@ -1489,7 +1489,7 @@ describe("lookupElectionDetailById", () => {
               detail:
                 "This district is mid-sized for its type, so each vote carries average weight. About 104,650 people live here.",
               formula:
-                "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest) = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 64, comparing counties in CA (grades: 66–100 high, 33–65 medium, 0–32 low)",
+                "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 64.25, comparing counties in CA (grades: 66+ high, 33+ medium, otherwise low)",
             },
             {
               title: "Decisiveness",

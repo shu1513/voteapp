@@ -348,32 +348,46 @@ function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-// 12 -> "12", 3.25 -> "3.3": one decimal at most, no trailing ".0".
+// 12 -> "12", 3.25 -> "3.25", 2.04 -> "2.04": two decimals at most — the
+// SAME precision classifyHistoricalContestMargin grades on. Coarser display
+// rounding would let a 2.04 margin render as "2" beside a "very competitive"
+// grade whose own rule says ≤2 is a toss-up.
 function formatMarginPoints(marginPercent: number): string {
-  const rounded = Math.round(marginPercent * 10) / 10;
-  return `${Number.isInteger(rounded) ? rounded.toFixed(0) : rounded}`;
+  return `${Math.round(marginPercent * 100) / 100}`;
 }
 
 function formatCount(value: number): string {
   return value.toLocaleString("en-US");
 }
 
-const REPRESENTATION_GRADE_SCALE = "grades: 66–100 high, 33–65 medium, 0–32 low";
+// First-match thresholds, not ranges: "33–65 medium" would leave a 65.6
+// score in no bucket, and the grader itself works on >= comparisons.
+const REPRESENTATION_GRADE_SCALE = "grades: 66+ high, 33+ medium, otherwise low";
 
 // The loader's log-scaled inverse-population model, spelled out with this
 // district's real numbers (see recomputeRepresentationPowerScores in
-// districtsLoader.ts — this string must describe that SQL faithfully).
+// districtsLoader.ts — this string must describe that SQL faithfully,
+// including its two-decimal rounding and its equal-extremes midpoint rule).
+// The value after "=" is the STORED score the rating graded on; the
+// expression's inputs are the current extremes, which match it whenever the
+// loader last recomputed both together.
 function representationFormula(input: {
   representationPowerScore: number;
   districtPopulation: number | null;
   representationScope: { maxPopulation: number; minPopulation: number; description: string } | null;
 }): string {
-  const score = Math.floor(input.representationPowerScore);
+  const score = Math.round(input.representationPowerScore * 100) / 100;
   if (input.districtPopulation !== null && input.representationScope !== null) {
     const scope = input.representationScope;
-    return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest) = 100 × ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(input.districtPopulation)}) ÷ ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(scope.minPopulation)}) = ${score}, comparing ${scope.description} (${REPRESENTATION_GRADE_SCALE})`;
+    if (scope.maxPopulation === scope.minPopulation) {
+      // ln(x ÷ x) ÷ ln(x ÷ x) is 0/0 — the SQL never evaluates it and
+      // assigns the midpoint instead, so the copy must say that, not fake
+      // an undefined division.
+      return `score = ${score} by rule: this district is the only one among ${scope.description}, so the model assigns the midpoint of 50 (${REPRESENTATION_GRADE_SCALE})`;
+    }
+    return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(input.districtPopulation)}) ÷ ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(scope.minPopulation)}) = ${score}, comparing ${scope.description} (${REPRESENTATION_GRADE_SCALE})`;
   }
-  return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts) = ${score} (${REPRESENTATION_GRADE_SCALE})`;
+  return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts), rounded to 2 decimals = ${score} (${REPRESENTATION_GRADE_SCALE})`;
 }
 
 function representationPart(input: {
@@ -416,8 +430,10 @@ function representationPart(input: {
   };
 }
 
+// First-match thresholds so boundary margins read unambiguously: a 2.04
+// margin is "not ≤2, so ≤5 → very competitive", never inside a "0–2" range.
 const MARGIN_GRADE_SCALE =
-  "margins: 0–2 toss-up, 2–5 very competitive, 5–10 competitive, 10–15 somewhat competitive, over 15 safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low";
+  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low";
 
 // The margin-to-grade pipeline with this contest's real numbers (see
 // classifyHistoricalContestMargin — this string must match its cutoffs).
@@ -441,9 +457,11 @@ function decisivenessFormula(input: {
   return `${marginExpression} → "${labelText}" → grade ${input.decisivenessLevel} (${MARGIN_GRADE_SCALE})`;
 }
 
-// 0.6 -> "0.6", 0.256 -> "0.26": weights print with at most two decimals.
+// 0.6 -> "0.6", 0.625 -> "0.625": up to four decimals, because rounding a
+// real 0.625/0.375 pair to 0.63/0.38 would display arithmetic whose product
+// sum no longer equals the blended total on the right of the "=".
 function formatWeight(weight: number): string {
-  return `${Math.round(weight * 100) / 100}`;
+  return `${Math.round(weight * 10000) / 10000}`;
 }
 
 function decisivenessPart(input: {

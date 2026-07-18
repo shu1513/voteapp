@@ -370,7 +370,7 @@ describe("explainVotePower", () => {
         detail:
           "Smaller districts give each vote more weight, and this district is small for its type. About 736,081 people live here.",
         formula:
-          "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest) = 100 × ln(39,287,377 ÷ 736,081) ÷ ln(39,287,377 ÷ 582,397) = 90, comparing all statewide districts nationwide (grades: 66–100 high, 33–65 medium, 0–32 low)",
+          "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(39,287,377 ÷ 736,081) ÷ ln(39,287,377 ÷ 582,397) = 90, comparing all statewide districts nationwide (grades: 66+ high, 33+ medium, otherwise low)",
       },
       {
         title: "Decisiveness",
@@ -378,7 +378,7 @@ describe("explainVotePower", () => {
         stat: "1.8-point margin in 2022",
         detail: "Past results here were very close — a small number of votes could decide the winner.",
         formula:
-          'margin = 1.8 points → "toss-up" → grade high (margins: 0–2 toss-up, 2–5 very competitive, 5–10 competitive, 10–15 somewhat competitive, over 15 safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low)',
+          'margin = 1.8 points → "toss-up" → grade high (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low)',
       },
     ]);
     expect(explanation.result).toBe("High representation + high decisiveness → Very high vote power.");
@@ -395,7 +395,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[0]?.formula).toBe(
-      "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts) = 90 (grades: 66–100 high, 33–65 medium, 0–32 low)"
+      "score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts), rounded to 2 decimals = 90 (grades: 66+ high, 33+ medium, otherwise low)"
     );
   });
 
@@ -405,16 +405,16 @@ describe("explainVotePower", () => {
       candidateCount: 2,
       representationPowerScore: 50,
       competitivenessLabel: "somewhat_competitive",
-      marginPercent: 11.45,
+      marginPercent: 11.3,
       marginElectionYears: [2024, 2022],
       marginContests: [
-        { marginPercent: 9.2, electionYear: 2024, weight: 0.6 },
-        { marginPercent: 14.8, electionYear: 2022, weight: 0.4 },
+        { marginPercent: 9.2, electionYear: 2024, weight: 0.625 },
+        { marginPercent: 14.8, electionYear: 2022, weight: 0.375 },
       ],
     });
 
     expect(explanation.parts[1]?.formula).toBe(
-      'margin = 0.6 × 9.2 (2024) + 0.4 × 14.8 (2022) = 11.5 points → "somewhat competitive" → grade medium (margins: 0–2 toss-up, 2–5 very competitive, 5–10 competitive, 10–15 somewhat competitive, over 15 safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low)'
+      'margin = 0.625 × 9.2 (2024) + 0.375 × 14.8 (2022) = 11.3 points → "somewhat competitive" → grade medium (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low)'
     );
   });
 
@@ -456,7 +456,7 @@ describe("explainVotePower", () => {
       marginElectionYears: [2024, 2022],
     });
 
-    expect(explanation.parts[1]?.stat).toBe("11.5-point weighted margin across 2024 and 2022");
+    expect(explanation.parts[1]?.stat).toBe("11.45-point weighted margin across 2024 and 2022");
   });
 
   it("mirrors the parts as transitional reason bullets for pre-parts frontends", () => {
@@ -471,7 +471,7 @@ describe("explainVotePower", () => {
 
     expect(explanation.reasons).toEqual([
       "Representation: High (90 out of 100). Smaller districts give each vote more weight, and this district is small for its type.",
-      "Decisiveness: High (3.3-point margin in 2022). Past results here were very close — a small number of votes could decide the winner.",
+      "Decisiveness: High (3.25-point margin in 2022). Past results here were very close — a small number of votes could decide the winner.",
     ]);
   });
 
@@ -625,5 +625,36 @@ describe("explainVotePower", () => {
     ]);
     expect(explanation.result).toBe("Not enough data → no rating yet.");
     expect(explanation.caveat).toBe("Not enough data to rate this election yet.");
+  });
+
+  it("shows boundary margins at the classifier's two-decimal precision", () => {
+    // A 2.04 margin grades "very competitive" (not ≤2); displaying it as
+    // "2 points" would contradict the ≤2 toss-up rule shown beside it.
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 50,
+      competitivenessLabel: "very_competitive",
+      marginPercent: 2.04,
+      marginElectionYears: [2024],
+    });
+
+    expect(explanation.parts[1]?.stat).toBe("2.04-point margin in 2024");
+    expect(explanation.parts[1]?.formula).toContain('margin = 2.04 points → "very competitive" → grade high');
+  });
+
+  it("states the midpoint rule instead of a 0/0 expression for a single-district scope", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 50,
+      competitivenessLabel: null,
+      districtPopulation: 736081,
+      representationScope: { maxPopulation: 736081, minPopulation: 736081, description: "counties in AK" },
+    });
+
+    expect(explanation.parts[0]?.formula).toBe(
+      "score = 50 by rule: this district is the only one among counties in AK, so the model assigns the midpoint of 50 (grades: 66+ high, 33+ medium, otherwise low)"
+    );
   });
 });
