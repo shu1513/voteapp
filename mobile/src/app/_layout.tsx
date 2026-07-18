@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { Platform } from "react-native";
 import { PushNotificationRouter } from "../components/PushNotificationRouter";
+import { TermsRenewalGate } from "../components/TermsRenewalGate";
 import { initApi } from "../lib/api";
 import { initErrorMonitoring } from "../lib/errorMonitoring";
 import { initPushNotifications } from "../lib/pushNotifications";
@@ -33,6 +34,8 @@ export default function RootLayout() {
             would double them. */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
+      {/* After the Stack so the overlay renders above every screen. */}
+      <TermsRenewalGate />
     </QueryClientProvider>
   );
 }
