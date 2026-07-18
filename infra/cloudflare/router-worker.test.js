@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 
-import worker, { isApiPath, resolveUpstreamHost, withSecurityHeaders } from "./router-worker.js";
+import worker, { CLIENT_IP_HEADER, isApiPath, resolveUpstreamHost, withSecurityHeaders } from "./router-worker.js";
 
 const ENV = {
   API_ORIGIN: "voteapp-api-pzns.onrender.com",
@@ -155,6 +155,37 @@ describe("fetch handler", () => {
     assert.equal(calls[0].headers.get("x-edge-secret"), "real-secret-value");
     // Not configured: the client-supplied copy must still be dropped.
     assert.equal(calls[1].headers.get("x-edge-secret"), null);
+  });
+
+  it("copies CF-Connecting-IP into the custom client-IP header and strips client-supplied copies", async () => {
+    const calls = stubFetch();
+
+    // Real edge request: Cloudflare stamped cf-connecting-ip, the client
+    // tried to smuggle its own copy of the custom header.
+    await worker.fetch(
+      new Request("https://impactperdollar.com/api/elections", {
+        headers: { "cf-connecting-ip": "203.0.113.9", [CLIENT_IP_HEADER]: "198.51.100.99" },
+      }),
+      ENV
+    );
+    // SSR-bound request: stamped there too so loaders can relay it.
+    await worker.fetch(
+      new Request("https://impactperdollar.com/elections/x", {
+        headers: { "cf-connecting-ip": "203.0.113.9" },
+      }),
+      ENV
+    );
+    // No CF-Connecting-IP (e.g. tests): the spoofed copy must still die.
+    await worker.fetch(
+      new Request("https://impactperdollar.com/api/elections", {
+        headers: { [CLIENT_IP_HEADER]: "198.51.100.99" },
+      }),
+      ENV
+    );
+
+    assert.equal(calls[0].headers.get(CLIENT_IP_HEADER), "203.0.113.9");
+    assert.equal(calls[1].headers.get(CLIENT_IP_HEADER), "203.0.113.9");
+    assert.equal(calls[2].headers.get(CLIENT_IP_HEADER), null);
   });
 
   it("preserves method and headers on the proxied request", async () => {

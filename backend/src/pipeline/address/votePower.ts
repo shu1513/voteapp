@@ -52,6 +52,10 @@ export type VotePowerExplanationPart = {
   grade: string;
   stat: string | null;
   detail: string;
+  // The exact scoring formula with this election's real numbers plugged in,
+  // plus the grade cutoffs. null when the measure has no numeric input
+  // (unknown data, uncontested, the ballot-measure step).
+  formula: string | null;
 };
 
 export type VotePowerExplanation = {
@@ -72,6 +76,17 @@ export type VotePowerExplanationContext = VotePowerInput & {
   // several when it is a weighted multi-year blend (the stat must not pin a
   // blended number on a single year).
   marginElectionYears?: number[] | null;
+  // Population extremes of the district's comparison group (the same scope
+  // the loader's representation-score SQL uses) plus a human name for the
+  // group, so the formula can show the real numbers.
+  representationScope?: {
+    maxPopulation: number;
+    minPopulation: number;
+    description: string;
+  } | null;
+  // Per-contest inputs behind a weighted multi-year margin, so the formula
+  // can show the actual blend arithmetic.
+  marginContests?: { marginPercent: number; electionYear: number; weight: number }[] | null;
 };
 
 const LABELS: readonly Exclude<VotePowerLabel, "unknown">[] = ["very_low", "low", "medium", "high", "very_high"];
@@ -324,22 +339,80 @@ function factorsFor(input: {
 // the 45/55 weighted score is a sorting signal only and never shown on the
 // detail page, so surfacing its formula here would misattribute the rating.
 const HOW_CALCULATED =
-  "Vote power = representation (how much weight one vote carries here) + decisiveness (how likely this race is to be close). Each is graded low, medium, or high, and the two grades together set the rating.";
+  "Vote power = representation (how much weight one vote carries here, the smaller the district's population, the higher the representation) + decisiveness (how likely this race is to be close, based on past results and number of candidates).";
 
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-// 12 -> "12", 3.25 -> "3.3": one decimal at most, no trailing ".0".
+// 12 -> "12", 3.25 -> "3.25", 2.04 -> "2.04": two decimals at most — the
+// SAME precision classifyHistoricalContestMargin grades on. Coarser display
+// rounding would let a 2.04 margin render as "2" beside a "very competitive"
+// grade whose own rule says ≤2 is a toss-up.
 function formatMarginPoints(marginPercent: number): string {
-  const rounded = Math.round(marginPercent * 10) / 10;
-  return `${Number.isInteger(rounded) ? rounded.toFixed(0) : rounded}`;
+  return `${Math.round(marginPercent * 100) / 100}`;
+}
+
+function formatCount(value: number): string {
+  return value.toLocaleString("en-US");
+}
+
+// First-match thresholds, not ranges: "33–65 medium" would leave a 65.6
+// score in no bucket, and the grader itself works on >= comparisons.
+const REPRESENTATION_GRADE_SCALE = "grades: 66+ high, 33+ medium, otherwise low";
+
+// The loader's log-scaled inverse-population model, spelled out with this
+// district's real numbers (see recomputeRepresentationPowerScores in
+// districtsLoader.ts — this string must describe that SQL faithfully,
+// including its two-decimal rounding and its equal-extremes midpoint rule).
+//
+// The value after "=" is the STORED score the rating graded on, while the
+// expression's inputs are the CURRENT extremes from a live subselect. The
+// numeric equation therefore only renders after re-evaluating the model
+// here and confirming it reproduces the stored score; any drift (population
+// edits since the last scoring run, or SQL-numeric vs float rounding at a
+// .005 boundary) degrades to the symbolic form, which shows the stored
+// score without claiming the live inputs derive it.
+function representationFormula(input: {
+  representationPowerScore: number;
+  districtPopulation: number | null;
+  representationScope: { maxPopulation: number; minPopulation: number; description: string } | null;
+}): string {
+  const score = Math.round(input.representationPowerScore * 100) / 100;
+  if (input.districtPopulation !== null && input.representationScope !== null) {
+    const scope = input.representationScope;
+    if (scope.maxPopulation === scope.minPopulation) {
+      // ln(x ÷ x) ÷ ln(x ÷ x) is 0/0 — the SQL never evaluates it and
+      // assigns the midpoint instead. Equal extremes can also mean several
+      // districts with identical populations, so don't claim "only one".
+      if (score === 50) {
+        return `score = 50 by rule: ${scope.description} currently all have the same population, so the model assigns the midpoint of 50 (${REPRESENTATION_GRADE_SCALE})`;
+      }
+    } else {
+      const recomputed =
+        Math.round(
+          Math.min(
+            100,
+            Math.max(
+              0,
+              (100 * (Math.log(scope.maxPopulation) - Math.log(input.districtPopulation))) /
+                (Math.log(scope.maxPopulation) - Math.log(scope.minPopulation))
+            )
+          ) * 100
+        ) / 100;
+      if (recomputed === score) {
+        return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest), rounded to 2 decimals = 100 × ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(input.districtPopulation)}) ÷ ln(${formatCount(scope.maxPopulation)} ÷ ${formatCount(scope.minPopulation)}) = ${score}, comparing ${scope.description} (${REPRESENTATION_GRADE_SCALE})`;
+      }
+    }
+  }
+  return `score = 100 × ln(largest population ÷ this district's) ÷ ln(largest ÷ smallest population among comparable districts), rounded to 2 decimals = ${score} (${REPRESENTATION_GRADE_SCALE})`;
 }
 
 function representationPart(input: {
   representationLevel: VotePowerRepresentationLevel;
   representationPowerScore: number | null;
   districtPopulation: number | null;
+  representationScope: { maxPopulation: number; minPopulation: number; description: string } | null;
 }): VotePowerExplanationPart {
   if (input.representationLevel === "unknown" || input.representationPowerScore === null) {
     return {
@@ -347,6 +420,7 @@ function representationPart(input: {
       grade: "Unknown",
       stat: null,
       detail: "We don't have a representation score for this district yet.",
+      formula: null,
     };
   }
 
@@ -366,13 +440,54 @@ function representationPart(input: {
     // the unrounded value (65.6 must not render as the high-threshold 66).
     stat: `${Math.floor(input.representationPowerScore)} out of 100`,
     detail: `${detailByLevel[input.representationLevel]}${populationSuffix}`,
+    formula: representationFormula({
+      representationPowerScore: input.representationPowerScore,
+      districtPopulation: input.districtPopulation,
+      representationScope: input.representationScope,
+    }),
   };
+}
+
+// First-match thresholds so boundary margins read unambiguously: a 2.04
+// margin is "not ≤2, so ≤5 → very competitive", never inside a "0–2" range.
+const MARGIN_GRADE_SCALE =
+  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade medium, safe grades low";
+
+// The margin-to-grade pipeline with this contest's real numbers (see
+// classifyHistoricalContestMargin — this string must match its cutoffs).
+function decisivenessFormula(input: {
+  decisivenessLevel: "low" | "medium" | "high";
+  competitivenessLabel: HistoricalContestCompetitivenessLabel | null | undefined;
+  marginPercent: number | null;
+  marginContests: { marginPercent: number; electionYear: number; weight: number }[] | null;
+}): string | null {
+  if (input.marginPercent === null || input.competitivenessLabel == null) {
+    return null;
+  }
+  const labelText = input.competitivenessLabel === "toss_up" ? "toss-up" : input.competitivenessLabel.replace(/_/g, " ");
+  const contests = input.marginContests ?? [];
+  const marginExpression =
+    contests.length > 1
+      ? `margin = ${contests
+          .map((contest) => `${formatWeight(contest.weight)} × ${formatMarginPoints(contest.marginPercent)} (${contest.electionYear})`)
+          .join(" + ")} = ${formatMarginPoints(input.marginPercent)} points`
+      : `margin = ${formatMarginPoints(input.marginPercent)} points`;
+  return `${marginExpression} → "${labelText}" → grade ${input.decisivenessLevel} (${MARGIN_GRADE_SCALE})`;
+}
+
+// 0.6 -> "0.6", 0.625 -> "0.625": up to four decimals, because rounding a
+// real 0.625/0.375 pair to 0.63/0.38 would display arithmetic whose product
+// sum no longer equals the blended total on the right of the "=".
+function formatWeight(weight: number): string {
+  return `${Math.round(weight * 10000) / 10000}`;
 }
 
 function decisivenessPart(input: {
   decisivenessLevel: VotePowerDecisivenessLevel;
+  competitivenessLabel: HistoricalContestCompetitivenessLabel | null | undefined;
   marginPercent: number | null;
   marginElectionYears: number[] | null;
+  marginContests: { marginPercent: number; electionYear: number; weight: number }[] | null;
   staleAfterRedistricting: boolean;
 }): VotePowerExplanationPart {
   if (input.decisivenessLevel === "none") {
@@ -381,6 +496,7 @@ function decisivenessPart(input: {
       grade: "None",
       stat: "only 1 candidate",
       detail: "One candidate is running unopposed, so votes can't change the outcome.",
+      formula: null,
     };
   }
   if (input.decisivenessLevel === "unknown") {
@@ -389,6 +505,7 @@ function decisivenessPart(input: {
       grade: "Unknown",
       stat: null,
       detail: "No past results for this contest yet.",
+      formula: null,
     };
   }
 
@@ -408,6 +525,12 @@ function decisivenessPart(input: {
     grade: capitalize(input.decisivenessLevel),
     stat: marginStat(input.marginPercent, input.marginElectionYears),
     detail: `${detailByLevel[input.decisivenessLevel]}${staleSuffix}`,
+    formula: decisivenessFormula({
+      decisivenessLevel: input.decisivenessLevel,
+      competitivenessLabel: input.competitivenessLabel,
+      marginPercent: input.marginPercent,
+      marginContests: input.marginContests,
+    }),
   };
 }
 
@@ -449,6 +572,7 @@ function ballotMeasurePart(boostApplied: boolean): VotePowerExplanationPart {
       grade: "+1 step",
       stat: null,
       detail: "Your vote sets the policy directly, so the rating gets a one-step boost.",
+      formula: null,
     };
   }
   return {
@@ -456,6 +580,7 @@ function ballotMeasurePart(boostApplied: boolean): VotePowerExplanationPart {
     grade: "Direct vote",
     stat: null,
     detail: "Your vote sets the policy directly, but it did not raise this rating further.",
+    formula: null,
   };
 }
 
@@ -482,8 +607,19 @@ function explanationResultFor(result: VotePowerResult, boostApplied: boolean, sk
     pieces.push("a ballot-measure boost");
   }
 
-  return `${capitalize(pieces.join(" + "))} → ${capitalize(result.label.replace("_", " "))} vote power.`;
+  return `${capitalize(pieces.join(" + "))} → ${capitalize(RESULT_LABEL_TEXT[result.label])} vote power.`;
 }
+
+// Display words for the rating in the result line. "low" reads as a verdict
+// on the voter, so it ships as "below average" (mirrors the api-client's
+// formatVotePowerLabel chip copy).
+const RESULT_LABEL_TEXT: Record<Exclude<VotePowerLabel, "unknown">, string> = {
+  very_low: "very low",
+  low: "below average",
+  medium: "medium",
+  high: "high",
+  very_high: "very high",
+};
 
 function explanationCaveatFor(confidence: VotePowerConfidence): string | null {
   switch (confidence) {
@@ -512,14 +648,17 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
       representationLevel: result.representation_level,
       representationPowerScore: normalizeRepresentationPowerScore(input.representationPowerScore),
       districtPopulation: input.districtPopulation ?? null,
+      representationScope: input.representationScope ?? null,
     }),
   ];
   if (!skipDecisiveness) {
     parts.push(
       decisivenessPart({
         decisivenessLevel: result.decisiveness_level,
+        competitivenessLabel: input.competitivenessLabel,
         marginPercent: input.marginPercent ?? null,
         marginElectionYears: input.marginElectionYears ?? null,
+        marginContests: input.marginContests ?? null,
         staleAfterRedistricting: input.staleAfterRedistricting === true,
       })
     );

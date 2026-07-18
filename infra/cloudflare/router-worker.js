@@ -8,9 +8,16 @@
  * the upstream URL's hostname is all that changes).
  *
  * Client IP: Cloudflare sets CF-Connecting-IP on every proxied request and
- * always overwrites a client-supplied copy, so both servers can trust it
- * (ADDRESS_API_TRUSTED_CLIENT_IP_HEADER=CF-Connecting-IP). This worker adds
- * no IP handling of its own.
+ * always overwrites a client-supplied copy, so its value is trustworthy at
+ * this hop — but the servers must NOT read it directly. Both origins sit
+ * behind Render's own Cloudflare, which rejects (403) outside clients that
+ * present the reserved CF-Connecting-IP header — and would overwrite it with
+ * the sender's socket IP even if it let the request through — so the SSR
+ * loader could never relay that header to the API's public host. This
+ * worker therefore copies the value into the custom X-Voteapp-Client-IP
+ * header (CLIENT_IP_HEADER below), which passes through Render's edge
+ * untouched; both servers read it via
+ * ADDRESS_API_TRUSTED_CLIENT_IP_HEADER=X-Voteapp-Client-IP.
  *
  * Worker vars (set in the dashboard or wrangler.toml):
  *   API_ORIGIN — e.g. "voteapp-api.onrender.com"
@@ -32,6 +39,13 @@
 export function isApiPath(pathname) {
   return pathname === "/sitemap.xml" || pathname === "/api" || pathname.startsWith("/api/");
 }
+
+// Custom (non-reserved) client-IP header both servers trust via
+// ADDRESS_API_TRUSTED_CLIENT_IP_HEADER — see the module comment for why the
+// reserved CF-Connecting-IP cannot be used past this hop. Cloudflare only
+// protects its own CF-* headers, so the Worker must strip client-supplied
+// copies itself before stamping.
+export const CLIENT_IP_HEADER = "X-Voteapp-Client-IP";
 
 // Baseline security headers, stamped on every response the Worker returns
 // (proxied, redirect, or error) — neither origin sets them itself. The edge
@@ -160,8 +174,8 @@ export default {
     // rewrites the Host header to the new hostname automatically.
     const upstreamRequest = new Request(url.toString(), request);
     // Prove to the origin that this hop is the edge: with EDGE_SHARED_SECRET
-    // set (Worker secret + the API/SSR env), the API only trusts
-    // CF-Connecting-IP on requests carrying it, closing the direct
+    // set (Worker secret + the API/SSR env), the API only trusts the
+    // client-IP header on requests carrying it, closing the direct
     // *.onrender.com header-spoofing bypass. Deliberately stamped on
     // SSR-bound requests too, not just API paths: the SSR loaders verify it
     // before relaying the client IP to the API, so a direct hit on the SSR
@@ -172,6 +186,16 @@ export default {
     const edgeSharedSecret = typeof env.EDGE_SHARED_SECRET === "string" ? env.EDGE_SHARED_SECRET.trim() : "";
     if (edgeSharedSecret) {
       upstreamRequest.headers.set("X-Edge-Secret", edgeSharedSecret);
+    }
+    // Copy Cloudflare's trusted client IP into the custom header the servers
+    // read (module comment: the reserved CF-Connecting-IP can't cross
+    // Render's own Cloudflare edge). Stamped on SSR-bound requests too so
+    // the loaders can relay it to the API. Always drop a client-supplied
+    // copy first — unlike CF-Connecting-IP, nothing else overwrites it.
+    upstreamRequest.headers.delete(CLIENT_IP_HEADER);
+    const clientIp = request.headers.get("CF-Connecting-IP");
+    if (clientIp) {
+      upstreamRequest.headers.set(CLIENT_IP_HEADER, clientIp);
     }
     return withSecurityHeaders(await fetch(upstreamRequest), url.pathname);
   },

@@ -91,7 +91,7 @@ export default function RegisterScreen() {
             autoCapitalize="none"
           />
           <LabeledInput
-            label="First name (optional)"
+            label="First Name (optional)"
             value={firstName}
             onChangeText={setFirstName}
             autoComplete="given-name"

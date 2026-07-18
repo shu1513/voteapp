@@ -57,7 +57,7 @@ describe("ElectionPage", () => {
     renderElection(() => electionDetail({ vote_power: VOTE_POWER_WITH_EXPLANATION }));
 
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.getByText("Why this vote power rating?")).toBeInTheDocument();
+    expect(screen.getByText("How do we calculate vote power?")).toBeInTheDocument();
     // Native <details> keeps content in the DOM while collapsed; the backend
     // copy must arrive verbatim.
     expect(screen.getByText("Vote power = representation + decisiveness.")).toBeInTheDocument();
@@ -70,6 +70,9 @@ describe("ElectionPage", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Medium representation + high decisiveness → High vote power.")).toBeInTheDocument();
     expect(screen.getByText("Some data is missing.")).toBeInTheDocument();
+    // The exact formula renders when the backend provides one; the null
+    // formula on the other part must not render an empty line.
+    expect(screen.getByText("score = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50")).toBeInTheDocument();
   });
 
   it("omits the vote power explanation when the payload has none or the label is unknown", async () => {
@@ -77,7 +80,7 @@ describe("ElectionPage", () => {
     renderElection(() => electionDetail());
 
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.queryByText("Why this vote power rating?")).not.toBeInTheDocument();
+    expect(screen.queryByText("How do we calculate vote power?")).not.toBeInTheDocument();
   });
 
   it("hides the vote power explanation entirely for an unknown label", async () => {
@@ -90,7 +93,7 @@ describe("ElectionPage", () => {
 
     await screen.findByRole("heading", { name: "Governor" });
     expect(screen.queryByText(/Vote power:/)).not.toBeInTheDocument();
-    expect(screen.queryByText("Why this vote power rating?")).not.toBeInTheDocument();
+    expect(screen.queryByText("How do we calculate vote power?")).not.toBeInTheDocument();
   });
 
   it("shows the seat count for multi-seat contests and hides it otherwise", async () => {

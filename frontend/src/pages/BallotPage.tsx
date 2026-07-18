@@ -16,9 +16,10 @@ const SORT_VALUES: readonly string[] = PUBLIC_BALLOT_SORTS.map((option) => optio
 
 export function BallotPage() {
   useDocumentTitle("Your ballot");
-  // Signed-in verified visitors get their saved areas highlighted even on
-  // the public ballot; anonymous visitors get an empty set (no highlights).
-  const { savedAreaIds } = useMyResearchAreas();
+  // Signed-in verified visitors get their saved areas listed first (in their
+  // own rank order) even on the public ballot; anonymous visitors get an
+  // empty map (no personalization).
+  const { weights: savedAreaWeights } = useMyResearchAreas();
   // Set by the home page's post-search navigation so the visitor can confirm
   // the geocoder matched the right address. Router state only — the address is
   // personal data and must stay out of the URL; a refresh or shared link
@@ -163,7 +164,7 @@ export function BallotPage() {
           {ballot.data.elections.length === 0 ? (
             <EmptyNotice text="No upcoming elections found for these districts yet. Check back — new elections are added as they are announced." />
           ) : (
-            <ElectionList elections={ballot.data.elections} savedAreaIds={savedAreaIds} />
+            <ElectionList elections={ballot.data.elections} savedAreaWeights={savedAreaWeights} />
           )}
         </>
       ) : null}

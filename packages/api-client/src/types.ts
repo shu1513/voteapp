@@ -59,6 +59,9 @@ export type VotePowerExplanationPart = {
   grade: string;
   stat: string | null;
   detail: string;
+  /** Exact scoring formula with this election's real numbers; null when the
+   * measure has no numeric input. Optional while pre-formula backends roll. */
+  formula?: string | null;
 };
 
 export type VotePowerExplanation = {

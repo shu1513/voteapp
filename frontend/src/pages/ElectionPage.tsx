@@ -105,7 +105,7 @@ export function ElectionPage() {
       {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
         <details className="mt-2 text-sm">
           <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
-            Why this vote power rating?
+            How do we calculate vote power?
           </summary>
           <div className="mt-2 rounded-xl border border-line bg-white p-4">
             <p className="text-ink">{data.vote_power.explanation.how}</p>
@@ -120,6 +120,11 @@ export function ElectionPage() {
                     {part.stat ? <span className="text-ink-soft"> · {part.stat}</span> : null}
                   </p>
                   <p className="mt-1 text-xs text-ink-soft">{part.detail}</p>
+                  {part.formula ? (
+                    <p className="mt-1 break-words font-mono text-[11px] leading-relaxed text-ink-soft">
+                      {part.formula}
+                    </p>
+                  ) : null}
                 </div>
               ))}
             </div>
@@ -141,7 +146,7 @@ export function ElectionPage() {
                   key={tag.research_area_id}
                   className={
                     savedAreaIds.has(tag.research_area_id)
-                      ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+                      ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
                       : "rounded bg-surface px-2 py-0.5 text-ink-soft"
                   }
                 >
@@ -284,7 +289,7 @@ export function ElectionPage() {
                           key={stance.research_area_id}
                           className={
                             savedAreaIds.has(stance.research_area_id)
-                              ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 font-medium text-rausch-dark"
+                              ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
                               : "rounded bg-surface px-2 py-0.5 text-ink-soft"
                           }
                         >

@@ -78,17 +78,16 @@ describe("SavedBallotPage", () => {
       "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
     });
     const { router } = renderSavedBallot({
-      addressSaved: { matched_address: "123 MAIN ST, AUSTIN, TX", district_count: 1, address_match_count: 1 },
+      addressSaved: { matched_address: "123 MAIN ST, AUSTIN, TX", address_match_count: 1 },
     });
 
     const confirmation = await screen.findByRole("status");
-    expect(confirmation).toHaveTextContent("Districts updated from 123 MAIN ST, AUSTIN, TX");
-    expect(confirmation).toHaveTextContent("1 district");
-    // The account keeps districts, not the address — the notice must say so
-    // instead of announcing "Address saved". Scoped to the profile: the
-    // backend's short-lived geocoder cache means an absolute "not stored"
-    // would be false.
-    expect(confirmation).toHaveTextContent("your street address is not kept in your profile");
+    expect(confirmation).toHaveTextContent("Your election districts are updated from 123 MAIN ST, AUSTIN, TX");
+    // The account keeps election districts, not the address — the notice
+    // states only what WAS saved instead of announcing "Address saved" or
+    // making an absolute no-save claim (the backend's 14-day geocoder cache
+    // would falsify one).
+    expect(confirmation).toHaveTextContent("Only the new election districts were saved in your profile");
     expect(confirmation).not.toHaveTextContent("Address saved");
     // Exact single match: no ambiguity warning.
     expect(confirmation).not.toHaveTextContent("possible locations");
@@ -111,13 +110,12 @@ describe("SavedBallotPage", () => {
     renderSavedBallot({
       addressSaved: {
         matched_address: "100 MAIN ST, SPRINGFIELD, MA, 01105",
-        district_count: 1,
         address_match_count: 7,
       },
     });
 
     const confirmation = await screen.findByRole("status");
-    expect(confirmation).toHaveTextContent("Districts updated from 100 MAIN ST, SPRINGFIELD, MA, 01105");
+    expect(confirmation).toHaveTextContent("Your election districts are updated from 100 MAIN ST, SPRINGFIELD, MA, 01105");
     expect(confirmation).toHaveTextContent(
       "Your address matched 7 possible locations and the first one was used"
     );
