@@ -46,7 +46,7 @@ describe("FollowsPage", () => {
     expect(document.title).toContain("Followed Candidates");
   });
 
-  it("filters follows by name via the search bar", async () => {
+  it("keeps the follows list unfiltered while typing in the search box", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/candidate-follows": {
@@ -57,8 +57,6 @@ describe("FollowsPage", () => {
           ],
         },
       },
-      // The same input also fires the debounced typeahead; keep it empty so
-      // the dropdown stays closed while this test exercises the filter.
       "/api/candidates/search": { body: { candidates: [] } },
     });
     const user = userEvent.setup();
@@ -67,22 +65,11 @@ describe("FollowsPage", () => {
     expect(await screen.findByText("Jordan Voter")).toBeInTheDocument();
     expect(screen.getByText("Alex Mayor")).toBeInTheDocument();
 
+    // The search box is typeahead-only: the followed list must stay put.
     await user.type(screen.getByRole("combobox", { name: "Search candidates by name" }), "jord");
     expect(screen.getByText("Jordan Voter")).toBeInTheDocument();
-    expect(screen.queryByText("Alex Mayor")).not.toBeInTheDocument();
-    // Screen readers hear the result count through the polite live region.
-    expect(screen.getByRole("status")).toHaveTextContent("1 of 2 followed candidates shown.");
-
-    // Clearing the query restores the full list and silences the live region.
-    await user.clear(screen.getByRole("combobox", { name: "Search candidates by name" }));
-    expect(screen.getByText("Jordan Voter")).toBeInTheDocument();
     expect(screen.getByText("Alex Mayor")).toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent("");
-
-    await user.type(screen.getByRole("combobox", { name: "Search candidates by name" }), "nobody");
-    // Once in the visible notice, once in the live region.
-    expect(screen.getAllByText(/No followed candidates match/)).toHaveLength(2);
-    expect(screen.getByRole("status")).toHaveTextContent("No followed candidates match “nobody”.");
+    expect(screen.queryByText(/No followed candidates match/)).not.toBeInTheDocument();
   });
 
   it("offers candidate search to users with zero follows", async () => {
