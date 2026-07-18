@@ -52,7 +52,7 @@ export function formatSourceHost(url: string): string {
 
 const VOTE_POWER_LABELS: Record<string, string> = {
   very_low: "Very low",
-  low: "Low",
+  low: "Below average",
   medium: "Medium",
   high: "High",
   very_high: "Very high",

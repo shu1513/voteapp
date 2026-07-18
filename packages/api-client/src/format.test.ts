@@ -80,6 +80,8 @@ describe("formatSourceHost", () => {
 describe("formatVotePowerLabel", () => {
   it("maps known labels and passes unknown ones through untouched", () => {
     expect(formatVotePowerLabel("very_low")).toBe("Very low");
+    // "Low" reads as a verdict on the voter; the chip says "Below average".
+    expect(formatVotePowerLabel("low")).toBe("Below average");
     expect(formatVotePowerLabel("unknown")).toBe("Unknown");
     expect(formatVotePowerLabel("super_high")).toBe("super_high");
   });

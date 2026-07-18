@@ -110,7 +110,7 @@ export function ElectionPage() {
       Array.isArray(data.vote_power.explanation.parts) ? (
         <details className="mt-2 text-sm">
           <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
-            Why this vote power rating?
+            How we calculated this vote power rating?
           </summary>
           <div className="mt-2 rounded-xl border border-line bg-white p-4">
             <p className="text-ink">{data.vote_power.explanation.how}</p>

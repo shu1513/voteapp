@@ -360,7 +360,7 @@ describe("explainVotePower", () => {
     // The how copy explains the displayed label (grade combination), never
     // the internal 45/55 sorting-score formula.
     expect(explanation.how).toBe(
-      "Vote power = representation (how much weight one vote carries here) + decisiveness (how likely this race is to be close). Each is graded low, medium, or high, and the two grades together set the rating."
+      "Vote power = representation (how much weight one vote carries here, the smaller the district's population, the higher the representation) + decisiveness (how likely this race is to be close, based on past results and number of candidates)."
     );
     expect(explanation.parts).toEqual([
       {
@@ -443,7 +443,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[1]).toMatchObject({ grade: "Low", stat: "40-point margin" });
-    expect(explanation.result).toBe("Medium representation + low decisiveness → Low vote power.");
+    expect(explanation.result).toBe("Medium representation + low decisiveness → Below average vote power.");
   });
 
   it("labels a multi-year margin as a weighted blend instead of pinning it on one year", () => {
@@ -492,7 +492,7 @@ describe("explainVotePower", () => {
       detail: "One candidate is running unopposed, so votes can't change the outcome.",
       formula: null,
     });
-    expect(explanation.result).toBe("High representation + an uncontested race → Low vote power.");
+    expect(explanation.result).toBe("High representation + an uncontested race → Below average vote power.");
   });
 
   it("qualifies decisiveness when the historical results predate redistricting", () => {
