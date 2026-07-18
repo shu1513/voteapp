@@ -77,8 +77,8 @@ describe("BallotPage", () => {
     });
     renderBallot("/ballot?d=d-1");
 
-    // The roster status renders inside the card's meta line, so match as a
-    // substring of that line rather than a standalone element.
+    // The roster status renders in the card's title row where the candidate
+    // count would sit, so match it as a substring.
     expect(await screen.findByText(/Candidate list not final/)).toBeInTheDocument();
     expect(screen.queryByText(/0 candidates/)).not.toBeInTheDocument();
   });

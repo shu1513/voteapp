@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import type { ElectionSummary } from "@voteapp/api-client";
 import {
-  formatDistrictType,
   formatElectionDate,
   formatOutcome,
   formatRosterStatus,
@@ -39,6 +38,19 @@ export function ElectionList({
       groups.push({ date: election.election_date, elections: [election] });
     }
   }
+  // Ballot titles are often generic ("State Representative", "Board of
+  // Education Member"), and overlapping districts — elementary plus unified
+  // school districts, say — can put two identically-titled races on one
+  // ballot. When titles collide, each colliding card shows its district name
+  // to stay tellable-apart; unique titles stay clean.
+  const seenTitles = new Set<string>();
+  const collidingTitles = new Set<string>();
+  for (const election of elections) {
+    if (seenTitles.has(election.official_ballot_title)) {
+      collidingTitles.add(election.official_ballot_title);
+    }
+    seenTitles.add(election.official_ballot_title);
+  }
   return (
     <div className="mt-4 space-y-6">
       {groups.map((group) => (
@@ -48,7 +60,12 @@ export function ElectionList({
           <h2 className="text-sm font-semibold text-ink">{formatElectionDate(group.date)}</h2>
           <div className="mt-2 space-y-3">
             {group.elections.map((election) => (
-              <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
+              <ElectionCard
+                key={election.id}
+                election={election}
+                savedAreaIds={savedAreaIds}
+                showDistrict={collidingTitles.has(election.official_ballot_title)}
+              />
             ))}
           </div>
         </section>
@@ -68,9 +85,11 @@ export function ElectionList({
 function ElectionCard({
   election,
   savedAreaIds,
+  showDistrict,
 }: {
   election: ElectionSummary;
   savedAreaIds?: Set<string>;
+  showDistrict?: boolean;
 }) {
   const savedAreas = election.research_areas.filter((area) => savedAreaIds?.has(area.id) ?? false);
   const otherAreas = election.research_areas.filter((area) => !(savedAreaIds?.has(area.id) ?? false));
@@ -80,7 +99,6 @@ function ElectionCard({
   // race has no signals to show.
   const hasSignalChips =
     (election.followed_candidates?.length ?? 0) > 0 ||
-    election.vote_power.label !== "unknown" ||
     election.historical_competitiveness !== null ||
     election.has_results;
   return (
@@ -88,36 +106,41 @@ function ElectionCard({
       to={`/elections/${election.id}`}
       className="block rounded-xl border border-line bg-white p-4 shadow-sm transition hover:shadow-md"
     >
-      {/* No per-card date: ElectionList's group heading carries it. */}
-      <h3 className="font-semibold text-ink">{election.official_ballot_title}</h3>
-      {/* Three tiers, visually distinct: race FACTS read as plain meta text
-          (district, office, who's running), SIGNALS read as colored chips
-          (follow, vote power, competitiveness, results), and the affected
-          AREAS sit behind a hairline divider with their own label. */}
-      <p className="mt-1 text-sm text-ink-soft">
-        {election.district.name} · {formatDistrictType(election.district.district_type)}
-        {election.office ? <> · {election.office.canonical_name}</> : null}
-        {election.race_type === "ballot_measure" ? (
-          <> · Ballot measure</>
-        ) : (
-          <>
-            {" · "}
-            {election.candidate_count === 0 && election.candidate_roster_status
-              ? formatRosterStatus(election.candidate_roster_status).short
-              : `${election.candidate_count} candidate${election.candidate_count === 1 ? "" : "s"}`}
-          </>
-        )}
-      </p>
+      {/* No per-card date: ElectionList's group heading carries it. No
+          district/office meta either — the ballot title already names the
+          race, and the election page carries the full detail. The title row
+          keeps vote power and the candidate count flush right, so every card
+          answers "how much does my vote matter, and who's running?" on its
+          first line. */}
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+        <h3 className="font-semibold text-ink">{election.official_ballot_title}</h3>
+        {/* The group wraps between chip and count on very narrow screens;
+            nowrap sits on each label so neither breaks mid-phrase. */}
+        <span className="flex flex-wrap items-baseline justify-end gap-x-2 gap-y-1">
+          {election.vote_power.label !== "unknown" ? (
+            <span className="whitespace-nowrap rounded bg-rausch/10 px-2 py-0.5 text-xs text-rausch-dark">
+              Vote power: {formatVotePowerLabel(election.vote_power.label)}
+            </span>
+          ) : null}
+          <span className="whitespace-nowrap text-sm text-ink-soft">
+            {election.race_type === "ballot_measure"
+              ? "Ballot measure"
+              : election.candidate_count === 0 && election.candidate_roster_status
+                ? formatRosterStatus(election.candidate_roster_status).short
+                : `${election.candidate_count} candidate${election.candidate_count === 1 ? "" : "s"}`}
+          </span>
+        </span>
+      </div>
+      {showDistrict ? (
+        // Disambiguator, not a meta line: rendered only when another card in
+        // the list carries the same ballot title.
+        <p className="mt-0.5 text-sm text-ink-soft">{election.district.name}</p>
+      ) : null}
       {hasSignalChips ? (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {election.followed_candidates && election.followed_candidates.length > 0 ? (
             <span className="rounded bg-rausch px-2 py-0.5 font-medium text-white">
               You follow {election.followed_candidates.map((candidate) => candidate.display_name).join(", ")}
-            </span>
-          ) : null}
-          {election.vote_power.label !== "unknown" ? (
-            <span className="rounded bg-rausch/10 px-2 py-0.5 text-rausch-dark">
-              Vote power: {formatVotePowerLabel(election.vote_power.label)}
             </span>
           ) : null}
           {election.historical_competitiveness ? (

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { screen } from "@testing-library/react";
 import { ElectionList } from "./ElectionCard";
 import { renderRoutes } from "../test/render";
-import { electionSummary } from "../test/fixtures";
+import { electionSummary, VOTE_POWER } from "../test/fixtures";
 import type { ElectionSummary } from "@voteapp/api-client";
 
 function area(id: string, name: string) {
@@ -19,6 +19,75 @@ function renderCard(election: ElectionSummary, savedAreaIds?: Set<string>) {
 }
 
 describe("ElectionCard", () => {
+  it("puts vote power and the candidate count on the title row, without district meta", () => {
+    renderCard(electionSummary());
+
+    const row = screen.getByRole("heading", { name: "Governor" }).parentElement;
+    expect(row).toHaveTextContent("Vote power: High");
+    expect(row).toHaveTextContent("2 candidates");
+    // The district/office meta line is gone — the ballot title names the race.
+    expect(screen.queryByText(/Alaska/)).not.toBeInTheDocument();
+  });
+
+  it("omits the vote-power chip when the score is unknown", () => {
+    renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "unknown" } }));
+
+    expect(screen.queryByText(/Vote power:/)).not.toBeInTheDocument();
+    expect(screen.getByText("2 candidates")).toBeInTheDocument();
+  });
+
+  it("shows district names only on cards whose ballot titles collide", () => {
+    renderRoutes(
+      [
+        {
+          path: "/",
+          element: (
+            <ElectionList
+              elections={[
+                // Overlapping school districts: same generic title, one ballot.
+                electionSummary({
+                  id: "e-1",
+                  official_ballot_title: "Board of Education Member",
+                  district: {
+                    id: "d-el",
+                    district_type: "school_elementary",
+                    name: "Yuma Elementary District, Arizona",
+                    state: "AZ",
+                  },
+                }),
+                electionSummary({
+                  id: "e-2",
+                  official_ballot_title: "Board of Education Member",
+                  district: {
+                    id: "d-hi",
+                    district_type: "school_secondary",
+                    name: "Yuma Union High School District, Arizona",
+                    state: "AZ",
+                  },
+                }),
+                electionSummary({ id: "e-3", official_ballot_title: "Governor" }),
+              ]}
+            />
+          ),
+        },
+      ],
+      "/"
+    );
+
+    // Colliding titles each carry their district as a disambiguator…
+    expect(screen.getByText("Yuma Elementary District, Arizona")).toBeInTheDocument();
+    expect(screen.getByText("Yuma Union High School District, Arizona")).toBeInTheDocument();
+    // …while the unique title stays district-free ("Alaska" is its fixture district).
+    expect(screen.queryByText("Alaska")).not.toBeInTheDocument();
+  });
+
+  it("labels ballot measures instead of counting candidates", () => {
+    renderCard(electionSummary({ race_type: "ballot_measure", candidate_count: 0 }));
+
+    expect(screen.getByText("Ballot measure")).toBeInTheDocument();
+    expect(screen.queryByText(/candidates?/)).not.toBeInTheDocument();
+  });
+
   it("caps unsaved research-area chips and counts the rest", () => {
     renderCard(
       electionSummary({
