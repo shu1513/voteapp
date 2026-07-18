@@ -141,17 +141,28 @@ export function ElectionPage() {
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
           <h2 className="text-lg font-semibold text-dem-blue">Ballot Measure</h2>
           {measure.research_area_tags.length > 0 ? (
+            // Stance colors the chip: green = the measure works for that
+            // area, red = against it. Stance wins over the saved-area green
+            // (same hue anyway for "for"); stanceless tags keep the
+            // saved/muted styling. Color is not the only carrier — an
+            // sr-only suffix says the direction out loud.
             <div className="mt-2 flex flex-wrap gap-2 text-xs">
               {measure.research_area_tags.map((tag) => (
                 <span
                   key={tag.research_area_id}
                   className={
-                    savedAreaIds.has(tag.research_area_id)
+                    tag.stance === "for"
                       ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
-                      : "rounded bg-surface px-2 py-0.5 text-ink-soft"
+                      : tag.stance === "against"
+                        ? "rounded border border-red-600/40 bg-red-600/10 px-2 py-0.5 font-medium text-red-900"
+                        : savedAreaIds.has(tag.research_area_id)
+                          ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
+                          : "rounded bg-surface px-2 py-0.5 text-ink-soft"
                   }
                 >
                   {tag.name}
+                  {tag.stance === "for" ? <span className="sr-only"> (for)</span> : null}
+                  {tag.stance === "against" ? <span className="sr-only"> (against)</span> : null}
                 </span>
               ))}
             </div>

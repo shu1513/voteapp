@@ -218,6 +218,44 @@ describe("ElectionPage", () => {
     expect(screen.getByRole("button", { name: "Report an issue with ballot measure" })).toBeInTheDocument();
   });
 
+  it("colors measure research-area chips by stance", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: null,
+          source_urls: [],
+          official_measure_url: null,
+          research_area_tags: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+            { research_area_id: "a-2", slug: "civil_rights", name: "Civil Rights", stance: "against" },
+            { research_area_id: "a-3", slug: "gun_control", name: "Gun Control", stance: null },
+          ],
+          results: [],
+        },
+      })
+    );
+
+    // The measure works FOR housing (green), AGAINST civil rights (red);
+    // a stanceless tag stays muted. sr-only text carries the direction for
+    // assistive tech, so color is not the only signal.
+    const forChip = await screen.findByText("Housing Affordability");
+    expect(forChip.className).toContain("text-green-900");
+    expect(forChip).toHaveTextContent("Housing Affordability (for)");
+    const againstChip = screen.getByText("Civil Rights");
+    expect(againstChip.className).toContain("text-red-900");
+    expect(againstChip).toHaveTextContent("Civil Rights (against)");
+    const neutralChip = screen.getByText("Gun Control");
+    expect(neutralChip.className).toContain("text-ink-soft");
+  });
+
   it("renders measure result rows, including election-night outcomes", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
