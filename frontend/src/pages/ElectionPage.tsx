@@ -18,6 +18,7 @@ import {
   formatVotePowerLabel,
 } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
+import { votePowerBadgeClass } from "../lib/votePowerBadge";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { aggregateRecordAreaStances, scoreStanceDirection } from "@voteapp/api-client";
@@ -92,7 +93,7 @@ export function ElectionPage() {
       </div>
       <div className="mt-2 flex flex-wrap gap-2 text-xs">
         {data.vote_power.label !== "unknown" ? (
-          <span className="rounded bg-rausch/10 px-2 py-0.5 text-rausch-dark">
+          <span className={`rounded px-2 py-0.5 ${votePowerBadgeClass(data.vote_power.label)}`}>
             Vote power: {formatVotePowerLabel(data.vote_power.label)}
           </span>
         ) : null}

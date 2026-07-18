@@ -10,6 +10,7 @@ import {
   compareByResearchAreaPriority,
   sortByResearchAreaPriority,
 } from "../lib/researchAreaPriority";
+import { votePowerBadgeClass } from "../lib/votePowerBadge";
 
 // Statewide races carry a dozen-plus research areas; rendering every one
 // buried the card's actual signal (title, candidates, vote power) under a
@@ -144,7 +145,9 @@ function ElectionCard({
             nowrap sits on each label so neither breaks mid-phrase. */}
         <span className="flex flex-wrap items-baseline justify-end gap-x-2 gap-y-1">
           {election.vote_power.label !== "unknown" ? (
-            <span className="whitespace-nowrap rounded bg-rausch/10 px-2 py-0.5 text-xs text-rausch-dark">
+            <span
+              className={`whitespace-nowrap rounded px-2 py-0.5 text-xs ${votePowerBadgeClass(election.vote_power.label)}`}
+            >
               Vote power: {formatVotePowerLabel(election.vote_power.label)}
             </span>
           ) : null}

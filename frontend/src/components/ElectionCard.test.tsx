@@ -59,6 +59,18 @@ describe("ElectionCard", () => {
     expect(screen.queryByText(/Alaska/)).not.toBeInTheDocument();
   });
 
+  it("color-codes the vote-power badge by level", () => {
+    // Fixture default is "high" → orange; hotter and cooler levels shift hue.
+    renderCard(electionSummary());
+    expect(screen.getByText("Vote power: High").className).toContain("text-orange-700");
+
+    renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "very_high" } }));
+    expect(screen.getByText("Vote power: Very high").className).toContain("text-red-700");
+
+    renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "very_low" } }));
+    expect(screen.getByText("Vote power: Very low").className).toContain("text-gray-500");
+  });
+
   it("omits the vote-power chip when the score is unknown", () => {
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "unknown" } }));
 
