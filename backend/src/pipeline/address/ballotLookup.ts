@@ -236,13 +236,21 @@ export type BallotLookupElection = {
   candidate_roster_status: BallotLookupCandidateRosterStatus | null;
   ballot_measure: BallotLookupBallotMeasure | null;
   results: BallotLookupElectionResult[];
+  // Same office/research-area shape as the summary list, so the detail page
+  // can show the office description and affected areas without a second
+  // request.
+  office: BallotLookupOfficeSummary | null;
+  research_areas: BallotLookupResearchAreaSummary[];
   historical_competitiveness: BallotLookupHistoricalCompetitiveness | null;
   // The detail payload carries the explanation; the ballot summary list
   // (BallotLookupElectionSummary) deliberately does not.
   vote_power: VotePowerResult & { explanation: VotePowerExplanation };
 };
 
-type BallotLookupElectionBase = Omit<BallotLookupElection, "historical_competitiveness" | "vote_power">;
+type BallotLookupElectionBase = Omit<
+  BallotLookupElection,
+  "office" | "research_areas" | "historical_competitiveness" | "vote_power"
+>;
 
 export type BallotLookupElectionSummary = {
   id: string;
@@ -303,6 +311,7 @@ type ElectionRow = {
 // Scope columns are optional: only loadElectionRowById selects them, and the
 // explanation degrades to a symbolic formula when they are absent.
 type ElectionDetailRow = ElectionRow & {
+  office_summary?: string | null;
   scope_max_population?: string | number | null;
   scope_min_population?: string | number | null;
 };
@@ -339,6 +348,62 @@ type MeasureResearchAreaSummaryRow = {
   name: string;
   description: string | null;
 };
+
+// Shared by the ballot-summary list and the election-detail lookup so both
+// payloads describe an election's research areas identically.
+async function loadOfficeResearchAreaSummaryRows(
+  db: Queryable,
+  officeIds: readonly string[]
+): Promise<OfficeResearchAreaSummaryRow[]> {
+  if (officeIds.length === 0) {
+    return [];
+  }
+  const result = await db.query<OfficeResearchAreaSummaryRow>(
+    `
+      SELECT
+        link.office_id,
+        area.id AS research_area_id,
+        area.slug,
+        area.name,
+        area.description
+      FROM public.office_research_areas AS link
+      JOIN public.research_areas AS area
+        ON area.id = link.research_area_id
+      WHERE link.office_id = ANY($1::uuid[])
+      ORDER BY link.office_id, area.slug
+    `,
+    [officeIds]
+  );
+  return result.rows;
+}
+
+async function loadMeasureResearchAreaSummaryRows(
+  db: Queryable,
+  electionIds: readonly string[]
+): Promise<MeasureResearchAreaSummaryRow[]> {
+  if (electionIds.length === 0) {
+    return [];
+  }
+  const result = await db.query<MeasureResearchAreaSummaryRow>(
+    `
+      SELECT
+        bm.election_id,
+        area.id AS research_area_id,
+        area.slug,
+        area.name,
+        area.description
+      FROM public.ballot_measures AS bm
+      JOIN public.ballot_measure_research_area_tags AS tag
+        ON tag.ballot_measure_id = bm.id
+      JOIN public.research_areas AS area
+        ON area.id = tag.research_area_id
+      WHERE bm.election_id = ANY($1::uuid[])
+      ORDER BY bm.election_id, area.slug
+    `,
+    [electionIds]
+  );
+  return result.rows;
+}
 
 function mergeResearchAreaSummaries(
   officeRows: readonly OfficeResearchAreaSummaryRow[],
@@ -1430,25 +1495,7 @@ export async function lookupBallotSummariesByDistrictIds(
         .filter((officeId): officeId is string => typeof officeId === "string" && officeId.length > 0)
     ),
   ];
-  const officeResearchAreaResult =
-    officeIds.length === 0
-      ? { rows: [] as OfficeResearchAreaSummaryRow[] }
-      : await db.query<OfficeResearchAreaSummaryRow>(
-          `
-            SELECT
-              link.office_id,
-              area.id AS research_area_id,
-              area.slug,
-              area.name,
-              area.description
-            FROM public.office_research_areas AS link
-            JOIN public.research_areas AS area
-              ON area.id = link.research_area_id
-            WHERE link.office_id = ANY($1::uuid[])
-            ORDER BY link.office_id, area.slug
-          `,
-          [officeIds]
-        );
+  const officeResearchAreaRows = await loadOfficeResearchAreaSummaryRows(db, officeIds);
 
   // Ballot-measure elections have no office, so without this their
   // research_areas would always be empty and area-based personalization
@@ -1456,27 +1503,7 @@ export async function lookupBallotSummariesByDistrictIds(
   // Skipped entirely when the ballot has no measures, mirroring the office
   // research-area guard above.
   const measureElectionIds = [...new Set(ballotMeasureResult.rows.map((row) => row.election_id))];
-  const measureResearchAreaResult =
-    measureElectionIds.length === 0
-      ? { rows: [] as MeasureResearchAreaSummaryRow[] }
-      : await db.query<MeasureResearchAreaSummaryRow>(
-          `
-            SELECT
-              bm.election_id,
-              area.id AS research_area_id,
-              area.slug,
-              area.name,
-              area.description
-            FROM public.ballot_measures AS bm
-            JOIN public.ballot_measure_research_area_tags AS tag
-              ON tag.ballot_measure_id = bm.id
-            JOIN public.research_areas AS area
-              ON area.id = tag.research_area_id
-            WHERE bm.election_id = ANY($1::uuid[])
-            ORDER BY bm.election_id, area.slug
-          `,
-          [measureElectionIds]
-        );
+  const measureResearchAreaRows = await loadMeasureResearchAreaSummaryRows(db, measureElectionIds);
 
   const resultSummaryResult = await db.query<ElectionResultSummaryRow>(
     `
@@ -1541,8 +1568,8 @@ export async function lookupBallotSummariesByDistrictIds(
       ballotMeasureIdsByElection.set(row.election_id, row.ballot_measure_id);
     }
   }
-  const researchAreasByOffice = groupBy(officeResearchAreaResult.rows, (row) => row.office_id);
-  const measureResearchAreasByElection = groupBy(measureResearchAreaResult.rows, (row) => row.election_id);
+  const researchAreasByOffice = groupBy(officeResearchAreaRows, (row) => row.office_id);
+  const measureResearchAreasByElection = groupBy(measureResearchAreaRows, (row) => row.election_id);
   const resultOutcomeByElection = new Map(resultSummaryResult.rows.map((row) => [row.election_id, row.outcome]));
   const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionResult.rows);
 
@@ -1642,6 +1669,7 @@ async function loadElectionRowById(db: Queryable, electionId: string): Promise<E
         office.id AS office_id,
         office.scope AS office_scope,
         office.canonical_name AS office_canonical_name,
+        office.summary AS office_summary,
         -- Population extremes of the district's comparison group, mirroring
         -- the scope rule in recomputeRepresentationPowerScores (national for
         -- statewide/us_house, per-state for everything else) so the detail
@@ -1734,6 +1762,34 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
 
   const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionRows);
   const historicalCompetitiveness = historicalCompetitivenessByElection.get(detail.id) ?? null;
+
+  // Office + research areas, mirroring the ballot-summary shape. Both
+  // loaders no-op on empty input, so these queries only run (and only need
+  // test mocks) when the election actually has an office or a measure.
+  // Issued after every pre-existing query so ordered test mocks keep their
+  // slots.
+  const electionRow = electionRows[0];
+  // Office columns are nullable only because of the LEFT JOIN (and summary
+  // is NOT NULL in the schema); resolved office rows have non-empty fields.
+  // Same guard as the ballot-summary path.
+  const office =
+    electionRow?.office_id && electionRow.office_scope && electionRow.office_canonical_name && electionRow.office_summary
+      ? {
+          id: electionRow.office_id,
+          scope: electionRow.office_scope,
+          canonical_name: electionRow.office_canonical_name,
+          summary: electionRow.office_summary,
+        }
+      : null;
+  const officeResearchAreaRows = await loadOfficeResearchAreaSummaryRows(
+    db,
+    electionRow?.office_id ? [electionRow.office_id] : []
+  );
+  const measureResearchAreaRows = await loadMeasureResearchAreaSummaryRows(
+    db,
+    detail.ballot_measure ? [detail.id] : []
+  );
+
   const votePowerInput = {
     raceType: detail.race_type,
     candidateCount: detail.candidates.length,
@@ -1743,6 +1799,10 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
   const votePower = calculateVotePower(votePowerInput);
   return {
     ...detail,
+    office,
+    // Office links first, then ballot-measure tags not already present —
+    // the same merge the summary list uses.
+    research_areas: mergeResearchAreaSummaries(officeResearchAreaRows, measureResearchAreaRows),
     historical_competitiveness: historicalCompetitiveness,
     vote_power: {
       ...votePower,

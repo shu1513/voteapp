@@ -6,10 +6,7 @@ import {
   formatRosterStatus,
   formatVotePowerLabel,
 } from "@voteapp/api-client";
-import {
-  compareByResearchAreaPriority,
-  sortByResearchAreaPriority,
-} from "../lib/researchAreaPriority";
+import { splitResearchAreasBySaved } from "../lib/researchAreaPriority";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 
 // Statewide races carry a dozen-plus research areas; rendering every one
@@ -20,8 +17,9 @@ import { votePowerBadgeClass } from "../lib/votePowerBadge";
 const MAX_UNSAVED_AREA_CHIPS = 3;
 
 // Saved and unsaved chips deliberately share one style: the row reads as one
-// list, and position alone marks the saved matches (they lead).
-const AREA_CHIP_CLASS =
+// list, and position alone marks the saved matches (they lead). Exported so
+// the election detail page's affected-areas row matches the card's.
+export const AREA_CHIP_CLASS =
   "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900";
 
 /**
@@ -105,20 +103,12 @@ function ElectionCard({
   savedAreaWeights?: Map<string, ResearchAreaWeight>;
   showDistrict?: boolean;
 }) {
-  // Saved matches lead, ordered by the user's own 1–7 ranking — their
-  // explicit priority outranks any global one. Unranked-but-saved areas (and
-  // rank ties) fall back to public salience. Unsaved areas follow in pure
-  // public-salience order (not the API's alphabetical order), so the chips
-  // that survive the cap are the areas voters care about most.
-  const savedAreas = election.research_areas
-    .filter((area) => savedAreaWeights?.has(area.id) ?? false)
-    .sort(
-      (a, b) =>
-        (savedAreaWeights?.get(a.id)?.rank ?? 0) - (savedAreaWeights?.get(b.id)?.rank ?? 0) ||
-        compareByResearchAreaPriority(a, b)
-    );
-  const otherAreas = sortByResearchAreaPriority(
-    election.research_areas.filter((area) => !(savedAreaWeights?.has(area.id) ?? false))
+  // Saved matches lead (in the user's rank order), unsaved follow in public-
+  // salience order — see splitResearchAreasBySaved. The chips that survive
+  // the cap are the areas voters care about most.
+  const { saved: savedAreas, others: otherAreas } = splitResearchAreasBySaved(
+    election.research_areas,
+    savedAreaWeights
   );
   const visibleOtherAreas = otherAreas.slice(0, MAX_UNSAVED_AREA_CHIPS);
   const hiddenAreaCount = otherAreas.length - visibleOtherAreas.length;

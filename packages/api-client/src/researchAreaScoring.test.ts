@@ -5,7 +5,7 @@ import {
   aggregateRecordAreaStances,
   buildResearchAreaWeights,
   researchAreaWeightForRank,
-  scoreStanceDirection,
+  scoreStanceRelevance,
   UNRANKED_RESEARCH_AREA_RANK,
 } from "./researchAreaScoring";
 
@@ -97,7 +97,7 @@ describe("aggregateRecordAreaStances", () => {
   });
 });
 
-describe("scoreStanceDirection", () => {
+describe("scoreStanceRelevance", () => {
   const weights = buildResearchAreaWeights([
     { research_area_id: AREA_HOUSING, slug: "housing", name: "Housing", description: null, rank: 1 }, // weight 7
     { research_area_id: AREA_SAFETY, slug: "safety", name: "Safety", description: null, rank: 3 }, // weight 5
@@ -110,15 +110,27 @@ describe("scoreStanceDirection", () => {
     record("r4", [{ area: AREA_ETHICS, slug: "ethics", stance: "for" }]), // not saved
   ]);
 
-  it("sums saved-area weights per direction with record counts as volume", () => {
-    expect(scoreStanceDirection(stances, weights, "for")).toEqual({ score: 7, recordCount: 2 });
-    expect(scoreStanceDirection(stances, weights, "against")).toEqual({ score: 5, recordCount: 1 });
+  it("sums saved-area weights across both directions with record counts as volume", () => {
+    // Housing (weight 7, 2 for-records) + Safety (weight 5, 1 against-record):
+    // both areas count once each regardless of direction.
+    expect(scoreStanceRelevance(stances, weights)).toEqual({ score: 12, recordCount: 3 });
+  });
+
+  it("scores against-only candidates above no-record candidates", () => {
+    // The "My issues first" label is direction-neutral: a candidate with only
+    // against-records on a saved issue has a track record on it and must not
+    // tie with a candidate who has none.
+    const againstOnly = aggregateRecordAreaStances([
+      record("r1", [{ area: AREA_HOUSING, slug: "housing", stance: "against" }]),
+    ]);
+    expect(scoreStanceRelevance(againstOnly, weights)).toEqual({ score: 7, recordCount: 1 });
+    expect(scoreStanceRelevance([], weights)).toEqual({ score: 0, recordCount: 0 });
   });
 
   it("ignores unsaved areas and scores zero with no matches", () => {
     const unsavedOnly = aggregateRecordAreaStances([
       record("r1", [{ area: AREA_ETHICS, slug: "ethics", stance: "for" }]),
     ]);
-    expect(scoreStanceDirection(unsavedOnly, weights, "for")).toEqual({ score: 0, recordCount: 0 });
+    expect(scoreStanceRelevance(unsavedOnly, weights)).toEqual({ score: 0, recordCount: 0 });
   });
 });

@@ -1539,7 +1539,9 @@ describe("lookupElectionDetailById", () => {
             discovery_contest_family: "non_judicial_office",
             sources: ["https://example.test/elections"],
             office_id: officeId,
+            office_scope: "place",
             office_canonical_name: "Mayor",
+            office_summary: "Runs the city government.",
           },
         ],
       })
@@ -1606,6 +1608,20 @@ describe("lookupElectionDetailById", () => {
           { office_id: officeId, research_area_id: researchAreaId },
           { office_id: null, research_area_id: integrityAreaId },
         ],
+      })
+      // Office research-area summaries for the detail payload's
+      // research_areas field (distinct from the allowed-set scoping query
+      // above, which returns bare ids).
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            office_id: officeId,
+            research_area_id: researchAreaId,
+            slug: "anti_corruption",
+            name: "Anti-Corruption",
+            description: "Corruption and abuse of office.",
+          },
+        ],
       });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
@@ -1627,9 +1643,25 @@ describe("lookupElectionDetailById", () => {
         stance: null,
       },
     ]);
-    expect(query).toHaveBeenCalledTimes(8);
+    expect(result?.office).toEqual({
+      id: officeId,
+      scope: "place",
+      canonical_name: "Mayor",
+      summary: "Runs the city government.",
+    });
+    expect(result?.research_areas).toEqual([
+      {
+        id: researchAreaId,
+        slug: "anti_corruption",
+        name: "Anti-Corruption",
+        description: "Corruption and abuse of office.",
+      },
+    ]);
+    expect(query).toHaveBeenCalledTimes(9);
     expect(query.mock.calls[7]?.[0]).toContain("public.office_research_areas");
     expect(query.mock.calls[7]?.[1]).toEqual([[officeId], ["general", "integrity_and_ethics"]]);
+    expect(query.mock.calls[8]?.[0]).toContain("public.office_research_areas");
+    expect(query.mock.calls[8]?.[1]).toEqual([[officeId]]);
   });
 
   it("keeps only universal tags when the election office has no curated research areas", async () => {
@@ -1718,7 +1750,10 @@ describe("lookupElectionDetailById", () => {
       // passed through.
       .mockResolvedValueOnce({
         rows: [{ office_id: null, research_area_id: integrityAreaId }],
-      });
+      })
+      // No curated areas either way, so the payload's research_areas summary
+      // query comes back empty too.
+      .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
@@ -1730,7 +1765,8 @@ describe("lookupElectionDetailById", () => {
         stance: null,
       },
     ]);
-    expect(query).toHaveBeenCalledTimes(8);
+    expect(result?.research_areas).toEqual([]);
+    expect(query).toHaveBeenCalledTimes(9);
     expect(query.mock.calls[7]?.[0]).toContain("public.office_research_areas");
   });
 
@@ -5140,10 +5176,18 @@ describe("lookupElectionDetailById", () => {
           },
         ],
       })
+      .mockResolvedValueOnce({ rows: [] })
+      // Detail-payload office research-area summaries (none curated here).
       .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
+    expect(result?.office).toEqual({
+      id: officeId,
+      scope: "statewide",
+      canonical_name: "Governor",
+      summary: "Governor of Minnesota.",
+    });
     expect(result?.candidates[0]?.finance_summary).toEqual({
       source: "MINNESOTA_CFB",
       cycle: 2026,
@@ -5223,7 +5267,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.mn_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.mn_candidate_finance_outside_groups");
     expect(query.mock.calls[9]?.[0]).toContain("public.mn_candidate_finance_outside_group_breakdowns");
@@ -5306,6 +5350,8 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      // Detail-payload office research-area summaries (none curated here).
       .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
@@ -5320,7 +5366,7 @@ describe("lookupElectionDetailById", () => {
         cash_on_hand: 25000,
       },
     });
-    expect(query).toHaveBeenCalledTimes(11);
+    expect(query).toHaveBeenCalledTimes(12);
     expect(query.mock.calls[7]?.[0]).toContain("public.mn_candidate_finance_summaries");
   });
 
@@ -5398,6 +5444,8 @@ describe("lookupElectionDetailById", () => {
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      // Detail-payload office research-area summaries (none curated here).
       .mockResolvedValueOnce({ rows: [] });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
@@ -5412,7 +5460,7 @@ describe("lookupElectionDetailById", () => {
         cash_on_hand: 25000,
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.la_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.la_candidate_finance_direct_breakdowns");
   });
@@ -8686,6 +8734,18 @@ describe("lookupElectionDetailById", () => {
             stance: "for",
           },
         ],
+      })
+      // Detail-payload research_areas: the measure's areas as summaries.
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: measureElectionId,
+            research_area_id: researchAreaId,
+            slug: "healthcare_affordability",
+            name: "Healthcare Affordability",
+            description: "Cost of care and coverage.",
+          },
+        ],
       });
 
     const result = await lookupElectionDetailById({ query }, measureElectionId);
@@ -8711,6 +8771,17 @@ describe("lookupElectionDetailById", () => {
         research_area_tags: [{ slug: "healthcare_affordability", stance: "for" }],
         results: [{ outcome: "passed", result_status: "certified" }],
       },
+      // No office on a measure election; research_areas carry the measure's
+      // tagged areas so the detail page can render them like the list does.
+      office: null,
+      research_areas: [
+        {
+          id: researchAreaId,
+          slug: "healthcare_affordability",
+          name: "Healthcare Affordability",
+          description: "Cost of care and coverage.",
+        },
+      ],
       historical_competitiveness: null,
       vote_power: {
         score: 100,
@@ -8721,8 +8792,10 @@ describe("lookupElectionDetailById", () => {
         factors: ["high_representation", "direct_vote_on_policy"],
       },
     });
-    expect(query).toHaveBeenCalledTimes(6);
+    expect(query).toHaveBeenCalledTimes(7);
     expect(query.mock.calls[0]?.[1]).toEqual([measureElectionId]);
+    expect(query.mock.calls[6]?.[0]).toContain("public.ballot_measure_research_area_tags");
+    expect(query.mock.calls[6]?.[1]).toEqual([[measureElectionId]]);
   });
 
   it("does not load Virginia finance summaries for unsupported Virginia offices", async () => {

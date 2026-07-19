@@ -80,24 +80,26 @@ export function aggregateRecordAreaStances(records: readonly CandidateRecord[]):
   return [...byArea.values()].sort((a, b) => (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0));
 }
 
-export type StanceDirectionScore = {
-  /** Sum of saved-area weights where the candidate has records in the chosen direction. */
+export type StanceRelevanceScore = {
+  /** Sum of saved-area weights where the candidate has stance-bearing records. */
   score: number;
-  /** Total matching records in that direction; tiebreak under equal weights. */
+  /** Total stance-bearing records on saved areas; tiebreak under equal weights. */
   recordCount: number;
 };
 
 /**
- * Scores a candidate for the "for/against my issues first" sorts: unique
- * matched areas (weighted) dominate, record volume breaks ties. Candidates
- * with no saved-area records in the chosen direction score 0 and keep their
- * ballot order.
+ * Scores a candidate for the "My issues first" sort: unique matched areas
+ * (weighted) dominate, record volume breaks ties. Relevance, not agreement —
+ * the label is direction-neutral, so a candidate with only *against* records
+ * on a saved issue still has a track record on it and must outrank one with
+ * no relevant records at all (the chips carry the direction). Candidates
+ * with no stance-bearing saved-area records score 0 and keep their
+ * alphabetical order.
  */
-export function scoreStanceDirection(
+export function scoreStanceRelevance(
   stances: readonly RecordAreaStance[],
-  weights: Map<string, ResearchAreaWeight>,
-  direction: "for" | "against"
-): StanceDirectionScore {
+  weights: Map<string, ResearchAreaWeight>
+): StanceRelevanceScore {
   let score = 0;
   let recordCount = 0;
   for (const stance of stances) {
@@ -105,7 +107,9 @@ export function scoreStanceDirection(
     if (!weight) {
       continue;
     }
-    const count = direction === "for" ? stance.for_count : stance.against_count;
+    // Every aggregated stance has for_count + against_count >= 1, but keep
+    // the guard so a hand-built empty stance can't buy weight.
+    const count = stance.for_count + stance.against_count;
     if (count === 0) {
       continue;
     }

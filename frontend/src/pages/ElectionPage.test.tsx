@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ElectionPage, ErrorBoundary } from "./ElectionPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
@@ -343,6 +344,176 @@ describe("ElectionPage", () => {
     const candidateChip = screen.getByText("Housing Affordability").closest("span")!;
     expect(candidateChip).toHaveTextContent("1 for");
     expect(candidateChip).toHaveTextContent("(saved)");
+  });
+
+  it("renders the office description before the affected areas, in public-salience order", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        office: { id: "o-1", scope: "statewide", canonical_name: "Governor", summary: "Heads the state's executive branch." },
+        // Alphabetical (API order) on purpose: the page must re-order by
+        // public salience, which puts Environment ahead of Civil Rights.
+        research_areas: [
+          { id: "a-civ", slug: "civil_rights", name: "Civil Rights", description: null },
+          { id: "a-env", slug: "environment_and_public_health", name: "Environment & Public Health", description: null },
+        ],
+      })
+    );
+
+    expect(await screen.findByRole("heading", { name: "About this office" })).toBeInTheDocument();
+    const description = screen.getByText("Heads the state's executive branch.");
+    const label = screen.getByText("Affected Areas:");
+    expect(description.compareDocumentPosition(label) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    const environment = screen.getByText("Environment & Public Health");
+    const civilRights = screen.getByText("Civil Rights");
+    expect(environment.compareDocumentPosition(civilRights) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("puts the viewer's saved areas first with an sr-only cue", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-civ", slug: "civil_rights", name: "Civil Rights", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    renderElection(() =>
+      electionDetail({
+        research_areas: [
+          { id: "a-civ", slug: "civil_rights", name: "Civil Rights", description: null },
+          { id: "a-env", slug: "environment_and_public_health", name: "Environment & Public Health", description: null },
+        ],
+      })
+    );
+
+    // Saved-ness arrives with the async preferences fetch; wait on the cue.
+    const savedCue = await screen.findByText("(saved)");
+    expect(savedCue.parentElement?.textContent).toContain("Civil Rights");
+    // Saved Civil Rights outranks the globally higher-salience Environment.
+    const civilRights = screen.getByText("Civil Rights");
+    const environment = screen.getByText("Environment & Public Health");
+    expect(civilRights.compareDocumentPosition(environment) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("shows no office section on ballot measure elections", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        // The measure's areas arrive on research_areas too; the measure
+        // section owns rendering them (with stance), so the office row
+        // must not duplicate the chips.
+        research_areas: [
+          { id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null },
+        ],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: null,
+          source_urls: [],
+          official_measure_url: null,
+          research_area_tags: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+          ],
+          results: [],
+        },
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Ballot Measure" });
+    expect(screen.queryByText("About this office")).not.toBeInTheDocument();
+    expect(screen.queryByText("Affected Areas:")).not.toBeInTheDocument();
+  });
+
+  it("defaults to my-issues order for viewers with saved areas and can switch to alphabetical", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    const detail = electionDetail();
+    // Riley (second in the alphabetical payload) is the only match on the
+    // viewer's saved area, so the my-issues default must lift them first.
+    detail.candidates[1].records = [
+      {
+        id: "r-1",
+        description: "A record.",
+        source_url: "https://example.gov/record",
+        event_date: "2025-01-15",
+        created_at: "2025-02-01T00:00:00.000Z",
+        research_area_tags: [
+          { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+        ],
+      },
+    ];
+    renderElection(() => detail);
+
+    // The dropdown only renders once the async preferences arrive.
+    const select = await screen.findByRole("combobox");
+    expect(select).toHaveValue("my_issues");
+    expect(screen.getByRole("option", { name: "My issues first" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Alphabetical" })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: /against my issues/i })).not.toBeInTheDocument();
+    const riley = screen.getByText("Riley Runner");
+    const jordan = screen.getByText("Jordan Voter");
+    expect(riley.compareDocumentPosition(jordan) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+    const user = userEvent.setup();
+    await user.selectOptions(select, "alphabetical");
+    expect(
+      screen.getByText("Jordan Voter").compareDocumentPosition(screen.getByText("Riley Runner")) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+  });
+
+  it("ranks an against-only candidate above one with no relevant records under my-issues sort", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    const detail = electionDetail();
+    // "My issues first" sorts by relevance, not agreement: Riley's record is
+    // AGAINST the saved issue, but it is still a track record on it, so Riley
+    // must outrank record-less Jordan rather than tying at zero.
+    detail.candidates[1].records = [
+      {
+        id: "r-1",
+        description: "A record.",
+        source_url: "https://example.gov/record",
+        event_date: "2025-01-15",
+        created_at: "2025-02-01T00:00:00.000Z",
+        research_area_tags: [
+          { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "against" },
+        ],
+      },
+    ];
+    renderElection(() => detail);
+
+    await screen.findByRole("combobox");
+    const riley = screen.getByText("Riley Runner");
+    const jordan = screen.getByText("Jordan Voter");
+    expect(riley.compareDocumentPosition(jordan) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("renders measure result rows, including election-night outcomes", async () => {
