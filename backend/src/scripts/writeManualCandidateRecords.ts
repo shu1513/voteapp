@@ -35,6 +35,7 @@ import {
   assertedSweepCompletenessGapIds,
   deleteSweepCompletenessConfirmation,
   enforceSweepRouteCoverage,
+  currentOfficeRoutingContradiction,
   hasHeldPublicOfficeContradiction,
   parseSweepEvidencePayload,
   persistHasHeldPublicOfficeAnswer,
@@ -706,6 +707,7 @@ async function main(): Promise<void> {
     if (sweepEvidencePersisted && sweepEvidenceEntries) {
       const coverage = enforceSweepRouteCoverage({
         discoveryContestFamily: context.discoveryContestFamily,
+        candidateCurrentOffice: context.currentOffice,
         candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
         evidenceHasHeldPublicOffice,
         entries: sweepEvidenceEntries,
@@ -713,10 +715,15 @@ async function main(): Promise<void> {
       sweepRoute = coverage.route;
       persistHasHeldPublicOffice = coverage.persistHasHeldPublicOffice;
     } else if (sinceDate !== null) {
-      const contradiction = hasHeldPublicOfficeContradiction({
-        candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
-        evidenceHasHeldPublicOffice,
-      });
+      const contradiction =
+        hasHeldPublicOfficeContradiction({
+          candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
+          evidenceHasHeldPublicOffice,
+        }) ??
+        currentOfficeRoutingContradiction({
+          candidateCurrentOffice: context.currentOffice,
+          hasHeldPublicOffice: evidenceHasHeldPublicOffice,
+        });
       if (contradiction !== null) {
         throw new Error(`Sweep evidence routing failed: ${contradiction}`);
       }

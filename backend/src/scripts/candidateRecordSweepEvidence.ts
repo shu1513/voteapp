@@ -220,8 +220,27 @@ export function hasHeldPublicOfficeContradiction(input: {
   return `evidence file says has_held_public_office=${input.evidenceHasHeldPublicOffice} but candidates.has_held_public_office=${input.candidateHasHeldPublicOffice}. One of them is wrong: if the evidence file is wrong, fix it; if the stored value is stale, correct it with a profile re-write carrying the researched answer and --replace-profile-fields has_held_public_office (manual:candidate-profile:write or manual:presidential-profile:write), then rerun this records write.`;
 }
 
+/**
+ * Holding an office NOW implies having held one — the same rule the profile
+ * contract and merge guard enforce. Without this check here, a records
+ * write on a column-NULL candidate could claim has_held_public_office=false,
+ * take the shorter never_held question list, and persist the false answer,
+ * even when candidates.current_office plainly says otherwise.
+ */
+export function currentOfficeRoutingContradiction(input: {
+  candidateCurrentOffice: string | null;
+  hasHeldPublicOffice: boolean | null;
+}): string | null {
+  const office = input.candidateCurrentOffice?.trim() ?? "";
+  if (office === "" || input.hasHeldPublicOffice !== false) {
+    return null;
+  }
+  return `candidates.current_office ("${office}") contradicts has_held_public_office=false — a candidate holding a public office now HAS held public office. If the office is real, the routing answer must be true; if current_office is stale or holds an occupation, clear or replace it with a profile write (--clear-profile-fields current_office / --replace-profile-fields current_office), then rerun this records write.`;
+}
+
 export function resolveSweepRoute(input: {
   discoveryContestFamily: string | null;
+  candidateCurrentOffice: string | null;
   candidateHasHeldPublicOffice: boolean | null;
   evidenceHasHeldPublicOffice: boolean | null;
 }): SweepRouteResolution {
@@ -232,6 +251,16 @@ export function resolveSweepRoute(input: {
   });
   if (contradiction !== null) {
     return { ok: false, reason: contradiction };
+  }
+  // Checked on the EFFECTIVE answer and before the judicial branch: the
+  // judicial route also persists a column-NULL candidate's evidence answer,
+  // so a false claim against a set current_office must not slip through it.
+  const officeContradiction = currentOfficeRoutingContradiction({
+    candidateCurrentOffice: input.candidateCurrentOffice,
+    hasHeldPublicOffice: candidateHasHeldPublicOffice ?? evidenceHasHeldPublicOffice,
+  });
+  if (officeContradiction !== null) {
+    return { ok: false, reason: officeContradiction };
   }
   const persistHasHeldPublicOffice =
     candidateHasHeldPublicOffice === null ? evidenceHasHeldPublicOffice : null;
@@ -276,12 +305,14 @@ export function listMissingSweepRouteQuestionIds(
  */
 export function enforceSweepRouteCoverage(input: {
   discoveryContestFamily: string | null;
+  candidateCurrentOffice: string | null;
   candidateHasHeldPublicOffice: boolean | null;
   evidenceHasHeldPublicOffice: boolean | null;
   entries: readonly SweepEvidenceEntry[];
 }): { route: SweepRoute; persistHasHeldPublicOffice: boolean | null } {
   const resolution = resolveSweepRoute({
     discoveryContestFamily: input.discoveryContestFamily,
+    candidateCurrentOffice: input.candidateCurrentOffice,
     candidateHasHeldPublicOffice: input.candidateHasHeldPublicOffice,
     evidenceHasHeldPublicOffice: input.evidenceHasHeldPublicOffice,
   });

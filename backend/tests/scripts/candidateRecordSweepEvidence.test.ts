@@ -6,6 +6,7 @@ import {
   SWEEP_ROUTE_QUESTION_IDS,
   assertedSweepCompletenessGapIds,
   deleteSweepCompletenessConfirmation,
+  currentOfficeRoutingContradiction,
   deleteSweepConfirmation,
   enforceSweepRouteCoverage,
   hasHeldPublicOfficeContradiction,
@@ -212,6 +213,7 @@ describe("resolveSweepRoute", () => {
   it("routes judicial contests from the contest family alone", () => {
     const result = resolveSweepRoute({
       discoveryContestFamily: "judicial_office",
+      candidateCurrentOffice: null,
       candidateHasHeldPublicOffice: null,
       evidenceHasHeldPublicOffice: null,
     });
@@ -221,6 +223,7 @@ describe("resolveSweepRoute", () => {
   it("routes from the stored column when set", () => {
     const result = resolveSweepRoute({
       discoveryContestFamily: "non_judicial_office",
+      candidateCurrentOffice: null,
       candidateHasHeldPublicOffice: true,
       evidenceHasHeldPublicOffice: null,
     });
@@ -230,6 +233,7 @@ describe("resolveSweepRoute", () => {
   it("falls back to the evidence answer and marks it for persistence", () => {
     const result = resolveSweepRoute({
       discoveryContestFamily: null,
+      candidateCurrentOffice: null,
       candidateHasHeldPublicOffice: null,
       evidenceHasHeldPublicOffice: false,
     });
@@ -243,6 +247,7 @@ describe("resolveSweepRoute", () => {
   it("does not re-persist when the column already holds the answer", () => {
     const result = resolveSweepRoute({
       discoveryContestFamily: null,
+      candidateCurrentOffice: null,
       candidateHasHeldPublicOffice: false,
       evidenceHasHeldPublicOffice: false,
     });
@@ -256,6 +261,7 @@ describe("resolveSweepRoute", () => {
   it("refuses a contradiction between the column and the evidence file", () => {
     const result = resolveSweepRoute({
       discoveryContestFamily: "non_judicial_office",
+      candidateCurrentOffice: null,
       candidateHasHeldPublicOffice: true,
       evidenceHasHeldPublicOffice: false,
     });
@@ -266,9 +272,64 @@ describe("resolveSweepRoute", () => {
     }
   });
 
+  it("refuses a never-held evidence answer against a set current_office", () => {
+    // Regression: a column-NULL candidate could previously claim
+    // has_held_public_office=false, take the shorter never_held question
+    // list, and persist the false answer — even for a sitting officeholder
+    // whose current_office says so (found live: Mike Schofield, TX House).
+    const result = resolveSweepRoute({
+      discoveryContestFamily: "non_judicial_office",
+      candidateCurrentOffice: "Texas House of Representatives District 132",
+      candidateHasHeldPublicOffice: null,
+      evidenceHasHeldPublicOffice: false,
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain('current_office ("Texas House of Representatives District 132")');
+      expect(result.reason).toContain("--replace-profile-fields current_office");
+    }
+  });
+
+  it("refuses a stored false answer against a set current_office", () => {
+    const result = resolveSweepRoute({
+      discoveryContestFamily: "non_judicial_office",
+      candidateCurrentOffice: "Mayor of Springfield",
+      candidateHasHeldPublicOffice: false,
+      evidenceHasHeldPublicOffice: null,
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it("refuses the false answer against a set current_office on the judicial route too", () => {
+    // The judicial branch also persists a column-NULL candidate's evidence
+    // answer, so the contradiction must be caught before route branching.
+    const result = resolveSweepRoute({
+      discoveryContestFamily: "judicial_office",
+      candidateCurrentOffice: "District Court Judge",
+      candidateHasHeldPublicOffice: null,
+      evidenceHasHeldPublicOffice: false,
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it("accepts a true answer alongside a set current_office", () => {
+    const result = resolveSweepRoute({
+      discoveryContestFamily: "non_judicial_office",
+      candidateCurrentOffice: "Mayor of Springfield",
+      candidateHasHeldPublicOffice: null,
+      evidenceHasHeldPublicOffice: true,
+    });
+    expect(result).toEqual({
+      ok: true,
+      route: "officeholder",
+      persistHasHeldPublicOffice: true,
+    });
+  });
+
   it("refuses to route a non-judicial sweep with no officeholder answer anywhere", () => {
     const result = resolveSweepRoute({
       discoveryContestFamily: "non_judicial_office",
+      candidateCurrentOffice: null,
       candidateHasHeldPublicOffice: null,
       evidenceHasHeldPublicOffice: null,
     });
@@ -281,10 +342,43 @@ describe("resolveSweepRoute", () => {
   it("still persists the officeholder answer on a judicial contest when the column is NULL", () => {
     const result = resolveSweepRoute({
       discoveryContestFamily: "judicial_office",
+      candidateCurrentOffice: null,
       candidateHasHeldPublicOffice: null,
       evidenceHasHeldPublicOffice: true,
     });
     expect(result).toEqual({ ok: true, route: "judicial", persistHasHeldPublicOffice: true });
+  });
+});
+
+describe("currentOfficeRoutingContradiction", () => {
+  it("is silent when the office is empty, blank, or the answer is not false", () => {
+    expect(
+      currentOfficeRoutingContradiction({ candidateCurrentOffice: null, hasHeldPublicOffice: false })
+    ).toBeNull();
+    expect(
+      currentOfficeRoutingContradiction({ candidateCurrentOffice: "  ", hasHeldPublicOffice: false })
+    ).toBeNull();
+    expect(
+      currentOfficeRoutingContradiction({
+        candidateCurrentOffice: "Mayor of Springfield",
+        hasHeldPublicOffice: true,
+      })
+    ).toBeNull();
+    expect(
+      currentOfficeRoutingContradiction({
+        candidateCurrentOffice: "Mayor of Springfield",
+        hasHeldPublicOffice: null,
+      })
+    ).toBeNull();
+  });
+
+  it("names the office and the correction paths when they contradict", () => {
+    const reason = currentOfficeRoutingContradiction({
+      candidateCurrentOffice: "Mayor of Springfield",
+      hasHeldPublicOffice: false,
+    });
+    expect(reason).toContain('current_office ("Mayor of Springfield")');
+    expect(reason).toContain("--clear-profile-fields current_office");
   });
 });
 
@@ -331,6 +425,7 @@ describe("enforceSweepRouteCoverage", () => {
     expect(
       enforceSweepRouteCoverage({
         discoveryContestFamily: "non_judicial_office",
+        candidateCurrentOffice: null,
         candidateHasHeldPublicOffice: null,
         evidenceHasHeldPublicOffice: false,
         entries: neverHeldEntries,
@@ -342,6 +437,7 @@ describe("enforceSweepRouteCoverage", () => {
     expect(() =>
       enforceSweepRouteCoverage({
         discoveryContestFamily: null,
+        candidateCurrentOffice: null,
         candidateHasHeldPublicOffice: null,
         evidenceHasHeldPublicOffice: null,
         entries: neverHeldEntries,
@@ -353,6 +449,7 @@ describe("enforceSweepRouteCoverage", () => {
     expect(() =>
       enforceSweepRouteCoverage({
         discoveryContestFamily: null,
+        candidateCurrentOffice: null,
         candidateHasHeldPublicOffice: false,
         evidenceHasHeldPublicOffice: null,
         entries: neverHeldEntries.slice(1),
