@@ -487,6 +487,7 @@ async function main(): Promise<void> {
     if (sweepEvidenceEntries) {
       const coverage = enforceSweepRouteCoverage({
         discoveryContestFamily: context.discoveryContestFamily,
+        candidateCurrentOffice: context.currentOffice,
         candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
         evidenceHasHeldPublicOffice,
         entries: sweepEvidenceEntries,

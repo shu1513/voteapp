@@ -35,7 +35,7 @@ import {
   assertedSweepCompletenessGapIds,
   deleteSweepCompletenessConfirmation,
   enforceSweepRouteCoverage,
-  hasHeldPublicOfficeContradiction,
+  deltaSweepRoutingContradiction,
   parseSweepEvidencePayload,
   persistHasHeldPublicOfficeAnswer,
   refreshSweepConfirmationTimestamp,
@@ -706,6 +706,7 @@ async function main(): Promise<void> {
     if (sweepEvidencePersisted && sweepEvidenceEntries) {
       const coverage = enforceSweepRouteCoverage({
         discoveryContestFamily: context.discoveryContestFamily,
+        candidateCurrentOffice: context.currentOffice,
         candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
         evidenceHasHeldPublicOffice,
         entries: sweepEvidenceEntries,
@@ -713,7 +714,8 @@ async function main(): Promise<void> {
       sweepRoute = coverage.route;
       persistHasHeldPublicOffice = coverage.persistHasHeldPublicOffice;
     } else if (sinceDate !== null) {
-      const contradiction = hasHeldPublicOfficeContradiction({
+      const contradiction = deltaSweepRoutingContradiction({
+        candidateCurrentOffice: context.currentOffice,
         candidateHasHeldPublicOffice: context.hasHeldPublicOffice,
         evidenceHasHeldPublicOffice,
       });
