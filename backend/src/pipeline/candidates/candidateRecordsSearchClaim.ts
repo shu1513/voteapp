@@ -18,7 +18,9 @@ export type CandidateRecordsClaimResult = {
 };
 
 const DEFAULT_COOLDOWN_DAYS = 30;
-const DEFAULT_LEASE_HOURS = 2;
+// Exported so tools that must not race an in-flight worker (the sweep
+// confirmation reset wrapper) treat the same window as an active lease.
+export const DEFAULT_LEASE_HOURS = 2;
 
 function toDateOnly(value: Date | string): string {
   if (value instanceof Date) {
