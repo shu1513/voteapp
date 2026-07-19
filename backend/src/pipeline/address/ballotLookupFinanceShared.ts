@@ -18,6 +18,12 @@ export type BallotLookupFinanceOutsideGroup = {
   amount: number;
   expenditure_count?: number | null;
   source_url: string | null;
+  /**
+   * Manually researched one-line description of the committee's interest
+   * (finance_committee_labels). Absent until the read path enriches the
+   * group; stays absent when no label has been researched yet.
+   */
+  label?: string;
 };
 
 export type BallotLookupFinanceOutsideIndustrySupportEvidence = {
@@ -108,6 +114,57 @@ export type BallotLookupFinanceSummary = {
   };
   backing_summary: BallotLookupFinanceBackingSummary;
 };
+
+// Runtime mirror of BallotLookupFinanceSummary["source"] for CLI validation
+// (the committee-labels writer rejects unknown sources so a typo cannot
+// create a label row that never matches at read time). `satisfies` pins
+// every member to the union; the FinanceSourceListIsComplete check below
+// fails compilation if the union ever gains a member this list lacks.
+export const FINANCE_SUMMARY_SOURCES = [
+  "FEC",
+  "ARIZONA_SOS",
+  "CALIFORNIA_SOS",
+  "LOS_ANGELES_CITY_ETHICS",
+  "COLORADO_TRACER",
+  "CONNECTICUT_ECRIS",
+  "INDIANA_CAMPAIGN_FINANCE",
+  "NEBRASKA_NADC",
+  "NEW_JERSEY_ELEC",
+  "NEW_MEXICO_CFIS",
+  "NEW_YORK_SODA",
+  "NEW_YORK_CITY_CFB",
+  "OKLAHOMA_GUARDIAN",
+  "TEXAS_TEC",
+  "HOUSTON_CAMPAIGN_FINANCE",
+  "FLORIDA_DOS",
+  "UTAH_DISCLOSURES",
+  "HAWAII_CSC",
+  "VIRGINIA_CFREPORTS",
+  "TENNESSEE_CAMP",
+  "WASHINGTON_PDC",
+  "WISCONSIN_SUNSHINE",
+  "MASSACHUSETTS_OCPF",
+  "VERMONT_CFD",
+  "LOUISIANA_ETHICS",
+  "KENTUCKY_KREF",
+  "MARYLAND_CFS",
+  "MAINE_CFIS",
+  "MICHIGAN_MITN",
+  "ILLINOIS_SBE",
+  "MINNESOTA_CFB",
+  "ALASKA_APOC",
+  "ORESTAR",
+  "PENNSYLVANIA_DOS",
+  "DISTRICT_OF_COLUMBIA_OCF",
+] as const satisfies readonly BallotLookupFinanceSummary["source"][];
+
+// Compile-time exhaustiveness: never = a union member is missing above.
+type MissingFinanceSources = Exclude<
+  BallotLookupFinanceSummary["source"],
+  (typeof FINANCE_SUMMARY_SOURCES)[number]
+>;
+const financeSourceListIsComplete: MissingFinanceSources extends never ? true : never = true;
+void financeSourceListIsComplete;
 
 export function parseFinanceAmount(value: string | number | null | undefined): number | null {
   if (value === null || value === undefined) {

@@ -165,6 +165,22 @@ describe("FinanceSummaryCard", () => {
     expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
   });
 
+  it("shows a researched committee label under the group name, and nothing when unlabeled", () => {
+    const summary = financeSummary();
+    summary.outside_spending.top_supporting_groups = [
+      {
+        ...summary.outside_spending.top_supporting_groups[0],
+        label: "Super PAC funded primarily by real-estate developers",
+      },
+    ];
+    render(<FinanceSummaryCard summary={summary} />);
+
+    expect(screen.getByText("Growth PAC")).toBeInTheDocument();
+    expect(screen.getByText("Super PAC funded primarily by real-estate developers")).toBeInTheDocument();
+    // The unlabeled opposing group renders its name with no description line.
+    expect(screen.getByText("Stop Them PAC")).toBeInTheDocument();
+  });
+
   it("keeps donor money direct and pairs each organization with its own committee", () => {
     const summary = financeSummary();
     summary.backing_summary = {

@@ -91,6 +91,8 @@
     "manual:deferral:resolve": "tsx src/scripts/manualResearchDeferrals.ts resolve",
     "manual:deferral:cancel": "tsx src/scripts/manualResearchDeferrals.ts cancel",
     "manual:deferral:status": "tsx src/scripts/manualResearchDeferrals.ts status",
+    "manual:finance-committee-labels:due": "tsx src/scripts/manualFinanceCommitteeLabels.ts due",
+    "manual:finance-committee-labels:write": "tsx src/scripts/manualFinanceCommitteeLabels.ts write",
     "candidates:record:live:ai-probe": "tsx src/scripts/liveCandidateRecordAiProbe.ts",
     "candidates:record:live:pipeline-smoke": "tsx src/scripts/liveCandidateRecordPipelineSmoke.ts",
     "candidates:finance:sync": "tsx src/scripts/syncCandidateFinance.ts",

@@ -2018,7 +2018,18 @@ describe("lookupElectionDetailById", () => {
           },
         ],
       })
-      .mockResolvedValueOnce({ rows: [] });
+      // Trailing committee-labels lookup (applyFinanceCommitteeLabels): the
+      // supporting group has a researched label, the opposing group does
+      // not — labeled groups gain `label`, unlabeled groups stay untouched.
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            source: "FEC",
+            committee_id: "C00000001",
+            label: "Super PAC funded primarily by technology-industry donors",
+          },
+        ],
+      });
 
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
@@ -2067,6 +2078,7 @@ describe("lookupElectionDetailById", () => {
             support_oppose: "support",
             amount: 5000,
             source_url: "https://www.fec.gov/data/independent-expenditures/?committee_id=C00000001",
+            label: "Super PAC funded primarily by technology-industry donors",
           },
         ],
         top_opposing_groups: [
@@ -2127,7 +2139,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.candidate_finance_direct_breakdowns");
     expect(query.mock.calls[9]?.[0]).toContain("public.candidate_finance_outside_groups");
@@ -2135,6 +2147,12 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
     expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
+    // Committee-labels enrichment runs last, keyed on (source, committee_id).
+    expect(query.mock.calls[12]?.[0]).toContain("public.finance_committee_labels");
+    expect(query.mock.calls[12]?.[1]).toEqual([
+      ["FEC", "FEC"],
+      ["C00000001", "C00000002"],
+    ]);
   });
 
   // FEC ids are office-typed (S=Senate, H=House, P=President) and stored
@@ -2522,6 +2540,9 @@ describe("lookupElectionDetailById", () => {
         ],
       });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -2613,7 +2634,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(11);
+    expect(query).toHaveBeenCalledTimes(12);
     expect(query.mock.calls[7]?.[0]).toContain("public.ca_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ca_candidate_finance_direct_breakdowns");
     expect(query.mock.calls[9]?.[0]).toContain("public.ca_candidate_finance_outside_groups");
@@ -3607,6 +3628,9 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -3701,7 +3725,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(11);
+    expect(query).toHaveBeenCalledTimes(12);
     expect(query.mock.calls[7]?.[0]).toContain("public.nm_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.nm_candidate_finance_direct_breakdowns");
     expect(query.mock.calls[9]?.[0]).toContain("public.nm_candidate_finance_outside_groups");
@@ -3859,6 +3883,9 @@ describe("lookupElectionDetailById", () => {
         ],
       });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -3961,7 +3988,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.tx_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.tx_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -4128,6 +4155,9 @@ describe("lookupElectionDetailById", () => {
         ],
       });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -4230,7 +4260,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.fl_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.fl_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -4391,6 +4421,9 @@ describe("lookupElectionDetailById", () => {
         ],
       });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -4493,7 +4526,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.az_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.az_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -4658,6 +4691,9 @@ describe("lookupElectionDetailById", () => {
         ],
       });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -4760,7 +4796,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.wa_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.wa_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -4927,6 +4963,9 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -5029,7 +5068,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.wi_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.wi_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -5180,6 +5219,9 @@ describe("lookupElectionDetailById", () => {
       // Detail-payload office research-area summaries (none curated here).
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.office).toEqual({
@@ -5267,7 +5309,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.mn_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.mn_candidate_finance_outside_groups");
     expect(query.mock.calls[9]?.[0]).toContain("public.mn_candidate_finance_outside_group_breakdowns");
@@ -5618,6 +5660,9 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -5720,7 +5765,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.ma_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ma_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -6128,6 +6173,9 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -6230,7 +6278,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.ky_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ky_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -6401,6 +6449,9 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -6503,7 +6554,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.ak_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ak_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -6728,6 +6779,9 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -6830,7 +6884,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.mi_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.mi_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -6980,6 +7034,9 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -7067,7 +7124,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.or_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.or_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -7294,6 +7351,9 @@ describe("lookupElectionDetailById", () => {
         ],
       });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -7396,7 +7456,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.hi_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.hi_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -7561,6 +7621,9 @@ describe("lookupElectionDetailById", () => {
         ],
       });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -7663,7 +7726,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.dc_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.dc_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -7821,6 +7884,9 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -7909,7 +7975,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     const marylandQueries = query.mock.calls.map(([sql]) => String(sql)).filter((sql) => sql.includes("public.md_candidate_finance_"));
     expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_summaries"))).toBe(true);
     expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_direct_breakdowns"))).toBe(true);
@@ -8080,6 +8146,9 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({
@@ -8984,6 +9053,9 @@ describe("lookupElectionDetailById", () => {
       })
       .mockResolvedValueOnce({ rows: [] });
 
+    // Trailing committee-labels lookup (applyFinanceCommitteeLabels):
+    // none researched, so the groups stay unlabeled.
+    query.mockResolvedValueOnce({ rows: [] });
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toEqual({

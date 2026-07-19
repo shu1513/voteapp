@@ -154,6 +154,9 @@ export type FinanceOutsideGroup = {
   support_oppose: "support" | "oppose";
   amount: number;
   source_url: string | null;
+  /** Manually researched one-line description of the committee's interest;
+   * absent until a label has been researched (finance_committee_labels). */
+  label?: string;
 };
 
 // Mirrors BallotLookupFinanceOutsideIndustrySupportEvidence (backend

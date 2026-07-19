@@ -181,9 +181,18 @@ function OutsideSection({
           <summary className="cursor-pointer select-none text-xs text-ink-soft underline hover:text-ink">
             Groups that spent money {directionLabel} this candidate ({groups.length})
           </summary>
-          <ul className="mt-1 space-y-0.5">
+          <ul className="mt-1 space-y-1">
             {groups.map((row) => (
-              <AmountRow key={row.committee_id} name={row.committee_name} right={formatMoney(row.amount)} />
+              <li key={row.committee_id} className="text-sm">
+                <div className="flex justify-between gap-3">
+                  <span className="text-ink">{row.committee_name}</span>
+                  <span className="shrink-0 text-ink-soft">{formatMoney(row.amount)}</span>
+                </div>
+                {/* Researched one-line description of who is behind the
+                    committee — the name alone ("Streets for All Los Angeles
+                    PAC") tells a voter nothing. Absent until researched. */}
+                {row.label ? <p className="text-xs text-ink-soft">{row.label}</p> : null}
+              </li>
             ))}
           </ul>
         </details>

@@ -1,0 +1,401 @@
+import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
+import { Pool } from "pg";
+
+import { loadProjectEnv } from "../config/env.js";
+import { loadCandidateFinanceSummariesByCandidateElection } from "../pipeline/address/ballotLookup.js";
+import { FINANCE_SUMMARY_SOURCES } from "../pipeline/address/ballotLookupFinanceShared.js";
+import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
+import { usLatestLocalDateIso } from "../utils/usLocalDate.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
+import { assertKnownCliFlags } from "./manualCliFlags.js";
+
+// Manual (no AI provider) research workflow for outside-spending committee
+// labels: one-line neutral descriptions of who is behind a committee, shown
+// under the group's name in the finance card (finance_committee_labels,
+// applied at read time by applyFinanceCommitteeLabels).
+//
+// Subcommands:
+//   due    List committees that appear in the finance summaries of upcoming
+//          elections and have no researched label yet — the work queue.
+//          Enumerates through the same merged read path the ballot lookup
+//          uses, so it exactly matches what voters currently see.
+//   write  Validate a researched payload and upsert the labels.
+
+type Subcommand = "due" | "write";
+
+function usage(): string {
+  return [
+    "Usage:",
+    "  npm run manual:finance-committee-labels:due -- [--state XX] [--limit 500]",
+    "  npm run manual:finance-committee-labels:write -- --file labels.json [--dry-run]",
+    "",
+    "The write payload shape:",
+    '  { "labels": [ { "source", "committee_id", "committee_name", "label", "source_urls": ["https://..."] } ] }',
+    "",
+    "Labels must be neutral, source-backed descriptions of the committee's",
+    "interest (who funds it / what it advocates), never voting advice.",
+  ].join("\n");
+}
+
+function readFlag(argv: readonly string[], name: string): string | null {
+  const index = argv.indexOf(name);
+  if (index >= 0) {
+    const value = argv[index + 1];
+    if (!value || value.startsWith("--") || value.trim().length === 0) {
+      throw new Error(`Missing value for ${name}.\n${usage()}`);
+    }
+    return value.trim();
+  }
+  const inlinePrefix = `${name}=`;
+  const inline = argv.find((token) => token.startsWith(inlinePrefix));
+  if (inline) {
+    const value = inline.slice(inlinePrefix.length).trim();
+    if (value.length === 0) {
+      throw new Error(`Missing value for ${name}.\n${usage()}`);
+    }
+    return value;
+  }
+  return null;
+}
+
+function requireEnv(name: string): string {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    throw new Error(`${name} is required for manual finance committee labels`);
+  }
+  return value;
+}
+
+type DueCommittee = {
+  source: string;
+  committee_id: string;
+  committee_name: string;
+  directions: string[];
+  total_amount: number;
+  elections: { official_ballot_title: string; election_date: string; state: string }[];
+};
+
+async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
+  const stateFilter = readFlag(argv, "--state")?.toUpperCase() ?? null;
+  const limit = readPositiveIntegerFlag(argv, "--limit", 500);
+  const today = usLatestLocalDateIso();
+
+  // Same row shapes the ballot lookup passes to the merged finance loader.
+  // Only upcoming elections: labels serve the races voters see now, and the
+  // finance cards only render for ongoing elections.
+  const electionResult = await pool.query(
+    `
+      SELECT
+        e.id AS election_id,
+        d.id AS district_id,
+        d.district_type,
+        d.geoid_compact,
+        d.name AS district_name,
+        d.state,
+        d.state_fips,
+        d.representation_power_score,
+        e.race_type,
+        e.official_ballot_title,
+        e.election_date::text AS election_date,
+        e.election_stage,
+        e.is_partisan,
+        e.seats_to_fill,
+        e.discovery_contest_family,
+        e.sources,
+        office.id AS office_id,
+        office.scope AS office_scope,
+        office.canonical_name AS office_canonical_name
+      FROM public.elections AS e
+      JOIN public.districts AS d
+        ON d.id = e.district_id
+      LEFT JOIN public.offices AS office
+        ON office.id = e.office_id
+      WHERE e.election_date >= $1
+        AND ($2::text IS NULL OR d.state = $2)
+        AND EXISTS (
+          SELECT 1 FROM public.candidate_elections AS ce WHERE ce.election_id = e.id
+        )
+      ORDER BY e.election_date, e.id
+    `,
+    [today, stateFilter]
+  );
+  const electionRows = electionResult.rows as Parameters<
+    typeof loadCandidateFinanceSummariesByCandidateElection
+  >[2];
+
+  const electionIds = electionResult.rows.map((row: { election_id: string }) => row.election_id);
+  const candidateResult = await pool.query(
+    `
+      SELECT ce.election_id, c.id AS candidate_id, c.fec_ids
+      FROM public.candidate_elections AS ce
+      JOIN public.candidates AS c
+        ON c.id = ce.candidate_id
+      WHERE ce.election_id = ANY($1::uuid[])
+        AND c.deleted_at IS NULL
+        AND c.merged_into_candidate_id IS NULL
+    `,
+    [electionIds]
+  );
+  const candidateRows = candidateResult.rows as Parameters<
+    typeof loadCandidateFinanceSummariesByCandidateElection
+  >[1];
+
+  const summaries = await loadCandidateFinanceSummariesByCandidateElection(pool, candidateRows, electionRows);
+
+  const electionById = new Map(
+    electionResult.rows.map((row: { election_id: string }) => [row.election_id, row])
+  );
+  const committees = new Map<string, DueCommittee>();
+  for (const [key, summary] of summaries) {
+    // candidateElectionKey joins candidate and election ids with a NUL separator.
+    const electionId = key.split("\u0000")[1];
+    const election = electionById.get(electionId) as
+      | { official_ballot_title: string; election_date: string; state: string }
+      | undefined;
+    for (const group of [
+      ...summary.outside_spending.top_supporting_groups,
+      ...summary.outside_spending.top_opposing_groups,
+    ]) {
+      const committeeKey = `${summary.source} ${group.committee_id}`;
+      const entry = committees.get(committeeKey) ?? {
+        source: summary.source,
+        committee_id: group.committee_id,
+        committee_name: group.committee_name,
+        directions: [],
+        total_amount: 0,
+        elections: [],
+      };
+      if (!entry.directions.includes(group.support_oppose)) {
+        entry.directions.push(group.support_oppose);
+      }
+      entry.total_amount += group.amount;
+      if (
+        election &&
+        !entry.elections.some(
+          (seen) =>
+            seen.official_ballot_title === election.official_ballot_title &&
+            seen.election_date === election.election_date
+        )
+      ) {
+        entry.elections.push({
+          official_ballot_title: election.official_ballot_title,
+          election_date: election.election_date,
+          state: election.state,
+        });
+      }
+      committees.set(committeeKey, entry);
+    }
+  }
+
+  // Drop committees that already have a researched label.
+  let unlabeled = [...committees.values()];
+  if (unlabeled.length > 0) {
+    const labeled = await pool.query<{ source: string; committee_id: string }>(
+      `
+        SELECT l.source, l.committee_id
+        FROM public.finance_committee_labels AS l
+        JOIN unnest($1::text[], $2::text[]) AS wanted(source, committee_id)
+          ON wanted.source = l.source
+         AND wanted.committee_id = l.committee_id
+      `,
+      [unlabeled.map((entry) => entry.source), unlabeled.map((entry) => entry.committee_id)]
+    );
+    const labeledKeys = new Set(labeled.rows.map((row) => `${row.source} ${row.committee_id}`));
+    unlabeled = unlabeled.filter((entry) => !labeledKeys.has(`${entry.source} ${entry.committee_id}`));
+  }
+
+  unlabeled.sort((a, b) => b.total_amount - a.total_amount);
+  console.log(
+    JSON.stringify(
+      {
+        as_of_date: today,
+        state: stateFilter,
+        unlabeled_committee_count: unlabeled.length,
+        committees: unlabeled.slice(0, limit),
+      },
+      null,
+      2
+    )
+  );
+}
+
+export type CommitteeLabelPayloadRow = {
+  source: string;
+  committee_id: string;
+  committee_name: string;
+  label: string;
+  source_urls: string[];
+};
+
+const MAX_LABEL_LENGTH = 200;
+
+/**
+ * Validates the write payload. Throws with every problem listed at once so a
+ * multi-row payload is fixed in one pass, mirroring the other manual writers.
+ */
+export function parseCommitteeLabelPayload(raw: unknown): CommitteeLabelPayloadRow[] {
+  if (typeof raw !== "object" || raw === null || !Array.isArray((raw as { labels?: unknown }).labels)) {
+    throw new Error(`Payload must be an object with a "labels" array.\n${usage()}`);
+  }
+  const labels = (raw as { labels: unknown[] }).labels;
+  if (labels.length === 0) {
+    throw new Error("Payload has an empty labels array — nothing to write.");
+  }
+  const errors: string[] = [];
+  const seen = new Set<string>();
+  const rows: CommitteeLabelPayloadRow[] = [];
+  const knownSources = new Set<string>(FINANCE_SUMMARY_SOURCES);
+  labels.forEach((entry, index) => {
+    const at = `labels[${index}]`;
+    if (typeof entry !== "object" || entry === null) {
+      errors.push(`${at}: must be an object`);
+      return;
+    }
+    const row = entry as Record<string, unknown>;
+    const source = typeof row.source === "string" ? row.source.trim() : "";
+    const committeeId = typeof row.committee_id === "string" ? row.committee_id.trim() : "";
+    const committeeName = typeof row.committee_name === "string" ? row.committee_name.trim() : "";
+    const label = typeof row.label === "string" ? row.label.trim() : "";
+    const sourceUrls = Array.isArray(row.source_urls)
+      ? row.source_urls.filter((url): url is string => typeof url === "string").map((url) => url.trim())
+      : [];
+
+    if (!knownSources.has(source)) {
+      errors.push(`${at}: unknown source "${source}" — must be one of the finance summary sources`);
+    }
+    if (committeeId.length === 0) {
+      errors.push(`${at}: committee_id is required`);
+    }
+    if (committeeName.length === 0) {
+      errors.push(`${at}: committee_name is required`);
+    }
+    if (label.length === 0) {
+      errors.push(`${at}: label is required`);
+    } else if (label.length > MAX_LABEL_LENGTH) {
+      errors.push(`${at}: label exceeds ${MAX_LABEL_LENGTH} characters (${label.length})`);
+    } else if (/[\r\n]/.test(label)) {
+      errors.push(`${at}: label must be a single line`);
+    }
+    if (sourceUrls.length === 0) {
+      errors.push(`${at}: source_urls must contain at least one URL`);
+    } else {
+      for (const url of sourceUrls) {
+        let parsed: URL | null = null;
+        try {
+          parsed = new URL(url);
+        } catch {
+          parsed = null;
+        }
+        if (!parsed || (parsed.protocol !== "https:" && parsed.protocol !== "http:")) {
+          errors.push(`${at}: source_urls entry is not a valid http(s) URL: ${url}`);
+        }
+      }
+    }
+    const key = `${source} ${committeeId}`;
+    if (seen.has(key)) {
+      errors.push(`${at}: duplicate (source, committee_id) pair in payload: ${source} ${committeeId}`);
+    }
+    seen.add(key);
+    rows.push({ source, committee_id: committeeId, committee_name: committeeName, label, source_urls: sourceUrls });
+  });
+  if (errors.length > 0) {
+    throw new Error(`Invalid committee-label payload:\n- ${errors.join("\n- ")}`);
+  }
+  return rows;
+}
+
+async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
+  const file = readFlag(argv, "--file");
+  if (!file) {
+    throw new Error(`--file is required.\n${usage()}`);
+  }
+  const dryRun = argv.includes("--dry-run");
+  const rows = parseCommitteeLabelPayload(JSON.parse(await readFile(file, "utf8")) as unknown);
+
+  if (dryRun) {
+    console.log(JSON.stringify({ dry_run: true, valid_rows: rows.length, rows }, null, 2));
+    return;
+  }
+
+  let inserted = 0;
+  let updated = 0;
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    for (const row of rows) {
+      const result = await client.query<{ inserted: boolean }>(
+        `
+          INSERT INTO public.finance_committee_labels
+            (source, committee_id, committee_name, label, source_urls, researched_at)
+          VALUES ($1, $2, $3, $4, $5, now())
+          ON CONFLICT (source, committee_id) DO UPDATE SET
+            committee_name = EXCLUDED.committee_name,
+            label = EXCLUDED.label,
+            source_urls = EXCLUDED.source_urls,
+            researched_at = now()
+          RETURNING (xmax = 0) AS inserted
+        `,
+        [row.source, row.committee_id, row.committee_name, row.label, row.source_urls]
+      );
+      if (result.rows[0]?.inserted) {
+        inserted += 1;
+      } else {
+        updated += 1;
+      }
+    }
+    await client.query("COMMIT");
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
+  console.log(JSON.stringify({ inserted, updated }, null, 2));
+}
+
+async function main(): Promise<void> {
+  const [command, ...rest] = process.argv.slice(2);
+  if (command !== "due" && command !== "write") {
+    throw new Error(`Unknown subcommand: ${command ?? "(none)"}.\n${usage()}`);
+  }
+  const subcommand: Subcommand = command;
+
+  const flagSpecs = {
+    due: [
+      { name: "--state", value: "both" as const },
+      { name: "--limit", value: "both" as const },
+    ],
+    write: [
+      { name: "--file", value: "both" as const },
+      { name: "--dry-run", value: "none" as const },
+    ],
+  }[subcommand];
+  assertKnownCliFlags(`manual:finance-committee-labels:${subcommand}`, rest, flagSpecs);
+
+  loadProjectEnv();
+  const databaseUrl = requireEnv("DATABASE_URL");
+  if (subcommand === "write") {
+    requireLocalDatabaseTarget(databaseUrl);
+  }
+
+  const pool = new Pool({ connectionString: databaseUrl });
+  try {
+    if (subcommand === "due") {
+      await runDue(pool, rest);
+    } else {
+      await runWrite(pool, rest);
+    }
+  } finally {
+    await pool.end();
+  }
+}
+
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("manual finance committee labels failed:", message);
+    process.exitCode = 1;
+  });
+}
