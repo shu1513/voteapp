@@ -331,9 +331,22 @@ describe("lookupCandidateDetailById", () => {
     expect(db.query).toHaveBeenCalledTimes(3);
     expect(db.query.mock.calls[2]?.[1]).toEqual([candidateId]);
     const sql = String(db.query.mock.calls[2]?.[0]);
+    const normalizedSql = sql.replace(/\s+/g, " ");
     expect(sql).toContain("FROM public.candidate_elections AS candidate_election");
-    expect(sql).toContain(
-      "WHERE (candidate_election.candidate_id = $1::uuid\n        OR candidate_election.running_mate_candidate_id = $1::uuid)"
+    // Running mates must resolve their ticket's election too, but without
+    // inheriting the lead row's incumbency, and without duplicating an
+    // election where the candidate also holds their own row.
+    expect(normalizedSql).toContain(
+      "WHERE (candidate_election.candidate_id = $1::uuid"
+    );
+    expect(normalizedSql).toContain(
+      "OR (candidate_election.running_mate_candidate_id = $1::uuid AND NOT EXISTS"
+    );
+    expect(normalizedSql).toContain(
+      "WHERE own_link.candidate_id = $1::uuid AND own_link.election_id = candidate_election.election_id"
+    );
+    expect(normalizedSql).toContain(
+      "CASE WHEN candidate_election.candidate_id = $1::uuid THEN candidate_election.is_incumbent ELSE FALSE END AS is_incumbent"
     );
     expect(sql).toContain("LEFT JOIN public.offices AS office");
     expect(sql).toContain("CASE WHEN election.election_date >= (now() AT TIME ZONE 'Pacific/Honolulu')::date THEN 0 ELSE 1 END ASC");
