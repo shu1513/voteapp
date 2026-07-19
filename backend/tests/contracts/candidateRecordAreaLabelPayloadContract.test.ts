@@ -78,6 +78,29 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
     }
   });
 
+  it("reports a duplicate pair alongside other invalid rows instead of failing fast", () => {
+    // Failing fast on the duplicate discarded already-collected row errors
+    // (and the allowlist hint), re-introducing serial repair.
+    const parsed = parseCandidateRecordAreaLabelPayload(
+      {
+        labels: [
+          { record_index: 0, research_area_slug: "immigration", stance: "for" },
+          { record_index: 1, research_area_slug: "general" },
+          { record_index: 1, research_area_slug: "general" },
+        ],
+      },
+      { allowedResearchAreaSlugs: new Set(["general", "government_efficiency"]) }
+    );
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("payload.labels contains invalid row");
+      expect(parsed.reason).toContain("labels[0]: research_area_slug 'immigration' is not in the allowed research areas");
+      expect(parsed.reason).toContain("labels[2]: duplicate (record_index, research_area_slug) pair");
+      expect(parsed.reason).toContain("allowed research areas for this office: general, government_efficiency");
+    }
+  });
+
   it("names the cause when stance is missing on a stance-bearing area", () => {
     const parsed = parseCandidateRecordAreaLabelPayload(
       {

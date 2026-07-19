@@ -307,6 +307,66 @@ describe("OfficeMatcher", () => {
     expect(result.officeId).not.toBe("office-county-commissioner");
   });
 
+  it.each([
+    ["President, Middlesex County Commissioners"],
+    ["Chair, Middlesex County Commissioners"],
+    ["Chair, Cook County Board of Commissioners"],
+  ])("keeps board leadership title %s out of the County Commissioner member office", async (officialBallotTitle) => {
+    // Comma-form leadership titles lose their connectors in normalization, so
+    // the fixed "president of the" lookbehind never saw them; singularizing
+    // the body plural scored them ~0.92 into the member office. The
+    // leadership-word guard must leave the plural intact so they fall to
+    // no-match instead.
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-executive", canonical_name: "County Executive" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Middlesex County, New Jersey",
+      state: "NJ",
+      officialBallotTitle,
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).not.toBe("office-county-commissioner");
+  });
+
+  it("keeps the Texas 'Commissioners Court' body plural so its key stays faithful", async () => {
+    // "Commissioners Court Precinct 2" has no "of" before "commissioners";
+    // singularizing it would persist an unfaithful "commissioner court" alias
+    // key. The court lookahead leaves the official plural in place, and the
+    // truncated body form must not confidently misroute anywhere.
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-judge", canonical_name: "County Level Judge" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Harris County, Texas",
+      state: "TX",
+      officialBallotTitle: "Commissioners Court Precinct 2",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.aliasMemoryKey).toBe("commissioners court");
+  });
+
   it("does not score a non-judicial county contest into a judge office (TX County Judge)", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { county: [] },

@@ -250,31 +250,54 @@ function stripJurisdictionPrefixes(value: string, input: { districtName: string;
   return next.replace(/\s+/g, " ").trim();
 }
 
+// A LEADERSHIP-of-the-body contest elects a different office than a member
+// seat: "President of the Cook County Board of Commissioners" is the county
+// executive, and comma forms ("President, Middlesex County Commissioners",
+// "Chair, County Board of Commissioners") lose their connectors in
+// normalization, so no fixed lookbehind can see them. Singularizing such a
+// title scores it ~0.92 into the member office — a confidently wrong,
+// alias-persisted match; with the rewrites skipped it under-scores (~0.4) and
+// falls safely to no-match. Position matters: only a leadership word BEFORE
+// the body phrase names the leadership post. A TRAILING one is a seat
+// descriptor on a member seat ("JACKSON COUNTY BOARD OF COMMISSIONERS
+// CHAIRMAN", NC live: the chairman is elected to the board) and must keep the
+// rewrite.
+const LEADERSHIP_BEFORE_COMMISSION_BODY_PATTERN =
+  /\b(?:president|chair(?:man|woman|person)?|director)\b[a-z ]*\bcommission/;
+
+function singularizeCommissionerBodyForms(value: string): string {
+  if (LEADERSHIP_BEFORE_COMMISSION_BODY_PATTERN.test(value)) {
+    return value;
+  }
+  return (
+    value
+      // North Carolina certifications title every county-commission seat by its
+      // governing body ("ALAMANCE COUNTY BOARD OF COMMISSIONERS DISTRICT 02",
+      // ~150 live rows); the catalog keys on "County Commissioner" and the body
+      // form's plural tokenizes into near-zero overlap ("commissioners" ≠
+      // "commissioner"). The "county"-anchored phrase leaves city boards of
+      // commissioners (place scope) untouched. (Lives here, after the
+      // jurisdiction strip, so the county's own name never sits inside the
+      // body phrase.)
+      .replace(/\bcounty board of commissioners\b/g, "county commissioner")
+      // Bare plural body form without "board of" ("Middlesex County
+      // Commissioners", official NJ title, live: wrote a NULL-office shell).
+      // The "of"-lookbehind leaves every "board of commissioners" phrase
+      // alone — the county form was already rewritten above, and city board
+      // phrases must keep their plural so they do not over-match the member
+      // office. Not before "court": the Texas "Commissioners Court" governing
+      // body keeps its official plural so its key stays faithful for aliasing.
+      .replace(/(?<!\bof )\bcommissioners\b(?! court\b)/g, "commissioner")
+      // Utah titles the county-commission seat by its governing body plus a
+      // seat letter ("Utah County Commission Seat A", live: four NULL-office
+      // shells); the catalog keys on the member office. The seat letter itself
+      // is stripped by the seat-designator rule below.
+      .replace(/\bcounty commission\b/g, "county commissioner")
+  );
+}
+
 function stripSeatSuffixes(value: string): string {
-  return value
-    // North Carolina certifications title every county-commission seat by its
-    // governing body ("ALAMANCE COUNTY BOARD OF COMMISSIONERS DISTRICT 02",
-    // ~150 live rows); the catalog keys on "County Commissioner" and the body
-    // form's plural tokenizes into near-zero overlap ("commissioners" ≠
-    // "commissioner"). The "county"-anchored phrase leaves city boards of
-    // commissioners (place scope) untouched. Not after "president of the": a
-    // board PRESIDENT (Cook County IL) is the county executive, matched by
-    // its own alias, and the rewrite would misroute it into the member
-    // office. (Lives here, after the jurisdiction strip, so the county's own
-    // name never sits between "president of the" and the body phrase.)
-    .replace(/(?<!\bpresident of the )\bcounty board of commissioners\b/g, "county commissioner")
-    // Bare plural body form without "board of" ("Middlesex County
-    // Commissioners", official NJ title, live: wrote a NULL-office shell).
-    // The "of"-lookbehind leaves every "board of commissioners" phrase alone —
-    // the county form was already rewritten above, and city/president-of board
-    // phrases must keep their plural so they do not over-match the member
-    // office.
-    .replace(/(?<!\bof )\bcommissioners\b/g, "commissioner")
-    // Utah titles the county-commission seat by its governing body plus a seat
-    // letter ("Utah County Commission Seat A", live: four NULL-office shells);
-    // the catalog keys on the member office. The seat letter itself is
-    // stripped by the seat-designator rule below.
-    .replace(/\bcounty commission\b/g, "county commissioner")
+  return singularizeCommissionerBodyForms(value)
     .replace(/\boffice (?:no )?\d+\b/g, " ")
     .replace(/\bposition (?:no )?\d+\b/g, " ")
     // "Council District No. 5" (Seattle live) titles the council-member SEAT

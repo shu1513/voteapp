@@ -120,7 +120,10 @@ export function parseCandidateRecordAreaLabelPayload(
     }
     const pairKey = `${parsed.label.record_index}::${parsed.label.research_area_slug}`;
     if (seenPairs.has(pairKey)) {
-      return { ok: false, reason: "payload.labels contains duplicate (record_index, research_area_slug) pair" };
+      // A duplicate is one more row problem — failing fast here would discard
+      // the rows already collected above and re-introduce serial repair.
+      rowProblems.push(`labels[${index}]: duplicate (record_index, research_area_slug) pair`);
+      continue;
     }
     seenPairs.add(pairKey);
     seenRecordIndexes.add(parsed.label.record_index);

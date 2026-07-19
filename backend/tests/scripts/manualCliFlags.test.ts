@@ -54,6 +54,28 @@ describe("assertKnownCliFlags", () => {
     }
   });
 
+  it("leaves --help under script control when the script declares it in its specs", () => {
+    // manual:research:preflight declares --help/-h and prints its own richer
+    // usage text; the built-in flag list must not preempt it.
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(((code?: number) => {
+      throw new Error(`process.exit(${code})`);
+    }) as never);
+    try {
+      expect(() =>
+        assertKnownCliFlags("manual:research:preflight", ["--help"], [
+          { name: "--help", value: "none" },
+          { name: "-h", value: "none" },
+        ])
+      ).not.toThrow();
+      expect(logSpy).not.toHaveBeenCalled();
+      expect(exitSpy).not.toHaveBeenCalled();
+    } finally {
+      logSpy.mockRestore();
+      exitSpy.mockRestore();
+    }
+  });
+
   it("rejects an unknown flag and names the known set", () => {
     expect(() => assertKnownCliFlags("manual:candidate-records:write", ["--dry_run"], RECORDS_SPECS)).toThrow(
       /unknown flag --dry_run.*Known flags: --dry-run, --evidence-file, --records-file/s
