@@ -164,10 +164,10 @@ describe("ElectionPage", () => {
     // disclosures stay distinguishable for screen-reader users.
     expect(screen.getByText("Campaign finance")).toHaveAccessibleName("Campaign finance for Jordan Voter");
     // The panel content is in the DOM (details renders children; collapsed
-    // is a display state) with occupations and industries distinct.
+    // is a display state). Direct-donor industries are no longer rendered.
     expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();
     expect(screen.getByText("Retired")).toBeInTheDocument();
-    expect(screen.getByText("Oil, gas, and energy")).toBeInTheDocument();
+    expect(screen.queryByText("Oil, gas, and energy")).not.toBeInTheDocument();
     expect(screen.getByText("Growth PAC")).toBeInTheDocument();
     // The header chip still summarizes the total.
     expect(screen.getByText("Raised $120,000")).toBeInTheDocument();

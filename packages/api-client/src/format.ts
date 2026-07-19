@@ -177,6 +177,48 @@ export function formatRosterStatus(status: CandidateRosterStatus): { short: stri
   }
 }
 
+/**
+ * Joins names as "A", "A and B", or "A, B, and C" for the outside-spending
+ * evidence lines. Mirrors the backend's formatShortList but returns "" when
+ * empty so callers can skip the line entirely.
+ */
+export function formatNameList(names: readonly string[]): string {
+  const unique = [...new Set(names.map((name) => name.trim()).filter((name) => name.length > 0))];
+  if (unique.length === 0) {
+    return "";
+  }
+  if (unique.length === 1) {
+    return unique[0];
+  }
+  if (unique.length === 2) {
+    return `${unique[0]} and ${unique[1]}`;
+  }
+  return `${unique.slice(0, -1).join(", ")}, and ${unique[unique.length - 1]}`;
+}
+
+/**
+ * Orders contribution-size buckets largest-first by the leading dollar
+ * amount in the label ("$5,000+" before "$1,000-$4,999" before "$1-$99").
+ * Labels arrive as free text from per-source aggregators; anything without a
+ * parseable amount sorts last in its original order.
+ */
+export function sortContributionSizeBuckets<T extends { category_name: string }>(rows: readonly T[]): T[] {
+  const leadingAmount = (label: string): number => {
+    const match = /([\d,]+)/.exec(label);
+    if (!match) {
+      return Number.NEGATIVE_INFINITY;
+    }
+    const value = Number(match[1].replaceAll(",", ""));
+    return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
+  };
+  return rows
+    .map((row, index) => ({ row, index }))
+    .sort(
+      (a, b) => leadingAmount(b.row.category_name) - leadingAmount(a.row.category_name) || a.index - b.index
+    )
+    .map((entry) => entry.row);
+}
+
 export function financeSourceLabel(source: string): string {
   const mapped = FINANCE_SOURCE_LABELS[source];
   if (mapped) {

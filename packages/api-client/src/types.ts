@@ -156,10 +156,32 @@ export type FinanceOutsideGroup = {
   source_url: string | null;
 };
 
+// Mirrors BallotLookupFinanceOutsideIndustrySupportEvidence (backend
+// ballotLookupFinanceShared.ts): a named organization whose contributions to
+// an outside group put its industry on the supporting-industries list.
+export type FinanceOutsideIndustryEvidence = {
+  organization_name: string;
+  organization_type: "employer" | "donor";
+  amount: number;
+  contributor_count: number | null;
+  committee_id: string;
+  committee_name: string;
+  source_url: string | null;
+};
+
+// Mirrors BallotLookupFinanceOutsideIndustrySupportSummary (backend): an
+// outside-spending support industry plus the organizations behind it.
+export type FinanceOutsideIndustrySupport = FinanceBreakdown & {
+  explanation: string;
+  supporting_organizations: FinanceOutsideIndustryEvidence[];
+};
+
 // Mirrors BallotLookupFinanceSummary (backend ballotLookupFinanceShared.ts):
 // the money lives under direct_campaign, not at the top level. Deliberately
-// partial — only what the UI renders; backing_summary stays backend-only.
-// null money values mean "not reported"; 0 is a real disclosed amount.
+// partial — only what the UI renders. backing_summary is typed for the
+// outside-spending evidence the card shows ("who is behind this industry");
+// its other fields stay backend-only. null money values mean "not reported";
+// 0 is a real disclosed amount.
 export type FinanceSummary = {
   source: string;
   cycle: number;
@@ -182,6 +204,11 @@ export type FinanceSummary = {
     top_opposing_groups: FinanceOutsideGroup[];
     top_supporting_industries: FinanceBreakdown[];
     top_opposing_industries: FinanceBreakdown[];
+  };
+  /** Optional defensively: the backend always sends it, but older cached
+   * payloads may not. Only the evidence-bearing field is typed. */
+  backing_summary?: {
+    top_outside_supporting_industries: FinanceOutsideIndustrySupport[];
   };
 };
 

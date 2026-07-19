@@ -1,14 +1,22 @@
-import type { FinanceBreakdown, FinanceOutsideGroup, FinanceSummary } from "@voteapp/api-client";
+import type {
+  FinanceBreakdown,
+  FinanceOutsideGroup,
+  FinanceOutsideIndustrySupport,
+  FinanceSummary,
+} from "@voteapp/api-client";
 import {
   financeSourceLabel,
   firstFinanceSourceUrl,
   formatElectionDate,
   formatFinanceCategory,
   formatMoney,
+  formatNameList,
   formatSourceHost,
   hasOutsideFinanceContent,
+  sortContributionSizeBuckets,
 } from "@voteapp/api-client";
-import { Text, View } from "react-native";
+import { useState } from "react";
+import { Pressable, Text, View } from "react-native";
 import { openExternalUrl } from "../lib/openExternalUrl";
 
 // Port of the web FinanceSummaryCard (frontend/src/components). Wording is
@@ -17,6 +25,14 @@ import { openExternalUrl } from "../lib/openExternalUrl";
 // committees are "outside groups" (state terminology differs; not every one
 // is a Super PAC). "Anything to render" gating (hasFinanceContent) lives in
 // the shared package.
+//
+// Same brief-by-default policy as the web card: top occupations collapse
+// past the first few, size buckets sort largest-first, outside spending gets
+// a plain-language explanation, and employers / direct-donor industries are
+// deliberately not rendered.
+
+// How many occupation rows show before the rest collapse behind "Show more".
+const VISIBLE_OCCUPATIONS = 4;
 
 function MoneyStat({ label, amount }: { label: string; amount: number | null }) {
   if (amount === null) {
@@ -39,30 +55,79 @@ function AmountRow({ name, right }: { name: string; right: string }) {
   );
 }
 
-function BreakdownList({ heading, rows }: { heading: string; rows: FinanceBreakdown[] }) {
-  if (rows.length === 0) {
-    return null;
-  }
+function BreakdownRows({ rows }: { rows: FinanceBreakdown[] }) {
   return (
-    <View className="mt-3">
-      <Text className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{heading}</Text>
-      <View className="mt-1 gap-0.5">
-        {rows.map((row) => (
-          // contributor_count is deliberately not rendered: state adapters
-          // disagree on its meaning, so any single label would be wrong for
-          // some sources. Same policy as the web card.
-          <AmountRow
-            key={row.category_name}
-            name={formatFinanceCategory(row.category_name)}
-            right={formatMoney(row.amount)}
-          />
-        ))}
-      </View>
+    <View className="mt-1 gap-0.5">
+      {rows.map((row) => (
+        // contributor_count is deliberately not rendered: state adapters
+        // disagree on its meaning, so any single label would be wrong for
+        // some sources. Same policy as the web card.
+        <AmountRow
+          key={row.category_name}
+          name={formatFinanceCategory(row.category_name)}
+          right={formatMoney(row.amount)}
+        />
+      ))}
     </View>
   );
 }
 
-function OutsideColumn({
+function BreakdownList({
+  heading,
+  rows,
+  visibleCount,
+}: {
+  heading: string;
+  rows: FinanceBreakdown[];
+  /** When set, rows beyond this count collapse behind a "Show more" toggle. */
+  visibleCount?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  if (rows.length === 0) {
+    return null;
+  }
+  const hiddenCount = visibleCount !== undefined ? Math.max(rows.length - visibleCount, 0) : 0;
+  const visible = hiddenCount > 0 && !expanded ? rows.slice(0, visibleCount) : rows;
+  return (
+    <View className="mt-3">
+      <Text className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{heading}</Text>
+      <BreakdownRows rows={visible} />
+      {hiddenCount > 0 ? (
+        <Pressable onPress={() => setExpanded((value) => !value)} accessibilityRole="button">
+          <Text className="mt-1 text-xs text-ink-soft underline">
+            {expanded ? "Show fewer" : `Show ${hiddenCount} more`}
+          </Text>
+        </Pressable>
+      ) : null}
+    </View>
+  );
+}
+
+/**
+ * One outside-spending industry with, when the backend supplies evidence,
+ * a plain-language line naming the organizations behind it.
+ */
+function OutsideIndustryRow({ industry }: { industry: FinanceBreakdown | FinanceOutsideIndustrySupport }) {
+  const organizations = "supporting_organizations" in industry ? industry.supporting_organizations : [];
+  const organizationNames = formatNameList(organizations.map((org) => org.organization_name));
+  const committeeNames = formatNameList(organizations.map((org) => org.committee_name));
+  return (
+    <View>
+      <View className="flex-row justify-between gap-3">
+        <Text className="flex-1 text-sm text-ink">{formatFinanceCategory(industry.category_name)}</Text>
+        <Text className="shrink-0 text-sm text-ink-soft">{formatMoney(industry.amount)}</Text>
+      </View>
+      {organizationNames ? (
+        <Text className="text-xs text-ink-soft">
+          Money from {organizationNames}
+          {committeeNames ? `, given to ${committeeNames}` : ""}.
+        </Text>
+      ) : null}
+    </View>
+  );
+}
+
+function OutsideSection({
   direction,
   total,
   groups,
@@ -71,53 +136,52 @@ function OutsideColumn({
   direction: "support" | "opposition";
   total: number | null;
   groups: FinanceOutsideGroup[];
-  industries: FinanceBreakdown[];
+  industries: (FinanceBreakdown | FinanceOutsideIndustrySupport)[];
 }) {
+  const [groupsExpanded, setGroupsExpanded] = useState(false);
   // An all-empty direction renders nothing rather than a bare header — a
   // race often has disclosed support with no disclosed opposition.
   if (total === null && groups.length === 0 && industries.length === 0) {
     return null;
   }
-  const support = direction === "support";
+  // Deliberately neutral styling (no green/red fill): the ballot-measure
+  // "A YES/NO vote means" boxes own that palette, and this section must not
+  // read as a voting recommendation.
   return (
-    <View
-      className={
-        support
-          ? "rounded border border-green-200 bg-green-50 p-2"
-          : "rounded border border-red-200 bg-red-50 p-2"
-      }
-    >
-      <Text className={support ? "text-sm font-medium text-green-900" : "text-sm font-medium text-red-900"}>
+    <View className="mt-2 rounded border border-line p-2">
+      <Text className="text-sm font-medium text-ink">
         Reported {direction}
         {total !== null ? `: ${formatMoney(total)}` : ""}
       </Text>
-      {groups.length > 0 ? (
-        <View className="mt-2">
-          <Text className="text-xs font-medium text-ink-soft">Outside groups reporting {direction}</Text>
-          <View className="mt-1 gap-0.5">
-            {groups.map((row) => (
-              <AmountRow key={row.committee_id} name={row.committee_name} right={formatMoney(row.amount)} />
-            ))}
-          </View>
-        </View>
-      ) : null}
       {industries.length > 0 ? (
         <View className="mt-2">
           {/* These amounts are contributions INTO the groups, while the
               total above is candidate-specific expenditure — the heading and
-              the card's shared note keep the two from being conflated. */}
+              the section's shared note keep the two from being conflated. */}
           <Text className="text-xs font-medium text-ink-soft">
             Industries funding groups reporting {direction}
           </Text>
-          <View className="mt-1 gap-0.5">
+          <View className="mt-1 gap-1">
             {industries.map((row) => (
-              <AmountRow
-                key={row.category_name}
-                name={formatFinanceCategory(row.category_name)}
-                right={formatMoney(row.amount)}
-              />
+              <OutsideIndustryRow key={row.category_name} industry={row} />
             ))}
           </View>
+        </View>
+      ) : null}
+      {groups.length > 0 ? (
+        <View className="mt-2">
+          <Pressable onPress={() => setGroupsExpanded((value) => !value)} accessibilityRole="button">
+            <Text className="text-xs text-ink-soft underline">
+              Outside groups reporting {direction} ({groups.length})
+            </Text>
+          </Pressable>
+          {groupsExpanded ? (
+            <View className="mt-1 gap-0.5">
+              {groups.map((row) => (
+                <AmountRow key={row.committee_id} name={row.committee_name} right={formatMoney(row.amount)} />
+              ))}
+            </View>
+          ) : null}
         </View>
       ) : null}
     </View>
@@ -134,11 +198,21 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
     direct.debts_owed !== null ||
     direct.public_funds_received != null;
   const sourceUrl = firstFinanceSourceUrl(summary);
+  // Supporting industries prefer the backing-summary rows, which carry the
+  // organizations behind each industry; fall back to the plain breakdown.
+  const supportingIndustries: (FinanceBreakdown | FinanceOutsideIndustrySupport)[] =
+    summary.backing_summary?.top_outside_supporting_industries?.length
+      ? summary.backing_summary.top_outside_supporting_industries
+      : outside.top_supporting_industries;
 
   return (
     <View>
+      <Text className="text-xs text-ink-soft">
+        Data last updated {formatElectionDate(summary.last_synced_at.slice(0, 10))}
+      </Text>
+
       {hasMoneyRow ? (
-        <View className="flex-row flex-wrap">
+        <View className="mt-3 flex-row flex-wrap">
           <MoneyStat label="Raised" amount={direct.total_raised} />
           <MoneyStat label="Spent" amount={direct.total_spent} />
           <MoneyStat label="Cash on hand" amount={direct.cash_on_hand} />
@@ -147,40 +221,47 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
         </View>
       ) : null}
 
-      <BreakdownList heading="Top disclosed occupations of direct donors" rows={direct.top_occupations} />
-      <BreakdownList heading="Top disclosed employers of direct donors" rows={direct.top_employers ?? []} />
-      <BreakdownList heading="Industries represented among direct contributions" rows={direct.top_industries} />
-      <BreakdownList heading="Direct contributions by size" rows={direct.contribution_size_buckets ?? []} />
+      <BreakdownList
+        heading="Top disclosed occupations of direct donors"
+        rows={direct.top_occupations}
+        visibleCount={VISIBLE_OCCUPATIONS}
+      />
+      <BreakdownList
+        heading="Direct contributions by size"
+        rows={sortContributionSizeBuckets(direct.contribution_size_buckets ?? [])}
+      />
 
       {hasOutsideFinanceContent(summary) ? (
         <View className="mt-3">
           <Text className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Outside spending</Text>
-          {outside.top_supporting_industries.length > 0 || outside.top_opposing_industries.length > 0 ? (
+          <Text className="mt-1 text-xs text-ink-soft">
+            Outside spending is money spent on this race by independent groups — such as PACs and super
+            PACs — not by the candidate&apos;s own campaign. These groups cannot coordinate with the
+            campaign, and their money never goes to the candidate directly.
+          </Text>
+          <OutsideSection
+            direction="support"
+            total={outside.support_total}
+            groups={outside.top_supporting_groups}
+            industries={supportingIndustries}
+          />
+          <OutsideSection
+            direction="opposition"
+            total={outside.oppose_total}
+            groups={outside.top_opposing_groups}
+            industries={outside.top_opposing_industries}
+          />
+          {supportingIndustries.length > 0 || outside.top_opposing_industries.length > 0 ? (
             <Text className="mt-1 text-xs text-ink-soft">
               Industry amounts are contributions to these groups, not amounts necessarily spent on this
               candidate.
             </Text>
           ) : null}
-          <View className="mt-1 gap-3">
-            <OutsideColumn
-              direction="support"
-              total={outside.support_total}
-              groups={outside.top_supporting_groups}
-              industries={outside.top_supporting_industries}
-            />
-            <OutsideColumn
-              direction="opposition"
-              total={outside.oppose_total}
-              groups={outside.top_opposing_groups}
-              industries={outside.top_opposing_industries}
-            />
-          </View>
         </View>
       ) : null}
 
       <Text className="mt-3 text-xs text-ink-soft">
-        Source: {financeSourceLabel(summary.source)} · {summary.cycle} cycle · synced{" "}
-        {formatElectionDate(summary.last_synced_at.slice(0, 10))}
+        Source: {financeSourceLabel(summary.source)} · {summary.cycle} cycle
         {sourceUrl ? (
           <>
             {" · "}
