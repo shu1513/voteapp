@@ -257,7 +257,13 @@ export function buildOutsideIndustrySupportExplanation(
     clauses.push(`${sources.join(", and ")} contributed to ${committee || "an outside group"}`);
   }
 
-  return `${preamble} ${clauses.join("; ")}, which reported ${supportAction}.`;
+  // Every committee here passed the support_oppose = 'support' filter, so the
+  // support claim must distribute over all of them — a trailing "which
+  // reported" would bind only to the last committee named.
+  if (clauses.length === 1) {
+    return `${preamble} ${clauses[0]}, which reported ${supportAction}.`;
+  }
+  return `${preamble} ${clauses.join("; ")}; all of these groups reported ${supportAction}.`;
 }
 
 export type StateFinanceSummaryRequest = {

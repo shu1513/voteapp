@@ -77,7 +77,7 @@ describe("buildOutsideIndustrySupportExplanation", () => {
         }),
       ])
     ).toBe(
-      "The Technology category is a top outside-spending support industry because Acme Corp contributed to Future PAC; contributors employed by Google LLC contributed to Other PAC, which reported independent spending supporting this candidate."
+      "The Technology category is a top outside-spending support industry because Acme Corp contributed to Future PAC; contributors employed by Google LLC contributed to Other PAC; all of these groups reported independent spending supporting this candidate."
     );
   });
 
