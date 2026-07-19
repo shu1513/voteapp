@@ -129,6 +129,69 @@ export function scoreCandidateRecordDescriptionSimilarity(left: string, right: s
   return (2 * precision * recall) / (precision + recall);
 }
 
+export type WithinPayloadRecordCollision = {
+  firstIndex: number;
+  secondIndex: number;
+  eventDate: string;
+  sourceUrl: string;
+  similarity: number;
+};
+
+// Detects payload rows the upsert below would silently merge into ONE stored
+// record: same event date, same normalized source URL, and descriptions at or
+// above the similarity threshold (or outright identical identity). Live hits:
+// adjacent bill numbers (HB 204/HB 205), same-day amendment votes, and an
+// initial vote vs its same-day reconsideration all scored >= 0.86 and lost a
+// genuinely distinct record. The manual writers refuse such payloads so the
+// operator differentiates the descriptions (or splits the source URLs) before
+// anything is written.
+export function findWithinPayloadRecordCollisions(
+  records: readonly { description: string; sourceUrl: string; eventDate: string | Date }[]
+): WithinPayloadRecordCollision[] {
+  const groups = new Map<string, number[]>();
+  records.forEach((record, index) => {
+    const key = `${toEventDateKey(record.eventDate)}|${normalizeUrlForIdentity(record.sourceUrl)}`;
+    const group = groups.get(key);
+    if (group) {
+      group.push(index);
+    } else {
+      groups.set(key, [index]);
+    }
+  });
+
+  const collisions: WithinPayloadRecordCollision[] = [];
+  for (const indexes of groups.values()) {
+    if (indexes.length < 2) {
+      continue;
+    }
+    for (let left = 0; left < indexes.length; left += 1) {
+      for (let right = left + 1; right < indexes.length; right += 1) {
+        const firstIndex = indexes[left]!;
+        const secondIndex = indexes[right]!;
+        const first = records[firstIndex]!;
+        const second = records[secondIndex]!;
+        const similarity = scoreCandidateRecordDescriptionSimilarity(
+          first.description,
+          second.description
+        );
+        if (similarity >= DESCRIPTION_SIMILARITY_UPDATE_THRESHOLD) {
+          collisions.push({
+            firstIndex,
+            secondIndex,
+            eventDate: toEventDateKey(first.eventDate),
+            // The normalized form is what actually collided; either row's raw
+            // URL alone can read as a mismatch to the operator repairing the
+            // other row.
+            sourceUrl: normalizeUrlForIdentity(first.sourceUrl),
+            similarity,
+          });
+        }
+      }
+    }
+  }
+  return collisions;
+}
+
 async function findSimilarExistingRecord(
   client: Pick<PoolClient, "query">,
   input: {

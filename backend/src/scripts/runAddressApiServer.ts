@@ -669,7 +669,16 @@ async function main(): Promise<void> {
     }
   };
 
+  // Idempotence guard: npm and the terminal's process group can each deliver
+  // the same Ctrl-C SIGINT, and the second shutdown() then calls
+  // server.close() on an already-closed listener — failing the whole
+  // shutdown with ERR_SERVER_NOT_RUNNING even though the stop succeeded.
+  let shuttingDown = false;
   const handleShutdown = (signal: NodeJS.Signals): void => {
+    if (shuttingDown) {
+      return;
+    }
+    shuttingDown = true;
     void shutdown()
       .then(() => {
         console.log(`address API server stopped after ${signal}`);

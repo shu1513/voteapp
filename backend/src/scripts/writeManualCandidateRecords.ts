@@ -20,6 +20,7 @@ import { markCandidateRecordsSearchCompleted } from "../pipeline/candidates/cand
 import { isNonStanceResearchAreaSlug } from "../pipeline/candidates/candidateRecordResearchAreaPolicy.js";
 import {
   buildCandidateRecordIdentityKey,
+  findWithinPayloadRecordCollisions,
   upsertCandidateRecords,
 } from "../pipeline/candidates/candidateRecordStore.js";
 import { createCandidateRecordUpdateNotificationEvents } from "../pipeline/users/candidateFollowNotificationEvents.js";
@@ -554,6 +555,56 @@ async function main(): Promise<void> {
         : "";
     throw new Error(
       `Candidate records payload needs focused repair before import; dropped=${validatedRecords.droppedRecords.length}; ${summarizeDroppedRecords(validatedRecords.droppedRecords)}.${hint}`
+    );
+  }
+  // Within-payload merge guard: two payload rows sharing an event date and
+  // source URL with near-identical descriptions would be silently collapsed
+  // into ONE stored record by the upsert's similarity dedupe (live: HB 204/
+  // HB 205, same-day amendment votes, a vote and its reconsideration). Refuse
+  // the payload so the operator differentiates the descriptions or source
+  // URLs before anything is written.
+  const withinPayloadCollisions = findWithinPayloadRecordCollisions(
+    validatedRecords.records.map((record) => ({
+      description: record.description,
+      sourceUrl: record.source_url,
+      eventDate: record.event_date,
+    }))
+  );
+  if (withinPayloadCollisions.length > 0) {
+    const gaps: ManualResearchRepairGap[] = withinPayloadCollisions.map((collision) => ({
+      id: `candidate_records.within_payload_collision.${collision.firstIndex}.${collision.secondIndex}`,
+      stage: "candidate_records",
+      objectType: "candidate_record_set",
+      outcome: "needs_repair",
+      failureKind: "schema",
+      reason: `records[${collision.firstIndex}] and records[${collision.secondIndex}] share event_date=${collision.eventDate} and source_url=${collision.sourceUrl} with description similarity ${collision.similarity.toFixed(2)} (>= 0.86): the writer would merge them into one stored record.`,
+      recordIndex: collision.secondIndex,
+      sourceUrl: collision.sourceUrl,
+      eventDate: collision.eventDate,
+      focusedResearchPass:
+        "If the rows describe the SAME action, keep one. If they are distinct actions, rewrite each description with its distinguishing substance (bill number plus what that measure did, the amendment's content, the procedural posture) or cite each action's own specific URL, then rerun.",
+    }));
+    await writeRecordsRepairReport({
+      reportFile: repairReportFile,
+      manualKey,
+      candidateId,
+      electionId,
+      recordsFile,
+      labelsFile,
+      candidateDisplayName: null,
+      gaps,
+    });
+    const preview = withinPayloadCollisions
+      .slice(0, 5)
+      .map(
+        (collision) =>
+          `records[${collision.firstIndex}]~records[${collision.secondIndex}] (similarity ${collision.similarity.toFixed(2)}, event_date=${collision.eventDate})`
+      )
+      .join("; ");
+    const extra =
+      withinPayloadCollisions.length > 5 ? `; +${withinPayloadCollisions.length - 5} more` : "";
+    throw new Error(
+      `Candidate records payload contains ${withinPayloadCollisions.length} within-payload similarity collision(s) that the writer would silently merge: ${preview}${extra}. Differentiate the descriptions (or source URLs) of distinct same-day actions, or remove true duplicates, then rerun.`
     );
   }
   if (sinceDate) {

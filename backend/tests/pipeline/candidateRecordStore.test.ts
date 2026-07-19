@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   buildCandidateRecordIdentityKey,
   deleteCandidateRecordsForReplacementRefresh,
+  findWithinPayloadRecordCollisions,
   scoreCandidateRecordDescriptionSimilarity,
   upsertCandidateRecords,
 } from "../../src/pipeline/candidates/candidateRecordStore.js";
@@ -147,5 +148,82 @@ describe("deleteCandidateRecordsForReplacementRefresh", () => {
       deletedCount: 0,
     });
     expect(query).not.toHaveBeenCalled();
+  });
+});
+
+describe("findWithinPayloadRecordCollisions", () => {
+  it("flags same-date same-source rows with near-identical descriptions", () => {
+    const collisions = findWithinPayloadRecordCollisions([
+      {
+        description:
+          "Voted yes on House Bill 204 to expand the state income tax credit for families",
+        sourceUrl: "https://example.gov/session/2025",
+        eventDate: "2025-03-26",
+      },
+      {
+        description:
+          "Voted yes on House Bill 205 to expand the state income tax credit for families",
+        sourceUrl: "https://example.gov/session/2025",
+        eventDate: "2025-03-26",
+      },
+    ]);
+
+    expect(collisions).toHaveLength(1);
+    expect(collisions[0]).toMatchObject({
+      firstIndex: 0,
+      secondIndex: 1,
+      eventDate: "2025-03-26",
+      sourceUrl: "https://example.gov/session/2025",
+    });
+    expect(collisions[0]!.similarity).toBeGreaterThanOrEqual(0.86);
+  });
+
+  it("normalizes source URLs and date forms before grouping", () => {
+    const collisions = findWithinPayloadRecordCollisions([
+      {
+        description: "Voted yes on Senate Bill 402 concurrence with House amendments",
+        sourceUrl: "HTTPS://Example.gov/journal/",
+        eventDate: new Date("1986-04-24T12:00:00.000Z"),
+      },
+      {
+        description: "Voted yes on Senate Bill 402 concurrence with House changes",
+        sourceUrl: "https://example.gov/journal",
+        eventDate: "1986-04-24",
+      },
+    ]);
+
+    expect(collisions).toHaveLength(1);
+    expect(collisions[0]).toMatchObject({
+      eventDate: "1986-04-24",
+      sourceUrl: "https://example.gov/journal",
+    });
+  });
+
+  it("ignores rows that differ in event date or source URL", () => {
+    const description = "Voted yes on House Bill 204 to expand the tax credit";
+    expect(
+      findWithinPayloadRecordCollisions([
+        { description, sourceUrl: "https://example.gov/a", eventDate: "2025-03-26" },
+        { description, sourceUrl: "https://example.gov/b", eventDate: "2025-03-26" },
+        { description, sourceUrl: "https://example.gov/a", eventDate: "2025-03-27" },
+      ])
+    ).toEqual([]);
+  });
+
+  it("ignores same-day same-source rows with clearly distinct descriptions", () => {
+    expect(
+      findWithinPayloadRecordCollisions([
+        {
+          description: "Voted yes on the fiscal year 2026 operating budget",
+          sourceUrl: "https://example.gov/session/2025",
+          eventDate: "2025-03-26",
+        },
+        {
+          description: "Spoke against the proposed surveillance camera contract during public comment",
+          sourceUrl: "https://example.gov/session/2025",
+          eventDate: "2025-03-26",
+        },
+      ])
+    ).toEqual([]);
   });
 });
