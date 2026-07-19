@@ -8,6 +8,7 @@ import type {
   BallotLookupFinanceOutsideIndustrySupportSummary,
   BallotLookupFinanceSummary,
 } from "../address/ballotLookupFinanceShared.js";
+import { buildOutsideIndustrySupportExplanation } from "../address/ballotLookupFinanceShared.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -141,48 +142,6 @@ function addFinanceBreakdown(
   const list = grouped.get(key) ?? [];
   list.push(row);
   grouped.set(key, list);
-}
-
-function formatShortList(values: readonly string[]): string {
-  const uniqueValues = [...new Set(values.map((value) => value.trim()).filter((value) => value.length > 0))];
-  if (uniqueValues.length === 0) {
-    return "";
-  }
-  if (uniqueValues.length === 1) {
-    return uniqueValues[0] ?? "";
-  }
-  if (uniqueValues.length === 2) {
-    return `${uniqueValues[0]} and ${uniqueValues[1]}`;
-  }
-  return `${uniqueValues.slice(0, -1).join(", ")}, and ${uniqueValues[uniqueValues.length - 1]}`;
-}
-
-function financeIndustryDisplayName(industryName: string): string {
-  const trimmed = industryName.trim();
-  if (!trimmed) {
-    return "This industry";
-  }
-  return trimmed
-    .split("_")
-    .filter((part) => part.length > 0)
-    .map((part, index) => (index === 0 ? part.charAt(0).toUpperCase() + part.slice(1).toLowerCase() : part.toLowerCase()))
-    .join(" ");
-}
-
-function buildOutsideIndustrySupportExplanation(
-  industryName: string,
-  evidence: readonly BallotLookupFinanceOutsideIndustrySupportEvidence[]
-): string {
-  const displayName = financeIndustryDisplayName(industryName);
-  if (evidence.length === 0) {
-    return `The ${displayName} category is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported independent spending supporting this candidate.`;
-  }
-
-  return `The ${displayName} category is a top outside-spending support industry because ${formatShortList(
-    evidence.map((item) => item.organization_name)
-  )} contributed to ${formatShortList(
-    evidence.map((item) => item.committee_name)
-  )}, which reported independent spending supporting this candidate.`;
 }
 
 function buildPennsylvaniaFinanceSummaryRequests(
