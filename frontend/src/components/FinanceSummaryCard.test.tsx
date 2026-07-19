@@ -56,17 +56,26 @@ describe("FinanceSummaryCard", () => {
     expect(screen.queryByText("Top disclosed employers of direct donors")).not.toBeInTheDocument();
     expect(screen.queryByText("Industries represented among direct contributions")).not.toBeInTheDocument();
     expect(screen.queryByText("Oil, gas, and energy")).not.toBeInTheDocument();
-    // Support and opposition stay distinct, with a plain-language intro.
+    // Support and opposition stay distinct, with a plain-language intro. The
+    // independence claim attaches to the spending, not the groups — PACs can
+    // also coordinate or give directly; the expenditure shown here doesn't.
     expect(
-      screen.getByText(/Outside spending is money spent on this race by independent groups/)
+      screen.getByText(/Outside spending is money spent on this race by outside groups/)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/This spending is not coordinated with the candidate's campaign/)
     ).toBeInTheDocument();
     expect(screen.getByText("Reported support: $50,000")).toBeInTheDocument();
     expect(screen.getByText("Growth PAC")).toBeInTheDocument();
     expect(screen.getByText("Reported opposition: $20,000")).toBeInTheDocument();
     expect(screen.getByText("Stop Them PAC")).toBeInTheDocument();
     // Backing evidence names the organizations behind a supporting industry.
+    // The fixture rows are employer-type: individuals who reported those
+    // employers gave — the sentence must not read as the companies donating.
     expect(screen.getByText("Technology")).toBeInTheDocument();
-    expect(screen.getByText("Money from Google and Anthropic, given to Growth PAC.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Money from contributors employed by Google and Anthropic, given to Growth PAC.")
+    ).toBeInTheDocument();
     // Industry money flows into the groups, not necessarily onto this race —
     // the heading and note must not present it as candidate-specific spend.
     expect(screen.getByText("Industries funding groups reporting support")).toBeInTheDocument();
@@ -140,6 +149,48 @@ describe("FinanceSummaryCard", () => {
 
     expect(screen.getByText(/Reported support/)).toBeInTheDocument();
     expect(screen.queryByText(/Reported opposition/)).not.toBeInTheDocument();
+  });
+
+  it("keeps donor money direct and pairs each organization with its own committee", () => {
+    const summary = financeSummary();
+    summary.backing_summary = {
+      top_outside_supporting_industries: [
+        {
+          category_name: "technology",
+          amount: 35000,
+          contributor_count: null,
+          source_url: null,
+          supporting_organizations: [
+            {
+              organization_name: "Google",
+              organization_type: "donor",
+              amount: 20000,
+              contributor_count: null,
+              committee_id: "pac-1",
+              committee_name: "Growth PAC",
+              source_url: null,
+            },
+            {
+              organization_name: "Anthropic",
+              organization_type: "employer",
+              amount: 15000,
+              contributor_count: 2,
+              committee_id: "pac-3",
+              committee_name: "Future PAC",
+              source_url: null,
+            },
+          ],
+        },
+      ],
+    };
+    render(<FinanceSummaryCard summary={summary} />);
+
+    // Two committees, two lines — no flattening Google onto Future PAC, and
+    // the employer-type row never reads as Anthropic itself donating.
+    expect(screen.getByText("Money from Google, given to Growth PAC.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Money from contributors employed by Anthropic, given to Future PAC.")
+    ).toBeInTheDocument();
   });
 
   it("falls back to the plain supporting-industries list without backing evidence", () => {

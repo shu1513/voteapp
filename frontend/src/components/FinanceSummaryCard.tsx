@@ -10,7 +10,7 @@ import {
   formatElectionDate,
   formatFinanceCategory,
   formatMoney,
-  formatNameList,
+  formatOutsideEvidenceLines,
   formatSourceHost,
   hasFinanceContent,
   hasOutsideFinanceContent,
@@ -109,20 +109,21 @@ function BreakdownList({
  */
 function OutsideIndustryRow({ industry }: { industry: FinanceBreakdown | FinanceOutsideIndustrySupport }) {
   const organizations = "supporting_organizations" in industry ? industry.supporting_organizations : [];
-  const organizationNames = formatNameList(organizations.map((org) => org.organization_name));
-  const committeeNames = formatNameList(organizations.map((org) => org.committee_name));
+  // One line per receiving committee; "employer" evidence reads as money from
+  // that employer's contributors, never as the company donating (the shared
+  // helper owns the distinction).
+  const evidenceLines = formatOutsideEvidenceLines(organizations);
   return (
     <li className="text-sm">
       <div className="flex justify-between gap-3">
         <span className="text-ink">{formatFinanceCategory(industry.category_name)}</span>
         <span className="shrink-0 text-ink-soft">{formatMoney(industry.amount)}</span>
       </div>
-      {organizationNames ? (
-        <p className="text-xs text-ink-soft">
-          Money from {organizationNames}
-          {committeeNames ? `, given to ${committeeNames}` : ""}.
+      {evidenceLines.map((line) => (
+        <p key={line} className="text-xs text-ink-soft">
+          {line}
         </p>
-      ) : null}
+      ))}
     </li>
   );
 }
@@ -232,9 +233,9 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
         <div className="mt-3">
           <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Outside spending</h4>
           <p className="mt-1 text-xs text-ink-soft">
-            Outside spending is money spent on this race by independent groups — such as PACs and super
-            PACs — not by the candidate's own campaign. These groups cannot coordinate with the campaign,
-            and their money never goes to the candidate directly.
+            Outside spending is money spent on this race by outside groups — such as PACs and super
+            PACs — not by the candidate's own campaign. This spending is not coordinated with the
+            candidate's campaign and does not go directly to the candidate.
           </p>
           <OutsideSection
             direction="support"

@@ -10,7 +10,7 @@ import {
   formatElectionDate,
   formatFinanceCategory,
   formatMoney,
-  formatNameList,
+  formatOutsideEvidenceLines,
   formatSourceHost,
   hasOutsideFinanceContent,
   sortContributionSizeBuckets,
@@ -93,7 +93,11 @@ function BreakdownList({
       <Text className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{heading}</Text>
       <BreakdownRows rows={visible} />
       {hiddenCount > 0 ? (
-        <Pressable onPress={() => setExpanded((value) => !value)} accessibilityRole="button">
+        <Pressable
+          onPress={() => setExpanded((value) => !value)}
+          accessibilityRole="button"
+          accessibilityState={{ expanded }}
+        >
           <Text className="mt-1 text-xs text-ink-soft underline">
             {expanded ? "Show fewer" : `Show ${hiddenCount} more`}
           </Text>
@@ -109,20 +113,21 @@ function BreakdownList({
  */
 function OutsideIndustryRow({ industry }: { industry: FinanceBreakdown | FinanceOutsideIndustrySupport }) {
   const organizations = "supporting_organizations" in industry ? industry.supporting_organizations : [];
-  const organizationNames = formatNameList(organizations.map((org) => org.organization_name));
-  const committeeNames = formatNameList(organizations.map((org) => org.committee_name));
+  // One line per receiving committee; "employer" evidence reads as money from
+  // that employer's contributors, never as the company donating (the shared
+  // helper owns the distinction).
+  const evidenceLines = formatOutsideEvidenceLines(organizations);
   return (
     <View>
       <View className="flex-row justify-between gap-3">
         <Text className="flex-1 text-sm text-ink">{formatFinanceCategory(industry.category_name)}</Text>
         <Text className="shrink-0 text-sm text-ink-soft">{formatMoney(industry.amount)}</Text>
       </View>
-      {organizationNames ? (
-        <Text className="text-xs text-ink-soft">
-          Money from {organizationNames}
-          {committeeNames ? `, given to ${committeeNames}` : ""}.
+      {evidenceLines.map((line) => (
+        <Text key={line} className="text-xs text-ink-soft">
+          {line}
         </Text>
-      ) : null}
+      ))}
     </View>
   );
 }
@@ -170,7 +175,11 @@ function OutsideSection({
       ) : null}
       {groups.length > 0 ? (
         <View className="mt-2">
-          <Pressable onPress={() => setGroupsExpanded((value) => !value)} accessibilityRole="button">
+          <Pressable
+            onPress={() => setGroupsExpanded((value) => !value)}
+            accessibilityRole="button"
+            accessibilityState={{ expanded: groupsExpanded }}
+          >
             <Text className="text-xs text-ink-soft underline">
               Outside groups reporting {direction} ({groups.length})
             </Text>
@@ -235,9 +244,9 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
         <View className="mt-3">
           <Text className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Outside spending</Text>
           <Text className="mt-1 text-xs text-ink-soft">
-            Outside spending is money spent on this race by independent groups — such as PACs and super
-            PACs — not by the candidate&apos;s own campaign. These groups cannot coordinate with the
-            campaign, and their money never goes to the candidate directly.
+            Outside spending is money spent on this race by outside groups — such as PACs and super
+            PACs — not by the candidate&apos;s own campaign. This spending is not coordinated with the
+            candidate&apos;s campaign and does not go directly to the candidate.
           </Text>
           <OutsideSection
             direction="support"

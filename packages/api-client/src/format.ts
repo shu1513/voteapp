@@ -2,7 +2,7 @@
 // must be treated as calendar dates, not instants: new Date("2026-11-03")
 // parses as UTC midnight and renders the previous day in US timezones.
 
-import type { CandidateRosterStatus } from "./types";
+import type { CandidateRosterStatus, FinanceOutsideIndustryEvidence } from "./types";
 
 export function formatElectionDate(isoDate: string): string {
   const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(isoDate.trim());
@@ -194,6 +194,46 @@ export function formatNameList(names: readonly string[]): string {
     return `${unique[0]} and ${unique[1]}`;
   }
   return `${unique.slice(0, -1).join(", ")}, and ${unique[unique.length - 1]}`;
+}
+
+/**
+ * Plain-language lines for outside-spending industry evidence, one per
+ * receiving committee so each organization stays paired with the group it
+ * actually funded. organization_type decides the claim: "donor" rows are the
+ * organization's own money; "employer" rows are individual contributions
+ * aggregated by the contributor's reported employer, and must never read as
+ * the company itself donating.
+ */
+export function formatOutsideEvidenceLines(organizations: readonly FinanceOutsideIndustryEvidence[]): string[] {
+  const byCommittee = new Map<string, FinanceOutsideIndustryEvidence[]>();
+  for (const organization of organizations) {
+    const committee = organization.committee_name.trim();
+    const rows = byCommittee.get(committee) ?? [];
+    rows.push(organization);
+    byCommittee.set(committee, rows);
+  }
+  const lines: string[] = [];
+  for (const [committee, rows] of byCommittee) {
+    const donorNames = formatNameList(
+      rows.filter((row) => row.organization_type === "donor").map((row) => row.organization_name)
+    );
+    const employerNames = formatNameList(
+      rows.filter((row) => row.organization_type === "employer").map((row) => row.organization_name)
+    );
+    const fragments: string[] = [];
+    if (donorNames) {
+      fragments.push(`from ${donorNames}`);
+    }
+    if (employerNames) {
+      fragments.push(`from contributors employed by ${employerNames}`);
+    }
+    if (fragments.length === 0) {
+      continue;
+    }
+    const given = committee ? `, given to ${committee}` : "";
+    lines.push(`Money ${fragments.join(", and ")}${given}.`);
+  }
+  return lines;
 }
 
 /**

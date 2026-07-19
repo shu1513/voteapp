@@ -171,8 +171,11 @@ export type FinanceOutsideIndustryEvidence = {
 
 // Mirrors BallotLookupFinanceOutsideIndustrySupportSummary (backend): an
 // outside-spending support industry plus the organizations behind it.
+// explanation is optional defensively: the backend always sends it, but the
+// cards build their own evidence sentence and older cached payloads predate
+// the field.
 export type FinanceOutsideIndustrySupport = FinanceBreakdown & {
-  explanation: string;
+  explanation?: string;
   supporting_organizations: FinanceOutsideIndustryEvidence[];
 };
 
