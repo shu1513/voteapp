@@ -49,14 +49,15 @@ function renderCard(election: ElectionSummary, savedAreaRanks?: Record<string, n
 }
 
 describe("ElectionCard", () => {
-  it("puts vote power and the candidate count on the title row, without district meta", () => {
+  it("puts vote power and the candidate count on the title row, with the district below", () => {
     renderCard(electionSummary());
 
     const row = screen.getByRole("heading", { name: "Governor" }).parentElement;
     expect(row).toHaveTextContent("Vote power: High");
     expect(row).toHaveTextContent("2 candidates");
-    // The district/office meta line is gone — the ballot title names the race.
-    expect(screen.queryByText(/Alaska/)).not.toBeInTheDocument();
+    // Every card names its district — generic titles ("Mayor", "Governor")
+    // don't say where the race is.
+    expect(screen.getByText("Alaska")).toBeInTheDocument();
   });
 
   it("color-codes the vote-power badge by level", () => {
@@ -86,7 +87,7 @@ describe("ElectionCard", () => {
     expect(screen.getByText("2 candidates")).toBeInTheDocument();
   });
 
-  it("shows district names only on cards whose ballot titles collide", () => {
+  it("shows the district name on every card", () => {
     renderRoutes(
       [
         {
@@ -124,11 +125,11 @@ describe("ElectionCard", () => {
       "/"
     );
 
-    // Colliding titles each carry their district as a disambiguator…
+    // Identically-titled races stay tellable-apart…
     expect(screen.getByText("Yuma Elementary District, Arizona")).toBeInTheDocument();
     expect(screen.getByText("Yuma Union High School District, Arizona")).toBeInTheDocument();
-    // …while the unique title stays district-free ("Alaska" is its fixture district).
-    expect(screen.queryByText("Alaska")).not.toBeInTheDocument();
+    // …and unique titles carry their district too ("Alaska" is the fixture's).
+    expect(screen.getByText("Alaska")).toBeInTheDocument();
   });
 
   it("labels ballot measures instead of counting candidates", () => {
@@ -303,8 +304,8 @@ describe("ElectionCard", () => {
     );
 
     // One heading for the shared date, one for the outlier — not one per card.
-    expect(screen.getAllByRole("heading", { name: "November 3, 2026" })).toHaveLength(1);
-    expect(screen.getByRole("heading", { name: "March 2, 2027" })).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { name: "Elections on November 3, 2026" })).toHaveLength(1);
+    expect(screen.getByRole("heading", { name: "Elections on March 2, 2027" })).toBeInTheDocument();
     expect(screen.getByText("Governor")).toBeInTheDocument();
     expect(screen.getByText("State Senate")).toBeInTheDocument();
     expect(screen.getByText("Special Runoff")).toBeInTheDocument();

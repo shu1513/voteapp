@@ -150,32 +150,22 @@ describe("ElectionPage", () => {
     expect(await screen.findByText("Candidate information for this race isn't available yet.")).toBeInTheDocument();
   });
 
-  it("renders a collapsed campaign finance disclosure only for candidates with finance data", async () => {
+  it("renders no campaign finance on candidate cards, even when the payload carries it", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const detail = electionDetail();
     detail.candidates[0].finance_summary = financeSummary();
     renderElection(() => detail);
 
-    // One candidate has finance, the other (finance_summary: null) must not
-    // grow an empty disclosure.
+    // Finance lives on the candidate profile page only — no disclosure, no
+    // "Raised $X" chip here.
     expect(await screen.findByText("Jordan Voter")).toBeInTheDocument();
-    expect(screen.getAllByText("Campaign finance")).toHaveLength(1);
-    // The toggle's accessible name carries the candidate so repeated
-    // disclosures stay distinguishable for screen-reader users.
-    expect(screen.getByText("Campaign finance")).toHaveAccessibleName("Campaign finance for Jordan Voter");
-    // The panel content is in the DOM (details renders children; collapsed
-    // is a display state). Direct-donor industries are no longer rendered.
-    expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();
-    expect(screen.getByText("Retired")).toBeInTheDocument();
-    expect(screen.queryByText("Oil, gas, and energy")).not.toBeInTheDocument();
-    expect(screen.getByText("Growth PAC")).toBeInTheDocument();
-    // The header chip still summarizes the total.
-    expect(screen.getByText("Raised $120,000")).toBeInTheDocument();
-    // The card link to the profile survives the card restructure, and the
-    // disclosure is not nested inside it.
+    expect(screen.queryByText("Campaign finance")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Raised \$/)).not.toBeInTheDocument();
+    expect(screen.queryByText("Top disclosed occupations of direct donors")).not.toBeInTheDocument();
+    expect(screen.queryByText("Growth PAC")).not.toBeInTheDocument();
+    // The card link to the profile survives.
     const cardLink = screen.getByRole("link", { name: /Jordan Voter/ });
     expect(cardLink).toHaveAttribute("href", "/candidates/c-1");
-    expect(cardLink.querySelector("details")).toBeNull();
   });
 
   it("shows no follow buttons in the candidate list even for verified users", async () => {

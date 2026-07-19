@@ -59,15 +59,20 @@ describe("FinanceSummaryCard", () => {
     // Support and opposition stay distinct, with a plain-language intro. The
     // independence claim attaches to the spending, not the groups — PACs can
     // also coordinate or give directly; the expenditure shown here doesn't.
+    expect(screen.getByText("Spending by outside groups")).toBeInTheDocument();
     expect(
-      screen.getByText(/Outside spending is money spent on this race by outside groups/)
+      screen.getByText(/Money spent on this race by outside groups/)
     ).toBeInTheDocument();
     expect(
       screen.getByText(/This spending is not coordinated with the candidate's campaign/)
     ).toBeInTheDocument();
-    expect(screen.getByText("Reported support: $50,000")).toBeInTheDocument();
+    expect(
+      screen.getByText("Outside money spent supporting this candidate: $50,000")
+    ).toBeInTheDocument();
     expect(screen.getByText("Growth PAC")).toBeInTheDocument();
-    expect(screen.getByText("Reported opposition: $20,000")).toBeInTheDocument();
+    expect(
+      screen.getByText("Outside money spent opposing this candidate: $20,000")
+    ).toBeInTheDocument();
     expect(screen.getByText("Stop Them PAC")).toBeInTheDocument();
     // Backing evidence names the organizations behind a supporting industry.
     // The fixture rows are employer-type: individuals who reported those
@@ -78,8 +83,8 @@ describe("FinanceSummaryCard", () => {
     ).toBeInTheDocument();
     // Industry money flows into the groups, not necessarily onto this race —
     // the heading and note must not present it as candidate-specific spend.
-    expect(screen.getByText("Industries funding groups reporting support")).toBeInTheDocument();
-    expect(screen.getByText("Industries funding groups reporting opposition")).toBeInTheDocument();
+    expect(screen.getByText("Industries funding these supporting groups")).toBeInTheDocument();
+    expect(screen.getByText("Industries funding these opposing groups")).toBeInTheDocument();
     expect(
       screen.getByText("Industry amounts are contributions to these groups, not amounts necessarily spent on this candidate.")
     ).toBeInTheDocument();
@@ -93,11 +98,20 @@ describe("FinanceSummaryCard", () => {
     );
   });
 
-  it("does not paint outside spending with the ballot-measure yes/no palette", () => {
+  it("color-codes outside support green and opposition red", () => {
     const summary = financeSummary();
     const { container } = render(<FinanceSummaryCard summary={summary} />);
-    expect(container.querySelector(".bg-green-50")).toBeNull();
-    expect(container.querySelector(".bg-red-50")).toBeNull();
+    const supportBox = screen
+      .getByText("Outside money spent supporting this candidate: $50,000")
+      .closest("div");
+    const opposeBox = screen
+      .getByText("Outside money spent opposing this candidate: $20,000")
+      .closest("div");
+    expect(supportBox?.className).toContain("bg-green-50");
+    expect(opposeBox?.className).toContain("bg-red-50");
+    // Exactly one box per direction — the tint marks direction, nothing else.
+    expect(container.querySelectorAll(".bg-green-50")).toHaveLength(1);
+    expect(container.querySelectorAll(".bg-red-50")).toHaveLength(1);
   });
 
   it("collapses occupations past the first four behind a Show more disclosure", () => {
@@ -147,8 +161,8 @@ describe("FinanceSummaryCard", () => {
     summary.outside_spending.top_opposing_industries = [];
     render(<FinanceSummaryCard summary={summary} />);
 
-    expect(screen.getByText(/Reported support/)).toBeInTheDocument();
-    expect(screen.queryByText(/Reported opposition/)).not.toBeInTheDocument();
+    expect(screen.getByText(/Outside money spent supporting/)).toBeInTheDocument();
+    expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
   });
 
   it("keeps donor money direct and pairs each organization with its own committee", () => {

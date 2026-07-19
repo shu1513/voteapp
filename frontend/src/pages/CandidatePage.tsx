@@ -157,45 +157,6 @@ function OngoingElectionFinance({ election, candidateId }: { election: Candidate
   );
 }
 
-// Lazy finance for a past election-history row: nothing is fetched until
-// the user opens the disclosure (opening is the explicit ask, so unlike the
-// ongoing section this one states it when there is nothing to show).
-function PastElectionFinance({ election, candidateId }: { election: CandidateElection; candidateId: string }) {
-  const [opened, setOpened] = useState(false);
-  const { summary, isPending, isError } = useElectionFinance(election.election_id, candidateId, opened);
-  return (
-    <details
-      className="mt-1"
-      onToggle={(event) => {
-        if (event.currentTarget.open) {
-          setOpened(true);
-        }
-      }}
-    >
-      {/* Every past-election row repeats this toggle; the aria-label keeps
-          them distinguishable for screen-reader users (an sr-only span would
-          glue words together in the computed accessible name). */}
-      <summary
-        className="cursor-pointer text-xs text-ink-soft hover:text-ink"
-        aria-label={`Campaign finance for ${election.official_ballot_title}, ${formatElectionDate(election.election_date)}`}
-      >
-        Campaign finance
-      </summary>
-      <div className="mt-2">
-        {!opened || isPending ? (
-          <p className="text-xs text-ink-soft">Loading…</p>
-        ) : isError ? (
-          <p className="text-xs text-ink-soft">Couldn’t load finance data for this election.</p>
-        ) : hasFinanceContent(summary) ? (
-          <FinanceSummaryCard summary={summary} />
-        ) : (
-          <p className="text-xs text-ink-soft">No finance data for this election.</p>
-        )}
-      </div>
-    </details>
-  );
-}
-
 // One record card, shared by the grouped and flat views (the flat view adds
 // the area tags to the meta line since there is no group heading to carry
 // them).
@@ -432,11 +393,9 @@ export function CandidatePage() {
                   · {formatElectionDate(election.election_date)} · {election.district.name}
                   {election.is_incumbent ? " · incumbent" : ""}
                 </span>
-                {election.election_date < today ? (
-                  // Ongoing races already show finance eagerly above; past
-                  // rows offer it on demand.
-                  <PastElectionFinance election={election} candidateId={candidate.candidate_id} />
-                ) : null}
+                {/* No finance on past-election rows: campaign finance shows
+                    only for the election(s) the candidate is currently in
+                    (the eager section above). */}
               </li>
             ))}
           </ul>

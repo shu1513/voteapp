@@ -8,7 +8,6 @@ import {
   candidateDetail,
   candidateElection,
   candidateFollow,
-  emptyFinanceSummary,
   financeSummary,
   ME_VERIFIED,
 } from "../test/fixtures";
@@ -274,7 +273,7 @@ describe("CandidatePage", () => {
     expect(screen.queryByRole("heading", { name: /Campaign finance/ })).not.toBeInTheDocument();
   });
 
-  it("fetches past-election finance only after the row's disclosure is opened", async () => {
+  it("shows no finance on past-election rows and never fetches it", async () => {
     const fetchMock = stubApiRoutes({
       ...ANONYMOUS,
       "/api/elections/e-1/candidates/c-1/finance": { body: { finance_summary: financeSummary() } },
@@ -284,37 +283,13 @@ describe("CandidatePage", () => {
     );
 
     expect(await screen.findByRole("heading", { name: "Elections" })).toBeInTheDocument();
-    // The toggle's accessible name carries the election and date so repeated
-    // rows stay distinguishable for screen-reader users.
-    expect(screen.getByText("Campaign finance")).toHaveAccessibleName(
-      "Campaign finance for Governor, November 3, 2000"
-    );
-    // Past rows must not preload their finance payloads.
-    const financeCalls = () =>
-      fetchMock.mock.calls.filter((call) => String(call[0]).includes("/api/elections/")).length;
-    expect(financeCalls()).toBe(0);
-
-    const user = userEvent.setup();
-    await user.click(screen.getByText("Campaign finance"));
-
-    expect(await screen.findByText("$120,000")).toBeInTheDocument();
-    expect(financeCalls()).toBe(1);
-    expect(String(fetchMock.mock.calls.at(-1)?.[0])).toContain("/api/elections/e-1/candidates/c-1/finance");
-  });
-
-  it("says so when an opened past election has no finance data", async () => {
-    stubApiRoutes({
-      ...ANONYMOUS,
-      "/api/elections/e-1/candidates/c-1/finance": { body: { finance_summary: emptyFinanceSummary() } },
-    });
-    renderCandidate(() =>
-      candidateDetail({ elections: [candidateElection({ election_date: "2000-11-03" })] })
-    );
-
-    const user = userEvent.setup();
-    await user.click(await screen.findByText("Campaign finance"));
-
-    expect(await screen.findByText("No finance data for this election.")).toBeInTheDocument();
+    // Campaign finance shows only for elections the candidate is currently
+    // in; past rows carry no disclosure and trigger no fetch.
+    expect(screen.queryByText("Campaign finance")).not.toBeInTheDocument();
+    const financeCalls = fetchMock.mock.calls.filter((call) =>
+      String(call[0]).includes("/api/elections/")
+    ).length;
+    expect(financeCalls).toBe(0);
   });
 
   it("submits record reports with the candidate record target", async () => {

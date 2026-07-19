@@ -104,14 +104,18 @@ export function ReportContentButton({ entityType, entityId, contextLabel, report
         <DialogBackdrop className="fixed inset-0 bg-ink/30" />
         <div className="fixed inset-0 flex items-center justify-center px-4 py-6">
           <DialogPanel className="w-full max-w-md rounded-2xl border border-line bg-white p-5 shadow-xl">
+            {/* After a successful send the prompt/disclaimer header is
+                replaced entirely — only the confirmation remains. */}
             <div className="flex items-start justify-between gap-4">
               <div>
                 <DialogTitle className="text-lg font-semibold text-ink">
-                  What's wrong?
+                  {status === "success" ? "Report sent" : "What's wrong?"}
                 </DialogTitle>
-                <p className="mt-1 text-xs text-ink-soft">
-                  Reports help us investigate accuracy issues. Don't include sensitive personal information; your message is stored as-is.
-                </p>
+                {status === "success" ? null : (
+                  <p className="mt-1 text-xs text-ink-soft">
+                    Reports help us investigate accuracy issues. Don't include sensitive personal information; your message is stored as-is.
+                  </p>
+                )}
               </div>
               <button type="button" onClick={closeDialog} className="text-sm text-ink-soft hover:text-ink">
                 Close

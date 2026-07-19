@@ -1,11 +1,10 @@
 import { Link, useLocation, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
-import { BALLOT_SORT_DESCRIPTIONS, PUBLIC_BALLOT_SORTS, type BallotSort, type BallotSummary } from "@voteapp/api-client";
+import { PUBLIC_BALLOT_SORTS, type BallotSort, type BallotSummary } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
-import { formatDistrictType } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Public page: only the sorts the anonymous endpoint can honor. A my_areas
@@ -75,8 +74,10 @@ export function BallotPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">Your ballot</h1>
+      {/* No page heading: the date group headings ("Elections on …") carry
+          the page's identity, so a "Your ballot" banner above them was
+          redundant. The sort control keeps the header row's right edge. */}
+      <div className="flex flex-wrap items-center justify-end gap-3">
         <label className="flex items-center gap-2 text-sm text-ink-soft">
           Sort by
           <select
@@ -93,18 +94,15 @@ export function BallotPage() {
         </label>
       </div>
 
-      {matchedAddress ? (
-        <p className="mt-1 text-sm text-ink-soft">
-          Matched address: <span className="font-medium text-ink">{matchedAddress}</span>{" "}
-          <Link to="/?new=1" className="underline hover:text-rausch">
-            Not your address?
-          </Link>
-        </p>
-      ) : null}
+      {/* The always-on "Matched address" confirmation line was dropped as
+          clutter; the warning below is self-contained (it names the matched
+          address) and only appears when the geocoder was ambiguous — the one
+          case where the ballot has a real chance of being for the wrong
+          address. */}
       {matchedAddress && ambiguousMatchCount ? (
         <p role="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
-          Your search matched {ambiguousMatchCount} possible addresses, and this ballot is for the first one.
-          Please check the matched address above — if it is not yours,{" "}
+          Your search matched {ambiguousMatchCount} possible addresses, and this ballot is for{" "}
+          <span className="font-medium">{matchedAddress}</span>. If that is not your address,{" "}
           <Link to="/?new=1" className="underline hover:text-rausch">
             search again
           </Link>{" "}
@@ -121,44 +119,6 @@ export function BallotPage() {
 
       {ballot.isSuccess ? (
         <>
-          <p className="mt-1 text-sm text-ink-soft">
-            {ballot.data.elections.length} election{ballot.data.elections.length === 1 ? "" : "s"} across{" "}
-            {ballot.data.districts.length} district{ballot.data.districts.length === 1 ? "" : "s"},{" "}
-            {BALLOT_SORT_DESCRIPTIONS[sort]}
-          </p>
-          <details className="mt-2 text-xs text-ink-soft">
-            <summary className="cursor-pointer select-none underline">Which districts?</summary>
-            <ul className="mt-2 divide-y divide-line rounded-lg border border-line">
-              {ballot.data.districts.map((district) => (
-                <li key={district.id} className="flex items-center justify-between px-3 py-2">
-                  <span className="text-ink">{district.name}</span>
-                  <span>{formatDistrictType(district.district_type)}</span>
-                </li>
-              ))}
-            </ul>
-          </details>
-          <details className="mt-2 text-xs text-ink-soft">
-            <summary className="cursor-pointer select-none underline">What do these labels mean?</summary>
-            <div className="mt-2 space-y-2 rounded-lg border border-line bg-surface p-3">
-              <p>
-                <strong className="text-ink">Vote power</strong> estimates how much weight one vote carries in
-                an election, based on district population and how decisive the contest is expected to be. It is
-                an estimate for comparing elections — it does not measure the value, importance, or likely
-                effect of your individual vote.
-              </p>
-              <p>
-                <strong className="text-ink">Competitiveness</strong> labels reflect the margin of past results
-                for the same contest and may be outdated after redistricting.
-              </p>
-              <p>
-                Details and limitations:{" "}
-                <Link to="/disclaimer" className="underline">
-                  Disclaimer
-                </Link>
-                , section 8.
-              </p>
-            </div>
-          </details>
           {ballot.data.elections.length === 0 ? (
             <EmptyNotice text="No upcoming elections found for these districts yet. Check back — new elections are added as they are announced." />
           ) : (

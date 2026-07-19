@@ -2,12 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "@voteapp/api-client";
-import {
-  BALLOT_SORT_DESCRIPTIONS,
-  BALLOT_SORTS,
-  type BallotPreferences,
-  type BallotSummary,
-} from "@voteapp/api-client";
+import { BALLOT_SORTS, type BallotPreferences, type BallotSummary } from "@voteapp/api-client";
 import {
   AddressSavedNotice,
   SavedAddressForm,
@@ -130,14 +125,6 @@ export function SavedBallotPage() {
     }
   }, [location.pathname, location.state, navigate]);
   const queryClient = useQueryClient();
-  // Same key as BallotPreferenceControls: shared cache entry, no extra fetch.
-  // Drives the subtitle so the copy matches the saved sort.
-  const savedPrefs = useQuery({
-    queryKey: ["me", "ballot-preferences"],
-    queryFn: () => apiRequest<BallotPreferences>("/api/me/ballot-preferences"),
-    staleTime: 60_000,
-    enabled: me?.email_verified === true,
-  });
   const { weights: savedAreaWeights } = useMyResearchAreas();
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
@@ -297,15 +284,12 @@ export function SavedBallotPage() {
           <AddressSavedNotice saved={addressSaved} />
         </div>
       ) : null}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">Your saved ballot</h1>
+      {/* No page heading or count subtitle: the date group headings
+          ("Elections on …") carry the page's identity; the preference
+          controls keep the header row's right edge. */}
+      <div className="flex flex-wrap items-center justify-end gap-3">
         <BallotPreferenceControls />
       </div>
-      <p className="mt-1 text-sm text-ink-soft">
-        {data.elections.length} election{data.elections.length === 1 ? "" : "s"} across{" "}
-        {data.districts.length} district{data.districts.length === 1 ? "" : "s"},{" "}
-        {BALLOT_SORT_DESCRIPTIONS[savedPrefs.data?.sort ?? "vote_power"]}
-      </p>
 
       {data.elections.length === 0 ? (
         <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />

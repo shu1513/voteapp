@@ -50,34 +50,19 @@ export function ElectionList({
       groups.push({ date: election.election_date, elections: [election] });
     }
   }
-  // Ballot titles are often generic ("State Representative", "Board of
-  // Education Member"), and overlapping districts — elementary plus unified
-  // school districts, say — can put two identically-titled races on one
-  // ballot. When titles collide, each colliding card shows its district name
-  // to stay tellable-apart; unique titles stay clean.
-  const seenTitles = new Set<string>();
-  const collidingTitles = new Set<string>();
-  for (const election of elections) {
-    if (seenTitles.has(election.official_ballot_title)) {
-      collidingTitles.add(election.official_ballot_title);
-    }
-    seenTitles.add(election.official_ballot_title);
-  }
   return (
     <div className="mt-4 space-y-6">
       {groups.map((group) => (
         // The same date can head several runs under a date-interleaving
         // sort; the first election id makes the key unique.
         <section key={`${group.date}-${group.elections[0].id}`}>
-          <h2 className="text-sm font-semibold text-ink">{formatElectionDate(group.date)}</h2>
+          {/* The ballot pages carry no h1 banner; these date headings are the
+              page's identity, so they read as full sentences and lead the
+              visual hierarchy. */}
+          <h2 className="text-xl font-bold text-ink">Elections on {formatElectionDate(group.date)}</h2>
           <div className="mt-2 space-y-3">
             {group.elections.map((election) => (
-              <ElectionCard
-                key={election.id}
-                election={election}
-                savedAreaWeights={savedAreaWeights}
-                showDistrict={collidingTitles.has(election.official_ballot_title)}
-              />
+              <ElectionCard key={election.id} election={election} savedAreaWeights={savedAreaWeights} />
             ))}
           </div>
         </section>
@@ -97,11 +82,9 @@ export function ElectionList({
 function ElectionCard({
   election,
   savedAreaWeights,
-  showDistrict,
 }: {
   election: ElectionSummary;
   savedAreaWeights?: Map<string, ResearchAreaWeight>;
-  showDistrict?: boolean;
 }) {
   // Saved matches lead (in the user's rank order), unsaved follow in public-
   // salience order — see splitResearchAreasBySaved. The chips that survive
@@ -123,12 +106,10 @@ function ElectionCard({
       to={`/elections/${election.id}`}
       className="block rounded-xl border border-line bg-white p-4 shadow-sm transition hover:shadow-md"
     >
-      {/* No per-card date: ElectionList's group heading carries it. No
-          district/office meta either — the ballot title already names the
-          race, and the election page carries the full detail. The title row
-          keeps vote power and the candidate count flush right, so every card
-          answers "how much does my vote matter, and who's running?" on its
-          first line. */}
+      {/* No per-card date: ElectionList's group heading carries it. The title
+          row keeps vote power and the candidate count flush right, so every
+          card answers "how much does my vote matter, and who's running?" on
+          its first line. */}
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
         <h3 className="font-semibold text-ink">{election.official_ballot_title}</h3>
         {/* The group wraps between chip and count on very narrow screens;
@@ -152,11 +133,10 @@ function ElectionCard({
           )}
         </span>
       </div>
-      {showDistrict ? (
-        // Disambiguator, not a meta line: rendered only when another card in
-        // the list carries the same ballot title.
-        <p className="mt-0.5 text-sm text-ink-soft">{election.district.name}</p>
-      ) : null}
+      {/* Always show the district: ballot titles are often generic ("Mayor",
+          "Governor", "State Representative"), and the district name is what
+          tells the voter WHERE the race is. */}
+      <p className="mt-0.5 text-sm text-ink-soft">{election.district.name}</p>
       {hasSignalChips ? (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {election.followed_candidates && election.followed_candidates.length > 0 ? (

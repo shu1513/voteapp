@@ -53,17 +53,22 @@ describe("SavedBallotPage", () => {
     expect(await screen.findByRole("heading", { name: "Set your address" })).toBeInTheDocument();
   });
 
-  it("renders the saved ballot with the sort-derived subtitle", async () => {
+  it("renders the saved ballot under a date heading, without banner or subtitle", async () => {
     stubApiRoutes({
       ...VERIFIED_BASE,
       "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
     });
     renderSavedBallot();
 
-    expect(await screen.findByRole("heading", { name: "Your saved ballot" })).toBeInTheDocument();
+    // The date heading is the page's identity — no "Your saved ballot"
+    // banner and no election/district count subtitle.
+    expect(
+      await screen.findByRole("heading", { name: "Elections on November 3, 2026" })
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Your saved ballot")).not.toBeInTheDocument();
+    expect(screen.queryByText(/election across/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/ordered by/)).not.toBeInTheDocument();
     expect(screen.getByText("Governor")).toBeInTheDocument();
-    expect(screen.getByText(/1 election across 1 district/)).toBeInTheDocument();
-    expect(screen.getByText(/ordered by where your vote carries the most weight/)).toBeInTheDocument();
     // Address changes live in Settings now; the ballot only links there.
     expect(screen.getByRole("link", { name: "Change your address in Settings" })).toHaveAttribute(
       "href",

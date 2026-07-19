@@ -6,12 +6,10 @@ import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
-import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
 import {
   formatDistrictType,
   formatElectionDate,
-  formatMoney,
   formatOutcome,
   formatRosterStatus,
   formatVotePowerLabel,
@@ -334,12 +332,10 @@ export function ElectionPage() {
           </div>
           <div className="mt-3 space-y-3">
             {sortCandidatesByStance(data.candidates, candidateSort, weights).map(({ candidate, stances }) => (
-              // The finance <details> is interactive content and may not
-              // nest inside an anchor. The whole-card click target survives
-              // via a stretched link: the name Link's ::after overlays the
-              // wrapper, and the interactive sibling sits above it (z-10) so
-              // it receives its own clicks. Following happens on the
-              // candidate profile page, not here.
+              // Whole-card click target via a stretched link: the name
+              // Link's ::after overlays the wrapper. Campaign finance is
+              // deliberately NOT rendered here — it lives on the candidate
+              // profile page only. Following also happens there.
               <div
                 key={candidate.candidate_id}
                 className="relative rounded-xl border border-line bg-white shadow-sm transition hover:shadow-md"
@@ -361,11 +357,6 @@ export function ElectionPage() {
                         {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
                       </p>
                     </div>
-                    {candidate.finance_summary?.direct_campaign.total_raised != null ? (
-                      <span className="shrink-0 text-sm text-ink-soft">
-                        Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
-                      </span>
-                    ) : null}
                   </div>
                   {candidate.summary ? (
                     <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>
@@ -417,23 +408,6 @@ export function ElectionPage() {
                     </div>
                   ) : null}
                 </div>
-                {hasFinanceContent(candidate.finance_summary) ? (
-                  <details className="relative z-10 border-t border-line px-4 py-3">
-                    {/* Every card repeats this toggle; the aria-label keeps
-                        repeated disclosures distinguishable for screen-reader
-                        users (an sr-only span would glue words together in
-                        the computed accessible name). */}
-                    <summary
-                      className="cursor-pointer text-sm font-medium text-ink"
-                      aria-label={`Campaign finance for ${candidate.display_name}`}
-                    >
-                      Campaign finance
-                    </summary>
-                    <div className="mt-2">
-                      <FinanceSummaryCard summary={candidate.finance_summary} />
-                    </div>
-                  </details>
-                ) : null}
               </div>
             ))}
           </div>
