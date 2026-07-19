@@ -136,7 +136,7 @@ describe("runSweepConfirmationReset", () => {
     expect(statementKinds(statements)).toEqual(["BEGIN", "SELECT", "ROLLBACK"]);
   });
 
-  it("live run deletes all resettable confirmations but clears stamps only for zero-record candidates", async () => {
+  it("live run deletes all resettable confirmations and clears stamps for every one of them", async () => {
     const rows = [
       cohortRow({ candidate_id: "a", record_count: 0 }),
       cohortRow({ candidate_id: "b", record_count: 3 }),
@@ -151,13 +151,14 @@ describe("runSweepConfirmationReset", () => {
 
     expect(result).toMatchObject({
       dryRun: false,
+      resettable: { total: 3, zeroRecordCount: 2, withRecordsCount: 1 },
       deletedConfirmations: 3,
-      clearedStamps: 2,
+      clearedStamps: 3,
     });
     const deleteStatement = statements.find((s) => s.text.includes("DELETE FROM"));
     expect(deleteStatement?.values).toEqual([["a", "b", "c"]]);
     const updateStatement = statements.find((s) => s.text.includes("UPDATE public.candidates"));
-    expect(updateStatement?.values).toEqual([["a", "c"]]);
+    expect(updateStatement?.values).toEqual([["a", "b", "c"]]);
     for (const column of [
       "last_records_searched_at = NULL",
       "last_records_researched_through = NULL",
@@ -167,7 +168,11 @@ describe("runSweepConfirmationReset", () => {
     expect(statementKinds(statements)).toEqual(["BEGIN", "SELECT", "DELETE", "UPDATE", "COMMIT"]);
   });
 
-  it("skips the stamp-clear statement entirely when every resettable candidate has records", async () => {
+  it("clears stamps for a records-holding candidate so it stays visible to repair", async () => {
+    // Regression: with the confirmation deleted, a stamped candidate WITH
+    // records is invisible to the audit suspect list (zero-record only), the
+    // confirmation detectors, and the unstamped backlog — the stamp must
+    // clear or the reset would end its repair permanently.
     const rows = [cohortRow({ candidate_id: "b", record_count: 3 })];
     const { client, statements } = fakeClient(rows);
 
@@ -176,8 +181,10 @@ describe("runSweepConfirmationReset", () => {
       options({ dryRun: false, expectedTotal: 1 })
     );
 
-    expect(result).toMatchObject({ deletedConfirmations: 1, clearedStamps: 0 });
-    expect(statementKinds(statements)).toEqual(["BEGIN", "SELECT", "DELETE", "COMMIT"]);
+    expect(result).toMatchObject({ deletedConfirmations: 1, clearedStamps: 1 });
+    const updateStatement = statements.find((s) => s.text.includes("UPDATE public.candidates"));
+    expect(updateStatement?.values).toEqual([["b"]]);
+    expect(statementKinds(statements)).toEqual(["BEGIN", "SELECT", "DELETE", "UPDATE", "COMMIT"]);
   });
 
   it("refuses a live run without --expected-total before touching the database", async () => {

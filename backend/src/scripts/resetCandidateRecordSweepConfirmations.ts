@@ -7,11 +7,15 @@
 // on candidates are load-bearing: the gap-repair backlog selects UNSTAMPED
 // candidates only, so a poisoned candidate is invisible to re-research until
 // its stamps clear. This wrapper is the supported repair path (code, not
-// direct SQL): it deletes the poisoned confirmations and, for candidates that
-// still have zero records, clears last_records_searched_at /
-// last_records_researched_through so they rejoin the unstamped backlog.
-// Candidates that do have records keep their stamps — deleting the
-// confirmation alone makes manual:records:audit resurface them as suspects.
+// direct SQL): it deletes the poisoned confirmations and clears
+// last_records_searched_at / last_records_researched_through on every reset
+// candidate so all of them rejoin the unstamped backlog for a real sweep.
+// Candidates with existing records get the same treatment — their stamps were
+// written by the same collapsed run, and with the confirmation deleted no
+// audit surface would ever flag them again (the suspect list only covers
+// zero-record candidates, the detectors only read persisted confirmations),
+// so keeping the stamp would hide them from repair permanently. Their records
+// are never touched; the re-sweep is additive.
 //
 // Guard rails, all of which have to pass before a single row changes:
 // - explicit confirmed-at date window (the incident days), never "everything";
@@ -113,6 +117,9 @@ export type SweepConfirmationResetResult = {
   windowRowCount: number;
   resettable: {
     total: number;
+    // Reporting split only — every resettable candidate gets its
+    // confirmation deleted AND its stamps cleared. The split shows how many
+    // rejoin the backlog empty vs carrying records the re-sweep will extend.
     zeroRecordCount: number;
     withRecordsCount: number;
     zeroRecordSample: CandidateSample[];
@@ -241,6 +248,10 @@ export async function runSweepConfirmationReset(
     if (dryRun || resettable.length === 0) {
       await client.query("ROLLBACK");
     } else {
+      // candidate_id is the table's PRIMARY KEY, so targeting by id alone
+      // cannot hit more rows than the cohort SELECT locked (1-to-1 by
+      // schema, not convention); the RETURNING count assert below turns any
+      // future violation of that invariant into a rollback.
       const deleted = await client.query<{ candidate_id: string }>(
         `
           DELETE FROM public.candidate_record_sweep_confirmations
@@ -255,24 +266,27 @@ export async function runSweepConfirmationReset(
           `Deleted ${deletedConfirmations} confirmations but expected ${resettable.length}; rolled back`
         );
       }
-      if (zeroRecord.length > 0) {
-        const cleared = await client.query<{ id: string }>(
-          `
-            UPDATE public.candidates
-            SET last_records_searched_at = NULL,
-                last_records_researched_through = NULL,
-                updated_at = now()
-            WHERE id = ANY($1::uuid[])
-            RETURNING id::text AS id
-          `,
-          [zeroRecord.map((row) => row.candidate_id)]
+      // Stamps clear for EVERY reset candidate, including those with
+      // records: the cohort's stamps all came from the collapsed run, and a
+      // stamped candidate with records and no confirmation is invisible to
+      // the suspect list, the detectors, and the unstamped backlog alike —
+      // keeping the stamp would end their repair here.
+      const cleared = await client.query<{ id: string }>(
+        `
+          UPDATE public.candidates
+          SET last_records_searched_at = NULL,
+              last_records_researched_through = NULL,
+              updated_at = now()
+          WHERE id = ANY($1::uuid[])
+          RETURNING id::text AS id
+        `,
+        [resettable.map((row) => row.candidate_id)]
+      );
+      clearedStamps = cleared.rows.length;
+      if (clearedStamps !== resettable.length) {
+        throw new Error(
+          `Cleared stamps on ${clearedStamps} candidates but expected ${resettable.length}; rolled back`
         );
-        clearedStamps = cleared.rows.length;
-        if (clearedStamps !== zeroRecord.length) {
-          throw new Error(
-            `Cleared stamps on ${clearedStamps} candidates but expected ${zeroRecord.length}; rolled back`
-          );
-        }
       }
       await client.query("COMMIT");
     }
@@ -310,9 +324,10 @@ export async function runSweepConfirmationReset(
 function usage(): string {
   return [
     "Reset poisoned candidate-record sweep confirmations (2026-07-15 incident repair).",
-    "Deletes untagged 4-entry template confirmations in the window; candidates left",
-    "with zero records also get last_records_searched_at /",
-    "last_records_researched_through cleared so they rejoin the unstamped backlog.",
+    "Deletes untagged 4-entry template confirmations in the window and clears",
+    "last_records_searched_at / last_records_researched_through on every reset",
+    "candidate (records-holding ones too — their stamps came from the same collapsed",
+    "run) so all of them rejoin the unstamped backlog for a real sweep.",
     "",
     "Usage:",
     "  npm run manual:records:reset-confirmations -- --confirmed-from YYYY-MM-DD --confirmed-to YYYY-MM-DD --reason text --dry-run",
