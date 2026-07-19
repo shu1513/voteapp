@@ -18,390 +18,616 @@ type SeedOfficeAlias = {
   aliasText: string;
 };
 
+// Each summary is a newline-separated list of duty bullets. The election page
+// renders them as a bulleted list under the heading
+// "{canonical_name} is responsible for:", so every line must read as a
+// gerund phrase completing that sentence, in plain 8th-grade language.
 const SEED_OFFICES: SeedOffice[] = [
   {
     scope: "presidential",
     canonicalName: "President of the United States",
-    summary:
-      "Serves as head of state and head of government, leading the federal executive branch and carrying out duties assigned by the U.S. Constitution.",
+    summary: [
+      "Leading the federal executive branch, its departments, and its agencies",
+      "Signing bills from Congress into law, or vetoing them",
+      "Serving as commander in chief of the U.S. military",
+      "Conducting foreign policy, including treaties and dealings with other countries",
+      "Appointing federal judges and top officials, with Senate approval",
+    ].join("\n"),
   },
   {
     scope: "presidential",
     canonicalName: "Vice President of the United States",
-    summary:
-      "Serves as the president of the U.S. Senate, succeeds to the presidency if needed, and performs executive duties assigned by the president or law.",
+    summary: [
+      "Taking over as president if the president dies, resigns, or cannot serve",
+      "Presiding over the U.S. Senate and casting tie-breaking votes",
+      "Carrying out duties the president assigns, such as leading policy projects or representing the U.S. abroad",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "United States Senator",
-    summary:
-      "Represents the state in the U.S. Senate, voting on federal laws, confirmations, treaties, and national policy.",
+    summary: [
+      "Voting on federal laws, taxes, and the federal budget",
+      "Approving or rejecting the president's nominees for judges and top officials",
+      "Voting on whether to approve treaties with other countries",
+      "Helping people in the state deal with federal agencies",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Governor",
-    summary:
-      "Leads the state executive branch, proposes budgets, signs or vetoes legislation, and oversees state agencies.",
+    summary: [
+      "Running the state government and its agencies",
+      "Proposing the state budget",
+      "Signing state bills into law, or vetoing them",
+      "Appointing state officials and, in many states, judges",
+      "Commanding the state National Guard during emergencies",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Lieutenant Governor",
-    summary:
-      "Performs duties defined by state law, often succeeds the governor if vacant, and may have legislative or administrative responsibilities.",
+    summary: [
+      "Taking over as governor if the governor leaves office or cannot serve",
+      "Presiding over the state senate in many states",
+      "Carrying out other duties state law or the governor assigns",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Secretary of State",
-    summary:
-      "Administers elections and key state records, including business filings and official state documentation.",
+    summary: [
+      "Running state elections and certifying the results",
+      "Keeping official state records and documents",
+      "Registering businesses that operate in the state",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Attorney General",
-    summary:
-      "Serves as the state's chief legal officer, representing the state in legal matters and enforcing state law.",
+    summary: [
+      "Acting as the state's top lawyer and representing the state in court",
+      "Enforcing state laws, including consumer protection and fraud cases",
+      "Issuing legal opinions that guide state agencies",
+      "Suing on the state's behalf, or defending the state when it is sued",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "State Treasurer",
-    summary:
-      "Manages state funds, cash operations, investments, and debt administration under state finance rules.",
+    summary: [
+      "Managing the state's bank accounts and day-to-day cash",
+      "Investing state money until it is needed",
+      "Managing state debt, such as bonds — money the state borrows and pays back over time",
+      "Paying out state funds as the law directs",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "State Auditor",
-    summary:
-      "Audits state agencies and programs for financial accuracy, compliance, and performance accountability.",
+    summary: [
+      "Checking how state agencies spend public money",
+      "Looking for waste, fraud, and mistakes in government programs",
+      "Publishing audit reports the public can read",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Comptroller",
-    summary:
-      "Oversees statewide accounting and fiscal controls, including revenue tracking, reporting, and payments.",
+    summary: [
+      "Keeping the state's official books and financial records",
+      "Approving and tracking state payments",
+      "Reporting how much money the state collects and spends",
+      "Collecting certain state taxes in some states",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Commissioner of Agriculture",
-    summary:
-      "Oversees state agricultural policy, industry regulation, food systems, and related inspections or programs.",
+    summary: [
+      "Overseeing programs that support farmers and ranchers",
+      "Inspecting food safety, and checking gas pumps and scales for accuracy in many states",
+      "Enforcing rules on pesticides, plant health, and animal health",
+      "Promoting the state's farm products",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Commissioner of Insurance",
-    summary:
-      "Regulates insurance markets, licensing, and consumer protections for insurance products in the state.",
+    summary: [
+      "Licensing insurance companies and agents in the state",
+      "Reviewing the rates and policy terms insurers offer",
+      "Investigating complaints against insurance companies",
+      "Making sure insurers stay able to pay claims",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Superintendent of Public Instruction",
-    summary:
-      "Leads statewide K-12 public education administration and helps implement education policy and standards.",
+    summary: [
+      "Leading the state education department",
+      "Carrying out state rules and learning standards for public K-12 schools",
+      "Distributing state money to school districts",
+      "Reporting how schools and students are doing",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Public Service Commissioner",
-    summary:
-      "Regulates public utilities and related services, including rates, service standards, and provider oversight.",
+    summary: [
+      "Setting the rates utilities may charge for electricity, gas, water, or phone service",
+      "Deciding whether utilities may build new plants and power lines",
+      "Handling customer complaints about utility companies",
+      "Making sure utility service stays safe and reliable",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Corporation Commissioner",
-    summary:
-      "Regulates specific business sectors under state law, often including utilities, securities, or corporations.",
+    summary: [
+      "Regulating utility companies and their rates in states that use a corporation commission",
+      "Overseeing certain other businesses, such as securities or corporations, depending on the state",
+      "Handling the related licenses, filings, and complaints",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "State Level Judge",
-    summary:
-      "Serves in a statewide judicial role, reviewing cases and applying state constitutional, statutory, and procedural law.",
+    summary: [
+      "Hearing appeals and major cases under state law",
+      "Deciding what the state constitution and state laws mean",
+      "Setting rulings that lower state courts must follow",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "State Board of Education Member",
-    summary:
-      "Sets or oversees statewide education policy, standards, and governance for the public school system.",
+    summary: [
+      "Setting statewide rules and learning standards for public schools",
+      "Approving graduation requirements and course standards",
+      "Overseeing the state education department, and in many states the state superintendent",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "State Board of Regents Member",
-    summary:
-      "Serves on a statewide higher-education governing board overseeing public university systems, budgets, policy, and institutional governance.",
+    summary: [
+      "Governing the state's public university system",
+      "Approving university budgets and tuition rates",
+      "Hiring and reviewing university presidents and chancellors",
+      "Setting policies that apply across the campuses",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "State Board of Equalization Member",
-    summary:
-      "Serves on the state board that makes sure property values are assessed evenly across the state, hears taxpayer appeals, and handles other tax-oversight duties assigned by state law.",
+    summary: [
+      "Making sure property is valued evenly across counties for tax purposes",
+      "Hearing taxpayers' appeals of their property assessments",
+      "Handling other tax-oversight duties state law assigns",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Labor Commissioner",
-    summary:
-      "Oversees labor standards, workplace protections, employment regulation, and workforce-related enforcement duties assigned by state law.",
+    summary: [
+      "Enforcing wage laws, such as minimum wage and overtime",
+      "Investigating unsafe or unfair workplace practices",
+      "Licensing and inspecting certain trades and workplaces",
+      "Running programs that help workers and employers follow the rules",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Land Commissioner",
-    summary:
-      "Manages state public lands, land records, natural resource revenues, and related stewardship duties assigned by state law.",
+    summary: [
+      "Managing land the state owns, including leases for grazing, oil, and gas",
+      "Collecting money earned from state lands, which often funds schools",
+      "Keeping official land records",
+      "Protecting the natural resources on state land",
+    ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Railroad Commissioner",
-    summary:
-      "Regulates rail, energy, oil and gas, pipeline, or utility sectors where those duties are assigned to a state railroad commission.",
+    summary: [
+      "Regulating oil and gas drilling, pipelines, mining, or utilities in states that keep a railroad commission (despite the name, the job today involves little railroad work)",
+      "Issuing drilling permits and enforcing safety and environmental rules",
+      "Overseeing natural gas utility rates where state law assigns it",
+    ].join("\n"),
   },
   {
     scope: "us_house",
     canonicalName: "United States Representative",
-    summary:
-      "Represents a congressional district in the U.S. House, voting on federal legislation and budget matters.",
+    summary: [
+      "Voting on federal laws, taxes, and the federal budget",
+      "Representing their district's interests in Congress",
+      "Starting tax and spending bills, which must begin in the House",
+      "Helping district residents deal with federal agencies",
+    ].join("\n"),
   },
   {
     scope: "state_upper",
     canonicalName: "State Senator",
-    summary:
-      "Represents a district in the state upper legislative chamber and votes on state laws and budget policy.",
+    summary: [
+      "Voting on state laws and the state budget",
+      "Representing their district in the state senate",
+      "Confirming certain governor appointments in many states",
+      "Helping district residents deal with state agencies",
+    ].join("\n"),
   },
   {
     scope: "state_lower",
     canonicalName: "State Lower Chamber Legislator",
-    summary:
-      "Represents a district in the state lower legislative chamber and votes on state laws and budget policy.",
+    summary: [
+      "Voting on state laws and the state budget",
+      "Representing their district in the statehouse",
+      "Serving on committees that shape bills before final votes",
+      "Helping district residents deal with state agencies",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Commissioner",
-    summary:
-      "Sets county policy and budget priorities, oversees county services, and governs county administration.",
+    summary: [
+      "Passing county rules and the county budget",
+      "Setting property tax rates that fund county services",
+      "Overseeing county departments such as roads, parks, and public health",
+      "Deciding land use in areas outside city limits",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Supervisor",
-    summary:
-      "Serves on the county governing board responsible for county budgets, ordinances, services, and administrative oversight.",
+    summary: [
+      "Serving on the county's governing board",
+      "Passing the county budget and local rules",
+      "Overseeing county services such as roads, health programs, and elections",
+      "Deciding land use in areas outside city limits",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Executive",
-    summary:
-      "Leads county government as its elected chief executive, overseeing the county's budget, agencies, and day-to-day administration. In some states the title is County Judge or County Judge/Executive; the job is mainly executive, though in some Texas counties the County Judge also hears certain court cases.",
+    summary: [
+      "Running county government day to day, like a mayor for the county",
+      "Proposing the county budget",
+      "Overseeing county departments and hiring their leaders",
+      "Hearing certain court cases in some Texas counties, where this office is called County Judge or County Judge/Executive",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "Borough President",
-    summary:
-      "Represents a borough in city government, advocates for borough priorities, and exercises budget, land-use, and appointment powers defined by the city charter.",
+    summary: [
+      "Advocating for the borough's needs inside city government",
+      "Recommending how part of the city budget is spent in the borough",
+      "Reviewing land-use and zoning proposals in the borough",
+      "Appointing members to community boards and other bodies the city charter names",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "Sheriff",
-    summary:
-      "Leads county law enforcement operations, jail administration, and public safety duties assigned by law.",
+    summary: [
+      "Running the county's law-enforcement department, including deputies and patrols",
+      "Running the county jail",
+      "Serving court orders, such as evictions and warrants",
+      "Providing courthouse security in many counties",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "District Attorney",
-    summary:
-      "Serves as the county prosecutor, making charging decisions and representing the public in criminal prosecutions.",
+    summary: [
+      "Deciding who gets charged with crimes in the county",
+      "Prosecuting criminal cases in court on the public's behalf",
+      "Deciding plea deals and what sentences to ask for",
+      "Working with police as cases are investigated and built",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Clerk",
-    summary:
-      "Maintains key county records and may administer elections, filings, and licensing functions.",
+    summary: [
+      "Keeping official county records, such as marriage licenses and property filings",
+      "Running elections in many counties",
+      "Handling business filings, permits, and licenses that state law assigns",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Assessor",
-    summary:
-      "Determines property valuations used to calculate local property taxes and maintains assessment records.",
+    summary: [
+      "Estimating what each property in the county is worth, which sets how much property tax each owner pays",
+      "Keeping property maps and assessment records",
+      "Handling tax exemptions, such as homeowner or veteran discounts",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Assessor-Recorder",
-    summary:
-      "Assesses taxable property and records deeds, liens, and other official land documents when a county combines assessor and recorder duties.",
+    summary: [
+      "Estimating property values, which set how much property tax each owner pays",
+      "Recording deeds, liens, and other official land documents",
+      "Keeping property and ownership records open to the public",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "Public Defender",
-    summary:
-      "Provides constitutionally required defense representation to eligible people accused of crimes and unable to afford counsel.",
+    summary: [
+      "Defending people charged with crimes who cannot afford a lawyer",
+      "Running the office of defense lawyers, investigators, and support staff",
+      "Making sure every defendant gets the fair defense the Constitution promises",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Auditor",
-    summary:
-      "Audits county finances, oversees fiscal controls, and may administer records, payments, or elections duties assigned by state law.",
+    summary: [
+      "Checking county spending and financial records",
+      "Watching for waste, fraud, and errors in county programs",
+      "Handling payroll, payments, or election duties in some counties",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Treasurer",
-    summary:
-      "Manages county funds, receipts, and disbursements, and may oversee tax collection or investment operations.",
+    summary: [
+      "Holding and managing the county's money",
+      "Collecting property taxes in many counties",
+      "Investing county funds until they are needed",
+      "Paying out money as the county board directs",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "Public Administrator",
-    summary:
-      "Manages, under court supervision, the money and property left behind when someone dies without a will or without anyone able to settle the estate. In some counties the same officer also serves as Public Guardian for adults who cannot care for themselves.",
+    summary: [
+      "Settling the money and property of people who die without a will or anyone able to handle their estate, under court supervision",
+      "Serving as Public Guardian in some counties — caring for adults who cannot care for themselves",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Recorder",
-    summary:
-      "Records and preserves public documents such as deeds, liens, and other official county filings.",
+    summary: [
+      "Recording deeds, mortgages, liens, and other official land documents",
+      "Keeping those records safe and open to the public",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "Clerk of Court",
-    summary:
-      "Maintains court records, manages filings and case documents, and supports public access to court administration.",
+    summary: [
+      "Keeping court records and case files",
+      "Collecting court fines and fees",
+      "Managing jury summons in many places",
+      "Helping the public file and find court documents",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Coroner",
-    summary:
-      "Investigates certain deaths under county jurisdiction and issues findings as required by law.",
+    summary: [
+      "Investigating sudden, unexpected, or suspicious deaths",
+      "Determining the cause of death, sometimes ordering autopsies",
+      "Issuing death certificates and official findings",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Superintendent of Schools",
-    summary:
-      "Oversees county-level education administration and support functions for local school systems.",
+    summary: [
+      "Supporting and overseeing local school districts at the county level",
+      "Running county-wide education programs and services",
+      "Reviewing district budgets or supporting teacher credentialing, depending on the state",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Level Judge",
-    summary:
-      "Serves in a county-level judicial role, hearing cases and issuing rulings under state and local court procedure.",
+    summary: [
+      "Hearing trials — criminal cases, lawsuits, family, or probate matters, depending on the court",
+      "Ruling on evidence, motions, and sentences",
+      "Applying state law and court procedure fairly in every case",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "Constable",
-    summary:
-      "Serves civil process such as evictions, subpoenas, and court orders, and provides limited law-enforcement support for local justice courts.",
+    summary: [
+      "Serving court papers, such as evictions, subpoenas, and court orders",
+      "Providing security and enforcement support for local justice courts",
+      "Performing limited police duties in some places",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "County Surveyor",
-    summary:
-      "Maintains official land surveys, boundary records, and plats for the county.",
+    summary: [
+      "Keeping official maps and survey records of land boundaries",
+      "Reviewing new subdivision maps and boundary surveys",
+      "Helping settle property-line questions",
+    ].join("\n"),
   },
   {
     scope: "county",
     canonicalName: "Soil and Water Conservation District Supervisor",
-    summary:
-      "Directs local soil and water conservation programs, guiding land-use, drainage, and watershed-protection practices.",
+    summary: [
+      "Guiding local programs that protect soil, farmland, and water",
+      "Helping landowners with drainage, erosion, and watershed projects",
+      "Directing conservation funding and priorities in the district",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Mayor",
-    summary:
-      "Leads municipal executive functions, oversees city administration, and helps set city policy priorities.",
+    summary: [
+      "Serving as the city's top elected leader and its public face",
+      "Setting policy priorities and helping shape the city budget",
+      "Running city government day to day in some cities; in others, a hired city manager runs daily operations",
+      "Signing or vetoing council laws and appointing department heads, such as the police chief, in many cities",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Public Advocate",
-    summary:
-      "Serves as a citywide ombudsman, investigates city services, advocates for residents, and performs legislative duties defined by the city charter.",
+    summary: [
+      "Investigating complaints about city services",
+      "Speaking for residents' concerns inside city government",
+      "Performing duties the city charter assigns, such as introducing bills in the city council",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Comptroller",
-    summary:
-      "Oversees municipal accounting, audits city agencies, reviews contracts, and monitors the city's finances and pension funds.",
+    summary: [
+      "Watching over the city's money and keeping its books",
+      "Auditing city agencies and reviewing city contracts",
+      "Overseeing city pension funds",
+      "Reporting on the city's financial health",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "City Council Member",
-    summary:
-      "Serves on the city legislative body, passing ordinances, approving budgets, and overseeing city governance.",
+    summary: [
+      "Passing city laws, called ordinances",
+      "Approving the city budget",
+      "Overseeing city departments and services",
+      "Representing residents' concerns at city hall",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "City Clerk",
-    summary:
-      "Maintains official municipal records and may administer local elections, filings, and public notices.",
+    summary: [
+      "Keeping official city records, such as meeting minutes and ordinances",
+      "Publishing public notices",
+      "Running local elections in some cities",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "City Treasurer",
-    summary:
-      "Manages municipal financial operations including receipts, disbursements, and fiscal reporting.",
+    summary: [
+      "Holding and managing the city's money",
+      "Collecting certain city taxes and fees",
+      "Paying city bills and keeping financial reports",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Place Level Judge",
-    summary:
-      "Serves in a municipal or place-level judicial role, handling local court matters and applying relevant law and procedure.",
+    summary: [
+      "Hearing local cases, such as traffic tickets, small claims, and city code violations",
+      "Ruling on fines and penalties",
+      "Applying city and state law fairly in every case",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Alderman",
-    summary:
-      "Serves on the city council in cities that call their council members aldermen, voting on local laws, budgets, and oversight of city services.",
+    summary: [
+      "Passing city laws and the city budget as a member of the city council",
+      "Overseeing city services and departments",
+      "Representing their ward's residents at city hall",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Town Council Member",
-    summary:
-      "Serves on the town legislative body, setting policy, budgets, and oversight for municipal operations.",
+    summary: [
+      "Passing town rules and the town budget",
+      "Setting policy for town services",
+      "Overseeing town departments and staff",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Municipal Trustee",
-    summary:
-      "Serves on a village or town governing board, setting local policy, budgets, and oversight for municipal operations.",
+    summary: [
+      "Serving on the village or town governing board",
+      "Passing local rules and the budget",
+      "Overseeing local services and staff",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Town Moderator",
-    summary:
-      "Presides over town meetings or local deliberative proceedings, helping manage procedure, debate, and public votes.",
+    summary: [
+      "Running town meetings, where residents debate and vote on town business",
+      "Keeping debate fair and orderly, ruling on procedure, and counting votes",
+      "Appointing members of certain town committees in some towns",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Municipal Assessor",
-    summary:
-      "Determines local property valuations used for municipal taxation and maintains assessment records.",
+    summary: [
+      "Estimating property values used for local property taxes",
+      "Keeping assessment records",
+      "Handling exemptions and value appeals",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Municipal Attorney",
-    summary:
-      "Provides legal representation and advice for municipal government and may handle local legal matters assigned by law.",
+    summary: [
+      "Acting as the city's lawyer and representing it in court",
+      "Advising city officials on what the law allows",
+      "Drafting and reviewing ordinances and contracts",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Municipal Controller",
-    summary:
-      "Oversees municipal accounting, audits, financial reporting, and fiscal controls for city government.",
+    summary: [
+      "Keeping the city's books and financial controls",
+      "Auditing city spending",
+      "Preparing the city's financial reports",
+    ].join("\n"),
   },
   {
     scope: "place",
     canonicalName: "Municipal Constable",
-    summary:
-      "Performs local law enforcement, civil process, or public safety duties assigned by municipal or state law.",
+    summary: [
+      "Serving court papers and local legal notices",
+      "Enforcing certain local laws",
+      "Performing public safety duties the town or state assigns",
+    ].join("\n"),
   },
   {
     scope: "school_elementary",
     canonicalName: "School Board Member",
-    summary:
-      "Sets school district governance policy, budgets, and superintendent oversight for local public schools.",
+    summary: [
+      "Setting policy for the school district",
+      "Approving the district budget and spending",
+      "Hiring and reviewing the superintendent",
+      "Deciding school boundaries, calendars, and curriculum choices within state rules",
+    ].join("\n"),
   },
   {
     scope: "school_secondary",
     canonicalName: "School Board Member",
-    summary:
-      "Sets school district governance policy, budgets, and superintendent oversight for local public schools.",
+    summary: [
+      "Setting policy for the school district",
+      "Approving the district budget and spending",
+      "Hiring and reviewing the superintendent",
+      "Deciding school boundaries, calendars, and curriculum choices within state rules",
+    ].join("\n"),
   },
   {
     scope: "school_unified",
     canonicalName: "School Board Member",
-    summary:
-      "Sets school district governance policy, budgets, and superintendent oversight for local public schools.",
+    summary: [
+      "Setting policy for the school district",
+      "Approving the district budget and spending",
+      "Hiring and reviewing the superintendent",
+      "Deciding school boundaries, calendars, and curriculum choices within state rules",
+    ].join("\n"),
   },
 ];
 

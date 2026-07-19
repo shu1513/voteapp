@@ -29,6 +29,21 @@ import { aggregateRecordAreaStances, scoreStanceRelevance } from "@voteapp/api-c
 // default for viewers with saved research areas.
 type CandidateSort = "alphabetical" | "my_issues";
 
+// Catalog bucket names that are not real-world office titles — "State Lower
+// Chamber Legislator is responsible for:" reads as internal jargon next to a
+// page titled "State Representative". Real titles (Mayor, Sheriff, Governor)
+// keep the personalized heading.
+const GENERIC_OFFICE_NAMES = new Set([
+  "State Lower Chamber Legislator",
+  "State Level Judge",
+  "County Level Judge",
+  "Place Level Judge",
+]);
+
+function officeHeadingName(canonicalName: string): string {
+  return GENERIC_OFFICE_NAMES.has(canonicalName) ? "This office" : canonicalName;
+}
+
 // Server loader: the election subject arrives in the document HTML so
 // non-JS crawlers can read it. Anonymous by design — see loadFromApi.
 export async function loader({ params, request }: LoaderFunctionArgs) {
@@ -160,8 +175,22 @@ export function ElectionPage() {
         // Description first, then the affected areas — what the office does,
         // then which issues it touches.
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
-          <h2 className="text-lg font-semibold">About this office</h2>
-          {office ? <p className="mt-2 text-sm text-ink">{office.summary}</p> : null}
+          <h2 className="text-lg font-semibold">
+            {office ? `${officeHeadingName(office.canonical_name)} is responsible for:` : "About this office"}
+          </h2>
+          {office ? (
+            // The summary is seeded as newline-separated duty bullets
+            // (seedOffices.ts); a legacy single-paragraph summary renders as
+            // one bullet until the seed is re-run.
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink">
+              {office.summary
+                .split("\n")
+                .filter((line) => line.trim() !== "")
+                .map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
+            </ul>
+          ) : null}
           {researchAreas.length > 0 ? (
             // Same one-list presentation as the ballot cards: saved matches
             // lead with a screen-reader-only "(saved)" cue, position is the
