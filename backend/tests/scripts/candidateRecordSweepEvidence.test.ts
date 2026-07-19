@@ -8,6 +8,7 @@ import {
   deleteSweepCompletenessConfirmation,
   currentOfficeRoutingContradiction,
   deleteSweepConfirmation,
+  deltaSweepRoutingContradiction,
   enforceSweepRouteCoverage,
   hasHeldPublicOfficeContradiction,
   listMissingSweepRouteQuestionIds,
@@ -379,6 +380,62 @@ describe("currentOfficeRoutingContradiction", () => {
     });
     expect(reason).toContain('current_office ("Mayor of Springfield")');
     expect(reason).toContain("--clear-profile-fields current_office");
+  });
+});
+
+describe("deltaSweepRoutingContradiction", () => {
+  it("surfaces a stored false answer against a set office when the delta ledger omits the field", () => {
+    // Regression (PR #356 review): the delta path passed only the evidence
+    // answer to the office check, so this exact combination — the one the
+    // full-sweep path always refuses — went silently through.
+    const reason = deltaSweepRoutingContradiction({
+      candidateCurrentOffice: "Mayor of Springfield",
+      candidateHasHeldPublicOffice: false,
+      evidenceHasHeldPublicOffice: null,
+    });
+    expect(reason).toContain('current_office ("Mayor of Springfield")');
+  });
+
+  it("still surfaces a stored-vs-evidence disagreement first", () => {
+    const reason = deltaSweepRoutingContradiction({
+      candidateCurrentOffice: null,
+      candidateHasHeldPublicOffice: true,
+      evidenceHasHeldPublicOffice: false,
+    });
+    expect(reason).toContain("candidates.has_held_public_office=true");
+  });
+
+  it("surfaces an evidence-claimed false against a set office", () => {
+    const reason = deltaSweepRoutingContradiction({
+      candidateCurrentOffice: "Mayor of Springfield",
+      candidateHasHeldPublicOffice: null,
+      evidenceHasHeldPublicOffice: false,
+    });
+    expect(reason).toContain('current_office ("Mayor of Springfield")');
+  });
+
+  it("is silent when the routing state is consistent", () => {
+    expect(
+      deltaSweepRoutingContradiction({
+        candidateCurrentOffice: "Mayor of Springfield",
+        candidateHasHeldPublicOffice: true,
+        evidenceHasHeldPublicOffice: null,
+      })
+    ).toBeNull();
+    expect(
+      deltaSweepRoutingContradiction({
+        candidateCurrentOffice: null,
+        candidateHasHeldPublicOffice: false,
+        evidenceHasHeldPublicOffice: null,
+      })
+    ).toBeNull();
+    expect(
+      deltaSweepRoutingContradiction({
+        candidateCurrentOffice: null,
+        candidateHasHeldPublicOffice: null,
+        evidenceHasHeldPublicOffice: null,
+      })
+    ).toBeNull();
   });
 });
 

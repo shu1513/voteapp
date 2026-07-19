@@ -238,6 +238,33 @@ export function currentOfficeRoutingContradiction(input: {
   return `candidates.current_office ("${office}") contradicts has_held_public_office=false — a candidate holding a public office now HAS held public office. If the office is real, the routing answer must be true; if current_office is stale or holds an occupation, clear or replace it with a profile write (--clear-profile-fields current_office / --replace-profile-fields current_office), then rerun this records write.`;
 }
 
+/**
+ * The routing checks a DELTA (windowed) write runs: it asserts only its
+ * window and never persists a routing answer, but it must not proceed on a
+ * contradictory routing state — a stored-vs-evidence disagreement, or a
+ * never-held answer (stored OR claimed) against a set current_office. The
+ * office check uses the same EFFECTIVE answer as resolveSweepRoute; passing
+ * only the evidence answer would let a legacy stored-false row with a set
+ * office slip through whenever the delta ledger omits the optional field.
+ */
+export function deltaSweepRoutingContradiction(input: {
+  candidateCurrentOffice: string | null;
+  candidateHasHeldPublicOffice: boolean | null;
+  evidenceHasHeldPublicOffice: boolean | null;
+}): string | null {
+  return (
+    hasHeldPublicOfficeContradiction({
+      candidateHasHeldPublicOffice: input.candidateHasHeldPublicOffice,
+      evidenceHasHeldPublicOffice: input.evidenceHasHeldPublicOffice,
+    }) ??
+    currentOfficeRoutingContradiction({
+      candidateCurrentOffice: input.candidateCurrentOffice,
+      hasHeldPublicOffice:
+        input.candidateHasHeldPublicOffice ?? input.evidenceHasHeldPublicOffice,
+    })
+  );
+}
+
 export function resolveSweepRoute(input: {
   discoveryContestFamily: string | null;
   candidateCurrentOffice: string | null;
