@@ -61,7 +61,10 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
     { title: `${data.official_ballot_title} · VoteApp` },
     {
       name: "description",
-      content: `${data.official_ballot_title} — ${data.district.name} election on ${data.election_date}: candidates, campaign finance, and issue research.`,
+      // No "campaign finance" here: this page stopped rendering finance
+      // (it lives on candidate profiles now), and a search preview must not
+      // promise content the page doesn't have.
+      content: `${data.official_ballot_title} — ${data.district.name} election on ${data.election_date}: candidates and issue research.`,
     },
   ];
 };
