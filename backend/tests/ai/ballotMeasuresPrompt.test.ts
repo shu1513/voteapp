@@ -32,7 +32,8 @@ describe("buildBallotMeasuresPrompt", () => {
       allowedResearchAreaSlugs: ["healthcare_affordability"],
     });
 
-    expect(prompt).toContain("name the specific change (amounts, rates, durations, who is affected), not just the topic");
+    expect(prompt).toContain("open with one short sentence stating the main change in everyday words");
+    expect(prompt).toContain("give the specifics (amounts, rates, durations, who is affected), not just the topic");
     expect(prompt).toContain(
       "never a restatement like 'adopts the measure' or 'the changes described'"
     );

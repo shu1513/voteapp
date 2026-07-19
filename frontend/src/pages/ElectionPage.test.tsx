@@ -350,7 +350,12 @@ describe("ElectionPage", () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
       electionDetail({
-        office: { id: "o-1", scope: "statewide", canonical_name: "Governor", summary: "Heads the state's executive branch." },
+        office: {
+          id: "o-1",
+          scope: "statewide",
+          canonical_name: "Governor",
+          summary: "Running the state government\nProposing the state budget",
+        },
         // Alphabetical (API order) on purpose: the page must re-order by
         // public salience, which puts Environment ahead of Civil Rights.
         research_areas: [
@@ -360,8 +365,12 @@ describe("ElectionPage", () => {
       })
     );
 
-    expect(await screen.findByRole("heading", { name: "About this office" })).toBeInTheDocument();
-    const description = screen.getByText("Heads the state's executive branch.");
+    expect(
+      await screen.findByRole("heading", { name: "Governor is responsible for:" })
+    ).toBeInTheDocument();
+    // Newline-separated duties render as individual bullets.
+    expect(screen.getByText("Running the state government")).toBeInTheDocument();
+    const description = screen.getByText("Proposing the state budget");
     const label = screen.getByText("Affected Areas:");
     expect(description.compareDocumentPosition(label) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     const environment = screen.getByText("Environment & Public Health");

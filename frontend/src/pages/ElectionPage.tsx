@@ -160,8 +160,22 @@ export function ElectionPage() {
         // Description first, then the affected areas — what the office does,
         // then which issues it touches.
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
-          <h2 className="text-lg font-semibold">About this office</h2>
-          {office ? <p className="mt-2 text-sm text-ink">{office.summary}</p> : null}
+          <h2 className="text-lg font-semibold">
+            {office ? `${office.canonical_name} is responsible for:` : "About this office"}
+          </h2>
+          {office ? (
+            // The summary is seeded as newline-separated duty bullets
+            // (seedOffices.ts); a legacy single-paragraph summary renders as
+            // one bullet until the seed is re-run.
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink">
+              {office.summary
+                .split("\n")
+                .filter((line) => line.trim() !== "")
+                .map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+            </ul>
+          ) : null}
           {researchAreas.length > 0 ? (
             // Same one-list presentation as the ballot cards: saved matches
             // lead with a screen-reader-only "(saved)" cue, position is the
