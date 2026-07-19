@@ -284,9 +284,10 @@ export function SavedBallotPage() {
           <AddressSavedNotice saved={addressSaved} />
         </div>
       ) : null}
-      {/* No page heading or count subtitle: the date group headings
-          ("Elections on …") carry the page's identity; the preference
-          controls keep the header row's right edge. */}
+      {/* No visible page heading or count subtitle: the date group headings
+          ("Elections on …") carry the page's identity. The sr-only h1 keeps
+          a level-1 target for screen-reader heading navigation. */}
+      <h1 className="sr-only">Your saved ballot</h1>
       <div className="flex flex-wrap items-center justify-end gap-3">
         <BallotPreferenceControls />
       </div>

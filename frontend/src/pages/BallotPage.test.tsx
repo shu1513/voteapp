@@ -55,12 +55,13 @@ describe("BallotPage", () => {
 
     expect(await screen.findByText("Governor")).toBeInTheDocument();
     expect(screen.getByText("State Senate")).toBeInTheDocument();
-    // The date heading is the page's identity — no "Your ballot" banner, no
-    // election/district count line, no explainer collapsibles.
+    // The date heading is the page's visible identity — the "Your ballot"
+    // h1 survives for screen readers only. No election/district count line,
+    // no explainer collapsibles.
     expect(
       screen.getByRole("heading", { name: "Elections on November 3, 2026" })
     ).toBeInTheDocument();
-    expect(screen.queryByText("Your ballot")).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "Your ballot" })).toHaveClass("sr-only");
     expect(screen.queryByText(/elections across/)).not.toBeInTheDocument();
     expect(screen.queryByText("Which districts?")).not.toBeInTheDocument();
     expect(screen.queryByText("What do these labels mean?")).not.toBeInTheDocument();

@@ -62,6 +62,7 @@ export function BallotPage() {
   if (districtIds.length === 0) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-10">
+        <h1 className="sr-only">Your ballot</h1>
         <EmptyNotice text="No districts selected." />
         <p className="text-center">
           <Link to="/" className="text-ink underline hover:text-rausch">
@@ -74,9 +75,12 @@ export function BallotPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      {/* No page heading: the date group headings ("Elections on …") carry
-          the page's identity, so a "Your ballot" banner above them was
-          redundant. The sort control keeps the header row's right edge. */}
+      {/* No visible page heading: the date group headings ("Elections on …")
+          carry the page's identity, so a "Your ballot" banner above them was
+          redundant. The sr-only h1 keeps a level-1 target for screen-reader
+          heading navigation — and gives the loading/error/empty states,
+          which render before any date heading exists, a heading at all. */}
+      <h1 className="sr-only">Your ballot</h1>
       <div className="flex flex-wrap items-center justify-end gap-3">
         <label className="flex items-center gap-2 text-sm text-ink-soft">
           Sort by

@@ -105,28 +105,30 @@ export function ReportContentButton({ entityType, entityId, contextLabel, report
         <div className="fixed inset-0 flex items-center justify-center px-4 py-6">
           <DialogPanel className="w-full max-w-md rounded-2xl border border-line bg-white p-5 shadow-xl">
             {/* After a successful send the prompt/disclaimer header is
-                replaced entirely — only the confirmation remains. */}
+                replaced entirely — the confirmation is the dialog title (a
+                dialog needs an accessible title), styled as the green box,
+                so it appears exactly once. */}
             <div className="flex items-start justify-between gap-4">
-              <div>
-                <DialogTitle className="text-lg font-semibold text-ink">
-                  {status === "success" ? "Report sent" : "What's wrong?"}
+              {status === "success" ? (
+                <DialogTitle className="flex-1 rounded-lg bg-green-50 p-3 text-sm font-medium text-green-900">
+                  Report sent. Thank you.
                 </DialogTitle>
-                {status === "success" ? null : (
+              ) : (
+                <div>
+                  <DialogTitle className="text-lg font-semibold text-ink">
+                    What's wrong?
+                  </DialogTitle>
                   <p className="mt-1 text-xs text-ink-soft">
                     Reports help us investigate accuracy issues. Don't include sensitive personal information; your message is stored as-is.
                   </p>
-                )}
-              </div>
+                </div>
+              )}
               <button type="button" onClick={closeDialog} className="text-sm text-ink-soft hover:text-ink">
                 Close
               </button>
             </div>
 
-            {status === "success" ? (
-              <div className="mt-4 rounded-lg bg-green-50 p-3 text-sm text-green-900">
-                Report sent. Thank you.
-              </div>
-            ) : (
+            {status === "success" ? null : (
               <form onSubmit={onSubmit} className="mt-4 space-y-3">
                 <label className="block text-sm font-medium text-ink">
                   Details

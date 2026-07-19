@@ -107,8 +107,8 @@ describe("FinanceSummaryCard", () => {
     const opposeBox = screen
       .getByText("Outside money spent opposing this candidate: $20,000")
       .closest("div");
-    expect(supportBox?.className).toContain("bg-green-50");
-    expect(opposeBox?.className).toContain("bg-red-50");
+    expect(supportBox).toHaveClass("bg-green-50");
+    expect(opposeBox).toHaveClass("bg-red-50");
     // Exactly one box per direction — the tint marks direction, nothing else.
     expect(container.querySelectorAll(".bg-green-50")).toHaveLength(1);
     expect(container.querySelectorAll(".bg-red-50")).toHaveLength(1);

@@ -341,23 +341,19 @@ export function ElectionPage() {
                 className="relative rounded-xl border border-line bg-white shadow-sm transition hover:shadow-md"
               >
                 <div className="p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h3 className="font-semibold">
-                        <Link
-                          to={`/candidates/${candidate.candidate_id}`}
-                          className="after:absolute after:inset-0"
-                        >
-                          {candidate.display_name}
-                        </Link>
-                      </h3>
-                      <p className="text-sm text-ink-soft">
-                        {candidate.party}
-                        {candidate.is_incumbent ? " · Incumbent" : ""}
-                        {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
-                      </p>
-                    </div>
-                  </div>
+                  <h3 className="font-semibold">
+                    <Link
+                      to={`/candidates/${candidate.candidate_id}`}
+                      className="after:absolute after:inset-0"
+                    >
+                      {candidate.display_name}
+                    </Link>
+                  </h3>
+                  <p className="text-sm text-ink-soft">
+                    {candidate.party}
+                    {candidate.is_incumbent ? " · Incumbent" : ""}
+                    {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
+                  </p>
                   {candidate.summary ? (
                     <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>
                   ) : null}
