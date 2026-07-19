@@ -17,12 +17,46 @@ export type CliFlagSpec = {
   value: CliFlagValueStyle;
 };
 
+function describeFlagValueStyle(spec: CliFlagSpec): string {
+  switch (spec.value) {
+    case "none":
+      return spec.name;
+    case "space":
+      return `${spec.name} <value>`;
+    case "equals":
+      return `${spec.name}=<value>`;
+    case "both":
+      return `${spec.name} <value> | ${spec.name}=<value>`;
+  }
+}
+
 export function assertKnownCliFlags(
   scriptLabel: string,
   argv: readonly string[],
   specs: readonly CliFlagSpec[]
 ): void {
   const byName = new Map(specs.map((spec) => [spec.name, spec]));
+
+  // Every manual wrapper asserts flags before loading env or touching
+  // Postgres/Redis, so this is the one place a read-only --help can live:
+  // wrappers historically rejected --help as an unknown flag, and operators
+  // fell back to reading the script source (or a sandbox-blocked probe run)
+  // just to discover the flag set — hit live on the deferral and election
+  // injector CLIs. A script that DECLARES --help in its spec set carries its
+  // own richer usage text (manual:research:preflight); the flag then passes
+  // the assertion below and stays under the script's control.
+  if (!byName.has("--help") && argv.includes("--help")) {
+    const lines = [
+      `${scriptLabel} flags:`,
+      ...specs
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((spec) => `  ${describeFlagValueStyle(spec)}`),
+    ];
+    console.log(lines.join("\n"));
+    process.exit(0);
+  }
+
   const problems: string[] = [];
 
   for (let index = 0; index < argv.length; index += 1) {

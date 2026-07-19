@@ -327,7 +327,11 @@ async function main(): Promise<void> {
           requiresFecIds: includeFecIds,
           candidateCount: parsed.payload.candidates.length,
           skippedCandidatesWithoutFecIds: parsed.skippedCandidatesWithoutFecIds,
-          next: [`npm run candidates:roster:enrich -- --election-id=${electionId}`],
+          // Manual-research continuation is the local no-AI fanout. The generic
+          // candidates:roster:enrich path can send the staged roster to an
+          // external AI provider — reserve it for AI-produced rosters and never
+          // recommend it as the default next step of a manual injection.
+          next: [`npm run manual:candidate-roster:fanout -- --election-id ${electionId}`],
         },
         null,
         2

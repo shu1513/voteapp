@@ -250,19 +250,54 @@ function stripJurisdictionPrefixes(value: string, input: { districtName: string;
   return next.replace(/\s+/g, " ").trim();
 }
 
+// A LEADERSHIP-of-the-body contest elects a different office than a member
+// seat: "President of the Cook County Board of Commissioners" is the county
+// executive, and comma forms ("President, Middlesex County Commissioners",
+// "Chair, County Board of Commissioners") lose their connectors in
+// normalization, so no fixed lookbehind can see them. Singularizing such a
+// title scores it ~0.92 into the member office — a confidently wrong,
+// alias-persisted match; with the rewrites skipped it under-scores (~0.4) and
+// falls safely to no-match. Position matters: only a leadership word BEFORE
+// the body phrase names the leadership post. A TRAILING one is a seat
+// descriptor on a member seat ("JACKSON COUNTY BOARD OF COMMISSIONERS
+// CHAIRMAN", NC live: the chairman is elected to the board) and must keep the
+// rewrite.
+const LEADERSHIP_BEFORE_COMMISSION_BODY_PATTERN =
+  /\b(?:president|chair(?:man|woman|person)?|director)\b[a-z ]*\bcommission/;
+
+function singularizeCommissionerBodyForms(value: string): string {
+  if (LEADERSHIP_BEFORE_COMMISSION_BODY_PATTERN.test(value)) {
+    return value;
+  }
+  return (
+    value
+      // North Carolina certifications title every county-commission seat by its
+      // governing body ("ALAMANCE COUNTY BOARD OF COMMISSIONERS DISTRICT 02",
+      // ~150 live rows); the catalog keys on "County Commissioner" and the body
+      // form's plural tokenizes into near-zero overlap ("commissioners" ≠
+      // "commissioner"). The "county"-anchored phrase leaves city boards of
+      // commissioners (place scope) untouched. (Lives here, after the
+      // jurisdiction strip, so the county's own name never sits inside the
+      // body phrase.)
+      .replace(/\bcounty board of commissioners\b/g, "county commissioner")
+      // Bare plural body form without "board of" ("Middlesex County
+      // Commissioners", official NJ title, live: wrote a NULL-office shell).
+      // The "of"-lookbehind leaves every "board of commissioners" phrase
+      // alone — the county form was already rewritten above, and city board
+      // phrases must keep their plural so they do not over-match the member
+      // office. Not before "court": the Texas "Commissioners Court" governing
+      // body keeps its official plural so its key stays faithful for aliasing.
+      .replace(/(?<!\bof )\bcommissioners\b(?! court\b)/g, "commissioner")
+      // Utah titles the county-commission seat by its governing body plus a
+      // seat letter ("Utah County Commission Seat A", live: four NULL-office
+      // shells); the catalog keys on the member office. The seat letter itself
+      // is stripped by the seat-designator rule below.
+      .replace(/\bcounty commission\b/g, "county commissioner")
+  );
+}
+
 function stripSeatSuffixes(value: string): string {
-  return value
-    // North Carolina certifications title every county-commission seat by its
-    // governing body ("ALAMANCE COUNTY BOARD OF COMMISSIONERS DISTRICT 02",
-    // ~150 live rows); the catalog keys on "County Commissioner" and the body
-    // form's plural tokenizes into near-zero overlap ("commissioners" ≠
-    // "commissioner"). The "county"-anchored phrase leaves city boards of
-    // commissioners (place scope) untouched. Not after "president of the": a
-    // board PRESIDENT (Cook County IL) is the county executive, matched by
-    // its own alias, and the rewrite would misroute it into the member
-    // office. (Lives here, after the jurisdiction strip, so the county's own
-    // name never sits between "president of the" and the body phrase.)
-    .replace(/(?<!\bpresident of the )\bcounty board of commissioners\b/g, "county commissioner")
+  return singularizeCommissionerBodyForms(value)
     .replace(/\boffice (?:no )?\d+\b/g, " ")
     .replace(/\bposition (?:no )?\d+\b/g, " ")
     // "Council District No. 5" (Seattle live) titles the council-member SEAT
@@ -295,9 +330,11 @@ function stripSeatSuffixes(value: string): string {
     // precincts ("Constable, Justice Prec. 2" — the seat is the justice-court
     // precinct, so the "justice" that introduces it goes with the number;
     // "Justice of the Peace, Prec. 2" keeps its office words because there
-    // the number follows bare "prec").
+    // the number follows bare "prec"). Lettered seats ("Commission Seat A",
+    // Utah live) are the same designator; [a-h] keeps single-letter coverage
+    // beyond what the Roman-numeral alternative already accepts.
     .replace(
-      /\b(?:ward|zone|seat|part|(?:justice )?(?:precinct|prec)) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g,
+      /\b(?:ward|zone|seat|part|(?:justice )?(?:precinct|prec)) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+|[a-h])\b/g,
       " "
     )
     // At-large is a seat designator, not an office word ("County Council At
@@ -316,6 +353,24 @@ function stripSeatSuffixes(value: string): string {
     // Howard County MD live) — leading connector only, so office names that
     // merely contain "for" are untouched.
     .replace(/^for /, "");
+}
+
+// The jurisdiction strip deliberately keeps the generic civic word so
+// bare-office aliases like "county judge" still match — but some states alias
+// the office WITHOUT it: "Snohomish County Prosecuting Attorney" strips to
+// "county prosecuting attorney" while the seeded county alias is "prosecuting
+// attorney" (→ District Attorney; Pierce and Snohomish both wrote NULL-office
+// shells live). This yields the civic-word-free form for a last-chance alias
+// lookup. Callers only use multi-word remainders — single-word offices
+// ("County Sheriff" → "sheriff") already resolve through the token scorer, and
+// a one-token alias hit ("judge") would be too generic to trust.
+function stripLeadingGenericCivicWords(value: string): string {
+  const tokens = value.split(" ").filter((token) => token.length > 0);
+  let start = 0;
+  while (start < tokens.length && GENERIC_DISTRICT_SUFFIX_TOKENS.has(tokens[start] ?? "")) {
+    start += 1;
+  }
+  return tokens.slice(start).join(" ");
 }
 
 function toMatcherTokens(value: string): string[] {
@@ -567,6 +622,12 @@ export class OfficeMatcher {
     let exactOfficeId = aliases.get(normalizedAlias);
     if (!exactOfficeId && titleMatcherKey.length > 0 && titleMatcherKey !== normalizedAlias) {
       exactOfficeId = aliases.get(titleMatcherKey);
+    }
+    if (!exactOfficeId && titleMatcherKey.length > 0) {
+      const civicWordFreeKey = stripLeadingGenericCivicWords(titleMatcherKey);
+      if (civicWordFreeKey !== titleMatcherKey && civicWordFreeKey.includes(" ")) {
+        exactOfficeId = aliases.get(civicWordFreeKey);
+      }
     }
     if (exactOfficeId && input.discoveryContestFamily === "non_judicial_office") {
       // A learned alias may point at a judge office (e.g. a Texas "County Judge",

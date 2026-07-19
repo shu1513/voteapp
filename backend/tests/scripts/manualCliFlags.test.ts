@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { assertKnownCliFlags, type CliFlagSpec } from "../../src/scripts/manualCliFlags.js";
 
@@ -28,6 +28,52 @@ describe("assertKnownCliFlags", () => {
         { name: "--reason", value: "space" },
       ])
     ).not.toThrow();
+  });
+
+  it("--help prints the known flag set and exits 0 before any env or DB work", () => {
+    // Wrappers historically rejected --help as an unknown flag; operators had
+    // to read script source (or burn a sandbox-blocked probe run) to discover
+    // flags — live on the deferral and election-injector CLIs.
+    const logs: string[] = [];
+    const logSpy = vi.spyOn(console, "log").mockImplementation((message: string) => {
+      logs.push(String(message));
+    });
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(((code?: number) => {
+      throw new Error(`process.exit(${code})`);
+    }) as never);
+    try {
+      expect(() => assertKnownCliFlags("manual:candidate-records:write", ["--help"], RECORDS_SPECS)).toThrow(
+        "process.exit(0)"
+      );
+      expect(logs.join("\n")).toContain("manual:candidate-records:write flags:");
+      expect(logs.join("\n")).toContain("--records-file <value>");
+      expect(logs.join("\n")).toContain("--dry-run");
+    } finally {
+      logSpy.mockRestore();
+      exitSpy.mockRestore();
+    }
+  });
+
+  it("leaves --help under script control when the script declares it in its specs", () => {
+    // manual:research:preflight declares --help/-h and prints its own richer
+    // usage text; the built-in flag list must not preempt it.
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(((code?: number) => {
+      throw new Error(`process.exit(${code})`);
+    }) as never);
+    try {
+      expect(() =>
+        assertKnownCliFlags("manual:research:preflight", ["--help"], [
+          { name: "--help", value: "none" },
+          { name: "-h", value: "none" },
+        ])
+      ).not.toThrow();
+      expect(logSpy).not.toHaveBeenCalled();
+      expect(exitSpy).not.toHaveBeenCalled();
+    } finally {
+      logSpy.mockRestore();
+      exitSpy.mockRestore();
+    }
   });
 
   it("rejects an unknown flag and names the known set", () => {

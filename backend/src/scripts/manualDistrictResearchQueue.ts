@@ -285,8 +285,6 @@ const COMMAND_FLAG_SPECS: Record<string, readonly CliFlagSpec[]> = {
 };
 
 async function main(): Promise<void> {
-  loadProjectEnv();
-
   const [command, ...rest] = process.argv.slice(2);
   if (!command || command === "--help" || command === "-h") {
     console.log(usage());
@@ -294,8 +292,11 @@ async function main(): Promise<void> {
   }
   const specs = COMMAND_FLAG_SPECS[command];
   if (specs) {
+    // Before loadProjectEnv so `--help` (handled inside the assert) stays
+    // environment-independent, matching every other manual wrapper.
     assertKnownCliFlags(`manual:district-research ${command}`, rest, specs);
   }
+  loadProjectEnv();
 
   const flags = parseFlags(rest);
   const pool = new Pool({ connectionString: requireEnv("DATABASE_URL") });

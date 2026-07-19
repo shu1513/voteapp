@@ -195,6 +195,178 @@ describe("OfficeMatcher", () => {
     expect(result.method).toBe("deterministic_fallback");
   });
 
+  it("resolves 'Snohomish County Prosecuting Attorney' through the bare 'prosecuting attorney' alias", async () => {
+    // The jurisdiction strip keeps the generic civic word ("county
+    // prosecuting attorney"), but Washington's seeded county alias is the
+    // bare office ("prosecuting attorney" → District Attorney). Pierce and
+    // Snohomish both wrote NULL-office shells at confidence 0.400 (live).
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [{ office_id: "office-district-attorney", normalized_alias: "prosecuting attorney" }],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+          { id: "office-county-supervisor", canonical_name: "County Supervisor" },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Snohomish County, Washington",
+      state: "WA",
+      officialBallotTitle: "Snohomish County Prosecuting Attorney",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-district-attorney");
+    expect(result.method).toBe("alias_exact");
+  });
+
+  it("matches the plural 'Middlesex County Commissioners' to County Commissioner", async () => {
+    // The official NJ plural body form tokenized "commissioners" ≠
+    // "commissioner" and wrote a NULL-office shell (live).
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-treasurer", canonical_name: "County Treasurer" },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Middlesex County, New Jersey",
+      state: "NJ",
+      officialBallotTitle: "Middlesex County Commissioners",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-commissioner");
+    expect(result.method).toBe("deterministic_fallback");
+  });
+
+  it("matches 'Utah County Commission Seat A' to County Commissioner", async () => {
+    // The governing-body form plus lettered seat left "county commission a"
+    // after the seat strip — near-zero overlap, four NULL-office shells
+    // (live).
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-treasurer", canonical_name: "County Treasurer" },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Utah County, Utah",
+      state: "UT",
+      officialBallotTitle: "Utah County Commission Seat A",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-commissioner");
+    expect(result.method).toBe("deterministic_fallback");
+  });
+
+  it("keeps the Cook County board president out of the County Commissioner member office", async () => {
+    // Regression guard for the plural rewrite: "President of the Cook County
+    // Board of Commissioners" is the county executive; singularizing its
+    // "commissioners" would over-match the member office.
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-executive", canonical_name: "County Executive" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Cook County, Illinois",
+      state: "IL",
+      officialBallotTitle: "President of the Cook County Board of Commissioners",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).not.toBe("office-county-commissioner");
+  });
+
+  it.each([
+    ["President, Middlesex County Commissioners"],
+    ["Chair, Middlesex County Commissioners"],
+    ["Chair, Cook County Board of Commissioners"],
+  ])("keeps board leadership title %s out of the County Commissioner member office", async (officialBallotTitle) => {
+    // Comma-form leadership titles lose their connectors in normalization, so
+    // the fixed "president of the" lookbehind never saw them; singularizing
+    // the body plural scored them ~0.92 into the member office. The
+    // leadership-word guard must leave the plural intact so they fall to
+    // no-match instead.
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-executive", canonical_name: "County Executive" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Middlesex County, New Jersey",
+      state: "NJ",
+      officialBallotTitle,
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).not.toBe("office-county-commissioner");
+  });
+
+  it("keeps the Texas 'Commissioners Court' body plural so its key stays faithful", async () => {
+    // "Commissioners Court Precinct 2" has no "of" before "commissioners";
+    // singularizing it would persist an unfaithful "commissioner court" alias
+    // key. The court lookahead leaves the official plural in place, and the
+    // truncated body form must not confidently misroute anywhere.
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-judge", canonical_name: "County Level Judge" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Harris County, Texas",
+      state: "TX",
+      officialBallotTitle: "Commissioners Court Precinct 2",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.aliasMemoryKey).toBe("commissioners court");
+  });
+
   it("does not score a non-judicial county contest into a judge office (TX County Judge)", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { county: [] },
