@@ -8,6 +8,7 @@ import type {
   BallotLookupFinanceOutsideIndustrySupportSummary,
   BallotLookupFinanceSummary,
 } from "../address/ballotLookupFinanceShared.js";
+import { buildOutsideIndustrySupportExplanation } from "../address/ballotLookupFinanceShared.js";
 import { isAlaskaFinanceEligibleOffice } from "./alaskaFinanceEligibleOffices.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -89,27 +90,6 @@ type AlaskaFinanceOutsideDonorEvidenceRow = {
 
 const GENERIC_ALASKA_APOC_SOURCE_URL = "https://aws.state.ak.us/ApocReports/Campaign/";
 
-const FINANCE_INDUSTRY_DISPLAY_NAMES: Record<string, string> = {
-  agriculture_and_food: "Agriculture and food",
-  construction: "Construction",
-  defense_aerospace: "Defense and aerospace",
-  education: "Education",
-  environmental_group: "Environmental groups",
-  finance_investment: "Finance and investment",
-  healthcare: "Healthcare",
-  hospitality: "Hospitality",
-  insurance: "Insurance",
-  labor_unions: "Labor unions",
-  lawyers_and_legal_services: "Lawyers and legal services",
-  manufacturing: "Manufacturing",
-  oil_gas_energy: "Oil, gas, and energy",
-  pharmaceuticals: "Pharmaceuticals",
-  real_estate: "Real estate",
-  technology: "Technology",
-  transportation: "Transportation",
-  waste_management: "Waste management",
-};
-
 function parseFinanceAmount(value: string | number | null | undefined): number | null {
   if (value === null || value === undefined || value === "") {
     return null;
@@ -164,51 +144,6 @@ function addFinanceBreakdown(
   const list = map.get(key) ?? [];
   list.push(row);
   map.set(key, list);
-}
-
-function formatShortList(values: readonly string[]): string {
-  const unique = [...new Set(values.map((value) => value.trim()).filter((value) => value.length > 0))];
-  if (unique.length === 0) {
-    return "reported organizations";
-  }
-  if (unique.length === 1) {
-    return unique[0]!;
-  }
-  if (unique.length === 2) {
-    return `${unique[0]} and ${unique[1]}`;
-  }
-  return `${unique.slice(0, -1).join(", ")}, and ${unique[unique.length - 1]}`;
-}
-
-function financeIndustryDisplayName(industryName: string): string {
-  const trimmed = industryName.trim();
-  if (!trimmed) {
-    return "This industry";
-  }
-  return (
-    FINANCE_INDUSTRY_DISPLAY_NAMES[trimmed] ??
-    trimmed
-      .split("_")
-      .filter((part) => part.length > 0)
-      .map((part, index) => (index === 0 ? part.charAt(0).toUpperCase() + part.slice(1).toLowerCase() : part.toLowerCase()))
-      .join(" ")
-  );
-}
-
-function buildOutsideIndustrySupportExplanation(
-  industryName: string,
-  evidence: readonly BallotLookupFinanceOutsideIndustrySupportEvidence[]
-): string {
-  const displayName = financeIndustryDisplayName(industryName);
-  if (evidence.length === 0) {
-    return `The ${displayName} category is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported independent spending supporting this candidate.`;
-  }
-
-  return `The ${displayName} category is a top outside-spending support industry because ${formatShortList(
-    evidence.map((item) => item.organization_name)
-  )} contributed to ${formatShortList(
-    evidence.map((item) => item.committee_name)
-  )}, which reported independent spending supporting this candidate.`;
 }
 
 function buildAlaskaFinanceSummaryRequests(
