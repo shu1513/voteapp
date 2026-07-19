@@ -1,0 +1,16 @@
+{
+  "official_measure_url": "https://arc-sos.state.al.us/ucp/L2109672.AI1.pdf",
+  "summary": "Would amend the Alabama Constitution to make three changes: a vacant Lieutenant Governor seat would be filled by an election in certain circumstances; the Legislature would set the salaries of the Lieutenant Governor and legislative officers; and legislative travel spending would need approval from legislative officers.",
+  "what_yes_means": "A yes vote makes all three changes: an election to fill a Lieutenant Governor vacancy in certain circumstances, Legislature-set salaries for the Lieutenant Governor and legislative officers, and required sign-off on legislative travel spending.",
+  "what_no_means": "A no vote keeps the constitution as it is: no required vacancy election, current salary rules, and no travel-spending approval requirement.",
+  "research_area_tags": [
+    {
+      "research_area_slug": "government_efficiency",
+      "stance": "for"
+    }
+  ],
+  "sources": [
+    "https://arc-sos.state.al.us/cgi/elactnum.mbr/output",
+    "https://arc-sos.state.al.us/ucp/L2109672.AI1.pdf"
+  ]
+}

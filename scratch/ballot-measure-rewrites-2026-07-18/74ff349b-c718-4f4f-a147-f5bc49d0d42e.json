@@ -1,0 +1,24 @@
+{
+  "official_measure_url": "https://oag.ca.gov/system/files/initiatives/pdfs/25-0023A1%20%28%26quot%3BEssential%20Projects%26quot%3B%29.pdf",
+  "summary": "Proposition 45 speeds up review under CEQA, the state law that requires studying a building project's environmental effects before approval, for certain housing, transportation, water, health, and clean-energy projects the measure calls essential. For those projects it sets deadlines for finishing the review, trims the required study of alternatives, and limits how long court challenges can hold projects up.",
+  "what_yes_means": "A yes vote gives the listed housing, transportation, water, health, and clean-energy projects a faster, deadline-bound environmental review and narrower court challenges.",
+  "what_no_means": "A no vote keeps full environmental review and current court procedures for those projects.",
+  "research_area_tags": [
+    {
+      "research_area_slug": "government_efficiency",
+      "stance": "for"
+    },
+    {
+      "research_area_slug": "public_infrastructure",
+      "stance": "for"
+    },
+    {
+      "research_area_slug": "housing_affordability",
+      "stance": "for"
+    }
+  ],
+  "sources": [
+    "https://www.sos.ca.gov/elections/ballot-measures/qualified-ballot-measures",
+    "https://oag.ca.gov/system/files/initiatives/pdfs/25-0023A1%20%28%26quot%3BEssential%20Projects%26quot%3B%29.pdf"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "official_measure_url": "https://oag.ca.gov/system/files/initiatives/pdfs/25-0040A1%20%28Gov.%20Efficiency%29.pdf",
+  "summary": "Proposition 41 adds two rules about new state taxes. Programs paid for by any new statewide special tax would have to be audited. And new state taxes passed after January 1, 2026 could no longer be written to escape the state's voter-approved spending limit, which caps how much tax revenue the state may spend each year.",
+  "what_yes_means": "A yes vote requires audits of programs funded by new statewide special taxes and blocks new state taxes from exempting their revenue from the state spending limit.",
+  "what_no_means": "A no vote keeps current law: no required audits of those programs, and a new tax measure may exempt its revenue from the spending limit.",
+  "research_area_tags": [
+    {
+      "research_area_slug": "government_spending_reduction",
+      "stance": "for"
+    },
+    {
+      "research_area_slug": "government_efficiency",
+      "stance": "for"
+    }
+  ],
+  "sources": [
+    "https://www.sos.ca.gov/elections/ballot-measures/qualified-ballot-measures",
+    "https://oag.ca.gov/system/files/initiatives/pdfs/25-0040A1%20%28Gov.%20Efficiency%29.pdf"
+  ]
+}

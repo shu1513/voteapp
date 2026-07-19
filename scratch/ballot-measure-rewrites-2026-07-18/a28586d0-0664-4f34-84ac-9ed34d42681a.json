@@ -1,0 +1,20 @@
+{
+  "official_measure_url": "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/aca-20.pdf",
+  "summary": "Proposition 2 lets California save more in its rainy-day fund, the Budget Stabilization Account. It raises the cap on the fund from 10 percent to 20 percent of estimated state tax revenue, changes how much the state transfers into the fund each year, and revises when the state may declare a budget emergency and spend the savings.",
+  "what_yes_means": "A yes vote doubles the rainy-day fund cap to 20 percent of estimated state tax revenue and updates the deposit rules and the budget-emergency rules for spending the savings.",
+  "what_no_means": "A no vote keeps the current 10 percent cap and today's deposit and budget-emergency rules.",
+  "research_area_tags": [
+    {
+      "research_area_slug": "government_spending_reduction",
+      "stance": "for"
+    },
+    {
+      "research_area_slug": "government_efficiency",
+      "stance": "for"
+    }
+  ],
+  "sources": [
+    "https://www.sos.ca.gov/elections/ballot-measures/qualified-ballot-measures",
+    "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/aca-20.pdf"
+  ]
+}

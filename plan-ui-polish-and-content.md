@@ -104,7 +104,9 @@ Wire enum value `medium` stays unchanged (no API break); display copy only.
     RI bond row, undefined jargon like quo warranto/councilmanic/CEQA).
     Rewrote all 15 from official sources via
     `npm run manual:ballot-measure:write` (dry-run then live; tags and
-    sources preserved, no AI API calls).
+    sources preserved, no AI API calls). Replay payloads committed in
+    `scratch/ballot-measure-rewrites-2026-07-18/` for non-local
+    environments.
   - Tightened plain-language rules in the ballot-measures prompt
     (`ballotMeasuresPrompt.ts`): merged concreteness + anti-circular
     demands into the two existing summary/yes-no rules, no new rules.

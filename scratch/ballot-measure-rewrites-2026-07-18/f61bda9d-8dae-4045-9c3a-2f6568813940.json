@@ -1,0 +1,20 @@
+{
+  "official_measure_url": "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/sb-42.pdf",
+  "summary": "California law today bans candidates and public officers from using public money for their campaigns. Proposition 4 lifts that ban so state and local governments can create public campaign-financing programs. Candidates who take the public money must accept spending limits and strict qualifying rules; money earmarked for education, transportation, or public safety still cannot be spent on campaigns; and penalties for illegal foreign campaign contributions and spending get stronger.",
+  "what_yes_means": "A yes vote lets governments offer public campaign financing to candidates who accept spending limits and qualifying rules, and stiffens penalties for foreign campaign money.",
+  "what_no_means": "A no vote keeps the ban on spending public funds on election campaigns.",
+  "research_area_tags": [
+    {
+      "research_area_slug": "election_integrity",
+      "stance": "for"
+    },
+    {
+      "research_area_slug": "anti_corruption",
+      "stance": "for"
+    }
+  ],
+  "sources": [
+    "https://www.sos.ca.gov/elections/ballot-measures/qualified-ballot-measures",
+    "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/sb-42.pdf"
+  ]
+}

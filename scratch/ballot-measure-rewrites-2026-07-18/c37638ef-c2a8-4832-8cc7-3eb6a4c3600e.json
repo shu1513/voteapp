@@ -1,0 +1,16 @@
+{
+  "official_measure_url": "https://gov.georgia.gov/document/2026-signed-legislation/hb-1535/download",
+  "summary": "Georgia law lets a city that gets voter approval use redevelopment powers: the city can declare an area it wants to redevelop a tax allocation district, freeze the property-tax base there, and use the growth in property-tax revenue as the area improves to pay for the redevelopment, including borrowing against that future growth through tax allocation bonds. This referendum, required by House Bill 1535, asks whether Sandy Springs may use those powers.",
+  "what_yes_means": "A yes vote lets Sandy Springs create tax allocation districts and borrow against future property-tax growth to pay for redevelopment projects.",
+  "what_no_means": "A no vote denies the city those redevelopment powers, and the authorizing act is automatically repealed.",
+  "research_area_tags": [
+    {
+      "research_area_slug": "government_efficiency",
+      "stance": "for"
+    }
+  ],
+  "sources": [
+    "https://gov.georgia.gov/document/2026-signed-legislation/hb-1535/download",
+    "https://www.sandyspringsga.gov/voting-and-elections"
+  ]
+}

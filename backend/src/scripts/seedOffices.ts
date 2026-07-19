@@ -185,7 +185,7 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "county",
     canonicalName: "County Executive",
     summary:
-      "Leads county government as its elected chief executive, overseeing the county's budget, agencies, and day-to-day administration. In some states the office is titled County Judge or County Judge/Executive, but it is not a judicial job.",
+      "Leads county government as its elected chief executive, overseeing the county's budget, agencies, and day-to-day administration. In some states the title is County Judge or County Judge/Executive; the job is mainly executive, though in some Texas counties the County Judge also hears certain court cases.",
   },
   {
     scope: "county",
