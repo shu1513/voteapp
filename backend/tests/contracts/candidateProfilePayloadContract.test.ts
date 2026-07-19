@@ -15,6 +15,7 @@ describe("parseCandidateProfilePayload", () => {
       fec_ids: ["H0XX00000"],
       state_filing_ids: ["SF-100"],
       current_office: "  Governor  ",
+      has_held_public_office: true,
       sources: ["https://example.org/profile"],
     });
 
@@ -27,6 +28,63 @@ describe("parseCandidateProfilePayload", () => {
     expect(parsed.payload.official_website_url).toBe("https://janedoe.example.com");
     expect(parsed.payload.fec_ids).toEqual(["H0XX00000"]);
     expect(parsed.payload.current_office).toBe("Governor");
+    expect(parsed.payload.has_held_public_office).toBe(true);
+  });
+
+  it("requires has_held_public_office as a boolean", () => {
+    const base = {
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      sources: ["https://example.org/profile"],
+    };
+
+    const missing = parseCandidateProfilePayload(base);
+    expect(missing.ok).toBe(false);
+    if (!missing.ok) {
+      expect(missing.reason).toContain("has_held_public_office");
+    }
+
+    const wrongType = parseCandidateProfilePayload({ ...base, has_held_public_office: "true" });
+    expect(wrongType.ok).toBe(false);
+
+    const falseAnswer = parseCandidateProfilePayload({ ...base, has_held_public_office: false });
+    expect(falseAnswer.ok).toBe(true);
+    if (falseAnswer.ok) {
+      expect(falseAnswer.payload.has_held_public_office).toBe(false);
+    }
+  });
+
+  it("rejects current_office together with has_held_public_office=false as contradictory", () => {
+    const base = {
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      sources: ["https://example.org/profile"],
+    };
+
+    const contradiction = parseCandidateProfilePayload({
+      ...base,
+      current_office: "Mayor",
+      has_held_public_office: false,
+    });
+    expect(contradiction.ok).toBe(false);
+    if (!contradiction.ok) {
+      expect(contradiction.reason).toContain('current_office ("Mayor") contradicts');
+    }
+
+    const officeholder = parseCandidateProfilePayload({
+      ...base,
+      current_office: "Mayor",
+      has_held_public_office: true,
+    });
+    expect(officeholder.ok).toBe(true);
+
+    const formerOfficeholder = parseCandidateProfilePayload({
+      ...base,
+      has_held_public_office: true,
+    });
+    expect(formerOfficeholder.ok).toBe(true);
   });
 
   it("rejects blank current office", () => {
@@ -51,6 +109,7 @@ describe("parseCandidateProfilePayload", () => {
       first_name: "Jane",
       last_name: "Doe",
       twitter_handle: "https://x.com/Jane_Doe",
+      has_held_public_office: false,
       sources: ["https://example.org/profile"],
     });
 

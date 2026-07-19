@@ -100,6 +100,7 @@ async function main(): Promise<void> {
     const discovery = await enrichCandidateRecords(
       {
         candidateDisplayName: context.candidateDisplayName,
+        hasHeldPublicOffice: context.hasHeldPublicOffice,
         districtName: context.districtName,
         districtType: context.districtType,
         state: context.state,

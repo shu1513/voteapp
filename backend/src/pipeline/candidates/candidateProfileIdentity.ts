@@ -68,6 +68,11 @@ export const OVERWRITABLE_PROFILE_FIELDS = [
   "official_website_url",
   "summary",
   "current_office",
+  // Boolean routing fact. Fill-if-NULL by default; listing it under
+  // --replace-profile-fields is the supported correction path for a stale
+  // stored value (the records writers refuse to sweep past a contradiction).
+  // Not clearable: the profile contract requires an answer on every payload.
+  "has_held_public_office",
 ] as const;
 export type OverwritableProfileField = (typeof OVERWRITABLE_PROFILE_FIELDS)[number];
 
@@ -282,6 +287,7 @@ async function insertCandidate(
         official_website_url,
         profile_sources,
         current_office,
+        has_held_public_office,
         last_researched
       )
       VALUES (
@@ -299,6 +305,7 @@ async function insertCandidate(
         $12,
         $13::jsonb,
         $14,
+        $15::boolean,
         now()
       )
       RETURNING id
@@ -318,6 +325,7 @@ async function insertCandidate(
       profile.official_website_url ?? null,
       JSON.stringify(profile.sources),
       profile.current_office ?? null,
+      profile.has_held_public_office ?? null,
     ]
   );
 
@@ -327,6 +335,44 @@ async function insertCandidate(
   }
 
   return id;
+}
+
+/**
+ * Refuse a merge whose EFFECTIVE post-write state would say "holds
+ * current_office X" and "has NEVER held public office" at once — the payload
+ * contract already rejects that pair inside one payload, but fill-if-empty
+ * merging can assemble it across writes (stored office + incoming false
+ * filling a NULL column, or incoming office filling a blank while a stored
+ * false survives). A contradictory row would route the record sweep onto the
+ * wrong question list, which is the exact failure this column exists to end.
+ * Mirrors the merge UPDATE's CASE semantics.
+ */
+export function assertMergedOfficeRoutingConsistent(input: {
+  profile: CandidateProfilePayload;
+  storedCurrentOffice: string | null;
+  storedHasHeldPublicOffice: boolean | null;
+  overwriteFields?: ReadonlySet<OverwritableProfileField>;
+  clearFields?: ReadonlySet<OverwritableProfileField>;
+}): void {
+  const incomingHasHeld = input.profile.has_held_public_office ?? null;
+  const effectiveHasHeld =
+    input.overwriteFields?.has("has_held_public_office") && incomingHasHeld !== null
+      ? incomingHasHeld
+      : input.storedHasHeldPublicOffice ?? incomingHasHeld;
+
+  const storedOffice = input.storedCurrentOffice?.trim() || null;
+  const incomingOffice = input.profile.current_office?.trim() || null;
+  const effectiveOffice = input.clearFields?.has("current_office")
+    ? null
+    : input.overwriteFields?.has("current_office") && incomingOffice !== null
+      ? incomingOffice
+      : storedOffice ?? incomingOffice;
+
+  if (effectiveHasHeld === false && effectiveOffice !== null) {
+    throw new Error(
+      `Profile merge would leave a contradictory candidate row: current_office would be "${effectiveOffice}" (stored: ${JSON.stringify(input.storedCurrentOffice)}, incoming: ${JSON.stringify(input.profile.current_office ?? null)}) while has_held_public_office would be false — a candidate holding a public office now HAS held public office. If the stored office is stale or holds an occupation, clear or replace it (--clear-profile-fields current_office / --replace-profile-fields current_office); if the stored false routing answer is stale, correct it with --replace-profile-fields has_held_public_office. Nothing was written.`
+    );
+  }
 }
 
 async function mergeCandidateIdentifiersForExistingCandidate(
@@ -339,9 +385,11 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   const locked = await client.query<{
     fec_ids: unknown;
     state_filing_ids: unknown;
+    current_office: string | null;
+    has_held_public_office: boolean | null;
   }>(
     `
-      SELECT fec_ids, state_filing_ids
+      SELECT fec_ids, state_filing_ids, current_office, has_held_public_office
       FROM public.candidates
       WHERE id = $1
         AND deleted_at IS NULL
@@ -353,6 +401,14 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   if (!current) {
     return;
   }
+
+  assertMergedOfficeRoutingConsistent({
+    profile,
+    storedCurrentOffice: current.current_office,
+    storedHasHeldPublicOffice: current.has_held_public_office,
+    overwriteFields,
+    clearFields,
+  });
 
   const existingFecIds = parseOptionalStringArray(current.fec_ids);
   const existingStateFilingIds = parseOptionalStringArray(current.state_filing_ids);
@@ -420,6 +476,11 @@ async function mergeCandidateIdentifiersForExistingCandidate(
             WHEN current_office IS NULL OR length(trim(current_office)) = 0 THEN COALESCE($15::text, current_office)
             ELSE current_office
           END,
+          has_held_public_office = CASE
+            WHEN $24::boolean AND $23::boolean IS NOT NULL THEN $23::boolean
+            WHEN has_held_public_office IS NULL THEN $23::boolean
+            ELSE has_held_public_office
+          END,
           profile_sources = $4::jsonb,
           last_researched = now(),
           updated_at = now()
@@ -448,6 +509,11 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       scalars.official_website_url.clear,
       scalars.summary.clear,
       scalars.current_office.clear,
+      // Boolean routing fact: fill-if-NULL, replace only when explicitly
+      // listed. Never cleared — the contract requires an answer, so a clear
+      // would immediately conflict with the payload (writers refuse the flag).
+      profile.has_held_public_office ?? null,
+      overwriteFields?.has("has_held_public_office") ?? false,
     ]
   );
 }

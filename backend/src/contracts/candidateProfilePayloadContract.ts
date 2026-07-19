@@ -13,6 +13,10 @@ export type CandidateProfilePayload = {
   fec_ids?: string[];
   state_filing_ids?: string[];
   current_office?: string;
+  // Has this person EVER held public office (current or former, elected or
+  // appointed)? Routing fact for candidate-record discovery sweeps; required
+  // so every profile pass answers it once and the sweep never re-derives it.
+  has_held_public_office: boolean;
   summary?: string;
   sources: string[];
 };
@@ -197,6 +201,25 @@ export function parseCandidateProfilePayload(
     currentOffice = input.current_office.trim();
   }
 
+  if (typeof input.has_held_public_office !== "boolean") {
+    return {
+      ok: false,
+      reason:
+        "payload.has_held_public_office must be true or false: has this person EVER held elected or appointed public office (current or former)? Answer it from the profile research; it routes the candidate-record discovery sweep.",
+    };
+  }
+  // Holding an office NOW implies having held one: a payload carrying both
+  // current_office and has_held_public_office=false is internally
+  // contradictory. This also catches the recurring misuse of current_office
+  // for an occupation ("Attorney, Noble Law") — occupation belongs in summary.
+  if (currentOffice && input.has_held_public_office === false) {
+    return {
+      ok: false,
+      reason:
+        `payload.current_office ("${currentOffice}") contradicts has_held_public_office=false — a candidate holding a public office now HAS held public office. If the office is real, set has_held_public_office=true; if current_office actually holds an occupation or past office, remove it (occupation belongs in summary).`,
+    };
+  }
+
   let summary: string | undefined;
   if (input.summary !== undefined && input.summary !== null) {
     if (!isNonEmptyString(input.summary)) {
@@ -219,6 +242,7 @@ export function parseCandidateProfilePayload(
       ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),
       ...(stateFilingIds !== undefined ? { state_filing_ids: stateFilingIds } : {}),
       ...(currentOffice ? { current_office: currentOffice } : {}),
+      has_held_public_office: input.has_held_public_office,
       ...(summary ? { summary } : {}),
       sources,
     },

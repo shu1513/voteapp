@@ -41,6 +41,7 @@ function options(
     allowNoHardIdentifier: false,
     confirmedGapIds: new Set(),
     repairReportFile: null,
+    overwriteProfileFields: new Set(),
     ...overrides,
   };
 }
@@ -87,6 +88,44 @@ describe("parseManualPresidentialProfileScriptArgs", () => {
         NOW
       )
     ).toEqual(options({ dryRun: true }));
+  });
+
+  it("parses --replace-profile-fields into a validated field set", () => {
+    expect(
+      parseManualPresidentialProfileScriptArgs(
+        [
+          "--presidential-cycle-id",
+          CYCLE_ID,
+          "--presidential-role",
+          "president",
+          "--file",
+          "profile.json",
+          "--run-id",
+          "manual-run",
+          "--replace-profile-fields",
+          "has_held_public_office,summary",
+        ],
+        NOW
+      )
+    ).toEqual(
+      options({ overwriteProfileFields: new Set(["has_held_public_office", "summary"]) })
+    );
+
+    expect(() =>
+      parseManualPresidentialProfileScriptArgs(
+        [
+          "--presidential-cycle-id",
+          CYCLE_ID,
+          "--presidential-role",
+          "president",
+          "--file",
+          "profile.json",
+          "--replace-profile-fields",
+          "not_a_field",
+        ],
+        NOW
+      )
+    ).toThrow('--replace-profile-fields: unknown field "not_a_field"');
   });
 
   it("requires a parent FEC ID for vice president profiles", () => {

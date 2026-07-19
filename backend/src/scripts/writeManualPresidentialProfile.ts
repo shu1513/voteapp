@@ -14,6 +14,8 @@ import { enqueueCandidateRecordDrafts } from "../pipeline/candidates/candidateRe
 import {
   findOrCreateCandidateFromProfile,
   hasAtLeastOneHardIdentifier,
+  OVERWRITABLE_PROFILE_FIELDS,
+  type OverwritableProfileField,
 } from "../pipeline/candidates/candidateProfileIdentity.js";
 import {
   findPresidentialCycleCandidateIdByFecId,
@@ -59,6 +61,7 @@ export type ManualPresidentialProfileScriptOptions = {
   allowNoHardIdentifier: boolean;
   confirmedGapIds: Set<string>;
   repairReportFile: string | null;
+  overwriteProfileFields: Set<OverwritableProfileField>;
 };
 
 export type ManualPresidentialProfileWriteResult =
@@ -111,9 +114,9 @@ type ManualPresidentialProfileWriteDeps = {
 function usage(): string {
   return [
     "Usage:",
-    "  npm run manual:presidential-profile:write -- --presidential-cycle-id uuid --presidential-role president|vice_president --file profile.json [--parent-presidential-candidate-fec-id P########] [--emit-record-draft] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--repair-report-file file] [--dry-run]",
+    "  npm run manual:presidential-profile:write -- --presidential-cycle-id uuid --presidential-role president|vice_president --file profile.json [--parent-presidential-candidate-fec-id P########] [--emit-record-draft] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--replace-profile-fields f1,f2] [--repair-report-file file] [--dry-run]",
     "",
-    "Payload must match CandidateProfilePayload. Live runs find/create a candidate and link it to the presidential cycle.",
+    "Payload must match CandidateProfilePayload (has_held_public_office true|false is required: has this person EVER held elected or appointed public office?). Stored candidates.has_held_public_office fills only when NULL; pass --replace-profile-fields has_held_public_office to correct a stale stored value. Live runs find/create a candidate and link it to the presidential cycle.",
   ].join("\n");
 }
 
@@ -240,6 +243,23 @@ export function parseManualPresidentialProfileScriptArgs(
     readValueFlag(args, "--run-id")?.trim() ||
     buildRunId({ presidentialCycleId, role: presidentialRole, now });
 
+  const overwriteProfileFields = new Set<OverwritableProfileField>();
+  const replaceFieldsRaw = readValueFlag(args, "--replace-profile-fields");
+  if (replaceFieldsRaw) {
+    for (const raw of replaceFieldsRaw.split(",")) {
+      const field = raw.trim();
+      if (!field) {
+        continue;
+      }
+      if (!(OVERWRITABLE_PROFILE_FIELDS as readonly string[]).includes(field)) {
+        throw new Error(
+          `--replace-profile-fields: unknown field "${field}". Allowed: ${OVERWRITABLE_PROFILE_FIELDS.join(", ")}`
+        );
+      }
+      overwriteProfileFields.add(field as OverwritableProfileField);
+    }
+  }
+
   return {
     presidentialCycleId,
     presidentialRole,
@@ -252,6 +272,7 @@ export function parseManualPresidentialProfileScriptArgs(
     allowNoHardIdentifier: readBooleanFlag(args, "--allow-no-hard-identifier"),
     confirmedGapIds: normalizeConfirmedGaps(readRepeatedFlag(args, "--confirmed-gap")),
     repairReportFile: readValueFlag(args, "--repair-report-file"),
+    overwriteProfileFields,
   };
 }
 
@@ -684,6 +705,7 @@ export async function runManualPresidentialProfileWrite(input: {
       rosterParty: effectiveParty({ profile, context }) ?? undefined,
       includeParty: true,
       allowCrossStateHardIdentifierMatch: true,
+      overwriteProfileFields: input.options.overwriteProfileFields,
     });
     candidateId = candidateResult.candidateId;
     matchedExisting = candidateResult.matchedExisting;
@@ -762,7 +784,7 @@ export async function runManualPresidentialProfileWrite(input: {
 }
 
 async function main(): Promise<void> {
-  assertKnownCliFlags("manual:presidential-profile:write", process.argv.slice(2), [{ name: "--presidential-cycle-id", value: "both" }, { name: "--presidential-role", value: "both" }, { name: "--parent-presidential-candidate-fec-id", value: "both" }, { name: "--file", value: "both" }, { name: "--run-id", value: "both" }, { name: "--confirmed-gap", value: "both" }, { name: "--repair-report-file", value: "both" }, { name: "--emit-record-draft", value: "none" }, { name: "--allow-no-hard-identifier", value: "none" }, { name: "--strict-quality-gate", value: "none" }, { name: "--dry-run", value: "none" }]);
+  assertKnownCliFlags("manual:presidential-profile:write", process.argv.slice(2), [{ name: "--presidential-cycle-id", value: "both" }, { name: "--presidential-role", value: "both" }, { name: "--parent-presidential-candidate-fec-id", value: "both" }, { name: "--file", value: "both" }, { name: "--run-id", value: "both" }, { name: "--confirmed-gap", value: "both" }, { name: "--replace-profile-fields", value: "both" }, { name: "--repair-report-file", value: "both" }, { name: "--emit-record-draft", value: "none" }, { name: "--allow-no-hard-identifier", value: "none" }, { name: "--strict-quality-gate", value: "none" }, { name: "--dry-run", value: "none" }]);
   loadProjectEnv();
   const options = parseManualPresidentialProfileScriptArgs(process.argv.slice(2));
   const rawPayload = await readJsonFile(options.file);

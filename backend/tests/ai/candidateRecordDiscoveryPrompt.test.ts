@@ -171,6 +171,58 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).not.toContain("votes, sponsored legislation, official decisions");
   });
 
+  it("states officeholder status as fact when has_held_public_office is true", () => {
+    const prompt = buildCandidateRecordDiscoveryPrompt({
+      ...baseInput,
+      hasHeldPublicOffice: true,
+    });
+
+    expect(prompt).toContain(
+      "This candidate has held public office (verified fact — do not re-derive it)."
+    );
+    expect(prompt).toContain("major votes and sponsored legislation");
+    expect(prompt).not.toContain("If the candidate holds or has EVER held public office");
+    expect(prompt).not.toContain("If they never held public office");
+  });
+
+  it("states never-held status as fact when has_held_public_office is false", () => {
+    const prompt = buildCandidateRecordDiscoveryPrompt({
+      ...baseInput,
+      hasHeldPublicOffice: false,
+    });
+
+    expect(prompt).toContain("This candidate has NEVER held public office (verified fact");
+    expect(prompt).toContain("do not use officeholder framing");
+    expect(prompt).toContain(
+      "career record; organizations and boards they led or served on and public advocacy; and court, legal, or regulatory records"
+    );
+    expect(prompt).not.toContain("If the candidate holds or has EVER held public office");
+    expect(prompt).not.toContain("major votes and sponsored legislation");
+  });
+
+  it("keeps the self-decide rule only when has_held_public_office is unknown", () => {
+    for (const hasHeldPublicOffice of [null, undefined]) {
+      const prompt = buildCandidateRecordDiscoveryPrompt({
+        ...baseInput,
+        ...(hasHeldPublicOffice === undefined ? {} : { hasHeldPublicOffice }),
+      });
+      expect(prompt).toContain("If the candidate holds or has EVER held public office");
+      expect(prompt).toContain("If they never held public office");
+    }
+  });
+
+  it("routes judicial contests to the judicial objective regardless of has_held_public_office", () => {
+    const prompt = buildCandidateRecordDiscoveryPrompt({
+      ...baseInput,
+      officialBallotTitle: "Judge of the Superior Court",
+      discoveryContestFamily: "judicial_office",
+      hasHeldPublicOffice: false,
+    });
+
+    expect(prompt).toContain("this exact judicial candidate");
+    expect(prompt).not.toContain("This candidate has NEVER held public office");
+  });
+
   it("does not use judicial record objective from title alone", () => {
     const prompt = buildCandidateRecordDiscoveryPrompt({
       ...baseInput,

@@ -4,6 +4,10 @@ import { Pool } from "pg";
 import { loadProjectEnv } from "../config/env.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
+import {
+  listMissingSweepRouteQuestionIds,
+  type SweepRoute,
+} from "./candidateRecordSweepEvidence.js";
 /**
  * Red-flag audit for false records-sweep completeness.
  *
@@ -113,6 +117,197 @@ export function isConfirmedNull(
   );
 }
 
+// --- Sweep-confirmation red-flag detectors (PR 2 of the routing-enforcement
+// plan). Both read the persisted evidence ledgers and retro-flag the
+// 2026-07-15 collapsed-template cohort: identical multi-candidate finding
+// text is the copy-paste signature, and a ledger whose question_id tags
+// cover no complete route was never a per-question sweep.
+
+/**
+ * Identical finding text across at least this many DISTINCT candidates flags
+ * the group. Real research phrases findings per candidate; verbatim reuse
+ * across several people is the template signature.
+ */
+export const SHARED_FINDING_MIN_CANDIDATES = 3;
+
+/**
+ * Findings shorter than this never flag: short negative findings ("nothing
+ * found" is the sanctioned phrasing for an empty answer) legitimately repeat
+ * across candidates, while identical long prose does not.
+ */
+export const SHARED_FINDING_MIN_LENGTH = 40;
+
+export type SweepConfirmationDetectorRow = {
+  candidate_id: string;
+  display_name: string;
+  has_held_public_office: boolean | null;
+  confirmed_at: string;
+  evidence: unknown;
+  context_type: "election" | "presidential_cycle";
+  /** elections.discovery_contest_family of the confirmation's own contest (election contexts only). */
+  discovery_contest_family: string | null;
+  /** False when an election-context confirmation's election row no longer exists. */
+  context_election_found: boolean;
+};
+
+type EvidenceEntryForAudit = {
+  finding: string;
+  questionId: string | null;
+};
+
+/**
+ * Defensive read of the stored evidence jsonb ({"entries": [{"question",
+ * "finding", "question_id"?}]}); malformed rows yield no entries rather than
+ * crashing the audit — the route-coverage detector then flags them anyway
+ * (no tags = no covered route).
+ */
+export function extractAuditEvidenceEntries(evidence: unknown): EvidenceEntryForAudit[] {
+  if (typeof evidence !== "object" || evidence === null || Array.isArray(evidence)) {
+    return [];
+  }
+  const entries = (evidence as Record<string, unknown>).entries;
+  if (!Array.isArray(entries)) {
+    return [];
+  }
+  const parsed: EvidenceEntryForAudit[] = [];
+  for (const row of entries) {
+    if (typeof row !== "object" || row === null || Array.isArray(row)) {
+      continue;
+    }
+    const entry = row as Record<string, unknown>;
+    if (typeof entry.finding !== "string" || entry.finding.trim().length === 0) {
+      continue;
+    }
+    parsed.push({
+      finding: entry.finding.trim(),
+      questionId: typeof entry.question_id === "string" ? entry.question_id : null,
+    });
+  }
+  return parsed;
+}
+
+export type SharedFindingTextGroup = {
+  findingText: string;
+  candidateCount: number;
+  sampleCandidates: { candidateId: string; displayName: string }[];
+};
+
+/**
+ * Groups confirmations by normalized finding text and returns the groups
+ * shared verbatim across >= SHARED_FINDING_MIN_CANDIDATES distinct
+ * candidates, most-shared first.
+ */
+export function listSharedFindingTexts(
+  rows: readonly SweepConfirmationDetectorRow[]
+): SharedFindingTextGroup[] {
+  const groups = new Map<
+    string,
+    { findingText: string; candidates: Map<string, string> }
+  >();
+  for (const row of rows) {
+    for (const entry of extractAuditEvidenceEntries(row.evidence)) {
+      if (entry.finding.length < SHARED_FINDING_MIN_LENGTH) {
+        continue;
+      }
+      const normalized = entry.finding.toLowerCase().replace(/\s+/g, " ");
+      let group = groups.get(normalized);
+      if (!group) {
+        group = { findingText: entry.finding, candidates: new Map() };
+        groups.set(normalized, group);
+      }
+      if (!group.candidates.has(row.candidate_id)) {
+        group.candidates.set(row.candidate_id, row.display_name);
+      }
+    }
+  }
+  return [...groups.values()]
+    .filter((group) => group.candidates.size >= SHARED_FINDING_MIN_CANDIDATES)
+    .sort((left, right) => right.candidates.size - left.candidates.size)
+    .map((group) => ({
+      findingText: group.findingText,
+      candidateCount: group.candidates.size,
+      sampleCandidates: [...group.candidates.entries()]
+        .slice(0, 5)
+        .map(([candidateId, displayName]) => ({ candidateId, displayName })),
+    }));
+}
+
+export type RouteCoverageGap = {
+  candidateId: string;
+  displayName: string;
+  confirmedAt: string;
+  taggedQuestionIds: string[];
+  reason: string;
+};
+
+/**
+ * The routes a confirmation may legitimately cover, derived from its OWN
+ * stored contest context first (the same routing the writers enforce):
+ * a judicial election context requires the judicial route, any other found
+ * election context and every presidential context excludes it (presidential
+ * contests are never judicial), and only a vanished election row falls back
+ * to permitting judicial. Within the non-judicial routes, the stored
+ * has_held_public_office picks officeholder vs never_held_office; NULL
+ * allows either.
+ */
+export function allowedSweepRoutesForConfirmation(
+  row: Pick<
+    SweepConfirmationDetectorRow,
+    "context_type" | "discovery_contest_family" | "context_election_found" | "has_held_public_office"
+  >
+): SweepRoute[] {
+  if (row.context_type === "election" && row.discovery_contest_family === "judicial_office") {
+    return ["judicial"];
+  }
+  const contextKnown =
+    row.context_type === "presidential_cycle" ||
+    (row.context_type === "election" && row.context_election_found);
+  const nonJudicial: SweepRoute[] =
+    row.has_held_public_office === true
+      ? ["officeholder"]
+      : row.has_held_public_office === false
+        ? ["never_held_office"]
+        : ["officeholder", "never_held_office"];
+  return contextKnown ? nonJudicial : [...nonJudicial, "judicial"];
+}
+
+/**
+ * A confirmation must carry question_id tags covering at least one COMPLETE
+ * route question list consistent with its stored contest context and the
+ * candidate's stored routing fact (allowedSweepRoutesForConfirmation).
+ * Pre-PR-#350 confirmations carry no tags and flag here — that is the
+ * retro-flagging of the 2026-07-15 cohort, not a false positive.
+ */
+export function listRouteCoverageGaps(
+  rows: readonly SweepConfirmationDetectorRow[]
+): RouteCoverageGap[] {
+  const gaps: RouteCoverageGap[] = [];
+  for (const row of rows) {
+    const entries = extractAuditEvidenceEntries(row.evidence);
+    const allowedRoutes = allowedSweepRoutesForConfirmation(row);
+    const covered = allowedRoutes.some(
+      (route) => listMissingSweepRouteQuestionIds(entries, route).length === 0
+    );
+    if (covered) {
+      continue;
+    }
+    const taggedQuestionIds = [
+      ...new Set(entries.map((entry) => entry.questionId).filter((id): id is string => id !== null)),
+    ].sort();
+    gaps.push({
+      candidateId: row.candidate_id,
+      displayName: row.display_name,
+      confirmedAt: row.confirmed_at,
+      taggedQuestionIds,
+      reason:
+        taggedQuestionIds.length === 0
+          ? "no question_id tags (pre-#350 ledger or untagged template)"
+          : `tags cover no complete route question list (allowed: ${allowedRoutes.join(", ")})`,
+    });
+  }
+  return gaps;
+}
+
 async function main(): Promise<void> {
   assertKnownCliFlags("manual:records:audit", process.argv.slice(2), [
     { name: "--candidate-id", value: "space" },
@@ -171,6 +366,36 @@ ${targetSql}
     const suspects = result.rows.filter((row) => !isConfirmedNull(row));
     const confirmedNulls = result.rows.filter((row) => isConfirmedNull(row));
 
+    // Detector pass over ALL persisted sweep confirmations in scope (not just
+    // zero-record candidates): a collapsed-template ledger is a red flag even
+    // when the candidate has records.
+    const confirmationsResult = await pool.query<SweepConfirmationDetectorRow>(
+      `
+        SELECT
+          c.id::text AS candidate_id,
+          c.display_name,
+          c.has_held_public_office,
+          sc.confirmed_at::text AS confirmed_at,
+          sc.evidence,
+          sc.context_type,
+          ctx.discovery_contest_family,
+          (sc.context_type <> 'election' OR ctx.id IS NOT NULL) AS context_election_found
+        FROM public.candidate_record_sweep_confirmations sc
+        JOIN public.candidates c ON c.id = sc.candidate_id
+        LEFT JOIN public.elections ctx
+          ON sc.context_type = 'election' AND ctx.id = sc.context_id
+        WHERE c.deleted_at IS NULL
+          AND c.merged_into_candidate_id IS NULL
+${targetSql}
+        ORDER BY c.display_name ASC
+      `,
+      target.values
+    );
+    const sharedFindingTexts = listSharedFindingTexts(confirmationsResult.rows);
+    const routeCoverageGaps = listRouteCoverageGaps(confirmationsResult.rows);
+    const ROUTE_COVERAGE_GAP_LIST_LIMIT = 100;
+    const SHARED_FINDING_LIST_LIMIT = 50;
+
     const appliedFilters = Object.fromEntries(
       Object.entries(filters).filter(([, value]) => value !== null)
     );
@@ -211,6 +436,28 @@ ${targetSql}
             confirmedAt: row.confirmed_at,
             evidenceEntryCount: row.evidence_entry_count,
           })),
+          sweepConfirmationDetectors: {
+            confirmationCount: confirmationsResult.rows.length,
+            explanation:
+              `Red-flag detectors over persisted sweep-confirmation ledgers. sharedFindingTexts: finding text (>= ${SHARED_FINDING_MIN_LENGTH} chars) repeated verbatim across >= ${SHARED_FINDING_MIN_CANDIDATES} distinct candidates — the copy-paste template signature; short negative findings like "nothing found" legitimately repeat and are exempt. routeCoverageGaps: confirmations whose question_id tags cover no complete route question list consistent with the confirmation's own contest context (judicial election contexts require the judicial route; other found election contexts and presidential contexts exclude it) and candidates.has_held_public_office — untagged pre-#350 ledgers (including the 2026-07-15 cohort) flag here by design. Flagged candidates need a proper per-question re-sweep (or the PR-3 confirmation-reset repair).`,
+            sharedFindingTextCount: sharedFindingTexts.length,
+            sharedFindingTexts: sharedFindingTexts.slice(0, SHARED_FINDING_LIST_LIMIT).map((group) => ({
+              candidateCount: group.candidateCount,
+              findingText:
+                group.findingText.length > 200
+                  ? `${group.findingText.slice(0, 197)}...`
+                  : group.findingText,
+              sampleCandidates: group.sampleCandidates,
+            })),
+            ...(sharedFindingTexts.length > SHARED_FINDING_LIST_LIMIT
+              ? { sharedFindingTextsTruncatedTo: SHARED_FINDING_LIST_LIMIT }
+              : {}),
+            routeCoverageGapCount: routeCoverageGaps.length,
+            routeCoverageGaps: routeCoverageGaps.slice(0, ROUTE_COVERAGE_GAP_LIST_LIMIT),
+            ...(routeCoverageGaps.length > ROUTE_COVERAGE_GAP_LIST_LIMIT
+              ? { routeCoverageGapsTruncatedTo: ROUTE_COVERAGE_GAP_LIST_LIMIT }
+              : {}),
+          },
         },
         null,
         2
