@@ -193,6 +193,10 @@ describe("findWithinPayloadRecordCollisions", () => {
     ]);
 
     expect(collisions).toHaveLength(1);
+    expect(collisions[0]).toMatchObject({
+      eventDate: "1986-04-24",
+      sourceUrl: "https://example.gov/journal",
+    });
   });
 
   it("ignores rows that differ in event date or source URL", () => {

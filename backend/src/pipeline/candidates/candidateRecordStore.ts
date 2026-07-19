@@ -179,7 +179,10 @@ export function findWithinPayloadRecordCollisions(
             firstIndex,
             secondIndex,
             eventDate: toEventDateKey(first.eventDate),
-            sourceUrl: first.sourceUrl,
+            // The normalized form is what actually collided; either row's raw
+            // URL alone can read as a mismatch to the operator repairing the
+            // other row.
+            sourceUrl: normalizeUrlForIdentity(first.sourceUrl),
             similarity,
           });
         }
