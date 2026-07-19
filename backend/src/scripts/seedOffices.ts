@@ -131,7 +131,7 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "statewide",
     canonicalName: "State Board of Equalization Member",
     summary:
-      "Oversees state tax administration, property assessment equalization, taxpayer appeals, and related fiscal oversight duties assigned by state law.",
+      "Serves on the state board that makes sure property values are assessed evenly across the state, hears taxpayer appeals, and handles other tax-oversight duties assigned by state law.",
   },
   {
     scope: "statewide",
@@ -185,7 +185,7 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "county",
     canonicalName: "County Executive",
     summary:
-      "The elected chief executive of a county government, such as a County Executive, or the presiding officer of a county commissioners court, such as a Texas County Judge or Kentucky County Judge/Executive. Responsible for county administration, budgets, and executive leadership; not a judicial office.",
+      "Leads county government as its elected chief executive, overseeing the county's budget, agencies, and day-to-day administration. In some states the office is titled County Judge or County Judge/Executive, but it is not a judicial job.",
   },
   {
     scope: "county",
@@ -245,7 +245,7 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "county",
     canonicalName: "Public Administrator",
     summary:
-      "An elected county officer who administers the estates of people who die without a will or without a qualified executor, acting as a court-supervised fiduciary over decedent assets. In some counties the same officer also serves as Public Guardian for incapacitated adults.",
+      "Manages, under court supervision, the money and property left behind when someone dies without a will or without anyone able to settle the estate. In some counties the same officer also serves as Public Guardian for adults who cannot care for themselves.",
   },
   {
     scope: "county",
@@ -341,7 +341,7 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "place",
     canonicalName: "Alderman",
     summary:
-      "Serves on a municipal legislative body in jurisdictions that use alderman titles for local representatives.",
+      "Serves on the city council in cities that call their council members aldermen, voting on local laws, budgets, and oversight of city services.",
   },
   {
     scope: "place",
