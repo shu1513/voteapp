@@ -231,7 +231,7 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "statewide",
     canonicalName: "Railroad Commissioner",
     summary: [
-      "Regulating oil and gas drilling, pipelines, mining, or utilities in states that keep a railroad commission — despite the name, little of the work involves railroads today",
+      "Regulating oil and gas drilling, pipelines, mining, or utilities in states that keep a railroad commission (despite the name, the job today involves little railroad work)",
       "Issuing drilling permits and enforcing safety and environmental rules",
       "Overseeing natural gas utility rates where state law assigns it",
     ].join("\n"),
@@ -293,7 +293,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Running county government day to day, like a mayor for the county",
       "Proposing the county budget",
       "Overseeing county departments and hiring their leaders",
-      "Carrying the title County Judge or County Judge/Executive in some states — the job is mostly executive, though some Texas County Judges also hear certain court cases",
+      "Hearing certain court cases in some Texas counties, where this office is called County Judge or County Judge/Executive",
     ].join("\n"),
   },
   {
@@ -465,10 +465,10 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "place",
     canonicalName: "Mayor",
     summary: [
-      "Running city government day to day",
-      "Proposing the city budget",
-      "Signing or vetoing laws the city council passes",
-      "Appointing department heads, such as the police chief, in many cities",
+      "Serving as the city's top elected leader and its public face",
+      "Setting policy priorities and helping shape the city budget",
+      "Running city government day to day in some cities; in others, a hired city manager runs daily operations",
+      "Signing or vetoing council laws and appointing department heads, such as the police chief, in many cities",
     ].join("\n"),
   },
   {

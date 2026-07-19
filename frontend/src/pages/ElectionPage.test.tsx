@@ -378,6 +378,25 @@ describe("ElectionPage", () => {
     expect(environment.compareDocumentPosition(civilRights) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
+  it("falls back to a neutral heading for catalog bucket office names", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        office: {
+          id: "o-2",
+          scope: "state_lower",
+          canonical_name: "State Lower Chamber Legislator",
+          summary: "Voting on state laws and the state budget",
+        },
+      })
+    );
+
+    expect(
+      await screen.findByRole("heading", { name: "This office is responsible for:" })
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/State Lower Chamber Legislator is responsible/)).not.toBeInTheDocument();
+  });
+
   it("puts the viewer's saved areas first with an sr-only cue", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },

@@ -1,8 +1,7 @@
 // Color scale for the vote-power badge, hottest at the top: the badge answers
 // "how much does my vote matter here" at a glance, so high-leverage elections
 // glow warm (red/orange/amber) and low-leverage ones cool off through purple
-// to gray. Full
-// literal class strings — Tailwind only generates classes it can see in
+// to gray. Full literal class strings — Tailwind only generates classes it can see in
 // source. The "unknown" label never renders a badge, so it has no entry;
 // unrecognized labels fall back to the neutral surface chip.
 const BADGE_CLASS_BY_LABEL: Record<string, string> = {

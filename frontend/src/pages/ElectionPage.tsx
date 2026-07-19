@@ -29,6 +29,21 @@ import { aggregateRecordAreaStances, scoreStanceRelevance } from "@voteapp/api-c
 // default for viewers with saved research areas.
 type CandidateSort = "alphabetical" | "my_issues";
 
+// Catalog bucket names that are not real-world office titles — "State Lower
+// Chamber Legislator is responsible for:" reads as internal jargon next to a
+// page titled "State Representative". Real titles (Mayor, Sheriff, Governor)
+// keep the personalized heading.
+const GENERIC_OFFICE_NAMES = new Set([
+  "State Lower Chamber Legislator",
+  "State Level Judge",
+  "County Level Judge",
+  "Place Level Judge",
+]);
+
+function officeHeadingName(canonicalName: string): string {
+  return GENERIC_OFFICE_NAMES.has(canonicalName) ? "This office" : canonicalName;
+}
+
 // Server loader: the election subject arrives in the document HTML so
 // non-JS crawlers can read it. Anonymous by design — see loadFromApi.
 export async function loader({ params, request }: LoaderFunctionArgs) {
@@ -161,7 +176,7 @@ export function ElectionPage() {
         // then which issues it touches.
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
           <h2 className="text-lg font-semibold">
-            {office ? `${office.canonical_name} is responsible for:` : "About this office"}
+            {office ? `${officeHeadingName(office.canonical_name)} is responsible for:` : "About this office"}
           </h2>
           {office ? (
             // The summary is seeded as newline-separated duty bullets
@@ -171,8 +186,8 @@ export function ElectionPage() {
               {office.summary
                 .split("\n")
                 .filter((line) => line.trim() !== "")
-                .map((line) => (
-                  <li key={line}>{line}</li>
+                .map((line, i) => (
+                  <li key={i}>{line}</li>
                 ))}
             </ul>
           ) : null}

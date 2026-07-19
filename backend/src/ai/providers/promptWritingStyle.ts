@@ -16,7 +16,7 @@
  */
 export const PLAIN_LANGUAGE_STYLE_RULES: readonly string[] = [
   "- Write all reader-facing text for a 6th-grade reader: everyday words, one main idea per sentence, no sentence longer than about 20 words.",
-  '- Say the plain meaning first, and add the official term in parentheses only when the reader will see that term on their ballot ("a court case that tests whether an official can keep the office (called quo warranto)"); everywhere else use the plain meaning alone and drop the term.',
+  '- Say the plain meaning first, then the official term in parentheses only when the reader needs the exact term — it appears on their ballot, or it names a specific bill, case, or law they could look up ("a court case that tests whether an official can keep the office (called quo warranto)"; "voted for the state budget bill (HB 110)"); otherwise use the plain meaning alone and drop the term.',
   '- Plain must stay precise: never swap a specific fact for a vague one, keep who-does-what exact (THE STATE borrows money — never "you agree to borrow money"), and keep numbers concrete.',
   "- Final check: read each sentence as if explaining it to a neighbor who never follows politics; rewrite any sentence they would have to read twice.",
 ];
