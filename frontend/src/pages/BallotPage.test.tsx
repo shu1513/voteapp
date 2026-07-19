@@ -41,7 +41,7 @@ describe("BallotPage", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders election cards, the count line, and only public sorts", async () => {
+  it("renders election cards under a date heading, with only public sorts", async () => {
     stubApiRoutes({
       ...ANONYMOUS,
       "/api/ballot": {
@@ -55,7 +55,16 @@ describe("BallotPage", () => {
 
     expect(await screen.findByText("Governor")).toBeInTheDocument();
     expect(screen.getByText("State Senate")).toBeInTheDocument();
-    expect(screen.getByText(/2 elections across 1 district/)).toBeInTheDocument();
+    // The date heading is the page's visible identity — the "Your ballot"
+    // h1 survives for screen readers only. No election/district count line,
+    // no explainer collapsibles.
+    expect(
+      screen.getByRole("heading", { name: "Elections on November 3, 2026" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "Your ballot" })).toHaveClass("sr-only");
+    expect(screen.queryByText(/elections across/)).not.toBeInTheDocument();
+    expect(screen.queryByText("Which districts?")).not.toBeInTheDocument();
+    expect(screen.queryByText("What do these labels mean?")).not.toBeInTheDocument();
 
     // The anonymous endpoint cannot honor my_areas; the dropdown must not offer it.
     const options = screen.getAllByRole("option").map((option) => option.textContent);
@@ -83,7 +92,7 @@ describe("BallotPage", () => {
     expect(screen.queryByText(/0 candidates/)).not.toBeInTheDocument();
   });
 
-  it("confirms the matched address from router state and lists the districts", async () => {
+  it("shows no matched-address confirmation line for an unambiguous match", async () => {
     stubApiRoutes({
       ...ANONYMOUS,
       "/api/ballot": { body: ballotSummary([electionSummary()]) },
@@ -94,18 +103,14 @@ describe("BallotPage", () => {
       state: { matchedAddress: "123 MAIN ST, JUNEAU, AK, 99801" },
     });
 
-    // Geocoder confirmation: the visitor can catch a wrong match and bail out.
-    expect(screen.getByText("123 MAIN ST, JUNEAU, AK, 99801")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Not your address?" })).toHaveAttribute("href", "/?new=1");
-
-    // District names come from the ballot response, so they survive a refresh.
-    const districtsToggle = await screen.findByText("Which districts?");
-    const list = districtsToggle.closest("details");
-    expect(list).not.toBeNull();
-    expect(list).toHaveTextContent("Alaska");
+    // The always-on confirmation line was dropped as clutter; without an
+    // ambiguous match count the address never renders.
+    await screen.findByText("Governor");
+    expect(screen.queryByText(/123 MAIN ST/)).not.toBeInTheDocument();
+    expect(screen.queryByText("Not your address?")).not.toBeInTheDocument();
   });
 
-  it("warns when the search matched multiple addresses so the visitor confirms the first match", async () => {
+  it("warns with the matched address when the search matched multiple addresses", async () => {
     stubApiRoutes({
       ...ANONYMOUS,
       "/api/ballot": { body: ballotSummary([electionSummary()]) },
@@ -116,9 +121,11 @@ describe("BallotPage", () => {
       state: { matchedAddress: "100 MAIN ST, SPRINGFIELD, MA, 01105", addressMatchCount: 7 },
     });
 
-    expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Your search matched 7 possible addresses, and this ballot is for the first one."
-    );
+    // Self-contained warning: it names the matched address itself since the
+    // confirmation line above it is gone.
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent("Your search matched 7 possible addresses");
+    expect(alert).toHaveTextContent("100 MAIN ST, SPRINGFIELD, MA, 01105");
     expect(screen.getByRole("link", { name: "search again" })).toHaveAttribute("href", "/?new=1");
   });
 

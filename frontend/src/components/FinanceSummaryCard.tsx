@@ -17,8 +17,9 @@ import {
   sortContributionSizeBuckets,
 } from "@voteapp/api-client";
 
-// Campaign finance disclosure panel shared by the election page (per
-// candidate card) and the candidate profile page. Wording is claims-precise:
+// Campaign finance disclosure panel, rendered on the candidate profile page
+// only (the election page's candidate cards deliberately omit finance).
+// Wording is claims-precise:
 // these are amounts and categories reported to the disclosing agency, so
 // headings say "disclosed" / "reporting", and outside committees are
 // "outside groups" (state terminology differs; not every one is a Super PAC).
@@ -144,13 +145,20 @@ function OutsideSection({
   if (total === null && groups.length === 0 && industries.length === 0) {
     return null;
   }
-  // Deliberately neutral styling (no green/red fill): the ballot-measure
-  // "A YES/NO vote means" boxes own that palette, and this section must not
-  // read as a voting recommendation.
+  // Support/opposition are color-coded (green/red tint, same palette as the
+  // ballot-measure YES/NO boxes) so the two directions read apart at a
+  // glance. Labels say what the money did ("spent supporting/opposing this
+  // candidate") — "reported support" was disclosure jargon.
+  const isSupport = direction === "support";
+  const directionLabel = isSupport ? "supporting" : "opposing";
   return (
-    <div className="mt-2 rounded border border-line p-2">
-      <p className="text-sm font-medium text-ink">
-        Reported {direction}
+    <div
+      className={`mt-2 rounded border p-2 ${
+        isSupport ? "border-green-200 bg-green-50" : "border-red-200 bg-red-50"
+      }`}
+    >
+      <p className={`text-sm font-medium ${isSupport ? "text-green-900" : "text-red-900"}`}>
+        Outside money spent {directionLabel} this candidate
         {total !== null ? `: ${formatMoney(total)}` : ""}
       </p>
       {industries.length > 0 ? (
@@ -160,7 +168,7 @@ function OutsideSection({
               is candidate-specific expenditure — an industry can have given
               a group more than the group spent on this race. The heading and
               the section's shared note keep the two from being conflated. */}
-          <h5 className="text-xs font-medium text-ink-soft">Industries funding groups reporting {direction}</h5>
+          <h5 className="text-xs font-medium text-ink-soft">Industries funding these {directionLabel} groups</h5>
           <ul className="mt-1 space-y-1">
             {industries.map((row) => (
               <OutsideIndustryRow key={row.category_name} industry={row} />
@@ -171,7 +179,7 @@ function OutsideSection({
       {groups.length > 0 ? (
         <details className="mt-2">
           <summary className="cursor-pointer select-none text-xs text-ink-soft underline hover:text-ink">
-            Outside groups reporting {direction} ({groups.length})
+            Groups that spent money {directionLabel} this candidate ({groups.length})
           </summary>
           <ul className="mt-1 space-y-0.5">
             {groups.map((row) => (
@@ -224,18 +232,26 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
         rows={direct.top_occupations}
         visibleCount={VISIBLE_OCCUPATIONS}
       />
-      <BreakdownList
-        heading="Direct contributions by size"
-        rows={sortContributionSizeBuckets(direct.contribution_size_buckets ?? [])}
-      />
+      {(direct.contribution_size_buckets ?? []).length > 0 ? (
+        // Collapsed by default: size buckets are secondary detail next to
+        // the money row and occupations.
+        <details className="mt-3">
+          <summary className="cursor-pointer select-none text-xs font-semibold uppercase tracking-wide text-ink-soft underline hover:text-ink">
+            Direct contributions by size
+          </summary>
+          <BreakdownRows rows={sortContributionSizeBuckets(direct.contribution_size_buckets ?? [])} />
+        </details>
+      ) : null}
 
       {hasOutsideFinanceContent(summary) ? (
         <div className="mt-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Outside spending</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
+            Spending by outside groups
+          </h4>
           <p className="mt-1 text-xs text-ink-soft">
-            Outside spending is money spent on this race by outside groups — such as PACs and super
-            PACs — not by the candidate's own campaign. This spending is not coordinated with the
-            candidate's campaign and does not go directly to the candidate.
+            Money spent on this race by outside groups — such as PACs and super PACs — not by the
+            candidate's own campaign. This spending is not coordinated with the candidate's campaign
+            and does not go directly to the candidate.
           </p>
           <OutsideSection
             direction="support"

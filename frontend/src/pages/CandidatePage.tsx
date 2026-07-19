@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import { useQuery } from "@tanstack/react-query";
 import type {
   CandidateDetail,
   CandidateElection,
@@ -16,7 +15,7 @@ import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
-import { apiRequest, formatElectionDate } from "@voteapp/api-client";
+import { formatElectionDate } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
 import { compareByResearchAreaPriority } from "../lib/researchAreaPriority";
 import { useFollows } from "@voteapp/api-client";
@@ -96,12 +95,6 @@ function orderGroupsByPreference(
     .map(({ group }) => group);
 }
 
-// Server loader: the candidate subject arrives in the document HTML so
-// non-JS crawlers can read it. Anonymous by design — see loadFromApi.
-export async function loader({ params, request }: LoaderFunctionArgs) {
-  return loadFromApi<CandidateDetail>(`/api/candidates/${params.candidateId}`, request);
-}
-
 // Election dates are YYYY-MM-DD calendar strings; "today" is the last US
 // clock still on a given date — Pacific/Honolulu, UTC-10, no DST — mirroring
 // the backend's US_LATEST_LOCAL_DATE_SQL (usLocalDate.ts): an election
@@ -113,29 +106,51 @@ function usLatestLocalDate(): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Pacific/Honolulu" }).format(new Date());
 }
 
-// Election-specific finance stays off the candidate detail payload (see
-// backend candidateDetailReader.ts) — the profile fetches this candidate's
-// summary for one election from the narrow finance endpoint, instead of the
-// full election detail with every opponent's records.
-function useElectionFinance(electionId: string, candidateId: string, enabled: boolean) {
-  const query = useQuery({
-    queryKey: ["election-finance", electionId, candidateId],
-    queryFn: () =>
-      apiRequest<{ finance_summary: FinanceSummary | null }>(
-        `/api/elections/${electionId}/candidates/${candidateId}/finance`
-      ),
-    enabled,
-    staleTime: 60_000,
-  });
-  return { summary: query.data?.finance_summary ?? null, isPending: query.isPending, isError: query.isError };
+// Loader payload: the candidate detail plus this candidate's finance for
+// each election they are currently in, keyed by candidate_election_id.
+export type CandidateLoaderData = CandidateDetail & {
+  ongoing_finance: Record<string, FinanceSummary | null>;
+};
+
+// Server loader: the candidate subject arrives in the document HTML so
+// non-JS crawlers can read it. Anonymous by design — see loadFromApi.
+//
+// Ongoing-election finance rides along in the loader (not a client query):
+// SSR never dehydrates query state, so a client-side fetch would leave the
+// profile's only finance surface invisible to crawlers and no-JS readers.
+// Election-specific finance still stays off the candidate detail payload
+// (see backend candidateDetailReader.ts) — the loader hits the narrow
+// per-candidate finance endpoint, instead of the full election detail with
+// every opponent's records.
+export async function loader({ params, request }: LoaderFunctionArgs): Promise<CandidateLoaderData> {
+  const detail = await loadFromApi<CandidateDetail>(`/api/candidates/${params.candidateId}`, request);
+  const today = usLatestLocalDate();
+  const ongoingElections = detail.candidate.elections.filter(
+    (election) => election.election_date >= today
+  );
+  const entries = await Promise.all(
+    ongoingElections.map(async (election): Promise<[string, FinanceSummary | null]> => {
+      try {
+        const { finance_summary } = await loadFromApi<{ finance_summary: FinanceSummary | null }>(
+          `/api/elections/${election.election_id}/candidates/${detail.candidate.candidate_id}/finance`,
+          request
+        );
+        return [election.candidate_election_id, finance_summary];
+      } catch {
+        // A finance failure (404/429/5xx/timeout) must not take down the
+        // whole profile; the section simply doesn't render — same degradation
+        // the old client-side fetch had.
+        return [election.candidate_election_id, null];
+      }
+    })
+  );
+  return { ...detail, ongoing_finance: Object.fromEntries(entries) };
 }
 
-// Eager finance for an election the candidate is currently in. Renders its
-// own section so there is no orphan heading while the fetch is in flight or
-// when the election has no finance coverage — a fetch failure also just
-// leaves the profile without the section.
-function OngoingElectionFinance({ election, candidateId }: { election: CandidateElection; candidateId: string }) {
-  const { summary } = useElectionFinance(election.election_id, candidateId, true);
+// Finance for an election the candidate is currently in, server-fetched by
+// the loader so crawlers see it. Renders its own section so there is no
+// orphan heading when the election has no finance coverage.
+function OngoingElectionFinance({ election, summary }: { election: CandidateElection; summary: FinanceSummary | null }) {
   if (!hasFinanceContent(summary)) {
     return null;
   }
@@ -154,45 +169,6 @@ function OngoingElectionFinance({ election, candidateId }: { election: Candidate
         <FinanceSummaryCard summary={summary} />
       </div>
     </section>
-  );
-}
-
-// Lazy finance for a past election-history row: nothing is fetched until
-// the user opens the disclosure (opening is the explicit ask, so unlike the
-// ongoing section this one states it when there is nothing to show).
-function PastElectionFinance({ election, candidateId }: { election: CandidateElection; candidateId: string }) {
-  const [opened, setOpened] = useState(false);
-  const { summary, isPending, isError } = useElectionFinance(election.election_id, candidateId, opened);
-  return (
-    <details
-      className="mt-1"
-      onToggle={(event) => {
-        if (event.currentTarget.open) {
-          setOpened(true);
-        }
-      }}
-    >
-      {/* Every past-election row repeats this toggle; the aria-label keeps
-          them distinguishable for screen-reader users (an sr-only span would
-          glue words together in the computed accessible name). */}
-      <summary
-        className="cursor-pointer text-xs text-ink-soft hover:text-ink"
-        aria-label={`Campaign finance for ${election.official_ballot_title}, ${formatElectionDate(election.election_date)}`}
-      >
-        Campaign finance
-      </summary>
-      <div className="mt-2">
-        {!opened || isPending ? (
-          <p className="text-xs text-ink-soft">Loading…</p>
-        ) : isError ? (
-          <p className="text-xs text-ink-soft">Couldn’t load finance data for this election.</p>
-        ) : hasFinanceContent(summary) ? (
-          <FinanceSummaryCard summary={summary} />
-        ) : (
-          <p className="text-xs text-ink-soft">No finance data for this election.</p>
-        )}
-      </div>
-    </details>
   );
 }
 
@@ -282,6 +258,9 @@ export function CandidatePage() {
 
   const detail = useLoaderData<typeof loader>();
   const candidate = detail.candidate;
+  // ?? {}: tolerates loader data from before this field existed (deploy skew
+  // between a cached document and fresh code) by rendering no finance.
+  const ongoingFinance = detail.ongoing_finance ?? {};
   const isFollowing = (follows ?? []).some((follow) => follow.candidate_id === candidate.candidate_id);
   const baseGroups = groupRecords(candidate.records);
   const recordGroups =
@@ -335,7 +314,7 @@ export function CandidatePage() {
         <OngoingElectionFinance
           key={election.candidate_election_id}
           election={election}
-          candidateId={candidate.candidate_id}
+          summary={ongoingFinance[election.candidate_election_id] ?? null}
         />
       ))}
 
@@ -432,11 +411,9 @@ export function CandidatePage() {
                   · {formatElectionDate(election.election_date)} · {election.district.name}
                   {election.is_incumbent ? " · incumbent" : ""}
                 </span>
-                {election.election_date < today ? (
-                  // Ongoing races already show finance eagerly above; past
-                  // rows offer it on demand.
-                  <PastElectionFinance election={election} candidateId={candidate.candidate_id} />
-                ) : null}
+                {/* No finance on past-election rows: campaign finance shows
+                    only for the election(s) the candidate is currently in
+                    (the eager section above). */}
               </li>
             ))}
           </ul>

@@ -34,12 +34,20 @@ describe("ReportContentButton", () => {
 
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Report an issue with candidate record" }));
+    // Pre-send header: the prompt and the data-handling disclaimer.
+    expect(screen.getByText("What's wrong?")).toBeInTheDocument();
+    expect(screen.getByText(/Reports help us investigate accuracy issues/)).toBeInTheDocument();
     await user.type(screen.getByLabelText("Details"), "The vote summary is outdated.");
     await user.type(screen.getByLabelText("Optional source URL"), "https://example.gov/source");
     expect(screen.getByLabelText("Optional email")).toHaveValue("voter@example.com");
     await user.click(screen.getByRole("button", { name: "Send report" }));
 
+    // Post-send: the confirmation replaces the header entirely and appears
+    // exactly once (it doubles as the dialog's accessible title).
     expect(await screen.findByText("Report sent. Thank you.")).toBeInTheDocument();
+    expect(screen.getAllByText(/Report sent/)).toHaveLength(1);
+    expect(screen.queryByText("What's wrong?")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Reports help us investigate accuracy issues/)).not.toBeInTheDocument();
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
   });
 
