@@ -1,0 +1,16 @@
+{
+  "official_measure_url": "https://www.sandyspringsga.gov/tsplost",
+  "summary": "Asks Sandy Springs voters to renew TSPLOST, the 0.75 percent (three-quarters of a penny) sales tax dedicated to transportation. The renewal would fund city projects through 2032, including bridge improvements, congestion relief, safety upgrades, sidewalks and bike paths, and road projects.",
+  "what_yes_means": "A yes vote continues the 0.75 percent transportation sales tax and funds the city's listed bridge, road, safety, sidewalk, and bike projects through 2032.",
+  "what_no_means": "A no vote lets the transportation sales tax end, and those city projects would not receive this funding.",
+  "research_area_tags": [
+    {
+      "research_area_slug": "public_infrastructure",
+      "stance": "for"
+    }
+  ],
+  "sources": [
+    "https://www.sandyspringsga.gov/tsplost",
+    "https://www.sandyspringsga.gov/voting-and-elections"
+  ]
+}

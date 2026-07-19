@@ -94,20 +94,26 @@ Wire enum value `medium` stays unchanged (no API break); display copy only.
 
 ## Group E — Content quality audit (data workflow, minimal code)
 
-- [ ] **Ballot measure wording rewrite.** Example of the problem:
+- [x] **Ballot measure wording rewrite.** Example of the problem:
   "Proposition 5: Recall of State Officers" — summary and what_yes_means are
   legalese ("addressing the election of a successor and vacancy handling").
   Target: an average reader understands what the measure does and what a
   yes/no vote changes, concretely. Work:
-  - Audit existing `ballot_measures` rows (summary, what_yes_means,
-    what_no_means); rewrite unclear ones via manual research workflow
-    (voteapp-manual-research skill, no AI API calls).
-  - Tighten plain-language rules in `backend/src/ai/enrichBallotMeasure.ts`
-    prompt so future rows arrive readable. Honor prompt-simplicity rule:
-    few single-idea rules, merge before adding.
-- [ ] **Office description audit.** Once Group C exposes office summaries on
-  the detail page, review each `offices.summary` row for accuracy and
-  readability; rewrite where needed (same manual research workflow).
+  - Audited all 94 `ballot_measures` rows; 15 failed the bar (circular
+    "adopts the changes described" yes/no lines, stub summaries, one garbled
+    RI bond row, undefined jargon like quo warranto/councilmanic/CEQA).
+    Rewrote all 15 from official sources via
+    `npm run manual:ballot-measure:write` (dry-run then live; tags and
+    sources preserved, no AI API calls). Replay payloads committed in
+    `scratch/ballot-measure-rewrites-2026-07-18/` for non-local
+    environments.
+  - Tightened plain-language rules in the ballot-measures prompt
+    (`ballotMeasuresPrompt.ts`): merged concreteness + anti-circular
+    demands into the two existing summary/yes-no rules, no new rules.
+- [x] **Office description audit.** Reviewed all 64 `offices.summary` rows;
+  rewrote 4 (County Executive, Public Administrator, Alderman, State Board
+  of Equalization Member) in `seedOffices.ts` and synced the DB via
+  `npm run elections:offices:seed`.
 
 ## Notes / decisions
 

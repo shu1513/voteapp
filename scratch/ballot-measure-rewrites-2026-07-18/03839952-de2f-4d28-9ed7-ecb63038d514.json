@@ -1,0 +1,20 @@
+{
+  "official_measure_url": "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/sca-1-24.pdf",
+  "summary": "Today a California recall ballot asks two questions at once: remove the state officer, and pick a replacement. Proposition 5 ends the same-ballot replacement vote. A recalled officer's seat would instead be filled the way other vacancies are, and a recalled Governor would be replaced by the Lieutenant Governor for the rest of the term. If a Governor is recalled in the first two years of the term, voters would choose the replacement at a special election combined with the next statewide primary, with a runoff at the general election if no one wins a majority.",
+  "what_yes_means": "A yes vote removes the replacement-candidate question from recall ballots. A recalled officer's seat is filled like other vacancies \u2014 the Lieutenant Governor finishes a recalled Governor's term \u2014 and the recalled officer cannot be appointed to the empty seat.",
+  "what_no_means": "A no vote keeps today's system, where the same recall ballot both removes the officer and elects a replacement, and the replacement wins with the most votes even without a majority.",
+  "research_area_tags": [
+    {
+      "research_area_slug": "election_integrity",
+      "stance": "for"
+    },
+    {
+      "research_area_slug": "government_efficiency",
+      "stance": "for"
+    }
+  ],
+  "sources": [
+    "https://www.sos.ca.gov/elections/ballot-measures/qualified-ballot-measures",
+    "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/sca-1-24.pdf"
+  ]
+}

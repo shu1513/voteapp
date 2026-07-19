@@ -1,0 +1,16 @@
+{
+  "official_measure_url": "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/aca-22.pdf",
+  "summary": "Today a local special tax \u2014 a tax earmarked for a specific purpose \u2014 needs two-thirds voter approval when a city or county proposes it, but only a simple majority when citizens put it on the ballot by initiative, under a California Supreme Court ruling. Proposition 43 closes that gap: starting January 1, 2027, every new, extended, or increased local special tax would need two-thirds voter approval no matter how it reaches the ballot. It also bars local governments, including citizen initiatives, from adding property-value-based taxes beyond those the constitution already allows.",
+  "what_yes_means": "A yes vote requires two-thirds voter approval for all new or increased local special taxes, including citizen-initiative taxes that today pass with a simple majority.",
+  "what_no_means": "A no vote keeps the current split: two-thirds approval for special taxes proposed by local governments, simple majority for those proposed by citizen initiative.",
+  "research_area_tags": [
+    {
+      "research_area_slug": "government_spending_reduction",
+      "stance": "for"
+    }
+  ],
+  "sources": [
+    "https://www.sos.ca.gov/elections/ballot-measures/qualified-ballot-measures",
+    "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/aca-22.pdf"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "official_measure_url": "https://mylrc.sdlegislature.gov/api/Documents/Bill/283708.pdf",
+  "summary": "Today South Dakota's constitution requires the state to provide expanded Medicaid coverage. Amendment I adds a condition: the state must keep that coverage only while the federal government pays at least 90 percent of its cost. If the federal share ever drops below 90 percent, the state could end or cut back expanded Medicaid.",
+  "what_yes_means": "A yes vote lets the state end or cut expanded Medicaid coverage if the federal government's share of the cost falls below 90 percent.",
+  "what_no_means": "A no vote keeps the constitutional requirement to provide expanded Medicaid no matter how much the federal government pays.",
+  "research_area_tags": [
+    {
+      "research_area_slug": "healthcare_affordability",
+      "stance": "against"
+    },
+    {
+      "research_area_slug": "social_programs_and_welfare",
+      "stance": "against"
+    }
+  ],
+  "sources": [
+    "https://mylrc.sdlegislature.gov/api/Documents/Bill/283708.pdf",
+    "https://sdlegislature.gov/api/Bills/25683",
+    "https://sdsos.gov/elections-voting/upcoming-elections/assets/2026%20BQ/HJR5001_DRAFT_4.30.2026.pdf",
+    "https://sdsos.gov/elections-voting/upcoming-elections/general-information/2026/2026-ballot-questions.aspx"
+  ]
+}

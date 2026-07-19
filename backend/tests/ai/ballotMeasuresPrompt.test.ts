@@ -21,6 +21,23 @@ describe("buildBallotMeasuresPrompt", () => {
     expect(prompt).toContain("6th-grade reader");
   });
 
+  it("demands concrete, non-circular summary and yes/no meanings", () => {
+    const prompt = buildBallotMeasuresPrompt({
+      districtName: "Los Angeles County, California",
+      districtType: "county",
+      state: "CA",
+      electionDate: "2026-06-02",
+      officialBallotTitle: "Measure H",
+      seedUrls: [],
+      allowedResearchAreaSlugs: ["healthcare_affordability"],
+    });
+
+    expect(prompt).toContain("name the specific change (amounts, rates, durations, who is affected), not just the topic");
+    expect(prompt).toContain(
+      "never a restatement like 'adopts the measure' or 'the changes described'"
+    );
+  });
+
   it("requests binary YES-outcome research-area tags from allowed slugs", () => {
     const prompt = buildBallotMeasuresPrompt({
       districtName: "Los Angeles County, California",
