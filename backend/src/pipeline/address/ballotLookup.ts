@@ -1769,6 +1769,9 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
   // Issued after every pre-existing query so ordered test mocks keep their
   // slots.
   const electionRow = electionRows[0];
+  // Office columns are nullable only because of the LEFT JOIN (and summary
+  // is NOT NULL in the schema); resolved office rows have non-empty fields.
+  // Same guard as the ballot-summary path.
   const office =
     electionRow?.office_id && electionRow.office_scope && electionRow.office_canonical_name && electionRow.office_summary
       ? {

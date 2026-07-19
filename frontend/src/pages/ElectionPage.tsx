@@ -22,7 +22,7 @@ import { splitResearchAreasBySaved } from "../lib/researchAreaPriority";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
-import { aggregateRecordAreaStances, scoreStanceDirection } from "@voteapp/api-client";
+import { aggregateRecordAreaStances, scoreStanceRelevance } from "@voteapp/api-client";
 
 // "alphabetical" is the payload's own order: the API sorts candidates by
 // display name (there is no true ballot-position data). "my_issues" is the
@@ -497,7 +497,9 @@ function isGovernmentUrl(url: string): boolean {
 // Client-side "my issues first" candidate ordering: weighted unique matched
 // areas dominate, matching record volume breaks ties, and candidates that
 // tie completely (including all zero-scores) keep the payload's alphabetical
-// order — the sort is stable over the original sequence.
+// order — the sort is stable over the original sequence. Relevance, not
+// agreement: against-only records on a saved issue still count as a track
+// record on it (scoreStanceRelevance), matching the direction-neutral label.
 function sortCandidatesByStance(
   candidates: ElectionDetail["candidates"],
   sort: CandidateSort,
@@ -511,7 +513,7 @@ function sortCandidatesByStance(
     return entries;
   }
   return entries
-    .map((entry, index) => ({ entry, index, score: scoreStanceDirection(entry.stances, weights, "for") }))
+    .map((entry, index) => ({ entry, index, score: scoreStanceRelevance(entry.stances, weights) }))
     .sort(
       (a, b) =>
         b.score.score - a.score.score || b.score.recordCount - a.score.recordCount || a.index - b.index

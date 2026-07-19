@@ -74,7 +74,13 @@ export function splitResearchAreasBySaved<T extends { id: string; slug: string; 
     .filter((area) => savedAreaWeights?.has(area.id) ?? false)
     .sort(
       (a, b) =>
-        (savedAreaWeights?.get(a.id)?.rank ?? 0) - (savedAreaWeights?.get(b.id)?.rank ?? 0) ||
+        // The fallback is unreachable — the filter above guarantees
+        // membership, and every stored weight carries a numeric rank
+        // (unranked saves get UNRANKED_RESEARCH_AREA_RANK, which already
+        // sinks them below ranked ones) — but Infinity keeps the same
+        // "unranked sinks" semantics if a caller ever passes a sparser map.
+        (savedAreaWeights?.get(a.id)?.rank ?? Number.POSITIVE_INFINITY) -
+          (savedAreaWeights?.get(b.id)?.rank ?? Number.POSITIVE_INFINITY) ||
         compareByResearchAreaPriority(a, b)
     );
   const others = sortByResearchAreaPriority(

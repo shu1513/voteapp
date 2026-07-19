@@ -480,6 +480,42 @@ describe("ElectionPage", () => {
     ).toBeTruthy();
   });
 
+  it("ranks an against-only candidate above one with no relevant records under my-issues sort", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    const detail = electionDetail();
+    // "My issues first" sorts by relevance, not agreement: Riley's record is
+    // AGAINST the saved issue, but it is still a track record on it, so Riley
+    // must outrank record-less Jordan rather than tying at zero.
+    detail.candidates[1].records = [
+      {
+        id: "r-1",
+        description: "A record.",
+        source_url: "https://example.gov/record",
+        event_date: "2025-01-15",
+        created_at: "2025-02-01T00:00:00.000Z",
+        research_area_tags: [
+          { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", stance: "against" },
+        ],
+      },
+    ];
+    renderElection(() => detail);
+
+    await screen.findByRole("combobox");
+    const riley = screen.getByText("Riley Runner");
+    const jordan = screen.getByText("Jordan Voter");
+    expect(riley.compareDocumentPosition(jordan) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it("renders measure result rows, including election-night outcomes", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>

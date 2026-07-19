@@ -10,7 +10,7 @@ import {
   formatRosterStatus,
   formatVotePowerLabel,
   hasFinanceContent,
-  scoreStanceDirection,
+  scoreStanceRelevance,
   useFollows,
   useMyResearchAreas,
 } from "@voteapp/api-client";
@@ -379,7 +379,9 @@ function isGovernmentUrl(url: string): boolean {
 // Client-side "my issues first" candidate ordering: weighted unique matched
 // areas dominate, matching record volume breaks ties, and candidates that
 // tie completely keep the payload's alphabetical order (stable sort over
-// the original sequence). Same logic as the web ElectionPage.
+// the original sequence). Relevance, not agreement: against-only records on
+// a saved issue still count as a track record on it. Same logic as the web
+// ElectionPage.
 function sortCandidatesByStance(
   candidates: ElectionDetail["candidates"],
   sort: CandidateSort,
@@ -396,7 +398,7 @@ function sortCandidatesByStance(
     return entries;
   }
   return entries
-    .map((entry, index) => ({ entry, index, score: scoreStanceDirection(entry.stances, weights, "for") }))
+    .map((entry, index) => ({ entry, index, score: scoreStanceRelevance(entry.stances, weights) }))
     .sort(
       (a, b) =>
         b.score.score - a.score.score || b.score.recordCount - a.score.recordCount || a.index - b.index
