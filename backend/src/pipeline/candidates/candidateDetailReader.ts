@@ -325,7 +325,8 @@ async function lookupCandidateElections(
         ON district.id = election.district_id
       LEFT JOIN public.offices AS office
         ON office.id = election.office_id
-      WHERE candidate_election.candidate_id = $1::uuid
+      WHERE (candidate_election.candidate_id = $1::uuid
+        OR candidate_election.running_mate_candidate_id = $1::uuid)
       ORDER BY
         CASE WHEN election.election_date >= ${US_LATEST_LOCAL_DATE_SQL} THEN 0 ELSE 1 END ASC,
         CASE WHEN election.election_date >= ${US_LATEST_LOCAL_DATE_SQL} THEN election.election_date END ASC,

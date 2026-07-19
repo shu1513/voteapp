@@ -332,6 +332,9 @@ describe("lookupCandidateDetailById", () => {
     expect(db.query.mock.calls[2]?.[1]).toEqual([candidateId]);
     const sql = String(db.query.mock.calls[2]?.[0]);
     expect(sql).toContain("FROM public.candidate_elections AS candidate_election");
+    expect(sql).toContain(
+      "WHERE (candidate_election.candidate_id = $1::uuid\n        OR candidate_election.running_mate_candidate_id = $1::uuid)"
+    );
     expect(sql).toContain("LEFT JOIN public.offices AS office");
     expect(sql).toContain("CASE WHEN election.election_date >= (now() AT TIME ZONE 'Pacific/Honolulu')::date THEN 0 ELSE 1 END ASC");
     expect(sql).toContain("CASE WHEN election.election_date >= (now() AT TIME ZONE 'Pacific/Honolulu')::date THEN election.election_date END ASC");
