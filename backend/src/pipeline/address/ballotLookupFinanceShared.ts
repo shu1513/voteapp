@@ -216,21 +216,48 @@ export function financeIndustryDisplayName(industryName: string): string {
   );
 }
 
+/**
+ * Evidence is grouped by receiving committee so each organization stays
+ * paired with the group it actually funded, and organization_type decides
+ * the claim: "donor" rows are the organization's own money; "employer" rows
+ * are individual contributions aggregated by the contributor's reported
+ * employer, and must never read as the company itself donating. Mirrors
+ * formatOutsideEvidenceLines in packages/api-client/src/format.ts.
+ */
 export function buildOutsideIndustrySupportExplanation(
   industryName: string,
   evidence: readonly BallotLookupFinanceOutsideIndustrySupportEvidence[],
   supportAction = "independent spending supporting this candidate"
 ): string {
   const displayName = financeIndustryDisplayName(industryName);
+  const preamble = `The ${displayName} category is a top outside-spending support industry because`;
   if (evidence.length === 0) {
-    return `The ${displayName} category is a top outside-spending support industry because organizations classified in this industry contributed to outside groups that reported ${supportAction}.`;
+    return `${preamble} organizations classified in this industry contributed to outside groups that reported ${supportAction}.`;
   }
 
-  return `The ${displayName} category is a top outside-spending support industry because ${formatShortList(
-    evidence.map((item) => item.organization_name)
-  )} contributed to ${formatShortList(
-    evidence.map((item) => item.committee_name)
-  )}, which reported ${supportAction}.`;
+  const byCommittee = new Map<string, BallotLookupFinanceOutsideIndustrySupportEvidence[]>();
+  for (const item of evidence) {
+    const committee = item.committee_name.trim();
+    const rows = byCommittee.get(committee) ?? [];
+    rows.push(item);
+    byCommittee.set(committee, rows);
+  }
+
+  const clauses: string[] = [];
+  for (const [committee, rows] of byCommittee) {
+    const donorNames = rows.filter((row) => row.organization_type === "donor").map((row) => row.organization_name);
+    const employerNames = rows.filter((row) => row.organization_type === "employer").map((row) => row.organization_name);
+    const sources: string[] = [];
+    if (donorNames.length > 0) {
+      sources.push(formatShortList(donorNames));
+    }
+    if (employerNames.length > 0) {
+      sources.push(`contributors employed by ${formatShortList(employerNames)}`);
+    }
+    clauses.push(`${sources.join(", and ")} contributed to ${committee || "an outside group"}`);
+  }
+
+  return `${preamble} ${clauses.join("; ")}, which reported ${supportAction}.`;
 }
 
 export type StateFinanceSummaryRequest = {
