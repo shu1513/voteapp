@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   AmbiguousCandidateIdentityError,
+  assertMergedOfficeRoutingConsistent,
   findOrCreateCandidateFromProfile,
   mergeIdentifierLists,
 } from "../../src/pipeline/candidates/candidateProfileIdentity.js";
@@ -152,7 +153,9 @@ describe("findOrCreateCandidateFromProfile", () => {
 
     const result = await findOrCreateCandidateFromProfile({
       client: { query } as never,
-      profile: profile({ fec_ids: ["P80000001"], current_office: "Governor" }),
+      // has_held_public_office must accompany a current office (contract
+      // invariant; the merge guard enforces it too).
+      profile: profile({ fec_ids: ["P80000001"], current_office: "Governor", has_held_public_office: true }),
       state: "US",
       rosterParty: "Democratic",
       includeParty: true,
@@ -186,7 +189,7 @@ describe("findOrCreateCandidateFromProfile", () => {
       false,
       false,
       // has_held_public_office value + overwrite flag
-      false,
+      true,
       false,
     ]);
   });
@@ -215,7 +218,7 @@ describe("findOrCreateCandidateFromProfile", () => {
 
     const result = await findOrCreateCandidateFromProfile({
       client: { query } as never,
-      profile: profile({ fec_ids: ["P80000001"], current_office: "Governor" }),
+      profile: profile({ fec_ids: ["P80000001"], current_office: "Governor", has_held_public_office: true }),
       state: "US",
       rosterParty: "Democratic",
       includeParty: true,
@@ -251,7 +254,7 @@ describe("findOrCreateCandidateFromProfile", () => {
       false,
       false,
       // has_held_public_office value + overwrite flag
-      false,
+      true,
       false,
     ]);
   });
@@ -492,6 +495,67 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
         matchByLinkedElectionId: "election-1",
       })
     ).rejects.toThrow(/Multiple candidates named/);
+  });
+});
+
+describe("assertMergedOfficeRoutingConsistent", () => {
+  it("refuses filling has_held_public_office=false against a stored current office", () => {
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile(),
+        storedCurrentOffice: "Mayor",
+        storedHasHeldPublicOffice: null,
+      })
+    ).toThrow(/contradictory candidate row/);
+  });
+
+  it("refuses filling a blank office while a stored false routing answer survives", () => {
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile({ current_office: "Mayor", has_held_public_office: true }),
+        storedCurrentOffice: null,
+        storedHasHeldPublicOffice: false,
+      })
+    ).toThrow(/--replace-profile-fields has_held_public_office/);
+  });
+
+  it("accepts the merge when the office is being cleared or replaced away", () => {
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile(),
+        storedCurrentOffice: "Attorney, Noble Law",
+        storedHasHeldPublicOffice: null,
+        clearFields: new Set(["current_office"]),
+      })
+    ).not.toThrow();
+  });
+
+  it("accepts an overwrite that corrects the stale false answer", () => {
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile({ current_office: "Mayor", has_held_public_office: true }),
+        storedCurrentOffice: null,
+        storedHasHeldPublicOffice: false,
+        overwriteFields: new Set(["has_held_public_office"]),
+      })
+    ).not.toThrow();
+  });
+
+  it("accepts consistent states: officeholder with office, never-held without one", () => {
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile({ current_office: "Governor", has_held_public_office: true }),
+        storedCurrentOffice: "Governor",
+        storedHasHeldPublicOffice: true,
+      })
+    ).not.toThrow();
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile(),
+        storedCurrentOffice: null,
+        storedHasHeldPublicOffice: null,
+      })
+    ).not.toThrow();
   });
 });
 

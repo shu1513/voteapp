@@ -259,7 +259,7 @@ export function resolveSweepRoute(input: {
  * completeness claim.
  */
 export function listMissingSweepRouteQuestionIds(
-  entries: readonly SweepEvidenceEntry[],
+  entries: readonly Pick<SweepEvidenceEntry, "questionId">[],
   route: SweepRoute
 ): string[] {
   const tagged = new Set(entries.map((entry) => entry.questionId).filter((id) => id !== null));

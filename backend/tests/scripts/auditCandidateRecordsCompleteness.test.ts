@@ -81,6 +81,9 @@ function detectorRow(
     has_held_public_office: null,
     confirmed_at: "2026-07-15T12:00:00Z",
     evidence: { entries: [] },
+    context_type: "election",
+    discovery_contest_family: null,
+    context_election_found: true,
     ...overrides,
   };
 }
@@ -203,15 +206,62 @@ describe("listRouteCoverageGaps", () => {
     expect(listRouteCoverageGaps([officeholder, neverHeld])).toEqual([]);
   });
 
-  it("accepts the judicial route for both routing answers (contest family routes judicial)", () => {
-    const rows = [true, false].map((hasHeld, index) =>
+  it("requires the judicial route on judicial election contexts, for both routing answers", () => {
+    const judicialLedgers = [true, false].map((hasHeld, index) =>
       detectorRow({
         candidate_id: `judge-${index}`,
         has_held_public_office: hasHeld,
+        discovery_contest_family: "judicial_office",
         evidence: entriesWithIds(["cases", "discipline", "endorsements"]),
       })
     );
-    expect(listRouteCoverageGaps(rows)).toEqual([]);
+    expect(listRouteCoverageGaps(judicialLedgers)).toEqual([]);
+
+    // An officeholder-covered ledger on a judicial contest is the wrong
+    // route even though the tags form a complete list.
+    const wrongRouteOnJudicial = detectorRow({
+      candidate_id: "judge-wrong",
+      has_held_public_office: true,
+      discovery_contest_family: "judicial_office",
+      evidence: entriesWithIds([
+        "rollcalls",
+        "sponsorship",
+        "executive",
+        "proceedings",
+        "leadership",
+        "outside_chamber",
+        "endorsements",
+      ]),
+    });
+    const gaps = listRouteCoverageGaps([wrongRouteOnJudicial]);
+    expect(gaps).toHaveLength(1);
+    expect(gaps[0]?.reason).toContain("allowed: judicial");
+  });
+
+  it("rejects judicial-only tags on non-judicial contexts", () => {
+    const mayoral = detectorRow({
+      candidate_id: "mayor",
+      has_held_public_office: true,
+      evidence: entriesWithIds(["cases", "discipline", "endorsements"]),
+    });
+    const presidential = detectorRow({
+      candidate_id: "pres",
+      context_type: "presidential_cycle",
+      has_held_public_office: true,
+      evidence: entriesWithIds(["cases", "discipline", "endorsements"]),
+    });
+    const gaps = listRouteCoverageGaps([mayoral, presidential]);
+    expect(gaps).toHaveLength(2);
+    expect(gaps[0]?.reason).toContain("allowed: officeholder");
+  });
+
+  it("permits the judicial route only when the election context row is missing", () => {
+    const orphaned = detectorRow({
+      candidate_id: "orphan",
+      context_election_found: false,
+      evidence: entriesWithIds(["cases", "discipline", "endorsements"]),
+    });
+    expect(listRouteCoverageGaps([orphaned])).toEqual([]);
   });
 
   it("flags untagged pre-#350 ledgers (the 2026-07-15 cohort) with the no-tags reason", () => {
@@ -246,7 +296,7 @@ describe("listRouteCoverageGaps", () => {
     });
     const gaps = listRouteCoverageGaps([row]);
     expect(gaps).toHaveLength(1);
-    expect(gaps[0]?.reason).toContain("allowed: never_held_office, judicial");
+    expect(gaps[0]?.reason).toContain("allowed: never_held_office");
   });
 
   it("accepts any complete route when the routing fact is unknown", () => {

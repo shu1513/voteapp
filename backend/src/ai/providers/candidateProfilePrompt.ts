@@ -66,7 +66,7 @@ export function buildCandidateProfilePrompt(input: CandidateProfilePromptInput):
     '  "linkedin_url": "https://... (optional)",',
     '  "official_website_url": "https://... (optional)",',
     '  "current_office": "current elected/appointed/public office, if any (optional)",',
-    '  "has_held_public_office": true,',
+    '  "has_held_public_office": true|false,',
     '  "summary": "short neutral bio summary (optional)",',
     '  "sources": ["https://..."]',
     "}",

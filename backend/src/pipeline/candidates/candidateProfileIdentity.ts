@@ -337,6 +337,44 @@ async function insertCandidate(
   return id;
 }
 
+/**
+ * Refuse a merge whose EFFECTIVE post-write state would say "holds
+ * current_office X" and "has NEVER held public office" at once — the payload
+ * contract already rejects that pair inside one payload, but fill-if-empty
+ * merging can assemble it across writes (stored office + incoming false
+ * filling a NULL column, or incoming office filling a blank while a stored
+ * false survives). A contradictory row would route the record sweep onto the
+ * wrong question list, which is the exact failure this column exists to end.
+ * Mirrors the merge UPDATE's CASE semantics.
+ */
+export function assertMergedOfficeRoutingConsistent(input: {
+  profile: CandidateProfilePayload;
+  storedCurrentOffice: string | null;
+  storedHasHeldPublicOffice: boolean | null;
+  overwriteFields?: ReadonlySet<OverwritableProfileField>;
+  clearFields?: ReadonlySet<OverwritableProfileField>;
+}): void {
+  const incomingHasHeld = input.profile.has_held_public_office ?? null;
+  const effectiveHasHeld =
+    input.overwriteFields?.has("has_held_public_office") && incomingHasHeld !== null
+      ? incomingHasHeld
+      : input.storedHasHeldPublicOffice ?? incomingHasHeld;
+
+  const storedOffice = input.storedCurrentOffice?.trim() || null;
+  const incomingOffice = input.profile.current_office?.trim() || null;
+  const effectiveOffice = input.clearFields?.has("current_office")
+    ? null
+    : input.overwriteFields?.has("current_office") && incomingOffice !== null
+      ? incomingOffice
+      : storedOffice ?? incomingOffice;
+
+  if (effectiveHasHeld === false && effectiveOffice !== null) {
+    throw new Error(
+      `Profile merge would leave a contradictory candidate row: current_office would be "${effectiveOffice}" (stored: ${JSON.stringify(input.storedCurrentOffice)}, incoming: ${JSON.stringify(input.profile.current_office ?? null)}) while has_held_public_office would be false — a candidate holding a public office now HAS held public office. If the stored office is stale or holds an occupation, clear or replace it (--clear-profile-fields current_office / --replace-profile-fields current_office); if the stored false routing answer is stale, correct it with --replace-profile-fields has_held_public_office. Nothing was written.`
+    );
+  }
+}
+
 async function mergeCandidateIdentifiersForExistingCandidate(
   client: PoolClient,
   candidateId: string,
@@ -347,9 +385,11 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   const locked = await client.query<{
     fec_ids: unknown;
     state_filing_ids: unknown;
+    current_office: string | null;
+    has_held_public_office: boolean | null;
   }>(
     `
-      SELECT fec_ids, state_filing_ids
+      SELECT fec_ids, state_filing_ids, current_office, has_held_public_office
       FROM public.candidates
       WHERE id = $1
         AND deleted_at IS NULL
@@ -361,6 +401,14 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   if (!current) {
     return;
   }
+
+  assertMergedOfficeRoutingConsistent({
+    profile,
+    storedCurrentOffice: current.current_office,
+    storedHasHeldPublicOffice: current.has_held_public_office,
+    overwriteFields,
+    clearFields,
+  });
 
   const existingFecIds = parseOptionalStringArray(current.fec_ids);
   const existingStateFilingIds = parseOptionalStringArray(current.state_filing_ids);

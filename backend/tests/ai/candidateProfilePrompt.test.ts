@@ -67,7 +67,9 @@ describe("buildCandidateProfilePrompt", () => {
   it("requires the has_held_public_office routing answer", () => {
     const prompt = buildCandidateProfilePrompt(baseInput);
 
-    expect(prompt).toContain('"has_held_public_office": true,');
+    // Both values shown: a true-only example would weakly bias models toward
+    // officeholder framing, the exact defaulting failure this field prevents.
+    expect(prompt).toContain('"has_held_public_office": true|false,');
     expect(prompt).toContain(
       "has_held_public_office is required: true if this person has EVER held elected or appointed public office (current or former, including judicial office), false if never."
     );

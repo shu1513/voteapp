@@ -55,6 +55,38 @@ describe("parseCandidateProfilePayload", () => {
     }
   });
 
+  it("rejects current_office together with has_held_public_office=false as contradictory", () => {
+    const base = {
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      sources: ["https://example.org/profile"],
+    };
+
+    const contradiction = parseCandidateProfilePayload({
+      ...base,
+      current_office: "Mayor",
+      has_held_public_office: false,
+    });
+    expect(contradiction.ok).toBe(false);
+    if (!contradiction.ok) {
+      expect(contradiction.reason).toContain('current_office ("Mayor") contradicts');
+    }
+
+    const officeholder = parseCandidateProfilePayload({
+      ...base,
+      current_office: "Mayor",
+      has_held_public_office: true,
+    });
+    expect(officeholder.ok).toBe(true);
+
+    const formerOfficeholder = parseCandidateProfilePayload({
+      ...base,
+      has_held_public_office: true,
+    });
+    expect(formerOfficeholder.ok).toBe(true);
+  });
+
   it("rejects blank current office", () => {
     const parsed = parseCandidateProfilePayload({
       display_name: "Jane Doe",

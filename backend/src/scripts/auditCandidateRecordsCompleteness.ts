@@ -6,7 +6,6 @@ import { loadProjectEnv } from "../config/env.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import {
   listMissingSweepRouteQuestionIds,
-  SWEEP_ROUTE_QUESTION_IDS,
   type SweepRoute,
 } from "./candidateRecordSweepEvidence.js";
 /**
@@ -144,6 +143,11 @@ export type SweepConfirmationDetectorRow = {
   has_held_public_office: boolean | null;
   confirmed_at: string;
   evidence: unknown;
+  context_type: "election" | "presidential_cycle";
+  /** elections.discovery_contest_family of the confirmation's own contest (election contexts only). */
+  discovery_contest_family: string | null;
+  /** False when an election-context confirmation's election row no longer exists. */
+  context_election_found: boolean;
 };
 
 type EvidenceEntryForAudit = {
@@ -237,30 +241,50 @@ export type RouteCoverageGap = {
 };
 
 /**
+ * The routes a confirmation may legitimately cover, derived from its OWN
+ * stored contest context first (the same routing the writers enforce):
+ * a judicial election context requires the judicial route, any other found
+ * election context and every presidential context excludes it (presidential
+ * contests are never judicial), and only a vanished election row falls back
+ * to permitting judicial. Within the non-judicial routes, the stored
+ * has_held_public_office picks officeholder vs never_held_office; NULL
+ * allows either.
+ */
+export function allowedSweepRoutesForConfirmation(
+  row: Pick<
+    SweepConfirmationDetectorRow,
+    "context_type" | "discovery_contest_family" | "context_election_found" | "has_held_public_office"
+  >
+): SweepRoute[] {
+  if (row.context_type === "election" && row.discovery_contest_family === "judicial_office") {
+    return ["judicial"];
+  }
+  const contextKnown =
+    row.context_type === "presidential_cycle" ||
+    (row.context_type === "election" && row.context_election_found);
+  const nonJudicial: SweepRoute[] =
+    row.has_held_public_office === true
+      ? ["officeholder"]
+      : row.has_held_public_office === false
+        ? ["never_held_office"]
+        : ["officeholder", "never_held_office"];
+  return contextKnown ? nonJudicial : [...nonJudicial, "judicial"];
+}
+
+/**
  * A confirmation must carry question_id tags covering at least one COMPLETE
- * route question list consistent with the candidate's stored routing fact:
- * has_held_public_office=true allows officeholder or judicial, false allows
- * never_held_office or judicial (judicial contests are routed by contest
- * family, which both officeholders and first-timers can sit in), NULL allows
- * any route. Pre-PR-#350 confirmations carry no tags and flag here — that is
- * the retro-flagging of the 2026-07-15 cohort, not a false positive.
+ * route question list consistent with its stored contest context and the
+ * candidate's stored routing fact (allowedSweepRoutesForConfirmation).
+ * Pre-PR-#350 confirmations carry no tags and flag here — that is the
+ * retro-flagging of the 2026-07-15 cohort, not a false positive.
  */
 export function listRouteCoverageGaps(
   rows: readonly SweepConfirmationDetectorRow[]
 ): RouteCoverageGap[] {
   const gaps: RouteCoverageGap[] = [];
   for (const row of rows) {
-    const entries = extractAuditEvidenceEntries(row.evidence).map((entry) => ({
-      question: "",
-      finding: entry.finding,
-      questionId: entry.questionId,
-    }));
-    const allowedRoutes: SweepRoute[] =
-      row.has_held_public_office === true
-        ? ["officeholder", "judicial"]
-        : row.has_held_public_office === false
-          ? ["never_held_office", "judicial"]
-          : (Object.keys(SWEEP_ROUTE_QUESTION_IDS) as SweepRoute[]);
+    const entries = extractAuditEvidenceEntries(row.evidence);
+    const allowedRoutes = allowedSweepRoutesForConfirmation(row);
     const covered = allowedRoutes.some(
       (route) => listMissingSweepRouteQuestionIds(entries, route).length === 0
     );
@@ -352,9 +376,14 @@ ${targetSql}
           c.display_name,
           c.has_held_public_office,
           sc.confirmed_at::text AS confirmed_at,
-          sc.evidence
+          sc.evidence,
+          sc.context_type,
+          ctx.discovery_contest_family,
+          (sc.context_type <> 'election' OR ctx.id IS NOT NULL) AS context_election_found
         FROM public.candidate_record_sweep_confirmations sc
         JOIN public.candidates c ON c.id = sc.candidate_id
+        LEFT JOIN public.elections ctx
+          ON sc.context_type = 'election' AND ctx.id = sc.context_id
         WHERE c.deleted_at IS NULL
           AND c.merged_into_candidate_id IS NULL
 ${targetSql}
@@ -410,7 +439,7 @@ ${targetSql}
           sweepConfirmationDetectors: {
             confirmationCount: confirmationsResult.rows.length,
             explanation:
-              `Red-flag detectors over persisted sweep-confirmation ledgers. sharedFindingTexts: finding text (>= ${SHARED_FINDING_MIN_LENGTH} chars) repeated verbatim across >= ${SHARED_FINDING_MIN_CANDIDATES} distinct candidates — the copy-paste template signature; short negative findings like "nothing found" legitimately repeat and are exempt. routeCoverageGaps: confirmations whose question_id tags cover no complete route question list consistent with candidates.has_held_public_office — untagged pre-#350 ledgers (including the 2026-07-15 cohort) flag here by design. Flagged candidates need a proper per-question re-sweep (or the PR-3 confirmation-reset repair).`,
+              `Red-flag detectors over persisted sweep-confirmation ledgers. sharedFindingTexts: finding text (>= ${SHARED_FINDING_MIN_LENGTH} chars) repeated verbatim across >= ${SHARED_FINDING_MIN_CANDIDATES} distinct candidates — the copy-paste template signature; short negative findings like "nothing found" legitimately repeat and are exempt. routeCoverageGaps: confirmations whose question_id tags cover no complete route question list consistent with the confirmation's own contest context (judicial election contexts require the judicial route; other found election contexts and presidential contexts exclude it) and candidates.has_held_public_office — untagged pre-#350 ledgers (including the 2026-07-15 cohort) flag here by design. Flagged candidates need a proper per-question re-sweep (or the PR-3 confirmation-reset repair).`,
             sharedFindingTextCount: sharedFindingTexts.length,
             sharedFindingTexts: sharedFindingTexts.slice(0, SHARED_FINDING_LIST_LIMIT).map((group) => ({
               candidateCount: group.candidateCount,
