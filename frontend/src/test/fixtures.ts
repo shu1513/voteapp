@@ -246,6 +246,38 @@ export function financeSummary(): FinanceSummary {
         { category_name: "labor_unions", amount: 15000, contributor_count: null, source_url: null },
       ],
     },
+    backing_summary: {
+      top_outside_supporting_industries: [
+        {
+          category_name: "technology",
+          amount: 35000,
+          contributor_count: null,
+          source_url: null,
+          explanation:
+            "The Technology category is a top outside-spending support industry because Google and Anthropic contributed to Growth PAC, which reported independent spending supporting this candidate.",
+          supporting_organizations: [
+            {
+              organization_name: "Google",
+              organization_type: "employer",
+              amount: 20000,
+              contributor_count: 3,
+              committee_id: "pac-1",
+              committee_name: "Growth PAC",
+              source_url: null,
+            },
+            {
+              organization_name: "Anthropic",
+              organization_type: "employer",
+              amount: 15000,
+              contributor_count: 2,
+              committee_id: "pac-1",
+              committee_name: "Growth PAC",
+              source_url: null,
+            },
+          ],
+        },
+      ],
+    },
   };
 }
 

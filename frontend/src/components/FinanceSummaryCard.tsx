@@ -1,13 +1,20 @@
-import type { FinanceBreakdown, FinanceOutsideGroup, FinanceSummary } from "@voteapp/api-client";
+import type {
+  FinanceBreakdown,
+  FinanceOutsideGroup,
+  FinanceOutsideIndustrySupport,
+  FinanceSummary,
+} from "@voteapp/api-client";
 import {
   financeSourceLabel,
   firstFinanceSourceUrl,
   formatElectionDate,
   formatFinanceCategory,
   formatMoney,
+  formatOutsideEvidenceLines,
   formatSourceHost,
   hasFinanceContent,
   hasOutsideFinanceContent,
+  sortContributionSizeBuckets,
 } from "@voteapp/api-client";
 
 // Campaign finance disclosure panel shared by the election page (per
@@ -15,10 +22,18 @@ import {
 // these are amounts and categories reported to the disclosing agency, so
 // headings say "disclosed" / "reporting", and outside committees are
 // "outside groups" (state terminology differs; not every one is a Super PAC).
+//
+// The card keeps a brief default view: top occupations (first few, rest
+// behind a disclosure), size buckets largest-first, and outside spending
+// with a plain-language explanation. Employers and direct-donor industries
+// are deliberately not rendered — they don't help voters decide.
 
 // "Anything to render" logic lives in the shared package (the mobile card
 // uses the same definition); re-exported here for this component's callers.
 export { hasFinanceContent };
+
+// How many occupation rows show before the rest collapse behind "Show more".
+const VISIBLE_OCCUPATIONS = 4;
 
 function MoneyStat({ label, amount }: { label: string; amount: number | null }) {
   if (amount === null) {
@@ -41,29 +56,79 @@ function AmountRow({ name, right }: { name: string; right: string }) {
   );
 }
 
-function BreakdownList({ heading, rows }: { heading: string; rows: FinanceBreakdown[] }) {
+function BreakdownRows({ rows }: { rows: FinanceBreakdown[] }) {
+  return (
+    <ul className="mt-1 space-y-0.5">
+      {rows.map((row) => (
+        // contributor_count is deliberately not rendered: state adapters
+        // disagree on its meaning (Colorado counts contribution rows, Utah
+        // counts distinct contributors, FEC counts itemized receipts), so
+        // any single label ("donors", "contributions") would be wrong for
+        // some sources. Show it only once the backend guarantees one
+        // semantic across every loader.
+        <AmountRow key={row.category_name} name={formatFinanceCategory(row.category_name)} right={formatMoney(row.amount)} />
+      ))}
+    </ul>
+  );
+}
+
+function BreakdownList({
+  heading,
+  rows,
+  visibleCount,
+}: {
+  heading: string;
+  rows: FinanceBreakdown[];
+  /** When set, rows beyond this count collapse behind a "Show more" disclosure. */
+  visibleCount?: number;
+}) {
   if (rows.length === 0) {
     return null;
   }
+  const visible = visibleCount !== undefined ? rows.slice(0, visibleCount) : rows;
+  const hidden = visibleCount !== undefined ? rows.slice(visibleCount) : [];
   return (
     <div className="mt-3">
       <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{heading}</h4>
-      <ul className="mt-1 space-y-0.5">
-        {rows.map((row) => (
-          // contributor_count is deliberately not rendered: state adapters
-          // disagree on its meaning (Colorado counts contribution rows, Utah
-          // counts distinct contributors, FEC counts itemized receipts), so
-          // any single label ("donors", "contributions") would be wrong for
-          // some sources. Show it only once the backend guarantees one
-          // semantic across every loader.
-          <AmountRow key={row.category_name} name={formatFinanceCategory(row.category_name)} right={formatMoney(row.amount)} />
-        ))}
-      </ul>
+      <BreakdownRows rows={visible} />
+      {hidden.length > 0 ? (
+        <details className="mt-1">
+          <summary className="cursor-pointer select-none text-xs text-ink-soft underline hover:text-ink">
+            Show {hidden.length} more
+          </summary>
+          <BreakdownRows rows={hidden} />
+        </details>
+      ) : null}
     </div>
   );
 }
 
-function OutsideColumn({
+/**
+ * One outside-spending industry with, when the backend supplies evidence,
+ * a plain-language line naming the organizations behind it.
+ */
+function OutsideIndustryRow({ industry }: { industry: FinanceBreakdown | FinanceOutsideIndustrySupport }) {
+  const organizations = "supporting_organizations" in industry ? industry.supporting_organizations : [];
+  // One line per receiving committee; "employer" evidence reads as money from
+  // that employer's contributors, never as the company donating (the shared
+  // helper owns the distinction).
+  const evidenceLines = formatOutsideEvidenceLines(organizations);
+  return (
+    <li className="text-sm">
+      <div className="flex justify-between gap-3">
+        <span className="text-ink">{formatFinanceCategory(industry.category_name)}</span>
+        <span className="shrink-0 text-ink-soft">{formatMoney(industry.amount)}</span>
+      </div>
+      {evidenceLines.map((line) => (
+        <p key={line} className="text-xs text-ink-soft">
+          {line}
+        </p>
+      ))}
+    </li>
+  );
+}
+
+function OutsideSection({
   direction,
   total,
   groups,
@@ -72,48 +137,48 @@ function OutsideColumn({
   direction: "support" | "opposition";
   total: number | null;
   groups: FinanceOutsideGroup[];
-  industries: FinanceBreakdown[];
+  industries: (FinanceBreakdown | FinanceOutsideIndustrySupport)[];
 }) {
   // An all-empty direction renders nothing rather than a bare header — a
   // race often has disclosed support with no disclosed opposition.
   if (total === null && groups.length === 0 && industries.length === 0) {
     return null;
   }
-  const support = direction === "support";
+  // Deliberately neutral styling (no green/red fill): the ballot-measure
+  // "A YES/NO vote means" boxes own that palette, and this section must not
+  // read as a voting recommendation.
   return (
-    <div className={support ? "rounded border border-green-200 bg-green-50 p-2" : "rounded border border-red-200 bg-red-50 p-2"}>
-      <p className={support ? "text-sm font-medium text-green-900" : "text-sm font-medium text-red-900"}>
+    <div className="mt-2 rounded border border-line p-2">
+      <p className="text-sm font-medium text-ink">
         Reported {direction}
         {total !== null ? `: ${formatMoney(total)}` : ""}
       </p>
-      {groups.length > 0 ? (
-        <div className="mt-2">
-          <h5 className="text-xs font-medium text-ink-soft">Outside groups reporting {direction}</h5>
-          <ul className="mt-1 space-y-0.5">
-            {groups.map((row) => (
-              <AmountRow key={row.committee_id} name={row.committee_name} right={formatMoney(row.amount)} />
-            ))}
-          </ul>
-        </div>
-      ) : null}
       {industries.length > 0 ? (
         <div className="mt-2">
           {/* These amounts are contributions INTO the groups (aggregated
               from committee income across the cycle), while the total above
               is candidate-specific expenditure — an industry can have given
               a group more than the group spent on this race. The heading and
-              the card's shared note keep the two from being conflated. */}
+              the section's shared note keep the two from being conflated. */}
           <h5 className="text-xs font-medium text-ink-soft">Industries funding groups reporting {direction}</h5>
-          <ul className="mt-1 space-y-0.5">
+          <ul className="mt-1 space-y-1">
             {industries.map((row) => (
-              <AmountRow
-                key={row.category_name}
-                name={formatFinanceCategory(row.category_name)}
-                right={formatMoney(row.amount)}
-              />
+              <OutsideIndustryRow key={row.category_name} industry={row} />
             ))}
           </ul>
         </div>
+      ) : null}
+      {groups.length > 0 ? (
+        <details className="mt-2">
+          <summary className="cursor-pointer select-none text-xs text-ink-soft underline hover:text-ink">
+            Outside groups reporting {direction} ({groups.length})
+          </summary>
+          <ul className="mt-1 space-y-0.5">
+            {groups.map((row) => (
+              <AmountRow key={row.committee_id} name={row.committee_name} right={formatMoney(row.amount)} />
+            ))}
+          </ul>
+        </details>
       ) : null}
     </div>
   );
@@ -131,11 +196,21 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
     direct.debts_owed !== null ||
     direct.public_funds_received != null;
   const sourceUrl = firstFinanceSourceUrl(summary);
+  // Supporting industries prefer the backing-summary rows, which carry the
+  // organizations behind each industry; fall back to the plain breakdown.
+  const supportingIndustries: (FinanceBreakdown | FinanceOutsideIndustrySupport)[] =
+    summary.backing_summary?.top_outside_supporting_industries?.length
+      ? summary.backing_summary.top_outside_supporting_industries
+      : outside.top_supporting_industries;
 
   return (
     <div className="text-sm">
+      <p className="text-xs text-ink-soft">
+        Data last updated {formatElectionDate(summary.last_synced_at.slice(0, 10))}
+      </p>
+
       {hasMoneyRow ? (
-        <dl className={`grid grid-cols-2 gap-3 ${hasPublicFunds ? "sm:grid-cols-5" : "sm:grid-cols-4"}`}>
+        <dl className={`mt-3 grid grid-cols-2 gap-3 ${hasPublicFunds ? "sm:grid-cols-5" : "sm:grid-cols-4"}`}>
           <MoneyStat label="Raised" amount={direct.total_raised} />
           <MoneyStat label="Spent" amount={direct.total_spent} />
           <MoneyStat label="Cash on hand" amount={direct.cash_on_hand} />
@@ -144,40 +219,47 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
         </dl>
       ) : null}
 
-      <BreakdownList heading="Top disclosed occupations of direct donors" rows={direct.top_occupations} />
-      <BreakdownList heading="Top disclosed employers of direct donors" rows={direct.top_employers ?? []} />
-      <BreakdownList heading="Industries represented among direct contributions" rows={direct.top_industries} />
-      <BreakdownList heading="Direct contributions by size" rows={direct.contribution_size_buckets ?? []} />
+      <BreakdownList
+        heading="Top disclosed occupations of direct donors"
+        rows={direct.top_occupations}
+        visibleCount={VISIBLE_OCCUPATIONS}
+      />
+      <BreakdownList
+        heading="Direct contributions by size"
+        rows={sortContributionSizeBuckets(direct.contribution_size_buckets ?? [])}
+      />
 
       {hasOutsideFinanceContent(summary) ? (
         <div className="mt-3">
           <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Outside spending</h4>
-          {outside.top_supporting_industries.length > 0 || outside.top_opposing_industries.length > 0 ? (
+          <p className="mt-1 text-xs text-ink-soft">
+            Outside spending is money spent on this race by outside groups — such as PACs and super
+            PACs — not by the candidate's own campaign. This spending is not coordinated with the
+            candidate's campaign and does not go directly to the candidate.
+          </p>
+          <OutsideSection
+            direction="support"
+            total={outside.support_total}
+            groups={outside.top_supporting_groups}
+            industries={supportingIndustries}
+          />
+          <OutsideSection
+            direction="opposition"
+            total={outside.oppose_total}
+            groups={outside.top_opposing_groups}
+            industries={outside.top_opposing_industries}
+          />
+          {supportingIndustries.length > 0 || outside.top_opposing_industries.length > 0 ? (
             <p className="mt-1 text-xs text-ink-soft">
               Industry amounts are contributions to these groups, not amounts necessarily spent on this
               candidate.
             </p>
           ) : null}
-          <div className="mt-1 grid gap-3 sm:grid-cols-2">
-            <OutsideColumn
-              direction="support"
-              total={outside.support_total}
-              groups={outside.top_supporting_groups}
-              industries={outside.top_supporting_industries}
-            />
-            <OutsideColumn
-              direction="opposition"
-              total={outside.oppose_total}
-              groups={outside.top_opposing_groups}
-              industries={outside.top_opposing_industries}
-            />
-          </div>
         </div>
       ) : null}
 
       <p className="mt-3 text-xs text-ink-soft">
-        Source: {financeSourceLabel(summary.source)} · {summary.cycle} cycle · synced{" "}
-        {formatElectionDate(summary.last_synced_at.slice(0, 10))}
+        Source: {financeSourceLabel(summary.source)} · {summary.cycle} cycle
         {sourceUrl ? (
           <>
             {" · "}

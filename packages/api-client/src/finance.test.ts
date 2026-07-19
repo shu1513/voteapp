@@ -34,12 +34,14 @@ describe("NYC finance shared fields", () => {
     expect(hasFinanceContent(summary)).toBe(true);
   });
 
-  it("finds source URLs in employer and size breakdowns", () => {
+  it("finds source URLs in employer breakdowns even though they no longer count as content", () => {
     const summary = emptySummary();
     summary.direct_campaign.top_employers = [
       { category_name: "NYC DOE", amount: 1, contributor_count: 1, source_url: "https://www.nyccfb.info/" },
     ];
-    expect(hasFinanceContent(summary)).toBe(true);
+    // Employers aren't rendered anymore, so alone they don't make the card show…
+    expect(hasFinanceContent(summary)).toBe(false);
+    // …but their rows still serve as a provenance-link fallback.
     expect(firstFinanceSourceUrl(summary)).toBe("https://www.nyccfb.info/");
   });
 });

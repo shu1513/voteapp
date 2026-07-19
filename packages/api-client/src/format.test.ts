@@ -5,11 +5,15 @@ import {
   formatElectionDate,
   formatFinanceCategory,
   formatMoney,
+  formatNameList,
   formatOutcome,
+  formatOutsideEvidenceLines,
   formatRosterStatus,
   formatSourceHost,
   formatVotePowerLabel,
+  sortContributionSizeBuckets,
 } from "./format";
+import type { FinanceOutsideIndustryEvidence } from "./types";
 
 describe("formatElectionDate", () => {
   it("renders YYYY-MM-DD as a local calendar date without timezone drift", () => {
@@ -129,5 +133,111 @@ describe("financeSourceLabel", () => {
 
   it("title-cases unknown enums instead of leaking raw values", () => {
     expect(financeSourceLabel("NEW_STATE_PORTAL")).toBe("New State Portal");
+  });
+});
+
+describe("formatNameList", () => {
+  it("joins one, two, and three-plus names with Oxford-comma grammar", () => {
+    expect(formatNameList(["Google"])).toBe("Google");
+    expect(formatNameList(["Google", "Anthropic"])).toBe("Google and Anthropic");
+    expect(formatNameList(["Google", "Anthropic", "Amazon"])).toBe("Google, Anthropic, and Amazon");
+  });
+
+  it("drops duplicates and whitespace-only entries, returning '' when nothing survives", () => {
+    expect(formatNameList(["Google", " Google", "Google "])).toBe("Google");
+    expect(formatNameList(["  ", "", "\t"])).toBe("");
+    expect(formatNameList([])).toBe("");
+  });
+});
+
+describe("sortContributionSizeBuckets", () => {
+  it("orders buckets largest-first by the leading dollar amount", () => {
+    const rows = [
+      { category_name: "$1-$99" },
+      { category_name: "$5,000+" },
+      { category_name: "$500-$999" },
+      { category_name: "$1,000-$4,999" },
+    ];
+    expect(sortContributionSizeBuckets(rows).map((row) => row.category_name)).toEqual([
+      "$5,000+",
+      "$1,000-$4,999",
+      "$500-$999",
+      "$1-$99",
+    ]);
+  });
+
+  it("keeps unparseable labels last in their original relative order", () => {
+    const rows = [
+      { category_name: "Unitemized" },
+      { category_name: "$100-$499" },
+      { category_name: "Other receipts" },
+      { category_name: "$5,000+" },
+    ];
+    expect(sortContributionSizeBuckets(rows).map((row) => row.category_name)).toEqual([
+      "$5,000+",
+      "$100-$499",
+      "Unitemized",
+      "Other receipts",
+    ]);
+  });
+
+  it("does not mutate its input", () => {
+    const rows = [{ category_name: "$1-$99" }, { category_name: "$5,000+" }];
+    sortContributionSizeBuckets(rows);
+    expect(rows.map((row) => row.category_name)).toEqual(["$1-$99", "$5,000+"]);
+  });
+});
+
+describe("formatOutsideEvidenceLines", () => {
+  const evidence = (overrides: Partial<FinanceOutsideIndustryEvidence>): FinanceOutsideIndustryEvidence => ({
+    organization_name: "Google",
+    organization_type: "donor",
+    amount: 1000,
+    contributor_count: null,
+    committee_id: "pac-1",
+    committee_name: "Growth PAC",
+    source_url: null,
+    ...overrides,
+  });
+
+  it("presents donor rows as the organization's own money", () => {
+    expect(formatOutsideEvidenceLines([evidence({})])).toEqual(["Money from Google, given to Growth PAC."]);
+  });
+
+  it("presents employer rows as contributors' money, never the company's", () => {
+    expect(formatOutsideEvidenceLines([evidence({ organization_type: "employer" })])).toEqual([
+      "Money from contributors employed by Google, given to Growth PAC.",
+    ]);
+  });
+
+  it("combines donor and employer rows for one committee in a single line", () => {
+    expect(
+      formatOutsideEvidenceLines([
+        evidence({}),
+        evidence({ organization_name: "Anthropic", organization_type: "employer" }),
+      ])
+    ).toEqual(["Money from Google, and from contributors employed by Anthropic, given to Growth PAC."]);
+  });
+
+  it("keeps each organization paired with its own committee across lines", () => {
+    expect(
+      formatOutsideEvidenceLines([
+        evidence({}),
+        evidence({
+          organization_name: "Anthropic",
+          organization_type: "employer",
+          committee_id: "pac-2",
+          committee_name: "Future PAC",
+        }),
+      ])
+    ).toEqual([
+      "Money from Google, given to Growth PAC.",
+      "Money from contributors employed by Anthropic, given to Future PAC.",
+    ]);
+  });
+
+  it("returns no lines for empty or name-less evidence", () => {
+    expect(formatOutsideEvidenceLines([])).toEqual([]);
+    expect(formatOutsideEvidenceLines([evidence({ organization_name: "  " })])).toEqual([]);
   });
 });

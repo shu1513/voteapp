@@ -6,7 +6,8 @@ import type { FinanceSummary } from "./types";
 /**
  * Whether a summary has anything worth rendering. null money values mean
  * "not reported" and hide; an explicit 0 is a real disclosed amount and
- * counts as content.
+ * counts as content. Employers and direct-donor industries are no longer
+ * rendered by the cards, so they no longer count as content on their own.
  */
 export function hasFinanceContent(summary: FinanceSummary | null | undefined): summary is FinanceSummary {
   if (!summary) {
@@ -20,8 +21,6 @@ export function hasFinanceContent(summary: FinanceSummary | null | undefined): s
     direct.debts_owed !== null ||
     direct.public_funds_received != null ||
     direct.top_occupations.length > 0 ||
-    (direct.top_employers?.length ?? 0) > 0 ||
-    direct.top_industries.length > 0 ||
     (direct.contribution_size_buckets?.length ?? 0) > 0 ||
     hasOutsideFinanceContent(summary)
   );

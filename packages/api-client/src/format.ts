@@ -2,7 +2,7 @@
 // must be treated as calendar dates, not instants: new Date("2026-11-03")
 // parses as UTC midnight and renders the previous day in US timezones.
 
-import type { CandidateRosterStatus } from "./types";
+import type { CandidateRosterStatus, FinanceOutsideIndustryEvidence } from "./types";
 
 export function formatElectionDate(isoDate: string): string {
   const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(isoDate.trim());
@@ -175,6 +175,88 @@ export function formatRosterStatus(status: CandidateRosterStatus): { short: stri
         long: "Candidate information for this race isn't available yet.",
       };
   }
+}
+
+/**
+ * Joins names as "A", "A and B", or "A, B, and C" for the outside-spending
+ * evidence lines. Mirrors the backend's formatShortList but returns "" when
+ * empty so callers can skip the line entirely.
+ */
+export function formatNameList(names: readonly string[]): string {
+  const unique = [...new Set(names.map((name) => name.trim()).filter((name) => name.length > 0))];
+  if (unique.length === 0) {
+    return "";
+  }
+  if (unique.length === 1) {
+    return unique[0];
+  }
+  if (unique.length === 2) {
+    return `${unique[0]} and ${unique[1]}`;
+  }
+  return `${unique.slice(0, -1).join(", ")}, and ${unique[unique.length - 1]}`;
+}
+
+/**
+ * Plain-language lines for outside-spending industry evidence, one per
+ * receiving committee so each organization stays paired with the group it
+ * actually funded. organization_type decides the claim: "donor" rows are the
+ * organization's own money; "employer" rows are individual contributions
+ * aggregated by the contributor's reported employer, and must never read as
+ * the company itself donating.
+ */
+export function formatOutsideEvidenceLines(organizations: readonly FinanceOutsideIndustryEvidence[]): string[] {
+  const byCommittee = new Map<string, FinanceOutsideIndustryEvidence[]>();
+  for (const organization of organizations) {
+    const committee = organization.committee_name.trim();
+    const rows = byCommittee.get(committee) ?? [];
+    rows.push(organization);
+    byCommittee.set(committee, rows);
+  }
+  const lines: string[] = [];
+  for (const [committee, rows] of byCommittee) {
+    const donorNames = formatNameList(
+      rows.filter((row) => row.organization_type === "donor").map((row) => row.organization_name)
+    );
+    const employerNames = formatNameList(
+      rows.filter((row) => row.organization_type === "employer").map((row) => row.organization_name)
+    );
+    const fragments: string[] = [];
+    if (donorNames) {
+      fragments.push(`from ${donorNames}`);
+    }
+    if (employerNames) {
+      fragments.push(`from contributors employed by ${employerNames}`);
+    }
+    if (fragments.length === 0) {
+      continue;
+    }
+    const given = committee ? `, given to ${committee}` : "";
+    lines.push(`Money ${fragments.join(", and ")}${given}.`);
+  }
+  return lines;
+}
+
+/**
+ * Orders contribution-size buckets largest-first by the leading dollar
+ * amount in the label ("$5,000+" before "$1,000-$4,999" before "$1-$99").
+ * Labels arrive as free text from per-source aggregators; anything without a
+ * parseable amount sorts last in its original order.
+ */
+export function sortContributionSizeBuckets<T extends { category_name: string }>(rows: readonly T[]): T[] {
+  const leadingAmount = (label: string): number => {
+    const match = /([\d,]+)/.exec(label);
+    if (!match) {
+      return Number.NEGATIVE_INFINITY;
+    }
+    const value = Number(match[1].replaceAll(",", ""));
+    return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
+  };
+  return rows
+    .map((row, index) => ({ row, index }))
+    .sort(
+      (a, b) => leadingAmount(b.row.category_name) - leadingAmount(a.row.category_name) || a.index - b.index
+    )
+    .map((entry) => entry.row);
 }
 
 export function financeSourceLabel(source: string): string {
