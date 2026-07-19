@@ -21,6 +21,7 @@ import {
 } from "../pipeline/candidates/candidateRecordOfficeContext.js";
 import {
   buildCandidateRecordIdentityKey,
+  findWithinPayloadRecordCollisions,
   upsertCandidateRecords,
 } from "../pipeline/candidates/candidateRecordStore.js";
 import {
@@ -386,6 +387,52 @@ async function main(): Promise<void> {
         : "";
     throw new Error(
       `Presidential candidate records payload needs focused repair before import; dropped=${validatedRecords.droppedRecords.length}; ${summarizeDroppedRecords(validatedRecords.droppedRecords)}.${hint}`
+    );
+  }
+
+  // Same within-payload merge guard as writeManualCandidateRecords: rows
+  // sharing an event date and source URL with near-identical descriptions
+  // would be collapsed into one stored record by the upsert's similarity
+  // dedupe, so the payload is refused until they are differentiated.
+  const withinPayloadCollisions = findWithinPayloadRecordCollisions(
+    validatedRecords.records.map((record) => ({
+      description: record.description,
+      sourceUrl: record.source_url,
+      eventDate: record.event_date,
+    }))
+  );
+  if (withinPayloadCollisions.length > 0) {
+    const gaps: ManualResearchRepairGap[] = withinPayloadCollisions.map((collision) => ({
+      id: `candidate_records.within_payload_collision.${collision.firstIndex}.${collision.secondIndex}`,
+      stage: "candidate_records",
+      objectType: "candidate_record_set",
+      outcome: "needs_repair",
+      failureKind: "schema",
+      reason: `records[${collision.firstIndex}] and records[${collision.secondIndex}] share event_date=${collision.eventDate} and source_url=${collision.sourceUrl} with description similarity ${collision.similarity.toFixed(2)} (>= 0.86): the writer would merge them into one stored record.`,
+      recordIndex: collision.secondIndex,
+      sourceUrl: collision.sourceUrl,
+      eventDate: collision.eventDate,
+      focusedResearchPass:
+        "If the rows describe the SAME action, keep one. If they are distinct actions, rewrite each description with its distinguishing substance or cite each action's own specific URL, then rerun.",
+    }));
+    await writeRecordsRepairReport({
+      reportFile: options.repairReportFile,
+      key,
+      options,
+      candidateDisplayName: null,
+      gaps,
+    });
+    const preview = withinPayloadCollisions
+      .slice(0, 5)
+      .map(
+        (collision) =>
+          `records[${collision.firstIndex}]~records[${collision.secondIndex}] (similarity ${collision.similarity.toFixed(2)}, event_date=${collision.eventDate})`
+      )
+      .join("; ");
+    const extra =
+      withinPayloadCollisions.length > 5 ? `; +${withinPayloadCollisions.length - 5} more` : "";
+    throw new Error(
+      `Presidential candidate records payload contains ${withinPayloadCollisions.length} within-payload similarity collision(s) that the writer would silently merge: ${preview}${extra}. Differentiate the descriptions (or source URLs) of distinct same-day actions, or remove true duplicates, then rerun.`
     );
   }
 
