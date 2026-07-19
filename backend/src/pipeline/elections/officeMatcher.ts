@@ -263,6 +263,18 @@ function stripSeatSuffixes(value: string): string {
     // office. (Lives here, after the jurisdiction strip, so the county's own
     // name never sits between "president of the" and the body phrase.)
     .replace(/(?<!\bpresident of the )\bcounty board of commissioners\b/g, "county commissioner")
+    // Bare plural body form without "board of" ("Middlesex County
+    // Commissioners", official NJ title, live: wrote a NULL-office shell).
+    // The "of"-lookbehind leaves every "board of commissioners" phrase alone —
+    // the county form was already rewritten above, and city/president-of board
+    // phrases must keep their plural so they do not over-match the member
+    // office.
+    .replace(/(?<!\bof )\bcommissioners\b/g, "commissioner")
+    // Utah titles the county-commission seat by its governing body plus a seat
+    // letter ("Utah County Commission Seat A", live: four NULL-office shells);
+    // the catalog keys on the member office. The seat letter itself is
+    // stripped by the seat-designator rule below.
+    .replace(/\bcounty commission\b/g, "county commissioner")
     .replace(/\boffice (?:no )?\d+\b/g, " ")
     .replace(/\bposition (?:no )?\d+\b/g, " ")
     // "Council District No. 5" (Seattle live) titles the council-member SEAT
@@ -295,9 +307,11 @@ function stripSeatSuffixes(value: string): string {
     // precincts ("Constable, Justice Prec. 2" — the seat is the justice-court
     // precinct, so the "justice" that introduces it goes with the number;
     // "Justice of the Peace, Prec. 2" keeps its office words because there
-    // the number follows bare "prec").
+    // the number follows bare "prec"). Lettered seats ("Commission Seat A",
+    // Utah live) are the same designator; [a-h] keeps single-letter coverage
+    // beyond what the Roman-numeral alternative already accepts.
     .replace(
-      /\b(?:ward|zone|seat|part|(?:justice )?(?:precinct|prec)) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g,
+      /\b(?:ward|zone|seat|part|(?:justice )?(?:precinct|prec)) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+|[a-h])\b/g,
       " "
     )
     // At-large is a seat designator, not an office word ("County Council At
@@ -316,6 +330,24 @@ function stripSeatSuffixes(value: string): string {
     // Howard County MD live) — leading connector only, so office names that
     // merely contain "for" are untouched.
     .replace(/^for /, "");
+}
+
+// The jurisdiction strip deliberately keeps the generic civic word so
+// bare-office aliases like "county judge" still match — but some states alias
+// the office WITHOUT it: "Snohomish County Prosecuting Attorney" strips to
+// "county prosecuting attorney" while the seeded county alias is "prosecuting
+// attorney" (→ District Attorney; Pierce and Snohomish both wrote NULL-office
+// shells live). This yields the civic-word-free form for a last-chance alias
+// lookup. Callers only use multi-word remainders — single-word offices
+// ("County Sheriff" → "sheriff") already resolve through the token scorer, and
+// a one-token alias hit ("judge") would be too generic to trust.
+function stripLeadingGenericCivicWords(value: string): string {
+  const tokens = value.split(" ").filter((token) => token.length > 0);
+  let start = 0;
+  while (start < tokens.length && GENERIC_DISTRICT_SUFFIX_TOKENS.has(tokens[start] ?? "")) {
+    start += 1;
+  }
+  return tokens.slice(start).join(" ");
 }
 
 function toMatcherTokens(value: string): string[] {
@@ -567,6 +599,12 @@ export class OfficeMatcher {
     let exactOfficeId = aliases.get(normalizedAlias);
     if (!exactOfficeId && titleMatcherKey.length > 0 && titleMatcherKey !== normalizedAlias) {
       exactOfficeId = aliases.get(titleMatcherKey);
+    }
+    if (!exactOfficeId && titleMatcherKey.length > 0) {
+      const civicWordFreeKey = stripLeadingGenericCivicWords(titleMatcherKey);
+      if (civicWordFreeKey !== titleMatcherKey && civicWordFreeKey.includes(" ")) {
+        exactOfficeId = aliases.get(civicWordFreeKey);
+      }
     }
     if (exactOfficeId && input.discoveryContestFamily === "non_judicial_office") {
       // A learned alias may point at a judge office (e.g. a Texas "County Judge",

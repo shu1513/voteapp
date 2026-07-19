@@ -49,6 +49,35 @@ describe("parseCandidateRecordAreaLabelPayload", () => {
     }
   });
 
+  it("reports every invalid row in one pass and prints the office allowlist once", () => {
+    // Fail-fast label validation forced serial repair — one defect per
+    // dry-run (a live 17-record payload took three cycles for three label
+    // problems). All rows must surface together, with the office's allowed
+    // set attached so the repair needs no discovery dry-run.
+    const parsed = parseCandidateRecordAreaLabelPayload(
+      {
+        labels: [
+          { record_index: 0, research_area_slug: "general" },
+          { record_index: 1, research_area_slug: "immigration", stance: "for" },
+          { record_index: 2, research_area_slug: "government_efficiency" },
+          { record_index: 3, research_area_slug: "integrity_and_ethics", stance: "for" },
+        ],
+      },
+      { allowedResearchAreaSlugs: new Set(["general", "government_efficiency", "integrity_and_ethics"]) }
+    );
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("payload.labels contains invalid row");
+      expect(parsed.reason).toContain("labels[1]: research_area_slug 'immigration' is not in the allowed research areas");
+      expect(parsed.reason).toContain("labels[2]: stance is required for research_area_slug 'government_efficiency'");
+      expect(parsed.reason).toContain("labels[3]: stance is not allowed for non-stance area 'integrity_and_ethics'");
+      expect(parsed.reason).toContain(
+        "allowed research areas for this office: general, government_efficiency, integrity_and_ethics"
+      );
+    }
+  });
+
   it("names the cause when stance is missing on a stance-bearing area", () => {
     const parsed = parseCandidateRecordAreaLabelPayload(
       {

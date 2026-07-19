@@ -33,7 +33,7 @@ function normalizeStance(value: unknown): CandidateRecordAreaLabel["stance"] | n
 function parseLabel(
   value: unknown,
   options: ParseOptions
-): { ok: true; label: CandidateRecordAreaLabel } | { ok: false; reason: string } {
+): { ok: true; label: CandidateRecordAreaLabel } | { ok: false; reason: string; allowlistRejection?: boolean } {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     return { ok: false, reason: "row must be an object" };
   }
@@ -58,6 +58,7 @@ function parseLabel(
     return {
       ok: false,
       reason: `research_area_slug '${slug}' is not in the allowed research areas for this office`,
+      allowlistRejection: true,
     };
   }
 
@@ -101,6 +102,11 @@ export function parseCandidateRecordAreaLabelPayload(
   const labels: CandidateRecordAreaLabel[] = [];
   const seenPairs = new Set<string>();
   const seenRecordIndexes = new Set<number>();
+  // Collect EVERY invalid row before failing: the fail-fast form exposed one
+  // defect per dry-run and forced serial repair (a live 17-record payload took
+  // three validation cycles to surface three label problems).
+  const rowProblems: string[] = [];
+  let sawAllowlistRejection = false;
 
   for (const [index, row] of input.labels.entries()) {
     const parsed = parseLabel(row, options);
@@ -108,7 +114,9 @@ export function parseCandidateRecordAreaLabelPayload(
       // Keep the "payload.labels contains invalid row" prefix stable: operator docs
       // and log searches match on it. The suffix names the row and cause so the AI
       // retry feedback loop (and manual-wrapper operators) can fix the right thing.
-      return { ok: false, reason: `payload.labels contains invalid row: labels[${index}]: ${parsed.reason}` };
+      rowProblems.push(`labels[${index}]: ${parsed.reason}`);
+      sawAllowlistRejection = sawAllowlistRejection || parsed.allowlistRejection === true;
+      continue;
     }
     const pairKey = `${parsed.label.record_index}::${parsed.label.research_area_slug}`;
     if (seenPairs.has(pairKey)) {
@@ -117,6 +125,20 @@ export function parseCandidateRecordAreaLabelPayload(
     seenPairs.add(pairKey);
     seenRecordIndexes.add(parsed.label.record_index);
     labels.push(parsed.label);
+  }
+
+  if (rowProblems.length > 0) {
+    // An allowlist rejection means the payload was assembled from the global
+    // taxonomy; print the office's actual allowed set once so the repair does
+    // not need a second failing dry-run to discover it.
+    const allowlistHint =
+      sawAllowlistRejection && options.allowedResearchAreaSlugs
+        ? ` (allowed research areas for this office: ${[...options.allowedResearchAreaSlugs].sort().join(", ")})`
+        : "";
+    return {
+      ok: false,
+      reason: `payload.labels contains invalid row: ${rowProblems.join("; ")}${allowlistHint}`,
+    };
   }
 
   if (options.requireLabelForEveryRecord && options.recordCount !== undefined) {

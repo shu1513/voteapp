@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { assertKnownCliFlags, type CliFlagSpec } from "../../src/scripts/manualCliFlags.js";
 
@@ -28,6 +28,30 @@ describe("assertKnownCliFlags", () => {
         { name: "--reason", value: "space" },
       ])
     ).not.toThrow();
+  });
+
+  it("--help prints the known flag set and exits 0 before any env or DB work", () => {
+    // Wrappers historically rejected --help as an unknown flag; operators had
+    // to read script source (or burn a sandbox-blocked probe run) to discover
+    // flags — live on the deferral and election-injector CLIs.
+    const logs: string[] = [];
+    const logSpy = vi.spyOn(console, "log").mockImplementation((message: string) => {
+      logs.push(String(message));
+    });
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(((code?: number) => {
+      throw new Error(`process.exit(${code})`);
+    }) as never);
+    try {
+      expect(() => assertKnownCliFlags("manual:candidate-records:write", ["--help"], RECORDS_SPECS)).toThrow(
+        "process.exit(0)"
+      );
+      expect(logs.join("\n")).toContain("manual:candidate-records:write flags:");
+      expect(logs.join("\n")).toContain("--records-file <value>");
+      expect(logs.join("\n")).toContain("--dry-run");
+    } finally {
+      logSpy.mockRestore();
+      exitSpy.mockRestore();
+    }
   });
 
   it("rejects an unknown flag and names the known set", () => {

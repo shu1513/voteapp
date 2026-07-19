@@ -382,9 +382,12 @@ async function main(): Promise<void> {
           familySourceUrlFamilies: familySourceUrls ? Object.keys(familySourceUrls) : [],
           reviewApprove,
           historical,
+          // Targeted mode is the manual-run default: bare --once consumes the
+          // shared stream and starves on stale local-Redis backlog (live, many
+          // runs followed this output verbatim into unrelated queued work).
           next: [
-            "npm run elections:validate -- --once",
-            "npm run elections:write -- --once",
+            `npm run elections:validate -- --once --ingest-key ${ingestKey}`,
+            `npm run elections:write -- --once --ingest-key ${ingestKey}`,
           ],
         },
         null,
