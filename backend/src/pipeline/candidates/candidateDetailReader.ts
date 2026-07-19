@@ -314,7 +314,12 @@ async function lookupCandidateElections(
         election.election_date::text AS election_date,
         election.election_stage,
         election.is_partisan,
-        candidate_election.is_incumbent,
+        -- is_incumbent describes the row's ticket lead, not the running mate;
+        -- never claim incumbency for a running-mate match.
+        CASE
+          WHEN candidate_election.candidate_id = $1::uuid THEN candidate_election.is_incumbent
+          ELSE FALSE
+        END AS is_incumbent,
         candidate_election.status,
         office.scope AS office_scope,
         office.canonical_name AS office_canonical_name
@@ -325,7 +330,17 @@ async function lookupCandidateElections(
         ON district.id = election.district_id
       LEFT JOIN public.offices AS office
         ON office.id = election.office_id
-      WHERE candidate_election.candidate_id = $1::uuid
+      WHERE (candidate_election.candidate_id = $1::uuid
+        -- Schema uniqueness is per role, so a candidate can hold their own row
+        -- and appear as a running mate in the same election; keep only the own
+        -- row then or the page would list the election twice.
+        OR (candidate_election.running_mate_candidate_id = $1::uuid
+          AND NOT EXISTS (
+            SELECT 1
+            FROM public.candidate_elections AS own_link
+            WHERE own_link.candidate_id = $1::uuid
+              AND own_link.election_id = candidate_election.election_id
+          )))
       ORDER BY
         CASE WHEN election.election_date >= ${US_LATEST_LOCAL_DATE_SQL} THEN 0 ELSE 1 END ASC,
         CASE WHEN election.election_date >= ${US_LATEST_LOCAL_DATE_SQL} THEN election.election_date END ASC,
