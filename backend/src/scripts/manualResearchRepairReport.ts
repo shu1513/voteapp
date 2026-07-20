@@ -9,13 +9,19 @@ export type ManualResearchRepairOutcome =
 
 export type ManualResearchRepairGap = {
   id: string;
-  stage: "candidate_profile" | "candidate_records" | "candidate_record_labels" | "finance_committee_labels";
+  stage:
+    | "candidate_profile"
+    | "candidate_records"
+    | "candidate_record_labels"
+    | "finance_committee_labels"
+    | "finance_industry_labels";
   objectType:
     | "candidate_profile"
     | "candidate_record"
     | "candidate_record_label"
     | "candidate_record_set"
-    | "finance_committee_label";
+    | "finance_committee_label"
+    | "finance_industry_label";
   outcome: ManualResearchRepairOutcome;
   reason: string;
   focusedResearchPass: string;

@@ -14,6 +14,7 @@ export const FINANCE_INDUSTRY_SLUGS = [
   "agriculture_and_food",
   "business_associations",
   "manufacturing",
+  "media_entertainment",
   "insurance",
   "hospitality",
   "transportation",
