@@ -228,8 +228,9 @@ describe("texasCandidateFinanceSync", () => {
       },
     });
 
-    expect(db.query).toHaveBeenCalledTimes(15);
-    expect(db.query.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(db.query).toHaveBeenCalledTimes(16);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.finance_label_classifications");
+    expect(db.query.mock.calls[1]?.[0]).toBe("BEGIN");
     expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
 
     const linkCall = db.query.mock.calls.find((call) =>

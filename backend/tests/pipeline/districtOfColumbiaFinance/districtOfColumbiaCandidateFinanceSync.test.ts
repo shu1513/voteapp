@@ -129,7 +129,10 @@ describe("districtOfColumbiaCandidateFinanceSync", () => {
       },
     });
 
-    expect(db.query).not.toHaveBeenCalled();
+    // The pool handle only serves the read-only cached-classification
+    // lookup; every write goes through the transactional client.
+    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.finance_label_classifications");
     expect(db.client.query.mock.calls[0]?.[0]).toBe("BEGIN");
     expect(db.client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
 

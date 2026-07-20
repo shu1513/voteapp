@@ -1,9 +1,22 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  FINANCE_INDUSTRY_DISPLAY_NAMES,
   buildOutsideIndustrySupportExplanation,
   type BallotLookupFinanceOutsideIndustrySupportEvidence,
 } from "../../../src/pipeline/address/ballotLookupFinanceShared.js";
+import { FINANCE_INDUSTRY_SLUGS } from "../../../src/pipeline/finance/financeLabelClassifier.js";
+
+describe("FINANCE_INDUSTRY_DISPLAY_NAMES", () => {
+  it("has a display name for every industry slug", () => {
+    // The api-client's FINANCE_CATEGORY_LABELS mirrors this map by hand (the
+    // package cannot import backend code); keeping this map complete is what
+    // makes that mirror auditable.
+    for (const slug of FINANCE_INDUSTRY_SLUGS) {
+      expect(FINANCE_INDUSTRY_DISPLAY_NAMES[slug], `missing display name for ${slug}`).toBeTruthy();
+    }
+  });
+});
 
 function evidenceRow(
   overrides: Partial<BallotLookupFinanceOutsideIndustrySupportEvidence>

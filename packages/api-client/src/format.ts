@@ -101,6 +101,7 @@ const FINANCE_CATEGORY_LABELS: Record<string, string> = {
   labor_unions: "Labor unions",
   lawyers_and_legal_services: "Lawyers and legal services",
   manufacturing: "Manufacturing",
+  media_entertainment: "Media and entertainment",
   oil_gas_energy: "Oil, gas, and energy",
   pharmaceuticals: "Pharmaceuticals",
   real_estate: "Real estate",

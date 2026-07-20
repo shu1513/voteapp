@@ -191,7 +191,10 @@ describe("wisconsinCandidateFinanceSync", () => {
       outsideOpposeTotal: 0,
     });
 
-    expect(db.query).not.toHaveBeenCalled();
+    // The pool handle only serves the read-only cached-classification
+    // lookup; every write goes through the transactional client.
+    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.finance_label_classifications");
     expect(client.query.mock.calls.map((call) => String(call[0]).trim().split(/\s+/).slice(0, 3).join(" "))).toEqual([
       "BEGIN",
       "INSERT INTO public.wi_candidate_finance_links",

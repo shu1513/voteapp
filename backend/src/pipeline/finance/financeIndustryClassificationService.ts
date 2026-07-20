@@ -73,6 +73,14 @@ function shouldReplaceClassification(
   if (!existing) {
     return true;
   }
+  // Manual rows are researched verdicts (including deliberate null slugs) and
+  // outrank every automated source; only another manual row replaces one.
+  if (existing.classificationSource === "manual") {
+    return next.classificationSource === "manual";
+  }
+  if (next.classificationSource === "manual") {
+    return true;
+  }
   if (!existing.industrySlug && next.industrySlug) {
     return true;
   }
@@ -99,9 +107,10 @@ function shouldSendClassificationToAi(classification: FinanceLabelClassification
   return classification.classificationSource === "unknown";
 }
 
-function collectAiClassificationCandidates(input: {
+function collectClassificationCandidates(input: {
   directBreakdowns: Iterable<FinanceIndustryClassifiableBreakdown>;
   outsideBreakdowns: Iterable<FinanceIndustryClassifiableOutsideBreakdown>;
+  shouldInclude: (existing: FinanceLabelClassification | undefined) => boolean;
   classifications: Map<string, FinanceLabelClassification>;
   minAmount: number;
 }): FinanceIndustryClassificationCandidate[] {
@@ -118,7 +127,7 @@ function collectAiClassificationCandidates(input: {
     }
     const key = financeClassificationKey(labelType, normalizedLabel);
     const classification = input.classifications.get(key);
-    if (!shouldSendClassificationToAi(classification)) {
+    if (!input.shouldInclude(classification)) {
       return;
     }
     const existing = candidates.get(key);
@@ -188,7 +197,9 @@ async function loadCachedFinanceLabelClassifications(
     params
   );
 
-  return result.rows.map(mapClassificationRow);
+  // Tolerate malformed rows instead of merging classifications with
+  // undefined keys — the merge map would otherwise poison the persist step.
+  return result.rows.filter((row) => row.label_type && row.normalized_label).map(mapClassificationRow);
 }
 
 export async function resolveFinanceIndustryClassifications(input: {
@@ -206,23 +217,30 @@ export async function resolveFinanceIndustryClassifications(input: {
   const directBreakdowns = [...input.directBreakdowns];
   const outsideBreakdowns = [...input.outsideBreakdowns];
 
-  const initialCandidates = collectAiClassificationCandidates({
+  // Cached rows are loaded for EVERY employer/donor label, independent of the
+  // AI amount threshold and of whether the rule classifier already resolved
+  // the label: a manual row must win over a fresh rule/unknown result even
+  // when the label would never be sent to AI, otherwise the subsequent
+  // persist would write the weaker in-memory result over the manual verdict.
+  const lookupCandidates = collectClassificationCandidates({
     directBreakdowns,
     outsideBreakdowns,
+    shouldInclude: () => true,
     classifications: input.classifications,
-    minAmount: input.minAmount,
+    minAmount: 0,
   });
-  if (initialCandidates.length === 0) {
+  if (lookupCandidates.length === 0) {
     return;
   }
 
-  for (const classification of await loadCachedFinanceLabelClassifications(input.db, initialCandidates)) {
+  for (const classification of await loadCachedFinanceLabelClassifications(input.db, lookupCandidates)) {
     mergeFinanceLabelClassification(input.classifications, classification);
   }
 
-  const remainingCandidates = collectAiClassificationCandidates({
+  const remainingCandidates = collectClassificationCandidates({
     directBreakdowns,
     outsideBreakdowns,
+    shouldInclude: shouldSendClassificationToAi,
     classifications: input.classifications,
     minAmount: input.minAmount,
   });
@@ -240,6 +258,13 @@ export async function resolveFinanceIndustryClassifications(input: {
   }
 }
 
+/**
+ * Upserts one classification row. The conflict guard mirrors
+ * shouldReplaceClassification at the database level: a manual row is only
+ * ever replaced by another manual row, and an automated write must improve
+ * the stored row (resolve an 'unknown', or fill a null slug) — so a sync
+ * whose in-memory state is weaker than the stored row cannot degrade it.
+ */
 export async function upsertFinanceLabelClassification(input: {
   db: Queryable;
   classification: FinanceLabelClassification;
@@ -261,6 +286,17 @@ export async function upsertFinanceLabelClassification(input: {
         industry_slug = EXCLUDED.industry_slug,
         confidence = EXCLUDED.confidence,
         classification_source = EXCLUDED.classification_source
+      WHERE EXCLUDED.classification_source = 'manual'
+         OR (
+           finance_label_classifications.classification_source <> 'manual'
+           AND (
+             finance_label_classifications.classification_source = 'unknown'
+             OR (
+               finance_label_classifications.industry_slug IS NULL
+               AND EXCLUDED.industry_slug IS NOT NULL
+             )
+           )
+         )
     `,
     [
       input.classification.rawLabel,

@@ -169,9 +169,125 @@ describe("financeIndustryClassificationService", () => {
       dryRun: false,
     });
 
-    expect(db.query).not.toHaveBeenCalled();
+    // Cached classifications are still looked up (a manual row must win even
+    // for labels AI never sees) — only the AI call is threshold-gated.
+    expect(db.query).toHaveBeenCalledTimes(1);
     expect(classifier).not.toHaveBeenCalled();
     expect(classifications.size).toBe(0);
+  });
+
+  it("loads a cached manual row for labels below the AI threshold so a sync cannot overwrite it", async () => {
+    const db = createDb([
+      {
+        raw_label: "Disney",
+        label_type: "employer",
+        normalized_label: "DISNEY",
+        industry_slug: "media_entertainment",
+        confidence: "high",
+        classification_source: "manual",
+      },
+    ]);
+    const classifications = new Map<string, FinanceLabelClassification>();
+    mergeFinanceLabelClassification(
+      classifications,
+      aiClassification({
+        rawLabel: "Disney",
+        normalizedLabel: "DISNEY",
+        industrySlug: null,
+        confidence: "unknown",
+        classificationSource: "unknown",
+      })
+    );
+    const classifier = vi.fn();
+
+    await resolveFinanceIndustryClassifications({
+      db,
+      directBreakdowns: [{ categoryType: "employer", categoryName: "Disney", amount: 500 }],
+      outsideBreakdowns: [],
+      classifications,
+      classifier,
+      minAmount: 100_000,
+      dryRun: false,
+    });
+
+    expect(classifier).not.toHaveBeenCalled();
+    expect(classifications.get(financeClassificationKey("employer", "DISNEY"))).toMatchObject({
+      industrySlug: "media_entertainment",
+      classificationSource: "manual",
+    });
+  });
+
+  it("loads a cached manual row even when the rule classifier already resolved the label", async () => {
+    const db = createDb([
+      {
+        raw_label: "Energy Transfer LP",
+        label_type: "employer",
+        normalized_label: "ENERGY TRANSFER",
+        industry_slug: "manufacturing",
+        confidence: "high",
+        classification_source: "manual",
+      },
+    ]);
+    const classifications = new Map<string, FinanceLabelClassification>();
+    mergeFinanceLabelClassification(
+      classifications,
+      aiClassification({
+        rawLabel: "Energy Transfer LP",
+        normalizedLabel: "ENERGY TRANSFER",
+        industrySlug: "oil_gas_energy",
+        confidence: "high",
+        classificationSource: "rule",
+      })
+    );
+    const classifier = vi.fn();
+
+    await resolveFinanceIndustryClassifications({
+      db,
+      directBreakdowns: [{ categoryType: "employer", categoryName: "Energy Transfer LP", amount: 200_000 }],
+      outsideBreakdowns: [],
+      classifications,
+      classifier,
+      minAmount: 100_000,
+      dryRun: false,
+    });
+
+    expect(classifier).not.toHaveBeenCalled();
+    expect(classifications.get(financeClassificationKey("employer", "ENERGY TRANSFER"))).toMatchObject({
+      industrySlug: "manufacturing",
+      classificationSource: "manual",
+    });
+  });
+
+  it("never replaces a manual classification with an automated one in the merge", () => {
+    const classifications = new Map<string, FinanceLabelClassification>();
+    const manual = aiClassification({
+      industrySlug: null,
+      confidence: "high",
+      classificationSource: "manual",
+    });
+    mergeFinanceLabelClassification(classifications, manual);
+    // A null-slug manual verdict must survive an AI result that "fills" the
+    // slug, and every other automated source.
+    for (const classificationSource of ["ai", "rule", "unknown"] as const) {
+      mergeFinanceLabelClassification(
+        classifications,
+        aiClassification({ classificationSource, industrySlug: "technology" })
+      );
+    }
+    expect(classifications.get(financeClassificationKey("employer", "ACME QUANTUM LABS"))).toMatchObject({
+      industrySlug: null,
+      classificationSource: "manual",
+    });
+
+    const corrected = aiClassification({
+      industrySlug: "technology",
+      classificationSource: "manual",
+    });
+    mergeFinanceLabelClassification(classifications, corrected);
+    expect(classifications.get(financeClassificationKey("employer", "ACME QUANTUM LABS"))).toMatchObject({
+      industrySlug: "technology",
+      classificationSource: "manual",
+    });
   });
 
   it("applies the AI classification threshold after aggregating split employer amounts", async () => {
