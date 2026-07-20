@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import type { ElectionSummary, ResearchAreaWeight } from "@voteapp/api-client";
 import {
+  formatDistrictName,
   formatElectionDate,
   formatOutcome,
   formatRosterStatus,
@@ -136,7 +137,7 @@ function ElectionCard({
       {/* Always show the district: ballot titles are often generic ("Mayor",
           "Governor", "State Representative"), and the district name is what
           tells the voter WHERE the race is. */}
-      <p className="mt-0.5 text-sm text-ink-soft">{election.district.name}</p>
+      <p className="mt-0.5 text-sm text-ink-soft">{formatDistrictName(election.district.name)}</p>
       {hasSignalChips ? (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {election.followed_candidates && election.followed_candidates.length > 0 ? (

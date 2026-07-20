@@ -9,6 +9,7 @@ import { SourceLine } from "../components/SourceLine";
 import { ReportContentButton } from "../components/ReportContentButton";
 import {
   formatDistrictType,
+  formatDistrictName,
   formatElectionDate,
   formatOutcome,
   formatRosterStatus,
@@ -64,7 +65,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
       // No "campaign finance" here: this page stopped rendering finance
       // (it lives on candidate profiles now), and a search preview must not
       // promise content the page doesn't have.
-      content: `${data.official_ballot_title} — ${data.district.name} election on ${data.election_date}: candidates and issue research.`,
+      content: `${data.official_ballot_title} — ${formatDistrictName(data.district.name)} election on ${data.election_date}: candidates and issue research.`,
     },
   ];
 };
@@ -108,24 +109,16 @@ export function ElectionPage() {
           "@type": "Event",
           name: data.official_ballot_title,
           startDate: data.election_date,
-          location: { "@type": "AdministrativeArea", name: data.district.name },
+          location: { "@type": "AdministrativeArea", name: formatDistrictName(data.district.name) },
         }}
       />
       <h1 className="text-2xl font-bold">{data.official_ballot_title}</h1>
       <p className="mt-1 text-sm text-ink-soft">
-        {formatElectionDate(data.election_date)} · {data.district.name} ·{" "}
+        {formatElectionDate(data.election_date)} · {formatDistrictName(data.district.name)} ·{" "}
         {formatDistrictType(data.district.district_type)}
         {data.election_stage ? <> · {data.election_stage}</> : null}
         {data.seats_to_fill != null && data.seats_to_fill > 1 ? <> · {data.seats_to_fill} seats</> : null}
       </p>
-      <div className="mt-2">
-        <ReportContentButton
-          entityType="election"
-          entityId={data.id}
-          contextLabel="election"
-          reporterEmail={me?.email}
-        />
-      </div>
       <div className="mt-2 flex flex-wrap gap-2 text-xs">
         {data.vote_power.label !== "unknown" ? (
           <span className={`rounded px-2 py-0.5 ${votePowerBadgeClass(data.vote_power.label)}`}>
@@ -466,6 +459,17 @@ export function ElectionPage() {
           ))}
         </section>
       ) : null}
+
+      {/* Last on purpose: reporting is a reaction to reading the page, not a
+          headline action worth space above the candidates. */}
+      <div className="mt-6">
+        <ReportContentButton
+          entityType="election"
+          entityId={data.id}
+          contextLabel="election"
+          reporterEmail={me?.email}
+        />
+      </div>
     </div>
   );
 }

@@ -42,6 +42,17 @@ export function formatDistrictType(districtType: string): string {
   return DISTRICT_TYPE_LABELS[districtType] ?? districtType.replaceAll("_", " ");
 }
 
+/**
+ * Stored district names carry the boundary vintage — "Assembly District 54
+ * (2024); California" — because legislative districts are versioned by
+ * redistricting cycle. The year is provenance, not identity: to a voter
+ * "(2024)" on a 2026 election reads as a mistake. Strip it for display
+ * everywhere; the stored name keeps the vintage for research bookkeeping.
+ */
+export function formatDistrictName(name: string): string {
+  return name.replace(/ \((?:19|20)\d{2}\)/g, "");
+}
+
 export function formatSourceHost(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, "");

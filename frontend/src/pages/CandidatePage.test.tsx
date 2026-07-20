@@ -172,6 +172,92 @@ describe("CandidatePage", () => {
     expect(headings).toEqual(["Gun Control", "Environment and Public Health"]);
   });
 
+  it("collapses campaign finance by default while keeping it in the DOM", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => ({
+      ...candidateDetail({ elections: [candidateElection()] }),
+      ongoing_finance: { "ce-1": financeSummary() },
+    }));
+
+    const heading = await screen.findByRole("heading", { name: "Campaign finance — Governor" });
+    // The heading sits OUTSIDE the disclosure (a heading inside <summary>
+    // can drop out of screen-reader heading navigation); the details is its
+    // sibling within the section.
+    expect(heading.closest("details")).toBeNull();
+    const details = heading.closest("section")?.querySelector("details");
+    expect(details).toBeTruthy();
+    expect(details!.open).toBe(false);
+    // Collapsed, not absent: SSR HTML must keep finance crawler-readable.
+    expect(screen.getByText("$120,000")).toBeInTheDocument();
+  });
+
+  it("scopes each record's For/Against chip to the group it renders under", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    // One record, for one area and against another: each group's copy must
+    // show only its own area's direction.
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          {
+            id: "r-mixed",
+            description: "Backed a housing bill that cut transit funding.",
+            source_url: "https://example.gov/record",
+            event_date: "2026-05-01",
+            created_at: "2026-05-02T00:00:00.000Z",
+            research_area_tags: [
+              { research_area_id: "a-housing", slug: "housing", name: "Housing", stance: "for" },
+              { research_area_id: "a-transit", slug: "transit", name: "Transit", stance: "against" },
+            ],
+          },
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    expect(screen.getByText("For")).toBeInTheDocument();
+    expect(screen.getByText("Against")).toBeInTheDocument();
+  });
+
+  it("keeps mixed records chipless in the newest view and spells out per-tag stances", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          {
+            id: "r-mixed",
+            description: "Backed a housing bill that cut transit funding.",
+            source_url: "https://example.gov/record",
+            event_date: "2026-05-01",
+            created_at: "2026-05-02T00:00:00.000Z",
+            research_area_tags: [
+              { research_area_id: "a-housing", slug: "housing", name: "Housing", stance: "for" },
+              { research_area_id: "a-transit", slug: "transit", name: "Transit", stance: "against" },
+            ],
+          },
+        ],
+      })
+    );
+
+    const user = userEvent.setup();
+    await user.selectOptions(await screen.findByRole("combobox"), "newest");
+
+    // No single chip — the record's direction differs by area — but the tag
+    // list carries each area's stance.
+    expect(screen.queryByText("For")).not.toBeInTheDocument();
+    expect(screen.queryByText("Against")).not.toBeInTheDocument();
+    expect(screen.getByText(/Housing \(for\), Transit \(against\)/)).toBeInTheDocument();
+  });
+
+  it("renders the profile report button after the record and election sections", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    const button = screen.getByRole("button", { name: "Report an issue with candidate profile" });
+    const electionsHeading = screen.getByRole("heading", { name: "Elections" });
+    expect(electionsHeading.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it("cuts the newest-first view off at 20 with a show-all button", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const records = Array.from({ length: 25 }, (_, index) => ({
