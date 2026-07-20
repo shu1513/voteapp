@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   financeSourceLabel,
+  formatDistrictName,
   formatDistrictType,
   formatElectionDate,
   formatFinanceCategory,
@@ -69,6 +70,20 @@ describe("formatDistrictType", () => {
     expect(formatDistrictType("state_upper")).toBe("State senate district");
     expect(formatDistrictType("us_house")).toBe("U.S. House district");
     expect(formatDistrictType("water_board_zone")).toBe("water board zone");
+  });
+});
+
+describe("formatDistrictName", () => {
+  it("strips the redistricting-vintage year, wherever it sits", () => {
+    expect(formatDistrictName("Assembly District 54 (2024); California")).toBe(
+      "Assembly District 54; California"
+    );
+    expect(formatDistrictName("State House District 1 (2024); Alaska")).toBe(
+      "State House District 1; Alaska"
+    );
+    expect(formatDistrictName("City of Pleasantville")).toBe("City of Pleasantville");
+    // A parenthetical that is not a year must survive.
+    expect(formatDistrictName("Ward 3 (at-large); Ohio")).toBe("Ward 3 (at-large); Ohio");
   });
 });
 

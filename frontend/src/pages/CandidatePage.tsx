@@ -15,7 +15,7 @@ import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
-import { formatElectionDate } from "@voteapp/api-client";
+import { formatDistrictName, formatElectionDate } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
 import { compareByResearchAreaPriority } from "../lib/researchAreaPriority";
 import { useFollows } from "@voteapp/api-client";
@@ -463,7 +463,7 @@ export function CandidatePage() {
                   {election.official_ballot_title}
                 </Link>{" "}
                 <span className="text-ink-soft">
-                  · {formatElectionDate(election.election_date)} · {election.district.name}
+                  · {formatElectionDate(election.election_date)} · {formatDistrictName(election.district.name)}
                   {election.is_incumbent ? " · incumbent" : ""}
                 </span>
                 {/* No finance on past-election rows: campaign finance shows
