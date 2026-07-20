@@ -95,9 +95,6 @@ export function HomePage() {
           <p className="mt-2 text-ink-soft">
             Enter your home address to see the elections coming up on your ballot.
           </p>
-          <p className="mt-3 text-sm text-ink-soft">
-            Every election on your ballot · AI-researched candidate records · Campaign finance, sourced
-          </p>
         </div>
       </div>
       <div className="mx-auto max-w-2xl px-4 py-8">

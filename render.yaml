@@ -13,7 +13,9 @@
 # API's public host would break (and the value would be overwritten anyway).
 #
 # Secrets (sync: false) are entered in the Render dashboard: AWS SES
-# send-only key pair, plus the optional EDGE_SHARED_SECRET. NOTE: a
+# send-only key pair, the optional EDGE_SHARED_SECRET, and
+# GOOGLE_PLACES_API_KEY (optional to boot, but address autocomplete 500s
+# without it). NOTE: a
 # Blueprint sync only prompts for sync: false vars present at blueprint
 # creation — ones added later must be entered manually on the service
 # (docs/deploy-render.md "Direct onrender.com access" has the sequence).
@@ -83,6 +85,13 @@ services:
         value: https://impactperdollar.com/api/email/unsubscribe
       - key: DEPLOY_ENV
         value: production
+      # Google Places key for /api/address/autocomplete (+retrieve). Without
+      # it the endpoint 500s ("Address autocomplete is not configured") and
+      # the frontend silently disables the address dropdown for the session.
+      # sync: false vars added after blueprint creation are NOT prompted for
+      # by a sync — enter the value manually on the voteapp-api service.
+      - key: GOOGLE_PLACES_API_KEY
+        sync: false
       - fromGroup: voteapp-shared
 
   # ---------------------------------------------------------------- SSR ----
