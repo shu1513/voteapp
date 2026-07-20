@@ -156,42 +156,104 @@ function OngoingElectionFinance({ election, summary }: { election: CandidateElec
   }
   return (
     <section className="mt-6">
-      {/* A candidate can be in two concurrent races, repeating this heading;
-          the aria-label keeps heading navigation distinguishable (an sr-only
-          span would glue words together in the computed accessible name). */}
-      <h2 className="text-lg font-semibold" aria-label={`Campaign finance — ${election.official_ballot_title}`}>
-        Campaign finance
-      </h2>
-      <p className="mt-1 text-sm text-ink-soft">
-        {election.official_ballot_title} · {formatElectionDate(election.election_date)}
-      </p>
-      <div className="mt-2 rounded-xl border border-line bg-white p-4">
-        <FinanceSummaryCard summary={summary} />
-      </div>
+      {/* Collapsed by default: finance is reference material, and open it
+          pushed the record — the page's main content — below the fold. The
+          collapsed content still ships in the SSR HTML (details just hides
+          it), so crawler readability is unaffected. The election name rides
+          in the summary because a candidate can be in two concurrent races,
+          repeating the heading; the aria-label keeps heading navigation
+          distinguishable (an sr-only span would glue words together in the
+          computed accessible name). */}
+      <details>
+        <summary className="cursor-pointer select-none">
+          <h2
+            className="inline text-lg font-semibold"
+            aria-label={`Campaign finance — ${election.official_ballot_title}`}
+          >
+            Campaign finance
+          </h2>{" "}
+          <span className="text-sm text-ink-soft">
+            · {election.official_ballot_title} · {formatElectionDate(election.election_date)}
+          </span>
+        </summary>
+        <div className="mt-2 rounded-xl border border-line bg-white p-4">
+          <FinanceSummaryCard summary={summary} />
+        </div>
+      </details>
     </section>
+  );
+}
+
+// The stance this record card should claim. In a group view the group's area
+// decides: the same record can be for one area and against another, so the
+// other areas' stances must not leak into this group. In the flat view
+// (areaId undefined) a direction shows only when every stance-bearing tag
+// agrees — a mixed record gets per-tag stances in the meta line instead.
+function recordStance(record: CandidateRecord, areaId: string | null | undefined): "for" | "against" | null {
+  if (areaId === null) {
+    // "Other records" pseudo-group: untagged, so no stance to show.
+    return null;
+  }
+  if (areaId !== undefined) {
+    const tag = record.research_area_tags.find((t) => t.research_area_id === areaId);
+    return tag?.stance === "for" || tag?.stance === "against" ? tag.stance : null;
+  }
+  const stances = new Set(
+    record.research_area_tags
+      .map((tag) => tag.stance)
+      .filter((stance): stance is "for" | "against" => stance === "for" || stance === "against")
+  );
+  return stances.size === 1 ? [...stances][0] : null;
+}
+
+// Small colored For/Against chip — direction as a quiet cue, not a whole-card
+// color wash. Same palette as the stance chips on the election page.
+function StanceChip({ stance }: { stance: "for" | "against" }) {
+  return (
+    <span
+      className={
+        stance === "for"
+          ? "rounded border border-green-600/40 bg-green-600/10 px-1.5 font-medium text-green-900"
+          : "rounded border border-red-600/40 bg-red-600/10 px-1.5 font-medium text-red-900"
+      }
+    >
+      {stance === "for" ? "For" : "Against"}
+    </span>
   );
 }
 
 // One record card, shared by the grouped and flat views (the flat view adds
 // the area tags to the meta line since there is no group heading to carry
-// them).
+// them). `stanceAreaId` is the group's area in grouped views; undefined in
+// the flat view.
 function RecordItem({
   record,
   showTags,
   reporterEmail,
+  stanceAreaId,
 }: {
   record: CandidateRecord;
   showTags: boolean;
   reporterEmail?: string | null;
+  stanceAreaId?: string | null;
 }) {
+  const stance = recordStance(record, stanceAreaId);
   return (
     <li className="rounded-xl border border-line bg-white p-3">
       <p className="text-sm text-ink">{record.description}</p>
-      <p className="mt-1 text-xs text-ink-soft">
-        {formatElectionDate(record.event_date)}
-        {showTags && record.research_area_tags.length > 0
-          ? ` · ${record.research_area_tags.map((tag) => tag.name).join(", ")}`
-          : ""}
+      <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-soft">
+        <span>{formatElectionDate(record.event_date)}</span>
+        {stance ? <StanceChip stance={stance} /> : null}
+        {showTags && record.research_area_tags.length > 0 ? (
+          // Per-tag stance in the flat view: a record can be for one area and
+          // against another, and the single chip stays silent on mixed records.
+          <span>
+            ·{" "}
+            {record.research_area_tags
+              .map((tag) => (tag.stance ? `${tag.name} (${tag.stance})` : tag.name))
+              .join(", ")}
+          </span>
+        ) : null}
       </p>
       <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />
       <div className="mt-2">
@@ -301,14 +363,6 @@ export function CandidatePage() {
         </p>
       ) : null}
       {candidate.summary ? <p className="mt-3 text-ink">{candidate.summary}</p> : null}
-      <div className="mt-3">
-        <ReportContentButton
-          entityType="candidate"
-          entityId={candidate.candidate_id}
-          contextLabel="candidate profile"
-          reporterEmail={me?.email}
-        />
-      </div>
 
       {ongoingElections.map((election) => (
         <OngoingElectionFinance
@@ -377,6 +431,7 @@ export function CandidatePage() {
                       record={record}
                       showTags={false}
                       reporterEmail={me?.email}
+                      stanceAreaId={group.areaId}
                     />
                   ))}
                 </ul>
@@ -425,6 +480,18 @@ export function CandidatePage() {
           Profile last researched {formatElectionDate(candidate.last_researched.slice(0, 10))}.
         </p>
       ) : null}
+
+      {/* Last on purpose: reporting is a reaction to reading the profile, not
+          a headline action worth space above the record. Per-record report
+          buttons stay on their cards. */}
+      <div className="mt-6">
+        <ReportContentButton
+          entityType="candidate"
+          entityId={candidate.candidate_id}
+          contextLabel="candidate profile"
+          reporterEmail={me?.email}
+        />
+      </div>
     </div>
   );
 }

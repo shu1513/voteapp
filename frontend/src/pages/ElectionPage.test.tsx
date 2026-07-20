@@ -50,7 +50,10 @@ describe("ElectionPage", () => {
     // The candidate list carries no follow controls; following lives on the
     // candidate profile page.
     expect(screen.queryByRole("button", { name: /follow/i })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Report an issue with election" })).toBeInTheDocument();
+    // The report button sits at the end of the page, after the candidates.
+    const reportButton = screen.getByRole("button", { name: "Report an issue with election" });
+    const candidatesHeading = screen.getByRole("heading", { name: "Candidates" });
+    expect(candidatesHeading.compareDocumentPosition(reportButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("renders a collapsed vote power explanation when the detail payload carries one", async () => {

@@ -191,13 +191,14 @@ function OutsideSection({
                 {/* Researched one-line description of who is behind the
                     committee — the name alone ("Streets for All Los Angeles
                     PAC") tells a voter nothing. Absent until researched.
-                    The label is a factual claim, so the evidence behind it
-                    rides along as quiet host links. */}
+                    Body size and full ink: this is the substance of the row,
+                    not a footnote. The label is a factual claim, so the
+                    evidence behind it rides along as quiet host links. */}
                 {row.label ? (
-                  <p className="text-xs text-ink-soft">
+                  <p className="mt-0.5 text-sm text-ink">
                     {row.label}
                     {(row.label_source_urls ?? []).map((url) => (
-                      <span key={url}>
+                      <span key={url} className="text-xs text-ink-soft">
                         {" · "}
                         <a
                           href={url}
