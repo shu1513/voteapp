@@ -105,7 +105,7 @@ function createDb() {
   return {
     client,
     db: {
-      query: vi.fn(),
+      query: vi.fn().mockResolvedValue({ rows: [], rowCount: 0 }),
       connect: vi.fn().mockResolvedValue(client),
     },
   };

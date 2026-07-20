@@ -26,9 +26,11 @@ import {
 // links (finance_label_classifications). Finance syncs persist a
 // classification_source = 'unknown' row for every employer/donor label the
 // rule classifier could not place; those rows are the work queue. A manual
-// row is permanent: the sync-time precedence never re-sends a label whose
-// classification_source is not 'unknown' to AI, and the ballot-lookup read
-// path joins this table live, so a new link takes effect without a resync.
+// row is permanent: sync-time merge precedence and the upsert's conflict
+// guard both treat 'manual' as the highest-precedence source, so no later
+// sync or AI run can overwrite it. The finance card's industry rows are
+// materialized at sync time, so a new link reaches voters when the affected
+// candidates' next finance sync rebuilds their industry breakdowns.
 //
 // Subcommands:
 //   due    List labels the rule classifier could not place — the work queue.
@@ -83,22 +85,36 @@ function requireEnv(name: string): string {
 
 async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
   const limit = readPositiveIntegerFlag(argv, "--limit", 500);
-  // Only 'unknown' rows are due: rule/ai/manual rows with a null slug are a
-  // deliberate "no industry" verdict, not unfinished work.
-  const result = await pool.query<{ label_type: string; raw_label: string; normalized_label: string }>(
+  // Only 'unknown' employer/donor rows are due: rule/ai/manual rows with a
+  // null slug are a deliberate "no industry" verdict, not unfinished work,
+  // and occupation rows (persisted by the FEC sync) are outside this
+  // workflow — the writer only accepts employer/donor.
+  const result = await pool.query<{
+    label_type: string;
+    raw_label: string;
+    normalized_label: string;
+    total: string;
+  }>(
     `
-      SELECT label_type, raw_label, normalized_label
+      SELECT label_type, raw_label, normalized_label, count(*) OVER () AS total
       FROM public.finance_label_classifications
       WHERE classification_source = 'unknown'
+        AND label_type IN ('employer', 'donor')
       ORDER BY label_type, normalized_label
-    `
+      LIMIT $1
+    `,
+    [limit]
   );
   console.log(
     JSON.stringify(
       {
-        unclassified_label_count: result.rows.length,
+        unclassified_label_count: Number(result.rows[0]?.total ?? 0),
         industry_slugs: FINANCE_INDUSTRY_SLUGS,
-        labels: result.rows.slice(0, limit),
+        labels: result.rows.map(({ label_type, raw_label, normalized_label }) => ({
+          label_type,
+          raw_label,
+          normalized_label,
+        })),
       },
       null,
       2

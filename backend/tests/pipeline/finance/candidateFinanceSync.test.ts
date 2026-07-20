@@ -105,12 +105,15 @@ describe("candidateFinanceSync", () => {
     expect(fecClient.getCommitteeAggregatesByOccupation).toHaveBeenCalledTimes(1);
     expect(fecClient.getCommitteeAggregatesBySize).toHaveBeenCalledTimes(1);
 
-    expect(db.query).toHaveBeenCalledTimes(13);
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.candidate_finance_summaries");
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("total_receipts = EXCLUDED.total_receipts");
-    expect(String(db.query.mock.calls[0]?.[0])).toContain("WHEN $15::boolean THEN EXCLUDED.outside_support_total");
-    expect(String(db.query.mock.calls[0]?.[0])).not.toContain("COALESCE(EXCLUDED.total_receipts");
-    expect(db.query.mock.calls[0]?.[1]).toEqual([
+    // 13 writes plus the read-only cached-classification lookup, which runs
+    // first (before the transactional writes).
+    expect(db.query).toHaveBeenCalledTimes(14);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.finance_label_classifications");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.candidate_finance_summaries");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("total_receipts = EXCLUDED.total_receipts");
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("WHEN $15::boolean THEN EXCLUDED.outside_support_total");
+    expect(String(db.query.mock.calls[1]?.[0])).not.toContain("COALESCE(EXCLUDED.total_receipts");
+    expect(db.query.mock.calls[1]?.[1]).toEqual([
       "P80001571",
       2024,
       1000,
@@ -169,7 +172,7 @@ describe("candidateFinanceSync", () => {
       release: vi.fn(),
     };
     const db = {
-      query: vi.fn(),
+      query: vi.fn().mockResolvedValue({ rows: [], rowCount: 0 }),
       connect: vi.fn().mockResolvedValue(client),
     };
     const fecClient = createFecClient();
@@ -184,7 +187,10 @@ describe("candidateFinanceSync", () => {
     });
 
     expect(db.connect).toHaveBeenCalledTimes(1);
-    expect(db.query).not.toHaveBeenCalled();
+    // The pool handle only serves the read-only cached-classification
+    // lookup; every write goes through the transactional client.
+    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.finance_label_classifications");
     expect(client.query.mock.calls[0]?.[0]).toBe("BEGIN");
     expect(client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
     expect(
