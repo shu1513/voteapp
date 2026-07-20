@@ -79,16 +79,18 @@ describe("checkRowsAgainstLiveCommittees", () => {
     const live = new Map([[liveKey, { committee_name: row.committee_name }]]);
     const wrongId = checkRowsAgainstLiveCommittees([{ ...row, committee_id: "9999999" }], live);
     expect(wrongId).toHaveLength(1);
-    expect(wrongId[0]).toMatch(/not in any upcoming election's finance summaries/);
+    expect(wrongId[0].kind).toBe("missing_committee");
+    expect(wrongId[0].reason).toMatch(/not in any upcoming election's finance summaries/);
     const wrongCycle = checkRowsAgainstLiveCommittees([{ ...row, cycle: 2028 }], live);
     expect(wrongCycle).toHaveLength(1);
   });
 
   it("rejects a committee_name that names a different committee, quoting the live name", () => {
     const live = new Map([[liveKey, { committee_name: "Some Other PAC" }]]);
-    const errors = checkRowsAgainstLiveCommittees([row], live);
-    expect(errors).toHaveLength(1);
-    expect(errors[0]).toMatch(/does not match the live finance name "Some Other PAC"/);
+    const issues = checkRowsAgainstLiveCommittees([row], live);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].kind).toBe("name_mismatch");
+    expect(issues[0].reason).toMatch(/does not match the live finance name "Some Other PAC"/);
   });
 });
 
@@ -105,11 +107,15 @@ describe("checkLabelSourceUrls", () => {
     });
   });
 
-  it("reports permanent failures without retrying them", async () => {
+  it("reports permanent failures without retrying them, carrying the URL and failure type", async () => {
     const verify = vi.fn().mockResolvedValue({ ok: false, reason: "status 404" });
-    const errors = await checkLabelSourceUrls([validRow()], verify);
-    expect(errors).toHaveLength(1);
-    expect(errors[0]).toMatch(/source URL unreachable \(status 404\)/);
+    const row = validRow();
+    const issues = await checkLabelSourceUrls([row], verify);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].reason).toMatch(/source URL unreachable \(status 404\)/);
+    expect(issues[0].kind).toBe("source_url");
+    expect(issues[0].sourceUrl).toBe(row.source_urls[0]);
+    expect(issues[0].failureType).toBe("permanent");
     expect(verify).toHaveBeenCalledTimes(1);
   });
 

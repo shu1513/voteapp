@@ -18,6 +18,11 @@ import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { usLatestLocalDateIso } from "../utils/usLocalDate.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
+import {
+  buildManualResearchRepairReport,
+  writeManualResearchRepairReport,
+  type ManualResearchRepairGap,
+} from "./manualResearchRepairReport.js";
 
 // Manual (no AI provider) research workflow for outside-spending committee
 // labels: one-line neutral descriptions of who is behind a committee, shown
@@ -37,7 +42,7 @@ function usage(): string {
   return [
     "Usage:",
     "  npm run manual:finance-committee-labels:due -- [--state XX] [--limit 500]",
-    "  npm run manual:finance-committee-labels:write -- --file labels.json [--dry-run]",
+    "  npm run manual:finance-committee-labels:write -- --file labels.json [--repair-report-file file] [--dry-run]",
     "",
     "The write payload shape:",
     '  { "labels": [ { "source", "committee_id", "cycle", "committee_name", "label", "source_urls": ["https://..."] } ] }',
@@ -379,6 +384,18 @@ function normalizeCommitteeName(name: string): string {
 }
 
 /**
+ * One deep-validation problem, structured so the CLI can both print it and
+ * emit a machine repair report a later session resumes from.
+ */
+export type CommitteeLabelValidationIssue = {
+  index: number;
+  kind: "missing_committee" | "name_mismatch" | "source_url";
+  reason: string;
+  sourceUrl?: string;
+  failureType?: "transient" | "permanent";
+};
+
+/**
  * Checks every payload row against the committees currently present in
  * upcoming elections' finance summaries. A triple absent from live data or
  * a committee_name that names a different committee is a research/transcribe
@@ -388,23 +405,27 @@ function normalizeCommitteeName(name: string): string {
 export function checkRowsAgainstLiveCommittees(
   rows: readonly CommitteeLabelPayloadRow[],
   liveCommittees: ReadonlyMap<string, Pick<DueCommittee, "committee_name">>
-): string[] {
-  const errors: string[] = [];
+): CommitteeLabelValidationIssue[] {
+  const issues: CommitteeLabelValidationIssue[] = [];
   rows.forEach((row, index) => {
     const live = liveCommittees.get(committeeLabelKey(row.source, row.committee_id, row.cycle));
     if (!live) {
-      errors.push(
-        `labels[${index}]: (${row.source}, ${row.committee_id}, ${row.cycle}) is not in any upcoming election's finance summaries — copy the triple from the due list`
-      );
+      issues.push({
+        index,
+        kind: "missing_committee",
+        reason: `(${row.source}, ${row.committee_id}, ${row.cycle}) is not in any upcoming election's finance summaries — copy the triple from the due list`,
+      });
       return;
     }
     if (normalizeCommitteeName(live.committee_name) !== normalizeCommitteeName(row.committee_name)) {
-      errors.push(
-        `labels[${index}]: committee_name "${row.committee_name}" does not match the live finance name "${live.committee_name}" for (${row.source}, ${row.committee_id}, ${row.cycle})`
-      );
+      issues.push({
+        index,
+        kind: "name_mismatch",
+        reason: `committee_name "${row.committee_name}" does not match the live finance name "${live.committee_name}" for (${row.source}, ${row.committee_id}, ${row.cycle})`,
+      });
     }
   });
-  return errors;
+  return issues;
 }
 
 /**
@@ -417,7 +438,7 @@ export function checkRowsAgainstLiveCommittees(
 export async function checkLabelSourceUrls(
   rows: readonly CommitteeLabelPayloadRow[],
   verify: typeof verifyHttpUrlReachability = verifyHttpUrlReachability
-): Promise<string[]> {
+): Promise<CommitteeLabelValidationIssue[]> {
   const uniqueUrls = [...new Set(rows.flatMap((row) => row.source_urls))];
   const resultByUrl = new Map<string, UrlReachabilityResult>();
 
@@ -455,16 +476,47 @@ export async function checkLabelSourceUrls(
     await verifyBatch(transientUrls);
   }
 
-  const errors: string[] = [];
+  const issues: CommitteeLabelValidationIssue[] = [];
   rows.forEach((row, index) => {
     for (const url of row.source_urls) {
       const result = resultByUrl.get(url);
       if (result !== undefined && !result.ok) {
-        errors.push(`labels[${index}]: source URL unreachable (${result.reason}): ${url}`);
+        issues.push({
+          index,
+          kind: "source_url",
+          reason: `source URL unreachable (${result.reason}): ${url}`,
+          sourceUrl: url,
+          failureType: classifyCitationVerificationFailure(result.reason),
+        });
       }
     }
   });
-  return errors;
+  return issues;
+}
+
+// One repair gap per issue: the report is what a later session resumes
+// from, so each gap carries a focused instruction matching the issue kind.
+function committeeLabelIssueToRepairGap(
+  issue: CommitteeLabelValidationIssue,
+  row: CommitteeLabelPayloadRow | undefined
+): ManualResearchRepairGap {
+  const triple = row ? `${row.source}.${row.committee_id}.${row.cycle}` : `labels_${issue.index}`;
+  const focusedResearchPass =
+    issue.kind === "source_url"
+      ? "Re-research this committee's label evidence: replace the unreachable source URL with a reachable source that still supports the label, or drop the row and report the committee as an unresolved gap, then rerun the committee-label writer."
+      : "Regenerate this row from a fresh manual:finance-committee-labels:due run — copy source, committee_id, cycle, and committee_name verbatim — then rerun the committee-label writer.";
+  return {
+    id: `finance_committee_label.${triple}.${issue.kind}`,
+    stage: "finance_committee_labels",
+    objectType: "finance_committee_label",
+    outcome: "needs_repair",
+    reason: issue.reason,
+    focusedResearchPass,
+    labelIndex: issue.index,
+    ...(issue.sourceUrl ? { sourceUrl: issue.sourceUrl } : {}),
+    failureKind: issue.kind === "source_url" ? "source_url" : "label_validation",
+    ...(issue.failureType ? { failureType: issue.failureType } : {}),
+  };
 }
 
 async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
@@ -473,6 +525,7 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
     throw new Error(`--file is required.\n${usage()}`);
   }
   const dryRun = argv.includes("--dry-run");
+  const repairReportFile = readFlag(argv, "--repair-report-file");
   const rows = parseCommitteeLabelPayload(JSON.parse(await readFile(file, "utf8")) as unknown);
 
   // Deep validation beyond the shape checks, mirroring the other manual
@@ -481,12 +534,27 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
   // so a multi-row payload is fixed in one pass. Dry runs validate too —
   // that is what a rehearsal is for.
   const liveCommittees = await collectUpcomingCommittees(pool, null, usLatestLocalDateIso());
-  const deepErrors = [
+  const issues = [
     ...checkRowsAgainstLiveCommittees(rows, liveCommittees),
     ...(await checkLabelSourceUrls(rows)),
   ];
-  if (deepErrors.length > 0) {
-    throw new Error(`Committee-label validation failed:\n- ${deepErrors.join("\n- ")}`);
+  if (issues.length > 0) {
+    // Same machine repair report the profile/records writers emit, so a
+    // later session can resume the fix without this run's terminal output.
+    await writeManualResearchRepairReport(
+      repairReportFile,
+      buildManualResearchRepairReport({
+        command: "manual:finance-committee-labels:write",
+        manualKey: "manual:finance-committee-labels:payload",
+        target: { file },
+        gaps: issues.map((issue) => committeeLabelIssueToRepairGap(issue, rows[issue.index])),
+      })
+    );
+    throw new Error(
+      `Committee-label validation failed:\n- ${issues
+        .map((issue) => `labels[${issue.index}]: ${issue.reason}`)
+        .join("\n- ")}`
+    );
   }
 
   if (dryRun) {
@@ -544,6 +612,7 @@ async function main(): Promise<void> {
     ],
     write: [
       { name: "--file", value: "both" as const },
+      { name: "--repair-report-file", value: "both" as const },
       { name: "--dry-run", value: "none" as const },
     ],
   }[subcommand];
