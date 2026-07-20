@@ -182,8 +182,12 @@ describe("FinanceSummaryCard", () => {
     expect(labelLine).toBeInTheDocument();
     const sourceLink = screen.getByRole("link", { name: "opensecrets.org" });
     expect(sourceLink).toHaveAttribute("href", "https://www.opensecrets.org/pacs/lookup");
-    // The unlabeled opposing group renders its name with no description line.
-    expect(screen.getByText("Stop Them PAC")).toBeInTheDocument();
+    // The unlabeled opposing group renders its name with no description
+    // paragraph and no evidence links.
+    const unlabeledItem = screen.getByText("Stop Them PAC").closest("li");
+    expect(unlabeledItem).not.toBeNull();
+    expect(unlabeledItem?.querySelector("p")).toBeNull();
+    expect(unlabeledItem?.querySelector("a")).toBeNull();
   });
 
   it("keeps donor money direct and pairs each organization with its own committee", () => {

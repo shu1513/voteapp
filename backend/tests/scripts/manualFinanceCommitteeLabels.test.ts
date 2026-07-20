@@ -1,6 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { parseCommitteeLabelPayload } from "../../src/scripts/manualFinanceCommitteeLabels.js";
+import { committeeLabelKey } from "../../src/pipeline/address/financeCommitteeLabels.js";
+import {
+  checkLabelSourceUrls,
+  checkRowsAgainstLiveCommittees,
+  parseCommitteeLabelPayload,
+} from "../../src/scripts/manualFinanceCommitteeLabels.js";
 
 function validRow() {
   return {
@@ -58,5 +63,63 @@ describe("parseCommitteeLabelPayload", () => {
     expect(() =>
       parseCommitteeLabelPayload({ labels: [{ ...validRow(), label: "x".repeat(201) }] })
     ).toThrow(/exceeds 200 characters/);
+  });
+});
+
+describe("checkRowsAgainstLiveCommittees", () => {
+  const row = validRow();
+  const liveKey = committeeLabelKey(row.source, row.committee_id, row.cycle);
+
+  it("passes when the triple exists and the name matches modulo whitespace/case", () => {
+    const live = new Map([[liveKey, { committee_name: "  STREETS FOR ALL  Los Angeles PAC " }]]);
+    expect(checkRowsAgainstLiveCommittees([row], live)).toEqual([]);
+  });
+
+  it("rejects a triple absent from live finance data, including a cycle mismatch", () => {
+    const live = new Map([[liveKey, { committee_name: row.committee_name }]]);
+    const wrongId = checkRowsAgainstLiveCommittees([{ ...row, committee_id: "9999999" }], live);
+    expect(wrongId).toHaveLength(1);
+    expect(wrongId[0]).toMatch(/not in any upcoming election's finance summaries/);
+    const wrongCycle = checkRowsAgainstLiveCommittees([{ ...row, cycle: 2028 }], live);
+    expect(wrongCycle).toHaveLength(1);
+  });
+
+  it("rejects a committee_name that names a different committee, quoting the live name", () => {
+    const live = new Map([[liveKey, { committee_name: "Some Other PAC" }]]);
+    const errors = checkRowsAgainstLiveCommittees([row], live);
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toMatch(/does not match the live finance name "Some Other PAC"/);
+  });
+});
+
+describe("checkLabelSourceUrls", () => {
+  it("passes reachable URLs, verifying each unique URL once", async () => {
+    const verify = vi.fn().mockResolvedValue({ ok: true });
+    const row = validRow();
+    const errors = await checkLabelSourceUrls([row, { ...row, cycle: 2028 }], verify);
+    expect(errors).toEqual([]);
+    expect(verify).toHaveBeenCalledTimes(1);
+    expect(verify).toHaveBeenCalledWith(row.source_urls[0], {
+      timeoutMs: 8_000,
+      allowStatusCodes: [403],
+    });
+  });
+
+  it("reports permanent failures without retrying them", async () => {
+    const verify = vi.fn().mockResolvedValue({ ok: false, reason: "status 404" });
+    const errors = await checkLabelSourceUrls([validRow()], verify);
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toMatch(/source URL unreachable \(status 404\)/);
+    expect(verify).toHaveBeenCalledTimes(1);
+  });
+
+  it("retries a transient failure once and passes when the retry succeeds", async () => {
+    const verify = vi
+      .fn()
+      .mockResolvedValueOnce({ ok: false, reason: "request timed out" })
+      .mockResolvedValueOnce({ ok: true });
+    const errors = await checkLabelSourceUrls([validRow()], verify);
+    expect(errors).toEqual([]);
+    expect(verify).toHaveBeenCalledTimes(2);
   });
 });

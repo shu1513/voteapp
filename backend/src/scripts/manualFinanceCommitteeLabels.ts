@@ -2,6 +2,11 @@ import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
+import {
+  classifyCitationVerificationFailure,
+  verifyHttpUrlReachability,
+  type UrlReachabilityResult,
+} from "../ai/urlReachability.js";
 import { loadProjectEnv } from "../config/env.js";
 import { loadCandidateFinanceSummariesByCandidateElection } from "../pipeline/address/ballotLookup.js";
 import { committeeLabelKey } from "../pipeline/address/financeCommitteeLabels.js";
@@ -88,11 +93,19 @@ type DueCommittee = {
   }[];
 };
 
-async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
-  const stateFilter = readFlag(argv, "--state")?.toUpperCase() ?? null;
-  const limit = readPositiveIntegerFlag(argv, "--limit", 500);
-  const today = usLatestLocalDateIso();
-
+/**
+ * Enumerates every outside-spending committee that appears in the finance
+ * summaries of upcoming elections, through the same merged read path the
+ * ballot lookup uses — so the result exactly matches what voters currently
+ * see. Shared by `due` (the work queue) and `write` (existence/name checks:
+ * a mistyped committee_id or cycle would otherwise write a label no voter
+ * ever sees, with no error anywhere).
+ */
+async function collectUpcomingCommittees(
+  pool: Pool,
+  stateFilter: string | null,
+  today: string
+): Promise<Map<string, DueCommittee>> {
   // Same row shapes the ballot lookup passes to the merged finance loader.
   // Only upcoming elections: labels serve the races voters see now, and the
   // finance cards only render for ongoing elections.
@@ -206,6 +219,14 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
       committees.set(committeeKey, entry);
     }
   }
+  return committees;
+}
+
+async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
+  const stateFilter = readFlag(argv, "--state")?.toUpperCase() ?? null;
+  const limit = readPositiveIntegerFlag(argv, "--limit", 500);
+  const today = usLatestLocalDateIso();
+  const committees = await collectUpcomingCommittees(pool, stateFilter, today);
 
   // Drop committees that already have a researched label for their cycle.
   let unlabeled = [...committees.values()];
@@ -350,6 +371,102 @@ export function parseCommitteeLabelPayload(raw: unknown): CommitteeLabelPayloadR
   return rows;
 }
 
+// Names arrive by copy-paste from the due list, so an exact match is the
+// expectation — the normalization only forgives whitespace/case drift, not
+// a different committee.
+function normalizeCommitteeName(name: string): string {
+  return name.replace(/\s+/g, " ").trim().toLowerCase();
+}
+
+/**
+ * Checks every payload row against the committees currently present in
+ * upcoming elections' finance summaries. A triple absent from live data or
+ * a committee_name that names a different committee is a research/transcribe
+ * error: the label would either never display or assert claims about the
+ * wrong committee.
+ */
+export function checkRowsAgainstLiveCommittees(
+  rows: readonly CommitteeLabelPayloadRow[],
+  liveCommittees: ReadonlyMap<string, Pick<DueCommittee, "committee_name">>
+): string[] {
+  const errors: string[] = [];
+  rows.forEach((row, index) => {
+    const live = liveCommittees.get(committeeLabelKey(row.source, row.committee_id, row.cycle));
+    if (!live) {
+      errors.push(
+        `labels[${index}]: (${row.source}, ${row.committee_id}, ${row.cycle}) is not in any upcoming election's finance summaries — copy the triple from the due list`
+      );
+      return;
+    }
+    if (normalizeCommitteeName(live.committee_name) !== normalizeCommitteeName(row.committee_name)) {
+      errors.push(
+        `labels[${index}]: committee_name "${row.committee_name}" does not match the live finance name "${live.committee_name}" for (${row.source}, ${row.committee_id}, ${row.cycle})`
+      );
+    }
+  });
+  return errors;
+}
+
+/**
+ * Verifies every source URL actually answers, mirroring the citation checks
+ * the other manual writers run before writing. 403 is allowed (official
+ * hosts routinely reject HEAD/bot requests they would serve to a browser),
+ * and transient failures get one plain retry — slow official hosts routinely
+ * pass on it, while permanent failures (404, DNS, TLS) never do.
+ */
+export async function checkLabelSourceUrls(
+  rows: readonly CommitteeLabelPayloadRow[],
+  verify: typeof verifyHttpUrlReachability = verifyHttpUrlReachability
+): Promise<string[]> {
+  const uniqueUrls = [...new Set(rows.flatMap((row) => row.source_urls))];
+  const resultByUrl = new Map<string, UrlReachabilityResult>();
+
+  const verifyBatch = async (batch: readonly string[]): Promise<void> => {
+    const workerCount = Math.min(4, batch.length);
+    let nextIndex = 0;
+    await Promise.all(
+      Array.from({ length: workerCount }, async () => {
+        while (true) {
+          const currentIndex = nextIndex;
+          nextIndex += 1;
+          if (currentIndex >= batch.length) {
+            return;
+          }
+          const url = batch[currentIndex];
+          if (!url) {
+            continue;
+          }
+          resultByUrl.set(url, await verify(url, { timeoutMs: 8_000, allowStatusCodes: [403] }));
+        }
+      })
+    );
+  };
+
+  await verifyBatch(uniqueUrls);
+  const transientUrls = uniqueUrls.filter((url) => {
+    const result = resultByUrl.get(url);
+    return (
+      result !== undefined &&
+      !result.ok &&
+      classifyCitationVerificationFailure(result.reason) === "transient"
+    );
+  });
+  if (transientUrls.length > 0) {
+    await verifyBatch(transientUrls);
+  }
+
+  const errors: string[] = [];
+  rows.forEach((row, index) => {
+    for (const url of row.source_urls) {
+      const result = resultByUrl.get(url);
+      if (result !== undefined && !result.ok) {
+        errors.push(`labels[${index}]: source URL unreachable (${result.reason}): ${url}`);
+      }
+    }
+  });
+  return errors;
+}
+
 async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
   const file = readFlag(argv, "--file");
   if (!file) {
@@ -357,6 +474,20 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
   }
   const dryRun = argv.includes("--dry-run");
   const rows = parseCommitteeLabelPayload(JSON.parse(await readFile(file, "utf8")) as unknown);
+
+  // Deep validation beyond the shape checks, mirroring the other manual
+  // writers: the triple must exist in live finance data, the name must match
+  // it, and every source URL must answer. Both checks run before reporting
+  // so a multi-row payload is fixed in one pass. Dry runs validate too —
+  // that is what a rehearsal is for.
+  const liveCommittees = await collectUpcomingCommittees(pool, null, usLatestLocalDateIso());
+  const deepErrors = [
+    ...checkRowsAgainstLiveCommittees(rows, liveCommittees),
+    ...(await checkLabelSourceUrls(rows)),
+  ];
+  if (deepErrors.length > 0) {
+    throw new Error(`Committee-label validation failed:\n- ${deepErrors.join("\n- ")}`);
+  }
 
   if (dryRun) {
     console.log(JSON.stringify({ dry_run: true, valid_rows: rows.length, rows }, null, 2));
