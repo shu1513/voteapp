@@ -13,7 +13,9 @@
 # API's public host would break (and the value would be overwritten anyway).
 #
 # Secrets (sync: false) are entered in the Render dashboard: AWS SES
-# send-only key pair, plus the optional EDGE_SHARED_SECRET. NOTE: a
+# send-only key pair, the optional EDGE_SHARED_SECRET, and
+# GOOGLE_PLACES_API_KEY (optional to boot, but address autocomplete 500s
+# without it). NOTE: a
 # Blueprint sync only prompts for sync: false vars present at blueprint
 # creation — ones added later must be entered manually on the service
 # (docs/deploy-render.md "Direct onrender.com access" has the sequence).
