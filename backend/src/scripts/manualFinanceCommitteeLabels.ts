@@ -316,9 +316,16 @@ export function parseCommitteeLabelPayload(raw: unknown): CommitteeLabelPayloadR
     const cycle = typeof row.cycle === "number" && Number.isInteger(row.cycle) ? row.cycle : null;
     const committeeName = typeof row.committee_name === "string" ? row.committee_name.trim() : "";
     const label = typeof row.label === "string" ? row.label.trim() : "";
-    const sourceUrls = Array.isArray(row.source_urls)
-      ? row.source_urls.filter((url): url is string => typeof url === "string").map((url) => url.trim())
-      : [];
+    const rawSourceUrls = Array.isArray(row.source_urls) ? row.source_urls : [];
+    // A non-string entry is a malformed payload, not an ignorable extra:
+    // silently filtering it out would pass a row whose evidence list lost
+    // an entry the researcher thought they provided.
+    if (rawSourceUrls.some((url) => typeof url !== "string")) {
+      errors.push(`${at}: source_urls entries must all be strings`);
+    }
+    const sourceUrls = rawSourceUrls
+      .filter((url): url is string => typeof url === "string")
+      .map((url) => url.trim());
 
     if (!knownSources.has(source)) {
       errors.push(`${at}: unknown source "${source}" — must be one of the finance summary sources`);
@@ -401,27 +408,35 @@ export type CommitteeLabelValidationIssue = {
  * a committee_name that names a different committee is a research/transcribe
  * error: the label would either never display or assert claims about the
  * wrong committee.
+ *
+ * A triple that already has a stored label row stays writable after its
+ * elections pass (storedCommittees, name checked against the stored
+ * snapshot): correcting an existing label is the same command, and the live
+ * summaries no longer carry a finished race's committees. Only NEW labels
+ * must appear in upcoming elections' summaries.
  */
 export function checkRowsAgainstLiveCommittees(
   rows: readonly CommitteeLabelPayloadRow[],
-  liveCommittees: ReadonlyMap<string, Pick<DueCommittee, "committee_name">>
+  liveCommittees: ReadonlyMap<string, Pick<DueCommittee, "committee_name">>,
+  storedCommittees: ReadonlyMap<string, Pick<DueCommittee, "committee_name">> = new Map()
 ): CommitteeLabelValidationIssue[] {
   const issues: CommitteeLabelValidationIssue[] = [];
   rows.forEach((row, index) => {
-    const live = liveCommittees.get(committeeLabelKey(row.source, row.committee_id, row.cycle));
-    if (!live) {
+    const key = committeeLabelKey(row.source, row.committee_id, row.cycle);
+    const known = liveCommittees.get(key) ?? storedCommittees.get(key);
+    if (!known) {
       issues.push({
         index,
         kind: "missing_committee",
-        reason: `(${row.source}, ${row.committee_id}, ${row.cycle}) is not in any upcoming election's finance summaries — copy the triple from the due list`,
+        reason: `(${row.source}, ${row.committee_id}, ${row.cycle}) is not in any upcoming election's finance summaries and has no existing label row — copy the triple from the due list`,
       });
       return;
     }
-    if (normalizeCommitteeName(live.committee_name) !== normalizeCommitteeName(row.committee_name)) {
+    if (normalizeCommitteeName(known.committee_name) !== normalizeCommitteeName(row.committee_name)) {
       issues.push({
         index,
         kind: "name_mismatch",
-        reason: `committee_name "${row.committee_name}" does not match the live finance name "${live.committee_name}" for (${row.source}, ${row.committee_id}, ${row.cycle})`,
+        reason: `committee_name "${row.committee_name}" does not match the known committee name "${known.committee_name}" for (${row.source}, ${row.committee_id}, ${row.cycle})`,
       });
     }
   });
@@ -534,8 +549,27 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
   // so a multi-row payload is fixed in one pass. Dry runs validate too —
   // that is what a rehearsal is for.
   const liveCommittees = await collectUpcomingCommittees(pool, null, usLatestLocalDateIso());
+  // Triples that already have a label row stay correctable after their
+  // elections pass — validated against the stored name snapshot.
+  const storedResult = await pool.query<{ source: string; committee_id: string; cycle: number; committee_name: string }>(
+    `
+      SELECT l.source, l.committee_id, l.cycle, l.committee_name
+      FROM public.finance_committee_labels AS l
+      JOIN unnest($1::text[], $2::text[], $3::int[]) AS wanted(source, committee_id, cycle)
+        ON wanted.source = l.source
+       AND wanted.committee_id = l.committee_id
+       AND wanted.cycle = l.cycle
+    `,
+    [rows.map((row) => row.source), rows.map((row) => row.committee_id), rows.map((row) => row.cycle)]
+  );
+  const storedCommittees = new Map(
+    storedResult.rows.map((row) => [
+      committeeLabelKey(row.source, row.committee_id, row.cycle),
+      { committee_name: row.committee_name },
+    ])
+  );
   const issues = [
-    ...checkRowsAgainstLiveCommittees(rows, liveCommittees),
+    ...checkRowsAgainstLiveCommittees(rows, liveCommittees, storedCommittees),
     ...(await checkLabelSourceUrls(rows)),
   ];
   if (issues.length > 0) {

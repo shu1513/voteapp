@@ -64,6 +64,14 @@ describe("parseCommitteeLabelPayload", () => {
       parseCommitteeLabelPayload({ labels: [{ ...validRow(), label: "x".repeat(201) }] })
     ).toThrow(/exceeds 200 characters/);
   });
+
+  it("rejects non-string source_urls entries instead of silently dropping them", () => {
+    expect(() =>
+      parseCommitteeLabelPayload({
+        labels: [{ ...validRow(), source_urls: ["https://ethics.lacity.org/data/campaigns/", 123] }],
+      })
+    ).toThrow(/source_urls entries must all be strings/);
+  });
 });
 
 describe("checkRowsAgainstLiveCommittees", () => {
@@ -85,12 +93,24 @@ describe("checkRowsAgainstLiveCommittees", () => {
     expect(wrongCycle).toHaveLength(1);
   });
 
-  it("rejects a committee_name that names a different committee, quoting the live name", () => {
+  it("rejects a committee_name that names a different committee, quoting the known name", () => {
     const live = new Map([[liveKey, { committee_name: "Some Other PAC" }]]);
     const issues = checkRowsAgainstLiveCommittees([row], live);
     expect(issues).toHaveLength(1);
     expect(issues[0].kind).toBe("name_mismatch");
-    expect(issues[0].reason).toMatch(/does not match the live finance name "Some Other PAC"/);
+    expect(issues[0].reason).toMatch(/does not match the known committee name "Some Other PAC"/);
+  });
+
+  it("keeps an already-labeled triple writable after its elections pass, name-checked against the stored snapshot", () => {
+    const stored = new Map([[liveKey, { committee_name: row.committee_name }]]);
+    expect(checkRowsAgainstLiveCommittees([row], new Map(), stored)).toEqual([]);
+    const renamed = checkRowsAgainstLiveCommittees(
+      [{ ...row, committee_name: "Different PAC" }],
+      new Map(),
+      stored
+    );
+    expect(renamed).toHaveLength(1);
+    expect(renamed[0].kind).toBe("name_mismatch");
   });
 });
 
