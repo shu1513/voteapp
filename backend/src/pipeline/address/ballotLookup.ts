@@ -18,6 +18,7 @@ import {
 } from "../competitiveness/historicalContestMarginLookup.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
 import { calculateVotePower, explainVotePower, type VotePowerExplanation, type VotePowerResult } from "./votePower.js";
+import { applyFinanceCommitteeLabels } from "./financeCommitteeLabels.js";
 import {
   GENERAL_RESEARCH_AREA_SLUG,
   INTEGRITY_AND_ETHICS_RESEARCH_AREA_SLUG,
@@ -1790,6 +1791,13 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
     detail.ballot_measure ? [detail.id] : []
   );
 
+  // Deliberately the LAST query of this lookup (and fault-isolated inside):
+  // mutates the finance summaries already embedded in detail.candidates.
+  await applyFinanceCommitteeLabels(
+    db,
+    detail.candidates.map((candidate) => candidate.finance_summary)
+  );
+
   const votePowerInput = {
     raceType: detail.race_type,
     candidateCount: detail.candidates.length,
@@ -1891,9 +1899,10 @@ export async function lookupCandidateElectionFinanceSummaryById(
   // Key on the DB-canonical row ids, not the request strings: the loaders
   // key their maps on lowercase ids from the database, and isUuid accepts
   // uppercase hex that Postgres matches but a string-keyed Map does not.
-  return {
-    finance_summary:
-      financeSummaryByCandidateElection.get(candidateElectionKey(candidateRow.candidate_id, candidateRow.election_id)) ??
-      null,
-  };
+  const financeSummary =
+    financeSummaryByCandidateElection.get(candidateElectionKey(candidateRow.candidate_id, candidateRow.election_id)) ??
+    null;
+  // Last query of the lookup, fault-isolated inside.
+  await applyFinanceCommitteeLabels(db, [financeSummary]);
+  return { finance_summary: financeSummary };
 }

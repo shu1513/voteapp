@@ -165,6 +165,31 @@ describe("FinanceSummaryCard", () => {
     expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
   });
 
+  it("shows a researched committee label with its source links, and nothing when unlabeled", () => {
+    const summary = financeSummary();
+    summary.outside_spending.top_supporting_groups = [
+      {
+        ...summary.outside_spending.top_supporting_groups[0],
+        label: "Super PAC funded primarily by real-estate developers",
+        label_source_urls: ["https://www.opensecrets.org/pacs/lookup"],
+      },
+    ];
+    render(<FinanceSummaryCard summary={summary} />);
+
+    expect(screen.getByText("Growth PAC")).toBeInTheDocument();
+    // The label is a factual claim, so its evidence renders beside it.
+    const labelLine = screen.getByText(/Super PAC funded primarily by real-estate developers/);
+    expect(labelLine).toBeInTheDocument();
+    const sourceLink = screen.getByRole("link", { name: "opensecrets.org" });
+    expect(sourceLink).toHaveAttribute("href", "https://www.opensecrets.org/pacs/lookup");
+    // The unlabeled opposing group renders its name with no description
+    // paragraph and no evidence links.
+    const unlabeledItem = screen.getByText("Stop Them PAC").closest("li");
+    expect(unlabeledItem).not.toBeNull();
+    expect(unlabeledItem?.querySelector("p")).toBeNull();
+    expect(unlabeledItem?.querySelector("a")).toBeNull();
+  });
+
   it("keeps donor money direct and pairs each organization with its own committee", () => {
     const summary = financeSummary();
     summary.backing_summary = {
