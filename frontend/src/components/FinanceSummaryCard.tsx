@@ -190,8 +190,27 @@ function OutsideSection({
                 </div>
                 {/* Researched one-line description of who is behind the
                     committee — the name alone ("Streets for All Los Angeles
-                    PAC") tells a voter nothing. Absent until researched. */}
-                {row.label ? <p className="text-xs text-ink-soft">{row.label}</p> : null}
+                    PAC") tells a voter nothing. Absent until researched.
+                    The label is a factual claim, so the evidence behind it
+                    rides along as quiet host links. */}
+                {row.label ? (
+                  <p className="text-xs text-ink-soft">
+                    {row.label}
+                    {(row.label_source_urls ?? []).map((url) => (
+                      <span key={url}>
+                        {" · "}
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline hover:text-ink"
+                        >
+                          {formatSourceHost(url)}
+                        </a>
+                      </span>
+                    ))}
+                  </p>
+                ) : null}
               </li>
             ))}
           </ul>

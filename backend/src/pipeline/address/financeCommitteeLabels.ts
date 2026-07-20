@@ -9,19 +9,26 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 type FinanceCommitteeLabelRow = {
   source: string;
   committee_id: string;
+  cycle: number;
   label: string;
+  source_urls: string[];
 };
 
-// (source, committee_id) — committee ids are only unique within one
-// disclosing agency's namespace.
-function committeeLabelKey(source: string, committeeId: string): string {
-  return `${source} ${committeeId}`;
+// (source, committee_id, cycle) — committee ids are only unique within one
+// disclosing agency's namespace, and labels are cycle-scoped because funder
+// claims can change between cycles. NUL-separated (candidateElectionKey's
+// convention): committee ids come from ~34 disclosure systems with no
+// guaranteed format, so a printable separator could collide. Exported for
+// the manual due/write script, which keys the same triple.
+export function committeeLabelKey(source: string, committeeId: string, cycle: number): string {
+  return `${source}\u0000${committeeId}\u0000${cycle}`;
 }
 
 /**
  * Attaches manually researched committee labels (finance_committee_labels)
  * to the outside-spending group rows of already-built finance summaries.
- * Mutates the summaries in place.
+ * Mutates the summaries in place: matching groups gain `label` plus the
+ * `label_source_urls` evidence behind it.
  *
  * Runs as the LAST query of each ballot-lookup entry point and is fault
  * isolated: labels enrich the payload, so a missing table (migration not
@@ -37,17 +44,19 @@ export async function applyFinanceCommitteeLabels(
   );
   const sources: string[] = [];
   const committeeIds: string[] = [];
+  const cycles: number[] = [];
   const seen = new Set<string>();
   for (const summary of summaryList) {
     for (const group of [
       ...summary.outside_spending.top_supporting_groups,
       ...summary.outside_spending.top_opposing_groups,
     ]) {
-      const key = committeeLabelKey(summary.source, group.committee_id);
+      const key = committeeLabelKey(summary.source, group.committee_id, summary.cycle);
       if (!seen.has(key)) {
         seen.add(key);
         sources.push(summary.source);
         committeeIds.push(group.committee_id);
+        cycles.push(summary.cycle);
       }
     }
   }
@@ -55,20 +64,21 @@ export async function applyFinanceCommitteeLabels(
     return;
   }
 
-  let labelByKey: Map<string, string>;
+  let labelByKey: Map<string, FinanceCommitteeLabelRow>;
   try {
     const result = await db.query<FinanceCommitteeLabelRow>(
       `
-        SELECT l.source, l.committee_id, l.label
+        SELECT l.source, l.committee_id, l.cycle, l.label, l.source_urls
         FROM public.finance_committee_labels AS l
-        JOIN unnest($1::text[], $2::text[]) AS wanted(source, committee_id)
+        JOIN unnest($1::text[], $2::text[], $3::int[]) AS wanted(source, committee_id, cycle)
           ON wanted.source = l.source
          AND wanted.committee_id = l.committee_id
+         AND wanted.cycle = l.cycle
       `,
-      [sources, committeeIds]
+      [sources, committeeIds, cycles]
     );
     labelByKey = new Map(
-      result.rows.map((row) => [committeeLabelKey(row.source, row.committee_id), row.label])
+      result.rows.map((row) => [committeeLabelKey(row.source, row.committee_id, row.cycle), row])
     );
   } catch (error) {
     console.warn("finance committee labels failed; continuing with unlabeled groups:", {
@@ -83,9 +93,10 @@ export async function applyFinanceCommitteeLabels(
       ...summary.outside_spending.top_supporting_groups,
       ...summary.outside_spending.top_opposing_groups,
     ]) {
-      const label = labelByKey.get(committeeLabelKey(summary.source, group.committee_id));
-      if (label !== undefined) {
-        group.label = label;
+      const row = labelByKey.get(committeeLabelKey(summary.source, group.committee_id, summary.cycle));
+      if (row !== undefined) {
+        group.label = row.label;
+        group.label_source_urls = row.source_urls;
       }
     }
   }

@@ -2019,14 +2019,17 @@ describe("lookupElectionDetailById", () => {
         ],
       })
       // Trailing committee-labels lookup (applyFinanceCommitteeLabels): the
-      // supporting group has a researched label, the opposing group does
-      // not — labeled groups gain `label`, unlabeled groups stay untouched.
+      // supporting group has a researched label for this cycle, the opposing
+      // group does not — labeled groups gain `label` plus its evidence,
+      // unlabeled groups stay untouched.
       .mockResolvedValueOnce({
         rows: [
           {
             source: "FEC",
             committee_id: "C00000001",
+            cycle: 2024,
             label: "Super PAC funded primarily by technology-industry donors",
+            source_urls: ["https://www.opensecrets.org/pacs/lookup"],
           },
         ],
       });
@@ -2079,6 +2082,7 @@ describe("lookupElectionDetailById", () => {
             amount: 5000,
             source_url: "https://www.fec.gov/data/independent-expenditures/?committee_id=C00000001",
             label: "Super PAC funded primarily by technology-industry donors",
+            label_source_urls: ["https://www.opensecrets.org/pacs/lookup"],
           },
         ],
         top_opposing_groups: [
@@ -2147,11 +2151,13 @@ describe("lookupElectionDetailById", () => {
     expect(query.mock.calls[11]?.[0]).toContain("public.finance_label_classifications");
     expect(query.mock.calls[11]?.[0]).toContain("classification.normalized_label");
     expect(query.mock.calls[11]?.[0]).not.toContain("classification.raw_label = breakdown.category_name");
-    // Committee-labels enrichment runs last, keyed on (source, committee_id).
+    // Committee-labels enrichment runs last, keyed on
+    // (source, committee_id, cycle).
     expect(query.mock.calls[12]?.[0]).toContain("public.finance_committee_labels");
     expect(query.mock.calls[12]?.[1]).toEqual([
       ["FEC", "FEC"],
       ["C00000001", "C00000002"],
+      [2024, 2024],
     ]);
   });
 

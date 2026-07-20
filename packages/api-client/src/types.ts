@@ -155,8 +155,11 @@ export type FinanceOutsideGroup = {
   amount: number;
   source_url: string | null;
   /** Manually researched one-line description of the committee's interest;
-   * absent until a label has been researched (finance_committee_labels). */
+   * absent until a label has been researched for this summary's cycle
+   * (finance_committee_labels). */
   label?: string;
+  /** Evidence URLs behind `label` — present exactly when `label` is. */
+  label_source_urls?: string[];
 };
 
 // Mirrors BallotLookupFinanceOutsideIndustrySupportEvidence (backend

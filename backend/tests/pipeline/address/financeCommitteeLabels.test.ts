@@ -59,7 +59,9 @@ describe("applyFinanceCommitteeLabels", () => {
         {
           source: "LOS_ANGELES_CITY_ETHICS",
           committee_id: "1461461",
+          cycle: 2026,
           label: "Transportation-advocacy PAC focused on bike and bus infrastructure",
+          source_urls: ["https://ethics.lacity.org/data/campaigns/"],
         },
       ],
     });
@@ -69,18 +71,36 @@ describe("applyFinanceCommitteeLabels", () => {
     expect(target.outside_spending.top_supporting_groups[0].label).toBe(
       "Transportation-advocacy PAC focused on bike and bus infrastructure"
     );
+    // The label's evidence rides along with it.
+    expect(target.outside_spending.top_supporting_groups[0].label_source_urls).toEqual([
+      "https://ethics.lacity.org/data/campaigns/",
+    ]);
     // The same committee in a second summary is labeled too…
     expect(other.outside_spending.top_supporting_groups[0].label).toBe(
       "Transportation-advocacy PAC focused on bike and bus infrastructure"
     );
     // …while a committee with no researched label stays untouched.
     expect(other.outside_spending.top_opposing_groups[0].label).toBeUndefined();
-    // One batched query with paired arrays, deduplicated across summaries.
+    // One batched query with paired arrays (cycle-scoped), deduplicated
+    // across summaries.
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[1]).toEqual([
       ["LOS_ANGELES_CITY_ETHICS", "LOS_ANGELES_CITY_ETHICS"],
       ["1461461", "999"],
+      [2026, 2026],
     ]);
+  });
+
+  it("does not apply a label researched for a different cycle", async () => {
+    const target = summary({ cycle: 2028 });
+    const query = vi.fn().mockResolvedValue({ rows: [] });
+
+    await applyFinanceCommitteeLabels({ query }, [target]);
+
+    // The lookup itself asks for the summary's own cycle…
+    expect(query.mock.calls[0]?.[1]).toEqual([["LOS_ANGELES_CITY_ETHICS"], ["1461461"], [2028]]);
+    // …and nothing matches, so the group stays unlabeled.
+    expect(target.outside_spending.top_supporting_groups[0].label).toBeUndefined();
   });
 
   it("issues no query when the summaries carry no outside groups", async () => {

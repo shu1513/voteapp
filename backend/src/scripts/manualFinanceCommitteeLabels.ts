@@ -4,7 +4,11 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { loadCandidateFinanceSummariesByCandidateElection } from "../pipeline/address/ballotLookup.js";
-import { FINANCE_SUMMARY_SOURCES } from "../pipeline/address/ballotLookupFinanceShared.js";
+import { committeeLabelKey } from "../pipeline/address/financeCommitteeLabels.js";
+import {
+  CANDIDATE_ELECTION_KEY_SEPARATOR,
+  FINANCE_SUMMARY_SOURCES,
+} from "../pipeline/address/ballotLookupFinanceShared.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { usLatestLocalDateIso } from "../utils/usLocalDate.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
@@ -31,7 +35,7 @@ function usage(): string {
     "  npm run manual:finance-committee-labels:write -- --file labels.json [--dry-run]",
     "",
     "The write payload shape:",
-    '  { "labels": [ { "source", "committee_id", "committee_name", "label", "source_urls": ["https://..."] } ] }',
+    '  { "labels": [ { "source", "committee_id", "cycle", "committee_name", "label", "source_urls": ["https://..."] } ] }',
     "",
     "Labels must be neutral, source-backed descriptions of the committee's",
     "interest (who funds it / what it advocates), never voting advice.",
@@ -70,10 +74,18 @@ function requireEnv(name: string): string {
 type DueCommittee = {
   source: string;
   committee_id: string;
+  /** Labels are cycle-scoped: funder claims can change between cycles. */
+  cycle: number;
   committee_name: string;
   directions: string[];
   total_amount: number;
-  elections: { official_ballot_title: string; election_date: string; state: string }[];
+  elections: {
+    election_id: string;
+    official_ballot_title: string;
+    district_name: string;
+    election_date: string;
+    state: string;
+  }[];
 };
 
 async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
@@ -148,19 +160,29 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
   );
   const committees = new Map<string, DueCommittee>();
   for (const [key, summary] of summaries) {
-    // candidateElectionKey joins candidate and election ids with a NUL separator.
-    const electionId = key.split("\u0000")[1];
+    // The map key is candidateElectionKey's join; recover the election id
+    // with the shared separator instead of re-encoding it.
+    const electionId = key.split(CANDIDATE_ELECTION_KEY_SEPARATOR)[1];
     const election = electionById.get(electionId) as
-      | { official_ballot_title: string; election_date: string; state: string }
+      | {
+          election_id: string;
+          official_ballot_title: string;
+          district_name: string;
+          election_date: string;
+          state: string;
+        }
       | undefined;
     for (const group of [
       ...summary.outside_spending.top_supporting_groups,
       ...summary.outside_spending.top_opposing_groups,
     ]) {
-      const committeeKey = `${summary.source} ${group.committee_id}`;
+      // Cycle-scoped, matching the table key: the same committee reappears
+      // as due in a new cycle instead of inheriting stale funder claims.
+      const committeeKey = committeeLabelKey(summary.source, group.committee_id, summary.cycle);
       const entry = committees.get(committeeKey) ?? {
         source: summary.source,
         committee_id: group.committee_id,
+        cycle: summary.cycle,
         committee_name: group.committee_name,
         directions: [],
         total_amount: 0,
@@ -170,16 +192,13 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
         entry.directions.push(group.support_oppose);
       }
       entry.total_amount += group.amount;
-      if (
-        election &&
-        !entry.elections.some(
-          (seen) =>
-            seen.official_ballot_title === election.official_ballot_title &&
-            seen.election_date === election.election_date
-        )
-      ) {
+      // Dedupe by election id: ballot titles repeat freely (ten same-day
+      // "State Representative" races, possibly across states).
+      if (election && !entry.elections.some((seen) => seen.election_id === election.election_id)) {
         entry.elections.push({
+          election_id: election.election_id,
           official_ballot_title: election.official_ballot_title,
+          district_name: election.district_name,
           election_date: election.election_date,
           state: election.state,
         });
@@ -188,21 +207,30 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
     }
   }
 
-  // Drop committees that already have a researched label.
+  // Drop committees that already have a researched label for their cycle.
   let unlabeled = [...committees.values()];
   if (unlabeled.length > 0) {
-    const labeled = await pool.query<{ source: string; committee_id: string }>(
+    const labeled = await pool.query<{ source: string; committee_id: string; cycle: number }>(
       `
-        SELECT l.source, l.committee_id
+        SELECT l.source, l.committee_id, l.cycle
         FROM public.finance_committee_labels AS l
-        JOIN unnest($1::text[], $2::text[]) AS wanted(source, committee_id)
+        JOIN unnest($1::text[], $2::text[], $3::int[]) AS wanted(source, committee_id, cycle)
           ON wanted.source = l.source
          AND wanted.committee_id = l.committee_id
+         AND wanted.cycle = l.cycle
       `,
-      [unlabeled.map((entry) => entry.source), unlabeled.map((entry) => entry.committee_id)]
+      [
+        unlabeled.map((entry) => entry.source),
+        unlabeled.map((entry) => entry.committee_id),
+        unlabeled.map((entry) => entry.cycle),
+      ]
     );
-    const labeledKeys = new Set(labeled.rows.map((row) => `${row.source} ${row.committee_id}`));
-    unlabeled = unlabeled.filter((entry) => !labeledKeys.has(`${entry.source} ${entry.committee_id}`));
+    const labeledKeys = new Set(
+      labeled.rows.map((row) => committeeLabelKey(row.source, row.committee_id, row.cycle))
+    );
+    unlabeled = unlabeled.filter(
+      (entry) => !labeledKeys.has(committeeLabelKey(entry.source, entry.committee_id, entry.cycle))
+    );
   }
 
   unlabeled.sort((a, b) => b.total_amount - a.total_amount);
@@ -223,12 +251,16 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
 export type CommitteeLabelPayloadRow = {
   source: string;
   committee_id: string;
+  cycle: number;
   committee_name: string;
   label: string;
   source_urls: string[];
 };
 
 const MAX_LABEL_LENGTH = 200;
+// Sanity bounds only — cycles come from the due list verbatim.
+const MIN_CYCLE = 1990;
+const MAX_CYCLE = 2100;
 
 /**
  * Validates the write payload. Throws with every problem listed at once so a
@@ -255,6 +287,7 @@ export function parseCommitteeLabelPayload(raw: unknown): CommitteeLabelPayloadR
     const row = entry as Record<string, unknown>;
     const source = typeof row.source === "string" ? row.source.trim() : "";
     const committeeId = typeof row.committee_id === "string" ? row.committee_id.trim() : "";
+    const cycle = typeof row.cycle === "number" && Number.isInteger(row.cycle) ? row.cycle : null;
     const committeeName = typeof row.committee_name === "string" ? row.committee_name.trim() : "";
     const label = typeof row.label === "string" ? row.label.trim() : "";
     const sourceUrls = Array.isArray(row.source_urls)
@@ -266,6 +299,9 @@ export function parseCommitteeLabelPayload(raw: unknown): CommitteeLabelPayloadR
     }
     if (committeeId.length === 0) {
       errors.push(`${at}: committee_id is required`);
+    }
+    if (cycle === null || cycle < MIN_CYCLE || cycle > MAX_CYCLE) {
+      errors.push(`${at}: cycle must be an integer between ${MIN_CYCLE} and ${MAX_CYCLE} (copy it from the due list)`);
     }
     if (committeeName.length === 0) {
       errors.push(`${at}: committee_name is required`);
@@ -292,12 +328,21 @@ export function parseCommitteeLabelPayload(raw: unknown): CommitteeLabelPayloadR
         }
       }
     }
-    const key = `${source} ${committeeId}`;
+    const key = committeeLabelKey(source, committeeId, cycle ?? 0);
     if (seen.has(key)) {
-      errors.push(`${at}: duplicate (source, committee_id) pair in payload: ${source} ${committeeId}`);
+      errors.push(
+        `${at}: duplicate (source, committee_id, cycle) in payload: ${source} ${committeeId} ${cycle}`
+      );
     }
     seen.add(key);
-    rows.push({ source, committee_id: committeeId, committee_name: committeeName, label, source_urls: sourceUrls });
+    rows.push({
+      source,
+      committee_id: committeeId,
+      cycle: cycle ?? 0,
+      committee_name: committeeName,
+      label,
+      source_urls: sourceUrls,
+    });
   });
   if (errors.length > 0) {
     throw new Error(`Invalid committee-label payload:\n- ${errors.join("\n- ")}`);
@@ -327,16 +372,16 @@ async function runWrite(pool: Pool, argv: readonly string[]): Promise<void> {
       const result = await client.query<{ inserted: boolean }>(
         `
           INSERT INTO public.finance_committee_labels
-            (source, committee_id, committee_name, label, source_urls, researched_at)
-          VALUES ($1, $2, $3, $4, $5, now())
-          ON CONFLICT (source, committee_id) DO UPDATE SET
+            (source, committee_id, cycle, committee_name, label, source_urls, researched_at)
+          VALUES ($1, $2, $3, $4, $5, $6, now())
+          ON CONFLICT (source, committee_id, cycle) DO UPDATE SET
             committee_name = EXCLUDED.committee_name,
             label = EXCLUDED.label,
             source_urls = EXCLUDED.source_urls,
             researched_at = now()
           RETURNING (xmax = 0) AS inserted
         `,
-        [row.source, row.committee_id, row.committee_name, row.label, row.source_urls]
+        [row.source, row.committee_id, row.cycle, row.committee_name, row.label, row.source_urls]
       );
       if (result.rows[0]?.inserted) {
         inserted += 1;

@@ -20,10 +20,13 @@ export type BallotLookupFinanceOutsideGroup = {
   source_url: string | null;
   /**
    * Manually researched one-line description of the committee's interest
-   * (finance_committee_labels). Absent until the read path enriches the
-   * group; stays absent when no label has been researched yet.
+   * (finance_committee_labels, cycle-scoped). Absent until the read path
+   * enriches the group; stays absent when no label has been researched for
+   * this summary's cycle.
    */
   label?: string;
+  /** Evidence URLs behind `label` — present exactly when `label` is. */
+  label_source_urls?: string[];
 };
 
 export type BallotLookupFinanceOutsideIndustrySupportEvidence = {
@@ -179,8 +182,15 @@ export function parseFinanceCount(value: string | number | null | undefined): nu
   return parsed === null ? null : Math.trunc(parsed);
 }
 
+// NUL separator: candidate/election ids and committee ids come from many
+// systems with no guaranteed format, so a printable separator could collide.
+// Exported so consumers that must SPLIT a key (the committee-labels due
+// script recovers the election id) share the one definition instead of
+// re-encoding it.
+export const CANDIDATE_ELECTION_KEY_SEPARATOR = "\u0000";
+
 export function candidateElectionKey(candidateId: string, electionId: string): string {
-  return `${candidateId}\u0000${electionId}`;
+  return `${candidateId}${CANDIDATE_ELECTION_KEY_SEPARATOR}${electionId}`;
 }
 
 export function firstNonEmptySourceUrl(...urls: Array<string | null | undefined>): string | null {
