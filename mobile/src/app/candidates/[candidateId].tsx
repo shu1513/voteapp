@@ -8,6 +8,7 @@ import type {
 import {
   ApiError,
   apiRequest,
+  formatDistrictName,
   formatElectionDate,
   hasFinanceContent,
   UNRANKED_RESEARCH_AREA_RANK,
@@ -381,7 +382,7 @@ function ElectionRow({
         <Text className="text-sm">
           <Text className="text-ink underline">{election.official_ballot_title}</Text>{" "}
           <Text className="text-ink-soft">
-            · {formatElectionDate(election.election_date)} · {election.district.name}
+            · {formatElectionDate(election.election_date)} · {formatDistrictName(election.district.name)}
             {election.is_incumbent ? " · incumbent" : ""}
           </Text>
         </Text>

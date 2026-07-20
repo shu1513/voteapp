@@ -2,6 +2,7 @@ import type { BallotSort, BallotSummary } from "@voteapp/api-client";
 import {
   apiRequest,
   BALLOT_SORT_DESCRIPTIONS,
+  formatDistrictName,
   formatDistrictType,
   PUBLIC_BALLOT_SORTS,
   useMyResearchAreas,
@@ -119,7 +120,7 @@ export default function BallotScreen() {
                       : "flex-row items-center justify-between px-3 py-2"
                   }
                 >
-                  <Text className="flex-1 text-xs text-ink">{district.name}</Text>
+                  <Text className="flex-1 text-xs text-ink">{formatDistrictName(district.name)}</Text>
                   <Text className="text-xs text-ink-soft">{formatDistrictType(district.district_type)}</Text>
                 </View>
               ))}

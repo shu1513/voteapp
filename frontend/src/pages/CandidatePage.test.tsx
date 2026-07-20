@@ -180,8 +180,12 @@ describe("CandidatePage", () => {
     }));
 
     const heading = await screen.findByRole("heading", { name: "Campaign finance — Governor" });
-    const details = heading.closest("details");
-    expect(details).not.toBeNull();
+    // The heading sits OUTSIDE the disclosure (a heading inside <summary>
+    // can drop out of screen-reader heading navigation); the details is its
+    // sibling within the section.
+    expect(heading.closest("details")).toBeNull();
+    const details = heading.closest("section")?.querySelector("details");
+    expect(details).toBeTruthy();
     expect(details!.open).toBe(false);
     // Collapsed, not absent: SSR HTML must keep finance crawler-readable.
     expect(screen.getByText("$120,000")).toBeInTheDocument();

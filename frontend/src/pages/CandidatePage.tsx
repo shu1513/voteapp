@@ -159,19 +159,19 @@ function OngoingElectionFinance({ election, summary }: { election: CandidateElec
       {/* Collapsed by default: finance is reference material, and open it
           pushed the record — the page's main content — below the fold. The
           collapsed content still ships in the SSR HTML (details just hides
-          it), so crawler readability is unaffected. The election name rides
-          in the summary because a candidate can be in two concurrent races,
-          repeating the heading; the aria-label keeps heading navigation
-          distinguishable (an sr-only span would glue words together in the
-          computed accessible name). */}
+          it), so crawler readability is unaffected.
+
+          The heading lives OUTSIDE the summary, sr-only: browsers map
+          <summary> to a button, and a heading inside it can drop out of
+          screen-reader heading navigation (the HTML content model also
+          forbids mixing a heading with phrasing content there). The election
+          name is in both — heading and visible line — because a candidate
+          can be in two concurrent races, which would otherwise render two
+          indistinguishable "Campaign finance" rows. */}
+      <h2 className="sr-only">{`Campaign finance — ${election.official_ballot_title}`}</h2>
       <details>
         <summary className="cursor-pointer select-none">
-          <h2
-            className="inline text-lg font-semibold"
-            aria-label={`Campaign finance — ${election.official_ballot_title}`}
-          >
-            Campaign finance
-          </h2>{" "}
+          <span className="text-lg font-semibold">Campaign finance</span>{" "}
           <span className="text-sm text-ink-soft">
             · {election.official_ballot_title} · {formatElectionDate(election.election_date)}
           </span>

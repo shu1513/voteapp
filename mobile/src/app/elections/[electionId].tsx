@@ -3,6 +3,7 @@ import {
   aggregateRecordAreaStances,
   ApiError,
   apiRequest,
+  formatDistrictName,
   formatDistrictType,
   formatElectionDate,
   formatMoney,
@@ -102,7 +103,7 @@ export default function ElectionScreen() {
       <Stack.Screen options={{ title: data.official_ballot_title }} />
       <Text className="text-2xl font-bold text-ink">{data.official_ballot_title}</Text>
       <Text className="mt-1 text-sm text-ink-soft">
-        {formatElectionDate(data.election_date)} · {data.district.name} ·{" "}
+        {formatElectionDate(data.election_date)} · {formatDistrictName(data.district.name)} ·{" "}
         {formatDistrictType(data.district.district_type)}
         {data.election_stage ? <> · {data.election_stage}</> : null}
         {data.seats_to_fill != null && data.seats_to_fill > 1 ? <> · {data.seats_to_fill} seats</> : null}

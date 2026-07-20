@@ -1,5 +1,6 @@
 import type { ElectionSummary } from "@voteapp/api-client";
 import {
+  formatDistrictName,
   formatDistrictType,
   formatElectionDate,
   formatOutcome,
@@ -33,7 +34,7 @@ export function ElectionCard({
         <Text className="shrink-0 text-sm text-ink-soft">{formatElectionDate(election.election_date)}</Text>
       </View>
       <Text className="mt-1 text-sm text-ink-soft">
-        {election.district.name} · {formatDistrictType(election.district.district_type)}
+        {formatDistrictName(election.district.name)} · {formatDistrictType(election.district.district_type)}
         {election.office ? <> · {election.office.canonical_name}</> : null}
       </Text>
       <View className="mt-2 flex-row flex-wrap items-center gap-2">
