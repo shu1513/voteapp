@@ -6,13 +6,14 @@ import { TermsRenewalGate } from "./components/TermsRenewalGate";
 import { useLogout, useMe } from "@voteapp/api-client";
 
 function AccountNav() {
-  const { me, isLoading } = useMe();
+  const { me } = useMe();
   const logout = useLogout();
   const navigate = useNavigate();
 
-  if (isLoading) {
-    return null;
-  }
+  // While /api/me is unresolved (SSR, or a cold-started API taking tens of
+  // seconds), default to the logged-out links rather than an empty header —
+  // an invisible Log in/Sign up costs signups, while a signed-in visitor
+  // briefly seeing them is harmless and self-corrects when /api/me lands.
   if (!me) {
     return (
       <span className="flex items-center gap-4">

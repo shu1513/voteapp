@@ -83,6 +83,13 @@ services:
         value: https://impactperdollar.com/api/email/unsubscribe
       - key: DEPLOY_ENV
         value: production
+      # Google Places key for /api/address/autocomplete (+retrieve). Without
+      # it the endpoint 500s ("Address autocomplete is not configured") and
+      # the frontend silently disables the address dropdown for the session.
+      # sync: false vars added after blueprint creation are NOT prompted for
+      # by a sync — enter the value manually on the voteapp-api service.
+      - key: GOOGLE_PLACES_API_KEY
+        sync: false
       - fromGroup: voteapp-shared
 
   # ---------------------------------------------------------------- SSR ----
