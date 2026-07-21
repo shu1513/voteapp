@@ -13,8 +13,6 @@ describe("upsertHawaiiCandidateFinanceSyncScheduler script", () => {
         "3",
         "--lookback-days=2",
         "--lookahead-days=365",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -23,8 +21,6 @@ describe("upsertHawaiiCandidateFinanceSyncScheduler script", () => {
       staleAfterDays: 3,
       electionLookbackDays: 2,
       electionLookaheadDays: 365,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 

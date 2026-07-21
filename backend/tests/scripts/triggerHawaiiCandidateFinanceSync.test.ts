@@ -13,8 +13,6 @@ describe("triggerHawaiiCandidateFinanceSync script", () => {
         "3",
         "--lookback-days=2",
         "--lookahead-days=365",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -23,8 +21,6 @@ describe("triggerHawaiiCandidateFinanceSync script", () => {
       staleAfterDays: 3,
       electionLookbackDays: 2,
       electionLookaheadDays: 365,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -43,9 +39,4 @@ describe("triggerHawaiiCandidateFinanceSync script", () => {
     ).toThrow("Provide --max-candidates at most once");
   });
 
-  it("can opt out of AI industry classification", () => {
-    expect(parseHawaiiCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
-    });
-  });
 });

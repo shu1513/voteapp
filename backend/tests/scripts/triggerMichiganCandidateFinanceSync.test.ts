@@ -15,7 +15,6 @@ describe("triggerMichiganCandidateFinanceSync script", () => {
         "--lookahead-days=365",
         "--raw-extracted-dir=/tmp/2022_mi_cfr",
         "--raw-cache-dir=/tmp/michigan-cache",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -26,8 +25,6 @@ describe("triggerMichiganCandidateFinanceSync script", () => {
       electionLookaheadDays: 365,
       rawDataExtractedDir: "/tmp/2022_mi_cfr",
       rawDataCacheDir: "/tmp/michigan-cache",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -46,9 +43,4 @@ describe("triggerMichiganCandidateFinanceSync script", () => {
     );
   });
 
-  it("can opt out of AI industry classification", () => {
-    expect(parseMichiganCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
-    });
-  });
 });

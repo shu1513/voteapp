@@ -14,8 +14,6 @@ describe("triggerNewMexicoCandidateFinanceSync script", () => {
         "--lookback-days=2",
         "--lookahead-days=365",
         "--raw-cache-dir=/tmp/cfis",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -25,8 +23,6 @@ describe("triggerNewMexicoCandidateFinanceSync script", () => {
       electionLookbackDays: 2,
       electionLookaheadDays: 365,
       rawDataCacheDir: "/tmp/cfis",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -39,9 +35,4 @@ describe("triggerNewMexicoCandidateFinanceSync script", () => {
     );
   });
 
-  it("can opt out of AI industry classification", () => {
-    expect(parseNewMexicoCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
-    });
-  });
 });

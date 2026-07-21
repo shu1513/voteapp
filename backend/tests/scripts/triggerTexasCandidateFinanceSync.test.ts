@@ -15,8 +15,6 @@ describe("triggerTexasCandidateFinanceSync script", () => {
         "--lookahead-days=365",
         "--raw-zip=/tmp/2026_ContributionData.csv.zip",
         "--raw-cache-dir=/tmp/texas-cache",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -27,8 +25,6 @@ describe("triggerTexasCandidateFinanceSync script", () => {
       electionLookaheadDays: 365,
       rawDataZipPath: "/tmp/2026_ContributionData.csv.zip",
       rawDataCacheDir: "/tmp/texas-cache",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -45,9 +41,4 @@ describe("triggerTexasCandidateFinanceSync script", () => {
     );
   });
 
-  it("can opt out of AI industry classification", () => {
-    expect(parseTexasCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
-    });
-  });
 });

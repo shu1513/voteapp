@@ -14,7 +14,6 @@ describe("triggerMarylandCandidateFinanceSync script", () => {
         "--lookback-days=2",
         "--lookahead-days=365",
         "--raw-cache-dir=/tmp/maryland-cfs",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -24,14 +23,6 @@ describe("triggerMarylandCandidateFinanceSync script", () => {
       electionLookbackDays: 2,
       electionLookaheadDays: 365,
       rawDataCacheDir: "/tmp/maryland-cfs",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
-    });
-  });
-
-  it("can opt out of AI industry classification", () => {
-    expect(parseMarylandCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
     });
   });
 

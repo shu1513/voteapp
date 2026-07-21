@@ -15,7 +15,6 @@ describe("upsertPennsylvaniaCandidateFinanceSyncScheduler script", () => {
         "--lookahead-days=365",
         "--raw-extracted-dir=/tmp/pa-cf/2022",
         "--raw-cache-dir=/tmp/pa-cf",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -26,8 +25,6 @@ describe("upsertPennsylvaniaCandidateFinanceSyncScheduler script", () => {
       electionLookaheadDays: 365,
       rawDataExtractedDir: "/tmp/pa-cf/2022",
       rawDataCacheDir: "/tmp/pa-cf",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 

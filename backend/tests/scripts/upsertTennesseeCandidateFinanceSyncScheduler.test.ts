@@ -12,7 +12,6 @@ describe("upsertTennesseeCandidateFinanceSyncScheduler script", () => {
   it("parses supported scheduler options", () => {
     expect(parseUpsertTennesseeCandidateFinanceSyncSchedulerArgs(["--force", "--ai-min-amount=25000"])).toMatchObject({
       force: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 });

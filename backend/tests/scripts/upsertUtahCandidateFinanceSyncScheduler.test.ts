@@ -15,8 +15,6 @@ describe("upsertUtahCandidateFinanceSyncScheduler script", () => {
         "--lookahead-days=365",
         "--raw-cache-dir=/tmp/utah-cache",
         "--refresh-cache",
-        "--ai-classify-industries",
-        "--ai-min-amount=5000",
       ])
     ).toEqual({
       dryRun: true,
@@ -27,8 +25,6 @@ describe("upsertUtahCandidateFinanceSyncScheduler script", () => {
       electionLookaheadDays: 365,
       rawDataCacheDir: "/tmp/utah-cache",
       refreshCache: true,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 5000,
     });
   });
 
@@ -47,9 +43,4 @@ describe("upsertUtahCandidateFinanceSyncScheduler script", () => {
     ).toThrow("Provide --max-candidates at most once");
   });
 
-  it("does not enable AI industry classification by default", () => {
-    expect(parseUpsertUtahCandidateFinanceSyncSchedulerArgs([])).toMatchObject({
-      aiClassifyIndustries: false,
-    });
-  });
 });

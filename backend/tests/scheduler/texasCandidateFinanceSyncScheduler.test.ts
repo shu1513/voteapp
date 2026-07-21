@@ -117,9 +117,6 @@ describe("texasCandidateFinanceSyncScheduler", () => {
     vi.doMock("../../src/pipeline/texasFinance/texasCandidateFinanceBatchSync.js", () => ({
       syncDueTexasCandidateFinance,
     }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv: vi.fn(() => vi.fn()),
-    }));
 
     const { runTexasCandidateFinanceSyncJob } = await import(
       "../../src/scheduler/texasCandidateFinanceSyncScheduler.js"
@@ -131,8 +128,6 @@ describe("texasCandidateFinanceSyncScheduler", () => {
       staleAfterDays: 3,
       electionLookbackDays: 14,
       rawDataZipPath: "/tmp/2026_ContributionData.csv.zip",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
       triggeredBy: "manual",
     });
 
@@ -151,79 +146,6 @@ describe("texasCandidateFinanceSyncScheduler", () => {
         staleAfterDays: 3,
         electionLookbackDays: 14,
         rawDataZipPath: "/tmp/2026_ContributionData.csv.zip",
-        financeIndustryClassifier: undefined,
-        aiClassificationMinAmount: 25000,
-      })
-    );
-    expect(end).toHaveBeenCalledTimes(1);
-  });
-
-  it("passes the shared finance industry classifier when AI classification is enabled outside dry-run", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.TEXAS_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.TEXAS_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
-
-    const end = vi.fn().mockResolvedValue(undefined);
-    const pool = { query: vi.fn(), end };
-    const syncDueTexasCandidateFinance = vi.fn().mockResolvedValue({
-      dryRun: false,
-      now: "2026-06-01T00:00:00.000Z",
-      staleAfterDays: 7,
-      maxCandidates: 1,
-      dueCandidateCount: 1,
-      selectedCandidateCount: 1,
-      syncedCandidateCount: 1,
-      failedCandidateCount: 0,
-      results: [],
-    });
-    const classifier = vi.fn();
-    const createFinanceIndustryClassifierFromEnv = vi.fn(() => classifier);
-
-    vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
-    vi.doMock("../../src/config/env.js", () => ({
-      getPipelineEnv: () => ({
-        DATABASE_URL: "postgresql://localhost:5432/test",
-        REDIS_URL: "redis://localhost:6379/0",
-        AI_PROVIDER: "openai",
-        AI_MODEL: "gpt-5.4-mini",
-        AI_TIMEOUT_MS: 90000,
-        ANTHROPIC_WEB_SEARCH_MAX_USES: 3,
-        STATE_RESOURCES_PROMPT_VERSION: "state_resources_v2",
-        CENSUS_API_KEYS: [],
-      }),
-    }));
-    vi.doMock("../../src/pipeline/texasFinance/texasCandidateFinanceBatchSync.js", () => ({
-      syncDueTexasCandidateFinance,
-    }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv,
-    }));
-
-    const { runTexasCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/texasCandidateFinanceSyncScheduler.js"
-    );
-
-    const result = await runTexasCandidateFinanceSyncJob({
-      maxCandidates: 1,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
-      triggeredBy: "manual",
-    });
-
-    expect(result).toMatchObject({
-      enabled: true,
-      dryRun: false,
-      selectedCandidateCount: 1,
-    });
-    expect(createFinanceIndustryClassifierFromEnv).toHaveBeenCalledTimes(1);
-    expect(syncDueTexasCandidateFinance).toHaveBeenCalledWith(
-      expect.objectContaining({
-        db: pool,
-        dryRun: false,
-        maxCandidates: 1,
-        financeIndustryClassifier: classifier,
-        aiClassificationMinAmount: 25000,
       })
     );
     expect(end).toHaveBeenCalledTimes(1);
@@ -260,8 +182,6 @@ describe("texasCandidateFinanceSyncScheduler", () => {
 
     await upsertRecurringTexasCandidateFinanceSyncJobs({
       maxCandidates: 5,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -274,8 +194,6 @@ describe("texasCandidateFinanceSyncScheduler", () => {
         name: "texas_candidate_finance_sync_due",
         data: expect.objectContaining({
           maxCandidates: 5,
-          aiClassifyIndustries: true,
-          aiClassificationMinAmount: 25000,
           triggeredBy: "daily",
         }),
       })
@@ -398,8 +316,6 @@ describe("texasCandidateFinanceSyncScheduler", () => {
         maxCandidates: 3,
         electionLookbackDays: 21,
         rawDataCacheDir: "/tmp/texas-cache",
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
       })
     ).resolves.toBe("texas-finance-job-1");
 
@@ -411,8 +327,6 @@ describe("texasCandidateFinanceSyncScheduler", () => {
         maxCandidates: 3,
         electionLookbackDays: 21,
         rawDataCacheDir: "/tmp/texas-cache",
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
         triggeredBy: "manual",
       }),
       expect.any(Object)

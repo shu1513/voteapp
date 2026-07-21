@@ -13,7 +13,6 @@ describe("triggerCaliforniaCandidateFinanceSync script", () => {
         "2",
         "--timeout-ms=5000",
         "--raw-zip=/tmp/dbwebexport.zip",
-        "--ai-classify-industries",
       ])
     ).toEqual({
       dryRun: false,
@@ -26,8 +25,6 @@ describe("triggerCaliforniaCandidateFinanceSync script", () => {
       timeoutMs: 5000,
       rawDataZipPath: "/tmp/dbwebexport.zip",
       rawDataCacheDir: undefined,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: undefined,
     });
   });
 
@@ -36,13 +33,6 @@ describe("triggerCaliforniaCandidateFinanceSync script", () => {
       dryRun: true,
       force: false,
       includeOutside: true,
-      aiClassifyIndustries: true,
-    });
-  });
-
-  it("can opt out of AI industry classification", () => {
-    expect(parseCaliforniaCandidateFinanceSyncTriggerArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
     });
   });
 

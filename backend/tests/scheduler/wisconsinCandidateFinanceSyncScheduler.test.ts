@@ -125,9 +125,6 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
     vi.doMock("../../src/pipeline/wisconsinFinance/wisconsinCandidateFinanceBatchSync.js", () => ({
       syncDueWisconsinCandidateFinance,
     }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv: vi.fn(() => vi.fn()),
-    }));
 
     const { runWisconsinCandidateFinanceSyncJob } = await import(
       "../../src/scheduler/wisconsinCandidateFinanceSyncScheduler.js"
@@ -138,8 +135,6 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
       maxCandidates: 2,
       staleAfterDays: 3,
       electionLookbackDays: 14,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
       triggeredBy: "manual",
     });
 
@@ -157,70 +152,6 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
         maxCandidates: 2,
         staleAfterDays: 3,
         electionLookbackDays: 14,
-        financeIndustryClassifier: undefined,
-        aiClassificationMinAmount: 25000,
-      })
-    );
-    expect(end).toHaveBeenCalledTimes(1);
-  });
-
-  it("passes the shared finance industry classifier when AI classification is enabled outside dry-run", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.WISCONSIN_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
-
-    const end = vi.fn().mockResolvedValue(undefined);
-    const pool = { query: vi.fn(), end };
-    const syncDueWisconsinCandidateFinance = vi.fn().mockResolvedValue({
-      dryRun: false,
-      now: "2026-06-01T00:00:00.000Z",
-      staleAfterDays: 7,
-      maxCandidates: 1,
-      dueCandidateCount: 1,
-      selectedCandidateCount: 1,
-      syncedCandidateCount: 1,
-      failedCandidateCount: 0,
-      autoLinkAttemptedCount: 1,
-      autoLinkLinkedCount: 1,
-      results: [],
-    });
-    const classifier = vi.fn();
-    const createFinanceIndustryClassifierFromEnv = vi.fn(() => classifier);
-
-    vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
-    mockEnv();
-    vi.doMock("../../src/pipeline/wisconsinFinance/wisconsinCandidateFinanceBatchSync.js", () => ({
-      syncDueWisconsinCandidateFinance,
-    }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv,
-    }));
-
-    const { runWisconsinCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/wisconsinCandidateFinanceSyncScheduler.js"
-    );
-
-    const result = await runWisconsinCandidateFinanceSyncJob({
-      maxCandidates: 1,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
-      triggeredBy: "manual",
-    });
-
-    expect(result).toMatchObject({
-      enabled: true,
-      dryRun: false,
-      selectedCandidateCount: 1,
-    });
-    expect(createFinanceIndustryClassifierFromEnv).toHaveBeenCalledTimes(1);
-    expect(syncDueWisconsinCandidateFinance).toHaveBeenCalledWith(
-      expect.objectContaining({
-        db: pool,
-        dryRun: false,
-        maxCandidates: 1,
-        financeIndustryClassifier: classifier,
-        aiClassificationMinAmount: 25000,
       })
     );
     expect(end).toHaveBeenCalledTimes(1);
@@ -245,8 +176,6 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
 
     await upsertRecurringWisconsinCandidateFinanceSyncJobs({
       maxCandidates: 5,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -259,8 +188,6 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
         name: "wisconsin_candidate_finance_sync_due",
         data: expect.objectContaining({
           maxCandidates: 5,
-          aiClassifyIndustries: true,
-          aiClassificationMinAmount: 25000,
           triggeredBy: "daily",
         }),
       })
@@ -312,8 +239,7 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
     );
     await expect(
       enqueueManualWisconsinCandidateFinanceSyncJob(
-        { aiClassifyIndustries: true, aiClassificationMinAmount: 25000 },
-        { jobId }
+        {        { jobId }
       )
     ).resolves.toBe("wisconsin-finance-job-1");
 
@@ -321,8 +247,6 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
     expect(queueInstance.add).toHaveBeenCalledWith(
       "wisconsin_candidate_finance_sync_due",
       expect.objectContaining({
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
         triggeredBy: "manual",
       }),
       expect.objectContaining({ jobId })

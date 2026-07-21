@@ -121,9 +121,6 @@ describe("maineCandidateFinanceSyncScheduler", () => {
     vi.doMock("../../src/pipeline/maineFinance/maineCandidateFinanceBatchSync.js", () => ({
       syncDueMaineCandidateFinance,
     }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv: vi.fn(() => vi.fn()),
-    }));
 
     const { runMaineCandidateFinanceSyncJob } = await import(
       "../../src/scheduler/maineCandidateFinanceSyncScheduler.js"
@@ -135,8 +132,6 @@ describe("maineCandidateFinanceSyncScheduler", () => {
       staleAfterDays: 3,
       electionLookbackDays: 14,
       rawDataCacheDir: "/tmp/maine-cfis",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
       triggeredBy: "manual",
     });
 
@@ -155,68 +150,6 @@ describe("maineCandidateFinanceSyncScheduler", () => {
         staleAfterDays: 3,
         electionLookbackDays: 14,
         rawDataCacheDir: "/tmp/maine-cfis",
-        financeIndustryClassifier: undefined,
-        aiClassificationMinAmount: 25000,
-      })
-    );
-    expect(end).toHaveBeenCalledTimes(1);
-  });
-
-  it("passes the shared finance industry classifier when AI classification is enabled outside dry-run", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.MAINE_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
-
-    const end = vi.fn().mockResolvedValue(undefined);
-    const pool = { query: vi.fn(), end };
-    const syncDueMaineCandidateFinance = vi.fn().mockResolvedValue({
-      dryRun: false,
-      now: "2026-06-01T00:00:00.000Z",
-      staleAfterDays: 7,
-      maxCandidates: 1,
-      dueCandidateCount: 1,
-      selectedCandidateCount: 1,
-      syncedCandidateCount: 1,
-      failedCandidateCount: 0,
-      results: [],
-    });
-    const classifier = vi.fn();
-    const createFinanceIndustryClassifierFromEnv = vi.fn(() => classifier);
-
-    vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
-    mockEnv();
-    vi.doMock("../../src/pipeline/maineFinance/maineCandidateFinanceBatchSync.js", () => ({
-      syncDueMaineCandidateFinance,
-    }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv,
-    }));
-
-    const { runMaineCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/maineCandidateFinanceSyncScheduler.js"
-    );
-
-    const result = await runMaineCandidateFinanceSyncJob({
-      maxCandidates: 1,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
-      triggeredBy: "manual",
-    });
-
-    expect(result).toMatchObject({
-      enabled: true,
-      dryRun: false,
-      selectedCandidateCount: 1,
-    });
-    expect(createFinanceIndustryClassifierFromEnv).toHaveBeenCalledTimes(1);
-    expect(syncDueMaineCandidateFinance).toHaveBeenCalledWith(
-      expect.objectContaining({
-        db: pool,
-        dryRun: false,
-        maxCandidates: 1,
-        financeIndustryClassifier: classifier,
-        aiClassificationMinAmount: 25000,
       })
     );
     expect(end).toHaveBeenCalledTimes(1);
@@ -242,8 +175,6 @@ describe("maineCandidateFinanceSyncScheduler", () => {
     await upsertRecurringMaineCandidateFinanceSyncJobs({
       maxCandidates: 5,
       rawDataCacheDir: "/tmp/maine-cfis",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -257,8 +188,6 @@ describe("maineCandidateFinanceSyncScheduler", () => {
         data: expect.objectContaining({
           maxCandidates: 5,
           rawDataCacheDir: "/tmp/maine-cfis",
-          aiClassifyIndustries: true,
-          aiClassificationMinAmount: 25000,
           triggeredBy: "daily",
         }),
       })
@@ -312,8 +241,6 @@ describe("maineCandidateFinanceSyncScheduler", () => {
         maxCandidates: 3,
         electionLookbackDays: 21,
         rawDataCacheDir: "/tmp/maine-cfis",
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
       })
     ).resolves.toBe("maine-finance-job-1");
 
@@ -325,8 +252,6 @@ describe("maineCandidateFinanceSyncScheduler", () => {
         maxCandidates: 3,
         electionLookbackDays: 21,
         rawDataCacheDir: "/tmp/maine-cfis",
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
         triggeredBy: "manual",
       }),
       expect.any(Object)

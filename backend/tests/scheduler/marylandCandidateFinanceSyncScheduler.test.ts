@@ -121,9 +121,6 @@ describe("marylandCandidateFinanceSyncScheduler", () => {
     vi.doMock("../../src/pipeline/marylandFinance/marylandCandidateFinanceBatchSync.js", () => ({
       syncDueMarylandCandidateFinance,
     }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv: vi.fn(() => vi.fn()),
-    }));
 
     const { runMarylandCandidateFinanceSyncJob } = await import(
       "../../src/scheduler/marylandCandidateFinanceSyncScheduler.js"
@@ -135,8 +132,6 @@ describe("marylandCandidateFinanceSyncScheduler", () => {
       staleAfterDays: 3,
       electionLookbackDays: 14,
       rawDataCacheDir: "/tmp/maryland-cfs",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
       triggeredBy: "manual",
     });
 
@@ -155,68 +150,6 @@ describe("marylandCandidateFinanceSyncScheduler", () => {
         staleAfterDays: 3,
         electionLookbackDays: 14,
         rawDataCacheDir: "/tmp/maryland-cfs",
-        financeIndustryClassifier: undefined,
-        aiClassificationMinAmount: 25000,
-      })
-    );
-    expect(end).toHaveBeenCalledTimes(1);
-  });
-
-  it("passes the shared finance industry classifier when AI classification is enabled outside dry-run", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.MARYLAND_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.MARYLAND_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
-
-    const end = vi.fn().mockResolvedValue(undefined);
-    const pool = { query: vi.fn(), end };
-    const syncDueMarylandCandidateFinance = vi.fn().mockResolvedValue({
-      dryRun: false,
-      now: "2026-06-01T00:00:00.000Z",
-      staleAfterDays: 7,
-      maxCandidates: 1,
-      dueCandidateCount: 1,
-      selectedCandidateCount: 1,
-      syncedCandidateCount: 1,
-      failedCandidateCount: 0,
-      results: [],
-    });
-    const classifier = vi.fn();
-    const createFinanceIndustryClassifierFromEnv = vi.fn(() => classifier);
-
-    vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
-    mockEnv();
-    vi.doMock("../../src/pipeline/marylandFinance/marylandCandidateFinanceBatchSync.js", () => ({
-      syncDueMarylandCandidateFinance,
-    }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv,
-    }));
-
-    const { runMarylandCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/marylandCandidateFinanceSyncScheduler.js"
-    );
-
-    const result = await runMarylandCandidateFinanceSyncJob({
-      maxCandidates: 1,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
-      triggeredBy: "manual",
-    });
-
-    expect(result).toMatchObject({
-      enabled: true,
-      dryRun: false,
-      selectedCandidateCount: 1,
-    });
-    expect(createFinanceIndustryClassifierFromEnv).toHaveBeenCalledTimes(1);
-    expect(syncDueMarylandCandidateFinance).toHaveBeenCalledWith(
-      expect.objectContaining({
-        db: pool,
-        dryRun: false,
-        maxCandidates: 1,
-        financeIndustryClassifier: classifier,
-        aiClassificationMinAmount: 25000,
       })
     );
     expect(end).toHaveBeenCalledTimes(1);
@@ -242,8 +175,6 @@ describe("marylandCandidateFinanceSyncScheduler", () => {
     await upsertRecurringMarylandCandidateFinanceSyncJobs({
       maxCandidates: 5,
       rawDataCacheDir: "/tmp/maryland-cfs",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -257,8 +188,6 @@ describe("marylandCandidateFinanceSyncScheduler", () => {
         data: expect.objectContaining({
           maxCandidates: 5,
           rawDataCacheDir: "/tmp/maryland-cfs",
-          aiClassifyIndustries: true,
-          aiClassificationMinAmount: 25000,
           triggeredBy: "daily",
         }),
       })
@@ -312,8 +241,6 @@ describe("marylandCandidateFinanceSyncScheduler", () => {
         maxCandidates: 3,
         electionLookbackDays: 21,
         rawDataCacheDir: "/tmp/maryland-cfs",
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
       })
     ).resolves.toBe("maryland-finance-job-1");
 
@@ -325,8 +252,6 @@ describe("marylandCandidateFinanceSyncScheduler", () => {
         maxCandidates: 3,
         electionLookbackDays: 21,
         rawDataCacheDir: "/tmp/maryland-cfs",
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
         triggeredBy: "manual",
       }),
       expect.any(Object)
