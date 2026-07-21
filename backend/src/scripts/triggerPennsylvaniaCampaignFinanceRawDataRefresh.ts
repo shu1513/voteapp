@@ -61,10 +61,12 @@ async function main(): Promise<void> {
     console.log("Pennsylvania campaign finance raw-data refresh is disabled; job was not enqueued");
     return;
   }
+  // Unpinned jobs resolve both cycle years at run time (previous + current).
+  const yearScope = jobData.year !== undefined ? `year=${jobData.year}` : "years=cycle(previous+current)";
   console.log(
-    `Pennsylvania campaign finance raw-data refresh job enqueued (jobId=${jobId} year=${
-      jobData.year ?? "current"
-    } force=${Boolean(jobData.force)})`
+    `Pennsylvania campaign finance raw-data refresh job enqueued (jobId=${jobId} ${yearScope} force=${Boolean(
+      jobData.force
+    )})`
   );
 }
 

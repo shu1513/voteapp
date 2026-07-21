@@ -118,6 +118,18 @@ function refreshUrlForYear(input: { year: number; urlOverride: string | null }):
   return input.urlOverride ?? buildPennsylvaniaCampaignFinanceExportUrl({ year: input.year });
 }
 
+// Bake year/url into job data only when explicitly pinned; otherwise each run
+// resolves both cycle years (and their per-year URLs) at run time.
+function bakedYearAndUrlFields(
+  jobData: PennsylvaniaCampaignFinanceRawDataRefreshJobData,
+  normalized: NormalizedRefreshJobData
+): Partial<Pick<PennsylvaniaCampaignFinanceRawDataRefreshJobData, "year" | "url">> {
+  return {
+    ...(jobData.year === undefined ? {} : { year: normalized.years[0] }),
+    ...(normalized.urlOverride ? { url: normalized.urlOverride } : {}),
+  };
+}
+
 function assertValidJobOptions(data: PennsylvaniaCampaignFinanceRawDataRefreshJobData): void {
   assertPositiveInteger(data.timeoutMs, "timeoutMs");
   normalizeRefreshJobData(data);
@@ -174,13 +186,7 @@ export async function upsertRecurringPennsylvaniaCampaignFinanceRawDataRefreshJo
       {
         name: PENNSYLVANIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_JOB_NAME,
         data: {
-          // Bake year/url only when explicitly pinned; otherwise each daily
-          // run resolves both cycle years (and their per-year URLs) at run
-          // time, staying correct across year boundaries without re-upserts.
-          ...(jobData.year === undefined
-            ? {}
-            : { year: normalizePennsylvaniaCampaignFinanceExportYear(jobData.year) }),
-          ...(normalized.urlOverride ? { url: normalized.urlOverride } : {}),
+          ...bakedYearAndUrlFields(jobData, normalized),
           force: Boolean(jobData.force),
           cacheDir: normalized.cacheDir,
           timeoutMs: normalized.timeoutMs,
@@ -209,10 +215,7 @@ export async function enqueueManualPennsylvaniaCampaignFinanceRawDataRefreshJob(
     const job = await queue.add(
       PENNSYLVANIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_JOB_NAME,
       {
-        ...(jobData.year === undefined
-          ? {}
-          : { year: normalizePennsylvaniaCampaignFinanceExportYear(jobData.year) }),
-        ...(normalized.urlOverride ? { url: normalized.urlOverride } : {}),
+        ...bakedYearAndUrlFields(jobData, normalized),
         force: Boolean(jobData.force),
         cacheDir: normalized.cacheDir,
         timeoutMs: normalized.timeoutMs,
