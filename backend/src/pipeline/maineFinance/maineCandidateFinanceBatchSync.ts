@@ -278,32 +278,62 @@ async function readValidCacheMetadata(input: {
   return metadata;
 }
 
+// Maine CFIS bulk files are keyed by RECEIPT year, but a Maine election cycle
+// spans [electionYear - 1, electionYear] (the resolver and aggregators already
+// filter to that window), so every cache load must read both filing years.
+function maineCycleFilingYears(electionYear: number): number[] {
+  return [electionYear - 1, electionYear];
+}
+
+async function readCycleArtifactData<Row>(input: {
+  electionYear: number;
+  artifactKind: "contributions" | "expenditures";
+  rawDataCacheDir?: string;
+  readRows: (filePath: string) => Promise<Row[]>;
+}): Promise<{ rows: Row[]; filePath: string; sourceUrl: string }> {
+  const kindLabel = input.artifactKind === "contributions" ? "contribution" : "expenditure";
+  const rows: Row[] = [];
+  let filePath = "";
+  let sourceUrl = MAINE_CFIS_CSV_DOWNLOAD_API_URL;
+  for (const filingYear of maineCycleFilingYears(input.electionYear)) {
+    const paths = getMaineCfisArtifactCachePaths({
+      cacheDir: rawDataCacheDir(input.rawDataCacheDir),
+      filingYear,
+      artifactKind: input.artifactKind,
+    });
+    if (!(await fileExists(paths.filePath))) {
+      throw new Error(`Maine CFIS ${kindLabel} artifact not found for ${filingYear}: ${paths.filePath}`);
+    }
+    const metadata = await readValidCacheMetadata({ year: filingYear, artifactKind: input.artifactKind, ...paths });
+    rows.push(...(await input.readRows(paths.filePath)));
+    filePath = paths.filePath;
+    sourceUrl = sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url });
+  }
+  return { rows, filePath, sourceUrl };
+}
+
 async function loadContributionDataForYear(input: {
   year: number;
   committeeIds: readonly string[];
   rawDataCacheDir?: string;
 }): Promise<MaineContributionDataForYear> {
   const normalizedCommitteeIds = new Set(input.committeeIds.map(normalizeCommitteeId).filter(Boolean));
-  const paths = getMaineCfisArtifactCachePaths({
-    cacheDir: rawDataCacheDir(input.rawDataCacheDir),
-    filingYear: input.year,
+  const data = await readCycleArtifactData({
+    electionYear: input.year,
     artifactKind: "contributions",
-  });
-  if (!(await fileExists(paths.filePath))) {
-    throw new Error(`Maine CFIS contribution artifact not found for ${input.year}: ${paths.filePath}`);
-  }
-
-  const metadata = await readValidCacheMetadata({ year: input.year, artifactKind: "contributions", ...paths });
-  const rows = await readMaineCfisContributionRows({
-    filePath: paths.filePath,
-    predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row.OrgID)),
+    rawDataCacheDir: input.rawDataCacheDir,
+    readRows: (filePath) =>
+      readMaineCfisContributionRows({
+        filePath,
+        predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row.OrgID)),
+      }),
   });
 
   return {
     year: input.year,
-    filePath: paths.filePath,
-    sourceUrl: sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url }),
-    rowsByCommitteeId: groupContributionRowsByCommittee(rows),
+    filePath: data.filePath,
+    sourceUrl: data.sourceUrl,
+    rowsByCommitteeId: groupContributionRowsByCommittee(data.rows),
   };
 }
 
@@ -321,23 +351,17 @@ async function loadAutoLinkContributionRowsForYear(input: {
     };
   }
 
-  const paths = getMaineCfisArtifactCachePaths({
-    cacheDir: rawDataCacheDir(input.rawDataCacheDir),
-    filingYear: input.year,
+  const data = await readCycleArtifactData({
+    electionYear: input.year,
     artifactKind: "contributions",
+    rawDataCacheDir: input.rawDataCacheDir,
+    readRows: (filePath) =>
+      readMaineCfisContributionRows({
+        filePath,
+        predicate: buildMaineCandidateNamePredicate(input.candidates),
+      }),
   });
-  if (!(await fileExists(paths.filePath))) {
-    throw new Error(`Maine CFIS contribution artifact not found for ${input.year}: ${paths.filePath}`);
-  }
-
-  const metadata = await readValidCacheMetadata({ year: input.year, artifactKind: "contributions", ...paths });
-  return {
-    rows: await readMaineCfisContributionRows({
-      filePath: paths.filePath,
-      predicate: buildMaineCandidateNamePredicate(input.candidates),
-    }),
-    sourceUrl: sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url }),
-  };
+  return { rows: data.rows, sourceUrl: data.sourceUrl };
 }
 
 async function loadExpenditureDataForYear(input: {
@@ -345,24 +369,21 @@ async function loadExpenditureDataForYear(input: {
   dueRows: readonly MaineCandidateFinanceDueRow[];
   rawDataCacheDir?: string;
 }): Promise<MaineExpenditureDataForYear> {
-  const paths = getMaineCfisArtifactCachePaths({
-    cacheDir: rawDataCacheDir(input.rawDataCacheDir),
-    filingYear: input.year,
+  const data = await readCycleArtifactData({
+    electionYear: input.year,
     artifactKind: "expenditures",
+    rawDataCacheDir: input.rawDataCacheDir,
+    readRows: (filePath) =>
+      readMaineCfisExpenditureRows({
+        filePath,
+        predicate: buildMaineExpenditureCandidatePredicate(input.dueRows),
+      }),
   });
-  if (!(await fileExists(paths.filePath))) {
-    throw new Error(`Maine CFIS expenditure artifact not found for ${input.year}: ${paths.filePath}`);
-  }
-
-  const metadata = await readValidCacheMetadata({ year: input.year, artifactKind: "expenditures", ...paths });
   return {
     year: input.year,
-    filePath: paths.filePath,
-    sourceUrl: sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url }),
-    rows: await readMaineCfisExpenditureRows({
-      filePath: paths.filePath,
-      predicate: buildMaineExpenditureCandidatePredicate(input.dueRows),
-    }),
+    filePath: data.filePath,
+    sourceUrl: data.sourceUrl,
+    rows: data.rows,
   };
 }
 

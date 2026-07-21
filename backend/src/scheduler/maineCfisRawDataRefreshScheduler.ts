@@ -35,14 +35,20 @@ export type MaineCfisRawDataRefreshJobData = {
   requestedAt?: string;
 };
 
+export type MaineCfisRawDataRefreshArtifactOutcome = {
+  filingYear: number;
+  status: MaineCfisArtifactRefreshResult["status"];
+  refresh: MaineCfisArtifactRefreshResult;
+};
+
 export type MaineCfisRawDataRefreshJobResult = {
   enabled: boolean;
   force: boolean;
   triggeredBy: NonNullable<MaineCfisRawDataRefreshJobData["triggeredBy"]>;
-  filingYear: number;
+  filingYears: number[];
   artifactKind: MaineCfisArtifactKind;
   status: "disabled" | MaineCfisArtifactRefreshResult["status"];
-  refresh: MaineCfisArtifactRefreshResult | null;
+  refreshes: MaineCfisRawDataRefreshArtifactOutcome[];
 };
 
 type MaineCfisRawDataRefreshSchedulerRuntimeConfig = {
@@ -51,9 +57,13 @@ type MaineCfisRawDataRefreshSchedulerRuntimeConfig = {
   dailyTz: string;
 };
 
-type NormalizedRefreshJobData = Required<
-  Pick<MaineCfisRawDataRefreshJobData, "filingYear" | "artifactKind" | "url" | "cacheDir" | "timeoutMs">
->;
+type NormalizedRefreshJobData = {
+  filingYears: number[];
+  artifactKind: MaineCfisArtifactKind;
+  url: string;
+  cacheDir: string;
+  timeoutMs: number;
+};
 
 function readSchedulerRuntimeConfig(): MaineCfisRawDataRefreshSchedulerRuntimeConfig {
   return {
@@ -63,12 +73,16 @@ function readSchedulerRuntimeConfig(): MaineCfisRawDataRefreshSchedulerRuntimeCo
   };
 }
 
-function defaultRefreshFilingYear(): number {
-  return new Date().getUTCFullYear();
-}
-
-function normalizeFilingYear(value: number | undefined): number {
-  return normalizeMaineCfisFilingYear(value ?? defaultRefreshFilingYear());
+// Maine CFIS bulk files are keyed by receipt year and the finance sync's cycle
+// loader requires [electionYear - 1, electionYear], so an unpinned refresh must
+// cover both cycle years. Resolved at RUN time (not bake time) so recurring
+// jobs stay correct across year boundaries without re-upserting the scheduler.
+function resolveRefreshFilingYears(value: number | undefined): number[] {
+  if (value !== undefined) {
+    return [normalizeMaineCfisFilingYear(value)];
+  }
+  const currentYear = new Date().getUTCFullYear();
+  return [currentYear - 1, currentYear];
 }
 
 function normalizeArtifactKind(value: MaineCfisRawDataRefreshJobData["artifactKind"]): MaineCfisArtifactKind {
@@ -83,7 +97,7 @@ function assertPositiveInteger(value: number | undefined, label: string): void {
 
 function normalizeRefreshJobData(data: MaineCfisRawDataRefreshJobData): NormalizedRefreshJobData {
   return {
-    filingYear: normalizeFilingYear(data.filingYear),
+    filingYears: resolveRefreshFilingYears(data.filingYear),
     artifactKind: normalizeArtifactKind(data.artifactKind),
     url: parseMaineCfisHttpsUrl(data.url?.trim() || MAINE_CFIS_CSV_DOWNLOAD_API_URL, "url"),
     cacheDir: data.cacheDir?.trim() || DEFAULT_MAINE_CFIS_CACHE_DIR,
@@ -174,7 +188,13 @@ export async function upsertRecurringMaineCfisRawDataRefreshJobs(
           name: MAINE_CFIS_RAW_DATA_REFRESH_JOB_NAME,
           data: {
             force: Boolean(jobData.force),
-            filingYear: entry.normalized.filingYear,
+            // Bake filingYear only when explicitly pinned; otherwise each
+            // daily run resolves both cycle years at run time, so recurring
+            // jobs keep covering [currentYear - 1, currentYear] across
+            // year boundaries without re-upserting the scheduler.
+            ...(jobData.filingYear === undefined
+              ? {}
+              : { filingYear: normalizeMaineCfisFilingYear(jobData.filingYear) }),
             artifactKind: entry.normalized.artifactKind,
             url: entry.normalized.url,
             cacheDir: entry.normalized.cacheDir,
@@ -205,7 +225,9 @@ export async function enqueueManualMaineCfisRawDataRefreshJob(
       MAINE_CFIS_RAW_DATA_REFRESH_JOB_NAME,
       {
         force: Boolean(jobData.force),
-        filingYear: normalized.filingYear,
+        ...(jobData.filingYear === undefined
+          ? {}
+          : { filingYear: normalizeMaineCfisFilingYear(jobData.filingYear) }),
         artifactKind: normalized.artifactKind,
         url: normalized.url,
         cacheDir: normalized.cacheDir,
@@ -239,30 +261,34 @@ export async function runMaineCfisRawDataRefreshJob(
       enabled: false,
       force,
       triggeredBy,
-      filingYear: normalized.filingYear,
+      filingYears: normalized.filingYears,
       artifactKind: normalized.artifactKind,
       status: "disabled",
-      refresh: null,
+      refreshes: [],
     };
   }
 
-  const refresh = await refreshMaineCfisArtifactCache({
-    filingYear: normalized.filingYear,
-    artifactKind: normalized.artifactKind,
-    cacheDir: normalized.cacheDir,
-    url: normalized.url,
-    force,
-    timeoutMs: normalized.timeoutMs,
-  });
+  const refreshes: MaineCfisRawDataRefreshArtifactOutcome[] = [];
+  for (const filingYear of normalized.filingYears) {
+    const refresh = await refreshMaineCfisArtifactCache({
+      filingYear,
+      artifactKind: normalized.artifactKind,
+      cacheDir: normalized.cacheDir,
+      url: normalized.url,
+      force,
+      timeoutMs: normalized.timeoutMs,
+    });
+    refreshes.push({ filingYear, status: refresh.status, refresh });
+  }
 
   return {
     enabled: true,
     force,
     triggeredBy,
-    filingYear: normalized.filingYear,
+    filingYears: normalized.filingYears,
     artifactKind: normalized.artifactKind,
-    status: refresh.status,
-    refresh,
+    status: refreshes.some((outcome) => outcome.status === "downloaded") ? "downloaded" : "unchanged",
+    refreshes,
   };
 }
 

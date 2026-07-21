@@ -43,6 +43,7 @@ export type MaineCandidateCommitteeResolution =
 type CandidateCommitteeAccumulator = {
   committeeId: string;
   committeeName: string;
+  fallbackCandidateName: string;
   rows: MaineCfisContributionRow[];
 };
 
@@ -235,7 +236,9 @@ function toCommitteeMatch(input: {
 }): MaineCandidateCommitteeMatch {
   return {
     committeeId: input.accumulator.committeeId,
-    committeeName: input.accumulator.committeeName,
+    // CFIS exports leave "Committee Name" blank on many candidate rows; fall
+    // back to the row's candidate name so downstream non-empty checks hold.
+    committeeName: input.accumulator.committeeName || input.accumulator.fallbackCandidateName,
     confidence: "exact",
     source: "cfis_bulk",
     sourceUrl: input.sourceUrl,
@@ -281,9 +284,12 @@ export function resolveMaineCandidateCommittee(
 
   const rowsByCommittee = new Map<string, CandidateCommitteeAccumulator>();
   for (const row of input.contributionRows) {
+    // OrgID is always populated in CFIS exports while "Committee Name" is
+    // blank on a large share of candidate rows, so key committees on OrgID
+    // alone and backfill the display name from whichever row carries one.
     const committeeId = row.OrgID.trim().replace(/\s+/g, " ").toUpperCase();
     const committeeName = row["Committee Name"].trim();
-    if (!committeeId || !committeeName) {
+    if (!committeeId) {
       continue;
     }
     if (!isCandidateCommittee(row)) {
@@ -305,11 +311,15 @@ export function resolveMaineCandidateCommittee(
     const existing = rowsByCommittee.get(committeeId);
     if (existing) {
       existing.rows.push(row);
+      if (!existing.committeeName && committeeName) {
+        existing.committeeName = committeeName;
+      }
       continue;
     }
     rowsByCommittee.set(committeeId, {
       committeeId,
       committeeName,
+      fallbackCandidateName: row["Candidate Name"].trim(),
       rows: [row],
     });
   }
