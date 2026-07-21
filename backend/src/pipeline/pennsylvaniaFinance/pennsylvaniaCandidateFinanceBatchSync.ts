@@ -16,6 +16,11 @@ import {
   type PennsylvaniaCampaignFinanceFilerRow,
 } from "./pennsylvaniaCampaignFinanceReader.js";
 import {
+  autoLinkMissingPennsylvaniaCandidateFinanceLinks,
+  listPennsylvaniaCandidateElectionsMissingFinanceLinks,
+  type PennsylvaniaFinanceAutoLinkCandidateElection,
+} from "./pennsylvaniaCandidateFinanceAutoLink.js";
+import {
   syncPennsylvaniaCandidateFinance,
   type PennsylvaniaCandidateFinanceSyncResult,
 } from "./pennsylvaniaCandidateFinanceSync.js";
@@ -60,6 +65,7 @@ export type PennsylvaniaCandidateFinanceBatchSyncInput = {
   electionLookaheadDays?: number;
   rawDataExtractedDir?: string;
   rawDataCacheDir?: string;
+  autoLinkMissingLinks?: boolean;
   paDataByYear?: ReadonlyMap<number, PennsylvaniaCampaignFinanceDataForYear>;
   outsideGroupsByLinkId?: ReadonlyMap<string, readonly PennsylvaniaOutsideSpendingGroup[]>;
   financeIndustryClassifier?: FinanceIndustryClassifier;
@@ -82,6 +88,8 @@ export type PennsylvaniaCandidateFinanceBatchSyncResult = {
   now: string;
   staleAfterDays: number;
   maxCandidates: number;
+  autoLinkAttemptedCount: number;
+  autoLinkLinkedCount: number;
   dueCandidateCount: number;
   selectedCandidateCount: number;
   syncedCandidateCount: number;
@@ -325,6 +333,48 @@ async function loadPennsylvaniaCampaignFinanceDataForYear(input: {
   };
 }
 
+function groupAutoLinkCandidatesByYear(
+  rows: readonly PennsylvaniaFinanceAutoLinkCandidateElection[]
+): Map<number, PennsylvaniaFinanceAutoLinkCandidateElection[]> {
+  const byYear = new Map<number, PennsylvaniaFinanceAutoLinkCandidateElection[]>();
+  for (const row of rows) {
+    const yearRows = byYear.get(row.electionYear) ?? [];
+    yearRows.push(row);
+    byYear.set(row.electionYear, yearRows);
+  }
+  return byYear;
+}
+
+// Auto-link resolution needs the filer table for the full election cycle:
+// registrations for an election-year race are often filed (and exported) in
+// the prior year's archive, and the resolver's EYEAR filter keeps only the
+// rows that belong to the election year.
+async function loadAutoLinkFilerRowsForElectionYear(input: {
+  electionYear: number;
+  rawDataExtractedDir?: string;
+  rawDataCacheDir?: string;
+}): Promise<{ rows: PennsylvaniaCampaignFinanceFilerRow[]; sourceUrl: string }> {
+  const cacheDir =
+    input.rawDataCacheDir ??
+    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR?.trim() ??
+    DEFAULT_PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR;
+  // The reader selects filer_<year>.txt inside the directory, so both cycle
+  // years must be read even under a single extracted-dir override — each year
+  // resolves to a different file, never a duplicate read.
+  const rows: PennsylvaniaCampaignFinanceFilerRow[] = [];
+  for (const year of [input.electionYear - 1, input.electionYear]) {
+    const extractedDir = resolve(input.rawDataExtractedDir ?? defaultExtractedDir({ cacheDir, year }));
+    if (!(await directoryExists(extractedDir))) {
+      throw new Error(`Pennsylvania campaign finance extracted CSV directory not found for ${year}: ${extractedDir}`);
+    }
+    rows.push(...(await readPennsylvaniaCampaignFinanceFilerRows({ extractedDir, year })));
+  }
+  return {
+    rows,
+    sourceUrl: await sourceUrlForYear({ year: input.electionYear, rawDataCacheDir: input.rawDataCacheDir }),
+  };
+}
+
 export async function listDuePennsylvaniaCandidateFinanceSyncRows(
   db: Queryable,
   input: {
@@ -471,6 +521,65 @@ export async function syncDuePennsylvaniaCandidateFinance(
   const dryRun = input.dryRun === true;
   const syncFn = input.syncPennsylvaniaCandidateFinanceFn ?? syncPennsylvaniaCandidateFinance;
 
+  let autoLinkAttemptedCount = 0;
+  let autoLinkLinkedCount = 0;
+  if (!dryRun && input.autoLinkMissingLinks !== false) {
+    try {
+      // No maxCandidates here: unmatched candidates would otherwise occupy a
+      // capped, stably-ordered prefix forever and starve the tail. The cap
+      // still applies to the heavier per-candidate sync below.
+      const missingLinkCandidates = await listPennsylvaniaCandidateElectionsMissingFinanceLinks(input.db, {
+        now,
+        electionLookbackDays,
+        electionLookaheadDays,
+      });
+      autoLinkAttemptedCount = missingLinkCandidates.length;
+      const filerRowsByElectionYear = new Map<number, readonly PennsylvaniaCampaignFinanceFilerRow[]>();
+      const sourceUrlByElectionYear = new Map<number, string>();
+      const skippedAutoLinkYears = new Map<number, string>();
+      for (const [year, candidates] of groupAutoLinkCandidatesByYear(missingLinkCandidates).entries()) {
+        if (candidates.length === 0) {
+          continue;
+        }
+        try {
+          const data = await loadAutoLinkFilerRowsForElectionYear({
+            electionYear: year,
+            rawDataExtractedDir: input.rawDataExtractedDir,
+            rawDataCacheDir: input.rawDataCacheDir,
+          });
+          filerRowsByElectionYear.set(year, data.rows);
+          sourceUrlByElectionYear.set(year, data.sourceUrl);
+        } catch (error) {
+          skippedAutoLinkYears.set(year, error instanceof Error ? error.message : String(error));
+        }
+      }
+      const autoLinkCandidates = missingLinkCandidates.filter((candidate) =>
+        filerRowsByElectionYear.has(candidate.electionYear)
+      );
+      const autoLinkResults = await autoLinkMissingPennsylvaniaCandidateFinanceLinks({
+        db: input.db,
+        now,
+        candidateElections: autoLinkCandidates,
+        filerRowsByElectionYear,
+        sourceUrlByElectionYear,
+      });
+      autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;
+      for (const result of autoLinkResults) {
+        if (result.status !== "linked") {
+          console.warn("Pennsylvania finance auto-link did not link candidate election:", result);
+        }
+      }
+      for (const [year, message] of skippedAutoLinkYears) {
+        console.warn(`Pennsylvania finance auto-link skipped year ${year}:`, message);
+      }
+    } catch (error) {
+      console.warn(
+        "Pennsylvania finance auto-link skipped; continuing with already-linked candidate sync:",
+        error instanceof Error ? error.message : error
+      );
+    }
+  }
+
   const due = await listDuePennsylvaniaCandidateFinanceSyncRows(input.db, {
     now,
     staleAfterDays,
@@ -594,6 +703,8 @@ export async function syncDuePennsylvaniaCandidateFinance(
     now: now.toISOString(),
     staleAfterDays,
     maxCandidates,
+    autoLinkAttemptedCount,
+    autoLinkLinkedCount,
     dueCandidateCount: due.totalDueRows,
     selectedCandidateCount: due.rows.length,
     syncedCandidateCount,
