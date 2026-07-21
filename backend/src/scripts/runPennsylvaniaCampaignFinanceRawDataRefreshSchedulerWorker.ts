@@ -25,7 +25,7 @@ async function main(): Promise<void> {
   worker.on("completed", (job, result) => {
     console.log(
       "Pennsylvania campaign finance raw-data refresh scheduler worker completed " +
-        `jobId=${job.id} status=${result.status} enabled=${result.enabled} force=${result.force}`
+        `jobId=${job.id} years=${result.years.join(",")} status=${result.status} enabled=${result.enabled} force=${result.force}`
     );
   });
 

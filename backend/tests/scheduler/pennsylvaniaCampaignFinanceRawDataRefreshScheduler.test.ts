@@ -53,8 +53,9 @@ describe("pennsylvaniaCampaignFinanceRawDataRefreshScheduler", () => {
       enabled: false,
       force: false,
       triggeredBy: "daily",
+      years: [2026],
       status: "disabled",
-      refresh: null,
+      refreshes: [],
     });
     expect(refreshPennsylvaniaCampaignFinanceExportCache).not.toHaveBeenCalled();
   });
@@ -107,9 +108,11 @@ describe("pennsylvaniaCampaignFinanceRawDataRefreshScheduler", () => {
       enabled: true,
       force: true,
       triggeredBy: "manual",
+      years: [2026],
       status: "unchanged",
-      refresh,
+      refreshes: [{ year: 2026, status: "unchanged", refresh }],
     });
+    expect(refreshPennsylvaniaCampaignFinanceExportCache).toHaveBeenCalledTimes(1);
     expect(refreshPennsylvaniaCampaignFinanceExportCache).toHaveBeenCalledWith({
       year: 2026,
       cacheDir: "/cache",
@@ -117,6 +120,54 @@ describe("pennsylvaniaCampaignFinanceRawDataRefreshScheduler", () => {
       force: true,
       timeoutMs: 5000,
     });
+  });
+
+  it("refreshes both cycle years when no year is pinned", async () => {
+    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED = "true";
+
+    const refreshPennsylvaniaCampaignFinanceExportCache = vi
+      .fn()
+      .mockImplementation(async ({ year }: { year: number }) => ({
+        status: year % 2 === 0 ? "downloaded" : "unchanged",
+      }));
+    vi.doMock("../../src/pipeline/pennsylvaniaFinance/pennsylvaniaCampaignFinanceArtifactCache.js", async () => {
+      const actual = await vi.importActual<object>(
+        "../../src/pipeline/pennsylvaniaFinance/pennsylvaniaCampaignFinanceArtifactCache.js"
+      );
+      return { ...actual, refreshPennsylvaniaCampaignFinanceExportCache };
+    });
+
+    const { runPennsylvaniaCampaignFinanceRawDataRefreshJob } = await import(
+      "../../src/scheduler/pennsylvaniaCampaignFinanceRawDataRefreshScheduler.js"
+    );
+
+    const result = await runPennsylvaniaCampaignFinanceRawDataRefreshJob({ triggeredBy: "daily" });
+
+    const currentYear = new Date().getUTCFullYear();
+    expect(result.years).toEqual([currentYear - 1, currentYear]);
+    expect(result.refreshes.map((outcome) => outcome.year)).toEqual([currentYear - 1, currentYear]);
+    expect(result.status).toBe("downloaded");
+    expect(refreshPennsylvaniaCampaignFinanceExportCache).toHaveBeenCalledTimes(2);
+    // Each year must fetch its own year-specific export URL.
+    const urls = refreshPennsylvaniaCampaignFinanceExportCache.mock.calls.map(
+      (call) => (call[0] as { url: string }).url
+    );
+    expect(urls[0]).toContain(String(currentYear - 1));
+    expect(urls[1]).toContain(String(currentYear));
+  });
+
+  it("rejects an explicit url without an explicit year", async () => {
+    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED = "true";
+
+    const { runPennsylvaniaCampaignFinanceRawDataRefreshJob } = await import(
+      "../../src/scheduler/pennsylvaniaCampaignFinanceRawDataRefreshScheduler.js"
+    );
+
+    await expect(
+      runPennsylvaniaCampaignFinanceRawDataRefreshJob({ url: MOCK_PA_EXPORT_URL, triggeredBy: "manual" })
+    ).rejects.toThrow("Pennsylvania raw data refresh url requires an explicit year");
   });
 
   it("upserts a daily scheduler with metadata-check defaults", async () => {
@@ -152,6 +203,29 @@ describe("pennsylvaniaCampaignFinanceRawDataRefreshScheduler", () => {
       })
     );
     expect(queueInstance.close).toHaveBeenCalledTimes(1);
+  });
+
+  it("omits year from recurring job data when not pinned", async () => {
+    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_ENABLED = "true";
+    mockEnv();
+
+    const queueInstance = {
+      upsertJobScheduler: vi.fn().mockResolvedValue(undefined),
+      close: vi.fn().mockResolvedValue(undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+
+    const { upsertRecurringPennsylvaniaCampaignFinanceRawDataRefreshJobs } = await import(
+      "../../src/scheduler/pennsylvaniaCampaignFinanceRawDataRefreshScheduler.js"
+    );
+
+    await upsertRecurringPennsylvaniaCampaignFinanceRawDataRefreshJobs();
+
+    expect(queueInstance.upsertJobScheduler).toHaveBeenCalledTimes(1);
+    const data = (queueInstance.upsertJobScheduler.mock.calls[0]?.[2] as { data: Record<string, unknown> }).data;
+    expect(data).not.toHaveProperty("year");
+    expect(data).not.toHaveProperty("url");
   });
 
   it("removes the daily scheduler when the master Pennsylvania finance flag is disabled", async () => {
