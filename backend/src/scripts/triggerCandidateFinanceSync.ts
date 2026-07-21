@@ -55,8 +55,6 @@ export function parseCandidateFinanceSyncTriggerArgs(args: readonly string[]): C
     perPage: parsePositiveIntegerFlag(args, "--per-page"),
     outsideGroupLimit: parsePositiveIntegerFlag(args, "--top-groups"),
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 

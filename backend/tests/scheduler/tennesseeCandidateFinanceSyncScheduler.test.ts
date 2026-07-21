@@ -264,7 +264,8 @@ describe("tennesseeCandidateFinanceSyncScheduler", () => {
     );
     await expect(
       enqueueManualTennesseeCandidateFinanceSyncJob(
-        {        { jobId }
+        {},
+        { jobId }
       )
     ).resolves.toBe("tennessee-finance-job-1");
 

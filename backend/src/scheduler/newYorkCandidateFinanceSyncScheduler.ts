@@ -3,7 +3,6 @@ import type { ConnectionOptions } from "bullmq";
 import { toConnectionOptions } from "../utils/redisConnection.js";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   isNewYorkCampaignFinanceEnabled,
@@ -25,8 +24,6 @@ export type NewYorkCandidateFinanceSyncJobData = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -103,7 +100,6 @@ function assertValidJobOptions(data: NewYorkCandidateFinanceSyncJobData): void {
   assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
   assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
   assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
-  assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
 }
 
 export function createNewYorkCandidateFinanceSyncSchedulerQueue(): Queue<NewYorkCandidateFinanceSyncJobData> {
@@ -153,8 +149,6 @@ export async function upsertRecurringNewYorkCandidateFinanceSyncJobs(
           staleAfterDays: jobData.staleAfterDays,
           electionLookbackDays: jobData.electionLookbackDays,
           electionLookaheadDays: jobData.electionLookaheadDays,
-          aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-          aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -186,8 +180,6 @@ export async function enqueueManualNewYorkCandidateFinanceSyncJob(
         staleAfterDays: jobData.staleAfterDays,
         electionLookbackDays: jobData.electionLookbackDays,
         electionLookaheadDays: jobData.electionLookaheadDays,
-        aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-        aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -243,9 +235,6 @@ export async function runNewYorkCandidateFinanceSyncJob(
       staleAfterDays: data.staleAfterDays,
       electionLookbackDays: data.electionLookbackDays,
       electionLookaheadDays: data.electionLookaheadDays,
-      financeIndustryClassifier:
-        data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: data.aiClassificationMinAmount,
     });
 
     return {

@@ -239,7 +239,8 @@ describe("districtOfColumbiaCandidateFinanceSyncScheduler", () => {
     );
     await expect(
       enqueueManualDistrictOfColumbiaCandidateFinanceSyncJob(
-        {        { jobId }
+        {},
+        { jobId }
       )
     ).resolves.toBe("district-finance-job-1");
 

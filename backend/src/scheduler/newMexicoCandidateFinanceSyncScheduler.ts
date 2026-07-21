@@ -3,7 +3,6 @@ import type { ConnectionOptions } from "bullmq";
 import { toConnectionOptions } from "../utils/redisConnection.js";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   isNewMexicoCampaignFinanceEnabled,
@@ -26,8 +25,6 @@ export type NewMexicoCandidateFinanceSyncJobData = {
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
   rawDataCacheDir?: string;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -104,7 +101,6 @@ function assertValidJobOptions(data: NewMexicoCandidateFinanceSyncJobData): void
   assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
   assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
   assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
-  assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
 }
 
 export function createNewMexicoCandidateFinanceSyncSchedulerQueue(): Queue<NewMexicoCandidateFinanceSyncJobData> {
@@ -155,8 +151,6 @@ export async function upsertRecurringNewMexicoCandidateFinanceSyncJobs(
           electionLookbackDays: jobData.electionLookbackDays,
           electionLookaheadDays: jobData.electionLookaheadDays,
           rawDataCacheDir: jobData.rawDataCacheDir,
-          aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-          aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -189,8 +183,6 @@ export async function enqueueManualNewMexicoCandidateFinanceSyncJob(
         electionLookbackDays: jobData.electionLookbackDays,
         electionLookaheadDays: jobData.electionLookaheadDays,
         rawDataCacheDir: jobData.rawDataCacheDir,
-        aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-        aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -245,9 +237,6 @@ export async function runNewMexicoCandidateFinanceSyncJob(
       electionLookbackDays: data.electionLookbackDays,
       electionLookaheadDays: data.electionLookaheadDays,
       rawDataCacheDir: data.rawDataCacheDir,
-      financeIndustryClassifier:
-        data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: data.aiClassificationMinAmount,
     });
 
     return {

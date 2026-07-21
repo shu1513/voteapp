@@ -2,7 +2,6 @@ import { Queue, Worker, type JobsOptions, type Processor } from "bullmq";
 import type { ConnectionOptions } from "bullmq";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   isNewYorkCityCampaignFinanceEnabled,
@@ -24,8 +23,6 @@ export type NewYorkCityFinanceSyncJobData = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual";
 };
 
@@ -52,7 +49,6 @@ function validate(data: NewYorkCityFinanceSyncJobData): void {
     staleAfterDays: data.staleAfterDays,
     electionLookbackDays: data.electionLookbackDays,
     electionLookaheadDays: data.electionLookaheadDays,
-    aiClassificationMinAmount: data.aiClassificationMinAmount,
   })) {
     if (value !== undefined && (!Number.isInteger(value) || value <= 0)) {
       throw new Error(`Invalid NYC finance scheduler ${name}: ${value}`);
@@ -129,9 +125,6 @@ export async function runNewYorkCityFinanceSyncJob(
       staleAfterDays: data.staleAfterDays,
       electionLookbackDays: data.electionLookbackDays,
       electionLookaheadDays: data.electionLookaheadDays,
-      financeIndustryClassifier:
-        data.aiClassifyIndustries && !data.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: data.aiClassificationMinAmount,
     });
     return { enabled: true, triggeredBy, ...result };
   } finally {

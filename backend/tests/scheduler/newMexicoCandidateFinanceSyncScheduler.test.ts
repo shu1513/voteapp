@@ -170,7 +170,8 @@ describe("newMexicoCandidateFinanceSyncScheduler", () => {
     );
     await expect(
       enqueueManualNewMexicoCandidateFinanceSyncJob(
-        {        { jobId }
+        {},
+        { jobId }
       )
     ).resolves.toBe("new-mexico-finance-job-1");
 

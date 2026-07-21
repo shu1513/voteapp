@@ -7,14 +7,13 @@ import {
   type MaineCandidateFinanceSyncJobData,
 } from "../scheduler/maineCandidateFinanceSyncScheduler.js";
 
-const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--no-ai-classify-industries"]);
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
 const KNOWN_VALUE_FLAGS = new Set([
   "--max-candidates",
   "--stale-after-days",
   "--lookback-days",
   "--lookahead-days",
   "--raw-cache-dir",
-  "--ai-min-amount",
 ]);
 
 function validateKnownFlags(args: readonly string[]): void {
@@ -82,8 +81,6 @@ export function parseUpsertMaineCandidateFinanceSyncSchedulerArgs(
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     rawDataCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 

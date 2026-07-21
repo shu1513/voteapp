@@ -119,9 +119,6 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     );
 
     await expect(
-      enqueueManualFloridaCandidateFinanceSyncJob({ aiClassificationMinAmount: 0 })
-    ).rejects.toThrow("Invalid Florida finance sync scheduler aiClassificationMinAmount");
-    await expect(
       enqueueManualFloridaCandidateFinanceSyncJob({ maxCandidates: 0 })
     ).rejects.toThrow("Invalid Florida finance sync scheduler maxCandidates");
     await expect(
@@ -198,8 +195,6 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
 
     const pool = { end: vi.fn().mockResolvedValue(undefined) };
     const Pool = vi.fn(() => pool);
-    const classifier = vi.fn();
-    const createFinanceIndustryClassifierFromEnv = vi.fn(() => classifier);
     const syncFloridaCandidateFinanceBatch = vi.fn().mockResolvedValue({
       dryRun: false,
       now: "2026-06-01T12:00:00.000Z",
@@ -221,7 +216,6 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
         REDIS_URL: "redis://localhost:6379/3",
       }),
     }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({ createFinanceIndustryClassifierFromEnv }));
     vi.doMock("../../src/pipeline/floridaFinance/floridaCandidateFinanceBatchSync.js", () => ({
       syncFloridaCandidateFinanceBatch,
       syncDueFloridaCandidateFinance,
@@ -258,14 +252,12 @@ describe("floridaCandidateFinanceSyncScheduler", () => {
     });
 
     expect(Pool).toHaveBeenCalledWith({ connectionString: "postgres://test/florida" });
-    expect(createFinanceIndustryClassifierFromEnv).toHaveBeenCalledTimes(1);
     expect(syncFloridaCandidateFinanceBatch).toHaveBeenCalledWith(
       expect.objectContaining({
         db: pool,
         dryRun: false,
         maxCandidates: 1,
         syncInputs,
-        financeIndustryClassifier: classifier,
       })
     );
     expect(pool.end).toHaveBeenCalledTimes(1);

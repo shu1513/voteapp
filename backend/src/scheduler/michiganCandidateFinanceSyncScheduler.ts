@@ -3,7 +3,6 @@ import type { ConnectionOptions } from "bullmq";
 import { toConnectionOptions } from "../utils/redisConnection.js";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   isMichiganCampaignFinanceEnabled,
@@ -27,8 +26,6 @@ export type MichiganCandidateFinanceSyncJobData = {
   electionLookaheadDays?: number;
   rawDataExtractedDir?: string;
   rawDataCacheDir?: string;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -105,7 +102,6 @@ function assertValidJobOptions(data: MichiganCandidateFinanceSyncJobData): void 
   assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
   assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
   assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
-  assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
 }
 
 export function createMichiganCandidateFinanceSyncSchedulerQueue(): Queue<MichiganCandidateFinanceSyncJobData> {
@@ -157,8 +153,6 @@ export async function upsertRecurringMichiganCandidateFinanceSyncJobs(
           electionLookaheadDays: jobData.electionLookaheadDays,
           rawDataExtractedDir: jobData.rawDataExtractedDir,
           rawDataCacheDir: jobData.rawDataCacheDir,
-          aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-          aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -192,8 +186,6 @@ export async function enqueueManualMichiganCandidateFinanceSyncJob(
         electionLookaheadDays: jobData.electionLookaheadDays,
         rawDataExtractedDir: jobData.rawDataExtractedDir,
         rawDataCacheDir: jobData.rawDataCacheDir,
-        aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-        aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -249,9 +241,6 @@ export async function runMichiganCandidateFinanceSyncJob(
       electionLookaheadDays: data.electionLookaheadDays,
       rawDataExtractedDir: data.rawDataExtractedDir,
       rawDataCacheDir: data.rawDataCacheDir,
-      financeIndustryClassifier:
-        data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: data.aiClassificationMinAmount,
     });
 
     return {

@@ -239,7 +239,8 @@ describe("hawaiiCandidateFinanceSyncScheduler", () => {
     );
     await expect(
       enqueueManualHawaiiCandidateFinanceSyncJob(
-        {        { jobId }
+        {},
+        { jobId }
       )
     ).resolves.toBe("hawaii-finance-job-1");
 

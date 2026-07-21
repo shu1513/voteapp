@@ -3,7 +3,6 @@ import type { ConnectionOptions } from "bullmq";
 import { toConnectionOptions } from "../utils/redisConnection.js";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import { isCandidateFinanceEnabled, isCandidateFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -29,8 +28,6 @@ export type CandidateFinanceSyncJobData = {
   perPage?: number;
   outsideGroupLimit?: number;
   timeoutMs?: number;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   candidateId?: string;
   fecCandidateId?: string;
   electionYear?: number;
@@ -103,7 +100,6 @@ function assertValidJobOptions(data: CandidateFinanceSyncJobData): void {
   assertPositiveInteger(data.perPage, "perPage");
   assertPositiveInteger(data.outsideGroupLimit, "outsideGroupLimit");
   assertPositiveInteger(data.timeoutMs, "timeoutMs");
-  assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
   if (
     data.electionYear !== undefined &&
     (!Number.isInteger(data.electionYear) || data.electionYear < 1970 || data.electionYear > 2100)
@@ -160,8 +156,6 @@ export async function upsertRecurringCandidateFinanceSyncJobs(
           perPage: jobData.perPage,
           outsideGroupLimit: jobData.outsideGroupLimit,
           timeoutMs: jobData.timeoutMs,
-          aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-          aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -196,8 +190,6 @@ export async function enqueueManualCandidateFinanceSyncJob(
         perPage: jobData.perPage,
         outsideGroupLimit: jobData.outsideGroupLimit,
         timeoutMs: jobData.timeoutMs,
-        aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-        aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         candidateId: jobData.candidateId,
         fecCandidateId: jobData.fecCandidateId?.trim().toUpperCase(),
         electionYear: jobData.electionYear,
@@ -222,8 +214,6 @@ export async function enqueueCandidateLinkCandidateFinanceSyncJob(input: {
   perPage?: number;
   outsideGroupLimit?: number;
   timeoutMs?: number;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
 }): Promise<string> {
   const jobData: CandidateFinanceSyncJobData = {
     candidateId: input.candidateId,
@@ -235,8 +225,6 @@ export async function enqueueCandidateLinkCandidateFinanceSyncJob(input: {
     perPage: input.perPage,
     outsideGroupLimit: input.outsideGroupLimit,
     timeoutMs: input.timeoutMs,
-    aiClassifyIndustries: input.aiClassifyIndustries,
-    aiClassificationMinAmount: input.aiClassificationMinAmount,
   };
   assertValidJobOptions(jobData);
   if (!isCandidateFinanceSyncEnabled(false)) {
@@ -348,9 +336,6 @@ export async function runCandidateFinanceSyncJob(
         includeOutside,
         perPage: data.perPage,
         outsideGroupLimit: data.outsideGroupLimit,
-        financeIndustryClassifier:
-          data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-        aiClassificationMinAmount: data.aiClassificationMinAmount,
       });
 
       return {
@@ -382,9 +367,6 @@ export async function runCandidateFinanceSyncJob(
       electionLookaheadDays: data.electionLookaheadDays,
       perPage: data.perPage,
       outsideGroupLimit: data.outsideGroupLimit,
-      financeIndustryClassifier:
-        data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: data.aiClassificationMinAmount,
     });
 
     return {

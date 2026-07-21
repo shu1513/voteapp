@@ -152,8 +152,6 @@ describe("utahCandidateFinanceSyncScheduler", () => {
         electionLookbackDays: 14,
         rawDataCacheDir: "/tmp/utah-cache",
         refreshCache: true,
-        classifySupportingCommitteeIndustriesWithAi: true,
-        supportingCommitteeIndustryMinAmount: 5000,
       })
     );
     expect(end).toHaveBeenCalledTimes(1);
@@ -243,7 +241,8 @@ describe("utahCandidateFinanceSyncScheduler", () => {
     const jobId = buildUtahCandidateFinanceLinkedElectionSyncJobId(new Date("2026-11-03T23:00:00.000Z"));
     await expect(
       enqueueManualUtahCandidateFinanceSyncJob(
-        {        { jobId }
+        {},
+        { jobId }
       )
     ).resolves.toBe("utah-finance-job-1");
 

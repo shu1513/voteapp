@@ -3,7 +3,6 @@ import type { ConnectionOptions } from "bullmq";
 import { toConnectionOptions } from "../utils/redisConnection.js";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import { isIllinoisCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -26,8 +25,6 @@ export type IllinoisCandidateFinanceSyncJobData = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   contributionCsvPaths?: string[];
   expenditureCsvPaths?: string[];
   contributionSourceUrl?: string;
@@ -167,7 +164,6 @@ function assertValidJobOptions(data: IllinoisCandidateFinanceSyncJobData): void 
   assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
   assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
   assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
-  assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
   normalizeArtifactJobData(data);
 }
 
@@ -219,8 +215,6 @@ export async function upsertRecurringIllinoisCandidateFinanceSyncJobs(
           staleAfterDays: jobData.staleAfterDays,
           electionLookbackDays: jobData.electionLookbackDays,
           electionLookaheadDays: jobData.electionLookaheadDays,
-          aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-          aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           contributionCsvPaths: artifacts?.contributionCsvPaths,
           expenditureCsvPaths: artifacts?.expenditureCsvPaths,
           contributionSourceUrl: artifacts?.contributionSourceUrl,
@@ -258,8 +252,6 @@ export async function enqueueManualIllinoisCandidateFinanceSyncJob(
         staleAfterDays: jobData.staleAfterDays,
         electionLookbackDays: jobData.electionLookbackDays,
         electionLookaheadDays: jobData.electionLookaheadDays,
-        aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-        aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         contributionCsvPaths: artifacts?.contributionCsvPaths,
         expenditureCsvPaths: artifacts?.expenditureCsvPaths,
         contributionSourceUrl: artifacts?.contributionSourceUrl,
@@ -334,9 +326,6 @@ export async function runIllinoisCandidateFinanceSyncJob(
       loadIllinoisFinanceDataFn: artifacts
         ? async (row) => loadIllinoisFinanceDataForDueRowFromArtifacts({ row, artifacts })
         : undefined,
-      financeIndustryClassifier:
-        data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: data.aiClassificationMinAmount,
     });
 
     return {

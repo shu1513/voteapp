@@ -154,8 +154,6 @@ type OptionalFloridaFinanceSyncSchedulerModule = {
     jobData?: {
       dryRun?: boolean;
       force?: boolean;
-      aiClassifyIndustries?: boolean;
-      aiClassificationMinAmount?: number;
       triggeredBy?: "manual" | "unknown";
       requestedAt?: string;
     },
@@ -405,7 +403,6 @@ async function enqueueCandidateFinanceSyncForLinkedElection(input: {
       fecCandidateId,
       electionYear,
       includeOutside: true,
-      aiClassifyIndustries: true,
     });
   } catch (error) {
     const reason = toReason(error);
@@ -433,7 +430,6 @@ async function enqueueCaliforniaFinanceSyncForLinkedElection(input: {
     await enqueueManualCaliforniaCandidateFinanceSyncJob(
       {
         includeOutside: true,
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -466,7 +462,7 @@ async function enqueueLosAngelesCityFinanceSyncForLinkedElection(input: {
   }
   try {
     await enqueueManualLosAngelesCityFinanceSyncJob(
-      { aiClassifyIndustries: true, triggeredBy: "manual" },
+      { triggeredBy: "manual" },
       { jobId: buildLosAngelesCityFinanceLinkedElectionSyncJobId() }
     );
   } catch (error) {
@@ -555,7 +551,6 @@ async function enqueueDistrictOfColumbiaFinanceSyncForLinkedElection(input: {
   try {
     await enqueueManualDistrictOfColumbiaCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -619,7 +614,6 @@ async function enqueueNewMexicoFinanceSyncForLinkedElection(input: {
   try {
     await enqueueManualNewMexicoCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -682,7 +676,6 @@ async function enqueueTexasFinanceSyncForLinkedElection(input: {
   try {
     await enqueueManualTexasCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -710,7 +703,7 @@ async function enqueueHoustonFinanceSyncForLinkedElection(input: {
   })) return;
   try {
     await enqueueManualHoustonCandidateFinanceSyncJob(
-      { aiClassifyIndustries: true, triggeredBy: "manual" },
+      { triggeredBy: "manual" },
       { jobId: buildHoustonCandidateFinanceLinkedElectionSyncJobId() }
     );
   } catch (error) {
@@ -754,7 +747,6 @@ async function enqueueFloridaFinanceSyncForLinkedElection(input: {
     )) as OptionalFloridaFinanceSyncSchedulerModule;
     await schedulerModule.enqueueManualFloridaCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -792,7 +784,6 @@ async function enqueueHawaiiFinanceSyncForLinkedElection(input: {
   try {
     await enqueueManualHawaiiCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -824,7 +815,6 @@ async function enqueueWashingtonFinanceSyncForLinkedElection(input: {
   try {
     await enqueueManualWashingtonCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -856,7 +846,6 @@ async function enqueueNewYorkFinanceSyncForLinkedElection(input: {
   try {
     await enqueueManualNewYorkCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -919,7 +908,6 @@ async function enqueueWisconsinFinanceSyncForLinkedElection(input: {
   try {
     await enqueueManualWisconsinCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -951,7 +939,6 @@ async function enqueueMassachusettsFinanceSyncForLinkedElection(input: {
   try {
     await enqueueManualMassachusettsCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -983,7 +970,6 @@ async function enqueueMichiganFinanceSyncForLinkedElection(input: {
   try {
     await enqueueManualMichiganCandidateFinanceSyncJob(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -1193,7 +1179,6 @@ async function enqueueCandidateFinanceSyncForPresidentialCycle(input: {
       electionYear: input.context.electionYear,
       source: "presidential_cycle",
       includeOutside: true,
-      aiClassifyIndustries: true,
     });
   } catch (error) {
     const reason = toReason(error);

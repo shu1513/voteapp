@@ -8,7 +8,6 @@ async function main(): Promise<void> {
   const id = await enqueueNewYorkCityFinanceSyncJob({
     force: args.includes("--force"),
     dryRun: args.includes("--dry-run"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
   });
   console.log(JSON.stringify({ type: "new_york_city_finance_sync_enqueued", job_id: id }));
 }

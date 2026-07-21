@@ -4,7 +4,7 @@ import { upsertRecurringNewYorkCityFinanceSyncJob } from "../scheduler/newYorkCi
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  await upsertRecurringNewYorkCityFinanceSyncJob({ aiClassifyIndustries: true });
+  await upsertRecurringNewYorkCityFinanceSyncJob();
   console.log(JSON.stringify({ type: "new_york_city_finance_scheduler_upserted" }));
 }
 if ((process.argv[1] ? pathToFileURL(process.argv[1]).href : null) === import.meta.url) {

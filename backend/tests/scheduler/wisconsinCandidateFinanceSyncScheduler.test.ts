@@ -239,7 +239,8 @@ describe("wisconsinCandidateFinanceSyncScheduler", () => {
     );
     await expect(
       enqueueManualWisconsinCandidateFinanceSyncJob(
-        {        { jobId }
+        {},
+        { jobId }
       )
     ).resolves.toBe("wisconsin-finance-job-1");
 

@@ -1,7 +1,6 @@
 import { Queue, Worker, type JobsOptions } from "bullmq";
 import type { ConnectionOptions } from "bullmq";
 import { Pool } from "pg";
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   isLosAngelesCityCampaignFinanceEnabled,
@@ -24,8 +23,6 @@ export type LosAngelesCityFinanceJobData = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -62,7 +59,6 @@ const validate = (data: LosAngelesCityFinanceJobData): void => {
         "staleAfterDays",
         "electionLookbackDays",
         "electionLookaheadDays",
-        "aiClassificationMinAmount",
       ].includes(key) &&
       value !== undefined &&
       (!Number.isInteger(value) || Number(value) <= 0)
@@ -156,10 +152,6 @@ export async function runLosAngelesCityFinanceJob(
         staleAfterDays: data.staleAfterDays,
         electionLookbackDays: data.electionLookbackDays,
         electionLookaheadDays: data.electionLookaheadDays,
-        financeIndustryClassifier: data.aiClassifyIndustries
-          ? createFinanceIndustryClassifierFromEnv()
-          : undefined,
-        aiClassificationMinAmount: data.aiClassificationMinAmount,
       })),
     };
   } finally {
