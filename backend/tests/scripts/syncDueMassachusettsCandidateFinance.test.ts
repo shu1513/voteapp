@@ -16,8 +16,6 @@ describe("syncDueMassachusettsCandidateFinance script", () => {
         "3",
         "--lookback-days=10",
         "--lookahead-days=365",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -26,8 +24,6 @@ describe("syncDueMassachusettsCandidateFinance script", () => {
       staleAfterDays: 3,
       electionLookbackDays: 10,
       electionLookaheadDays: 365,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -35,23 +31,7 @@ describe("syncDueMassachusettsCandidateFinance script", () => {
     expect(parseSyncDueMassachusettsCandidateFinanceScriptArgs([])).toMatchObject({
       dryRun: false,
       force: false,
-      aiClassifyIndustries: true,
     });
-  });
-
-  it("can opt out of AI industry classification", () => {
-    expect(parseSyncDueMassachusettsCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
-    });
-  });
-
-  it("rejects conflicting AI industry classification flags", () => {
-    expect(() =>
-      parseSyncDueMassachusettsCandidateFinanceScriptArgs([
-        "--ai-classify-industries",
-        "--no-ai-classify-industries",
-      ])
-    ).toThrow("Provide either --ai-classify-industries or --no-ai-classify-industries, not both");
   });
 
   it("rejects malformed numeric flags strictly", () => {
@@ -85,7 +65,6 @@ describe("syncDueMassachusettsCandidateFinance script", () => {
         dryRun: true,
         force: false,
         maxCandidates: 2,
-        aiClassifyIndustries: false,
       },
       result: {
         dryRun: true,
@@ -114,7 +93,6 @@ describe("syncDueMassachusettsCandidateFinance script", () => {
       type: "massachusetts_candidate_finance_due_sync",
       started_at: "2026-01-02T03:04:05.000Z",
       dry_run: true,
-      ai_classify_industries: false,
       result: {
         dueCandidateCount: 3,
         selectedCandidateCount: 2,

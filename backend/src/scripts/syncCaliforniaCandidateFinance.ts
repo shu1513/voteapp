@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isCaliforniaCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -29,8 +28,6 @@ export type SyncCaliforniaCandidateFinanceScriptOptions = {
   timeoutMs?: number;
   rawZipPath?: string;
   rawCacheDir?: string;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
 };
 
 type DryRunDb = {
@@ -117,8 +114,6 @@ export function parseSyncCaliforniaCandidateFinanceScriptArgs(
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
     rawZipPath: parseOptionalStringFlag(args, "--raw-zip"),
     rawCacheDir: parseOptionalStringFlag(args, "--raw-cache-dir"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -151,7 +146,6 @@ export function toSyncCaliforniaCandidateFinanceScriptOutput(input: {
     controlled_committee_id: input.options.controlledCommitteeId,
     dry_run: input.options.dryRun,
     include_outside: input.options.includeOutside,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -209,9 +203,6 @@ async function main(): Promise<void> {
               campaignCoverRows: resolutionData.campaignCoverRows,
             })
         : undefined,
-      financeIndustryClassifier:
-        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: options.aiClassificationMinAmount,
       now: startedAt,
     });
 

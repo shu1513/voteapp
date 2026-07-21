@@ -4,7 +4,21 @@ import {
   type FinanceIndustrySlug,
   type FinanceLabelClassification,
 } from "../finance/financeLabelClassifier.js";
-import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
+import {
+  mergeFinanceLabelClassification,
+  type FinanceIndustryClassificationCandidate,
+  type FinanceIndustryClassifier,
+} from "../finance/financeIndustryClassificationService.js";
+
+/**
+ * Loads previously stored classifications (manual research, prior AI runs)
+ * for the given donor labels. Injected by the sync from the shared
+ * finance_label_classifications table so manually researched industry links
+ * apply to Utah's supporting-committee rollup like every other state.
+ */
+export type UtahCachedClassificationLoader = (
+  labels: readonly FinanceIndustryClassificationCandidate[]
+) => Promise<FinanceLabelClassification[]>;
 import {
   isUtahDirectDonorSupportReceipt,
 } from "./utahDirectContributionAggregator.js";
@@ -37,11 +51,14 @@ export type UtahSupportingCommitteeIndustryAggregationInput = {
   minIndustryAmount?: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
   classifyIndustriesWithAi?: boolean;
+  loadCachedClassifications?: UtahCachedClassificationLoader;
 };
 
 export type UtahSupportingCommitteeIndustryAggregationResult = {
   supportingCommittees: UtahSupportingCommittee[];
   supportingCommitteeIndustryBreakdowns: UtahSupportingCommitteeIndustryBreakdown[];
+  /** Every eligible donor's classification (including unknowns) for persistence. */
+  classifications: FinanceLabelClassification[];
   matchedCommitteeTransactionRowCount: number;
   includedOrganizationDonorRowCount: number;
   skippedCommitteeTransactionRowCount: number;
@@ -309,17 +326,47 @@ async function classifyDonors(input: {
   minIndustryAmountCents: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
   classifyIndustriesWithAi: boolean;
+  loadCachedClassifications?: UtahCachedClassificationLoader;
 }): Promise<Map<string, FinanceLabelClassification>> {
   const classifications = new Map<string, FinanceLabelClassification>();
-  const aiCandidates = new Map<string, { rawLabel: string; normalizedLabel: string; amount: number }>();
+  const eligibleDonors: DonorAggregate[] = [];
 
   for (const donor of input.donors) {
     if (donor.amountCents < input.minIndustryAmountCents) {
       continue;
     }
+    eligibleDonors.push(donor);
     const classification = classifyFinanceLabel({ rawLabel: donor.donorName, labelType: "donor" });
     classifications.set(classificationKey(donor.normalizedDonorName), classification);
-    if (!classification.industrySlug && input.classifyIndustriesWithAi && input.financeIndustryClassifier) {
+  }
+
+  // Stored classifications (manual research, prior AI runs) override the
+  // in-memory rule result via the shared merge precedence — manual wins.
+  if (input.loadCachedClassifications && eligibleDonors.length > 0) {
+    const cached = await input.loadCachedClassifications(
+      eligibleDonors.map((donor) => ({
+        rawLabel: donor.donorName,
+        labelType: "donor" as const,
+        normalizedLabel: donor.normalizedDonorName,
+        amount: centsToDollars(donor.amountCents),
+      }))
+    );
+    for (const classification of cached) {
+      const key = classificationKey(classification.normalizedLabel);
+      const existing = classifications.get(key);
+      if (existing) {
+        mergeFinanceLabelClassification(classifications, classification);
+      }
+    }
+  }
+
+  const aiCandidates = new Map<string, { rawLabel: string; normalizedLabel: string; amount: number }>();
+  if (input.classifyIndustriesWithAi && input.financeIndustryClassifier) {
+    for (const donor of eligibleDonors) {
+      const classification = classifications.get(classificationKey(donor.normalizedDonorName));
+      if (classification && (classification.industrySlug || classification.classificationSource !== "unknown")) {
+        continue;
+      }
       const existing = aiCandidates.get(donor.normalizedDonorName);
       if (existing) {
         existing.amount += centsToDollars(donor.amountCents);
@@ -460,6 +507,7 @@ export async function aggregateUtahSupportingCommitteeIndustries(
     return {
       supportingCommittees: [],
       supportingCommitteeIndustryBreakdowns: [],
+      classifications: [],
       matchedCommitteeTransactionRowCount: 0,
       includedOrganizationDonorRowCount: 0,
       skippedCommitteeTransactionRowCount: 0,
@@ -484,6 +532,7 @@ export async function aggregateUtahSupportingCommitteeIndustries(
     minIndustryAmountCents,
     financeIndustryClassifier: input.financeIndustryClassifier,
     classifyIndustriesWithAi: input.classifyIndustriesWithAi !== false,
+    loadCachedClassifications: input.loadCachedClassifications,
   });
 
   const industries = new Map<string, IndustryAggregate>();
@@ -509,6 +558,7 @@ export async function aggregateUtahSupportingCommitteeIndustries(
       sourceUrl: input.committeeSourceUrl ?? null,
       maxIndustriesPerCommittee,
     }),
+    classifications: [...classifications.values()],
     matchedCommitteeTransactionRowCount: incoming.matchedCommitteeTransactionRowCount,
     includedOrganizationDonorRowCount: incoming.includedOrganizationDonorRowCount,
     skippedCommitteeTransactionRowCount: incoming.skippedCommitteeTransactionRowCount,

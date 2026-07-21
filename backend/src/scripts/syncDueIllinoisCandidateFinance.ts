@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isIllinoisCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -24,8 +23,6 @@ export type SyncDueIllinoisCandidateFinanceScriptOptions = {
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
   timeoutMs?: number;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
   contributionCsvPaths: string[];
   expenditureCsvPaths: string[];
   contributionSourceUrl?: string;
@@ -68,9 +65,6 @@ export function parseSyncDueIllinoisCandidateFinanceScriptArgs(
     "--lookback-days",
     "--lookahead-days",
     "--timeout-ms",
-    "--ai-classify-industries",
-    "--no-ai-classify-industries",
-    "--ai-min-amount",
     "--contributions-csv",
     "--expenditures-csv",
     "--contributions-url",
@@ -97,8 +91,6 @@ export function parseSyncDueIllinoisCandidateFinanceScriptArgs(
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
     contributionCsvPaths,
     expenditureCsvPaths,
     contributionSourceUrl,
@@ -139,7 +131,6 @@ export function toSyncDueIllinoisCandidateFinanceScriptOutput(input: {
     outside_group_contribution_data_available_count: successfulResults.filter(
       (result) => result.outsideGroupContributionDataAvailable
     ).length,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -186,9 +177,6 @@ async function main(): Promise<void> {
       loadIllinoisFinanceDataFn: artifacts
         ? async (row) => loadIllinoisFinanceDataForDueRowFromArtifacts({ row, artifacts })
         : undefined,
-      financeIndustryClassifier:
-        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: options.aiClassificationMinAmount,
     });
 
     console.log(

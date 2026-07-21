@@ -19,9 +19,13 @@ import {
 } from "./utahFinanceWriter.js";
 import {
   aggregateUtahSupportingCommitteeIndustries,
+  type UtahCachedClassificationLoader,
   type UtahSupportingCommitteeIndustryAggregationResult,
 } from "./utahSupportingCommitteeIndustryAggregator.js";
-import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
+import {
+  loadCachedFinanceLabelClassifications,
+  type FinanceIndustryClassifier,
+} from "../finance/financeIndustryClassificationService.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -224,6 +228,7 @@ async function aggregateSupportingCommitteeIndustries(input: {
   minIndustryAmount?: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
   classifyIndustriesWithAi?: boolean;
+  loadCachedClassifications?: UtahCachedClassificationLoader;
 }): Promise<UtahSupportingCommitteeIndustryAggregationResult | undefined> {
   if (input.supportingCommitteeTransactions === undefined) {
     return undefined;
@@ -240,6 +245,7 @@ async function aggregateSupportingCommitteeIndustries(input: {
     minIndustryAmount: input.minIndustryAmount,
     financeIndustryClassifier: input.financeIndustryClassifier,
     classifyIndustriesWithAi: input.classifyIndustriesWithAi,
+    loadCachedClassifications: input.loadCachedClassifications,
   });
 }
 
@@ -287,6 +293,7 @@ export async function syncUtahCandidateFinance(
     minIndustryAmount: input.supportingCommitteeIndustryMinAmount,
     financeIndustryClassifier: input.financeIndustryClassifier,
     classifyIndustriesWithAi: input.classifySupportingCommitteeIndustriesWithAi,
+    loadCachedClassifications: (labels) => loadCachedFinanceLabelClassifications(input.db, labels),
   });
   const link = toFinanceLink({
     candidateId,
@@ -310,6 +317,7 @@ export async function syncUtahCandidateFinance(
       directBreakdowns: directFinance.directBreakdowns,
       supportingCommittees: supportingCommitteeFinance?.supportingCommittees,
       supportingCommitteeIndustries: supportingCommitteeFinance?.supportingCommitteeIndustryBreakdowns,
+      classifications: supportingCommitteeFinance?.classifications,
     });
   }
 

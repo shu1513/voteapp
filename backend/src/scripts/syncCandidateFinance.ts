@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isCandidateFinanceEnabled } from "../config/featureFlags.js";
 import { syncCandidateFinance, type CandidateFinanceSyncResult } from "../pipeline/finance/candidateFinanceSync.js";
@@ -16,8 +15,6 @@ export type SyncCandidateFinanceScriptOptions = {
   perPage?: number;
   outsideGroupLimit?: number;
   timeoutMs?: number;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
 };
 
 type DryRunDb = {
@@ -90,8 +87,6 @@ export function parseSyncCandidateFinanceScriptArgs(args: readonly string[]): Sy
     perPage: parsePositiveIntegerFlag(args, "--per-page"),
     outsideGroupLimit: parsePositiveIntegerFlag(args, "--top-groups"),
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -120,7 +115,6 @@ export function toSyncCandidateFinanceScriptOutput(input: {
     election_year: input.options.electionYear,
     dry_run: input.options.dryRun,
     include_outside: input.options.includeOutside,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -153,9 +147,6 @@ async function main(): Promise<void> {
       includeOutside: options.includeOutside,
       perPage: options.perPage,
       outsideGroupLimit: options.outsideGroupLimit,
-      financeIndustryClassifier:
-        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: options.aiClassificationMinAmount,
       now: startedAt,
     });
 

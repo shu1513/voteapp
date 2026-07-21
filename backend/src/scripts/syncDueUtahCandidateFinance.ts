@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isUtahCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -19,8 +18,6 @@ export type SyncDueUtahCandidateFinanceScriptOptions = {
   electionLookaheadDays?: number;
   rawCacheDir?: string;
   refreshCache: boolean;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
 };
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
@@ -76,8 +73,6 @@ export function parseSyncDueUtahCandidateFinanceScriptArgs(
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     rawCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
     refreshCache: args.includes("--refresh-cache"),
-    aiClassifyIndustries: args.includes("--ai-classify-industries") && !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -100,7 +95,6 @@ export function toSyncDueUtahCandidateFinanceScriptOutput(input: {
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
     refresh_cache: input.options.refreshCache,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -125,12 +119,6 @@ export async function runSyncDueUtahCandidateFinanceScript(input: {
       electionLookaheadDays: input.options.electionLookaheadDays,
       rawDataCacheDir: input.options.rawCacheDir,
       refreshCache: input.options.refreshCache,
-      financeIndustryClassifier:
-        input.options.aiClassifyIndustries && !input.options.dryRun
-          ? createFinanceIndustryClassifierFromEnv()
-          : undefined,
-      classifySupportingCommitteeIndustriesWithAi: input.options.aiClassifyIndustries,
-      supportingCommitteeIndustryMinAmount: input.options.aiClassificationMinAmount,
     });
     return toSyncDueUtahCandidateFinanceScriptOutput({ startedAt: input.startedAt, options: input.options, result });
   } finally {

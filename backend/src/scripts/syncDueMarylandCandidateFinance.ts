@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isMarylandCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -18,18 +17,15 @@ export type SyncDueMarylandCandidateFinanceScriptOptions = {
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
   rawCacheDir?: string;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
 };
 
-const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--no-ai-classify-industries"]);
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
 const KNOWN_VALUE_FLAGS = new Set([
   "--max-candidates",
   "--stale-after-days",
   "--lookback-days",
   "--lookahead-days",
   "--raw-cache-dir",
-  "--ai-min-amount",
 ]);
 
 function validateKnownFlags(args: readonly string[]): void {
@@ -97,8 +93,6 @@ export function parseSyncDueMarylandCandidateFinanceScriptArgs(
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     rawCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -120,7 +114,6 @@ export function toSyncDueMarylandCandidateFinanceScriptOutput(input: {
     ts: new Date().toISOString(),
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -147,9 +140,6 @@ async function main(): Promise<void> {
       electionLookbackDays: options.electionLookbackDays,
       electionLookaheadDays: options.electionLookaheadDays,
       rawDataCacheDir: options.rawCacheDir,
-      financeIndustryClassifier:
-        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: options.aiClassificationMinAmount,
     });
 
     console.log(JSON.stringify(toSyncDueMarylandCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));

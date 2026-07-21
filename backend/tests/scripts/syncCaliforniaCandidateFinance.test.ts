@@ -29,8 +29,6 @@ describe("syncCaliforniaCandidateFinance script", () => {
         "--force",
         "--timeout-ms=5000",
         "--raw-zip=/tmp/dbwebexport.zip",
-        "--ai-classify-industries",
-        "--ai-min-amount=250000",
       ])
     ).toEqual({
       candidateId: CANDIDATE_ID,
@@ -47,8 +45,6 @@ describe("syncCaliforniaCandidateFinance script", () => {
       timeoutMs: 5000,
       rawZipPath: "/tmp/dbwebexport.zip",
       rawCacheDir: undefined,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 250000,
     });
   });
 
@@ -67,24 +63,6 @@ describe("syncCaliforniaCandidateFinance script", () => {
       dryRun: false,
       includeOutside: true,
       force: false,
-      aiClassifyIndustries: true,
-    });
-  });
-
-  it("can opt out of AI industry classification", () => {
-    expect(
-      parseSyncCaliforniaCandidateFinanceScriptArgs([
-        `--candidate-id=${CANDIDATE_ID}`,
-        `--election-id=${ELECTION_ID}`,
-        "--candidate-name=Newsom, Gavin",
-        "--year=2026",
-        "--office=Governor",
-        "--committee-id=1456045",
-        "--committee-name=Newsom for California Governor 2026",
-        "--no-ai-classify-industries",
-      ])
-    ).toMatchObject({
-      aiClassifyIndustries: false,
     });
   });
 

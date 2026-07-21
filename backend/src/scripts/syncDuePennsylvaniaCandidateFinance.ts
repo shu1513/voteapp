@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isPennsylvaniaCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -19,8 +18,6 @@ export type SyncDuePennsylvaniaCandidateFinanceScriptOptions = {
   electionLookaheadDays?: number;
   rawCacheDir?: string;
   rawExtractedDir?: string;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
 };
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
@@ -76,8 +73,6 @@ export function parseSyncDuePennsylvaniaCandidateFinanceScriptArgs(
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     rawCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
     rawExtractedDir: parseFlagValue(args, "--raw-extracted-dir") || undefined,
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -99,7 +94,6 @@ export function toSyncDuePennsylvaniaCandidateFinanceScriptOutput(input: {
     ts: new Date().toISOString(),
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -127,9 +121,6 @@ async function main(): Promise<void> {
       electionLookaheadDays: options.electionLookaheadDays,
       rawDataCacheDir: options.rawCacheDir,
       rawDataExtractedDir: options.rawExtractedDir,
-      financeIndustryClassifier:
-        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: options.aiClassificationMinAmount,
     });
 
     console.log(JSON.stringify(toSyncDuePennsylvaniaCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));

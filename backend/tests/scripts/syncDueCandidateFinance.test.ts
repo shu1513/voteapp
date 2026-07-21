@@ -20,8 +20,6 @@ describe("syncDueCandidateFinance script", () => {
         "--top-groups",
         "8",
         "--timeout-ms=5000",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -33,8 +31,6 @@ describe("syncDueCandidateFinance script", () => {
       perPage: 25,
       outsideGroupLimit: 8,
       timeoutMs: 5000,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -47,12 +43,6 @@ describe("syncDueCandidateFinance script", () => {
     );
   });
 
-  it("can opt out of AI industry classification", () => {
-    expect(parseSyncDueCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
-    });
-  });
-
   it("formats script output", () => {
     const output = toSyncDueCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),
@@ -60,7 +50,6 @@ describe("syncDueCandidateFinance script", () => {
         dryRun: true,
         includeOutside: true,
         maxCandidates: 2,
-        aiClassifyIndustries: false,
       },
       result: {
         dryRun: true,
@@ -81,7 +70,6 @@ describe("syncDueCandidateFinance script", () => {
       started_at: "2026-01-02T03:04:05.000Z",
       dry_run: true,
       include_outside: true,
-      ai_classify_industries: false,
       result: {
         dueCandidateCount: 3,
         selectedCandidateCount: 2,
