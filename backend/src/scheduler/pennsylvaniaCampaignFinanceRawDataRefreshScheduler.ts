@@ -32,12 +32,19 @@ export type PennsylvaniaCampaignFinanceRawDataRefreshJobData = {
   requestedAt?: string;
 };
 
+export type PennsylvaniaCampaignFinanceRawDataRefreshOutcome = {
+  year: number;
+  status: PennsylvaniaCampaignFinanceExportRefreshResult["status"];
+  refresh: PennsylvaniaCampaignFinanceExportRefreshResult;
+};
+
 export type PennsylvaniaCampaignFinanceRawDataRefreshJobResult = {
   enabled: boolean;
   force: boolean;
   triggeredBy: NonNullable<PennsylvaniaCampaignFinanceRawDataRefreshJobData["triggeredBy"]>;
+  years: number[];
   status: "disabled" | PennsylvaniaCampaignFinanceExportRefreshResult["status"];
-  refresh: PennsylvaniaCampaignFinanceExportRefreshResult | null;
+  refreshes: PennsylvaniaCampaignFinanceRawDataRefreshOutcome[];
 };
 
 type RawDataRefreshSchedulerRuntimeConfig = {
@@ -56,11 +63,19 @@ function readSchedulerRuntimeConfig(): RawDataRefreshSchedulerRuntimeConfig {
   };
 }
 
-function defaultPennsylvaniaCampaignFinanceRawDataRefreshYear(now = new Date()): number {
+// Pennsylvania's batch sync loads one export ZIP per cycle year
+// ({electionYear - 1, electionYear}), so an unpinned refresh must cover both.
+// Years are resolved at RUN time (not bake time) so recurring jobs stay
+// correct across year boundaries without re-upserting the scheduler.
+function resolveRefreshYears(value: number | undefined, now = new Date()): number[] {
   if (!(now instanceof Date) || Number.isNaN(now.getTime())) {
     throw new Error("Invalid Pennsylvania campaign finance raw data refresh date");
   }
-  return now.getUTCFullYear();
+  if (value !== undefined) {
+    return [normalizePennsylvaniaCampaignFinanceExportYear(value)];
+  }
+  const currentYear = now.getUTCFullYear();
+  return [currentYear - 1, currentYear];
 }
 
 function assertPositiveInteger(value: number | undefined, label: string): void {
@@ -77,20 +92,41 @@ function normalizeCacheDir(value: string | undefined): string {
   return normalized;
 }
 
-function normalizeRefreshJobData(data: PennsylvaniaCampaignFinanceRawDataRefreshJobData): Required<
-  Pick<PennsylvaniaCampaignFinanceRawDataRefreshJobData, "year" | "url" | "cacheDir" | "timeoutMs">
-> {
-  const year = normalizePennsylvaniaCampaignFinanceExportYear(
-    data.year ?? defaultPennsylvaniaCampaignFinanceRawDataRefreshYear()
-  );
+type NormalizedRefreshJobData = {
+  years: number[];
+  urlOverride: string | null;
+  cacheDir: string;
+  timeoutMs: number;
+};
+
+function normalizeRefreshJobData(data: PennsylvaniaCampaignFinanceRawDataRefreshJobData): NormalizedRefreshJobData {
+  // The export URL embeds the year, so an explicit url only makes sense for a
+  // single explicitly pinned year — never for a resolved multi-year cycle.
+  const urlOverride = data.url?.trim() || null;
+  if (urlOverride && data.year === undefined) {
+    throw new Error("Pennsylvania raw data refresh url requires an explicit year");
+  }
   return {
-    year,
-    url: parsePennsylvaniaCampaignFinanceHttpsUrl(
-      data.url?.trim() || buildPennsylvaniaCampaignFinanceExportUrl({ year }),
-      "url"
-    ),
+    years: resolveRefreshYears(data.year),
+    urlOverride: urlOverride ? parsePennsylvaniaCampaignFinanceHttpsUrl(urlOverride, "url") : null,
     cacheDir: normalizeCacheDir(data.cacheDir),
     timeoutMs: data.timeoutMs ?? PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_FETCH_TIMEOUT_MS,
+  };
+}
+
+function refreshUrlForYear(input: { year: number; urlOverride: string | null }): string {
+  return input.urlOverride ?? buildPennsylvaniaCampaignFinanceExportUrl({ year: input.year });
+}
+
+// Bake year/url into job data only when explicitly pinned; otherwise each run
+// resolves both cycle years (and their per-year URLs) at run time.
+function bakedYearAndUrlFields(
+  jobData: PennsylvaniaCampaignFinanceRawDataRefreshJobData,
+  normalized: NormalizedRefreshJobData
+): Partial<Pick<PennsylvaniaCampaignFinanceRawDataRefreshJobData, "year" | "url">> {
+  return {
+    ...(jobData.year === undefined ? {} : { year: normalized.years[0] }),
+    ...(normalized.urlOverride ? { url: normalized.urlOverride } : {}),
   };
 }
 
@@ -150,9 +186,8 @@ export async function upsertRecurringPennsylvaniaCampaignFinanceRawDataRefreshJo
       {
         name: PENNSYLVANIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_JOB_NAME,
         data: {
-          year: normalized.year,
+          ...bakedYearAndUrlFields(jobData, normalized),
           force: Boolean(jobData.force),
-          url: normalized.url,
           cacheDir: normalized.cacheDir,
           timeoutMs: normalized.timeoutMs,
           triggeredBy: "daily",
@@ -180,9 +215,8 @@ export async function enqueueManualPennsylvaniaCampaignFinanceRawDataRefreshJob(
     const job = await queue.add(
       PENNSYLVANIA_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_JOB_NAME,
       {
-        year: normalized.year,
+        ...bakedYearAndUrlFields(jobData, normalized),
         force: Boolean(jobData.force),
-        url: normalized.url,
         cacheDir: normalized.cacheDir,
         timeoutMs: normalized.timeoutMs,
         triggeredBy: "manual",
@@ -208,31 +242,44 @@ export async function runPennsylvaniaCampaignFinanceRawDataRefreshJob(
     console.warn("Pennsylvania raw data refresh job missing triggeredBy; recording as unknown");
   }
 
+  const normalized = normalizeRefreshJobData(data);
+
   if (!enabled) {
     return {
       enabled: false,
       force,
       triggeredBy,
+      years: normalized.years,
       status: "disabled",
-      refresh: null,
+      refreshes: [],
     };
   }
 
-  const normalized = normalizeRefreshJobData(data);
-  const refresh = await refreshPennsylvaniaCampaignFinanceExportCache({
-    year: normalized.year,
-    cacheDir: normalized.cacheDir,
-    url: normalized.url,
-    force,
-    timeoutMs: normalized.timeoutMs,
-  });
+  const refreshes: PennsylvaniaCampaignFinanceRawDataRefreshOutcome[] = [];
+  for (const year of normalized.years) {
+    const refresh = await refreshPennsylvaniaCampaignFinanceExportCache({
+      year,
+      cacheDir: normalized.cacheDir,
+      url: refreshUrlForYear({ year, urlOverride: normalized.urlOverride }),
+      force,
+      timeoutMs: normalized.timeoutMs,
+    });
+    refreshes.push({ year, status: refresh.status, refresh });
+  }
+
+  const status = refreshes.some((outcome) => outcome.status === "downloaded")
+    ? "downloaded"
+    : refreshes.some((outcome) => outcome.status === "extracted")
+      ? "extracted"
+      : "unchanged";
 
   return {
     enabled: true,
     force,
     triggeredBy,
-    status: refresh.status,
-    refresh,
+    years: normalized.years,
+    status,
+    refreshes,
   };
 }
 
