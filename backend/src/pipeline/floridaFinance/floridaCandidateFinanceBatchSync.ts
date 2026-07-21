@@ -403,6 +403,21 @@ function buildCommitteeContributionExportQuery(input: {
   row: FloridaCandidateFinanceDueRow;
   rowLimit: number;
 }): FloridaContributionExportQuery {
+  // Linked committee names are DOS recipient strings ("Donalds, Byron
+  // (REP)(GOV)"), which the DOS committee search does not recognize — it
+  // matches registered committee names only, so the export came back empty
+  // and every summary synced as $0. Query by candidate instead (the sync
+  // filters rows to the linked committee's recipient names), which also
+  // reuses the auto-link step's cached candidate export.
+  const name = splitCandidateNameForFloridaExport(input.row.candidateName);
+  if (name) {
+    return {
+      searchType: "candidate_detail",
+      candidateFirstName: name.candidateFirstName,
+      candidateLastName: name.candidateLastName,
+      rowLimit: input.rowLimit,
+    };
+  }
   return {
     searchType: "committee_detail",
     committeeName: input.row.committeeName,

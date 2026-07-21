@@ -117,6 +117,18 @@ export function normalizeFloridaCandidateNameKeys(candidateName: string): Set<st
     keys.add(normalized);
   }
 
+  // DOS committee names lead with the surname ("Barreiro, Bruno A. (REP)"),
+  // while candidate display names are "First Last" — without the reversed
+  // key a comma-less candidate name can never match a committee.
+  if (!candidateName.includes(",")) {
+    const words = normalized.split(" ");
+    if (words.length >= 2) {
+      const lastName = words[words.length - 1];
+      const givenNames = words.slice(0, -1).join(" ");
+      keys.add(`${lastName} ${givenNames}`);
+    }
+  }
+
   const commaParts = candidateName
     .split(",")
     .map((part) => normalizeFloridaTextKey(part))
