@@ -85,10 +85,68 @@ describe("utahSupportingCommitteeIndustryAggregator", () => {
           sourceUrl: PAC_SOURCE_URL,
         },
       ],
+      classifications: expect.arrayContaining([
+        expect.objectContaining({
+          labelType: "donor",
+          industrySlug: "construction",
+          classificationSource: "rule",
+        }),
+      ]),
       matchedCommitteeTransactionRowCount: 3,
       includedOrganizationDonorRowCount: 2,
       skippedCommitteeTransactionRowCount: 1,
     });
+  });
+
+  it("applies stored manual classifications over rule results and skips AI for them", async () => {
+    const financeIndustryClassifier = vi.fn();
+    const result = await aggregateUtahSupportingCommitteeIndustries({
+      electionYear: 2024,
+      candidateCommitteeName: "Friends of Jane Doe",
+      candidateSourceUrl: CANDIDATE_SOURCE_URL,
+      committeeSourceUrl: PAC_SOURCE_URL,
+      minIndustryAmount: 5_000,
+      financeIndustryClassifier,
+      classifyIndustriesWithAi: true,
+      loadCachedClassifications: async (labels) => {
+        expect(labels).toEqual([
+          expect.objectContaining({ labelType: "donor", normalizedLabel: "ACME HOLDINGS" }),
+        ]);
+        return [
+          {
+            rawLabel: "Acme Holdings LLC",
+            labelType: "donor",
+            normalizedLabel: "ACME HOLDINGS",
+            industrySlug: "finance_investment",
+            confidence: "high",
+            classificationSource: "manual",
+            matchedRule: null,
+          },
+        ];
+      },
+      candidateTransactions: [
+        transaction({ transactionId: "candidate-pac-1", amount: 2_500, name: "Utah Builders PAC" }),
+      ],
+      committeeTransactions: [
+        transaction({
+          entityType: "PAC",
+          entityName: "UTAH BUILDERS PAC",
+          transactionId: "pac-org",
+          amount: 25_000,
+          // No rule matches this name; only the stored manual row places it.
+          name: "Acme Holdings LLC",
+        }),
+      ],
+    });
+
+    expect(result.supportingCommitteeIndustryBreakdowns).toEqual([
+      expect.objectContaining({ industrySlug: "finance_investment", amount: 25_000 }),
+    ]);
+    expect(result.classifications).toEqual([
+      expect.objectContaining({ industrySlug: "finance_investment", classificationSource: "manual" }),
+    ]);
+    // The manual row resolved the donor, so nothing is left for AI.
+    expect(financeIndustryClassifier).not.toHaveBeenCalled();
   });
 
   it("uses the minimum industry amount threshold", async () => {

@@ -31,18 +31,11 @@ describe("syncDueUtahCandidateFinance script", () => {
     });
   });
 
-  it("defaults to a disabled-by-flag safe option set with AI classification disabled", () => {
+  it("defaults to a disabled-by-flag safe option set", () => {
     expect(parseSyncDueUtahCandidateFinanceScriptArgs([])).toMatchObject({
       dryRun: false,
       force: false,
       refreshCache: false,
-    });
-  });
-
-  it("can opt into and out of AI industry classification", () => {
-    expect(parseSyncDueUtahCandidateFinanceScriptArgs(["--ai-classify-industries"])).toMatchObject({
-    });
-    expect(parseSyncDueUtahCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
     });
   });
 

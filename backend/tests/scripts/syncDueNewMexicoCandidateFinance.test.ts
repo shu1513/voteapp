@@ -26,7 +26,6 @@ describe("syncDueNewMexicoCandidateFinance script", () => {
       electionLookbackDays: 10,
       electionLookaheadDays: 365,
       rawCacheDir: "/tmp/cfis",
-      aiClassificationMinAmount: undefined,
     });
   });
 

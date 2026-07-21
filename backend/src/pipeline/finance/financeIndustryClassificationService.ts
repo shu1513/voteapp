@@ -165,7 +165,7 @@ function mapClassificationRow(row: FinanceClassificationRow): FinanceLabelClassi
   };
 }
 
-async function loadCachedFinanceLabelClassifications(
+export async function loadCachedFinanceLabelClassifications(
   db: Queryable,
   labels: readonly FinanceIndustryClassificationCandidate[]
 ): Promise<FinanceLabelClassification[]> {

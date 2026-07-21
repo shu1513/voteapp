@@ -1,5 +1,8 @@
 import type { Pool, PoolClient } from "pg";
 
+import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
   connect?: () => Promise<PoolClient>;
@@ -63,6 +66,7 @@ export type UtahFinanceSnapshotInput = {
   directBreakdowns?: readonly UtahFinanceDirectBreakdownInput[];
   supportingCommittees?: readonly UtahFinanceSupportingCommitteeInput[];
   supportingCommitteeIndustries?: readonly UtahFinanceSupportingCommitteeIndustryInput[];
+  classifications?: readonly FinanceLabelClassification[];
 };
 
 export type UtahFinanceSnapshotWriteResult = {
@@ -542,6 +546,13 @@ export async function replaceUtahCandidateFinanceSnapshot(
         electionYear,
         industries: input.supportingCommitteeIndustries,
       });
+    }
+
+    // Persist donor classifications to the shared cache so unresolved Utah
+    // labels enter the manual industry-label queue; the upsert's conflict
+    // guard keeps manual rows authoritative.
+    for (const classification of input.classifications ?? []) {
+      await upsertFinanceLabelClassification({ db, classification });
     }
 
     return {

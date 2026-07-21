@@ -27,7 +27,7 @@ describe("syncDueTennesseeCandidateFinance script", () => {
     });
   });
 
-  it("defaults to AI industry classification enabled", () => {
+  it("defaults to a disabled-by-flag safe option set", () => {
     expect(parseSyncDueTennesseeCandidateFinanceScriptArgs([])).toMatchObject({
       dryRun: false,
       force: false,
