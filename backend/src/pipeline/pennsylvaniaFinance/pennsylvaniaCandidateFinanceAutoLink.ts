@@ -63,7 +63,13 @@ export async function listPennsylvaniaCandidateElectionsMissingFinanceLinks(
   db: Queryable,
   input: {
     now: Date;
-    maxCandidates: number;
+    // Auto-link intentionally has NO default cap: unmatched/ambiguous
+    // candidates never get a link, so a stable ORDER BY + LIMIT would retry
+    // the same unmatched prefix every run and starve the tail forever.
+    // Resolution is an in-memory pass over already-loaded filer rows, and the
+    // window/office/state filters bound the result, so enumerating all
+    // eligible candidates is cheap. maxCandidates still caps the actual sync.
+    maxCandidates?: number;
     electionLookbackDays: number;
     electionLookaheadDays: number;
   }
@@ -121,7 +127,8 @@ export async function listPennsylvaniaCandidateElectionsMissingFinanceLinks(
     `,
     [
       input.now.toISOString(),
-      input.maxCandidates,
+      // NULL means LIMIT ALL in Postgres — enumerate every eligible candidate.
+      input.maxCandidates ?? null,
       input.electionLookbackDays,
       input.electionLookaheadDays,
       [...PENNSYLVANIA_FINANCE_ELIGIBLE_OFFICE_KEYS],

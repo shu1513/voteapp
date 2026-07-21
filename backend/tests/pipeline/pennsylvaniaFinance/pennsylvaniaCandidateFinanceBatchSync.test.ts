@@ -1,14 +1,44 @@
-import { describe, expect, it, vi } from "vitest";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   listPennsylvaniaCandidateFinanceOutsideGroupsForLinks,
   listDuePennsylvaniaCandidateFinanceSyncRows,
   syncDuePennsylvaniaCandidateFinance,
 } from "../../../src/pipeline/pennsylvaniaFinance/pennsylvaniaCandidateFinanceBatchSync.js";
+import { PENNSYLVANIA_CAMPAIGN_FINANCE_FILER_COLUMNS } from "../../../src/pipeline/pennsylvaniaFinance/pennsylvaniaCampaignFinanceReader.js";
 
 const LINK_ID = "33333333-3333-3333-3333-333333333333";
 const CANDIDATE_ID = "11111111-1111-1111-1111-111111111111";
 const ELECTION_ID = "22222222-2222-2222-2222-222222222222";
+const tempDirs: string[] = [];
+
+afterEach(async () => {
+  await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
+});
+
+async function makeTempDir(): Promise<string> {
+  const dir = await mkdtemp(join(tmpdir(), "voteapp-pa-batch-sync-"));
+  tempDirs.push(dir);
+  return dir;
+}
+
+function filerCsvLine(overrides: Record<string, string>): string {
+  return PENNSYLVANIA_CAMPAIGN_FINANCE_FILER_COLUMNS.map((column) => overrides[column] ?? "").join(",");
+}
+
+async function writeFilerFile(input: {
+  cacheDir: string;
+  year: number;
+  rows: readonly Record<string, string>[];
+}): Promise<void> {
+  const extractedDir = join(input.cacheDir, String(input.year));
+  await mkdir(extractedDir, { recursive: true });
+  const csv = [PENNSYLVANIA_CAMPAIGN_FINANCE_FILER_COLUMNS.join(","), ...input.rows.map(filerCsvLine)].join("\n") + "\n";
+  await writeFile(join(extractedDir, `filer_${input.year}.txt`), csv, "utf8");
+}
 const SOURCE_URL = "https://www.pa.gov/content/dam/copapwp-pagov/en/dos/resources/voting-and-elections/campaign-finance/campaign-finance-data/2026.zip";
 
 function dueRow() {
@@ -97,6 +127,87 @@ describe("pennsylvaniaCandidateFinanceBatchSync", () => {
     ]);
     expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.pa_candidate_finance_outside_groups");
     expect(db.query.mock.calls[0]?.[1]).toEqual([[LINK_ID]]);
+  });
+
+  it("auto-links a candidate whose filer registration exists only in the prior-year archive", async () => {
+    // PA registrations for an election-year race are often exported only in
+    // the prior year's file; the cycle loader must read filer_<year>.txt for
+    // BOTH cycle years (each year selects a different file — no duplication).
+    const cacheDir = await makeTempDir();
+    await writeFilerFile({
+      cacheDir,
+      year: 2025,
+      rows: [
+        {
+          CampaignfinanceID: "100",
+          FILERID: "12345",
+          EYEAR: "2026",
+          FILERTYPE: "1",
+          FILERNAME: "JANE DOE FOR GOVERNOR",
+          OFFICE: "GOV",
+          DISTRICT: "",
+        },
+      ],
+    });
+    await writeFilerFile({
+      cacheDir,
+      year: 2026,
+      rows: [
+        {
+          CampaignfinanceID: "200",
+          FILERID: "99999",
+          EYEAR: "2026",
+          FILERTYPE: "1",
+          FILERNAME: "SOMEBODY ELSE FOR AUDITOR GENERAL",
+          OFFICE: "AUD",
+          DISTRICT: "",
+        },
+      ],
+    });
+    const db = {
+      query: vi
+        .fn()
+        // 1: missing-links enumeration
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Jane Doe",
+              election_year: 2026,
+              office_scope: "statewide",
+              office_name: "Governor",
+              district: null,
+            },
+          ],
+        })
+        // 2: link upsert
+        .mockResolvedValueOnce({ rows: [{ id: LINK_ID }], rowCount: 1 })
+        // 3: due query (empty — this test focuses on the auto-link path)
+        .mockResolvedValueOnce({ rows: [] }),
+    };
+    const syncFn = vi.fn();
+
+    const result = await syncDuePennsylvaniaCandidateFinance({
+      db,
+      now: new Date("2026-07-21T12:00:00.000Z"),
+      rawDataCacheDir: cacheDir,
+      syncPennsylvaniaCandidateFinanceFn: syncFn,
+    });
+
+    expect(result).toMatchObject({
+      autoLinkAttemptedCount: 1,
+      autoLinkLinkedCount: 1,
+      dueCandidateCount: 0,
+      syncedCandidateCount: 0,
+    });
+    const insertCall = db.query.mock.calls[1];
+    expect(String(insertCall?.[0])).toContain("INSERT INTO public.pa_candidate_finance_links");
+    expect(insertCall?.[1]).toContain("12345");
+    // The auto-link enumeration must not be capped: unmatched candidates
+    // would otherwise pin a stably-ordered LIMIT prefix and starve the tail.
+    const enumerationParams = db.query.mock.calls[0]?.[1] as unknown[];
+    expect(enumerationParams?.[1]).toBeNull();
   });
 
   it("syncs due linked PA candidates with injected yearly data", async () => {

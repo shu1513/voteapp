@@ -358,11 +358,11 @@ async function loadAutoLinkFilerRowsForElectionYear(input: {
     input.rawDataCacheDir ??
     process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR?.trim() ??
     DEFAULT_PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR;
-  // A single explicit extracted-dir override is one complete row set — read it
-  // once instead of once per cycle year (which would duplicate every row).
-  const years = input.rawDataExtractedDir ? [input.electionYear] : [input.electionYear - 1, input.electionYear];
+  // The reader selects filer_<year>.txt inside the directory, so both cycle
+  // years must be read even under a single extracted-dir override — each year
+  // resolves to a different file, never a duplicate read.
   const rows: PennsylvaniaCampaignFinanceFilerRow[] = [];
-  for (const year of years) {
+  for (const year of [input.electionYear - 1, input.electionYear]) {
     const extractedDir = resolve(input.rawDataExtractedDir ?? defaultExtractedDir({ cacheDir, year }));
     if (!(await directoryExists(extractedDir))) {
       throw new Error(`Pennsylvania campaign finance extracted CSV directory not found for ${year}: ${extractedDir}`);
@@ -525,9 +525,11 @@ export async function syncDuePennsylvaniaCandidateFinance(
   let autoLinkLinkedCount = 0;
   if (!dryRun && input.autoLinkMissingLinks !== false) {
     try {
+      // No maxCandidates here: unmatched candidates would otherwise occupy a
+      // capped, stably-ordered prefix forever and starve the tail. The cap
+      // still applies to the heavier per-candidate sync below.
       const missingLinkCandidates = await listPennsylvaniaCandidateElectionsMissingFinanceLinks(input.db, {
         now,
-        maxCandidates,
         electionLookbackDays,
         electionLookaheadDays,
       });
