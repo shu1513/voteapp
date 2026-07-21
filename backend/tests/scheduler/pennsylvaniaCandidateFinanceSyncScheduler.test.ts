@@ -58,6 +58,8 @@ describe("pennsylvaniaCandidateFinanceSyncScheduler", () => {
       now: "2026-06-01T00:00:00.000Z",
       staleAfterDays: 7,
       maxCandidates: 10,
+      autoLinkAttemptedCount: 0,
+      autoLinkLinkedCount: 0,
       dueCandidateCount: 0,
       selectedCandidateCount: 0,
       syncedCandidateCount: 0,

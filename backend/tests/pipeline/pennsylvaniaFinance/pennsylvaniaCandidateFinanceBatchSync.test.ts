@@ -153,6 +153,7 @@ describe("pennsylvaniaCandidateFinanceBatchSync", () => {
     const result = await syncDuePennsylvaniaCandidateFinance({
       db,
       now: new Date("2026-01-01T00:00:00.000Z"),
+      autoLinkMissingLinks: false,
       paDataByYear: new Map([
         [
           2025,
@@ -182,6 +183,8 @@ describe("pennsylvaniaCandidateFinanceBatchSync", () => {
 
     expect(result).toMatchObject({
       dryRun: false,
+      autoLinkAttemptedCount: 0,
+      autoLinkLinkedCount: 0,
       dueCandidateCount: 1,
       selectedCandidateCount: 1,
       syncedCandidateCount: 1,

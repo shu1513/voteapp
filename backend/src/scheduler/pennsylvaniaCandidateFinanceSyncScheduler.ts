@@ -220,6 +220,8 @@ export async function runPennsylvaniaCandidateFinanceSyncJob(
       now: now.toISOString(),
       staleAfterDays: data.staleAfterDays ?? DISABLED_RESULT_DEFAULT_STALE_AFTER_DAYS,
       maxCandidates: data.maxCandidates ?? DISABLED_RESULT_DEFAULT_MAX_CANDIDATES,
+      autoLinkAttemptedCount: 0,
+      autoLinkLinkedCount: 0,
       dueCandidateCount: 0,
       selectedCandidateCount: 0,
       syncedCandidateCount: 0,
