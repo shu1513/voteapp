@@ -155,10 +155,10 @@ describe("maineCfisRawDataRefreshScheduler", () => {
       enabled: false,
       force: false,
       triggeredBy: "daily",
-      filingYear: 2026,
+      filingYears: [2026],
       artifactKind: "expenditures",
       status: "disabled",
-      refresh: null,
+      refreshes: [],
     });
     expect(refreshMaineCfisArtifactCache).not.toHaveBeenCalled();
   });
@@ -202,13 +202,74 @@ describe("maineCfisRawDataRefreshScheduler", () => {
 
     expect(result).toMatchObject({
       enabled: true,
-      filingYear: 2026,
+      filingYears: [2026],
       artifactKind: "contributions",
       status: "unchanged",
     });
+    expect(result.refreshes).toHaveLength(1);
+    expect(refreshMaineCfisArtifactCache).toHaveBeenCalledTimes(1);
     expect(refreshMaineCfisArtifactCache).toHaveBeenCalledWith(
       expect.objectContaining({ filingYear: 2026, artifactKind: "contributions" })
     );
+  });
+
+  it("refreshes both cycle filing years when no filingYear is pinned", async () => {
+    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MAINE_CFIS_RAW_DATA_REFRESH_ENABLED = "true";
+    const refreshMaineCfisArtifactCache = vi
+      .fn()
+      .mockImplementation(async ({ filingYear }: { filingYear: number }) => ({
+        status: filingYear % 2 === 0 ? "downloaded" : "unchanged",
+      }));
+    vi.doMock("../../src/pipeline/maineFinance/maineCfisArtifactCache.js", async (importOriginal) => ({
+      ...(await importOriginal<object>()),
+      refreshMaineCfisArtifactCache,
+    }));
+
+    const { runMaineCfisRawDataRefreshJob } = await import(
+      "../../src/scheduler/maineCfisRawDataRefreshScheduler.js"
+    );
+
+    const result = await runMaineCfisRawDataRefreshJob({ artifactKind: "contributions", triggeredBy: "daily" });
+
+    const currentYear = new Date().getUTCFullYear();
+    expect(result.filingYears).toEqual([currentYear - 1, currentYear]);
+    expect(result.refreshes.map((outcome) => outcome.filingYear)).toEqual([currentYear - 1, currentYear]);
+    expect(result.status).toBe("downloaded");
+    expect(refreshMaineCfisArtifactCache).toHaveBeenCalledTimes(2);
+    expect(refreshMaineCfisArtifactCache).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({ filingYear: currentYear - 1, artifactKind: "contributions" })
+    );
+    expect(refreshMaineCfisArtifactCache).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({ filingYear: currentYear, artifactKind: "contributions" })
+    );
+  });
+
+  it("omits filingYear from recurring job data when not pinned", async () => {
+    process.env.MAINE_CAMPAIGN_FINANCE_ENABLED = "true";
+    mockEnv();
+
+    const queueInstance = {
+      upsertJobScheduler: vi.fn().mockResolvedValue(undefined),
+      removeJobScheduler: vi.fn().mockResolvedValue(true),
+      close: vi.fn().mockResolvedValue(undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+
+    const { upsertRecurringMaineCfisRawDataRefreshJobs } = await import(
+      "../../src/scheduler/maineCfisRawDataRefreshScheduler.js"
+    );
+
+    await upsertRecurringMaineCfisRawDataRefreshJobs();
+
+    expect(queueInstance.upsertJobScheduler).toHaveBeenCalledTimes(2);
+    for (const call of queueInstance.upsertJobScheduler.mock.calls) {
+      const data = (call[2] as { data: Record<string, unknown> }).data;
+      expect(data).not.toHaveProperty("filingYear");
+    }
   });
 
   it("enqueues a manual refresh job when enabled", async () => {

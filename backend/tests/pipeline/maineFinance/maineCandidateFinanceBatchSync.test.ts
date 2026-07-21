@@ -9,7 +9,10 @@ import {
   type MaineContributionDataForYear,
   type MaineExpenditureDataForYear,
 } from "../../../src/pipeline/maineFinance/maineCandidateFinanceBatchSync.js";
-import { getMaineCfisArtifactCachePaths } from "../../../src/pipeline/maineFinance/maineCfisArtifactCache.js";
+import {
+  getMaineCfisArtifactCachePaths,
+  refreshMaineCfisArtifactCache,
+} from "../../../src/pipeline/maineFinance/maineCfisArtifactCache.js";
 import {
   MAINE_CFIS_CONTRIBUTION_COLUMNS,
   type MaineCfisContributionRow,
@@ -366,6 +369,60 @@ describe("maineCandidateFinanceBatchSync", () => {
 
     expect(result.syncedCandidateCount).toBe(1);
     expect(syncFn).toHaveBeenCalledTimes(1);
+    const receiptIds = (syncFn.mock.calls[0]?.[0]?.contributionRows as MaineCfisContributionRow[]).map(
+      (row) => row["Receipt ID"]
+    );
+    expect(receiptIds.sort()).toEqual(["R-2023", "R-2024"]);
+  });
+
+  it("reads artifacts written by the real cache refresher (scheduler/script path)", async () => {
+    // End-to-end guarantee for the refresh -> sync chain: artifacts written by
+    // refreshMaineCfisArtifactCache (what the scheduler job and refresh script
+    // run) must satisfy the cycle loader's metadata validation.
+    const rawDataCacheDir = await makeTempDir();
+    const csvByYear = new Map<number, string>([
+      [2023, contributionCsv([contribution({ "Receipt ID": "R-2023", "Receipt Date": "12/15/2023" })])],
+      [2024, contributionCsv([contribution({ "Receipt ID": "R-2024", "Receipt Date": "03/11/2024" })])],
+    ]);
+    const fetchImpl: typeof fetch = async (_url, init) => {
+      const body = JSON.parse(String(init?.body)) as { year: number };
+      const csv = csvByYear.get(body.year);
+      if (!csv) {
+        throw new Error(`Unexpected Maine CFIS request year: ${body.year}`);
+      }
+      return new Response(csv, { status: 200 });
+    };
+    for (const filingYear of [2023, 2024]) {
+      await refreshMaineCfisArtifactCache({
+        filingYear,
+        artifactKind: "contributions",
+        cacheDir: rawDataCacheDir,
+        fetchImpl,
+      });
+    }
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const db = {
+      query: vi.fn().mockResolvedValue({ rows: [dueDbRow()] }),
+      connect: vi.fn(),
+    };
+    const syncFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2024,
+      dryRun: false,
+    });
+
+    const result = await syncDueMaineCandidateFinance({
+      db,
+      now: new Date("2026-06-25T12:00:00.000Z"),
+      maxCandidates: 10,
+      staleAfterDays: 7,
+      autoLinkMissingLinks: false,
+      rawDataCacheDir,
+      syncMaineCandidateFinanceFn: syncFn,
+    });
+
+    expect(result.syncedCandidateCount).toBe(1);
     const receiptIds = (syncFn.mock.calls[0]?.[0]?.contributionRows as MaineCfisContributionRow[]).map(
       (row) => row["Receipt ID"]
     );

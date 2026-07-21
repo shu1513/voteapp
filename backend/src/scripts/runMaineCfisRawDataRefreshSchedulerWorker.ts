@@ -25,7 +25,7 @@ async function main(): Promise<void> {
   worker.on("completed", (job, result) => {
     console.log(
       "Maine CFIS raw-data refresh scheduler worker completed " +
-        `jobId=${job.id} filingYear=${result.filingYear} artifactKind=${result.artifactKind} status=${result.status}`
+        `jobId=${job.id} filingYears=${result.filingYears.join(",")} artifactKind=${result.artifactKind} status=${result.status}`
     );
   });
 
