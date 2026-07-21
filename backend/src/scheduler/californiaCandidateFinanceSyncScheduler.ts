@@ -3,7 +3,6 @@ import type { ConnectionOptions } from "bullmq";
 import { toConnectionOptions } from "../utils/redisConnection.js";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   isCaliforniaCampaignFinanceEnabled,
@@ -29,8 +28,6 @@ export type CaliforniaCandidateFinanceSyncJobData = {
   timeoutMs?: number;
   rawDataZipPath?: string;
   rawDataCacheDir?: string;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -108,7 +105,6 @@ function assertValidJobOptions(data: CaliforniaCandidateFinanceSyncJobData): voi
   assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
   assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
   assertPositiveInteger(data.timeoutMs, "timeoutMs");
-  assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
 }
 
 export function createCaliforniaCandidateFinanceSyncSchedulerQueue(): Queue<CaliforniaCandidateFinanceSyncJobData> {
@@ -162,8 +158,6 @@ export async function upsertRecurringCaliforniaCandidateFinanceSyncJobs(
           timeoutMs: jobData.timeoutMs,
           rawDataZipPath: jobData.rawDataZipPath,
           rawDataCacheDir: jobData.rawDataCacheDir,
-          aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-          aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -199,8 +193,6 @@ export async function enqueueManualCaliforniaCandidateFinanceSyncJob(
         timeoutMs: jobData.timeoutMs,
         rawDataZipPath: jobData.rawDataZipPath,
         rawDataCacheDir: jobData.rawDataCacheDir,
-        aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-        aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -260,9 +252,6 @@ export async function runCaliforniaCandidateFinanceSyncJob(
       powerSearchOptions: data.timeoutMs ? { timeoutMs: data.timeoutMs } : undefined,
       rawDataZipPath: data.rawDataZipPath,
       rawDataCacheDir: data.rawDataCacheDir,
-      financeIndustryClassifier:
-        data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: data.aiClassificationMinAmount,
     });
 
     return {

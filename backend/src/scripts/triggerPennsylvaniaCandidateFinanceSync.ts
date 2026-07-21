@@ -56,8 +56,6 @@ export function parsePennsylvaniaCandidateFinanceSyncTriggerArgs(
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     rawDataExtractedDir: parseFlagValue(args, "--raw-extracted-dir") || undefined,
     rawDataCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 

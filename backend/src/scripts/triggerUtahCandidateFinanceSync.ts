@@ -59,8 +59,6 @@ export function parseUtahCandidateFinanceSyncTriggerArgs(
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     rawDataCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
     refreshCache: args.includes("--refresh-cache"),
-    aiClassifyIndustries: args.includes("--ai-classify-industries") && !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 

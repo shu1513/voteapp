@@ -16,8 +16,6 @@ describe("upsertCaliforniaCandidateFinanceSyncScheduler script", () => {
         "--lookahead-days=30",
         "--timeout-ms=5000",
         "--raw-cache-dir=/tmp/calaccess",
-        "--ai-classify-industries",
-        "--ai-min-amount=100000",
       ])
     ).toEqual({
       dryRun: true,
@@ -30,8 +28,6 @@ describe("upsertCaliforniaCandidateFinanceSyncScheduler script", () => {
       timeoutMs: 5000,
       rawDataZipPath: undefined,
       rawDataCacheDir: "/tmp/calaccess",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 100000,
     });
   });
 

@@ -12,8 +12,6 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
         "--stale-after-days=2",
         "--lookback-days=14",
         "--lookahead-days=365",
-        "--no-ai-classify-industries",
-        "--ai-min-amount=50000",
         "--contributions-csv=/exports/il-contrib-a.csv",
         "--contributions-csv",
         "/exports/il-contrib-b.csv",
@@ -29,8 +27,6 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
       staleAfterDays: 2,
       electionLookbackDays: 14,
       electionLookaheadDays: 365,
-      aiClassifyIndustries: false,
-      aiClassificationMinAmount: 50000,
       contributionCsvPaths: ["/exports/il-contrib-a.csv", "/exports/il-contrib-b.csv"],
       expenditureCsvPaths: ["/exports/il-exp.csv"],
       contributionSourceUrl: "https://example.test/contributions.csv",
@@ -41,18 +37,6 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
 
   it("rejects unknown flags", () => {
     expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--unknown"])).toThrow("Unknown option: --unknown");
-  });
-
-  it("rejects valued booleans and conflicting AI flags", () => {
-    expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--dry-run=true"])).toThrow(
-      "Boolean flag --dry-run does not take a value"
-    );
-    expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--dry-run", "false"])).toThrow(
-      "Boolean flag --dry-run does not take a value"
-    );
-    expect(() =>
-      parseIllinoisCandidateFinanceSyncTriggerArgs(["--ai-classify-industries", "--no-ai-classify-industries"])
-    ).toThrow("Provide --ai-classify-industries or --no-ai-classify-industries, not both");
   });
 
   it("requires contribution artifacts when artifact source flags are provided", () => {

@@ -15,7 +15,6 @@ describe("triggerUtahCandidateFinanceSync script", () => {
         "--lookahead-days=365",
         "--raw-cache-dir=/tmp/utah-cache",
         "--refresh-cache",
-        "--no-ai-classify-industries",
       ])
     ).toEqual({
       dryRun: true,
@@ -26,8 +25,6 @@ describe("triggerUtahCandidateFinanceSync script", () => {
       electionLookaheadDays: 365,
       rawDataCacheDir: "/tmp/utah-cache",
       refreshCache: true,
-      aiClassifyIndustries: false,
-      aiClassificationMinAmount: undefined,
     });
   });
 
@@ -40,10 +37,4 @@ describe("triggerUtahCandidateFinanceSync script", () => {
     );
   });
 
-  it("can opt into queued AI industry classification", () => {
-    expect(parseUtahCandidateFinanceSyncTriggerArgs(["--ai-classify-industries", "--ai-min-amount=5000"])).toMatchObject({
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 5000,
-    });
-  });
 });

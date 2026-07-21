@@ -13,8 +13,6 @@ describe("upsertWisconsinCandidateFinanceSyncScheduler script", () => {
         "3",
         "--lookback-days=2",
         "--lookahead-days=365",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -23,21 +21,6 @@ describe("upsertWisconsinCandidateFinanceSyncScheduler script", () => {
       staleAfterDays: 3,
       electionLookbackDays: 2,
       electionLookaheadDays: 365,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
-    });
-  });
-
-  it("parses AI classification opt-out", () => {
-    expect(parseUpsertWisconsinCandidateFinanceSyncSchedulerArgs(["--no-ai-classify-industries"])).toEqual({
-      dryRun: false,
-      force: false,
-      maxCandidates: undefined,
-      staleAfterDays: undefined,
-      electionLookbackDays: undefined,
-      electionLookaheadDays: undefined,
-      aiClassifyIndustries: false,
-      aiClassificationMinAmount: undefined,
     });
   });
 

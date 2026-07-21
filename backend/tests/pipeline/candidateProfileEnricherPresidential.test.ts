@@ -422,7 +422,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       electionYear: 2028,
       source: "presidential_cycle",
       includeOutside: true,
-      aiClassifyIndustries: true,
     });
     expect(redisXAckMock).toHaveBeenCalledWith(
       "staging:candidates:profile:draft",
@@ -777,7 +776,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
       fecCandidateId: "S80000002",
       electionYear: 2028,
       includeOutside: true,
-      aiClassifyIndustries: true,
     });
     expect(enqueueManualCaliforniaCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
     expect(enqueueManualColoradoCandidateFinanceSyncJobMock).not.toHaveBeenCalled();
@@ -1075,7 +1073,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(enqueueManualCaliforniaCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
         includeOutside: true,
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -1355,7 +1352,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(buildDistrictOfColumbiaCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
     expect(enqueueManualDistrictOfColumbiaCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -1546,7 +1542,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(buildNewMexicoCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
     expect(enqueueManualNewMexicoCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -1643,7 +1638,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(buildTexasCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
     expect(enqueueManualTexasCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -1740,7 +1734,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(buildFloridaCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
     expect(enqueueManualFloridaCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -1837,7 +1830,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(buildWashingtonCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
     expect(enqueueManualWashingtonCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -1935,7 +1927,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(buildHawaiiCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
     expect(enqueueManualHawaiiCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -2134,7 +2125,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(buildWisconsinCandidateFinanceLinkedElectionSyncJobIdMock).toHaveBeenCalledTimes(1);
     expect(enqueueManualWisconsinCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {
@@ -2235,7 +2225,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
     expect(buildMassachusettsCandidateFinanceLinkedElectionSyncJobIdMock).not.toHaveBeenCalled();
     expect(enqueueManualMassachusettsCandidateFinanceSyncJobMock).toHaveBeenCalledWith(
       {
-        aiClassifyIndustries: true,
         triggeredBy: "manual",
       },
       {

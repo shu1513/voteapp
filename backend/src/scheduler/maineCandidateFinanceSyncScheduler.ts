@@ -3,7 +3,6 @@ import type { ConnectionOptions } from "bullmq";
 import { toConnectionOptions } from "../utils/redisConnection.js";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import { isMaineCampaignFinanceEnabled, isMaineCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -22,8 +21,6 @@ export type MaineCandidateFinanceSyncJobData = {
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
   rawDataCacheDir?: string;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -102,7 +99,6 @@ function assertValidJobOptions(data: MaineCandidateFinanceSyncJobData): void {
   assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
   assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
   assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
-  assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
 }
 
 export function createMaineCandidateFinanceSyncSchedulerQueue(): Queue<MaineCandidateFinanceSyncJobData> {
@@ -146,8 +142,6 @@ export async function upsertRecurringMaineCandidateFinanceSyncJobs(
           electionLookbackDays: jobData.electionLookbackDays,
           electionLookaheadDays: jobData.electionLookaheadDays,
           rawDataCacheDir: jobData.rawDataCacheDir,
-          aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-          aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -181,8 +175,6 @@ export async function enqueueManualMaineCandidateFinanceSyncJob(
         electionLookbackDays: jobData.electionLookbackDays,
         electionLookaheadDays: jobData.electionLookaheadDays,
         rawDataCacheDir: jobData.rawDataCacheDir,
-        aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-        aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -237,9 +229,6 @@ export async function runMaineCandidateFinanceSyncJob(
       electionLookbackDays: data.electionLookbackDays,
       electionLookaheadDays: data.electionLookaheadDays,
       rawDataCacheDir: data.rawDataCacheDir,
-      financeIndustryClassifier:
-        data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: data.aiClassificationMinAmount,
     });
 
     return {

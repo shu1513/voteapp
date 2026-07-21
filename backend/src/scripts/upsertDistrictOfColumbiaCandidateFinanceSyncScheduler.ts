@@ -71,9 +71,6 @@ export function parseUpsertDistrictOfColumbiaCandidateFinanceSyncSchedulerArgs(
     "--stale-after-days",
     "--lookback-days",
     "--lookahead-days",
-    "--ai-classify-industries",
-    "--no-ai-classify-industries",
-    "--ai-min-amount",
   ]);
   return {
     dryRun: args.includes("--dry-run"),
@@ -82,8 +79,6 @@ export function parseUpsertDistrictOfColumbiaCandidateFinanceSyncSchedulerArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 

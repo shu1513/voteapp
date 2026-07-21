@@ -54,8 +54,6 @@ export function parseCaliforniaCandidateFinanceSyncTriggerArgs(
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
     rawDataZipPath: parseFlagValue(args, "--raw-zip")?.trim() || undefined,
     rawDataCacheDir: parseFlagValue(args, "--raw-cache-dir")?.trim() || undefined,
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 

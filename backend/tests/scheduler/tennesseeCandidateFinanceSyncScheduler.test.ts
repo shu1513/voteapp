@@ -125,9 +125,6 @@ describe("tennesseeCandidateFinanceSyncScheduler", () => {
     vi.doMock("../../src/pipeline/tennesseeFinance/tennesseeCandidateFinanceBatchSync.js", () => ({
       syncDueTennesseeCandidateFinance,
     }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv: vi.fn(() => vi.fn()),
-    }));
 
     const { runTennesseeCandidateFinanceSyncJob } = await import(
       "../../src/scheduler/tennesseeCandidateFinanceSyncScheduler.js"
@@ -138,8 +135,6 @@ describe("tennesseeCandidateFinanceSyncScheduler", () => {
       maxCandidates: 2,
       staleAfterDays: 3,
       electionLookbackDays: 14,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
       triggeredBy: "manual",
     });
 
@@ -157,70 +152,6 @@ describe("tennesseeCandidateFinanceSyncScheduler", () => {
         maxCandidates: 2,
         staleAfterDays: 3,
         electionLookbackDays: 14,
-        financeIndustryClassifier: undefined,
-        aiClassificationMinAmount: 25000,
-      })
-    );
-    expect(end).toHaveBeenCalledTimes(1);
-  });
-
-  it("passes the shared finance industry classifier when AI classification is enabled outside dry-run", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.TENNESSEE_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.TENNESSEE_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
-
-    const end = vi.fn().mockResolvedValue(undefined);
-    const pool = { query: vi.fn(), end };
-    const syncDueTennesseeCandidateFinance = vi.fn().mockResolvedValue({
-      dryRun: false,
-      now: "2026-06-01T00:00:00.000Z",
-      staleAfterDays: 7,
-      maxCandidates: 1,
-      dueCandidateCount: 1,
-      selectedCandidateCount: 1,
-      syncedCandidateCount: 1,
-      failedCandidateCount: 0,
-      autoLinkAttemptedCount: 1,
-      autoLinkLinkedCount: 1,
-      results: [],
-    });
-    const classifier = vi.fn();
-    const createFinanceIndustryClassifierFromEnv = vi.fn(() => classifier);
-
-    vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
-    mockEnv();
-    vi.doMock("../../src/pipeline/tennesseeFinance/tennesseeCandidateFinanceBatchSync.js", () => ({
-      syncDueTennesseeCandidateFinance,
-    }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv,
-    }));
-
-    const { runTennesseeCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/tennesseeCandidateFinanceSyncScheduler.js"
-    );
-
-    const result = await runTennesseeCandidateFinanceSyncJob({
-      maxCandidates: 1,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
-      triggeredBy: "manual",
-    });
-
-    expect(result).toMatchObject({
-      enabled: true,
-      dryRun: false,
-      selectedCandidateCount: 1,
-    });
-    expect(createFinanceIndustryClassifierFromEnv).toHaveBeenCalledTimes(1);
-    expect(syncDueTennesseeCandidateFinance).toHaveBeenCalledWith(
-      expect.objectContaining({
-        db: pool,
-        dryRun: false,
-        maxCandidates: 1,
-        financeIndustryClassifier: classifier,
-        aiClassificationMinAmount: 25000,
       })
     );
     expect(end).toHaveBeenCalledTimes(1);
@@ -246,8 +177,6 @@ describe("tennesseeCandidateFinanceSyncScheduler", () => {
 
     await upsertRecurringTennesseeCandidateFinanceSyncJobs({
       maxCandidates: 5,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -260,8 +189,6 @@ describe("tennesseeCandidateFinanceSyncScheduler", () => {
         name: "tennessee_candidate_finance_sync_due",
         data: expect.objectContaining({
           maxCandidates: 5,
-          aiClassifyIndustries: true,
-          aiClassificationMinAmount: 25000,
           triggeredBy: "daily",
         }),
       })
@@ -337,7 +264,7 @@ describe("tennesseeCandidateFinanceSyncScheduler", () => {
     );
     await expect(
       enqueueManualTennesseeCandidateFinanceSyncJob(
-        { aiClassifyIndustries: true, aiClassificationMinAmount: 25000 },
+        {},
         { jobId }
       )
     ).resolves.toBe("tennessee-finance-job-1");
@@ -346,8 +273,6 @@ describe("tennesseeCandidateFinanceSyncScheduler", () => {
     expect(queueInstance.add).toHaveBeenCalledWith(
       "tennessee_candidate_finance_sync_due",
       expect.objectContaining({
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
         triggeredBy: "manual",
       }),
       expect.objectContaining({ jobId })

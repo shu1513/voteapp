@@ -92,9 +92,6 @@ describe("newMexicoCandidateFinanceSyncScheduler", () => {
     vi.doMock("../../src/pipeline/newMexicoFinance/newMexicoCandidateFinanceBatchSync.js", () => ({
       syncDueNewMexicoCandidateFinance,
     }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv: vi.fn(() => ({ classify: vi.fn() })),
-    }));
 
     const { runNewMexicoCandidateFinanceSyncJob } = await import(
       "../../src/scheduler/newMexicoCandidateFinanceSyncScheduler.js"
@@ -106,8 +103,6 @@ describe("newMexicoCandidateFinanceSyncScheduler", () => {
       staleAfterDays: 3,
       electionLookbackDays: 14,
       rawDataCacheDir: "/tmp/cfis",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
       triggeredBy: "manual",
     });
 
@@ -126,8 +121,6 @@ describe("newMexicoCandidateFinanceSyncScheduler", () => {
         staleAfterDays: 3,
         electionLookbackDays: 14,
         rawDataCacheDir: "/tmp/cfis",
-        financeIndustryClassifier: undefined,
-        aiClassificationMinAmount: 25000,
       })
     );
     expect(end).toHaveBeenCalledTimes(1);
@@ -177,7 +170,7 @@ describe("newMexicoCandidateFinanceSyncScheduler", () => {
     );
     await expect(
       enqueueManualNewMexicoCandidateFinanceSyncJob(
-        { aiClassifyIndustries: true, aiClassificationMinAmount: 25000 },
+        {},
         { jobId }
       )
     ).resolves.toBe("new-mexico-finance-job-1");
@@ -186,8 +179,6 @@ describe("newMexicoCandidateFinanceSyncScheduler", () => {
     expect(queueInstance.add).toHaveBeenCalledWith(
       "new_mexico_candidate_finance_sync_due",
       expect.objectContaining({
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
         triggeredBy: "manual",
       }),
       expect.objectContaining({ jobId })

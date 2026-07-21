@@ -121,9 +121,6 @@ describe("utahCandidateFinanceSyncScheduler", () => {
     vi.doMock("../../src/pipeline/utahFinance/utahCandidateFinanceBatchSync.js", () => ({
       syncDueUtahCandidateFinance,
     }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv: vi.fn(() => vi.fn()),
-    }));
 
     const { runUtahCandidateFinanceSyncJob } = await import(
       "../../src/scheduler/utahCandidateFinanceSyncScheduler.js"
@@ -136,8 +133,6 @@ describe("utahCandidateFinanceSyncScheduler", () => {
       electionLookbackDays: 14,
       rawDataCacheDir: "/tmp/utah-cache",
       refreshCache: true,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 5000,
       triggeredBy: "manual",
     });
 
@@ -157,70 +152,6 @@ describe("utahCandidateFinanceSyncScheduler", () => {
         electionLookbackDays: 14,
         rawDataCacheDir: "/tmp/utah-cache",
         refreshCache: true,
-        financeIndustryClassifier: undefined,
-        classifySupportingCommitteeIndustriesWithAi: true,
-        supportingCommitteeIndustryMinAmount: 5000,
-      })
-    );
-    expect(end).toHaveBeenCalledTimes(1);
-  });
-
-  it("passes the shared finance industry classifier when AI classification is enabled outside dry-run", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.UTAH_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.UTAH_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
-
-    const end = vi.fn().mockResolvedValue(undefined);
-    const pool = { query: vi.fn(), end };
-    const syncDueUtahCandidateFinance = vi.fn().mockResolvedValue({
-      dryRun: false,
-      now: "2026-06-01T00:00:00.000Z",
-      staleAfterDays: 7,
-      maxCandidates: 1,
-      dueCandidateCount: 1,
-      selectedCandidateCount: 1,
-      syncedCandidateCount: 1,
-      failedCandidateCount: 0,
-      results: [],
-    });
-    const classifier = vi.fn();
-    const createFinanceIndustryClassifierFromEnv = vi.fn(() => classifier);
-
-    vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
-    mockEnv();
-    vi.doMock("../../src/pipeline/utahFinance/utahCandidateFinanceBatchSync.js", () => ({
-      syncDueUtahCandidateFinance,
-    }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv,
-    }));
-
-    const { runUtahCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/utahCandidateFinanceSyncScheduler.js"
-    );
-
-    const result = await runUtahCandidateFinanceSyncJob({
-      maxCandidates: 1,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 5000,
-      triggeredBy: "manual",
-    });
-
-    expect(result).toMatchObject({
-      enabled: true,
-      dryRun: false,
-      selectedCandidateCount: 1,
-    });
-    expect(createFinanceIndustryClassifierFromEnv).toHaveBeenCalledTimes(1);
-    expect(syncDueUtahCandidateFinance).toHaveBeenCalledWith(
-      expect.objectContaining({
-        db: pool,
-        dryRun: false,
-        maxCandidates: 1,
-        financeIndustryClassifier: classifier,
-        classifySupportingCommitteeIndustriesWithAi: true,
-        supportingCommitteeIndustryMinAmount: 5000,
       })
     );
     expect(end).toHaveBeenCalledTimes(1);
@@ -247,8 +178,6 @@ describe("utahCandidateFinanceSyncScheduler", () => {
       maxCandidates: 5,
       rawDataCacheDir: "/tmp/utah-cache",
       refreshCache: true,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 5000,
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -263,8 +192,6 @@ describe("utahCandidateFinanceSyncScheduler", () => {
           maxCandidates: 5,
           rawDataCacheDir: "/tmp/utah-cache",
           refreshCache: true,
-          aiClassifyIndustries: true,
-          aiClassificationMinAmount: 5000,
           triggeredBy: "daily",
         }),
       })
@@ -314,7 +241,7 @@ describe("utahCandidateFinanceSyncScheduler", () => {
     const jobId = buildUtahCandidateFinanceLinkedElectionSyncJobId(new Date("2026-11-03T23:00:00.000Z"));
     await expect(
       enqueueManualUtahCandidateFinanceSyncJob(
-        { aiClassifyIndustries: true, aiClassificationMinAmount: 5000 },
+        {},
         { jobId }
       )
     ).resolves.toBe("utah-finance-job-1");
@@ -323,8 +250,6 @@ describe("utahCandidateFinanceSyncScheduler", () => {
     expect(queueInstance.add).toHaveBeenCalledWith(
       "utah_candidate_finance_sync_due",
       expect.objectContaining({
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 5000,
         triggeredBy: "manual",
       }),
       expect.objectContaining({ jobId })

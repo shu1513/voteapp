@@ -57,8 +57,6 @@ export function parseUpsertHoustonCandidateFinanceSyncSchedulerArgs(
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     rawDataZipPath: parseFlagValue(args, "--raw-zip") || undefined,
     rawDataCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 

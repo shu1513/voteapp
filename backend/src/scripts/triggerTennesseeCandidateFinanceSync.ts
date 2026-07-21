@@ -21,8 +21,6 @@ export function parseTennesseeCandidateFinanceSyncTriggerArgs(
     staleAfterDays: parseTennesseeFinancePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parseTennesseeFinancePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parseTennesseeFinancePositiveIntegerFlag(args, "--lookahead-days"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parseTennesseeFinancePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 

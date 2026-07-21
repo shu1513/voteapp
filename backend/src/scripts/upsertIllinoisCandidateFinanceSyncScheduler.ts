@@ -50,12 +50,6 @@ function assertBareBooleanFlags(args: readonly string[], booleanFlags: readonly 
   }
 }
 
-function assertMutuallyExclusiveFlags(args: readonly string[], left: string, right: string): void {
-  if (args.includes(left) && args.includes(right)) {
-    throw new Error(`Provide ${left} or ${right}, not both`);
-  }
-}
-
 export function parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): IllinoisCandidateFinanceSyncJobData {
@@ -66,17 +60,13 @@ export function parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(
     "--stale-after-days",
     "--lookback-days",
     "--lookahead-days",
-    "--ai-classify-industries",
-    "--no-ai-classify-industries",
-    "--ai-min-amount",
     "--contributions-csv",
     "--expenditures-csv",
     "--contributions-url",
     "--expenditures-url",
     "--normalized-artifact",
   ]);
-  assertBareBooleanFlags(args, ["--dry-run", "--force", "--ai-classify-industries", "--no-ai-classify-industries"]);
-  assertMutuallyExclusiveFlags(args, "--ai-classify-industries", "--no-ai-classify-industries");
+  assertBareBooleanFlags(args, ["--dry-run", "--force"]);
   const contributionCsvPaths = parseFlagValues(args, "--contributions-csv");
   const expenditureCsvPaths = parseFlagValues(args, "--expenditures-csv");
   const contributionSourceUrl = parseFlagValue(args, "--contributions-url") || undefined;
@@ -96,8 +86,6 @@ export function parseUpsertIllinoisCandidateFinanceSyncSchedulerArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    aiClassifyIndustries: args.includes("--ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
     contributionCsvPaths: contributionCsvPaths.length > 0 ? contributionCsvPaths : undefined,
     expenditureCsvPaths: expenditureCsvPaths.length > 0 ? expenditureCsvPaths : undefined,
     contributionSourceUrl,

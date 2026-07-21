@@ -15,8 +15,6 @@ describe("upsertTexasCandidateFinanceSyncScheduler script", () => {
         "--lookahead-days=365",
         "--raw-zip=/tmp/2026_ContributionData.csv.zip",
         "--raw-cache-dir=/tmp/texas-cache",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -27,8 +25,6 @@ describe("upsertTexasCandidateFinanceSyncScheduler script", () => {
       electionLookaheadDays: 365,
       rawDataZipPath: "/tmp/2026_ContributionData.csv.zip",
       rawDataCacheDir: "/tmp/texas-cache",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 

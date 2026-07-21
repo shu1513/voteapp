@@ -3,7 +3,6 @@ import type { ConnectionOptions } from "bullmq";
 import { toConnectionOptions } from "../utils/redisConnection.js";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   isFloridaCampaignFinanceEnabled,
@@ -33,8 +32,6 @@ export type FloridaCandidateFinanceSyncJobData = {
   refreshExportArtifacts?: boolean;
   exportMinIntervalMs?: number;
   exportRowLimit?: number;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -118,7 +115,6 @@ function assertValidJobOptions(data: FloridaCandidateFinanceSyncJobData): void {
   assertNonnegativeInteger(data.electionLookaheadDays, "electionLookaheadDays");
   assertPositiveInteger(data.exportRowLimit, "exportRowLimit");
   assertNonnegativeInteger(data.exportMinIntervalMs, "exportMinIntervalMs");
-  assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
 }
 
 export function createFloridaCandidateFinanceSyncSchedulerQueue(): Queue<FloridaCandidateFinanceSyncJobData> {
@@ -173,8 +169,6 @@ export async function upsertRecurringFloridaCandidateFinanceSyncJobs(
           refreshExportArtifacts: Boolean(jobData.refreshExportArtifacts),
           exportMinIntervalMs: jobData.exportMinIntervalMs,
           exportRowLimit: jobData.exportRowLimit,
-          aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-          aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -211,8 +205,6 @@ export async function enqueueManualFloridaCandidateFinanceSyncJob(
         refreshExportArtifacts: Boolean(jobData.refreshExportArtifacts),
         exportMinIntervalMs: jobData.exportMinIntervalMs,
         exportRowLimit: jobData.exportRowLimit,
-        aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-        aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -257,8 +249,6 @@ export async function runFloridaCandidateFinanceSyncJob(
   const env = getPipelineEnv();
   const pool = new Pool({ connectionString: env.DATABASE_URL });
   try {
-    const financeIndustryClassifier =
-      data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined;
     const result =
       data.syncInputs !== undefined
         ? await syncFloridaCandidateFinanceBatch({
@@ -268,8 +258,6 @@ export async function runFloridaCandidateFinanceSyncJob(
             maxCandidates: data.maxCandidates,
             syncInputs: data.syncInputs,
             defaultArtifactCacheDir: data.defaultArtifactCacheDir,
-            financeIndustryClassifier,
-            aiClassificationMinAmount: data.aiClassificationMinAmount,
           })
         : await syncDueFloridaCandidateFinance({
             db: pool,
@@ -284,8 +272,6 @@ export async function runFloridaCandidateFinanceSyncJob(
             exportRowLimit: data.exportRowLimit,
             exportForce: force,
             refreshExportArtifacts: data.refreshExportArtifacts === true,
-            financeIndustryClassifier,
-            aiClassificationMinAmount: data.aiClassificationMinAmount,
           });
 
     return {

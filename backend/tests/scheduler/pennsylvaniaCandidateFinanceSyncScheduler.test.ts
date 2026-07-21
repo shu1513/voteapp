@@ -67,66 +67,6 @@ describe("pennsylvaniaCandidateFinanceSyncScheduler", () => {
     expect(Pool).not.toHaveBeenCalled();
   });
 
-  it("runs the due Pennsylvania finance sync with the shared classifier when enabled", async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-01T00:00:00.000Z"));
-    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_ENABLED = "true";
-    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
-
-    const end = vi.fn().mockResolvedValue(undefined);
-    const pool = { query: vi.fn(), end };
-    const syncDuePennsylvaniaCandidateFinance = vi.fn().mockResolvedValue({
-      dryRun: false,
-      now: "2026-06-01T00:00:00.000Z",
-      staleAfterDays: 7,
-      maxCandidates: 1,
-      dueCandidateCount: 1,
-      selectedCandidateCount: 1,
-      syncedCandidateCount: 1,
-      failedCandidateCount: 0,
-      results: [],
-    });
-    const classifier = vi.fn();
-    const createFinanceIndustryClassifierFromEnv = vi.fn(() => classifier);
-
-    vi.doMock("pg", () => ({ Pool: vi.fn(() => pool) }));
-    mockEnv();
-    vi.doMock("../../src/pipeline/pennsylvaniaFinance/pennsylvaniaCandidateFinanceBatchSync.js", () => ({
-      syncDuePennsylvaniaCandidateFinance,
-    }));
-    vi.doMock("../../src/ai/classifyFinanceIndustry.js", () => ({
-      createFinanceIndustryClassifierFromEnv,
-    }));
-
-    const { runPennsylvaniaCandidateFinanceSyncJob } = await import(
-      "../../src/scheduler/pennsylvaniaCandidateFinanceSyncScheduler.js"
-    );
-
-    const result = await runPennsylvaniaCandidateFinanceSyncJob({
-      maxCandidates: 1,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
-      triggeredBy: "manual",
-    });
-
-    expect(result).toMatchObject({
-      enabled: true,
-      dryRun: false,
-      selectedCandidateCount: 1,
-    });
-    expect(createFinanceIndustryClassifierFromEnv).toHaveBeenCalledTimes(1);
-    expect(syncDuePennsylvaniaCandidateFinance).toHaveBeenCalledWith(
-      expect.objectContaining({
-        db: pool,
-        dryRun: false,
-        maxCandidates: 1,
-        financeIndustryClassifier: classifier,
-        aiClassificationMinAmount: 25000,
-      })
-    );
-    expect(end).toHaveBeenCalledTimes(1);
-  });
-
   it("upserts recurring jobs with configured queue payload", async () => {
     process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_ENABLED = "true";
     process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_SYNC_DAILY_CRON = "30 9 * * *";
@@ -147,8 +87,6 @@ describe("pennsylvaniaCandidateFinanceSyncScheduler", () => {
     await upsertRecurringPennsylvaniaCandidateFinanceSyncJobs({
       maxCandidates: 5,
       rawDataExtractedDir: "/tmp/pa-cf/2022",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -162,8 +100,6 @@ describe("pennsylvaniaCandidateFinanceSyncScheduler", () => {
         data: expect.objectContaining({
           maxCandidates: 5,
           rawDataExtractedDir: "/tmp/pa-cf/2022",
-          aiClassifyIndustries: true,
-          aiClassificationMinAmount: 25000,
           triggeredBy: "daily",
         }),
       })
@@ -195,8 +131,6 @@ describe("pennsylvaniaCandidateFinanceSyncScheduler", () => {
         electionLookbackDays: 21,
         rawDataExtractedDir: "/tmp/pa-cf/2022",
         rawDataCacheDir: "/tmp/pa-cf",
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
       })
     ).resolves.toBe("pennsylvania-finance-job-1");
 
@@ -209,8 +143,6 @@ describe("pennsylvaniaCandidateFinanceSyncScheduler", () => {
         electionLookbackDays: 21,
         rawDataExtractedDir: "/tmp/pa-cf/2022",
         rawDataCacheDir: "/tmp/pa-cf",
-        aiClassifyIndustries: true,
-        aiClassificationMinAmount: 25000,
         triggeredBy: "manual",
       }),
       expect.any(Object)

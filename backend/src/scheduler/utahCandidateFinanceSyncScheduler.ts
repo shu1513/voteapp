@@ -3,7 +3,6 @@ import type { ConnectionOptions } from "bullmq";
 import { toConnectionOptions } from "../utils/redisConnection.js";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   isUtahCampaignFinanceEnabled,
@@ -26,8 +25,6 @@ export type UtahCandidateFinanceSyncJobData = {
   electionLookaheadDays?: number;
   rawDataCacheDir?: string;
   refreshCache?: boolean;
-  aiClassifyIndustries?: boolean;
-  aiClassificationMinAmount?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -104,7 +101,6 @@ function assertValidJobOptions(data: UtahCandidateFinanceSyncJobData): void {
   assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
   assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
   assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
-  assertPositiveInteger(data.aiClassificationMinAmount, "aiClassificationMinAmount");
 }
 
 export function createUtahCandidateFinanceSyncSchedulerQueue(): Queue<UtahCandidateFinanceSyncJobData> {
@@ -156,8 +152,6 @@ export async function upsertRecurringUtahCandidateFinanceSyncJobs(
           electionLookaheadDays: jobData.electionLookaheadDays,
           rawDataCacheDir: jobData.rawDataCacheDir,
           refreshCache: Boolean(jobData.refreshCache),
-          aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-          aiClassificationMinAmount: jobData.aiClassificationMinAmount,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -191,8 +185,6 @@ export async function enqueueManualUtahCandidateFinanceSyncJob(
         electionLookaheadDays: jobData.electionLookaheadDays,
         rawDataCacheDir: jobData.rawDataCacheDir,
         refreshCache: Boolean(jobData.refreshCache),
-        aiClassifyIndustries: Boolean(jobData.aiClassifyIndustries),
-        aiClassificationMinAmount: jobData.aiClassificationMinAmount,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -248,10 +240,6 @@ export async function runUtahCandidateFinanceSyncJob(
       electionLookaheadDays: data.electionLookaheadDays,
       rawDataCacheDir: data.rawDataCacheDir,
       refreshCache: Boolean(data.refreshCache),
-      financeIndustryClassifier:
-        data.aiClassifyIndustries && !dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      classifySupportingCommitteeIndustriesWithAi: Boolean(data.aiClassifyIndustries),
-      supportingCommitteeIndustryMinAmount: data.aiClassificationMinAmount,
     });
 
     return {
