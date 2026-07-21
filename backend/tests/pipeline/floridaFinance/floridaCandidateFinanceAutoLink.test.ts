@@ -114,6 +114,45 @@ describe("floridaCandidateFinanceAutoLink", () => {
     });
   });
 
+  it("matches DOS surname-first recipient names from a First-Last candidate name", () => {
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Bruno Barreiro",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({ contributionDate: "01/15/2026", recipientName: "Barreiro, Bruno A. (REP)(STR)" }),
+          contribution({ recipientName: "Other Committee" }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeName: "Barreiro, Bruno A. (REP)(STR)",
+    });
+  });
+
+  it("matches around middle names and compound surnames via the short reversed key", () => {
+    // App "Jane A. Doe" vs DOS "DOE, JANE" (no middle name on the DOS side).
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({ contributionDate: "01/15/2026", recipientName: "DOE, JANE (DEM)(GOV)" }),
+        ],
+      })
+    ).toMatchObject({ status: "matched" });
+    // App "Jane de la Cruz" vs DOS "DE LA CRUZ, JANE".
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Jane de la Cruz",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({ contributionDate: "01/15/2026", recipientName: "DE LA CRUZ, JANE (REP)(STR)" }),
+        ],
+      })
+    ).toMatchObject({ status: "matched" });
+  });
+
   it("does not resolve when more than one recipient name matches the candidate", () => {
     expect(
       resolveFloridaCandidateCommittee({
@@ -325,7 +364,8 @@ describe("floridaCandidateFinanceAutoLink", () => {
       },
     ]);
 
-    expect(predicate(contribution({ recipientName: "DOE, JANE Campaign Account" }))).toBe(false);
+    // Surname-first is how DOS names candidate committees; it must match.
+    expect(predicate(contribution({ recipientName: "DOE, JANE Campaign Account" }))).toBe(true);
     expect(predicate(contribution({ recipientName: "Friends of Jane Doe" }))).toBe(true);
     expect(predicate(contribution({ recipientName: "Friends of Janedoe" }))).toBe(false);
     expect(predicate(contribution({ contributionDate: "12/31/2024", recipientName: "Friends of Jane Doe" }))).toBe(false);
