@@ -17,8 +17,6 @@ describe("syncDueIllinoisCandidateFinance script", () => {
         "--lookback-days=10",
         "--lookahead-days=365",
         "--timeout-ms=45000",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
         "--contributions-csv=exports/il-contrib-a.csv",
         "--contributions-csv",
         "exports/il-contrib-b.csv",
@@ -35,8 +33,6 @@ describe("syncDueIllinoisCandidateFinance script", () => {
       electionLookbackDays: 10,
       electionLookaheadDays: 365,
       timeoutMs: 45000,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
       contributionCsvPaths: ["exports/il-contrib-a.csv", "exports/il-contrib-b.csv"],
       expenditureCsvPaths: ["exports/il-exp.csv"],
       contributionSourceUrl: "https://example.test/contributions.csv",
@@ -49,16 +45,9 @@ describe("syncDueIllinoisCandidateFinance script", () => {
     expect(parseSyncDueIllinoisCandidateFinanceScriptArgs([])).toMatchObject({
       dryRun: false,
       force: false,
-      aiClassifyIndustries: true,
       contributionCsvPaths: [],
       expenditureCsvPaths: [],
       normalizedArtifactPath: undefined,
-    });
-  });
-
-  it("can opt out of AI industry classification", () => {
-    expect(parseSyncDueIllinoisCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
     });
   });
 
@@ -117,7 +106,6 @@ describe("syncDueIllinoisCandidateFinance script", () => {
         dryRun: true,
         force: false,
         maxCandidates: 2,
-        aiClassifyIndustries: false,
         contributionCsvPaths: [],
         expenditureCsvPaths: [],
         normalizedArtifactPath: undefined,
@@ -182,7 +170,6 @@ describe("syncDueIllinoisCandidateFinance script", () => {
       normalized_artifact: true,
       outside_expenditure_data_available_count: 0,
       outside_group_contribution_data_available_count: 0,
-      ai_classify_industries: false,
       result: {
         dueCandidateCount: 3,
         selectedCandidateCount: 2,

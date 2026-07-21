@@ -18,8 +18,6 @@ describe("syncCandidateFinance script", () => {
         "--top-groups",
         "12",
         "--timeout-ms=5000",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       fecCandidateId: "P80001571",
@@ -29,8 +27,6 @@ describe("syncCandidateFinance script", () => {
       perPage: 25,
       outsideGroupLimit: 12,
       timeoutMs: 5000,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -47,14 +43,6 @@ describe("syncCandidateFinance script", () => {
     );
   });
 
-  it("can opt out of AI industry classification", () => {
-    expect(
-      parseSyncCandidateFinanceScriptArgs(["--fec-id=P80001571", "--year=2024", "--no-ai-classify-industries"])
-    ).toMatchObject({
-      aiClassifyIndustries: false,
-    });
-  });
-
   it("formats script output", () => {
     const output = toSyncCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),
@@ -65,7 +53,6 @@ describe("syncCandidateFinance script", () => {
         includeOutside: true,
         perPage: 10,
         outsideGroupLimit: 5,
-        aiClassifyIndustries: false,
       },
       result: {
         fecCandidateId: "P80001571",
@@ -91,7 +78,6 @@ describe("syncCandidateFinance script", () => {
       election_year: 2024,
       dry_run: true,
       include_outside: true,
-      ai_classify_industries: false,
       result: {
         outsideSupportTotal: 100,
         outsideOpposeTotal: 50,

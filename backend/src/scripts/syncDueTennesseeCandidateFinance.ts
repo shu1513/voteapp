@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isTennesseeCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -21,8 +20,6 @@ export type SyncDueTennesseeCandidateFinanceScriptOptions = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
 };
 
 export function parseSyncDueTennesseeCandidateFinanceScriptArgs(
@@ -36,8 +33,6 @@ export function parseSyncDueTennesseeCandidateFinanceScriptArgs(
     staleAfterDays: parseTennesseeFinancePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parseTennesseeFinancePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parseTennesseeFinancePositiveIntegerFlag(args, "--lookahead-days"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parseTennesseeFinancePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -59,7 +54,6 @@ export function toSyncDueTennesseeCandidateFinanceScriptOutput(input: {
     ts: new Date().toISOString(),
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -85,9 +79,6 @@ async function main(): Promise<void> {
       staleAfterDays: options.staleAfterDays,
       electionLookbackDays: options.electionLookbackDays,
       electionLookaheadDays: options.electionLookaheadDays,
-      financeIndustryClassifier:
-        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: options.aiClassificationMinAmount,
     });
 
     console.log(JSON.stringify(toSyncDueTennesseeCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));

@@ -26,7 +26,6 @@ describe("syncDueNewMexicoCandidateFinance script", () => {
       electionLookbackDays: 10,
       electionLookaheadDays: 365,
       rawCacheDir: "/tmp/cfis",
-      aiClassifyIndustries: true,
       aiClassificationMinAmount: undefined,
     });
   });
@@ -35,13 +34,6 @@ describe("syncDueNewMexicoCandidateFinance script", () => {
     expect(parseSyncDueNewMexicoCandidateFinanceScriptArgs([])).toMatchObject({
       dryRun: false,
       force: false,
-      aiClassifyIndustries: true,
-    });
-  });
-
-  it("can opt out of AI industry classification", () => {
-    expect(parseSyncDueNewMexicoCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
     });
   });
 
@@ -85,7 +77,6 @@ describe("syncDueNewMexicoCandidateFinance script", () => {
         dryRun: true,
         force: false,
         maxCandidates: 2,
-        aiClassifyIndustries: false,
       },
       result: {
         dryRun: true,

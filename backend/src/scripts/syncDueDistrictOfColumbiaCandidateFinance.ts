@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isDistrictOfColumbiaCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -17,8 +16,6 @@ export type SyncDueDistrictOfColumbiaCandidateFinanceScriptOptions = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
 };
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
@@ -85,9 +82,6 @@ export function parseSyncDueDistrictOfColumbiaCandidateFinanceScriptArgs(
     "--stale-after-days",
     "--lookback-days",
     "--lookahead-days",
-    "--ai-classify-industries",
-    "--no-ai-classify-industries",
-    "--ai-min-amount",
   ]);
   return {
     dryRun: args.includes("--dry-run"),
@@ -96,8 +90,6 @@ export function parseSyncDueDistrictOfColumbiaCandidateFinanceScriptArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -119,7 +111,6 @@ export function toSyncDueDistrictOfColumbiaCandidateFinanceScriptOutput(input: {
     ts: new Date().toISOString(),
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -145,9 +136,6 @@ async function main(): Promise<void> {
       staleAfterDays: options.staleAfterDays,
       electionLookbackDays: options.electionLookbackDays,
       electionLookaheadDays: options.electionLookaheadDays,
-      financeIndustryClassifier:
-        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: options.aiClassificationMinAmount,
     });
 
     console.log(

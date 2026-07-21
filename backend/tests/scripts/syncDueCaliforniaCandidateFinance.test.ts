@@ -19,8 +19,6 @@ describe("syncDueCaliforniaCandidateFinance script", () => {
         "--lookahead-days=365",
         "--timeout-ms=5000",
         "--raw-cache-dir=/tmp/calaccess",
-        "--ai-classify-industries",
-        "--ai-min-amount=250000",
       ])
     ).toEqual({
       dryRun: true,
@@ -33,8 +31,6 @@ describe("syncDueCaliforniaCandidateFinance script", () => {
       timeoutMs: 5000,
       rawZipPath: undefined,
       rawCacheDir: "/tmp/calaccess",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 250000,
     });
   });
 
@@ -43,13 +39,6 @@ describe("syncDueCaliforniaCandidateFinance script", () => {
       dryRun: false,
       includeOutside: true,
       force: false,
-      aiClassifyIndustries: true,
-    });
-  });
-
-  it("can opt out of AI industry classification", () => {
-    expect(parseSyncDueCaliforniaCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
     });
   });
 

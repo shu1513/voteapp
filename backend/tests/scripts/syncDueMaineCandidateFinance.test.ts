@@ -17,7 +17,6 @@ describe("syncDueMaineCandidateFinance script", () => {
         "--lookback-days=10",
         "--lookahead-days=365",
         "--raw-cache-dir=/tmp/maine-cfis",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -27,8 +26,6 @@ describe("syncDueMaineCandidateFinance script", () => {
       electionLookbackDays: 10,
       electionLookaheadDays: 365,
       rawCacheDir: "/tmp/maine-cfis",
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -36,13 +33,6 @@ describe("syncDueMaineCandidateFinance script", () => {
     expect(parseSyncDueMaineCandidateFinanceScriptArgs([])).toMatchObject({
       dryRun: false,
       force: false,
-      aiClassifyIndustries: true,
-    });
-  });
-
-  it("can opt out of AI industry classification", () => {
-    expect(parseSyncDueMaineCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
     });
   });
 
@@ -92,7 +82,6 @@ describe("syncDueMaineCandidateFinance script", () => {
         dryRun: true,
         force: false,
         maxCandidates: 2,
-        aiClassifyIndustries: false,
       },
       result: {
         dryRun: true,
@@ -111,7 +100,6 @@ describe("syncDueMaineCandidateFinance script", () => {
       type: "maine_candidate_finance_due_sync",
       started_at: "2026-01-02T03:04:05.000Z",
       dry_run: true,
-      ai_classify_industries: false,
       result: {
         dueCandidateCount: 3,
         selectedCandidateCount: 2,

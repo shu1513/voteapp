@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isMassachusettsCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -17,8 +16,6 @@ export type SyncDueMassachusettsCandidateFinanceScriptOptions = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
 };
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
@@ -62,15 +59,6 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
-function parseAiClassifyIndustriesFlag(args: readonly string[]): boolean {
-  const enabled = args.includes("--ai-classify-industries");
-  const disabled = args.includes("--no-ai-classify-industries");
-  if (enabled && disabled) {
-    throw new Error("Provide either --ai-classify-industries or --no-ai-classify-industries, not both");
-  }
-  return !disabled;
-}
-
 export function parseSyncDueMassachusettsCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueMassachusettsCandidateFinanceScriptOptions {
@@ -81,8 +69,6 @@ export function parseSyncDueMassachusettsCandidateFinanceScriptArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    aiClassifyIndustries: parseAiClassifyIndustriesFlag(args),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -104,7 +90,6 @@ export function toSyncDueMassachusettsCandidateFinanceScriptOutput(input: {
     ts: new Date().toISOString(),
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -130,9 +115,6 @@ async function main(): Promise<void> {
       staleAfterDays: options.staleAfterDays,
       electionLookbackDays: options.electionLookbackDays,
       electionLookaheadDays: options.electionLookaheadDays,
-      financeIndustryClassifier:
-        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: options.aiClassificationMinAmount,
     });
 
     console.log(JSON.stringify(toSyncDueMassachusettsCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));

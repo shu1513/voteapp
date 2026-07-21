@@ -16,7 +16,6 @@ describe("syncDueTennesseeCandidateFinance script", () => {
         "3",
         "--lookback-days=10",
         "--lookahead-days=365",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -25,8 +24,6 @@ describe("syncDueTennesseeCandidateFinance script", () => {
       staleAfterDays: 3,
       electionLookbackDays: 10,
       electionLookaheadDays: 365,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -34,13 +31,6 @@ describe("syncDueTennesseeCandidateFinance script", () => {
     expect(parseSyncDueTennesseeCandidateFinanceScriptArgs([])).toMatchObject({
       dryRun: false,
       force: false,
-      aiClassifyIndustries: true,
-    });
-  });
-
-  it("can opt out of AI industry classification", () => {
-    expect(parseSyncDueTennesseeCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
     });
   });
 
@@ -82,7 +72,6 @@ describe("syncDueTennesseeCandidateFinance script", () => {
         dryRun: true,
         force: false,
         maxCandidates: 2,
-        aiClassifyIndustries: false,
       },
       result: {
         dryRun: true,
@@ -111,7 +100,6 @@ describe("syncDueTennesseeCandidateFinance script", () => {
       type: "tennessee_candidate_finance_due_sync",
       started_at: "2026-01-02T03:04:05.000Z",
       dry_run: true,
-      ai_classify_industries: false,
       result: {
         dueCandidateCount: 3,
         selectedCandidateCount: 2,

@@ -18,8 +18,6 @@ describe("syncDueUtahCandidateFinance script", () => {
         "--lookahead-days=365",
         "--raw-cache-dir=/tmp/utah-disclosures",
         "--refresh-cache",
-        "--ai-classify-industries",
-        "--ai-min-amount=25000",
       ])
     ).toEqual({
       dryRun: true,
@@ -30,8 +28,6 @@ describe("syncDueUtahCandidateFinance script", () => {
       electionLookaheadDays: 365,
       rawCacheDir: "/tmp/utah-disclosures",
       refreshCache: true,
-      aiClassifyIndustries: true,
-      aiClassificationMinAmount: 25000,
     });
   });
 
@@ -40,16 +36,13 @@ describe("syncDueUtahCandidateFinance script", () => {
       dryRun: false,
       force: false,
       refreshCache: false,
-      aiClassifyIndustries: false,
     });
   });
 
   it("can opt into and out of AI industry classification", () => {
     expect(parseSyncDueUtahCandidateFinanceScriptArgs(["--ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: true,
     });
     expect(parseSyncDueUtahCandidateFinanceScriptArgs(["--no-ai-classify-industries"])).toMatchObject({
-      aiClassifyIndustries: false,
     });
   });
 
@@ -88,7 +81,6 @@ describe("syncDueUtahCandidateFinance script", () => {
         force: false,
         maxCandidates: 2,
         refreshCache: false,
-        aiClassifyIndustries: false,
       },
       result: {
         dryRun: true,
@@ -108,7 +100,6 @@ describe("syncDueUtahCandidateFinance script", () => {
       started_at: "2026-01-02T03:04:05.000Z",
       dry_run: true,
       refresh_cache: false,
-      ai_classify_industries: false,
       result: {
         dueCandidateCount: 3,
         selectedCandidateCount: 2,

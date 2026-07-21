@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isCaliforniaCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import {
@@ -21,8 +20,6 @@ export type SyncDueCaliforniaCandidateFinanceScriptOptions = {
   timeoutMs?: number;
   rawZipPath?: string;
   rawCacheDir?: string;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
 };
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
@@ -68,8 +65,6 @@ export function parseSyncDueCaliforniaCandidateFinanceScriptArgs(
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
     rawZipPath: parseFlagValue(args, "--raw-zip")?.trim() || undefined,
     rawCacheDir: parseFlagValue(args, "--raw-cache-dir")?.trim() || undefined,
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -88,7 +83,6 @@ export function toSyncDueCaliforniaCandidateFinanceScriptOutput(input: {
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
     include_outside: input.options.includeOutside,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -118,9 +112,6 @@ async function main(): Promise<void> {
       powerSearchOptions: options.timeoutMs ? { timeoutMs: options.timeoutMs } : undefined,
       rawDataZipPath: options.rawZipPath,
       rawDataCacheDir: options.rawCacheDir,
-      financeIndustryClassifier:
-        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: options.aiClassificationMinAmount,
     });
 
     console.log(JSON.stringify(toSyncDueCaliforniaCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));

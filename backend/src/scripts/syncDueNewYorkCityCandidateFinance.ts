@@ -1,7 +1,6 @@
 import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isNewYorkCityCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import { syncDueNewYorkCityCandidateFinance } from "../pipeline/newYorkCityFinance/newYorkCityCandidateFinanceBatchSync.js";
@@ -40,9 +39,6 @@ async function main(): Promise<void> {
       electionLookbackDays: positiveInteger(args, "--lookback-days"),
       electionLookaheadDays: positiveInteger(args, "--lookahead-days"),
       cacheDir: flagValue(args, "--cache-dir") ?? undefined,
-      financeIndustryClassifier:
-        !dryRun && !args.includes("--no-ai-classify-industries") ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: positiveInteger(args, "--ai-min-amount"),
     });
     console.log(JSON.stringify({ type: "new_york_city_candidate_finance_due_sync", enabled: true, result }, null, 2));
   } finally {

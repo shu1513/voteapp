@@ -2,7 +2,6 @@ import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
-import { createFinanceIndustryClassifierFromEnv } from "../ai/classifyFinanceIndustry.js";
 import { loadProjectEnv } from "../config/env.js";
 import { isCandidateFinanceEnabled } from "../config/featureFlags.js";
 import {
@@ -21,8 +20,6 @@ export type SyncDueCandidateFinanceScriptOptions = {
   perPage?: number;
   outsideGroupLimit?: number;
   timeoutMs?: number;
-  aiClassifyIndustries: boolean;
-  aiClassificationMinAmount?: number;
 };
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
@@ -67,8 +64,6 @@ export function parseSyncDueCandidateFinanceScriptArgs(
     perPage: parsePositiveIntegerFlag(args, "--per-page"),
     outsideGroupLimit: parsePositiveIntegerFlag(args, "--top-groups"),
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
-    aiClassifyIndustries: !args.includes("--no-ai-classify-industries"),
-    aiClassificationMinAmount: parsePositiveIntegerFlag(args, "--ai-min-amount"),
   };
 }
 
@@ -87,7 +82,6 @@ export function toSyncDueCandidateFinanceScriptOutput(input: {
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
     include_outside: input.options.includeOutside,
-    ai_classify_industries: input.options.aiClassifyIndustries,
     result: input.result,
   };
 }
@@ -123,9 +117,6 @@ async function main(): Promise<void> {
       electionLookaheadDays: options.electionLookaheadDays,
       perPage: options.perPage,
       outsideGroupLimit: options.outsideGroupLimit,
-      financeIndustryClassifier:
-        options.aiClassifyIndustries && !options.dryRun ? createFinanceIndustryClassifierFromEnv() : undefined,
-      aiClassificationMinAmount: options.aiClassificationMinAmount,
     });
 
     console.log(JSON.stringify(toSyncDueCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));
