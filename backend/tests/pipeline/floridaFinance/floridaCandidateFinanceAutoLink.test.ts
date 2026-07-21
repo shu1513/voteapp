@@ -130,6 +130,29 @@ describe("floridaCandidateFinanceAutoLink", () => {
     });
   });
 
+  it("matches around middle names and compound surnames via the short reversed key", () => {
+    // App "Jane A. Doe" vs DOS "DOE, JANE" (no middle name on the DOS side).
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({ contributionDate: "01/15/2026", recipientName: "DOE, JANE (DEM)(GOV)" }),
+        ],
+      })
+    ).toMatchObject({ status: "matched" });
+    // App "Jane de la Cruz" vs DOS "DE LA CRUZ, JANE".
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Jane de la Cruz",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({ contributionDate: "01/15/2026", recipientName: "DE LA CRUZ, JANE (REP)(STR)" }),
+        ],
+      })
+    ).toMatchObject({ status: "matched" });
+  });
+
   it("does not resolve when more than one recipient name matches the candidate", () => {
     expect(
       resolveFloridaCandidateCommittee({

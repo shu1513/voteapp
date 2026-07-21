@@ -158,6 +158,12 @@ function assertFloridaContributionExportTsv(tsv: string): void {
   ) {
     throw new Error("Florida contribution export returned non-TSV content");
   }
+  // contrib.exe can emit a VALID TSV header followed by an HTML error body
+  // (seen live: "Overflow Error Number = 6" when rowlimit exceeds ~32767),
+  // so the first-line check alone would parse and cache the error page.
+  if (/error in \/cgi-bin\/contrib\.exe/i.test(tsv) || /<\/html>/i.test(tsv)) {
+    throw new Error("Florida contribution export returned an error page after the TSV header");
+  }
 }
 
 export function createFloridaContributionExportFetchTransport(

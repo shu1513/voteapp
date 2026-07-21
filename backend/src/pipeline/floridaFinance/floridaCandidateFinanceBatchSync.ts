@@ -8,6 +8,7 @@ import {
 } from "./floridaCampaignFinanceArtifactCache.js";
 import {
   floridaElectionCycleStartYear,
+  normalizeFloridaTextKey,
   parseFloridaDateYear,
   type FloridaContributionRow,
 } from "./floridaCampaignFinanceRows.js";
@@ -399,6 +400,95 @@ async function loadContributionExportWithCache(input: {
   };
 }
 
+function parseFloridaExportDate(value: string, label: string): Date {
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value);
+  if (!match) {
+    throw new Error(`Invalid Florida export ${label}: ${value}`);
+  }
+  return new Date(Date.UTC(Number(match[3]), Number(match[1]) - 1, Number(match[2])));
+}
+
+function formatFloridaExportDate(date: Date): string {
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  return `${month}/${day}/${date.getUTCFullYear()}`;
+}
+
+const MIN_EXPORT_CHUNK_DAYS = 7;
+
+/**
+ * Loads a date-bounded export, recursively halving the date range whenever a
+ * response fills the row limit — DOS hard-caps exports (contrib.exe
+ * overflows past ~32767 rows) and both 2026 gubernatorial candidates exceed
+ * a single full-cycle export. Sub-ranges never overlap, so concatenation
+ * cannot double-count (legitimate duplicate contributions are preserved).
+ * Fails closed if even a one-week range fills the limit.
+ */
+async function loadContributionExportChunked(input: {
+  query: FloridaContributionExportQuery;
+  rowLimit: number;
+  cacheDir: string;
+  refresh: boolean;
+  dryRun: boolean;
+  exportRows: typeof exportFloridaContributionRows;
+  transport: FloridaContributionExportTransport | undefined;
+  rateLimiter: FloridaContributionExportRateLimiter | undefined;
+  force: boolean;
+}): Promise<FloridaCandidateFinanceDueContributionData | null> {
+  const data = await loadContributionExportWithCache(input);
+  if (data === null || data.contributionRows === undefined || data.contributionRows.length < input.rowLimit) {
+    return data;
+  }
+
+  const dateFrom = input.query.dateFrom;
+  const dateTo = input.query.dateTo;
+  if (!dateFrom || !dateTo) {
+    return data;
+  }
+  const start = parseFloridaExportDate(dateFrom, "dateFrom");
+  const end = parseFloridaExportDate(dateTo, "dateTo");
+  const spanDays = Math.round((end.getTime() - start.getTime()) / 86_400_000);
+  if (spanDays < MIN_EXPORT_CHUNK_DAYS) {
+    throw new Error(
+      `Florida contribution export fills the ${input.rowLimit}-row limit even for ${dateFrom}..${dateTo}; totals would be truncated`
+    );
+  }
+  const mid = new Date(start.getTime() + Math.floor(spanDays / 2) * 86_400_000);
+  const rightStart = new Date(mid.getTime() + 86_400_000);
+
+  const halves: FloridaCandidateFinanceDueContributionData[] = [];
+  for (const [from, to] of [
+    [dateFrom, formatFloridaExportDate(mid)],
+    [formatFloridaExportDate(rightStart), dateTo],
+  ] as const) {
+    const half = await loadContributionExportChunked({
+      ...input,
+      query: { ...input.query, dateFrom: from, dateTo: to },
+    });
+    if (half === null || half.contributionRows === undefined) {
+      return null;
+    }
+    halves.push(half);
+  }
+  return {
+    contributionRows: halves.flatMap((half) => half.contributionRows ?? []),
+    contributionArtifact: null,
+    contributionSourceUrl: halves[0]?.contributionSourceUrl ?? data.contributionSourceUrl,
+  };
+}
+
+/**
+ * Bounds an export to the election cycle so an all-years candidate history
+ * cannot eat the DOS row limit before the cycle filter runs — Byron Donalds'
+ * unbounded export returned exactly the 10,000-row cap.
+ */
+function cycleDateBounds(electionYear: number): { dateFrom: string; dateTo: string } {
+  return {
+    dateFrom: `01/01/${floridaElectionCycleStartYear(electionYear)}`,
+    dateTo: `12/31/${electionYear}`,
+  };
+}
+
 function buildCommitteeContributionExportQuery(input: {
   row: FloridaCandidateFinanceDueRow;
   rowLimit: number;
@@ -415,12 +505,14 @@ function buildCommitteeContributionExportQuery(input: {
       searchType: "candidate_detail",
       candidateFirstName: name.candidateFirstName,
       candidateLastName: name.candidateLastName,
+      ...cycleDateBounds(input.row.electionYear),
       rowLimit: input.rowLimit,
     };
   }
   return {
     searchType: "committee_detail",
     committeeName: input.row.committeeName,
+    ...cycleDateBounds(input.row.electionYear),
     rowLimit: input.rowLimit,
   };
 }
@@ -437,6 +529,7 @@ function buildCandidateContributionExportQuery(input: {
     searchType: "candidate_detail",
     candidateFirstName: name.candidateFirstName,
     candidateLastName: name.candidateLastName,
+    ...cycleDateBounds(input.candidateElection.electionYear),
     rowLimit: input.rowLimit,
   };
 }
@@ -530,6 +623,13 @@ async function buildAutoLinkExportData(input: {
     }
     if (!data?.contributionRows) {
       continue;
+    }
+    if (data.contributionRows.length >= input.rowLimit) {
+      console.warn("Florida auto-link export hit the row limit; committee resolution may be working from truncated data:", {
+        candidateId: candidateElection.candidateId,
+        electionYear: candidateElection.electionYear,
+        rowLimit: input.rowLimit,
+      });
     }
     const cycleRows = data.contributionRows.filter((row) =>
       isContributionInElectionCycle(row, candidateElection.electionYear)
@@ -687,9 +787,12 @@ export async function syncDueFloridaCandidateFinance(
     rateLimiter: input.exportRateLimiter,
     minIntervalMs: exportMinIntervalMs,
   });
+  // Statewide candidates exceed 10k in-cycle rows (Byron Donalds' bounded
+  // gubernatorial export fills it). Do not exceed ~32767: contrib.exe
+  // overflows above a signed 16-bit rowlimit ("Overflow Error Number = 6").
   const exportRowLimit = normalizePositiveInteger(
     input.exportRowLimit,
-    10_000,
+    30_000,
     "exportRowLimit"
   );
 
@@ -752,8 +855,9 @@ export async function syncDueFloridaCandidateFinance(
     let contributionData = contributionDataByCommitteeId.get(normalizeCommitteeId(row.committeeId));
     if (!hasDirectContributionData(contributionData) && !dryRun && input.fetchMissingContributionData !== false) {
       try {
-        contributionData = (await loadContributionExportWithCache({
+        contributionData = (await loadContributionExportChunked({
           query: buildCommitteeContributionExportQuery({ row, rowLimit: exportRowLimit }),
+          rowLimit: exportRowLimit,
           cacheDir: defaultArtifactCacheDir,
           refresh: input.refreshExportArtifacts === true,
           dryRun,
@@ -784,6 +888,31 @@ export async function syncDueFloridaCandidateFinance(
         error: `Florida contribution data not provided for committee: ${row.committeeId}`,
       });
       continue;
+    }
+    if (contributionData.contributionRows !== undefined) {
+      // (Export truncation fails closed inside loadContributionExportChunked,
+      // which recursively halves the date range and throws when even a
+      // one-week range fills the DOS row limit.)
+      // Fail closed on zero matching rows: writing a snapshot from an export
+      // with no rows for the linked committee (header-only response, or a
+      // same-named different candidate) would overwrite real totals with $0.
+      const committeeKey = normalizeFloridaTextKey(row.committeeName);
+      const matchingRowCount = contributionData.contributionRows.filter(
+        (contributionRow) =>
+          normalizeFloridaTextKey(contributionRow.recipientName) === committeeKey &&
+          isContributionInElectionCycle(contributionRow, row.electionYear)
+      ).length;
+      if (matchingRowCount === 0) {
+        missingDataResults.push({
+          candidateId: row.candidateId,
+          electionId: row.electionId,
+          electionYear: row.electionYear,
+          committeeId: row.committeeId,
+          ok: false,
+          error: `Florida contribution export has no in-cycle rows for linked committee "${row.committeeName}"; refusing to write a zero snapshot`,
+        });
+        continue;
+      }
     }
     syncInputs.push(buildDueSyncInput({ row, contributionData }));
   }

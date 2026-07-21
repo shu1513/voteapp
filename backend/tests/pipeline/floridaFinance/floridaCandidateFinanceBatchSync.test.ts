@@ -558,9 +558,12 @@ describe("floridaCandidateFinanceBatchSync", () => {
     });
     expect(exportFloridaContributionRowsFn).toHaveBeenCalledWith(
       expect.objectContaining({
-        searchType: "committee_detail",
-        committeeName: "Friends of Jane Doe",
-        rowLimit: 10000,
+        searchType: "candidate_detail",
+        candidateFirstName: "Jane",
+        candidateLastName: "Doe",
+        dateFrom: "01/01/2025",
+        dateTo: "12/31/2026",
+        rowLimit: 30000,
       })
     );
     expect(syncFloridaCandidateFinanceFn).toHaveBeenCalledWith(
@@ -575,6 +578,129 @@ describe("floridaCandidateFinanceBatchSync", () => {
         cacheKey: liveCacheKey,
         rowCount: 1,
       },
+    });
+  });
+
+  it("splits a limit-filling export into date chunks and fails closed when even a week fills it", async () => {
+    const cacheDir = await makeTempDir();
+    const dueRow = {
+      candidate_id: CANDIDATE_ID,
+      candidate_election_id: CANDIDATE_ELECTION_ID,
+      election_id: ELECTION_ID,
+      candidate_name: "Jane Doe",
+      election_year: 2026,
+      office_name: "Governor",
+      district: null,
+      committee_id: "FRIENDS_OF_JANE_DOE",
+      committee_name: "Friends of Jane Doe",
+      source_url: null,
+      last_synced_at: null,
+      total_due_rows: "1",
+    };
+    const syncFloridaCandidateFinanceFn = vi.fn();
+    // Every date range fills the 2-row limit → recursion bottoms out at the
+    // one-week floor and the candidate fails instead of truncating totals.
+    const alwaysFull = vi.fn(async (input: { dateFrom?: string | null }) => ({
+      ...exportResult(`full-${(input.dateFrom ?? "none").replaceAll("/", "-")}`),
+      rowCount: 2,
+      rows: [CONTRIBUTION_ROW, CONTRIBUTION_ROW],
+    }));
+
+    const truncated = await syncDueFloridaCandidateFinance({
+      db: createMockDb([dueRow]),
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      maxCandidates: 1,
+      autoLinkMissingLinks: false,
+      exportRowLimit: 2,
+      defaultArtifactCacheDir: cacheDir,
+      exportFloridaContributionRowsFn: alwaysFull as never,
+      exportMinIntervalMs: 0,
+      syncFloridaCandidateFinanceFn,
+    });
+    expect(syncFloridaCandidateFinanceFn).not.toHaveBeenCalled();
+    expect(truncated.failedCandidateCount).toBe(1);
+    expect(truncated.results[0]).toMatchObject({
+      ok: false,
+      error: expect.stringContaining("row limit"),
+    });
+    // The full-cycle query was split into strictly narrower date ranges.
+    expect(alwaysFull.mock.calls.length).toBeGreaterThan(2);
+
+    // When halves fit under the limit, the chunked rows sync normally.
+    const cacheDir2 = await makeTempDir();
+    const fullThenHalves = vi.fn(async (input: { dateFrom?: string | null; dateTo?: string | null }) => {
+      const isFullCycle = input.dateFrom === "01/01/2025" && input.dateTo === "12/31/2026";
+      return {
+        ...exportResult(`split-${(input.dateFrom ?? "none").replaceAll("/", "-")}`),
+        rowCount: isFullCycle ? 2 : 1,
+        rows: isFullCycle ? [CONTRIBUTION_ROW, CONTRIBUTION_ROW] : [CONTRIBUTION_ROW],
+      };
+    });
+    const syncOk = vi.fn(async (input: { candidateId: string; electionId: string; electionYear: number; contributionRows: readonly unknown[] }) => ({
+      candidateId: input.candidateId,
+      electionId: input.electionId,
+      electionYear: input.electionYear,
+      dryRun: false,
+      linkWritten: true,
+      summaryWritten: true,
+    }));
+    const chunked = await syncDueFloridaCandidateFinance({
+      db: createMockDb([dueRow]),
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      maxCandidates: 1,
+      autoLinkMissingLinks: false,
+      exportRowLimit: 2,
+      defaultArtifactCacheDir: cacheDir2,
+      exportFloridaContributionRowsFn: fullThenHalves as never,
+      exportMinIntervalMs: 0,
+      syncFloridaCandidateFinanceFn: syncOk as never,
+    });
+    expect(chunked.syncedCandidateCount).toBe(1);
+    // Two half-range rows delivered to the sync (non-overlapping ranges).
+    expect(syncOk).toHaveBeenCalledWith(
+      expect.objectContaining({ contributionRows: [CONTRIBUTION_ROW, CONTRIBUTION_ROW] })
+    );
+  });
+
+  it("refuses to write a zero snapshot when no export rows match the linked committee", async () => {
+    const db = createMockDb([
+      {
+        candidate_id: CANDIDATE_ID,
+        candidate_election_id: CANDIDATE_ELECTION_ID,
+        election_id: ELECTION_ID,
+        candidate_name: "Jane Doe",
+        election_year: 2026,
+        office_name: "Governor",
+        district: null,
+        committee_id: "FRIENDS_OF_JANE_DOE",
+        committee_name: "Friends of Jane Doe",
+        source_url: null,
+        last_synced_at: null,
+        total_due_rows: "1",
+      },
+    ]);
+    const syncFloridaCandidateFinanceFn = vi.fn();
+
+    const result = await syncDueFloridaCandidateFinance({
+      db,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      maxCandidates: 1,
+      autoLinkMissingLinks: false,
+      contributionDataByCommitteeId: new Map([
+        [
+          "FRIENDS_OF_JANE_DOE",
+          // Rows exist, but for a same-named different candidate's committee.
+          { contributionRows: [{ ...CONTRIBUTION_ROW, recipientName: "Jane Doe for Congress" }] },
+        ],
+      ]),
+      syncFloridaCandidateFinanceFn,
+    });
+
+    expect(syncFloridaCandidateFinanceFn).not.toHaveBeenCalled();
+    expect(result.failedCandidateCount).toBe(1);
+    expect(result.results[0]).toMatchObject({
+      ok: false,
+      error: expect.stringContaining("refusing to write a zero snapshot"),
     });
   });
 

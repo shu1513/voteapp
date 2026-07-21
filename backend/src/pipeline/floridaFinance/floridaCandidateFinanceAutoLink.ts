@@ -126,6 +126,12 @@ export function normalizeFloridaCandidateNameKeys(candidateName: string): Set<st
       const lastName = words[words.length - 1];
       const givenNames = words.slice(0, -1).join(" ");
       keys.add(`${lastName} ${givenNames}`);
+      if (words.length > 2) {
+        // Short reversed key: app middle names/initials ("Jane A. Doe") and
+        // compound surnames ("Jane de la Cruz") both still match a DOS
+        // "DOE, JANE" / "DE LA CRUZ, JANE" via the bounded substring check.
+        keys.add(`${lastName} ${words[0]}`);
+      }
     }
   }
 
