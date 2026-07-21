@@ -28,9 +28,9 @@ describe("financeIndustryClassificationPrompt", () => {
     expect(prompt).toContain("labor_unions");
     expect(prompt).toContain("environmental_group");
     expect(prompt).toContain("media_entertainment");
+    expect(prompt).toContain("retail");
     expect(prompt).not.toContain("public_sector");
     expect(prompt).not.toContain("telecom");
-    expect(prompt).not.toContain("retail");
     expect(prompt).not.toContain("crypto");
     expect(prompt).toContain("Return exactly one classification for each input id.");
     expect(prompt).toContain('"id": "1"');
