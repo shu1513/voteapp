@@ -105,6 +105,7 @@ const FINANCE_CATEGORY_LABELS: Record<string, string> = {
   oil_gas_energy: "Oil, gas, and energy",
   pharmaceuticals: "Pharmaceuticals",
   real_estate: "Real estate",
+  retail: "Retail",
   technology: "Technology",
   transportation: "Transportation",
   waste_management: "Waste management",
