@@ -83,6 +83,69 @@ describe("maineCandidateCommitteeResolver", () => {
     });
   });
 
+  it("matches committees whose export rows leave Committee Name, Office, and District blank", () => {
+    // Real CFIS exports omit "Committee Name" on ~16% of candidate rows
+    // (e.g. Charlotte Nutt, OrgID 555695 in CON_2025); OrgID is always set.
+    expect(
+      resolveMaineCandidateCommittee({
+        candidateName: "Charlotte Nutt",
+        officeScope: "state_lower",
+        officeName: "State Representative",
+        district: "48",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({
+            OrgID: "555695",
+            "Committee Name": "",
+            "Candidate Name": "Charlotte Nutt",
+            "Receipt Date": "11/27/2025",
+            Office: "",
+            District: "",
+            "Committee Type": "Candidate",
+          }),
+          contribution({
+            OrgID: "555695",
+            "Committee Name": "",
+            "Candidate Name": "Charlotte Nutt",
+            "Receipt Date": "12/01/2025",
+            Office: "",
+            District: "",
+            "Committee Type": "Candidate",
+          }),
+        ],
+      })
+    ).toEqual({
+      status: "matched",
+      committeeId: "555695",
+      committeeName: "Charlotte Nutt",
+      confidence: "exact",
+      source: "cfis_bulk",
+      sourceUrl: null,
+      matchedContributionRowCount: 2,
+    });
+  });
+
+  it("backfills the committee name from any same-OrgID row that carries one", () => {
+    expect(
+      resolveMaineCandidateCommittee({
+        candidateName: "Reagan LeeAnn Paul",
+        officeScope: "state_lower",
+        officeName: "State Representative",
+        district: "37",
+        electionYear: 2024,
+        contributionRows: [
+          contribution({ "Committee Name": "" }),
+          contribution({ "Receipt ID": "R-2" }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeId: "1001",
+      committeeName: "Paul for Maine",
+      matchedContributionRowCount: 2,
+    });
+  });
+
   it("does not guess when multiple candidate committees match", () => {
     expect(
       resolveMaineCandidateCommittee({

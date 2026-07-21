@@ -10,9 +10,10 @@ import {
   type MaineExpenditureDataForYear,
 } from "../../../src/pipeline/maineFinance/maineCandidateFinanceBatchSync.js";
 import { getMaineCfisArtifactCachePaths } from "../../../src/pipeline/maineFinance/maineCfisArtifactCache.js";
-import type {
-  MaineCfisContributionRow,
-  MaineCfisExpenditureRow,
+import {
+  MAINE_CFIS_CONTRIBUTION_COLUMNS,
+  type MaineCfisContributionRow,
+  type MaineCfisExpenditureRow,
 } from "../../../src/pipeline/maineFinance/maineCfisArtifactReader.js";
 
 const CANDIDATE_ID = "11111111-1111-1111-1111-111111111111";
@@ -115,6 +116,51 @@ function expenditure(overrides: Partial<MaineCfisExpenditureRow> = {}): MaineCfi
     "Candidate Financing Type": "",
     ...overrides,
   };
+}
+
+function contributionCsv(rows: readonly MaineCfisContributionRow[]): string {
+  const escape = (value: string): string => (/[",\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value);
+  const lines = rows.map((row) =>
+    MAINE_CFIS_CONTRIBUTION_COLUMNS.map((column) => escape(row[column] ?? "")).join(",")
+  );
+  return [MAINE_CFIS_CONTRIBUTION_COLUMNS.join(","), ...lines].join("\n") + "\n";
+}
+
+async function writeContributionArtifact(input: {
+  cacheDir: string;
+  filingYear: number;
+  rows: readonly MaineCfisContributionRow[];
+}): Promise<void> {
+  const paths = getMaineCfisArtifactCachePaths({
+    cacheDir: input.cacheDir,
+    filingYear: input.filingYear,
+    artifactKind: "contributions",
+  });
+  const csv = contributionCsv(input.rows);
+  await writeFile(paths.filePath, csv, "utf8");
+  await writeFile(
+    paths.metadataPath,
+    JSON.stringify({
+      version: 1,
+      artifact: { filingYear: input.filingYear, artifactKind: "contributions" },
+      filePath: paths.filePath,
+      metadataPath: paths.metadataPath,
+      downloadedAt: "2026-06-25T00:00:00.000Z",
+      remote: {
+        filingYear: input.filingYear,
+        artifactKind: "contributions",
+        url: "https://mainecampaignfinance.com/api/DataDownload/CSVDownloadReport",
+        requestBody: { year: input.filingYear, transactionType: "CON" },
+        contentLength: Buffer.byteLength(csv, "utf8"),
+        contentType: "application/octet-stream",
+        contentDisposition: `attachment; filename=CON_${input.filingYear}.csv`,
+        etag: null,
+        lastModified: null,
+      },
+      bytesWritten: Buffer.byteLength(csv, "utf8"),
+    }),
+    "utf8"
+  );
 }
 
 function dueDbRow() {
@@ -282,11 +328,57 @@ describe("maineCandidateFinanceBatchSync", () => {
     );
   });
 
-  it("does not ingest cached raw artifacts without matching metadata", async () => {
+  it("merges cached artifacts from both cycle filing years into one sync", async () => {
+    // Maine CFIS keys bulk files by receipt year: money for a 2024 election is
+    // split across CON_2023 and CON_2024. Both must reach the sync.
     const rawDataCacheDir = await makeTempDir();
-    const paths = getMaineCfisArtifactCachePaths({
+    await writeContributionArtifact({
+      cacheDir: rawDataCacheDir,
+      filingYear: 2023,
+      rows: [contribution({ "Receipt ID": "R-2023", "Receipt Date": "12/15/2023" })],
+    });
+    await writeContributionArtifact({
       cacheDir: rawDataCacheDir,
       filingYear: 2024,
+      rows: [contribution({ "Receipt ID": "R-2024", "Receipt Date": "03/11/2024" })],
+    });
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const db = {
+      query: vi.fn().mockResolvedValue({ rows: [dueDbRow()] }),
+      connect: vi.fn(),
+    };
+    const syncFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2024,
+      dryRun: false,
+    });
+
+    const result = await syncDueMaineCandidateFinance({
+      db,
+      now: new Date("2026-06-25T12:00:00.000Z"),
+      maxCandidates: 10,
+      staleAfterDays: 7,
+      autoLinkMissingLinks: false,
+      rawDataCacheDir,
+      syncMaineCandidateFinanceFn: syncFn,
+    });
+
+    expect(result.syncedCandidateCount).toBe(1);
+    expect(syncFn).toHaveBeenCalledTimes(1);
+    const receiptIds = (syncFn.mock.calls[0]?.[0]?.contributionRows as MaineCfisContributionRow[]).map(
+      (row) => row["Receipt ID"]
+    );
+    expect(receiptIds.sort()).toEqual(["R-2023", "R-2024"]);
+  });
+
+  it("does not ingest cached raw artifacts without matching metadata", async () => {
+    const rawDataCacheDir = await makeTempDir();
+    // The cycle loader reads filing years [electionYear - 1, electionYear] in
+    // order, so the first artifact it validates for a 2024 election is 2023.
+    const paths = getMaineCfisArtifactCachePaths({
+      cacheDir: rawDataCacheDir,
+      filingYear: 2023,
       artifactKind: "contributions",
     });
     await writeFile(paths.filePath, "OrgID,Committee Name\n1001,Paul for Maine\n", "utf8");
