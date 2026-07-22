@@ -204,7 +204,7 @@ function centsToDollars(cents: number): number {
   return cents / 100;
 }
 
-function parseOregonDateYear(raw: string | null | undefined): number | null {
+export function parseOregonDateYear(raw: string | null | undefined): number | null {
   const trimmed = raw?.trim();
   if (!trimmed) {
     return null;

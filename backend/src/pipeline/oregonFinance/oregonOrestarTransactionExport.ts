@@ -1,5 +1,6 @@
 import { read as readXlsWorkbook, utils as xlsxUtils } from "xlsx";
 
+import { parseOregonDateYear } from "./oregonFinanceAggregator.js";
 import type { OregonOrestarTransactionDetail } from "./oregonOrestarParser.js";
 
 /**
@@ -52,11 +53,61 @@ function toAmount(value: unknown): number | null {
   return null;
 }
 
+/**
+ * Guards the gap between "the workbook has the right number of rows" and "the
+ * aggregator can actually count this row". A row the aggregator silently drops
+ * still satisfies the row-count completeness check, so a blank or unusable
+ * cell would understate the saved total while every check stayed green — the
+ * exact failure class the complete-or-throw contract exists to prevent.
+ *
+ * Only parseability is enforced. Non-positive amounts and refund/loan subtypes
+ * are REAL rows that the aggregator excludes as a deliberate business rule, so
+ * they must not throw here.
+ */
+function assertUsableExportRow(input: {
+  detail: OregonOrestarTransactionDetail;
+  expectedCommitteeId: string | null;
+  rowNumber: number;
+}): void {
+  const { detail, expectedCommitteeId, rowNumber } = input;
+  const fail = (reason: string): never => {
+    throw new Error(
+      `ORESTAR export row ${rowNumber} is unusable (${reason}); refusing to persist a total that would silently drop it`
+    );
+  };
+
+  if (!detail.transactionId) {
+    fail("missing Tran Id");
+  }
+  if (!detail.filerCommitteeId) {
+    fail("missing Filer Id");
+  }
+  // The aggregator matches the filer committee by exact ID, so a stray row
+  // from another committee would be dropped rather than counted.
+  if (expectedCommitteeId && detail.filerCommitteeId !== expectedCommitteeId) {
+    fail(`Filer Id ${detail.filerCommitteeId} does not match requested committee ${expectedCommitteeId}`);
+  }
+  // A blank date — or one exported as a raw Excel serial instead of a date
+  // string — yields no year, and the aggregator's cycle-window check drops it.
+  if (parseOregonDateYear(detail.transactionDate) === null) {
+    fail(`unparseable Tran Date ${JSON.stringify(detail.transactionDate)}`);
+  }
+  if (detail.amount === null) {
+    fail(`unparseable Amount ${JSON.stringify(detail.amount)}`);
+  }
+}
+
 export function parseOregonOrestarTransactionExport(input: {
   data: Uint8Array;
   /** Stamped onto every row; the caller knows which cneSearchTranType it searched for. */
   transactionType?: string | null;
   sourceUrl?: string | null;
+  /**
+   * When set, every row's Filer Id must equal it. The sync always passes the
+   * committee it searched for; it stays optional so the parser can be pointed
+   * at an arbitrary saved export.
+   */
+  expectedCommitteeId?: string | null;
 }): OregonOrestarTransactionDetail[] {
   if (!isOregonOrestarExportWorkbook(input.data)) {
     throw new Error("ORESTAR export response is not an .xls workbook; treating as blocked rather than parsing");
@@ -87,27 +138,32 @@ export function parseOregonOrestarTransactionExport(input: {
 
   const transactionType = input.transactionType?.trim() || null;
   const sourceUrl = input.sourceUrl?.trim() || null;
-  return rows.map((row) => ({
-    transactionId: toText(row["Tran Id"]),
-    transactionDate: toText(row["Tran Date"]),
-    transactionType,
-    transactionSubType: toText(row["Sub Type"]),
-    filedDate: toText(row["Filed Date"]),
-    amount: toAmount(row["Amount"]),
-    aggregate: toAmount(row["Aggregate Amount"]),
-    processStatus: toText(row["Tran Status"]),
-    purpose: toText(row["Purp Desc"]),
-    filerCommitteeName: toText(row["Filer"]),
-    filerCommitteeId: toText(row["Filer Id"]),
-    addressBookType: toText(row["Book Type"]),
-    contributorPayeeName: toText(row["Contributor/Payee"]),
-    address: null,
-    occupation: toText(row["Occptn Txt"]),
-    employerName: toText(row["Emp Name"]),
-    // Independent-expenditure associations only exist on transaction detail
-    // pages; the export has no equivalent column. This path has never carried
-    // them (see the outside-spending limitation note in the batch sync).
-    outsideAssociations: [],
-    sourceUrl,
-  }));
+  const expectedCommitteeId = input.expectedCommitteeId?.trim() || null;
+  return rows.map((row, index) => {
+    const detail: OregonOrestarTransactionDetail = {
+      transactionId: toText(row["Tran Id"]),
+      transactionDate: toText(row["Tran Date"]),
+      transactionType,
+      transactionSubType: toText(row["Sub Type"]),
+      filedDate: toText(row["Filed Date"]),
+      amount: toAmount(row["Amount"]),
+      aggregate: toAmount(row["Aggregate Amount"]),
+      processStatus: toText(row["Tran Status"]),
+      purpose: toText(row["Purp Desc"]),
+      filerCommitteeName: toText(row["Filer"]),
+      filerCommitteeId: toText(row["Filer Id"]),
+      addressBookType: toText(row["Book Type"]),
+      contributorPayeeName: toText(row["Contributor/Payee"]),
+      address: null,
+      occupation: toText(row["Occptn Txt"]),
+      employerName: toText(row["Emp Name"]),
+      // Independent-expenditure associations only exist on transaction detail
+      // pages; the export has no equivalent column. This path has never carried
+      // them (see the outside-spending limitation note in the batch sync).
+      outsideAssociations: [],
+      sourceUrl,
+    };
+    assertUsableExportRow({ detail, expectedCommitteeId, rowNumber: index + 2 });
+    return detail;
+  });
 }

@@ -507,6 +507,7 @@ export async function getOregonOrestarCommitteeContributionDetailsFromExport(inp
     // a Contribution by the portal's own taxonomy.
     transactionType: "Contribution",
     sourceUrl: OREGON_ORESTAR_TRANSACTION_SEARCH_URL,
+    expectedCommitteeId: committeeId,
   });
   if (details.length !== results.resultCount) {
     throw new Error(
